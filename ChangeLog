@@ -1,3 +1,7 @@
+2003-01-16  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* configure.in: Added Amharic (am) and Dutch (nl) to ALL_LINGUAS
+
 2003-01-15  Michael Meeks  <michael@ximian.com>
 
 	* configure.in: add a check for people with stale /

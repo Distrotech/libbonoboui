@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-01-06 12:16+0000\n"
-"PO-Revision-Date: 2002-06-05 03:03+0700\n"
+"POT-Creation-Date: 2003-01-10 11:59+0100\n"
+"PO-Revision-Date: 2003-01-10 22:10+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgid ""
 "A NULL_terminated array of interfaces which a server must support in order "
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr ""
+msgstr "Mảng kết thúc bằng NULL các giao diện, mà một server phải hỗ trợ để được liệt kê trong bộ chọn. Mặc định là \"IDL:Bonobo/Embeddable:1.0\" nếu không có giao diện nào được liệt kê"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -149,15 +149,15 @@ msgstr "Chỉ ưu tiên _text"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "_Dump XML"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "Xuất (dump) toàn bộ mô tả UI bằng XML ra console"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -302,7 +302,7 @@ msgstr "Xem trợ giúp về ứng dụng này"
 
 #: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "Tên cửa sổ - được dùng để serialize cấu hình."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
