@@ -1,3 +1,12 @@
+2002-04-01  Murray Cumming  <murrayc@usa.net>
+
+	* bonobo/bonobo-a11y.h, bonobo/bonobo-control-internal.h,
+	bonobo/bonobo-ui-container.h, bonobo/bonobo-ui-node-private.h,
+	bonobo/bonobo-ui-node.h, bonobo/bonobo-ui-private.h,
+	bonobo/bonobo-ui-util.h, bonobo/bonobo-ui-xml.h,
+	bonobo/bonobo-window.h:	
+	Added G_BEGIN_DECLS/G_END_DECLS for use with C++.
+
 2002-03-29  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-plug.c: (bonobo_plug_button_event): ungrab the

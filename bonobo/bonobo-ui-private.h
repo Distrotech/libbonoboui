@@ -18,6 +18,8 @@
 #include <bonobo/bonobo-ui-node-private.h>
 #include <bonobo/bonobo-ui-toolbar-control-item.h>
 
+G_BEGIN_DECLS
+
 /* To debug plug/socket/control render issues */
 #define noDEBUG_CONTROL
 
@@ -50,6 +52,8 @@ static inline void dprintf (const char *format, ...) { };
 #define dprintf(format...) fprintf(stderr, format)
 
 #endif /* DEBUG_UI */
+
+G_END_DECLS
 
 #endif /* _BONOBO_UI_PRIVATE_H_ */
 

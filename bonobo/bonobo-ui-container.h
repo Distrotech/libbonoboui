@@ -10,6 +10,8 @@
 #ifndef _BONOBO_UI_CONTAINER_H_
 #define _BONOBO_UI_CONTAINER_H_
 
+G_BEGIN_DECLS
+
 typedef struct _BonoboUIContainer BonoboUIContainer;
 
 #include <bonobo/bonobo-ui-engine.h>
@@ -40,5 +42,7 @@ BonoboUIContainer           *bonobo_ui_container_new                 (void);
 void                         bonobo_ui_container_set_engine          (BonoboUIContainer  *container,
 								      BonoboUIEngine     *engine);
 BonoboUIEngine              *bonobo_ui_container_get_engine          (BonoboUIContainer  *container);
+
+G_END_DECLS
 
 #endif /* _BONOBO_UI_CONTAINER_H_ */

@@ -14,6 +14,8 @@
 #include <atk/atkaction.h>
 #include <gtk/gtkwidget.h>
 
+G_BEGIN_DECLS
+
 typedef void     (*BonoboA11YClassInitFn)    (AtkObjectClass *klass);
 
 AtkObject *bonobo_a11y_get_atk_object        (gpointer              widget);
@@ -42,6 +44,8 @@ void       bonobo_a11y_add_actions_interface (GType                 a11y_object_
 					      /* char * keybinding descr. */
 					      ...);
 				              /* -1 terminated */
+
+G_END_DECLS
 
 #endif /* _BONOBO_A11Y_H_ */
 

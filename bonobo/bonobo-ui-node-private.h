@@ -8,6 +8,8 @@
 
 #include <bonobo/bonobo-ui-node.h>
 
+G_BEGIN_DECLS
+
 struct _BonoboUINode {
 	/* Tree management */
 	BonoboUINode *parent;
@@ -45,5 +47,7 @@ void        bonobo_ui_node_add_after      (BonoboUINode *before,
 void        bonobo_ui_node_move_children  (BonoboUINode *from,
 					   BonoboUINode *to);
 #define     bonobo_ui_node_same_name(a,b) ((a)->name_id == (b)->name_id)
+
+G_END_DECLS
 
 #endif /* _BONOBO_UI_NODE_PRIVATE_H_ */

@@ -12,6 +12,8 @@
 
 #include <glib.h>
 
+G_BEGIN_DECLS
+
 typedef struct _BonoboUINode BonoboUINode;
 
 BonoboUINode *bonobo_ui_node_new         (const char   *name);
@@ -61,5 +63,7 @@ char *        bonobo_ui_node_to_string   (BonoboUINode *node,
 					  gboolean      recurse);
 BonoboUINode* bonobo_ui_node_from_string (const char *str);
 BonoboUINode* bonobo_ui_node_from_file   (const char *filename);
+
+G_END_DECLS
 
 #endif /* _BONOBO_UI_NODE_H_ */

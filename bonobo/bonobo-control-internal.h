@@ -16,6 +16,8 @@
 #include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-control-frame.h>
 
+G_BEGIN_DECLS
+
 void     bonobo_control_add_listener            (CORBA_Object        object,
 						 GCallback           fn,
 						 gpointer            user_data,
@@ -46,5 +48,7 @@ void                bonobo_control_set_plug         (BonoboControl      *control
 void                bonobo_plug_set_control         (BonoboPlug         *plug,
 						     BonoboControl      *control);
 gboolean            bonobo_socket_disposed          (BonoboSocket       *socket);
+
+G_END_DECLS
 
 #endif /* _BONOBO_CONTROL_INTERNAL_H_ */

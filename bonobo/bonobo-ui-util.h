@@ -13,6 +13,8 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <bonobo/bonobo-ui-component.h>
 
+G_BEGIN_DECLS
+
 char      *bonobo_ui_util_pixbuf_to_xml       (GdkPixbuf         *pixbuf);
 GdkPixbuf *bonobo_ui_util_xml_to_pixbuf       (const char        *xml);
 
@@ -67,5 +69,7 @@ void            bonobo_ui_util_accel_parse  (const char        *name,
 
 #define         bonobo_ui_util_decode_str(s,e) g_strdup (s)
 #define         bonobo_ui_util_encode_str(s)   g_strdup (s)
+
+G_END_DECLS
 
 #endif /* _BONOBO_UI_XML_UTIL_H_ */

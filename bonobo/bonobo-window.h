@@ -16,6 +16,8 @@
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-container.h>
 
+G_BEGIN_DECLS
+
 #define BONOBO_TYPE_WINDOW        (bonobo_window_get_type ())
 #define BONOBO_WINDOW(o)          (GTK_CHECK_CAST ((o), BONOBO_TYPE_WINDOW, BonoboWindow))
 #define BONOBO_WINDOW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_WINDOW, BonoboWindowClass))
@@ -69,5 +71,7 @@ void                 bonobo_window_add_popup                      (BonoboWindow 
  */
 void                 bonobo_window_remove_popup                   (BonoboWindow      *win,
 								   const char        *path);
+
+G_END_DECLS
 
 #endif /* _BONOBO_WINDOW_H_ */

@@ -14,6 +14,8 @@
 #include <bonobo/bonobo-ui-node.h>
 #include <bonobo/bonobo-ui-engine.h>
 
+G_BEGIN_DECLS
+
 /* Internal API only */
 
 #ifdef BONOBO_UI_INTERNAL
@@ -128,5 +130,7 @@ void             bonobo_ui_xml_remove_watch_by_data (BonoboUIXml  *tree,
 						     gpointer      user_data);
 
 #endif /* BONOBO_UI_INTERNAL */
+
+G_END_DECLS
 
 #endif /* _BONOBO_UI_XML_H_ */
