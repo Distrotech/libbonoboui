@@ -8,11 +8,11 @@
  * Copyright (C) 2002 Sun Microsystems, Inc.
  */
 
-#include <config.h>
+#include "config.h"
+#include <string.h>
 #include <bonobo/bonobo-dock-item-grip.h>
 #include <bonobo/bonobo-dock-band.h>
 #include <bonobo/bonobo-a11y.h>
-
 #include <glib-object.h>
 #include <atk/atkstateset.h>
 #include <gdk/gdkkeysyms.h>

@@ -1,3 +1,8 @@
+2004-01-25  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/*.c: add #include "config.h"s where they
+	were missing - thanks to Morten.
+
 2004-01-23  Jody Goldberg <jody@gnome.org>
 
 	* bonobo/bonobo-dock-band.h : Use the  G_TYPE macros in place of

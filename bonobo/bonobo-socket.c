@@ -9,6 +9,7 @@
  * Copyright 2001, Ximian, Inc.
  *                 Martin Baulig.
  */
+#include "config.h"
 #include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkwindow.h>
