@@ -64,6 +64,8 @@ main (int argc, char **argv)
 	g_signal_connect (G_OBJECT (window), "button-release-event", G_CALLBACK (event_cb), NULL);
 
 	control = bonobo_widget_new_control (iid, NULL);
+	if (!control)
+		g_error (_("Cannot get control widget for '%s'"), iid);
 
 	gtk_container_add (GTK_CONTAINER (window), control);
 

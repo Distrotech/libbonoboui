@@ -1,3 +1,11 @@
+2002-02-05  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-ui-sync-menu.c: (impl_bonobo_ui_sync_menu_build):
+	check whether the attribute is set in the cmd_node also. Fix
+	leak.
+
+	* tests/test-events.c: (main): some error checking.
+
 2002-02-04  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.110.2
