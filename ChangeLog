@@ -1,5 +1,11 @@
 2001-07-23  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/bonobo-widget.c (bonobo_widget_construct_control):
+	`bw->priv->server' is already a CORBA_Object, don't call
+	BONOBO_OBJREF on it.
+
+2001-07-23  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/bonobo-ui-engine.c (BonoboUIEngineClass): Added
 	"destroy" signal.
 

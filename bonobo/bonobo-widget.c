@@ -169,7 +169,7 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 		return NULL;
 	}
 
-	control = BONOBO_OBJREF (bw->priv->server);
+	control = bw->priv->server;
 
 	return bonobo_widget_construct_control_from_objref (bw, control, uic);
 }
