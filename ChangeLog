@@ -1,3 +1,9 @@
+2002-04-18  Murray Cumming  <murrayc@usa.net>
+
+	* glade/glade-bonobo.c: Changed GladeWidgetInfo::class to
+	classname, now that libglade has corrected its use of the C++
+	keyword.
+	
 2002-04-23  Murray Cumming  <murrayc@usa.net>
 
 	* bonobo/bonobo-window.[h|c]: bonobo_window_new() is now just
