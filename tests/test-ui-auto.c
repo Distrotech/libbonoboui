@@ -225,7 +225,7 @@ test_ui_performance (CORBA_Environment *ev)
 
 	engine = bonobo_ui_engine_new (NULL);
 
-        node = bonobo_ui_node_from_file (BONOBO_TOPBUILDDIR "/doc/std-ui.xml");
+        node = bonobo_ui_node_from_file (BONOBO_TOPSRCDIR "/doc/std-ui.xml");
 	if (!node)
 		g_error ("Can't find std-ui.xml");
 

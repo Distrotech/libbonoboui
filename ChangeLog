@@ -1,5 +1,12 @@
 2002-03-04  Michael Meeks  <michael@ximian.com>
 
+	* Version 1.112.1
+
+2002-03-04  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-ui-auto.c (test_ui_performance):
+	use top_srcdir.
+
 	* bonobo/bonobo-ui-sync-status.c
 	(impl_bonobo_ui_sync_status_state): get
 	'resize_grip' from the parent 'status' node, and

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2002-02-25 14:15+0800\n"
+"POT-Creation-Date: 2002-03-04 16:23+0000\n"
 "PO-Revision-Date: 2002-02-25 14:13+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
@@ -32,15 +32,15 @@ msgstr "Lebar yang dikehendaki"
 msgid "Preferred height"
 msgstr "Tinggi yang dikehendaki"
 
-#: bonobo/bonobo-file-selector-util.c:412
+#: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
 msgstr "Pilih satu fail untuk dibuka"
 
-#: bonobo/bonobo-file-selector-util.c:440
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
 msgstr "Pilih beberapa fail untuk dibuka"
 
-#: bonobo/bonobo-file-selector-util.c:469
+#: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
 msgstr "Pilih satu nama fail untuk disimpan"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2002-02-19 09:43+0000\n"
+"POT-Creation-Date: 2002-03-04 16:23+0000\n"
 "PO-Revision-Date: 2001-06-19 12:54+0200\n"
 "Last-Translator: Héctor García Álvarez <hector@scouts-es.org>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -32,15 +32,15 @@ msgstr "Archo preferido"
 msgid "Preferred height"
 msgstr "Altura preferida"
 
-#: bonobo/bonobo-file-selector-util.c:402
+#: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
 msgstr "Seleccione un archivo a abrir"
 
-#: bonobo/bonobo-file-selector-util.c:430
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
 msgstr "Seleccione los archivos a abrir"
 
-#: bonobo/bonobo-file-selector-util.c:459
+#: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
 msgstr "Seleccione un nombre de archivo para guardar"
 
@@ -85,11 +85,11 @@ msgstr "Barra de herramientas"
 msgid "toolbars"
 msgstr "Barra de herramientas"
 
-#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "Mirar"
 
-#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "_Icono"
 
@@ -105,31 +105,31 @@ msgstr "Solo texto _prioritario"
 msgid "Configure UI"
 msgstr "Configurar UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
 msgstr "Amb_os"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
 msgstr "T_exto"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
 msgstr "Ocultar c_onsejos"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
 msgstr "Mostrar c_onsejos"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
 msgstr "O_cultar barra de herramientas"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
 msgstr "Personali_zar"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
 msgstr "Personalizar la barra de herramientas"
 

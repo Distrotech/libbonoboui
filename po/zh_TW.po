@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.103.0\n"
-"POT-Creation-Date: 2002-02-19 09:43+0000\n"
+"POT-Creation-Date: 2002-03-04 16:23+0000\n"
 "PO-Revision-Date: 2001-10-03 09:54+0800\n"
 "Last-Translator: Joe Man <trmetal@yahoo.com.hk>\n"
 "Language-Team: traditional chinese <zh-l10n@linux.org.tw>\n"
@@ -32,15 +32,15 @@ msgstr "寬度"
 msgid "Preferred height"
 msgstr "高度"
 
-#: bonobo/bonobo-file-selector-util.c:402
+#: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
 msgstr "選取一個要開啟的檔案"
 
-#: bonobo/bonobo-file-selector-util.c:430
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
 msgstr "選取多個要開啟的檔案"
 
-#: bonobo/bonobo-file-selector-util.c:459
+#: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
 msgstr "選取一個要儲存的檔案"
 
@@ -85,11 +85,11 @@ msgstr "工具列"
 msgid "toolbars"
 msgstr "工具列"
 
-#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "檢視"
 
-#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "圖示 (_I)"
 
@@ -105,31 +105,31 @@ msgstr "圖示及橫向文字 (_P)"
 msgid "Configure UI"
 msgstr "設定使用者介面"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
 msgstr "圖文 (_O)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
 msgstr "文字 (_E)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
 msgstr "隱藏提示 (_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
 msgstr "顯示提示 (_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
 msgstr "隱藏工具列 (_H)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
 msgstr "自訂 (_Z)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
 msgstr "自訂工具列"
 

@@ -19,7 +19,7 @@ INCLUDES =	\
 	-I$(top_srcdir) 				\
 	-DBONOBO_UI_INTERNAL				\
 	-DBONOBO_UIDIR=\""$(datadir)/gnome/ui/"\"	\
-	-DBONOBO_TOPBUILDDIR=\""$(top_builddir)"\"	\
+	-DBONOBO_TOPSRCDIR=\""$(top_srcdir)"\"		\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-DVERSION=\"$(VERSION)\"			\
 	$(WARN_CFLAGS)					\

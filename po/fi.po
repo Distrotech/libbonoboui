@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2002-03-01 16:00+0200\n"
+"POT-Creation-Date: 2002-03-04 16:23+0000\n"
 "PO-Revision-Date: 2002-02-20 23:59+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -39,15 +39,15 @@ msgstr "Haluttu leveys"
 msgid "Preferred height"
 msgstr "Haluttu korkeus"
 
-#: bonobo/bonobo-file-selector-util.c:351
+#: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
 msgstr "Valitse avattava tiedosto"
 
-#: bonobo/bonobo-file-selector-util.c:379
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
 msgstr "Valitse avattavat tiedostot"
 
-#: bonobo/bonobo-file-selector-util.c:408
+#: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
 msgstr "Valitse tallennettava tiedostonimi"
 

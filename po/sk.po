@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-02-25 08:32+0100\n"
+"POT-Creation-Date: 2002-03-04 16:23+0000\n"
 "PO-Revision-Date: 2002-02-25 08:38+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
@@ -32,15 +32,15 @@ msgstr "Preferovaná ¹írka"
 msgid "Preferred height"
 msgstr "Preferovaná vý¹ka"
 
-#: bonobo/bonobo-file-selector-util.c:412
+#: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
 msgstr "Vybra» súbor na otvorenie"
 
-#: bonobo/bonobo-file-selector-util.c:440
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
 msgstr "Vybra» súbory na otvorenie"
 
-#: bonobo/bonobo-file-selector-util.c:469
+#: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
 msgstr "Vybra» meno súboru na ulo¾enie"
 

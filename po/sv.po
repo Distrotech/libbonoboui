@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-03-02 00:09+0100\n"
+"POT-Creation-Date: 2002-03-04 16:23+0000\n"
 "PO-Revision-Date: 2002-03-02 00:09+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -34,15 +34,15 @@ msgstr "Föredragen bredd"
 msgid "Preferred height"
 msgstr "Föredragen höjd"
 
-#: bonobo/bonobo-file-selector-util.c:351
+#: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
 msgstr "Väj en fil att öppna"
 
-#: bonobo/bonobo-file-selector-util.c:379
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
 msgstr "Välj filer att öppna"
 
-#: bonobo/bonobo-file-selector-util.c:408
+#: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
 msgstr "Välj ett filnamn att spara"
 
