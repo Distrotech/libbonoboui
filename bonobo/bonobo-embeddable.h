@@ -55,4 +55,6 @@ void     gnome_component_set_view_factory (GnomeComponent *component,
  */
 GtkWidget *gnome_component_new_view       (GnomeObject *server_object);
 
+END_GNOME_DECLS
+
 #endif

@@ -44,5 +44,7 @@ gboolean         gnome_client_site_bind_component (GnomeClientSite *client_site,
 
 extern POA_GNOME_ClientSite__epv gnome_client_site_epv;
 
+END_GNOME_DECLS
+
 #endif
 

@@ -31,4 +31,6 @@ GnomeView   *gnome_view_construct          (GnomeView *view,
 					    GtkWidget *widget);
 GnomeView   *gnome_view_new                (GtkWidget *widget);
 
+END_GNOME_DECLS
+
 #endif /* _GNOME_VIEW_H_ */

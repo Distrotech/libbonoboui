@@ -54,4 +54,6 @@ void         gnome_component_factory_set       (GnomeComponentFactory *c_factory
 						GnomeComponentFactoryFn factory,
 						void *data);
 
+END_GNOME_DECLS
+
 #endif
