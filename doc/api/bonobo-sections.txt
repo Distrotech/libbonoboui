@@ -1,6 +1,6 @@
 <SECTION>
 <FILE>bonobo-selector</FILE>
-GNOME_IS_BONOBO_SELECTOR
+BONOBO_IS_SELECTOR
 BONOBO_SELECTOR
 BONOBO_SELECTOR_CLASS
 BonoboSelector
@@ -107,6 +107,8 @@ bonobo_control_frame_get_control
 bonobo_control_frame_get_ui_container
 bonobo_control_frame_construct
 bonobo_control_frame_size_request
+bonobo_control_frame_sync_realize
+bonobo_control_frame_sync_unrealize
 <SUBSECTION Standard>
 bonobo_control_frame_get_type
 BonoboControlFramePrivate
@@ -138,8 +140,6 @@ bonobo_control_get_properties
 bonobo_control_get_ambient_properties
 bonobo_control_activate_notify
 bonobo_control_windowid_from_x11
-bonobo_control_sync_realize
-bonobo_control_sync_unrealize
 <SUBSECTION Standard>
 bonobo_control_get_type
 BonoboControlPrivate

@@ -822,7 +822,14 @@ bonobo_control_frame_get_propbag (BonoboControlFrame  *control_frame)
 
 /**
  * bonobo_control_frame_get_control_property_bag:
- */
+ * @control_frame: the control frame
+ * @ev: CORBA exception environment
+ * 
+ * This retrives a Bonobo_PropertyBag reference from its
+ * associated Bonobo Control
+ *
+ * Return value: CORBA property bag reference or CORBA_OBJECT_NIL
+ **/
 Bonobo_PropertyBag
 bonobo_control_frame_get_control_property_bag (BonoboControlFrame *control_frame,
 					       CORBA_Environment  *ev)
