@@ -59,12 +59,12 @@ void                        bonobo_control_set_toolbars_with_data  (BonoboContro
 BonoboUIHandlerToolbarItem *bonobo_control_get_toolbars            (BonoboControl *control);
 
 
-void                     bonobo_control_set_property            (BonoboControl       *control,
-								 const char          *first_prop,
-								 ...);
-void                     bonobo_control_get_property            (BonoboControl       *control,
-								 const char          *first_prop,
-								 ...);
+void                        bonobo_control_set_property            (BonoboControl       *control,
+								    const char          *first_prop,
+								    ...);
+void                        bonobo_control_get_property            (BonoboControl       *control,
+								    const char          *first_prop,
+								    ...);
 
 /* "Internal" stuff */
 GtkType                     bonobo_control_get_type                (void);
@@ -80,7 +80,8 @@ void                        bonobo_control_set_property_bag        (BonoboContro
 								    BonoboPropertyBag   *pb);
 BonoboPropertyBag          *bonobo_control_get_property_bag        (BonoboControl       *control);
 Bonobo_UIHandler            bonobo_control_get_remote_ui_handler   (BonoboControl       *control);
-BonoboPropertyBagClient    *bonobo_control_get_ambient_properties  (BonoboControl       *control);
+Bonobo_PropertyBag          bonobo_control_get_ambient_properties  (BonoboControl       *control,
+								    CORBA_Environment   *ev);
 void                        bonobo_control_activate_notify         (BonoboControl       *control,
 								    gboolean             activated);
 Bonobo_Control_windowid     bonobo_control_windowid_from_x11       (guint32              x11_id);

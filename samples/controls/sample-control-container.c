@@ -18,14 +18,15 @@
 
 #include <bonobo.h>
 
-BonoboPropertyBagClient *pbc = NULL;
+Bonobo_PropertyBag pb = CORBA_OBJECT_NIL;
 
 static void
 populate_property_list (GtkWidget *bw, GtkCList *clist)
 {
 	GList *property_list, *l;
 
-	property_list = bonobo_property_bag_client_get_property_names (pbc);
+	property_list = bonobo_property_bag_client_get_property_names (pb, NULL);
+
 	for (l = property_list; l != NULL; l = l->next) {
 		char *row_array[2];
 		CORBA_TypeCode tc;
@@ -33,28 +34,28 @@ populate_property_list (GtkWidget *bw, GtkCList *clist)
 
 		row_array [0] = name;
 
-		tc = bonobo_property_bag_client_get_property_type (pbc, name);
+		tc = bonobo_property_bag_client_get_property_type (pb, name, NULL);
 		switch (tc->kind) {
 
 		case CORBA_tk_boolean:
 			row_array [1] = g_strdup (
-				bonobo_property_bag_client_get_value_gboolean (pbc, name) ? "TRUE" : "FALSE");
+				bonobo_property_bag_client_get_value_gboolean (pb, name, NULL) ? "TRUE" : "FALSE");
 			break;
 
 		case CORBA_tk_string:
-			row_array [1] = g_strdup (bonobo_property_bag_client_get_value_string (pbc, name));
+			row_array [1] = g_strdup (bonobo_property_bag_client_get_value_string (pb, name, NULL));
 			break;
 
 		case CORBA_tk_long:
-			row_array [1] = g_strdup_printf ("%ld", bonobo_property_bag_client_get_value_glong (pbc, name));
+			row_array [1] = g_strdup_printf ("%ld", bonobo_property_bag_client_get_value_glong (pb, name, NULL));
 			break;
 
 		case CORBA_tk_float:
-			row_array [1] = g_strdup_printf ("%f", bonobo_property_bag_client_get_value_gfloat (pbc, name));
+			row_array [1] = g_strdup_printf ("%f", bonobo_property_bag_client_get_value_gfloat (pb, name, NULL));
 			break;
 
 		case CORBA_tk_double:
-			row_array [1] = g_strdup_printf ("%g", bonobo_property_bag_client_get_value_gdouble (pbc, name));
+			row_array [1] = g_strdup_printf ("%g", bonobo_property_bag_client_get_value_gdouble (pb, name, NULL));
 			break;
 
 		default:
@@ -79,19 +80,19 @@ edit_property (GtkCList *clist, GdkEventButton *event, BonoboWidget *bw)
 		gtk_clist_get_selection_info (clist, event->x, event->y,
 		                              &row, &col);
 		if (row < 0) return;
-		l = bonobo_property_bag_client_get_property_names (pbc);
+		l = bonobo_property_bag_client_get_property_names (pb, NULL);
 		if (row > g_list_length (l) - 1) return;
 
 		/* Get the value of the property they clicked on. */
 		prop = g_list_nth_data (l, row);
 		/* Change it appropriately. */
-		tc = bonobo_property_bag_client_get_property_type (pbc, prop);
+		tc = bonobo_property_bag_client_get_property_type (pb, prop, NULL);
 
 		switch (tc->kind) {
 
 		case CORBA_tk_boolean:
 			bonobo_property_bag_client_set_value_gboolean (
-				pbc, prop, !bonobo_property_bag_client_get_value_gboolean (pbc, prop));
+				pb, prop, !bonobo_property_bag_client_get_value_gboolean (pb, prop, NULL), NULL);
 			break;
 
 		default:
@@ -139,9 +140,9 @@ static void
 app_destroy_cb (GtkWidget *app, BonoboUIHandler *uih)
 {
 	bonobo_object_unref (BONOBO_OBJECT (uih));
-	if (pbc)
-		bonobo_object_unref (BONOBO_OBJECT (pbc));
-	pbc = NULL;
+	if (pb != CORBA_OBJECT_NIL)
+		bonobo_object_release_unref (pb, NULL);
+	pb = CORBA_OBJECT_NIL;
 
 	gtk_main_quit ();
 	g_warning ("Main level %d\n", gtk_main_level ());
@@ -213,7 +214,7 @@ container_create (void)
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
 	cf = bonobo_widget_get_control_frame (BONOBO_WIDGET (control));
-	pbc = bonobo_control_frame_get_control_property_bag (cf);
+	pb = bonobo_control_frame_get_control_property_bag (cf, NULL);
 
 	proplist = create_proplist (control);
 

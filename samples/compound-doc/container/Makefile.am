@@ -5,9 +5,7 @@ INCLUDES =	\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
-        $(GNOME_INCLUDEDIR)				\
-	$(OAF_CFLAGS)					\
-	$(GTK_CFLAGS)
+	$(BONOBOX_TEST_CFLAGS)
 
 bin_PROGRAMS = sample-container
 
@@ -30,9 +28,6 @@ sample_container_SOURCES =	\
 sample_container_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(top_builddir)/bonobo/libbonobox.la		\
-	$(GPRINT_LIBS)				        \
-	$(GTK_LIBS)					\
-	$(GNOME_LIBDIR)					\
-	$(GNOME_PRINT_LIBS)				\
-	$(OBJECT_DIRECTORY_LIBS)			\
+	$(top_builddir)/bonobo/libbonobo-print.la	\
+	$(BONOBOX_TEST_LIBS)				\
 	$(INTLLIBS)

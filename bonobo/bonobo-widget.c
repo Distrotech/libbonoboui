@@ -453,50 +453,73 @@ void
 bonobo_widget_set_property (BonoboWidget      *control,
 			    const char        *first_prop, ...)
 {
-	BonoboPropertyBagClient *cl;
-	char                    *err;
+	Bonobo_PropertyBag pb;
+	CORBA_Environment  ev;
 
 	va_list args;
 	va_start (args, first_prop);
 
 	g_return_if_fail (control != NULL);
+	g_return_if_fail (first_prop != NULL);
 	g_return_if_fail (control->priv != NULL);
 	g_return_if_fail (BONOBO_IS_WIDGET (control));
-	g_return_if_fail (first_prop != NULL);
 
-	cl = bonobo_control_frame_get_control_property_bag (control->priv->control_frame);
+	CORBA_exception_init (&ev);
+	
+	pb = bonobo_control_frame_get_control_property_bag (
+		control->priv->control_frame, &ev);
 
-	err = bonobo_property_bag_client_setv (cl, first_prop, args);
+	if (ev._major != CORBA_NO_EXCEPTION)
+		g_warning ("Error getting property bag from control");
+	else {
+		/* FIXME: this should use ev */
+		char *err = bonobo_property_bag_client_setv (pb, &ev, first_prop, args);
 
-	if (err)
-		g_warning ("Error '%s'", err);
+		if (err)
+			g_warning ("Error '%s'", err);
+	}
 
-	bonobo_object_unref (BONOBO_OBJECT (cl));
+	bonobo_object_release_unref (pb, &ev);
+
+	CORBA_exception_free (&ev);
 
 	va_end (args);
 }
+
 
 void
 bonobo_widget_get_property (BonoboWidget      *control,
 			    const char        *first_prop, ...)
 {
-	BonoboPropertyBagClient *cl;
-	char                    *err;
+	Bonobo_PropertyBag pb;
+	CORBA_Environment  ev;
 
 	va_list args;
 	va_start (args, first_prop);
 
 	g_return_if_fail (control != NULL);
+	g_return_if_fail (first_prop != NULL);
 	g_return_if_fail (control->priv != NULL);
 	g_return_if_fail (BONOBO_IS_WIDGET (control));
-	g_return_if_fail (first_prop != NULL);
 
-	cl = bonobo_control_frame_get_control_property_bag (control->priv->control_frame);
+	CORBA_exception_init (&ev);
+	
+	pb = bonobo_control_frame_get_control_property_bag (
+		control->priv->control_frame, &ev);
 
-	if ((err = bonobo_property_bag_client_getv (cl, first_prop, args)))
-		g_warning ("Error '%s'", err);
+	if (ev._major != CORBA_NO_EXCEPTION)
+		g_warning ("Error getting property bag from control");
+	else {
+		/* FIXME: this should use ev */
+		char *err = bonobo_property_bag_client_getv (pb, &ev, first_prop, args);
 
-	bonobo_object_unref (BONOBO_OBJECT (cl));
+		if (err)
+			g_warning ("Error '%s'", err);
+	}
+
+	bonobo_object_release_unref (pb, &ev);
+
+	CORBA_exception_free (&ev);
 
 	va_end (args);
 }

@@ -10,19 +10,6 @@ INCLUDES =                                              \
 	$(OAF_CFLAGS)					\
 	$(GDK_PIXBUF_CFLAGS)
 
-gnome_libs =				\
-	$(GNOME_LIBDIR)			\
-	$(GDK_PIXBUF_LIBS) 		\
-        $(GNOMEUI_LIBS)			\
-	$(OAF_LIBS)		 	\
-	$(GNOME_LIBS)			\
-	$(INTLLIBS)
-
-bonobo_libs = 			\
-	libbonobo.la 		\
-	$(gnome_libs)
-
-
 lib_LTLIBRARIES = libbonobo.la libbonobox.la libbonobo-print.la
 
 CORBA_SOURCE =			\

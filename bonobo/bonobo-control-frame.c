@@ -808,29 +808,33 @@ bonobo_control_frame_get_propbag (BonoboControlFrame  *control_frame)
 /**
  * bonobo_control_frame_get_control_property_bag:
  */
-BonoboPropertyBagClient *
-bonobo_control_frame_get_control_property_bag (BonoboControlFrame *control_frame)
+Bonobo_PropertyBag
+bonobo_control_frame_get_control_property_bag (BonoboControlFrame *control_frame,
+					       CORBA_Environment  *ev)
 {
 	Bonobo_PropertyBag pbag;
-	CORBA_Environment ev;
 	Bonobo_Control control;
+	CORBA_Environment *real_ev, tmp_ev;
 
 	g_return_val_if_fail (control_frame != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
-	control = control_frame->priv->control;
-
-	CORBA_exception_init (&ev);
-
-	pbag = Bonobo_Control_get_property_bag (control, &ev);
-
-	if (ev._major != CORBA_NO_EXCEPTION) {
-		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
-		CORBA_exception_free (&ev);
-		return NULL;
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
 	}
 
-	CORBA_exception_free (&ev);
+	control = control_frame->priv->control;
 
-	return bonobo_property_bag_client_new (pbag);
+	pbag = Bonobo_Control_get_property_bag (control, real_ev);
+
+	if (real_ev->_major != CORBA_NO_EXCEPTION) {
+		if (!ev)
+			CORBA_exception_free (&tmp_ev);
+		pbag = CORBA_OBJECT_NIL;
+	}
+
+	return pbag;
 }

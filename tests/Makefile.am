@@ -6,25 +6,17 @@ noinst_PROGRAMS =		\
 	test-container-autoload	\
 	selector_test
 
-gnome_libs =				\
-	$(GNOME_LIBDIR)			\
-	$(GDK_PIXBUF_LIBS) 		\
-        $(GNOMEUI_LIBS)			\
-	$(INTLLIBS)
-
 bonobo_libs =						\
 	$(top_builddir)/bonobo/libbonobo.la		\
-	$(gnome_libs)					\
-	$(OBJECT_DIRECTORY_LIBS)
+	$(BONOBOX_TEST_LIBS)				\
+	$(INTLLIBS)
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
-        $(GNOME_INCLUDEDIR)				\
-	$(GTK_CFLAGS)					\
-	$(OAF_CFLAGS)
+	$(BONOBOX_TEST_FLAGS)
 
 test_properties_server_SOURCES =			\
 	test-properties-server.c

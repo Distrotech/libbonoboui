@@ -51,7 +51,8 @@ void                          bonobo_control_frame_set_autoactivate          (Bo
 gboolean                      bonobo_control_frame_get_autoactivate          (BonoboControlFrame  *control_frame);
 
 /* Remote properties */
-BonoboPropertyBagClient      *bonobo_control_frame_get_control_property_bag  (BonoboControlFrame  *control_frame);
+Bonobo_PropertyBag            bonobo_control_frame_get_control_property_bag  (BonoboControlFrame  *control_frame,
+									      CORBA_Environment   *ev);
 
 /* Ambient properties */
 void                          bonobo_control_frame_set_propbag               (BonoboControlFrame  *control_frame,

@@ -13,17 +13,13 @@ bonobo_echo_SOURCES =		\
 bonobo_echo_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la	\
 	$(top_builddir)/bonobo/libbonobox.la	\
-	$(GTK_LIBS)				\
-	$(GNOME_LIBDIR)				\
-	$(OBJECT_DIRECTORY_LIBS)                \
+	$(BONOBOX_TEST_LIBS)			\
 	libEcho.a				\
 	$(INTLLIBS)
 
 echo_client_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la	\
-	$(GTK_LIBS)				\
-	$(GNOME_LIBDIR)				\
-	$(OBJECT_DIRECTORY_LIBS)                \
+	$(BONOBOX_TEST_LIBS)			\
 	libEcho.a				\
 	$(INTLLIBS)
 
@@ -56,7 +52,6 @@ INCLUDES = 						\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I$(top_builddir)				\
         -I$(includedir)                                 \
-	$(OAF_CFLAGS)					\
-        $(GNOME_INCLUDEDIR)
+	$(BONOBOX_TEST_CFLAGS)
 
 MYHACKAROUNDAUTOMAKE=$(shell echo $(ECHO_CORBA_GENERATED))

@@ -5,9 +5,7 @@ INCLUDES =						\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
-        $(GNOME_INCLUDEDIR)				\
-	$(OAF_CFLAGS)					\
-	$(GTK_CFLAGS)
+	$(BONOBOX_TEST_CFLAGS)
 
 bin_PROGRAMS = bonobo-hello
 
@@ -22,13 +20,12 @@ bonobo_hello_SOURCES =		\
 	hello-object-print.h	\
 	hello-object-print.c
 
-bonobo_hello_LDADD = 				\
-	$(top_builddir)/bonobo/libbonobo.la	\
-	$(top_builddir)/bonobo/libbonobox.la	\
-	$(GPRINT_LIBS)				\
-	$(GNOME_PRINT_LIBS)			\
-	$(INTLLIBS)                             \
-	$(OBJECT_DIRECTORY_LIBS)
+bonobo_hello_LDADD =					\
+	$(top_builddir)/bonobo/libbonobo.la		\
+	$(top_builddir)/bonobo/libbonobox.la		\
+	$(top_builddir)/bonobo/libbonobo-print.la	\
+	$(BONOBOX_TEST_LIBS)				\
+	$(INTLLIBS)
 
 oafdir = $(datadir)/oaf
 oaffile = hello.oafinfo

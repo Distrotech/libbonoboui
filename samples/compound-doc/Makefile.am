@@ -10,19 +10,16 @@ INCLUDES =						\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
-        $(GNOME_INCLUDEDIR)				\
-	$(OAF_CFLAGS)					\
-	$(GTK_CFLAGS)
+	$(BONOBOX_TEST_CFLAGS)
 
 paint_component_simple_SOURCES =	\
 	paint-component-simple.c
 
-paint_component_simple_LDADD = 			\
-	$(top_builddir)/bonobo/libbonobo.la	\
-	$(top_builddir)/bonobo/libbonobox.la	\
-	$(GPRINT_LIBS)				\
-	$(GNOME_PRINT_LIBS)			\
-	$(OBJECT_DIRECTORY_LIBS)		\
+paint_component_simple_LDADD =				\
+	$(top_builddir)/bonobo/libbonobo.la		\
+	$(top_builddir)/bonobo/libbonobox.la		\
+	$(top_builddir)/bonobo/libbonobo-print.la	\
+	$(BONOBOX_TEST_LIBS)				\
 	$(INTLLIBS)
 
 sample_canvas_item_SOURCES =	\
@@ -31,9 +28,7 @@ sample_canvas_item_SOURCES =	\
 sample_canvas_item_LDADD = 			\
 	$(top_builddir)/bonobo/libbonobo.la	\
 	$(top_builddir)/bonobo/libbonobox.la	\
-	$(GPRINT_LIBS)				\
-	$(GNOME_PRINT_LIBS)			\
-	$(OBJECT_DIRECTORY_LIBS)		\
+	$(BONOBOX_TEST_LIBS)			\
 	$(INTLLIBS)
 
 oafdir = $(datadir)/oaf

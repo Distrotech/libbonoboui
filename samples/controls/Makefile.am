@@ -5,9 +5,7 @@ INCLUDES =	\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
-        $(GNOME_INCLUDEDIR)				\
-	$(OAF_CFLAGS)					\
-	$(GTK_CFLAGS)
+	$(BONOBOX_TEST_CFLAGS)
 
 sample_control_factory_SOURCES =			\
 	bonobo-clock-control.c				\
@@ -19,9 +17,7 @@ sample_control_factory_SOURCES =			\
 sample_control_factory_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(top_builddir)/bonobo/libbonobox.la		\
-	$(GTK_LIBS)					\
-	$(GNOME_LIBDIR)					\
-	$(OBJECT_DIRECTORY_LIBS)			\
+	$(BONOBOX_TEST_LIBS)				\
 	$(INTLLIBS)
 
 sample_control_container_SOURCES =			\
@@ -30,9 +26,7 @@ sample_control_container_SOURCES =			\
 sample_control_container_LDADD =			\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(top_builddir)/bonobo/libbonobox.la		\
-	$(GTK_LIBS)					\
-	$(GNOME_LIBDIR)					\
-	$(OBJECT_DIRECTORY_LIBS)			\
+	$(BONOBOX_TEST_LIBS)				\
 	$(INTLLIBS)
 
 oafdir = $(datadir)/oaf

@@ -905,15 +905,16 @@ bonobo_control_get_property_bag (BonoboControl *control)
  * @control: A #BonoboControl which is bound to a remote
  * #BonoboControlFrame.
  *
- * Returns: A #BonoboPropertyBagClient bound to the bag of ambient
+ * Returns: A #Bonobo_PropertyBag bound to the bag of ambient
  * properties associated with this #Control's #ControlFrame.
  */
-BonoboPropertyBagClient *
-bonobo_control_get_ambient_properties (BonoboControl *control)
+Bonobo_PropertyBag
+bonobo_control_get_ambient_properties (BonoboControl     *control,
+				       CORBA_Environment *ev)
 {
 	Bonobo_ControlFrame control_frame;
 	Bonobo_PropertyBag pbag;
-	CORBA_Environment ev;
+	CORBA_Environment *real_ev, tmp_ev;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
@@ -922,18 +923,23 @@ bonobo_control_get_ambient_properties (BonoboControl *control)
 	if (control_frame == CORBA_OBJECT_NIL)
 		return NULL;
 
-	CORBA_exception_init (&ev);
-
-	pbag = Bonobo_ControlFrame_get_ambient_properties (control_frame, &ev);
-
-	if (ev._major != CORBA_NO_EXCEPTION) {
-		bonobo_object_check_env (BONOBO_OBJECT (control), control_frame, &ev);
-		return NULL;
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
 	}
 
-	CORBA_exception_free (&ev);
+	pbag = Bonobo_ControlFrame_get_ambient_properties (
+		control_frame, real_ev);
 
-	return bonobo_property_bag_client_new (pbag);
+	if (real_ev->_major != CORBA_NO_EXCEPTION) {
+		if (!ev)
+			CORBA_exception_free (&tmp_ev);
+		pbag = CORBA_OBJECT_NIL;
+	}
+
+	return pbag;
 }
 
 /**
@@ -1074,25 +1080,24 @@ bonobo_control_set_property (BonoboControl       *control,
 			     const char          *first_prop,
 			     ...)
 {
-	BonoboPropertyBagClient *cl;
-	Bonobo_PropertyBag       bag;
-	char                    *err;
+	Bonobo_PropertyBag  bag;
+	char               *err;
+	CORBA_Environment   ev;
+	va_list             args;
 
-	va_list args;
+	g_return_if_fail (first_prop != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+
 	va_start (args, first_prop);
 
-	g_return_if_fail (BONOBO_IS_CONTROL (control));
-	g_return_if_fail (first_prop != NULL);
+	CORBA_exception_init (&ev);
 
-	bonobo_object_ref (BONOBO_OBJECT (control->priv->propbag));
-	bag = (Bonobo_PropertyBag)
-		bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
-	cl = bonobo_property_bag_client_new (bag);
+	bag = bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
 
-	if ((err = bonobo_property_bag_client_setv (cl, first_prop, args)))
+	if ((err = bonobo_property_bag_client_setv (bag, &ev, first_prop, args)))
 		g_warning ("Error '%s'", err);
 
-	bonobo_object_unref (BONOBO_OBJECT (cl));
+	CORBA_exception_free (&ev);
 
 	va_end (args);
 }
@@ -1102,25 +1107,24 @@ bonobo_control_get_property (BonoboControl       *control,
 			     const char          *first_prop,
 			     ...)
 {
-	BonoboPropertyBagClient *cl;
-	Bonobo_PropertyBag       bag;
-	char                    *err;
+	Bonobo_PropertyBag  bag;
+	char               *err;
+	CORBA_Environment   ev;
+	va_list             args;
 
-	va_list args;
+	g_return_if_fail (first_prop != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+
 	va_start (args, first_prop);
 
-	g_return_if_fail (BONOBO_IS_CONTROL (control));
-	g_return_if_fail (first_prop != NULL);
+	CORBA_exception_init (&ev);
 
-	bonobo_object_ref (BONOBO_OBJECT (control->priv->propbag));
-	bag = (Bonobo_PropertyBag)
-		bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
-	cl = bonobo_property_bag_client_new (bag);
+	bag = bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
 
-	if ((err = bonobo_property_bag_client_getv (cl, first_prop, args)))
+	if ((err = bonobo_property_bag_client_getv (bag, &ev, first_prop, args)))
 		g_warning ("Error '%s'", err);
 
-	bonobo_object_unref (BONOBO_OBJECT (cl));
+	CORBA_exception_free (&ev);
 
 	va_end (args);
 }
