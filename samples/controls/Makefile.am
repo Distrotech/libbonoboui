@@ -2,9 +2,7 @@ bin_PROGRAMS = bonobo-sample-controls
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
-	-I$(srcdir) -I$(top_srcdir) 			\
-	-I. -I$(top_srcdir)/bonobo			\
-        -I$(includedir)                                 \
+	-I$(top_srcdir) 				\
 	$(BONOBOUI_CFLAGS)
 
 bonobo_sample_controls_SOURCES =			\

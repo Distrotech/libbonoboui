@@ -1,9 +1,6 @@
 INCLUDES = \
-	-I. 						\
-	-I$(srcdir) -I$(top_srcdir) 			\
+	-I$(top_srcdir) 				\
 	-I$(top_builddir)				\
-	-I$(builddir)					\
-        -I$(includedir)                                 \
 	$(WARN_CFLAGS)					\
 	$(BONOBOUI_CFLAGS)				\
 	-DPLUGIN_DIR=\""$(PLUGIN_DIR)"\"		\
@@ -64,8 +61,7 @@ libbonoboinclude_HEADERS = \
 	bonobo-window.h				\
 	bonobo-wrapper.h			\
 	bonobo-zoomable-frame.h			\
-	bonobo-zoomable.h			\
-	bonoboui-marshal.h
+	bonobo-zoomable.h
 
 libbonoboui_2_la_LIBADD = \
 	$(BONOBOUI_LIBS)
@@ -114,31 +110,25 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-wrapper.c			\
 	bonobo-zoomable.c			\
 	bonobo-zoomable-frame.c			\
-	bonoboui-marshal-main.c
+	bonobo-ui-marshal-main.c
 
 marshal_sources = \
-	bonoboui-marshal.c \
-	bonoboui-marshal.h
+	bonobo-ui-marshal.c \
+	bonobo-ui-marshal.h
 
-bonoboui-marshal.h: bonoboui-marshal.list
-	cd $(srcdir) \
-	&& glib-genmarshal --prefix=bonobo_ui_marshal bonoboui-marshal.list --header >> xgen-gmh \
-	&& (cmp -s xgen-gmh bonoboui-marshal.h || cp xgen-gmh bonoboui-marshal.h) \
-	&& rm -f xgen-gmh xgen-gmh~
+$(libbonoboui_2_la_OBJECTS): $(marshal_sources)
 
-bonoboui-marshal.c: bonoboui-marshal.list bonoboui-marshal.h
-	cd $(srcdir) \
-	&& glib-genmarshal --prefix=bonobo_ui_marshal bonoboui-marshal.list --body >> xgen-gmc \
-	&& cp xgen-gmc bonoboui-marshal.c \
-	&& rm -f xgen-gmc xgen-gmc~
+bonobo-ui-marshal.h: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
+	$(GLIB_GENMARSHAL) $< --header --prefix=bonobo_ui_marshal > $@
+bonobo-ui-marshal.c: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
+	$(GLIB_GENMARSHAL) $< --body --prefix=bonobo_ui_marshal > $@
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbonoboui-2.0.pc
 
 EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in \
-	bonoboui-marshal.list $(marshal_sources)
-MAINTAINERCLEANFILES = $(marshal_sources)
-BUILT_SOURCES = $(marshal_sources)
+	bonobo-ui-marshal.list
+CLEANFILES = $(marshal_sources)
 
 DONT_DIST_SOURCE = $(marshal_sources)
 

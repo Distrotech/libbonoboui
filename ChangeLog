@@ -1,3 +1,22 @@
+2001-08-18  Darin Adler  <darin@bentspoon.com>
+
+	* configure.in: Add GLIB_GENMARSHAL.
+	
+	* bonobo/Makefile.am: Build marshal files in a simpler way.
+	
+	* bonobo/.cvsignore:
+	* bonobo/bonoboui-marshal-main.c:
+	* bonobo/bonoboui-marshal.list:
+	* bonobo/bonobo-ui-component.c:
+	* bonobo/bonobo-ui-marshal-main.c:
+	* bonobo/bonobo-ui-marshal.list:
+	Changed name of marshal files.
+	
+	* samples/bonoboui-hello/Makefile.am:
+	* samples/controls/Makefile.am:
+	* tests/Makefile.am:
+	Removed extra -I directives.
+
 2001-08-17  Cody Russell  <bratsche@gnome.org>
 
 	* bonobo/bonobo-zoomable.c: bonobo_zoomable_new() should be

@@ -8,6 +8,5 @@ _libs
 .libs
 so_locations
 libbonoboui-2.0.pc
-
-bonoboui-marshal.h
-bonoboui-marshal.c
+bonobo-ui-marshal.h
+bonobo-ui-marshal.c

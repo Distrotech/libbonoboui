@@ -2,9 +2,7 @@ noinst_PROGRAMS = bonoboui-hello
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
-	-I$(srcdir) -I$(top_srcdir) 			\
-	-I. -I$(top_srcdir)/bonobo			\
-        -I$(includedir)                                 \
+	-I$(top_srcdir) 				\
 	-DBONOBO_UIDIR=\""$(datadir)/gnome/ui/"\"	\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-DVERSION=\"$(VERSION)\"			\
