@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-01-10 12:41+0000\n"
+"POT-Creation-Date: 2002-01-15 12:03+0000\n"
 "PO-Revision-Date: 2001-12-11 18:01+0200\n"
 "Last-Translator: Yuriy Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -77,11 +77,11 @@ msgstr ""
 msgid "Toolbars"
 msgstr "Панел╕ ╕нстпумент╕в"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "Look"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "_Icon"
 msgstr "П╕ктограма"
 
@@ -97,31 +97,31 @@ msgstr ""
 msgid "Configure UI"
 msgstr "Налаштувати ╕нтерфейс"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "B_oth"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "T_ext"
 msgstr "Текст"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:540
 msgid "Hide t_ips"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:540
 msgid "Show t_ips"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:543
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Hide toolbar"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:543
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Customi_ze"
 msgstr "Налаштувати"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:544
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Customize the toolbar"
 msgstr "Налаштувати панель"
 

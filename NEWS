@@ -1,3 +1,12 @@
+libbonoboui 1.109.2
+
+	* dynamicaly update UI to match GConf (Anders)
+	* re-enterancy fixes in UI engine dispose (Michael)
+
+libbonoboui 1.109.1
+
+	* silly build fix.
+
 libbonoboui 1.109.0
 
 	* UI handler

@@ -1,5 +1,9 @@
 2002-01-15  Michael Meeks  <michael@ximian.com>
 
+	* Version 1.109.2
+
+2002-01-15  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-preferences.c
 	(bonobo_ui_preferences_remove_engine): remove assert,
 	we can double dispose.

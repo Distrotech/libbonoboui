@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tamil libbonoboui2 1.7\n"
-"POT-Creation-Date: 2002-01-10 12:41+0000\n"
+"POT-Creation-Date: 2002-01-15 12:03+0000\n"
 "PO-Revision-Date: 2001-09-28 18:53-0500\n"
 "Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -77,11 +77,11 @@ msgstr "_¸ÕÅ¢ ¯¾Å¢¸¨Ç ¸¡ñÀ¢"
 msgid "Toolbars"
 msgstr "¸ÕÅ¢ô ÀÄ¨¸¸û"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "Look"
 msgstr "À¡÷"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "_Icon"
 msgstr "_ÌÕõÀ¼õ"
 
@@ -97,31 +97,31 @@ msgstr "_ÓýÛÃ¢¨Á ¯¨Ã ÁðÎõ"
 msgid "Configure UI"
 msgstr "UI³ ¯ÕÅ¡ìÌ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "B_oth"
 msgstr "_­ÃñÎõ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "T_ext"
 msgstr "¯_¨Ã"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:540
 msgid "Hide t_ips"
 msgstr "¯¾_Å¢¸¨Ç Á¨È"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:540
 msgid "Show t_ips"
 msgstr "¯_¾Å¢¸¨Ç ¸¡ñÀ¢"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:543
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Hide toolbar"
 msgstr "¸ÕÅ¢ô _ÀÄ¨¸¨Â Á¨È"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:543
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Customi_ze"
 msgstr "_¾É¢ôÀÂÉ¡ìÌ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:544
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Customize the toolbar"
 msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
 
