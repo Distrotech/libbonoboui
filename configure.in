@@ -23,6 +23,8 @@ GNOME_COMPILE_WARNINGS
 GETTEXT_PACKAGE=libbonoboui-2.0
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
+gnomelocaledir='${prefix}/${DATADIRNAME}/locale'
+AC_SUBST(gnomelocaledir)
 
 ALL_LINGUAS="ar az bg ca cs de es fi fr hi hu it ja ko ms nn no pl pt ru sk sl sv ta tr uk vi wa zh_CN zh_TW"
 AM_GLIB_GNU_GETTEXT

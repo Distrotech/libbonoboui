@@ -1,3 +1,7 @@
+2002-06-11  Michael Meeks  <michael@ximian.com>
+
+	* configure.in (gnomelocaledir): setup properly.
+
 2002-06-10  Naba Kumar <kh_naba@users.sourceforge.net>
 
 	* configure.in: Added hi in ALL_LINGUAS
