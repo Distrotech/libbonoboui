@@ -151,7 +151,7 @@ info_dump_fn (BonoboUIXml *tree, BonoboUINode *node)
  		} else
 			fprintf (stderr, " no associated widget\n");
 	} else
-		fprintf (stderr, " very wierd no data on node '%p'\n", node);
+		fprintf (stderr, " very weird no data on node '%p'\n", node);
 }
 
 /* We need to map the shell to the item */
@@ -598,13 +598,13 @@ sync_generic_widgets (BonoboWindowPrivate *priv,
 					printf ("not dirty & not same, but has no widget\n");
 #endif
 				} else {
-					printf ("Bonobo-WARNING **: non dirty node, but widget mismatch "
-						"a: '%s:%s', b: '%s:%s' '%p'\n\n",
-						bonobo_ui_node_get_name (a),
-						bonobo_ui_node_get_attr (a, "name"),
-						bn ? bonobo_ui_node_get_name (bn) : "NULL",
-						bn ? bonobo_ui_node_get_attr (bn, "name") : "NULL",
-						info->widget);
+					g_warning ("non dirty node, but widget mismatch "
+						   "a: '%s:%s', b: '%s:%s' '%p'",
+						   bonobo_ui_node_get_name (a),
+						   bonobo_ui_node_get_attr (a, "name"),
+						   bn ? bonobo_ui_node_get_name (bn) : "NULL",
+						   bn ? bonobo_ui_node_get_attr (bn, "name") : "NULL",
+						   info->widget);
 				}
 			}
 #ifdef WIDGET_SYNC_DEBUG
@@ -642,13 +642,13 @@ check_excess_widgets (BonoboWindowPrivate *priv, GList *wptr)
 				continue;
 			
 			if (!warned++)
-				printf ("Bonono-Warning **: Excess widgets at the "
-					"end of the container; wierd\n\n");
+				g_warning ("Excess widgets at the "
+					   "end of the container; weird");
 
 			node = widget_get_node (b->data);
-			printf ("Widget type '%s' with node: '%s'\n",
-				gtk_type_name (GTK_OBJECT (b->data)->klass->type),
-				node ? bonobo_ui_xml_make_path (node) : "NULL");
+			g_message ("Widget type '%s' with node: '%s'",
+				   gtk_type_name (GTK_OBJECT (b->data)->klass->type),
+				   node ? bonobo_ui_xml_make_path (node) : "NULL");
 		}
 	}
 }
@@ -716,7 +716,7 @@ widget_set_state (GtkWidget *widget, BonoboUINode *node)
 				atoi (txt));
 		} else
 			g_warning ("TESTME: strange, setting "
-				   "state '%s' on wierd object '%s'",
+				   "state '%s' on weird object '%s'",
 				   txt, gtk_type_name (GTK_OBJECT (
 					   widget)->klass->type));
 
@@ -1280,7 +1280,7 @@ exec_verb_cb (GtkWidget *item, BonoboWindowPrivate  *priv)
 		return FALSE;
 
 	if (!data->id) {
-		g_warning ("Wierd; no ID on verb '%s'", verb);
+		g_warning ("Weird; no ID on verb '%s'", verb);
 		bonobo_ui_node_free_string (verb);
 		return FALSE;
 	}
@@ -1639,13 +1639,15 @@ menu_sync_state (BonoboWindowPrivate *priv, BonoboUINode *node,
 	if ((hidden    = bonobo_ui_node_get_attr (node, "hidden")) ||
 	    (sensitive = bonobo_ui_node_get_attr (node, "sensitive")) ||
 	    (state     = bonobo_ui_node_get_attr (node, "state"))) {
-		if (cmd_node && !warned++) {
-			char *txt;
-			g_warning ("FIXME: We have an attribute '%s' at '%s' breaking "
-				   "cmd/widget separation, please fix",
-				   hidden?"hidden":((sensitive)?"sensitive":((state)?"state":"error")),
-				   (txt = bonobo_ui_xml_make_path (node)));
-			g_free (txt);
+		if (cmd_node) {
+			if (!warned++) {
+				char *txt;
+				g_warning ("FIXME: We have an attribute '%s' at '%s' breaking "
+					   "cmd/widget separation, please fix",
+					   hidden?"hidden":((sensitive)?"sensitive":((state)?"state":"error")),
+					   (txt = bonobo_ui_xml_make_path (node)));
+				g_free (txt);
+			}
 			if (hidden)
 				set_cmd_attr (priv, cmd_node, "hidden", hidden, FALSE);
 			if (sensitive)
