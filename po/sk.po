@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-05-20 12:06+0100\n"
-"PO-Revision-Date: 2002-05-13 09:37+0200\n"
+"POT-Creation-Date: 2002-05-21 22:55+0200\n"
+"PO-Revision-Date: 2002-05-21 23:00+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -172,13 +172,12 @@ msgid "DISPLAY"
 msgstr "DISPLEJ"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
-#, fuzzy
 msgid "X screen to use"
-msgstr "Pu¾i» tento X displej"
+msgstr "Pou¾i» túto X obrazovku"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "OBRAZOVKA"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -282,12 +281,11 @@ msgstr "èi je li¹ta nástrojov plávajúca"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr ""
+msgstr "_Obsah"
 
 #: bonobo/bonobo-ui-util.c:584
-#, fuzzy
 msgid "View help for this application"
-msgstr "O tejto aplikácii"
+msgstr "Pozrie» pomocníka pre túto aplikáciu"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
