@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-08-05 15:52+0100\n"
+"POT-Creation-Date: 2002-08-28 15:35+0100\n"
 "PO-Revision-Date: 2002-06-03 08:14+0400\n"
 "Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -68,15 +68,15 @@ msgstr "Выбрать файлы для открытия"
 msgid "Select a filename to save"
 msgstr "Выбрать имя файла для сохранения"
 
-#: bonobo/bonobo-plug.c:358
+#: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
 msgstr "Пересылка события"
 
-#: bonobo/bonobo-plug.c:359
+#: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
 msgstr "Должны ли пересылаться события X"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
 msgid "Name"
 msgstr "Имя"
 
@@ -283,15 +283,15 @@ msgstr "плавающая"
 msgid "whether the toolbar is floating"
 msgstr "является ли панель плавающей"
 
-#: bonobo/bonobo-ui-util.c:583
+#: bonobo/bonobo-ui-util.c:607
 msgid "_Contents"
 msgstr "_Содержание Справки"
 
-#: bonobo/bonobo-ui-util.c:584
+#: bonobo/bonobo-ui-util.c:608
 msgid "View help for this application"
 msgstr "Вызвать справку для этого приложения"
 
-#: bonobo/bonobo-window.c:448
+#: bonobo/bonobo-window.c:446
 msgid "Name of the window - used for configuration serialization."
 msgstr "Наименование окна - используется для сериализации конфигурации."
 

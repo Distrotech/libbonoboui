@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.0\n"
-"POT-Creation-Date: 2002-08-05 15:52+0100\n"
+"POT-Creation-Date: 2002-08-28 15:35+0100\n"
 "PO-Revision-Date: 2002-07-28 11:06+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -70,15 +70,15 @@ msgstr "Sélectionner des fichiers à ouvrir"
 msgid "Select a filename to save"
 msgstr "Sélectionner le nom du fichier à enregistrer"
 
-#: bonobo/bonobo-plug.c:358
+#: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
 msgstr "Transfert des événements"
 
-#: bonobo/bonobo-plug.c:359
+#: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
 msgstr "Si les événements X doivent être transférés"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
 msgid "Name"
 msgstr "Nom"
 
@@ -285,15 +285,15 @@ msgstr "est flottant"
 msgid "whether the toolbar is floating"
 msgstr "indique si la barre d'outils est flottante"
 
-#: bonobo/bonobo-ui-util.c:583
+#: bonobo/bonobo-ui-util.c:607
 msgid "_Contents"
 msgstr "_Contenu"
 
-#: bonobo/bonobo-ui-util.c:584
+#: bonobo/bonobo-ui-util.c:608
 msgid "View help for this application"
 msgstr "Affiche l'aide de cette application"
 
-#: bonobo/bonobo-window.c:448
+#: bonobo/bonobo-window.c:446
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nom de la fenêtre - utilisé pour la sérialisation de la configuration."
 

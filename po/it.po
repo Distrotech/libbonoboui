@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"POT-Creation-Date: 2002-08-05 15:52+0100\n"
+"POT-Creation-Date: 2002-08-28 15:35+0100\n"
 "PO-Revision-Date: 2002-03-03 16:29+0100\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@cgabriel.org>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -70,15 +70,15 @@ msgstr "Selezionare i file da aprire"
 msgid "Select a filename to save"
 msgstr "Selezione il nome del file da salvare"
 
-#: bonobo/bonobo-plug.c:358
+#: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
 msgstr "Inoltro degli eventi"
 
-#: bonobo/bonobo-plug.c:359
+#: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
 msgstr "Se gli eventi X devono essere inoltrati"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
 msgid "Name"
 msgstr "Nome"
 
@@ -283,16 +283,16 @@ msgstr "è fluttuante"
 msgid "whether the toolbar is floating"
 msgstr "se la barra degli strumenti è fluttuante o meno"
 
-#: bonobo/bonobo-ui-util.c:583
+#: bonobo/bonobo-ui-util.c:607
 msgid "_Contents"
 msgstr ""
 
-#: bonobo/bonobo-ui-util.c:584
+#: bonobo/bonobo-ui-util.c:608
 #, fuzzy
 msgid "View help for this application"
 msgstr "Informazioni su questa applicazione"
 
-#: bonobo/bonobo-window.c:448
+#: bonobo/bonobo-window.c:446
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
 

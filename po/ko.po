@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2002-08-06 17:06+0900\n"
+"POT-Creation-Date: 2002-08-28 15:35+0100\n"
 "PO-Revision-Date: 2002-08-06 08:07+0900\n"
 "Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -67,15 +67,15 @@ msgstr "열 파일을 선택하십시오"
 msgid "Select a filename to save"
 msgstr "저장할 파일이름을 선택하십시오"
 
-#: bonobo/bonobo-plug.c:358
+#: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
 msgstr "이벤트 전달하기"
 
-#: bonobo/bonobo-plug.c:359
+#: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
 msgstr "X 이벤트를 전달할 지 여부"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
 msgid "Name"
 msgstr "이름"
 
@@ -281,15 +281,15 @@ msgstr "움직이기"
 msgid "whether the toolbar is floating"
 msgstr "도구 모음을 움직일 수 있는지"
 
-#: bonobo/bonobo-ui-util.c:583
+#: bonobo/bonobo-ui-util.c:607
 msgid "_Contents"
 msgstr "목차"
 
-#: bonobo/bonobo-ui-util.c:584
+#: bonobo/bonobo-ui-util.c:608
 msgid "View help for this application"
 msgstr "이 프로그램에 대한 도움말을 봅니다"
 
-#: bonobo/bonobo-window.c:448
+#: bonobo/bonobo-window.c:446
 msgid "Name of the window - used for configuration serialization."
 msgstr "창의 이름 - 설정 직렬화에 사용됩니다"
 

@@ -1,3 +1,28 @@
+libbonoboui 2.0.2
+
+	* Bugs fixed
+		+ expose event propagation (Federico Mena)
+		+ dock layout fix (Michael)
+		+ flush icon cache on theme change (Michael)
+		+ plug/socket in-process sizing (Michael)
+		+ leak fixes (Michael)
+		+ UI node lifecycle re-enterancy fix (Michael)
+
+libbonoboui 2.0.1
+
+	* Bugs fixed
+		+ multi-head fixes all over (Mark McLouglin)
+		+ plug/socket ref update (Michael, Dave Camp)
+		+ menu accel group fix (Michael)
+		+ UI re-enterancy fixes (Michael)
+		+ a11y toolbar role on toolbar (Michael)
+		+ don't install test bits (Brian Cameron)
+		+ 'No foo' (Morten Welinder)
+	* Featurelets
+		+ better control regression tests (Michael)
+		+ optimized UI path lookups (Michael)
+		+ DockItem glade improvements (James Henstridge)
+
 libbonoboui 2.0.0
 
 	* Add bin-compat padding (Michael)

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2002-08-17 13:00+0100\n"
+"POT-Creation-Date: 2002-08-28 15:35+0100\n"
 "PO-Revision-Date: 2002-08-17 13:18+0100\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -73,14 +73,13 @@ msgstr "Επιλογή αρχείων για άνοιγμα"
 
 #: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
-msgstr ""
-"Επιλογή ονόματος αρχείου για αποθήκευση"
+msgstr "Επιλογή ονόματος αρχείου για αποθήκευση"
 
-#: bonobo/bonobo-plug.c:358
+#: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
 msgstr "Προώθηση Γεγονότων"
 
-#: bonobo/bonobo-plug.c:359
+#: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
 msgstr ""
 
@@ -92,7 +91,7 @@ msgstr ""
 #
 # #-#-#-#-#  nautilus.nautilus-gnome-1.el.po (nautilus 0.8.3)  #-#-#-#-#
 #
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
 msgid "Name"
 msgstr "Όνομα"
 
@@ -112,16 +111,15 @@ msgstr "Διασύνδεση"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
-"A NULL_terminated array of interfaces which a server must support in order to "
-"be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no "
-"interfaces are listed"
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
 msgstr ""
 
 #: bonobo/bonobo-selector.c:348
 #, fuzzy
 msgid "Interface required entry"
-msgstr ""
-"Συναρτήσεις Δημιουργίας Διεπιφάνειας:"
+msgstr "Συναρτήσεις Δημιουργίας Διεπιφάνειας:"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
@@ -181,9 +179,7 @@ msgstr "Ρύθμιση Διασύνδεσης Χρήστη"
 #
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
-"Διακόπτες αποσφαλμάτωσης του Gdk για "
-"ενεργοποίηση"
+msgstr "Διακόπτες αποσφαλμάτωσης του Gdk για ενεργοποίηση"
 
 #
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
@@ -194,9 +190,7 @@ msgstr "FLAGS"
 #
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
-"Διακόπτες αποσφαλμάτωσης του Gdk για "
-"απενεργοποίηση"
+msgstr "Διακόπτες αποσφαλμάτωσης του Gdk για απενεργοποίηση"
 
 #
 #: bonobo/bonobo-ui-init-gtk.c:120
@@ -225,16 +219,12 @@ msgstr "Χρήση σύγχρονων κλήσεων X"
 #
 #: bonobo/bonobo-ui-init-gtk.c:135
 msgid "Don't use X shared memory extension"
-msgstr ""
-"Απενεργοποίηση επεκτασης χρήσης κοινής "
-"μνήμης στα X"
+msgstr "Απενεργοποίηση επεκτασης χρήσης κοινής μνήμης στα X"
 
 #
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "Program name as used by the window manager"
-msgstr ""
-"Όνομα προγράμματος όπως δηλώνεται από το "
-"διαχειριστή παραθύρων"
+msgstr "Όνομα προγράμματος όπως δηλώνεται από το διαχειριστή παραθύρων"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "NAME"
@@ -243,9 +233,7 @@ msgstr "ΌΝΟΜΑ"
 #
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "Program class as used by the window manager"
-msgstr ""
-"Τάξη προγράμματος όπως δηλώνεται από το "
-"διαχειριστή παραθύρων"
+msgstr "Τάξη προγράμματος όπως δηλώνεται από το διαχειριστή παραθύρων"
 
 #
 #: bonobo/bonobo-ui-init-gtk.c:142
@@ -269,16 +257,12 @@ msgstr "ΣΤΥΛ"
 #
 #: bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
-msgstr ""
-"Διακόπτες αποσφαλμάτωσης του Gtk+ για "
-"ενεργοποίηση"
+msgstr "Διακόπτες αποσφαλμάτωσης του Gtk+ για ενεργοποίηση"
 
 #
 #: bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
-"Διακόπτες αποσφαλμάτωσης του Gtk+ για "
-"απενεργοποίηση"
+msgstr "Διακόπτες αποσφαλμάτωσης του Gtk+ για απενεργοποίηση"
 
 #
 #: bonobo/bonobo-ui-init-gtk.c:168
@@ -302,9 +286,7 @@ msgstr "GTK+"
 #
 #: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
-msgstr ""
-"Υποστήριξη Γραφικού Περιβάλλοντος "
-"Διασύνδεσης (ΓΠΔ) Bonobo"
+msgstr "Υποστήριξη Γραφικού Περιβάλλοντος Διασύνδεσης (ΓΠΔ) Bonobo"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "B_oth"
@@ -353,7 +335,7 @@ msgstr "Περιε_χόμενα"
 msgid "View help for this application"
 msgstr "Εμφάνιση βοήθειας για την εφαρμογή"
 
-#: bonobo/bonobo-window.c:448
+#: bonobo/bonobo-window.c:446
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
 
@@ -477,4 +459,3 @@ msgstr "Αποτυχία αρχικοποίησης κώδικα libbonoboui"
 #, fuzzy
 msgid "Could not initialize Bonobo UI"
 msgstr "Αδύνατη η αρχικοποίηση του Bonobo"
-
