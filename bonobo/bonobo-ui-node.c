@@ -154,24 +154,26 @@ bonobo_ui_node_add_after (BonoboUINode *before,
 
 /**
  * bonobo_ui_node_insert_before:
- * @sibling: the node to insert
- * @prev_sibling: the placeholder for insertion
+ * @after: the placeholder for insertion
+ * @new_before: the node to insert
  * 
  * Insert a @sibling before @prev_sibling in a node list
  **/
 void
-bonobo_ui_node_insert_before (BonoboUINode *new_before,
-                              BonoboUINode *after)
+bonobo_ui_node_insert_before (BonoboUINode *after,
+			      BonoboUINode *new_before)
 {
+	bonobo_ui_node_unlink (new_before);
+
 	new_before->prev = after->prev;
-	if (!after->prev) {
+
+	if (after->prev) {
+		after->prev->next = new_before;
+	} else {
 		if (after->parent)
 			after->parent->children = new_before;
 	}
 	new_before->next = after;
-	if (new_before->prev)
-		new_before->prev->next = new_before;
-
 	after->prev = new_before;
 
 	new_before->parent = after->parent;

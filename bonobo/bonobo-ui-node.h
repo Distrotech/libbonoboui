@@ -34,8 +34,8 @@ void          bonobo_ui_node_remove_attr (BonoboUINode *node,
                                           const char   *name);
 void          bonobo_ui_node_add_child   (BonoboUINode *parent,
                                           BonoboUINode *child);
-void          bonobo_ui_node_insert_before (BonoboUINode *sibling,
-                                            BonoboUINode *prev_sibling);
+void          bonobo_ui_node_insert_before (BonoboUINode *after,
+					    BonoboUINode *new_before);
 void          bonobo_ui_node_unlink      (BonoboUINode *node);
 void          bonobo_ui_node_replace     (BonoboUINode *old_node,
 					  BonoboUINode *new_node);

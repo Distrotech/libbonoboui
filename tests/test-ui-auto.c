@@ -14,12 +14,12 @@
 #include <bonobo/bonobo-ui-node-private.h>
 
 static void
-test_ui_node (void)
+test_ui_node_attrs (void)
 {
 	GQuark baa_id;
 	BonoboUINode *node;
 
-	fprintf (stderr, "testing BonoboUINode ...\n");
+	fprintf (stderr, "  attrs ...\n");
 
 	node = bonobo_ui_node_new ("foo");
 	g_assert (node != NULL);
@@ -36,6 +36,45 @@ test_ui_node (void)
 	g_assert (!strcmp (bonobo_ui_node_peek_attr (node, "A"), "B"));
 
 	bonobo_ui_node_free (node);
+}
+
+static void
+test_ui_node_inserts (void)
+{
+	BonoboUINode *parent, *a, *b;
+
+	fprintf (stderr, "  inserts ...\n");
+
+	parent = bonobo_ui_node_new ("parent");
+
+	a = bonobo_ui_node_new_child (parent, "a");
+	g_assert (a->prev == NULL);
+	g_assert (a->next == NULL);
+	g_assert (a->parent == parent);
+
+	b = bonobo_ui_node_new ("b");
+	g_assert (b->prev == NULL);
+	g_assert (b->next == NULL);
+
+	bonobo_ui_node_insert_before (a, b);
+
+	g_assert (b->prev == NULL);
+	g_assert (b->next == a);
+	g_assert (b->parent == parent);
+	g_assert (a->prev == b);
+	g_assert (a->next == NULL);
+	g_assert (a->parent == parent);
+
+	bonobo_ui_node_free (parent);
+}
+
+static void
+test_ui_node (void)
+{
+	fprintf (stderr, "testing BonoboUINode ...\n");
+
+	test_ui_node_attrs ();
+	test_ui_node_inserts ();
 }
 
 static void
@@ -57,11 +96,14 @@ check_prop (BonoboUIEngine *engine,
 }
 
 static void
-test_ui_engine (BonoboUIEngine *engine, CORBA_Environment *ev)
+test_engine_misc (CORBA_Environment *ev)
 {
 	BonoboUINode *node;
+	BonoboUIEngine *engine;
 
-	fprintf (stderr, "testing the UI engine ...\n");
+	fprintf (stderr, "   misc ...\n");
+
+	engine = bonobo_ui_engine_new (NULL);
 
 	node = bonobo_ui_node_from_string (
 		"<testnode name=\"Foo\" prop=\"A\"/>");
@@ -78,12 +120,67 @@ test_ui_engine (BonoboUIEngine *engine, CORBA_Environment *ev)
 
 	g_assert (bonobo_ui_engine_node_is_dirty (
 		engine, bonobo_ui_engine_get_path (engine, "/Foo")));
+
+	g_object_unref (G_OBJECT (engine));
+}
+
+static void
+test_engine_default_placeholder (CORBA_Environment *ev)
+{
+	BonoboUIEngine *engine;
+	CORBA_char *str;
+	BonoboUINode *node;
+
+	fprintf (stderr, "  default placeholders ...\n");
+
+	engine = bonobo_ui_engine_new (NULL);
+
+	node = bonobo_ui_node_from_string (
+		"<Root>"
+		"  <nodea name=\"fooa\" attr=\"baa\"/>"
+		"  <placeholder/>"
+		"  <nodec name=\"fooc\" attr=\"baa\"/>"
+		"</Root>");
+
+	bonobo_ui_engine_xml_merge_tree (engine, "/", node, "A");
+
+	node = bonobo_ui_node_from_string ("<nodeb name=\"foob\" attr=\"baa\"/>");
+	bonobo_ui_engine_xml_merge_tree (engine, "/", node, "A");
+
+	str = bonobo_ui_engine_xml_get (engine, "/", FALSE);
+/*	g_warning ("foo '%s'", str); */
+	CORBA_free (str);
+
+	node = bonobo_ui_engine_get_path (engine, "/fooa");
+	g_assert (node != NULL);
+	g_assert (node->name_id == g_quark_from_string ("nodea"));
+	g_assert (node->next != NULL);
+	node = node->next;
+	g_assert (node->name_id == g_quark_from_string ("nodeb"));
+	g_assert (node->next != NULL);
+	node = node->next;
+	g_assert (node->name_id == g_quark_from_string ("placeholder"));
+	g_assert (node->next != NULL);
+	node = node->next;
+	g_assert (node->name_id == g_quark_from_string ("nodec"));
+	g_assert (node->next == NULL);
+	
+	g_object_unref (G_OBJECT (engine));
+
+}
+
+static void
+test_ui_engine (CORBA_Environment *ev)
+{
+	fprintf (stderr, "testing BonoboUIEngine ...\n");
+
+	test_engine_misc (ev);
+	test_engine_default_placeholder (ev);
 }
 
 int
 main (int argc, char **argv)
 {
-	BonoboUIEngine *engine;
 	CORBA_Environment *ev, real_ev;
 
 	ev = &real_ev;
@@ -103,12 +200,8 @@ main (int argc, char **argv)
 
 	bonobo_activate ();
 
-	engine = bonobo_ui_engine_new (NULL);
-
 	test_ui_node ();
-	test_ui_engine (engine, ev);
-
-	g_object_unref (G_OBJECT (engine));
+	test_ui_engine (ev);
 
 	CORBA_exception_free (ev);
 
@@ -116,4 +209,3 @@ main (int argc, char **argv)
 
 	return bonobo_ui_debug_shutdown ();
 }
-

@@ -944,11 +944,9 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 	}
 
 #ifdef UI_XML_DEBUG
-	{
-		char *txt;
-		fprintf (stderr, "\n\n\nPATH: '%s' '%s\n", current->name,
-			 bonobo_ui_node_peek_attr (current, "name"));
-	}
+	fprintf (stderr, "\n\n\nPATH: '%s' '%s\n",
+		 g_quark_to_string (current->name_id),
+		 bonobo_ui_node_peek_attr (current, "name"));
 #endif
 
 	DUMP_XML (tree, tree->root, "Merging in");
