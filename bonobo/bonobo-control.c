@@ -54,7 +54,27 @@ struct _BonoboControlPrivate {
 };
 
 /**
- * window_id_demangle:
+ * bonobo_control_windowid_from_x11:
+ * @x11_id: the x11 window id.
+ * 
+ * This mangles the X11 name into the ':' delimited
+ * string format "X-id: ..."
+ * 
+ * Return value: the string; free after use.
+ **/
+Bonobo_Control_windowId
+bonobo_control_window_id_from_x11 (guint32 x11_id)
+{
+	CORBA_char *str;
+
+	str = g_strdup_printf ("%d", x11_id);
+
+/*	printf ("Mangled %d to '%s'\n", x11_id, str);*/
+	return str;
+}
+
+/**
+ * bonobo_control_x11_from_windowid:
  * @id: CORBA_char *
  * 
  * De-mangle a window id string,
@@ -63,8 +83,8 @@ struct _BonoboControlPrivate {
  * 
  * Return value: the X11 window id.
  **/
-inline static guint32
-window_id_demangle (Bonobo_Control_windowId id)
+guint32
+bonobo_control_x11_from_window_id (Bonobo_Control_windowId id)
 {
 	guint32 x11_id;
 	char **elements;
@@ -83,26 +103,6 @@ window_id_demangle (Bonobo_Control_windowId id)
 /*	printf ("x11 : %d\n", x11_id);*/
 
 	return x11_id;
-}
-
-/**
- * bonobo_control_windowid_from_x11:
- * @x11_id: the x11 window id.
- * 
- * This mangles the X11 name into the ':' delimited
- * string format "X-id: ..."
- * 
- * Return value: the string; free after use.
- **/
-Bonobo_Control_windowId
-bonobo_control_windowid_from_x11 (guint32 x11_id)
-{
-	CORBA_char *str;
-
-	str = g_strdup_printf ("%d", x11_id);
-
-/*	printf ("Mangled %d to '%s'\n", x11_id, str);*/
-	return str;
 }
 
 /*
@@ -280,7 +280,7 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 
 	g_return_if_fail (control->priv->widget != NULL);
 
-	x11_id = window_id_demangle (id);
+	x11_id = bonobo_control_x11_from_window_id (id);
 
 	/*
 	 * Check to see if this XID is local to the application.  In

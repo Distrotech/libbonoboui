@@ -196,7 +196,7 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 	 * remote Control.
 	 */
 	CORBA_exception_init (&ev);
-	id = bonobo_control_windowid_from_x11 (
+	id = bonobo_control_window_id_from_x11 (
 		GDK_WINDOW_XWINDOW (socket->window));
 
 	Bonobo_Control_setWindowId (control, id, &ev);

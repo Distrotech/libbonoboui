@@ -1,3 +1,12 @@
+2001-07-27  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control.c (window_id_demangle): rename to
+	(bonobo_control_x11_from_window_id): this, and publicise.
+	(bonobo_control_windowid_from_x11): rename to
+	(bonobo_control_window_id_from_x11): this & add compat macro.
+
+	* bonobo/bonobo-control-frame.c (bonobo_control_frame_set_remote_window): upd.
+
 2001-07-24  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-main.c (bonobo_ui_init_full): init. bonobo

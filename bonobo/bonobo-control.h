@@ -76,7 +76,10 @@ Bonobo_PropertyBag          bonobo_control_get_ambient_properties  (BonoboContro
 								    CORBA_Environment   *ev);
 void                        bonobo_control_activate_notify         (BonoboControl       *control,
 								    gboolean             activated);
-Bonobo_Control_windowId     bonobo_control_windowid_from_x11       (guint32              x11_id);
+Bonobo_Control_windowId     bonobo_control_window_id_from_x11      (guint32              x11_id);
+guint32                     bonobo_control_x11_from_window_id      (Bonobo_Control_windowId id);
+#define                     bonobo_control_windowid_from_x11(a) \
+			    bonobo_control_window_id_from_x11(a)
 
 G_END_DECLS
 
