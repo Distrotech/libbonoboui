@@ -70,98 +70,6 @@ struct poptOption moniker_test_options [] = {
 };
 
 
-static void do_moniker_magic (void);
-
-int
-main (int argc, char **argv)
-{
-	CORBA_ORB   orb;
-	poptContext ctx = NULL;
-	int         i;
-
-	bindtextdomain (PACKAGE, GNOMELOCALEDIR);
-	textdomain (PACKAGE);
-
-	gnomelib_register_popt_table (oaf_popt_options, _("Oaf options"));
-
-	gnome_init_with_popt_table ("moniker-test", "0.0", argc, argv,
-				    moniker_test_options, 0, &ctx);
-
-	if ((orb = oaf_init (argc, argv)) == NULL)
-		g_error ("Cannot init oaf");
-
-	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error ("Cannot init bonobo");
-
-
-	/* Do the nasty popt stuff */
-	while ((i = poptGetNextOpt (ctx)) > 0)
-		;
-
-	if (global_mto.ps + global_mto.pr + global_mto.ph +
-	    global_mto.pc > 1) {
-		poptPrintUsage (ctx, stderr, 0);
-		return 1;
-	}
-
-	if (global_mto.requested_interface)
-		global_mto.display_as = AS_INTERFACE;
-	else if (global_mto.ps)
-		global_mto.display_as = AS_STREAM;
-	else if (global_mto.pr)
-		global_mto.display_as = AS_STORAGE_FILE_LIST;
-	else if (global_mto.ph)
-		global_mto.display_as = AS_HTML;
-	else if (global_mto.pc)
-		global_mto.display_as = AS_CONTROL;
-	else {
-		fprintf (stderr, "Usage: %s [-i interface] [-srch] <moniker>\n", argv [0]);
-		fprintf (stderr, "Run %s --help for more info\n", argv [0]);
-		return 1;
-	}
-
-
-	poptSetOtherOptionHelp (ctx, "<moniker>");
-	global_mto.requested_moniker = g_strdup (poptGetArg (ctx));
-	if (!global_mto.requested_moniker) {
-		fprintf (stderr, "Usage: %s [-i interface] [-srch] <moniker>\n", argv[0]);
-		fprintf (stderr, "Run %s --help for more info\n", argv[0]);
-		return 1;
-	}
-
-	poptFreeContext (ctx);
-	/* done with nasty popt stuff */
-
-	fprintf (stderr, "Resolving moniker '%s' as ", global_mto.requested_moniker);
-	switch (global_mto.display_as) {
-        case AS_INTERFACE:
-		fprintf (stderr, global_mto.requested_interface);
-		break;
-        case AS_STREAM:
-		fprintf (stderr, "IDL:Bonobo/Stream:1.0");
-		break;
-        case AS_STORAGE_FILE_LIST:
-		fprintf (stderr, "IDL:Bonobo/Storage:1.0");
-		break;
-        case AS_HTML:
-		fprintf (stderr, "IDL:Bonobo/Control:1.0 (html)");
-		break;
-        case AS_CONTROL:
-		fprintf (stderr, "IDL:Bonobo/Control:1.0");
-		break;
-        default:
-		fprintf (stderr, "???");
-		break;
-	}
-	fprintf (stderr, "\n");
-
-	bonobo_activate ();
-
-	do_moniker_magic ();
-	return 0;
-}
-
-
 static void
 do_moniker_magic (void)
 {
@@ -277,28 +185,108 @@ display_as_html (const char *moniker, CORBA_Environment *ev)
 static void
 display_as_control (const char *moniker, CORBA_Environment *ev)
 {
-    Bonobo_Control the_control;
-    GtkWidget *widget;
+	Bonobo_Control the_control;
+	GtkWidget *widget;
 
-    GtkWidget *window;
+	GtkWidget *window;
 
-    the_control = bonobo_get_object (moniker, "IDL:Bonobo/Control:1.0", ev);
-    if (ev->_major != CORBA_NO_EXCEPTION || !the_control) {
-        g_error ("Couldn't get Bonobo/Control interface");
-    }
+	the_control = bonobo_get_object (moniker, "IDL:Bonobo/Control:1.0", ev);
+	if (ev->_major != CORBA_NO_EXCEPTION || !the_control)
+		g_error ("Couldn't get Bonobo/Control interface");
 
-    widget = bonobo_widget_new_control_from_objref (the_control, CORBA_OBJECT_NIL);
-    if (ev->_major != CORBA_NO_EXCEPTION || !widget) {
-        g_error ("Couldn't get a widget from the_control");
-    }
+	widget = bonobo_widget_new_control_from_objref (the_control, CORBA_OBJECT_NIL);
+	if (ev->_major != CORBA_NO_EXCEPTION || !widget)
+		g_error ("Couldn't get a widget from the_control");
 
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size (GTK_WINDOW (window), 400, 350);
-    gtk_container_add (GTK_CONTAINER (window), widget);
-    gtk_signal_connect (GTK_OBJECT (window), "destroy",
-                        GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_default_size (GTK_WINDOW (window), 400, 350);
+	gtk_container_add (GTK_CONTAINER (window), widget);
+	gtk_signal_connect (GTK_OBJECT (window), "destroy",
+			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 
-    gtk_widget_show_all (window);
-    gtk_main ();
+	gtk_widget_show_all (window);
+	gtk_main ();
 }
 
+int
+main (int argc, char **argv)
+{
+	CORBA_ORB   orb;
+	poptContext ctx = NULL;
+
+	bindtextdomain (PACKAGE, GNOMELOCALEDIR);
+	textdomain (PACKAGE);
+
+	gnomelib_register_popt_table (oaf_popt_options, _("Oaf options"));
+
+	gnome_init_with_popt_table ("moniker-test", "0.0", argc, argv,
+				    moniker_test_options, 0, &ctx);
+
+	if ((orb = oaf_init (argc, argv)) == NULL)
+		g_error ("Cannot init oaf");
+
+	if (bonobo_init (orb, NULL, NULL) == FALSE)
+		g_error ("Cannot init bonobo");
+
+	if (global_mto.ps + global_mto.pr + global_mto.ph +
+	    global_mto.pc > 1) {
+		poptPrintUsage (ctx, stderr, 0);
+		return 1;
+	}
+
+	if (global_mto.requested_interface)
+		global_mto.display_as = AS_INTERFACE;
+	else if (global_mto.ps)
+		global_mto.display_as = AS_STREAM;
+	else if (global_mto.pr)
+		global_mto.display_as = AS_STORAGE_FILE_LIST;
+	else if (global_mto.ph)
+		global_mto.display_as = AS_HTML;
+	else if (global_mto.pc)
+		global_mto.display_as = AS_CONTROL;
+	else {
+		fprintf (stderr, "Usage: %s [-i interface] [-srch] <moniker>\n", argv [0]);
+		fprintf (stderr, "Run %s --help for more info\n", argv [0]);
+		return 1;
+	}
+
+
+	poptSetOtherOptionHelp (ctx, "<moniker>");
+	global_mto.requested_moniker = g_strdup (poptGetArg (ctx));
+	if (!global_mto.requested_moniker) {
+		fprintf (stderr, "Usage: %s [-i interface] [-srch] <moniker>\n", argv[0]);
+		fprintf (stderr, "Run %s --help for more info\n", argv[0]);
+		return 1;
+	}
+
+	poptFreeContext (ctx);
+	/* done with nasty popt stuff */
+
+	fprintf (stderr, "Resolving moniker '%s' as ", global_mto.requested_moniker);
+	switch (global_mto.display_as) {
+        case AS_INTERFACE:
+		fprintf (stderr, global_mto.requested_interface);
+		break;
+        case AS_STREAM:
+		fprintf (stderr, "IDL:Bonobo/Stream:1.0");
+		break;
+        case AS_STORAGE_FILE_LIST:
+		fprintf (stderr, "IDL:Bonobo/Storage:1.0");
+		break;
+        case AS_HTML:
+		fprintf (stderr, "IDL:Bonobo/Control:1.0 (html)");
+		break;
+        case AS_CONTROL:
+		fprintf (stderr, "IDL:Bonobo/Control:1.0");
+		break;
+        default:
+		fprintf (stderr, "???");
+		break;
+	}
+	fprintf (stderr, "\n");
+
+	bonobo_activate ();
+
+	do_moniker_magic ();
+	return 0;
+}
