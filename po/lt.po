@@ -1,21 +1,20 @@
 # Lithuanian translation of libbonoboui
-# Copyright (C) 2003-2004 Free Software Foundation, Inc.
-# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
-# Žygimantas Beručka <uid0@akl.lt>, 2003-2004.
-# Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
+# Copyright (C) 2003-2005 Free Software Foundation, Inc.
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003-2004.
+# Žygimantas Beručka <uid0@akl.lt>, 2003-2005.
 # 
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-04 18:53+0200\n"
-"PO-Revision-Date: 2004-12-04 18:59+0200\n"
+"POT-Creation-Date: 2005-01-31 12:32+0200\n"
+"PO-Revision-Date: 2005-01-31 12:34+0200\n"
 "Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -33,30 +32,30 @@ msgstr "corba vartototo sąsajos konteineris"
 msgid "The User interface container"
 msgstr "Vartotojo sąsajos konteineris"
 
-#: bonobo/bonobo-dock-item-grip.c:256
+#: bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
 msgstr "Prisegti įrankių juostą"
 
-#: bonobo/bonobo-dock-item-grip.c:257
-msgid "Un dock the toolbar"
+#: bonobo/bonobo-dock-item-grip.c:258
+msgid "Undock the toolbar"
 msgstr "Atkabinti įrankių juostą"
 
-#: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Šešėlio tipas"
 
-#: bonobo/bonobo-dock-item.c:243 bonobo/bonobo-dock-item.c:244
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientacija"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Pageidautinas plotis"
 
-#: bonobo/bonobo-dock-item.c:263 bonobo/bonobo-dock-item.c:264
+#: bonobo/bonobo-dock-item.c:264 bonobo/bonobo-dock-item.c:265
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Pageidautinas aukštis"
@@ -100,9 +99,9 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Nuliais uždaromas sąsajos masyvas, kurį turi palaikyti serveris tam, kad "
-"parodyti pasirinkimo juostoje. Pagal nutylėjimą suveikia \"IDL:Bonobo/"
-"Embenddable:1.0\", jei jokia sąsają nenurodyta"
+"Nuliais uždaromas sąsajų masyvas, kurias serveris turi palaikyti tam, kad "
+"būtų rodomas pasirinkimo juostoje. Jei jokia sąsaja nenurodyta, naudojamas "
+"standartinis „IDL:Bonobo/Embenddable:1.0“"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -477,4 +476,3 @@ msgstr "Bonobo komponentų naršyklė"
 #: tools/browser/window.c:246
 msgid "Component Browser"
 msgstr "Komponentų naršyklė"
-
