@@ -351,7 +351,7 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 			menu_widget = widget;
 
 		/* Recurse here just once, don't duplicate in the build. */
-		bonobo_ui_engine_update_node (engine, node);
+		bonobo_ui_engine_update_node (engine, sync, node);
 
 	} else if (bonobo_ui_node_has_name (node, "menuitem"))
 		menu_widget = widget;

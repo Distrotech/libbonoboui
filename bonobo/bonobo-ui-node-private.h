@@ -32,6 +32,8 @@ void        bonobo_ui_node_set_attr_by_id (BonoboUINode *node,
 					   const char   *value);
 const char *bonobo_ui_node_get_attr_by_id (BonoboUINode *node,
 					   GQuark        id);
+const char *bonobo_ui_node_peek_attr      (BonoboUINode *node,
+					   const char   *name);
 const char *bonobo_ui_node_peek_content   (BonoboUINode *node);
 gboolean    bonobo_ui_node_has_name_by_id (BonoboUINode *node,
 					   GQuark        id);
@@ -39,5 +41,6 @@ void        bonobo_ui_node_add_after      (BonoboUINode *before,
 					   BonoboUINode *new_after);
 void        bonobo_ui_node_move_children  (BonoboUINode *from,
 					   BonoboUINode *to);
+#define     bonobo_ui_node_same_name(a,b) ((a)->name_id == (b)->name_id)
 
 #endif /* _BONOBO_UI_NODE_PRIVATE_H_ */

@@ -433,7 +433,9 @@ replace_override_fn (GObject        *object,
 	cmd_to_node_add_node    (engine, new, FALSE);
 
 /*	g_warning ("Replace override on '%s' '%s' widget '%p'",
-		   old->name, bonobo_ui_node_get_attr (old, "name"), old_info->widget);
+		   bonobo_ui_node_get_name (old),
+		   bonobo_ui_node_get_attr (old, "name"),
+		   old_info->widget);
 	info_dump_fn (old_info);
 	info_dump_fn (info);*/
 
@@ -554,10 +556,15 @@ override_fn (GObject        *object,
 	fprintf (stderr, "Override '%s'\n", 
 		 bonobo_ui_xml_make_path (old));
 #endif
-	bonobo_ui_engine_prune_widget_info (engine, old, TRUE);
+	if (bonobo_ui_node_same_name (new, old)) {
+		replace_override_fn (object, new, old, engine);
 
-	cmd_to_node_remove_node (engine, old, FALSE);
-	cmd_to_node_add_node    (engine, new, FALSE);
+	} else {
+		bonobo_ui_engine_prune_widget_info (engine, old, TRUE);
+
+		cmd_to_node_remove_node (engine, old, FALSE);
+		cmd_to_node_add_node    (engine, new, FALSE);
+	}
 }
 
 static void
@@ -2051,6 +2058,7 @@ bonobo_ui_engine_sync (BonoboUIEngine   *engine,
 				printf ("-- just syncing state --\n");
 #endif
 				ss (sync, a, cmd_node, b->data, parent);
+
 				(*pos)++;
 			} else {
 				NodeInfo   *info;
@@ -2233,11 +2241,10 @@ seek_dirty (BonoboUIEngine *engine,
  **/
 void
 bonobo_ui_engine_update_node (BonoboUIEngine *engine,
+			      BonoboUISync   *sync,
 			      BonoboUINode   *node)
 {
-	BonoboUISync *sync = find_sync_for_node (engine, node);
-
-	if ((sync = find_sync_for_node (engine, node))) {
+	if (sync) {
 		if (bonobo_ui_sync_is_recursive (sync))
 			seek_dirty (engine, sync, node);
 		else 
@@ -2359,25 +2366,40 @@ bonobo_ui_engine_update (BonoboUIEngine *engine)
 	if (engine->priv->frozen)
 		return;
 
+	access ("Bonobo: UI engine update - start", 0);
+
 	for (l = engine->priv->syncs; l; l = l->next)
 		bonobo_ui_sync_stamp_root (l->data);
 
+	access ("Bonobo: UI engine update - after stamp", 0);
+
 	move_dirt_cmd_to_widget (engine);
+
+	access ("Bonobo: UI engine update - after dirt transfer", 0);
 
 /*	bonobo_ui_engine_dump (priv->win, "before update");*/
 
 	for (node = bonobo_ui_node_children (engine->priv->tree->root);
 	     node; node = bonobo_ui_node_next (node)) {
+		BonoboUISync *sync;
 
 		if (!bonobo_ui_node_get_name (node))
 			continue;
 
-		bonobo_ui_engine_update_node (engine, node);
+		sync = find_sync_for_node (engine, node);
+
+		bonobo_ui_engine_update_node (engine, sync, node);
 	}
+
+	access ("Bonobo: UI engine update - after update nodes", 0);
 
 	update_commands_state (engine);
 
+	access ("Bonobo: UI engine update - after cmd state", 0);
+
 	process_state_updates (engine);
+
+	access ("Bonobo: UI engine update - end", 0);
 
 /*	bonobo_ui_engine_dump (priv->win, "after update");*/
 }

@@ -79,6 +79,7 @@ GSList       *bonobo_ui_engine_get_syncs       (BonoboUIEngine   *engine);
 
 void          bonobo_ui_engine_update          (BonoboUIEngine   *engine);
 void          bonobo_ui_engine_update_node     (BonoboUIEngine   *engine,
+						BonoboUISync     *sync,
 						BonoboUINode     *node);
 void          bonobo_ui_engine_queue_update    (BonoboUIEngine   *engine,
 						GtkWidget        *widget,

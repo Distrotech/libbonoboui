@@ -1,3 +1,43 @@
+2001-12-20  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_util_xml_get_pixbuf): stub.
+
+2001-12-18  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-node.c (bonobo_ui_node_peek_attr): impl.
+
+2001-12-17  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_update): find the sync once here.
+	(bonobo_ui_engine_update_node): simplify checks.
+
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_bonobo_ui_sync_menu_state): pass 'sync' here.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_set_propbag): fix cast.
+
+	* bonobo/bonobo-ui-engine.c (bonobo_ui_engine_update):
+	instrument with 'access' calls.
+
+2001-12-15  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control.c (bonobo_control_do_popup):
+	fixup return value.
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_sync): after sync, all dirty
+	flags must be TRUE.
+	(replace_override_fn): work out which attrs changed.
+	(override_fn): set all attrs to changed on override.
+
+	* bonobo/bonobo-ui-node.c
+	(bonobo_ui_node_transparent): treat separators
+	differently - they tend to have no attrs, but are
+	not 'transparent'.
+
 2001-12-18  Darin Adler  <darin@bentspoon.com>
 
 	* bonobo/bonobo-ui-component.c: (bonobo_ui_component_set_tree):

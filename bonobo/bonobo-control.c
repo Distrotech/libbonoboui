@@ -1265,6 +1265,7 @@ bonobo_control_do_popup (BonoboControl       *control,
 			 guint                button,
 			 guint32              activate_time)
 {
-	bonobo_control_do_popup_full (control, NULL, NULL, NULL, NULL,
-				      button, activate_time);
+	return bonobo_control_do_popup_full (
+		control, NULL, NULL, NULL, NULL,
+		button, activate_time);
 }

@@ -10,9 +10,15 @@
 #ifndef _BONOBO_UI_PRIVATE_H_
 #define _BONOBO_UI_PRIVATE_H_
 
+#include <gtk/gtkmisc.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <bonobo/bonobo-ui-node.h>
+
 #undef DEBUG_UI
 
-void bonobo_ui_preferences_shutdown (void);
+void       bonobo_ui_preferences_shutdown (void);
+GdkPixbuf *bonobo_ui_util_xml_get_pixbuf  (BonoboUINode *node,
+					   GtkIconSize   icon_size);
 
 
 #ifndef   DEBUG_UI

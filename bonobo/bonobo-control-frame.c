@@ -832,8 +832,8 @@ bonobo_control_frame_set_propbag (BonoboControlFrame  *frame,
 	if (old_pb == propbag)
 		return;
 
-	frame->priv->propbag = bonobo_object_ref (BONOBO_OBJECT (propbag));
-	bonobo_object_unref (BONOBO_OBJECT (old_pb));
+	frame->priv->propbag = bonobo_object_ref ((BonoboObject *) propbag);
+	bonobo_object_unref ((BonoboObject *) old_pb);
 }
 
 /**

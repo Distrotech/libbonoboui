@@ -264,6 +264,14 @@ lookup_stock_compat (const char *id)
 	return NULL;
 }
 
+GdkPixbuf *
+bonobo_ui_util_xml_get_pixbuf (BonoboUINode *node,
+			       GtkIconSize   icon_size)
+{
+	/* FIXME: implement me */
+	return NULL;
+}
+
 /**
  * bonobo_ui_util_xml_get_icon_widget:
  * @node: the node

@@ -607,17 +607,25 @@ bonobo_ui_node_transparent (BonoboUINode *node)
 {
 	gboolean ret = FALSE;
 	static GQuark  name_id = 0;
+	static GQuark  separator_id;
 
 	g_return_val_if_fail (node != NULL, TRUE);
 
-	if (!name_id)
+	if (!name_id) {
 		name_id = g_quark_from_static_string ("name");
+		/* FIXME: ugly to have specific widgets in here */
+		separator_id = g_quark_from_static_string ("separator");
+	}
 
 	if (node->content)
 		ret = FALSE;
 
 	else if (node->attrs->len == 0)
-		ret = TRUE;
+
+		if (node->name_id == separator_id)
+			ret = FALSE;
+		else
+			ret = TRUE;
 
 	else if (node->attrs->len == 1 && attr (node, 0).id == name_id)
 		ret = TRUE;
@@ -1039,4 +1047,13 @@ bonobo_ui_node_to_string (BonoboUINode *node,
 /*	validate_tree (node); */
 
 	return g_string_free (str, FALSE);
+}
+
+const char *
+bonobo_ui_node_peek_attr (BonoboUINode *node,
+			  const char   *name)
+{
+	GQuark id = g_quark_from_string (name);
+
+	return bonobo_ui_node_get_attr_by_id (node, id);
 }
