@@ -21,6 +21,29 @@
 #define RUNNING_KEY  "Clock::Running"
 
 static void
+get_prop (BonoboPropertyBag *bag,
+	  BonoboArg         *arg,
+	  guint              arg_id,
+	  gpointer           user_data)
+{
+	GtkObject *clock = user_data;
+
+	switch (arg_id) {
+
+	case PROP_RUNNING:
+	{
+		gboolean b = GPOINTER_TO_UINT (gtk_object_get_data (clock, RUNNING_KEY));
+		BONOBO_ARG_SET_BOOLEAN (arg, b);
+		break;
+	}
+
+	default:
+		g_warning ("Unhandled arg %d\n", arg_id);
+		break;
+	}
+}
+
+static void
 set_prop (BonoboPropertyBag *bag,
 	  const BonoboArg   *arg,
 	  guint              arg_id,
@@ -52,28 +75,6 @@ set_prop (BonoboPropertyBag *bag,
 	}
 }
 
-static void
-get_prop (BonoboPropertyBag *bag,
-	  BonoboArg         *arg,
-	  guint              arg_id,
-	  gpointer           user_data)
-{
-	GtkObject *clock = user_data;
-
-	switch (arg_id) {
-
-	case PROP_RUNNING:
-	{
-		gboolean b = GPOINTER_TO_UINT (gtk_object_get_data (clock, RUNNING_KEY));
-		BONOBO_ARG_SET_BOOLEAN (arg, b);
-		break;
-	}
-
-	default:
-		g_warning ("Unhandled arg %d\n", arg_id);
-	}
-}
-
 static BonoboObject *
 bonobo_clock_factory (BonoboGenericFactory *Factory, void *closure)
 {
@@ -101,10 +102,33 @@ bonobo_clock_factory (BonoboGenericFactory *Factory, void *closure)
 	return BONOBO_OBJECT (control);
 }
 
+/*
+ * A test widget.
+ */
+static BonoboObject *
+bonobo_entry_factory (BonoboGenericFactory *Factory, void *closure)
+{
+	BonoboPropertyBag  *pb;
+	BonoboControl      *control;
+	GtkWidget	   *button;
+
+	/* Create the control. */
+	button = gtk_button_new_with_label ("Bonobo");
+	gtk_widget_show (button);
+
+	control = bonobo_control_new (button);
+	pb = bonobo_property_bag_new (NULL, NULL, NULL);
+	bonobo_control_set_property_bag (control, pb);
+	bonobo_property_bag_add_gtk_args (pb, GTK_OBJECT (button));
+
+	return BONOBO_OBJECT (control);
+}
+
 void
 bonobo_clock_factory_init (void)
 {
 	static BonoboGenericFactory *bonobo_clock_control_factory = NULL;
+	static BonoboGenericFactory *bonobo_entry_control_factory = NULL;
 
 	if (bonobo_clock_control_factory != NULL)
 		return;
@@ -116,4 +140,12 @@ bonobo_clock_factory_init (void)
 
 	if (bonobo_clock_control_factory == NULL)
 		g_error ("I could not register a BonoboClock factory.");
+
+	bonobo_entry_control_factory =
+		bonobo_generic_factory_new (
+			"control-factory:entry",
+			bonobo_entry_factory, NULL);
+
+	if (bonobo_entry_control_factory == NULL)
+		g_error ("I could not register an Entry factory.");
 }
