@@ -593,6 +593,7 @@ main (int argc, char *argv [])
 
 	app = application_new ();
 	
+	add_gnumeric_cmd (NULL, app);
 	gtk_main ();
 
 	CORBA_exception_free (&ev);
