@@ -51,6 +51,14 @@ void bonobo_ui_engine_thaw   (BonoboUIEngine *engine);
 void bonobo_ui_engine_update (BonoboUIEngine *engine);
 #endif
 
+#define BONOBO_TYPE_UI_ENGINE            (bonobo_ui_engine_get_type ())
+#define BONOBO_UI_ENGINE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_ENGINE, BonoboUIEngine))
+#define BONOBO_UI_ENGINE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_ENGINE, BonoboUIEngineClass))
+#define BONOBO_IS_UI_ENGINE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_ENGINE))
+#define BONOBO_IS_UI_ENGINE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_UI_ENGINE))
+
+GtkType         bonobo_ui_engine_get_type      (void) G_GNUC_CONST;
+
 /* Private - implementation details */
 #ifdef BONOBO_UI_INTERNAL
 
@@ -62,12 +70,6 @@ typedef enum {
 } BonoboUIError;
 
 #include <bonobo/bonobo-ui-sync.h>
-
-#define BONOBO_TYPE_UI_ENGINE            (bonobo_ui_engine_get_type ())
-#define BONOBO_UI_ENGINE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_ENGINE, BonoboUIEngine))
-#define BONOBO_UI_ENGINE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_ENGINE, BonoboUIEngineClass))
-#define BONOBO_IS_UI_ENGINE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_ENGINE))
-#define BONOBO_IS_UI_ENGINE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_UI_ENGINE))
 
 typedef struct _BonoboUIEnginePrivate BonoboUIEnginePrivate;
 
@@ -96,7 +98,6 @@ typedef struct {
 
 } BonoboUIEngineClass;
 
-GtkType         bonobo_ui_engine_get_type      (void) G_GNUC_CONST;
 BonoboUIEngine *bonobo_ui_engine_construct     (BonoboUIEngine   *engine,
 						GObject          *view);
 BonoboUIEngine *bonobo_ui_engine_new           (GObject          *view);
