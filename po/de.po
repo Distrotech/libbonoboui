@@ -1,12 +1,13 @@
-# German translation for libbonoboui.
-# Copyright (C) 2002 Free Software Foundation, Inc.
-# Jrgen Scheibengruber, <mfcn@gmx.de>, 2002.
+# German libbonoboui translation.
+# Copyright (C) 2002-2003 Free Software Foundation, Inc.
+# Jörgen Scheibengruber <mfcn@gmx.de>, 2002.
+# Christian Neumair <chris@gnome.de.org>, 2002, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
-"PO-Revision-Date: 2002-11-02 13:38+0100\n"
+"POT-Creation-Date: 2003-05-05 17:40+0200\n"
+"PO-Revision-Date: 2003-05-05 17:50+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -38,35 +39,36 @@ msgid "Un dock the toolbar"
 msgstr "Die Werkzeugleiste abdocken"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
-msgstr "Schattenart"
+msgstr "Schattentyp"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Ausrichtung"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Bevorzugte Breite"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Bevorzugte Höhe"
 
 #: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
-msgstr "Eine zu öffnende Datei auswählen"
+msgstr "Wählen Sie die zu öffnende Datei"
 
 #: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
-msgstr "Zu öffnende Dateien auswählen"
+msgstr "Wählen Sie die zu öffnenden Dateien"
 
 #: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
-msgstr "Einen Dateinamen zum Speichern auswählen"
+msgstr "Wählen Sie einen Namen für die zu speichernde Datei"
 
 #: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
@@ -74,9 +76,9 @@ msgstr "Ereignis-Weiterleitung"
 
 #: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
-msgstr "Ob X-Ereignisse weitergeleitet werden sollen"
+msgstr "Sollen X-Ereignisse weitergeleitet werden?"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Name"
 
@@ -89,14 +91,16 @@ msgid "Interfaces required"
 msgstr "Schnittstellen erforderlich"
 
 #: bonobo/bonobo-selector.c:346
+#, fuzzy
 msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Eine NULL-terminiertes Array von Schnittstellen, die ein Server unterstützen "
-"muss, um in der Auswahlliste zu erscheinen. Falls keine Schnittstellen "
-"aufgelistet werden, sind die Vorgaben »IDL:Bonobo/Embeddable:1.0«."
+"Ein NULL-terminiertes Datenfeld von Schnittstellen, die ein Server "
+"unterstützen muss, um in der Auswahlliste zu erscheinen. Falls es keine "
+"Schnittstellen enthält, wird die Vorgabe »IDL:Bonobo/Embeddable:1.0« "
+"verwendet."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -112,7 +116,7 @@ msgstr "Sichtbar"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr "_Zeigen"
+msgstr "An_zeigen"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
@@ -120,7 +124,7 @@ msgstr "_Verbergen"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr "Tooltips _ansehen"
+msgstr "_Minihilfen anzeigen"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
@@ -136,11 +140,11 @@ msgstr "Aussehen"
 
 #: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
-msgstr "_Icon"
+msgstr "_Symbol"
 
 #: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
-msgstr "_Text und Icon"
+msgstr "_Text und Symbol"
 
 #: bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
@@ -148,17 +152,17 @@ msgstr "Nur Text"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr "_Priorität nur Text"
+msgstr "Nur _vorrangiger Text"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Fehlerdiagnose"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "XML _ausgeben"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr ""
 "Die XML-Beschreibung der gesamten Benutzeroberfläche im Terminal ausgeben"
@@ -262,7 +266,7 @@ msgstr "Unterstützung für grafische Bonobo-Benutzeroberfläche"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
-msgstr "Bei_de"
+msgstr "_Beide"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
@@ -274,7 +278,7 @@ msgstr "T_ipps verbergen"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
-msgstr "T_ipps zeigen"
+msgstr "Ti_pps anzeigen"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
@@ -288,23 +292,27 @@ msgstr "_Anpassen"
 msgid "Customize the toolbar"
 msgstr "Die Werkzeugleiste anpassen"
 
-#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
-msgstr "ist schwebend"
+msgstr "schwebt"
 
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
-msgstr "Ob die Werkzeugleiste schwebend ist"
+msgstr "Ob die Werkzeugleiste schweben soll"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-toolbar.c:1176
+msgid "Style of bevel around the toolbar"
+msgstr ""
+
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "I_nhalt"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
-msgstr "Die für diese Anwendung verfügbare Hilfe betrachten"
+msgstr "Die zu dieser Anwendung verfügbare Hilfe anzeigen"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Name des Fensters - verwendet für die Serialisierung der Konfiguration"
 
@@ -339,7 +347,7 @@ msgstr "Hat eine minimale Vergrößerungsstufe"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Ob es eine gültige minimale Vergrößerungsstufe gibt"
+msgstr "Gibt es eine gültige minimale Vergrößerungsstufe?"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
@@ -347,7 +355,7 @@ msgstr "Hat eine maximale Vergrößerungsstufe"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Ob es eine gültige maximale Vergrößerungsstufe gibt"
+msgstr "Gibt es eine gültige maximale Vergrößerungsstufe?"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -355,11 +363,11 @@ msgstr "Ist kontinuierlich"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Ob kontinuierlich gezoomt wird (im Gegensatz zu Sprüngen)"
+msgstr "Soll kontinuierlich vergrößert/verkleinert werden (nicht sprunghaft)?"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "Über diese Anwendung"
+msgstr "Info zu dieser Anwendung"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
@@ -404,4 +412,4 @@ msgstr "Der libbonoboui-Code konnte nicht initialisiert werden"
 
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
-msgstr "Bonobo-Benutzeroberfläche konnte nicht initialisiert werden"
+msgstr "Bonobo-UI konnte nicht initialisiert werden"
