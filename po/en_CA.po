@@ -1,15 +1,15 @@
 # English/Canada translation of libbonoboui.
-# Copyright (C) 2004 Adam Weinberger and the GNOME Foundation
+# Copyright (C) 2004-2005 Adam Weinberger and the GNOME Foundation
 # This file is distributed under the same licence as the libbonoboui package.
-# Adam Weinberger <adamw@gnome.org>, 2004.
+# Adam Weinberger <adamw@gnome.org>, 2004, 2005
 # 
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-01 20:19-0400\n"
-"PO-Revision-Date: 2004-10-01 16:39-0400\n"
+"POT-Creation-Date: 2005-01-12 16:13-0500\n"
+"PO-Revision-Date: 2005-01-12 16:39-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: English/Canada <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -37,8 +37,8 @@ msgid "Dock the toolbar"
 msgstr "Dock the toolbar"
 
 #: bonobo/bonobo-dock-item-grip.c:257
-msgid "Un dock the toolbar"
-msgstr "Un-dock the toolbar"
+msgid "Undock the toolbar"
+msgstr "Undock the toolbar"
 
 #: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
 #: bonobo/bonobo-ui-toolbar.c:1175
@@ -135,11 +135,11 @@ msgstr "Toolbars"
 msgid "toolbars"
 msgstr "toolbars"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "Look"
 msgstr "Look"
 
-#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "_Icon"
 msgstr "_Icon"
 
@@ -252,31 +252,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI support"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "B_oth"
 msgstr "B_oth"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "T_ext"
 msgstr "T_ext"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Hide t_ips"
 msgstr "Hide t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Show t_ips"
 msgstr "Show t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Hide toolbar"
 msgstr "_Hide toolbar"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "Customi_ze"
 msgstr "Customi_ze"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:560
+#: bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Customize the toolbar"
 msgstr "Customize the toolbar"
 
