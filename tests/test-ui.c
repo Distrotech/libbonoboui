@@ -166,7 +166,7 @@ main (int argc, char **argv)
 		"<item name=\"main\">Kippers</item>\n";
 	char statusb [] =
 		"<status>\n"
-		"	<item name=\"main\">Nothing</item>\n"
+		"	<item name=\"main\"/>\n"
 		"	<control name=\"Progress\"/>\n"
 		"</status>";
 	BonoboUINode *accel;
@@ -354,6 +354,15 @@ main (int argc, char **argv)
 	bonobo_ui_component_set_translate (componenta, "/", simplea, &ev);
 
 	bonobo_ui_component_thaw (componenta, NULL);
+
+	bonobo_ui_component_set_status (componenta, "WhatA1", &ev);
+	bonobo_ui_component_set_status (componentb, "WhatB2", &ev);
+	bonobo_ui_component_set_status (componenta, "WhatA3", &ev);
+	bonobo_ui_component_set_status (componentb, "WhatB4", &ev);
+	bonobo_ui_component_set_status (componenta, "WhatA5", &ev);
+	bonobo_ui_component_set_status (componenta, "WhatA6", &ev);
+	bonobo_ui_component_set_status (componentb, "WhatB7", &ev);
+	bonobo_ui_component_set_status (componentb, "", &ev);
 
 	gtk_main ();
 

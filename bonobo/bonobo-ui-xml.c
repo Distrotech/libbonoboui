@@ -444,8 +444,8 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 	if (!same) {
 		gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
 
-		prune_overrides_by_id (tree, data, data->id);
 		data->overridden = g_slist_prepend (old_data->overridden, old);
+		prune_overrides_by_id (tree, data, data->id);
 		
 	} else {
 		data->id = old_data->id;

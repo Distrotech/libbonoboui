@@ -1288,7 +1288,7 @@ put_hint_in_statusbar (GtkWidget *menuitem, BonoboWinPrivate *priv)
 	txt = bonobo_ui_util_decode_str (hint, &err);
 	if (err) {
 		g_warning ("Encoding error in tip on '%s', ensure you are "
-			   "translating this node, and using component_set_trans_prop",
+			   "encoding this node's tip",
 			   bonobo_ui_xml_make_path (node));
 		return;
 	}
@@ -1609,7 +1609,7 @@ menu_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		txt = bonobo_ui_util_decode_str (label_attr, &err);
 		if (err) {
 			g_warning ("Encoding error in label on '%s', ensure you are "
-				   "translating this node, and using component_set_trans_prop",
+				   "encoding this node's label",
 				   bonobo_ui_xml_make_path (node));
 			return;
 		}
@@ -2007,7 +2007,7 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 			char *txt = bonobo_ui_util_decode_str (label, &err);
 			if (err) {
 				g_warning ("Encoding error in label on '%s', ensure you are "
-					   "translating this node, and using component_set_trans_prop",
+					   "encoding this node's label",
 					   bonobo_ui_xml_make_path (node));
 				return;
 			}
@@ -2206,22 +2206,40 @@ static void
 status_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		   GtkWidget *widget, GtkWidget *parent)
 {
-	char *name, *txt;
+	char *name;
 		
 	name = bonobo_ui_node_get_attr (node, "name");
 	if (!name)
 		return;
 
 	if (!strcmp (name, "main")) {
+		BonoboUIXmlData *data = bonobo_ui_xml_get_data (priv->tree, node);
+
 		priv->main_status = GTK_STATUSBAR (widget);
 			
-		if ((txt = bonobo_ui_node_get_content (node))) {
+		if (data->id) {
 			guint id;
+			char *txt;
 
-			id = gtk_statusbar_get_context_id (priv->main_status,
-							   "BonoboWin:data");
+			id = gtk_statusbar_get_context_id (
+				priv->main_status, data->id);
 
-			gtk_statusbar_push (priv->main_status, id, txt);
+			if ((txt = bonobo_ui_node_get_content (node))) {
+				gboolean err;
+				char    *status;
+
+				status = bonobo_ui_util_decode_str (txt, &err);
+
+				if (err)
+					g_warning ("It looks like the status '%s' is not correctly "
+						   "encoded, use bonobo_ui_component_set_status", txt);
+				else
+					gtk_statusbar_push (priv->main_status, id, status);
+
+				g_free (status);
+			} else
+				gtk_statusbar_pop (priv->main_status, id);
+
 			bonobo_ui_node_free_string (txt);
 		}
 	}
@@ -2281,13 +2299,8 @@ static void
 update_status (BonoboWinPrivate *priv, BonoboUINode *node)
 {
 	GtkWidget       *item = GTK_WIDGET (priv->status);
-	BonoboUIXmlData *data;
 	GList *widgets, *wptr;
 	int pos;
-
-	data = bonobo_ui_xml_get_data (priv->tree, node);
-	if (!data->dirty)
-		return;
 
 	priv->main_status = NULL;
 

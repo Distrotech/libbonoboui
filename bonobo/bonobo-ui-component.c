@@ -860,13 +860,20 @@ bonobo_ui_component_set_status (BonoboUIComponent *component,
 				const char        *text,
 				CORBA_Environment *opt_ev)
 {
-	char *str;
+	if (text == NULL ||
+	    text [0] == '\0') { /* Remove what was there to reveal other msgs */
+		bonobo_ui_component_rm (component, "/status/main/*", opt_ev);
+	} else {
+		char *str, *encoded;
 
-	g_return_if_fail (text != NULL);
-
-	str = g_strdup_printf ("<item name=\"main\">%s</item>", text);
-
-	bonobo_ui_component_set (component, "/status", str, opt_ev);
+		encoded = bonobo_ui_util_encode_str (text);
+		str = g_strdup_printf ("<item name=\"main\">%s</item>", encoded);
+		g_free (encoded);
+		
+		bonobo_ui_component_set (component, "/status", str, opt_ev);
+		
+		g_free (str);
+	}
 }
 
 void
