@@ -1,3 +1,8 @@
+2003-08-21  Martin Kretzschmar  <m_kretzschmar@gmx.net>
+
+       * samples/container/bonobo-sample-container.c: define
+         POPT_TABLEEND when compiling with older popt
+
 2003-08-11  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.3.6

@@ -2,6 +2,10 @@
 #include <bonobo.h>
 #include <glib.h>
 
+#ifndef POPT_TABLEEND /* popt < 1.6.2 */
+#define POPT_TABLEEND { NULL, '\0', 0, 0, 0, NULL, NULL }
+#endif
+
 #define APPNAME "TestContainer"
 #define APPVERSION "1.0"
 
