@@ -3522,6 +3522,23 @@ construct_priv (BonoboWindow *win)
 	gnome_dock_add_item (priv->dock, priv->menu_item,
 			     GNOME_DOCK_TOP, 0, 0, 0, TRUE);
 
+	/* 
+	 * To have menubar relief agree with the toolbar (and have the relief outside of
+	 * smaller handles), substitute the dock item's relief for the menubar's relief,
+	 * but don't change the size of the menubar in the process. 
+	 */
+	gtk_menu_bar_set_shadow_type (GTK_MENU_BAR (priv->menu), GTK_SHADOW_NONE);
+	if (gnome_preferences_get_menubar_relief ()) {
+		guint border_width;
+
+		gtk_container_set_border_width (GTK_CONTAINER (priv->menu_item), 2);
+		border_width = GTK_CONTAINER (priv->menu)->border_width;
+		if (border_width >= 2)
+			border_width -= 2;
+		gtk_container_set_border_width (GTK_CONTAINER (priv->menu), border_width);
+	} else
+		gnome_dock_item_set_shadow_type (GNOME_DOCK_ITEM (priv->menu_item), GTK_SHADOW_NONE);
+
 	priv->main_vbox = gtk_vbox_new (FALSE, 0);
 	gnome_dock_set_client_area (priv->dock, priv->main_vbox);
 

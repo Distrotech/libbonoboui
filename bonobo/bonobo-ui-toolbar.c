@@ -1143,17 +1143,22 @@ static void
 init (BonoboUIToolbar *toolbar)
 {
 	BonoboUIToolbarPrivate *priv;
+	BonoboUIToolbarStyle style;
 
 	GTK_WIDGET_SET_FLAGS (toolbar, GTK_NO_WINDOW);
 	GTK_WIDGET_UNSET_FLAGS (toolbar, GTK_CAN_FOCUS);
 
 	priv = g_new (BonoboUIToolbarPrivate, 1);
 
+	style = gnome_preferences_get_toolbar_labels ()
+		? BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT
+		: BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
+
 	priv->orientation                 = GTK_ORIENTATION_HORIZONTAL;
 	priv->is_floating		  = FALSE;
-	priv->style                       = BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
-	priv->hstyle                      = BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
-	priv->vstyle                      = BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
+	priv->style                       = style;
+	priv->hstyle                      = style;
+	priv->vstyle                      = style;
 	priv->max_width			  = 0;
 	priv->total_width		  = 0;
 	priv->max_height		  = 0;
