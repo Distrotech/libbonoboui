@@ -8,6 +8,7 @@ _libs
 .libs
 so_locations
 libbonoboui-2.0.pc
+libbonoboui-2.0-uninstalled.pc
 bonobo-ui-marshal.h
 bonobo-ui-marshal.c
 bonobo-ui-type-builtins.c
