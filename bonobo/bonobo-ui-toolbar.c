@@ -564,7 +564,7 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 
 	/* first, make a pass through the items to layout the ones that are packed on the right */
 	priv->end_position = allocation->x + available_space;
-	for (p = priv->items; p != NULL; p = p->next) {
+	for (p = g_list_last (priv->items); p != NULL; p = p->prev) {
 
 		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
 		if (! bonobo_ui_toolbar_item_get_pack_end (item))

@@ -440,7 +440,7 @@ bonobo_ui_toolbar_item_get_expandable (BonoboUIToolbarItem *item)
 
 void
 bonobo_ui_toolbar_item_set_pack_end (BonoboUIToolbarItem *item,
-				       gboolean pack_end)
+				     gboolean pack_end)
 {
 	BonoboUIToolbarItemPrivate *priv;
 
