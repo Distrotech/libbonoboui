@@ -40,7 +40,8 @@ idls =							\
 	$(top_srcdir)/idl/bonobo-storage.idl		\
 	$(top_srcdir)/idl/bonobo-ui.idl			\
 	$(top_srcdir)/idl/bonobo-unknown.idl		\
-	$(top_srcdir)/idl/bonobo-zoomable.idl
+	$(top_srcdir)/idl/bonobo-zoomable.idl		\
+	$(top_srcdir)/idl/bonobo-exception.idl	
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 
