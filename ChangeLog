@@ -1,3 +1,8 @@
+2001-06-29  Anders Carlsson  <andersca@codefactory.se>
+
+	* bonobo/bonobo-ui-component.c (impl_get_prop): Use CORBA_free
+	since bonobo_ui_component_get returns a CORBA_char.
+
 Sat Jun 30 16:11:37 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* bonobo/bonobo-embeddable.c (make_canvas_component): change

@@ -1204,7 +1204,7 @@ impl_get_prop (BonoboUIComponent *component,
 	ans = bonobo_ui_node_get_attr (node, prop);
 	if (ans) {
 		ret = g_strdup (ans);
-		bonobo_ui_node_free_string (ans);
+		CORBA_free (ans);
 	} else
 		ret = NULL;
 
