@@ -1,8 +1,3 @@
-
-SUBDIRS = container bonobo-hello
-
-bin_PROGRAMS = paint-component-simple
-
 GPRINT_LIBS = $(top_builddir)/bonobo/libbonobo-print.la
 
 if OAF
@@ -19,30 +14,33 @@ INCLUDES =	\
         $(GNOME_INCLUDEDIR)				\
 	$(GTK_CFLAGS)
 
-paint_component_simple_SOURCES =	\
-	paint-component-simple.c
+bin_PROGRAMS = bonobo-hello
 
-paint_component_simple_LDADD = 			\
+bonobo_hello_SOURCES =	\
+	bonobo-hello.c \
+	hello-model.h hello-model.c \
+	hello-object.h hello-object.c \
+	hello-object-io.h hello-object-io.c \
+	hello-object-print.h hello-object-print.c \
+	hello-view.h hello-view.c
+
+bonobo_hello_LDADD = 			\
 	$(top_builddir)/bonobo/libbonobo.la	\
 	$(GPRINT_LIBS)				\
 	$(GNOME_PRINT_LIBS)			\
 	$(INTLLIBS)                             \
 	$(OBJECT_DIRECTORY_LIBS)
 
-goaddir = $(sysconfdir)/CORBA/servers
+gnorbadir = $(sysconfdir)/CORBA/servers
 oafdir = $(datadir)/oaf
 
-GOAD_FILES =    paint-component-simple.gnorba
-OAF_FILES =	paint-component-simple.oafinfo
+gnorbafile = hello.gnorba
+oaffile = hello.oafinfo
 
-#if OAF
-goad_DATA = $(GOAD_FILES)
-#else
-oaf_DATA = $(OAF_FILES)
-#endif
+if OAF
+oaf_DATA = $(oaffile)
+else
+gnorba_DATA = $(gnorbafile)
+endif
 
-oafdir = $(datadir)/oaf
-oaf_DATA = paint-component-simple.oafinfo
-
-extra_DIST = $(GOAD_FILES) $(OAF_FILES)
-
+EXTRA_DIST = $(gnorbafile) $(oaffile)

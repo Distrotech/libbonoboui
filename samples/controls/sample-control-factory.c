@@ -36,8 +36,8 @@ init_bonobo (int argc, char **argv)
 	orb = oaf_init (argc, argv);
 #else
 	gnome_CORBA_init_with_popt_table (
-      	"sample-control-factory", "0.0",
-	&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
+		"sample-control-factory", "0.0",
+		&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
 	orb = gnome_CORBA_ORB ();
 #endif
 	if (bonobo_init (orb, NULL, NULL) == FALSE)

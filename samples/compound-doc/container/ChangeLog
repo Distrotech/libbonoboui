@@ -1,0 +1,22 @@
+2000-04-24  ERDI Gergo  <cactus@cactus.rulez.org>
+
+	* hello-container-print.[ch]: Printing 
+
+	* hello-container.h (hello_app_exit): New function to allow
+	graceful exit from any point of the program
+
+	* hello-container-menu.c (hello_app_create_menus): Create a
+	default menu for the container (application-specific menu)
+
+	* hello-container.c (hello_app_create): Create a menu for the
+	components to use
+	
+	* hello-component.c (component_user_context_cb): Context menu
+	implementation
+	(component_print): Render a component to a print canvas
+
+2000-04-23  ERDI Gergo  <cactus@cactus.rulez.org>
+
+	* hello-container.c: Added compile-time option to use
+	OAF instead of GOAD
+

@@ -1,0 +1,18 @@
+2000-04-24  ERDI Gergo  <cactus@cactus.rulez.org>
+
+	* hello-object-print.c (hello_object_print): Bonobo::Print implementation
+
+	* hello-object-io.c: Separated IO functions
+
+	* Makefile.am: Install the oafinfo file
+
+2000-04-23  ERDI Gergo  <cactus@cactus.rulez.org>
+
+	* hello-object.[ch]: Exit cleanly when the instance count drops to 0
+
+	* hello.oafinfo: Added OAF description file (Unique ID is simply
+	the version number)
+
+	* bonobo-hello.c (init_server_factory): Added compile-time option
+	to use OAF instead of GOAD
+
