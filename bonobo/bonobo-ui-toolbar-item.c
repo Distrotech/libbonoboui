@@ -49,6 +49,7 @@ enum {
 	SET_STYLE,
 	SET_WANT_LABEL,
 	ACTIVATE,
+	STATE_ALTERED,
 	LAST_SIGNAL
 };
 
@@ -225,6 +226,14 @@ class_init (GtkObjectClass *object_class)
 				  gtk_marshal_NONE__NONE,
 				  GTK_TYPE_NONE, 0);
 
+	signals[STATE_ALTERED]
+		= gtk_signal_new ("state_altered",
+				  GTK_RUN_LAST,
+				  object_class->type,
+				  GTK_SIGNAL_OFFSET (BonoboUIToolbarItemClass, activate),
+				  gtk_marshal_NONE__STRING,
+				  GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
+
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
@@ -282,6 +291,38 @@ bonobo_ui_toolbar_item_new (void)
 }
 
 
+void
+bonobo_ui_toolbar_item_set_tooltip (BonoboUIToolbarItem *item,
+				    GtkTooltips         *tooltips,
+				    const char          *tooltip)
+{
+	BonoboUIToolbarItemClass *klass;
+
+	g_return_if_fail (item != NULL);
+	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
+
+	klass = BONOBO_UI_TOOLBAR_ITEM_CLASS (((GtkObject *)item)->klass);
+
+	if (klass->set_tooltip)
+		klass->set_tooltip (item, tooltips, tooltip);
+	/* FIXME: implement setting of tooltips */
+}
+
+void
+bonobo_ui_toolbar_item_set_state (BonoboUIToolbarItem *item,
+				  const char          *new_state)
+{
+	BonoboUIToolbarItemClass *klass;
+
+	g_return_if_fail (item != NULL);
+	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
+
+	klass = BONOBO_UI_TOOLBAR_ITEM_CLASS (((GtkObject *)item)->klass);
+
+	if (klass->set_state)
+		klass->set_state (item, new_state);
+}
+
 void
 bonobo_ui_toolbar_item_set_orientation (BonoboUIToolbarItem *item,
 				     GtkOrientation orientation)

@@ -867,8 +867,8 @@ bonobo_ui_xml_rm (BonoboUIXml *tree,
 	current = bonobo_ui_xml_get_path_wildcard (
 		tree, path, &wildcard);
 
-	fprintf (stderr, "remove stuff from '%s' (%d) -> '%p'\n",
-		 path, wildcard, current);
+/*	fprintf (stderr, "remove stuff from '%s' (%d) -> '%p'\n",
+	path, wildcard, current);*/
 
 	if (current)
 		reinstate_node (tree, current, id, !wildcard);

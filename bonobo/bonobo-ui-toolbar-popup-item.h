@@ -51,8 +51,9 @@ struct _BonoboUIToolbarPopupItemClass {
 };
 
 
-GtkType    bonobo_ui_toolbar_popup_item_get_type (void);
-GtkWidget *bonobo_ui_toolbar_popup_item_new      (void);
+GtkType    bonobo_ui_toolbar_popup_item_get_type  (void);
+GtkWidget *bonobo_ui_toolbar_popup_item_new       (void);
+void       bonobo_ui_toolbar_popup_item_construct (BonoboUIToolbarPopupItem *);
 
 #ifdef __cplusplus
 }

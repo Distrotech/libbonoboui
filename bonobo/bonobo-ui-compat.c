@@ -25,6 +25,8 @@
 #include <gnome-xml/tree.h>
 #include <gnome-xml/parser.h>
 
+static int no_sideffect_event_inhibit = 0;
+
 #undef COMPAT_DEBUG
 
 #ifdef COMPAT_DEBUG
@@ -339,7 +341,7 @@ verb_to_cb (BonoboUIComponent *component,
 {
 	VerbClosure *c = user_data;
 
-	if (!c || !c->cb)
+	if (!c || !c->cb || no_sideffect_event_inhibit > 0)
 		return;
 
 	/* Does anyone use the path field here ? */
@@ -1349,12 +1351,14 @@ bonobo_ui_handler_menu_set_sensitivity (BonoboUIHandler *uih, const char *path,
 
 	xml_path = make_path ("/menu", path, FALSE);
 	sloppy_check (priv->container, xml_path, NULL);
+	no_sideffect_event_inhibit++;
 	if (sensitive)
 		bonobo_ui_container_set_prop (
 			priv->container, xml_path, "sensitive", "1", NULL);
 	else
 		bonobo_ui_container_set_prop (
 			priv->container, xml_path, "sensitive", "0", NULL);
+	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }
 
@@ -1368,8 +1372,10 @@ bonobo_ui_handler_menu_set_label (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
+	no_sideffect_event_inhibit++;
 	sloppy_check (priv->container, xml_path, NULL);
 	bonobo_ui_container_set_prop (priv->container, xml_path, "label", label, NULL);
+	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }
 
@@ -1400,7 +1406,9 @@ bonobo_ui_handler_menu_set_hint (BonoboUIHandler *uih, const char *path,
 
 	xml_path = make_path ("/menu", path, FALSE);
 	sloppy_check (priv->container, xml_path, NULL);
+	no_sideffect_event_inhibit++;
 	bonobo_ui_container_set_prop (priv->container, xml_path, "hint", hint, NULL);
+	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }
 
@@ -1415,7 +1423,9 @@ bonobo_ui_handler_menu_set_pixmap (BonoboUIHandler *uih, const char *path,
 
 	xml_path = make_path ("/menu", path, FALSE);
 	sloppy_check (priv->container, xml_path, NULL);
+	no_sideffect_event_inhibit++;
 	do_set_pixmap (priv, xml_path, type, data);
+	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }
 

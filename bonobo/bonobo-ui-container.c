@@ -60,8 +60,6 @@ impl_deregister_component (PortableServer_Servant servant,
 	if (!app)
 		return;
 
-	g_warning ("De-register component '%s'", component_name);
-
 	bonobo_win_deregister_component (app, component_name);
 }
 
@@ -120,7 +118,7 @@ impl_node_remove (PortableServer_Servant servant,
 	if (!app)
 		return;
 
-	g_warning ("Node remove '%s' for '%s'", path, component_name);
+/*	g_warning ("Node remove '%s' for '%s'", path, component_name);*/
 
 	err = bonobo_win_xml_rm (app, path, component_name);
 

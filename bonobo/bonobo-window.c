@@ -27,7 +27,7 @@
 #include <gnome-xml/tree.h>
 #include <gnome-xml/parser.h>
 
-#undef NAUTILUS_LOOP
+#undef STATE_SYNC_DEBUG
 
 #define	BINDING_MOD_MASK()				\
 	(gtk_accelerator_get_default_mod_mask () | GDK_RELEASE_MASK)
@@ -421,17 +421,15 @@ widget_set_state (GtkWidget *widget, BonoboUINode *node)
 	char *txt;
 
 	/* FIXME */
-
 	if ((txt = bonobo_ui_node_get_attr (node, "sensitive"))) {
 		gtk_widget_set_sensitive (widget, atoi (txt));
 		bonobo_ui_node_free_string (txt);
 	}
 
-#if 0
 	if ((txt = bonobo_ui_node_get_attr (node, "state"))) {
-		if (BONOBO_IS_UI_ITEM (widget))
-			bonobo_ui_item_set_state (
-				BONOBO_UI_ITEM (widget), txt);
+		if (BONOBO_IS_UI_TOOLBAR_ITEM (widget))
+			bonobo_ui_toolbar_item_set_state (
+				BONOBO_UI_TOOLBAR_ITEM (widget), txt);
 
 		else if (GTK_IS_CHECK_MENU_ITEM (widget))
 			gtk_check_menu_item_set_active (
@@ -442,7 +440,6 @@ widget_set_state (GtkWidget *widget, BonoboUINode *node)
 				   "state '%s' on wierd object", txt);
 		bonobo_ui_node_free_string (txt);
 	}
-#endif
 }
 
 static void
@@ -532,19 +529,19 @@ set_cmd_state (BonoboWinPrivate *priv, BonoboUINode *cmd_node, const char *prop,
 
 	old_value = bonobo_ui_node_get_attr (node, prop);
 
-#ifdef NAUTILUS_LOOP
+#ifdef STATE_SYNC_DEBUG
 	fprintf (stderr, "Set '%s' : '%s' to '%s' (%d)",
 		 cmd_name, prop, value, immediate_update);
 #endif
 	/* We set it to the same thing */
 	if (old_value && !strcmp (old_value, value)) {
 		g_free (cmd_name);
-#ifdef NAUTILUS_LOOP
+#ifdef STATE_SYNC_DEBUG
 		fprintf (stderr, "same\n");
 #endif
 		return;
 	}
-#ifdef NAUTILUS_LOOP
+#ifdef STATE_SYNC_DEBUG
 	else
 		fprintf (stderr, "different\n");
 #endif
@@ -874,7 +871,6 @@ exec_verb_cb (GtkWidget *item, BonoboUINode *node)
 	return FALSE;
 }
 
-#if 0
 static gint
 menu_toggle_emit_ui_event (GtkCheckMenuItem *item, BonoboUINode *node)
 {
@@ -910,11 +906,9 @@ menu_toggle_emit_ui_event (GtkCheckMenuItem *item, BonoboUINode *node)
 
 	return FALSE;
 }
-#endif
 
-#if 0
 static gint
-app_item_emit_ui_event (BonoboUIItem *item, const char *state, BonoboUINode *node)
+app_item_emit_ui_event (BonoboUIToolbarItem *item, const char *state, BonoboUINode *node)
 {
 	char             *id;
 	BonoboUIXmlData  *data;
@@ -942,7 +936,6 @@ app_item_emit_ui_event (BonoboUIItem *item, const char *state, BonoboUINode *nod
 
 	return FALSE;
 }
-#endif
 
 #define BONOBO_WIN_MENU_ITEM_KEY "BonoboWin::Priv"
 
@@ -1117,11 +1110,9 @@ menu_item_create (BonoboWinPrivate *priv, GtkWidget *parent, BonoboUINode *node)
 		
 		gtk_object_set_data (GTK_OBJECT (menu_widget), BONOBO_WIN_PRIV_KEY, priv);
 
-#if 0
 		gtk_signal_connect (GTK_OBJECT (menu_widget), "toggled",
 				    (GtkSignalFunc) menu_toggle_emit_ui_event,
 				    node);
-#endif
 
 		bonobo_ui_node_free_string (type);
 	} else {
@@ -1477,7 +1468,7 @@ build_toolbar_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 {
 	NodeInfo   *info;
 	GtkWidget  *parent;
-	char *type, *verb, *sensitive, *state, *label;
+	char *type, *verb, *sensitive, *state, *label, *txt;
 	GdkPixbuf  *icon_pixbuf;
 	GtkWidget  *item;
 
@@ -1528,14 +1519,12 @@ build_toolbar_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 	/* FIXME need an `append' method, and this should use it.  */
 	bonobo_ui_toolbar_insert (BONOBO_UI_TOOLBAR (parent), BONOBO_UI_TOOLBAR_ITEM (item), -1);
 
-#if 0
-	bonobo_ui_item_set_tooltip (
-		BONOBO_UI_ITEM (item),
+	bonobo_ui_toolbar_item_set_tooltip (
+		BONOBO_UI_TOOLBAR_ITEM (item),
 		bonobo_ui_toolbar_get_tooltips (
 			BONOBO_UI_TOOLBAR (parent)),
 		(txt = bonobo_ui_node_get_attr (node, "descr")));
 	bonobo_ui_node_free_string (txt);
-#endif
 
 	info->widget = GTK_WIDGET (item);
 	gtk_widget_show (info->widget);
@@ -1548,10 +1537,8 @@ build_toolbar_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 
 	gtk_object_set_data (GTK_OBJECT (item), BONOBO_WIN_PRIV_KEY, priv);
 
-#if 0
 	gtk_signal_connect (GTK_OBJECT (item), "state_altered",
 			    (GtkSignalFunc) app_item_emit_ui_event, node);
-#endif
 
 	if ((sensitive = bonobo_ui_node_get_attr (node, "sensitive"))) {
 		set_cmd_state (priv, node, "sensitive", sensitive, FALSE);
@@ -1591,8 +1578,10 @@ build_toolbar_control (BonoboWinPrivate *priv, BonoboUINode *node)
 	item = bonobo_ui_toolbar_item_new ();
 	gtk_container_add (GTK_CONTAINER (item), control);
 
+	gtk_widget_show (GTK_WIDGET (item));
 	/* FIXME: there should be an `append' method and it should be used here. */
-	bonobo_ui_toolbar_insert (BONOBO_UI_TOOLBAR (parent), BONOBO_UI_TOOLBAR_ITEM (item), -1);
+	bonobo_ui_toolbar_insert (BONOBO_UI_TOOLBAR (parent),
+				  BONOBO_UI_TOOLBAR_ITEM (item), -1);
 }
 
 static void

@@ -66,7 +66,7 @@ struct _BonoboUIToolbarPrivate {
 	GList *first_not_fitting_item;
 
 	/* The pop-up button.  When clicked, it pops up a window with all the
-           items that don't fit.  */
+X           items that don't fit.  */
 	BonoboUIToolbarItem *popup_item;
 
 	/* The window we pop-up when the pop-up item is clicked.  */
@@ -79,6 +79,8 @@ struct _BonoboUIToolbarPrivate {
            prevent the size_allocation code to incorrectly hide the pop-up
            button in that case.  */
 	gboolean items_moved_to_popup_window;
+
+	GtkTooltips *tooltips;
 };
 
 enum {
@@ -174,8 +176,8 @@ item_activate_cb (BonoboUIToolbarItem *item,
 	toolbar = BONOBO_UI_TOOLBAR (data);
 	priv = toolbar->priv;
 
-	bonobo_ui_toolbar_toggle_button_item_set_active (BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (priv->popup_item),
-						      FALSE);
+	bonobo_ui_toolbar_toggle_button_item_set_active (
+		BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (priv->popup_item), FALSE);
 }
 
 static void
@@ -283,8 +285,8 @@ popup_window_button_release_cb (GtkWidget *widget,
 	toolbar = BONOBO_UI_TOOLBAR (data);
 	priv = toolbar->priv;
 
-	bonobo_ui_toolbar_toggle_button_item_set_active (BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (priv->popup_item),
-						      FALSE);
+	bonobo_ui_toolbar_toggle_button_item_set_active (
+		BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (priv->popup_item), FALSE);
 }
 
 static void
@@ -371,7 +373,8 @@ get_popup_item_size (BonoboUIToolbar *toolbar)
 
 	priv = toolbar->priv;
 
-	gtk_widget_get_child_requisition (GTK_WIDGET (priv->popup_item), &requisition);
+	gtk_widget_get_child_requisition (
+		GTK_WIDGET (priv->popup_item), &requisition);
 
 	if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
 		return requisition.width;
@@ -431,7 +434,8 @@ allocate_popup_item (BonoboUIToolbar *toolbar)
 
 	border_width = GTK_CONTAINER (toolbar)->border_width;
 
-	gtk_widget_get_child_requisition (GTK_WIDGET (priv->popup_item), &popup_item_requisition);
+	gtk_widget_get_child_requisition (
+		GTK_WIDGET (priv->popup_item), &popup_item_requisition);
 
 	popup_item_allocation.x = toolbar_allocation->x;
 	popup_item_allocation.y = toolbar_allocation->y;
@@ -656,6 +660,9 @@ impl_destroy (GtkObject *object)
 
 	if (priv->popup_window != NULL)
 		gtk_widget_destroy (priv->popup_window);
+
+	gtk_object_unref (GTK_OBJECT (priv->tooltips));
+	priv->tooltips = NULL;
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy != NULL)
 		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -914,7 +921,8 @@ impl_set_orientation (BonoboUIToolbar *toolbar,
 		set_attributes_on_child (item, orientation, priv->style);
 	}
 
-	bonobo_ui_toolbar_item_set_orientation (BONOBO_UI_TOOLBAR_ITEM (priv->popup_item), orientation);
+	bonobo_ui_toolbar_item_set_orientation (
+		BONOBO_UI_TOOLBAR_ITEM (priv->popup_item), orientation);
 
 	gtk_widget_queue_resize (GTK_WIDGET (toolbar));
 }
@@ -1062,6 +1070,7 @@ init (BonoboUIToolbar *toolbar)
 	priv->popup_window                = NULL;
 	priv->popup_window_vbox           = NULL;
 	priv->items_moved_to_popup_window = FALSE;
+	priv->tooltips                    = gtk_tooltips_new ();
 
 	toolbar->priv = priv;
 }
@@ -1182,6 +1191,19 @@ bonobo_ui_toolbar_get_style (BonoboUIToolbar *toolbar)
 	priv = toolbar->priv;
 
 	return priv->style;
+}
+
+GtkTooltips *
+bonobo_ui_toolbar_get_tooltips (BonoboUIToolbar *toolbar)
+{
+	BonoboUIToolbarPrivate *priv;
+
+	g_return_val_if_fail (toolbar != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar), NULL);
+
+	priv = toolbar->priv;
+
+	return priv->tooltips;
 }
 
 

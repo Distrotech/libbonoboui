@@ -60,32 +60,49 @@ struct _BonoboUIToolbarItem {
 struct _BonoboUIToolbarItemClass {
 	GtkBinClass parent_class;
 
-	void (* set_orientation) (BonoboUIToolbarItem *item,
-				  GtkOrientation orientation);
-	void (* set_style)       (BonoboUIToolbarItem *item,
+	/* Virtual method */
+	void (* set_state)       (BonoboUIToolbarItem     *item,
+				  const char              *new_state);
+	void (* set_tooltip)     (BonoboUIToolbarItem     *item,
+				  GtkTooltips             *tooltips,
+				  const char              *tooltip);
+
+	/* Signals */
+	void (* set_orientation) (BonoboUIToolbarItem     *item,
+				  GtkOrientation           orientation);
+	void (* set_style)       (BonoboUIToolbarItem     *item,
 				  BonoboUIToolbarItemStyle style);
-	void (* set_want_label)  (BonoboUIToolbarItem *item,
-				  gboolean want_label);
-	void (* activate)        (BonoboUIToolbarItem *item);
+	void (* set_want_label)  (BonoboUIToolbarItem     *item,
+				  gboolean                 want_label);
+	/* Notifies that the state changed, and what it changed to */
+	void (* state_altered)   (BonoboUIToolbarItem     *item,
+				  const char              *new_state);
+	void (* activate)        (BonoboUIToolbarItem     *item);
 };
 
 
-GtkType                 bonobo_ui_toolbar_item_get_type         (void);
-GtkWidget              *bonobo_ui_toolbar_item_new              (void);
+GtkType                  bonobo_ui_toolbar_item_get_type         (void);
+GtkWidget               *bonobo_ui_toolbar_item_new              (void);
 
-void                    bonobo_ui_toolbar_item_set_orientation  (BonoboUIToolbarItem      *item,
-							      GtkOrientation          orientation);
-GtkOrientation          bonobo_ui_toolbar_item_get_orientation  (BonoboUIToolbarItem      *item);
+void                     bonobo_ui_toolbar_item_set_tooltip      (BonoboUIToolbarItem     *item,
+								  GtkTooltips             *tooltips,
+								  const char              *tooltip);
+void                     bonobo_ui_toolbar_item_set_state        (BonoboUIToolbarItem     *item,
+								  const char              *new_state);
 
-void                    bonobo_ui_toolbar_item_set_style        (BonoboUIToolbarItem      *item,
-							      BonoboUIToolbarItemStyle  style);
-BonoboUIToolbarItemStyle  bonobo_ui_toolbar_item_get_style        (BonoboUIToolbarItem      *item);
+void                     bonobo_ui_toolbar_item_set_orientation  (BonoboUIToolbarItem     *item,
+								  GtkOrientation           orientation);
+GtkOrientation           bonobo_ui_toolbar_item_get_orientation  (BonoboUIToolbarItem     *item);
+
+void                     bonobo_ui_toolbar_item_set_style        (BonoboUIToolbarItem     *item,
+								  BonoboUIToolbarItemStyle style);
+BonoboUIToolbarItemStyle bonobo_ui_toolbar_item_get_style        (BonoboUIToolbarItem     *item);
 
 /* FIXME ugly names.  */
-void                    bonobo_ui_toolbar_item_set_want_label   (BonoboUIToolbarItem      *button_item,
-							      gboolean                prefer_text);
-gboolean                bonobo_ui_toolbar_item_get_want_label   (BonoboUIToolbarItem      *button_item);
-void                    bonobo_ui_toolbar_item_activate         (BonoboUIToolbarItem      *item);
+void                     bonobo_ui_toolbar_item_set_want_label   (BonoboUIToolbarItem     *button_item,
+								  gboolean                 prefer_text);
+gboolean                 bonobo_ui_toolbar_item_get_want_label   (BonoboUIToolbarItem     *button_item);
+void                     bonobo_ui_toolbar_item_activate         (BonoboUIToolbarItem     *item);
 
 #ifdef __cplusplus
 }
