@@ -28,8 +28,8 @@ static guint view_signals [LAST_SIGNAL];
 
 static void
 impl_GNOME_View_do_verb (PortableServer_Servant servant,
-				 const CORBA_char *verb_name,
-				 CORBA_Environment *ev)
+			 const CORBA_char *verb_name,
+			 CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 
@@ -68,8 +68,18 @@ impl_GNOME_View_set_window (PortableServer_Servant servant, GNOME_View_windowid 
 	gtk_container_add (GTK_CONTAINER (view->plug), view->widget);
 }
 
-static CORBA_Object
-create_gnome_view (GnomeObject *object)
+/**
+ * gnome_view_corba_object_create:
+ * @object: the GtkObject that will wrap the CORBA object
+ *
+ * Creates and activates the CORBA object that is wrapped by the
+ * @object GnomeObject.
+ *
+ * Returns: An activated object reference to the created object
+ * or %CORBA_OBJECT_NIL in case of failure.
+ */
+GNOME_View
+gnome_view_corba_object_create (GnomeObject *object)
 {
 	POA_GNOME_View *servant;
 	
@@ -82,7 +92,7 @@ create_gnome_view (GnomeObject *object)
 		return CORBA_OBJECT_NIL;
 	}
 
-	return gnome_object_activate_servant (object, servant);
+	return (GNOME_View) gnome_object_activate_servant (object, servant);
 	
 }
 
@@ -126,15 +136,15 @@ gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 GnomeView *
 gnome_view_new (GtkWidget *widget)
 {
-	GNOME_View corba_view;
 	GnomeView *view;
+	GNOME_View corba_view;
 	
 	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
 	view = gtk_type_new (gnome_view_get_type ());
 
-	corba_view = create_gnome_view (GNOME_OBJECT (view));
+	corba_view = gnome_view_corba_object_create (GNOME_OBJECT (view));
 	if (corba_view == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (view));
 		return NULL;

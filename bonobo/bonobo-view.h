@@ -36,11 +36,12 @@ typedef struct {
 
 } GnomeViewClass;
 
-GtkType      gnome_view_get_type           (void);
-GnomeView   *gnome_view_construct          (GnomeView *view,
-					    GNOME_View corba_view,
-					    GtkWidget *widget);
-GnomeView   *gnome_view_new                (GtkWidget *widget);
+GtkType       gnome_view_get_type            (void);
+GnomeView    *gnome_view_construct           (GnomeView *view,
+			 		      GNOME_View corba_view,
+					      GtkWidget *widget);
+GnomeView    *gnome_view_new                 (GtkWidget *widget);
+GNOME_View    gnome_view_corba_object_create (GnomeObject *object);
 
 END_GNOME_DECLS
 
