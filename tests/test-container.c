@@ -396,8 +396,8 @@ item_event_handler (GnomeCanvasItem *item, GdkEvent *event)
 		if (!pressed)
 			return FALSE;
 		
-		delta_x = last_x - event->motion.x;
-		delta_y = last_y - event->motion.y;
+		delta_x = event->motion.x - last_x;
+		delta_y = event->motion.y - last_y;
 		gnome_canvas_item_move (item, delta_x, delta_y);
 		printf ("Motion: %g %g\n", delta_x, delta_y);
 		last_x = event->motion.x;
@@ -441,7 +441,7 @@ add_canvas_cmd (GtkWidget *widget, Application *app)
 	canvas = gnome_canvas_new_aa ();
 	gtk_widget_pop_visual ();
 	gtk_widget_pop_colormap ();
-	gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas), 0, 0, 100, 100);
+	gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas), -100, -100, 200, 200);
 	gtk_widget_set_usize (canvas, 100, 100);
 
 	/*

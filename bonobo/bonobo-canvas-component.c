@@ -232,7 +232,7 @@ gcc_draw (PortableServer_Servant servant,
 	  GNOME_Canvas_window_id drawable,
 	  CORBA_short x, CORBA_short y,
 	  CORBA_short width, CORBA_short height,
-	  CORBA_Environment * ev)
+	  CORBA_Environment *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
@@ -243,14 +243,31 @@ gcc_draw (PortableServer_Servant servant,
 
 static void
 gcc_render (PortableServer_Servant servant,
-	    GNOME_Canvas_Buf * buf,
-	    CORBA_Environment * ev)
+	    GNOME_Canvas_Buf *buf,
+	    CORBA_Environment *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	GnomeCanvasBuf canvas_buf;
 
+	if (!(buf->flags & GNOME_Canvas_IS_BUF)){
+		printf ("Allocating!\n");
+		buf->rgb_buf._length = buf->row_stride * (buf->rect.y1 - buf->rect.y0);
+		buf->rgb_buf._maximum = buf->rgb_buf._length;
+		
+		buf->rgb_buf._buffer = CORBA_sequence_CORBA_octet_allocbuf (
+			buf->rgb_buf._length);
+		CORBA_sequence_set_release (&buf->rgb_buf, TRUE);
+
+		if (buf->rgb_buf._buffer == NULL){
+			CORBA_exception_set_system (
+				ev, ex_CORBA_NO_MEMORY, CORBA_COMPLETED_NO);
+			return;
+		}
+	}
+
 	canvas_buf.buf = buf->rgb_buf._buffer;
+	
 	canvas_buf.buf_rowstride = buf->row_stride;
 	canvas_buf.rect.x0 = buf->rect.x0;
 	canvas_buf.rect.x1 = buf->rect.x1;
@@ -267,14 +284,20 @@ gcc_render (PortableServer_Servant servant,
 	else
 		canvas_buf.is_buf = 0;
 
-	memset (buf->rgb_buf._buffer, 0, buf->row_stride * (buf->rect.y1 - buf->rect.y0));
 	ICLASS (item)->render (item, &canvas_buf);
+
+	/*
+	 * return
+	 */
+	buf->flags =
+		(canvas_buf.is_bg ? GNOME_Canvas_IS_BG : 0) |
+		(canvas_buf.is_buf ? GNOME_Canvas_IS_BUF : 0);
 }
 
 static CORBA_boolean 
 gcc_contains (PortableServer_Servant servant,
 	      CORBA_double x, CORBA_double y,
-	      CORBA_Environment * ev)
+	      CORBA_Environment *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
@@ -287,7 +310,7 @@ static void
 gcc_bounds (PortableServer_Servant servant,
 	    CORBA_double * x1, CORBA_double * x2,
 	    CORBA_double * y1, CORBA_double * y2,
-	    CORBA_Environment * ev)
+	    CORBA_Environment *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
@@ -397,7 +420,7 @@ free_event (GdkEvent *event)
 static CORBA_boolean
 gcc_event (PortableServer_Servant servant,
 	   GNOME_Gdk_Event * gnome_event,
-	   CORBA_Environment * ev)
+	   CORBA_Environment *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
@@ -419,7 +442,7 @@ static void
 gcc_size_set (PortableServer_Servant servant,
 	      CORBA_short x, CORBA_short y,
 	      CORBA_short width, CORBA_short height,
-	      CORBA_Environment * ev)
+	      CORBA_Environment *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);

@@ -123,7 +123,7 @@ uta_from_cuta (GNOME_Canvas_ArtUTA *cuta)
 {
 	ArtUta *uta;
 
-	uta = art_uta_new (cuta->x0, cuta->y0, cuta->x0 + cuta->width, cuta->height);
+	uta = art_uta_new (cuta->x0, cuta->y0, cuta->x0 + cuta->width, cuta->y0 + cuta->height);
 	memcpy (uta->utiles, cuta->utiles._buffer, cuta->width * cuta->height * sizeof (ArtUtaBbox));
 
 	return uta;
@@ -160,12 +160,11 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 		&ev);
 
 	if (ev._major == CORBA_NO_EXCEPTION){
-		if (cuta->width > 0){
+		if (cuta->width > 0 && cuta->height > 0){
 			ArtUta *uta;
 
 			uta = uta_from_cuta (cuta);
 			gnome_canvas_request_redraw_uta (item->canvas, uta);
-			gnome_canvas_item_request_update (item);
 		}
 
 		item->x1 = x1;
@@ -282,18 +281,35 @@ gbi_render (GnomeCanvasItem *item, GnomeCanvasBuf *buf)
 	CORBA_Environment ev;
 
 	if (getenv ("DEBUG_BI"))
-		printf ("gbi_render\n");
+		printf ("gbi_render (%d %d)-(%d %d)\n",
+			buf->rect.x0, buf->rect.y0,
+			buf->rect.x1, buf->rect.y1);
 
 	cbuf = GNOME_Canvas_Buf__alloc ();
 	if (!cbuf)
 		return;
 
 	cbuf->rgb_buf._buffer = buf->buf;
-	cbuf->rgb_buf._maximum = buf->buf_rowstride * (buf->rect.y1 - buf->rect.y0);
-	cbuf->rgb_buf._length = buf->buf_rowstride * (buf->rect.y1 - buf->rect.y0);
-	cbuf->rgb_buf._buffer = buf->buf;
+
+	/*
+	 * Inneficient!
+	 */
+#if 0
+	if (!buf->is_buf)
+		gnome_canvas_buf_ensure_buf (buf);
+#endif
+	
+	if (buf->is_buf){
+		cbuf->rgb_buf._maximum = buf->buf_rowstride * (buf->rect.y1 - buf->rect.y0);
+		cbuf->rgb_buf._length = buf->buf_rowstride * (buf->rect.y1 - buf->rect.y0);
+		cbuf->rgb_buf._buffer = buf->buf;
+		CORBA_sequence_set_release (&cbuf->rgb_buf, FALSE);
+	} else {
+		cbuf->rgb_buf._maximum = 0;
+		cbuf->rgb_buf._length = 0;
+		cbuf->rgb_buf._buffer = NULL;
+	}
 	cbuf->row_stride = buf->buf_rowstride;
-	CORBA_sequence_set_release (&cbuf->rgb_buf, FALSE);
 	
 	cbuf->rect.x0 = buf->rect.x0;
 	cbuf->rect.x1 = buf->rect.x1;
@@ -306,8 +322,16 @@ gbi_render (GnomeCanvasItem *item, GnomeCanvasBuf *buf)
 	
 	CORBA_exception_init (&ev);
 	GNOME_Canvas_Item_render (gbi->priv->object, cbuf, &ev);
-	memcpy (buf->buf, cbuf->rgb_buf._buffer, cbuf->rgb_buf._length);
+	if (ev._major != CORBA_NO_EXCEPTION){
+		CORBA_exception_free (&ev);
+		return;
+	}
 	CORBA_exception_free (&ev);
+	
+	memcpy (buf->buf, cbuf->rgb_buf._buffer, cbuf->rgb_buf._length);
+	buf->is_bg  = (cbuf->flags & GNOME_Canvas_IS_BG) != 0;
+	buf->is_buf = (cbuf->flags & GNOME_Canvas_IS_BUF) != 0;
+	
 	CORBA_free (cbuf);
 }
 
