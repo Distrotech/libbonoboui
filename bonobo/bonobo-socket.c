@@ -390,13 +390,17 @@ bonobo_socket_focus_out_event (GtkWidget *widget, GdkEventFocus *event)
 {
 	GtkWidget *toplevel;
 	BonoboSocket *socket;
+	XWindowAttributes attr;
 
 	g_return_val_if_fail (BONOBO_IS_SOCKET (widget), FALSE);
 	socket = BONOBO_SOCKET (widget);
 
 	toplevel = gtk_widget_get_ancestor (widget, gtk_window_get_type());
-  
-	if (toplevel)
+	XGetWindowAttributes (GDK_DISPLAY (), GDK_WINDOW_XWINDOW (toplevel->window), &attr);
+
+	/* FIXME: can we just check the return value of 
+	 * XGetWindowAttributes? */
+	if (toplevel && attr.map_state == IsViewable)
 	{
 		XSetInputFocus (GDK_DISPLAY (),
 				GDK_WINDOW_XWINDOW (toplevel->window),
