@@ -6,13 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2002-03-04 16:23+0000\n"
-"PO-Revision-Date: 2002-01-26 11:35+2000\n"
-"Last-Translator: Alexander Shopov <al_shopov@web.bg>\n"
-"Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
+"POT-Creation-Date: 2002-03-04 16:19-0500\n"
+"PO-Revision-Date: 2002-03-06 13:25EET\n"
+"Last-Translator: Alexander Shopov <al_shopov@yahoo.com>\n"
+"Language-Team: Bulgarian <dict@linuz.zonebg.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.5\n"
 
 #: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
 msgid "Shadow type"
@@ -82,9 +83,8 @@ msgid "Toolbars"
 msgstr "Ленти с инструменти"
 
 #: bonobo/bonobo-ui-config-widget.c:299
-#, fuzzy
 msgid "toolbars"
-msgstr "Ленти с инструменти"
+msgstr "ленти с инструменти"
 
 #: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
@@ -159,7 +159,6 @@ msgid "The maximum degree of enlargment"
 msgstr "Максимален процент увеличение"
 
 #: bonobo/bonobo-zoomable.c:353
-#, fuzzy
 msgid "Has a minimum Zoom level"
 msgstr "Има минимално ниво на увеличение"
 
@@ -185,27 +184,27 @@ msgstr "Дали увеличаваме непрекъснато (не с дис
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr ""
+msgstr "corba фабрика"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr ""
+msgstr "Указателът на фабриката"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
-msgstr ""
+msgstr "corba контейнер на потр. интерфейс"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr ""
+msgstr "Контейнер на потребителския интерфейс"
 
 #: bonobo/bonobo-ui-toolbar.c:1099
 msgid "is floating"
-msgstr ""
+msgstr "е свободна"
 
 #: bonobo/bonobo-ui-toolbar.c:1100
 msgid "whether the toolbar is floating"
-msgstr ""
+msgstr "дали лентата с инструменти е свободна"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -251,3 +250,4 @@ msgstr "_Файл"
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
 msgstr "Избе_ри"
+
