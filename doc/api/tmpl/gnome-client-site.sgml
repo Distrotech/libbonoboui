@@ -38,16 +38,59 @@ Container side object embedding server.
    <title>Sample usage</title>
 
    <para>
-      This demostrates the use of the #GnomeClientSite object.
+      This demostrates the use of the #GnomeClientSite object.  This
+      launches the object specified, creates a #GnomeClientSite,
+      then requests a new #GnomeViewFrame and finally it returns the
+      widget that represents that component.
    </para>
       
    <programlisting>
+GtkWidget *
+create_widget_from_component (GnomeContainer *container, const char *goad_id)
+{
+	GnomeObjectClient *server;
+	GnomeClientSite   *client_site;
+	GnomeViewFrame    *view_frame;
+
+	/*
+	 * Launch the requested component
+	 */
+	server = gnome_object_activate (goad_id, 0);
+	if (!server){
+		printf ("Could not activate the server");
+		return NULL;
+	}
+
+	client_site = gnome_client_site_new (app->container);
+
+	/*
+	 * Add this client site to the container
+	 */
+	gnome_container_add (container, GNOME_OBJECT (client_site));
+
+	/*
+	 * Bind the component to the client site
+	 */
+	gnome_client_site_bind_embeddable (client_site, server);
+
+	/*
+	 * Create a new GnomeView, and then get a GtkWidget
+	 */
+	view_frame = gnome_client_site_embeddable_new_view (client_site);
+
+	/*
+	 * Get the widget for this view.
+	 */
+
+	 return gnome_view_frame_get_wrapper (view_frame);
+}
+
    </programlisting>
 </example>
    
 <!-- ##### SECTION See_Also ##### -->
 <para>
-  #GnomeEmbeddable #GnomeContainer #GnomeObjectClient
+  #GnomeEmbeddable #GnomeContainer #GnomeObjectClient #GnomeViewFrame
 </para>
 
 <!-- ##### MACRO GNOME_CLIENT_SITE_TYPE ##### -->

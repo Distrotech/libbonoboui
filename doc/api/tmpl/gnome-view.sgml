@@ -2,7 +2,7 @@
 GnomeView
 
 <!-- ##### SECTION Short_Description ##### -->
-
+View object for exporting a view of a GnomeEmbeddable component
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -11,7 +11,7 @@ GnomeView
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+   #GnomeViewFrame #GnomeEmbeddable
 </para>
 
 <!-- ##### MACRO GNOME_VIEW_TYPE ##### -->
