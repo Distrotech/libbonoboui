@@ -55,9 +55,7 @@ void                  bonobo_view_set_view_frame         (BonoboView         *vi
 							  Bonobo_ViewFrame    view_frame);
 Bonobo_ViewFrame      bonobo_view_get_view_frame         (BonoboView         *view);
 Bonobo_UIContainer    bonobo_view_get_remote_ui_handler  (BonoboView         *view);
-#ifdef UIH
 BonoboUIHandler      *bonobo_view_get_ui_handler         (BonoboView         *view);
-#endif
 void                  bonobo_view_activate_notify        (BonoboView         *view,
 							  gboolean            activated);
 						  

@@ -2,7 +2,7 @@
 #ifndef _BONOBO_WIN_H_
 #define _BONOBO_WIN_H_
 
-#include <gtk/gtkwindow.h>
+#include <gnome.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-ui-xml.h>
 

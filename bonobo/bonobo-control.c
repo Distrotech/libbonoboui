@@ -16,7 +16,6 @@
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
 #include <gdk/gdkprivate.h>
-#include <bonobo/bonobo-ui-compat.h>
 
 enum {
 	SET_FRAME,
