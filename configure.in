@@ -55,6 +55,17 @@ else
    AC_MSG_RESULT(no)
 fi
 
+AC_MSG_CHECKING([for broken, old development packages])
+if $PKG_CONFIG --exists gdk_pixbuf; then
+	if $PKG_CONFIG --modversion 'gdk_pixbuf >= 0.12'; then
+		AC_MSG_RESULT([parallel install ok]);
+	else
+		AC_ERROR([If you have gdk-pixbuf you need at least ver 0.12]);
+	fi
+else
+	AC_MSG_RESULT([clean])
+fi;
+
 PKG_CHECK_MODULES(BONOBOUI_GLADE, $BONOBOUI_MODULES libglade-2.0 >= 1.99.11)
 AC_SUBST(BONOBOUI_GLADE_CFLAGS)
 AC_SUBST(BONOBOUI_GLADE_LIBS)
