@@ -13,6 +13,8 @@
 
 #include "bonobo-file-selector-util.h"
 
+#include <string.h>
+
 #include <bonobo/bonobo-event-source.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-widget.h>

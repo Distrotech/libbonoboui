@@ -273,7 +273,7 @@ remove_destroy_idle (GtkWidget *socket,
 
 static void
 impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
-				 Bonobo_Control_windowId id,
+				 const CORBA_char       *id,
 				 CORBA_Environment      *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
