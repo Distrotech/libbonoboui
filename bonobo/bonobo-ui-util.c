@@ -7,7 +7,6 @@
  * Copyright 2000, 2001 Ximian, Inc.
  */
 #include <config.h>
-#include <ctype.h>
 #include <string.h>
 
 #include <gtk/gtkstock.h>
@@ -180,7 +179,7 @@ bonobo_ui_util_xml_to_pixbuf (const char *xml)
 
 	g_return_val_if_fail (xml != NULL, NULL);
 
-	while (*xml && isspace ((unsigned char) (*xml)))
+	while (*xml && g_ascii_isspace (*xml))
 		xml++;
 
 	length = strlen (xml);
@@ -585,12 +584,12 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 		BonoboUINode *node;
 
 		/* Format of lines is "help_file_name whitespace* menu_title" */
-		for (s = buf; *s && !isspace (*s); s++)
+		for (s = buf; *s && !g_ascii_isspace (*s); s++)
 			;
 
 		*s++ = '\0';
 
-		for (; *s && isspace (*s); s++)
+		for (; *s && g_ascii_isspace (*s); s++)
 			;
 
 		if (s [strlen (s) - 1] == '\n')

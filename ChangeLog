@@ -1,3 +1,9 @@
+2002-01-25  Darin Adler  <darin@bentspoon.com>
+
+	* bonobo/bonobo-ui-util.c: (bonobo_ui_util_xml_to_pixbuf),
+	(bonobo_ui_util_build_help_menu): Wean from <ctype.h>, use
+	new g_ascii_xxx calls instead.
+
 2002-01-25  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-sync-toolbar.c
