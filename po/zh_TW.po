@@ -1,32 +1,32 @@
 # traditional Chinese translation of libbonoboui.
-# Copyright (C) 2001, 02, 03 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
 # Joe Man <trmetal@yahoo.com.hk>, 2001.
 # Abel Cheung <maddog@linux.org.hk>, 2002-2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.2.0\n"
-"POT-Creation-Date: 2003-04-30 10:39+0800\n"
-"PO-Revision-Date: 2003-01-23 14:03+0800\n"
-"Last-Translator: Joe Man <trmetal@yahoo.com.hk>\n"
+"POT-Creation-Date: 2003-05-30 06:43+0800\n"
+"PO-Revision-Date: 2003-05-30 07:10+0800\n"
+"Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:647
+#: bonobo/bonobo-canvas-item.c:655
 msgid "corba factory"
 msgstr "corba 工廠"
 
-#: bonobo/bonobo-canvas-item.c:648
+#: bonobo/bonobo-canvas-item.c:656
 msgid "The factory pointer"
 msgstr "表示工廠的 pointer"
 
-#: bonobo/bonobo-canvas-item.c:657
+#: bonobo/bonobo-canvas-item.c:665
 msgid "corba UI container"
 msgstr "corba 界面容器元件"
 
-#: bonobo/bonobo-canvas-item.c:658
+#: bonobo/bonobo-canvas-item.c:666
 msgid "The User interface container"
 msgstr "用戶界面容器元件"
 
@@ -72,11 +72,11 @@ msgstr "選取準備儲存的檔案"
 
 #: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
-msgstr ""
+msgstr "傳遞動作"
 
 #: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "輸入裝置發出的動作應否直接傳遞至 X"
 
 #: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
@@ -92,8 +92,8 @@ msgstr "需要的 interface"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
 "一個以 NULL 作為最後一個元素的 CORBA interface 陣列，如果 server 想在 "
@@ -199,7 +199,7 @@ msgstr "螢幕"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "使用同步方式調用 X 函式"
 
 #: bonobo/bonobo-ui-init-gtk.c:135
 msgid "Don't use X shared memory extension"
@@ -207,7 +207,7 @@ msgstr "不使用 X 分享記憶體延伸功能"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "Program name as used by the window manager"
-msgstr "視窗管理員中使用的程式名稱"
+msgstr "視窗總管中使用的程式名稱"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "NAME"
@@ -215,7 +215,7 @@ msgstr "名稱"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "Program class as used by the window manager"
-msgstr "視窗管理員所需的程式類別名稱"
+msgstr "視窗總管所需的程式類別名稱"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "CLASS"
@@ -310,8 +310,9 @@ msgid "View help for this application"
 msgstr "瀏覽有關本程式的說明文件"
 
 #: bonobo/bonobo-window.c:398
+#, fuzzy
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "視窗名稱"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
