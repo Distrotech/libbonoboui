@@ -1012,7 +1012,7 @@ button_changed (GtkWidget *widget,
 
           bonobo_dock_item_grab_pointer (di);
 
-          g_signal_emit (widget, dock_item_signals[DOCK_DRAG_BEGIN], 0);
+          g_signal_emit (di , dock_item_signals[DOCK_DRAG_BEGIN], 0);
 
 	  event_handled = TRUE;
 	}
