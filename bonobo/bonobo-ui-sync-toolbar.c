@@ -156,7 +156,8 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	bonobo_ui_node_free_string (type);
 	bonobo_ui_node_free_string (label);
 
-	if (bonobo_ui_node_has_name (node, "control")) {
+	if (bonobo_ui_node_has_name (node, "control") &&
+	    BONOBO_IS_UI_TOOLBAR_CONTROL_ITEM (widget)) {
 		const char *txt;
 		BonoboUIToolbarControlDisplay hdisp, vdisp;
 		gboolean sensitive;
