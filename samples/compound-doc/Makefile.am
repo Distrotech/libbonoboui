@@ -54,5 +54,5 @@ oaf_DATA = $(OAF_FILES)
 oafdir = $(datadir)/oaf
 oaf_DATA = paint-component-simple.oafinfo
 
-extra_DIST = $(GOAD_FILES) $(OAF_FILES)
+EXTRA_DIST = $(GOAD_FILES) $(OAF_FILES)
 
