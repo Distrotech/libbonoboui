@@ -1,5 +1,9 @@
 2002-02-04  Michael Meeks  <michael@ximian.com>
 
+	* Version 1.110.2
+
+2002-02-04  Michael Meeks  <michael@ximian.com>
+
 	* tests/test-ui-auto.c
 	(test_ui_node_attrs): split from
 	(test_ui_node): here

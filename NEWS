@@ -1,3 +1,8 @@
+libbonoboui 1.110.2
+
+	* fix a default placeholder issue (Michael)
+	* more automated regression tests (Michael)
+
 libbonoboui 1.110.1
 
 	* update regression tests (Michael)
