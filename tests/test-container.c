@@ -365,7 +365,7 @@ add_gnumeric_cmd (GtkWidget *widget, Application *app)
 	moniker = gnome_moniker_new ();
 	gnome_moniker_set_server (
 		moniker,
-		"IDL:GNOME:Gnumeric:Workbook:1.0",
+		"GOADID:GNOME:Gnumeric:Workbook:1.0",
 		"/tmp/sales.gnumeric");
 	gnome_moniker_append_item_name (
 		moniker,
