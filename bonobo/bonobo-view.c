@@ -31,7 +31,7 @@ enum {
 static guint view_signals [LAST_SIGNAL];
 
 struct _BonoboViewPrivate {
-	gpointer stop_warning_syntax_error_empty_declaration_on_solaris;
+ 	int placeholder;
 };
 
 static void
@@ -159,7 +159,7 @@ bonobo_view_init (BonoboView *view)
 BONOBO_TYPE_FUNC_FULL (BonoboView, 
 			   Bonobo_View,
 			   PARENT_TYPE,
-			   bonobo_view);
+			   bonobo_view)
 
 /**
  * bonobo_view_set_embeddable:

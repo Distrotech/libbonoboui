@@ -1,3 +1,8 @@
+2001-07-05  Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
+
+	* bonobo/bonobo-view.c: add a placeholder member to _BonoboViewPrivate
+	struct, since most compilers object to empty structs.
+
 2001-07-07  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-container.c (bonobo_ui_container_set_engine):
