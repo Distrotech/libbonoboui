@@ -112,8 +112,9 @@ libbonoboinclude_HEADERS =			\
 	bonobo-persist.h			\
 	bonobo-plug.h				\
 	bonobo-progressive.h			\
-	bonobo-property-bag-client.h		\
 	bonobo-property-bag.h			\
+	bonobo-property-bag-client.h		\
+	bonobo-property-bag-xml.h		\
 	bonobo-property-listener.h		\
 	bonobo-property-types.h			\
 	bonobo-property.h			\
@@ -161,6 +162,7 @@ libbonobox_la_SOURCES =				\
 	bonobo-embeddable.c			\
 	bonobo-item-container.c			\
 	bonobo-plug.c				\
+	bonobo-property-bag-xml.c		\
 	bonobo-selector.c			\
 	bonobo-socket.c				\
 	bonobo-ui-component.c            	\
