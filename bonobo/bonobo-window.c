@@ -2780,7 +2780,7 @@ popup_destroy (GtkObject *menu, WinPopup *popup)
 
 	g_return_if_fail (priv != NULL);
 	popup_remove (priv, popup);
-	g_warning ("Popup destroy ...");
+/*	g_warning ("Popup destroy ..."); */
 }
 
 void
