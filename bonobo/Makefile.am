@@ -74,7 +74,7 @@ idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 $(CORBA_SOURCE): $(idls)
 	$(ORBIT_IDL) $(top_srcdir)/idl/Bonobo.idl -I$(top_srcdir)/idl $(idl_flags)
 
-libbonobo_la_LDFLAGS = -version-info 1:0:0 #-rpath $(libdir)
+libbonobo_la_LDFLAGS = -version-info 2:0:1 #-rpath $(libdir)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
@@ -85,6 +85,7 @@ libbonobo_la_SOURCES =			\
 	bonobo-uih-menu.c		\
 	bonobo-uih-toolbar.c		\
 	bonobo-uih-dock.c		\
+	bonobo-uih-private.h		\
 	bonobo-canvas-item.c		\
 	bonobo-selector.c		\
 	bonobo-widget.c			\
