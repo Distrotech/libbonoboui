@@ -1,13 +1,14 @@
 <oaf_info>
 
-<oaf_server iid="OAFIID:bonobo-hello-factory:cactus" type="exe" location="bonobo-hello">
+<oaf_server iid="OAFIID:bonobo-hello-factory:694a23d5-dbb3-4705-8b4f-2229b9b319c6" type="exe" location="bonobo-hello">
   <oaf_attribute name="repo_ids" type="stringv">
     <item value="IDL:Bonobo/GenericFactory:1.0"/>
   </oaf_attribute>
   <oaf_attribute name="description" type="string" value="Bonobo-Hello factory"/>
 </oaf_server>
 
-<oaf_server iid="OAFIID:bonobo-hello:cactus" type="factory" location="OAFIID:bonobo-hello-factory:cactus">
+<oaf_server iid="OAFIID:bonobo-hello:e745f596-9e29-4bb9-8dde-fb5bfafb4782" type="factory"
+	location="OAFIID:bonobo-hello-factory:694a23d5-dbb3-4705-8b4f-2229b9b319c6">
   <oaf_attribute name="repo_ids" type="stringv">
     <item value="IDL:Bonobo/Unknown:1.0"/>
     <item value="IDL:Bonobo/Embeddable:1.0"/>

@@ -1,136 +1,155 @@
-/* $Id$ */
-/*
-  Bonobo-Hello Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
-  
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 2
-  (included in the RadioActive distribution in doc/GPL) as published by
-  the Free Software Foundation.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-*/
+#include <gnome.h>
 
+#include "hello-embeddable.h"
 #include "hello-view.h"
-#include <libgnomeui/libgnomeui.h>
 
-/*
- * Refresh a view. Call this whenever the object changes (see
- * hello_model_refresh_views for an example)
- */
+static BonoboViewClass *hello_bonobo_view_parent_class = NULL;
+
 void
-hello_view_refresh (HelloView *view_data)
+hello_view_update (HelloBonoboView       *view,
+		   HelloBonoboEmbeddable *embeddable)
 {
-	Hello *obj = view_data->obj;
-
-	gtk_label_set (GTK_LABEL (view_data->label), obj->text);
-}
-
-/*
- * View destructor
- */
-static void
-view_delete (BonoboView * view, HelloView * view_data)
-{
-	g_free (view_data);
-}
-
-/*
- * Signal handler for the `activate' signal
- */
-static void
-view_activate_cb (BonoboView * view, gboolean activate, gpointer data)
-{
-	bonobo_view_activate_notify (view, activate);
+	if (embeddable && embeddable->text)
+		gtk_label_set (GTK_LABEL (view->label),
+			       embeddable->text);
 }
 
 static void
-view_change_string_cb (gchar * string, gpointer data)
+view_change_string_cb (gchar *txt, gpointer data)
 {
-	HelloView *view_data = (HelloView *) data;
+	BonoboView *view = data;
+	HelloBonoboEmbeddable *embeddable;
 
-	if (string)
-		hello_model_set_text (view_data->obj, string);
+	embeddable = HELLO_BONOBO_EMBEDDABLE (
+		bonobo_view_get_embeddable (BONOBO_VIEW (view)));
+			
+	if (txt)
+		hello_bonobo_embeddable_set_text (embeddable, txt);
+	/* else
+		Canceled */
 }
 
 static void
-view_clicked_cb (GtkWidget *caller, gpointer data)
+button_clicked_cb (GtkWidget *caller, HelloBonoboView *view)
 {
-	HelloView *view_data = (HelloView *) data;
-	gchar *curr_text;
+	gchar *txt;
 
-	gtk_label_get (GTK_LABEL (view_data->label), &curr_text);
+	gtk_label_get (GTK_LABEL (view->label), &txt);
 
-	gnome_request_dialog (FALSE,            /* Password entry */
-			      "Enter new text",	/* Prompt         */
-			      curr_text,	/* Default value  */
-			      0,                /* Maximum length */
-			      view_change_string_cb, /* Callback  */
-			      data,             /* Callback data  */
-			      NULL	        /* Parent window  */
-	    );
+	gnome_request_dialog (FALSE, "Enter new text", txt, 0,
+			      view_change_string_cb, view, NULL);
 }
 
-/*
- * Creates the GTK part of a new View for the data passed in its
- * argument. Does not include the Bonobo part of view creation
- */
 static GtkWidget *
-view_new (HelloView * view_data)
+view_new (HelloBonoboView *view)
 {
-	GtkWidget *w;
-	GtkWidget *button, *label, *vbox;
+	view->label = gtk_label_new ("");
 
-	view_data->label = label = gtk_label_new ("");
+	view->button = gtk_button_new_with_label ("Change text");
+	gtk_signal_connect (GTK_OBJECT (view->button), "clicked",
+			    GTK_SIGNAL_FUNC (button_clicked_cb),
+			    view);
 
-	button = gtk_button_new_with_label ("Change text");
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (view_clicked_cb), view_data);
+	view->vbox = gtk_vbox_new (FALSE, 10);
 
-	vbox = gtk_vbox_new (FALSE, 10);
+	gtk_container_add (GTK_CONTAINER (view->vbox), view->label);
+	gtk_container_add (GTK_CONTAINER (view->vbox), view->button);
 
-	gtk_container_add (GTK_CONTAINER (vbox), label);
-	gtk_container_add (GTK_CONTAINER (vbox), button);
-
-	w = vbox;
-
-	hello_view_refresh (view_data);
-
-	gtk_widget_show_all (w);
-	return w;
+	return view->vbox;
 }
 
-/*
- * Create the Bonobo part of a new view. The actualy widget creation
- * is done in hello_view_new.
- */
 BonoboView *
-hello_view_factory (BonoboEmbeddable *bonobo_object,
-		    const Bonobo_ViewFrame view_frame, void *data)
+hello_bonobo_view_factory (BonoboEmbeddable      *embeddable,
+			   const Bonobo_ViewFrame view_frame,
+			   void                  *closure)
 {
-	BonoboView *view;
-	Hello *obj = (Hello *) data;
-	HelloView *view_data = g_new (HelloView, 1);
+	Bonobo_View      corba_view;
+	HelloBonoboView *view;
+	GtkWidget       *widget;
 
-	view_data->obj = obj;
-	view_data->widget = view_new (view_data);
+	view = gtk_type_new (HELLO_BONOBO_VIEW_TYPE);
 
-	view_data->view = view = bonobo_view_new (view_data->widget);
-	bonobo_view_set_view_frame (view, view_frame);
+	corba_view = bonobo_view_corba_object_create (BONOBO_OBJECT (view));
+	if (corba_view == CORBA_OBJECT_NIL) {
+		gtk_object_destroy (GTK_OBJECT (view));
+		return NULL;
+	}
 
-	gtk_object_set_data (GTK_OBJECT (view), "view_data", view_data);
+	widget = view_new (view);
+	gtk_widget_show_all (widget);
+	
+	view = HELLO_BONOBO_VIEW (
+		bonobo_view_construct (BONOBO_VIEW (view),
+				       corba_view, widget));
+	if (!view)
+		return NULL;
 
-	gtk_signal_connect (GTK_OBJECT (view), "destroy",
-			    GTK_SIGNAL_FUNC (view_delete), view_data);
+	bonobo_view_set_view_frame (BONOBO_VIEW (view), view_frame);
 
-	gtk_signal_connect (GTK_OBJECT (view), "activate",
-			    GTK_SIGNAL_FUNC (view_activate_cb), view_data);
+	hello_view_update (view, HELLO_BONOBO_EMBEDDABLE (embeddable));
 
-	return view;
+	return BONOBO_VIEW (view);
+}
+
+static void
+hello_bonobo_view_destroy (GtkObject *object)
+{
+	HelloBonoboView *view;
+
+	g_return_if_fail (object != NULL);
+	g_return_if_fail (HELLO_BONOBO_IS_VIEW (object));
+	
+	view = HELLO_BONOBO_VIEW (object);
+
+	gtk_widget_destroy (view->vbox);
+
+	GTK_OBJECT_CLASS (hello_bonobo_view_parent_class)->destroy (object);
+}
+
+static void 
+hello_bonobo_view_activate (BonoboControl *control, gboolean state)
+{
+	bonobo_view_activate_notify (BONOBO_VIEW (control), state);
+}
+
+static void
+hello_bonobo_view_class_init (HelloBonoboViewClass *klass)
+{
+	GtkObjectClass  *object_class = (GtkObjectClass *) klass;
+	BonoboControlClass *control_class = (BonoboControlClass *) klass;
+
+	hello_bonobo_view_parent_class =
+		gtk_type_class (bonobo_view_get_type ());
+
+	control_class->activate = hello_bonobo_view_activate;
+
+	object_class->destroy = hello_bonobo_view_destroy;
+}
+
+static void
+hello_bonobo_view_init (HelloBonoboView *view)
+{
+}
+
+GtkType
+hello_bonobo_view_get_type (void)
+{
+	static GtkType type = 0;
+
+	if (!type){
+		GtkTypeInfo info = {
+			"HelloBonoboView",
+			sizeof (HelloBonoboView),
+			sizeof (HelloBonoboViewClass),
+			(GtkClassInitFunc) hello_bonobo_view_class_init,
+			(GtkObjectInitFunc) hello_bonobo_view_init,
+			NULL, /* reserved 1 */
+			NULL, /* reserved 2 */
+			(GtkClassInitFunc) NULL
+		};
+
+		type = gtk_type_unique (bonobo_view_get_type (), &info);
+	}
+
+	return type;
 }

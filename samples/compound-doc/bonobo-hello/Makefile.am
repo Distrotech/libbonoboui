@@ -16,13 +16,16 @@ INCLUDES =	\
 
 bin_PROGRAMS = bonobo-hello
 
-bonobo_hello_SOURCES =	\
-	bonobo-hello.c \
-	hello-model.h hello-model.c \
-	hello-object.h hello-object.c \
-	hello-object-io.h hello-object-io.c \
-	hello-object-print.h hello-object-print.c \
-	hello-view.h hello-view.c
+bonobo_hello_SOURCES =		\
+	bonobo-hello.c		\
+	hello-embeddable.c	\
+	hello-embeddable.h	\
+	hello-object-io.h	\
+	hello-object-io.c	\
+	hello-view.c		\
+	hello-view.h		\
+	hello-object-print.h	\
+	hello-object-print.c
 
 bonobo_hello_LDADD = 			\
 	$(top_builddir)/bonobo/libbonobo.la	\

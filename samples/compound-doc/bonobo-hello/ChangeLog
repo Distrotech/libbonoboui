@@ -1,3 +1,15 @@
+2000-07-06  Michael Meeks  <michael@helixcode.com>
+
+	* hello-model.[ch]: Remove.
+
+	* hello-embeddable.[ch]: New file.
+
+	* hello-view.[ch]: Totaly re-write.
+
+	* hello.oafinfo: use uuids.
+
+	* bonobo-hello.c: Substantialy re-write.
+
 2000-07-05  Michael Meeks  <michael@helixcode.com>
 
 	* hello-object-io.c (hello_object_pstream_load): update read_string

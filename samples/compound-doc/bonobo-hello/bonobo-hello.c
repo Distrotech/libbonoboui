@@ -26,25 +26,68 @@
 #endif
 #include <bonobo.h>
 
-#include "hello-object.h"
+#include "hello-embeddable.h"
+
+static BonoboGenericFactory *factory = NULL;
+static gint running_objects = 0;
 
 static void
-init_bonobo_hello_factory (void)
+hello_bonobo_destroy (BonoboEmbeddable *embeddable,
+		      gpointer user_data)
 {
-#if USING_OAF
-	factory =
-	    bonobo_embeddable_factory_new ("OAFIID:bonobo-hello-factory:cactus",
-					   hello_object_factory,
-					   NULL);
-#else
-	factory =
-	    bonobo_embeddable_factory_new ("bonobo-object-factory:hello",
-					   hello_object_factory, NULL);
-#endif
+	running_objects--;
+	if (running_objects > 0)
+		return;
+
+	if (factory)
+		bonobo_object_unref (BONOBO_OBJECT (factory));
+	else
+		g_warning ("Serious ref counting error");
+	factory = NULL;
+
+	gtk_main_quit ();
+}
+
+static BonoboObject*
+hello_embeddable_factory (BonoboEmbeddableFactory *f, gpointer data)
+{
+	HelloBonoboEmbeddable *embeddable;
+
+	embeddable = gtk_type_new (HELLO_BONOBO_EMBEDDABLE_TYPE);
+
+	g_return_val_if_fail(embeddable != NULL, NULL);
+
+	running_objects++;
+
+	/* Install destructor */
+	gtk_signal_connect (GTK_OBJECT(embeddable), "destroy",
+			    GTK_SIGNAL_FUNC(hello_bonobo_destroy),
+			    NULL);
+
+	embeddable = hello_bonobo_embeddable_construct (embeddable);
+
+	return BONOBO_OBJECT (embeddable);
 }
 
 static void
-init_server_factory (int argc, char **argv)
+hello_bonobo_init (void)
+{
+#if USING_OAF
+	factory =
+		bonobo_embeddable_factory_new (
+			"OAFIID:bonobo-hello-factory:694a23d5-dbb3-4705-8b4f-2229b9b319c6",
+			hello_embeddable_factory, NULL);
+#else
+	factory =
+		bonobo_embeddable_factory_new ("bonobo-object-factory:hello",
+					       hello_embeddable_factory, NULL);
+#endif
+	if (!factory)
+		g_warning ("Couldn't register hello object factory");
+}
+
+static void
+server_factory_init (int argc, char **argv)
 {
 	CORBA_Environment ev;
 	CORBA_exception_init (&ev);
@@ -72,8 +115,8 @@ init_server_factory (int argc, char **argv)
 int
 main (int argc, char **argv)
 {
-	init_server_factory (argc, argv);
-	init_bonobo_hello_factory ();
+	server_factory_init (argc, argv);
+	hello_bonobo_init ();
 
 	bonobo_main ();
 
