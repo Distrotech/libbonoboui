@@ -1,6 +1,6 @@
 <oaf_info>
 
-<oaf_server iid="OAFIID:Bonobo_Sample_HelloEmbeddableFactory" type="exe"
+<oaf_server iid="OAFIID:Bonobo_Sample_Hello_EmbeddableFactory" type="exe"
 	location="bonobo-sample-hello">
   <oaf_attribute name="repo_ids" type="stringv">
     <item value="IDL:GNOME/ObjectFactory:1.0"/>
@@ -8,8 +8,8 @@
   <oaf_attribute name="description" type="string" value="Bonobo-Hello factory"/>
 </oaf_server>
 
-<oaf_server iid="OAFIID:Bonobo_Sample_HelloEmbeddable" type="factory"
-	location="OAFIID:Bonobo_Sample_HelloEmbeddableFactory">
+<oaf_server iid="OAFIID:Bonobo_Sample_Hello_Embeddable" type="factory"
+	location="OAFIID:Bonobo_Sample_Hello_EmbeddableFactory">
   <oaf_attribute name="repo_ids" type="stringv">
     <item value="IDL:Bonobo/Unknown:1.0"/>
     <item value="IDL:Bonobo/Embeddable:1.0"/>

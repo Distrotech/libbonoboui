@@ -1,3 +1,7 @@
+2000-12-28  Arturo Tena <arturo@directmail.org>
+
+	* Bonobo_Sample_Hello.oafinfo: fix naming.
+
 2000-12-14  Michael Meeks  <michael@helixcode.com>
 
 	* Makefile.am (bin_PROGRAMS): upd.
