@@ -30,7 +30,7 @@ noinst_HEADERS = \
 	bonobo-ui-toolbar-separator-item.h	\
 	bonobo-ui-xml.h
 
-libbonoboincludedir = $(includedir)/gnome/2/bonobo
+libbonoboincludedir = $(includedir)/gnome-2.0/bonobo
 
 libbonoboinclude_HEADERS = \
 	bonobo-canvas-component.h		\

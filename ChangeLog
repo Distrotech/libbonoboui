@@ -1,3 +1,10 @@
+2001-09-06  Anders Carlsson  <andersca@gnu.org>
+
+	* bonobo/Makefile.am (libbonoboincludedir): Change includedir
+	to gnome-2.0/ instead of gnome/2/
+
+	* bonobo/libbonoboui-2.0.pc.in (Cflags): Likewise.
+
 Sun Sep 02 23:32:07 2001  George Lebl <jirka@5z.com>
 
 	* bonobo/bonobo-ui-main.c (bonobo_ui_init_full):
