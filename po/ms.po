@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2002-11-26 10:17+0000\n"
-"PO-Revision-Date: 2002-03-28 14:13+0800\n"
+"POT-Creation-Date: 2003-01-01 21:22+0800\n"
+"PO-Revision-Date: 2003-01-01 21:23+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -37,22 +37,29 @@ msgstr "Labuhkan toolbar"
 msgid "Un dock the toolbar"
 msgstr "Leraikan  toolbar"
 
-#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-dock-item.c:291
+#: bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
 msgstr "Jenis bayang"
 
-#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
+#: bonobo/bonobo-dock-item.c:302
+#: bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1086
+#: bonobo/bonobo-ui-toolbar.c:1087
 msgid "Orientation"
 msgstr "Orientasi"
 
-#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
+#: bonobo/bonobo-dock-item.c:313
+#: bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1105
+#: bonobo/bonobo-ui-toolbar.c:1106
 msgid "Preferred width"
 msgstr "Lebar yang dikehendaki"
 
-#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
+#: bonobo/bonobo-dock-item.c:322
+#: bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1115
 msgid "Preferred height"
 msgstr "Tinggi yang dikehendaki"
 
@@ -76,7 +83,8 @@ msgstr "Forward Acara"
 msgid "Whether X events should be forwarded"
 msgstr "Samada acara X patut diforwardkan"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300
+#: bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "Nama"
 
@@ -89,14 +97,8 @@ msgid "Interfaces required"
 msgstr "Antaramuka diperkukan"
 
 #: bonobo/bonobo-selector.c:346
-msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
-"no interfaces are listed"
-msgstr ""
-"Array NULL_terminated bagi antaramuka dimana mesti disokongi pelayan supaya "
-"ia tersenarai pada pemilih. Default ke \"IDL:Bonobo/Embeddable:1.0\" jika "
-"tiada antaramuka disenaraikan"
+msgid "A NULL_terminated array of interfaces which a server must support in order to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
+msgstr "Array NULL_terminated bagi antaramuka dimana mesti disokongi pelayan supaya ia tersenarai pada pemilih. Default ke \"IDL:Bonobo/Embeddable:1.0\" jika tiada antaramuka disenaraikan"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -130,11 +132,13 @@ msgstr "Toolbar"
 msgid "toolbars"
 msgstr "toolbar"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:313
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Lihat"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:322
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Ikon"
 
@@ -152,15 +156,15 @@ msgstr "Teks yang _penting sahaja"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "Nyahpepijat"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "_Longgok XML"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "Longgok seluruh keterangan XML bagi UI ke konsol"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -170,8 +174,10 @@ msgstr "Konfigurasikan UI"
 msgid "Gdk debugging flags to set"
 msgstr "Flag nyahpepijat Gdk untuk ditetapkan"
 
-#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:113
+#: bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "FLAG"
 
@@ -227,7 +233,8 @@ msgstr "HOS"
 msgid "PORT"
 msgstr "LIANG"
 
-#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:155
+#: bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
 msgstr "GAYA"
 
@@ -295,11 +302,11 @@ msgstr "adalah terapung"
 msgid "whether the toolbar is floating"
 msgstr "Samada toolbar adalah terapung"
 
-#: bonobo/bonobo-ui-util.c:615
+#: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
 msgstr "_Kandungan"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
 msgstr "Lihat bantuan bagi aplikasi ini"
 
@@ -403,3 +410,4 @@ msgstr "Gagal menginitialisasikan kod libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Tak dapat menginitialisasi UI Bonobo"
+
