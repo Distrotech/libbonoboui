@@ -1,3 +1,12 @@
+2002-07-27  James Henstridge  <james@daa.com.au>
+
+	* glade/glade-bonobo.c (dock_item_set_behavior): add function to
+	handle behavior property for BonoboDockItem objects.
+	(dock_item_build): free dockitem->name to trap potential memory
+	leak.
+	(add_dock_item): behavior is a widget property, rather than a
+	child packing property (we were ignoring it anyway).
+
 2002-07-26  Gustavo Noronha Silva  <kov@beterraba>
 
 	* configure.in: added pt_BR to ALL_LINGUAS

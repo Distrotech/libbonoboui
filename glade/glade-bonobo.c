@@ -5,7 +5,7 @@
  *      Michael Meeks (michael@ximian.com)
  *      Jacob Berkman (jacob@ximian.com>
  *
- * Copyright (C) 2000,2001 Ximian, Inc., 2001 James Henstridge.
+ * Copyright (C) 2000,2001 Ximian, Inc., 2001,2002 James Henstridge.
  */
 #include <config.h>
 #include <stdlib.h>
@@ -35,6 +35,22 @@ dock_item_set_shadow_type (GladeXML *xml, GtkWidget *widget,
 		glade_enum_from_string (GTK_TYPE_SHADOW_TYPE, value));
 }
 
+static void
+dock_item_set_behavior (GladeXML *xml, GtkWidget *widget,
+			const char *name, const char *value)
+{
+	BonoboDockItem *dock_item = BONOBO_DOCK_ITEM (widget);
+	gchar *old_name;
+
+	old_name = dock_item->name;
+	dock_item->name = NULL;
+	bonobo_dock_item_construct (dock_item, old_name,
+				    glade_flags_from_string (
+					BONOBO_TYPE_DOCK_ITEM_BEHAVIOR,
+					value));
+	g_free (old_name);
+}
+
 static GtkWidget *
 dock_item_build (GladeXML *xml, GType widget_type,
 		 GladeWidgetInfo *info)
@@ -43,6 +59,7 @@ dock_item_build (GladeXML *xml, GType widget_type,
 
 	w = glade_standard_build_widget (xml, widget_type, info);
 
+	g_free(BONOBO_DOCK_ITEM (w)->name);
 	BONOBO_DOCK_ITEM (w)->name = g_strdup (info->name);
 
 	return w;
@@ -186,13 +203,11 @@ add_dock_item (GladeXML *xml,
 	BonoboDockPlacement placement;
 	guint band, offset;
 	int position;
-	BonoboDockItemBehavior behavior;
 	int i;
 	GtkWidget *child;
 	
 	band = offset = position = 0;
 	placement = BONOBO_DOCK_TOP;
-	behavior  = BONOBO_DOCK_ITEM_BEH_NORMAL;
 	
 	for (i = 0; i < childinfo->n_properties; i++) {
 		const char *name  = childinfo->properties[i].name;
@@ -208,10 +223,6 @@ add_dock_item (GladeXML *xml,
 			position = INT (value);
 		else if (!strcmp (name, "offset"))
 			offset = UINT (value);
-		else if (!strcmp (name, "behavior"))
-			behavior = glade_flags_from_string (
-				BONOBO_TYPE_DOCK_ITEM_BEHAVIOR,
-				value);
 	}
 
 	child = glade_xml_build_widget (xml, childinfo->child);
@@ -256,6 +267,7 @@ glade_module_register_widgets (void)
 
 	glade_register_custom_prop (BONOBO_TYPE_DOCK, "allow_floating", dock_allow_floating);
 	glade_register_custom_prop (BONOBO_TYPE_DOCK_ITEM, "shadow_type", dock_item_set_shadow_type);
+	glade_register_custom_prop (BONOBO_TYPE_DOCK_ITEM, "behavior", dock_item_set_behavior);
 
 	glade_register_widget (BONOBO_TYPE_WIDGET,
 			       glade_bonobo_widget_new,
