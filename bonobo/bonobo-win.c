@@ -3196,15 +3196,33 @@ construct_priv (BonoboWin *win)
 	return priv;
 }
 
+/*
+ *   To kill bug reports of hiding not working
+ * we want to stop show_all showing hidden menus etc.
+ */
+static void
+bonobo_win_show_all (GtkWidget *widget)
+{
+	BonoboWin *win = BONOBO_WIN (widget);
+
+	if (win->priv->client_area)
+		gtk_widget_show_all (win->priv->client_area);
+
+	gtk_widget_show (widget);
+}
+
 static void
 bonobo_win_class_init (BonoboWinClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 
 	bonobo_win_parent_class =
 		gtk_type_class (gtk_window_get_type ());
 
 	object_class->finalize = bonobo_win_finalize;
+
+	widget_class->show_all = bonobo_win_show_all;
 }
 
 static void

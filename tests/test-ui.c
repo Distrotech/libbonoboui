@@ -328,7 +328,8 @@ main (int argc, char **argv)
 			componenta, "/menu/Preferences",
 			"pixname", "/demo/a.xpm", NULL);*/
 
-		gtk_widget_show (GTK_WIDGET (win));
+		/* NB. bad, bad practice */
+		gtk_widget_show_all (GTK_WIDGET (win));
 
 		gtk_main ();
 	} else {
