@@ -1415,7 +1415,7 @@ bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
 
 	uclass->ui_event = ui_event;
 
-	signals [EXEC_VERB] = g_signal_newc (
+	signals [EXEC_VERB] = g_signal_new (
 		"exec_verb", G_TYPE_FROM_CLASS (object_class),
 		G_SIGNAL_RUN_FIRST,
 		G_STRUCT_OFFSET (BonoboUIComponentClass, exec_verb),
@@ -1423,7 +1423,7 @@ bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
 		g_cclosure_marshal_VOID__STRING,
 		G_TYPE_NONE, 1, G_TYPE_STRING);
 
-	signals [UI_EVENT] = g_signal_newc (
+	signals [UI_EVENT] = g_signal_new (
 		"ui_event", G_TYPE_FROM_CLASS (object_class),
 		G_SIGNAL_RUN_FIRST,
 		G_STRUCT_OFFSET (BonoboUIComponentClass, ui_event),

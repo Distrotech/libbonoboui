@@ -644,24 +644,24 @@ bonobo_canvas_component_class_init (BonoboCanvasComponentClass *klass)
 	object_class->finalize = gcc_finalize;
 
 	gcc_signals [SET_BOUNDS] = 
-                g_signal_newc ("set_bounds",
-			       G_OBJECT_CLASS_TYPE(object_class),
-			       G_SIGNAL_RUN_LAST,
-			       G_STRUCT_OFFSET(BonoboCanvasComponentClass, set_bounds),
-			       NULL, NULL,
-			       bonobo_marshal_VOID__POINTER_POINTER,
-			       G_TYPE_NONE, 2,
-			       G_TYPE_POINTER, G_TYPE_POINTER);
+                g_signal_new ("set_bounds",
+			      G_OBJECT_CLASS_TYPE(object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET(BonoboCanvasComponentClass, set_bounds),
+			      NULL, NULL,
+			      bonobo_marshal_VOID__POINTER_POINTER,
+			      G_TYPE_NONE, 2,
+			      G_TYPE_POINTER, G_TYPE_POINTER);
 
 	gcc_signals [EVENT] = 
-		g_signal_newc ("event", 
-			       G_OBJECT_CLASS_TYPE(object_class),
-			       G_SIGNAL_RUN_LAST,
-			       G_STRUCT_OFFSET(BonoboCanvasComponentClass, event),
-			       _bonobo_boolean_handled_accumulator, NULL,
-			       bonobo_marshal_BOOLEAN__POINTER,
-			       G_TYPE_BOOLEAN, 1,
-			       G_TYPE_POINTER);
+		g_signal_new ("event", 
+			      G_OBJECT_CLASS_TYPE(object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET(BonoboCanvasComponentClass, event),
+			      _bonobo_boolean_handled_accumulator, NULL,
+			      bonobo_marshal_BOOLEAN__POINTER,
+			      G_TYPE_BOOLEAN, 1,
+			      G_TYPE_POINTER);
 
 	epv->update         = impl_Bonobo_Canvas_Component_update;
 	epv->realize        = impl_Bonobo_Canvas_Component_realize;

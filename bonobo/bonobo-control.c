@@ -914,23 +914,23 @@ bonobo_control_class_init (BonoboControlClass *klass)
 	bonobo_control_parent_class = g_type_class_peek_parent (klass);
 
 	control_signals [SET_FRAME] =
-                g_signal_newc ("set_frame",
-			       G_TYPE_FROM_CLASS (object_class),
-			       G_SIGNAL_RUN_LAST,
-			       G_STRUCT_OFFSET (BonoboControlClass, set_frame),
-			       NULL, NULL,
-			       g_cclosure_marshal_VOID__VOID,
-			       G_TYPE_NONE, 0);
+                g_signal_new ("set_frame",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (BonoboControlClass, set_frame),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
 
 	control_signals [ACTIVATE] =
-                g_signal_newc ("activate",
-			       G_TYPE_FROM_CLASS (object_class),
-			       G_SIGNAL_RUN_LAST,
-			       G_STRUCT_OFFSET (BonoboControlClass, activate),
-			       NULL, NULL,
-			       g_cclosure_marshal_VOID__BOOLEAN,
-			       G_TYPE_NONE, 1,
-			       G_TYPE_BOOLEAN);
+                g_signal_new ("activate",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (BonoboControlClass, activate),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__BOOLEAN,
+			      G_TYPE_NONE, 1,
+			      G_TYPE_BOOLEAN);
 
 	object_class->finalize = bonobo_control_finalize;
 

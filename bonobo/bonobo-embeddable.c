@@ -424,25 +424,25 @@ bonobo_embeddable_class_init (BonoboEmbeddableClass *klass)
 	bonobo_embeddable_parent_class = g_type_class_peek_parent (klass);
 
 	embeddable_signals [HOST_NAME_CHANGED] =
-                g_signal_newc ("host_name_changed",
-			       G_OBJECT_CLASS_TYPE (object_class),
-			       G_SIGNAL_RUN_LAST,
-			       G_STRUCT_OFFSET (BonoboEmbeddableClass, host_name_changed),
-			       NULL, NULL,
-			       gtk_marshal_VOID__STRING,
-			       G_TYPE_NONE, 1,
-			       G_TYPE_STRING);
+                g_signal_new ("host_name_changed",
+			      G_OBJECT_CLASS_TYPE (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (BonoboEmbeddableClass, host_name_changed),
+			      NULL, NULL,
+			      gtk_marshal_VOID__STRING,
+			      G_TYPE_NONE, 1,
+			      G_TYPE_STRING);
 
 
 	embeddable_signals [URI_CHANGED] =
-                g_signal_newc ("uri_changed",
-			       G_OBJECT_CLASS_TYPE (object_class),
-			       G_SIGNAL_RUN_LAST,
-			       G_STRUCT_OFFSET (BonoboEmbeddableClass, uri_changed),
-			       NULL, NULL,
-			       gtk_marshal_VOID__STRING,
-			       G_TYPE_NONE, 1, 
-			       G_TYPE_STRING);
+                g_signal_new ("uri_changed",
+			      G_OBJECT_CLASS_TYPE (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (BonoboEmbeddableClass, uri_changed),
+			      NULL, NULL,
+			      gtk_marshal_VOID__STRING,
+			      G_TYPE_NONE, 1, 
+			      G_TYPE_STRING);
 
 	object_class->finalize = bonobo_embeddable_finalize;
 

@@ -384,25 +384,25 @@ bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 	bonobo_control_frame_parent_class = g_type_class_peek_parent (klass);
 
 	control_frame_signals [ACTIVATED] =
-		g_signal_newc ("activated",
-			       G_TYPE_FROM_CLASS (object_class),
-			       G_SIGNAL_RUN_LAST,
-			       G_STRUCT_OFFSET (BonoboControlFrameClass, activated),
-			       NULL, NULL,
-			       g_cclosure_marshal_VOID__BOOLEAN,
-			       G_TYPE_NONE, 1,
-			       G_TYPE_BOOLEAN);
+		g_signal_new ("activated",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (BonoboControlFrameClass, activated),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__BOOLEAN,
+			      G_TYPE_NONE, 1,
+			      G_TYPE_BOOLEAN);
 
 	
 	control_frame_signals [ACTIVATE_URI] =
-		g_signal_newc ("activate_uri",
-			       G_TYPE_FROM_CLASS (object_class),
-			       G_SIGNAL_RUN_LAST,
-			       G_STRUCT_OFFSET (BonoboControlFrameClass, activate_uri),
-			       NULL, NULL,
-			       bonobo_marshal_VOID__STRING_BOOLEAN,
-			       G_TYPE_NONE, 2,
-			       G_TYPE_STRING, G_TYPE_BOOLEAN);
+		g_signal_new ("activate_uri",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (BonoboControlFrameClass, activate_uri),
+			      NULL, NULL,
+			      bonobo_marshal_VOID__STRING_BOOLEAN,
+			      G_TYPE_NONE, 2,
+			      G_TYPE_STRING, G_TYPE_BOOLEAN);
 	
 	klass->activated = bonobo_control_frame_activated;
 

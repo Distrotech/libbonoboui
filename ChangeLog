@@ -1,3 +1,10 @@
+2001-07-02  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* bonobo/bonobo-canvas-component.c, bonobo/bonobo-control.c,
+	bonobo/bonobo-control-frame.c, bonobo/bonobo-embeddable.c,
+	bonobo/bonobo-ui-component.c, bonobo/bonobo-view.c:
+	/s/g_signal_newc/g_signal_new/ to sync with the latest glib.
+
 2001-06-29  Anders Carlsson  <andersca@codefactory.se>
 
 	* bonobo/bonobo-ui-component.c (impl_get_prop): Use CORBA_free

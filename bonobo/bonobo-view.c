@@ -136,14 +136,14 @@ bonobo_view_class_init (BonoboViewClass *klass)
 	bonobo_view_parent_class = g_type_class_peek_parent (klass);
 
 	view_signals [SET_ZOOM_FACTOR] =
-		g_signal_newc ("set_zoom_factor",
-			       G_OBJECT_CLASS_TYPE (object_class),
-			       G_SIGNAL_RUN_LAST,
-			       G_STRUCT_OFFSET (BonoboViewClass, set_zoom_factor),
-			       NULL, NULL,
-			       g_cclosure_marshal_VOID__DOUBLE,
-			       G_TYPE_NONE, 1,
-			       G_TYPE_DOUBLE);
+		g_signal_new ("set_zoom_factor",
+			      G_OBJECT_CLASS_TYPE (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (BonoboViewClass, set_zoom_factor),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__DOUBLE,
+			      G_TYPE_NONE, 1,
+			      G_TYPE_DOUBLE);
 
 	object_class->finalize = bonobo_view_finalize;
 
