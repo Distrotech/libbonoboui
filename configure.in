@@ -113,6 +113,7 @@ Makefile
 po/Makefile.in
 bonobo/Makefile
 bonobo/libbonoboui-2.0.pc
+bonobo/libbonoboui-2.0-uninstalled.pc
 glade/Makefile
 samples/Makefile
 samples/controls/Makefile

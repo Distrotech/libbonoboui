@@ -206,7 +206,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbonoboui-2.0.pc
 
 EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in \
-	bonobo-ui-marshal.list
+	libbonoboui-2.0-uninstalled.pc.in bonobo-ui-marshal.list
 CLEANFILES = $(libbonoboui_built_sources)
 
 BUILT_SOURCE = $(libbonoboui_built_sources)

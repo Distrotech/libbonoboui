@@ -1,3 +1,9 @@
+2004-03-07  Glynn Foster  <glynn.foster@sun.com>
+
+	* bonobo/Makefile.am, bonobo/libbonoboui-2.0-uninstalled.pc.in,
+	configure.in: Add uninstalled pc file, so that we can link
+	the library without installing it.
+
 2004-03-05  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-file-selector-util.c (response_cb):
