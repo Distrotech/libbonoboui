@@ -24,6 +24,7 @@ static GConfEnumStringPair toolbar_styles[] = {
         { BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY,     "icons" },
         { BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT, "both" },
         { BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT,  "both_horiz" },
+	{ BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT,  "both-horiz" },
 	{ -1, NULL }
 };
 
