@@ -1,3 +1,10 @@
+2002-04-13  Murray Cumming  <murrayc@usa.net>
+
+	* bonobo/bonobo-window.[h|c]: bonobo_window_new() is now just
+	a convenience wrapper for g_object_new(). This is possible because
+	BonoboWindow now has a "win_name" property and the UIContainer is
+	created in the *_instance_init function.
+	
 2002-04-19  jacob berkman  <jacob@ximian.com>
 
 	* COPYING: add

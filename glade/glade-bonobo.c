@@ -233,7 +233,7 @@ dock_build_children (GladeXML *xml, GtkWidget *w, GladeWidgetInfo *info)
 	for (i = 0; i < info->n_children; i++) {
 		childinfo = &info->children[i];
 
-		if (!strcmp (childinfo->child->class, "BonoboDockItem")) {
+		if (!strcmp (childinfo->child->classname, "BonoboDockItem")) {
 			add_dock_item (xml, w, info, childinfo);
 			continue;
 		}
