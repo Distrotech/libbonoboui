@@ -285,8 +285,8 @@ main (int argc, char **argv)
 		"        _label=\"TogSave\" _tip=\"My tooltip\" priority=\"1\"/>\n"
 		"	<separator/>\n"
 		"	<toolitem name=\"baa\" pixtype=\"stock\" pixname=\"Open\" _label=\"baa\" _tip=\"My 2nd tooltip\" verb=\"testme\"/>\n"
-		"	<control name=\"AControl\" _tip=\"a tip on a control\" hidden=\"0\"\n"
-		"	pixtype=\"stock\" pixname=\"Attach\"/>\n"
+		"	<control name=\"AControl\" _tip=\"a tip on a control\" hidden=\"0\" vdisplay=\"button\"\n"
+		"	pixtype=\"stock\" pixname=\"gtk-italic\" _label=\"EntryControl\" verb=\"OpenEntry\"/>\n"
 		"	<control name=\"BControl\" _tip=\"another tip on a control\" hidden=\"0\"\n"
 		"	pixtype=\"stock\" pixname=\"gtk-stop\"/>\n"
 		"</dockitem>";

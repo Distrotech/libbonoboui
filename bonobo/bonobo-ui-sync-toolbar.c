@@ -266,18 +266,17 @@ toolbar_build_control (BonoboUISync     *sync,
 		       GtkWidget        *parent)
 {
 	GtkWidget  *bonobo_item = NULL;
-	GtkWidget  *gtk_tool_item = NULL;
 
 	g_return_val_if_fail (sync != NULL, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	if ((bonobo_item = bonobo_ui_engine_node_get_widget (
 		sync->engine, node))) {
-
+		
 		g_assert (bonobo_item->parent == NULL);
-
-		gtk_tool_item = toolbar_build_item (bonobo_item);
-
+		if (!GTK_IS_TOOL_ITEM (bonobo_item))
+			g_warning ("Serious oddness not a toolbar item: '%s'",
+				   g_type_name_from_instance (bonobo_item));
 	} else {
 		Bonobo_Control control;
 
@@ -290,7 +289,6 @@ toolbar_build_control (BonoboUISync     *sync,
 			if (!bonobo_item)
 				return NULL;
 
-			gtk_tool_item = toolbar_build_item (bonobo_item);
 			bonobo_ui_engine_stamp_custom (
 				sync->engine, node);
 		} else
@@ -298,10 +296,10 @@ toolbar_build_control (BonoboUISync     *sync,
 	}
 
 	gtk_toolbar_insert (GTK_TOOLBAR (parent),
-			    GTK_TOOL_ITEM (gtk_tool_item),
+			    GTK_TOOL_ITEM (bonobo_item),
 			    (*pos)++);
 
-	gtk_widget_show (gtk_tool_item);
+	gtk_widget_show (bonobo_item);
 
 	return bonobo_item;
 }
@@ -398,7 +396,6 @@ impl_bonobo_ui_sync_toolbar_build (BonoboUISync     *sync,
 			sync, node, cmd_node, pos, parent);
 
 	if (widget) {
-		/* FIXME: What about "id"s ! ? */
 		if ((verb = bonobo_ui_engine_get_attr (node, NULL, "verb"))) {
 			g_signal_connect (widget, "clicked",
 					  G_CALLBACK (exec_verb_cb),
@@ -847,7 +844,7 @@ static GtkWidget *
 impl_bonobo_ui_sync_toolbar_wrap_widget (BonoboUISync *sync,
 					 GtkWidget    *custom_widget)
 {
-	if (!BONOBO_IS_UI_TOOLBAR_ITEM (custom_widget))
+	if (!GTK_IS_TOOL_ITEM (custom_widget))
 		return bonobo_ui_toolbar_control_item_new_widget (custom_widget);
 	else
 		return custom_widget;

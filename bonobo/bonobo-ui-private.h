@@ -36,10 +36,6 @@ void       bonobo_ui_util_xml_set_image   (GtkImage     *image,
 					   BonoboUINode *cmd_node,
 					   GtkIconSize   icon_size);
 void       bonobo_ui_engine_dispose       (BonoboUIEngine *engine);
-void       bonobo_ui_toolbar_control_item_set_sensitive
-                                          (BonoboUIToolbarControlItem *item,
-					   gboolean                    sensitive);
-
 GtkWidget *bonobo_ui_toolbar_button_item_get_image (BonoboUIToolbarButtonItem *item);
 
 GtkWidget *bonobo_ui_internal_toolbar_new (void);

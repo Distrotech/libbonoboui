@@ -166,6 +166,8 @@ impl_style_changed (GtkToolbar *toolbar,
 	GList *items, *l;
 	GtkOrientation orientation;
 
+	invalidate_size ((InternalToolbar *) toolbar);
+
 	items = bonobo_ui_internal_toolbar_get_children (GTK_WIDGET (toolbar));
 
 	orientation = gtk_toolbar_get_orientation (GTK_TOOLBAR (toolbar));

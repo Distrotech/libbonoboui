@@ -1,4 +1,23 @@
+2004-02-24  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar-control-item.c: substantial
+	re-write / simplify; internal API anyway.
+
+	* bonobo/bonobo-ui-internal-toolbar.c
+	(impl_style_changed): call invalidate_size still.
+
 2004-02-20  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-status.c
+	(impl_bonobo_ui_sync_status_build_placeholder): use a
+	vseparator - unused code-path though.
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(impl_bonobo_ui_sync_toolbar_state): bin special control
+	sensitivity setting foo.
+
+	* bonobo/bonobo-ui-toolbar-control-item.c: drastic re-write/
+	simplify.
 
 	* bonobo/bonobo-ui-toolbar-separator-item.[ch]: bin, no
 	longer required.
