@@ -232,22 +232,6 @@ libbonobo_printinclude_HEADERS =		\
 	bonobo-print.h		\
 	bonobo-print-client.h
 
-noinst_PROGRAMS = test-app test-toolbar
-
-test_app_SOURCES = app.c
-test_app_LDADD =					\
-	libbonobo.la					\
-	libbonobox.la					\
-	libbonobo-print.la				\
-	$(BONOBOX_TEST_LIBS)
-
-test_toolbar_SOURCES = test-toolbar.c
-test_toolbar_LDADD =					\
-	libbonobo.la					\
-	libbonobox.la					\
-	libbonobo-print.la				\
-	$(BONOBOX_TEST_LIBS)
-
 BUILT_SOURCES=$(CORBA_SOURCE)
 
 CLEANFILES += $(BUILT_SOURCES)
