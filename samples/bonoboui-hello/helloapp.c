@@ -24,10 +24,6 @@
 #include "helloapp.h"
 
 #include <libgnome/libgnome.h>
-#include <libgnomeui/gnome-stock.h>
-#include <libgnomeui/gnome-pixmap.h>
-#include <libgnomeui/gnome-about.h>
-#include <libgnomeui/gnome-dialog.h>
 
 /* Keep a list of all open application windows */
 static GSList* app_list = NULL;
