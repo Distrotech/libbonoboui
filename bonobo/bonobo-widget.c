@@ -603,7 +603,7 @@ bonobo_widget_set_property (BonoboWidget      *control,
 	pb = bonobo_control_frame_get_control_property_bag (
 		control->priv->control_frame, &ev);
 
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		g_warning ("Error getting property bag from control");
 	else {
 		/* FIXME: this should use ev */
@@ -664,7 +664,7 @@ bonobo_widget_get_property (BonoboWidget      *control,
 	pb = bonobo_control_frame_get_control_property_bag (
 		control->priv->control_frame, &ev);
 
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		g_warning ("Error getting property bag from control");
 	else {
 		/* FIXME: this should use ev */

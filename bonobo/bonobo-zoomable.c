@@ -25,6 +25,7 @@
  */
 
 #include <config.h>
+#include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-zoomable.h>
 #include <bonobo/bonobo-property-bag.h>
 #include <gtk/gtksignal.h>
@@ -513,7 +514,7 @@ bonobo_zoomable_corba_object_create (BonoboObject *object)
 	CORBA_exception_init (&ev);
 
 	POA_Bonobo_Zoomable__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
                 g_free (servant);
 		CORBA_exception_free (&ev);
                 return CORBA_OBJECT_NIL;

@@ -12,6 +12,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkplug.h>
+#include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-view.h>
 #include <bonobo/bonobo-view-frame.h>
@@ -61,7 +62,7 @@ create_bonobo_view_frame (BonoboObject *object)
 
 	CORBA_exception_init (&ev);
 	POA_Bonobo_ViewFrame__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
 		g_free (servant);
 		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;
@@ -471,7 +472,7 @@ bonobo_view_frame_set_zoom_factor (BonoboViewFrame *view_frame, double zoom)
 
 	CORBA_exception_init (&ev);
 	Bonobo_View_setZoomFactor (view_frame->priv->view, zoom, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (&ev)) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (view_frame),
 			(CORBA_Object) view_frame->priv->view, &ev);

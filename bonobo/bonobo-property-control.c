@@ -12,6 +12,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtktypeutils.h>
+#include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-property-control.h>
 #include <bonobo/bonobo-event-source.h>
@@ -217,7 +218,7 @@ bonobo_property_control_corba_object_create (BonoboObject *object)
 
 	CORBA_exception_init (&ev);
 	POA_Bonobo_PropertyControl__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (&ev)) {
 		g_free (servant);
 		CORBA_exception_free (&ev);
 		return NULL;
@@ -373,7 +374,7 @@ bonobo_property_control_changed (BonoboPropertyControl *property_control,
 	bonobo_event_source_notify_listeners (priv->event_source,
 					      BONOBO_PROPERTY_CONTROL_CHANGED,
 					      &any, &ev);
-	if (opt_ev == NULL && ev._major != CORBA_NO_EXCEPTION) {
+	if (opt_ev == NULL && BONOBO_EX (&ev)) {
 		g_warning ("ERROR: %s", CORBA_exception_id (&ev));
 	}
 

@@ -237,7 +237,7 @@ bonobo_zoomable_frame_corba_object_create (BonoboObject *object)
 	CORBA_exception_init (&ev);
 
 	POA_Bonobo_ZoomableFrame__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
                 g_free (servant);
 		CORBA_exception_free (&ev);
                 return CORBA_OBJECT_NIL;
@@ -317,7 +317,7 @@ bonobo_zoomable_frame_bind_to_zoomable (BonoboZoomableFrame *zoomable_frame, Bon
 	Bonobo_Zoomable_setFrame (zoomable,
 				   bonobo_object_corba_objref (BONOBO_OBJECT (zoomable_frame)),
 				   &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		bonobo_object_check_env (BONOBO_OBJECT (zoomable_frame), zoomable, &ev);
 	CORBA_exception_free (&ev);
 }
@@ -415,7 +415,7 @@ bonobo_zoomable_frame_get_zoom_level (BonoboZoomableFrame *zoomable_frame)
 
 	CORBA_exception_init (&ev);
 	retval = Bonobo_Zoomable__get_level (zoomable_frame->priv->zoomable, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		retval = 0.0;
 	bonobo_object_check_env (BONOBO_OBJECT (zoomable_frame),
 				 zoomable_frame->priv->zoomable, &ev);
@@ -436,7 +436,7 @@ bonobo_zoomable_frame_get_min_zoom_level (BonoboZoomableFrame *zoomable_frame)
 
 	CORBA_exception_init (&ev);
 	retval = Bonobo_Zoomable__get_minLevel (zoomable_frame->priv->zoomable, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		retval = 0.0;
 	bonobo_object_check_env (BONOBO_OBJECT (zoomable_frame),
 				 zoomable_frame->priv->zoomable, &ev);
@@ -457,7 +457,7 @@ bonobo_zoomable_frame_get_max_zoom_level (BonoboZoomableFrame *zoomable_frame)
 
 	CORBA_exception_init (&ev);
 	retval = Bonobo_Zoomable__get_maxLevel (zoomable_frame->priv->zoomable, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		retval = 0.0;
 	bonobo_object_check_env (BONOBO_OBJECT (zoomable_frame),
 				 zoomable_frame->priv->zoomable, &ev);
@@ -478,7 +478,7 @@ bonobo_zoomable_frame_has_min_zoom_level (BonoboZoomableFrame *zoomable_frame)
 
 	CORBA_exception_init (&ev);
 	retval = Bonobo_Zoomable__get_hasMinLevel (zoomable_frame->priv->zoomable, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		retval = FALSE;
 	bonobo_object_check_env (BONOBO_OBJECT (zoomable_frame),
 				 zoomable_frame->priv->zoomable, &ev);
@@ -499,7 +499,7 @@ bonobo_zoomable_frame_has_max_zoom_level (BonoboZoomableFrame *zoomable_frame)
 
 	CORBA_exception_init (&ev);
 	retval = Bonobo_Zoomable__get_hasMaxLevel (zoomable_frame->priv->zoomable, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		retval = FALSE;
 	bonobo_object_check_env (BONOBO_OBJECT (zoomable_frame),
 				 zoomable_frame->priv->zoomable, &ev);
@@ -520,7 +520,7 @@ bonobo_zoomable_frame_is_continuous (BonoboZoomableFrame *zoomable_frame)
 
 	CORBA_exception_init (&ev);
 	retval = Bonobo_Zoomable__get_isContinuous (zoomable_frame->priv->zoomable, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		retval = FALSE;
 	bonobo_object_check_env (BONOBO_OBJECT (zoomable_frame),
 				 zoomable_frame->priv->zoomable, &ev);

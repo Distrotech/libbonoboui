@@ -287,7 +287,7 @@ bonobo_ui_container_corba_object_create (BonoboObject *object)
 	CORBA_exception_init (&ev);
 
 	POA_Bonobo_UIContainer__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
 		g_free (servant);
 		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;

@@ -8,6 +8,7 @@
  */
 #include <config.h>
 #include <bonobo/Bonobo.h>
+#include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-canvas-item.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-main.h>
@@ -185,7 +186,7 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 		&x1, &y1, &x2, &y2,
 		&ev);
 
-	if (ev._major == CORBA_NO_EXCEPTION){
+	if (!BONOBO_EX (&ev)){
 		if (cuta->width > 0 && cuta->height > 0){
 			ArtUta *uta;
 
@@ -373,7 +374,7 @@ gbi_render (GnomeCanvasItem *item, GnomeCanvasBuf *buf)
 	
 	CORBA_exception_init (&ev);
 	Bonobo_Canvas_Component_render (gbi->priv->object, cbuf, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
 		CORBA_exception_free (&ev);
 		return;
 	}
@@ -732,7 +733,7 @@ bonobo_canvas_item_new (GnomeCanvasGroup *parent, BonoboObjectClient *embeddable
 	remote_item = Bonobo_Embeddable_createCanvasItem (corba_embeddable, is_aa, proxy_ref, &ev);
 	CORBA_Object_release (proxy_ref, &ev);
 
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		goto fail;
 
 	if (remote_item == CORBA_OBJECT_NIL)

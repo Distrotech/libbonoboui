@@ -487,7 +487,7 @@ bonobo_control_corba_object_create (BonoboObject *object)
 
 	CORBA_exception_init (&ev);
 	POA_Bonobo_Control__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
 		g_free (servant);
 		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;
@@ -855,7 +855,7 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 	pbag = Bonobo_ControlFrame_getAmbientProperties (
 		control_frame, real_ev);
 
-	if (real_ev->_major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (real_ev)) {
 		if (!ev)
 			CORBA_exception_free (&tmp_ev);
 		pbag = CORBA_OBJECT_NIL;

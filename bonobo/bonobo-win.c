@@ -1182,7 +1182,7 @@ real_emit_ui_event (BonoboWindowPrivate *priv, const char *component_name,
 			bonobo_object_check_env (
 				priv->container, component, &ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION)
+		if (BONOBO_EX (&ev))
 			g_warning ("Exception emitting state change to %d '%s' '%s'"
 				   "major %d, %s",
 				   type, id, new_state, ev._major, ev._repo_id);
@@ -1473,7 +1473,7 @@ real_exec_verb (BonoboWindowPrivate *priv,
 			bonobo_object_check_env (
 				priv->container, component, &ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION)
+		if (BONOBO_EX (&ev))
 			g_warning ("Exception executing verb '%s' '%s'"
 				   "major %d, %s",
 				   verb, component_name, ev._major, ev._repo_id);

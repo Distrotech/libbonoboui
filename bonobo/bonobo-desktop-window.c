@@ -10,6 +10,7 @@
  */
 #include <config.h>
 #include <gtk/gtkplug.h>
+#include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-desktop-window.h>
 #include <gdk/gdkprivate.h>
@@ -32,7 +33,7 @@ bonobo_desktop_window_corba_object_create (BonoboObject *object)
 
 	CORBA_exception_init (&ev);
 	POA_Bonobo_Desktop_Window__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
 		g_free (servant);
 		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;

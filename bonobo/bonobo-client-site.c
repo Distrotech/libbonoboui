@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
+#include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-client-site.h>
 #include <bonobo/bonobo-embeddable.h>
 #include <bonobo/bonobo-canvas-item.h>
@@ -201,7 +202,7 @@ bonobo_client_site_corba_object_create (BonoboObject *object)
 	CORBA_exception_init (&ev);
 
 	POA_Bonobo_ClientSite__init ( (PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
 		CORBA_exception_free (&ev);
 		g_free (servant);
 		return CORBA_OBJECT_NIL;
@@ -348,7 +349,7 @@ bonobo_client_site_bind_embeddable (BonoboClientSite   *client_site,
 		bonobo_object_corba_objref (BONOBO_OBJECT (client_site)),
 		&ev);
 		
-	if (ev._major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (&ev)) {
 		bonobo_object_check_env (BONOBO_OBJECT (object),
 					 embeddable_object, &ev);
 		CORBA_exception_free (&ev);
@@ -460,7 +461,7 @@ bonobo_client_site_new_view_full (BonoboClientSite  *client_site,
 		bonobo_object_corba_objref (BONOBO_OBJECT (view_frame)),
 		&ev);
 
-	if (ev._major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (&ev)) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (client_site),
 			server_object,

@@ -424,7 +424,7 @@ bonobo_ui_component_corba_object_create (BonoboObject *object)
 	CORBA_exception_init (&ev);
 
 	POA_Bonobo_UIComponent__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
                 g_free (servant);
 		CORBA_exception_free (&ev);
                 return CORBA_OBJECT_NIL;
@@ -547,7 +547,7 @@ impl_xml_set (BonoboUIComponent  *component,
 	Bonobo_UIContainer_setNode (container, path, xml,
 				     name, real_ev);
 
-	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
+	if (BONOBO_EX (real_ev) && !ev)
 		g_warning ("Serious exception on node_set '$%s' of '%s' to '%s'",
 			   bonobo_exception_get_text (real_ev), xml, path);
 
@@ -625,7 +625,7 @@ impl_xml_get (BonoboUIComponent *component,
 
 	xml = Bonobo_UIContainer_getNode (container, path, !recurse, real_ev);
 
-	if (real_ev->_major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (real_ev)) {
 		if (!ev)
 			g_warning ("Serious exception getting node '%s' '$%s'",
 				   path, bonobo_exception_get_text (real_ev));
@@ -694,7 +694,7 @@ impl_xml_rm (BonoboUIComponent  *component,
 	Bonobo_UIContainer_removeNode (
 		container, path, priv->name, real_ev);
 
-	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
+	if (!ev && BONOBO_EX (real_ev))
 		g_warning ("Serious exception removing path  '%s' '%s'",
 			   path, bonobo_exception_get_text (real_ev));
 
@@ -725,7 +725,7 @@ bonobo_ui_component_object_set (BonoboUIComponent  *component,
 
 	Bonobo_UIContainer_setObject (container, path, control, real_ev);
 
-	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
+	if (!ev && BONOBO_EX (real_ev))
 		g_warning ("Serious exception setting object '%s' '%s'",
 			   path, bonobo_exception_get_text (real_ev));
 
@@ -757,7 +757,7 @@ bonobo_ui_component_object_get (BonoboUIComponent  *component,
 
 	ret = Bonobo_UIContainer_getObject (container, path, real_ev);
 
-	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
+	if (!ev && BONOBO_EX (real_ev))
 		g_warning ("Serious exception getting object '%s' '%s'",
 			   path, bonobo_exception_get_text (real_ev));
 
@@ -818,7 +818,7 @@ impl_freeze (BonoboUIComponent *component,
 
 	Bonobo_UIContainer_freeze (container, real_ev);
 
-	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
+	if (BONOBO_EX (real_ev) && !ev)
 		g_warning ("Serious exception on UI freeze '$%s'",
 			   bonobo_exception_get_text (real_ev));
 
@@ -853,7 +853,7 @@ impl_thaw (BonoboUIComponent *component,
 
 	Bonobo_UIContainer_thaw (container, real_ev);
 
-	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
+	if (BONOBO_EX (real_ev) && !ev)
 		g_warning ("Serious exception on UI thaw '$%s'",
 			   bonobo_exception_get_text (real_ev));
 
@@ -992,7 +992,7 @@ impl_exists (BonoboUIComponent *component,
 
 	ret = Bonobo_UIContainer_exists (container, path, real_ev);
 
-	if (real_ev->_major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (real_ev)) {
 		ret = FALSE;
 		if (!ev)
 			g_warning ("Serious exception on path_exists '$%s'",
@@ -1044,7 +1044,7 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component)
 		Bonobo_UIContainer_deregisterComponent (
 			component->priv->container, name, &ev);
 		
-		if (ev._major != CORBA_NO_EXCEPTION)
+		if (BONOBO_EX (&ev))
 			g_warning ("Serious exception deregistering component '%s'",
 				   bonobo_exception_get_text (&ev));
 
@@ -1082,7 +1082,7 @@ bonobo_ui_component_set_container (BonoboUIComponent *component,
 		Bonobo_UIContainer_registerComponent (
 			ref_cont, name, corba_component, &ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION)
+		if (BONOBO_EX (&ev))
 			g_warning ("Serious exception registering component '$%s'",
 				   bonobo_exception_get_text (&ev));
 		

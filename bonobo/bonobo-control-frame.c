@@ -125,7 +125,7 @@ create_bonobo_control_frame (BonoboObject *object)
 
 	CORBA_exception_init (&ev);
 	POA_Bonobo_ControlFrame__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
 		g_free (servant);
 		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;
@@ -224,7 +224,7 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 
 	Bonobo_Control_setWindowId (control, id, &ev);
 	g_free (id);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);
 }
@@ -544,7 +544,7 @@ bonobo_control_frame_control_activate (BonoboControlFrame *control_frame)
 
 	Bonobo_Control_activate (control_frame->priv->control, TRUE, &ev);
 
-	if (ev._major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (&ev)) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (control_frame),
 			(CORBA_Object) control_frame->priv->control, &ev);
@@ -580,7 +580,7 @@ bonobo_control_frame_control_deactivate (BonoboControlFrame *control_frame)
 
 	Bonobo_Control_activate (control_frame->priv->control, FALSE, &ev);
 
-	if (ev._major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (&ev)) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (control_frame),
 			(CORBA_Object) control_frame->priv->control, &ev);
@@ -678,7 +678,7 @@ bonobo_control_frame_control_set_state (BonoboControlFrame  *control_frame,
 
 	Bonobo_Control_setState (control_frame->priv->control, corba_state, &ev);
 
-	if (ev._major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (&ev)) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (control_frame),
 			control_frame->priv->control, &ev);
@@ -804,7 +804,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	Bonobo_Control_setFrame (control,
 				 bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
 				 &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);
 
@@ -923,7 +923,7 @@ bonobo_control_frame_get_control_property_bag (BonoboControlFrame *control_frame
 
 	pbag = Bonobo_Control_getProperties (control, real_ev);
 
-	if (real_ev->_major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (real_ev)) {
 		if (!ev)
 			CORBA_exception_free (&tmp_ev);
 		pbag = CORBA_OBJECT_NIL;
@@ -950,7 +950,7 @@ bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
 	Bonobo_Control_getDesiredSize (control_frame->priv->control,
 				       &width, &height, &ev);
 
-	if (ev._major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (&ev)) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (control_frame),
 			(CORBA_Object) control_frame->priv->control, &ev);

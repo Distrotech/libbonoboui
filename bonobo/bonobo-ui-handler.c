@@ -81,7 +81,7 @@ create_bonobo_ui_handler (BonoboObject *object)
 	CORBA_exception_init (&ev);
 
 	POA_Bonobo_UIHandler__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION) {
+	if (BONOBO_EX (&ev)) {
 		g_free (servant);
 		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;
@@ -394,7 +394,7 @@ bonobo_ui_handler_set_container (BonoboUIHandler  *uih,
 	CORBA_exception_init (&ev);
 
 	top_level = Bonobo_UIHandler_get_toplevel (container, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	if (BONOBO_EX (&ev))
 		bonobo_object_check_env (BONOBO_OBJECT (uih), (CORBA_Object) container, &ev);
 	else {
 		uih->top_level_uih = top_level;
@@ -404,7 +404,7 @@ bonobo_ui_handler_set_container (BonoboUIHandler  *uih,
 			uih->top_level_uih,
 			bonobo_object_corba_objref (BONOBO_OBJECT (uih)), &ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION) {
+		if (BONOBO_EX (&ev)) {
 			bonobo_object_check_env (
 				BONOBO_OBJECT (uih),
 				(CORBA_Object) uih->top_level_uih, &ev);
@@ -436,7 +436,7 @@ bonobo_ui_handler_unset_container (BonoboUIHandler *uih)
 			uih->top_level_uih,
 			bonobo_object_corba_objref (BONOBO_OBJECT (uih)), &ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION) {
+		if (BONOBO_EX (&ev)) {
 			bonobo_object_check_env (
 				BONOBO_OBJECT (uih),
 				(CORBA_Object) uih->top_level_uih, &ev);

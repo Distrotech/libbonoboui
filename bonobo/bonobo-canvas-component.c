@@ -14,6 +14,7 @@
 #include <libgnomeui/gnome-canvas.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>
+#include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-canvas-component.h>
 
 enum {
@@ -657,7 +658,7 @@ bonobo_canvas_component_object_create (BonoboObject *object)
 
 	CORBA_exception_init (&ev);
 	POA_Bonobo_Canvas_Component__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (BONOBO_EX (&ev)){
 		g_free (servant);
 		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;
