@@ -685,8 +685,8 @@ bonobo_zoomable_report_zoom_level_changed (BonoboZoomable *zoomable,
 
 	CORBA_exception_init (&ev);
 	Bonobo_ZoomableFrame_onLevelChanged (zoomable->priv->zoomable_frame,
-							zoomable->priv->zoom_level,
-							&ev);
+					     zoomable->priv->zoom_level,
+					     &ev);
 	CORBA_exception_free (&ev);
 }
 
