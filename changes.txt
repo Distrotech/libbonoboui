@@ -1,3 +1,11 @@
+bonobo-control-frame.[ch]:
+	Privatize
+		bonobo_control_frame_realize
+		bonobo_control_frame_focus
+		bonobo_control_frame_size_request
+	bonobo_control_frame_set_ui_container,
+	bonobo_control_frame_construct, add CORBA_Environment
+
 bonobo-ui-util.[ch]:
 	Remove all anachronistic _build methods, everyone just a file.
 	       bonobo_ui_util_new_menu,

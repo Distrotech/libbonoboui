@@ -1,3 +1,132 @@
+2001-10-31  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar-control-item.c
+	(set_control_property_bag_value): don't set things on a NULL bag.
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_util_get_ui_fname): fix silly.
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_set_transient_for): re-impl, fix leak.
+
+2001-10-30  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_bind_to_control): shortcut re-sets,
+	only take a CORBA ref.
+	(bonobo_control_frame_dispose): only release a CORBA ref.
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_notify_plug_died): impl.
+
+	* bonobo/bonobo-plug.c
+	(bonobo_plug_destroy_event): impl.
+	(bonobo_plug_dispose): notify control that plug died.
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_plug_destroy_cb): kill.
+	(bonobo_control_plug_destroy_event_cb): kill.
+	(impl_Bonobo_Control_setWindowId): don't connect them.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_sync_unrealize): kill.
+	(bonobo_control_frame_sync_realize): simplify.
+	s/priv->container/priv->socket/ remove the hbox
+	hack.
+	(bonobo_control_frame_construct): kill hbox code, add ev.
+	(bonobo_control_frame_socket_state_changed): kill, move
+	into the socket -> loose a signal & unsafety.
+	(bonobo_control_frame_autoactivate_focus_in): kill.
+	(bonobo_control_frame_autoactivate_focus_out): kill.
+	(bonobo_control_frame_create_socket): fold back into
+	(bonobo_control_frame_construct): here & upd.
+	(bonobo_control_frame_new): upd.
+	(bonobo_control_frame_init): create the socket here.
+	(bonobo_control_frame_get_widget): return the socket.
+	(bonobo_control_frame_realize): kill in favour of
+	(bonobo_control_frame_set_remote_window): me & upd.
+	(bonobo_control_frame_destroy): kill.
+	(bonobo_control_frame_set_propbag): take a ref on the
+	incoming prop bag.
+	(bonobo_control_frame_dispose): unref the propbag.
+
+	* bonobo/bonobo-socket.c
+	(bonobo_socket_state_changed, bonobo_socket_focus_in),
+	(bonobo_socket_focus_out): impl.
+	(bonobo_socket_class_init): hook up.
+	(bonobo_socket_size_request): use CORBA if we are not
+	realized yet.
+
+	* changes.txt: upd.
+
+	* bonobo/bonobo-socket.c
+	(bonobo_socket_unrealize): kill.
+	(bonobo_socket_class_init): upd.
+
+	* bonobo/bonobo-control.c
+	(impl_Bonobo_Control_getDesiredSize): upd. signature.
+	(impl_Bonobo_Control_realize): kill.
+	(impl_Bonobo_Control_unrealize): kill.
+	(bonobo_control_set_control_frame): shortcut re-sets.
+
+	* bonobo/bonobo-control-frame.c (get_toplevel_fn):
+	rename to
+	(impl_Bonobo_ControlFrame_getToplevelId): this & re-impl.
+	(add_toplevel_prop): kill.
+	(bonobo_control_frame_set_propbag): upd.
+	(impl_Bonobo_ControlFrame_getAmbientProperties): no demand
+	property bag instantiation nonsense.
+
+	* doc/control.txt (Note 2): add Darin's input.
+
+2001-10-27  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_get_socket),
+	(bonobo_control_frame_set_socket): impl.
+	(bonobo_control_frame_dispose): impl.
+	(bonobo_control_frame_finalize): move stuff to dispose.
+	(bonobo_control_frame_socket_destroy): kill the mess.
+	(bonobo_control_frame_create_socket): don't connect to
+	destroy.
+
+	* bonobo/bonobo-socket.c (bonobo_socket_dispose): impl.
+	(bonobo_socket_finalize): stub.
+	(bonobo_socket_set_control_frame): impl.
+	(bonobo_socket_get_control_frame): impl.
+	(bonobo_socket_init): kill.
+
+	* doc/control.txt (interactions): fix typo.
+	(Misc Notes): add to describe Marks' tests.
+
+2001-10-25  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control.c
+	(impl_Bonobo_Control_setWindowId): kill is_local,
+	GtkPlug / GtkSocket now do this for us.
+	(idle_destroy_socket): kill.
+	(remove_destroy_idle): kill.
+	(impl_Bonobo_Control_setWindowId): completely
+	re-write & simplify.
+	(bonobo_control_dispose): chain to parent dispoze
+	method; sigh.
+	(bonobo_gtk_widget_from_x11_id): kill.
+	(bonobo_control_finalize): remove destroy_idle mess.
+
+	* bonobo/bonobo-control-internal.h: add.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_sync_realize): kill remote
+	call to realize.
+	(bonobo_control_frame_sync_unrealize): ditto.
+
+	* bonobo/bonobo-control.c (process_events): kill.
+	(impl_Bonobo_Control_realize),
+	(impl_Bonobo_Control_unrealize): stub.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_destroy): chain to parent.
+
 2001-10-29  jacob berkman  <jacob@ximian.com>
 
 	* tests/test-filesel.c (main): 
