@@ -1,3 +1,9 @@
+2004-03-18  Alexander Larsson  <alexl@redhat.com>
+
+	* bonobo/bonobo-control-frame.c (bonobo_control_frame_set_ui_container):
+	Move activated check inside check for NIL, since we use this
+	function with NIL from dispose.
+
 2004-03-16  Gareth Owen  <gowen72@yahoo.com>
 
 	* configure.in: Added en_GB to ALL_LINGUAS

@@ -717,7 +717,6 @@ bonobo_control_frame_set_ui_container (BonoboControlFrame *frame,
 	Bonobo_UIContainer old_ui_container;
 
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
-	g_return_if_fail (frame->priv->activated == FALSE);
 
 	old_ui_container = frame->priv->ui_container;
 
@@ -732,6 +731,9 @@ bonobo_control_frame_set_ui_container (BonoboControlFrame *frame,
 
 	/* See ui-faq.txt if this dies on you. */
 	if (ui_container != CORBA_OBJECT_NIL) {
+		if (frame->priv->activated) 
+			g_warning ("Trying to associate an new UI container with an activated control frame");
+		
 		g_assert (CORBA_Object_is_a (
 			ui_container, "IDL:Bonobo/UIContainer:1.0", ev));
 
