@@ -18,9 +18,8 @@ typedef struct {
 } GnomeView;
 
 typedef struct {
-	GtkObjectClass parent_class;
-	void  (*test)(GnomeObject *object);
-} GnomeObjectClass;
+	GnomeObjectClass parent_class;
+} GnomeViewClass;
 
 GtkType      gnome_view_get_type  (void);
 
