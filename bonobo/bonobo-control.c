@@ -643,7 +643,7 @@ bonobo_control_class_init (BonoboControlClass *klass)
                                 GTK_RUN_LAST,
                                 object_class->type,
                                 GTK_SIGNAL_OFFSET (BonoboControlClass, set_frame),
-                                gtk_marshal_NONE__BOOL,
+                                gtk_marshal_NONE__NONE,
                                 GTK_TYPE_NONE, 0);
 
 	control_signals [ACTIVATE] =
