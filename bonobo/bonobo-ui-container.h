@@ -37,8 +37,6 @@ typedef struct {
 } BonoboUIContainerClass;
 
 GtkType                      bonobo_ui_container_get_type            (void);
-POA_Bonobo_UIContainer__epv *bonobo_ui_container_get_epv             (void);
-Bonobo_UIContainer           bonobo_ui_container_corba_object_create (BonoboObject       *object);
 BonoboUIContainer           *bonobo_ui_container_construct           (BonoboUIContainer  *container,
 								      Bonobo_UIContainer  corba_container);
 
