@@ -32,9 +32,8 @@ CORBA_SOURCE =			\
 idls =						\
 	$(top_srcdir)/idl/bonobo.idl		\
 	$(top_srcdir)/idl/gnome-advise.idl	\
-	$(top_srcdir)/idl/gnome-base.idl	\
-	$(top_srcdir)/idl/gnome-component.idl	\
 	$(top_srcdir)/idl/gnome-client-site.idl	\
+	$(top_srcdir)/idl/gnome-component.idl	\
 	$(top_srcdir)/idl/gnome-container.idl	\
 	$(top_srcdir)/idl/gnome-inplace.idl	\
 	$(top_srcdir)/idl/gnome-moniker.idl	\
