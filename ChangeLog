@@ -1,5 +1,11 @@
 2004-02-20  Arvind Samptur <arvind.samptur@wipro.com>
 
+	* bonobo/bonobo-ui-internal-toolbar.c:
+	(impl_style_changed): Propogate this further up
+	to the parent class
+
+2004-02-20  Arvind Samptur <arvind.samptur@wipro.com>
+
 	* bonobo/bonobo-ui-sync-toolbar.c: (toolbar_style_changed): bin this
 	(set_attributes_on_child)
 	(toolbar_get_children): move these to
