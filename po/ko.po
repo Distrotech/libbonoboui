@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.112.0\n"
-"POT-Creation-Date: 2002-05-27 12:51+0100\n"
-"PO-Revision-Date: 2002-03-20 15:23+0900\n"
+"POT-Creation-Date: 2002-05-30 14:07+0900\n"
+"PO-Revision-Date: 2002-05-30 14:12+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -85,22 +85,22 @@ msgstr "설명"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "필요한 인터페이스"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
 "A NULL_terminated array of interfaces which a server must support in order "
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr ""
+msgstr "셀렉터에 열거되기 위해서 서버가 지원해야 할 인터페이스의 NULL로 끝나는 배열.  열거된 인터페이스가 없을 때 기본값은 \"IDL:Bonobo/Embeddable:1.0\""
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "필요한 인터페이스 엔트리"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "필요한 인터페이스의 하나"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -136,16 +136,15 @@ msgstr "아이콘(_I)"
 
 #: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
-msgstr "글월과 아이콘(_T)"
+msgstr "글자와 아이콘(_T)"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "글월과 아이콘(_T)"
+msgstr "글자만"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr "우선 순위 텍스트만(_P)"
+msgstr "우선 순위 글자만(_P)"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -173,13 +172,12 @@ msgid "DISPLAY"
 msgstr "<디스플레이>"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
-#, fuzzy
 msgid "X screen to use"
-msgstr "사용할 X 디스플레이"
+msgstr "사용할 X 스크린"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "<스크린>"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -283,16 +281,15 @@ msgstr "도구 모음을 움직일 수 있는지"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr ""
+msgstr "목차"
 
 #: bonobo/bonobo-ui-util.c:584
-#, fuzzy
 msgid "View help for this application"
-msgstr "이 프로그램에 대하여"
+msgstr "이 프로그램에 대한 도움말을 봅니다"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "창의 이름 - 설정 직렬화에 사용됩니다"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
