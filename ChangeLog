@@ -1,3 +1,21 @@
+2002-03-13  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-main.c
+	(libbonoboui_module_info_get): impl.
+	(do_low_level_init): split out of
+	(bonobo_ui_init_full): here.
+	(libbonoboui_post_args_parse): impl.
+
+	* bonobo/bonobo-ui-init-gtk.c: move from libgnomeui
+
+2002-03-11  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-main.c (bonobo_ui_init_full): 
+	use DisplayString not gdk_get_display.
+
+	* samples/controls/bonobo-sample-controls.c (main):
+	ditto.
+
 2002-03-11  Changwoo Ryu  <cwryu@debian.org>
 
 	* configure.in: Added 'ko' to ALL_LINGUAS.

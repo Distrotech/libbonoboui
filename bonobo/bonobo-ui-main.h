@@ -14,8 +14,16 @@
 #define __BONOBO_UI_MAIN_H__ 1
 
 #include <bonobo/bonobo-main.h>
+#include <libgnome/gnome-program.h>
 
 G_BEGIN_DECLS
+
+#define LIBBONOBOUI_MODULE libbonobo_ui_module_info_get()
+const GnomeModuleInfo * libbonobo_ui_module_info_get (void) G_GNUC_CONST;
+
+#define BONOBO_UI_GTK_MODULE bonobo_ui_gtk_module_info_get()
+const GnomeModuleInfo * bonobo_ui_gtk_module_info_get (void) G_GNUC_CONST;
+
 
 gboolean   bonobo_ui_is_initialized     (void);
 gboolean   bonobo_ui_init               (const gchar *app_name,

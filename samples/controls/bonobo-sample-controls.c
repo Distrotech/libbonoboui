@@ -9,8 +9,8 @@
 
 #include <config.h>
 #include <string.h>
+#include <gdk/gdkx.h>
 #include <libbonoboui.h>
-
 #include <libgnomecanvas/gnome-canvas-widget.h>
 #define USE_SCROLLED
 
@@ -122,7 +122,7 @@ main (int argc, char *argv [])
 
 	iid = bonobo_activation_make_registration_id (
 		"OAFIID:Bonobo_Sample_ControlFactory",
-		gdk_get_display ());
+		DisplayString (gdk_display));
 
 	retval = bonobo_generic_factory_main (iid, control_factory, NULL);
 

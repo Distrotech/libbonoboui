@@ -11,7 +11,7 @@
  */
 #include <config.h>
 
-#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-private.h>
@@ -89,6 +89,32 @@ bonobo_ui_is_initialized (void)
 	return bonobo_ui_inited;
 }
 
+static void
+do_low_level_init (void)
+{
+	CORBA_Context context;
+	CORBA_Environment ev;
+
+	if (bonobo_ui_inited)
+		return;
+
+	bonobo_ui_inited = TRUE;
+
+	bonobo_setup_x_error_handler ();
+
+	/* FIXME: nasty contractual bonobo-activation issues here */
+		
+	context = bonobo_activation_context_get ();
+		
+	CORBA_exception_init (&ev);
+	CORBA_Context_set_one_value (
+		context, "display",
+		DisplayString (gdk_display),
+		&ev);
+	CORBA_exception_free (&ev);
+}
+
+/* compat */
 gboolean
 bonobo_ui_init (const gchar *app_name, const gchar *app_version,
 		int *argc, char **argv)
@@ -97,6 +123,7 @@ bonobo_ui_init (const gchar *app_name, const gchar *app_version,
 				    NULL, NULL, NULL, TRUE);
 }
 
+/* compat */
 gboolean
 bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 		     int *argc, char **argv, CORBA_ORB orb,
@@ -123,19 +150,7 @@ bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 
 	gtk_init (argc, &argv);
 
-	bonobo_setup_x_error_handler ();
-
-	{ /* FIXME: nasty contractual bonobo-activation issues here */
-		CORBA_Context context;
-		CORBA_Environment ev;
-		
-		context = bonobo_activation_context_get ();
-		
-		CORBA_exception_init (&ev);
-		CORBA_Context_set_one_value (
-			context, "display", gdk_get_display (), &ev);
-		CORBA_exception_free (&ev);
-	}
+	do_low_level_init ();
 
 	return TRUE;
 }
@@ -155,4 +170,43 @@ bonobo_ui_debug_shutdown (void)
 		return 1;
 	
 	return bonobo_debug_shutdown ();
+}
+
+static void
+libbonoboui_post_args_parse (GnomeProgram    *program,
+			     GnomeModuleInfo *mod_info)
+{
+	do_low_level_init ();
+}
+
+const GnomeModuleInfo *
+libbonobo_ui_module_info_get (void)
+{
+	static GnomeModuleInfo module_info = {
+		"libbonoboui", VERSION,
+		N_("Bonobo GUI support"),
+		NULL, NULL,
+		NULL, libbonoboui_post_args_parse,
+		NULL, NULL, NULL, NULL
+	};
+
+	if (module_info.requirements == NULL) {
+		static GnomeModuleRequirement req[6];
+
+		req[0].required_version = "1.3.7";
+		req[0].module_info = bonobo_ui_gtk_module_info_get ();
+
+		req[1].required_version = "1.102.0";
+		req[1].module_info = LIBGNOME_MODULE;
+
+		req[2].required_version = "1.101.2";
+		req[2].module_info = GNOME_BONOBO_MODULE;
+
+		req[5].required_version = NULL;
+		req[5].module_info = NULL;
+
+		module_info.requirements = req;
+	}
+
+	return &module_info;
 }

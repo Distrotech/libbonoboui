@@ -87,6 +87,7 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-dock-band.h			\
 	bonobo-dock-layout.c			\
 	bonobo-dock-layout.h			\
+	bonobo-ui-init-gtk.c			\
 	bonobo-ui-main.h			\
 	bonobo-ui-main.c			\
 	bonobo-canvas-component.c		\
