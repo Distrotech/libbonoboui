@@ -499,8 +499,8 @@ hide_not_fitting_items (BonoboUIToolbar *toolbar)
 
 	allocation = & GTK_WIDGET (toolbar)->allocation;
 
-	child_allocation.x      = -1;
-	child_allocation.y      = -1;
+	child_allocation.x      = 40000;
+	child_allocation.y      = 40000;
 	child_allocation.width  = 1;
 	child_allocation.height = 1;
 
