@@ -1,5 +1,11 @@
 libbonoboui 1.108.1
 
+	* GType != guint fixage (George Lebl)
+	* substantial control lifecycle work & cleanup (Michael)
+	* macro fixage (Jacob)
+	* forward unhandled mouse clicks on plug (Mark McLouglin)
+	* popup API addition (Mark)
+
 libbonoboui 1.108.0
 
 	* add glib-mkenum (Jacob)

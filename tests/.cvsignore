@@ -10,5 +10,5 @@ test-sensitivity
 test-reparent
 test-moniker
 test-selector
-
+test-events
 test-filesel

@@ -29,3 +29,5 @@ COPYING
 .lclintrc
 xml-i18n-*
 intltool-*
+libbonoboui-*.tar.gz
+libbonoboui2-*.tar.gz

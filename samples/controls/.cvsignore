@@ -4,3 +4,4 @@ Makefile
 Makefile.in
 bonobo-sample-controls-2
 Bonobo_Sample_Controls.server
+Bonobo_Sample_Controls.server.in
