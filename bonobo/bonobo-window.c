@@ -1350,16 +1350,14 @@ put_hint_in_statusbar (GtkWidget *menuitem, BonoboWinPrivate *priv)
 		g_warning ("Encoding error in tip on '%s', ensure you are "
 			   "encoding this node's tip",
 			   bonobo_ui_xml_make_path (node));
-		return;
-	}
-
-	if (priv->main_status) {
+	} else if (priv->main_status) {
 		guint id;
 
 		id = gtk_statusbar_get_context_id (priv->main_status,
 						  "BonoboWin:menu-hint");
 		gtk_statusbar_push (priv->main_status, id, txt);
 	}
+
 	g_free (txt);
 	bonobo_ui_node_free_string (hint);
 }
@@ -2110,12 +2108,22 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	}
 	
 	if ((txt = cmd_get_attr (node, cmd_node, "tip"))) {
+		gboolean err;
+		char *decoded_txt;
 
-		bonobo_ui_toolbar_item_set_tooltip (
-			BONOBO_UI_TOOLBAR_ITEM (widget),
-			bonobo_ui_toolbar_get_tooltips (
-				BONOBO_UI_TOOLBAR (parent)), txt);
+		decoded_txt = bonobo_ui_util_decode_str (txt, &err);
+		if (err) {
+			g_warning ("Encoding error in tip on '%s', ensure you are "
+				   "encoding this node's tip",
+				   bonobo_ui_xml_make_path (node));
+		} else {
+			bonobo_ui_toolbar_item_set_tooltip (
+				BONOBO_UI_TOOLBAR_ITEM (widget),
+				bonobo_ui_toolbar_get_tooltips (
+					BONOBO_UI_TOOLBAR (parent)), decoded_txt);
+		}
 
+		g_free (decoded_txt);
 		bonobo_ui_node_free_string (txt);
 	}
 }
