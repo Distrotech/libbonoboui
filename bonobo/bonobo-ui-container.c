@@ -18,6 +18,10 @@
 #include <bonobo/bonobo-win.h>
 #include <bonobo/bonobo-ui-container.h>
 
+#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+
+static GtkObjectClass *bonobo_ui_container_parent_class;
+
 POA_Bonobo_UIContainer__vepv bonobo_ui_container_vepv;
 
 struct _BonoboUIContainerPrivate {
@@ -210,6 +214,7 @@ impl_Bonobo_UIContainer_thaw (PortableServer_Servant   servant,
 static void
 bonobo_ui_container_destroy (GtkObject *object)
 {
+	bonobo_ui_container_parent_class->destroy (object);
 }
 
 static void
@@ -219,19 +224,28 @@ bonobo_ui_container_finalize (GtkObject *object)
 
 	g_free (container->priv);
 	container->priv = NULL;
+
+	bonobo_ui_container_parent_class->finalize (object);
 }
 
-/**
- * bonobo_ui_container_get_epv:
- *
- * Returns: The EPV for the default BonoboUIContainer implementation.  
- */
-POA_Bonobo_UIContainer__epv *
-bonobo_ui_container_get_epv (void)
+static void
+bonobo_ui_container_init (GtkObject *object)
 {
-	POA_Bonobo_UIContainer__epv *epv;
+	BonoboUIContainer *container = (BonoboUIContainer *) object;
 
-	epv = g_new0 (POA_Bonobo_UIContainer__epv, 1);
+	container->priv = g_new0 (BonoboUIContainerPrivate, 1);
+}
+
+static void
+bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
+{
+	GtkObjectClass              *gtk_class = (GtkObjectClass *) klass;
+	POA_Bonobo_UIContainer__epv *epv = &klass->epv;
+
+	bonobo_ui_container_parent_class = gtk_type_class (PARENT_TYPE);
+	
+	gtk_class->destroy  = bonobo_ui_container_destroy;
+	gtk_class->finalize = bonobo_ui_container_finalize;
 
 	epv->registerComponent   = impl_Bonobo_UIContainer_registerComponent;
 	epv->deregisterComponent = impl_Bonobo_UIContainer_deregisterComponent;
@@ -246,26 +260,6 @@ bonobo_ui_container_get_epv (void)
 
 	epv->freeze     = impl_Bonobo_UIContainer_freeze;
 	epv->thaw       = impl_Bonobo_UIContainer_thaw;
-
-	return epv;
-}
-
-static void
-bonobo_ui_container_init (GtkObject *object)
-{
-	BonoboUIContainer *container = (BonoboUIContainer *) object;
-
-	container->priv = g_new0 (BonoboUIContainerPrivate, 1);
-}
-
-static void
-bonobo_ui_container_class_init (GtkObjectClass *klass)
-{
-	bonobo_ui_container_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
-	bonobo_ui_container_vepv.Bonobo_UIContainer_epv = bonobo_ui_container_get_epv ();
-
-	klass->destroy  = bonobo_ui_container_destroy;
-	klass->finalize = bonobo_ui_container_finalize;
 }
 
 /**
@@ -290,72 +284,21 @@ bonobo_ui_container_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (bonobo_object_get_type (), &info);
+		type = bonobo_x_type_unique (
+			PARENT_TYPE,
+			POA_Bonobo_UIContainer__init,
+			NULL,
+			GTK_STRUCT_OFFSET (BonoboUIContainerClass, epv),
+			&info);
 	}
 
 	return type;
 }
 
-/**
- * bonobo_ui_container_corba_object_create:
- * @object: The GtkObject that will wrap the CORBA object.
- *
- * Creates an activates the CORBA object that is wrcontainered
- * by the BonoboObject @object.
- *
- * Returns: An activated object reference to the created object or
- * %CORBA_OBJECT_NIL in case of failure.
- */
-Bonobo_UIContainer
-bonobo_ui_container_corba_object_create (BonoboObject *object)
-{
-	POA_Bonobo_UIContainer *servant;
-	CORBA_Environment ev;
-	
-	servant = (POA_Bonobo_UIContainer *)g_new0 (BonoboObjectServant, 1);
-	servant->vepv = &bonobo_ui_container_vepv;
-
-	CORBA_exception_init (&ev);
-
-	POA_Bonobo_UIContainer__init ((PortableServer_Servant) servant, &ev);
-	if (BONOBO_EX (&ev)){
-		g_free (servant);
-		CORBA_exception_free (&ev);
-		return CORBA_OBJECT_NIL;
-	}
-	CORBA_exception_free (&ev);
-
-	return bonobo_object_activate_servant (object, servant);
-}
-
-BonoboUIContainer *
-bonobo_ui_container_construct (BonoboUIContainer  *container,
-			       Bonobo_UIContainer  corba_container)
-{
-	g_return_val_if_fail (container != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_UI_CONTAINER (container), NULL);
-	g_return_val_if_fail (corba_container != CORBA_OBJECT_NIL, NULL);
-
-	bonobo_object_construct (BONOBO_OBJECT (container), corba_container);
-	
-	return container;
-}
-
 BonoboUIContainer *
 bonobo_ui_container_new (void)
 {
-	Bonobo_UIContainer corba_container;
-	BonoboUIContainer *container;
-
-	container = gtk_type_new (BONOBO_UI_CONTAINER_TYPE);
-
-	corba_container = bonobo_ui_container_corba_object_create (BONOBO_OBJECT (container));
-	if (corba_container == CORBA_OBJECT_NIL) {
-		bonobo_object_unref (BONOBO_OBJECT (container));
-		return NULL;
-	}
-	
-	return bonobo_ui_container_construct (container, corba_container);
+	return gtk_type_new (BONOBO_UI_CONTAINER_TYPE);
 }
 
 static void

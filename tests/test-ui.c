@@ -332,6 +332,9 @@ main (int argc, char **argv)
 			    slow_size_request, NULL);
 
 	componenta = bonobo_ui_component_new ("A");
+	bonobo_object_unref (BONOBO_OBJECT (componenta));
+
+	componenta = bonobo_ui_component_new ("A");
 	componentb = bonobo_ui_component_new ("B");
 	componentc = bonobo_ui_component_new ("C");
 
