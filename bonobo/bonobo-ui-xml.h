@@ -2,7 +2,7 @@
 #ifndef _BONOBO_UI_XML_H_
 #define _BONOBO_UI_XML_H_
 
-#include <gtk/gtk.h>
+#include <gtk/gtkobject.h>
 #include <bonobo/bonobo-ui-node.h>
 
 #define BONOBO_UI_XML_TYPE        (bonobo_ui_xml_get_type ())

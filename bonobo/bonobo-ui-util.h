@@ -1,10 +1,10 @@
 #ifndef _BONOBO_UI_XML_UTIL_H_
 #define _BONOBO_UI_XML_UTIL_H_
 
-#include <gnome-xml/tree.h>
-#include <gtk/gtk.h>
+#include <gtk/gtkwidget.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <bonobo/bonobo-ui-component.h>
+#include <bonobo/bonobo-ui-xml.h>
 
 void       bonobo_ui_util_build_skeleton       (BonoboUIXml  *xml);
 char      *bonobo_ui_util_pixbuf_to_xml        (GdkPixbuf    *pixbuf);

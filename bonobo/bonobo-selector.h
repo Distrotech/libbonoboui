@@ -2,8 +2,6 @@
 #ifndef __BONOBO_SELECTOR_H__
 #define __BONOBO_SELECTOR_H__
 
-
-#include <gtk/gtk.h>
 #include <libgnomeui/gnome-dialog.h>
 
 BEGIN_GNOME_DECLS

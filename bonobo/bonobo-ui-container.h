@@ -2,8 +2,6 @@
 #ifndef _BONOBO_UI_CONTAINER_H_
 #define _BONOBO_UI_CONTAINER_H_
 
-#include <gnome.h>
-#include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-win.h>
 
 #define BONOBO_UI_CONTAINER_TYPE        (bonobo_ui_container_get_type ())

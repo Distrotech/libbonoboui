@@ -10,6 +10,7 @@
 
 #include "config.h"
 #include <string.h>
+#include <gtk/gtksignal.h>
 #include <bonobo/bonobo-ui-xml.h>
 
 #include <gnome-xml/tree.h>

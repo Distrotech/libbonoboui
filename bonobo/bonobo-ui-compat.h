@@ -8,6 +8,8 @@
 #include <gtk/gtkcheckmenuitem.h>
 #include <gtk/gtkaccelgroup.h>
 #include <gnome-xml/tree.h>
+#include <libgnomeui/gnome-app.h>
+#include <libgnomeui/gnome-app-helper.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-win.h>
 #include <bonobo/bonobo-ui-component.h>
