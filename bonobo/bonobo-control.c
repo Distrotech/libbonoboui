@@ -635,11 +635,13 @@ bonobo_control_destroy (GtkObject *object)
 		bonobo_object_unref (BONOBO_OBJECT (control->priv->propbag));
 	control->priv->propbag = NULL;
 
-	if (control->priv->active)
-		Bonobo_ControlFrame_activated (control->priv->control_frame,
-					       FALSE, &ev);
-
-	CORBA_Object_release (control->priv->control_frame, &ev);
+	if (control->priv->control_frame != CORBA_OBJECT_NIL) {
+		if (control->priv->active)
+			Bonobo_ControlFrame_activated (control->priv->control_frame,
+						       FALSE, &ev);
+		
+		CORBA_Object_release (control->priv->control_frame, &ev);
+	}
 
 	CORBA_exception_free (&ev);
 
@@ -704,7 +706,10 @@ bonobo_control_set_control_frame (BonoboControl *control, Bonobo_ControlFrame co
 	if (control->priv->control_frame != CORBA_OBJECT_NIL)
 		CORBA_Object_release (control->priv->control_frame, &ev);
 	
-	control->priv->control_frame = CORBA_Object_duplicate (control_frame, &ev);
+	if (control_frame == CORBA_OBJECT_NIL)
+		control->priv->control_frame = CORBA_OBJECT_NIL;
+	else
+		control->priv->control_frame = CORBA_Object_duplicate (control_frame, &ev);
 	
 	CORBA_exception_free (&ev);
 
@@ -717,7 +722,7 @@ bonobo_control_set_control_frame (BonoboControl *control, Bonobo_ControlFrame co
  * being retrieved.
  *
  * Returns: The Bonobo_ControlFrame CORBA object associated with @control, this is
- * a CORBA_object_duplicated object.  You need to CORBA_free it when you are
+ * a CORBA_Object_duplicated object.  You need to CORBA_Object_release it when you are
  * done with it.
  */
 Bonobo_ControlFrame

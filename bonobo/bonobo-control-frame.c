@@ -336,8 +336,15 @@ bonobo_control_frame_destroy (GtkObject *object)
 
 	gtk_widget_destroy (control_frame->priv->container);
 
-	if (control_frame->priv->control != CORBA_OBJECT_NIL)
+	if (control_frame->priv->control != CORBA_OBJECT_NIL) {
+		CORBA_Environment ev;
+
+		CORBA_exception_init (&ev);
+		Bonobo_Control_setFrame (control_frame->priv->control,
+					 CORBA_OBJECT_NIL, &ev);
+		CORBA_exception_free (&ev);
 		bonobo_object_release_unref (control_frame->priv->control, NULL);
+	}
 	control_frame->priv->control = CORBA_OBJECT_NIL;
 
 	if (control_frame->priv->socket) {
