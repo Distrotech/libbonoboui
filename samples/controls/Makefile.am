@@ -4,7 +4,7 @@ bin_PROGRAMS = sample-control-factory sample-control-container
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(srcdir) -I$(top_srcdir) 			\
-	-I. 						\
+	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)				\
 	$(GTK_CFLAGS)
