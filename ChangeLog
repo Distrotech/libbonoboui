@@ -1,5 +1,23 @@
 2002-02-11  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-xml.c (do_set_id): only do
+	sanity checks where absolutely neccessary,
+	accelerate, remove redundant NULL check.
+	(set_id): upd.
+	(xml_get_path): do on-stack path splitting to
+	avoid locking / malloc overheads.
+	(bonobo_ui_xml_path_split),
+	(bonobo_ui_xml_path_freev): kill.
+
+	* bonobo/bonobo-ui-node.c
+	(bonobo_ui_node_unlink): tolerate NULL
+	nodes silently.
+
+	* tests/test-ui-auto.c (test_ui_performance): 
+	more beef.
+
+2002-02-11  Michael Meeks  <michael@ximian.com>
+
 	* Version 1.111.0
 
 2002-02-11  Michael Meeks  <michael@ximian.com>

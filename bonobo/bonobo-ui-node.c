@@ -188,6 +188,9 @@ bonobo_ui_node_insert_before (BonoboUINode *after,
 void
 bonobo_ui_node_unlink (BonoboUINode *node)
 {
+	if (!node)
+		return;
+
 	if (!node->prev) {
 		if (node->parent)
 			node->parent->children = node->next;

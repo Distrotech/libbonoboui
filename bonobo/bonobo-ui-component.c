@@ -638,6 +638,7 @@ impl_xml_set (BonoboUIComponent  *component,
 
 	name = component->priv->name ? component->priv->name : "";
 
+/*	fprintf (stderr, "setNode ( '%s', '%s', '%s' )", path, xml, name); */
 	Bonobo_UIContainer_setNode (container, path, xml,
 				    name, real_ev);
 

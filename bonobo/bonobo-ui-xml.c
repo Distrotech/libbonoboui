@@ -245,36 +245,29 @@ do_set_id (BonoboUIXml *tree, BonoboUINode *node, gpointer id)
 {
 	BonoboUIXmlData *data;
 
-	if (!node)
-		return;
-
 	data = bonobo_ui_xml_get_data (tree, node);
-
 	data->id = id;
 
+#ifdef UI_XML_DEBUG
 	/* Do some basic validation here ? */
 	{
 		const char *p, *name;
 		
 		if ((name = bonobo_ui_node_get_attr_by_id (node, name_id))) {
-			/*
-			 *  The consequences of this are so unthinkable
-			 * an assertion is warrented.
-			 */
 			for (p = name; *p; p++)
 				g_assert (*p != '/' && *p != '#');
 		}
 	}
+#endif
 
-	for (node = bonobo_ui_node_children (node); node;
-             node = bonobo_ui_node_next (node))
+	for (node = node->children; node; node = node->next)
 		do_set_id (tree, node, id);
 }
 
 static void
 set_id (BonoboUIXml *tree, BonoboUINode *node, gpointer id)
 {
-	for (; node; node = bonobo_ui_node_next (node))
+	for (; node; node = node->next)
 		do_set_id (tree, node, id);
 }
 
@@ -574,88 +567,13 @@ bonobo_ui_xml_path_unescape (const char *path)
 }
 */
 
-/*
- * bonobo_ui_xml_path_split:
- * @path: the path to split
- * 
- * This function splits a path on the '/' character
- * there is no escaping in place in the path - thus
- * do not use the '/' character in a node name.
- * 
- * Return value: the split path.
- */
-static char **
-bonobo_ui_xml_path_split (const char *path)
-{
-	return g_strsplit (path, "/", -1);
-/*	GSList *string_list = NULL, *l;
-	char *chunk, **ret;
-	int   i, chunks;
-	const char *p;
-
-	g_return_val_if_fail (path != NULL, NULL);
-
-	chunk = g_malloc (strlen (path) + 2);
-	p = path;
-
-	string_list = g_slist_prepend (string_list, chunk);
-	chunks = 1;
-	for (i = 0; p && *p; i++) {
-
-		if (*p == '\\') {
-			p++;
-			chunk [i] = *p++;
-		} else if (*p == '/') {
-			chunk [i] = '\0';
-			p++;
-			if (*p != '\0') {
-				string_list = g_slist_prepend (
-					string_list, &chunk [i] + 1);
-				chunks++;
-			}
-		} else
-			chunk [i] = *p++;
-	}
-	chunk [i] = '\0';
-	g_assert (i < strlen (path) + 2);
-
-	ret = g_new (char *, chunks + 1);
-	ret [chunks] = NULL;
-
-	l = string_list;
-	for (i = chunks - 1; i >= 0; i--) {
-		ret [i] = l->data;
-		l = bonobo_ui_node_next (l);
-	}
-	g_assert (l == NULL);
-	g_slist_free (string_list);
-	g_assert (ret [0] == chunk);
-
-	fprintf (stderr, "Split path '%s' to:\n", path);
-	for (i = 0; ret [i]; i++)
-		fprintf (stderr, "> %s\n", ret [i]);
-
-		return ret;*/
-}
-
-static void
-bonobo_ui_xml_path_freev (char **split)
-{
-	g_strfreev (split);
-
-/*	if (split)
-		g_free (*split);
-
-		g_free (split);*/
-}
-
 static BonoboUINode *
 xml_get_path (BonoboUIXml *tree, const char *path,
 	      gboolean allow_wild, gboolean *wildcard)
 {
 	BonoboUINode *ret;
-	char   **names;
-	int      i;
+	char   **names, *copy;
+	int      i, j, slashes;
 	
 	g_return_val_if_fail (tree != NULL, NULL);
 	g_return_val_if_fail (!allow_wild || wildcard != NULL, NULL);
@@ -673,14 +591,31 @@ xml_get_path (BonoboUIXml *tree, const char *path,
 	if (path [0] != '/')
 		g_warning ("non-absolute path brokenness '%s'", path);
 
-	names = bonobo_ui_xml_path_split (path);
+	for (i = slashes = 0; path [i]; i++)
+		if (path [i] == '/')
+			slashes++;
+
+	names = g_newa (char *, slashes + 2);
+	names [0] = copy = g_alloca (i + 1);
+
+	for (i = j = 0; path [i]; i++) {
+		if (path [i] == '/') {
+			copy [i] = '\0';
+			names [++j] = &copy [i + 1];
+		} else
+			copy [i] = path [i];
+	}
+	copy [i] = '\0';
+	names [++j] = NULL;
+
+/*	names = bonobo_ui_xml_path_split (path); */
 
 	ret = tree->root;
 	for (i = 0; names && names [i]; i++) {
 		if (names [i] [0] == '\0')
 			continue;
 
-/*		g_warning ("Path element '%s'", names [i]);*/
+/*		g_warning ("Path element '%s'", names [i]); */
 
 		if (allow_wild &&
 		    names [i] [0] == '*' &&
@@ -688,12 +623,12 @@ xml_get_path (BonoboUIXml *tree, const char *path,
 			*wildcard = TRUE;
 
 		else if (!(ret = find_child (ret, names [i]))) {
-			bonobo_ui_xml_path_freev (names);
+/*			bonobo_ui_xml_path_freev (names); */
 			return NULL;
 		}
 	}
 		
-	bonobo_ui_xml_path_freev (names);
+/*	bonobo_ui_xml_path_freev (names); */
 
 /*	DUMP_XML (tree, tree->root, "After clean find path"); */
 
@@ -927,8 +862,6 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 	if (nodes == NULL)
 		return BONOBO_UI_ERROR_OK;
 
-	set_id (tree, nodes, id);
-
 	current = bonobo_ui_xml_get_path (tree, path);
 	if (!current) {
 		BonoboUINode *l, *next;
@@ -940,6 +873,8 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 
 		return BONOBO_UI_ERROR_INVALID_PATH;
 	}
+
+	set_id (tree, nodes, id);
 
 #ifdef UI_XML_DEBUG
 	fprintf (stderr, "\n\n\nPATH: '%s' '%s\n",
