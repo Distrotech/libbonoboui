@@ -139,3 +139,10 @@ EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in \
 	bonoboui-marshal.list $(marshal_sources)
 MAINTAINERCLEANFILES = $(marshal_sources)
 BUILT_SOURCES = $(marshal_sources)
+
+DONT_DIST_SOURCE = $(marshal_sources)
+
+dist-hook:
+	for file in $(DONT_DIST_SOURCE) ; do \
+	    rm -f $(distdir)/$$file ; \
+	done

@@ -1,3 +1,37 @@
+2001-08-07  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: use PKG_CHECK_MODULES, depend on
+	libbonobo >= 1.101.1
+
+	* bonobo/bonobo-control.c (bonobo_control_set_transient_for),
+	(bonobo_control_unset_transient_for): impl.
+	(window_transient_realize_gdk_cb): impl.
+	(window_transient_unrealize_gdk_cb): 
+	(window_set_transient_for_gdk): impl.
+
+	* bonobo/bonobo-control-frame.c: Sort out transient issues.
+	(impl_Bonobo_ControlFrame_getAmbientProperties): 
+	demand create the ambient property bag.
+	(get_toplevel_fn): impl.
+	(add_toplevel_prop): impl.
+	(bonobo_control_frame_set_propbag): upd.
+	(check_ambient_propbag): impl.
+	(bonobo_control_frame_destroy): impl to remove property to kill race.
+	(bonobo_control_frame_class_init): hook it up.
+
+2001-08-07  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/Makefile.am: don't distribute marshal-sources.
+
+2001-08-06  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_window_id_from_x11): fix to return
+	correctlty CORBA allocated type.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_set_remote_window): upd.
+
 2001-08-08  Darin Adler  <darin@bentspoon.com>
 
 	* README: Help people find the information about using

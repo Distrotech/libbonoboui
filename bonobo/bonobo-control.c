@@ -65,12 +65,14 @@ struct _BonoboControlPrivate {
 Bonobo_Control_windowId
 bonobo_control_window_id_from_x11 (guint32 x11_id)
 {
-	CORBA_char *str;
+	guchar                  str[32];
 
-	str = g_strdup_printf ("%d", x11_id);
+	snprintf (str, 31, "%d", x11_id);
+	str[31] = '\0';
 
 /*	printf ("Mangled %d to '%s'\n", x11_id, str);*/
-	return str;
+
+	return CORBA_string_dup (str);
 }
 
 /**
@@ -430,7 +432,7 @@ impl_Bonobo_Control_setState (PortableServer_Servant      servant,
 
 static Bonobo_PropertyBag
 impl_Bonobo_Control_getProperties (PortableServer_Servant  servant,
-				      CORBA_Environment      *ev)
+				   CORBA_Environment      *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 	if (control->priv->propbag == CORBA_OBJECT_NIL)
@@ -992,10 +994,24 @@ BONOBO_TYPE_FUNC_FULL (BonoboControl,
 		       PARENT_TYPE,
 		       bonobo_control);
 
+/*
+ * Varrarg Property get/set simplification wrappers.
+ */
+
+/**
+ * bonobo_control_set_property:
+ * @control: the control with associated property bag
+ * @opt_ev: optional corba exception environment
+ * @first_prop: the first property's name
+ * 
+ * This method takes a NULL terminated list of name, type, value
+ * triplicates, and sets the corresponding values on the control's
+ * associated property bag.
+ **/
 void
-bonobo_control_set_property (BonoboControl       *control,
-			     CORBA_Environment   *opt_ev,
-			     const char          *first_prop,
+bonobo_control_set_property (BonoboControl     *control,
+			     CORBA_Environment *opt_ev,
+			     const char        *first_prop,
 			     ...)
 {
 	Bonobo_PropertyBag  bag;
@@ -1025,10 +1041,20 @@ bonobo_control_set_property (BonoboControl       *control,
 	va_end (args);
 }
 
+/**
+ * bonobo_control_get_property:
+ * @control: the control with associated property bag
+ * @opt_ev: optional corba exception environment
+ * @first_prop: the first property's name
+ * 
+ * This method takes a NULL terminated list of name, type, value
+ * triplicates, and fetches the corresponding values on the control's
+ * associated property bag.
+ **/
 void
-bonobo_control_get_property (BonoboControl       *control,
-			     CORBA_Environment   *opt_ev,
-			     const char          *first_prop,
+bonobo_control_get_property (BonoboControl     *control,
+			     CORBA_Environment *opt_ev,
+			     const char        *first_prop,
 			     ...)
 {
 	Bonobo_PropertyBag  bag;
@@ -1057,3 +1083,154 @@ bonobo_control_get_property (BonoboControl       *control,
 
 	va_end (args);
 }
+
+/*
+ * Transient / Modality handling logic
+ */
+
+#undef TRANSIENT_DEBUG
+
+static void
+window_transient_realize_gdk_cb (GtkWidget *widget)
+{
+	GdkWindow *win;
+
+	win = gtk_object_get_data (GTK_OBJECT (widget), "transient");
+	g_return_if_fail (win != NULL);
+
+#ifdef TRANSIENT_DEBUG
+	g_warning ("Set transient");
+#endif
+	gdk_window_set_transient_for (
+		GTK_WIDGET (widget)->window, win);
+}
+
+static void
+window_transient_unrealize_gdk_cb (GtkWidget *widget)
+{
+	GdkWindow *win;
+
+	win = gtk_object_get_data (GTK_OBJECT (widget), "transient");
+	g_return_if_fail (win != NULL);
+
+	gdk_property_delete (
+		win, gdk_atom_intern ("WM_TRANSIENT_FOR", FALSE));
+}
+
+
+static void
+window_transient_destroy_gdk_cb (GtkWidget *widget)
+{
+	GdkWindow *win;
+	
+	if ((win = gtk_object_get_data (GTK_OBJECT (widget),
+					"transient")))
+		gdk_window_unref (win);
+}
+
+static void       
+window_set_transient_for_gdk (GtkWindow *window, 
+			      GdkWindow *parent)
+{
+	g_return_if_fail (window != NULL);
+	g_return_if_fail (gtk_object_get_data (
+		GTK_OBJECT (window), "transient") == NULL);
+
+	gdk_window_ref (parent);
+
+	gtk_object_set_data (GTK_OBJECT (window), "transient", parent);
+
+	if (GTK_WIDGET_REALIZED (window)) {
+#ifdef TRANSIENT_DEBUG
+		g_warning ("Set transient");
+#endif
+		gdk_window_set_transient_for (
+			GTK_WIDGET (window)->window, parent);
+	}
+
+	gtk_signal_connect (
+		GTK_OBJECT (window), "realize",
+		GTK_SIGNAL_FUNC (window_transient_realize_gdk_cb), NULL);
+
+	gtk_signal_connect (
+		GTK_OBJECT (window), "unrealize",
+		GTK_SIGNAL_FUNC (window_transient_unrealize_gdk_cb), NULL);
+	
+	gtk_signal_connect (
+		GTK_OBJECT (window), "destroy",
+		GTK_SIGNAL_FUNC (window_transient_destroy_gdk_cb), NULL);
+}
+
+/**
+ * bonobo_control_set_transient_for:
+ * @control: a control with associated control frame
+ * @window: a window upon which to set the transient window.
+ * 
+ *   Attempts to make the @window transient for the toplevel
+ * of any associated controlframe the BonoboControl may have.
+ **/
+void
+bonobo_control_set_transient_for (BonoboControl     *control,
+				  GtkWindow         *window,
+				  CORBA_Environment *opt_ev)
+{
+	Bonobo_PropertyBag pb;
+	char              *id;
+	GdkWindow         *win;
+	guint32            x11_id;
+
+	g_return_if_fail (GTK_IS_WINDOW (window));
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+
+	pb = bonobo_control_get_ambient_properties (control, NULL);
+
+	g_return_if_fail (pb != CORBA_OBJECT_NIL);
+
+	id = bonobo_property_bag_client_get_value_string (
+		pb, "bonobo:toplevel", opt_ev);
+
+	g_return_if_fail (id != CORBA_OBJECT_NIL);
+
+	x11_id = strtol (id, NULL, 10);
+
+#ifdef TRANSIENT_DEBUG
+	g_warning ("Got id '%s' -> %d", id, x11_id);
+#endif
+
+	/* FIXME: Special case the local case ? */
+
+	win = gdk_window_foreign_new (x11_id);
+
+	g_return_if_fail (win != NULL);
+
+	window_set_transient_for_gdk (window, win);
+}
+
+/**
+ * bonobo_control_unset_transient_for:
+ * @control: a control with associated control frame
+ * @window: a window upon which to unset the transient window.
+ * 
+ **/
+void
+bonobo_control_unset_transient_for (BonoboControl     *control,
+				    GtkWindow         *window,
+				    CORBA_Environment *opt_ev)
+{
+	g_return_if_fail (GTK_IS_WINDOW (window));
+
+	gtk_signal_disconnect_by_func (
+		GTK_OBJECT (window),
+		GTK_SIGNAL_FUNC (window_transient_realize_gdk_cb), NULL);
+
+	gtk_signal_disconnect_by_func (
+		GTK_OBJECT (window),
+		GTK_SIGNAL_FUNC (window_transient_unrealize_gdk_cb), NULL);
+	
+	gtk_signal_disconnect_by_func (
+		GTK_OBJECT (window),
+		GTK_SIGNAL_FUNC (window_transient_destroy_gdk_cb), NULL);
+
+	window_transient_unrealize_gdk_cb (GTK_WIDGET (window));
+}
+

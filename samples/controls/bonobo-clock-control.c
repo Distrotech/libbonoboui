@@ -112,6 +112,24 @@ bonobo_clock_control_new (void)
 	return BONOBO_OBJECT (control);
 }
 
+static void
+activate_cb (GtkEditable *editable, BonoboControl *control)
+{
+	GtkWidget *dialog;
+
+	dialog = gtk_message_dialog_new (
+		NULL, 0, GTK_MESSAGE_INFO,
+		GTK_BUTTONS_OK,
+		"This dialog demonstrates transient dialogs");
+
+	bonobo_control_set_transient_for (
+		control, GTK_WINDOW (dialog));
+
+	gtk_dialog_run (GTK_DIALOG (dialog));
+
+	gtk_widget_destroy (dialog);
+}
+
 BonoboObject *
 bonobo_entry_control_new (void)
 {
@@ -127,6 +145,10 @@ bonobo_entry_control_new (void)
 	pb = bonobo_property_bag_new (NULL, NULL, NULL);
 	bonobo_control_set_properties (control, pb);
 	bonobo_object_unref (BONOBO_OBJECT (pb));
+
+	gtk_signal_connect (
+		GTK_OBJECT (entry), "activate",
+		GTK_SIGNAL_FUNC (activate_cb), control);
 
 	bonobo_property_bag_add_gtk_args (pb, GTK_OBJECT (entry));
 

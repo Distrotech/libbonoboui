@@ -43,6 +43,7 @@ typedef struct {
 
 } BonoboControlFrameClass;
 
+#define BONOBO_CONTROL_FRAME_TOPLEVEL_PROP "bonobo:toplevel"
 
 BonoboControlFrame           *bonobo_control_frame_new                       (Bonobo_UIContainer   ui_container);
 

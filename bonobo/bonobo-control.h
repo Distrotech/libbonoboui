@@ -14,6 +14,7 @@
 #include <glib/gmacros.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
+#include <gtk/gtkwindow.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-ui-component.h>
@@ -59,6 +60,13 @@ void                        bonobo_control_get_property            (BonoboContro
 								    CORBA_Environment   *opt_ev,
 								    const char          *first_prop,
 								    ...);
+
+void                        bonobo_control_set_transient_for       (BonoboControl       *control,
+								    GtkWindow           *window,
+								    CORBA_Environment   *opt_ev);
+void                        bonobo_control_unset_transient_for     (BonoboControl       *control,
+								    GtkWindow           *window,
+								    CORBA_Environment   *opt_ev);
 
 /* "Internal" stuff */
 GType                       bonobo_control_get_type                (void) G_GNUC_CONST;

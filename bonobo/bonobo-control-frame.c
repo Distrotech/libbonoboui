@@ -73,15 +73,91 @@ impl_Bonobo_ControlFrame_getUIHandler (PortableServer_Servant  servant,
 	return bonobo_object_dup_ref (control_frame->priv->ui_container, ev);
 }
 
-static Bonobo_PropertyBag
-impl_Bonobo_ControlFrame_getAmbientProperties (PortableServer_Servant  servant,
-						 CORBA_Environment      *ev)
+static void
+get_toplevel_fn (BonoboPropertyBag *bag,
+		 BonoboArg         *arg,
+		 guint              arg_id,
+		 CORBA_Environment *ev,
+		 gpointer           user_data)
 {
-	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
-	Bonobo_PropertyBag corba_propbag;
+	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (user_data);
+	GtkWidget          *toplev;
+	char               *id;
 
-	if (control_frame->priv->propbag == NULL)
-		return CORBA_OBJECT_NIL;
+	g_return_if_fail (frame != NULL);
+
+	for (toplev = bonobo_control_frame_get_widget (frame);
+	     toplev && toplev->parent;
+	     toplev = toplev->parent)
+		;
+
+	g_return_if_fail (toplev != NULL);
+
+	/* FIXME: check if toplev is a socket - if so,
+	   find it's ControlFrame and ask on up the chain ? */
+
+	id = bonobo_control_window_id_from_x11 (
+		GDK_WINDOW_XWINDOW (toplev->window));
+
+/*	g_warning ("return toplevel '%s'", id); */
+
+	*(char **)arg->_value = CORBA_string_dup (id);
+
+	g_free (id);
+}
+
+static void
+bonobo_control_frame_destroy (BonoboObject *object)
+{
+	BonoboControlFrame *control_frame = (BonoboControlFrame *) object;
+
+	if (control_frame->priv && control_frame->priv->propbag)
+		bonobo_property_bag_remove (
+			control_frame->priv->propbag,
+			BONOBO_CONTROL_FRAME_TOPLEVEL_PROP);
+}
+
+static void
+add_toplevel_prop (BonoboControlFrame *control_frame)
+{
+	bonobo_property_bag_add_full (
+		control_frame->priv->propbag,
+		BONOBO_CONTROL_FRAME_TOPLEVEL_PROP, 0,
+		TC_Bonobo_Control_windowId,
+		NULL, "toplevel window id", "the toplevel window X id",
+		BONOBO_PROPERTY_READABLE,
+		g_cclosure_new (G_CALLBACK (get_toplevel_fn),
+				control_frame, NULL),
+		NULL);
+}
+
+static void
+check_ambient_propbag (BonoboControlFrame *control_frame)
+{
+	BonoboPropertyBag *pb;
+
+	if (control_frame->priv->propbag)
+		return;
+
+	if (!(pb = bonobo_control_frame_get_propbag (control_frame))) {
+		pb = bonobo_property_bag_new (NULL, NULL, NULL);
+		bonobo_control_frame_set_propbag (control_frame, pb);
+	}
+
+	control_frame->priv->propbag = pb;
+
+	add_toplevel_prop (control_frame);
+}
+
+static Bonobo_PropertyBag
+impl_Bonobo_ControlFrame_getAmbientProperties (PortableServer_Servant servant,
+					       CORBA_Environment     *ev)
+{
+	BonoboControlFrame *control_frame =
+		BONOBO_CONTROL_FRAME (bonobo_object (servant));
+	Bonobo_PropertyBag  corba_propbag;
+
+	check_ambient_propbag (control_frame);
 
 	corba_propbag = BONOBO_OBJREF (control_frame->priv->propbag);
 
@@ -200,7 +276,7 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 		GDK_WINDOW_XWINDOW (socket->window));
 
 	Bonobo_Control_setWindowId (control, id, &ev);
-	g_free (id);
+	CORBA_free (id);
 	if (BONOBO_EX (&ev))
 		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);
@@ -378,7 +454,8 @@ bonobo_control_frame_activated (BonoboControlFrame *control_frame, gboolean stat
 static void
 bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 {
-	GObjectClass *object_class = (GObjectClass *)klass;
+	GObjectClass      *object_class = (GObjectClass *) klass;
+	BonoboObjectClass *bobject_class = (BonoboObjectClass *) klass;
 	POA_Bonobo_ControlFrame__epv *epv = &klass->epv;
 
 	bonobo_control_frame_parent_class = g_type_class_peek_parent (klass);
@@ -407,6 +484,7 @@ bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 	klass->activated = bonobo_control_frame_activated;
 
 	object_class->finalize = bonobo_control_frame_finalize;
+	bobject_class->destroy = bonobo_control_frame_destroy;
 
 	epv->activated            = impl_Bonobo_ControlFrame_activated;
 	epv->getUIHandler         = impl_Bonobo_ControlFrame_getUIHandler;
@@ -795,10 +873,19 @@ void
 bonobo_control_frame_set_propbag (BonoboControlFrame  *control_frame,
 				 BonoboPropertyBag   *propbag)
 {
+	BonoboPropertyBag *old_pb;
+
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 	g_return_if_fail (BONOBO_IS_PROPERTY_BAG (propbag));
 
+	old_pb = control_frame->priv->propbag;
+
 	control_frame->priv->propbag = propbag;
+
+	add_toplevel_prop (control_frame);
+
+	if (old_pb)
+		bonobo_object_unref (BONOBO_OBJECT (old_pb));
 }
 
 /**
