@@ -1,21 +1,22 @@
 # translation of libbonoboui.HEAD.be.po to Belarusian
 # translation of libbonoboui.HEAD.be.po to belarusian
-# This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the libbonoboui.HEAD.be package.
+# Copyright (C) 2005 THE libbonoboui.HEAD.be'S COPYRIGHT HOLDER
 # Vital Khilko <dojlid@mova.org>, 2003
-#
+# Ales Nyakhaychyk <nab@mail.by>, 2005.
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.be\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-05 15:33+0000\n"
-"PO-Revision-Date: 2003-07-23 13:44+0300\n"
-"Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
+"POT-Creation-Date: 2005-02-12 07:28+0100\n"
+"PO-Revision-Date: 2005-02-14 09:09+0200\n"
+"Last-Translator: Vital Khilko <vk@altlinux.ru>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -27,30 +28,29 @@ msgstr "Указальнік вытворчасьці"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
-msgstr "утрымальнік UI corba"
+msgstr "кантэйнэр UI corba"
 
 #: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
-msgstr "Утрымальнік спалучэньня карыстальніка"
+msgstr "Кантэйнэр інтэрфэйсу карыстальніка"
 
 #: bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
-msgstr "Прычапіць панэль сродкаў"
+msgstr "Прычапіць панэль інструмэнтаў"
 
 #: bonobo/bonobo-dock-item-grip.c:258
-#, fuzzy
 msgid "Undock the toolbar"
-msgstr "Адчапіць панэль сродкаў"
+msgstr "Адчапіць панэль інструмэнтаў"
 
 #: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
-msgstr "Від ценю"
+msgstr "Тып ценю"
 
 #: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
-msgstr "Спагляданьне"
+msgstr "Арыентацыя"
 
 #: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
@@ -64,7 +64,7 @@ msgstr "Пераважная вышыня"
 
 #: bonobo/bonobo-file-selector-util.c:351
 msgid "Select a file to open"
-msgstr "Выбярыце файл для адкрыцьця"
+msgstr "Выберыце файл для адкрыцьця"
 
 #: bonobo/bonobo-file-selector-util.c:379
 msgid "Select files to open"
@@ -93,7 +93,7 @@ msgstr "Апісаньне"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr "Запатрабаваныя спалучэньні"
+msgstr "Запатрабаваныя інтэрфэйсы"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -101,17 +101,17 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Масыў спалучэньняў які сканчаецца на NULL, якія павінен падтрымліваць "
-"паслужнік у чарзе пералічэньня ў вылучальніке. Дапомна \"IDL:Bonobo/"
-"Embeddable:1.0\" калі спалучэньні не пералічаны"
+"Масіў інтэрфэйсаў які канчаецца на NULL, якія павінен падтрымліваць "
+"паслужнік па чарзе пералічэньня ў вылучальніку. Дапомна \"IDL:Bonobo/"
+"Embeddable:1.0\" калі інтэрфэйсы не пералічаны"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "Спалучэньне патрабуе запіс"
+msgstr "Інтэрфэйс патрабуе запіс"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr "Адно са спалучэньняў патрабуе гэта"
+msgstr "Адзін з інтэрфэйсаў патрабуе гэта"
 
 #: bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
@@ -131,11 +131,11 @@ msgstr "_Прагляд падказак"
 
 #: bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
-msgstr "Панэлі сродкаў"
+msgstr "Панэлі інструмэнтаў"
 
 #: bonobo/bonobo-ui-config-widget.c:303
 msgid "toolbars"
-msgstr "панэлі сродкаў"
+msgstr "панэлі інструмэнтаў"
 
 #: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "Look"
@@ -163,11 +163,11 @@ msgstr "Адладка"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "_Дамп XML"
+msgstr "_Адбітак XML"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Зваліць поўнае XML апісаньня UI у кансоль"
+msgstr "Адбіць поўнае XML апісаньне UI у кансоль"
 
 #: bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
@@ -272,7 +272,7 @@ msgstr "Адлюстроўваць _падказкі"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Hide toolbar"
-msgstr "_Схаваць панэль сродкаў"
+msgstr "_Схаваць панэль інструмэнтаў"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "Customi_ze"
@@ -280,7 +280,7 @@ msgstr "На_ладзіць"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Customize the toolbar"
-msgstr "Наладзіць панэль сродкаў"
+msgstr "Наладзіць панэль інструмэнтаў"
 
 #: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
@@ -288,11 +288,11 @@ msgstr "плавае"
 
 #: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
-msgstr "ці мусіць плаваць панэль сродкаў"
+msgstr "ці мусіць плаваць панэль інструмэнтаў"
 
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
-msgstr "Стыль скосаў вакол панэлі сродкаў"
+msgstr "Стыль скосаў вакол панэлі інструмэнтаў"
 
 #: bonobo/bonobo-ui-util.c:630
 msgid "_Contents"
@@ -304,7 +304,7 @@ msgstr "Адлюстраваць даведку для гэтага дастас
 
 #: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
-msgstr "Назва вакна - выкарыстоўваецца для пасьлядоўваньня наладак."
+msgstr "Назва акна - выкарыстоўваецца для сэрыялізацыі наладак."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -356,7 +356,7 @@ msgstr "Ці маштабаваньне неперарыўнае (у супра�
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "Пра праграму"
+msgstr "Пра гэтае дастасаваньне"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
@@ -368,7 +368,7 @@ msgstr "_Пра праграму"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "_Рэдагаваць"
+msgstr "_Рэдагаваньне"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 #: tools/browser/bonobo-browser.xml.h:4
@@ -398,88 +398,86 @@ msgstr "Вітаньні, Сьвет!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "Немагчыма распачаць код libbonoboui"
+msgstr "Немагчыма ініцыялізаваць код libbonoboui"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr "Немагчыма распачаць Bonobo UI"
+msgstr "Немагчыма ініцыялізаваць Bonobo UI"
 
 #: tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr ""
+msgstr "Вандроўнік па кампанэнтах Bonobo"
 
 #: tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr ""
+msgstr "Адлюстроўвае наяўныя кампанэнты Bonobo"
 
 #: tools/browser/bonobo-browser.xml.h:1
-#, fuzzy
 msgid "About this program..."
-msgstr "Пра праграму"
+msgstr "Пра гэту праграму"
 
 #: tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr ""
+msgstr "Закрыць гэта вакно"
 
 #: tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
-msgstr ""
+msgstr "Адкрыць новае акно"
 
 #: tools/browser/bonobo-browser.xml.h:5
-#, fuzzy
 msgid "_Help"
-msgstr "_Схаваць"
+msgstr "_Даведка"
 
 #. Build the general tab
 #: tools/browser/component-details.c:109
 msgid "General"
-msgstr ""
+msgstr "Асноўнае"
 
 #: tools/browser/component-details.c:116 tools/browser/component-list.c:401
 msgid "IID"
-msgstr ""
+msgstr "IID"
 
 #: tools/browser/component-details.c:117
 msgid "Location"
-msgstr ""
+msgstr "Месца"
 
 #. Build the details tab
 #: tools/browser/component-details.c:167
 msgid "Details"
-msgstr ""
+msgstr "Падрабязнасьці"
 
 #: tools/browser/component-details.c:168
 msgid "Detailed Information"
-msgstr ""
+msgstr "Падрабязная інфармацыя"
 
 #: tools/browser/component-list.c:370
 msgid "Active"
-msgstr ""
+msgstr "Актыўны"
 
 #: tools/browser/component-list.c:391
 msgid "Type"
-msgstr ""
+msgstr "Тып"
 
 #: tools/browser/window.c:169
 msgid "Component Details"
-msgstr ""
+msgstr "Падрабязнасьці кампанэнту"
 
 #: tools/browser/window.c:214
 msgid "Bonobo Browser"
-msgstr ""
+msgstr "Вандроўнік Bonobo"
 
 #: tools/browser/window.c:215
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr ""
+msgstr "© Аўтарскае права 2001, The GNOME Foundation"
 
 #: tools/browser/window.c:216
 msgid "Bonobo component browser"
-msgstr ""
+msgstr "Вандроўнік па кампанэнтах Bonobo"
 
 #. create the window
 #: tools/browser/window.c:246
 msgid "Component Browser"
-msgstr ""
+msgstr "Вандроўнік па кампанэнтах"
 
 #~ msgid "HOST"
 #~ msgstr "ВУЗЕЛ"
