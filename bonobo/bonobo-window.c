@@ -1219,7 +1219,7 @@ static GnomeDockItem *
 get_dock_item (BonoboWindowPrivate *priv,
 	       const char       *dockname)
 {
-	guint          dummy;
+	guint dummy;
 	
 	return gnome_dock_get_item_by_name (priv->dock,
 					    dockname,

@@ -704,8 +704,6 @@ impl_destroy (GtkObject *object)
 		if (item_widget->parent == NULL)
 			gtk_widget_destroy (item_widget);
 	}
-	g_list_free (priv->items);
-	priv->items = NULL;
 
 	if (GTK_WIDGET (priv->popup_item)->parent == NULL)
 		gtk_widget_destroy (GTK_WIDGET (priv->popup_item));
@@ -718,8 +716,23 @@ impl_destroy (GtkObject *object)
 	priv->tooltips = NULL;
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy != NULL)
-		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+		GTK_OBJECT_CLASS (parent_class)->destroy (object);
 
+}
+
+static void
+impl_finalize (GtkObject *object)
+{
+	BonoboUIToolbar *toolbar;
+	BonoboUIToolbarPrivate *priv;
+	GList *p;
+
+	toolbar = BONOBO_UI_TOOLBAR (object);
+	priv = toolbar->priv;
+
+	g_list_free (priv->items);
+	priv->items = NULL;
+	
 	g_free (priv);
 }
 
@@ -1072,9 +1085,10 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 	GtkContainerClass *container_class;
 
 	object_class = GTK_OBJECT_CLASS (toolbar_class);
-	object_class->destroy = impl_destroy;
-	object_class->get_arg = impl_get_arg;
-	object_class->set_arg = impl_set_arg;
+	object_class->destroy  = impl_destroy;
+	object_class->finalize = impl_finalize;
+	object_class->get_arg  = impl_get_arg;
+	object_class->set_arg  = impl_set_arg;
 
 	widget_class = GTK_WIDGET_CLASS (toolbar_class);
 	widget_class->size_request  = impl_size_request;

@@ -147,13 +147,12 @@ make_moniker (const char *name)
 }
 
 static void
-do_add_cb (BonoboAsyncReply  *handle,
+do_add_cb (Bonobo_Unknown     embeddable,
 	   CORBA_Environment *ev,
 	   gpointer           user_data)
 {
 	SampleApp         *app = user_data;
 	SampleClientSite  *site;
-	Bonobo_Embeddable  embeddable = CORBA_OBJECT_NIL;
 
 	if (BONOBO_EX (ev)) {
 		g_warning ("Moniker resolve demarshal exception '%s'\n",
@@ -161,7 +160,6 @@ do_add_cb (BonoboAsyncReply  *handle,
 		return;
 	}
 
-	bonobo_async_demarshal (handle, &embeddable, NULL);
 	if (embeddable == CORBA_OBJECT_NIL) {
 		g_warning ("Failed to demarshal embeddable");
 		return;
@@ -183,6 +181,7 @@ resolve_and_add (SampleApp *app, Bonobo_Moniker moniker, const char *interface)
 
 	CORBA_exception_init (&ev);
 
+#if 0 /* Async */
 	bonobo_moniker_resolve_async_default (
 		moniker, interface, &ev, 5000, do_add_cb, app);
 	
@@ -191,11 +190,19 @@ resolve_and_add (SampleApp *app, Bonobo_Moniker moniker, const char *interface)
 			 bonobo_exception_get_text (&ev));
 		return;
 	}
-
-	bonobo_object_release_unref (moniker, &ev);
+#else
+	{
+		Bonobo_Unknown object;
+		object = bonobo_moniker_client_resolve_default (
+			moniker, interface, &ev);
+		do_add_cb (object, &ev, app);
+	}
+#endif
 
 	name = bonobo_moniker_client_get_name (moniker, &ev);
 	g_print ("My moniker looks like '%s'\n", name);
+
+	bonobo_object_release_unref (moniker, &ev);
 
 	CORBA_free (name);
 }
