@@ -360,7 +360,7 @@ bonobo_widget_destroy (GtkObject *object)
 		bonobo_object_unref (BONOBO_OBJECT (priv->client_site));
 	if (priv->view_frame)
 		bonobo_object_unref (BONOBO_OBJECT (priv->view_frame));
-	if (priv->uih){
+	if (priv->uih != CORBA_OBJECT_NIL) {
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);
