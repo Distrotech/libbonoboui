@@ -1,3 +1,10 @@
+2002-05-31  Federico Mena Quintero  <federico@ximian.com>
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_size_request): Do not g_return_if_fail() if
+	we haven't been bound to a control yet.  Rather, return 0 for the
+	requisition, which means "I don't care about what I get assigned".
+
 2002-05-31  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-socket.c (bonobo_socket_show):

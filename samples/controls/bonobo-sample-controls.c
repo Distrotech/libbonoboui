@@ -12,7 +12,7 @@
 #include <gdk/gdkx.h>
 #include <libbonoboui.h>
 #include <libgnomecanvas/gnome-canvas-widget.h>
-#define USE_SCROLLED
+/*  #define USE_SCROLLED */
 
 static void
 activate_cb (GtkEditable *editable, BonoboControl *control)
@@ -40,10 +40,20 @@ bonobo_entry_control_new (void)
 	GtkWidget	   *entry;
 	GParamSpec        **pspecs;
 	guint               n_pspecs;
+	GtkWidget          *box;
+	int i;
 
+	
 	/* Create the control. */
-	entry = gtk_entry_new ();
-	gtk_widget_show (entry);
+
+	box = gtk_vbox_new (FALSE, 0);
+	for (i = 0; i < 3; i++) {
+		entry = gtk_entry_new ();
+		gtk_box_pack_start (GTK_BOX (box), entry, FALSE, FALSE, 0);
+		gtk_widget_show (entry);
+	}
+
+	gtk_widget_show (box);
 
 #ifdef USE_SCROLLED
 	{
@@ -73,7 +83,7 @@ bonobo_entry_control_new (void)
 		control = bonobo_control_new (scrolled);
 	}
 #else
-	control = bonobo_control_new (entry);
+	control = bonobo_control_new (box);
 #endif
 	pb = bonobo_property_bag_new (NULL, NULL, NULL);
 	bonobo_control_set_properties (control, BONOBO_OBJREF (pb), NULL);

@@ -934,7 +934,14 @@ bonobo_control_frame_size_request (BonoboControlFrame *frame,
 
 	g_return_if_fail (requisition != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
-	g_return_if_fail (frame->priv->control != CORBA_OBJECT_NIL);
+
+	if (frame->priv->control == CORBA_OBJECT_NIL) {
+		/* We haven't been bound to a control yet, so return "I don't
+		 * care about what I get assigned".
+		 */
+		requisition->width = requisition->height = 0;
+		return;
+	}
 
 	if (!opt_ev) {
 		CORBA_exception_init (&tmp_ev);
