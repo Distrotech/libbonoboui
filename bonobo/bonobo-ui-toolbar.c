@@ -203,8 +203,6 @@ create_popup_window (BonoboUIToolbar *toolbar)
 	GList *p;
 	int row_width;
 
-	puts (__FUNCTION__);
-
 	priv = toolbar->priv;
 
 	row_width = 0;
@@ -285,8 +283,8 @@ popup_window_button_release_cb (GtkWidget *widget,
 	toolbar = BONOBO_UI_TOOLBAR (data);
 	priv = toolbar->priv;
 
-	bonobo_ui_toolbar_toggle_button_item_set_active (
-		BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (priv->popup_item), FALSE);
+	bonobo_ui_toolbar_toggle_button_item_set_active
+		(BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (priv->popup_item), FALSE);
 }
 
 static void
@@ -348,8 +346,6 @@ popup_item_toggled_cb (BonoboUIToolbarToggleButtonItem *toggle_button_item,
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
 	gboolean active;
-
-	puts (__FUNCTION__);
 
 	toolbar = BONOBO_UI_TOOLBAR (data);
 	priv = toolbar->priv;
