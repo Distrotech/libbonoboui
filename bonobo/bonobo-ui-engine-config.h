@@ -15,10 +15,17 @@ BEGIN_GNOME_DECLS
 
 #include <bonobo/bonobo-ui-engine.h>
 
-void bonobo_ui_engine_config_connect (GtkWidget      *widget,
-				      BonoboUIEngine *engine,
-				      const char     *path,
-				      const char     *popup_xml);
+void bonobo_ui_engine_config_connect     (GtkWidget      *widget,
+					  BonoboUIEngine *engine,
+					  const char     *path,
+					  const char     *popup_xml);
+
+void bonobo_ui_engine_config_add_node    (BonoboUIEngine *engine,
+					  BonoboUINode   *node);
+
+void bonobo_ui_engine_config_remove_node (BonoboUIEngine *engine,
+					  BonoboUINode   *node);
+				       
 END_GNOME_DECLS
 
 #endif /* _BONOBO_UI_ENGINE_H_ */

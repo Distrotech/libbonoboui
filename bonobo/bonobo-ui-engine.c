@@ -204,15 +204,6 @@ add_node_fn (BonoboUINode *parent, BonoboUINode *child)
 {
 	BonoboUINode *insert = parent;
 	char    *pos;
-/*	BonoboUINode *l;
-	if (!bonobo_ui_node_get_attr (child, "noplace"))
-		for (l = bonobo_ui_node_children (parent); l; l = l->next) {
-			if (!strcmp (l->name, "placeholder") &&
-			    !bonobo_ui_node_get_attr (l, "name")) {
-			    insert = l;
-				g_warning ("Found default placeholder");
-			}
-		}*/
 
 	if (bonobo_ui_node_children (insert) &&
 	    (pos = bonobo_ui_node_get_attr (child, "pos"))) {
@@ -223,6 +214,7 @@ add_node_fn (BonoboUINode *parent, BonoboUINode *child)
 		} else
 			bonobo_ui_node_add_child (insert, child);
 		bonobo_ui_node_free_string (pos);
+
 	} else /* just add to bottom */
 		bonobo_ui_node_add_child (insert, child);
 }
