@@ -1,3 +1,18 @@
+2003-01-21  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.2.0
+
+	* bonobo/bonobo-ui-toolbar.c
+	(accumulate_item_size): split from
+	(update_sizes): here and account for the
+	popup's item's size itself if items moved there.
+
+2003-01-21  Kang Jeong-Hee  <keizi@mail.co.kr>
+	
+	* bonobo/bonobo-ui-toolbar.c
+	(show_popup_window): fix #76310, popup going off
+	the side of the screen unhelpfully.
+
 2003-01-16  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: Added Amharic (am) and Dutch (nl) to ALL_LINGUAS
