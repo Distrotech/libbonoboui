@@ -73,7 +73,7 @@ struct _BonoboDock
   /* Client rectangle before drag.  */
   GtkAllocation client_rect;
 
-  gboolean floating_items_allowed : 1;
+  guint floating_items_allowed : 1;
 
   /*< private >*/
   BonoboDockPrivate *_priv;

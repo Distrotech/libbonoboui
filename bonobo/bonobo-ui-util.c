@@ -91,7 +91,7 @@ read_byte (const char *start)
 	return (nibble1 << 4) + nibble2;
 }
 
-static inline const guint32
+static inline guint32
 read_four_bytes (const char *pos)
 {
 	return ((read_byte (pos) << 24) |

@@ -79,8 +79,8 @@ struct _BonoboDockItem
   /* Position of the floating window.  */
   gint16                  float_x, float_y;
 
-  BonoboDockItemBehavior behavior : 5;
-  GtkOrientation        orientation : 1;
+  guint                 behavior : 5;
+  guint                 orientation : 1;
 
   guint                 float_window_mapped : 1;
   guint                 is_floating : 1;

@@ -1,3 +1,12 @@
+2004-01-14  The Written Word  <bugzilla-gnome@thewrittenword.com>
+
+	* bonobo/bonobo-dock-item.h, bonobo/bonobo-dock-band.h,
+	bonobo/bonobo-dock.h: fix (signed) enum bitfields
+
+	* bonobo/bonobo-canvas-item.c: fix trailing comma in enum.
+
+	* bonobo/bonobo-ui-util.c (read_four_bytes): bin bogus const.
+
 2004-01-12  Sergey V. Udaltsov  <sergey.oudaltsov@clients.ie>
 
 	* bonobo/bonobo-ui-util.c (bonobo_ui_util_xml_set_image):

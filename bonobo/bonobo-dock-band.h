@@ -65,8 +65,8 @@ struct _BonoboDockBand
   guint max_space_requisition : 16;
   guint num_children : 8;
   guint new_for_drag : 1;
-  gboolean doing_drag : 1;
-  GtkOrientation orientation : 1;
+  guint doing_drag : 1;
+  guint orientation : 1;
 
   /*< private >*/
   BonoboDockBandPrivate *_priv;

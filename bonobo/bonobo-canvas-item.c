@@ -47,7 +47,7 @@ struct _BonoboCanvasItemPrivate {
 enum {
 	PROP_0,
 	PROP_CORBA_FACTORY,
-	PROP_CORBA_UI_CONTAINER,
+	PROP_CORBA_UI_CONTAINER
 };
 
 /*
