@@ -343,10 +343,10 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 		control->priv->destroy_idle_id = gtk_idle_add (
 			idle_destroy_socket, control);
 
-		gtk_signal_connect (GTK_OBJECT (local_socket),
-				    "destroy",
-				    remove_destroy_idle,
-				    control);
+		gtk_signal_connect_while_alive (GTK_OBJECT (local_socket),
+						"destroy",
+						remove_destroy_idle,
+						control, GTK_OBJECT (control));
 
 
 		gtk_box_pack_end (GTK_BOX (socket_parent),
