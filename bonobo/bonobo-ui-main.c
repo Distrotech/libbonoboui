@@ -16,7 +16,7 @@
 #include <bonobo/bonobo-ui-main.h>
 #include <bonobo/bonobo-main.h>
 
-#include <libgnome/libgnome-init.h>
+#include <libgnome/gnome-init.h>
 #include <gtk/gtkmain.h>
 
 #include <X11/Xlib.h>

@@ -1,3 +1,10 @@
+2001-08-06  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/bonobo-ui-main.c: #include <libgnome/gnome-init.h>,
+	not <libgnome/libgnome-init.h>.
+
+	* samples/compound-doc/container/container.c: Ditto.
+
 2001-08-05  Michael Meeks  <michael@ximian.com>
 
 	* Makefile.am: add changes.txt

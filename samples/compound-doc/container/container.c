@@ -1,7 +1,7 @@
 #include "config.h"
 #include <libbonoboui.h>
 #include <gtk/gtkvbox.h>
-#include <libgnome/libgnome-init.h>
+#include <libgnome/gnome-init.h>
 
 #include "container.h"
 #include "document.h"
