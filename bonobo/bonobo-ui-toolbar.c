@@ -1237,12 +1237,16 @@ bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
 
 static void
 containee_destroy_cb (GtkWidget *widget,
-		      BonoboUIToolbarPrivate *priv)
+		      void *data)
 {
-	if (widget != (GtkWidget *)priv->popup_item)
+	BonoboUIToolbar *toolbar;
+	BonoboUIToolbarPrivate *priv;
+
+	toolbar = BONOBO_UI_TOOLBAR (data);
+	priv = toolbar->priv;
+
+	if (widget != GTK_WIDGET (priv->popup_item))
 		gtk_widget_destroy (widget);
-	else
-		g_warning ("Skipping '%p' : popup item", widget);
 }
 
 void
@@ -1251,9 +1255,5 @@ bonobo_ui_toolbar_clean (BonoboUIToolbar *toolbar)
 	g_return_if_fail (toolbar != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
 
-	g_warning ("UI toolbar clean");
-
-	gtk_container_foreach (GTK_CONTAINER (toolbar),
-			       (GtkCallback) containee_destroy_cb,
-			       toolbar->priv);
+	gtk_container_foreach (GTK_CONTAINER (toolbar), containee_destroy_cb, toolbar);
 }
