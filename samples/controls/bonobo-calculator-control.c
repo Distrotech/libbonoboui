@@ -87,10 +87,17 @@ bonobo_calculator_factory_init (void)
 	if (bonobo_calc_control_factory != NULL)
 		return;
 
+#if USING_OAF
 	bonobo_calc_control_factory =
 		bonobo_generic_factory_new (
   		        "OAFIID:bonobo_calculator_factory:0f55cdac-47fc-4d5b-9111-26c84a244fe2",
 			bonobo_calculator_factory, NULL);
+#else
+	bonobo_calc_control_factory =
+		bonobo_generic_factory_new (
+  		        "control-factory:calculator",
+			bonobo_calculator_factory, NULL);
+#endif
 
 	if (bonobo_calc_control_factory == NULL)
 		g_error ("I could not register a BonoboCalculator factory.");
