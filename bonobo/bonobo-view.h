@@ -18,6 +18,7 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_TYPE))
 
 typedef struct _GnomeView GnomeView;
+typedef struct _GnomeViewPrivate GnomeViewPrivate;
 typedef struct _GnomeViewClass GnomeViewClass;
 
 #include <bonobo/gnome-embeddable.h>
@@ -40,6 +41,8 @@ struct _GnomeView {
 
 	GHashTable *verb_callbacks;
 	GHashTable *verb_callback_closures;
+
+	GnomeViewPrivate *priv;
 };
 
 struct _GnomeViewClass {

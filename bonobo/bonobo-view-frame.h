@@ -17,7 +17,8 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_VIEW_FRAME(o)       (GTK_CHECK_TYPE ((o), GNOME_VIEW_FRAME_TYPE))
 #define GNOME_IS_VIEW_FRAME_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_FRAME_TYPE))
 
-typedef struct _GnomeViewFrame GnomeViewFrame ;
+typedef struct _GnomeViewFramePrivate GnomeViewFramePrivate;
+typedef struct _GnomeViewFrame GnomeViewFrame;
 
 #include <bonobo/gnome-client-site.h>
 
@@ -31,6 +32,8 @@ struct _GnomeViewFrame {
 	GNOME_View	 view;
 
 	GnomeUIHandler  *uih;
+
+	GnomeViewFramePrivate *priv;
 };
 
 typedef struct {

@@ -25,6 +25,7 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_CLIENT_SITE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_CLIENT_SITE_TYPE))
 
 typedef struct _GnomeClientSite GnomeClientSite;
+typedef struct _GnomeClientSitePrivate GnomeClientSitePrivate;
 
 #include <bonobo/gnome-view-frame.h>
 
@@ -35,6 +36,8 @@ struct _GnomeClientSite {
 	GnomeObjectClient *bound_object;
 	GList		  *view_frames;
 	int               child_shown:1;
+
+	GnomeClientSitePrivate *priv;
 };
 
 typedef struct {

@@ -25,7 +25,9 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_EMBEDDABLE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_EMBEDDABLE_TYPE))
 
 struct _GnomeEmbeddable;
+struct _GnomeEmbeddablePrivate;
 typedef struct _GnomeEmbeddable GnomeEmbeddable;
+typedef struct _GnomeEmbeddablePrivate GnomeEmbeddablePrivate;
 typedef struct _GnomeVerb GnomeVerb;
 
 #include <bonobo/gnome-view.h>
@@ -55,6 +57,8 @@ struct _GnomeEmbeddable {
 	 * this component.
 	 */
 	GList *verbs;
+
+	GnomeEmbeddablePrivate *priv;
 };
 
 typedef struct {

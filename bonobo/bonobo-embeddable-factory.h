@@ -27,6 +27,7 @@ BEGIN_GNOME_DECLS
 
 struct _GnomeEmbeddableFactory;
 typedef struct _GnomeEmbeddableFactory GnomeEmbeddableFactory;
+typedef struct _GnomeEmbeddableFactoryPrivate GnomeEmbeddableFactoryPrivate;
 
 typedef GnomeObject * (*GnomeEmbeddableFactoryFn)(GnomeEmbeddableFactory *Factory, void *closure);
 					
@@ -43,6 +44,8 @@ struct _GnomeEmbeddableFactory {
 	 * The goad_id for this embeddable factory
 	 */
 	char *goad_id;
+
+	GnomeEmbeddableFactoryPrivate *priv;
 };
 
 typedef struct {
