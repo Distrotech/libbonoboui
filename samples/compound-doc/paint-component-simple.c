@@ -65,7 +65,7 @@ typedef struct {
 } view_data_t;
 
 /*
- * Clean up our supplementary Embeddable data sturctures
+ * Clean up our supplementary GnomeEmbeddable data sturctures.
  */
 static void
 embeddable_destroy_cb (GnomeEmbeddable *embeddable, gpointer data)
@@ -74,6 +74,27 @@ embeddable_destroy_cb (GnomeEmbeddable *embeddable, gpointer data)
 
 	gdk_pixmap_unref (embeddable_data->pixmap);
 	g_free (embeddable_data); 
+}
+
+/*
+ * This callback is invoked when the GnomeEmbeddable object
+ * encounters a fatal CORBA exception.
+ */
+static void
+embeddable_system_exception_cb (GnomeEmbeddable *embeddable, CORBA_Object corba_object,
+				CORBA_Environment *ev, gpointer data)
+{
+	gnome_object_destroy (GNOME_OBJECT (embeddable));
+}
+
+/*
+ * The view encounters a fatal corba exception.
+ */
+static void
+view_system_exception_cb (GnomeView *view, CORBA_Object corba_object,
+			  CORBA_Environment *ev, gpointer data)
+{
+	gnome_object_destroy (GNOME_OBJECT (view));
 }
 
 /*
@@ -238,8 +259,7 @@ view_activate_cb (GnomeView *view, gboolean activate, gpointer data)
 	 * with whatever the ViewFrame told us.  Most components
 	 * should behave this way.
 	 */
-	GNOME_ViewFrame_view_activated (gnome_view_get_view_frame (view), activate, &ev);
-	/* FIXME: Check exception */
+	gnome_view_activate_notify (view, activate);
 
 	/*
 	 * If we were just activated, we merge in our menu entries.
@@ -293,8 +313,8 @@ view_expose_cb (GtkWidget *drawing_area, GdkEventExpose *event, gpointer data)
  * it wants to be.
  */
 static void
-view_size_request_cb (GnomeView *view, int *desired_width, int *desired_height,
-		      gpointer data)
+view_size_query_cb (GnomeView *view, int *desired_width, int *desired_height,
+		    gpointer data)
 {
 	view_data_t *view_data = (view_data_t *) data;
 
@@ -500,11 +520,11 @@ view_factory (GnomeEmbeddable *embeddable,
 	gnome_view_register_verb (view, "ClearImage", view_clear_image_cb, view_data);
 
 	/*
-	 * The "size_request" signal is raised when the container asks
+	 * The "size_query" signal is raised when the container asks
 	 * the component what size it wants to be.
 	 */
-	gtk_signal_connect (GTK_OBJECT (view), "size_request",
-			    GTK_SIGNAL_FUNC (view_size_request_cb), view_data);
+	gtk_signal_connect (GTK_OBJECT (view), "size_query",
+			    GTK_SIGNAL_FUNC (view_size_query_cb), view_data);
 
 	/*
 	 * When the container assigns us a size, we will get a
@@ -520,6 +540,12 @@ view_factory (GnomeEmbeddable *embeddable,
 	gtk_signal_connect (GTK_OBJECT (view), "view_activate",
 			    GTK_SIGNAL_FUNC (view_activate_cb), view_data);
 
+	/*
+	 * The "system_exception" signal is raised when the GnomeView
+	 * encounters a fatal CORBA exception.
+	 */
+	gtk_signal_connect (GTK_OBJECT (view), "system_exception",
+			    GTK_SIGNAL_FUNC (view_system_exception_cb), view_data);
 
 	/*
 	 * We'll need to be able to cleanup when this view gets

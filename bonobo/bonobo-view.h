@@ -7,6 +7,7 @@
 #include <gtk/gtkwidget.h>
 #include <bonobo/gnome-object.h>
 #include <bonobo/gnome-view-frame.h>
+#include <bonobo/gnome-ui-handler.h>
 
 BEGIN_GNOME_DECLS
  
@@ -33,6 +34,8 @@ struct _GnomeView {
 
 	GNOME_ViewFrame view_frame;
 
+	GnomeUIHandler *uih;
+
 	GnomeEmbeddable *embeddable;
 
 	GHashTable *verb_callbacks;
@@ -48,7 +51,7 @@ struct _GnomeViewClass {
 	void (*view_activate)            (GnomeView *view,
 					  gboolean activate);
 	void (*view_undo_last_operation) (GnomeView *view);
-	void (*size_request)             (GnomeView *view, int *desired_width, int *desired_height);
+	void (*size_query)               (GnomeView *view, int *desired_width, int *desired_height);
 	void (*do_verb)                  (GnomeView *view,
 					  const CORBA_char *verb_name);
 					  
@@ -66,7 +69,10 @@ GnomeEmbeddable *gnome_view_get_embeddable	(GnomeView *view);
 void		 gnome_view_set_view_frame	(GnomeView *view,
 						 GNOME_ViewFrame view_frame);
 GNOME_ViewFrame  gnome_view_get_view_frame	(GnomeView *view);
-GNOME_UIHandler  gnome_view_get_ui_handler	(GnomeView *view);
+GNOME_UIHandler  gnome_view_get_remote_ui_handler(GnomeView *view);
+void		 gnome_view_activate_notify	(GnomeView *view, gboolean activated);
+void		 gnome_view_set_ui_handler	(GnomeView *view, GnomeUIHandler *uih);
+GnomeUIHandler	*gnome_view_get_ui_handler	(GnomeView *view);
 void		 gnome_view_register_verb	(GnomeView *view,
 						 const char *verb_name,
 						 GnomeViewVerbFunc callback,

@@ -4,7 +4,7 @@
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
- *   Nat Friedman    (nat@gnome-support.com)
+ *   Nat Friedman    (nat@nat.org)
  *
  * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
@@ -26,7 +26,7 @@ static POA_GNOME_View__vepv gnome_view_vepv;
 enum {
 	VIEW_ACTIVATE,
 	VIEW_UNDO_LAST_OPERATION,
-	SIZE_REQUEST,
+	SIZE_QUERY,
 	DO_VERB,
 	LAST_SIGNAL
 };
@@ -45,7 +45,6 @@ impl_GNOME_View_activate (PortableServer_Servant servant,
 
 static void
 impl_GNOME_View_reactivate_and_undo (PortableServer_Servant servant,
-				     CORBA_boolean activated,
 				     CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
@@ -56,7 +55,7 @@ impl_GNOME_View_reactivate_and_undo (PortableServer_Servant servant,
 	
 static void
 impl_GNOME_View_do_verb (PortableServer_Servant servant,
-			 const CORBA_char *verb_name,
+			 CORBA_char *verb_name,
 			 CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
@@ -105,12 +104,16 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 	gtk_widget_size_allocate (view->plug, &allocation);
 }
 
+/*
+ * This callback is invoked when the plug is unexpectedly destroyed.
+ * This may happen if, for example, the container application goes
+ * away.  This callback is _not_ invoked if the GnomeView is destroyed
+ * normally, i.e. the user unrefs the GnomeView away.
+ */
 static gint
 plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 {
 	GnomeView *view = GNOME_VIEW (closure);
-
-	printf ("Plug Delete !\n");
 
 	/*
 	 * Set the plug to NULL here so that we don't try to
@@ -118,21 +121,13 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 	 * own.
 	 */
 	view->plug = NULL;
-
 	gtk_signal_disconnect (GTK_OBJECT (plug), view->plug_destroy_id);
-	
+
+	/*
+	 * Destroy this plug's GnomeView.
+	 */
 	gnome_object_destroy (GNOME_OBJECT (view));
 
-	gdk_error_trap_push ();
-
-	gdk_flush ();
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
-	gdk_error_trap_pop ();
-
-	
 	return FALSE;
 }
 
@@ -154,18 +149,18 @@ impl_GNOME_View_set_window (PortableServer_Servant servant,
 }
 
 static void
-impl_GNOME_View_size_request (PortableServer_Servant servant,
-			      CORBA_short *desired_width,
-			      CORBA_short *desired_height,
-			      CORBA_Environment *ev)
+impl_GNOME_View_size_query (PortableServer_Servant servant,
+			    CORBA_short *desired_width,
+			    CORBA_short *desired_height,
+			    CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-	int dh = 10;
-	int dw = 10;
+	int dh = -1;
+	int dw = -1;
 	
 	gtk_signal_emit (
 		GTK_OBJECT (view),
-		view_signals [SIZE_REQUEST], &dw, &dh);
+		view_signals [SIZE_QUERY], &dw, &dh);
 
 	*desired_height = dh;
 	*desired_width = dw;
@@ -272,6 +267,11 @@ gnome_view_destroy (GtkObject *object)
 	if (view->widget)
 		gtk_object_unref (GTK_OBJECT (view->widget));
 
+	if (view->plug != NULL) {
+		gtk_signal_disconnect (GTK_OBJECT (view->plug), view->plug_destroy_id);
+		gtk_object_unref (GTK_OBJECT (view->plug));
+	}
+
 	GTK_OBJECT_CLASS (gnome_view_parent_class)->destroy (object);
 }
 
@@ -298,11 +298,21 @@ gnome_view_class_init (GnomeViewClass *class)
 
 	gnome_view_parent_class = gtk_type_class (gnome_object_get_type ());
 
+
 	view_signals [VIEW_ACTIVATE] =
                 gtk_signal_new ("view_activate",
                                 GTK_RUN_LAST,
                                 object_class->type,
                                 GTK_SIGNAL_OFFSET (GnomeViewClass, view_activate), 
+                                gtk_marshal_NONE__BOOL,
+                                GTK_TYPE_NONE, 1,
+				GTK_TYPE_BOOL);
+
+	view_signals [SIZE_QUERY] =
+                gtk_signal_new ("size_query",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET (GnomeViewClass, size_query), 
                                 gtk_marshal_NONE__BOOL,
                                 GTK_TYPE_NONE, 1,
 				GTK_TYPE_BOOL);
@@ -445,13 +455,47 @@ gnome_view_get_view_frame (GnomeView *view)
 }
 
 /**
+ * gnome_view_set_ui_handler:
+ * @view: A GnomeView object.
+ * @uih: A GnomeUIHandler object.
+ *
+ * Sets the GnomeUIHandler for @view to @uih.  This provides a
+ * convenient way for a component to store the GnomeUIHandler which it
+ * will use to merge menus and toolbars.
+ */
+void
+gnome_view_set_ui_handler (GnomeView *view, GnomeUIHandler *uih)
+{
+	g_return_if_fail (view != NULL);
+	g_return_if_fail (GNOME_IS_VIEW (view));
+
+	view->uih = uih;
+}
+
+/**
  * gnome_view_get_ui_handler:
+ * @view: A GnomeView object for which a GnomeUIHandler has been created and set.
+ *
+ * Returns: The GnomeUIHandler which was associated with @view using
+ * gnome_view_set_ui_handler().
+ */
+GnomeUIHandler *
+gnome_view_get_ui_handler (GnomeView *view)
+{
+	g_return_val_if_fail (view != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_VIEW (view), NULL);
+
+	return view->uih;
+}
+
+/**
+ * gnome_view_get_remote_ui_handler:
  * @view: A GnomeView object which is bound to a remote GnomeViewFrame.
  *
  * Returns: The GNOME_UIHandler CORBA server for the remote GnomeViewFrame.
  */
 GNOME_UIHandler
-gnome_view_get_ui_handler (GnomeView *view)
+gnome_view_get_remote_ui_handler (GnomeView *view)
 {
 	CORBA_Environment ev;
 	GNOME_UIHandler uih;
@@ -463,11 +507,37 @@ gnome_view_get_ui_handler (GnomeView *view)
 
 	uih = GNOME_ViewFrame_get_ui_handler (view->view_frame, &ev);
 
+	gnome_object_check_env (GNOME_OBJECT (view), view->view_frame, &ev);
+
 	CORBA_exception_free (&ev);
 
 	return uih;
 }
 
+/**
+ * gnome_view_activate_notify:
+ * @view: A GnomeView object which is bound to a remote GnomeViewFrame.
+ * @activate: %TRUE if the view is activated, %FALSE otherwise.
+ *
+ * This function notifies @view's remote ViewFrame that the activation
+ * state of @view has changed.
+ */
+void
+gnome_view_activate_notify (GnomeView *view, gboolean activated)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (view != NULL);
+	g_return_if_fail (GNOME_IS_VIEW (view));
+
+	CORBA_exception_init (&ev);
+
+	GNOME_ViewFrame_view_activated (view->view_frame, activated, &ev);
+
+	gnome_object_check_env (GNOME_OBJECT (view), view->view_frame, &ev);
+
+	CORBA_exception_free (&ev);
+}
 
 /**
  * gnome_view_register_verb:
@@ -518,4 +588,3 @@ gnome_view_unregister_verb (GnomeView *view, const char *verb_name)
 	g_hash_table_remove (view->verb_callback_closures, verb_name);
 	g_free (original_key);
 }
-

@@ -11,7 +11,7 @@
  *
  * Authors:
  *   Miguel de Icaza (miguel@kernel.org)
- *   Nat Friedman    (nat@gnome-support.com)
+ *   Nat Friedman    (nat@nat.org)
  *
  * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
@@ -153,6 +153,33 @@ impl_GNOME_Embeddable_get_misc_status (PortableServer_Servant servant,
 	return 0;
 }
 
+static void
+gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
+{
+	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (data);
+
+	/*
+	 * Remove this view from our list of views.
+	 */
+	embeddable->views = g_list_remove (embeddable->views, view);
+
+	/*
+	 * If all of the views are gone, that *might* mean that
+	 * our container application died.  So ping it to find
+	 * out if it's still alive.
+	 */
+	if (embeddable->views != NULL)
+		return;
+
+	if (! gnome_unknown_ping (embeddable->client_site)) {
+		/*
+		 * The remote end is dead; it's time for
+		 * us to die too.
+		 */
+		gnome_object_destroy (GNOME_OBJECT (embeddable));
+	}
+}
+
 static GNOME_View
 impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 				const GNOME_ViewFrame view_frame,
@@ -172,6 +199,9 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 	gnome_view_set_embeddable (view, embeddable);
 
 	embeddable->views = g_list_prepend (embeddable->views, view);
+
+	gtk_signal_connect (GTK_OBJECT (view), "destroy",
+			    GTK_SIGNAL_FUNC (gnome_embeddable_view_destroy_cb), embeddable);
 
 	CORBA_exception_init (&evx);
 	ret = CORBA_Object_duplicate (gnome_object_corba_objref (GNOME_OBJECT (view)), &evx);
@@ -302,10 +332,25 @@ gnome_embeddable_destroy (GtkObject *object)
 	GList *l;
 
 	/*
+	 * Destroy all our views.
+	 */
+	for (l = embeddable->views; l != NULL; l = l->next) {
+		GnomeView *view = GNOME_VIEW (l->data);
+
+		gnome_object_destroy (GNOME_OBJECT (view));
+	}
+
+	/*
 	 * Release the verbs
 	 */
-	for (l = embeddable->verbs; l; l = l->next)
-		g_free (l->data);
+	for (l = embeddable->verbs; l; l = l->next) {
+		GnomeVerb *verb = (GnomeVerb *) l->data;
+
+		g_free (verb->name);
+		g_free (verb->label);
+		g_free (verb->hint);
+		g_free (verb);
+	}
 	g_list_free (embeddable->verbs);
 
 	/*
@@ -471,6 +516,7 @@ gnome_embeddable_remove_verb (GnomeEmbeddable *embeddable, const char *verb_name
 
 		if (! strcmp (verb_name, verb->name)) {
 			embeddable->verbs = g_list_remove_link (embeddable->verbs, l);
+			g_list_free_1 (l);
 
 			g_free (verb->name);
 			g_free (verb->label);

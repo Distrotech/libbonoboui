@@ -4,7 +4,7 @@
  *
  * Authors:
  *   Miguel de Icaza (miguel@kernel.org)
- *   Nat Friedman    (nat@gnome-support.com)
+ *   Nat Friedman    (nat@nat.org)
  *
  * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
@@ -97,20 +97,20 @@ struct _GnomeVerb {
 GtkType          gnome_embeddable_get_type         (void);
 GnomeEmbeddable *gnome_embeddable_new              (GnomeViewFactory factory,
 						    void *data);
-GnomeEmbeddable *gnome_embeddable_construct        (GnomeEmbeddable *bonobo_object,
-						    GNOME_Embeddable corba_bonobo_object,
+GnomeEmbeddable *gnome_embeddable_construct        (GnomeEmbeddable *embeddable,
+						    GNOME_Embeddable corba_embeddable,
 						    GnomeViewFactory factory,
 						    void *data);
 GNOME_Embeddable gnome_embeddable_corba_object_create (GnomeObject *object);
-void             gnome_embeddable_add_verb         (GnomeEmbeddable *bonobo_object,
+void             gnome_embeddable_add_verb         (GnomeEmbeddable *embeddable,
 						    const char *verb_name,
 						    const char *verb_label,
 						    const char *verb_hint);
-void             gnome_embeddable_add_verbs        (GnomeEmbeddable *bonobo_object,
+void             gnome_embeddable_add_verbs        (GnomeEmbeddable *embeddable,
 						    const GnomeVerb *verbs);
-void             gnome_embeddable_remove_verb      (GnomeEmbeddable *bonobo_object,
+void             gnome_embeddable_remove_verb      (GnomeEmbeddable *embeddable,
 						    const char *verb_name);
-void             gnome_embeddable_set_view_factory (GnomeEmbeddable *bonobo_object,
+void             gnome_embeddable_set_view_factory (GnomeEmbeddable *embeddable,
 						    GnomeViewFactory factory,
 						    void *data);
 

@@ -6,7 +6,7 @@
  * components.
  *
  * Authors:
- *    Nat Friedman (nat@gnome-support.com)
+ *    Nat Friedman (nat@nat.org)
  *    Miguel de Icaza (miguel@gnu.org)
  */
  
@@ -31,6 +31,9 @@ GnomeClientSite *text_client_site;
 
 GnomeObjectClient *image_png_obj;
 GnomeClientSite   *image_client_site;
+
+GnomeObjectClient *paint_obj;
+GnomeClientSite *paint_client_site;
 
 /*
  * The currently active view.  We keep track of this
@@ -261,7 +264,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
-	object = add_cmd (widget, app, "bonobo-object:image-x-png", &image_client_site);
+	object = add_cmd (widget, app, "embeddable:image-x-png", &image_client_site);
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch bonobo object."));
@@ -304,7 +307,7 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
-	object = add_cmd (widget, app, "bonobo-object:image-x-pdf", &image_client_site);
+	object = add_cmd (widget, app, "embeddable:image-x-pdf", &image_client_site);
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch bonobo object."));
@@ -374,6 +377,32 @@ add_gnumeric_cmd (GtkWidget *widget, Application *app)
 	g_free (moniker_string_rep);
 }
 
+static void
+add_paint_cmd (GtkWidget *widget, Application *app)
+{
+	GnomeObjectClient *object;
+	GnomeStream *stream;
+	GNOME_PersistStream persist;
+
+	object = add_cmd (widget, app, "embeddable:paint-component-simple", &paint_client_site);
+	if (object == NULL)
+	  {
+	    gnome_warning_dialog (_("Could not launch Embeddable."));
+	    return;
+	  }
+
+	paint_obj = object;
+}
+
+static void
+add_paint_view (GtkWidget *widget, Application *app)
+{
+	if (paint_obj == NULL)
+		return;
+
+	add_view (NULL, app, paint_client_site, paint_obj);
+}
+
 /*
  * This function uses GNOME::PersistStream to load a set of data into
  * the text/plain Embeddable.
@@ -385,7 +414,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
-	object = add_cmd (widget, app, "bonobo-object:text-plain", &text_client_site);
+	object = add_cmd (widget, app, "embeddable:text-plain", &text_client_site);
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch Embeddable."));
@@ -546,6 +575,16 @@ static GnomeUIInfo container_text_plain_menu [] = {
 	GNOMEUIINFO_END
 };
 
+static GnomeUIInfo container_paint_menu [] = {
+	GNOMEUIINFO_ITEM_NONE (
+		N_("_Add a new simple paint component"), NULL,
+		add_paint_cmd),
+	GNOMEUIINFO_ITEM_NONE (
+		N_("Add a new _view to an existing paint component"), NULL,
+		add_paint_view),
+	GNOMEUIINFO_END
+};
+
 static GnomeUIInfo container_image_png_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
 		N_("_Add a new image/x-png component"), NULL,
@@ -582,6 +621,7 @@ static GnomeUIInfo container_main_menu [] = {
 	GNOMEUIINFO_SUBTREE (N_("_text/plain"), container_text_plain_menu),
 	GNOMEUIINFO_SUBTREE (N_("_image/x-png"), container_image_png_menu),
 	GNOMEUIINFO_SUBTREE (N_("_image/x-pdf"), container_image_pdf_menu),
+	GNOMEUIINFO_SUBTREE (N_("paint sample"), container_paint_menu),
 	GNOMEUIINFO_SUBTREE (N_("Gnumeric"), container_gnumeric_menu),
 	GNOMEUIINFO_END
 };
