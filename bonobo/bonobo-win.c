@@ -1347,8 +1347,8 @@ put_hint_in_statusbar (GtkWidget *menuitem, BonoboWinPrivate *priv)
 
 	txt = bonobo_ui_util_decode_str (hint, &err);
 	if (err) {
-		g_warning ("Encoding error in tip on '%s', ensure you are "
-			   "encoding this node's tip",
+		g_warning ("Encoding error in tip on '%s', you probably forgot to "
+			   "put an '_' before tip in your xml file",
 			   bonobo_ui_xml_make_path (node));
 	} else if (priv->main_status) {
 		guint id;
@@ -1675,8 +1675,8 @@ menu_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 
 		txt = bonobo_ui_util_decode_str (label_attr, &err);
 		if (err) {
-			g_warning ("Encoding error in label on '%s', ensure you are "
-				   "encoding this node's label",
+			g_warning ("Encoding error in label on '%s', you probably forgot to "
+				   "put an '_' before label in your xml file",
 				   bonobo_ui_xml_make_path (node));
 			return;
 		}
@@ -2092,8 +2092,8 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 			gboolean err;
 			char *txt = bonobo_ui_util_decode_str (label, &err);
 			if (err) {
-				g_warning ("Encoding error in label on '%s', ensure you are "
-					   "encoding this node's label",
+				g_warning ("Encoding error in label on '%s', you probably forgot to "
+					   "put an '_' before label in your xml file",
 					   bonobo_ui_xml_make_path (node));
 				return;
 			}
@@ -2120,8 +2120,8 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 
 		decoded_txt = bonobo_ui_util_decode_str (txt, &err);
 		if (err) {
-			g_warning ("Encoding error in tip on '%s', ensure you are "
-				   "encoding this node's tip",
+			g_warning ("Encoding error in tip on '%s', you probably forgot to "
+				   "put an '_' before tip in your xml file",
 				   bonobo_ui_xml_make_path (node));
 		} else {
 			bonobo_ui_toolbar_item_set_tooltip (
