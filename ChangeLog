@@ -1,5 +1,9 @@
 2002-11-01  Michael Meeks  <michael@ximian.com>
 
+	* Version 2.1.0
+
+2002-11-01  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-toolbar-control-item.c
 	(bonobo_ui_toolbar_control_item_construct): upd.
 	(bonobo_ui_toolbar_control_item_new_widget): impl.
