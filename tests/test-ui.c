@@ -414,6 +414,7 @@ main (int argc, char **argv)
 		g_assert (!BONOBO_EX (ev));
 	}
 
+#ifdef OLD_STUFF
 	{
 		GtkWidget *widget = gtk_entry_new ();
 		BonoboControl *control = bonobo_control_new (widget);
@@ -427,6 +428,18 @@ main (int argc, char **argv)
 		bonobo_object_unref (BONOBO_OBJECT (control));
 		g_assert (!BONOBO_EX (ev));
 	}
+#else
+	{
+		GtkWidget *widget = gtk_entry_new ();
+		
+		gtk_entry_set_text (GTK_ENTRY (widget), "Example text");
+		gtk_widget_show (widget);
+		bonobo_ui_component_widget_set (componenta,
+						"/Toolbar/AControl",
+						widget, ev);
+		g_assert (!BONOBO_EX (ev));
+	}
+#endif
 
 	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, ev);
 	g_assert (!BONOBO_EX (ev));

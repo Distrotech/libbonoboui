@@ -1,3 +1,20 @@
+2002-11-01  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar-control-item.c
+	(bonobo_ui_toolbar_control_item_construct): upd.
+	(bonobo_ui_toolbar_control_item_new_widget): impl.
+	clean to allow non-control items.
+
+	* tests/test-ui.c (main): test it.
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_widget_set): impl helper.
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_widget_set): impl. so
+	we can do in-proc shortcuts to make theming
+	nicer in nautilus / galeon.
+
 2002-10-31  Mark McLoughlin  <mark@skynet.ie>
 
 	* configure.in: require libxml - fixes breakage

@@ -32,6 +32,9 @@
 #include <bonobo/bonobo-ui-marshal.h>
 #include <bonobo/bonobo-ui-preferences.h>
 
+/* only for embedded widgets */
+#include <bonobo/bonobo-ui-toolbar-item.h>
+
 #include <bonobo/bonobo-ui-node-private.h>
 
 #ifdef LOWLEVEL_DEBUG
@@ -1162,6 +1165,37 @@ bonobo_ui_engine_object_set (BonoboUIEngine   *engine,
 /*	bonobo_ui_engine_dump (win, "After object set updatew");*/
 
 	return BONOBO_UI_ERROR_OK;
+}
+
+void
+bonobo_ui_engine_widget_set (BonoboUIEngine    *engine,
+			     const char        *path,
+			     GtkWidget         *widget)
+{
+	NodeInfo *info;
+	GtkWidget *tool_item;
+	BonoboUINode *node;
+
+	g_return_if_fail (widget != NULL);
+
+	bonobo_ui_engine_freeze (engine);
+
+	bonobo_ui_engine_object_set (
+		engine, path, CORBA_OBJECT_NIL, NULL);
+
+	node = bonobo_ui_engine_get_path (engine, path);
+	g_return_if_fail (node != NULL);
+	g_return_if_fail (!strcmp (bonobo_ui_node_get_name (node), "control"));
+
+	tool_item = bonobo_ui_toolbar_control_item_new_widget (widget);
+
+	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
+	info->widget = gtk_widget_ref (tool_item);
+	gtk_object_sink (GTK_OBJECT (tool_item));
+
+	bonobo_ui_engine_stamp_custom (engine, node);
+		
+	bonobo_ui_engine_thaw (engine);
 }
 
 /**
