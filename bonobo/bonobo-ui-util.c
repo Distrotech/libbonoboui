@@ -353,6 +353,58 @@ get_stock_pixbuf (const char *name)
 	return pixbuf;
 }
 
+static gchar *
+find_pixmap_in_path (const gchar *filename)
+{
+	gchar *path, *file;
+
+	if (filename [0] == '/')
+		return g_strdup (filename);
+
+	file = gnome_pixmap_file (filename);
+	if (file)
+		return file;
+
+	path = g_strconcat (g_get_prgname (), "/", filename, NULL);
+	file = gnome_pixmap_file (path);
+	if (file) {
+		g_free (path);
+		return file;
+	}
+	g_free (path);
+
+	path = g_getenv ("GNOME_PATH");
+	if (path != NULL) {
+		gchar **pathv;
+		gint i;
+
+		pathv = g_strsplit (path, ":", 0);
+		for (i = 0; pathv[i] != NULL; i++) {
+			gchar *s;
+
+			s = g_strconcat (pathv[i], "/share/pixmaps/",
+					 filename, NULL);
+			if (g_file_exists (s)) {
+				g_strfreev (pathv);
+				return s;
+			}
+			g_free (s);
+
+			s = g_strconcat (pathv[i], "/share/pixmaps/",
+					 g_get_prgname (), "/",
+					 filename, NULL);
+			if (g_file_exists (s)) {
+				g_strfreev (pathv);
+				return s;
+			}
+			g_free (s);
+		}
+		g_strfreev (pathv);
+	}
+
+	return NULL;
+}
+
 GdkPixbuf *
 bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 {
@@ -382,21 +434,14 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 			icon_pixbuf = get_stock_pixbuf (text);
 
 	} else if (!strcmp (type, "filename")) {
-		char *name;
+		char *name = find_pixmap_in_path (text);
 
-		if (text [0] == '/' && g_file_exists (text)) {
-			name = g_strdup (text);
-		} else {
-			name = gnome_pixmap_file (text);
-		}
-
-		if (name == NULL)
+		if ((name == NULL) || !g_file_exists (name))
 			g_warning ("Could not find GNOME pixmap file %s", text);
 		else
 			icon_pixbuf = gdk_pixbuf_new_from_file (name);
 
 		g_free (name);
-
 	} else if (!strcmp (type, "pixbuf")) {
 		
 		/* Get pointer to GdkPixbuf */
@@ -946,6 +991,52 @@ bonobo_ui_util_fixup_help (BonoboUIComponent *component,
 		bonobo_ui_util_fixup_help (component, l, app_prefix, app_name);
 }
 
+static void
+bonobo_ui_util_fixup_icons (BonoboUINode *node)
+{
+	BonoboUINode *l;
+	gboolean fixup_here = FALSE;
+	char *txt;
+
+	if (!node)
+		return;
+
+	if ((txt = bonobo_ui_node_get_attr (node, "pixtype"))) {
+		fixup_here = !strcmp (txt, "filename");
+		bonobo_ui_node_free_string (txt);
+	}
+
+	if (fixup_here &&
+	    ((txt = bonobo_ui_node_get_attr (node, "pixname")))) {
+		GdkPixbuf *pixbuf = NULL;
+
+		if (g_path_is_absolute (txt))
+			pixbuf = gdk_pixbuf_new_from_file (txt);
+		else {
+			gchar *name = find_pixmap_in_path (txt);
+
+			if (name) {
+				pixbuf = gdk_pixbuf_new_from_file (name);
+				g_free (name);
+			}
+		}
+
+		if (pixbuf) {
+			gchar *xml = bonobo_ui_util_pixbuf_to_xml (pixbuf);
+
+			bonobo_ui_node_set_attr (node, "pixtype", "pixbuf");
+			bonobo_ui_node_set_attr (node, "pixname", xml);
+			g_free (xml);
+		}
+
+		bonobo_ui_node_free_string (txt);
+	}
+
+	for (l = bonobo_ui_node_children (node); l; l = bonobo_ui_node_next (l))
+		bonobo_ui_util_fixup_icons (l);
+}
+
+
 /**
  * bonobo_ui_util_new_ui:
  * @component: The component help callback should be on
@@ -975,6 +1066,8 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 	bonobo_ui_util_translate_ui (node);
 
 	bonobo_ui_util_fixup_help (component, node, app_prefix, app_name);
+
+	bonobo_ui_util_fixup_icons (node);
 
 	return node;
 }
