@@ -40,71 +40,13 @@ struct _BonoboSocketPrivate {
 	BonoboControlFrame *frame;
 };
 
-/* Forward declararations */
-
-static void bonobo_socket_class_init               (BonoboSocketClass    *klass);
-static void bonobo_socket_init                     (BonoboSocket         *socket);
-static void bonobo_socket_destroy                  (GtkObject            *object);
-static void bonobo_socket_realize                  (GtkWidget            *widget);
-static void bonobo_socket_unrealize                (GtkWidget            *widget);
-
 /* Local data */
 
 static GtkSocketClass *parent_class = NULL;
 
-guint
-bonobo_socket_get_type ()
-{
-	static guint socket_type = 0;
-
-	if (!socket_type)
-	{
-		static const GtkTypeInfo socket_info =
-		{
-			"BonoboSocket",
-			sizeof (BonoboSocket),
-			sizeof (BonoboSocketClass),
-			(GtkClassInitFunc) bonobo_socket_class_init,
-			(GtkObjectInitFunc) bonobo_socket_init,
-			NULL,
-			NULL
-		};
-
-		socket_type = gtk_type_unique (gtk_socket_get_type (), &socket_info);
-	}
-
-	return socket_type;
-}
-
-static void
-bonobo_socket_class_init (BonoboSocketClass *class)
-{
-	GtkObjectClass *object_class;
-	GtkWidgetClass *widget_class;
-
-	object_class = (GtkObjectClass*) class;
-	widget_class = (GtkWidgetClass*) class;
-
-	parent_class = gtk_type_class (GTK_TYPE_SOCKET);
-
-	object_class->destroy = bonobo_socket_destroy;
-
-	widget_class->realize = bonobo_socket_realize;
-	widget_class->unrealize = bonobo_socket_unrealize;
-}
-
-static void
-bonobo_socket_init (BonoboSocket *socket)
-{
-	BonoboSocketPrivate *priv;
-
-	priv = g_new (BonoboSocketPrivate, 1);
-	socket->priv = priv;
-}
-
 /* Destroy handler for the socket */
 static void
-bonobo_socket_destroy (GtkObject *object)
+bonobo_socket_finalize (GObject *object)
 {
 	BonoboSocket *socket;
 	BonoboSocketPrivate *priv;
@@ -118,26 +60,9 @@ bonobo_socket_destroy (GtkObject *object)
 	g_free (priv);
 	socket->priv = NULL;
 
-	if (GTK_OBJECT_CLASS (parent_class)->destroy)
-		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-/**
- * bonobo_socket_new:
- *
- * Create a new empty #BonoboSocket.
- *
- * Returns: A new #BonoboSocket.
- */
-GtkWidget*
-bonobo_socket_new (void)
-{
-	BonoboSocket *socket;
-
-	socket = gtk_type_new (bonobo_socket_get_type ());
-
-	return GTK_WIDGET (socket);
-}
 
 static void
 bonobo_socket_realize (GtkWidget *widget)
@@ -169,6 +94,70 @@ bonobo_socket_unrealize (GtkWidget *widget)
 		(* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
 
 	bonobo_control_frame_sync_unrealize (socket->priv->frame);
+}
+
+static void
+bonobo_socket_class_init (GObjectClass *klass)
+{
+	GtkWidgetClass *widget_class;
+
+	widget_class = (GtkWidgetClass*) klass;
+
+	parent_class = gtk_type_class (GTK_TYPE_SOCKET);
+
+	klass->finalize = bonobo_socket_finalize;
+
+	widget_class->realize = bonobo_socket_realize;
+	widget_class->unrealize = bonobo_socket_unrealize;
+}
+
+static void
+bonobo_socket_init (BonoboSocket *socket)
+{
+	BonoboSocketPrivate *priv;
+
+	priv = g_new (BonoboSocketPrivate, 1);
+	socket->priv = priv;
+}
+
+
+guint
+bonobo_socket_get_type ()
+{
+	static guint socket_type = 0;
+
+	if (!socket_type) {
+		static const GtkTypeInfo socket_info = {
+			"BonoboSocket",
+			sizeof (BonoboSocket),
+			sizeof (BonoboSocketClass),
+			(GtkClassInitFunc) bonobo_socket_class_init,
+			(GtkObjectInitFunc) bonobo_socket_init,
+			NULL,
+			NULL
+		};
+
+		socket_type = gtk_type_unique (gtk_socket_get_type (), &socket_info);
+	}
+
+	return socket_type;
+}
+
+/**
+ * bonobo_socket_new:
+ *
+ * Create a new empty #BonoboSocket.
+ *
+ * Returns: A new #BonoboSocket.
+ */
+GtkWidget*
+bonobo_socket_new (void)
+{
+	BonoboSocket *socket;
+
+	socket = gtk_type_new (bonobo_socket_get_type ());
+
+	return GTK_WIDGET (socket);
 }
 
 void

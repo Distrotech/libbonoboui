@@ -4,7 +4,7 @@ INCLUDES = \
 	$(WARN_CFLAGS)					\
 	$(BONOBOUI_CFLAGS)				\
 	-DPLUGIN_DIR=\""$(PLUGIN_DIR)"\"		\
-	-DBONOBO_UIDIR=\""$(datadir)/gnome/ui/"\"	\
+	-DBONOBO_UIDIR=\""$(datadir)/gnome-2.0/ui/"\"	\
         -DBONOBO_LIBDIR=\""$(libdir)"\" 		\
         -DBONOBO_DATADIR=\""$(datadir)"\" 		\
         -DBONOBO_PIXMAPDIR=\""$(datadir)/pixmaps"\"	\

@@ -250,7 +250,7 @@ lookup_stock_compat (const char *id)
 	}
 
 	g_free (new_id);
-	new_id = g_strconcat ("gnome-stock-pixmap-", lower, NULL);
+	new_id = g_strconcat ("gnome-stock-", lower, NULL);
 
 	if (gtk_stock_lookup (new_id, &item)) {
 		g_free (lower);
@@ -531,30 +531,12 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 {
 	char *fname, *name;
 
-#if 0
-	/*
-	 * This is fundamentally broken.  The user has no business defining
-	 * his own user interfaces.
-	 */
-	/*
-	 * The user copy ?
-	 */
-	fname = g_strdup_printf ("%s/.gnome/ui/%s",
-				 g_get_home_dir (), file_name);
+	if (file_name [0] == '/' &&
+	    g_file_test (file_name, G_FILE_TEST_EXISTS))
+		return g_strdup (file_name);
 
-	/*
-	 * FIXME: we should compare timestamps vs. the master copy.
-	 */
-	if (g_file_exists (fname))
-		return fname;
-	g_free (fname);
-#endif
-	
-	/*
-	 * The master copy
-	 */
 	if (component_prefix) {
-		fname = g_strdup_printf ("%s/gnome/ui/%s",
+		fname = g_strdup_printf ("%s/gnome-2.0/ui/%s",
 					 component_prefix, file_name);
 		if (g_file_test (fname, G_FILE_TEST_EXISTS))
 			return fname;
@@ -562,6 +544,11 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 	}
 
 	name = g_strconcat (BONOBO_UIDIR, file_name, NULL);
+	if (g_file_test (name, G_FILE_TEST_EXISTS))
+		return name;
+	g_free (name);
+
+	name = g_strconcat (component_prefix, "/", file_name, NULL);
 	if (g_file_test (name, G_FILE_TEST_EXISTS))
 		return name;
 	g_free (name);

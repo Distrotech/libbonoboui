@@ -1,3 +1,21 @@
+2001-10-11  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-util.c (bonobo_ui_util_get_ui_fname):
+	update to allow absolute file name paths, and fall back to
+	a straight prefix / file_name conflation.
+	version gnome-2.0/ui
+
+	* bonobo/Makefile.am (BONOBOUIDIR): version dir.
+
+	* bonobo/bonobo-socket.c (bonobo_socket_destroy): rename to
+	(bonobo_socket_finalize): and finalize instead.
+	(bonobo_socket_class_init): upd.
+
+2001-10-05  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-util.c (lookup_stock_compat): rename
+	gnome-stock-pixmap- prefix to gnome-stock- for compat.
+
 2001-10-08  Abel Cheung  <maddog@linux.org.hk>
 
 	* samples/controls/*: Rename bonobo-sample-controls ->

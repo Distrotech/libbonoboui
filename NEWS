@@ -1,4 +1,4 @@
-Bonobo 1.103
+libbonoboui 1.103
 
 	* Bug fixes
 		* build fixage (Glynn Foster, Anders, PeterW)
@@ -20,3 +20,4 @@ Bonobo 1.103
 		* pruning libgnome usage (Martin)
 		* closure API updates (Martin)
 		* file selector client API (Jacob)
+
