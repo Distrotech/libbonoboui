@@ -79,4 +79,14 @@ void                 bonobo_win_deregister_component (BonoboWin     *win,
 Bonobo_Unknown       bonobo_win_component_get        (BonoboWin     *win,
 						      const char    *name);
 
+void                 bonobo_win_add_popup            (BonoboWin     *win,
+						      GtkMenu       *popup,
+						      const char    *path);
+
+/*
+ * NB. popups are automaticaly removed on destroy.
+ */
+void                 bonobo_win_remove_popup         (BonoboWin     *win,
+						      const char    *path);
+
 #endif /* _BONOBO_WIN_H_ */

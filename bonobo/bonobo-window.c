@@ -24,6 +24,8 @@
 #define	BINDING_MOD_MASK()				\
 	(gtk_accelerator_get_default_mod_mask () | GDK_RELEASE_MASK)
 
+#define BONOBO_WIN_PRIV_KEY "BonoboWin::Priv"
+
 GtkWindowClass *bonobo_win_parent_class = NULL;
 
 struct _BonoboWinPrivate {
@@ -44,6 +46,7 @@ struct _BonoboWinPrivate {
 	GHashTable    *radio_groups;
 	GHashTable    *keybindings;
 	GSList        *components;
+	GSList        *popups;
 
 	GtkWidget     *main_vbox;
 
@@ -53,9 +56,18 @@ struct _BonoboWinPrivate {
 	GtkWidget     *client_area;
 };
 
+typedef enum {
+	ROOT_WIDGET   = 0x1,
+	CUSTOM_WIDGET = 0x2
+} NodeType;
+
+#define NODE_IS_ROOT_WIDGET(n)   ((n->type & ROOT_WIDGET) != 0)
+#define NODE_IS_CUSTOM_WIDGET(n) ((n->type & CUSTOM_WIDGET) != 0)
+
 typedef struct {
 	BonoboUIXmlData parent;
 
+	int             type;
 	GtkWidget      *widget;
 	Bonobo_Unknown  object;
 } NodeInfo;
@@ -63,8 +75,10 @@ typedef struct {
 static void
 info_dump_fn (BonoboUIXmlData *a)
 {
-	fprintf (stderr, " '%s' widget %p\n",
-		 (char *)a->id, ((NodeInfo *)a)->widget);
+	NodeInfo *info = (NodeInfo *) a;
+
+	fprintf (stderr, " '%s' widget %8p object %8p\n",
+		 (char *)a->id, info->widget, info->object);
 }
 
 static BonoboUIXmlData *
@@ -164,7 +178,7 @@ typedef struct {
 } WinComponent;
 
 static WinComponent *
-app_component_get (BonoboWinPrivate *priv, const char *name)
+win_component_get (BonoboWinPrivate *priv, const char *name)
 {
 	WinComponent *component;
 	GSList       *l;
@@ -189,9 +203,9 @@ app_component_get (BonoboWinPrivate *priv, const char *name)
 }
 
 static Bonobo_Unknown
-app_component_objref (BonoboWinPrivate *priv, const char *name)
+win_component_objref (BonoboWinPrivate *priv, const char *name)
 {
-	WinComponent *component = app_component_get (priv, name);
+	WinComponent *component = win_component_get (priv, name);
 
 	g_return_val_if_fail (component != NULL, CORBA_OBJECT_NIL);
 
@@ -202,9 +216,9 @@ app_component_objref (BonoboWinPrivate *priv, const char *name)
  * Use the pointer identity instead of a costly compare
  */
 static char *
-app_component_cmp_name (BonoboWinPrivate *priv, const char *name)
+win_component_cmp_name (BonoboWinPrivate *priv, const char *name)
 {
-	WinComponent *component = app_component_get (priv, name);
+	WinComponent *component = win_component_get (priv, name);
 
 	g_return_val_if_fail (component != NULL, NULL);
 
@@ -212,7 +226,7 @@ app_component_cmp_name (BonoboWinPrivate *priv, const char *name)
 }
 
 static void
-app_component_destroy (BonoboWinPrivate *priv, WinComponent *component)
+win_component_destroy (BonoboWinPrivate *priv, WinComponent *component)
 {
 	priv->components = g_slist_remove (priv->components, component);
 
@@ -224,6 +238,81 @@ app_component_destroy (BonoboWinPrivate *priv, WinComponent *component)
 	}
 }
 
+typedef struct {
+	GtkMenu          *menu;
+	char             *path;
+} WinPopup;
+
+static void
+popup_remove (BonoboWinPrivate *priv,
+	      WinPopup         *popup)
+{
+	g_return_if_fail (priv != NULL);
+	g_return_if_fail (popup != NULL);
+
+	priv->popups = g_slist_remove (
+		priv->popups, popup);
+	
+	g_free (popup->path);
+	g_free (popup);
+}
+
+void
+bonobo_win_remove_popup (BonoboWin     *win,
+			 const char    *path)
+{
+	GSList *l, *next;
+
+	g_return_if_fail (path != NULL);
+	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (win->priv != NULL);
+
+	for (l = win->priv->popups; l; l = next) {
+		WinPopup *popup = l->data;
+
+		next = l->next;
+		if (!strcmp (popup->path, path))
+			popup_remove (win->priv, popup);
+	}
+}
+
+static void
+popup_destroy (GtkObject *menu, WinPopup *popup)
+{
+	BonoboWinPrivate *priv = gtk_object_get_data (
+		GTK_OBJECT (menu), BONOBO_WIN_PRIV_KEY);
+
+	g_return_if_fail (priv != NULL);
+	bonobo_win_remove_popup (priv->app, popup->path);
+}
+
+void
+bonobo_win_add_popup (BonoboWin     *win,
+		      GtkMenu       *menu,
+		      const char    *path)
+{
+	WinPopup *popup;
+
+	g_return_if_fail (path != NULL);
+	g_return_if_fail (GTK_IS_MENU (menu));
+	g_return_if_fail (BONOBO_IS_WIN (win));
+
+	bonobo_win_remove_popup (win, path);
+
+	popup       = g_new (WinPopup, 1);
+	popup->menu = menu;
+	popup->path = g_strdup (path);
+
+	win->priv->popups = g_slist_prepend (win->priv->popups, popup);
+
+	gtk_object_set_data (GTK_OBJECT (menu),
+			     BONOBO_WIN_PRIV_KEY,
+			     win->priv);
+
+	gtk_signal_connect (GTK_OBJECT (menu), "destroy",
+			    (GtkSignalFunc) popup_destroy, popup);
+}
+
 void
 bonobo_win_register_component (BonoboWin     *app,
 			       const char    *name,
@@ -233,7 +322,7 @@ bonobo_win_register_component (BonoboWin     *app,
 
 	g_return_if_fail (BONOBO_IS_WIN (app));
 
-	if ((appcomp = app_component_get (app->priv, name))) {
+	if ((appcomp = win_component_get (app->priv, name))) {
 		if (appcomp->object != CORBA_OBJECT_NIL)
 			bonobo_object_release_unref (appcomp->object, NULL);
 	}
@@ -249,9 +338,9 @@ bonobo_win_deregister_component (BonoboWin     *app,
 
 	g_return_if_fail (BONOBO_IS_WIN (app));
 
-	if ((component = app_component_get (app->priv, name))) {
+	if ((component = win_component_get (app->priv, name))) {
 		bonobo_win_xml_rm (app, "/", component->name);
-		app_component_destroy (app->priv, component);
+		win_component_destroy (app->priv, component);
 	} else
 		g_warning ("Attempting to deregister non-registered "
 			   "component '%s'", name);
@@ -431,7 +520,7 @@ real_emit_ui_event (BonoboWinPrivate *priv, const char *component_name,
 
 	gtk_object_ref (GTK_OBJECT (priv->app));
 
-	component = app_component_objref (priv, component_name);
+	component = win_component_objref (priv, component_name);
 
 	if (component != CORBA_OBJECT_NIL) {
 		CORBA_Environment ev;
@@ -455,13 +544,36 @@ real_emit_ui_event (BonoboWinPrivate *priv, const char *component_name,
 }
 
 static void
+custom_widget_unparent (NodeInfo *info)
+{
+	GtkContainer *container;
+
+	g_return_if_fail (info != NULL);
+
+	if (!info->widget)
+		return;
+
+	g_return_if_fail (GTK_IS_WIDGET (info->widget));
+
+	container = GTK_CONTAINER (info->widget->parent);
+	g_return_if_fail (container != NULL);
+
+	gtk_widget_ref (info->widget);
+	gtk_container_remove (container, info->widget);
+}
+
+static void
 override_fn (GtkObject *object, xmlNode *node, BonoboWinPrivate *priv)
 {
 	char     *id = node_get_id_or_path (node);
 	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
 	/* To stop stale pointers floating in the overrides */
-	info->widget = NULL;
+	if (info->widget && NODE_IS_CUSTOM_WIDGET (info)) {
+		custom_widget_unparent (info);
+		g_warning ("TESTME: untested code path overriding custom widgets");
+	} else
+		info->widget = NULL;
 
 	real_emit_ui_event (priv, info->parent.id, id,
 			    Bonobo_UIComponent_OVERRIDDEN, "");
@@ -477,7 +589,8 @@ reinstate_fn (GtkObject *object, xmlNode *node, BonoboWinPrivate *priv)
 	char     *id = node_get_id_or_path (node);
 	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
-	g_assert (info->widget == NULL);
+	if (!NODE_IS_CUSTOM_WIDGET (info))
+		g_assert (info->widget == NULL);
 
 	real_emit_ui_event (priv, info->parent.id, id,
 			    Bonobo_UIComponent_REINSTATED, "");
@@ -498,6 +611,7 @@ remove_fn (GtkObject *object, xmlNode *node, BonoboWinPrivate *priv)
 
 	if (info->widget)
 		gtk_widget_destroy (info->widget);
+
 	info->widget = NULL;
 
 /*	fprintf (stderr, "XRemove '%s'\n", id);*/
@@ -576,19 +690,28 @@ radio_group_add (BonoboWinPrivate *priv,
 static void
 container_destroy_siblings (BonoboUIXml *tree, GtkWidget *widget, xmlNode *node)
 {
-	xmlNode *l;
+	xmlNode   *l;
+
+/*	if (node)
+		fprintf (stderr, "Container destroy siblings on '%s' '%s'\n",
+		node->name, xmlGetProp (node, "name"));*/
 
 	for (l = node; l; l = l->next) {
 		NodeInfo *info;
 
-		info = bonobo_ui_xml_get_data (tree, node);
+		info = bonobo_ui_xml_get_data (tree, l);
 
-		container_destroy_siblings (tree, info->widget, node->childs);
+		if (!NODE_IS_CUSTOM_WIDGET (info))
+			container_destroy_siblings (tree, info->widget, l->childs);
 
-		if (info->widget)
-			gtk_widget_destroy (info->widget);
-		/* else freshly merged and no widget yet */
-		info->widget = NULL;
+		if (info->widget) {
+			if (NODE_IS_CUSTOM_WIDGET (info))
+				custom_widget_unparent (info);
+			else {
+				gtk_widget_destroy (info->widget);
+				info->widget = NULL;
+			}
+		} /* else freshly merged and no widget yet */
 	}
 
 	if (GTK_IS_CONTAINER (widget))
@@ -596,8 +719,6 @@ container_destroy_siblings (BonoboUIXml *tree, GtkWidget *widget, xmlNode *node)
 				       (GtkCallback) gtk_widget_destroy,
 				       NULL);
 }
-
-#define BONOBO_WIN_PRIV_KEY "BonoboWin::Priv"
 
 static void
 real_exec_verb (BonoboWinPrivate *priv,
@@ -612,7 +733,7 @@ real_exec_verb (BonoboWinPrivate *priv,
 
 	gtk_object_ref (GTK_OBJECT (priv->app));
 
-	component = app_component_objref (priv, component_name);
+	component = win_component_objref (priv, component_name);
 
 	if (component != CORBA_OBJECT_NIL) {
 		CORBA_Environment ev;
@@ -1032,6 +1153,33 @@ build_menu_placeholder (BonoboWinPrivate *priv, xmlNode *node, GtkWidget *parent
 	}
 }
 
+static GtkWidget *
+build_control (BonoboWinPrivate *priv,
+		    xmlNode          *node,
+		    GtkWidget        *parent)
+{
+	GtkWidget *control;
+	NodeInfo  *info = bonobo_ui_xml_get_data (priv->tree, node);
+
+	if (info->widget) { /* Re-parent the widget */
+		control = info->widget;
+	} else {
+		g_return_val_if_fail (info->object != CORBA_OBJECT_NIL, NULL);
+
+		control = bonobo_widget_new_control_from_objref
+			(bonobo_object_dup_ref (info->object, NULL),
+			 CORBA_OBJECT_NIL);
+		g_return_val_if_fail (control != NULL, NULL);
+				
+		g_return_val_if_fail (control != NULL, NULL);
+		
+		info->type |= CUSTOM_WIDGET;
+		info->widget = control;
+	}
+
+	return control;
+}
+
 static void
 build_menu_widget (BonoboWinPrivate *priv, xmlNode *node)
 {
@@ -1110,12 +1258,7 @@ build_menu_widget (BonoboWinPrivate *priv, xmlNode *node)
 	} else if (!strcmp (node->name, "control")) {
 		GtkWidget *control;
 
-		g_return_if_fail (info->object != CORBA_OBJECT_NIL);
-		
-		control = bonobo_widget_new_control_from_objref
-			(bonobo_object_dup_ref (info->object, NULL),
-			 CORBA_OBJECT_NIL);
-		g_return_if_fail (control != NULL);
+		control = build_control (priv, node, parent);
 
 		menu_widget = gtk_menu_item_new ();
 		gtk_container_add (GTK_CONTAINER (menu_widget), control);
@@ -1152,9 +1295,6 @@ update_menus (BonoboWinPrivate *priv, xmlNode *node)
 {
 	xmlNode  *l;
 	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
-
-	if (!info->widget)
-		info->widget = GTK_WIDGET (priv->menu);
 
 	container_destroy_siblings (priv->tree, info->widget, node->childs);
 
@@ -1239,6 +1379,7 @@ build_toolbar_widget (BonoboWinPrivate *priv, xmlNode *node)
 
 	type = xmlGetProp (node, "type");
 	label = xmlGetProp (node, "label");
+
 	if (!type || !strcmp (type, "std"))
 		item = bonobo_ui_item_new_item (label, pixmap);
 	
@@ -1253,6 +1394,7 @@ build_toolbar_widget (BonoboWinPrivate *priv, xmlNode *node)
 		g_warning ("Invalid type '%s'", type);
 		return;
 	}
+
 	XML_FREE (type);
 	XML_FREE (label);
 	
@@ -1291,6 +1433,28 @@ build_toolbar_widget (BonoboWinPrivate *priv, xmlNode *node)
 	set_cmd_dirty (priv, node);
 }
 
+
+static void
+build_toolbar_control (BonoboWinPrivate *priv, xmlNode *node)
+{
+	NodeInfo   *info;
+	GtkWidget  *parent;
+	GtkWidget  *item;
+
+	g_return_if_fail (priv != NULL);
+	g_return_if_fail (node != NULL);
+
+	info = bonobo_ui_xml_get_data (priv->tree, node);
+
+	parent = node_get_parent_widget (priv->tree, node);
+
+	item = build_control (priv, node, parent);
+	g_return_if_fail (item != NULL);
+	gtk_widget_show (GTK_WIDGET (item));
+
+	bonobo_ui_toolbar_add (BONOBO_UI_TOOLBAR (parent), item);
+}
+
 static void
 update_dockitem (BonoboWinPrivate *priv, xmlNode *node)
 {
@@ -1323,8 +1487,7 @@ update_dockitem (BonoboWinPrivate *priv, xmlNode *node)
 		gtk_widget_show (GTK_WIDGET (item));
 	}
 
-	if (GTK_BIN (item)->child)
-		gtk_widget_destroy (GTK_BIN (item)->child);
+	container_destroy_siblings (priv->tree, GTK_WIDGET (item), node->childs);
 
 	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
 	info->widget = GTK_WIDGET (toolbar);
@@ -1336,6 +1499,9 @@ update_dockitem (BonoboWinPrivate *priv, xmlNode *node)
 	for (l = node->childs; l; l = l->next) {
 		if (!strcmp (l->name, "toolitem"))
 			build_toolbar_widget (priv, l);
+
+		else if (!strcmp (l->name, "control"))
+			build_toolbar_control (priv, l);
 	}
 
 	if ((txt = xmlGetProp (node, "look"))) {
@@ -1449,9 +1615,8 @@ update_status (BonoboWinPrivate *priv, xmlNode *node)
 {
 	xmlNode *l;
 
-	gtk_container_foreach (GTK_CONTAINER (priv->status),
-			       (GtkCallback) gtk_widget_destroy,
-			       NULL);
+	container_destroy_siblings (priv->tree, GTK_WIDGET (priv->status), node->childs);
+
 	priv->main_status = NULL;
 
 	for (l = node->childs; l; l = l->next) {
@@ -1479,10 +1644,10 @@ update_status (BonoboWinPrivate *priv, xmlNode *node)
 				gtk_statusbar_push (priv->main_status, id, txt);
 				xmlFree (txt);
 			}
-		} else {
+		} else if (!strcmp (l->name, "control")) {
 			NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, l);
 
-			g_warning ("TESTME: untested code path");
+			g_warning ("TESTME: non-working code path");
 
 			if (!info->object) {
 				g_warning ("Unknown status bar object");
@@ -1492,7 +1657,9 @@ update_status (BonoboWinPrivate *priv, xmlNode *node)
 
 			widget = bonobo_ui_item_new_control (info->object);
 			g_return_if_fail (widget != NULL);
-			gtk_widget_show (GTK_WIDGET (widget));
+
+			gtk_widget_show (widget);
+			info->widget = widget;
 			
 			gtk_box_pack_end (priv->status, widget, TRUE, TRUE, 0);
 		}
@@ -1540,15 +1707,46 @@ seek_dirty (BonoboWinPrivate *priv, xmlNode *node, UIUpdateType type)
 }
 
 static void
+setup_root_widgets (BonoboWinPrivate *priv)
+{
+	xmlNode  *node;
+	NodeInfo *info;
+	GSList   *l;
+
+	if ((node = bonobo_ui_xml_get_path (priv->tree,
+					    "/menu"))) {
+		info = bonobo_ui_xml_get_data (priv->tree, node);
+		info->widget = GTK_WIDGET (priv->menu);
+		info->type |= ROOT_WIDGET;
+	}
+
+	for (l = priv->popups; l; l = l->next) {
+		WinPopup *popup = l->data;
+
+		if ((node = bonobo_ui_xml_get_path (priv->tree,
+						    popup->path))) {
+			info = bonobo_ui_xml_get_data (priv->tree, node);
+			info->widget = GTK_WIDGET (popup->menu);
+			info->type |= ROOT_WIDGET;
+		}
+	}
+}
+
+static void
 update_widgets (BonoboWinPrivate *priv)
 {
 	xmlNode *node;
+
+	setup_root_widgets (priv);
 
 	for (node = priv->tree->root->childs; node; node = node->next) {
 		if (!node->name)
 			continue;
 
 		if (!strcmp (node->name, "menu")) {
+			seek_dirty (priv, node, UI_UPDATE_MENU);
+
+		} else if (!strcmp (node->name, "popup")) {
 			seek_dirty (priv, node, UI_UPDATE_MENU);
 
 		} else if (!strcmp (node->name, "dockitem")) {
@@ -1623,8 +1821,10 @@ destroy_priv (BonoboWinPrivate *priv)
 	priv->keybindings = NULL;
 
 	while (priv->components)
-		app_component_destroy (priv, priv->components->data);
-	priv->components = NULL;
+		win_component_destroy (priv, priv->components->data);
+
+	while (priv->popups)
+		popup_remove (priv, priv->popups->data);
 	
 	g_free (priv);
 }
@@ -1752,10 +1952,10 @@ bonobo_win_xml_merge_tree (BonoboWin  *app,
 		bonobo_ui_xml_strip (tree);
 		bonobo_ui_xml_merge (app->priv->tree, path,
 				     tree->childs,
-				     app_component_cmp_name (app->priv, component));
+				     win_component_cmp_name (app->priv, component));
 	} else
 		bonobo_ui_xml_merge (app->priv->tree, path, tree,
-				     app_component_cmp_name (app->priv, component));
+				     win_component_cmp_name (app->priv, component));
 
 	update_widgets (app->priv);
 }
@@ -1795,7 +1995,7 @@ bonobo_win_xml_rm (BonoboWin  *app,
 	g_return_if_fail (app->priv->tree != NULL);
 
 	bonobo_ui_xml_rm (app->priv->tree, "/",
-			  app_component_cmp_name (app->priv, by_component));
+			  win_component_cmp_name (app->priv, by_component));
 	update_widgets (app->priv);
 }
 

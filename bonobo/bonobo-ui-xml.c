@@ -178,7 +178,7 @@ do_set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
 			 * an assertion is warrented.
 			 */
 			for (p = name; *p; p++)
-				g_assert (*p != '/');
+				g_assert (*p != '/' && *p != '#');
 		}
 	}
 

@@ -143,12 +143,6 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_set (componenta, corba_container, "/menu", simplea, &ev);
 
-	bonobo_ui_component_set (componentb, corba_container, "/",     toola, &ev);
-
-	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
-
-	gtk_widget_show (GTK_WIDGET (app));
-
 	{
 		GtkWidget *widget = gtk_button_new_with_label ("My Label");
 		BonoboControl *control = bonobo_control_new (widget);
@@ -161,6 +155,25 @@ main (int argc, char **argv)
 			NULL);
 	}
 
+	{
+		GtkWidget *widget = gtk_entry_new ();
+		BonoboControl *control = bonobo_control_new (widget);
+		
+		gtk_entry_set_text (GTK_ENTRY (widget), "Example text");
+		gtk_widget_show (widget);
+		bonobo_ui_container_object_set (
+			corba_container,
+			"/dockitem/#toolbar/control/#AControl",
+			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
+			NULL);
+	}
+
+	bonobo_ui_component_set (componentb, corba_container, "/",     toola, &ev);
+
+	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
+
+	gtk_widget_show (GTK_WIDGET (app));
+
 	gtk_main ();
 
 	accel = bonobo_ui_util_build_accel (GDK_A, GDK_CONTROL_MASK, "KeyWibbleVerb");
@@ -171,14 +184,14 @@ main (int argc, char **argv)
 	bonobo_ui_component_set (componentb, corba_container, "/status", statusb, &ev);
 
 	{
-		GtkWidget *widget = gtk_progress_bar_new ();
+		GtkWidget *widget = gtk_button_new_with_label ("A progress bar");
 		BonoboControl *control = bonobo_control_new (widget);
 
-		gtk_progress_bar_update (GTK_PROGRESS_BAR (widget), 0.5);
+/*		gtk_progress_bar_update (GTK_PROGRESS_BAR (widget), 0.5);*/
 		gtk_widget_show (widget);
 		bonobo_ui_container_object_set (
 			corba_container,
-			"/status/item/#Progress",
+			"/status/control/#Progress",
 			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
 			NULL);
 	}
