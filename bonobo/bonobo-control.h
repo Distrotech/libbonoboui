@@ -23,10 +23,10 @@
 G_BEGIN_DECLS
  
 #define BONOBO_CONTROL_TYPE        (bonobo_control_get_type ())
-#define BONOBO_CONTROL(o)          (GTK_CHECK_CAST ((o), BONOBO_CONTROL_TYPE, BonoboControl))
-#define BONOBO_CONTROL_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_CONTROL_TYPE, BonoboControlClass))
-#define BONOBO_IS_CONTROL(o)       (GTK_CHECK_TYPE ((o), BONOBO_CONTROL_TYPE))
-#define BONOBO_IS_CONTROL_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CONTROL_TYPE))
+#define BONOBO_CONTROL(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_CONTROL_TYPE, BonoboControl))
+#define BONOBO_CONTROL_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_CONTROL_TYPE, BonoboControlClass))
+#define BONOBO_IS_CONTROL(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_CONTROL_TYPE))
+#define BONOBO_IS_CONTROL_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_CONTROL_TYPE))
 
 typedef struct _BonoboControlPrivate BonoboControlPrivate;
 
@@ -61,7 +61,7 @@ void                        bonobo_control_get_property            (BonoboContro
 								    ...);
 
 /* "Internal" stuff */
-GtkType                     bonobo_control_get_type                (void);
+GType                       bonobo_control_get_type                (void);
 BonoboControl              *bonobo_control_construct               (BonoboControl       *control,
 								    GtkWidget           *widget);
 BonoboUIComponent          *bonobo_control_get_ui_component        (BonoboControl       *control);

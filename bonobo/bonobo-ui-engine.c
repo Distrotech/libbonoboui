@@ -52,6 +52,8 @@ struct _BonoboUIEnginePrivate {
 	BonoboUIEngineConfig *config;
 
 	GHashTable   *cmd_to_node;
+
+	guint         destroy_id;
 };
 
 /*
@@ -729,9 +731,10 @@ sub_component_cmp_name (BonoboUIEngine *engine, const char *name)
 static void
 sub_component_destroy (BonoboUIEngine *engine, SubComponent *component)
 {
-	if (engine->priv->container)
-		gtk_signal_disconnect_by_data (
-			GTK_OBJECT (engine->priv->container), engine);
+	if (engine->priv->destroy_id)
+		g_signal_handler_disconnect (G_OBJECT (engine->priv->container),
+					     engine->priv->destroy_id);
+	engine->priv->destroy_id = 0;
 
 	engine->priv->container = NULL;
 
@@ -1261,8 +1264,10 @@ bonobo_ui_engine_set_ui_container (BonoboUIEngine *engine,
 	engine->priv->container = ui_container;
 
 	if (ui_container)
-		gtk_signal_connect (GTK_OBJECT (ui_container), "destroy",
-				    (GtkSignalFunc) blank_container, engine);
+		engine->priv->destroy_id = g_signal_connect_data (
+			G_OBJECT (ui_container), "destroy",
+			G_CALLBACK (blank_container), engine,
+			NULL, FALSE, FALSE);
 }
 
 static void
@@ -1575,7 +1580,7 @@ impl_emit_event_on (BonoboUIEngine *engine,
 }
 
 static void
-impl_destroy (GtkObject *object)
+impl_finalize (GObject *object)
 {
 	BonoboUIEngine *engine;
 	BonoboUIEnginePrivate *priv;
@@ -1605,18 +1610,6 @@ impl_destroy (GtkObject *object)
 	g_hash_table_destroy (priv->cmd_to_node);
 	priv->cmd_to_node = NULL;
 
-	parent_class->destroy (object);
-}
-
-static void
-impl_finalize (GObject *object)
-{
-	BonoboUIEngine *engine;
-	BonoboUIEnginePrivate *priv;
-
-	engine = BONOBO_UI_ENGINE (object);
-	priv = engine->priv;
-	
 	g_free (priv);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -1632,7 +1625,6 @@ class_init (BonoboUIEngineClass *engine_class)
 
 	object_class = GTK_OBJECT_CLASS (engine_class);
 	gobject_class = G_OBJECT_CLASS (engine_class);
-	object_class->destroy  = impl_destroy;
 	gobject_class->finalize = impl_finalize;
 
 	engine_class->emit_verb_on  = impl_emit_verb_on;

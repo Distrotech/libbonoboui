@@ -37,7 +37,7 @@ enum {
 static guint control_frame_signals [LAST_SIGNAL];
 
 /* Parent object class in GTK hierarchy */
-static GtkObjectClass *bonobo_control_frame_parent_class;
+static GObjectClass *bonobo_control_frame_parent_class;
 
 struct _BonoboControlFramePrivate {
 	Bonobo_Control	   control;
@@ -323,13 +323,13 @@ bonobo_control_frame_new (Bonobo_UIContainer ui_container)
 {
 	BonoboControlFrame *control_frame;
 
-	control_frame = gtk_type_new (BONOBO_CONTROL_FRAME_TYPE);
+	control_frame = g_object_new (BONOBO_CONTROL_FRAME_TYPE, NULL);
 
 	return bonobo_control_frame_construct (control_frame, ui_container);
 }
 
 static void
-bonobo_control_frame_destroy (GtkObject *object)
+bonobo_control_frame_finalize (GObject *object)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (object);
 
@@ -363,7 +363,7 @@ bonobo_control_frame_destroy (GtkObject *object)
 	g_free (control_frame->priv);
 	control_frame->priv = NULL;
 	
-	bonobo_control_frame_parent_class->destroy (object);
+	bonobo_control_frame_parent_class->finalize (object);
 }
 
 static void
@@ -378,33 +378,35 @@ bonobo_control_frame_activated (BonoboControlFrame *control_frame, gboolean stat
 static void
 bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *)klass;
+	GObjectClass *object_class = (GObjectClass *)klass;
 	POA_Bonobo_ControlFrame__epv *epv = &klass->epv;
 
-	bonobo_control_frame_parent_class = gtk_type_class (PARENT_TYPE);
+	bonobo_control_frame_parent_class = g_type_class_peek_parent (klass);
 
 	control_frame_signals [ACTIVATED] =
-		gtk_signal_new ("activated",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (BonoboControlFrameClass, activated),
-				gtk_marshal_VOID__BOOLEAN,
-				GTK_TYPE_NONE, 1,
-				GTK_TYPE_BOOL);
+		g_signal_newc ("activated",
+			       G_TYPE_FROM_CLASS (object_class),
+			       G_SIGNAL_RUN_LAST,
+			       G_STRUCT_OFFSET (BonoboControlFrameClass, activated),
+			       NULL, NULL,
+			       g_cclosure_marshal_VOID__BOOLEAN,
+			       G_TYPE_NONE, 1,
+			       G_TYPE_BOOLEAN);
 
 	
 	control_frame_signals [ACTIVATE_URI] =
-		gtk_signal_new ("activate_uri",
-				GTK_RUN_LAST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (BonoboControlFrameClass, activate_uri),
-				bonobo_marshal_VOID__STRING_BOOLEAN,
-				GTK_TYPE_NONE, 2,
-				GTK_TYPE_STRING, GTK_TYPE_BOOL);
+		g_signal_newc ("activate_uri",
+			       G_TYPE_FROM_CLASS (object_class),
+			       G_SIGNAL_RUN_LAST,
+			       G_STRUCT_OFFSET (BonoboControlFrameClass, activate_uri),
+			       NULL, NULL,
+			       bonobo_marshal_VOID__STRING_BOOLEAN,
+			       G_TYPE_NONE, 2,
+			       G_TYPE_STRING, G_TYPE_BOOLEAN);
 	
 	klass->activated = bonobo_control_frame_activated;
 
-	object_class->destroy = bonobo_control_frame_destroy;
+	object_class->finalize = bonobo_control_frame_finalize;
 
 	epv->activated            = impl_Bonobo_ControlFrame_activated;
 	epv->getUIHandler         = impl_Bonobo_ControlFrame_getUIHandler;

@@ -478,7 +478,7 @@ bonobo_widget_get_objref (BonoboWidget *bonobo_widget)
 }
 
 static void
-bonobo_widget_destroy (GtkObject *object)
+bonobo_widget_finalize (GObject *object)
 {
 	BonoboWidget *bw = BONOBO_WIDGET (object);
 	BonoboWidgetPrivate *priv = bw->priv;
@@ -495,7 +495,7 @@ bonobo_widget_destroy (GtkObject *object)
 		bonobo_object_release_unref (priv->uic, NULL);
 
 	g_free (priv);
-	GTK_OBJECT_CLASS (bonobo_widget_parent_class)->destroy (object);
+	G_OBJECT_CLASS (bonobo_widget_parent_class)->finalize (object);
 }
 
 static void
@@ -547,7 +547,7 @@ bonobo_widget_size_allocate (GtkWidget *widget,
 static void
 bonobo_widget_class_init (BonoboWidgetClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GObjectClass *object_class = (GObjectClass *) klass;
 	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 
 	bonobo_widget_parent_class = gtk_type_class (GTK_TYPE_BIN);
@@ -555,7 +555,7 @@ bonobo_widget_class_init (BonoboWidgetClass *klass)
 	widget_class->size_request = bonobo_widget_size_request;
 	widget_class->size_allocate = bonobo_widget_size_allocate;
 
-	object_class->destroy = bonobo_widget_destroy;
+	object_class->finalize = bonobo_widget_finalize;
 }
 
 static void

@@ -16,10 +16,10 @@
 G_BEGIN_DECLS
 
 #define BONOBO_UI_COMPONENT_TYPE        (bonobo_ui_component_get_type ())
-#define BONOBO_UI_COMPONENT(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_COMPONENT_TYPE, BonoboUIComponent))
-#define BONOBO_UI_COMPONENT_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_UI_COMPONENT_TYPE, BonoboUIComponentClass))
-#define BONOBO_IS_UI_COMPONENT(o)       (GTK_CHECK_TYPE ((o), BONOBO_UI_COMPONENT_TYPE))
-#define BONOBO_IS_UI_COMPONENT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_UI_COMPONENT_TYPE))
+#define BONOBO_UI_COMPONENT(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_UI_COMPONENT_TYPE, BonoboUIComponent))
+#define BONOBO_UI_COMPONENT_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), BONOBO_UI_COMPONENT_TYPE, BonoboUIComponentClass))
+#define BONOBO_IS_UI_COMPONENT(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_UI_COMPONENT_TYPE))
+#define BONOBO_IS_UI_COMPONENT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_UI_COMPONENT_TYPE))
 
 typedef struct _BonoboUIComponent BonoboUIComponent;
 typedef struct _BonoboUIComponentPrivate BonoboUIComponentPrivate;
@@ -92,7 +92,7 @@ typedef struct {
 	gpointer            dummy;
 } BonoboUIComponentClass;
 
-GtkType            bonobo_ui_component_get_type        (void);
+GType              bonobo_ui_component_get_type        (void);
 
 BonoboUIComponent *bonobo_ui_component_construct       (BonoboUIComponent  *component,
 							const char         *name);

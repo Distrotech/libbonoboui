@@ -21,7 +21,7 @@
 
 #define PARENT_TYPE BONOBO_OBJECT_TYPE
 
-static GtkObjectClass *bonobo_ui_container_parent_class;
+static BonoboObjectClass *bonobo_ui_container_parent_class;
 
 struct _BonoboUIContainerPrivate {
 	BonoboUIEngine *engine;
@@ -211,12 +211,6 @@ impl_Bonobo_UIContainer_thaw (PortableServer_Servant   servant,
 }
 
 static void
-bonobo_ui_container_destroy (GtkObject *object)
-{
-	bonobo_ui_container_parent_class->destroy (object);
-}
-
-static void
 bonobo_ui_container_finalize (GObject *object)
 {
 	BonoboUIContainer *container = (BonoboUIContainer *) object;
@@ -228,7 +222,7 @@ bonobo_ui_container_finalize (GObject *object)
 }
 
 static void
-bonobo_ui_container_init (GtkObject *object)
+bonobo_ui_container_init (GObject *object)
 {
 	BonoboUIContainer *container = (BonoboUIContainer *) object;
 
@@ -238,13 +232,11 @@ bonobo_ui_container_init (GtkObject *object)
 static void
 bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 {
-	GtkObjectClass              *gtk_class = (GtkObjectClass *) klass;
 	GObjectClass                *g_class = (GObjectClass *) klass;
 	POA_Bonobo_UIContainer__epv *epv = &klass->epv;
 
-	bonobo_ui_container_parent_class = gtk_type_class (PARENT_TYPE);
-	
-	gtk_class->destroy  = bonobo_ui_container_destroy;
+	bonobo_ui_container_parent_class = g_type_class_peek_parent (klass);
+
 	g_class->finalize = bonobo_ui_container_finalize;
 
 	epv->registerComponent   = impl_Bonobo_UIContainer_registerComponent;
@@ -263,9 +255,9 @@ bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 }
 
 BONOBO_TYPE_FUNC_FULL (BonoboUIContainer, 
-			   Bonobo_UIContainer,
-			   PARENT_TYPE,
-			   bonobo_ui_container);
+		       Bonobo_UIContainer,
+		       PARENT_TYPE,
+		       bonobo_ui_container);
 
 /**
  * bonobo_ui_container_new:
@@ -276,7 +268,7 @@ BONOBO_TYPE_FUNC_FULL (BonoboUIContainer,
 BonoboUIContainer *
 bonobo_ui_container_new (void)
 {
-	return gtk_type_new (BONOBO_UI_CONTAINER_TYPE);
+	return g_object_new (BONOBO_UI_CONTAINER_TYPE, NULL);
 }
 
 static void
@@ -306,9 +298,9 @@ bonobo_ui_container_set_engine (BonoboUIContainer *container,
 		engine, BONOBO_OBJECT (container));
 
 	gtk_signal_connect_while_alive (
-		GTK_OBJECT (engine), "destroy",
+		G_OBJECT (engine), "destroy",
 		GTK_SIGNAL_FUNC (blank_engine),
-		container, GTK_OBJECT (container));
+		container, G_OBJECT (container));
 }
 
 /**
@@ -349,9 +341,9 @@ bonobo_ui_container_set_win (BonoboUIContainer *container,
 		container, bonobo_window_get_ui_engine (win));
 
 	gtk_signal_connect_while_alive (
-		GTK_OBJECT (win), "destroy",
+		G_OBJECT (win), "destroy",
 		(GtkSignalFunc) blank_engine,
-		container, GTK_OBJECT (container));
+		container, G_OBJECT (container));
 }
 
 /**

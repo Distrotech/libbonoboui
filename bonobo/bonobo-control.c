@@ -209,7 +209,7 @@ impl_Bonobo_Control_activate (PortableServer_Servant servant,
 	}
 
 	if (control->priv->active != activated)
-		gtk_signal_emit (GTK_OBJECT (control), control_signals [ACTIVATE], (gboolean) activated);
+		g_signal_emit (G_OBJECT (control), control_signals [ACTIVATE], 0, (gboolean) activated);
 
 	control->priv->active = activated;
 }
@@ -301,10 +301,10 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 
 		gtk_signal_connect_while_alive (GTK_OBJECT (control->priv->plug), "destroy_event",
 						GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_event_cb),
-						control, GTK_OBJECT (control));
+						control, (GtkObject *) control);
 		gtk_signal_connect_while_alive (GTK_OBJECT (control->priv->plug), "destroy",
 						GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_cb),
-						control, GTK_OBJECT (control));
+						control, (GtkObject *) control);
 
 		/*
 		 * Put the control widget inside the plug.  If we
@@ -344,7 +344,7 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 		gtk_signal_connect_while_alive (GTK_OBJECT (local_socket),
 						"destroy",
 						GTK_SIGNAL_FUNC (remove_destroy_idle),
-						control, GTK_OBJECT (control));
+						control, (GtkObject *) control);
 
 
 		gtk_box_pack_end (GTK_BOX (socket_parent),
@@ -567,7 +567,7 @@ bonobo_control_new (GtkWidget *widget)
 	
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
-	control = gtk_type_new (bonobo_control_get_type ());
+	control = g_object_new (bonobo_control_get_type (), NULL);
 	
 	return bonobo_control_construct (control, widget);
 }
@@ -627,7 +627,7 @@ bonobo_control_get_automerge (BonoboControl *control)
 }
 
 static void
-bonobo_control_destroy (GtkObject *object)
+bonobo_control_finalize (GObject *object)
 {
 	BonoboControl *control = BONOBO_CONTROL (object);
 	CORBA_Environment ev;
@@ -660,14 +660,6 @@ bonobo_control_destroy (GtkObject *object)
 		bonobo_ui_component_unset_container (control->priv->ui_component);
 		bonobo_object_unref (BONOBO_OBJECT (control->priv->ui_component));
 	}
-
-	GTK_OBJECT_CLASS (bonobo_control_parent_class)->destroy (object);
-}
-
-static void
-bonobo_control_finalize (GObject *object)
-{
-	BonoboControl *control = BONOBO_CONTROL (object);
 
 	/*
 	 * Destroy the control's top-level widget.
@@ -721,7 +713,7 @@ bonobo_control_set_control_frame (BonoboControl *control, Bonobo_ControlFrame co
 	
 	CORBA_exception_free (&ev);
 
-	gtk_signal_emit (GTK_OBJECT (control), control_signals [SET_FRAME]);
+	g_signal_emit (G_OBJECT (control), control_signals [SET_FRAME], 0);
 }
 
 /**
@@ -920,31 +912,31 @@ bonobo_control_activate_notify (BonoboControl *control,
 static void
 bonobo_control_class_init (BonoboControlClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *)klass;
-	GObjectClass *gobject_class = (GObjectClass *)klass;
+	GObjectClass *object_class = (GObjectClass *)klass;
 	POA_Bonobo_Control__epv *epv;
 
-	bonobo_control_parent_class = gtk_type_class (PARENT_TYPE);
+	bonobo_control_parent_class = g_type_class_peek_parent (klass);
 
 	control_signals [SET_FRAME] =
-                gtk_signal_new ("set_frame",
-                                GTK_RUN_LAST,
-                                GTK_CLASS_TYPE (object_class),
-                                GTK_SIGNAL_OFFSET (BonoboControlClass, set_frame),
-                                gtk_marshal_NONE__NONE,
-                                GTK_TYPE_NONE, 0);
+                g_signal_newc ("set_frame",
+			       G_TYPE_FROM_CLASS (object_class),
+			       G_SIGNAL_RUN_LAST,
+			       G_STRUCT_OFFSET (BonoboControlClass, set_frame),
+			       NULL, NULL,
+			       g_cclosure_marshal_VOID__VOID,
+			       G_TYPE_NONE, 0);
 
 	control_signals [ACTIVATE] =
-                gtk_signal_new ("activate",
-                                GTK_RUN_LAST,
-                                GTK_CLASS_TYPE (object_class),
-                                GTK_SIGNAL_OFFSET (BonoboControlClass, activate),
-                                gtk_marshal_NONE__BOOL,
-                                GTK_TYPE_NONE, 1,
-				GTK_TYPE_BOOL);
+                g_signal_newc ("activate",
+			       G_TYPE_FROM_CLASS (object_class),
+			       G_SIGNAL_RUN_LAST,
+			       G_STRUCT_OFFSET (BonoboControlClass, activate),
+			       NULL, NULL,
+			       g_cclosure_marshal_VOID__BOOLEAN,
+			       G_TYPE_NONE, 1,
+			       G_TYPE_BOOLEAN);
 
-	object_class->destroy  = bonobo_control_destroy;
-	gobject_class->finalize = bonobo_control_finalize;
+	object_class->finalize = bonobo_control_finalize;
 
 	epv = &klass->epv;
 
@@ -969,9 +961,9 @@ bonobo_control_init (BonoboControl *control)
 }
 
 BONOBO_TYPE_FUNC_FULL (BonoboControl, 
-			 Bonobo_Control,
-			 PARENT_TYPE,
-			 bonobo_control);
+		       Bonobo_Control,
+		       PARENT_TYPE,
+		       bonobo_control);
 
 void
 bonobo_control_set_property (BonoboControl       *control,

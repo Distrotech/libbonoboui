@@ -12,7 +12,6 @@
 #define _BONOBO_CONTROL_FRAME_H_
 
 #include <gmacros.h>
-#include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-wrapper.h>
@@ -21,10 +20,10 @@
 G_BEGIN_DECLS
  
 #define BONOBO_CONTROL_FRAME_TYPE        (bonobo_control_frame_get_type ())
-#define BONOBO_CONTROL_FRAME(o)          (GTK_CHECK_CAST ((o), BONOBO_CONTROL_FRAME_TYPE, BonoboControlFrame))
-#define BONOBO_CONTROL_FRAME_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_CONTROL_FRAME_TYPE, BonoboControlFrameClass))
-#define BONOBO_IS_CONTROL_FRAME(o)       (GTK_CHECK_TYPE ((o), BONOBO_CONTROL_FRAME_TYPE))
-#define BONOBO_IS_CONTROL_FRAME_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CONTROL_FRAME_TYPE))
+#define BONOBO_CONTROL_FRAME(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_CONTROL_FRAME_TYPE, BonoboControlFrame))
+#define BONOBO_CONTROL_FRAME_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_CONTROL_FRAME_TYPE, BonoboControlFrameClass))
+#define BONOBO_IS_CONTROL_FRAME(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_CONTROL_FRAME_TYPE))
+#define BONOBO_IS_CONTROL_FRAME_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_CONTROL_FRAME_TYPE))
 
 typedef struct _BonoboControlFramePrivate BonoboControlFramePrivate;
 
@@ -87,7 +86,7 @@ Bonobo_UIContainer            bonobo_control_frame_get_ui_container          (Bo
 
 
 /* Object construction stuff */
-GtkType                       bonobo_control_frame_get_type                  (void);
+GType                         bonobo_control_frame_get_type                  (void);
 BonoboControlFrame           *bonobo_control_frame_construct                 (BonoboControlFrame  *control_frame,
 									      Bonobo_UIContainer   ui_container);
 

@@ -1,5 +1,20 @@
 2001-05-01  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/bonobo-control.[ch]: Use GObject, not GtkObject.
+	* bonobo/bonobo-control-frame.[ch]: Likewise.
+	* bonobo/bonobo-ui-component.[ch]: Likewise.
+	* bonobo/bonobo-ui-container.[ch]: Likewise.
+
+	* bonobo/bonobo-ui-engine.c (impl_destroy): Removed and put
+	all the stuff into finalize; `destroy' may be run multiple
+	times with GTK+ 2.0, so it's easier to have this in finalize.
+
+	* bonobo/bonobo-widget.c (bonobo_widget_destroy): Renamed to
+	bonobo_widget_finalize(), we use `finalize' since `destroy'
+	may be run multiple times.
+
+2001-05-01  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/Makefile.am: Install all our header files.
 
 2001-05-01  Martin Baulig  <baulig@suse.de>

@@ -8,7 +8,6 @@
  * Copyright 1999, 2000 Helix Code, Inc.
  */
 #include <config.h>
-#include <gtk/gtksignal.h>
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
@@ -19,7 +18,7 @@
 
 #define PARENT_TYPE BONOBO_OBJECT_TYPE
 
-static GtkObjectClass *bonobo_ui_component_parent_class;
+static GObjectClass *bonobo_ui_component_parent_class;
 
 enum {
 	EXEC_VERB,
@@ -28,7 +27,7 @@ enum {
 };
 static guint signals[LAST_SIGNAL] = { 0 };
 
-#define GET_CLASS(c) (BONOBO_UI_COMPONENT_CLASS (GTK_OBJECT_GET_CLASS (c)))
+#define GET_CLASS(c) (BONOBO_UI_COMPONENT_CLASS (G_OBJECT_GET_CLASS (c)))
 
 typedef struct {
 	char              *id;
@@ -125,9 +124,9 @@ impl_Bonobo_UIComponent_execVerb (PortableServer_Servant servant,
 	else
 		g_warning ("FIXME: verb '%s' not found, emit exception", cname);
 
-	gtk_signal_emit (GTK_OBJECT (component),
-			 signals [EXEC_VERB],
-			 cname);
+	g_signal_emit (G_OBJECT (component),
+		       signals [EXEC_VERB], 0,
+		       cname);
 
 	bonobo_object_unref (BONOBO_OBJECT (component));
 }
@@ -147,8 +146,8 @@ impl_Bonobo_UIComponent_uiEvent (PortableServer_Servant             servant,
 
 	bonobo_object_ref (BONOBO_OBJECT (component));
 
-	gtk_signal_emit (GTK_OBJECT (component),
-			 signals [UI_EVENT], id, type, state);
+	g_signal_emit (G_OBJECT (component),
+		       signals [UI_EVENT], 0, id, type, state);
 
 	bonobo_object_unref (BONOBO_OBJECT (component));
 }
@@ -455,7 +454,7 @@ bonobo_ui_component_remove_listener_by_data (BonoboUIComponent  *component,
 }
 
 static void
-bonobo_ui_component_destroy (GtkObject *object)
+bonobo_ui_component_finalize (GObject *object)
 {
 	BonoboUIComponent *comp = (BonoboUIComponent *) object;
 	BonoboUIComponentPrivate *priv = comp->priv;
@@ -478,7 +477,7 @@ bonobo_ui_component_destroy (GtkObject *object)
 	}
 	comp->priv = NULL;
 
-	bonobo_ui_component_parent_class->destroy (object);
+	bonobo_ui_component_parent_class->finalize (object);
 }
 
 /**
@@ -514,7 +513,7 @@ bonobo_ui_component_new (const char *name)
 {
 	BonoboUIComponent *component;
 
-	component = gtk_type_new (BONOBO_UI_COMPONENT_TYPE);
+	component = g_object_new (BONOBO_UI_COMPONENT_TYPE, NULL);
 	if (!component)
 		return NULL;
 
@@ -1388,30 +1387,32 @@ bonobo_ui_component_get_container (BonoboUIComponent *component)
 static void
 bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GObjectClass *object_class = (GObjectClass *) klass;
 	BonoboUIComponentClass *uclass = BONOBO_UI_COMPONENT_CLASS (klass);
 	POA_Bonobo_UIComponent__epv *epv = &klass->epv;
 	
-	bonobo_ui_component_parent_class = gtk_type_class (PARENT_TYPE);
+	bonobo_ui_component_parent_class = g_type_class_peek_parent (klass);
 
-	object_class->destroy = bonobo_ui_component_destroy;
+	object_class->finalize = bonobo_ui_component_finalize;
 
 	uclass->ui_event = ui_event;
 
-	signals [EXEC_VERB] = gtk_signal_new (
-		"exec_verb", GTK_RUN_FIRST,
-		GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboUIComponentClass, exec_verb),
-		gtk_marshal_VOID__STRING,
-		GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
+	signals [EXEC_VERB] = g_signal_newc (
+		"exec_verb", G_TYPE_FROM_CLASS (object_class),
+		G_SIGNAL_RUN_FIRST,
+		G_STRUCT_OFFSET (BonoboUIComponentClass, exec_verb),
+		NULL, NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE, 1, G_TYPE_STRING);
 
-	signals [UI_EVENT] = gtk_signal_new (
-		"ui_event", GTK_RUN_FIRST,
-		GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboUIComponentClass, ui_event),
+	signals [UI_EVENT] = g_signal_newc (
+		"ui_event", G_TYPE_FROM_CLASS (object_class),
+		G_SIGNAL_RUN_FIRST,
+		G_STRUCT_OFFSET (BonoboUIComponentClass, ui_event),
+		NULL, NULL,
 		bonobo_marshal_VOID__POINTER_INT_POINTER,
-		GTK_TYPE_NONE, 3, GTK_TYPE_STRING, GTK_TYPE_INT,
-		GTK_TYPE_STRING);
+		G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_INT,
+		G_TYPE_STRING);
 
 	uclass->freeze   = impl_freeze;
 	uclass->thaw     = impl_thaw;
