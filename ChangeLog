@@ -1,3 +1,13 @@
+2002-11-20  hhetter@suse.de
+
+	* bonobo/bonobo-ui-component.c (ui_event),
+	(impl_Bonobo_UIComponent_execVerb): 
+
+2002-11-18  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-ui.c (cb_do_popup): don't destroy
+	popup immediately after popup ;-)
+
 2002-11-11  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-component.c

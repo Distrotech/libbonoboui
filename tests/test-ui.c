@@ -74,7 +74,6 @@ cb_do_popup (GtkWindow *window, BonoboWindow *win)
 
 	gtk_widget_show (menu);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 3, 0);
-	gtk_widget_destroy (menu);
 }
 
 static void
