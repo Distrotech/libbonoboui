@@ -1,5 +1,10 @@
 2002-06-11  Michael Meeks  <michael@ximian.com>
 
+	* tests/test-focus.c (add_control): switch back
+	to Sample_Entry so we can test transience.
+
+2002-06-11  Michael Meeks  <michael@ximian.com>
+
 	* configure.in (gnomelocaledir): setup properly.
 
 2002-06-10  Naba Kumar <kh_naba@users.sourceforge.net>

@@ -39,10 +39,11 @@ add_control (GtkBox *box)
 {
 	GtkWidget *tmp, *control;
 
-#if 0
+#if 1
 	control = bonobo_widget_new_control ("OAFIID:Bonobo_Sample_Entry", NULL);
-#endif
+#else
 	control = bonobo_widget_new_control ("OAFIID:Nautilus_Text_View", NULL);
+#endif
 
 	g_assert (control != NULL);
 	gtk_box_pack_start_defaults (box, control);
