@@ -1,3 +1,15 @@
+2001-12-28  Jens Finke <jens@triq.net>
+
+	* bonobo/bonobo-property-control.c
+	(impl_Bonobo_PropertyControl_notifyAction),
+	(bonobo_property_control_destroy),
+	(bonobo_property_control_class_init),
+	(bonobo_property_control_new_full),
+	(bonobo_property_control_new): Replaced functions from gtk based
+	type system with new gobject based functions.
+
+	* bonobo/bonobo-ui-marshal.list: Added 'VOID:INT,INT'.
+
 2001-12-27  Duarte Loreto <happyguy_pt@hotmail.com>
 
         * configure.in: Added portuguese to ALL_LINGUAS

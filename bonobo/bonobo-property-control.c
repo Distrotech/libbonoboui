@@ -9,13 +9,11 @@
  */
 #include <config.h>
 #include <stdio.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtkmarshal.h>
-#include <gtk/gtktypeutils.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-property-control.h>
 #include <bonobo/bonobo-event-source.h>
+#include <bonobo/bonobo-ui-marshal.h>
 #include <bonobo/Bonobo.h>
 
 struct _BonoboPropertyControlPrivate {
@@ -33,7 +31,7 @@ enum {
 
 #define PARENT_TYPE BONOBO_TYPE_OBJECT
 
-static GtkObjectClass *parent_class;
+static GObjectClass *parent_class;
 
 static guint32 signals[LAST_SIGNAL] = { 0 };
 
@@ -103,11 +101,11 @@ impl_Bonobo_PropertyControl_notifyAction (PortableServer_Servant servant,
 		return;
 	}
 	
-	gtk_signal_emit (GTK_OBJECT (bonobo_object), signals [ACTION], pagenumber, action);
+	g_signal_emit (G_OBJECT (bonobo_object), signals [ACTION], 0, pagenumber, action);
 }
 
 static void
-bonobo_property_control_destroy (GtkObject *object)
+bonobo_property_control_destroy (BonoboObject *object)
 {
 	BonoboPropertyControl *property_control;
 	
@@ -118,25 +116,28 @@ bonobo_property_control_destroy (GtkObject *object)
 	g_free (property_control->priv);
 	property_control->priv = NULL;
 
-	parent_class->destroy (object);
+	BONOBO_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
 static void
 bonobo_property_control_class_init (BonoboPropertyControlClass *klass)
 {
-	GtkObjectClass *object_class;
+	BonoboObjectClass *object_class;
 	POA_Bonobo_PropertyControl__epv *epv = &klass->epv;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = BONOBO_OBJECT_CLASS (klass);
 	object_class->destroy = bonobo_property_control_destroy;
 
-	signals [ACTION] = gtk_signal_new ("action",
-					 GTK_RUN_FIRST, GTK_CLASS_TYPE (object_class),
-					 GTK_SIGNAL_OFFSET (BonoboPropertyControlClass, action),
-					 gtk_marshal_NONE__INT_INT, GTK_TYPE_NONE,
-					 2, GTK_TYPE_INT, GTK_TYPE_INT);
+	signals [ACTION] = g_signal_new ("action",
+					 G_TYPE_FROM_CLASS (object_class),
+					 G_SIGNAL_RUN_FIRST, 
+					 G_STRUCT_OFFSET (BonoboPropertyControlClass, action),
+					 NULL, NULL,
+					 bonobo_ui_marshal_VOID__INT_INT,
+					 G_TYPE_NONE,
+					 2, G_TYPE_INT, G_TYPE_INT);
 				     
-	parent_class = gtk_type_class (PARENT_TYPE);
+	parent_class = g_type_class_peek_parent (klass);
 
 	epv->_get_pageCount = impl_Bonobo_PropertyControl__get_pageCount;
 	epv->getControl     = impl_Bonobo_PropertyControl_getControl;
@@ -219,7 +220,8 @@ bonobo_property_control_new_full (BonoboPropertyControlGetControlFn get_fn,
 	g_return_val_if_fail (num_pages > 0, NULL);
 	g_return_val_if_fail (BONOBO_IS_EVENT_SOURCE (event_source), NULL);
 
-	property_control = gtk_type_new (bonobo_property_control_get_type ());
+	property_control = g_object_new (bonobo_property_control_get_type (), 
+					 NULL);
 					
 	return bonobo_property_control_construct (
 		property_control, event_source, get_fn, num_pages, closure);
@@ -245,7 +247,7 @@ bonobo_property_control_new (BonoboPropertyControlGetControlFn get_fn,
 
 	g_return_val_if_fail (num_pages > 0, NULL);
 
-	property_control = gtk_type_new (bonobo_property_control_get_type ());
+	property_control = g_object_new (bonobo_property_control_get_type (), NULL);
 
 	event_source = bonobo_event_source_new ();
 
