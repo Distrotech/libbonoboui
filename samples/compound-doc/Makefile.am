@@ -39,9 +39,6 @@ sample_container_LDADD = 			\
 	$(OBJECT_DIRECTORY_LIBS)			\
 	$(INTLLIBS)
 
-sample_container_LDFLAGS = -static
-
-
 goaddir = $(sysconfdir)/CORBA/servers
 oafdir = $(datadir)/oaf
 
@@ -58,16 +55,3 @@ oafdir = $(datadir)/oaf
 oaf_DATA = paint-component-simple.oafinfo
 
 extra_DIST = $(GOAD_FILES) $(OAF_FILES)
-
-
-
-
-
-
-
-
-
-
-
-
-
