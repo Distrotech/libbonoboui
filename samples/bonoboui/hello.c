@@ -192,7 +192,7 @@ hello_create_main_window (void)
 	BonoboUIContainer *ui_container;
 	BonoboUIComponent *ui_component;
 
-	win = BONOBO_WINDOW (bonobo_window_new (PACKAGE, _("Gnome Hello")));
+	win = BONOBO_WINDOW (bonobo_window_new (GETTEXT_PACKAGE, _("Gnome Hello")));
 
 	/* Create Container: */
 	ui_container = bonobo_window_get_ui_container (win);
@@ -283,8 +283,8 @@ main (int argc, char* argv[])
 	GtkWidget *app;
 
 	/* Setup translaton domain */
-	bindtextdomain (PACKAGE, GNOMELOCALEDIR);  
-	textdomain (PACKAGE);
+	bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+	textdomain (GETTEXT_PACKAGE);
 
 	if (!bonobo_ui_init ("bonobo-hello", VERSION, &argc, argv))
 		g_error (_("Cannot init libbonoboui code"));

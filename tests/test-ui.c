@@ -259,7 +259,7 @@ main (int argc, char **argv)
 				  NULL, NULL, NULL, TRUE))
 		g_error (_("Cannot init libbonoboui code"));
 
-	textdomain (PACKAGE);
+	textdomain (GETTEXT_PACKAGE);
 
 	bonobo_activate ();
 

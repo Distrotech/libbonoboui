@@ -1,5 +1,10 @@
 2001-10-29  jacob berkman  <jacob@ximian.com>
 
+	* tests/test-filesel.c (main): 
+	* tests/test-ui.c (main): 
+	* tests/test-focus.c (main): 
+	* samples/bonoboui/hello.c: use GETTEXT_PACKAGE where appropriate
+
 	* samples/controls/Makefile.am: use INTLTOOL rules
 
 	* configure.in: drop the 2 from the package name, use intltool,

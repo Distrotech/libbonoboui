@@ -51,7 +51,7 @@ main (int argc, char *argv[])
 
 	free (malloc (8));
 
-	textdomain (PACKAGE);
+	textdomain (GETTEXT_PACKAGE);
 
 	if (!bonobo_ui_init ("test-filesel", VERSION, &argc, argv))
 		g_error (_("Cannot bonobo_ui_init ()"));

@@ -41,7 +41,7 @@ main (int argc, char **argv)
 
 	free (malloc (8));
 
-	textdomain (PACKAGE);
+	textdomain (GETTEXT_PACKAGE);
 
 	if (!bonobo_ui_init ("test-focus", VERSION, &argc, argv))
 		g_error (_("Can not bonobo_ui_init"));
