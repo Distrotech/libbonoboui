@@ -1640,9 +1640,13 @@ bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
 			   &requisition);
 
   gtk_window_move (GTK_WINDOW (item->_priv->float_window), x, y);
+
+  /* FIXME: if we have a dock item with zero children (why?), the requisition is
+   * zero.  We shouldn't have to do this.
+   */
   gtk_window_resize (GTK_WINDOW (item->_priv->float_window), 
-                     requisition.width, 
-                     requisition.height);
+                     MAX (requisition.width, 1), 
+                     MAX (requisition.height, 1));
 
   gtk_widget_show_all (GTK_WIDGET (item->_priv->float_window));
 
@@ -1725,7 +1729,10 @@ bonobo_dock_item_attach (BonoboDockItem *item,
   if (GTK_WIDGET (item)->parent != GTK_WIDGET (parent))
     {
       gdk_window_move_resize (GTK_WIDGET (item)->window, -1, -1, 0, 0);
-      gtk_widget_reparent (GTK_WIDGET (item), parent);
+      g_object_ref (item);
+      gtk_container_remove (GTK_CONTAINER (GTK_WIDGET (item)->parent), GTK_WIDGET (item));
+      gtk_container_add (GTK_CONTAINER (parent), GTK_WIDGET (item));
+      g_object_unref (item);
       bonobo_dock_item_unfloat (item);
       bonobo_dock_item_grab_pointer (item);
     }

@@ -1,3 +1,10 @@
+2004-05-10  Federico Mena Quintero  <federico@ximian.com>
+
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_attach): Don't
+	gtk_widget_reparent(), as that leaves widgets realized BUT
+	un-anchored.  Use gtk_container_remove() and gtk_container_add()
+	by hand.
+
 2004-05-06  Federico Mena Quintero  <federico@ximian.com>
 
 	* bonobo/bonobo-dock-item.c (bonobo_dock_item_realize): Don't
