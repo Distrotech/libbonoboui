@@ -1,8 +1,8 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 
 #include <gtk/gtk.h>
-#include <bonobo/gnome-object.h>
-#include <bonobo/gnome-bonobo-selector.h>
+#include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-selector.h>
 #include <libgnorba/gnorba.h>
 
 CORBA_Environment ev;

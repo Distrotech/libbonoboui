@@ -2,11 +2,11 @@
 /**
  * GNOME ClientSite object.
  *
- * A GnomeClientSite object acts as the point-of-contact for an
- * embedded component: the contained GNOME::Embeddable object
- * communicates with the GnomeClientSite when it wants to talk to its
+ * A BonoboClientSite object acts as the point-of-contact for an
+ * embedded component: the contained Bonobo::Embeddable object
+ * communicates with the BonoboClientSite when it wants to talk to its
  * container.  There must be a one-to-one mapping between
- * GnomeClientSite objects and embedding GnomeEmbeddable components.
+ * BonoboClientSite objects and embedding BonoboEmbeddable components.
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
@@ -18,14 +18,14 @@
 #include <stdio.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
-#include <bonobo/gnome-client-site.h>
-#include <bonobo/gnome-embeddable.h>
-#include <bonobo/gnome-bonobo-item.h>
+#include <bonobo/bonobo-client-site.h>
+#include <bonobo/bonobo-embeddable.h>
+#include <bonobo/bonobo-canvas-item.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdktypes.h>
 
-POA_GNOME_ClientSite__vepv gnome_client_site_vepv;
+POA_Bonobo_ClientSite__vepv bonobo_client_site_vepv;
 
 enum {
 	SHOW_WINDOW,
@@ -33,97 +33,97 @@ enum {
 	LAST_SIGNAL
 };
 
-static GnomeObjectClass *gnome_client_site_parent_class;
-static guint gnome_client_site_signals [LAST_SIGNAL];
+static BonoboObjectClass *bonobo_client_site_parent_class;
+static guint bonobo_client_site_signals [LAST_SIGNAL];
 
-static GNOME_Container
+static Bonobo_Container
 impl_GNOME_client_site_get_container (PortableServer_Servant servant, CORBA_Environment *ev)
 {
-	GnomeObject *object = gnome_object_from_servant (servant);
-	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
+	BonoboObject *object = bonobo_object_from_servant (servant);
+	BonoboClientSite *client_site = BONOBO_CLIENT_SITE (object);
 
-	return CORBA_Object_duplicate (gnome_object_corba_objref (
-		GNOME_OBJECT (client_site->container)), ev);
+	return CORBA_Object_duplicate (bonobo_object_corba_objref (
+		BONOBO_OBJECT (client_site->container)), ev);
 }
 
 static void
 impl_GNOME_client_site_show_window (PortableServer_Servant servant, CORBA_boolean shown,
 				    CORBA_Environment *ev)
 {
-	GnomeClientSite *client_site = GNOME_CLIENT_SITE (gnome_object_from_servant (servant));
-	GnomeObject *object = GNOME_OBJECT (client_site);
+	BonoboClientSite *client_site = BONOBO_CLIENT_SITE (bonobo_object_from_servant (servant));
+	BonoboObject *object = BONOBO_OBJECT (client_site);
 
 	gtk_signal_emit (GTK_OBJECT (object),
-			 gnome_client_site_signals [SHOW_WINDOW],
+			 bonobo_client_site_signals [SHOW_WINDOW],
 			 shown);
 }
 
-static GNOME_Persist_Status
+static Bonobo_Persist_Status
 impl_GNOME_client_site_save_object (PortableServer_Servant servant, CORBA_Environment *ev)
 {
-	GnomeObject *object = gnome_object_from_servant (servant);
-	GNOME_Persist_Status status;
+	BonoboObject *object = bonobo_object_from_servant (servant);
+	Bonobo_Persist_Status status;
 
-	status = GNOME_Persist_SAVE_OK;
+	status = Bonobo_Persist_SAVE_OK;
 	
 	gtk_signal_emit (GTK_OBJECT (object),
-			 gnome_client_site_signals [SAVE_OBJECT],
+			 bonobo_client_site_signals [SAVE_OBJECT],
 			 &status);
 	return status;
 }
 
 static void
-gnome_client_site_destroy (GtkObject *object)
+bonobo_client_site_destroy (GtkObject *object)
 {
 	GtkObjectClass *object_class;
-	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
+	BonoboClientSite *client_site = BONOBO_CLIENT_SITE (object);
 	
-	object_class = (GtkObjectClass *)gnome_client_site_parent_class;
+	object_class = (GtkObjectClass *)bonobo_client_site_parent_class;
 
 	/*
 	 * Destroy all the view frames.
 	 */
 	while (client_site->view_frames) {
-		GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (client_site->view_frames->data);
+		BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (client_site->view_frames->data);
 
-		gnome_object_destroy (GNOME_OBJECT (view_frame));
+		bonobo_object_destroy (BONOBO_OBJECT (view_frame));
 	}
 
 	/*
 	 * Destroy all canvas items
 	 */
 	while (client_site->canvas_items) {
-		GnomeBonoboItem *item = GNOME_BONOBO_ITEM (client_site->canvas_items->data);
+		BonoboCanvasItem *item = BONOBO_CANVAS_ITEM (client_site->canvas_items->data);
 
-		gnome_object_destroy (GNOME_OBJECT (item));
+		bonobo_object_destroy (BONOBO_OBJECT (item));
 	}
 
-	gnome_container_remove (client_site->container, GNOME_OBJECT (object));
+	bonobo_container_remove (client_site->container, BONOBO_OBJECT (object));
 
 	object_class->destroy (object);
 }
 
 static void
-default_show_window (GnomeClientSite *cs, CORBA_boolean shown)
+default_show_window (BonoboClientSite *cs, CORBA_boolean shown)
 {
 	cs->child_shown = shown ? 1 : 0;
 }
 
 static void
-default_save_object (GnomeClientSite *cs, GNOME_Persist_Status *status)
+default_save_object (BonoboClientSite *cs, Bonobo_Persist_Status *status)
 {
 }
 
 /**
- * gnome_client_site_get_epv:
+ * bonobo_client_site_get_epv:
  *
  */
-POA_GNOME_ClientSite__epv *
-gnome_client_site_get_epv (void)
+POA_Bonobo_ClientSite__epv *
+bonobo_client_site_get_epv (void)
 {
-	POA_GNOME_ClientSite__epv *epv;
+	POA_Bonobo_ClientSite__epv *epv;
 
-	epv = g_new0 (POA_GNOME_ClientSite__epv, 1);
+	epv = g_new0 (POA_Bonobo_ClientSite__epv, 1);
 
 	epv->get_container = impl_GNOME_client_site_get_container;
 	epv->show_window   = impl_GNOME_client_site_show_window;
@@ -135,39 +135,39 @@ gnome_client_site_get_epv (void)
 static void
 init_client_site_corba_class ()
 {
-	gnome_client_site_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_client_site_vepv.GNOME_ClientSite_epv = gnome_client_site_get_epv ();
+	bonobo_client_site_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
+	bonobo_client_site_vepv.Bonobo_ClientSite_epv = bonobo_client_site_get_epv ();
 }
 
 static void
-gnome_client_site_class_init (GnomeClientSiteClass *klass)
+bonobo_client_site_class_init (BonoboClientSiteClass *klass)
 {
-	GnomeObjectClass *gobject_class = (GnomeObjectClass *) klass;
+	BonoboObjectClass *gobject_class = (BonoboObjectClass *) klass;
 	GtkObjectClass *object_class = (GtkObjectClass *) gobject_class;
 	
-	gnome_client_site_parent_class = gtk_type_class (gnome_object_get_type ());
+	bonobo_client_site_parent_class = gtk_type_class (bonobo_object_get_type ());
 
-	gnome_client_site_signals [SHOW_WINDOW] =
+	bonobo_client_site_signals [SHOW_WINDOW] =
 		gtk_signal_new ("show_window",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeClientSiteClass, show_window), 
+				GTK_SIGNAL_OFFSET (BonoboClientSiteClass, show_window), 
 				gtk_marshal_NONE__INT,
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_INT); 
-	gnome_client_site_signals [SAVE_OBJECT] =
+	bonobo_client_site_signals [SAVE_OBJECT] =
 		gtk_signal_new ("save_object",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeClientSiteClass, save_object), 
+				GTK_SIGNAL_OFFSET (BonoboClientSiteClass, save_object), 
 				gtk_marshal_NONE__POINTER,
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_POINTER); 
 	gtk_object_class_add_signals (object_class,
-				      gnome_client_site_signals,
+				      bonobo_client_site_signals,
 				      LAST_SIGNAL);
 	
-	object_class->destroy = gnome_client_site_destroy;
+	object_class->destroy = bonobo_client_site_destroy;
 	klass->show_window = default_show_window;
 	klass->save_object = default_save_object;
 
@@ -175,22 +175,22 @@ gnome_client_site_class_init (GnomeClientSiteClass *klass)
 }
 
 static void
-gnome_client_site_init (GnomeClientSite *client_site)
+bonobo_client_site_init (BonoboClientSite *client_site)
 {
 }
 
 static CORBA_Object
-create_client_site (GnomeObject *object)
+create_client_site (BonoboObject *object)
 {
-	POA_GNOME_ClientSite *servant;
+	POA_Bonobo_ClientSite *servant;
 	CORBA_Environment ev;
 
-	servant = (POA_GNOME_ClientSite *)g_new0 (GnomeObjectServant, 1);
-	servant->vepv = &gnome_client_site_vepv;
+	servant = (POA_Bonobo_ClientSite *)g_new0 (BonoboObjectServant, 1);
+	servant->vepv = &bonobo_client_site_vepv;
 
 	CORBA_exception_init (&ev);
 
-	POA_GNOME_ClientSite__init ( (PortableServer_Servant) servant, &ev);
+	POA_Bonobo_ClientSite__init ( (PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
 		CORBA_exception_free (&ev);
 		g_free (servant);
@@ -199,133 +199,133 @@ create_client_site (GnomeObject *object)
 
 	CORBA_exception_free (&ev);
 
-	return gnome_object_activate_servant (object, servant);
+	return bonobo_object_activate_servant (object, servant);
 
 }
 /**
- * gnome_client_site_construct:
- * @client_site: The GnomeClientSite object to initialize
+ * bonobo_client_site_construct:
+ * @client_site: The BonoboClientSite object to initialize
  * @corba_client_site: The CORBA server that implements the service
- * @container: a GnomeContainer to bind to.
+ * @container: a BonoboContainer to bind to.
  *
- * This initializes an object of type GnomeClientSite.  See the description
- * for gnome_client_site_new () for more details.
+ * This initializes an object of type BonoboClientSite.  See the description
+ * for bonobo_client_site_new () for more details.
  *
- * Returns: the constructed GnomeClientSite @client_site.
+ * Returns: the constructed BonoboClientSite @client_site.
  */
-GnomeClientSite *
-gnome_client_site_construct (GnomeClientSite  *client_site,
-			     GNOME_ClientSite  corba_client_site,
-			     GnomeContainer   *container)
+BonoboClientSite *
+bonobo_client_site_construct (BonoboClientSite  *client_site,
+			     Bonobo_ClientSite  corba_client_site,
+			     BonoboContainer   *container)
 {
 	g_return_val_if_fail (client_site != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 	g_return_val_if_fail (container != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTAINER (container), NULL);
 	g_return_val_if_fail (corba_client_site != CORBA_OBJECT_NIL, NULL);
 	
-	gnome_object_construct (GNOME_OBJECT (client_site), corba_client_site);
+	bonobo_object_construct (BONOBO_OBJECT (client_site), corba_client_site);
 	
-	GNOME_CLIENT_SITE (client_site)->container = container;
-	gnome_container_add (container, GNOME_OBJECT (client_site));
+	BONOBO_CLIENT_SITE (client_site)->container = container;
+	bonobo_container_add (container, BONOBO_OBJECT (client_site));
 
 	return client_site;
 }
 
 /**
- * gnome_client_site_new:
+ * bonobo_client_site_new:
  * @container: The container to which this client_site belongs.
  *
- * Container programs should provide a GnomeClientSite GTK object (ie,
- * a GNOME::ClientSite CORBA server) for each Embeddable which they
+ * Container programs should provide a BonoboClientSite GTK object (ie,
+ * a Bonobo::ClientSite CORBA server) for each Embeddable which they
  * embed.  This is the contact end point for the remote
- * GNOME::Embeddable object.
+ * Bonobo::Embeddable object.
  *
- * This routine creates a new GnomeClientSite.
+ * This routine creates a new BonoboClientSite.
  *
- * Returns: The activated GnomeClientSite object bound to the @container
+ * Returns: The activated BonoboClientSite object bound to the @container
  * container.
  */
-GnomeClientSite *
-gnome_client_site_new (GnomeContainer *container)
+BonoboClientSite *
+bonobo_client_site_new (BonoboContainer *container)
 {
-	GNOME_ClientSite corba_client_site;
-	GnomeClientSite *client_site;
+	Bonobo_ClientSite corba_client_site;
+	BonoboClientSite *client_site;
 
 	g_return_val_if_fail (container != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTAINER (container), NULL);
 	
-	client_site = gtk_type_new (gnome_client_site_get_type ());
-	corba_client_site = create_client_site (GNOME_OBJECT (client_site));
+	client_site = gtk_type_new (bonobo_client_site_get_type ());
+	corba_client_site = create_client_site (BONOBO_OBJECT (client_site));
 	if (corba_client_site == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (client_site));
 		return NULL;
 	}
 
-	client_site = gnome_client_site_construct (client_site, corba_client_site, container);
+	client_site = bonobo_client_site_construct (client_site, corba_client_site, container);
 	
 	return client_site;
 }
 
 /**
- * gnome_client_site_get_type:
+ * bonobo_client_site_get_type:
  *
  * Returns: The GtkType for the GnomeClient class.
  */
 GtkType
-gnome_client_site_get_type (void)
+bonobo_client_site_get_type (void)
 {
 	static GtkType type = 0;
 
 	if (!type){
 		GtkTypeInfo info = {
 			"IDL:GNOME/ClientSite:1.0",
-			sizeof (GnomeClientSite),
-			sizeof (GnomeClientSiteClass),
-			 (GtkClassInitFunc) gnome_client_site_class_init,
-			 (GtkObjectInitFunc) gnome_client_site_init,
+			sizeof (BonoboClientSite),
+			sizeof (BonoboClientSiteClass),
+			 (GtkClassInitFunc) bonobo_client_site_class_init,
+			 (GtkObjectInitFunc) bonobo_client_site_init,
 			NULL, /* reserved 1 */
 			NULL, /* reserved 2 */
 			 (GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_object_get_type (), &info);
+		type = gtk_type_unique (bonobo_object_get_type (), &info);
 	}
 
 	return type;
 }
 
 /** 
- * gnome_client_site_bind_embeddable:
+ * bonobo_client_site_bind_embeddable:
  * @client_site: the client site to which the remote Embeddable object will be bound.
- * @object: The remote object which supports the GNOME::Embeddable interface.
+ * @object: The remote object which supports the Bonobo::Embeddable interface.
  *
  * This routine binds a remote Embeddable object to a local
- * GnomeClientSite object.  The idea is that there is always a
- * one-to-one mapping between GnomeClientSites and GnomeEmbeddables.
- * The Embeddable uses its GnomeClientSite to communicate with the
+ * BonoboClientSite object.  The idea is that there is always a
+ * one-to-one mapping between BonoboClientSites and BonoboEmbeddables.
+ * The Embeddable uses its BonoboClientSite to communicate with the
  * container in which it is embedded.
  *
  * Returns: %TRUE if @object was successfully bound to @client_site
  * @client_site.
  */
 gboolean
-gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClient *object)
+bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectClient *object)
 {
 	CORBA_Object corba_object;
-	GnomeObject *gnome_object;
+	BonoboObject *bonobo_object;
 	CORBA_Environment ev;
 	
 	g_return_val_if_fail (client_site != NULL, FALSE);
 	g_return_val_if_fail (object != NULL, FALSE);
-	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), FALSE);
-	g_return_val_if_fail (GNOME_IS_OBJECT_CLIENT (object), FALSE);
+	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), FALSE);
+	g_return_val_if_fail (BONOBO_IS_OBJECT_CLIENT (object), FALSE);
 
 	CORBA_exception_init (&ev);
 
-	gnome_object = GNOME_OBJECT (object);
+	bonobo_object = BONOBO_OBJECT (object);
 
-	corba_object = gnome_object_client_query_interface (object,
+	corba_object = bonobo_object_client_query_interface (object,
 							    "IDL:GNOME/Embeddable:1.0", NULL);
 
 	if (corba_object == CORBA_OBJECT_NIL) {
@@ -333,20 +333,20 @@ gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClie
 		return FALSE;
 	}
 
-	GNOME_Embeddable_set_client_site (
+	Bonobo_Embeddable_set_client_site (
 		corba_object, 
-		gnome_object_corba_objref (GNOME_OBJECT (client_site)),
+		bonobo_object_corba_objref (BONOBO_OBJECT (client_site)),
 		&ev);
 		
 	if (ev._major != CORBA_NO_EXCEPTION){
 		CORBA_exception_free (&ev);
-		gnome_object_check_env (gnome_object, corba_object, &ev);
+		bonobo_object_check_env (bonobo_object, corba_object, &ev);
 		return FALSE;
 	}
 
 	client_site->bound_object = object;
 
-	GNOME_Unknown_unref (gnome_object_corba_objref (gnome_object), &ev);
+	Bonobo_Unknown_unref (bonobo_object_corba_objref (bonobo_object), &ev);
 	
 	CORBA_exception_free (&ev);
 
@@ -354,24 +354,24 @@ gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClie
 }
 
 /**
- * gnome_client_site_get_embeddable:
- * @client_site: A GnomeClientSite object which is bound to a remote
- * GnomeObject server.
+ * bonobo_client_site_get_embeddable:
+ * @client_site: A BonoboClientSite object which is bound to a remote
+ * BonoboObject server.
  *
- * Returns: The GnomeObjectClient object which corresponds to the
- * remote GnomeObject to which @client_site is bound.
+ * Returns: The BonoboObjectClient object which corresponds to the
+ * remote BonoboObject to which @client_site is bound.
  */
-GnomeObjectClient *
-gnome_client_site_get_embeddable (GnomeClientSite *client_site)
+BonoboObjectClient *
+bonobo_client_site_get_embeddable (BonoboClientSite *client_site)
 {
 	g_return_val_if_fail (client_site != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 
 	return client_site->bound_object;
 }
 
 static void
-gnome_client_site_view_frame_destroy (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
+bonobo_client_site_view_frame_destroy (BonoboViewFrame *view_frame, BonoboClientSite *client_site)
 {
 	/*
 	 * Remove this view frame.
@@ -380,34 +380,34 @@ gnome_client_site_view_frame_destroy (GnomeViewFrame *view_frame, GnomeClientSit
 }
 
 /**
- * gnome_client_site_new_view_full:
+ * bonobo_client_site_new_view_full:
  * @client_site: the client site that contains a remote Embeddable object.
  * @visible_cover: %TRUE if the cover should draw a border when it is active.
  * @active_view: %TRUE if the view should be uncovered when it is created.
  *
  * Creates a ViewFrame and asks the remote @server_object (which must
- * support the GNOME::Embeddable interface) to provide a new view of
- * its data.  The remote @server_object will construct a GnomeView
- * object which corresponds to the new GnomeViewFrame returned by this
+ * support the Bonobo::Embeddable interface) to provide a new view of
+ * its data.  The remote @server_object will construct a BonoboView
+ * object which corresponds to the new BonoboViewFrame returned by this
  * function.
  * 
- * Returns: A GnomeViewFrame object that contains the view frame for
+ * Returns: A BonoboViewFrame object that contains the view frame for
  * the new view of @server_object.
  */
-GnomeViewFrame *
-gnome_client_site_new_view_full (GnomeClientSite *client_site,
+BonoboViewFrame *
+bonobo_client_site_new_view_full (BonoboClientSite *client_site,
 				 gboolean visible_cover,
 				 gboolean active_view)
 {
-	GnomeObjectClient *server_object;
-	GnomeViewFrame *view_frame;
-	GnomeWrapper *wrapper;
-	GNOME_View view;
+	BonoboObjectClient *server_object;
+	BonoboViewFrame *view_frame;
+	BonoboWrapper *wrapper;
+	Bonobo_View view;
 
 	CORBA_Environment ev;
 
 	g_return_val_if_fail (client_site != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
 
 	server_object = client_site->bound_object;
@@ -415,30 +415,30 @@ gnome_client_site_new_view_full (GnomeClientSite *client_site,
 	/*
 	 * 1. Create the view frame.
 	 */
-	view_frame = gnome_view_frame_new (client_site);
-	wrapper = GNOME_WRAPPER (gnome_view_frame_get_wrapper (view_frame));
-	gnome_wrapper_set_visibility (wrapper, visible_cover);
-	gnome_wrapper_set_covered (wrapper, ! active_view);
+	view_frame = bonobo_view_frame_new (client_site);
+	wrapper = BONOBO_WRAPPER (bonobo_view_frame_get_wrapper (view_frame));
+	bonobo_wrapper_set_visibility (wrapper, visible_cover);
+	bonobo_wrapper_set_covered (wrapper, ! active_view);
 
 	/*
 	 * 2. Now, create the view.
 	 */
 	CORBA_exception_init (&ev);
- 	view = GNOME_Embeddable_new_view (
-		gnome_object_corba_objref (GNOME_OBJECT (server_object)),
-		gnome_object_corba_objref (GNOME_OBJECT (view_frame)),
+ 	view = Bonobo_Embeddable_new_view (
+		bonobo_object_corba_objref (BONOBO_OBJECT (server_object)),
+		bonobo_object_corba_objref (BONOBO_OBJECT (view_frame)),
 		&ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (client_site),
-			gnome_object_corba_objref (GNOME_OBJECT (server_object)),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (client_site),
+			bonobo_object_corba_objref (BONOBO_OBJECT (server_object)),
 			&ev);
-		gnome_object_unref (GNOME_OBJECT (view_frame));
+		bonobo_object_unref (BONOBO_OBJECT (view_frame));
 		CORBA_exception_free (&ev);
 		return NULL;
 	}
 
-	gnome_view_frame_bind_to_view (view_frame, view);
+	bonobo_view_frame_bind_to_view (view_frame, view);
 	CORBA_Object_release (view, &ev);
 	
 	/*
@@ -448,57 +448,57 @@ gnome_client_site_new_view_full (GnomeClientSite *client_site,
 	client_site->view_frames = g_list_prepend (client_site->view_frames, view_frame);
 	
 	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
-			    GTK_SIGNAL_FUNC (gnome_client_site_view_frame_destroy), client_site);
+			    GTK_SIGNAL_FUNC (bonobo_client_site_view_frame_destroy), client_site);
 
 	CORBA_exception_free (&ev);		
 	return view_frame;
 }
 
 /**
- * gnome_client_site_new_view:
+ * bonobo_client_site_new_view:
  * @client_site: the client site that contains a remote Embeddable
  * object.
  *
- * The same as gnome_client_site_new_view_full() with an inactive,
+ * The same as bonobo_client_site_new_view_full() with an inactive,
  * visible cover.
  * 
- * Returns: A GnomeViewFrame object that contains the view frame for
+ * Returns: A BonoboViewFrame object that contains the view frame for
  * the new view of @server_object.
  */
-GnomeViewFrame *
-gnome_client_site_new_view (GnomeClientSite *client_site)
+BonoboViewFrame *
+bonobo_client_site_new_view (BonoboClientSite *client_site)
 {
 
-	return gnome_client_site_new_view_full (client_site, TRUE, FALSE);
+	return bonobo_client_site_new_view_full (client_site, TRUE, FALSE);
 }
 
 static void
-canvas_item_destroyed (GnomeCanvasItem *item, GnomeClientSite *client_site)
+canvas_item_destroyed (GnomeCanvasItem *item, BonoboClientSite *client_site)
 {
 	client_site->canvas_items = g_list_remove (client_site->canvas_items, item);
 }
 		      
 /**
- * gnome_client_site_new_item:
+ * bonobo_client_site_new_item:
  * @client_site: The client site that contains a remote Embeddable object
  * @group: The Canvas group that will be the parent for the new item.
  *
  */
 GnomeCanvasItem *
-gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *group)
+bonobo_client_site_new_item (BonoboClientSite *client_site, GnomeCanvasGroup *group)
 {
-	GnomeObjectClient *server_object;
+	BonoboObjectClient *server_object;
 	GnomeCanvasItem *item;
 		
 	g_return_val_if_fail (client_site != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
 	g_return_val_if_fail (group != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_GROUP (group), NULL);
 
 	server_object = client_site->bound_object;
 
-	item = gnome_bonobo_item_new (group, server_object);
+	item = bonobo_canvas_item_new (group, server_object);
 
 	/*
 	 * 5. Add this new view frame to the list of ViewFrames for
@@ -513,41 +513,41 @@ gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *grou
 }
 
 /**
- * gnome_client_site_get_verbs:
+ * bonobo_client_site_get_verbs:
  * @server_object: The pointer to the embedeed server object
  *
  * Returns: A GList containing the GnomeVerb structures for the verbs
  * supported by the Embeddable @server_object.
  *
  * The GnomeVerbs can be deallocated with a call to
- * gnome_embeddable_free_verbs ().
+ * bonobo_embeddable_free_verbs ().
  */
 GList *
-gnome_client_site_get_verbs (GnomeClientSite *client_site)
+bonobo_client_site_get_verbs (BonoboClientSite *client_site)
 {
-	GNOME_Embeddable_verb_list *list;
-	GNOME_Embeddable object;
-	GnomeObjectClient *server_object;
-	GnomeObject *gobject;
+	Bonobo_Embeddable_verb_list *list;
+	Bonobo_Embeddable object;
+	BonoboObjectClient *server_object;
+	BonoboObject *gobject;
 	CORBA_Environment ev;
 	GList *l;
 	int i;
 	
 	g_return_val_if_fail (client_site != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
 
 	CORBA_exception_init (&ev);
 
 	server_object = client_site->bound_object;
 
-	gobject = GNOME_OBJECT (server_object);
-	object = (GNOME_Embeddable) gnome_object_corba_objref (gobject);
+	gobject = BONOBO_OBJECT (server_object);
+	object = (Bonobo_Embeddable) bonobo_object_corba_objref (gobject);
 
-	list = GNOME_Embeddable_get_verb_list (object, &ev);
+	list = Bonobo_Embeddable_get_verb_list (object, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION){
-		gnome_object_check_env (GNOME_OBJECT (client_site), object, &ev);
+		bonobo_object_check_env (BONOBO_OBJECT (client_site), object, &ev);
 		CORBA_exception_free (&ev);
 		return NULL;
 	}
@@ -570,10 +570,10 @@ gnome_client_site_get_verbs (GnomeClientSite *client_site)
 }
 
 /**
- * gnome_client_site_free_verbs:
+ * bonobo_client_site_free_verbs:
  */
 void
-gnome_client_site_free_verbs (GList *verbs)
+bonobo_client_site_free_verbs (GList *verbs)
 {
 	GList *curr;
 

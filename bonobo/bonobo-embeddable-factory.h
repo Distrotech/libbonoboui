@@ -2,7 +2,7 @@
 /**
  * GNOME EmbeddableFactory object.
  *
- * Left for compatibility reasons, you should use GnomeGenericFactory instead.
+ * Left for compatibility reasons, you should use BonoboGenericFactory instead.
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
@@ -14,28 +14,28 @@
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
-#include <bonobo/bonobo.h>
-#include <bonobo/gnome-object.h>
-#include <bonobo/gnome-view.h>
-#include <bonobo/gnome-embeddable.h>
-#include <bonobo/gnome-generic-factory.h>
+#include <bonobo/Bonobo.h>
+#include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-view.h>
+#include <bonobo/bonobo-embeddable.h>
+#include <bonobo/bonobo-generic-factory.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_EMBEDDABLE_FACTORY_TYPE        GNOME_GENERIC_FACTORY_TYPE
-#define GNOME_EMBEDDABLE_FACTORY(o)          GNOME_GENERIC_FACTORY(o)
-#define GNOME_EMBEDDABLE_FACTORY_CLASS(k)    GNOME_GENERIC_FACTORY_CLASS(k)
-#define GNOME_IS_EMBEDDABLE_FACTORY(o)       GNOME_IS_GENERIC_FACTORY(o)
-#define GNOME_IS_EMBEDDABLE_FACTORY_CLASS(k) GNOME_IS_GENERIC_FACTORY_CLASS(k)
+#define BONOBO_EMBEDDABLE_FACTORY_TYPE        BONOBO_GENERIC_FACTORY_TYPE
+#define BONOBO_EMBEDDABLE_FACTORY(o)          BONOBO_GENERIC_FACTORY(o)
+#define BONOBO_EMBEDDABLE_FACTORY_CLASS(k)    BONOBO_GENERIC_FACTORY_CLASS(k)
+#define BONOBO_IS_EMBEDDABLE_FACTORY(o)       BONOBO_IS_GENERIC_FACTORY(o)
+#define BONOBO_IS_EMBEDDABLE_FACTORY_CLASS(k) BONOBO_IS_GENERIC_FACTORY_CLASS(k)
 
-typedef GnomeGenericFactory GnomeEmbeddableFactory;
-typedef GnomeGenericFactoryClass GnomeEmbeddableFactoryClass;
-typedef GnomeGenericFactoryFn GnomeEmbeddableFactoryFn;
+typedef BonoboGenericFactory BonoboEmbeddableFactory;
+typedef BonoboGenericFactoryClass BonoboEmbeddableFactoryClass;
+typedef BonoboGenericFactoryFn BonoboEmbeddableFactoryFn;
 					
-#define gnome_embeddable_factory_get_type  gnome_generic_factory_get_type
-#define gnome_embeddable_factory_new       gnome_generic_factory_new
-#define gnome_embeddable_factory_construct gnome_generic_factory_construct
-#define gnome_embeddable_factory_set       gnome_generic_factory_set
+#define bonobo_embeddable_factory_get_type  bonobo_generic_factory_get_type
+#define bonobo_embeddable_factory_new       bonobo_generic_factory_new
+#define bonobo_embeddable_factory_construct bonobo_generic_factory_construct
+#define bonobo_embeddable_factory_set       bonobo_generic_factory_set
 
 END_GNOME_DECLS
 

@@ -1,50 +1,50 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-#ifndef _GNOME_CANVAS_COMPONENT_H_
-#define _GNOME_CANVAS_COMPONENT_H_
+#ifndef _BONOBO_CANVAS_COMPONENT_H_
+#define _BONOBO_CANVAS_COMPONENT_H_
 
 #include <libgnome/gnome-defs.h>
-#include <bonobo/gnome-object.h>
+#include <bonobo/bonobo-object.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_CANVAS_COMPONENT_TYPE        (gnome_canvas_component_get_type ())
-#define GNOME_CANVAS_COMPONENT(o)          (GTK_CHECK_CAST ((o), GNOME_CANVAS_COMPONENT_TYPE, GnomeCanvasComponent))
-#define GNOME_CANVAS_COMPONENT_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_CANVAS_COMPONENT__TYPE, GnomeCanvasComponentClass))
-#define GNOME_IS_CANVAS_COMPONENT(o)       (GTK_CHECK_TYPE ((o), GNOME_CANVAS_COMPONENT_TYPE))
-#define GNOME_IS_CANVAS_COMPONENT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_CANVAS_COMPONENT_TYPE))
+#define BONOBO_CANVAS_COMPONENT_TYPE        (bonobo_canvas_component_get_type ())
+#define BONOBO_CANVAS_COMPONENT(o)          (GTK_CHECK_CAST ((o), BONOBO_CANVAS_COMPONENT_TYPE, BonoboCanvasComponent))
+#define BONOBO_CANVAS_COMPONENT_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_CANVAS_COMPONENT__TYPE, BonoboCanvasComponentClass))
+#define BONOBO_IS_CANVAS_COMPONENT(o)       (GTK_CHECK_TYPE ((o), BONOBO_CANVAS_COMPONENT_TYPE))
+#define BONOBO_IS_CANVAS_COMPONENT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CANVAS_COMPONENT_TYPE))
 
-typedef struct _GnomeCanvasComponent        GnomeCanvasComponent;
-typedef struct _GnomeCanvasComponentPrivate GnomeCanvasComponentPrivate;
-typedef struct _GnomeCanvasComponentClass   GnomeCanvasComponentClass;
+typedef struct _BonoboCanvasComponent        BonoboCanvasComponent;
+typedef struct _BonoboCanvasComponentPrivate BonoboCanvasComponentPrivate;
+typedef struct _BonoboCanvasComponentClass   BonoboCanvasComponentClass;
 
-struct _GnomeCanvasComponent {
-	GnomeObject base;
-	GnomeCanvasComponentPrivate *priv;
+struct _BonoboCanvasComponent {
+	BonoboObject base;
+	BonoboCanvasComponentPrivate *priv;
 };
 
-struct _GnomeCanvasComponentClass {
-	GnomeObjectClass parent_class;
+struct _BonoboCanvasComponentClass {
+	BonoboObjectClass parent_class;
 
 	/*
 	 * Signals
 	 */
-	 void (*set_bounds) (GnomeCanvasComponent *component, GNOME_Canvas_DRect *bbox, CORBA_Environment *ev);
+	 void (*set_bounds) (BonoboCanvasComponent *component, Bonobo_Canvas_DRect *bbox, CORBA_Environment *ev);
 };
 
-GtkType           gnome_canvas_component_get_type      (void);
-GNOME_Canvas_Item gnome_canvas_component_object_create (GnomeObject *object);
-void              gnome_canvas_component_set_proxy     (GnomeCanvasComponent *comp,
-							GNOME_Canvas_ItemProxy proxy);
-GnomeCanvasComponent *gnome_canvas_component_construct (GnomeCanvasComponent *comp,
-							GNOME_Canvas_Item    ccomp,
+GtkType           bonobo_canvas_component_get_type      (void);
+Bonobo_Canvas_Component bonobo_canvas_component_object_create (BonoboObject *object);
+void              bonobo_canvas_component_set_proxy     (BonoboCanvasComponent *comp,
+							Bonobo_Canvas_ComponentProxy proxy);
+BonoboCanvasComponent *bonobo_canvas_component_construct (BonoboCanvasComponent *comp,
+							Bonobo_Canvas_Component    ccomp,
 							GnomeCanvasItem     *item);
-GnomeCanvasComponent *gnome_canvas_component_new (GnomeCanvasItem *item);
-GnomeCanvasItem      *gnome_canvas_component_get_item  (GnomeCanvasComponent *comp);
+BonoboCanvasComponent *bonobo_canvas_component_new (GnomeCanvasItem *item);
+GnomeCanvasItem      *bonobo_canvas_component_get_item  (BonoboCanvasComponent *comp);
 
-POA_GNOME_Canvas_Item__epv *gnome_canvas_item_get_epv  (void);
+POA_Bonobo_Canvas_Component__epv *bonobo_canvas_component_get_epv  (void);
 
 /* CORBA default vector methods we provide */
-extern POA_GNOME_Canvas_Item__vepv gnome_canvas_item_vepv;
+extern POA_Bonobo_Canvas_Component__vepv bonobo_canvas_component_vepv;
 
 END_GNOME_DECLS
 

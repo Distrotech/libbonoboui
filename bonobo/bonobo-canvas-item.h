@@ -1,30 +1,30 @@
-#ifndef _GNOME_BONOBO_ITEM_H_
-#define _GNOME_BONOBO_ITEM_H_
+#ifndef _BONOBO_CANVAS_ITEM_H_
+#define _BONOBO_CANVAS_ITEM_H_
 
 #include <libgnome/gnome-defs.h>
 #include <libgnomeui/gnome-canvas.h>
-#include <bonobo/gnome-embeddable.h>
+#include <bonobo/bonobo-embeddable.h>
 
-#define GNOME_BONOBO_ITEM(obj)          (GTK_CHECK_CAST((obj), gnome_bonobo_item_get_type (), GnomeBonoboItem))
-#define GNOME_BONOBO_ITEM_CLASS(k)      (GTK_CHECK_CLASS_CAST ((k), gnome_bonobo_get_type (), GnomeBonoboItemClass))
-#define GNOME_IS_BONOBO_ITEM(o)         (GTK_CHECK_TYPE((o), gnome_bonobo_get_type ()))
+#define BONOBO_CANVAS_ITEM(obj)          (GTK_CHECK_CAST((obj), bonobo_canvas_item_get_type (), BonoboCanvasItem))
+#define BONOBO_CANVAS_ITEM_CLASS(k)      (GTK_CHECK_CLASS_CAST ((k), gnome_bonobo_get_type (), BonoboCanvasItemClass))
+#define BONOBO_IS_CANVAS_ITEM(o)         (GTK_CHECK_TYPE((o), gnome_bonobo_get_type ()))
 
-typedef struct _GnomeBonoboItemPrivate GnomeBonoboItemPrivate;
+typedef struct _BonoboCanvasItemPrivate BonoboCanvasItemPrivate;
 
 typedef struct {
 	GnomeCanvasItem         canvas_item;
-	GnomeEmbeddable        *embeddable;
-	GnomeBonoboItemPrivate *priv;
-} GnomeBonoboItem;
+	BonoboEmbeddable        *embeddable;
+	BonoboCanvasItemPrivate *priv;
+} BonoboCanvasItem;
 
 typedef struct {
 	GnomeCanvasItemClass parent_class;
-} GnomeBonoboItemClass;
+} BonoboCanvasItemClass;
 
-GtkType          gnome_bonobo_item_get_type    (void);
-GnomeCanvasItem *gnome_bonobo_item_new         (GnomeCanvasGroup  *parent,
-						GnomeObjectClient *embeddable);
+GtkType          bonobo_canvas_item_get_type    (void);
+GnomeCanvasItem *bonobo_canvas_item_new         (GnomeCanvasGroup  *parent,
+						BonoboObjectClient *embeddable);
 
-void		 gnome_bonobo_item_set_bounds (GnomeBonoboItem *item, double x1, double y1, double x2, double y2);
+void		 bonobo_canvas_item_set_bounds (BonoboCanvasItem *item, double x1, double y1, double x2, double y2);
 
-#endif /* _GNOME_BONOBO_ITEM_H_ */
+#endif /* _BONOBO_CANVAS_ITEM_H_ */

@@ -8,46 +8,46 @@
  * Copyright 1999 Helix Code, Inc.
  */
 
-#include <bonobo/gnome-object.h>
+#include <bonobo/bonobo-object.h>
 
-#include <bonobo/gnome-moniker.h>
-#include <bonobo/gnome-moniker-client.h>
+#include <bonobo/bonobo-moniker.h>
+#include <bonobo/bonobo-moniker-client.h>
 
-#include <bonobo/gnome-container.h>
-#include <bonobo/gnome-object-client.h>
-#include <bonobo/gnome-client-site.h>
+#include <bonobo/bonobo-container.h>
+#include <bonobo/bonobo-object-client.h>
+#include <bonobo/bonobo-client-site.h>
 
-#include <bonobo/gnome-property-bag.h>
-#include <bonobo/gnome-property-bag-client.h>
+#include <bonobo/bonobo-property-bag.h>
+#include <bonobo/bonobo-property-bag-client.h>
 
-#include <bonobo/gnome-control.h>
-#include <bonobo/gnome-control-frame.h>
+#include <bonobo/bonobo-control.h>
+#include <bonobo/bonobo-control-frame.h>
 
-#include <bonobo/gnome-view.h>
-#include <bonobo/gnome-generic-factory.h>
+#include <bonobo/bonobo-view.h>
+#include <bonobo/bonobo-generic-factory.h>
 
-#include <bonobo/gnome-embeddable.h>
-#include <bonobo/gnome-embeddable-factory.h>
+#include <bonobo/bonobo-embeddable.h>
+#include <bonobo/bonobo-embeddable-factory.h>
 
-#include <bonobo/gnome-main.h>
+#include <bonobo/bonobo-main.h>
 
-#include <bonobo/gnome-stream.h>
-#include <bonobo/gnome-stream-client.h>
-#include <bonobo/gnome-stream-fs.h>
+#include <bonobo/bonobo-stream.h>
+#include <bonobo/bonobo-stream-client.h>
+#include <bonobo/bonobo-stream-fs.h>
 
-#include <bonobo/gnome-persist.h>
-#include <bonobo/gnome-persist-file.h>
-#include <bonobo/gnome-persist-stream.h>
+#include <bonobo/bonobo-persist.h>
+#include <bonobo/bonobo-persist-file.h>
+#include <bonobo/bonobo-persist-stream.h>
 
-#include <bonobo/gnome-ui-handler.h>
+#include <bonobo/bonobo-ui-handler.h>
 
-#include <bonobo/gnome-object-io.h>
+#include <bonobo/bonobo-object-io.h>
 
-#include <bonobo/gnome-progressive.h>
+#include <bonobo/bonobo-progressive.h>
 
-#include <bonobo/gnome-storage.h>
+#include <bonobo/bonobo-storage.h>
 
-#include <bonobo/gnome-bonobo-selector.h>
+#include <bonobo/bonobo-selector.h>
 
-#include <bonobo/gnome-bonobo-widget.h>
+#include <bonobo/bonobo-widget.h>
 

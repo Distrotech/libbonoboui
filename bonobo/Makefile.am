@@ -6,8 +6,8 @@ INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-DSTORAGE_LIB=\""$(libdir)"\"			\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
-	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. 						\
+	-I$(srcdir) -I$(top_srcdir) 			\
 	-I$(top_builddir)				\
         -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)
@@ -34,118 +34,120 @@ noinst_PROGRAMS = 		\
 	test-bw
 
 CORBA_SOURCE =			\
-	bonobo.h		\
-	bonobo-common.c		\
-	bonobo-stubs.c		\
-	bonobo-skels.c
+	Bonobo.h		\
+	Bonobo-common.c		\
+	Bonobo-stubs.c		\
+	Bonobo-skels.c
 
-idls =						\
-	$(top_srcdir)/idl/bonobo.idl		\
-	$(top_srcdir)/idl/gnome-advise.idl	\
-	$(top_srcdir)/idl/gnome-canvas.idl 	\
-	$(top_srcdir)/idl/gnome-client-site.idl	\
-	$(top_srcdir)/idl/gnome-control.idl	\
-	$(top_srcdir)/idl/gnome-embeddable.idl	\
-	$(top_srcdir)/idl/gnome-container.idl	\
-	$(top_srcdir)/idl/gnome-persist.idl	\
-	$(top_srcdir)/idl/gnome-storage.idl	\
-	$(top_srcdir)/idl/gnome-progressive.idl \
-	$(top_srcdir)/idl/gnome-ui-handler.idl	\
-	$(top_srcdir)/idl/gnome-property.idl
+idls =							\
+	$(top_srcdir)/idl/Bonobo.idl			\
+	$(top_srcdir)/idl/bonobo-advise.idl		\
+	$(top_srcdir)/idl/bonobo-canvas.idl 		\
+	$(top_srcdir)/idl/bonobo-client-site.idl	\
+	$(top_srcdir)/idl/bonobo-control.idl		\
+	$(top_srcdir)/idl/bonobo-embeddable.idl		\
+	$(top_srcdir)/idl/bonobo-container.idl		\
+	$(top_srcdir)/idl/bonobo-persist.idl		\
+	$(top_srcdir)/idl/bonobo-storage.idl		\
+	$(top_srcdir)/idl/bonobo-progressive.idl	\
+	$(top_srcdir)/idl/bonobo-ui-handler.idl		\
+	$(top_srcdir)/idl/bonobo-property.idl
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 
 $(CORBA_SOURCE): $(idls)
-	$(ORBIT_IDL) $(top_srcdir)/idl/bonobo.idl -I$(top_srcdir)/idl $(idl_flags)
+	$(ORBIT_IDL) $(top_srcdir)/idl/Bonobo.idl -I$(top_srcdir)/idl $(idl_flags)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
-	gnome-ui-handler.c		\
-	gnome-bonobo-item.c		\
-	gnome-bonobo-selector.c		\
-	gnome-bonobo-widget.c		\
-	gnome-canvas-component.c	\
-	gnome-client-site.c		\
-	gnome-container.c		\
-	gnome-control.c			\
-	gnome-control-frame.c		\
-	gnome-desktop-window.c		\
-	gnome-embeddable.c		\
-	gnome-generic-factory.c		\
-	gnome-main.c			\
-	gnome-moniker.c			\
-	gnome-moniker-client.c		\
-	gnome-object.c			\
-	gnome-object-client.c		\
-	gnome-object-io.c		\
-	gnome-persist-file.c		\
-	gnome-persist-stream.c		\
-	gnome-persist.c			\
-	gnome-progressive.c		\
-	gnome-storage.c			\
-	gnome-stream.c			\
-	gnome-stream-client.c		\
-	gnome-stream-fs.c		\
-	gnome-stream-memory.c		\
-	gnome-view.c			\
-	gnome-view-frame.c		\
-	gnome-wrapper.c			\
-	gnome-property.c		\
-	gnome-property-types.c		\
-	gnome-property-bag.c		\
-	gnome-property-bag-client.c
+	bonobo-ui-handler.c		\
+	bonobo-canvas-item.c		\
+	bonobo-selector.c		\
+	bonobo-widget.c			\
+	bonobo-canvas-component.c	\
+	bonobo-client-site.c		\
+	bonobo-container.c		\
+	bonobo-control.c		\
+	bonobo-control-frame.c		\
+	bonobo-desktop-window.c		\
+	bonobo-embeddable.c		\
+	bonobo-generic-factory.c	\
+	bonobo-main.c			\
+	bonobo-moniker.c		\
+	bonobo-moniker-client.c		\
+	bonobo-object.c			\
+	bonobo-object-client.c		\
+	bonobo-object-io.c		\
+	bonobo-persist-file.c		\
+	bonobo-persist-stream.c		\
+	bonobo-persist.c		\
+	bonobo-progressive.c		\
+	bonobo-storage.c		\
+	bonobo-stream.c			\
+	bonobo-stream-client.c		\
+	bonobo-stream-fs.c		\
+	bonobo-stream-memory.c		\
+	bonobo-view.c			\
+	bonobo-view-frame.c		\
+	bonobo-wrapper.c		\
+	bonobo-property.c		\
+	bonobo-property-types.c		\
+	bonobo-property-bag.c		\
+	bonobo-property-bag-client.c
 
 libbonoboincludedir = $(includedir)/bonobo
 
+libbonobodir = $(includedir)
+libbonobo_HEADERS = bonobo.h
+
 libbonoboinclude_HEADERS =		\
-	bonobo.h			\
-	gnome-bonobo.h			\
-	gnome-bonobo-item.h		\
-	gnome-bonobo-selector.h		\
-	gnome-bonobo-widget.h		\
-	gnome-canvas-component.h	\
-	gnome-client-site.h		\
-	gnome-component-io.h		\
-	gnome-container.h		\
-	gnome-control.h			\
-	gnome-control-frame.h		\
-	gnome-desktop-window.h		\
-	gnome-embeddable.h		\
-	gnome-embeddable-factory.h	\
-	gnome-generic-factory.h		\
-	gnome-main.h			\
-	gnome-moniker.h			\
-	gnome-moniker-client.h		\
-	gnome-object.h			\
-	gnome-object-client.h		\
-	gnome-object-io.h		\
-	gnome-persist-file.h		\
-	gnome-persist-stream.h		\
-	gnome-persist.h			\
-	gnome-progressive.h		\
-	gnome-storage.h			\
-	gnome-stream.h			\
-	gnome-stream-client.h		\
-	gnome-stream-fs.h		\
-	gnome-stream-memory.h		\
-	gnome-ui-handler.h		\
-	gnome-view.h			\
-	gnome-view-frame.h		\
-	gnome-wrapper.h			\
-	gnome-property.h		\
-	gnome-property-types.h		\
-	gnome-property-bag.h		\
-	gnome-property-bag-client.h
+	Bonobo.h			\
+	bonobo-canvas-item.h		\
+	bonobo-selector.h		\
+	bonobo-widget.h 		\
+	bonobo-canvas-component.h	\
+	bonobo-client-site.h		\
+	bonobo-component-io.h		\
+	bonobo-container.h		\
+	bonobo-control.h		\
+	bonobo-control-frame.h		\
+	bonobo-desktop-window.h		\
+	bonobo-embeddable.h		\
+	bonobo-embeddable-factory.h	\
+	bonobo-generic-factory.h	\
+	bonobo-main.h			\
+	bonobo-moniker.h		\
+	bonobo-moniker-client.h		\
+	bonobo-object.h			\
+	bonobo-object-client.h		\
+	bonobo-object-io.h		\
+	bonobo-persist-file.h		\
+	bonobo-persist-stream.h		\
+	bonobo-persist.h		\
+	bonobo-progressive.h		\
+	bonobo-storage.h		\
+	bonobo-stream.h			\
+	bonobo-stream-client.h		\
+	bonobo-stream-fs.h		\
+	bonobo-stream-memory.h		\
+	bonobo-ui-handler.h		\
+	bonobo-view.h			\
+	bonobo-view-frame.h		\
+	bonobo-wrapper.h		\
+	bonobo-property.h		\
+	bonobo-property-types.h		\
+	bonobo-property-bag.h		\
+	bonobo-property-bag-client.h
 
 libbonobo_xml_la_SOURCES =		\
-	gnome-property-bag-xml.c
+	bonobo-property-bag-xml.c
 
 libbonobo_xmlincludedir = $(includedir)/bonobo
 
 libbonobo_xmlinclude_HEADERS =		\
-	bonobo.h			\
-	gnome-property-bag.h		\
-	gnome-property-bag-xml.h
+	Bonobo.h			\
+	bonobo-property-bag.h		\
+	bonobo-property-bag-xml.h
 
 test_bw_SOURCES =			\
 	test-bw.c
@@ -157,17 +159,17 @@ test_container_SOURCES =		\
 
 test_container_LDADD = $(bonobo_libs)
 
-test_container_autoload_SOURCES =		\
+test_container_autoload_SOURCES =	\
 	test-container-autoload.c
 
 test_container_autoload_LDADD = $(bonobo_libs)
 
-sample_server_SOURCES =		\
+sample_server_SOURCES =			\
 	sample-server.c
 
 sample_server_LDADD = $(bonobo_libs)
 
-sample_item_SOURCES = 		\
+sample_item_SOURCES = 			\
 	sample-item.c
 
 sample_item_LDADD = $(bonobo_libs)
@@ -176,7 +178,7 @@ test_storage_SOURCES = test-storage.c
 
 test_storage_LDADD = $(bonobo_libs)
 
-selector_test_SOURCES =		\
+selector_test_SOURCES =			\
 	selector_test.c
 
 selector_test_LDADD = $(bonobo_libs)

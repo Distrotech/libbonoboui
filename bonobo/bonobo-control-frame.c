@@ -12,9 +12,9 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkplug.h>
-#include <bonobo/gnome-main.h>
-#include <bonobo/gnome-control.h>
-#include <bonobo/gnome-control-frame.h>
+#include <bonobo/bonobo-main.h>
+#include <bonobo/bonobo-control.h>
+#include <bonobo/bonobo-control-frame.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdktypes.h>
@@ -30,34 +30,34 @@ enum {
 static guint control_frame_signals [LAST_SIGNAL];
 
 /* Parent object class in GTK hierarchy */
-static GnomeObjectClass *gnome_control_frame_parent_class;
+static BonoboObjectClass *bonobo_control_frame_parent_class;
 
 /* The entry point vectors for the server we provide */
-POA_GNOME_ControlFrame__vepv gnome_control_frame_vepv;
+POA_Bonobo_ControlFrame__vepv bonobo_control_frame_vepv;
 
-struct _GnomeControlFramePrivate {
-	GNOME_Control	  control;
+struct _BonoboControlFramePrivate {
+	Bonobo_Control	  control;
 	GtkWidget	 *socket;
-	GnomeUIHandler   *uih;
-	GnomePropertyBag *propbag;
+	BonoboUIHandler   *uih;
+	BonoboPropertyBag *propbag;
 };
 
 static void
-impl_GNOME_ControlFrame_activated (PortableServer_Servant servant,
+impl_Bonobo_ControlFrame_activated (PortableServer_Servant servant,
 				   const CORBA_boolean state,
 				   CORBA_Environment *ev)
 {
-	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
+	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
 	gtk_signal_emit (GTK_OBJECT (control_frame),
 			 control_frame_signals [ACTIVATED], state);
 }
 
 static void
-impl_GNOME_ControlFrame_deactivate_and_undo (PortableServer_Servant servant,
+impl_Bonobo_ControlFrame_deactivate_and_undo (PortableServer_Servant servant,
 					     CORBA_Environment *ev)
 {
-	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
+	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
 	gtk_signal_emit (GTK_OBJECT (control_frame),
 			 control_frame_signals [ACTIVATED], FALSE);
@@ -67,31 +67,31 @@ impl_GNOME_ControlFrame_deactivate_and_undo (PortableServer_Servant servant,
 }
 
 
-static GNOME_UIHandler
-impl_GNOME_ControlFrame_get_ui_handler (PortableServer_Servant servant,
+static Bonobo_UIHandler
+impl_Bonobo_ControlFrame_get_ui_handler (PortableServer_Servant servant,
 					CORBA_Environment *ev)
 {
-	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
+	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
 	if (control_frame->priv->uih == NULL)
 		return CORBA_OBJECT_NIL;
 	
 	return CORBA_Object_duplicate (
-		gnome_object_corba_objref (GNOME_OBJECT (control_frame->priv->uih)), ev);
+		bonobo_object_corba_objref (BONOBO_OBJECT (control_frame->priv->uih)), ev);
 }
 
-static GNOME_PropertyBag
-impl_GNOME_ControlFrame_get_ambient_properties (PortableServer_Servant servant,
+static Bonobo_PropertyBag
+impl_Bonobo_ControlFrame_get_ambient_properties (PortableServer_Servant servant,
 						CORBA_Environment *ev)
 {
-	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
-	GNOME_PropertyBag corba_propbag;
+	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
+	Bonobo_PropertyBag corba_propbag;
 
 	if (control_frame->priv->propbag == NULL)
 		return CORBA_OBJECT_NIL;
 
-	corba_propbag = (GNOME_PropertyBag)
-		gnome_object_corba_objref (GNOME_OBJECT (control_frame->priv->propbag));
+	corba_propbag = (Bonobo_PropertyBag)
+		bonobo_object_corba_objref (BONOBO_OBJECT (control_frame->priv->propbag));
 
 	corba_propbag = CORBA_Object_duplicate (corba_propbag, ev);
 
@@ -99,7 +99,7 @@ impl_GNOME_ControlFrame_get_ambient_properties (PortableServer_Servant servant,
 }
 
 static void
-impl_GNOME_ControlFrame_queue_resize (PortableServer_Servant servant,
+impl_Bonobo_ControlFrame_queue_resize (PortableServer_Servant servant,
 				      CORBA_Environment *ev)
 {
 	/*
@@ -111,12 +111,12 @@ impl_GNOME_ControlFrame_queue_resize (PortableServer_Servant servant,
 }
 
 static void
-impl_GNOME_ControlFrame_activate_uri (PortableServer_Servant servant,
+impl_Bonobo_ControlFrame_activate_uri (PortableServer_Servant servant,
 				      const CORBA_char *uri,
 				      CORBA_boolean relative,
 				      CORBA_Environment *ev)
 {
-	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
+	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
 	gtk_signal_emit (GTK_OBJECT (control_frame),
 			 control_frame_signals [ACTIVATE_URI],
@@ -124,16 +124,16 @@ impl_GNOME_ControlFrame_activate_uri (PortableServer_Servant servant,
 }
 
 static CORBA_Object
-create_gnome_control_frame (GnomeObject *object)
+create_bonobo_control_frame (BonoboObject *object)
 {
-	POA_GNOME_ControlFrame *servant;
+	POA_Bonobo_ControlFrame *servant;
 	CORBA_Environment ev;
 	
-	servant = (POA_GNOME_ControlFrame *) g_new0 (GnomeObjectServant, 1);
-	servant->vepv = &gnome_control_frame_vepv;
+	servant = (POA_Bonobo_ControlFrame *) g_new0 (BonoboObjectServant, 1);
+	servant->vepv = &bonobo_control_frame_vepv;
 
 	CORBA_exception_init (&ev);
-	POA_GNOME_ControlFrame__init ((PortableServer_Servant) servant, &ev);
+	POA_Bonobo_ControlFrame__init ((PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
 		g_free (servant);
 		CORBA_exception_free (&ev);
@@ -141,15 +141,15 @@ create_gnome_control_frame (GnomeObject *object)
 	}
 
 	CORBA_exception_free (&ev);
-	return gnome_object_activate_servant (object, servant);
+	return bonobo_object_activate_servant (object, servant);
 }
 
 static void
-gnome_control_frame_set_remote_window (GtkWidget *socket, GnomeControlFrame *control_frame)
+bonobo_control_frame_set_remote_window (GtkWidget *socket, BonoboControlFrame *control_frame)
 {
-	GNOME_Control control = gnome_control_frame_get_control (control_frame);
+	Bonobo_Control control = bonobo_control_frame_get_control (control_frame);
 	CORBA_Environment ev;
-	GNOME_Control_windowid id;
+	Bonobo_Control_windowid id;
 
 	/*
 	 * If we are not yet bound to a remote control, don't do
@@ -163,32 +163,32 @@ gnome_control_frame_set_remote_window (GtkWidget *socket, GnomeControlFrame *con
 	 * remote Control.
 	 */
 	CORBA_exception_init (&ev);
-	id = gnome_control_windowid_from_x11 (GDK_WINDOW_XWINDOW (socket->window));
-	GNOME_Control_set_window (control, id, &ev);
+	id = bonobo_control_windowid_from_x11 (GDK_WINDOW_XWINDOW (socket->window));
+	Bonobo_Control_set_window (control, id, &ev);
 	g_free (id);
 	if (ev._major != CORBA_NO_EXCEPTION)
-		gnome_object_check_env (GNOME_OBJECT (control_frame), control, &ev);
+		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);
 }
 
 /**
- * gnome_control_frame_construct:
- * @control_frame: The GnomeControlFrame object to be initialized.
- * @corba_control_frame: A CORBA object for the GNOME_ControlFrame interface.
+ * bonobo_control_frame_construct:
+ * @control_frame: The BonoboControlFrame object to be initialized.
+ * @corba_control_frame: A CORBA object for the Bonobo_ControlFrame interface.
  *
  * Initializes @control_frame with the parameters.
  *
- * Returns: the initialized GnomeControlFrame object @control_frame that implements the
- * GNOME::ControlFrame CORBA service.
+ * Returns: the initialized BonoboControlFrame object @control_frame that implements the
+ * Bonobo::ControlFrame CORBA service.
  */
-GnomeControlFrame *
-gnome_control_frame_construct (GnomeControlFrame *control_frame,
-			       GNOME_ControlFrame corba_control_frame)
+BonoboControlFrame *
+bonobo_control_frame_construct (BonoboControlFrame *control_frame,
+			       Bonobo_ControlFrame corba_control_frame)
 {
 	g_return_val_if_fail (control_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
-	gnome_object_construct (GNOME_OBJECT (control_frame), corba_control_frame);
+	bonobo_object_construct (BONOBO_OBJECT (control_frame), corba_control_frame);
 
 	/*
 	 * Now create the GtkSocket which will be used to embed
@@ -203,70 +203,70 @@ gnome_control_frame_construct (GnomeControlFrame *control_frame,
 	 */
 	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
 			    "realize",
-			    GTK_SIGNAL_FUNC (gnome_control_frame_set_remote_window),
+			    GTK_SIGNAL_FUNC (bonobo_control_frame_set_remote_window),
 			    control_frame);
 
 	return control_frame;
 }
 
 /**
- * gnome_control_frame_new:
+ * bonobo_control_frame_new:
  *
- * Returns: GnomeControlFrame object that implements the
- * GNOME::ControlFrame CORBA service. 
+ * Returns: BonoboControlFrame object that implements the
+ * Bonobo::ControlFrame CORBA service. 
  */
-GnomeControlFrame *
-gnome_control_frame_new (void)
+BonoboControlFrame *
+bonobo_control_frame_new (void)
 {
-	GNOME_ControlFrame corba_control_frame;
-	GnomeControlFrame *control_frame;
+	Bonobo_ControlFrame corba_control_frame;
+	BonoboControlFrame *control_frame;
 
-	control_frame = gtk_type_new (GNOME_CONTROL_FRAME_TYPE);
+	control_frame = gtk_type_new (BONOBO_CONTROL_FRAME_TYPE);
 
-	corba_control_frame = create_gnome_control_frame (GNOME_OBJECT (control_frame));
+	corba_control_frame = create_bonobo_control_frame (BONOBO_OBJECT (control_frame));
 	if (corba_control_frame == CORBA_OBJECT_NIL) {
 		gtk_object_destroy (GTK_OBJECT (control_frame));
 		return NULL;
 	}
 
-	return gnome_control_frame_construct (control_frame, corba_control_frame);
+	return bonobo_control_frame_construct (control_frame, corba_control_frame);
 }
 
 static void
-gnome_control_frame_destroy (GtkObject *object)
+bonobo_control_frame_destroy (GtkObject *object)
 {
-	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (object);
+	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (object);
 
 	if (control_frame->priv->control != CORBA_OBJECT_NIL){
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);
-		GNOME_Control_unref (control_frame->priv->control, &ev);
+		Bonobo_Control_unref (control_frame->priv->control, &ev);
 		CORBA_Object_release (control_frame->priv->control, &ev);
 		CORBA_exception_free (&ev);
 	}
 	
 	g_free (control_frame->priv);
 	
-	GTK_OBJECT_CLASS (gnome_control_frame_parent_class)->destroy (object);
+	GTK_OBJECT_CLASS (bonobo_control_frame_parent_class)->destroy (object);
 }
 
 /**
- * gnome_control_frame_get_epv:
+ * bonobo_control_frame_get_epv:
  */
-POA_GNOME_ControlFrame__epv *
-gnome_control_frame_get_epv (void)
+POA_Bonobo_ControlFrame__epv *
+bonobo_control_frame_get_epv (void)
 {
-	POA_GNOME_ControlFrame__epv *epv;
+	POA_Bonobo_ControlFrame__epv *epv;
 
-	epv = g_new0 (POA_GNOME_ControlFrame__epv, 1);
+	epv = g_new0 (POA_Bonobo_ControlFrame__epv, 1);
 
-	epv->activated              = impl_GNOME_ControlFrame_activated;
-	epv->deactivate_and_undo    = impl_GNOME_ControlFrame_deactivate_and_undo;
-	epv->get_ui_handler         = impl_GNOME_ControlFrame_get_ui_handler;
-	epv->queue_resize           = impl_GNOME_ControlFrame_queue_resize;
-	epv->activate_uri           = impl_GNOME_ControlFrame_activate_uri;
-	epv->get_ambient_properties = impl_GNOME_ControlFrame_get_ambient_properties;
+	epv->activated              = impl_Bonobo_ControlFrame_activated;
+	epv->deactivate_and_undo    = impl_Bonobo_ControlFrame_deactivate_and_undo;
+	epv->get_ui_handler         = impl_Bonobo_ControlFrame_get_ui_handler;
+	epv->queue_resize           = impl_Bonobo_ControlFrame_queue_resize;
+	epv->activate_uri           = impl_Bonobo_ControlFrame_activate_uri;
+	epv->get_ambient_properties = impl_Bonobo_ControlFrame_get_ambient_properties;
 
 	return epv;
 }
@@ -275,8 +275,8 @@ static void
 init_control_frame_corba_class (void)
 {
 	/* Setup the vector of epvs */
-	gnome_control_frame_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_control_frame_vepv.GNOME_ControlFrame_epv = gnome_control_frame_get_epv ();
+	bonobo_control_frame_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
+	bonobo_control_frame_vepv.Bonobo_ControlFrame_epv = bonobo_control_frame_get_epv ();
 }
 
 typedef void (*GnomeSignal_NONE__STRING_BOOL) (GtkObject *, const char *, gboolean, gpointer);
@@ -294,17 +294,17 @@ gnome_marshal_NONE__STRING_BOOL (GtkObject     *object,
 }
 
 static void
-gnome_control_frame_class_init (GnomeControlFrameClass *klass)
+bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *)klass;
 
-	gnome_control_frame_parent_class = gtk_type_class (GNOME_OBJECT_TYPE);
+	bonobo_control_frame_parent_class = gtk_type_class (BONOBO_OBJECT_TYPE);
 
 	control_frame_signals [ACTIVATED] =
 		gtk_signal_new ("activated",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeControlFrameClass, activated),
+				GTK_SIGNAL_OFFSET (BonoboControlFrameClass, activated),
 				gtk_marshal_NONE__BOOL,
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_BOOL);
@@ -314,7 +314,7 @@ gnome_control_frame_class_init (GnomeControlFrameClass *klass)
 		gtk_signal_new ("undo_last_operation",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeControlFrameClass, undo_last_operation),
+				GTK_SIGNAL_OFFSET (BonoboControlFrameClass, undo_last_operation),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
@@ -322,7 +322,7 @@ gnome_control_frame_class_init (GnomeControlFrameClass *klass)
 		gtk_signal_new ("activate_uri",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeControlFrameClass, activate_uri),
+				GTK_SIGNAL_OFFSET (BonoboControlFrameClass, activate_uri),
 				gnome_marshal_NONE__STRING_BOOL,
 				GTK_TYPE_NONE, 2,
 				GTK_TYPE_STRING, GTK_TYPE_BOOL);
@@ -332,61 +332,61 @@ gnome_control_frame_class_init (GnomeControlFrameClass *klass)
 		control_frame_signals,
 		LAST_SIGNAL);
 
-	object_class->destroy = gnome_control_frame_destroy;
+	object_class->destroy = bonobo_control_frame_destroy;
 
 	init_control_frame_corba_class ();
 }
 
 static void
-gnome_control_frame_init (GnomeObject *object)
+bonobo_control_frame_init (BonoboObject *object)
 {
-	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (object);
+	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (object);
 
-	control_frame->priv = g_new0 (GnomeControlFramePrivate, 1);
+	control_frame->priv = g_new0 (BonoboControlFramePrivate, 1);
 }
 
 /**
- * gnome_control_frame_get_type:
+ * bonobo_control_frame_get_type:
  *
- * Returns: The GtkType for the GnomeControlFrame class.  */
+ * Returns: The GtkType for the BonoboControlFrame class.  */
 GtkType
-gnome_control_frame_get_type (void)
+bonobo_control_frame_get_type (void)
 {
 	static GtkType type = 0;
 
 	if (!type){
 		GtkTypeInfo info = {
-			"GnomeControlFrame",
-			sizeof (GnomeControlFrame),
-			sizeof (GnomeControlFrameClass),
-			(GtkClassInitFunc) gnome_control_frame_class_init,
-			(GtkObjectInitFunc) gnome_control_frame_init,
+			"BonoboControlFrame",
+			sizeof (BonoboControlFrame),
+			sizeof (BonoboControlFrameClass),
+			(GtkClassInitFunc) bonobo_control_frame_class_init,
+			(GtkObjectInitFunc) bonobo_control_frame_init,
 			NULL, /* reserved 1 */
 			NULL, /* reserved 2 */
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_object_get_type (), &info);
+		type = gtk_type_unique (bonobo_object_get_type (), &info);
 	}
 
 	return type;
 }
 
 /**
- * gnome_control_frame_control_activate:
- * @control_frame: The GnomeControlFrame object whose control should be
+ * bonobo_control_frame_control_activate:
+ * @control_frame: The BonoboControlFrame object whose control should be
  * activated.
  *
- * Activates the GnomeControl embedded in @control_frame by calling the
- * activate() #GNOME_Control interface method on it.
+ * Activates the BonoboControl embedded in @control_frame by calling the
+ * activate() #Bonobo_Control interface method on it.
  */
 void
-gnome_control_frame_control_activate (GnomeControlFrame *control_frame)
+bonobo_control_frame_control_activate (BonoboControlFrame *control_frame)
 {
 	CORBA_Environment ev;
 
 	g_return_if_fail (control_frame != NULL);
-	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 
 	/*
 	 * Check that this ControLFrame actually has a Control associated
@@ -396,11 +396,11 @@ gnome_control_frame_control_activate (GnomeControlFrame *control_frame)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_Control_activate (control_frame->priv->control, TRUE, &ev);
+	Bonobo_Control_activate (control_frame->priv->control, TRUE, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (control_frame),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (control_frame),
 			(CORBA_Object) control_frame->priv->control, &ev);
 	}
 
@@ -409,20 +409,20 @@ gnome_control_frame_control_activate (GnomeControlFrame *control_frame)
 
 
 /**
- * gnome_control_frame_control_deactivate:
- * @control_frame: The GnomeControlFrame object whose control should be
+ * bonobo_control_frame_control_deactivate:
+ * @control_frame: The BonoboControlFrame object whose control should be
  * deactivated.
  *
- * Deactivates the GnomeControl embedded in @control_frame by calling
+ * Deactivates the BonoboControl embedded in @control_frame by calling
  * the activate() CORBA method on it with the parameter %FALSE.
  */
 void
-gnome_control_frame_control_deactivate (GnomeControlFrame *control_frame)
+bonobo_control_frame_control_deactivate (BonoboControlFrame *control_frame)
 {
 	CORBA_Environment ev;
 
 	g_return_if_fail (control_frame != NULL);
-	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 
 	/*
 	 * Check that this ControlFrame actually has a Control associated
@@ -432,11 +432,11 @@ gnome_control_frame_control_deactivate (GnomeControlFrame *control_frame)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_Control_activate (control_frame->priv->control, FALSE, &ev);
+	Bonobo_Control_activate (control_frame->priv->control, FALSE, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (control_frame),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (control_frame),
 			(CORBA_Object) control_frame->priv->control, &ev);
 	}
 
@@ -444,26 +444,26 @@ gnome_control_frame_control_deactivate (GnomeControlFrame *control_frame)
 }
 
 /**
- * gnome_control_frame_bind_to_control:
- * @control_frame: A GnomeControlFrame object.
- * @control: The CORBA object for the GnomeControl embedded
- * in this GnomeControlFrame.
+ * bonobo_control_frame_bind_to_control:
+ * @control_frame: A BonoboControlFrame object.
+ * @control: The CORBA object for the BonoboControl embedded
+ * in this BonoboControlFrame.
  *
  * Associates @control with this @control_frame.
  */
 void
-gnome_control_frame_bind_to_control (GnomeControlFrame *control_frame, GNOME_Control control)
+bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_Control control)
 {
 	CORBA_Environment ev;
 
 	g_return_if_fail (control_frame != NULL);
-	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 
 	/*
 	 * Keep a local handle to the Control.
 	 */
 	CORBA_exception_init (&ev);
-	GNOME_Control_ref (control, &ev);
+	Bonobo_Control_ref (control, &ev);
 	control_frame->priv->control = CORBA_Object_duplicate (control, &ev);
 	CORBA_exception_free (&ev);
 
@@ -471,11 +471,11 @@ gnome_control_frame_bind_to_control (GnomeControlFrame *control_frame, GNOME_Con
 	 * Introduce ourselves to the Control.
 	 */
 	CORBA_exception_init (&ev);
-	GNOME_Control_set_frame (control,
-				 gnome_object_corba_objref (GNOME_OBJECT (control_frame)),
+	Bonobo_Control_set_frame (control,
+				 bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
 				 &ev);
 	if (ev._major != CORBA_NO_EXCEPTION)
-		gnome_object_check_env (GNOME_OBJECT (control_frame), control, &ev);
+		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);
 
 	/*
@@ -483,55 +483,55 @@ gnome_control_frame_bind_to_control (GnomeControlFrame *control_frame, GNOME_Con
 	 * window ID to the remote control.
 	 */
 	if (GTK_WIDGET_REALIZED (control_frame->priv->socket)) {
-		gnome_control_frame_set_remote_window (control_frame->priv->socket,
+		bonobo_control_frame_set_remote_window (control_frame->priv->socket,
 						       control_frame);
 	}
 }
 
 /**
- * gnome_control_frame_get_control:
- * @control_frame: A GnomeControlFrame which is bound to a remote
- * GnomeControl.
+ * bonobo_control_frame_get_control:
+ * @control_frame: A BonoboControlFrame which is bound to a remote
+ * BonoboControl.
  *
- * Returns: The GNOME_Control CORBA interface for the remote Control
+ * Returns: The Bonobo_Control CORBA interface for the remote Control
  * which is bound to @frame.  See also
- * gnome_control_frame_bind_to_control().
+ * bonobo_control_frame_bind_to_control().
  */
-GNOME_Control
-gnome_control_frame_get_control (GnomeControlFrame *control_frame)
+Bonobo_Control
+bonobo_control_frame_get_control (BonoboControlFrame *control_frame)
 {
 	g_return_val_if_fail (control_frame != NULL, CORBA_OBJECT_NIL);
-	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), CORBA_OBJECT_NIL);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), CORBA_OBJECT_NIL);
 
 	return control_frame->priv->control;
 }
 
 /**
- * gnome_control_frame_get_widget:
- * @frame: The GnomeControlFrame whose widget is being requested.a
+ * bonobo_control_frame_get_widget:
+ * @frame: The BonoboControlFrame whose widget is being requested.a
  *
- * Use this function when you want to embed a GnomeControl into your
+ * Use this function when you want to embed a BonoboControl into your
  * container's widget hierarchy.  Once you have bound the
- * GnomeControlFrame to a remote GnomeControl, place the widget
- * returned by gnome_control_frame_get_widget() into your widget
+ * BonoboControlFrame to a remote BonoboControl, place the widget
+ * returned by bonobo_control_frame_get_widget() into your widget
  * hierarchy and the control will appear in your application.
  *
- * Returns: A GtkWidget which has the remote GnomeControl physically
+ * Returns: A GtkWidget which has the remote BonoboControl physically
  * inside it.
  */
 GtkWidget *
-gnome_control_frame_get_widget (GnomeControlFrame *control_frame)
+bonobo_control_frame_get_widget (BonoboControlFrame *control_frame)
 {
 	g_return_val_if_fail (control_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
 	return control_frame->priv->socket;
 }
 
 /**
- * gnome_control_frame_set_propbag:
- * @control_frame: A GnomeControlFrame object.
- * @propbag: A GnomePropertyBag which will hold @control_frame's
+ * bonobo_control_frame_set_propbag:
+ * @control_frame: A BonoboControlFrame object.
+ * @propbag: A BonoboPropertyBag which will hold @control_frame's
  * ambient properties.
  *
  * Makes @control_frame use @propbag for its ambient properties.  When
@@ -540,94 +540,94 @@ gnome_control_frame_get_widget (GnomeControlFrame *control_frame)
  */
 
 void
-gnome_control_frame_set_propbag (GnomeControlFrame  *control_frame,
-				 GnomePropertyBag   *propbag)
+bonobo_control_frame_set_propbag (BonoboControlFrame  *control_frame,
+				 BonoboPropertyBag   *propbag)
 {
 	g_return_if_fail (control_frame != NULL);
-	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 	g_return_if_fail (propbag != NULL);
-	g_return_if_fail (GNOME_IS_PROPERTY_BAG (propbag));
+	g_return_if_fail (BONOBO_IS_PROPERTY_BAG (propbag));
 
 	control_frame->priv->propbag = propbag;
 }
 
 /**
- * gnome_control_frame_get_propbag:
- * @control_frame: A GnomeControlFrame object whose PropertyBag has
+ * bonobo_control_frame_get_propbag:
+ * @control_frame: A BonoboControlFrame object whose PropertyBag has
  * been set.
  *
- * Returns: The GnomePropertyBag object which has been associated with
+ * Returns: The BonoboPropertyBag object which has been associated with
  * @control_frame.
  */
-GnomePropertyBag *
-gnome_control_frame_get_propbag (GnomeControlFrame  *control_frame)
+BonoboPropertyBag *
+bonobo_control_frame_get_propbag (BonoboControlFrame  *control_frame)
 {
 	g_return_val_if_fail (control_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
 	return control_frame->priv->propbag;
 }
 
 /**
- * gnome_control_frame_set_ui_handler:
- * @control_frame: A GnomeControlFrame object.
- * @uih: A GnomeUIHandler object to be associated with this ControlFrame.
+ * bonobo_control_frame_set_ui_handler:
+ * @control_frame: A BonoboControlFrame object.
+ * @uih: A BonoboUIHandler object to be associated with this ControlFrame.
  *
- * Sets the GnomeUIHandler object for this ControlFrame.  When the
+ * Sets the BonoboUIHandler object for this ControlFrame.  When the
  * ControlFrame's Control requests its container's UIHandler
  * interface, the ControlFrame will pass it the UIHandler specified
- * here.  See also gnome_control_frame_get_ui_handler().
+ * here.  See also bonobo_control_frame_get_ui_handler().
  */
 void
-gnome_control_frame_set_ui_handler (GnomeControlFrame *control_frame, GnomeUIHandler *uih)
+bonobo_control_frame_set_ui_handler (BonoboControlFrame *control_frame, BonoboUIHandler *uih)
 {
 	g_return_if_fail (control_frame != NULL);
-	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 
 	control_frame->priv->uih = uih;
 }
 
 /**
- * gnome_control_frame_get_ui_handler:
- * @control_frame: A GnomeControlFrame object.
+ * bonobo_control_frame_get_ui_handler:
+ * @control_frame: A BonoboControlFrame object.
  *
- * Returns: The GNOMEUIHandler associated with this COntrolFrame.  See
- * also gnome_control_frame_set_ui_handler().
+ * Returns: The BonoboUIHandler associated with this COntrolFrame.  See
+ * also bonobo_control_frame_set_ui_handler().
  */
-GnomeUIHandler *
-gnome_control_frame_get_ui_handler (GnomeControlFrame *control_frame)
+BonoboUIHandler *
+bonobo_control_frame_get_ui_handler (BonoboControlFrame *control_frame)
 {
 	g_return_val_if_fail (control_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
 	return control_frame->priv->uih;
 }
 
 /**
- * gnome_control_frame_get_control_property_bag:
+ * bonobo_control_frame_get_control_property_bag:
  */
-GnomePropertyBagClient *
-gnome_control_frame_get_control_property_bag (GnomeControlFrame *control_frame)
+BonoboPropertyBagClient *
+bonobo_control_frame_get_control_property_bag (BonoboControlFrame *control_frame)
 {
-	GNOME_PropertyBag pbag;
+	Bonobo_PropertyBag pbag;
 	CORBA_Environment ev;
-	GNOME_Control control;
+	Bonobo_Control control;
 
 	control = control_frame->priv->control;
 
 	CORBA_exception_init (&ev);
 
-	pbag = GNOME_Control_get_property_bag (control, &ev);
+	pbag = Bonobo_Control_get_property_bag (control, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (GNOME_OBJECT (control_frame), control, &ev);
+		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 		CORBA_exception_free (&ev);
 		return NULL;
 	}
 
 	CORBA_exception_free (&ev);
 
-	return gnome_property_bag_client_new (pbag);
+	return bonobo_property_bag_client_new (pbag);
 }

@@ -7,74 +7,74 @@
  *
  * Copyright 1999 Helix Code, Inc.
  */
-#ifndef _GNOME_CLIENT_SITE_H_
-#define _GNOME_CLIENT_SITE_H_
+#ifndef _BONOBO_CLIENT_SITE_H_
+#define _BONOBO_CLIENT_SITE_H_
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <libgnomeui/gnome-canvas.h>
-#include <bonobo/gnome-object.h>
-#include <bonobo/gnome-object-client.h>
-#include <bonobo/gnome-container.h>
+#include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-object-client.h>
+#include <bonobo/bonobo-container.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_CLIENT_SITE_TYPE        (gnome_client_site_get_type ())
-#define GNOME_CLIENT_SITE(o)          (GTK_CHECK_CAST ((o), GNOME_CLIENT_SITE_TYPE, GnomeClientSite))
-#define GNOME_CLIENT_SITE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_CLIENT_SITE_TYPE, GnomeClientSiteClass))
-#define GNOME_IS_CLIENT_SITE(o)       (GTK_CHECK_TYPE ((o), GNOME_CLIENT_SITE_TYPE))
-#define GNOME_IS_CLIENT_SITE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_CLIENT_SITE_TYPE))
+#define BONOBO_CLIENT_SITE_TYPE        (bonobo_client_site_get_type ())
+#define BONOBO_CLIENT_SITE(o)          (GTK_CHECK_CAST ((o), BONOBO_CLIENT_SITE_TYPE, BonoboClientSite))
+#define BONOBO_CLIENT_SITE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_CLIENT_SITE_TYPE, BonoboClientSiteClass))
+#define BONOBO_IS_CLIENT_SITE(o)       (GTK_CHECK_TYPE ((o), BONOBO_CLIENT_SITE_TYPE))
+#define BONOBO_IS_CLIENT_SITE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CLIENT_SITE_TYPE))
 
-typedef struct _GnomeClientSite GnomeClientSite;
-typedef struct _GnomeClientSitePrivate GnomeClientSitePrivate;
+typedef struct _BonoboClientSite BonoboClientSite;
+typedef struct _BonoboClientSitePrivate BonoboClientSitePrivate;
 
-#include <bonobo/gnome-view-frame.h>
+#include <bonobo/bonobo-view-frame.h>
 
-struct _GnomeClientSite {
-	GnomeObject base;
+struct _BonoboClientSite {
+	BonoboObject base;
 
-	GnomeContainer    *container;
-	GnomeObjectClient *bound_object;
+	BonoboContainer    *container;
+	BonoboObjectClient *bound_object;
 	GList		  *view_frames;
 	GList             *canvas_items;
 	int               child_shown:1;
 
-	GnomeClientSitePrivate *priv;
+	BonoboClientSitePrivate *priv;
 };
 
 typedef struct {
-	GnomeObjectClass parent_class;
+	BonoboObjectClass parent_class;
 
-	void (*show_window)  (GnomeClientSite *, CORBA_boolean shown);
-	void (*queue_resize) (GnomeClientSite *);
-	void (*save_object)  (GnomeClientSite *, GNOME_Persist_Status *status);
-} GnomeClientSiteClass;
+	void (*show_window)  (BonoboClientSite *, CORBA_boolean shown);
+	void (*queue_resize) (BonoboClientSite *);
+	void (*save_object)  (BonoboClientSite *, Bonobo_Persist_Status *status);
+} BonoboClientSiteClass;
 
-GtkType            gnome_client_site_get_type		(void);
-GnomeClientSite   *gnome_client_site_new		(GnomeContainer *container);
-GnomeClientSite   *gnome_client_site_construct		(GnomeClientSite  *client_site,
-							 GNOME_ClientSite corba_client_site,
-							 GnomeContainer   *container);
+GtkType            bonobo_client_site_get_type		(void);
+BonoboClientSite   *bonobo_client_site_new		(BonoboContainer *container);
+BonoboClientSite   *bonobo_client_site_construct		(BonoboClientSite  *client_site,
+							 Bonobo_ClientSite corba_client_site,
+							 BonoboContainer   *container);
 
-gboolean           gnome_client_site_bind_embeddable	(GnomeClientSite *client_site,
-							 GnomeObjectClient *object);
-GnomeObjectClient *gnome_client_site_get_embeddable	(GnomeClientSite *client_site);
+gboolean           bonobo_client_site_bind_embeddable	(BonoboClientSite *client_site,
+							 BonoboObjectClient *object);
+BonoboObjectClient *bonobo_client_site_get_embeddable	(BonoboClientSite *client_site);
 
 /*
  * Proxy/Utility functions.
  */
-GnomeViewFrame	  *gnome_client_site_new_view_full	(GnomeClientSite *client_site,
+BonoboViewFrame	  *bonobo_client_site_new_view_full	(BonoboClientSite *client_site,
 							 gboolean visible_cover,
 							 gboolean active_view);
-GnomeViewFrame    *gnome_client_site_new_view		(GnomeClientSite *client_site);
-GnomeCanvasItem   *gnome_client_site_new_item           (GnomeClientSite *client_site,
+BonoboViewFrame    *bonobo_client_site_new_view		(BonoboClientSite *client_site);
+GnomeCanvasItem   *bonobo_client_site_new_item           (BonoboClientSite *client_site,
 							 GnomeCanvasGroup *group);
-GList		  *gnome_client_site_get_verbs		(GnomeClientSite *client_site);
-void		   gnome_client_site_free_verbs		(GList *verb_list);
+GList		  *bonobo_client_site_get_verbs		(BonoboClientSite *client_site);
+void		   bonobo_client_site_free_verbs		(GList *verb_list);
 
-POA_GNOME_ClientSite__epv *gnome_client_site_get_epv	(void);
+POA_Bonobo_ClientSite__epv *bonobo_client_site_get_epv	(void);
 
-extern POA_GNOME_ClientSite__vepv gnome_client_site_vepv;
+extern POA_Bonobo_ClientSite__vepv bonobo_client_site_vepv;
 
 END_GNOME_DECLS
 

@@ -1,82 +1,82 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-#ifndef _GNOME_VIEW_H_
-#define _GNOME_VIEW_H_
+#ifndef _BONOBO_VIEW_H_
+#define _BONOBO_VIEW_H_
 
 #include <libgnome/gnome-defs.h>
-#include <bonobo/gnome-control.h>
-#include <bonobo/gnome-view-frame.h>
-#include <bonobo/gnome-ui-handler.h>
+#include <bonobo/bonobo-control.h>
+#include <bonobo/bonobo-view-frame.h>
+#include <bonobo/bonobo-ui-handler.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_VIEW_TYPE        (gnome_view_get_type ())
-#define GNOME_VIEW(o)          (GTK_CHECK_CAST ((o), GNOME_VIEW_TYPE, GnomeView))
-#define GNOME_VIEW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_VIEW_TYPE, GnomeViewClass))
-#define GNOME_IS_VIEW(o)       (GTK_CHECK_TYPE ((o), GNOME_VIEW_TYPE))
-#define GNOME_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_TYPE))
+#define BONOBO_VIEW_TYPE        (bonobo_view_get_type ())
+#define BONOBO_VIEW(o)          (GTK_CHECK_CAST ((o), BONOBO_VIEW_TYPE, BonoboView))
+#define BONOBO_VIEW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_VIEW_TYPE, BonoboViewClass))
+#define BONOBO_IS_VIEW(o)       (GTK_CHECK_TYPE ((o), BONOBO_VIEW_TYPE))
+#define BONOBO_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_VIEW_TYPE))
 
-typedef struct _GnomeView GnomeView;
-typedef struct _GnomeViewPrivate GnomeViewPrivate;
-typedef struct _GnomeViewClass GnomeViewClass;
+typedef struct _BonoboView BonoboView;
+typedef struct _BonoboViewPrivate BonoboViewPrivate;
+typedef struct _BonoboViewClass BonoboViewClass;
 
-#include <bonobo/gnome-embeddable.h>
+#include <bonobo/bonobo-embeddable.h>
 
-#define GNOME_VIEW_VERB_FUNC(fn) ((GnomeViewVerbFunc)(fn))
-typedef void (*GnomeViewVerbFunc)(GnomeView *view, const char *verb_name, void *user_data);
+#define BONOBO_VIEW_VERB_FUNC(fn) ((BonoboViewVerbFunc)(fn))
+typedef void (*BonoboViewVerbFunc)(BonoboView *view, const char *verb_name, void *user_data);
 
-struct _GnomeView {
-	GnomeControl base;
+struct _BonoboView {
+	BonoboControl base;
 
-	GnomeEmbeddable  *embeddable;
-	GNOME_ViewFrame   view_frame;
-	GnomeViewPrivate *priv;
+	BonoboEmbeddable  *embeddable;
+	Bonobo_ViewFrame   view_frame;
+	BonoboViewPrivate *priv;
 };
 
-struct _GnomeViewClass {
-	GnomeControlClass parent_class;
+struct _BonoboViewClass {
+	BonoboControlClass parent_class;
 
 	/*
 	 * Signals
 	 */
-	void (*do_verb)                  (GnomeView *view,
+	void (*do_verb)                  (BonoboView *view,
 					  const CORBA_char *verb_name);
-	void (*set_zoom_factor)          (GnomeView *view, double zoom);
+	void (*set_zoom_factor)          (BonoboView *view, double zoom);
 };
 
-GtkType              gnome_view_get_type               (void);
-GnomeView           *gnome_view_construct              (GnomeView         *view,
-							GNOME_View         corba_view,
+GtkType              bonobo_view_get_type               (void);
+BonoboView           *bonobo_view_construct              (BonoboView         *view,
+							Bonobo_View         corba_view,
 							GtkWidget         *widget);
-GnomeView           *gnome_view_new                    (GtkWidget         *widget);
-GNOME_View           gnome_view_corba_object_create    (GnomeObject       *object);
-void                 gnome_view_set_embeddable         (GnomeView         *view,
-							GnomeEmbeddable   *embeddable);
-GnomeEmbeddable     *gnome_view_get_embeddable         (GnomeView         *view);
-void                 gnome_view_set_view_frame         (GnomeView         *view,
-							GNOME_ViewFrame    view_frame);
-GNOME_ViewFrame      gnome_view_get_view_frame         (GnomeView         *view);
-GNOME_UIHandler      gnome_view_get_remote_ui_handler  (GnomeView         *view);
-void                 gnome_view_set_ui_handler         (GnomeView         *view,
-							GnomeUIHandler    *uih);
-GnomeUIHandler      *gnome_view_get_ui_handler         (GnomeView         *view);
-void                 gnome_view_activate_notify        (GnomeView         *view,
+BonoboView           *bonobo_view_new                    (GtkWidget         *widget);
+Bonobo_View           bonobo_view_corba_object_create    (BonoboObject       *object);
+void                 bonobo_view_set_embeddable         (BonoboView         *view,
+							BonoboEmbeddable   *embeddable);
+BonoboEmbeddable     *bonobo_view_get_embeddable         (BonoboView         *view);
+void                 bonobo_view_set_view_frame         (BonoboView         *view,
+							Bonobo_ViewFrame    view_frame);
+Bonobo_ViewFrame      bonobo_view_get_view_frame         (BonoboView         *view);
+Bonobo_UIHandler      bonobo_view_get_remote_ui_handler  (BonoboView         *view);
+void                 bonobo_view_set_ui_handler         (BonoboView         *view,
+							BonoboUIHandler    *uih);
+BonoboUIHandler      *bonobo_view_get_ui_handler         (BonoboView         *view);
+void                 bonobo_view_activate_notify        (BonoboView         *view,
 							gboolean           activated);
 						  
 /* Verbs. */					  
-void                 gnome_view_register_verb          (GnomeView         *view,
+void                 bonobo_view_register_verb          (BonoboView         *view,
 							const char        *verb_name,
-							GnomeViewVerbFunc  callback,
+							BonoboViewVerbFunc  callback,
 							gpointer           user_data);
-void                 gnome_view_unregister_verb        (GnomeView         *view,
+void                 bonobo_view_unregister_verb        (BonoboView         *view,
 							const char        *verb_name);
-void                 gnome_view_execute_verb           (GnomeView         *view,
+void                 bonobo_view_execute_verb           (BonoboView         *view,
 							const char        *verb_name);
-char                *gnome_view_popup_verbs            (GnomeView         *view);
-POA_GNOME_View__epv *gnome_view_get_epv                (void);
+char                *bonobo_view_popup_verbs            (BonoboView         *view);
+POA_Bonobo_View__epv *bonobo_view_get_epv                (void);
 
 /* CORBA default vector methods we provide */
-extern POA_GNOME_View__vepv gnome_view_vepv;
+extern POA_Bonobo_View__vepv bonobo_view_vepv;
 
 END_GNOME_DECLS
 
-#endif /* _GNOME_VIEW_H_ */
+#endif /* _BONOBO_VIEW_H_ */

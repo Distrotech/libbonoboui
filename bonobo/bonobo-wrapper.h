@@ -6,8 +6,8 @@
  * Author: Federico Mena <federico@nuclecu.unam.mx>
  */
 
-#ifndef GNOME_WRAPPER_H
-#define GNOME_WRAPPER_H
+#ifndef BONOBO_WRAPPER_H
+#define BONOBO_WRAPPER_H
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkbin.h>
@@ -15,37 +15,37 @@
 BEGIN_GNOME_DECLS
 
 
-#define GNOME_TYPE_WRAPPER            (gnome_wrapper_get_type ())
-#define GNOME_WRAPPER(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_WRAPPER, GnomeWrapper))
-#define GNOME_WRAPPER_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_WRAPPER, GnomeWrapperClass))
-#define GNOME_IS_WRAPPER(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_WRAPPER))
-#define GNOME_IS_WRAPPER_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_WRAPPER))
+#define GNOME_TYPE_WRAPPER            (bonobo_wrapper_get_type ())
+#define BONOBO_WRAPPER(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_WRAPPER, BonoboWrapper))
+#define BONOBO_WRAPPER_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_WRAPPER, BonoboWrapperClass))
+#define BONOBO_IS_WRAPPER(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_WRAPPER))
+#define BONOBO_IS_WRAPPER_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_WRAPPER))
 
 
-typedef struct _GnomeWrapper GnomeWrapper;
-typedef struct _GnomeWrapperClass GnomeWrapperClass;
-typedef struct _GnomeWrapperPrivate GnomeWrapperPrivate;
+typedef struct _BonoboWrapper BonoboWrapper;
+typedef struct _BonoboWrapperClass BonoboWrapperClass;
+typedef struct _BonoboWrapperPrivate BonoboWrapperPrivate;
 
-struct _GnomeWrapper {
+struct _BonoboWrapper {
 	GtkBin bin;
 
 	/* Private data. */
-	GnomeWrapperPrivate *priv;
+	BonoboWrapperPrivate *priv;
 };
 
-struct _GnomeWrapperClass {
+struct _BonoboWrapperClass {
 	GtkBinClass parent_class;
 };
 
 
-GtkType		 gnome_wrapper_get_type		(void);
-GtkWidget	*gnome_wrapper_new		(void);
+GtkType		 bonobo_wrapper_get_type		(void);
+GtkWidget	*bonobo_wrapper_new		(void);
 
-void		 gnome_wrapper_set_covered	(GnomeWrapper *wrapper, gboolean covered);
-gboolean	 gnome_wrapper_is_covered	(GnomeWrapper *wrapper);
+void		 bonobo_wrapper_set_covered	(BonoboWrapper *wrapper, gboolean covered);
+gboolean	 bonobo_wrapper_is_covered	(BonoboWrapper *wrapper);
 
-gboolean	 gnome_wrapper_get_visibility	(GnomeWrapper *wrapper);
-void		 gnome_wrapper_set_visibility	(GnomeWrapper *wrapper, gboolean visible);
+gboolean	 bonobo_wrapper_get_visibility	(BonoboWrapper *wrapper);
+void		 bonobo_wrapper_set_visibility	(BonoboWrapper *wrapper, gboolean visible);
 
 END_GNOME_DECLS
 

@@ -7,60 +7,60 @@
  *
  * Copyright 1999 Helix Code, Inc.
  */
-#ifndef _GNOME_BONOBO_WIDGET_H_
-#define _GNOME_BONOBO_WIDGET_H_
+#ifndef _BONOBO_WIDGET_H_
+#define _BONOBO_WIDGET_H_
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
-#include <bonobo/bonobo.h>
-#include <bonobo/gnome-object.h>
-#include <bonobo/gnome-wrapper.h>
+#include <bonobo/Bonobo.h>
+#include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-wrapper.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_BONOBO_WIDGET_TYPE        (gnome_bonobo_widget_get_type ())
-#define GNOME_BONOBO_WIDGET(o)          (GTK_CHECK_CAST ((o), GNOME_BONOBO_WIDGET_TYPE, GnomeBonoboWidget))
-#define GNOME_BONOBO_WIDGET_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_BONOBO_WIDGET_TYPE, GnomeBonoboWidgetClass))
-#define GNOME_IS_BONOBO_WIDGET(o)       (GTK_CHECK_TYPE ((o), GNOME_BONOBO_WIDGET_TYPE))
-#define GNOME_IS_BONOBO_WIDGET_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_BONOBO_WIDGET_TYPE))
+#define BONOBO_WIDGET_TYPE        (bonobo_widget_get_type ())
+#define BONOBO_WIDGET(o)          (GTK_CHECK_CAST ((o), BONOBO_WIDGET_TYPE, BonoboWidget))
+#define BONOBO_WIDGET_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_WIDGET_TYPE, BonoboWidgetClass))
+#define BONOBO_IS_WIDGET(o)       (GTK_CHECK_TYPE ((o), BONOBO_WIDGET_TYPE))
+#define BONOBO_IS_WIDGET_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_WIDGET_TYPE))
 
-struct _GnomeBonoboWidget;
-typedef struct _GnomeBonoboWidget GnomeBonoboWidget;
+struct _BonoboWidget;
+typedef struct _BonoboWidget BonoboWidget;
 
-struct _GnomeBonoboWidgetPrivate;
-typedef struct _GnomeBonoboWidgetPrivate GnomeBonoboWidgetPrivate;
+struct _BonoboWidgetPrivate;
+typedef struct _BonoboWidgetPrivate BonoboWidgetPrivate;
 
-#include <bonobo/gnome-view.h>
+#include <bonobo/bonobo-view.h>
 
-struct _GnomeBonoboWidget {
+struct _BonoboWidget {
 	GtkBin		          bin;
 
-	GnomeBonoboWidgetPrivate *priv;
+	BonoboWidgetPrivate *priv;
 };
 
 typedef struct {
 	GtkBinClass	 bin_class;
-} GnomeBonoboWidgetClass;
+} BonoboWidgetClass;
 
-GtkType            gnome_bonobo_widget_get_type                (void);
-GnomeObjectClient *gnome_bonobo_widget_get_server              (GnomeBonoboWidget *bw);
+GtkType            bonobo_widget_get_type                (void);
+BonoboObjectClient *bonobo_widget_get_server              (BonoboWidget *bw);
 
 /*
- * GnomeBonoboWidget for Controls.
+ * BonoboWidget for Controls.
  */
-GtkWidget	  *gnome_bonobo_widget_new_control	       (char *goad_id);
-GtkWidget	  *gnome_bonobo_widget_new_control_from_objref (GNOME_Control control);
-GnomeControlFrame *gnome_bonobo_widget_get_control_frame       (GnomeBonoboWidget *bw);
+GtkWidget	  *bonobo_widget_new_control	       (char *goad_id);
+GtkWidget	  *bonobo_widget_new_control_from_objref (Bonobo_Control control);
+BonoboControlFrame *bonobo_widget_get_control_frame       (BonoboWidget *bw);
 
 /*
  * Gnome Bonobo Widget for subdocuments (Embeddables with a single View).
  */
-GtkWidget	  *gnome_bonobo_widget_new_subdoc              (char *object_desc,
-							       	GnomeUIHandler *uih);
-GnomeContainer	  *gnome_bonobo_widget_get_container           (GnomeBonoboWidget *bw);
-GnomeClientSite	  *gnome_bonobo_widget_get_client_site         (GnomeBonoboWidget *bw);
-GnomeViewFrame	  *gnome_bonobo_widget_get_view_frame          (GnomeBonoboWidget *bw);
-GnomeUIHandler	  *gnome_bonobo_widget_get_uih	               (GnomeBonoboWidget *bw);
+GtkWidget	  *bonobo_widget_new_subdoc              (char *object_desc,
+							       	BonoboUIHandler *uih);
+BonoboContainer	  *bonobo_widget_get_container           (BonoboWidget *bw);
+BonoboClientSite	  *bonobo_widget_get_client_site         (BonoboWidget *bw);
+BonoboViewFrame	  *bonobo_widget_get_view_frame          (BonoboWidget *bw);
+BonoboUIHandler	  *bonobo_widget_get_uih	               (BonoboWidget *bw);
 
 END_GNOME_DECLS
 

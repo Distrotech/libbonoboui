@@ -15,7 +15,7 @@
 #include <libgnorba/gnorba.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
-#include <bonobo/gnome-bonobo.h>
+#include <bonobo/bonobo.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -26,47 +26,47 @@ CORBA_ORB orb;
  * A handle to some Embeddables and their ClientSites so we can add
  * views to existing components.
  */
-GnomeObjectClient *text_obj;
-GnomeClientSite *text_client_site;
+BonoboObjectClient *text_obj;
+BonoboClientSite *text_client_site;
 
-GnomeObjectClient *image_png_obj;
-GnomeClientSite   *image_client_site;
+BonoboObjectClient *image_png_obj;
+BonoboClientSite   *image_client_site;
 
-GnomeObjectClient *paint_obj;
-GnomeClientSite *paint_client_site;
+BonoboObjectClient *paint_obj;
+BonoboClientSite *paint_client_site;
 
 /*
  * The currently active view.  We keep track of this
  * so we can deactivate it when a new view is activated.
  */
-GnomeViewFrame *active_view_frame;
+BonoboViewFrame *active_view_frame;
 
 char *server_goadid = "Test_server_bonobo_object";
 
 typedef struct {
 	GtkWidget *app;
-	GnomeContainer *container;
+	BonoboContainer *container;
 	GtkWidget *box;
-	GNOME_View view;
-	GnomeUIHandler *uih;
+	Bonobo_View view;
+	BonoboUIHandler *uih;
 } Application;
 
-static GnomeObjectClient *
-launch_server (GnomeClientSite *client_site, GnomeContainer *container, char *goadid)
+static BonoboObjectClient *
+launch_server (BonoboClientSite *client_site, BonoboContainer *container, char *goadid)
 {
-	GnomeObjectClient *object_server;
+	BonoboObjectClient *object_server;
 	
-	gnome_container_add (container, GNOME_OBJECT (client_site));
+	bonobo_container_add (container, BONOBO_OBJECT (client_site));
 
 	printf ("Launching...\n");
-	object_server = gnome_object_activate_with_goad_id (NULL, goadid, 0, NULL);
+	object_server = bonobo_object_activate_with_goad_id (NULL, goadid, 0, NULL);
 	printf ("Return: %p\n", object_server);
 	if (!object_server){
 		g_warning (_("Can not activate object_server\n"));
 		return NULL;
 	}
 
-	if (!gnome_client_site_bind_embeddable (client_site, object_server)){
+	if (!bonobo_client_site_bind_embeddable (client_site, object_server)){
 		g_warning (_("Can not bind object server to client_site\n"));
 		return NULL;
 	}
@@ -74,22 +74,22 @@ launch_server (GnomeClientSite *client_site, GnomeContainer *container, char *go
 	return object_server;
 }
 
-static GnomeObjectClient *
-launch_server_moniker (GnomeClientSite *client_site, GnomeContainer *container, char *moniker)
+static BonoboObjectClient *
+launch_server_moniker (BonoboClientSite *client_site, BonoboContainer *container, char *moniker)
 {
-	GnomeObjectClient *object_server;
+	BonoboObjectClient *object_server;
 	
-	gnome_container_add (container, GNOME_OBJECT (client_site));
+	bonobo_container_add (container, BONOBO_OBJECT (client_site));
 
 	printf ("Launching moniker %s...\n", moniker);
-	object_server = gnome_object_activate (moniker, 0);
+	object_server = bonobo_object_activate (moniker, 0);
 	printf ("Return: %p\n", object_server);
 	if (!object_server){
 		g_warning (_("Can not activate object_server\n"));
 		return NULL;
 	}
 
-	if (!gnome_client_site_bind_embeddable (client_site, object_server)){
+	if (!bonobo_client_site_bind_embeddable (client_site, object_server)){
 		g_warning (_("Can not bind object server to client_site\n"));
 		return NULL;
 	}
@@ -102,7 +102,7 @@ launch_server_moniker (GnomeClientSite *client_site, GnomeContainer *container, 
  * order to activate it.
  */
 static gint
-user_activation_request_cb (GnomeViewFrame *view_frame)
+user_activation_request_cb (BonoboViewFrame *view_frame)
 {
 	/*
 	 * If there is already an active View, deactivate it.
@@ -114,7 +114,7 @@ user_activation_request_cb (GnomeViewFrame *view_frame)
 		 * cover it so that it does not receive any Gtk
 		 * events.
 		 */
-                gnome_view_frame_view_deactivate (active_view_frame);
+                bonobo_view_frame_view_deactivate (active_view_frame);
 
 		/*
 		 * Here we manually cover it if it hasn't acquiesced.
@@ -124,7 +124,7 @@ user_activation_request_cb (GnomeViewFrame *view_frame)
 		 * to NULL.  Which is why this check is here.
 		 */
 		if (active_view_frame != NULL)
-			gnome_view_frame_set_covered (active_view_frame, TRUE);
+			bonobo_view_frame_set_covered (active_view_frame, TRUE);
 									     
 		active_view_frame = NULL;
 	}
@@ -140,7 +140,7 @@ user_activation_request_cb (GnomeViewFrame *view_frame)
 	 * be activated, and so we wait until it notifies us that it
 	 * has been activated to uncover it.
 	 */
-        gnome_view_frame_view_activate (view_frame);
+        bonobo_view_frame_view_activate (view_frame);
 
         return FALSE;
 }                                                                               
@@ -150,7 +150,7 @@ user_activation_request_cb (GnomeViewFrame *view_frame)
  * to be activated or deactivated.
  */
 static gint
-view_activated_cb (GnomeViewFrame *view_frame, gboolean activated)
+view_activated_cb (BonoboViewFrame *view_frame, gboolean activated)
 {
 
         if (activated) {
@@ -169,7 +169,7 @@ view_activated_cb (GnomeViewFrame *view_frame, gboolean activated)
 		 * Otherwise, uncover it so that it can receive
 		 * events, and set it as the active View.
 		 */
-		gnome_view_frame_set_covered (view_frame, FALSE);
+		bonobo_view_frame_set_covered (view_frame, FALSE);
                 active_view_frame = view_frame;
         } else {
 		/*
@@ -181,7 +181,7 @@ view_activated_cb (GnomeViewFrame *view_frame, gboolean activated)
 		 * not told it to deactivate itself, and that is
 		 * why we cover the view here.
 		 */
-		gnome_view_frame_set_covered (view_frame, TRUE);
+		bonobo_view_frame_set_covered (view_frame, TRUE);
 
 		if (view_frame == active_view_frame)
 			active_view_frame = NULL;
@@ -190,24 +190,24 @@ view_activated_cb (GnomeViewFrame *view_frame, gboolean activated)
         return FALSE;
 }                                                                               
 
-static GnomeViewFrame *
+static BonoboViewFrame *
 add_view (GtkWidget *widget, Application *app,
-	  GnomeClientSite *client_site, GnomeObjectClient *server) 
+	  BonoboClientSite *client_site, BonoboObjectClient *server) 
 {
-	GnomeViewFrame *view_frame;
+	BonoboViewFrame *view_frame;
 	GtkWidget *view_widget;
 	GtkWidget *frame;
 	
-	view_frame = gnome_client_site_new_view (client_site);
+	view_frame = bonobo_client_site_new_view (client_site);
 
 	gtk_signal_connect (GTK_OBJECT (view_frame), "user_activate",
 			    GTK_SIGNAL_FUNC (user_activation_request_cb), NULL);
 	gtk_signal_connect (GTK_OBJECT (view_frame), "view_activated",
 			    GTK_SIGNAL_FUNC (view_activated_cb), NULL);
 
-	gnome_view_frame_set_ui_handler (view_frame, app->uih);
+	bonobo_view_frame_set_ui_handler (view_frame, app->uih);
 
-	view_widget = gnome_view_frame_get_wrapper (view_frame);
+	view_widget = bonobo_view_frame_get_wrapper (view_frame);
 
 	frame = gtk_frame_new ("Embeddable");
 	gtk_widget_show (frame);
@@ -219,13 +219,13 @@ add_view (GtkWidget *widget, Application *app,
 	return view_frame;
 } /* add_view */
 
-static GnomeObjectClient *
+static BonoboObjectClient *
 add_cmd (GtkWidget *widget, Application *app, char *server_goadid,
-	 GnomeClientSite **client_site)
+	 BonoboClientSite **client_site)
 {
-	GnomeObjectClient *server;
+	BonoboObjectClient *server;
 	
-	*client_site = gnome_client_site_new (app->container);
+	*client_site = bonobo_client_site_new (app->container);
 
 	server = launch_server (*client_site, app->container, server_goadid);
 	if (server == NULL)
@@ -235,12 +235,12 @@ add_cmd (GtkWidget *widget, Application *app, char *server_goadid,
 	return server;
 }
 
-static GnomeObjectClient *
-add_cmd_moniker (GtkWidget *widget, Application *app, char *moniker, GnomeClientSite **client_site)
+static BonoboObjectClient *
+add_cmd_moniker (GtkWidget *widget, Application *app, char *moniker, BonoboClientSite **client_site)
 {
-	GnomeObjectClient *server;
+	BonoboObjectClient *server;
 	
-	*client_site = gnome_client_site_new (app->container);
+	*client_site = bonobo_client_site_new (app->container);
 
 	server = launch_server_moniker (*client_site, app->container, moniker);
 	if (server == NULL)
@@ -253,16 +253,16 @@ add_cmd_moniker (GtkWidget *widget, Application *app, char *moniker, GnomeClient
 static void
 add_demo_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeClientSite *client_site;
+	BonoboClientSite *client_site;
 	add_cmd (widget, app, server_goadid, &client_site);
 }
 
 static void
 add_image_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeObjectClient *object;
-	GnomeStream *stream;
-	GNOME_PersistStream persist;
+	BonoboObjectClient *object;
+	BonoboStream *stream;
+	Bonobo_PersistStream persist;
 
 	object = add_cmd (widget, app, "embeddable:image-x-png",
 			  &image_client_site);
@@ -273,7 +273,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 
 	image_png_obj = object;
 
-	persist = gnome_object_client_query_interface (object,
+	persist = bonobo_object_client_query_interface (object,
 						       "IDL:GNOME/PersistStream:1.0", NULL);
 
         if (persist == CORBA_OBJECT_NIL) {
@@ -283,27 +283,27 @@ add_image_cmd (GtkWidget *widget, Application *app)
 
 	printf ("Good: Embeddable supports PersistStream\n");
 	
-	stream = gnome_stream_fs_open ("/tmp/a.png", GNOME_Storage_READ);
+	stream = bonobo_stream_fs_open ("/tmp/a.png", Bonobo_Storage_READ);
 
 	if (stream == NULL) {
 		printf ("I could not open /tmp/a.png!\n");
 		return;
 	}
 	
-	GNOME_PersistStream_load (
+	Bonobo_PersistStream_load (
 		persist,
-		(GNOME_Stream) gnome_object_corba_objref (GNOME_OBJECT (stream)), &ev);
+		(Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)), &ev);
 
-	GNOME_Unknown_unref  (persist, &ev);
+	Bonobo_Unknown_unref  (persist, &ev);
 	CORBA_Object_release (persist, &ev);
 }
 
 static void
 add_pdf_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeObjectClient *object;
-	GnomeStream *stream;
-	GNOME_PersistStream persist;
+	BonoboObjectClient *object;
+	BonoboStream *stream;
+	Bonobo_PersistStream persist;
 
 	object = add_cmd (widget, app, "bonobo-object:application-x-pdf", &image_client_site);
 	if (object == NULL)
@@ -314,7 +314,7 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 
 	image_png_obj = object;
 
-	persist = gnome_object_client_query_interface (object,
+	persist = bonobo_object_client_query_interface (object,
 						       "IDL:GNOME/PersistStream:1.0", NULL);
 
         if (persist == CORBA_OBJECT_NIL)
@@ -322,18 +322,18 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 
 	printf ("Good: Embeddable supports PersistStream\n");
 	
-	stream = gnome_stream_fs_open ("/tmp/a.pdf", GNOME_Storage_READ);
+	stream = bonobo_stream_fs_open ("/tmp/a.pdf", Bonobo_Storage_READ);
 
 	if (stream == NULL){
 		printf ("I could not open /tmp/a.pdf!\n");
 		return;
 	}
 	
-	GNOME_PersistStream_load (
+	Bonobo_PersistStream_load (
 		persist,
-		(GNOME_Stream) gnome_object_corba_objref (GNOME_OBJECT (stream)), &ev);
+		(Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)), &ev);
 
-	GNOME_Unknown_unref (persist, &ev);
+	Bonobo_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
 }
 
@@ -352,19 +352,19 @@ add_image_view (GtkWidget *widget, Application *app)
 static void
 add_gnumeric_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeClientSite *client_site;
-	GnomeMoniker *moniker;
+	BonoboClientSite *client_site;
+	BonoboMoniker *moniker;
 	char *moniker_string_rep;
 	
-	moniker = gnome_moniker_new ();
-	gnome_moniker_set_server (
+	moniker = bonobo_moniker_new ();
+	bonobo_moniker_set_server (
 		moniker,
 		"GOADID:GNOME:Gnumeric:Workbook:1.0",
 		"/tmp/sales.gnumeric");
-	gnome_moniker_append_item_name (
+	bonobo_moniker_append_item_name (
 		moniker,
 		"Sheet 1!A1:D1");
-	moniker_string_rep = gnome_moniker_get_as_string (moniker);
+	moniker_string_rep = bonobo_moniker_get_as_string (moniker);
 	gtk_object_destroy (GTK_OBJECT (moniker));
 	
 	add_cmd_moniker (widget, app, moniker_string_rep, &client_site); 
@@ -411,13 +411,13 @@ item_event_handler (GnomeCanvasItem *item, GdkEvent *event)
 static void
 do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 {
-	GnomeClientSite *client_site;
+	BonoboClientSite *client_site;
 	GtkWidget *canvas, *frame, *sw;
 	CORBA_Environment ev;
-	GnomeObjectClient *server;
+	BonoboObjectClient *server;
 	GnomeCanvasItem *item;
 	
-	client_site = gnome_client_site_new (app->container);
+	client_site = bonobo_client_site_new (app->container);
 
 	server = launch_server (client_site, app->container, "Test_item_server_bonobo_object");
 	if (server == NULL){
@@ -460,8 +460,8 @@ do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 	/*
 	 * The remote item
 	 */
-	item = gnome_client_site_new_item (
-		GNOME_CLIENT_SITE (client_site),
+	item = bonobo_client_site_new_item (
+		BONOBO_CLIENT_SITE (client_site),
 		GNOME_CANVAS_GROUP (gnome_canvas_root (GNOME_CANVAS (canvas))));
 
 	gtk_signal_connect (
@@ -490,7 +490,7 @@ add_canvas_aa_cmd (GtkWidget *widget, Application *app)
 static void
 add_paint_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeObjectClient *object;
+	BonoboObjectClient *object;
 
 	object = add_cmd (widget, app, "embeddable:paint-component-simple", &paint_client_site);
 	if (object == NULL)
@@ -512,15 +512,15 @@ add_paint_view (GtkWidget *widget, Application *app)
 }
 
 /*
- * This function uses GNOME::PersistStream to load a set of data into
+ * This function uses Bonobo::PersistStream to load a set of data into
  * the text/plain Embeddable.
  */
 static void
 add_text_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeObjectClient *object;
-	GnomeStream *stream;
-	GNOME_PersistStream persist;
+	BonoboObjectClient *object;
+	BonoboStream *stream;
+	Bonobo_PersistStream persist;
 
 	object = add_cmd (widget, app, "embeddable:text-plain", &text_client_site);
 	if (object == NULL)
@@ -531,7 +531,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 	text_obj = object;
 
-	persist = gnome_object_client_query_interface (object,
+	persist = bonobo_object_client_query_interface (object,
 		"IDL:GNOME/PersistStream:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)
@@ -542,17 +542,17 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 	printf ("Good: Embeddable supports PersistStream\n");
 	
-	stream = gnome_stream_fs_open ("/etc/passwd", GNOME_Storage_READ);
+	stream = bonobo_stream_fs_open ("/etc/passwd", Bonobo_Storage_READ);
 
 	if (stream == NULL){
 		printf ("I could not open /etc/passwd!\n");
 		return;
 	}
 	
-	GNOME_PersistStream_load (
-	     persist, (GNOME_Stream) gnome_object_corba_objref (GNOME_OBJECT (stream)), &ev);
+	Bonobo_PersistStream_load (
+	     persist, (Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)), &ev);
 
-	GNOME_Unknown_unref (persist, &ev);
+	Bonobo_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
 } /* add_text_cmd */
 
@@ -561,7 +561,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
  * to the text/plain Embeddable.
  */
 struct progressive_timeout {
-	GNOME_ProgressiveDataSink psink;
+	Bonobo_ProgressiveDataSink psink;
 	FILE *f;
 };
 
@@ -573,17 +573,17 @@ timeout_next_line (gpointer data)
 {
 	struct progressive_timeout *tmt = (struct progressive_timeout *) data;
   
-	GNOME_ProgressiveDataSink_iobuf *buffer;
+	Bonobo_ProgressiveDataSink_iobuf *buffer;
 	char line[1024];
 	int line_len;
 	
 	if (fgets (line, sizeof (line), tmt->f) == NULL)
 	{
-		GNOME_ProgressiveDataSink_end (tmt->psink, &ev);
+		Bonobo_ProgressiveDataSink_end (tmt->psink, &ev);
 
 		fclose (tmt->f);
 
-		GNOME_Unknown_unref (tmt->psink, &ev);
+		Bonobo_Unknown_unref (tmt->psink, &ev);
 		CORBA_Object_release (tmt->psink, &ev);
 
 		g_free (tmt);
@@ -592,14 +592,14 @@ timeout_next_line (gpointer data)
 
 	line_len = strlen (line);
 
-	buffer = GNOME_ProgressiveDataSink_iobuf__alloc ();
+	buffer = Bonobo_ProgressiveDataSink_iobuf__alloc ();
 	CORBA_sequence_set_release (buffer, TRUE);
 
 	buffer->_length = line_len;
 	buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (line_len);
 	memcpy (buffer->_buffer, line, line_len);
 
-	GNOME_ProgressiveDataSink_add_data (tmt->psink, buffer, &ev);
+	Bonobo_ProgressiveDataSink_add_data (tmt->psink, buffer, &ev);
 
 	return TRUE;
 } /* timeout_add_more_data */
@@ -623,7 +623,7 @@ add_text_view (GtkWidget *widget, Application *app)
 static void
 send_text_cmd (GtkWidget *widget, Application *app)
 {
-	GNOME_ProgressiveDataSink psink;
+	Bonobo_ProgressiveDataSink psink;
 	struct progressive_timeout *tmt;
 	struct stat statbuf;
 	FILE *f;
@@ -631,7 +631,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
 	if (text_obj == NULL)
 		return;
 
-	psink = gnome_object_client_query_interface (text_obj,
+	psink = bonobo_object_client_query_interface (text_obj,
                  "IDL:GNOME/ProgressiveDataSink:1.0", NULL);
 
         if (psink == CORBA_OBJECT_NIL)
@@ -641,7 +641,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
 
 	tmt = g_new0 (struct progressive_timeout, 1);
 
-	GNOME_ProgressiveDataSink_start (psink, &ev);
+	Bonobo_ProgressiveDataSink_start (psink, &ev);
 
 	f = fopen ("/etc/passwd", "r");
 	if (f == NULL) {
@@ -650,7 +650,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
 	}
 	
 	fstat (fileno (f), &statbuf);
-	GNOME_ProgressiveDataSink_set_size (psink,
+	Bonobo_ProgressiveDataSink_set_size (psink,
 					    (CORBA_long) statbuf.st_size,
 					    &ev);
 
@@ -744,12 +744,12 @@ static Application *
 application_new (void)
 {
 	Application *app;
-	GnomeUIHandlerMenuItem *menu_list;
+	BonoboUIHandlerMenuItem *menu_list;
 
 	app = g_new0 (Application, 1);
 	app->app = gnome_app_new ("test-container",
 				  "Sample Container Application");
-	app->container = GNOME_CONTAINER (gnome_container_new ());
+	app->container = BONOBO_CONTAINER (bonobo_container_new ());
 
 	app->box = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (app->box);
@@ -758,20 +758,20 @@ application_new (void)
 	/*
 	 * Create the menus.
 	 */
-	app->uih = gnome_ui_handler_new ();
+	app->uih = bonobo_ui_handler_new ();
 
-	gnome_ui_handler_set_app (app->uih, GNOME_APP (app->app));
-	gnome_ui_handler_create_menubar (app->uih);
+	bonobo_ui_handler_set_app (app->uih, GNOME_APP (app->app));
+	bonobo_ui_handler_create_menubar (app->uih);
 
-	menu_list = gnome_ui_handler_menu_parse_uiinfo_list_with_data (container_main_menu, app);
-	gnome_ui_handler_menu_add_list (app->uih, "/", menu_list);
-	gnome_ui_handler_menu_free_list (menu_list);
+	menu_list = bonobo_ui_handler_menu_parse_uiinfo_list_with_data (container_main_menu, app);
+	bonobo_ui_handler_menu_add_list (app->uih, "/", menu_list);
+	bonobo_ui_handler_menu_free_list (menu_list);
 
-	gnome_ui_handler_create_toolbar (app->uih, "Common");
-	gnome_ui_handler_toolbar_new_item (app->uih,
+	bonobo_ui_handler_create_toolbar (app->uih, "Common");
+	bonobo_ui_handler_toolbar_new_item (app->uih,
 					   "/Common/item 1",
 					   "Container-added Item 1", "I am the container.  Hear me roar.",
-					   0, GNOME_UI_HANDLER_PIXMAP_NONE, NULL, 0, 0,
+					   0, BONOBO_UI_HANDLER_PIXMAP_NONE, NULL, 0, 0,
 					   NULL, NULL);
 
 	gtk_widget_show (app->app);

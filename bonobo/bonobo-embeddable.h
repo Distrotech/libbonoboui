@@ -8,45 +8,45 @@
  *
  * Copyright 1999 Helix Code, Inc.
  */
-#ifndef _GNOME_EMBEDDABLE_H_
-#define _GNOME_EMBEDDABLE_H_
+#ifndef _BONOBO_EMBEDDABLE_H_
+#define _BONOBO_EMBEDDABLE_H_
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <libgnomeui/gnome-canvas.h>
-#include <bonobo/bonobo.h>
-#include <bonobo/gnome-object.h>
-#include <bonobo/gnome-canvas-component.h>
+#include <bonobo/Bonobo.h>
+#include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-canvas-component.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_EMBEDDABLE_TYPE        (gnome_embeddable_get_type ())
-#define GNOME_EMBEDDABLE(o)          (GTK_CHECK_CAST ((o), GNOME_EMBEDDABLE_TYPE, GnomeEmbeddable))
-#define GNOME_EMBEDDABLE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_EMBEDDABLE_TYPE, GnomeEmbeddableClass))
-#define GNOME_IS_EMBEDDABLE(o)       (GTK_CHECK_TYPE ((o), GNOME_EMBEDDABLE_TYPE))
-#define GNOME_IS_EMBEDDABLE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_EMBEDDABLE_TYPE))
+#define BONOBO_EMBEDDABLE_TYPE        (bonobo_embeddable_get_type ())
+#define BONOBO_EMBEDDABLE(o)          (GTK_CHECK_CAST ((o), BONOBO_EMBEDDABLE_TYPE, BonoboEmbeddable))
+#define BONOBO_EMBEDDABLE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_EMBEDDABLE_TYPE, BonoboEmbeddableClass))
+#define BONOBO_IS_EMBEDDABLE(o)       (GTK_CHECK_TYPE ((o), BONOBO_EMBEDDABLE_TYPE))
+#define BONOBO_IS_EMBEDDABLE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_EMBEDDABLE_TYPE))
 
-struct _GnomeEmbeddable;
-struct _GnomeEmbeddablePrivate;
-typedef struct _GnomeEmbeddable GnomeEmbeddable;
-typedef struct _GnomeEmbeddablePrivate GnomeEmbeddablePrivate;
+struct _BonoboEmbeddable;
+struct _BonoboEmbeddablePrivate;
+typedef struct _BonoboEmbeddable BonoboEmbeddable;
+typedef struct _BonoboEmbeddablePrivate BonoboEmbeddablePrivate;
 typedef struct _GnomeVerb GnomeVerb;
 
-#include <bonobo/gnome-view.h>
+#include <bonobo/bonobo-view.h>
 
-#define GNOME_VIEW_FACTORY(fn) ((GnomeViewFactory)(fn))
+#define BONOBO_VIEW_FACTORY(fn) ((BonoboViewFactory)(fn))
 
-typedef GnomeView * (*GnomeViewFactory)(GnomeEmbeddable *embeddable, const GNOME_ViewFrame view_frame, void *closure);
-typedef GnomeCanvasComponent *(*GnomeItemCreator)(GnomeEmbeddable *embeddable, GnomeCanvas *canvas, void *user_data);
-typedef void (*GnomeEmbeddableForeachViewFn) (GnomeView *view, void *data);
-typedef void (*GnomeEmbeddableForeachItemFn) (GnomeCanvasComponent *comp, void *data);
+typedef BonoboView * (*BonoboViewFactory)(BonoboEmbeddable *embeddable, const Bonobo_ViewFrame view_frame, void *closure);
+typedef BonoboCanvasComponent *(*GnomeItemCreator)(BonoboEmbeddable *embeddable, GnomeCanvas *canvas, void *user_data);
+typedef void (*BonoboEmbeddableForeachViewFn) (BonoboView *view, void *data);
+typedef void (*BonoboEmbeddableForeachItemFn) (BonoboCanvasComponent *comp, void *data);
 
-struct _GnomeEmbeddable {
-	GnomeObject base;
+struct _BonoboEmbeddable {
+	BonoboObject base;
 
 	char *host_name;
 	char *host_appname;
-	GNOME_ClientSite client_site;
+	Bonobo_ClientSite client_site;
 
 	/*
 	 * A list of GnomeVerb structures for the verbs supported by
@@ -59,18 +59,18 @@ struct _GnomeEmbeddable {
 	 */
 	char *uri;
 	
-	GnomeEmbeddablePrivate *priv;
+	BonoboEmbeddablePrivate *priv;
 };
 
 typedef struct {
-	GnomeObjectClass parent_class;
+	BonoboObjectClass parent_class;
 
 	/*
 	 * Signals
 	 */
-	void (*host_name_changed)  (GnomeEmbeddable *comp, const char *hostname);
-	void (*uri_changed)        (GnomeEmbeddable *comp, const char *uri);
-} GnomeEmbeddableClass;
+	void (*host_name_changed)  (BonoboEmbeddable *comp, const char *hostname);
+	void (*uri_changed)        (BonoboEmbeddable *comp, const char *uri);
+} BonoboEmbeddableClass;
 
 struct _GnomeVerb {
 	/*
@@ -100,49 +100,49 @@ struct _GnomeVerb {
 	char *hint;
 };
 
-GtkType          gnome_embeddable_get_type         (void);
-GnomeEmbeddable *gnome_embeddable_new              (GnomeViewFactory factory,
+GtkType          bonobo_embeddable_get_type         (void);
+BonoboEmbeddable *bonobo_embeddable_new              (BonoboViewFactory factory,
 						    void *data);
-GnomeEmbeddable *gnome_embeddable_new_canvas_item  (GnomeItemCreator item_factory,
+BonoboEmbeddable *bonobo_embeddable_new_canvas_item  (GnomeItemCreator item_factory,
 						    void *closure);
-GnomeEmbeddable *gnome_embeddable_construct        (GnomeEmbeddable *embeddable,
-						    GNOME_Embeddable corba_embeddable,
-						    GnomeViewFactory factory,
+BonoboEmbeddable *bonobo_embeddable_construct        (BonoboEmbeddable *embeddable,
+						    Bonobo_Embeddable corba_embeddable,
+						    BonoboViewFactory factory,
 						    void *data);
-GnomeEmbeddable *gnome_embeddable_construct_full   (GnomeEmbeddable *embeddable,
-						    GNOME_Embeddable corba_embeddable,
-						    GnomeViewFactory factory,
+BonoboEmbeddable *bonobo_embeddable_construct_full   (BonoboEmbeddable *embeddable,
+						    Bonobo_Embeddable corba_embeddable,
+						    BonoboViewFactory factory,
 						    void *factory_data,
 						    GnomeItemCreator item_factory,
 						    void *item_factory_data);
-GNOME_Embeddable gnome_embeddable_corba_object_create (GnomeObject *object);
+Bonobo_Embeddable bonobo_embeddable_corba_object_create (BonoboObject *object);
 
-void             gnome_embeddable_add_verb         (GnomeEmbeddable *embeddable,
+void             bonobo_embeddable_add_verb         (BonoboEmbeddable *embeddable,
 						    const char *verb_name,
 						    const char *verb_label,
 						    const char *verb_hint);
-void             gnome_embeddable_add_verbs        (GnomeEmbeddable *embeddable,
+void             bonobo_embeddable_add_verbs        (BonoboEmbeddable *embeddable,
 						    const GnomeVerb *verbs);
-void             gnome_embeddable_remove_verb      (GnomeEmbeddable *embeddable,
+void             bonobo_embeddable_remove_verb      (BonoboEmbeddable *embeddable,
 						    const char *verb_name);
-void             gnome_embeddable_set_view_factory (GnomeEmbeddable *embeddable,
-						    GnomeViewFactory factory,
+void             bonobo_embeddable_set_view_factory (BonoboEmbeddable *embeddable,
+						    BonoboViewFactory factory,
 						    void *data);
-const GList	*gnome_embeddable_get_verbs	   (GnomeEmbeddable *embeddable);
+const GList	*bonobo_embeddable_get_verbs	   (BonoboEmbeddable *embeddable);
 
 
-const char      *gnome_embeddable_get_uri          (GnomeEmbeddable *embeddable);
-void             gnome_embeddable_set_uri          (GnomeEmbeddable *embeddable,
+const char      *bonobo_embeddable_get_uri          (BonoboEmbeddable *embeddable);
+void             bonobo_embeddable_set_uri          (BonoboEmbeddable *embeddable,
 						    const char *uri);
 
-void             gnome_embeddable_foreach_view     (GnomeEmbeddable *embeddable,
-						    GnomeEmbeddableForeachViewFn fn,
+void             bonobo_embeddable_foreach_view     (BonoboEmbeddable *embeddable,
+						    BonoboEmbeddableForeachViewFn fn,
 						    void *data);
-void             gnome_embeddable_foreach_item     (GnomeEmbeddable *embeddable,
-						    GnomeEmbeddableForeachItemFn fn,
+void             bonobo_embeddable_foreach_item     (BonoboEmbeddable *embeddable,
+						    BonoboEmbeddableForeachItemFn fn,
 						    void *data);
 
-POA_GNOME_Embeddable__epv *gnome_embeddable_get_epv (void);
+POA_Bonobo_Embeddable__epv *bonobo_embeddable_get_epv (void);
 
 END_GNOME_DECLS
 

@@ -2,12 +2,12 @@
 /**
  * GNOME Embeddable object.
  *
- * A GnomeEmbeddable object represents the actual object being
- * embedded.  A GnomeEmbeddable may have one or more GnomeViews, each
+ * A BonoboEmbeddable object represents the actual object being
+ * embedded.  A BonoboEmbeddable may have one or more BonoboViews, each
  * of which is an identical embedded window which displays the
- * GnomeEmbeddable's contents.  The GnomeEmbeddable is associated with
- * a GnomeClientSite, which is a container-side object with which the
- * GnomeEmbeddable communicates.
+ * BonoboEmbeddable's contents.  The BonoboEmbeddable is associated with
+ * a BonoboClientSite, which is a container-side object with which the
+ * BonoboEmbeddable communicates.
  *
  * Authors:
  *   Miguel de Icaza (miguel@kernel.org)
@@ -18,12 +18,12 @@
 #include <config.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
-#include <bonobo/bonobo.h>
-#include <bonobo/gnome-main.h>
-#include <bonobo/gnome-object.h>
-#include <bonobo/gnome-embeddable.h>
+#include <bonobo/Bonobo.h>
+#include <bonobo/bonobo-main.h>
+#include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-embeddable.h>
 
-static GnomeObjectClass *gnome_embeddable_parent_class;
+static BonoboObjectClass *bonobo_embeddable_parent_class;
 
 enum {
 	HOST_NAME_CHANGED,
@@ -33,9 +33,9 @@ enum {
 
 static guint embeddable_signals [LAST_SIGNAL];
 
-POA_GNOME_Embeddable__vepv gnome_embeddable_vepv;
+POA_Bonobo_Embeddable__vepv bonobo_embeddable_vepv;
 
-struct _GnomeEmbeddablePrivate {
+struct _BonoboEmbeddablePrivate {
 	/*
 	 * The instantiated views for this Embeddable.
 	 */
@@ -49,7 +49,7 @@ struct _GnomeEmbeddablePrivate {
 	/*
 	 * The View factory
 	 */
-	GnomeViewFactory view_factory;
+	BonoboViewFactory view_factory;
 	void *view_factory_closure;
 
 	/*
@@ -60,11 +60,11 @@ struct _GnomeEmbeddablePrivate {
 };
 
 static void
-impl_GNOME_Embeddable_set_client_site (PortableServer_Servant servant,
-				       const GNOME_ClientSite client_site,
+impl_Bonobo_Embeddable_set_client_site (PortableServer_Servant servant,
+				       const Bonobo_ClientSite client_site,
 				       CORBA_Environment *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
 	CORBA_Environment evx;
 
 	CORBA_exception_init (&evx);
@@ -76,12 +76,12 @@ impl_GNOME_Embeddable_set_client_site (PortableServer_Servant servant,
         CORBA_exception_free (&evx);							     
 }
 
-static GNOME_ClientSite
-impl_GNOME_Embeddable_get_client_site (PortableServer_Servant servant,
+static Bonobo_ClientSite
+impl_Bonobo_Embeddable_get_client_site (PortableServer_Servant servant,
 				       CORBA_Environment *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
-	GNOME_ClientSite ret;
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
+	Bonobo_ClientSite ret;
 	CORBA_Environment evx;
 	
 	CORBA_exception_init (&evx);
@@ -92,12 +92,12 @@ impl_GNOME_Embeddable_get_client_site (PortableServer_Servant servant,
 }
 
 static void
-impl_GNOME_Embeddable_set_host_name (PortableServer_Servant servant,
+impl_Bonobo_Embeddable_set_host_name (PortableServer_Servant servant,
 				     const CORBA_char      *name,
 				     const CORBA_char      *appname,
 				     CORBA_Environment     *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
 
 	if (embeddable->host_name)
 		g_free (embeddable->host_name);
@@ -113,18 +113,18 @@ impl_GNOME_Embeddable_set_host_name (PortableServer_Servant servant,
 
 
 static void
-impl_GNOME_Embeddable_close (PortableServer_Servant servant,
-			     const GNOME_Embeddable_CloseMode mode,
+impl_Bonobo_Embeddable_close (PortableServer_Servant servant,
+			     const Bonobo_Embeddable_CloseMode mode,
 			     CORBA_Environment *ev)
 {
 }
 
-static GNOME_Embeddable_verb_list *
-impl_GNOME_Embeddable_get_verb_list (PortableServer_Servant servant,
+static Bonobo_Embeddable_verb_list *
+impl_Bonobo_Embeddable_get_verb_list (PortableServer_Servant servant,
 				     CORBA_Environment *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
-	GNOME_Embeddable_verb_list *verb_list;
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
+	Bonobo_Embeddable_verb_list *verb_list;
 
 	GList *l;
 	int len;
@@ -132,16 +132,16 @@ impl_GNOME_Embeddable_get_verb_list (PortableServer_Servant servant,
 
 	len = g_list_length (embeddable->verbs);
 
-	verb_list = GNOME_Embeddable_verb_list__alloc ();
+	verb_list = Bonobo_Embeddable_verb_list__alloc ();
 	verb_list->_length = len;
 
 	if (len == 0)
 		return verb_list;
 
-	verb_list->_buffer = CORBA_sequence_GNOME_Embeddable_GnomeVerb_allocbuf (len);
+	verb_list->_buffer = CORBA_sequence_Bonobo_Embeddable_GnomeVerb_allocbuf (len);
 
 	for (i = 0, l = embeddable->verbs; l != NULL; l = l->next, i ++) {
-		GNOME_Embeddable_GnomeVerb *corba_verb;
+		Bonobo_Embeddable_GnomeVerb *corba_verb;
 		GnomeVerb *verb = (GnomeVerb *) l->data;
 
 		corba_verb = & verb_list->_buffer [i];
@@ -155,19 +155,19 @@ impl_GNOME_Embeddable_get_verb_list (PortableServer_Servant servant,
 }
 
 static void
-impl_GNOME_Embeddable_advise (PortableServer_Servant servant,
-			      const GNOME_AdviseSink advise,
+impl_Bonobo_Embeddable_advise (PortableServer_Servant servant,
+			      const Bonobo_AdviseSink advise,
 			      CORBA_Environment *ev)
 {
 }
 
 static void
-impl_GNOME_Embeddable_unadvise (PortableServer_Servant servant, CORBA_Environment *ev)
+impl_Bonobo_Embeddable_unadvise (PortableServer_Servant servant, CORBA_Environment *ev)
 {
 }
 
 static CORBA_long
-impl_GNOME_Embeddable_get_misc_status (PortableServer_Servant servant,
+impl_Bonobo_Embeddable_get_misc_status (PortableServer_Servant servant,
 				       const CORBA_long type,
 				       CORBA_Environment *ev)
 {
@@ -176,7 +176,7 @@ impl_GNOME_Embeddable_get_misc_status (PortableServer_Servant servant,
 }
 
 static void
-ping_container (GnomeEmbeddable *embeddable)
+ping_container (BonoboEmbeddable *embeddable)
 {
 	/*
 	 * If all of the views are gone, that *might* mean that
@@ -204,14 +204,14 @@ ping_container (GnomeEmbeddable *embeddable)
 		 * The remote end is dead; it's time for
 		 * us to die too.
 		 */
-		gnome_object_destroy (GNOME_OBJECT (embeddable));
+		bonobo_object_destroy (BONOBO_OBJECT (embeddable));
 	}
 }
 
 static void
-gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
+bonobo_embeddable_view_destroy_cb (BonoboView *view, gpointer data)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (data);
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (data);
 
 	/*
 	 * Remove this view from our list of views.
@@ -221,15 +221,15 @@ gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
 	ping_container (embeddable);
 }
 
-static GNOME_View
-impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
-				GNOME_ViewFrame view_frame,
+static Bonobo_View
+impl_Bonobo_Embeddable_new_view (PortableServer_Servant servant,
+				Bonobo_ViewFrame view_frame,
 				CORBA_Environment *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
-	GnomeView *view;
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
+	BonoboView *view;
 	CORBA_Environment evx;
-	GNOME_View ret;
+	Bonobo_View ret;
 	
 	view = embeddable->priv->view_factory (
 		embeddable, view_frame,
@@ -238,42 +238,42 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 	if (view == NULL)
 		return CORBA_OBJECT_NIL;
 
-	if (gnome_object_corba_objref (GNOME_OBJECT (view)) == CORBA_OBJECT_NIL){
+	if (bonobo_object_corba_objref (BONOBO_OBJECT (view)) == CORBA_OBJECT_NIL){
 		g_warning ("Returned view does not have a CORBA object bound\n");
 		gtk_object_destroy (GTK_OBJECT (view));
 		return CORBA_OBJECT_NIL;
 	}
-	gnome_view_set_view_frame (view, view_frame);
-	gnome_view_set_embeddable (view, embeddable);
+	bonobo_view_set_view_frame (view, view_frame);
+	bonobo_view_set_embeddable (view, embeddable);
 
 	embeddable->priv->views = g_list_prepend (embeddable->priv->views, view);
 
 	gtk_signal_connect (GTK_OBJECT (view), "destroy",
-			    GTK_SIGNAL_FUNC (gnome_embeddable_view_destroy_cb), embeddable);
+			    GTK_SIGNAL_FUNC (bonobo_embeddable_view_destroy_cb), embeddable);
 
 	CORBA_exception_init (&evx);
-	ret = CORBA_Object_duplicate (gnome_object_corba_objref (GNOME_OBJECT (view)), &evx);
+	ret = CORBA_Object_duplicate (bonobo_object_corba_objref (BONOBO_OBJECT (view)), &evx);
 	CORBA_exception_free (&evx);
 
 	return ret;
 }
 
 static void
-impl_GNOME_Embeddable_set_uri (PortableServer_Servant servant,
+impl_Bonobo_Embeddable_set_uri (PortableServer_Servant servant,
 			       const CORBA_char      *uri,
 			       CORBA_Environment     *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
 
-	gnome_embeddable_set_uri (embeddable, uri);
+	bonobo_embeddable_set_uri (embeddable, uri);
 }
 
 static void
-canvas_item_destroyed (GnomeCanvasComponent *comp, GnomeEmbeddable *embeddable)
+canvas_item_destroyed (BonoboCanvasComponent *comp, BonoboEmbeddable *embeddable)
 {
 	GnomeCanvasItem *item;
 
-	item = gnome_canvas_component_get_item (comp);
+	item = bonobo_canvas_component_get_item (comp);
 	gtk_object_destroy (GTK_OBJECT (item->canvas));
 	
 	/*
@@ -284,10 +284,10 @@ canvas_item_destroyed (GnomeCanvasComponent *comp, GnomeEmbeddable *embeddable)
 	ping_container (embeddable);
 }
 
-static GnomeCanvasComponent *
-make_canvas_component (GnomeEmbeddable *embeddable, gboolean aa, GNOME_Canvas_ItemProxy item_proxy)
+static BonoboCanvasComponent *
+make_canvas_component (BonoboEmbeddable *embeddable, gboolean aa, Bonobo_Canvas_ComponentProxy item_proxy)
 {
-	GnomeCanvasComponent *component;
+	BonoboCanvasComponent *component;
 	GnomeCanvas *pseudo_canvas;
 	
 	if (aa){
@@ -304,7 +304,7 @@ make_canvas_component (GnomeEmbeddable *embeddable, gboolean aa, GNOME_Canvas_It
 		gtk_object_destroy (GTK_OBJECT (pseudo_canvas));
 		return NULL;
 	}
-	gnome_canvas_component_set_proxy (component, item_proxy);
+	bonobo_canvas_component_set_proxy (component, item_proxy);
 
 	/*
 	 * Now keep track of it
@@ -316,15 +316,15 @@ make_canvas_component (GnomeEmbeddable *embeddable, gboolean aa, GNOME_Canvas_It
 	return component;
 }
 
-static GNOME_Canvas_Item
-impl_GNOME_Embeddable_new_canvas_item (PortableServer_Servant servant,
+static Bonobo_Canvas_Component
+impl_Bonobo_Embeddable_new_canvas_item (PortableServer_Servant servant,
 				       CORBA_boolean aa,
-				       GNOME_Canvas_ItemProxy _item_proxy,
+				       Bonobo_Canvas_ComponentProxy _item_proxy,
 				       CORBA_Environment *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
-	GNOME_Canvas_ItemProxy item_proxy;
-	GnomeCanvasComponent *component;
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
+	Bonobo_Canvas_ComponentProxy item_proxy;
+	BonoboCanvasComponent *component;
 	
 	if (embeddable->priv->item_creator == NULL)
 		return CORBA_OBJECT_NIL;
@@ -333,63 +333,63 @@ impl_GNOME_Embeddable_new_canvas_item (PortableServer_Servant servant,
 	
 	component = make_canvas_component (embeddable, aa, item_proxy);
 
-	return CORBA_Object_duplicate (gnome_object_corba_objref (GNOME_OBJECT (component)), ev);
+	return CORBA_Object_duplicate (bonobo_object_corba_objref (BONOBO_OBJECT (component)), ev);
 }
 
 /**
- * gnome_embeddable_get_epv:
+ * bonobo_embeddable_get_epv:
  */
-POA_GNOME_Embeddable__epv *
-gnome_embeddable_get_epv (void)
+POA_Bonobo_Embeddable__epv *
+bonobo_embeddable_get_epv (void)
 {
-	POA_GNOME_Embeddable__epv *epv;
+	POA_Bonobo_Embeddable__epv *epv;
 
-	epv = g_new0 (POA_GNOME_Embeddable__epv, 1);
+	epv = g_new0 (POA_Bonobo_Embeddable__epv, 1);
 
-	epv->set_client_site = impl_GNOME_Embeddable_set_client_site;
-	epv->get_client_site = impl_GNOME_Embeddable_get_client_site;
-	epv->set_host_name   = impl_GNOME_Embeddable_set_host_name;
-	epv->close           = impl_GNOME_Embeddable_close;
-	epv->get_verb_list   = impl_GNOME_Embeddable_get_verb_list;
-	epv->advise          = impl_GNOME_Embeddable_advise;
-	epv->unadvise        = impl_GNOME_Embeddable_unadvise;
-	epv->get_misc_status = impl_GNOME_Embeddable_get_misc_status;
-	epv->new_view        = impl_GNOME_Embeddable_new_view;
-	epv->set_uri         = impl_GNOME_Embeddable_set_uri;
-	epv->new_canvas_item = impl_GNOME_Embeddable_new_canvas_item;
+	epv->set_client_site = impl_Bonobo_Embeddable_set_client_site;
+	epv->get_client_site = impl_Bonobo_Embeddable_get_client_site;
+	epv->set_host_name   = impl_Bonobo_Embeddable_set_host_name;
+	epv->close           = impl_Bonobo_Embeddable_close;
+	epv->get_verb_list   = impl_Bonobo_Embeddable_get_verb_list;
+	epv->advise          = impl_Bonobo_Embeddable_advise;
+	epv->unadvise        = impl_Bonobo_Embeddable_unadvise;
+	epv->get_misc_status = impl_Bonobo_Embeddable_get_misc_status;
+	epv->new_view        = impl_Bonobo_Embeddable_new_view;
+	epv->set_uri         = impl_Bonobo_Embeddable_set_uri;
+	epv->new_canvas_item = impl_Bonobo_Embeddable_new_canvas_item;
 
 	return epv;
 }
 
 static void
-gnome_embeddable_corba_class_init ()
+bonobo_embeddable_corba_class_init ()
 {
-	gnome_embeddable_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_embeddable_vepv.GNOME_Embeddable_epv = gnome_embeddable_get_epv ();
+	bonobo_embeddable_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
+	bonobo_embeddable_vepv.Bonobo_Embeddable_epv = bonobo_embeddable_get_epv ();
 }
 
 /**
- * gnome_embeddable_corba_object_create:
+ * bonobo_embeddable_corba_object_create:
  * @object: The GtkObject that will wrap the CORBA object.
  *
  * Creates an activates the CORBA object that is wrapped
- * by the GnomeObject @object.
+ * by the BonoboObject @object.
  *
  * Returns: An activated object reference to the created object or
  * %CORBA_OBJECT_NIL in case of failure.
  */
-GNOME_Embeddable
-gnome_embeddable_corba_object_create (GnomeObject *object)
+Bonobo_Embeddable
+bonobo_embeddable_corba_object_create (BonoboObject *object)
 {
-	POA_GNOME_Embeddable *servant;
+	POA_Bonobo_Embeddable *servant;
 	CORBA_Environment ev;
 	
-	servant = (POA_GNOME_Embeddable *)g_new0 (GnomeObjectServant, 1);
-	servant->vepv = &gnome_embeddable_vepv;
+	servant = (POA_Bonobo_Embeddable *)g_new0 (BonoboObjectServant, 1);
+	servant->vepv = &bonobo_embeddable_vepv;
 
 	CORBA_exception_init (&ev);
 
-	POA_GNOME_Embeddable__init ((PortableServer_Servant) servant, &ev);
+	POA_Bonobo_Embeddable__init ((PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
 		g_free (servant);
 		CORBA_exception_free (&ev);
@@ -397,19 +397,19 @@ gnome_embeddable_corba_object_create (GnomeObject *object)
 	}
 	CORBA_exception_free (&ev);
 
-	return gnome_object_activate_servant (object, servant);
+	return bonobo_object_activate_servant (object, servant);
 }
 
 /**
- * gnome_embeddable_construct:
- * @embeddable: GnomeEmbeddable object to construct.
+ * bonobo_embeddable_construct:
+ * @embeddable: BonoboEmbeddable object to construct.
  * @corba_embeddable: The CORBA reference that implements this object.
  * @view_factory: Factory routine that provides new views of the embeddable on demand
  * @view_factory_data: pointer passed to the @view_factory routine to provide context.
- * @item_factory: A factory routine that creates GnomeCanvasComponents.
+ * @item_factory: A factory routine that creates BonoboCanvasComponents.
  * @item_factory_data: pointer passed to the @item_factory routine.
  *
- * This routine constructs a GNOME::Embeddable CORBA server and activates it.
+ * This routine constructs a Bonobo::Embeddable CORBA server and activates it.
  *
  * The @view_factory routine will be invoked by this CORBA server when
  * a request arrives to get a new view of the embeddable (embeddable
@@ -423,20 +423,20 @@ gnome_embeddable_corba_object_create (GnomeObject *object)
  *
  * Returns: The constructed object.
  */
-GnomeEmbeddable *
-gnome_embeddable_construct_full (GnomeEmbeddable *embeddable,
-				 GNOME_Embeddable corba_embeddable,
-				 GnomeViewFactory view_factory,
+BonoboEmbeddable *
+bonobo_embeddable_construct_full (BonoboEmbeddable *embeddable,
+				 Bonobo_Embeddable corba_embeddable,
+				 BonoboViewFactory view_factory,
 				 void             *factory_data,
 				 GnomeItemCreator item_factory,
 				 void             *item_factory_data)
 {
 	
 	g_return_val_if_fail (embeddable != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_EMBEDDABLE (embeddable), NULL);
+	g_return_val_if_fail (BONOBO_IS_EMBEDDABLE (embeddable), NULL);
 	g_return_val_if_fail (corba_embeddable != CORBA_OBJECT_NIL, NULL);
 
-	gnome_object_construct (GNOME_OBJECT (embeddable), corba_embeddable);
+	bonobo_object_construct (BONOBO_OBJECT (embeddable), corba_embeddable);
 
 	embeddable->priv->view_factory = view_factory;
 	embeddable->priv->view_factory_closure = factory_data;
@@ -447,13 +447,13 @@ gnome_embeddable_construct_full (GnomeEmbeddable *embeddable,
 }
 
 /**
- * gnome_embeddable_construct:
- * @embeddable: GnomeEmbeddable object to construct.
+ * bonobo_embeddable_construct:
+ * @embeddable: BonoboEmbeddable object to construct.
  * @corba_embeddable: The CORBA reference that implements this object.
  * @factory: Factory routine that provides new views of the embeddable on demand
  * @data: pointer passed to the @factory routine to provide context.
  * 
- * This routine constructs a GNOME::Embeddable CORBA server and activates it.  The
+ * This routine constructs a Bonobo::Embeddable CORBA server and activates it.  The
  * @factory routine will be invoked by this CORBA server when a request arrives
  * to get a new view of the embeddable (embeddable should be able to provide
  * multiple views of themselves upon demand).  The @data pointer is passed
@@ -462,103 +462,103 @@ gnome_embeddable_construct_full (GnomeEmbeddable *embeddable,
  *
  * Returns: The constructed object.
  */
-GnomeEmbeddable *
-gnome_embeddable_construct (GnomeEmbeddable  *embeddable,
-			    GNOME_Embeddable  corba_embeddable,
-			    GnomeViewFactory factory,
+BonoboEmbeddable *
+bonobo_embeddable_construct (BonoboEmbeddable  *embeddable,
+			    Bonobo_Embeddable  corba_embeddable,
+			    BonoboViewFactory factory,
 			    void *data)
 {
-	return gnome_embeddable_construct_full (embeddable, corba_embeddable, factory, data, NULL, NULL);
+	return bonobo_embeddable_construct_full (embeddable, corba_embeddable, factory, data, NULL, NULL);
 }
 
 /**
- * gnome_embeddable_new:
+ * bonobo_embeddable_new:
  * @factory: Factory routine that provides new views of the embeddable on demand
  * @data: pointer passed to the @factory routine to provide context.
  *
- * This routine creates a GNOME::Embeddable CORBA server and activates it.  The
+ * This routine creates a Bonobo::Embeddable CORBA server and activates it.  The
  * @factory routine will be invoked by this CORBA server when a request arrives
  * to get a new view of the embeddable (embeddable should be able to provide
  * multiple views of themselves upon demand).  The @data pointer is passed
  * to this factory routine untouched to allow the factory to get some context
  * on what it should create.
  *
- * Returns a GnomeEmbeddable that contains an activated GNOME::Embeddable
+ * Returns a BonoboEmbeddable that contains an activated Bonobo::Embeddable
  * CORBA server.
  */
-GnomeEmbeddable *
-gnome_embeddable_new (GnomeViewFactory factory, void *data)
+BonoboEmbeddable *
+bonobo_embeddable_new (BonoboViewFactory factory, void *data)
 {
-	GNOME_Embeddable corba_embeddable;
-	GnomeEmbeddable *embeddable;
+	Bonobo_Embeddable corba_embeddable;
+	BonoboEmbeddable *embeddable;
 
 	g_return_val_if_fail (factory != NULL, NULL);
 
-	embeddable = gtk_type_new (GNOME_EMBEDDABLE_TYPE);
+	embeddable = gtk_type_new (BONOBO_EMBEDDABLE_TYPE);
 
-	corba_embeddable = gnome_embeddable_corba_object_create (GNOME_OBJECT (embeddable));
+	corba_embeddable = bonobo_embeddable_corba_object_create (BONOBO_OBJECT (embeddable));
 	if (corba_embeddable == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (embeddable));
 		return NULL;
 	}
 	
-	return gnome_embeddable_construct (embeddable, corba_embeddable, factory, data);
+	return bonobo_embeddable_construct (embeddable, corba_embeddable, factory, data);
 }
 
 /**
- * gnome_embeddable_new_canvas_item:
+ * bonobo_embeddable_new_canvas_item:
  * @item_factory: Factory routine that provides new canvas items of the embeddable on demand
  * @data: pointer passed to the @factory routine to provide context.
  *
- * This routine creates a GNOME::Embeddable CORBA server and activates it.  The
+ * This routine creates a Bonobo::Embeddable CORBA server and activates it.  The
  * @factory routine will be invoked by this CORBA server when a request arrives
  * to get a new view of the embeddable (embeddable should be able to provide
  * multiple views of themselves upon demand).  The @data pointer is passed
  * to this factory routine untouched to allow the factory to get some context
  * on what it should create.
  *
- * Returns a GnomeEmbeddable that contains an activated GNOME::Embeddable
+ * Returns a BonoboEmbeddable that contains an activated Bonobo::Embeddable
  * CORBA server.
  */
-GnomeEmbeddable *
-gnome_embeddable_new_canvas_item (GnomeItemCreator item_factory, void *data)
+BonoboEmbeddable *
+bonobo_embeddable_new_canvas_item (GnomeItemCreator item_factory, void *data)
 {
-	GNOME_Embeddable corba_embeddable;
-	GnomeEmbeddable *embeddable;
+	Bonobo_Embeddable corba_embeddable;
+	BonoboEmbeddable *embeddable;
 
 	g_return_val_if_fail (item_factory != NULL, NULL);
 
-	embeddable = gtk_type_new (GNOME_EMBEDDABLE_TYPE);
+	embeddable = gtk_type_new (BONOBO_EMBEDDABLE_TYPE);
 
-	corba_embeddable = gnome_embeddable_corba_object_create (GNOME_OBJECT (embeddable));
+	corba_embeddable = bonobo_embeddable_corba_object_create (BONOBO_OBJECT (embeddable));
 	if (corba_embeddable == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (embeddable));
 		return NULL;
 	}
 	
-	return gnome_embeddable_construct_full (embeddable, corba_embeddable, NULL, NULL, item_factory, data);
+	return bonobo_embeddable_construct_full (embeddable, corba_embeddable, NULL, NULL, item_factory, data);
 }
 
 static void
-gnome_embeddable_destroy (GtkObject *object)
+bonobo_embeddable_destroy (GtkObject *object)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (object);
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (object);
 	GList *l;
 
 	/*
 	 * Destroy all our views.
 	 */
 	while (embeddable->priv->views) {
-		GnomeView *view = GNOME_VIEW (embeddable->priv->views->data);
+		BonoboView *view = BONOBO_VIEW (embeddable->priv->views->data);
 
-		gnome_object_destroy (GNOME_OBJECT (view));
+		bonobo_object_destroy (BONOBO_OBJECT (view));
 	}
 
 	while (embeddable->priv->canvas_items){
 		void *data = embeddable->priv->canvas_items->data;
-		GnomeCanvasComponent *comp = GNOME_CANVAS_COMPONENT (data);
+		BonoboCanvasComponent *comp = BONOBO_CANVAS_COMPONENT (data);
 
-		gnome_object_destroy (GNOME_OBJECT (comp));
+		bonobo_object_destroy (BONOBO_OBJECT (comp));
 	}
 	
 	/*
@@ -590,93 +590,93 @@ gnome_embeddable_destroy (GtkObject *object)
 
 	g_free (embeddable->priv);
 	
-	GTK_OBJECT_CLASS (gnome_embeddable_parent_class)->destroy (object);
+	GTK_OBJECT_CLASS (bonobo_embeddable_parent_class)->destroy (object);
 }
 
 static void
-gnome_embeddable_class_init (GnomeEmbeddableClass *klass)
+bonobo_embeddable_class_init (BonoboEmbeddableClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
-	gnome_embeddable_parent_class =
-		gtk_type_class (gnome_object_get_type ());
+	bonobo_embeddable_parent_class =
+		gtk_type_class (bonobo_object_get_type ());
 
 	embeddable_signals [HOST_NAME_CHANGED] =
                 gtk_signal_new ("host_name_changed",
                                 GTK_RUN_LAST,
                                 object_class->type,
-                                GTK_SIGNAL_OFFSET(GnomeEmbeddableClass,host_name_changed), 
+                                GTK_SIGNAL_OFFSET(BonoboEmbeddableClass,host_name_changed), 
                                 gtk_marshal_NONE__STRING,
                                 GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
 	embeddable_signals [URI_CHANGED] =
                 gtk_signal_new ("uri_changed",
                                 GTK_RUN_LAST,
                                 object_class->type,
-                                GTK_SIGNAL_OFFSET(GnomeEmbeddableClass,uri_changed), 
+                                GTK_SIGNAL_OFFSET(BonoboEmbeddableClass,uri_changed), 
                                 gtk_marshal_NONE__STRING,
                                 GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
 
 	gtk_object_class_add_signals (object_class, embeddable_signals,
 				      LAST_SIGNAL);
 
-	object_class->destroy = gnome_embeddable_destroy;
+	object_class->destroy = bonobo_embeddable_destroy;
 
-	gnome_embeddable_corba_class_init ();
+	bonobo_embeddable_corba_class_init ();
 }
 
 static void
-gnome_embeddable_init (GnomeObject *object)
+bonobo_embeddable_init (BonoboObject *object)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (object);
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (object);
 
-	embeddable->priv = g_new0 (GnomeEmbeddablePrivate, 1);
+	embeddable->priv = g_new0 (BonoboEmbeddablePrivate, 1);
 }
 
 /**
- * gnome_embeddable_get_type:
+ * bonobo_embeddable_get_type:
  *
- * Returns: The GtkType for the GnomeEmbeddable class.
+ * Returns: The GtkType for the BonoboEmbeddable class.
  */
 GtkType
-gnome_embeddable_get_type (void)
+bonobo_embeddable_get_type (void)
 {
 	static GtkType type = 0;
 
 	if (!type){
 		GtkTypeInfo info = {
 			"IDL:GNOME/Embeddable:1.0",
-			sizeof (GnomeEmbeddable),
-			sizeof (GnomeEmbeddableClass),
-			(GtkClassInitFunc) gnome_embeddable_class_init,
-			(GtkObjectInitFunc) gnome_embeddable_init,
+			sizeof (BonoboEmbeddable),
+			sizeof (BonoboEmbeddableClass),
+			(GtkClassInitFunc) bonobo_embeddable_class_init,
+			(GtkObjectInitFunc) bonobo_embeddable_init,
 			NULL, /* reserved 1 */
 			NULL, /* reserved 2 */
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_object_get_type (), &info);
+		type = gtk_type_unique (bonobo_object_get_type (), &info);
 	}
 
 	return type;
 }
 
 /**
- * gnome_embeddable_set_view_factory:
+ * bonobo_embeddable_set_view_factory:
  * @embeddable: The embeddable object to operate on.
- * @factory: A pointer to a function that can provide GnomeView objects on demand.
+ * @factory: A pointer to a function that can provide BonoboView objects on demand.
  * @data: data to pass to the @factory function.
  *
  * This routine defines the view factory for this embeddable component.
  * When a container requires a view, the routine specified in @factory
- * will be invoked to create a new GnomeView object to satisfy this request.
+ * will be invoked to create a new BonoboView object to satisfy this request.
  */
 void
-gnome_embeddable_set_view_factory (GnomeEmbeddable *embeddable,
-				   GnomeViewFactory factory,
+bonobo_embeddable_set_view_factory (BonoboEmbeddable *embeddable,
+				   BonoboViewFactory factory,
 				   void *data)
 {
 	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (factory != NULL);
 
 	embeddable->priv->view_factory = factory;
@@ -684,7 +684,7 @@ gnome_embeddable_set_view_factory (GnomeEmbeddable *embeddable,
 }
 
 /**
- * gnome_embeddable_add_verb:
+ * bonobo_embeddable_add_verb:
  * @embeddable: The embeddable object to operate on.
  * @verb_name: The key which is used to uniquely identify the verb.
  * @verb_label: A localizable string which identifies the verb.
@@ -695,13 +695,13 @@ gnome_embeddable_set_view_factory (GnomeEmbeddable *embeddable,
  * by this @embeddable.
  */
 void
-gnome_embeddable_add_verb (GnomeEmbeddable *embeddable,
+bonobo_embeddable_add_verb (BonoboEmbeddable *embeddable,
 			   const char *verb_name, const char *verb_label, const char *verb_hint)
 {
 	GnomeVerb *verb;
 
 	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (verb_name != NULL);
 
 	verb = g_new0 (GnomeVerb, 1);
@@ -713,7 +713,7 @@ gnome_embeddable_add_verb (GnomeEmbeddable *embeddable,
 }
 
 /**
- * gnome_embeddable_add_verbs:
+ * bonobo_embeddable_add_verbs:
  * @embeddable: The embeddable object to operate on.
  * @verbs: An array of GnomeVerbs to be added.
  *
@@ -721,20 +721,20 @@ gnome_embeddable_add_verb (GnomeEmbeddable *embeddable,
  * in @verbs to the exported verbs for the component.
  */
 void
-gnome_embeddable_add_verbs (GnomeEmbeddable *embeddable, const GnomeVerb *verbs)
+bonobo_embeddable_add_verbs (BonoboEmbeddable *embeddable, const GnomeVerb *verbs)
 {
 	int i;
 
 	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (verbs != NULL);
 
 	for (i = 0; verbs [i].name != NULL; i++)
-		gnome_embeddable_add_verb (embeddable, verbs[i].name, verbs[i].label, verbs[i].hint);
+		bonobo_embeddable_add_verb (embeddable, verbs[i].name, verbs[i].label, verbs[i].hint);
 }
 
 /**
- * gnome_embeddable_remove_verb:
+ * bonobo_embeddable_remove_verb:
  * @embeddable: The embeddable object to operate on.
  * @verb_name: a verb name
  *
@@ -742,12 +742,12 @@ gnome_embeddable_add_verbs (GnomeEmbeddable *embeddable, const GnomeVerb *verbs)
  * of exported verbs for this embeddable object
  */
 void
-gnome_embeddable_remove_verb (GnomeEmbeddable *embeddable, const char *verb_name)
+bonobo_embeddable_remove_verb (BonoboEmbeddable *embeddable, const char *verb_name)
 {
 	GList *l;
 	
 	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (verb_name != NULL);
 
 	for (l = embeddable->verbs; l != NULL; l = l->next) {
@@ -770,49 +770,49 @@ gnome_embeddable_remove_verb (GnomeEmbeddable *embeddable, const char *verb_name
 }
 
 /**
- * gnome_embeddable_get_verbs:
- * @embeddable: A GnomeEmbeddable object.
+ * bonobo_embeddable_get_verbs:
+ * @embeddable: A BonoboEmbeddable object.
  *
  * Returns the internal copy of the list of verbs supported by this
  * Embeddable object.
  */
 const GList *
-gnome_embeddable_get_verbs (GnomeEmbeddable *embeddable)
+bonobo_embeddable_get_verbs (BonoboEmbeddable *embeddable)
 {
 	g_return_val_if_fail (embeddable != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_EMBEDDABLE (embeddable), NULL);
+	g_return_val_if_fail (BONOBO_IS_EMBEDDABLE (embeddable), NULL);
 
 	return (const GList *) embeddable->verbs;
 }
 
 
 /**
- * gnome_embeddable_get_uri:
+ * bonobo_embeddable_get_uri:
  * @embeddable: The embeddable object to operate on.
  *
  * Returns the URI that this object represents
  */
 const char *
-gnome_embeddable_get_uri (GnomeEmbeddable *embeddable)
+bonobo_embeddable_get_uri (BonoboEmbeddable *embeddable)
 {
 	g_return_val_if_fail (embeddable != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_EMBEDDABLE (embeddable), NULL);
+	g_return_val_if_fail (BONOBO_IS_EMBEDDABLE (embeddable), NULL);
 
 	return embeddable->uri;
 }
 
 /**
- * gnome_embeddable_set_uri:
+ * bonobo_embeddable_set_uri:
  * @embeddable: The embeddable object to operate on.
  * @uri: the URI this embeddable represents.
  *
  * Sets the URI that this object represents.
  */
 void
-gnome_embeddable_set_uri (GnomeEmbeddable *embeddable, const char *uri)
+bonobo_embeddable_set_uri (BonoboEmbeddable *embeddable, const char *uri)
 {
 	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
 
 	if (embeddable->uri){
 		g_free (embeddable->uri);
@@ -828,33 +828,33 @@ gnome_embeddable_set_uri (GnomeEmbeddable *embeddable, const char *uri)
 }
 
 /**
- * gnome_embeddable_foreach_view:
+ * bonobo_embeddable_foreach_view:
  * @embeddable: Embeddable on which we operate
- * @fn: function to be invoked for each existing GnomeView
+ * @fn: function to be invoked for each existing BonoboView
  * @data: data to pass to function
  *
  * Invokes the @fn function for each view existing
  */
 void
-gnome_embeddable_foreach_view (GnomeEmbeddable *embeddable,
-			       GnomeEmbeddableForeachViewFn fn,
+bonobo_embeddable_foreach_view (BonoboEmbeddable *embeddable,
+			       BonoboEmbeddableForeachViewFn fn,
 			       void *data)
 {
 	GList *copy, *l;
 	
 	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (fn != NULL);
 
 	copy = g_list_copy (embeddable->priv->views);
 	for (l = copy; l; l = l->next)
-		(*fn)(GNOME_VIEW (l->data), data);
+		(*fn)(BONOBO_VIEW (l->data), data);
 
 	g_list_free (copy);
 }
 
 /**
- * gnome_embeddable_foreach_item:
+ * bonobo_embeddable_foreach_item:
  * @embeddable: Embeddable on which we operate
  * @fn: function to be invoked for each existing GnomeItem
  * @data: data to pass to function
@@ -862,19 +862,19 @@ gnome_embeddable_foreach_view (GnomeEmbeddable *embeddable,
  * Invokes the @fn function for each item existing
  */
 void
-gnome_embeddable_foreach_item (GnomeEmbeddable *embeddable,
-			       GnomeEmbeddableForeachItemFn fn,
+bonobo_embeddable_foreach_item (BonoboEmbeddable *embeddable,
+			       BonoboEmbeddableForeachItemFn fn,
 			       void *data)
 {
 	GList *copy, *l;
 	
 	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (fn != NULL);
 
 	copy = g_list_copy (embeddable->priv->canvas_items);
 	for (l = copy; l; l = l->next)
-		(*fn)(GNOME_CANVAS_COMPONENT (l->data), data);
+		(*fn)(BONOBO_CANVAS_COMPONENT (l->data), data);
 
 	g_list_free (copy);
 }

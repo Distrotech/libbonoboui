@@ -1,74 +1,74 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-#ifndef _GNOME_CONTROL_H_
-#define _GNOME_CONTROL_H_
+#ifndef _BONOBO_CONTROL_H_
+#define _BONOBO_CONTROL_H_
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
-#include <bonobo/gnome-object.h>
-#include <bonobo/gnome-control-frame.h>
-#include <bonobo/gnome-property-bag.h>
-#include <bonobo/gnome-property-bag-client.h>
+#include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-control-frame.h>
+#include <bonobo/bonobo-property-bag.h>
+#include <bonobo/bonobo-property-bag-client.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_CONTROL_TYPE        (gnome_control_get_type ())
-#define GNOME_CONTROL(o)          (GTK_CHECK_CAST ((o), GNOME_CONTROL_TYPE, GnomeControl))
-#define GNOME_CONTROL_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_CONTROL_TYPE, GnomeControlClass))
-#define GNOME_IS_CONTROL(o)       (GTK_CHECK_TYPE ((o), GNOME_CONTROL_TYPE))
-#define GNOME_IS_CONTROL_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_CONTROL_TYPE))
+#define BONOBO_CONTROL_TYPE        (bonobo_control_get_type ())
+#define BONOBO_CONTROL(o)          (GTK_CHECK_CAST ((o), BONOBO_CONTROL_TYPE, BonoboControl))
+#define BONOBO_CONTROL_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_CONTROL_TYPE, BonoboControlClass))
+#define BONOBO_IS_CONTROL(o)       (GTK_CHECK_TYPE ((o), BONOBO_CONTROL_TYPE))
+#define BONOBO_IS_CONTROL_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CONTROL_TYPE))
 
-typedef struct _GnomeControl GnomeControl;
-typedef struct _GnomeControlPrivate GnomeControlPrivate;
-typedef struct _GnomeControlClass GnomeControlClass;
+typedef struct _BonoboControl BonoboControl;
+typedef struct _BonoboControlPrivate BonoboControlPrivate;
+typedef struct _BonoboControlClass BonoboControlClass;
 
-struct _GnomeControl {
-	GnomeObject base;
+struct _BonoboControl {
+	BonoboObject base;
 
-	GnomeControlPrivate *priv;
+	BonoboControlPrivate *priv;
 };
 
-struct _GnomeControlClass {
-	GnomeObjectClass parent_class;
+struct _BonoboControlClass {
+	BonoboObjectClass parent_class;
 
 	/*
 	 * Signals.
 	 */
-	void (*activate)            (GnomeControl *control, gboolean state);
-	void (*undo_last_operation) (GnomeControl *control);
+	void (*activate)            (BonoboControl *control, gboolean state);
+	void (*undo_last_operation) (BonoboControl *control);
 };
 
-GtkType		         gnome_control_get_type	                (void);
-GnomeControl	        *gnome_control_construct	        (GnomeControl *control,
-		        				         GNOME_Control corba_control,
+GtkType		         bonobo_control_get_type	                (void);
+BonoboControl	        *bonobo_control_construct	        (BonoboControl *control,
+		        				         Bonobo_Control corba_control,
 		        				         GtkWidget *widget);
-GNOME_Control	         gnome_control_corba_object_create      (GnomeObject *object);
-GnomeControl            *gnome_control_new                      (GtkWidget *widget);
+Bonobo_Control	         bonobo_control_corba_object_create      (BonoboObject *object);
+BonoboControl            *bonobo_control_new                      (GtkWidget *widget);
 		        				             
-void		         gnome_control_set_control_frame        (GnomeControl *control,
-		        				         GNOME_ControlFrame control_frame);
-GNOME_ControlFrame       gnome_control_get_control_frame        (GnomeControl *control);
-void                     gnome_control_set_ui_handler           (GnomeControl *control,
-								 GnomeUIHandler *uih);
-GnomeUIHandler          *gnome_control_get_ui_handler           (GnomeControl *control);
+void		         bonobo_control_set_control_frame        (BonoboControl *control,
+		        				         Bonobo_ControlFrame control_frame);
+Bonobo_ControlFrame       bonobo_control_get_control_frame        (BonoboControl *control);
+void                     bonobo_control_set_ui_handler           (BonoboControl *control,
+								 BonoboUIHandler *uih);
+BonoboUIHandler          *bonobo_control_get_ui_handler           (BonoboControl *control);
 		        				             
-void		         gnome_control_set_property_bag         (GnomeControl *control,
-		        				         GnomePropertyBag *pb);
-GnomePropertyBag        *gnome_control_get_property_bag         (GnomeControl *control);
-GNOME_UIHandler		 gnome_control_get_remote_ui_handler    (GnomeControl *control);
-GnomePropertyBagClient  *gnome_control_get_ambient_properties   (GnomeControl *control);
+void		         bonobo_control_set_property_bag         (BonoboControl *control,
+		        				         BonoboPropertyBag *pb);
+BonoboPropertyBag        *bonobo_control_get_property_bag         (BonoboControl *control);
+Bonobo_UIHandler		 bonobo_control_get_remote_ui_handler    (BonoboControl *control);
+BonoboPropertyBagClient  *bonobo_control_get_ambient_properties   (BonoboControl *control);
 
-void                     gnome_control_activate_notify          (GnomeControl *control,
+void                     bonobo_control_activate_notify          (BonoboControl *control,
 								 gboolean      activated);
 
-GNOME_Control_windowid   gnome_control_windowid_from_x11        (guint32 x11_id);
+Bonobo_Control_windowid   bonobo_control_windowid_from_x11        (guint32 x11_id);
 
-POA_GNOME_Control__epv  *gnome_control_get_epv		        (void);
+POA_Bonobo_Control__epv  *bonobo_control_get_epv		        (void);
 
 /* CORBA default vector methods we provide */
-extern POA_GNOME_Control__epv gnome_control_epv;
-extern POA_GNOME_Control__vepv gnome_control_vepv;
+extern POA_Bonobo_Control__epv bonobo_control_epv;
+extern POA_Bonobo_Control__vepv bonobo_control_vepv;
 
 END_GNOME_DECLS
 
-#endif /* _GNOME_CONTROL_H_ */
+#endif /* _BONOBO_CONTROL_H_ */

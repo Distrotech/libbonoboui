@@ -1,48 +1,48 @@
 
-#ifndef _GNOME_VIEW_H_
-#define _GNOME_VIEW_H_
+#ifndef _BONOBO_VIEW_H_
+#define _BONOBO_VIEW_H_
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwindow.h>
-#include <bonobo/gnome-object.h>
+#include <bonobo/bonobo-object.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_DESKTOP_WINDOW_TYPE        (gnome_desktop_window_get_type ())
-#define GNOME_DESKTOP_WINDOW(o)          (GTK_CHECK_CAST ((o), GNOME_DESKTOP_WINDOW_TYPE, GnomeDesktopWindow))
-#define GNOME_DESKTOP_WINDOW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_DESKTOP_WINDOW_TYPE, GnomeDesktopWindowClass))
-#define GNOME_IS_DESKTOP_WINDOW(o)       (GTK_CHECK_TYPE ((o), GNOME_DESKTOP_WINDOW_TYPE))
-#define GNOME_IS_DESKTOP_WINDOW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_DESKTOP_WINDOW_TYPE))
+#define BONOBO_DESKTOP_WINDOW_TYPE        (bonobo_desktop_window_get_type ())
+#define BONOBO_DESKTOP_WINDOW(o)          (GTK_CHECK_CAST ((o), BONOBO_DESKTOP_WINDOW_TYPE, BonoboDesktopWindow))
+#define BONOBO_DESKTOP_WINDOW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_DESKTOP_WINDOW_TYPE, BonoboDesktopWindowClass))
+#define BONOBO_IS_DESKTOP_WINDOW(o)       (GTK_CHECK_TYPE ((o), BONOBO_DESKTOP_WINDOW_TYPE))
+#define BONOBO_IS_DESKTOP_WINDOW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_DESKTOP_WINDOW_TYPE))
 
-typedef struct _GnomeDesktopWindow GnomeDesktopWindow;
-typedef struct _GnomeDesktopWindowPrivate GnomeDesktopWindowPrivate;
-typedef struct _GnomeDesktopWindowClass GnomeDesktopWindowClass;
+typedef struct _BonoboDesktopWindow BonoboDesktopWindow;
+typedef struct _BonoboDesktopWindowPrivate BonoboDesktopWindowPrivate;
+typedef struct _BonoboDesktopWindowClass BonoboDesktopWindowClass;
 
-struct _GnomeDesktopWindow {
-	GnomeObject base;
+struct _BonoboDesktopWindow {
+	BonoboObject base;
 	GtkWindow   *window;
-	GnomeDesktopWindowPrivate *priv;
+	BonoboDesktopWindowPrivate *priv;
 };
 
-struct _GnomeDesktopWindowClass {
-	GnomeObjectClass parent_class;
+struct _BonoboDesktopWindowClass {
+	BonoboObjectClass parent_class;
 };
 
-GtkType             gnome_desktop_window_get_type  (void);
-GnomeDesktopWindow *gnome_desktop_window_construct (GnomeDesktopWindow *desktop_window,
-						    GNOME_Desktop_Window corba_desktop_window,
+GtkType             bonobo_desktop_window_get_type  (void);
+BonoboDesktopWindow *bonobo_desktop_window_construct (BonoboDesktopWindow *desktop_window,
+						    Bonobo_Desktop_Window corba_desktop_window,
 						    GtkWindow *toplevel);
-GnomeDesktopWindow *gnome_desktop_window_new       (GtkWindow *toplevel);
-void                gnome_desktop_window_control   (GnomeObject *object,
+BonoboDesktopWindow *bonobo_desktop_window_new       (GtkWindow *toplevel);
+void                bonobo_desktop_window_control   (BonoboObject *object,
 						    GtkWindow *win);
-GNOME_Desktop_Window gnome_desktop_window_corba_object_create (GnomeObject *object);
+Bonobo_Desktop_Window bonobo_desktop_window_corba_object_create (BonoboObject *object);
 
-POA_GNOME_Desktop_Window__epv *gnome_desktop_window_get_epv   (void);
+POA_Bonobo_Desktop_Window__epv *bonobo_desktop_window_get_epv   (void);
 
 /* CORBA default vector methods we provide */
-extern POA_GNOME_Desktop_Window__vepv gnome_desktop_window_vepv;
+extern POA_Bonobo_Desktop_Window__vepv bonobo_desktop_window_vepv;
 
 END_GNOME_DECLS
 
-#endif /* _GNOME_DESKTOP_WINDOW_H_ */
+#endif /* _BONOBO_DESKTOP_WINDOW_H_ */

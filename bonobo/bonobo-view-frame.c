@@ -12,9 +12,9 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkplug.h>
-#include <bonobo/gnome-main.h>
-#include <bonobo/gnome-view.h>
-#include <bonobo/gnome-view-frame.h>
+#include <bonobo/bonobo-main.h>
+#include <bonobo/bonobo-view.h>
+#include <bonobo/bonobo-view-frame.h>
 #include <gdk/gdkprivate.h>
 #include <libgnomeui/gnome-canvas.h>
 
@@ -27,39 +27,39 @@ enum {
 static guint view_frame_signals [LAST_SIGNAL];
 
 /* Parent object class in GTK hierarchy */
-static GnomeControlFrameClass *gnome_view_frame_parent_class;
+static BonoboControlFrameClass *bonobo_view_frame_parent_class;
 
 /* The entry point vectors for the server we provide */
-POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
+POA_Bonobo_ViewFrame__vepv bonobo_view_frame_vepv;
 
-struct _GnomeViewFramePrivate {
+struct _BonoboViewFramePrivate {
 	GtkWidget	*wrapper; 
-	GnomeClientSite *client_site;
-	GnomeUIHandler	*uih;
-	GNOME_View       view;
+	BonoboClientSite *client_site;
+	BonoboUIHandler	*uih;
+	Bonobo_View       view;
 };
 
-static GNOME_ClientSite
-impl_GNOME_ViewFrame_get_client_site (PortableServer_Servant servant,
+static Bonobo_ClientSite
+impl_Bonobo_ViewFrame_get_client_site (PortableServer_Servant servant,
 				      CORBA_Environment *ev)
 {
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
+	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (bonobo_object_from_servant (servant));
 
 	return CORBA_Object_duplicate (
-		gnome_object_corba_objref (GNOME_OBJECT (view_frame->priv->client_site)), ev);
+		bonobo_object_corba_objref (BONOBO_OBJECT (view_frame->priv->client_site)), ev);
 }
 
 static CORBA_Object
-create_gnome_view_frame (GnomeObject *object)
+create_bonobo_view_frame (BonoboObject *object)
 {
-	POA_GNOME_ViewFrame *servant;
+	POA_Bonobo_ViewFrame *servant;
 	CORBA_Environment ev;
 	
-	servant = (POA_GNOME_ViewFrame *) g_new0 (GnomeObjectServant, 1);
-	servant->vepv = &gnome_view_frame_vepv;
+	servant = (POA_Bonobo_ViewFrame *) g_new0 (BonoboObjectServant, 1);
+	servant->vepv = &bonobo_view_frame_vepv;
 
 	CORBA_exception_init (&ev);
-	POA_GNOME_ViewFrame__init ((PortableServer_Servant) servant, &ev);
+	POA_Bonobo_ViewFrame__init ((PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
 		g_free (servant);
 		CORBA_exception_free (&ev);
@@ -67,15 +67,15 @@ create_gnome_view_frame (GnomeObject *object)
 	}
 
 	CORBA_exception_free (&ev);
-	return gnome_object_activate_servant (object, servant);
+	return bonobo_object_activate_servant (object, servant);
 }
 
 static gboolean
-gnome_view_frame_wrapper_button_press_cb (GtkWidget *wrapper,
+bonobo_view_frame_wrapper_button_press_cb (GtkWidget *wrapper,
 					  GdkEventButton *event,
 					  gpointer data)
 {
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (data);
+	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (data);
 
 	/* Check for double click. */
 	if (event->type == GDK_2BUTTON_PRESS)
@@ -90,11 +90,11 @@ gnome_view_frame_wrapper_button_press_cb (GtkWidget *wrapper,
 } 
 
 static gboolean
-gnome_view_frame_key_press_cb (GtkWidget *wrapper,
+bonobo_view_frame_key_press_cb (GtkWidget *wrapper,
 			       GdkEventKey *event,
 			       gpointer data)
 {
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (data);
+	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (data);
 
 	/* Hitting enter will activate the embedded component too. */
 	if (event->keyval == GDK_Return)
@@ -104,45 +104,45 @@ gnome_view_frame_key_press_cb (GtkWidget *wrapper,
 }
 
 /**
- * gnome_view_frame_construct:
- * @view_frame: The GnomeViewFrame object to be initialized.
- * @corba_view_frame: A CORBA object for the GNOME_ViewFrame interface.
- * @wrapper: A GnomeWrapper widget which the new ViewFrame will use to cover its enclosed View.
+ * bonobo_view_frame_construct:
+ * @view_frame: The BonoboViewFrame object to be initialized.
+ * @corba_view_frame: A CORBA object for the Bonobo_ViewFrame interface.
+ * @wrapper: A BonoboWrapper widget which the new ViewFrame will use to cover its enclosed View.
  * @client_site: the client site to which the newly-created ViewFrame will belong.
  *
  * Initializes @view_frame with the parameters.
  *
- * Returns: the initialized GnomeViewFrame object @view_frame that implements the
- * GNOME::ViewFrame CORBA service.
+ * Returns: the initialized BonoboViewFrame object @view_frame that implements the
+ * Bonobo::ViewFrame CORBA service.
  */
-GnomeViewFrame *
-gnome_view_frame_construct (GnomeViewFrame *view_frame,
-			    GNOME_ViewFrame corba_view_frame,
-			    GnomeClientSite *client_site)
+BonoboViewFrame *
+bonobo_view_frame_construct (BonoboViewFrame *view_frame,
+			    Bonobo_ViewFrame corba_view_frame,
+			    BonoboClientSite *client_site)
 {
 	GtkWidget *wrapper;
 
 	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
 	g_return_val_if_fail (client_site != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 
-	gnome_control_frame_construct (GNOME_CONTROL_FRAME (view_frame), corba_view_frame);
+	bonobo_control_frame_construct (BONOBO_CONTROL_FRAME (view_frame), corba_view_frame);
 	
 	view_frame->priv->client_site = client_site;
 	
 	/*
-	 * Create the GnomeWrapper which will cover the remote
-	 * GnomeView.
+	 * Create the BonoboWrapper which will cover the remote
+	 * BonoboView.
 	 */
-	wrapper = gnome_wrapper_new ();
+	wrapper = bonobo_wrapper_new ();
 	if (wrapper == NULL) {
 		gtk_object_unref (GTK_OBJECT (view_frame));
 		return NULL;
 	}
 	view_frame->priv->wrapper = wrapper;
 	gtk_container_add (GTK_CONTAINER (wrapper),
-			   gnome_control_frame_get_widget (GNOME_CONTROL_FRAME (view_frame)));
+			   bonobo_control_frame_get_widget (BONOBO_CONTROL_FRAME (view_frame)));
 
 	/*
 	 * Connect signal handlers to catch activation events (double
@@ -150,52 +150,52 @@ gnome_view_frame_construct (GnomeViewFrame *view_frame,
 	 * the ViewFrame to emit the USER_ACTIVATE signal.
 	 */
 	gtk_signal_connect (GTK_OBJECT (wrapper), "button_press_event",
-			    GTK_SIGNAL_FUNC (gnome_view_frame_wrapper_button_press_cb),
+			    GTK_SIGNAL_FUNC (bonobo_view_frame_wrapper_button_press_cb),
 			    view_frame);
 	gtk_signal_connect (GTK_OBJECT (wrapper), "key_press_event",
-			    GTK_SIGNAL_FUNC (gnome_view_frame_key_press_cb),
+			    GTK_SIGNAL_FUNC (bonobo_view_frame_key_press_cb),
 			    view_frame);
 	
 	return view_frame;
 }
 
 /**
- * gnome_view_frame_new:
+ * bonobo_view_frame_new:
  * @client_site: the client site to which the newly-created ViewFrame will belong.
  *
- * Returns: GnomeViewFrame object that implements the
- * GNOME::ViewFrame CORBA service.
+ * Returns: BonoboViewFrame object that implements the
+ * Bonobo::ViewFrame CORBA service.
  */
-GnomeViewFrame *
-gnome_view_frame_new (GnomeClientSite *client_site)
+BonoboViewFrame *
+bonobo_view_frame_new (BonoboClientSite *client_site)
 {
-	GNOME_ViewFrame corba_view_frame;
-	GnomeViewFrame *view_frame;
+	Bonobo_ViewFrame corba_view_frame;
+	BonoboViewFrame *view_frame;
 	
 	g_return_val_if_fail (client_site != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 
-	view_frame = gtk_type_new (GNOME_VIEW_FRAME_TYPE);
+	view_frame = gtk_type_new (BONOBO_VIEW_FRAME_TYPE);
 
-	corba_view_frame = create_gnome_view_frame (GNOME_OBJECT (view_frame));
+	corba_view_frame = create_bonobo_view_frame (BONOBO_OBJECT (view_frame));
 	if (corba_view_frame == CORBA_OBJECT_NIL) {
 		gtk_object_destroy (GTK_OBJECT (view_frame));
 		return NULL;
 	}
 
-	return gnome_view_frame_construct (view_frame, corba_view_frame, client_site);
+	return bonobo_view_frame_construct (view_frame, corba_view_frame, client_site);
 }
 
 static void
-gnome_view_frame_destroy (GtkObject *object)
+bonobo_view_frame_destroy (GtkObject *object)
 {
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (object);
+	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (object);
 
 	if (view_frame->priv->view != CORBA_OBJECT_NIL){
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);
-                GNOME_Unknown_unref (view_frame->priv->view, &ev);
+                Bonobo_Unknown_unref (view_frame->priv->view, &ev);
 		CORBA_Object_release (view_frame->priv->view, &ev);
 		CORBA_exception_free (&ev);
 	}
@@ -203,20 +203,20 @@ gnome_view_frame_destroy (GtkObject *object)
 	gtk_object_destroy (GTK_OBJECT (view_frame->priv->wrapper));
 	g_free (view_frame->priv);
 	
-	GTK_OBJECT_CLASS (gnome_view_frame_parent_class)->destroy (object);
+	GTK_OBJECT_CLASS (bonobo_view_frame_parent_class)->destroy (object);
 }
 
 /**
- * gnome_view_frame_get_epv:
+ * bonobo_view_frame_get_epv:
  */
-POA_GNOME_ViewFrame__epv *
-gnome_view_frame_get_epv (void)
+POA_Bonobo_ViewFrame__epv *
+bonobo_view_frame_get_epv (void)
 {
-	POA_GNOME_ViewFrame__epv *epv;
+	POA_Bonobo_ViewFrame__epv *epv;
 
-	epv = g_new0 (POA_GNOME_ViewFrame__epv, 1);
+	epv = g_new0 (POA_Bonobo_ViewFrame__epv, 1);
 
-	epv->get_client_site = impl_GNOME_ViewFrame_get_client_site;
+	epv->get_client_site = impl_Bonobo_ViewFrame_get_client_site;
 
 	return epv;
 }
@@ -225,23 +225,23 @@ static void
 init_view_frame_corba_class (void)
 {
 	/* Setup the vector of epvs */
-	gnome_view_frame_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_view_frame_vepv.GNOME_ControlFrame_epv = gnome_control_frame_get_epv ();
-	gnome_view_frame_vepv.GNOME_ViewFrame_epv = gnome_view_frame_get_epv ();
+	bonobo_view_frame_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
+	bonobo_view_frame_vepv.Bonobo_ControlFrame_epv = bonobo_control_frame_get_epv ();
+	bonobo_view_frame_vepv.Bonobo_ViewFrame_epv = bonobo_view_frame_get_epv ();
 }
 
 static void
-gnome_view_frame_class_init (GnomeViewFrameClass *klass)
+bonobo_view_frame_class_init (BonoboViewFrameClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
-	gnome_view_frame_parent_class = gtk_type_class (GNOME_CONTROL_FRAME_TYPE);
+	bonobo_view_frame_parent_class = gtk_type_class (BONOBO_CONTROL_FRAME_TYPE);
 
 	view_frame_signals [USER_ACTIVATE] =
 		gtk_signal_new ("user_activate",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, user_activate),
+				GTK_SIGNAL_OFFSET (BonoboViewFrameClass, user_activate),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
@@ -249,7 +249,7 @@ gnome_view_frame_class_init (GnomeViewFrameClass *klass)
 		gtk_signal_new ("user_context",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, user_context),
+				GTK_SIGNAL_OFFSET (BonoboViewFrameClass, user_context),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
@@ -258,265 +258,265 @@ gnome_view_frame_class_init (GnomeViewFrameClass *klass)
 		view_frame_signals,
 		LAST_SIGNAL);
 
-	object_class->destroy = gnome_view_frame_destroy;
+	object_class->destroy = bonobo_view_frame_destroy;
 
 	init_view_frame_corba_class ();
 }
 
 static void
-gnome_view_frame_init (GnomeObject *object)
+bonobo_view_frame_init (BonoboObject *object)
 {
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (object);
+	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (object);
 
-	view_frame->priv = g_new0 (GnomeViewFramePrivate, 1);
+	view_frame->priv = g_new0 (BonoboViewFramePrivate, 1);
 }
 
 /**
- * gnome_view_frame_get_type:
+ * bonobo_view_frame_get_type:
  *
- * Returns: The GtkType for the GnomeViewFrame class.
+ * Returns: The GtkType for the BonoboViewFrame class.
  */
 GtkType
-gnome_view_frame_get_type (void)
+bonobo_view_frame_get_type (void)
 {
 	static GtkType type = 0;
 
 	if (!type){
 		GtkTypeInfo info = {
-			"GnomeViewFrame",
-			sizeof (GnomeViewFrame),
-			sizeof (GnomeViewFrameClass),
-			(GtkClassInitFunc) gnome_view_frame_class_init,
-			(GtkObjectInitFunc) gnome_view_frame_init,
+			"BonoboViewFrame",
+			sizeof (BonoboViewFrame),
+			sizeof (BonoboViewFrameClass),
+			(GtkClassInitFunc) bonobo_view_frame_class_init,
+			(GtkObjectInitFunc) bonobo_view_frame_init,
 			NULL, /* reserved 1 */
 			NULL, /* reserved 2 */
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_control_frame_get_type (), &info);
+		type = gtk_type_unique (bonobo_control_frame_get_type (), &info);
 	}
 
 	return type;
 }
 
 /**
- * gnome_view_frame_bind_to_view:
- * @view_frame: A GnomeViewFrame object.
- * @view: The CORBA object for the GnomeView embedded
+ * bonobo_view_frame_bind_to_view:
+ * @view_frame: A BonoboViewFrame object.
+ * @view: The CORBA object for the BonoboView embedded
  * in this ViewFrame.
  *
  * Associates @view with this @view_frame.
  */
 void
-gnome_view_frame_bind_to_view (GnomeViewFrame *view_frame, GNOME_View view)
+bonobo_view_frame_bind_to_view (BonoboViewFrame *view_frame, Bonobo_View view)
 {
 	CORBA_Environment ev;
 
 	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
 
 	CORBA_exception_init (&ev);
-	gnome_control_frame_bind_to_control (
-		GNOME_CONTROL_FRAME (view_frame),
-		(GNOME_Control) view);
+	bonobo_control_frame_bind_to_control (
+		BONOBO_CONTROL_FRAME (view_frame),
+		(Bonobo_Control) view);
 	view_frame->priv->view = CORBA_Object_duplicate (view, &ev);
 
 	CORBA_exception_free (&ev);
 }
 
 /**
- * gnome_view_frame_get_view:
- * @view_frame: A GnomeViewFrame object.
- * @view: The CORBA object for the GnomeView embedded
+ * bonobo_view_frame_get_view:
+ * @view_frame: A BonoboViewFrame object.
+ * @view: The CORBA object for the BonoboView embedded
  * in this ViewFrame.
  *
  * Associates @view with this @view_frame.
  */
-GNOME_View
-gnome_view_frame_get_view (GnomeViewFrame *view_frame)
+Bonobo_View
+bonobo_view_frame_get_view (BonoboViewFrame *view_frame)
 {
 	g_return_val_if_fail (view_frame != NULL, CORBA_OBJECT_NIL);
-	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), CORBA_OBJECT_NIL);
+	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), CORBA_OBJECT_NIL);
 
 	return view_frame->priv->view;
 }
 
 /**
- * gnome_view_frame_set_covered:
- * @view_frame: A GnomeViewFrame object whose embedded View should be
+ * bonobo_view_frame_set_covered:
+ * @view_frame: A BonoboViewFrame object whose embedded View should be
  * either covered or uncovered.
  * @covered: %TRUE if the View should be covered.  %FALSE if it should
  * be uncovered.
  *
  * This function either covers or uncovers the View embedded in a
- * GnomeViewFrame.  If the View is covered, then the embedded widgets
+ * BonoboViewFrame.  If the View is covered, then the embedded widgets
  * will receive no Gtk events, such as mouse movements, keypresses,
  * and exposures.  When the View is uncovered, all events pass through
- * to the GnomeView's widgets normally.
+ * to the BonoboView's widgets normally.
  */
 void
-gnome_view_frame_set_covered (GnomeViewFrame *view_frame, gboolean covered)
+bonobo_view_frame_set_covered (BonoboViewFrame *view_frame, gboolean covered)
 {
 	GtkWidget *wrapper;
 
 	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
 
-	wrapper = gnome_view_frame_get_wrapper (view_frame);
-	gnome_wrapper_set_covered (GNOME_WRAPPER (wrapper), covered);
+	wrapper = bonobo_view_frame_get_wrapper (view_frame);
+	bonobo_wrapper_set_covered (BONOBO_WRAPPER (wrapper), covered);
 }
 
 
 /**
- * gnome_view_frame_view_activate:
- * @view_frame: The GnomeViewFrame object whose view should be
+ * bonobo_view_frame_view_activate:
+ * @view_frame: The BonoboViewFrame object whose view should be
  * activated.
  *
- * Activates the GnomeView embedded in @view_frame by calling the
- * activate() #GNOME_Control interface method on it.
+ * Activates the BonoboView embedded in @view_frame by calling the
+ * activate() #Bonobo_Control interface method on it.
  */
 void
-gnome_view_frame_view_activate (GnomeViewFrame *view_frame)
+bonobo_view_frame_view_activate (BonoboViewFrame *view_frame)
 {
 	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
 
-	gnome_control_frame_control_activate (
-		GNOME_CONTROL_FRAME (view_frame));
+	bonobo_control_frame_control_activate (
+		BONOBO_CONTROL_FRAME (view_frame));
 }
 
 
 /**
- * gnome_view_frame_view_deactivate:
- * @view_frame: The GnomeViewFrame object whose view should be
+ * bonobo_view_frame_view_deactivate:
+ * @view_frame: The BonoboViewFrame object whose view should be
  * deactivated.
  *
- * Deactivates the GnomeView embedded in @view_frame by calling a the
+ * Deactivates the BonoboView embedded in @view_frame by calling a the
  * activate() CORBA method on it with the parameter %FALSE.
  */
 void
-gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame)
+bonobo_view_frame_view_deactivate (BonoboViewFrame *view_frame)
 {
 	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
 
-	gnome_control_frame_control_deactivate (
-		GNOME_CONTROL_FRAME (view_frame));
+	bonobo_control_frame_control_deactivate (
+		BONOBO_CONTROL_FRAME (view_frame));
 }
 
 
 /**
- * gnome_view_frame_view_do_verb:
- * @view_frame: A GnomeViewFrame object which has an associated GnomeView.
- * @verb_name: The name of the verb to perform on @view_frame's GnomeView.
+ * bonobo_view_frame_view_do_verb:
+ * @view_frame: A BonoboViewFrame object which has an associated BonoboView.
+ * @verb_name: The name of the verb to perform on @view_frame's BonoboView.
  *
- * Performs the verb specified by @verb_name on the remote GnomeView
+ * Performs the verb specified by @verb_name on the remote BonoboView
  * object associated with @view_frame.
  */
 void
-gnome_view_frame_view_do_verb (GnomeViewFrame *view_frame,
+bonobo_view_frame_view_do_verb (BonoboViewFrame *view_frame,
 			       const char *verb_name)
 {
 	CORBA_Environment ev;
 
 	g_return_if_fail (verb_name != NULL);
 	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
 	g_return_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL);
 
 	CORBA_exception_init (&ev);
-	GNOME_View_do_verb (view_frame->priv->view, verb_name, &ev);
+	Bonobo_View_do_verb (view_frame->priv->view, verb_name, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (view_frame),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (view_frame),
 			(CORBA_Object) view_frame->priv->view, &ev);
 	}
 	CORBA_exception_free (&ev);
 }
 
 /**
- * gnome_view_frame_get_wrapper:
- * @view_frame: A GnomeViewFrame object.
+ * bonobo_view_frame_get_wrapper:
+ * @view_frame: A BonoboViewFrame object.
  *
- * Returns: The GnomeWrapper widget associated with this ViewFrame.
+ * Returns: The BonoboWrapper widget associated with this ViewFrame.
  */
 GtkWidget *
-gnome_view_frame_get_wrapper (GnomeViewFrame *view_frame)
+bonobo_view_frame_get_wrapper (BonoboViewFrame *view_frame)
 {
 	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
 
 	return GTK_WIDGET (view_frame->priv->wrapper);
 }
 
 /**
- * gnome_view_frame_set_ui_handler:
- * @view_frame: A GnomeViewFrame object.
- * @uih: A GnomeUIHandler object to be associated with this ViewFrame.
+ * bonobo_view_frame_set_ui_handler:
+ * @view_frame: A BonoboViewFrame object.
+ * @uih: A BonoboUIHandler object to be associated with this ViewFrame.
  *
- * Sets the GnomeUIHandler object for this ViewFrame.  When the
+ * Sets the BonoboUIHandler object for this ViewFrame.  When the
  * ViewFrame's View requests its container's UIHandler interface, the
  * ViewFrame will pass it the UIHandler specified here.  See also
- * gnome_view_frame_get_ui_handler().
+ * bonobo_view_frame_get_ui_handler().
  */
 void
-gnome_view_frame_set_ui_handler (GnomeViewFrame *view_frame, GnomeUIHandler *uih)
+bonobo_view_frame_set_ui_handler (BonoboViewFrame *view_frame, BonoboUIHandler *uih)
 {
 	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 
-	gnome_control_frame_set_ui_handler (GNOME_CONTROL_FRAME (view_frame), uih);
+	bonobo_control_frame_set_ui_handler (BONOBO_CONTROL_FRAME (view_frame), uih);
 }
 
 /**
- * gnome_view_frame_get_ui_handler:
- * @view_frame: A GnomeViewFrame object.
+ * bonobo_view_frame_get_ui_handler:
+ * @view_frame: A BonoboViewFrame object.
  *
- * Returns: The GNOMEUIHandler associated with this ViewFrame.  See
- * also gnome_view_frame_set_ui_handler().
+ * Returns: The BonoboUIHandler associated with this ViewFrame.  See
+ * also bonobo_view_frame_set_ui_handler().
  */
-GnomeUIHandler *
-gnome_view_frame_get_ui_handler (GnomeViewFrame *view_frame)
+BonoboUIHandler *
+bonobo_view_frame_get_ui_handler (BonoboViewFrame *view_frame)
 {
 	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
 
-	return gnome_control_frame_get_ui_handler (GNOME_CONTROL_FRAME (view_frame));
+	return bonobo_control_frame_get_ui_handler (BONOBO_CONTROL_FRAME (view_frame));
 }
 
 /**
- * gnome_view_frame_set_zoom_factor:
- * @view_frame: A GnomeViewFrame object.
+ * bonobo_view_frame_set_zoom_factor:
+ * @view_frame: A BonoboViewFrame object.
  * @zoom: a zoom factor.  1.0 means one-to-one mapping.
  *
  * Requests the associated view to change its zoom factor the the value in @zoom.
  */
 void
-gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom)
+bonobo_view_frame_set_zoom_factor (BonoboViewFrame *view_frame, double zoom)
 {
 	CORBA_Environment ev;
 
 	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
 	g_return_if_fail (zoom > 0.0);
 
 	CORBA_exception_init (&ev);
-	GNOME_View_set_zoom_factor (view_frame->priv->view, zoom, &ev);
+	Bonobo_View_set_zoom_factor (view_frame->priv->view, zoom, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (view_frame),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (view_frame),
 			(CORBA_Object) view_frame->priv->view, &ev);
 	}
 	CORBA_exception_free (&ev);
 }
 
 static void
-gnome_view_frame_verb_selected_cb (GnomeUIHandler *uih, void *user_data,
+bonobo_view_frame_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
 				   const char *path)
 {
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (user_data);
+	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (user_data);
 	const char     *verb_name;
 
 	g_assert (path != NULL);
@@ -530,7 +530,7 @@ gnome_view_frame_verb_selected_cb (GnomeUIHandler *uih, void *user_data,
 	/*
 	 * Now execute the verb on the remote View.
 	 */
-	gnome_view_frame_view_do_verb (view_frame, verb_name);
+	bonobo_view_frame_view_do_verb (view_frame, verb_name);
 
 	/*
 	 * Store the verb name.
@@ -540,12 +540,12 @@ gnome_view_frame_verb_selected_cb (GnomeUIHandler *uih, void *user_data,
 }
 
 /**
- * gnome_view_frame_popup_verbs:
- * @view_frame: A GnomeViewFrame object which is bound to a remote
- * GnomeView.
+ * bonobo_view_frame_popup_verbs:
+ * @view_frame: A BonoboViewFrame object which is bound to a remote
+ * BonoboView.
  *
  * This function creates a popup menu containing the available verbs
- * for the remote GnomeEmbeddable.  When the user selects a verb in
+ * for the remote BonoboEmbeddable.  When the user selects a verb in
  * the menu, the menu is destroyed, and the verb is executed on the
  * view to which @view_frame is bound.  This function is meant to act
  * as a convenience, to save people the trouble of having to
@@ -555,39 +555,39 @@ gnome_view_frame_verb_selected_cb (GnomeUIHandler *uih, void *user_data,
  * no verb was selected.
  */
 char *
-gnome_view_frame_popup_verbs (GnomeViewFrame *view_frame)
+bonobo_view_frame_popup_verbs (BonoboViewFrame *view_frame)
 {
-	GnomeUIHandler *popup;
+	BonoboUIHandler *popup;
 	GList *verbs, *l;
 	char *verb;
 
 	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
 	g_return_val_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL, NULL);
 
 	/*
 	 * First get the list of available verbs from the remote
-	 * GnomeEmbeddable.
+	 * BonoboEmbeddable.
 	 */
-	verbs = gnome_client_site_get_verbs (view_frame->priv->client_site);
+	verbs = bonobo_client_site_get_verbs (view_frame->priv->client_site);
 
 	/*
 	 * Now build a menu.
 	 */
-	popup = gnome_ui_handler_new ();
-	gnome_ui_handler_create_popup_menu (popup);
+	popup = bonobo_ui_handler_new ();
+	bonobo_ui_handler_create_popup_menu (popup);
 
 	for (l = verbs; l != NULL; l = l->next) {
 		GnomeVerb *verb = (GnomeVerb *) l->data;
 		char *path;
 
 		path = g_strconcat ("/", verb->name, NULL);
-		gnome_ui_handler_menu_new_item (popup, path,
+		bonobo_ui_handler_menu_new_item (popup, path,
 						verb->label, verb->hint,
 						-1,
-						GNOME_UI_HANDLER_PIXMAP_NONE, NULL,
+						BONOBO_UI_HANDLER_PIXMAP_NONE, NULL,
 						0, (GdkModifierType) 0,
-						gnome_view_frame_verb_selected_cb,
+						bonobo_view_frame_verb_selected_cb,
 						view_frame);
 
 		g_free (path);
@@ -596,12 +596,12 @@ gnome_view_frame_popup_verbs (GnomeViewFrame *view_frame)
 	/*
 	 * Pop up the menu.
 	 */
-	gnome_ui_handler_do_popup_menu (popup);
+	bonobo_ui_handler_do_popup_menu (popup);
 
 	/*
 	 * Destroy it.
 	 */
-	gnome_object_unref (GNOME_OBJECT (popup));
+	bonobo_object_unref (BONOBO_OBJECT (popup));
 
 	/*
 	 * Grab the name of the executed verb.
@@ -613,16 +613,16 @@ gnome_view_frame_popup_verbs (GnomeViewFrame *view_frame)
 }
 
 /**
- * gnome_view_frame_get_client_site:
+ * bonobo_view_frame_get_client_site:
  * @view_frame: The view frame
  *
- * Returns the GnomeClientSite associated with this view frame
+ * Returns the BonoboClientSite associated with this view frame
  */
-GnomeClientSite *
-gnome_view_frame_get_client_site (GnomeViewFrame *view_frame)
+BonoboClientSite *
+bonobo_view_frame_get_client_site (BonoboViewFrame *view_frame)
 {
 	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
 
 	return view_frame->priv->client_site;
 }

@@ -1,13 +1,13 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #include <config.h>
-#include "gnome-bonobo-selector.h"
+#include "bonobo-selector.h"
 #include <string.h> /* strcmp */
 
 #define DEFAULT_INTERFACE	"IDL:GNOME/Embeddable:1.0"
 
 static GtkDialogClass *parent_class;
 
-struct _GnomeBonoboSelectorPrivate 
+struct _BonoboSelectorPrivate 
 {
 	GtkWidget *clist;
 	GoadServerList *servers;
@@ -23,15 +23,15 @@ enum {
 
 guint bonobo_selector_signals[LAST_SIGNAL] = { 0, 0 };
 
-static void gnome_bonobo_selector_class_init (GnomeBonoboSelectorClass *klass);
-static void gnome_bonobo_selector_init (GtkWidget *widget);
-static void gnome_bonobo_selector_destroy (GtkObject *object);
+static void bonobo_selector_class_init (BonoboSelectorClass *klass);
+static void bonobo_selector_init (GtkWidget *widget);
+static void bonobo_selector_destroy (GtkObject *object);
 static void button_callback (GtkWidget *widget, gint button_number,
 	gpointer data);
 static void ok_callback (GtkWidget *widget, gpointer data);
 static void cancel_callback (GtkWidget *widget, gpointer data);
-static void add_gnorba_objects (GnomeBonoboSelector *widget); 
-static GList *get_filtered_objects (GnomeBonoboSelector *widget);
+static void add_gnorba_objects (BonoboSelector *widget); 
+static GList *get_filtered_objects (BonoboSelector *widget);
 static gboolean stringlist_contains (gchar **list, const gchar *word);
 
 
@@ -44,7 +44,7 @@ gnome_dialog_clicked (GnomeDialog *dialog, gint button_num)
 
 
 static void
-gnome_bonobo_selector_class_init (GnomeBonoboSelectorClass *klass)
+bonobo_selector_class_init (BonoboSelectorClass *klass)
 {
 	GtkObjectClass *object_class;
 	
@@ -55,27 +55,27 @@ gnome_bonobo_selector_class_init (GnomeBonoboSelectorClass *klass)
 
 	bonobo_selector_signals[OK] =
 		gtk_signal_new ("ok", GTK_RUN_LAST, object_class->type,
-		GTK_SIGNAL_OFFSET (GnomeBonoboSelectorClass, ok),
+		GTK_SIGNAL_OFFSET (BonoboSelectorClass, ok),
 		gtk_signal_default_marshaller, GTK_TYPE_NONE, 0);
 	
 	bonobo_selector_signals[CANCEL] =
 		gtk_signal_new ("cancel", GTK_RUN_LAST, object_class->type,
-		GTK_SIGNAL_OFFSET (GnomeBonoboSelectorClass, cancel),
+		GTK_SIGNAL_OFFSET (BonoboSelectorClass, cancel),
 		gtk_signal_default_marshaller, GTK_TYPE_NONE, 0);
 	
 	gtk_object_class_add_signals (object_class, bonobo_selector_signals,
 		LAST_SIGNAL);
 	
-	object_class->destroy = gnome_bonobo_selector_destroy;
+	object_class->destroy = bonobo_selector_destroy;
 }
 
 /**
- * gnome_bonobo_selector_get_type:
+ * bonobo_selector_get_type:
  *
- * Returns: The GtkType for the GnomeBonoboSelector object class.
+ * Returns: The GtkType for the BonoboSelector object class.
  */
 GtkType
-gnome_bonobo_selector_get_type (void)
+bonobo_selector_get_type (void)
 {
 	static guint bonobo_selector_type = 0;
 
@@ -83,11 +83,11 @@ gnome_bonobo_selector_get_type (void)
 	{
 		GtkTypeInfo bonobo_selector_info =
 		{
-			"GnomeBonoboSelector",
-			sizeof (GnomeBonoboSelector),
-			sizeof (GnomeBonoboSelectorClass),
-			 (GtkClassInitFunc) gnome_bonobo_selector_class_init,
-			 (GtkObjectInitFunc) gnome_bonobo_selector_init,
+			"BonoboSelector",
+			sizeof (BonoboSelector),
+			sizeof (BonoboSelectorClass),
+			 (GtkClassInitFunc) bonobo_selector_class_init,
+			 (GtkObjectInitFunc) bonobo_selector_init,
 			 (GtkArgSetFunc) NULL,
 			 (GtkArgGetFunc) NULL
 		};
@@ -101,31 +101,31 @@ gnome_bonobo_selector_get_type (void)
 }
 
 /**
- * gnome_bonobo_selector_new:
+ * bonobo_selector_new:
  * @title: A string which should go in the title of the
- * GnomeBonoboSelector window.
+ * BonoboSelector window.
  * @interfaces_required: A NULL_terminated array of interfaces which a
  * server must support in order to be listed in the selector.  Defaults
  * to "IDL:GNOME/Embeddable:1.0" if no interfaces are listed.
  *
- * Creates a new GnomeBonoboSelector widget.  The title of the dialog
+ * Creates a new BonoboSelector widget.  The title of the dialog
  * is set to @title, and the list of selectable servers is populated
  * with those servers which support the interfaces specified in
  * @interfaces_required.
  *
- * Returns: A pointer to the newly-created GnomeBonoboSelector widget.
+ * Returns: A pointer to the newly-created BonoboSelector widget.
  */
 GtkWidget *
-gnome_bonobo_selector_new (const gchar *title,
+bonobo_selector_new (const gchar *title,
 			   const gchar **interfaces_required)
 {
-	GnomeBonoboSelector *sel;
-	GnomeBonoboSelectorPrivate *priv;
+	BonoboSelector *sel;
+	BonoboSelectorPrivate *priv;
 
 	if (title == NULL) title = "";
 
 	
-	sel = gtk_type_new (gnome_bonobo_selector_get_type ());
+	sel = gtk_type_new (bonobo_selector_get_type ());
 	priv = sel->priv;
 	priv->interfaces_required = interfaces_required;
 	add_gnorba_objects (sel);
@@ -134,14 +134,14 @@ gnome_bonobo_selector_new (const gchar *title,
 }
 
 static void
-gnome_bonobo_selector_destroy (GtkObject *object)
+bonobo_selector_destroy (GtkObject *object)
 {
-	GnomeBonoboSelector *sel;
-	GnomeBonoboSelectorPrivate *priv; 
+	BonoboSelector *sel;
+	BonoboSelectorPrivate *priv; 
 	g_return_if_fail (object != NULL);
 	g_return_if_fail (GNOME_IS_BONOBO_SELECTOR (object));
 
-	sel = GNOME_BONOBO_SELECTOR (object);
+	sel = BONOBO_SELECTOR (object);
 	priv = sel->priv;
 
 	gtk_widget_destroy (priv->clist);
@@ -154,8 +154,8 @@ gnome_bonobo_selector_destroy (GtkObject *object)
 }
 
 /**
- * gnome_bonobo_selector_get_selected_goad_id:
- * @sel: A GnomeBonoboSelector widget.
+ * bonobo_selector_get_selected_goad_id:
+ * @sel: A BonoboSelector widget.
  *
  * Returns: A newly-allocated string containing the GOAD ID of the
  * currently-selected CORBA server (i.e., the corba server whose
@@ -163,11 +163,11 @@ gnome_bonobo_selector_destroy (GtkObject *object)
  * responsible for freeing this.
  */
 gchar *
-gnome_bonobo_selector_get_selected_goad_id (GnomeBonoboSelector *sel)
+bonobo_selector_get_selected_goad_id (BonoboSelector *sel)
 {
 	GList *selection;
 	gchar *text;
-	GnomeBonoboSelectorPrivate *priv; 
+	BonoboSelectorPrivate *priv; 
 	
 	g_return_val_if_fail (sel != NULL, NULL);
 	priv = sel->priv;	
@@ -183,10 +183,10 @@ gnome_bonobo_selector_get_selected_goad_id (GnomeBonoboSelector *sel)
  * gnome_bonobo_select_goad_id:
  * @title: The title to be used for the dialog.
  * @interfaces_required: A list of required interfaces.  See
- * gnome_bonobo_selector_new().
+ * bonobo_selector_new().
  *
- * Calls gnome_bonobo_selector_new() to create a new
- * GnomeBonoboSelector widget with the specified paramters, @title and
+ * Calls bonobo_selector_new() to create a new
+ * BonoboSelector widget with the specified paramters, @title and
  * @interfaces_required.  Then runs the dialog modally and allows
  * the user to make a selection.
  *
@@ -197,7 +197,7 @@ gchar *
 gnome_bonobo_select_goad_id (const gchar *title,
 			     const gchar **interfaces_required)
 {
-	GtkWidget *sel = gnome_bonobo_selector_new (title, interfaces_required);
+	GtkWidget *sel = bonobo_selector_new (title, interfaces_required);
 	gchar *name = NULL;
 	int n;
 
@@ -245,8 +245,8 @@ button_callback (GtkWidget *widget, gint button_number,
 static void
 ok_callback (GtkWidget *widget, gpointer data)
 {
-	char *text = gnome_bonobo_selector_get_selected_goad_id (
-		GNOME_BONOBO_SELECTOR (widget));
+	char *text = bonobo_selector_get_selected_goad_id (
+		BONOBO_SELECTOR (widget));
 	gtk_object_set_user_data (GTK_OBJECT (widget), text);
 	gtk_main_quit ();
 }
@@ -259,7 +259,7 @@ cancel_callback (GtkWidget *widget, gpointer data)
 
 static void
 select_row (GtkCList *clist, gint row, gint col, 
-	    GdkEvent *event, GnomeBonoboSelector *sel)
+	    GdkEvent *event, BonoboSelector *sel)
 {
 	if (event && event->type == GDK_2BUTTON_PRESS)
 		gnome_dialog_clicked ( GNOME_DIALOG (sel), 0);
@@ -273,16 +273,16 @@ select_row (GtkCList *clist, gint row, gint col,
 }
 
 static void
-gnome_bonobo_selector_init (GtkWidget *widget)
+bonobo_selector_init (GtkWidget *widget)
 {
-	GnomeBonoboSelector *sel = GNOME_BONOBO_SELECTOR (widget);
+	BonoboSelector *sel = BONOBO_SELECTOR (widget);
 	GtkWidget *scrolled;
-	GnomeBonoboSelectorPrivate *priv;
+	BonoboSelectorPrivate *priv;
 	gchar *titles[] = { N_("Bonobo object description"), "goadid", NULL };
 	
 	g_return_if_fail (widget != NULL);
 	
-	sel->priv = g_new0 (GnomeBonoboSelectorPrivate, 1);
+	sel->priv = g_new0 (BonoboSelectorPrivate, 1);
 	priv = sel->priv;
 	
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
@@ -317,11 +317,11 @@ gnome_bonobo_selector_init (GtkWidget *widget)
 }
 
 static void
-add_gnorba_objects (GnomeBonoboSelector *widget) 
+add_gnorba_objects (BonoboSelector *widget) 
 {
 	gchar *text[3];
 	GList *list = NULL;
-	GnomeBonoboSelectorPrivate *priv;
+	BonoboSelectorPrivate *priv;
 	
 	text[2] = NULL;
 	
@@ -355,14 +355,14 @@ add_gnorba_objects (GnomeBonoboSelector *widget)
 }
 
 static GList *
-get_filtered_objects (GnomeBonoboSelector *widget) 
+get_filtered_objects (BonoboSelector *widget) 
 {
 	int i = 0, j = 0, num = 0;
 	const gchar **inters;
 	GList *objects = NULL;
 	int n_inters = 0;
 	int n_objects = 0;
-	GnomeBonoboSelectorPrivate *priv;
+	BonoboSelectorPrivate *priv;
 	
 	g_return_val_if_fail (widget != NULL, NULL);
 

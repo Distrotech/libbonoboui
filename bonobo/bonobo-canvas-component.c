@@ -1,6 +1,6 @@
 /*
  * gnome-canvas-component.c: implements the CORBA interface for
- * the GNOME::Canvas:Item interface used in GNOME::Views.
+ * the GNOME::Canvas:Item interface used in Bonobo::Views.
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
@@ -11,11 +11,11 @@
 #include <stdio.h>
 #include <config.h>
 #include <gtk/gtksignal.h>
-#include <bonobo/bonobo.h>
+#include <bonobo/Bonobo.h>
 #include <libgnomeui/gnome-canvas.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>
-#include <bonobo/gnome-canvas-component.h>
+#include <bonobo/bonobo-canvas-component.h>
 
 enum {
 	SET_BOUNDS,
@@ -24,10 +24,10 @@ enum {
 
 static gint gcc_signals [LAST_SIGNAL] = { 0, };
 
-typedef GnomeCanvasComponent Gcc;
-#define GCC(x) GNOME_CANVAS_COMPONENT(x)
+typedef BonoboCanvasComponent Gcc;
+#define GCC(x) BONOBO_CANVAS_COMPONENT(x)
 
-struct _GnomeCanvasComponentPrivate {
+struct _BonoboCanvasComponentPrivate {
 	/*
 	 * The item
 	 */
@@ -41,12 +41,12 @@ struct _GnomeCanvasComponentPrivate {
  */
 #define ICLASS(x) GNOME_CANVAS_ITEM_CLASS ((GTK_OBJECT (x)->klass))
 
-POA_GNOME_Canvas_Item__vepv gnome_canvas_item_vepv;
+POA_Bonobo_Canvas_Component__vepv bonobo_canvas_component_vepv;
 
-static GnomeObjectClass *gcc_parent_class;
+static BonoboObjectClass *gcc_parent_class;
 
 static gboolean
-CORBA_SVP_Segment_to_SVPSeg (GNOME_Canvas_SVPSegment *seg, ArtSVPSeg *art_seg)
+CORBA_SVP_Segment_to_SVPSeg (Bonobo_Canvas_SVPSegment *seg, ArtSVPSeg *art_seg)
 {
 	int i;
 
@@ -82,12 +82,12 @@ free_seg (ArtSVPSeg *seg)
 /*
  * Encodes an ArtUta
  */
-static GNOME_Canvas_ArtUTA *
+static Bonobo_Canvas_ArtUTA *
 CORBA_UTA (ArtUta *uta)
 {
-	GNOME_Canvas_ArtUTA *cuta;
+	Bonobo_Canvas_ArtUTA *cuta;
 
-	cuta = GNOME_Canvas_ArtUTA__alloc ();
+	cuta = Bonobo_Canvas_ArtUTA__alloc ();
 	if (cuta == NULL)
 		return NULL;
 
@@ -99,7 +99,7 @@ CORBA_UTA (ArtUta *uta)
 
 		return cuta;
 	}
-	cuta->utiles._buffer = CORBA_sequence_GNOME_Canvas_int32_allocbuf (uta->width * uta->height);
+	cuta->utiles._buffer = CORBA_sequence_Bonobo_Canvas_int32_allocbuf (uta->width * uta->height);
 	cuta->utiles._length = uta->width * uta->height;
 	cuta->utiles._maximum = uta->width * uta->height;
 	if (cuta->utiles._buffer == NULL){
@@ -118,7 +118,7 @@ CORBA_UTA (ArtUta *uta)
 }
 
 static void
-restore_state (GnomeCanvasItem *item, const GNOME_Canvas_State *state)
+restore_state (GnomeCanvasItem *item, const Bonobo_Canvas_State *state)
 {
 	double affine [6];
 	int i;
@@ -135,11 +135,11 @@ restore_state (GnomeCanvasItem *item, const GNOME_Canvas_State *state)
 	GTK_LAYOUT (item->canvas)->yoffset = state->yoffset;
 }
 
-static GNOME_Canvas_ArtUTA *
+static Bonobo_Canvas_ArtUTA *
 gcc_update (PortableServer_Servant servant,
-	    const GNOME_Canvas_State     *state,
-	    const GNOME_Canvas_affine     aff,
-	    const GNOME_Canvas_SVP       *clip_path,
+	    const Bonobo_Canvas_State     *state,
+	    const Bonobo_Canvas_affine     aff,
+	    const Bonobo_Canvas_SVP       *clip_path,
 	    CORBA_long                    flags,
 	    CORBA_double                 *x1, 
 	    CORBA_double                 *y1, 
@@ -147,12 +147,12 @@ gcc_update (PortableServer_Servant servant,
 	    CORBA_double                 *y2, 
 	    CORBA_Environment            *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	double affine [6];
 	int i;
 	ArtSVP *svp = NULL;
-	GNOME_Canvas_ArtUTA *cuta;
+	Bonobo_Canvas_ArtUTA *cuta;
 
 	restore_state (item, state);
 	for (i = 0; i < 6; i++)
@@ -220,10 +220,10 @@ static GdkGC *the_gc;
 
 static void
 gcc_realize (PortableServer_Servant servant,
-	     GNOME_Canvas_window_id window,
+	     Bonobo_Canvas_window_id window,
 	     CORBA_Environment      *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	GdkWindow *gdk_window = gdk_window_foreign_new (window);
 
@@ -241,7 +241,7 @@ static void
 gcc_unrealize (PortableServer_Servant servant,
 	       CORBA_Environment      *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 
 	ICLASS (item)->unrealize (item);
@@ -256,7 +256,7 @@ static void
 gcc_map (PortableServer_Servant servant,
 	 CORBA_Environment      *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	
 	ICLASS (item)->map (item);
@@ -266,7 +266,7 @@ static void
 gcc_unmap (PortableServer_Servant servant,
 	   CORBA_Environment      *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	
 	ICLASS (item)->unmap (item);
@@ -289,13 +289,13 @@ my_gdk_pixmap_foreign_release (GdkPixmap *pixmap)
 
 static void
 gcc_draw (PortableServer_Servant servant,
-	  const GNOME_Canvas_State *state,
-	  const GNOME_Canvas_window_id drawable,
+	  const Bonobo_Canvas_State *state,
+	  const Bonobo_Canvas_window_id drawable,
 	  CORBA_short x, CORBA_short y,
 	  CORBA_short width, CORBA_short height,
 	  CORBA_Environment *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	GdkPixmap *pix;
 	
@@ -316,14 +316,14 @@ gcc_draw (PortableServer_Servant servant,
 
 static void
 gcc_render (PortableServer_Servant servant,
-	    GNOME_Canvas_Buf *buf,
+	    Bonobo_Canvas_Buf *buf,
 	    CORBA_Environment *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	GnomeCanvasBuf canvas_buf;
 
-	if (!(buf->flags & GNOME_Canvas_IS_BUF)){
+	if (!(buf->flags & Bonobo_Canvas_IS_BUF)){
 		buf->rgb_buf._length = buf->row_stride * (buf->rect.y1 - buf->rect.y0);
 		buf->rgb_buf._maximum = buf->rgb_buf._length;
 		
@@ -346,12 +346,12 @@ gcc_render (PortableServer_Servant servant,
 	canvas_buf.rect.y0 = buf->rect.y0;
 	canvas_buf.rect.y1 = buf->rect.y1;
 	canvas_buf.bg_color = buf->bg_color;
-	if (buf->flags & GNOME_Canvas_IS_BG)
+	if (buf->flags & Bonobo_Canvas_IS_BG)
 		canvas_buf.is_bg = 1;
 	else
 		canvas_buf.is_bg = 0;
 
-	if (buf->flags & GNOME_Canvas_IS_BUF)
+	if (buf->flags & Bonobo_Canvas_IS_BUF)
 		canvas_buf.is_buf = 1;
 	else
 		canvas_buf.is_buf = 0;
@@ -362,8 +362,8 @@ gcc_render (PortableServer_Servant servant,
 	 * return
 	 */
 	buf->flags =
-		(canvas_buf.is_bg ? GNOME_Canvas_IS_BG : 0) |
-		(canvas_buf.is_buf ? GNOME_Canvas_IS_BUF : 0);
+		(canvas_buf.is_bg ? Bonobo_Canvas_IS_BG : 0) |
+		(canvas_buf.is_buf ? Bonobo_Canvas_IS_BUF : 0);
 }
 
 static CORBA_boolean 
@@ -371,7 +371,7 @@ gcc_contains (PortableServer_Servant servant,
 	      CORBA_double x, CORBA_double y,
 	      CORBA_Environment *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	GnomeCanvasItem *new_item;
 	CORBA_boolean ret;
@@ -386,12 +386,12 @@ gcc_contains (PortableServer_Servant servant,
 
 static void
 gcc_bounds (PortableServer_Servant servant,
-	    const GNOME_Canvas_State *state,
+	    const Bonobo_Canvas_State *state,
 	    CORBA_double * x1, CORBA_double * x2,
 	    CORBA_double * y1, CORBA_double * y2,
 	    CORBA_Environment *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 
 	restore_state (item, state);
@@ -402,16 +402,16 @@ gcc_bounds (PortableServer_Servant servant,
  * Converts the event marshalled from the container into a GdkEvent
  */
 static void
-GNOME_Gdk_Event_to_GdkEvent (const GNOME_Gdk_Event *gnome_event, GdkEvent *gdk_event)
+Bonobo_Gdk_Event_to_GdkEvent (const Bonobo_Gdk_Event *gnome_event, GdkEvent *gdk_event)
 {
 	switch (gnome_event->_d){
-	case GNOME_Gdk_FOCUS:
+	case Bonobo_Gdk_FOCUS:
 		gdk_event->type = GDK_FOCUS_CHANGE;
 		gdk_event->focus_change.in = gnome_event->_u.focus.inside;
 		return;
 		
-	case GNOME_Gdk_KEY:
-		if (gnome_event->_u.key.type == GNOME_Gdk_KEY_PRESS)
+	case Bonobo_Gdk_KEY:
+		if (gnome_event->_u.key.type == Bonobo_Gdk_KEY_PRESS)
 			gdk_event->type = GDK_KEY_PRESS;
 		else
 			gdk_event->type = GDK_KEY_RELEASE;
@@ -422,7 +422,7 @@ GNOME_Gdk_Event_to_GdkEvent (const GNOME_Gdk_Event *gnome_event, GdkEvent *gdk_e
 		gdk_event->key.string = g_strdup (gnome_event->_u.key.str);
 		return;
 		
-	case GNOME_Gdk_MOTION:
+	case Bonobo_Gdk_MOTION:
 		gdk_event->type = GDK_MOTION_NOTIFY;
 		gdk_event->motion.time = gnome_event->_u.motion.time;
 		gdk_event->motion.x = gnome_event->_u.motion.x;
@@ -435,18 +435,18 @@ GNOME_Gdk_Event_to_GdkEvent (const GNOME_Gdk_Event *gnome_event, GdkEvent *gdk_e
 		gdk_event->motion.is_hint = gnome_event->_u.motion.is_hint;
 		return;
 		
-	case GNOME_Gdk_BUTTON:
+	case Bonobo_Gdk_BUTTON:
 		switch (gnome_event->_u.button.type){
-		case GNOME_Gdk_BUTTON_PRESS:
+		case Bonobo_Gdk_BUTTON_PRESS:
 			gdk_event->type = GDK_BUTTON_PRESS;
 			break;
-		case GNOME_Gdk_BUTTON_RELEASE:
+		case Bonobo_Gdk_BUTTON_RELEASE:
 			gdk_event->type = GDK_BUTTON_RELEASE;
 			break;
-		case GNOME_Gdk_BUTTON_2_PRESS:
+		case Bonobo_Gdk_BUTTON_2_PRESS:
 			gdk_event->type = GDK_2BUTTON_PRESS;
 			break;
-		case GNOME_Gdk_BUTTON_3_PRESS:
+		case Bonobo_Gdk_BUTTON_3_PRESS:
 			gdk_event->type = GDK_3BUTTON_PRESS;
 			break;
 		}
@@ -458,8 +458,8 @@ GNOME_Gdk_Event_to_GdkEvent (const GNOME_Gdk_Event *gnome_event, GdkEvent *gdk_e
 		gdk_event->button.button = gnome_event->_u.button.button;
 		return;
 		
-	case GNOME_Gdk_CROSSING:
-		if (gnome_event->_u.crossing.type == GNOME_Gdk_ENTER)
+	case Bonobo_Gdk_CROSSING:
+		if (gnome_event->_u.crossing.type == Bonobo_Gdk_ENTER)
 			gdk_event->type = GDK_ENTER_NOTIFY;
 		else
 			gdk_event->type = GDK_LEAVE_NOTIFY;
@@ -470,14 +470,14 @@ GNOME_Gdk_Event_to_GdkEvent (const GNOME_Gdk_Event *gnome_event, GdkEvent *gdk_e
 		gdk_event->crossing.x_root = gnome_event->_u.crossing.x_root;
 		gdk_event->crossing.y_root = gnome_event->_u.crossing.y_root;
 		switch (gnome_event->_u.crossing.mode){
-		case GNOME_Gdk_NORMAL:
+		case Bonobo_Gdk_NORMAL:
 			gdk_event->crossing.mode = GDK_CROSSING_NORMAL;
 			break;
 			
-		case GNOME_Gdk_GRAB:
+		case Bonobo_Gdk_GRAB:
 			gdk_event->crossing.mode = GDK_CROSSING_GRAB;
 			break;
-		case GNOME_Gdk_UNGRAB:
+		case Bonobo_Gdk_UNGRAB:
 			gdk_event->crossing.mode = GDK_CROSSING_UNGRAB;
 			break;
 		}
@@ -499,11 +499,11 @@ free_event (GdkEvent *event)
  */
 static CORBA_boolean
 gcc_event (PortableServer_Servant    servant,
-	   const GNOME_Canvas_State *state,
-	   const GNOME_Gdk_Event    *gnome_event,
+	   const Bonobo_Canvas_State *state,
+	   const Bonobo_Gdk_Event    *gnome_event,
 	   CORBA_Environment        *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	GdkEvent gdk_event;
 	int retval;
@@ -511,7 +511,7 @@ gcc_event (PortableServer_Servant    servant,
 	if (!ICLASS (item)->event)
 		return FALSE;
 
-	GNOME_Gdk_Event_to_GdkEvent (gnome_event, &gdk_event);
+	Bonobo_Gdk_Event_to_GdkEvent (gnome_event, &gdk_event);
 
 	restore_state (item, state);
 	retval = ICLASS (item)->event (item, &gdk_event);
@@ -526,7 +526,7 @@ gcc_size_set (PortableServer_Servant servant,
 	      CORBA_short width, CORBA_short height,
 	      CORBA_Environment *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	GtkAllocation alloc;
 
@@ -540,24 +540,24 @@ gcc_size_set (PortableServer_Servant servant,
 
 static void
 gcc_set_bounds (PortableServer_Servant    servant,
-		const GNOME_Canvas_DRect *bbox,
+		const Bonobo_Canvas_DRect *bbox,
 		CORBA_Environment        *ev)
 {
-	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 
 	gtk_signal_emit (GTK_OBJECT (gcc), gcc_signals [SET_BOUNDS], bbox, &ev);
 }
 
 /**
- * gnome_canvas_item_get_epv:
+ * bonobo_canvas_component_get_epv:
  *
  */
-POA_GNOME_Canvas_Item__epv *
-gnome_canvas_item_get_epv (void)
+POA_Bonobo_Canvas_Component__epv *
+bonobo_canvas_component_get_epv (void)
 {
-	POA_GNOME_Canvas_Item__epv *epv;
+	POA_Bonobo_Canvas_Component__epv *epv;
 
-	epv = g_new0 (POA_GNOME_Canvas_Item__epv, 1);
+	epv = g_new0 (POA_Bonobo_Canvas_Component__epv, 1);
 
 	epv->update    = gcc_update;
 	epv->realize   = gcc_realize;
@@ -581,9 +581,8 @@ gcc_corba_class_init (void)
 	/*
 	 * Initialize the VEPV
 	 */
-	gnome_canvas_item_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_canvas_item_vepv.GNOME_Canvas_Item_epv = gnome_canvas_item_get_epv ();
-	
+	bonobo_canvas_component_vepv.Bonobo_Unknown_epv     = bonobo_object_get_epv ();
+	bonobo_canvas_component_vepv.Bonobo_Canvas_Component_epv = bonobo_canvas_component_get_epv ();
 }
 
 static void
@@ -599,7 +598,7 @@ gcc_finalize (GtkObject *object)
 static void
 gcc_class_init (GtkObjectClass *object_class)
 {
-	gcc_parent_class = gtk_type_class (gnome_object_get_type ());
+	gcc_parent_class = gtk_type_class (bonobo_object_get_type ());
 
 	gcc_corba_class_init ();
 	object_class->finalize = gcc_finalize;
@@ -608,7 +607,7 @@ gcc_class_init (GtkObjectClass *object_class)
                 gtk_signal_new ("set_bounds",
                                 GTK_RUN_LAST,
                                 object_class->type,
-                                GTK_SIGNAL_OFFSET (GnomeCanvasComponentClass, set_bounds), 
+                                GTK_SIGNAL_OFFSET (BonoboCanvasComponentClass, set_bounds), 
                                 gtk_marshal_NONE__POINTER_POINTER,
                                 GTK_TYPE_NONE, 2,
 				GTK_TYPE_POINTER, GTK_TYPE_POINTER);
@@ -621,19 +620,19 @@ gcc_init (GtkObject *object)
 {
 	Gcc *gcc = GCC (object);
 
-	gcc->priv = g_new0 (GnomeCanvasComponentPrivate, 1);
+	gcc->priv = g_new0 (BonoboCanvasComponentPrivate, 1);
 }
 
 GtkType
-gnome_canvas_component_get_type (void)
+bonobo_canvas_component_get_type (void)
 {
 	static GtkType type = 0;
 
 	if (!type){
 		GtkTypeInfo info = {
-			"GnomeCanvasComponent",
-			sizeof (GnomeCanvasComponent),
-			sizeof (GnomeCanvasComponentClass),
+			"BonoboCanvasComponent",
+			sizeof (BonoboCanvasComponent),
+			sizeof (BonoboCanvasComponentClass),
 			(GtkClassInitFunc) gcc_class_init,
 			(GtkObjectInitFunc) gcc_init,
 			NULL, /* reserved 1 */
@@ -641,23 +640,23 @@ gnome_canvas_component_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_object_get_type (), &info);
+		type = gtk_type_unique (bonobo_object_get_type (), &info);
 	}
 
 	return type;
 }
 
-GNOME_Canvas_Item
-gnome_canvas_component_object_create (GnomeObject *object)
+Bonobo_Canvas_Component
+bonobo_canvas_component_object_create (BonoboObject *object)
 {
-	POA_GNOME_Canvas_Item *servant;
+	POA_Bonobo_Canvas_Component *servant;
 	CORBA_Environment ev;
 	
-	servant = (POA_GNOME_Canvas_Item *) g_new0 (GnomeObjectServant, 1);
-	servant->vepv = &gnome_canvas_item_vepv;
+	servant = (POA_Bonobo_Canvas_Component *) g_new0 (BonoboObjectServant, 1);
+	servant->vepv = &bonobo_canvas_component_vepv;
 
 	CORBA_exception_init (&ev);
-	POA_GNOME_Canvas_Item__init ((PortableServer_Servant) servant, &ev);
+	POA_Bonobo_Canvas_Component__init ((PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
 		g_free (servant);
 		CORBA_exception_free (&ev);
@@ -665,32 +664,32 @@ gnome_canvas_component_object_create (GnomeObject *object)
 	}
 
 	CORBA_exception_free (&ev);
-	return (GNOME_View) gnome_object_activate_servant (object, servant);
+	return (Bonobo_View) bonobo_object_activate_servant (object, servant);
 }
 
 /**
- * gnome_canvas_component_construct:
- * @comp: a #GnomeCanvasComponent to initialize
- * @corba_canvas_comp: A GNOME_Canvas_Item corba object.
+ * bonobo_canvas_component_construct:
+ * @comp: a #BonoboCanvasComponent to initialize
+ * @corba_canvas_comp: A Bonobo_Canvas_Component corba object.
  * @item: A #GnomeCanvasItem that is being exported
  *
  * Creates a CORBA server for the interface GNOME::Canvas::Item
  * wrapping @item.
  *
- * Returns: The GnomeCanvasComponent.
+ * Returns: The BonoboCanvasComponent.
  */
-GnomeCanvasComponent *
-gnome_canvas_component_construct (GnomeCanvasComponent *comp,
-				  GNOME_Canvas_Item     corba_canvas_comp,
+BonoboCanvasComponent *
+bonobo_canvas_component_construct (BonoboCanvasComponent *comp,
+				  Bonobo_Canvas_Component     corba_canvas_comp,
 				  GnomeCanvasItem      *item)
 {
 	g_return_val_if_fail (comp != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CANVAS_COMPONENT (comp), NULL);
+	g_return_val_if_fail (BONOBO_IS_CANVAS_COMPONENT (comp), NULL);
 	g_return_val_if_fail (corba_canvas_comp != NULL, NULL);
 	g_return_val_if_fail (item != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_ITEM (item), NULL);
 
-	gnome_object_construct (GNOME_OBJECT (comp), corba_canvas_comp);
+	bonobo_object_construct (BONOBO_OBJECT (comp), corba_canvas_comp);
 	comp->priv->item = item;
 
 	return comp;
@@ -698,45 +697,45 @@ gnome_canvas_component_construct (GnomeCanvasComponent *comp,
 
 				  
 /**
- * gnome_canvas_component_new:
+ * bonobo_canvas_component_new:
  * @item: A GnomeCanvasItem that is being exported
  *
  * Creates a CORBA server for the interface GNOME::Canvas::Item
  * wrapping @item.
  *
- * Returns: The GnomeCanvasComponent.
+ * Returns: The BonoboCanvasComponent.
  */
-GnomeCanvasComponent *
-gnome_canvas_component_new (GnomeCanvasItem *item)
+BonoboCanvasComponent *
+bonobo_canvas_component_new (GnomeCanvasItem *item)
 {
-	GnomeCanvasComponent *comp;
-	GNOME_Canvas_Item corba_canvas_comp;
+	BonoboCanvasComponent *comp;
+	Bonobo_Canvas_Component corba_canvas_comp;
 	
 	g_return_val_if_fail (item != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_ITEM (item), NULL);
 	
-	comp = gtk_type_new (gnome_canvas_component_get_type ());
-	corba_canvas_comp = gnome_canvas_component_object_create (
-		GNOME_OBJECT (comp));
+	comp = gtk_type_new (bonobo_canvas_component_get_type ());
+	corba_canvas_comp = bonobo_canvas_component_object_create (
+		BONOBO_OBJECT (comp));
 
 	if (corba_canvas_comp == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (comp));
 		return NULL;
 	}
-	return gnome_canvas_component_construct (comp, corba_canvas_comp, item);
+	return bonobo_canvas_component_construct (comp, corba_canvas_comp, item);
 }
 
 /** 
- * gnome_canvas_component_get_item:
- * @comp: A #GnomeCanvasComponent object
+ * bonobo_canvas_component_get_item:
+ * @comp: A #BonoboCanvasComponent object
  *
- * Returns: The GnomeCanvasItem that this GnomeCanvasComponent proxies
+ * Returns: The GnomeCanvasItem that this BonoboCanvasComponent proxies
  */
 GnomeCanvasItem *
-gnome_canvas_component_get_item (GnomeCanvasComponent *comp)
+bonobo_canvas_component_get_item (BonoboCanvasComponent *comp)
 {
 	g_return_val_if_fail (comp != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CANVAS_COMPONENT (comp), NULL);
+	g_return_val_if_fail (BONOBO_IS_CANVAS_COMPONENT (comp), NULL);
 
 	return comp->priv->item;
 }
@@ -766,7 +765,7 @@ gnome_canvas_component_get_item (GnomeCanvasComponent *comp)
 
 typedef struct {
 	GnomeCanvasGroup       group;
-	GNOME_Canvas_ItemProxy proxy;
+	Bonobo_Canvas_ComponentProxy proxy;
 } RootItemHack;
 
 typedef struct {
@@ -782,12 +781,12 @@ rih_update (GnomeCanvasItem *item, double affine [6], ArtSVP *svp, int flags)
 {
 	RootItemHack *rih = (RootItemHack *) item;
 	CORBA_Environment ev;
-	GNOME_Canvas_ArtUTA *cuta;
+	Bonobo_Canvas_ArtUTA *cuta;
 
 	cuta = CORBA_UTA (item->canvas->redraw_area);
 
 	CORBA_exception_init (&ev);
-	GNOME_Canvas_ItemProxy_request_update (rih->proxy, cuta, &ev);
+	Bonobo_Canvas_ComponentProxy_request_update (rih->proxy, cuta, &ev);
 	CORBA_free (cuta);
 	CORBA_exception_free (&ev);
 
@@ -830,7 +829,7 @@ root_item_hack_get_type (void)
 }
 
 static RootItemHack *
-root_item_hack_new (GnomeCanvas *canvas, GNOME_Canvas_ItemProxy proxy)
+root_item_hack_new (GnomeCanvas *canvas, Bonobo_Canvas_ComponentProxy proxy)
 {
 	RootItemHack *item_hack;
 
@@ -842,24 +841,24 @@ root_item_hack_new (GnomeCanvas *canvas, GNOME_Canvas_ItemProxy proxy)
 }
 
 /**
- * gnome_canvas_component_set_proxy:
- * @comp: A #GnomeCanvasComponent to operate on
- * @proxy: A GNOME_Canvas_ItemProxy CORBA object reference to our update proxy
+ * bonobo_canvas_component_set_proxy:
+ * @comp: A #BonoboCanvasComponent to operate on
+ * @proxy: A Bonobo_Canvas_ComponentProxy CORBA object reference to our update proxy
  *
  * This routine sets the updating proxy for the @comp Canvas Component to be
  * the @proxy.
  *
- * This modifies the canvas bound to the GnomeCanvasComponent object to have
+ * This modifies the canvas bound to the BonoboCanvasComponent object to have
  * our 'filtering' root item for propagating the updates and repaints to the
  * container canvas.
  */
 void
-gnome_canvas_component_set_proxy (GnomeCanvasComponent *comp, GNOME_Canvas_ItemProxy proxy)
+bonobo_canvas_component_set_proxy (BonoboCanvasComponent *comp, Bonobo_Canvas_ComponentProxy proxy)
 {
 	GnomeCanvas *canvas;
 	
 	g_return_if_fail (comp != NULL);
-	g_return_if_fail (GNOME_IS_CANVAS_COMPONENT (comp));
+	g_return_if_fail (BONOBO_IS_CANVAS_COMPONENT (comp));
 
 	canvas = comp->priv->item->canvas;
 	

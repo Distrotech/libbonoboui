@@ -1,77 +1,77 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-#ifndef _GNOME_VIEW_FRAME_H_
-#define _GNOME_VIEW_FRAME_H_
+#ifndef _BONOBO_VIEW_FRAME_H_
+#define _BONOBO_VIEW_FRAME_H_
 
 #include <libgnome/gnome-defs.h>
-#include <bonobo/gnome-control-frame.h>
-#include <bonobo/gnome-ui-handler.h>
+#include <bonobo/bonobo-control-frame.h>
+#include <bonobo/bonobo-ui-handler.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_VIEW_FRAME_TYPE        (gnome_view_frame_get_type ())
-#define GNOME_VIEW_FRAME(o)          (GTK_CHECK_CAST ((o), GNOME_VIEW_FRAME_TYPE, GnomeViewFrame))
-#define GNOME_VIEW_FRAME_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_VIEW_FRAME_TYPE, GnomeViewFrameClass))
-#define GNOME_IS_VIEW_FRAME(o)       (GTK_CHECK_TYPE ((o), GNOME_VIEW_FRAME_TYPE))
-#define GNOME_IS_VIEW_FRAME_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_FRAME_TYPE))
+#define BONOBO_VIEW_FRAME_TYPE        (bonobo_view_frame_get_type ())
+#define BONOBO_VIEW_FRAME(o)          (GTK_CHECK_CAST ((o), BONOBO_VIEW_FRAME_TYPE, BonoboViewFrame))
+#define BONOBO_VIEW_FRAME_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_VIEW_FRAME_TYPE, BonoboViewFrameClass))
+#define BONOBO_IS_VIEW_FRAME(o)       (GTK_CHECK_TYPE ((o), BONOBO_VIEW_FRAME_TYPE))
+#define BONOBO_IS_VIEW_FRAME_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_VIEW_FRAME_TYPE))
 
-typedef struct _GnomeViewFramePrivate GnomeViewFramePrivate;
-typedef struct _GnomeViewFrame GnomeViewFrame;
+typedef struct _BonoboViewFramePrivate BonoboViewFramePrivate;
+typedef struct _BonoboViewFrame BonoboViewFrame;
 
-#include <bonobo/gnome-client-site.h>
+#include <bonobo/bonobo-client-site.h>
 
-struct _GnomeViewFrame {
-	GnomeControlFrame	 base;
-	GnomeViewFramePrivate	*priv;
+struct _BonoboViewFrame {
+	BonoboControlFrame	 base;
+	BonoboViewFramePrivate	*priv;
 };
 
 typedef struct {
-	GnomeControlFrameClass parent_class;
+	BonoboControlFrameClass parent_class;
 
 	/*
 	 * Signals.
 	 */
-	void (*user_activate)       (GnomeViewFrame *view_frame);
-	void (*user_context)        (GnomeViewFrame *view_frame);
-} GnomeViewFrameClass;
+	void (*user_activate)       (BonoboViewFrame *view_frame);
+	void (*user_context)        (BonoboViewFrame *view_frame);
+} BonoboViewFrameClass;
 
-GtkType           gnome_view_frame_get_type        (void);
-GnomeViewFrame   *gnome_view_frame_construct       (GnomeViewFrame *view_frame,
-						    GNOME_ViewFrame corba_view_frame,
-						    GnomeClientSite *client_site);
-GnomeViewFrame   *gnome_view_frame_new             (GnomeClientSite *client_site);
-void		  gnome_view_frame_bind_to_view	   (GnomeViewFrame *view_frame,
-						    GNOME_View view);
-GNOME_View	  gnome_view_frame_get_view	   (GnomeViewFrame *view_frame);
+GtkType           bonobo_view_frame_get_type        (void);
+BonoboViewFrame   *bonobo_view_frame_construct       (BonoboViewFrame *view_frame,
+						    Bonobo_ViewFrame corba_view_frame,
+						    BonoboClientSite *client_site);
+BonoboViewFrame   *bonobo_view_frame_new             (BonoboClientSite *client_site);
+void		  bonobo_view_frame_bind_to_view	   (BonoboViewFrame *view_frame,
+						    Bonobo_View view);
+Bonobo_View	  bonobo_view_frame_get_view	   (BonoboViewFrame *view_frame);
 
-GnomeClientSite  *gnome_view_frame_get_client_site (GnomeViewFrame *view_frame);
+BonoboClientSite  *bonobo_view_frame_get_client_site (BonoboViewFrame *view_frame);
 
-GtkWidget        *gnome_view_frame_get_wrapper     (GnomeViewFrame *view_frame);
+GtkWidget        *bonobo_view_frame_get_wrapper     (BonoboViewFrame *view_frame);
 
-char		 *gnome_view_frame_popup_verbs	   (GnomeViewFrame *view_frame);
+char		 *bonobo_view_frame_popup_verbs	   (BonoboViewFrame *view_frame);
 
-void		  gnome_view_frame_set_covered     (GnomeViewFrame *view_frame,
+void		  bonobo_view_frame_set_covered     (BonoboViewFrame *view_frame,
 						    gboolean covered);
 
-void              gnome_view_frame_set_ui_handler  (GnomeViewFrame *view_frame, GnomeUIHandler *uih);
-GnomeUIHandler   *gnome_view_frame_get_ui_handler  (GnomeViewFrame *view_frame);
+void              bonobo_view_frame_set_ui_handler  (BonoboViewFrame *view_frame, BonoboUIHandler *uih);
+BonoboUIHandler   *bonobo_view_frame_get_ui_handler  (BonoboViewFrame *view_frame);
 /*
- * A GnomeViewFrame acts as a proxy for the remote GnomeView object to
+ * A BonoboViewFrame acts as a proxy for the remote BonoboView object to
  * which it is bound.  These functions act as wrappers which a
- * container can use to communicate with the GnomeView associated with
- * a given GnomeViewFrame.
+ * container can use to communicate with the BonoboView associated with
+ * a given BonoboViewFrame.
  */
-void		  gnome_view_frame_view_activate   (GnomeViewFrame *view_frame);
-void		  gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame);
+void		  bonobo_view_frame_view_activate   (BonoboViewFrame *view_frame);
+void		  bonobo_view_frame_view_deactivate (BonoboViewFrame *view_frame);
 
-void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
+void		  bonobo_view_frame_view_do_verb	   (BonoboViewFrame *view_frame,
 						    const char *verb_name);
-void              gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom);
+void              bonobo_view_frame_set_zoom_factor (BonoboViewFrame *view_frame, double zoom);
 
-POA_GNOME_ViewFrame__epv *gnome_view_frame_get_epv (void);
+POA_Bonobo_ViewFrame__epv *bonobo_view_frame_get_epv (void);
 
 /* The entry point vectors for the server we provide */
-extern POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
+extern POA_Bonobo_ViewFrame__vepv bonobo_view_frame_vepv;
 
 END_GNOME_DECLS
 
-#endif /* _GNOME_VIEW_FRAME_H_ */
+#endif /* _BONOBO_VIEW_FRAME_H_ */
