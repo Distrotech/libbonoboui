@@ -37,7 +37,6 @@ IGNORE_HFILES= bonobo-client-site.h		\
 	bonobo-item-handler.h			\
 	bonobo-transient.h			\
 	bonobo-ui-config-widget.h		\
-	bonobo-ui-engine-config.h		\
 	bonobo-ui-engine-private.h		\
 	bonobo-ui-marshal.h			\
 	bonobo-ui-node-private.h		\
@@ -56,6 +55,8 @@ IGNORE_HFILES= bonobo-client-site.h		\
 	bonobo-ui-toolbar-separator-item.h	\
 	bonobo-ui-toolbar.h			\
 	bonobo-ui-toolbar-toggle-button-item.h	\
+	bonobo-canvas-item.h			\
+	bonobo-canvas-component.h		\
 	bonobo-ui-type-builtins.h
 
 

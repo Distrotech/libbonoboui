@@ -2,37 +2,28 @@
 <!-- -*- xml-lite -*- -->
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
     "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-    <!ENTITY bonobo-canvas-component SYSTEM "xml/bonobo-canvas-component.xml">
-    <!ENTITY bonobo-canvas-item SYSTEM "xml/bonobo-canvas-item.xml">
-    <!ENTITY bonobo-component-io SYSTEM "xml/bonobo-component-io.xml">
     <!ENTITY bonobo-control-frame SYSTEM "xml/bonobo-control-frame.xml">
     <!ENTITY bonobo-control SYSTEM "xml/bonobo-control.xml">
-    <!ENTITY bonobo-desktop-window SYSTEM "xml/bonobo-desktop-window.xml">
-    <!ENTITY bonobo-embeddable SYSTEM "xml/bonobo-embeddable.xml">
     <!ENTITY bonobo-plug SYSTEM "xml/bonobo-plug.xml">
-    <!ENTITY bonobo-print-client SYSTEM "xml/bonobo-print-client.xml">
-    <!ENTITY bonobo-print SYSTEM "xml/bonobo-print.xml">
-    <!ENTITY bonobo-progressive SYSTEM "xml/bonobo-progressive.xml">
     <!ENTITY bonobo-selector SYSTEM "xml/bonobo-selector.xml">
+    <!ENTITY bonobo-selector-widget SYSTEM "xml/bonobo-selector-widget.xml">
     <!ENTITY bonobo-socket SYSTEM "xml/bonobo-socket.xml">
     <!ENTITY bonobo-property-control SYSTEM "xml/bonobo-property-control.xml">
     <!ENTITY bonobo-ui-component SYSTEM "xml/bonobo-ui-component.xml">
     <!ENTITY bonobo-ui-container SYSTEM "xml/bonobo-ui-container.xml">
     <!ENTITY bonobo-ui-engine SYSTEM "xml/bonobo-ui-engine.xml">
+    <!ENTITY bonobo-ui-engine-config SYSTEM "xml/bonobo-ui-engine-config.xml">
     <!ENTITY bonobo-ui-node SYSTEM "xml/bonobo-ui-node.xml">
+    <!ENTITY bonobo-ui-main SYSTEM "xml/bonobo-ui-main.xml">
     <!ENTITY bonobo-ui-sync SYSTEM "xml/bonobo-ui-sync.xml">
-    <!ENTITY bonobo-ui-toolbar-button-item SYSTEM "xml/bonobo-ui-toolbar-button-item.xml">
-    <!ENTITY bonobo-ui-toolbar-item SYSTEM "xml/bonobo-ui-toolbar-item.xml">
-    <!ENTITY bonobo-ui-toolbar-toggle-button-item SYSTEM "xml/bonobo-ui-toolbar-toggle-button-item.xml">
     <!ENTITY bonobo-ui-util SYSTEM "xml/bonobo-ui-util.xml">
-    <!ENTITY bonobo-view SYSTEM "xml/bonobo-view.xml">
+    <!ENTITY bonobo-ui-preferences SYSTEM "xml/bonobo-ui-preferences.xml">
     <!ENTITY bonobo-widget SYSTEM "xml/bonobo-widget.xml">
     <!ENTITY bonobo-window SYSTEM "xml/bonobo-window.xml">
     <!ENTITY bonobo-wrapper SYSTEM "xml/bonobo-wrapper.xml">
-    <!ENTITY bonobo-zoomable-frame SYSTEM "xml/bonobo-zoomable-frame.xml">
-    <!ENTITY bonobo-zoomable SYSTEM "xml/bonobo-zoomable.xml">
-    <!ENTITY object_index SYSTEM "xml/object_index.sgml">
     <!ENTITY tree_index SYSTEM "xml/tree_index.sgml">
+    <!ENTITY bonobo-a11y SYSTEM "xml/bonobo-a11y.xml">
+    <!ENTITY bonobo-file-selector-util SYSTEM "xml/bonobo-file-selector-util.xml">
 
     ]>
 
@@ -53,22 +44,6 @@
 	&bonobo-property-control;
     </chapter>
 
-    <chapter id="bonobo-documents">
-	<title>Bonobo Compound Documents</title>
-
-	<sect1 id="bonobo-view">
-	    <title>View interfaces</title>
-	    &bonobo-canvas-item;
-	    &bonobo-canvas-component;
-	</sect1>
-
-<!-- 	<sect1 id="bonobo-print"> -->
-<!-- 	    <title>Printing</title> -->
-<!-- 	    &bonobo-print; -->
-<!-- 	    &bonobo-print-client; -->
-<!-- 	</sect1> -->
-    </chapter>
-
     <chapter id="bonobo-ui">
 	<title>Bonobo UI</title>
 	&bonobo-widget;
@@ -78,14 +53,20 @@
 	&bonobo-ui-util;
 	&bonobo-ui-node;
 	&bonobo-ui-engine;
+	&bonobo-ui-engine-config;
 	&bonobo-ui-sync;
+	&bonobo-ui-preferences;
     </chapter>
 
     <chapter id="bonobo-support-utilities">
 	<title>Supporting Classes</title>
 	&bonobo-plug;
 	&bonobo-socket;
+	&bonobo-wrapper;
 	&bonobo-selector;
+	&bonobo-selector-widget;
+	&bonobo-file-selector-util;
+	&bonobo-a11y;
     </chapter>
 
 

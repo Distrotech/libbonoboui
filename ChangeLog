@@ -1,5 +1,14 @@
 2003-01-22  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
 
+	* doc/api/libbonoboui-sections.txt: Removed canvas sections.
+
+	* doc/api/Makefile.am (IGNORE_HFILES): Don't ignore
+	bonobo-ui-engine-config.h. Ignore canvas headers.
+
+	* doc/api/libbonoboui-docs.sgml: Added some missing
+	sections. Removed canvas sections, since I realized they're
+	deprecated.
+
 	* doc/api/tmpl/bonobo-item-container.sgml,
 	  doc/api/tmpl/bonobo-item-handler.sgml,
 	  doc/api/tmpl/bonobo-ui-toolbar-button-item.sgml,

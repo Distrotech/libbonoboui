@@ -54,26 +54,6 @@ BONOBO_IS_UI_COMPONENT_CLASS
 </SECTION>
 
 
-<SECTION>
-<FILE>bonobo-canvas-component</FILE>
-BonoboCanvasComponentPrivate
-BonoboCanvasComponent
-BonoboCanvasComponentClass
-bonobo_canvas_component_construct
-bonobo_canvas_component_new
-bonobo_canvas_component_get_item
-bonobo_canvas_component_grab
-bonobo_canvas_component_ungrab
-bonobo_canvas_component_get_ui_container
-bonobo_canvas_new
-<SUBSECTION Standard>
-BONOBO_CANVAS_COMPONENT
-BONOBO_IS_CANVAS_COMPONENT
-BONOBO_TYPE_CANVAS_COMPONENT
-bonobo_canvas_component_get_type
-BONOBO_CANVAS_COMPONENT_CLASS
-BONOBO_IS_CANVAS_COMPONENT_CLASS
-</SECTION>
 
 <SECTION>
 <FILE>bonobo-widget</FILE>
@@ -284,19 +264,6 @@ BONOBO_IS_CONTROL_FRAME_CLASS
 </SECTION>
 
 
-<SECTION>
-<FILE>bonobo-canvas-item</FILE>
-BonoboCanvasItemPrivate
-BonoboCanvasItem
-BonoboCanvasItemClass
-bonobo_canvas_item_set_bounds
-<SUBSECTION Standard>
-BONOBO_CANVAS_ITEM
-BONOBO_IS_CANVAS_ITEM
-BONOBO_TYPE_CANVAS_ITEM
-bonobo_canvas_item_get_type
-BONOBO_CANVAS_ITEM_CLASS
-</SECTION>
 
 <SECTION>
 <FILE>bonobo-socket</FILE>
