@@ -56,7 +56,7 @@ bonobo_clock_factory (BonoboGenericFactory *Factory, void *closure)
 			    bonobo_clock_control_prop_value_changed_cb,
 			    clock);
 
-	running = g_new0 (gboolean, 1);
+	running = g_new0 (CORBA_boolean, 1);
 	*running = TRUE;
 	bonobo_property_bag_add (pb, "running", "boolean",
 				(gpointer) running,

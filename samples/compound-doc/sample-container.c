@@ -13,6 +13,7 @@
 #include <config.h>
 #include <gnome.h>
 #include <bonobo.h>
+#include <libgnorba/gnorba.h>
 
 typedef struct {
 	BonoboContainer  *container;
