@@ -50,7 +50,7 @@ GnomePropertyBagClient  *gnome_control_get_ambient_properties (GnomeControl *con
 
 GNOME_Control_windowid   gnome_control_windowid_from_x11      (guint32 x11_id);
 
-POA_GNOME_Control__epv *gnome_control_get_epv		      (gboolean duplicate);
+POA_GNOME_Control__epv *gnome_control_get_epv		      (void);
 
 /* CORBA default vector methods we provide */
 extern POA_GNOME_Control__epv gnome_control_epv;

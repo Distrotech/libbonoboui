@@ -50,7 +50,7 @@ GtkWidget	       *gnome_control_frame_get_widget      (GnomeControlFrame *frame)
 GnomePropertyBagClient *gnome_control_frame_get_control_property_bag (GnomeControlFrame *control_frame);
 								       
 
-POA_GNOME_ControlFrame__epv *gnome_control_frame_get_epv (gboolean duplicate);
+POA_GNOME_ControlFrame__epv *gnome_control_frame_get_epv (void);
 
 /*
  * A GnomeControlFrame acts as a proxy for the remote GnomeControl object to
