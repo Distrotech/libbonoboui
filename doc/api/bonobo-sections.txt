@@ -614,14 +614,6 @@ BonoboPropertyBagPrivate
 </SECTION>
 
 <SECTION>
-<FILE>bonobo-property</FILE>
-bonobo_property_servant_new
-bonobo_property_servant_destroy
-BonoboProperty
-<SUBSECTION Standard>
-</SECTION>
-
-<SECTION>
 <FILE>bonobo-socket</FILE>
 BONOBO_SOCKET
 BONOBO_SOCKET_CLASS

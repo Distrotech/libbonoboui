@@ -2,19 +2,51 @@
 bonobo-ui-engine
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The guts of the UI handler
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The Bonobo UI code as exposed through the #BonoboWindow,
+#BonoboUIComponent and #BonoboUIContainer API's use the
+BonoboUIEngine. The Engine effectively maintains a
+#BonoboUIXml tree internaly, and a list of #BonoboUISync
+synchronizers that, when the tree changes are used to
+re-sync the associated widgets with the XML model.
 </para>
 
+<para>
+The Engine can be tweaked by getting its pointer from an
+associated BonoboWindow eg. this can be useful for setting
+the configuration path. To allow a BonoboWindow to be
+configurable you need to do:
+  <example>
+    <title>How to make your UI user configurable</title>
+    <programlisting>
+bonobo_ui_engine_config_set_path (
+	bonobo_window_get_ui_engine (win),
+	"/my-application-name/UIConfig/kvps");
+    </programlisting>
+  </example>
+  where "UIConfig/kvps" is some convenient path into your
+gnome_config file. Key value pairs (kvps) are stored in
+this, mangled into a comma delimited string and these are
+used to clobber the XML on merges, eg.
+  <example>
+    <programlisting>
+[UIConfig]
+kvps=/Toolbar:look:both
+    </programlisting>
+  </example>
+  inside your ~/.gnome/my-application-name file, will
+ensure that whenever the item with path '/Toolbar' is
+modified the 'look="both"' attribute will be stamped
+onto it, effecively forcing a certain look.
+</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### MACRO BONOBO_TYPE_UI_ENGINE ##### -->
 <para>
