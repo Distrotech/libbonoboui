@@ -2372,22 +2372,8 @@ menu_toplevel_create_label (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
 {
 	GtkWidget *label;
 	guint keyval;
-	gchar *label_text;
 
-	/*
-	 * Create the label, translating the provided text, which is
-	 * supposed to be untranslated.  This text gets translated in
-	 * the domain of the application or in the "gnome-libs" domain.
-	 */
-	if ( item->label [0] == '\0' ) 
-		label_text = item->label;
-	else {
-		label_text = gettext(item->label);
-		if ( label_text == item->label )
-			label_text = dgettext ("gnome-libs", item->label);
-	}
-
-	label = gtk_accel_label_new (label_text);
+	label = gtk_accel_label_new (item->label);
 
 	/*
 	 * Setup the widget.
@@ -2407,7 +2393,7 @@ menu_toplevel_create_label (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
 	 *
 	 * FIXME: Should this be an option?
 	 */
-	keyval = gtk_label_parse_uline (GTK_LABEL (label), label_text);
+	keyval = gtk_label_parse_uline (GTK_LABEL (label), item->label);
 
 	if (keyval != GDK_VoidSymbol) {
 		if (GTK_IS_MENU (parent_menu_shell_widget))
@@ -4157,8 +4143,8 @@ menu_parse_uiinfo_one (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii)
 
 	item->type = menu_uiinfo_type_to_uih (uii->type);
 
-	item->label = COPY_STRING (uii->label);
-	item->hint = COPY_STRING (uii->hint);
+	item->label = COPY_STRING (L_(uii->label));
+	item->hint = COPY_STRING (L_(uii->hint));
 
 	item->pos = -1;
 
@@ -7279,8 +7265,8 @@ toolbar_parse_uiinfo_one (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii)
 
 	item->type = toolbar_uiinfo_type_to_uih (uii->type);
 
-	item->label = g_strdup (uii->label);
-	item->hint = g_strdup (uii->hint);
+	item->label = g_strdup (L_(uii->label));
+	item->hint = g_strdup (L_(uii->hint));
 
 	item->pos = -1;
 
