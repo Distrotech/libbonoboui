@@ -1,3 +1,10 @@
+2003-02-25  Rodney Dawes  <dobey@free.fr>
+
+	* *: create gnome-2-2 branch and commit following patch to HEAD
+	* bonobo/bonobo-ui-sync-toolbar.c: Move _set_border_width () call
+	* bonobo/bonobo-ui-toolbar.c: Add shadow_type style property, to match
+	GtkToolbar drawing
+	
 2003-02-21  Roozbeh Pournader  <roozbeh@sharif.edu>
 
 	* configure.in: Added "fa" to ALL_LINGUAS.

@@ -870,6 +870,7 @@ impl_expose_event (GtkWidget *widget,
 {
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
+	GtkShadowType shadow_type;
 	GList *p;
 
 	if (! GTK_WIDGET_DRAWABLE (widget))
@@ -877,6 +878,18 @@ impl_expose_event (GtkWidget *widget,
 
 	toolbar = BONOBO_UI_TOOLBAR (widget);
 	priv = toolbar->priv;
+
+	gtk_widget_style_get (widget, "shadow_type", &shadow_type, NULL);
+
+	gtk_paint_box (widget->style,
+		       widget->window,
+		       GTK_WIDGET_STATE (widget),
+		       shadow_type,
+		       &event->area, widget, "toolbar",
+		       widget->allocation.x,
+		       widget->allocation.y,
+		       widget->allocation.width,
+		       widget->allocation.height);
 
 	for (p = priv->items; p != NULL; p = p->next) {
 		GtkWidget *item_widget;
@@ -1152,6 +1165,15 @@ bonobo_ui_toolbar_class_init (BonoboUIToolbarClass *toolbar_class)
 				NULL, NULL,
 				g_cclosure_marshal_VOID__VOID,
 				G_TYPE_NONE, 0);
+
+	gtk_widget_class_install_style_property (
+	        widget_class,
+		g_param_spec_enum ("shadow_type",
+				   _("Shadow type"),
+				   _("Style of bevel around the toolbar"),
+				   GTK_TYPE_SHADOW_TYPE,
+				   GTK_SHADOW_OUT,
+				   G_PARAM_READABLE));
 }
 
 static void
