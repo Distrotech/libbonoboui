@@ -274,6 +274,11 @@ bonobo_plug_key_press_event (GtkWidget   *widget,
 		}
 	}
 
+	/* If we havn't handled it pass it on to our socket,
+	 * since it might be a keybinding or something interesting */
+	if (!return_val)
+		bonobo_plug_forward_key_press (plug, event);
+
 	return return_val;
 }
 
