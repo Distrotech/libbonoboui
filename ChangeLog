@@ -1,3 +1,7 @@
+2003-03-21  Guntupalli Karunakar  <karunakar@freeedomink.org>
+
+	* configure.in: Added "ml" in ALL_LINGUUAS
+
 2003-03-04  Radek Doulik  <rodo@ximian.com>
 
 	* bonobo/bonobo-ui-engine.c (execute_state_updates):
