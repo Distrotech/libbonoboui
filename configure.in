@@ -5,11 +5,6 @@ AM_INIT_AUTOMAKE(libbonoboui2, 1.97.0)
 
 AM_MAINTAINER_MODE
 
-if test -z "$CERTIFIED_GNOMIE"; then
-  cat $srcdir/message-of-doom
-  exit 1
-fi
-
 dnl
 dnl Due to the sed scripts being split on 90 line
 dnl blocks, this macro needs to be right at the beggining.
