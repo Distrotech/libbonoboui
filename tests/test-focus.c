@@ -15,12 +15,20 @@
 #include <bonobo/bonobo-ui-main.h>
 #include <bonobo/bonobo-i18n.h>
 
+static void
+clicked_fn (GtkButton *button, GtkWidget *control)
+{
+	gtk_signal_disconnect_by_data (
+		GTK_OBJECT (button), control);
+	gtk_widget_destroy (control);
+}
+
 int
 main (int argc, char **argv)
 {
 	GtkWidget *window;
 	GtkWidget *vbox;
-	GtkWidget *tmp;
+	GtkWidget *tmp, *control;
 	CORBA_ORB  orb;
 
 	free (malloc (8));
@@ -40,13 +48,18 @@ main (int argc, char **argv)
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox);
 
+	tmp = gtk_entry_new ();
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), tmp);
+
 	tmp = gtk_button_new_with_label ("In Container A");
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), tmp);
 
-	tmp = bonobo_widget_new_control ("OAFIID:Bonobo_Sample_Entry", NULL);
-	gtk_box_pack_start_defaults (GTK_BOX (vbox), tmp);
+	control = bonobo_widget_new_control ("OAFIID:Bonobo_Sample_Entry", NULL);
+	gtk_box_pack_start_defaults (GTK_BOX (vbox), control);
 
-	tmp = gtk_button_new_with_label ("In Container B");
+	tmp = gtk_button_new_with_label ("Destroy remote control");
+	gtk_signal_connect (GTK_OBJECT (tmp), "clicked",
+			    GTK_SIGNAL_FUNC (clicked_fn), control);
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), tmp);
 
 	gtk_widget_show_all (window);
