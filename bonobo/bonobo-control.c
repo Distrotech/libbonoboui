@@ -458,6 +458,7 @@ bonobo_control_construct (BonoboControl  *control,
 	gtk_object_ref (GTK_OBJECT (widget));
 
 	control->priv->uih = bonobo_ui_handler_new ();
+	control->priv->propbag = NULL;
 
 	return control;
 }
