@@ -2,18 +2,20 @@
 # Copyright (C) 2002 Free Software Foundation, Inc.
 # Alexander Shopov <al_shopov@web.bg>, 2002.
 # small additions for completeness. Yanko Kaneti <yaneti@declera.com>, 2002.
-#
+# Rostislav Raykov <zbrox@i-space.org>, 2004.
+# 
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2004-05-14 11:09+0100\n"
-"PO-Revision-Date: 2002-12-10 19:39+0200\n"
-"Last-Translator: Alexander Shopov <al_shopov@web.bg>\n"
+"Project-Id-Version: libbonoboui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-07-27 04:06+0200\n"
+"PO-Revision-Date: 2004-07-27 15:35+0300\n"
+"Last-Translator: Rostislav Raykov <zbrox@i-space.org>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -33,7 +35,7 @@ msgstr "Контейнер на потребителския интерфейс"
 
 #: bonobo/bonobo-dock-item-grip.c:249
 msgid "Dock the toolbar"
-msgstr "Залепи лентата с инструменти"
+msgstr "Залепване на лентата с инструменти"
 
 #: bonobo/bonobo-dock-item-grip.c:250
 msgid "Un dock the toolbar"
@@ -61,15 +63,15 @@ msgstr "Предпочитана височина"
 
 #: bonobo/bonobo-file-selector-util.c:351
 msgid "Select a file to open"
-msgstr "Избери файл за отваряне"
+msgstr "Избор на файл за отваряне"
 
 #: bonobo/bonobo-file-selector-util.c:379
 msgid "Select files to open"
-msgstr "Избери файлове за отваряне"
+msgstr "Избор на файлове за отваряне"
 
 #: bonobo/bonobo-file-selector-util.c:408
 msgid "Select a filename to save"
-msgstr "Избери име на файл за запис"
+msgstr "Избор на име на файл за запис"
 
 #: bonobo/bonobo-plug.c:412
 msgid "Event Forwarding"
@@ -92,7 +94,6 @@ msgid "Interfaces required"
 msgstr "Необходими интерфейси"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
@@ -116,15 +117,15 @@ msgstr "Видим"
 
 #: bonobo/bonobo-ui-config-widget.c:275
 msgid "_Show"
-msgstr "_Покажи"
+msgstr "_Показване"
 
 #: bonobo/bonobo-ui-config-widget.c:282
 msgid "_Hide"
-msgstr "_Скрий"
+msgstr "_Скриване"
 
 #: bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
-msgstr "_Виж подсказките"
+msgstr "Преглед на подсказките"
 
 #: bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
@@ -160,15 +161,15 @@ msgstr "Чисти грешки"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "_Покажи XML"
+msgstr "_Показване на XML"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Показва цялото описание на потребителския интерфейс в XML на конзолата"
+msgstr "Показване на цялото описание на потребителския интерфейс в XML на конзолата"
 
 #: bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
-msgstr "Настрой потребителски интерфейс"
+msgstr "Настройки на потребителски интерфейс"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
@@ -261,23 +262,23 @@ msgstr "Т_екст"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr "Скрий съвети_и"
+msgstr "Скриване на съвети_и"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
-msgstr "Покажи съвет_и"
+msgstr "Показване на съвет_и"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "С_крий лентата с инструменти"
+msgstr "С_криване на лентата с инструменти"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
-msgstr "Настро_й"
+msgstr "Настро_йки"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "Настрой лентата с инструменти"
+msgstr "Настройки на лентата с инструменти"
 
 #: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
@@ -289,7 +290,7 @@ msgstr "дали лентата с инструменти е свободна"
 
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Стила на повдигането около лентата с инструменти"
 
 #: bonobo/bonobo-ui-util.c:629
 msgid "_Contents"
@@ -297,7 +298,7 @@ msgstr "_Съдържание"
 
 #: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
-msgstr "Виж помощ за това приложение"
+msgstr "Показване на помощ за това приложение"
 
 #: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
@@ -357,7 +358,7 @@ msgstr "Информация за приложението"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr "Избери"
+msgstr "Избор"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
@@ -365,7 +366,7 @@ msgstr "Информ_ация.."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "Р_едакция"
+msgstr "Р_едактиране"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
@@ -373,7 +374,7 @@ msgstr "_Файл"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "Избе_ри"
+msgstr "Избор"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -385,7 +386,7 @@ msgstr "BonoboUI-Здравей"
 
 #: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr "Гном здравей"
+msgstr "Gnome Hello"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
@@ -394,7 +395,7 @@ msgstr "Здравей, Свят!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "Не мога да инициализирам кода на libbonoboui"
+msgstr "Не може да се инициализира кода на libbonoboui"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
