@@ -1,3 +1,12 @@
+2004-02-24  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.5.3.
+
+2004-02-16  Arvind Samptur <arvind.samptur@wipro.com>
+
+	* bonobo/bonobo-window.c: (bonobo_window_class_init): upd.
+	(bonobo_window_focus): bin: always was a bad idea.
+	
 2004-02-18  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-dock-item.c (check_guint_arg): 

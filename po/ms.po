@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-03 18:24+0800\n"
+"POT-Creation-Date: 2004-02-24 10:15+0000\n"
 "PO-Revision-Date: 2003-01-01 21:23+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@my-penguin.org>\n"
 "Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -38,22 +38,22 @@ msgstr "Labuhkan toolbar"
 msgid "Un dock the toolbar"
 msgstr "Leraikan  toolbar"
 
-#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-dock-item.c:222 bonobo/bonobo-dock-item.c:223
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Jenis bayang"
 
-#: bonobo/bonobo-dock-item.c:225 bonobo/bonobo-dock-item.c:226
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientasi"
 
-#: bonobo/bonobo-dock-item.c:236 bonobo/bonobo-dock-item.c:237
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Lebar yang dikehendaki"
 
-#: bonobo/bonobo-dock-item.c:245 bonobo/bonobo-dock-item.c:246
+#: bonobo/bonobo-dock-item.c:253 bonobo/bonobo-dock-item.c:254
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Tinggi yang dikehendaki"
@@ -78,7 +78,7 @@ msgstr "Forward Acara"
 msgid "Whether X events should be forwarded"
 msgstr "Samada acara X patut diforwardkan"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
 msgid "Name"
 msgstr "Nama"
 
@@ -297,7 +297,7 @@ msgstr "_Kandungan"
 msgid "View help for this application"
 msgstr "Lihat bantuan bagi aplikasi ini"
 
-#: bonobo/bonobo-window.c:398
+#: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nama bagi tetingkap - digunakan untuk menyelaraskan konfigurasi"
 

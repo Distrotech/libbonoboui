@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD\n"
-"POT-Creation-Date: 2004-01-15 09:07+0000\n"
+"POT-Creation-Date: 2004-02-24 10:15+0000\n"
 "PO-Revision-Date: 2003-08-28 14:04+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@arrakis.es>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -34,30 +34,30 @@ msgstr "contenedor corba UI"
 msgid "The User interface container"
 msgstr "El contenedor de la interfaz de usuario"
 
-#: bonobo/bonobo-dock-item-grip.c:248
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Dock the toolbar"
 msgstr "Empotrar la barra de herramientas"
 
-#: bonobo/bonobo-dock-item-grip.c:249
+#: bonobo/bonobo-dock-item-grip.c:250
 msgid "Un dock the toolbar"
 msgstr "Desempotrar la barra de herramientas"
 
-#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-dock-item.c:222 bonobo/bonobo-dock-item.c:223
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Tipo oculto"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientación"
 
-#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Ancho preferido"
 
-#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-dock-item.c:253 bonobo/bonobo-dock-item.c:254
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Altura preferida"
@@ -74,15 +74,15 @@ msgstr "Seleccione los archivos a abrir"
 msgid "Select a filename to save"
 msgstr "Seleccione un nombre de archivo para guardar"
 
-#: bonobo/bonobo-plug.c:411
+#: bonobo/bonobo-plug.c:412
 msgid "Event Forwarding"
 msgstr "Redirección de eventos"
 
-#: bonobo/bonobo-plug.c:412
+#: bonobo/bonobo-plug.c:413
 msgid "Whether X events should be forwarded"
 msgstr "Si se deben redirigir los eventos de X"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
 msgid "Name"
 msgstr "Nombre"
 
@@ -112,47 +112,47 @@ msgstr "Entrada requerida por el interfaz"
 msgid "One of the interfaces that's required"
 msgstr "Uno de los interfaces que se necesitan"
 
-#: bonobo/bonobo-ui-config-widget.c:267
+#: bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
 msgstr "Visible"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:275
 msgid "_Show"
 msgstr "Mo_strar"
 
-#: bonobo/bonobo-ui-config-widget.c:281
+#: bonobo/bonobo-ui-config-widget.c:282
 msgid "_Hide"
 msgstr "_Ocultar"
 
-#: bonobo/bonobo-ui-config-widget.c:287
+#: bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
 msgstr "_Ver consejos"
 
-#: bonobo/bonobo-ui-config-widget.c:292
+#: bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
 msgstr "Barras de herramientas"
 
-#: bonobo/bonobo-ui-config-widget.c:302
+#: bonobo/bonobo-ui-config-widget.c:303
 msgid "toolbars"
 msgstr "barras de herramientas"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Apariencia"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Icono"
 
-#: bonobo/bonobo-ui-config-widget.c:328
+#: bonobo/bonobo-ui-config-widget.c:329
 msgid "_Text and Icon"
 msgstr "_Texto e icono"
 
-#: bonobo/bonobo-ui-config-widget.c:334
+#: bonobo/bonobo-ui-config-widget.c:335
 msgid "Text only"
 msgstr "Sólo texto"
 
-#: bonobo/bonobo-ui-config-widget.c:340
+#: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
 msgstr "Solo texto _prioritario"
 
@@ -168,7 +168,7 @@ msgstr "_Volcar XML"
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Volcar la descripción completa del XML de la UI a la consola"
 
-#: bonobo/bonobo-ui-engine-config.c:521
+#: bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
 msgstr "Configurar UI"
 
@@ -177,7 +177,7 @@ msgid "Gdk debugging flags to set"
 msgstr "Banderas de depuración de GDK a establecer"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
 msgid "FLAGS"
 msgstr "BANDERAS"
 
@@ -225,39 +225,27 @@ msgstr "Clase de programa tal y como la usa el gestor de ventanas"
 msgid "CLASS"
 msgstr "CLASE"
 
-#: bonobo/bonobo-ui-init-gtk.c:145
-msgid "HOST"
-msgstr "HOST"
-
-#: bonobo/bonobo-ui-init-gtk.c:149
-msgid "PORT"
-msgstr "PUERTO"
-
-#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
-msgid "STYLE"
-msgstr "ESTILO"
-
-#: bonobo/bonobo-ui-init-gtk.c:161
+#: bonobo/bonobo-ui-init-gtk.c:144
 msgid "Gtk+ debugging flags to set"
 msgstr "Banderas de depuración de GTK+ a fijar"
 
-#: bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:147
 msgid "Gtk+ debugging flags to unset"
 msgstr "Banderas de depuración de GTK+ a desactivar"
 
-#: bonobo/bonobo-ui-init-gtk.c:167
+#: bonobo/bonobo-ui-init-gtk.c:150
 msgid "Make all warnings fatal"
 msgstr "Hacer que todos los avisos actúen como errores"
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:153
 msgid "Load an additional Gtk module"
 msgstr "Cargar un módulo GTK adicional"
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:153
 msgid "MODULE"
 msgstr "MODULO"
 
-#: bonobo/bonobo-ui-init-gtk.c:179
+#: bonobo/bonobo-ui-init-gtk.c:162
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -313,7 +301,7 @@ msgstr "_Índice"
 msgid "View help for this application"
 msgstr "Ver la ayuda para esta aplicación"
 
-#: bonobo/bonobo-window.c:398
+#: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nombre de la ventana - usado para serialización de configuración."
 
@@ -414,3 +402,12 @@ msgstr "No se puede inicializar el código de libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "No se pudo iniciar la interfaz de Bonobo"
+
+#~ msgid "HOST"
+#~ msgstr "HOST"
+
+#~ msgid "PORT"
+#~ msgstr "PUERTO"
+
+#~ msgid "STYLE"
+#~ msgstr "ESTILO"

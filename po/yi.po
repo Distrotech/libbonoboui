@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2004-01-15 09:07+0000\n"
+"POT-Creation-Date: 2004-02-24 10:15+0000\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
@@ -29,30 +29,30 @@ msgstr "קאָרבאַ UI פּעקל"
 msgid "The User interface container"
 msgstr "דאָס ניצער־צובינד פּעקל"
 
-#: bonobo/bonobo-dock-item-grip.c:248
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Dock the toolbar"
 msgstr "דאָקיר דעם מכשיר־װײַזער"
 
-#: bonobo/bonobo-dock-item-grip.c:249
+#: bonobo/bonobo-dock-item-grip.c:250
 msgid "Un dock the toolbar"
 msgstr "אױסדאָקיר דעם מכשיר־װײַזער"
 
-#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-dock-item.c:222 bonobo/bonobo-dock-item.c:223
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "שאָטן־סאָרט"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "אָריִענטירונג"
 
-#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "געװוּנטשענע ברײט"
 
-#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-dock-item.c:253 bonobo/bonobo-dock-item.c:254
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "געװוּנטשענע הײך"
@@ -69,15 +69,15 @@ msgstr "סעלעקטיר טעקעס צו עפֿענען"
 msgid "Select a filename to save"
 msgstr "סעלעקטיר אַ טעקע־נאָמען אױפֿצוהיטן"
 
-#: bonobo/bonobo-plug.c:411
+#: bonobo/bonobo-plug.c:412
 msgid "Event Forwarding"
 msgstr "טרעפֿעניש־װײַטערשיקן"
 
-#: bonobo/bonobo-plug.c:412
+#: bonobo/bonobo-plug.c:413
 msgid "Whether X events should be forwarded"
 msgstr "צי X־טרעפֿענישן זאָלן זיך װײַטער שיקן"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
 msgid "Name"
 msgstr "נאָמען"
 
@@ -108,47 +108,47 @@ msgstr "צובינד נײטיקט זיך אין אַן אײנס"
 msgid "One of the interfaces that's required"
 msgstr "אײנער פֿון די נױטיקע צובינדן"
 
-#: bonobo/bonobo-ui-config-widget.c:267
+#: bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
 msgstr "זעעװדיק"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:275
 msgid "_Show"
 msgstr "װײַז"
 
-#: bonobo/bonobo-ui-config-widget.c:281
+#: bonobo/bonobo-ui-config-widget.c:282
 msgid "_Hide"
 msgstr "באַהאַלט"
 
-#: bonobo/bonobo-ui-config-widget.c:287
+#: bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
 msgstr "זע מכשיר־פּינטלעך"
 
-#: bonobo/bonobo-ui-config-widget.c:292
+#: bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
 msgstr "מכשיר־װירעס"
 
-#: bonobo/bonobo-ui-config-widget.c:302
+#: bonobo/bonobo-ui-config-widget.c:303
 msgid "toolbars"
 msgstr "מכשיר־װירעס"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "זע"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "בילדל"
 
-#: bonobo/bonobo-ui-config-widget.c:328
+#: bonobo/bonobo-ui-config-widget.c:329
 msgid "_Text and Icon"
 msgstr "טעקסט און בילדל"
 
-#: bonobo/bonobo-ui-config-widget.c:334
+#: bonobo/bonobo-ui-config-widget.c:335
 msgid "Text only"
 msgstr "בלױז טעקסט"
 
-#: bonobo/bonobo-ui-config-widget.c:340
+#: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
 msgstr "בלױז פּריִאָריטעט־טעקסט"
 
@@ -164,7 +164,7 @@ msgstr "װײַז XML באַריכות"
 msgid "Dump the entire UI's XML description to the console"
 msgstr "װײַז באַריכות דעם גאַנצן UIס XML באַשרײַבונג צום עקראַן"
 
-#: bonobo/bonobo-ui-engine-config.c:521
+#: bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
 msgstr "פּאַס UI צו"
 
@@ -173,7 +173,7 @@ msgid "Gdk debugging flags to set"
 msgstr "Gdk פֿעלער־באַזײַטיקונג אָפּציעס צו באַשטעטיקן"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
 msgid "FLAGS"
 msgstr "FLAGS"
 
@@ -221,39 +221,27 @@ msgstr "פּראָגראַם־קלאַס, װי דער פֿענצטער־אַדמ
 msgid "CLASS"
 msgstr "CLASS"
 
-#: bonobo/bonobo-ui-init-gtk.c:145
-msgid "HOST"
-msgstr "HOST"
-
-#: bonobo/bonobo-ui-init-gtk.c:149
-msgid "PORT"
-msgstr "PORT"
-
-#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
-msgid "STYLE"
-msgstr "STYLE"
-
-#: bonobo/bonobo-ui-init-gtk.c:161
+#: bonobo/bonobo-ui-init-gtk.c:144
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk פֿעלער־באַזײַטיקונג אָפּציעס צו באַשטעטיקן"
 
-#: bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:147
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk פֿעלער־באַזײַטיקונג אָפּציעס מבֿטל צו זײַן"
 
-#: bonobo/bonobo-ui-init-gtk.c:167
+#: bonobo/bonobo-ui-init-gtk.c:150
 msgid "Make all warnings fatal"
 msgstr "אַלע װאָרענונגען װערן טױטפֿאַלן"
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:153
 msgid "Load an additional Gtk module"
 msgstr "שטעל אַרײַן אַ צוגעבלעכן Gtk מאָדול"
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:153
 msgid "MODULE"
 msgstr "MODULE"
 
-#: bonobo/bonobo-ui-init-gtk.c:179
+#: bonobo/bonobo-ui-init-gtk.c:162
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -309,7 +297,7 @@ msgstr "אינהאַלט"
 msgid "View help for this application"
 msgstr "זע געהילף פֿאַר דער אַפּליקאַציע"
 
-#: bonobo/bonobo-window.c:398
+#: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
 msgstr "פֿענצטער־נאָמען, גענוצט צוליב צופּאַס־סעריאַליזאַציע"
 
@@ -409,3 +397,12 @@ msgstr "ניט געקענט איניציאַליזירן libbonoboui פּראָ�
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "ניט געקענט איניציאַליזירן באָנאָבאָ ניצער־צובינד"
+
+#~ msgid "HOST"
+#~ msgstr "HOST"
+
+#~ msgid "PORT"
+#~ msgstr "PORT"
+
+#~ msgid "STYLE"
+#~ msgstr "STYLE"

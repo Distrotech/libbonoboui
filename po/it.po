@@ -6,14 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-12 16:44+0100\n"
+"POT-Creation-Date: 2004-02-24 10:15+0000\n"
 "PO-Revision-Date: 2004-02-12 22:08+0100\n"
 "Last-Translator: Alessio Frusciante <algol@firenze.linux.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -39,22 +39,22 @@ msgstr "Ancora la barra degli strumenti"
 msgid "Un dock the toolbar"
 msgstr "Rimuovi ancoraggio della barra degli strumenti"
 
-#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-dock-item.c:222 bonobo/bonobo-dock-item.c:223
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Tipo di ombra"
 
-#: bonobo/bonobo-dock-item.c:225 bonobo/bonobo-dock-item.c:226
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientamento"
 
-#: bonobo/bonobo-dock-item.c:236 bonobo/bonobo-dock-item.c:237
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Larghezza preferita"
 
-#: bonobo/bonobo-dock-item.c:245 bonobo/bonobo-dock-item.c:246
+#: bonobo/bonobo-dock-item.c:253 bonobo/bonobo-dock-item.c:254
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Altezza preferita"
@@ -79,7 +79,7 @@ msgstr "Inoltro degli eventi"
 msgid "Whether X events should be forwarded"
 msgstr "Se gli eventi X devono essere inoltrati"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
 msgid "Name"
 msgstr "Nome"
 
@@ -163,7 +163,9 @@ msgstr "_Dump XML"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Fare un dump della descrizione XML completa dell'interfaccia utente sulla console"
+msgstr ""
+"Fare un dump della descrizione XML completa dell'interfaccia utente sulla "
+"console"
 
 #: bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
@@ -298,7 +300,7 @@ msgstr "_Sommario"
 msgid "View help for this application"
 msgstr "Mosta la documentazione su questa applicazione"
 
-#: bonobo/bonobo-window.c:398
+#: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
 msgstr "Numero della finestra - usato per serializzare la configurazione."
 

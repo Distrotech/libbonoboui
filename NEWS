@@ -1,3 +1,11 @@
+libbonoboui 2.5.3
+
+	* bugs fixed
+		+ toolbar/dock destruction crasher (Michael)
+		+ unused arg cleanup (Fernando Herrera)
+	* featurelets
+		+ BonoboWindow cleanup (Arvind Samptur)
+
 libbonoboui 2.5.2
 
 	* bugs fixed

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 0\n"
-"POT-Creation-Date: 2004-02-01 17:10+0100\n"
+"POT-Creation-Date: 2004-02-24 10:15+0000\n"
 "PO-Revision-Date: 2004-02-05 23:50+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
@@ -37,22 +37,22 @@ msgstr "Usidri traku s alatima"
 msgid "Un dock the toolbar"
 msgstr "Odsidri traku s alatima"
 
-#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-dock-item.c:222 bonobo/bonobo-dock-item.c:223
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Vrsta sjene"
 
-#: bonobo/bonobo-dock-item.c:225 bonobo/bonobo-dock-item.c:226
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orijentacija"
 
-#: bonobo/bonobo-dock-item.c:236 bonobo/bonobo-dock-item.c:237
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Najpogodnija širina"
 
-#: bonobo/bonobo-dock-item.c:245 bonobo/bonobo-dock-item.c:246
+#: bonobo/bonobo-dock-item.c:253 bonobo/bonobo-dock-item.c:254
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Preporučena visina"
@@ -77,7 +77,7 @@ msgstr "Događaj prosljeđivanja"
 msgid "Whether X events should be forwarded"
 msgstr "Koji X događaji trebaju biti prosljeđeni"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
 msgid "Name"
 msgstr "Ime"
 
@@ -94,7 +94,10 @@ msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr "NULL-završno polje sučelja koje poslužitelj mora podržavati kako bi mogao biti popisan u izborniku. Uobičajeno u \"IDL:Bonobo/Embeddable:1.0\" ukoliko nije niti jedno sučelje na popisu"
+msgstr ""
+"NULL-završno polje sučelja koje poslužitelj mora podržavati kako bi mogao "
+"biti popisan u izborniku. Uobičajeno u \"IDL:Bonobo/Embeddable:1.0\" ukoliko "
+"nije niti jedno sučelje na popisu"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -293,7 +296,7 @@ msgstr "_Sadržaj"
 msgid "View help for this application"
 msgstr "Pogledaj pomoć za ovaj program"
 
-#: bonobo/bonobo-window.c:398
+#: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
 msgstr "Ime prozora - koristi se za serijalizaciju postavki."
 
@@ -393,4 +396,3 @@ msgstr "ne mogu pokrenuti libbonoboui kod"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Ne mogu pokrenuti Bonobo korisničko sučelje"
-
