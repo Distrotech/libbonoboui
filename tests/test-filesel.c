@@ -40,7 +40,7 @@ get_files (gpointer data)
 		g_strfreev (strv);
 	}
 
-	gtk_main_quit ();
+	bonobo_main_quit ();
 
 	return FALSE;
 }
