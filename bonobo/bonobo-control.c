@@ -301,6 +301,9 @@ gnome_control_destroy (GtkObject *object)
 	}
 
 	g_free (control->priv);
+
+	if (GTK_OBJECT_CLASS (gnome_control_parent_class)->destroy)
+		(* GTK_OBJECT_CLASS (gnome_control_parent_class)->destroy) (object);
 }
 
 /**
