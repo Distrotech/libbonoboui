@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-12-14 13:14+0000\n"
+"POT-Creation-Date: 2001-12-21 12:46+0200\n"
 "PO-Revision-Date: 2001-12-11 18:01+0200\n"
 "Last-Translator: Yuriy Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -49,39 +49,39 @@ msgstr "Назва"
 msgid "Description"
 msgstr "Опис"
 
-#: bonobo/bonobo-ui-config-widget.c:265
+#: bonobo/bonobo-ui-config-widget.c:260
 msgid "Visible"
 msgstr "Видимий"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "_Show"
 msgstr "Показати"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Hide"
 msgstr "Прибрати"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:280
 msgid "_View tooltips"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "Toolbars"
 msgstr "Панел╕ ╕нстпумент╕в"
 
-#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "Look"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "_Icon"
 msgstr "П╕ктограма"
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:310
 msgid "_Text and Icon"
 msgstr "Текст ╕ п╕ктограма"
 
-#: bonobo/bonobo-ui-config-widget.c:321
+#: bonobo/bonobo-ui-config-widget.c:316
 msgid "_Priority text only"
 msgstr ""
 
@@ -89,31 +89,31 @@ msgstr ""
 msgid "Configure UI"
 msgstr "Налаштувати ╕нтерфейс"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "B_oth"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "T_ext"
 msgstr "Текст"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:540
 msgid "Hide t_ips"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:540
 msgid "Show t_ips"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Hide toolbar"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Customi_ze"
 msgstr "Налаштувати"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Customize the toolbar"
 msgstr "Налаштувати панель"
 
@@ -127,7 +127,7 @@ msgstr ""
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "М╕н╕мальний р╕вень масштабування"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
@@ -135,7 +135,7 @@ msgstr ""
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "Максимальний р╕вень масштабування"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
