@@ -281,10 +281,6 @@ bonobo_wrapper_unrealize (GtkWidget *widget)
 	gdk_window_destroy (wrapper->priv->cover);
 	wrapper->priv->cover = NULL;
 
-	gdk_window_set_user_data (widget->window, NULL);
-	gdk_window_destroy (widget->window);
-	widget->window = NULL;
-
 	if (GTK_WIDGET_CLASS (parent_class)->unrealize)
 		(* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
 }
