@@ -1,18 +1,21 @@
+# translation of libbonoboui.HEAD.es.po to Spanish
 # Translation into spanish of libbonoboui.
-# Copyright (C) 2001 Free Software Foundation, Inc.
+# Copyright (C) 2001,2003 Free Software Foundation, Inc.
 # Héctor García Álvarez <hector@scouts-es.org>, 2001.
 # Juan Manuel García Molina <juanma_gm@wanadoo.es>, 2002.
+# Francisco Javier F. Serrador <serrador@arrakis.es>, 2003
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2002-12-17 22:01GMT\n"
-"Last-Translator: Germán Poo-Caamaño <gpoo@ubiobio.cl>\n"
-"Language-Team:  <traductores@es.gnome.org>\n"
+"Project-Id-Version: libbonoboui.HEAD.es\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-07-14 21:06+0200\n"
+"PO-Revision-Date: 2003-07-15 06:27+0200\n"
+"Last-Translator: Francisco Javier F. Serrador <serrador@arrakis.es>\n"
+"Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.5\n"
+"X-Generator: KBabel 1.0.1\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -91,13 +94,12 @@ msgid "Interfaces required"
 msgstr "Interfaces requeridas"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Para que un servidor sea listado en el selector, debe sportar un arreglo de "
+"Para que un servidor sea listado en el selector, debe soportar un array de "
 "interfaces terminado en nulo.  Por omisión es «IDL:Bonobo/Embeddable:1.0» si "
 "no se listan las interfaces."
 
@@ -123,11 +125,11 @@ msgstr "_Ocultar"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr "_Mostrar consejos"
+msgstr "_Ver consejos"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
-msgstr "Barra de herramientas"
+msgstr "Barras de herramientas"
 
 #: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
@@ -135,7 +137,7 @@ msgstr "barras de herramientas"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
-msgstr "Mirar"
+msgstr "Apariencia"
 
 #: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
@@ -159,11 +161,11 @@ msgstr "Depurar"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "_Vaciar XML"
+msgstr "_Volcar XML"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Vaciar la descripción completa del XML de la UI a la consola"
+msgstr "Volcar la descripción completa del XML de la UI a la consola"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -171,7 +173,7 @@ msgstr "Configurar UI"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr "Banderas de depuración de GDK a fijar"
+msgstr "Banderas de depuración de GDK a establecer"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
@@ -300,11 +302,11 @@ msgstr "si la barra de herramientas es flotante"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Estilo de bisel alrededor de la barra de herramientas"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
-msgstr "_Contenidos"
+msgstr "_Índice"
 
 #: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
@@ -316,15 +318,15 @@ msgstr "Nombre de la ventana - usado para serialización de configuración."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "Nivel de zoom"
+msgstr "Nivel de ampliación"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "Grado de estiramiento"
+msgstr "Grado de alargamiento"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "Nivel de zoom mínimo"
+msgstr "Nivel de ampliación mínimo"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
@@ -332,7 +334,7 @@ msgstr "El mínimo grado de alargamiento"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "Máximo nivel de zoom"
+msgstr "Máximo nivel de ampliación"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
@@ -340,27 +342,27 @@ msgstr "El máximo grado de alargamiento"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "Tiene un nivel mínimo de zoom"
+msgstr "Tiene un nivel mínimo de ampliación"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Si se tiene un nivel mínimo de zoom válido"
+msgstr "Si se tiene un nivel mínimo de ampliación válido"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Tiene un nivel de zoom máximo"
+msgstr "Tiene un nivel de ampliación máximo"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Si tiene un nivel máximo de zoom"
+msgstr "Si tiene un nivel máximo de ampliación válido"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr "Contínuo"
+msgstr "Continuo"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Si se realiza zoom de forma continua (opuesto a hacerlo a saltos)"
+msgstr "Si se realiza ampliación de forma continua (opuesto a hacerlo a saltos)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -410,3 +412,4 @@ msgstr "No se puede inicializar el código de libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "No se pudo iniciar la interfaz de Bonobo"
+
