@@ -151,12 +151,12 @@ main (int argc, char **argv)
 		"<dockitem name=\"toolbar\" homogeneous=\"0\" look=\"both\">\n"
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"
 		"	<separator/>\n"
-		"	<toolitem type=\"std\" name=\"baa\" pixtype=\"stock\" pixname=\"Open\" label=\"baa\" descr=\"My 2nd tooltip\" verb=\"testme\"/>\n"
+		"	<toolitem name=\"baa\" pixtype=\"stock\" pixname=\"Open\" label=\"baa\" descr=\"My 2nd tooltip\" verb=\"testme\"/>\n"
 		"	<control name=\"AControl\"/>\n"
 		"</dockitem>";
 	char toolb [] =
 		"<dockitem name=\"toolbar\" look=\"icon\" relief=\"none\">\n"
-		"	<toolitem name=\"foo1\" type=\"std\" label=\"Insensitive\" sensitive=\"0\"/>\n"
+		"	<toolitem name=\"foo1\" label=\"Insensitive\" sensitive=\"0\"/>\n"
 		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\" label=\"TogSame\" descr=\"My tooltip\"/>\n"
 		"</dockitem>";
 	char statusa [] =

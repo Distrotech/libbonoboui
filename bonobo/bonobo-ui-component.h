@@ -95,6 +95,10 @@ BonoboUIComponent *bonobo_ui_component_construct       (BonoboUIComponent  *comp
 BonoboUIComponent *bonobo_ui_component_new             (const char         *name);
 BonoboUIComponent *bonobo_ui_component_new_default     (void);
 
+void               bonobo_ui_component_set_name        (BonoboUIComponent  *component,
+							const char         *name);
+const char        *bonobo_ui_component_get_name        (BonoboUIComponent  *component);
+
 void               bonobo_ui_component_set_container   (BonoboUIComponent  *component,
 							Bonobo_UIContainer  container);
 void               bonobo_ui_component_unset_container (BonoboUIComponent  *component);

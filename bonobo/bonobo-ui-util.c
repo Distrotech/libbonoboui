@@ -654,7 +654,7 @@ BonoboUINode *
 bonobo_ui_util_new_menu (gboolean    submenu,
 			 const char *name,
 			 const char *label,
-			 const char *descr,
+			 const char *tip,
 			 const char *verb)
 {
 	BonoboUINode *node;
@@ -670,8 +670,8 @@ bonobo_ui_util_new_menu (gboolean    submenu,
 	if (label)
 		bonobo_ui_node_set_attr (node, "label", label);
 
-	if (descr)
-		bonobo_ui_node_set_attr (node, "descr", descr);
+	if (tip)
+		bonobo_ui_node_set_attr (node, "tip", tip);
 
 	if (verb)
 		bonobo_ui_node_set_attr (node, "verb", verb);
@@ -729,7 +729,7 @@ bonobo_ui_util_set_toggle (BonoboUINode    *node,
 BonoboUINode *
 bonobo_ui_util_new_std_toolbar (const char *name,
 				const char *label,
-				const char *descr,
+				const char *tip,
 				const char *verb)
 {
 	BonoboUINode *node;
@@ -737,13 +737,12 @@ bonobo_ui_util_new_std_toolbar (const char *name,
 	g_return_val_if_fail (name != NULL, NULL);
 	
 	node = bonobo_ui_node_new ("toolitem");
-	bonobo_ui_node_set_attr (node, "type", "std");
 	bonobo_ui_node_set_attr (node, "name", name);
 	
 	if (label)
 		bonobo_ui_node_set_attr (node, "label", label);
-	if (descr)
-		bonobo_ui_node_set_attr (node, "descr", descr);
+	if (tip)
+		bonobo_ui_node_set_attr (node, "tip", tip);
 	if (verb)
 		bonobo_ui_node_set_attr (node, "verb", verb);
 
@@ -753,7 +752,7 @@ bonobo_ui_util_new_std_toolbar (const char *name,
 BonoboUINode *
 bonobo_ui_util_new_toggle_toolbar (const char *name,
 				   const char *label,
-				   const char *descr,
+				   const char *tip,
 				   const char *id)
 {
 	BonoboUINode *node;
@@ -766,8 +765,8 @@ bonobo_ui_util_new_toggle_toolbar (const char *name,
 	
 	if (label)
 		bonobo_ui_node_set_attr (node, "label", label);
-	if (descr)
-		bonobo_ui_node_set_attr (node, "descr", descr);
+	if (tip)
+		bonobo_ui_node_set_attr (node, "tip", tip);
 	if (id)
 		bonobo_ui_node_set_attr (node, "id", id);
 
@@ -843,11 +842,19 @@ void
 bonobo_ui_util_translate_ui (BonoboUINode *bnode)
 {
         BonoboUINode *l;
-        xmlNode *node = XML_NODE (bnode);
+        xmlNode *node;
 	xmlAttr *prop, *old_props;
 
-	if (!node)
+	if (!bnode)
 		return;
+
+	bonobo_ui_xml_strip (&bnode);
+	if (!bnode) {
+		g_warning ("All xml stripped away");
+		return;
+	}
+
+	node = XML_NODE (bnode);
 
 	old_props = node->properties;
 	node->properties = NULL;
@@ -921,11 +928,12 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 {
 	BonoboUINode *node;
 
+	g_return_val_if_fail (app_name != NULL, NULL);
 	g_return_val_if_fail (file_name != NULL, NULL);
 
         node = bonobo_ui_node_from_file (file_name);
-        
-	bonobo_ui_xml_strip (node);
+
+	bonobo_ui_xml_strip (&node);
 
 	bonobo_ui_util_translate_ui (node);
 

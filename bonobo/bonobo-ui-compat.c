@@ -370,9 +370,9 @@ compat_add_verb (BonoboUIComponent *component, const char *verb,
 
 static BonoboUINode *
 compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv, 
-					 GnomeUIInfo            *uii,
-					 void                   *data,
-					 BonoboUINode                *parent)
+					 GnomeUIInfo           *uii,
+					 void                  *data,
+					 BonoboUINode          *parent)
 {
 	BonoboUINode *node;
 	char    *verb;

@@ -35,7 +35,7 @@ BonoboUINode   *bonobo_ui_util_build_accel  (guint              accelerator_key,
 BonoboUINode   *bonobo_ui_util_new_menu     (gboolean           submenu,
 					     const char        *name,
 					     const char        *label,
-					     const char        *descr,
+					     const char        *tip,
 					     const char        *verb);
 
 BonoboUINode   *bonobo_ui_util_new_placeholder   (const char        *name,
@@ -51,12 +51,12 @@ void       bonobo_ui_util_set_toggle        (BonoboUINode           *node,
 
 BonoboUINode   *bonobo_ui_util_new_std_toolbar   (const char        *name,
 					     const char        *label,
-					     const char        *descr,
+					     const char        *tip,
 					     const char        *verb);
 					     
 BonoboUINode   *bonobo_ui_util_new_toggle_toolbar(const char        *name,
 					     const char        *label,
-					     const char        *descr,
+					     const char        *tip,
 					     const char        *id);
 
 char      *bonobo_ui_util_get_ui_fname      (const char        *component_prefix,

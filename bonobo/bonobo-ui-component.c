@@ -348,6 +348,25 @@ bonobo_ui_component_new_default (void)
 }
 
 void
+bonobo_ui_component_set_name (BonoboUIComponent  *component,
+			      const char         *name)
+{
+	g_return_if_fail (name != NULL);
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+	
+	g_free (component->priv->name);
+	component->priv->name = g_strdup (name);
+}
+
+const char *
+bonobo_ui_component_get_name (BonoboUIComponent  *component)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), NULL);
+	
+	return component->priv->name;
+}
+
+void
 bonobo_ui_component_set (BonoboUIComponent  *component,
 			 const char         *path,
 			 const char         *xml,
@@ -363,9 +382,8 @@ impl_xml_set (BonoboUIComponent  *component,
 	      CORBA_Environment  *ev)
 {
 	CORBA_Environment *real_ev, tmp_ev;
-	Bonobo_UIComponent corba_component;
-	char *name;
 	Bonobo_UIContainer container;
+	char              *name;
 
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 	container = component->priv->container;
@@ -378,24 +396,7 @@ impl_xml_set (BonoboUIComponent  *component,
 		real_ev = &tmp_ev;
 	}
 
-	if (component)
-		name = component->priv->name;
-	else
-		name = "";
-
-	if (component != NULL)
-		corba_component = 
-			bonobo_object_corba_objref (BONOBO_OBJECT (component));
-	else
-		corba_component = CORBA_OBJECT_NIL;
-
-	Bonobo_UIContainer_register_component (
-		container, name,
-		corba_component, real_ev);
-
-	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
-		g_warning ("Serious exception registering component '$%s'",
-			   bonobo_exception_get_text (real_ev));
+	name = component->priv->name ? component->priv->name : "";
 
 	Bonobo_UIContainer_node_set (container, path, xml,
 				     name, real_ev);
@@ -487,7 +488,7 @@ bonobo_ui_component_get_tree (BonoboUIComponent  *component,
 	if (!node)
 		return NULL;
 
-	bonobo_ui_xml_strip (node);
+	bonobo_ui_xml_strip (&node);
 
 	return node;
 }
@@ -528,15 +529,6 @@ impl_xml_rm (BonoboUIComponent  *component,
 	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
 		g_warning ("Serious exception removing path  '%s' '%s'",
 			   path, bonobo_exception_get_text (real_ev));
-
-	if (path [0] == '\0' || !strcmp (path, "/")) {
-		Bonobo_UIContainer_deregister_component (
-			container, priv->name, real_ev);
-		
-		if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
-			g_warning ("Serious exception removing path  '%s' '%s'",
-				   path, bonobo_exception_get_text (real_ev));
-	}
 
 	if (!ev)
 		CORBA_exception_free (&tmp_ev);
@@ -844,7 +836,24 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component)
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
 	if (component->priv->container != CORBA_OBJECT_NIL) {
+		CORBA_Environment  ev;
+		char              *name;
+
 		bonobo_ui_component_rm (component, "/", NULL);
+
+		CORBA_exception_init (&ev);
+
+		name = component->priv->name ? component->priv->name : "";
+
+		Bonobo_UIContainer_deregister_component (
+			component->priv->container, name, &ev);
+		
+		if (ev._major != CORBA_NO_EXCEPTION)
+			g_warning ("Serious exception deregistering component '%s'",
+				   bonobo_exception_get_text (&ev));
+
+		CORBA_exception_free (&ev);
+
 		bonobo_object_release_unref (component->priv->container, NULL);
 	}
 
@@ -859,10 +868,30 @@ bonobo_ui_component_set_container (BonoboUIComponent *component,
 
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
-	if (container != CORBA_OBJECT_NIL)
+	if (container != CORBA_OBJECT_NIL) {
+		Bonobo_UIComponent corba_component;
+		char              *name;
+		CORBA_Environment  ev;
+
 		ref_cont = 		
 			bonobo_object_dup_ref (container, NULL);
-	else
+
+		CORBA_exception_init (&ev);
+
+		corba_component = 
+			bonobo_object_corba_objref (BONOBO_OBJECT (component));
+
+		name = component->priv->name ? component->priv->name : "";
+
+		Bonobo_UIContainer_register_component (
+			ref_cont, name, corba_component, &ev);
+
+		if (ev._major != CORBA_NO_EXCEPTION)
+			g_warning ("Serious exception registering component '$%s'",
+				   bonobo_exception_get_text (&ev));
+		
+		CORBA_exception_free (&ev);
+	} else
 		ref_cont = CORBA_OBJECT_NIL;
 
 	bonobo_ui_component_unset_container (component);
