@@ -1,3 +1,7 @@
+2003-04-29  Malcolm Tredinnick <malcolm@commsecure.com.au>
+	
+	* bonobo/Makefile.am (libbonoboui_2_la_LIBADD): Fix link order.
+
 2003-04-18  Masahiro Sakai  <sakai@tom.sfc.keio.ac.jp>
 
 	* configure.in: call AC_LIBTOOL_WIN32_DLL.
