@@ -173,7 +173,7 @@ main (int argc, char **argv)
 	char simplee [] =
 		"<menuitem name=\"fish\" _label=\"_Inplace\" pixtype=\"stock\" pixname=\"Save\" _tip=\"tip2\"/>\n";
 	char toola [] =
-		"<dockitem name=\"toolbar\" homogeneous=\"0\" look=\"both\">\n"
+		"<dockitem name=\"toolbar\" homogeneous=\"0\" vlook=\"icon\">\n"
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" _label=\"TogSave\" _tip=\"My tooltip\"/>\n"
 		"	<separator/>\n"
 		"	<toolitem name=\"baa\" pixtype=\"stock\" pixname=\"Open\" _label=\"baa\" _tip=\"My 2nd tooltip\" verb=\"testme\"/>\n"

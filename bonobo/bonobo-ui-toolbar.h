@@ -46,8 +46,7 @@ struct _BonoboUIToolbarClass {
 
 	void (* set_orientation) (BonoboUIToolbar *toolbar,
 				  GtkOrientation orientation);
-	void (* set_style)       (BonoboUIToolbar *toolbar,
-				  BonoboUIToolbarStyle style);
+	void (* style_changed)   (BonoboUIToolbar *toolbar);
 };
 
 
@@ -59,9 +58,11 @@ void                  bonobo_ui_toolbar_set_orientation  (BonoboUIToolbar      *
 							  GtkOrientation        orientation);
 GtkOrientation        bonobo_ui_toolbar_get_orientation  (BonoboUIToolbar      *toolbar);
 
-void                  bonobo_ui_toolbar_set_style        (BonoboUIToolbar      *toolbar,
-							  BonoboUIToolbarStyle  style);
 BonoboUIToolbarStyle  bonobo_ui_toolbar_get_style        (BonoboUIToolbar      *toolbar);
+
+void                  bonobo_ui_toolbar_set_hv_styles    (BonoboUIToolbar      *toolbar,
+							  BonoboUIToolbarStyle  hstyle,
+							  BonoboUIToolbarStyle  vstyle);
 
 void                  bonobo_ui_toolbar_insert           (BonoboUIToolbar      *toolbar,
 							  BonoboUIToolbarItem  *item,

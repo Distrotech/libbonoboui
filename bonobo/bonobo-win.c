@@ -2213,6 +2213,15 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	}
 }
 
+static BonoboUIToolbarStyle
+parse_look (const char *look)
+{
+	if (!look || !strcmp (look, "both"))
+		return BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
+	else
+		return BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
+}
+
 static void
 update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 {
@@ -2222,6 +2231,7 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 	GnomeDockItem *item;
 	BonoboUIToolbar *toolbar;
 	GList *widgets, *wptr;
+	BonoboUIToolbarStyle look;
 	int    pos;
 
 	item = get_dock_item (priv, dockname);
@@ -2254,15 +2264,25 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 /*	bonobo_win_dump (priv->win, "after build widgets");*/
 
 	/* Update the attributes */
+
 	if ((txt = bonobo_ui_node_get_attr (node, "look"))) {
-		if (!strcmp (txt, "both"))
-			bonobo_ui_toolbar_set_style (
-				toolbar, BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT);
-		else
-			bonobo_ui_toolbar_set_style (
-				toolbar, BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY);
+		look = parse_look (txt);
+		bonobo_ui_toolbar_set_hv_styles (toolbar, look, look);
 		bonobo_ui_node_free_string (txt);
-	}
+
+	} else {
+		BonoboUIToolbarStyle vlook, hlook;
+
+		txt = bonobo_ui_node_get_attr (node, "hlook");
+		hlook = parse_look (txt);
+		bonobo_ui_node_free_string (txt);
+
+		txt = bonobo_ui_node_get_attr (node, "vlook");
+		vlook = parse_look (txt);
+		bonobo_ui_node_free_string (txt);
+
+		bonobo_ui_toolbar_set_hv_styles (toolbar, hlook, vlook);
+	}		
 
 #if 0
 	if ((txt = bonobo_ui_node_get_attr (node, "relief"))) {

@@ -92,6 +92,8 @@ impl_set_orientation (BonoboUIToolbarItem *item,
 		break;
 
 	case BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_NONE:
+		gtk_widget_hide (GTK_WIDGET (priv->control));
+		gtk_widget_hide (priv->button);
 		break;
 
 	default:

@@ -41,6 +41,10 @@ struct _BonoboUIToolbarPrivate {
 	/* The style of this toolbar.  */
 	BonoboUIToolbarStyle style;
 
+	/* Styles to use in different orientations */
+	BonoboUIToolbarStyle hstyle;
+	BonoboUIToolbarStyle vstyle;
+
 	/* Sizes of the toolbar.  This is actually the height for
            horizontal toolbars and the width for vertical toolbars.  */
 	int max_width, max_height;
@@ -78,7 +82,7 @@ struct _BonoboUIToolbarPrivate {
 
 enum {
 	SET_ORIENTATION,
-	SET_STYLE,
+	STYLE_CHANGED,
 	LAST_SIGNAL
 };
 
@@ -978,13 +982,15 @@ impl_set_orientation (BonoboUIToolbar *toolbar,
 }
 
 static void
-impl_set_style (BonoboUIToolbar *toolbar,
-		BonoboUIToolbarStyle style)
+impl_style_changed (BonoboUIToolbar *toolbar)
 {
-	BonoboUIToolbarPrivate *priv;
 	GList *p;
+	BonoboUIToolbarStyle style;
+	BonoboUIToolbarPrivate *priv;
 
 	priv = toolbar->priv;
+
+	style = (priv->orientation == GTK_ORIENTATION_HORIZONTAL) ? priv->hstyle : priv->vstyle;
 
 	if (style == priv->style)
 		return;
@@ -1078,7 +1084,7 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 	container_class->forall = impl_forall;
 
 	toolbar_class->set_orientation = impl_set_orientation;
-	toolbar_class->set_style       = impl_set_style;
+	toolbar_class->style_changed   = impl_style_changed;
 
 	parent_class = gtk_type_class (gtk_container_get_type ());
 
@@ -1101,14 +1107,13 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 				  GTK_TYPE_NONE, 1,
 				  GTK_TYPE_INT);
 
-	signals[SET_STYLE]
+	signals[STYLE_CHANGED]
 		= gtk_signal_new ("set_style",
 				  GTK_RUN_LAST,
 				  object_class->type,
-				  GTK_SIGNAL_OFFSET (BonoboUIToolbarClass, set_style),
-				  gtk_marshal_NONE__INT,
-				  GTK_TYPE_NONE, 1,
-				  GTK_TYPE_INT);
+				  GTK_SIGNAL_OFFSET (BonoboUIToolbarClass, style_changed),
+				  gtk_marshal_NONE__NONE,
+				  GTK_TYPE_NONE, 0);
 
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 }
@@ -1126,6 +1131,8 @@ init (BonoboUIToolbar *toolbar)
 	priv->orientation                 = GTK_ORIENTATION_HORIZONTAL;
 	priv->is_floating		  = FALSE;
 	priv->style                       = BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
+	priv->hstyle                      = BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
+	priv->vstyle                      = BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
 	priv->max_width			  = 0;
 	priv->total_width		  = 0;
 	priv->max_height		  = 0;
@@ -1220,6 +1227,8 @@ bonobo_ui_toolbar_set_orientation (BonoboUIToolbar *toolbar,
 			  || orientation == GTK_ORIENTATION_VERTICAL);
 
 	gtk_signal_emit (GTK_OBJECT (toolbar), signals[SET_ORIENTATION], orientation);
+
+	gtk_signal_emit (GTK_OBJECT (toolbar), signals[STYLE_CHANGED]);
 }
 
 GtkOrientation
@@ -1236,16 +1245,6 @@ bonobo_ui_toolbar_get_orientation (BonoboUIToolbar *toolbar)
 }
 
 
-void
-bonobo_ui_toolbar_set_style (BonoboUIToolbar *toolbar,
-			  BonoboUIToolbarStyle style)
-{
-	g_return_if_fail (toolbar != NULL);
-	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
-
-	gtk_signal_emit (GTK_OBJECT (toolbar), signals[SET_STYLE], style);
-}
-
 BonoboUIToolbarStyle
 bonobo_ui_toolbar_get_style (BonoboUIToolbar *toolbar)
 {
@@ -1332,4 +1331,17 @@ bonobo_ui_toolbar_get_children (BonoboUIToolbar *toolbar)
 	}
 
 	return g_list_reverse (ret);
+}
+
+void
+bonobo_ui_toolbar_set_hv_styles (BonoboUIToolbar      *toolbar,
+				 BonoboUIToolbarStyle  hstyle,
+				 BonoboUIToolbarStyle  vstyle)
+{
+	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
+
+	toolbar->priv->hstyle = hstyle;
+	toolbar->priv->vstyle = vstyle;
+
+	gtk_signal_emit (GTK_OBJECT (toolbar), signals [STYLE_CHANGED]);
 }
