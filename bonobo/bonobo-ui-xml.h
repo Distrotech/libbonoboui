@@ -43,7 +43,7 @@ struct _BonoboUIXml {
 	BonoboUIXmlDumpFn      dump;
 	BonoboUIXmlAddNode     add_node;
 
-	BonoboUINode               *root;
+	BonoboUINode          *root;
 	
 	gpointer               dummy;
 };

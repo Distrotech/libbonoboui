@@ -1212,8 +1212,8 @@ bonobo_ui_toolbar_get_tooltips (BonoboUIToolbar *toolbar)
 
 void
 bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
-		       BonoboUIToolbarItem *item,
-		       int position)
+			  BonoboUIToolbarItem *item,
+			  int position)
 {
 	BonoboUIToolbarPrivate *priv;
 

@@ -125,9 +125,28 @@ bonobo_ui_xml_clean (BonoboUIXml  *tree,
 		bonobo_ui_xml_clean (tree, l);
 }
 
+static void
+set_children_dirty (BonoboUIXml *tree, BonoboUINode *node)
+{
+	BonoboUINode *l;
+
+	if (!node)
+		return;
+
+	for (l = bonobo_ui_node_children (node); l;
+	     l = bonobo_ui_node_next (l)) {
+		BonoboUIXmlData *data;
+
+		data = bonobo_ui_xml_get_data (tree, l);
+		data->dirty = TRUE;
+		
+		set_children_dirty (tree, l);
+	}
+}
+
 /*
- * FIXME: this functionality is broken and should live in bonobo-win.c
- * for cleanliness and never in this more generic code.
+ * FIXME: the placeholder functionality is broken and should live in
+ * bonobo-win.c for cleanliness and never in this more generic code.
  */
 void
 bonobo_ui_xml_set_dirty (BonoboUIXml *tree, BonoboUINode *node)
@@ -147,6 +166,9 @@ bonobo_ui_xml_set_dirty (BonoboUIXml *tree, BonoboUINode *node)
 
 		l = bonobo_ui_node_parent (l);
 	}
+
+	/* Too conservative in some cases.*/
+	set_children_dirty (tree, node);
 }
 
 char *
