@@ -28,6 +28,7 @@ bonobo_transient_get_type
 bonobo_ui_component_get_type
 bonobo_ui_container_get_type
 bonobo_ui_engine_get_type
+bonobo_ui_sync_get_type
 bonobo_ui_toolbar_button_item_get_type
 bonobo_ui_toolbar_icon_get_type
 bonobo_ui_toolbar_item_get_type

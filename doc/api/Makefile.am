@@ -65,12 +65,12 @@ tmpl_sources = 					\
         tmpl/bonobo-ui-container.sgml		\
         tmpl/bonobo-ui-engine.sgml		\
         tmpl/bonobo-ui-node.sgml		\
+        tmpl/bonobo-ui-sync.sgml		\
         tmpl/bonobo-ui-toolbar-button-item.sgml	\
         tmpl/bonobo-ui-toolbar-icon.sgml	\
         tmpl/bonobo-ui-toolbar-item.sgml	\
         tmpl/bonobo-ui-toolbar-toggle-button-item.sgml \
         tmpl/bonobo-ui-util.sgml		\
-        tmpl/bonobo-ui-xml.sgml			\
         tmpl/bonobo-unused.sgml			\
         tmpl/bonobo-view-frame.sgml		\
         tmpl/bonobo-view.sgml			\
@@ -158,12 +158,12 @@ scan:
 		../../bonobo/bonobo-ui-container.h            	\
 		../../bonobo/bonobo-ui-engine.h            	\
 		../../bonobo/bonobo-ui-node.h                 	\
+		../../bonobo/bonobo-ui-sync.h                 	\
 		../../bonobo/bonobo-ui-toolbar-button-item.h  	\
 		../../bonobo/bonobo-ui-toolbar-icon.h         	\
 		../../bonobo/bonobo-ui-toolbar-item.h		\
 		../../bonobo/bonobo-ui-toolbar-toggle-button-item.h	\
 		../../bonobo/bonobo-ui-util.h			\
-		../../bonobo/bonobo-ui-xml.h			\
 		../../bonobo/bonobo-view-frame.h		\
 		../../bonobo/bonobo-view.h			\
 		../../bonobo/bonobo-widget.h 			\

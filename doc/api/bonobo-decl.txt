@@ -4693,6 +4693,203 @@ const char *str
 <RETURNS>BonoboUINode *</RETURNS>
 const char *filename
 </FUNCTION>
+<STRUCT>
+<NAME>BonoboUISync</NAME>
+</STRUCT>
+<MACRO>
+<NAME>BONOBO_TYPE_UI_SYNC</NAME>
+#define BONOBO_TYPE_UI_SYNC            (bonobo_ui_sync_get_type ())
+</MACRO>
+<MACRO>
+<NAME>BONOBO_UI_SYNC</NAME>
+#define BONOBO_UI_SYNC(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC, BonoboUISync))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_UI_SYNC_CLASS</NAME>
+#define BONOBO_UI_SYNC_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC, BonoboUISyncClass))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_IS_UI_SYNC</NAME>
+#define BONOBO_IS_UI_SYNC(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_SYNC))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_IS_UI_SYNC_CLASS</NAME>
+#define BONOBO_IS_UI_SYNC_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC))
+</MACRO>
+<USER_FUNCTION>
+<NAME>BonoboUISyncStateFn</NAME>
+<RETURNS>void </RETURNS>
+BonoboUISync     *sync,
+					     BonoboUINode     *node,
+					     BonoboUINode     *cmd_node,
+					     GtkWidget        *widget,
+					     GtkWidget        *parent
+</USER_FUNCTION>
+<USER_FUNCTION>
+<NAME>BonoboUISyncBuildFn</NAME>
+<RETURNS>GtkWidget *</RETURNS>
+BonoboUISync     *sync,
+					     BonoboUINode     *node,
+					     BonoboUINode     *cmd_node,
+					     int              *pos,
+					     GtkWidget        *parent
+</USER_FUNCTION>
+<STRUCT>
+<NAME>BonoboUISyncPrivate</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboUISync</NAME>
+struct BonoboUISync {
+	GtkObject parent;
+
+	BonoboUIEngine *engine;
+	gboolean        is_recursive;
+	gboolean        has_widgets;
+
+	BonoboUISyncPrivate *priv;
+};
+</STRUCT>
+<TYPEDEF>
+<NAME>BonoboUISyncClass</NAME>
+typedef struct {
+	GtkObjectClass parent_class;
+
+	BonoboUISyncStateFn sync_state;
+	BonoboUISyncStateFn sync_state_placeholder;
+	BonoboUISyncBuildFn build;
+	BonoboUISyncBuildFn build_placeholder;
+
+	void          (*update_root)     (BonoboUISync     *sync,
+					  BonoboUINode     *root);
+
+	void          (*remove_root)     (BonoboUISync     *sync,
+					  BonoboUINode     *root);
+
+	GList        *(*get_widgets)     (BonoboUISync     *sync,
+					  BonoboUINode     *node);
+
+	void          (*state_update)    (BonoboUISync     *sync,
+					  GtkWidget        *widget,
+					  const char       *new_state);
+	
+	gboolean      (*ignore_widget)   (BonoboUISync     *sync,
+					  GtkWidget        *widget);
+	
+	gboolean      (*can_handle)      (BonoboUISync     *sync,
+					  BonoboUINode     *node);
+	
+        void          (*stamp_root)      (BonoboUISync     *sync);
+
+	GtkWidget    *(*get_attached)    (BonoboUISync     *sync,
+					  GtkWidget        *widget,
+					  BonoboUINode     *node);
+} BonoboUISyncClass;
+</TYPEDEF>
+<FUNCTION>
+<NAME>bonobo_ui_sync_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_construct</NAME>
+<RETURNS>BonoboUISync  *</RETURNS>
+BonoboUISync     *sync,BonoboUIEngine   *engine,gboolean          is_recursive,gboolean          has_widgets
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_is_recursive</NAME>
+<RETURNS>gboolean  </RETURNS>
+BonoboUISync     *sync
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_has_widgets</NAME>
+<RETURNS>gboolean  </RETURNS>
+BonoboUISync     *sync
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_remove_root</NAME>
+<RETURNS>void  </RETURNS>
+BonoboUISync     *sync,BonoboUINode     *root
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_update_root</NAME>
+<RETURNS>void  </RETURNS>
+BonoboUISync     *sync,BonoboUINode     *root
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_state</NAME>
+<RETURNS>void  </RETURNS>
+BonoboUISync     *sync,BonoboUINode     *node,BonoboUINode     *cmd_node,GtkWidget        *widget,GtkWidget        *parent
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_state_placeholder</NAME>
+<RETURNS>void  </RETURNS>
+BonoboUISync     *sync,BonoboUINode     *node,BonoboUINode     *cmd_node,GtkWidget        *widget,GtkWidget        *parent
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_build</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+BonoboUISync     *sync,BonoboUINode     *node,BonoboUINode     *cmd_node,int              *pos,GtkWidget        *parent
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_build_placeholder</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+BonoboUISync     *sync,BonoboUINode     *node,BonoboUINode     *cmd_node,int              *pos,GtkWidget        *parent
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_ignore_widget</NAME>
+<RETURNS>gboolean  </RETURNS>
+BonoboUISync     *sync,GtkWidget        *widget
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_get_widgets</NAME>
+<RETURNS>GList      *</RETURNS>
+BonoboUISync     *sync,BonoboUINode     *node
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_stamp_root</NAME>
+<RETURNS>void  </RETURNS>
+BonoboUISync     *sync
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_can_handle</NAME>
+<RETURNS>gboolean  </RETURNS>
+BonoboUISync     *sync,BonoboUINode     *node
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_get_attached</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+BonoboUISync     *sync,GtkWidget        *widget,BonoboUINode     *node
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_state_update</NAME>
+<RETURNS>void  </RETURNS>
+BonoboUISync     *sync,GtkWidget        *widget,const char       *new_state
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_do_show_hide</NAME>
+<RETURNS>gboolean  </RETURNS>
+BonoboUISync     *sync,BonoboUINode     *node,BonoboUINode     *cmd_node,GtkWidget        *widget
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_keys_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_menu_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_status_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_ui_sync_toolbar_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
 <MACRO>
 <NAME>BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM</NAME>
 #define BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM		(bonobo_ui_toolbar_button_item_get_type ())
@@ -5318,183 +5515,6 @@ const char *str, gboolean *err
 <NAME>bonobo_ui_util_encode_str</NAME>
 <RETURNS>char            *</RETURNS>
 const char *str
-</FUNCTION>
-<MACRO>
-<NAME>BONOBO_UI_XML_TYPE</NAME>
-#define BONOBO_UI_XML_TYPE        (bonobo_ui_xml_get_type ())
-</MACRO>
-<MACRO>
-<NAME>BONOBO_UI_XML</NAME>
-#define BONOBO_UI_XML(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_XML_TYPE, BonoboUIXml))
-</MACRO>
-<MACRO>
-<NAME>BONOBO_UI_XML_CLASS</NAME>
-#define BONOBO_UI_XML_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_UI_XML_TYPE, BonoboUIXmlClass))
-</MACRO>
-<MACRO>
-<NAME>BONOBO_IS_UI_XML</NAME>
-#define BONOBO_IS_UI_XML(o)       (GTK_CHECK_TYPE ((o), BONOBO_UI_XML_TYPE))
-</MACRO>
-<MACRO>
-<NAME>BONOBO_IS_UI_XML_CLASS</NAME>
-#define BONOBO_IS_UI_XML_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_UI_XML_TYPE))
-</MACRO>
-<STRUCT>
-<NAME>BonoboUIXml</NAME>
-</STRUCT>
-<TYPEDEF>
-<NAME>BonoboUIXmlData</NAME>
-typedef struct {
-	gpointer id;
-	gboolean dirty;
-	GSList  *overridden;
-} BonoboUIXmlData;
-</TYPEDEF>
-<USER_FUNCTION>
-<NAME>BonoboUIXmlCompareFn</NAME>
-<RETURNS>gboolean </RETURNS>
-gpointer         id_a,
-						    gpointer         id_b
-</USER_FUNCTION>
-<USER_FUNCTION>
-<NAME>BonoboUIXmlDataNewFn</NAME>
-<RETURNS>BonoboUIXmlData *</RETURNS>
-void
-</USER_FUNCTION>
-<USER_FUNCTION>
-<NAME>BonoboUIXmlDataFreeFn</NAME>
-<RETURNS>void </RETURNS>
-BonoboUIXmlData *data
-</USER_FUNCTION>
-<USER_FUNCTION>
-<NAME>BonoboUIXmlDumpFn</NAME>
-<RETURNS>void </RETURNS>
-BonoboUIXml      *tree,
-						    BonoboUINode     *node
-</USER_FUNCTION>
-<USER_FUNCTION>
-<NAME>BonoboUIXmlAddNode</NAME>
-<RETURNS>void </RETURNS>
-BonoboUINode     *parent,
-						    BonoboUINode     *child,
-						    gpointer          user_data
-</USER_FUNCTION>
-<USER_FUNCTION>
-<NAME>BonoboUIXmlWatchFn</NAME>
-<RETURNS>void </RETURNS>
-BonoboUIXml      *xml,
-						    const char       *path,
-						    BonoboUINode     *opt_node,
-						    gpointer          user_data
-</USER_FUNCTION>
-<STRUCT>
-<NAME>BonoboUIXml</NAME>
-struct BonoboUIXml {
-	GtkObject              object;
-
-	BonoboUIXmlCompareFn   compare;
-	BonoboUIXmlDataNewFn   data_new;
-	BonoboUIXmlDataFreeFn  data_free;
-	BonoboUIXmlDumpFn      dump;
-	BonoboUIXmlAddNode     add_node;
-	BonoboUIXmlWatchFn     watch;
-	gpointer               user_data;
-
-	BonoboUINode          *root;
-
-	GSList                *watches;
-};
-</STRUCT>
-<TYPEDEF>
-<NAME>BonoboUIXmlClass</NAME>
-typedef struct {
-	GtkObjectClass         object_klass;
-
-	void                 (*override)          (BonoboUINode *new_node,
-						   BonoboUINode *old_node);
-	void                 (*replace_override)  (BonoboUINode *new_node,
-						   BonoboUINode *old_node);
-	void                 (*reinstate)         (BonoboUINode *node);
-	void                 (*rename)            (BonoboUINode *node);
-	void                 (*remove)            (BonoboUINode *node);
-
-	gpointer               dummy;
-} BonoboUIXmlClass;
-</TYPEDEF>
-<FUNCTION>
-<NAME>bonobo_ui_xml_get_type</NAME>
-<RETURNS>GtkType  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_new</NAME>
-<RETURNS>BonoboUIXml      *</RETURNS>
-BonoboUIXmlCompareFn  compare,BonoboUIXmlDataNewFn  data_new,BonoboUIXmlDataFreeFn data_free,BonoboUIXmlDumpFn     dump,BonoboUIXmlAddNode    add_node,gpointer              user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_get_data</NAME>
-<RETURNS>gpointer  </RETURNS>
-BonoboUIXml  *tree,BonoboUINode *node
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_set_dirty</NAME>
-<RETURNS>void  </RETURNS>
-BonoboUIXml  *tree,BonoboUINode *node
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_clean</NAME>
-<RETURNS>void  </RETURNS>
-BonoboUIXml  *tree,BonoboUINode *node
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_get_path</NAME>
-<RETURNS>BonoboUINode     *</RETURNS>
-BonoboUIXml  *tree,const char   *path
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_get_path_wildcard</NAME>
-<RETURNS>BonoboUINode     *</RETURNS>
-BonoboUIXml  *tree,const char   *path,gboolean     *wildcard
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_make_path</NAME>
-<RETURNS>char             *</RETURNS>
-BonoboUINode *node
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_get_parent_path</NAME>
-<RETURNS>char             *</RETURNS>
-const char   *path
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_merge</NAME>
-<RETURNS>BonoboUIError  </RETURNS>
-BonoboUIXml  *tree,const char   *path,BonoboUINode *nodes,gpointer      id
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_rm</NAME>
-<RETURNS>BonoboUIError  </RETURNS>
-BonoboUIXml  *tree,const char   *path,gpointer      id
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_dump</NAME>
-<RETURNS>void  </RETURNS>
-BonoboUIXml  *tree,BonoboUINode *node,const char   *msg
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_set_watch_fn</NAME>
-<RETURNS>void  </RETURNS>
-BonoboUIXml  *tree,BonoboUIXmlWatchFn watch
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_add_watch</NAME>
-<RETURNS>void  </RETURNS>
-BonoboUIXml  *tree,const char   *path,gpointer      user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_ui_xml_remove_watch_by_data</NAME>
-<RETURNS>void  </RETURNS>
-BonoboUIXml  *tree,gpointer      user_data
 </FUNCTION>
 <MACRO>
 <NAME>BONOBO_VIEW_FRAME_TYPE</NAME>

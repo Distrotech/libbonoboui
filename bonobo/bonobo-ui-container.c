@@ -267,6 +267,12 @@ BONOBO_X_TYPE_FUNC_FULL (BonoboUIContainer,
 			   PARENT_TYPE,
 			   bonobo_ui_container);
 
+/**
+ * bonobo_ui_container_new:
+ * @void: 
+ * 
+ * Return value: a newly created BonoboUIContainer
+ **/
 BonoboUIContainer *
 bonobo_ui_container_new (void)
 {
@@ -281,6 +287,14 @@ blank_engine (GtkObject *win, BonoboUIContainer *container)
 	container->priv->flags |= WIN_DESTROYED;
 }
 
+/**
+ * bonobo_ui_container_set_engine:
+ * @container: the container
+ * @engine: the engine
+ * 
+ * Associates the BonoboUIContainer with a #BonoboUIEngine
+ * that it will use to handle all the UI merging requests.
+ **/
 void
 bonobo_ui_container_set_engine (BonoboUIContainer *container,
 				BonoboUIEngine    *engine)
@@ -297,6 +311,14 @@ bonobo_ui_container_set_engine (BonoboUIContainer *container,
 		container, GTK_OBJECT (container));
 }
 
+/**
+ * bonobo_ui_container_get_engine:
+ * @container: the UI container
+ * 
+ * Get the associated #BonoboUIEngine
+ * 
+ * Return value: the engine
+ **/
 BonoboUIEngine *
 bonobo_ui_container_get_engine (BonoboUIContainer *container)
 {
@@ -305,6 +327,16 @@ bonobo_ui_container_get_engine (BonoboUIContainer *container)
 	return container->priv->engine;
 }
 
+/**
+ * bonobo_ui_container_set_win:
+ * @container: the container
+ * @win: a #BonoboWindow widget
+ * 
+ * This function is deprecated, please use
+ * bonobo_ui_container_set_engine instead, we plan to
+ * allow UIContainers to be associated with many things
+ * apart from BonoboWindows.
+ **/
 void
 bonobo_ui_container_set_win (BonoboUIContainer *container,
 			     BonoboWindow      *win)
@@ -322,6 +354,16 @@ bonobo_ui_container_set_win (BonoboUIContainer *container,
 		container, GTK_OBJECT (container));
 }
 
+/**
+ * bonobo_ui_container_get_win:
+ * @container: the BonoboUIContainer
+ * 
+ * This is _extremely_ deprecated, there is no garentee
+ * that a BonoboUIContainer has an associated window, this
+ * function will spew warnings.
+ * 
+ * Return value: a BonoboWindow if it is associated.
+ **/
 BonoboWindow *
 bonobo_ui_container_get_win (BonoboUIContainer *container)
 {

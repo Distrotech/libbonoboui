@@ -71,6 +71,17 @@ bonobo_ui_xml_strip (BonoboUINode **node)
 	bonobo_ui_node_strip (node);
 }
 
+/**
+ * bonobo_ui_xml_get_data:
+ * @tree: the tree
+ * @node: the node
+ * 
+ * This function gets the data pointer associated with @node
+ * and if there is no data pointer, constructs it using a user supplied
+ * callback.
+ * 
+ * Return value: a valid Data pointer - never NULL.
+ **/
 gpointer
 bonobo_ui_xml_get_data (BonoboUIXml *tree, BonoboUINode *node)
 {
@@ -86,6 +97,14 @@ bonobo_ui_xml_get_data (BonoboUIXml *tree, BonoboUINode *node)
 	return bonobo_ui_node_get_data (node);
 }
 
+/**
+ * bonobo_ui_xml_clean:
+ * @tree: the tree
+ * @node: the node
+ * 
+ * This function marks the entire @tree from @node down
+ * ( all its child nodes ) as being clean.
+ **/
 void
 bonobo_ui_xml_clean (BonoboUIXml  *tree,
 		     BonoboUINode *node)
@@ -120,11 +139,17 @@ set_children_dirty (BonoboUIXml *tree, BonoboUINode *node)
 	}
 }
 
-/*
- * FIXME: the placeholder functionality is broken and should
- * live in bonobo-win.c for cleanliness and never in this
- * more generic code.
- */
+/**
+ * bonobo_ui_xml_set_dirty:
+ * @tree: the tree
+ * @node: the node
+ * 
+ * This function sets a node as being dirty, along with all
+ * its children. However more than this, it also sets its parent
+ * dirty, and bubbles this up while the parent is a placeholder,
+ * so as to allow a re-generate to be forced for its real visible
+ * parent.
+ **/
 void
 bonobo_ui_xml_set_dirty (BonoboUIXml *tree, BonoboUINode *node)
 {
@@ -134,6 +159,12 @@ bonobo_ui_xml_set_dirty (BonoboUIXml *tree, BonoboUINode *node)
 	l = node;
 	for (i = 0; (i < 2) && l; i++) {
 		BonoboUIXmlData *data;
+
+		/*
+		 * FIXME: the placeholder functionality is broken and should
+		 * live in bonobo-win.c for cleanliness and never in this
+		 * more generic code.
+		 */
 
 		if (!strcmp (bonobo_ui_node_get_name (l), "placeholder"))
 			i--;
@@ -148,6 +179,15 @@ bonobo_ui_xml_set_dirty (BonoboUIXml *tree, BonoboUINode *node)
 	set_children_dirty (tree, node);
 }
 
+/**
+ * bonobo_ui_xml_get_parent_path:
+ * @path: the path
+ * 
+ * This function lops one level off a path, much
+ * like appending '..' to a Unix directory path.
+ * 
+ * Return value: the parent's path, use g_free to release it
+ **/
 char *
 bonobo_ui_xml_get_parent_path (const char *path)
 {
@@ -300,10 +340,22 @@ dump_internals (BonoboUIXml *tree, BonoboUINode *node)
 	indent -= 2;
 }
 
-/* XML_NODE() hack used here since there's no public "dump node" API */
+/**
+ * bonobo_ui_xml_dump:
+ * @tree: the tree node
+ * @bnode: the base node to start dumping from
+ * @descr: a description string to print.
+ * 
+ * This debug function dumps the contents of a BonoboUIXml tree
+ * to stderr, it is used by BonoboUIEngine to provide some of the
+ * builtin BonoboUIDump verb functionality.
+ **/
 void
-bonobo_ui_xml_dump (BonoboUIXml *tree, BonoboUINode *bnode, const char *descr)
+bonobo_ui_xml_dump (BonoboUIXml  *tree,
+		    BonoboUINode *bnode,
+		    const char   *descr)
 {
+	/* XML_NODE() hack used here since there's no public "dump node" API */
 	xmlDoc *doc;
         xmlNode *node = XML_NODE (bnode);
 
@@ -574,6 +626,16 @@ bonobo_ui_xml_path_unescape (const char *path)
 }
 */
 
+/*
+ * bonobo_ui_xml_path_split:
+ * @path: the path to split
+ * 
+ * This function splits a path on the '/' character
+ * there is no escaping in place in the path - thus
+ * do not use the '/' character in a node name.
+ * 
+ * Return value: the split path.
+ */
 static char **
 bonobo_ui_xml_path_split (const char *path)
 {
@@ -690,12 +752,34 @@ xml_get_path (BonoboUIXml *tree, const char *path,
 	return ret;
 }
 
+/**
+ * bonobo_ui_xml_get_path:
+ * @tree: the tree
+ * @path: the path
+ * 
+ * This function returns the node at path @path inside the
+ * internal XML tree.
+ * 
+ * Return value: a pointer to the node at @path
+ **/
 BonoboUINode *
 bonobo_ui_xml_get_path (BonoboUIXml *tree, const char *path)
 {
 	return xml_get_path (tree, path, FALSE, NULL);
 }
 
+/**
+ * bonobo_ui_xml_get_path_wildcard:
+ * @tree: the tree
+ * @path: the path
+ * @wildcard: whether to allow '*' as a wildcard
+ * 
+ * This does a wildcard path match, the only
+ * wildcard character is '*'. This is only really
+ * used by the _rm command and the _exists functionality.
+ * 
+ * Return value: TRUE if the path matches.
+ **/
 BonoboUINode *
 bonobo_ui_xml_get_path_wildcard (BonoboUIXml *tree, const char *path,
 				 gboolean    *wildcard)
@@ -703,6 +787,14 @@ bonobo_ui_xml_get_path_wildcard (BonoboUIXml *tree, const char *path,
 	return xml_get_path (tree, path, TRUE, wildcard);
 }
 
+/**
+ * bonobo_ui_xml_make_path:
+ * @node: the node.
+ * 
+ * This generates a path name for a node in a tree.
+ * 
+ * Return value: the path name, use g_free to release.
+ **/
 char *
 bonobo_ui_xml_make_path  (BonoboUINode *node)
 {
@@ -783,14 +875,6 @@ do_insert (BonoboUINode *parent,
 	}
 }
 
-/**
- * merge:
- * @current: the parent node
- * @new: an xml fragment
- * 
- * Merges two xml trees overriding where appropriate.
- * new and its siblings get merged into current's children
- **/
 static void
 merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 {
@@ -877,6 +961,19 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 /*	DUMP_XML (tree, current, "After all"); */
 }
 
+/**
+ * bonobo_ui_xml_merge:
+ * @tree: the tree
+ * @path: the path to merge into
+ * @nodes: the nodes
+ * @id: the id to merge with.
+ * 
+ * Merges new xml nodes into the internal tree, overriding
+ * where appropriate. Merging is by id, ie. overriding only
+ * occurs where there is an id mismatch.
+ * 
+ * Return value: an error flag.
+ **/
 BonoboUIError
 bonobo_ui_xml_merge (BonoboUIXml  *tree,
 		     const char   *path,

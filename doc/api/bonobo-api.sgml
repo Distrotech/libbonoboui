@@ -49,12 +49,12 @@
 <!entity bonobo-ui-container SYSTEM "sgml/bonobo-ui-container.sgml">
 <!entity bonobo-ui-engine SYSTEM "sgml/bonobo-ui-engine.sgml">
 <!entity bonobo-ui-node SYSTEM "sgml/bonobo-ui-node.sgml">
+<!entity bonobo-ui-sync SYSTEM "sgml/bonobo-ui-sync.sgml">
 <!entity bonobo-ui-toolbar-button-item SYSTEM "sgml/bonobo-ui-toolbar-button-item.sgml">
 <!entity bonobo-ui-toolbar-icon SYSTEM "sgml/bonobo-ui-toolbar-icon.sgml">
 <!entity bonobo-ui-toolbar-item SYSTEM "sgml/bonobo-ui-toolbar-item.sgml">
 <!entity bonobo-ui-toolbar-toggle-button-item SYSTEM "sgml/bonobo-ui-toolbar-toggle-button-item.sgml">
 <!entity bonobo-ui-util SYSTEM "sgml/bonobo-ui-util.sgml">
-<!entity bonobo-ui-xml SYSTEM "sgml/bonobo-ui-xml.sgml">
 <!entity bonobo-view-frame SYSTEM "sgml/bonobo-view-frame.sgml">
 <!entity bonobo-view SYSTEM "sgml/bonobo-view.sgml">
 <!entity bonobo-widget SYSTEM "sgml/bonobo-widget.sgml">
@@ -127,32 +127,19 @@
 
   <chapter id="bonobo-documents">
     <title>Bonobo Compound Documents</title>
-      <sect1 id="bonobo-embedding">
-        <title>Document interfaces</title>
+      <sect1 id="bonobo-embeddable">
+        <title>Model interfaces</title>
           &bonobo-client-site;
           &bonobo-embeddable;
+          &bonobo-item-container;
+      </sect1>
+
+      <sect1 id="bonobo-view">
+        <title>View interfaces</title>
           &bonobo-view;
           &bonobo-view-frame;
 	  &bonobo-canvas-item;
           &bonobo-canvas-component;
-          &bonobo-item-container;
-      </sect1>
-
-      <sect1 id="bonobo-ui">
-        <title>Bonobo UI</title>
-          &bonobo-widget;
-	  &bonobo-win;
-	  &bonobo-ui-component;
-	  &bonobo-ui-container;
-	  &bonobo-ui-util;
-          &bonobo-ui-node;
-	  &bonobo-ui-xml;
-	  &bonobo-ui-engine;
-          &bonobo-ui-toolbar-item;
-          &bonobo-ui-toolbar-icon;
-          &bonobo-ui-toolbar-button-item;
-          &bonobo-ui-toolbar-toggle-button-item;
-          &bonobo-desktop-window;
       </sect1>
 
       <sect1 id="bonobo-print">
@@ -160,6 +147,18 @@
           &bonobo-print;
           &bonobo-print-client;
       </sect1>
+  </chapter>
+
+  <chapter id="bonobo-ui">
+    <title>Bonobo UI</title>
+      &bonobo-widget;
+      &bonobo-win;
+      &bonobo-ui-component;
+      &bonobo-ui-container;
+      &bonobo-ui-util;
+      &bonobo-ui-node;
+      &bonobo-ui-engine;
+      &bonobo-ui-sync;
   </chapter>
 
   <chapter id="bonobo-moniker-handlers">
@@ -180,11 +179,20 @@
       &bonobo-async;
   </chapter>
 
-  <chapter id="misc-ugly">
+  <chapter id="bonobo-useful-widgets">
+    <title>Useful UI widgets</title>      
+      &bonobo-ui-toolbar-item;
+      &bonobo-ui-toolbar-icon;
+      &bonobo-ui-toolbar-button-item;
+      &bonobo-ui-toolbar-toggle-button-item;
+  </chapter>
+
+  <chapter id="bonobo-ugly">
     <title>Strange stuff</title>
-      &bonobo-object-io;
-      &bonobo-component-io;
       &bonobo-zoomable;
       &bonobo-zoomable-frame;
+      &bonobo-desktop-window;
+      &bonobo-object-io;
+      &bonobo-component-io;
   </chapter>
 </book>

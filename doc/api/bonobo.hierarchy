@@ -55,5 +55,6 @@ GtkObject
       BonoboUIToolbarIcon
   BonoboTransient
   BonoboUIEngine
+  BonoboUISync
   BonoboUIXml
   BonoboPrintClient
