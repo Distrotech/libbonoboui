@@ -398,9 +398,13 @@ bonobo_ui_util_xml_set_image (GtkImage     *image,
 
 		if ((name == NULL) || !g_file_test (name, G_FILE_TEST_EXISTS))
 			g_warning ("Could not find GNOME pixmap file %s", text);
-		else
-			pixbuf = gdk_pixbuf_new_from_file (name, NULL);
-
+		else {
+ 			int w, h;
+ 			if (gtk_icon_size_lookup (icon_size, &w, &h))
+ 				pixbuf = gdk_pixbuf_new_from_file_at_size (name, w, h, NULL);
+ 			else
+ 				pixbuf = gdk_pixbuf_new_from_file (name, NULL);
+ 		}
 		g_free (name);
 
 	} else if (!strcmp (type, "pixbuf"))
@@ -425,6 +429,8 @@ bonobo_ui_util_xml_set_image (GtkImage     *image,
  * 
  * This function extracts a pixbuf from the node and returns a GtkWidget
  * containing a display of the pixbuf.
+ *
+ * Unused internally.
  *
  * Return value: the widget.
  **/

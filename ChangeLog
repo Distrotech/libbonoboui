@@ -1,3 +1,8 @@
+2004-01-12  Sergey V. Udaltsov  <sergey.oudaltsov@clients.ie>
+
+	* bonobo/bonobo-ui-util.c (bonobo_ui_util_xml_set_image):
+	handle image loading with a defined size for svg artwork.
+
 2004-01-07  Alexander Larsson  <alexl@redhat.com>
 
 	* bonobo/bonobo-ui-sync-status.c (impl_bonobo_ui_sync_status_build): 
