@@ -134,6 +134,8 @@ display_as_stream (const char *moniker, CORBA_Environment *ev)
 
         fwrite (stream_iobuf->_buffer, stream_iobuf->_length, 1,
                 stdout);
+
+	CORBA_free (stream_iobuf);
     } while (1);
 }
 
