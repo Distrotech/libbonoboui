@@ -1,3 +1,11 @@
+2001-06-15  Dietmar Maurer  <dietmar@ximian.com>
+
+	* bonobo/bonobo-view.c: added something to the empty structure to
+	stop compiler warnings on solaris.
+
+	* bonobo/bonobo-ui-sync.c (bonobo_ui_sync_state): return void
+	(bonobo_ui_sync_state_placeholder): return void
+
 2001-06-13  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
 
 	* configure.in: Added "sk" for Slovak to $ALL_LINGUAS

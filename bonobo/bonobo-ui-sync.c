@@ -151,8 +151,7 @@ bonobo_ui_sync_state (BonoboUISync     *sync,
 {
 	g_return_if_fail (BONOBO_IS_UI_SYNC (sync));
 
-	return CLASS (sync)->sync_state (
-		sync, node, cmd_node, widget, parent);
+	CLASS (sync)->sync_state (sync, node, cmd_node, widget, parent);
 }
 
 /**
@@ -175,8 +174,8 @@ bonobo_ui_sync_state_placeholder (BonoboUISync     *sync,
 {
 	g_return_if_fail (BONOBO_IS_UI_SYNC (sync));
 
-	return CLASS (sync)->sync_state_placeholder (
-		sync, node, cmd_node, widget, parent);
+	CLASS (sync)->sync_state_placeholder (sync, node, cmd_node, widget, 
+					      parent);
 }
 
 /**
