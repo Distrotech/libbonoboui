@@ -6,14 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-12 16:44+0100\n"
-"PO-Revision-Date: 2004-02-12 22:08+0100\n"
+"POT-Creation-Date: 2004-01-15 09:07+0000\n"
+"PO-Revision-Date: 2003-07-25 11:06+0200\n"
 "Last-Translator: Alessio Frusciante <algol@firenze.linux.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -31,30 +31,30 @@ msgstr "contenitore UI corba"
 msgid "The User interface container"
 msgstr "Il contenitore dell'interfaccia utente"
 
-#: bonobo/bonobo-dock-item-grip.c:249
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
 msgstr "Ancora la barra degli strumenti"
 
-#: bonobo/bonobo-dock-item-grip.c:250
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
 msgstr "Rimuovi ancoraggio della barra degli strumenti"
 
-#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Tipo di ombra"
 
-#: bonobo/bonobo-dock-item.c:225 bonobo/bonobo-dock-item.c:226
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientamento"
 
-#: bonobo/bonobo-dock-item.c:236 bonobo/bonobo-dock-item.c:237
+#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Larghezza preferita"
 
-#: bonobo/bonobo-dock-item.c:245 bonobo/bonobo-dock-item.c:246
+#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Altezza preferita"
@@ -71,11 +71,11 @@ msgstr "Selezionare i file da aprire"
 msgid "Select a filename to save"
 msgstr "Selezione il nome del file da salvare"
 
-#: bonobo/bonobo-plug.c:412
+#: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
 msgstr "Inoltro degli eventi"
 
-#: bonobo/bonobo-plug.c:413
+#: bonobo/bonobo-plug.c:412
 msgid "Whether X events should be forwarded"
 msgstr "Se gli eventi X devono essere inoltrati"
 
@@ -103,53 +103,53 @@ msgstr ""
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "Voce interfacce richieste"
+msgstr ""
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
 msgstr "Una delle interfacce richieste"
 
-#: bonobo/bonobo-ui-config-widget.c:268
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "Visibile"
 
-#: bonobo/bonobo-ui-config-widget.c:275
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Mostra"
 
-#: bonobo/bonobo-ui-config-widget.c:282
+#: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "_Nascondi"
 
-#: bonobo/bonobo-ui-config-widget.c:288
+#: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "_Suggerimenti"
 
-#: bonobo/bonobo-ui-config-widget.c:293
+#: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "Barre strumenti"
 
-#: bonobo/bonobo-ui-config-widget.c:303
+#: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "barre strumenti"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Aspetto"
 
-#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Icona"
 
-#: bonobo/bonobo-ui-config-widget.c:329
+#: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "_Testo e icona"
 
-#: bonobo/bonobo-ui-config-widget.c:335
+#: bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
 msgstr "Solo testo"
 
-#: bonobo/bonobo-ui-config-widget.c:341
+#: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "Solo testo _prioritario"
 
@@ -159,13 +159,13 @@ msgstr "Debug"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "_Dump XML"
+msgstr ""
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Fare un dump della descrizione XML completa dell'interfaccia utente sulla console"
+msgstr ""
 
-#: bonobo/bonobo-ui-engine-config.c:522
+#: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Configurazione UI"
 
@@ -174,11 +174,12 @@ msgid "Gdk debugging flags to set"
 msgstr "Flag di debug di Gdk da impostare"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
+#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
 msgstr "FLAG"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
+#, fuzzy
 msgid "Gdk debugging flags to unset"
 msgstr "Flag di debug di Gdk da azzerare"
 
@@ -222,27 +223,40 @@ msgstr "Classe del programma da usare nel window manager"
 msgid "CLASS"
 msgstr "CLASSE"
 
-#: bonobo/bonobo-ui-init-gtk.c:144
+#: bonobo/bonobo-ui-init-gtk.c:145
+msgid "HOST"
+msgstr "HOST"
+
+#: bonobo/bonobo-ui-init-gtk.c:149
+msgid "PORT"
+msgstr "PORTA"
+
+#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
+msgid "STYLE"
+msgstr "STILE"
+
+#: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "Flag di debug di Gtk+ da impostare"
 
-#: bonobo/bonobo-ui-init-gtk.c:147
+#: bonobo/bonobo-ui-init-gtk.c:164
+#, fuzzy
 msgid "Gtk+ debugging flags to unset"
 msgstr "Flag di debug di Gtk+ da azzerare"
 
-#: bonobo/bonobo-ui-init-gtk.c:150
+#: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
-msgstr "Rendere tutti gli warning fatali"
+msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:153
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "Carica un modulo Gtk aggiuntivo"
 
-#: bonobo/bonobo-ui-init-gtk.c:153
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
 msgstr "MODULO"
 
-#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:179
 msgid "GTK+"
 msgstr "GTK+"
 

@@ -1393,6 +1393,7 @@ bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
   gdk_window_set_transient_for(item->float_window,
                                gdk_window_get_toplevel(GTK_WIDGET (item)->window));
 
+  g_signal_emit (item, dock_item_signals [DOCK_DETACH], 0);
   return TRUE;
 }
 

@@ -1,3 +1,81 @@
+2004-02-19  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(impl_bonobo_ui_sync_toolbar_update_root): bin hvlook
+	properties.
+	(bonobo_ui_sync_toolbar_get_look, parse_look): upd. to
+	use GtkToolbarStyle enums.
+	(impl_bonobo_ui_sync_toolbar_state): axe min_width.
+
+	* bonobo/bonobo-ui-preferences.c
+	(bonobo_ui_preferences_get_toolbar_style): use Gtk enum.
+	(keys_changed_fn): use g_idle_add.
+
+	* bonobo/bonobo-ui-config-widget.c (set_values):
+	update to use gtk enum values.
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_util_xml_set_image): multi-head safe fix.
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(toolbar_orientation_changed): remove
+	(toolbar_style_changed): fix leak.
+	(bonobo_ui_sync_toolbar_init): prune all priv-> setup.
+	(set_attributes_on_child): take gtk+ style enum.
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(toolbar_get_children): re-work slightly.
+	(toolbar_build_item, toolbar_build_button_item): factor out
+	common code from (toolbar_build_control), and slave
+	parent/child lifecycle to avoid problems elsewhere.
+
+	* bonobo/bonobo-ui-internal-toolbar.c: implement - sub-class
+	the GtkToolbar and provide a nasty hack to allow preferred
+	width/height calculation. Add is_floating and orientation
+	properties to avoid hacks elsewhere.
+
+2004-02-16  Arvind Samptur <arvind.samptur@wipro.com>
+
+	Fix to get toolbar keynav going.
+
+	* bonobo/bonobo-dock-item-grip.c: 
+	(bonobo_dock_item_grip_instance_init): Set the CAN_FOCUS flag for 
+	the grip
+
+	* bonobo/bonobo-ui-toolbar-button-item.c: 
+	(bonobo_ui_toolbar_button_item_construct): Remove the unsetting of 
+	focus
+
+	* bonobo/bonobo-window.c: (bonobo_window_class_init): upd.
+	(bonobo_window_focus): bin: always was a bad idea.
+
+	* bonobo/bonobo-dock-item.c: (bonobo_dock_item_detach): Emit the
+	dock_detach signal
+
+	* bonobo/bonobo-ui-sync-toolbar.c: 
+	(impl_bonobo_ui_sync_toolbar_state): Get the gtktoolbar tooltips
+	(toolbar_build_control): Port stuff to gtktoolbar.
+	(toolbar_build_widget): ditto
+	(impl_bonobo_ui_sync_toolbar_build_placeholder): ditto
+	(impl_bonobo_ui_sync_toolbar_get_widgets): ditto
+	(impl_bonobo_ui_sync_toolbar_update_root): ditto
+	(bonobo_ui_sync_toolbar_get_look): ditto
+	(create_dockitem): ditto
+	(clone_image_menu_size): Get the icon for the overflown menuitem
+	(set_attributes_on_child): Set the orientation and style on the
+	toolitem.
+	(item_set_want_label_cb): To set text only on the toolbar items
+	(toolbar_get_children): get the children list
+	(toolbar_orientation_changed): set the orientation
+	(toolbar_style_changed): set style on each child
+	(toolbar_button_create_proxy): create overflown menuitems
+	(toolbar_menuitem_activate): callback for overflown menuitems
+	(toolbar_drag_detach): Unset the toolbar arrow when
+	it is undocked.
+	(bonobo_ui_sync_toolbar_init): Initialize the new members of
+	BonoboUISyncToolbarPrivate (GtkToolbarStyle, GtkOrientation)
+	(bonobo_ui_sync_toolbar_get_type): add the bonobo_ui_sync_toolbar_init
+
 2004-02-18  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-dock-item.c (check_guint_arg): 

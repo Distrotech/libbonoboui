@@ -42,6 +42,8 @@ void       bonobo_ui_toolbar_control_item_set_sensitive
 
 GtkWidget *bonobo_ui_toolbar_button_item_get_image (BonoboUIToolbarButtonItem *item);
 
+GtkWidget *bonobo_ui_internal_toolbar_new (void);
+
 #ifndef   DEBUG_UI
 
 static inline void dprintf (const char *format, ...) { };
