@@ -18,12 +18,14 @@ INCLUDES =                                              \
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I$(top_builddir)				\
         -I$(includedir)                                 \
-        $(GNOME_INCLUDEDIR)
+       	$(GNOME_INCLUDEDIR)				\
+       	$(GDK_PIXBUF_CFLAGS)
 
-gnome_libs =				\
-	$(GNOME_LIBDIR)			\
-        $(GNOMEUI_LIBS)			\
-	$(OBJECT_DIRECTORY_LIBS)	\
+gnome_libs =			\
+	$(GNOME_LIBDIR)		\
+	$(GDK_PIXBUF_LIBS) \
+        $(GNOMEUI_LIBS)		\
+	$(OBJECT_DIRECTORY_LIBS) \
 	$(INTLLIBS)
 
 bonobo_libs = 			\
@@ -74,7 +76,7 @@ idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 $(CORBA_SOURCE): $(idls)
 	$(ORBIT_IDL) $(top_srcdir)/idl/Bonobo.idl -I$(top_srcdir)/idl $(idl_flags)
 
-libbonobo_la_LDFLAGS = -version-info 2:0:1 #-rpath $(libdir)
+libbonobo_la_LDFLAGS = -version-info 2:0:1 $(gnome_libs)
 
 libbonobo_la_SOURCES =			\
 	bonobo-arg.h			\

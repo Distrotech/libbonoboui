@@ -32,6 +32,7 @@
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-handler.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include "bonobo-uih-private.h"
 
 static BonoboObjectClass   *bonobo_ui_handler_parent_class;
@@ -1177,14 +1178,20 @@ bonobo_ui_handler_pixmap_xpm_copy_data (const gconstpointer src)
 	return (gpointer) dest;
 }
 
+
+#define ALPHA_THRESHOLD 128
+
 GtkWidget *
-bonobo_ui_handler_toplevel_create_pixmap (GtkWidget                 *window,
+bonobo_ui_handler_toplevel_create_pixmap (GtkWidget *window,
 					  BonoboUIHandlerPixmapType  pixmap_type,
 					  gpointer                   pixmap_info)
 {
-	GtkWidget *pixmap;
-	char *name;
-
+	GtkWidget 	*pixmap;
+	GdkPixbuf	*pixbuf;
+	GdkPixmap 	*gdk_pixmap;
+	GdkBitmap 	*gdk_bitmap;	
+	char 		*name;
+	
 	pixmap = NULL;
 
 	switch (pixmap_type) {
@@ -1213,9 +1220,20 @@ bonobo_ui_handler_toplevel_create_pixmap (GtkWidget                 *window,
 			pixmap = gnome_pixmap_new_from_xpm_d (pixmap_info);
 		break;
 
-	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
-	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
-		g_warning ("Unsupported pixmap type (RGB[A]_DATA)\n");
+	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA:
+		g_return_val_if_fail(pixmap_info != NULL, NULL);
+		
+		/* Get pointer to GdkPixbuf */
+		pixbuf = (GdkPixbuf *) pixmap_info;
+
+		/* Get GdkPixmap and mask */
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &gdk_pixmap, &gdk_bitmap, ALPHA_THRESHOLD);
+			
+		/* Create GtkPixmap to return */
+		pixmap = gtk_pixmap_new (gdk_pixmap, gdk_bitmap);
+
+		gdk_pixmap_unref (gdk_pixmap);
+		gdk_bitmap_unref (gdk_bitmap);
 		break;
 
 	default:
@@ -1249,9 +1267,9 @@ bonobo_ui_handler_pixmap_free_data (BonoboUIHandlerPixmapType pixmap_type, gpoin
 		g_free (pixmap_info);
 		break;
 
-	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
-	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
-		g_warning ("Unsupported pixmap type (RGB[A]_DATA)\n");
+	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA:
+		g_return_if_fail(pixmap_info != NULL);
+		gdk_pixbuf_unref((GdkPixbuf *)pixmap_info);
 		break;
 
 	default:
@@ -1276,6 +1294,10 @@ bonobo_ui_handler_pixmap_copy_data (BonoboUIHandlerPixmapType pixmap_type, const
 	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
 		return bonobo_ui_handler_pixmap_xpm_copy_data (pixmap_info);
 
+	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA:
+		g_return_val_if_fail(pixmap_info != NULL, NULL);
+		return gdk_pixbuf_ref((GdkPixbuf *)pixmap_info);
+		
 	default:
 		g_warning ("Unknown pixmap type: %d\n", pixmap_type);
 		return NULL;
@@ -1294,10 +1316,8 @@ bonobo_ui_handler_pixmap_type_to_corba (BonoboUIHandlerPixmapType type)
 		return Bonobo_UIHandler_PixmapTypeFilename;
 	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
 		return Bonobo_UIHandler_PixmapTypeXPMData;
-	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
-		return Bonobo_UIHandler_PixmapTypeRGBData;
-	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
-		return Bonobo_UIHandler_PixmapTypeRGBAData;
+	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA:
+		return Bonobo_UIHandler_PixmapTypePixbufData;
 	default:
 		g_warning ("pixmap_type_to_corba: Unknown pixmap type [%d]!\n", (int) type);
 		return Bonobo_UIHandler_PixmapTypeNone;
@@ -1316,10 +1336,8 @@ bonobo_ui_handler_pixmap_corba_to_type (Bonobo_UIHandler_PixmapType type)
 		return BONOBO_UI_HANDLER_PIXMAP_FILENAME;
 	case Bonobo_UIHandler_PixmapTypeXPMData:
 		return BONOBO_UI_HANDLER_PIXMAP_XPM_DATA;
-	case Bonobo_UIHandler_PixmapTypeRGBData:
-		return BONOBO_UI_HANDLER_PIXMAP_RGB_DATA;
-	case Bonobo_UIHandler_PixmapTypeRGBAData:
-		return BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA;
+	case Bonobo_UIHandler_PixmapTypePixbufData:
+		return BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA;
 	default:
 		g_warning ("pixmap_corba_to_type: Unknown pixmap type [%d]!\n", (int) type);
 		return BONOBO_UI_HANDLER_PIXMAP_NONE;
@@ -1362,6 +1380,7 @@ bonobo_ui_handler_pixmap_xpm_flatten (char **src, int *length)
 
 	return flat;
 }
+
 
 /*
  * After a flattened XPM file has been received via CORBA, it can be
@@ -1407,12 +1426,166 @@ bonobo_ui_handler_pixmap_xpm_unflatten (char *src, int length)
 	return unflattened;
 }
 
+
+/* Big-endian data streaming functions for converting pixbuf data to and from CORBA */
+static char *write_four_bytes(char *start, int value) 
+{
+	start[0] = value >> 24;
+	start[1] = value >> 16;
+	start[2] = value >> 8;
+	start[3] = value;
+	return start + 4;
+}
+
+
+static const char *read_four_bytes(const char *start, int *value)
+{
+	guchar *as_uchar = (guchar *)start;
+	*value = (as_uchar[0] << 24) | (as_uchar[1] << 16)
+			| (as_uchar[2] << 8) | as_uchar[3];
+
+	return start + 4;
+}
+
+/*
+ * 	Write data out into buffer a character at a time.  The data will be
+ * 	reconstituted in a similar fashion
+ */
+ 
+static Bonobo_UIHandler_iobuf *
+bonobo_ui_handler_pixmap_pixbuf_flatten (Bonobo_UIHandler_iobuf *buffer, 
+										 GdkPixbuf *pixbuf)
+{
+	int 	size, width, height, row;
+	char 	*dst;
+	guchar	*src;
+	int 	row_stride, flattened_row_stride;
+	gboolean has_alpha;
+			
+	g_return_val_if_fail(pixbuf != NULL, NULL);
+
+	/*	Get pixbuf data geometry */	
+	width = gdk_pixbuf_get_width(pixbuf);
+	height = gdk_pixbuf_get_height(pixbuf);
+	has_alpha = gdk_pixbuf_get_has_alpha(pixbuf);
+	flattened_row_stride = width * (3 + (has_alpha ? 1 : 0));
+	
+	/* Calculate data size of pixmap data */
+	size = height * flattened_row_stride;
+
+	/* Allocate CORBA buffer to receive bits */
+	buffer->_length  = (4 * 2 + 1) + size;
+	buffer->_buffer  = CORBA_sequence_CORBA_octet_allocbuf(buffer->_length);
+
+	/*	Copy over header information
+	 * 	Data is stored in the buffer in this format:
+	 * 		width		<4 bytes>
+	 * 		height		<4 bytes>
+	 * 		has_alpha	<1 byte>
+	 * 		
+	 * 		This is followed by the pixbuf data which has been written
+	 * 		into the buffer as a sequences of chars, row by row.
+	 * 
+	 */
+
+	dst = (char *)buffer->_buffer;
+	dst = write_four_bytes(dst, gdk_pixbuf_get_width(pixbuf));
+	dst = write_four_bytes(dst, gdk_pixbuf_get_height(pixbuf));
+	*dst = has_alpha;
+	dst++;
+
+	/* Copy over bitmap information */	
+	row_stride = gdk_pixbuf_get_rowstride(pixbuf);
+	
+	src = gdk_pixbuf_get_pixels(pixbuf);
+			
+	for (row = 0; row < height; row++) {
+		memcpy(dst, src, flattened_row_stride);
+		dst += flattened_row_stride;
+		src += row_stride;
+	}
+
+	/* Check that we copied the correct amount of data */
+	g_assert(dst - (char *)buffer->_buffer == buffer->_length);
+	
+	return buffer;
+}
+
+
+/*
+ *	Reconstitute pixbuf data in a way that is byte order indepenent
+ */
+ 
+static gpointer
+bonobo_ui_handler_pixmap_pixbuf_unflatten (char *flat_data, int length)
+{
+
+	GdkPixbuf 	*pixbuf;
+	int 		width, height;
+	gboolean 	has_alpha;
+	int 		pix_length, row;
+	int			flattened_row_stride, row_stride;
+	const char 	*src;
+	guchar		*dst;
+
+	g_return_val_if_fail (flat_data != NULL, NULL);
+
+	/* 	Data is stored in the buffer in this format:
+	* 		width		<4 bytes>
+	* 		height		<4 bytes>
+	* 		has_alpha	<1 byte>
+	* 		
+	* 		This is followed by the pixbuf data which has been written
+	* 		into the buffer as a sequences of chars, roq by row.
+	*/
+	
+	/* Verify that length is large enough to contain basic geometry info */
+	if (length < ((4 * 2 ) + 1)) {
+		g_warning ("bonobo_ui_handler_pixmap_pixbuf_unflatten(): Length not large enough to contain geometry info.");
+		return NULL;
+	}
+	 
+	/* Copy over header information */	
+	src = (char *)flat_data;
+	src = read_four_bytes(src, &width);
+	src = read_four_bytes(src, &height);
+	has_alpha = *src++;
+	
+	flattened_row_stride = width * (3 + (has_alpha ? 1 : 0));
+	pix_length = height * flattened_row_stride;
+
+	/* Make sure we have the proper buffer size before continuing */
+	if (length != pix_length + ((4 * 2) + 1) ) {
+		g_warning ("bonobo_ui_handler_pixmap_pixbuf_unflatten(): flat_data buffer has an improper size.");
+		return NULL;
+	}
+	
+	/* Create GdkPixbuf */
+	pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, has_alpha, 8, width, height);
+	row_stride = gdk_pixbuf_get_rowstride(pixbuf);
+
+	/* Copy over bitmap data */				
+	dst = gdk_pixbuf_get_pixels(pixbuf);
+	
+	for (row = 0; row < height; row++) {
+		memcpy(dst, src, flattened_row_stride);
+		dst += row_stride;
+		src += flattened_row_stride;
+	}
+
+	/* Verify that we copied the proper amount of data */							  		
+	g_assert( src - (char *)flat_data == length);
+	
+	return pixbuf;
+}
+
+
 Bonobo_UIHandler_iobuf *
 bonobo_ui_handler_pixmap_data_to_corba (BonoboUIHandlerPixmapType type, gpointer data)
 {
 	Bonobo_UIHandler_iobuf *buffer;
 	gpointer temp_xpm_buffer;
-
+					
 	buffer = Bonobo_UIHandler_iobuf__alloc ();
 	CORBA_sequence_set_release (buffer, TRUE);
 
@@ -1429,13 +1602,6 @@ bonobo_ui_handler_pixmap_data_to_corba (BonoboUIHandlerPixmapType type, gpointer
 		strcpy (buffer->_buffer, (char *) data);
 		return buffer;
 
-	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
-	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
-		g_warning ("bonobo_ui_handler_pixmap_data_to_corba: Pixmap type (RGB[A]) not yet supported!\n");
-		buffer->_length = 1;
-		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (1);
-		return buffer;
-
 	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
 		temp_xpm_buffer = bonobo_ui_handler_pixmap_xpm_flatten (data, &(buffer->_length));
 		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (buffer->_length);
@@ -1443,6 +1609,10 @@ bonobo_ui_handler_pixmap_data_to_corba (BonoboUIHandlerPixmapType type, gpointer
 		g_free (temp_xpm_buffer);
 		return buffer;
 
+	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA:		
+		buffer = bonobo_ui_handler_pixmap_pixbuf_flatten(buffer, (GdkPixbuf *)data);
+		return buffer;
+		
 	default:
 		g_warning ("bonobo_ui_handler_pixmap_data_to_corba: Unknown pixmap type [%d]\n", type);
 		buffer->_length = 1;
@@ -1454,7 +1624,7 @@ bonobo_ui_handler_pixmap_data_to_corba (BonoboUIHandlerPixmapType type, gpointer
 }
 
 gpointer
-bonobo_ui_handler_pixmap_corba_to_data (Bonobo_UIHandler_PixmapType   corba_pixmap_type,
+bonobo_ui_handler_pixmap_corba_to_data (Bonobo_UIHandler_PixmapType corba_pixmap_type,
 					const Bonobo_UIHandler_iobuf *corba_pixmap_data)
 {
 	BonoboUIHandlerPixmapType type;
@@ -1470,16 +1640,16 @@ bonobo_ui_handler_pixmap_corba_to_data (Bonobo_UIHandler_PixmapType   corba_pixm
 	case BONOBO_UI_HANDLER_PIXMAP_STOCK:
 		return g_strdup (corba_pixmap_data->_buffer);
 
-	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
-	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
-		g_warning ("pixmap_corba_to_data: Pixmap type (RGB[A]) not yet supported!\n");
-		return NULL;
-
 	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
 		pixmap_data = bonobo_ui_handler_pixmap_xpm_unflatten (
 			corba_pixmap_data->_buffer, corba_pixmap_data->_length);
 		return pixmap_data;
 
+	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA: 
+		pixmap_data = bonobo_ui_handler_pixmap_pixbuf_unflatten(
+			corba_pixmap_data->_buffer, corba_pixmap_data->_length);
+		return pixmap_data;
+		
 	default:
 		g_warning ("pixmap_corba_to_data: Unknown pixmap type [%d]\n", type);
 		return NULL;
@@ -1503,3 +1673,6 @@ bonobo_ui_handler_uiinfo_pixmap_type_to_uih (GnomeUIPixmapType ui_type)
 		return BONOBO_UI_HANDLER_PIXMAP_NONE;
 	}
 }
+
+
+
