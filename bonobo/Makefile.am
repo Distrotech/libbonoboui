@@ -76,21 +76,21 @@ libbonoboincludedir = $(includedir)/bonobo
 libbonobodir = $(includedir)
 libbonobo_HEADERS = bonobo.h
 
-if USE_UI_HANDLER
-UI_HDRS =				\
-	bonobo-ui-handler.h
-UI_SRCS =				\
-	bonobo-ui-handler.c		\
-	bonobo-uih-menu.c		\
-	bonobo-uih-toolbar.c		\
-	bonobo-uih-dock.c		\
-	bonobo-uih-private.h
-else
+# if USE_UI_HANDLER
+# UI_HDRS =				\
+#	bonobo-ui-handler.h
+#UI_SRCS =				\
+#	bonobo-ui-handler.c		\
+#	bonobo-uih-menu.c		\
+#	bonobo-uih-toolbar.c		\
+#	bonobo-uih-dock.c		\
+#	bonobo-uih-private.h
+# else
 UI_HDRS =				\
 	bonobo-ui-compat.h
 UI_SRCS =				\
 	bonobo-ui-compat.c
-endif
+# endif
 
 libbonoboinclude_HEADERS =		\
 	Bonobo.h			\
