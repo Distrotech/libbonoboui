@@ -302,6 +302,7 @@ BonoboUINode *
 bonobo_ui_node_ref (BonoboUINode *node)
 {
 	node->ref_count++;
+	return node;
 }
 
 /**

@@ -296,16 +296,6 @@ lookup_stock_compat (const char *id)
 	return NULL;
 }
 
-static GHashTable *pixbuf_cache = NULL;
-
-void
-bonobo_ui_image_cache_trash (void)
-{
-	if (pixbuf_cache)
-		g_hash_table_destroy (pixbuf_cache);
-	pixbuf_cache = NULL;
-}
-
 void
 bonobo_ui_image_set_pixbuf (GtkImage *image, GdkPixbuf *pixbuf)
 {
@@ -339,6 +329,7 @@ bonobo_ui_util_xml_set_image (GtkImage     *image,
 	char       *key;
 	const char *type, *text;
 	GdkPixbuf  *pixbuf = NULL;
+	static GHashTable *pixbuf_cache = NULL;
 
 	g_return_if_fail (node != NULL);
 
@@ -363,10 +354,7 @@ bonobo_ui_util_xml_set_image (GtkImage     *image,
 		return;
 	}
 
-	/* FIXME: how worthwhile is this cache */
-	key = g_strdup_printf (
-		"%s:%d:%d", text, icon_size,
-		gtk_widget_get_direction (GTK_WIDGET (image)));
+	key = g_strdup_printf ("%s:%d", text, icon_size);
 
 	if (!pixbuf_cache)
 		pixbuf_cache = g_hash_table_new_full (

@@ -1,3 +1,20 @@
+2002-09-02  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-node.c
+	(bonobo_ui_node_ref): fix bad bogon.
+
+	* bonobo/bonobo-window.c
+	(bonobo_window_realize): kill; we don't
+	need to flush the cache, on settings
+	changed, we use stock icons properly now.
+	(setting_changed_cb): bin.
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_util_xml_set_image): bin the
+	widget direction in the cache.
+	(bonobo_ui_image_cache_trash): bin.
+	(bonobo_ui_util_xml_set_image): upd.
+
 2002-08-31  Jacob Berkman  <jacob@ximian.com>
 
 	* tests/Makefile.am (LDADD): add -lpopt

@@ -393,35 +393,6 @@ bonobo_window_get_property (GObject         *object,
 }
 
 static void
-setting_changed_cb (BonoboWindow *window,
-		    GParamSpec	 *pspec)
-{
-	if (!strcmp (pspec->name, "gtk-theme-name")) {
-		BonoboUINode *node;
-
-		bonobo_ui_image_cache_trash ();
-		if ((node = bonobo_ui_engine_get_path (window->priv->engine, "/"))) {
-			bonobo_ui_engine_dirty_tree (window->priv->engine, node);
-			bonobo_ui_engine_update (window->priv->engine);
-		}
-	}
-}
-
-static void
-bonobo_window_realize (GtkWidget *widget)
-{
-	GtkSettings *settings;
-	
-	settings = gtk_widget_get_settings (widget);
-
-	g_signal_connect_object (settings, "notify",
-				 G_CALLBACK (setting_changed_cb),
-				 widget, G_CONNECT_SWAPPED);
-
-	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, realize, (widget));
-}
-
-static void
 bonobo_window_class_init (BonoboWindowClass *klass)
 {
 	GObjectClass *gobject_class = (GObjectClass *) klass;
@@ -436,7 +407,6 @@ bonobo_window_class_init (BonoboWindowClass *klass)
 	widget_class->show_all = bonobo_window_show_all;
 	widget_class->key_press_event = bonobo_window_key_press_event;
 	widget_class->key_release_event = bonobo_window_key_release_event;
-	widget_class->realize = bonobo_window_realize;
 
 	/* Properties: */
 	g_object_class_install_property (gobject_class,

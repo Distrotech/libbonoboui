@@ -28,7 +28,6 @@ G_BEGIN_DECLS
 
 void       bonobo_socket_add_id           (BonoboSocket   *socket,
 					   GdkNativeWindow xid);
-void       bonobo_ui_image_cache_trash    (void);
 int        bonobo_ui_preferences_shutdown (void);
 void       bonobo_ui_image_set_pixbuf     (GtkImage     *image,
 					   GdkPixbuf    *pixbuf);
