@@ -25,7 +25,15 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 			       const CORBA_short height,
 			       CORBA_Environment *ev)
 {
-	g_warning ("GNOME::View::size_allocate invoked\n");
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
+	GtkAllocation allocation;
+
+	allocation.x = view->plug->allocation.x;
+	allocation.y = view->plug->allocation.y;
+	allocation.width = width;
+	allocation.height = height;
+	
+	gtk_widget_size_allocate (view->plug, &allocation);
 }
 
 static void
