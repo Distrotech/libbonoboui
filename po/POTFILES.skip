@@ -7,3 +7,4 @@ tests/test-toolbar.c
 tests/test-ui.c
 tests/test-events.c
 tests/test-filesel.c
+samples/compound-doc/container/embeddable-io.c
