@@ -417,8 +417,6 @@ bonobo_window_realize (GtkWidget *widget)
 	g_signal_connect_object (settings, "notify",
 				 G_CALLBACK (setting_changed_cb),
 				 widget, G_CONNECT_SWAPPED);
-	g_signal_connect (settings, "destroy",
-			  G_CALLBACK (bonobo_ui_image_cache_trash), NULL);
 
 	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, realize, (widget));
 }
