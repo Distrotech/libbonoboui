@@ -1,3 +1,8 @@
+2001-07-22  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/bonobo-ui-xml.c (bonobo_ui_xml_strip): Removed.
+	(bonobo_ui_xml_merge): Don't call bonobo_ui_xml_strip.
+
 2001-07-22  Mike Kestner  <mkestner@speakeasy.net>
 
 	* configure.in : produce the samples Makefiles.

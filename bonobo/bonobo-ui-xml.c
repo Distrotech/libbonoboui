@@ -64,14 +64,6 @@ identical (BonoboUIXml *tree, gpointer a, gpointer b)
 	return val;
 }
 
-/* This logicaly belongs in bonobo-ui-node.c */
-void bonobo_ui_xml_strip (BonoboUINode **node);
-void
-bonobo_ui_xml_strip (BonoboUINode **node)
-{
-	bonobo_ui_node_strip (node);
-}
-
 /**
  * bonobo_ui_xml_get_data:
  * @tree: the tree
@@ -988,7 +980,6 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 	if (nodes == NULL)
 		return BONOBO_UI_ERROR_OK;
 
-	bonobo_ui_xml_strip (&nodes);
 	set_id (tree, nodes, id);
 
 	current = bonobo_ui_xml_get_path (tree, path);
