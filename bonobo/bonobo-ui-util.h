@@ -24,8 +24,9 @@ void       bonobo_ui_util_xml_set_pix_stock (xmlNode     *node,
 void       bonobo_ui_util_xml_set_pix_fname (xmlNode     *node,
 					     const char  *name);
 
-xmlNode   *bonobo_ui_util_build_help_menu   (BonoboUIComponent *listener,
-					     const char        *app_name);
+void       bonobo_ui_util_build_help_menu   (BonoboUIComponent *listener,
+					     const char        *app_name,
+					     xmlNode           *parent);
 
 xmlNode   *bonobo_ui_util_build_accel       (guint              accelerator_key,
 					     GdkModifierType    accelerator_mods,
@@ -60,8 +61,17 @@ xmlNode   *bonobo_ui_util_new_toggle_toolbar(const char        *name,
 
 char      *bonobo_ui_util_get_ui_fname      (const char        *component_name);
 
-xmlNode   *bonobo_ui_util_new_ui            (const char        *fname);
-
 void       bonobo_ui_util_translate_ui      (xmlNode           *node);
+
+void       bonobo_ui_util_fixup_help        (BonoboUIComponent *component,
+					     xmlNode           *node,
+					     const char        *app_name);
+
+/*
+ * Does all the translation & other grunt.
+ */
+xmlNode   *bonobo_ui_util_new_ui            (BonoboUIComponent *component,
+					     const char        *fname,
+					     const char        *app_name);
 
 #endif /* _BONOBO_UI_XML_UTIL_H_ */

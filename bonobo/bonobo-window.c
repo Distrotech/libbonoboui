@@ -774,8 +774,89 @@ remove_hint_from_statusbar (GtkWidget *menuitem, xmlNode *node)
 	}
 }
 
+
+static void
+menu_item_set_label (BonoboAppPrivate *priv, xmlNode *node,
+		     GtkWidget *parent, GtkWidget *menu_widget)
+{
+	char *label_text;
+
+	if ((label_text = xmlGetProp (node, "label"))) {
+		GtkWidget *label;
+		guint      keyval;
+
+		label = gtk_accel_label_new (label_text);
+
+		/*
+		 * Setup the widget.
+		 */
+		gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+		gtk_widget_show (label);
+		
+		/*
+		 * Insert it into the menu item widget and setup the
+		 * accelerator.
+		 */
+		gtk_container_add (GTK_CONTAINER (menu_widget), label);
+		gtk_accel_label_set_accel_widget (
+			GTK_ACCEL_LABEL (label), menu_widget);
+	
+		keyval = gtk_label_parse_uline (GTK_LABEL (label), label_text);
+
+		if (keyval != GDK_VoidSymbol) {
+			if (GTK_IS_MENU (parent))
+				gtk_widget_add_accelerator (
+					menu_widget, "activate_item",
+					gtk_menu_ensure_uline_accel_group (
+						GTK_MENU (parent)),
+					keyval, 0, 0);
+
+			else if (GTK_IS_MENU_BAR (parent) &&
+				 priv->accel_group != NULL)
+				gtk_widget_add_accelerator (
+					menu_widget, "activate_item",
+					priv->accel_group,
+					keyval, GDK_MOD1_MASK, 0);
+			else
+				g_warning ("Adding accelerator went bananas");
+		}
+		xmlFree (label_text);
+	}
+}
+
+static void
+menu_item_set_global_accels (BonoboAppPrivate *priv, xmlNode *node,
+			     GtkWidget *menu_widget)
+{
+	char *text;
+
+	if ((text = xmlGetProp (node, "accel"))) {
+		guint           key;
+		GdkModifierType mods;
+		char           *signal;
+
+/*		fprintf (stderr, "Accel name is afterwards '%s'\n", text); */
+		gtk_accelerator_parse (text, &key, &mods);
+		xmlFree (text);
+
+		if (!key)
+			return;
+
+/*		if (GTK_IS_CHECK_MENU_ITEM (menu_widget))
+			signal = "toggled";
+			else*/
+		signal = "activate";
+
+		gtk_widget_add_accelerator (menu_widget,
+					    signal,
+					    priv->accel_group,
+					    key, mods,
+					    GTK_ACCEL_VISIBLE);
+	}
+}
+
 static GtkWidget *
-menu_item_create (BonoboAppPrivate *priv, xmlNode *node)
+menu_item_create (BonoboAppPrivate *priv, GtkWidget *parent, xmlNode *node)
 {
 	GtkWidget *menu_widget;
 	NodeInfo  *info;
@@ -861,87 +942,11 @@ menu_item_create (BonoboAppPrivate *priv, xmlNode *node)
 				    node);
 	}
 
+	menu_item_set_label (priv, node, parent, menu_widget);
+
+	menu_item_set_global_accels (priv, node, menu_widget);
+
 	return menu_widget;
-}
-
-static void
-menu_item_set_label (BonoboAppPrivate *priv, xmlNode *node,
-		     GtkWidget *parent, GtkWidget *menu_widget)
-{
-	char *label_text;
-
-	if ((label_text = xmlGetProp (node, "label"))) {
-		GtkWidget *label;
-		guint      keyval;
-
-		label = gtk_accel_label_new (label_text);
-
-		/*
-		 * Setup the widget.
-		 */
-		gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-		gtk_widget_show (label);
-		
-		/*
-		 * Insert it into the menu item widget and setup the
-		 * accelerator.
-		 */
-		gtk_container_add (GTK_CONTAINER (menu_widget), label);
-		gtk_accel_label_set_accel_widget (
-			GTK_ACCEL_LABEL (label), menu_widget);
-	
-		keyval = gtk_label_parse_uline (GTK_LABEL (label), label_text);
-
-		if (keyval != GDK_VoidSymbol) {
-			if (GTK_IS_MENU (parent))
-				gtk_widget_add_accelerator (
-					menu_widget, "activate_item",
-					gtk_menu_ensure_uline_accel_group (
-						GTK_MENU (parent)),
-					keyval, 0, 0);
-
-			else if (GTK_IS_MENU_BAR (parent) &&
-				 priv->accel_group != NULL)
-				gtk_widget_add_accelerator (
-					menu_widget, "activate_item",
-					priv->accel_group,
-					keyval, GDK_MOD1_MASK, 0);
-			else
-				g_warning ("Adding accelerator went bananas");
-		}
-		xmlFree (label_text);
-	}
-}
-
-static void
-menu_item_set_global_accels (BonoboAppPrivate *priv, xmlNode *node,
-			     GtkWidget *menu_widget)
-{
-	char *text;
-
-	if ((text = xmlGetProp (node, "accel"))) {
-		guint           key;
-		GdkModifierType mods;
-		char           *signal;
-
-/*		fprintf (stderr, "Accel name is afterwards '%s'\n", text); */
-		gtk_accelerator_parse (text, &key, &mods);
-		xmlFree (text);
-
-		if (!key)
-			return;
-
-/*		if (GTK_IS_CHECK_MENU_ITEM (menu_widget))
-			signal = "toggled";
-			else*/
-		signal = "activate";
-
-		gtk_widget_add_accelerator (menu_widget,
-					    signal,
-					    priv->accel_group,
-					    key, mods,
-					    GTK_ACCEL_VISIBLE);
-	}
 }
 
 /*
@@ -1038,19 +1043,15 @@ build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
 		return;
 	}
 
-	menu_widget = menu_item_create (priv, node);
-	if (!menu_widget)
-		return;
-
-	menu_item_set_label (priv, node, parent, menu_widget);
-
-	menu_item_set_global_accels (priv, node, menu_widget);
-
 	if (!strcmp (node->name, "submenu")) {
 		xmlNode      *l;
 		GtkMenuShell *shell;
 		GtkMenu      *menu;
 		GtkWidget    *tearoff;
+		
+		menu_widget = menu_item_create (priv, parent, node);
+		if (!menu_widget)
+			return;
 
 		if (parent == NULL)
 			shell = GTK_MENU_SHELL (priv->menu);
@@ -1092,11 +1093,25 @@ build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
 	} else if (!strcmp (node->name, "menuitem")) {
 		g_return_if_fail (parent != NULL);
 
+		menu_widget = menu_item_create (priv, parent, node);
+		if (!menu_widget)
+			return;
+
 		gtk_menu_shell_append (GTK_MENU_SHELL (parent), menu_widget);
 	} else if (!strcmp (node->name, "control")) {
-		g_return_if_fail (info->object != CORBA_OBJECT_NIL);
+		GtkWidget *control;
 
-		menu_widget = bonobo_app_item_new_control (info->object);
+		g_return_if_fail (info->object != CORBA_OBJECT_NIL);
+		
+		control = bonobo_widget_new_control_from_objref
+			(bonobo_object_dup_ref (info->object, NULL),
+			 CORBA_OBJECT_NIL);
+		g_return_if_fail (control != NULL);
+
+		menu_widget = gtk_menu_item_new ();
+		gtk_container_add (GTK_CONTAINER (menu_widget), control);
+		gtk_widget_show (control);
+
 		g_return_if_fail (menu_widget != NULL);
 
 		gtk_menu_shell_append (GTK_MENU_SHELL (parent), menu_widget);
@@ -1444,7 +1459,7 @@ update_status (BonoboAppPrivate *priv, xmlNode *node)
 			widget = gtk_statusbar_new ();
 			priv->main_status = GTK_STATUSBAR (widget);
 			gtk_widget_show (GTK_WIDGET (widget));
-			gtk_box_pack_end (priv->status, widget, TRUE, TRUE, 0);
+			gtk_box_pack_start (priv->status, widget, TRUE, TRUE, 0);
 			
 			if ((txt = xmlNodeGetContent (l))) {
 				guint id;

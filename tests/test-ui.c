@@ -47,19 +47,20 @@ main (int argc, char **argv)
 	Bonobo_UIContainer corba_container;
 
 	char simplea [] =
-		"<submenu name=\"file\" label=\"_File\">\n"
+		"<submenu name=\"File\" label=\"_File\">\n"
 		"	<menuitem name=\"open\" label=\"_Open\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Wibble\"/>\n"
 		"</submenu>\n";
 	char simpleb [] =
-		"<submenu name=\"file\" label=\"_FileB\">\n"
+		"<submenu name=\"File\" label=\"_FileB\">\n"
 		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Open you fool\"/>\n"
+		"       <menuitem/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\" accel=\"&lt;Control&gt;t\"/>\n"
 		"       <placeholder delimit=\"both\"/>\n"
 		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" "
 		"        pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"&lt;Control&gt;q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
-		"<submenu name=\"file\" label=\"_FileC\">\n"
+		"<submenu name=\"File\" label=\"_FileC\">\n"
 		"    <placeholder>\n"
 		"	<menuitem name=\"fooa\" label=\"_FooA\" type=\"radio\" group=\"foogroup\" descr=\"Radio1\"/>\n"
 		"	<menuitem name=\"foob\" label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
@@ -83,7 +84,7 @@ main (int argc, char **argv)
 		"<item name=\"main\">Kippers</item>\n";
 	char statusb [] =
 		"<item name=\"main\">Nothing</item>\n";
-	xmlNode *help, *accel, *file;
+	xmlNode *accel, *file;
 
 	free (malloc (8));
 
@@ -138,10 +139,20 @@ main (int argc, char **argv)
 	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
 
 	gtk_widget_show (GTK_WIDGET (app));
-	gtk_main ();
 
-	help = bonobo_ui_util_build_help_menu (componenta, "gnomecal");
-	bonobo_ui_component_set_tree (componenta, corba_container, "/menu", help, &ev);
+	{
+		GtkWidget *widget = gtk_button_new_with_label ("My Label");
+		BonoboControl *control = bonobo_control_new (widget);
+		
+		gtk_widget_show (widget);
+		bonobo_ui_container_object_set (
+			corba_container,
+			"/menu/submenu/#File/control/#MyControl",
+			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
+			NULL);
+	}
+
+	gtk_main ();
 
 	accel = bonobo_ui_util_build_accel (GDK_A, GDK_CONTROL_MASK, "KeyWibbleVerb");
 	bonobo_ui_component_set_tree (componenta, corba_container, "/keybindings", accel, &ev);
@@ -150,13 +161,25 @@ main (int argc, char **argv)
 	bonobo_ui_component_set (componenta, corba_container, "/",     toolb, &ev);
 	bonobo_ui_component_set (componentb, corba_container, "/status", statusb, &ev);
 
+	{
+		GtkWidget *widget = gtk_progress_bar_new ();
+		BonoboControl *control = bonobo_control_new (widget);
+
+		gtk_progress_bar_update (GTK_PROGRESS_BAR (widget), 0.5);
+		gtk_widget_show (widget);
+		bonobo_ui_container_object_set (
+			corba_container,
+			"/status/item/#Progress",
+			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
+			NULL);
+	}
 	gtk_main ();
 
 	bonobo_ui_component_set (componentc, corba_container, "/commands",
 				 "<cmd name=\"MyFoo\" sensitive=\"0\"/>", &ev);
 	bonobo_ui_component_set (componentc, corba_container, "/menu", simplec, &ev);
 	
-	bonobo_ui_component_set (componentc, corba_container, "/menu/submenu/#file", simpled, &ev);
+	bonobo_ui_component_set (componentc, corba_container, "/menu/submenu/#File", simpled, &ev);
 
 	gtk_main ();
 
@@ -177,7 +200,7 @@ main (int argc, char **argv)
 
 	if (g_file_exists ("ui.xml")) {
 		fprintf (stderr, "\n\n--- Add ui.xml ---\n\n\n");
-		file = bonobo_ui_util_new_ui ("ui.xml");
+		file = bonobo_ui_util_new_ui (componentc, "ui.xml", "gnomecal");
 		bonobo_ui_component_set_tree (componentc, corba_container,
 					      "/", file, &ev);
 		gtk_main ();

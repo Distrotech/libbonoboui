@@ -5,6 +5,8 @@
 #include "bonobo-ui-xml.h"
 #include "bonobo-ui-util.h"
 
+#define XML_FREE(a) ((a)?xmlFree(a):(a))
+
 static void
 write_byte (char *start, guint8 byte)
 {
@@ -338,22 +340,18 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 	gnome_help_display (component, user_data);
 }
 
-xmlNode *
+void
 bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
-				const char        *app_name)
+				const char        *app_name,
+				xmlNode           *parent)
 {
-	xmlNode *ret;
 	char buf [1024];
 	char *topic_file;
 	FILE *file;
 
-	g_return_val_if_fail (app_name != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (listener), NULL);
-
-	/* Setup the base help menu */
-	ret = xmlNewNode (NULL, "submenu");
-	xmlSetProp (ret, "name", "help");
-	xmlSetProp (ret, "label", _("_Help"));
+	g_return_if_fail (parent != NULL);
+	g_return_if_fail (app_name != NULL);
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (listener));
 
 	/* Try to open help topics file */
 	topic_file = gnome_help_file_find_file ((char *)app_name, "topic.dat");
@@ -363,7 +361,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 				topic_file ? topic_file : "NULL", app_name);
 
 		g_free (topic_file);
-		return ret;
+		return;
 	}
 	g_free (topic_file);
 	
@@ -387,11 +385,11 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 
 		node = xmlNewNode (NULL, "menuitem");
 		/* Try and make something unique */
-		id = g_strdup_printf ("%s%s", app_name, buf);
+		id = g_strdup_printf ("Help%s%s", app_name, buf);
 		xmlSetProp (node, "name", id);
 		xmlSetProp (node, "verb", id);
 		xmlSetProp (node, "label", s);
-		xmlAddChild (ret, node);
+		xmlAddChild (parent, node);
 
 		/* Create help menu entry */
 		entry = g_new (GnomeHelpMenuEntry, 1);
@@ -407,8 +405,6 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 	}
 
 	fclose (file);
-
-	return ret;
 }
 
 xmlNode *
@@ -622,10 +618,37 @@ bonobo_ui_util_translate_ui (xmlNode *node)
 		bonobo_ui_util_translate_ui (l);
 }
 
+void
+bonobo_ui_util_fixup_help (BonoboUIComponent *component,
+			   xmlNode           *node,
+			   const char        *app_name)
+{
+	xmlNode *l;
+	gboolean build_here = FALSE;
+	
+	if (!strcmp (node->name, "placeholder")) {
+		char *txt;
+
+		if ((txt = xmlGetProp (node, "name"))) {
+			build_here = !strcmp (txt, "BuiltMenuItems");
+			xmlFree (txt);
+		}
+	}
+
+	if (build_here) {
+		bonobo_ui_util_build_help_menu (
+			component, app_name, node);
+	}
+
+	for (l = node->childs; l; l = l->next)
+		bonobo_ui_util_fixup_help (component, l, app_name);
+}
 
 /**
  * bonobo_ui_util_new_ui:
+ * @component: The component help callback should be on
  * @fname: Filename of the UI file
+ * @app_name: Application name ( for finding help )
  * 
  *  Loads an xml tree from a file, cleans the 
  * doc cruft from its nodes; and translates the nodes.
@@ -633,7 +656,9 @@ bonobo_ui_util_translate_ui (xmlNode *node)
  * Return value: The translated tree ready to be merged.
  **/
 xmlNode *
-bonobo_ui_util_new_ui (const char *fname)
+bonobo_ui_util_new_ui (BonoboUIComponent *component,
+		       const char        *fname,
+		       const char        *app_name)
 {
 	xmlDoc  *doc;
 	xmlNode *node;
@@ -652,6 +677,8 @@ bonobo_ui_util_new_ui (const char *fname)
 	bonobo_ui_xml_strip (node);
 
 	bonobo_ui_util_translate_ui (node);
+
+	bonobo_ui_util_fixup_help (component, node, app_name);
 
 	return node;
 }
