@@ -78,17 +78,14 @@ impl_Bonobo_Embeddable_set_client_site (PortableServer_Servant servant,
 
 static Bonobo_ClientSite
 impl_Bonobo_Embeddable_get_client_site (PortableServer_Servant servant,
-				       CORBA_Environment *ev)
+					CORBA_Environment     *ev)
 {
-	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
-	Bonobo_ClientSite ret;
-	CORBA_Environment evx;
-	
-	CORBA_exception_init (&evx);
-	ret = CORBA_Object_duplicate (embeddable->client_site, &evx);
-        CORBA_exception_free (&evx);							     
+	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (
+		bonobo_object_from_servant (servant));
 
-	return ret;
+	return bonobo_object_dup_ref (
+		bonobo_object_corba_objref (
+			BONOBO_OBJECT (embeddable->client_site)), ev);
 }
 
 static void
@@ -227,9 +224,7 @@ impl_Bonobo_Embeddable_new_view (PortableServer_Servant servant,
 				CORBA_Environment *ev)
 {
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
-	BonoboView *view;
-	CORBA_Environment evx;
-	Bonobo_View ret;
+	BonoboView       *view;
 	
 	view = embeddable->priv->view_factory (
 		embeddable, view_frame,
@@ -251,11 +246,8 @@ impl_Bonobo_Embeddable_new_view (PortableServer_Servant servant,
 	gtk_signal_connect (GTK_OBJECT (view), "destroy",
 			    GTK_SIGNAL_FUNC (bonobo_embeddable_view_destroy_cb), embeddable);
 
-	CORBA_exception_init (&evx);
-	ret = CORBA_Object_duplicate (bonobo_object_corba_objref (BONOBO_OBJECT (view)), &evx);
-	CORBA_exception_free (&evx);
-
-	return ret;
+	return CORBA_Object_duplicate (
+		bonobo_object_corba_objref (BONOBO_OBJECT (view)), ev);
 }
 
 static void
@@ -333,7 +325,8 @@ impl_Bonobo_Embeddable_new_canvas_item (PortableServer_Servant servant,
 	
 	component = make_canvas_component (embeddable, aa, item_proxy);
 
-	return CORBA_Object_duplicate (bonobo_object_corba_objref (BONOBO_OBJECT (component)), ev);
+	return bonobo_object_dup_ref (
+		bonobo_object_corba_objref (BONOBO_OBJECT (component)), ev);
 }
 
 /**

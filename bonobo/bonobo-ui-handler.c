@@ -359,9 +359,10 @@ impl_Bonobo_UIHandler_get_toplevel (PortableServer_Servant  servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 
 	if (uih->top_level_uih == CORBA_OBJECT_NIL)
-		return CORBA_Object_duplicate (bonobo_object_corba_objref (BONOBO_OBJECT (uih)), ev);
+		return bonobo_object_dup_ref (
+			bonobo_object_corba_objref (BONOBO_OBJECT (uih)), ev);
 
-	return CORBA_Object_duplicate (uih->top_level_uih, ev);
+	return bonobo_object_dup_ref (uih->top_level_uih, ev);
 }
 
 /**
@@ -395,7 +396,7 @@ bonobo_ui_handler_set_container (BonoboUIHandler  *uih,
 	if (ev._major != CORBA_NO_EXCEPTION)
 		bonobo_object_check_env (BONOBO_OBJECT (uih), (CORBA_Object) container, &ev);
 	else {
-		uih->top_level_uih = CORBA_Object_duplicate (top_level, &ev);
+		uih->top_level_uih = top_level;
 
 		/* Register with the top-level UIHandler. */
 		Bonobo_UIHandler_register_containee (
@@ -439,11 +440,10 @@ bonobo_ui_handler_unset_container (BonoboUIHandler *uih)
 				BONOBO_OBJECT (uih),
 				(CORBA_Object) uih->top_level_uih, &ev);
 		}
-		
-		CORBA_Object_release (uih->top_level_uih, &ev);
+
+		bonobo_object_release_unref (uih->top_level_uih, &ev);
 
 		/* FIXME: Check the exception */
-
 		uih->top_level_uih = CORBA_OBJECT_NIL;
 	}
 	CORBA_exception_free (&ev);

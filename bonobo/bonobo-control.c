@@ -399,12 +399,10 @@ impl_Bonobo_Control_get_property_bag (PortableServer_Servant  servant,
 	if (control->priv->propbag == NULL)
 		return CORBA_OBJECT_NIL;
 
-	corba_propbag = (Bonobo_PropertyBag)
-		bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
+	corba_propbag = bonobo_object_corba_objref (
+		BONOBO_OBJECT (control->priv->propbag));
 
-	corba_propbag = CORBA_Object_duplicate (corba_propbag, ev);
-
-	return corba_propbag;
+	return bonobo_object_dup_ref (corba_propbag, ev);
 }
 
 /**
@@ -734,7 +732,7 @@ bonobo_control_destroy (GtkObject *object)
 	CORBA_Object_release (control->priv->control_frame, &ev);
 
 	CORBA_exception_free (&ev);
-	
+
 	/*
 	 * If we have a UIHandler, destroy it.
 	 */
@@ -742,6 +740,12 @@ bonobo_control_destroy (GtkObject *object)
 		bonobo_ui_handler_unset_container (control->priv->uih);
 		bonobo_object_unref (BONOBO_OBJECT (control->priv->uih));
 	}
+}
+
+static void
+bonobo_control_finalize (GtkObject *object)
+{
+	BonoboControl *control = BONOBO_CONTROL (object);
 
 	/*
 	 * Destroy the control's top-level widget.
@@ -759,16 +763,14 @@ bonobo_control_destroy (GtkObject *object)
 	 * which is why we're here now. In the latter case, it's not
 	 * needed because there is no plug.  
 	 */
-
 	if (control->priv->plug) {
-		gtk_object_destroy (GTK_OBJECT (control->priv->plug));
+		gtk_object_unref (GTK_OBJECT (control->priv->plug));
 		control->priv->plug = NULL;
 	}
 
 	g_free (control->priv);
 
-	if (GTK_OBJECT_CLASS (bonobo_control_parent_class)->destroy)
-		(* GTK_OBJECT_CLASS (bonobo_control_parent_class)->destroy) (object);
+	GTK_OBJECT_CLASS (bonobo_control_parent_class)->finalize (object);
 }
 
 /**
@@ -1026,6 +1028,8 @@ bonobo_control_class_init (BonoboControlClass *klass)
 	gtk_object_class_add_signals (object_class, control_signals, LAST_SIGNAL);
 
 	object_class->destroy = bonobo_control_destroy;
+	object_class->finalize = bonobo_control_finalize;
+
 	init_control_corba_class ();
 }
 

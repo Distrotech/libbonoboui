@@ -22,6 +22,7 @@ sample_app_exit (SampleApp *app)
 			BONOBO_OBJECT (app->components->data));
 
 	bonobo_object_unref (BONOBO_OBJECT (app->container));
+	bonobo_object_unref (BONOBO_OBJECT (app->ui_handler));
 
 	gtk_main_quit ();
 }
@@ -60,12 +61,6 @@ sample_app_create (void)
 	gtk_widget_show_all (app_widget);
 
 	return app;
-}
-
-static void
-sample_app_shutdown (SampleApp *app)
-{
-	bonobo_object_unref (BONOBO_OBJECT (app->ui_handler));
 }
 
 SampleClientSite *
@@ -168,8 +163,6 @@ main (int argc, char **argv)
 	gtk_idle_add ((GtkFunction) final_setup, &init_data);
 
 	bonobo_main ();
-
-	sample_app_shutdown (init_data.app);
 
 	if (ctx)
 		poptFreeContext (ctx);

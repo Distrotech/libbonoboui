@@ -39,11 +39,14 @@ static guint bonobo_client_site_signals [LAST_SIGNAL];
 static Bonobo_Container
 impl_Bonobo_client_site_get_container (PortableServer_Servant servant, CORBA_Environment *ev)
 {
-	BonoboObject *object = bonobo_object_from_servant (servant);
+	BonoboObject     *object = bonobo_object_from_servant (servant);
+	Bonobo_Container  corba_object;
 	BonoboClientSite *client_site = BONOBO_CLIENT_SITE (object);
 
-	return CORBA_Object_duplicate (bonobo_object_corba_objref (
-		BONOBO_OBJECT (client_site->container)), ev);
+	corba_object = bonobo_object_corba_objref (
+		BONOBO_OBJECT (client_site->container));
+
+	return bonobo_object_dup_ref (corba_object, ev);
 }
 
 static void
@@ -467,8 +470,7 @@ bonobo_client_site_new_view_full (BonoboClientSite *client_site,
 	}
 
 	bonobo_view_frame_bind_to_view (view_frame, view);
-	Bonobo_Unknown_unref (view, &ev);
-	CORBA_Object_release (view, &ev);
+	bonobo_object_release_unref (view, &ev);
 	
 	/*
 	 * 3. Add this new view frame to the list of ViewFrames for

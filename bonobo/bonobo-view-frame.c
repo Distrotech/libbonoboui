@@ -46,8 +46,8 @@ impl_Bonobo_ViewFrame_get_client_site (PortableServer_Servant servant,
 {
 	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (bonobo_object_from_servant (servant));
 
-	return CORBA_Object_duplicate (
-		bonobo_object_corba_objref (BONOBO_OBJECT (view_frame->priv->client_site)), ev);
+	return bonobo_object_dup_ref (bonobo_object_corba_objref (
+		BONOBO_OBJECT (view_frame->priv->client_site)), ev);
 }
 
 static CORBA_Object
@@ -198,19 +198,21 @@ bonobo_view_frame_destroy (GtkObject *object)
 {
 	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (object);
 
-	if (view_frame->priv->view != CORBA_OBJECT_NIL) {
-		CORBA_Environment ev;
-
-		CORBA_exception_init (&ev);
-                Bonobo_Unknown_unref (view_frame->priv->view, &ev);
-		CORBA_Object_release (view_frame->priv->view, &ev);
-		CORBA_exception_free (&ev);
-	}
+	if (view_frame->priv->view != CORBA_OBJECT_NIL)
+		bonobo_object_release_unref (view_frame->priv->view, NULL);
 	
+	GTK_OBJECT_CLASS (bonobo_view_frame_parent_class)->destroy (object);
+}
+
+static void
+bonobo_view_frame_finalize (GtkObject *object)
+{
+	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (object);
+
 	gtk_object_unref (GTK_OBJECT (view_frame->priv->wrapper));
 	g_free (view_frame->priv);
 	
-	GTK_OBJECT_CLASS (bonobo_view_frame_parent_class)->destroy (object);
+	GTK_OBJECT_CLASS (bonobo_view_frame_parent_class)->finalize (object);
 }
 
 /**
@@ -265,7 +267,8 @@ bonobo_view_frame_class_init (BonoboViewFrameClass *klass)
 		view_frame_signals,
 		LAST_SIGNAL);
 
-	object_class->destroy = bonobo_view_frame_destroy;
+	object_class->destroy  = bonobo_view_frame_destroy;
+	object_class->finalize = bonobo_view_frame_finalize;
 
 	init_view_frame_corba_class ();
 }
@@ -317,21 +320,15 @@ bonobo_view_frame_get_type (void)
 void
 bonobo_view_frame_bind_to_view (BonoboViewFrame *view_frame, Bonobo_View view)
 {
-	CORBA_Environment ev;
-
 	g_return_if_fail (view_frame != NULL);
 	g_return_if_fail (view != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
 
-	CORBA_exception_init (&ev);
 	bonobo_control_frame_bind_to_control (
 		BONOBO_CONTROL_FRAME (view_frame),
 		(Bonobo_Control) view);
 	
-	Bonobo_Unknown_ref (view, &ev);
-	view_frame->priv->view = CORBA_Object_duplicate (view, &ev);
-
-	CORBA_exception_free (&ev);
+	view_frame->priv->view = bonobo_object_dup_ref (view, NULL);
 }
 
 /**

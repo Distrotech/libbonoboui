@@ -1,3 +1,9 @@
+2000-08-02  Michael Meeks  <michael@helixcode.com>
+
+	* container.c (sample_app_exit): unref the UI handler here.
+	(sample_app_shutdown, main): kill this kludge, this is now fixed
+	in the UIHandler code.
+
 2000-07-26  Michael Meeks  <michael@helixcode.com>
 
 	* container-io.c (STORAGE_TYPE): change to efs.

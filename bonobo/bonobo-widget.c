@@ -360,14 +360,9 @@ bonobo_widget_destroy (GtkObject *object)
 		bonobo_object_unref (BONOBO_OBJECT (priv->client_site));
 	if (priv->view_frame)
 		bonobo_object_unref (BONOBO_OBJECT (priv->view_frame));
-	if (priv->uih != CORBA_OBJECT_NIL) {
-		CORBA_Environment ev;
+	if (priv->uih != CORBA_OBJECT_NIL)
+		bonobo_object_release_unref (priv->uih, NULL);
 
-		CORBA_exception_init (&ev);
-		Bonobo_UIHandler_unref (priv->uih, &ev);
-		CORBA_Object_release (priv->uih, &ev);
-		CORBA_exception_free (&ev);
-	}
 	g_free (priv);
 	GTK_OBJECT_CLASS (bonobo_widget_parent_class)->destroy (object);
 }
