@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.103.0\n"
-"POT-Creation-Date: 2001-11-30 13:49+1100\n"
+"POT-Creation-Date: 2001-12-12 16:34+0000\n"
 "PO-Revision-Date: 2001-10-03 09:54+0800\n"
 "Last-Translator: Joe Man <trmetal@yahoo.com.hk>\n"
 "Language-Team: traditional chinese <zh-l10n@linux.org.tw>\n"
@@ -49,39 +49,39 @@ msgstr "名稱"
 msgid "Description"
 msgstr "描述"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:265
 msgid "Visible"
 msgstr "可見"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:272
 msgid "_Show"
 msgstr "顯示 (_S)"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_Hide"
 msgstr "隱藏 (_H)"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
 msgstr "顯示工具列提示 (_V)"
 
-#: bonobo/bonobo-ui-config-widget.c:301
+#: bonobo/bonobo-ui-config-widget.c:290
 msgid "Toolbars"
 msgstr "工具列"
 
-#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "檢視"
 
-#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "圖示 (_I)"
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:315
 msgid "_Text and Icon"
 msgstr "圖示及文字 (_T)"
 
-#: bonobo/bonobo-ui-config-widget.c:341
+#: bonobo/bonobo-ui-config-widget.c:321
 msgid "_Priority text only"
 msgstr "圖示及橫向文字 (_P)"
 

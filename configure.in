@@ -1,7 +1,7 @@
 AC_INIT(message-of-doom)
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(libbonoboui, 1.107.0)
+AM_INIT_AUTOMAKE(libbonoboui, 1.108.0)
 
 AM_MAINTAINER_MODE
 
@@ -37,14 +37,14 @@ AC_SUBST(LDFLAGS)
 dnl
 dnl Start of pkg-config checks
 dnl
-BONOBOUI_MODULES="libgnomecanvas-2.0 >= 1.105.0 libbonobo-2.0 >= 1.107.0 \
-		  libgnome-2.0 >= 1.105.0 bonobo-activation-2.0 >= 0.9.3 \
-		  gconf-2.0 >= 1.1.3 gtk+-2.0 >= 1.3.11"
+BONOBOUI_MODULES="libgnomecanvas-2.0 >= 1.108.0 libbonobo-2.0 >= 1.108.0 \
+		  libgnome-2.0 >= 1.108.0 bonobo-activation-2.0 >= 0.9.3 \
+		  gconf-2.0 >= 1.1.5 gtk+-2.0 >= 1.3.11"
 PKG_CHECK_MODULES(BONOBOUI, $BONOBOUI_MODULES)
 AC_SUBST(BONOBOUI_CFLAGS)
 AC_SUBST(BONOBOUI_LIBS)
 
-PKG_CHECK_MODULES(BONOBOUI_GLADE, $BONOBOUI_MODULES libglade-2.0 >= 1.99.3)
+PKG_CHECK_MODULES(BONOBOUI_GLADE, $BONOBOUI_MODULES libglade-2.0 >= 1.99.5)
 AC_SUBST(BONOBOUI_GLADE_CFLAGS)
 AC_SUBST(BONOBOUI_GLADE_LIBS)
  

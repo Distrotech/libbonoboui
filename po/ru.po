@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-11-30 13:49+1100\n"
+"POT-Creation-Date: 2001-12-12 16:34+0000\n"
 "PO-Revision-Date: 2001-10-13 20:15+0400\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -48,39 +48,39 @@ msgstr "Имя"
 msgid "Description"
 msgstr "Описание"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:265
 msgid "Visible"
 msgstr "Видимый"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:272
 msgid "_Show"
 msgstr "Показать"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_Hide"
 msgstr "Скрыть"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
 msgstr "Просмотр подсказок"
 
-#: bonobo/bonobo-ui-config-widget.c:301
+#: bonobo/bonobo-ui-config-widget.c:290
 msgid "Toolbars"
 msgstr "Панели"
 
-#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "Пиктограмма"
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:315
 msgid "_Text and Icon"
 msgstr "Текст и пиктограмма"
 
-#: bonobo/bonobo-ui-config-widget.c:341
+#: bonobo/bonobo-ui-config-widget.c:321
 msgid "_Priority text only"
 msgstr ""
 

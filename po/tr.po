@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2001-11-30 13:49+1100\n"
+"POT-Creation-Date: 2001-12-12 16:34+0000\n"
 "PO-Revision-Date: 2001-10-23 17:15+0200\n"
 "Last-Translator: Ömer Fadýl USTA <omer_fad@hotmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -49,39 +49,39 @@ msgstr "Ýsim"
 msgid "Description"
 msgstr "Tanýmlama"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:265
 msgid "Visible"
 msgstr "Görünürlük"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:272
 msgid "_Show"
 msgstr "_Göster"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_Hide"
 msgstr "Gi_zle"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
 msgstr "_Araç ipucunu göster"
 
-#: bonobo/bonobo-ui-config-widget.c:301
+#: bonobo/bonobo-ui-config-widget.c:290
 msgid "Toolbars"
 msgstr "Araç çubuðu"
 
-#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "Bak"
 
-#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "_Simge"
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:315
 msgid "_Text and Icon"
 msgstr "_Metin ve simge"
 
-#: bonobo/bonobo-ui-config-widget.c:341
+#: bonobo/bonobo-ui-config-widget.c:321
 msgid "_Priority text only"
 msgstr "_Öncelikli yalnýz metin"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bonobo 0.32\n"
-"POT-Creation-Date: 2001-11-30 13:49+1100\n"
+"POT-Creation-Date: 2001-12-12 16:34+0000\n"
 "PO-Revision-Date: 2000-09-07 20:17+02:00\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (Nynorsk)\n"
@@ -52,40 +52,40 @@ msgstr "Namn"
 msgid "Description"
 msgstr "Skildring"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:265
 msgid "Visible"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:272
 msgid "_Show"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 #, fuzzy
 msgid "_Hide"
 msgstr "Fil"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:301
+#: bonobo/bonobo-ui-config-widget.c:290
 msgid "Toolbars"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:315
 msgid "_Text and Icon"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:341
+#: bonobo/bonobo-ui-config-widget.c:321
 msgid "_Priority text only"
 msgstr ""
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"POT-Creation-Date: 2001-11-30 13:49+1100\n"
+"POT-Creation-Date: 2001-12-12 16:34+0000\n"
 "PO-Revision-Date: 2001-07-07 12:50+02:00\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@cgabriel.org>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -49,39 +49,39 @@ msgstr "Nome"
 msgid "Description"
 msgstr "Descrizione"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:265
 msgid "Visible"
 msgstr "Visibile"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:272
 msgid "_Show"
 msgstr "_Mostra"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_Hide"
 msgstr "_Nascondi"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
 msgstr "_Suggerimenti"
 
-#: bonobo/bonobo-ui-config-widget.c:301
+#: bonobo/bonobo-ui-config-widget.c:290
 msgid "Toolbars"
 msgstr "Barre strumenti"
 
-#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "Aspetto"
 
-#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "_Icona"
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:315
 msgid "_Text and Icon"
 msgstr "_Testo e icona"
 
-#: bonobo/bonobo-ui-config-widget.c:341
+#: bonobo/bonobo-ui-config-widget.c:321
 msgid "_Priority text only"
 msgstr "_Priorità al solo testo"
 
