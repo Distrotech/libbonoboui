@@ -1,19 +1,20 @@
 # Libbonoboui Estonian Translation.
 # Copyright (C) 1999-2003 Free Software Foundation, Inc.
-# This file is distributed under the same license as the libbonobui package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# This file is distributed under the same license as the libbonoboui package.
+# Ivar Smolin <okul@linux.ee>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Libbonoboui Gnome 2.6\n"
+"Project-Id-Version: Libbonoboui Gnome 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-05 15:33+0000\n"
+"POT-Creation-Date: 2005-01-15 12:31+0100\n"
 "PO-Revision-Date: 2004-03-06 10:32+0300\n"
-"Last-Translator: Priit Laes <amd@tt.ee>\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -29,33 +30,32 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
-msgstr ""
+msgstr "Kasutajaliidese konteiner"
+
+#: bonobo/bonobo-dock-item-grip.c:256
+msgid "Dock the toolbar"
+msgstr "Haagi tööriistariba külge"
 
 #: bonobo/bonobo-dock-item-grip.c:257
-msgid "Dock the toolbar"
-msgstr ""
-
-#: bonobo/bonobo-dock-item-grip.c:258
-#, fuzzy
 msgid "Undock the toolbar"
-msgstr "Kohanda tööriistariba"
+msgstr "Haagi tööriistariba lahti"
 
-#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
+#: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Varju tüüp"
 
-#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
+#: bonobo/bonobo-dock-item.c:243 bonobo/bonobo-dock-item.c:244
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Suund"
 
-#: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
+#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Eelistatud laius"
 
-#: bonobo/bonobo-dock-item.c:264 bonobo/bonobo-dock-item.c:265
+#: bonobo/bonobo-dock-item.c:263 bonobo/bonobo-dock-item.c:264
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Eelistatud kõrgus"
@@ -78,7 +78,7 @@ msgstr "Sündmuste edastamine"
 
 #: bonobo/bonobo-plug.c:413
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "Kas X'i sündmused tuleb edastada"
 
 #: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
 #: tools/browser/component-details.c:114 tools/browser/component-list.c:381
@@ -91,7 +91,7 @@ msgstr "Kirjeldus"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "Vajalikud liidesed"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -102,11 +102,11 @@ msgstr ""
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "Vajalike liideste kirje"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Üks vajalikest liidestest"
 
 #: bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
@@ -122,7 +122,7 @@ msgstr "_Peida"
 
 #: bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
-msgstr ""
+msgstr "_Vaata tööriistavihjeid"
 
 #: bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
@@ -154,15 +154,15 @@ msgstr ""
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
-msgstr ""
+msgstr "Silumine"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr ""
+msgstr "XML'i väljastamine"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "Väljastab konsoolile kogu kasutgajaliidest XML kirjelduse"
 
 #: bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
@@ -170,7 +170,7 @@ msgstr "Seadista kasutajaliidest"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "Gdk silumislipud, mida seada"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
@@ -179,7 +179,7 @@ msgstr "LIPUD"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "Gdk silumislipud, mida nullida"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
@@ -199,12 +199,11 @@ msgstr "EKRAAN"
 
 #: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "X'i kutsungid muudetakse sünkroonseks"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
-#, fuzzy
 msgid "Don't use X shared memory extension"
-msgstr "Ära kasuta X jagatud mälu laiendust "
+msgstr "X'i jagatud mälu laiendust ei kasutata"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
@@ -224,19 +223,19 @@ msgstr "LIIK"
 
 #: bonobo/bonobo-ui-init-gtk.c:144
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "Gtk+ silumislipud, mida seada"
 
 #: bonobo/bonobo-ui-init-gtk.c:147
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "Gtk+ silumislipud, mida nullida"
 
 #: bonobo/bonobo-ui-init-gtk.c:150
 msgid "Make all warnings fatal"
-msgstr "Muuda kõik hoiatused saatuslikuks"
+msgstr "Kõik hoiatused muudetakse saatuslikud"
 
 #: bonobo/bonobo-ui-init-gtk.c:153
 msgid "Load an additional Gtk module"
-msgstr "Laadi Gtk lisamoodul"
+msgstr "Gtk lisamooduli laadimine"
 
 #: bonobo/bonobo-ui-init-gtk.c:153
 msgid "MODULE"
@@ -248,7 +247,7 @@ msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:202
 msgid "Bonobo GUI support"
-msgstr ""
+msgstr "Bonobo kasutajaliidese tugi"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "B_oth"
@@ -300,7 +299,7 @@ msgstr "Kuva programmi abi"
 
 #: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "Akna nimi - kasutatakse seadistuse serialiseerimiseks."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -395,85 +394,83 @@ msgstr "Tere, maailm!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr ""
+msgstr "libbonoboui koodi ei saa lähtestada"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr ""
+msgstr "Bonobo kasutajaliidest ei saa lähtestada"
 
 #: tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr ""
+msgstr "Bonobo komponendisirvija"
 
 #: tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr ""
+msgstr "Näitab saadaolevaid Bonobo komponente"
 
 #: tools/browser/bonobo-browser.xml.h:1
-#, fuzzy
 msgid "About this program..."
-msgstr "Programmi kohta"
+msgstr "Programmist lähemalt..."
 
 #: tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr ""
+msgstr "Sulgeb käesoleva akna"
 
 #: tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
-msgstr ""
+msgstr "Avab uue akna"
 
 #: tools/browser/bonobo-browser.xml.h:5
-#, fuzzy
 msgid "_Help"
-msgstr "_Peida"
+msgstr "_Abi"
 
 #. Build the general tab
 #: tools/browser/component-details.c:109
 msgid "General"
-msgstr ""
+msgstr "Üldine"
 
 #: tools/browser/component-details.c:116 tools/browser/component-list.c:401
 msgid "IID"
-msgstr ""
+msgstr "IID"
 
 #: tools/browser/component-details.c:117
 msgid "Location"
-msgstr ""
+msgstr "Asukoht"
 
 #. Build the details tab
 #: tools/browser/component-details.c:167
 msgid "Details"
-msgstr ""
+msgstr "Üksikasjad"
 
 #: tools/browser/component-details.c:168
 msgid "Detailed Information"
-msgstr ""
+msgstr "Üksikasjaline teave"
 
 #: tools/browser/component-list.c:370
 msgid "Active"
-msgstr ""
+msgstr "Aktiivne"
 
 #: tools/browser/component-list.c:391
 msgid "Type"
-msgstr ""
+msgstr "Tüüp"
 
 #: tools/browser/window.c:169
 msgid "Component Details"
-msgstr ""
+msgstr "Komponendi üksikasjad"
 
 #: tools/browser/window.c:214
 msgid "Bonobo Browser"
-msgstr ""
+msgstr "Bonobo sirvija"
 
 #: tools/browser/window.c:215
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr ""
+msgstr "Copyright 2001, The GNOME Foundation"
 
 #: tools/browser/window.c:216
 msgid "Bonobo component browser"
-msgstr ""
+msgstr "Bonobo komponendilehitseja"
 
 #. create the window
 #: tools/browser/window.c:246
 msgid "Component Browser"
-msgstr ""
+msgstr "Komponendilehitseja"
