@@ -708,6 +708,7 @@ bonobo_ui_component_set_translate (BonoboUIComponent  *component,
 		return;
 
 	node = bonobo_ui_node_from_string (xml);
+	g_return_if_fail (node != NULL);
 
 	bonobo_ui_util_translate_ui (node);
 

@@ -1,3 +1,10 @@
+2002-11-11  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_set_translate): don't
+	segv later if we have a NULL / bogus xml
+	string coming in.
+
 2002-11-10  Ole Laursen  <olau@hardworking.dk>
 
 	* configure.in: Added da to ALL_LINGUAS.
