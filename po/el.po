@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2002-11-05 14:12+0000\n"
+"POT-Creation-Date: 2002-12-02 09:37+0000\n"
 "PO-Revision-Date: 2002-11-05 15:14+0000\n"
 "Last-Translator: Simos Xenitellis <simos74@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -112,9 +112,10 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Ένας πίνακας διασυνδέσεων διαχωριζόμενος με χαρακτήρες NULL που ο εξυπηρετητής "
-"πρέπει να υποστηρίζει για να εμφανίζεται στον επιλογέα. Εξ ορισμού το "
-"\"IDL:Bonobo/Embeddable:1.0\" αν δεν εμφανίζονται άλλες διασυνδέσεις"
+"Ένας πίνακας διασυνδέσεων διαχωριζόμενος με χαρακτήρες NULL που ο "
+"εξυπηρετητής πρέπει να υποστηρίζει για να εμφανίζεται στον επιλογέα. Εξ "
+"ορισμού το \"IDL:Bonobo/Embeddable:1.0\" αν δεν εμφανίζονται άλλες "
+"διασυνδέσεις"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -335,7 +336,9 @@ msgstr "Εμφάνιση βοήθειας για την εφαρμογή"
 
 #: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
-msgstr "Το όνομα του παραθύρου - για χρήση στη μετατροπή κατ' αλληλουχία των ρυθμίσεων."
+msgstr ""
+"Το όνομα του παραθύρου - για χρήση στη μετατροπή κατ' αλληλουχία των "
+"ρυθμίσεων."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -454,4 +457,3 @@ msgstr "Αποτυχία αρχικοποίησης κώδικα libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Αδύνατη η αρχικοποίηση της γραφικής διασύνδεσης του Bonobo "
-

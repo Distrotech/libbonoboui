@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo\n"
-"POT-Creation-Date: 2002-10-18 12:25+0100\n"
+"POT-Creation-Date: 2002-12-02 09:37+0000\n"
 "PO-Revision-Date: 2002-07-24 11:52+0100\n"
 "Last-Translator: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
 "Language-Team: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pbbonoboui\n"
-"POT-Creation-Date: 2002-11-05 05:07+0100\n"
+"POT-Creation-Date: 2002-12-02 09:37+0000\n"
 "PO-Revision-Date: 2002-11-06 12:39+0200\n"
 "Last-Translator: Vital Khilko <dojlid@mova.org>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -393,4 +393,3 @@ msgstr "Немагчыма праініцыялізаваць код libbonoboui
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Немагчыма ініцыялізаваць Bonobo UI"
-

@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2002-10-18 12:25+0100\n"
+"POT-Creation-Date: 2002-12-02 09:37+0000\n"
 "PO-Revision-Date: 2002-05-31 18:10+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"

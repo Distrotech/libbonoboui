@@ -1,3 +1,7 @@
+2002-12-02  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.0.3.3
+
 2002-11-20  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-file-selector-util.c

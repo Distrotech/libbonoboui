@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-11-02 05:06+0100\n"
+"POT-Creation-Date: 2002-12-02 09:37+0000\n"
 "PO-Revision-Date: 2002-11-02 15:00+0200\n"
 "Last-Translator: Artis Trops <hornet@navigators.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -37,29 +37,22 @@ msgstr "Enkurot rīkjoslu"
 msgid "Un dock the toolbar"
 msgstr "Atenkurot rīkjoslu"
 
-#: bonobo/bonobo-dock-item.c:291
-#: bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
 msgstr "Ēnas tips"
 
-#: bonobo/bonobo-dock-item.c:302
-#: bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1086
-#: bonobo/bonobo-ui-toolbar.c:1087
+#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
 msgid "Orientation"
 msgstr "Novietojums"
 
-#: bonobo/bonobo-dock-item.c:313
-#: bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1105
-#: bonobo/bonobo-ui-toolbar.c:1106
+#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
 msgid "Preferred width"
 msgstr "Vēlamais platums"
 
-#: bonobo/bonobo-dock-item.c:322
-#: bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1114
-#: bonobo/bonobo-ui-toolbar.c:1115
+#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
 msgid "Preferred height"
 msgstr "Vēlamais augstums"
 
@@ -83,8 +76,7 @@ msgstr "Notikumu Pārsūtīšana"
 msgid "Whether X events should be forwarded"
 msgstr "Vai X notikumiem jātiek pārsūtītiem"
 
-#: bonobo/bonobo-selector-widget.c:300
-#: bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "Nosaukums"
 
@@ -97,8 +89,14 @@ msgid "Interfaces required"
 msgstr "Pieprasītie interfeisi"
 
 #: bonobo/bonobo-selector.c:346
-msgid "A NULL_terminated array of interfaces which a server must support in order to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
-msgstr "Ar NULL pātraukts interfeisu masīvs kuri serverim ir jāatbalsta, lai tie tiku parādīti izvēlētājā. Noklusētais ir uz \"IDL:Bonobo/Embeddable:1.0\" ja interfeisi nav parādīti"
+msgid ""
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+"Ar NULL pātraukts interfeisu masīvs kuri serverim ir jāatbalsta, lai tie "
+"tiku parādīti izvēlētājā. Noklusētais ir uz \"IDL:Bonobo/Embeddable:1.0\" ja "
+"interfeisi nav parādīti"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -132,13 +130,11 @@ msgstr "Rīkjoslas"
 msgid "toolbars"
 msgstr "rīkjoslas"
 
-#: bonobo/bonobo-ui-config-widget.c:313
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Skatīties"
 
-#: bonobo/bonobo-ui-config-widget.c:322
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Ikona"
 
@@ -154,18 +150,6 @@ msgstr "Tikai Teksts"
 msgid "_Priority text only"
 msgstr "Tikai _prioritātes teksts"
 
-#: bonobo/bonobo-ui-engine.c:88
-msgid "Debug"
-msgstr "Atkļūdot"
-
-#: bonobo/bonobo-ui-engine.c:88
-msgid "_Dump XML"
-msgstr "_Izmest XML"
-
-#: bonobo/bonobo-ui-engine.c:89
-msgid "Dump the entire UI's XML description to the console"
-msgstr "Izmest visu UI XML aprakstu konsolē"
-
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Konfigurēt UI"
@@ -174,10 +158,8 @@ msgstr "Konfigurēt UI"
 msgid "Gdk debugging flags to set"
 msgstr "Gdk atkļūdošanas karodziņi, kurus ieslēgt"
 
-#: bonobo/bonobo-ui-init-gtk.c:113
-#: bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "FLAGS"
 
@@ -233,8 +215,7 @@ msgstr "HOST"
 msgid "PORT"
 msgstr "PORT"
 
-#: bonobo/bonobo-ui-init-gtk.c:155
-#: bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
 msgstr "STYLE"
 
@@ -411,3 +392,11 @@ msgstr "Nevaru inicializēt libbonoboui kodu"
 msgid "Could not initialize Bonobo UI"
 msgstr "Nevarēju inicializēt Bonobo UI"
 
+#~ msgid "Debug"
+#~ msgstr "Atkļūdot"
+
+#~ msgid "_Dump XML"
+#~ msgstr "_Izmest XML"
+
+#~ msgid "Dump the entire UI's XML description to the console"
+#~ msgstr "Izmest visu UI XML aprakstu konsolē"
