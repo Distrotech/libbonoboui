@@ -1672,7 +1672,10 @@ update_menus (BonoboWinPrivate *priv, BonoboUINode *node)
 	if (wptr)
 		g_warning ("Excess widgets at the end of the container; wierd");
 
-	do_show_hide (info->widget, node);
+	if (bonobo_ui_node_parent (node) == priv->tree->root)
+		do_show_hide (info->widget, node);
+	else
+		do_show_hide (info->widget, node);
 
 	g_list_free  (widgets);
 }

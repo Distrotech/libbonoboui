@@ -319,6 +319,9 @@ get_stock_pixbuf (const char *name)
 	GdkPixbuf *pixbuf;
 	char *path;
 
+	if (!name)
+		return NULL;
+
 	entry = gnome_stock_pixmap_checkfor (name, GNOME_STOCK_PIXMAP_REGULAR);
 	if (entry == NULL)
 		return NULL;
@@ -354,18 +357,22 @@ GdkPixbuf *
 bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 {
 	GdkPixbuf *icon_pixbuf = NULL;
-	char      *type;
+	char      *type, *text;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if (!(type = bonobo_ui_node_get_attr (node, "pixtype")) 
-	    || !(bonobo_ui_node_get_attr (node, "pixname")))
+	if (!(type = bonobo_ui_node_get_attr (node, "pixtype")))
+		return NULL;
+
+	if (!(text = bonobo_ui_node_get_attr (node, "pixname"))) {
+		bonobo_ui_node_free_string (type);
+		return NULL;
+	}
+
+	if (!text)
 		return NULL;
 
 	if (!strcmp (type, "stock")) {
-		char *text;
-
-		text = bonobo_ui_node_get_attr (node, "pixname");
 
 		if (prepend_menu) {
 			char *fullname = g_strconcat ("Menu_", text, NULL);
@@ -374,39 +381,33 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 		} else
 			icon_pixbuf = get_stock_pixbuf (text);
 
-		bonobo_ui_node_free_string (text);
 	} else if (!strcmp (type, "filename")) {
-		char *name, *text;
+		char *name;
 
-		text = bonobo_ui_node_get_attr (node, "pixname");
-		if (text[0] == '/' && g_file_exists (text)) {
+		if (text [0] == '/' && g_file_exists (text)) {
 			name = g_strdup (text);
 		} else {
 			name = gnome_pixmap_file (text);
 		}
+
 		if (name == NULL)
 			g_warning ("Could not find GNOME pixmap file %s", text);
 		else
 			icon_pixbuf = gdk_pixbuf_new_from_file (name);
 
-		bonobo_ui_node_free_string (text);
 		g_free (name);
+
 	} else if (!strcmp (type, "pixbuf")) {
-		char      *text;
-
-		text = bonobo_ui_node_get_attr (node, "pixname");
-
-		g_return_val_if_fail (text != NULL, NULL);
 		
 		/* Get pointer to GdkPixbuf */
 		icon_pixbuf = bonobo_ui_util_xml_to_pixbuf (text);
 		bonobo_ui_node_free_string (text);
 
 		g_return_val_if_fail (icon_pixbuf != NULL, NULL);
-	} else {
+	} else
 		g_warning ("Unknown icon_pixbuf type '%s'", type);
-	}
 
+	bonobo_ui_node_free_string (text);
 	bonobo_ui_node_free_string (type);
 
 	return icon_pixbuf;
