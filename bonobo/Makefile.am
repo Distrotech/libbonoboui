@@ -80,7 +80,8 @@ libbonobo_la_SOURCES =			\
 	bonobo-property.c		\
 	bonobo-property-bag.c		\
 	bonobo-property-bag-client.c	\
-	bonobo-property-control.c
+	bonobo-property-control.c	\
+	bonobo-running-context.c
 
 libbonoboincludedir = $(includedir)/bonobo
 
@@ -89,7 +90,6 @@ libbonobo_HEADERS = bonobo.h
 
 libbonoboinclude_HEADERS =			\
 	Bonobo.h				\
-	bonobo-activation-context.h		\
 	bonobo-arg.h				\
 	bonobo-async.h				\
 	bonobo-canvas-component.h		\
@@ -152,10 +152,12 @@ libbonoboinclude_HEADERS =			\
 	bonobo-zoomable-frame.h
 
 noinst_HEADERS =				\
+	bonobo-activation-context.h		\
 	bonobo-ui-toolbar.h			\
 	bonobo-ui-toolbar-control-item.h  	\
 	bonobo-ui-toolbar-popup-item.h		\
-	bonobo-ui-toolbar-separator-item.h
+	bonobo-ui-toolbar-separator-item.h	\
+	bonobo-running-context.h
 
 libbonobox_la_LDFLAGS = \
 	-version-info $(BONOBO_CURRENT):$(BONOBO_REVISION):$(BONOBO_AGE)
