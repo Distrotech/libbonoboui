@@ -7,7 +7,8 @@ noinst_PROGRAMS =		\
 	test-properties-client	\
 	test-storage		\
 	test-toolbar		\
-	selector_test
+	selector_test		\
+	test-event-source 	
 
 bonobo_libs =						\
 	$(top_builddir)/bonobo/libbonobo.la		\
@@ -75,9 +76,15 @@ selector_test_LDADD =					\
 	$(bonobo_libs)					\
 	$(top_builddir)/bonobo/libbonobox.la
 
+test_event_source_SOURCES = test-event-source.c
+
+test_event_source_LDADD =				\
+	$(bonobo_libs)					\
+	$(top_builddir)/bonobo/libbonobox.la
+
 
 TESTS_ENVIRONMENT =					\
 	LD_LIBRARY_PATH=$(top_builddir)/bonobo/.libs/	\
 	BONOBO_PLUGIN_PATH=$(top_builddir)/storage-modules/.libs
 
-TESTS = test-storage test-any test-moniker
+TESTS = test-storage test-any test-moniker test-event-source
