@@ -142,8 +142,12 @@ info_dump_fn (BonoboUIXml *tree, BonoboUINode *node)
 			else if (attached_node != node)
 				fprintf (stderr, "Serious mismatch attaches should be '%8p'\n",
 					 node);
-			else
-				fprintf (stderr, "and matching\n");
+			else {
+				if (info->widget->parent)
+					fprintf (stderr, "and matching; parented\n");
+				else
+					fprintf (stderr, "and matching; BUT NO PARENT!\n");
+			}
  		} else
 			fprintf (stderr, " no associated widget\n");
 	} else
@@ -494,6 +498,18 @@ sync_generic_widgets (BonoboWinPrivate *priv,
 	BonoboUINode *a;
 	GList        *b, *nextb;
 
+#ifdef WIDGET_SYNC_DEBUG
+	printf ("In sync to pos %d with widgets:\n", *pos);
+	for (b = *widgets; b; b = b->next) {
+		BonoboUINode *node = widget_get_node (b->data);
+
+		if (node)
+			printf ("\t'%s'\n", bonobo_ui_xml_make_path (node));
+		else
+			printf ("\tno node ptr\n");
+	}
+#endif
+
 	b = *widgets;
 	for (a = node; a; b = nextb) {
 		gboolean same;
@@ -576,6 +592,7 @@ sync_generic_widgets (BonoboWinPrivate *priv,
 					 * on this 'b' node until a more favorable 'a'
 					 */
 					nextb = b;
+					(*pos)--;
 					g_assert (info->type | CUSTOM_WIDGET);
 #ifdef WIDGET_SYNC_DEBUG
 					printf ("not dirty & not same, but has no widget\n");

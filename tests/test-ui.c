@@ -396,6 +396,14 @@ main (int argc, char **argv)
 	bonobo_ui_component_set_status (componentb, "WhatB7", &ev);
 	bonobo_ui_component_set_status (componentb, "", &ev);
 
+	{
+		char *txt = bonobo_ui_component_get (componenta, "/status/main", TRUE, NULL);
+		if (strcmp (txt, "<?xml version=\"1.0\"?>\n<item name=\"main\">576861744136</item>\n")) {
+			g_warning ("Broken merging code '%s'", txt);
+			g_assert_not_reached ();
+		}
+	}
+
 	gtk_main ();
 
 	bonobo_ui_component_freeze (componenta, NULL);

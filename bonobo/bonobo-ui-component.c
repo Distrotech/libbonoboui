@@ -477,7 +477,7 @@ impl_xml_get (BonoboUIComponent *component,
 		real_ev = &tmp_ev;
 	}
 
-	xml = Bonobo_UIContainer_node_get (container, path, recurse, real_ev);
+	xml = Bonobo_UIContainer_node_get (container, path, !recurse, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION) {
 		if (!ev)
