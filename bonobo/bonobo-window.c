@@ -348,15 +348,30 @@ set_cmd_dirty (BonoboWinPrivate *priv, BonoboUINode *cmd_node)
 }
 
 static void
-widget_set_state (GtkWidget *widget, BonoboUINode *node)
+do_show_hide (GtkWidget *widget, BonoboUINode *node)
 {
 	char *txt;
 
-	/* FIXME */
-	if ((txt = bonobo_ui_node_get_attr (node, "sensitive"))) {
-		gtk_widget_set_sensitive (widget, atoi (txt));
+	if (!widget)
+		return;
+
+	if ((txt = bonobo_ui_node_get_attr (node, "hidden"))) {
+		printf ("Node '%s' hidden '%s'\n",
+			bonobo_ui_node_get_name (node), txt);
+		if (atoi (txt)) {
+			gtk_widget_hide (widget);
+			g_warning ("Hide it!");
+		} else
+			gtk_widget_show (widget);
 		bonobo_ui_node_free_string (txt);
-	}
+	} else
+		gtk_widget_show (widget);
+}
+
+static void
+widget_set_state (GtkWidget *widget, BonoboUINode *node)
+{
+	char *txt;
 
 	/*
 	 * FIXME: we should compare the current state before setting
@@ -380,6 +395,13 @@ widget_set_state (GtkWidget *widget, BonoboUINode *node)
 				   "state '%s' on wierd object", txt);
 		bonobo_ui_node_free_string (txt);
 	}
+
+	if ((txt = bonobo_ui_node_get_attr (node, "sensitive"))) {
+		gtk_widget_set_sensitive (widget, atoi (txt));
+		bonobo_ui_node_free_string (txt);
+	}
+
+	do_show_hide (widget, node);
 }
 
 static void
@@ -1236,6 +1258,7 @@ build_control (BonoboWinPrivate *priv,
 		info->widget = control;
 	}
 
+	do_show_hide (control, node);
 
 /*	fprintf (stderr, "Type on '%s' '%s' is %d widget %p\n",
 		 node->name, xmlGetProp (node, "name"),
@@ -1331,7 +1354,6 @@ build_menu_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 
 		menu_widget = gtk_menu_item_new ();
 		gtk_container_add (GTK_CONTAINER (menu_widget), control);
-		gtk_widget_show (control);
 
 		g_return_if_fail (menu_widget != NULL);
 
@@ -1347,10 +1369,7 @@ build_menu_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 	}
 
 	if ((hidden = bonobo_ui_node_get_attr (node, "hidden"))) {
-		if (atoi (hidden))
-			gtk_widget_hide (menu_widget);
-		else
-			gtk_widget_show (menu_widget);
+		set_cmd_state (priv, node, "hidden", hidden, FALSE);
 		bonobo_ui_node_free_string (hidden);
 	}
 
@@ -1371,7 +1390,8 @@ static void
 update_menus (BonoboWinPrivate *priv, BonoboUINode *node)
 {
 	BonoboUINode  *l;
-	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
+	gboolean       hide = FALSE;
+	NodeInfo      *info = bonobo_ui_xml_get_data (priv->tree, node);
 
 	if (info->widget)
 		gtk_widget_hide (GTK_WIDGET (info->widget));
@@ -1395,7 +1415,7 @@ update_menus (BonoboWinPrivate *priv, BonoboUINode *node)
 		build_menu_widget (priv, l);
 
 	if (info->widget)
-		gtk_widget_show (GTK_WIDGET (info->widget));
+		do_show_hide (info->widget, node);
 }
 
 static void build_toolbar_widget (BonoboWinPrivate *priv, BonoboUINode *node);
@@ -1450,7 +1470,7 @@ build_toolbar_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 {
 	NodeInfo   *info;
 	GtkWidget  *parent;
-	char *type, *verb, *sensitive, *state, *label, *txt;
+	char *type, *verb, *sensitive, *state, *label, *txt, *hidden;
 	GdkPixbuf  *icon_pixbuf;
 	GtkWidget  *item;
 
@@ -1532,6 +1552,11 @@ build_toolbar_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 		bonobo_ui_node_free_string (state);
 	}
 
+	if ((hidden = bonobo_ui_node_get_attr (node, "hidden"))) {
+		set_cmd_state (priv, node, "hidden", hidden, FALSE);
+		bonobo_ui_node_free_string (hidden);
+	}
+
 	set_cmd_dirty (priv, node);
 }
 
@@ -1554,8 +1579,6 @@ build_toolbar_control (BonoboWinPrivate *priv, BonoboUINode *node)
 	control = build_control (priv, node, parent);
 	if (!control)
 		return;
-
-	gtk_widget_show (control);
 
 	item = bonobo_ui_toolbar_item_new ();
 	gtk_container_add (GTK_CONTAINER (item), control);
@@ -1711,18 +1734,7 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 	bonobo_ui_toolbar_set_tooltips (toolbar, tooltips);
 #endif
 
-	if ((txt = bonobo_ui_node_get_attr (node, "hidden"))) {
-		if (atoi (txt)) {
-			gtk_widget_hide (GTK_WIDGET (item));
-			bonobo_ui_node_free_string (txt);
-			return;
-		} else {			
-			gtk_widget_show (GTK_WIDGET (item));
-			bonobo_ui_node_free_string (txt);
-		}
-	} else {
-		gtk_widget_show (GTK_WIDGET (item));
-	}
+	do_show_hide (GTK_WIDGET (item), node);
 
 	gtk_widget_queue_resize (GTK_WIDGET (item));
 
@@ -1809,7 +1821,6 @@ update_keybindings (BonoboWinPrivate *priv, BonoboUINode *node)
 static void
 update_status (BonoboWinPrivate *priv, BonoboUINode *node)
 {
-	char            *txt;
 	GtkWidget       *item = GTK_WIDGET (priv->status);
 	BonoboUINode    *l;
 	BonoboUIXmlData *data;
@@ -1866,24 +1877,12 @@ update_status (BonoboWinPrivate *priv, BonoboUINode *node)
 			if (!widget)
 				return;
 
-			gtk_widget_show (widget);
 			gtk_box_pack_end (priv->status, widget, FALSE, FALSE, 0);
 		}
 		bonobo_ui_node_free_string (name);
 	}
 
-	if ((txt = bonobo_ui_node_get_attr (node, "hidden"))) {
-		if (atoi (txt)) {
-			gtk_widget_hide (item);
-			bonobo_ui_node_free_string (txt);
-			return;
-		} else {
-			gtk_widget_show (item);
-			bonobo_ui_node_free_string (txt);
-		}
-	} else {
-		gtk_widget_show (item);
-	}
+	do_show_hide (item, node);
 
 	bonobo_ui_xml_clean (priv->tree, node);
 }

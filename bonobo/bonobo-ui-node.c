@@ -291,8 +291,6 @@ bonobo_ui_node_transparent (BonoboUINode *node)
 			ret = TRUE;
 	}
 
-	fprintf (stderr, "Node '%s' transparent %d\n", n->name, ret);
-
 	return ret;
 }
 
