@@ -415,7 +415,7 @@ gnome_view_destroy (GtkObject *object)
 		gtk_object_unref (GTK_OBJECT (view->priv->widget));
 
 	if (view->priv->canvas_comp){
-		gtk_object_unref (GTK_OBJECT (view->priv->canvas_comp));
+		gnome_object_unref (GNOME_OBJECT (view->priv->canvas_comp));
 		gtk_object_unref (GTK_OBJECT (view->priv->pseudo_canvas));
 	}
 	
