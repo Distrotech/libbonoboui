@@ -480,18 +480,22 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		BonoboUIXmlData *child_data = 
 			bonobo_ui_xml_get_data (tree, bonobo_ui_node_children (node));
 		data->id = child_data->id;
-		return;
-	} else {
-/*		fprintf (stderr, "destroying node '%s' '%s'\n",
-		node->name, bonobo_ui_node_get_attr (node, "name"));*/
 
 		/* Mark dirty */
 		bonobo_ui_xml_set_dirty (tree, node);
-
-		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
-		bonobo_ui_node_unlink (node);
+		
+		gtk_signal_emit (GTK_OBJECT (tree), signals [REINSTATE], node);
+		return;
 	}
-
+/*		fprintf (stderr, "destroying node '%s' '%s'\n",
+		node->name, bonobo_ui_node_get_attr (node, "name"));*/
+		
+	/* Mark dirty */
+	bonobo_ui_xml_set_dirty (tree, node);
+	
+	gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
+	bonobo_ui_node_unlink (node);
+	
 	if (node == tree->root) /* Ugly special case */
 		tree->root = NULL;
 

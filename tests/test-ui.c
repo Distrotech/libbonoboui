@@ -122,6 +122,7 @@ main (int argc, char **argv)
 		"	<submenu name=\"File\" label=\"_File\">\n"
 		"		<menuitem name=\"open\" label=\"_Open\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Wibble\"/>\n"
 		"		<control name=\"MyControl\"/>\n"
+		"		<control name=\"ThisIsEmpty\"/>\n"
 		"	</submenu>\n"
 		"</menu>";
 	char simpleb [] =
@@ -129,16 +130,17 @@ main (int argc, char **argv)
 		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Open you fool\"/>\n"
 		"       <menuitem/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\" accel=\"*Control*t\"/>\n"
-		"       <placeholder name=\"Nice\" delimit=\"both\"/>\n"
+		"       <placeholder name=\"Nice\" delimit=\"top\"/>\n"
 		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" "
 		"        pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"*Control*q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
 		"<submenu name=\"File\" label=\"_FileC\">\n"
-		"    <placeholder name=\"Nice\" delimit=\"both\">\n"
+		"    <placeholder name=\"Nice\" delimit=\"top\">\n"
 		"	<menuitem name=\"fooa\" label=\"_FooA\" type=\"radio\" group=\"foogroup\" descr=\"Radio1\"/>\n"
 		"	<menuitem name=\"foob\" label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
 		"	<menuitem name=\"wibble\" label=\"_Baa\" pixtype=\"stock\" pixname=\"Menu_Open\" sensitive=\"0\"/>\n"
+		"       <separator/>\n"
 		"    </placeholder>\n"
 		"</submenu>\n";
 	char simpled [] =
@@ -148,7 +150,7 @@ main (int argc, char **argv)
 	char toola [] =
 		"<dockitem name=\"toolbar\" homogeneous=\"0\" look=\"both\">\n"
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"
-		"	<toolitem type=\"separator\" name=\"foo3\" pixtype=\"stock\" pixname=\"Save\" label=\"Separator\"/>\n"
+		"	<separator/>\n"
 		"	<toolitem type=\"std\" name=\"baa\" pixtype=\"stock\" pixname=\"Open\" label=\"baa\" descr=\"My 2nd tooltip\" verb=\"testme\"/>\n"
 		"	<control name=\"AControl\"/>\n"
 		"</dockitem>";
@@ -351,6 +353,8 @@ main (int argc, char **argv)
 
 	fprintf (stderr, "\n\n--- Remove 2 ---\n\n\n");
 	bonobo_ui_component_rm (componentb, "/", &ev);
+	bonobo_ui_component_set_prop (componentc, "/menu/File/save",
+				      "label", "SaveC", NULL);
 
 	bonobo_ui_component_thaw (componenta, NULL);
 	gtk_main ();
