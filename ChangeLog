@@ -1,3 +1,11 @@
+2003-03-01  Dave Camp  <dave@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar-control-item.c: (impl_set_tooltip),
+	(impl_realize), (impl_unrealize), (impl_size_allocate), (impl_map),
+	(impl_unmap), (bonobo_ui_toolbar_control_item_class_init),
+	(bonobo_ui_toolbar_control_item_construct): Implement tooltips
+	with an input only window instead of a GtkEventBox.
+
 2003-02-28  Michael Meeks  <michael@localhost.localdomain>
 
 	* bonobo/bonobo-ui-util.c (bonobo_ui_util_xml_set_image):
