@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2004-02-24 10:15+0000\n"
+"POT-Creation-Date: 2004-03-09 11:44+0000\n"
 "PO-Revision-Date: 2003-08-25 15:18+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -61,15 +61,15 @@ msgstr "お好みの幅"
 msgid "Preferred height"
 msgstr "お好みの高さ"
 
-#: bonobo/bonobo-file-selector-util.c:361
+#: bonobo/bonobo-file-selector-util.c:351
 msgid "Select a file to open"
 msgstr "オープンするファイルの選択"
 
-#: bonobo/bonobo-file-selector-util.c:389
+#: bonobo/bonobo-file-selector-util.c:379
 msgid "Select files to open"
 msgstr "オープンするファイルの選択"
 
-#: bonobo/bonobo-file-selector-util.c:418
+#: bonobo/bonobo-file-selector-util.c:408
 msgid "Select a filename to save"
 msgstr "保存するファイル名の選択"
 

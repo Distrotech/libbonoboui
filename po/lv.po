@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2004-02-24 10:15+0000\n"
+"POT-Creation-Date: 2004-03-09 11:44+0000\n"
 "PO-Revision-Date: 2002-12-20 22:10+0200\n"
 "Last-Translator: Artis Trops <hornet@navigators.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -57,15 +57,15 @@ msgstr "Vēlamais platums"
 msgid "Preferred height"
 msgstr "Vēlamais augstums"
 
-#: bonobo/bonobo-file-selector-util.c:361
+#: bonobo/bonobo-file-selector-util.c:351
 msgid "Select a file to open"
 msgstr "Izvēlieties failu, ko atvērt"
 
-#: bonobo/bonobo-file-selector-util.c:389
+#: bonobo/bonobo-file-selector-util.c:379
 msgid "Select files to open"
 msgstr "Izvēlieties failus, ko atvērt"
 
-#: bonobo/bonobo-file-selector-util.c:418
+#: bonobo/bonobo-file-selector-util.c:408
 msgid "Select a filename to save"
 msgstr "Izvēlieties faila nosaukumu, lai saglabātu"
 

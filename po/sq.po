@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD\n"
-"POT-Creation-Date: 2004-02-24 10:15+0000\n"
+"POT-Creation-Date: 2004-03-09 11:44+0000\n"
 "PO-Revision-Date: 2004-02-20 12:16+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -59,15 +59,15 @@ msgstr "Gjerësia e preferuar"
 msgid "Preferred height"
 msgstr "Lartësia e preferuar"
 
-#: bonobo/bonobo-file-selector-util.c:361
+#: bonobo/bonobo-file-selector-util.c:351
 msgid "Select a file to open"
 msgstr "Zgjidh file që duhet hapur"
 
-#: bonobo/bonobo-file-selector-util.c:389
+#: bonobo/bonobo-file-selector-util.c:379
 msgid "Select files to open"
 msgstr "Zgjidh files që duhen hapur"
 
-#: bonobo/bonobo-file-selector-util.c:418
+#: bonobo/bonobo-file-selector-util.c:408
 msgid "Select a filename to save"
 msgstr "Zgjidh emrin e file për të ruajtur"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2004-02-24 10:15+0000\n"
+"POT-Creation-Date: 2004-03-09 11:44+0000\n"
 "PO-Revision-Date: 2003-07-18 09:35+0600\n"
 "Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
@@ -63,16 +63,16 @@ msgstr "পছন্দের প্রস্থ"
 msgid "Preferred height"
 msgstr "পছন্দের উচ্চতা"
 
-#: bonobo/bonobo-file-selector-util.c:361
+#: bonobo/bonobo-file-selector-util.c:351
 msgid "Select a file to open"
 msgstr "খোলার জন্য একটি ফাইল বাছাই করুন"
 
-#: bonobo/bonobo-file-selector-util.c:389
+#: bonobo/bonobo-file-selector-util.c:379
 msgid "Select files to open"
 msgstr "খোলার জন্য ফাইলগুলো বাছাই করুন"
 
 # msgstr "কয়েকটি ফাইল বাছাই করো"
-#: bonobo/bonobo-file-selector-util.c:418
+#: bonobo/bonobo-file-selector-util.c:408
 msgid "Select a filename to save"
 msgstr "সংরক্ষণ করার জন্য ফাইলের নাম বাছাই করুন"
 

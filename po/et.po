@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Libbonoboui Gnome 2.6\n"
-"POT-Creation-Date: 2004-02-27 04:20+0100\n"
+"POT-Creation-Date: 2004-03-09 11:44+0000\n"
 "PO-Revision-Date: 2004-03-06 10:32+0300\n"
 "Last-Translator: Priit Laes <amd@tt.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
@@ -38,42 +38,35 @@ msgstr ""
 msgid "Un dock the toolbar"
 msgstr ""
 
-#: bonobo/bonobo-dock-item.c:222
-#: bonobo/bonobo-dock-item.c:223
+#: bonobo/bonobo-dock-item.c:222 bonobo/bonobo-dock-item.c:223
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Varju tüüp"
 
-#: bonobo/bonobo-dock-item.c:233
-#: bonobo/bonobo-dock-item.c:234
-#: bonobo/bonobo-ui-toolbar.c:1119
-#: bonobo/bonobo-ui-toolbar.c:1120
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Suund"
 
-#: bonobo/bonobo-dock-item.c:244
-#: bonobo/bonobo-dock-item.c:245
-#: bonobo/bonobo-ui-toolbar.c:1138
-#: bonobo/bonobo-ui-toolbar.c:1139
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Eelistatud laius"
 
-#: bonobo/bonobo-dock-item.c:253
-#: bonobo/bonobo-dock-item.c:254
-#: bonobo/bonobo-ui-toolbar.c:1147
-#: bonobo/bonobo-ui-toolbar.c:1148
+#: bonobo/bonobo-dock-item.c:253 bonobo/bonobo-dock-item.c:254
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Eelistatud kõrgus"
 
-#: bonobo/bonobo-file-selector-util.c:361
+#: bonobo/bonobo-file-selector-util.c:351
 msgid "Select a file to open"
 msgstr "Vali fail, mida avada"
 
-#: bonobo/bonobo-file-selector-util.c:389
+#: bonobo/bonobo-file-selector-util.c:379
 msgid "Select files to open"
 msgstr "Vali failid, mida avada"
 
-#: bonobo/bonobo-file-selector-util.c:418
+#: bonobo/bonobo-file-selector-util.c:408
 msgid "Select a filename to save"
 msgstr "Vali salvestatava faili nimi"
 
@@ -85,8 +78,7 @@ msgstr "Sündmuste edastamine"
 msgid "Whether X events should be forwarded"
 msgstr ""
 
-#: bonobo/bonobo-selector-widget.c:300
-#: bonobo/bonobo-window.c:346
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
 msgid "Name"
 msgstr "Nimi"
 
@@ -99,7 +91,10 @@ msgid "Interfaces required"
 msgstr ""
 
 #: bonobo/bonobo-selector.c:346
-msgid "A NULL-terminated array of interfaces which a server must support in order to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
+msgid ""
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
 msgstr ""
 
 #: bonobo/bonobo-selector.c:348
@@ -134,13 +129,11 @@ msgstr "Tööriistaribad"
 msgid "toolbars"
 msgstr "tööriistaribad"
 
-#: bonobo/bonobo-ui-config-widget.c:314
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Vaade"
 
-#: bonobo/bonobo-ui-config-widget.c:323
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Ikoon"
 
@@ -176,10 +169,8 @@ msgstr "Seadista kasutajaliidest"
 msgid "Gdk debugging flags to set"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:113
-#: bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:144
-#: bonobo/bonobo-ui-init-gtk.c:147
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
 msgid "FLAGS"
 msgstr "LIPUD"
 
@@ -393,6 +384,7 @@ msgid "Gnome Hello"
 msgstr "Gnome'i Tere"
 
 #  Create Label and put it in the Button:
+#. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
 msgstr "Tere, maailm!"
@@ -404,4 +396,3 @@ msgstr ""
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr ""
-

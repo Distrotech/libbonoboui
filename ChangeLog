@@ -1,3 +1,15 @@
+2004-03-09  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.5.4
+
+2004-03-08  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar-toggle-button-item.h,
+	* bonobo/bonobo-ui-toolbar-button-item.h,
+	* bonobo/bonobo-ui-toolbar-item.h,
+	* bonobo/bonobo-ui-toolbar.h: add deprecated flags,
+	should never have been exposed.
+
 2004-03-07  Glynn Foster  <glynn.foster@sun.com>
 
 	* bonobo/Makefile.am, bonobo/libbonoboui-2.0-uninstalled.pc.in,

@@ -9,14 +9,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-25 16:12+0100\n"
+"POT-Creation-Date: 2004-03-09 11:44+0000\n"
 "PO-Revision-Date: 2004-02-16 19:48+0100\n"
 "Last-Translator: Bojan Suzic <bojans@teol.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -62,15 +62,15 @@ msgstr "Жељена ширина"
 msgid "Preferred height"
 msgstr "Жељена висина"
 
-#: bonobo/bonobo-file-selector-util.c:361
+#: bonobo/bonobo-file-selector-util.c:351
 msgid "Select a file to open"
 msgstr "Одаберите датотеку за отварање"
 
-#: bonobo/bonobo-file-selector-util.c:389
+#: bonobo/bonobo-file-selector-util.c:379
 msgid "Select files to open"
 msgstr "Одаберите датотеке за отварање"
 
-#: bonobo/bonobo-file-selector-util.c:418
+#: bonobo/bonobo-file-selector-util.c:408
 msgid "Select a filename to save"
 msgstr "Одаберите име датотеке за снимање"
 

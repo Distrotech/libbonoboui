@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version:libbonoboui.HEAD\n"
-"POT-Creation-Date: 2004-02-24 10:15+0000\n"
+"POT-Creation-Date: 2004-03-09 11:44+0000\n"
 "PO-Revision-Date: 2003-07-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
@@ -65,17 +65,17 @@ msgstr "സ്ഥിര വീതി"
 msgid "Preferred height"
 msgstr "തിരനോട്ട ഉയരം"
 
-#: bonobo/bonobo-file-selector-util.c:361
+#: bonobo/bonobo-file-selector-util.c:351
 #, fuzzy
 msgid "Select a file to open"
 msgstr "താരതമ്യം ചെയ്യ‍ുന്നതിന് ആദ്യ ശേഖരം തെരഞ്ഞെടുക്കുക"
 
-#: bonobo/bonobo-file-selector-util.c:389
+#: bonobo/bonobo-file-selector-util.c:379
 #, fuzzy
 msgid "Select files to open"
 msgstr "താരതമ്യം ചെയ്യ‍ുന്നതിന് ആദ്യ ശേഖരം തെരഞ്ഞെടുക്കുക"
 
-#: bonobo/bonobo-file-selector-util.c:418
+#: bonobo/bonobo-file-selector-util.c:408
 msgid "Select a filename to save"
 msgstr "സംരക്ഷിക്കാന്‌ ഒരു രചനാ നാമം തെരഞ്ഞെടുക്കുക"
 
