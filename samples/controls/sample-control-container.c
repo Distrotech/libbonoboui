@@ -11,43 +11,60 @@
 #include <gnome.h>
 #include <liboaf/liboaf.h>
 #include <bonobo.h>
+#include <bonobo/bonobo-listener.h>
 
 Bonobo_PropertyBag pb = CORBA_OBJECT_NIL;
-BonoboPropertyListener *listener = NULL;
+BonoboListener *listener = NULL;
 
-static void
-prop_changed_cb (BonoboPropertyListener *listener, gchar *name, 
-		 BonoboArg *arg, GtkCList *clist)
+static void 
+prop_changed_cb (BonoboListener    *listener,
+		 char              *event_name, 
+		 CORBA_any         *arg,
+		 CORBA_Environment *ev,
+		 gpointer           user_data)
 {
-	gchar *value;
+	GtkCList *clist = GTK_CLIST (user_data);
+	gchar    *value;
 
 	value = g_strdup_printf ("%s", BONOBO_ARG_GET_BOOLEAN (arg) ? "TRUE" :"FALSE");
 
 	gtk_clist_set_text (clist, 0, 1, value);
 
 	g_free (value);
+
 }
 
 static void
 add_listener (GtkCList *clist)
 {
-	Bonobo_PropertyListener corba_listener;
+	Bonobo_Listener corba_listener;
+	Bonobo_EventSource_ListenerId id;
 	CORBA_Environment ev;
-	
+	Bonobo_Unknown es;
+
 	CORBA_exception_init (&ev);
 
 	/* Set up the change listener */
-	listener = bonobo_property_listener_new ();
-	gtk_signal_connect (GTK_OBJECT (listener), "prop_changed",
-			    GTK_SIGNAL_FUNC (prop_changed_cb), clist);
+	listener = bonobo_listener_new (prop_changed_cb, clist);
 
 	corba_listener = bonobo_object_corba_objref (BONOBO_OBJECT (listener));
 
-	Bonobo_PropertyBag_addChangeListener (pb, "running", corba_listener, &ev);
-
-	if (BONOBO_EX (&ev))
-		g_warning ("Listener exception: %s\n",
-			   bonobo_exception_get_text (&ev));
+	es = Bonobo_Unknown_queryInterface (pb, "IDL:Bonobo/EventSource:1.0",
+					    &ev);
+	if (BONOBO_EX(&ev) || !es) {
+		printf ("ERR %s\n", bonobo_exception_get_text (&ev));
+		g_warning ("Couldn't get EventSource from bag");
+		CORBA_exception_free (&ev);
+		return;
+	}
+	
+	id = Bonobo_EventSource_addListener (es, corba_listener, &ev);
+	if (BONOBO_EX(&ev) || !id) {
+		printf ("ERR %s\n", bonobo_exception_get_text (&ev));
+		g_error ("Couldn't add listener to bag");
+		CORBA_exception_free (&ev);
+		return;
+	}
 
 	CORBA_exception_free (&ev);
 }
@@ -238,7 +255,7 @@ container_create (void)
 	bonobo_window_set_contents (BONOBO_WINDOW (app), box);
 
 	control = bonobo_widget_new_control (
-		"OAFIID:bonobo_calculator:fab8c2a7-9576-437c-aa3a-a8617408970f",
+		"OAFIID:Bonobo_Sample_Calculator",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
 
 	if (control)
@@ -248,7 +265,7 @@ container_create (void)
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    (GtkSignalFunc)incr_calc, control);
 	control = bonobo_widget_new_control (
-		"OAFIID:bonobo_clock:d42cc651-44ae-4f69-a10d-a0b6b2cc6ecc",
+		"OAFIID:Bonobo_Sample_Clock",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
 
 	if (control)
@@ -262,11 +279,11 @@ container_create (void)
 
 	cf = bonobo_widget_get_control_frame (BONOBO_WIDGET (control));
 	pb = bonobo_control_frame_get_control_property_bag (cf, NULL);
-
+	
 	proplist = create_proplist (control);
 
 	control = bonobo_widget_new_control (
-		"OAFIID:bonobo_entry_factory:ef3e3c33-43e2-4f7c-9ca9-9479104608d6",
+		"OAFIID:Bonobo_Sample_Entry",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
 
 	if (control)

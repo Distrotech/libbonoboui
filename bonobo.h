@@ -29,7 +29,6 @@ extern "C" {
 
 #include <bonobo/bonobo-property-bag.h>
 #include <bonobo/bonobo-property-bag-xml.h>
-#include <bonobo/bonobo-property-listener.h>
 #include <bonobo/bonobo-property-bag-client.h>
 #include <bonobo/bonobo-property-control.h>
 
