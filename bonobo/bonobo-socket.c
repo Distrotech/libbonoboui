@@ -56,17 +56,13 @@ bonobo_socket_realize (GtkWidget *widget)
 
 	socket = BONOBO_SOCKET (widget);
 
+	dprintf ("bonobo_socket_realize\n");
+
 	if (GTK_WIDGET_CLASS (parent_class)->realize)
 		(* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
 
-	if (socket->frame) {
-		CORBA_Environment ev;
-
-		CORBA_exception_init (&ev);
-		bonobo_control_frame_set_remote_window (
-			socket->frame, &ev);
-		CORBA_exception_free (&ev);
-	}
+	if (socket->frame)
+		bonobo_control_frame_set_remote_window (socket->frame);
 
 	g_assert (GTK_WIDGET_REALIZED (widget));
 }

@@ -1,5 +1,29 @@
 2001-11-01  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control.c (bonobo_control_construct): put
+	the widget inside the plug; oh yes.
+
+	* tests/control/test-control.c (create_control): upd.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_set_remote_window): drasticaly
+	simplify.
+	(bonobo_control_frame_set_inproc_widget): kill; Owen
+	doesn't like it; sigh.
+	(bonobo_control_frame_bind_to_control): update.
+
+	* bonobo/bonobo-socket.c (bonobo_socket_realize): upd.
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_set_control_frame): privatize - makes no
+	sense to be public, split into
+	(bonobo_control_unset_control_frame): here and
+	(impl_Bonobo_Control_setFrame): here. Return the plug's
+	window id.
+	(bonobo_control_init): always setup the plug.
+
+2001-11-01  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-socket.c (bonobo_socket_unrealize): impl.
 	(bonobo_socket_class_init): hook.
 	(bonobo_socket_unrealize): unset the REALIZED flag before

@@ -17,8 +17,7 @@
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
 
-void     bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
-						 CORBA_Environment  *ev);
+void     bonobo_control_frame_set_remote_window (BonoboControlFrame *frame);
 gboolean bonobo_control_frame_focus             (BonoboControlFrame *frame,
 						 GtkDirectionType    direction);
 void     bonobo_control_frame_size_request      (BonoboControlFrame *frame,

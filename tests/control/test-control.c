@@ -64,9 +64,8 @@ create_control (Test *test)
 	test->control = bonobo_control_new (test->control_widget);
 	g_assert (test->control != NULL);
 
-	/* FIXME: should we have the plug to start with ? */
 	test->plug = bonobo_control_get_plug (test->control);
-	g_assert (test->plug == NULL);
+	g_assert (test->plug != NULL);
 }
 
 /* An ugly hack into the ORB */
@@ -151,7 +150,7 @@ run_tests (GtkContainer *parent,
 	}
 
 	if (wait_for_realize)
-		mainloop_for (1000);
+		mainloop_for (10000);
 
 	for (t = 0; t < DESTROY_TYPE_LAST; t++) {
 		destroy_test (tests [t], t);

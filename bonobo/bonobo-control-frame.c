@@ -46,6 +46,7 @@ static GObjectClass *bonobo_control_frame_parent_class;
 struct _BonoboControlFramePrivate {
 	BonoboControl     *inproc_control;
 	Bonobo_Control	   control;
+	guint32            plug_xid;
 	GtkWidget	  *socket;
 	Bonobo_UIContainer ui_container;
 	BonoboPropertyBag *propbag;
@@ -151,42 +152,19 @@ impl_Bonobo_ControlFrame_activateURI (PortableServer_Servant  servant,
 }
 
 void
-bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
-					CORBA_Environment  *ev)
+bonobo_control_frame_set_remote_window (BonoboControlFrame *frame)
 					
 {
-	Bonobo_Control      control;
-	Bonobo_Gdk_WindowId id;
-	GtkWidget          *socket;
-
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
 
-	if (!frame->priv || !(socket = frame->priv->socket))
+	if (!frame->priv || !frame->priv->socket ||
+	    frame->priv->plug_xid == 0)
 		return;
 
-	if ((control = frame->priv->control) == CORBA_OBJECT_NIL)
-		return;
+	dprintf ("gtk_socket_add_id %d\n", frame->priv->plug_xid);
 
-	/*
-	 * We sync here so that we make sure that if the XID for
-	 * our window is passed to another application, SubstructureRedirectMask
-	 * will be set by the time the other app creates its window.
-	 */
-	gdk_flush (); /* FIXME: not very convinced about this flush */
-
-	/*
-	 * Otherwise, pass the window ID of our GtkSocket to the
-	 * remote Control.
-	 */
-	id = bonobo_control_window_id_from_x11 (
-		GDK_WINDOW_XWINDOW (socket->window));
-
-	Bonobo_Control_setWindowId (control, id, ev);
-
-	CORBA_free (id);
-
-	if (BONOBO_EX (ev))
-		bonobo_object_check_env (BONOBO_OBJECT (frame), control, ev);
+	gtk_socket_add_id (GTK_SOCKET (frame->priv->socket),
+			   frame->priv->plug_xid);
 }
 
 /**
@@ -330,6 +308,7 @@ bonobo_control_frame_init (BonoboObject *object)
 	frame->priv->autostate    = TRUE;
 
 	socket = BONOBO_SOCKET (bonobo_socket_new ());
+	gtk_widget_show (GTK_WIDGET (socket));
 	bonobo_control_frame_set_socket (frame, socket);
 }
 
@@ -633,8 +612,11 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 		ev = opt_ev;
 
 	if (frame->priv->control != CORBA_OBJECT_NIL) {
-		Bonobo_Control_setFrame (frame->priv->control,
-					 CORBA_OBJECT_NIL, ev);
+		/* FIXME: we need to unset our frame / disassociate
+		   ourselves from the control in some standard way
+		   here */
+/*		Bonobo_Control_setFrame (frame->priv->control,
+					 CORBA_OBJECT_NIL, ev); */
 		CORBA_Object_release (frame->priv->control, ev);
 	}
 
@@ -642,23 +624,25 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 		frame->priv->control = CORBA_OBJECT_NIL;
 		frame->priv->inproc_control = NULL;
 	} else {
+		CORBA_char *id;
+
 		frame->priv->control = CORBA_Object_duplicate (control, ev);
 
 		frame->priv->inproc_control = (BonoboControl *)
 			bonobo_object (ORBit_small_get_servant (control));
 
 		/* Introduce ourselves to the Control. */
-		Bonobo_Control_setFrame (control, BONOBO_OBJREF (frame), ev);
-
+		id = Bonobo_Control_setFrame (control, BONOBO_OBJREF (frame), ev);
 		if (BONOBO_EX (ev))
 			bonobo_object_check_env (BONOBO_OBJECT (frame), control, ev);
+		else {
+			frame->priv->plug_xid = bonobo_control_x11_from_window_id (id);
+			dprintf ("setFrame id '%s' (=%d)\n", id, frame->priv->plug_xid);
+			CORBA_free (id);
 
-		/*
-		 * If the socket is realized, then we transfer the
-		 * window ID to the remote control.
-		 */
-		if (GTK_WIDGET_REALIZED (frame->priv->socket))
-			bonobo_control_frame_set_remote_window (frame, ev);
+			if (GTK_WIDGET_REALIZED (frame->priv->socket))
+				bonobo_control_frame_set_remote_window (frame);
+		}
 	}
 
 	if (!opt_ev)
@@ -931,58 +915,4 @@ bonobo_control_frame_get_socket (BonoboControlFrame *frame)
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (frame), NULL);
 
 	return (BonoboSocket *) frame->priv->socket;
-}
-
-/*
- *   Essentialy a copy of _gtk_plug_add_to_socket, with
- * part of gtk_plug_construct.
- * FIXME: we could kill this, and proxy GtkWidget to the remote object
- * inside BonoboSocket - cleanly; not having a remote plug etc.
- */
-void
-bonobo_control_frame_set_inproc_widget (BonoboControlFrame *frame,
-					BonoboPlug         *bonobo_plug,
-					GtkWidget          *control_widget)
-{
-	GtkSocket *socket;
-	GtkPlug   *plug;
-
-	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
-
-	plug = GTK_PLUG (bonobo_plug);
-	socket = GTK_SOCKET (frame->priv->socket);
-  
-	g_return_if_fail (plug != NULL);
-	g_return_if_fail (socket != NULL);
-/*	g_return_if_fail (GTK_WIDGET_REALIZED (socket)); - dodgy ! */
-
-	/* start gtk_plug_set_is_child */
-	g_assert (plug->modality_window == NULL);
-	g_assert (plug->modality_group == NULL);
-	GTK_WIDGET_UNSET_FLAGS (plug, GTK_TOPLEVEL);
-	gtk_container_set_resize_mode (GTK_CONTAINER (plug), GTK_RESIZE_PARENT);
-
-/* FIXME: do we need this to work !?
-	g_object_ref (G_OBJECT (plug));
-
-	gtk_widget_propagate_hierarchy_changed_recurse (
-		GTK_WIDGET (plug), GTK_WIDGET (plug));
-  
-		g_object_unref (G_OBJECT (plug));
-*/
-	/* end gtk_plug_set_is_child */
-
-	plug->same_app = TRUE;
-	socket->plug_widget = GTK_WIDGET (plug);
-
-	if (GTK_WIDGET_REALIZED (plug))
-		gdk_window_reparent (
-			GTK_WIDGET (plug)->window,
-			plug->socket_window, 0, 0);
-
-	gtk_widget_set_parent (GTK_WIDGET (plug),
-			       GTK_WIDGET (socket));
-
-	g_signal_emit_by_name (G_OBJECT (socket), "plug_added", 0);
-	g_signal_emit_by_name (G_OBJECT (plug), "embedded", 0);
 }
