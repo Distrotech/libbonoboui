@@ -1551,6 +1551,9 @@ menu_build_item (BonoboWindowPrivate *priv,
 
 			bonobo_ui_node_free_string (txt);
 		}
+
+		if (!menu_widget)
+			return NULL;
 			
 		gtk_signal_connect (GTK_OBJECT (menu_widget),
 				    "select",
@@ -1562,7 +1565,10 @@ menu_build_item (BonoboWindowPrivate *priv,
 				    GTK_SIGNAL_FUNC (remove_hint_from_statusbar),
 				    priv);
 	}
-		   
+
+	if (!menu_widget)
+		return NULL;	
+	   
 	if (bonobo_ui_node_has_name (node, "submenu")) {
 		GtkMenuShell *shell;
 		GtkMenu      *menu;
@@ -2728,10 +2734,15 @@ update_widgets (BonoboWindowPrivate *priv)
 
 static void
 popup_remove (BonoboWindowPrivate *priv,
-	      WinPopup         *popup)
+	      WinPopup            *popup)
 {
+	BonoboUINode *node;
+
 	g_return_if_fail (priv != NULL);
 	g_return_if_fail (popup != NULL);
+
+	node = bonobo_ui_xml_get_path (priv->tree, popup->path);
+	prune_widget_info (priv, node, TRUE);
 
 	priv->popups = g_slist_remove (
 		priv->popups, popup);
@@ -2742,7 +2753,7 @@ popup_remove (BonoboWindowPrivate *priv,
 
 void
 bonobo_window_remove_popup (BonoboWindow     *win,
-			 const char    *path)
+			    const char    *path)
 {
 	GSList *l, *next;
 
@@ -2766,13 +2777,14 @@ popup_destroy (GtkObject *menu, WinPopup *popup)
 		GTK_OBJECT (menu), BONOBO_WINDOW_PRIV_KEY);
 
 	g_return_if_fail (priv != NULL);
-	bonobo_window_remove_popup (priv->win, popup->path);
+	popup_remove (priv, popup);
+	g_warning ("Popup destroy ...");
 }
 
 void
-bonobo_window_add_popup (BonoboWindow     *win,
-		      GtkMenu       *menu,
-		      const char    *path)
+bonobo_window_add_popup (BonoboWindow *win,
+			 GtkMenu      *menu,
+			 const char   *path)
 {
 	WinPopup     *popup;
 	BonoboUINode    *node;
@@ -2800,14 +2812,8 @@ bonobo_window_add_popup (BonoboWindow     *win,
 	node = bonobo_ui_xml_get_path_wildcard (
 		win->priv->tree, path, &wildcard);
 
-	if (node) {
-		BonoboUIXmlData *data;
-
-		data = bonobo_ui_xml_get_data (win->priv->tree, node);
-		g_return_if_fail (data != NULL);
-
-		data->dirty = TRUE;
-	}
+	if (node)
+		bonobo_ui_xml_set_dirty (win->priv->tree, node);
 
 	update_widgets (win->priv);
 }
@@ -2859,6 +2865,9 @@ destroy_priv (BonoboWindowPrivate *priv)
 {
 	priv->win = NULL;
 
+	while (priv->popups)
+		popup_remove (priv, priv->popups->data);
+
 	gtk_object_unref (GTK_OBJECT (priv->tree));
 	priv->tree = NULL;
 
@@ -2880,9 +2889,6 @@ destroy_priv (BonoboWindowPrivate *priv)
 
 	while (priv->components)
 		win_component_destroy (priv, priv->components->data);
-
-	while (priv->popups)
-		popup_remove (priv, priv->popups->data);
 	
 	g_free (priv);
 }

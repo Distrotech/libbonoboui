@@ -39,12 +39,8 @@ static void
 cb_do_popup (GtkWindow *window, BonoboWindow *win)
 {
 	GtkWidget *menu;
-	GtkWidget *menuitem;
 
 	menu = gtk_menu_new ();
-	menuitem = gtk_menu_item_new_with_label ("Is anything else here yet ?");
-	gtk_widget_show (menuitem);
-	gtk_menu_append (GTK_MENU (menu), menuitem);
 
 	bonobo_window_add_popup (win, GTK_MENU (menu), "/popups/MyStuff");
 
@@ -175,7 +171,7 @@ main (int argc, char **argv)
 		"	</submenu>\n"
 		"</menu>";
 	char simpleb [] =
-		"<submenu name=\"File\">\n"
+		"<submenu name=\"File\" _label=\"_File\">\n"
 		"	<menuitem name=\"open\" _label=\"_OpenB\" pixtype=\"stock\" pixname=\"Open\" _tip=\"Open you fool\"/>\n"
 		"       <separator/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" _label=\"_ToggleMe\" _tip=\"a\" accel=\"*Control*t\"/>\n"
