@@ -1,14 +1,14 @@
-bin_PROGRAMS = bonobo-sample-controls
+bin_PROGRAMS = bonobo-sample-controls-2
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(top_srcdir) 				\
 	$(BONOBOUI_CFLAGS)
 
-bonobo_sample_controls_SOURCES =			\
+bonobo_sample_controls_2_SOURCES =			\
 	bonobo-sample-controls.c
 
-bonobo_sample_controls_LDADD =				\
+bonobo_sample_controls_2_LDADD =			\
 	$(top_builddir)/bonobo/libbonoboui-2.la		\
 	$(BONOBOUI_LIBS)				\
 	$(INTLLIBS)

@@ -1,3 +1,9 @@
+2001-10-08  Abel Cheung  <maddog@linux.org.hk>
+
+	* samples/controls/*: Rename bonobo-sample-controls ->
+	  bonobo-sample-controls-2 , to enable parallel install
+	  with bonobo 1.0.x .
+
 2001-09-27  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.103

@@ -97,7 +97,7 @@ verb_HelpAbout_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname
 		NULL
 	};
 
-	GtkWidget *about = gnome_about_new ("sample-container", VERSION,
+	GtkWidget *about = gnome_about_new ("sample-container-2", VERSION,
 					    "(C) 2000-2001 ÉRDI Gergõ, Mike Kestner, and Ximian, Inc",
 					    authors,
 					    "Bonobo sample container", NULL);

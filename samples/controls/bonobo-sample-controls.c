@@ -71,6 +71,6 @@ control_factory (BonoboGenericFactory *this,
 }
 
 BONOBO_OAF_FACTORY_MULTI ("OAFIID:Bonobo_Sample_ControlFactory",
-			  "bonobo-sample-controls", VERSION,
+			  "bonobo-sample-controls-2", VERSION,
 			  control_factory,
 			  NULL)

@@ -3,9 +3,9 @@ INCLUDES =	\
 	-I$(top_srcdir) 				\
 	$(BONOBOUI_CFLAGS)
 
-bin_PROGRAMS = sample-container
+bin_PROGRAMS = sample-container-2
 
-sample_container_SOURCES =	\
+sample_container_2_SOURCES =	\
 	container.c		\
 	container.h		\
 	component.c		\
@@ -19,7 +19,7 @@ sample_container_SOURCES =	\
 	doc-view.c		\
 	doc-view.h
 
-sample_container_LDADD =				\
+sample_container_2_LDADD =				\
 	$(top_builddir)/bonobo/libbonoboui-2.la		\
 	$(BONOBOUI_LIBS)				\
 	$(INTLLIBS)
