@@ -9,6 +9,7 @@
 
 #include "config.h"
 
+#include <stdlib.h>
 #include <libbonoboui.h>
 
 #include <bonobo/bonobo-widget.h>

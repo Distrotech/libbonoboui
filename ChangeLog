@@ -1,5 +1,9 @@
 2001-10-20  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_bonobo_ui_sync_menu_build): only set stuff from
+	the stockid if we don't have it set already.
+
 	* samples/bonoboui/hello.c: finish re-write.
 
 	* bonobo/bonobo-ui-component.c

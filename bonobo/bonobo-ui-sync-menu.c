@@ -580,20 +580,25 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 			else {
 				gchar *label, *accel;
 
-				label = dgettext (stock_item.translation_domain, stock_item.label);
-				accel = bonobo_ui_util_accel_name (stock_item.keyval, stock_item.modifier);
+				if (!bonobo_ui_node_has_attr (node, "label")) {
+					label = dgettext (stock_item.translation_domain, stock_item.label);
+					bonobo_ui_node_set_attr (node, "label", label);
+				}
 
-				bonobo_ui_node_set_attr (node, "label", label);
-				bonobo_ui_node_set_attr (node, "accel", accel);
-
-				g_free (accel);
+				if (!bonobo_ui_node_has_attr (node, "accel")) {
+					accel = bonobo_ui_util_accel_name (stock_item.keyval, stock_item.modifier);
+					bonobo_ui_node_set_attr (node, "accel", accel);
+					g_free (accel);
+				}
 			}
 
 			icon_set = gtk_icon_factory_lookup_default (stock_id);
 
 			if (icon_set) {
-				bonobo_ui_node_set_attr (node, "pixtype", "stock");
-				bonobo_ui_node_set_attr (node, "pixname", stock_id);
+				if (!bonobo_ui_node_has_attr (node, "pixtype"))
+					bonobo_ui_node_set_attr (node, "pixtype", "stock");
+				if (!bonobo_ui_node_has_attr (node, "pixname"))
+					bonobo_ui_node_set_attr (node, "pixname", stock_id);
 			}
 		}
 
