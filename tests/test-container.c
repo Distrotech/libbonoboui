@@ -208,8 +208,8 @@ add_view (Application *app, BonoboClientSite *client_site, BonoboObjectClient *s
 
 	gtk_signal_connect (GTK_OBJECT (view_frame), "user_activate",
 			    GTK_SIGNAL_FUNC (user_activation_request_cb), NULL);
-	gtk_signal_connect (GTK_OBJECT (view_frame), "view_activated",
-			    GTK_SIGNAL_FUNC (view_activated_cb), NULL);
+	/*  gtk_signal_connect (GTK_OBJECT (view_frame), "view_activated", */
+/*  			    GTK_SIGNAL_FUNC (view_activated_cb), NULL); */
 
 	view_widget = bonobo_view_frame_get_wrapper (view_frame);
 
@@ -356,8 +356,8 @@ verb_AddPdf_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
-	g_error ("Wrong oafid for pdf");
-	object = add_cmd (app, "bonobo-object:application-x-pdf", &image_client_site);
+	/*g_error ("Wrong oafid for pdf");*/
+	object = add_cmd (app, "OAFIID:GNOME_XPDF_Embeddable", &image_client_site);
 
 	if (object == NULL)
 	  {
