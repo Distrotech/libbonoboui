@@ -10,6 +10,7 @@
 
 /*
  * Notes to self:
+ *  - toolbar position handling
  *  - Toolbar radiogroups!
  *  - Check exceptions in all *_remote_* functions.
  *  - use gnome_preferences_[get/set]_[menus/toolbars] !
@@ -165,14 +166,8 @@ typedef struct {
  * Prototypes for some internal functions.
  */
 static void                       init_ui_handler_corba_class           (void);
-static char			 *path_escape_forward_slashes		(char *str);
-static char			 *path_unescape_forward_slashes		(char *str);
-static gchar			**path_tokenize				(char *path);
-static gchar			 *remove_ulines				(const char *str);
-static gchar			 *path_get_parent			(char *path);
-static GtkWidget		 *uih_toplevel_create_pixmap		(GtkWidget *window,
-									 GnomeUIHandlerPixmapType pixmap_type,
-									 gpointer pixmap_info);
+static gboolean			  uih_toplevel_check_toplevel		(GnomeUIHandler *uih);
+static void			  uih_toplevel_add_containee		(GnomeUIHandler *uih, GNOME_UIHandler containee);
 static void			  pixmap_free_data			(GnomeUIHandlerPixmapType pixmap_type,
 									 gpointer pixmap_info);
 static gpointer			  pixmap_copy_data			(GnomeUIHandlerPixmapType pixmap_type,
@@ -184,123 +179,27 @@ static gpointer	                  pixmap_corba_to_data			(GNOME_UIHandler_Pixmap
 static GNOME_UIHandler_PixmapType pixmap_corba_to_type			(GNOME_UIHandler_PixmapType type);
 static GNOME_UIHandler_PixmapType pixmap_type_to_corba			(GnomeUIHandlerPixmapType type);
 static gint			  pixmap_xpm_get_length			(gpointer data, int *num_lines);
-static GnomeUIHandlerPixmapType	  uiinfo_pixmap_type_to_uih		(GnomeUIPixmapType ui_type);
-static void			  uih_toplevel_add_containee		(GnomeUIHandler *uih, GNOME_UIHandler containee);
 
 /*
  * Prototypes for some internal menu functions.
  */
-static gint		 	  menu_toplevel_save_accels		(gpointer data);
-static GnomeUIHandlerMenuItem    *menu_make_item			(char *path, GnomeUIHandlerMenuItemType type,
-									 char *label, char *hint,
-									 int pos, GnomeUIHandlerPixmapType pixmap_type,
-									 gpointer pixmap_data,
-									 guint accelerator_key, GdkModifierType ac_mods,
-									 GnomeUIHandlerCallbackFunc callback,
-									 gpointer callback_data);
-static GnomeUIHandlerMenuItem	 *menu_copy_item			(GnomeUIHandlerMenuItem *item);
-static void			  menu_free_data			(GnomeUIHandlerMenuItem *item);
-static void			  menu_free				(GnomeUIHandlerMenuItem *item);
-static GNOME_UIHandler_MenuType	  menu_type_to_corba			(GnomeUIHandlerMenuItemType type);
-static GnomeUIHandlerMenuItemType menu_corba_to_type			(GNOME_UIHandler_MenuType type);
-static void			  menu_local_do_path			(char *parent_path, GnomeUIHandlerMenuItem *item);
-static MenuItemLocalInternal	 *menu_local_get_item			(GnomeUIHandler *uih, char *path);
-static void			  menu_local_create_item		(GnomeUIHandler *uih, char *parent_path,
-									 GnomeUIHandlerMenuItem *item);
-static void			  menu_local_add_parent_entry		(GnomeUIHandler *uih, char *path);
-static void			  menu_local_remove_parent_entry	(GnomeUIHandler *uih, char *path, gboolean warn);
-static void			  menu_local_remove_item		(GnomeUIHandler *uih, char *path);
-static void			  menu_local_remove_item_recursive	(GnomeUIHandler *uih, char *path);
-static MenuItemInternal		 *menu_toplevel_get_item		(GnomeUIHandler *uih, char *path);
-static MenuItemInternal		 *menu_toplevel_get_item_for_containee	(GnomeUIHandler *uih, char *path,
-									 GNOME_UIHandler containee_uih);
-static gboolean			  menu_toplevel_item_is_head		(GnomeUIHandler *uih, MenuItemInternal *internal);
-static gboolean			  uih_toplevel_check_toplevel		(GnomeUIHandler *uih);
-static GtkWidget		 *menu_toplevel_get_shell		(GnomeUIHandler *uih, char *path);
-static GtkWidget		 *menu_toplevel_create_label		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
-									 GtkWidget *parent_menu_shell_widget, GtkWidget *menu_widget);
-static GtkWidget		 *menu_toplevel_create_item_widget	(GnomeUIHandler *uih, char *parent_path,
-									 GnomeUIHandlerMenuItem *item);
-static GtkWidget		 *menu_toplevel_create_item_widget	(GnomeUIHandler *uih, char *parent_path,
-									 GnomeUIHandlerMenuItem *item);
-static void			  menu_toplevel_install_global_accelerators (GnomeUIHandler *uih,
-									    GnomeUIHandlerMenuItem *item,
-									    GtkWidget *menu_widget);
-static void			  menu_toplevel_connect_signal		(GtkWidget *menu_widget, MenuItemInternal *internal);
-static void			  menu_toplevel_create_widgets_recursive (GnomeUIHandler *uih, MenuItemInternal *internal);
-static void			  menu_toplevel_put_hint_in_appbar	(GtkWidget *menu_item, gpointer data);
-static void			  menu_toplevel_remove_hint_from_appbar	(GtkWidget *menu_item, gpointer data);
-static void			  menu_toplevel_put_hint_in_statusbar	(GtkWidget *menu_item, gpointer data);
-static void			  menu_toplevel_remove_hint_from_statusbar (GtkWidget *menu_item, gpointer data);
-static void			  menu_toplevel_create_hint		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
-									 GtkWidget *menu_item);
-static gint			  menu_toplevel_item_activated		(GtkWidget *menu_item, MenuItemInternal *internal);
-static MenuItemInternal		 *menu_toplevel_store_data		(GnomeUIHandler *uih, GNOME_UIHandler uih_corba,
-									 GnomeUIHandlerMenuItem *item);
-static void			  menu_toplevel_override_notify_recursive(GnomeUIHandler *uih, char *path);
-static void			  menu_toplevel_override_notify		(GnomeUIHandler *uih, char *path);
-static void			  menu_toplevel_create_item		(GnomeUIHandler *uih, char *parent_path,
-									 GnomeUIHandlerMenuItem *item,
-									 GNOME_UIHandler uih_corba);
-static void			  menu_remote_create_item		(GnomeUIHandler *uih, char *parent_path,
-									 GnomeUIHandlerMenuItem *item);
-static void			  menu_toplevel_remove_widgets		(GnomeUIHandler *uih, char *path);
-static void			  menu_toplevel_remove_widgets_recursive (GnomeUIHandler *uih, char *path);
-static void			  menu_toplevel_add_parent_entry	(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item);
-static void			  menu_toplevel_remove_parent_entry	(GnomeUIHandler *uih, char *path, gboolean warn);
-static void			  menu_toplevel_remove_data		(GnomeUIHandler *uih, MenuItemInternal *internal);
 static void			  menu_toplevel_remove_item_internal	(GnomeUIHandler *uih, MenuItemInternal *internal,
 									 gboolean replace);
-static void			  menu_toplevel_remove_item		(GnomeUIHandler *uih, char *path);
-static void			  menu_remote_remove_item		(GnomeUIHandler *uih, char *path);
-static GnomeUIHandlerMenuItem	 *menu_toplevel_fetch			(GnomeUIHandler *uih, char *path);
-static GnomeUIHandlerMenuItem	 *menu_remote_fetch			(GnomeUIHandler *uih, char *path);
-static GList			 *menu_toplevel_get_children		(GnomeUIHandler *uih, char *parent_path);
-static GList			 *menu_remote_get_children		(GnomeUIHandler *uih, char *parent_path);
-static void			  menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
-									 gboolean sensitivity);
-static void			  menu_toplevel_set_sensitivity		(GnomeUIHandler *uih, char *path, gboolean sensitive);
-
-static void			  menu_remote_set_sensitivity		(GnomeUIHandler *uih, char *path, gboolean sensitive);
-static gboolean			  menu_remote_get_sensitivity		(GnomeUIHandler *uih, char *path);
-static void			  menu_remote_set_label			(GnomeUIHandler *uih, char *path, gchar *label_text);
-static gchar			 *menu_toplevel_get_label		(GnomeUIHandler *uih, char *path);
-static gchar			 *menu_remote_get_label			(GnomeUIHandler *uih, char *path);
-static void			  menu_toplevel_set_hint		(GnomeUIHandler *uih, char *path, char *hint);
-static void			  menu_remote_set_hint			(GnomeUIHandler *uih, char *path, char *hint);
-static gchar			 *menu_toplevel_get_hint		(GnomeUIHandler *uih, char *path);
-static gchar			 *menu_remote_get_hint			(GnomeUIHandler *uih, char *path);
-static void			  menu_toplevel_set_pixmap		(GnomeUIHandler *uih, char *path,
-				 					 GnomeUIHandlerPixmapType type, gpointer data);
-static void			  menu_remote_set_pixmap		(GnomeUIHandler *uih, char *path,
-				 					 GnomeUIHandlerPixmapType type, gpointer data);
-static void			  menu_toplevel_get_pixmap		(GnomeUIHandler *uih, char *path,
-				 					 GnomeUIHandlerPixmapType *type, gpointer *data);
-static void			  menu_remote_get_pixmap		(GnomeUIHandler *uih, char *path,
-				 					 GnomeUIHandlerPixmapType *type, gpointer *data);
-static void			  menu_toplevel_set_accel		(GnomeUIHandler *uih, char *path,
-				 					 guint accelerator_key, GdkModifierType ac_mods);
-static void			  menu_remote_set_accel			(GnomeUIHandler *uih, char *path,
-				 					 guint accelerator_key, GdkModifierType ac_mods);
-static void			  menu_toplevel_get_accel		(GnomeUIHandler *uih, char *path,
-				 					 guint *accelerator_key, GdkModifierType *ac_mods);
-static void			  menu_remote_get_accel			(GnomeUIHandler *uih, char *path,
-				 					 guint *accelerator_key, GdkModifierType *ac_mods);
-static void			  menu_local_set_callback		(GnomeUIHandler *uih, char *path,
-				 					 GnomeUIHandlerCallbackFunc callback,
-				 					 gpointer callback_data);
-static void			  menu_local_get_callback		(GnomeUIHandler *uih, char *path,
-									 GnomeUIHandlerCallbackFunc *callback,
-									 gpointer *callback_data);
-static gboolean			  menu_toplevel_get_sensitivity		(GnomeUIHandler *uih, char *path);
+static void			  menu_local_add_parent_entry		(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_create_hint		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
+									 GtkWidget *menu_item);
 static void			  menu_toplevel_set_toggle_state_internal(GnomeUIHandler *uih, MenuItemInternal *internal,
 				 					 gboolean state);
-static void			  menu_toplevel_set_toggle_state	(GnomeUIHandler *uih, char *path, gboolean state);
-static gboolean			  menu_toplevel_get_toggle_state	(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+									 gboolean sensitivity);
 static void			  menu_toplevel_set_radio_state_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
 				 					 gboolean state);
-static void			  menu_toplevel_set_radio_state		(GnomeUIHandler *uih, char *path, gboolean state);
-static void			  menu_remote_set_radio_state		(GnomeUIHandler *uih, char *path, gboolean state); 
+static gint			  menu_toplevel_item_activated		(GtkWidget *menu_item, MenuItemInternal *internal);
+static void			  menu_toplevel_add_parent_entry	(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item);
+static void			  menu_toplevel_override_notify		(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_remove_widgets_recursive (GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_remove_parent_entry	(GnomeUIHandler *uih, char *path, gboolean warn);
+
 
 /*
  * Prototypes for some internal Toolbar functions.
@@ -315,120 +214,6 @@ static void			  toolbar_toplevel_item_override_notify_recursive (GnomeUIHandler 
 static void			  toolbar_toplevel_set_sensitivity_internal (GnomeUIHandler *uih,
 									     ToolbarItemInternal *internal,
 									     gboolean sensitive);
-
-/*
- * Menu CORBA prototypes.
- */
-static void			  impl_register_containee		(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_Environment *ev);
-static void			  impl_unregister_containee		(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_Environment *ev);
-static GNOME_UIHandler		  impl_get_toplevel			(PortableServer_Servant servant,
-									 CORBA_Environment *ev);
-
-static void			  impl_menu_create			(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_char *path,
-									 GNOME_UIHandler_MenuType menu_type,
-									 CORBA_char *label, CORBA_char *hint,
-									 CORBA_long pos,
-									 GNOME_UIHandler_PixmapType pixmap_type,
-									 GNOME_UIHandler_iobuf *pixmap_data,
-									 CORBA_unsigned_long accelerator_key,
-									 CORBA_long modifier,
-									 CORBA_Environment *ev);
-static void			  impl_menu_remove			(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_char *path, CORBA_Environment *ev);
-static CORBA_boolean		  impl_menu_fetch			(PortableServer_Servant servant, CORBA_char *path,
-									 GNOME_UIHandler_MenuType *type, CORBA_char **label,
-									 CORBA_char **hint, CORBA_long *pos,
-									 GNOME_UIHandler_PixmapType *pixmap_type,
-									 GNOME_UIHandler_iobuf **pixmap_data,
-									 CORBA_unsigned_long *accelerator_key,
-									 CORBA_long *modifier,
-									 CORBA_Environment *ev);
-static CORBA_boolean		  impl_menu_get_children		(PortableServer_Servant servant,
-									 CORBA_char *parent_path,
-									 GNOME_UIHandler_StringSeq **child_paths,
-									 CORBA_Environment *ev);
-static CORBA_long		  impl_menu_get_pos			(PortableServer_Servant servant, CORBA_char *path,
-									 CORBA_Environment *ev);
-static void			  impl_menu_set_sensitivity		(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_char *path, CORBA_boolean sensitive,
-									 CORBA_Environment *ev);
-static CORBA_boolean		  impl_menu_get_sensitivity		(PortableServer_Servant servant, CORBA_char *path,
-									 CORBA_Environment *ev);
-static CORBA_char		 *impl_menu_get_label			(PortableServer_Servant servant, CORBA_char *path,
-									 CORBA_Environment *ev);
-static void			  impl_menu_set_label			(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_char *path, CORBA_char *label,
-									 CORBA_Environment *ev);
-static void			  impl_menu_set_hint			(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_char *path, CORBA_char *hint,
-									 CORBA_Environment *ev);
-static CORBA_char		 *impl_menu_get_hint			(PortableServer_Servant servant,
-									 CORBA_char *path,
-									 CORBA_Environment *ev);
-static void			  impl_menu_set_pixmap			(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_char *path,
-									 GNOME_UIHandler_PixmapType corba_pixmap_type,
-									 GNOME_UIHandler_iobuf *corba_pixmap_data,
-									 CORBA_Environment *ev);
-static void			  impl_menu_get_pixmap			(PortableServer_Servant servant,
-									 CORBA_char *path,
-									 GNOME_UIHandler_PixmapType *corba_pixmap_type,
-									 GNOME_UIHandler_iobuf **corba_pixmap_data,
-									 CORBA_Environment *ev);
-static void			  impl_menu_set_accel			(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_char *path, CORBA_long accelerator_key,
-									 CORBA_long ac_mods, CORBA_Environment *ev);
-static void			  impl_menu_get_accel			(PortableServer_Servant servant, CORBA_char *path,
-									 CORBA_long *accelerator_key, CORBA_long *ac_mods,
-									 CORBA_Environment *ev);
-static void			  impl_menu_set_toggle_state		(PortableServer_Servant servant,
-									 GNOME_UIHandler containee,
-									 CORBA_char *path, CORBA_boolean state,
-									 CORBA_Environment *ev);
-static CORBA_boolean		  impl_menu_get_toggle_state		(PortableServer_Servant servant, CORBA_char *path,
-									 CORBA_Environment *ev);
-static void			  impl_menu_activated			(PortableServer_Servant servant, CORBA_char *path,
-									 CORBA_Environment *ev);
-static void			  impl_menu_removed			(PortableServer_Servant servant, CORBA_char *path,
-									 CORBA_Environment *ev);
-static void			  impl_menu_overridden			(PortableServer_Servant servant, CORBA_char *path,
-									 CORBA_Environment *ev);
-static void			  impl_menu_reinstated			(PortableServer_Servant servant, CORBA_char *path,
-									 CORBA_Environment *ev);
-
-static void			  impl_toolbar_create			(PortableServer_Servant servant,
-									 GNOME_UIHandler containee,
-									 CORBA_char *name, CORBA_Environment *ev);
-
-static void			  impl_toolbar_create_item		(PortableServer_Servant servant,
-									 GNOME_UIHandler containee_uih,
-									 CORBA_char *path,
-									 GNOME_UIHandler_ToolbarType menu_type,
-									 CORBA_char *label,
-									 CORBA_char *hint,
-									 CORBA_long pos,
-									 GNOME_UIHandler_PixmapType pixmap_type,
-									 GNOME_UIHandler_iobuf *pixmap_data,
-									 CORBA_unsigned_long accelerator_key,
-									 CORBA_long modifier,
-									 CORBA_Environment *ev);
-
-static void			  impl_toolbar_overridden		(PortableServer_Servant servant,
-									 CORBA_char *path,
-									 CORBA_Environment *ev);
-
 /*
  * Basic GtkObject management.
  *
@@ -2428,6 +2213,13 @@ menu_toplevel_install_global_accelerators (GnomeUIHandler *uih, GnomeUIHandlerMe
 
 }
 
+static void
+menu_toplevel_connect_signal (GtkWidget *menu_widget, MenuItemInternal *internal)
+{
+	gtk_signal_connect (GTK_OBJECT (menu_widget), "activate",
+			    GTK_SIGNAL_FUNC (menu_toplevel_item_activated), internal);
+}
+
 /*
  * This function does all the work associated with creating a menu
  * item's GTK widgets.
@@ -2522,13 +2314,6 @@ menu_toplevel_create_widgets (GnomeUIHandler *uih, char *parent_path, MenuItemIn
 		menu_toplevel_set_toggle_state_internal (uih, internal, internal->active);
 	else if (internal->item->type == GNOME_UI_HANDLER_MENU_RADIOITEM)
 		menu_toplevel_set_radio_state_internal (uih, internal, internal->active);
-}
-
-static void
-menu_toplevel_connect_signal (GtkWidget *menu_widget, MenuItemInternal *internal)
-{
-	gtk_signal_connect (GTK_OBJECT (menu_widget), "activate",
-			    GTK_SIGNAL_FUNC (menu_toplevel_item_activated), internal);
 }
 
 static void
@@ -6094,6 +5879,7 @@ impl_toolbar_remove (PortableServer_Servant servant,
 		     CORBA_Environment *ev)
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+
 	g_warning ("toolbar remove unimplemented");
 }
 
