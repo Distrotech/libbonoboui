@@ -424,14 +424,13 @@ view_clear_image_cb (BonoboView *view, const char *verb_name, view_data_t *view_
  * itself) is a misuse of the classes.
  */
 static BonoboView *
-view_factory (BonoboEmbeddable *embeddable,
-	      const Bonobo_ViewFrame view_frame,
-	      embeddable_data_t *embeddable_data)
+view_factory (BonoboEmbeddable       *embeddable,
+	      const Bonobo_ViewFrame  view_frame,
+	      embeddable_data_t      *embeddable_data)
 {
 	view_data_t *view_data;
-	BonoboUIHandler *uih;
-	BonoboView *view;
-	GtkWidget *vbox;
+	BonoboView  *view;
+	GtkWidget   *vbox;
 
 	/*
 	 * Create the private view data.
@@ -509,13 +508,6 @@ view_factory (BonoboEmbeddable *embeddable,
 	view = bonobo_view_new (vbox);
 	view_data->view = view;
 	gtk_object_set_data (GTK_OBJECT (view), "view_data", view_data);
-
-	/*
-	 * Create the BonoboUIHandler for this view.  It will be used
-	 * to merge menu and toolbar items when the view is activated.
-	 */
-	uih = bonobo_ui_handler_new ();
-	bonobo_view_set_ui_handler (view, uih);
 
 	/*
 	 * Register a callback to handle the ClearImage verb.
@@ -596,7 +588,7 @@ embeddable_factory (BonoboEmbeddableFactory *this,
 	 * Create the BonoboEmbeddable object.
 	 */
 	embeddable = bonobo_embeddable_new (BONOBO_VIEW_FACTORY (view_factory),
-					   embeddable_data);
+					    embeddable_data);
 
 	if (embeddable == NULL) {
 		g_free (embeddable_data);

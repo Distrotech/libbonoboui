@@ -271,8 +271,8 @@ add_image_cmd (GtkWidget *widget, Application *app)
 
 	image_png_obj = object;
 
-	persist = bonobo_object_client_query_interface (object,
-						       "IDL:GNOME/PersistStream:1.0", NULL);
+	persist = bonobo_object_client_query_interface (
+		object, "IDL:Bonobo/PersistStream:1.0", NULL);
 
         if (persist == CORBA_OBJECT_NIL) {
 		printf ("No persist-stream interface\n");
@@ -312,8 +312,8 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 
 	image_png_obj = object;
 
-	persist = bonobo_object_client_query_interface (object,
-						       "IDL:GNOME/PersistStream:1.0", NULL);
+	persist = bonobo_object_client_query_interface (
+		object, "IDL:Bonobo/PersistStream:1.0", NULL);
 
         if (persist == CORBA_OBJECT_NIL)
                 return;
@@ -530,7 +530,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	text_obj = object;
 
 	persist = bonobo_object_client_query_interface (object,
-		"IDL:GNOME/PersistStream:1.0", &ev);
+		"IDL:Bonobo/PersistStream:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)
                 return;
@@ -630,7 +630,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
 		return;
 
 	psink = bonobo_object_client_query_interface (text_obj,
-                 "IDL:GNOME/ProgressiveDataSink:1.0", NULL);
+                 "IDL:Bonobo/ProgressiveDataSink:1.0", NULL);
 
         if (psink == CORBA_OBJECT_NIL)
                 return;

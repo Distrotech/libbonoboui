@@ -1036,7 +1036,7 @@ bonobo_control_get_type (void)
 
 	if (!type){
 		GtkTypeInfo info = {
-			"IDL:GNOME/Control:1.0",
+			"BonoboControl",
 			sizeof (BonoboControl),
 			sizeof (BonoboControlClass),
 			(GtkClassInitFunc) bonobo_control_class_init,

@@ -5,7 +5,7 @@
 #include <gnome.h>
 #include "bonobo-object-directory.h"
 
-#define DEFAULT_INTERFACE	"IDL:GNOME/Embeddable:1.0"
+#define DEFAULT_INTERFACE	"IDL:Bonobo/Embeddable:1.0"
 
 static GtkDialogClass *parent_class;
 
@@ -107,7 +107,7 @@ bonobo_selector_get_type (void)
  * BonoboSelector window.
  * @interfaces_required: A NULL_terminated array of interfaces which a
  * server must support in order to be listed in the selector.  Defaults
- * to "IDL:GNOME/Embeddable:1.0" if no interfaces are listed.
+ * to "IDL:Bonobo/Embeddable:1.0" if no interfaces are listed.
  *
  * Creates a new BonoboSelector widget.  The title of the dialog
  * is set to @title, and the list of selectable servers is populated

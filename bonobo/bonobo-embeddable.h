@@ -101,8 +101,8 @@ struct _GnomeVerb {
 };
 
 GtkType          bonobo_embeddable_get_type         (void);
-BonoboEmbeddable *bonobo_embeddable_new              (BonoboViewFactory factory,
-						    void *data);
+BonoboEmbeddable *bonobo_embeddable_new              (BonoboViewFactory  factory,
+						      void              *data);
 BonoboEmbeddable *bonobo_embeddable_new_canvas_item  (GnomeItemCreator item_factory,
 						    void *closure);
 BonoboEmbeddable *bonobo_embeddable_construct        (BonoboEmbeddable *embeddable,

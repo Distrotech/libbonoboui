@@ -72,6 +72,9 @@ void                          bonobo_control_frame_bind_to_control           (Bo
 
 Bonobo_Control                bonobo_control_frame_get_control               (BonoboControlFrame  *control_frame);
 
+/* The UIHandler */
+Bonobo_UIHandler              bonobo_control_frame_get_ui_handler            (BonoboControlFrame  *control_frame);
+
 
 /* Object construction stuff */
 BonoboControlFrame           *bonobo_control_frame_construct                 (BonoboControlFrame  *control_frame,

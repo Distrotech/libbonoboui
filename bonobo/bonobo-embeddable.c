@@ -104,7 +104,7 @@ impl_Bonobo_Embeddable_set_host_name (PortableServer_Servant servant,
 	if (embeddable->host_appname)
 		g_free (embeddable->host_appname);
 
-	embeddable->host_name = g_strdup (name);
+	embeddable->host_name    = g_strdup (name);
 	embeddable->host_appname = g_strdup (appname);
 
 	gtk_signal_emit (GTK_OBJECT (embeddable),
@@ -146,9 +146,9 @@ impl_Bonobo_Embeddable_get_verb_list (PortableServer_Servant servant,
 
 		corba_verb = & verb_list->_buffer [i];
 #define CORBIFY_STRING(s) ((s) == NULL ? "" : (s))
-		corba_verb->name = CORBA_string_dup (CORBIFY_STRING (verb->name));
+		corba_verb->name  = CORBA_string_dup (CORBIFY_STRING (verb->name));
 		corba_verb->label = CORBA_string_dup (CORBIFY_STRING (verb->label));
-		corba_verb->hint = CORBA_string_dup (CORBIFY_STRING (verb->hint));
+		corba_verb->hint  = CORBA_string_dup (CORBIFY_STRING (verb->hint));
 	}
 
 	return verb_list;
@@ -438,10 +438,10 @@ bonobo_embeddable_construct_full (BonoboEmbeddable *embeddable,
 
 	bonobo_object_construct (BONOBO_OBJECT (embeddable), corba_embeddable);
 
-	embeddable->priv->view_factory = view_factory;
+	embeddable->priv->view_factory         = view_factory;
 	embeddable->priv->view_factory_closure = factory_data;
-	embeddable->priv->item_creator = item_factory;
-	embeddable->priv->item_creator_data = item_factory_data;
+	embeddable->priv->item_creator         = item_factory;
+	embeddable->priv->item_creator_data    = item_factory_data;
 		
 	return embeddable;
 }
@@ -464,9 +464,9 @@ bonobo_embeddable_construct_full (BonoboEmbeddable *embeddable,
  */
 BonoboEmbeddable *
 bonobo_embeddable_construct (BonoboEmbeddable  *embeddable,
-			    Bonobo_Embeddable  corba_embeddable,
-			    BonoboViewFactory factory,
-			    void *data)
+			    Bonobo_Embeddable   corba_embeddable,
+			    BonoboViewFactory   factory,
+			    void               *data)
 {
 	return bonobo_embeddable_construct_full (embeddable, corba_embeddable, factory, data, NULL, NULL);
 }
@@ -644,7 +644,7 @@ bonobo_embeddable_get_type (void)
 
 	if (!type){
 		GtkTypeInfo info = {
-			"IDL:GNOME/Embeddable:1.0",
+			"BonoboEmbeddable",
 			sizeof (BonoboEmbeddable),
 			sizeof (BonoboEmbeddableClass),
 			(GtkClassInitFunc) bonobo_embeddable_class_init,

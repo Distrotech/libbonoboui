@@ -279,7 +279,7 @@ bonobo_client_site_get_type (void)
 
 	if (!type){
 		GtkTypeInfo info = {
-			"IDL:GNOME/ClientSite:1.0",
+			"BonoboClientSite",
 			sizeof (BonoboClientSite),
 			sizeof (BonoboClientSiteClass),
 			 (GtkClassInitFunc) bonobo_client_site_class_init,
@@ -325,8 +325,8 @@ bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectC
 
 	bonobo_object = BONOBO_OBJECT (object);
 
-	corba_object = bonobo_object_client_query_interface (object,
-							    "IDL:GNOME/Embeddable:1.0", NULL);
+	corba_object = bonobo_object_client_query_interface (
+		object, "IDL:Bonobo/Embeddable:1.0", NULL);
 
 	if (corba_object == CORBA_OBJECT_NIL) {
 		CORBA_exception_free (&ev);

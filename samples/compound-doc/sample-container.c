@@ -205,7 +205,7 @@ static void
 component_add_view (Component *component)
 {
 	BonoboViewFrame *view_frame;
-	GtkWidget *view_widget;
+	GtkWidget       *view_widget;
 
 	/*
 	 * Create the remote view and the local ViewFrame.  This also
@@ -216,7 +216,8 @@ component_add_view (Component *component)
 	 */
 	view_frame = bonobo_client_site_new_view (
 		component->client_site,
-		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
+		bonobo_object_corba_objref (BONOBO_OBJECT (
+			component->container->uih)));
 
 	/*
 	 * Connect to the "system_exception" signal on the
@@ -344,7 +345,7 @@ component_load_pf_ok_cb (GtkWidget *button, Component *component)
 	 * component.
 	 */
 	persist = bonobo_object_client_query_interface (component->server,
-						       "IDL:GNOME/PersistFile:1.0",
+						       "IDL:Bonobo/PersistFile:1.0",
 						       NULL);
 
 	/*
@@ -432,7 +433,7 @@ component_load_ps_ok_cb (GtkWidget *button, Component *component)
 	 * component.
 	 */
 	persist = bonobo_object_client_query_interface (component->server,
-						       "IDL:GNOME/PersistStream:1.0",
+						       "IDL:Bonobo/PersistStream:1.0",
 						       NULL);
 
 	/*
@@ -587,7 +588,7 @@ container_create_component_frame (Container *container, Component *component, ch
 	 * Create the 'Load component with PersistFile' button.
 	 */
 	if (bonobo_object_client_has_interface (component->server,
-					       "IDL:GNOME/PersistFile:1.0",
+					       "IDL:Bonobo/PersistFile:1.0",
 					       NULL)) {
 		
 		button = gtk_button_new_with_label (_("Load with PersistFile"));
@@ -604,8 +605,7 @@ container_create_component_frame (Container *container, Component *component, ch
 	 * Create the 'Load component with PersistStream' button.
 	 */
 	if (bonobo_object_client_has_interface (component->server,
-					"IDL:GNOME/PersistStream:1.0",
-					       NULL)) {
+			"IDL:Bonobo/PersistStream:1.0", NULL)) {
 		button = gtk_button_new_with_label (_("Load with PersistStream"));
 
 		gtk_box_pack_start (GTK_BOX (button_hbox), button,
@@ -705,7 +705,7 @@ container_activate_component (Container *container, char *component_goad_id)
 static void
 container_add_embeddable_cmd (GtkWidget *widget, Container *container)
 {
-	char *required_interfaces[2] = { "IDL:GNOME/Embeddable:1.0", NULL };
+	char *required_interfaces[2] = { "IDL:Bonobo/Embeddable:1.0", NULL };
 	char *goad_id;
 
 	/*

@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 void panel_callback (GtkWidget *widget, gpointer data)
 {
 /* it filters! */
-	const gchar *ints [] = { "IDL:GNOME/Applet:1.0", NULL };
+	const gchar *ints [] = { "IDL:Bonobo/Applet:1.0", NULL };
 	gchar *text;
 
 	text = gnome_bonobo_select_goad_id (_("Select an object"), ints);

@@ -388,7 +388,7 @@ bonobo_view_get_view_frame (BonoboView *view)
  *
  * Returns: The BonoboUIHandler which was associated with @view when it was created.
  */
-Bonobo_UIHandler
+BonoboUIHandler *
 bonobo_view_get_ui_handler (BonoboView *view)
 {
 	g_return_val_if_fail (view != NULL, NULL);

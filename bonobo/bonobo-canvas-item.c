@@ -163,7 +163,7 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 	int i;
 
 	if (getenv ("DEBUG_BI"))
-		printf ("gbi_update\n");
+		g_message ("gbi_update\n");
 
 	if (gbi_parent_class)
 		(*gbi_parent_class->update)(item, item_affine, item_clip_path, item_flags);

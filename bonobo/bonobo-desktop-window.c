@@ -198,7 +198,7 @@ bonobo_desktop_window_get_type (void)
 
 	if (!type){
 		GtkTypeInfo info = {
-			"IDL:GNOME/Desktop_Window:1.0",
+			"BonoboDesktopWindow",
 			sizeof (BonoboDesktopWindow),
 			sizeof (BonoboDesktopWindowClass),
 			(GtkClassInitFunc) bonobo_desktop_window_class_init,

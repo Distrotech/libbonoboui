@@ -194,7 +194,7 @@ bonobo_ui_handler_get_type (void)
 
 	if (!type) {
 		GtkTypeInfo info = {
-			"IDL:GNOME/UIHandler:1.0",
+			"BonoboUIHandler",
 			sizeof (BonoboUIHandler),
 			sizeof (BonoboUIHandlerClass),
 			(GtkClassInitFunc) bonobo_ui_handler_class_init,
@@ -283,6 +283,18 @@ bonobo_ui_handler_set_app (BonoboUIHandler *uih, GnomeApp *app)
 
 	if (uih->top->accelgroup == NULL && app->accel_group != NULL)
 		bonobo_ui_handler_set_accelgroup (uih, app->accel_group);
+}
+
+/**
+ * bonobo_ui_handler_get_app:
+ */
+GnomeApp *
+bonobo_ui_handler_get_app (BonoboUIHandler *uih)
+{
+	g_return_val_if_fail (uih != NULL,                NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
+
+	return uih->top->app;
 }
 
 static void
