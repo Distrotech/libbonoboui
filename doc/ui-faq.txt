@@ -272,4 +272,8 @@ flashiness this can also cause torn-off menus to hide themselves.
 the group set on the command, there can of course be mutiple sets of the
 same radio verbs, but they cannot share the same group.
 
+ 
+* How do I let the user customize a toolbar once it's hidden?
 
+	You really want to add a menu item with the builtin verb
+'BonoboCustomize' that should magically do what you want.
