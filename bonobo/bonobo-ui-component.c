@@ -606,8 +606,6 @@ bonobo_ui_component_get_tree (BonoboUIComponent  *component,
 	if (!node)
 		return NULL;
 
-	bonobo_ui_xml_strip (&node);
-
 	return node;
 }
 

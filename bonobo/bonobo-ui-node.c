@@ -439,6 +439,8 @@ bonobo_ui_node_from_string (const char *xml)
 	
 	xmlFreeDoc (doc);
 
+	bonobo_ui_node_strip (&node);
+
 	return node;
 }
 
@@ -527,5 +529,88 @@ bonobo_ui_node_copy_attrs (BonoboUINode *src,
 		xmlSetProp (XML_NODE (dest), attr->name, txt);
 
 		xmlFree (txt);
+	}
+}
+
+static gboolean
+do_strip (xmlNode *node)
+{
+        xmlNode *l, *next;
+	gboolean suspicious = FALSE;
+
+	if (!node)
+		return FALSE;
+
+	switch (node->type) {
+        case XML_DOCUMENT_FRAG_NODE:
+        case XML_ELEMENT_NODE:
+	case XML_TEXT_NODE:
+        case XML_ENTITY_NODE:
+        case XML_ENTITY_REF_NODE: {
+		xmlAttr *a, *nexta;
+
+		node->nsDef = NULL;
+		node->ns = NULL;
+		node->doc = NULL;
+
+		for (a = node->properties; a; a = nexta) {
+			nexta = a->next;
+			a->ns = NULL;
+			do_strip (a->val);
+		}
+
+		for (l = node->xmlChildrenNode; l; l = next) {
+			next = l->next;
+			do_strip (l);
+		}
+		break;
+	}
+
+	case XML_ATTRIBUTE_NODE: {
+		xmlAttr *attr = (xmlAttr *)node;
+		attr->ns = NULL;
+		do_strip (attr->val);
+		break;
+	}
+
+        case XML_PI_NODE:
+        case XML_COMMENT_NODE:
+        case XML_DOCUMENT_NODE:
+        case XML_HTML_DOCUMENT_NODE:
+        case XML_DOCUMENT_TYPE_NODE:
+        case XML_NOTATION_NODE:
+        case XML_CDATA_SECTION_NODE:
+		suspicious = TRUE;
+		break;
+	}
+
+	if (suspicious) {
+/*		g_warning ("node looks suspicious %d: '%s'",
+			   node->type,
+			   bonobo_ui_node_to_string (BNODE (node), TRUE));*/
+		xmlUnlinkNode (node);
+		bonobo_ui_node_free (BNODE (node));
+		return TRUE;
+	} else
+		return FALSE;
+}
+
+/**
+ * bonobo_ui_node_strip:
+ * @node: a pointer to the node's pointer
+ * 
+ *   This function is used to purge unwanted content from
+ * a set of nodes, and particularly clean up stray Doc and
+ * NS pointers that cause serious trouble later.
+ **/
+void
+bonobo_ui_node_strip (BonoboUINode **node)
+{
+	BonoboUINode *next, *l;
+
+	for (l = *node; l; l = next) {
+		next = bonobo_ui_node_next (l);
+		if (l == *node && do_strip (XML_NODE (l)))
+			*node = next;
 	}
 }
