@@ -12,6 +12,7 @@
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
+#include <libgnomeui/gnome-canvas.h>
 #include <bonobo/gnome-object.h>
 #include <bonobo/gnome-object-client.h>
 #include <bonobo/gnome-container.h>
@@ -50,6 +51,8 @@ typedef struct {
 
 GtkType            gnome_client_site_get_type		(void);
 GnomeClientSite   *gnome_client_site_new		(GnomeContainer *container);
+GnomeCanvasItem   *gnome_client_site_new_item           (GnomeClientSite *client_site,
+							 GnomeCanvasGroup *group);
 GnomeClientSite   *gnome_client_site_construct		(GnomeClientSite  *client_site,
 							 GNOME_ClientSite corba_client_site,
 							 GnomeContainer   *container);

@@ -1,6 +1,6 @@
 corbadir = $(sysconfdir)/CORBA/servers
 
-corba_DATA = sample.gnorba
+corba_DATA = sample.gnorba item.gnorba
 
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -23,8 +23,14 @@ bonobo_libs = 			\
 
 
 lib_LTLIBRARIES = libbonobo.la
-noinst_PROGRAMS = test-container sample-server \
-			test-container-autoload selector_test test-storage test-bw
+noinst_PROGRAMS = 		\
+	test-container 		\
+	sample-server 		\
+	sample-item 		\
+	test-container-autoload	\
+	selector_test		\
+	test-storage		\
+	test-bw
 
 CORBA_SOURCE =			\
 	bonobo.h		\
@@ -50,7 +56,10 @@ $(CORBA_SOURCE): $(idls)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
+	gnome-bonobo-item.c		\
 	gnome-bonobo-selector.c		\
+	gnome-bonobo-widget.c		\
+	gnome-canvas-component.c	\
 	gnome-client-site.c		\
 	gnome-container.c		\
 	gnome-embeddable-factory.c 	\
@@ -73,8 +82,7 @@ libbonobo_la_SOURCES =			\
 	gnome-ui-handler.c		\
 	gnome-view.c			\
 	gnome-view-frame.c		\
-	gnome-wrapper.c			\
-	gnome-bonobo-widget.c
+	gnome-wrapper.c
 
 
 libbonoboincludedir = $(includedir)/bonobo
@@ -82,7 +90,10 @@ libbonoboincludedir = $(includedir)/bonobo
 libbonoboinclude_HEADERS =		\
 	bonobo.h			\
 	gnome-bonobo.h			\
+	gnome-bonobo-item.h		\
 	gnome-bonobo-selector.h		\
+	gnome-bonobo-widget.h		\
+	gnome-canvas-component.h	\
 	gnome-client-site.h		\
 	gnome-component-io.h		\
 	gnome-container.h		\
@@ -106,8 +117,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-ui-handler.h		\
 	gnome-view.h			\
 	gnome-view-frame.h		\
-	gnome-wrapper.h			\
-	gnome-bonobo-widget.h
+	gnome-wrapper.h
 
 #test_ui_handler_SOURCES =		\
 #	 test-ui-handler.c
@@ -133,6 +143,11 @@ sample_server_SOURCES =		\
 	sample-server.c
 
 sample_server_LDADD = $(bonobo_libs)
+
+sample_item_SOURCES = 		\
+	sample-item.c
+
+sample_item_LDADD = $(bonobo_libs)
 
 test_storage_SOURCES = test-storage.c
 

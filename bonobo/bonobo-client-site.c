@@ -20,6 +20,7 @@
 #include <gtk/gtkmarshal.h>
 #include <bonobo/gnome-client-site.h>
 #include <bonobo/gnome-embeddable.h>
+#include <bonobo/gnome-bonobo-item.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdktypes.h>
@@ -524,6 +525,76 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 
 	CORBA_exception_free (&ev);		
 	return view_frame;
+}
+
+/**
+ * gnome_client_site_new_item:
+ * @client_site: The client site that contains a remote Embeddable object
+ *
+ *
+ */
+GnomeCanvasItem *
+gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *group)
+{
+	GnomeObjectClient *server_object;
+	GnomeViewFrame *view_frame;
+	GNOME_View view;
+	CORBA_Environment ev;
+	GnomeCanvas *canvas;
+	GnomeCanvasItem *item;
+		
+	g_return_val_if_fail (client_site != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
+	g_return_val_if_fail (group != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CANVAS_GROUP (group), NULL);
+
+	server_object = client_site->bound_object;
+
+	/*
+	 * 1. Create the view frame.
+	 */
+	view_frame = gnome_view_frame_new (client_site);
+
+	/*
+	 * 2. Create the view.
+	 */
+	CORBA_exception_init (&ev);
+ 	view = GNOME_Embeddable_new_view (
+		gnome_object_corba_objref (GNOME_OBJECT (server_object)),
+		gnome_object_corba_objref (GNOME_OBJECT (view_frame)),
+		&ev);
+	if (ev._major != CORBA_NO_EXCEPTION){
+		gnome_object_check_env (
+			GNOME_OBJECT (client_site),
+			gnome_object_corba_objref (GNOME_OBJECT (server_object)),
+			&ev);
+		gtk_object_unref (GTK_OBJECT (view_frame));
+		CORBA_exception_free (&ev);
+		return NULL;
+	}
+
+	/*
+	 * 3. Bind the view frame and the view
+	 */
+	gnome_view_frame_bind_to_view (view_frame, view);
+
+	item = gnome_bonobo_item_new (group, view_frame);
+
+	if (!item){
+		gtk_object_unref (GTK_OBJECT (view_frame));
+		CORBA_exception_free (&ev);		
+		return NULL;
+	}
+	
+	/*
+	 * 5. Add this new view frame to the list of ViewFrames for
+	 * this embedded component.
+	 */
+	client_site->view_frames = g_list_prepend (client_site->view_frames, view_frame);
+	
+	CORBA_exception_free (&ev);
+	return item;
 }
 
 /**

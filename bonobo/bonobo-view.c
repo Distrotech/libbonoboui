@@ -2,7 +2,7 @@
 /**
  * GNOME view object
  *
- * Author:
+ * Authors:
  *   Miguel de Icaza (miguel@kernel.org)
  *   Nat Friedman    (nat@nat.org)
  *
@@ -35,6 +35,31 @@ enum {
 static guint view_signals [LAST_SIGNAL];
 
 typedef void (*GnomeSignal_NONE__DOUBLE) (GtkObject *object, double arg1, gpointer user_data);
+
+struct _GnomeViewPrivate {
+	GtkWidget *plug;
+
+	int plug_destroy_id;
+
+	GHashTable *verb_callbacks;
+	GHashTable *verb_callback_closures;
+
+	GtkWidget  *widget;
+	
+	/*
+	 * For the Canvas Item
+	 */
+	
+	/*If we are exporting a CanvasItem, this is our pseudo-canvas we use */
+	GtkWidget *pseudo_canvas;
+
+	/* If we export a CanvasItem */
+	GnomeCanvasComponent *canvas_comp;
+
+	/* The routine that will create the item */
+	GnomeViewItemCreator item_creator;
+	void *item_creator_data;
+};
 
 static void
 impl_GNOME_View_activate (PortableServer_Servant servant,
@@ -75,15 +100,15 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 	GtkAllocation allocation;
 
-	if (view->plug == NULL)
+	if (view->priv->plug == NULL)
 		return;
 
-	allocation.x = view->plug->allocation.x;
-	allocation.y = view->plug->allocation.y;
+	allocation.x = view->priv->plug->allocation.x;
+	allocation.y = view->priv->plug->allocation.y;
 
 	allocation.width = width;
 	allocation.height = height;
-	gtk_widget_size_allocate (view->plug, &allocation);
+	gtk_widget_size_allocate (view->priv->plug, &allocation);
 }
 
 /*
@@ -97,7 +122,7 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 {
 	GnomeView *view = GNOME_VIEW (closure);
 
-	if (view->plug != plug)
+	if (view->priv->plug != plug)
 		g_warning ("Destroying incorrect plug");
 
 	/*
@@ -105,8 +130,8 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 	 * destroy it later.  It will get destroyed on its
 	 * own.
 	 */
-	view->plug = NULL;
-	gtk_signal_disconnect (GTK_OBJECT (plug), view->plug_destroy_id);
+	view->priv->plug = NULL;
+	gtk_signal_disconnect (GTK_OBJECT (plug), view->priv->plug_destroy_id);
 
 	/*
 	 * Destroy this plug's GnomeView.
@@ -117,20 +142,44 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 }
 
 static void
+make_component (GnomeView *view, gboolean aa)
+{
+	if (aa)
+		view->priv->pseudo_canvas = gnome_canvas_new_aa ();
+	else
+		view->priv->pseudo_canvas = gnome_canvas_new ();
+	
+	view->priv->canvas_comp = (*view->priv->item_creator)(
+		view, GNOME_CANVAS (view->priv->pseudo_canvas),
+		view->priv->item_creator_data);
+}
+
+static void
 impl_GNOME_View_set_window (PortableServer_Servant servant,
 			    GNOME_View_windowid id,
 			    CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 
-	view->plug = gtk_plug_new (id);
-	view->plug_destroy_id = gtk_signal_connect (
-		GTK_OBJECT (view->plug), "destroy_event",
+	view->priv->plug = gtk_plug_new (id);
+	view->priv->plug_destroy_id = gtk_signal_connect (
+		GTK_OBJECT (view->priv->plug), "destroy_event",
 		GTK_SIGNAL_FUNC (plug_destroy_cb), view);
 
-	gtk_widget_show_all (view->plug);
+	gtk_widget_show_all (view->priv->plug);
 
-	gtk_container_add (GTK_CONTAINER (view->plug), view->widget);
+	if (view->priv->widget != NULL)
+		gtk_container_add (GTK_CONTAINER (view->priv->plug), view->priv->widget);
+	else {
+		GnomeCanvasItem *item;
+		
+		if (view->priv->canvas_comp == NULL)
+			make_component (view, FALSE);
+
+		item = gnome_canvas_component_get_item (view->priv->canvas_comp);
+		gtk_container_add (GTK_CONTAINER (view->priv->plug),
+				   GTK_WIDGET (item->canvas));
+	}
 }
 
 static void
@@ -163,6 +212,28 @@ impl_GNOME_View_set_zoom_factor (PortableServer_Servant servant,
 		view_signals [SET_ZOOM_FACTOR], zoom);
 }
 
+static GNOME_Canvas_Item
+impl_GNOME_View_get_canvas_item (PortableServer_Servant servant,
+				 CORBA_boolean aa,
+				 CORBA_Environment *ev)
+{
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
+	
+	if (view->priv->item_creator == NULL)
+		return CORBA_OBJECT_NIL;
+
+	if (view->priv->canvas_comp != CORBA_OBJECT_NIL)
+		return CORBA_Object_duplicate (
+			gnome_object_corba_objref (
+				GNOME_OBJECT (view->priv->canvas_comp)),
+			ev);
+
+	make_component (view, aa);
+
+	return CORBA_Object_duplicate (
+		gnome_object_corba_objref (
+			GNOME_OBJECT (view->priv->canvas_comp)), ev);
+}
 
 /**
  * gnome_view_corba_object_create:
@@ -199,19 +270,26 @@ gnome_view_corba_object_create (GnomeObject *object)
  * gnome_view_construct:
  * @view: The GnomeView object to be initialized.
  * @corba_view: The CORBA GNOME_View interface for the new GnomeView object.
- * @widget: A widget which contains the view and which will be passed
- * to the container process's ViewFrame object.
+ * @widget: A GtkWidget contains the view and * will be passed to the container
+ * process's ViewFrame object.
+ * @item_creator: The item creation function to be invoked on demand.
+ * 
+ * @item_creator might be NULL for widget-based views.
  *
  * Returns: the intialized GnomeView object.
  */
 GnomeView *
-gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
+gnome_view_construct (GnomeView *view, GNOME_View corba_view,
+		      GtkWidget *widget, GnomeViewItemCreator item_creator)
 {
 	g_return_val_if_fail (view != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_VIEW (view), NULL);
 	g_return_val_if_fail (corba_view != CORBA_OBJECT_NIL, NULL);
-	g_return_val_if_fail (widget != NULL, NULL);
-	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+
+	if (!item_creator){
+		g_return_val_if_fail (widget != NULL, NULL);
+		g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+	}
 
 	/*
 	 * FIXME: This should probably be explained.
@@ -219,22 +297,26 @@ gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 	bonobo_setup_x_error_handler ();
 
 	gnome_object_construct (GNOME_OBJECT (view), corba_view);
-	
-	view->widget = widget;
-	gtk_object_ref (GTK_OBJECT (view->widget));
 
-	view->verb_callbacks = g_hash_table_new (g_str_hash, g_str_equal);
-	view->verb_callback_closures = g_hash_table_new (g_str_hash, g_str_equal);
+	view->priv->item_creator = item_creator;
+
+	if (widget){
+		view->priv->widget = GTK_WIDGET (widget);
+		gtk_object_ref (GTK_OBJECT (widget));
+	}
+
+	view->priv->verb_callbacks = g_hash_table_new (g_str_hash, g_str_equal);
+	view->priv->verb_callback_closures = g_hash_table_new (g_str_hash, g_str_equal);
 
 	return view;
 }
 
 /**
  * gnome_view_new:
- * @widget: a GTK widget which contains the view and which will be
- * passed to the container process.
+ * @widget: a GTK widget that contains the view and will be passed to the
+ * container process.
  *
- * This function creates a new GnomeView object for @widget.
+ * This function creates a new GnomeView object for @widget
  *
  * Returns: a GnomeView object that implements the GNOME::View CORBA
  * service that will transfer the @widget to the container process.
@@ -256,8 +338,38 @@ gnome_view_new (GtkWidget *widget)
 		return NULL;
 	}
 	
+	return gnome_view_construct (view, corba_view, widget, NULL);
+}
 
-	return gnome_view_construct (view, corba_view, widget);
+/**
+ * gnome_view_new:
+ * @item_creator: A callback function that will create a #GnomeCanvasItem
+ * @user_data: data passed to the item_creator function.
+ *
+ * This function creates a new GnomeView object.  The View will be able
+ * to respond to the get_canvas_item request.
+ *
+ * Returns: a GnomeView object that implements the GNOME::View CORBA
+ * service that will provide a a GnomeCanvasItem.
+ */
+GnomeView *
+gnome_view_new_canvas (GnomeViewItemCreator item_creator, void *user_data)
+{
+	GnomeView *view;
+	GNOME_View corba_view;
+	
+	g_return_val_if_fail (item_creator != NULL, NULL);
+
+	view = gtk_type_new (gnome_view_get_type ());
+
+	corba_view = gnome_view_corba_object_create (GNOME_OBJECT (view));
+	if (corba_view == CORBA_OBJECT_NIL){
+		gtk_object_destroy (GTK_OBJECT (view));
+		return NULL;
+	}
+
+	view->priv->item_creator_data = user_data;
+	return gnome_view_construct (view, corba_view, NULL, item_creator);
 }
 
 static gboolean
@@ -282,18 +394,23 @@ gnome_view_destroy (GtkObject *object)
 	/*
 	 * Free up all the verbs associated with this View.
 	 */
-	g_hash_table_foreach_remove (view->verb_callbacks,
+	g_hash_table_foreach_remove (view->priv->verb_callbacks,
 				     gnome_view_destroy_remove_verb, NULL);
-	g_hash_table_destroy (view->verb_callbacks);
+	g_hash_table_destroy (view->priv->verb_callbacks);
 
-	g_hash_table_destroy (view->verb_callback_closures);
+	g_hash_table_destroy (view->priv->verb_callback_closures);
 
 	/*
 	 * Destroy the view's top-level widget.
 	 */
-	if (view->widget)
-		gtk_object_unref (GTK_OBJECT (view->widget));
+	if (view->priv->widget)
+		gtk_object_unref (GTK_OBJECT (view->priv->widget));
 
+	if (view->priv->canvas_comp){
+		gtk_object_unref (GTK_OBJECT (view->priv->canvas_comp));
+		gtk_object_unref (GTK_OBJECT (view->priv->pseudo_canvas));
+	}
+	
 	/*
 	 * If the plug still exists, destroy it.  The plug might not
 	 * exist in the case where the container application died,
@@ -302,12 +419,14 @@ gnome_view_destroy (GtkObject *object)
 	 * have triggered the destruction of the View.  Which is why
 	 * we're here now.
 	 */
-	if (view->plug) {
-		gtk_signal_disconnect (GTK_OBJECT (view->plug), view->plug_destroy_id);
-		gtk_object_unref (GTK_OBJECT (view->plug));
-		view->plug = NULL;
+	if (view->priv->plug) {
+		gtk_signal_disconnect (GTK_OBJECT (view->priv->plug), view->priv->plug_destroy_id);
+		gtk_object_unref (GTK_OBJECT (view->priv->plug));
+		view->priv->plug = NULL;
 	}
 
+	g_free (view->priv);
+	
 	GTK_OBJECT_CLASS (gnome_view_parent_class)->destroy (object);
 }
 
@@ -322,6 +441,7 @@ init_view_corba_class (void)
 	gnome_view_epv.reactivate_and_undo = impl_GNOME_View_reactivate_and_undo;
 	gnome_view_epv.size_query = impl_GNOME_View_size_query;
 	gnome_view_epv.set_zoom_factor = impl_GNOME_View_set_zoom_factor;
+	gnome_view_epv.get_canvas_item = impl_GNOME_View_get_canvas_item;
 	
 	/* Setup the vector of epvs */
 	gnome_view_vepv.GNOME_Unknown_epv = &gnome_object_epv;
@@ -403,6 +523,7 @@ gnome_view_class_init (GnomeViewClass *class)
 static void
 gnome_view_init (GnomeView *view)
 {
+	view->priv = g_new0 (GnomeViewPrivate, 1);
 }
 
 /**
@@ -619,8 +740,8 @@ gnome_view_register_verb (GnomeView *view, const char *verb_name,
 
 	key = g_strdup (verb_name);
 
-	g_hash_table_insert (view->verb_callbacks, key, callback);
-	g_hash_table_insert (view->verb_callback_closures, key, user_data);
+	g_hash_table_insert (view->priv->verb_callbacks, key, callback);
+	g_hash_table_insert (view->priv->verb_callback_closures, key, user_data);
 }
 
 /**
@@ -639,11 +760,11 @@ gnome_view_unregister_verb (GnomeView *view, const char *verb_name)
 	g_return_if_fail (GNOME_IS_VIEW (view));
 	g_return_if_fail (verb_name != NULL);
 
-	if (! g_hash_table_lookup_extended (view->verb_callbacks, verb_name,
+	if (! g_hash_table_lookup_extended (view->priv->verb_callbacks, verb_name,
 					    (gpointer *) &original_key, NULL))
 		return;
-	g_hash_table_remove (view->verb_callbacks, verb_name);
-	g_hash_table_remove (view->verb_callback_closures, verb_name);
+	g_hash_table_remove (view->priv->verb_callbacks, verb_name);
+	g_hash_table_remove (view->priv->verb_callback_closures, verb_name);
 	g_free (original_key);
 }
 
@@ -701,11 +822,11 @@ gnome_view_execute_verb (GnomeView *view, const char *verb_name)
 	 * The user may have registered a callback for this particular
 	 * verb.  If so, dispatch to that callback.
 	 */
-	callback = g_hash_table_lookup (view->verb_callbacks, verb_name);
+	callback = g_hash_table_lookup (view->priv->verb_callbacks, verb_name);
 	if (callback != NULL) {
 		void *user_data;
 
-		user_data = g_hash_table_lookup (view->verb_callback_closures, verb_name);
+		user_data = g_hash_table_lookup (view->priv->verb_callback_closures, verb_name);
 
 		(*callback) (view, (const char *) verb_name, user_data);
 	}
@@ -749,8 +870,8 @@ char *
 gnome_view_popup_verbs (GnomeView *view)
 {
 	GnomeUIHandler *popup;
-	GList *verbs;
-	GList *l;
+	const GList *verbs;
+	const GList *l;
 	char *verb;
 
 	g_return_val_if_fail (view != NULL, NULL);
@@ -769,7 +890,7 @@ gnome_view_popup_verbs (GnomeView *view)
 	gnome_ui_handler_create_popup_menu (popup);
 
 	for (l = verbs; l != NULL; l = l->next) {
-		GnomeVerb *verb = (GnomeVerb *) l->data;
+		const GnomeVerb *verb = (GnomeVerb *) l->data;
 		char *path;
 
 		path = g_strconcat ("/", verb->name, NULL);

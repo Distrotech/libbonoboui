@@ -378,6 +378,54 @@ add_gnumeric_cmd (GtkWidget *widget, Application *app)
 }
 
 static void
+add_canvas_cmd (GtkWidget *widget, Application *app)
+{
+	GnomeClientSite *client_site;
+	GtkWidget *canvas, *frame, *sw;
+	CORBA_Environment ev;
+	GnomeObjectClient *server;
+	GnomeCanvasItem *item;
+	
+	client_site = gnome_client_site_new (app->container);
+
+	server = launch_server (client_site, app->container, "Test_item_server_bonobo_object");
+	if (server == NULL){
+		g_warning ("Can not activate Test_item_server_bonobo_object");
+		return;
+	}
+	CORBA_exception_init (&ev);
+
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	
+	gtk_widget_push_visual (gdk_rgb_get_visual());
+	gtk_widget_push_colormap (gdk_rgb_get_cmap());
+	canvas = gnome_canvas_new_aa ();
+	gtk_widget_pop_visual ();
+	gtk_widget_pop_colormap ();
+	gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas), 0, 0, 100, 100);
+	gtk_widget_set_usize (canvas, 100, 100);
+
+	gnome_canvas_item_new (
+		GNOME_CANVAS_GROUP (gnome_canvas_root (canvas)),
+		gnome_canvas_rect_get_type (),
+		"x1", 40.0,
+		"y1", 40.0,
+		"x2", 60.0,
+		"y2", 60.0,
+		"fill_color", "red",
+		NULL);
+	item = gnome_client_site_new_item (
+		GNOME_CLIENT_SITE (client_site),
+		GNOME_CANVAS_GROUP (gnome_canvas_root (GNOME_CANVAS (canvas))));
+
+	frame = gtk_frame_new ("Canvas with a remote item");
+	gtk_box_pack_start (GTK_BOX (app->box), frame, TRUE, TRUE, 0);
+	gtk_container_add (GTK_CONTAINER (frame), sw);
+	gtk_container_add (GTK_CONTAINER (sw), canvas);
+	gtk_widget_show_all (frame);
+}
+
+static void
 add_paint_cmd (GtkWidget *widget, Application *app)
 {
 	GnomeObjectClient *object;
@@ -614,6 +662,13 @@ static GnomeUIInfo container_file_menu [] = {
 	GNOMEUIINFO_END
 };
 
+static GnomeUIInfo container_canvas_menu [] = {
+	GNOMEUIINFO_ITEM_NONE (
+		N_("Add a new Sample-Canvas item"),
+		NULL, add_canvas_cmd),
+	GNOMEUIINFO_END
+};
+
 static GnomeUIInfo container_main_menu [] = {
 	GNOMEUIINFO_MENU_FILE_TREE (container_file_menu),
 	GNOMEUIINFO_SUBTREE (N_("_text/plain"), container_text_plain_menu),
@@ -621,6 +676,7 @@ static GnomeUIInfo container_main_menu [] = {
 	GNOMEUIINFO_SUBTREE (N_("_image/x-pdf"), container_image_pdf_menu),
 	GNOMEUIINFO_SUBTREE (N_("paint sample"), container_paint_menu),
 	GNOMEUIINFO_SUBTREE (N_("Gnumeric"), container_gnumeric_menu),
+	GNOMEUIINFO_SUBTREE (N_("Canvas-based"), container_canvas_menu),
 	GNOMEUIINFO_END
 };
 
@@ -682,7 +738,6 @@ main (int argc, char *argv [])
 
 	app = application_new ();
 	
-	add_gnumeric_cmd (NULL, app);
 	bonobo_activate ();
 	gtk_main ();
 
