@@ -7,14 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.be\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2003-05-19 09:14+0300\n"
-"Last-Translator: Vital Khilko <dojlid@mova.org>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-07-12 05:10+0200\n"
+"PO-Revision-Date: 2003-07-23 13:44+0300\n"
+"Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0\n"
+"X-Generator: KBabel 0.9.6\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -26,29 +27,29 @@ msgstr "Указальнік вытворчасьці"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
-msgstr "кантэйнэр UI corba"
+msgstr "утрымальнік UI corba"
 
 #: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
-msgstr "Кантэйнэр інтэрфэйса карыстальніка"
+msgstr "Утрымальнік спалучэньня карыстальніка"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
-msgstr "Прычапіць панэль інструмэнту"
+msgstr "Прычапіць панэль сродкаў"
 
 #: bonobo/bonobo-dock-item-grip.c:237
 msgid "Un dock the toolbar"
-msgstr "Адчапіць панэль інструмэнту"
+msgstr "Адчапіць панэль сродкаў"
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
-msgstr "Тып зацяненьня"
+msgstr "Від ценю"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
 #: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
 msgid "Orientation"
-msgstr "Арыентацыя"
+msgstr "Спагляданьне"
 
 #: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
 #: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
@@ -90,26 +91,25 @@ msgstr "Апісаньне"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr "Запатрабаваныя інтарфэйсы"
+msgstr "Запатрабаваныя спалучэньні"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Масыў інтарфэйсаў які сканчаецца NULL, які павінны падтрымліваць паслужнік, "
-"каб быць пералічаным. Дапомна \"IDL:Bonobo/Embeddable:1.0\" калі інтарфэйсы "
-"ня пералічаны"
+"Масыў спалучэньняў які сканчаецца на NULL, якія павінен падтрымліваць паслужнік у "
+"чарзе пералічэньня ў вылучальніке. Дапомна \"IDL:Bonobo/Embeddable:1.0\" калі "
+"спалучэньні не пералічаны"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "Інтарфэйс патрабуе запіс"
+msgstr "Спалучэньне патрабуе запіс"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr "Адзін з інтарфэйсаў патрабуе гэта"
+msgstr "Адно са спалучэньняў патрабуе гэта"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -117,7 +117,7 @@ msgstr "Бачна"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr "_Адлюстраваць"
+msgstr "_Паказаць"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
@@ -129,11 +129,11 @@ msgstr "_Прагляд падказак"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
-msgstr "Панэлі інструмэнту"
+msgstr "Панэлі сродкаў"
 
 #: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
-msgstr "панэлі інструмэнту"
+msgstr "панэлі сродкаў"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
@@ -157,7 +157,7 @@ msgstr "_Прыярытэт толькі тэксту"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
-msgstr "Наладка"
+msgstr "Адладка"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
@@ -165,15 +165,15 @@ msgstr "_Дамп XML"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Дамп поўнага апісаньня ГI XML у кансоль"
+msgstr "Зваліць поўнае XML апісаньня UI у кансоль"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr "Канфігураваньне UI"
+msgstr "Наладка UI"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr "сьцягі атладкі Gdk для усталяваньня"
+msgstr "сьцягі адладкі Gdk для усталяваньня"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
@@ -182,7 +182,7 @@ msgstr "СЬЦЯГІ"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr "сьцягі атладкі Gdk для скіданьня"
+msgstr "сьцягі адладкі Gdk для скіданьня"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
@@ -210,7 +210,7 @@ msgstr "Не выкарыстоўваць пашырэньне Х падзеле
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
-msgstr "Назва праграмы якая будзе выкарыстоўвацца мэнаджарам вокнаў"
+msgstr "Назва праграмы якая будзе выкарыстоўвацца кіраўніком вокнаў"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
@@ -218,7 +218,7 @@ msgstr "НАЗВА"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
-msgstr "Кляса праграмы якая будзе выкарыстоўвацца мэнаджарам вокнаў"
+msgstr "Кляса праграмы якая будзе выкарыстоўвацца кіраўніком вокнаў"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
@@ -238,11 +238,11 @@ msgstr "СТЫЛЬ"
 
 #: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
-msgstr "сьцягі атладкі Gtk+ для усталяваньня"
+msgstr "сьцягі адладкі Gtk+ для усталяваньня"
 
 #: bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
-msgstr "сьцягі атладкі Gtk+ для скіданьня"
+msgstr "сьцягі адладкі Gtk+ для скіданьня"
 
 #: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
@@ -282,7 +282,7 @@ msgstr "Адлюстроўваць _падказкі"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "_Схаваць панэль інструмэнту"
+msgstr "_Схаваць панэль сродкаў"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
@@ -290,7 +290,7 @@ msgstr "На_ладзіць"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "Наладзіць панэль інструмэнту"
+msgstr "Наладзіць панэль сродкаў"
 
 #: bonobo/bonobo-ui-toolbar.c:1130
 msgid "is floating"
@@ -298,11 +298,11 @@ msgstr "плавае"
 
 #: bonobo/bonobo-ui-toolbar.c:1131
 msgid "whether the toolbar is floating"
-msgstr "ці мусіць плаваць панэль інструмэнту"
+msgstr "ці мусіць плаваць панэль сродкаў"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr "Стыль скосаў вакол панэлі інструмэнта"
+msgstr "Стыль скосаў вакол панэлі сродкаў"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
@@ -310,11 +310,11 @@ msgstr "_Зьмест"
 
 #: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
-msgstr "Адлюстраваць дапамогу для гэтага дастасаваньня"
+msgstr "Адлюстраваць даведку для гэтага дастасаваньня"
 
 #: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
-msgstr "Назва акна - выкарыстоўваецца для сэрыялізацыі канфігурацыі."
+msgstr "Назва вакна - выкарыстоўваецца для пасьлядоўваньня наладак."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -330,31 +330,31 @@ msgstr "Найменшы узровень маштабаваньня"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "Мінімальная ступень павялічэньня"
+msgstr "Найменшая ступень павялічэньня"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "Найбольшы узровень маштабаваньня"
+msgstr "Найбольшы ўзровень маштабаваньня"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "Максымальная ступень павялічэньня"
+msgstr "Найбольшая ступень павялічэньня"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "Утрымлівае найменьшы узровень павялічэньня"
+msgstr "Утрымлівае найменьшы ўзровень павялічэньня"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Ці утрымлівае правільны мінімальны узровень павялічэньня"
+msgstr "Ці ўтрымлівае правільны найменшы ўзровень павялічэньня"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Утрымлівае найбольшы узровень павялічэньня"
+msgstr "Утрымлівае найбольшы ўзровень павялічэньня"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Ці утрымлівае правільны максымальны узровень павялічэньня"
+msgstr "Ці ўтрымлівае правільны найбольшы ўзровень павялічэньня"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -390,7 +390,7 @@ msgstr "_Выбар"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Гэта нічога ня робіць; гэта толькі дэманстрацыя."
+msgstr "Гэта нічога ня робіць; гэта толькі паказ магчымасьцяў."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -403,12 +403,13 @@ msgstr "Вітаньне Gnome"
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "Вітаньні, сьвет!"
+msgstr "Вітаньні, Сьвет!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "Немагчыма праініцыялізаваць код libbonoboui"
+msgstr "Немагчыма распачаць код libbonoboui"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr "Немагчыма ініцыялізаваць Bonobo UI"
+msgstr "Немагчыма распачаць Bonobo UI"
+
