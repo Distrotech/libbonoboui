@@ -447,6 +447,34 @@ gnome_control_get_ambient_properties (GnomeControl *control)
 	return gnome_property_bag_client_new (pbag);
 }
 
+/**
+ * gnome_control_get_remote_ui_handler:
+
+ * @control: A GnomeControl object which is associated with a remote
+ * ControlFrame.
+ *
+ * Returns: The GNOME_UIHandler CORBA server for the remote GnomeControlFrame.
+ */
+GNOME_UIHandler
+gnome_control_get_remote_ui_handler (GnomeControl *control)
+{
+	CORBA_Environment ev;
+	GNOME_UIHandler uih;
+
+	g_return_val_if_fail (control != NULL, CORBA_OBJECT_NIL);
+	g_return_val_if_fail (GNOME_IS_CONTROL (control), CORBA_OBJECT_NIL);
+
+	CORBA_exception_init (&ev);
+
+	uih = GNOME_ControlFrame_get_ui_handler (control->priv->control_frame, &ev);
+
+	gnome_object_check_env (GNOME_OBJECT (control), control->priv->control_frame, &ev);
+
+	CORBA_exception_free (&ev);
+
+	return uih;
+}
+
 static void
 gnome_control_class_init (GnomeControlClass *klass)
 {

@@ -470,21 +470,10 @@ gnome_view_get_ui_handler (GnomeView *view)
 GNOME_UIHandler
 gnome_view_get_remote_ui_handler (GnomeView *view)
 {
-	CORBA_Environment ev;
-	GNOME_UIHandler uih;
-
 	g_return_val_if_fail (view != NULL, CORBA_OBJECT_NIL);
 	g_return_val_if_fail (GNOME_IS_VIEW (view), CORBA_OBJECT_NIL);
 
-	CORBA_exception_init (&ev);
-
-	uih = GNOME_ViewFrame_get_ui_handler (view->view_frame, &ev);
-
-	gnome_object_check_env (GNOME_OBJECT (view), view->view_frame, &ev);
-
-	CORBA_exception_free (&ev);
-
-	return uih;
+	return gnome_control_get_remote_ui_handler (GNOME_CONTROL (view));
 }
 
 /**

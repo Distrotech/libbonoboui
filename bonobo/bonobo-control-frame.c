@@ -3,7 +3,7 @@
  * GNOME control frame object.
  *
  * Authors:
- *   Nat Friedman    (nat@nat.org)
+ *   Nat Friedman    (nat@helixcode.com)
  *   Miguel de Icaza (miguel@kernel.org)
  *
  * Copyright 1999 Helix Code, Inc.
@@ -34,9 +34,42 @@ static GnomeObjectClass *gnome_control_frame_parent_class;
 POA_GNOME_ControlFrame__vepv gnome_control_frame_vepv;
 
 struct _GnomeControlFramePrivate {
-	GNOME_Control	 control;
-	GtkWidget	*socket;
+	GNOME_Control	  control;
+	GtkWidget	 *socket;
+	GnomeUIHandler   *uih;
+	GnomePropertyBag *propbag;
 };
+
+static GNOME_UIHandler
+impl_GNOME_ControlFrame_get_ui_handler (PortableServer_Servant servant,
+					CORBA_Environment *ev)
+{
+	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
+
+	if (control_frame->priv->uih == NULL)
+		return CORBA_OBJECT_NIL;
+	
+	return CORBA_Object_duplicate (
+		gnome_object_corba_objref (GNOME_OBJECT (control_frame->priv->uih)), ev);
+}
+
+static GNOME_PropertyBag
+impl_GNOME_ControlFrame_get_ambient_properties (PortableServer_Servant servant,
+						CORBA_Environment *ev)
+{
+	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
+	GNOME_PropertyBag corba_propbag;
+
+	if (control_frame->priv->propbag == NULL)
+		return CORBA_OBJECT_NIL;
+
+	corba_propbag = (GNOME_PropertyBag)
+		gnome_object_corba_objref (GNOME_OBJECT (control_frame->priv->propbag));
+
+	corba_propbag = CORBA_Object_duplicate (corba_propbag, ev);
+
+	return corba_propbag;
+}
 
 static void
 impl_GNOME_ControlFrame_queue_resize (PortableServer_Servant servant,
@@ -201,8 +234,10 @@ gnome_control_frame_get_epv (void)
 
 	epv = g_new0 (POA_GNOME_ControlFrame__epv, 1);
 
-	epv->queue_resize   = impl_GNOME_ControlFrame_queue_resize;
-	epv->activate_uri   = impl_GNOME_ControlFrame_activate_uri;
+	epv->get_ui_handler         = impl_GNOME_ControlFrame_get_ui_handler;
+	epv->queue_resize           = impl_GNOME_ControlFrame_queue_resize;
+	epv->activate_uri           = impl_GNOME_ControlFrame_activate_uri;
+	epv->get_ambient_properties = impl_GNOME_ControlFrame_get_ambient_properties;
 
 	return epv;
 }
@@ -375,6 +410,82 @@ gnome_control_frame_get_widget (GnomeControlFrame *control_frame)
 	return control_frame->priv->socket;
 }
 
+/**
+ * gnome_control_frame_set_propbag:
+ * @control_frame: A GnomeControlFrame object.
+ * @propbag: A GnomePropertyBag which will hold @control_frame's
+ * ambient properties.
+ *
+ * Makes @control_frame use @propbag for its ambient properties.  When
+ * @control_frame's Control requests the ambient properties, it will
+ * get them from @propbag.
+ */
+
+void
+gnome_control_frame_set_propbag (GnomeControlFrame  *control_frame,
+				 GnomePropertyBag   *propbag)
+{
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (propbag != NULL);
+	g_return_if_fail (GNOME_IS_PROPERTY_BAG (propbag));
+
+	control_frame->priv->propbag = propbag;
+}
+
+/**
+ * gnome_control_frame_get_propbag:
+ * @control_frame: A GnomeControlFrame object whose PropertyBag has
+ * been set.
+ *
+ * Returns: The GnomePropertyBag object which has been associated with
+ * @control_frame.
+ */
+GnomePropertyBag *
+gnome_control_frame_get_propbag (GnomeControlFrame  *control_frame)
+{
+	g_return_val_if_fail (control_frame != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), NULL);
+
+	return control_frame->priv->propbag;
+}
+
+/**
+ * gnome_control_frame_set_ui_handler:
+ * @control_frame: A GnomeControlFrame object.
+ * @uih: A GnomeUIHandler object to be associated with this ControlFrame.
+ *
+ * Sets the GnomeUIHandler object for this ControlFrame.  When the
+ * ControlFrame's Control requests its container's UIHandler
+ * interface, the ControlFrame will pass it the UIHandler specified
+ * here.  See also gnome_control_frame_get_ui_handler().
+ */
+void
+gnome_control_frame_set_ui_handler (GnomeControlFrame *control_frame, GnomeUIHandler *uih)
+{
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+
+	control_frame->priv->uih = uih;
+}
+
+/**
+ * gnome_control_frame_get_ui_handler:
+ * @control_frame: A GnomeControlFrame object.
+ *
+ * Returns: The GNOMEUIHandler associated with this COntrolFrame.  See
+ * also gnome_control_frame_set_ui_handler().
+ */
+GnomeUIHandler *
+gnome_control_frame_get_ui_handler (GnomeControlFrame *control_frame)
+{
+	g_return_val_if_fail (control_frame != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), NULL);
+
+	return control_frame->priv->uih;
+}
 
 /**
  * gnome_control_frame_get_control_property_bag:

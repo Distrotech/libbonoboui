@@ -45,9 +45,6 @@ void		  gnome_view_frame_bind_to_view	   (GnomeViewFrame *view_frame,
 						    GNOME_View view);
 GNOME_View	  gnome_view_frame_get_view	   (GnomeViewFrame *view_frame);
 
-void		  gnome_view_frame_set_ui_handler  (GnomeViewFrame *view_frame,
-						    GnomeUIHandler *uih);
-GnomeUIHandler   *gnome_view_frame_get_ui_handler  (GnomeViewFrame *view_frame);
 GnomeClientSite  *gnome_view_frame_get_client_site (GnomeViewFrame *view_frame);
 
 GtkWidget        *gnome_view_frame_get_wrapper     (GnomeViewFrame *view_frame);

@@ -41,19 +41,6 @@ struct _GnomeViewFramePrivate {
 	GNOME_View       view;
 };
 
-static GNOME_UIHandler
-impl_GNOME_ViewFrame_get_ui_handler (PortableServer_Servant servant,
-				     CORBA_Environment *ev)
-{
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
-
-	if (view_frame->priv->uih == NULL)
-		return CORBA_OBJECT_NIL;
-	
-	return CORBA_Object_duplicate (
-		gnome_object_corba_objref (GNOME_OBJECT (view_frame->priv->uih)), ev);
-}
-
 static GNOME_ClientSite
 impl_GNOME_ViewFrame_get_client_site (PortableServer_Servant servant,
 				      CORBA_Environment *ev)
@@ -256,7 +243,6 @@ gnome_view_frame_get_epv (void)
 	epv = g_new0 (POA_GNOME_ViewFrame__epv, 1);
 
 	epv->get_client_site	 = impl_GNOME_ViewFrame_get_client_site;
-	epv->get_ui_handler	 = impl_GNOME_ViewFrame_get_ui_handler;
 	epv->view_activated	 = impl_GNOME_ViewFrame_view_activated;
 	epv->deactivate_and_undo = impl_GNOME_ViewFrame_view_deactivate_and_undo;
 
@@ -566,7 +552,7 @@ gnome_view_frame_set_ui_handler (GnomeViewFrame *view_frame, GnomeUIHandler *uih
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 
-	view_frame->priv->uih = uih;
+	gnome_control_frame_set_ui_handler (GNOME_CONTROL_FRAME (view_frame), uih);
 }
 
 /**
@@ -582,7 +568,7 @@ gnome_view_frame_get_ui_handler (GnomeViewFrame *view_frame)
 	g_return_val_if_fail (view_frame != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
 
-	return view_frame->priv->uih;
+	return gnome_control_frame_get_ui_handler (GNOME_CONTROL_FRAME (view_frame));
 }
 
 /**

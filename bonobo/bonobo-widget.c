@@ -3,7 +3,7 @@
  * GNOME BonoboWidget object.
  *
  * Authors:
- *   Nat Friedman    (nat@nat.org)
+ *   Nat Friedman    (nat@helixcode.com)
  *
  * Copyright 1999 Helix Code, Inc.
  * 
@@ -150,7 +150,12 @@ gnome_bonobo_widget_new_control_from_objref (GNOME_Control control)
 
 	bw = gtk_type_new (GNOME_BONOBO_WIDGET_TYPE);
 
-	return GTK_WIDGET (gnome_bonobo_widget_construct_control_from_objref (bw, control));
+	bw = gnome_bonobo_widget_construct_control_from_objref (bw, control);
+
+	if (bw == NULL)
+		return NULL;
+
+	return GTK_WIDGET (bw);
 }
 
 GtkWidget *
@@ -162,7 +167,12 @@ gnome_bonobo_widget_new_control (char *goad_id)
 
 	bw = gtk_type_new (GNOME_BONOBO_WIDGET_TYPE);
 
-	return GTK_WIDGET (gnome_bonobo_widget_construct_control (bw, goad_id));
+	bw = gnome_bonobo_widget_construct_control (bw, goad_id);
+
+	if (bw == NULL)
+		return NULL;
+	else
+		return GTK_WIDGET (bw);
 }
 
 GnomeControlFrame *
@@ -237,8 +247,14 @@ gnome_bonobo_widget_new_subdoc (char *object_desc,
 
 	bw = gtk_type_new (GNOME_BONOBO_WIDGET_TYPE);
 
+	if (bw == NULL)
+		return NULL;
+
 	gnome_bonobo_widget_create_subdoc_object (bw, object_desc);
 
+	if (bw == NULL)
+		return NULL;
+ 
 	gnome_view_frame_set_covered (bw->priv->view_frame, FALSE);
 
 	return GTK_WIDGET (bw);
