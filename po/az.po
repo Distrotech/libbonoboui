@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.107.0\n"
-"POT-Creation-Date: 2001-12-14 13:14+0000\n"
+"POT-Creation-Date: 2002-01-10 12:41+0000\n"
 "PO-Revision-Date: 2001-11-28 23:45GMT+0200\n"
 "Last-Translator: Vasif İsmayıloğlu MD <azerb_linux@hotmail.com>\n"
 "Language-Team: Azərbaycan Türkcəsi <linuxaz@azerimail.net>\n"
@@ -30,17 +30,25 @@ msgstr "Tərcih edilən en"
 msgid "Preferred height"
 msgstr "Tərcih edilən hündürlük"
 
-#: bonobo/bonobo-file-selector-util.c:367
+#: bonobo/bonobo-file-selector-util.c:375
 msgid "Select a file to open"
 msgstr "Açılacaq faylı seçin"
 
-#: bonobo/bonobo-file-selector-util.c:395
+#: bonobo/bonobo-file-selector-util.c:403
 msgid "Select files to open"
 msgstr "Açılacaq faylları seçin"
 
-#: bonobo/bonobo-file-selector-util.c:424
+#: bonobo/bonobo-file-selector-util.c:432
 msgid "Select a filename to save"
 msgstr "Qeyd ediləcək fayl adlarını seçin"
+
+#: bonobo/bonobo-plug.c:343
+msgid "Event Forwarding"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:344
+msgid "Whether X events should be forwarded"
+msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -50,39 +58,39 @@ msgstr "Ad"
 msgid "Description"
 msgstr "İzah"
 
-#: bonobo/bonobo-ui-config-widget.c:265
+#: bonobo/bonobo-ui-config-widget.c:260
 msgid "Visible"
 msgstr "Görünən"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "_Show"
 msgstr "_Göstər"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Hide"
 msgstr "_Gizlət"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:280
 msgid "_View tooltips"
 msgstr "_İpuclarını göstər"
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "Toolbars"
 msgstr "Ləvazimat çubuqları"
 
-#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Look"
 msgstr "Bax"
 
-#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Icon"
 msgstr "_Timsal"
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:310
 msgid "_Text and Icon"
 msgstr "_Mətn və Timsal"
 
-#: bonobo/bonobo-ui-config-widget.c:321
+#: bonobo/bonobo-ui-config-widget.c:316
 msgid "_Priority text only"
 msgstr "Təkcə _üstünlük mətni"
 
@@ -90,31 +98,31 @@ msgstr "Təkcə _üstünlük mətni"
 msgid "Configure UI"
 msgstr "UIni Quraşdır"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "B_oth"
 msgstr "_Hər İkisi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "T_ext"
 msgstr "M_ətn"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Hide t_ips"
 msgstr "İ_puclarını gizlət"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Show t_ips"
 msgstr "İ_puclarını göstər"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "_Hide toolbar"
 msgstr "Ləvazimat çubuğunu _Gizlət"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "Customi_ze"
 msgstr "Xü_susiləşdir"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:544
 msgid "Customize the toolbar"
 msgstr "Ləvazimat çubuğunu xüsusiləşdir"
 
@@ -183,14 +191,37 @@ msgstr "Gnome Hello"
 msgid "Hello, World!"
 msgstr "Xoş Gördük, Dünya!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+#: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
 msgstr "libbononoui kodu init edilə bilmir"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
-msgstr "Bonobo_ui_init edə bilmirəm"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr ""
 
-#: tests/test-selector.c:12
-msgid "Select an object"
-msgstr "Bir cism seç"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#, fuzzy
+msgid "_File"
+msgstr "_Gizlət"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr ""
+
+#~ msgid "Can not bonobo_ui_init"
+#~ msgstr "Bonobo_ui_init edə bilmirəm"
+
+#~ msgid "Select an object"
+#~ msgstr "Bir cism seç"

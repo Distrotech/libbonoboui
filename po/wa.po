@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2001-12-14 13:14+0000\n"
+"POT-Creation-Date: 2002-01-10 12:41+0000\n"
 "PO-Revision-Date: 1999-02-07 17:37+0100\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: walon <linux-wa@chanae.alphanet.ch>\n"
@@ -34,17 +34,25 @@ msgstr "Preferêye lårdjeu"
 msgid "Preferred height"
 msgstr "Preferêye hôteu"
 
-#: bonobo/bonobo-file-selector-util.c:367
+#: bonobo/bonobo-file-selector-util.c:375
 msgid "Select a file to open"
 msgstr "Tchwezixhoz li fitchî a drovî"
 
-#: bonobo/bonobo-file-selector-util.c:395
+#: bonobo/bonobo-file-selector-util.c:403
 msgid "Select files to open"
 msgstr "Tchwezixhoz les fitchîs a drovî"
 
-#: bonobo/bonobo-file-selector-util.c:424
+#: bonobo/bonobo-file-selector-util.c:432
 msgid "Select a filename to save"
 msgstr "Tchwezixhoz on no d' fitchî po schaper"
+
+#: bonobo/bonobo-plug.c:343
+msgid "Event Forwarding"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:344
+msgid "Whether X events should be forwarded"
+msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -54,39 +62,39 @@ msgstr "No"
 msgid "Description"
 msgstr "Discrijhaedje"
 
-#: bonobo/bonobo-ui-config-widget.c:265
+#: bonobo/bonobo-ui-config-widget.c:260
 msgid "Visible"
 msgstr "Veyåve"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "_Show"
 msgstr "_Vey"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Hide"
 msgstr "_Catchî"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:280
 msgid "_View tooltips"
 msgstr "_Vey racsegnes"
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "Toolbars"
 msgstr "Bårs ås usteyes"
 
-#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Look"
 msgstr "Rivnance"
 
-#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Icon"
 msgstr "_Imådjete"
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:310
 msgid "_Text and Icon"
 msgstr "_Tecse et imådjete"
 
-#: bonobo/bonobo-ui-config-widget.c:321
+#: bonobo/bonobo-ui-config-widget.c:316
 msgid "_Priority text only"
 msgstr "Seulmint les tecses di _prumîristé"
 
@@ -94,31 +102,31 @@ msgstr "Seulmint les tecses di _prumîristé"
 msgid "Configure UI"
 msgstr "Apontyî l' eterface ûzeu"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "B_oth"
 msgstr "Les _deus"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "T_ext"
 msgstr "_Tecse"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Hide t_ips"
 msgstr "Catchî les _racsegnes"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Show t_ips"
 msgstr "Mostrer les _racsegnes"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "_Hide toolbar"
 msgstr "_Catchî l' bår ås usteyes"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "Customi_ze"
 msgstr "A _vosse môde"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:544
 msgid "Customize the toolbar"
 msgstr "Apontyî l' bår ås usteyes a vosse môde"
 
@@ -187,17 +195,40 @@ msgstr "GnomeBondjoû"
 msgid "Hello, World!"
 msgstr "Bondjoû, Daegn!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+#: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
 msgstr "Dji n' pout nén enonder li côde libbonoboui"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
-msgstr "Dji n' pout nén enonder l' eterface ûzeu di bonobo"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr ""
 
-#: tests/test-selector.c:12
-msgid "Select an object"
-msgstr "Tchwezixhoz on objet"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#, fuzzy
+msgid "_File"
+msgstr "_Catchî"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr ""
+
+#~ msgid "Can not bonobo_ui_init"
+#~ msgstr "Dji n' pout nén enonder l' eterface ûzeu di bonobo"
+
+#~ msgid "Select an object"
+#~ msgstr "Tchwezixhoz on objet"
 
 #~ msgid "Can not activate object_server"
 #~ msgstr "Dji n' pout nén mete en alaedje object_server"

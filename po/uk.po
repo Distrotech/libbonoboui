@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-12-21 12:46+0200\n"
+"POT-Creation-Date: 2002-01-10 12:41+0000\n"
 "PO-Revision-Date: 2001-12-11 18:01+0200\n"
 "Last-Translator: Yuriy Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -29,17 +29,25 @@ msgstr "Бажана ширина"
 msgid "Preferred height"
 msgstr "Бажана висота"
 
-#: bonobo/bonobo-file-selector-util.c:367
+#: bonobo/bonobo-file-selector-util.c:375
 msgid "Select a file to open"
 msgstr "Вибер╕ть файл для в╕дкривання"
 
-#: bonobo/bonobo-file-selector-util.c:395
+#: bonobo/bonobo-file-selector-util.c:403
 msgid "Select files to open"
 msgstr "Вибер╕ть файли для в╕дкривання"
 
-#: bonobo/bonobo-file-selector-util.c:424
+#: bonobo/bonobo-file-selector-util.c:432
 msgid "Select a filename to save"
 msgstr "Вибер╕ть файл для збереження"
+
+#: bonobo/bonobo-plug.c:343
+msgid "Event Forwarding"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:344
+msgid "Whether X events should be forwarded"
+msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -69,11 +77,11 @@ msgstr ""
 msgid "Toolbars"
 msgstr "Панел╕ ╕нстпумент╕в"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Look"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Icon"
 msgstr "П╕ктограма"
 
@@ -89,31 +97,31 @@ msgstr ""
 msgid "Configure UI"
 msgstr "Налаштувати ╕нтерфейс"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "B_oth"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "T_ext"
 msgstr "Текст"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Hide t_ips"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Show t_ips"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "_Hide toolbar"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "Customi_ze"
 msgstr "Налаштувати"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:544
 msgid "Customize the toolbar"
 msgstr "Налаштувати панель"
 
@@ -182,14 +190,37 @@ msgstr "GNOME Прив╕т"
 msgid "Hello, World!"
 msgstr "Прив╕т, св╕т!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+#: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
 msgstr "Неможливо ╕н╕ц╕ал╕зувати код libbonoboui"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
-msgstr "Неможливо виконати bonobo_ui_init"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr ""
 
-#: tests/test-selector.c:12
-msgid "Select an object"
-msgstr "В╕бер╕ть об'╓кт"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#, fuzzy
+msgid "_File"
+msgstr "Прибрати"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr ""
+
+#~ msgid "Can not bonobo_ui_init"
+#~ msgstr "Неможливо виконати bonobo_ui_init"
+
+#~ msgid "Select an object"
+#~ msgstr "В╕бер╕ть об'╓кт"

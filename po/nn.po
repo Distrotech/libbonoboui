@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bonobo 0.32\n"
-"POT-Creation-Date: 2001-12-14 13:14+0000\n"
+"POT-Creation-Date: 2002-01-10 12:41+0000\n"
 "PO-Revision-Date: 2000-09-07 20:17+02:00\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (Nynorsk)\n"
@@ -29,20 +29,28 @@ msgstr ""
 msgid "Preferred height"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:367
+#: bonobo/bonobo-file-selector-util.c:375
 #, fuzzy
 msgid "Select a file to open"
 msgstr "Vel fil"
 
-#: bonobo/bonobo-file-selector-util.c:395
+#: bonobo/bonobo-file-selector-util.c:403
 #, fuzzy
 msgid "Select files to open"
 msgstr "Vel fil"
 
-#: bonobo/bonobo-file-selector-util.c:424
+#: bonobo/bonobo-file-selector-util.c:432
 #, fuzzy
 msgid "Select a filename to save"
 msgstr "Vel fil"
+
+#: bonobo/bonobo-plug.c:343
+msgid "Event Forwarding"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:344
+msgid "Whether X events should be forwarded"
+msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -52,40 +60,40 @@ msgstr "Namn"
 msgid "Description"
 msgstr "Skildring"
 
-#: bonobo/bonobo-ui-config-widget.c:265
+#: bonobo/bonobo-ui-config-widget.c:260
 msgid "Visible"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "_Show"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:274
 #, fuzzy
 msgid "_Hide"
 msgstr "Fil"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:280
 msgid "_View tooltips"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "Toolbars"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Look"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Icon"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:310
 msgid "_Text and Icon"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:321
+#: bonobo/bonobo-ui-config-widget.c:316
 msgid "_Priority text only"
 msgstr ""
 
@@ -93,32 +101,32 @@ msgstr ""
 msgid "Configure UI"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "B_oth"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 #, fuzzy
 msgid "T_ext"
 msgstr "Avslutt"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Hide t_ips"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Show t_ips"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "_Hide toolbar"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "Customi_ze"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:544
 msgid "Customize the toolbar"
 msgstr ""
 
@@ -190,18 +198,40 @@ msgstr ""
 msgid "Hello, World!"
 msgstr ""
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+#: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
 msgstr ""
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+#, fuzzy
+msgid "About this application"
+msgstr "Avsluttar programmet"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
 msgstr ""
 
-#: tests/test-selector.c:12
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 #, fuzzy
-msgid "Select an object"
-msgstr "Vel ein film"
+msgid "_About..."
+msgstr "Om ..."
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#, fuzzy
+msgid "_File"
+msgstr "Drep"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Select an object"
+#~ msgstr "Vel ein film"
 
 #, fuzzy
 #~ msgid "Can not activate object_server"
@@ -368,10 +398,6 @@ msgstr "Vel ein film"
 #~ msgstr "Feil under opning av dette dokumentet"
 
 #, fuzzy
-#~ msgid "About this application"
-#~ msgstr "Avsluttar programmet"
-
-#, fuzzy
 #~ msgid "Close the current window"
 #~ msgstr "Lukkar prosjektet"
 
@@ -459,10 +485,6 @@ msgstr "Vel ein film"
 #~ msgstr "Forstørr"
 
 #, fuzzy
-#~ msgid "_About..."
-#~ msgstr "Om ..."
-
-#, fuzzy
 #~ msgid "_Buffers"
 #~ msgstr "Bufferar"
 
@@ -473,10 +495,6 @@ msgstr "Vel ein film"
 #, fuzzy
 #~ msgid "_Help"
 #~ msgstr "Hjelp"
-
-#, fuzzy
-#~ msgid "_Kill"
-#~ msgstr "Drep"
 
 #, fuzzy
 #~ msgid "_Load..."

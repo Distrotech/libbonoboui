@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2001-12-14 13:14+0000\n"
+"POT-Creation-Date: 2002-01-10 12:41+0000\n"
 "PO-Revision-Date: 2001-06-19 12:54+0200\n"
 "Last-Translator: Héctor García Álvarez <hector@scouts-es.org>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -29,17 +29,25 @@ msgstr "Archo preferido"
 msgid "Preferred height"
 msgstr "Altura preferida"
 
-#: bonobo/bonobo-file-selector-util.c:367
+#: bonobo/bonobo-file-selector-util.c:375
 msgid "Select a file to open"
 msgstr "Seleccione un archivo a abrir"
 
-#: bonobo/bonobo-file-selector-util.c:395
+#: bonobo/bonobo-file-selector-util.c:403
 msgid "Select files to open"
 msgstr "Seleccione los archivos a abrir"
 
-#: bonobo/bonobo-file-selector-util.c:424
+#: bonobo/bonobo-file-selector-util.c:432
 msgid "Select a filename to save"
 msgstr "Seleccione un nombre de archivo para guardar"
+
+#: bonobo/bonobo-plug.c:343
+msgid "Event Forwarding"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:344
+msgid "Whether X events should be forwarded"
+msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -49,39 +57,39 @@ msgstr "Nombre"
 msgid "Description"
 msgstr "Descripción"
 
-#: bonobo/bonobo-ui-config-widget.c:265
+#: bonobo/bonobo-ui-config-widget.c:260
 msgid "Visible"
 msgstr "Visible"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "_Show"
 msgstr "Mo_strar"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Hide"
 msgstr "_Ocultar"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:280
 msgid "_View tooltips"
 msgstr "_Mostrar consejos"
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "Toolbars"
 msgstr "Barra de herramientas"
 
-#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Look"
 msgstr "Mirar"
 
-#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Icon"
 msgstr "_Icono"
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:310
 msgid "_Text and Icon"
 msgstr "_Texto e incono"
 
-#: bonobo/bonobo-ui-config-widget.c:321
+#: bonobo/bonobo-ui-config-widget.c:316
 msgid "_Priority text only"
 msgstr "Solo texto _prioritario"
 
@@ -89,31 +97,31 @@ msgstr "Solo texto _prioritario"
 msgid "Configure UI"
 msgstr "Configurar UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "B_oth"
 msgstr "Amb_os"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "T_ext"
 msgstr "T_exto"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Hide t_ips"
 msgstr "Ocultar c_onsejos"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Show t_ips"
 msgstr "Mostrar c_onsejos"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "_Hide toolbar"
 msgstr "O_cultar barra de herramientas"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "Customi_ze"
 msgstr "Personali_zar"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:544
 msgid "Customize the toolbar"
 msgstr "Personalizar la barra de herramientas"
 
@@ -182,14 +190,37 @@ msgstr ""
 msgid "Hello, World!"
 msgstr ""
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+#: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
 msgstr "No puedo inicializar el codigo de libbonoboui"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
-msgstr "No puede ejecutar bonobo_ui_init"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr ""
 
-#: tests/test-selector.c:12
-msgid "Select an object"
-msgstr "Seleccionar un objeto"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#, fuzzy
+msgid "_File"
+msgstr "_Ocultar"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr ""
+
+#~ msgid "Can not bonobo_ui_init"
+#~ msgstr "No puede ejecutar bonobo_ui_init"
+
+#~ msgid "Select an object"
+#~ msgstr "Seleccionar un objeto"

@@ -1,3 +1,25 @@
+libbonoboui 1.109.0
+
+	* UI handler
+		+ re-enterancy fixes (Michael)
+		+ status segv (Darin Adler)
+		+ resize grip configurability (Anders Carlsson)
+		+ component polishing (Michael)
+		+ fix control widget leak (Michael)
+		+ forward ported accelerations (Michael)
+		+ less malloc thrash (Michael)
+	* Controls
+		+ auto merging fixes (Jacob Berkman)
+		+ signal updates (Dave Camp)
+		+ missing macro (Bill Haneman)
+		+ plug property fixage (Mark)
+	* Misc
+		+ PropertyControl ported (Jens Finke)
+		+ more regression tests (Michael)
+		+ file selector updates (Paolo Maggi)
+		+ leak fixes (Michael, Anders, Darin)
+		+ build fixage (Darin)
+
 libbonoboui 1.108.1
 
 	* GType != guint fixage (George Lebl)

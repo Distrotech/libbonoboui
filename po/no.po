@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2001-12-14 13:14+0000\n"
+"POT-Creation-Date: 2002-01-10 12:41+0000\n"
 "PO-Revision-Date: 2001-11-11 14:11+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -29,17 +29,25 @@ msgstr "Foretrukket bredde"
 msgid "Preferred height"
 msgstr "Foretrukket høyde"
 
-#: bonobo/bonobo-file-selector-util.c:367
+#: bonobo/bonobo-file-selector-util.c:375
 msgid "Select a file to open"
 msgstr "Velg en fil som skal åpnes"
 
-#: bonobo/bonobo-file-selector-util.c:395
+#: bonobo/bonobo-file-selector-util.c:403
 msgid "Select files to open"
 msgstr "Velg filer som skal åpnes"
 
-#: bonobo/bonobo-file-selector-util.c:424
+#: bonobo/bonobo-file-selector-util.c:432
 msgid "Select a filename to save"
 msgstr "Velg et fil som skal lagres"
+
+#: bonobo/bonobo-plug.c:343
+msgid "Event Forwarding"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:344
+msgid "Whether X events should be forwarded"
+msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -49,39 +57,39 @@ msgstr "Navn"
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: bonobo/bonobo-ui-config-widget.c:265
+#: bonobo/bonobo-ui-config-widget.c:260
 msgid "Visible"
 msgstr "Synlig"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "_Show"
 msgstr "_Vis"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Hide"
 msgstr "_Skjul"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:280
 msgid "_View tooltips"
 msgstr "_Vis verktøytips"
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "Toolbars"
 msgstr "Verktøylinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Look"
 msgstr "Se"
 
-#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Icon"
 msgstr "_Ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:310
 msgid "_Text and Icon"
 msgstr "_Tekst og ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:321
+#: bonobo/bonobo-ui-config-widget.c:316
 msgid "_Priority text only"
 msgstr "Kun _prioritetstekst"
 
@@ -89,31 +97,31 @@ msgstr "Kun _prioritetstekst"
 msgid "Configure UI"
 msgstr "Konfigurer UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "B_oth"
 msgstr "B_egge"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "T_ext"
 msgstr "T_ekst"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Hide t_ips"
 msgstr "Skjul t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Show t_ips"
 msgstr "Vis t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "_Hide toolbar"
 msgstr "Sk_jul verktøylinjen"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "Customi_ze"
 msgstr "Tilpas_s"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:544
 msgid "Customize the toolbar"
 msgstr "Tilpass verktøylinjen"
 
@@ -182,17 +190,40 @@ msgstr "GNOME hallo"
 msgid "Hello, World!"
 msgstr "Hallo verden!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+#: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
 msgstr "Kan ikke initiere libbonoboui"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
-msgstr "Kan ikke kjøre bonobo_ui_init"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "Om denne applikasjonen"
 
-#: tests/test-selector.c:12
-msgid "Select an object"
-msgstr "Velg et objekt"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr "_Om..."
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+#, fuzzy
+msgid "_Edit"
+msgstr "A_vslutt"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+msgid "_File"
+msgstr "_Fil"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr ""
+
+#~ msgid "Can not bonobo_ui_init"
+#~ msgstr "Kan ikke kjøre bonobo_ui_init"
+
+#~ msgid "Select an object"
+#~ msgstr "Velg et objekt"
 
 #~ msgid "Can not bonobo_init"
 #~ msgstr "Kan ikke kjøre bonobo_init"
@@ -391,9 +422,6 @@ msgstr "Velg et objekt"
 #~ "Et unntak oppstod under forsøk på å laste data inn i komponenten med "
 #~ "PersistStream"
 
-#~ msgid "About this application"
-#~ msgstr "Om denne applikasjonen"
-
 #~ msgid "Close the current window"
 #~ msgstr "Lukk aktivt vindu"
 
@@ -408,9 +436,6 @@ msgstr "Velg et objekt"
 
 #~ msgid "Displays only one window"
 #~ msgstr "Viser kun ett vindu"
-
-#~ msgid "E_xit"
-#~ msgstr "A_vslutt"
 
 #~ msgid "Exit the program"
 #~ msgstr "Avslutt programmet"
@@ -475,17 +500,11 @@ msgstr "Velg et objekt"
 #~ msgid "Zoom to _fit"
 #~ msgstr "Zoom til_passet"
 
-#~ msgid "_About..."
-#~ msgstr "_Om..."
-
 #~ msgid "_Buffers"
 #~ msgstr "_Buffere"
 
 #~ msgid "_Close This Window"
 #~ msgstr "_Lukk dette vinduet"
-
-#~ msgid "_File"
-#~ msgstr "_Fil"
 
 #~ msgid "_Help"
 #~ msgstr "_Hjelp"

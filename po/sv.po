@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-01-09 13:06+0100\n"
+"POT-Creation-Date: 2002-01-10 12:41+0000\n"
 "PO-Revision-Date: 2002-01-09 13:06+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -79,11 +79,11 @@ msgstr "V_isa verktygstips"
 msgid "Toolbars"
 msgstr "Verktygsrader"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Look"
 msgstr "Utseende"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Icon"
 msgstr "_Ikon"
 
@@ -99,31 +99,31 @@ msgstr "_Endast prioritetstext"
 msgid "Configure UI"
 msgstr "Konfigurera användargränssnitt"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "B_oth"
 msgstr "B_åda"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "T_ext"
 msgstr "Te_xt"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Hide t_ips"
 msgstr "Göm t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Show t_ips"
 msgstr "Visa t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "_Hide toolbar"
 msgstr "_Göm verktygsrad"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "Customi_ze"
 msgstr "Anpa_ssa"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:544
 msgid "Customize the toolbar"
 msgstr "Anpassa verktygsraden"
 
@@ -175,26 +175,26 @@ msgstr "Är kontinuerlig"
 msgid "Whether we zoom continuously (as opposed to jumps)"
 msgstr "Huruvida vi zoomar kontinuerligt (i motsats till hopp)"
 
-#: monikers/Bonobo_Moniker_extra.server.in.in.h:1
-msgid "Extra Moniker factory"
-msgstr "Extra monikerfabrik"
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "Detta gör ingenting; det är bara en demonstration."
 
-#: monikers/Bonobo_Moniker_extra.server.in.in.h:2
-msgid "GConf moniker"
-msgstr "GConf-moniker"
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-hej."
 
-#: monikers/Bonobo_Moniker_extra.server.in.in.h:3
-msgid "config indirect moniker"
-msgstr "konfigurera indirekt moniker"
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr "Gnome-hej"
 
-#: monikers/bonobo-config-bag.c:212
-msgid "Unknown type"
-msgstr "Okänd typ"
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr "Hej världen!"
 
-#: monikers/bonobo-moniker-conf-indirect.c:44
-#, c-format
-msgid "Key %s not found in configuration"
-msgstr "Nycklen %s hittades inte i konfigurationen"
+#: samples/bonoboui/hello.c:290
+msgid "Cannot init libbonoboui code"
+msgstr "Kan inte initiera libbonoboui-koden"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -220,42 +220,34 @@ msgstr "_Arkiv"
 msgid "_Select"
 msgstr "_Markera"
 
-#: samples/bonoboui/hello.c:63
-msgid "This does nothing; it is only a demonstration."
-msgstr "Detta gör ingenting; det är bara en demonstration."
+#~ msgid "Extra Moniker factory"
+#~ msgstr "Extra monikerfabrik"
 
-#: samples/bonoboui/hello.c:145
-msgid "BonoboUI-Hello."
-msgstr "BonoboUI-hej."
+#~ msgid "GConf moniker"
+#~ msgstr "GConf-moniker"
 
-#: samples/bonoboui/hello.c:195
-msgid "Gnome Hello"
-msgstr "Gnome-hej"
+#~ msgid "config indirect moniker"
+#~ msgstr "konfigurera indirekt moniker"
 
-#. Create Label and put it in the Button:
-#: samples/bonoboui/hello.c:250
-msgid "Hello, World!"
-msgstr "Hej världen!"
+#~ msgid "Unknown type"
+#~ msgstr "Okänd typ"
 
-#: samples/bonoboui/hello.c:290
-msgid "Cannot init libbonoboui code"
-msgstr "Kan inte initiera libbonoboui-koden"
+#~ msgid "Key %s not found in configuration"
+#~ msgstr "Nycklen %s hittades inte i konfigurationen"
 
-#: samples/compound-doc/container/embeddable-io.c:36
-msgid ""
-"An exception occured while trying to load data into the component with "
-"PersistStorage"
-msgstr ""
-"Ett undantag inträffade vid försök att läsa in data i komponenten med "
-"PersistStorage"
+#~ msgid ""
+#~ "An exception occured while trying to load data into the component with "
+#~ "PersistStorage"
+#~ msgstr ""
+#~ "Ett undantag inträffade vid försök att läsa in data i komponenten med "
+#~ "PersistStorage"
 
-#: samples/compound-doc/container/embeddable-io.c:67
-msgid ""
-"An exception occured while trying to save data from the component with "
-"PersistStorage"
-msgstr ""
-"Ett undantag inträffade vid försök att spara data från komponenten med "
-"PersistStorage"
+#~ msgid ""
+#~ "An exception occured while trying to save data from the component with "
+#~ "PersistStorage"
+#~ msgstr ""
+#~ "Ett undantag inträffade vid försök att spara data från komponenten med "
+#~ "PersistStorage"
 
 #~ msgid "Can not bonobo_ui_init"
 #~ msgstr "Kan inte utföra bonobo_ui_init"

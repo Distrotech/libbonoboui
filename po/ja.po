@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.108.1\n"
-"POT-Creation-Date: 2001-12-23 23:18+0900\n"
+"POT-Creation-Date: 2002-01-10 12:41+0000\n"
 "PO-Revision-Date: 2001-12-23 23:26+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -30,17 +30,25 @@ msgstr "希望する幅"
 msgid "Preferred height"
 msgstr "希望する高さ"
 
-#: bonobo/bonobo-file-selector-util.c:367
+#: bonobo/bonobo-file-selector-util.c:375
 msgid "Select a file to open"
 msgstr "開きたいファイルを選択"
 
-#: bonobo/bonobo-file-selector-util.c:395
+#: bonobo/bonobo-file-selector-util.c:403
 msgid "Select files to open"
 msgstr "開きたいファイルを選択"
 
-#: bonobo/bonobo-file-selector-util.c:424
+#: bonobo/bonobo-file-selector-util.c:432
 msgid "Select a filename to save"
 msgstr "保存するファイル名を選択"
+
+#: bonobo/bonobo-plug.c:343
+msgid "Event Forwarding"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:344
+msgid "Whether X events should be forwarded"
+msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -70,11 +78,11 @@ msgstr "ツールチップを表示(_V)"
 msgid "Toolbars"
 msgstr "ツールバー"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Look"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Icon"
 msgstr "アイコン(_I)"
 
@@ -90,31 +98,31 @@ msgstr ""
 msgid "Configure UI"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "B_oth"
 msgstr "両方(_O)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "T_ext"
 msgstr "テキスト(_E)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Hide t_ips"
 msgstr "ツールチップを隠す(_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Show t_ips"
 msgstr "ツールチップを表示(_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "_Hide toolbar"
 msgstr "ツールバーを隠す(_H)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "Customi_ze"
 msgstr "設定変更(_Z)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:544
 msgid "Customize the toolbar"
 msgstr "ツールバーのカスタマイズ"
 
@@ -183,17 +191,40 @@ msgstr "Gnome Hello"
 msgid "Hello, World!"
 msgstr "こんにちは、世界!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+#: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
 msgstr "libbonoboui のコードを初期化できません"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
-msgstr "bonobo_ui_init 失敗"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr ""
 
-#: tests/test-selector.c:12
-msgid "Select an object"
-msgstr "オブジェクトを選択"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#, fuzzy
+msgid "_File"
+msgstr "隠す(_H)"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr ""
+
+#~ msgid "Can not bonobo_ui_init"
+#~ msgstr "bonobo_ui_init 失敗"
+
+#~ msgid "Select an object"
+#~ msgstr "オブジェクトを選択"
 
 #~ msgid "Error checking error; no exception"
 #~ msgstr "エラーチェックでエラー: 例外ではありません"

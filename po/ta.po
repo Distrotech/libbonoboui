@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tamil libbonoboui2 1.7\n"
-"POT-Creation-Date: 2001-12-14 13:14+0000\n"
+"POT-Creation-Date: 2002-01-10 12:41+0000\n"
 "PO-Revision-Date: 2001-09-28 18:53-0500\n"
 "Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -29,16 +29,24 @@ msgstr "Å¢ÕôÀÁ¡É «¸Äõ"
 msgid "Preferred height"
 msgstr "Å¢ÕôÀÁ¡É ¯ÂÃõ"
 
-#: bonobo/bonobo-file-selector-util.c:367
+#: bonobo/bonobo-file-selector-util.c:375
 msgid "Select a file to open"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:395
+#: bonobo/bonobo-file-selector-util.c:403
 msgid "Select files to open"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:424
+#: bonobo/bonobo-file-selector-util.c:432
 msgid "Select a filename to save"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:343
+msgid "Event Forwarding"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:344
+msgid "Whether X events should be forwarded"
 msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:302
@@ -49,39 +57,39 @@ msgstr "¦ÀÂ÷"
 msgid "Description"
 msgstr "Å¢ÅÃ¢ôÒ"
 
-#: bonobo/bonobo-ui-config-widget.c:265
+#: bonobo/bonobo-ui-config-widget.c:260
 msgid "Visible"
 msgstr "À¡÷ì¸ììÜÊÂÐ"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "_Show"
 msgstr "_¸¡ñÀ¢"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Hide"
 msgstr "_Á¨È"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:280
 msgid "_View tooltips"
 msgstr "_¸ÕÅ¢ ¯¾Å¢¸¨Ç ¸¡ñÀ¢"
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:285
 msgid "Toolbars"
 msgstr "¸ÕÅ¢ô ÀÄ¨¸¸û"
 
-#: bonobo/bonobo-ui-config-widget.c:300 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Look"
 msgstr "À¡÷"
 
-#: bonobo/bonobo-ui-config-widget.c:309 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Icon"
 msgstr "_ÌÕõÀ¼õ"
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:310
 msgid "_Text and Icon"
 msgstr "_¯¨ÃÔõ ÌÕõÀ¼Óõ"
 
-#: bonobo/bonobo-ui-config-widget.c:321
+#: bonobo/bonobo-ui-config-widget.c:316
 msgid "_Priority text only"
 msgstr "_ÓýÛÃ¢¨Á ¯¨Ã ÁðÎõ"
 
@@ -89,31 +97,31 @@ msgstr "_ÓýÛÃ¢¨Á ¯¨Ã ÁðÎõ"
 msgid "Configure UI"
 msgstr "UI³ ¯ÕÅ¡ìÌ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "B_oth"
 msgstr "_­ÃñÎõ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "T_ext"
 msgstr "¯_¨Ã"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Hide t_ips"
 msgstr "¯¾_Å¢¸¨Ç Á¨È"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Show t_ips"
 msgstr "¯_¾Å¢¸¨Ç ¸¡ñÀ¢"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "_Hide toolbar"
 msgstr "¸ÕÅ¢ô _ÀÄ¨¸¨Â Á¨È"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:543
 msgid "Customi_ze"
 msgstr "_¾É¢ôÀÂÉ¡ìÌ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:544
 msgid "Customize the toolbar"
 msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
 
@@ -182,14 +190,37 @@ msgstr ""
 msgid "Hello, World!"
 msgstr ""
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+#: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
 msgstr "libbonoboui ÌÈ¢Ó¨È¨Â ¦¾¡¼ì¸ ­ÂÄÅ¢ø¨Ä"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
-msgstr "bonobo_ui_init ­ÂÄÅ¢ø¨Ä"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr ""
 
-#: tests/test-selector.c:12
-msgid "Select an object"
-msgstr "´Õ ­Äì¨¸ §¾÷× ¦ºö"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr ""
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#, fuzzy
+msgid "_File"
+msgstr "_Á¨È"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr ""
+
+#~ msgid "Can not bonobo_ui_init"
+#~ msgstr "bonobo_ui_init ­ÂÄÅ¢ø¨Ä"
+
+#~ msgid "Select an object"
+#~ msgstr "´Õ ­Äì¨¸ §¾÷× ¦ºö"
