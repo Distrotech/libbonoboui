@@ -1,9 +1,10 @@
-/* -*- Mode: C; c-basic-offset: 8 -*-
+/* -*- Mode: C; c-basic-offset: 4 -*-
  * libglade - a library for building interfaces from XML files at runtime
  * Copyright (C) 1998-2001  James Henstridge <james@daa.com.au>
  *
  * glade-bonobo.c: support for bonobo widgets in libglade.
  * Copyright (C) 2000 Helix Code, Inc.
+ * Copyright (C) 2001 James Henstridge
  *
  * Author:
  *      Michael Meeks (michael@helixcode.com)
@@ -27,113 +28,118 @@
 /* this file is only built if GNOME support is enabled */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#  include "config.h"
 #endif
 
 #include <stdlib.h>
 #include <string.h>
-#include <glade/glade.h>
+#include <glade/glade-init.h>
 #include <glade/glade-build.h>
-#include <glade/glade-private.h>
 
-#include <gnome.h>
-#include <bonobo.h>
+#include <libbonoboui.h>
 
 #ifndef ENABLE_NLS
 /* a slight optimisation when gettext is off */
-#define glade_xml_gettext(xml, msgid) (msgid)
+#  define glade_xml_gettext(xml, msgid) (msgid)
 #endif
 #undef _
 #define _(msgid) (glade_xml_gettext(xml, msgid))
 
 static GtkWidget *
-gnome_control_new (GladeXML *xml, GladeWidgetInfo *info, char **err)
+glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
+			 GladeWidgetInfo *info)
 {
-	GtkWidget               *widget;
-	BonoboControlFrame      *cf;
-	Bonobo_PropertyBag       pb;
-	GList                   *tmp;
+    const gchar *control_moniker = NULL;
+    GtkWidget *widget;
+    BonoboControlFrame *cf;
+    Bonobo_PropertyBag pb;
+    GList *tmp;
+    gint i;
 
-	g_return_val_if_fail (info->class != NULL, NULL);
-
-	widget = bonobo_widget_new_control (info->class, CORBA_OBJECT_NIL);
-
-	if (!widget) {
-		*err = g_strdup_printf ("unknown bonobo control '%s'", info->class);
-		return NULL;
+    for (i = 0; i < info->n_properties; i++)
+	if (!strcmp (info->properties[i].name, "moniker")) {
+	    control_moniker = info->properties[i].value;
+	    break;
 	}
 
-	cf = bonobo_widget_get_control_frame (BONOBO_WIDGET (widget));
+    if (!control_moniker) {
+	g_warning (G_STRLOC " BonoboWidget doesn't have moniker property");
+	return NULL;
+    }
+    widget = bonobo_widget_new_control (control_moniker, CORBA_OBJECT_NIL);
 
-	if (!cf) {
-		*err = g_strdup_printf ("control '%s' has no frame", info->class);
-		gtk_widget_unref (widget);
-		return NULL;
-	}
+    if (!widget) {
+	g_warning (G_STRLOC " unknown bonobo control '%s'", control_moniker);
+	return NULL;
+    }
 
-	pb = bonobo_control_frame_get_control_property_bag (cf, NULL);
-	if (pb == CORBA_OBJECT_NIL)
-		return widget;
+    cf = bonobo_widget_get_control_frame (BONOBO_WIDGET (widget));
 
-	for (tmp = info->attributes; tmp; tmp = tmp->next) {
-		GladeAttribute *attr = tmp->data;
-		CORBA_TypeCode tc;
+    if (!cf) {
+	g_warning ("control '%s' has no frame", control_moniker);
+	gtk_widget_unref (widget);
+	return NULL;
+    }
 
-		tc  = bonobo_property_bag_client_get_property_type (pb, attr->name, NULL);
-
-		switch (tc->kind) {
-
-		case CORBA_tk_boolean:
-			bonobo_property_bag_client_set_value_gboolean (pb, attr->name,
-								       attr->value[0] == 'T', NULL);
-			break;
-
-		case CORBA_tk_string:
-			bonobo_property_bag_client_set_value_string (pb, attr->name, attr->value, NULL);
-			break;
-
-		case CORBA_tk_long:
-			bonobo_property_bag_client_set_value_glong (pb, attr->name, strtol (attr->value, NULL, 0), NULL);
-			break;
-
-		case CORBA_tk_float:
-			bonobo_property_bag_client_set_value_gfloat (pb, attr->name, strtod (attr->value, NULL), NULL);
-			break;
-
-		case CORBA_tk_double:
-			bonobo_property_bag_client_set_value_gdouble (pb, attr->name, strtod (attr->value, NULL), NULL);
-			break;
-
-		default:
-			g_warning ("Unhandled type %d", tc->kind);
-			break;
-		}
-	}
-
-	gtk_widget_show (widget);
+    pb = bonobo_control_frame_get_control_property_bag (cf, NULL);
+    if (pb == CORBA_OBJECT_NIL)
 	return widget;
+
+    for (i = 0; i < info->n_properties; i++) {
+	const gchar *name = info->properties[i].name;
+	const gchar *value = info->properties[i].value;
+	CORBA_TypeCode tc;
+
+	if (!strcmp (name, "moniker"))
+	    continue;
+
+	tc  = bonobo_property_bag_client_get_property_type (pb, name, NULL);
+
+	switch (tc->kind) {
+	case CORBA_tk_boolean:
+	    bonobo_property_bag_client_set_value_gboolean (pb, name,
+				value[0] == 'T' || value[0] == 'y', NULL);
+	    break;
+	case CORBA_tk_string:
+	    bonobo_property_bag_client_set_value_string (pb, name, value,NULL);
+	    break;
+	case CORBA_tk_long:
+	    bonobo_property_bag_client_set_value_glong (pb, name,
+							strtol (value, NULL,0),
+							NULL);
+	    break;
+	case CORBA_tk_float:
+	    bonobo_property_bag_client_set_value_gfloat (pb, name,
+							 strtod (value, NULL),
+							 NULL);
+	    break;
+	case CORBA_tk_double:
+	    bonobo_property_bag_client_set_value_gdouble (pb, name,
+							  strtod (value, NULL),
+							  NULL);
+	    break;
+	default:
+	    g_warning ("Unhandled type %d", tc->kind);
+	    break;
+	}
+    }
+
+    gtk_widget_show (widget);
+    return widget;
 }
 
-/**
- * glade_bonobo_init
- *
- * This function performs initialisation of glade, similar to what glade_init
- * does (in fact it calls glade_init for you).  The difference is that it
- * also initialises the Bonobo widget building routines.
- *
- * As well as calling this initialisation function, Bonoboized programs should
- * also link with the libglade-gnome and libglade-bonobo libraries, which
- * contains all the GNOME, Bonobo libglade stuff.
- */
+static GladeWidgetBuildData widget_data[] = {
+    { "BonoboWidget", glade_bonobo_widget_new, NULL,
+      bonobo_widget_get_type },
+    { NULL, NULL, NULL, 0, 0 }
+};
+
+/* this macro puts a version check function into the module */
+GLADE_MODULE_CHECK_INIT
+
 void
-glade_bonobo_init(void)
+glade_module_register_widgets (void)
 {
-	static gboolean initialised = FALSE;
-
-	if (initialised) return;
-	initialised = TRUE;
-	glade_init();
-	glade_gnome_init();
-
-	glade_xml_build_extended_widget = gnome_control_new;
+    glade_provide ("bonobo");
+    glade_register_widgets (widget_data);
 }
