@@ -184,6 +184,11 @@ typedef struct {
 	Bonobo_Unknown object;
 } WinComponent;
 
+typedef struct {
+	GtkMenu          *menu;
+	char             *path;
+} WinPopup;
+
 static WinComponent *
 win_component_get (BonoboWinPrivate *priv, const char *name)
 {
@@ -251,81 +256,6 @@ win_component_destroy (BonoboWinPrivate *priv, WinComponent *component)
 			bonobo_object_release_unref (component->object, NULL);
 		g_free (component);
 	}
-}
-
-typedef struct {
-	GtkMenu          *menu;
-	char             *path;
-} WinPopup;
-
-static void
-popup_remove (BonoboWinPrivate *priv,
-	      WinPopup         *popup)
-{
-	g_return_if_fail (priv != NULL);
-	g_return_if_fail (popup != NULL);
-
-	priv->popups = g_slist_remove (
-		priv->popups, popup);
-	
-	g_free (popup->path);
-	g_free (popup);
-}
-
-void
-bonobo_win_remove_popup (BonoboWin     *win,
-			 const char    *path)
-{
-	GSList *l, *next;
-
-	g_return_if_fail (path != NULL);
-	g_return_if_fail (BONOBO_IS_WIN (win));
-	g_return_if_fail (win->priv != NULL);
-
-	for (l = win->priv->popups; l; l = next) {
-		WinPopup *popup = l->data;
-
-		next = l->next;
-		if (!strcmp (popup->path, path))
-			popup_remove (win->priv, popup);
-	}
-}
-
-static void
-popup_destroy (GtkObject *menu, WinPopup *popup)
-{
-	BonoboWinPrivate *priv = gtk_object_get_data (
-		GTK_OBJECT (menu), BONOBO_WIN_PRIV_KEY);
-
-	g_return_if_fail (priv != NULL);
-	bonobo_win_remove_popup (priv->win, popup->path);
-}
-
-void
-bonobo_win_add_popup (BonoboWin     *win,
-		      GtkMenu       *menu,
-		      const char    *path)
-{
-	WinPopup *popup;
-
-	g_return_if_fail (path != NULL);
-	g_return_if_fail (GTK_IS_MENU (menu));
-	g_return_if_fail (BONOBO_IS_WIN (win));
-
-	bonobo_win_remove_popup (win, path);
-
-	popup       = g_new (WinPopup, 1);
-	popup->menu = menu;
-	popup->path = g_strdup (path);
-
-	win->priv->popups = g_slist_prepend (win->priv->popups, popup);
-
-	gtk_object_set_data (GTK_OBJECT (menu),
-			     BONOBO_WIN_PRIV_KEY,
-			     win->priv);
-
-	gtk_signal_connect (GTK_OBJECT (menu), "destroy",
-			    (GtkSignalFunc) popup_destroy, popup);
 }
 
 void
@@ -1068,7 +998,9 @@ menu_item_set_label (BonoboWinPrivate *priv, BonoboUINode *node,
 				g_warning ("Adding accelerator went bananas");
 		}
 		bonobo_ui_node_free_string (label_text);
-	}
+
+	} else /* Separator */
+		gtk_widget_set_sensitive (GTK_WIDGET (menu_widget), FALSE);
 }
 
 static void
@@ -1733,10 +1665,10 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 	if ((txt = bonobo_ui_node_get_attr (node, "look"))) {
 		if (!strcmp (txt, "both"))
 			bonobo_ui_toolbar_set_style (
-				toolbar, GTK_TOOLBAR_BOTH);
+				toolbar, BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT);
 		else
 			bonobo_ui_toolbar_set_style (
-				toolbar, GTK_TOOLBAR_ICONS);
+				toolbar, BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY);
 		bonobo_ui_node_free_string (txt);
 	}
 
@@ -2003,8 +1935,19 @@ setup_root_widgets (BonoboWinPrivate *priv)
 			info = bonobo_ui_xml_get_data (priv->tree, node);
 			info->widget = GTK_WIDGET (popup->menu);
 			info->type |= ROOT_WIDGET;
-		}
+		} else
+			g_warning ("Can't find path '%s' for popup widget",
+				   popup->path);
 	}
+}
+
+static void
+update_popups (BonoboWinPrivate *priv, BonoboUINode *node)
+{
+	BonoboUINode *l;
+
+	for (l = bonobo_ui_node_children (node); l; l = bonobo_ui_node_next (l))
+		seek_dirty (priv, l, UI_UPDATE_MENU);
 }
 
 static void
@@ -2024,8 +1967,8 @@ update_widgets (BonoboWinPrivate *priv)
 		if (bonobo_ui_node_has_name (node, "menu")) {
 			seek_dirty (priv, node, UI_UPDATE_MENU);
 
-		} else if (bonobo_ui_node_has_name (node, "popup")) {
-			seek_dirty (priv, node, UI_UPDATE_MENU);
+		} else if (bonobo_ui_node_has_name (node, "popups")) {
+			update_popups (priv, node);
 
 		} else if (bonobo_ui_node_has_name (node, "dockitem")) {
 			seek_dirty (priv, node, UI_UPDATE_DOCKITEM);
@@ -2040,6 +1983,92 @@ update_widgets (BonoboWinPrivate *priv)
 	}
 
 	update_commands_state (priv);
+}
+
+static void
+popup_remove (BonoboWinPrivate *priv,
+	      WinPopup         *popup)
+{
+	g_return_if_fail (priv != NULL);
+	g_return_if_fail (popup != NULL);
+
+	priv->popups = g_slist_remove (
+		priv->popups, popup);
+	
+	g_free (popup->path);
+	g_free (popup);
+}
+
+void
+bonobo_win_remove_popup (BonoboWin     *win,
+			 const char    *path)
+{
+	GSList *l, *next;
+
+	g_return_if_fail (path != NULL);
+	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (win->priv != NULL);
+
+	for (l = win->priv->popups; l; l = next) {
+		WinPopup *popup = l->data;
+
+		next = l->next;
+		if (!strcmp (popup->path, path))
+			popup_remove (win->priv, popup);
+	}
+}
+
+static void
+popup_destroy (GtkObject *menu, WinPopup *popup)
+{
+	BonoboWinPrivate *priv = gtk_object_get_data (
+		GTK_OBJECT (menu), BONOBO_WIN_PRIV_KEY);
+
+	g_return_if_fail (priv != NULL);
+	bonobo_win_remove_popup (priv->win, popup->path);
+}
+
+void
+bonobo_win_add_popup (BonoboWin     *win,
+		      GtkMenu       *menu,
+		      const char    *path)
+{
+	WinPopup     *popup;
+	BonoboUINode    *node;
+	gboolean         wildcard;
+
+	g_return_if_fail (path != NULL);
+	g_return_if_fail (GTK_IS_MENU (menu));
+	g_return_if_fail (BONOBO_IS_WIN (win));
+
+	bonobo_win_remove_popup (win, path);
+
+	popup       = g_new (WinPopup, 1);
+	popup->menu = menu;
+	popup->path = g_strdup (path);
+
+	win->priv->popups = g_slist_prepend (win->priv->popups, popup);
+
+	gtk_object_set_data (GTK_OBJECT (menu),
+			     BONOBO_WIN_PRIV_KEY,
+			     win->priv);
+
+	gtk_signal_connect (GTK_OBJECT (menu), "destroy",
+			    (GtkSignalFunc) popup_destroy, popup);
+
+	node = bonobo_ui_xml_get_path_wildcard (
+		win->priv->tree, path, &wildcard);
+
+	if (node) {
+		BonoboUIXmlData *data;
+
+		data = bonobo_ui_xml_get_data (win->priv->tree, node);
+		g_return_if_fail (data != NULL);
+
+		data->dirty = TRUE;
+	}
+
+	update_widgets (win->priv);
 }
 
 void

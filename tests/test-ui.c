@@ -20,18 +20,33 @@ poptContext ctx;
 
 Bonobo_UIContainer corba_container;
 
-static int
+static void
 cb_do_quit (GtkWindow *window, gpointer dummy)
 {
 	gtk_main_quit ();
-	return 1;
 }
 
-static int
-cb_do_dump (GtkWindow *window, BonoboWin *app)
+static void
+cb_do_dump (GtkWindow *window, BonoboWin *win)
 {
-	bonobo_win_dump (app, "on User input");
-	return 1;
+	bonobo_win_dump (win, "on User input");
+}
+
+static void
+cb_do_popup (GtkWindow *window, BonoboWin *win)
+{
+	GtkWidget *menu;
+	GtkWidget *menuitem;
+
+	menu = gtk_menu_new ();
+	menuitem = gtk_menu_item_new_with_label ("Error if you see this");
+	gtk_widget_show (menuitem);
+	gtk_menu_append (GTK_MENU (menu), menuitem);
+
+	bonobo_win_add_popup (win, GTK_MENU (menu), "/popups/MyStuff");
+
+	gtk_widget_show (GTK_WIDGET (menu));
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 3, 0);
 }
 
 static void
@@ -58,8 +73,6 @@ cb_set_state (GtkEntry *state_entry, GtkEntry *path_entry)
 
 	g_free (txt);
 }
-
-
 
 static void
 toggled_cb (BonoboUIComponent           *component,
@@ -94,7 +107,7 @@ update_progress (GtkProgress *progress)
 int
 main (int argc, char **argv)
 {
-	BonoboWin *app;
+	BonoboWin *win;
 	CORBA_ORB  orb;
 	BonoboUIComponent *componenta;
 	BonoboUIComponent *componentb;
@@ -131,7 +144,7 @@ main (int argc, char **argv)
 	char simplee [] =
 		"<menuitem name=\"fish\" label=\"_Inplace\" pixtype=\"stock\" pixname=\"Menu_Save\"/>\n";
 	char toola [] =
-		"<dockitem name=\"toolbar\" homogeneous=\"0\">\n"
+		"<dockitem name=\"toolbar\" homogeneous=\"0\" look=\"both\">\n"
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"
 		"	<toolitem type=\"separator\" name=\"foo3\" pixtype=\"stock\" pixname=\"Save\" label=\"Separator\"/>\n"
 		"	<toolitem type=\"std\" name=\"baa\" pixtype=\"stock\" pixname=\"Open\" label=\"baa\" descr=\"My 2nd tooltip\" verb=\"testme\"/>\n"
@@ -163,9 +176,9 @@ main (int argc, char **argv)
 
 	bonobo_activate ();
 
-	app = BONOBO_WIN (bonobo_win_new ("App", "My Test Application"));
+	win = BONOBO_WIN (bonobo_win_new ("Win", "My Test Application"));
 	container = bonobo_ui_container_new ();
-	bonobo_ui_container_set_app (container, app);
+	bonobo_ui_container_set_app (container, win);
 
 	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (container));
 
@@ -182,7 +195,13 @@ main (int argc, char **argv)
 
 		button = gtk_button_new_with_label ("Dump Xml tree");
 		gtk_signal_connect (GTK_OBJECT (button), "clicked",
-				    (GtkSignalFunc) cb_do_dump, app);
+				    (GtkSignalFunc) cb_do_dump, win);
+		gtk_widget_show (GTK_WIDGET (button));
+		gtk_box_pack_start_defaults (GTK_BOX (box), button);
+
+		button = gtk_button_new_with_label ("Popup");
+		gtk_signal_connect (GTK_OBJECT (button), "clicked",
+				    (GtkSignalFunc) cb_do_popup, win);
 		gtk_widget_show (GTK_WIDGET (button));
 		gtk_box_pack_start_defaults (GTK_BOX (box), button);
 
@@ -199,7 +218,7 @@ main (int argc, char **argv)
 		gtk_box_pack_start_defaults (GTK_BOX (box), state_entry);
 
 		gtk_widget_show (GTK_WIDGET (box));
-		bonobo_win_set_contents (app, box);
+		bonobo_win_set_contents (win, box);
 	}
 
 	componenta = bonobo_ui_component_new ("A");
@@ -214,7 +233,7 @@ main (int argc, char **argv)
 				       NULL, "ui.xml", "gnomecal");
 		bonobo_ui_container_thaw (corba_container, NULL);
 
-		gtk_widget_show (GTK_WIDGET (app));
+		gtk_widget_show (GTK_WIDGET (win));
 
 		gtk_main ();
 	} else
@@ -228,6 +247,10 @@ main (int argc, char **argv)
 	bonobo_ui_component_set (componentb, corba_container, "/status", statusa, &ev);
 
 	bonobo_ui_component_set (componenta, corba_container, "/", simplea, &ev);
+
+	bonobo_ui_component_set (componentb, corba_container, "/",
+				 "<popups> <popup name=\"MyStuff\"/> </popups>", &ev);
+	bonobo_ui_component_set (componenta, corba_container, "/popups/MyStuff", simpleb, &ev);
 
 	bonobo_ui_component_set (componentb, corba_container, "/",   toola, &ev);
 
@@ -334,7 +357,7 @@ main (int argc, char **argv)
 	bonobo_object_unref (BONOBO_OBJECT (componentc));
 
 	bonobo_object_unref (BONOBO_OBJECT (container));
-	gtk_widget_destroy (GTK_WIDGET (app));
+	gtk_widget_destroy (GTK_WIDGET (win));
 
 	CORBA_exception_free (&ev);
 

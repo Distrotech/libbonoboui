@@ -38,7 +38,7 @@ typedef struct {
 } BonoboControlFrameClass;
 
 
-BonoboControlFrame           *bonobo_control_frame_new                       (Bonobo_Unknown       uih);
+BonoboControlFrame           *bonobo_control_frame_new                       (Bonobo_UIContainer   uic);
 
 GtkWidget                    *bonobo_control_frame_get_widget                (BonoboControlFrame  *frame);
 

@@ -99,7 +99,8 @@ void                 bonobo_win_add_popup            (BonoboWin     *win,
 						      const char    *path);
 
 /*
- * NB. popups are automaticaly removed on destroy.
+ * NB. popups are automaticaly removed on destroy, you probably don't
+ * want to use this.
  */
 void                 bonobo_win_remove_popup         (BonoboWin     *win,
 						      const char    *path);
