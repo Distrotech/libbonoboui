@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.8-branch\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-16 17:36+0200\n"
+"POT-Creation-Date: 2004-12-03 10:34+0200\n"
 "PO-Revision-Date: 2004-12-02 14:06+0200\n"
 "Last-Translator: Zuza Software Foundation <info@translate.org.za>\n"
 "Language-Team: Zulu <translate-discuss-zu@lists.sourceforge.net>\n"
@@ -81,10 +81,11 @@ msgid "Whether X events should be forwarded"
 msgstr "Ingabe umncimbi X umelwe ukudluliselwa phambili"
 
 #: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
+#: tools/browser/component-details.c:114 tools/browser/component-list.c:381
 msgid "Name"
 msgstr "Igama"
 
-#: bonobo/bonobo-selector-widget.c:322
+#: bonobo/bonobo-selector-widget.c:322 tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Ukulanda"
 
@@ -93,13 +94,14 @@ msgid "Interfaces required"
 msgstr "Kudingeka imiboniso"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
-#, review - short
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr "Umlinganiselo NULL-ogcinisiwe wemiboniso lapho umnikezi kumele awuxhase "
+msgstr ""
+"Umlinganiselo NULL-ogcinisiwe wemiboniso lapho umnikezi kumele awuxhase "
+"ukuze ingeniswe phakathi kokhetho. Amaphutha ku \"IDL:Bonobo/ethwalisiwe:1.0"
+"\" uma kungekho okuhleliwe okungena ngaphakthi"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -133,11 +135,11 @@ msgstr "Iziqobo"
 msgid "toolbars"
 msgstr "iziqobo"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "Look"
 msgstr "Bheka"
 
-#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "_Icon"
 msgstr "_Uphawu"
 
@@ -235,12 +237,10 @@ msgid "Make all warnings fatal"
 msgstr "Yenza zonke izixwayiso ukuba zibe nokubulala"
 
 #: bonobo/bonobo-ui-init-gtk.c:153
-#, review - translation of module
 msgid "Load an additional Gtk module"
-msgstr "Faka isexwayiso esinye Gtk"
+msgstr "Faka enye futhi Gtk module"
 
 #: bonobo/bonobo-ui-init-gtk.c:153
-#, fuzzy
 msgid "MODULE"
 msgstr "MODULE"
 
@@ -252,31 +252,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Ukuxhasa Bonobo GUI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "B_oth"
 msgstr "Zo_mbili"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "T_ext"
 msgstr "Ite_kisi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Hide t_ips"
 msgstr "Fihla amac_ebo"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Show t_ips"
 msgstr "Khombisa amac_ebo"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Hide toolbar"
 msgstr "_Fihla isiqobo"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "Customi_ze"
 msgstr "Zenze_le"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:560
+#: bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Customize the toolbar"
 msgstr "Zenzele isiqobo"
 
@@ -369,6 +369,7 @@ msgid "_Edit"
 msgstr "_Hlela"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#: tools/browser/bonobo-browser.xml.h:4
 msgid "_File"
 msgstr "_Ihele"
 
@@ -401,3 +402,79 @@ msgstr "Ihlulekile kwikhodi ye init libbonoboui"
 msgid "Could not initialize Bonobo UI"
 msgstr "Ihlulekile ukuqala ikhodi Bonobo UI"
 
+#: tools/browser/bonobo-browser.desktop.in.h:1
+msgid "Bonobo Component Browser"
+msgstr ""
+
+#: tools/browser/bonobo-browser.desktop.in.h:2
+msgid "Shows available Bonobo components"
+msgstr ""
+
+#: tools/browser/bonobo-browser.xml.h:1
+#, fuzzy
+msgid "About this program..."
+msgstr "Ngalesithobo"
+
+#: tools/browser/bonobo-browser.xml.h:2
+msgid "Close the current window"
+msgstr ""
+
+#: tools/browser/bonobo-browser.xml.h:3
+msgid "Open a new window"
+msgstr ""
+
+#: tools/browser/bonobo-browser.xml.h:5
+#, fuzzy
+msgid "_Help"
+msgstr "_Fihla"
+
+#. Build the general tab
+#: tools/browser/component-details.c:109
+msgid "General"
+msgstr ""
+
+#: tools/browser/component-details.c:116 tools/browser/component-list.c:401
+msgid "IID"
+msgstr ""
+
+#: tools/browser/component-details.c:117
+msgid "Location"
+msgstr ""
+
+#. Build the details tab
+#: tools/browser/component-details.c:167
+msgid "Details"
+msgstr ""
+
+#: tools/browser/component-details.c:168
+msgid "Detailed Information"
+msgstr ""
+
+#: tools/browser/component-list.c:370
+msgid "Active"
+msgstr ""
+
+#: tools/browser/component-list.c:391
+msgid "Type"
+msgstr ""
+
+#: tools/browser/window.c:169
+msgid "Component Details"
+msgstr ""
+
+#: tools/browser/window.c:214
+msgid "Bonobo Browser"
+msgstr ""
+
+#: tools/browser/window.c:215
+msgid "Copyright 2001, The GNOME Foundation"
+msgstr ""
+
+#: tools/browser/window.c:216
+msgid "Bonobo component browser"
+msgstr ""
+
+#. create the window
+#: tools/browser/window.c:246
+msgid "Component Browser"
+msgstr ""
