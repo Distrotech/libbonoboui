@@ -381,8 +381,6 @@ bonobo_window_deregister_dead_components (BonoboWindow *win)
 
 		CORBA_exception_free (&ev);
 	}
-
-	return TRUE;
 }
 
 void
