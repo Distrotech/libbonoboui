@@ -1679,7 +1679,7 @@ class_init (BonoboUIEngineClass *engine_class)
 				  GTK_RUN_LAST,
 				  GTK_CLASS_TYPE (object_class),
 				  GTK_SIGNAL_OFFSET (BonoboUIEngineClass, emit_event_on),
-				  bonobo_marshal_VOID__POINTER_POINTER,
+				  bonobo_marshal_VOID__POINTER_STRING,
 				  GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_STRING);
 }
 

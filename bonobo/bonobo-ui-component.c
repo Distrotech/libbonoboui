@@ -1428,7 +1428,7 @@ bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
 		G_SIGNAL_RUN_FIRST,
 		G_STRUCT_OFFSET (BonoboUIComponentClass, ui_event),
 		NULL, NULL,
-		bonobo_marshal_VOID__POINTER_INT_POINTER,
+		bonobo_marshal_VOID__STRING_INT_STRING,
 		G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_INT,
 		G_TYPE_STRING);
 

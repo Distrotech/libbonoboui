@@ -1,3 +1,9 @@
+2001-07-12  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/bonobo-ui-engine.c: Fix signal marshaller for EMIT_EVENT_ON.
+
+	* bonobo/bonobo-ui-component.c: Fix signal marshaller for UI_EVENT.
+
 2001-07-05  Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
 
 	* bonobo/bonobo-view.c: add a placeholder member to _BonoboViewPrivate
