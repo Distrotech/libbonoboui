@@ -1,4 +1,5 @@
 doc/std-ui.xml
+doc/api/ui-faq.xml
 tests/control/test-control.c
 tests/test-focus.c
 tests/test-sensitivity.c
