@@ -12,6 +12,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkplug.h>
+#include <gtk/gtkframe.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
@@ -37,6 +38,7 @@ POA_Bonobo_ControlFrame__vepv bonobo_control_frame_vepv;
 
 struct _BonoboControlFramePrivate {
 	Bonobo_Control	  control;
+	GtkWidget        *control;
 	GtkWidget	 *socket;
 	BonoboUIHandler   *uih;
 	BonoboPropertyBag *propbag;
@@ -198,9 +200,21 @@ bonobo_control_frame_construct (BonoboControlFrame *control_frame,
 	gtk_widget_show (control_frame->priv->socket);
 
 	/*
-	 * When the socket is realized, we pass its Window ID to our
-	 * Control.
+	 * Finally, create a frame to hold the socket; this no-window
+	 * container is needed solely for the sake of bypassing
+	 * plug/socket in the local case.
 	 */
+	control_frame->priv->container = gtk_frame_new(NULL);
+	gtk_frame_set_shadow_type ( GTK_FRAME (control_frame->priv->container), GTK_SHADOW_NONE);
+	gtk_container_set_border_width (GTK_CONTAINER (control_frame->priv->container), 0);
+	gtk_container_add (GTK_CONTAINER (control_frame->priv->container), 
+			   control_frame->priv->socket);
+	gtk_widget_show (control_frame->priv->container);
+
+
+	/*
+	 * When the socket is realized, we pass its Window ID to our
+	 * Control.  */
 	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
 			    "realize",
 			    GTK_SIGNAL_FUNC (bonobo_control_frame_set_remote_window),
@@ -525,7 +539,7 @@ bonobo_control_frame_get_widget (BonoboControlFrame *control_frame)
 	g_return_val_if_fail (control_frame != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
-	return control_frame->priv->socket;
+	return control_frame->priv->container;
 }
 
 /**

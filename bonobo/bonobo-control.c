@@ -35,6 +35,7 @@ struct _BonoboControlPrivate {
 	GtkWidget          *plug;
 
 	int                 plug_destroy_id;
+	gboolean            is_local;
 
 	GtkWidget          *widget;
 
@@ -156,25 +157,56 @@ impl_Bonobo_Control_set_frame (PortableServer_Servant servant,
 	bonobo_control_set_control_frame (control, frame);
 }
 
+
+
+GtkWidget *bonobo_gtk_widget_from_x11_id(guint32 xid)
+{
+	GdkWindow *window;
+	gpointer data;
+
+	window = gdk_window_lookup (xid);
+	
+	if (!window) {
+		return NULL;
+	}
+
+	gdk_window_get_user_data(window, &data);
+
+	if (!data || !GTK_IS_WIDGET(data)) {
+		return NULL;
+	} else {
+		return GTK_WIDGET(data);
+	}
+}
+
 static void
 impl_Bonobo_Control_set_window (PortableServer_Servant servant,
 			       Bonobo_Control_windowid id,
 			       CORBA_Environment *ev)
 {
 	guint32 x11_id;
+	GtkWidget *local_socket;
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 
 	x11_id = window_id_demangle (id);
 
-	control->priv->plug = gtk_plug_new (x11_id);
-	control->priv->plug_destroy_id = gtk_signal_connect (
-		GTK_OBJECT (control->priv->plug), "destroy_event",
-		GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_cb), control);
+	local_socket = bonobo_gtk_widget_from_x11_id(x11_id);
 
-
-	gtk_container_add (GTK_CONTAINER (control->priv->plug), control->priv->widget);
-
-	gtk_widget_show_all (control->priv->plug);
+	if (local_socket) {
+		GtkWidget *socket_parent;
+		control->priv->is_local = TRUE;
+		socket_parent = local_socket->parent;
+		gtk_container_remove (GTK_CONTAINER (socket_parent), local_socket);
+		gtk_container_add (GTK_CONTAINER (socket_parent), control->priv->widget);
+		gtk_widget_show_all (control->priv->widget);
+	} else {
+		control->priv->plug = gtk_plug_new (x11_id);
+		control->priv->plug_destroy_id = gtk_signal_connect (
+		        GTK_OBJECT (control->priv->plug), "destroy_event",
+		        GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_cb), control);
+		gtk_container_add (GTK_CONTAINER (control->priv->plug), control->priv->widget);
+		gtk_widget_show_all (control->priv->plug);
+	}
 }
 
 static void
@@ -187,7 +219,8 @@ impl_Bonobo_Control_size_allocate (PortableServer_Servant servant,
 	 * Nothing.
 	 *
 	 * In the Gnome implementation of Bonobo, all size negotiation
-	 * is handled by GtkPlug/GtkSocket for us.
+	 * is handled by GtkPlug/GtkSocket for us, or GtkFrame in the
+	 * local case.
 	 */
 }
 
@@ -327,11 +360,14 @@ bonobo_control_destroy (GtkObject *object)
 	/*
 	 * If the plug still exists, destroy it.  The plug might not
 	 * exist in the case where the container application died,
-	 * taking the plug out with it.  In that case,
-	 * plug_destroy_cb() would have been invoked, and it would
-	 * have triggered the destruction of the Control.  Which is why
-	 * we're here now.
+	 * taking the plug out with it, or the optimized local case
+	 * where the plug/socket mechanism was bypassed.  In the
+	 * formaer case, plug_destroy_cb() would have been invoked,
+	 * and it would have triggered the destruction of the Control,
+	 * which is why we're here now. In the latter case, it's not
+	 * needed because there is no plug.  
 	 */
+
 	if (control->priv->plug) {
 		gtk_signal_disconnect (GTK_OBJECT (control->priv->plug), control->priv->plug_destroy_id);
 		gtk_object_destroy (GTK_OBJECT (control->priv->plug));
