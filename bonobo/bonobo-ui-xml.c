@@ -28,8 +28,8 @@ identical (BonoboUIXml *tree, gpointer a, gpointer b)
 	return val;
 }
 
-static void
-remove_floating_pointers (xmlNode *node)
+void
+bonobo_ui_xml_strip (xmlNode *node)
 {
 	xmlNode *l;
 
@@ -38,7 +38,7 @@ remove_floating_pointers (xmlNode *node)
 	node->nsDef = NULL;
 
 	for (l = node->childs; l; l = l->next)
-		remove_floating_pointers (l);
+		bonobo_ui_xml_strip (l);
 }
 
 gpointer
@@ -147,7 +147,7 @@ dump_internals (BonoboUIXml *tree, xmlNode *node)
 
 	fprintf (stderr, "%s name=\"%s\" ", node->name,
 		 xmlGetProp (node, "name"));
-	fprintf (stderr, "%p %d len %d", data->id, data->dirty,
+	fprintf (stderr, "%d len %d", data->dirty,
 		 g_slist_length (data->overridden));
 	if (tree->dump)
 		tree->dump (data);
@@ -157,13 +157,11 @@ dump_internals (BonoboUIXml *tree, xmlNode *node)
 	if (data->overridden) {
 		GSList *l;
 		int     old_indent;
-		fprintf (stderr, "overrides:\n");
-
 		old_indent = indent;
 		for (l = data->overridden; l; l = l->next) {
-			fprintf (stderr, ">");
 			for (i = 0; i < indent; i++)
 				fprintf (stderr, " ");
+			fprintf (stderr, "`--->");
 			dump_internals (tree, l->data);
 			indent += 4;
 		}
@@ -380,6 +378,11 @@ xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 				else {
 					if (!create)
 						return NULL;
+ 
+					if (ret->properties) {
+						ret = xmlNewChild (ret->parent, NULL, ret->name, NULL);
+					} /*else Use the node we created last time */
+
 					xmlSetProp (ret, "name", &names [i] [1]);
 				}
 			} else {
@@ -573,7 +576,7 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 		return;
 
 	set_id (tree, nodes, id);
-	remove_floating_pointers (nodes);
+	bonobo_ui_xml_strip (nodes);
 
 	current = bonobo_ui_xml_get_path (tree, path);
 

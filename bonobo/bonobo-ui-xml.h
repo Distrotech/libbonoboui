@@ -54,13 +54,13 @@ typedef struct {
 	gpointer               dummy;
 } BonoboUIXmlClass;
 
-GtkType      bonobo_ui_xml_get_type  (void);
+GtkType          bonobo_ui_xml_get_type  (void);
 
-BonoboUIXml *bonobo_ui_xml_new       (BonoboUIXmlCompareFn  compare,
-				      BonoboUIXmlDataNewFn  data_new,
-				      BonoboUIXmlDataFreeFn data_free,
-				      BonoboUIXmlDumpFn     dump,
-				      BonoboUIXmlAddNode    add_node);
+BonoboUIXml     *bonobo_ui_xml_new       (BonoboUIXmlCompareFn  compare,
+					  BonoboUIXmlDataNewFn  data_new,
+					  BonoboUIXmlDataFreeFn data_free,
+					  BonoboUIXmlDumpFn     dump,
+					  BonoboUIXmlAddNode    add_node);
 
 /* Nominaly BonoboUIXmlData * */
 gpointer         bonobo_ui_xml_get_data  (BonoboUIXml *tree,
@@ -86,5 +86,7 @@ void             bonobo_ui_xml_rm        (BonoboUIXml *tree,
 void             bonobo_ui_xml_dump      (BonoboUIXml *tree,
 					  xmlNode     *node,
 					  const char  *msg);
+
+void             bonobo_ui_xml_strip     (xmlNode     *node);
 
 #endif /* _BONOBO_UI_XML_H_ */

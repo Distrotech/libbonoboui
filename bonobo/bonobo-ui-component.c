@@ -40,6 +40,7 @@ typedef struct {
 struct _BonoboUIComponentPrivate {
 	GSList *verbs;
 	GSList *listeners;
+	char   *name;
 };
 
 static inline BonoboUIComponent *
@@ -218,6 +219,8 @@ bonobo_ui_component_destroy (GtkObject *object)
 			listener_destroy (l->data);
 		g_slist_free (priv->listeners);
 
+		g_free (priv->name);
+
 		g_free (priv);
 	}
 	comp->priv = NULL;
@@ -331,10 +334,13 @@ bonobo_ui_component_corba_object_create (BonoboObject *object)
 
 BonoboUIComponent *
 bonobo_ui_component_construct (BonoboUIComponent *ui_component,
-			       Bonobo_UIComponent corba_component)
+			       Bonobo_UIComponent corba_component,
+			       const char        *name)
 {
 	g_return_val_if_fail (corba_component != CORBA_OBJECT_NIL, NULL);
 	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (ui_component), NULL);
+
+	ui_component->priv->name = g_strdup (name);
 
 	return BONOBO_UI_COMPONENT (
 		bonobo_object_construct (BONOBO_OBJECT (ui_component),
@@ -342,7 +348,7 @@ bonobo_ui_component_construct (BonoboUIComponent *ui_component,
 }
 
 BonoboUIComponent *
-bonobo_ui_component_new (void)
+bonobo_ui_component_new (const char *name)
 {
 	BonoboUIComponent *component;
 	Bonobo_UIComponent corba_component;
@@ -360,5 +366,72 @@ bonobo_ui_component_new (void)
 	}
 
 	return BONOBO_UI_COMPONENT (bonobo_ui_component_construct (
-		component, corba_component));
+		component, corba_component, name));
+}
+
+void
+bonobo_ui_component_set (BonoboUIComponent  *component,
+			 Bonobo_UIContainer  container,
+			 const char         *path,
+			 const char         *xml,
+			 CORBA_Environment  *ev)
+{
+	BonoboUIComponentPrivate *priv;
+
+	g_return_if_fail (container != CORBA_OBJECT_NIL);
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
+	priv = component->priv;
+
+	Bonobo_UIContainer_register_component (
+		container, priv->name,
+		bonobo_object_corba_objref (BONOBO_OBJECT (component)), ev);
+
+	Bonobo_UIContainer_node_set (container, path, xml, priv->name, ev);
+}
+
+void
+bonobo_ui_component_set_tree (BonoboUIComponent  *component,
+			      Bonobo_UIContainer  container,
+			      const char         *path,
+			      xmlNode            *node,
+			      CORBA_Environment  *ev)
+{
+	xmlDoc     *doc;
+	xmlChar    *mem = NULL;
+	int         size;
+
+	doc = xmlNewDoc ("1.0");
+	g_return_if_fail (doc != NULL);
+
+	doc->root = node;
+
+	xmlDocDumpMemory (doc, &mem, &size);
+
+	g_return_if_fail (mem != NULL);
+
+	doc->root = NULL;
+	xmlFreeDoc (doc);
+
+	bonobo_ui_component_set (
+		component, container, path, mem, ev);
+
+	xmlFree (mem);
+}
+
+void
+bonobo_ui_component_rm (BonoboUIComponent  *component,
+			Bonobo_UIContainer  container,
+			const char         *path,
+			CORBA_Environment  *ev)
+{
+	BonoboUIComponentPrivate *priv;
+
+	g_return_if_fail (container != CORBA_OBJECT_NIL);
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
+	priv = component->priv;
+
+	Bonobo_UIContainer_deregister_component (
+		container, priv->name, ev);
 }

@@ -62,4 +62,7 @@ void                 bonobo_app_xml_rm              (BonoboApp  *app,
 						     const char *path,
 						     gpointer    by_listner);
 
+void                 bonobo_app_dump                (BonoboApp  *app,
+						     const char *msg);
+
 #endif /* _BONOBO_APP_H_ */

@@ -2,6 +2,7 @@
 #include <gnome.h>
 #include <ctype.h>
 
+#include "bonobo-ui-xml.h"
 #include "bonobo-ui-util.h"
 
 static void
@@ -279,8 +280,8 @@ bonobo_ui_util_xml_set_pixbuf (xmlNode     *node,
 }
 
 void
-bonobo_ui_util_xml_set_xpm (xmlNode     *node,
-			     const char **xpm)
+bonobo_ui_util_xml_set_pix_xpm (xmlNode     *node,
+				const char **xpm)
 {
 	GdkPixbuf *pixbuf;
 
@@ -295,8 +296,8 @@ bonobo_ui_util_xml_set_xpm (xmlNode     *node,
 }
 				     
 void
-bonobo_ui_util_xml_set_stock (xmlNode     *node,
-			      const char  *name)
+bonobo_ui_util_xml_set_pix_stock (xmlNode     *node,
+				  const char  *name)
 {
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (name != NULL);
@@ -306,8 +307,8 @@ bonobo_ui_util_xml_set_stock (xmlNode     *node,
 }
 
 void
-bonobo_ui_util_xml_set_fname (xmlNode     *node,
-			      const char  *name)
+bonobo_ui_util_xml_set_pix_fname (xmlNode     *node,
+				  const char  *name)
 {
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (name != NULL);
@@ -315,3 +316,245 @@ bonobo_ui_util_xml_set_fname (xmlNode     *node,
 	xmlSetProp (node, "pixtype", "filename");
 	xmlNodeSetContent (node, name);
 }
+
+
+static void
+free_help_menu_entry (GtkWidget *widget, GnomeHelpMenuEntry *entry)
+{
+	g_free (entry->name);
+	g_free (entry->path);
+	g_free (entry);
+}
+
+static void
+bonobo_help_display_cb (BonoboUIComponent *component,
+			const char        *cname,
+			gpointer           user_data)
+{
+	gnome_help_display (component, user_data);
+}
+
+xmlNode *
+bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
+				const char        *app_name)
+{
+	xmlNode *ret;
+	char buf [1024];
+	char *topic_file;
+	FILE *file;
+
+	g_return_val_if_fail (app_name != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (listener), NULL);
+
+	/* Setup the base help menu */
+	ret = xmlNewNode (NULL, "submenu");
+	xmlSetProp (ret, "name", "help");
+	xmlSetProp (ret, "label", _("_Help"));
+
+	/* Try to open help topics file */
+	topic_file = gnome_help_file_find_file ((char *)app_name, "topic.dat");
+
+	if (!topic_file || !(file = fopen (topic_file, "rt"))) {
+		g_warning ("Could not open help topics file %s for app %s", 
+				topic_file ? topic_file : "NULL", app_name);
+
+		g_free (topic_file);
+		return ret;
+	}
+	g_free (topic_file);
+	
+	/* Read in the help topics and create menu items for them */
+	while (fgets (buf, sizeof (buf), file)) {
+		char *s, *id;
+		GnomeHelpMenuEntry *entry;
+		xmlNode *node;
+
+		/* Format of lines is "help_file_name whitespace* menu_title" */
+		for (s = buf; *s && !isspace (*s); s++)
+			;
+
+		*s++ = '\0';
+
+		for (; *s && isspace (*s); s++)
+			;
+
+		if (s [strlen (s) - 1] == '\n')
+			s [strlen (s) - 1] = '\0';
+
+		node = xmlNewNode (NULL, "menuitem");
+		/* Try and make something unique */
+		id = g_strdup_printf ("%s%s", app_name, buf);
+		xmlSetProp (node, "name", id);
+		xmlSetProp (node, "verb", id);
+		xmlSetProp (node, "label", s);
+		xmlAddChild (ret, node);
+
+		/* Create help menu entry */
+		entry = g_new (GnomeHelpMenuEntry, 1);
+		entry->name = g_strdup (app_name);
+		entry->path = g_strdup (buf);
+
+		bonobo_ui_component_add_verb (listener,
+					      id, s, s, 
+					      bonobo_help_display_cb,
+					      entry);
+
+		gtk_signal_connect (GTK_OBJECT (listener), "destroy",
+				    (GtkSignalFunc) free_help_menu_entry, 
+				    entry);
+	}
+
+	fclose (file);
+
+	return ret;
+}
+
+xmlNode *
+bonobo_ui_util_build_accel (guint           accelerator_key,
+			    GdkModifierType accelerator_mods,
+			    const char     *verb)
+{
+	/* Kludge due to brokenness in gnome-xml */
+	char    *name;
+	xmlDoc  *doc;
+	xmlNode *ret;
+
+	name = gtk_accelerator_name (accelerator_key, accelerator_mods);
+	
+	doc = xmlNewDoc ("1.0");
+	ret = xmlNewDocNode (doc, NULL, "accel", NULL);
+	xmlSetProp (ret, "name", name);
+	xmlSetProp (ret, "verb", verb);
+	doc->root = NULL;
+	bonobo_ui_xml_strip (ret);
+	xmlFreeDoc (doc);
+
+	return ret;
+}
+
+xmlNode *
+bonobo_ui_util_new_menu (gboolean    submenu,
+			 const char *name,
+			 const char *label,
+			 const char *descr,
+			 const char *verb)
+{
+	xmlNode *node;
+
+	g_return_val_if_fail (name != NULL, NULL);
+
+	if (submenu)
+		node = xmlNewNode (NULL, "submenu");
+	else
+		node = xmlNewNode (NULL, "menuitem");
+
+	xmlSetProp (node, "name", name);
+	if (label)
+		xmlSetProp (node, "label", label);
+
+	if (descr)
+		xmlSetProp (node, "descr", descr);
+
+	if (verb)
+		xmlSetProp (node, "verb", verb);
+
+	return node;
+}
+
+xmlNode *
+bonobo_ui_util_new_placeholder (const char *name,
+				gboolean    top,
+				gboolean    bottom)
+{
+	xmlNode *node;
+	
+	node = xmlNewNode (NULL, "placeholder");
+
+	if (name)
+		xmlSetProp (node, "name", name);
+
+	if (top && bottom)
+		xmlSetProp (node, "delimit", "both");
+	else if (top)
+		xmlSetProp (node, "delimit", "top");
+	else if (bottom)
+		xmlSetProp (node, "delimit", "bottom");
+
+	return node;
+}
+
+void
+bonobo_ui_util_set_radiogroup (xmlNode    *node,
+			       const char *group_name)
+{
+	g_return_if_fail (node != NULL);
+	g_return_if_fail (group_name != NULL);
+	g_return_if_fail (xmlGetProp (node, "pixtype") != NULL);
+
+	xmlSetProp (node, "type", "radio");
+	xmlSetProp (node, "group", group_name);
+}
+
+void
+bonobo_ui_util_set_toggle (xmlNode    *node,
+			   const char *id,
+			   const char *init_state)
+{
+	g_return_if_fail (node != NULL);
+	g_return_if_fail (xmlGetProp (node, "pixtype") != NULL);
+
+	xmlSetProp (node, "type", "toggle");
+	if (id)
+		xmlSetProp (node, "id", id);
+	if (init_state)
+		xmlSetProp (node, "state", init_state);
+}
+
+xmlNode *
+bonobo_ui_util_new_std_toolbar (const char *name,
+				const char *label,
+				const char *descr,
+				const char *verb)
+{
+	xmlNode *node;
+
+	g_return_val_if_fail (name != NULL, NULL);
+	
+	node = xmlNewNode (NULL, "toolitem");
+	xmlSetProp (node, "type", "std");
+	xmlSetProp (node, "name", name);
+	
+	if (label)
+		xmlSetProp (node, "label", label);
+	if (descr)
+		xmlSetProp (node, "descr", descr);
+	if (verb)
+		xmlSetProp (node, "verb", verb);
+
+	return node;
+}
+					     
+xmlNode *
+bonobo_ui_util_new_toggle_toolbar (const char *name,
+				   const char *label,
+				   const char *descr,
+				   const char *id)
+{
+	xmlNode *node;
+
+	g_return_val_if_fail (name != NULL, NULL);
+	
+	node = xmlNewNode (NULL, "toolitem");
+	xmlSetProp (node, "type", "toggle");
+	xmlSetProp (node, "name", name);
+	
+	if (label)
+		xmlSetProp (node, "label", label);
+	if (descr)
+		xmlSetProp (node, "descr", descr);
+	if (id)
+		xmlSetProp (node, "id", id);
+
+	return node;
+}
+					     

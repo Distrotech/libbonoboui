@@ -4,6 +4,8 @@
 
 BEGIN_GNOME_DECLS
 
+#include <bonobo/bonobo-object.h>
+
 #define BONOBO_UI_COMPONENT_TYPE        (bonobo_ui_component_get_type ())
 #define BONOBO_UI_COMPONENT(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_COMPONENT_TYPE, BonoboUIComponent))
 #define BONOBO_UI_COMPONENT_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_UI_COMPONENT_TYPE, BonoboUIComponentClass))
@@ -44,9 +46,10 @@ typedef struct {
 GtkType            bonobo_ui_component_get_type     (void);
 
 BonoboUIComponent *bonobo_ui_component_construct    (BonoboUIComponent  *component,
-						     Bonobo_UIComponent  corba_ui);
+						     Bonobo_UIComponent  corba_ui,
+						     const char         *name);
 
-BonoboUIComponent *bonobo_ui_component_new          (void);
+BonoboUIComponent *bonobo_ui_component_new          (const char         *name);
 
 void               bonobo_ui_component_add_verb     (BonoboUIComponent  *component,
 						     const char         *cname,
@@ -59,6 +62,23 @@ void               bonobo_ui_component_add_listener (BonoboUIComponent  *compone
 						     const char         *id,
 						     BonoboUIListenerFn  fn,
 						     gpointer            user_data);
+
+void               bonobo_ui_component_set          (BonoboUIComponent  *component,
+						     Bonobo_UIContainer  container,
+						     const char         *path,
+						     const char         *xml,
+						     CORBA_Environment  *ev);
+
+void               bonobo_ui_component_set_tree     (BonoboUIComponent  *component,
+						     Bonobo_UIContainer  container,
+						     const char         *path,
+						     xmlNode            *node,
+						     CORBA_Environment  *ev);
+
+void               bonobo_ui_component_rm           (BonoboUIComponent  *component,
+						     Bonobo_UIContainer  container,
+						     const char         *path,
+						     CORBA_Environment  *ev);
 
 POA_Bonobo_UIComponent__epv *bonobo_ui_component_get_epv (void);
 Bonobo_UIComponent bonobo_ui_component_corba_object_create (BonoboObject *object);
