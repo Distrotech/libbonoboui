@@ -1754,7 +1754,7 @@ impl_GNOME_UIHandler_register_containee (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 
 	g_message ("Registering containee!\n");
-	gnome_ui_handler_add_containee (uih, uih_containee);
+	gnome_ui_handler_add_containee (uih, CORBA_Object_duplicate(uih_containee, ev));
 }
 
 static void
