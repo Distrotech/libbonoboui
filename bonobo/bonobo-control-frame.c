@@ -688,13 +688,16 @@ bonobo_control_frame_set_ui_container (BonoboControlFrame *control_frame, Bonobo
  * @control_frame: A BonoboControlFrame object.
  * @control: The CORBA object for the BonoboControl embedded
  * in this BonoboControlFrame.
+ * @opt_ev: Optional exception environment
  *
  * Associates @control with this @control_frame.
  */
 void
-bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_Control control)
+bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame,
+				      Bonobo_Control      control,
+				      CORBA_Environment  *opt_ev)
 {
-	CORBA_Environment ev;
+	CORBA_Environment *ev, tmp_ev;
 
 	g_return_if_fail (control != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
@@ -705,18 +708,24 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	if (control_frame->priv->control != CORBA_OBJECT_NIL)
 		g_warning ("FIXME: leaking control reference");
 
-	CORBA_exception_init (&ev);
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
 
-	control_frame->priv->control = bonobo_object_dup_ref (control, &ev);
+	control_frame->priv->control = bonobo_object_dup_ref (control, ev);
 
 	/*
 	 * Introduce ourselves to the Control.
 	 */
-	Bonobo_Control_setFrame (control, BONOBO_OBJREF (control_frame), &ev);
+	Bonobo_Control_setFrame (control, BONOBO_OBJREF (control_frame), ev);
 
-	if (BONOBO_EX (&ev))
-		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
-	CORBA_exception_free (&ev);
+	if (BONOBO_EX (ev))
+		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, ev);
+
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 
 	/* 
 	 * Re-create the socket if it got destroyed by the Control before.
@@ -851,9 +860,11 @@ bonobo_control_frame_get_control_property_bag (BonoboControlFrame *control_frame
 
 void
 bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
-				   int *desired_width, int *desired_height)
+				   int                *desired_width,
+				   int                *desired_height,
+				   CORBA_Environment  *opt_ev)
 {
-	CORBA_Environment ev;
+	CORBA_Environment *ev, tmp_ev;
 	CORBA_short width, height;
 
 	g_return_if_fail (control_frame != NULL);
@@ -862,15 +873,19 @@ bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
 	g_return_if_fail (desired_width != NULL);
 	g_return_if_fail (desired_height != NULL);
 
-	CORBA_exception_init (&ev);
-
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
+		
 	Bonobo_Control_getDesiredSize (control_frame->priv->control,
-				       &width, &height, &ev);
+				       &width, &height, ev);
 
-	if (BONOBO_EX (&ev)) {
+	if (BONOBO_EX (ev)) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (control_frame),
-			(CORBA_Object) control_frame->priv->control, &ev);
+			(CORBA_Object) control_frame->priv->control, ev);
 
 		width = height = 0;
 	}
@@ -878,7 +893,8 @@ bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
 	*desired_width = width;
 	*desired_height = height;
 
-	CORBA_exception_free (&ev);
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 }
 
 /*

@@ -78,7 +78,8 @@ gboolean                      bonobo_control_frame_get_autostate             (Bo
 
 /* Connecting to the remote control */
 void                          bonobo_control_frame_bind_to_control           (BonoboControlFrame  *control_frame,
-									      Bonobo_Control       control);
+									      Bonobo_Control       control,
+									      CORBA_Environment   *opt_ev);
 
 Bonobo_Control                bonobo_control_frame_get_control               (BonoboControlFrame  *control_frame);
 
@@ -98,8 +99,9 @@ BonoboControlFrame           *bonobo_control_frame_construct                 (Bo
  */
 void  bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
 					 int                *desired_width,
-					 int                *desired_height);
-
+					 int                *desired_height,
+					 CORBA_Environment  *opt_ev);
+					 
 /* You almost certainly don't want these methods */
 void  bonobo_control_frame_sync_realize   (BonoboControlFrame *frame);
 void  bonobo_control_frame_sync_unrealize (BonoboControlFrame *frame);

@@ -173,7 +173,7 @@ bonobo_control_auto_merge (BonoboControl *control)
 	if (control->priv->ui_component == NULL)
 		return;
 
-	remote_container = bonobo_control_get_remote_ui_container (control);
+	remote_container = bonobo_control_get_remote_ui_container (control, NULL);
 	if (remote_container == CORBA_OBJECT_NIL)
 		return;
 
@@ -221,7 +221,7 @@ impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 
-	bonobo_control_set_control_frame (control, frame);
+	bonobo_control_set_control_frame (control, frame, ev);
 }
 
 
@@ -684,51 +684,68 @@ bonobo_control_finalize (GObject *object)
  * bonobo_control_set_control_frame:
  * @control: A BonoboControl object.
  * @control_frame: A CORBA interface for the ControlFrame which contains this Controo.
+ * @opt_ev: an optional exception environment
  *
  * Sets the ControlFrame for @control to @control_frame.
  */
 void
-bonobo_control_set_control_frame (BonoboControl *control, Bonobo_ControlFrame control_frame)
+bonobo_control_set_control_frame (BonoboControl       *control,
+				  Bonobo_ControlFrame  control_frame,
+				  CORBA_Environment   *opt_ev)
 {
-	CORBA_Environment ev;
+	CORBA_Environment *ev, tmp_ev;
 
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
-	CORBA_exception_init (&ev);
-
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
+		
 	if (control->priv->control_frame != CORBA_OBJECT_NIL)
-		CORBA_Object_release (control->priv->control_frame, &ev);
+		CORBA_Object_release (control->priv->control_frame, ev);
 	
 	if (control_frame == CORBA_OBJECT_NIL)
 		control->priv->control_frame = CORBA_OBJECT_NIL;
 	else
-		control->priv->control_frame = CORBA_Object_duplicate (control_frame, &ev);
+		control->priv->control_frame = CORBA_Object_duplicate (control_frame, ev);
 	
-	CORBA_exception_free (&ev);
-
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
+	
 	g_signal_emit (G_OBJECT (control), control_signals [SET_FRAME], 0);
-}
+	}
 
 /**
  * bonobo_control_get_control_frame:
  * @control: A BonoboControl object whose Bonobo_ControlFrame CORBA interface is
  * being retrieved.
+ * @opt_ev: an optional exception environment
  *
  * Returns: The Bonobo_ControlFrame CORBA object associated with @control, this is
  * a CORBA_Object_duplicated object.  You need to CORBA_Object_release it when you are
  * done with it.
  */
 Bonobo_ControlFrame
-bonobo_control_get_control_frame (BonoboControl *control)
+bonobo_control_get_control_frame (BonoboControl     *control,
+				  CORBA_Environment *opt_ev)
 {
 	Bonobo_ControlFrame control_frame;
-	CORBA_Environment ev;
+	CORBA_Environment *ev, tmp_ev;
 	
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
 
-	CORBA_exception_init (&ev);
-	control_frame = CORBA_Object_duplicate (control->priv->control_frame, &ev);
-	CORBA_exception_free (&ev);
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
+	
+	control_frame = CORBA_Object_duplicate (control->priv->control_frame, ev);
+	
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 
 	return control_frame;
 }
@@ -767,12 +784,15 @@ bonobo_control_set_ui_component (BonoboControl     *control,
  * bonobo_control_set_properties:
  * @control: A #BonoboControl object.
  * @pb: A #Bonobo_PropertyBag.
+ * @opt_ev: An optional exception environment
  *
  * Binds @pb to @control.  When a remote object queries @control
  * for its property bag, @pb will be used in the responses.
  */
 void
-bonobo_control_set_properties (BonoboControl *control, Bonobo_PropertyBag pb)
+bonobo_control_set_properties (BonoboControl      *control,
+			       Bonobo_PropertyBag  pb,
+			       CORBA_Environment  *opt_ev)
 {
 	Bonobo_PropertyBag old_bag;
 
@@ -783,10 +803,10 @@ bonobo_control_set_properties (BonoboControl *control, Bonobo_PropertyBag pb)
 	control->priv->propbag = pb;
 
 	if (pb)
-		bonobo_object_dup_ref (pb, NULL);
+		bonobo_object_dup_ref (pb, opt_ev);
 
 	if (old_bag)
-		bonobo_object_release_unref (old_bag, NULL);
+		bonobo_object_release_unref (old_bag, opt_ev);
 }
 
 /**
@@ -807,18 +827,18 @@ bonobo_control_get_properties (BonoboControl *control)
  * bonobo_control_get_ambient_properties:
  * @control: A #BonoboControl which is bound to a remote
  * #BonoboControlFrame.
- * @ev: CORBA exception environment.
+ * @opt_ev: an optional exception environment
  *
  * Returns: A #Bonobo_PropertyBag bound to the bag of ambient
  * properties associated with this #Control's #ControlFrame.
  */
 Bonobo_PropertyBag
 bonobo_control_get_ambient_properties (BonoboControl     *control,
-				       CORBA_Environment *ev)
+				       CORBA_Environment *opt_ev)
 {
 	Bonobo_ControlFrame control_frame;
 	Bonobo_PropertyBag pbag;
-	CORBA_Environment *real_ev, tmp_ev;
+	CORBA_Environment *real_ev = 0, tmp_ev;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
@@ -827,8 +847,8 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 	if (control_frame == CORBA_OBJECT_NIL)
 		return NULL;
 
-	if (ev)
-		real_ev = ev;
+	if (opt_ev)
+		real_ev = opt_ev;
 	else {
 		CORBA_exception_init (&tmp_ev);
 		real_ev = &tmp_ev;
@@ -838,7 +858,7 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 		control_frame, real_ev);
 
 	if (BONOBO_EX (real_ev)) {
-		if (!ev)
+		if (!opt_ev)
 			CORBA_exception_free (&tmp_ev);
 		pbag = CORBA_OBJECT_NIL;
 	}
@@ -850,13 +870,15 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
  * bonobo_control_get_remote_ui_container:
  * @control: A BonoboControl object which is associated with a remote
  * ControlFrame.
+ * @opt_ev: an optional exception environment
  *
  * Returns: The Bonobo_UIContainer CORBA server for the remote BonoboControlFrame.
  */
 Bonobo_UIContainer
-bonobo_control_get_remote_ui_container (BonoboControl *control)
+bonobo_control_get_remote_ui_container (BonoboControl     *control,
+					CORBA_Environment *opt_ev)
 {
-	CORBA_Environment  ev;
+	CORBA_Environment  tmp_ev, *ev;
 	Bonobo_UIContainer ui_container;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
@@ -864,13 +886,18 @@ bonobo_control_get_remote_ui_container (BonoboControl *control)
 	g_return_val_if_fail (control->priv->control_frame != CORBA_OBJECT_NIL,
 			      CORBA_OBJECT_NIL);
 
-	CORBA_exception_init (&ev);
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
 
-	ui_container = Bonobo_ControlFrame_getUIHandler (control->priv->control_frame, &ev);
+	ui_container = Bonobo_ControlFrame_getUIHandler (control->priv->control_frame, ev);
 
-	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, &ev);
+	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, ev);
 
-	CORBA_exception_free (&ev);
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 
 	return ui_container;
 }
@@ -880,26 +907,33 @@ bonobo_control_get_remote_ui_container (BonoboControl *control)
  * @control: A #BonoboControl object which is bound
  * to a remote ControlFrame.
  * @activated: Whether or not @control has been activated.
+ * @opt_ev: An optional exception environment
  *
  * Notifies the remote ControlFrame which is associated with
  * @control that @control has been activated/deactivated.
  */
 void
-bonobo_control_activate_notify (BonoboControl *control,
-				gboolean      activated)
+bonobo_control_activate_notify (BonoboControl     *control,
+				gboolean           activated,
+				CORBA_Environment *opt_ev)
 {
-	CORBA_Environment ev;
+	CORBA_Environment *ev, tmp_ev;
 
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 	g_return_if_fail (control->priv->control_frame != CORBA_OBJECT_NIL);
-	
-	CORBA_exception_init (&ev);
 
-	Bonobo_ControlFrame_activated (control->priv->control_frame, activated, &ev);
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
 
-	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, &ev);
+	Bonobo_ControlFrame_activated (control->priv->control_frame, activated, ev);
 
-	CORBA_exception_free (&ev);
+	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, ev);
+
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 }
 
 static void
@@ -960,12 +994,13 @@ BONOBO_TYPE_FUNC_FULL (BonoboControl,
 
 void
 bonobo_control_set_property (BonoboControl       *control,
+			     CORBA_Environment   *opt_ev,
 			     const char          *first_prop,
 			     ...)
 {
 	Bonobo_PropertyBag  bag;
 	char               *err;
-	CORBA_Environment   ev;
+	CORBA_Environment  *ev, tmp_ev;
 	va_list             args;
 
 	g_return_if_fail (first_prop != NULL);
@@ -973,26 +1008,32 @@ bonobo_control_set_property (BonoboControl       *control,
 
 	va_start (args, first_prop);
 
-	CORBA_exception_init (&ev);
-
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
+		
 	bag = control->priv->propbag;
 
-	if ((err = bonobo_property_bag_client_setv (bag, &ev, first_prop, args)))
+	if ((err = bonobo_property_bag_client_setv (bag, ev, first_prop, args)))
 		g_warning ("Error '%s'", err);
 
-	CORBA_exception_free (&ev);
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 
 	va_end (args);
 }
 
 void
 bonobo_control_get_property (BonoboControl       *control,
+			     CORBA_Environment   *opt_ev,
 			     const char          *first_prop,
 			     ...)
 {
 	Bonobo_PropertyBag  bag;
 	char               *err;
-	CORBA_Environment   ev;
+	CORBA_Environment  *ev, tmp_ev;
 	va_list             args;
 
 	g_return_if_fail (first_prop != NULL);
@@ -1000,14 +1041,19 @@ bonobo_control_get_property (BonoboControl       *control,
 
 	va_start (args, first_prop);
 
-	CORBA_exception_init (&ev);
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
 
 	bag = control->priv->propbag;
 
-	if ((err = bonobo_property_bag_client_getv (bag, &ev, first_prop, args)))
+	if ((err = bonobo_property_bag_client_getv (bag, ev, first_prop, args)))
 		g_warning ("Error '%s'", err);
 
-	CORBA_exception_free (&ev);
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 
 	va_end (args);
 }

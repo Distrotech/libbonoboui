@@ -108,7 +108,8 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 	 */
 	bw->priv->control_frame = bonobo_control_frame_new (uic);
 
-	bonobo_control_frame_bind_to_control (bw->priv->control_frame, control);
+	bonobo_control_frame_bind_to_control
+		(bw->priv->control_frame, control, NULL);
 
 	/*
 	 * People that pass us controls get them sunk.

@@ -52,9 +52,11 @@ void                        bonobo_control_set_automerge           (BonoboContro
 gboolean                    bonobo_control_get_automerge           (BonoboControl *control);
 
 void                        bonobo_control_set_property            (BonoboControl       *control,
+								    CORBA_Environment   *opt_ev,
 								    const char          *first_prop,
 								    ...);
 void                        bonobo_control_get_property            (BonoboControl       *control,
+								    CORBA_Environment   *opt_ev,
 								    const char          *first_prop,
 								    ...);
 
@@ -65,17 +67,22 @@ BonoboControl              *bonobo_control_construct               (BonoboContro
 BonoboUIComponent          *bonobo_control_get_ui_component        (BonoboControl       *control);
 void                        bonobo_control_set_ui_component        (BonoboControl       *control,
 								    BonoboUIComponent   *component);
-Bonobo_UIContainer          bonobo_control_get_remote_ui_container (BonoboControl       *control);
+Bonobo_UIContainer          bonobo_control_get_remote_ui_container (BonoboControl       *control,
+								    CORBA_Environment   *opt_ev);
 void                        bonobo_control_set_control_frame       (BonoboControl       *control,
-								    Bonobo_ControlFrame  control_frame);
-Bonobo_ControlFrame         bonobo_control_get_control_frame       (BonoboControl       *control);
+								    Bonobo_ControlFrame  control_frame,
+								    CORBA_Environment   *opt_ev);
+Bonobo_ControlFrame         bonobo_control_get_control_frame       (BonoboControl       *control,
+								    CORBA_Environment   *opt_ev);
 void                        bonobo_control_set_properties          (BonoboControl       *control,
-								    Bonobo_PropertyBag   pb);
+								    Bonobo_PropertyBag   pb,
+								    CORBA_Environment   *opt_ev);
 Bonobo_PropertyBag          bonobo_control_get_properties          (BonoboControl       *control);
 Bonobo_PropertyBag          bonobo_control_get_ambient_properties  (BonoboControl       *control,
-								    CORBA_Environment   *ev);
+								    CORBA_Environment   *opt_ev);
 void                        bonobo_control_activate_notify         (BonoboControl       *control,
-								    gboolean             activated);
+								    gboolean             activated,
+								    CORBA_Environment   *opt_ev);
 Bonobo_Control_windowId     bonobo_control_window_id_from_x11      (guint32              x11_id);
 guint32                     bonobo_control_x11_from_window_id      (Bonobo_Control_windowId id);
 #define                     bonobo_control_windowid_from_x11(a) \
