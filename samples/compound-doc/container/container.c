@@ -147,25 +147,25 @@ make_moniker (const char *name)
 }
 
 static void
-do_add_cb (BonoboMonikerASyncHandle *handle, SampleApp *app)
+do_add_cb (BonoboASyncReply  *handle,
+	   CORBA_Environment *ev,
+	   gpointer           user_data)
 {
-	SampleClientSite *site;
-	Bonobo_Embeddable  embeddable;
-	CORBA_Environment *ev;
+	SampleApp         *app = user_data;
+	SampleClientSite  *site;
+	Bonobo_Embeddable  embeddable = CORBA_OBJECT_NIL;
 
-	ev = bonobo_moniker_async_handle_get_environment (handle);
 	if (BONOBO_EX (ev)) {
 		g_warning ("Moniker resolve demarshal exception '%s'\n",
 			   bonobo_exception_get_text (ev));
-		bonobo_moniker_async_handle_release (handle);
 		return;
 	}
 
-	embeddable = bonobo_moniker_async_handle_get_object (handle);
-
-	if (ev->_major != CORBA_NO_EXCEPTION)
-		g_warning ("Moniker get name exception '%s'\n",
-			   bonobo_exception_get_text (ev));
+	bonobo_async_demarshal (handle, &embeddable, NULL);
+	if (embeddable == CORBA_OBJECT_NIL) {
+		g_warning ("Failed to demarshal embeddable");
+		return;
+	}
 
 	site = sample_app_add_embeddable (
 		app, bonobo_object_client_from_corba (embeddable),
@@ -173,11 +173,6 @@ do_add_cb (BonoboMonikerASyncHandle *handle, SampleApp *app)
 
 	if (!site)
 		g_warning ("Failed to add embeddable to app");
-
-	bonobo_moniker_async_handle_release (handle);
-
-	/* FIXME: We need to deal with this reference somehow */
-/*	bonobo_object_release_unref (moniker, ev); */
 }
 
 static void
@@ -189,7 +184,7 @@ resolve_and_add (SampleApp *app, Bonobo_Moniker moniker, const char *interface)
 	CORBA_exception_init (&ev);
 
 	bonobo_moniker_resolve_async_default (
-		moniker, interface, &ev, (BonoboMonikerCallback) do_add_cb, app);
+		moniker, interface, &ev, 5000, do_add_cb, app);
 	
 	if (BONOBO_EX (&ev)) {
 		g_warning ("Moniker resolve async exception '%s'\n",
@@ -197,10 +192,12 @@ resolve_and_add (SampleApp *app, Bonobo_Moniker moniker, const char *interface)
 		return;
 	}
 
-	name = bonobo_moniker_client_get_name (moniker, &ev);
+	bonobo_object_release_unref (moniker, &ev);
+
+/*	name = bonobo_moniker_client_get_name (moniker, &ev);
 	g_print ("My moniker looks like '%s'\n", name);
 
-	CORBA_free (name);
+	CORBA_free (name);*/
 }
 
 /*

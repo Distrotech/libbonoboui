@@ -52,6 +52,7 @@ libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
 	bonobo-activation-context.c	\
 	bonobo-arg.c			\
+	bonobo-async.c			\
 	bonobo-context.c		\
 	bonobo-event-source.c		\
 	bonobo-exception.c		\
@@ -90,6 +91,7 @@ libbonoboinclude_HEADERS =			\
 	Bonobo.h				\
 	bonobo-activation-context.h		\
 	bonobo-arg.h				\
+	bonobo-async.h				\
 	bonobo-canvas-component.h		\
 	bonobo-canvas-item.h			\
 	bonobo-client-site.h			\
