@@ -17,7 +17,6 @@
  */
 #include <config.h>
 #include <string.h> /* strcmp */
-#include <libgnomeui/gnome-stock.h>
 #include <bonobo/bonobo-object-directory.h>
 #include <bonobo/bonobo-selector.h>
 
