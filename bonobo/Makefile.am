@@ -64,6 +64,7 @@ libbonobo_la_SOURCES =			\
 	gnome-canvas-component.c	\
 	gnome-client-site.c		\
 	gnome-container.c		\
+	gnome-desktop-window.c		\
 	gnome-embeddable-factory.c 	\
 	gnome-embeddable.c		\
 	gnome-main.c			\
@@ -99,6 +100,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-client-site.h		\
 	gnome-component-io.h		\
 	gnome-container.h		\
+	gnome-desktop-window.h		\
 	gnome-embeddable.h		\
 	gnome-embeddable-factory.h	\
 	gnome-main.h			\
