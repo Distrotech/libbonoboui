@@ -47,7 +47,60 @@ get_full_size (InternalToolbar *toolbar)
 static void
 invalidate_size (InternalToolbar *toolbar)
 {
-	toolbar->got_size = FALSE;	
+	toolbar->got_size = FALSE;
+}
+
+GList *
+bonobo_ui_internal_toolbar_get_children (GtkWidget *toolbar)
+{
+	int i, n_items = 0;
+	GList *ret = NULL;
+
+	n_items = gtk_toolbar_get_n_items (GTK_TOOLBAR (toolbar));
+
+	for (i = 0; i < n_items; i++) {
+		GtkWidget *child;
+		GtkToolItem *item = gtk_toolbar_get_nth_item  (GTK_TOOLBAR (toolbar), i);
+		if ((child = GTK_BIN (item)->child) && BONOBO_IS_UI_TOOLBAR_ITEM (child))
+			ret = g_list_prepend (ret, child);
+		else
+			ret = g_list_prepend (ret, item);
+	}
+
+	return g_list_reverse (ret);
+}
+
+static void
+set_attributes_on_child (BonoboUIToolbarItem *item,
+                         GtkOrientation       orientation,
+                         GtkToolbarStyle      style)
+{
+	bonobo_ui_toolbar_item_set_orientation (item, orientation);
+
+	switch (style) {
+	case GTK_TOOLBAR_BOTH_HORIZ:
+		if (! bonobo_ui_toolbar_item_get_want_label (item))
+			bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_ONLY);
+		else if (orientation == GTK_ORIENTATION_HORIZONTAL)
+			bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_HORIZONTAL);
+		else
+			bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL);
+		break;
+	case GTK_TOOLBAR_BOTH:
+		if (orientation == GTK_ORIENTATION_VERTICAL)
+			bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_HORIZONTAL);
+		else
+			bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL);
+		break;
+	case GTK_TOOLBAR_ICONS:
+		bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_ONLY);
+		break;
+	case GTK_TOOLBAR_TEXT:
+		bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_TEXT_ONLY);
+		break;
+	default:
+		g_assert_not_reached ();
+	}
 }
 
 static void
@@ -96,12 +149,47 @@ impl_set_property (GObject      *object,
 }
 
 static void
+impl_orientation_changed (GtkToolbar *widget,
+			  GtkOrientation orientation)
+{
+	InternalToolbar *toolbar = (InternalToolbar *) widget;
+
+	toolbar->got_size = FALSE;
+
+	GTK_TOOLBAR_CLASS (internal_toolbar_parent_class)->orientation_changed (widget, orientation);
+}
+
+static void
+impl_style_changed (GtkToolbar *toolbar,
+		    GtkToolbarStyle style)
+{
+	GList *items, *l;
+	GtkOrientation orientation;
+
+	items = bonobo_ui_internal_toolbar_get_children (GTK_WIDGET (toolbar));
+
+	orientation = gtk_toolbar_get_orientation (GTK_TOOLBAR (toolbar));
+
+	for (l = items; l != NULL; l = l->next) {
+
+		if (BONOBO_IS_UI_TOOLBAR_ITEM (l->data))
+			set_attributes_on_child (l->data, orientation, style);
+	}
+
+	gtk_widget_queue_resize (GTK_WIDGET (toolbar));
+}
+
+static void
 internal_toolbar_class_init (InternalToolbarClass *klass)
 {
 	GObjectClass *gobject_class = (GObjectClass *) klass;
+	GtkToolbarClass *toolbar_class = (GtkToolbarClass *) klass;
 
 	gobject_class->get_property = impl_get_property;
 	gobject_class->set_property = impl_set_property;
+
+	toolbar_class->orientation_changed = impl_orientation_changed;
+	toolbar_class->style_changed = impl_style_changed;
 
 	g_object_class_install_property (
 		gobject_class,
@@ -132,8 +220,6 @@ internal_toolbar_init (InternalToolbar *toolbar)
 	g_signal_connect (toolbar, "add",
 			  G_CALLBACK (invalidate_size), NULL);
 	g_signal_connect (toolbar, "remove",
-			  G_CALLBACK (invalidate_size), NULL);
-	g_signal_connect (toolbar, "orientation_changed",
 			  G_CALLBACK (invalidate_size), NULL);
 }
 

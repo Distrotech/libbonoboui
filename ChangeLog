@@ -1,3 +1,16 @@
+2004-02-20  Arvind Samptur <arvind.samptur@wipro.com>
+
+	* bonobo/bonobo-ui-sync-toolbar.c: (toolbar_style_changed): bin this
+	(set_attributes_on_child)
+	(toolbar_get_children): move these to
+	bonobo/bonobo-ui-internal-toolbar.c
+
+	* bonobo/bonobo-ui-internal-toolbar.c:
+	(bonobo_ui_internal_toolbar_get_children):
+	(impl_style_changed):
+	(impl_orientation_changed):
+	Instead of g_signal_connect() it is better this way.
+
 2004-02-20  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-ui.c (main): add extra in-proc tests.
