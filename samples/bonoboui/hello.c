@@ -28,8 +28,8 @@
  * USA
  */
 
-#include "config.h"
-
+#include <config.h>
+#include <string.h>
 #include <stdlib.h>
 
 #include <libbonoboui.h>
@@ -148,15 +148,37 @@ hello_on_menu_help_about (BonoboUIComponent *uic,
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
+static gchar *
+utf8_reverse (const char *string)
+{
+	int len;
+	gchar *result;
+	const gchar *p;
+	gchar *m, *r, skip;
+
+	len = strlen (string);
+
+	result = g_new (gchar, len + 1);
+	r = result + len;
+	p = string;
+	while (*p)  {
+		skip = g_utf8_skip[*(guchar*)p];
+		r -= skip;
+		for (m = r; skip; skip--)
+			*m++ = *p++;
+	}
+	result[len] = 0;
+
+	return result;
+}
+
 static void
 hello_on_button_click (GtkWidget* w, gpointer user_data)
 {
 	gchar    *text;
 	GtkLabel *label = GTK_LABEL (user_data);
 
-	text = g_strdup (gtk_label_get_text (label));
-
-	g_strreverse (text);
+	text = utf8_reverse (gtk_label_get_text (label));
 
 	gtk_label_set_text (label, text);
 

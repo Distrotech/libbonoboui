@@ -1,5 +1,9 @@
 2002-02-02  Michael Meeks  <michael@ximian.com>
 
+	* samples/bonoboui/hello.c (utf8_reverse): copy
+	from glib/glib/gpattern.c
+	(hello_on_button_click): use it not g_strreverse.
+
 	* bonobo/bonobo-ui-node.c
 	(bonobo_ui_node_set_attr_by_id): split out into
 	(do_set_attr): here.
