@@ -40,8 +40,7 @@ bonobo_plug_construct (BonoboPlug *plug, guint32 socket_id)
 	plug->socket_window = gdk_window_lookup (socket_id);
 	plug->same_app = TRUE;
 
-	if (plug->socket_window == NULL)
-	{
+	if (plug->socket_window == NULL) {
 		plug->socket_window = gdk_window_foreign_new (socket_id);
 		plug->same_app = FALSE;
 	}
@@ -67,15 +66,22 @@ bonobo_plug_unrealize (GtkWidget *widget)
 
 	plug = BONOBO_PLUG (widget);
 
-	if (plug->socket_window != NULL)
-	{
+	if (GTK_WIDGET_CLASS (parent_class)->unrealize)
+		(* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
+
+	if (plug->socket_window != NULL) {
 		gdk_window_set_user_data (plug->socket_window, NULL);
 		gdk_window_unref (plug->socket_window);
 		plug->socket_window = NULL;
 	}
+}
 
-	if (GTK_WIDGET_CLASS (parent_class)->unrealize)
-		(* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
+static void
+bonobo_plug_destroy (GtkObject *object)
+{
+	g_warning ("Bonobo plug destroy '%p'", object);
+
+	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
 static void
