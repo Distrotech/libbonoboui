@@ -100,6 +100,16 @@ read_four_bytes (const char *pos)
 		(read_byte (pos + 6)));
 }
 
+/**
+ * bonobo_ui_util_pixbuf_to_xml:
+ * @pixbuf: a GdkPixbuf
+ * 
+ * Convert a @pixbuf to a string representation suitable
+ * for passing as a "pixname" attribute with a pixtype
+ * attribute = "pixbuf".
+ * 
+ * Return value: the stringified pixbuf.
+ **/
 char *
 bonobo_ui_util_pixbuf_to_xml (GdkPixbuf *pixbuf)
 {
@@ -152,6 +162,14 @@ bonobo_ui_util_pixbuf_to_xml (GdkPixbuf *pixbuf)
 	return xml;
 }
 
+/**
+ * bonobo_ui_util_xml_to_pixbuf:
+ * @xml: a string
+ * 
+ * This converts a stringified pixbuf in @xml into a GdkPixbuf
+ * 
+ * Return value: a handed reference to the created GdkPixbuf.
+ **/
 GdkPixbuf *
 bonobo_ui_util_xml_to_pixbuf (const char *xml)
 {
@@ -405,6 +423,18 @@ find_pixmap_in_path (const gchar *filename)
 	return NULL;
 }
 
+/**
+ * bonobo_ui_util_xml_get_icon_pixbuf:
+ * @node: the node
+ * @prepend_menu: whether the pixbuf is for a menu item
+ * 
+ * This routine returns a GdkPixbuf for a @node, if @prepend_menu is
+ * TRUE then if it is a stock pixbuf 'Menu_' will be prepended to
+ * the stock name. Otherwise the pixbuf is extracted either from the
+ * node, a filename, or the stock system.
+ * 
+ * Return value: A handed reference to the extracted pixbuf.
+ **/
 GdkPixbuf *
 bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 {
@@ -457,6 +487,16 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 	return icon_pixbuf;
 }
 
+/**
+ * bonobo_ui_util_xml_get_icon_pixmap_widget:
+ * @node: the node
+ * @prepend_menu: whether the pixbuf is for a menu item
+ * 
+ * This function extracts a pixbuf from the node and returns a GtkWidget
+ * containing a display of the pixbuf.
+ * 
+ * Return value: the widget.
+ **/
 GtkWidget *
 bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_menu)
 {
@@ -478,9 +518,17 @@ bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_
 	return GTK_WIDGET (gpixmap);
 }
 
+/**
+ * bonobo_ui_util_xml_set_pixbuf:
+ * @node: the node
+ * @pixbuf: the pixbuf
+ * 
+ * Associate @pixbuf with this @node by stringifying it and setting
+ * the requisite attributes.
+ **/
 void
-bonobo_ui_util_xml_set_pixbuf (BonoboUINode     *node,
-				GdkPixbuf   *pixbuf)
+bonobo_ui_util_xml_set_pixbuf (BonoboUINode *node,
+			       GdkPixbuf    *pixbuf)
 {
 	char *data;
 
@@ -493,6 +541,14 @@ bonobo_ui_util_xml_set_pixbuf (BonoboUINode     *node,
 	g_free (data);
 }
 
+/**
+ * bonobo_ui_util_xml_set_pix_xpm:
+ * @node: the node
+ * @xpm: an xpm
+ * 
+ * Associate @xpm with this @node by stringifying it and setting
+ * the requisite attributes.
+ **/
 void
 bonobo_ui_util_xml_set_pix_xpm (BonoboUINode     *node,
 				const char **xpm)
@@ -508,7 +564,13 @@ bonobo_ui_util_xml_set_pix_xpm (BonoboUINode     *node,
 
 	gdk_pixbuf_unref (pixbuf);
 }
-				     
+/**
+ * bonobo_ui_util_xml_set_pix_stock:
+ * @node: the node
+ * @name: the stock name
+ * 
+ * Associate the stock pixmap named @name with this @node
+ **/
 void
 bonobo_ui_util_xml_set_pix_stock (BonoboUINode *node,
 				  const char   *name)
@@ -520,6 +582,13 @@ bonobo_ui_util_xml_set_pix_stock (BonoboUINode *node,
 	bonobo_ui_node_set_attr (node, "pixname", name);
 }
 
+/**
+ * bonobo_ui_util_xml_set_pix_fname:
+ * @node: the node
+ * @name: the filename
+ * 
+ * Associate a pixmap filename @name with a @node
+ **/
 void
 bonobo_ui_util_xml_set_pix_fname (BonoboUINode *node,
 				  const char   *name)
@@ -595,6 +664,16 @@ bonobo_help_file_find_file (const char *prefix, const char *app,
 	return res;
 }
 
+/**
+ * bonobo_ui_util_build_help_menu:
+ * @listener: associated component
+ * @app_prefix: application prefix
+ * @app_name: application name
+ * @parent: toplevel node
+ * 
+ * This routine inserts all the help menu items appropriate for this
+ * application as children of the @parent node.
+ **/
 void
 bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 				const char        *app_prefix,
@@ -675,6 +754,17 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 	fclose (file);
 }
 
+/**
+ * bonobo_ui_util_build_accel:
+ * @accelerator_key: the accelerator key
+ * @accelerator_mods: the accelerator mods
+ * @verb: the associated verb.
+ * 
+ * This routine builds an accelerator node from the key and mod mask
+ * and associates it with a verb.
+ * 
+ * Return value: the built node.
+ **/
 BonoboUINode *
 bonobo_ui_util_build_accel (guint           accelerator_key,
 			    GdkModifierType accelerator_mods,
@@ -690,26 +780,21 @@ bonobo_ui_util_build_accel (guint           accelerator_key,
 	bonobo_ui_node_set_attr (ret, "verb", verb);
 
 	return ret;
-
-	/* Old Kludge due to brokenness in gnome-xml */
-/*	char    *name;
-	xmlDoc  *doc;
-	BonoboUINode *ret;
-
-	name = bonobo_ui_util_accel_name (accelerator_key, accelerator_mods);
-	
-	doc = xmlNewDoc ("1.0");
-	ret = xmlNewDocNode (doc, NULL, "accel", NULL);
-	bonobo_ui_node_set_attr (ret, "name", name);
-	g_free (name);
-	bonobo_ui_node_set_attr (ret, "verb", verb);
-	doc->root = NULL;
-	bonobo_ui_xml_strip (ret);
-	bonobo_ui_node_free_stringDoc (doc);
-
-	return ret;*/
 }
 
+/**
+ * bonobo_ui_util_new_menu:
+ * @submenu: whether it is a menu or submenu
+ * @name: the path element name of the menu
+ * @label: the label
+ * @tip: the description
+ * @verb: the associated verb
+ * 
+ * A helper routine to create a menu or submenu with associated
+ * information - this routine is strongly deprecated.
+ * 
+ * Return value: the constructed node.
+ **/
 BonoboUINode *
 bonobo_ui_util_new_menu (gboolean    submenu,
 			 const char *name,
@@ -745,6 +830,18 @@ bonobo_ui_util_new_menu (gboolean    submenu,
 	return node;
 }
 
+/**
+ * bonobo_ui_util_new_placeholder:
+ * @name: path element name of the placeholder
+ * @top: whether to delimit at the top
+ * @bottom: whether to delimit at the bottom
+ * 
+ * A helper routine to create a menu or submenu with associated
+ * information - this routine is strongly deprecated - it is also
+ * broken.
+ * 
+ * Return value: the new node
+ **/
 BonoboUINode *
 bonobo_ui_util_new_placeholder (const char *name,
 				gboolean    top,
@@ -767,9 +864,17 @@ bonobo_ui_util_new_placeholder (const char *name,
 	return node;
 }
 
+/**
+ * bonobo_ui_util_set_radiogroup:
+ * @node: the node
+ * @group_name: the group name.
+ * 
+ * This is a helper function that sets the radiogroup to
+ * the requested group - deprecated
+ **/
 void
-bonobo_ui_util_set_radiogroup (BonoboUINode    *node,
-			       const char *group_name)
+bonobo_ui_util_set_radiogroup (BonoboUINode *node,
+			       const char   *group_name)
 {
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (group_name != NULL);
@@ -778,10 +883,18 @@ bonobo_ui_util_set_radiogroup (BonoboUINode    *node,
 	bonobo_ui_node_set_attr (node, "group", group_name);
 }
 
+/**
+ * bonobo_ui_util_set_toggle:
+ * @node: the node
+ * @id: the associated id
+ * @init_state: 
+ * 
+ * Deprecated, makes a node toggleable.
+ **/
 void
-bonobo_ui_util_set_toggle (BonoboUINode    *node,
-			   const char *id,
-			   const char *init_state)
+bonobo_ui_util_set_toggle (BonoboUINode *node,
+			   const char   *id,
+			   const char   *init_state)
 {
 	g_return_if_fail (node != NULL);
 
@@ -792,6 +905,17 @@ bonobo_ui_util_set_toggle (BonoboUINode    *node,
 		bonobo_ui_node_set_attr (node, "state", init_state);
 }
 
+/**
+ * bonobo_ui_util_new_std_toolbar:
+ * @name: 
+ * @label: 
+ * @tip: 
+ * @verb: 
+ * 
+ * Deprecated - created a new toolbar item.
+ * 
+ * Return value: 
+ **/
 BonoboUINode *
 bonobo_ui_util_new_std_toolbar (const char *name,
 				const char *label,
@@ -820,6 +944,17 @@ bonobo_ui_util_new_std_toolbar (const char *name,
 
 	return node;
 }
+/**
+ * bonobo_ui_util_new_toggle_toolbar:
+ * @name: 
+ * @label: 
+ * @tip: 
+ * @id: 
+ * 
+ * Deprecated - creates a new toggle toolbar item
+ * 
+ * Return value: 
+ **/
 					     
 BonoboUINode *
 bonobo_ui_util_new_toggle_toolbar (const char *name,
@@ -965,6 +1100,16 @@ bonobo_ui_util_translate_ui (BonoboUINode *bnode)
 	xmlFreePropList (old_props);
 }
 
+/**
+ * bonobo_ui_util_fixup_help:
+ * @component: the UI component
+ * @node: the node to search under
+ * @app_prefix: the application prefix
+ * @app_name: the application name
+ * 
+ * This searches for 'BuiltMenuItems' placeholders, and then
+ * fills them with the application's menu items.
+ **/
 void
 bonobo_ui_util_fixup_help (BonoboUIComponent *component,
 			   BonoboUINode      *node,
@@ -995,6 +1140,14 @@ bonobo_ui_util_fixup_help (BonoboUIComponent *component,
 		bonobo_ui_util_fixup_help (component, l, app_prefix, app_name);
 }
 
+/**
+ * bonobo_ui_util_fixup_icons:
+ * @node: the node
+ * 
+ * This function is used to ensure filename pixbuf attributes are
+ * converted to in-line pixbufs on the server side, so that we don't
+ * sent a ( possibly invalid ) filename across the wire.
+ **/
 void
 bonobo_ui_util_fixup_icons (BonoboUINode *node)
 {
@@ -1076,6 +1229,18 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 	return node;
 }
 
+/**
+ * bonobo_ui_util_set_ui:
+ * @component: the component
+ * @app_prefix: the application prefix eg. /opt/gnome
+ * @file_name: the filename of the file to merge relative to the prefix.
+ * @app_name: the application name - for help merging
+ * 
+ * This function loads the UI from the associated file, translates it,
+ * fixes up all the menus, ensures pixbuf filenames are resolved to xml
+ * and then merges the XML to the remote container - this is the best
+ * and most simple entry point for the new UI code.
+ **/
 void
 bonobo_ui_util_set_ui (BonoboUIComponent *component,
 		       const char        *app_prefix,
@@ -1211,6 +1376,17 @@ is_release (const gchar *string)
 		(string[8] == DELIM_POST));
 }
 
+/**
+ * bonobo_ui_util_accel_parse:
+ * @accelerator: the accelerator name
+ * @accelerator_key: output of the key
+ * @accelerator_mods: output of the mods
+ * 
+ * This parses the accelerator string and returns the key and mods
+ * associated with it - using a similar format to Gtk+ but one which
+ * doesn't involve inefficient XML entities and avoids other misc.
+ * problems.
+ **/
 void
 bonobo_ui_util_accel_parse (char              *accelerator,
 			    guint             *accelerator_key,
@@ -1319,6 +1495,16 @@ bonobo_ui_util_accel_parse (char              *accelerator,
 		*accelerator_mods = mods;
 }
 
+/**
+ * bonobo_ui_util_accel_name:
+ * @accelerator_key: the key
+ * @accelerator_mods: the modifiers
+ * 
+ * This stringifies an @accelerator_key and some @accelerator_mods
+ * it is the converse of bonobo_ui_util_accel_parse
+ * 
+ * Return value: the stringified representation
+ **/
 gchar *
 bonobo_ui_util_accel_name (guint              accelerator_key,
 			   GdkModifierType    accelerator_mods)
@@ -1409,6 +1595,15 @@ bonobo_ui_util_accel_name (guint              accelerator_key,
 	return accelerator;
 }
 
+/**
+ * bonobo_ui_util_set_pixbuf:
+ * @component: the component
+ * @path: the path into the xml tree
+ * @pixbuf: the pixbuf
+ * 
+ * This helper function sets a pixbuf at a certain path into an
+ * xml tree.
+ **/
 void
 bonobo_ui_util_set_pixbuf (BonoboUIComponent *component,
 			   const char        *path,
@@ -1438,6 +1633,17 @@ bonobo_ui_util_set_pixbuf (BonoboUIComponent *component,
  */
 #ifdef IF_ONLY_LIBXML1_COULD_COPE_WITH_UTF8
 
+/**
+ * bonobo_ui_util_encode_str:
+ * @str: the string
+ * 
+ * This function is needed to encode labels that contain
+ * either UTF-8 or other 8 bit charsets. This is due to
+ * severe libxml1 breakage. If you want to do manual
+ * label setting you need this function.
+ * 
+ * Return value: the mangled (hex) text.
+ **/
 char *
 bonobo_ui_util_encode_str (const char *str)
 {
@@ -1469,6 +1675,15 @@ bonobo_ui_util_encode_str (const char *str)
 	return ret;
 }
 
+/**
+ * bonobo_ui_util_decode_str:
+ * @str: the string
+ * @err: a pointer to an error flag
+ * 
+ * This provides the inverse mapping for bonobo_ui_util_encode_str
+ * 
+ * Return value: the decoded string or NULL on failure.
+ **/
 char *
 bonobo_ui_util_decode_str (const char *str, gboolean *err)
 {

@@ -10,7 +10,9 @@ The UI utilities do man things, mostly concerned with smoothing
 the flow of XML data from containee to container. There are also
 several generaly useful functions used internaly for manipulating
 pixmaps. Also, code for stringifying accelerators, fixing up help
-and working around libxml bugs.
+and working around libxml bugs. Also a large chunk of code is
+included for dynamic UI tree building that is now strongly
+deprecated by the various tools to do this from dynamic files.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

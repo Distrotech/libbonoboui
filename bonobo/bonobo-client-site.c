@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/**
+/*
  * bonobo-client-site.h: a ClientSite object.
  *
  * A BonoboClientSite object acts as the point-of-contact for an
@@ -422,8 +422,9 @@ canvas_item_destroyed (GnomeCanvasItem *item, BonoboClientSite *client_site)
  * Returns: A GnomeCanvasItem that wraps the remote Canvas Item.
  */
 GnomeCanvasItem *
-bonobo_client_site_new_item (BonoboClientSite *client_site, Bonobo_UIContainer uic,
-			     GnomeCanvasGroup *group)
+bonobo_client_site_new_item (BonoboClientSite  *client_site,
+			     Bonobo_UIContainer uic,
+			     GnomeCanvasGroup  *group)
 {
 	GnomeCanvasItem *item;
 	Bonobo_Embeddable corba_emb;
