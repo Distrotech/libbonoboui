@@ -920,7 +920,7 @@ bonobo_control_frame_sync_realize (BonoboControlFrame *frame)
 
 	Bonobo_Control_realize (control, &ev);
 	if (BONOBO_EX (&ev))
-		g_warning ("Exception on unrealize '%s'",
+		g_warning ("Exception on realize '%s'",
 			   bonobo_exception_get_text (&ev));
 
 	CORBA_exception_free (&ev);
