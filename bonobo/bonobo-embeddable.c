@@ -193,7 +193,7 @@ impl_Bonobo_Embeddable_createView (PortableServer_Servant servant,
 
 	g_signal_connect_data (G_OBJECT (view), "destroy",
 			       G_CALLBACK (bonobo_embeddable_view_destroy_cb), 
-			       embeddable, NULL, FALSE, FALSE);
+			       embeddable, NULL, 0);
 
 	return CORBA_Object_duplicate (BONOBO_OBJREF (view), ev);
 }
@@ -243,7 +243,7 @@ make_canvas_component (BonoboEmbeddable *embeddable, gboolean aa, Bonobo_Canvas_
 	embeddable->priv->canvas_items = g_list_prepend (embeddable->priv->canvas_items, component);
 	g_signal_connect_data (G_OBJECT (component), "destroy",
 			       G_CALLBACK (canvas_item_destroyed), embeddable,
-			       NULL, FALSE, FALSE);
+			       NULL, 0);
 	
 	return component;
 }

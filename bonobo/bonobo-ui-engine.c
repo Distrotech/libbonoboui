@@ -1268,7 +1268,7 @@ bonobo_ui_engine_set_ui_container (BonoboUIEngine *engine,
 		engine->priv->destroy_id = g_signal_connect_data (
 			G_OBJECT (ui_container), "destroy",
 			G_CALLBACK (blank_container), engine,
-			NULL, FALSE, FALSE);
+			NULL, 0);
 }
 
 static void
