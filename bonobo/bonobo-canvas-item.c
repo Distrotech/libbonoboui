@@ -25,6 +25,7 @@ typedef struct {
 struct _GnomeBonoboItemPrivate {
 	GNOME_Canvas_Item object;
 	ItemProxyServant  *proxy;
+	int               realize_pending;
 };
 
 enum {
@@ -217,7 +218,12 @@ gbi_realize (GnomeCanvasItem *item)
 	
 	if (gbi_parent_class)
 		(*gbi_parent_class->realize) (item);
-	
+
+	if (gbi->priv->object == CORBA_OBJECT_NIL){
+		gbi->priv->realize_pending = 1;
+		return;
+	}
+		
 	CORBA_exception_init (&ev);
 	gdk_flush ();
 	GNOME_Canvas_Item_realize (
@@ -235,10 +241,12 @@ gbi_unrealize (GnomeCanvasItem *item)
 	
 	if (getenv ("DEBUG_BI"))
 		printf ("gbi_unrealize\n");
-	
-	CORBA_exception_init (&ev);
-	GNOME_Canvas_Item_unrealize (gbi->priv->object, &ev);
-	CORBA_exception_free (&ev);
+
+	if (gbi->priv->object != CORBA_OBJECT_NIL){
+		CORBA_exception_init (&ev);
+		GNOME_Canvas_Item_unrealize (gbi->priv->object, &ev);
+		CORBA_exception_free (&ev);
+	}
 
 	if (gbi_parent_class)
 		(*gbi_parent_class->unrealize) (item);
@@ -526,6 +534,11 @@ gbi_set_arg (GtkObject *o, GtkArg *arg, guint arg_id)
 		if (corba_object != CORBA_OBJECT_NIL)
 			gbi->priv->object = CORBA_Object_duplicate (corba_object, &ev);
 		CORBA_exception_free (&ev);
+
+		if (gbi->priv->realize_pending){
+			gbi->priv->realize_pending = 0;
+			gbi_realize (GNOME_CANVAS_ITEM (gbi));
+		}
 		break;
 	}
 	}
