@@ -101,8 +101,6 @@ bonobo_client_site_destroy (GtkObject *object)
 		gtk_object_unref (GTK_OBJECT (item));
 	}
 
-	bonobo_item_container_remove (client_site->container, BONOBO_OBJECT (object));
-
 	if (client_site->bound_embeddable) {
 		bonobo_object_unref (BONOBO_OBJECT (client_site->bound_embeddable));
 		client_site->bound_embeddable = NULL;
@@ -237,7 +235,6 @@ bonobo_client_site_construct (BonoboClientSite    *client_site,
 	bonobo_object_construct (BONOBO_OBJECT (client_site), corba_client_site);
 	
 	BONOBO_CLIENT_SITE (client_site)->container = container;
-	bonobo_item_container_add (container, BONOBO_OBJECT (client_site));
 
 	return client_site;
 }

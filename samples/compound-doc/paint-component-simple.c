@@ -156,25 +156,21 @@ view_set_color (view_data_t *view_data, char *color)
 }
 
 static void
-view_color_select_cb (BonoboUIComponent *uic, view_data_t *view_data, char *path)
-{
-	if (strstr (path, "Red") != NULL)
-		view_set_color (view_data, "red");
-	else if (strstr (path, "White") != NULL)
-		view_set_color (view_data, "white");
-	else if (strstr (path, "Green") != NULL)
-		view_set_color (view_data, "green");
-	else
-		g_error ("set to unknown color");
-}
-
-static void
-color_listener_cb (BonoboUIComponent *uic, const char *path, Bonobo_UIComponent_EventType type,
+color_listener_cb (BonoboUIComponent *uic, const char *path,
+		   Bonobo_UIComponent_EventType type,
 		   const char *state, gpointer user_data)
 {
-    g_message ("color_listener_cb: `%s' - `%s' - %d", path, state, type);
+	if (atoi (state)) {
+		if (strstr (path, "Red") != NULL)
+			view_set_color (user_data, "red");
+		else if (strstr (path, "White") != NULL)
+			view_set_color (user_data, "white");
+		else if (strstr (path, "Green") != NULL)
+			view_set_color (user_data, "green");
+		else
+			g_error ("set to unknown color");
+	}
 }
-
 
 /*
  * When one of our views is activated, we merge our menus
@@ -186,25 +182,20 @@ view_create_menus (view_data_t *view_data)
 	Bonobo_UIContainer  remote_uic;
 	BonoboView         *view = view_data->view;
 	BonoboUIComponent  *uic;
-#if 0
-	int                 i;
-#endif
 
 	const char *ui_commands =
 		"<commands>\n"
-		"	<cmd name=\"ColorWhite\" state=\"0\" _label=\"White\" group=\"Color\"/>\n"
-		"	<cmd name=\"ColorRed\" state=\"1\" _label=\"Red\" group=\"Color\"/>\n"
-		"	<cmd name=\"ColorGreen\" state=\"2\" _label=\"Green\" group=\"Color\"/>\n"
-		"	<cmd name=\"ColorBlack\" state=\"3\" _label=\"Black\" group=\"Color\"/>\n"
+		"	<cmd name=\"ColorWhite\"  _label=\"White\" group=\"Color\"/>\n"
+		"	<cmd name=\"ColorRed\"    _label=\"Red\"   group=\"Color\"/>\n"
+		"	<cmd name=\"ColorGreen\"  _label=\"Green\" group=\"Color\"/>\n"
 		"</commands>\n";
 
 	const char *ui_menus =
 		"<menu>\n"
 		"	<submenu name=\"Colors\" _label=\"Colors\">\n"
 		"		<menuitem name=\"ColorWhite\" type=\"radio\" verb=\"\"/>\n"
-		"		<menuitem name=\"ColorRed\" type=\"radio\" verb=\"\"/>\n"
+		"		<menuitem name=\"ColorRed\"   type=\"radio\" verb=\"\"/>\n"
 		"		<menuitem name=\"ColorGreen\" type=\"radio\" verb=\"\"/>\n"
-		"		<menuitem name=\"ColorBlack\" type=\"radio\" verb=\"\"/>\n"
 		"	</submenu>\n"
 		"</menu>\n";
 
@@ -229,58 +220,18 @@ view_create_menus (view_data_t *view_data)
 
 	/*
 	 * Give our BonoboUIHandler object a reference to the
-	 * container's UIhandler server.
+	 * container's UIContainer server.
 	 */
 	bonobo_ui_component_set_container (uic, remote_uic);
 
 	bonobo_ui_component_set_translate (uic, "/", ui_commands, NULL);
 	bonobo_ui_component_set_translate (uic, "/", ui_menus, NULL);
 
-	bonobo_ui_component_add_listener (uic, "Color", color_listener_cb, view_data);
+	bonobo_ui_component_add_listener (uic, "ColorWhite", color_listener_cb, view_data);
+	bonobo_ui_component_add_listener (uic, "ColorRed",   color_listener_cb, view_data);
+	bonobo_ui_component_add_listener (uic, "ColorGreen", color_listener_cb, view_data);
 
 	bonobo_ui_component_thaw (uic, NULL);
-
-#if 0
-	/*
-	 * Create our menu entries.
-	 */
-	bonobo_ui_handler_create_menubar (uih);
-
-	bonobo_ui_handler_menu_new_subtree (uih, "/Colors",
-					   N_("Select drawing color..."),
-					   N_("Set the current drawing color"),
-					   1,
-					   BONOBO_UI_HANDLER_PIXMAP_NONE, NULL,
-					   0, (GdkModifierType)0);
-
-	bonobo_ui_handler_menu_new_radiogroup (uih, "/Colors/color radiogroup");
-
-	bonobo_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/White",
-					     N_("White"),
-					     N_("Set the current drawing color to white"),
-					     -1,
-					     0, (GdkModifierType) 0,
-					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
-
-	bonobo_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Red",
-					     N_("Red"),
-					     N_("Set the current drawing color to red"),
-					     -1, 
-					     0, (GdkModifierType) 0,
-					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
-
-	bonobo_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Green",
-					     N_("Green"),
-					     N_("Set the current drawing color to green"),
-					     -1,
-					     0, (GdkModifierType) 0,
-					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
-
-	g_warning ("Breakpoint");
-	i = bonobo_ui_handler_menu_get_pos (uih, "/Colors/color radiogroup/Green");
-
-	i = bonobo_ui_handler_menu_get_pos (uih, "/Colors");
-#endif
 }
 
 /*

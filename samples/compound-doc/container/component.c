@@ -435,7 +435,6 @@ sample_client_site_new (BonoboItemContainer *container,
 		bonobo_client_site_bind_embeddable (BONOBO_CLIENT_SITE (site),
 						    embeddable);
 		bonobo_object_unref (BONOBO_OBJECT (embeddable));
-		bonobo_item_container_add (container, BONOBO_OBJECT (site));
 
 		site->app = app;
 		g_free (site->obj_id);

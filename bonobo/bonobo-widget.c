@@ -318,13 +318,6 @@ bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
 		return NULL;
 
 	/*
-	 * Add the client site to the container.  This container is
-	 * basically just there as a place holder; this is the only
-	 * client site that will ever be added to it.
-	 */
-	bonobo_item_container_add (bw->priv->container, BONOBO_OBJECT (bw->priv->client_site));
-
-	/*
 	 * Now create a new view for the remote object.
 	 */
 	bw->priv->view_frame = bonobo_client_site_new_view (bw->priv->client_site, uic);

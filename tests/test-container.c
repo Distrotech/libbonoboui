@@ -58,8 +58,6 @@ launch_server (BonoboClientSite *client_site, BonoboItemContainer *container, ch
 {
 	BonoboObjectClient *object_server;
 	
-	bonobo_item_container_add (container, BONOBO_OBJECT (client_site));
-
 	printf ("Launching...\n");
 	object_server = bonobo_object_activate (id, 0);
 	printf ("Return: %p\n", object_server);
@@ -85,8 +83,6 @@ launch_server_moniker (BonoboClientSite    *client_site,
 	char *moniker_name;
 	BonoboObjectClient *object_server;
 	
-	bonobo_item_container_add (container, BONOBO_OBJECT (client_site));
-
 	moniker_name = bonobo_moniker_client_get_name (moniker, ev);
 	printf ("Launching moniker '%s' ...\n", moniker_name);
 	CORBA_free (moniker_name);
