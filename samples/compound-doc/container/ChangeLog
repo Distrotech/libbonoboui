@@ -1,5 +1,10 @@
 2001-02-06  Michael Meeks  <michael@ximian.com>
 
+	* component.c (object_print): gtk_object_unref the
+	print_client.
+	
+2001-02-06  Michael Meeks  <michael@ximian.com>
+
 	* component.c (sample_client_site_get_type): upd.
 	(sample_client_site_new): upd.
 

@@ -23,7 +23,7 @@ object_print (BonoboObjectClient *object,
 	bonobo_print_data_render (ctx, x, y, print_data, 0.0, 0.0);
 	bonobo_print_data_free (print_data);
 
-	bonobo_object_unref (BONOBO_OBJECT (print_client));
+	gtk_object_unref (GTK_OBJECT (print_client));
 }
 
 static void
