@@ -1,0 +1,666 @@
+/*
+ * An embeddable "paint" component.
+ *
+ * FIXME: This is supposed to be an example.. describe
+ *
+ * Author:
+ *   Nat Friedman (nat@nat.org)
+ */
+
+#include <config.h>
+#include <gnome.h>
+#include <bonobo/gnome-bonobo.h>
+
+CORBA_Environment ev;
+CORBA_ORB orb;
+
+/*
+ * The Embeddable data.
+ *
+ * This is where we store the document's abstract data.  Each
+ * on-screen representation of the document (a GnomeView) will be
+ * based on the data in this structure.
+ */
+typedef struct {
+	GnomeEmbeddable     *embeddable;
+
+	/*
+	 * We store the image data internally in a GdkPixmap.
+	 */
+	GdkPixmap	    *pixmap;
+	int		     width;
+	int		     height;
+} embeddable_data_t;
+
+/*
+ * The per-view data.
+ */
+typedef struct {
+	GnomeView	    *view;
+	embeddable_data_t   *embeddable_data;
+
+	/*
+	 * The widget used to render this view of the image data.
+	 */
+	GtkWidget	    *drawing_area;
+
+	/*
+	 * The width and height of this view.
+	 */
+	int		     width;
+	int		     height;
+
+	/*
+	 * The drawing context for this view.  Each view can have a
+	 * separate current pen color, and so each view maintains its
+	 * own GC.
+	 */
+	GdkGC		    *gc;
+
+	/*
+	 * The last known x,y position of the mouse.
+	 */
+	int		     last_x;
+	int		     last_y;
+} view_data_t;
+
+/*
+ * Clean up our supplementary Embeddable data sturctures
+ */
+static void
+embeddable_destroy_cb (GnomeEmbeddable *embeddable, gpointer data)
+{
+	embeddable_data_t *embeddable_data = (embeddable_data_t *) data;
+
+	gdk_pixmap_unref (embeddable_data->pixmap);
+	g_free (embeddable_data); 
+}
+
+/*
+ * The job of this function is to update the view from the
+ * embeddable's representation of the image data.
+ */
+static void
+view_update (view_data_t *view_data)
+{
+	gdk_draw_pixmap (view_data->drawing_area->window,
+			 view_data->gc,
+			 view_data->embeddable_data->pixmap,
+			 0, 0,
+			 0, 0,
+			 view_data->width,
+			 view_data->height);
+}
+
+/*
+ * This function updates all of an embeddable's views to reflect the
+ * image data stored in the embeddable.
+ */
+static void
+embeddable_update_all_views (embeddable_data_t *embeddable_data)
+{
+	GnomeEmbeddable *embeddable;
+	GList *l;
+
+	embeddable = embeddable_data->embeddable;
+
+	for (l = embeddable->views; l != NULL; l = l->next) {
+		view_data_t *view_data;
+		GnomeView *view;
+
+		view = GNOME_VIEW (l->data);
+		view_data = gtk_object_get_data (GTK_OBJECT (view), "view_data");
+		view_update (view_data);
+	}
+}
+
+/*
+ * This function sets the view's current drawing color.
+ */
+static void
+view_set_color (view_data_t *view_data, char *color)
+{
+	GdkColormap *colormap;
+	GdkColor gdk_color;
+
+	colormap = gtk_widget_get_colormap (view_data->drawing_area);
+
+	gdk_color_parse (color, &gdk_color);
+	gdk_color_alloc (colormap, &gdk_color);
+
+	gdk_gc_set_foreground (view_data->gc, &gdk_color);
+}
+
+static void
+view_color_select_cb (GnomeUIHandler *uih, void *data, char *path)
+{
+	view_data_t *view_data = (view_data_t *) data;
+
+	if (strstr (path, "Red") != NULL)
+		view_set_color (view_data, "red");
+	else if (strstr (path, "White") != NULL)
+		view_set_color (view_data, "white");
+	else if (strstr (path, "Green") != NULL)
+		view_set_color (view_data, "green");
+}
+
+/*
+ * When one of our views is activated, we merge our menus
+ * in with our container's menus.
+ */
+static void
+view_create_menus (view_data_t *view_data)
+{
+	GNOME_UIHandler remote_uih;
+	GnomeView *view = view_data->view;
+	GnomeUIHandler *uih;
+
+	/*
+	 * Grab our GnomeUIHandler object.
+	 */
+	uih = gnome_view_get_ui_handler (view);
+
+	/*
+	 * Get our container's UIHandler server.
+	 */
+	remote_uih = gnome_view_get_remote_ui_handler (view);
+
+	/*
+	 * We have to deal gracefully with containers
+	 * which don't have a UIHandler running.
+	 */
+	if (remote_uih == CORBA_OBJECT_NIL)
+		return;
+
+	/*
+	 * Give our GnomeUIHandler object a reference to the
+	 * container's UIhandler server.
+	 */
+	gnome_ui_handler_set_container (uih, remote_uih);
+
+	/*
+	 * Create our menu entries.
+	 */
+	gnome_ui_handler_menu_new_subtree (uih, "/Colors",
+					   N_("Select drawing color..."),
+					   N_("Set the current drawing color"),
+					   1,
+					   GNOME_UI_HANDLER_PIXMAP_NONE, NULL,
+					   0, 0);
+	gnome_ui_handler_menu_new_radiogroup (uih, "/Colors/color radiogroup");
+
+	gnome_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/White",
+					     N_("White"),
+					     N_("Set the current drawing color to white"),
+					     -1,
+					     0, (GdkModifierType) 0,
+					     view_color_select_cb, (gpointer) view_data);
+
+	gnome_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Red",
+					     N_("Red"),
+					     N_("Set the current drawing color to red"),
+					     -1, 
+					     0, (GdkModifierType) 0,
+					     view_color_select_cb, (gpointer) view_data);
+
+	gnome_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Green",
+					     N_("Green"),
+					     N_("Set the current drawing color to green"),
+					     -1,
+					     0, (GdkModifierType) 0,
+					     view_color_select_cb, (gpointer) view_data);
+}
+
+/*
+ * When this view is deactivated, we must remove our menu items.
+ */
+static void
+view_remove_menus (view_data_t *view_data)
+{
+	GnomeView *view = view_data->view;
+	GnomeUIHandler *uih;
+
+	uih = gnome_view_get_ui_handler (view);
+
+	gnome_ui_handler_unset_container (uih);
+}
+
+static void
+view_activate_cb (GnomeView *view, gboolean activate, gpointer data)
+{
+	view_data_t *view_data = (view_data_t *) data;
+
+	/*
+	 * The ViewFrame has just asked the View (that's us) to be
+	 * activated or deactivated.  We must reply to the ViewFrame
+	 * and say whether or not we want our activation state to
+	 * change.  We are an acquiescent GnomeView, so we just agree
+	 * with whatever the ViewFrame told us.  Most components
+	 * should behave this way.
+	 */
+	GNOME_ViewFrame_view_activated (gnome_view_get_view_frame (view), activate, &ev);
+	/* FIXME: Check exception */
+
+	/*
+	 * If we were just activated, we merge in our menu entries.
+	 * If we were just deactivated, we remove them.
+	 */
+	if (activate)
+		view_create_menus (view_data);
+	else
+		view_remove_menus (view_data);
+}
+
+/*
+ * This callback is envoked when the view is destroyed.  We use it to
+ * free up our ancillary view-centric data structures.
+ */
+static void
+view_destroy_cb (GnomeView *view, gpointer data)
+{
+	view_data_t *view_data = (view_data_t *) data;
+
+	gdk_gc_destroy (view_data->gc);
+	g_free (view_data);
+}
+
+/*
+ * Some parts of the View initialization must be forestalled until the
+ * View window is actually realized.  We perform those here.
+ */
+static void
+view_realize_cb (GtkWidget *drawing_area, gpointer data)
+{
+	view_data_t *view_data = (view_data_t *) data;
+
+	view_set_color (view_data, "white");
+	view_update (view_data);
+}
+
+/*
+ * When a part of the window is exposed, we must redraw it.
+ */
+static void
+view_expose_cb (GtkWidget *drawing_area, GdkEventExpose *event, gpointer data)
+{
+	view_data_t *view_data = (view_data_t *) data;
+
+	view_update (view_data);
+}
+
+/*
+ * This callback is invoked when the container asks a view what size
+ * it wants to be.
+ */
+static void
+view_size_request_cb (GnomeView *view, int *desired_width, int *desired_height,
+		      gpointer data)
+{
+	view_data_t *view_data = (view_data_t *) data;
+
+	*desired_width = view_data->embeddable_data->width;
+	*desired_width = view_data->embeddable_data->height;
+}
+
+/*
+ * This callback will be invoked when the container assigns us a size.
+ */
+static void
+view_size_allocate_cb (GtkWidget *drawing_area, GtkAllocation *allocation,
+		       gpointer data)
+{
+	view_data_t *view_data = (view_data_t *) data;
+
+	view_data->width = allocation->width;
+	view_data->height = allocation->height;
+}
+
+/*
+ * This callback is invoked whenever the user moves the mouse
+ * over the drawing area.
+ */
+static void
+view_motion_notify_cb (GtkWidget *drawing_area, GdkEventMotion *event,
+		       gpointer data)
+{
+	view_data_t *view_data = (view_data_t *) data;
+	embeddable_data_t *embeddable_data = view_data->embeddable_data;
+
+	/*
+	 * If the mouse button is depressed, we update the internal
+	 * representation of the image.  Then we update all the views.
+	 */
+
+	if (! (event->state & GDK_BUTTON1_MASK))
+		return;
+
+	/*
+	 * First, update the internal representation of the image.  We
+	 * store the image data internally in an off-screen GdkPixmap.
+	 * This is just for the convenience of being able to use gdk
+	 * routines to draw into it.  We could just as easily store
+	 * this data in our own image buffer, or as a list of strokes
+	 * which could be replayed, or whatever.
+	 *
+	 * We do the drawing using the view's graphics context.  This
+	 * is because each view could have a different current drawing
+	 * mode (pen color, style, etc).  In general, all views for a
+	 * given embeddable are supposed to be identical, but they can
+	 * differ in some small ways, such as the undo history and
+	 * current editing mode.
+	 */
+	if (view_data->last_x != -1 && view_data->last_y != -1) {
+		gdk_draw_line (embeddable_data->pixmap,
+			       view_data->gc,
+			       view_data->last_x, view_data->last_y,
+			       (gint) event->x, (gint) event->y);
+	}
+
+	view_data->last_x = (gint) event->x;
+	view_data->last_y = (gint) event->y;
+		
+	/*
+	 * Now reflect this change to the image data in all the views.
+	 */
+	embeddable_update_all_views (embeddable_data);
+}
+
+static void
+embeddable_clear_image (embeddable_data_t *embeddable_data)
+{
+	GdkGC *temp_gc;
+	
+	temp_gc = gdk_gc_new (embeddable_data->pixmap);
+	gdk_draw_rectangle (embeddable_data->pixmap,
+			    temp_gc,
+			    TRUE, 0, 0,
+			    embeddable_data->width,
+			    embeddable_data->height);
+	gdk_gc_destroy (temp_gc);
+}
+
+/*
+ * This function is called when the "ClearImage" verb is executed on
+ * the component.
+ */
+static void
+view_clear_image_cb (GnomeView *view, char *verb_name, void *user_data)
+{
+	view_data_t *view_data = (view_data_t *) user_data;
+	embeddable_data_t *embeddable_data;
+
+	embeddable_data = view_data->embeddable_data;
+
+	embeddable_clear_image (embeddable_data);
+	embeddable_update_all_views (embeddable_data);
+}
+
+/*
+ * This function is invoked whenever the container requests that a new
+ * view be created for a given embeddable.  Its job is to constrct the
+ * new view and return it.
+ *
+ * All views of a given Embeddable must be identical.  The purpose of
+ * the "View" concept is to make it easy for containers to implement
+ * split-screen editing, where the same document is displayed in two
+ * different windows simultaneously.
+ *
+ * Views can differ in a few small ways: they can be at different
+ * zooms, can have different undo histories, and so on.  But using
+ * GnomeViews to implement two radically different representations of
+ * a piece of data (e.g. a hexadecimal dump of an image and the image
+ * itself) is a misuse of the classes.
+ */
+static GnomeView *
+view_factory (GnomeEmbeddable *embeddable,
+	      const GNOME_ViewFrame view_frame,
+	      void *data)
+{
+	embeddable_data_t *embeddable_data = (embeddable_data_t *) data;
+	view_data_t *view_data;
+	GnomeUIHandler *uih;
+	GnomeView *view;
+	GtkWidget *vbox;
+
+	/*
+	 * Create the private view data.
+	 */
+	view_data = g_new0 (view_data_t, 1);
+	view_data->embeddable_data = embeddable_data;
+
+	view_data->last_x = -1;
+	view_data->last_y = -1;
+
+	/*
+	 * Now create the drawing area which will be used to display
+	 * the current image in this view.
+	 */
+	view_data->drawing_area = gtk_drawing_area_new ();
+	/* FIXME: REMOVE THIS! */
+	gtk_widget_set_usize (view_data->drawing_area, 100, 100);
+
+	/*
+	 * We will use this event to actually draw into the
+	 * Embeddable.
+	 */
+	gtk_widget_set_events (view_data->drawing_area,
+			       gtk_widget_get_events (view_data->drawing_area) |
+			       GDK_BUTTON_MOTION_MASK);
+
+	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "motion_notify_event",
+			    GTK_SIGNAL_FUNC (view_motion_notify_cb), view_data);
+
+	/*
+	 * When the widget is realized, we will draw the current image
+	 * data into it.
+	 */
+	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "realize",
+			    GTK_SIGNAL_FUNC (view_realize_cb), view_data);
+
+	/*
+	 * We have to redraw the view when we get expose events.
+	 */
+	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "expose_event",
+			    GTK_SIGNAL_FUNC (view_expose_cb), view_data);
+	 
+
+	/*
+	 * Insert the drawing area into a vbox.
+	 */
+	vbox = gtk_vbox_new (FALSE, 0);
+
+	gtk_box_pack_start (GTK_BOX (vbox),
+			    view_data->drawing_area,
+			    FALSE, FALSE, 0);
+
+	gtk_widget_show_all (vbox);
+
+	/*
+	 * Each view has its own GC; we create that here.
+	 */
+	view_data->gc = gdk_gc_new (embeddable_data->pixmap);
+
+	/*
+	 * Create the GnomeView object.
+	 */
+	view = gnome_view_new (vbox);
+	view_data->view = view;
+	gtk_object_set_data (view, "view_data", view_data);
+
+	/*
+	 * Create the GnomeUIHandler for this view.  It will be used
+	 * to merge menu and toolbar items when the view is activated.
+	 */
+	uih = gnome_ui_handler_new ();
+	gnome_view_set_ui_handler (view, uih);
+
+	/*
+	 * Register a callback to handle the ClearImage verb.
+	 */
+	gnome_view_register_verb (view, "ClearImage", view_clear_image_cb, view_data);
+
+	/*
+	 * The "size_request" signal is raised when the container asks
+	 * the component what size it wants to be.
+	 */
+	gtk_signal_connect (GTK_OBJECT (view), "size_request",
+			    GTK_SIGNAL_FUNC (view_size_request_cb), view_data);
+
+	/*
+	 * When the container assigns us a size, we will get a
+	 * "size_allocate" signal raised on our top-level widget.
+	 */
+	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "size_allocate",
+			    GTK_SIGNAL_FUNC (view_size_allocate_cb), view_data);
+
+	/*
+	 * When our container wants to activate a given view of this
+	 * component, we will get the "view_activate" signal.
+	 */
+	gtk_signal_connect (GTK_OBJECT (view), "view_activate",
+			    GTK_SIGNAL_FUNC (view_activate_cb), view_data);
+
+
+	/*
+	 * We'll need to be able to cleanup when this view gets
+	 * destroyed.
+	 */
+	gtk_signal_connect (GTK_OBJECT (view), "destroy",
+			    GTK_SIGNAL_FUNC (view_destroy_cb), view_data);
+
+	return view;
+}
+
+/*
+ * When a container asks our EmbeddableFactory for a new paint
+ * component, this function is called.  It creates the new
+ * GnomeEmbeddable object and returns it.
+ */
+static GnomeObject *
+embeddable_factory (GnomeEmbeddableFactory *this,
+		    void *data)
+{
+	GnomeEmbeddable *embeddable;
+	embeddable_data_t *embeddable_data;
+
+	/*
+	 * Create a data structure in which we can store
+	 * Embeddable-object-specific data about this document.
+	 */
+	embeddable_data = g_new0 (embeddable_data_t, 1);
+	if (embeddable_data == NULL)
+		return NULL;
+
+	/*
+	 * Our paint component is very simple.  It only works with one
+	 * size of image.
+	 */
+	embeddable_data->width = 100;
+	embeddable_data->height = 100;
+
+	/*
+	 * The embeddable must maintain an internal representation of
+	 * the data for its document.  In our case, that document is
+	 * an image, and it so happens that the most convenient way of
+	 * storing an image for us is a GdkPixmap.
+	 */
+	embeddable_data->pixmap = gdk_pixmap_new (NULL,
+						  embeddable_data->width,
+						  embeddable_data->height,
+						  gdk_visual_get_best_depth ());
+
+	/*
+	 * Blank the pixmap.
+	 */
+	embeddable_clear_image (embeddable_data);
+	
+	/*
+	 * Create the GnomeEmbeddable object.
+	 */
+	embeddable = gnome_embeddable_new (view_factory, embeddable_data);
+
+	if (embeddable == NULL) {
+		g_free (embeddable_data);
+		return NULL;
+	}
+
+	embeddable_data->embeddable = embeddable;
+
+	/*
+	 * Add some verbs to the embeddable.
+	 *
+	 * Verbs are simple non-paramameterized actions which the
+	 * component can perform.  The GnomeEmbeddable must maintain a
+	 * list of the verbs which a component supports, and the
+	 * component author must register callbacks for each of his
+	 * verbs with the GnomeView.
+	 *
+	 * The container application will then have the programmatic
+	 * ability to execute the verbs on the component.  It will
+	 * also provide a simple mechanism whereby the user can
+	 * right-click on the component to create a popup menu
+	 * listing the available verbs.
+	 *
+	 * We provide one simple verb whose job it is to clear the
+	 * window.
+	 */
+	gnome_embeddable_add_verb (embeddable,
+				   "ClearImage",
+				   _("_Clear Image"),
+				   _("Clear the image to black"));
+
+
+	/*
+	 * Catch the destroy signal so that we can free up resources.
+	 * When an Embeddable is destroyed, its views will
+	 * automatically be destroyed.
+	 */
+	gtk_signal_connect (GTK_OBJECT (embeddable), "destroy",
+			    GTK_SIGNAL_FUNC (embeddable_destroy_cb),
+			    embeddable_data);
+
+	return GNOME_OBJECT (embeddable);
+}
+
+static void
+init_simple_paint_factory (void)
+{
+	GnomeEmbeddableFactory *factory;
+
+	/*
+	 * This will create a factory server for our simple paint
+	 * component.  When a container wants to create a paint
+	 * component, it will ask the factory to create one, and the
+	 * factory will invoke our embeddable_factory() function.
+	 */
+	factory = gnome_embeddable_factory_new (
+		"embeddable-factory:paint-component-simple",
+		embeddable_factory, NULL);
+}
+
+static void
+init_server_factory (int argc, char **argv)
+{
+	gnome_CORBA_init_with_popt_table (
+		"bonobo-simple-paint", VERSION,
+		&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
+
+	orb = gnome_CORBA_ORB ();
+	if (bonobo_init (orb, NULL, NULL) == FALSE)
+		g_error (_("Could not initialize Bonobo!"));
+}
+ 
+int
+main (int argc, char **argv)
+{
+	CORBA_exception_init (&ev);
+
+	init_server_factory (argc, argv);
+	init_simple_paint_factory ();
+
+	gtk_main ();
+
+	CORBA_exception_free (&ev);
+
+	return 0;
+}
