@@ -1,5 +1,9 @@
 2003-10-29  Michael Meeks  <michael@ximian.com>
 
+	* Makefile.am (DISTCLEANFILES): add .
+
+2003-10-29  Michael Meeks  <michael@ximian.com>
+
 	* Version 2.4.1
 
 2003-10-29  Steve Chaplin  <stevech1097@yahoo.com.au>
