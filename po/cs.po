@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2002-11-26 10:17+0000\n"
-"PO-Revision-Date: 2002-09-24 01:55+0200\n"
+"POT-Creation-Date: 2002-12-06 06:15+0100\n"
+"PO-Revision-Date: 2002-12-06 12:36+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -152,15 +152,15 @@ msgstr "Jen _důležitý text"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "Ladit"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "_Vypsat XML"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "Vypsat celý XML popis UI na konzolu"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
