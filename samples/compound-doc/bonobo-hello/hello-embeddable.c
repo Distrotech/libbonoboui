@@ -87,28 +87,7 @@ hello_bonobo_embeddable_init (BonoboObject *object)
 	embeddable->text = g_strdup ("Hello World");
 }
 
-GtkType
-hello_bonobo_embeddable_get_type (void)
-{
-	static GtkType type = 0;
 
-	if (!type) {
-		GtkTypeInfo info = {
-			"HelloBonoboEmbeddable",
-			sizeof (HelloBonoboEmbeddable),
-			sizeof (HelloBonoboEmbeddableClass),
-			(GtkClassInitFunc) hello_bonobo_embeddable_class_init,
-			(GtkObjectInitFunc) hello_bonobo_embeddable_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			bonobo_embeddable_get_type (),
-			NULL, NULL, 0,
-			&info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC (HelloBonoboEmbeddable, 
+		      bonobo_embeddable_get_type (),
+		      hello_bonobo_embeddable);

@@ -158,37 +158,10 @@ bonobo_property_control_init (BonoboPropertyControl *property_control)
 	property_control->priv = priv;
 }
 
-/**
- * bonobo_property_control_get_type:
- *
- * Returns: The GtkType for the BonoboPropertyControl class.
- */
-GtkType
-bonobo_property_control_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboPropertyControl",
-			sizeof (BonoboPropertyControl),
-			sizeof (BonoboPropertyControlClass),
-			(GtkClassInitFunc) bonobo_property_control_class_init,
-			(GtkObjectInitFunc) bonobo_property_control_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_PropertyControl__init, NULL,
-			GTK_STRUCT_OFFSET (BonoboPropertyControlClass, epv),
-			&info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboPropertyControl, 
+			   Bonobo_PropertyControl,
+			   PARENT_TYPE,
+			   bonobo_property_control);
 
 /**
  * bonobo_property_control_construct:

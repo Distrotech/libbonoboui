@@ -176,38 +176,10 @@ bonobo_view_init (BonoboView *view)
 	view->priv = g_new0 (BonoboViewPrivate, 1);
 }
 
-/**
- * bonobo_view_get_type:
- *
- * Returns: The GtkType corresponding to the BonoboView class.
- */
-GtkType
-bonobo_view_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type){
-		GtkTypeInfo info = {
-			"BonoboView",
-			sizeof (BonoboView),
-			sizeof (BonoboViewClass),
-			(GtkClassInitFunc) bonobo_view_class_init,
-			(GtkObjectInitFunc) bonobo_view_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_View__init,
-			NULL,
-			GTK_STRUCT_OFFSET (BonoboViewClass, epv),
-			&info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboView, 
+			   Bonobo_View,
+			   PARENT_TYPE,
+			   bonobo_view);
 
 /**
  * bonobo_view_set_embeddable:

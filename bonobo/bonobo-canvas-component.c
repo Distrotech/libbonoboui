@@ -617,7 +617,7 @@ gcc_finalize (GtkObject *object)
 }
 
 static void
-gcc_class_init (BonoboCanvasComponentClass *klass)
+bonobo_canvas_component_class_init (BonoboCanvasComponentClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 	POA_Bonobo_Canvas_Component__epv *epv = &klass->epv;
@@ -659,39 +659,18 @@ gcc_class_init (BonoboCanvasComponentClass *klass)
 }
 
 static void
-gcc_init (GtkObject *object)
+bonobo_canvas_component_init (GtkObject *object)
 {
 	Gcc *gcc = GCC (object);
 
 	gcc->priv = g_new0 (BonoboCanvasComponentPrivate, 1);
 }
 
-GtkType
-bonobo_canvas_component_get_type (void)
-{
-	static GtkType type = 0;
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboCanvasComponent, 
+			   Bonobo_Canvas_Component,
+			   PARENT_TYPE,
+			   bonobo_canvas_component);
 
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboCanvasComponent",
-			sizeof (BonoboCanvasComponent),
-			sizeof (BonoboCanvasComponentClass),
-			(GtkClassInitFunc) gcc_class_init,
-			(GtkObjectInitFunc) gcc_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_Canvas_Component__init, NULL,
-			GTK_STRUCT_OFFSET (BonoboCanvasComponentClass, epv),
-			&info);
-	}
-
-	return type;
-}
 
 /**
  * bonobo_canvas_component_construct:

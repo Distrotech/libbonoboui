@@ -475,37 +475,10 @@ bonobo_embeddable_init (BonoboObject *object)
 	embeddable->priv = g_new0 (BonoboEmbeddablePrivate, 1);
 }
 
-/**
- * bonobo_embeddable_get_type:
- *
- * Returns: The GtkType for the BonoboEmbeddable class.
- */
-GtkType
-bonobo_embeddable_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type){
-		GtkTypeInfo info = {
-			"BonoboEmbeddable",
-			sizeof (BonoboEmbeddable),
-			sizeof (BonoboEmbeddableClass),
-			(GtkClassInitFunc) bonobo_embeddable_class_init,
-			(GtkObjectInitFunc) bonobo_embeddable_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_Embeddable__init, NULL,
-			GTK_STRUCT_OFFSET (BonoboEmbeddableClass, epv),
-			&info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboEmbeddable, 
+			   Bonobo_Embeddable,
+			   PARENT_TYPE,
+			   bonobo_embeddable);
 
 /**
  * bonobo_embeddable_set_view_factory:

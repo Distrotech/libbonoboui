@@ -123,27 +123,6 @@ hello_bonobo_view_init (HelloBonoboView *view)
 {
 }
 
-GtkType
-hello_bonobo_view_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type){
-		GtkTypeInfo info = {
-			"HelloBonoboView",
-			sizeof (HelloBonoboView),
-			sizeof (HelloBonoboViewClass),
-			(GtkClassInitFunc) hello_bonobo_view_class_init,
-			(GtkObjectInitFunc) hello_bonobo_view_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			bonobo_view_get_type (),
-			NULL, NULL, 0, &info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC (HelloBonoboView, 
+		      bonobo_view_get_type (),
+		      hello_bonobo_view);

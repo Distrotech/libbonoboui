@@ -205,38 +205,10 @@ bonobo_client_site_new (BonoboItemContainer *container)
 	return bonobo_client_site_construct (client_site, container);
 }
 
-/**
- * bonobo_client_site_get_type:
- *
- * Returns: The GtkType for the GnomeClient class.
- */
-GtkType
-bonobo_client_site_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type){
-		GtkTypeInfo info = {
-			"BonoboClientSite",
-			sizeof (BonoboClientSite),
-			sizeof (BonoboClientSiteClass),
-			 (GtkClassInitFunc) bonobo_client_site_class_init,
-			 (GtkObjectInitFunc) bonobo_client_site_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			 (GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_ClientSite__init,
-			NULL,
-			GTK_STRUCT_OFFSET (BonoboClientSiteClass, epv),
-			&info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboClientSite, 
+			   Bonobo_ClientSite,
+			   PARENT_TYPE,
+			   bonobo_client_site);
 
 /** 
  * bonobo_client_site_bind_embeddable:

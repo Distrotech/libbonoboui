@@ -262,38 +262,10 @@ bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 	epv->thaw       = impl_Bonobo_UIContainer_thaw;
 }
 
-/**
- * bonobo_ui_container_get_type:
- *
- * Returns: The GtkType for the BonoboUIContainer class.
- */
-GtkType
-bonobo_ui_container_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboUIContainer",
-			sizeof (BonoboUIContainer),
-			sizeof (BonoboUIContainerClass),
-			(GtkClassInitFunc) bonobo_ui_container_class_init,
-			(GtkObjectInitFunc) bonobo_ui_container_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_UIContainer__init,
-			NULL,
-			GTK_STRUCT_OFFSET (BonoboUIContainerClass, epv),
-			&info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboUIContainer, 
+			   Bonobo_UIContainer,
+			   PARENT_TYPE,
+			   bonobo_ui_container);
 
 BonoboUIContainer *
 bonobo_ui_container_new (void)

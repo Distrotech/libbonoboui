@@ -437,36 +437,10 @@ bonobo_control_frame_init (BonoboObject *object)
 	control_frame->priv->autostate    = TRUE;
 }
 
-/**
- * bonobo_control_frame_get_type:
- *
- * Returns: The GtkType for the BonoboControlFrame class.  */
-GtkType
-bonobo_control_frame_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type){
-		GtkTypeInfo info = {
-			"BonoboControlFrame",
-			sizeof (BonoboControlFrame),
-			sizeof (BonoboControlFrameClass),
-			(GtkClassInitFunc) bonobo_control_frame_class_init,
-			(GtkObjectInitFunc) bonobo_control_frame_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_ControlFrame__init, NULL,
-			GTK_STRUCT_OFFSET (BonoboControlFrameClass, epv),
-			&info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboControlFrame, 
+			   Bonobo_ControlFrame,
+			   PARENT_TYPE,
+			   bonobo_control_frame);
 
 /**
  * bonobo_control_frame_control_activate:

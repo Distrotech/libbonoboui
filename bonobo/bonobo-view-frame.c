@@ -240,37 +240,10 @@ bonobo_view_frame_init (BonoboObject *object)
 	view_frame->priv = g_new0 (BonoboViewFramePrivate, 1);
 }
 
-/**
- * bonobo_view_frame_get_type:
- *
- * Returns: The GtkType for the BonoboViewFrame class.
- */
-GtkType
-bonobo_view_frame_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboViewFrame",
-			sizeof (BonoboViewFrame),
-			sizeof (BonoboViewFrameClass),
-			(GtkClassInitFunc) bonobo_view_frame_class_init,
-			(GtkObjectInitFunc) bonobo_view_frame_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_ViewFrame__init, NULL,
-			GTK_STRUCT_OFFSET (BonoboViewFrameClass, epv),
-			&info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboViewFrame, 
+			   Bonobo_ViewFrame,
+			   PARENT_TYPE,
+			   bonobo_view_frame);
 
 /**
  * bonobo_view_frame_bind_to_view:

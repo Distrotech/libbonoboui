@@ -1110,36 +1110,7 @@ bonobo_ui_component_init (BonoboUIComponent *component)
 	component->priv = priv;
 }
 
-/**
- * bonobo_ui_component_get_type:
- *
- * Returns: the GtkType of the BonoboUIComponent class.
- */
-GtkType
-bonobo_ui_component_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboUIComponent",
-			sizeof (BonoboUIComponent),
-			sizeof (BonoboUIComponentClass),
-			(GtkClassInitFunc) bonobo_ui_component_class_init,
-			(GtkObjectInitFunc) bonobo_ui_component_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_UIComponent__init,
-			NULL,
-			GTK_STRUCT_OFFSET (BonoboUIComponentClass, epv),
-			&info);
-	}
-
-	return type;
-}
-
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboUIComponent, 
+			   Bonobo_UIComponent,
+			   PARENT_TYPE,
+			   bonobo_ui_component);

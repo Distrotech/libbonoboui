@@ -121,37 +121,16 @@ bonobo_desktop_window_class_init (BonoboDesktopWindowClass *klass)
 	epv->getWindowId = impl_Desktop_Window_getWindowId;
 }
 
-/**
- * bonobo_desktop_window_get_type:
- *
- * Returns: The GtkType corresponding to the BonoboDesktopWindow class.
- */
-GtkType
-bonobo_desktop_window_get_type (void)
+static void
+bonobo_desktop_window_init (GtkObject *object)
 {
-	static GtkType type = 0;
-
-	if (!type){
-		GtkTypeInfo info = {
-			"BonoboDesktopWindow",
-			sizeof (BonoboDesktopWindow),
-			sizeof (BonoboDesktopWindowClass),
-			(GtkClassInitFunc) bonobo_desktop_window_class_init,
-			(GtkObjectInitFunc) NULL,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_Desktop_Window__init, NULL,
-			GTK_STRUCT_OFFSET (BonoboDesktopWindowClass, epv),
-			&info);
-	}
-
-	return type;
+	/* nothing to do */
 }
+
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboDesktopWindow, 
+			   Bonobo_Desktop_Window,
+			   PARENT_TYPE,
+			   bonobo_desktop_window);
 
 /**
  * bonobo_desktop_window_control:

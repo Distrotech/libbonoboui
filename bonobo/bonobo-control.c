@@ -953,37 +953,10 @@ bonobo_control_init (BonoboControl *control)
 	control->priv->control_frame = CORBA_OBJECT_NIL;
 }
 
-/**
- * bonobo_control_get_type:
- *
- * Returns: The GtkType corresponding to the BonoboControl class.
- */
-GtkType
-bonobo_control_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboControl",
-			sizeof (BonoboControl),
-			sizeof (BonoboControlClass),
-			(GtkClassInitFunc) bonobo_control_class_init,
-			(GtkObjectInitFunc) bonobo_control_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = bonobo_x_type_unique (
-			PARENT_TYPE,
-			POA_Bonobo_Control__init, NULL,
-			GTK_STRUCT_OFFSET (BonoboControlClass, epv),
-			&info);
-	}
-
-	return type;
-}
+BONOBO_GTK_TYPE_FUNC_FULL (BonoboControl, 
+			   Bonobo_Control,
+			   PARENT_TYPE,
+			   bonobo_control);
 
 void
 bonobo_control_set_property (BonoboControl       *control,
