@@ -209,6 +209,7 @@ test_toolbar_LDADD =					\
 
 bonobo_ui_extract_SOURCES = extract.c
 bonobo_ui_extract_LDADD =				\
+	$(GNOME_LIBS)					\
 	$(XML_LIBS)
 
 BUILT_SOURCES=$(CORBA_SOURCE)
