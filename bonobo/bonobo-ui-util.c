@@ -358,7 +358,8 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if (!(type = bonobo_ui_node_get_attr (node, "pixtype")))
+	if (!(type = bonobo_ui_node_get_attr (node, "pixtype")) 
+	    || !(type = bonobo_ui_node_get_attr (node, "pixname")))
 		return NULL;
 
 	if (!strcmp (type, "stock")) {
