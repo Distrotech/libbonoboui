@@ -12,7 +12,12 @@
 #include <bonobo/gnome-view.h>
 #include <gdk/gdkprivate.h>
 
+/* Parent object class in GTK hierarchy */
 static GnomeObjectClass *gnome_view_parent_class;
+
+/* The entry point vectors for the server we provide */
+static POA_GNOME_View__epv gnome_view_epv;
+static POA_GNOME_View__vepv gnome_view_vepv;
 
 static void
 impl_GNOME_View_size_allocate (PortableServer_Servant servant,
@@ -29,24 +34,11 @@ impl_GNOME_View_set_window (PortableServer_Servant servant, GNOME_View_windowid 
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 	GdkWindowPrivate *win;
 
-	printf ("Creating a plug with: %d\n", id);
 	view->plug = gtk_plug_new (id);
 	gtk_container_add (GTK_CONTAINER (view->plug), view->widget);
 	
 	gtk_widget_show_all (view->plug);
 }
-
-POA_GNOME_View__epv gnome_view_epv = {
-	NULL,
-	&impl_GNOME_View_size_allocate,
-	&impl_GNOME_View_set_window
-};
-	
-POA_GNOME_View__vepv gnome_view_vepv = {
-	&gnome_object_base_epv,
-	&gnome_object_epv,
-	&gnome_view_epv
-};
 
 static CORBA_Object
 create_gnome_view (GnomeObject *object)
@@ -117,6 +109,18 @@ gnome_view_destroy (GtkObject *object)
 }
 
 static void
+init_view_corba_class (void)
+{
+	/* The entry point vectors for this GNOME::View class */
+	gnome_view_epv.size_allocate = impl_GNOME_View_size_allocate;
+	gnome_view_epv.set_window = impl_GNOME_View_set_window;
+
+	/* Setup the vector of epvs */
+	gnome_view_vepv.GNOME_object_epv = &gnome_object_epv;
+	gnome_view_vepv.GNOME_View_epv = &gnome_view_epv;
+}
+
+static void
 gnome_view_class_init (GnomeViewClass *class)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
@@ -124,6 +128,8 @@ gnome_view_class_init (GnomeViewClass *class)
 	gnome_view_parent_class = gtk_type_class (gtk_object_get_type ());
 
 	object_class->destroy = gnome_view_destroy;
+
+	init_view_corba_class ();
 }
 
 static void
