@@ -1,6 +1,10 @@
+2001-06-10  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/bonobo-ui-engine-config.c: #ifdef FIXME all gnome-config calls.
+
 Sun Jun 10 01:27:57 2001  Malcolm Tredinnick <malcolm@commsecure.com.au>
 
-	* bonobo-control.c (impl_Bonobo_Control_focus): altered a
+	* bonobo/bonobo-control.c (impl_Bonobo_Control_focus): altered a
 	  gtk_container_focus() call to be a gtk_widget_child_focus() call
 	  (matching a recent gtk+ change).
 

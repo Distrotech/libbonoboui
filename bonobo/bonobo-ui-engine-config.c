@@ -12,7 +12,6 @@
 #include <gtk/gtk.h>
 
 #include <gmacros.h>
-#include <libgnome/gnome-config.h>
 #include <bonobo/bonobo-i18n.h>
 
 #include <bonobo/bonobo-ui-util.h>
@@ -94,15 +93,19 @@ bonobo_ui_engine_config_serialize (BonoboUIEngineConfig *config)
 				     cl->value, NULL));
 	}
 	
+#ifdef FIXME
 	gnome_config_set_vector (config->priv->path,
 				 array->len, (const char * const *) array->pdata);
+#endif
 
 	for (i = 0; i < array->len; i++)
 		g_free (g_ptr_array_index (array, i));
 
 	g_ptr_array_free (array, TRUE);
 
+#ifdef FIXME
 	gnome_config_sync ();
+#endif
 }
 
 static void
@@ -196,8 +199,10 @@ bonobo_ui_engine_config_hydrate (BonoboUIEngineConfig *config)
 
 	clobbers_free (config);
 
+#ifdef FIXME
 	gnome_config_get_vector (config->priv->path,
 				 &argc, &argv);
+#endif
 
 	for (i = 0; i < argc; i++) {
 		char **strs = g_strsplit (argv [i], ":", -1);
