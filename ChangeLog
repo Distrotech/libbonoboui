@@ -1,5 +1,12 @@
 2002-02-02  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-node.c (do_set_attr): fix
+	heinous bug.
+
+	* tests/test-ui-auto.c (test_ui_node): impl.
+
+2002-02-02  Michael Meeks  <michael@ximian.com>
+
 	* samples/bonoboui/hello.c (utf8_reverse): copy
 	from glib/glib/gpattern.c
 	(hello_on_button_click): use it not g_strreverse.

@@ -351,14 +351,14 @@ do_set_attr (BonoboUINode *node,
 	gboolean different = TRUE;
 	BonoboUIAttr *a, *space;
 
-	g_return_if_fail (node != NULL);
+	g_return_val_if_fail (node != NULL, FALSE);
 
 	a = get_attr (node, id, &space);
 
 	if (a) {
-		different = value && strcmp (a->value, value);
+		different = !value || strcmp (a->value, value);
 
-		if (!different) {
+		if (different) {
 			xmlFree (a->value);
 			a->value = NULL;
 			

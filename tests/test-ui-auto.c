@@ -11,6 +11,32 @@
 
 #include <libbonoboui.h>
 #include <bonobo/bonobo-ui-private.h>
+#include <bonobo/bonobo-ui-node-private.h>
+
+static void
+test_ui_node (void)
+{
+	GQuark baa_id;
+	BonoboUINode *node;
+
+	fprintf (stderr, "testing BonoboUINode ...\n");
+
+	node = bonobo_ui_node_new ("foo");
+	g_assert (node != NULL);
+	g_assert (bonobo_ui_node_has_name (node, "foo"));
+
+	baa_id = g_quark_from_static_string ("baa");
+	g_assert ( bonobo_ui_node_try_set_attr (node, baa_id, "baz"));
+	g_assert (!bonobo_ui_node_try_set_attr (node, baa_id, "baz"));
+
+	g_assert (!strcmp (bonobo_ui_node_get_attr_by_id (node, baa_id), "baz"));
+
+	bonobo_ui_node_set_attr (node, "A", "A");
+	bonobo_ui_node_set_attr (node, "A", "B");
+	g_assert (!strcmp (bonobo_ui_node_peek_attr (node, "A"), "B"));
+
+	bonobo_ui_node_free (node);
+}
 
 static void
 check_prop (BonoboUIEngine *engine,
@@ -79,6 +105,7 @@ main (int argc, char **argv)
 
 	engine = bonobo_ui_engine_new (NULL);
 
+	test_ui_node ();
 	test_ui_engine (engine, ev);
 
 	g_object_unref (G_OBJECT (engine));
