@@ -18,12 +18,13 @@ gnome_libs =			\
 
 bonobo_libs = 			\
 	libbonobo.la 		\
-	$(gnome_libs)
+	$(gnome_libs)		\
+	-lefs
 
 
 lib_LTLIBRARIES = libbonobo.la
 noinst_PROGRAMS = object_test test-container sample-server \
-			test-container-autoload selector_test
+			test-container-autoload selector_test test-storage
 
 CORBA_SOURCE =			\
 	bonobo.h		\
@@ -73,9 +74,11 @@ libbonobo_la_SOURCES =			\
 	gnome-progressive.c		\
 	gnome-storage.c			\
 	gnome-storage-fs.c		\
+	gnome-storage-efs.c		\
 	gnome-stream.c			\
 	gnome-stream-client.c		\
 	gnome-stream-fs.c		\
+	gnome-stream-efs.c		\
 	gnome-stream-memory.c		\
 	gnome-ui-handler.c		\
 	gnome-view.c			\
@@ -114,9 +117,11 @@ libbonoboinclude_HEADERS =		\
 	gnome-progressive.h		\
 	gnome-storage.h			\
 	gnome-storage-fs.h		\
+	gnome-storage-efs.h		\
 	gnome-stream.h			\
 	gnome-stream-client.h		\
 	gnome-stream-fs.h		\
+	gnome-stream-efs.h		\
 	gnome-stream-memory.h		\
 	gnome-ui-handler.h		\
 	gnome-view.h			\
@@ -142,6 +147,10 @@ sample_server_SOURCES =		\
 	sample-server.c
 
 sample_server_LDADD = $(bonobo_libs)
+
+test_storage_SOURCES = test-storage.c
+
+test_storage_LDADD = $(bonobo_libs)
 
 selector_test_SOURCES =		\
 	selector_test.c
