@@ -1,22 +1,26 @@
+# translation of el.po to Greek
 # Greek translation of libbonoboui.
 # Copyright (C) 2003 Simos Xenitellis.
-# Simos Xenitellis <simos74@gmx.net>, 2002,2003.
 #
 # simos: 71 messages, 16Aug2002, initial translation.
 # simos: 92 messages, 05Nov2002, completed translation..
 # kostas : 05Jan2003 updated translation for Gnome 2.1x
+# kostas : 03Sep2003, 96 messages,updated translation for Gnome 2.4
+# Simos Xenitellis <simos74@gmx.net>, 2002,2003.
+# Kostas Papadimas <pkst@gmx.net>, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
-"PO-Revision-Date: 2003-01-05 12:34+0200\n"
+"Project-Id-Version: el\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-03 17:44+0300\n"
+"PO-Revision-Date: 2003-09-03 17:46+0300\n"
 "Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 1.0\n"
 
 #
 #: bonobo/bonobo-canvas-item.c:667
@@ -109,7 +113,6 @@ msgid "Interfaces required"
 msgstr "Διασυνδέσεις που απαιτούνται"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
@@ -341,7 +344,7 @@ msgstr "αν η εργαλειοθήκη αιωρήται"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Στυλ γωνίας γύρω από την εργαλειοθήκη"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
@@ -476,3 +479,4 @@ msgstr "Αποτυχία αρχικοποίησης κώδικα libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Αδύνατη η αρχικοποίηση της γραφικής διασύνδεσης του Bonobo "
+
