@@ -38,6 +38,7 @@ enum {
 	OVERRIDE,
 	REPLACE_OVERRIDE,
 	REINSTATE,
+	RENAME,
 	REMOVE,
 	LAST_SIGNAL
 };
@@ -411,8 +412,6 @@ prune_overrides_by_id (BonoboUIXml *tree, BonoboUIXmlData *data, gpointer id)
 {
 	GSList *l, *next;
 
-	g_return_if_fail (id != NULL);
-	
 	for (l = data->overridden; l; l = next) {
 		BonoboUIXmlData *o_data;
 				
@@ -443,17 +442,20 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 
 	same = identical (tree, data->id, old_data->id);
 
-	if (!data->id)
-		same = TRUE;
+	g_assert (data->id);
+/*	if (!data->id)
+	same = TRUE;*/
 
-	if (!same) {
+	if (!same && !transparent) {
+
 		gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
 
 		data->overridden = g_slist_prepend (old_data->overridden, old);
 		prune_overrides_by_id (tree, data, data->id);
-		
 	} else {
-		data->id = old_data->id;
+		if (transparent)
+			data->id = old_data->id;
+
 		data->overridden = old_data->overridden;
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REPLACE_OVERRIDE], new, old);
 
@@ -529,7 +531,7 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		/* Mark dirty */
 		bonobo_ui_xml_set_dirty (tree, node);
 		
-		gtk_signal_emit (GTK_OBJECT (tree), signals [REINSTATE], node);
+		gtk_signal_emit (GTK_OBJECT (tree), signals [RENAME], node);
 		return;
 	}
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",
@@ -1006,6 +1008,13 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 		"reinstate", GTK_RUN_FIRST,
 		object_class->type,
 		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, reinstate),
+		gtk_marshal_NONE__POINTER,
+		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+
+	signals [RENAME] = gtk_signal_new (
+		"rename", GTK_RUN_FIRST,
+		object_class->type,
+		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, rename),
 		gtk_marshal_NONE__POINTER,
 		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 

@@ -56,6 +56,7 @@ typedef struct {
 	void                 (*replace_override)  (BonoboUINode *new_node,
 						   BonoboUINode *old_node);
 	void                 (*reinstate)         (BonoboUINode *node);
+	void                 (*rename)            (BonoboUINode *node);
 	void                 (*remove)            (BonoboUINode *node);
 
 	gpointer               dummy;

@@ -30,6 +30,7 @@
 
 #undef STATE_SYNC_DEBUG
 #undef WIDGET_SYNC_DEBUG
+#undef XML_MERGE_DEBUG
 
 #define	BINDING_MOD_MASK()				\
 	(gtk_accelerator_get_default_mod_mask () | GDK_RELEASE_MASK)
@@ -788,21 +789,22 @@ cmd_get_node (BonoboWinPrivate *priv,
 	ret  = bonobo_ui_xml_get_path (priv->tree, path);
 
 	if (!ret) {
-		BonoboUIXmlData *data_from, *data_to;
+		BonoboUIXmlData *data_from;
+		BonoboUINode *commands;
+		BonoboUINode *node;
 
-		BonoboUINode *node = bonobo_ui_node_new ("cmd");
+		commands = bonobo_ui_node_new ("commands");
+		node     = bonobo_ui_node_new_child (commands, "cmd");
+
 		bonobo_ui_node_set_attr (node, "name", cmd_name);
 
+		data_from   = bonobo_ui_xml_get_data (priv->tree, from_node);
+
 		bonobo_ui_xml_merge (
-			priv->tree, "/commands", node, NULL);
+			priv->tree, "/", commands, data_from->id);
 		
 		ret = bonobo_ui_xml_get_path (priv->tree, path);
 		g_assert (ret != NULL);
-
-		data_from = bonobo_ui_xml_get_data (priv->tree, from_node);
-		data_to   = bonobo_ui_xml_get_data (priv->tree, ret);
-
-		data_to->id = data_from->id;
 	}
 
 	g_free (path);
@@ -994,8 +996,9 @@ replace_override_fn (GtkObject        *object,
 		     BonoboUINode     *old,
 		     BonoboWinPrivate *priv)
 {
-	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, new);
-	NodeInfo *old_info = bonobo_ui_xml_get_data (priv->tree, old);
+	NodeInfo  *info = bonobo_ui_xml_get_data (priv->tree, new);
+	NodeInfo  *old_info = bonobo_ui_xml_get_data (priv->tree, old);
+	GtkWidget *old_widget;
 
 	g_return_if_fail (info != NULL);
 	g_return_if_fail (old_info != NULL);
@@ -1006,8 +1009,11 @@ replace_override_fn (GtkObject        *object,
 	info_dump_fn (info);*/
 
 	/* Copy useful stuff across */
+	old_widget = old_info->widget;
+	old_info->widget = NULL;
+
 	info->type = old_info->type;
-	info->widget = old_info->widget;
+	info->widget = old_widget;
 
 	/* Re-stamp the widget */
 	widget_set_node (info->widget, new);
@@ -1028,8 +1034,7 @@ prune_widget_info (BonoboWinPrivate *priv,
 	if (!node)
 		return;
 
-	for (l = bonobo_ui_node_children (node);
-             l;
+	for (l = bonobo_ui_node_children (node); l;
              l = bonobo_ui_node_next (l))
 		prune_widget_info (priv, l, save_custom);
 
@@ -1043,8 +1048,10 @@ prune_widget_info (BonoboWinPrivate *priv,
 		if (!NODE_IS_ROOT_WIDGET (info) && !save) {
 			GtkWidget *item = get_item_widget (info->widget);
 
-/*			printf ("Destroy widget '%s' '%p'\n",
-			bonobo_ui_xml_make_path (node), item);*/
+#ifdef XML_MERGE_DEBUG
+			printf ("Destroy widget '%s' '%p'\n",
+				bonobo_ui_xml_make_path (node), item);
+#endif
 
 			gtk_widget_destroy (item);
 		} else {
@@ -1066,12 +1073,15 @@ override_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 	char     *id = node_get_id_or_path (node);
 	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
+#ifdef XML_MERGE_DEBUG
+	fprintf (stderr, "Override '%s'\n", 
+		 bonobo_ui_xml_make_path (node));
+#endif
+
 	prune_widget_info (priv, node, TRUE);
 
 	real_emit_ui_event (priv, info->parent.id, id,
 			    Bonobo_UIComponent_OVERRIDDEN, "");
-
-/*	fprintf (stderr, "XOverride '%s'\n", id); */
 
 	g_free (id);
 }
@@ -1082,17 +1092,26 @@ reinstate_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 	char     *id = node_get_id_or_path (node);
 	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
-/*	fprintf (stderr, "Reinstate '%s'\n", 
-	bonobo_ui_xml_make_path (node));*/
+#ifdef XML_MERGE_DEBUG
+	fprintf (stderr, "Reinstate '%s'\n", 
+		 bonobo_ui_xml_make_path (node));
+#endif
 
 	prune_widget_info (priv, node, TRUE);
 
 	real_emit_ui_event (priv, info->parent.id, id,
 			    Bonobo_UIComponent_REINSTATED, "");
 
-/*	fprintf (stderr, "XReinstate '%s'\n", id);*/
-
 	g_free (id);
+}
+
+static void
+rename_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
+{
+#ifdef XML_MERGE_DEBUG
+	fprintf (stderr, "Rename '%s'\n", 
+		 bonobo_ui_xml_make_path (node));
+#endif
 }
 
 static void
@@ -1104,8 +1123,10 @@ remove_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 	real_emit_ui_event (priv, info->parent.id, id,
 			    Bonobo_UIComponent_REMOVED, "");
 
-/*	fprintf (stderr, "Remove on '%s'\n",
-	bonobo_ui_xml_make_path (node));*/
+#ifdef XML_MERGE_DEBUG
+	fprintf (stderr, "Remove on '%s'\n",
+		 bonobo_ui_xml_make_path (node));
+#endif
 
 	prune_widget_info (priv, node, FALSE);
 
@@ -1126,8 +1147,6 @@ remove_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 /* Makes evolution look like a dog 
    gtk_widget_hide (GTK_WIDGET (priv->menu_item)); */
 	}
-
-/*	fprintf (stderr, "XRemove '%s'\n", id);*/
 
 	g_free (id);
 }
@@ -3129,6 +3148,9 @@ construct_priv (BonoboWin *win)
 
 	gtk_signal_connect (GTK_OBJECT (priv->tree), "reinstate",
 			    (GtkSignalFunc) reinstate_fn, priv);
+
+	gtk_signal_connect (GTK_OBJECT (priv->tree), "rename",
+			    (GtkSignalFunc) rename_fn, priv);
 
 	gtk_signal_connect (GTK_OBJECT (priv->tree), "remove",
 			    (GtkSignalFunc) remove_fn, priv);
