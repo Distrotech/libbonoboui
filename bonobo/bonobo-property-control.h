@@ -25,6 +25,7 @@ typedef struct _BonoboPropertyControlPrivate BonoboPropertyControlPrivate;
 #define BONOBO_IS_PROPERTY_CONTROL_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_PROPERTY_CONTROL_TYPE))
 
 typedef BonoboControl *(* BonoboPropertyControlGetControlFn) (BonoboPropertyControl *control,
+							      int page_number,
 							      void *closure);
 
 struct _BonoboPropertyControl {
@@ -48,10 +49,13 @@ Bonobo_PropertyControl bonobo_property_control_corba_object_create (BonoboObject
 BonoboPropertyControl *bonobo_property_control_construct (BonoboPropertyControl *property_control,
 							  Bonobo_PropertyControl corba_control,
 							  BonoboPropertyControlGetControlFn get_fn,
+							  int num_pages,
 							  void *closure);
 BonoboPropertyControl *bonobo_property_control_new (BonoboPropertyControlGetControlFn get_fn,
+						    int num_pages,
 						    void *closure);
-
+void bonobo_property_control_changed (BonoboPropertyControl *property_control,
+				      CORBA_Environment *opt_ev);
 
 END_GNOME_DECLS
 
