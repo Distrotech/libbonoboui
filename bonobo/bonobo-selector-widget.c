@@ -19,7 +19,7 @@
 #include <string.h> /* strcmp */
 #include <glib.h>
 #include <bonobo/bonobo-i18n.h>
-#include <libgnomeui/gnome-uidefs.h>
+#include <libgnome/gnome-preferences.h>
 #include <bonobo/bonobo-selector-widget.h>
 #include <bonobo/bonobo-object-directory.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
