@@ -207,7 +207,7 @@ gnome_view_frame_new (GnomeClientSite *client_site)
 	view_frame = gtk_type_new (GNOME_VIEW_FRAME_TYPE);
 
 	wrapper = GNOME_WRAPPER (gnome_wrapper_new ());
-	if (wrapper == NULL){
+	if (wrapper == NULL) {
 	       gtk_object_unref (GTK_OBJECT (view_frame));
 	       return NULL;
 	}
@@ -221,7 +221,7 @@ gnome_view_frame_new (GnomeClientSite *client_site)
 			    view_frame);
 
 	corba_view_frame = create_gnome_view_frame (GNOME_OBJECT (view_frame));
-	if (corba_view_frame == CORBA_OBJECT_NIL){
+	if (corba_view_frame == CORBA_OBJECT_NIL) {
 		gtk_object_destroy (GTK_OBJECT (view_frame));
 		return NULL;
 	}
