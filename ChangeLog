@@ -1,3 +1,9 @@
+2004-10-04  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
+
+	* bonobo/bonobo-control.c (bonobo_control_set_transient_for): See
+	if there is already a GdkWindow wrapper registered for the x11_id,
+	reuse it if it exists, otherwise request new one.  Fixes #151378.
+
 2004-10-02  Jesus Bravo Alvarez  <suso@trasno.net>
 
 	* configure.in: Added gl (Galician) to ALL_LINGUAS.
