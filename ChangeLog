@@ -1,3 +1,8 @@
+2002-11-05  Balamurali Viswanathan  <balamurali.viswanathan@wipro.com>
+
+	* bonobo/bonobo-ui-init-gtk.c: Change POPT_ARG_STRING to
+	POPT_ARG_INT for the screen argument
+
 2002-11-04  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-ui-util.c:
