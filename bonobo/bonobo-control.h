@@ -92,7 +92,7 @@ void                        bonobo_control_activate_notify         (BonoboContro
 								    gboolean             activated,
 								    CORBA_Environment   *opt_ev);
 Bonobo_Control_windowId     bonobo_control_window_id_from_x11      (guint32              x11_id);
-guint32                     bonobo_control_x11_from_window_id      (Bonobo_Control_windowId id);
+guint32                     bonobo_control_x11_from_window_id      (const CORBA_char    *id);
 #define                     bonobo_control_windowid_from_x11(a) \
 			    bonobo_control_window_id_from_x11(a)
 

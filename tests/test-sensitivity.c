@@ -12,6 +12,8 @@
  *
  * Copyright 1999, 2001 Ximian, Inc.
  */
+#include <stdlib.h>
+
 #include <bonobo/bonobo-i18n.h>
 
 #include <libbonoboui.h>

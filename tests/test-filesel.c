@@ -9,7 +9,7 @@
  */
 
 #include <config.h>
-
+#include <stdlib.h>
 #include <bonobo/bonobo-file-selector-util.h>
 #include <bonobo/bonobo-ui-main.h>
 

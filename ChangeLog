@@ -1,3 +1,11 @@
+2001-10-17  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-file-selector-util.c
+	(run_file_slector): use g_getenv.
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_x11_from_window_id): upd. sig.
+
 2001-10-16  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-moniker.c (display_as_stream): split chunks

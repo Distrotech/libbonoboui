@@ -1,4 +1,5 @@
 #include "config.h"
+#include <stdlib.h>
 #include <libbonoboui.h>
 #include <gtk/gtkvbox.h>
 #include <libgnome/gnome-init.h>

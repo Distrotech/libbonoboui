@@ -54,7 +54,7 @@ struct _BonoboControlPrivate {
 };
 
 /**
- * bonobo_control_windowid_from_x11:
+ * bonobo_control_window_id_from_x11:
  * @x11_id: the x11 window id.
  * 
  * This mangles the X11 name into the ':' delimited
@@ -76,7 +76,7 @@ bonobo_control_window_id_from_x11 (guint32 x11_id)
 }
 
 /**
- * bonobo_control_x11_from_windowid:
+ * bonobo_control_x11_from_window_id:
  * @id: CORBA_char *
  * 
  * De-mangle a window id string,
@@ -86,7 +86,7 @@ bonobo_control_window_id_from_x11 (guint32 x11_id)
  * Return value: the X11 window id.
  **/
 guint32
-bonobo_control_x11_from_window_id (Bonobo_Control_windowId id)
+bonobo_control_x11_from_window_id (const CORBA_char *id)
 {
 	guint32 x11_id;
 	char **elements;

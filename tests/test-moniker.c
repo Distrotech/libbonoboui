@@ -13,6 +13,7 @@
 #include <config.h>
 #endif
 
+#include <stdlib.h>
 #include <popt.h>
 #include <glib.h>
 #include <libbonoboui.h>

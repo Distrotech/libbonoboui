@@ -14,6 +14,7 @@
 
 #include <config.h>
 #include <string.h>
+#include <stdlib.h>
 #include <libbonoboui.h>
 #include <gdk/gdkkeysyms.h>
 

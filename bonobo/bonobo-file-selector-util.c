@@ -313,7 +313,7 @@ run_file_slector (GtkWindow  *parent,
 	GtkWindow *dialog = NULL;
 	gpointer   retval;
 
-	if (!getenv ("GNOME_FILESEL_DISABLE_BONOBO"))
+	if (!g_getenv ("GNOME_FILESEL_DISABLE_BONOBO"))
 		dialog = create_bonobo_selector (enable_vfs, mode, mime_types, 
 						 default_path, default_filename);
 	if (!dialog)
