@@ -43,7 +43,7 @@ BonoboUIContainer *bonobo_ui_engine_get_ui_container (BonoboUIEngine    *engine)
 
 
 /* Used in Nautilus */
-#ifndef BONOBO_UI_DEPRECATED
+#ifndef BONOBO_UI_DISABLE_DEPRECATED
 void bonobo_ui_engine_freeze (BonoboUIEngine *engine);
 void bonobo_ui_engine_thaw   (BonoboUIEngine *engine);
 void bonobo_ui_engine_update (BonoboUIEngine *engine);
