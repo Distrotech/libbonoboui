@@ -1,13 +1,13 @@
 # libbonoboui translation to Catalan.
-# Copyright (C) 2001 Free Software Foundation, Inc.
-# Softcatalà <tradgnome@softcatala.org>, 2001-2002
-#
+# Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
+# Softcatalà <tradgnome@softcatala.org>, 2001, 2002.
+# Jordi Mallach <jordi@sindominio.net>, 2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2003-01-06 12:16+0000\n"
-"PO-Revision-Date: 2001-09-21 20:57+0200\n"
+"Project-Id-Version: libbonoboui 2.1.2\n"
+"POT-Creation-Date: 2003-01-13 03:42+0100\n"
+"PO-Revision-Date: 2003-01-13 03:45+0100\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr "taller de corbes"
+msgstr "taller de corba"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
@@ -30,12 +30,10 @@ msgstr "El contenidor UI de corbes"
 msgid "The User interface container"
 msgstr "El contenidor d'interfície de l'usuari"
 
-#
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
 msgstr "Amarra la barra d'eines"
 
-#
 #: bonobo/bonobo-dock-item-grip.c:237
 msgid "Un dock the toolbar"
 msgstr "Desamarra la barra d'eines"
@@ -129,7 +127,6 @@ msgstr "_Mostra els rètols indicadors de funció"
 msgid "Toolbars"
 msgstr "Barres d'eines"
 
-#
 #: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "barres d'eines"
@@ -146,7 +143,6 @@ msgstr "_Icona"
 msgid "_Text and Icon"
 msgstr "_Text i icona"
 
-#
 #: bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
 msgstr "_Text i icona"
@@ -157,15 +153,15 @@ msgstr "Només el text de _prioritat"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "Depuració"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "_Bolca XML"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "Bolca la descripció sencera del UI a la consola"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -377,7 +373,6 @@ msgstr "_Quant a..."
 msgid "_Edit"
 msgstr "_Edita"
 
-#
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
 msgstr "_Fitxer"
