@@ -448,7 +448,7 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 /*	if (!data->id)
 	same = TRUE;*/
 
-	override = !same && !transparent;
+	override = !same;
 
 	if (override) {
 
