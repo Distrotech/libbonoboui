@@ -34,6 +34,48 @@ noinst_HEADERS = \
 	bonobo-ui-toolbar-separator-item.h	\
 	bonobo-ui-xml.h
 
+libbonoboincludedir = $(includedir)/gnome/2/bonobo
+
+libbonoboinclude_HEADERS = \
+	bonobo-canvas-component.h		\
+	bonobo-canvas-item.h			\
+	bonobo-client-site.h			\
+	bonobo-control-frame.h			\
+	bonobo-control.h			\
+	bonobo-desktop-window.h			\
+	bonobo-dock-band.h			\
+	bonobo-dock-item.h			\
+	bonobo-dock-layout.h			\
+	bonobo-dock.h				\
+	bonobo-embeddable-factory.h		\
+	bonobo-embeddable.h			\
+	bonobo-plug.h				\
+	bonobo-property-control.h		\
+	bonobo-selector-widget.h		\
+	bonobo-selector.h			\
+	bonobo-socket.h				\
+	bonobo-ui-compat.h			\
+	bonobo-ui-component.h			\
+	bonobo-ui-config-widget.h		\
+	bonobo-ui-container.h			\
+	bonobo-ui-engine.h			\
+	bonobo-ui-main.h			\
+	bonobo-ui-node.h			\
+	bonobo-ui-sync.h			\
+	bonobo-ui-toolbar-button-item.h		\
+	bonobo-ui-toolbar-icon.h		\
+	bonobo-ui-toolbar-item.h		\
+	bonobo-ui-toolbar-toggle-button-item.h	\
+	bonobo-ui-toolbar.h			\
+	bonobo-ui-util.h			\
+	bonobo-view-frame.h			\
+	bonobo-view.h				\
+	bonobo-widget.h				\
+	bonobo-win.h				\
+	bonobo-wrapper.h			\
+	bonobo-zoomable-frame.h			\
+	bonobo-zoomable.h
+
 libbonoboui_2_la_LIBADD = \
 	$(LIBGNOMECANVAS_LIBS) $(LIBBONOBO_LIBS) \
 	$(LIBGNOME_LIBS)
@@ -47,6 +89,8 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-dock-band.h			\
 	bonobo-dock-layout.c			\
 	bonobo-dock-layout.h			\
+	bonobo-ui-main.h			\
+	bonobo-ui-main.c			\
 	bonobo-canvas-component.c		\
 	bonobo-canvas-item.c			\
 	bonobo-client-site.c			\
@@ -87,4 +131,7 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-zoomable.c			\
 	bonobo-zoomable-frame.c
 
-EXTRA_DIST = bonobo-insert-component.xpm libbonobo-2.0.pc.in
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libbonoboui-2.0.pc
+
+EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in
