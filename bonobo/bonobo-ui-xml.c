@@ -9,7 +9,7 @@
  */
 #include "config.h"
 #include <string.h>
-#include <gtk/gtksignal.h>
+#include <gobject/gsignal.h>
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-marshal.h>
 
@@ -37,7 +37,7 @@ static void watch_destroy (gpointer      data);
 #define XML_NODE(x) ((xmlNode*)(x))
 #define BNODE(x)    ((BonoboUINode*)(x))
 
-static GtkObjectClass *bonobo_ui_xml_parent_class;
+static GObjectClass *bonobo_ui_xml_parent_class;
 
 enum {
 	OVERRIDE,
@@ -437,8 +437,8 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 
 	if (override) {
 
-		gtk_signal_emit (GTK_OBJECT (tree),
-				 signals [OVERRIDE], new, old);
+		g_signal_emit (G_OBJECT (tree),
+			       signals [OVERRIDE], 0, new, old);
 
 		data->overridden = g_slist_prepend (old_data->overridden, old);
 		prune_overrides_by_id (tree, data, data->id);
@@ -447,8 +447,8 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 			data->id = old_data->id;
 
 		data->overridden = old_data->overridden;
-		gtk_signal_emit (GTK_OBJECT (tree),
-				 signals [REPLACE_OVERRIDE], new, old);
+		g_signal_emit (G_OBJECT (tree),
+			       signals [REPLACE_OVERRIDE], 0, new, old);
 
 /*		fprintf (stderr, "Replace override of '%s' '%s' with '%s' '%s'",
 			 old->name, bonobo_ui_node_get_attr (old, "name"),
@@ -505,7 +505,7 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		data->overridden = NULL;
 
 		/* Fire remove while still in tree */
-		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
+		g_signal_emit (G_OBJECT (tree), signals [REMOVE], 0, node);
 		
 		/* Move children across */
 		move_children (node, old);
@@ -516,7 +516,7 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		/* Mark dirty */
 		bonobo_ui_xml_set_dirty (tree, old);
 
-		gtk_signal_emit (GTK_OBJECT (tree), signals [REINSTATE], old);
+		g_signal_emit (G_OBJECT (tree), signals [REINSTATE], 0, old);
 
 		watch_update (tree, old);
 
@@ -529,13 +529,13 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		/* Mark dirty */
 		bonobo_ui_xml_set_dirty (tree, node);
 		
-		gtk_signal_emit (GTK_OBJECT (tree), signals [RENAME], node);
+		g_signal_emit (G_OBJECT (tree), signals [RENAME], 0, node);
 		return;
 	} else {
 		/* Mark parent & up dirty */
 		bonobo_ui_xml_set_dirty (tree, node);
 
-		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
+		g_signal_emit (G_OBJECT (tree), signals [REMOVE], 0, node);
 	}
 
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",
@@ -1049,7 +1049,7 @@ bonobo_ui_xml_rm (BonoboUIXml *tree,
 }
 
 static void
-bonobo_ui_xml_destroy (GtkObject *object)
+bonobo_ui_xml_finalize (GObject *object)
 {
 	BonoboUIXml *tree = BONOBO_UI_XML (object);
 
@@ -1072,47 +1072,57 @@ bonobo_ui_xml_destroy (GtkObject *object)
 static void
 bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GObjectClass *object_class = (GObjectClass *) klass;
 	
-	bonobo_ui_xml_parent_class = gtk_type_class (
-		gtk_object_get_type ());
+	bonobo_ui_xml_parent_class = g_type_class_peek_parent (klass);
 
-	object_class->destroy = bonobo_ui_xml_destroy;
+	object_class->finalize = bonobo_ui_xml_finalize;
 
-	signals [OVERRIDE] = gtk_signal_new (
-		"override", GTK_RUN_FIRST,
-		GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, override),
-		bonobo_marshal_VOID__POINTER_POINTER,
-		GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-
-	signals [REPLACE_OVERRIDE] = gtk_signal_new (
-		"replace_override", GTK_RUN_FIRST,
-		GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, replace_override),
-		bonobo_marshal_VOID__POINTER_POINTER,
-		GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-
-	signals [REINSTATE] = gtk_signal_new (
-		"reinstate", GTK_RUN_FIRST,
-		GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, reinstate),
-		gtk_marshal_VOID__POINTER,
-		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-
-	signals [RENAME] = gtk_signal_new (
-		"rename", GTK_RUN_FIRST,
-		GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, rename),
-		gtk_marshal_VOID__POINTER,
-		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-
-	signals [REMOVE] = gtk_signal_new (
-		"remove", GTK_RUN_FIRST,
-		GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, remove),
-		gtk_marshal_VOID__POINTER,
-		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	signals [OVERRIDE] =
+		g_signal_new ("override",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (BonoboUIXmlClass, override),
+			      NULL, NULL,
+			      bonobo_marshal_VOID__POINTER_POINTER,
+			      G_TYPE_NONE, 2,
+			      G_TYPE_POINTER, G_TYPE_POINTER);
+	signals [REPLACE_OVERRIDE] =
+		g_signal_new ("replace_override",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (BonoboUIXmlClass, replace_override),
+			      NULL, NULL,
+			      bonobo_marshal_VOID__POINTER_POINTER,
+			      G_TYPE_NONE, 2,
+			      G_TYPE_POINTER, G_TYPE_POINTER);
+	signals [REINSTATE] =
+		g_signal_new ("reinstate",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (BonoboUIXmlClass, reinstate),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE, 1,
+			      G_TYPE_POINTER);
+	signals [RENAME] =
+		g_signal_new ("rename",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (BonoboUIXmlClass, rename),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE, 1,
+			      G_TYPE_POINTER);
+	signals [REMOVE] =
+		g_signal_new ("remove",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (BonoboUIXmlClass, remove),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__POINTER,
+			      G_TYPE_NONE, 1,
+			      G_TYPE_POINTER);
 }
 
 /**
@@ -1120,24 +1130,26 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
  *
  * Returns the GtkType for the BonoboCmdModel class.
  */
-GtkType
+GType
 bonobo_ui_xml_get_type (void)
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboUIXml",
-			sizeof (BonoboUIXml),
+		GTypeInfo info = {
 			sizeof (BonoboUIXmlClass),
-			(GtkClassInitFunc) bonobo_ui_xml_class_init,
-			(GtkObjectInitFunc) NULL,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) bonobo_ui_xml_class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (BonoboUIXml),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gtk_object_get_type (), &info);
+		type = g_type_register_static (G_TYPE_OBJECT, "BonoboUIXml",
+					       &info, 0);
 	}
 
 	return type;
@@ -1153,7 +1165,7 @@ bonobo_ui_xml_new (BonoboUIXmlCompareFn   compare,
 {
 	BonoboUIXml *tree;
 
-	tree = gtk_type_new (BONOBO_UI_XML_TYPE);
+	tree = g_object_new (BONOBO_UI_XML_TYPE, NULL);
 
 	tree->compare = compare;
 	tree->data_new = data_new;

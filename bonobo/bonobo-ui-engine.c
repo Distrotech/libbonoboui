@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <gtk/gtksignal.h>
+#include <gobject/gsignal.h>
 
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-xml.h>
@@ -30,7 +30,7 @@
 
 #define PARENT_TYPE gtk_object_get_type ()
 
-static GtkObjectClass *parent_class = NULL;
+static GObjectClass *parent_class = NULL;
 
 enum {
 	ADD_HINT,
@@ -419,7 +419,7 @@ sync_widget_set_node (BonoboUISync *sync,
 }
 
 static void
-replace_override_fn (GtkObject      *object,
+replace_override_fn (GObject        *object,
 		     BonoboUINode   *new,
 		     BonoboUINode   *old,
 		     BonoboUIEngine *engine)
@@ -547,7 +547,7 @@ bonobo_ui_engine_prune_widget_info (BonoboUIEngine *engine,
 }
 
 static void
-override_fn (GtkObject      *object,
+override_fn (GObject        *object,
 	     BonoboUINode   *new,
 	     BonoboUINode   *old,
 	     BonoboUIEngine *engine)
@@ -563,7 +563,7 @@ override_fn (GtkObject      *object,
 }
 
 static void
-reinstate_fn (GtkObject      *object,
+reinstate_fn (GObject        *object,
 	      BonoboUINode   *node,
 	      BonoboUIEngine *engine)
 {
@@ -579,7 +579,7 @@ reinstate_fn (GtkObject      *object,
 }
 
 static void
-rename_fn (GtkObject      *object,
+rename_fn (GObject        *object,
 	   BonoboUINode   *node,
 	   BonoboUIEngine *engine)
 {
@@ -590,7 +590,7 @@ rename_fn (GtkObject      *object,
 }
 
 static void
-remove_fn (GtkObject      *object,
+remove_fn (GObject        *object,
 	   BonoboUINode   *node,
 	   BonoboUIEngine *engine)
 {
@@ -1300,7 +1300,7 @@ real_exec_verb (BonoboUIEngine *engine,
 	g_return_if_fail (component_name != NULL);
 	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
 
-	gtk_object_ref (GTK_OBJECT (engine));
+	g_object_ref (G_OBJECT (engine));
 
 	component = sub_component_objref (engine, component_name);
 
@@ -1326,7 +1326,7 @@ real_exec_verb (BonoboUIEngine *engine,
 		CORBA_exception_free (&ev);
 	}
 
-	gtk_object_unref (GTK_OBJECT (engine));
+	g_object_unref (G_OBJECT (engine));
 }
 
 static void
@@ -1540,7 +1540,7 @@ real_emit_ui_event (BonoboUIEngine *engine,
 	if (!component_name) /* Auto-created entry, no-one can listen to it */
 		return;
 
-	gtk_object_ref (GTK_OBJECT (engine));
+	g_object_ref (G_OBJECT (engine));
 
 	component = sub_component_objref (engine, component_name);
 
@@ -1566,7 +1566,7 @@ real_emit_ui_event (BonoboUIEngine *engine,
 		CORBA_exception_free (&ev);
 	}
 
-	gtk_object_unref (GTK_OBJECT (engine));
+	g_object_unref (G_OBJECT (engine));
 }
 
 static void
@@ -1609,17 +1609,17 @@ impl_finalize (GObject *object)
 	engine = BONOBO_UI_ENGINE (object);
 	priv = engine->priv;
 
-	gtk_object_unref (GTK_OBJECT (priv->config));
+	g_object_unref (G_OBJECT (priv->config));
 
 	while (priv->components)
 		sub_component_destroy (
 			engine, priv->components->data);
 
-	gtk_object_unref (GTK_OBJECT (priv->tree));
+	g_object_unref (G_OBJECT (priv->tree));
 	priv->tree = NULL;
 
 	for (l = priv->syncs; l; l = l->next)
-		gtk_object_unref (GTK_OBJECT (l->data));
+		g_object_unref (G_OBJECT (l->data));
 	g_slist_free (priv->syncs);
 	priv->syncs = NULL;
 
@@ -1638,49 +1638,50 @@ impl_finalize (GObject *object)
 static void
 class_init (BonoboUIEngineClass *engine_class)
 {
-	GtkObjectClass *object_class;
-	GObjectClass *gobject_class;
+	GObjectClass *object_class;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	parent_class = g_type_class_peek_parent (engine_class);
 
-	object_class = GTK_OBJECT_CLASS (engine_class);
-	gobject_class = G_OBJECT_CLASS (engine_class);
-	gobject_class->finalize = impl_finalize;
+	object_class = G_OBJECT_CLASS (engine_class);
+	object_class->finalize = impl_finalize;
 
 	engine_class->emit_verb_on  = impl_emit_verb_on;
 	engine_class->emit_event_on = impl_emit_event_on;
 
 	signals [ADD_HINT]
-		= gtk_signal_new ("add_hint",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIEngineClass, add_hint),
-				  gtk_marshal_VOID__STRING,
-				  GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
-
+		= g_signal_new ("add_hint",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIEngineClass, add_hint),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__STRING,
+				G_TYPE_NONE, 1, G_TYPE_STRING);
 	signals [REMOVE_HINT]
-		= gtk_signal_new ("remove_hint",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIEngineClass, remove_hint),
-				  gtk_marshal_VOID__VOID,
-				  GTK_TYPE_NONE, 0);
+		= g_signal_new ("remove_hint",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIEngineClass, remove_hint),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__VOID,
+				G_TYPE_NONE, 0);
 
 	signals [EMIT_VERB_ON]
-		= gtk_signal_new ("emit_verb_on",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIEngineClass, emit_verb_on),
-				  gtk_marshal_VOID__POINTER,
-				  GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+		= g_signal_new ("emit_verb_on",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIEngineClass, emit_verb_on),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__POINTER,
+				G_TYPE_NONE, 1, G_TYPE_POINTER);
 
 	signals [EMIT_EVENT_ON]
-		= gtk_signal_new ("emit_event_on",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIEngineClass, emit_event_on),
-				  bonobo_marshal_VOID__POINTER_STRING,
-				  GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_STRING);
+		= g_signal_new ("emit_event_on",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIEngineClass, emit_event_on),
+				NULL, NULL,
+				bonobo_marshal_VOID__POINTER_STRING,
+				G_TYPE_NONE, 2, G_TYPE_POINTER, G_TYPE_STRING);
 }
 
 static void
@@ -1696,24 +1697,26 @@ init (BonoboUIEngine *engine)
 		g_str_hash, g_str_equal);
 }
 
-GtkType
+GType
 bonobo_ui_engine_get_type (void)
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUIEngine",
-			sizeof (BonoboUIEngine),
+		GTypeInfo info = {
 			sizeof (BonoboUIEngineClass),
-			(GtkClassInitFunc)  class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (BonoboUIEngine),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) init
 		};
-
-		type = gtk_type_unique (PARENT_TYPE, &info);
+		
+		type = g_type_register_static (PARENT_TYPE, "BonoboUIEngine",
+					       &info, 0);
 	}
 
 	return type;
@@ -1764,20 +1767,20 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine,
 
 	build_skeleton (priv->tree);
 
-	gtk_signal_connect (GTK_OBJECT (priv->tree), "override",
-			    (GtkSignalFunc) override_fn, engine);
+	g_signal_connect (G_OBJECT (priv->tree), "override",
+			  (GtkSignalFunc) override_fn, engine);
 
-	gtk_signal_connect (GTK_OBJECT (priv->tree), "replace_override",
-			    (GtkSignalFunc) replace_override_fn, engine);
+	g_signal_connect (G_OBJECT (priv->tree), "replace_override",
+			  (GtkSignalFunc) replace_override_fn, engine);
 
-	gtk_signal_connect (GTK_OBJECT (priv->tree), "reinstate",
-			    (GtkSignalFunc) reinstate_fn, engine);
+	g_signal_connect (G_OBJECT (priv->tree), "reinstate",
+			  (GtkSignalFunc) reinstate_fn, engine);
 
-	gtk_signal_connect (GTK_OBJECT (priv->tree), "rename",
-			    (GtkSignalFunc) rename_fn, engine);
+	g_signal_connect (G_OBJECT (priv->tree), "rename",
+			  (GtkSignalFunc) rename_fn, engine);
 
-	gtk_signal_connect (GTK_OBJECT (priv->tree), "remove",
-			    (GtkSignalFunc) remove_fn, engine);
+	g_signal_connect (G_OBJECT (priv->tree), "remove",
+			  (GtkSignalFunc) remove_fn, engine);
 
 	return engine;
 }
@@ -1794,7 +1797,7 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine,
 BonoboUIEngine *
 bonobo_ui_engine_new (GObject *view)
 {
-	BonoboUIEngine *engine = gtk_type_new (BONOBO_TYPE_UI_ENGINE);
+	BonoboUIEngine *engine = g_object_new (BONOBO_TYPE_UI_ENGINE, NULL);
 
 	return bonobo_ui_engine_construct (engine, view);
 }
@@ -2062,7 +2065,7 @@ check_excess_widgets (BonoboUISync *sync, GList *wptr)
 
 			node = bonobo_ui_engine_widget_get_node (b->data);
 			g_message ("Widget type '%s' with node: '%s'",
-				   GTK_CLASS_NAME (GTK_OBJECT_GET_CLASS (b->data)),
+				   G_OBJECT_CLASS_NAME (b->data),
 				   node ? bonobo_ui_xml_make_path (node) : "NULL");
 		}
 	}
@@ -2075,7 +2078,7 @@ do_sync (BonoboUIEngine *engine,
 {
 #ifdef WIDGET_SYNC_DEBUG
 	fprintf (stderr, "Syncing ('%s') on node '%s'\n",
-		 gtk_type_name (GTK_OBJECT (sync)->klass->type),
+		 G_OBJECT_CLASS_NAME (sync),
 		 bonobo_ui_xml_make_path (node));
 #endif
 	if (bonobo_ui_node_parent (node) == engine->priv->tree->root)
@@ -2531,8 +2534,8 @@ void
 bonobo_ui_engine_add_hint (BonoboUIEngine   *engine,
 			   const char       *str)
 {
-	gtk_signal_emit (GTK_OBJECT (engine),
-			 signals [ADD_HINT], str);
+	g_signal_emit (G_OBJECT (engine),
+		       signals [ADD_HINT], 0, str);
 }
 
 /**
@@ -2544,8 +2547,8 @@ bonobo_ui_engine_add_hint (BonoboUIEngine   *engine,
 void
 bonobo_ui_engine_remove_hint (BonoboUIEngine *engine)
 {
-	gtk_signal_emit (GTK_OBJECT (engine),
-			 signals [REMOVE_HINT]);
+	g_signal_emit (G_OBJECT (engine),
+		       signals [REMOVE_HINT], 0);
 }
 
 /**
@@ -2559,8 +2562,8 @@ void
 bonobo_ui_engine_emit_verb_on (BonoboUIEngine   *engine,
 			       BonoboUINode     *node)
 {
-	gtk_signal_emit (GTK_OBJECT (engine),
-			 signals [EMIT_VERB_ON], node);
+	g_signal_emit (G_OBJECT (engine),
+		       signals [EMIT_VERB_ON], 0, node);
 }
 
 /**
@@ -2576,9 +2579,9 @@ bonobo_ui_engine_emit_event_on (BonoboUIEngine   *engine,
 				BonoboUINode     *node,
 				const char       *state)
 {
-	gtk_signal_emit (GTK_OBJECT (engine),
-			 signals [EMIT_EVENT_ON],
-			 node, state);
+	g_signal_emit (G_OBJECT (engine),
+		       signals [EMIT_EVENT_ON], 0,
+		       node, state);
 }
 
 #define WIDGET_NODE_KEY "BonoboUIEngine:NodeKey"
@@ -2594,8 +2597,8 @@ bonobo_ui_engine_widget_get_node (GtkWidget *widget)
 {
 	g_return_val_if_fail (widget != NULL, NULL);
 	
-	return gtk_object_get_data (GTK_OBJECT (widget),
-				    WIDGET_NODE_KEY);
+	return g_object_get_data (G_OBJECT (widget),
+				  WIDGET_NODE_KEY);
 }
 
 /**
@@ -2610,8 +2613,8 @@ bonobo_ui_engine_widget_attach_node (GtkWidget    *widget,
 				     BonoboUINode *node)
 {
 	if (widget)
-		gtk_object_set_data (GTK_OBJECT (widget),
-				     WIDGET_NODE_KEY, node);
+		g_object_set_data (G_OBJECT (widget),
+				   WIDGET_NODE_KEY, node);
 }
 
 /**
@@ -2712,8 +2715,8 @@ bonobo_ui_engine_emit_verb_on_w (BonoboUIEngine *engine,
 {
 	BonoboUINode *node = bonobo_ui_engine_widget_get_node (widget);
 
-	gtk_signal_emit (GTK_OBJECT (engine),
-			 signals [EMIT_VERB_ON], node);
+	g_signal_emit (G_OBJECT (engine),
+		       signals [EMIT_VERB_ON], 0, node);
 }
 
 /**
@@ -2733,8 +2736,8 @@ bonobo_ui_engine_emit_event_on_w (BonoboUIEngine *engine,
 {
 	BonoboUINode *node = bonobo_ui_engine_widget_get_node (widget);
 
-	gtk_signal_emit (GTK_OBJECT (engine),
-			 signals [EMIT_EVENT_ON], node, state);
+	g_signal_emit (G_OBJECT (engine),
+		       signals [EMIT_EVENT_ON], 0, node, state);
 }
 
 /**

@@ -10,15 +10,15 @@
 #ifndef _BONOBO_UI_XML_H_
 #define _BONOBO_UI_XML_H_
 
-#include <gtk/gtkobject.h>
+#include <gobject/gobject.h>
 #include <bonobo/bonobo-ui-node.h>
 #include <bonobo/bonobo-ui-engine.h>
 
 #define BONOBO_UI_XML_TYPE        (bonobo_ui_xml_get_type ())
-#define BONOBO_UI_XML(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_XML_TYPE, BonoboUIXml))
-#define BONOBO_UI_XML_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_UI_XML_TYPE, BonoboUIXmlClass))
-#define BONOBO_IS_UI_XML(o)       (GTK_CHECK_TYPE ((o), BONOBO_UI_XML_TYPE))
-#define BONOBO_IS_UI_XML_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_UI_XML_TYPE))
+#define BONOBO_UI_XML(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_UI_XML_TYPE, BonoboUIXml))
+#define BONOBO_UI_XML_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_UI_XML_TYPE, BonoboUIXmlClass))
+#define BONOBO_IS_UI_XML(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_UI_XML_TYPE))
+#define BONOBO_IS_UI_XML_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_UI_XML_TYPE))
 
 typedef struct _BonoboUIXml BonoboUIXml;
 
@@ -43,7 +43,7 @@ typedef void             (*BonoboUIXmlWatchFn)     (BonoboUIXml      *xml,
 						    gpointer          user_data);
 
 struct _BonoboUIXml {
-	GtkObject              object;
+	GObject                object;
 
 	BonoboUIXmlCompareFn   compare;
 	BonoboUIXmlDataNewFn   data_new;
@@ -59,7 +59,7 @@ struct _BonoboUIXml {
 };
 
 typedef struct {
-	GtkObjectClass         object_klass;
+	GObjectClass           object_klass;
 
 	void                 (*override)          (BonoboUINode *new_node,
 						   BonoboUINode *old_node);

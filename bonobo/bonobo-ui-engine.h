@@ -29,21 +29,21 @@ typedef enum {
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_ENGINE            (bonobo_ui_engine_get_type ())
-#define BONOBO_UI_ENGINE(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_ENGINE, BonoboUIEngine))
-#define BONOBO_UI_ENGINE_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_ENGINE, BonoboUIEngineClass))
-#define BONOBO_IS_UI_ENGINE(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_ENGINE))
-#define BONOBO_IS_UI_ENGINE_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_ENGINE))
+#define BONOBO_UI_ENGINE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_ENGINE, BonoboUIEngine))
+#define BONOBO_UI_ENGINE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_ENGINE, BonoboUIEngineClass))
+#define BONOBO_IS_UI_ENGINE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_ENGINE))
+#define BONOBO_IS_UI_ENGINE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_ENGINE))
 
 typedef struct _BonoboUIEnginePrivate BonoboUIEnginePrivate;
 
 struct _BonoboUIEngine {
-	GtkObject parent;
+	GObject parent;
 
 	BonoboUIEnginePrivate *priv;
 };
 
 typedef struct {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 
 	/* Signals */
 	void (*add_hint)      (BonoboUIEngine *engine,
