@@ -45,7 +45,8 @@
 #undef _
 #define _(msgid) (glade_xml_gettext(xml, msgid))
 
-static GtkWidget *gnome_control_new (GladeXML *xml, GladeWidgetInfo *info, char **err)
+static GtkWidget *
+gnome_control_new (GladeXML *xml, GladeWidgetInfo *info, char **err)
 {
 	GtkWidget               *widget;
 	BonoboControlFrame      *cf;
@@ -65,7 +66,7 @@ static GtkWidget *gnome_control_new (GladeXML *xml, GladeWidgetInfo *info, char 
 
 	if (!cf) {
 		*err = g_strdup_printf ("control '%s' has no frame", info->class);
-		gtk_widget_destroy (widget);
+		gtk_widget_unref (widget);
 		return NULL;
 	}
 
@@ -123,7 +124,8 @@ static GtkWidget *gnome_control_new (GladeXML *xml, GladeWidgetInfo *info, char 
  * also link with the libglade-gnome and libglade-bonobo libraries, which
  * contains all the GNOME, Bonobo libglade stuff.
  */
-void glade_bonobo_init(void)
+void
+glade_bonobo_init(void)
 {
 	static gboolean initialised = FALSE;
 
