@@ -17,26 +17,26 @@ G_BEGIN_DECLS
 #include <bonobo/bonobo-ui-engine.h>
 
 #define BONOBO_TYPE_UI_ENGINE_CONFIG            (bonobo_ui_engine_config_get_type ())
-#define BONOBO_UI_ENGINE_CONFIG(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_ENGINE_CONFIG, BonoboUIEngineConfig))
-#define BONOBO_UI_ENGINE_CONFIG_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_ENGINE_CONFIG, BonoboUIEngineConfigClass))
-#define BONOBO_IS_UI_ENGINE_CONFIG(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_ENGINE_CONFIG))
-#define BONOBO_IS_UI_ENGINE_CONFIG_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_ENGINE_CONFIG))
+#define BONOBO_UI_ENGINE_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_ENGINE_CONFIG, BonoboUIEngineConfig))
+#define BONOBO_UI_ENGINE_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_ENGINE_CONFIG, BonoboUIEngineConfigClass))
+#define BONOBO_IS_UI_ENGINE_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_ENGINE_CONFIG))
+#define BONOBO_IS_UI_ENGINE_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_ENGINE_CONFIG))
 
 typedef struct _BonoboUIEngineConfigPrivate BonoboUIEngineConfigPrivate;
 
 typedef struct {
-	GtkObject parent;
+	GObject parent;
 
 	BonoboUIEngineConfigPrivate *priv;
 } BonoboUIEngineConfig;
 
 typedef struct {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 
 	gpointer       dummy;
 } BonoboUIEngineConfigClass;
 
-GtkType bonobo_ui_engine_config_get_type  (void);
+GType bonobo_ui_engine_config_get_type  (void);
 
 BonoboUIEngineConfig *
         bonobo_ui_engine_config_construct (BonoboUIEngineConfig   *config,

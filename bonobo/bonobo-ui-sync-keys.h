@@ -18,10 +18,10 @@
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_SYNC_KEYS            (bonobo_ui_sync_keys_get_type ())
-#define BONOBO_UI_SYNC_KEYS(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC_KEYS, BonoboUISyncKeys))
-#define BONOBO_UI_SYNC_KEYS_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC_KEYS, BonoboUISyncKeysClass))
-#define BONOBO_IS_UI_SYNC_KEYS(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_SYNC_KEYS))
-#define BONOBO_IS_UI_SYNC_KEYS_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC_KEYS))
+#define BONOBO_UI_SYNC_KEYS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_SYNC_KEYS, BonoboUISyncKeys))
+#define BONOBO_UI_SYNC_KEYS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC_KEYS, BonoboUISyncKeysClass))
+#define BONOBO_IS_UI_SYNC_KEYS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_SYNC_KEYS))
+#define BONOBO_IS_UI_SYNC_KEYS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC_KEYS))
 
 typedef struct _BonoboUISyncKeysPrivate BonoboUISyncKeysPrivate;
 

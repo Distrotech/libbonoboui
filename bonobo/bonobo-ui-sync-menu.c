@@ -25,7 +25,7 @@
 
 #undef WIDGET_SYNC_DEBUG
 
-static GtkObjectClass *parent_class = NULL;
+static BonoboUISyncClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
@@ -769,7 +769,7 @@ radio_group_destroy (gpointer	key,
 }
 
 static void
-impl_destroy (GtkObject *object)
+impl_finalize (GObject *object)
 {
 	BonoboUISyncMenu *sync;
 
@@ -780,7 +780,7 @@ impl_destroy (GtkObject *object)
 	g_hash_table_destroy (sync->radio_groups);
 	sync->radio_groups = NULL;
 
-	parent_class->destroy (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static gboolean
@@ -863,12 +863,12 @@ impl_bonobo_ui_sync_menu_get_attached (BonoboUISync *sync,
 static void
 class_init (BonoboUISyncClass *sync_class)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 
-	parent_class = gtk_type_class (BONOBO_TYPE_UI_SYNC);
+	parent_class = g_type_class_peek_parent (sync_class);
 
-	object_class = GTK_OBJECT_CLASS (sync_class);
-	object_class->destroy  = impl_destroy;
+	object_class = G_OBJECT_CLASS (sync_class);
+	object_class->finalize = impl_finalize;
 
 	sync_class->sync_state = impl_bonobo_ui_sync_menu_state;
 	sync_class->build      = impl_bonobo_ui_sync_menu_build;
@@ -892,24 +892,26 @@ init (BonoboUISyncMenu *sync)
 		g_str_hash, g_str_equal);
 }
 
-GtkType
+GType
 bonobo_ui_sync_menu_get_type (void)
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUISyncMenu",
-			sizeof (BonoboUISyncMenu),
+		GTypeInfo info = {
 			sizeof (BonoboUISyncMenuClass),
-			(GtkClassInitFunc)  class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (BonoboUISyncMenu),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) init
 		};
 
-		type = gtk_type_unique (PARENT_TYPE, &info);
+		type = g_type_register_static (PARENT_TYPE, "BonoboUISyncMenu",
+					       &info, 0);
 	}
 
 	return type;
@@ -925,7 +927,7 @@ bonobo_ui_sync_menu_new (BonoboUIEngine *engine,
 
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
 
-	sync = gtk_type_new (BONOBO_TYPE_UI_SYNC_MENU);
+	sync = g_object_new (BONOBO_TYPE_UI_SYNC_MENU, NULL);
 
 	sync->menu           = menu;
 	sync->menu_dock_item = menu_dock_item;

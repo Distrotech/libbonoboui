@@ -20,10 +20,10 @@
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_SYNC_MENU            (bonobo_ui_sync_menu_get_type ())
-#define BONOBO_UI_SYNC_MENU(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC_MENU, BonoboUISyncMenu))
-#define BONOBO_UI_SYNC_MENU_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC_MENU, BonoboUISyncMenuClass))
-#define BONOBO_IS_UI_SYNC_MENU(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_SYNC_MENU))
-#define BONOBO_IS_UI_SYNC_MENU_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC_MENU))
+#define BONOBO_UI_SYNC_MENU(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_SYNC_MENU, BonoboUISyncMenu))
+#define BONOBO_UI_SYNC_MENU_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC_MENU, BonoboUISyncMenuClass))
+#define BONOBO_IS_UI_SYNC_MENU(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_SYNC_MENU))
+#define BONOBO_IS_UI_SYNC_MENU_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC_MENU))
 
 typedef struct _BonoboUISyncMenuPrivate BonoboUISyncMenuPrivate;
 

@@ -18,10 +18,10 @@
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_SYNC_TOOLBAR            (bonobo_ui_sync_toolbar_get_type ())
-#define BONOBO_UI_SYNC_TOOLBAR(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC_TOOLBAR, BonoboUISyncToolbar))
-#define BONOBO_UI_SYNC_TOOLBAR_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC_TOOLBAR, BonoboUISyncToolbarClass))
-#define BONOBO_IS_UI_SYNC_TOOLBAR(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_SYNC_TOOLBAR))
-#define BONOBO_IS_UI_SYNC_TOOLBAR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC_TOOLBAR))
+#define BONOBO_UI_SYNC_TOOLBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_SYNC_TOOLBAR, BonoboUISyncToolbar))
+#define BONOBO_UI_SYNC_TOOLBAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC_TOOLBAR, BonoboUISyncToolbarClass))
+#define BONOBO_IS_UI_SYNC_TOOLBAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_SYNC_TOOLBAR))
+#define BONOBO_IS_UI_SYNC_TOOLBAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC_TOOLBAR))
 
 typedef struct _BonoboUISyncToolbarPrivate BonoboUISyncToolbarPrivate;
 

@@ -18,10 +18,10 @@
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_SYNC_STATUS            (bonobo_ui_sync_status_get_type ())
-#define BONOBO_UI_SYNC_STATUS(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC_STATUS, BonoboUISyncStatus))
-#define BONOBO_UI_SYNC_STATUS_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC_STATUS, BonoboUISyncStatusClass))
-#define BONOBO_IS_UI_SYNC_STATUS(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_SYNC_STATUS))
-#define BONOBO_IS_UI_SYNC_STATUS_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC_STATUS))
+#define BONOBO_UI_SYNC_STATUS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_SYNC_STATUS, BonoboUISyncStatus))
+#define BONOBO_UI_SYNC_STATUS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC_STATUS, BonoboUISyncStatusClass))
+#define BONOBO_IS_UI_SYNC_STATUS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_SYNC_STATUS))
+#define BONOBO_IS_UI_SYNC_STATUS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC_STATUS))
 
 typedef struct _BonoboUISyncStatusPrivate BonoboUISyncStatusPrivate;
 

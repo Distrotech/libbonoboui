@@ -21,9 +21,9 @@
 #include <bonobo/bonobo-ui-engine-config.h>
 #include <bonobo/bonobo-ui-engine-private.h>
 
-#define PARENT_TYPE gtk_object_get_type ()
+#define PARENT_TYPE G_TYPE_OBJECT
 
-static GtkObjectClass *parent_class = NULL;
+static GObjectClass *parent_class = NULL;
 
 struct _BonoboUIEngineConfigPrivate {
 	char           *path; 
@@ -292,13 +292,13 @@ create_popup_engine (closure_t *c,
 		BONOBO_UI_SYNC_MENU (smenu),
 		menu, "/popups/popup");
 
-	gtk_signal_connect (GTK_OBJECT (engine),
-			    "emit_verb_on",
-			    (GtkSignalFunc) emit_verb_on_cb, c);
+	g_signal_connect (G_OBJECT (engine),
+			  "emit_verb_on",
+			  (GCallback) emit_verb_on_cb, c);
 
-	gtk_signal_connect (GTK_OBJECT (engine),
-			    "emit_event_on",
-			    (GtkSignalFunc) emit_event_on_cb, c);
+	g_signal_connect (G_OBJECT (engine),
+			  "emit_event_on",
+			  (GCallback) emit_event_on_cb, c);
 
 	bonobo_ui_engine_update (engine);
 
@@ -371,19 +371,6 @@ bonobo_ui_engine_config_watch (BonoboUIXml    *xml,
 }
 
 static void
-impl_destroy (GtkObject *object)
-{
-	BonoboUIEngineConfig *config;
-
-	config = BONOBO_UI_ENGINE_CONFIG (object);
-
-	if (config->priv->dialog)
-		gtk_widget_destroy (config->priv->dialog);
-
-	parent_class->destroy (object);
-}
-
-static void
 impl_finalize (GObject *object)
 {
 	BonoboUIEngineConfig *config;
@@ -391,6 +378,9 @@ impl_finalize (GObject *object)
 
 	config = BONOBO_UI_ENGINE_CONFIG (object);
 	priv = config->priv;
+
+	if (priv->dialog)
+		gtk_widget_destroy (priv->dialog);
 
 	g_free (priv->path);
 
@@ -404,16 +394,13 @@ impl_finalize (GObject *object)
 static void
 class_init (BonoboUIEngineClass *engine_class)
 {
-	GtkObjectClass *object_class;
-	GObjectClass *gobject_class;
+	GObjectClass *object_class;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	parent_class = g_type_class_peek_parent (engine_class);
 
-	object_class = GTK_OBJECT_CLASS (engine_class);
-	gobject_class = G_OBJECT_CLASS (engine_class);
+	object_class = G_OBJECT_CLASS (engine_class);
 
-	object_class->destroy  = impl_destroy;
-	gobject_class->finalize = impl_finalize;
+	object_class->finalize = impl_finalize;
 }
 
 static void
@@ -426,24 +413,26 @@ init (BonoboUIEngineConfig *config)
 	config->priv = priv;
 }
 
-GtkType
+GType
 bonobo_ui_engine_config_get_type (void)
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (!type) {
-		static const GtkTypeInfo info = {
-			"BonoboUIEngineConfig",
-			sizeof (BonoboUIEngineConfig),
+		GTypeInfo info = {
 			sizeof (BonoboUIEngineConfigClass),
-			(GtkClassInitFunc)  class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (BonoboUIEngineConfig),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) init
 		};
 
-		type = gtk_type_unique (PARENT_TYPE, &info);
+		type = g_type_register_static (PARENT_TYPE, "BonoboUIEngineConfig",
+					       &info, 0);
 	}
 
 	return type;
@@ -470,7 +459,7 @@ bonobo_ui_engine_config_new (BonoboUIEngine *engine)
 
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
 
-	config = gtk_type_new (bonobo_ui_engine_config_get_type ());
+	config = g_object_new (bonobo_ui_engine_config_get_type (), NULL);
 
 	return bonobo_ui_engine_config_construct (config, engine);
 }

@@ -25,7 +25,7 @@
 
 #include <bonobo/bonobo-ui-toolbar-separator-item.h>
 
-static GtkObjectClass *parent_class = NULL;
+static BonoboUISyncClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
@@ -246,9 +246,9 @@ impl_bonobo_ui_sync_status_get_widgets (BonoboUISync *sync,
 }
 
 static void
-impl_destroy (GtkObject *object)
+impl_finalize (GObject *object)
 {
-	parent_class->destroy (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static gboolean
@@ -263,12 +263,12 @@ impl_bonobo_ui_sync_status_can_handle (BonoboUISync *sync,
 static void
 class_init (BonoboUISyncClass *sync_class)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 
-	parent_class = gtk_type_class (BONOBO_TYPE_UI_SYNC);
+	parent_class = g_type_class_peek_parent (sync_class);
 
-	object_class = GTK_OBJECT_CLASS (sync_class);
-	object_class->destroy  = impl_destroy;
+	object_class = G_OBJECT_CLASS (sync_class);
+	object_class->finalize = impl_finalize;
 
 	sync_class->sync_state = impl_bonobo_ui_sync_status_state;
 	sync_class->build      = impl_bonobo_ui_sync_status_build;
@@ -285,24 +285,26 @@ init (BonoboUISyncStatus *msync)
 {
 }
 
-GtkType
+GType
 bonobo_ui_sync_status_get_type (void)
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUISyncStatus",
-			sizeof (BonoboUISyncStatus),
+		GTypeInfo info = {
 			sizeof (BonoboUISyncStatusClass),
-			(GtkClassInitFunc)  class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (BonoboUISyncStatus),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) init
 		};
 
-		type = gtk_type_unique (PARENT_TYPE, &info);
+		type = g_type_register_static (PARENT_TYPE, "BonoboUISyncStatus",
+					       &info, 0);
 	}
 
 	return type;
@@ -316,12 +318,12 @@ bonobo_ui_sync_status_new (BonoboUIEngine *engine,
 
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
 
-	sync = gtk_type_new (BONOBO_TYPE_UI_SYNC_STATUS);
+	sync = g_object_new (BONOBO_TYPE_UI_SYNC_STATUS, NULL);
 
 	sync->status = status;
 
 	g_signal_connect (G_OBJECT (engine), "add_hint",
-			  G_CALLBACK (set_hint_cb), sync);
+			  (GCallback) set_hint_cb, sync);
 
 	g_signal_connect (G_OBJECT (engine), "remove_hint",
 			  G_CALLBACK (remove_hint_cb), sync);

@@ -23,10 +23,10 @@ typedef struct _BonoboUISync BonoboUISync;
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_SYNC            (bonobo_ui_sync_get_type ())
-#define BONOBO_UI_SYNC(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC, BonoboUISync))
-#define BONOBO_UI_SYNC_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC, BonoboUISyncClass))
-#define BONOBO_IS_UI_SYNC(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_SYNC))
-#define BONOBO_IS_UI_SYNC_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC))
+#define BONOBO_UI_SYNC(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_SYNC, BonoboUISync))
+#define BONOBO_UI_SYNC_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC, BonoboUISyncClass))
+#define BONOBO_IS_UI_SYNC(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_SYNC))
+#define BONOBO_IS_UI_SYNC_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC))
 
 typedef void (*BonoboUISyncStateFn)         (BonoboUISync     *sync,
 					     BonoboUINode     *node,
@@ -43,7 +43,7 @@ typedef GtkWidget *(*BonoboUISyncBuildFn)   (BonoboUISync     *sync,
 typedef struct _BonoboUISyncPrivate BonoboUISyncPrivate;
 
 struct _BonoboUISync {
-	GtkObject parent;
+	GObject parent;
 
 	BonoboUIEngine *engine;
 	gboolean        is_recursive;
@@ -53,7 +53,7 @@ struct _BonoboUISync {
 };
 
 typedef struct {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 
 	BonoboUISyncStateFn sync_state;
 	BonoboUISyncStateFn sync_state_placeholder;
@@ -86,7 +86,7 @@ typedef struct {
 					  BonoboUINode     *node);
 } BonoboUISyncClass;
 
-GtkType    bonobo_ui_sync_get_type           (void);
+GType      bonobo_ui_sync_get_type           (void);
 BonoboUISync *bonobo_ui_sync_construct       (BonoboUISync     *sync,
 					      BonoboUIEngine   *engine,
 					      gboolean          is_recursive,
@@ -151,10 +151,10 @@ gboolean   bonobo_ui_sync_do_show_hide       (BonoboUISync     *sync,
  * from a bonobo-window to allow full sub-classing of that.
  * Do not use to instantiate syncs manualy or to sub-class.
  */
-GtkType bonobo_ui_sync_keys_get_type    (void);
-GtkType bonobo_ui_sync_menu_get_type    (void);
-GtkType bonobo_ui_sync_status_get_type  (void);
-GtkType bonobo_ui_sync_toolbar_get_type (void);
+GType bonobo_ui_sync_keys_get_type    (void);
+GType bonobo_ui_sync_menu_get_type    (void);
+GType bonobo_ui_sync_status_get_type  (void);
+GType bonobo_ui_sync_toolbar_get_type (void);
 
 G_END_DECLS
 

@@ -16,8 +16,8 @@
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-sync.h>
 
-#define PARENT_TYPE gtk_object_get_type ()
-#define CLASS(o) BONOBO_UI_SYNC_CLASS (GTK_OBJECT_GET_CLASS (o))
+#define PARENT_TYPE G_TYPE_OBJECT
+#define CLASS(o) BONOBO_UI_SYNC_CLASS (G_OBJECT_GET_CLASS (o))
 
 static void
 impl_sync_state_placeholder (BonoboUISync     *sync,
@@ -56,24 +56,26 @@ class_init (BonoboUISyncClass *sync_class)
  * 
  * Return value: the GtkType index.
  **/
-GtkType
+GType
 bonobo_ui_sync_get_type (void)
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUISync",
-			sizeof (BonoboUISync),
+		GTypeInfo info = {
 			sizeof (BonoboUISyncClass),
-			(GtkClassInitFunc)  class_init,
-			(GtkObjectInitFunc) NULL,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (BonoboUISync),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) NULL
 		};
 
-		type = gtk_type_unique (PARENT_TYPE, &info);
+		type = g_type_register_static (PARENT_TYPE, "BonoboUISync",
+					       &info, 0);
 	}
 
 	return type;

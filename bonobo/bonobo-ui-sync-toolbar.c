@@ -31,7 +31,7 @@
 #include <bonobo/bonobo-ui-toolbar-popup-item.h>
 #include <bonobo/bonobo-ui-toolbar-control-item.h>
 
-static GtkObjectClass *parent_class = NULL;
+static BonoboUISyncClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
@@ -434,13 +434,13 @@ impl_bonobo_ui_sync_toolbar_state_update (BonoboUISync *sync,
 }
 
 static void
-impl_destroy (GtkObject *object)
+impl_finalize (GObject *object)
 {
 	BonoboUISyncToolbar *sync;
 
 	sync = BONOBO_UI_SYNC_TOOLBAR (object);
 
-	parent_class->destroy (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static gboolean
@@ -838,12 +838,12 @@ impl_bonobo_ui_sync_toolbar_can_handle (BonoboUISync *sync,
 static void
 class_init (BonoboUISyncClass *sync_class)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 
-	parent_class = gtk_type_class (BONOBO_TYPE_UI_SYNC);
+	parent_class = g_type_class_peek_parent (sync_class);
 
-	object_class = GTK_OBJECT_CLASS (sync_class);
-	object_class->destroy  = impl_destroy;
+	object_class = G_OBJECT_CLASS (sync_class);
+	object_class->finalize = impl_finalize;
 
 	sync_class->sync_state = impl_bonobo_ui_sync_toolbar_state;
 	sync_class->build      = impl_bonobo_ui_sync_toolbar_build;
@@ -858,24 +858,26 @@ class_init (BonoboUISyncClass *sync_class)
 	sync_class->can_handle    = impl_bonobo_ui_sync_toolbar_can_handle;
 }
 
-GtkType
+GType
 bonobo_ui_sync_toolbar_get_type (void)
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUISyncToolbar",
-			sizeof (BonoboUISyncToolbar),
+		GTypeInfo info = {
 			sizeof (BonoboUISyncToolbarClass),
-			(GtkClassInitFunc)  class_init,
-			(GtkObjectInitFunc) NULL,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (BonoboUISyncToolbar),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) NULL
 		};
 
-		type = gtk_type_unique (PARENT_TYPE, &info);
+		type = g_type_register_static (PARENT_TYPE, "BonoboUISyncToolbar",
+					       &info, 0);
 	}
 
 	return type;
@@ -889,7 +891,7 @@ bonobo_ui_sync_toolbar_new (BonoboUIEngine  *engine,
 
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
 
-	sync = gtk_type_new (BONOBO_TYPE_UI_SYNC_TOOLBAR);
+	sync = g_object_new (BONOBO_TYPE_UI_SYNC_TOOLBAR, NULL);
 
 	sync->dock = dock;
 

@@ -17,7 +17,7 @@
 #include <bonobo/bonobo-ui-sync.h>
 #include <bonobo/bonobo-ui-sync-keys.h>
 
-static GtkObjectClass *parent_class = NULL;
+static BonoboUISyncClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
@@ -88,7 +88,7 @@ bonobo_ui_sync_keys_binding_handle (GtkWidget        *widget,
 }
 
 static void
-impl_destroy (GtkObject *object)
+impl_finalize (GObject *object)
 {
 	BonoboUISyncKeys *sync;
 
@@ -99,7 +99,7 @@ impl_destroy (GtkObject *object)
 	g_hash_table_destroy (sync->keybindings);
 	sync->keybindings = NULL;
 
-	parent_class->destroy (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -175,12 +175,12 @@ impl_bonobo_ui_sync_keys_can_handle (BonoboUISync *sync,
 static void
 class_init (BonoboUISyncClass *sync_class)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 
-	parent_class = gtk_type_class (BONOBO_TYPE_UI_SYNC);
+	parent_class = g_type_class_peek_parent (sync_class);
 
-	object_class = GTK_OBJECT_CLASS (sync_class);
-	object_class->destroy  = impl_destroy;
+	object_class = G_OBJECT_CLASS (sync_class);
+	object_class->finalize    = impl_finalize;
 
 	sync_class->update_root   = impl_bonobo_ui_sync_keys_update_root;
 	sync_class->can_handle    = impl_bonobo_ui_sync_keys_can_handle;
@@ -194,24 +194,26 @@ init (BonoboUISyncKeys *msync)
 		keybinding_hash_fn, keybinding_compare_fn);	
 }
 
-GtkType
+GType
 bonobo_ui_sync_keys_get_type (void)
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUISyncKeys",
-			sizeof (BonoboUISyncKeys),
+		GTypeInfo info = {
 			sizeof (BonoboUISyncKeysClass),
-			(GtkClassInitFunc)  class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (BonoboUISyncKeys),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) init
 		};
 
-		type = gtk_type_unique (PARENT_TYPE, &info);
+		type = g_type_register_static (PARENT_TYPE, "BonoboUISyncKeys",
+					       &info, 0);
 	}
 
 	return type;
@@ -224,7 +226,7 @@ bonobo_ui_sync_keys_new (BonoboUIEngine *engine)
 
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
 
-	sync = gtk_type_new (BONOBO_TYPE_UI_SYNC_KEYS);
+	sync = g_object_new (BONOBO_TYPE_UI_SYNC_KEYS, NULL);
 
 	return bonobo_ui_sync_construct (
 		BONOBO_UI_SYNC (sync), engine, FALSE, FALSE);
