@@ -1,5 +1,10 @@
 2004-04-05  Arvind Samptur  <arvind.samptur@wipro.com>
 
+	* bonobo/bonobo-dock.c: (drag_floating): Check if
+	the toolbar is already floating.
+	
+2004-04-05  Arvind Samptur  <arvind.samptur@wipro.com>
+
 	* bonobo/bonobo-dock-item.c: (button_changed):
 	doh!  Emitting signal on the wrong widget
 
