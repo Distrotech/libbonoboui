@@ -163,7 +163,7 @@ bonobo_ui_util_xml_to_pixbuf (const char *xml)
 
 	g_return_val_if_fail (xml != NULL, NULL);
 
-	while (*xml && isspace (*xml))
+	while (*xml && isspace ((unsigned char) (*xml)))
 		xml++;
 
 	length = strlen (xml);
@@ -583,7 +583,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 	
 	/* Read in the help topics and create menu items for them */
 	while (fgets (buf, sizeof (buf), file)) {
-		char *s, *id;
+		unsigned char *s, *id;
 		GnomeHelpMenuEntry *entry;
 		BonoboUINode *node;
 
