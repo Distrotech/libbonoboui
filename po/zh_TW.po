@@ -1,12 +1,12 @@
 # traditional Chinese translation of libbonoboui.
-# Copyright (C) 2001-2003 Free Software Foundation, Inc.
+# Copyright (C) 2001, 02, 03 Free Software Foundation, Inc.
 # Joe Man <trmetal@yahoo.com.hk>, 2001.
 # Abel Cheung <maddog@linux.org.hk>, 2002-2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.2.0\n"
-"POT-Creation-Date: 2003-01-23 13:21+0800\n"
+"POT-Creation-Date: 2003-04-30 10:39+0800\n"
 "PO-Revision-Date: 2003-01-23 14:03+0800\n"
 "Last-Translator: Joe Man <trmetal@yahoo.com.hk>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -20,7 +20,7 @@ msgstr "corba 工廠"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr ""
+msgstr "表示工廠的 pointer"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
@@ -28,7 +28,7 @@ msgstr "corba 界面容器元件"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr "使用者界面容器元件"
+msgstr "用戶界面容器元件"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
@@ -39,21 +39,22 @@ msgid "Un dock the toolbar"
 msgstr "卸離工具列"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "陰影類別"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "方向"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "首選的寬度"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "首選的高度"
 
@@ -77,7 +78,7 @@ msgstr ""
 msgid "Whether X events should be forwarded"
 msgstr ""
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "名稱"
 
@@ -87,7 +88,7 @@ msgstr "描述"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr "需要的界面"
+msgstr "需要的 interface"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -95,14 +96,17 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"一個以 NULL 作為最後一個元素的 CORBA interface 陣列，如果 server 想在 "
+"selector 中出現，就必須支援這些 interface。如果沒有列出任何 interface，預設值"
+"為 \"IDL:Bonobo/Embeddable:1.0\"。"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "必須存在的界面項目"
+msgstr "必須存在的 interface 項目"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr "其中一個必須存在的界面"
+msgstr "其中一個必須存在的 interface"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -148,21 +152,21 @@ msgstr "只顯示文字"
 msgid "_Priority text only"
 msgstr "部份圖示旁邊顯示文字(_P)"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "偵錯"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "傾印 XML(_D)"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "傾印整個使用者界面的 XML 描述資料"
+msgstr "傾印整個用戶界面的 XML 描述資料"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr "設定使用者界面"
+msgstr "設定用戶界面"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
@@ -285,23 +289,27 @@ msgstr "自選(_Z)"
 msgid "Customize the toolbar"
 msgstr "自選工具列"
 
-#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
 msgstr "是浮動"
 
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
 msgstr "工具列是否浮動"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-toolbar.c:1176
+msgid "Style of bevel around the toolbar"
+msgstr "圍繞工具列周圍的斜邊款式"
+
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "內容(_C)"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "瀏覽有關本程式的說明文件"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
 
@@ -392,7 +400,7 @@ msgstr "GNOME 示範"
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "你好！"
+msgstr "您好！"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
