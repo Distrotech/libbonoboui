@@ -27,6 +27,9 @@
 #include "bonobo-browser.h"
 #include <bonobo/bonobo-main.h>
 #include <gtk/gtk.h>
+#ifdef ENABLE_NLS
+#include <locale.h>
+#endif
 
 int
 main (int argc, char *argv [])
