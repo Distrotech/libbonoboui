@@ -4,4 +4,4 @@ Makefile
 Makefile.in
 bonobo-sample-controls
 sample-control-container
-Bonobo_Sample_Controls.oaf
+Bonobo_Sample_Controls.server
