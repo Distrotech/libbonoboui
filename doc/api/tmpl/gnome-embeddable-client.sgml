@@ -1,0 +1,80 @@
+<!-- ##### SECTION Title ##### -->
+gnome-embeddable-client
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION gnome_embeddable_client_new_view ##### -->
+<para>
+
+</para>
+
+@server_object: 
+@client_site: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_embeddable_client_new_view_simple ##### -->
+<para>
+
+</para>
+
+@server_object: 
+@client_site: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_embeddable_client_activate ##### -->
+<para>
+
+</para>
+
+@client_object: 
+
+
+<!-- ##### FUNCTION gnome_embeddable_client_deactivate ##### -->
+<para>
+
+</para>
+
+@client_object: 
+
+
+<!-- ##### FUNCTION gnome_embeddable_client_get_verbs ##### -->
+<para>
+
+</para>
+
+@server_object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_embeddable_client_free_verbs ##### -->
+<para>
+
+</para>
+
+@string_list: 
+
+
+<!-- ##### FUNCTION gnome_view_client_do_verb ##### -->
+<para>
+
+</para>
+
+@view: 
+@verb: 
+
+

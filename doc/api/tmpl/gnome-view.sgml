@@ -1,0 +1,45 @@
+<!-- ##### SECTION Title ##### -->
+GnomeView
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_VIEW_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION gnome_view_construct ##### -->
+<para>
+
+</para>
+
+@view: 
+@corba_view: 
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_view_new ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+

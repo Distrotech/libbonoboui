@@ -1,0 +1,53 @@
+<!-- ##### SECTION Title ##### -->
+GnomeInPlaceEmbeddable
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_INPLACE_BONOBO_OBJECT_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION gnome_inplace_bonobo_object_new ##### -->
+<para>
+
+</para>
+
+@factory: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_inplace_bonobo_object_construct ##### -->
+<para>
+
+</para>
+
+@inplace: 
+@corba_inplace: 
+@factory: 
+@data: 
+@Returns: 
+
+
+<!-- ##### VARIABLE gnome_embeddable_epv ##### -->
+<para>
+
+</para>
+
+

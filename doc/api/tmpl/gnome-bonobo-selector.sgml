@@ -1,0 +1,74 @@
+<!-- ##### SECTION Title ##### -->
+GnomeBonoboSelector
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GnomeBonoboSelectorPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION gnome_bonobo_selector_new ##### -->
+<para>
+
+</para>
+
+@title: 
+@interfaces_required: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_bonobo_selector_get_selected_goad_id ##### -->
+<para>
+
+</para>
+
+@sel: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_bonobo_selector_activate_selected ##### -->
+<para>
+
+</para>
+
+@sel: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_bonobo_select_goad_id ##### -->
+<para>
+
+</para>
+
+@title: 
+@interfaces_required: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_bonobo_select_activate ##### -->
+<para>
+
+</para>
+
+@title: 
+@interfaces_required: 
+@flags: 
+@Returns: 
+
+

@@ -1,0 +1,76 @@
+<!-- ##### SECTION Title ##### -->
+GnomeContainer
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_CONTAINER_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### TYPEDEF GnomeClientSiteList ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION gnome_container_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_container_construct ##### -->
+<para>
+
+</para>
+
+@container: 
+@container_corba: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_container_get_moniker ##### -->
+<para>
+
+</para>
+
+@container: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_container_add ##### -->
+<para>
+
+</para>
+
+@container: 
+@object: 
+
+
+<!-- ##### FUNCTION gnome_container_remove ##### -->
+<para>
+
+</para>
+
+@container: 
+@object: 
+
+

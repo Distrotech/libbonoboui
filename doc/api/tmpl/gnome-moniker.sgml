@@ -1,0 +1,82 @@
+<!-- ##### SECTION Title ##### -->
+GnomeMoniker
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_MONIKER_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION GnomeMonikerBindFn ##### -->
+<para>
+
+</para>
+
+@moniker: 
+@bind_options: 
+@closure: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_moniker_construct ##### -->
+<para>
+
+</para>
+
+@moniker: 
+@corba_moniker: 
+@bind_function: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_bind_context_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_parse_display_name ##### -->
+<para>
+
+</para>
+
+@bind: 
+@display_name: 
+@chars_parsed: 
+@Returns: 
+
+
+<!-- ##### FUNCTION find_moniker_in_naming_service ##### -->
+<para>
+
+</para>
+
+@name: 
+@kind: 
+@Returns: 
+
+
+<!-- ##### VARIABLE gnome_moniker_vepv ##### -->
+<para>
+
+</para>
+
+

@@ -1,0 +1,50 @@
+<!-- ##### SECTION Title ##### -->
+gnome-main
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION bonobo_init ##### -->
+<para>
+
+</para>
+
+@orb: 
+@poa: 
+@manager: 
+@Returns: 
+
+
+<!-- ##### MACRO bonobo_orb ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO bonobo_poa ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO bonobo_poa_manager ##### -->
+<para>
+
+</para>
+
+
+

@@ -1,0 +1,43 @@
+<!-- ##### SECTION Title ##### -->
+GnomeBindContext
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_BIND_CONTEXT_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION gnome_bind_context_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_bind_context_construct ##### -->
+<para>
+
+</para>
+
+@bindctx: 
+@corba_bindctx: 
+@Returns: 
+
+

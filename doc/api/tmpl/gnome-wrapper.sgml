@@ -1,0 +1,44 @@
+<!-- ##### SECTION Title ##### -->
+GnomeWrapper
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION gnome_wrapper_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_wrapper_set_covered ##### -->
+<para>
+
+</para>
+
+@wrapper: 
+@covered: 
+
+
+<!-- ##### FUNCTION gnome_wrapper_is_covered ##### -->
+<para>
+
+</para>
+
+@wrapper: 
+@Returns: 
+
+

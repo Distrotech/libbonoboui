@@ -1,0 +1,57 @@
+<!-- ##### SECTION Title ##### -->
+GnomeStorageFS
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_STORAGE_FS_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION gnome_storage_fs_construct ##### -->
+<para>
+
+</para>
+
+@storage: 
+@corba_storage: 
+@path: 
+@open_mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_storage_fs_open ##### -->
+<para>
+
+</para>
+
+@path: 
+@mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_storage_fs_create ##### -->
+<para>
+
+</para>
+
+@storage_fs: 
+@path: 
+@Returns: 
+
+
