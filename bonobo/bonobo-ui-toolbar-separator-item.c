@@ -40,15 +40,15 @@ impl_size_request (GtkWidget *widget,
 	requisition->height = 2 * border_width + widget->style->ythickness;
 }
 
-#ifdef FIXME
-static void
-impl_draw (GtkWidget *widget,
-	   GdkRectangle *area)
+static int
+impl_expose_event (GtkWidget *widget,
+		   GdkEventExpose *expose)
 {
 	BonoboUIToolbarItem *item;
 	const GtkAllocation *allocation;
 	GtkOrientation orientation;
 	int border_width;
+	GdkRectangle *area = &expose->area;
 
 	item = BONOBO_UI_TOOLBAR_ITEM (widget);
 
@@ -71,14 +71,6 @@ impl_draw (GtkWidget *widget,
 				 allocation->x + allocation->width * SPACE_LINE_START / SPACE_LINE_DIVISION,
 				 allocation->x + allocation->width * SPACE_LINE_END / SPACE_LINE_DIVISION,
 				 allocation->y + border_width);
-}
-#endif
-
-static int
-impl_expose_event (GtkWidget *widget,
-		   GdkEventExpose *expose)
-{
-	gtk_widget_draw (widget, &expose->area);
 
 	return FALSE;
 }

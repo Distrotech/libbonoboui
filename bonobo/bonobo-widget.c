@@ -345,9 +345,6 @@ bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
  *
  * This will launch a single view of the embeddable activated by @moniker.
  *
- * FIXME: this function should really be using bonobo_get_object() instead
- * of bonobo_activate_object() to launch the object.
- *
  * Returns: A #GtkWidget that is bound to the Bonobo Control. 
  */
 GtkWidget *
@@ -584,11 +581,6 @@ bonobo_widget_get_type (void)
  * implementation of the actual setting of the PropertyBag values is
  * done by the bonobo_property_bag_client_setv() function).
  *
- * FIXME: This function is error prone because it depends on the
- * client and the server to agree on the data types to be sent.  If
- * the server arguments change the data type, this routine will not
- * be able to cope gracefully with this condition.
- *
  * This only works for BonoboWidgets that represent controls (ie,
  * that were returned by bonobo_widget_new_control_from_objref() or
  * bonobo_widget_new_control().
@@ -644,11 +636,6 @@ bonobo_widget_set_property (BonoboWidget      *control,
  * name) and a pointer where the data will be stored.  The
  * implementation of the actual setting of the PropertyBag values is
  * done by the bonobo_property_bag_client_setv() function).
- *
- * FIXME: This function is error prone because it depends on the
- * client and the server to agree on the data types to be sent.  If
- * the server arguments change the data type, this routine will not
- * be able to cope gracefully with this condition.
  *
  * This only works for BonoboWidgets that represent controls (ie,
  * that were returned by bonobo_widget_new_control_from_objref() or

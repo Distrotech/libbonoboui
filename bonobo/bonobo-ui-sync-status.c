@@ -150,6 +150,8 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 	if (!strcmp (name, "main")) {
 
 		widget = gtk_statusbar_new ();
+		gtk_statusbar_set_has_resize_grip (
+			GTK_STATUSBAR (widget), FALSE);
 
 		gtk_signal_connect (GTK_OBJECT (widget),
 				    "size_request",
@@ -186,10 +188,10 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 
 static GtkWidget *
 impl_bonobo_ui_sync_status_build_placeholder (BonoboUISync     *sync,
-					    BonoboUINode     *node,
-					    BonoboUINode     *cmd_node,
-					    int              *pos,
-					    GtkWidget        *parent)
+					      BonoboUINode     *node,
+					      BonoboUINode     *cmd_node,
+					      int              *pos,
+					      GtkWidget        *parent)
 {
 	GtkWidget *widget;
 	BonoboUISyncStatus *msync = BONOBO_UI_SYNC_STATUS (sync);

@@ -5,6 +5,7 @@
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-selector.h>
 #include <bonobo/bonobo-main.h>
+#include <bonobo/bonobo-ui-main.h>
 #include <bonobo/bonobo-win.h>
 
 #include <liboaf/liboaf.h>
@@ -26,7 +27,7 @@ noact_callback (GtkWidget *widget, gpointer data)
 static void
 quit_callback (GtkWidget *widget, gpointer data)
 {
-	gtk_main_quit ();
+	bonobo_main_quit ();
 }
 
 static void
@@ -46,10 +47,10 @@ main (int argc, char *argv[])
 
 	CORBA_exception_init (&ev);
 
-        gnome_program_init ("BonoboSel Test", "1.0", &libgnome_module_info,
-			    argc, argv, NULL);
+/*        gnome_program_init ("BonoboSel Test", "1.0", &libgnome_module_info,
+	  argc, argv, NULL);*/
 
-	bonobo_init (&argc, argv);
+	bonobo_ui_init ("BonoboSelector Test", VERSION, &argc, argv);
 
 	orb = bonobo_orb ();
 
@@ -72,7 +73,7 @@ main (int argc, char *argv[])
 	
 	gtk_widget_show_all (window);
 
-	gtk_main ();
+	bonobo_main ();
 	
 	return 0;
 }

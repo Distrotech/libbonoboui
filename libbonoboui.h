@@ -15,6 +15,7 @@
 
 G_BEGIN_DECLS
 
+#include <bonobo/bonobo-ui-main.h>
 #include <bonobo/bonobo-client-site.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>

@@ -12,7 +12,6 @@
  *
  * Copyright 1999, 2000 Helix Code, Inc.
  */
-#include <bonobo/bonobo-ui-main.h>
 #include <bonobo/bonobo-i18n.h>
 #include <liboaf/liboaf.h>
 #include <bonobo.h>

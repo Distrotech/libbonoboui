@@ -1,3 +1,42 @@
+2001-07-17  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-status.c
+	(impl_bonobo_ui_sync_status_build): don't have a 'resize
+	grip' on the statusbar.
+
+	* bonobo/bonobo-ui-component.c (impl_get_prop):
+	free the string.
+
+	* bonobo/bonobo-ui-toolbar.c (impl_destroy): cope with
+	a NULL priv->popup_item.
+	(impl_remove): don't do a typechecked cast -
+	popup_item can be NULL.
+	(impl_destroy): check before unref.
+
+	* bonobo/bonobo-wrapper.c (bonobo_wrapper_draw): kill.
+
+	* bonobo/bonobo-ui-toolbar.c (impl_draw): kill.
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_new_default): make default name
+	just getpid () + static idx.
+
+	* bonobo/bonobo-ui-toolbar-separator-item.c
+	(impl_expose_event): move the draw impl. here.
+	(impl_draw): kill.
+
+	* bonobo/bonobo-ui-toolbar.c (impl_expose_event): return
+	TRUE from expose.
+
+	* libbonoboui.h: include bonobo-ui-main.h
+
+	* tests/test-reparent.c (main): do a bonobo_ui_init.
+
+2001-07-12  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar.c (impl_expose_event): port to
+	Gtk+ 2.0
+
 2001-07-13  Darin Adler  <darin@bentspoon.com>
 
 	* configure.in: Remove duplicate macros.

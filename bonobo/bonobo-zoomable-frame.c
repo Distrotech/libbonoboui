@@ -193,17 +193,13 @@ bonobo_zoomable_frame_bind_to_zoomable (BonoboZoomableFrame *zoomable_frame, Bon
 	g_return_if_fail (zoomable != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_ZOOMABLE_FRAME (zoomable_frame));
 
-	/*
-	 * Keep a local handle to the Zoomable.
-	 */
+	/* Keep a local handle to the Zoomable. */
 	if (zoomable_frame->priv->zoomable != CORBA_OBJECT_NIL)
 		g_warning ("FIXME: leaking zoomable reference");
 
 	zoomable_frame->priv->zoomable = bonobo_object_dup_ref (zoomable, NULL);
 
-	/*
-	 * Introduce ourselves to the Zoomable.
-	 */
+	/* Introduce ourselves to the Zoomable. */
 	CORBA_exception_init (&ev);
 	Bonobo_Zoomable_setFrame (zoomable, BONOBO_OBJREF (zoomable_frame),
 				  &ev);

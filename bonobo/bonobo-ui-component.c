@@ -538,18 +538,10 @@ bonobo_ui_component_new_default (void)
 {
 	char              *name;
 	BonoboUIComponent *component;
-#ifndef FIXME
-	const gchar       *gnome_app_id = NULL;
-	const gchar       *gnome_app_version = NULL;
-#endif
-
 	static int idx = 0;
 
 	name = g_strdup_printf (
-		"%s-%s-%d-%d",
-		gnome_app_id ? gnome_app_id : "unknown",
-		gnome_app_version ? gnome_app_version : "-.-",
-		getpid (), idx++);
+		"%d-%d", getpid (), idx++);
 
 	component = bonobo_ui_component_new (name);
 	
@@ -1204,7 +1196,7 @@ impl_get_prop (BonoboUIComponent *component,
 	ans = bonobo_ui_node_get_attr (node, prop);
 	if (ans) {
 		ret = g_strdup (ans);
-		CORBA_free (ans);
+		bonobo_ui_node_free_string (ans);
 	} else
 		ret = NULL;
 

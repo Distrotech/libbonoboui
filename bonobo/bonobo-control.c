@@ -143,7 +143,6 @@ bonobo_control_plug_destroy_event_cb (GtkWidget   *plug,
 /*
  * This callback is invoked when the plug is unexpectedly destroyed
  * through normal Gtk channels. FIXME FIXME FIXME 
- *
  */
 static void
 bonobo_control_plug_destroy_cb (GtkWidget *plug,

@@ -724,7 +724,7 @@ verb_Exit_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 
 	gtk_widget_destroy (app->app);
 
-	gtk_main_quit ();
+	bonobo_main_quit ();
 }
 
 static const char *commands =
@@ -861,8 +861,7 @@ main (int argc, char *argv [])
 
 	app = application_new ();
 	
-	bonobo_activate ();
-	gtk_main ();
+	bonobo_main ();
 
 	CORBA_exception_free (&ev);
 	

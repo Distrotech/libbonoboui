@@ -88,7 +88,7 @@ quit_cb (GtkWindow *window, GdkEvent *event, gpointer dummy)
 	if (do_local)
 		gtk_widget_destroy (inproc_widget);
 
-	gtk_main_quit ();
+	bonobo_main_quit ();
 
 	return TRUE;
 }
@@ -96,7 +96,7 @@ quit_cb (GtkWindow *window, GdkEvent *event, gpointer dummy)
 int
 main (int argc, char **argv)
 {
-	if (bonobo_init (&argc, argv) == FALSE) {
+	if (bonobo_ui_init ("test-reparent", VERSION, &argc, argv) == FALSE) {
 		g_error ("Bigger problems than controls not working");
 		exit (0);
 	}

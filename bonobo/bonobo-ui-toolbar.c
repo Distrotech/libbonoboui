@@ -710,19 +710,21 @@ impl_destroy (GtkObject *object)
 			gtk_widget_destroy (item_widget);
 	}
 
-	if (GTK_WIDGET (priv->popup_item)->parent == NULL)
+	if (priv->popup_item &&
+	    GTK_WIDGET (priv->popup_item)->parent == NULL)
 		gtk_widget_destroy (GTK_WIDGET (priv->popup_item));
+	priv->popup_item = NULL;
 
 	if (priv->popup_window != NULL)
 		gtk_widget_destroy (priv->popup_window);
 	priv->popup_window = NULL;
 
-	gtk_object_unref (GTK_OBJECT (priv->tooltips));
+	if (priv->tooltips)
+		gtk_object_unref (GTK_OBJECT (priv->tooltips));
 	priv->tooltips = NULL;
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy != NULL)
 		GTK_OBJECT_CLASS (parent_class)->destroy (object);
-
 }
 
 static void
@@ -854,54 +856,19 @@ impl_unmap (GtkWidget *widget)
 		gtk_widget_unmap (GTK_WIDGET (priv->popup_item));
 }
 
-#ifdef FIXME
-static void
-impl_draw (GtkWidget *widget,
-	   GdkRectangle *area)
-{
-	BonoboUIToolbar *toolbar;
-	BonoboUIToolbarPrivate *priv;
-	GdkRectangle item_area;
-	GList *p;
-
-	if (! GTK_WIDGET_DRAWABLE (widget))
-		return;
-
-	toolbar = BONOBO_UI_TOOLBAR (widget);
-	priv = toolbar->priv;
-
-	for (p = priv->items; p != NULL; p = p->next) {
-		GtkWidget *item_widget;
-
-		item_widget = GTK_WIDGET (p->data);
-		if (item_widget->parent != GTK_WIDGET (toolbar))
-			continue;
-
-		if (gtk_widget_intersect (item_widget, area, &item_area))
-			gtk_widget_draw (item_widget, &item_area);
-	}
-
-	if (gtk_widget_intersect (GTK_WIDGET (priv->popup_item), area, &item_area))
-		gtk_widget_draw (GTK_WIDGET (priv->popup_item), &item_area);
-}
-#endif
-
 static int
 impl_expose_event (GtkWidget *widget,
 		   GdkEventExpose *event)
 {
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
-	GdkEventExpose item_event;
 	GList *p;
 
 	if (! GTK_WIDGET_DRAWABLE (widget))
-		return FALSE;
+		return TRUE;
 
 	toolbar = BONOBO_UI_TOOLBAR (widget);
 	priv = toolbar->priv;
-
-	item_event = *event;
 
 	for (p = priv->items; p != NULL; p = p->next) {
 		GtkWidget *item_widget;
@@ -913,14 +880,14 @@ impl_expose_event (GtkWidget *widget,
 		if (! GTK_WIDGET_NO_WINDOW (item_widget))
 			continue;
 
-		if (gtk_widget_intersect (item_widget, &event->area, &item_event.area))
-			gtk_widget_event (item_widget, (GdkEvent *) &item_event);
+		gtk_container_propagate_expose (
+			GTK_CONTAINER (widget), item_widget, event);
 	}
 
-	if (gtk_widget_intersect (GTK_WIDGET (priv->popup_item), &event->area, &item_event.area))
-		gtk_widget_event (GTK_WIDGET (priv->popup_item), (GdkEvent *) &item_event);
+	gtk_container_propagate_expose (
+		GTK_CONTAINER (widget), GTK_WIDGET (priv->popup_item), event);
 
-	return FALSE;
+	return TRUE;
 }
 
 
@@ -936,7 +903,7 @@ impl_remove (GtkContainer *container,
 	toolbar = BONOBO_UI_TOOLBAR (container);
 	priv = toolbar->priv;
 
-	if (child == GTK_WIDGET (priv->popup_item))
+	if (child == (GtkWidget *) priv->popup_item)
 		priv->popup_item = NULL;
 
 	gtk_widget_unparent (child);
@@ -1107,7 +1074,6 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 	widget_class->size_allocate = impl_size_allocate;
 	widget_class->map           = impl_map;
 	widget_class->unmap         = impl_unmap;
-	/* widget_class->draw          = impl_draw; [FIXME] */
 	widget_class->expose_event  = impl_expose_event;
 
 	container_class = GTK_CONTAINER_CLASS (toolbar_class);

@@ -119,7 +119,6 @@ bonobo_wrapper_class_init (BonoboWrapperClass *klass)
 	widget_class->size_request = bonobo_wrapper_size_request;
 	widget_class->size_allocate = bonobo_wrapper_size_allocate;
 	widget_class->expose_event = bonobo_wrapper_expose;
-	/* widget_class->draw = bonobo_wrapper_draw; [FIXME] */
 
 	object_class->destroy = bonobo_wrapper_destroy;
 }
@@ -195,7 +194,7 @@ bonobo_wrapper_realize (GtkWidget *widget)
 	GdkWindowAttr attributes;
 	int attributes_mask;
 	GdkGCValues gc_values;
-	char data_paint [25] = {21, 10, 21, 10, 21}; /* FIXME: What the fuck? */
+	char data_paint [25] = {21, 10, 21, 10, 21};
 
 	g_return_if_fail (widget != NULL);
 	g_return_if_fail (BONOBO_IS_WRAPPER (widget));
@@ -382,14 +381,6 @@ bonobo_wrapper_paint (GtkWidget *widget)
 				    widget->allocation.height);
  	}
 }
-
-#ifdef FIXME
-static void
-bonobo_wrapper_draw (GtkWidget *widget, GdkRectangle *area)
-{
-	bonobo_wrapper_paint (widget);
-}
-#endif
 
 static gint
 bonobo_wrapper_expose (GtkWidget *widget, GdkEventExpose *event)
