@@ -1187,7 +1187,10 @@ bonobo_ui_engine_widget_set (BonoboUIEngine    *engine,
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (!strcmp (bonobo_ui_node_get_name (node), "control"));
 
-	tool_item = bonobo_ui_toolbar_control_item_new_widget (widget);
+	if (BONOBO_IS_UI_TOOLBAR_ITEM (widget))
+		tool_item = widget;
+	else
+		tool_item = bonobo_ui_toolbar_control_item_new_widget (widget);
 
 	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
 	info->widget = gtk_widget_ref (tool_item);
