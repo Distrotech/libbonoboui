@@ -20,7 +20,8 @@
 #include <bonobo/bonobo-widget.h>
 
 #include <gtk/gtkmain.h>
-#include <gtk/gtkclist.h>
+#include <gtk/gtktreeview.h>
+#include <gtk/gtktreeselection.h>
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkeditable.h>
@@ -35,6 +36,12 @@ typedef enum {
 	FILESEL_OPEN_MULTI,
 	FILESEL_SAVE
 } FileselMode;
+
+/* Take in sync with gtkfilesel.c */
+enum {
+  FILE_COLUMN
+};
+
 
 static gint
 delete_file_selector (GtkWidget *d, GdkEventAny *e, gpointer data)
@@ -192,34 +199,41 @@ ok_clicked_cb (GtkWidget *widget, gpointer data)
 		gtk_file_selection_set_filename (fsel, dir_name);
 		g_free (dir_name);
 	} else if (GET_MODE (fsel) == FILESEL_OPEN_MULTI) {
-		GtkCList *clist;
-		GList  *row;
-		char **strv;
+
+		GtkTreeSelection *selection;
+		GtkTreeModel *model;
+		GtkTreeIter iter;
+		
 		char *filedirname;
-		int i, rows, rownum;
+		char **strv;
+		int rows, i;
 
 		gtk_widget_hide (GTK_WIDGET (fsel));
-		
-		clist = GTK_CLIST (fsel->file_list);
-		rows = g_list_length (clist->selection);
-		
+
+		model = gtk_tree_view_get_model (GTK_TREE_VIEW (GTK_FILE_SELECTION (fsel)->file_list));	
+		selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (GTK_FILE_SELECTION (fsel)->file_list));	
+
+		rows = 	gtk_tree_model_iter_n_children (model, NULL);
+
 		strv = g_new (char *, rows + 2);
 		strv[rows] = g_strdup (file_name);
 
+		if (!gtk_tree_model_get_iter_root (model, &iter))
+			return;
+
 		filedirname = g_dirname (file_name);
-
-		rownum = 0;
-		i = 0;
-		row = clist->row_list;
 		
-		for ( ; row; row = g_list_next (row)) {
-			
-			if ((GTK_CLIST_ROW (row)->state == GTK_STATE_SELECTED) &&
-			    (gtk_clist_get_cell_type (clist, rownum, 0) == GTK_CELL_TEXT)) {		
-				gchar* f;
-
-				gtk_clist_get_text (clist, rownum, 0, &f);
+		i = 0;
+		
+		do {
+			if (gtk_tree_selection_iter_is_selected (selection, &iter))
+			{	
+		      		gchar *f;
+      
+      				gtk_tree_model_get (model, &iter, FILE_COLUMN, &f, -1);
 				strv[i] = concat_dir_and_file (filedirname, f);
+				
+				g_free (f);
 
 				/* avoid duplicates */
 				if (strv[rows] && (strcmp (strv[i], strv[rows]) == 0)) {
@@ -229,18 +243,18 @@ ok_clicked_cb (GtkWidget *widget, gpointer data)
 
 				++i;
 			}
+		} while (gtk_tree_model_iter_next (model, &iter));
 
-			++rownum;
-		}
-		
-		/* g_assert (i == rows); */
-		
-		strv[rows + 1] = NULL;
+		strv[i] = strv[rows];
+		strv[i + 1] = NULL;
+
+		strv = g_renew (char *, strv, i + 2);
 
 		g_free (filedirname);
 
 		gtk_object_set_user_data (GTK_OBJECT (fsel), strv);
 		gtk_main_quit ();
+
 	} else {
 		gtk_widget_hide (GTK_WIDGET (fsel));
 
@@ -300,8 +314,13 @@ create_gtk_selector (FileselMode mode,
 	g_free (path);
 
 	if (mode == FILESEL_OPEN_MULTI) {
-		gtk_clist_set_selection_mode (GTK_CLIST (GTK_FILE_SELECTION (filesel)->file_list),
-					      GTK_SELECTION_EXTENDED);
+		GtkTreeSelection *selection;
+
+		selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (GTK_FILE_SELECTION (filesel)->file_list));	
+		/* FIXME: change GTK_SELECTION_SINGLE to GTK_SELECTION_MULTIPLE as soon as bug #70505
+		 * will be fixed -- Paolo
+		 */	
+		gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
 	}
 
 	return GTK_WINDOW (filesel);

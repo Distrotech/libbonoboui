@@ -1,3 +1,8 @@
+2002-02-04  Paolo Maggi  <maggi@athena.polito.it>
+
+	* bonobo/bonobo-file-selector-ui.c: updated to work
+	with the new GtkTreeView based GtkFileSelection widget
+
 2002-02-04  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-engine.c
