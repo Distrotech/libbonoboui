@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.112.1\n"
-"POT-Creation-Date: 2002-03-11 22:14+0900\n"
+"POT-Creation-Date: 2002-03-18 13:47+0000\n"
 "PO-Revision-Date: 2002-03-11 23:03+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -204,6 +204,91 @@ msgstr "取り外し中"
 #: bonobo/bonobo-ui-toolbar.c:1100
 msgid "whether the toolbar is floating"
 msgstr "ツールバーが取り外されている状態かどうか"
+
+#: bonobo/bonobo-ui-init-gtk.c:113
+msgid "Gdk debugging flags to set"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
+msgid "FLAGS"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:116
+msgid "Gdk debugging flags to unset"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "X display to use"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "DISPLAY"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:124
+msgid "Make X calls synchronous"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:130
+msgid "Don't use X shared memory extension"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:134
+msgid "Program name as used by the window manager"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:134
+msgid "NAME"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:137
+msgid "Program class as used by the window manager"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:137
+msgid "CLASS"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:141
+msgid "HOST"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:145
+msgid "PORT"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
+msgid "STYLE"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:157
+msgid "Gtk+ debugging flags to set"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:160
+msgid "Gtk+ debugging flags to unset"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:163
+msgid "Make all warnings fatal"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:166
+msgid "Load an additional Gtk module"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:166
+msgid "MODULE"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:175
+msgid "GTK+"
+msgstr ""
+
+#: bonobo/bonobo-ui-main.c:187
+msgid "Bonobo GUI support"
+msgstr ""
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."

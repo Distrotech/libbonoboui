@@ -122,6 +122,7 @@ update_keybindings (BonoboUISyncKeys *msync,
 	if (!data->dirty)
 		return;
 
+
 	g_hash_table_foreach_remove (
 		msync->keybindings, keybindings_free, NULL);
 

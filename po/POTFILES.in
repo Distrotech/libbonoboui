@@ -10,6 +10,8 @@ bonobo/bonobo-ui-sync-toolbar.c
 bonobo/bonobo-zoomable.c
 bonobo/bonobo-canvas-item.c
 bonobo/bonobo-ui-toolbar.c
+bonobo/bonobo-ui-init-gtk.c
+bonobo/bonobo-ui-main.c
 samples/bonoboui/hello.c
 samples/bonoboui/Bonobo_Sample_Hello.xml
 samples/controls/bonobo-sample-controls.c

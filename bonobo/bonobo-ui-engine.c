@@ -1983,19 +1983,19 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine,
 
 	build_skeleton (priv->tree);
 
-	g_signal_connect (G_OBJECT (priv->tree), "override",
+	g_signal_connect (priv->tree, "override",
 			  (GtkSignalFunc) override_fn, engine);
 
-	g_signal_connect (G_OBJECT (priv->tree), "replace_override",
+	g_signal_connect (priv->tree, "replace_override",
 			  (GtkSignalFunc) replace_override_fn, engine);
 
-	g_signal_connect (G_OBJECT (priv->tree), "reinstate",
+	g_signal_connect (priv->tree, "reinstate",
 			  (GtkSignalFunc) reinstate_fn, engine);
 
-	g_signal_connect (G_OBJECT (priv->tree), "rename",
+	g_signal_connect (priv->tree, "rename",
 			  (GtkSignalFunc) rename_fn, engine);
 
-	g_signal_connect (G_OBJECT (priv->tree), "remove",
+	g_signal_connect (priv->tree, "remove",
 			  (GtkSignalFunc) remove_fn, engine);
 
 	/* Add the engine to the configuration notify list */

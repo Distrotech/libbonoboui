@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2002-03-04 16:23+0000\n"
+"POT-Creation-Date: 2002-03-18 13:47+0000\n"
 "PO-Revision-Date: 2001-06-19 12:54+0200\n"
 "Last-Translator: Héctor García Álvarez <hector@scouts-es.org>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -60,43 +60,43 @@ msgstr "Nombre"
 msgid "Description"
 msgstr "Descripción"
 
-#: bonobo/bonobo-ui-config-widget.c:264
+#: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
 msgstr "Visible"
 
-#: bonobo/bonobo-ui-config-widget.c:271
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
 msgstr "Mo_strar"
 
-#: bonobo/bonobo-ui-config-widget.c:278
+#: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
 msgstr "_Ocultar"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
 msgstr "_Mostrar consejos"
 
-#: bonobo/bonobo-ui-config-widget.c:289
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
 msgstr "Barra de herramientas"
 
-#: bonobo/bonobo-ui-config-widget.c:299
+#: bonobo/bonobo-ui-config-widget.c:294
 msgid "toolbars"
 msgstr "barras de herramientas"
 
-#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "Mirar"
 
-#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "_Icono"
 
-#: bonobo/bonobo-ui-config-widget.c:325
+#: bonobo/bonobo-ui-config-widget.c:320
 msgid "_Text and Icon"
 msgstr "_Texto e incono"
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:326
 msgid "_Priority text only"
 msgstr "Solo texto _prioritario"
 
@@ -178,8 +178,7 @@ msgstr "Es continuo"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
-"Si hacemos zoom de forma continua (opuesto a hacerlo a saltos)"
+msgstr "Si hacemos zoom de forma continua (opuesto a hacerlo a saltos)"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
@@ -204,6 +203,91 @@ msgstr "esta flotando"
 #: bonobo/bonobo-ui-toolbar.c:1100
 msgid "whether the toolbar is floating"
 msgstr "si la barra de herramientas es flotante"
+
+#: bonobo/bonobo-ui-init-gtk.c:113
+msgid "Gdk debugging flags to set"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
+msgid "FLAGS"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:116
+msgid "Gdk debugging flags to unset"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "X display to use"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "DISPLAY"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:124
+msgid "Make X calls synchronous"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:130
+msgid "Don't use X shared memory extension"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:134
+msgid "Program name as used by the window manager"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:134
+msgid "NAME"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:137
+msgid "Program class as used by the window manager"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:137
+msgid "CLASS"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:141
+msgid "HOST"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:145
+msgid "PORT"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
+msgid "STYLE"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:157
+msgid "Gtk+ debugging flags to set"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:160
+msgid "Gtk+ debugging flags to unset"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:163
+msgid "Make all warnings fatal"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:166
+msgid "Load an additional Gtk module"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:166
+msgid "MODULE"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:175
+msgid "GTK+"
+msgstr ""
+
+#: bonobo/bonobo-ui-main.c:187
+msgid "Bonobo GUI support"
+msgstr ""
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -250,3 +334,6 @@ msgstr "_Archivo"
 msgid "_Select"
 msgstr "_Seleccionar"
 
+#: samples/controls/bonobo-sample-controls.c:121
+msgid "Could not initialize Bonobo UI"
+msgstr ""

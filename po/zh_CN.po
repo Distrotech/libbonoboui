@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo\n"
-"POT-Creation-Date: 2002-03-04 16:23+0000\n"
+"POT-Creation-Date: 2002-03-18 13:47+0000\n"
 "PO-Revision-Date: 2002-02-19 20:32+0800\n"
 "Last-Translator: Wang Jian <lark@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -60,43 +60,43 @@ msgstr "名字"
 msgid "Description"
 msgstr "描述"
 
-#: bonobo/bonobo-ui-config-widget.c:264
+#: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
 msgstr "可见"
 
-#: bonobo/bonobo-ui-config-widget.c:271
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
 msgstr "显示(_S)"
 
-#: bonobo/bonobo-ui-config-widget.c:278
+#: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
 msgstr "隐藏(_H)"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
 msgstr "查看工具提示(_V)"
 
-#: bonobo/bonobo-ui-config-widget.c:289
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
 msgstr "工具栏"
 
-#: bonobo/bonobo-ui-config-widget.c:299
+#: bonobo/bonobo-ui-config-widget.c:294
 msgid "toolbars"
 msgstr "工具栏"
 
-#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "外观"
 
-#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "图标(_I)"
 
-#: bonobo/bonobo-ui-config-widget.c:325
+#: bonobo/bonobo-ui-config-widget.c:320
 msgid "_Text and Icon"
 msgstr "文字和图标(_T)"
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:326
 msgid "_Priority text only"
 msgstr "仅优先级文字(_P)"
 
@@ -204,6 +204,91 @@ msgstr "是浮动的"
 msgid "whether the toolbar is floating"
 msgstr "工具栏是否浮动"
 
+#: bonobo/bonobo-ui-init-gtk.c:113
+msgid "Gdk debugging flags to set"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
+msgid "FLAGS"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:116
+msgid "Gdk debugging flags to unset"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "X display to use"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "DISPLAY"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:124
+msgid "Make X calls synchronous"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:130
+msgid "Don't use X shared memory extension"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:134
+msgid "Program name as used by the window manager"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:134
+msgid "NAME"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:137
+msgid "Program class as used by the window manager"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:137
+msgid "CLASS"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:141
+msgid "HOST"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:145
+msgid "PORT"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
+msgid "STYLE"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:157
+msgid "Gtk+ debugging flags to set"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:160
+msgid "Gtk+ debugging flags to unset"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:163
+msgid "Make all warnings fatal"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:166
+msgid "Load an additional Gtk module"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:166
+msgid "MODULE"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:175
+msgid "GTK+"
+msgstr ""
+
+#: bonobo/bonobo-ui-main.c:187
+msgid "Bonobo GUI support"
+msgstr ""
+
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
 msgstr "不做任何事；它仅仅是个演示。"
@@ -248,6 +333,10 @@ msgstr "文件(_F)"
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
 msgstr "选择(_S)"
+
+#: samples/controls/bonobo-sample-controls.c:121
+msgid "Could not initialize Bonobo UI"
+msgstr ""
 
 #~ msgid "Can not bonobo_ui_init"
 #~ msgstr "无法 bonobo_ui_init"
