@@ -53,6 +53,19 @@ cb_do_popup (GtkWindow *window, BonoboWin *win)
 }
 
 static void
+cb_do_hide_toolbar (GtkWindow *window, BonoboWin *win)
+{
+	const char path [] = "/toolbar";
+	char *val;
+
+	val = bonobo_ui_component_get_prop (global_component, path, "hidden", NULL);
+	if (val && atoi (val))
+		bonobo_ui_component_set_prop (global_component, path, "hidden", "0", NULL);
+	else
+		bonobo_ui_component_set_prop (global_component, path, "hidden", "1", NULL);
+}
+
+static void
 cb_set_state (GtkEntry *state_entry, GtkEntry *path_entry)
 {
 	char *path, *state, *txt, *str;
@@ -105,6 +118,14 @@ update_progress (GtkProgress *progress)
 		gtk_progress_set_percentage (progress, 0);
 
 	return TRUE;
+}
+
+static void
+slow_size_request (GtkWidget      *widget,
+		   GtkRequisition *requisition,
+		   gpointer        user_data)
+{
+/*	sleep (2);*/
 }
 
 int
@@ -257,6 +278,12 @@ main (int argc, char **argv)
 		gtk_widget_show (GTK_WIDGET (button));
 		gtk_box_pack_start_defaults (GTK_BOX (box), button);
 
+		button = gtk_button_new_with_label ("Hide toolbar");
+		gtk_signal_connect (GTK_OBJECT (button), "clicked",
+				    (GtkSignalFunc) cb_do_hide_toolbar, win);
+		gtk_widget_show (GTK_WIDGET (button));
+		gtk_box_pack_start_defaults (GTK_BOX (box), button);
+
 		path_entry = gtk_entry_new ();
 		gtk_entry_set_text (GTK_ENTRY (path_entry), "/menu/File/toggle");
 		gtk_widget_show (GTK_WIDGET (path_entry));
@@ -272,6 +299,9 @@ main (int argc, char **argv)
 		gtk_widget_show (GTK_WIDGET (box));
 		bonobo_win_set_contents (win, box);
 	}
+
+	gtk_signal_connect (GTK_OBJECT (win), "size_request", 
+			    slow_size_request, NULL);
 
 	componenta = bonobo_ui_component_new ("A");
 	componentb = bonobo_ui_component_new ("B");

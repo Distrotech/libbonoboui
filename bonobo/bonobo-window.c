@@ -597,24 +597,35 @@ cmd_set_dirty (BonoboWinPrivate *priv, BonoboUINode *cmd_node)
 	data->dirty = TRUE;
 }
 
-static void
+/*
+ * Returns: TRUE if hiddenness changed.
+ */
+static gboolean
 do_show_hide (GtkWidget *widget, BonoboUINode *node)
 {
-	char *txt;
+	char    *txt;
+	gboolean changed;
 
 	widget = get_item_widget (widget);
 
 	if (!widget)
-		return;
+		return FALSE;
 
 	if ((txt = bonobo_ui_node_get_attr (node, "hidden"))) {
 		if (atoi (txt)) {
+			changed = GTK_WIDGET_VISIBLE (widget);
 			gtk_widget_hide (widget);
-		} else
+		} else {
+			changed = !GTK_WIDGET_VISIBLE (widget);
 			gtk_widget_show (widget);
+		}
 		bonobo_ui_node_free_string (txt);
-	} else
+	} else {
+		changed = !GTK_WIDGET_VISIBLE (widget);
 		gtk_widget_show (widget);
+	}
+
+	return changed;
 }
 
 static void
@@ -1727,6 +1738,19 @@ update_menus (BonoboWinPrivate *priv, BonoboUINode *node)
 	g_list_free  (widgets);
 }
 
+static gboolean 
+string_array_contains (char **str_array, const char *match)
+{
+	int i = 0;
+	char *string;
+
+	while ((string = str_array [i++]))
+		if (strcmp (string, match) == 0)
+			return TRUE;
+
+	return FALSE;
+}
+
 static GnomeDockItem *
 create_dockitem (BonoboWinPrivate *priv,
 		 BonoboUINode     *node,
@@ -1939,19 +1963,6 @@ toolbar_build_placeholder (BonoboWinPrivate *priv,
 	return widget;
 }
 
-static gboolean 
-string_array_contains (char **str_array, const char *match)
-{
-	int i = 0;
-	char *string;
-
-	while ((string = str_array[i++]) != NULL)
-		if (strcmp (string, match) == 0)
-			return TRUE;
-
-	return FALSE;
-}
-
 static void
 toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		    GtkWidget *widget, GtkWidget *parent)
@@ -1994,10 +2005,11 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		behavior_array = g_strsplit (behavior, ",", -1);
 		bonobo_ui_node_free_string (behavior);
 
-		bonobo_ui_toolbar_item_set_expandable (BONOBO_UI_TOOLBAR_ITEM (widget),
-					string_array_contains (behavior_array, "expandable"));
+		bonobo_ui_toolbar_item_set_expandable (
+			BONOBO_UI_TOOLBAR_ITEM (widget),
+			string_array_contains (behavior_array, "expandable"));
+
 		g_strfreev (behavior_array);
-		
 	}
 
 	/* if it's a control, exit now, since the rest isn't relevant */
@@ -2133,9 +2145,14 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 	bonobo_ui_toolbar_set_tooltips (toolbar, tooltips);
 #endif
 
-	do_show_hide (GTK_WIDGET (item), node);
 
-	gtk_widget_queue_resize (GTK_WIDGET (item));
+       /*
+	* FIXME: It shouldn't be necessary to explicitly resize the
+	* dock, since resizing a widget is supposed to resize it's parent,
+	* but the dock is not resized correctly on dockitem show / hides.
+	*/
+	if (do_show_hide (GTK_WIDGET (item), node))
+		gtk_widget_queue_resize (GTK_WIDGET (priv->dock));
 
 	bonobo_ui_node_free_string (dockname);
 }
