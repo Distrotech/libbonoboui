@@ -31,7 +31,6 @@ idls =							\
 	$(top_srcdir)/idl/bonobo-persist.idl		\
 	$(top_srcdir)/idl/bonobo-progressive.idl	\
 	$(top_srcdir)/idl/bonobo-property.idl		\
-	$(top_srcdir)/idl/bonobo-sizeable.idl		\
 	$(top_srcdir)/idl/bonobo-storage.idl
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
@@ -108,7 +107,6 @@ libbonoboinclude_HEADERS =			\
 	bonobo-property-types.h			\
 	bonobo-property.h			\
 	bonobo-selector.h			\
-	bonobo-sizeable.h			\
 	bonobo-socket.h				\
 	bonobo-storage.h			\
 	bonobo-stream-client.h			\
@@ -147,7 +145,6 @@ libbonobox_la_SOURCES =				\
 	bonobo-item-container.c			\
 	bonobo-plug.c				\
 	bonobo-selector.c			\
-	bonobo-sizeable.c			\
 	bonobo-socket.c				\
 	bonobo-ui-compat.c               	\
 	bonobo-ui-component.c            	\

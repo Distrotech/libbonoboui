@@ -36,7 +36,6 @@ extern "C" {
 
 #include <bonobo/bonobo-embeddable.h>
 #include <bonobo/bonobo-embeddable-factory.h>
-#include <bonobo/bonobo-sizeable.h>
 
 #include <bonobo/bonobo-main.h>
 
