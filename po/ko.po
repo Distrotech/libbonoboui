@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.112.0\n"
-"POT-Creation-Date: 2002-03-18 13:47+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2002-03-20 15:18+0900\n"
+"PO-Revision-Date: 2002-03-20 15:23+0900\n"
+"Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -205,88 +205,88 @@ msgstr "도구 모음을 움직일 수 있는지"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "GDK 디버깅 사용 플래그"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
-msgstr ""
+msgstr "<플래그>"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "GDK 디버깅 사용하지 않을 플래그"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "사용할 X 디스플레이"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "<디스플레이>"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "동기(synchronous) X 호출"
 
 #: bonobo/bonobo-ui-init-gtk.c:130
 msgid "Don't use X shared memory extension"
-msgstr ""
+msgstr "X 공유 메모리 확장 기능을 사용하지 않음"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "창 관리자가 사용할 프로그램 이름"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "NAME"
-msgstr ""
+msgstr "<이름>"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "창 관리자가 사용할 프로그램 클래스"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "CLASS"
-msgstr ""
+msgstr "<클래스>"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "HOST"
-msgstr ""
+msgstr "호스트"
 
 #: bonobo/bonobo-ui-init-gtk.c:145
 msgid "PORT"
-msgstr ""
+msgstr "포트"
 
 #: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
 msgid "STYLE"
-msgstr ""
+msgstr "스타일"
 
 #: bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "GTK+ 디버깅 사용 플래그"
 
 #: bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "GTK+ 디버깅 사용하지 않을 플래그"
 
 #: bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "모든 경고를 치명적인 오류로 취급합니다"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "추가로 GTK 모듈을 읽어들입니다"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
-msgstr ""
+msgstr "<모듈>"
 
 #: bonobo/bonobo-ui-init-gtk.c:175
 msgid "GTK+"
-msgstr ""
+msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:187
 msgid "Bonobo GUI support"
-msgstr ""
+msgstr "보노보 GUI 지원 기능"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -335,4 +335,4 @@ msgstr "선택(_S)"
 
 #: samples/controls/bonobo-sample-controls.c:121
 msgid "Could not initialize Bonobo UI"
-msgstr ""
+msgstr "보노보 UI를 초기화할 수 없습니다"
