@@ -4,14 +4,14 @@
 # Keld Simonsen <keld@dkuug.dk>, 2001.
 # Kjartan Maraas <kmaraas@gnome.org>, 1999-2001.
 # Ole Laursen <olau@hardworking.dk>, 2002, 03.
-# Martin Willemoes Hansen <mwh@sysrq.dk>, 2004.
+# Martin Willemoes Hansen <mwh@sysrq.dk>, 2004, 05.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-06 16:16+0100\n"
-"PO-Revision-Date: 2004-11-06 16:16+0100\n"
+"POT-Creation-Date: 2005-01-31 12:02+0100\n"
+"PO-Revision-Date: 2005-01-31 12:01+0100\n"
 "Last-Translator: Martin Willemoes Hansen <mwh@sysrq.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -34,30 +34,30 @@ msgstr "CORBA-grænsefladebeholder"
 msgid "The User interface container"
 msgstr "Brugergrænsefladebeholderen"
 
-#: bonobo/bonobo-dock-item-grip.c:256
+#: bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
 msgstr "Anbring værktøjslinjen i dok"
 
-#: bonobo/bonobo-dock-item-grip.c:257
-msgid "Un dock the toolbar"
+#: bonobo/bonobo-dock-item-grip.c:258
+msgid "Undock the toolbar"
 msgstr "Fjern værktøjslinjen fra dok"
 
-#: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Skyggetype"
 
-#: bonobo/bonobo-dock-item.c:243 bonobo/bonobo-dock-item.c:244
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientering"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Foretrukket bredde"
 
-#: bonobo/bonobo-dock-item.c:263 bonobo/bonobo-dock-item.c:264
+#: bonobo/bonobo-dock-item.c:264 bonobo/bonobo-dock-item.c:265
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Foretrukket højde"
