@@ -1,3 +1,9 @@
+2002-01-07  Michael Meeks  <michael@ximian.com>
+
+	* POTFILES.in: update from auto-email thing.
+
+	* POTFILES.skip: add.
+
 2001-12-27  Duarte Loreto <happyguy_pt@hotmail.com>
 
         * pt.po: Added portuguese translation

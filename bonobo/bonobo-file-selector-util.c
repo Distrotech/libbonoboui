@@ -300,13 +300,13 @@ create_gtk_selector (FileselMode mode,
 }
 
 static gpointer
-run_file_slector (GtkWindow  *parent,
-		  gboolean    enable_vfs,
-		  FileselMode mode, 
-		  const char *title,
-		  const char *mime_types,
-		  const char *default_path, 
-		  const char *default_filename)
+run_file_selector (GtkWindow  *parent,
+		   gboolean    enable_vfs,
+		   FileselMode mode, 
+		   const char *title,
+		   const char *mime_types,
+		   const char *default_path, 
+		   const char *default_filename)
 
 {
 	GtkWindow *dialog = NULL;
@@ -358,14 +358,14 @@ run_file_slector (GtkWindow  *parent,
  **/
 char *
 bonobo_file_selector_open (GtkWindow  *parent,
-			  gboolean    enable_vfs,
-			  const char *title,
-			  const char *mime_types,
-			  const char *default_path)
+			   gboolean    enable_vfs,
+			   const char *title,
+			   const char *mime_types,
+			   const char *default_path)
 {
-	return run_file_slector (parent, enable_vfs, FILESEL_OPEN, 
-				 title ? title : _("Select a file to open"),
-				 mime_types, default_path, NULL);
+	return run_file_selector (parent, enable_vfs, FILESEL_OPEN, 
+				  title ? title : _("Select a file to open"),
+				  mime_types, default_path, NULL);
 }
 
 /**
@@ -391,9 +391,9 @@ bonobo_file_selector_open_multi (GtkWindow  *parent,
 				const char *mime_types,
 				const char *default_path)
 {
-	return run_file_slector (parent, enable_vfs, FILESEL_OPEN_MULTI,
-				 title ? title : _("Select files to open"),
-				 mime_types, default_path, NULL);
+	return run_file_selector (parent, enable_vfs, FILESEL_OPEN_MULTI,
+				  title ? title : _("Select files to open"),
+				  mime_types, default_path, NULL);
 }
 
 /**
@@ -414,13 +414,13 @@ bonobo_file_selector_open_multi (GtkWindow  *parent,
  **/
 char *
 bonobo_file_selector_save (GtkWindow  *parent,
-			  gboolean    enable_vfs,
-			  const char *title,
-			  const char *mime_types,
-			  const char *default_path, 
-			  const char *default_filename)
+			   gboolean    enable_vfs,
+			   const char *title,
+			   const char *mime_types,
+			   const char *default_path, 
+			   const char *default_filename)
 {
-	return run_file_slector (parent, enable_vfs, FILESEL_SAVE,
-				 title ? title : _("Select a filename to save"),
-				 mime_types, default_path, default_filename);
+	return run_file_selector (parent, enable_vfs, FILESEL_SAVE,
+				  title ? title : _("Select a filename to save"),
+				  mime_types, default_path, default_filename);
 }

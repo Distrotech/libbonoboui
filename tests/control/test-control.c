@@ -304,7 +304,7 @@ main (int argc, char **argv)
 	textdomain (GETTEXT_PACKAGE);
 
 	if (!bonobo_ui_init ("test-focus", VERSION, &argc, argv))
-		g_error (_("Can not bonobo_ui_init"));
+		g_error ("Can not bonobo_ui_init");
 
 	orb = bonobo_orb ();
 

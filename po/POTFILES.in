@@ -1,3 +1,4 @@
+bonobo/bonobo-plug.c
 bonobo/bonobo-dock-item.c
 bonobo/bonobo-file-selector-util.c
 bonobo/bonobo-selector-widget.c
@@ -6,8 +7,7 @@ bonobo/bonobo-ui-engine-config.c
 bonobo/bonobo-ui-sync-toolbar.c
 bonobo/bonobo-zoomable.c
 samples/bonoboui/hello.c
-tests/test-focus.c
-tests/test-sensitivity.c
-tests/test-selector.c
-tests/test-toolbar.c
-tests/test-ui.c
+monikers/Bonobo_Moniker_extra.server.in.in
+monikers/bonobo-moniker-conf-indirect.c
+samples/bonoboui/Bonobo_Sample_Hello.xml
+samples/compound-doc/container/embeddable-io.c

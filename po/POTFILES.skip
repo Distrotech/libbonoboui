@@ -1,0 +1,9 @@
+doc/std-ui.xml
+tests/control/test-control.c
+tests/test-focus.c
+tests/test-sensitivity.c
+tests/test-selector.c
+tests/test-toolbar.c
+tests/test-ui.c
+tests/test-events.c
+tests/test-filesel.c
