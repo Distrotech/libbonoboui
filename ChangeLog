@@ -1,3 +1,10 @@
+2002-11-04  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-ui-util.c:
+	(bonobo_ui_util_xml_get_icon_size): impl reading a named
+	icon size from a node's "icon_size" attribute.
+	(bonobo_ui_util_xml_set_image): use this icon size.
+
 2002-11-04  Michael Meeks  <michael@ximian.com>
 
 	* samples/controls/bonobo-sample-controls.c
