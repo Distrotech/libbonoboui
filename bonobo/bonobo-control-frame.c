@@ -659,7 +659,6 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 		 */
 		if (GTK_WIDGET_REALIZED (frame->priv->socket))
 			bonobo_control_frame_set_remote_window (frame, ev);
-
 	}
 
 	if (!opt_ev)

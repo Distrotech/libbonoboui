@@ -1,5 +1,10 @@
 2001-11-01  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-socket.c (bonobo_socket_unrealize): impl.
+	(bonobo_socket_class_init): hook.
+	(bonobo_socket_unrealize): unset the REALIZED flag before
+	we chain - bug in Gtk+.
+
 	* bonobo/bonobo-control-frame.c
 	(bonobo_control_frame_set_inproc_widget): impl. to do aweful
 	GtkPlug / Socket skullduggery - we know we're in-proc well

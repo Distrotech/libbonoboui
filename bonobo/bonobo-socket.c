@@ -67,6 +67,23 @@ bonobo_socket_realize (GtkWidget *widget)
 			socket->frame, &ev);
 		CORBA_exception_free (&ev);
 	}
+
+	g_assert (GTK_WIDGET_REALIZED (widget));
+}
+
+static void
+bonobo_socket_unrealize (GtkWidget *widget)
+{
+	dprintf ("unrealize %p\n", widget);
+
+	g_assert (GTK_WIDGET_REALIZED (widget));
+	g_assert (GTK_WIDGET (widget)->window);
+
+	/* To stop evilness inside Gtk+ */
+	GTK_WIDGET_UNSET_FLAGS (widget, GTK_REALIZED);
+
+	GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
+	dprintf ("unrealize done %p\n", widget);
 }
 
 static void
@@ -146,6 +163,7 @@ bonobo_socket_class_init (GObjectClass *klass)
 	klass->dispose  = bonobo_socket_dispose;
 
 	widget_class->realize         = bonobo_socket_realize;
+	widget_class->unrealize       = bonobo_socket_unrealize;
 	widget_class->state_changed   = bonobo_socket_state_changed;
 	widget_class->focus_in_event  = bonobo_socket_focus_in;
 	widget_class->focus_out_event = bonobo_socket_focus_out;
