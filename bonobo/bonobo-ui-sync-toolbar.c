@@ -597,6 +597,15 @@ config_verb_fn (BonoboUIEngineConfig *config,
 		bonobo_ui_engine_config_serialize (config);
 }
 
+static void
+toolbar_style_changed (BonoboUIToolbar *toolbar, gpointer data)
+{
+	GnomeDock *dock;
+
+	dock = (GnomeDock *) data;
+	gtk_widget_queue_resize (GTK_WIDGET (dock));
+}
+
 static GnomeDockItem *
 create_dockitem (BonoboUISyncToolbar *sync,
 		 BonoboUINode        *node,
@@ -696,6 +705,9 @@ create_dockitem (BonoboUISyncToolbar *sync,
 
 		
 	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
+	gtk_signal_connect (GTK_OBJECT (toolbar), "set_style",
+                            GTK_SIGNAL_FUNC (toolbar_style_changed),
+                            sync->dock);
 
 	gtk_container_add (GTK_CONTAINER (item),
 			   GTK_WIDGET (toolbar));
