@@ -162,6 +162,7 @@ bonobo_selector_destroy (GtkObject *object)
 	priv = sel->priv;
 
 	gtk_widget_destroy (priv->clist);
+	
 	od_server_list_free (priv->servers);
 	g_free (priv);
 
