@@ -531,7 +531,7 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 {
 	char *fname, *name;
 
-	if (file_name [0] == '/' &&
+	if ((file_name [0] == '/' || file_name [0] == '.') &&
 	    g_file_test (file_name, G_FILE_TEST_EXISTS))
 		return g_strdup (file_name);
 
