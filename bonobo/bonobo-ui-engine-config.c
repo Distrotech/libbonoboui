@@ -16,7 +16,6 @@
 #include <bonobo/bonobo-i18n.h>
 
 #include <libgnomeui/gnome-stock.h>
-#include <libgnomeui/gnome-dialog.h>
 
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
@@ -500,7 +499,7 @@ bonobo_ui_engine_config_get_path (BonoboUIEngine *engine)
 }
 
 static void
-button_clicked_fn (GnomeDialog *dialog,
+button_clicked_fn (GtkDialog   *dialog,
 		   gint         button_number,
 		   BonoboUIEngineConfig *config)
 {
@@ -517,17 +516,19 @@ dialog_new (BonoboUIEngineConfig *config)
 
 	accel_group = gtk_accel_group_new ();
 
-	window = gnome_dialog_new (_("Configure UI"), 
-				   GNOME_STOCK_BUTTON_OK,
-				   NULL);
-	gnome_dialog_set_default (GNOME_DIALOG (window), 0);
+	window = gtk_dialog_new_with_buttons (_("Configure UI"), 
+					      NULL,
+					      0,
+					      GTK_STOCK_BUTTON_OK,
+					      NULL);
+	gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_OK);
 
 	gtk_signal_connect (GTK_OBJECT (window), "clicked",
 			    (GtkSignalFunc) button_clicked_fn, config);
 
 	cwidget = bonobo_ui_config_widget_new (config->priv->engine, accel_group);
 	gtk_widget_show (cwidget);
-	gtk_container_add (GTK_CONTAINER (GNOME_DIALOG (window)->vbox), cwidget);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), cwidget);
 
 	gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
 	

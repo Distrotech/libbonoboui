@@ -1,5 +1,12 @@
 2001-04-24  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/bonobo-selector.[ch]: Use GtkDialog, not GnomeDialog.
+
+	* bonobo/bonobo-ui-engine-config.c (dialog_new): Use GtkDialog,
+	not GnomeDialog.
+
+2001-04-24  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/bonobo-zoomable.h (BonoboZoomableClass):
 	Added `POA_Bonobo_Zoomable__epv epv'.
 	(bonobo_zoomable_get_epv): Removed.

@@ -17,13 +17,12 @@
  */
 #include <config.h>
 #include <string.h> /* strcmp */
-#include <libgnomeui/gnome-uidefs.h>
 #include <libgnomeui/gnome-stock.h>
-#include <libgnomeui/gnome-dialog.h>
 #include <bonobo/bonobo-object-directory.h>
 #include <bonobo/bonobo-selector.h>
 
 #define DEFAULT_INTERFACE "IDL:Bonobo/Embeddable:1.0"
+#define BONOBO_PAD_SMALL 4
 
 static GtkDialogClass *parent_class;
 
@@ -151,7 +150,7 @@ bonobo_selector_select_id (const gchar  *title,
 	
 	gtk_widget_show (sel);
 		
-	n = gnome_dialog_run (GNOME_DIALOG(sel));
+	n = gtk_dialog_run (GTK_DIALOG (sel));
 	if (n == -1)
 		return NULL;
 
@@ -184,7 +183,7 @@ button_callback (GtkWidget *widget,
 static void
 final_select_cb (GtkWidget *widget, BonoboSelector *sel)
 {
-	gnome_dialog_clicked (GNOME_DIALOG (sel), 0);
+	gtk_dialog_response (GTK_DIALOG (sel), GTK_RESPONSE_OK);
 }
 
 static void
@@ -207,7 +206,7 @@ bonobo_selector_class_init (BonoboSelectorClass *klass)
 	object_class = (GObjectClass *) klass;
 	object_class->finalize = bonobo_selector_finalize;
 
-	parent_class = gtk_type_class (gnome_dialog_get_type ());
+	parent_class = gtk_type_class (gtk_dialog_get_type ());
 
 	bonobo_selector_signals [OK] =
 		gtk_signal_new ("ok", GTK_RUN_LAST, GTK_CLASS_TYPE (object_class),
@@ -242,7 +241,7 @@ bonobo_selector_get_type (void)
 		};
 
 		bonobo_selector_type = gtk_type_unique (
-			gnome_dialog_get_type (),
+			gtk_dialog_get_type (),
 			&bonobo_selector_info);
 	}
 
@@ -274,14 +273,15 @@ bonobo_selector_construct (BonoboSelector       *sel,
 	
 	gtk_window_set_title (GTK_WINDOW (sel), title ? title : "");
 
-	gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (sel)->vbox),
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (sel)->vbox),
 			    GTK_WIDGET (selector),
-			    TRUE, TRUE, GNOME_PAD_SMALL);
+			    TRUE, TRUE, BONOBO_PAD_SMALL);
 	
-	gnome_dialog_append_button (GNOME_DIALOG (sel), GNOME_STOCK_BUTTON_OK);
-	gnome_dialog_append_button (GNOME_DIALOG (sel), 
-		GNOME_STOCK_BUTTON_CANCEL);
-	gnome_dialog_set_default (GNOME_DIALOG (sel), 0);
+	gtk_dialog_add_button (GTK_DIALOG (sel), GTK_STOCK_BUTTON_OK,
+			       GTK_RESPONSE_OK);
+	gtk_dialog_add_button (GTK_DIALOG (sel), GTK_STOCK_BUTTON_CANCEL,
+			       GTK_RESPONSE_CANCEL);
+	gtk_dialog_set_default_response (GTK_DIALOG (sel), GTK_RESPONSE_OK);
 	
 	gtk_signal_connect (GTK_OBJECT (sel),
 		"clicked", GTK_SIGNAL_FUNC (button_callback), sel);
@@ -289,7 +289,7 @@ bonobo_selector_construct (BonoboSelector       *sel,
 		GTK_SIGNAL_FUNC (button_callback), sel);
 	
 	gtk_widget_set_usize (GTK_WIDGET (sel), 400, 300); 
-	gtk_widget_show_all  (GNOME_DIALOG (sel)->vbox);
+	gtk_widget_show_all  (GTK_DIALOG (sel)->vbox);
 
 	return GTK_WIDGET (sel);
 }

@@ -17,7 +17,6 @@
 #ifndef __BONOBO_SELECTOR_H__
 #define __BONOBO_SELECTOR_H__
 
-#include <libgnomeui/gnome-dialog.h>
 #include <bonobo/bonobo-selector-widget.h>
 
 G_BEGIN_DECLS
@@ -29,13 +28,13 @@ G_BEGIN_DECLS
 typedef struct _BonoboSelectorPrivate BonoboSelectorPrivate;
 
 typedef struct {
-	GnomeDialog dialog;
+	GtkDialog dialog;
 
 	BonoboSelectorPrivate *priv;
 } BonoboSelector;
 
 typedef struct {
-	GnomeDialogClass parent_class;
+	GtkDialogClass parent_class;
 	
 	void (* ok)	(BonoboSelector *sel);
 	void (* cancel)	(BonoboSelector *sel);
