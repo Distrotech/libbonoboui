@@ -1,13 +1,13 @@
-# bonobo po
-# Copyright (C) 1999 Free Software Foundation, Inc.
+# libbonoboui ja.po
+# Copyright (C) 1999-2002 Free Software Foundation, Inc.
 # Yukihiro Nakai <nacai@iname.com>, 1999.
-# Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 1999, 2000.
+# Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 1999, 2000, 2002.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.108.1\n"
-"POT-Creation-Date: 2002-01-15 12:03+0000\n"
-"PO-Revision-Date: 2001-12-23 23:26+0900\n"
+"POT-Creation-Date: 2002-01-17 23:37+0900\n"
+"PO-Revision-Date: 2002-01-17 23:39+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -44,11 +44,11 @@ msgstr "保存するファイル名を選択"
 
 #: bonobo/bonobo-plug.c:343
 msgid "Event Forwarding"
-msgstr ""
+msgstr "イベント転送"
 
 #: bonobo/bonobo-plug.c:344
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "X イベントを転送するかどうか"
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -80,7 +80,7 @@ msgstr "ツールバー"
 
 #: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "Look"
-msgstr ""
+msgstr "外観"
 
 #: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "_Icon"
@@ -92,11 +92,11 @@ msgstr "テキストとアイコン(_T)"
 
 #: bonobo/bonobo-ui-config-widget.c:316
 msgid "_Priority text only"
-msgstr ""
+msgstr "テキストのみ(_P)"
 
 #: bonobo/bonobo-ui-engine-config.c:513
 msgid "Configure UI"
-msgstr ""
+msgstr "UI の設定"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "B_oth"
@@ -148,31 +148,31 @@ msgstr "最大拡大率"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "最大でどの程度拡大するか"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minumum Zoom level"
-msgstr ""
+msgstr "最小拡大率有り"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "有効な最小拡大率を設定しているかどうか"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr ""
+msgstr "最大拡大率有り"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "有効な最大拡大率を設定しているかどうか"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr ""
+msgstr "連続的"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "(段階的ではなく)連続的に拡大できるかどうか"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -197,28 +197,27 @@ msgstr "libbonoboui のコードを初期化できません"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr ""
+msgstr "このアプリケーションについて"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr ""
+msgstr "選択"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr ""
+msgstr "情報(_A)..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr ""
+msgstr "編集(_E)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
-#, fuzzy
 msgid "_File"
-msgstr "隠す(_H)"
+msgstr "ファイル(_F)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr ""
+msgstr "選択(_S)"
 
 #~ msgid "Can not bonobo_ui_init"
 #~ msgstr "bonobo_ui_init 失敗"
