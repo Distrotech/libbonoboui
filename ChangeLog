@@ -1,3 +1,7 @@
+2004-11-15  Dwayne Bailey  <dwayne@translate.org.za>
+
+	* configure.in: Added "nso" to ALL_LINGUAS.
+
 Sat Nov 13 01:05:27 2004  Jonathan Blandford  <jrb@redhat.com>
 
 	* bonobo/bonobo-canvas-item.c:
