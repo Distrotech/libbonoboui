@@ -1,41 +1,38 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
-<!entity gnome-bind-context SYSTEM "sgml/">
-<!entity gnome-bind-context SYSTEM "sgml/gnome-bind-context.sgml">
-<!entity gnome-bonobo-selector SYSTEM "sgml/gnome-bonobo-selector.sgml">
-<!entity gnome-bonobo SYSTEM "sgml/gnome-bonobo.sgml">
-<!entity gnome-client-site SYSTEM "sgml/gnome-client-site.sgml">
-<!entity gnome-component-io SYSTEM "sgml/gnome-component-io.sgml">
-<!entity gnome-composite-moniker SYSTEM "sgml/gnome-composite-moniker.sgml">
-<!entity gnome-container SYSTEM "sgml/gnome-container.sgml">
-<!entity gnome-embeddable-client SYSTEM "sgml/gnome-embeddable-client.sgml">
-<!entity gnome-embeddable-factory SYSTEM "sgml/gnome-embeddable-factory.sgml">
-<!entity gnome-embeddable SYSTEM "sgml/gnome-embeddable.sgml">
-<!entity gnome-file-moniker SYSTEM "sgml/gnome-file-moniker.sgml">
-<!entity gnome-inplace-component SYSTEM "sgml/gnome-inplace-component.sgml">
-<!entity gnome-inplace-site SYSTEM "sgml/gnome-inplace-site.sgml">
-<!entity gnome-item-moniker SYSTEM "sgml/gnome-item-moniker.sgml">
-<!entity gnome-main SYSTEM "sgml/gnome-main.sgml">
-<!entity gnome-moniker SYSTEM "sgml/gnome-moniker.sgml">
-<!entity gnome-object-client SYSTEM "sgml/gnome-object-client.sgml">
-<!entity gnome-object SYSTEM "sgml/gnome-object.sgml">
-<!entity gnome-persist-file SYSTEM "sgml/gnome-persist-file.sgml">
-<!entity gnome-persist-stream SYSTEM "sgml/gnome-persist-stream.sgml">
-<!entity gnome-persist SYSTEM "sgml/gnome-persist.sgml">
-<!entity gnome-progressive SYSTEM "sgml/gnome-progressive.sgml">
-<!entity gnome-simple-source SYSTEM "sgml/gnome-simple-source.sgml">
-<!entity gnome-storage-driver SYSTEM "sgml/gnome-storage-driver.sgml">
-<!entity gnome-storage-fs SYSTEM "sgml/gnome-storage-fs.sgml">
-<!entity gnome-storage-private SYSTEM "sgml/gnome-storage-private.sgml">
-<!entity gnome-storage-repo SYSTEM "sgml/gnome-storage-repo.sgml">
-<!entity gnome-storage SYSTEM "sgml/gnome-storage.sgml">
-<!entity gnome-stream-fs SYSTEM "sgml/gnome-stream-fs.sgml">
-<!entity gnome-stream-memory SYSTEM "sgml/gnome-stream-memory.sgml">
-<!entity gnome-stream-repo SYSTEM "sgml/gnome-stream-repo.sgml">
-<!entity gnome-stream SYSTEM "sgml/gnome-stream.sgml">
-<!entity gnome-ui-handler SYSTEM "sgml/gnome-ui-handler.sgml">
-<!entity gnome-view-frame SYSTEM "sgml/gnome-view-frame.sgml">
-<!entity gnome-view SYSTEM "sgml/gnome-view.sgml">
-<!entity gnome-wrapper SYSTEM "sgml/gnome-wrapper.sgml">
+<!entity bonobo-bonobo-selector SYSTEM "sgml/bonobo-selector.sgml">
+<!entity bonobo-bonobo-object SYSTEM "sgml/bonobo-object.sgml">
+<!entity bonobo-bonobo-moniker SYSTEM "sgml/bonobo-moniker.sgml">
+<!entity bonobo-bonobo-exception SYSTEM "sgml/bonobo-exception.sgml">
+<!entity bonobo-bonobo-item-container SYSTEM "sgml/bonobo-item-container.sgml">
+<!entity bonobo-bonobo-object-client SYSTEM "sgml/bonobo-object-client.sgml">
+<!entity bonobo-bonobo-moniker-util SYSTEM "sgml/bonobo-moniker-util.sgml">
+<!entity bonobo-bonobo-property-listener SYSTEM "sgml/bonobo-property-listener.sgml">
+<!entity bonobo-bonobo-property-bag-client SYSTEM "sgml/bonobo-property-bag-client.sgml">
+<!entity bonobo-bonobo-control SYSTEM "sgml/bonobo-control.sgml">
+<!entity bonobo-bonobo-control-frame SYSTEM "sgml/bonobo-control-frame.sgml">
+<!entity bonobo-bonobo-view SYSTEM "sgml/bonobo-view.sgml">
+<!entity bonobo-bonobo-generic-factory SYSTEM "sgml/bonobo-generic-factory.sgml">
+<!entity bonobo-bonobo-embeddable SYSTEM "sgml/bonobo-embeddable.sgml">
+<!entity bonobo-bonobo-embeddable-factory SYSTEM "sgml/bonobo-embeddable-factory.sgml">
+<!entity bonobo-bonobo-sizeable SYSTEM "sgml/bonobo-sizeable.sgml">
+<!entity bonobo-bonobo-main SYSTEM "sgml/bonobo-main.sgml">
+<!entity bonobo-bonobo-stream SYSTEM "sgml/bonobo-stream.sgml">
+<!entity bonobo-bonobo-stream-client SYSTEM "sgml/bonobo-stream-client.sgml">
+<!entity bonobo-bonobo-stream-fs SYSTEM "sgml/bonobo-stream-fs.sgml">
+<!entity bonobo-bonobo-persist SYSTEM "sgml/bonobo-persist.sgml">
+<!entity bonobo-bonobo-persist-file SYSTEM "sgml/bonobo-persist-file.sgml">
+<!entity bonobo-bonobo-persist-stream SYSTEM "sgml/bonobo-persist-stream.sgml">
+<!entity bonobo-bonobo-ui-xml SYSTEM "sgml/bonobo-ui-xml.sgml">
+<!entity bonobo-bonobo-ui-util SYSTEM "sgml/bonobo-ui-util.sgml">
+<!entity bonobo-bonobo-ui-component SYSTEM "sgml/bonobo-ui-component.sgml">
+<!entity bonobo-bonobo-ui-container SYSTEM "sgml/bonobo-ui-container.sgml">
+<!entity bonobo-bonobo-win SYSTEM "sgml/bonobo-win.sgml">
+<!entity bonobo-bonobo-object-io SYSTEM "sgml/bonobo-object-io.sgml">
+<!entity bonobo-bonobo-progressive SYSTEM "sgml/bonobo-progressive.sgml">
+<!entity bonobo-bonobo-storage SYSTEM "sgml/bonobo-storage.sgml">
+<!entity bonobo-bonobo-widget SYSTEM "sgml/bonobo-widget.sgml">
+<!entity bonobo-bonobo-print SYSTEM "sgml/bonobo-print.sgml">
+<!entity bonobo-bonobo-print-client SYSTEM "sgml/bonobo-print-client.sgml">
 ]>
 
 <book>
@@ -45,49 +42,47 @@
 
   <chapter id="bonobo-funcs">
     <title>Bonobo Functions Reference Manual</title>
-      &gnome-bonobo&
-      &gnome-component-io&
-      &gnome-embeddable-client&
-      &gnome-main&
-      &gnome-storage-driver&
-      &gnome-storage-private&
-      &gnome-bonobo-selector&
+    &bonobo-bonobo-main;
+    &bonobo-bonobo-selector;
   </chapter>
 
   <chapter id="bonobo-storage">
     <title>Bonobo Objects for Storage</title>
-      &gnome-persist&
-      &gnome-persist-file&
-      &gnome-persist-stream&
-      &gnome-progressive&
-      &gnome-simple-source&
-      &gnome-storage&
-      &gnome-storage-fs&
-      &gnome-storage-repo&
-      &gnome-stream&
-      &gnome-stream-fs&
-      &gnome-stream-memory&
-      &gnome-stream-repo&
+    &bonobo-bonobo-persist;
+    &bonobo-bonobo-persist-file;
+    &bonobo-bonobo-persist-stream;
+    &bonobo-bonobo-progressive;
+    &bonobo-bonobo-storage;
+    &bonobo-bonobo-stream;
+    &bonobo-bonobo-stream-client;
+    &bonobo-bonobo-stream-fs;
   </chapter>
-  
+
   <chapter id="bonobo-objects">
     <title>Bonobo Objects Reference Manual</title>
-      &gnome-bind-context&
-      &gnome-client-site&
-      &gnome-composite-moniker&
-      &gnome-container&
-      &gnome-embeddable-factory&
-      &gnome-embeddable&
-      &gnome-file-moniker&
-      &gnome-inplace-component&
-      &gnome-inplace-site&
-      &gnome-item-moniker&
-      &gnome-moniker&
-      &gnome-object-client&
-      &gnome-object&
-      &gnome-ui-handler&
-      &gnome-view-frame&
-      &gnome-view&
-      &gnome-wrapper&
+    &bonobo-bonobo-object;
+    &bonobo-bonobo-moniker;
+    &bonobo-bonobo-exception;
+    &bonobo-bonobo-item-container;
+    &bonobo-bonobo-object-client;
+    &bonobo-bonobo-moniker-util;
+    &bonobo-bonobo-property-listener;
+    &bonobo-bonobo-property-bag-client;
+    &bonobo-bonobo-control;
+    &bonobo-bonobo-control-frame;
+    &bonobo-bonobo-view;
+    &bonobo-bonobo-generic-factory;
+    &bonobo-bonobo-embeddable;
+    &bonobo-bonobo-embeddable-factory;
+    &bonobo-bonobo-sizeable;
+    &bonobo-bonobo-ui-xml;
+    &bonobo-bonobo-ui-util;
+    &bonobo-bonobo-ui-component;
+    &bonobo-bonobo-ui-container;
+    &bonobo-bonobo-win;
+    &bonobo-bonobo-object-io;
+    &bonobo-bonobo-widget;
+    &bonobo-bonobo-print;
+    &bonobo-bonobo-print-client;
   </chapter>
 </book>

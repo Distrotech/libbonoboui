@@ -45,8 +45,22 @@ scan:
 	-(cd $(srcdir) \
 	&& env CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) \
 		 gtkdoc-scanobj --module=$(DOC_MODULE) \
-	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=../.. \
-		--ignore-headers="Bonobo.h" )
+	&& gtkdoc-scan --module=$(DOC_MODULE) \
+		../../bonobo/bonobo-object.h ../../bonobo/bonobo-moniker.h \
+		../../bonobo/bonobo-exception.h \
+		../../bonobo/bonobo-item-container.h ../../bonobo/bonobo-object-client.h \
+		../../bonobo/bonobo-moniker-util.h ../../bonobo/bonobo-property-listener.h \
+		../../bonobo/bonobo-property-bag-client.h ../../bonobo/bonobo-control.h \
+		../../bonobo/bonobo-control-frame.h ../../bonobo/bonobo-view.h ../../bonobo/bonobo-generic-factory.h \
+		../../bonobo/bonobo-embeddable.h ../../bonobo/bonobo-embeddable-factory.h \
+		../../bonobo/bonobo-sizeable.h ../../bonobo/bonobo-main.h ../../bonobo/bonobo-stream.h \
+		../../bonobo/bonobo-stream-client.h ../../bonobo/bonobo-stream-fs.h ../../bonobo/bonobo-persist.h \
+		../../bonobo/bonobo-persist-file.h ../../bonobo/bonobo-persist-stream.h ../../bonobo/bonobo-ui-xml.h \
+		../../bonobo/bonobo-ui-util.h ../../bonobo/bonobo-ui-component.h ../../bonobo/bonobo-ui-container.h \
+		../../bonobo/bonobo-win.h ../../bonobo/bonobo-object-io.h ../../bonobo/bonobo-progressive.h \
+		../../bonobo/bonobo-storage.h ../../bonobo/bonobo-selector.h ../../bonobo/bonobo-widget.h \
+		../../bonobo/bonobo-print.h ../../bonobo/bonobo-print-client.h )
+
 
 templates: scan
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
