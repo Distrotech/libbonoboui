@@ -5,7 +5,6 @@
 
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo.h>
-#include <bonobo/bonobo-embeddable-factory.h>
 
 CORBA_Environment ev;
 CORBA_ORB orb;
@@ -30,7 +29,7 @@ item_factory (BonoboEmbeddable *bonobo_object, GnomeCanvas *canvas, void *data)
 }
 
 static BonoboObject *
-bonobo_item_factory (BonoboEmbeddableFactory *factory, void *closure)
+bonobo_item_factory (BonoboGenericFactory *factory, void *closure)
 {
 	BonoboEmbeddable *server;
 
@@ -45,7 +44,7 @@ bonobo_item_factory (BonoboEmbeddableFactory *factory, void *closure)
 static void
 init_server_factory (void)
 {
-	bonobo_embeddable_factory_new (
+	bonobo_generic_factory_new (
 		"OAFIID:test_canvas_item_factory:db20642e-25a0-46d0-bbe0-84b79ab64e05", bonobo_item_factory, NULL);
 }
 
