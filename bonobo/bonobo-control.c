@@ -112,7 +112,7 @@ bonobo_control_windowid_from_x11 (guint32 x11_id)
  * if the BonoboControl is destroyed normally, i.e. the user unrefs
  * the BonoboControl away.
  */
-static void
+static gboolean
 bonobo_control_plug_destroy_event_cb (GtkWidget   *plug,
 				      GdkEventAny *event,
 				      gpointer     closure)
@@ -120,7 +120,7 @@ bonobo_control_plug_destroy_event_cb (GtkWidget   *plug,
 	BonoboControl *control = BONOBO_CONTROL (closure);
 
 	if (control->priv->plug == NULL)
-		return;
+		return FALSE;
 
 	if (control->priv->plug != plug)
 		g_warning ("Destroying incorrect plug!");
@@ -136,6 +136,8 @@ bonobo_control_plug_destroy_event_cb (GtkWidget   *plug,
 	 * Destroy this plug's BonoboControl.
 	 */
 	bonobo_object_unref (BONOBO_OBJECT (control));
+
+	return FALSE;
 }
 
 /*
