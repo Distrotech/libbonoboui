@@ -1,15 +1,13 @@
 # Romanian translation for libbonoboui
-# Copyright (C) 2003 - 2004 Free Software Foundation, Inc.
-# Mişu Moldovan <dumol@go.ro>, 2003, 2004.
+# Copyright (C) 2003 - 2005 Free Software Foundation, Inc.
+# Mişu Moldovan <dumol@go.ro>, 2003, 2004, 2005.
 #
-# OBS. Nu sunt programator, m-am inspirat din celelalte localizări 
-# libbonobo, orice sugestie sau corectură este binevenită.
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-05 15:33+0000\n"
-"PO-Revision-Date: 2004-03-18 15:05+0200\n"
+"POT-Creation-Date: 2005-03-05 14:07+0100\n"
+"PO-Revision-Date: 2005-03-05 17:04+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -37,7 +35,6 @@ msgid "Dock the toolbar"
 msgstr "Ataşează bara de unelte"
 
 #: bonobo/bonobo-dock-item-grip.c:258
-#, fuzzy
 msgid "Undock the toolbar"
 msgstr "Detaşează bara de unelte"
 
@@ -405,77 +402,76 @@ msgstr "Nu am putut iniţializa interfaţa Bonobo"
 
 #: tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr ""
+msgstr "Navigator componente Bonobo"
 
 #: tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr ""
+msgstr "Arată componentele Bonobo disponibile"
 
 #: tools/browser/bonobo-browser.xml.h:1
-#, fuzzy
 msgid "About this program..."
-msgstr "Despre această aplicaţie"
+msgstr "Despre această aplicaţie..."
 
 #: tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr ""
+msgstr "Închide fereastra curentă"
 
 #: tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
-msgstr ""
+msgstr "Deschide o nouă fereastră"
 
 #: tools/browser/bonobo-browser.xml.h:5
-#, fuzzy
 msgid "_Help"
-msgstr "A_scunde"
+msgstr "_Ajutor"
 
 #. Build the general tab
 #: tools/browser/component-details.c:109
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: tools/browser/component-details.c:116 tools/browser/component-list.c:401
 msgid "IID"
-msgstr ""
+msgstr "IID"
 
 #: tools/browser/component-details.c:117
 msgid "Location"
-msgstr ""
+msgstr "Locaţie"
 
 #. Build the details tab
 #: tools/browser/component-details.c:167
 msgid "Details"
-msgstr ""
+msgstr "Detalii"
 
 #: tools/browser/component-details.c:168
 msgid "Detailed Information"
-msgstr ""
+msgstr "Informaţii detaliate"
 
 #: tools/browser/component-list.c:370
 msgid "Active"
-msgstr ""
+msgstr "Activ"
 
 #: tools/browser/component-list.c:391
 msgid "Type"
-msgstr ""
+msgstr "Tip"
 
 #: tools/browser/window.c:169
 msgid "Component Details"
-msgstr ""
+msgstr "Detalii componente"
 
 #: tools/browser/window.c:214
 msgid "Bonobo Browser"
-msgstr ""
+msgstr "Navigator Bonobo"
 
 #: tools/browser/window.c:215
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr ""
+msgstr "© Drepturi de autor 2001, The GNOME Foundation"
 
 #: tools/browser/window.c:216
 msgid "Bonobo component browser"
-msgstr ""
+msgstr "Navigator componente Bonobo"
 
 #. create the window
 #: tools/browser/window.c:246
 msgid "Component Browser"
-msgstr ""
+msgstr "Navigator componente"
+
