@@ -810,8 +810,7 @@ application_new (void)
 
 	bonobo_window_set_contents (BONOBO_WINDOW (app->app), app->box);
 
-	ui_container = bonobo_ui_container_new ();
-	bonobo_ui_container_set_win (ui_container, BONOBO_WINDOW (app->app));
+	ui_container = bonobo_window_get_ui_container (BONOBO_WINDOW (app->app));
 
 	corba_container = BONOBO_OBJREF (ui_container);
 	app->corba_container = bonobo_object_dup_ref (corba_container, NULL);

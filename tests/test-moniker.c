@@ -200,8 +200,7 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 		g_error ("Couldn't get Bonobo/Control interface");
 
 	window = bonobo_window_new ("moniker-test", moniker);
-	ui_container = bonobo_ui_container_new ();
-	bonobo_ui_container_set_win (ui_container, BONOBO_WINDOW (window));
+	ui_container = bonobo_window_get_ui_container (BONOBO_WINDOW (window));
 
 	gtk_window_set_default_size (GTK_WINDOW (window), 400, 350);
 

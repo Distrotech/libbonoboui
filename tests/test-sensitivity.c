@@ -64,9 +64,7 @@ container_create (void)
 
 	window = GTK_WINDOW (app);
 	
-	uic = bonobo_ui_container_new ();
-
-	bonobo_ui_container_set_win (uic, BONOBO_WINDOW (app));
+	uic = bonobo_window_get_ui_container (BONOBO_WINDOW (app));
 
 	gtk_window_set_default_size (window, 500, 440);
 	gtk_window_set_policy (window, TRUE, TRUE, FALSE);

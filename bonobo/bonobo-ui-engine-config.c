@@ -191,6 +191,8 @@ bonobo_ui_engine_config_remove (BonoboUIEngineConfig *config,
 void
 bonobo_ui_engine_config_hydrate (BonoboUIEngineConfig *config)
 {
+#warning Bonobo UI Engine configuration needs monikerizing.
+#ifdef FIXME
 	char **argv;
 	int    argc, i;
 
@@ -200,11 +202,8 @@ bonobo_ui_engine_config_hydrate (BonoboUIEngineConfig *config)
 
 	clobbers_free (config);
 
-#ifdef FIXME
-#warning Bonobo UI Engine configuration needs monikerizing.
 	gnome_config_get_vector (config->priv->path,
 				 &argc, &argv);
-#endif
 
 	for (i = 0; i < argc; i++) {
 		char **strs = g_strsplit (argv [i], ":", -1);
@@ -221,6 +220,7 @@ bonobo_ui_engine_config_hydrate (BonoboUIEngineConfig *config)
 
 	g_free (argv);
 	bonobo_ui_engine_thaw (config->priv->engine);
+#endif
 }
 
 typedef struct {
@@ -268,7 +268,7 @@ create_popup_engine (closure_t *c,
 	BonoboUINode   *node;
 	char           *str;
 
-	engine = bonobo_ui_engine_new ();
+	engine = bonobo_ui_engine_new (NULL);
 	smenu  = bonobo_ui_sync_menu_new (engine, NULL, NULL, NULL);
 
 	bonobo_ui_engine_add_sync (engine, smenu);

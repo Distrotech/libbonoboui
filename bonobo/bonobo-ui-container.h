@@ -10,8 +10,9 @@
 #ifndef _BONOBO_UI_CONTAINER_H_
 #define _BONOBO_UI_CONTAINER_H_
 
-#include <bonobo/bonobo-win.h>
-#include <bonobo/bonobo-object.h>
+typedef struct _BonoboUIContainer BonoboUIContainer;
+
+#include <bonobo/bonobo-ui-engine.h>
 
 #define BONOBO_UI_CONTAINER_TYPE        (bonobo_ui_container_get_type ())
 #define BONOBO_UI_CONTAINER(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_UI_CONTAINER_TYPE, BonoboUIContainer))
@@ -21,14 +22,11 @@
 
 typedef struct _BonoboUIContainerPrivate BonoboUIContainerPrivate;
 
-typedef struct {
+struct _BonoboUIContainer {
 	BonoboObject base;
 
 	BonoboUIContainerPrivate *priv;
-
-	/* For backwards compatibility, strongly deprecated */
-	BonoboWindow *win;
-} BonoboUIContainer;
+};
 
 typedef struct {
 	BonoboObjectClass parent;
@@ -45,10 +43,5 @@ BonoboUIContainer           *bonobo_ui_container_new                 (void);
 void                         bonobo_ui_container_set_engine          (BonoboUIContainer  *container,
 								      BonoboUIEngine     *engine);
 BonoboUIEngine              *bonobo_ui_container_get_engine          (BonoboUIContainer  *container);
-
-void                         bonobo_ui_container_set_win             (BonoboUIContainer  *container,
-								      BonoboWindow       *win);
-/* Deprecated */
-BonoboWindow                *bonobo_ui_container_get_win             (BonoboUIContainer  *container);
 
 #endif /* _BONOBO_UI_CONTAINER_H_ */

@@ -1,3 +1,60 @@
+2001-07-07  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-container.c (bonobo_ui_container_set_engine):
+	port to GObject.
+
+	* bonobo/bonobo-ui-main.c (bonobo_ui_init_full):
+	always init gtk+, leave gnome_ bits as optional on full_init.
+
+	* bonobo/bonobo-win.c (bonobo_window_construct): add
+	ui container bits. (bonobo_window_new): ditto.
+	(bonobo_window_get_ui_container): impl.
+	(bonobo_window_set_ui_container): remove.
+
+	* bonobo/bonobo-ui-engine-config.c (create_popup_engine):
+	set view to NULL.
+
+2001-07-06  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_get_view): impl.
+	(bonobo_ui_engine_new, bonobo_ui_engine_construct): upd,
+	adding view.
+	(bonobo_ui_engine_get_ui_container): impl. for symmetry.
+	(bonobo_ui_engine_set_ui_container): upd. preconditions.
+
+	* bonobo/bonobo-win.c (construct_priv): set the view.
+
+	* bonobo/bonobo-ui-container.c
+	(bonobo_ui_container_set_win),
+	(bonobo_ui_container_get_win): remove; deprecated. 
+	upd.
+
+	* bonobo/bonobo-win.c
+	(bonobo_window_deregister_dead_components),
+	(bonobo_window_register_component),
+	(bonobo_window_deregister_component),
+	(bonobo_window_deregister_component_by_ref),
+	(bonobo_window_deregister_get_component_names),
+	(bonobo_window_component_get),
+	(bonobo_window_xml_node_exists), 
+	(bonobo_window_object_set), 
+	(bonobo_window_object_get), 
+	(bonobo_window_xml_merge_tree), 
+	(bonobo_window_xml_merge), 
+	(bonobo_window_xml_rm), 
+	(bonobo_window_freeze), 
+	(bonobo_window_thaw), 
+	(bonobo_window_xml_get),
+	(bonobo_window_dump), 
+	(bonobo_window_set_ui_container):  remove a few deprecated
+	methods NB. use the equivalents on the BonoboUIEngine.
+
+	* bonobo/bonobo-win.h: kill from header too.
+
+	* tests/test-ui.c (main): don't call bonobo_ui_init - it get's
+	libgnome to do seriously whacked out things.
+
 2001-07-06  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added sv to ALL_LINGUAS.

@@ -23,6 +23,7 @@ typedef enum {
 	BONOBO_UI_ERROR_INVALID_XML
 } BonoboUIError;
 
+#include <bonobo/bonobo-ui-container.h>
 #include <bonobo/bonobo-ui-sync.h>
 
 G_BEGIN_DECLS
@@ -58,8 +59,10 @@ typedef struct {
 } BonoboUIEngineClass;
 
 GtkType         bonobo_ui_engine_get_type      (void);
-BonoboUIEngine *bonobo_ui_engine_construct     (BonoboUIEngine   *engine);
-BonoboUIEngine *bonobo_ui_engine_new           (void);
+BonoboUIEngine *bonobo_ui_engine_construct     (BonoboUIEngine   *engine,
+						GObject          *view);
+BonoboUIEngine *bonobo_ui_engine_new           (GObject          *view);
+GObject        *bonobo_ui_engine_get_view      (BonoboUIEngine   *engine);
 
 void          bonobo_ui_engine_config_set_path (BonoboUIEngine *engine,
 						const char     *path);
@@ -177,11 +180,12 @@ BonoboUIError    bonobo_ui_engine_object_get      (BonoboUIEngine    *engine,
 						   const char        *path,
 						   Bonobo_Unknown    *object,
 						   CORBA_Environment *ev);
-void             bonobo_ui_engine_set_ui_container(BonoboUIEngine    *engine,
-						   BonoboObject      *ui_container);
-
 void             bonobo_ui_engine_freeze          (BonoboUIEngine    *engine);
 void             bonobo_ui_engine_thaw            (BonoboUIEngine    *engine);
+
+void               bonobo_ui_engine_set_ui_container (BonoboUIEngine    *engine,
+						      BonoboUIContainer *ui_container);
+BonoboUIContainer *bonobo_ui_engine_get_ui_container (BonoboUIEngine    *engine);
 
 G_END_DECLS
 

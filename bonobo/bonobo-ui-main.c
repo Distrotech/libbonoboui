@@ -113,9 +113,9 @@ bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 		 */
 		gnome_program_init (app_name, app_version, &libgnome_module_info,
 				    *argc, argv, NULL);
-
-		gtk_init (argc, &argv);
 	}
+
+	gtk_init (argc, &argv);
 
 	bonobo_setup_x_error_handler ();
 

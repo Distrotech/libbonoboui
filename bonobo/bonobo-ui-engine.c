@@ -43,13 +43,15 @@ enum {
 guint signals [LAST_SIGNAL] = { 0 };
 
 struct _BonoboUIEnginePrivate {
+	GObject      *view;
+
 	BonoboUIXml  *tree;
 	int           frozen;
 	GSList       *syncs;
 	GSList       *state_updates;
 	GSList       *components;
-	BonoboObject *container;
 
+	BonoboUIContainer    *container;
 	BonoboUIEngineConfig *config;
 
 	GHashTable   *cmd_to_node;
@@ -1255,12 +1257,12 @@ blank_container (BonoboUIContainer *container,
  * Associates a given UI Container with this BonoboUIEngine.
  **/
 void
-bonobo_ui_engine_set_ui_container (BonoboUIEngine *engine,
-				   BonoboObject   *ui_container)
+bonobo_ui_engine_set_ui_container (BonoboUIEngine    *engine,
+				   BonoboUIContainer *ui_container)
 {
 	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
-	g_return_if_fail (ui_container == CORBA_OBJECT_NIL ||
-			  BONOBO_IS_UI_CONTAINER (ui_container));
+	g_return_if_fail (engine->priv->container == NULL);
+	g_return_if_fail (BONOBO_IS_UI_CONTAINER (ui_container));
 
 	engine->priv->container = ui_container;
 
@@ -1269,6 +1271,22 @@ bonobo_ui_engine_set_ui_container (BonoboUIEngine *engine,
 			G_OBJECT (ui_container), "destroy",
 			G_CALLBACK (blank_container), engine,
 			NULL, 0);
+}
+
+/**
+ * bonobo_ui_engine_get_ui_container:
+ * @engine: the engine
+ * 
+ * Fetches the associated UI Container
+ *
+ * Return value: the associated UI container.
+ **/
+BonoboUIContainer *
+bonobo_ui_engine_get_ui_container (BonoboUIEngine *engine)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
+
+	return engine->priv->container;
 }
 
 static void
@@ -1296,7 +1314,8 @@ real_exec_verb (BonoboUIEngine *engine,
 
 		if (engine->priv->container)
 			bonobo_object_check_env (
-				engine->priv->container, component, &ev);
+				BONOBO_OBJECT (engine->priv->container),
+				component, &ev);
 
 		if (BONOBO_EX (&ev))
 			g_warning ("Exception executing verb '%s' '%s'"
@@ -1535,7 +1554,7 @@ real_emit_ui_event (BonoboUIEngine *engine,
 
 		if (engine->priv->container)
 			bonobo_object_check_env (
-				engine->priv->container,
+				BONOBO_OBJECT (engine->priv->container),
 				component, &ev);
 
 		if (BONOBO_EX (&ev))
@@ -1720,19 +1739,22 @@ build_skeleton (BonoboUIXml *xml)
 /**
  * bonobo_ui_engine_construct:
  * @engine: the engine.
+ * @view: the view [ often a BonoboWindow ]
  * 
  * Construct a new bonobo_ui_engine
  * 
  * Return value: the constructed engine.
  **/
 BonoboUIEngine *
-bonobo_ui_engine_construct (BonoboUIEngine *engine)
+bonobo_ui_engine_construct (BonoboUIEngine *engine,
+			    GObject        *view)
 {
 	BonoboUIEnginePrivate *priv;
 
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
 
 	priv = engine->priv;
+	priv->view = view;
 
 	priv->tree = bonobo_ui_xml_new (
 		NULL, info_new_fn, info_free_fn,
@@ -1770,13 +1792,29 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine)
  * Return value: the new UI Engine.
  **/
 BonoboUIEngine *
-bonobo_ui_engine_new (void)
+bonobo_ui_engine_new (GObject *view)
 {
 	BonoboUIEngine *engine = gtk_type_new (BONOBO_TYPE_UI_ENGINE);
 
-	return bonobo_ui_engine_construct (engine);
+	return bonobo_ui_engine_construct (engine, view);
 }
 
+
+/**
+ * bonobo_ui_engine_get_view:
+ * @engine: the engine
+ * 
+ * This returns the associated view, often a BonoboWindow
+ * 
+ * Return value: the view widget.
+ **/
+GObject *
+bonobo_ui_engine_get_view (BonoboUIEngine *engine)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
+
+	return engine->priv->view;
+}
 
 static void
 hide_all_widgets (BonoboUIEngine *engine,

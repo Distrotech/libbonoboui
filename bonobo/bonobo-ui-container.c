@@ -14,7 +14,6 @@
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
-#include <bonobo/bonobo-win.h>
 #include <bonobo/bonobo-ui-container.h>
 
 #include <gtk/gtksignal.h>
@@ -28,7 +27,7 @@ struct _BonoboUIContainerPrivate {
 	int             flags;
 };
 
-#define WIN_DESTROYED 0x1
+#define ENGINE_DESTROYED 0x1
 
 static BonoboUIEngine *
 get_engine (PortableServer_Servant servant)
@@ -39,7 +38,7 @@ get_engine (PortableServer_Servant servant)
 	g_return_val_if_fail (container != NULL, NULL);
 
 	if (container->priv->engine == NULL) {
-		if (!container->priv->flags & WIN_DESTROYED)
+		if (!container->priv->flags & ENGINE_DESTROYED)
 			g_warning ("Trying to invoke CORBA method "
 				   "on unbound UIContainer");
 		return NULL;
@@ -275,8 +274,7 @@ static void
 blank_engine (GtkObject *win, BonoboUIContainer *container)
 {
 	container->priv->engine = NULL;
-	container->win          = NULL;
-	container->priv->flags |= WIN_DESTROYED;
+	container->priv->flags |= ENGINE_DESTROYED;
 }
 
 /**
@@ -291,16 +289,20 @@ void
 bonobo_ui_container_set_engine (BonoboUIContainer *container,
 				BonoboUIEngine    *engine)
 {
+	GClosure *closure;
+
 	g_return_if_fail (BONOBO_IS_UI_CONTAINER (container));
 
 	container->priv->engine = engine;
-	bonobo_ui_engine_set_ui_container (
-		engine, BONOBO_OBJECT (container));
+	bonobo_ui_engine_set_ui_container (engine, container);
 
-	gtk_signal_connect_while_alive (
-		GTK_OBJECT (engine), "destroy",
-		GTK_SIGNAL_FUNC (blank_engine),
-		container, GTK_OBJECT (container));
+	closure = g_cclosure_new (
+		G_CALLBACK (blank_engine), container, NULL);
+	g_object_watch_closure (G_OBJECT (container), closure);
+	g_signal_connect_closure_by_id (
+		G_OBJECT (engine),
+		g_signal_lookup ("destroy", G_OBJECT_TYPE (engine)), 0,
+		closure, FALSE);
 }
 
 /**
@@ -319,49 +321,3 @@ bonobo_ui_container_get_engine (BonoboUIContainer *container)
 	return container->priv->engine;
 }
 
-/**
- * bonobo_ui_container_set_win:
- * @container: the container
- * @win: a #BonoboWindow widget
- * 
- * This function is deprecated, please use
- * bonobo_ui_container_set_engine instead, we plan to
- * allow UIContainers to be associated with many things
- * apart from BonoboWindows.
- **/
-void
-bonobo_ui_container_set_win (BonoboUIContainer *container,
-			     BonoboWindow      *win)
-{
-	g_return_if_fail (BONOBO_IS_UI_CONTAINER (container));
-
-	container->win = win;
-
-	bonobo_ui_container_set_engine (
-		container, bonobo_window_get_ui_engine (win));
-
-	gtk_signal_connect_while_alive (
-		GTK_OBJECT (win), "destroy",
-		(GtkSignalFunc) blank_engine,
-		container, GTK_OBJECT (container));
-}
-
-/**
- * bonobo_ui_container_get_win:
- * @container: the BonoboUIContainer
- * 
- * This is _extremely_ deprecated, there is no garentee
- * that a BonoboUIContainer has an associated window, this
- * function will spew warnings.
- * 
- * Return value: a BonoboWindow if it is associated.
- **/
-BonoboWindow *
-bonobo_ui_container_get_win (BonoboUIContainer *container)
-{
-	g_return_val_if_fail (BONOBO_IS_UI_CONTAINER (container), NULL);
-
-	g_warning ("bonobo_ui_container_get_win is deprecated");
-
-	return container->win;
-}

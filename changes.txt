@@ -16,3 +16,46 @@ bonobo-control.[ch]
 	bonobo_control_[get|set]_properties () are now working with
 	Bonobo_PropertyBag (a CORAB object reference) instead of
 	BonoboPropertyBag. 
+
+
+bonobo-win.[ch]
+	Deprecated methods removed:
+		bonobo_window_deregister_dead_components
+		bonobo_window_register_component
+		bonobo_window_deregister_component
+		bonobo_window_deregister_component_by_ref
+		bonobo_window_deregister_get_component_names
+		bonobo_window_component_get
+		bonobo_window_xml_node_exists 
+		bonobo_window_object_set 
+		bonobo_window_object_get 
+		bonobo_window_xml_merge_tree 
+		bonobo_window_xml_merge 
+		bonobo_window_xml_rm 
+		bonobo_window_xml_get 
+		bonobo_window_freeze 
+		bonobo_window_thaw 
+		bonobo_window_dump 
+		bonobo_window_set_ui_container
+	finaly removed - use bonobo_ui_engine equvialents, get the
+	bonobo_ui_engine from the window using bonobo_window_get_ui_engine.
+
+	bonobo_window_new: instead of doing:
+		win = BONOBO_WINDOW (bonobo_window_new ("Win", "My Test Application"));
+		container = bonobo_ui_container_new ();
+		bonobo_ui_container_set_win (container, win);
+	just do:
+		win = BONOBO_WINDOW (bonobo_window_new ("Win", "My Test Application"));
+		container = bonobo_window_get_ui_container (win);
+	since the ui container is now automaticaly created.
+	bonobo_window_get_ui_container: added,
+	bonobo_window_construct: add UIContainer arg.
+
+
+bonobo-ui-container.c:
+	Remove deprecated methods:
+		bonobo_ui_container_set_win
+		bonobo_ui_container_get_win
+	Instead use:
+	    BONOBO_WINDOW (bonobo_ui_engine_get_view (
+		bonobo_ui_container_get_engine (uic)));

@@ -31,6 +31,9 @@ cb_do_quit (GtkWindow *window, gpointer dummy)
 	gtk_main_quit ();
 }
 
+#define bonobo_window_dump(w,msg) \
+	bonobo_ui_engine_dump (bonobo_window_get_ui_engine (w), stderr, msg)
+
 static void
 cb_do_dump (GtkWindow *window, BonoboWindow *win)
 {
@@ -221,8 +224,12 @@ main (int argc, char **argv)
 
 	free (malloc (8));
 
-	if (!bonobo_ui_init ("test-ui", VERSION, &argc, argv))
-		g_error (_("Can not bonobo_ui_init"));
+	if (!bonobo_init (&argc, argv))
+		g_error (_("Cannot init bonobo"));
+
+	if (!bonobo_ui_init_full ("test-ui", VERSION, &argc, argv,
+				  NULL, NULL, NULL, FALSE))
+		g_error (_("Cannot bonobo UI code"));
 
 	textdomain (PACKAGE);
 
@@ -274,8 +281,7 @@ main (int argc, char **argv)
 	}
 
 	win = BONOBO_WINDOW (bonobo_window_new ("Win", "My Test Application"));
-	container = bonobo_ui_container_new ();
-	bonobo_ui_container_set_win (container, win);
+	container = bonobo_window_get_ui_container (win);
 	
 	bonobo_ui_engine_config_set_path (bonobo_window_get_ui_engine (win),
 					  "/test-ui/UIConfig/kvps");

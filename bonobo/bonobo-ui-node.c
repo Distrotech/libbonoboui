@@ -9,7 +9,8 @@
  * Copyright 2000 Red Hat, Inc.
  *           2001 Ximian, Inc.
  */
-#include "config.h"
+#include <config.h>
+#include <string.h>
 #include <bonobo/bonobo-ui-node.h>
 
 #include <libxml/parser.h>

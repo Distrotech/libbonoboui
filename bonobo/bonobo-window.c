@@ -52,74 +52,6 @@ struct _BonoboWindowPrivate {
 };
 
 /**
- * bonobo_window_deregister_dead_components:
- * @win: 
- * 
- * Deprecated
- **/
-void
-bonobo_window_deregister_dead_components (BonoboWindow *win)
-{
-	g_return_if_fail (BONOBO_IS_WINDOW (win));
-
-	bonobo_ui_engine_deregister_dead_components (
-		win->priv->engine);
-}
-
-/**
- * bonobo_window_register_component:
- * @win: 
- * @name: 
- * @component: 
- * 
- * Deprecated
- **/
-void
-bonobo_window_register_component (BonoboWindow  *win,
-				  const char    *name,
-				  Bonobo_Unknown component)
-{
-	g_return_if_fail (BONOBO_IS_WINDOW (win));
-
-	bonobo_ui_engine_register_component (
-		win->priv->engine, name, component);
-}
-
-/**
- * bonobo_window_deregister_component:
- * @win: 
- * @name: 
- * 
- * Deprecated
- **/
-void
-bonobo_window_deregister_component (BonoboWindow *win,
-				    const char   *name)
-{
-	g_return_if_fail (BONOBO_IS_WINDOW (win));
-
-	bonobo_ui_engine_deregister_component (
-		win->priv->engine, name);
-}
-
-/**
- * bonobo_window_deregister_component_by_ref:
- * @win: 
- * @ref: 
- * 
- * Deprecated
- **/
-void
-bonobo_window_deregister_component_by_ref (BonoboWindow  *win,
-					   Bonobo_Unknown ref)
-{
-	g_return_if_fail (BONOBO_IS_WINDOW (win));
-
-	bonobo_ui_engine_deregister_component_by_ref (
-		win->priv->engine, ref);
-}
-
-/**
  * bonobo_window_remove_popup:
  * @win: the window
  * @path: the path
@@ -155,41 +87,6 @@ bonobo_window_add_popup (BonoboWindow *win,
 
 	bonobo_ui_sync_menu_add_popup (
 		BONOBO_UI_SYNC_MENU (win->priv->sync_menu), menu, path);
-}
-
-/**
- * bonobo_window_deregister_get_component_names:
- * @win: 
- * 
- * Deprecated
- * 
- * Return value: 
- **/
-GList *
-bonobo_window_deregister_get_component_names (BonoboWindow *win)
-{
-	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
-
-	return bonobo_ui_engine_get_component_names (win->priv->engine);
-}
-
-
-/**
- * bonobo_window_component_get:
- * @win: 
- * @name: 
- * 
- * Deprecated
- * 
- * Return value: 
- **/
-Bonobo_Unknown
-bonobo_window_component_get (BonoboWindow *win,
-			     const char  *name)
-{
-	g_return_val_if_fail (BONOBO_IS_WINDOW (win), CORBA_OBJECT_NIL);
-
-	return bonobo_ui_engine_get_component (win->priv->engine, name);
 }
 
 /**
@@ -265,210 +162,6 @@ bonobo_window_finalize (GObject *object)
 	G_OBJECT_CLASS (bonobo_window_parent_class)->finalize (object);
 }
 
-char *
-bonobo_window_xml_get (BonoboWindow *win,
-		       const char   *path,
-		       gboolean      node_only)
-{
-  	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
-
-	return bonobo_ui_engine_xml_get (win->priv->engine, path, node_only);
-}
-
-/**
- * bonobo_window_xml_node_exists:
- * @win: 
- * @path: 
- * 
- * Deprecated
- * 
- * Return value: 
- **/
-gboolean
-bonobo_window_xml_node_exists (BonoboWindow *win,
-			       const char   *path)
-{
-	g_return_val_if_fail (BONOBO_IS_WINDOW (win), FALSE);
-
-	return bonobo_ui_engine_xml_node_exists (
-		win->priv->engine, path);
-}
-
-/**
- * bonobo_window_object_set:
- * @win: 
- * @path: 
- * @object: 
- * @ev: 
- * 
- * Deprecated
- * 
- * Return value: 
- **/
-BonoboUIError   
-bonobo_window_object_set (BonoboWindow  *win,
-			  const char    *path,
-			  Bonobo_Unknown object,
-			  CORBA_Environment *ev)
-{
-	g_return_val_if_fail (BONOBO_IS_WINDOW (win),
-			      BONOBO_UI_ERROR_BAD_PARAM);
-
-	return bonobo_ui_engine_object_set (
-		win->priv->engine, path, object, ev);
-}
-
-/**
- * bonobo_window_object_get:
- * @win: 
- * @path: 
- * @object: 
- * @ev: 
- * 
- * Deprecated
- * 
- * Return value: 
- **/
-BonoboUIError   
-bonobo_window_object_get (BonoboWindow   *win,
-			  const char     *path,
-			  Bonobo_Unknown *object,
-			  CORBA_Environment *ev)
-{
-	g_return_val_if_fail (BONOBO_IS_WINDOW (win),
-			      BONOBO_UI_ERROR_BAD_PARAM);
-
-	return bonobo_ui_engine_object_get (
-		win->priv->engine, path, object, ev);
-}
-
-/**
- * bonobo_window_xml_merge_tree:
- * @win: 
- * @path: 
- * @tree: 
- * @component: 
- * 
- * Deprecated
- * 
- * Return value: 
- **/
-BonoboUIError   
-bonobo_window_xml_merge_tree (BonoboWindow *win,
-			      const char   *path,
-			      BonoboUINode *tree,
-			      const char   *component)
-{
-	g_return_val_if_fail (BONOBO_IS_WINDOW (win),
-			      BONOBO_UI_ERROR_BAD_PARAM);
-
-	return bonobo_ui_engine_xml_merge_tree (
-		win->priv->engine, path, tree, component);
-}
-
-/**
- * bonobo_window_xml_merge:
- * @win: 
- * @path: 
- * @xml: 
- * @component: 
- * 
- * Deprecated
- * 
- * Return value: 
- **/
-BonoboUIError   
-bonobo_window_xml_merge (BonoboWindow *win,
-			 const char   *path,
-			 const char   *xml,
-			 const char   *component)
-{
-	BonoboUIError    err;
-	BonoboUINode *node;
-	
-	g_return_val_if_fail (win != NULL, BONOBO_UI_ERROR_BAD_PARAM);
-	g_return_val_if_fail (xml != NULL, BONOBO_UI_ERROR_BAD_PARAM);
-	g_return_val_if_fail (win->priv != NULL, BONOBO_UI_ERROR_BAD_PARAM);
-
-/*	fprintf (stderr, "Merging :\n%s\n", xml);*/
-
-	node = bonobo_ui_node_from_string (xml);
-	
-	if (!node)
-		return BONOBO_UI_ERROR_INVALID_XML;
-
-	err = bonobo_window_xml_merge_tree (win, path, node, component);
-
-	return err;
-}
-
-/**
- * bonobo_window_xml_rm:
- * @win: 
- * @path: 
- * @by_component: 
- * 
- * Deprecated
- * 
- * Return value: 
- **/
-BonoboUIError   
-bonobo_window_xml_rm (BonoboWindow *win,
-		      const char   *path,
-		      const char   *by_component)
-{
-	g_return_val_if_fail (BONOBO_IS_WINDOW (win), BONOBO_UI_ERROR_BAD_PARAM);
-
-	return bonobo_ui_engine_xml_rm (
-		win->priv->engine, path, by_component);
-}
-
-/**
- * bonobo_window_freeze:
- * @win: 
- * 
- * Deprecated
- **/
-void
-bonobo_window_freeze (BonoboWindow *win)
-{
-	g_return_if_fail (BONOBO_IS_WINDOW (win));
-
-	bonobo_ui_engine_freeze (win->priv->engine);
-}
-
-/**
- * bonobo_window_thaw:
- * @win: 
- * 
- * Deprecated
- **/
-void
-bonobo_window_thaw (BonoboWindow *win)
-{
-	g_return_if_fail (BONOBO_IS_WINDOW (win));
-	
-	bonobo_ui_engine_thaw (win->priv->engine);
-}
-
-/**
- * bonobo_window_dump:
- * @win: 
- * @msg: 
- * 
- * Deprecated
- **/
-void
-bonobo_window_dump (BonoboWindow *win,
-		    const char   *msg)
-{
-	g_return_if_fail (BONOBO_IS_WINDOW (win));
-
-	fprintf (stderr, "Bonobo Win '%s'\n", win->priv->name);
-
-	bonobo_ui_engine_dump (win->priv->engine, stderr, msg);
-}
-
 /**
  * bonobo_window_get_accel_group:
  * @win: the bonobo window
@@ -491,7 +184,7 @@ construct_priv (BonoboWindow *win)
 
 	priv = g_new0 (BonoboWindowPrivate, 1);
 
-	priv->engine = bonobo_ui_engine_new ();
+	priv->engine = bonobo_ui_engine_new (G_OBJECT (win));
 
 	priv->dock = BONOBO_DOCK (bonobo_dock_new ());
 	gtk_container_add (GTK_CONTAINER (win),
@@ -625,25 +318,6 @@ bonobo_window_init (BonoboWindow *win)
 }
 
 /**
- * bonobo_window_set_ui_container:
- * @win: 
- * @container: 
- * 
- * Deprecated
- **/
-void
-bonobo_window_set_ui_container (BonoboWindow *win,
-				BonoboObject *container)
-{
-	g_return_if_fail (BONOBO_IS_WINDOW (win));
-
-	g_warning ("bonobo_window_set_ui_container is deprecated");
-
-	bonobo_ui_engine_set_ui_container (
-		win->priv->engine, container);
-}
-
-/**
  * bonobo_window_set_name:
  * @win: the bonobo window
  * @win_name: the window name
@@ -707,8 +381,24 @@ bonobo_window_get_ui_engine (BonoboWindow *win)
 }
 
 /**
+ * bonobo_window_get_ui_container:
+ * @win: the bonobo window
+ * 
+ * Return value: the #BonoboUIContainer
+ **/
+BonoboUIContainer *
+bonobo_window_get_ui_container (BonoboWindow *win)
+{
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
+	g_return_val_if_fail (win->priv != NULL, NULL);
+
+	return bonobo_ui_engine_get_ui_container (win->priv->engine);
+}
+
+/**
  * bonobo_window_construct:
  * @win: the window to construct
+ * @iu_container: the UI container
  * @win_name: the window name
  * @title: the window's title for the title bar
  * 
@@ -717,13 +407,17 @@ bonobo_window_get_ui_engine (BonoboWindow *win)
  * Return value: a constructed window
  **/
 GtkWidget *
-bonobo_window_construct (BonoboWindow *win,
-			 const char   *win_name,
-			 const char   *title)
+bonobo_window_construct (BonoboWindow      *win,
+			 BonoboUIContainer *ui_container,
+			 const char        *win_name,
+			 const char        *title)
 {
 	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_CONTAINER (ui_container), NULL);
 
 	bonobo_window_set_name (win, win_name);
+
+	bonobo_ui_container_set_engine (ui_container, win->priv->engine);
 
 	if (title)
 		gtk_window_set_title (GTK_WINDOW (win), title);
@@ -742,11 +436,15 @@ GtkWidget *
 bonobo_window_new (const char   *win_name,
 		   const char   *title)
 {
-	BonoboWindow *win;
+	BonoboWindow      *win;
+	BonoboUIContainer *ui_container;
 
 	win = gtk_type_new (BONOBO_TYPE_WINDOW);
 
-	return bonobo_window_construct (win, win_name, title);
+	ui_container = bonobo_ui_container_new ();
+
+	return bonobo_window_construct (
+		win, ui_container, win_name, title);
 }
 
 /**
