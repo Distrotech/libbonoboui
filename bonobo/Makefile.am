@@ -31,15 +31,15 @@ CORBA_SOURCE =			\
 
 idls =						\
 	$(top_srcdir)/idl/bonobo.idl		\
-	$(top_srcdir)/idl/advise.idl		\
-	$(top_srcdir)/idl/base.idl		\
-	$(top_srcdir)/idl/bobject.idl		\
-	$(top_srcdir)/idl/clientsite.idl	\
-	$(top_srcdir)/idl/container.idl		\
-	$(top_srcdir)/idl/inplace.idl		\
-	$(top_srcdir)/idl/moniker.idl		\
-	$(top_srcdir)/idl/persist.idl		\
-	$(top_srcdir)/idl/storage.idl
+	$(top_srcdir)/idl/gnome-advise.idl	\
+	$(top_srcdir)/idl/gnome-base.idl	\
+	$(top_srcdir)/idl/gnome-component.idl	\
+	$(top_srcdir)/idl/gnome-client-site.idl	\
+	$(top_srcdir)/idl/gnome-container.idl	\
+	$(top_srcdir)/idl/gnome-inplace.idl	\
+	$(top_srcdir)/idl/gnome-moniker.idl	\
+	$(top_srcdir)/idl/gnome-persist.idl	\
+	$(top_srcdir)/idl/gnome-storage.idl
 
 idl_flags = `gnome-config --cflags idl`
 
@@ -49,14 +49,20 @@ $(CORBA_SOURCE): $(idls)
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
 	gtk-interfaces.c		\
+	gnome-bind-context.c		\
 	gnome-client-site.c		\
 	gnome-component.c		\
 	gnome-component-factory.c 	\
 	gnome-container.c		\
+	gnome-file-moniker.c		\
 	gnome-inplace-component.c	\
 	gnome-inplace-site.c		\
 	gnome-main.c			\
+	gnome-moniker.c			\
 	gnome-object.c			\
+	gnome-persist-stream.c		\
+	gnome-persist.c			\
+	gnome-storage.c			\
 	gnome-view.c
 
 
@@ -77,8 +83,10 @@ libbonoboinclude_HEADERS =		\
 	gnome-inplace-component.h	\
 	gnome-item-moniker.h		\
 	gnome-main.h			\
+	gnome-moniker.h			\
 	gnome-object.h			\
 	gnome-persist-stream.h		\
+	gnome-persist.h			\
 	gnome-view.h
 
 test_container_SOURCES =		\
