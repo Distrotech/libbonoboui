@@ -1,3 +1,15 @@
+2001-12-20  Rodrigo Moya <rodrigo@gnome-db.org>
+
+	* tests/test-moniker.c: added exception's text to error messages
+
+	* monikers/bonobo-moniker-extra.[ch]: extra moniker factory
+
+	* monikers/bonobo-moniker-conf-indirect.c: implemented new
+	conf_indirect: moniker
+
+	* configure.in:
+	* Makefile.am: added monikers directory
+
 2001-12-20  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/*.c: use bonobo_ui_node_peek_attr to save doing

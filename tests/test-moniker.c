@@ -69,9 +69,10 @@ display_as_interface (const char *moniker, CORBA_Environment *ev)
 		return;
 	}
 
-	fprintf (stderr, "Requesting interface: %s: EXCEPTION: %s\n",
+	fprintf (stderr, "Requesting interface: %s: EXCEPTION: %s:%s\n",
 		 global_mto.requested_interface,
-		 BONOBO_EX_REPOID (ev));
+		 BONOBO_EX_REPOID (ev),
+		 bonobo_exception_get_text (ev));
 }
 
 static void

@@ -1,4 +1,4 @@
-SUBDIRS = bonobo glade samples tests po doc
+SUBDIRS = bonobo glade monikers samples tests po doc
 
 libincludedir = $(includedir)/libbonoboui-2.0
 libinclude_HEADERS =    \
