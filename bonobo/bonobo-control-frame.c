@@ -437,7 +437,7 @@ bonobo_control_frame_init (BonoboObject *object)
 	control_frame->priv->autostate    = TRUE;
 }
 
-BONOBO_GTK_TYPE_FUNC_FULL (BonoboControlFrame, 
+BONOBO_X_TYPE_FUNC_FULL (BonoboControlFrame, 
 			   Bonobo_ControlFrame,
 			   PARENT_TYPE,
 			   bonobo_control_frame);

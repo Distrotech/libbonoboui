@@ -205,7 +205,7 @@ bonobo_client_site_new (BonoboItemContainer *container)
 	return bonobo_client_site_construct (client_site, container);
 }
 
-BONOBO_GTK_TYPE_FUNC_FULL (BonoboClientSite, 
+BONOBO_X_TYPE_FUNC_FULL (BonoboClientSite, 
 			   Bonobo_ClientSite,
 			   PARENT_TYPE,
 			   bonobo_client_site);

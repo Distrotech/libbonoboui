@@ -666,7 +666,7 @@ bonobo_canvas_component_init (GtkObject *object)
 	gcc->priv = g_new0 (BonoboCanvasComponentPrivate, 1);
 }
 
-BONOBO_GTK_TYPE_FUNC_FULL (BonoboCanvasComponent, 
+BONOBO_X_TYPE_FUNC_FULL (BonoboCanvasComponent, 
 			   Bonobo_Canvas_Component,
 			   PARENT_TYPE,
 			   bonobo_canvas_component);

@@ -953,7 +953,7 @@ bonobo_control_init (BonoboControl *control)
 	control->priv->control_frame = CORBA_OBJECT_NIL;
 }
 
-BONOBO_GTK_TYPE_FUNC_FULL (BonoboControl, 
+BONOBO_X_TYPE_FUNC_FULL (BonoboControl, 
 			   Bonobo_Control,
 			   PARENT_TYPE,
 			   bonobo_control);

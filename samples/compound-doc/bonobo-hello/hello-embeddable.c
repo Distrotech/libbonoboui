@@ -88,6 +88,6 @@ hello_bonobo_embeddable_init (BonoboObject *object)
 }
 
 
-BONOBO_GTK_TYPE_FUNC (HelloBonoboEmbeddable, 
+BONOBO_X_TYPE_FUNC (HelloBonoboEmbeddable, 
 		      bonobo_embeddable_get_type (),
 		      hello_bonobo_embeddable);

@@ -158,7 +158,7 @@ bonobo_property_control_init (BonoboPropertyControl *property_control)
 	property_control->priv = priv;
 }
 
-BONOBO_GTK_TYPE_FUNC_FULL (BonoboPropertyControl, 
+BONOBO_X_TYPE_FUNC_FULL (BonoboPropertyControl, 
 			   Bonobo_PropertyControl,
 			   PARENT_TYPE,
 			   bonobo_property_control);

@@ -123,6 +123,6 @@ hello_bonobo_view_init (HelloBonoboView *view)
 {
 }
 
-BONOBO_GTK_TYPE_FUNC (HelloBonoboView, 
+BONOBO_X_TYPE_FUNC (HelloBonoboView, 
 		      bonobo_view_get_type (),
 		      hello_bonobo_view);

@@ -326,7 +326,7 @@ sample_client_site_init (GtkObject *object)
 	/* nothing to do */
 }
 
-BONOBO_GTK_TYPE_FUNC (SampleClientSite, 
+BONOBO_X_TYPE_FUNC (SampleClientSite, 
 		      bonobo_client_site_get_type (),
 		      sample_client_site);
 

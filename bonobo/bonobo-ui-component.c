@@ -1110,7 +1110,7 @@ bonobo_ui_component_init (BonoboUIComponent *component)
 	component->priv = priv;
 }
 
-BONOBO_GTK_TYPE_FUNC_FULL (BonoboUIComponent, 
+BONOBO_X_TYPE_FUNC_FULL (BonoboUIComponent, 
 			   Bonobo_UIComponent,
 			   PARENT_TYPE,
 			   bonobo_ui_component);

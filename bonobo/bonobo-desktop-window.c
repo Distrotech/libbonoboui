@@ -127,7 +127,7 @@ bonobo_desktop_window_init (GtkObject *object)
 	/* nothing to do */
 }
 
-BONOBO_GTK_TYPE_FUNC_FULL (BonoboDesktopWindow, 
+BONOBO_X_TYPE_FUNC_FULL (BonoboDesktopWindow, 
 			   Bonobo_Desktop_Window,
 			   PARENT_TYPE,
 			   bonobo_desktop_window);

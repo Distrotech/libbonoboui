@@ -475,7 +475,7 @@ bonobo_embeddable_init (BonoboObject *object)
 	embeddable->priv = g_new0 (BonoboEmbeddablePrivate, 1);
 }
 
-BONOBO_GTK_TYPE_FUNC_FULL (BonoboEmbeddable, 
+BONOBO_X_TYPE_FUNC_FULL (BonoboEmbeddable, 
 			   Bonobo_Embeddable,
 			   PARENT_TYPE,
 			   bonobo_embeddable);

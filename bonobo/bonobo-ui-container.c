@@ -262,7 +262,7 @@ bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 	epv->thaw       = impl_Bonobo_UIContainer_thaw;
 }
 
-BONOBO_GTK_TYPE_FUNC_FULL (BonoboUIContainer, 
+BONOBO_X_TYPE_FUNC_FULL (BonoboUIContainer, 
 			   Bonobo_UIContainer,
 			   PARENT_TYPE,
 			   bonobo_ui_container);
