@@ -1,3 +1,20 @@
+2002-11-04  Michael Meeks  <michael@ximian.com>
+
+	* samples/controls/bonobo-sample-controls.c
+	(bonobo_entry_control_new): do life instrumentation
+	on the entry.
+
+	* bonobo/bonobo-control.c:
+	(bonobo_control_class_init): added disconnected signal.
+	(bonobo_control_life_set_purge): impl.
+	(bonobo_control_disconnected): impl.
+	(control_frame_connection_died_cb): upd.
+	(bonobo_control_unset_control_frame): kill timeout on frame.
+	(bonobo_control_construct): setup timeout on construct'n.
+	(control_life_idle_cb, control_life_disconnected): impl.
+	(bonobo_control_life_instrument): impl.
+	(bonobo_control_life_get_count): impl.
+
 2002-11-01  Gustavo Carneiro <gjc@inescporto.pt>
 
 	* bonobo/bonobo-ui-engine.c
