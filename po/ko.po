@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2002-10-18 12:25+0100\n"
+"POT-Creation-Date: 2002-11-26 10:17+0000\n"
 "PO-Revision-Date: 2002-08-06 08:07+0900\n"
 "Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -148,6 +148,18 @@ msgstr "글자만"
 msgid "_Priority text only"
 msgstr "우선 순위 글자만(_P)"
 
+#: bonobo/bonobo-ui-engine.c:88
+msgid "Debug"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "_Dump XML"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:89
+msgid "Dump the entire UI's XML description to the console"
+msgstr ""
+
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "UI 설정"
@@ -281,11 +293,11 @@ msgstr "움직이기"
 msgid "whether the toolbar is floating"
 msgstr "도구 모음을 움직일 수 있는지"
 
-#: bonobo/bonobo-ui-util.c:598
+#: bonobo/bonobo-ui-util.c:615
 msgid "_Contents"
 msgstr "목차"
 
-#: bonobo/bonobo-ui-util.c:599
+#: bonobo/bonobo-ui-util.c:616
 msgid "View help for this application"
 msgstr "이 프로그램에 대한 도움말을 봅니다"
 
@@ -386,6 +398,6 @@ msgstr "안녕하세요, 여러분!"
 msgid "Cannot init libbonoboui code"
 msgstr "libbonoboui 코드를 초기화할 수 없습니다"
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "보노보 UI를 초기화할 수 없습니다"

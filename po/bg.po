@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2002-10-18 12:25+0100\n"
+"POT-Creation-Date: 2002-11-26 10:17+0000\n"
 "PO-Revision-Date: 2002-06-11 01:10+0200\n"
 "Last-Translator: Alexander Shopov <al_shopov@yahoo.com>\n"
 "Language-Team: Bulgarian <dict@linuz.zonebg.com>\n"
@@ -152,6 +152,18 @@ msgstr "Те_кст"
 msgid "_Priority text only"
 msgstr "Само важ_ния текст"
 
+#: bonobo/bonobo-ui-engine.c:88
+msgid "Debug"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "_Dump XML"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:89
+msgid "Dump the entire UI's XML description to the console"
+msgstr ""
+
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Настрой потребителски интерфейс"
@@ -285,11 +297,11 @@ msgstr "е свободна"
 msgid "whether the toolbar is floating"
 msgstr "дали лентата с инструменти е свободна"
 
-#: bonobo/bonobo-ui-util.c:598
+#: bonobo/bonobo-ui-util.c:615
 msgid "_Contents"
 msgstr "_Съдържание"
 
-#: bonobo/bonobo-ui-util.c:599
+#: bonobo/bonobo-ui-util.c:616
 msgid "View help for this application"
 msgstr "Виж помощ за това приложение"
 
@@ -390,6 +402,6 @@ msgstr "Здравей, Свят!"
 msgid "Cannot init libbonoboui code"
 msgstr "Не мога да инициализирам кода на libbonoboui"
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Грешка при инициализацията на Bonobo UI"

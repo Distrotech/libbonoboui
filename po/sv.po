@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-11-02 15:40+0100\n"
+"POT-Creation-Date: 2002-11-26 10:17+0000\n"
 "PO-Revision-Date: 2002-11-02 15:41+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -298,11 +298,11 @@ msgstr "flyter"
 msgid "whether the toolbar is floating"
 msgstr "huruvida verktygsraden flyter"
 
-#: bonobo/bonobo-ui-util.c:598
+#: bonobo/bonobo-ui-util.c:615
 msgid "_Contents"
 msgstr "_Innehåll"
 
-#: bonobo/bonobo-ui-util.c:599
+#: bonobo/bonobo-ui-util.c:616
 msgid "View help for this application"
 msgstr "Visa hjälp för detta program"
 
@@ -403,7 +403,7 @@ msgstr "Hej världen!"
 msgid "Cannot init libbonoboui code"
 msgstr "Kan inte initiera libbonoboui-koden"
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Kunde inte initiera Bonobo-användargränssnitt"
 

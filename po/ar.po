@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-10-18 12:25+0100\n"
+"POT-Creation-Date: 2002-11-26 10:17+0000\n"
 "PO-Revision-Date: 2002-05-31 19:15-0300\n"
 "Last-Translator: Isam Bayazidi <bayazidi@arabeyes.org>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -150,6 +150,18 @@ msgstr "نص ورمز رسومي"
 msgid "_Priority text only"
 msgstr "الأولوية فقط نصاً"
 
+#: bonobo/bonobo-ui-engine.c:88
+msgid "Debug"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "_Dump XML"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:89
+msgid "Dump the entire UI's XML description to the console"
+msgstr ""
+
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "اضبط واجهة المستخدم"
@@ -284,11 +296,11 @@ msgstr "يطفو"
 msgid "whether the toolbar is floating"
 msgstr "فيما إذا كان شريط الأدوات يطفو"
 
-#: bonobo/bonobo-ui-util.c:598
+#: bonobo/bonobo-ui-util.c:615
 msgid "_Contents"
 msgstr ""
 
-#: bonobo/bonobo-ui-util.c:599
+#: bonobo/bonobo-ui-util.c:616
 #, fuzzy
 msgid "View help for this application"
 msgstr "حول هذا البرنامج"
@@ -390,6 +402,6 @@ msgstr "Hello, World!"
 msgid "Cannot init libbonoboui code"
 msgstr "لم يتم التمكن من ابتداء شيفرة libbonoboui "
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "لم يتم التمكن من ابتداء واجهة مستخدم Bonobo "

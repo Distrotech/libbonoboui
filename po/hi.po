@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-10-18 12:25+0100\n"
+"POT-Creation-Date: 2002-11-26 10:17+0000\n"
 "PO-Revision-Date: 2002-09-04 20:36+0530\n"
 "Last-Translator: Anurag Seetha <anuragseetha@yahoo.com>\n"
 "Language-Team: Hindi <indlinux-hindi-gnome@lists.sourceforge.net>\n"
@@ -150,6 +150,18 @@ msgstr "केवल पाठ्य"
 msgid "_Priority text only"
 msgstr "केवल पाठ्य की प्राथमिकता"
 
+#: bonobo/bonobo-ui-engine.c:88
+msgid "Debug"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "_Dump XML"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:89
+msgid "Dump the entire UI's XML description to the console"
+msgstr ""
+
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "UI कानफिगर करें"
@@ -283,11 +295,11 @@ msgstr "क्या गतिशील है?"
 msgid "whether the toolbar is floating"
 msgstr "क्या टूलबार गतिशील है?"
 
-#: bonobo/bonobo-ui-util.c:598
+#: bonobo/bonobo-ui-util.c:615
 msgid "_Contents"
 msgstr "तत्व"
 
-#: bonobo/bonobo-ui-util.c:599
+#: bonobo/bonobo-ui-util.c:616
 msgid "View help for this application"
 msgstr "इस अनुप्रयोग के बारे में सहायता"
 
@@ -388,6 +400,6 @@ msgstr "हैलो दुनिया"
 msgid "Cannot init libbonoboui code"
 msgstr "libbonoboui कोड को प्रारंभ नहीं किया जा सका"
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Bonobo UI को प्रारंभ नहीं किया जा सका"

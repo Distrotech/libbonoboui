@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-10-18 12:25+0100\n"
+"POT-Creation-Date: 2002-11-26 10:17+0000\n"
 "PO-Revision-Date: 2002-08-29 23:06GMT+0020\n"
 "Last-Translator: Pēteris Krišjānis <peteris.krisjanis@os.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -151,6 +151,18 @@ msgstr "Tikai Teksts"
 msgid "_Priority text only"
 msgstr "Tikai _prioritātes teksts"
 
+#: bonobo/bonobo-ui-engine.c:88
+msgid "Debug"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "_Dump XML"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:89
+msgid "Dump the entire UI's XML description to the console"
+msgstr ""
+
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Konfigurēt UI"
@@ -284,11 +296,11 @@ msgstr "'peldēšana'"
 msgid "whether the toolbar is floating"
 msgstr "vai rīkjosla 'peld'"
 
-#: bonobo/bonobo-ui-util.c:598
+#: bonobo/bonobo-ui-util.c:615
 msgid "_Contents"
 msgstr "_Saturs"
 
-#: bonobo/bonobo-ui-util.c:599
+#: bonobo/bonobo-ui-util.c:616
 msgid "View help for this application"
 msgstr "Skatīt palīdzību šai aplikācijai"
 
@@ -389,6 +401,6 @@ msgstr "Sveiki, Pasaule!"
 msgid "Cannot init libbonoboui code"
 msgstr "Nevaru inicializēt libbonoboui kodu"
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Nespēju inicializēt Bonobo UI"

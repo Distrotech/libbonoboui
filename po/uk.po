@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-10-18 12:25+0100\n"
+"POT-Creation-Date: 2002-11-26 10:17+0000\n"
 "PO-Revision-Date: 2002-04-05 09:49+0200\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -148,6 +148,18 @@ msgstr "Текст і піктограма"
 msgid "_Priority text only"
 msgstr "Лише текст _приорітету"
 
+#: bonobo/bonobo-ui-engine.c:88
+msgid "Debug"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "_Dump XML"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:89
+msgid "Dump the entire UI's XML description to the console"
+msgstr ""
+
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Налаштувати інтерфейс"
@@ -282,11 +294,11 @@ msgstr "відірваний"
 msgid "whether the toolbar is floating"
 msgstr "чи пенал відірваний"
 
-#: bonobo/bonobo-ui-util.c:598
+#: bonobo/bonobo-ui-util.c:615
 msgid "_Contents"
 msgstr ""
 
-#: bonobo/bonobo-ui-util.c:599
+#: bonobo/bonobo-ui-util.c:616
 #, fuzzy
 msgid "View help for this application"
 msgstr "Про цей додаток"
@@ -388,6 +400,6 @@ msgstr "Привіт, світ!"
 msgid "Cannot init libbonoboui code"
 msgstr "Неможливо ініціалізувати код libbonoboui"
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Не вдалося ініціалізувати графічний інтерфейс Bonobo"
