@@ -1,5 +1,10 @@
 2003-12-30  Federico Mena Quintero  <federico@ximian.com>
 
+	* bonobo/bonobo-control.c (impl_Bonobo_Control_activate): Ahem,
+	flip my reversed condition.
+
+2003-12-30  Federico Mena Quintero  <federico@ximian.com>
+
 	* bonobo/bonobo-control.c (impl_Bonobo_Control_activate): Fixed
 	the emission logic; actually test against the old activation
 	state.  Also, call bonobo_control_activate_notify() to notify the
