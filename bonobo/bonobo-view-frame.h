@@ -34,10 +34,10 @@ typedef struct {
 } BonoboViewFrameClass;
 
 GtkType                    bonobo_view_frame_get_type         (void);
-BonoboViewFrame           *bonobo_view_frame_construct        (BonoboViewFrame  *view_frame,
-							       Bonobo_ViewFrame  corba_view_frame,
-							       BonoboClientSite *client_site,
-							       Bonobo_Unknown    uih);
+BonoboViewFrame           *bonobo_view_frame_construct        (BonoboViewFrame   *view_frame,
+							       Bonobo_ViewFrame   corba_view_frame,
+							       BonoboClientSite  *client_site,
+							       Bonobo_UIContainer uih);
 BonoboViewFrame           *bonobo_view_frame_new              (BonoboClientSite *client_site,
 							       Bonobo_Unknown    uih);
 void                       bonobo_view_frame_bind_to_view     (BonoboViewFrame  *view_frame,
@@ -49,7 +49,7 @@ char                      *bonobo_view_frame_popup_verbs      (BonoboViewFrame  
 void                       bonobo_view_frame_set_covered      (BonoboViewFrame  *view_frame,
 							       gboolean          covered);
 
-Bonobo_Unknown             bonobo_view_frame_get_ui_handler   (BonoboViewFrame *view_frame);
+Bonobo_UIContainer         bonobo_view_frame_get_ui_handler   (BonoboViewFrame *view_frame);
 
 /*
  * A BonoboViewFrame acts as a proxy for the remote BonoboView object to

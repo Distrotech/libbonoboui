@@ -190,7 +190,7 @@ view_color_select_cb (BonoboUIHandler *uih, view_data_t *view_data, char *path)
 static void
 view_create_menus (view_data_t *view_data)
 {
-	Bonobo_UIHandler  remote_uih;
+	Bonobo_UIContainer remote_uih;
 	BonoboView       *view = view_data->view;
 	BonoboUIHandler  *uih;
 	int               i;

@@ -54,7 +54,7 @@ BonoboEmbeddable     *bonobo_view_get_embeddable         (BonoboView         *vi
 void                  bonobo_view_set_view_frame         (BonoboView         *view,
 							  Bonobo_ViewFrame    view_frame);
 Bonobo_ViewFrame      bonobo_view_get_view_frame         (BonoboView         *view);
-Bonobo_Unknown        bonobo_view_get_remote_ui_handler  (BonoboView         *view);
+Bonobo_UIContainer    bonobo_view_get_remote_ui_handler  (BonoboView         *view);
 BonoboUIHandler      *bonobo_view_get_ui_handler         (BonoboView         *view);
 void                  bonobo_view_activate_notify        (BonoboView         *view,
 							  gboolean            activated);

@@ -40,7 +40,7 @@ struct _BonoboControlFramePrivate {
 	Bonobo_Control	   control;
 	GtkWidget         *container;
 	GtkWidget	  *socket;
-	Bonobo_UIHandler   uih;
+	Bonobo_UIContainer uih;
 	BonoboPropertyBag *propbag;
 	gboolean           autoactivate;
 	gboolean           autostate;
@@ -71,7 +71,7 @@ impl_Bonobo_ControlFrame_deactivate_and_undo (PortableServer_Servant  servant,
 }
 
 
-static Bonobo_UIHandler
+static Bonobo_UIContainer
 impl_Bonobo_ControlFrame_get_ui_handler (PortableServer_Servant  servant,
 					 CORBA_Environment      *ev)
 {
@@ -232,7 +232,7 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
  * bonobo_control_frame_construct:
  * @control_frame: The #BonoboControlFrame object to be initialized.
  * @corba_control_frame: A CORBA object for the Bonobo_ControlFrame interface.
- * @uih: A CORBA object for the UIHandler for the container application.
+ * @uih: A CORBA object for the UIContainer for the container application.
  *
  * Initializes @control_frame with the parameters.
  *
@@ -242,7 +242,7 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 BonoboControlFrame *
 bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 				Bonobo_ControlFrame  corba_control_frame,
-				Bonobo_UIHandler     uih)
+				Bonobo_UIContainer   uih)
 {
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
@@ -317,13 +317,13 @@ bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 
 /**
  * bonobo_control_frame_new:
- * @uih: The #Bonobo_UIHandler for the container application.
+ * @uih: The #Bonobo_UIContainer for the container application.
  *
  * Returns: BonoboControlFrame object that implements the
  * Bonobo::ControlFrame CORBA service. 
  */
 BonoboControlFrame *
-bonobo_control_frame_new (Bonobo_UIHandler uih)
+bonobo_control_frame_new (Bonobo_UIContainer uih)
 {
 	Bonobo_ControlFrame corba_control_frame;
 	BonoboControlFrame *control_frame;
@@ -684,11 +684,11 @@ bonobo_control_frame_get_autostate (BonoboControlFrame *control_frame)
  * bonobo_control_frame_get_ui_handler:
  * @control_frame: A BonoboControlFrame object.
 
- * Returns: The Bonobo_UIHandler object reference associated with this
+ * Returns: The Bonobo_UIContainer object reference associated with this
  * ControlFrame.  This uih is specified when the ControlFrame is
  * created.  See bonobo_control_frame_new().
  */
-Bonobo_UIHandler
+Bonobo_UIContainer
 bonobo_control_frame_get_ui_handler (BonoboControlFrame *control_frame)
 {
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), CORBA_OBJECT_NIL);

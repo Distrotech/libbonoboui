@@ -1996,6 +1996,7 @@ bonobo_win_xml_get (BonoboWin  *app,
 	g_return_val_if_fail (doc->root != NULL, NULL);
 
 	if (node_only && doc->root->childs) {
+#warning FIXME: this only frees the head child node!
 		xmlNode *tmp = doc->root->childs;
 		xmlUnlinkNode (tmp);
 		xmlFreeNode (tmp);
@@ -2018,12 +2019,17 @@ bonobo_win_xml_node_exists (BonoboWin  *app,
 			    const char *path)
 {
 	xmlNode *node;
+	gboolean wildcard;
 
 	g_return_val_if_fail (BONOBO_IS_WIN (app), FALSE);
 
-	node = bonobo_ui_xml_get_path (app->priv->tree, path);
+	node = bonobo_ui_xml_get_path_wildcard (
+		app->priv->tree, path, &wildcard);
 
-	return (node != NULL);
+	if (!wildcard)
+		return (node != NULL);
+	else
+		return (node != NULL && node->childs != NULL);
 }
 
 BonoboUIXmlError
@@ -2043,8 +2049,12 @@ bonobo_win_object_set (BonoboWin  *app,
 
 	info = bonobo_ui_xml_get_data (app->priv->tree, node);
 
-	if (info->object != CORBA_OBJECT_NIL)
+	if (info->object != CORBA_OBJECT_NIL) {
 		bonobo_object_release_unref (info->object, ev);
+		if (info->widget)
+			gtk_widget_destroy (info->widget);
+		info->widget = NULL;
+	}
 
 	if (object != CORBA_OBJECT_NIL)
 		info->object = bonobo_object_dup_ref (object, ev);
@@ -2154,7 +2164,7 @@ bonobo_win_xml_rm (BonoboWin  *app,
 	g_return_val_if_fail (app->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
 
 	err = bonobo_ui_xml_rm (
-		app->priv->tree, "/",
+		app->priv->tree, path,
 		win_component_cmp_name (app->priv, by_component));
 
 	update_widgets (app->priv);

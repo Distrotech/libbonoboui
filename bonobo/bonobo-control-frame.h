@@ -72,14 +72,13 @@ void                          bonobo_control_frame_bind_to_control           (Bo
 
 Bonobo_Control                bonobo_control_frame_get_control               (BonoboControlFrame  *control_frame);
 
-/* The UIHandler */
-Bonobo_UIHandler              bonobo_control_frame_get_ui_handler            (BonoboControlFrame  *control_frame);
+Bonobo_UIContainer            bonobo_control_frame_get_ui_handler            (BonoboControlFrame  *control_frame);
 
 
 /* Object construction stuff */
 BonoboControlFrame           *bonobo_control_frame_construct                 (BonoboControlFrame  *control_frame,
 									      Bonobo_ControlFrame  corba_control_frame,
-									      Bonobo_UIHandler     uih);
+									      Bonobo_Container     uih);
 GtkType                       bonobo_control_frame_get_type                  (void);
 POA_Bonobo_ControlFrame__epv *bonobo_control_frame_get_epv                   (void);
 

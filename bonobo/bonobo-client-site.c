@@ -411,7 +411,7 @@ bonobo_client_site_view_frame_destroy (BonoboViewFrame  *view_frame,
 /**
  * bonobo_client_site_new_view_full:
  * @client_site: the client site that contains a remote Embeddable object.
- * @uih: The CORBA object for the container's UIHandler server.
+ * @uih: The CORBA object for the container's UIContainer server.
  * @visible_cover: %TRUE if the cover should draw a border when it is active.
  * @active_view: %TRUE if the view should be uncovered when it is created.
  *
@@ -425,10 +425,10 @@ bonobo_client_site_view_frame_destroy (BonoboViewFrame  *view_frame,
  * the new view of @server_object.
  */
 BonoboViewFrame *
-bonobo_client_site_new_view_full (BonoboClientSite *client_site,
-				  Bonobo_UIHandler  uih,
-				  gboolean          visible_cover,
-				  gboolean          active_view)
+bonobo_client_site_new_view_full (BonoboClientSite  *client_site,
+				  Bonobo_UIContainer uih,
+				  gboolean           visible_cover,
+				  gboolean           active_view)
 {
 	Bonobo_Embeddable server_object;
 	BonoboViewFrame *view_frame;
@@ -498,8 +498,8 @@ bonobo_client_site_new_view_full (BonoboClientSite *client_site,
  * the new view of @server_object.
  */
 BonoboViewFrame *
-bonobo_client_site_new_view (BonoboClientSite *client_site,
-			     Bonobo_UIHandler  uih)
+bonobo_client_site_new_view (BonoboClientSite  *client_site,
+			     Bonobo_UIContainer uih)
 {
 
 	return bonobo_client_site_new_view_full (client_site, uih, TRUE, FALSE);

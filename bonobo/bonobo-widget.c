@@ -32,8 +32,8 @@
  *
  *        gtk_container_add (some_container, bw);
  *
- *      You are free to make the UIHandler argument to
- *      bonobo_widget_new_subdoc() be NULL.
+ *      You are free to make the UIContainer argument to
+ *      bonobo_widget_new_subdoc() be CORBA_OBJECT_NIL.
  *
  *   2. Provide a simple wrapper for embedding Controls.  Embedding
  *      controls is already really easy, but BonoboWidget reduces
@@ -70,7 +70,7 @@ struct _BonoboWidgetPrivate {
 	BonoboContainer	   *container;
 	BonoboClientSite   *client_site;
 	BonoboViewFrame    *view_frame;
-	Bonobo_UIHandler    uih;
+	Bonobo_UIContainer  uih;
 };
 
 static BonoboWrapperClass *bonobo_widget_parent_class;
@@ -92,9 +92,9 @@ bonobo_widget_launch_component (const char *object_desc)
  *
  */
 static BonoboWidget *
-bonobo_widget_construct_control_from_objref (BonoboWidget     *bw,
-					     Bonobo_Control    control,
-					     Bonobo_UIHandler  uih)
+bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
+					     Bonobo_Control     control,
+					     Bonobo_UIContainer uih)
 {
 	GtkWidget    *control_frame_widget;
 
@@ -127,9 +127,9 @@ bonobo_widget_construct_control_from_objref (BonoboWidget     *bw,
 }
 
 static BonoboWidget *
-bonobo_widget_construct_control (BonoboWidget     *bw,
-				 const char       *goad_id,
-				 Bonobo_UIHandler  uih)
+bonobo_widget_construct_control (BonoboWidget      *bw,
+				 const char        *goad_id,
+				 Bonobo_UIContainer uih)
 {
 	Bonobo_Control control;
 
@@ -148,8 +148,8 @@ bonobo_widget_construct_control (BonoboWidget     *bw,
 }
 
 GtkWidget *
-bonobo_widget_new_control_from_objref (Bonobo_Control   control,
-				       Bonobo_UIHandler uih)
+bonobo_widget_new_control_from_objref (Bonobo_Control     control,
+				       Bonobo_UIContainer uih)
 {
 	BonoboWidget *bw;
 
@@ -166,8 +166,8 @@ bonobo_widget_new_control_from_objref (Bonobo_Control   control,
 }
 
 GtkWidget *
-bonobo_widget_new_control (const char       *goad_id,
-			   Bonobo_UIHandler  uih)
+bonobo_widget_new_control (const char        *goad_id,
+			   Bonobo_UIContainer uih)
 {
 	BonoboWidget *bw;
 
@@ -201,9 +201,9 @@ bonobo_widget_get_control_frame (BonoboWidget *bw)
  *
  */
 static BonoboWidget *
-bonobo_widget_create_subdoc_object (BonoboWidget     *bw,
-				    const char       *object_desc,
-				    Bonobo_UIHandler  uih)
+bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
+				    const char        *object_desc,
+				    Bonobo_UIContainer uih)
 {
 	GtkWidget *view_widget;
 	
@@ -249,23 +249,15 @@ bonobo_widget_create_subdoc_object (BonoboWidget     *bw,
 	gtk_container_add (GTK_CONTAINER (bw), view_widget);
 	gtk_widget_show (view_widget);
 
-	if (uih != CORBA_OBJECT_NIL){
-		CORBA_Environment ev;
-		
-		CORBA_exception_init (&ev);
-
-		Bonobo_UIHandler_ref (uih, &ev);
-		if (ev._major == CORBA_NO_EXCEPTION)
-			bw->priv->uih = CORBA_Object_duplicate (uih, &ev);
-		CORBA_exception_free (&ev);
-	}
+	if (uih != CORBA_OBJECT_NIL)
+		bw->priv->uih = bonobo_object_dup_ref (uih, NULL);
 	
 	return bw;
 }
 
 GtkWidget *
-bonobo_widget_new_subdoc (const char       *object_desc,
-			  Bonobo_UIHandler  uih)
+bonobo_widget_new_subdoc (const char        *object_desc,
+			  Bonobo_UIContainer uih)
 {
 	BonoboWidget *bw;
 
@@ -276,7 +268,7 @@ bonobo_widget_new_subdoc (const char       *object_desc,
 	if (bw == NULL)
 		return NULL;
 
-	if (!bonobo_widget_create_subdoc_object (bw, object_desc, uih)){
+	if (!bonobo_widget_create_subdoc_object (bw, object_desc, uih)) {
 		gtk_object_destroy (GTK_OBJECT (bw));
 		return NULL;
 	}
@@ -314,7 +306,7 @@ bonobo_widget_get_view_frame (BonoboWidget *bw)
 	return bw->priv->view_frame;
 }
 
-Bonobo_UIHandler
+Bonobo_UIContainer
 bonobo_widget_get_uih (BonoboWidget *bw)
 {
 	g_return_val_if_fail (bw != NULL, NULL);

@@ -560,12 +560,21 @@ bonobo_ui_component_rm (BonoboUIComponent  *component,
 
 	priv = component->priv;
 
-	Bonobo_UIContainer_deregister_component (
-		container, priv->name, real_ev);
+	Bonobo_UIContainer_node_remove (
+		container, path, priv->name, real_ev);
 
 	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
 		g_warning ("Serious exception removing path  '%s' '%s'",
 			   path, bonobo_exception_get_text (real_ev));
+
+	if (path [0] == '\0' || !strcmp (path, "/")) {
+		Bonobo_UIContainer_deregister_component (
+			container, priv->name, real_ev);
+		
+		if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
+			g_warning ("Serious exception removing path  '%s' '%s'",
+				   path, bonobo_exception_get_text (real_ev));
+	}
 
 	if (!ev)
 		CORBA_exception_free (&tmp_ev);

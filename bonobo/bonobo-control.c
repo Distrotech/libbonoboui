@@ -43,10 +43,6 @@ struct _BonoboControlPrivate {
 			
 	BonoboUIHandler            *uih;
 	gboolean                    automerge;
-#ifdef STALE_NOT_USED
-	BonoboUIHandlerMenuItem    *menus;
-	BonoboUIHandlerToolbarItem *toolbars;
-#endif
 				   
 	BonoboPropertyBag          *propbag;
 };
@@ -165,7 +161,7 @@ bonobo_control_plug_destroy_cb (GtkWidget *plug,
 static void
 bonobo_control_auto_merge (BonoboControl *control)
 {
-	Bonobo_UIHandler remote_uih;
+	Bonobo_UIContainer remote_uih;
 
 	if (control->priv->uih == NULL)
 		return;
@@ -552,179 +548,6 @@ bonobo_control_get_automerge (BonoboControl *control)
 	return control->priv->automerge;
 }
 
-#ifdef STALE_NOT_USED
-/**
- * bonobo_control_set_menus_with_data:
- * @control: A #BonoboControl.
- * @menus: A list of #GnomeUIInfo structures.
- * @closure: The closure which should be used for all the callbacks.
- *
- * Sets the menus which should automatically merged into @control's
- * container when @control is activated.  See
- * bonobo_control_set_menus(), bonobo_control_get_menus() and
- * bonobo_control_set_toolbars().
- */
-void
-bonobo_control_set_menus_with_data (BonoboControl  *control,
-				    GnomeUIInfo    *menus,
-				    gpointer        closure)
-{
-	BonoboUIHandlerMenuItem *list;
-
-	g_return_if_fail (BONOBO_IS_CONTROL (control));
-
-	if (control->priv->menus != NULL) {
-		bonobo_ui_handler_menu_free_list (control->priv->menus);
-	}
-
-	list = bonobo_ui_handler_menu_parse_uiinfo_list_with_data (menus, closure);
-	control->priv->menus = list;
-
-	/*
-	 * This is going to look sloppy, but it's necessary for
-	 * correctness.
-	 */
-	if (control->priv->automerge && control->priv->active) {
-		bonobo_control_auto_unmerge (control);
-		bonobo_control_auto_merge (control);
-	}
-}
-
-/**
- * bonobo_control_set_menus:
- * @control: A #BonoboControl.
- * @menus: A list of #GnomeUIInfo structures.
- *
- * Sets the menus which should automatically merged into @control's
- * container when @control is activated.  See
- * bonobo_control_set_menus_with_data(), bonobo_control_get_menus()
- * and bonobo_control_set_toolbars().
- */
-void
-bonobo_control_set_menus (BonoboControl  *control,
-			  GnomeUIInfo    *menus)
-{
-	BonoboUIHandlerMenuItem *list;
-
-	g_return_if_fail (BONOBO_IS_CONTROL (control));
-
-	if (control->priv->menus != NULL) {
-		bonobo_ui_handler_menu_free_list (control->priv->menus);
-	}
-
-	list = bonobo_ui_handler_menu_parse_uiinfo_list (menus);
-	control->priv->menus = list;
-
-	/*
-	 * This is going to look sloppy, but it's necessary for
-	 * correctness.
-	 */
-	if (control->priv->automerge && control->priv->active) {
-		bonobo_control_auto_unmerge (control);
-		bonobo_control_auto_merge (control);
-	}
-}
-
-/**
- * bonobo_control_get_menus:
- * @control: A #BonoboControl.
- *
- * Returns: The menu tree which has been associated to the control
- * using bonobo_control_set_menus().
- */
-BonoboUIHandlerMenuItem *
-bonobo_control_get_menus (BonoboControl *control)
-{
-	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
-
-	return control->priv->menus;
-}
-
-/**
- * bonobo_control_set_toolbars_with_data:
- * @control: A #BonoboControl.
- * @toolbars: A list of #GnomeUIInfo structures.
- * @closure: The closure which should be used for all the callbacks.
- *
- * Sets the toolbars which should automatically merged into @control's
- * container when @control is activated.  See
- * bonobo_control_set_toolbars(), bonobo_control_get_toolbars() and
- * bonobo_control_set_menus().
- */
-void
-bonobo_control_set_toolbars_with_data (BonoboControl  *control,
-				       GnomeUIInfo    *toolbars,
-				       gpointer        closure)
-{
-	BonoboUIHandlerToolbarItem *list;
-
-	g_return_if_fail (BONOBO_IS_CONTROL (control));
-
-	if (control->priv->toolbars != NULL) {
-		bonobo_ui_handler_toolbar_free_list (control->priv->toolbars);
-	}
-
-	list = bonobo_ui_handler_toolbar_parse_uiinfo_list_with_data (toolbars, closure);
-	control->priv->toolbars = list;
-
-	/*
-	 * This is a real fucking mess.
-	 */
-	if (control->priv->automerge && control->priv->active) {
-		bonobo_control_auto_unmerge (control);
-		bonobo_control_auto_merge (control);
-	}
-}
-
-/**
- * bonobo_control_set_toolbars:
- * @control: A #BonoboControl.
- * @toolbars: A list of #GnomeUIInfo structures.
- *
- * Sets the toolbars which should automatically merged into @control's
- * container when @control is activated.  See
- * bonobo_control_set_toolbars_with_data() and bonobo_control_set_menus().
- */
-void
-bonobo_control_set_toolbars (BonoboControl *control,
-			     GnomeUIInfo   *toolbars)
-{
-	BonoboUIHandlerToolbarItem *list;
-
-	g_return_if_fail (BONOBO_IS_CONTROL (control));
-
-	if (control->priv->toolbars != NULL) {
-		bonobo_ui_handler_toolbar_free_list (control->priv->toolbars);
-	}
-
-	list = bonobo_ui_handler_toolbar_parse_uiinfo_list (toolbars);
-	control->priv->toolbars = list;
-
-	/*
-	 * Sigh.
-	 */
-	if (control->priv->automerge && control->priv->active) {
-		bonobo_control_auto_unmerge (control);
-		bonobo_control_auto_merge (control);
-	}
-}
-
-/**
- * bonobo_control_get_toolbars:
- * @control: A #BonoboControl.
- *
- * Returns: The toolbar tree which has been associated to the control
- * using bonobo_control_set_toolbars().
- */
-BonoboUIHandlerToolbarItem *
-bonobo_control_get_toolbars (BonoboControl *control)
-{
-	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
-
-	return control->priv->toolbars;
-}
-#endif /* STALE_NOT_USED */
-
 static void
 bonobo_control_destroy (GtkObject *object)
 {
@@ -956,13 +779,13 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
  * @control: A BonoboControl object which is associated with a remote
  * ControlFrame.
  *
- * Returns: The Bonobo_UIHandler CORBA server for the remote BonoboControlFrame.
+ * Returns: The Bonobo_UIContainer CORBA server for the remote BonoboControlFrame.
  */
-Bonobo_UIHandler
+Bonobo_Unknown
 bonobo_control_get_remote_ui_handler (BonoboControl *control)
 {
-	CORBA_Environment ev;
-	Bonobo_UIHandler uih;
+	CORBA_Environment  ev;
+	Bonobo_UIContainer uih;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
 

@@ -9,7 +9,7 @@
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-property-bag.h>
 #include <bonobo/bonobo-property-bag-client.h>
-#include <bonobo/bonobo-ui-handler.h>
+#include <bonobo/bonobo-ui-compat.h>
 
 BEGIN_GNOME_DECLS
  
@@ -47,22 +47,6 @@ void                        bonobo_control_set_automerge           (BonoboContro
 								    gboolean       automerge);
 gboolean                    bonobo_control_get_automerge           (BonoboControl *control);
 
-#ifdef STALE_NOT_USED
-void                        bonobo_control_set_menus               (BonoboControl *control,
-								    GnomeUIInfo   *menus);
-void                        bonobo_control_set_menus_with_data     (BonoboControl *control,
-								    GnomeUIInfo   *menus,
-								    gpointer       closure);
-BonoboUIHandlerMenuItem    *bonobo_control_get_menus               (BonoboControl *control);
-
-void                        bonobo_control_set_toolbars            (BonoboControl *control,
-								    GnomeUIInfo   *toolbars);
-void                        bonobo_control_set_toolbars_with_data  (BonoboControl *control,
-								    GnomeUIInfo   *toolbars,
-								    gpointer       closure);
-BonoboUIHandlerToolbarItem *bonobo_control_get_toolbars            (BonoboControl *control);
-#endif
-
 void                        bonobo_control_set_property            (BonoboControl       *control,
 								    const char          *first_prop,
 								    ...);
@@ -83,7 +67,7 @@ BonoboUIHandler            *bonobo_control_get_ui_handler          (BonoboContro
 void                        bonobo_control_set_property_bag        (BonoboControl       *control,
 								    BonoboPropertyBag   *pb);
 BonoboPropertyBag          *bonobo_control_get_property_bag        (BonoboControl       *control);
-Bonobo_UIHandler            bonobo_control_get_remote_ui_handler   (BonoboControl       *control);
+Bonobo_Unknown              bonobo_control_get_remote_ui_handler   (BonoboControl       *control);
 Bonobo_PropertyBag          bonobo_control_get_ambient_properties  (BonoboControl       *control,
 								    CORBA_Environment   *ev);
 void                        bonobo_control_activate_notify         (BonoboControl       *control,

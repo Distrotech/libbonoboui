@@ -79,7 +79,12 @@ void             bonobo_ui_xml_set_dirty (BonoboUIXml *tree,
 					  xmlNode     *node,
 					  gboolean     dirty);
 
-xmlNode         *bonobo_ui_xml_get_path  (BonoboUIXml *tree, const char *path);
+xmlNode         *bonobo_ui_xml_get_path          (BonoboUIXml *tree,
+						  const char  *path);
+xmlNode         *bonobo_ui_xml_get_path_wildcard (BonoboUIXml *tree,
+						  const char  *path,
+						  gboolean    *wildcard);
+
 char            *bonobo_ui_xml_make_path (xmlNode     *node);
 char            *bonobo_ui_xml_get_parent_path (const char *path);
 

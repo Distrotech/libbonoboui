@@ -339,8 +339,9 @@ override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 		data->id = old_data->id;
 		data->overridden = old_data->overridden;
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REPLACE_OVERRIDE], new, old);
-/*		g_warning ("Replace override of '%s' '%s'",
-		old->name, xmlGetProp (old, "name"));*/
+/*		fprintf (stderr, "Replace override of '%s' '%s' with '%s' '%s'",
+			 old->name, xmlGetProp (old, "name"),
+			 new->name, xmlGetProp (new, "name"));*/
 	}
 
 	old_data->overridden = NULL;
@@ -380,11 +381,15 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 		BonoboUIXmlData *old_data;
 
 		g_return_if_fail (data->overridden->data != NULL);
-		
+
 		/* Get Old node from overridden list */
 		old = data->overridden->data;
 		old_data = bonobo_ui_xml_get_data (tree, old);
 
+/*		fprintf (stderr, "Reinstating override '%s' '%s' with '%s' '%s'",
+			 node->name, xmlGetProp (node, "name"),
+			 old->name, xmlGetProp (old, "name"));*/
+		
 		/* Update Overridden list */
 		old_data->overridden = g_slist_next (data->overridden);
 		g_slist_free_1 (data->overridden);
@@ -568,19 +573,23 @@ bonobo_ui_xml_path_freev (char **split)
 }
 
 static xmlNode *
-xml_get_path (BonoboUIXml *tree, const char *path)
+xml_get_path (BonoboUIXml *tree, const char *path,
+	      gboolean allow_wild, gboolean *wildcard)
 {
 	xmlNode *ret;
 	char   **names;
 	int      i;
 	
 	g_return_val_if_fail (tree != NULL, NULL);
+	g_return_val_if_fail (!allow_wild || wildcard != NULL, NULL);
 
 #ifdef UI_XML_DEBUG
 	fprintf (stderr, "Find path '%s'\n", path);
 #endif
 	DUMP_XML (tree, tree->root, "Before find path");
 
+	if (allow_wild)
+		*wildcard = FALSE;
 	if (!path || path [0] == '\0')
 		return tree->root;
 
@@ -596,7 +605,12 @@ xml_get_path (BonoboUIXml *tree, const char *path)
 
 /*		g_warning ("Path element '%s'", names [i]);*/
 
-		if (!(ret = find_child (ret, names [i]))) {
+		if (allow_wild &&
+		    names [i] [0] == '*' &&
+		    names [i] [1] == '\0')
+			*wildcard = TRUE;
+
+		else if (!(ret = find_child (ret, names [i]))) {
 			bonobo_ui_xml_path_freev (names);
 			return NULL;
 		}
@@ -612,7 +626,14 @@ xml_get_path (BonoboUIXml *tree, const char *path)
 xmlNode *
 bonobo_ui_xml_get_path (BonoboUIXml *tree, const char *path)
 {
-	return xml_get_path (tree, path);
+	return xml_get_path (tree, path, FALSE, NULL);
+}
+
+xmlNode *
+bonobo_ui_xml_get_path_wildcard (BonoboUIXml *tree, const char *path,
+				 gboolean    *wildcard)
+{
+	return xml_get_path (tree, path, TRUE, wildcard);
 }
 
 char *
@@ -646,6 +667,8 @@ static void
 prune_overrides_by_id (BonoboUIXml *tree, BonoboUIXmlData *data, gpointer id)
 {
 	GSList *l, *next;
+
+	g_return_if_fail (id != NULL);
 	
 	for (l = data->overridden; l; l = next) {
 		BonoboUIXmlData *o_data;
@@ -664,22 +687,26 @@ prune_overrides_by_id (BonoboUIXml *tree, BonoboUIXmlData *data, gpointer id)
 }
 
 static void
-reinstate_node (BonoboUIXml *tree, xmlNode *node, gpointer id)
+reinstate_node (BonoboUIXml *tree, xmlNode *node,
+		gpointer id, gboolean nail_me)
 {
-	BonoboUIXmlData *data;
 	xmlNode *l, *next;
 			
 	for (l = node->childs; l; l = next) {
 		next = l->next;
-		reinstate_node (tree, l, id);
+		reinstate_node (tree, l, id, TRUE);
 	}
 
-	data = bonobo_ui_xml_get_data (tree, node);
+	if (nail_me) {
+		BonoboUIXmlData *data;
 
-	if (identical (tree, data->id, id))
-		reinstate_old_node (tree, node);
-	else
-		prune_overrides_by_id (tree, data, id);
+		data = bonobo_ui_xml_get_data (tree, node);
+
+		if (identical (tree, data->id, id))
+			reinstate_old_node (tree, node);
+		else
+			prune_overrides_by_id (tree, data, id);
+	}
 }
 
 /**
@@ -805,15 +832,20 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 
 BonoboUIXmlError
 bonobo_ui_xml_rm (BonoboUIXml *tree,
-		  const char      *path,
-		  gpointer         id)
+		  const char  *path,
+		  gpointer     id)
 {
 	xmlNode *current;
+	gboolean wildcard;
 
-	current = xml_get_path (tree, path);
+	current = bonobo_ui_xml_get_path_wildcard (
+		tree, path, &wildcard);
+
+	fprintf (stderr, "remove stuff from '%s' (%d) -> '%p'\n",
+		 path, wildcard, current);
 
 	if (current)
-		reinstate_node (tree, current, id);
+		reinstate_node (tree, current, id, !wildcard);
 	else
 		return BONOBO_UI_XML_INVALID_PATH;
 

@@ -409,7 +409,7 @@ bonobo_view_get_ui_handler (BonoboView *view)
  *
  * Returns: The Bonobo_UIHandler CORBA server for the remote BonoboViewFrame.
  */
-Bonobo_UIHandler
+Bonobo_UIContainer
 bonobo_view_get_remote_ui_handler (BonoboView *view)
 {
 	g_return_val_if_fail (view != NULL, CORBA_OBJECT_NIL);

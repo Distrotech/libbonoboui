@@ -33,8 +33,7 @@ idls =							\
 	$(top_srcdir)/idl/bonobo-progressive.idl	\
 	$(top_srcdir)/idl/bonobo-property.idl		\
 	$(top_srcdir)/idl/bonobo-sizeable.idl		\
-	$(top_srcdir)/idl/bonobo-storage.idl		\
-	$(top_srcdir)/idl/bonobo-ui-handler.idl
+	$(top_srcdir)/idl/bonobo-storage.idl
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 
@@ -49,6 +48,7 @@ libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
 	bonobo-arg.h			\
 	bonobo-arg.c			\
+	bonobo-exception.c		\
 	bonobo-object-directory.c	\
 	bonobo-generic-factory.c	\
 	bonobo-main.c			\
@@ -91,6 +91,7 @@ libbonoboinclude_HEADERS =		\
 	bonobo-desktop-window.h		\
 	bonobo-embeddable.h		\
 	bonobo-embeddable-factory.h	\
+	bonobo-exception.h		\
 	bonobo-generic-factory.h	\
 	bonobo-listener.h		\
 	bonobo-main.h			\
@@ -112,7 +113,6 @@ libbonoboinclude_HEADERS =		\
 	bonobo-stream-client.h		\
 	bonobo-stream-fs.h		\
 	bonobo-stream-memory.h		\
-	bonobo-ui-handler.h		\
 	bonobo-ui-component.h		\
 	bonobo-ui-container.h		\
 	bonobo-ui-compat.h		\

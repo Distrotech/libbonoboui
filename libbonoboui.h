@@ -17,6 +17,7 @@ extern "C" {
 
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-moniker.h>
+#include <bonobo/bonobo-exception.h>
 
 #include <bonobo/bonobo-container.h>
 #include <bonobo/bonobo-object-client.h>
@@ -25,8 +26,6 @@ extern "C" {
 
 #include <bonobo/bonobo-property-bag.h>
 #include <bonobo/bonobo-property-bag-client.h>
-
-#include <bonobo/bonobo-ui-handler.h>
 
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
@@ -47,6 +46,9 @@ extern "C" {
 #include <bonobo/bonobo-persist.h>
 #include <bonobo/bonobo-persist-file.h>
 #include <bonobo/bonobo-persist-stream.h>
+
+/* Deprecated */
+#include <bonobo/bonobo-ui-compat.h>
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>

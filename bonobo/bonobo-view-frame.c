@@ -126,10 +126,10 @@ bonobo_view_frame_key_press_cb (GtkWidget *wrapper,
  * Bonobo::ViewFrame CORBA service.
  */
 BonoboViewFrame *
-bonobo_view_frame_construct (BonoboViewFrame  *view_frame,
-			     Bonobo_ViewFrame  corba_view_frame,
-			     BonoboClientSite *client_site,
-			     Bonobo_UIHandler  uih)
+bonobo_view_frame_construct (BonoboViewFrame   *view_frame,
+			     Bonobo_ViewFrame   corba_view_frame,
+			     BonoboClientSite  *client_site,
+			     Bonobo_UIContainer uih)
 {
 	GtkWidget *wrapper;
 
@@ -175,14 +175,14 @@ bonobo_view_frame_construct (BonoboViewFrame  *view_frame,
 /**
  * bonobo_view_frame_new:
  * @client_site: the client site to which the newly-created ViewFrame will belong.
- * @uih: A CORBA object for the container's UIHandler server. 
+ * @uih: A CORBA object for the container's UIContainer server. 
  *
  * Returns: BonoboViewFrame object that implements the
  * Bonobo::ViewFrame CORBA service.
  */
 BonoboViewFrame *
-bonobo_view_frame_new (BonoboClientSite *client_site,
-		       Bonobo_UIHandler  uih)
+bonobo_view_frame_new (BonoboClientSite  *client_site,
+		       Bonobo_UIContainer uih)
 {
 	Bonobo_ViewFrame corba_view_frame;
 	BonoboViewFrame *view_frame;
@@ -386,10 +386,10 @@ bonobo_view_frame_set_covered (BonoboViewFrame *view_frame, gboolean covered)
  * bonobo_view_frame_get_ui_handler:
  * @view_frame: A BonoboViewFrame object.
  *
- * Returns: The BonoboUIHandler associated with this ViewFrame.  See
+ * Returns: The BonoboUIContainer associated with this ViewFrame.  See
  * also bonobo_view_frame_set_ui_handler().
  */
-Bonobo_UIHandler
+Bonobo_UIContainer
 bonobo_view_frame_get_ui_handler (BonoboViewFrame *view_frame)
 {
 	g_return_val_if_fail (view_frame != NULL, NULL);
