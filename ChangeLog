@@ -1,3 +1,8 @@
+2001-12-12  jacob berkman  <jacob@ximian.com>
+
+	* bonobo/bonobo-*.h (BONOBO_IS_*_CLASS): s/obj/klass/ where
+	appropriate
+
 2001-12-12  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-reparent.c: do the out of proc re-parent,

@@ -26,7 +26,7 @@ G_BEGIN_DECLS
 #define BONOBO_UI_SYNC(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_SYNC, BonoboUISync))
 #define BONOBO_UI_SYNC_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_SYNC, BonoboUISyncClass))
 #define BONOBO_IS_UI_SYNC(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_SYNC))
-#define BONOBO_IS_UI_SYNC_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_SYNC))
+#define BONOBO_IS_UI_SYNC_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_UI_SYNC))
 
 typedef void (*BonoboUISyncStateFn)         (BonoboUISync     *sync,
 					     BonoboUINode     *node,

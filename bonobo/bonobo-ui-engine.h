@@ -32,7 +32,7 @@ G_BEGIN_DECLS
 #define BONOBO_UI_ENGINE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_ENGINE, BonoboUIEngine))
 #define BONOBO_UI_ENGINE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_ENGINE, BonoboUIEngineClass))
 #define BONOBO_IS_UI_ENGINE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_ENGINE))
-#define BONOBO_IS_UI_ENGINE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_ENGINE))
+#define BONOBO_IS_UI_ENGINE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_UI_ENGINE))
 
 typedef struct _BonoboUIEnginePrivate BonoboUIEnginePrivate;
 
