@@ -77,7 +77,8 @@ libbonobo_la_SOURCES =			\
 	bonobo-transient.c		\
 	bonobo-property.c		\
 	bonobo-property-bag.c		\
-	bonobo-property-bag-client.c
+	bonobo-property-bag-client.c	\
+	bonobo-property-control.c
 
 libbonoboincludedir = $(includedir)/bonobo
 
@@ -118,6 +119,7 @@ libbonoboinclude_HEADERS =			\
 	bonobo-property-bag.h			\
 	bonobo-property-bag-client.h		\
 	bonobo-property-bag-xml.h		\
+	bonobo-property-control.h		\
 	bonobo-property-listener.h		\
 	bonobo-property-types.h			\
 	bonobo-property.h			\

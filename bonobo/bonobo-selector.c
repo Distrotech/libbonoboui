@@ -374,6 +374,8 @@ bonobo_selector_init (GtkWidget *widget)
 			    GTK_SIGNAL_FUNC (select_row), sel);
 	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 1, FALSE);
 	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 2, FALSE);
+	gtk_clist_column_titles_passive (GTK_CLIST (priv->clist));
+
 	gtk_container_add (GTK_CONTAINER (scrolled), priv->clist);
 	gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (sel)->vbox), scrolled, TRUE, TRUE, 0);
 
