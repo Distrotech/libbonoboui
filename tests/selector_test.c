@@ -68,14 +68,16 @@ void panel_callback (GtkWidget *widget, gpointer data)
 	gchar *text;
 
 #if USING_OAF
-
+	g_warning ("You can't get an id of a panel applet since the panel"
+		   "is using GOAD at the moment");
 #else
 	text = gnome_bonobo_select_goad_id (_("Select an object"), ints);
-#endif
 
 	g_print("%s\n", text);
 	if (text != NULL)
 		g_free(text);
+#endif
+
 }
 
 void noact_callback (GtkWidget *widget, gpointer data)

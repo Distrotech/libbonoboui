@@ -223,4 +223,5 @@ oaf_DATA = $(OAF_FILES)
 #endif
 
 
-EXTRA_DIST = $(GOAD_FILES) $(OAF_FILES)
+EXTRA_DIST = $(GOAD_FILES) $(OAF_FILES) \
+	bonobo-insert-component.xpm

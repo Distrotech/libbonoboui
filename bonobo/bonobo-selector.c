@@ -4,6 +4,7 @@
 #include <string.h> /* strcmp */
 #include <gnome.h>
 #include "bonobo-object-directory.h"
+#include "bonobo-insert-component.xpm"
 
 #define DEFAULT_INTERFACE	"IDL:Bonobo/Embeddable:1.0"
 
@@ -12,6 +13,7 @@ static GtkDialogClass *parent_class;
 struct _BonoboSelectorPrivate 
 {
 	GtkWidget *clist;
+	GtkWidget *desc_label;
 	GList *servers;
 	int n_servers;
 	const gchar **interfaces_required;
@@ -165,7 +167,7 @@ bonobo_selector_destroy (GtkObject *object)
  * depending on the activation framework you are using.
  */
 
-static gchar *
+gchar *
 bonobo_selector_get_selected_id (BonoboSelector *sel)
 {
 	GList *selection;
@@ -349,8 +351,14 @@ select_row (GtkCList *clist, gint row, gint col,
 		gnome_dialog_clicked ( GNOME_DIALOG (sel), 0);
 	else {
 		GtkCListClass *cl;
-
+		gchar *text;
+		
+		gtk_clist_get_text (GTK_CLIST (clist), row,
+				    2, &text);
+		gtk_label_set_text (GTK_LABEL (sel->priv->desc_label), text);
+		
 		cl = gtk_type_class (GTK_TYPE_CLIST);
+
 		if (cl->select_row)
 			cl->select_row (clist, row, col, event);
 	}
@@ -360,31 +368,51 @@ static void
 bonobo_selector_init (GtkWidget *widget)
 {
 	BonoboSelector *sel = BONOBO_SELECTOR (widget);
-	GtkWidget *scrolled;
+	GtkWidget *scrolled, *pixmap;
+	GtkWidget *vbox, *hbox;
+	GtkWidget *frame;
+	
 	BonoboSelectorPrivate *priv;
-	gchar *titles[] = { N_("Bonobo object description"), "ID", NULL };
+	gchar *titles[] = { N_("Name"), "Description", "ID", NULL };
 	
 	g_return_if_fail (widget != NULL);
-	
+
+	titles[0] = gettext (titles[0]);
 	sel->priv = g_new0 (BonoboSelectorPrivate, 1);
 	priv = sel->priv;
+
+	vbox = gtk_vbox_new (FALSE, 0);
 	
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 		GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	titles[0] = gettext(titles[0]);
-
-	priv->clist = gtk_clist_new_with_titles (2, titles);
+	priv->clist = gtk_clist_new_with_titles (3, titles);
 	gtk_clist_set_selection_mode (GTK_CLIST (priv->clist),
 		GTK_SELECTION_BROWSE);
 	gtk_signal_connect (GTK_OBJECT (priv->clist), "select-row",
 			    GTK_SIGNAL_FUNC (select_row), sel);
 	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 1, FALSE);
+	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 2, FALSE);
 	gtk_container_add (GTK_CONTAINER (scrolled), priv->clist);
+	gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (sel)->vbox), scrolled, TRUE, TRUE, 0);
+
+	frame = gtk_frame_new (_("Description"));
+	gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (sel)->vbox), frame, FALSE, TRUE, 0);
+
 	
-	gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (sel)->vbox), scrolled,
-		TRUE, TRUE, 0);
+	priv->desc_label = gtk_label_new ("");
+	gtk_misc_set_alignment (GTK_MISC (priv->desc_label), 0.0, 0.5);
+	gtk_label_set_line_wrap (GTK_LABEL (priv->desc_label), TRUE);
+	gtk_label_set_justify (GTK_LABEL (priv->desc_label), GTK_JUSTIFY_LEFT);
+
+	hbox = gtk_hbox_new (FALSE, 0);
+
+	pixmap = gnome_pixmap_new_from_xpm_d (bonobo_insert_component_xpm);
+	gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, TRUE, GNOME_PAD_SMALL);
+	
+	gtk_box_pack_start (GTK_BOX (hbox), priv->desc_label, TRUE, TRUE, GNOME_PAD_SMALL);
+	gtk_container_add (GTK_CONTAINER (frame), hbox);
 	
 	gnome_dialog_append_button (GNOME_DIALOG (sel), GNOME_STOCK_BUTTON_OK);
 	gnome_dialog_append_button (GNOME_DIALOG (sel), 
@@ -395,20 +423,19 @@ bonobo_selector_init (GtkWidget *widget)
 	gtk_signal_connect (GTK_OBJECT (sel), "close",
 		GTK_SIGNAL_FUNC (button_callback), sel);
 	
-	gtk_widget_set_usize (priv->clist, 200, 200);
-	gtk_widget_show (priv->clist);
-	gtk_widget_show (scrolled);
+	gtk_widget_set_usize (widget, 400, 300); 
+	gtk_widget_show_all (GNOME_DIALOG (sel)->vbox);
 }
 
 static void
 add_gnorba_objects (BonoboSelector *widget) 
 {
-	const gchar *text[3];
+	const gchar *text[4];
 	GList *list = NULL;
 	BonoboSelectorPrivate *priv;
-	
-	text[2] = NULL;
-	
+
+	text[3] = NULL;
+
 	g_return_if_fail (widget != NULL);
 	
 	priv = widget->priv;
@@ -428,14 +455,24 @@ add_gnorba_objects (BonoboSelector *widget)
 	
 	while (list != NULL)  
 	{
-		text[0] = od_server_info_get_description(list->data);
+		text[0] = od_server_info_get_name(list->data);
 		text[1] = od_server_info_get_id(list->data);
+		text[2] = od_server_info_get_description(list->data);
+		
 		gtk_clist_append (GTK_CLIST (priv->clist), (gchar**)text);
 		priv->n_servers++;
 		list = list->next;  	
 	}
 
 	gtk_clist_thaw (GTK_CLIST (priv->clist));
+}
+
+static gint
+server_list_compare (gconstpointer a, gconstpointer b)
+{
+	return strcmp (od_server_info_get_name ((ODServerInfo *)a),
+		       od_server_info_get_name ((ODServerInfo *)b));
+
 }
 
 static GList *
@@ -469,5 +506,8 @@ get_filtered_objects (BonoboSelector *widget)
 	if (priv->interfaces_required == NULL)
 		g_free (inters);
 
+	/* Sort the list */
+	g_list_sort (priv->servers, server_list_compare);
+	
 	return priv->servers;
 }
