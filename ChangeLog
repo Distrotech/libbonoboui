@@ -1,3 +1,18 @@
+2003-03-24  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
+
+	* Makefile.am (EXTRA_DIST): Include gtk-doc.make in the
+	distribution.
+
+	* doc/api/figures/Makefile.am: Don't delete the png files when
+	doing make maintainer-clean.
+
+	* configure.in: Use the macro GTK_DOC_CHECK to check for gtk-doc.
+
+	* Makefile.am (DISTCHECK_CONFIGURE_FLAGS): Pass --enable-gtk-doc
+	to configure when making distcheck, otherwise it fails.
+
+	* autogen.sh (REQUIRED_AUTOMAKE_VERSION): require automake 1.6.
+
 2003-03-21  Guntupalli Karunakar  <karunakar@freeedomink.org>
 
 	* configure.in: Added "ml" in ALL_LINGUUAS

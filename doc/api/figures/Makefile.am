@@ -12,7 +12,6 @@ all-local: $(diagrams_png)
 %.png: %.dia
 	@dia $< -e $@ 2> /dev/null || true
 
-MAINTAINERCLEANFILES = $(diagrams_png)
 
 EXTRA_DIST = $(diagrams) $(diagrams_png)
 
