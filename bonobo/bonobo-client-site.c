@@ -78,7 +78,7 @@ impl_GNOME_client_site_queue_resize (PortableServer_Servant servant, CORBA_Envir
 			 gnome_client_site_signals [QUEUE_RESIZE]);
 }
 
-GNOME_Persist_Status
+static GNOME_Persist_Status
 impl_GNOME_client_site_save_object (PortableServer_Servant servant, CORBA_Environment *ev)
 {
 	GnomeObject *object = gnome_object_from_servant (servant);
