@@ -20,10 +20,9 @@ noact_callback (GtkWidget *widget, gpointer data)
 	gchar *text;
 
 	text = bonobo_selector_select_id (_("Select an object"), NULL);
-	g_print("%s\n", text);
+	g_print ("%s\n", text);
 
-	if (text)
-		g_free(text);
+	g_free (text);
 }
 
 static void
@@ -46,9 +45,8 @@ panel_callback (GtkWidget *widget, gpointer data)
 
 		text = gnome_bonobo_select_goad_id (_("Select an object"), ints);
 		
-		g_print("%s\n", text);
-		if (text != NULL)
-			g_free(text);
+		g_print ("%s\n", text);
+		g_free (text);
 	}
 #endif
 }

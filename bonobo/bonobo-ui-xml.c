@@ -144,8 +144,10 @@ bonobo_ui_xml_get_data (BonoboUIXml *tree, BonoboUINode *node)
 	if (!bonobo_ui_node_get_data (node)) {
 		if (tree && tree->data_new)
 			bonobo_ui_node_set_data (node, tree->data_new ());
-		else
+		else {
+			g_warning ("Error: No tree, and no data on node; leaking");
 			bonobo_ui_node_set_data (node, g_new0 (BonoboUIXmlData, 1));
+		}
 	}
 
 	return bonobo_ui_node_get_data (node);
@@ -256,14 +258,6 @@ free_nodedata (BonoboUIXml *tree, BonoboUIXmlData *data,
 }
 
 static void
-node_free (BonoboUIXml *tree, BonoboUINode *node)
-{
-	free_nodedata (tree, bonobo_ui_node_get_data (node), FALSE);
-	bonobo_ui_node_unlink (node);
-	bonobo_ui_node_free (node);
-}
-
-static void
 free_nodedata_tree (BonoboUIXml *tree, BonoboUINode *node, gboolean do_overrides)
 {
 	BonoboUINode *l;
@@ -276,6 +270,14 @@ free_nodedata_tree (BonoboUIXml *tree, BonoboUINode *node, gboolean do_overrides
 	for (l = bonobo_ui_node_children (node); l;
              l = bonobo_ui_node_next (l));
 		free_nodedata_tree (tree, l, do_overrides);
+}
+
+static void
+node_free (BonoboUIXml *tree, BonoboUINode *node)
+{
+	free_nodedata_tree (tree, node, FALSE);
+	bonobo_ui_node_unlink (node);
+	bonobo_ui_node_free (node);
 }
 
 static void

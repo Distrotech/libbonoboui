@@ -3321,10 +3321,10 @@ bonobo_window_object_get (BonoboWindow   *win,
 }
 
 BonoboUIXmlError
-bonobo_window_xml_merge_tree (BonoboWindow  *win,
-			   const char *path,
-			   BonoboUINode    *tree,
-			   const char *component)
+bonobo_window_xml_merge_tree (BonoboWindow *win,
+			      const char   *path,
+			      BonoboUINode *tree,
+			      const char   *component)
 {
 	BonoboUIXmlError err;
 	
@@ -3352,6 +3352,7 @@ bonobo_window_xml_merge_tree (BonoboWindow  *win,
 		err = bonobo_ui_xml_merge (
 			win->priv->tree, path, bonobo_ui_node_children (tree),
 			win_component_cmp_name (win->priv, component));
+		bonobo_ui_node_free (tree);
 	} else
 		err = bonobo_ui_xml_merge (
 			win->priv->tree, path, tree,

@@ -803,8 +803,8 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	 * Introduce ourselves to the Control.
 	 */
 	Bonobo_Control_setFrame (control,
-				  bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
-				  &ev);
+				 bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
+				 &ev);
 	if (ev._major != CORBA_NO_EXCEPTION)
 		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);
@@ -825,7 +825,6 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	 * If the socket is realized, then we transfer the
 	 * window ID to the remote control.
 	 */
-
 	if (GTK_WIDGET_REALIZED (control_frame->priv->socket))
 		bonobo_control_frame_set_remote_window (
 			control_frame->priv->socket, control_frame);
