@@ -22,6 +22,8 @@
 #include "container-io.h"
 #include "component-io.h"
 
+#define STORAGE_TYPE "efs"
+
 static Bonobo_Stream open_stream (Bonobo_Storage storage, gchar * path);
 static Bonobo_Stream create_stream (Bonobo_Storage storage, gchar * path);
 static gchar *load_component_id (Bonobo_Storage storage);
@@ -191,7 +193,7 @@ sample_container_load (SampleApp * inst, const gchar * filename)
 	Bonobo_Storage_directory_list *list;
 	int i;
 
-	storage = bonobo_storage_open ("efs", filename,
+	storage = bonobo_storage_open (STORAGE_TYPE, filename,
 				       BONOBO_SS_RDWR | BONOBO_SS_CREATE,
 				       0664);
 	g_return_if_fail (storage);
@@ -225,7 +227,7 @@ sample_container_save (SampleApp * inst, const gchar * filename)
 	int i;
 
 	unlink (filename);
-	storage = bonobo_storage_open ("efs", filename,
+	storage = bonobo_storage_open (STORAGE_TYPE, filename,
 				       BONOBO_SS_RDWR | BONOBO_SS_CREATE,
 				       0664);
 	g_return_if_fail (storage);
