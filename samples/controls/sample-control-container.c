@@ -40,6 +40,29 @@ populate_property_list (GtkWidget *bw, GtkCList *clist)
 		case CORBA_tk_boolean:
 			row_array [1] = g_strdup (*((CORBA_boolean *) any->_value) ? "TRUE" : "FALSE");
 			break;
+		case CORBA_tk_string:
+			row_array [1] = g_strdup (*((CORBA_char **) any->_value));
+			break;
+		case CORBA_tk_short:
+			row_array [1] = g_strdup_printf ("%d", *(CORBA_short *) any->_value);
+			break;
+		case CORBA_tk_ushort:
+			row_array [1] = g_strdup_printf ("%d", *(CORBA_unsigned_short *) any->_value);
+			break;
+		case CORBA_tk_long:
+			row_array [1] = g_strdup_printf ("%d", *(CORBA_long *) any->_value);
+			break;
+		case CORBA_tk_ulong:
+			row_array [1] = g_strdup_printf ("%d", *(CORBA_unsigned_long *) any->_value);
+			break;
+		case CORBA_tk_float:
+			row_array [1] = g_strdup_printf ("%f", *(CORBA_float *) any->_value);
+			break;
+		case CORBA_tk_double:
+			row_array [1] = g_strdup_printf ("%g", *(CORBA_double *) any->_value);
+			break;
+		default:
+			row_array [1] = g_strdup ("Unhandled Property Type");
 		}
 
 		gtk_clist_append (clist, row_array);
@@ -75,6 +98,7 @@ table_create (GtkWidget *control)
 		}
 
 	/* Put the control in the center. */
+	gtk_widget_show (control);
 	gtk_table_attach (GTK_TABLE (table), control,
 			  1, 2, 1, 2,
 			  0, 0,
