@@ -22,7 +22,7 @@
 
 #include "container.h"
 
-void sample_container_load (SampleApp *inst, gchar *filename);
-void sample_container_save (SampleApp *inst, gchar *filename);
+void sample_container_load (SampleApp *inst, const gchar *filename);
+void sample_container_save (SampleApp *inst, const gchar *filename);
 
 #endif

@@ -1,4 +1,4 @@
-/* $Id */
+/* $Id$ */
 /*
   Sample-Container Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
   
@@ -17,35 +17,13 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef SAMPLE_COMPONENT_H
-#define SAMPLE_COMPONENT_H
-
-#include <gnome.h>
-#include <bonobo.h>
+#ifndef SAMPLE_CONTAINER_FILESEL_H
+#define SAMPLE_CONTAINER_FILESEL_H
 
 #include "container.h"
 
-struct _Component
-{
-    SampleApp	  *container;
-
-    BonoboClientSite   *client_site;
-    BonoboObjectClient *server;
-    gchar              *goad_id;
-    
-    GtkWidget	  *widget;
-    GtkWidget	  *views_hbox;
-    GList         *views;
-};
-
-void component_add_view (Component *component);
-void component_del_view (Component *component);
-void component_del (Component *component);
-
-void component_print (Component *component, GnomePrintContext *ctx,
-		      gdouble x, gdouble y,
-		      gdouble width, gdouble height);
-
-GtkWidget *component_create_frame (Component *component, gchar *goad_id);
-
+void container_request_file (SampleApp *app,
+			     gboolean save,
+			     GtkSignalFunc cb,
+			     gpointer user_data);
 #endif

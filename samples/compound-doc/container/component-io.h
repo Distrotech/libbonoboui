@@ -17,35 +17,16 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef SAMPLE_COMPONENT_H
-#define SAMPLE_COMPONENT_H
+#ifndef SAMPLE_COMPONENT_IO_H
+#define SAMPLE_COMPONENT_IO_H
 
-#include <gnome.h>
 #include <bonobo.h>
 
 #include "container.h"
+#include "component.h"
 
-struct _Component
-{
-    SampleApp	  *container;
-
-    BonoboClientSite   *client_site;
-    BonoboObjectClient *server;
-    gchar              *goad_id;
-    
-    GtkWidget	  *widget;
-    GtkWidget	  *views_hbox;
-    GList         *views;
-};
-
-void component_add_view (Component *component);
-void component_del_view (Component *component);
-void component_del (Component *component);
-
-void component_print (Component *component, GnomePrintContext *ctx,
-		      gdouble x, gdouble y,
-		      gdouble width, gdouble height);
-
-GtkWidget *component_create_frame (Component *component, gchar *goad_id);
+void component_load (Component *component, Bonobo_Stream stream);
+void component_save (Component *component, Bonobo_Stream stream);
+void component_save_id (Component *component, Bonobo_Stream stream);
 
 #endif

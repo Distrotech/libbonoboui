@@ -206,11 +206,11 @@ typedef struct {
 static guint
 final_setup (setup_data_t *sd)
 {
-	char **a = sd->startup_files;
+	const gchar **filenames = sd->startup_files;
 
-	while (a && *a) {
-		sample_container_load (sd->app, *a);
-		a++;
+	while (filenames && *filenames) {
+		sample_container_load (sd->app, *filenames);
+		filenames++;
 	}
 	
 	return FALSE;

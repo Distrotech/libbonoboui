@@ -20,7 +20,7 @@
 #include <bonobo.h>
 
 #include "container-io.h"
-#include "component.h"
+#include "component-io.h"
 
 static Bonobo_Stream open_stream (Bonobo_Storage storage,
 				  gchar *path);
@@ -197,7 +197,7 @@ load_component (SampleApp *inst,
 
 void
 sample_container_load (SampleApp *inst,
-		      gchar *filename)
+		      const gchar *filename)
 {
     CORBA_Environment ev;
     BonoboStorage *storage;
@@ -231,7 +231,7 @@ sample_container_load (SampleApp *inst,
 
 void
 sample_container_save (SampleApp *inst,
-		       gchar *filename)
+		       const gchar *filename)
 {
     CORBA_Environment ev;
     BonoboStorage *storage;

@@ -1,3 +1,18 @@
+2000-05-22  ERDI Gergo  <cactus@cactus.rulez.org>
+
+	* Makefile.am (sample_container_SOURCES): Add the new sources
+
+	* container-filesel.[ch]: Separated file request GUI (idea from
+	the original `sample-container'
+
+	* component-io.[ch]: separated component-level IO from other
+	component operations
+
+	* container-io.h: Use consts whereever possible
+
+	* container.c (final_setup): Removed a compile-time warning, and
+	renamed `a' to something more informative
+
 2000-05-05  Michael Meeks  <michael@helixcode.com>
 
 	* container.c (sample_app_exit): kill redundant forward definitions.

@@ -1,4 +1,4 @@
-/* $Id */
+/* $Id$ */
 /*
   Bonobo-Hello Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
   
@@ -19,6 +19,9 @@
 
 #include "component.h"
 
+#include "component-io.h"
+#include "container-filesel.h"
+
 static void activate_request_cb (BonoboViewFrame *view_frame,
 				 Component *component);
 static void view_activated_cb (BonoboViewFrame *view_frame,
@@ -33,6 +36,7 @@ static void component_user_context_cb (BonoboViewFrame *view_frame, Component *c
 static void add_view_cb (GtkWidget *caller, Component *component);
 static void del_view_cb (GtkWidget *caller, Component *component);
 static void del_cb      (GtkWidget *caller, Component *component);
+static void fill_cb     (GtkWidget *caller, Component *component);
 
 static void
 deactivate (Component *component)
@@ -179,110 +183,6 @@ component_print (Component *component,
     bonobo_print_data_free (print_data);
 }
 
-void
-component_load (Component *component, Bonobo_Stream stream)
-{
-    Bonobo_PersistStream persist;
-    Bonobo_Stream corba_stream = stream;
-    CORBA_Environment ev;
-
-    /* Get the PersistStream interface of our component */
-    persist = bonobo_object_client_query_interface (component->server,
-						    "IDL:Bonobo/PersistStream:1.0",
-						    NULL);
-    if (persist == CORBA_OBJECT_NIL)
-    {
-	printf ("noimplement\n");
-	/* This component doesn't implement load/save features */
-	return;
-    }
-
-    CORBA_exception_init (&ev);
-
-    Bonobo_PersistStream_load (persist, corba_stream, &ev);
-
-    /* See if we had any problems */
-    if (ev._major != CORBA_NO_EXCEPTION)
-	gnome_warning_dialog (_("An exception occured while trying "
-				"to load data into the component with "
-				"PersistStorage"));
-    Bonobo_Unknown_unref (persist, &ev);
-    CORBA_Object_release (persist, &ev);
-/*    bonobo_object_unref (BONOBO_OBJECT (stream));*/
-    
-    CORBA_exception_free (&ev);
-}
-
-void
-component_save (Component *component, Bonobo_Stream stream)
-{
-    Bonobo_PersistStream persist;
-    Bonobo_Stream corba_stream = stream;
-    CORBA_Environment ev;
-
-    /* Get the PersistStream interface of our component */
-    persist = bonobo_object_client_query_interface (component->server,
-						    "IDL:Bonobo/PersistStream:1.0",
-						    NULL);
-    if (persist == CORBA_OBJECT_NIL)
-    {
-	printf ("noimplement\n");
-	/* This component doesn't implement load/save features */
-	return;
-    }
-
-    CORBA_exception_init (&ev);
-
-    Bonobo_PersistStream_save (persist, corba_stream, &ev);
-
-    /* See if we had any problems */
-    if (ev._major != CORBA_NO_EXCEPTION) {
-	gnome_warning_dialog (_("An exception occured while trying "
-				"to save data from the component with "
-				"PersistStorage"));
-    } else {
-	Bonobo_Unknown_unref (persist, &ev);
-	
-	CORBA_Object_release (persist, &ev);
-    }
-    
-    CORBA_exception_free (&ev);
-}
-
-void
-component_save_id (Component *component, Bonobo_Stream stream)
-{
-    Bonobo_Stream_iobuf *buffer;
-    Bonobo_Stream corba_stream = stream;
-    size_t pos = 0, length = strlen (component->goad_id);
-    CORBA_Environment ev;
-    
-    CORBA_exception_init (&ev);
-
-    buffer = Bonobo_Stream_iobuf__alloc ();
-    buffer->_length = length;
-    buffer->_buffer = component->goad_id;
-
-    while (pos < length)
-    {
-	CORBA_long bytes_written;
-	
-	bytes_written = Bonobo_Stream_write (corba_stream, buffer, &ev);
-	
-	if (ev._major != CORBA_NO_EXCEPTION)
-	{
-	    CORBA_free (buffer);
-	    CORBA_exception_free (&ev);
-	    return;
-	}
-	
-	pos += bytes_written;
-    }
-
-    CORBA_free (buffer);
-    CORBA_exception_free (&ev);
-}
-
 static void
 activate_request_cb (BonoboViewFrame *view_frame, Component *component)
 {
@@ -377,7 +277,9 @@ component_create_frame (Component *component, gchar *goad_id)
 {
     GtkWidget *frame;
     GtkWidget *vbox, *hbox;
-    GtkWidget *new_view_button, *del_view_button, *del_comp_button;
+    GtkWidget *new_view_button, *del_view_button,
+	*del_comp_button,
+	*fill_comp_button;
     
     /* Display widgets */
     frame = component->widget = gtk_frame_new (goad_id);
@@ -390,15 +292,26 @@ component_create_frame (Component *component, gchar *goad_id)
     /* The views of the component */
     component->views_hbox = gtk_hbox_new (FALSE, 2);
     gtk_signal_connect (GTK_OBJECT (new_view_button), "clicked",
-			add_view_cb, component);
+			GTK_SIGNAL_FUNC (add_view_cb), component);
     gtk_signal_connect (GTK_OBJECT (del_view_button), "clicked",
-			del_view_cb, component);
+			GTK_SIGNAL_FUNC (del_view_cb), component);
     gtk_signal_connect (GTK_OBJECT (del_comp_button), "clicked",
-			del_cb, component);
-
+			GTK_SIGNAL_FUNC (del_cb), component);
+    
     gtk_container_add (GTK_CONTAINER (hbox), new_view_button);
     gtk_container_add (GTK_CONTAINER (hbox), del_view_button);
     gtk_container_add (GTK_CONTAINER (hbox), del_comp_button);
+
+    if (bonobo_object_client_has_interface (component->server,
+					    "IDL:Bonobo/PersistStream:1.0", NULL))
+    {
+	fill_comp_button = gtk_button_new_with_label ("Fill with stream");
+	gtk_container_add (GTK_CONTAINER (hbox), fill_comp_button);
+	
+	gtk_signal_connect (GTK_OBJECT (fill_comp_button), "clicked",
+			    GTK_SIGNAL_FUNC (fill_cb), component);
+    }
+
 
     gtk_container_add (GTK_CONTAINER (vbox), component->views_hbox);
     gtk_container_add (GTK_CONTAINER (vbox), hbox);
@@ -428,3 +341,89 @@ del_cb (GtkWidget *caller, Component *component)
     component_del (component);
 }
 
+static void
+load_stream_cb (GtkWidget *caller, Component *component)
+{
+    GtkWidget *fs = component->container->fileselection;
+    gchar *filename = g_strdup (gtk_file_selection_get_filename
+				(GTK_FILE_SELECTION (fs)));
+    gtk_widget_destroy (fs);
+    
+    if (filename)
+    {
+	CORBA_Environment ev;
+	Bonobo_PersistStream persist;
+	BonoboStream *stream;
+	
+	stream = bonobo_stream_fs_open (filename, Bonobo_Storage_READ);
+
+	if (stream == NULL)
+	{
+	    gchar *error_msg;
+	    
+	    error_msg = g_strdup_printf (_("Could not open file %s"), filename);
+	    gnome_warning_dialog (error_msg);
+	    g_free (error_msg);
+	    
+	    return;
+	}
+
+	/*
+	 * Now get the PersistStream interface off the embedded
+	 * component.
+	 */
+	persist = bonobo_object_client_query_interface (component->server,
+							"IDL:Bonobo/PersistStream:1.0",
+							NULL);
+
+	/*
+	 * If the component doesn't support PersistStream (and it
+	 * really ought to -- we query it to see if it supports
+	 * PersistStream before we even give the user the option of
+	 * loading data into it with PersistStream), then we destroy
+	 * the stream we created and bail.
+	 */
+	if (persist == CORBA_OBJECT_NIL)
+	{
+	    gnome_warning_dialog (_("The component now claims that it "
+				    "doesn't support PersistStream!"));
+	    bonobo_object_unref (BONOBO_OBJECT (stream));
+	    g_free (filename);
+	    return;
+	}
+
+	CORBA_exception_init (&ev);
+
+	/*
+	 * Load the file into the component using PersistStream.
+	 */
+	Bonobo_PersistStream_load (persist,
+				   (Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)),
+				   &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+	    gnome_warning_dialog (_("An exception occured while trying "
+				    "to load data into the component with "
+				    "PersistStream"));
+	}
+	
+	/*
+	 * Now we destroy the PersistStream object.
+	 */
+	Bonobo_Unknown_unref (persist, &ev);
+	CORBA_Object_release (persist, &ev);
+
+	bonobo_object_unref (BONOBO_OBJECT (stream));
+	
+	CORBA_exception_free (&ev);
+    }
+    
+    g_free (filename);
+}
+
+static void
+fill_cb (GtkWidget *caller, Component *component)
+{
+    container_request_file (component->container, FALSE,
+			    load_stream_cb, component);
+}

@@ -22,6 +22,7 @@
 
 #include "container-io.h"
 #include "container-print.h"
+#include "container-filesel.h"
 
 static void add_cb (GtkWidget *caller, SampleApp *app);
 static void load_cb (GtkWidget *caller, SampleApp *inst);
@@ -105,11 +106,6 @@ add_cb (GtkWidget *caller, SampleApp *inst)
 }
 
 #if GUI
-static void
-cancel_cb (GtkWidget *caller, GtkWidget *fs)
-{
-    gtk_widget_destroy (fs);
-}
 
 static void
 load_ok_cb (GtkWidget *caller, SampleApp *app)
@@ -118,9 +114,10 @@ load_ok_cb (GtkWidget *caller, SampleApp *app)
     gchar *filename = gtk_file_selection_get_filename
 	(GTK_FILE_SELECTION (fs));
     
-    gtk_widget_hide (fs);
     if (filename)
 	sample_container_load (app, filename);
+
+    gtk_widget_destroy (fs);
 }
 
 static void
@@ -130,9 +127,10 @@ save_ok_cb (GtkWidget *caller, SampleApp *app)
     gchar *filename = gtk_file_selection_get_filename
 	(GTK_FILE_SELECTION (fs));
     
-    gtk_widget_hide (fs);
     if (filename)
 	sample_container_save (app, filename);
+    
+    gtk_widget_destroy (fs);
 }
 #endif
 
@@ -141,16 +139,7 @@ static void
 save_cb (GtkWidget *caller, SampleApp *app)
 {
 #if GUI
-    GtkWidget *fs;
-
-    app->fileselection = fs = gtk_file_selection_new (_("Select file"));
-    gtk_file_selection_show_fileop_buttons (GTK_FILE_SELECTION (fs));
-    gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->ok_button),
-			"clicked", save_ok_cb, app);
-    gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->cancel_button),
-			"clicked", cancel_cb, fs);
-    gtk_window_set_modal (GTK_WINDOW (fs), TRUE);
-    gtk_widget_show (fs);
+    container_request_file (app, TRUE, save_ok_cb, app);
 #else    
     sample_container_save (app, FILE);
 #endif
@@ -160,16 +149,7 @@ static void
 load_cb (GtkWidget *caller, SampleApp *app)
 {
 #if GUI
-    GtkWidget *fs;
-
-    app->fileselection = fs = gtk_file_selection_new (_("Select file"));
-    gtk_file_selection_hide_fileop_buttons (GTK_FILE_SELECTION (fs));
-    gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->ok_button),
-			"clicked", load_ok_cb, app);
-    gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->cancel_button),
-			"clicked", cancel_cb, fs);
-    gtk_window_set_modal (GTK_WINDOW (fs), TRUE);
-    gtk_widget_show (fs);
+    container_request_file (app, FALSE, load_ok_cb, app);
 #else
     sample_container_load (app, FILE);
 #endif
