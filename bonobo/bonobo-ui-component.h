@@ -2,10 +2,10 @@
 #ifndef _BONOBO_UI_COMPONENT_H_
 #define _BONOBO_UI_COMPONENT_H_
 
-BEGIN_GNOME_DECLS
-
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-ui-node.h>
+
+BEGIN_GNOME_DECLS
 
 #define BONOBO_UI_COMPONENT_TYPE        (bonobo_ui_component_get_type ())
 #define BONOBO_UI_COMPONENT(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_COMPONENT_TYPE, BonoboUIComponent))
