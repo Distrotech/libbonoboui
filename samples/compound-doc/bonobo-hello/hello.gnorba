@@ -1,0 +1,11 @@
+[bonobo-object-factory:hello]
+type=exe
+repo_id=IDL:Bonobo/EmbeddableFactory:1.0 IDL:Bonobo/GenericFactory:1.0
+description=Hello World embeddable factory
+location_info=bonobo-hello
+
+[bonobo-object:hello]
+type=factory
+repo_id=IDL:BonoboObject/hello:1.0 IDL:Bonobo/Embeddable:1.0 
+description=Hello World bonobo object
+location_info=bonobo-object-factory:hello

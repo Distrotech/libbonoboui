@@ -1,0 +1,21 @@
+<oaf_info>
+
+<oaf_server iid="OAFIID:bonobo-hello-factory:0.4" type="exe" location="bonobo-hello">
+  <oaf_attribute name="repo_ids" type="stringv">
+    <item value="IDL:Bonobo/GenericFactory:1.0"/>
+  </oaf_attribute>
+  <oaf_attribute name="description" type="string" value="Bonobo-Hello factory"/>
+</oaf_server>
+
+<oaf_server iid="OAFIID:bonobo-hello:0.4" type="factory" location="OAFIID:bonobo-hello-factory:0.4">
+  <oaf_attribute name="repo_ids" type="stringv">
+    <item value="IDL:Bonobo/Unknown:1.0"/>
+    <item value="IDL:Bonobo/Embeddable:1.0"/>
+    <item value="IDL:Bonobo/ProgressiveDataSink:1.0"/>
+    <item value="IDL:Bonobo/PersistStream:1.0"/>
+    <item value="IDL:Bonobo/Persist:1.0"/>
+  </oaf_attribute>
+  <oaf_attribute name="description" type="string" value="Bonobo-Hello"/>
+</oaf_server>
+
+</oaf_info>
