@@ -727,18 +727,6 @@ check_excess_widgets (BonoboWindowPrivate *priv, GList *wptr)
 	}
 }
 
-static void
-cmd_set_dirty (BonoboWindowPrivate *priv, BonoboUINode *cmd_node)
-{
-	BonoboUIXmlData *data;
-
-	if (!cmd_node)
-		return;
-
-	data = bonobo_ui_xml_get_data (priv->tree, cmd_node);
-	data->dirty = TRUE;
-}
-
 /*
  * Returns: TRUE if hiddenness changed.
  */
@@ -2953,6 +2941,8 @@ popup_remove (BonoboWindowPrivate *priv,
 
 	g_return_if_fail (priv != NULL);
 	g_return_if_fail (popup != NULL);
+
+	gtk_signal_disconnect_by_data (GTK_OBJECT (popup->menu), popup);
 
 	node = bonobo_ui_xml_get_path (priv->tree, popup->path);
 	prune_widget_info (priv, node, TRUE);
