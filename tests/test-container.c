@@ -1,3 +1,14 @@
+/*
+ * test-container.c
+ *
+ * A simple program to act as a test container for BonoboObjects.
+ *
+ * Authors:
+ *    Nat Friedman (nat@gnome-support.com)
+ *    Miguel de Icaza (miguel@gnu.org)
+ */
+
+ 
 #include <config.h>
 #include <gnome.h>
 #include <libgnorba/gnorba.h>
@@ -127,7 +138,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
         if (persist == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: BonoboObject supports PersistStream");
+	printf ("Good: BonoboObject supports PersistStream\n");
 	
 	stream = gnome_stream_fs_open (NULL, "/tmp/a.png", GNOME_Storage_READ);
 
@@ -184,7 +195,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
         if (persist == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: BonoboObject supports PersistStream");
+	printf ("Good: BonoboObject supports PersistStream\n");
 	
 	stream = gnome_stream_fs_open (NULL, "/usr/dict/words",
 				       GNOME_Storage_READ);
@@ -286,7 +297,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
         if (psink == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: BonoboObject supports ProgressiveDataSink");
+	printf ("Good: BonoboObject supports ProgressiveDataSink\n");
 
 	tmt = g_new0 (struct progressive_timeout, 1);
 
