@@ -19,7 +19,7 @@ bonobo_libs = 			\
 	libbonobo.la 		\
 	$(gnome_libs)
 
- 
+
 lib_LTLIBRARIES = libbonobo.la
 noinst_PROGRAMS = object_test test-container sample-server \
 			test-container-autoload
@@ -42,10 +42,10 @@ idls =						\
 	$(top_srcdir)/idl/gnome-storage.idl	\
 	$(top_srcdir)/idl/gnome-progressive.idl
 
-idl_flags = `gnome-config --cflags idl`
+idl_flags = `$(GNOME_CONFIG) --cflags idl`
 
 $(CORBA_SOURCE): $(idls)
-	orbit-idl $(top_srcdir)/idl/bonobo.idl $(idl_flags)
+	$(ORBIT_IDL) $(top_srcdir)/idl/bonobo.idl $(idl_flags)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
