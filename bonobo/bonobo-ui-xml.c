@@ -512,10 +512,13 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		old_data->overridden = g_slist_next (data->overridden);
 		g_slist_free_1 (data->overridden);
 		data->overridden = NULL;
+
+		/* Fire remove while still in tree */
+		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
 		
 		/* Move children across */
 		move_children (node, old);
-		
+
 		/* Switch node back into tree */
 		bonobo_ui_node_replace (old, node);
 
@@ -523,6 +526,7 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		bonobo_ui_xml_set_dirty (tree, old);
 
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REINSTATE], old);
+
 	} else if (bonobo_ui_node_children (node)) { /* We need to leave the node here */
 		/* Re-tag the node */
 		BonoboUIXmlData *child_data = 
@@ -534,14 +538,12 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		
 		gtk_signal_emit (GTK_OBJECT (tree), signals [RENAME], node);
 		return;
-	}
+	} else
+		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
+
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",
 		node->name, bonobo_ui_node_get_attr (node, "name"));*/
-		
-	/* Mark dirty */
-	bonobo_ui_xml_set_dirty (tree, node);
-	
-	gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
+			
 	bonobo_ui_node_unlink (node);
 	
 	if (node == tree->root) /* Ugly special case */

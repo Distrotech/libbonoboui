@@ -20,23 +20,28 @@
 
 POA_Bonobo_UIContainer__vepv bonobo_ui_container_vepv;
 
+struct _BonoboUIContainerPrivate {
+	BonoboUIEngine *engine;
+	int             flags;
+};
+
 #define WIN_DESTROYED 0x1
 
-static BonoboWindow *
-bonobo_ui_container_from_servant (PortableServer_Servant servant)
+static BonoboUIEngine *
+get_engine (PortableServer_Servant servant)
 {
 	BonoboUIContainer *container;
 
 	container = BONOBO_UI_CONTAINER (bonobo_object_from_servant (servant));
 	g_return_val_if_fail (container != NULL, NULL);
 
-	if (container->win == NULL) {
-		if (!container->flags & WIN_DESTROYED)
+	if (container->priv->engine == NULL) {
+		if (!container->priv->flags & WIN_DESTROYED)
 			g_warning ("Trying to invoke CORBA method "
 				   "on unbound UIContainer");
 		return NULL;
 	} else
-		return container->win;
+		return container->priv->engine;
 }
 
 static void
@@ -45,9 +50,9 @@ impl_Bonobo_UIContainer_registerComponent (PortableServer_Servant   servant,
 					   const Bonobo_Unknown     object,
 					   CORBA_Environment       *ev)
 {
-	BonoboWindow *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine *engine = get_engine (servant);
 
-	bonobo_window_register_component (win, component_name, object);
+	bonobo_ui_engine_register_component (engine, component_name, object);
 }
 
 static void
@@ -55,12 +60,12 @@ impl_Bonobo_UIContainer_deregisterComponent (PortableServer_Servant servant,
 					     const CORBA_char      *component_name,
 					     CORBA_Environment     *ev)
 {
-	BonoboWindow *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine *engine = get_engine (servant);
 
-	if (!win)
+	if (!engine)
 		return;
 
-	bonobo_window_deregister_component (win, component_name);
+	bonobo_ui_engine_deregister_component (engine, component_name);
 }
 
 static void
@@ -70,10 +75,23 @@ impl_Bonobo_UIContainer_setNode (PortableServer_Servant   servant,
 				 const CORBA_char        *component_name,
 				 CORBA_Environment       *ev)
 {
-	BonoboWindow *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine  *engine = get_engine (servant);
 	BonoboUIXmlError err;
+	BonoboUINode    *node;
 
-	err = bonobo_window_xml_merge (win, path, xml, component_name);
+/*	fprintf (stderr, "Merging :\n%s\n", xml);*/
+
+	if (!xml)
+		err = BONOBO_UI_XML_BAD_PARAM;
+	else {
+		node = bonobo_ui_node_from_string (xml);
+		
+		if (!node)
+			err = BONOBO_UI_XML_INVALID_XML;
+		else
+			err = bonobo_ui_engine_xml_merge_tree (
+				engine, path, node, component_name);
+	}
 
 	if (err) {
 		if (err == BONOBO_UI_XML_INVALID_PATH)
@@ -93,10 +111,10 @@ impl_Bonobo_UIContainer_getNode (PortableServer_Servant servant,
 				 const CORBA_boolean    nodeOnly,
 				 CORBA_Environment     *ev)
 {
-	BonoboWindow  *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine *engine = get_engine (servant);
 	CORBA_char *xml;
 
-	xml = bonobo_window_xml_get (win, path, nodeOnly);
+	xml = bonobo_ui_engine_xml_get (engine, path, nodeOnly);
 	if (!xml) {
 		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
 				     ex_Bonobo_UIContainer_InvalidPath, NULL);
@@ -112,15 +130,15 @@ impl_Bonobo_UIContainer_removeNode (PortableServer_Servant servant,
 				    const CORBA_char      *component_name,
 				    CORBA_Environment     *ev)
 {
-	BonoboWindow *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine *engine = get_engine (servant);
 	BonoboUIXmlError err;
 
-	if (!win)
+	if (!engine)
 		return;
 
 /*	g_warning ("Node remove '%s' for '%s'", path, component_name);*/
 
-	err = bonobo_window_xml_rm (win, path, component_name);
+	err = bonobo_ui_engine_xml_rm (engine, path, component_name);
 
 	if (err)
 		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
@@ -132,9 +150,9 @@ impl_Bonobo_UIContainer_exists (PortableServer_Servant servant,
 				const CORBA_char      *path,
 				CORBA_Environment     *ev)
 {
-	BonoboWindow *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine *engine = get_engine (servant);
 
-	return bonobo_window_xml_node_exists (win, path);
+	return bonobo_ui_engine_xml_node_exists (engine, path);
 }
 
 static void
@@ -143,10 +161,10 @@ impl_Bonobo_UIContainer_setObject (PortableServer_Servant servant,
 				   const Bonobo_Unknown   control,
 				   CORBA_Environment     *ev)
 {
-	BonoboWindow *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine *engine = get_engine (servant);
 	BonoboUIXmlError err;
 
-	err = bonobo_window_object_set (win, path, control, ev);
+	err = bonobo_ui_engine_object_set (engine, path, control, ev);
 
 	if (err)
 		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
@@ -158,11 +176,11 @@ impl_Bonobo_UIContainer_getObject (PortableServer_Servant servant,
 				   const CORBA_char      *path,
 				   CORBA_Environment     *ev)
 {
-	BonoboWindow *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine *engine = get_engine (servant);
 	BonoboUIXmlError err;
 	Bonobo_Unknown object;
 
-	err = bonobo_window_object_get (win, path, &object, ev);
+	err = bonobo_ui_engine_object_get (engine, path, &object, ev);
 
 	if (err)
 		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
@@ -173,30 +191,34 @@ impl_Bonobo_UIContainer_getObject (PortableServer_Servant servant,
 
 static void
 impl_Bonobo_UIContainer_freeze (PortableServer_Servant   servant,
-	     CORBA_Environment       *ev)
+				CORBA_Environment       *ev)
 {
-	BonoboWindow *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine *engine = get_engine (servant);
 
-	bonobo_window_freeze (win);
+	bonobo_ui_engine_freeze (engine);
 }
 
 static void
 impl_Bonobo_UIContainer_thaw (PortableServer_Servant   servant,
-	     CORBA_Environment       *ev)
+			      CORBA_Environment       *ev)
 {
-	BonoboWindow *win = bonobo_ui_container_from_servant (servant);
+	BonoboUIEngine *engine = get_engine (servant);
 
-	bonobo_window_thaw (win);
+	bonobo_ui_engine_thaw (engine);
 }
 
 static void
 bonobo_ui_container_destroy (GtkObject *object)
 {
+}
+
+static void
+bonobo_ui_container_finalize (GtkObject *object)
+{
 	BonoboUIContainer *container = (BonoboUIContainer *) object;
 
-	if (container->win)
-		gtk_signal_disconnect_by_data (
-			GTK_OBJECT (container->win), container);
+	g_free (container->priv);
+	container->priv = NULL;
 }
 
 /**
@@ -229,12 +251,21 @@ bonobo_ui_container_get_epv (void)
 }
 
 static void
+bonobo_ui_container_init (GtkObject *object)
+{
+	BonoboUIContainer *container = (BonoboUIContainer *) object;
+
+	container->priv = g_new0 (BonoboUIContainerPrivate, 1);
+}
+
+static void
 bonobo_ui_container_class_init (GtkObjectClass *klass)
 {
 	bonobo_ui_container_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
 	bonobo_ui_container_vepv.Bonobo_UIContainer_epv = bonobo_ui_container_get_epv ();
 
-	klass->destroy = bonobo_ui_container_destroy;
+	klass->destroy  = bonobo_ui_container_destroy;
+	klass->finalize = bonobo_ui_container_finalize;
 }
 
 /**
@@ -253,7 +284,7 @@ bonobo_ui_container_get_type (void)
 			sizeof (BonoboUIContainer),
 			sizeof (BonoboUIContainerClass),
 			(GtkClassInitFunc) bonobo_ui_container_class_init,
-			(GtkObjectInitFunc) NULL,
+			(GtkObjectInitFunc) bonobo_ui_container_init,
 			NULL, /* reserved 1 */
 			NULL, /* reserved 2 */
 			(GtkClassInitFunc) NULL
@@ -328,10 +359,35 @@ bonobo_ui_container_new (void)
 }
 
 static void
-blank_win (GtkObject *win, BonoboUIContainer *container)
+blank_engine (GtkObject *win, BonoboUIContainer *container)
 {
-	container->win = NULL;
-	container->flags |= WIN_DESTROYED;
+	container->priv->engine = NULL;
+	container->win          = NULL;
+	container->priv->flags |= WIN_DESTROYED;
+}
+
+void
+bonobo_ui_container_set_engine (BonoboUIContainer *container,
+				BonoboUIEngine    *engine)
+{
+	g_return_if_fail (BONOBO_IS_UI_CONTAINER (container));
+
+	container->priv->engine = engine;
+	bonobo_ui_engine_set_ui_container (
+		engine, BONOBO_OBJECT (container));
+
+	gtk_signal_connect_while_alive (
+		GTK_OBJECT (engine), "destroy",
+		(GtkSignalFunc) blank_engine,
+		container, GTK_OBJECT (container));
+}
+
+BonoboUIEngine *
+bonobo_ui_container_get_engine (BonoboUIContainer *container)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_CONTAINER (container), NULL);
+
+	return container->priv->engine;
 }
 
 void
@@ -342,16 +398,21 @@ bonobo_ui_container_set_win (BonoboUIContainer *container,
 
 	container->win = win;
 
-	bonobo_window_set_ui_container (win, BONOBO_OBJECT (container));
+	bonobo_ui_container_set_engine (
+		container, bonobo_window_get_ui_engine (win));
 
-	gtk_signal_connect (GTK_OBJECT (win), "destroy",
-			    (GtkSignalFunc) blank_win, container);
+	gtk_signal_connect_while_alive (
+		GTK_OBJECT (win), "destroy",
+		(GtkSignalFunc) blank_engine,
+		container, GTK_OBJECT (container));
 }
 
 BonoboWindow *
 bonobo_ui_container_get_win (BonoboUIContainer *container)
 {
 	g_return_val_if_fail (BONOBO_IS_UI_CONTAINER (container), NULL);
+
+	g_warning ("bonobo_ui_container_get_win is deprecated");
 
 	return container->win;
 }

@@ -18,11 +18,15 @@
 #define BONOBO_IS_UI_CONTAINER(o)       (GTK_CHECK_TYPE ((o), BONOBO_UI_CONTAINER_TYPE))
 #define BONOBO_IS_UI_CONTAINER_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_UI_CONTAINER_TYPE))
 
+typedef struct _BonoboUIContainerPrivate BonoboUIContainerPrivate;
+
 typedef struct {
 	BonoboObject base;
 
-	int          flags;
-	BonoboWindow   *win;
+	BonoboUIContainerPrivate *priv;
+
+	/* For backwards compatibility, strongly deprecated */
+	BonoboWindow *win;
 } BonoboUIContainer;
 
 typedef struct {
@@ -37,8 +41,13 @@ BonoboUIContainer           *bonobo_ui_container_construct           (BonoboUICo
 
 BonoboUIContainer           *bonobo_ui_container_new                 (void);
 
+void                         bonobo_ui_container_set_engine          (BonoboUIContainer  *container,
+								      BonoboUIEngine     *engine);
+BonoboUIEngine              *bonobo_ui_container_get_engine          (BonoboUIContainer  *container);
+
 void                         bonobo_ui_container_set_win             (BonoboUIContainer  *container,
 								      BonoboWindow       *win);
+/* Deprecated */
 BonoboWindow                *bonobo_ui_container_get_win             (BonoboUIContainer  *container);
 
 #endif /* _BONOBO_UI_CONTAINER_H_ */

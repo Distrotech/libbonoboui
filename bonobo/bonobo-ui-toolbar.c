@@ -727,7 +727,6 @@ impl_finalize (GtkObject *object)
 {
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
-	GList *p;
 
 	toolbar = BONOBO_UI_TOOLBAR (object);
 	priv = toolbar->priv;
@@ -736,6 +735,9 @@ impl_finalize (GtkObject *object)
 	priv->items = NULL;
 	
 	g_free (priv);
+
+	if (GTK_OBJECT_CLASS (parent_class)->finalize != NULL)
+		GTK_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 

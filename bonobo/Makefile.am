@@ -2,7 +2,7 @@ PLUGIN_DIR=$(libdir)/bonobo/plugin
 
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
-	-DBONOBO_UIDIR=\""$(datadir)/gnome/ui"\"	\
+	-DBONOBO_UIDIR=\""$(datadir)/gnome/ui/"\"	\
 	-DPLUGIN_DIR=\""$(PLUGIN_DIR)"\"		\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-I. 						\
@@ -145,7 +145,9 @@ libbonoboinclude_HEADERS =			\
 	bonobo-transient.h			\
 	bonobo-ui-component.h            	\
 	bonobo-ui-container.h            	\
+	bonobo-ui-engine.h	            	\
 	bonobo-ui-node.h                 	\
+	bonobo-ui-sync.h			\
 	bonobo-ui-toolbar-button-item.h  	\
 	bonobo-ui-toolbar-icon.h         	\
 	bonobo-ui-toolbar-item.h		\
@@ -162,6 +164,10 @@ libbonoboinclude_HEADERS =			\
 
 noinst_HEADERS =				\
 	bonobo-activation-context.h		\
+	bonobo-ui-sync-menu.h			\
+	bonobo-ui-sync-keys.h			\
+	bonobo-ui-sync-status.h			\
+	bonobo-ui-sync-toolbar.h		\
 	bonobo-ui-toolbar.h			\
 	bonobo-ui-toolbar-control-item.h  	\
 	bonobo-ui-toolbar-popup-item.h		\
@@ -187,7 +193,13 @@ libbonobox_la_SOURCES =				\
 	bonobo-socket.c				\
 	bonobo-ui-component.c            	\
 	bonobo-ui-container.c            	\
+	bonobo-ui-engine.c			\
 	bonobo-ui-node.c                 	\
+	bonobo-ui-sync.c			\
+	bonobo-ui-sync-menu.c			\
+	bonobo-ui-sync-keys.c			\
+	bonobo-ui-sync-status.c			\
+	bonobo-ui-sync-toolbar.c		\
 	bonobo-ui-toolbar-button-item.c  	\
 	bonobo-ui-toolbar-control-item.c  	\
 	bonobo-ui-toolbar-icon.c         	\
@@ -198,7 +210,6 @@ libbonobox_la_SOURCES =				\
 	bonobo-ui-toolbar.c			\
 	bonobo-ui-util.c			\
 	bonobo-ui-xml.c				\
-	bonobo-ui-xml.h				\
 	bonobo-view-frame.c			\
 	bonobo-view.c				\
 	bonobo-widget.c				\
