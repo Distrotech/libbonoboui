@@ -1,3 +1,9 @@
+2004-06-25  Muktha  <muktha.narayan@wipro.com>
+
+	* bonobo/bonobo-ui-engine.c
+	(check_excess_widgets): Add a check for NULL in
+	g_message.
+
 2004-05-14  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.6.1
