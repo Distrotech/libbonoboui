@@ -1228,7 +1228,6 @@ bonobo_ui_toolbar_construct (BonoboUIToolbar *toolbar)
 			    GTK_SIGNAL_FUNC (popup_window_button_release_cb), toolbar);
 
 	frame = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 	gtk_widget_show (frame);
 	gtk_container_add (GTK_CONTAINER (priv->popup_window), frame);
 

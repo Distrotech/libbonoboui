@@ -619,6 +619,11 @@ create_dockitem (BonoboUISyncToolbar *sync,
 	item = GNOME_DOCK_ITEM (gnome_dock_item_new (
 		dockname, beh));
 
+	if (gnome_preferences_get_toolbar_relief ()
+		gnome_dock_item_set_shadow_type (item, GTK_SHADOW_OUT);
+	else
+		gnome_dock_item_set_shadow_type (item, GTK_SHADOW_NONE);
+
 	gtk_container_set_border_width (GTK_CONTAINER (item), 2);
 
 	if ((prop = bonobo_ui_node_get_attr (node, "placement"))) {
@@ -661,7 +666,7 @@ create_dockitem (BonoboUISyncToolbar *sync,
 
 		
 	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
-	
+
 	gtk_container_add (GTK_CONTAINER (item),
 			   GTK_WIDGET (toolbar));
 	gtk_widget_show (GTK_WIDGET (toolbar));
