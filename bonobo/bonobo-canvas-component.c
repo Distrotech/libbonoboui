@@ -675,7 +675,6 @@ BONOBO_X_TYPE_FUNC_FULL (BonoboCanvasComponent,
 /**
  * bonobo_canvas_component_construct:
  * @comp: a #BonoboCanvasComponent to initialize
- * @corba_canvas_comp: A Bonobo_Canvas_Component corba object.
  * @item: A #GnomeCanvasItem that is being exported
  *
  * Creates a CORBA server for the interface Bonobo::Canvas::Item

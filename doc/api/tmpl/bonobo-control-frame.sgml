@@ -70,8 +70,10 @@ An implementation of the container's frame containing a Control
 
 </para>
 
-@uic: 
+@ui_container: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@uic: 
 
 
 <!-- ##### FUNCTION bonobo_control_frame_get_widget ##### -->
@@ -214,9 +216,10 @@ An implementation of the container's frame containing a Control
 </para>
 
 @control_frame: 
-@uih: 
+@ui_container: 
 @Returns: 
 <!-- # Unused Parameters # -->
+@uih: 
 @corba_control_frame: 
 
 

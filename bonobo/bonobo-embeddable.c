@@ -281,7 +281,6 @@ impl_Bonobo_Embeddable_createCanvasItem (PortableServer_Servant servant,
 /**
  * bonobo_embeddable_construct:
  * @embeddable: BonoboEmbeddable object to construct.
- * @corba_embeddable: The CORBA reference that implements this object.
  * @view_factory: Factory routine that provides new views of the embeddable on demand
  * @view_factory_data: pointer passed to the @view_factory routine to provide context.
  * @item_factory: A factory routine that creates BonoboCanvasComponents.
@@ -323,7 +322,6 @@ bonobo_embeddable_construct_full (BonoboEmbeddable *embeddable,
 /**
  * bonobo_embeddable_construct:
  * @embeddable: BonoboEmbeddable object to construct.
- * @corba_embeddable: The CORBA reference that implements this object.
  * @factory: Factory routine that provides new views of the embeddable on demand
  * @data: pointer passed to the @factory routine to provide context.
  * 

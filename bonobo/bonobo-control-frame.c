@@ -270,7 +270,6 @@ bonobo_control_frame_create_socket (BonoboControlFrame *control_frame)
 /**
  * bonobo_control_frame_construct:
  * @control_frame: The #BonoboControlFrame object to be initialized.
- * @corba_control_frame: A CORBA object for the Bonobo_ControlFrame interface.
  * @ui_container: A CORBA object for the UIContainer for the container application.
  *
  * Initializes @control_frame with the parameters.

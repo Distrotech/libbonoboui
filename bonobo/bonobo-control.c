@@ -808,6 +808,7 @@ bonobo_control_get_properties (BonoboControl *control)
  * bonobo_control_get_ambient_properties:
  * @control: A #BonoboControl which is bound to a remote
  * #BonoboControlFrame.
+ * @ev: CORBA exception environment.
  *
  * Returns: A #Bonobo_PropertyBag bound to the bag of ambient
  * properties associated with this #Control's #ControlFrame.
@@ -848,7 +849,6 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 
 /**
  * bonobo_control_get_remote_ui_container:
- *
  * @control: A BonoboControl object which is associated with a remote
  * ControlFrame.
  *
@@ -956,9 +956,9 @@ bonobo_control_init (BonoboControl *control)
 }
 
 BONOBO_X_TYPE_FUNC_FULL (BonoboControl, 
-			   Bonobo_Control,
-			   PARENT_TYPE,
-			   bonobo_control);
+			 Bonobo_Control,
+			 PARENT_TYPE,
+			 bonobo_control);
 
 void
 bonobo_control_set_property (BonoboControl       *control,

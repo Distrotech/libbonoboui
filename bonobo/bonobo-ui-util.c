@@ -1065,7 +1065,7 @@ bonobo_ui_util_translate_ui (BonoboUINode *bnode)
 	if (!bnode)
 		return;
 
-	bonobo_ui_xml_strip (&bnode);
+	bonobo_ui_node_strip (&bnode);
 	if (!bnode) {
 		g_warning ("All xml stripped away");
 		return;
@@ -1218,7 +1218,7 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 
         node = bonobo_ui_node_from_file (file_name);
 
-	bonobo_ui_xml_strip (&node);
+	bonobo_ui_node_strip (&node);
 
 	bonobo_ui_util_translate_ui (node);
 

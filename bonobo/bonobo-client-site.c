@@ -156,7 +156,6 @@ bonobo_client_site_init (BonoboClientSite *client_site)
 /**
  * bonobo_client_site_construct:
  * @client_site: The BonoboClientSite object to initialize
- * @corba_client_site: The CORBA server that implements the service
  * @container: a BonoboContainer to bind to.
  *
  * This initializes an object of type BonoboClientSite.  See the description

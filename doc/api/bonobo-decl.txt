@@ -498,7 +498,7 @@ typedef struct {
 <FUNCTION>
 <NAME>bonobo_control_frame_new</NAME>
 <RETURNS>BonoboControlFrame            *</RETURNS>
-Bonobo_UIContainer   uic
+Bonobo_UIContainer   ui_container
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_control_frame_get_widget</NAME>
@@ -583,12 +583,12 @@ void
 <FUNCTION>
 <NAME>bonobo_control_frame_construct</NAME>
 <RETURNS>BonoboControlFrame            *</RETURNS>
-BonoboControlFrame  *control_frame,Bonobo_UIContainer   uih
+BonoboControlFrame  *control_frame,Bonobo_UIContainer   ui_container
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_control_frame_size_request</NAME>
 <RETURNS>void  </RETURNS>
-BonoboControlFrame *control_frame,int *desired_width,int *desired_height
+BonoboControlFrame *control_frame,int                *desired_width,int                *desired_height
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_control_frame_sync_realize</NAME>
@@ -815,7 +815,7 @@ void
 <FUNCTION>
 <NAME>bonobo_desktop_window_construct</NAME>
 <RETURNS>BonoboDesktopWindow  *</RETURNS>
-BonoboDesktopWindow *desktop_window,GtkWindow           *toplevel
+BonoboDesktopWindow *desk_win,GtkWindow           *toplevel
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_desktop_window_new</NAME>
@@ -922,7 +922,7 @@ BonoboViewFactory factory,void             *data
 <FUNCTION>
 <NAME>bonobo_embeddable_new_canvas_item</NAME>
 <RETURNS>BonoboEmbeddable  *</RETURNS>
-GnomeItemCreator  item_factory,void             *closure
+GnomeItemCreator  item_factory,void             *data
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_embeddable_construct</NAME>
@@ -937,7 +937,7 @@ BonoboEmbeddable *embeddable,BonoboViewFactory factory,void             *factory
 <FUNCTION>
 <NAME>bonobo_embeddable_set_view_factory</NAME>
 <RETURNS>void  </RETURNS>
-BonoboEmbeddable  *embeddable,BonoboViewFactory factory,void             *data
+BonoboEmbeddable *embeddable,BonoboViewFactory factory,void             *data
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_embeddable_get_uri</NAME>
@@ -1267,17 +1267,17 @@ BonoboObject *object,gpointer      shlib_id
 <FUNCTION>
 <NAME>bonobo_generic_factory_new</NAME>
 <RETURNS>BonoboGenericFactory  *</RETURNS>
-const char            *component_id,BonoboGenericFactoryFn factory,gpointer               user_data
+const char            *oaf_iid,BonoboGenericFactoryFn factory,gpointer               user_data
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_generic_factory_new_multi</NAME>
 <RETURNS>BonoboGenericFactory  *</RETURNS>
-const char            *component_id,GnomeFactoryCallback   factory_cb,gpointer               data
+const char            *oaf_iid,GnomeFactoryCallback   factory_cb,gpointer               data
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_generic_factory_construct</NAME>
 <RETURNS>BonoboGenericFactory  *</RETURNS>
-const char            *component_id,BonoboGenericFactory  *c_factory,CORBA_Object           corba_factory,BonoboGenericFactoryFn factory,GnomeFactoryCallback   factory_cb,void                  *data
+const char            *oaf_iid,BonoboGenericFactory  *c_factory,CORBA_Object           corba_factory,BonoboGenericFactoryFn factory,GnomeFactoryCallback   factory_cb,gpointer               user_data
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_generic_factory_set</NAME>
