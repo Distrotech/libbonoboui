@@ -1,3 +1,22 @@
+libbonoboui 1.112.1
+
+	* Bugs fixed
+		+ popup race (Mark)
+		+ resize_grip handling (Paolo Maggi, Michael)
+		+ file_selector fixes (James Willcox, Paolo)
+		+ leak fixes (Paolo)
+		+ zoomable ref leak on failure (Michael)
+		+ build warning fixes (Jody)
+		+ g_value warning fix (Michael)
+		+ publicise BonoboUIEngine type (Johan Dahlin)
+		+ updated control lifecycle (Michael)
+		+ passes distcheck (Michael)
+
+	* UI handler featurelets (Michael)
+		+ automated performance tests
+		+ compat stock mapping updated
+		+ various accelerations
+
 libbonoboui 1.112.0
 
 	* Bugs fixed

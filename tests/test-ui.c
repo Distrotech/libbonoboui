@@ -478,6 +478,8 @@ main (int argc, char **argv)
  			bonobo_window_dump (win, "on fatal error");
   			g_assert_not_reached ();
   		}
+
+		CORBA_free (txt);
   	}
 
 	bonobo_main ();

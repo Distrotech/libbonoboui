@@ -726,7 +726,7 @@ bonobo_ui_component_set_translate (BonoboUIComponent  *component,
  * to by @path. If @recurse then the child nodes of @path
  * are returned too, otherwise they are not.
  *
- * Return value: an XML string
+ * Return value: an XML string (CORBA allocated)
  **/
 CORBA_char *
 bonobo_ui_component_get (BonoboUIComponent *component,

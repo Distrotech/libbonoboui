@@ -239,7 +239,6 @@ find_pixmap_in_path (const gchar *filename)
 static char *
 lookup_stock_compat (const char *id)
 {
-	GtkStockItem item;
 	char *lower, *new_id;
 	static GHashTable *compat_hash = NULL;
 
@@ -274,7 +273,7 @@ lookup_stock_compat (const char *id)
 	lower = g_ascii_strdown (id, -1);
 	new_id = g_strconcat ("gtk-", lower, NULL);
 
-	if (gtk_stock_lookup (new_id, &item)) {
+	if (gtk_icon_factory_lookup_default (new_id)) {
 		g_free (lower);
 		return new_id;
 	}
@@ -282,7 +281,7 @@ lookup_stock_compat (const char *id)
 	g_free (new_id);
 	new_id = g_strconcat ("gnome-stock-", lower, NULL);
 
-	if (gtk_stock_lookup (new_id, &item)) {
+	if (gtk_icon_factory_lookup_default (new_id)) {
 		g_free (lower);
 		return new_id;
 	}
@@ -329,9 +328,7 @@ bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
 	}
 
 	if (!strcmp (type, "stock")) {
-		GtkStockItem item;
-
-		if (gtk_stock_lookup (text, &item))
+		if (gtk_icon_factory_lookup_default (text))
 			pixbuf = gtk_widget_render_icon (
 				widget, text, icon_size, "bonobo-ui");
 		else {
@@ -401,9 +398,8 @@ bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 		return NULL;
 
 	if (!strcmp (type, "stock")) {
-		GtkStockItem item;
 
-		if (gtk_stock_lookup (text, &item))
+		if (gtk_icon_factory_lookup_default (text))
 			image = gtk_image_new_from_stock (text, icon_size);
 		else {
 			char *mapped;
