@@ -1557,6 +1557,8 @@ impl_emit_verb_on (BonoboUIEngine *engine,
 		   BonoboUINode   *node)
 {
 	const char      *verb;
+	const char      *sensitive;
+	BonoboUINode    *cmd_node;
 	BonoboUIXmlData *data;
 	
 	g_return_if_fail (node != NULL);
@@ -1566,6 +1568,11 @@ impl_emit_verb_on (BonoboUIEngine *engine,
 
 	verb = node_get_id (node);
 	if (!verb)
+		return;
+
+	if ((cmd_node = bonobo_ui_engine_get_cmd_node (engine, node)) &&
+	    (sensitive = bonobo_ui_node_get_attr_by_id (cmd_node, sensitive_id)) &&
+	    !atoi (sensitive))
 		return;
 
 	/* Builtins */
@@ -1799,12 +1806,19 @@ impl_emit_event_on (BonoboUIEngine *engine,
 		    const char     *state)
 {
 	const char      *id;
+	const char      *sensitive;
+	BonoboUINode    *cmd_node;
 	BonoboUIXmlData *data;
 	char            *component_id, *real_id, *real_state;
 
 	g_return_if_fail (node != NULL);
 
 	if (!(id = node_get_id (node)))
+		return;
+
+	if ((cmd_node = bonobo_ui_engine_get_cmd_node (engine, node)) &&
+	    (sensitive = bonobo_ui_node_get_attr_by_id (cmd_node, sensitive_id)) &&
+	    !atoi (sensitive))
 		return;
 
 	data = bonobo_ui_xml_get_data (NULL, node);
