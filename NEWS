@@ -1,3 +1,23 @@
+libbonoboui 1.113.0
+
+	* Bugs fixed
+		+ widget / leak fixes (Paolo Maggi)
+		+ UI config display (Michael)
+		+ file selector fixes (James Willcox, Paolo)
+		+ pixmap / stock-item lookup bug (Michael)
+		+ Popup API race fixage (Mark McLoughlin)
+		+ resize grip visibility updates (Paolo)
+		+ const warning fixes (Jody Goldberg)
+		+ signal type brokenness (Michael)
+		+ UI engine scripting binding fixes (Johan Dahlin)
+		+ 'system_exception' fired more (Michael)
+
+	* Featurelets (Michael)
+		+ UI handler performance improvements
+		+ multi display activation updates
+		+ GnomeProgram re-organisation
+		+ performance regression test
+
 libbonoboui 1.112.1
 
 	* Bugs fixed
