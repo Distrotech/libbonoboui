@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-05-28 02:30+0100\n"
+"POT-Creation-Date: 2002-06-01 18:31+0100\n"
 "PO-Revision-Date: 2002-05-28 02:35+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -37,21 +37,21 @@ msgstr "Ancorar barra de ferramentas"
 msgid "Un dock the toolbar"
 msgstr "Desancorar barra de ferramentas"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
 msgid "Shadow type"
 msgstr "Tipo sombra"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
 #: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
 msgid "Orientation"
 msgstr "Orientação"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
 #: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred width"
 msgstr "Largura preferida"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
 #: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred height"
 msgstr "Altura preferida"
@@ -68,11 +68,11 @@ msgstr "Seleccione ficheiros a abrir"
 msgid "Select a filename to save"
 msgstr "Seleccione um nome de ficheiro a gravar"
 
-#: bonobo/bonobo-plug.c:363
+#: bonobo/bonobo-plug.c:364
 msgid "Event Forwarding"
 msgstr "Reencaminhamento Eventos"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:365
 msgid "Whether X events should be forwarded"
 msgstr "Se eventos X deveriam ser reencaminhados"
 
@@ -95,8 +95,8 @@ msgid ""
 "no interfaces are listed"
 msgstr ""
 "Um array de interfaces terminado em NULL que um servidor tem de suportar por "
-"forma a ser listado no selector. Por omissão é \"IDL:Bonobo/Embeddable:1.0\" se "
-"nenhum interface for listado"
+"forma a ser listado no selector. Por omissão é \"IDL:Bonobo/Embeddable:1.0\" "
+"se nenhum interface for listado"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -388,7 +388,7 @@ msgstr "Olá, Mundo!"
 msgid "Cannot init libbonoboui code"
 msgstr "Incapaz de inicializar código libbonoboui"
 
-#: samples/controls/bonobo-sample-controls.c:121
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Incapaz de inicializar UI Bonobo"
 

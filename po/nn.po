@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bonobo 0.32\n"
-"POT-Creation-Date: 2002-05-27 12:51+0100\n"
+"POT-Creation-Date: 2002-06-01 18:31+0100\n"
 "PO-Revision-Date: 2002-01-30 04:56+0100\n"
 "Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: Norwegian/Nynorsk <nn@li.org>\n"
@@ -40,21 +40,21 @@ msgstr "Skreddarsy verktylinja"
 msgid "Un dock the toolbar"
 msgstr "Skreddarsy verktylinja"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
 msgid "Shadow type"
 msgstr "Skuggetype"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
 #: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
 msgid "Orientation"
 msgstr "Retning"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
 #: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred width"
 msgstr "Ønska breidde"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
 #: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred height"
 msgstr "Ønska høgde"
@@ -71,11 +71,11 @@ msgstr "Velj filer som skal opnast"
 msgid "Select a filename to save"
 msgstr "Velj eit filnamn som skal lagrast"
 
-#: bonobo/bonobo-plug.c:363
+#: bonobo/bonobo-plug.c:364
 msgid "Event Forwarding"
 msgstr "Hendingsvidaresending"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:365
 msgid "Whether X events should be forwarded"
 msgstr "Om X hendingar skal vidaresendast"
 
@@ -392,7 +392,7 @@ msgstr "Hallo, Verd!"
 msgid "Cannot init libbonoboui code"
 msgstr "Klarar ikkje å initiere libbonoboui-kode"
 
-#: samples/controls/bonobo-sample-controls.c:121
+#: samples/controls/bonobo-sample-controls.c:131
 #, fuzzy
 msgid "Could not initialize Bonobo UI"
 msgstr "Fann ikkje bilete %1"

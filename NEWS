@@ -1,3 +1,12 @@
+libbonoboui 1.118.0
+
+	* Bugs fixed
+		+ socket resize on show (Michael)
+		+ socket sizing badness / inefficiency (Michael)
+		+ DockItem glade fixes (Kristian Rietveld)
+		+ pixbuf leak fix (Gustavo Giráldez)
+		+ control frame CORBA sizing update (Federico)
+
 libbonoboui 1.117.1
 
 	* Bugs fixed

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-05-28 09:45+0200\n"
+"POT-Creation-Date: 2002-06-01 18:31+0100\n"
 "PO-Revision-Date: 2002-05-28 09:45+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
@@ -37,21 +37,21 @@ msgstr "Zaparkova» li¹tu nástrojov"
 msgid "Un dock the toolbar"
 msgstr "Oddeli» li¹tu nástrojov"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
 msgid "Shadow type"
 msgstr "Typ tieòa"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
 #: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
 msgid "Orientation"
 msgstr "Orientácia"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
 #: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred width"
 msgstr "Preferovaná ¹írka"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
 #: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred height"
 msgstr "Preferovaná vý¹ka"
@@ -68,11 +68,11 @@ msgstr "Vybra» súbory na otvorenie"
 msgid "Select a filename to save"
 msgstr "Vybra» meno súboru na ulo¾enie"
 
-#: bonobo/bonobo-plug.c:363
+#: bonobo/bonobo-plug.c:364
 msgid "Event Forwarding"
 msgstr "Preposielanie udalostí"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:365
 msgid "Whether X events should be forwarded"
 msgstr "Èi majú by» udalosti X preposielané"
 
@@ -388,6 +388,6 @@ msgstr "Ahoj, svet!"
 msgid "Cannot init libbonoboui code"
 msgstr "Nemô¾em inicializova» kód libbonoboui"
 
-#: samples/controls/bonobo-sample-controls.c:121
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Nemô¾em inicializova» Bonobo UI"

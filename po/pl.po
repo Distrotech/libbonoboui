@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-05-27 12:51+0100\n"
+"POT-Creation-Date: 2002-06-01 18:31+0100\n"
 "PO-Revision-Date: 2002-05-25 18:19+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -41,21 +41,21 @@ msgstr "Zadokuj pasek narzędziowy"
 msgid "Un dock the toolbar"
 msgstr "Oderwij pasek narzędziowy"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
 msgid "Shadow type"
 msgstr "Typ cienia"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
 #: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
 msgid "Orientation"
 msgstr "Ułożenie"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
 #: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred width"
 msgstr "Preferowana szerokość"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
 #: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred height"
 msgstr "Preferowana szerokość"
@@ -72,11 +72,11 @@ msgstr "Wybór plików do odczytu"
 msgid "Select a filename to save"
 msgstr "Wybór pliku do zapisu"
 
-#: bonobo/bonobo-plug.c:363
+#: bonobo/bonobo-plug.c:364
 msgid "Event Forwarding"
 msgstr "Przesyłanie zdarzeń"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:365
 msgid "Whether X events should be forwarded"
 msgstr "Określa, czy zdarzenia X powinny być przesyłane"
 
@@ -393,6 +393,6 @@ msgstr "Witaj świecie!"
 msgid "Cannot init libbonoboui code"
 msgstr "Nie można zainicjować kodu libbonoboui"
 
-#: samples/controls/bonobo-sample-controls.c:121
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Nie można zainicjować Bonobo UI"

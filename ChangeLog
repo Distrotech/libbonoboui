@@ -1,3 +1,11 @@
+2002-06-01  Michael Meeks  <michael@ximian.com>
+
+	* Version 1.118.0
+
+2002-06-01  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: bump reqs.
+
 2002-05-31  Federico Mena Quintero  <federico@ximian.com>
 
 	* bonobo/bonobo-control-frame.c

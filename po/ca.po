@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2002-05-25 13:28+0200\n"
+"POT-Creation-Date: 2002-06-01 18:31+0100\n"
 "PO-Revision-Date: 2001-09-21 20:57+0200\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -30,31 +30,31 @@ msgstr "El contenidor UI de corbes"
 msgid "The User interface container"
 msgstr "El contenidor d'interfície de l'usuari"
 
-#: bonobo/bonobo-dock-item-grip.c:236
 #
+#: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
 msgstr "Amarra la barra d'eines"
 
-#: bonobo/bonobo-dock-item-grip.c:237
 #
+#: bonobo/bonobo-dock-item-grip.c:237
 msgid "Un dock the toolbar"
 msgstr "Desamarra la barra d'eines"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
 msgid "Shadow type"
 msgstr "Tipus d'ombra"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
 #: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
 msgid "Orientation"
 msgstr "Orientació"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
 #: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred width"
 msgstr "Amplada preferida"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
 #: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred height"
 msgstr "Alçada preferida"
@@ -71,11 +71,11 @@ msgstr "Seleccioneu els fitxers a obrir"
 msgid "Select a filename to save"
 msgstr "Seleccioneu un nom de fitxer per desar"
 
-#: bonobo/bonobo-plug.c:363
+#: bonobo/bonobo-plug.c:364
 msgid "Event Forwarding"
 msgstr "Reenviament de l'esdeveniment"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:365
 msgid "Whether X events should be forwarded"
 msgstr "Si els esdeveniments X haurien de ser reenviats"
 
@@ -129,8 +129,8 @@ msgstr "_Mostra els rètols indicadors de funció"
 msgid "Toolbars"
 msgstr "Barres d'eines"
 
-#: bonobo/bonobo-ui-config-widget.c:302
 #
+#: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "barres d'eines"
 
@@ -146,8 +146,8 @@ msgstr "_Icona"
 msgid "_Text and Icon"
 msgstr "_Text i icona"
 
-#: bonobo/bonobo-ui-config-widget.c:334
 #
+#: bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
 msgstr "_Text i icona"
 
@@ -365,8 +365,8 @@ msgstr "_Quant a..."
 msgid "_Edit"
 msgstr "_Edita"
 
-#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 #
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
 msgstr "_Fitxer"
 
@@ -395,7 +395,7 @@ msgstr "Hola, Món!"
 msgid "Cannot init libbonoboui code"
 msgstr "No es pot inicialitzar el codi del libbonoboui"
 
-#: samples/controls/bonobo-sample-controls.c:121
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "No es pot inicialitzar Bonobo UI"
 
@@ -428,5 +428,3 @@ msgstr "No es pot inicialitzar Bonobo UI"
 
 #~ msgid "Cannot bonobo UI code"
 #~ msgstr "No es pot fer bonobo al codi UI"
-
-
