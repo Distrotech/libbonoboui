@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2001-05-21 23:15+0200\n"
-"PO-Revision-Date: 2001-05-21 23:16+02:00\n"
+"POT-Creation-Date: 2001-08-11 22:47+0200\n"
+"PO-Revision-Date: 2001-08-11 22:48+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,118 +29,114 @@ msgstr "Foretrukket bredde"
 msgid "Preferred height"
 msgstr "Foretrukket høyde"
 
-#: bonobo/bonobo-selector-widget.c:211
+#: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
 msgstr "Navn"
 
-#: bonobo/bonobo-selector-widget.c:235
+#: bonobo/bonobo-selector-widget.c:380
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "Visible"
 msgstr "Synlig"
 
-#: bonobo/bonobo-ui-config-widget.c:280
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Vis"
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "_Hide"
 msgstr "_Skjul"
 
-#: bonobo/bonobo-ui-config-widget.c:300
+#: bonobo/bonobo-ui-config-widget.c:294
 msgid "_View tooltips"
 msgstr "_Vis verktøytips"
 
-#: bonobo/bonobo-ui-config-widget.c:307
+#: bonobo/bonobo-ui-config-widget.c:301
 msgid "Toolbars"
 msgstr "Verktøylinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:317 bonobo/bonobo-ui-sync-toolbar.c:509
+#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "Se"
 
-#: bonobo/bonobo-ui-config-widget.c:327 bonobo/bonobo-ui-sync-toolbar.c:511
+#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "_Ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:337
+#: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Text and Icon"
 msgstr "_Tekst og ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:347
+#: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
 msgstr "Kun _prioritetstekst"
 
-#: bonobo/bonobo-ui-engine-config.c:517
+#: bonobo/bonobo-ui-engine-config.c:513
 msgid "Configure UI"
 msgstr "Konfigurer UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:510
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
 msgstr "B_egge"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:512
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
 msgstr "T_ekst"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:513
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
 msgstr "Skjul t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:514
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
 msgstr "Vis t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:515
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
 msgstr "Sk_jul verktøylinjen"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:516
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
 msgstr "Tilpas_s"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:517
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
 msgstr "Tilpass verktøylinjen"
 
-#: tests/selector_test.c:20
+#: tests/test-focus.c:31 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+msgid "Can not bonobo_ui_init"
+msgstr "Kan ikke kjøre bonobo_ui_init"
+
+#: tests/test-selector.c:13
 msgid "Select an object"
 msgstr "Velg et objekt"
 
-#: tests/test-container.c:65 tests/test-container.c:95
-msgid "Can not activate object_server"
-msgstr "Kan ikke aktivere object_server"
+#: tests/test-ui.c:229
+msgid "Cannot init libbonoboui code"
+msgstr "Kan ikke initiere libbonoboui"
 
-#: tests/test-container.c:70 tests/test-container.c:100
-msgid "Can not bind object server to client_site"
-msgstr "Kan ikke binde objekt tjener til client_site"
+#~ msgid "Can not activate object_server"
+#~ msgstr "Kan ikke aktivere object_server"
 
-#: tests/test-container.c:269
-msgid "Can not activate server"
-msgstr "Kan ikke aktivere tjener"
+#~ msgid "Can not bind object server to client_site"
+#~ msgstr "Kan ikke binde objekt tjener til client_site"
 
-#: tests/test-container.c:319 tests/test-container.c:364
-msgid "Could not launch bonobo object."
-msgstr "Kunne ikke starte bonobo objektet."
+#~ msgid "Can not activate server"
+#~ msgstr "Kan ikke aktivere tjener"
 
-#: tests/test-container.c:562
-msgid "Could not launch Embeddable."
-msgstr "Kunne ikke starte Embeddable.."
+#~ msgid "Could not launch bonobo object."
+#~ msgstr "Kunne ikke starte bonobo objektet."
 
-#: tests/test-container.c:596
-msgid "Could not launch Control."
-msgstr "Kunne ikke starte kontroll."
+#~ msgid "Could not launch Embeddable."
+#~ msgstr "Kunne ikke starte Embeddable.."
 
-#: tests/test-container.c:861
-msgid "Can not bonobo_init"
-msgstr "Kan ikke kjøre bonobo_init"
+#~ msgid "Could not launch Control."
+#~ msgstr "Kunne ikke starte kontroll."
 
-#: tests/test-focus.c:31 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-#: tests/test-ui.c:224
-msgid "Can not bonobo_ui_init"
-msgstr "Kan ikke kjøre bonobo_ui_init"
+#~ msgid "Can not bonobo_init"
+#~ msgstr "Kan ikke kjøre bonobo_init"
 
 #~ msgid "Customize Toolbars"
 #~ msgstr "Tilpass verktøylinjer"
@@ -472,10 +468,10 @@ msgstr "Kan ikke kjøre bonobo_ui_init"
 #~ msgstr "_Zoom"
 
 #~ msgid ""
-#~ "This program is part of the GNOME project. Gnome Shell comes with ABSOLUTELY "
-#~ "NO WARRANTY. This is free software, and you are welcome to redistribute it "
-#~ "under the conditions of the GNU General Public License. Please report bugs "
-#~ "to dietmar@maurer-it.com"
+#~ "This program is part of the GNOME project. Gnome Shell comes with "
+#~ "ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to "
+#~ "redistribute it under the conditions of the GNU General Public License. "
+#~ "Please report bugs to dietmar@maurer-it.com"
 #~ msgstr ""
 #~ "Dette programmet er en del av GNOME prosjektet for Linux. GNOME Shell har "
 #~ "ABSOLUTT INGEN GARANTI. Dette er fri programvare, og du må gjerne "

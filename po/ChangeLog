@@ -1,7 +1,7 @@
-2001-08-07  gettextize  <bug-gnu-utils@gnu.org>
+2001-08-11  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* Makefile.in.in: Upgrade to gettext-0.10.39.
-
+	* no.po: Updated Norwegian (bokmål) translation.
+	
 2001-08-07  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
 
 	* sk.po: Updated Slovak translation from Marcel Telka <marcel@telka.sk>.
