@@ -1751,7 +1751,7 @@ menu_make_item (const char *path, BonoboUIHandlerMenuItemType type,
 	BonoboUIHandlerMenuItem *item;
 
 	item = g_new0 (BonoboUIHandlerMenuItem, 1);
-	item->path        = strdup (path);
+	item->path        = g_strdup (path);
 	item->type        = type;
 	item->label       = g_strdup (label?label:"");
 	item->hint        = g_strdup (hint?hint:"");
@@ -5508,10 +5508,10 @@ toolbar_make_item (const char *path, BonoboUIHandlerToolbarItemType type,
 
 	item = g_new0 (BonoboUIHandlerToolbarItem, 1);
 
-	item->path = strdup (path);
+	item->path = g_strdup (path);
 	item->type = type;
-	item->label = strdup (label);
-	item->hint = strdup (hint);
+	item->label = g_strdup (label);
+	item->hint = g_strdup (hint);
 	item->pos = pos;
 	item->control = control;
 	item->pixmap_type = pixmap_type;
