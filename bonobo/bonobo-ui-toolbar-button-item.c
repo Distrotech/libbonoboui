@@ -201,7 +201,7 @@ impl_destroy (GtkObject *object)
 
 	button_item = BONOBO_UI_TOOLBAR_BUTTON_ITEM (object);
 	priv = button_item->priv;
-
+	button_item->priv = NULL;
 	g_free (priv);
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy != NULL)

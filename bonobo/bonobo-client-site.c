@@ -89,10 +89,9 @@ bonobo_client_site_destroy (GtkObject *object)
 		gtk_object_unref (GTK_OBJECT (item));
 	}
 
-	if (client_site->bound_embeddable) {
+	if (client_site->bound_embeddable)
 		bonobo_object_unref (BONOBO_OBJECT (client_site->bound_embeddable));
-		client_site->bound_embeddable = NULL;
-	}
+	client_site->bound_embeddable = NULL;
 
 	bonobo_client_site_parent_class->destroy (object);
 }

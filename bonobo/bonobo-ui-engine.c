@@ -28,7 +28,7 @@
 #undef WIDGET_SYNC_DEBUG
 #undef XML_MERGE_DEBUG
 
-#define PARENT_TYPE gtk_object_get_type ()
+#define PARENT_TYPE G_TYPE_OBJECT
 
 static GObjectClass *parent_class = NULL;
 

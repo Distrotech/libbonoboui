@@ -312,14 +312,12 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 		 */
 		if (control->priv->xid_received) {
 
-			if (old_plug != NULL) {
+			if (old_plug != NULL)
 				gtk_object_unref (GTK_OBJECT (old_plug));
-			}
 
 			gtk_widget_reparent (control->priv->widget, control->priv->plug);
-		} else {
+		} else
  			gtk_container_add (GTK_CONTAINER (control->priv->plug), control->priv->widget);
-		}
 
 		gtk_widget_show (control->priv->plug);
 

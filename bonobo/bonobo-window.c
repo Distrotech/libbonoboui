@@ -136,7 +136,7 @@ bonobo_window_get_contents (BonoboWindow *win)
 static void
 destroy_priv (BonoboWindowPrivate *priv)
 {
-	gtk_object_unref (GTK_OBJECT (priv->engine));
+	g_object_unref (G_OBJECT (priv->engine));
 	priv->engine = NULL;
 
 	g_free (priv->name);

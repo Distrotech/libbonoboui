@@ -1,3 +1,20 @@
+2001-07-20  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c (PARENT_TYPE): make it inherit
+	from a GObject since the structures do: doh.
+
+	* bonobo/bonobo-window.c (destroy_priv): g_object_unref
+	the BonoboUIEngine, not gtk_object_unref.
+
+	* bonobo/bonobo-ui-toolbar-item.c (impl_destroy): protect
+	against double destroys - these seem to happen; argh.
+
+	* bonobo/bonobo-canvas-component.c (rih_destroy): ditto.
+
+	* bonobo/bonobo-wrapper.c (bonobo_wrapper_destroy): ditto.
+
+	* bonobo/bonobo-ui-toolbar-button-item.c (impl_destroy): ditto.
+
 2001-07-19  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-node.c (bonobo_ui_node_strip): NULL

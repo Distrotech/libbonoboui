@@ -795,7 +795,11 @@ rih_destroy (GtkObject *obj)
 	RootItemHack *rih = ROOT_ITEM_HACK (obj);
 
 	bonobo_object_release_unref (rih->proxy, NULL);
-	gtk_object_destroy (GTK_OBJECT (rih->orig_root));
+	rih->proxy = CORBA_OBJECT_NIL;
+
+	if (rih->orig_root)
+		gtk_object_destroy (GTK_OBJECT (rih->orig_root));
+	rih->orig_root = NULL;
 
 	GTK_OBJECT_CLASS (rih_parent_class)->destroy (obj);
 }
@@ -833,7 +837,7 @@ rih_class_init (GnomeCanvasItemClass *item_class)
 {
 	rih_parent_class = gtk_type_class (gnome_canvas_group_get_type ());
 
-	GTK_OBJECT_CLASS (item_class)->destroy  = rih_destroy;
+	GTK_OBJECT_CLASS (item_class)->destroy = rih_destroy;
 	item_class->update = rih_update;
 }
       

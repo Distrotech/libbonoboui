@@ -241,6 +241,9 @@ bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 	epv->registerComponent   = impl_Bonobo_UIContainer_registerComponent;
 	epv->deregisterComponent = impl_Bonobo_UIContainer_deregisterComponent;
 
+/*	epv->setAttr    = impl_Bonobo_UIContainer_setAttr;
+	epv->getAttr    = impl_Bonobo_UIContainer_getAttr;*/
+
 	epv->setNode    = impl_Bonobo_UIContainer_setNode;
 	epv->getNode    = impl_Bonobo_UIContainer_getNode;
 	epv->removeNode = impl_Bonobo_UIContainer_removeNode;

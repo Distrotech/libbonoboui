@@ -87,15 +87,20 @@ bonobo_wrapper_destroy (GtkObject *object)
 
 	wrapper = BONOBO_WRAPPER (object);
 
-	if (wrapper->priv->gc != NULL)
-		gdk_gc_destroy (wrapper->priv->gc);
+	if (wrapper->priv) {
+		if (wrapper->priv->gc)
+			gdk_gc_destroy (wrapper->priv->gc);
+		wrapper->priv->gc = NULL;
 
-	if (wrapper->priv->cover != NULL) {
-		gdk_window_set_user_data (wrapper->priv->cover, NULL);
-		gdk_window_destroy (wrapper->priv->cover);
+		if (wrapper->priv->cover) {
+			gdk_window_set_user_data (wrapper->priv->cover, NULL);
+			gdk_window_destroy (wrapper->priv->cover);
+		}
+		wrapper->priv->cover = NULL;
+
+		g_free (wrapper->priv);
 	}
-
-	g_free (wrapper->priv);
+	wrapper->priv = NULL;
 
 	(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
