@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2003-02-06 10:27+0700\n"
+"POT-Creation-Date: 2003-06-12 15:05+0700\n"
+"PO-Revision-Date: 2003-06-12 15:05+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesia <id@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -91,14 +91,13 @@ msgid "Interfaces required"
 msgstr "Nama interface yang harus ada"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"array berisi interfaces yang NULL_terminated yang hendak digunakan oleh "
-"server agar bisa didaftar pada selector. Jika belum ada isinya, maka "
+"Array (NULL-terminated) berisi interface yang hendak digunakan oleh "
+"server agar bisa didaftar pada selektor. Jika belum ada isinya, maka "
 "defaultnya bernilai \"IDL:Bonobo/Embeddable:1.0\""
 
 #: bonobo/bonobo-selector.c:348
@@ -300,7 +299,7 @@ msgstr "pilih apakah toolbar harus mengambang atau tidak"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Gaya bevel disekeliling toolbar"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
