@@ -1033,7 +1033,7 @@ bonobo_ui_engine_xml_get_prop (BonoboUIEngine *engine,
  * node to an XML string, otherwise it dumps it and
  * its children.
  *
- * Return value: the XML string - use bonobo_ui_node_free_string to free
+ * Return value: the XML string - use CORBA_free to free
  **/
 CORBA_char *
 bonobo_ui_engine_xml_get (BonoboUIEngine *engine,

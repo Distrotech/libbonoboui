@@ -1,3 +1,13 @@
+2001-12-17  Darin Adler  <darin@bentspoon.com>
+
+	* bonobo/bonobo-ui-node.c: (bonobo_ui_node_to_string):
+	Fix bug where bonobo_ui_node_to_string was returning a string
+	that you must free with g_free, not bonobo_ui_node_free_string.
+
+	* bonobo/bonobo-ui-engine.c: (bonobo_ui_engine_xml_get_prop):
+	Fix comment that mentions the wrong function to free
+	the resulting string.
+
 2001-12-17  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-plug.c: (bonobo_plug_set_property),

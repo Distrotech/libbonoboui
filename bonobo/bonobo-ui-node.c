@@ -1039,8 +1039,8 @@ bonobo_ui_node_to_string (BonoboUINode *node,
 /*	fprintf (stderr, "nodes to string: '%s'", str->str); */
 /*	validate_tree (node); */
 
-	ret = str->str;
-	g_string_free (str, FALSE);
+	ret = xmlStrdup (str->str);
+	g_string_free (str, TRUE);
 
 	return ret;
 }
