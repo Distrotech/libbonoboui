@@ -7,8 +7,8 @@
  *
  * Copyright 1999 Helix Code, Inc.
  */
-#ifndef _BONOBO_VIEW_H_
-#define _BONOBO_VIEW_H_
+#ifndef _BONOBO_DESKTOP_WINDOW_H_
+#define _BONOBO_DESKTOP_WINDOW_H_
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>

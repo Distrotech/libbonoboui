@@ -195,7 +195,8 @@ main (int argc, char **argv)
 		"<menuitem name=\"fish\" _label=\"_Inplace\" pixtype=\"stock\" pixname=\"Save\" _tip=\"tip2\"/>\n";
 	char toola [] =
 		"<dockitem name=\"Toolbar\" homogeneous=\"0\" vlook=\"icon\">\n"
-		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" _label=\"TogSave\" _tip=\"My tooltip\"/>\n"
+		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\""
+		"        _label=\"TogSave\" _tip=\"My tooltip\" priority=\"1\"/>\n"
 		"	<separator/>\n"
 		"	<toolitem name=\"baa\" pixtype=\"stock\" pixname=\"Open\" _label=\"baa\" _tip=\"My 2nd tooltip\" verb=\"testme\"/>\n"
 		"	<control name=\"AControl\" _tip=\"a tip on a control\" hidden=\"0\" vdisplay=\"button\"\n"
@@ -203,7 +204,7 @@ main (int argc, char **argv)
 		"</dockitem>";
 	char toolb [] =
 		"<dockitem name=\"Toolbar\" look=\"icon\" relief=\"none\">\n"
-		"	<toolitem name=\"foo1\" _label=\"Insensitive\" hidden=\"0\"/>\n"
+		"	<toolitem name=\"foo1\" _label=\"Insensitive\" hidden=\"0\" priority=\"1\"/>\n"
 		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\""
 		"	 _label=\"TogSame\" _tip=\"My tooltip\"/>\n"
 		"</dockitem>";
