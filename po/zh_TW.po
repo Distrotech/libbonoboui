@@ -1,151 +1,139 @@
-# Big5 Translation.
+# Traditional Chinese translation for libbonoboui.
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Joe Man <trmetal@yahoo.com.hk>, 2001.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ammonite\n"
-"POT-Creation-Date: 2001-09-27 08:01+1000\n"
-"PO-Revision-Date: 2001-07-30 10:36+0800\n"
+"Project-Id-Version: libbonoboui 1.103.0\n"
+"POT-Creation-Date: 2001-10-01 21:37-0400\n"
+"PO-Revision-Date: 2001-10-03 09:54+0800\n"
 "Last-Translator: Joe Man <trmetal@yahoo.com.hk>\n"
-"Language-Team: chinese <zh@li.org>\n"
+"Language-Team: traditional chinese <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=big5\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:228
+#: bonobo/bonobo-dock-item.c:229
 msgid "Shadow type"
-msgstr "¥ßÅé®ÄªGÃş§O"
+msgstr "ç«‹é«”æ•ˆæœé¡åˆ¥"
 
-#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+#: bonobo/bonobo-dock-item.c:237
+#: bonobo/bonobo-dock-item.c:238
 msgid "Orientation"
-msgstr "¤è¦V"
+msgstr "æ–¹å‘"
 
-#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+#: bonobo/bonobo-dock-item.c:246
+#: bonobo/bonobo-dock-item.c:247
 msgid "Preferred width"
-msgstr "¼e«×"
+msgstr "å¯¬åº¦"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:254
+#: bonobo/bonobo-dock-item.c:255
 msgid "Preferred height"
-msgstr "°ª«×"
+msgstr "é«˜åº¦"
 
 #: bonobo/bonobo-file-selector-util.c:371
 msgid "Select a file to open"
-msgstr ""
+msgstr "é¸å–ä¸€å€‹è¦é–‹å•Ÿçš„æª”æ¡ˆ"
 
 #: bonobo/bonobo-file-selector-util.c:399
 msgid "Select files to open"
-msgstr ""
+msgstr "é¸å–å¤šå€‹è¦é–‹å•Ÿçš„æª”æ¡ˆ"
 
 #: bonobo/bonobo-file-selector-util.c:428
 msgid "Select a filename to save"
-msgstr ""
+msgstr "é¸å–ä¸€å€‹è¦å„²å­˜çš„æª”æ¡ˆ"
 
 #: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
-msgstr "¦WºÙ"
+msgstr "åç¨±"
 
 #: bonobo/bonobo-selector-widget.c:380
 msgid "Description"
-msgstr "´y­z"
+msgstr "æè¿°"
 
 #: bonobo/bonobo-ui-config-widget.c:266
 msgid "Visible"
-msgstr "¥i¨£"
+msgstr "å¯è¦‹"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr "Åã¥Ü (_S)"
+msgstr "é¡¯ç¤º (_S)"
 
 #: bonobo/bonobo-ui-config-widget.c:284
 msgid "_Hide"
-msgstr "ÁôÂÃ (_H)"
+msgstr "éš±è— (_H)"
 
 #: bonobo/bonobo-ui-config-widget.c:294
 msgid "_View tooltips"
-msgstr "Åã¥Ü¤u¨ã¦C´£¥Ü (_V)"
+msgstr "é¡¯ç¤ºå·¥å…·åˆ—æç¤º (_V)"
 
 #: bonobo/bonobo-ui-config-widget.c:301
 msgid "Toolbars"
-msgstr "¤u¨ã¦C"
+msgstr "å·¥å…·åˆ—"
 
-#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:311
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
-msgstr "ÀËµø"
+msgstr "æª¢è¦–"
 
-#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:321
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
-msgstr "¹Ï¥Ü (_I)"
+msgstr "åœ–ç¤º (_I)"
 
 #: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Text and Icon"
-msgstr "¹Ï¥Ü¤Î¤å¦r (_T)"
+msgstr "åœ–ç¤ºåŠæ–‡å­— (_T)"
 
 #: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
-msgstr "¹Ï¥Ü¤Î¾î¦V¤å¦r (_P)"
+msgstr "åœ–ç¤ºåŠæ©«å‘æ–‡å­— (_P)"
 
 #: bonobo/bonobo-ui-engine-config.c:513
 msgid "Configure UI"
-msgstr "³]©w¨Ï¥ÎªÌ¤¶­±"
+msgstr "è¨­å®šä½¿ç”¨è€…ä»‹é¢"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
-msgstr "¹Ï¤å (_O)"
+msgstr "åœ–æ–‡ (_O)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
-msgstr "¤å¦r (_E)"
+msgstr "æ–‡å­— (_E)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
-msgstr "ÁôÂÃ´£¥Ü (_I)"
+msgstr "éš±è—æç¤º (_I)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
-msgstr "Åã¥Ü´£¥Ü (_I)"
+msgstr "é¡¯ç¤ºæç¤º (_I)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
-msgstr "ÁôÂÃ¤u¨ã¦C (_H)"
+msgstr "éš±è—å·¥å…·åˆ— (_H)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
-msgstr "¦Û­q (_Z)"
+msgstr "è‡ªè¨‚ (_Z)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
-msgstr "¦Û­q¤u¨ã¦C"
+msgstr "è‡ªè¨‚å·¥å…·åˆ—"
 
-#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: tests/test-focus.c:39
+#: tests/test-sensitivity.c:193
+#: tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
-msgstr "µLªkªì©l¤Æ bonobo ¨Ï¥ÎªÌ¤¶­± "
+msgstr "ç„¡æ³•åˆå§‹åŒ– bonobo ä½¿ç”¨è€…ä»‹é¢ "
 
 #: tests/test-selector.c:12
 msgid "Select an object"
-msgstr "¿ï¾Ü¤@­Óª«¥ó"
+msgstr "é¸æ“‡ä¸€å€‹ç‰©ä»¶"
 
 #: tests/test-ui.c:230
 msgid "Cannot init libbonoboui code"
-msgstr "µLªkªì©l¤Æ libbonoboui ªº­ì½X"
+msgstr "ç„¡æ³•åˆå§‹åŒ– libbonoboui çš„åŸç¢¼"
 
-#~ msgid "Can not activate object_server"
-#~ msgstr "µLªk±Ò°Ê¦øªAª«¥ó"
-
-#~ msgid "Can not bind object server to client_site"
-#~ msgstr "µLªk³sµ²¦øªAª«¥ó¨ì«È¤áºİ"
-
-#~ msgid "Can not activate server"
-#~ msgstr "µLªk±Ò°Ê¦øªAªA°È"
-
-#~ msgid "Could not launch bonobo object."
-#~ msgstr "µLªk±Ò°Ê bonobo ª«¥ó¡C"
-
-#~ msgid "Could not launch Embeddable."
-#~ msgstr "µLªk±Ò°Ê´O¤J¦¡"
-
-#~ msgid "Could not launch Control."
-#~ msgstr "µLªk±Ò°Ê±±¨î¤¸¥ó¡C"
-
-#~ msgid "Can not bonobo_init"
-#~ msgstr "µLªkªì©l¤Æ Bononbo"
