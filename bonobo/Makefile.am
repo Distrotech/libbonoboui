@@ -16,8 +16,9 @@ gnome_libs =			\
 	$(INTLLIBS)
 
 bonobo_libs = 			\
-	$(gnome_libs)		\
-	libbonobo.la 
+	libbonobo.la 		\
+	$(gnome_libs)
+
 
 lib_LTLIBRARIES = libbonobo.la
 noinst_PROGRAMS = object_test test-container sample-server
