@@ -11,10 +11,12 @@ gnome_libs =			\
 lib_LTLIBRARIES = libbonobo.la
 noinst_PROGRAMS = object_test
 
-libbonobo_la_SOURCES =	\
-	gnome-object.c
+libbonobo_la_SOURCES =		\
+	gtk-interfaces.c	\
+	gnome-object.c		
 
-bonobo_headers =	\
+bonobo_headers =		\
+	gtk-interfaaces.h	\
 	gnome-object.h
 
 
@@ -22,4 +24,6 @@ object_test_SOURCES =	\
 	object_test.c
 
 object_test_LDADD =	\
-	$(gnome_libs)
+	$(gnome_libs) libbonobo.la
+
+
