@@ -39,6 +39,7 @@ bonobo-view-frame.[ch]:
 bonobo-widget.[ch]:
 	Removed bonobo_widget_get_server, redundany BonoboObjectClient variant,
 	use bonobo_widget_get_objref instead.  Removed the subdoc variant.
+	Rename bonobo_widget_get_uih -> bonobo_widget_get_ui_container.
 
 bonobo-desktop-window.[ch]:
 	Removed - stale, deprecated.		  
@@ -134,5 +135,10 @@ bonobo-ui-component.[ch]:
 	bonobo_ui_component_remove_listener_by_closure.
 	bonobo_ui_component_set_container: added optional ev.
 	bonobo_ui_component_get_container: added optional ev.
+
+bonobo-zoomable.[ch]:
+	bonobo_zoomable_report_zoom_level_changed,
+	bonobo_zoomable_report_zoom_parameters_changed:
+	added optional ev.
 
 

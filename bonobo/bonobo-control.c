@@ -457,7 +457,7 @@ bonobo_control_construct (BonoboControl  *control,
 	 */
 	bonobo_setup_x_error_handler ();
 
-	control->priv->widget = GTK_WIDGET (widget);
+	control->priv->widget = g_object_ref (G_OBJECT (widget));
 	gtk_container_add (GTK_CONTAINER (control->priv->plug),
 			   control->priv->widget);
 
@@ -561,7 +561,7 @@ bonobo_control_dispose (GObject *object)
 	bonobo_control_set_ui_component    (control, NULL);
 
 	if (control->priv->widget)
-		gtk_object_destroy (GTK_OBJECT (control->priv->widget));
+		g_object_unref (G_OBJECT (control->priv->widget));
 
 	bonobo_control_parent_class->dispose (object);
 }

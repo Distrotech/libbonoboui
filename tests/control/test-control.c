@@ -40,9 +40,16 @@ destroy_test (Test *test, DestroyType type)
 	case DESTROY_TOPLEVEL:
 		gtk_widget_destroy (test->bonobo_widget);
 		break;
-	case DESTROY_CONTAINED:
+	case DESTROY_CONTAINED: {
+		BonoboControlFrame *frame;
+
 		gtk_widget_destroy (test->control_widget);
+
+		frame = bonobo_widget_get_control_frame (
+			BONOBO_WIDGET (test->bonobo_widget));
+		g_assert (BONOBO_IS_CONTROL_FRAME (frame));
 		break;
+	}
 	case DESTROY_CONTROL:
 	case DESTROY_SOCKET:
 		g_warning ("unimpl");

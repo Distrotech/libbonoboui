@@ -39,12 +39,8 @@
 #include <bonobo/bonobo-moniker-util.h>
 
 struct _BonoboWidgetPrivate {
-	/* Either a Control or an Embeddable ref */
-	Bonobo_Unknown      server;
-
 	/* Control stuff. */
-	BonoboControlFrame *control_frame;
-	Bonobo_UIContainer  uic;
+	BonoboControlFrame *frame;
 };
 
 static BonoboWrapperClass *bonobo_widget_parent_class;
@@ -97,32 +93,29 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 					     Bonobo_UIContainer uic,
 					     CORBA_Environment *ev)
 {
-	GtkWidget *control_frame_widget;
+	GtkWidget *frame_widget;
 
 	/* Create a local ControlFrame for it. */
-	bw->priv->control_frame = bonobo_control_frame_new (uic);
+	bw->priv->frame = bonobo_control_frame_new (uic);
 
 	bonobo_control_frame_bind_to_control
-		(bw->priv->control_frame, control, ev);
+		(bw->priv->frame, control, ev);
 
 	/* People that pass us controls get them sunk. */
 	bonobo_object_release_unref (control, ev);
 
-	bonobo_control_frame_set_autoactivate (bw->priv->control_frame, TRUE);
+	bonobo_control_frame_set_autoactivate (bw->priv->frame, TRUE);
 
 	/*
 	 * Grab the actual widget which visually contains the remote
 	 * Control.  This is a GtkSocket, in reality.
 	 */
-	control_frame_widget = bonobo_control_frame_get_widget (bw->priv->control_frame);
+	frame_widget = bonobo_control_frame_get_widget (bw->priv->frame);
 
 	/* Now stick it into this BonoboWidget. */
 	gtk_container_add (GTK_CONTAINER (bw),
-			   control_frame_widget);
-	gtk_widget_show (control_frame_widget);
-
-	if (uic != CORBA_OBJECT_NIL)
-		bw->priv->uic = bonobo_object_dup_ref (uic, ev);
+			   frame_widget);
+	gtk_widget_show (frame_widget);
 
 	return bw;
 }
@@ -153,14 +146,12 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 	Bonobo_Control control;
 
 	/* Create the remote Control object. */
-	bw->priv->server = bonobo_widget_launch_component (
+	control = bonobo_widget_launch_component (
 		moniker, "IDL:Bonobo/Control:1.0", ev);
-	if (bw->priv->server == NULL) {
+	if (BONOBO_EX (ev) || control == CORBA_OBJECT_NIL) {
 		gtk_object_unref (GTK_OBJECT (bw));
 		return NULL;
 	}
-
-	control = bw->priv->server;
 
 	return bonobo_widget_construct_control_from_objref (
 		bw, control, uic, ev);
@@ -310,44 +301,40 @@ bonobo_widget_new_control (const char        *moniker,
 BonoboControlFrame *
 bonobo_widget_get_control_frame (BonoboWidget *bonobo_widget)
 {
-	g_return_val_if_fail (bonobo_widget != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return bonobo_widget->priv->control_frame;
+	return bonobo_widget->priv->frame;
 }
 
 /**
- * bonobo_widget_get_uih:
+ * bonobo_widget_get_ui_container:
  * @bonobo_widget: the #BonoboWidget to query.
  *
  * Returns: the CORBA object reference to the Bonobo_UIContainer
  * associated with the @bonobo_widget.
  */
 Bonobo_UIContainer
-bonobo_widget_get_uih (BonoboWidget *bonobo_widget)
+bonobo_widget_get_ui_container (BonoboWidget *bonobo_widget)
 {
-	g_return_val_if_fail (bonobo_widget != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return bonobo_widget->priv->uic;
+	if (!bonobo_widget->priv->frame)
+		return CORBA_OBJECT_NIL;
+
+	return bonobo_control_frame_get_ui_container (
+		bonobo_widget->priv->frame);
 }
-
-
-
-/*
- * Generic (non-control/subdoc specific) BonoboWidget stuff.
- */
 
 Bonobo_Unknown
 bonobo_widget_get_objref (BonoboWidget *bonobo_widget)
 {
-	g_return_val_if_fail (bonobo_widget != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return bonobo_widget->priv->server;
+	if (!bonobo_widget->priv->frame)
+		return CORBA_OBJECT_NIL;
+	else
+		return bonobo_control_frame_get_control (bonobo_widget->priv->frame);
 }
-
-
 
 static void
 bonobo_widget_dispose (GObject *object)
@@ -355,12 +342,7 @@ bonobo_widget_dispose (GObject *object)
 	BonoboWidget *bw = BONOBO_WIDGET (object);
 	BonoboWidgetPrivate *priv = bw->priv;
 	
-	if (priv->uic != CORBA_OBJECT_NIL) {
-		bonobo_object_release_unref (priv->uic, NULL);
-		priv->uic = CORBA_OBJECT_NIL;
-	}
-
-	priv->control_frame = NULL;
+	priv->frame = NULL;
 
 	G_OBJECT_CLASS (bonobo_widget_parent_class)->dispose (object);
 }
@@ -500,7 +482,7 @@ bonobo_widget_set_property (BonoboWidget      *control,
 	CORBA_exception_init (&ev);
 	
 	pb = bonobo_control_frame_get_control_property_bag (
-		control->priv->control_frame, &ev);
+		control->priv->frame, &ev);
 
 	if (BONOBO_EX (&ev))
 		g_warning ("Error getting property bag from control");
@@ -556,7 +538,7 @@ bonobo_widget_get_property (BonoboWidget      *control,
 	CORBA_exception_init (&ev);
 	
 	pb = bonobo_control_frame_get_control_property_bag (
-		control->priv->control_frame, &ev);
+		control->priv->frame, &ev);
 
 	if (BONOBO_EX (&ev))
 		g_warning ("Error getting property bag from control");

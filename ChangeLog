@@ -1,5 +1,50 @@
 2001-11-06  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-zoomable.c
+	(bonobo_zoomable_free_preferred_zoom_level_arrays):
+	handle double destroys.
+	(bonobo_zoomable_destroy): rename to
+	(bonobo_zoomable_dispose): this & upd.
+	(bonobo_zoomable_finalize): upd.
+	(bonobo_zoomable_from_servant): simplify.
+	(impl_Bonobo_Zoomable_setLevel),
+	(impl_Bonobo_Zoomable_zoomOut),
+	(impl_Bonobo_Zoomable_zoomIn),
+	(impl_Bonobo_Zoomable_zoomFit),
+	(impl_Bonobo_Zoomable_zoomDefault),
+	(impl_Bonobo_Zoomable_setFrame): clean + gsignal.
+	(bonobo_zoomable_new): prune cruft.
+	(bonobo_zoomable_report_zoom_level_changed): add opt_ev.
+	(bonobo_zoomable_report_zoom_parameters_changed): ditto.
+	(bonobo_zoomable_class_init): upd. for g_signal.
+	(bonobo_zoomable_get_arg): rename to
+	(bonobo_zoomable_get_property): this.
+	(bonobo_zoomable_set_parameters_full): upd.
+
+2001-11-06  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-widget.c (bonobo_widget_dispose):
+	re-order for more safety & simplify.
+	(bonobo_widget_get_objref): use the frame's version,
+	not our own private, stale copy.
+	(bonobo_widget_get_uih): rename to
+	(bonobo_widget_get_ui_container): use the frame's version.
+	(bonobo_widget_construct_control): kill priv->server.
+	(bonobo_widget_construct_control_from_objref): remove
+	ui container management.
+	(bonobo_widget_dispose): ditto.
+
+	* bonobo/bonobo-widget.h: kill
+	bonobo_widget_new_subdoc decl. add bonobo_widget_get_uih
+	compat method.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_dispose): pull
+	the child out before it can be disposed of.
+
+	* bonobo/bonobo-control.c (bonobo_control_dispose):
+	unref the plug on dispose.
+	(bonobo_control_construct): take a ref on the widget.
+
 	* bonobo/bonobo-ui-component.c (impl_get_prop):
 	silently return NULL even with a NULL opt_ev, if we
 	get a NonExistantAttr.

@@ -103,8 +103,13 @@ static void
 bonobo_plug_dispose (GObject *object)
 {
 	BonoboPlug *plug = (BonoboPlug *) object;
+	GtkBin *bin_plug = (GtkBin *) object;
 
 	dprintf ("bonobo_plug_dispose\n");
+
+	if (bin_plug->child)
+		gtk_container_remove (
+			&bin_plug->container, bin_plug->child);
 
 	if (plug->control) {
 		BonoboControl *control = plug->control;

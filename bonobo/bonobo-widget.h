@@ -55,6 +55,7 @@ GtkWidget          *bonobo_widget_new_control_from_objref  (Bonobo_Control     c
 							    Bonobo_UIContainer uic);
 BonoboControlFrame *bonobo_widget_get_control_frame        (BonoboWidget      *bw);
 
+Bonobo_UIContainer  bonobo_widget_get_ui_container         (BonoboWidget      *bw);
 
 typedef void      (*BonoboWidgetAsyncFn)                   (BonoboWidget       *widget,
 							    CORBA_Environment  *ev,
@@ -87,13 +88,8 @@ void                 bonobo_widget_get_property             (BonoboWidget       
 							     const char         *first_prop,
 							     ...);
 
-/*
- * Gnome Bonobo Widget for subdocuments (Embeddables with a single View).
- */
-GtkWidget           *bonobo_widget_new_subdoc               (const char        *moniker,
-							     Bonobo_UIContainer uic);
-Bonobo_UIContainer   bonobo_widget_get_uih                  (BonoboWidget      *bw);
-
+/* Compat */
+#define bonobo_widget_get_uih(w) bonobo_widget_get_ui_container (w)
 
 G_END_DECLS
 
