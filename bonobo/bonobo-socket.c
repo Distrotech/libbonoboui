@@ -552,8 +552,8 @@ bonobo_socket_focus_out_event (GtkWidget *widget, GdkEventFocus *event)
 	 * processed by our event filter.
 	 */
 
-	fprintf (stderr, "socket_focus_out: Socket focus out event\n");
 #if 0
+	fprintf (stderr, "socket_focus_out: Socket focus out event\n");
 	focus_toplevel_window (socket);
 #endif
 	return TRUE;
@@ -806,6 +806,7 @@ bonobo_socket_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer data
 		break;
 
 	case FocusOut:
+#if 0
 		fprintf (stderr, "socket_filter: FocusOut event from ");
 		if (xevent->xfocus.window == GDK_WINDOW_XWINDOW (widget->window))
 			fprintf (stderr, "the socket window\n");
@@ -813,6 +814,7 @@ bonobo_socket_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer data
 			fprintf (stderr, "the plug window\n");
 		else
 			fprintf (stderr, "unknown window\n");
+#endif
 
 		return_val = GDK_FILTER_REMOVE;
 		break;
