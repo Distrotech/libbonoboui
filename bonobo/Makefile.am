@@ -43,16 +43,17 @@ idls =							\
 	$(top_srcdir)/idl/Bonobo.idl			\
 	$(top_srcdir)/idl/bonobo-advise.idl		\
 	$(top_srcdir)/idl/bonobo-canvas.idl 		\
-	$(top_srcdir)/idl/bonobo-client-site.idl	\
-	$(top_srcdir)/idl/bonobo-control.idl		\
-	$(top_srcdir)/idl/bonobo-embeddable.idl		\
 	$(top_srcdir)/idl/bonobo-container.idl		\
+	$(top_srcdir)/idl/bonobo-control.idl		\
+	$(top_srcdir)/idl/bonobo-client-site.idl	\
+	$(top_srcdir)/idl/bonobo-embeddable.idl		\
+	$(top_srcdir)/idl/bonobo-moniker.idl		\
 	$(top_srcdir)/idl/bonobo-persist.idl		\
+	$(top_srcdir)/idl/bonobo-progressive.idl	\
+	$(top_srcdir)/idl/bonobo-property.idl		\
 	$(top_srcdir)/idl/bonobo-sizeable.idl		\
 	$(top_srcdir)/idl/bonobo-storage.idl		\
-	$(top_srcdir)/idl/bonobo-progressive.idl	\
-	$(top_srcdir)/idl/bonobo-ui-handler.idl		\
-	$(top_srcdir)/idl/bonobo-property.idl
+	$(top_srcdir)/idl/bonobo-ui-handler.idl
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 
@@ -72,7 +73,7 @@ libbonobo_la_SOURCES =			\
 	bonobo-generic-factory.c	\
 	bonobo-main.c			\
 	bonobo-moniker.c		\
-	bonobo-moniker-client.c		\
+	bonobo-moniker-util.c		\
 	bonobo-object.c			\
 	bonobo-object-client.c		\
 	bonobo-object-io.c		\

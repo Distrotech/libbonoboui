@@ -16,12 +16,11 @@ extern "C" {
 #endif
 
 #include <bonobo/bonobo-object.h>
-
 #include <bonobo/bonobo-moniker.h>
-#include <bonobo/bonobo-moniker-client.h>
 
 #include <bonobo/bonobo-container.h>
 #include <bonobo/bonobo-object-client.h>
+#include <bonobo/bonobo-moniker-util.h>
 #include <bonobo/bonobo-client-site.h>
 
 #include <bonobo/bonobo-property-bag.h>
