@@ -17,11 +17,6 @@
 #include <bonobo/gnome-object.h>
 #include <bonobo/gnome-bonobo-widget.h>
 
-#define CHILD_SPACING     1
-#define DEFAULT_LEFT_POS  4
-#define DEFAULT_TOP_POS   4
-#define DEFAULT_SPACING   7
-
 static GnomeWrapperClass *gnome_bonobo_widget_parent_class;
 
 static GnomeObjectClient *
@@ -153,30 +148,21 @@ static void
 gnome_bonobo_widget_size_request (GtkWidget *widget,
 				  GtkRequisition *requisition)
 {
-	GnomeBonoboWidget *bw;
+	GtkBin *bin;
 
 	g_return_if_fail (widget != NULL);
 	g_return_if_fail (GNOME_IS_BONOBO_WIDGET (widget));
 	g_return_if_fail (requisition != NULL);
 
-	bw = GNOME_BONOBO_WIDGET (widget);
+	bin = GTK_BIN (widget);
 
-	requisition->width = (GTK_CONTAINER (widget)->border_width + CHILD_SPACING +
-			      GTK_WIDGET (widget)->style->klass->xthickness) * 2;
-	requisition->height = (GTK_CONTAINER (widget)->border_width + CHILD_SPACING +
-			       GTK_WIDGET (widget)->style->klass->ythickness) * 2;
+	requisition->width = GTK_CONTAINER (widget)->border_width * 2;
+	requisition->height = GTK_CONTAINER (widget)->border_width * 2;
 
-	if (GTK_WIDGET_CAN_DEFAULT (widget)) {
-		requisition->width += (GTK_WIDGET (widget)->style->klass->xthickness * 2 +
-				       DEFAULT_SPACING);
-		requisition->height += (GTK_WIDGET (widget)->style->klass->ythickness * 2 +
-					DEFAULT_SPACING);
-	}
-
-	if (GTK_BIN (bw)->child && GTK_WIDGET_VISIBLE (GTK_BIN (bw)->child)) {
+	if (bin->child && GTK_WIDGET_VISIBLE (bin->child)) {
 		GtkRequisition child_requisition;
-
-		gtk_widget_size_request (GTK_BIN (bw)->child, &child_requisition);
+      
+		gtk_widget_size_request (bin->child, &child_requisition);
 
 		requisition->width += child_requisition.width;
 		requisition->height += child_requisition.height;
@@ -187,49 +173,31 @@ static void
 gnome_bonobo_widget_size_allocate (GtkWidget *widget,
 				   GtkAllocation *allocation)
 {
-	GnomeBonoboWidget *bw;
+	GtkBin *bin;
 	GtkAllocation child_allocation;
-	gint border_width;
 
 	g_return_if_fail (widget != NULL);
 	g_return_if_fail (GNOME_IS_BONOBO_WIDGET (widget));
 	g_return_if_fail (allocation != NULL);
 
 	widget->allocation = *allocation;
-	border_width = GTK_CONTAINER (widget)->border_width;
+	bin = GTK_BIN (widget);
 
-#if 0
-	if (GTK_WIDGET_REALIZED (widget))
+	child_allocation.x = 0;
+	child_allocation.y = 0;
+	child_allocation.width = MAX (allocation->width - GTK_CONTAINER (widget)->border_width * 2, 0);
+	child_allocation.height = MAX (allocation->height - GTK_CONTAINER (widget)->border_width * 2, 0);
+
+	if (GTK_WIDGET_REALIZED (widget)) {
 		gdk_window_move_resize (widget->window,
-					widget->allocation.x + border_width,
-					widget->allocation.y + border_width,
-					widget->allocation.width - border_width * 2,
-					widget->allocation.height - border_width * 2);
-#endif
-
-	bw = GNOME_BONOBO_WIDGET (widget);
-
-	if (GTK_BIN (bw)->child && GTK_WIDGET_VISIBLE (GTK_BIN (bw)->child)) {
-		child_allocation.x = (CHILD_SPACING + GTK_WIDGET (widget)->style->klass->xthickness);
-		child_allocation.y = (CHILD_SPACING + GTK_WIDGET (widget)->style->klass->ythickness);
-
-		child_allocation.width = MAX (1, (gint)widget->allocation.width - child_allocation.x * 2 -
-					      border_width * 2);
-		child_allocation.height = MAX (1, (gint)widget->allocation.height - child_allocation.y * 2 -
-					       border_width * 2);
-
-		if (GTK_WIDGET_CAN_DEFAULT (bw)) {
-			child_allocation.x += (GTK_WIDGET (widget)->style->klass->xthickness +
-					       DEFAULT_LEFT_POS);
-			child_allocation.y += (GTK_WIDGET (widget)->style->klass->ythickness +
-					       DEFAULT_TOP_POS);
-			child_allocation.width =  MAX (1, (gint)child_allocation.width -
-			       (gint)(GTK_WIDGET (widget)->style->klass->xthickness * 2 + DEFAULT_SPACING));
-			child_allocation.height = MAX (1, (gint)child_allocation.height -
-			       (gint)(GTK_WIDGET (widget)->style->klass->xthickness * 2 + DEFAULT_SPACING));
-		}
-
-		gtk_widget_size_allocate (GTK_BIN (bw)->child, &child_allocation);
+					allocation->x + GTK_CONTAINER (widget)->border_width,
+					allocation->y + GTK_CONTAINER (widget)->border_width,
+					child_allocation.width,
+					child_allocation.height);
+	}
+  
+	if (bin->child) {
+		gtk_widget_size_allocate (bin->child, &child_allocation);
 	}
 }
 
