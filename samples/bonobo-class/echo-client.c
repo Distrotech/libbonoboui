@@ -17,26 +17,34 @@
 #include <bonobo.h>
 #include "Echo.h"
 
-CORBA_Environment ev;
-
 static void
 init_bonobo (int argc, char *argv [])
 {
+	CORBA_ORB orb;
+#ifndef USING_OAF
+	CORBA_Environment ev;
+
 	CORBA_exception_init (&ev);
 	
-#if USING_OAF
-        gnome_init_with_popt_table("echo-client", "1.0",
-				   argc, argv,
-				   oaf_popt_options, 0, NULL); 
-
-	oaf_init (argc, argv);
-#else
 	gnome_CORBA_init_with_popt_table (
-      	"echo-client", "1.0",
-	&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
+		"echo-client", "1.0",
+		&argc, argv, NULL, 0, NULL,
+		GNORBA_INIT_SERVER_FUNC, &ev);
+
+	orb = gnome_CORBA_ORB ();
+
+	CORBA_exception_free (&ev);
+#else
+        gnome_init_with_popt_table (
+		"echo-client", "1.0",
+		argc, argv,
+		oaf_popt_options, 0, NULL); 
+
+	orb = oaf_init (argc, argv);
 #endif
 
-	if (bonobo_init (NULL, NULL, NULL) == FALSE)
+	if (!bonobo_init (orb, CORBA_OBJECT_NIL,
+			  CORBA_OBJECT_NIL))
 		g_error (_("I could not initialize Bonobo"));
 
 	/*
@@ -49,24 +57,26 @@ int
 main (int argc, char *argv [])
 {
 	BonoboObjectClient *server;
-	Demo_Echo echo_server;
+	Demo_Echo           echo_server;
+	CORBA_Environment   ev;
+	char               *obj_id;
 
 	init_bonobo (argc, argv);
 
 #if USING_OAF
-	server = bonobo_object_activate ("OAFIID:demo_echo:fe45dab2-ae27-45e9-943d-34a49eefca96", 0);
+	obj_id = "OAFIID:demo_echo:fe45dab2-ae27-45e9-943d-34a49eefca96";
+		
 #else
-	server = bonobo_object_activate ("GOADID:demo_echo", 0);
+	obj_id = "GOADID:demo_echo";
+#endif
+	server = bonobo_object_activate (obj_id, 0);
 
-#endif
-	if (!server){
-#ifdef USING_OAF
-		printf ("Could not create an instance of the OAFIID:demo_echo:fe45dab2-ae27-45e9-943d-34a49eefca96 component");
-#else
-		printf ("Could not create an instance of the GOADID:demo:echo");
-#endif
+	if (!server) {
+		printf ("Could not create an instance of the %s component", obj_id);
 		return 1;
 	}
+
+	CORBA_exception_init (&ev);
 
 	/*
 	 * Get the CORBA Object reference from the BonoboObjectClient
@@ -78,16 +88,9 @@ main (int argc, char *argv [])
 	 */
 	Demo_Echo_echo (echo_server, "This is the message from the client\n", &ev);
 
-	/*
-	 * Notify we are no longer interested in their services:
-	 *
-	 * We unref once because of the result from QI
-	 * We unref once to get rid of the object altogether.
-	 */
-	Demo_Echo_unref (echo_server, &ev);
-	Demo_Echo_unref (echo_server, &ev);
-	
 	CORBA_exception_free (&ev);
 
+	bonobo_object_unref (server);
+	
 	return 0;
 }

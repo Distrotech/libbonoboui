@@ -52,7 +52,8 @@ impl_demo_echo_echo (PortableServer_Servant  servant,
 {
 	Echo *echo = ECHO (bonobo_object_from_servant (servant));
 									 
-	printf ("Echo message received: %s (echo instance data: %s)\n", string, echo->instance_data);
+	printf ("Echo message received: %s (echo instance data: %s)\n", string,
+		echo->instance_data);
 }
 
 /*
@@ -168,7 +169,7 @@ create_echo (BonoboObject *echo)
 	CORBA_exception_free (&ev);
 
 	/*
-	 * Activates the CORBA object.
+	 * Activates the CORBA object & binds to the servant
 	 */
 	return (Demo_Echo) bonobo_object_activate_servant (echo, servant);
 }
