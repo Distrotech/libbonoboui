@@ -94,7 +94,6 @@ libbonoboinclude_HEADERS =			\
 	bonobo-exception.h			\
 	bonobo-generic-factory.h		\
 	bonobo-item-container.h			\
-	bonobo-item-handler.h			\
 	bonobo-main.h				\
 	bonobo-moniker-util.h			\
 	bonobo-moniker.h			\
@@ -152,7 +151,6 @@ libbonobox_la_SOURCES =				\
 	bonobo-desktop-window.c			\
 	bonobo-embeddable.c			\
 	bonobo-item-container.c			\
-	bonobo-item-handler.c			\
 	bonobo-plug.c				\
 	bonobo-selector.c			\
 	bonobo-socket.c				\
