@@ -27,6 +27,21 @@ CORBA_SOURCE =			\
 	bonobo-stubs.c		\
 	bonobo-skels.c
 
+idls =						\
+	$(top_srcdir)/idl/bonobo.idl		\
+	$(top_srcdir)/idl/advise.idl		\
+	$(top_srcdir)/idl/base.idl		\
+	$(top_srcdir)/idl/bobject.idl		\
+	$(top_srcdir)/idl/clientsite.idl	\
+	$(top_srcdir)/idl/container.idl		\
+	$(top_srcdir)/idl/inplace.idl		\
+	$(top_srcdir)/idl/moniker.idl		\
+	$(top_srcdir)/idl/persist.idl		\
+	$(top_srcdir)/idl/storage.idl
+	
+$(CORBA_SOURCE): $(idls)
+	orbit-idl $(top_srcdir)/idl/bonobo.idl
+
 libbonobo_la_SOURCES =		\
 	$(CORBA_SOURCE)		\
 	gtk-interfaces.c	\

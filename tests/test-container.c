@@ -24,12 +24,12 @@ container_add (GnomeContainer *container, char *repoid)
 
 	object_server = gnome_object_activate_with_repo_id (NULL, repoid, 0, NULL);
 	if (!object_server){
-		g_warning ("Can not activate object_server\n");
+		g_warning (_("Can not activate object_server\n"));
 		return;
 	}
 
 	if (!gnome_client_site_bind_component (client_site, object_server)){
-		g_warning ("Can not bind object server to client_site\n");
+		g_warning (_("Can not bind object server to client_site\n"));
 		return;
 	}
 }
@@ -43,7 +43,7 @@ main (int argc, char *argv [])
 	orb = gnome_CORBA_ORB ();
 	
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error ("Can not bonobo_init\n");
+		g_error (_("Can not bonobo_init\n"));
 
 	container = GNOME_CONTAINER (gnome_container_new ());
 
