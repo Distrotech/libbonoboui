@@ -20,9 +20,7 @@
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-i18n.h>
-
-#include <libxml/tree.h>
-#include <libxml/parser.h>
+#include <bonobo/bonobo-ui-node-private.h>
 
 static gchar *find_pixmap_in_path (const gchar *filename);
 
@@ -571,12 +569,6 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 	return NULL;
 }
 
-
-/* To avoid exporting property iterators on BonoboUINode
- * (not sure those should be public), this hack is used.
- */
-#define XML_NODE(x) ((xmlNode*)(x))
-
 /**
  * bonobo_ui_util_translate_ui:
  * @node: the node to start at.
@@ -586,45 +578,38 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
  * property and removes the leading '_'.
  **/
 void
-bonobo_ui_util_translate_ui (BonoboUINode *bnode)
+bonobo_ui_util_translate_ui (BonoboUINode *node)
 {
         BonoboUINode *l;
-        xmlNode *node;
-	xmlAttr *prop, *old_props;
+	int           i;
 
-	if (!bnode)
+	if (!node)
 		return;
 
-	bonobo_ui_node_strip (&bnode);
-	if (!bnode) {
-		g_warning ("All xml stripped away");
-		return;
+	for (i = 0; i < node->attrs->len; i++) {
+		BonoboUIAttr *a;
+		const char   *str;
+
+		a = &g_array_index (node->attrs, BonoboUIAttr, i);
+
+		if (!a->id)
+			continue;
+
+		str = g_quark_to_string (a->id);
+		if (str [0] == '_') {
+			char *encoded;
+
+			a->id = g_quark_from_static_string (str + 1);
+
+			encoded = bonobo_ui_util_encode_str (_(a->value));
+			xmlFree (a->value);
+			a->value = xmlStrdup (encoded);
+			g_free (encoded);
+		}
 	}
 
-	node = XML_NODE (bnode);
-
-	old_props = node->properties;
-	node->properties = NULL;
-
-	for (prop = old_props; prop; prop = prop->next) {
-		xmlChar *value;
-
-		value = xmlNodeListGetString (NULL, prop->children, 1);
-
-		/* Find translatable properties */
-		if (prop->name && prop->name [0] == '_')
-			xmlNewProp (node, &prop->name [1], _(value));
-		else
-			xmlNewProp (node, prop->name, value);
-
-		if (value)
-			bonobo_ui_node_free_string (value);
-	}
-
-	for (l = bonobo_ui_node_children (bnode); l; l = bonobo_ui_node_next (l))
+	for (l = node->children; l; l = l->next)
 		bonobo_ui_util_translate_ui (l);
-
-	xmlFreePropList (old_props);
 }
 
 /**
@@ -745,8 +730,6 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 
         node = bonobo_ui_node_from_file (file_name);
 
-	bonobo_ui_node_strip (&node);
-
 	bonobo_ui_util_translate_ui (node);
 
 	bonobo_ui_util_fixup_help (component, node, app_prefix, app_name);
@@ -754,6 +737,53 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 	bonobo_ui_util_fixup_icons (node);
 
 	return node;
+}
+
+
+typedef struct {
+	char *file_name;
+	char *app_name;
+	char *tree;
+} BonoboUINodeCacheEntry;
+
+static guint
+node_hash (gconstpointer key)
+{
+	BonoboUINodeCacheEntry *entry = (BonoboUINodeCacheEntry *)key;
+
+	return g_str_hash (entry->file_name) ^ g_str_hash (entry->app_name);
+}
+
+static gint
+node_equal (gconstpointer a, gconstpointer b)
+{
+	BonoboUINodeCacheEntry *entry_a = (BonoboUINodeCacheEntry *)a;
+	BonoboUINodeCacheEntry *entry_b = (BonoboUINodeCacheEntry *)b;
+
+	return !strcmp (entry_a->file_name, entry_b->file_name) &&
+		!strcmp (entry_a->app_name, entry_b->app_name);
+}
+
+static GHashTable *loaded_node_cache = NULL;
+
+static void
+free_node_cache_entry (BonoboUINodeCacheEntry *entry)
+{
+	g_free (entry->file_name);
+	g_free (entry->app_name);
+	g_free (entry->tree);
+	g_free (entry);
+}
+
+static void
+free_loaded_node_cache (void)
+{
+	if (loaded_node_cache) {
+		g_hash_table_foreach (loaded_node_cache,
+				      (GHFunc) free_node_cache_entry,
+				      NULL);
+		g_hash_table_destroy (loaded_node_cache);
+	}
 }
 
 /**
@@ -774,8 +804,14 @@ bonobo_ui_util_set_ui (BonoboUIComponent *component,
 		       const char        *file_name,
 		       const char        *app_name)
 {
-	char *fname;
-	BonoboUINode *ui;
+	char                  *fname, *ui;
+	BonoboUINodeCacheEntry entry, *cached;
+
+	if (!loaded_node_cache) {
+		loaded_node_cache = g_hash_table_new (node_hash,
+						      node_equal);
+		g_atexit (free_loaded_node_cache);
+	}
 
 	if (bonobo_ui_component_get_container (component) == CORBA_OBJECT_NIL) {
 		g_warning ("Component must be associated with a container first "
@@ -788,16 +824,37 @@ bonobo_ui_util_set_ui (BonoboUIComponent *component,
 		g_warning ("Can't find '%s' to load ui from", file_name);
 		return;
 	}
-	
-	ui = bonobo_ui_util_new_ui (component, fname, app_prefix, app_name);
+
+	entry.file_name = (char *) fname;
+	entry.app_name  = (char *) app_name;
+
+	cached = g_hash_table_lookup (loaded_node_cache, &entry);
+
+	if (cached) 
+		ui = cached->tree;
+	else {
+		BonoboUINode *node;
+
+		node = bonobo_ui_util_new_ui (
+			component, fname, app_prefix, app_name);
+
+		ui = bonobo_ui_node_to_string (node, TRUE);
+
+		bonobo_ui_node_free (node);
+		
+		cached = g_new (BonoboUINodeCacheEntry, 1);
+		
+		cached->file_name = g_strdup (fname);
+		cached->app_name  = g_strdup (app_name);
+		cached->tree      = ui;
+		
+		g_hash_table_insert (loaded_node_cache, cached, cached);
+	}
 	
 	if (ui)
-		bonobo_ui_component_set_tree (
-			component, "/", ui, NULL);
+		bonobo_ui_component_set (component, "/", ui, NULL);
 	
 	g_free (fname);
-	bonobo_ui_node_free (ui);
-	/* FIXME: we could be caching the tree here */
 }
 
 /*

@@ -174,7 +174,7 @@ impl_Bonobo_UIContainer_removeNode (PortableServer_Servant servant,
 	if (!engine)
 		return;
 
-/*	g_warning ("Node remove '%s' for '%s'", path, component_name);*/
+/*	g_warning ("Node remove '%s' for '%s'", path, component_name); */
 
 	err = bonobo_ui_engine_xml_rm (engine, path, component_name);
 

@@ -1,3 +1,112 @@
+2001-08-22  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_set_status): update path - since tree
+	no longer has empty child content nodes.
+
+2001-08-21  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c (state_update_new):
+	efficiency wins.
+	(hide_placeholder_if_empty_or_hidden): ditto.
+
+	* bonobo/bonobo-ui-xml.c (do_insert): optimize.
+	(merge): more efficiency tweaking.
+
+	* bonobo/bonobo-ui-engine.c (move_dirt_cmd_to_widget): 
+	accelerate loop, use name_id
+	(update_commands_state): ditto.
+
+	* bonobo/bonobo-ui-xml.c (bonobo_ui_xml_set_dirty, merge):
+	quick compares for placeholder.
+	(find_child, merge): accelerate name lookups.
+
+	* tests/test-ui.c (main): update status check.
+
+	* bonobo/bonobo-ui-node.c (uiEndElement): fix
+	empty content pruning bug.
+	(bonobo_ui_node_replace): swap arg. order; it was wrong.
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_util_translate_ui): encode strings for
+	libxml transport issues.
+
+	* bonobo/bonobo-ui-node.c
+	(bonobo_ui_node_move_children): impl.
+
+	* bonobo/bonobo-ui-xml.c (override_node_with),
+	(reinstate_old_node): use it.
+	(move_children): kill it - slow.
+
+	* bonobo/bonobo-ui-engine.c (class_init): setup
+	cached ids for "id", "verb", "name"
+	(node_get_id): fix horrible inefficiencies.
+	(cmd_to_node_add_node): upd.
+	(cmd_to_node_remove_node): upd.
+	(impl_emit_verb_on): upd.
+	(cmd_get_node): upd.
+	(impl_emit_event_on): upd.
+	(bonobo_ui_engine_get_cmd_node): upd.
+
+	* bonobo/bonobo-ui-xml.c
+	(bonobo_ui_xml_class_init): setup name_id.
+	(do_set_id): use it.
+	(bonobo_ui_xml_make_path): ditto & optimize.
+
+2001-08-21  Michael Meeks  <michael@ximian.com>
+
+	* Merged libbonoboui to here:
+
+	* bonobo/bonobo-ui-xml.c (bonobo_ui_xml_dump),
+	(override_node_with): port to new code.
+	(bonobo_ui_xml_merge): ditto.
+
+	* bonobo/bonobo-ui-util.c (bonobo_ui_util_translate_ui):
+	re-implement for new node structures.
+
+	* bonobo/bonobo-ui-node.c
+	(bonobo_ui_node_from_string, bonobo_ui_node_from_file): reimpl.
+	(parse_state_new, parse_state_free): impl.
+	(bonobo_ui_node_str_from_id): impl.
+	(internal_to_string): impl.
+	(bonobo_ui_node_to_string): re-impl.
+
+2001-08-20  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-node.c (bonobo_ui_node_new),
+	(bonobo_ui_node_new_child, bonobo_ui_node_copy): rewrite.
+	(node_free_internal): impl.
+	(bonobo_ui_node_free, bonobo_ui_node_set_data),
+	(bonobo_ui_node_get_data): rewrite.
+	(bonobo_ui_node_get_id, cleanhash): impl.
+	(bonobo_ui_node_set_attr_by_id): impl.
+	(bonobo_ui_node_set_attr): upd.
+	(bonobo_ui_node_remove_attr): upd.
+	(bonobo_ui_node_unlink, bonobo_ui_node_insert_before),
+	(bonobo_ui_node_add_child, bonobo_ui_node_set_content),
+	(bonobo_ui_node_replace): rewrite.
+	(bonobo_ui_node_peek_content): impl
+	(bonobo_ui_node_next): re-impl.
+	(bonobo_ui_node_prev, bonobo_ui_node_children),
+	(bonobo_ui_node_get_name, bonobo_ui_node_parent): rewrite.
+	(bonobo_ui_node_has_name): reimpl.
+	(bonobo_ui_node_has_name_by_id): impl.
+	(bonobo_ui_node_transparent): reimpl.
+	(bonobo_ui_node_copy_attrs): reimpl.
+	(node_free_attrs): impl.
+	(do_strip): kill.
+	(bonobo_ui_node_strip): make a noop.
+
+	* bonobo/bonobo-ui-node-private.h: add.
+
+2001-08-22  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-util.c (free_loaded_node_cache),
+	(free_node_cache_entry, bonobo_ui_util_set_ui):
+	(node_hash, node_equal): port Alex' cache code from
+	bonobo stable.
+	(bonobo_ui_util_new_ui): remove 'strip'
+
 2001-08-22  Anders Carlsson  <andersca@gnu.org>
 
 	* bonobo/bonobo-ui-component.c (impl_xml_get): Free our

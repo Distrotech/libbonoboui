@@ -1260,7 +1260,7 @@ bonobo_ui_component_set_status (BonoboUIComponent *component,
 {
 	if (text == NULL ||
 	    text [0] == '\0') { /* Remove what was there to reveal other msgs */
-		bonobo_ui_component_rm (component, "/status/main/*", opt_ev);
+		bonobo_ui_component_rm (component, "/status/main", opt_ev);
 	} else {
 		char *str;
 

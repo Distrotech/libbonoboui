@@ -384,13 +384,18 @@ main (int argc, char **argv)
 	bonobo_ui_component_set_status (componenta, "WhatA5", &ev);
 	bonobo_ui_component_set_status (componenta, "WhatA6", &ev);
 	bonobo_ui_component_set_status (componentb, "WhatB7", &ev);
-	{
-		char *txt = bonobo_ui_component_get (componenta, "/status/main", TRUE, NULL);
-		if (!txt || strcmp (txt, "<?xml version=\"1.0\"?>\n<item name=\"main\">576861744136</item>\n")) {
-			g_warning ("FIXME: seriously broken merging code '%s'", txt);
-		}
-	}
 	bonobo_ui_component_set_status (componentb, "", &ev);
+
+  	{
+  		char *txt = bonobo_ui_component_get (componenta, "/status/main", TRUE, NULL);
+ 		const char *good = "<item name=\"main\">WhatA6</item>\n";
+ 
+ 		if (!txt || strcmp (txt, good)) {
+ 			g_warning ("Broken merging code '%s' should be '%s'", txt, good);
+ 			bonobo_window_dump (win, "on fatal error");
+  			g_assert_not_reached ();
+  		}
+  	}
 
 	bonobo_main ();
 
@@ -399,8 +404,7 @@ main (int argc, char **argv)
 	bonobo_ui_component_set_translate (componentb, "/menu", simpleb, &ev);
 	bonobo_ui_component_set_translate (componenta, "/",     toolb, &ev);
 
-	bonobo_ui_component_set_prop (componenta, "/menu/File", "label",
-				      "_Gå", NULL);
+	bonobo_ui_component_set_prop (componenta, "/menu/File", "label", "_Goo-wan", NULL);
 
 	/* A 'transparent' node merge */
 	txt = bonobo_ui_component_get_prop (componenta, "/Toolbar", "look", NULL);

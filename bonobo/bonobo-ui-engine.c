@@ -24,6 +24,8 @@
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-marshal.h>
 
+#include <bonobo/bonobo-ui-node-private.h>
+
 /* Various debugging output defines */
 #undef STATE_SYNC_DEBUG
 #undef WIDGET_SYNC_DEBUG
@@ -32,6 +34,12 @@
 #define PARENT_TYPE G_TYPE_OBJECT
 
 static GObjectClass *parent_class = NULL;
+
+static GQuark id_id        = 0;
+static GQuark verb_id      = 0;
+static GQuark name_id      = 0;
+static GQuark hidden_id    = 0;
+static GQuark sensitive_id = 0;
 
 enum {
 	ADD_HINT,
@@ -92,8 +100,7 @@ find_sync_for_node (BonoboUIEngine *engine,
 		return ret;
 	}
 
-	return find_sync_for_node (
-		engine, bonobo_ui_node_parent (node));
+	return find_sync_for_node (engine, node->parent);
 }
 
 /**
@@ -158,29 +165,22 @@ typedef struct {
 	GSList *nodes;
 } CmdToNode;
 
-static char *
+static const char *
 node_get_id (BonoboUINode *node)
 {
-	char *txt;
-	char *ret;
+	const char *txt;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if (!(txt = bonobo_ui_node_get_attr (node, "id"))) {
-		txt = bonobo_ui_node_get_attr (node, "verb");
-		if (txt && txt [0] == '\0') {
-			bonobo_ui_node_free_string (txt);
-			txt = bonobo_ui_node_get_attr (node, "name");
-		}
+	if (!(txt = bonobo_ui_node_get_attr_by_id (node, id_id))) {
+
+		txt = bonobo_ui_node_get_attr_by_id (node, verb_id);
+
+		if (txt && txt [0] == '\0')
+			txt = bonobo_ui_node_get_attr_by_id (node, name_id);
 	}
 
-	if (txt) {
-		ret = g_strdup (txt);
-		bonobo_ui_node_free_string (txt);
-	} else
-		ret = NULL;
-
-	return ret;
+	return txt;
 }
 
 static void
@@ -188,14 +188,13 @@ cmd_to_node_add_node (BonoboUIEngine *engine,
 		      BonoboUINode   *node,
 		      gboolean        recurse)
 {
-	CmdToNode *ctn;
-	char      *name;
+	CmdToNode  *ctn;
+	const char *name;
 
 	if (recurse) {
 		BonoboUINode *l;
 
-		for (l = bonobo_ui_node_children (node); l;
-		     l = bonobo_ui_node_next (l))
+		for (l = node->children; l; l = l->next)
 			cmd_to_node_add_node (engine, l, TRUE);
 	}
 
@@ -204,17 +203,16 @@ cmd_to_node_add_node (BonoboUIEngine *engine,
 		return;
 
 	ctn = g_hash_table_lookup (
-		engine->priv->cmd_to_node, name);
+		engine->priv->cmd_to_node, (gpointer) name);
 
 	if (!ctn) {
 		ctn = g_new (CmdToNode, 1);
 
-		ctn->name = name;
+		ctn->name = g_strdup (name);
 		ctn->nodes = NULL;
 		g_hash_table_insert (
 			engine->priv->cmd_to_node, ctn->name, ctn);
-	} else
-		g_free (name);
+	}
 
 /*	fprintf (stderr, "Adding %d'th '%s'\n",
 	g_slist_length (ctn->nodes), ctn->name);*/
@@ -227,14 +225,13 @@ cmd_to_node_remove_node (BonoboUIEngine *engine,
 			 BonoboUINode   *node,
 			 gboolean        recurse)
 {
-	CmdToNode *ctn;
-	char      *name;
+	CmdToNode  *ctn;
+	const char *name;
 
 	if (recurse) {
 		BonoboUINode *l;
 
-		for (l = bonobo_ui_node_children (node); l;
-		     l = bonobo_ui_node_next (l))
+		for (l = node->children; l; l = l->next)
 			cmd_to_node_remove_node (engine, l, TRUE);
 	}
 
@@ -257,7 +254,6 @@ cmd_to_node_remove_node (BonoboUIEngine *engine,
 	 * NB. we leave the CmdToNode structures around
 	 * for future use.
 	 */
-	g_free (name);
 }
 
 static int
@@ -929,23 +925,22 @@ state_update_new (BonoboUISync *sync,
 		  GtkWidget    *widget,
 		  BonoboUINode *node)
 {
-	char *hidden, *sensitive, *state;
-	StateUpdate   *su;
+	char        *state;
+	const char  *hidden, *sensitive;
+	StateUpdate *su;
 
 	g_return_val_if_fail (node != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
-	hidden = bonobo_ui_node_get_attr (node, "hidden");
+	hidden = bonobo_ui_node_get_attr_by_id (node, hidden_id);
 	if (hidden && atoi (hidden))
 		gtk_widget_hide (widget);
 	else
 		gtk_widget_show (widget);
-	bonobo_ui_node_free_string (hidden);
 
-	sensitive = bonobo_ui_node_get_attr (node, "sensitive");
+	sensitive = bonobo_ui_node_get_attr_by_id (node, sensitive_id);
 	if (sensitive)
 		gtk_widget_set_sensitive (widget, atoi (sensitive));
-	bonobo_ui_node_free_string (sensitive);
 
 	if ((state = bonobo_ui_node_get_attr (node, "state"))) {
 		su = g_new0 (StateUpdate, 1);
@@ -1405,7 +1400,7 @@ static void
 impl_emit_verb_on (BonoboUIEngine *engine,
 		   BonoboUINode   *node)
 {
-	CORBA_char      *verb;
+	const char      *verb;
 	BonoboUIXmlData *data;
 	
 	g_return_if_fail (node != NULL);
@@ -1427,14 +1422,11 @@ impl_emit_verb_on (BonoboUIEngine *engine,
 	else {
 		if (!data->id) {
 			g_warning ("Weird; no ID on verb '%s'", verb);
-			bonobo_ui_node_free_string (verb);
 			return;
 		}
 
 		real_exec_verb (engine, data->id, verb);
 	}
-
-	g_free (verb);
 }
 
 static BonoboUINode *
@@ -1443,7 +1435,7 @@ cmd_get_node (BonoboUIEngine *engine,
 {
 	char         *path;
 	BonoboUINode *ret;
-	char         *cmd_name;
+	const char   *cmd_name;
 
 	g_return_val_if_fail (engine != NULL, NULL);
 
@@ -1479,7 +1471,6 @@ cmd_get_node (BonoboUIEngine *engine,
 	}
 
 	g_free (path);
-	g_free (cmd_name);
 
 	return ret;
 }
@@ -1646,9 +1637,9 @@ impl_emit_event_on (BonoboUIEngine *engine,
 		    BonoboUINode   *node,
 		    const char     *state)
 {
-	char            *id;
+	const char      *id;
 	BonoboUIXmlData *data;
-	char            *component_id;
+	char            *component_id, *real_id;
 
 	g_return_if_fail (node != NULL);
 
@@ -1659,16 +1650,17 @@ impl_emit_event_on (BonoboUIEngine *engine,
 	g_return_if_fail (data != NULL);
 
 	component_id = g_strdup (data->id);
+	real_id      = g_strdup (id);
 
 	/* This could invoke a CORBA method that might de-register the component */
 	set_cmd_attr (engine, node, "state", state, TRUE);
 
-	real_emit_ui_event (engine, component_id, id,
+	real_emit_ui_event (engine, component_id, real_id,
 			    Bonobo_UIComponent_STATE_CHANGED,
 			    state);
 
+	g_free (real_id);
 	g_free (component_id);
-	g_free (id);
 }
 
 static void
@@ -1713,6 +1705,12 @@ class_init (BonoboUIEngineClass *engine_class)
 	GObjectClass *object_class;
 
 	parent_class = g_type_class_peek_parent (engine_class);
+ 
+ 	id_id        = g_quark_from_static_string ("id");
+ 	verb_id      = g_quark_from_static_string ("verb");
+ 	name_id      = g_quark_from_static_string ("name");
+ 	hidden_id    = g_quark_from_static_string ("hidden");
+ 	sensitive_id = g_quark_from_static_string ("sensitive");
 
 	object_class = G_OBJECT_CLASS (engine_class);
 	object_class->finalize = impl_finalize;
@@ -1941,14 +1939,13 @@ static void
 hide_placeholder_if_empty_or_hidden (BonoboUIEngine *engine,
 				     BonoboUINode   *node)
 {
-	NodeInfo *info;
-	char *txt;
+	NodeInfo   *info;
+	const char *txt;
 	gboolean hide_placeholder_and_contents;
 	gboolean has_visible_separator;
 
-	txt = bonobo_ui_node_get_attr (node, "hidden");
+	txt = bonobo_ui_node_get_attr_by_id (node, hidden_id);
 	hide_placeholder_and_contents = txt && atoi (txt);
-	bonobo_ui_node_free_string (txt);
 
 	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
 	has_visible_separator = info && info->widget
@@ -2262,20 +2259,18 @@ move_dirt_cmd_to_widget (BonoboUIEngine *engine)
 	if (!cmds)
 		return;
 
-	for (l = bonobo_ui_node_children (cmds); l;
-             l = bonobo_ui_node_next (l)) {
-		BonoboUIXmlData *data = bonobo_ui_xml_get_data (engine->priv->tree, l);
+	for (l = cmds->children; l; l = l->next) {
+		BonoboUIXmlData *data = bonobo_ui_xml_get_data (
+			engine->priv->tree, l);
 
 		if (data->dirty) {
-			char *cmd_name;
+			const char *cmd_name;
 
-			cmd_name = bonobo_ui_node_get_attr (l, "name");
+			cmd_name = bonobo_ui_node_get_attr_by_id (l, name_id);
 			if (!cmd_name)
 				g_warning ("Serious error, cmd without name");
 			else
 				dirty_by_cmd (engine, cmd_name);
-
-			bonobo_ui_node_free_string (cmd_name);
 		}
 	}
 }
@@ -2294,13 +2289,12 @@ update_commands_state (BonoboUIEngine *engine)
 	if (!cmds)
 		return;
 
-	for (l = bonobo_ui_node_children (cmds); l;
-             l = bonobo_ui_node_next (l)) {
+	for (l = cmds->children; l; l = l->next) {
 		BonoboUIXmlData *data = bonobo_ui_xml_get_data (
 			engine->priv->tree, l);
-		char *cmd_name;
+		const char *cmd_name;
 
-		cmd_name = bonobo_ui_node_get_attr (l, "name");
+		cmd_name = bonobo_ui_node_get_attr_by_id (l, name_id);
 		if (!cmd_name)
 			g_warning ("Internal error; cmd with no id");
 
@@ -2309,7 +2303,6 @@ update_commands_state (BonoboUIEngine *engine)
 				engine, updates, l, cmd_name);
 
 		data->dirty = FALSE;
-		bonobo_ui_node_free_string (cmd_name);
 	}
 
 	execute_state_updates (updates);
@@ -2742,7 +2735,7 @@ bonobo_ui_engine_get_cmd_node (BonoboUIEngine *engine,
 {
 	char         *path;
 	BonoboUINode *ret;
-	char         *cmd_name;
+	const char   *cmd_name;
 
 	g_return_val_if_fail (engine != NULL, NULL);
 
@@ -2777,7 +2770,6 @@ bonobo_ui_engine_get_cmd_node (BonoboUIEngine *engine,
 	}
 
 	g_free (path);
-	g_free (cmd_name);
 
 	return ret;
 }

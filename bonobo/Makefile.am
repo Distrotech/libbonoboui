@@ -19,6 +19,7 @@ lib_LTLIBRARIES = libbonoboui-2.la
 noinst_HEADERS = \
 	bonobo-ui-engine-config.h		\
 	bonobo-ui-engine-private.h		\
+	bonobo-ui-node-private.h		\
 	bonobo-ui-sync-menu.h			\
 	bonobo-ui-sync-keys.h			\
 	bonobo-ui-sync-status.h			\

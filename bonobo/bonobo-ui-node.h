@@ -50,7 +50,7 @@ const char   *bonobo_ui_node_get_name    (BonoboUINode *node);
 gboolean      bonobo_ui_node_has_name    (BonoboUINode *node,
 					  const char   *name);
 gboolean      bonobo_ui_node_transparent (BonoboUINode *node);
-void          bonobo_ui_node_copy_attrs  (BonoboUINode *src,
+void          bonobo_ui_node_copy_attrs  (const BonoboUINode *src,
 					  BonoboUINode *dest);
 
 /* This blows. libxml2 fixes it I guess. */
