@@ -753,6 +753,7 @@ container_print_preview_cmd (GtkWidget *widget, Container *container)
 	GnomePrintMaster *pm;
 	GnomePrintContext *ctx;
 	GnomePrintMasterPreview *pv;
+	double ypos = 0.0;
 
 	g_return_if_fail (container != NULL);
 	g_return_if_fail (container->container != NULL);
@@ -761,19 +762,22 @@ container_print_preview_cmd (GtkWidget *widget, Container *container)
 	ctx = gnome_print_master_get_context (pm);
 
 	for (l = container->container->client_sites; l; l = l->next) {
-		BonoboClientSite *cs = l->data;
+		BonoboClientSite   *cs = l->data;
 		BonoboObjectClient *boc = bonobo_client_site_get_embeddable (cs);
+		BonoboPrintClient  *pc = bonobo_print_client_get (boc);
+		BonoboPrintContext *c;
 
-		BonoboPrintClient *pc = bonobo_print_client_get (boc);
 		if (!pc) {
 			g_warning ("component isn't printable");
 			continue;
 		} else
 			g_warning ("component is printable!");
 
-		bonobo_print_client_init     (pc, 0.0, 0.0, 100.0, 150.0);
-		bonobo_print_client_print_to (pc, ctx);
-		
+		c = bonobo_print_context_new (0.0, ypos, 100.0, 150.0);
+		bonobo_print_client_print_to (pc, c, ctx);
+		bonobo_print_context_free (c);
+		ypos += 150.0;
+
 		break;
 	}
 
