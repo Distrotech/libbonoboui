@@ -138,6 +138,7 @@ typedef struct {
 	GSList *radio_items;
 } ToolbarItemInternal;
 
+static MenuItemInternal *store_menu_item_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, GnomeUIHandlerMenuItem *item);
 static void remove_menu_item (GnomeUIHandler *uih, MenuItemInternal *internal_remove_me, gboolean replace);
 static void impl_GNOME_UIHandler_register_containee (PortableServer_Servant servant, GNOME_UIHandler uih,
 						     CORBA_Environment *ev);
@@ -367,10 +368,31 @@ gnome_ui_handler_new (void)
 void
 gnome_ui_handler_set_container (GnomeUIHandler *uih, GNOME_UIHandler container)
 {
+	CORBA_Environment ev;
+
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
+	CORBA_exception_init (&ev);
+
+	/*
+	 * Unregister with an existing container, if we have one
+	 */
+	if (uih->container_uih != CORBA_OBJECT_NIL) {
+
+		GNOME_UIHandler_unregister_containee (uih->container_uih,
+						      gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);
+		/* FIXME: Check the exception */
+	}
+
+	/*
+	 * Register with the new one.
+	 */
+	GNOME_UIHandler_register_containee (container, gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);
+
+	CORBA_exception_free (&ev);
+					    
 	uih->container_uih = container;
 }
 
@@ -538,7 +560,7 @@ gnome_ui_handler_get_accelgroup (GnomeUIHandler *uih)
 }
 
 /*
- * This helper function replaces all instances of "/" with "\!" and
+ * This helper function replaces all instances of "/" with "\/" and
  * replaces "\" with "\\".
  */
 static char *
@@ -554,7 +576,7 @@ escape_forward_slashes (char *str)
 	while (*p != '\0') {
 		if (*p == '/') {
 			*newp++ = '\\';
-			*newp++ = '!';
+			*newp++ = '/';
 		} else if (*p == '\\') {
 			*newp++ = '\\';
 			*newp++ = '\\';
@@ -573,7 +595,7 @@ escape_forward_slashes (char *str)
 }
 
 /*
- * This helper function replaces all instances of "\!" with "/"
+ * This helper function replaces all instances of "\/" with "/"
  * and all instances of "\\" with "\".
  */
 static char *
@@ -587,7 +609,7 @@ unescape_forward_slashes (char *str)
 	newp = new;
 
 	while (*p != '\0') {
-		if (*p == '\\' && *(p + 1) == '!') {
+		if (*p == '\\' && *(p + 1) == '/') {
 			*newp++ = '/';
 			p++;
 		} else if (*p == '\\' && *(p + 1) == '\\') {
@@ -743,10 +765,69 @@ gnome_ui_handler_get_statusbar (GnomeUIHandler *uih)
 	return uih->top->statusbar;
 }
 
+/*
+ * We have to manually tokenize the path (instead of using g_strsplit,
+ * or a similar function) to deal with the forward-slash escaping.  So
+ * we split the string on all instances of "/", except when "/" is
+ * preceded by a backslash.
+ */
 static gchar **
-tokenize_path (const char *path)
+tokenize_path (char *path)
 {
-	return g_strsplit (path, "/", 0);
+	int num_toks;
+	int tok_idx;
+	gchar **toks;
+	char *p, *q;
+
+	/*
+	 * Count the number of tokens.
+	 */
+	num_toks = 1;
+	q = NULL;
+	for (p = path; *p != '\0'; p ++) {
+		if (*p == '/' && (q == NULL || *q != '\\'))
+			num_toks ++;
+		q = p;
+	}
+
+	/*
+	 * Allocate space for the token array.
+	 */
+	toks = g_new0 (gchar *, num_toks + 1);
+
+	/*
+	 * Fill it.
+	 */
+	tok_idx = 0;
+	q = NULL;
+	for (p = path; *p != '\0'; p ++) {
+
+		if (*p == '/' && (q == NULL || *q != '\\')) {
+			int tok_len;
+
+			tok_len = p - path;
+			toks [tok_idx] = g_malloc0 (tok_len + 1);
+			strncpy (toks [tok_idx], path, tok_len);
+			path = p + 1;
+			tok_idx ++;
+		}
+
+		q = p;
+	}
+
+	/*
+	 * Copy the last bit.
+	 */
+	if (*path != '\0') {
+		int tok_len;
+
+		tok_len = p - path;
+
+		toks [tok_idx] = g_new0 (gchar, tok_len + 1);
+		strncpy (toks [tok_idx], path, tok_len);
+	}
+
+	return toks;
 }
 
 /*
@@ -798,14 +879,18 @@ get_parent_path (const char *path)
 		i++;
 	}
 
-	if (parent_path == NULL || strlen (parent_path) == 0)
+	if ((parent_path == NULL) || strlen (parent_path) == 0) {
+		g_free (parent_path);
 		parent_path = g_strdup ("/");
+	}
 
 	/*
 	 * Free the token array.
 	 */
-	for (i = 0; toks [i] != NULL; i ++)
+	for (i = 0; toks [i] != NULL; i ++) {
+		printf ("i: %d\n", i);
 		g_free (toks [i]);
+	}
 	g_free (toks);
 
 
@@ -1364,30 +1449,27 @@ copy_menu_item (GnomeUIHandlerMenuItem *item)
 	return copy;
 }
 
-/* FIXME */
+/*
+ * This function creates the parent of a menu item, if it does not
+ * exist.  This function will only get invoked if this UIHandler
+ * is a containee, and does not have information on the menu items
+ * residing in its parents.  Full lineages are created recursively
+ * if several of an item's ancestors aren't present in the internal
+ * data.
+ */
+
 static void
-copy_menu_item_here (GnomeUIHandlerMenuItem *dst, GnomeUIHandlerMenuItem *src)
+create_parent_menu_item (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, char *item_path)
 {
-	GnomeUIHandlerMenuItem *copy;	
+	GnomeUIHandlerMenuItem *parent_item;
 
-#define COPY_STRING(x) ((x) == NULL ? NULL : g_strdup (x))
-	dst->path = COPY_STRING (src->path);
-	dst->type = src->type;
-	dst->hint = COPY_STRING (src->hint);
-	dst->label = COPY_STRING (src->label);
-	dst->children = NULL; /* FIXME: Make sure this gets handled properly. */
-	dst->dynlist_maxsize = src->dynlist_maxsize;
+	parent_item = g_new0 (GnomeUIHandlerMenuItem, 1);
+	parent_item->path = get_parent_path (item_path);
+	parent_item->type = GNOME_UI_HANDLER_MENU_SUBTREE;
 
-	dst->pixmap_data = copy_pixmap_data (src->pixmap_type, src->pixmap_data);
-	dst->pixmap_type = src->pixmap_type;
-
-	dst->accelerator_key = src->accelerator_key;
-	dst->ac_mods = src->ac_mods;
-	dst->callback = src->callback;
-	dst->callback_data = src->callback_data;
-
-	return copy;
+	store_menu_item_data (uih, uih_corba, parent_item);
 }
+
 
 static MenuItemInternal *
 store_menu_item_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, GnomeUIHandlerMenuItem *item)
@@ -1422,12 +1504,34 @@ store_menu_item_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, GnomeUIHan
 	/*
 	 * Now insert a child record for this item's parent, if it has
 	 * a parent.
-	 *
-	 * FIXME: How do we handle '/' ?
-	 *
 	 */
 	parent_path = get_parent_path (item->path);
 	parent = get_menu_item (uih, parent_path);
+
+	/*
+	 * If we don't have internal data for the parent,
+	 * then either the user hasn't created the appropriate
+	 * parent menu items, or they were created by our container.
+	 *
+	 * If they were created by the container, and we just don't
+	 * have data on them, that's ok.  But if we are the top-level
+	 * UIHandler, then we must insist they exist.
+	 */
+	if (parent == NULL) {
+
+		if (uih->container_uih == CORBA_OBJECT_NIL) {
+			g_warning ("store_menu_item_data: Parent data does not exist for path [%s]!\n",
+				   item->path);
+			/* FIXME: Memory leak */
+
+			return NULL;
+		}
+
+
+		create_parent_menu_item (uih, uih_corba, item->path);
+		parent = get_menu_item (uih, parent_path);
+	}
+
 	g_free (parent_path);
 
 	if (! g_list_find_custom (parent->children, item->path, g_str_equal))
@@ -1609,6 +1713,9 @@ pixmap_data_to_corba (GnomeUIHandlerPixmapType type, gpointer data)
 
 	/* FIXME: Free me */
 	buffer = GNOME_UIHandler_iobuf__alloc ();
+	CORBA_sequence_set_release (buffer, TRUE);
+	buffer->_length = 1;
+	buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (1);
 
 	return buffer;
 }
@@ -1620,11 +1727,12 @@ menu_item_container_create (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item, i
 
 	CORBA_exception_init (&ev);
 
+#define CORBIFY_STRING(s) (s == NULL ? "" : s)
 	GNOME_UIHandler_menu_item_create (uih->container_uih,
 					  item->path,
 					  menu_type_to_corba (item->type),
-					  item->label,
-					  item->hint,
+					  CORBIFY_STRING (item->label),
+					  CORBIFY_STRING (item->hint),
 					  pixmap_data_to_corba (item->pixmap_type,
 								item->pixmap_data),
 					  (CORBA_unsigned_long) item->accelerator_key,
@@ -1695,7 +1803,18 @@ impl_GNOME_UIHandler_menu_item_create (PortableServer_Servant servant,
 
 	g_message ("impl_GNOME_UIHandler_menu_item_create!\n");
 
-	item = make_menu_item (path, corba_to_menu_type (menu_type), label, hint, 0, /* FIXME: Dynlist */
+	/*
+	 * CORBA does not distinguish betwen a zero-length string and
+	 * a NULL char pointer; everything is a zero-length string to
+	 * it.  So I translate zero-length CORBA strings to NULL char
+	 * pointers here.
+	 */
+#define UNCORBIFY_STRING(s) (strlen (s) == 0 ? NULL : s)
+
+	item = make_menu_item (path, corba_to_menu_type (menu_type),
+			       UNCORBIFY_STRING (label),
+			       UNCORBIFY_STRING (hint),
+			       0, /* FIXME: Dynlist */
 			       GNOME_UI_HANDLER_PIXMAP_NONE, NULL,
 			       (guint) accelerator_key, (GdkModifierType) modifier,
 			       NULL, NULL, -1);
@@ -3451,9 +3570,5 @@ gnome_ui_handler_group_get_members (gint gid)
 void
 gnome_ui_handler_group_set_sensitivity (gint gid, gboolean sensitivity)
 {
-}
 
-void
-gnome_ui_handler_group_set_hidden (gint gid, gboolean hidden)
-{
 }

@@ -43,7 +43,8 @@ idls =						\
 	$(top_srcdir)/idl/gnome-moniker.idl	\
 	$(top_srcdir)/idl/gnome-persist.idl	\
 	$(top_srcdir)/idl/gnome-storage.idl	\
-	$(top_srcdir)/idl/gnome-progressive.idl
+	$(top_srcdir)/idl/gnome-progressive.idl \
+	$(top_srcdir)/idl/gnome-ui-handler.idl
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 
@@ -61,11 +62,11 @@ libbonobo_la_SOURCES =			\
 	gnome-embeddable-factory.c 	\
 	gnome-embeddable.c		\
 	gnome-file-moniker.c		\
+	gnome-moniker-client.c		\
 	gnome-inplace-component.c	\
 	gnome-inplace-site.c		\
 	gnome-main.c			\
 	gnome-moniker.c			\
-	gnome-moniker-client.c		\
 	gnome-object.c			\
 	gnome-object-client.c		\
 	gnome-object-io.c		\
@@ -103,12 +104,12 @@ libbonoboinclude_HEADERS =		\
 	gnome-embeddable-client.h	\
 	gnome-embeddable-factory.h	\
 	gnome-file-moniker.h		\
+	gnome-moniker-client.h		\
 	gnome-inplace-site.h		\
 	gnome-inplace-component.h	\
 	gnome-item-moniker.h		\
 	gnome-main.h			\
 	gnome-moniker.h			\
-	gnome-moniker-client.h		\
 	gnome-object.h			\
 	gnome-object-client.h		\
 	gnome-object-io.h		\
@@ -127,7 +128,8 @@ libbonoboinclude_HEADERS =		\
 	gnome-ui-handler.h		\
 	gnome-view.h			\
 	gnome-view-frame.h		\
-	gnome-wrapper.h
+	gnome-wrapper.h			\
+	gnome-ui-handler.h
 
 test_container_SOURCES =		\
 	test-container.c
