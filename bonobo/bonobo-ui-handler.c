@@ -1753,8 +1753,8 @@ menu_make_item (const char *path, BonoboUIHandlerMenuItemType type,
 	item = g_new0 (BonoboUIHandlerMenuItem, 1);
 	item->path        = strdup (path);
 	item->type        = type;
-	item->label       = strdup (label);
-	item->hint        = strdup (hint);
+	item->label       = g_strdup (label?label:"");
+	item->hint        = g_strdup (hint?hint:"");
 	item->pos         = pos;
 	item->pixmap_type = pixmap_type;
 	item->pixmap_data = pixmap_data;
