@@ -1,3 +1,7 @@
+2000-06-24  Michael Meeks  <michael@helixcode.com>
+
+	* container-io.c (save_component): make it more robust.
+
 2000-06-23  Michael Meeks  <michael@helixcode.com>
 
 	* container-io.c (sample_container_load): use STORAGE_TYPE ("efs")

@@ -85,10 +85,14 @@ save_component (BonoboStorage * storage, Component * component, int index)
 
 	corba_subdir = Bonobo_Storage_create_storage (corba_storage,
 						      curr_dir, &ev);
-	component_save_id (component,
-			   create_stream (corba_subdir, GOAD_FILE));
-	component_save (component,
-			create_stream (corba_subdir, DATA_FILE));
+	if (!corba_subdir)
+		g_warning ("Can't create '%s'", curr_dir);
+	else {
+		component_save_id (component,
+				   create_stream (corba_subdir, GOAD_FILE));
+		component_save (component,
+				create_stream (corba_subdir, DATA_FILE));
+	}
 
 	CORBA_exception_free (&ev);
 
