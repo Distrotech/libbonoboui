@@ -1,3 +1,9 @@
+2004-03-15  Alexander Larsson  <alexl@redhat.com>
+
+	* doc/api/Makefile.am:
+	Pass flag needed to access all gtk-doc:ed headers.
+	Fixed gtk-doc build on 64bit systems.
+
 2004-03-09  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.5.4

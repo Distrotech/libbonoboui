@@ -80,6 +80,7 @@ extra_files =
 GTKDOC_CFLAGS =					\
 	@CFLAGS@				\
 	-I$(top_srcdir)				\
+	-DBONOBO_UI_INTERNAL			\
 	$(BONOBOUI_CFLAGS)
 
 GTKDOC_LIBS = $(top_builddir)/bonobo/libbonoboui-2.la $(BONOBOUI_LIBS)
