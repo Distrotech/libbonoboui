@@ -1233,16 +1233,16 @@ cmd_get_node (BonoboUIEngine *engine,
 
 static GSList *
 make_updates_for_command (BonoboUIEngine *engine,
+			  GSList         *list,
 			  BonoboUINode   *state,
 			  const char     *search_id)
 {
 	const GSList *l;
-	GSList *list = NULL;
 
 	l = cmd_to_nodes (engine, search_id);
 
 	if (!l)
-		return NULL;
+		return list;
 
 /*	printf ("Update cmd state if %s == %s on node '%s'\n", search_id, id,
 	bonobo_ui_xml_make_path (search));*/
@@ -1270,18 +1270,9 @@ make_updates_for_command (BonoboUIEngine *engine,
 }
 
 static void
-update_cmd_state (BonoboUIEngine *engine, BonoboUINode *search,
-		  BonoboUINode   *state, const char *search_id)
+execute_state_updates (GSList *updates)
 {
-	GSList *updates, *l;
-
-	g_return_if_fail (search_id != NULL);
-
-/*	printf ("Update cmd state on %s from node '%s'\n", search_id,
-	bonobo_ui_xml_make_path (state));*/
-
-	updates = make_updates_for_command (
-		engine, state, search_id);
+	GSList *l;
 
 	for (l = updates; l; l = l->next) {
 		StateUpdate *su = l->data;
@@ -1333,12 +1324,15 @@ set_cmd_attr (BonoboUIEngine *engine,
 	bonobo_ui_node_set_attr (cmd_node, prop, value);
 
 	if (event) {
-		char *cmd_name = bonobo_ui_node_get_attr (
+		GSList *updates;
+		char   *cmd_name = bonobo_ui_node_get_attr (
 			cmd_node, "name");
 
-		update_cmd_state (
-			engine, engine->priv->tree->root,
-			cmd_node, cmd_name);
+
+		updates = make_updates_for_command (
+			engine, NULL, cmd_node, cmd_name);
+
+		execute_state_updates (updates);
 
 		bonobo_ui_node_free_string (cmd_name);
 	} else {
@@ -1994,6 +1988,7 @@ static void
 update_commands_state (BonoboUIEngine *engine)
 {
 	BonoboUINode *cmds, *l;
+	GSList       *updates = NULL;
 
 	cmds = bonobo_ui_xml_get_path (engine->priv->tree, "/commands");
 
@@ -2014,13 +2009,14 @@ update_commands_state (BonoboUIEngine *engine)
 			g_warning ("Internal error; cmd with no id");
 
 		else if (data->dirty)
-			update_cmd_state (
-				engine, engine->priv->tree->root, 
-				l, cmd_name);
+			updates = make_updates_for_command (
+				engine, updates, l, cmd_name);
 
 		data->dirty = FALSE;
 		bonobo_ui_node_free_string (cmd_name);
 	}
+
+	execute_state_updates (updates);
 }
 
 static void
