@@ -1,3 +1,73 @@
+2003-05-15 Bob Gibbs <gibbsrc@npt.nuwc.navy.mil>
+        * bonobo-canvas-component.h
+
+        (bonobo_canvas_component_factory_new): new.  Convenience to replace old
+        embeddable way of creating the canvas component.
+
+        * bonobo-canvas-component.c
+
+        (impl_Bonobo_Canvas_Component_bounds): Mapped state for crossing event.
+
+        (impl_Bonobo_Canvas_Component_contains): Fixed to return proper
+        inside/outside value.  Was always returning true.
+
+        (impl_Bonobo_Canvas_Component_update): Call rih group update here vice
+        inside rih_update. Solves for case where a request_update is made while
+        the component is waiting for a response.
+
+        (handle_event): new. Passes the remote item's event back into the local
+        pseudo-canvas so that canvas items can see events the normal way as if
+        they were not using bonobo.
+
+        (rih_update): Moved rih group update into
+        impl_Bonobo_Canvas_Component_update.  This solves for case where a
+        request_update is made while the component is waiting for a response to
+        its last Bonobo_Canvas_ComponentProxy_requestUpdate.
+
+        (impl_Bonobo_Canvas_Component_event): Added do_update_flag check to
+        prevent signal from being emitted when any pseudo-canvas is in its
+        do_update. Fixed alloc/de-alloc of gdk_event structure.
+
+        (handle_event_later): new. Emits event signal sometime after do_update
+        finishes.
+
+        (free_event): removed. Replaced by gdk_event_free.
+
+        (impl_Bonobo_Canvas_Component_setBounds): Added do_update_flag check to
+        prevent signal from being emitted when any pseudo-canvas is in its
+        do_update. This procedure is in IDL but does not appear to be invoke by
+        the client ever.
+
+        (set_bounds_later):  new. Emits bounds signal sometime after do_update
+        finishes.
+
+        (bonobo_canvas_new): Put into container to prevent gtk warning.
+
+        (bonobo_canvas_component_factory_new): new.  Convenience to replace old
+        embeddable way of creating the canvas component.
+
+        bonobo-canvas-item.c
+
+        (gbi_set_property): Moved proxy_size_allocate call from gbi_set_property
+        to gbi_realize. Sometimes widget is not realized when user sets the
+        properties.
+
+        (gdk_event_to_bonobo_event): fixed x/y mixup for motion notify
+
+        (bonobo_canvas_item_class_init): Make sure set_property callback is
+        initialized before calling install_property.
+
+        (impl_Bonobo_Canvas_ComponentProxy_requestUpdate): Added idle_handler
+        that gets invoked whenever the canvas has already had one added.  This
+        solves for case of NEED_UPDATE flags getting out of sync and canvas
+        refusing to update the remote item forever thereafter. See code for
+        further details.
+
+        (create_proxy): Fixed to allocate space for base epv before
+        initializing.
+
+	* canvdemo: Added demo / test program.
+
 2003-05-13  Hidetoshi Tajima <hidetoshi.tajima@sun.com>
 
 	* configure.in (LDFLAGS):
