@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-06-10 15:45+0100\n"
 "PO-Revision-Date: 2002-11-02 22:42+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -20,19 +20,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:647
+#: bonobo/bonobo-canvas-item.c:655
 msgid "corba factory"
 msgstr "corba-tehdas"
 
-#: bonobo/bonobo-canvas-item.c:648
+#: bonobo/bonobo-canvas-item.c:656
 msgid "The factory pointer"
 msgstr "Tehdasosoitin"
 
-#: bonobo/bonobo-canvas-item.c:657
+#: bonobo/bonobo-canvas-item.c:665
 msgid "corba UI container"
 msgstr "corba UI -säilö"
 
-#: bonobo/bonobo-canvas-item.c:658
+#: bonobo/bonobo-canvas-item.c:666
 msgid "The User interface container"
 msgstr "Käyttöliittymäsäilö"
 
@@ -44,22 +44,23 @@ msgstr "Telakoi työkalupalkki"
 msgid "Un dock the toolbar"
 msgstr "Irrota työkalupalkki"
 
-#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
 msgstr "Varjotyyppi"
 
-#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
 msgid "Orientation"
 msgstr "Suunta"
 
-#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
 msgid "Preferred width"
 msgstr "Haluttu leveys"
 
-#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
 msgid "Preferred height"
 msgstr "Haluttu korkeus"
 
@@ -83,7 +84,7 @@ msgstr "Tapahtumien edelleen välitys"
 msgid "Whether X events should be forwarded"
 msgstr "Välittyvätkö X-tapahtumat edelleen"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Nimi"
 
@@ -96,9 +97,10 @@ msgid "Interfaces required"
 msgstr "Vaaditut rajapinnat"
 
 #: bonobo/bonobo-selector.c:346
+#, fuzzy
 msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
 "NULL-päätteinen taulukko rajapinnoista, joita palvelimen täytyy tukea, jotta "
@@ -157,15 +159,15 @@ msgstr "Pelkkä teksti"
 msgid "_Priority text only"
 msgstr "_Vain tärkeä teksti"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Vianetsintä"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_XML-vedos"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Tulosta koko käyttöliittymän XML-kuvaus päätteeseen"
 
@@ -178,7 +180,7 @@ msgid "Gdk debugging flags to set"
 msgstr "Asetettavat Gdk-vianetsintäliput"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
 msgstr "LIPUT"
 
@@ -194,75 +196,75 @@ msgstr "Käytettävä X-näyttö"
 msgid "DISPLAY"
 msgstr "NÄYTTÖ"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
 msgstr "Käytettävä X-näyttö"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
 msgstr "RUUTU"
 
-#: bonobo/bonobo-ui-init-gtk.c:129
+#: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
 msgstr "Tee X-kutsut synkronisesti"
 
-#: bonobo/bonobo-ui-init-gtk.c:135
+#: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
 msgstr "Älä käytä X:n jaetun muistin laajennosta"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
 msgstr "Ohjelman nimi ikkunointiohjelmaa varten"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
 msgstr "NIMI"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
 msgstr "Ohjelman luokka ikkunointiohjelmaa varten"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
 msgstr "LUOKKA"
 
-#: bonobo/bonobo-ui-init-gtk.c:146
+#: bonobo/bonobo-ui-init-gtk.c:145
 msgid "HOST"
 msgstr "ISÄNTÄ"
 
-#: bonobo/bonobo-ui-init-gtk.c:150
+#: bonobo/bonobo-ui-init-gtk.c:149
 msgid "PORT"
 msgstr "PORTTI"
 
-#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
 msgid "STYLE"
 msgstr "TYYLI"
 
-#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "Asetettavat Gtk+-vianetsintäliput"
 
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
 msgstr "Poistettavat Gtk+-vianetsintäliput"
 
-#: bonobo/bonobo-ui-init-gtk.c:168
+#: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
 msgstr "Tee kaikista varoituksista vakavia"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "Lataa ylimääräinen Gtk-moduuli"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
 msgstr "MODUULI"
 
-#: bonobo/bonobo-ui-init-gtk.c:180
+#: bonobo/bonobo-ui-init-gtk.c:179
 msgid "GTK+"
 msgstr "GTK+"
 
-#: bonobo/bonobo-ui-main.c:188
+#: bonobo/bonobo-ui-main.c:193
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI -tuki"
 
@@ -294,23 +296,27 @@ msgstr "Muka_uta"
 msgid "Customize the toolbar"
 msgstr "Mukauta työkalupalkki"
 
-#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "is floating"
 msgstr "kelluu"
 
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1131
 msgid "whether the toolbar is floating"
 msgstr "kelluuko työkalupalkki"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-toolbar.c:1177
+msgid "Style of bevel around the toolbar"
+msgstr ""
+
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Sisältö"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Näytä tämän ohjelman ohje"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Ikkunan nimi - käytetään asetusten serialisointiin."
 
@@ -407,6 +413,6 @@ msgstr "Tervehdys!"
 msgid "Cannot init libbonoboui code"
 msgstr "Ei voi alustaa libbonoboui'n koodia"
 
-#: samples/controls/bonobo-sample-controls.c:133
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Ei voinut alustaa Bonobo-UI:ta"

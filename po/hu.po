@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-06-10 15:45+0100\n"
 "PO-Revision-Date: 2002-12-04 16:37+0100\n"
 "Last-Translator: Emese Kovacs <emese@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
@@ -13,19 +13,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:647
+#: bonobo/bonobo-canvas-item.c:655
 msgid "corba factory"
 msgstr "corba factory"
 
-#: bonobo/bonobo-canvas-item.c:648
+#: bonobo/bonobo-canvas-item.c:656
 msgid "The factory pointer"
 msgstr "A factory mutató"
 
-#: bonobo/bonobo-canvas-item.c:657
+#: bonobo/bonobo-canvas-item.c:665
 msgid "corba UI container"
 msgstr "corba UI konténer"
 
-#: bonobo/bonobo-canvas-item.c:658
+#: bonobo/bonobo-canvas-item.c:666
 msgid "The User interface container"
 msgstr "A felhasználói felület konténere"
 
@@ -37,22 +37,23 @@ msgstr "Az eszköztár dokkolása"
 msgid "Un dock the toolbar"
 msgstr "Az eszköztár dokkolásának megszüntetése"
 
-#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
 msgstr "Árnyéktípus"
 
-#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
 msgid "Orientation"
 msgstr "Irány"
 
-#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
 msgid "Preferred width"
 msgstr "Előnyben részesített szélesség"
 
-#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
 msgid "Preferred height"
 msgstr "Előnyben részesített magasság"
 
@@ -76,7 +77,7 @@ msgstr "Eseménytovábbítás"
 msgid "Whether X events should be forwarded"
 msgstr "Továbbítsa-e az X eseményeket, vagy ne"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Név"
 
@@ -89,9 +90,10 @@ msgid "Interfaces required"
 msgstr "Szükséges interfészek"
 
 #: bonobo/bonobo-selector.c:346
+#, fuzzy
 msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
 "Olyan interfészek NULL-végű tömbje, amelyet a kiszolgálónak támogatni kell, "
@@ -150,15 +152,15 @@ msgstr "Csak szöveg"
 msgid "_Priority text only"
 msgstr "Csak _lényeges szöveg"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Hibakeresés"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_XML kiíratása"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "A teljes felhasználói felület XML-leírásának kiíratása a konzolra"
 
@@ -171,7 +173,7 @@ msgid "Gdk debugging flags to set"
 msgstr "Beállítandó Gdk debug jelzőbitek"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
 msgstr "FLAGS"
 
@@ -187,75 +189,75 @@ msgstr "Használandó X megjelenítő"
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
 msgstr "Használandó X képernyő"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
 msgstr "SCREEN"
 
-#: bonobo/bonobo-ui-init-gtk.c:129
+#: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
 msgstr "Legyenek szinkron X-hívások"
 
-#: bonobo/bonobo-ui-init-gtk.c:135
+#: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
 msgstr "Ne használja az X megosztott memória kiterjesztését"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
 msgstr "A program név, ahogy az ablakkezelő használja"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
 msgstr "NAME"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
 msgstr "A program osztálya, ahogy az ablakkezelő használja"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
 msgstr "CLASS"
 
-#: bonobo/bonobo-ui-init-gtk.c:146
+#: bonobo/bonobo-ui-init-gtk.c:145
 msgid "HOST"
 msgstr "HOST"
 
-#: bonobo/bonobo-ui-init-gtk.c:150
+#: bonobo/bonobo-ui-init-gtk.c:149
 msgid "PORT"
 msgstr "PORT"
 
-#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
 msgid "STYLE"
 msgstr "STYLE"
 
-#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "Beállítandó Gtk+ debug jelzőbitek"
 
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
 msgstr "Kikapcsolandó Gtk+ jelzőbitek"
 
-#: bonobo/bonobo-ui-init-gtk.c:168
+#: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
 msgstr "Minden figyelmeztetés legyen végzetes"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "További Gtk modul betöltése"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
 msgstr "MODULE"
 
-#: bonobo/bonobo-ui-init-gtk.c:180
+#: bonobo/bonobo-ui-init-gtk.c:179
 msgid "GTK+"
 msgstr "GTK+"
 
-#: bonobo/bonobo-ui-main.c:188
+#: bonobo/bonobo-ui-main.c:193
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI támogatás"
 
@@ -287,23 +289,27 @@ msgstr "Testres_zabás"
 msgid "Customize the toolbar"
 msgstr "Az eszköztár testreszabása"
 
-#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "is floating"
 msgstr "lebegő"
 
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1131
 msgid "whether the toolbar is floating"
 msgstr "legyen-e lebegő az eszköztár"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-toolbar.c:1177
+msgid "Style of bevel around the toolbar"
+msgstr ""
+
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Tartalom"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Az alkalmazás súgójának megtekintése"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Az ablak neve - a konfiguráció szerializációjához kell."
 
@@ -400,6 +406,6 @@ msgstr "Szia világ!"
 msgid "Cannot init libbonoboui code"
 msgstr "A libbonobo kód initje sikertelen"
 
-#: samples/controls/bonobo-sample-controls.c:133
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Nem sikerült inicializálni a Bonobo UI-t"

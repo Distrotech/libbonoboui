@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.2.0\n"
-"POT-Creation-Date: 2003-05-01 21:27+0900\n"
+"POT-Creation-Date: 2003-06-10 15:45+0100\n"
 "PO-Revision-Date: 2003-05-01 21:42+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -12,19 +12,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:647
+#: bonobo/bonobo-canvas-item.c:655
 msgid "corba factory"
 msgstr "corba 팩토리"
 
-#: bonobo/bonobo-canvas-item.c:648
+#: bonobo/bonobo-canvas-item.c:656
 msgid "The factory pointer"
 msgstr "팩토리 포인터"
 
-#: bonobo/bonobo-canvas-item.c:657
+#: bonobo/bonobo-canvas-item.c:665
 msgid "corba UI container"
 msgstr "코바 UI 컨테이너"
 
-#: bonobo/bonobo-canvas-item.c:658
+#: bonobo/bonobo-canvas-item.c:666
 msgid "The User interface container"
 msgstr "사용자 인터페이스 컨테이너"
 
@@ -36,23 +36,23 @@ msgstr "도구 모음 고정"
 msgid "Un dock the toolbar"
 msgstr "도구 모음 고정 해제"
 
-#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
-#: bonobo/bonobo-ui-toolbar.c:1175
+#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
 msgstr "그림자 유형"
 
-#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
 msgid "Orientation"
 msgstr "방향"
 
-#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
+#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
 msgid "Preferred width"
 msgstr "너비 선택"
 
-#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
+#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
 msgid "Preferred height"
 msgstr "높이 선택"
 
@@ -89,9 +89,10 @@ msgid "Interfaces required"
 msgstr "필요한 인터페이스"
 
 #: bonobo/bonobo-selector.c:346
+#, fuzzy
 msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
 "셀렉터에 열거되기 위해서 서버가 지원해야 할 인터페이스의 NULL로 끝나는 배"
@@ -170,7 +171,7 @@ msgid "Gdk debugging flags to set"
 msgstr "GDK 디버깅 사용 플래그"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
 msgstr "<플래그>"
 
@@ -186,75 +187,75 @@ msgstr "사용할 X 디스플레이"
 msgid "DISPLAY"
 msgstr "<디스플레이>"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
 msgstr "사용할 X 스크린"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
 msgstr "<스크린>"
 
-#: bonobo/bonobo-ui-init-gtk.c:129
+#: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
 msgstr "동기(synchronous) X 호출"
 
-#: bonobo/bonobo-ui-init-gtk.c:135
+#: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
 msgstr "X 공유 메모리 확장 기능을 사용하지 않음"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
 msgstr "창 관리자가 사용할 프로그램 이름"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
 msgstr "<이름>"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
 msgstr "창 관리자가 사용할 프로그램 클래스"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
 msgstr "<클래스>"
 
-#: bonobo/bonobo-ui-init-gtk.c:146
+#: bonobo/bonobo-ui-init-gtk.c:145
 msgid "HOST"
 msgstr "호스트"
 
-#: bonobo/bonobo-ui-init-gtk.c:150
+#: bonobo/bonobo-ui-init-gtk.c:149
 msgid "PORT"
 msgstr "포트"
 
-#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
 msgid "STYLE"
 msgstr "스타일"
 
-#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "GTK+ 디버깅 사용 플래그"
 
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
 msgstr "GTK+ 디버깅 사용하지 않을 플래그"
 
-#: bonobo/bonobo-ui-init-gtk.c:168
+#: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
 msgstr "모든 경고를 치명적인 오류로 취급합니다"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "GTK 모듈을 더 읽어들입니다"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
 msgstr "<모듈>"
 
-#: bonobo/bonobo-ui-init-gtk.c:180
+#: bonobo/bonobo-ui-init-gtk.c:179
 msgid "GTK+"
 msgstr "GTK+"
 
-#: bonobo/bonobo-ui-main.c:188
+#: bonobo/bonobo-ui-main.c:193
 msgid "Bonobo GUI support"
 msgstr "보노보 GUI 지원 기능"
 
@@ -286,15 +287,15 @@ msgstr "사용자 설정(_Z)"
 msgid "Customize the toolbar"
 msgstr "도구 모음 사용자 설정"
 
-#: bonobo/bonobo-ui-toolbar.c:1129
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "is floating"
 msgstr "움직이기"
 
-#: bonobo/bonobo-ui-toolbar.c:1130
+#: bonobo/bonobo-ui-toolbar.c:1131
 msgid "whether the toolbar is floating"
 msgstr "도구 모음을 움직일 수 있는지"
 
-#: bonobo/bonobo-ui-toolbar.c:1176
+#: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
 msgstr "도구 모음의 3D 효과 스타일"
 
@@ -403,6 +404,6 @@ msgstr "안녕하세요, 여러분!"
 msgid "Cannot init libbonoboui code"
 msgstr "libbonoboui 코드를 초기화할 수 없습니다"
 
-#: samples/controls/bonobo-sample-controls.c:133
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "보노보 UI를 초기화할 수 없습니다"

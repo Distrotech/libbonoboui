@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-05-20 13:06+0200\n"
+"POT-Creation-Date: 2003-06-10 15:45+0100\n"
 "PO-Revision-Date: 2003-05-20 15:33+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -37,23 +37,23 @@ msgstr "Dokovat nástrojovou lištu"
 msgid "Un dock the toolbar"
 msgstr "Odtrhnout nástrojovou lištu"
 
-#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
-#: bonobo/bonobo-ui-toolbar.c:1175
+#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
 msgstr "Typ stínu"
 
-#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
 msgid "Orientation"
 msgstr "Orientace"
 
-#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
+#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
 msgid "Preferred width"
 msgstr "Preferovaná šířka"
 
-#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
+#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
 msgid "Preferred height"
 msgstr "Preferovaná výška"
 
@@ -172,7 +172,7 @@ msgid "Gdk debugging flags to set"
 msgstr "Nastavit ladicí volby Gdk"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
 msgstr "VOLBY"
 
@@ -188,75 +188,75 @@ msgstr "Použít X displej"
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
 msgstr "Použít X obrazovku"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
 msgstr "OBRAZOVKA"
 
-#: bonobo/bonobo-ui-init-gtk.c:129
+#: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
 msgstr "Použít synchronní volání X"
 
-#: bonobo/bonobo-ui-init-gtk.c:135
+#: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
 msgstr "Nepoužívat rozšířené X o sdílenou paměť"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
 msgstr "Jméno programu, jak je používá manažer oken"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
 msgstr "JMÉNO"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
 msgstr "Třída programu, jak ji používá manažer oken"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
 msgstr "TŘÍDA"
 
-#: bonobo/bonobo-ui-init-gtk.c:146
+#: bonobo/bonobo-ui-init-gtk.c:145
 msgid "HOST"
 msgstr "POČÍTAČ"
 
-#: bonobo/bonobo-ui-init-gtk.c:150
+#: bonobo/bonobo-ui-init-gtk.c:149
 msgid "PORT"
 msgstr "PORT"
 
-#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
 msgid "STYLE"
 msgstr "STYL"
 
-#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "Nastavit ladicí volby Gtk+"
 
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
 msgstr "Zrušit ladicí volby Gtk+"
 
-#: bonobo/bonobo-ui-init-gtk.c:168
+#: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
 msgstr "Všechna varování považovat za fatální"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "Nahrát přídavný modul Gtk"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
 msgstr "MODUL"
 
-#: bonobo/bonobo-ui-init-gtk.c:180
+#: bonobo/bonobo-ui-init-gtk.c:179
 msgid "GTK+"
 msgstr "GTK+"
 
-#: bonobo/bonobo-ui-main.c:188
+#: bonobo/bonobo-ui-main.c:193
 msgid "Bonobo GUI support"
 msgstr "Podpora GUI Bonobo"
 
@@ -288,15 +288,15 @@ msgstr "_Upravit"
 msgid "Customize the toolbar"
 msgstr "_Upravit lištu nástrojů"
 
-#: bonobo/bonobo-ui-toolbar.c:1129
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "is floating"
 msgstr "je plovoucí"
 
-#: bonobo/bonobo-ui-toolbar.c:1130
+#: bonobo/bonobo-ui-toolbar.c:1131
 msgid "whether the toolbar is floating"
 msgstr "jestli je lišta nástrojů plovoucí"
 
-#: bonobo/bonobo-ui-toolbar.c:1176
+#: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
 msgstr "Velikost okrajů okolo lišty nástrojů"
 
@@ -405,6 +405,6 @@ msgstr "Ahoj, světe!"
 msgid "Cannot init libbonoboui code"
 msgstr "Nelze inicializovat kód libbonoboui"
 
-#: samples/controls/bonobo-sample-controls.c:133
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Nelze inicializovat Bonobo UI"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-05-20 13:06+0200\n"
+"POT-Creation-Date: 2003-06-10 15:45+0100\n"
 "PO-Revision-Date: 2003-05-30 22:27+0100\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -38,23 +38,23 @@ msgstr "Docio'r bar offer"
 msgid "Un dock the toolbar"
 msgstr "Dad-docio'r bar offer"
 
-#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
-#: bonobo/bonobo-ui-toolbar.c:1175
+#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
 msgstr "Math cysgod"
 
-#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
 msgid "Orientation"
 msgstr "Gogwydd"
 
-#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
+#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
 msgid "Preferred width"
 msgstr "Lled dewisol"
 
-#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
+#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
 msgid "Preferred height"
 msgstr "Uchder dewisol"
 
@@ -97,9 +97,8 @@ msgid ""
 "no interfaces are listed"
 msgstr ""
 "Arae terfynnedig a NULL o rhyngwynebau mae gweinydd yn gorfod eu cynnal er "
-"mwyn cael ei rhestri yn y dewiswr. Y rhagosodiad yw "
-"\"IDL:Bonobo/EMbeddable:1.0\" os nad oes unrhyw rhyngwynebau wedi eu "
-"rhestri."
+"mwyn cael ei rhestri yn y dewiswr. Y rhagosodiad yw \"IDL:Bonobo/"
+"EMbeddable:1.0\" os nad oes unrhyw rhyngwynebau wedi eu rhestri."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -174,7 +173,7 @@ msgid "Gdk debugging flags to set"
 msgstr "Baneri dadchwilenni Gdk i'w gosod"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
 msgstr "BANNERI"
 
@@ -190,75 +189,75 @@ msgstr "Y dangosydd X i'w ddefnyddio"
 msgid "DISPLAY"
 msgstr "DANGOSYDD"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
 msgstr "Y sgrîn X i'w ddefnyddio"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
 msgstr "SGRÎN"
 
-#: bonobo/bonobo-ui-init-gtk.c:129
+#: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
 msgstr "Gwneud galwadau X yn gydamseredig"
 
-#: bonobo/bonobo-ui-init-gtk.c:135
+#: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
 msgstr "Peidio defnyddio estyniad côf rhannedig X"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
 msgstr "Enw'r rhaglen fel y defnyddiwyd gan y rheolwr ffenestri"
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
 msgstr "ENW"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
 msgstr "Dosbarth y rhaglen fel y defnyddiwyd gan y rheolwr ffenestri"
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
 msgstr "DOSBARTH"
 
-#: bonobo/bonobo-ui-init-gtk.c:146
+#: bonobo/bonobo-ui-init-gtk.c:145
 msgid "HOST"
 msgstr "GWESTEIWR"
 
-#: bonobo/bonobo-ui-init-gtk.c:150
+#: bonobo/bonobo-ui-init-gtk.c:149
 msgid "PORT"
 msgstr "PORTH"
 
-#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
 msgid "STYLE"
 msgstr "ARDDULL"
 
-#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "Baneri dadchwilenni Gtk+ i'w gosod"
 
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
 msgstr "Baneri dadchwilenni Gtk+ i'w dadosod"
 
-#: bonobo/bonobo-ui-init-gtk.c:168
+#: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
 msgstr "Gwneud pob rhybudd yn farwol"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "Llwytho modiwl Gtk ychwannegol"
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
 msgstr "MODIWL"
 
-#: bonobo/bonobo-ui-init-gtk.c:180
+#: bonobo/bonobo-ui-init-gtk.c:179
 msgid "GTK+"
 msgstr "GTK+"
 
-#: bonobo/bonobo-ui-main.c:188
+#: bonobo/bonobo-ui-main.c:193
 msgid "Bonobo GUI support"
 msgstr "cynhaliaeth Rhyngwyneb Defnyddiwr Graffigol Bonobo"
 
@@ -290,16 +289,16 @@ msgstr "_Addasu"
 msgid "Customize the toolbar"
 msgstr "Addaasu'r bar offer"
 
-#: bonobo/bonobo-ui-toolbar.c:1129
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "is floating"
 msgstr "yn arnofio"
 
-#: bonobo/bonobo-ui-toolbar.c:1130
+#: bonobo/bonobo-ui-toolbar.c:1131
 msgid "whether the toolbar is floating"
 msgstr "a ydy'r bar offer yn arnofio"
 
-#: bonobo/bonobo-ui-toolbar.c:1176
 # EFALLAI (befel?)
+#: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
 msgstr "Arddull y befel o amgylch y bar offer"
 
@@ -311,8 +310,8 @@ msgstr "_Cynnwys"
 msgid "View help for this application"
 msgstr "Dangos cymorth ar gyfer y rhaglen hwn"
 
-#: bonobo/bonobo-window.c:398
 # EFALLAI (cyfresoli?)
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Enw'r ffenest - defnyddir ar gyfer cyfresoli ffurfweddiad."
 
@@ -320,8 +319,8 @@ msgstr "Enw'r ffenest - defnyddir ar gyfer cyfresoli ffurfweddiad."
 msgid "Zoom level"
 msgstr "Lefel chwyddo"
 
-#: bonobo/bonobo-zoomable.c:327
 # EFALLAI (context would be nice)
+#: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
 msgstr "Y lefel o chwyddo"
 
@@ -410,7 +409,6 @@ msgstr "Helô, Byd!"
 msgid "Cannot init libbonoboui code"
 msgstr "Methu cychwyn côd libbonoboui"
 
-#: samples/controls/bonobo-sample-controls.c:133
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Methu cychwyn Rhyngwyneb Defnyddiwr Bonobo"
-

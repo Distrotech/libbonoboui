@@ -16,3 +16,4 @@ bonobo_sample_container_LDADD =			\
 uidir = $(datadir)/gnome-2.0/ui
 ui_DATA = Bonobo_Sample_Container-ui.xml
 
+EXTRA_DIST = $(ui_DATA)

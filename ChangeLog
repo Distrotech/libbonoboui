@@ -1,5 +1,11 @@
 2003-06-10  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/Makefile.am: fix write-protected srcdir horrors.
+
+	* samples/container/Makefile.am: dist -ui.xml
+
+2003-06-10  Michael Meeks  <michael@ximian.com>
+
 	* configure.in: require libbonobo >= 2.3.3
 
 	* bonobo/Makefile.am: add -DGDK_MULTIHEAD_SAFE
