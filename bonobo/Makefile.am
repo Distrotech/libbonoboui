@@ -73,6 +73,7 @@ libbonobo_la_SOURCES =			\
 	bonobo-stream.c			\
 	bonobo-stream-client.c		\
 	bonobo-stream-memory.c		\
+	bonobo-tar-storage.c		\
 	bonobo-transient.c		\
 	bonobo-property.c		\
 	bonobo-property-bag.c		\
@@ -124,6 +125,8 @@ libbonoboinclude_HEADERS =			\
 	bonobo-stream-client.h			\
 	bonobo-stream-memory.h			\
 	bonobo-stream.h				\
+	bonobo-tar-storage.h			\
+	bonobo-tar-storage-private.h		\
 	bonobo-transient.h			\
 	bonobo-ui-component.h            	\
 	bonobo-ui-container.h            	\
