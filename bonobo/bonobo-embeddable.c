@@ -339,8 +339,8 @@ gnome_embeddable_destroy (GtkObject *object)
 	/*
 	 * Destroy all our views.
 	 */
-	for (l = embeddable->views; l != NULL; l = l->next) {
-		GnomeView *view = GNOME_VIEW (l->data);
+	while (embeddable->views) {
+		GnomeView *view = GNOME_VIEW (embeddable->views->data);
 
 		gnome_object_destroy (GNOME_OBJECT (view));
 	}
