@@ -246,7 +246,6 @@ widgets_init (BonoboUIConfigWidget *config,
 	GtkWidget *frame6;
 	GtkWidget *vbox7;
 	GSList *visible_group = NULL;
-	guint key;
 	GtkWidget *frame7;
 	GtkWidget *toolbar_list;
 	GtkWidget *frame5;
@@ -269,31 +268,21 @@ widgets_init (BonoboUIConfigWidget *config,
 	vbox7 = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (frame6), vbox7);
 
-	priv->show = gtk_radio_button_new_with_label (visible_group, "");
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (priv->show)->child),
-						  _("_Show"));
-	gtk_widget_add_accelerator (priv->show, "clicked", accel_group,
-				    key, GDK_MOD1_MASK, (GtkAccelFlags) 0);
+	priv->show = gtk_radio_button_new_with_mnemonic (visible_group,
+							 _("_Show"));
 	gtk_signal_connect (GTK_OBJECT (priv->show), "clicked",
 			    (GtkSignalFunc) show_hide_cb, config);
 	visible_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->show));
 	gtk_box_pack_start (GTK_BOX (vbox7), priv->show, FALSE, FALSE, 0);
 
-	priv->hide = gtk_radio_button_new_with_label (visible_group, "");
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (priv->hide)->child),
-						   _("_Hide"));
-	gtk_widget_add_accelerator (priv->hide, "clicked", accel_group,
-				    key, GDK_MOD1_MASK, (GtkAccelFlags) 0);
+	priv->hide = gtk_radio_button_new_with_mnemonic (visible_group,
+							 _("_Hide"));
 	gtk_signal_connect (GTK_OBJECT (priv->hide), "clicked",
 			    (GtkSignalFunc) show_hide_cb, config);
 	visible_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->hide));
 	gtk_box_pack_start (GTK_BOX (vbox7), priv->hide, FALSE, FALSE, 0);
 
-	priv->tooltips = gtk_check_button_new_with_label ("");
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (priv->tooltips)->child),
-						  _("_View tooltips"));
-	gtk_widget_add_accelerator (priv->tooltips, "clicked", accel_group,
-				    key, GDK_MOD1_MASK, (GtkAccelFlags) 0);
+	priv->tooltips = gtk_check_button_new_with_mnemonic (_("_View tooltips"));
 	gtk_box_pack_start (GTK_BOX (vbox6), priv->tooltips, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (priv->tooltips), "clicked",
 			    (GtkSignalFunc) tooltips_cb, config);
@@ -316,31 +305,20 @@ widgets_init (BonoboUIConfigWidget *config,
 	priv->right_attrs = vbox5 = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (frame5), vbox5);
 
-	priv->icon = gtk_radio_button_new_with_label (look_group, "");
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (priv->icon)->child),
-						  _("_Icon"));
-	gtk_widget_add_accelerator (priv->icon, "clicked", accel_group,
-				    key, GDK_MOD1_MASK, (GtkAccelFlags) 0);
+	priv->icon = gtk_radio_button_new_with_mnemonic (look_group,
+							 _("_Icon"));
 	gtk_signal_connect (GTK_OBJECT (priv->icon), "clicked",
 			    (GtkSignalFunc) look_cb, config);
 	look_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->icon));
 	gtk_box_pack_start (GTK_BOX (vbox5), priv->icon, FALSE, FALSE, 0);
 
-	priv->icon_and_text = gtk_radio_button_new_with_label (look_group, "");
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (priv->icon_and_text)->child),
-						  _("_Text and Icon"));
-	gtk_widget_add_accelerator (priv->icon_and_text, "clicked", accel_group,
-				    key, GDK_MOD1_MASK, (GtkAccelFlags) 0);
+	priv->icon_and_text = gtk_radio_button_new_with_mnemonic (look_group, _("_Text and Icon"));
 	gtk_signal_connect (GTK_OBJECT (priv->icon_and_text), "clicked",
 			    (GtkSignalFunc) look_cb, config);
 	look_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->icon_and_text));
 	gtk_box_pack_start (GTK_BOX (vbox5), priv->icon_and_text, FALSE, FALSE, 0);
 
-	priv->priority_text = gtk_radio_button_new_with_label (look_group, "");
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (priv->priority_text)->child),
-						  _("_Priority text only"));
-	gtk_widget_add_accelerator (priv->priority_text, "clicked", accel_group,
-				    key, GDK_MOD1_MASK, (GtkAccelFlags) 0);
+	priv->priority_text = gtk_radio_button_new_with_mnemonic (look_group, _("_Priority text only"));
 	gtk_signal_connect (GTK_OBJECT (priv->priority_text), "clicked",
 			    (GtkSignalFunc) look_cb, config);
 	look_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->priority_text));

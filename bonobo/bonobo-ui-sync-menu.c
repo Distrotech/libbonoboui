@@ -375,10 +375,12 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 
 	if ((label_attr = bonobo_ui_engine_get_attr (node, cmd_node, "label"))) {
 		GtkWidget *label;
-		guint      keyval;
 
 		if (!label_same (GTK_BIN (menu_widget), label_attr)) {
 			label = gtk_accel_label_new (label_attr);
+
+			/* this widget has a mnemonic */
+			gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
 
 			/* Setup the widget. */
 			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -394,28 +396,6 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 			gtk_container_add (GTK_CONTAINER (menu_widget), label);
 			gtk_accel_label_set_accel_widget (
 				GTK_ACCEL_LABEL (label), menu_widget);
-			
-			keyval = gtk_label_parse_uline (GTK_LABEL (label), label_attr);
-			
-#ifdef FIXME
-			if (keyval != GDK_VoidSymbol) {
-				if (GTK_IS_MENU (parent))
-					gtk_widget_add_accelerator (
-						menu_widget, "activate_item",
-						gtk_menu_ensure_uline_accel_group (
-							GTK_MENU (parent)),
-						keyval, 0, 0);
-				
-				else if (GTK_IS_MENU_BAR (parent) &&
-					 sync_menu->accel_group != NULL)
-					gtk_widget_add_accelerator (
-						menu_widget, "activate_item",
-						sync_menu->accel_group,
-						keyval, GDK_MOD1_MASK, 0);
-				else
-					g_warning ("Adding accelerator went bananas");
-			}
-#endif
 		} /* else
 			g_warning ("No change in label '%s'", label_attr); */
 
