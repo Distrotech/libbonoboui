@@ -58,20 +58,6 @@ impl_Bonobo_ControlFrame_activated (PortableServer_Servant  servant,
 			 control_frame_signals [ACTIVATED], state);
 }
 
-static void
-impl_Bonobo_ControlFrame_deactivate_and_undo (PortableServer_Servant  servant,
-					     CORBA_Environment       *ev)
-{
-	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
-
-	gtk_signal_emit (GTK_OBJECT (control_frame),
-			 control_frame_signals [ACTIVATED], FALSE);
-
-	gtk_signal_emit (GTK_OBJECT (control_frame),
-			 control_frame_signals [UNDO_LAST_OPERATION]);
-}
-
-
 static Bonobo_UIContainer
 impl_Bonobo_ControlFrame_get_ui_handler (PortableServer_Servant  servant,
 					 CORBA_Environment      *ev)
@@ -366,7 +352,6 @@ bonobo_control_frame_get_epv (void)
 	epv = g_new0 (POA_Bonobo_ControlFrame__epv, 1);
 
 	epv->activated              = impl_Bonobo_ControlFrame_activated;
-	epv->deactivate_and_undo    = impl_Bonobo_ControlFrame_deactivate_and_undo;
 	epv->get_ui_handler         = impl_Bonobo_ControlFrame_get_ui_handler;
 	epv->queue_resize           = impl_Bonobo_ControlFrame_queue_resize;
 	epv->activate_uri           = impl_Bonobo_ControlFrame_activate_uri;

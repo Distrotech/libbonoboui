@@ -206,16 +206,6 @@ impl_Bonobo_Control_activate (PortableServer_Servant servant,
 	control->priv->active = activated;
 }
 
-
-static void
-impl_Bonobo_Control_reactivate_and_undo (PortableServer_Servant servant,
-					 CORBA_Environment *ev)
-{
-	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
-
-	gtk_signal_emit (GTK_OBJECT (control), control_signals [ACTIVATE], TRUE);
-	gtk_signal_emit (GTK_OBJECT (control), control_signals [UNDO_LAST_OPERATION]);
-}
 	
 static void
 impl_Bonobo_Control_set_frame (PortableServer_Servant servant,
@@ -610,7 +600,6 @@ bonobo_control_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_Control__epv, 1);
 
-	epv->reactivate_and_undo = impl_Bonobo_Control_reactivate_and_undo;
 	epv->activate            = impl_Bonobo_Control_activate;
 	epv->size_allocate       = impl_Bonobo_Control_size_allocate;
 	epv->set_window          = impl_Bonobo_Control_set_window;

@@ -30,6 +30,8 @@ extern "C" {
 
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
+#include <bonobo/bonobo-zoomable.h>
+#include <bonobo/bonobo-zoomable-frame.h>
 
 #include <bonobo/bonobo-view.h>
 #include <bonobo/bonobo-generic-factory.h>

@@ -21,7 +21,9 @@ CORBA_SOURCE =			\
 idls =							\
 	$(top_srcdir)/idl/Bonobo.idl			\
 	$(top_srcdir)/idl/bonobo-advise.idl		\
-	$(top_srcdir)/idl/bonobo-app.idl		\
+	$(top_srcdir)/idl/bonobo-listener.idl		\
+	$(top_srcdir)/idl/bonobo-ui.idl			\
+	$(top_srcdir)/idl/bonobo-zoomable.idl		\
 	$(top_srcdir)/idl/bonobo-canvas.idl 		\
 	$(top_srcdir)/idl/bonobo-item-container.idl	\
 	$(top_srcdir)/idl/bonobo-control.idl		\
@@ -132,7 +134,9 @@ libbonoboinclude_HEADERS =			\
 	bonobo-view.h				\
 	bonobo-widget.h 			\
 	bonobo-win.h				\
-	bonobo-wrapper.h
+	bonobo-wrapper.h			\
+	bonobo-zoomable.h			\
+	bonobo-zoomable-frame.h
 
 libbonobox_la_SOURCES =				\
 	bonobo-canvas-component.c		\
@@ -165,7 +169,9 @@ libbonobox_la_SOURCES =				\
 	bonobo-view.c				\
 	bonobo-widget.c				\
 	bonobo-win.c				\
-	bonobo-wrapper.c
+	bonobo-wrapper.c			\
+	bonobo-zoomable.c			\
+	bonobo-zoomable-frame.c
 
 libbonobo_print_la_SOURCES =		\
 	bonobo-print.c			\
