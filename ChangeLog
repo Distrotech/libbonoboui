@@ -1,3 +1,9 @@
+2001-12-17  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-plug.c: (bonobo_plug_set_property),
+	(bonobo_plug_get_property), (bonobo_plug_button_event):
+	fix stylistic faux pas.
+
 2001-12-14  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.108.1

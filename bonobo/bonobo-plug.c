@@ -174,7 +174,7 @@ bonobo_plug_set_property (GObject      *object,
 {
 	BonoboPlug *plug;
 
-	g_return_if_fail (object && BONOBO_IS_PLUG (object));
+	g_return_if_fail (BONOBO_IS_PLUG (object));
 
 	plug = BONOBO_PLUG (object);
 
@@ -197,7 +197,7 @@ bonobo_plug_get_property (GObject    *object,
 
 	BonoboPlug *plug;
 
-	g_return_if_fail (object && BONOBO_IS_PLUG (object));
+	g_return_if_fail (BONOBO_IS_PLUG (object));
 
 	plug = BONOBO_PLUG (object);
 
@@ -265,9 +265,9 @@ static gboolean
 bonobo_plug_button_event (GtkWidget      *widget,
 			  GdkEventButton *event)
 {
-	XEvent      xevent;
+	XEvent xevent;
 
-	g_return_if_fail (widget && BONOBO_IS_PLUG (widget));
+	g_return_val_if_fail (BONOBO_IS_PLUG (widget), FALSE);
 
 	if (!BONOBO_PLUG (widget)->priv->forward_events || !GTK_WIDGET_TOPLEVEL (widget))
 		return FALSE;
