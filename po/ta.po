@@ -32,31 +32,31 @@ msgstr ""
 #: bonobo/bonobo-dock-item-grip.c:236
 #, fuzzy
 msgid "Dock the toolbar"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
+msgstr "கருவிப் பலகையை தனிப்பயனாக்கு"
 
 #: bonobo/bonobo-dock-item-grip.c:237
 #, fuzzy
 msgid "Un dock the toolbar"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
+msgstr "கருவிப் பலகையை தனிப்பயனாக்கு"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
-msgstr "¿¢Æø Å¨¸"
+msgstr "நிழல் வகை"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
 #: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
 msgid "Orientation"
-msgstr "¾¢¨º «¨Á×"
+msgstr "திசை அமைவு"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
 #: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred width"
-msgstr "Å¢ÕôÀÁ¡É «¸Äõ"
+msgstr "விருப்பமான அகலம்"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
 #: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
 msgid "Preferred height"
-msgstr "Å¢ÕôÀÁ¡É ¯ÂÃõ"
+msgstr "விருப்பமான உயரம்"
 
 #: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
@@ -80,11 +80,11 @@ msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
-msgstr "¦ÀÂ÷"
+msgstr "பெயர்"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
-msgstr "Å¢ÅÃ¢ôÒ"
+msgstr "விவரிப்பு"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
@@ -107,49 +107,49 @@ msgstr ""
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
-msgstr "À¡÷ì¸ììÜÊÂÐ"
+msgstr "பார்க்கக்க்கூடியது"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr "_¸¡ñÀ¢"
+msgstr "_காண்பி"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
-msgstr "_Á¨È"
+msgstr "_மறை"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr "_¸ÕÅ¢ ¯¾Å¢¸¨Ç ¸¡ñÀ¢"
+msgstr "_கருவி உதவிகளை காண்பி"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¸û"
+msgstr "கருவிப் பலகைகள்"
 
 #: bonobo/bonobo-ui-config-widget.c:302
 #, fuzzy
 msgid "toolbars"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¸û"
+msgstr "கருவிப் பலகைகள்"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
-msgstr "À¡÷"
+msgstr "பார்"
 
 #: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
-msgstr "_ÌÕõÀ¼õ"
+msgstr "_குரும்படம்"
 
 #: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
-msgstr "_¯¨ÃÔõ ÌÕõÀ¼Óõ"
+msgstr "_உரையும் குரும்படமும்"
 
 #: bonobo/bonobo-ui-config-widget.c:334
 #, fuzzy
 msgid "Text only"
-msgstr "_¯¨ÃÔõ ÌÕõÀ¼Óõ"
+msgstr "_உரையும் குரும்படமும்"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr "_ÓýÛÃ¢¨Á ¯¨Ã ÁðÎõ"
+msgstr "_முன்னுரிமை உரை மட்டும்"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
@@ -165,7 +165,7 @@ msgstr ""
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr "UI³ ¯ÕÅ¡ìÌ"
+msgstr "UIஐ உருவாக்கு"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
@@ -262,31 +262,31 @@ msgstr ""
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
-msgstr "_­ÃñÎõ"
+msgstr "_இரண்டும்"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
-msgstr "¯_¨Ã"
+msgstr "உ_ரை"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr "¯¾_Å¢¸¨Ç Á¨È"
+msgstr "உத_விகளை மறை"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
-msgstr "¯_¾Å¢¸¨Ç ¸¡ñÀ¢"
+msgstr "உ_தவிகளை காண்பி"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "¸ÕÅ¢ô _ÀÄ¨¸¨Â Á¨È"
+msgstr "கருவிப் _பலகையை மறை"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
-msgstr "_¾É¢ôÀÂÉ¡ìÌ"
+msgstr "_தனிப்பயனாக்கு"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
+msgstr "கருவிப் பலகையை தனிப்பயனாக்கு"
 
 #: bonobo/bonobo-ui-toolbar.c:1113
 msgid "is floating"
@@ -375,7 +375,7 @@ msgstr ""
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 #, fuzzy
 msgid "_File"
-msgstr "_Á¨È"
+msgstr "_மறை"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
@@ -400,14 +400,14 @@ msgstr ""
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "libbonoboui ÌÈ¢Ó¨È¨Â ¦¾¡¼ì¸ ­ÂÄÅ¢ø¨Ä"
+msgstr "libbonoboui குறிமுறையை தொடக்க இயலவில்லை"
 
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr ""
 
 #~ msgid "Can not bonobo_ui_init"
-#~ msgstr "bonobo_ui_init ­ÂÄÅ¢ø¨Ä"
+#~ msgstr "bonobo_ui_init இயலவில்லை"
 
 #~ msgid "Select an object"
-#~ msgstr "´Õ ­Äì¨¸ §¾÷× ¦ºö"
+#~ msgstr "ஒரு இலக்கை தேர்வு செய்"
