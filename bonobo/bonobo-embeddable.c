@@ -24,7 +24,9 @@
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-embeddable.h>
 
-static BonoboObjectClass *bonobo_embeddable_parent_class;
+#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+
+static GtkObjectClass *bonobo_embeddable_parent_class;
 
 enum {
 	HOST_NAME_CHANGED,
@@ -34,28 +36,18 @@ enum {
 
 static guint embeddable_signals [LAST_SIGNAL];
 
-POA_Bonobo_Embeddable__vepv bonobo_embeddable_vepv;
-
 struct _BonoboEmbeddablePrivate {
-	/*
-	 * The instantiated views for this Embeddable.
-	 */
+	/* The instantiated views for this Embeddable. */
 	GList *views;
 
-	/*
-	 * The instantiated Canvas Items for this Embeddable.
-	 */
+	/* The instantiated Canvas Items for this Embeddable. */
 	GList *canvas_items;
 	
-	/*
-	 * The View factory
-	 */
+	/* The View factory */
 	BonoboViewFactory view_factory;
 	void *view_factory_closure;
 
-	/*
-	 * For the Canvas Item
-	 */
+	/* For the Canvas Item */
 	GnomeItemCreator item_creator;
 	void *item_creator_data;
 };
@@ -235,9 +227,7 @@ canvas_item_destroyed (BonoboCanvasComponent *comp, BonoboEmbeddable *embeddable
 	item = bonobo_canvas_component_get_item (comp);
 	gtk_object_destroy (GTK_OBJECT (item->canvas));
 	
-	/*
-	 * Remove the canvas item from the list of items we keep
-	 */
+	/* Remove the canvas item from the list of items we keep */
 	embeddable->priv->canvas_items = g_list_remove (embeddable->priv->canvas_items, comp);
 
 	ping_container (embeddable);
@@ -289,71 +279,6 @@ impl_Bonobo_Embeddable_createCanvasItem (PortableServer_Servant servant,
 }
 
 /**
- * bonobo_embeddable_get_epv:
- *
- * Returns: The EPV for the default BonoboEmbeddable implementation. 
- */
-POA_Bonobo_Embeddable__epv *
-bonobo_embeddable_get_epv (void)
-{
-	POA_Bonobo_Embeddable__epv *epv;
-
-	epv = g_new0 (POA_Bonobo_Embeddable__epv, 1);
-
-	epv->setClientSite    = impl_Bonobo_Embeddable_setClientSite;
-	epv->getClientSite    = impl_Bonobo_Embeddable_getClientSite;
-	epv->setHostName      = impl_Bonobo_Embeddable_setHostName;
-	epv->close            = impl_Bonobo_Embeddable_close;
-	epv->advise           = impl_Bonobo_Embeddable_advise;
-	epv->unadvise         = impl_Bonobo_Embeddable_unadvise;
-	epv->getMiscStatus    = impl_Bonobo_Embeddable_getMiscStatus;
-	epv->createView       = impl_Bonobo_Embeddable_createView;
-	epv->setURI           = impl_Bonobo_Embeddable_setURI;
-	epv->createCanvasItem = impl_Bonobo_Embeddable_createCanvasItem;
-
-	return epv;
-}
-
-static void
-bonobo_embeddable_corba_class_init ()
-{
-	bonobo_embeddable_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
-	bonobo_embeddable_vepv.Bonobo_Embeddable_epv = bonobo_embeddable_get_epv ();
-}
-
-/**
- * bonobo_embeddable_corba_object_create:
- * @object: The GtkObject that will wrap the CORBA object.
- *
- * Creates an activates the CORBA object that is wrapped
- * by the BonoboObject @object.
- *
- * Returns: An activated object reference to the created object or
- * %CORBA_OBJECT_NIL in case of failure.
- */
-Bonobo_Embeddable
-bonobo_embeddable_corba_object_create (BonoboObject *object)
-{
-	POA_Bonobo_Embeddable *servant;
-	CORBA_Environment ev;
-	
-	servant = (POA_Bonobo_Embeddable *)g_new0 (BonoboObjectServant, 1);
-	servant->vepv = &bonobo_embeddable_vepv;
-
-	CORBA_exception_init (&ev);
-
-	POA_Bonobo_Embeddable__init ((PortableServer_Servant) servant, &ev);
-	if (BONOBO_EX (&ev)){
-		g_free (servant);
-		CORBA_exception_free (&ev);
-		return CORBA_OBJECT_NIL;
-	}
-	CORBA_exception_free (&ev);
-
-	return bonobo_object_activate_servant (object, servant);
-}
-
-/**
  * bonobo_embeddable_construct:
  * @embeddable: BonoboEmbeddable object to construct.
  * @corba_embeddable: The CORBA reference that implements this object.
@@ -378,18 +303,14 @@ bonobo_embeddable_corba_object_create (BonoboObject *object)
  */
 BonoboEmbeddable *
 bonobo_embeddable_construct_full (BonoboEmbeddable *embeddable,
-				 Bonobo_Embeddable corba_embeddable,
-				 BonoboViewFactory view_factory,
-				 void             *factory_data,
-				 GnomeItemCreator item_factory,
-				 void             *item_factory_data)
+				  BonoboViewFactory view_factory,
+				  void             *factory_data,
+				  GnomeItemCreator item_factory,
+				  void             *item_factory_data)
 {
 	
 	g_return_val_if_fail (embeddable != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_EMBEDDABLE (embeddable), NULL);
-	g_return_val_if_fail (corba_embeddable != CORBA_OBJECT_NIL, NULL);
-
-	bonobo_object_construct (BONOBO_OBJECT (embeddable), corba_embeddable);
 
 	embeddable->priv->view_factory         = view_factory;
 	embeddable->priv->view_factory_closure = factory_data;
@@ -417,11 +338,10 @@ bonobo_embeddable_construct_full (BonoboEmbeddable *embeddable,
  */
 BonoboEmbeddable *
 bonobo_embeddable_construct (BonoboEmbeddable  *embeddable,
-			    Bonobo_Embeddable   corba_embeddable,
-			    BonoboViewFactory   factory,
-			    void               *data)
+			     BonoboViewFactory  factory,
+			     void              *data)
 {
-	return bonobo_embeddable_construct_full (embeddable, corba_embeddable, factory, data, NULL, NULL);
+	return bonobo_embeddable_construct_full (embeddable, factory, data, NULL, NULL);
 }
 
 /**
@@ -442,20 +362,13 @@ bonobo_embeddable_construct (BonoboEmbeddable  *embeddable,
 BonoboEmbeddable *
 bonobo_embeddable_new (BonoboViewFactory factory, void *data)
 {
-	Bonobo_Embeddable corba_embeddable;
 	BonoboEmbeddable *embeddable;
 
 	g_return_val_if_fail (factory != NULL, NULL);
 
 	embeddable = gtk_type_new (BONOBO_EMBEDDABLE_TYPE);
-
-	corba_embeddable = bonobo_embeddable_corba_object_create (BONOBO_OBJECT (embeddable));
-	if (corba_embeddable == CORBA_OBJECT_NIL){
-		bonobo_object_unref (BONOBO_OBJECT (embeddable));
-		return NULL;
-	}
 	
-	return bonobo_embeddable_construct (embeddable, corba_embeddable, factory, data);
+	return bonobo_embeddable_construct (embeddable, factory, data);
 }
 
 /**
@@ -476,20 +389,14 @@ bonobo_embeddable_new (BonoboViewFactory factory, void *data)
 BonoboEmbeddable *
 bonobo_embeddable_new_canvas_item (GnomeItemCreator item_factory, void *data)
 {
-	Bonobo_Embeddable corba_embeddable;
 	BonoboEmbeddable *embeddable;
 
 	g_return_val_if_fail (item_factory != NULL, NULL);
 
 	embeddable = gtk_type_new (BONOBO_EMBEDDABLE_TYPE);
-
-	corba_embeddable = bonobo_embeddable_corba_object_create (BONOBO_OBJECT (embeddable));
-	if (corba_embeddable == CORBA_OBJECT_NIL){
-		bonobo_object_unref (BONOBO_OBJECT (embeddable));
-		return NULL;
-	}
 	
-	return bonobo_embeddable_construct_full (embeddable, corba_embeddable, NULL, NULL, item_factory, data);
+	return bonobo_embeddable_construct_full (
+		embeddable, NULL, NULL, item_factory, data);
 }
 
 static void
@@ -517,16 +424,16 @@ bonobo_embeddable_destroy (GtkObject *object)
 
 	g_free (embeddable->priv);
 	
-	GTK_OBJECT_CLASS (bonobo_embeddable_parent_class)->destroy (object);
+	bonobo_embeddable_parent_class->destroy (object);
 }
 
 static void
 bonobo_embeddable_class_init (BonoboEmbeddableClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	POA_Bonobo_Embeddable__epv *epv = &klass->epv;
 
-	bonobo_embeddable_parent_class =
-		gtk_type_class (bonobo_object_get_type ());
+	bonobo_embeddable_parent_class = gtk_type_class (PARENT_TYPE);
 
 	embeddable_signals [HOST_NAME_CHANGED] =
                 gtk_signal_new ("host_name_changed",
@@ -548,7 +455,16 @@ bonobo_embeddable_class_init (BonoboEmbeddableClass *klass)
 
 	object_class->destroy = bonobo_embeddable_destroy;
 
-	bonobo_embeddable_corba_class_init ();
+	epv->setClientSite    = impl_Bonobo_Embeddable_setClientSite;
+	epv->getClientSite    = impl_Bonobo_Embeddable_getClientSite;
+	epv->setHostName      = impl_Bonobo_Embeddable_setHostName;
+	epv->close            = impl_Bonobo_Embeddable_close;
+	epv->advise           = impl_Bonobo_Embeddable_advise;
+	epv->unadvise         = impl_Bonobo_Embeddable_unadvise;
+	epv->getMiscStatus    = impl_Bonobo_Embeddable_getMiscStatus;
+	epv->createView       = impl_Bonobo_Embeddable_createView;
+	epv->setURI           = impl_Bonobo_Embeddable_setURI;
+	epv->createCanvasItem = impl_Bonobo_Embeddable_createCanvasItem;
 }
 
 static void
@@ -581,7 +497,11 @@ bonobo_embeddable_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (bonobo_object_get_type (), &info);
+		type = bonobo_x_type_unique (
+			PARENT_TYPE,
+			POA_Bonobo_Embeddable__init, NULL,
+			GTK_STRUCT_OFFSET (BonoboEmbeddableClass, epv),
+			&info);
 	}
 
 	return type;

@@ -33,14 +33,12 @@ struct _BonoboCanvasComponentPrivate {
 	GnomeCanvasItem   *item;
 };
 
-/*
- * Returns the GnomeCanvasItemClass of an object
- */
+#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+
+/* Returns the GnomeCanvasItemClass of an object */
 #define ICLASS(x) GNOME_CANVAS_ITEM_CLASS ((GTK_OBJECT (x)->klass))
 
-POA_Bonobo_Canvas_Component__vepv bonobo_canvas_component_vepv;
-
-static BonoboObjectClass *gcc_parent_class;
+static GtkObjectClass *gcc_parent_class;
 
 static gboolean
 CORBA_SVP_Segment_to_SVPSeg (Bonobo_Canvas_SVPSegment *seg, ArtSVPSeg *art_seg)
@@ -598,44 +596,6 @@ impl_Bonobo_Canvas_Component_setBounds (PortableServer_Servant     servant,
 	gtk_signal_emit (GTK_OBJECT (gcc), gcc_signals [SET_BOUNDS], bbox, &ev);
 }
 
-/**
- * bonobo_canvas_component_get_epv:
- *
- * Returns: The EPV for the BonoboCanvasComponent.
- */
-POA_Bonobo_Canvas_Component__epv *
-bonobo_canvas_component_get_epv (void)
-{
-	POA_Bonobo_Canvas_Component__epv *epv;
-
-	epv = g_new0 (POA_Bonobo_Canvas_Component__epv, 1);
-
-	epv->update         = impl_Bonobo_Canvas_Component_update;
-	epv->realize        = impl_Bonobo_Canvas_Component_realize;
-	epv->unrealize      = impl_Bonobo_Canvas_Component_unrealize;
-	epv->map            = impl_Bonobo_Canvas_Component_map;
-	epv->unmap          = impl_Bonobo_Canvas_Component_unmap;
-	epv->draw           = impl_Bonobo_Canvas_Component_draw;
-	epv->render         = impl_Bonobo_Canvas_Component_render;
-	epv->bounds         = impl_Bonobo_Canvas_Component_bounds;
-	epv->event          = impl_Bonobo_Canvas_Component_event;
-	epv->contains       = impl_Bonobo_Canvas_Component_contains;
-	epv->setCanvasSize  = impl_Bonobo_Canvas_Component_setCanvasSize;
-	epv->setBounds      = impl_Bonobo_Canvas_Component_setBounds;
-
-	return epv;
-}
-
-static void
-gcc_corba_class_init (void)
-{
-	/*
-	 * Initialize the VEPV
-	 */
-	bonobo_canvas_component_vepv.Bonobo_Unknown_epv     = bonobo_object_get_epv ();
-	bonobo_canvas_component_vepv.Bonobo_Canvas_Component_epv = bonobo_canvas_component_get_epv ();
-}
-
 static void
 gcc_destroy (GtkObject *object)
 {
@@ -643,7 +603,7 @@ gcc_destroy (GtkObject *object)
 
 	gtk_object_destroy (GTK_OBJECT (item->canvas));
 
-	GTK_OBJECT_CLASS (gcc_parent_class)->destroy (object);
+	gcc_parent_class->destroy (object);
 }
 
 static void
@@ -653,15 +613,17 @@ gcc_finalize (GtkObject *object)
 
 	g_free (gcc->priv);
 
-	GTK_OBJECT_CLASS (gcc_parent_class)->finalize (object);
+	gcc_parent_class->finalize (object);
 }
 
 static void
-gcc_class_init (GtkObjectClass *object_class)
+gcc_class_init (BonoboCanvasComponentClass *klass)
 {
-	gcc_parent_class = gtk_type_class (bonobo_object_get_type ());
+	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	POA_Bonobo_Canvas_Component__epv *epv = &klass->epv;
 
-	gcc_corba_class_init ();
+	gcc_parent_class = gtk_type_class (PARENT_TYPE);
+
 	object_class->destroy  = gcc_destroy;
 	object_class->finalize = gcc_finalize;
 
@@ -681,6 +643,19 @@ gcc_class_init (GtkObjectClass *object_class)
                         GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
 
 	gtk_object_class_add_signals (object_class, gcc_signals, LAST_SIGNAL);
+
+	epv->update         = impl_Bonobo_Canvas_Component_update;
+	epv->realize        = impl_Bonobo_Canvas_Component_realize;
+	epv->unrealize      = impl_Bonobo_Canvas_Component_unrealize;
+	epv->map            = impl_Bonobo_Canvas_Component_map;
+	epv->unmap          = impl_Bonobo_Canvas_Component_unmap;
+	epv->draw           = impl_Bonobo_Canvas_Component_draw;
+	epv->render         = impl_Bonobo_Canvas_Component_render;
+	epv->bounds         = impl_Bonobo_Canvas_Component_bounds;
+	epv->event          = impl_Bonobo_Canvas_Component_event;
+	epv->contains       = impl_Bonobo_Canvas_Component_contains;
+	epv->setCanvasSize  = impl_Bonobo_Canvas_Component_setCanvasSize;
+	epv->setBounds      = impl_Bonobo_Canvas_Component_setBounds;
 }
 
 static void
@@ -696,7 +671,7 @@ bonobo_canvas_component_get_type (void)
 {
 	static GtkType type = 0;
 
-	if (!type){
+	if (!type) {
 		GtkTypeInfo info = {
 			"BonoboCanvasComponent",
 			sizeof (BonoboCanvasComponent),
@@ -708,31 +683,14 @@ bonobo_canvas_component_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (bonobo_object_get_type (), &info);
+		type = bonobo_x_type_unique (
+			PARENT_TYPE,
+			POA_Bonobo_Canvas_Component__init, NULL,
+			GTK_STRUCT_OFFSET (BonoboCanvasComponentClass, epv),
+			&info);
 	}
 
 	return type;
-}
-
-Bonobo_Canvas_Component
-bonobo_canvas_component_object_create (BonoboObject *object)
-{
-	POA_Bonobo_Canvas_Component *servant;
-	CORBA_Environment ev;
-	
-	servant = (POA_Bonobo_Canvas_Component *) g_new0 (BonoboObjectServant, 1);
-	servant->vepv = &bonobo_canvas_component_vepv;
-
-	CORBA_exception_init (&ev);
-	POA_Bonobo_Canvas_Component__init ((PortableServer_Servant) servant, &ev);
-	if (BONOBO_EX (&ev)){
-		g_free (servant);
-		CORBA_exception_free (&ev);
-		return CORBA_OBJECT_NIL;
-	}
-
-	CORBA_exception_free (&ev);
-	return (Bonobo_View) bonobo_object_activate_servant (object, servant);
 }
 
 /**
@@ -748,16 +706,11 @@ bonobo_canvas_component_object_create (BonoboObject *object)
  */
 BonoboCanvasComponent *
 bonobo_canvas_component_construct (BonoboCanvasComponent  *comp,
-				  Bonobo_Canvas_Component  corba_canvas_comp,
 				  GnomeCanvasItem         *item)
 {
-	g_return_val_if_fail (comp != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_CANVAS_COMPONENT (comp), NULL);
-	g_return_val_if_fail (corba_canvas_comp != NULL, NULL);
-	g_return_val_if_fail (item != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_ITEM (item), NULL);
+	g_return_val_if_fail (BONOBO_IS_CANVAS_COMPONENT (comp), NULL);
 
-	bonobo_object_construct (BONOBO_OBJECT (comp), corba_canvas_comp);
 	comp->priv->item = item;
 
 	return comp;
@@ -777,20 +730,12 @@ BonoboCanvasComponent *
 bonobo_canvas_component_new (GnomeCanvasItem *item)
 {
 	BonoboCanvasComponent *comp;
-	Bonobo_Canvas_Component corba_canvas_comp;
 	
-	g_return_val_if_fail (item != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_ITEM (item), NULL);
 	
 	comp = gtk_type_new (bonobo_canvas_component_get_type ());
-	corba_canvas_comp = bonobo_canvas_component_object_create (
-		BONOBO_OBJECT (comp));
 
-	if (corba_canvas_comp == CORBA_OBJECT_NIL){
-		bonobo_object_unref (BONOBO_OBJECT (comp));
-		return NULL;
-	}
-	return bonobo_canvas_component_construct (comp, corba_canvas_comp, item);
+	return bonobo_canvas_component_construct (comp, item);
 }
 
 /** 
