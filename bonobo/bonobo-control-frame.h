@@ -72,7 +72,7 @@ gboolean                      bonobo_control_frame_get_autoactivate          (Bo
 
 /* Remote properties */
 Bonobo_PropertyBag            bonobo_control_frame_get_control_property_bag  (BonoboControlFrame  *control_frame,
-									      CORBA_Environment   *ev);
+									      CORBA_Environment   *opt_ev);
 
 /* Ambient properties */
 void                          bonobo_control_frame_set_propbag               (BonoboControlFrame  *control_frame,

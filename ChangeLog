@@ -1,3 +1,9 @@
+2001-11-20  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-control-frame.[ch]:
+	(bonobo_control_frame_get_control_property_bag): renamed
+	exception param to 'opt_ev' to indicate that it's optional.
+
 2001-11-19  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-plug.c (bonobo_plug_dispose): update

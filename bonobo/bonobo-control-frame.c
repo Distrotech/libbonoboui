@@ -880,7 +880,7 @@ bonobo_control_frame_get_propbag (BonoboControlFrame  *frame)
  **/
 Bonobo_PropertyBag
 bonobo_control_frame_get_control_property_bag (BonoboControlFrame *frame,
-					       CORBA_Environment  *ev)
+					       CORBA_Environment  *opt_ev)
 {
 	Bonobo_PropertyBag pbag;
 	Bonobo_Control control;
