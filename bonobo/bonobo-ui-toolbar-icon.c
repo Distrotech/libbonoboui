@@ -444,10 +444,12 @@ paint_with_pixbuf (BonoboUIToolbarIcon *gpixmap, GdkRectangle *area)
 		button_widget = GTK_WIDGET (gpixmap);
 		while (button_widget && GTK_WIDGET_NO_WINDOW (button_widget))
 			button_widget = button_widget->parent;
+
 		g_return_if_fail (button_widget != NULL);
 
-		if (button_widget->style->bg_pixmap[state] != NULL)
-		{
+		if (button_widget->style->bg_pixmap [state] != NULL &&
+                    button_widget->style->bg_pixmap [state] != (GdkPixmap*) GDK_PARENT_RELATIVE) {
+
 			gdk_window_get_geometry (widget->style->bg_pixmap[state],
 						 &bg_pixmap_x, &bg_pixmap_y,
 						 &bg_pixmap_width, &bg_pixmap_height, NULL);
@@ -476,10 +478,8 @@ paint_with_pixbuf (BonoboUIToolbarIcon *gpixmap, GdkRectangle *area)
 						       gdk_pixbuf_get_height (dest_source),
 						       GDK_RGB_DITHER_NORMAL,
 						       0, 0); /* FIXME -- get the right offset */
-		}
-		else    /* We're using either default, or a theme engine */
+		} else { /* We're using either default, or a theme engine */
 #if 0
-		{
 			/*
 			 * This section is for full alpha compositing for themes not
 			 * based on bg_pixmap.  Currently it's broken, but if anyone
@@ -546,9 +546,7 @@ paint_with_pixbuf (BonoboUIToolbarIcon *gpixmap, GdkRectangle *area)
 						       gdk_pixbuf_get_height (dest_source),
 						       GDK_RGB_DITHER_NORMAL,
 						       0, 0);
-		}
 #else
-		{
 			dest_source = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
 						      FALSE,
 						      gdk_pixbuf_get_bits_per_sample (draw_source),
@@ -590,8 +588,8 @@ paint_with_pixbuf (BonoboUIToolbarIcon *gpixmap, GdkRectangle *area)
 
 			gdk_gc_set_clip_mask (widget->style->black_gc, NULL);
 			gdk_gc_set_clip_origin (widget->style->black_gc, 0, 0);
-		}
 #endif /* 0 */
+		}
 
 		gdk_pixbuf_unref (dest_source);
 	}
@@ -1057,9 +1055,9 @@ bonobo_ui_toolbar_icon_clear (BonoboUIToolbarIcon *gpixmap)
  **/
 void
 bonobo_ui_toolbar_icon_set_draw_vals (BonoboUIToolbarIcon *gpixmap,
-			    GtkStateType state,
-			    gfloat saturation,
-			    gboolean pixelate)
+                                      GtkStateType state,
+                                      gfloat saturation,
+                                      gboolean pixelate)
 {
 	g_return_if_fail (gpixmap != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ICON (gpixmap));
@@ -1085,7 +1083,7 @@ bonobo_ui_toolbar_icon_set_draw_vals (BonoboUIToolbarIcon *gpixmap,
  *
  **/
 void
-bonobo_ui_toolbar_icon_get_draw_vals           (BonoboUIToolbarIcon      *gpixmap,
+bonobo_ui_toolbar_icon_get_draw_vals (BonoboUIToolbarIcon      *gpixmap,
                                       GtkStateType      state,
                                       gfloat           *saturation,
                                       gboolean         *pixelate)
@@ -1110,7 +1108,7 @@ bonobo_ui_toolbar_icon_get_draw_vals           (BonoboUIToolbarIcon      *gpixma
  **/
 void
 bonobo_ui_toolbar_icon_set_draw_mode (BonoboUIToolbarIcon *gpixmap,
-			    BonoboUIToolbarIconDrawMode mode)
+                                      BonoboUIToolbarIconDrawMode mode)
 {
 	g_return_if_fail (gpixmap != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ICON (gpixmap));
@@ -1156,7 +1154,7 @@ bonobo_ui_toolbar_icon_get_draw_mode (BonoboUIToolbarIcon *gpixmap)
  **/
 void
 bonobo_ui_toolbar_icon_set_alpha_threshold (BonoboUIToolbarIcon *gpixmap,
-				  gint alpha_threshold)
+                                            gint alpha_threshold)
 {
 	g_return_if_fail (gpixmap != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ICON (gpixmap));
@@ -1169,9 +1167,8 @@ bonobo_ui_toolbar_icon_set_alpha_threshold (BonoboUIToolbarIcon *gpixmap,
 
 	clear_generated_images (gpixmap);
         
-        if (GTK_WIDGET_VISIBLE (gpixmap)) {
+        if (GTK_WIDGET_VISIBLE (gpixmap))
 		gtk_widget_queue_clear (GTK_WIDGET (gpixmap));
-	}
 }
 
 /**
@@ -1211,8 +1208,8 @@ clear_provided_state_image (BonoboUIToolbarIcon *gpixmap,
 }
 
 static void
-clear_generated_state_image(BonoboUIToolbarIcon *gpixmap,
-                            GtkStateType state)
+clear_generated_state_image (BonoboUIToolbarIcon *gpixmap,
+                             GtkStateType state)
 {
         if (gpixmap->generated[state].pixbuf != NULL) {
                 gdk_pixbuf_unref(gpixmap->generated[state].pixbuf);
