@@ -28,8 +28,6 @@ bonobo_hello_LDADD =					\
 	$(INTLLIBS)
 
 oafdir = $(datadir)/oaf
-oaffile = hello.oafinfo
+oaf_DATA = Bonobo_Sample_Hello.oafinfo
 
-oaf_DATA = $(oaffile)
-
-EXTRA_DIST = $(oaffile)
+EXTRA_DIST = $(oaf_DATA)

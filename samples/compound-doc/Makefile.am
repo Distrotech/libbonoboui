@@ -32,11 +32,11 @@ sample_canvas_item_LDADD = 			\
 	$(INTLLIBS)
 
 oafdir = $(datadir)/oaf
-OAF_FILES =	paint-component-simple.oafinfo item.oafinfo
-oaf_DATA = $(OAF_FILES)
+oaf_DATA =	Bonobo_Sample_Paint.oafinfo	\
+		Bonobo_Sample_CanvasItem.oafinfo
 
 oafdir = $(datadir)/oaf
 oaf_DATA = paint-component-simple.oafinfo
 
-EXTRA_DIST = $(OAF_FILES)
+EXTRA_DIST = $(oaf_DATA)
 

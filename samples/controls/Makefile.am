@@ -31,12 +31,10 @@ sample_control_container_LDADD =			\
 
 oafdir = $(datadir)/oaf
 
-OAF_FILES =	bonobo-clock-control.oafinfo		\
-		bonobo-calculator-control.oafinfo
+oaf_DATA = 	Bonobo_Sample_Clock.oafinfo		\
+		Bonobo_Sample_Calculator.oafinfo
 
-oaf_DATA = $(OAF_FILES)
-
-EXTRA_DIST = $(OAF_FILES)
+EXTRA_DIST = $(oaf_DATA)
 
 
 

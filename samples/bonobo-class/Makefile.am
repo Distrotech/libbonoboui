@@ -37,13 +37,12 @@ $(ECHO_CORBA_GENERATED): Echo.idl
 
 
 oafdir = $(datadir)/oaf
-OAF_FILES = echo.oafinfo
-oaf_DATA = $(OAF_FILES)
+oaf_DATA = Bonobo_Sample_Echo.oafinfo
 
 idldir    = $(datadir)/idl
 idl_DATA  = Echo.idl
 
-EXTRA_DIST = $(OAF_FILES) $(idl_DATA)
+EXTRA_DIST = $(oaf_DATA) $(idl_DATA)
 
 INCLUDES = 						\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
