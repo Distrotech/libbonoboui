@@ -2,10 +2,10 @@
 .libs
 Makefile
 Makefile.in
-Echo-stubs.c
-Echo-skels.c
-Echo-common.c
-Echo.h
+Bonobo_Sample_Echo-common.c
+Bonobo_Sample_Echo-skels.c
+Bonobo_Sample_Echo.h
+Bonobo_Sample_Echo-stubs.c
 bonobo-echo
 echo-client
 my_echo_idl
