@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2002-08-28 15:35+0100\n"
+"POT-Creation-Date: 2002-08-30 16:39+0100\n"
 "PO-Revision-Date: 2002-08-06 08:07+0900\n"
 "Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -128,11 +128,11 @@ msgstr "도구 모음"
 msgid "toolbars"
 msgstr "도구 모음"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "보기"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "아이콘(_I)"
 
@@ -245,31 +245,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "보노보 GUI 지원 기능"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
 msgstr "둘 다(_O)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
 msgstr "글월(_E)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
 msgstr "설명 숨기기(_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
 msgstr "설명 보이기(_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
 msgstr "도구 모음 숨기기(_H)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
 msgstr "사용자 설정(_Z)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
 msgstr "도구 모음 사용자 설정"
 
@@ -281,11 +281,11 @@ msgstr "움직이기"
 msgid "whether the toolbar is floating"
 msgstr "도구 모음을 움직일 수 있는지"
 
-#: bonobo/bonobo-ui-util.c:607
+#: bonobo/bonobo-ui-util.c:610
 msgid "_Contents"
 msgstr "목차"
 
-#: bonobo/bonobo-ui-util.c:608
+#: bonobo/bonobo-ui-util.c:611
 msgid "View help for this application"
 msgstr "이 프로그램에 대한 도움말을 봅니다"
 

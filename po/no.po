@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2002-08-28 15:35+0100\n"
+"POT-Creation-Date: 2002-08-30 16:39+0100\n"
 "PO-Revision-Date: 2002-05-23 15:46+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -130,11 +130,11 @@ msgstr "Verktøylinjer"
 msgid "toolbars"
 msgstr "verktøylinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Utseende"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Ikon"
 
@@ -247,31 +247,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Støtte for Bonobo-GUI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
 msgstr "B_egge"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
 msgstr "T_ekst"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
 msgstr "Skjul t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
 msgstr "Vis t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
 msgstr "Sk_jul verktøylinjen"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
 msgstr "Tilpas_s"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
 msgstr "Tilpass verktøylinjen"
 
@@ -283,11 +283,11 @@ msgstr "er flytende"
 msgid "whether the toolbar is floating"
 msgstr "om verktøylinjen er flytende"
 
-#: bonobo/bonobo-ui-util.c:607
+#: bonobo/bonobo-ui-util.c:610
 msgid "_Contents"
 msgstr "_Innhold"
 
-#: bonobo/bonobo-ui-util.c:608
+#: bonobo/bonobo-ui-util.c:611
 msgid "View help for this application"
 msgstr "Vis hjelp for denne applikasjonen"
 

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.0\n"
-"POT-Creation-Date: 2002-08-28 15:35+0100\n"
+"POT-Creation-Date: 2002-08-30 16:39+0100\n"
 "PO-Revision-Date: 2002-07-28 11:06+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -132,11 +132,11 @@ msgstr "Barres d'outils"
 msgid "toolbars"
 msgstr "barres d'outils"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Look"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Icône"
 
@@ -249,31 +249,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Support Bonobo d'interface utilisateur graphique"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
 msgstr "Les _deux"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
 msgstr "T_exte"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
 msgstr "Masquer les _astuces"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
 msgstr "Afficher les _astuces"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
 msgstr "_Masquer la barre d'outils"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
 msgstr "_Personnaliser"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
 msgstr "Personnalise la barre d'outils"
 
@@ -285,11 +285,11 @@ msgstr "est flottant"
 msgid "whether the toolbar is floating"
 msgstr "indique si la barre d'outils est flottante"
 
-#: bonobo/bonobo-ui-util.c:607
+#: bonobo/bonobo-ui-util.c:610
 msgid "_Contents"
 msgstr "_Contenu"
 
-#: bonobo/bonobo-ui-util.c:608
+#: bonobo/bonobo-ui-util.c:611
 msgid "View help for this application"
 msgstr "Affiche l'aide de cette application"
 

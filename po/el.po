@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2002-08-28 15:35+0100\n"
+"POT-Creation-Date: 2002-08-30 16:39+0100\n"
 "PO-Revision-Date: 2002-08-17 13:18+0100\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -152,11 +152,11 @@ msgstr "Εργαλειοθήκες"
 msgid "toolbars"
 msgstr "εργαλειοθήκες"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Εμφάνιση"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Εικονίδιο"
 
@@ -288,31 +288,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Υποστήριξη Γραφικού Περιβάλλοντος Διασύνδεσης (ΓΠΔ) Bonobo"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
 msgstr "_Και τα δύο"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
 msgstr "_Κείμενο"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
 msgstr "Απόκρυ_ψη υποδείξεων"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
 msgstr "Εμ_φάνιση υποδείξεων"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
 msgstr "_Απόκρυψη εργαλειοθήκης"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
 msgstr "Παραμετρο_ποίηση"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
 msgstr "Παραμετροποίηση γραμμής εντολών"
 
@@ -325,13 +325,13 @@ msgstr "Πληροφορίες Δίσκων"
 msgid "whether the toolbar is floating"
 msgstr ""
 
-#: bonobo/bonobo-ui-util.c:607
+#: bonobo/bonobo-ui-util.c:610
 msgid "_Contents"
 msgstr "Περιε_χόμενα"
 
 # #-#-#-#-#  gnome-libs.gnome-libs-1-0.el.po (gnome-libs 1.2.12)  #-#-#-#-#
 #
-#: bonobo/bonobo-ui-util.c:608
+#: bonobo/bonobo-ui-util.c:611
 msgid "View help for this application"
 msgstr "Εμφάνιση βοήθειας για την εφαρμογή"
 

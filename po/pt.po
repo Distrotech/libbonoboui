@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-08-28 15:35+0100\n"
+"POT-Creation-Date: 2002-08-30 16:39+0100\n"
 "PO-Revision-Date: 2002-05-28 02:35+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -130,11 +130,11 @@ msgstr "Barras Ferramentas"
 msgid "toolbars"
 msgstr "barras ferramentas"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Aspecto"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Ícone"
 
@@ -247,31 +247,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Suporte Bonobo GUI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
 msgstr "Amb_os"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
 msgstr "T_exto"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
 msgstr "Escoder d_icas"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
 msgstr "Mostrar d_icas"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
 msgstr "_Esconder barra ferramentas"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
 msgstr "Customi_zar"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
 msgstr "Customizar a barra de ferramentas"
 
@@ -283,11 +283,11 @@ msgstr "está a flutuar"
 msgid "whether the toolbar is floating"
 msgstr "se a barra de ferramentas está ou não a flutuar"
 
-#: bonobo/bonobo-ui-util.c:607
+#: bonobo/bonobo-ui-util.c:610
 msgid "_Contents"
 msgstr "_Conteudos"
 
-#: bonobo/bonobo-ui-util.c:608
+#: bonobo/bonobo-ui-util.c:611
 msgid "View help for this application"
 msgstr "Ver a ajuda desta aplicação"
 

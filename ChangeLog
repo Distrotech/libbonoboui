@@ -1,5 +1,9 @@
 2002-08-30  Michael Meeks  <michael@ximian.com>
 
+	* Version 2.0.3
+
+2002-08-30  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-util.c
 	(bonobo_ui_image_set_pixbuf): fix
 	pixbuf leak on theme change.
