@@ -153,24 +153,25 @@ main (int argc, char **argv)
 		"<submenu name=\"File\">\n"
 		"	<menuitem name=\"open\" _label=\"_OpenB\" pixtype=\"stock\" pixname=\"Open\" _tip=\"Open you fool\"/>\n"
 		"       <separator/>\n"
-		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" _label=\"_ToggleMe\" accel=\"*Control*t\"/>\n"
+		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" _label=\"_ToggleMe\" _tip=\"a\" accel=\"*Control*t\"/>\n"
 		"       <placeholder name=\"Nice\" delimit=\"top\"/>\n"
-		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" _label=\"_CloseB\" "
+		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" _label=\"_CloseB\" _tip=\"hi\""
 		"        pixtype=\"stock\" pixname=\"Close\" accel=\"*Control*q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
-		"<submenu name=\"File\" _label=\"_FileC\">\n"
+		"<submenu name=\"File\" _label=\"_FileC\" _tip=\"what!\">\n"
 		"    <placeholder name=\"Nice\" delimit=\"top\">\n"
 		"	<menuitem name=\"fooa\" _label=\"_FooA\" type=\"radio\" group=\"foogroup\" _tip=\"Radio1\"/>\n"
-		"	<menuitem name=\"foob\" _label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
-		"	<menuitem name=\"wibble\" verb=\"ThisForcesAnError\" _label=\"_Baa\" pixtype=\"stock\" pixname=\"Open\" sensitive=\"0\"/>\n"
+		"	<menuitem name=\"foob\" _label=\"_FooB\" type=\"radio\" group=\"foogroup\" _tip=\"kippers\"/>\n"
+		"	<menuitem name=\"wibble\" verb=\"ThisForcesAnError\" _label=\"_Baa\""
+		"        pixtype=\"stock\" pixname=\"Open\" sensitive=\"0\" _tip=\"fish\"/>\n"
 		"       <separator/>\n"
 		"    </placeholder>\n"
 		"</submenu>\n";
 	char simpled [] =
-		"<menuitem name=\"save\" _label=\"_SaveD\" pixtype=\"stock\" pixname=\"Save\"/>\n";
+		"<menuitem name=\"save\" _label=\"_SaveD\" pixtype=\"stock\" pixname=\"Save\" _tip=\"tip1\"/>\n";
 	char simplee [] =
-		"<menuitem name=\"fish\" _label=\"_Inplace\" pixtype=\"stock\" pixname=\"Save\"/>\n";
+		"<menuitem name=\"fish\" _label=\"_Inplace\" pixtype=\"stock\" pixname=\"Save\" _tip=\"tip2\"/>\n";
 	char toola [] =
 		"<dockitem name=\"toolbar\" homogeneous=\"0\" look=\"both\">\n"
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" _label=\"TogSave\" _tip=\"My tooltip\"/>\n"
@@ -181,7 +182,8 @@ main (int argc, char **argv)
 	char toolb [] =
 		"<dockitem name=\"toolbar\" look=\"icon\" relief=\"none\">\n"
 		"	<toolitem name=\"foo1\" _label=\"Insensitive\" hidden=\"0\"/>\n"
-		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\" _label=\"TogSame\" _tip=\"My tooltip\"/>\n"
+		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\""
+		"	 _label=\"TogSame\" _tip=\"My tooltip\"/>\n"
 		"</dockitem>";
 	char statusa [] =
 		"<item name=\"main\">Kippers</item>\n";
@@ -260,7 +262,7 @@ main (int argc, char **argv)
 		GtkWidget *button;
 		GtkWidget *path_entry, *state_entry;
 
-		button = gtk_button_new_with_label ("Xml merge / demerge");
+		button = gtk_button_new_with_label ("Press me to test!");
 		gtk_signal_connect (GTK_OBJECT (button), "clicked",
 				    (GtkSignalFunc) cb_do_quit, NULL);
 		gtk_widget_show (GTK_WIDGET (button));
@@ -412,10 +414,12 @@ main (int argc, char **argv)
 	txt = bonobo_ui_component_get_prop (componenta, "/toolbar", "look", NULL);
 	printf ("Before merge look '%s'\n", txt);
 	bonobo_ui_component_set_translate (componenta, "/", "<dockitem name=\"toolbar\"/>", &ev);
+	g_free (txt);
 	txt = bonobo_ui_component_get_prop (componenta, "/toolbar", "look", NULL);
 	printf ("After merge look '%s'\n", txt);
 	if (txt == NULL || strcmp (txt, "icon"))
 		g_warning ("Serious transparency regression");
+	g_free (txt);
 
 	bonobo_ui_component_set_translate (componenta, "/menu/File/Nice", simplee, &ev);
 

@@ -464,7 +464,6 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 
 	old_data->overridden = NULL;
 
-
  	/* This code doesn't work right with opaque BonoboUINode object */
  	if (bonobo_ui_node_children (new))
  		merge (tree, old, (BonoboUINode**)&XML_NODE (new)->childs);

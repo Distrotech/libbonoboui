@@ -1420,8 +1420,7 @@ debug_reparents (BonoboControl *control, const char *str)
 
 static GtkWidget *
 build_control (BonoboWinPrivate *priv,
-	       BonoboUINode     *node,
-	       GtkWidget        *parent)
+	       BonoboUINode     *node)
 {
 	GtkWidget *control = NULL;
 	NodeInfo  *info = bonobo_ui_xml_get_data (priv->tree, node);
@@ -1476,7 +1475,7 @@ menu_build_item (BonoboWinPrivate *priv,
 		gtk_widget_set_sensitive (menu_widget, FALSE);
 
 	} else if (bonobo_ui_node_has_name (node, "control")) {
-		GtkWidget *control = build_control (priv, node, parent);
+		GtkWidget *control = build_control (priv, node);
 		if (!control)
 			return NULL;
 		else if (!GTK_IS_MENU_ITEM (control)) {
@@ -1524,6 +1523,8 @@ menu_build_item (BonoboWinPrivate *priv,
 				menu_widget = gtk_pixmap_menu_item_new ();
 			else
 				menu_widget = gtk_menu_item_new ();
+
+			bonobo_ui_node_free_string (txt);
 		}
 			
 		gtk_signal_connect (GTK_OBJECT (menu_widget),
@@ -1608,10 +1609,12 @@ menu_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	    (sensitive = bonobo_ui_node_get_attr (node, "sensitive")) ||
 	    (state     = bonobo_ui_node_get_attr (node, "state"))) {
 		if (cmd_node && !warned++) {
+			char *txt;
 			g_warning ("FIXME: We have an attribute '%s' at '%s' breaking "
 				   "cmd/widget separation, please fix",
 				   hidden?"hidden":((sensitive)?"sensitive":((state)?"state":"error")),
-				   bonobo_ui_xml_make_path (node));
+				   (txt = bonobo_ui_xml_make_path (node)));
+			g_free (txt);
 			if (hidden)
 				set_cmd_attr (priv, cmd_node, "hidden", hidden, FALSE);
 			if (sensitive)
@@ -1909,7 +1912,7 @@ toolbar_build_control (BonoboWinPrivate *priv,
 	g_return_val_if_fail (priv != NULL, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
-	control = build_control (priv, node, parent);
+	control = build_control (priv, node);
 	if (!control)
 		return NULL;
 
@@ -2340,12 +2343,18 @@ status_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	bonobo_ui_node_free_string (name);
 }
 
+static void
+main_status_null (GtkObject *dummy, BonoboWinPrivate *priv)
+{
+	priv->main_status = NULL;
+}
+
 static GtkWidget *
 status_build_item (BonoboWinPrivate *priv,
-		    BonoboUINode    *node,
-		    int             *pos,
-		    NodeInfo        *info,
-		    GtkWidget       *parent)
+		   BonoboUINode    *node,
+		   int             *pos,
+		   NodeInfo        *info,
+		   GtkWidget       *parent)
 {
 	char *name;
 	GtkWidget *widget = NULL;
@@ -2357,6 +2366,9 @@ status_build_item (BonoboWinPrivate *priv,
 	if (!strcmp (name, "main")) {
 		widget = gtk_statusbar_new ();
 		priv->main_status = GTK_STATUSBAR (widget);
+
+		gtk_signal_connect (GTK_OBJECT (widget), "destroy",
+				    (GtkSignalFunc) main_status_null, priv);
 
 		/* insert a little padding so text isn't jammed against frame */
 		gtk_misc_set_padding (
@@ -2374,8 +2386,7 @@ status_build_item (BonoboWinPrivate *priv,
 			return NULL;
 		}
 
-		widget = build_control (
-			priv, node, GTK_WIDGET (priv->status));
+		widget = build_control (priv, node);
 
 		if (widget)
 			gtk_box_pack_end (GTK_BOX (parent), widget,
@@ -2435,8 +2446,6 @@ update_status (BonoboWinPrivate *priv, BonoboUINode *node)
 	GtkWidget       *item = GTK_WIDGET (priv->status);
 	GList *widgets, *wptr;
 	int pos;
-
-	priv->main_status = NULL;
 
 	wptr = widgets = box_get_children_in_order (GTK_BOX (priv->status));
 	pos = 0;
@@ -2566,6 +2575,8 @@ move_dirt_cmd_to_widget (BonoboWinPrivate *priv)
 				g_warning ("Serious error, cmd without name");
 			else
 				dirty_by_cmd (priv, priv->tree->root, cmd_name);
+
+			bonobo_ui_node_free_string (cmd_name);
 		}
 	}
 }

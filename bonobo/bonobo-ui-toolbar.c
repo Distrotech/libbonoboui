@@ -657,6 +657,8 @@ impl_destroy (GtkObject *object)
 	gtk_object_unref (GTK_OBJECT (priv->tooltips));
 	priv->tooltips = NULL;
 
+	g_free (priv);
+
 	if (GTK_OBJECT_CLASS (parent_class)->destroy != NULL)
 		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }

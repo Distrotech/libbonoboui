@@ -624,6 +624,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 		gtk_signal_connect (GTK_OBJECT (listener), "destroy",
 				    (GtkSignalFunc) free_help_menu_entry, 
 				    entry);
+		g_free (id);
 	}
 
 	fclose (file);
