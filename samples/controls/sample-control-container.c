@@ -181,9 +181,9 @@ toggle_clock (GtkButton *button, BonoboWidget *control)
 }
 
 static void
-app_destroy_cb (GtkWidget *app, BonoboUIHandler *uih)
+app_destroy_cb (GtkWidget *app, BonoboUIContainer *uic)
 {
-	bonobo_object_unref (BONOBO_OBJECT (uih));
+	bonobo_object_unref (BONOBO_OBJECT (uic));
 	if (pb != CORBA_OBJECT_NIL)
 		bonobo_object_release_unref (pb, NULL);
 	pb = CORBA_OBJECT_NIL;
@@ -211,7 +211,7 @@ container_create (void)
 	GtkWidget       *box;
 	GtkWidget       *button;
 	GtkWidget       *clock_button;
-	BonoboUIHandler *uih;
+	BonoboUIContainer *uic;
 	BonoboControlFrame *cf;
 	GtkWindow       *window;
 	GtkWidget       *app;
@@ -221,9 +221,9 @@ container_create (void)
 
 	window = GTK_WINDOW (app);
 	
-	uih = bonobo_ui_handler_new ();
+	uic = bonobo_ui_container_new ();
 
-	bonobo_ui_handler_set_app (uih, BONOBO_WIN (app));
+	bonobo_ui_container_set_win (uic, BONOBO_WIN (app));
 
 	gtk_window_set_default_size (window, 500, 440);
 	gtk_window_set_policy (window, TRUE, TRUE, FALSE);
@@ -232,16 +232,14 @@ container_create (void)
 			    GTK_SIGNAL_FUNC (app_delete_cb), NULL);
 
 	gtk_signal_connect (GTK_OBJECT (window), "destroy",
-			    GTK_SIGNAL_FUNC (app_destroy_cb), uih);
-
-	bonobo_ui_handler_create_menubar (uih);
+			    GTK_SIGNAL_FUNC (app_destroy_cb), uic);
 
 	box = gtk_vbox_new (FALSE, 0);
 	bonobo_win_set_contents (BONOBO_WIN (app), box);
 
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_calculator:fab8c2a7-9576-437c-aa3a-a8617408970f",
-		bonobo_ui_compat_get_container (uih));
+		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
@@ -251,7 +249,7 @@ container_create (void)
 
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_clock:d42cc651-44ae-4f69-a10d-a0b6b2cc6ecc",
-		bonobo_ui_compat_get_container (uih));
+		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
@@ -268,7 +266,7 @@ container_create (void)
 
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_entry_factory:ef3e3c33-43e2-4f7c-9ca9-9479104608d6",
-		bonobo_ui_compat_get_container (uih));
+		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 

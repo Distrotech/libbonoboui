@@ -121,7 +121,7 @@ sample_client_site_add_frame (SampleClientSite *site)
 	 */
 	view_frame = bonobo_client_site_new_view (
 		BONOBO_CLIENT_SITE (site),
-		bonobo_ui_compat_get_container (site->app->ui_handler));
+		bonobo_object_corba_objref (BONOBO_OBJECT (site->app->ui_container)));
 	
 	/*
 	 * Embed the view frame into the application.

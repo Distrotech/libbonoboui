@@ -18,7 +18,7 @@ sample_app_exit (SampleApp *app)
 			BONOBO_OBJECT (app->components->data));
 
 	bonobo_object_unref (BONOBO_OBJECT (app->container));
-	bonobo_object_unref (BONOBO_OBJECT (app->ui_handler));
+	bonobo_object_unref (BONOBO_OBJECT (app->ui_container));
 	gtk_widget_destroy (app->app);
 
 	gtk_main_quit ();
@@ -53,11 +53,10 @@ sample_app_create (void)
 
 	app->container = bonobo_item_container_new ();
 
-	app->ui_handler = bonobo_ui_handler_new ();
-	bonobo_ui_handler_set_app (app->ui_handler, BONOBO_WIN (app->app));
+	app->ui_container = bonobo_ui_container_new ();
+	bonobo_ui_container_set_win (app->ui_container, BONOBO_WIN (app->app));
 
 	/* Create menu bar */
-	bonobo_ui_handler_create_menubar (app->ui_handler);
 	sample_app_fill_menu (app);
 
 	gtk_widget_show_all (app_widget);

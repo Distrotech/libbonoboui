@@ -9,7 +9,7 @@ typedef struct _SampleClientSite SampleClientSite;
 
 struct _SampleApp {
 	BonoboItemContainer *container;
-	BonoboUIHandler     *ui_handler;
+	BonoboUIContainer   *ui_container;
 
 	BonoboViewFrame     *curr_view;
 	GList               *components;

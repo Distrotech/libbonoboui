@@ -28,7 +28,7 @@ CORBA_ORB orb;
  * views to existing components.
  */
 BonoboObjectClient *text_obj;
-BonoboClientSite   *text_client_site;
+BonoboControlFrame *text_control_frame;
 
 BonoboObjectClient *image_png_obj;
 BonoboClientSite   *image_client_site;
@@ -49,7 +49,7 @@ typedef struct {
 	BonoboItemContainer *container;
 	GtkWidget *box;
 	Bonobo_View view;
-	BonoboUIContainer *ui_container;
+	Bonobo_UIContainer corba_container;
 	BonoboUIComponent *uic;
 } Application;
 
@@ -227,6 +227,22 @@ add_view (Application *app, BonoboClientSite *client_site, BonoboObjectClient *s
 	return view_frame;
 } /* add_view */
 
+static void
+add_control (Application *app, BonoboControlFrame *control_frame, BonoboObjectClient *server) 
+{
+	GtkWidget *control_widget;
+	GtkWidget *frame;
+	
+	control_widget = bonobo_control_frame_get_widget (control_frame);
+
+	frame = gtk_frame_new ("Control");
+	gtk_widget_show (frame);
+	gtk_box_pack_start (GTK_BOX (app->box), frame, TRUE, TRUE, 0);
+	gtk_container_add (GTK_CONTAINER (frame), control_widget);
+
+	gtk_widget_show_all (frame);
+} /* add_control */
+
 static BonoboObjectClient *
 add_cmd (Application *app, char *server_id, BonoboClientSite **client_site)
 {
@@ -239,6 +255,30 @@ add_cmd (Application *app, char *server_id, BonoboClientSite **client_site)
 		return NULL;
 
 	add_view (app, *client_site, server);
+	return server;
+}
+
+static BonoboObjectClient *
+add_cmd_control (Application *app, char *server_id, BonoboControlFrame **control_frame)
+{
+	BonoboObjectClient *server;
+	Bonobo_Control corba_control;
+	
+	*control_frame = bonobo_control_frame_new (app->corba_container);
+
+	printf ("Launching...\n");
+	server = bonobo_object_activate (server_id, 0);
+	printf ("Return: %p\n", server);
+	if (!server){
+		g_warning (_("Can not activate server"));
+		return NULL;
+	}
+
+	corba_control = bonobo_object_corba_objref (BONOBO_OBJECT (server));
+	bonobo_control_frame_bind_to_control (*control_frame, corba_control);
+	bonobo_control_frame_control_activate (*control_frame);
+
+	add_control (app, *control_frame, server);
 	return server;
 }
 
@@ -553,12 +593,12 @@ verb_AddText_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
-	object = add_cmd (app,
-			  "OAFIID:bonobo_text-plain:26e1f6ba-90dd-4783-b304-6122c4b6c821",
-			  &text_client_site);
+	object = add_cmd_control (app,
+				  "OAFIID:bonobo_text-plain:26e1f6ba-90dd-4783-b304-6122c4b6c821",
+				  &text_control_frame);
 
 	if (object == NULL) {
-		gnome_warning_dialog (_("Could not launch Embeddable."));
+		gnome_warning_dialog (_("Could not launch Control."));
 		return;
 	}
 
@@ -573,7 +613,7 @@ verb_AddText_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
         if (persist == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: Embeddable supports PersistStream\n");
+	printf ("Good: Control supports PersistStream\n");
 	
 	stream = bonobo_stream_fs_open ("/etc/passwd", Bonobo_Storage_READ);
 
@@ -638,20 +678,6 @@ timeout_next_line (gpointer data)
 } /* timeout_add_more_data */
 
 /*
- * Add a new view for the existing text Embeddable.
- */
-static void
-verb_AddTextView_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
-{
-	Application *app = user_data;
-
-	if (text_obj == NULL)
-		return;
-
-	add_view (app, text_client_site, text_obj);
-} /* add_text_view */
-
-/*
  * Setup a timer to send a new line to the text/plain Embeddable using
  * ProgressiveDataSink.
  */
@@ -672,7 +698,7 @@ verb_SendText_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
         if (psink == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: Embeddable supports ProgressiveDataSink\n");
+	printf ("Good: Control supports ProgressiveDataSink\n");
 
 	tmt = g_new0 (struct progressive_timeout, 1);
 
@@ -705,7 +731,6 @@ static const char *commands =
 "<commands>\n"
 "	<cmd name=\"AddText\" label=\"_Add a new text/plain component\"/>\n"
 "	<cmd name=\"SendText\" label=\"_Send progressive data to an existing text/plain component\"/>\n"
-"	<cmd name=\"AddTextView\" label=\"Add a new _view to an existing text/plain component\"/>\n"
 "	<cmd name=\"AddPaint\" label=\"_Add a new simple paint component\"/>\n"
 "	<cmd name=\"AddPaintView\" label=\"Add a new _view to an existing paint component\"/>\n"
 "	<cmd name=\"AddImage\" label=\"_Add a new application/x-png component\"/>\n"
@@ -729,7 +754,6 @@ static const char *menus =
 "	<submenu name=\"TextPlain\" label=\"_text/plain\">\n"
 "		<menuitem name=\"AddText\" verb=\"\"/>\n"
 "		<menuitem name=\"SendText\" verb=\"\"/>\n"
-"		<menuitem name=\"AddTextView\" verb=\"\"/>\n"
 "	</submenu>\n"
 "	<submenu name=\"ImagePng\" label=\"_image/x-png\">\n"
 "		<menuitem name=\"AddImage\" verb=\"\"/>\n"
@@ -754,7 +778,6 @@ static const char *menus =
 static BonoboUIVerb verbs [] = {
 	BONOBO_UI_VERB ("AddText", verb_AddText_cb),
 	BONOBO_UI_VERB ("SendText", verb_SendText_cb),
-	BONOBO_UI_VERB ("AddTextView", verb_AddTextView_cb),
 	BONOBO_UI_VERB ("AddPaint", verb_AddPaint_cb),
 	BONOBO_UI_VERB ("AddPaintView", verb_AddPaintView_cb),
 	BONOBO_UI_VERB ("AddImage", verb_AddImage_cb),
@@ -773,6 +796,7 @@ static Application *
 application_new (void)
 {
 	Application *app;
+	BonoboUIContainer *ui_container;
 	Bonobo_UIContainer corba_container;
 
 	app = g_new0 (Application, 1);
@@ -785,12 +809,14 @@ application_new (void)
 
 	bonobo_win_set_contents (BONOBO_WIN (app->app), app->box);
 
-	app->ui_container = bonobo_ui_container_new ();
-	bonobo_ui_container_set_win (app->ui_container, BONOBO_WIN (app->app));
-	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (app->ui_container));
+	ui_container = bonobo_ui_container_new ();
+	bonobo_ui_container_set_win (ui_container, BONOBO_WIN (app->app));
+
+	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (ui_container));
+	app->corba_container = bonobo_object_dup_ref (corba_container, NULL);
 
 	app->uic = bonobo_ui_component_new ("test-container");
-	bonobo_ui_component_set_container (app->uic, corba_container);
+	bonobo_ui_component_set_container (app->uic, app->corba_container);
 
 	/*
 	 * Create the menus.

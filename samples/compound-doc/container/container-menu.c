@@ -6,8 +6,9 @@
 #include "container-filesel.h"
 
 static void
-add_cb (GtkWidget *caller, SampleApp *inst)
+verb_AddEmbeddable_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	SampleApp *inst = user_data;
 	char *required_interfaces [2] =
 	    { "IDL:Bonobo/Embeddable:1.0", NULL };
 	char *obj_id;
@@ -53,31 +54,39 @@ save_ok_cb (GtkWidget *caller, SampleApp *app)
 }
 
 static void
-save_cb (GtkWidget *caller, SampleApp *app)
+verb_FileSaveAs_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	SampleApp *app = user_data;
+
 	container_request_file (app, TRUE, save_ok_cb, app);
 }
 
 static void
-load_cb (GtkWidget *caller, SampleApp *app)
+verb_FileLoad_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	SampleApp *app = user_data;
+
 	container_request_file (app, FALSE, load_ok_cb, app);
 }
 
 static void
-print_preview_cb (GtkWidget *caller, SampleApp *app)
+verb_PrintPreview_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	SampleApp *app = user_data;
+
 	sample_app_print_preview (app);
 }
 
 static void
-xml_dump_cb (GtkWidget *caller, SampleApp *app)
+verb_XmlDump_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	SampleApp *app = user_data;
+
 	bonobo_win_dump (BONOBO_WIN (app->app), "On request");
 }
 
 static void
-about_cb (GtkWidget *caller, SampleApp *app)
+verb_HelpAbout_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
 	static const gchar *authors[] = {
 		"ÉRDI Gergõ <cactus@cactus.rulez.org>",
@@ -93,50 +102,82 @@ about_cb (GtkWidget *caller, SampleApp *app)
 }
 
 static void
-exit_cb (GtkWidget *caller, SampleApp *app)
+verb_FileExit_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	SampleApp *app = user_data;
+
 	sample_app_exit (app);
 }
 
 /*
  * The menus.
  */
-static GnomeUIInfo sample_app_file_menu[] = {
-	GNOMEUIINFO_ITEM_NONE (N_("A_dd a new Embeddable component"), NULL,
-			       add_cb),
+static char ui_commands [] =
+"<commands>\n"
+"	<cmd name=\"AddEmbeddable\" label=\"A_dd Embeddable\"/>\n"
+"	<cmd name=\"FileOpen\" label=\"_Open\"\n"
+"		pixtype=\"stock\" pixname=\"Open\" tip=\"Open a file\"/>\n"
+"	<cmd name=\"FileSaveAs\" label=\"Save _As...\"\n"
+"		pixtype=\"stock\" pixname=\"Save\"\n"
+"		tip=\"Save the current file with a different name\"/>\n"
+"	<cmd name=\"XmlDump\" label=\"Xml dump\"/>\n"
+"	<cmd name=\"PrintPreview\" label=\"Print Pre_view\"/>\n"
+"	<cmd name=\"FileExit\" label=\"E_xit\" tip=\"Exit the program\"\n"
+"		pixtype=\"stock\" pixname=\"Quit\" accel=\"*Control*q\"/>\n"
+"	<cmd name=\"HelpAbout\" label=\"_About...\" tip=\"About this application\"\n"
+"		pixtype=\"stock\" pixname=\"About\"/>\n"
+"</commands>";
 
-	GNOMEUIINFO_SEPARATOR,
-	GNOMEUIINFO_MENU_OPEN_ITEM (load_cb, NULL),
-	GNOMEUIINFO_MENU_SAVE_AS_ITEM (save_cb, NULL),
-	BONOBOUIINFO_PLACEHOLDER ("Placeholder"),
+static char ui_data [] =
+"<menu>\n"
+"	<submenu name=\"File\" label=\"_File\">\n"
+"		<menuitem name=\"AddEmbeddable\" verb=\"\"/>\n"
+"		<separator/>"
+"		<menuitem name=\"FileOpen\" verb=\"\"/>\n"
+"\n"
+"		<menuitem name=\"FileSaveAs\" verb=\"\"/>\n"
+"\n"
+"		<placeholder name=\"Placeholder\"/>\n"
+"\n"
+"		<menuitem name=\"XmlDump\" verb=\"\"/>\n"
+"		<separator/>\n"
+"		<menuitem name=\"PrintPreview\" verb=\"\"/>\n"
+"		<separator/>\n"
+"		<menuitem name=\"FileExit\" verb=\"\"/>\n"
+"	</submenu>\n"
+"\n"
+"	<submenu name=\"Help\" label=\"_Help\">\n"
+"		<menuitem name=\"HelpAbout\" verb=\"\"/>\n"
+"	</submenu>\n"
+"</menu>";
 
-	GNOMEUIINFO_SEPARATOR,
-	GNOMEUIINFO_ITEM_NONE (N_("Xml dump"), NULL,
-			       xml_dump_cb),
-
-	GNOMEUIINFO_SEPARATOR,
-	GNOMEUIINFO_ITEM_NONE (N_("Print Pre_view"), NULL,
-			       print_preview_cb),
-
-	GNOMEUIINFO_SEPARATOR,
-	GNOMEUIINFO_MENU_EXIT_ITEM (exit_cb, NULL),
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo sample_app_help_menu[] = {
-	GNOMEUIINFO_MENU_ABOUT_ITEM (about_cb, NULL),
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo sample_app_menu[] = {
-	GNOMEUIINFO_MENU_FILE_TREE (sample_app_file_menu),
-	GNOMEUIINFO_MENU_HELP_TREE (sample_app_help_menu),
-	GNOMEUIINFO_END
+static BonoboUIVerb sample_app_verbs[] = {
+	BONOBO_UI_VERB ("AddEmbeddable", verb_AddEmbeddable_cb),
+	BONOBO_UI_VERB ("FileOpen", verb_FileLoad_cb),
+	BONOBO_UI_VERB ("FileSaveAs", verb_FileSaveAs_cb),
+	BONOBO_UI_VERB ("PrintPreview", verb_PrintPreview_cb),
+	BONOBO_UI_VERB ("XmlDump", verb_XmlDump_cb),
+	BONOBO_UI_VERB ("FileExit", verb_FileExit_cb),
+	BONOBO_UI_VERB ("HelpAbout", verb_HelpAbout_cb),
+	BONOBO_UI_VERB_END
 };
 
 void
 sample_app_fill_menu (SampleApp *app)
 {
+	Bonobo_UIContainer corba_container;
+	BonoboUIComponent *uic;
+
+	uic = bonobo_ui_component_new ("sample");
+	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (app->ui_container));
+	bonobo_ui_component_set_container (uic, corba_container);
+
+	bonobo_ui_component_set (uic, "/", ui_commands, NULL);
+	bonobo_ui_component_set (uic, "/", ui_data, NULL);
+
+	bonobo_ui_component_add_verb_list_with_data (uic, sample_app_verbs, app);
+
+#if 0
 	BonoboUIHandlerMenuItem *menu_list;
 
 	/* Load the menu bar with the container-specific base menus */
@@ -145,4 +186,5 @@ sample_app_fill_menu (SampleApp *app)
 
 	bonobo_ui_handler_menu_add_list  (app->ui_handler, "/", menu_list);
 	bonobo_ui_handler_menu_free_list (menu_list);
+#endif
 }

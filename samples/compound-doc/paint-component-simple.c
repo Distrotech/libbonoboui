@@ -183,6 +183,14 @@ view_color_select_cb (BonoboUIHandler *uih, view_data_t *view_data, char *path)
 		g_error ("set to unknown color");
 }
 
+static void
+color_listener_cb (BonoboUIComponent *uic, const char *path, Bonobo_UIComponent_EventType type,
+		   const char *state, gpointer user_data)
+{
+    g_message ("color_listener_cb: `%s' - `%s' - %d", path, state, type);
+}
+
+
 /*
  * When one of our views is activated, we merge our menus
  * in with our container's menus.
@@ -190,34 +198,64 @@ view_color_select_cb (BonoboUIHandler *uih, view_data_t *view_data, char *path)
 static void
 view_create_menus (view_data_t *view_data)
 {
-	Bonobo_UIContainer remote_uih;
-	BonoboView       *view = view_data->view;
-	BonoboUIHandler  *uih;
-	int               i;
+	Bonobo_UIContainer  remote_uic;
+	BonoboView         *view = view_data->view;
+	BonoboUIComponent  *uic;
+#if 0
+	int                 i;
+#endif
+
+	const char *ui_commands =
+		"<commands>\n"
+		"	<cmd name=\"ColorWhite\" state=\"0\" label=\"White\" group=\"Color\"/>\n"
+		"	<cmd name=\"ColorRed\" state=\"1\" label=\"Red\" group=\"Color\"/>\n"
+		"	<cmd name=\"ColorGreen\" state=\"2\" label=\"Green\" group=\"Color\"/>\n"
+		"	<cmd name=\"ColorBlack\" state=\"3\" label=\"Black\" group=\"Color\"/>\n"
+		"</commands>\n";
+
+	const char *ui_menus =
+		"<menu>\n"
+		"	<submenu name=\"Colors\" label=\"Colors\">\n"
+		"		<menuitem name=\"ColorWhite\" type=\"radio\" verb=\"\"/>\n"
+		"		<menuitem name=\"ColorRed\" type=\"radio\" verb=\"\"/>\n"
+		"		<menuitem name=\"ColorGreen\" type=\"radio\" verb=\"\"/>\n"
+		"		<menuitem name=\"ColorBlack\" type=\"radio\" verb=\"\"/>\n"
+		"	</submenu>\n"
+		"</menu>\n";
 
 	/*
-	 * Grab our BonoboUIHandler object.
+	 * Grab our BonoboUIComponent object.
 	 */
-	uih = bonobo_view_get_ui_handler (view);
+	uic = bonobo_view_get_ui_component (view);
 
 	/*
-	 * Get our container's UIHandler server.
+	 * Get our container's UIContainer server.
 	 */
-	remote_uih = bonobo_view_get_remote_ui_handler (view);
+	remote_uic = bonobo_view_get_remote_ui_container (view);
 
 	/*
 	 * We have to deal gracefully with containers
-	 * which don't have a UIHandler running.
+	 * which don't have a UIContainer running.
 	 */
-	if (remote_uih == CORBA_OBJECT_NIL)
+	if (remote_uic == CORBA_OBJECT_NIL) {
+		g_warning ("Can't get remote UIContainer");
 		return;
+	}
 
 	/*
 	 * Give our BonoboUIHandler object a reference to the
 	 * container's UIhandler server.
 	 */
-	bonobo_ui_handler_set_container (uih, remote_uih);
+	bonobo_ui_component_set_container (uic, remote_uic);
 
+	bonobo_ui_component_set (uic, "/", ui_commands, NULL);
+	bonobo_ui_component_set (uic, "/", ui_menus, NULL);
+
+	bonobo_ui_component_add_listener (uic, "Color", color_listener_cb, view_data);
+
+	bonobo_ui_component_thaw (uic, NULL);
+
+#if 0
 	/*
 	 * Create our menu entries.
 	 */
@@ -257,6 +295,7 @@ view_create_menus (view_data_t *view_data)
 	i = bonobo_ui_handler_menu_get_pos (uih, "/Colors/color radiogroup/Green");
 
 	i = bonobo_ui_handler_menu_get_pos (uih, "/Colors");
+#endif
 }
 
 /*
@@ -266,11 +305,11 @@ static void
 view_remove_menus (view_data_t *view_data)
 {
 	BonoboView *view = view_data->view;
-	BonoboUIHandler *uih;
+	BonoboUIComponent *uic;
 
-	uih = bonobo_view_get_ui_handler (view);
+	uic = bonobo_view_get_ui_component (view);
 
-	bonobo_ui_handler_unset_container (uih);
+	bonobo_ui_component_unset_container (uic);
 }
 
 static void
