@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 1.112.1\n"
-"POT-Creation-Date: 2002-06-01 18:31+0100\n"
-"PO-Revision-Date: 2002-03-11 23:03+0900\n"
+"Project-Id-Version: libbonoboui 2.0.0cvs\n"
+"POT-Creation-Date: 2002-06-13 01:32+0900\n"
+"PO-Revision-Date: 2002-06-13 01:40+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -31,14 +31,12 @@ msgid "The User interface container"
 msgstr "ユーザインターフェイス コンテナ"
 
 #: bonobo/bonobo-dock-item-grip.c:236
-#, fuzzy
 msgid "Dock the toolbar"
-msgstr "ツールバーのカスタマイズ"
+msgstr "ツールバーをドッキング"
 
 #: bonobo/bonobo-dock-item-grip.c:237
-#, fuzzy
 msgid "Un dock the toolbar"
-msgstr "ツールバーのカスタマイズ"
+msgstr "ツールバーを外す"
 
 #: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
 msgid "Shadow type"
@@ -88,9 +86,8 @@ msgid "Description"
 msgstr "説明"
 
 #: bonobo/bonobo-selector.c:345
-#, fuzzy
 msgid "Interfaces required"
-msgstr "インターフェイス"
+msgstr "必要なインターフェイス"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -98,14 +95,17 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"セレクタの一覧に載るのに必要な、サーバがサポートすべきインターフェイスの "
+"NULL で終了する配列。インターフェイスがなにもリストされていなければ、デフォル"
+"トは \"ID:Bonobo/Embeddable:1.0\""
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "必要なインターフェイスのエントリ"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "必要とされているインターフェイスの一つ"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -144,9 +144,8 @@ msgid "_Text and Icon"
 msgstr "テキストとアイコン(_T)"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "テキストとアイコン(_T)"
+msgstr "テキストのみ"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -158,96 +157,96 @@ msgstr "UI の設定"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "設定する Gdk のデバッグフラグ"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
-msgstr ""
+msgstr "FLAGS"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "外す Gdk のデバッグフラグ"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "使用する X のディスプレイ"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "DISPLAY"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "X screen to use"
-msgstr ""
+msgstr "使用する X のスクリーン"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "SCREEN"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "X を同期呼出する"
 
 #: bonobo/bonobo-ui-init-gtk.c:135
 msgid "Don't use X shared memory extension"
-msgstr ""
+msgstr "X の共有メモリ拡張を使用しない"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "ウインドウマネージャで使用されるプログラム名"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "NAME"
-msgstr ""
+msgstr "NAME"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "ウインドウマネージャで使用されるプログラム クラス"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "CLASS"
-msgstr ""
+msgstr "CLASS"
 
 #: bonobo/bonobo-ui-init-gtk.c:146
 msgid "HOST"
-msgstr ""
+msgstr "HOST"
 
 #: bonobo/bonobo-ui-init-gtk.c:150
 msgid "PORT"
-msgstr ""
+msgstr "PORT"
 
 #: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
-msgstr ""
+msgstr "STYLE"
 
 #: bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "設定する Gtk+ デバッグフラグ"
 
 #: bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "外す Gtk+ デバッグフラグ"
 
 #: bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "警告を致命的なものとする"
 
 #: bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "追加 Gtk モジュールを読みこむ"
 
 #: bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
-msgstr ""
+msgstr "MODULE"
 
 #: bonobo/bonobo-ui-init-gtk.c:180
 msgid "GTK+"
-msgstr ""
+msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
-msgstr ""
+msgstr "Bonobo GUI サポート"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "B_oth"
@@ -287,16 +286,15 @@ msgstr "ツールバーが取り外されている状態かどうか"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr ""
+msgstr "内容"
 
 #: bonobo/bonobo-ui-util.c:584
-#, fuzzy
 msgid "View help for this application"
-msgstr "このアプリケーションについて"
+msgstr "このアプリケーションのヘルプを表示"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "ウインドウ名 - 設定のシリアライズに使用"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
