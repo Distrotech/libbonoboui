@@ -75,15 +75,15 @@ static void do_moniker_magic (void);
 int
 main (int argc, char **argv)
 {
-	CORBA_ORB orb;
-
+	CORBA_ORB   orb;
 	poptContext ctx = NULL;
-	int i;
+	int         i;
 
 	bindtextdomain (PACKAGE, GNOMELOCALEDIR);
 	textdomain (PACKAGE);
 
 	gnomelib_register_popt_table (oaf_popt_options, _("Oaf options"));
+
 	gnome_init_with_popt_table ("moniker-test", "0.0", argc, argv,
 				    moniker_test_options, 0, &ctx);
 
