@@ -1,5 +1,17 @@
 2001-11-01  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control.c
+	(bonobo_control_set_control_frame): de-activate exiting frame.
+	(bonobo_control_dispose): use the std. methods, destroy not
+	unref toplevel widget.
+	(bonobo_control_set_properties): short circuit re-set.
+	(bonobo_control_set_ui_component): short circuit re-set,
+	unset the ui_component's container on release, dup the
+	incoming ref.
+	(bonobo_control_notify_plug_died): update for new ORBit2 API.
+
+2001-11-01  Michael Meeks  <michael@ximian.com>
+
 	* tests/control/test-control.c (main): use
 	bonobo_debug_shutdown.
 

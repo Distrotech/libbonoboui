@@ -17,10 +17,6 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtksignal.h>
 
-/* FIXME: do something more sane here.  this is needed to see
- * CORBA_Object->connection in the control frame code */
-#define ORBIT2_INTERNAL_API 1
-
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
@@ -36,7 +32,6 @@ enum {
 
 static guint control_signals [LAST_SIGNAL];
 
-/* Parent object class in GObject hierarchy */
 static GObjectClass *bonobo_control_parent_class = NULL;
 
 struct _BonoboControlPrivate {
@@ -54,9 +49,7 @@ struct _BonoboControlPrivate {
 	Bonobo_PropertyBag          propbag;
 };
 
-/*
- * Control lifecycle grind ...
- */
+/* Control lifecycle grind ... */
 void
 bonobo_control_notify_plug_died (BonoboControl *control)
 {
@@ -67,15 +60,20 @@ bonobo_control_notify_plug_died (BonoboControl *control)
 
 	dprintf ("bonobo_control_notify_plug_died: ");
 
-	if (frame != CORBA_OBJECT_NIL && frame->connection != NULL) {
-		if (LINC_CONNECTION (frame->connection)->status != LINC_CONNECTED) {
-			dprintf ("connection broken\n");
-			end_of_life = TRUE;
-		} else {
+	if (frame != CORBA_OBJECT_NIL) {
+		end_of_life = TRUE; /* Hack for now */
+		switch (ORBit_small_get_connection_status (frame)) {
+		case ORBIT_CONNECTION_CONNECTED:
+		case ORBIT_CONNECTION_CONNECTING:
 			dprintf ("valid connection\n");
 			g_warning ("FIXME: We need to wait for 'broken' on the "
 				   "connection - to allow re-parenting");
-			end_of_life = TRUE;
+			break;
+		case ORBIT_CONNECTION_DISCONNECTED:
+			dprintf ("connection broken\n");
+			break;
+		case ORBIT_CONNECTION_IN_PROC:
+			break;
 		}
 	} else {
 		dprintf ("no frame\n");
@@ -495,7 +493,6 @@ bonobo_control_get_automerge (BonoboControl *control)
 static void
 bonobo_control_dispose (GObject *object)
 {
-	CORBA_Environment ev;
 	BonoboControl *control = (BonoboControl *) object;
 
 	dprintf ("bonobo_control_dispose\n");
@@ -503,31 +500,13 @@ bonobo_control_dispose (GObject *object)
 	if (control->priv->plug)
 		bonobo_control_set_plug (control, NULL);
 
-	CORBA_exception_init (&ev);
-
-	if (control->priv->control_frame != CORBA_OBJECT_NIL) {
-		if (control->priv->active)
-			Bonobo_ControlFrame_notifyActivated (
-				control->priv->control_frame,
-				FALSE, &ev);
-		
-		CORBA_Object_release (control->priv->control_frame, &ev);
-	}
-
-	if (control->priv->propbag != CORBA_OBJECT_NIL)
-		bonobo_object_release_unref (control->priv->propbag, &ev);
-	control->priv->propbag = CORBA_OBJECT_NIL;
-
-	if (control->priv->ui_component != NULL) {
-		bonobo_ui_component_unset_container (control->priv->ui_component, &ev);
-		bonobo_object_unref (BONOBO_OBJECT (control->priv->ui_component));
-	}
-
-	CORBA_exception_free (&ev);
+	bonobo_control_set_control_frame (control, CORBA_OBJECT_NIL, NULL);
+	bonobo_control_set_properties    (control, CORBA_OBJECT_NIL, NULL);
+	bonobo_control_set_ui_component  (control, NULL);
 
 	/* Destroy the control's top-level widget. */
 	if (control->priv->widget)
-		gtk_object_unref (GTK_OBJECT (control->priv->widget));
+		gtk_object_destroy (GTK_OBJECT (control->priv->widget));
 
 	/*
 	 * If the plug still exists, destroy it.  The plug might not
@@ -585,8 +564,14 @@ bonobo_control_set_control_frame (BonoboControl       *control,
 	} else
 		ev = opt_ev;
 
-	if (control->priv->control_frame != CORBA_OBJECT_NIL)
+	if (control->priv->control_frame != CORBA_OBJECT_NIL) {
+		if (control->priv->active)
+			Bonobo_ControlFrame_notifyActivated (
+				control->priv->control_frame,
+				FALSE, ev);
+		
 		CORBA_Object_release (control->priv->control_frame, ev);
+	}
 	
 	if (control_frame == CORBA_OBJECT_NIL)
 		control->priv->control_frame = CORBA_OBJECT_NIL;
@@ -656,12 +641,18 @@ bonobo_control_set_ui_component (BonoboControl     *control,
 				 BonoboUIComponent *component)
 {
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
-	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+	g_return_if_fail (component == NULL ||
+			  BONOBO_IS_UI_COMPONENT (component));
 
-	if (control->priv->ui_component)
+	if (component == control->priv->ui_component)
+		return;
+
+	if (control->priv->ui_component) {
+		bonobo_ui_component_unset_container (control->priv->ui_component, NULL);
 		bonobo_object_unref (BONOBO_OBJECT (control->priv->ui_component));
-	
-	control->priv->ui_component = component;
+	}
+
+	control->priv->ui_component = bonobo_object_ref ((BonoboObject *) component);
 }
 
 /**
@@ -681,16 +672,14 @@ bonobo_control_set_properties (BonoboControl      *control,
 	Bonobo_PropertyBag old_bag;
 
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
-	g_return_if_fail (pb != CORBA_OBJECT_NIL);
+
+	if (pb == control->priv->propbag)
+		return;
 
 	old_bag = control->priv->propbag;
-	control->priv->propbag = pb;
 
-	if (pb)
-		bonobo_object_dup_ref (pb, opt_ev);
-
-	if (old_bag)
-		bonobo_object_release_unref (old_bag, opt_ev);
+	control->priv->propbag = bonobo_object_dup_ref (pb, opt_ev);
+	bonobo_object_release_unref (old_bag, opt_ev);
 }
 
 /**

@@ -184,7 +184,7 @@ main (int argc, char **argv)
 	gtk_widget_show_all (window);
 
 	run_tests (GTK_CONTAINER (window), TRUE, TRUE);
-//	run_tests (GTK_CONTAINER (window), FALSE);
+	run_tests (GTK_CONTAINER (window), FALSE, TRUE);
 
 	/* FIXME: we will iterate the gtk mainloop and show windows,
 	   but we will be fully automated */

@@ -18,6 +18,8 @@ interactions:
 
 * Creation interaction (A)
 
+** Out of proc.
+
 	1. Control creation
 	2. Passes it's reference
         3.                       _control_frame_new
@@ -27,9 +29,21 @@ interactions:
 	7.			 takes a C. Control ref.
 	8.			 Control->setFrame
 	9. takes a C. control_frame ref
-	10.			 Control->setWindowId
-OR.
-	on socket realize:	 Control->setWindowId
+	10. -- socket realize -- Control->setWindowId
+
+** In proc
+
+	1. Control creation
+	2. Passes it's reference
+        3.                       _control_frame_new
+	4.			 creates ControlFrame
+	5.			 creates Socket
+	6.			 _control_frame_bind_to_control
+	7.			 takes a C. Control ref.
+	8.			 Control->setFrame
+	9. takes a C. control_frame ref
+	10. Sets up in-proc references to each other.
+	11. -- socket realize -- Control->setWindowId
 
 
 * Steady state referencing
@@ -44,7 +58,13 @@ OR.
 	Control: GObject ref -> Plug
 	Plug: Bonobo ref -> Control
 
+	NB. Actual 'ownership' of references somewhat confused between
+modules to give more lucid encapsulation.
+
+
 * Destruction interaction (B1)
+
+** Out of proc
 
 	Toplevel gtk_widget_destroy.
 
@@ -76,6 +96,17 @@ Leaves:
 	can occur 'inside' or during a CORBA method leading
 	to some confusion. Thus it is best to delay the actual
 	destruction invocations until the glib mainloop is hit.
+
+** In proc
+
+	Toplevel gtk_widget_destroy.
+
+	1.                       Socket dispose
+	2.			 unset control
+	3.			 B. unref Control
+	4.                       gtk_widget_destroy plug
+	5. plug unset control frame
+	6. plug B. unref ControlFrame
 
 * Destruction interaction (B2)
 
@@ -159,3 +190,4 @@ widget, and possibly it's control frame ?
 	  tell ? - we need to have local hacks - and have a
 	  reference to the BonoboControlFrame inside our
 	  BonoboControl etc.
+
