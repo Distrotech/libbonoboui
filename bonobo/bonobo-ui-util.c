@@ -119,7 +119,7 @@ bonobo_ui_util_pixbuf_to_xml (GdkPixbuf *pixbuf)
 		height * byte_width * 2;
 	
 	xml = g_malloc (size);
-	xml [size] = '\0';
+	xml [size - 1] = '\0';
 
 	dst = xml;
 
