@@ -362,7 +362,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *class)
 			G_STRUCT_OFFSET (BonoboDockItemClass, orientation_changed),
 			NULL, NULL,
 			g_cclosure_marshal_VOID__ENUM,
-			G_TYPE_NONE, 0, G_TYPE_ENUM);
+			G_TYPE_NONE, 1, GTK_TYPE_ORIENTATION);
   
   gobject_class->finalize = bonobo_dock_item_finalize;
 

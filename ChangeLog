@@ -1,3 +1,8 @@
+2002-04-11  Murray Cumming  <murrayc@usa.net>
+
+	* bonobo/bonobo-dock-item.c: Corrected "orientation-changed" 
+	signal paratemeter types registration.
+	
 2002-04-11  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-sync-menu.c (label_same):
