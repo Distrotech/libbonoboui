@@ -226,9 +226,14 @@ bonobo_gtk_container_focus_move (GtkContainer     *container,
   return FALSE;
 }
 
-static gboolean
-bonobo_dock_item_focus (GtkWidget        *widget,
-			GtkDirectionType  direction)
+/*
+ * FIXME: this is a hack because in un-docked toolbars
+ * bad things happen if we traverse up the GdkWindow
+ * hierarchy doing dumb things like GtkContainer does.
+ */
+gboolean
+bonobo_widget_clobber_focus (GtkWidget        *widget,
+			     GtkDirectionType  direction)
 {
   gboolean has_focus_chain;
   GList *focus_chain = NULL;
@@ -362,7 +367,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *class)
 
   widget_class->map = bonobo_dock_item_map;
   widget_class->unmap = bonobo_dock_item_unmap;
-  widget_class->focus = bonobo_dock_item_focus;
+  widget_class->focus = bonobo_widget_clobber_focus;
   widget_class->realize = bonobo_dock_item_realize;
   widget_class->unrealize = bonobo_dock_item_unrealize;
   widget_class->style_set = bonobo_dock_item_style_set;

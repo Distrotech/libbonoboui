@@ -11,6 +11,7 @@
 #include <config.h>
 #include <libgnome/gnome-i18n.h>
 #include <libgnome/gnome-macros.h>
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-toolbar.h>
 #include <bonobo/bonobo-ui-toolbar-item.h>
 #include <bonobo/bonobo-ui-toolbar-popup-item.h>
@@ -1073,6 +1074,7 @@ bonobo_ui_toolbar_class_init (BonoboUIToolbarClass *toolbar_class)
 	widget_class->map           = impl_map;
 	widget_class->unmap         = impl_unmap;
 	widget_class->expose_event  = impl_expose_event;
+	widget_class->focus         = bonobo_widget_clobber_focus;
 
 	container_class = GTK_CONTAINER_CLASS (toolbar_class);
 	container_class->remove = impl_remove;

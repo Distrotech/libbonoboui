@@ -1,5 +1,26 @@
 2002-03-26  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-toolbar-item.c
+	(bonobo_ui_toolbar_item_class_init): clobber
+	focus handling for items here.
+
+	* bonobo/bonobo-dock-item-grip.c
+	(bonobo_dock_item_grip_key_press_event): only
+	allow band traversal if not floating.
+
+	* bonobo/bonobo-dock.c
+	(bonobo_dock_focus_roll): upd. to include
+	floating children.
+
+	* bonobo/bonobo-ui-toolbar.c
+	(bonobo_ui_toolbar_class_init): klobber focus stuff.
+
+	* bonobo/bonobo-dock-item.c
+	(bonobo_dock_item_focus): rename
+	(bonobo_widget_clobber_focus): to this.
+
+2002-03-26  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-dock-item-grip.c
 	(bonobo_dock_item_grip_dock),
 	(bonobo_dock_item_grip_undock): split out of

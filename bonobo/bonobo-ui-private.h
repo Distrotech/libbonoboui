@@ -35,6 +35,10 @@ void       bonobo_ui_toolbar_control_item_set_sensitive
                                           (BonoboUIToolbarControlItem *item,
 					   gboolean                    sensitive);
 
+
+gboolean   bonobo_widget_clobber_focus    (GtkWidget        *widget,
+					   GtkDirectionType  direction);
+
 #ifndef   DEBUG_UI
 
 static inline void dprintf (const char *format, ...) { };

@@ -1825,20 +1825,16 @@ void
 bonobo_dock_focus_roll (BonoboDock *dock)
 {
 	GList *focusable = NULL;
-	GList *children, *l, *bands = NULL, *grips = NULL;
+	GList *l, *bands = NULL, *grips = NULL;
 
-	children = gtk_container_get_children (GTK_CONTAINER (dock));
-
-	for (l = children; l; l = l->next) {
-		if (BONOBO_IS_DOCK_BAND (l->data) &&
-		    bonobo_dock_band_get_num_children (l->data) > 0)
-			bands = g_list_prepend (bands, l->data);
-	}
-
-	g_list_free (children);
+	bands = NULL;
+	bands = g_list_concat (bands, g_list_copy (dock->top_bands));
+	bands = g_list_concat (bands, g_list_copy (dock->bottom_bands));
+	bands = g_list_concat (bands, g_list_copy (dock->right_bands));
+	bands = g_list_concat (bands, g_list_copy (dock->left_bands));
 
 	for (l = bands; l; l = l->next) {
-		GList *l2;
+		GList *l2, *children;
 
 		children = gtk_container_get_children (l->data);
 		
@@ -1852,6 +1848,14 @@ bonobo_dock_focus_roll (BonoboDock *dock)
 	}
 
 	g_list_free (bands);
+
+	for (l = dock->floating_children; l; l = l->next) {
+		GtkWidget *grip;
+
+		if (BONOBO_IS_DOCK_ITEM (l->data) &&
+		    (grip = bonobo_dock_item_get_grip (BONOBO_DOCK_ITEM (l->data))))
+			grips = g_list_prepend (grips, grip);
+	}
 
 	for (l = grips; l; l = l->next) {
 		if (GTK_WIDGET_DRAWABLE (l->data) &&

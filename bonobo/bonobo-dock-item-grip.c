@@ -284,8 +284,8 @@ bonobo_dock_item_grip_key_press_event (GtkWidget   *widget,
   BonoboDockBand *band = get_dock_band (widget);
   BonoboDockItemGrip *grip = (BonoboDockItemGrip *) widget;
 
-  if (band && bonobo_dock_band_handle_key_nav (
-	  band, grip->item, event))
+  if (!grip->item->is_floating && band &&
+      bonobo_dock_band_handle_key_nav (band, grip->item, event))
     {
       if (had_focus && !GTK_WIDGET_HAS_FOCUS (widget))
         gtk_widget_grab_focus (widget);
