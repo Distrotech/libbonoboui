@@ -3,10 +3,12 @@
  * Bonobo control object
  *
  * Author:
- *   Nat Friedman (nat@helixcode.com)
- *   Miguel de Icaza (miguel@helixcode.com)
+ *   Nat Friedman      (nat@helixcode.com)
+ *   Miguel de Icaza   (miguel@helixcode.com)
+ *   Maciej Stachowiak (mjs@eazel.com)
  *
  * Copyright 1999, 2000 Helix Code, Inc.
+ *                 2000 Eazel, Inc.
  */
 #include <config.h>
 #include <stdlib.h>

@@ -3,10 +3,12 @@
  * Bonobo control frame object.
  *
  * Authors:
- *   Nat Friedman    (nat@helixcode.com)
- *   Miguel de Icaza (miguel@kernel.org)
+ *   Nat Friedman      (nat@helixcode.com)
+ *   Miguel de Icaza   (miguel@kernel.org)
+ *   Maciej Stachowiak (mjs@eazel.com)
  *
  * Copyright 1999, 2000 Helix Code, Inc.
+ *                 2000 Eazel, Inc.
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
