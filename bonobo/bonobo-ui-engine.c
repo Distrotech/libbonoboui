@@ -570,7 +570,7 @@ remove_fn (GtkObject      *object,
 			bonobo_ui_sync_remove_root (sync, node);
 	}
 
-	cmd_to_node_remove_node (engine, node, FALSE);
+	cmd_to_node_remove_node (engine, node, TRUE);
 }
 
 /*
@@ -1958,8 +1958,7 @@ dirty_by_cmd (BonoboUIEngine *engine,
 /*	printf ("Dirty node by cmd if %s == %s on node '%s'\n", search_id, id,
 	bonobo_ui_xml_make_path (search));*/
 
-	for (l = cmd_to_nodes (engine, search_id); l;
-	     l = l->next)
+	for (l = cmd_to_nodes (engine, search_id); l; l = l->next)
 		bonobo_ui_xml_set_dirty (engine->priv->tree, l->data);
 }
 
