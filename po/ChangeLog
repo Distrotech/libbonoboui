@@ -1,3 +1,7 @@
+2003-04-21  Michael Meeks  <michael@ximian.com>
+
+	* POTFILES.skip: ignore sample-container-ui.xml
+
 2003-03-26  Christian Rose  <menthos@menthos.com>
 
 	* yi.po: Added Yiddish translation by
