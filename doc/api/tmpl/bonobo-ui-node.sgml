@@ -8,10 +8,8 @@ Simplified XML Node manipulation API
 <para>
   The BonoboUINode API is designed to make XML node manipulation
 simple, and to hide the underlying implementation of the XML tree.
-This is since libxml is both horrendously inefficient in terms of
-both memory and speed for the simple application of storing trees
-of attributed utf-8 strings. It also provides workarounds for
-several bugs in libxml ( pwrt. switching nodes in between trees ).
+This is to allow the use of some more efficient internal representation
+than libxml's at some later date.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
