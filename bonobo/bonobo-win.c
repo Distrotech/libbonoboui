@@ -156,16 +156,12 @@ node_get_id (xmlNode *node)
 static char *
 node_get_id_or_path (xmlNode *node)
 {
-	xmlChar *txt;
+	char *txt;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if ((txt = node_get_id (node))) {
-		char *ret;
-		ret = g_strdup (txt);
-		xmlFree (txt);
-		return ret;
-	}
+	if ((txt = node_get_id (node)))
+		return txt;
 
 	return bonobo_ui_xml_make_path (node);
 }

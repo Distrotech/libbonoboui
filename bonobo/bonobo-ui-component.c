@@ -609,6 +609,9 @@ bonobo_ui_container_freeze (Bonobo_UIContainer  container,
 			    CORBA_Environment  *ev)
 {
 	CORBA_Environment *real_ev, tmp_ev;
+
+	g_return_if_fail (container != CORBA_OBJECT_NIL);
+
 	if (ev)
 		real_ev = ev;
 	else {
@@ -631,6 +634,9 @@ bonobo_ui_container_thaw (Bonobo_UIContainer  container,
 			  CORBA_Environment  *ev)
 {
 	CORBA_Environment *real_ev, tmp_ev;
+
+	g_return_if_fail (container != CORBA_OBJECT_NIL);
+
 	if (ev)
 		real_ev = ev;
 	else {
@@ -729,6 +735,8 @@ bonobo_ui_container_path_exists (Bonobo_UIContainer  container,
 {
 	gboolean ret;
 	CORBA_Environment *real_ev, tmp_ev;
+
+	g_return_val_if_fail (container != CORBA_OBJECT_NIL, FALSE);
 
 	if (ev)
 		real_ev = ev;
