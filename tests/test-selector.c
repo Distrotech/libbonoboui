@@ -2,6 +2,7 @@
 
 #include <gtk/gtk.h>
 #include <bonobo/gnome-object.h>
+#include <bonobo/gnome-bonobo-selector.h>
 #include <libgnorba/gnorba.h>
 
 CORBA_Environment ev;

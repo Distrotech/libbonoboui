@@ -118,7 +118,7 @@ CORBA_UTA (ArtUta *uta)
 }
 
 static void
-restore_state (GnomeCanvasItem *item, GNOME_Canvas_State *state)
+restore_state (GnomeCanvasItem *item, const GNOME_Canvas_State *state)
 {
 	double affine [6];
 	int i;
@@ -137,15 +137,15 @@ restore_state (GnomeCanvasItem *item, GNOME_Canvas_State *state)
 
 static GNOME_Canvas_ArtUTA *
 gcc_update (PortableServer_Servant servant,
-	    GNOME_Canvas_State     *state,
-	    GNOME_Canvas_affine    aff,
-	    GNOME_Canvas_SVP       *clip_path,
-	    CORBA_long             flags,
-	    CORBA_double           *x1, 
-	    CORBA_double           *y1, 
-	    CORBA_double           *x2, 
-	    CORBA_double           *y2, 
-	    CORBA_Environment      *ev)
+	    const GNOME_Canvas_State     *state,
+	    const GNOME_Canvas_affine     aff,
+	    const GNOME_Canvas_SVP       *clip_path,
+	    CORBA_long                    flags,
+	    CORBA_double                 *x1, 
+	    CORBA_double                 *y1, 
+	    CORBA_double                 *x2, 
+	    CORBA_double                 *y2, 
+	    CORBA_Environment            *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
@@ -182,7 +182,7 @@ gcc_update (PortableServer_Servant servant,
 		}
 	}
 	
-	ICLASS (item)->update (item, aff, svp, flags);
+	ICLASS (item)->update (item, (double *)aff, svp, flags);
 
 	if (svp){
 		for (i = 0; i < svp->n_segs; i++)
@@ -289,8 +289,8 @@ my_gdk_pixmap_foreign_release (GdkPixmap *pixmap)
 
 static void
 gcc_draw (PortableServer_Servant servant,
-	  GNOME_Canvas_State *state,
-	  GNOME_Canvas_window_id drawable,
+	  const GNOME_Canvas_State *state,
+	  const GNOME_Canvas_window_id drawable,
 	  CORBA_short x, CORBA_short y,
 	  CORBA_short width, CORBA_short height,
 	  CORBA_Environment *ev)
@@ -386,7 +386,7 @@ gcc_contains (PortableServer_Servant servant,
 
 static void
 gcc_bounds (PortableServer_Servant servant,
-	    GNOME_Canvas_State *state,
+	    const GNOME_Canvas_State *state,
 	    CORBA_double * x1, CORBA_double * x2,
 	    CORBA_double * y1, CORBA_double * y2,
 	    CORBA_Environment *ev)
@@ -402,7 +402,7 @@ gcc_bounds (PortableServer_Servant servant,
  * Converts the event marshalled from the container into a GdkEvent
  */
 static void
-GNOME_Gdk_Event_to_GdkEvent (GNOME_Gdk_Event *gnome_event, GdkEvent *gdk_event)
+GNOME_Gdk_Event_to_GdkEvent (const GNOME_Gdk_Event *gnome_event, GdkEvent *gdk_event)
 {
 	switch (gnome_event->_d){
 	case GNOME_Gdk_FOCUS:
@@ -498,10 +498,10 @@ free_event (GdkEvent *event)
  * GdkEvent and forwards this to the CanvasItem
  */
 static CORBA_boolean
-gcc_event (PortableServer_Servant servant,
-	   GNOME_Canvas_State *state,
-	   GNOME_Gdk_Event * gnome_event,
-	   CORBA_Environment *ev)
+gcc_event (PortableServer_Servant    servant,
+	   const GNOME_Canvas_State *state,
+	   const GNOME_Gdk_Event    *gnome_event,
+	   CORBA_Environment        *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
@@ -539,7 +539,9 @@ gcc_size_set (PortableServer_Servant servant,
 }
 
 static void
-gcc_set_bounds (PortableServer_Servant servant, GNOME_Canvas_DRect *bbox, CORBA_Environment *ev)
+gcc_set_bounds (PortableServer_Servant    servant,
+		const GNOME_Canvas_DRect *bbox,
+		CORBA_Environment        *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 

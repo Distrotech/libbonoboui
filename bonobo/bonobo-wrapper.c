@@ -17,7 +17,7 @@
 
 #define BORDER_WIDTH	3
 
-static void gnome_wrapper_class_init (GnomeWrapperClass *class);
+static void gnome_wrapper_class_init (GnomeWrapperClass *klass);
 static void gnome_wrapper_init (GnomeWrapper *wrapper);
 
 static void gnome_wrapper_map (GtkWidget *widget);
@@ -105,13 +105,13 @@ gnome_wrapper_destroy (GtkObject *object)
 
 /* Standard class initialization function */
 static void
-gnome_wrapper_class_init (GnomeWrapperClass *class)
+gnome_wrapper_class_init (GnomeWrapperClass *klass)
 {
 	GtkObjectClass *object_class;
 	GtkWidgetClass *widget_class;
 
-	object_class = (GtkObjectClass *) class;
-	widget_class = (GtkWidgetClass *) class;
+	object_class = (GtkObjectClass *) klass;
+	widget_class = (GtkWidgetClass *) klass;
 
 	parent_class = gtk_type_class (GTK_TYPE_BIN);
 

@@ -36,7 +36,7 @@ static gboolean stringlist_contains (gchar **list, const gchar *word);
 
 
 /* fixme: revove this as soon it is included in gnome-dialog */
-void       
+static void       
 gnome_dialog_clicked (GnomeDialog *dialog, gint button_num)
 {
 	gtk_signal_emit_by_name(GTK_OBJECT(dialog), "clicked", button_num);

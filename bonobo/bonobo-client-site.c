@@ -140,9 +140,9 @@ init_client_site_corba_class ()
 }
 
 static void
-gnome_client_site_class_init (GnomeClientSiteClass *class)
+gnome_client_site_class_init (GnomeClientSiteClass *klass)
 {
-	GnomeObjectClass *gobject_class = (GnomeObjectClass *) class;
+	GnomeObjectClass *gobject_class = (GnomeObjectClass *) klass;
 	GtkObjectClass *object_class = (GtkObjectClass *) gobject_class;
 	
 	gnome_client_site_parent_class = gtk_type_class (gnome_object_get_type ());
@@ -168,8 +168,8 @@ gnome_client_site_class_init (GnomeClientSiteClass *class)
 				      LAST_SIGNAL);
 	
 	object_class->destroy = gnome_client_site_destroy;
-	class->show_window = default_show_window;
-	class->save_object = default_save_object;
+	klass->show_window = default_show_window;
+	klass->save_object = default_save_object;
 
 	init_client_site_corba_class ();
 }

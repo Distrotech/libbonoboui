@@ -93,9 +93,9 @@ impl_GNOME_Embeddable_get_client_site (PortableServer_Servant servant,
 
 static void
 impl_GNOME_Embeddable_set_host_name (PortableServer_Servant servant,
-				     CORBA_char *name,
-				     CORBA_char *appname,
-				     CORBA_Environment *ev)
+				     const CORBA_char      *name,
+				     const CORBA_char      *appname,
+				     CORBA_Environment     *ev)
 {
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
 
@@ -260,8 +260,8 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 
 static void
 impl_GNOME_Embeddable_set_uri (PortableServer_Servant servant,
-			       CORBA_char *uri,
-			       CORBA_Environment *ev)
+			       const CORBA_char      *uri,
+			       CORBA_Environment     *ev)
 {
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
 
@@ -594,9 +594,9 @@ gnome_embeddable_destroy (GtkObject *object)
 }
 
 static void
-gnome_embeddable_class_init (GnomeEmbeddableClass *class)
+gnome_embeddable_class_init (GnomeEmbeddableClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) class;
+	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
 	gnome_embeddable_parent_class =
 		gtk_type_class (gnome_object_get_type ());

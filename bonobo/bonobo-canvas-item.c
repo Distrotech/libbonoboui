@@ -626,7 +626,7 @@ gnome_bonobo_item_get_type (void)
 
 static void
 impl_GNOME_Canvas_ItemProxy_request_update (PortableServer_Servant servant,
-					    GNOME_Canvas_ArtUTA *uta,
+					    const GNOME_Canvas_ArtUTA *uta,
 					    CORBA_Environment *ev)
 {
 	ItemProxyServant *item_proxy = (ItemProxyServant *) servant;

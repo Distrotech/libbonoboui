@@ -103,7 +103,7 @@ impl_desktop_window_get_title (PortableServer_Servant servant, CORBA_Environment
 
 static void
 impl_desktop_window_set_title (PortableServer_Servant servant,
-			       CORBA_char *value,
+			       const CORBA_char *value,
 			       CORBA_Environment * ev)
 {
 	GnomeDesktopWindow *desk_win = GNOME_DESKTOP_WINDOW (gnome_object_from_servant (servant));
@@ -129,9 +129,9 @@ impl_desktop_window_get_geometry (PortableServer_Servant servant,
 }
 
 static void
-impl_desktop_window_set_geometry (PortableServer_Servant servant,
-			   GNOME_Desktop_Window_Geometry * geo,
-			   CORBA_Environment * ev)
+impl_desktop_window_set_geometry (PortableServer_Servant               servant,
+				  const GNOME_Desktop_Window_Geometry *geo,
+				  CORBA_Environment                   *ev)
 {
 	GnomeDesktopWindow *desk_win = GNOME_DESKTOP_WINDOW (gnome_object_from_servant (servant));
 
@@ -175,7 +175,7 @@ init_desktop_window_corba_class (void)
 }
 
 static void
-gnome_desktop_window_class_init (GnomeDesktopWindowClass *class)
+gnome_desktop_window_class_init (GnomeDesktopWindowClass *klass)
 {
 	gnome_desktop_window_parent_class = gtk_type_class (gnome_object_get_type ());
 	init_desktop_window_corba_class ();
