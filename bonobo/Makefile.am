@@ -141,12 +141,10 @@ libbonoboinclude_HEADERS = \
 	$(libbonoboui_built_public_sources)
 
 $(srcdir)/bonobo-ui-marshal.h: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
-	cd $(srcdir) \
-	&& $(GLIB_GENMARSHAL) $< --header --prefix=bonobo_ui_marshal > $@
+	$(GLIB_GENMARSHAL) $< --header --prefix=bonobo_ui_marshal > $@
 
 $(srcdir)/bonobo-ui-marshal.c: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
-	cd $(srcdir) \
-	&& $(GLIB_GENMARSHAL) $< --body --prefix=bonobo_ui_marshal > $@
+	$(GLIB_GENMARSHAL) $< --body --prefix=bonobo_ui_marshal > $@
 
 $(srcdir)/bonobo-ui-type-builtins.c: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
 	cd $(srcdir) \

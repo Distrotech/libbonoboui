@@ -1,3 +1,8 @@
+2002-01-08  Darin Adler  <darin@bentspoon.com>
+
+	* bonobo/Makefile.am: Remove unnecessary "cd srcdir" from
+	build rule that screwed up distcheck.
+
 2002-01-07  Rodrigo Moya <rodrigo@ximian.com>
 
 	* monikers/bonobo-moniker-config.c: implemented config: moniker, based
