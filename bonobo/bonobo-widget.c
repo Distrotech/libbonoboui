@@ -349,10 +349,10 @@ gnome_bonobo_widget_size_allocate (GtkWidget *widget,
 }
 
 static void
-gnome_bonobo_widget_class_init (GnomeBonoboWidgetClass *class)
+gnome_bonobo_widget_class_init (GnomeBonoboWidgetClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) class;
-	GtkWidgetClass *widget_class = (GtkWidgetClass *) class;
+	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 
 	gnome_bonobo_widget_parent_class = gtk_type_class (GTK_TYPE_BIN);
 

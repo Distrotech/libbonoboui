@@ -448,9 +448,9 @@ gnome_control_get_ambient_properties (GnomeControl *control)
 }
 
 static void
-gnome_control_class_init (GnomeControlClass *class)
+gnome_control_class_init (GnomeControlClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) class;
+	GtkObjectClass *object_class = (GtkObjectClass *)klass;
 
 	gnome_control_parent_class = gtk_type_class (gnome_object_get_type ());
 

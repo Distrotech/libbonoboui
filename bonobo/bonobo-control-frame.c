@@ -52,7 +52,7 @@ impl_GNOME_ControlFrame_queue_resize (PortableServer_Servant servant,
 
 static void
 impl_GNOME_ControlFrame_activate_uri (PortableServer_Servant servant,
-				      CORBA_char *uri,
+				      const CORBA_char *uri,
 				      CORBA_boolean relative,
 				      CORBA_Environment *ev)
 {
@@ -230,9 +230,9 @@ gnome_marshal_NONE__STRING_BOOL (GtkObject     *object,
 }
 
 static void
-gnome_control_frame_class_init (GnomeControlFrameClass *class)
+gnome_control_frame_class_init (GnomeControlFrameClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) class;
+	GtkObjectClass *object_class = (GtkObjectClass *)klass;
 
 	gnome_control_frame_parent_class = gtk_type_class (GNOME_OBJECT_TYPE);
 

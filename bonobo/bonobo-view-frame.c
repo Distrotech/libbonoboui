@@ -279,9 +279,9 @@ gnome_view_frame_activated (GnomeViewFrame *view_frame, gboolean state)
 }
 
 static void
-gnome_view_frame_class_init (GnomeViewFrameClass *class)
+gnome_view_frame_class_init (GnomeViewFrameClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) class;
+	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
 	gnome_view_frame_parent_class = gtk_type_class (GNOME_CONTROL_FRAME_TYPE);
 
@@ -325,7 +325,7 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 
 	object_class->destroy = gnome_view_frame_destroy;
 
-	class->view_activated = gnome_view_frame_activated;
+	klass->view_activated = gnome_view_frame_activated;
 
 	init_view_frame_corba_class ();
 }
@@ -514,13 +514,13 @@ gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame)
  */
 void
 gnome_view_frame_view_do_verb (GnomeViewFrame *view_frame,
-			       char *verb_name)
+			       const char *verb_name)
 {
 	CORBA_Environment ev;
 
+	g_return_if_fail (verb_name != NULL);
 	g_return_if_fail (view_frame != NULL);
 	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
-	g_return_if_fail (verb_name != NULL);
 	g_return_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL);
 
 	CORBA_exception_init (&ev);
@@ -612,10 +612,11 @@ gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom)
 }
 
 static void
-gnome_view_frame_verb_selected_cb (GnomeUIHandler *uih, void *user_data, char *path)
+gnome_view_frame_verb_selected_cb (GnomeUIHandler *uih, void *user_data,
+				   const char *path)
 {
 	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (user_data);
-	char *verb_name;
+	const char     *verb_name;
 
 	g_assert (path != NULL);
 
@@ -633,7 +634,8 @@ gnome_view_frame_verb_selected_cb (GnomeUIHandler *uih, void *user_data, char *p
 	/*
 	 * Store the verb name.
 	 */
-	gtk_object_set_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name", g_strdup (verb_name));
+	gtk_object_set_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name",
+			     g_strdup (verb_name));
 }
 
 /**

@@ -63,8 +63,8 @@ impl_GNOME_View_reactivate_and_undo (PortableServer_Servant servant,
 	
 static void
 impl_GNOME_View_do_verb (PortableServer_Servant servant,
-			 CORBA_char *verb_name,
-			 CORBA_Environment *ev)
+			 const CORBA_char      *verb_name,
+			 CORBA_Environment     *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 
@@ -114,6 +114,21 @@ gnome_view_corba_object_create (GnomeObject *object)
 }
 
 /**
+ * gnome_view_activate:
+ * @view: 
+ * @activate: 
+ * 
+ *   A basic default handler so we can at least
+ * get focus in a development component; 95% of these
+ * will override this to merge menus for them.
+ **/
+static void
+gnome_view_activate (GnomeView *view, gboolean activate, gpointer user_data)
+{
+	gnome_view_activate_notify (view, activate);
+}
+
+/**
  * gnome_view_construct:
  * @view: The GnomeView object to be initialized.
  * @corba_view: The CORBA GNOME_View interface for the new GnomeView object.
@@ -138,6 +153,9 @@ gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 	view->priv->verb_callbacks = g_hash_table_new (g_str_hash, g_str_equal);
 	view->priv->verb_callback_closures = g_hash_table_new (g_str_hash, g_str_equal);
 
+/*	gtk_signal_connect (GTK_OBJECT (view), "view_activate",
+			    GTK_SIGNAL_FUNC (gnome_view_activate),
+			    NULL);*/
 	return view;
 }
 
@@ -163,7 +181,7 @@ gnome_view_new (GtkWidget *widget)
 	view = gtk_type_new (gnome_view_get_type ());
 
 	corba_view = gnome_view_corba_object_create (GNOME_OBJECT (view));
-	if (corba_view == CORBA_OBJECT_NIL){
+	if (corba_view == CORBA_OBJECT_NIL) {
 		gtk_object_destroy (GTK_OBJECT (view));
 		return NULL;
 	}
@@ -252,9 +270,9 @@ gnome_marshal_NONE__DOUBLE (GtkObject * object,
 }
 
 static void
-gnome_view_class_init (GnomeViewClass *class)
+gnome_view_class_init (GnomeViewClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) class;
+	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
 	gnome_view_parent_class = gtk_type_class (gnome_control_get_type ());
 
@@ -582,10 +600,11 @@ gnome_view_execute_verb (GnomeView *view, const char *verb_name)
 }
 
 static void
-gnome_view_verb_selected_cb (GnomeUIHandler *uih, void *user_data, char *path)
+gnome_view_verb_selected_cb (GnomeUIHandler *uih, void *user_data,
+			     const char *path)
 {
-	GnomeView *view = GNOME_VIEW (user_data);
-	char *verb_name;
+	GnomeView  *view = GNOME_VIEW (user_data);
+	const char *verb_name;
 
 	g_assert (path != NULL);
 
@@ -602,7 +621,8 @@ gnome_view_verb_selected_cb (GnomeUIHandler *uih, void *user_data, char *path)
 	/*
 	 * Store the verb name.
 	 */
-	gtk_object_set_data (GTK_OBJECT (view), "view_executed_verb_name", g_strdup (verb_name));
+	gtk_object_set_data (GTK_OBJECT (view), "view_executed_verb_name",
+			     g_strdup (verb_name));
 	
 }
 

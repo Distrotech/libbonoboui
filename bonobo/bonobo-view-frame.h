@@ -67,7 +67,7 @@ void		  gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame);
 
 
 void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
-						    char *verb_name);
+						    const char *verb_name);
 void              gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom);
 
 POA_GNOME_ViewFrame__epv *gnome_view_frame_get_epv (void);
