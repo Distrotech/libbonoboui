@@ -1,5 +1,7 @@
 2001-08-01  ERDI Gergo  <cactus@cactus.rulez.org>
 
+	* changes.txt: Added note about new opt_ev's
+
 	* bonobo/bonobo-control.h: Add opt_ev's around the place
 
 	* bonobo/bonobo-control-frame.h: ditto

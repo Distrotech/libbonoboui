@@ -36,7 +36,23 @@ bonobo-desktop-window.[ch]:
 bonobo-control.[ch]
 	bonobo_control_[get|set]_properties () are now working with
 	Bonobo_PropertyBag (a CORBA object reference) instead of
-	BonoboPropertyBag. 
+	BonoboPropertyBag.
+
+	Added an optional CORBA exception environment to the following
+	methods:
+	 bonobo_control_set_property
+	 bonobo_control_get_property
+	 bonobo_control_get_remote_ui_container
+	 bonobo_control_set_control_frame
+	 bonobo_control_get_control_frame
+	 bonobo_control_set_properties
+	 bonobo_control_activate_notify
+
+bonobo-control.[ch]:
+	Added an optional CORBA exception environment to the following
+	methods:
+	 bonobo_control_frame_bind_to_control
+	 bonobo_control_frame_size_request
 
 
 bonobo-win.[ch]
