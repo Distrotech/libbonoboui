@@ -11,6 +11,7 @@
  */
 #include <config.h>
 
+#include <gdk/gdk.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-private.h>
@@ -123,6 +124,18 @@ bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 	gtk_init (argc, &argv);
 
 	bonobo_setup_x_error_handler ();
+
+	{ /* FIXME: nasty contractual bonobo-activation issues here */
+		CORBA_Context context;
+		CORBA_Environment ev;
+		
+		context = bonobo_activation_context_get ();
+		
+		CORBA_exception_init (&ev);
+		CORBA_Context_set_one_value (
+			context, "display", gdk_get_display (), &ev);
+		CORBA_exception_free (&ev);
+	}
 
 	return TRUE;
 }

@@ -1,3 +1,10 @@
+2002-03-08  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-main.c (bonobo_ui_init_full):
+	initialize the display context setting so it
+	correctly matches the normalized name returned
+	from gdk_display_name.
+
 2002-03-06  Michael Meeks  <michael@ximian.com>
 
 	* samples/controls/bonobo-sample-controls.c
