@@ -31,6 +31,7 @@ libbonobo_la_SOURCES =		\
 	$(CORBA_SOURCE)		\
 	gtk-interfaces.c	\
 	gnome-client-site.c	\
+	gnome-component.c	\
 	gnome-container.c	\
 	gnome-main.c		\
 	gnome-object.c		\
@@ -39,6 +40,7 @@ libbonobo_la_SOURCES =		\
 bonobo_headers =		\
 	gtk-interfaaces.h	\
 	gnome-client-site.h	\
+	gnome-component.h	\
 	gnome-container.h	\
 	gnome-main.h		\
 	gnome-object.h		\

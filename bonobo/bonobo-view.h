@@ -3,6 +3,9 @@
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
+#include <gtk/gtkwidget.h>
+#include <bonobo/gnome-object.h>
+#include <bonobo/gnome-view.h>
 
 BEGIN_GNOME_DECLS
  
@@ -22,7 +25,8 @@ typedef struct {
 } GnomeViewClass;
 
 GtkType      gnome_view_get_type  (void);
-GnomeObject *gnome_view_new       (GtkWidget *widget);
-GnomeObject *gnome_view_construct (GnomeView *view, GtkWidget *widget);
+GnomeView   *gnome_view_new       (GtkWidget *widget);
+GnomeView   *gnome_view_construct (GnomeView *view, GtkWidget *widget);
 
 #endif
+

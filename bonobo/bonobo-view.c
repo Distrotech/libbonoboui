@@ -7,9 +7,7 @@
 #include <config.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
-#include <gtk/gtkwidget.h>
 #include <bonobo/gnome-main.h>
-#include <bonobo/gnome-object.h>
 #include <bonobo/gnome-view.h>
 #include <gdk/gdkprivate.h>
 
@@ -68,7 +66,7 @@ create_gnome_view (GnomeObject *object)
 	
 }
 
-GnomeObject *
+GnomeView *
 gnome_view_construct (GnomeView *view, GtkWidget *widget)
 {
 	GNOME_View corba_view;
@@ -90,10 +88,10 @@ gnome_view_construct (GnomeView *view, GtkWidget *widget)
 
 	gtk_object_ref (GTK_OBJECT (view->widget));
 	
-	return GNOME_OBJECT (view);
+	return view;
 }
 
-GnomeObject *
+GnomeView *
 gnome_view_new (GtkWidget *widget)
 {
 	GnomeView *view;
