@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-05-16 00:13+0200\n"
-"PO-Revision-Date: 2002-05-16 00:14+0200\n"
+"POT-Creation-Date: 2002-05-19 10:46+0200\n"
+"PO-Revision-Date: 2002-05-19 10:46+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,6 +33,14 @@ msgstr "Corbowy kontener UI"
 msgid "The User interface container"
 msgstr "Kontener interfejsu użytkownika"
 
+#: bonobo/bonobo-dock-item-grip.c:1
+msgid "Dock the toolbar"
+msgstr "Zadokuj pasek narzędziowy"
+
+#: bonobo/bonobo-dock-item-grip.c:1
+msgid "Un dock the toolbar"
+msgstr "Oderwij pasek narzędziowy"
+
 #: bonobo/bonobo-dock-item.c:1 bonobo/bonobo-dock-item.c:1
 msgid "Shadow type"
 msgstr "Typ cienia"
@@ -51,14 +59,6 @@ msgstr "Preferowana szerokość"
 #: bonobo/bonobo-ui-toolbar.c:1 bonobo/bonobo-ui-toolbar.c:1
 msgid "Preferred height"
 msgstr "Preferowana szerokość"
-
-#: bonobo/bonobo-dock-item-grip.c:1
-msgid "Dock the toolbar"
-msgstr "Zadokuj pasek narzędziowy"
-
-#: bonobo/bonobo-dock-item-grip.c:1
-msgid "Un dock the toolbar"
-msgstr "Oderwij pasek narzędziowy"
 
 #: bonobo/bonobo-file-selector-util.c:1
 msgid "Select a file to open"
@@ -79,6 +79,14 @@ msgstr "Przesyłanie zdarzeń"
 #: bonobo/bonobo-plug.c:1
 msgid "Whether X events should be forwarded"
 msgstr "Określa, czy zdarzenia X powinny być przesyłane"
+
+#: bonobo/bonobo-selector-widget.c:1 bonobo/bonobo-window.c:1
+msgid "Name"
+msgstr "Nazwa"
+
+#: bonobo/bonobo-selector-widget.c:1
+msgid "Description"
+msgstr "Opis"
 
 #: bonobo/bonobo-selector.c:1
 msgid "Interfaces required"
@@ -101,14 +109,6 @@ msgstr "Pole z nazwą wymaganego interfejsu"
 #: bonobo/bonobo-selector.c:1
 msgid "One of the interfaces that's required"
 msgstr "Jeden z wymaganych interfejsów"
-
-#: bonobo/bonobo-selector-widget.c:1 bonobo/bonobo-window.c:1
-msgid "Name"
-msgstr "Nazwa"
-
-#: bonobo/bonobo-selector-widget.c:1
-msgid "Description"
-msgstr "Opis"
 
 #: bonobo/bonobo-ui-config-widget.c:1
 msgid "Visible"
@@ -283,6 +283,14 @@ msgstr "Oderwany"
 msgid "whether the toolbar is floating"
 msgstr "Określa, czy pasek narzędziowy jest oderwany"
 
+#: bonobo/bonobo-ui-util.c:1
+msgid "_Contents"
+msgstr "_Zawartość"
+
+#: bonobo/bonobo-ui-util.c:1
+msgid "View help for this application"
+msgstr "Wyświetla pomoc na temat tej aplikacji"
+
 #: bonobo/bonobo-window.c:1
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nazwa okna - używana przy serializacji konfiguracji."
@@ -336,27 +344,6 @@ msgid "Whether we zoom continuously (as opposed to jumps)"
 msgstr ""
 "Określa, czy powiększenie odbywa się w sposób ciągły (zamiast skokowego)"
 
-#: samples/bonoboui/hello.c:1
-msgid "This does nothing; it is only a demonstration."
-msgstr "To tylko demonstracja."
-
-#: samples/bonoboui/hello.c:1
-msgid "BonoboUI-Hello."
-msgstr "BonoboUI-Hello."
-
-#: samples/bonoboui/hello.c:1
-msgid "Gnome Hello"
-msgstr "Powitanie GNOME"
-
-#. Create Label and put it in the Button:
-#: samples/bonoboui/hello.c:1
-msgid "Hello, World!"
-msgstr "Witaj świecie!"
-
-#: samples/bonoboui/hello.c:1
-msgid "Cannot init libbonoboui code"
-msgstr "Nie można zainicjować kodu libbonoboui"
-
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
 msgstr "Informacje o aplikacji"
@@ -380,6 +367,27 @@ msgstr "_Plik"
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "_Select"
 msgstr "_Zaznacz"
+
+#: samples/bonoboui/hello.c:1
+msgid "This does nothing; it is only a demonstration."
+msgstr "To tylko demonstracja."
+
+#: samples/bonoboui/hello.c:1
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Hello."
+
+#: samples/bonoboui/hello.c:1
+msgid "Gnome Hello"
+msgstr "Powitanie GNOME"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:1
+msgid "Hello, World!"
+msgstr "Witaj świecie!"
+
+#: samples/bonoboui/hello.c:1
+msgid "Cannot init libbonoboui code"
+msgstr "Nie można zainicjować kodu libbonoboui"
 
 #: samples/controls/bonobo-sample-controls.c:1
 msgid "Could not initialize Bonobo UI"
