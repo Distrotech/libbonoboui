@@ -1,7 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #include <config.h>
-#include <gnome.h>
-#include <liboaf/liboaf.h>
 
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo.h>
@@ -121,6 +119,6 @@ bonobo_item_factory (BonoboGenericFactory *factory, void *closure)
 }
 
 BONOBO_OAF_FACTORY ("OAFIID:Bonobo_Sample_CanvasItem_Factory",
-		    "bonobo-sample-canvas-item",
+		    "bonobo-sample-canvas-item", VERSION, 
 		    bonobo_item_factory,
 		    NULL)

@@ -17,9 +17,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#include <gnome.h>
 #include "config.h"
-#include <liboaf/liboaf.h>
 #include <bonobo.h>
 
 #include "hello-embeddable.h"
@@ -39,6 +37,6 @@ hello_embeddable_factory (BonoboGenericFactory *f, gpointer data)
 }
 
 BONOBO_OAF_FACTORY ("OAFIID:Bonobo_Sample_Hello_EmbeddableFactory",
-		    "bonobo hello",
+		    "bonobo hello", VERSION,
 		    hello_embeddable_factory,
 		    NULL)

@@ -9,9 +9,6 @@
  */
 
 #include <config.h>
-#include <gnome.h>
-#include <liboaf/liboaf.h>
-
 #include <bonobo.h>
 #include <bonobo/bonobo-print.h>
 #include <libgnomeprint/gnome-print.h>
@@ -612,6 +609,6 @@ embeddable_factory (BonoboGenericFactory *this,
 }
 
 BONOBO_OAF_FACTORY ("OAFIID:Bonobo_Sample_Paint_EmbeddableFactory",
-		    "bonobo-simple-paint",
+		    "bonobo-simple-paint", VERSION,
 		    embeddable_factory,
 		    NULL)

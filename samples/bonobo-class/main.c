@@ -7,10 +7,8 @@
  * (C) 1999, 2000 Helix Code, Inc.  http://www.helixcode.com
  */
 #include <config.h>
-#include <gnome.h>
-#include <liboaf/liboaf.h>
-
 #include <bonobo.h>
+
 #include "Echo.h"
 #include "echo.h"
 
@@ -28,6 +26,6 @@ echo_factory (BonoboGenericFactory *this_factory, void *data)
 }
 
 BONOBO_OAF_FACTORY ("OAFIID:Bonobo_Sample_Echo_Factory",
-		    "echo",
+		    "echo", VERSION, 
 		    echo_factory,
 		    NULL)
