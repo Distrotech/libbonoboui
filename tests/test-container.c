@@ -4,6 +4,7 @@
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <bonobo/gnome-bonobo.h>
+#include <bonobo/gnome-stream-fs.h>
 
 CORBA_Environment ev;
 CORBA_ORB orb;
@@ -221,7 +222,7 @@ application_new (void)
 	return app;
 }
 
-void
+int
 main (int argc, char *argv [])
 {
 	Application *app;
@@ -243,4 +244,6 @@ main (int argc, char *argv [])
 	gtk_main ();
 
 	CORBA_exception_free (&ev);
+	
+	return 0;
 }
