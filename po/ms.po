@@ -1,11 +1,11 @@
 # Malay Translation for libbonoboui
 # Copyright (C) 2002 Free Software Foundation, Inc., Projek Gabai.
-# Mohamad Afifi Omar (App) <mr_mohd_afifi@yahoo.com>.2002
-#
+# 1. Mohamad Afifi Omar (App) <mr_mohd_afifi@yahoo.com>,2002.
+# 2. Hasbullah Bin Pit <sebol@ikhlas.com>, 2002.
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2002-01-03 07:23-0500\n"
+"POT-Creation-Date: 2002-01-23 06:18+0800\n"
 "PO-Revision-Date: 2002-01-10 01:42+0800\n"
 "Last-Translator: Mohamad Afifi Omar <mr_mohd_afifi@yahoo.com>\n"
 "Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
@@ -30,17 +30,25 @@ msgstr "Lebar yang dikehendaki"
 msgid "Preferred height"
 msgstr "Tinggi yang dikehendaki"
 
-#: bonobo/bonobo-file-selector-util.c:367
+#: bonobo/bonobo-file-selector-util.c:375
 msgid "Select a file to open"
 msgstr "Pilih satu fail untuk dibuka"
 
-#: bonobo/bonobo-file-selector-util.c:395
+#: bonobo/bonobo-file-selector-util.c:403
 msgid "Select files to open"
 msgstr "Pilih beberapa fail untuk dibuka"
 
-#: bonobo/bonobo-file-selector-util.c:424
+#: bonobo/bonobo-file-selector-util.c:432
 msgid "Select a filename to save"
 msgstr "Pilih satu nama fail untuk disimpan"
+
+#: bonobo/bonobo-plug.c:343
+msgid "Event Forwarding"
+msgstr "Forward Acara"
+
+#: bonobo/bonobo-plug.c:344
+msgid "Whether X events should be forwarded"
+msgstr "Samada acara X patut diforwardkan"
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -70,11 +78,11 @@ msgstr "_Paparkan tooltips"
 msgid "Toolbars"
 msgstr "Toolbar"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "Look"
 msgstr "Lihat"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "_Icon"
 msgstr "_Ikon"
 
@@ -90,31 +98,31 @@ msgstr "Teks yang _penting sahaja"
 msgid "Configure UI"
 msgstr "Konfigurasikan UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "B_oth"
 msgstr "Ke_dua-dua"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:538
+#: bonobo/bonobo-ui-sync-toolbar.c:539
 msgid "T_ext"
 msgstr "T_eks"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:540
 msgid "Hide t_ips"
 msgstr "Sembunyikan t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:540
 msgid "Show t_ips"
 msgstr "Paparkan t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "_Hide toolbar"
 msgstr "Sembunyikan toolba_r"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:541
 msgid "Customi_ze"
 msgstr "Personali_sasi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:542
 msgid "Customize the toolbar"
 msgstr "Personalisasikan toolbar"
 
@@ -181,17 +189,38 @@ msgstr "Gnome Hello"
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:250
 msgid "Hello, World!"
-msgstr "Hello, World!"
+msgstr "Hello, Dunia!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+#: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
 msgstr "Gagal menginitialisasikan kod libbonoboui"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
-msgstr "Tak dapat bonobo_ui_init"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "Perihal aplikasi ini"
 
-#: tests/test-selector.c:12
-msgid "Select an object"
-msgstr "Sila pilih satu objek"
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr "Pilih"
 
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr "Perih_al..."
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr "_Edit"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+msgid "_File"
+msgstr "_Fail"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr "_Pilih"
+
+#~ msgid "Can not bonobo_ui_init"
+#~ msgstr "Tak dapat bonobo_ui_init"
+
+#~ msgid "Select an object"
+#~ msgstr "Sila pilih satu objek"
