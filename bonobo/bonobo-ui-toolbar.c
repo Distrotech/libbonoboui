@@ -533,6 +533,8 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 	int extra_space;
 	int num_expandable_items;
 	int popup_item_size;
+	int item_size_left_to_place;
+	int acc_space;
 	gboolean first_expandable;
 	GList *p;
 
@@ -575,6 +577,7 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 
 	/* first, make a pass through the items to layout the ones that are packed on the right */
 	priv->end_position = allocation->x + available_space;
+	acc_space = 0;
 	for (p = g_list_last (priv->items); p != NULL; p = p->prev) {
 
 		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
@@ -584,14 +587,15 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 		gtk_widget_get_child_requisition (GTK_WIDGET (item), &child_requisition);
 
 		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL) {
-			available_space -= child_requisition.width;
+			acc_space += child_requisition.width;
+			item_size_left_to_place -= child_requisition.width;
 			priv->end_position -= child_requisition.width;
 			
 			child_allocation.x = priv->end_position;
 			child_allocation.width = child_requisition.width;
 			child_allocation.height = priv->max_height;
 		} else {
-			available_space -= child_requisition.height;
+			acc_space += child_requisition.height;
 			priv->end_position -= child_requisition.height;
 			
 			child_allocation.y = priv->end_position;
@@ -601,6 +605,11 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 		
 		gtk_widget_size_allocate (GTK_WIDGET (item), &child_allocation);
 	}
+	available_space -= acc_space;
+	if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
+		item_size_left_to_place = priv->total_width - acc_space;
+	else
+		item_size_left_to_place = priv->total_height - acc_space;
 	
 	/* make a pass through the items to determine how many fit */	
 	space_required = 0;
@@ -610,8 +619,7 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 	child_allocation.y = allocation->y + border_width;
 
 	for (p = priv->items; p != NULL; p = p->next) {
-		int    item_size;
-		GList *l;
+		int item_size;
 
 		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
 		if (! GTK_WIDGET_VISIBLE (item) || GTK_WIDGET (item)->parent != GTK_WIDGET (toolbar) ||
@@ -625,24 +633,15 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 		else
 			item_size = child_requisition.height;
 
-		for (l = p->next; l; l = l->next) {
-			GtkWidget *widget = GTK_WIDGET (l->data);
-
-			if (GTK_WIDGET_VISIBLE (widget) &&
-			    widget->parent == GTK_WIDGET (toolbar) &&
-			    ! bonobo_ui_toolbar_item_get_pack_end (BONOBO_UI_TOOLBAR_ITEM (widget)))
-				break;
-		}
-
-		if (!l) {
-			if (space_required + item_size > available_space)
-				break;
-		} else {
-			if (space_required + item_size > available_space - popup_item_size)
-				break;
-		}
-
+/*		g_message ("Item  size %4d, space_required %4d, available %4d left to place %4d",
+			   item_size, space_required, available_space, item_size_left_to_place); */
+		
+		if (item_size_left_to_place > available_space - space_required &&
+		    space_required + item_size > available_space - popup_item_size)
+			break;
+		
 		space_required += item_size;
+		item_size_left_to_place -= item_size;
 
 		if (bonobo_ui_toolbar_item_get_expandable (item))
 			num_expandable_items ++;

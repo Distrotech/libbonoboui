@@ -1,3 +1,11 @@
+2003-12-11  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar.c
+	(size_allocate_helper): fix bug where item + <small item>
+	where small item was < sizeof expander popup would cause
+	the last 2 items to always hit the expander. Cleaned up
+	logic, simplified a tad. X#49949
+
 2003-12-08  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.5.1
