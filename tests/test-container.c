@@ -11,9 +11,16 @@
 CORBA_Environment ev;
 CORBA_ORB orb;
 
-/* A handle to some existing BonoboObjects so we can add views. */
+/*
+ * A handle to some BonoboObjects and their ClientSites so we can add
+ * views to existing components.
+ */
+
 GnomeObjectClient *text_obj;
+GnomeClientSite   *text_client_site;
+
 GnomeObjectClient *image_png_obj;
+GnomeClientSite   *image_client_site;
 
 char *server_goadid = "Test_server_bonobo_object";
 
@@ -25,12 +32,10 @@ typedef struct {
 } Application;
 
 static GnomeObjectClient *
-launch_server (GnomeContainer *container, char *goadid)
+launch_server (GnomeClientSite *client_site, GnomeContainer *container, char *goadid)
 {
-	GnomeClientSite *client_site;
 	GnomeObjectClient *object_server;
 	
-	client_site = gnome_client_site_new (container);
 	gnome_container_add (container, GNOME_OBJECT (client_site));
 
 	printf ("Launching...\n");
@@ -49,44 +54,51 @@ launch_server (GnomeContainer *container, char *goadid)
 	return object_server;
 }
 
-static GtkWidget *
-add_view (GtkWidget *widget, Application *app, GnomeObjectClient *server)
+static GnomeViewFrame *
+add_view (GtkWidget *widget, Application *app,
+	  GnomeClientSite *client_site, GnomeObjectClient *server) 
 {
-	GtkWidget *frame, *w;
+	GnomeViewFrame *view_frame;
+	GtkWidget *view_widget;
+	GtkWidget *frame;
 	
-	w = gnome_bonobo_object_new_view (server);
+	view_frame = gnome_bonobo_object_new_view (server, client_site);
+	view_widget = gnome_view_frame_get_wrapper (view_frame);
 
 	frame = gtk_frame_new ("BonoboObject");
 	gtk_widget_show (frame);
 	gtk_box_pack_start (GTK_BOX (app->box), frame, TRUE, TRUE, 0);
-	gtk_container_add (GTK_CONTAINER (frame), w);
+	gtk_container_add (GTK_CONTAINER (frame), view_widget);
 
 	gtk_widget_show_all (frame);
 
 	gnome_bonobo_object_client_activate (server);
 
-	return w;
+	return view_frame;
 }
 
 
 static GnomeObjectClient *
-add_cmd (GtkWidget *widget, Application *app, char *server_goadid)
+add_cmd (GtkWidget *widget, Application *app, char *server_goadid, GnomeClientSite **client_site)
 {
 	GtkWidget *w;
 	GnomeObjectClient *server;
 	
-	server = launch_server (app->container, server_goadid);
+	*client_site = gnome_client_site_new (app->container);
+
+	server = launch_server (*client_site, app->container, server_goadid);
 	if (server == NULL)
 		return NULL;
 
-	w = add_view (widget, app, server);
+	add_view (widget, app, *client_site, server);
 	return server;
 }
 
 static void
 add_demo_cmd (GtkWidget *widget, Application *app)
 {
-	add_cmd (widget, app, server_goadid);
+	GnomeClientSite *client_site;
+	add_cmd (widget, app, server_goadid, &client_site);
 }
 
 static void
@@ -96,7 +108,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
-	object = add_cmd (widget, app, "bonobo-object:image-x-png");
+	object = add_cmd (widget, app, "bonobo-object:image-x-png", &image_client_site);
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch bonobo object."));
@@ -136,7 +148,7 @@ add_image_view (GtkWidget *widget, Application *app)
 	if (image_png_obj == NULL)
 		return;
 
-	add_view (NULL, app, image_png_obj);
+	add_view (NULL, app, image_client_site, image_png_obj);
 } /* add_image_view */
 
 /*
@@ -150,7 +162,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
-	object = add_cmd (widget, app, "bonobo-object:text-plain");
+	object = add_cmd (widget, app, "bonobo-object:text-plain", &text_client_site);
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch BonoboObject."));
@@ -240,7 +252,7 @@ add_text_view (GtkWidget *widget, Application *app)
 	if (text_obj == NULL)
 		return;
 
-	add_view (NULL, app, text_obj);
+	add_view (NULL, app, text_client_site, text_obj);
 } /* add_text_view */
 
 /*

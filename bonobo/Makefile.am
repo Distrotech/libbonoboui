@@ -73,6 +73,7 @@ libbonobo_la_SOURCES =			\
 	gnome-stream-fs.c		\
 	gnome-stream-memory.c		\
 	gnome-view.c			\
+	gnome-view-frame.c		\
 	gnome-wrapper.c
 
 
@@ -109,6 +110,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-stream-fs.h		\
 	gnome-stream-memory.h		\
 	gnome-view.h			\
+	gnome-view-frame.h		\
 	gnome-wrapper.h
 
 test_container_SOURCES =		\
@@ -133,7 +135,7 @@ sample_server_LDADD = $(bonobo_libs)
 
 selector_test_SOURCES =		\
 	selector_test.c
-	
+
 selector_test_LDADD = $(bonobo_libs)
 
 BUILT_SOURCES=$(CORBA_SOURCE)

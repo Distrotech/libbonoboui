@@ -141,7 +141,7 @@ gnome_view_class_init (GnomeViewClass *class)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
-	gnome_view_parent_class = gtk_type_class (gtk_object_get_type ());
+	gnome_view_parent_class = gtk_type_class (gnome_object_get_type ());
 
 	object_class->destroy = gnome_view_destroy;
 
