@@ -11,12 +11,13 @@ else
 OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
 endif
 
-INCLUDES =	\
+INCLUDES =						\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)				\
+	$(OAF_CFLAGS)					\
 	$(GTK_CFLAGS)
 
 paint_component_simple_SOURCES =	\

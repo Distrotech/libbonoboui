@@ -12,6 +12,7 @@ INCLUDES =	\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)				\
+	$(OAF_CFLAGS)					\
 	$(GTK_CFLAGS)
 
 bin_PROGRAMS = sample-container

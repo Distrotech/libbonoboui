@@ -16,13 +16,14 @@ INCLUDES =                                              \
 	-I$(top_builddir)				\
         -I$(includedir)                                 \
 	$(GNOME_INCLUDEDIR)				\
+	$(OAF_CFLAGS)					\
 	$(GDK_PIXBUF_CFLAGS)
 
-gnome_libs =			\
-	$(GNOME_LIBDIR)		\
-	$(GDK_PIXBUF_LIBS) \
-        $(GNOMEUI_LIBS)		\
-	$(OBJECT_DIRECTORY_LIBS) \
+gnome_libs =				\
+	$(GNOME_LIBDIR)			\
+	$(GDK_PIXBUF_LIBS) 		\
+        $(GNOMEUI_LIBS)			\
+	$(OBJECT_DIRECTORY_LIBS) 	\
 	$(INTLLIBS)
 
 bonobo_libs = 			\

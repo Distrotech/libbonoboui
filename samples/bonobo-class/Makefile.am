@@ -70,6 +70,7 @@ INCLUDES = 						\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I$(top_builddir)				\
         -I$(includedir)                                 \
+	$(OAF_CFLAGS)					\
         $(GNOME_INCLUDEDIR)
 
 MYHACKAROUNDAUTOMAKE=$(shell echo $(ECHO_CORBA_GENERATED))

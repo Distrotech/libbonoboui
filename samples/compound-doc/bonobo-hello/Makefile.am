@@ -6,12 +6,13 @@ else
 OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
 endif
 
-INCLUDES =	\
+INCLUDES =						\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)				\
+	$(OAF_CFLAGS)					\
 	$(GTK_CFLAGS)
 
 bin_PROGRAMS = bonobo-hello
@@ -27,7 +28,7 @@ bonobo_hello_SOURCES =		\
 	hello-object-print.h	\
 	hello-object-print.c
 
-bonobo_hello_LDADD = 			\
+bonobo_hello_LDADD = 				\
 	$(top_builddir)/bonobo/libbonobo.la	\
 	$(GPRINT_LIBS)				\
 	$(GNOME_PRINT_LIBS)			\

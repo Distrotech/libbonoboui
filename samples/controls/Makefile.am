@@ -13,6 +13,7 @@ INCLUDES =	\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)				\
+	$(OAF_CFLAGS)					\
 	$(GTK_CFLAGS)
 
 sample_control_factory_SOURCES =			\
