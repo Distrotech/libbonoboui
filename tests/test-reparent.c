@@ -10,7 +10,9 @@
 
 #include <gnome.h>
 #include <bonobo.h>
-#include <liboaf/liboaf.h>
+
+gboolean do_remote = FALSE;
+gboolean do_local  = TRUE;
 
 GtkWidget *window, *vbox, *button, *placeholder1, *placeholder2;
 GtkWidget *remote_widget = NULL, *inproc_widget = NULL;
@@ -20,13 +22,19 @@ GtkWidget *remote_widget = NULL, *inproc_widget = NULL;
 static void
 remove_and_add (GtkWidget *click, gpointer useless_user_data)
 {
-	gtk_object_ref (GTK_OBJECT (remote_widget));
-	gtk_container_remove (GTK_CONTAINER (placeholder1), remote_widget);
-	gtk_object_ref (GTK_OBJECT (inproc_widget));
-	gtk_container_remove (GTK_CONTAINER (placeholder2), inproc_widget);
+	if (do_remote) {
+		gtk_object_ref (GTK_OBJECT (remote_widget));
+		gtk_container_remove (GTK_CONTAINER (placeholder1), remote_widget);
+	}
+	if (do_local) {
+		gtk_object_ref (GTK_OBJECT (inproc_widget));
+		gtk_container_remove (GTK_CONTAINER (placeholder2), inproc_widget);
+	}
 	g_print ("Removed............\n");
-	gtk_container_add (GTK_CONTAINER (placeholder1), remote_widget);
-	gtk_container_add (GTK_CONTAINER (placeholder2), inproc_widget);
+	if (do_remote)
+		gtk_container_add (GTK_CONTAINER (placeholder1), remote_widget);
+	if (do_local)
+		gtk_container_add (GTK_CONTAINER (placeholder2), inproc_widget);
 	g_print ("Added..............\n");
 }
 
@@ -52,8 +60,13 @@ make_inproc_widget (void)
 	gtk_entry_set_text (GTK_ENTRY (entry), "In-proc");
 	gtk_widget_show (entry);
 
-	control = bonobo_control_new (entry);
+	control = bonobo_control_new (gtk_entry_new ());
+	bonobo_object_unref (BONOBO_OBJECT (control));
 
+	control = bonobo_control_new (gtk_entry_new ());
+	bonobo_object_release_unref (BONOBO_OBJREF (control), NULL);
+
+	control = bonobo_control_new (entry);
 	inproc_widget = bonobo_widget_new_control_from_objref (
 		BONOBO_OBJREF (control), CORBA_OBJECT_NIL);
 
@@ -65,10 +78,23 @@ make_inproc_widget (void)
 static gboolean
 idle_init (gpointer data)
 {
-	make_remote_widget ();
-	make_inproc_widget ();
+	if (do_remote)
+		make_remote_widget ();
+	if (do_local)
+		make_inproc_widget ();
 
 	return FALSE;
+}
+
+static gboolean
+quit_cb (GtkWindow *window, GdkEvent *event, gpointer dummy)
+{
+	if (do_local)
+		gtk_widget_destroy (inproc_widget);
+
+	gtk_main_quit ();
+
+	return TRUE;
 }
 
 int
@@ -88,6 +114,9 @@ main (int argc, char **argv)
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox);
+
+	gtk_signal_connect (GTK_OBJECT (window), "delete_event",
+			    (GtkSignalFunc) quit_cb, NULL);
 
 	placeholder1 = gtk_frame_new ("Out of proc");
 	gtk_box_pack_start (GTK_BOX (vbox), placeholder1, TRUE, TRUE, 0);
