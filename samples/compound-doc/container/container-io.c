@@ -79,8 +79,8 @@ save_component (BonoboStorage *storage, Component *component, int index)
 		Bonobo_Unknown_unref (corba_stream, &ev);
 		CORBA_Object_release (corba_stream, &ev);
 
-		Bonobo_Unknown_unref (subdir, &ev);
-		CORBA_Object_release (subdir, &ev);
+		Bonobo_Unknown_unref (corba_subdir, &ev);
+		CORBA_Object_release (corba_subdir, &ev);
 	}
 
 	g_free (curr_dir);
