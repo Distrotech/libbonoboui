@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2004-03-29 16:41+0100\n"
+"POT-Creation-Date: 2004-05-14 11:09+0100\n"
 "PO-Revision-Date: 2003-09-30 11:41-0400\n"
 "Last-Translator: Evandro Fernandes Giovanini <evandrofg@ig.com.br>\n"
 "Language-Team: Brazilian Portuguese <gnome-br@listas.cipsga.org.br>\n"
@@ -245,7 +245,7 @@ msgstr "MODULE"
 msgid "GTK+"
 msgstr "GTK+"
 
-#: bonobo/bonobo-ui-main.c:193
+#: bonobo/bonobo-ui-main.c:202
 msgid "Bonobo GUI support"
 msgstr "Suporte à GUI do Bonobo"
 

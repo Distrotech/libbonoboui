@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2004-03-29 16:41+0100\n"
+"POT-Creation-Date: 2004-05-14 11:09+0100\n"
 "PO-Revision-Date: 2004-01-27 16:18+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -246,7 +246,7 @@ msgstr "MODUL"
 msgid "GTK+"
 msgstr "GTK+"
 
-#: bonobo/bonobo-ui-main.c:193
+#: bonobo/bonobo-ui-main.c:202
 msgid "Bonobo GUI support"
 msgstr "Podpora GUI Bonobo"
 

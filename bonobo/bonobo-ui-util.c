@@ -724,7 +724,11 @@ bonobo_ui_util_translate_ui (BonoboUINode *node)
 			a->id = g_quark_from_static_string (str + 1);
 
 			old = a->value;
-			a->value = xmlStrdup (_(a->value));
+#ifdef ENABLE_NLS
+			a->value = xmlStrdup (gettext(a->value));
+#else
+			a->value = xmlStrdup (a->value);
+#endif
 			xmlFree (old);
 		}
 	}

@@ -103,6 +103,10 @@ do_low_level_init (void)
 
 	bonobo_ui_inited = TRUE;
 
+	gtk_set_locale ();
+	bindtextdomain (GETTEXT_PACKAGE, BONOBO_LOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
 	bonobo_setup_x_error_handler ();
 
 	display = gdk_display_get_default ();
@@ -148,6 +152,11 @@ bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 
 	if (full_init) {
 		/* Initialize all our dependencies. */
+
+		gtk_set_locale ();
+		bindtextdomain (GETTEXT_PACKAGE, BONOBO_LOCALEDIR);
+		bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
 		gnome_program_init (
 			app_name, app_version,
 			libgnome_module_info_get (),

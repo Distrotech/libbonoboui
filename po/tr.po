@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-30 22:26+0300\n"
+"POT-Creation-Date: 2004-05-14 11:09+0100\n"
 "PO-Revision-Date: 2004-03-30 22:39+0300\n"
 "Last-Translator: Baris Cicek <baris@teamforce.name.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -98,9 +98,9 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Sunucunun desteklemek zorunda olduğu NULL ile terkedilmiş arayüz dizisi seçicide "
-"listelenmek için gereklidir. Eğer hiç bir arayüz seçilmezse, öntanımlı olarak "
-"\"IDL:Bonobo/Embeddable:1.0\" kullanılır"
+"Sunucunun desteklemek zorunda olduğu NULL ile terkedilmiş arayüz dizisi "
+"seçicide listelenmek için gereklidir. Eğer hiç bir arayüz seçilmezse, "
+"öntanımlı olarak \"IDL:Bonobo/Embeddable:1.0\" kullanılır"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -247,7 +247,7 @@ msgstr "MODÜL"
 msgid "GTK+"
 msgstr "GTK+"
 
-#: bonobo/bonobo-ui-main.c:193
+#: bonobo/bonobo-ui-main.c:202
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI desteği"
 
@@ -399,4 +399,3 @@ msgstr "Libbonoboui kodu çalıştırılamıyor"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Bonobo UI başlatılamıyor"
-
