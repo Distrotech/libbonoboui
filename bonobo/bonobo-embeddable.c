@@ -340,29 +340,23 @@ impl_GNOME_Embeddable_new_canvas_item (PortableServer_Servant servant,
  * gnome_embeddable_get_epv:
  */
 POA_GNOME_Embeddable__epv *
-gnome_embeddable_get_epv (gboolean duplicate)
+gnome_embeddable_get_epv (void)
 {
 	POA_GNOME_Embeddable__epv *epv;
-	static POA_GNOME_Embeddable__epv em_epv = {
-		NULL,
-		impl_GNOME_Embeddable_set_client_site,
-		impl_GNOME_Embeddable_get_client_site,
-		impl_GNOME_Embeddable_set_host_name,
-		impl_GNOME_Embeddable_close,
-		impl_GNOME_Embeddable_get_verb_list,
-		impl_GNOME_Embeddable_advise,
-		impl_GNOME_Embeddable_unadvise,
-		impl_GNOME_Embeddable_get_misc_status,
-		impl_GNOME_Embeddable_new_view,
-		impl_GNOME_Embeddable_set_uri,
-		impl_GNOME_Embeddable_new_canvas_item
-	};
 
-	if(duplicate) {
-		epv = g_new0 (POA_GNOME_Embeddable__epv, 1);
-		memcpy(epv, &em_epv, sizeof(em_epv));
-	} else
-		epv = &em_epv;
+	epv = g_new0 (POA_GNOME_Embeddable__epv, 1);
+
+	epv->set_client_site = impl_GNOME_Embeddable_set_client_site;
+	epv->get_client_site = impl_GNOME_Embeddable_get_client_site;
+	epv->set_host_name   = impl_GNOME_Embeddable_set_host_name;
+	epv->close           = impl_GNOME_Embeddable_close;
+	epv->get_verb_list   = impl_GNOME_Embeddable_get_verb_list;
+	epv->advise          = impl_GNOME_Embeddable_advise;
+	epv->unadvise        = impl_GNOME_Embeddable_unadvise;
+	epv->get_misc_status = impl_GNOME_Embeddable_get_misc_status;
+	epv->new_view        = impl_GNOME_Embeddable_new_view;
+	epv->set_uri         = impl_GNOME_Embeddable_set_uri;
+	epv->new_canvas_item = impl_GNOME_Embeddable_new_canvas_item;
 
 	return epv;
 }
@@ -370,8 +364,8 @@ gnome_embeddable_get_epv (gboolean duplicate)
 static void
 gnome_embeddable_corba_class_init ()
 {
-	gnome_embeddable_vepv.GNOME_Unknown_epv = gnome_object_get_epv (FALSE);
-	gnome_embeddable_vepv.GNOME_Embeddable_epv = gnome_embeddable_get_epv (FALSE);
+	gnome_embeddable_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_embeddable_vepv.GNOME_Embeddable_epv = gnome_embeddable_get_epv ();
 }
 
 /**

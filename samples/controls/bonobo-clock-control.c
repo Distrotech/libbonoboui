@@ -34,14 +34,12 @@ bonobo_clock_control_prop_value_changed_cb (GnomePropertyBag *pb, char *name, ch
 }
 
 static GnomeObject *
-bonobo_clock_factory (GnomeGenericFactory *Factory, const char *goad_id, void *closure)
+bonobo_clock_factory (GnomeGenericFactory *Factory, void *closure)
 {
 	GnomePropertyBag  *pb;
 	GnomeControl      *control;
 	GtkWidget	  *clock;
 	CORBA_boolean	  *running;
-
-	g_return_val_if_fail(!strcmp(goad_id, "control:clock"), NULL);
 
 	/* Create the control. */
 	clock = gtk_clock_new (GTK_CLOCK_INCREASING);

@@ -41,7 +41,7 @@ GnomeCanvasComponent *gnome_canvas_component_construct (GnomeCanvasComponent *co
 GnomeCanvasComponent *gnome_canvas_component_new (GnomeCanvasItem *item);
 GnomeCanvasItem      *gnome_canvas_component_get_item  (GnomeCanvasComponent *comp);
 
-POA_GNOME_Canvas_Item__epv *gnome_canvas_item_get_epv  (gboolean duplicate);
+POA_GNOME_Canvas_Item__epv *gnome_canvas_item_get_epv  (void);
 
 /* CORBA default vector methods we provide */
 extern POA_GNOME_Canvas_Item__vepv gnome_canvas_item_vepv;

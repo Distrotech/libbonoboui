@@ -151,23 +151,17 @@ impl_desktop_window_get_window_id (PortableServer_Servant servant, CORBA_Environ
  * gnome_desktop_window_get_epv:
  */
 POA_GNOME_Desktop_Window__epv *
-gnome_desktop_window_get_epv (gboolean duplicate)
+gnome_desktop_window_get_epv (void)
 {
 	POA_GNOME_Desktop_Window__epv *epv;
-	static POA_GNOME_Desktop_Window__epv dw_epv = {
-		NULL,
-		impl_desktop_window_get_title,
-		impl_desktop_window_set_title,
-		impl_desktop_window_get_geometry,
-		impl_desktop_window_set_geometry,
-		impl_desktop_window_get_window_id
-	};
 
-	if(duplicate) {
-		epv = g_new0 (POA_GNOME_Desktop_Window__epv, 1);
-		memcpy(epv, &dw_epv, sizeof(dw_epv));
-	} else
-		epv = &dw_epv;
+	epv = g_new0 (POA_GNOME_Desktop_Window__epv, 1);
+
+	epv->_get_title = impl_desktop_window_get_title;
+	epv->_set_title = impl_desktop_window_set_title;
+	epv->get_geometry = impl_desktop_window_get_geometry;
+	epv->set_geometry = impl_desktop_window_set_geometry;
+	epv->get_window_id = impl_desktop_window_get_window_id;
 
 	return epv;
 }
@@ -176,8 +170,8 @@ static void
 init_desktop_window_corba_class (void)
 {
 	/* Setup the vector of epvs */
-	gnome_desktop_window_vepv.GNOME_Unknown_epv = gnome_object_get_epv (FALSE);
-	gnome_desktop_window_vepv.GNOME_Desktop_Window_epv = gnome_desktop_window_get_epv (FALSE);
+	gnome_desktop_window_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_desktop_window_vepv.GNOME_Desktop_Window_epv = gnome_desktop_window_get_epv ();
 }
 
 static void

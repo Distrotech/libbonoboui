@@ -142,7 +142,7 @@ void             gnome_embeddable_foreach_item     (GnomeEmbeddable *embeddable,
 						    GnomeEmbeddableForeachItemFn fn,
 						    void *data);
 
-POA_GNOME_Embeddable__epv *gnome_embeddable_get_epv (gboolean duplicate);
+POA_GNOME_Embeddable__epv *gnome_embeddable_get_epv (void);
 
 extern POA_GNOME_Embeddable__epv gnome_embeddable_epv;
 

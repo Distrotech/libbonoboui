@@ -195,20 +195,14 @@ gnome_control_frame_destroy (GtkObject *object)
  * gnome_control_frame_get_epv:
  */
 POA_GNOME_ControlFrame__epv *
-gnome_control_frame_get_epv (gboolean duplicate)
+gnome_control_frame_get_epv (void)
 {
-	static POA_GNOME_ControlFrame__epv cf_epv = {
-		NULL,
-		&impl_GNOME_ControlFrame_queue_resize,
-		&impl_GNOME_ControlFrame_activate_uri
-	};
 	POA_GNOME_ControlFrame__epv *epv;
 
-	if(duplicate) {
-		epv = g_new0 (POA_GNOME_ControlFrame__epv, 1);
-		memcpy(epv, &cf_epv, sizeof(cf_epv));
-	} else
-		epv = &cf_epv;
+	epv = g_new0 (POA_GNOME_ControlFrame__epv, 1);
+
+	epv->queue_resize   = impl_GNOME_ControlFrame_queue_resize;
+	epv->activate_uri   = impl_GNOME_ControlFrame_activate_uri;
 
 	return epv;
 }
@@ -217,8 +211,8 @@ static void
 init_control_frame_corba_class (void)
 {
 	/* Setup the vector of epvs */
-	gnome_control_frame_vepv.GNOME_Unknown_epv = gnome_object_get_epv (FALSE);
-	gnome_control_frame_vepv.GNOME_ControlFrame_epv = gnome_control_frame_get_epv (FALSE);
+	gnome_control_frame_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_control_frame_vepv.GNOME_ControlFrame_epv = gnome_control_frame_get_epv ();
 }
 
 typedef void (*GnomeSignal_NONE__STRING_BOOL) (GtkObject *, const char *, gboolean, gpointer);

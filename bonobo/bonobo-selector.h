@@ -2,12 +2,9 @@
 #ifndef __GNOME_BONOBO_SELECTOR_H__
 #define __GNOME_BONOBO_SELECTOR_H__
 
+
 #include <gtk/gtk.h>
-#ifdef BONOBO_USE_GNOME2
-#include <liboaf/liboaf.h>
-#else
 #include <libgnorba/gnorba.h>
-#endif
 #include <libgnomeui/gnome-dialog.h>
 
 BEGIN_GNOME_DECLS
@@ -37,23 +34,11 @@ struct _GnomeBonoboSelector
 
 GtkType	    gnome_bonobo_selector_get_type		(void);
 
-#ifdef BONOBO_USE_GNOME2
-char	   *gnome_bonobo_select_iid			(const char *title,
-							 const char *requirements,
-							 const char **sort_order);
-
-GtkWidget  *gnome_bonobo_selector_new			(const char *title,
-							 const char *requirements,
-							 const char **sort_order);
-char	   *gnome_bonobo_selector_get_selected_iid      (GnomeBonoboSelector *sel);
-
-#else
-GtkWidget  *gnome_bonobo_selector_new			(const char *title,
-							 const char **interfaces_required);
-char	   *gnome_bonobo_selector_get_selected_goad_id  (GnomeBonoboSelector *sel);
-char	   *gnome_bonobo_select_goad_id			(const char *title,
-							 const char **interfaces_required);
-#endif
+GtkWidget  *gnome_bonobo_selector_new			(const gchar *title,
+							 const gchar **interfaces_required);
+gchar	   *gnome_bonobo_selector_get_selected_goad_id  (GnomeBonoboSelector *sel);
+gchar	   *gnome_bonobo_select_goad_id			(const gchar *title,
+							 const gchar **interfaces_required);
 
 END_GNOME_DECLS
 

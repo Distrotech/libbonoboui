@@ -308,23 +308,17 @@ gnome_control_destroy (GtkObject *object)
  *
  */
 POA_GNOME_Control__epv *
-gnome_control_get_epv (gboolean duplicate)
+gnome_control_get_epv (void)
 {
 	POA_GNOME_Control__epv *epv;
-	static POA_GNOME_Control__epv ctl_epv = {
-		NULL,
-		impl_GNOME_Control_size_allocate,
-		impl_GNOME_Control_set_window,
-		impl_GNOME_Control_set_frame,
-		impl_GNOME_Control_size_request,
-		impl_GNOME_Control_get_property_bag
-	};
 
-	if(duplicate) {
-		epv = g_new0 (POA_GNOME_Control__epv, 1);
-		memcpy(epv, &ctl_epv, sizeof(ctl_epv));
-	} else
-		epv = &ctl_epv;
+	epv = g_new0 (POA_GNOME_Control__epv, 1);
+
+	epv->size_allocate     = impl_GNOME_Control_size_allocate;
+	epv->set_window        = impl_GNOME_Control_set_window;
+	epv->set_frame         = impl_GNOME_Control_set_frame;
+	epv->size_request      = impl_GNOME_Control_size_request;
+	epv->get_property_bag  = impl_GNOME_Control_get_property_bag;
 
 	return epv;
 }
@@ -333,8 +327,8 @@ static void
 init_control_corba_class (void)
 {
 	/* Setup the vector of epvs */
-	gnome_control_vepv.GNOME_Unknown_epv = gnome_object_get_epv (FALSE);
-	gnome_control_vepv.GNOME_Control_epv = gnome_control_get_epv (FALSE);
+	gnome_control_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_control_vepv.GNOME_Control_epv = gnome_control_get_epv ();
 }
 
 /**

@@ -81,11 +81,7 @@ gnome_bonobo_widget_launch_component (char *object_desc)
 {
 	GnomeObjectClient *server;
 
-#ifdef BONOBO_USE_GNOME2
-	server = gnome_object_activate (object_desc, 0, NULL);
-#else
 	server = gnome_object_activate (object_desc, (GoadActivationFlags) 0);
-#endif
 
 	return server;
 }

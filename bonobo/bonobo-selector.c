@@ -10,13 +10,9 @@ static GtkDialogClass *parent_class;
 struct _GnomeBonoboSelectorPrivate 
 {
 	GtkWidget *clist;
-#ifdef BONOBO_USE_GNOME2
-	OAF_ServerInfoList *servers;
-#else
 	GoadServerList *servers;
 	int n_servers;
 	const gchar **interfaces_required;
-#endif
 };
 
 enum {
@@ -34,22 +30,18 @@ static void button_callback (GtkWidget *widget, gint button_number,
 	gpointer data);
 static void ok_callback (GtkWidget *widget, gpointer data);
 static void cancel_callback (GtkWidget *widget, gpointer data);
-#ifdef BONOBO_USE_GNOME2
-static void do_oaf_query(GnomeBonoboSelector *widget, const char *requirements, const char **sort_order);
-#else
 static void add_gnorba_objects (GnomeBonoboSelector *widget); 
 static GList *get_filtered_objects (GnomeBonoboSelector *widget);
 static gboolean stringlist_contains (gchar **list, const gchar *word);
-#endif
+
 
 /* fixme: revove this as soon it is included in gnome-dialog */
-#ifndef BONOBO_USE_GNOME2
 void       
 gnome_dialog_clicked (GnomeDialog *dialog, gint button_num)
 {
 	gtk_signal_emit_by_name(GTK_OBJECT(dialog), "clicked", button_num);
 }              
-#endif
+
 
 static void
 gnome_bonobo_selector_class_init (GnomeBonoboSelectorClass *klass)
@@ -115,8 +107,6 @@ gnome_bonobo_selector_get_type (void)
  * @interfaces_required: A NULL_terminated array of interfaces which a
  * server must support in order to be listed in the selector.  Defaults
  * to "IDL:GNOME/Embeddable:1.0" if no interfaces are listed.
- * @requirements: A query to be made of the OAF database, specifying the constraints for a server.
- * @sort_order: A list of sort specifications, to be used to sort the query results.
  *
  * Creates a new GnomeBonoboSelector widget.  The title of the dialog
  * is set to @title, and the list of selectable servers is populated
@@ -125,16 +115,9 @@ gnome_bonobo_selector_get_type (void)
  *
  * Returns: A pointer to the newly-created GnomeBonoboSelector widget.
  */
-#ifdef BONOBO_USE_GNOME2
 GtkWidget *
 gnome_bonobo_selector_new (const gchar *title,
-			   const char *requirements,
-			   const char **sort_order)
-#else
-GtkWidget *
-gnome_bonobo_selector_new (const gchar *title,
-                           const gchar **interfaces_required)
-#endif
+			   const gchar **interfaces_required)
 {
 	GnomeBonoboSelector *sel;
 	GnomeBonoboSelectorPrivate *priv;
@@ -144,12 +127,8 @@ gnome_bonobo_selector_new (const gchar *title,
 	
 	sel = gtk_type_new (gnome_bonobo_selector_get_type ());
 	priv = sel->priv;
-#ifdef BONOBO_USE_GNOME2
-	do_oaf_query(sel, requirements, sort_order);
-#else
 	priv->interfaces_required = interfaces_required;
 	add_gnorba_objects (sel);
-#endif
 	gtk_window_set_title (GTK_WINDOW (sel), title);
 	return GTK_WIDGET (sel);
 }
@@ -166,11 +145,7 @@ gnome_bonobo_selector_destroy (GtkObject *object)
 	priv = sel->priv;
 
 	gtk_widget_destroy (priv->clist);
-#ifdef BONOBO_USE_GNOME2
-	CORBA_free(priv->servers);
-#else
 	goad_server_list_free (priv->servers);
-#endif
 	g_free (priv);
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy)
@@ -178,19 +153,6 @@ gnome_bonobo_selector_destroy (GtkObject *object)
 	
 }
 
-#ifdef BONOBO_USE_GNOME2
-/**
- * gnome_bonobo_selector_get_aid:
- * @sel: A GnomeBonoboSelector widget.
- *
- * Returns: A newly-allocated string containing the GOAD ID of the
- * currently-selected CORBA server (i.e., the corba server whose
- * name is highlighted in the list).  The user of this function is
- * responsible for freeing this.
- */
-gchar *
-gnome_bonobo_selector_get_selected_aid (GnomeBonoboSelector *sel)
-#else
 /**
  * gnome_bonobo_selector_get_selected_goad_id:
  * @sel: A GnomeBonoboSelector widget.
@@ -202,7 +164,6 @@ gnome_bonobo_selector_get_selected_aid (GnomeBonoboSelector *sel)
  */
 gchar *
 gnome_bonobo_selector_get_selected_goad_id (GnomeBonoboSelector *sel)
-#endif
 {
 	GList *selection;
 	gchar *text;
@@ -213,43 +174,11 @@ gnome_bonobo_selector_get_selected_goad_id (GnomeBonoboSelector *sel)
 	selection = GTK_CLIST (priv->clist)->selection;
 	
 	if (selection == NULL) return NULL;
-
-#ifdef BONOBO_USE_GNOME2
-	{
-		char *iid, *host, *user;
-
-		gtk_clist_get_text (GTK_CLIST (priv->clist), GPOINTER_TO_INT(selection->data), 1, &host);
-		gtk_clist_get_text (GTK_CLIST (priv->clist), GPOINTER_TO_INT(selection->data), 2, &user);
-		gtk_clist_get_text (GTK_CLIST (priv->clist), GPOINTER_TO_INT(selection->data), 3, &iid);
-		return g_strdup_printf("OAFAID:[%s,%s,%s]", iid, user, host);
-	}
-#else
-	gtk_clist_get_text (GTK_CLIST (priv->clist), GPOINTER_TO_INT(selection->data), 1, &text);
-
+	gtk_clist_get_text (GTK_CLIST (priv->clist), (int) selection->data,
+			1, &text);
 	return g_strdup (text);
-#endif
 }
 
-#ifdef BONOBO_USE_GNOME2
-/**
- * gnome_bonobo_select_aid:
- * @title: The title to be used for the dialog.
- * @requirements: A query to be made of the OAF database, specifying the constraints for a server.
- * @sort_order: A list of sort specifications, to be used to sort the query results.
- *
- * Calls gnome_bonobo_selector_new() to create a new
- * GnomeBonoboSelector widget with the specified paramters, @title and
- * @interfaces_required.  Then runs the dialog modally and allows
- * the user to make a selection.
- *
- * Returns: The GOAD ID of the selected server, or NULL if no server
- * is selected.  The GOAD ID string has been allocated with g_strdup
- */
-gchar *
-gnome_bonobo_select_aid (const gchar *title,
-			 const char *requirements,
-			 const char **sort_order)
-#else
 /**
  * gnome_bonobo_select_goad_id:
  * @title: The title to be used for the dialog.
@@ -267,44 +196,13 @@ gnome_bonobo_select_aid (const gchar *title,
 gchar *
 gnome_bonobo_select_goad_id (const gchar *title,
 			     const gchar **interfaces_required)
-#endif
 {
-	GtkWidget *sel;
-	char *name = NULL;
+	GtkWidget *sel = gnome_bonobo_selector_new (title, interfaces_required);
+	gchar *name = NULL;
 	int n;
-	GnomeBonoboSelectorPrivate *priv;
 
-#ifdef BONOBO_USE_GNOME2
-	sel = gnome_bonobo_selector_new (title, requirements, sort_order);
-#else
-	sel = gnome_bonobo_selector_new (title, interfaces_required);
-#endif
 	if (sel == NULL)
 		return NULL;
-	priv = GNOME_BONOBO_SELECTOR(sel)->priv;
-
-#ifdef BONOBO_USE_GNOME2
-	if(priv->servers->_length == 1)
-#else
-	if(priv->n_servers == 1)
-#endif
-		{
-			char *retval;
-#ifdef BONOBO_USE_GNOME2
-			retval = g_strdup_printf("OAFAID:[%s,%s,%s]",
-						 priv->servers->_buffer[0].iid,
-						 priv->servers->_buffer[0].username,
-						 priv->servers->_buffer[0].hostname);
-#else
-			char *goad_id;
-
-			gtk_clist_get_text (GTK_CLIST (priv->clist), 0, 1, &goad_id);
-			retval = g_strdup(goad_id);
-#endif
-			gtk_widget_destroy(GTK_WIDGET(sel));
-
-			return retval;
-		}
 
 	gtk_signal_connect (GTK_OBJECT (sel),
 		"ok", GTK_SIGNAL_FUNC (ok_callback), NULL);
@@ -315,7 +213,9 @@ gnome_bonobo_select_goad_id (const gchar *title,
 	
 	gtk_widget_show (sel);
 		
-	n = gnome_dialog_run_and_close (GNOME_DIALOG(sel));
+	n = gnome_dialog_run (GNOME_DIALOG(sel));
+	if (n == -1)
+		return NULL;
 	if (n == 0)
 		name = gtk_object_get_user_data (GTK_OBJECT (sel));
 		
@@ -345,14 +245,8 @@ button_callback (GtkWidget *widget, gint button_number,
 static void
 ok_callback (GtkWidget *widget, gpointer data)
 {
-	char *text;
-#ifdef BONOBO_USE_GNOME2
-	text = gnome_bonobo_selector_get_selected_aid (
+	char *text = gnome_bonobo_selector_get_selected_goad_id (
 		GNOME_BONOBO_SELECTOR (widget));
-#else
-	text = gnome_bonobo_selector_get_selected_goad_id (
-		GNOME_BONOBO_SELECTOR (widget));
-#endif
 	gtk_object_set_user_data (GTK_OBJECT (widget), text);
 	gtk_main_quit ();
 }
@@ -384,14 +278,7 @@ gnome_bonobo_selector_init (GtkWidget *widget)
 	GnomeBonoboSelector *sel = GNOME_BONOBO_SELECTOR (widget);
 	GtkWidget *scrolled;
 	GnomeBonoboSelectorPrivate *priv;
-	int i;
-
-#ifdef BONOBO_USE_GNOME2
-	char *titles[] = { N_("Description"), N_("Host"), N_("User"), N_("IID") };
-#else
-	gchar *titles[] = { N_("Description"),
-			    "goadid", NULL };
-#endif
+	gchar *titles[] = { N_("Bonobo object description"), "goadid", NULL };
 	
 	g_return_if_fail (widget != NULL);
 	
@@ -402,10 +289,9 @@ gnome_bonobo_selector_init (GtkWidget *widget)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 		GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	for(i = 0; i < sizeof(titles)/sizeof(titles[0]); i++)
-		titles[i] = _(titles[i]);
+	titles[0] = gettext(titles[0]);
 
-	priv->clist = gtk_clist_new_with_titles (sizeof(titles)/sizeof(titles[0]), titles);
+	priv->clist = gtk_clist_new_with_titles (2, titles);
 	gtk_clist_set_selection_mode (GTK_CLIST (priv->clist),
 		GTK_SELECTION_BROWSE);
 	gtk_signal_connect (GTK_OBJECT (priv->clist), "select-row",
@@ -430,37 +316,6 @@ gnome_bonobo_selector_init (GtkWidget *widget)
 	gtk_widget_show (scrolled);
 }
 
-#ifdef BONOBO_USE_GNOME2
-static void
-do_oaf_query(GnomeBonoboSelector *widget, const char *requirements, const char **sort_order)
-{
-	GnomeBonoboSelectorPrivate *priv = widget->priv;
-	CORBA_Environment ev;
-	int i;
-	char *text[4];
-	GSList *langs = gnome_i18n_get_language_list(NULL);
-
-	CORBA_exception_init(&ev);
-	priv->servers = oaf_query(requirements, sort_order, &ev);
-	if(ev._major != CORBA_NO_EXCEPTION) {
-		priv->servers = NULL;
-		return;
-	}
-
-	gtk_clist_freeze(priv->clist);
-
-	for(i = 0; i < priv->servers->_length; i++) {
-		text[0] = oaf_server_info_attr_lookup(&priv->servers->_buffer[i], "description", langs);
-		text[1] = priv->servers->_buffer[i].hostname;
-		text[2] = priv->servers->_buffer[i].username;
-		text[3] = priv->servers->_buffer[i].iid;
-		gtk_clist_append (GTK_CLIST(priv->clist), text);
-	}
-
-	gtk_clist_thaw(priv->clist);
-}
-
-#else
 static void
 add_gnorba_objects (GnomeBonoboSelector *widget) 
 {
@@ -578,4 +433,3 @@ stringlist_contains (gchar **list, const gchar *word)
 	}
 	return FALSE;
 }
-#endif
