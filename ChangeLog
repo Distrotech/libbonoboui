@@ -1,5 +1,10 @@
 2001-11-12  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control.c
+	(control_frame_connection_died_cb): upd. fixup casts.
+
+2001-11-12  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-control-frame.c: kill plug_xid, it's
 	transient and stale ...
 	(bonobo_control_frame_bind_to_control): prune get id

@@ -51,9 +51,9 @@ static void
 control_frame_connection_died_cb (gpointer connection,
 				  gpointer user_data)
 {
-	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (user_data);
+	BonoboControl *control = BONOBO_CONTROL (user_data);
 
-	g_return_if_fail (frame != NULL);
+	g_return_if_fail (control != NULL);
 
 	dprintf ("The remote control frame died unexpectedly");
 }
