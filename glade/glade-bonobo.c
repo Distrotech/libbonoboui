@@ -82,28 +82,28 @@ static GtkWidget *gnome_control_new (GladeXML *xml, GladeWidgetInfo *info, char 
 		switch (tc->kind) {
 
 		case CORBA_tk_boolean:
-			bonobo_property_bag_client_set_value_boolean (pbc, attr->name,
-								      attr->value[0] == 'T');
+			bonobo_property_bag_client_set_value_gboolean (pbc, attr->name,
+								       attr->value[0] == 'T');
 			break;
 
 		case CORBA_tk_string:
 			bonobo_property_bag_client_set_value_string (pbc, attr->name, attr->value);
 			break;
 
-		case CORBA_tk_short:
-			bonobo_property_bag_client_set_value_short (pbc, attr->name, strtol (attr->value, NULL, 0));
+		case CORBA_tk_long:
+			bonobo_property_bag_client_set_value_glong (pbc, attr->name, strtol (attr->value, NULL, 0));
 			break;
 
 		case CORBA_tk_float:
-			bonobo_property_bag_client_set_value_float (pbc, attr->name, strtod (attr->value, NULL));
+			bonobo_property_bag_client_set_value_gfloat (pbc, attr->name, strtod (attr->value, NULL));
 			break;
 
-		case CORBA_tk_ushort:
-		case CORBA_tk_long:
-		case CORBA_tk_ulong:
 		case CORBA_tk_double:
+			bonobo_property_bag_client_set_value_gdouble (pbc, attr->name, strtod (attr->value, NULL));
+			break;
+
 		default:
-			g_warning ("Unhandled type");
+			g_warning ("Unhandled type %d", tc->kind);
 			break;
 		}
 	}
