@@ -1,3 +1,10 @@
+2003-12-29  Federico Mena Quintero  <federico@ximian.com>
+
+	* bonobo/bonobo-control.c (impl_Bonobo_Control_activate): Fixed
+	the emission logic; actually test against the old activation
+	state.  Also, call bonobo_control_activate_notify() to notify the
+	control frame.
+
 2003-12-15  JP Rosevear <jpr@ximian.com>
 
 	* bonobo/bonobo-ui-sync-toolbar.c (toolbar_build_widget): do a
