@@ -31,6 +31,8 @@ GtkWindowClass *bonobo_win_parent_class = NULL;
 struct _BonoboWinPrivate {
 	BonoboWin     *app;
 
+	int            frozen;
+
 	GnomeDock     *dock;
 
 	GnomeDockItem *menu_item;
@@ -1749,6 +1751,9 @@ update_widgets (BonoboWinPrivate *priv)
 {
 	xmlNode *node;
 
+	if (priv->frozen)
+		return;
+
 	setup_root_widgets (priv);
 
 	for (node = priv->tree->root->childs; node; node = node->next) {
@@ -2038,6 +2043,25 @@ bonobo_win_xml_rm (BonoboWin  *app,
 	update_widgets (app->priv);
 
 	return err;
+}
+
+void
+bonobo_win_freeze (BonoboWin *win)
+{
+	g_return_if_fail (BONOBO_IS_WIN (win));
+
+	win->priv->frozen++;
+}
+
+void
+bonobo_win_thaw (BonoboWin *win)
+{
+	g_return_if_fail (BONOBO_IS_WIN (win));
+	
+	if (--win->priv->frozen <= 0) {
+		update_widgets (win->priv);
+		win->priv->frozen = 0;
+	}
 }
 
 void

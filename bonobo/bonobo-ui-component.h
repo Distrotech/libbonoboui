@@ -97,6 +97,12 @@ Bonobo_Unknown     bonobo_ui_container_object_get   (Bonobo_UIContainer  contain
 						     const char         *path,
 						     CORBA_Environment  *ev);
 
+void               bonobo_ui_container_freeze       (Bonobo_UIContainer  container,
+						     CORBA_Environment  *ev);
+
+void               bonobo_ui_container_thaw         (Bonobo_UIContainer  container,
+						     CORBA_Environment  *ev);
+
 POA_Bonobo_UIComponent__epv *bonobo_ui_component_get_epv (void);
 Bonobo_UIComponent bonobo_ui_component_corba_object_create (BonoboObject *object);
 

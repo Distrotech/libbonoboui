@@ -159,6 +159,24 @@ impl_object_get (PortableServer_Servant servant,
 	return object;
 }
 
+static void
+impl_freeze (PortableServer_Servant   servant,
+	     CORBA_Environment       *ev)
+{
+	BonoboWin *app = bonobo_ui_container_from_servant (servant);
+
+	bonobo_win_freeze (app);
+}
+
+static void
+impl_thaw (PortableServer_Servant   servant,
+	     CORBA_Environment       *ev)
+{
+	BonoboWin *app = bonobo_ui_container_from_servant (servant);
+
+	bonobo_win_thaw (app);
+}
+
 /**
  * bonobo_ui_container_get_epv:
  */
@@ -179,6 +197,9 @@ bonobo_ui_container_get_epv (void)
 
 	epv->object_set  = impl_object_set;
 	epv->object_get  = impl_object_get;
+
+	epv->freeze      = impl_freeze;
+	epv->thaw        = impl_thaw;
 
 	return epv;
 }

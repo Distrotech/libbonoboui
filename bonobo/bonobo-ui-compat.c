@@ -1465,3 +1465,102 @@ bonobo_ui_compat_get_container (BonoboUIHandler *uih)
 
 	return priv->container;
 }
+
+static char *
+path_escape_forward_slashes (const char *str)
+{
+	const char *p = str;
+	char *new, *newp;
+	char *final;
+
+	new = g_malloc (strlen (str) * 2 + 1);
+	newp = new;
+
+	while (*p != '\0') {
+		g_assert (*p != '/');
+/*		if (*p == '/') {
+			*newp++ = '\\';
+			*newp++ = '/';
+		} else if (*p == '\\') {
+			*newp++ = '\\';
+			*newp++ = '\\';
+		} else {
+			*newp++ = *p;
+		}
+*/
+		p++;
+	}
+
+/*	*newp = '\0';
+
+	final = g_strdup (new);
+	g_free (new);*/
+	return g_strdup (str);
+}
+
+/*
+ * bonobo_ui_handler_build_path_v:
+ * 
+ * Builds a path from an optional base path and a list of individual pieces.
+ * 
+ * @base: Beginning of path, already including leading separator and 
+ * separators between pieces. Pass NULL to construct the entire path
+ * from individual pieces.
+ * @va_list: List of individual path pieces, without any separators yet added.
+ * 
+ * Result: Path ready for use with bonobo_ui_handler calls that take paths.
+ */
+char *
+bonobo_ui_handler_build_path_v (const char *base, va_list path_components)
+{
+	char *path;
+	const char *path_component;
+
+	/* Note that base is not escaped, because it already contains separators. */
+	path = g_strdup (base);
+	for (;;) {
+		char *old_path;
+		char *escaped_component;
+	
+		path_component = va_arg (path_components, const char *);
+		if (path_component == NULL)
+			break;
+			
+		old_path = path;
+		escaped_component = path_escape_forward_slashes (path_component);
+
+		if (path == NULL) {
+			path = g_strconcat ("/", escaped_component, NULL);
+		} else {
+			path = g_strconcat (old_path, "/", escaped_component, NULL);
+		}
+		g_free (old_path);
+	}
+	
+	return path;
+}
+
+/*
+ * bonobo_ui_handler_build_path:
+ * 
+ * Builds a path from an optional base path and a NULL-terminated list of individual pieces.
+ * 
+ * @base: Beginning of path, already including leading separator and 
+ * separators between pieces. Pass NULL to construct the entire path
+ * from individual pieces.
+ * @...: List of individual path pieces, without any separators yet added, ending with NULL.
+ * 
+ * Result: Path ready for use with bonobo_ui_handler calls that take paths.
+ */
+char *
+bonobo_ui_handler_build_path (const char *base, ...)
+{
+	va_list args;
+	char *path;
+
+	va_start (args, base);
+	path = bonobo_ui_handler_build_path_v (base, args);
+	va_end (args);
+	
+	return path;
+}

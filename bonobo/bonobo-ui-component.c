@@ -594,3 +594,47 @@ bonobo_ui_component_add_verb_list (BonoboUIComponent  *component,
 {
 	bonobo_ui_component_add_verb_list_with_data (component, list, NULL);
 }
+
+void
+bonobo_ui_container_freeze (Bonobo_UIContainer  container,
+			    CORBA_Environment  *ev)
+{
+	CORBA_Environment *real_ev, tmp_ev;
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
+
+	Bonobo_UIContainer_freeze (container, real_ev);
+
+	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
+		g_warning ("Serious exception on UI freeze '$%s'",
+			   bonobo_exception_get_text (real_ev));
+
+	if (!ev)
+		CORBA_exception_free (&tmp_ev);
+}
+
+void
+bonobo_ui_container_thaw (Bonobo_UIContainer  container,
+			  CORBA_Environment  *ev)
+{
+	CORBA_Environment *real_ev, tmp_ev;
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
+
+	Bonobo_UIContainer_thaw (container, real_ev);
+
+	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
+		g_warning ("Serious exception on UI thaw '$%s'",
+			   bonobo_exception_get_text (real_ev));
+
+	if (!ev)
+		CORBA_exception_free (&tmp_ev);
+}
