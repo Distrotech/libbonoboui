@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2002-03-04 16:23+0000\n"
-"PO-Revision-Date: 2002-03-03 09:48+0100\n"
+"POT-Creation-Date: 2002-03-14 22:34+0100\n"
+"PO-Revision-Date: 2002-03-14 22:34+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -60,43 +60,43 @@ msgstr "Navn"
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: bonobo/bonobo-ui-config-widget.c:264
+#: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
 msgstr "Synlig"
 
-#: bonobo/bonobo-ui-config-widget.c:271
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
 msgstr "_Vis"
 
-#: bonobo/bonobo-ui-config-widget.c:278
+#: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
 msgstr "_Skjul"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
 msgstr "_Vis verktøytips"
 
-#: bonobo/bonobo-ui-config-widget.c:289
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
 msgstr "Verktøylinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:299
+#: bonobo/bonobo-ui-config-widget.c:294
 msgid "toolbars"
 msgstr "verktøylinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "Utseende"
 
-#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "_Ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:325
+#: bonobo/bonobo-ui-config-widget.c:320
 msgid "_Text and Icon"
 msgstr "_Tekst og ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:326
 msgid "_Priority text only"
 msgstr "Kun _prioritetstekst"
 
@@ -248,3 +248,7 @@ msgstr "_Fil"
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
 msgstr "_Velg"
+
+#: samples/controls/bonobo-sample-controls.c:121
+msgid "Could not initialize Bonobo UI"
+msgstr "Kunne ikke initiere Bonobo-UI"
