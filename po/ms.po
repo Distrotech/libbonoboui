@@ -1,0 +1,197 @@
+# Malay Translation for libbonoboui
+# Copyright (C) 2002 Free Software Foundation, Inc., Projek Gabai.
+# Mohamad Afifi Omar (App) <mr_mohd_afifi@yahoo.com>.2002
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui HEAD\n"
+"POT-Creation-Date: 2002-01-03 07:23-0500\n"
+"PO-Revision-Date: 2002-01-10 01:42+0800\n"
+"Last-Translator: Mohamad Afifi Omar <mr_mohd_afifi@yahoo.com>\n"
+"Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.8\n"
+
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+msgid "Shadow type"
+msgstr "Jenis bayang"
+
+#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+msgid "Orientation"
+msgstr "Orientasi"
+
+#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+msgid "Preferred width"
+msgstr "Lebar yang dikehendaki"
+
+#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+msgid "Preferred height"
+msgstr "Tinggi yang dikehendaki"
+
+#: bonobo/bonobo-file-selector-util.c:367
+msgid "Select a file to open"
+msgstr "Pilih satu fail untuk dibuka"
+
+#: bonobo/bonobo-file-selector-util.c:395
+msgid "Select files to open"
+msgstr "Pilih beberapa fail untuk dibuka"
+
+#: bonobo/bonobo-file-selector-util.c:424
+msgid "Select a filename to save"
+msgstr "Pilih satu nama fail untuk disimpan"
+
+#: bonobo/bonobo-selector-widget.c:302
+msgid "Name"
+msgstr "Nama"
+
+#: bonobo/bonobo-selector-widget.c:326
+msgid "Description"
+msgstr "Keterangan"
+
+#: bonobo/bonobo-ui-config-widget.c:260
+msgid "Visible"
+msgstr "Kelihatan"
+
+#: bonobo/bonobo-ui-config-widget.c:267
+msgid "_Show"
+msgstr "_Papar"
+
+#: bonobo/bonobo-ui-config-widget.c:274
+msgid "_Hide"
+msgstr "_Sembunyi"
+
+#: bonobo/bonobo-ui-config-widget.c:280
+msgid "_View tooltips"
+msgstr "_Paparkan tooltips"
+
+#: bonobo/bonobo-ui-config-widget.c:285
+msgid "Toolbars"
+msgstr "Toolbar"
+
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:538
+msgid "Look"
+msgstr "Lihat"
+
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:538
+msgid "_Icon"
+msgstr "_Ikon"
+
+#: bonobo/bonobo-ui-config-widget.c:310
+msgid "_Text and Icon"
+msgstr "_Teks dan Ikon"
+
+#: bonobo/bonobo-ui-config-widget.c:316
+msgid "_Priority text only"
+msgstr "Teks yang _penting sahaja"
+
+#: bonobo/bonobo-ui-engine-config.c:513
+msgid "Configure UI"
+msgstr "Konfigurasikan UI"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:538
+msgid "B_oth"
+msgstr "Ke_dua-dua"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:538
+msgid "T_ext"
+msgstr "T_eks"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:539
+msgid "Hide t_ips"
+msgstr "Sembunyikan t_ips"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:539
+msgid "Show t_ips"
+msgstr "Paparkan t_ips"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:540
+msgid "_Hide toolbar"
+msgstr "Sembunyikan toolba_r"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:540
+msgid "Customi_ze"
+msgstr "Personali_sasi"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:541
+msgid "Customize the toolbar"
+msgstr "Personalisasikan toolbar"
+
+#: bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "Aras zoom"
+
+#: bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "Darjah pembesaran"
+
+#: bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "Aras Zoom Minima"
+
+#: bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "Darjah pembesaran minima"
+
+#: bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "Aras Maksima Zoom"
+
+#: bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "Aras maksima pembesaran"
+
+#: bonobo/bonobo-zoomable.c:353
+msgid "Has a minumum Zoom level"
+msgstr "Mempunyai zoom minima"
+
+#: bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "Samada kita mempunyai aras zoom minimum yang sah"
+
+#: bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "Mempunyai aras maksima zoom"
+
+#: bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "Samada kita mempunyai aras zoom maksimum yang sah"
+
+#: bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "adalah berterusan"
+
+#: bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "Apakah kita boleh zoom berterusan (berbanding dengan lompatan)"
+
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "Tiada apa-apa; Ini hanya demonstrasi"
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Hello."
+
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr "Gnome Hello"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr "Hello, World!"
+
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
+msgid "Cannot init libbonoboui code"
+msgstr "Gagal menginitialisasikan kod libbonoboui"
+
+#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
+msgid "Can not bonobo_ui_init"
+msgstr "Tak dapat bonobo_ui_init"
+
+#: tests/test-selector.c:12
+msgid "Select an object"
+msgstr "Sila pilih satu objek"
+

@@ -1,3 +1,9 @@
+2002-01-20  Hasbullah Bin Pit <sebol@ikhlas.com>
+
+	* configure.ini: Added Malay (ms)to ALL_LINGUAS.
+	* po/ms.po: Added Malay Malay Translation by
+	  Mohamad Afifi Omar (App) <mr_mohd_afifi@yahoo.com>.
+
 2002-01-18  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-toolbar-item.c
