@@ -80,12 +80,9 @@ main(int argc, char* argv[])
   bindtextdomain(PACKAGE, GNOMELOCALEDIR);  
   textdomain(PACKAGE);
 
-  printf("before gnome_init_with_popt_table\n");
-
   if (!bonobo_ui_init_full ("BonoboUI-Hello", VERSION, &argc, argv, NULL, NULL, NULL, TRUE))
 	  g_error (_("Cannot init libbonoboui code"));
 
-  printf("after gnome_init_with_popt_table\n");
   /* Argument parsing */
   //args = poptGetArgs(pctx);
   //poptFreeContext(pctx);

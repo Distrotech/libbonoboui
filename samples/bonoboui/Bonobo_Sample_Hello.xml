@@ -1,35 +1,21 @@
 <Root>
   <commands>
-    <cmd name="FileNew" _label="_New" _tip="Create a new document" pixtype="stock"
-      pixname="New"/>
-    <cmd name="FileOpen" _label="_Open" _tip="Open a document" pixtype="stock"
-      pixname="Open"/>
-    <cmd name="FileSave" _label="_Save" _tip="Save the document" pixtype="stock"
-      pixname="Save"/>
-    <cmd name="FileSaveAs" _label="_SaveAs" _tip="Save the document to a new filename" pixtype="stock"
-      pixname="SaveAs"/>
-    <cmd name="FileClose" _label="_Close" _tip="Close this document" pixtype="stock"
-      pixname="Close"/>
-    <cmd name="FileExit" _label="E_xit" _tip="Exit the program" pixtype="stock"
-      pixname="Quit" accel="*Control*q"/>
+    <cmd name="FileNew" stockid="gtk-new"/>
+    <cmd name="FileOpen" stockid="gtk-open"/>
+    <cmd name="FileSave" _stockid="gtk-save"/>
+    <cmd name="FileSaveAs" _stockid="gtk-save-as"/>
+    <cmd name="FileClose" stockid="gtk-close"/>
+    <cmd name="FileExit" stockid="gtk-quit"/>
 
-    <cmd name="EditUndo" _label="_Undo" _tip="Undo"
-      pixtype="stock" pixname="Cut"/>
-    <cmd name="EditRedo" _label="_Redo" _tip="Redo"
-      pixtype="stock" pixname="Cut"/>
-    <cmd name="EditCut" _label="_Cut" _tip="Cut"
-      pixtype="stock" pixname="Cut"/>
-    <cmd name="EditCopy" _label="_Copy" _tip="Copy"
-      pixtype="stock" pixname="Copy"/>
-    <cmd name="EditPaste" _label="_Paste" _tip="Paste"
-      pixtype="stock" pixname="Paste"/>
-    <cmd name="EditSelect" _label="_Select" _tip="Select"
-      pixtype="stock" pixname="Select"/>
-    <cmd name="EditClear" _label="_Clear" _tip="Clear"
-      pixtype="stock" pixname="Clear"/>
+    <cmd name="EditUndo" stockid="gtk-undo"/>
+    <cmd name="EditRedo" stockid="gtk-redo"/>
+    <cmd name="EditCut" stockid="gtk-cut"/>
+    <cmd name="EditCopy" stockid="gtk-copy"/>
+    <cmd name="EditPaste" stockid="gtk-paste"/>
+    <cmd name="EditSelect" _label="_Select" _tip="Select"/>
+    <cmd name="EditClear" stockid="gtk-clear"/>
 
-    <cmd name="HelpAbout" _label="_About..." _tip="About this application"
-      pixtype="stock" pixname="About"/>
+    <cmd name="HelpAbout" _label="_About..." _tip="About this application"/>
   </commands>
 
   <menu>

@@ -183,14 +183,17 @@ void helloapp_check_for_ui_xml_file(const gchar* filename)
 {
   gchar* filepath;
 
+  /* We don't actually need to specify HELLO_DATADIR if we use the standard top-level directory
+. *  If we use NULL then it looks in <prefix>/share. The tests use NULL. */
+
   filepath = bonobo_ui_util_get_ui_fname (HELLO_DATADIR, filename);
 	if (!filepath || !(g_file_test (filepath, G_FILE_TEST_EXISTS))) //If the file isn't there.
   {
 		g_warning ("\nCan't find <prefix>/share/gnome/ui/bonoboui-hello-ui.xml\n"
 			   "You need to symlink it like so:\n"
-         "e.g. ln -s <downloadpath>/libbonoboui/samples/bonoboui-hello/%s %s/%s\n"
+         "e.g. ln -s <downloadpath>/libbonoboui/samples/bonoboui-hello/%s %s/%s/%s\n"
          "A normal application would install the xml file as part of 'make install'.\n",
-         filename, HELLO_DATADIR, filename);
+         filename, HELLO_DATADIR, "gnome/ui", filename);
 	}
 	g_free (filepath);
 }

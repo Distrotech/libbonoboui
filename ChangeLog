@@ -1,3 +1,8 @@
+2001-09-15 Murray Cumming <murrayc@usa.net>
+
+	* samples/bonboui-hello: Now uses gtk stock items for menus and
+	toolbars. Corrected symlink suggestion to include gnome/ui in
+	path.
 2001-09-07  Martin Baulig  <baulig@suse.de>
 
 	Removing the libgnome dependency - part I.
