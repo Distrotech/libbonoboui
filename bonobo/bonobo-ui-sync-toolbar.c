@@ -721,7 +721,7 @@ impl_bonobo_ui_sync_toolbar_remove_root (BonoboUISync *sync,
 {
 	const char *name;
 
-	if ((name = bonobo_ui_node_get_attr (node, "name"))) {
+	if ((name = bonobo_ui_node_peek_attr (node, "name"))) {
 		BonoboDockItem *item;
 
 		item = get_dock_item (BONOBO_UI_SYNC_TOOLBAR (sync), name);

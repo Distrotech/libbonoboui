@@ -39,6 +39,7 @@ bonobo_ui_node_new (const char *name)
 	BonoboUINode *node = g_new0 (BonoboUINode, 1);
 
 	node->name_id = g_quark_from_string (name);
+	node->ref_count = 1;
 
 	/* FIXME: we could do this idly */
 	node->attrs = g_array_new (FALSE, FALSE, sizeof (BonoboUIAttr));
@@ -84,6 +85,7 @@ bonobo_ui_node_copy (BonoboUINode *node,
 	BonoboUINode *copy;
 
 	copy = g_new0 (BonoboUINode, 1);
+	copy->ref_count = 1;
 	copy->name_id = node->name_id;
 
 	copy->content = g_strdup (node->content);
@@ -271,16 +273,35 @@ node_free_internal (BonoboUINode *node)
 {
 	BonoboUINode *l, *next;
 
+	g_return_if_fail (node->ref_count >= 0);
+
+	if (node->parent || node->next || node->prev)
+		bonobo_ui_node_unlink (node);
+
 	node_free_attrs (node);
 
 	g_free (node->content);
 
 	for (l = node->children; l; l = next) {
 		next = l->next;
-		bonobo_ui_node_free (l);
+		bonobo_ui_node_unlink (l);
+		bonobo_ui_node_unref (l);
 	}
 
 	g_free (node);
+}
+
+void
+bonobo_ui_node_unref (BonoboUINode *node)
+{
+	if (--node->ref_count <= 0) 
+		node_free_internal (node);
+}
+
+BonoboUINode *
+bonobo_ui_node_ref (BonoboUINode *node)
+{
+	node->ref_count++;
 }
 
 /**
@@ -292,11 +313,12 @@ node_free_internal (BonoboUINode *node)
 void
 bonobo_ui_node_free (BonoboUINode *node)
 {
-	if (node->parent || node->next)
-		bonobo_ui_node_unlink (node);
-	
-	node_free_internal (node);
+	if (node->ref_count > 1)
+		g_warning ("Freeing referenced node %p", node);
+
+	bonobo_ui_node_unref (node);
 }
+
 
 /**
  * bonobo_ui_node_set_data:

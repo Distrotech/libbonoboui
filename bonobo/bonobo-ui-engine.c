@@ -2302,6 +2302,8 @@ do_sync (BonoboUIEngine *engine,
 		 G_OBJECT_CLASS_NAME (sync),
 		 bonobo_ui_xml_make_path (node));
 #endif
+	bonobo_ui_node_ref (node);
+
 	if (bonobo_ui_node_parent (node) == engine->priv->tree->root)
 		bonobo_ui_sync_update_root (sync, node);
 
@@ -2324,6 +2326,8 @@ do_sync (BonoboUIEngine *engine,
 	}
 
 	bonobo_ui_xml_clean (engine->priv->tree, node);
+
+	bonobo_ui_node_unref (node);
 }
 
 static void
@@ -2357,6 +2361,9 @@ seek_dirty (BonoboUIEngine *engine,
  * 
  * This function is used to write recursive synchronizers
  * and is intended only for internal / privilaged use.
+ *
+ * By the time this returns, due to re-enterancy, node
+ * points at undefined memory.
  **/
 void
 bonobo_ui_engine_update_node (BonoboUIEngine *engine,

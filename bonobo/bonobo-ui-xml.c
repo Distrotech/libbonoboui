@@ -226,6 +226,7 @@ free_nodedata_tree (BonoboUIXml *tree, BonoboUINode *node, gboolean do_overrides
 		return;
 
 	free_nodedata (tree, bonobo_ui_node_get_data (node), do_overrides);
+	bonobo_ui_node_set_data (node, NULL);
 
 	for (l = bonobo_ui_node_children (node); l;
              l = bonobo_ui_node_next (l))
@@ -237,7 +238,7 @@ node_free (BonoboUIXml *tree, BonoboUINode *node)
 {
 	free_nodedata_tree (tree, node, TRUE);
 	bonobo_ui_node_unlink (node);
-	bonobo_ui_node_free (node);
+	bonobo_ui_node_unref (node);
 }
 
 static void
@@ -864,7 +865,7 @@ bonobo_ui_xml_finalize (GObject *object)
 	
 	if (tree->root) {
 		free_nodedata_tree (tree, tree->root, TRUE);
-		bonobo_ui_node_free (tree->root);
+		bonobo_ui_node_unref (tree->root);
 		tree->root = NULL;
 	}
 

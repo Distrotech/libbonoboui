@@ -620,6 +620,8 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 			cl, help_display_closure_free));
 
 	bonobo_ui_node_add_child (parent, node);
+
+	g_free (id);
 }
 
 /**

@@ -19,6 +19,7 @@ struct _BonoboUINode {
 
 	/* The useful bits */
 	GQuark        name_id;
+	int           ref_count;
 	xmlChar      *content;
 	GArray       *attrs;
 	gpointer      user_data;
@@ -49,6 +50,9 @@ void          bonobo_ui_node_move_children  (BonoboUINode *from,
 #define       bonobo_ui_node_same_name(a,b) ((a)->name_id == (b)->name_id)
 BonoboUINode *bonobo_ui_node_get_path_child (BonoboUINode *node,
 					     const char   *name);
+BonoboUINode *bonobo_ui_node_ref            (BonoboUINode *node);
+void          bonobo_ui_node_unref          (BonoboUINode *node);
+
 
 G_END_DECLS
 
