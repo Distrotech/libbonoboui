@@ -517,7 +517,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 
 /**
  * bonobo_ui_util_get_ui_fname:
- * @component_prefix: the prefix for the component.
+ * @component_datadir: the datadir for the component, e.g. /usr/share
  * @file_name: the file name of the xml file.
  * 
  * Builds a path to the xml file that stores the GUI.
@@ -526,7 +526,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
  * UI or NULL if it is not found.
  **/
 char *
-bonobo_ui_util_get_ui_fname (const char *component_prefix,
+bonobo_ui_util_get_ui_fname (const char *component_datadir,
 			     const char *file_name)
 {
 	char *fname, *name;
@@ -538,6 +538,7 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 	if (component_prefix) {
 		fname = g_strdup_printf ("%s/gnome-2.0/ui/%s",
 					 component_prefix, file_name);
+
 		if (g_file_test (fname, G_FILE_TEST_EXISTS))
 			return fname;
 		g_free (fname);
@@ -776,7 +777,7 @@ free_loaded_node_cache (void)
 /**
  * bonobo_ui_util_set_ui:
  * @component: the component
- * @app_prefix: the application prefix eg. /opt/gnome
+ * @app_datadir: the application datadir eg. /opt/gnome/share
  * @file_name: the filename of the file to merge relative to the prefix.
  * @app_name: the application name - for help merging
  * 
@@ -787,7 +788,7 @@ free_loaded_node_cache (void)
  **/
 void
 bonobo_ui_util_set_ui (BonoboUIComponent *component,
-		       const char        *app_prefix,
+		       const char        *app_datadir,
 		       const char        *file_name,
 		       const char        *app_name)
 {
@@ -806,7 +807,7 @@ bonobo_ui_util_set_ui (BonoboUIComponent *component,
 		return;
 	}
 	
-	fname = bonobo_ui_util_get_ui_fname (app_prefix, file_name);
+	fname = bonobo_ui_util_get_ui_fname (app_datadir, file_name);
 	if (!fname) {
 		g_warning ("Can't find '%s' to load ui from", file_name);
 		return;
@@ -823,7 +824,7 @@ bonobo_ui_util_set_ui (BonoboUIComponent *component,
 		BonoboUINode *node;
 
 		node = bonobo_ui_util_new_ui (
-			component, fname, app_prefix, app_name);
+			component, fname, app_datadir, app_name);
 
 		ui = bonobo_ui_node_to_string (node, TRUE);
 
