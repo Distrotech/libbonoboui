@@ -685,7 +685,7 @@ bonobo_canvas_component_init (GObject *object)
 BONOBO_TYPE_FUNC_FULL (BonoboCanvasComponent, 
 			   Bonobo_Canvas_Component,
 			   PARENT_TYPE,
-			   bonobo_canvas_component);
+			   bonobo_canvas_component)
 
 
 /**

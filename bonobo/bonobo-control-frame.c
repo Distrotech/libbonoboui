@@ -482,7 +482,7 @@ bonobo_control_frame_init (BonoboObject *object)
 BONOBO_TYPE_FUNC_FULL (BonoboControlFrame, 
 		       Bonobo_ControlFrame,
 		       PARENT_TYPE,
-		       bonobo_control_frame);
+		       bonobo_control_frame)
 
 /**
  * bonobo_control_frame_control_activate:

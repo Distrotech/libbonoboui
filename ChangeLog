@@ -1,3 +1,12 @@
+2003-04-11  Padraig O'Briain  <padraig.obriain@sun.com>
+
+	* bonobo/bonobo-canvas-component.c, bonobo/bonobo-control-frame.c,
+	bonobo/bonobo-control.c, bonobo/bonobo-property-control.c,
+	bonobo/bonobo-ui-component.c, bonobo/bonobo-ui-container.c,
+	bonobo/bonobo-zoomable-frame.c, bonobo/bonobo-zoomable.c:
+	Remove semicolon after macro BONOBO_TYPE_FUNC_FULL; this fixes
+	compiler warning when using FORTE compiler.
+
 2003-04-07  Gustavo Giraldez  <gustavo.giraldez@gmx.net>
 
 	* bonobo/bonobo-ui-toolbar.c (impl_get_property): Add container's

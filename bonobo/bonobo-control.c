@@ -1058,7 +1058,7 @@ bonobo_control_init (BonoboControl *control)
 BONOBO_TYPE_FUNC_FULL (BonoboControl, 
 		       Bonobo_Control,
 		       BONOBO_OBJECT_TYPE,
-		       bonobo_control);
+		       bonobo_control)
 
 /*
  * Varrarg Property get/set simplification wrappers.
