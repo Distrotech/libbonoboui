@@ -2949,11 +2949,10 @@ process_state_updates (BonoboWindowPrivate *priv)
 	while (priv->state_updates) {
 		StateUpdate *su = priv->state_updates->data;
 
-		state_update_exec (su);
-
 		priv->state_updates = g_slist_remove (
 			priv->state_updates, su);
 
+		state_update_exec (su);
 		state_update_destroy (su);
 	}
 }
