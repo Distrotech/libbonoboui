@@ -11,10 +11,8 @@
 #include <gnome.h>
 #include <liboaf/liboaf.h>
 #include <bonobo.h>
-#include <bonobo/bonobo-listener.h>
 
 Bonobo_PropertyBag pb = CORBA_OBJECT_NIL;
-BonoboListener *listener = NULL;
 
 static void 
 prop_changed_cb (BonoboListener    *listener,
@@ -32,41 +30,6 @@ prop_changed_cb (BonoboListener    *listener,
 
 	g_free (value);
 
-}
-
-static void
-add_listener (GtkCList *clist)
-{
-	Bonobo_Listener corba_listener;
-	Bonobo_EventSource_ListenerId id;
-	CORBA_Environment ev;
-	Bonobo_Unknown es;
-
-	CORBA_exception_init (&ev);
-
-	/* Set up the change listener */
-	listener = bonobo_listener_new (prop_changed_cb, clist);
-
-	corba_listener = bonobo_object_corba_objref (BONOBO_OBJECT (listener));
-
-	es = Bonobo_Unknown_queryInterface (pb, "IDL:Bonobo/EventSource:1.0",
-					    &ev);
-	if (BONOBO_EX(&ev) || !es) {
-		printf ("ERR %s\n", bonobo_exception_get_text (&ev));
-		g_warning ("Couldn't get EventSource from bag");
-		CORBA_exception_free (&ev);
-		return;
-	}
-	
-	id = Bonobo_EventSource_addListener (es, corba_listener, &ev);
-	if (BONOBO_EX(&ev) || !id) {
-		printf ("ERR %s\n", bonobo_exception_get_text (&ev));
-		g_error ("Couldn't add listener to bag");
-		CORBA_exception_free (&ev);
-		return;
-	}
-
-	CORBA_exception_free (&ev);
 }
 
 static void
@@ -172,7 +135,8 @@ create_proplist (GtkWidget *bw)
  
 	populate_property_list (bw, GTK_CLIST (clist));
 
-	add_listener (GTK_CLIST (clist));
+	bonobo_event_source_client_add_listener (pb, prop_changed_cb, 
+	        "Bonobo/Property:change:running", NULL, clist); 
 
 	return clist;
 }
@@ -204,10 +168,6 @@ app_destroy_cb (GtkWidget *app, BonoboUIContainer *uic)
 	if (pb != CORBA_OBJECT_NIL)
 		bonobo_object_release_unref (pb, NULL);
 	pb = CORBA_OBJECT_NIL;
-
-	if (listener)
-		bonobo_object_unref (BONOBO_OBJECT (listener));
-	listener = NULL;
 
 	gtk_main_quit ();
 /*	g_warning ("Main level %d\n", gtk_main_level ());*/

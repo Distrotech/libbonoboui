@@ -37,6 +37,9 @@ extern "C" {
 #include <bonobo/bonobo-zoomable.h>
 #include <bonobo/bonobo-zoomable-frame.h>
 
+#include <bonobo/bonobo-listener.h>
+#include <bonobo/bonobo-event-source.h>
+
 #include <bonobo/bonobo-view.h>
 #include <bonobo/bonobo-generic-factory.h>
 
