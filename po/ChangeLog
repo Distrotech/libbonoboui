@@ -1,0 +1,6 @@
+2001-05-21  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* no.po: Added Norwegian translation.
+	* POTFILES.in: Populated this.
+	* .cvsignore: Updated.
+	
