@@ -1,6 +1,7 @@
 SUBDIRS = bonobo po intl
 
-include_HEADERS =	\
+libincludedir = $(includedir)/gnome/2
+libinclude_HEADERS =    \
 	bonobo.h	\
 	libbonoboui.h
 

@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libbonobui
+Description: libbonoboui
+Requires: glib-2.0 ORBit-2.0 libxml-2.0 libbonobo
+Version: @VERSION@
+Libs: -L${libdir} -lbonobo-2
+Cflags: -I${includedir}/gnome/2
