@@ -190,7 +190,7 @@ gnome_view_frame_new (GnomeClientSite *client_site)
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
 
-	view_frame = gtk_type_new (gnome_view_frame_get_type ());
+	view_frame = gtk_type_new (GNOME_VIEW_FRAME_TYPE);
 
 	wrapper = GNOME_WRAPPER (gnome_wrapper_new ());
 	if (wrapper == NULL){
@@ -251,7 +251,7 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
-	gnome_view_frame_parent_class = gtk_type_class (gnome_object_get_type ());
+	gnome_view_frame_parent_class = gtk_type_class (GNOME_OBJECT_TYPE);
 
 	view_frame_signals [VIEW_ACTIVATED] =
 		gtk_signal_new ("view_activated",

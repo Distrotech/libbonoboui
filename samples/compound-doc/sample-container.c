@@ -68,13 +68,27 @@ container_exit_cmd (GtkWidget *widget, Container *container)
 }
 
 static void
+component_view_set_size (Component *component, GtkWidget *view_widget, int width, int height)
+{
+	/*
+	 * Clamp this to our (arbitrarily chosen) constraints.
+	 */
+	width = CLAMP (width, 10, 500);
+	height = CLAMP (height, 10, 500);
+
+	/*
+	 * Now set the size.
+	 */
+	gtk_widget_set_usize (view_widget, width, height);
+}
+
+static void
 component_user_activate_request_cb (GnomeViewFrame *view_frame, gpointer data)
 {
 	Component *component = (Component *) data;
 	Container *container = component->container;
 
 	/*
-	 * If there is a
 	 * If there is already an active View, deactivate it.
 	 */
         if (container->active_view_frame != NULL) {
@@ -183,6 +197,17 @@ component_user_context_cb (GnomeViewFrame *view_frame, gpointer data)
 }
 
 static void
+component_request_resize_cb (GnomeViewFrame *view_frame, int width, int height, gpointer data)
+{
+	Component *component = (Component *) data;
+	GtkWidget *view_widget;
+
+	view_widget = gnome_view_frame_get_wrapper (view_frame);
+
+	component_view_set_size (component, view_widget, width, height);
+}
+
+static void
 component_add_view (Component *component)
 {
 	GnomeViewFrame *view_frame;
@@ -245,6 +270,13 @@ component_add_view (Component *component)
 			    GTK_SIGNAL_FUNC (component_user_context_cb), component);
 
 	/*
+	 * The "request_resize" signal is emitted by the view frame
+	 * when the embedded component wants to be resized.
+	 */
+	gtk_signal_connect (GTK_OBJECT (view_frame), "request_resize",
+			    GTK_SIGNAL_FUNC (component_request_resize_cb), component);
+
+	/*
 	 * Show the component.
 	 */
 	gtk_widget_show_all (view_widget);
@@ -255,20 +287,9 @@ component_add_view (Component *component)
 	gnome_view_frame_size_request (view_frame, &component_width, &component_height);
 
 	/*
-	 * Clamp this to our (arbitrarily chosen) constraints.
+	 * Set the size.
 	 */
-	component_width = CLAMP (component_width, 10, 500);
-	component_height = CLAMP (component_height, 10, 500);
-
-	/*
-	 * Now set the size.
-	 */
-	/*
-	 * FIXME: All this size negotiation needs to be put into a
-	 * single function and then connected to the queue_resize
-	 * signal (or whatever the component function is.)
-	 */
-	gtk_widget_set_usize (view_widget, component_width, component_height);
+	component_view_set_size (component, view_widget, component_width, component_height);
 }
 
 
@@ -287,7 +308,6 @@ component_load_cancel_cb (GtkWidget *button, gpointer data)
 
 	gtk_widget_destroy (component->fs);
 }
-
 
 static void
 component_create_fs (Component *component,
@@ -736,6 +756,9 @@ container_add_embeddable_cmd (GtkWidget *widget, Container *container)
 	goad_id = gnome_bonobo_select_goad_id (
 		_("Select an embeddable Bonobo component to add"),
 		(const gchar **) required_interfaces);
+
+	if (goad_id == NULL)
+		return;
 
 	/*
 	 * Activate it.

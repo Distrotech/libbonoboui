@@ -724,6 +724,9 @@ gnome_ui_handler_set_app (GnomeUIHandler *uih, GnomeApp *app)
 	g_return_if_fail (GNOME_IS_APP (app));
 
 	uih->top->app = app;
+
+	if (uih->top->accelgroup == NULL && app->accel_group != NULL)
+		gnome_ui_handler_set_accelgroup (uih, app->accel_group);
 }
 
 static void

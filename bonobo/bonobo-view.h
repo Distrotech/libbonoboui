@@ -79,6 +79,8 @@ void		 gnome_view_register_verb	(GnomeView *view,
 						 gpointer user_data);
 void		 gnome_view_unregister_verb	(GnomeView *view,
 						 const char *verb_name);
+void		 gnome_view_request_resize	(GnomeView *view,
+						 int width, int height);
 
 /* CORBA default vector methods we provide */
 extern POA_GNOME_View__epv gnome_view_epv;

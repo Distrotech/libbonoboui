@@ -657,3 +657,31 @@ gnome_view_unregister_verb (GnomeView *view, const char *verb_name)
 	g_hash_table_remove (view->verb_callback_closures, verb_name);
 	g_free (original_key);
 }
+
+/**
+ * gnome_view_request_resize:
+ * @view: A GnomeView object which we are requesting to resize.
+ * @width: The requested width.
+ * @height: The requested height.
+ *
+ * Asks the ViewFrame associated with @view to resize the view.  If
+ * the ViewFrame acquiesces, the toplevel widget associated with @view
+ * will get a "size_allocate" signal.
+ */
+void
+gnome_view_request_resize (GnomeView *view, int width, int height)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (view != NULL);
+	g_return_if_fail (GNOME_IS_VIEW (view));
+	g_return_if_fail (view->view_frame != CORBA_OBJECT_NIL); 
+
+	CORBA_exception_init (&ev);
+
+	GNOME_ViewFrame_request_resize (view->view_frame,
+					width, height,
+					&ev);
+
+	CORBA_exception_free (&ev);
+}

@@ -78,5 +78,45 @@ gnome_bonobo_widget_new (char *object_desc,
 	if (bw->view_frame == NULL)
 		return NULL;
 
+	gnome_container_add (GTK_CONTAINER (
 	return gnome_view_frame_get_wrapper (bw->view_frame);
+}
+
+static void
+gnome_bonobo_widget_class_init (GnomeBonoboWidgetClass *class)
+{
+	GtkObjectClass *object_class = (GtkObjectClass *) class;
+	GtkWidgetClass *widget_class = (GtkWidgetClass *) class;
+
+	parent_class = gtk_type_class (GTK_TYPE_BIN);
+
+	object_class->destroy = gnome_bonobo_widget_destroy;
+}
+
+static void
+gnome_bonobo_widget_init (GnomeBonoboWidget *bw)
+{
+}
+
+GtkType
+gnome_bonobo_widget_get_type (void)
+{
+	static GtkType type = 0;
+
+	if (! type) {
+		static const GtkTypeInfo info = {
+			"GnomeBonoboWidget",
+			sizeof (GnomeBonoboWidget),
+			sizeof (GnomeBonoboWidgetClass),
+			(GtkClassInitFunc) gnome_bonobo_widget_class_init,
+			(GtkObjectInitFunc) gnome_bonobo_widget_init,
+			NULL, /* reserved_1 */
+			NULL, /* reserved_2 */
+			(GtkClassInitFunc) NULL
+		};
+
+		type = gtk_type_unique (GNOME_WRAPPER_TYPE, &info);
+	}
+
+	return type;
 }
