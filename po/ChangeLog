@@ -1,3 +1,8 @@
+2001-08-22  Wang Jian <lark@linux.net.cn>
+
+	* zh_CN.po: Added Simplified Chinese translation.
+	(Merged from bonobo/po/zh_CN.po)
+
 2001-06-21  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* ca.po: Added Catalan file
