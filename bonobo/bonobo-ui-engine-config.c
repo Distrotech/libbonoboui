@@ -31,6 +31,8 @@ static GObjectClass *parent_class = NULL;
 struct _BonoboUIEngineConfigPrivate {
 	char           *path; 
 
+	GtkWindow      *opt_parent;
+
 	BonoboUIEngine *engine;
 	BonoboUIXml    *tree;
 
@@ -443,10 +445,12 @@ bonobo_ui_engine_config_get_type (void)
 
 BonoboUIEngineConfig *
 bonobo_ui_engine_config_construct (BonoboUIEngineConfig *config,
-				   BonoboUIEngine       *engine)
+				   BonoboUIEngine       *engine,
+				   GtkWindow            *opt_parent)
 {
 	config->priv->engine = engine;
 	config->priv->tree   = bonobo_ui_engine_get_xml (engine);
+	config->priv->opt_parent = opt_parent;
 
 	bonobo_ui_xml_set_watch_fn (
 		bonobo_ui_engine_get_xml (engine),
@@ -456,7 +460,8 @@ bonobo_ui_engine_config_construct (BonoboUIEngineConfig *config,
 }
 
 BonoboUIEngineConfig *
-bonobo_ui_engine_config_new (BonoboUIEngine *engine)
+bonobo_ui_engine_config_new (BonoboUIEngine *engine,
+			     GtkWindow      *opt_parent)
 {
 	BonoboUIEngineConfig *config;
 
@@ -464,7 +469,7 @@ bonobo_ui_engine_config_new (BonoboUIEngine *engine)
 
 	config = g_object_new (bonobo_ui_engine_config_get_type (), NULL);
 
-	return bonobo_ui_engine_config_construct (config, engine);
+	return bonobo_ui_engine_config_construct (config, engine, opt_parent);
 }
 
 void
@@ -514,7 +519,7 @@ dialog_new (BonoboUIEngineConfig *config)
 	accel_group = gtk_accel_group_new ();
 
 	window = gtk_dialog_new_with_buttons (_("Configure UI"), 
-					      NULL, 0,
+					      config->priv->opt_parent, 0,
 					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
 	gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_OK);

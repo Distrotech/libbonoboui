@@ -40,10 +40,12 @@ GType bonobo_ui_engine_config_get_type  (void) G_GNUC_CONST;
 
 BonoboUIEngineConfig *
         bonobo_ui_engine_config_construct (BonoboUIEngineConfig   *config,
-					   BonoboUIEngine         *engine);
+					   BonoboUIEngine         *engine,
+					   GtkWindow              *opt_parent);
 
 BonoboUIEngineConfig *
-        bonobo_ui_engine_config_new       (BonoboUIEngine         *engine);
+        bonobo_ui_engine_config_new       (BonoboUIEngine         *engine,
+					   GtkWindow              *opt_parent);
 
 typedef char*(*BonoboUIEngineConfigFn)    (BonoboUIEngineConfig   *config,
 					   BonoboUINode           *config_node,
@@ -77,3 +79,6 @@ BonoboUIEngine *bonobo_ui_engine_config_get_engine (BonoboUIEngineConfig *config
 G_END_DECLS
 
 #endif /* _BONOBO_UI_ENGINE_CONFIG_H_ */
+
+
+

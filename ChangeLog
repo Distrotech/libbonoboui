@@ -1,3 +1,15 @@
+2002-05-23  Michael Meeks  <michael@ximian.com>
+
+
+	* bonobo/bonobo-ui-engine-config.c
+	(bonobo_ui_engine_config_construct),
+	(bonobo_ui_engine_config_new): store transient parent.
+	(dialog_new): set transient parent #82592
+
+	* bonobo/bonobo-ui-engine.c (bonobo_ui_engine_construct): 
+	pass the view as the transient parent if it's a
+	GtkWindow.
+
 2002-05-22  Gustavo Giráldez  <gustavo.giraldez@gmx.net>
 
 	* bonobo/bonobo-ui-config-widget.c (look_cb, set_values,

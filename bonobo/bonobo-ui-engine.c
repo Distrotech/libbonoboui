@@ -1954,6 +1954,7 @@ BonoboUIEngine *
 bonobo_ui_engine_construct (BonoboUIEngine *engine,
 			    GObject        *view)
 {
+	GtkWindow *opt_parent;
 	BonoboUIEnginePrivate *priv;
 
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
@@ -1964,8 +1965,14 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine,
 	priv->tree = bonobo_ui_xml_new (
 		NULL, info_new_fn, info_free_fn,
 		info_dump_fn, add_node_fn, engine);
+
+
+	if (GTK_IS_WINDOW (view))
+		opt_parent = GTK_WINDOW (view);
+	else
+		opt_parent = NULL;
 	
-	priv->config = bonobo_ui_engine_config_new (engine);
+	priv->config = bonobo_ui_engine_config_new (engine, opt_parent);
 
 	build_skeleton (priv->tree);
 
