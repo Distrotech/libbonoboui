@@ -316,6 +316,19 @@ info_new_fn (void)
 }
 
 static void
+widget_unref (GtkWidget **ref)
+{
+	GtkWidget *w;
+
+	g_return_if_fail (ref != NULL);
+	
+	if ((w = *ref)) {
+		*ref = NULL;
+		gtk_widget_unref (w);
+	}
+}
+
+static void
 info_free_fn (BonoboUIXmlData *data)
 {
 	NodeInfo *info = (NodeInfo *) data;
@@ -325,7 +338,8 @@ info_free_fn (BonoboUIXmlData *data)
 		bonobo_object_release_unref (info->object, NULL);
 		info->object = CORBA_OBJECT_NIL;
 	}
-	info->widget = NULL;
+
+	widget_unref (&info->widget);
 
 	g_free (data);
 }
@@ -392,7 +406,6 @@ custom_widget_unparent (NodeInfo *info)
 		container = GTK_CONTAINER (info->widget->parent);
 		g_return_if_fail (container != NULL);
 
-		gtk_widget_ref (info->widget);
 		gtk_container_remove (container, info->widget);
 	}
 }
@@ -440,7 +453,7 @@ replace_override_fn (GObject        *object,
 	info_dump_fn (old_info);
 	info_dump_fn (info);*/
 
-	/* Copy useful stuff across */
+	/* Copy useful stuff across & tranfer widget ref */
 	old_widget = old_info->widget;
 	old_info->widget = NULL;
 
@@ -505,7 +518,6 @@ prune_node (BonoboUIEngine *engine,
 #endif
 
 			gtk_widget_destroy (item);
-
 		} else {
 			if (save)
 				custom_widget_unparent (info);
@@ -514,7 +526,7 @@ prune_node (BonoboUIEngine *engine,
 		}
 
 		if (!save)
-			info->widget = NULL;
+			widget_unref (&info->widget);
 	}
 }
 
@@ -1132,7 +1144,7 @@ bonobo_ui_engine_object_set (BonoboUIEngine   *engine,
 		bonobo_object_release_unref (info->object, ev);
 		if (info->widget)
 			gtk_widget_destroy (info->widget);
-		info->widget = NULL;
+		widget_unref (&info->widget);
 	}
 	
 	dprintf ("** Setting object %p on info %p\n", object, info);
@@ -1977,14 +1989,14 @@ hide_placeholder_if_empty_or_hidden (BonoboUIEngine *engine,
 	hide_placeholder_and_contents = txt && atoi (txt);
 
 	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
-	has_visible_separator = info && info->widget
-		&& GTK_WIDGET_VISIBLE (info->widget);
+	has_visible_separator = info && info->widget &&
+		GTK_WIDGET_VISIBLE (info->widget);
 
 	if (hide_placeholder_and_contents)
 		hide_all_widgets (engine, node);
 
-	else if (has_visible_separator
-		 && !contains_visible_widget (engine, node))
+	else if (has_visible_separator &&
+		 !contains_visible_widget (engine, node))
 		gtk_widget_hide (info->widget);
 }
 
@@ -2084,7 +2096,7 @@ bonobo_ui_engine_sync (BonoboUIEngine   *engine,
 					widget, bonobo_ui_node_get_name (a), *pos);
 #endif
 
-				info->widget = widget;
+				info->widget = widget ? gtk_widget_ref (widget) : NULL;
 				if (widget) {
 					bonobo_ui_engine_widget_set_node (
 						sync->engine, widget, a);
@@ -2878,7 +2890,7 @@ bonobo_ui_engine_stamp_root (BonoboUIEngine *engine,
 
 	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
 
-	info->widget = widget;
+	info->widget = widget ? gtk_widget_ref (widget) : NULL;
 	info->type |= ROOT_WIDGET;
 
 	bonobo_ui_engine_widget_attach_node (widget, node);

@@ -1,5 +1,30 @@
 2002-01-09  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(bonobo_ui_sync_toolbar_new): take a ref on the dock.
+	(impl_dispose): impl.
+	(impl_finalize): kill.
+	(class_init): upd.
+
+	* bonobo/bonobo-ui-sync-status.c
+	(impl_dispose): impl.
+	(class_init): upd.
+	(bonobo_ui_sync_status_new): take a ref on status.
+
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_dispose): impl.
+	(class_init): add dispose.
+	(bonobo_ui_sync_menu_new): hold references on the
+	various bits.
+
+	* bonobo/bonobo-ui-engine.c (widget_unref): impl.
+	(info_free_fn, prune_node, bonobo_ui_engine_object_set),
+	(bonobo_ui_engine_sync, bonobo_ui_engine_stamp_root): hold
+	a reference on the info->widget member.
+	(custom_widget_unparent): don't do extra refs.
+
+2002-01-09  Michael Meeks  <michael@ximian.com>
+
 	* Makefile.am: remove monikers.
 
 	* monikers/: remove, in libgnome now.

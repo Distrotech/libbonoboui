@@ -32,7 +32,7 @@
 #include <bonobo/bonobo-ui-toolbar-popup-item.h>
 #include <bonobo/bonobo-ui-toolbar-control-item.h>
 
-static BonoboUISyncClass *parent_class = NULL;
+static GObjectClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
@@ -426,13 +426,16 @@ impl_bonobo_ui_sync_toolbar_state_update (BonoboUISync *sync,
 }
 
 static void
-impl_finalize (GObject *object)
+impl_dispose (GObject *object)
 {
-	BonoboUISyncToolbar *sync;
+	BonoboUISyncToolbar *sync = (BonoboUISyncToolbar *) object;
 
-	sync = BONOBO_UI_SYNC_TOOLBAR (object);
+	if (sync->dock) {
+		g_object_unref (G_OBJECT (sync->dock));
+		sync->dock = NULL;
+	}
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	parent_class->dispose (object);
 }
 
 static gboolean
@@ -812,7 +815,7 @@ class_init (BonoboUISyncClass *sync_class)
 	parent_class = g_type_class_peek_parent (sync_class);
 
 	object_class = G_OBJECT_CLASS (sync_class);
-	object_class->finalize = impl_finalize;
+	object_class->dispose = impl_dispose;
 
 	sync_class->sync_state = impl_bonobo_ui_sync_toolbar_state;
 	sync_class->build      = impl_bonobo_ui_sync_toolbar_build;
@@ -862,7 +865,7 @@ bonobo_ui_sync_toolbar_new (BonoboUIEngine  *engine,
 
 	sync = g_object_new (BONOBO_TYPE_UI_SYNC_TOOLBAR, NULL);
 
-	sync->dock = dock;
+	sync->dock = g_object_ref (G_OBJECT (dock));
 
 	return bonobo_ui_sync_construct (
 		BONOBO_UI_SYNC (sync), engine, FALSE, TRUE);

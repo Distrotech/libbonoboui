@@ -25,7 +25,7 @@
 
 #undef WIDGET_SYNC_DEBUG
 
-static BonoboUISyncClass *parent_class = NULL;
+static GObjectClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
@@ -762,6 +762,29 @@ radio_group_destroy (gpointer	key,
 }
 
 static void
+impl_dispose (GObject *object)
+{
+	BonoboUISyncMenu *sync = (BonoboUISyncMenu *) object;
+
+	if (sync->menu) {
+		g_object_unref (G_OBJECT (sync->menu));
+		sync->menu = NULL;
+	}
+
+	if (sync->menu_dock_item) {
+		g_object_unref (G_OBJECT (sync->menu_dock_item));
+		sync->menu_dock_item = NULL;
+	}
+
+	if (sync->accel_group) {
+		g_object_unref (G_OBJECT (sync->accel_group));
+		sync->accel_group = NULL;
+	}
+
+	parent_class->dispose (object);
+}
+
+static void
 impl_finalize (GObject *object)
 {
 	BonoboUISyncMenu *sync;
@@ -773,7 +796,7 @@ impl_finalize (GObject *object)
 	g_hash_table_destroy (sync->radio_groups);
 	sync->radio_groups = NULL;
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	parent_class->finalize (object);
 }
 
 static gboolean
@@ -861,6 +884,7 @@ class_init (BonoboUISyncClass *sync_class)
 	parent_class = g_type_class_peek_parent (sync_class);
 
 	object_class = G_OBJECT_CLASS (sync_class);
+	object_class->dispose  = impl_dispose;
 	object_class->finalize = impl_finalize;
 
 	sync_class->sync_state = impl_bonobo_ui_sync_menu_state;
@@ -922,9 +946,13 @@ bonobo_ui_sync_menu_new (BonoboUIEngine *engine,
 
 	sync = g_object_new (BONOBO_TYPE_UI_SYNC_MENU, NULL);
 
-	sync->menu           = menu;
-	sync->menu_dock_item = menu_dock_item;
-	sync->accel_group    = group;
+	sync->menu = menu ? g_object_ref (G_OBJECT (menu)) : NULL;
+
+	sync->menu_dock_item = menu_dock_item ?
+		g_object_ref (G_OBJECT (menu_dock_item)) :
+		menu_dock_item;
+
+	sync->accel_group = group ? g_object_ref (G_OBJECT (group)) : NULL;
 
 	return bonobo_ui_sync_construct (
 		BONOBO_UI_SYNC (sync), engine, TRUE, TRUE);

@@ -25,7 +25,7 @@
 
 #include <bonobo/bonobo-ui-toolbar-separator-item.h>
 
-static BonoboUISyncClass *parent_class = NULL;
+static GObjectClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
@@ -248,9 +248,22 @@ impl_bonobo_ui_sync_status_get_widgets (BonoboUISync *sync,
 }
 
 static void
+impl_dispose (GObject *object)
+{
+	BonoboUISyncStatus *sync = (BonoboUISyncStatus *) object;
+
+	if (sync->status) {
+		g_object_unref (G_OBJECT (sync->status));
+		sync->status = NULL;
+	}
+
+	parent_class->dispose (object);
+}
+
+static void
 impl_finalize (GObject *object)
 {
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	parent_class->finalize (object);
 }
 
 static gboolean
@@ -270,6 +283,7 @@ class_init (BonoboUISyncClass *sync_class)
 	parent_class = g_type_class_peek_parent (sync_class);
 
 	object_class = G_OBJECT_CLASS (sync_class);
+	object_class->dispose  = impl_dispose;
 	object_class->finalize = impl_finalize;
 
 	sync_class->sync_state = impl_bonobo_ui_sync_status_state;
@@ -322,7 +336,7 @@ bonobo_ui_sync_status_new (BonoboUIEngine *engine,
 
 	sync = g_object_new (BONOBO_TYPE_UI_SYNC_STATUS, NULL);
 
-	sync->status = status;
+	sync->status = g_object_ref (G_OBJECT (status));
 
 	g_signal_connect (G_OBJECT (engine), "add_hint",
 			  (GCallback) set_hint_cb, sync);
