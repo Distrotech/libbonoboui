@@ -1,6 +1,6 @@
 /* -*- mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * GNOME control object
+ * Bonobo control object
  *
  * Author:
  *   Nat Friedman (nat@helixcode.com)

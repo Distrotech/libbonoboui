@@ -1,6 +1,6 @@
 /*
  * bonobo-canvas-component.c: implements the CORBA interface for
- * the GNOME::Canvas:Item interface used in Bonobo::Views.
+ * the Bonobo::Canvas:Item interface used in Bonobo::Views.
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
@@ -673,7 +673,7 @@ bonobo_canvas_component_object_create (BonoboObject *object)
  * @corba_canvas_comp: A Bonobo_Canvas_Component corba object.
  * @item: A #GnomeCanvasItem that is being exported
  *
- * Creates a CORBA server for the interface GNOME::Canvas::Item
+ * Creates a CORBA server for the interface Bonobo::Canvas::Item
  * wrapping @item.
  *
  * Returns: The BonoboCanvasComponent.
@@ -700,7 +700,7 @@ bonobo_canvas_component_construct (BonoboCanvasComponent *comp,
  * bonobo_canvas_component_new:
  * @item: A GnomeCanvasItem that is being exported
  *
- * Creates a CORBA server for the interface GNOME::Canvas::Item
+ * Creates a CORBA server for the interface Bonobo::Canvas::Item
  * wrapping @item.
  *
  * Returns: The BonoboCanvasComponent.

@@ -131,6 +131,8 @@ bonobo_wrapper_class_init (BonoboWrapperClass *klass)
 static void
 bonobo_wrapper_init (BonoboWrapper *wrapper)
 {
+	GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET(wrapper), GTK_NO_WINDOW);
+
 	wrapper->priv = g_new0 (BonoboWrapperPrivate, 1);
 
 	wrapper->priv->covered = TRUE;

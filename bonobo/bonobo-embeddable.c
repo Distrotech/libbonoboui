@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * GNOME Embeddable object.
+ * Bonobo Embeddable object.
  *
  * A BonoboEmbeddable object represents the actual object being
  * embedded.  A BonoboEmbeddable may have one or more BonoboViews, each

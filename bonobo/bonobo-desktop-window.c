@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * GNOME Desktop Window Control implementation.
+ * Bonobo Desktop Window Control implementation.
  * Enables applications to export their geometry control through CORBA.
  *
  * Author:
@@ -219,7 +219,7 @@ bonobo_desktop_window_get_type (void)
  * @object: Object to be aggregated.
  * @win: Window to be controled.
  *
- * Attaches a Bonobo::Desktop::Window corba handler to a GNOME
+ * Attaches a Bonobo::Desktop::Window corba handler to a Bonobo
  * object controlling the window @win.  
  */
 void

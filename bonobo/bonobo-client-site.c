@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * GNOME ClientSite object.
+ * Bonobo ClientSite object.
  *
  * A BonoboClientSite object acts as the point-of-contact for an
  * embedded component: the contained Bonobo::Embeddable object
@@ -37,7 +37,7 @@ static BonoboObjectClass *bonobo_client_site_parent_class;
 static guint bonobo_client_site_signals [LAST_SIGNAL];
 
 static Bonobo_Container
-impl_GNOME_client_site_get_container (PortableServer_Servant servant, CORBA_Environment *ev)
+impl_Bonobo_client_site_get_container (PortableServer_Servant servant, CORBA_Environment *ev)
 {
 	BonoboObject *object = bonobo_object_from_servant (servant);
 	BonoboClientSite *client_site = BONOBO_CLIENT_SITE (object);
@@ -47,7 +47,7 @@ impl_GNOME_client_site_get_container (PortableServer_Servant servant, CORBA_Envi
 }
 
 static void
-impl_GNOME_client_site_show_window (PortableServer_Servant servant, CORBA_boolean shown,
+impl_Bonobo_client_site_show_window (PortableServer_Servant servant, CORBA_boolean shown,
 				    CORBA_Environment *ev)
 {
 	BonoboClientSite *client_site = BONOBO_CLIENT_SITE (bonobo_object_from_servant (servant));
@@ -59,7 +59,7 @@ impl_GNOME_client_site_show_window (PortableServer_Servant servant, CORBA_boolea
 }
 
 static Bonobo_Persist_Status
-impl_GNOME_client_site_save_object (PortableServer_Servant servant, CORBA_Environment *ev)
+impl_Bonobo_client_site_save_object (PortableServer_Servant servant, CORBA_Environment *ev)
 {
 	BonoboObject *object = bonobo_object_from_servant (servant);
 	Bonobo_Persist_Status status;
@@ -125,9 +125,9 @@ bonobo_client_site_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_ClientSite__epv, 1);
 
-	epv->get_container = impl_GNOME_client_site_get_container;
-	epv->show_window   = impl_GNOME_client_site_show_window;
-	epv->save_object   = impl_GNOME_client_site_save_object;
+	epv->get_container = impl_Bonobo_client_site_get_container;
+	epv->show_window   = impl_Bonobo_client_site_show_window;
+	epv->save_object   = impl_Bonobo_client_site_save_object;
 
 	return epv;
 }
