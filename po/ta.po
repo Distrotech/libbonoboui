@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tamil Translation of libbonoboui 1.4.1\n"
-"POT-Creation-Date: 2001-09-23 10:34-0400\n"
+"POT-Creation-Date: 2001-09-27 08:01+1000\n"
 "PO-Revision-Date: 2001-09-19 22:37-0500\n"
 "Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"

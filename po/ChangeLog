@@ -1,3 +1,11 @@
+2001-09-27  gettextize  <bug-gnu-utils@gnu.org>
+
+	* Makefile.in.in: Upgrade to gettext-0.10.39.
+
+2001-09-27  gettextize  <bug-gnu-utils@gnu.org>
+
+	* Makefile.in.in: Upgrade to gettext-0.10.39.
+
 2001-09-24  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* az.po: Updated Azeri file

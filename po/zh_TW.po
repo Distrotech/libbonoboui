@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ammonite\n"
-"POT-Creation-Date: 2001-07-30 09:31+0800\n"
+"POT-Creation-Date: 2001-09-27 08:01+1000\n"
 "PO-Revision-Date: 2001-07-30 10:36+0800\n"
 "Last-Translator: Joe Man <trmetal@yahoo.com.hk>\n"
 "Language-Team: chinese <zh@li.org>\n"
@@ -13,25 +13,33 @@ msgstr ""
 "Content-Type: text/plain; charset=big5\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:228
-#: bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
 msgid "Shadow type"
 msgstr "立體效果類別"
 
-#: bonobo/bonobo-dock-item.c:237
-#: bonobo/bonobo-dock-item.c:238
+#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
 msgid "Orientation"
 msgstr "方向"
 
-#: bonobo/bonobo-dock-item.c:246
-#: bonobo/bonobo-dock-item.c:247
+#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
 msgid "Preferred width"
 msgstr "寬度"
 
-#: bonobo/bonobo-dock-item.c:254
-#: bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 msgid "Preferred height"
 msgstr "高度"
+
+#: bonobo/bonobo-file-selector-util.c:371
+msgid "Select a file to open"
+msgstr ""
+
+#: bonobo/bonobo-file-selector-util.c:399
+msgid "Select files to open"
+msgstr ""
+
+#: bonobo/bonobo-file-selector-util.c:428
+msgid "Select a filename to save"
+msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
@@ -61,13 +69,11 @@ msgstr "顯示工具列提示 (_V)"
 msgid "Toolbars"
 msgstr "工具列"
 
-#: bonobo/bonobo-ui-config-widget.c:311
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "檢視"
 
-#: bonobo/bonobo-ui-config-widget.c:321
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "圖示 (_I)"
 
@@ -111,43 +117,11 @@ msgstr "自訂 (_Z)"
 msgid "Customize the toolbar"
 msgstr "自訂工具列"
 
-#: tests/test-container.c:66
-#: tests/test-container.c:92
-msgid "Can not activate object_server"
-msgstr "無法啟動伺服物件"
-
-#: tests/test-container.c:97
-msgid "Can not bind object server to client_site"
-msgstr "無法連結伺服物件到客戶端"
-
-#: tests/test-container.c:266
-msgid "Can not activate server"
-msgstr "無法啟動伺服服務"
-
-#: tests/test-container.c:316
-#: tests/test-container.c:361
-msgid "Could not launch bonobo object."
-msgstr "無法啟動 bonobo 物件。"
-
-#: tests/test-container.c:559
-msgid "Could not launch Embeddable."
-msgstr "無法啟動嵌入式"
-
-#: tests/test-container.c:593
-msgid "Could not launch Control."
-msgstr "無法啟動控制元件。"
-
-#: tests/test-container.c:845
-msgid "Can not bonobo_init"
-msgstr "無法初始化 Bononbo"
-
-#: tests/test-focus.c:31
-#: tests/test-sensitivity.c:194
-#: tests/test-toolbar.c:50
+#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "無法初始化 bonobo 使用者介面 "
 
-#: tests/test-selector.c:13
+#: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "選擇一個物件"
 
@@ -155,3 +129,23 @@ msgstr "選擇一個物件"
 msgid "Cannot init libbonoboui code"
 msgstr "無法初始化 libbonoboui 的原碼"
 
+#~ msgid "Can not activate object_server"
+#~ msgstr "無法啟動伺服物件"
+
+#~ msgid "Can not bind object server to client_site"
+#~ msgstr "無法連結伺服物件到客戶端"
+
+#~ msgid "Can not activate server"
+#~ msgstr "無法啟動伺服服務"
+
+#~ msgid "Could not launch bonobo object."
+#~ msgstr "無法啟動 bonobo 物件。"
+
+#~ msgid "Could not launch Embeddable."
+#~ msgstr "無法啟動嵌入式"
+
+#~ msgid "Could not launch Control."
+#~ msgstr "無法啟動控制元件。"
+
+#~ msgid "Can not bonobo_init"
+#~ msgstr "無法初始化 Bononbo"

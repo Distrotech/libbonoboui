@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"POT-Creation-Date: 2001-07-07 12:46+0200\n"
+"POT-Creation-Date: 2001-09-27 08:01+1000\n"
 "PO-Revision-Date: 2001-07-07 12:50+02:00\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@cgabriel.org>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -29,115 +29,124 @@ msgstr "Larghezza preferita"
 msgid "Preferred height"
 msgstr "Altezza preferita"
 
-#: bonobo/bonobo-selector-widget.c:211
+#: bonobo/bonobo-file-selector-util.c:371
+msgid "Select a file to open"
+msgstr ""
+
+#: bonobo/bonobo-file-selector-util.c:399
+msgid "Select files to open"
+msgstr ""
+
+#: bonobo/bonobo-file-selector-util.c:428
+msgid "Select a filename to save"
+msgstr ""
+
+#: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
 msgstr "Nome"
 
-#: bonobo/bonobo-selector-widget.c:235
+#: bonobo/bonobo-selector-widget.c:380
 msgid "Description"
 msgstr "Descrizione"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "Visible"
 msgstr "Visibile"
 
-#: bonobo/bonobo-ui-config-widget.c:280
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Mostra"
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "_Hide"
 msgstr "_Nascondi"
 
-#: bonobo/bonobo-ui-config-widget.c:300
+#: bonobo/bonobo-ui-config-widget.c:294
 msgid "_View tooltips"
 msgstr "_Suggerimenti"
 
-#: bonobo/bonobo-ui-config-widget.c:307
+#: bonobo/bonobo-ui-config-widget.c:301
 msgid "Toolbars"
 msgstr "Barre strumenti"
 
-#: bonobo/bonobo-ui-config-widget.c:317 bonobo/bonobo-ui-sync-toolbar.c:510
+#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "Aspetto"
 
-#: bonobo/bonobo-ui-config-widget.c:327 bonobo/bonobo-ui-sync-toolbar.c:512
+#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "_Icona"
 
-#: bonobo/bonobo-ui-config-widget.c:337
+#: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Text and Icon"
 msgstr "_Testo e icona"
 
-#: bonobo/bonobo-ui-config-widget.c:347
+#: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
 msgstr "_Priorità al solo testo"
 
-#: bonobo/bonobo-ui-engine-config.c:524
+#: bonobo/bonobo-ui-engine-config.c:513
 msgid "Configure UI"
 msgstr "Configurazione UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:511
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
 msgstr "_Entrambi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:513
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
 msgstr "_Testo"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:514
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
 msgstr "N_ascondi suggerimenti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:515
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
 msgstr "_Mostra suggerimenti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:516
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
 msgstr "_Nascondi barra strumenti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:517
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
 msgstr "_Personalizza"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:518
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
 msgstr "Personalizza la barra degli strumenti"
 
-#: tests/selector_test.c:20
+#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+msgid "Can not bonobo_ui_init"
+msgstr "Impossibile bonobo_ui_init"
+
+#: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Selezionare un oggetto"
 
-#: tests/test-container.c:65 tests/test-container.c:95
-msgid "Can not activate object_server"
-msgstr "Impossibile attivare object_server"
-
-#: tests/test-container.c:70 tests/test-container.c:100
-msgid "Can not bind object server to client_site"
-msgstr "Impossibile collegare il server oggetti al client_site"
-
-#: tests/test-container.c:269
-msgid "Can not activate server"
-msgstr "Impossibile attivare il server"
-
-#: tests/test-container.c:319 tests/test-container.c:364
-msgid "Could not launch bonobo object."
-msgstr "Impossibile lanciare oggetto Bonobo."
-
-#: tests/test-container.c:562
-msgid "Could not launch Embeddable."
-msgstr "Impossibile lanciare oggetto Embeddable."
-
-#: tests/test-container.c:596
-msgid "Could not launch Control."
-msgstr "Impossibile lanciare il controllo."
-
-#: tests/test-container.c:861
-msgid "Can not bonobo_init"
-msgstr "Impossibile bonobo_init"
-
-#: tests/test-focus.c:31 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-#: tests/test-ui.c:225
-msgid "Can not bonobo_ui_init"
+#: tests/test-ui.c:230
+#, fuzzy
+msgid "Cannot init libbonoboui code"
 msgstr "Impossibile bonobo_ui_init"
+
+#~ msgid "Can not activate object_server"
+#~ msgstr "Impossibile attivare object_server"
+
+#~ msgid "Can not bind object server to client_site"
+#~ msgstr "Impossibile collegare il server oggetti al client_site"
+
+#~ msgid "Can not activate server"
+#~ msgstr "Impossibile attivare il server"
+
+#~ msgid "Could not launch bonobo object."
+#~ msgstr "Impossibile lanciare oggetto Bonobo."
+
+#~ msgid "Could not launch Embeddable."
+#~ msgstr "Impossibile lanciare oggetto Embeddable."
+
+#~ msgid "Could not launch Control."
+#~ msgstr "Impossibile lanciare il controllo."
+
+#~ msgid "Can not bonobo_init"
+#~ msgstr "Impossibile bonobo_init"
