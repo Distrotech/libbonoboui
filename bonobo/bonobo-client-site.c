@@ -100,6 +100,16 @@ bonobo_client_site_destroy (GtkObject *object)
 
 	bonobo_container_remove (client_site->container, BONOBO_OBJECT (object));
 
+	if (client_site->bound_object) {
+		CORBA_Environment ev;
+	
+		CORBA_exception_init (&ev);
+		Bonobo_Unknown_unref (bonobo_object_corba_objref (
+			BONOBO_OBJECT (client_site->bound_object)), &ev);
+		client_site->bound_object = NULL;
+		CORBA_exception_free (&ev);
+	}
+
 	object_class->destroy (object);
 }
 
@@ -177,6 +187,7 @@ bonobo_client_site_class_init (BonoboClientSiteClass *klass)
 static void
 bonobo_client_site_init (BonoboClientSite *client_site)
 {
+	client_site->bound_object = NULL;
 }
 
 static CORBA_Object
@@ -313,7 +324,6 @@ gboolean
 bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectClient *object)
 {
 	CORBA_Object corba_object;
-	BonoboObject *bonobo_object;
 	CORBA_Environment ev;
 	
 	g_return_val_if_fail (client_site != NULL, FALSE);
@@ -322,8 +332,6 @@ bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectC
 	g_return_val_if_fail (BONOBO_IS_OBJECT_CLIENT (object), FALSE);
 
 	CORBA_exception_init (&ev);
-
-	bonobo_object = BONOBO_OBJECT (object);
 
 	corba_object = bonobo_object_client_query_interface (
 		object, "IDL:Bonobo/Embeddable:1.0", NULL);
@@ -340,13 +348,13 @@ bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectC
 		
 	if (ev._major != CORBA_NO_EXCEPTION){
 		CORBA_exception_free (&ev);
-		bonobo_object_check_env (bonobo_object, corba_object, &ev);
+		bonobo_object_check_env (BONOBO_OBJECT (object), corba_object, &ev);
 		return FALSE;
 	}
 
 	client_site->bound_object = object;
 
-	Bonobo_Unknown_unref (bonobo_object_corba_objref (bonobo_object), &ev);
+	Bonobo_Unknown_ref (bonobo_object_corba_objref (BONOBO_OBJECT (object)), &ev);
 	
 	CORBA_exception_free (&ev);
 
@@ -401,9 +409,9 @@ bonobo_client_site_new_view_full (BonoboClientSite *client_site,
 				  gboolean          visible_cover,
 				  gboolean          active_view)
 {
-	BonoboObjectClient *server_object;
 	BonoboViewFrame *view_frame;
 	BonoboWrapper *wrapper;
+	CORBA_Object server_object;
 	Bonobo_View view;
 
 	CORBA_Environment ev;
@@ -411,8 +419,6 @@ bonobo_client_site_new_view_full (BonoboClientSite *client_site,
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
-
-	server_object = client_site->bound_object;
 
 	/*
 	 * 1. Create the view frame.
@@ -425,15 +431,21 @@ bonobo_client_site_new_view_full (BonoboClientSite *client_site,
 	/*
 	 * 2. Now, create the view.
 	 */
+	server_object = bonobo_object_client_query_interface (
+		client_site->bound_object, "IDL:Bonobo/Embeddable:1.0", NULL);
+	if (server_object == CORBA_OBJECT_NIL)
+		return NULL;
+
 	CORBA_exception_init (&ev);
  	view = Bonobo_Embeddable_new_view (
-		bonobo_object_corba_objref (BONOBO_OBJECT (server_object)),
+		server_object,
 		bonobo_object_corba_objref (BONOBO_OBJECT (view_frame)),
 		&ev);
+
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (client_site),
-			bonobo_object_corba_objref (BONOBO_OBJECT (server_object)),
+			server_object,
 			&ev);
 		bonobo_object_unref (BONOBO_OBJECT (view_frame));
 		CORBA_exception_free (&ev);
@@ -529,10 +541,8 @@ GList *
 bonobo_client_site_get_verbs (BonoboClientSite *client_site)
 {
 	Bonobo_Embeddable_verb_list *list;
-	Bonobo_Embeddable object;
-	BonoboObjectClient *server_object;
-	BonoboObject *gobject;
 	CORBA_Environment ev;
+	CORBA_Object server_object;
 	GList *l;
 	int i;
 	
@@ -542,15 +552,15 @@ bonobo_client_site_get_verbs (BonoboClientSite *client_site)
 
 	CORBA_exception_init (&ev);
 
-	server_object = client_site->bound_object;
+	server_object = bonobo_object_client_query_interface (
+		client_site->bound_object, "IDL:Bonobo/Embeddable:1.0", NULL);
+	if (server_object == CORBA_OBJECT_NIL)
+		return NULL;
 
-	gobject = BONOBO_OBJECT (server_object);
-	object = (Bonobo_Embeddable) bonobo_object_corba_objref (gobject);
-
-	list = Bonobo_Embeddable_get_verb_list (object, &ev);
+	list = Bonobo_Embeddable_get_verb_list (server_object, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION){
-		bonobo_object_check_env (BONOBO_OBJECT (client_site), object, &ev);
+		bonobo_object_check_env (BONOBO_OBJECT (client_site), server_object, &ev);
 		CORBA_exception_free (&ev);
 		return NULL;
 	}
