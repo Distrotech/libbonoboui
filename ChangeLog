@@ -1,3 +1,12 @@
+2002-03-02  Paolo Maggi  <maggi@athena.polito.it>
+
+	* bonobo/bonobo-widget.c (bonobo_widget_construct_control):
+	bw is a floating objetc so to unref (and kill it) we have to 
+	call gtk_object_sink
+	(bonobo_widget_new_control_from_objref): call CORBA_exception_free
+	to free the ev
+	(bonobo_widget_new_control): ditto
+
 2002-02-27  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-zoomable-frame.c

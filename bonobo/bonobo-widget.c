@@ -146,7 +146,9 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 	control = bonobo_widget_launch_component (
 		moniker, "IDL:Bonobo/Control:1.0", ev);
 	if (BONOBO_EX (ev) || control == CORBA_OBJECT_NIL) {
-		g_object_unref (bw);
+		/* Kill it (it is a floating object) */
+		gtk_object_sink (GTK_OBJECT (bw));
+		
 		return NULL;
 	}
 
@@ -252,7 +254,7 @@ bonobo_widget_new_control_from_objref (Bonobo_Control     control,
 	if (BONOBO_EX (&ev))
 		bw = NULL;
 
-	CORBA_exception_init (&ev);
+	CORBA_exception_free (&ev);
 
 	return (GtkWidget *) bw;
 }
@@ -277,14 +279,16 @@ bonobo_widget_new_control (const char        *moniker,
 
 	g_return_val_if_fail (moniker != NULL, NULL);
 
-	bw = g_object_new (BONOBO_TYPE_WIDGET, NULL);
-
 	CORBA_exception_init (&ev);
+
+	bw = g_object_new (BONOBO_TYPE_WIDGET, NULL);
 
 	bw = bonobo_widget_construct_control (bw, moniker, uic, &ev);
 
 	if (BONOBO_EX (&ev))
 		bw = NULL;
+
+	CORBA_exception_free (&ev);
 
 	return (GtkWidget *) bw;
 }
