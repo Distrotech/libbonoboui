@@ -27,11 +27,11 @@ void       bonobo_ui_util_build_help_menu   (BonoboUIComponent *listener,
 					     const char        *app_name,
 					     BonoboUINode           *parent);
 
-BonoboUINode   *bonobo_ui_util_build_accel       (guint              accelerator_key,
+BonoboUINode   *bonobo_ui_util_build_accel  (guint              accelerator_key,
 					     GdkModifierType    accelerator_mods,
 					     const char        *verb);
 
-BonoboUINode   *bonobo_ui_util_new_menu          (gboolean           submenu,
+BonoboUINode   *bonobo_ui_util_new_menu     (gboolean           submenu,
 					     const char        *name,
 					     const char        *label,
 					     const char        *descr,

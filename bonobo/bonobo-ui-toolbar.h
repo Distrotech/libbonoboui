@@ -85,6 +85,8 @@ void                  bonobo_ui_toolbar_insert           (BonoboUIToolbar      *
 
 GtkTooltips          *bonobo_ui_toolbar_get_tooltips     (BonoboUIToolbar *toolbar);
 
+void                  bonobo_ui_toolbar_clean            (BonoboUIToolbar *toolbar);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

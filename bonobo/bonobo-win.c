@@ -614,6 +614,18 @@ custom_widget_unparent (NodeInfo *info)
 	gtk_container_remove (container, info->widget);
 }
 
+static GnomeDockItem *
+get_dock_item (BonoboWinPrivate *priv,
+	       const char       *dockname)
+{
+	guint          dummy;
+	
+	return gnome_dock_get_item_by_name (priv->dock,
+					    dockname,
+					    &dummy, &dummy,
+					    &dummy, &dummy);
+}
+
 static void
 replace_override_fn (GtkObject        *object,
 		     BonoboUINode          *new,
@@ -691,6 +703,20 @@ remove_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 		gtk_widget_destroy (info->widget);
 
 	info->widget = NULL;
+
+	if (bonobo_ui_node_has_name (node, "dockitem")) {
+		char *name = bonobo_ui_node_get_attr (node, "name");
+
+		if (name) {
+			GnomeDockItem *item;
+
+			item = get_dock_item (priv, name);
+			if (item)
+				gtk_widget_destroy (GTK_WIDGET (item));
+		}
+
+		bonobo_ui_node_free_string (name);
+	}
 
 /*	fprintf (stderr, "XRemove '%s'\n", id);*/
 
@@ -793,7 +819,10 @@ container_destroy_siblings (BonoboUIXml *tree, GtkWidget *widget, BonoboUINode *
 		} /* else freshly merged and no widget yet */
 	}
 
-	if (GTK_IS_CONTAINER (widget))
+	if (BONOBO_IS_UI_TOOLBAR (widget))
+		bonobo_ui_toolbar_clean (BONOBO_UI_TOOLBAR (widget));
+
+	else if (GTK_IS_CONTAINER (widget))
 		gtk_container_foreach (GTK_CONTAINER (widget),
 				       (GtkCallback) gtk_widget_destroy,
 				       NULL);
@@ -1590,15 +1619,11 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 	BonoboUINode       *l;
 	NodeInfo      *info = bonobo_ui_xml_get_data (priv->tree, node);
 	char          *txt;
-	guint          dummy;
 	char          *dockname = bonobo_ui_node_get_attr (node, "name");
 	GnomeDockItem *item;
 	BonoboUIToolbar *toolbar;
 
-	item = gnome_dock_get_item_by_name (priv->dock,
-					    dockname,
-					    &dummy, &dummy,
-					    &dummy, &dummy);
+	item = get_dock_item (priv, dockname);
 	
 	if (!item) {
 		GnomeDockItemBehavior beh = GNOME_DOCK_ITEM_BEH_EXCLUSIVE;
@@ -1616,10 +1641,11 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 				     1, 0, 0, TRUE);
 	}
 
-	container_destroy_siblings (priv->tree, GTK_WIDGET (item), bonobo_ui_node_children (node));
-
 	/* Re-generation is far faster if unmapped */
 	gtk_widget_hide (GTK_WIDGET (item));
+
+	container_destroy_siblings (priv->tree, GTK_WIDGET (item),
+				    bonobo_ui_node_children (node));
 
 	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
 
@@ -1686,6 +1712,8 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 	} else {
 		gtk_widget_show (GTK_WIDGET (item));
 	}
+
+	gtk_widget_queue_resize (GTK_WIDGET (item));
 
 	bonobo_ui_node_free_string (dockname);
 }

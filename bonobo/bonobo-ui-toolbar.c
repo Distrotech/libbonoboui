@@ -895,6 +895,10 @@ impl_forall (GtkContainer *container,
 
 		p = pnext;
 	}
+
+	if (priv->popup_item)
+		(* callback) (GTK_WIDGET (priv->popup_item),
+			      callback_data);
 }
 
 
@@ -1241,4 +1245,27 @@ bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
 	g_assert (GTK_WIDGET (item)->parent == GTK_WIDGET (toolbar));
 
 	gtk_widget_queue_resize (GTK_WIDGET (toolbar));
+}
+
+static void
+containee_destroy_cb (GtkWidget *widget,
+		      BonoboUIToolbarPrivate *priv)
+{
+	if (widget != (GtkWidget *)priv->popup_item)
+		gtk_widget_destroy (widget);
+	else
+		g_warning ("Skipping '%p' : popup item", widget);
+}
+
+void
+bonobo_ui_toolbar_clean (BonoboUIToolbar *toolbar)
+{
+	g_return_if_fail (toolbar != NULL);
+	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
+
+	g_warning ("UI toolbar clean");
+
+	gtk_container_foreach (GTK_CONTAINER (toolbar),
+			       (GtkCallback) containee_destroy_cb,
+			       toolbar->priv);
 }
