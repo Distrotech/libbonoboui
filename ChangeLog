@@ -1,3 +1,16 @@
+2004-01-10  Arvind Samptur  <arvind.samptur@wipro.com>
+
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_detach):
+	Don't create a new vbox/hbox if we had already had a detached
+	toolbar and had actually hidden it.
+	(bonobo_dock_item_unmap): set the floating hidden status
+	(bonobo_dock_item_unrealize): invoke bonobo_dock_item_unfloat()
+	when we are detached and hidden
+	(bonobo_dock_item_unfloat): reset floating hidden status
+	Fixes #161137
+	(bonobo_dock_item_attach): fix a compiler warning about a GtkWidget*
+	not being used.
+
 2005-01-04  JP Rosevear  <jpr@novell.com>
 
 	* bonobo/bonobo-ui-sync-toolbar.c

@@ -54,6 +54,7 @@ struct _BonoboDockItemPrivate
 
   GtkWidget *float_window;
   GtkWidget *float_window_box;
+  gboolean  float_window_hidden;
 };
 
 GNOME_CLASS_BOILERPLATE (BonoboDockItem, bonobo_dock_item,
@@ -339,6 +340,7 @@ bonobo_dock_item_instance_init (BonoboDockItem *dock_item)
 
   dock_item->_priv->grip = bonobo_dock_item_grip_new (dock_item);
   dock_item->_priv->float_window = NULL;
+  dock_item->_priv->float_window_hidden = FALSE;
 
   gtk_widget_set_parent (dock_item->_priv->grip, GTK_WIDGET (dock_item));
   gtk_widget_show (dock_item->_priv->grip);
@@ -489,6 +491,7 @@ bonobo_dock_item_unmap (GtkWidget *widget)
     {
       gtk_widget_hide (GTK_WIDGET (di->_priv->float_window));
       di->float_window_mapped = FALSE;
+      di->_priv->float_window_hidden = TRUE;
     }
 
   if (di->_priv->grip)
@@ -595,6 +598,9 @@ bonobo_dock_item_unrealize (GtkWidget *widget)
   gdk_window_set_user_data (di->bin_window, NULL);
   gdk_window_destroy (di->bin_window);
   di->bin_window = NULL;
+
+  if (di->_priv->float_window_hidden)
+     di->float_window_mapped = TRUE;
 
   if (di->float_window_mapped)
     bonobo_dock_item_unfloat (di);
@@ -1609,10 +1615,12 @@ bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
   g_assert (priv->child != NULL);
   g_assert (priv->grip != NULL);
 
-  if (item->orientation == GTK_ORIENTATION_HORIZONTAL)
-     priv->float_window_box = gtk_vbox_new (FALSE, 0);
-  else
-     priv->float_window_box = gtk_hbox_new (FALSE, 0);
+  if (!priv->float_window_hidden)
+    {
+      if (item->orientation == GTK_ORIENTATION_HORIZONTAL)
+        priv->float_window_box = gtk_vbox_new (FALSE, 0);
+      else
+        priv->float_window_box = gtk_hbox_new (FALSE, 0);
 
    /*
 
@@ -1629,26 +1637,28 @@ bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
 
    */
 
-  gtk_container_add (GTK_CONTAINER (item->_priv->float_window), priv->float_window_box);
+      gtk_container_add (GTK_CONTAINER (item->_priv->float_window), priv->float_window_box);
 
-  widget = priv->grip; /* container_remove() will make priv->grip NULL, so we save it here */
-  g_object_ref (priv->grip);
-  gtk_container_remove (GTK_CONTAINER (item), priv->grip);
-  priv->grip = widget;
-  gtk_box_pack_start (GTK_BOX (priv->float_window_box), priv->grip, FALSE, FALSE, 0);
-  g_object_unref (priv->grip);
+      widget = priv->grip; /* container_remove() will make priv->grip NULL, so we save it here */
+      g_object_ref (priv->grip);
+      gtk_container_remove (GTK_CONTAINER (item), priv->grip);
+      priv->grip = widget;
+      gtk_box_pack_start (GTK_BOX (priv->float_window_box), priv->grip, FALSE, FALSE, 0);
+      g_object_unref (priv->grip);
 
-  widget = priv->child;
-  g_object_ref (priv->child);
-  gtk_container_remove (GTK_CONTAINER (item), priv->child);
-  priv->child = widget;
-  gtk_box_pack_start (GTK_BOX (priv->float_window_box), priv->child, FALSE, FALSE, 0);
-  g_object_unref (priv->child);
+      widget = priv->child;
+      g_object_ref (priv->child);
+      gtk_container_remove (GTK_CONTAINER (item), priv->child);
+      priv->child = widget;
+      gtk_box_pack_start (GTK_BOX (priv->float_window_box), priv->child, FALSE, FALSE, 0);
+      g_object_unref (priv->child);
+    }
 
   gtk_window_move (GTK_WINDOW (item->_priv->float_window), x, y);
   gtk_widget_show_all (GTK_WIDGET (item->_priv->float_window));
 
   item->float_window_mapped = TRUE;
+  item->_priv->float_window_hidden = FALSE;
 
   gdk_window_hide (GTK_WIDGET (item)->window);
   gtk_widget_queue_draw (GTK_WIDGET (item));
@@ -1712,6 +1722,8 @@ bonobo_dock_item_unfloat (BonoboDockItem *item)
   gdk_window_show (GTK_WIDGET (item)->window);
 
   item->float_window_mapped = FALSE;
+  item->_priv->float_window_hidden = FALSE;
+
   bonobo_dock_item_set_floating (item, FALSE);
 
   gtk_widget_queue_resize (GTK_WIDGET (item));
@@ -1724,8 +1736,6 @@ bonobo_dock_item_attach (BonoboDockItem *item,
 {
   if (GTK_WIDGET (item)->parent != GTK_WIDGET (parent))
     {
-      GtkWidget *child = item->_priv->child;
-
       gdk_window_move_resize (GTK_WIDGET (item)->window, -1, -1, 0, 0);
       g_object_ref (item);
       gtk_container_remove (GTK_CONTAINER (GTK_WIDGET (item)->parent), GTK_WIDGET (item));
