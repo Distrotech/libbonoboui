@@ -771,7 +771,7 @@ container_print_preview_cmd (GtkWidget *widget, Container *container)
 		Component          *component = l->data;
 		BonoboObjectClient *boc = component->server;
 		BonoboPrintClient  *pc = bonobo_print_client_get (boc);
-		BonoboPrintContext *c;
+		BonoboPrintData    *pd;
 
 		if (!pc) {
 			g_warning ("component isn't printable");
@@ -779,9 +779,10 @@ container_print_preview_cmd (GtkWidget *widget, Container *container)
 		} else
 			g_warning ("component is printable!");
 
-		c = bonobo_print_context_new (0.0, ypos, 100.0, 150.0);
-		bonobo_print_client_print_to (pc, c, ctx);
-		bonobo_print_context_free (c);
+		pd = bonobo_print_client_render (pc, 100.0, 150.0);
+		bonobo_print_data_render (pd, ctx, 0.0, ypos, 0.0, 0.0);
+		bonobo_print_data_free (pd);
+
 		ypos += 150.0;
 	}
 
