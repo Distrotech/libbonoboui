@@ -1,3 +1,9 @@
+libbonoboui 2.0.3.2
+
+	* Bugs fixed
+		+ toolbar label set efficiency win (Michael)
+		+ toolbar destruction (Jaka Mocnik, Satyajit)
+
 libbonoboui 2.0.3.1
 
 	* Bugs fixed

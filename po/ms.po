@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2002-10-01 11:34+0100\n"
+"POT-Creation-Date: 2002-10-18 12:25+0100\n"
 "PO-Revision-Date: 2002-03-28 14:13+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
@@ -42,17 +42,17 @@ msgid "Shadow type"
 msgstr "Jenis bayang"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1085 bonobo/bonobo-ui-toolbar.c:1086
+#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
 msgid "Orientation"
 msgstr "Orientasi"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1104 bonobo/bonobo-ui-toolbar.c:1105
+#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
 msgid "Preferred width"
 msgstr "Lebar yang dikehendaki"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
 msgid "Preferred height"
 msgstr "Tinggi yang dikehendaki"
 
@@ -275,11 +275,11 @@ msgstr "Personali_sasi"
 msgid "Customize the toolbar"
 msgstr "Personalisasikan toolbar"
 
-#: bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-ui-toolbar.c:1096
 msgid "is floating"
 msgstr "adalah terapung"
 
-#: bonobo/bonobo-ui-toolbar.c:1096
+#: bonobo/bonobo-ui-toolbar.c:1097
 msgid "whether the toolbar is floating"
 msgstr "Samada toolbar adalah terapung"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-10-01 11:34+0100\n"
+"POT-Creation-Date: 2002-10-18 12:25+0100\n"
 "PO-Revision-Date: 2002-05-31 19:15-0300\n"
 "Last-Translator: Isam Bayazidi <bayazidi@arabeyes.org>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -44,17 +44,17 @@ msgid "Shadow type"
 msgstr "نوع الظل"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1085 bonobo/bonobo-ui-toolbar.c:1086
+#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
 msgid "Orientation"
 msgstr "الاتجاه"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1104 bonobo/bonobo-ui-toolbar.c:1105
+#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
 msgid "Preferred width"
 msgstr "العرض المفضل"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
 msgid "Preferred height"
 msgstr "الارتفاع المفضل"
 
@@ -276,11 +276,11 @@ msgstr "تفصيل حسب الطلب"
 msgid "Customize the toolbar"
 msgstr "تفصيل شريط الأدوات حسب الطلب"
 
-#: bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-ui-toolbar.c:1096
 msgid "is floating"
 msgstr "يطفو"
 
-#: bonobo/bonobo-ui-toolbar.c:1096
+#: bonobo/bonobo-ui-toolbar.c:1097
 msgid "whether the toolbar is floating"
 msgstr "فيما إذا كان شريط الأدوات يطفو"
 

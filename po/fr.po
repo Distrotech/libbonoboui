@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.0\n"
-"POT-Creation-Date: 2002-10-01 11:34+0100\n"
+"POT-Creation-Date: 2002-10-18 12:25+0100\n"
 "PO-Revision-Date: 2002-07-28 11:06+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -44,17 +44,17 @@ msgid "Shadow type"
 msgstr "Type d'ombre"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1085 bonobo/bonobo-ui-toolbar.c:1086
+#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
 msgid "Orientation"
 msgstr "Orientation"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1104 bonobo/bonobo-ui-toolbar.c:1105
+#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
 msgid "Preferred width"
 msgstr "Largeur préférée"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
 msgid "Preferred height"
 msgstr "Hauteur préférée"
 
@@ -277,11 +277,11 @@ msgstr "_Personnaliser"
 msgid "Customize the toolbar"
 msgstr "Personnalise la barre d'outils"
 
-#: bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-ui-toolbar.c:1096
 msgid "is floating"
 msgstr "est flottant"
 
-#: bonobo/bonobo-ui-toolbar.c:1096
+#: bonobo/bonobo-ui-toolbar.c:1097
 msgid "whether the toolbar is floating"
 msgstr "indique si la barre d'outils est flottante"
 

@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2002-10-01 11:34+0100\n"
+"POT-Creation-Date: 2002-10-18 12:25+0100\n"
 "PO-Revision-Date: 2002-05-31 18:10+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -45,17 +45,17 @@ msgid "Shadow type"
 msgstr "Varjotyyppi"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1085 bonobo/bonobo-ui-toolbar.c:1086
+#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
 msgid "Orientation"
 msgstr "Suunta"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1104 bonobo/bonobo-ui-toolbar.c:1105
+#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
 msgid "Preferred width"
 msgstr "Haluttu leveys"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
 msgid "Preferred height"
 msgstr "Haluttu korkeus"
 
@@ -278,11 +278,11 @@ msgstr "Muka_uta"
 msgid "Customize the toolbar"
 msgstr "Mukauta työkalupalkki"
 
-#: bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-ui-toolbar.c:1096
 msgid "is floating"
 msgstr "kelluu"
 
-#: bonobo/bonobo-ui-toolbar.c:1096
+#: bonobo/bonobo-ui-toolbar.c:1097
 msgid "whether the toolbar is floating"
 msgstr "kelluuko työkalupalkki"
 

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2002-10-01 11:34+0100\n"
+"POT-Creation-Date: 2002-10-18 12:25+0100\n"
 "PO-Revision-Date: 2002-08-17 13:18+0100\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -49,17 +49,17 @@ msgid "Shadow type"
 msgstr "Τύπος σκιάς"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1085 bonobo/bonobo-ui-toolbar.c:1086
+#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
 msgid "Orientation"
 msgstr "Προσανατολισμός"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1104 bonobo/bonobo-ui-toolbar.c:1105
+#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
 msgid "Preferred width"
 msgstr "Επιθυμητό πλάτος"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
 msgid "Preferred height"
 msgstr "Επιθυμητό ύψος"
 
@@ -316,12 +316,12 @@ msgstr "Παραμετρο_ποίηση"
 msgid "Customize the toolbar"
 msgstr "Παραμετροποίηση γραμμής εντολών"
 
-#: bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-ui-toolbar.c:1096
 #, fuzzy
 msgid "is floating"
 msgstr "Πληροφορίες Δίσκων"
 
-#: bonobo/bonobo-ui-toolbar.c:1096
+#: bonobo/bonobo-ui-toolbar.c:1097
 msgid "whether the toolbar is floating"
 msgstr ""
 
