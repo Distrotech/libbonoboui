@@ -19,48 +19,21 @@ Simplified embedding of widgets in Bonobo.
   <orderedlist>
     <listitem>
       <para>
-        Provide a simple wrapper for embedding a single-view
-        subdocument.  In this case, BonoboWidget handles creating the
-        embeddable, binding it to a local BonoboClientSite, creating a
-        view for it, and displaying the view.  You can use the
-        accessor functions (bonobo_widget_get_view_frame, etc) to get
-        at the actual Bonobo objects which underlie the whole process.
-      </para>
-
-      <para>
-        In order to do this, just call:
-        <informalexample>
-          <programlisting>
-	bw = bonobo_widget_new_subdoc ("id of subdoc embeddable", top_level_uihandler);
-          </programlisting>
-        </informalexample>
-
-        And then insert the 'bw' widget into the widget tree of your application like so:
-        <informalexample>
-          <programlisting>
-	gtk_container_add (some_container, bw);
-          </programlisting>
-        </informalexample>
-      </para>
-        
-      <para>
-        You are free to make the UIContainer argument to
-        bonobo_widget_new_subdoc() be CORBA_OBJECT_NIL.
-      </para>
-    </listitem>
-
-    <listitem>
-      <para>
         Provide a simple wrapper for embedding Controls.  Embedding
         controls is already really easy, but BonoboWidget reduces the
         work from about 5 lines to 1.  To embed a given control, just
         do:
         <informalexample>
           <programlisting>
-       bw = bonobo_widget_new_control ("id for control");
+       bw = bonobo_widget_new_control ("id for control", toplevel_ui_handler);
        gtk_container_add (some_container, bw);
           </programlisting>
         </informalexample>
+      </para>
+
+      <para>
+        You are free to make the 2nd (UIContainer) argument to
+        bonobo_widget_new_control() be CORBA_OBJECT_NIL.
       </para>
     </listitem>
 
@@ -72,7 +45,7 @@ Simplified embedding of widgets in Bonobo.
       far more powerful than this:
         <informalexample>
           <programlisting>
-	         bw = bonobo_widget_new_control ("file:/demo/a.jpeg");
+	         bw = bonobo_widget_new_control ("file:/demo/a.jpeg", toplevel_ui_handler);
           </programlisting>
         </informalexample>
 	will launch an application that can render a jpeg as a control,
