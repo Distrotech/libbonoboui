@@ -12,6 +12,15 @@ since it provides lots of nice auxiliary features to make embedding
 easy.
 </para>
 
+<figure id="control-frame-img">
+    <title>The Bonobo::ControlFrame interface</title>
+    <mediaobject>
+	<imageobject>
+	    <imagedata fileref="control-frame.png" format="PNG"/>
+	</imageobject>
+    </mediaobject>
+</figure>
+
 <para>
 The control frame is coupled to an embedded control and is used
 to allow the Control to communicate with its environment, particuarly

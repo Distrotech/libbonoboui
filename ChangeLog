@@ -1,3 +1,21 @@
+2003-02-03  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
+
+	* configure.in: Write makefile doc/api/figures/Makefile.
+
+	* doc/api/tmpl/bonobo-control-frame.sgml: Include the figure
+	control-frame.png.
+
+	* doc/api/tmpl/bonobo-control.sgml: Include control.png figure.
+
+	* doc/api/figures/control-frame.dia, doc/api/figures/control.dia:
+	New uml class diagrams showing the Bonobo::Control and
+	Bonobo::ControlFrame interfaces.
+	
+	* doc/api/figures/Makefile.am: New makefile to convert .dia to
+	.png.
+
+	* doc/api/Makefile.am (HTML_IMAGES): Include the two new figures.
+
 2003-01-29  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
 
 	* bonobo/bonobo-zoomable.h: Removed declaration of the

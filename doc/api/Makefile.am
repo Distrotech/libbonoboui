@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+SUBDIRS = figures
+
 # The name of the module, e.g. 'glib'.
 DOC_MODULE=libbonoboui
 
@@ -61,7 +63,7 @@ IGNORE_HFILES= bonobo-client-site.h		\
 
 
 # Images to copy into HTML directory.
-HTML_IMAGES = 
+HTML_IMAGES = figures/control.png figures/control-frame.png
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
 content_files = ui-faq.xml

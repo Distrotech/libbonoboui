@@ -13,6 +13,15 @@ typicaly expose much of their functionality through a
 property bag.
 </para>
 
+<figure id="control-img">
+    <title>The Bonobo::Control interface</title>
+    <mediaobject>
+	<imageobject>
+	    <imagedata fileref="control.png" format="PNG"/>
+	</imageobject>
+    </mediaobject>
+</figure>
+
 <para>
 A BonoboControl provides the server ( or component ) side
 implementation of a Control. The client that uses this
