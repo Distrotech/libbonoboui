@@ -1,3 +1,13 @@
+2004-09-21  Rodrigo Moya <rodrigo@novell.com>
+
+	* tools/Makefile.am: added new tools directory.
+
+	* tools/browser/*: get the Bonobo component browser from
+	bonobo-support module.
+
+	* configure.in:
+	* Makefile.am: added new directories to the build.
+
 2004-09-14  Tomasz Kłoczko <kloczek@pld.org.pl>
 
 	* configure.in: remove AC_SUBST() for CFLAGS, CPPFLAGS and LDFLAGS

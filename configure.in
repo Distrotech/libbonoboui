@@ -120,6 +120,8 @@ samples/compound-doc/container/Makefile
 samples/canvdemo/Makefile
 tests/Makefile
 tests/control/Makefile
+tools/Makefile
+tools/browser/Makefile
 doc/Makefile
 doc/api/Makefile
 doc/api/figures/Makefile
