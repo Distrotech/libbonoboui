@@ -1,12 +1,11 @@
 # Korean messages for libbonoboui
 # Changwoo Ryu <cwryu@debian.org>, 2002-2004.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 2.5.2\n"
+"Project-Id-Version: libbonoboui 2.8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-09-13 15:55+0100\n"
-"PO-Revision-Date: 2004-01-30 04:35+0900\n"
+"PO-Revision-Date: 2004-10-06 13:17+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
@@ -198,11 +197,11 @@ msgstr "<스크린>"
 
 #: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
-msgstr "동기(synchronous) X 호출"
+msgstr "X 호출을 동기식으로 합니다"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
-msgstr "X 공유 메모리 확장 기능을 사용하지 않음"
+msgstr "X 공유 메모리 확장 기능을 사용하지 않습니다"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
@@ -230,7 +229,7 @@ msgstr "GTK+ 디버깅 사용하지 않을 플래그"
 
 #: bonobo/bonobo-ui-init-gtk.c:150
 msgid "Make all warnings fatal"
-msgstr "모든 경고를 치명적인 오류로 취급합니다"
+msgstr "모든 경고를 치명적인 것으로 취급합니다"
 
 #: bonobo/bonobo-ui-init-gtk.c:153
 msgid "Load an additional Gtk module"
@@ -290,7 +289,7 @@ msgstr "도구 모음의 3D 효과 스타일"
 
 #: bonobo/bonobo-ui-util.c:629
 msgid "_Contents"
-msgstr "목차"
+msgstr "목차(_C)"
 
 #: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
