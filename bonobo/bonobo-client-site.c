@@ -53,7 +53,7 @@ impl_GNOME_client_site_get_moniker (PortableServer_Servant servant,
 	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
 	GnomeMoniker *container_moniker;
 
-	container_moniker = gnome_container_get_moniker (client_site->container);
+/*	container_moniker = gnome_container_get_moniker (client_site->container); */
 
 	switch (which){
 	case GNOME_Moniker_CONTAINER:
