@@ -343,7 +343,7 @@ bonobo_selector_class_init (BonoboSelectorClass *klass)
 				 PROP_INTERFACES,
 				 g_param_spec_value_array ("interfaces_required",
 							   _("Interfaces required"),
-							   _("A NULL_terminated array of interfaces which a server must support in order to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"),
+							   _("A NULL-terminated array of interfaces which a server must support in order to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"),
 							   g_param_spec_string ("interface-required-entry",
 										_("Interface required entry"),
 										_("One of the interfaces that's required"),
@@ -356,7 +356,7 @@ bonobo_selector_class_init (BonoboSelectorClass *klass)
  * bonobo_selector_new:
  * @title: A string which should go in the title of the
  * BonoboSelector window.
- * @interfaces_required: A NULL_terminated array of interfaces which a
+ * @interfaces_required: A NULL-terminated array of interfaces which a
  * server must support in order to be listed in the selector.  Defaults
  * to "IDL:Bonobo/Embeddable:1.0" if no interfaces are listed.
  *
