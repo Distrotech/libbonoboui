@@ -258,8 +258,8 @@ gnome_client_site_construct (GnomeClientSite  *client_site,
  * @container: The container to which this client_site belongs.
  *
  * Programs should provide a GnomeClientSite GTK object (ie, a
- * GNOME::ClientSite CORBA server) for each component they embed.  This
- * is the contact end point for the remote GNOME::Component object.
+ * GNOME::ClientSite CORBA server) for each bonobo object they embed.  This
+ * is the contact end point for the remote GNOME::BonoboObject object.
  *
  * This routine creates a new GnomeClientSite.
  *
@@ -311,15 +311,15 @@ gnome_client_site_get_type (void)
 }
 
 /** 
- * gnome_client_site_bind_component:
+ * gnome_client_site_bind_bonobo_object:
  * @client_site: the client site where we hook the object
- * @object: remote GNOME::Component object
+ * @object: remote GNOME::BonoboObject object
  *
  * Returns %TRUE if the code successfully bound the remote object to this
  * @client_site.
  */
 gboolean
-gnome_client_site_bind_component (GnomeClientSite *client_site, GnomeObjectClient *object)
+gnome_client_site_bind_bonobo_object (GnomeClientSite *client_site, GnomeObjectClient *object)
 {
 	CORBA_Object corba_object;
 	GnomeObject *gnome_object;
@@ -332,7 +332,7 @@ gnome_client_site_bind_component (GnomeClientSite *client_site, GnomeObjectClien
 	gnome_object = GNOME_OBJECT (object);
 	
 	corba_object = GNOME_obj_query_interface (
-		gnome_object->object, "IDL:GNOME/Component:1.0",
+		gnome_object->object, "IDL:GNOME/BonoboObject:1.0",
 		&gnome_object->ev);
 
 	if (gnome_object->ev._major != CORBA_NO_EXCEPTION)
@@ -341,7 +341,7 @@ gnome_client_site_bind_component (GnomeClientSite *client_site, GnomeObjectClien
 	if (corba_object == CORBA_OBJECT_NIL)
 		return FALSE;
 
-	GNOME_Component_set_client_site (
+	GNOME_BonoboObject_set_client_site (
 		corba_object, 
 		GNOME_OBJECT (client_site)->object,
 		&GNOME_OBJECT (client_site)->ev);

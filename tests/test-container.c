@@ -12,7 +12,7 @@ CORBA_ORB orb;
 /* A handle to the last text/plain widget created. */
 GnomeObjectClient *text_obj;
 
-char *server_goadid = "Test_server_component";
+char *server_goadid = "Test_server_bonobo_object";
 
 typedef struct {
 	GtkWidget *app;
@@ -38,7 +38,7 @@ launch_server (GnomeContainer *container, char *goadid)
 		return NULL;
 	}
 
-	if (!gnome_client_site_bind_component (client_site, object_server)){
+	if (!gnome_client_site_bind_bonobo_object (client_site, object_server)){
 		g_warning (_("Can not bind object server to client_site\n"));
 		return NULL;
 	}
@@ -58,16 +58,16 @@ add_cmd (GtkWidget *widget, Application *app, char *server_goadid)
 	if (server == NULL)
 		return NULL;
 
-	w = gnome_component_new_view (server);
+	w = gnome_bonobo_object_new_view (server);
 
-	frame = gtk_frame_new ("Component");
+	frame = gtk_frame_new ("BonoboObject");
 	gtk_widget_show (frame);
 	gtk_box_pack_start (GTK_BOX (app->box), frame, TRUE, TRUE, 0);
 	gtk_container_add (GTK_CONTAINER (frame), w);
 
 	gtk_widget_show_all (frame);
 
-	gnome_component_client_activate (server);
+	gnome_bonobo_object_client_activate (server);
 
 	return server;
 }
@@ -85,10 +85,10 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
-	object = add_cmd (widget, app, "component:image-x-png");
+	object = add_cmd (widget, app, "bonobo-object:image-x-png");
 	if (object == NULL)
 	  {
-	    gnome_warning_dialog (_("Could not launch component."));
+	    gnome_warning_dialog (_("Could not launch bonobo object."));
 	    return;
 	  }
 	persist = GNOME_obj_query_interface (
@@ -101,7 +101,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
         if (persist == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: Component supports PersistStream");
+	printf ("Good: BonoboObject supports PersistStream");
 	
 	stream = gnome_stream_fs_open (NULL, "/tmp/a.png", GNOME_Storage_READ);
 
@@ -115,7 +115,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 
 /*
  * This function uses GNOME::PersistStream to load a set of data into
- * the text/plain component.
+ * the text/plain BonoboObject.
  */
 static void
 add_text_cmd (GtkWidget *widget, Application *app)
@@ -124,10 +124,10 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
-	object = add_cmd (widget, app, "component:text-plain");
+	object = add_cmd (widget, app, "bonobo-object:text-plain");
 	if (object == NULL)
 	  {
-	    gnome_warning_dialog (_("Could not launch component."));
+	    gnome_warning_dialog (_("Could not launch BonoboObject."));
 	    return;
 	  }
 
@@ -143,7 +143,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
         if (persist == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: Component supports PersistStream");
+	printf ("Good: BonoboObject supports PersistStream");
 	
 	stream = gnome_stream_fs_open (NULL, "/usr/dict/words",
 				       GNOME_Storage_READ);
@@ -159,7 +159,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 /*
  * These functions handle the progressive transmission of data
- * to the text/plain component.
+ * to the text/plain BonoboObject.
  */
 struct progressive_timeout {
 	GNOME_ProgressiveDataSink psink;
@@ -167,7 +167,7 @@ struct progressive_timeout {
 };
 
 /*
- * Send a new line to the text/plain component.
+ * Send a new line to the text/plain BonoboObject.
  */
 static gboolean
 timeout_next_line (gpointer data)
@@ -196,7 +196,7 @@ timeout_next_line (gpointer data)
 } /* timeout_add_more_data */
 
 /*
- * Setup a timer to send a new line to the text/plain component using
+ * Setup a timer to send a new line to the text/plain BonoboObject using
  * ProgressiveDataSink.
  */
 static void
@@ -219,7 +219,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
         if (psink == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: Component supports ProgressiveDataSink");
+	printf ("Good: BonoboObject supports ProgressiveDataSink");
 
 	tmt = g_new0 (struct progressive_timeout, 1);
 
@@ -249,7 +249,7 @@ static GnomeUIInfo container_file_menu [] = {
 	GNOMEUIINFO_ITEM_NONE(N_("Add a new _object"), NULL, add_demo_cmd),
 	GNOMEUIINFO_ITEM_NONE(N_("Add a new _image/x-png handler"), NULL, add_image_cmd),
 	GNOMEUIINFO_ITEM_NONE(N_("Add a new _text/plain handler"), NULL, add_text_cmd),
-	GNOMEUIINFO_ITEM_NONE(N_("_Send progressive data to an existing text component"), NULL, send_text_cmd),
+	GNOMEUIINFO_ITEM_NONE(N_("_Send progressive data to an existing text bonobo_object"), NULL, send_text_cmd),
 	GNOMEUIINFO_SEPARATOR,
 	GNOMEUIINFO_MENU_EXIT_ITEM (exit_cmd, NULL),
 	GNOMEUIINFO_END
