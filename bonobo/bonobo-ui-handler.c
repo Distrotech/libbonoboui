@@ -1651,7 +1651,7 @@ impl_GNOME_UIHandler_register_containee (PortableServer_Servant servant,
 
 static void
 impl_GNOME_UIHandler_menu_item_activated (PortableServer_Servant servant,
-					  CORBA_char *path,
+					  const CORBA_char *path,
 					  CORBA_Environment *ev)
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
@@ -1678,15 +1678,15 @@ impl_GNOME_UIHandler_menu_item_activated (PortableServer_Servant servant,
 
 static void
 impl_GNOME_UIHandler_menu_item_create (PortableServer_Servant servant,
-				       CORBA_char *path,
-				       GNOME_UIHandler_MenuType menu_type,
-				       CORBA_char *label,
-				       CORBA_char *hint,
-				       GNOME_UIHandler_iobuf pixmap_data,
-				       CORBA_unsigned_long accelerator_key,
-				       CORBA_long modifier,
-				       CORBA_long pos,
-				       GNOME_UIHandler containee_uih,
+				       const CORBA_char *path,
+				       const GNOME_UIHandler_MenuType menu_type,
+				       const CORBA_char *label,
+				       const CORBA_char *hint,
+				       const GNOME_UIHandler_iobuf *pixmap_data,
+				       const CORBA_unsigned_long accelerator_key,
+				       const CORBA_long modifier,
+				       const CORBA_long pos,
+				       const GNOME_UIHandler containee_uih,
 				       CORBA_Environment *ev)
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
