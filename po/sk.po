@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
-"PO-Revision-Date: 2003-01-12 23:47+0100\n"
+"POT-Creation-Date: 2003-05-06 08:56+0200\n"
+"PO-Revision-Date: 2003-05-06 08:57+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -38,21 +38,22 @@ msgid "Un dock the toolbar"
 msgstr "Oddeliť lištu nástrojov"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Typ tieňa"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientácia"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Preferovaná šírka"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Preferovaná výška"
 
@@ -76,7 +77,7 @@ msgstr "Preposielanie udalostí"
 msgid "Whether X events should be forwarded"
 msgstr "Či majú byť udalosti X preposielané"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Meno"
 
@@ -150,15 +151,15 @@ msgstr "Len text"
 msgid "_Priority text only"
 msgstr "Len _prioritný text"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Ladenie"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Vypísať XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Vypísať kompletný XML popis používateľského rozhrania na konzolu"
 
@@ -287,23 +288,27 @@ msgstr "Prispôso_biť"
 msgid "Customize the toolbar"
 msgstr "Prispôsobiť lištu nástrojov"
 
-#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
 msgstr "je plávajúca"
 
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
 msgstr "či je lišta nástrojov plávajúca"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-toolbar.c:1176
+msgid "Style of bevel around the toolbar"
+msgstr "Štýl sklonu okolo lišty nástrojov"
+
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Obsah"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Pozrieť pomocníka pre túto aplikáciu"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Názov okna - použité pre konfiguráciu serializácie."
 
