@@ -651,20 +651,12 @@ gbi_class_init (GtkObjectClass *object_class)
 }
 
 static void
-impl_Bonobo_Canvas_ComponentProxy_updateArea (PortableServer_Servant servant,
-					    const Bonobo_Canvas_ArtUTA *uta,
-					    CORBA_Environment *ev)
+impl_Bonobo_Canvas_ComponentProxy_requestUpdate (PortableServer_Servant servant,
+					         CORBA_Environment *ev)
 {
 	ComponentProxyServant *item_proxy = (ComponentProxyServant *) servant;
-	GnomeCanvas *canvas = item_proxy->item_bound->canvas;
-	GtkLayout *layout = GTK_LAYOUT (canvas);
 
-	g_warning ("BonoboItem: Fixme, just a quick hack to queue redraws");
-	gnome_canvas_request_redraw (
-		canvas,
-		layout->xoffset, layout->yoffset,
-		layout->xoffset + layout->width,
-		layout->yoffset + layout->height);
+	gnome_canvas_item_request_update (item_proxy->item_bound);
 
 }
 					    
@@ -725,7 +717,7 @@ create_proxy (GnomeCanvasItem *item)
 	CORBA_exception_init (&ev);
 	POA_Bonobo_Canvas_ComponentProxy__init ((PortableServer_Servant) item_proxy, &ev);
 
-	item_proxy_epv.updateArea     = impl_Bonobo_Canvas_ComponentProxy_updateArea;
+	item_proxy_epv.requestUpdate  = impl_Bonobo_Canvas_ComponentProxy_requestUpdate;
 	item_proxy_epv.grabFocus      = impl_Bonobo_Canvas_ComponentProxy_grabFocus;
 	item_proxy_epv.ungrabFocus    = impl_Bonobo_Canvas_ComponentProxy_ungrabFocus;
 	item_proxy_epv.getUIContainer = impl_Bonobo_Canvas_ComponentProxy_getUIContainer;

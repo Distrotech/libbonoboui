@@ -123,7 +123,7 @@ restore_state (GnomeCanvasItem *item, const Bonobo_Canvas_State *state)
 	for (i = 0; i < 6; i++)
 		affine [i] = state->item_aff [i];
 
-	gnome_canvas_item_affine_absolute (item, affine);
+	gnome_canvas_item_affine_absolute (item->canvas->root, affine);
 	item->canvas->pixels_per_unit = state->pixels_per_unit;
 	item->canvas->scroll_x1 = state->canvas_scroll_x1;
 	item->canvas->scroll_y1 = state->canvas_scroll_y1;
@@ -131,6 +131,49 @@ restore_state (GnomeCanvasItem *item, const Bonobo_Canvas_State *state)
 	item->canvas->zoom_yofs = state->zoom_yofs;
 	GTK_LAYOUT (item->canvas)->xoffset = state->xoffset;
 	GTK_LAYOUT (item->canvas)->yoffset = state->yoffset;
+}
+
+/* This is copied from gnome-canvas.c since it is declared static */
+static void
+invoke_update (GnomeCanvasItem *item, double *affine, ArtSVP *clip_path, int flags)
+{
+	int child_flags;
+	double *child_affine;
+        double i2w[6], w2c[6], i2c[6];
+
+	child_flags = flags;
+	if (!(item->object.flags & GNOME_CANVAS_ITEM_VISIBLE))
+		child_flags &= ~GNOME_CANVAS_UPDATE_IS_VISIBLE;
+
+	/* Apply the child item's transform */
+        gnome_canvas_item_i2w_affine (item, i2w);
+        gnome_canvas_w2c_affine (item->canvas, w2c);
+        art_affine_multiply (i2c, i2w, w2c);
+        child_affine = i2c;
+
+	/* apply object flags to child flags */
+
+	child_flags &= ~GNOME_CANVAS_UPDATE_REQUESTED;
+
+	if (item->object.flags & GNOME_CANVAS_ITEM_NEED_UPDATE)
+		child_flags |= GNOME_CANVAS_UPDATE_REQUESTED;
+
+	if (item->object.flags & GNOME_CANVAS_ITEM_NEED_AFFINE)
+		child_flags |= GNOME_CANVAS_UPDATE_AFFINE;
+
+	if (item->object.flags & GNOME_CANVAS_ITEM_NEED_CLIP)
+		child_flags |= GNOME_CANVAS_UPDATE_CLIP;
+
+	if (item->object.flags & GNOME_CANVAS_ITEM_NEED_VIS)
+		child_flags |= GNOME_CANVAS_UPDATE_VISIBILITY;
+
+	if ((child_flags & (GNOME_CANVAS_UPDATE_REQUESTED
+			    | GNOME_CANVAS_UPDATE_AFFINE
+			    | GNOME_CANVAS_UPDATE_CLIP
+			    | GNOME_CANVAS_UPDATE_VISIBILITY))
+	    && GNOME_CANVAS_ITEM_CLASS (item->object.klass)->update)
+		(* GNOME_CANVAS_ITEM_CLASS (item->object.klass)->update) (
+			item, child_affine, clip_path, child_flags);
 }
 
 static Bonobo_Canvas_ArtUTA *
@@ -180,7 +223,7 @@ impl_Bonobo_Canvas_Component_update (PortableServer_Servant     servant,
 		}
 	}
 	
-	ICLASS (item)->update (item, (double *)aff, svp, flags);
+	invoke_update (item, (double *)aff, svp, flags);
 
 	if (svp){
 		for (i = 0; i < svp->n_segs; i++)
@@ -824,18 +867,19 @@ rih_update (GnomeCanvasItem *item, double affine [6], ArtSVP *svp, int flags)
 {
 	RootItemHack *rih = (RootItemHack *) item;
 	CORBA_Environment ev;
-	Bonobo_Canvas_ArtUTA *cuta;
-
-	cuta = CORBA_UTA (item->canvas->redraw_area);
+	GnomeCanvasItemClass *gci_class = gtk_type_class (
+					gnome_canvas_item_get_type ());
 
 	CORBA_exception_init (&ev);
-	Bonobo_Canvas_ComponentProxy_updateArea (rih->proxy, cuta, &ev);
-	CORBA_free (cuta);
+	Bonobo_Canvas_ComponentProxy_requestUpdate (rih->proxy, &ev);
 	CORBA_exception_free (&ev);
 
 	/*
-	 * Mark our canvas as fully updated
+	 * Mark our canvas and item as fully updated
 	 */
+
+	(* gci_class->update) (item, affine, svp, flags);
+
 	if (item->canvas->redraw_area)
 		art_uta_free (item->canvas->redraw_area);
 	item->canvas->redraw_area = NULL;
