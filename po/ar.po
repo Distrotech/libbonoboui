@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2002-04-23 15:53-0400\n"
-"PO-Revision-Date: 2002-05-05 22:56GMT\n"
-"Last-Translator: \n"
-"Language-Team:  <C@li.org>\n"
+"PO-Revision-Date: 2002-05-31 19:15-0300\n"
+"Last-Translator: Isam Bayazidi <bayazidi@arabeyes.org>\n"
+"Language-Team: Arabic <support@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -76,15 +76,15 @@ msgstr "ظاهر"
 
 #: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
-msgstr "_عرض"
+msgstr "عرض"
 
 #: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
-msgstr "_إخفاء"
+msgstr "إخفاء"
 
 #: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
-msgstr "_ظهور أفكار الأدوات"
+msgstr "ظهور أفكار الأدوات"
 
 #: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
@@ -100,15 +100,15 @@ msgstr "المظهر"
 
 #: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
-msgstr "_رمز رسومي"
+msgstr "رمز رسومي"
 
 #: bonobo/bonobo-ui-config-widget.c:320
 msgid "_Text and Icon"
-msgstr "_نص ورمز رسومي"
+msgstr "نص ورمز رسومي"
 
 #: bonobo/bonobo-ui-config-widget.c:326
 msgid "_Priority text only"
-msgstr "_الأولوية فقط نصاً"
+msgstr "الأولوية فقط نصاً"
 
 #: bonobo/bonobo-ui-engine-config.c:516
 msgid "Configure UI"
@@ -116,27 +116,27 @@ msgstr "اضبط واجهة المستخدم"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
-msgstr "_كلاهما"
+msgstr "كلاهما"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
-msgstr "_نص"
+msgstr "نص"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
-msgstr "أخف الأ_فكار"
+msgstr "أخف الأفكار"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
-msgstr "أظهر الأ_فكار"
+msgstr "أظهر الأفكار"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
-msgstr "أخف _شريط الأدوات"
+msgstr "أخف شريط الأدوات"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
-msgstr "_تفصيل حسب الطلب"
+msgstr "تفصيل حسب الطلب"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
@@ -330,19 +330,19 @@ msgstr "اختر"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "_حول"
+msgstr "حول"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "_تحرير"
+msgstr "تحرير"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
-msgstr "_ملف"
+msgstr "ملف"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "ا_ختر"
+msgstr "اختر"
 
 #: samples/controls/bonobo-sample-controls.c:121
 msgid "Could not initialize Bonobo UI"
