@@ -1193,8 +1193,9 @@ bonobo_ui_engine_widget_set (BonoboUIEngine    *engine,
 			     GtkWidget         *widget)
 {
 	NodeInfo *info;
-	GtkWidget *tool_item;
+	GtkWidget *custom_widget;
 	BonoboUINode *node;
+	BonoboUISync *sync;
 
 	g_return_if_fail (widget != NULL);
 
@@ -1207,16 +1208,17 @@ bonobo_ui_engine_widget_set (BonoboUIEngine    *engine,
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (!strcmp (bonobo_ui_node_get_name (node), "control"));
 
-	if (BONOBO_IS_UI_TOOLBAR_ITEM (widget))
-		tool_item = widget;
-	else
-		tool_item = bonobo_ui_toolbar_control_item_new_widget (widget);
+	sync = find_sync_for_node (engine, node);
 
-	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
-	info->widget = gtk_widget_ref (tool_item);
-	gtk_object_sink (GTK_OBJECT (tool_item));
+	custom_widget = bonobo_ui_sync_wrap_widget (sync, widget);
 
-	bonobo_ui_engine_stamp_custom (engine, node);
+	if (custom_widget) {
+		info = bonobo_ui_xml_get_data (engine->priv->tree, node);
+		info->widget = gtk_widget_ref (custom_widget);
+		gtk_object_sink (GTK_OBJECT (custom_widget));
+
+		bonobo_ui_engine_stamp_custom (engine, node);
+	}
 		
 	bonobo_ui_engine_thaw (engine);
 }

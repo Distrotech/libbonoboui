@@ -1,3 +1,19 @@
+2002-11-22  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-menu.c (class_init): upd.
+	(impl_bonobo_ui_sync_menu_wrap_widget): impl.
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_widget_set): use the synchronizer.
+
+	* bonobo/bonobo-ui-sync-toolbar.c (class_init): upd.
+	(impl_bonobo_ui_sync_toolbar_wrap_widget): impl.
+
+	* bonobo/bonobo-ui-sync.c
+	(bonobo_ui_sync_wrap_widget): impl.
+
+	* tests/test-ui.c (main): insert a menu widget.
+
 2002-11-20  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-file-selector-util.c
