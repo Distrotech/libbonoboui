@@ -44,7 +44,6 @@ extern "C" {
 
 #include <bonobo/bonobo-stream.h>
 #include <bonobo/bonobo-stream-client.h>
-#include <bonobo/bonobo-stream-fs.h>
 
 #include <bonobo/bonobo-persist.h>
 #include <bonobo/bonobo-persist-file.h>
