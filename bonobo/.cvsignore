@@ -8,3 +8,6 @@ _libs
 .libs
 so_locations
 libbonoboui-2.0.pc
+
+bonoboui-marshal.h
+bonoboui-marshal.c

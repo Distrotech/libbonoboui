@@ -66,7 +66,8 @@ libbonoboinclude_HEADERS = \
 	bonobo-window.h				\
 	bonobo-wrapper.h			\
 	bonobo-zoomable-frame.h			\
-	bonobo-zoomable.h
+	bonobo-zoomable.h			\
+	bonoboui-marshal.h
 
 libbonoboui_2_la_LIBADD = \
 	$(LIBGNOMECANVAS_LIBS) $(LIBBONOBO_LIBS) \
@@ -115,9 +116,26 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-window.c				\
 	bonobo-wrapper.c			\
 	bonobo-zoomable.c			\
-	bonobo-zoomable-frame.c
+	bonobo-zoomable-frame.c			\
+	bonoboui-marshal-main.c
+
+BUILT_SOURCES = \
+	bonoboui-marshal.c		\
+	bonoboui-marshal.h
+
+bonoboui-marshal.h: bonoboui-marshal.list
+	cd $(srcdir) \
+	&& glib-genmarshal --prefix=bonobo_ui_marshal bonoboui-marshal.list --header >> xgen-gmh \
+	&& (cmp -s xgen-gmh bonoboui-marshal.h || cp xgen-gmh bonoboui-marshal.h) \
+	&& rm -f xgen-gmh xgen-gmh~
+
+bonoboui-marshal.c: bonoboui-marshal.list bonoboui-marshal.h
+	cd $(srcdir) \
+	&& glib-genmarshal --prefix=bonobo_ui_marshal bonoboui-marshal.list --body >> xgen-gmc \
+	&& cp xgen-gmc bonoboui-marshal.c \
+	&& rm -f xgen-gmc xgen-gmc~
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbonoboui-2.0.pc
 
-EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in
+EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in bonoboui-marshal.list

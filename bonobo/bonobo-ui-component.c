@@ -15,7 +15,8 @@
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-exception.h>
-#include <bonobo/bonobo-marshal.h>
+#include <bonobo/bonoboui-marshal.h>
+#include <bonobo/bonobo-types.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 
@@ -225,12 +226,8 @@ bonobo_ui_component_add_verb_full (BonoboUIComponent  *component,
 
 	verb = g_new (UIVerb, 1);
 	verb->cname      = g_strdup (cname);
-	verb->closure    = closure;
-
-	if (G_CLOSURE_NEEDS_MARSHAL (closure))
-		g_closure_set_marshal (
-			closure,
-			marshal_VOID__USER_DATA_STRING);
+	verb->closure    = bonobo_closure_store
+		(closure, marshal_VOID__USER_DATA_STRING);
 	
 	/*	verb->cb (component, verb->user_data, cname); */
 
@@ -356,11 +353,8 @@ bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
 
 	list = g_new (UIListener, 1);
 	list->id = g_strdup (id);
-	list->closure = closure;
-
-	if (G_CLOSURE_NEEDS_MARSHAL (closure))
-		g_closure_set_marshal (
-			closure, bonobo_marshal_VOID__STRING_ENUM_STRING);
+	list->closure = bonobo_closure_store
+		(closure, bonobo_ui_marshal_VOID__STRING_ENUM_STRING);
 
 	g_hash_table_insert (priv->listeners, list->id, list);	
 }
@@ -1418,7 +1412,7 @@ bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
 		G_SIGNAL_RUN_FIRST,
 		G_STRUCT_OFFSET (BonoboUIComponentClass, ui_event),
 		NULL, NULL,
-		bonobo_marshal_VOID__STRING_INT_STRING,
+		bonobo_ui_marshal_VOID__STRING_INT_STRING,
 		G_TYPE_NONE, 3, G_TYPE_STRING, G_TYPE_INT,
 		G_TYPE_STRING);
 
