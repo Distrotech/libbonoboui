@@ -1,5 +1,6 @@
 #include "component.h"
 #include <libbonobo.h>
+#include <libart_lgpl/art_affine.h>
 
 struct _SampleComponentPrivate {
 	Bonobo_Unknown	server;

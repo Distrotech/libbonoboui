@@ -20,7 +20,10 @@
 
 /*** gnomehello-app */
 
-#include <config.h>
+#include "config.h"
+
+#include <stdlib.h>
+
 #include "helloapp.h"
 
 /* Keep a list of all open application windows */

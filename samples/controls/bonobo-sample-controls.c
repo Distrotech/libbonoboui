@@ -35,6 +35,8 @@ bonobo_entry_control_new (void)
 	BonoboPropertyBag  *pb;
 	BonoboControl      *control;
 	GtkWidget	   *entry;
+	GParamSpec        **pspecs;
+	guint               n_pspecs;
 
 	/* Create the control. */
 	entry = gtk_entry_new ();
@@ -49,7 +51,13 @@ bonobo_entry_control_new (void)
 		GTK_OBJECT (entry), "activate",
 		GTK_SIGNAL_FUNC (activate_cb), control);
 
-	bonobo_property_bag_add_gtk_args (pb, G_OBJECT (entry));
+	pspecs = g_object_class_list_properties (
+		G_OBJECT_CLASS (entry), &n_pspecs);
+
+	bonobo_property_bag_map_params (
+		pb, G_OBJECT (entry), pspecs, n_pspecs);
+
+	g_free (pspecs);
 
 	return BONOBO_OBJECT (control);
 }

@@ -1,3 +1,17 @@
+2001-10-18  Michael Meeks  <michael@ximian.com>
+
+	* samples/controls/bonobo-sample-controls.c
+	(bonobo_entry_control_new): upd. for new param spec mappings.
+
+2001-10-18  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-marshal.list (VOID): don't generate an ENUM
+	marshaler.
+
+	* bonobo/bonobo-ui-component.c (ui_event): dont use G_TYPE_ENUM
+	it sucks. (bonobo_ui_component_add_listener_full): register the
+	enum as an int.
+
 2001-10-17  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-file-selector-util.c

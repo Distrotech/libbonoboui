@@ -96,7 +96,7 @@ ui_event (BonoboUIComponent           *component,
 			list->closure, G_TYPE_NONE,
 			BONOBO_UI_COMPONENT_TYPE, component,
 			G_TYPE_STRING, id,
-			G_TYPE_ENUM, type,
+			G_TYPE_INT, type,
 			G_TYPE_STRING, state, 0);
 }
 
@@ -354,7 +354,7 @@ bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
 	list = g_new (UIListener, 1);
 	list->id = g_strdup (id);
 	list->closure = bonobo_closure_store
-		(closure, bonobo_ui_marshal_VOID__STRING_ENUM_STRING);
+		(closure, bonobo_ui_marshal_VOID__STRING_INT_STRING);
 
 	g_hash_table_insert (priv->listeners, list->id, list);	
 }
