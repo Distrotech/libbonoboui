@@ -34,7 +34,6 @@ GnomeStreamFS
 
 </para>
 
-@parent: 
 @path: 
 @mode: 
 @Returns: 
@@ -45,7 +44,6 @@ GnomeStreamFS
 
 </para>
 
-@fs: 
 @path: 
 @Returns: 
 

@@ -1,4 +1,12 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * GNOME ClientSite object.
+ *
+ * Author:
+ *   Miguel de Icaza (miguel@kernel.org)
+ *
+ * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ */
 #ifndef _GNOME_CLIENT_SITE_H_
 #define _GNOME_CLIENT_SITE_H_
 
@@ -41,9 +49,6 @@ GnomeClientSite *gnome_client_site_new			(GnomeContainer *container);
 GnomeClientSite *gnome_client_site_construct		(GnomeClientSite  *client_site,
 							 GNOME_ClientSite corba_client_site,
 							 GnomeContainer   *container);
-
-void             gnome_client_site_set_moniker		(GnomeClientSite *client_site,
-							 GnomeMoniker   *moniker);
 
 gboolean         gnome_client_site_bind_embeddable	(GnomeClientSite *client_site,
 							 GnomeObjectClient *object);

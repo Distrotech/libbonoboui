@@ -9,12 +9,10 @@ GnomeObjectClient
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### MACRO GNOME_OBJECT_CLIENT_TYPE ##### -->
 <para>
@@ -30,6 +28,16 @@ GnomeObjectClient
 
 @object_client: 
 @corba_object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_object_activate ##### -->
+<para>
+
+</para>
+
+@object_desc: 
+@flags: 
 @Returns: 
 
 
@@ -54,6 +62,16 @@ GnomeObjectClient
 @goad_id: 
 @flags: 
 @params: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_object_restore_from_url ##### -->
+<para>
+
+</para>
+
+@goad_id: 
+@url: 
 @Returns: 
 
 

@@ -23,33 +23,118 @@ GnomeUIHandler
 
 
 
-<!-- ##### USER_FUNCTION GnomeUIHandlerCallbackFunc ##### -->
+<!-- ##### STRUCT GnomeUIHandlerTopLevelData ##### -->
 <para>
 
 </para>
 
-@uih: 
-@path: 
-@data: 
-@Returns: 
-
+@path_to_menu_item: 
+@path_to_toolbar_item: 
+@name_to_toolbar: 
+@app: 
+@accelgroup: 
+@statusbar: 
+@menubar: 
+@common_toolbar: 
+@toolbars: 
+@path_to_menu_widget: 
+@path_to_menu_shell: 
+@name_to_toolbar_widget: 
+@path_to_toolbar_item_widget: 
+@containee_uihs: 
 
 <!-- ##### STRUCT GnomeUIHandlerMenuItem ##### -->
 <para>
 
 </para>
 
+@path: 
+@type: 
+@label: 
+@hint: 
+@pos: 
+@children: 
+@pixmap_type: 
+@pixmap_data: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
 
 <!-- ##### STRUCT GnomeUIHandlerToolbarItem ##### -->
 <para>
 
 </para>
 
+@path: 
+@type: 
+@label: 
+@hint: 
+@pos: 
+@children: 
+@pixmap_type: 
+@pixmap_data: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
 
-<!-- ##### STRUCT GnomeUIHandlerTopLevelData ##### -->
+<!-- ##### USER_FUNCTION GnomeUIHandlerCallbackFunc ##### -->
 <para>
 
 </para>
+
+@uih: 
+@user_data: 
+@path: 
+@Returns: 
+
+
+<!-- ##### ENUM GnomeUIHandlerPixmapType ##### -->
+<para>
+
+</para>
+
+@GNOME_UI_HANDLER_PIXMAP_NONE: 
+@GNOME_UI_HANDLER_PIXMAP_STOCK: 
+@GNOME_UI_HANDLER_PIXMAP_FILENAME: 
+@GNOME_UI_HANDLER_PIXMAP_XPM_DATA: 
+@GNOME_UI_HANDLER_PIXMAP_RGBA_DATA: 
+@GNOME_UI_HANDLER_PIXMAP_RGB_DATA: 
+
+<!-- ##### ENUM GnomeUIHandlerMenuItemType ##### -->
+<para>
+
+</para>
+
+@GNOME_UI_HANDLER_MENU_END: 
+@GNOME_UI_HANDLER_MENU_ITEM: 
+@GNOME_UI_HANDLER_MENU_SUBTREE: 
+@GNOME_UI_HANDLER_MENU_RADIOITEM: 
+@GNOME_UI_HANDLER_MENU_RADIOGROUP: 
+@GNOME_UI_HANDLER_MENU_TOGGLEITEM: 
+@GNOME_UI_HANDLER_MENU_SEPARATOR: 
+
+<!-- ##### ENUM GnomeUIHandlerToolbarItemType ##### -->
+<para>
+
+</para>
+
+@GNOME_UI_HANDLER_TOOLBAR_END: 
+@GNOME_UI_HANDLER_TOOLBAR_ITEM: 
+@GNOME_UI_HANDLER_TOOLBAR_RADIOITEM: 
+@GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP: 
+@GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM: 
+@GNOME_UI_HANDLER_TOOLBAR_SEPARATOR: 
+
+<!-- ##### FUNCTION gnome_ui_handler_construct ##### -->
+<para>
+
+</para>
+
+@ui_handler: 
+@corba_uihandler: 
+@Returns: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_new ##### -->
@@ -67,6 +152,14 @@ GnomeUIHandler
 
 @uih: 
 @container: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_unset_container ##### -->
+<para>
+
+</para>
+
+@uih: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_add_containee ##### -->
@@ -115,6 +208,66 @@ GnomeUIHandler
 @Returns: 
 
 
+<!-- ##### FUNCTION gnome_ui_handler_build_path_v ##### -->
+<para>
+
+</para>
+
+@path_components: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_set_app ##### -->
+<para>
+
+</para>
+
+@uih: 
+@app: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_set_statusbar ##### -->
+<para>
+
+</para>
+
+@uih: 
+@statusbar: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_get_statusbar ##### -->
+<para>
+
+</para>
+
+@uih: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_create_menubar ##### -->
+<para>
+
+</para>
+
+@uih: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_create_popup_menu ##### -->
+<para>
+
+</para>
+
+@uih: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_do_popup_menu ##### -->
+<para>
+
+</para>
+
+@uih: 
+
+
 <!-- ##### FUNCTION gnome_ui_handler_set_menubar ##### -->
 <para>
 
@@ -130,8 +283,148 @@ GnomeUIHandler
 </para>
 
 @uih: 
-@menubar: 
 @Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_create_toolbar ##### -->
+<para>
+
+</para>
+
+@uih: 
+@name: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_remove_toolbar ##### -->
+<para>
+
+</para>
+
+@uih: 
+@name: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_set_toolbar ##### -->
+<para>
+
+</para>
+
+@uih: 
+@name: 
+@toolbar: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_get_toolbar_list ##### -->
+<para>
+
+</para>
+
+@uih: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_new ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@type: 
+@label: 
+@hint: 
+@pos: 
+@pixmap_type: 
+@pixmap_data: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_new_item ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@label: 
+@hint: 
+@pos: 
+@pixmap_type: 
+@pixmap_data: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_new_subtree ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@label: 
+@hint: 
+@pos: 
+@pixmap_type: 
+@pixmap_data: 
+@accelerator_key: 
+@ac_mods: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_new_separator ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@pos: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_new_radiogroup ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_new_radioitem ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@label: 
+@hint: 
+@pos: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_new_toggleitem ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@label: 
+@hint: 
+@pos: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_add_one ##### -->
@@ -144,17 +437,6 @@ GnomeUIHandler
 @item: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_menu_add_one_pos ##### -->
-<para>
-
-</para>
-
-@uih: 
-@parent_path: 
-@pos: 
-@item: 
-
-
 <!-- ##### FUNCTION gnome_ui_handler_menu_add_list ##### -->
 <para>
 
@@ -162,18 +444,7 @@ GnomeUIHandler
 
 @uih: 
 @parent_path: 
-@item: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_menu_add_list_pos ##### -->
-<para>
-
-</para>
-
-@uih: 
-@parent_path: 
-@pos: 
-@item: 
+@array: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_add_tree ##### -->
@@ -183,18 +454,7 @@ GnomeUIHandler
 
 @uih: 
 @parent_path: 
-@item: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_menu_add_tree_pos ##### -->
-<para>
-
-</para>
-
-@uih: 
-@parent_path: 
-@pos: 
-@item: 
+@tree: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_remove ##### -->
@@ -206,17 +466,7 @@ GnomeUIHandler
 @path: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_menu_set_info ##### -->
-<para>
-
-</para>
-
-@uih: 
-@path: 
-@info: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_menu_fetch ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_menu_fetch_one ##### -->
 <para>
 
 </para>
@@ -224,6 +474,50 @@ GnomeUIHandler
 @uih: 
 @path: 
 @Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_fetch_list ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_fetch_tree ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_free_one ##### -->
+<para>
+
+</para>
+
+@item: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_free_list ##### -->
+<para>
+
+</para>
+
+@item: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_free_tree ##### -->
+<para>
+
+</para>
+
+@item: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_fetch_by_callback ##### -->
@@ -246,13 +540,13 @@ GnomeUIHandler
 @Returns: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_menu_parse_uiinfo_list ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_menu_get_child_paths ##### -->
 <para>
 
 </para>
 
 @uih: 
-@uii: 
+@parent_path: 
 @Returns: 
 
 
@@ -261,8 +555,55 @@ GnomeUIHandler
 
 </para>
 
-@uih: 
 @uii: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_parse_uiinfo_list ##### -->
+<para>
+
+</para>
+
+@uii: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_parse_uiinfo_tree ##### -->
+<para>
+
+</para>
+
+@uii: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_parse_uiinfo_one_with_data ##### -->
+<para>
+
+</para>
+
+@uii: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_parse_uiinfo_list_with_data ##### -->
+<para>
+
+</para>
+
+@uii: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_parse_uiinfo_tree_with_data ##### -->
+<para>
+
+</para>
+
+@uii: 
+@data: 
 @Returns: 
 
 
@@ -296,26 +637,6 @@ GnomeUIHandler
 @Returns: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_menu_set_hidden ##### -->
-<para>
-
-</para>
-
-@uih: 
-@path: 
-@hidden: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_menu_get_hidden ##### -->
-<para>
-
-</para>
-
-@uih: 
-@path: 
-@Returns: 
-
-
 <!-- ##### FUNCTION gnome_ui_handler_menu_set_label ##### -->
 <para>
 
@@ -324,10 +645,29 @@ GnomeUIHandler
 @uih: 
 @path: 
 @label: 
-@Returns: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_get_label ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_set_hint ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@hint: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_menu_get_hint ##### -->
 <para>
 
 </para>
@@ -346,7 +686,6 @@ GnomeUIHandler
 @path: 
 @type: 
 @data: 
-@Returns: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_get_pixmap ##### -->
@@ -369,7 +708,6 @@ GnomeUIHandler
 @path: 
 @accelerator_key: 
 @ac_mods: 
-@Returns: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_get_accel ##### -->
@@ -392,7 +730,6 @@ GnomeUIHandler
 @path: 
 @callback: 
 @callback_data: 
-@Returns: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_get_callback ##### -->
@@ -414,7 +751,6 @@ GnomeUIHandler
 @uih: 
 @path: 
 @state: 
-@Returns: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_get_toggle_state ##### -->
@@ -424,6 +760,7 @@ GnomeUIHandler
 
 @uih: 
 @path: 
+@Returns: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_menu_set_radio_state ##### -->
@@ -436,7 +773,7 @@ GnomeUIHandler
 @state: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_menu_radio_get_state ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_menu_get_radio_state ##### -->
 <para>
 
 </para>
@@ -446,76 +783,118 @@ GnomeUIHandler
 @Returns: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_dynlist_set_maxsize ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_menu_get_radio_group_selection ##### -->
+<para>
+
+</para>
+
+@uih: 
+@rg_path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_new ##### -->
 <para>
 
 </para>
 
 @uih: 
 @path: 
-@maxsize: 
-@Returns: 
+@type: 
+@label: 
+@hint: 
+@pos: 
+@pixmap_type: 
+@pixmap_data: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_dynlist_get_maxsize ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_new_item ##### -->
 <para>
 
 </para>
 
 @uih: 
 @path: 
-@Returns: 
+@label: 
+@hint: 
+@pos: 
+@pixmap_type: 
+@pixmap_data: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_dynlist_prepend_item ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_new_subtree ##### -->
 <para>
 
 </para>
 
 @uih: 
-@dynlist: 
-@dynlist_item: 
-@Returns: 
+@path: 
+@label: 
+@hint: 
+@pos: 
+@pixmap_type: 
+@pixmap_data: 
+@accelerator_key: 
+@ac_mods: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_dynlist_append_item ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_new_separator ##### -->
 <para>
 
 </para>
 
 @uih: 
-@dynlist: 
-@dynlist_item: 
-@Returns: 
+@path: 
+@pos: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_set_toolbar ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_new_radiogroup ##### -->
 <para>
 
 </para>
 
 @uih: 
-@name: 
-@toolbar: 
-@Returns: 
+@path: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_get_toolbar_list ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_new_radioitem ##### -->
 <para>
 
 </para>
 
 @uih: 
-@Returns: 
+@path: 
+@label: 
+@hint: 
+@pos: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_toolbar_create ##### -->
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_new_toggleitem ##### -->
 <para>
 
 </para>
 
 @uih: 
-@name: 
+@path: 
+@label: 
+@hint: 
+@pos: 
+@accelerator_key: 
+@ac_mods: 
+@callback: 
+@callback_data: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_toolbar_add_one ##### -->
@@ -524,18 +903,7 @@ GnomeUIHandler
 </para>
 
 @uih: 
-@path: 
-@item: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_toolbar_add_one_pos ##### -->
-<para>
-
-</para>
-
-@uih: 
-@path: 
-@pos: 
+@parent_path: 
 @item: 
 
 
@@ -545,18 +913,7 @@ GnomeUIHandler
 </para>
 
 @uih: 
-@path: 
-@item: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_toolbar_add_list_pos ##### -->
-<para>
-
-</para>
-
-@uih: 
-@path: 
-@pos: 
+@parent_path: 
 @item: 
 
 
@@ -566,18 +923,7 @@ GnomeUIHandler
 </para>
 
 @uih: 
-@path: 
-@item: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_toolbar_add_tree_pos ##### -->
-<para>
-
-</para>
-
-@uih: 
-@path: 
-@pos: 
+@parent_path: 
 @item: 
 
 
@@ -588,16 +934,6 @@ GnomeUIHandler
 
 @uih: 
 @path: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_toolbar_set_info ##### -->
-<para>
-
-</para>
-
-@uih: 
-@path: 
-@info: 
 
 
 <!-- ##### FUNCTION gnome_ui_handler_toolbar_fetch ##### -->
@@ -660,6 +996,16 @@ GnomeUIHandler
 @Returns: 
 
 
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_parse_uiinfo_tree ##### -->
+<para>
+
+</para>
+
+@uih: 
+@uii: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gnome_ui_handler_toolbar_set_sensitivity ##### -->
 <para>
 
@@ -680,27 +1026,6 @@ GnomeUIHandler
 @Returns: 
 
 
-<!-- ##### FUNCTION gnome_ui_handler_toolbar_set_hidden ##### -->
-<para>
-
-</para>
-
-@uih: 
-@path: 
-@hidden: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_toolbar_get_hidden ##### -->
-<para>
-
-</para>
-
-@uih: 
-@path: 
-@hidden: 
-@Returns: 
-
-
 <!-- ##### FUNCTION gnome_ui_handler_toolbar_set_label ##### -->
 <para>
 
@@ -712,6 +1037,26 @@ GnomeUIHandler
 
 
 <!-- ##### FUNCTION gnome_ui_handler_toolbar_get_label ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_set_hint ##### -->
+<para>
+
+</para>
+
+@uih: 
+@path: 
+@hint: 
+
+
+<!-- ##### FUNCTION gnome_ui_handler_toolbar_get_hint ##### -->
 <para>
 
 </para>
@@ -825,68 +1170,5 @@ GnomeUIHandler
 @uih: 
 @path: 
 @state: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_group_create ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_group_destroy ##### -->
-<para>
-
-</para>
-
-@gid: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_group_add_menu_items ##### -->
-<para>
-
-</para>
-
-@gid: 
-@path1: 
-@Varargs: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_group_add_toolbar_items ##### -->
-<para>
-
-</para>
-
-@gid: 
-@path1: 
-@Varargs: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_group_get_members ##### -->
-<para>
-
-</para>
-
-@gid: 
-@Returns: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_group_set_sensitivity ##### -->
-<para>
-
-</para>
-
-@gid: 
-@sensitivity: 
-
-
-<!-- ##### FUNCTION gnome_ui_handler_group_set_hidden ##### -->
-<para>
-
-</para>
-
-@gid: 
-@hidden: 
 
 

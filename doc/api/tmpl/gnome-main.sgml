@@ -27,6 +27,13 @@ gnome-main
 @Returns: 
 
 
+<!-- ##### FUNCTION bonobo_setup_x_error_handler ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO bonobo_orb ##### -->
 <para>
 

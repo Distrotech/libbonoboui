@@ -9,12 +9,10 @@ GnomeClientSite
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### MACRO GNOME_CLIENT_SITE_TYPE ##### -->
 <para>
@@ -43,16 +41,7 @@ GnomeClientSite
 @Returns: 
 
 
-<!-- ##### FUNCTION gnome_client_site_set_moniker ##### -->
-<para>
-
-</para>
-
-@client_site: 
-@moniker: 
-
-
-<!-- ##### FUNCTION gnome_client_site_bind_bonobo_object ##### -->
+<!-- ##### FUNCTION gnome_client_site_bind_embeddable ##### -->
 <para>
 
 </para>
@@ -60,6 +49,46 @@ GnomeClientSite
 @client_site: 
 @object: 
 @Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_site_new_view ##### -->
+<para>
+
+</para>
+
+@client_site: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_site_get_verbs ##### -->
+<para>
+
+</para>
+
+@client_site: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_site_free_verbs ##### -->
+<para>
+
+</para>
+
+@string_list: 
+
+
+<!-- ##### MACRO gnome_client_site_embeddable_new_view ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO gnome_client_site_embeddable_get_verbs ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### VARIABLE gnome_client_site_epv ##### -->

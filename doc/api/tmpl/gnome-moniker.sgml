@@ -9,12 +9,10 @@ GnomeMoniker
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### MACRO GNOME_MONIKER_TYPE ##### -->
 <para>
@@ -23,60 +21,39 @@ GnomeMoniker
 
 
 
-<!-- ##### USER_FUNCTION GnomeMonikerBindFn ##### -->
+<!-- ##### FUNCTION gnome_moniker_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_moniker_set_server ##### -->
 <para>
 
 </para>
 
 @moniker: 
-@bind_options: 
-@closure: 
-@Returns: 
+@goad_id: 
+@filename: 
 
 
-<!-- ##### FUNCTION gnome_moniker_construct ##### -->
+<!-- ##### FUNCTION gnome_moniker_append_item_name ##### -->
 <para>
 
 </para>
 
 @moniker: 
-@corba_moniker: 
-@bind_function: 
-@Returns: 
+@item_name: 
 
 
-<!-- ##### FUNCTION gnome_bind_context_new ##### -->
+<!-- ##### FUNCTION gnome_moniker_get_as_string ##### -->
 <para>
 
 </para>
 
+@moniker: 
 @Returns: 
-
-
-<!-- ##### FUNCTION gnome_parse_display_name ##### -->
-<para>
-
-</para>
-
-@bind: 
-@display_name: 
-@chars_parsed: 
-@Returns: 
-
-
-<!-- ##### FUNCTION find_moniker_in_naming_service ##### -->
-<para>
-
-</para>
-
-@name: 
-@kind: 
-@Returns: 
-
-
-<!-- ##### VARIABLE gnome_moniker_vepv ##### -->
-<para>
-
-</para>
 
 

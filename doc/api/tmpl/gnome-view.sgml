@@ -23,6 +23,16 @@ GnomeView
 
 
 
+<!-- ##### USER_FUNCTION GnomeViewVerbFunc ##### -->
+<para>
+
+</para>
+
+@view: 
+@verb_name: 
+@user_data: 
+
+
 <!-- ##### FUNCTION gnome_view_construct ##### -->
 <para>
 
@@ -41,5 +51,79 @@ GnomeView
 
 @widget: 
 @Returns: 
+
+
+<!-- ##### FUNCTION gnome_view_corba_object_create ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_view_set_embeddable ##### -->
+<para>
+
+</para>
+
+@view: 
+@embeddable: 
+
+
+<!-- ##### FUNCTION gnome_view_get_embeddable ##### -->
+<para>
+
+</para>
+
+@view: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_view_set_view_frame ##### -->
+<para>
+
+</para>
+
+@view: 
+@view_frame: 
+
+
+<!-- ##### FUNCTION gnome_view_get_view_frame ##### -->
+<para>
+
+</para>
+
+@view: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_view_get_ui_handler ##### -->
+<para>
+
+</para>
+
+@view: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_view_register_verb ##### -->
+<para>
+
+</para>
+
+@view: 
+@verb_name: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION gnome_view_unregister_verb ##### -->
+<para>
+
+</para>
+
+@view: 
+@verb_name: 
 
 

@@ -10,6 +10,8 @@
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
+ *
+ * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
 #include <config.h>
 #include <stdio.h>
@@ -55,33 +57,6 @@ impl_GNOME_client_site_show_window (PortableServer_Servant servant, CORBA_boolea
 		shown);
 }
 
-static GNOME_Moniker
-impl_GNOME_client_site_get_moniker (PortableServer_Servant servant,
-				    GNOME_Moniker_type which,
-				    CORBA_Environment *ev)
-{
-	GnomeClientSite *client_site = GNOME_CLIENT_SITE (gnome_object_from_servant (servant));
-	GnomeMoniker *container_moniker;
-
-	container_moniker = gnome_container_get_moniker (client_site->container);
-
-	switch (which){
-	case GNOME_Moniker_CONTAINER:
-		if (container_moniker == NULL)
-			return CORBA_OBJECT_NIL;
-
-		return CORBA_Object_duplicate (
-			gnome_object_corba_objref (GNOME_OBJECT (container_moniker)), ev);
-			
-	case GNOME_Moniker_OBJ_RELATIVE:
-	case GNOME_Moniker_OBJ_FULL:
-		g_warning ("Implement me!\n");
-		return CORBA_OBJECT_NIL;
-	}
-	g_warning ("Unknown GNOME_Moniker_type");
-	return CORBA_OBJECT_NIL;
-}
-
 static void
 impl_GNOME_client_site_queue_resize (PortableServer_Servant servant, CORBA_Environment *ev)
 {
@@ -124,7 +99,6 @@ POA_GNOME_ClientSite__epv gnome_client_site_epv =
 	NULL,
 	&impl_GNOME_client_site_get_container,
 	&impl_GNOME_client_site_show_window,
-	&impl_GNOME_client_site_get_moniker,
 	&impl_GNOME_client_site_queue_resize,
 	&impl_GNOME_client_site_save_object,
 };
@@ -360,7 +334,10 @@ gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClie
 		&gnome_object->ev);
 
 	if (gnome_object->ev._major != CORBA_NO_EXCEPTION){
-		gnome_object_check_env (gnome_object, &gnome_object->ev);
+		gnome_object_check_env (
+			gnome_object,
+			gnome_object_corba_objref (gnome_object),
+			&gnome_object->ev);
 		return FALSE;
 	}
 	
@@ -372,20 +349,26 @@ gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClie
 		gnome_object_corba_objref (GNOME_OBJECT (client_site)),
 		&GNOME_OBJECT (client_site)->ev);
 		
-	if (gnome_object->ev._major != CORBA_NO_EXCEPTION)
+	if (gnome_object->ev._major != CORBA_NO_EXCEPTION){
+		gnome_object_check_env (gnome_object, corba_object, &GNOME_OBJECT (client_site)->ev);
 		return FALSE;
+	}
 	
 	client_site->bound_object = object;
 	return TRUE;
 }
 
 static void
-set_remote_window (GtkWidget *socket, GNOME_View view)
+set_remote_window (GtkWidget *socket, GnomeViewFrame *view_frame)
 {
+	GNOME_View view = view_frame->view;
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 	GNOME_View_set_window (view, GDK_WINDOW_XWINDOW (socket->window), &ev);
+	if (ev._major != CORBA_NO_EXCEPTION)
+		gnome_object_check_env (GNOME_OBJECT (view_frame), view, &ev);
+
 	CORBA_exception_free (&ev);
 }
 
@@ -396,12 +379,15 @@ destroy_view_frame (GnomeViewFrame *view_frame, GnomeObjectClient *server_object
 }
 
 static void
-size_allocate (GtkWidget *widget, GtkAllocation *allocation, GNOME_View view)
+size_allocate (GtkWidget *widget, GtkAllocation *allocation, GnomeViewFrame *view_frame)
 {
+	GNOME_View view = view_frame->view;
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 	GNOME_View_size_allocate (view, allocation->width, allocation->height, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION)
+		gnome_object_check_env (GNOME_OBJECT (view_frame), view, &ev);
 	CORBA_exception_free (&ev);
 }
 
@@ -459,6 +445,10 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 		gnome_object_corba_objref (GNOME_OBJECT (view_frame)),
 		&ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
+		gnome_object_check_env (
+			GNOME_OBJECT (client_site),
+			gnome_object_corba_objref (GNOME_OBJECT (server_object)),
+			&ev);
 		gtk_object_unref (GTK_OBJECT (socket));
 		gtk_object_unref (GTK_OBJECT (view_frame));
 		CORBA_exception_free (&ev);
@@ -477,13 +467,13 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 	 * 5. Now wait until the socket->window is realized.
 	 */
 	gtk_signal_connect (GTK_OBJECT (socket), "realize",
-			    GTK_SIGNAL_FUNC (set_remote_window), view);
+			    GTK_SIGNAL_FUNC (set_remote_window), view_frame);
 
 	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
 			    GTK_SIGNAL_FUNC (destroy_view_frame), server_object);
 
 	gtk_signal_connect (GTK_OBJECT (wrapper), "size_allocate",
-			    GTK_SIGNAL_FUNC (size_allocate), view);
+			    GTK_SIGNAL_FUNC (size_allocate), view_frame);
 	
 	CORBA_exception_free (&ev);		
 	return view_frame;
@@ -521,9 +511,7 @@ gnome_client_site_get_verbs (GnomeClientSite *client_site)
 	list = GNOME_Embeddable_get_verb_list (object, &gobject->ev);
 
 	if (gobject->ev._major != CORBA_NO_EXCEPTION){
-		if (list != CORBA_OBJECT_NIL)
-			CORBA_free (list);
-		
+		gnome_object_check_env (GNOME_OBJECT (client_site), object, &gobject->ev);
 		return NULL;
 	}
 

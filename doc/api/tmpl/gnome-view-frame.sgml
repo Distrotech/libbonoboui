@@ -44,6 +44,76 @@ GnomeViewFrame
 @Returns: 
 
 
+<!-- ##### FUNCTION gnome_view_frame_bind_to_view ##### -->
+<para>
+
+</para>
+
+@view_frame: 
+@view: 
+
+
+<!-- ##### FUNCTION gnome_view_frame_get_view ##### -->
+<para>
+
+</para>
+
+@view_frame: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_view_frame_view_activate ##### -->
+<para>
+
+</para>
+
+@view_frame: 
+
+
+<!-- ##### FUNCTION gnome_view_frame_view_deactivate ##### -->
+<para>
+
+</para>
+
+@view_frame: 
+
+
+<!-- ##### FUNCTION gnome_view_frame_view_do_verb ##### -->
+<para>
+
+</para>
+
+@view_frame: 
+@verb_name: 
+
+
+<!-- ##### FUNCTION gnome_view_frame_set_covered ##### -->
+<para>
+
+</para>
+
+@view_frame: 
+@covered: 
+
+
+<!-- ##### FUNCTION gnome_view_frame_set_ui_handler ##### -->
+<para>
+
+</para>
+
+@view_frame: 
+@uih: 
+
+
+<!-- ##### FUNCTION gnome_view_frame_get_ui_handler ##### -->
+<para>
+
+</para>
+
+@view_frame: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gnome_view_frame_get_wrapper ##### -->
 <para>
 
@@ -51,5 +121,15 @@ GnomeViewFrame
 
 @view_frame: 
 @Returns: 
+
+
+<!-- ##### FUNCTION gnome_view_frame_size_request ##### -->
+<para>
+
+</para>
+
+@view_frame: 
+@desired_width: 
+@desired_height: 
 
 

@@ -9,12 +9,10 @@ GnomeEmbeddable
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### MACRO GNOME_EMBEDDABLE_TYPE ##### -->
 <para>
@@ -23,15 +21,26 @@ GnomeEmbeddable
 
 
 
+<!-- ##### STRUCT GnomeVerb ##### -->
+<para>
+
+</para>
+
+@name: 
+@label: 
+@hint: 
+
 <!-- ##### USER_FUNCTION GnomeViewFactory ##### -->
 <para>
 
 </para>
 
-@bonobo_object: 
+@embeddable: 
 @view_frame: 
 @closure: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@bonobo_object: 
 
 
 <!-- ##### FUNCTION gnome_embeddable_new ##### -->
@@ -56,6 +65,15 @@ GnomeEmbeddable
 @Returns: 
 
 
+<!-- ##### FUNCTION gnome_embeddable_corba_object_create ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gnome_embeddable_add_verb ##### -->
 <para>
 
@@ -63,6 +81,8 @@ GnomeEmbeddable
 
 @bonobo_object: 
 @verb_name: 
+@verb_label: 
+@verb_hint: 
 
 
 <!-- ##### FUNCTION gnome_embeddable_add_verbs ##### -->
@@ -71,6 +91,8 @@ GnomeEmbeddable
 </para>
 
 @bonobo_object: 
+@verbs: 
+<!-- # Unused Parameters # -->
 @verb_list: 
 
 
@@ -91,5 +113,11 @@ GnomeEmbeddable
 @bonobo_object: 
 @factory: 
 @data: 
+
+
+<!-- ##### VARIABLE gnome_embeddable_epv ##### -->
+<para>
+
+</para>
 
 

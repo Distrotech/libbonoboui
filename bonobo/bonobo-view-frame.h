@@ -39,8 +39,10 @@ typedef struct {
 	/*
 	 * signal
 	 */
-	void (*view_activated) (GnomeViewFrame *view_frame, gboolean state);
-	void (*user_activate)  (GnomeViewFrame *view_frame);
+	void (*view_activated)      (GnomeViewFrame *view_frame, gboolean state);
+	void (*undo_last_operation) (GnomeViewFrame *view_frame);
+	void (*user_activate)       (GnomeViewFrame *view_frame);
+	void (*request_resize)      (GnomeViewFrame *view_frame, gint requested_width, gint requested_height);
 } GnomeViewFrameClass;
 
 GtkType           gnome_view_frame_get_type        (void);
@@ -49,7 +51,6 @@ GnomeViewFrame   *gnome_view_frame_construct       (GnomeViewFrame *view_frame,
 						    GnomeWrapper   *wrapper,
 						    GnomeClientSite *client_site);
 GnomeViewFrame   *gnome_view_frame_new             (GnomeClientSite *client_site);
-
 void		  gnome_view_frame_bind_to_view	   (GnomeViewFrame *view_frame,
 						    GNOME_View view);
 GNOME_View	  gnome_view_frame_get_view	   (GnomeViewFrame *view_frame);
@@ -75,6 +76,9 @@ void		  gnome_view_frame_set_ui_handler  (GnomeViewFrame *view_frame,
 GnomeUIHandler   *gnome_view_frame_get_ui_handler  (GnomeViewFrame *view_frame);
 
 GtkWidget        *gnome_view_frame_get_wrapper     (GnomeViewFrame *view_frame);
+void              gnome_view_frame_size_request    (GnomeViewFrame *view_frame,
+						    int *desired_width,
+						    int *desired_height);
 
 END_GNOME_DECLS
 

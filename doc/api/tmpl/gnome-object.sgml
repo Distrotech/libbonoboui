@@ -29,7 +29,7 @@ GnomeObject
 </para>
 
 
-<!-- ##### STRUCT GnomeAggregateObject ##### -->
+<!-- ##### STRUCT GnomeObjectPrivate ##### -->
 <para>
 
 </para>
@@ -63,6 +63,15 @@ GnomeObject
 @servant: 
 
 
+<!-- ##### FUNCTION gnome_object_get_servant ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
 <!-- ##### FUNCTION gnome_object_activate_servant ##### -->
 <para>
 
@@ -93,6 +102,67 @@ GnomeObject
 
 
 <!-- ##### FUNCTION gnome_object_corba_objref ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_object_ref ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION gnome_object_unref ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION gnome_object_destroy ##### -->
+<para>
+
+</para>
+
+@object: 
+
+
+<!-- ##### FUNCTION gnome_object_check_env ##### -->
+<para>
+
+</para>
+
+@object: 
+@corba_object: 
+@ev: 
+
+
+<!-- ##### MACRO GNOME_OBJECT_CHECK ##### -->
+<para>
+
+</para>
+
+@o: 
+@c: 
+@e: 
+
+
+<!-- ##### MACRO GNOME_OBJECT_EV ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
+<!-- ##### FUNCTION gnome_unknown_ping ##### -->
 <para>
 
 </para>

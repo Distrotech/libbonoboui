@@ -9,9 +9,11 @@
  * a GnomeClientSite, which is a container-side object with which the
  * GnomeEmbeddable communicates.
  *
- * Author:
+ * Authors:
  *   Miguel de Icaza (miguel@kernel.org)
  *   Nat Friedman    (nat@gnome-support.com)
+ *
+ * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -65,8 +67,8 @@ impl_GNOME_Embeddable_get_client_site (PortableServer_Servant servant,
 
 static void
 impl_GNOME_Embeddable_set_host_name (PortableServer_Servant servant,
-				     CORBA_char *name,
-				     CORBA_char *appname,
+				     const CORBA_char *name,
+				     const CORBA_char *appname,
 				     CORBA_Environment *ev)
 {
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
@@ -90,16 +92,6 @@ impl_GNOME_Embeddable_close (PortableServer_Servant servant,
 			     CORBA_Environment *ev)
 {
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
-}
-
-static void
-impl_GNOME_Embeddable_set_moniker (PortableServer_Servant servant,
-				   const GNOME_Moniker mon,
-				   const GNOME_Moniker_type which,
-				   CORBA_Environment *ev)
-{
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
-
 }
 
 static GNOME_Embeddable_verb_list *
@@ -194,7 +186,6 @@ POA_GNOME_Embeddable__epv gnome_embeddable_epv = {
 	&impl_GNOME_Embeddable_get_client_site,
 	&impl_GNOME_Embeddable_set_host_name,
 	&impl_GNOME_Embeddable_close,
-	&impl_GNOME_Embeddable_set_moniker,
 	&impl_GNOME_Embeddable_get_verb_list,
 	&impl_GNOME_Embeddable_advise,
 	&impl_GNOME_Embeddable_unadvise,

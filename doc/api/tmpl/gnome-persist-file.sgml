@@ -28,7 +28,7 @@ GnomePersistFile
 
 </para>
 
-@ps: 
+@pf: 
 @filename: 
 @closure: 
 @Returns: 
@@ -48,6 +48,7 @@ GnomePersistFile
 
 </para>
 
+@goad_id: 
 @load_fn: 
 @save_fn: 
 @closure: 
@@ -61,6 +62,7 @@ GnomePersistFile
 
 @ps: 
 @corba_ps: 
+@goad_id: 
 @load_fn: 
 @save_fn: 
 @closure: 

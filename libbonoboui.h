@@ -4,18 +4,15 @@
  *
  * FIXME: We should try to optimize the order of the include
  * files here to minimize repeated inclussion of files.
+ *
+ * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
 #include <bonobo/gtk-interfaces.h>
 
 #include <bonobo/gnome-object.h>
 
-#include <bonobo/gnome-bind-context.h>
-
 #include <bonobo/gnome-moniker.h>
 #include <bonobo/gnome-moniker-client.h>
-#include <bonobo/gnome-file-moniker.h>
-#include <bonobo/gnome-item-moniker.h>
-#include <bonobo/gnome-composite-moniker.h>
 
 #include <bonobo/gnome-container.h>
 #include <bonobo/gnome-object-client.h>
@@ -24,9 +21,6 @@
 #include <bonobo/gnome-view.h>
 #include <bonobo/gnome-embeddable.h>
 #include <bonobo/gnome-embeddable-factory.h>
-
-#include <bonobo/gnome-inplace-component.h>
-#include <bonobo/gnome-inplace-site.h>
 
 #include <bonobo/gnome-main.h>
 

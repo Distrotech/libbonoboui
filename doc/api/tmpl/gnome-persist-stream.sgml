@@ -58,6 +58,7 @@ GnomePersistStream
 
 </para>
 
+@goad_id: 
 @load_fn: 
 @save_fn: 
 @closure: 
@@ -71,6 +72,7 @@ GnomePersistStream
 
 @ps: 
 @corba_ps: 
+@goad_id: 
 @load_fn: 
 @save_fn: 
 @closure: 

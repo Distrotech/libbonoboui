@@ -45,10 +45,13 @@ struct _GnomeViewClass {
 	/*
 	 * Signals
 	 */
-	void (*view_activate)      (GnomeView *comp,
-				    gboolean activate);
-	void (*do_verb)            (GnomeView *comp,
-				    const CORBA_char *verb_name);
+	void (*view_activate)            (GnomeView *view,
+					  gboolean activate);
+	void (*view_undo_last_operation) (GnomeView *view);
+	void (*size_request)             (GnomeView *view, int *desired_width, int *desired_height);
+	void (*do_verb)                  (GnomeView *view,
+					  const CORBA_char *verb_name);
+					  
 };
 
 GtkType		 gnome_view_get_type		(void);

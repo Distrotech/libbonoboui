@@ -33,13 +33,15 @@ GnomeStorage
 @Returns: 
 
 
-<!-- ##### FUNCTION gnome_storage_file_open ##### -->
+<!-- ##### FUNCTION gnome_storage_open ##### -->
 <para>
 
 </para>
 
+@driver: 
 @path: 
-@open_mode: 
+@flags: 
+@mode: 
 @Returns: 
 
 
@@ -93,5 +95,51 @@ GnomeStorage
 <para>
 
 </para>
+
+
+<!-- ##### MACRO GNOME_SS_READ ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO GNOME_SS_WRITE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO GNOME_SS_RDWR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO GNOME_SS_CREATE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO GNOME_SS_EXCL ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION gnome_storage_driver_open ##### -->
+<para>
+
+</para>
+
+@path: 
+@flags: 
+@mode: 
+@Returns: 
 
 

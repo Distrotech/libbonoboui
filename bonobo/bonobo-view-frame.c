@@ -2,9 +2,11 @@
 /**
  * GNOME view frame object.
  *
- * Author:
+ * Authors:
  *   Nat Friedman (nat@nat.org)
  *   Miguel de Icaza (miguel@kernel.org)
+ *
+ * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -17,6 +19,8 @@
 
 enum {
 	VIEW_ACTIVATED,
+	UNDO_LAST_OPERATION,
+	REQUEST_RESIZE,
 	USER_ACTIVATE,
 	LAST_SIGNAL
 };
@@ -62,6 +66,34 @@ impl_GNOME_ViewFrame_view_activated (PortableServer_Servant servant,
 
 	gtk_signal_emit (GTK_OBJECT (view_frame),
 			 view_frame_signals [VIEW_ACTIVATED], state);
+}
+
+static void
+impl_GNOME_ViewFrame_view_deactivate_and_undo (PortableServer_Servant servant,
+					       CORBA_Environment *ev)
+{
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (GTK_OBJECT (view_frame),
+			 view_frame_signals [VIEW_ACTIVATED], FALSE);
+
+	gtk_signal_emit (GTK_OBJECT (view_frame),
+			 view_frame_signals [UNDO_LAST_OPERATION]);
+}
+
+static void
+impl_GNOME_ViewFrame_request_resize (PortableServer_Servant servant,
+				     const CORBA_short new_width,
+				     const CORBA_short new_height,
+				     CORBA_Environment *ev)
+{
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (GTK_OBJECT (view_frame),
+			 view_frame_signals [REQUEST_RESIZE],
+			 (gint) new_width,
+			 (gint) new_height);
+
 }
 
 static CORBA_Object
@@ -188,7 +220,9 @@ init_view_frame_corba_class (void)
 	gnome_view_frame_epv.get_client_site = impl_GNOME_ViewFrame_get_client_site;
 	gnome_view_frame_epv.get_ui_handler = impl_GNOME_ViewFrame_get_ui_handler;
 	gnome_view_frame_epv.view_activated = impl_GNOME_ViewFrame_view_activated;
-
+	gnome_view_frame_epv.deactivate_and_undo = impl_GNOME_ViewFrame_view_deactivate_and_undo;
+	gnome_view_frame_epv.request_resize = impl_GNOME_ViewFrame_request_resize;
+	
 	/* Setup the vector of epvs */
 	gnome_view_frame_vepv.GNOME_Unknown_epv = &gnome_object_epv;
 	gnome_view_frame_vepv.GNOME_ViewFrame_epv = &gnome_view_frame_epv;
@@ -216,6 +250,14 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_BOOL);
 
+	view_frame_signals [UNDO_LAST_OPERATION] =
+		gtk_signal_new ("undo_last_operation",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, undo_last_operation),
+				gtk_marshal_NONE__NONE,
+				GTK_TYPE_NONE, 0);
+
 	view_frame_signals [USER_ACTIVATE] =
 		gtk_signal_new ("user_activate",
 				GTK_RUN_LAST,
@@ -224,14 +266,24 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
+	view_frame_signals [REQUEST_RESIZE] =
+		gtk_signal_new ("request_resize",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, request_resize),
+				gtk_marshal_NONE__INT_INT,
+				GTK_TYPE_NONE, 2,
+				GTK_TYPE_INT, GTK_TYPE_INT);
+
 	gtk_object_class_add_signals (
 		object_class,
 		view_frame_signals,
 		LAST_SIGNAL);
 
 	object_class->destroy = gnome_view_frame_destroy;
+
 	class->view_activated = gnome_view_frame_activated;
-	
+
 	init_view_frame_corba_class ();
 }
 
@@ -361,7 +413,9 @@ gnome_view_frame_view_activate (GnomeViewFrame *view_frame)
 	GNOME_View_activate (view_frame->view, TRUE, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		/* FIXME: What do I do here? */
+		gnome_object_check_env (
+			GNOME_OBJECT (view_frame),
+			(CORBA_Object) view_frame->view, &ev);
 	}
 
 	CORBA_exception_free (&ev);
@@ -395,7 +449,9 @@ gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame)
 	GNOME_View_activate (view_frame->view, FALSE, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		/* FIXME: What do I do here? */
+		gnome_object_check_env (
+			GNOME_OBJECT (view_frame),
+			(CORBA_Object) view_frame->view, &ev);
 	}
 
 	CORBA_exception_free (&ev);
@@ -422,7 +478,11 @@ gnome_view_frame_view_do_verb (GnomeViewFrame *view_frame,
 
 	CORBA_exception_init (&ev);
 	GNOME_View_do_verb (view_frame->view, verb_name, &ev);
-	/* FIXME: Check exception */
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (
+			GNOME_OBJECT (view_frame),
+			(CORBA_Object) view_frame->view, &ev);
+	}
 	CORBA_exception_free (&ev);
 }
 
@@ -476,4 +536,41 @@ gnome_view_frame_get_ui_handler (GnomeViewFrame *view_frame)
 	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
 
 	return view_frame->uih;
+}
+
+/**
+ * gnome_view_frame_size_request:
+ * @view_frame: A GnomeViewFrame object.
+ * @desired_width: pointer to an integer, where the desired width of the View is stored
+ * @desired_height: pointer to an integer, where the desired height of the View is stored
+ *
+ * Returns: The default desired_width and desired_height the component wants to use.
+ */
+void
+gnome_view_frame_size_request (GnomeViewFrame *view_frame, int *desired_width, int *desired_height)
+{
+	CORBA_short dw, dh;
+	CORBA_Environment ev;
+	
+	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (desired_height != NULL);
+	g_return_if_fail (desired_width  != NULL);
+
+	dw = 0;
+	dh = 0;
+	
+	CORBA_exception_init (&ev);
+	GNOME_View_size_request (view_frame->view, &dw, &dh, &ev);
+	if (ev._major == CORBA_NO_EXCEPTION){
+		*desired_width = dw;
+		*desired_height = dh;
+	} else {
+		if (ev._major != CORBA_NO_EXCEPTION) {
+			gnome_object_check_env (
+				GNOME_OBJECT (view_frame),
+				(CORBA_Object) view_frame->view, &ev);
+		}
+	}
+	CORBA_exception_free (&ev);
 }

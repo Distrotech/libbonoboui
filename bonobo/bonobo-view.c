@@ -5,6 +5,8 @@
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
  *   Nat Friedman    (nat@gnome-support.com)
+ *
+ * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -23,6 +25,8 @@ static POA_GNOME_View__vepv gnome_view_vepv;
 
 enum {
 	VIEW_ACTIVATE,
+	VIEW_UNDO_LAST_OPERATION,
+	SIZE_REQUEST,
 	DO_VERB,
 	LAST_SIGNAL
 };
@@ -40,8 +44,19 @@ impl_GNOME_View_activate (PortableServer_Servant servant,
 }
 
 static void
+impl_GNOME_View_reactivate_and_undo (PortableServer_Servant servant,
+				     CORBA_boolean activated,
+				     CORBA_Environment *ev)
+{
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (GTK_OBJECT (view), view_signals [VIEW_ACTIVATE], TRUE);
+	gtk_signal_emit (GTK_OBJECT (view), view_signals [VIEW_UNDO_LAST_OPERATION]);
+}
+	
+static void
 impl_GNOME_View_do_verb (PortableServer_Servant servant,
-			 CORBA_char *verb_name,
+			 const CORBA_char *verb_name,
 			 CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
@@ -122,17 +137,38 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 }
 
 static void
-impl_GNOME_View_set_window (PortableServer_Servant servant, GNOME_View_windowid id, CORBA_Environment *ev)
+impl_GNOME_View_set_window (PortableServer_Servant servant,
+			    GNOME_View_windowid id,
+			    CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 
 	view->plug = gtk_plug_new (id);
-	view->plug_destroy_id = gtk_signal_connect (GTK_OBJECT (view->plug), "destroy_event",
-						    GTK_SIGNAL_FUNC (plug_destroy_cb), view);
+	view->plug_destroy_id = gtk_signal_connect (
+		GTK_OBJECT (view->plug), "destroy_event",
+		GTK_SIGNAL_FUNC (plug_destroy_cb), view);
 
 	gtk_widget_show_all (view->plug);
 
 	gtk_container_add (GTK_CONTAINER (view->plug), view->widget);
+}
+
+static void
+impl_GNOME_View_size_request (PortableServer_Servant servant,
+			      CORBA_short *desired_width,
+			      CORBA_short *desired_height,
+			      CORBA_Environment *ev)
+{
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
+	int dh = 10;
+	int dw = 10;
+	
+	gtk_signal_emit (
+		GTK_OBJECT (view),
+		view_signals [SIZE_REQUEST], &dw, &dh);
+
+	*desired_height = dh;
+	*desired_width = dw;
 }
 
 /**
@@ -247,7 +283,9 @@ init_view_corba_class (void)
 	gnome_view_epv.set_window = impl_GNOME_View_set_window;
 	gnome_view_epv.do_verb = impl_GNOME_View_do_verb;
 	gnome_view_epv.activate = impl_GNOME_View_activate;
-
+	gnome_view_epv.reactivate_and_undo = impl_GNOME_View_reactivate_and_undo;
+	gnome_view_epv.size_request = impl_GNOME_View_size_request;
+	
 	/* Setup the vector of epvs */
 	gnome_view_vepv.GNOME_Unknown_epv = &gnome_object_epv;
 	gnome_view_vepv.GNOME_View_epv = &gnome_view_epv;
@@ -268,6 +306,14 @@ gnome_view_class_init (GnomeViewClass *class)
                                 gtk_marshal_NONE__BOOL,
                                 GTK_TYPE_NONE, 1,
 				GTK_TYPE_BOOL);
+
+	view_signals [VIEW_UNDO_LAST_OPERATION] =
+                gtk_signal_new ("view_undo_last_operation",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET (GnomeViewClass, view_undo_last_operation),
+                                gtk_marshal_NONE__NONE,
+                                GTK_TYPE_NONE, 0);
 
 	view_signals [DO_VERB] =
                 gtk_signal_new ("do_verb",

@@ -9,12 +9,10 @@ GnomeContainer
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### MACRO GNOME_CONTAINER_TYPE ##### -->
 <para>
@@ -72,5 +70,17 @@ GnomeContainer
 
 @container: 
 @object: 
+
+
+<!-- ##### VARIABLE gnome_container_epv ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE gnome_container_vepv ##### -->
+<para>
+
+</para>
 
 

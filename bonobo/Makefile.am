@@ -24,7 +24,7 @@ bonobo_libs = 			\
 
 lib_LTLIBRARIES = libbonobo.la
 noinst_PROGRAMS = object_test test-container sample-server \
-			test-container-autoload selector_test test-storage test-ui-handler
+			test-container-autoload selector_test test-storage 
 
 CORBA_SOURCE =			\
 	bonobo.h		\
@@ -38,8 +38,6 @@ idls =						\
 	$(top_srcdir)/idl/gnome-client-site.idl	\
 	$(top_srcdir)/idl/gnome-embeddable.idl	\
 	$(top_srcdir)/idl/gnome-container.idl	\
-	$(top_srcdir)/idl/gnome-inplace.idl	\
-	$(top_srcdir)/idl/gnome-moniker.idl	\
 	$(top_srcdir)/idl/gnome-persist.idl	\
 	$(top_srcdir)/idl/gnome-storage.idl	\
 	$(top_srcdir)/idl/gnome-progressive.idl \
@@ -53,14 +51,11 @@ $(CORBA_SOURCE): $(idls)
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
 	gtk-interfaces.c		\
-	gnome-bind-context.c		\
 	gnome-bonobo-selector.c		\
 	gnome-client-site.c		\
 	gnome-container.c		\
 	gnome-embeddable-factory.c 	\
 	gnome-embeddable.c		\
-	gnome-inplace-component.c	\
-	gnome-inplace-site.c		\
 	gnome-main.c			\
 	gnome-moniker.c			\
 	gnome-moniker-client.c		\
@@ -87,21 +82,15 @@ libbonoboincludedir = $(includedir)/bonobo
 libbonoboinclude_HEADERS =		\
 	bonobo.h			\
 	gtk-interfaces.h		\
-	gnome-bind-context.h		\
 	gnome-bonobo.h			\
 	gnome-bonobo-selector.h		\
 	gnome-client-site.h		\
 	gnome-component-io.h		\
-	gnome-composite-moniker.h	\
 	gnome-container.h		\
 	gnome-embeddable.h		\
 	gnome-embeddable-factory.h	\
-	gnome-inplace-site.h		\
-	gnome-inplace-component.h	\
 	gnome-main.h			\
 	gnome-moniker.h			\
-	gnome-item-moniker.h		\
-	gnome-file-moniker.h		\
 	gnome-moniker-client.h		\
 	gnome-object.h			\
 	gnome-object-client.h		\
@@ -121,16 +110,15 @@ libbonoboinclude_HEADERS =		\
 	gnome-wrapper.h			\
 	gnome-ui-handler.h
 
+#test_ui_handler_SOURCES =		\
+#	 test-ui-handler.c
+#
+#test_ui_handler_LDADD = $(bonobo_libs)
+
 test_container_SOURCES =		\
 	test-container.c
 
 test_container_LDADD = $(bonobo_libs)
-
-
-test_ui_handler_SOURCES =		\
-	test-ui-handler.c
-
-test_ui_handler_LDADD = $(bonobo_libs)
 
 test_container_autoload_SOURCES =		\
 	test-container-autoload.c

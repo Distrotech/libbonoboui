@@ -1,4 +1,13 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * GNOME Embeddable object.
+ *
+ * Authors:
+ *   Miguel de Icaza (miguel@kernel.org)
+ *   Nat Friedman    (nat@gnome-support.com)
+ *
+ * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ */
 #ifndef _GNOME_EMBEDDABLE_H_
 #define _GNOME_EMBEDDABLE_H_
 
