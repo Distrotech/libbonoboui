@@ -224,6 +224,31 @@ impl_set_tooltip (BonoboUIToolbarItem *item,
 }
 
 
+/* BonoboUIToolbarButtonItem virtual methods.  */
+static void
+impl_set_icon  (BonoboUIToolbarButtonItem *button_item,
+		GdkPixbuf                 *icon)
+{
+	set_icon (button_item, icon);
+	layout_pixmap_and_label (
+		button_item,
+		bonobo_ui_toolbar_item_get_style (
+			BONOBO_UI_TOOLBAR_ITEM (button_item)));
+}
+
+static void
+impl_set_label (BonoboUIToolbarButtonItem *button_item,
+		const char                *label)
+{
+	set_label (button_item, label);
+	layout_pixmap_and_label (
+		button_item,
+		bonobo_ui_toolbar_item_get_style (
+			BONOBO_UI_TOOLBAR_ITEM (button_item)));
+	
+}
+
+
 /* GTK+ object initialization.  */
 
 static void
@@ -238,6 +263,9 @@ class_init (BonoboUIToolbarButtonItemClass *button_item_class)
 	item_class = BONOBO_UI_TOOLBAR_ITEM_CLASS (button_item_class);
 	item_class->set_style = impl_set_style;
 	item_class->set_tooltip = impl_set_tooltip;
+
+	button_item_class->set_icon  = impl_set_icon;
+	button_item_class->set_label = impl_set_label;
 
 	parent_class = gtk_type_class (bonobo_ui_toolbar_item_get_type ());
 
@@ -355,23 +383,32 @@ void
 bonobo_ui_toolbar_button_item_set_icon (BonoboUIToolbarButtonItem *button_item,
 					GdkPixbuf *icon)
 {
+	BonoboUIToolbarButtonItemClass *klass;
+
 	g_return_if_fail (button_item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item));
 
-	set_icon (button_item, icon);
-	layout_pixmap_and_label (button_item, bonobo_ui_toolbar_item_get_style (BONOBO_UI_TOOLBAR_ITEM (button_item)));
+	klass = BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS (
+		((GtkObject *)button_item)->klass);
+
+	if (klass->set_icon)
+		klass->set_icon (button_item, icon);
 }
 
 void
 bonobo_ui_toolbar_button_item_set_label (BonoboUIToolbarButtonItem *button_item,
 				      const char *label)
 {
+	BonoboUIToolbarButtonItemClass *klass;
+
 	g_return_if_fail (button_item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item));
 
-	set_label (button_item, label);
-	layout_pixmap_and_label (button_item, bonobo_ui_toolbar_item_get_style (
-		BONOBO_UI_TOOLBAR_ITEM (button_item)));
+	klass = BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS (
+		((GtkObject *)button_item)->klass);
+
+	if (klass->set_label)
+		klass->set_label (button_item, label);
 }
 
 

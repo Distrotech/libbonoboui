@@ -1980,7 +1980,7 @@ toolbar_build_widget (BonoboWinPrivate *priv,
 		      NodeInfo         *info,
 		      GtkWidget        *parent)
 {
-	char         *type, *verb;
+	char         *type;
 	GtkWidget    *item;
 	BonoboUINode *cmd_node;
 
@@ -2014,16 +2014,6 @@ toolbar_build_widget (BonoboWinPrivate *priv,
 				  (*pos)++);
 	gtk_widget_show (item);
 
-	/* FIXME: What about "id"s ! ? */
-	if ((verb = bonobo_ui_node_get_attr (node, "verb"))) {
-		gtk_signal_connect (GTK_OBJECT (item), "activate",
-				    (GtkSignalFunc) exec_verb_cb, priv);
-		bonobo_ui_node_free_string (verb);
-	}
-
-	gtk_signal_connect (GTK_OBJECT (item), "state_altered",
-			    (GtkSignalFunc) win_item_emit_ui_event, priv);
-
 	return item;
 }
 
@@ -2035,11 +2025,24 @@ toolbar_build_item (BonoboWinPrivate *priv,
 		    GtkWidget        *parent)
 {
 	GtkWidget *widget;
+	char      *verb;
 	
 	if (bonobo_ui_node_has_name (node, "control"))
 		widget = toolbar_build_control (priv, node, pos, info, parent);
 	else
 		widget = toolbar_build_widget (priv, node, pos, info, parent);
+
+	if (widget) {
+		/* FIXME: What about "id"s ! ? */
+		if ((verb = bonobo_ui_node_get_attr (node, "verb"))) {
+			gtk_signal_connect (GTK_OBJECT (widget), "activate",
+					    (GtkSignalFunc) exec_verb_cb, priv);
+			bonobo_ui_node_free_string (verb);
+		}
+		
+		gtk_signal_connect (GTK_OBJECT (widget), "state_altered",
+				    (GtkSignalFunc) win_item_emit_ui_event, priv);
+	}
 
 	return widget;
 }
@@ -2061,6 +2064,22 @@ toolbar_build_placeholder (BonoboWinPrivate *priv,
 				  (*pos)++);
 
 	return widget;
+}
+
+static BonoboUIToolbarControlDisplay
+decode_control_disp (const char *txt)
+{
+	if (!txt || !strcmp (txt, "control"))
+		return BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_CONTROL;
+
+	else if (!strcmp (txt, "button"))
+		return BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_BUTTON;
+
+	else if (!strcmp (txt, "none"))
+		return BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_NONE;
+
+	else
+		return BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_CONTROL;
 }
 
 static void
@@ -2102,7 +2121,6 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	bonobo_ui_node_free_string (sensitive);
 	bonobo_ui_node_free_string (hidden);
 
-	/* behaviors can apply to controls, so we need to handle them here */
 	if ((behavior = cmd_get_attr (node, cmd_node, "behavior"))) {
 		
 		behavior_array = g_strsplit (behavior, ",", -1);
@@ -2151,6 +2169,22 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 
 	bonobo_ui_node_free_string (type);
 	bonobo_ui_node_free_string (label);
+
+	if (bonobo_ui_node_has_name (node, "control")) {
+		char *txt;
+		BonoboUIToolbarControlDisplay hdisp, vdisp;
+		
+		txt = bonobo_ui_node_get_attr (node, "hdisplay");
+		hdisp = decode_control_disp (txt);
+		bonobo_ui_node_free_string (txt);
+
+		txt = bonobo_ui_node_get_attr (node, "vdisplay");
+		vdisp = decode_control_disp (txt);
+		bonobo_ui_node_free_string (txt);
+
+		bonobo_ui_toolbar_control_item_set_display (
+			BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget), hdisp, vdisp);
+	}
 
 	if ((min_width = cmd_get_attr (node, cmd_node, "min_width"))) {
 		bonobo_ui_toolbar_item_set_minimum_width (BONOBO_UI_TOOLBAR_ITEM (widget),

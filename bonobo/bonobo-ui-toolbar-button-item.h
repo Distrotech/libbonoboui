@@ -37,6 +37,12 @@ struct _BonoboUIToolbarButtonItem {
 struct _BonoboUIToolbarButtonItemClass {
 	BonoboUIToolbarItemClass parent_class;
 
+	/* Virtual methods */
+	void (* set_icon)       (BonoboUIToolbarButtonItem *button_item,
+				 GdkPixbuf                 *icon);
+	void (* set_label)      (BonoboUIToolbarButtonItem *button_item,
+				 const char                *label);
+
 	/* Signals.  */
 	void (* clicked)	(BonoboUIToolbarButtonItem *toolbar_button_item);
 	void (* set_want_label) (BonoboUIToolbarButtonItem *toolbar_button_item);

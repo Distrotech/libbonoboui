@@ -11,34 +11,42 @@
 #define _BONOBO_UI_TOOLBAR_CONTROL_ITEM_H_
 
 #include <libgnome/gnome-defs.h>
-#include "bonobo-ui-toolbar-item.h"
+#include "bonobo-ui-toolbar-button-item.h"
 #include "bonobo-widget.h"
 
 BEGIN_GNOME_DECLS
 
 #define BONOBO_TYPE_UI_TOOLBAR_CONTROL_ITEM            (bonobo_ui_toolbar_control_item_get_type ())
-#define BONOBO_UI_TOOLBAR_CONTROL_ITEM(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR_CONTROL_ITEM, BonoboUIToolbarItemControl))
-#define BONOBO_UI_TOOLBAR_CONTROL_ITEM_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_TOOLBAR_CONTROL_ITEM, BonoboUIToolbarItemControlClass))
+#define BONOBO_UI_TOOLBAR_CONTROL_ITEM(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR_CONTROL_ITEM, BonoboUIToolbarControlItem))
+#define BONOBO_UI_TOOLBAR_CONTROL_ITEM_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_TOOLBAR_CONTROL_ITEM, BonoboUIToolbarControlItemClass))
 #define BONOBO_IS_UI_TOOLBAR_CONTROL_ITEM(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR_CONTROL_ITEM))
 #define BONOBO_IS_UI_TOOLBAR_CONTROL_ITEM_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR_CONTROL_ITEM))
 
+typedef enum {
+	BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_CONTROL,
+	BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_BUTTON,
+	BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_NONE
+} BonoboUIToolbarControlDisplay;
 
-typedef struct _BonoboUIToolbarItemControl        BonoboUIToolbarItemControl;
-typedef struct _BonoboUIToolbarItemControlPrivate BonoboUIToolbarItemControlPrivate;
-typedef struct _BonoboUIToolbarItemControlClass   BonoboUIToolbarItemControlClass;
+typedef struct _BonoboUIToolbarControlItem        BonoboUIToolbarControlItem;
+typedef struct _BonoboUIToolbarControlItemPrivate BonoboUIToolbarControlItemPrivate;
+typedef struct _BonoboUIToolbarControlItemClass   BonoboUIToolbarControlItemClass;
 
-struct _BonoboUIToolbarItemControl {
-	BonoboUIToolbarItem parent;
+struct _BonoboUIToolbarControlItem {
+	BonoboUIToolbarButtonItem parent;
 
-	BonoboUIToolbarItemControlPrivate *priv;
+	BonoboUIToolbarControlItemPrivate *priv;
 };
 
-struct _BonoboUIToolbarItemControlClass {
-	BonoboUIToolbarItemClass parent_class;
+struct _BonoboUIToolbarControlItemClass {
+	BonoboUIToolbarButtonItemClass parent_class;
 };
 
-GtkType       bonobo_ui_toolbar_control_item_get_type (void);
-GtkWidget    *bonobo_ui_toolbar_control_item_new      (Bonobo_Control control_ref);
+GtkType       bonobo_ui_toolbar_control_item_get_type    (void);
+GtkWidget    *bonobo_ui_toolbar_control_item_new         (Bonobo_Control control_ref);
+void          bonobo_ui_toolbar_control_item_set_display (BonoboUIToolbarControlItem    *item,
+							  BonoboUIToolbarControlDisplay  hdisplay,
+							  BonoboUIToolbarControlDisplay  vdisplay);
 
 END_GNOME_DECLS
 
