@@ -1,3 +1,13 @@
+2003-04-15  Michael Meeks  <michael@ximian.com>
+
+	* samples/container/*: the start of a nice sample
+	container from Sergey V. Oudaltsov
+	<sergey.oudaltsov@clients.ie>
+
+	* samples/container/Makefile.am,
+	* samples/Makefile.am,
+	* configure.in: add sample container to build.
+
 2003-04-14  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-dock-item-grip.c

@@ -92,6 +92,7 @@ glade/Makefile
 samples/Makefile
 samples/controls/Makefile
 samples/bonoboui/Makefile
+samples/container/Makefile
 samples/compound-doc/Makefile
 samples/compound-doc/container/Makefile
 tests/Makefile
