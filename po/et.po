@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Libbonoboui Gnome 2.10\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-15 12:31+0100\n"
-"PO-Revision-Date: 2004-03-06 10:32+0300\n"
-"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
+"PO-Revision-Date: 2005-02-20 10:11+0200\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee> \n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +26,7 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
-msgstr ""
+msgstr "corba kasutajaliidese konteiner"
 
 #: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
@@ -150,7 +150,7 @@ msgstr "Ainult tekst"
 
 #: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
-msgstr ""
+msgstr "_Ainult tähtis tekst"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
@@ -307,7 +307,7 @@ msgstr "Suurendusaste"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr ""
+msgstr "Suurendamise aste"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
@@ -315,7 +315,7 @@ msgstr "Minimaalne suurendusaste"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr ""
+msgstr "Väikseim suurendamise aste"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
@@ -323,7 +323,7 @@ msgstr "Maksimaalne suurendusaste"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "Suurim suurendamise aste"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
