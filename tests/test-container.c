@@ -171,7 +171,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 
 	printf ("Good: Embeddable supports PersistStream\n");
 	
-	stream = gnome_stream_fs_open (NULL, "/tmp/a.png", GNOME_Storage_READ);
+	stream = gnome_stream_fs_open ("/tmp/a.png", GNOME_Storage_READ);
 
 	if (stream == NULL){
 		printf ("I could not open /tmp/a.png!\n");
@@ -230,8 +230,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 	printf ("Good: Embeddable supports PersistStream\n");
 	
-	stream = gnome_stream_fs_open (NULL, "/etc/passwd",
-				       GNOME_Storage_READ);
+	stream = gnome_stream_fs_open ("/etc/passwd", GNOME_Storage_READ);
 
 	if (stream == NULL){
 		printf ("I could not open /etc/passwd!\n");
