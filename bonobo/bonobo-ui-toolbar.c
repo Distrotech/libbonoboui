@@ -480,9 +480,11 @@ setup_popup_item (BonoboUIToolbar *toolbar)
 	gtk_widget_hide (GTK_WIDGET (priv->popup_item));
 }
 
-/* This is a dirty hack.  We cannot hide the items with gtk_widget_hide()
-   because we want to let the user be in control of the physical hidden/shown
-   state, so we just move the widget to a non-visible area.  */
+/*
+ *  This is a dirty hack.  We cannot hide the items with gtk_widget_hide ()
+ * because we want to let the user be in control of the physical hidden/shown
+ * state, so we just move the widget to a non-visible area.
+ */
 static void
 hide_not_fitting_items (BonoboUIToolbar *toolbar)
 {
@@ -696,12 +698,13 @@ impl_size_request (GtkWidget *widget,
 		GtkRequisition popup_item_requisition;
 
 		gtk_widget_size_request (GTK_WIDGET (priv->popup_item), &popup_item_requisition);
+
 		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL) {
-			requisition->width  = popup_item_requisition.width;
+			requisition->width  = MAX (popup_item_requisition.width,  priv->total_width);
 			requisition->height = MAX (popup_item_requisition.height, priv->max_height);
 		} else {
-			requisition->width  = MAX (popup_item_requisition.width, priv->max_width);
-			requisition->height = popup_item_requisition.height;
+			requisition->width  = MAX (popup_item_requisition.width,  priv->max_width);
+			requisition->height = MAX (popup_item_requisition.height, priv->total_height);
 		}
 	}
 

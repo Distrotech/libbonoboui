@@ -803,8 +803,6 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 			*p = '\0';
 			bonobo_ui_node_set_attr (node, "group", p + 1);
 
-			g_warning ("Radio item group '%s' from '%s'\n", p + 1, path);
-
 			g_free (group);
 		}
 
@@ -1081,7 +1079,10 @@ bonobo_ui_handler_toolbar_new (BonoboUIHandler *uih, const char *path,
 	{
 		char *xml_path = make_path ("", path, TRUE);
 
+		no_sideffect_event_inhibit++;
 		compat_set_tree (priv, xml_path, node);
+		no_sideffect_event_inhibit--;
+
                 bonobo_ui_node_free (node);
 
 		g_free (xml_path);
@@ -1223,7 +1224,9 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 
 	xml_path = make_path ("", path, FALSE);
 	SLOPPY_CHECK (priv->container, xml_path, NULL);
+	no_sideffect_event_inhibit++;
 	do_set_pixmap (priv, xml_path, type, data);
+	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }
 

@@ -435,11 +435,15 @@ widget_set_state (GtkWidget *widget, BonoboUINode *node)
 			bonobo_ui_toolbar_item_set_state (
 				BONOBO_UI_TOOLBAR_ITEM (widget), txt);
 
-		else if (GTK_IS_CHECK_MENU_ITEM (widget))
+		else if (GTK_IS_CHECK_MENU_ITEM (widget)) {
+#ifdef STATE_SYNC_DEBUG
+			g_warning ("Setting check menu item '%p' to '%s'",
+				   widget, txt);
+#endif
 			gtk_check_menu_item_set_active (
 				GTK_CHECK_MENU_ITEM (widget), 
 				atoi (txt));
-		else
+		} else
 			g_warning ("TESTME: strange, setting "
 				   "state '%s' on wierd object", txt);
 		bonobo_ui_node_free_string (txt);
@@ -462,12 +466,12 @@ update_cmd_state (BonoboWinPrivate *priv, BonoboUINode *search,
 			widget_set_state (info->widget, state);
 	}
 
+	g_free (id);
+
 	for (l = bonobo_ui_node_children (search);
              l;
              l = bonobo_ui_node_next (l))
 		update_cmd_state (priv, l, state, search_id);
-
-	g_free (id);
 }
 
 static void
@@ -537,18 +541,6 @@ set_cmd_state (BonoboWinPrivate *priv, BonoboUINode *cmd_node, const char *prop,
 	fprintf (stderr, "Set '%s' : '%s' to '%s' (%d)",
 		 cmd_name, prop, value, immediate_update);
 #endif
-	/* We set it to the same thing */
-	if (old_value && !strcmp (old_value, value)) {
-		g_free (cmd_name);
-#ifdef STATE_SYNC_DEBUG
-		fprintf (stderr, "same\n");
-#endif
-		return;
-	}
-#ifdef STATE_SYNC_DEBUG
-	else
-		fprintf (stderr, "different\n");
-#endif
 	bonobo_ui_node_set_attr (node, prop, value);
 
 	if (immediate_update)
@@ -556,6 +548,17 @@ set_cmd_state (BonoboWinPrivate *priv, BonoboUINode *cmd_node, const char *prop,
 	else {
 		BonoboUIXmlData *data =
 			bonobo_ui_xml_get_data (priv->tree, node);
+
+#if 0
+		/* We set it to the same thing */
+		if (old_value && !strcmp (old_value, value)) {
+			g_free (cmd_name);
+			fprintf (stderr, "same\n");
+			return;
+		}
+		else
+			fprintf (stderr, "different\n");
+#endif
 
 		data->dirty = TRUE;
 	}
@@ -775,12 +778,13 @@ radio_group_add (BonoboWinPrivate *priv,
 	g_return_if_fail (menuitem != NULL);
 	g_return_if_fail (group_name != NULL);
 
-	if (!(master = g_hash_table_lookup (priv->radio_groups, group_name)))
+	if (!(master = g_hash_table_lookup (priv->radio_groups, group_name))) {
 		g_hash_table_insert (priv->radio_groups, g_strdup (group_name),
 				     menuitem);
-	else
+	} else {
 		gtk_radio_menu_item_set_group (
 			menuitem, gtk_radio_menu_item_group (master));
+	}
 
 	gtk_object_set_data (GTK_OBJECT (menuitem),
 			     MAGIC_RADIO_GROUP_KEY, priv);
@@ -1137,6 +1141,7 @@ menu_item_create (BonoboWinPrivate *priv, GtkWidget *parent, BonoboUINode *node)
 		gtk_check_menu_item_set_show_toggle (
 			GTK_CHECK_MENU_ITEM (menu_widget), TRUE);
 
+		/* FIXME: Looks dodgy to me */
 		if (!(state = bonobo_ui_node_get_attr (node, "state")))
 			state = "0";
 		set_cmd_state (priv, node, "state", state, FALSE);
@@ -1617,6 +1622,77 @@ build_toolbar_control (BonoboWinPrivate *priv, BonoboUINode *node)
 				  BONOBO_UI_TOOLBAR_ITEM (item), -1);
 }
 
+static GnomeDockItem *
+create_dockitem (BonoboWinPrivate *priv,
+		 BonoboUINode     *node,
+		 const char       *dockname)
+{
+	GnomeDockItem *item;
+	GnomeDockItemBehavior beh = 0;
+	char *prop;
+
+	gboolean force_detachable = FALSE;
+	GnomeDockPlacement placement = GNOME_DOCK_TOP;
+	gint band_num = 1;
+	gint position = 0;
+	guint offset = 0;
+	gboolean in_new_band = TRUE;
+
+	if ((prop = bonobo_ui_node_get_attr (node, "behavior"))) {
+		if (!strcmp (prop, "detachable"))
+			force_detachable = TRUE;
+		bonobo_ui_node_free_string (prop);
+	}
+
+	if (!force_detachable && !gnome_preferences_get_toolbar_detachable())
+		beh |= GNOME_DOCK_ITEM_BEH_LOCKED;
+
+	item = GNOME_DOCK_ITEM (gnome_dock_item_new (
+		dockname, beh));
+
+	gtk_container_set_border_width (GTK_CONTAINER (item), 2);
+
+	if ((prop = bonobo_ui_node_get_attr (node, "placement"))) {
+		if (!strcmp (prop, "top"))
+			placement = GNOME_DOCK_TOP;
+		else if (!strcmp (prop, "right"))
+			placement = GNOME_DOCK_RIGHT;
+		else if (!strcmp (prop, "bottom"))
+			placement = GNOME_DOCK_BOTTOM;
+		else if (!strcmp (prop, "left"))
+			placement = GNOME_DOCK_LEFT;
+		else if (!strcmp (prop, "floating"))
+			placement = GNOME_DOCK_FLOATING;
+		bonobo_ui_node_free_string (prop);
+	}
+
+	if ((prop = bonobo_ui_node_get_attr (node, "band_num"))) {
+		band_num = atoi (prop);
+		bonobo_ui_node_free_string (prop);
+	}
+
+	if ((prop = bonobo_ui_node_get_attr (node, "position"))) {
+		position = atoi (prop);
+		bonobo_ui_node_free_string (prop);
+	}
+
+	if ((prop = bonobo_ui_node_get_attr (node, "offset"))) {
+		offset = atoi (prop);
+		bonobo_ui_node_free_string (prop);
+	}
+
+	if ((prop = bonobo_ui_node_get_attr (node, "in_new_band"))) {
+		in_new_band = atoi (prop);
+		bonobo_ui_node_free_string (prop);
+	}	
+
+	gnome_dock_add_item (priv->dock, item,
+			     placement, band_num,
+			     position, offset, in_new_band);
+
+	return item;
+}
+
 static void
 update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 {
@@ -1629,21 +1705,8 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 
 	item = get_dock_item (priv, dockname);
 	
-	if (!item) {
-		GnomeDockItemBehavior beh = GNOME_DOCK_ITEM_BEH_EXCLUSIVE;
-		
-		if (!gnome_preferences_get_toolbar_detachable())
-			beh |= GNOME_DOCK_ITEM_BEH_LOCKED;
-
-		item = GNOME_DOCK_ITEM (gnome_dock_item_new (
-			dockname, beh));
-
-		gtk_container_set_border_width (GTK_CONTAINER (item), 2);
-
-		gnome_dock_add_item (priv->dock, item,
-				     GNOME_DOCK_TOP,
-				     1, 0, 0, TRUE);
-	}
+	if (!item)
+		item = create_dockitem (priv, node, dockname);
 
 	/* Re-generation is far faster if unmapped */
 	gtk_widget_hide (GTK_WIDGET (item));

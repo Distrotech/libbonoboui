@@ -492,10 +492,58 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 	gnome_help_display (component, user_data);
 }
 
+/*
+ * Cut and paste job so we can overcome gnome-libs brokenness.
+ */
+static char *
+bonobo_help_file_find_file (const char *prefix, const char *app,
+			    const char *path)
+{
+	GList *language_list;
+	GString *buf;
+	
+	gchar *res= NULL;
+	gchar *p, c = 0;
+	
+	language_list= gnome_i18n_get_language_list ("LC_MESSAGES");
+	
+	while (!res && language_list) {
+		const gchar *lang;
+		
+		lang = language_list->data;
+		
+		buf = g_string_new (NULL);
+		g_string_sprintf (buf, "%s/gnome/help/%s/%s/%s",
+				  prefix, app, lang, path);
+		res = g_strdup (buf->str);
+		p = strrchr (res, '#');
+		if (p) {
+			c = *p;
+			*p = '\0';
+		}
+		g_string_free (buf, TRUE);
+		
+		if (!g_file_exists (res)) {
+			g_free (res);
+			res = NULL;
+		}
+
+		if (c && res) {
+			*p = c;
+			c = 0;
+		}
+		
+		language_list = language_list->next;
+	}
+	
+	return res;
+}
+
 void
 bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
+				const char        *app_prefix,
 				const char        *app_name,
-				BonoboUINode           *parent)
+				BonoboUINode      *parent)
 {
 	char buf [1024];
 	char *topic_file;
@@ -507,6 +555,11 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 
 	/* Try to open help topics file */
 	topic_file = gnome_help_file_find_file ((char *)app_name, "topic.dat");
+	
+	/* Do something sensible */
+	if (!topic_file && app_prefix)
+		topic_file = bonobo_help_file_find_file (
+			app_prefix, app_name, "topic.dat");
 
 	if (!topic_file || !(file = fopen (topic_file, "rt"))) {
 		g_warning ("Could not open help topics file %s for app %s", 
@@ -751,17 +804,22 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 	/*
 	 * The master copy
 	 */
-	fname = g_strdup_printf ("%s/gnome/ui/%s",
-				 component_prefix, file_name);
-	if (g_file_exists (fname))
-		return fname;
-	g_free (fname);
+	if (component_prefix) {
+		fname = g_strdup_printf ("%s/gnome/ui/%s",
+					 component_prefix, file_name);
+		if (g_file_exists (fname))
+			return fname;
+		g_free (fname);
+	}
 
 	name  = g_strdup_printf ("gnome/ui/%s", file_name);
 	fname = gnome_unconditional_datadir_file (name);
 	g_free (name);
-
-	return fname;
+	if (g_file_exists (fname))
+		return fname;
+	g_free (fname);
+	
+	return NULL;
 }
 
 
@@ -813,12 +871,16 @@ bonobo_ui_util_translate_ui (BonoboUINode *bnode)
 
 void
 bonobo_ui_util_fixup_help (BonoboUIComponent *component,
-			   BonoboUINode           *node,
+			   BonoboUINode      *node,
+			   const char        *app_prefix,
 			   const char        *app_name)
 {
 	BonoboUINode *l;
 	gboolean build_here = FALSE;
-	
+
+	if (!node)
+		return;
+
 	if (bonobo_ui_node_has_name (node, "placeholder")) {
 		char *txt;
 
@@ -830,11 +892,11 @@ bonobo_ui_util_fixup_help (BonoboUIComponent *component,
 
 	if (build_here) {
 		bonobo_ui_util_build_help_menu (
-			component, app_name, node);
+			component, app_prefix, app_name, node);
 	}
 
 	for (l = bonobo_ui_node_children (node); l; l = bonobo_ui_node_next (l))
-		bonobo_ui_util_fixup_help (component, l, app_name);
+		bonobo_ui_util_fixup_help (component, l, app_prefix, app_name);
 }
 
 /**
@@ -851,6 +913,7 @@ bonobo_ui_util_fixup_help (BonoboUIComponent *component,
 BonoboUINode *
 bonobo_ui_util_new_ui (BonoboUIComponent *component,
 		       const char        *file_name,
+		       const char        *app_prefix,
 		       const char        *app_name)
 {
 	BonoboUINode *node;
@@ -863,7 +926,7 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 
 	bonobo_ui_util_translate_ui (node);
 
-	bonobo_ui_util_fixup_help (component, node, app_name);
+	bonobo_ui_util_fixup_help (component, node, app_prefix, app_name);
 
 	return node;
 }
@@ -871,19 +934,24 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 void
 bonobo_ui_util_set_ui (BonoboUIComponent *component,
 		       Bonobo_UIContainer container,
-		       const char        *component_prefix,
+		       const char        *app_prefix,
 		       const char        *file_name,
 		       const char        *app_name)
 {
 	char *fname;
 	BonoboUINode *ui;
 	
-	fname = bonobo_ui_util_get_ui_fname (component_prefix, file_name);
-/*	g_warning ("Attempting ui load from '%s'", file);*/
+	fname = bonobo_ui_util_get_ui_fname (app_prefix, file_name);
+	if (!fname) {
+		g_warning ("Can't find '%s' to load ui from", file_name);
+		return;
+	}
 	
-	ui = bonobo_ui_util_new_ui (component, fname, app_name);
+	ui = bonobo_ui_util_new_ui (component, fname, app_prefix, app_name);
 	
-	bonobo_ui_component_set_tree (component, container, "/", ui, NULL);
+	if (ui)
+		bonobo_ui_component_set_tree (
+			component, container, "/", ui, NULL);
 	
 	g_free (fname);
 	bonobo_ui_node_free (ui);

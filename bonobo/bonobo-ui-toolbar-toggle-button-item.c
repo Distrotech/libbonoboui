@@ -59,13 +59,14 @@ impl_set_state (BonoboUIToolbarItem *item,
 		const char          *state)
 {
 	GtkButton *button;
+	gboolean   active = atoi (state);
 
 	button = bonobo_ui_toolbar_button_item_get_button_widget (
 		BONOBO_UI_TOOLBAR_BUTTON_ITEM (item));
 
-	gtk_toggle_button_set_active (
-		GTK_TOGGLE_BUTTON (button),
-		atoi (state));
+	if (GTK_WIDGET_STATE (GTK_WIDGET (button)) != active)
+		gtk_toggle_button_set_active (
+			GTK_TOGGLE_BUTTON (button), active);
 }		
 
 

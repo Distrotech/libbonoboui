@@ -113,10 +113,10 @@ main (int argc, char **argv)
 		"<submenu name=\"File\" label=\"_FileB\">\n"
 		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Open you fool\"/>\n"
 		"       <menuitem/>\n"
-		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\" accel=\"&lt;Control&gt;t\"/>\n"
+		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\" accel=\"*Control*t\"/>\n"
 		"       <placeholder name=\"Nice\" delimit=\"both\"/>\n"
 		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" "
-		"        pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"&lt;Control&gt;q\"/>\n"
+		"        pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"*Control*q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
 		"<submenu name=\"File\" label=\"_FileC\">\n"
@@ -149,7 +149,7 @@ main (int argc, char **argv)
 		"	<item name=\"main\">Nothing</item>\n"
 		"	<control name=\"Progress\"/>\n"
 		"</status>";
-	BonoboUINode *accel, *file;
+	BonoboUINode *accel;
 
 	free (malloc (8));
 
@@ -208,7 +208,22 @@ main (int argc, char **argv)
 
 	CORBA_exception_init (&ev);
 
+	if (g_file_exists ("ui.xml")) {
+		fprintf (stderr, "\n\n--- Add ui.xml ---\n\n\n");
+		bonobo_ui_util_set_ui (componenta, corba_container,
+				       NULL, "ui.xml", "gnomecal");
+		bonobo_ui_container_thaw (corba_container, NULL);
+
+		gtk_widget_show (GTK_WIDGET (app));
+
+		gtk_main ();
+	} else
+		g_warning ("Can't find ui.xml");
+
 	bonobo_ui_container_freeze (corba_container, NULL);
+
+	fprintf (stderr, "\n\n--- Remove A ---\n\n\n");
+	bonobo_ui_component_rm (componenta, corba_container, "/", &ev);
 
 	bonobo_ui_component_set (componentb, corba_container, "/status", statusa, &ev);
 
@@ -249,8 +264,6 @@ main (int argc, char **argv)
 	bonobo_ui_component_set (componenta, corba_container, "/", simplea, &ev);
 
 	bonobo_ui_container_thaw (corba_container, NULL);
-
-	gtk_widget_show (GTK_WIDGET (app));
 
 	gtk_main ();
 
@@ -315,18 +328,6 @@ main (int argc, char **argv)
 
 	bonobo_ui_container_thaw (corba_container, NULL);
 	gtk_main ();
-	bonobo_ui_container_freeze (corba_container, NULL);
-
-	if (g_file_exists ("ui.xml")) {
-		fprintf (stderr, "\n\n--- Add ui.xml ---\n\n\n");
-		file = bonobo_ui_util_new_ui (componentc, "ui.xml", "gnomecal");
-		bonobo_ui_component_set_tree (componentc, corba_container,
-					      "/", file, &ev);
-		bonobo_ui_container_thaw (corba_container, NULL);
-		gtk_main ();
-
-	} else
-		g_warning ("Can't find ui.xml");
 
 	bonobo_object_unref (BONOBO_OBJECT (componenta));
 	bonobo_object_unref (BONOBO_OBJECT (componentb));
