@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-12-12 16:34+0000\n"
+"POT-Creation-Date: 2001-12-14 13:14+0000\n"
 "PO-Revision-Date: 2001-12-11 18:01+0200\n"
 "Last-Translator: Yuriy Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -182,11 +182,11 @@ msgstr "GNOME Прив╕т"
 msgid "Hello, World!"
 msgstr "Прив╕т, св╕т!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:267
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
 msgid "Cannot init libbonoboui code"
 msgstr "Неможливо ╕н╕ц╕ал╕зувати код libbonoboui"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
+#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Неможливо виконати bonobo_ui_init"
 

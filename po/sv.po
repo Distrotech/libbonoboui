@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-12-12 16:34+0000\n"
+"POT-Creation-Date: 2001-12-14 13:14+0000\n"
 "PO-Revision-Date: 2001-12-04 02:04+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -184,11 +184,11 @@ msgstr "Gnome-hej"
 msgid "Hello, World!"
 msgstr "Hej världen!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:267
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
 msgid "Cannot init libbonoboui code"
 msgstr "Kan inte initiera libbonoboui-koden"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
+#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Kan inte utföra bonobo_ui_init"
 

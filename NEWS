@@ -1,3 +1,17 @@
+libbonoboui 1.108.1
+
+libbonoboui 1.108.0
+
+	* add glib-mkenum (Jacob)
+	* glade updates (Jacob)
+	* build fixage (Jacob, Laszlo Peter)
+	* dock item placement fixes & new properties (Jacob)
+	* UI handler - fix mnemonics (James Henstridge)
+	* install samples out of the path (Rodrigo Moya)
+	* referencing fix in toolbar (Darin)
+	* plug expose issue (Michael)
+
+
 libbonoboui 1.107.0
 
 	* UI handler (Me)

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.107.0\n"
-"POT-Creation-Date: 2001-12-12 16:34+0000\n"
+"POT-Creation-Date: 2001-12-14 13:14+0000\n"
 "PO-Revision-Date: 2001-11-28 23:45GMT+0200\n"
 "Last-Translator: Vasif İsmayıloğlu MD <azerb_linux@hotmail.com>\n"
 "Language-Team: Azərbaycan Türkcəsi <linuxaz@azerimail.net>\n"
@@ -183,11 +183,11 @@ msgstr "Gnome Hello"
 msgid "Hello, World!"
 msgstr "Xoş Gördük, Dünya!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:267
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:271
 msgid "Cannot init libbonoboui code"
 msgstr "libbononoui kodu init edilə bilmir"
 
-#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
+#: tests/test-focus.c:47 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Bonobo_ui_init edə bilmirəm"
 
