@@ -2,6 +2,8 @@
 /**
  * GNOME EmbeddableFactory object.
  *
+ * Left for compatibility reasons, you should use GnomeGenericFactory instead.
+ *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
  *
@@ -19,62 +21,20 @@
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_EMBEDDABLE_FACTORY_TYPE        (gnome_embeddable_factory_get_type ())
-#define GNOME_EMBEDDABLE_FACTORY(o)          (GTK_CHECK_CAST ((o), GNOME_EMBEDDABLE_FACTORY_TYPE, GnomeEmbeddableFactory))
-#define GNOME_EMBEDDABLE_FACTORY_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_EMBEDDABLE_FACTORY_TYPE, GnomeEmbeddableFactoryClass))
-#define GNOME_IS_EMBEDDABLE_FACTORY(o)       (GTK_CHECK_TYPE ((o), GNOME_EMBEDDABLE_FACTORY_TYPE))
-#define GNOME_IS_EMBEDDABLE_FACTORY_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_EMBEDDABLE_FACTORY_TYPE))
+#define GNOME_EMBEDDABLE_FACTORY_TYPE        GNOME_GENERIC_FACTORY_TYPE
+#define GNOME_EMBEDDABLE_FACTORY(o)          GNOME_GENERIC_FACTORY(o)
+#define GNOME_EMBEDDABLE_FACTORY_CLASS(k)    GNOME_GENERIC_FACTORY_CLASS(k)
+#define GNOME_IS_EMBEDDABLE_FACTORY(o)       GNOME_IS_GENERIC_FACTORY(o)
+#define GNOME_IS_EMBEDDABLE_FACTORY_CLASS(k) GNOME_IS_GENERIC_FACTORY_CLASS(k)
 
-struct _GnomeEmbeddableFactory;
-typedef struct _GnomeEmbeddableFactory GnomeEmbeddableFactory;
-typedef struct _GnomeEmbeddableFactoryPrivate GnomeEmbeddableFactoryPrivate;
-
-typedef GnomeObject * (*GnomeEmbeddableFactoryFn)(GnomeEmbeddableFactory *Factory, void *closure);
+typedef GnomeGenericFactory GnomeEmbeddableFactory;
+typedef GnomeGenericFactoryClass GnomeEmbeddableFactoryClass;
+typedef GnomeGenericFactoryFn GnomeEmbeddableFactoryFn;
 					
-struct _GnomeEmbeddableFactory {
-	GnomeObject base;
-
-	/*
-	 * The function factory
-	 */
-	GnomeEmbeddableFactoryFn factory;
-	void *factory_closure;
-
-	/*
-	 * The goad_id for this embeddable factory
-	 */
-	char *goad_id;
-
-	GnomeEmbeddableFactoryPrivate *priv;
-};
-
-typedef struct {
-	GnomeObjectClass parent_class;
-
-	/*
-	 * Virtual methods
-	 */
-	GnomeObject * (*new_embeddable)(GnomeEmbeddableFactory *c_factory);
-} GnomeEmbeddableFactoryClass;
-
-GtkType gnome_embeddable_factory_get_type  (void);
-
-GnomeEmbeddableFactory *gnome_embeddable_factory_new (
-	const char *goad_id,
-	GnomeEmbeddableFactoryFn factory,
-	void *data);
-
-GnomeEmbeddableFactory *gnome_embeddable_factory_construct (
-	const char *goad_id,
-	GnomeEmbeddableFactory  *c_factory,
-	GNOME_GenericFactory    corba_factory,
-	GnomeEmbeddableFactoryFn factory,
-	void *data);
-
-void gnome_embeddable_factory_set (
-	GnomeEmbeddableFactory *c_factory,
-	GnomeEmbeddableFactoryFn factory,
-	void *data);
+#define gnome_embeddable_factory_get_type  gnome_generic_factory_get_type
+#define gnome_embeddable_factory_new       gnome_generic_factory_new
+#define gnome_embeddable_factory_construct gnome_generic_factory_construct
+#define gnome_embeddable_factory_set       gnome_generic_factory_set (
 
 END_GNOME_DECLS
 

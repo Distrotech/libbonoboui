@@ -68,8 +68,8 @@ libbonobo_la_SOURCES =			\
 	gnome-control.c			\
 	gnome-control-frame.c		\
 	gnome-desktop-window.c		\
-	gnome-embeddable-factory.c 	\
 	gnome-embeddable.c		\
+	gnome-generic-factory.c		\
 	gnome-main.c			\
 	gnome-moniker.c			\
 	gnome-moniker-client.c		\
@@ -108,6 +108,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-desktop-window.h		\
 	gnome-embeddable.h		\
 	gnome-embeddable-factory.h	\
+	gnome-generic-factory.h		\
 	gnome-main.h			\
 	gnome-moniker.h			\
 	gnome-moniker-client.h		\

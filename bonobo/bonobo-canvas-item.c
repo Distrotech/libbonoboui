@@ -770,3 +770,8 @@ fail:
 	return NULL;
 }
 
+void
+gnome_bonobo_item_set_bounds (GnomeBonoboItem *item, double x1, double y1, double x2, double y2)
+{
+	
+}

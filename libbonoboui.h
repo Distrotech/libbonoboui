@@ -17,7 +17,12 @@
 #include <bonobo/gnome-object-client.h>
 #include <bonobo/gnome-client-site.h>
 
+#include <bonobo/gnome-control.h>
+#include <bonobo/gnome-control-frame.h>
+
 #include <bonobo/gnome-view.h>
+#include <bonobo/gnome-generic-factory.h>
+
 #include <bonobo/gnome-embeddable.h>
 #include <bonobo/gnome-embeddable-factory.h>
 
