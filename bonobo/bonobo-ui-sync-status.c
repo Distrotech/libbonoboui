@@ -60,6 +60,32 @@ remove_hint_cb (BonoboUIEngine   *engine,
 	}
 }
 
+/* Only works for non-end packed @widget */
+static gboolean
+has_item_to_the_right (GtkBox *box, GtkWidget *widget)
+{
+	GList *l;
+	gboolean passed_us = FALSE;
+	gboolean has_to_right = FALSE;
+
+	g_return_val_if_fail (GTK_IS_BOX (box), FALSE);
+
+	for (l = box->children; l; l=l->next) {
+		GtkBoxChild *child = l->data;
+
+		if (child->widget == widget) {
+			passed_us = TRUE;
+			
+		} else if (GTK_WIDGET_VISIBLE (child->widget)) {
+			if (child->pack == GTK_PACK_END || passed_us) {
+				has_to_right = TRUE;
+				break;
+			}
+		}
+	}
+	return has_to_right;
+}
+
 static void
 impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 				  BonoboUINode     *node,
@@ -96,6 +122,8 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 			    !atoi (hidden))
 				has_grip = FALSE;
 		}
+		if (has_item_to_the_right (parent, widget))
+			has_grip = FALSE;
 
 		gtk_statusbar_set_has_resize_grip (msync->main_status, has_grip);
 		

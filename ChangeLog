@@ -1,3 +1,9 @@
+2004-01-07  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-status.c
+	(has_item_to_the_right): add to deal with pack-end fun.
+	(impl_bonobo_ui_sync_status_state): upd. logic.
+
 2003-12-30  Federico Mena Quintero  <federico@ximian.com>
 
 	* bonobo/bonobo-control.c (impl_Bonobo_Control_activate): Ahem,
