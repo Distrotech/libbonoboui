@@ -41,8 +41,8 @@ struct _BonoboViewFramePrivate {
 };
 
 static Bonobo_ClientSite
-impl_Bonobo_ViewFrame_get_client_site (PortableServer_Servant servant,
-				      CORBA_Environment *ev)
+impl_Bonobo_ViewFrame_getClientSite (PortableServer_Servant servant,
+				     CORBA_Environment *ev)
 {
 	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (bonobo_object_from_servant (servant));
 
@@ -233,7 +233,7 @@ bonobo_view_frame_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_ViewFrame__epv, 1);
 
-	epv->get_client_site = impl_Bonobo_ViewFrame_get_client_site;
+	epv->getClientSite = impl_Bonobo_ViewFrame_getClientSite;
 
 	return epv;
 }
@@ -468,7 +468,7 @@ bonobo_view_frame_set_zoom_factor (BonoboViewFrame *view_frame, double zoom)
 	g_return_if_fail (zoom > 0.0);
 
 	CORBA_exception_init (&ev);
-	Bonobo_View_set_zoom_factor (view_frame->priv->view, zoom, &ev);
+	Bonobo_View_setZoomFactor (view_frame->priv->view, zoom, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (view_frame),

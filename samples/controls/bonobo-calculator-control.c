@@ -48,7 +48,7 @@ bonobo_calculator_factory (BonoboGenericFactory *Factory, void *closure)
 	control = bonobo_control_new (calc);
 
 	pb = bonobo_property_bag_new (get_prop, set_prop, calc);
-	bonobo_control_set_property_bag (control, pb);
+	bonobo_control_set_properties (control, pb);
 	bonobo_object_unref (BONOBO_OBJECT (pb));
 
 	bonobo_property_bag_add (pb, "value", 1, BONOBO_ARG_DOUBLE, NULL,

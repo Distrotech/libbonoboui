@@ -61,7 +61,7 @@ impl_Bonobo_ControlFrame_activated (PortableServer_Servant  servant,
 }
 
 static Bonobo_UIContainer
-impl_Bonobo_ControlFrame_get_ui_handler (PortableServer_Servant  servant,
+impl_Bonobo_ControlFrame_getUIHandler (PortableServer_Servant  servant,
 					 CORBA_Environment      *ev)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
@@ -73,7 +73,7 @@ impl_Bonobo_ControlFrame_get_ui_handler (PortableServer_Servant  servant,
 }
 
 static Bonobo_PropertyBag
-impl_Bonobo_ControlFrame_get_ambient_properties (PortableServer_Servant  servant,
+impl_Bonobo_ControlFrame_getAmbientProperties (PortableServer_Servant  servant,
 						 CORBA_Environment      *ev)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
@@ -89,7 +89,7 @@ impl_Bonobo_ControlFrame_get_ambient_properties (PortableServer_Servant  servant
 }
 
 static void
-impl_Bonobo_ControlFrame_queue_resize (PortableServer_Servant  servant,
+impl_Bonobo_ControlFrame_queueResize (PortableServer_Servant  servant,
 				       CORBA_Environment      *ev)
 {
 	/*
@@ -101,7 +101,7 @@ impl_Bonobo_ControlFrame_queue_resize (PortableServer_Servant  servant,
 }
 
 static void
-impl_Bonobo_ControlFrame_activate_uri (PortableServer_Servant  servant,
+impl_Bonobo_ControlFrame_activateURI (PortableServer_Servant  servant,
 				       const CORBA_char       *uri,
 				       CORBA_boolean           relative,
 				       CORBA_Environment      *ev)
@@ -197,7 +197,7 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 {
 	Bonobo_Control control = bonobo_control_frame_get_control (control_frame);
 	CORBA_Environment ev;
-	Bonobo_Control_windowid id;
+	Bonobo_Control_windowId id;
 
 	/*
 	 * If we are not yet bound to a remote control, don't do
@@ -218,7 +218,8 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 	 */
 	CORBA_exception_init (&ev);
 	id = bonobo_control_windowid_from_x11 (GDK_WINDOW_XWINDOW (socket->window));
-	Bonobo_Control_set_window (control, id, &ev);
+
+	Bonobo_Control_setWindowId (control, id, &ev);
 	g_free (id);
 	if (ev._major != CORBA_NO_EXCEPTION)
 		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
@@ -408,11 +409,11 @@ bonobo_control_frame_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_ControlFrame__epv, 1);
 
-	epv->activated              = impl_Bonobo_ControlFrame_activated;
-	epv->get_ui_handler         = impl_Bonobo_ControlFrame_get_ui_handler;
-	epv->queue_resize           = impl_Bonobo_ControlFrame_queue_resize;
-	epv->activate_uri           = impl_Bonobo_ControlFrame_activate_uri;
-	epv->get_ambient_properties = impl_Bonobo_ControlFrame_get_ambient_properties;
+	epv->activated            = impl_Bonobo_ControlFrame_activated;
+	epv->getUIHandler         = impl_Bonobo_ControlFrame_getUIHandler;
+	epv->queueResize          = impl_Bonobo_ControlFrame_queueResize;
+	epv->activateURI          = impl_Bonobo_ControlFrame_activateURI;
+	epv->getAmbientProperties = impl_Bonobo_ControlFrame_getAmbientProperties;
 
 	return epv;
 }
@@ -671,7 +672,7 @@ bonobo_control_frame_control_set_state (BonoboControlFrame  *control_frame,
 
 	CORBA_exception_init (&ev);
 
-	Bonobo_Control_set_state (control_frame->priv->control, corba_state, &ev);
+	Bonobo_Control_setState (control_frame->priv->control, corba_state, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		bonobo_object_check_env (
@@ -796,7 +797,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	/*
 	 * Introduce ourselves to the Control.
 	 */
-	Bonobo_Control_set_frame (control,
+	Bonobo_Control_setFrame (control,
 				  bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
 				  &ev);
 	if (ev._major != CORBA_NO_EXCEPTION)
@@ -917,7 +918,7 @@ bonobo_control_frame_get_control_property_bag (BonoboControlFrame *control_frame
 
 	control = control_frame->priv->control;
 
-	pbag = Bonobo_Control_get_property_bag (control, real_ev);
+	pbag = Bonobo_Control_getProperties (control, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION) {
 		if (!ev)

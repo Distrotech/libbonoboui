@@ -627,7 +627,7 @@ bonobo_canvas_item_get_type (void)
 }
 
 static void
-impl_Bonobo_Canvas_ComponentProxy_request_update (PortableServer_Servant servant,
+impl_Bonobo_Canvas_ComponentProxy_updateArea (PortableServer_Servant servant,
 					    const Bonobo_Canvas_ArtUTA *uta,
 					    CORBA_Environment *ev)
 {
@@ -646,7 +646,7 @@ impl_Bonobo_Canvas_ComponentProxy_request_update (PortableServer_Servant servant
 					    
 static POA_Bonobo_Canvas_ComponentProxy__epv item_proxy_epv = {
 	NULL,
-	&impl_Bonobo_Canvas_ComponentProxy_request_update
+	&impl_Bonobo_Canvas_ComponentProxy_updateArea
 };
 
 static POA_Bonobo_Canvas_ComponentProxy__vepv item_proxy_vepv = {
@@ -685,7 +685,7 @@ proxy_size_allocate (GnomeCanvas *canvas, GtkAllocation *allocation, BonoboCanva
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
-	Bonobo_Canvas_Component_canvas_size_set (
+	Bonobo_Canvas_Component_setCanvasSize (
 		bonobo_item->priv->object,
 		allocation->x, allocation->y,
 		allocation->width, allocation->height, &ev);
@@ -729,7 +729,7 @@ bonobo_canvas_item_new (GnomeCanvasGroup *parent, BonoboObjectClient *embeddable
 	CORBA_exception_init (&ev);
 	is_aa = GNOME_CANVAS_ITEM (parent)->canvas->aa;
 	proxy = create_proxy (&proxy_ref, bonobo_item);
-	remote_item = Bonobo_Embeddable_new_canvas_item (corba_embeddable, is_aa, proxy_ref, &ev);
+	remote_item = Bonobo_Embeddable_createCanvasItem (corba_embeddable, is_aa, proxy_ref, &ev);
 	CORBA_Object_release (proxy_ref, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION)

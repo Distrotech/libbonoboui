@@ -39,7 +39,7 @@ sample_app_create (void)
 	GtkWidget *app_widget;
 
 	/* Create widgets */
-	app_widget = app->app = bonobo_win_new ("sample-container",
+	app_widget = app->app = bonobo_window_new ("sample-container",
 						_("Sample Bonobo container"));
 
 	app->box = gtk_vbox_new (FALSE, 10);
@@ -48,13 +48,13 @@ sample_app_create (void)
 			    (GtkSignalFunc) delete_cb, app);
 
 	/* Do the packing stuff */
-	bonobo_win_set_contents (BONOBO_WIN (app->app), app->box);
+	bonobo_window_set_contents (BONOBO_WINDOW (app->app), app->box);
 	gtk_widget_set_usize (app_widget, 400, 600);
 
 	app->container = bonobo_item_container_new ();
 
 	app->ui_container = bonobo_ui_container_new ();
-	bonobo_ui_container_set_win (app->ui_container, BONOBO_WIN (app->app));
+	bonobo_ui_container_set_win (app->ui_container, BONOBO_WINDOW (app->app));
 
 	/* Create menu bar */
 	sample_app_fill_menu (app);

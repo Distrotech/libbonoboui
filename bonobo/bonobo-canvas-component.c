@@ -568,8 +568,8 @@ bonobo_canvas_component_get_epv (void)
 	epv->bounds    = gcc_bounds;
 	epv->event     = gcc_event;
 	epv->contains  = gcc_contains;
-	epv->canvas_size_set = gcc_size_set;
-	epv->set_bounds = gcc_set_bounds;
+	epv->setCanvasSize = gcc_size_set;
+	epv->setBounds = gcc_set_bounds;
 
 	return epv;
 }
@@ -785,7 +785,7 @@ rih_update (GnomeCanvasItem *item, double affine [6], ArtSVP *svp, int flags)
 	cuta = CORBA_UTA (item->canvas->redraw_area);
 
 	CORBA_exception_init (&ev);
-	Bonobo_Canvas_ComponentProxy_request_update (rih->proxy, cuta, &ev);
+	Bonobo_Canvas_ComponentProxy_updateArea (rih->proxy, cuta, &ev);
 	CORBA_free (cuta);
 	CORBA_exception_free (&ev);
 

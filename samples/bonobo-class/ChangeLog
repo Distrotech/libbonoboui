@@ -1,3 +1,7 @@
+2000-10-31  Michael Meeks  <michael@helixcode.com>
+
+	* Makefile.am: get idl includes the right way round.
+
 2000-07-23  Michael Meeks  <michael@helixcode.com>
 
 	* echo-client.c (main): fix severe ref-counting brokenness.

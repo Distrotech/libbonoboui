@@ -92,8 +92,8 @@ bonobo_zoomable_from_servant (PortableServer_Servant servant)
 }
 
 static CORBA_float
-impl_Bonobo_Zoomable__get_zoom_level (PortableServer_Servant  servant,
-				      CORBA_Environment      *ev)
+impl_Bonobo_Zoomable__get_level (PortableServer_Servant  servant,
+				 CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
@@ -102,8 +102,8 @@ impl_Bonobo_Zoomable__get_zoom_level (PortableServer_Servant  servant,
 }
 
 static CORBA_float
-impl_Bonobo_Zoomable__get_min_zoom_level (PortableServer_Servant  servant,
-					  CORBA_Environment      *ev)
+impl_Bonobo_Zoomable__get_minLevel (PortableServer_Servant  servant,
+				    CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
@@ -112,8 +112,8 @@ impl_Bonobo_Zoomable__get_min_zoom_level (PortableServer_Servant  servant,
 }
 
 static CORBA_float
-impl_Bonobo_Zoomable__get_max_zoom_level (PortableServer_Servant  servant,
-					  CORBA_Environment      *ev)
+impl_Bonobo_Zoomable__get_maxLevel (PortableServer_Servant  servant,
+				    CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
@@ -122,8 +122,8 @@ impl_Bonobo_Zoomable__get_max_zoom_level (PortableServer_Servant  servant,
 }
 
 static CORBA_boolean
-impl_Bonobo_Zoomable__get_has_min_zoom_level (PortableServer_Servant  servant,
-					      CORBA_Environment      *ev)
+impl_Bonobo_Zoomable__get_hasMinLevel (PortableServer_Servant  servant,
+				       CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
@@ -132,8 +132,8 @@ impl_Bonobo_Zoomable__get_has_min_zoom_level (PortableServer_Servant  servant,
 }
 
 static CORBA_boolean
-impl_Bonobo_Zoomable__get_has_max_zoom_level (PortableServer_Servant  servant,
-					      CORBA_Environment      *ev)
+impl_Bonobo_Zoomable__get_hasMaxLevel (PortableServer_Servant  servant,
+				       CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
@@ -142,8 +142,8 @@ impl_Bonobo_Zoomable__get_has_max_zoom_level (PortableServer_Servant  servant,
 }
 
 static CORBA_boolean
-impl_Bonobo_Zoomable__get_is_continuous (PortableServer_Servant  servant,
-					 CORBA_Environment      *ev)
+impl_Bonobo_Zoomable__get_isContinuous (PortableServer_Servant  servant,
+					CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
@@ -152,8 +152,8 @@ impl_Bonobo_Zoomable__get_is_continuous (PortableServer_Servant  servant,
 }
 
 static Bonobo_ZoomLevelList *
-impl_Bonobo_Zoomable__get_preferred_zoom_levels (PortableServer_Servant  servant,
-						 CORBA_Environment      *ev)
+impl_Bonobo_Zoomable__get_preferredLevels (PortableServer_Servant  servant,
+					   CORBA_Environment      *ev)
 {
 	Bonobo_ZoomLevelList *list;
 	BonoboZoomable *zoomable;
@@ -171,8 +171,8 @@ impl_Bonobo_Zoomable__get_preferred_zoom_levels (PortableServer_Servant  servant
 }
 
 static Bonobo_ZoomLevelNameList *
-impl_Bonobo_Zoomable__get_preferred_zoom_level_names (PortableServer_Servant  servant,
-						      CORBA_Environment      *ev)
+impl_Bonobo_Zoomable__get_preferredLevelNames (PortableServer_Servant  servant,
+					       CORBA_Environment      *ev)
 {
 	Bonobo_ZoomLevelNameList *list;
 	BonoboZoomable *zoomable;
@@ -190,9 +190,9 @@ impl_Bonobo_Zoomable__get_preferred_zoom_level_names (PortableServer_Servant  se
 }
 
 static void 
-impl_Bonobo_Zoomable_set_zoom_level (PortableServer_Servant  servant,
-				     const CORBA_float       zoom_level,
-				     CORBA_Environment      *ev)
+impl_Bonobo_Zoomable_setLevel (PortableServer_Servant  servant,
+			       const CORBA_float       zoom_level,
+			       CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
@@ -201,8 +201,8 @@ impl_Bonobo_Zoomable_set_zoom_level (PortableServer_Servant  servant,
 }
 
 static void
-impl_Bonobo_Zoomable_zoom_in (PortableServer_Servant  servant,
-			      CORBA_Environment      *ev)
+impl_Bonobo_Zoomable_zoomIn (PortableServer_Servant  servant,
+			     CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
@@ -211,8 +211,8 @@ impl_Bonobo_Zoomable_zoom_in (PortableServer_Servant  servant,
 }
 
 static void
-impl_Bonobo_Zoomable_zoom_out (PortableServer_Servant  servant,
-			       CORBA_Environment      *ev)
+impl_Bonobo_Zoomable_zoomOut (PortableServer_Servant  servant,
+			      CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
@@ -221,8 +221,8 @@ impl_Bonobo_Zoomable_zoom_out (PortableServer_Servant  servant,
 }
 
 static void
-impl_Bonobo_Zoomable_zoom_to_fit (PortableServer_Servant  servant,
-				  CORBA_Environment      *ev)
+impl_Bonobo_Zoomable_zoomFit (PortableServer_Servant  servant,
+			      CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
@@ -231,8 +231,8 @@ impl_Bonobo_Zoomable_zoom_to_fit (PortableServer_Servant  servant,
 }
 
 static void
-impl_Bonobo_Zoomable_zoom_to_default (PortableServer_Servant  servant,
-				      CORBA_Environment      *ev)
+impl_Bonobo_Zoomable_zoomDefault (PortableServer_Servant  servant,
+				  CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
@@ -241,9 +241,9 @@ impl_Bonobo_Zoomable_zoom_to_default (PortableServer_Servant  servant,
 }
 
 static void
-impl_Bonobo_Zoomable_set_frame (PortableServer_Servant  servant,
-				Bonobo_ZoomableFrame	zoomable_frame,
-				CORBA_Environment      *ev)
+impl_Bonobo_Zoomable_setFrame (PortableServer_Servant  servant,
+			       Bonobo_ZoomableFrame    zoomable_frame,
+			       CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
@@ -265,22 +265,22 @@ bonobo_zoomable_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_Zoomable__epv, 1);
 
-	epv->_get_zoom_level = impl_Bonobo_Zoomable__get_zoom_level;
-	epv->_get_min_zoom_level = impl_Bonobo_Zoomable__get_min_zoom_level;
-	epv->_get_max_zoom_level = impl_Bonobo_Zoomable__get_max_zoom_level;
-	epv->_get_has_min_zoom_level = impl_Bonobo_Zoomable__get_has_min_zoom_level;
-	epv->_get_has_max_zoom_level = impl_Bonobo_Zoomable__get_has_max_zoom_level;
-	epv->_get_is_continuous = impl_Bonobo_Zoomable__get_is_continuous;
-	epv->_get_preferred_zoom_levels = impl_Bonobo_Zoomable__get_preferred_zoom_levels;
-	epv->_get_preferred_zoom_level_names = impl_Bonobo_Zoomable__get_preferred_zoom_level_names;
+	epv->_get_level = impl_Bonobo_Zoomable__get_level;
+	epv->_get_minLevel = impl_Bonobo_Zoomable__get_minLevel;
+	epv->_get_maxLevel = impl_Bonobo_Zoomable__get_maxLevel;
+	epv->_get_hasMinLevel = impl_Bonobo_Zoomable__get_hasMinLevel;
+	epv->_get_hasMaxLevel = impl_Bonobo_Zoomable__get_hasMaxLevel;
+	epv->_get_isContinuous = impl_Bonobo_Zoomable__get_isContinuous;
+	epv->_get_preferredLevels = impl_Bonobo_Zoomable__get_preferredLevels;
+	epv->_get_preferredLevelNames = impl_Bonobo_Zoomable__get_preferredLevelNames;
 
-	epv->zoom_in = impl_Bonobo_Zoomable_zoom_in;
-	epv->zoom_out = impl_Bonobo_Zoomable_zoom_out;
-	epv->zoom_to_fit = impl_Bonobo_Zoomable_zoom_to_fit;
-	epv->zoom_to_default = impl_Bonobo_Zoomable_zoom_to_default;
+	epv->zoomIn      = impl_Bonobo_Zoomable_zoomIn;
+	epv->zoomOut     = impl_Bonobo_Zoomable_zoomOut;
+	epv->zoomFit     = impl_Bonobo_Zoomable_zoomFit;
+	epv->zoomDefault = impl_Bonobo_Zoomable_zoomDefault;
 
-	epv->set_zoom_level = impl_Bonobo_Zoomable_set_zoom_level;
-	epv->set_frame = impl_Bonobo_Zoomable_set_frame;
+	epv->setLevel = impl_Bonobo_Zoomable_setLevel;
+	epv->setFrame = impl_Bonobo_Zoomable_setFrame;
 	
 	return epv;
 }
@@ -682,7 +682,7 @@ bonobo_zoomable_report_zoom_level_changed (BonoboZoomable *zoomable,
 		return;
 
 	CORBA_exception_init (&ev);
-	Bonobo_ZoomableFrame_report_zoom_level_changed (zoomable->priv->zoomable_frame,
+	Bonobo_ZoomableFrame_onLevelChanged (zoomable->priv->zoomable_frame,
 							zoomable->priv->zoom_level,
 							&ev);
 	CORBA_exception_free (&ev);
@@ -712,7 +712,7 @@ bonobo_zoomable_report_zoom_parameters_changed (BonoboZoomable *zoomable)
 		return;
 
 	CORBA_exception_init (&ev);
-	Bonobo_ZoomableFrame_report_zoom_parameters_changed (zoomable->priv->zoomable_frame,
+	Bonobo_ZoomableFrame_onParametersChanged (zoomable->priv->zoomable_frame,
 							     &ev);
 	CORBA_exception_free (&ev);
 }

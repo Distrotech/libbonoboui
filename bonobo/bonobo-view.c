@@ -38,9 +38,9 @@ struct _BonoboViewPrivate {
 };
 
 static void
-impl_Bonobo_View_set_zoom_factor (PortableServer_Servant servant,
-				 const CORBA_double zoom,
-				 CORBA_Environment *ev)
+impl_Bonobo_View_setZoomFactor (PortableServer_Servant servant,
+				const CORBA_double zoom,
+				CORBA_Environment *ev)
 {
 	BonoboView *view = BONOBO_VIEW (bonobo_object_from_servant (servant));
 
@@ -182,7 +182,7 @@ bonobo_view_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_View__epv, 1);
 
-	epv->set_zoom_factor = impl_Bonobo_View_set_zoom_factor;
+	epv->setZoomFactor = impl_Bonobo_View_setZoomFactor;
 
 	return epv;
 }

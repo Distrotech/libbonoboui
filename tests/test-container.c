@@ -675,7 +675,7 @@ timeout_next_line (gpointer data)
 	buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (line_len);
 	memcpy (buffer->_buffer, line, line_len);
 
-	Bonobo_ProgressiveDataSink_add_data (tmt->psink, buffer, &ev);
+	Bonobo_ProgressiveDataSink_addData (tmt->psink, buffer, &ev);
 
 	return TRUE;
 } /* timeout_add_more_data */
@@ -714,7 +714,7 @@ verb_SendText_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 	}
 	
 	fstat (fileno (f), &statbuf);
-	Bonobo_ProgressiveDataSink_set_size (psink,
+	Bonobo_ProgressiveDataSink_setSize (psink,
 					    (CORBA_long) statbuf.st_size,
 					    &ev);
 
@@ -807,13 +807,13 @@ application_new (void)
 	app->box = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (app->box);
 
-	app->app = bonobo_win_new ("test-container",
+	app->app = bonobo_window_new ("test-container",
 				   "Sample Container Application");
 
-	bonobo_win_set_contents (BONOBO_WIN (app->app), app->box);
+	bonobo_window_set_contents (BONOBO_WINDOW (app->app), app->box);
 
 	ui_container = bonobo_ui_container_new ();
-	bonobo_ui_container_set_win (ui_container, BONOBO_WIN (app->app));
+	bonobo_ui_container_set_win (ui_container, BONOBO_WINDOW (app->app));
 
 	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (ui_container));
 	app->corba_container = bonobo_object_dup_ref (corba_container, NULL);

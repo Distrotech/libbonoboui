@@ -60,9 +60,9 @@ struct _BonoboEmbeddablePrivate {
 };
 
 static void
-impl_Bonobo_Embeddable_set_client_site (PortableServer_Servant servant,
-				       const Bonobo_ClientSite client_site,
-				       CORBA_Environment *ev)
+impl_Bonobo_Embeddable_setClientSite (PortableServer_Servant servant,
+				      const Bonobo_ClientSite client_site,
+				      CORBA_Environment *ev)
 {
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
 	CORBA_Environment evx;
@@ -77,8 +77,8 @@ impl_Bonobo_Embeddable_set_client_site (PortableServer_Servant servant,
 }
 
 static Bonobo_ClientSite
-impl_Bonobo_Embeddable_get_client_site (PortableServer_Servant servant,
-					CORBA_Environment     *ev)
+impl_Bonobo_Embeddable_getClientSite (PortableServer_Servant servant,
+				      CORBA_Environment     *ev)
 {
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (
 		bonobo_object_from_servant (servant));
@@ -89,10 +89,10 @@ impl_Bonobo_Embeddable_get_client_site (PortableServer_Servant servant,
 }
 
 static void
-impl_Bonobo_Embeddable_set_host_name (PortableServer_Servant servant,
-				     const CORBA_char      *name,
-				     const CORBA_char      *appname,
-				     CORBA_Environment     *ev)
+impl_Bonobo_Embeddable_setHostName (PortableServer_Servant servant,
+				    const CORBA_char      *name,
+				    const CORBA_char      *appname,
+				    CORBA_Environment     *ev)
 {
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
 
@@ -129,9 +129,9 @@ impl_Bonobo_Embeddable_unadvise (PortableServer_Servant servant, CORBA_Environme
 }
 
 static CORBA_long
-impl_Bonobo_Embeddable_get_misc_status (PortableServer_Servant servant,
-				       const CORBA_long type,
-				       CORBA_Environment *ev)
+impl_Bonobo_Embeddable_getMiscStatus (PortableServer_Servant servant,
+				      const CORBA_long type,
+				      CORBA_Environment *ev)
 {
 
 	return 0;
@@ -184,9 +184,9 @@ bonobo_embeddable_view_destroy_cb (BonoboView *view, gpointer data)
 }
 
 static Bonobo_View
-impl_Bonobo_Embeddable_new_view (PortableServer_Servant servant,
-				Bonobo_ViewFrame view_frame,
-				CORBA_Environment *ev)
+impl_Bonobo_Embeddable_createView (PortableServer_Servant servant,
+				   Bonobo_ViewFrame view_frame,
+				   CORBA_Environment *ev)
 {
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
 	BonoboView       *view;
@@ -216,7 +216,7 @@ impl_Bonobo_Embeddable_new_view (PortableServer_Servant servant,
 }
 
 static void
-impl_Bonobo_Embeddable_set_uri (PortableServer_Servant servant,
+impl_Bonobo_Embeddable_setURI (PortableServer_Servant servant,
 			       const CORBA_char      *uri,
 			       CORBA_Environment     *ev)
 {
@@ -274,10 +274,10 @@ make_canvas_component (BonoboEmbeddable *embeddable, gboolean aa, Bonobo_Canvas_
 }
 
 static Bonobo_Canvas_Component
-impl_Bonobo_Embeddable_new_canvas_item (PortableServer_Servant servant,
-				       CORBA_boolean aa,
-				       Bonobo_Canvas_ComponentProxy _item_proxy,
-				       CORBA_Environment *ev)
+impl_Bonobo_Embeddable_createCanvasItem (PortableServer_Servant servant,
+					 CORBA_boolean aa,
+					 Bonobo_Canvas_ComponentProxy _item_proxy,
+					 CORBA_Environment *ev)
 {
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
 	Bonobo_Canvas_ComponentProxy item_proxy;
@@ -304,16 +304,16 @@ bonobo_embeddable_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_Embeddable__epv, 1);
 
-	epv->set_client_site = impl_Bonobo_Embeddable_set_client_site;
-	epv->get_client_site = impl_Bonobo_Embeddable_get_client_site;
-	epv->set_host_name   = impl_Bonobo_Embeddable_set_host_name;
-	epv->close           = impl_Bonobo_Embeddable_close;
-	epv->advise          = impl_Bonobo_Embeddable_advise;
-	epv->unadvise        = impl_Bonobo_Embeddable_unadvise;
-	epv->get_misc_status = impl_Bonobo_Embeddable_get_misc_status;
-	epv->new_view        = impl_Bonobo_Embeddable_new_view;
-	epv->set_uri         = impl_Bonobo_Embeddable_set_uri;
-	epv->new_canvas_item = impl_Bonobo_Embeddable_new_canvas_item;
+	epv->setClientSite    = impl_Bonobo_Embeddable_setClientSite;
+	epv->getClientSite    = impl_Bonobo_Embeddable_getClientSite;
+	epv->setHostName      = impl_Bonobo_Embeddable_setHostName;
+	epv->close            = impl_Bonobo_Embeddable_close;
+	epv->advise           = impl_Bonobo_Embeddable_advise;
+	epv->unadvise         = impl_Bonobo_Embeddable_unadvise;
+	epv->getMiscStatus    = impl_Bonobo_Embeddable_getMiscStatus;
+	epv->createView       = impl_Bonobo_Embeddable_createView;
+	epv->setURI           = impl_Bonobo_Embeddable_setURI;
+	epv->createCanvasItem = impl_Bonobo_Embeddable_createCanvasItem;
 
 	return epv;
 }

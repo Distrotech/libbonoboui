@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * bonobo-ui-container.h: The server side CORBA impl. for BonoboWin.
+ * bonobo-ui-container.h: The server side CORBA impl. for BonoboWindow.
  *
  * Author:
  *	Michael Meeks (michael@helixcode.com)
@@ -25,7 +25,7 @@ struct _BonoboUIContainer {
 	BonoboObject base;
 
 	int          flags;
-	BonoboWin   *win;
+	BonoboWindow   *win;
 };
 
 struct _BonoboUIContainerClass {
@@ -41,6 +41,6 @@ BonoboUIContainer           *bonobo_ui_container_construct           (BonoboUICo
 BonoboUIContainer           *bonobo_ui_container_new                 (void);
 
 void                         bonobo_ui_container_set_win             (BonoboUIContainer  *container,
-								      BonoboWin          *win);
+								      BonoboWindow          *win);
 
 #endif /* _BONOBO_UI_CONTAINER_H_ */

@@ -163,7 +163,7 @@ bonobo_selector_destroy (GtkObject *object)
 
 	gtk_widget_destroy (priv->clist);
 	
-	od_server_list_free (priv->servers);
+	bonobo_directory_free_server_list (priv->servers);
 	g_free (priv);
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy)
@@ -433,9 +433,9 @@ add_objects (BonoboSelector *widget)
 	}
 	
 	while (list != NULL) {
-		text[0] = od_server_info_get_name(list->data);
-		text[1] = od_server_info_get_id(list->data);
-		text[2] = od_server_info_get_description(list->data);
+		text[0] = bonobo_directory_get_server_info_name(list->data);
+		text[1] = bonobo_directory_get_server_info_id(list->data);
+		text[2] = bonobo_directory_get_server_info_description(list->data);
 		
 		gtk_clist_append (GTK_CLIST (priv->clist), (gchar**)text);
 		priv->n_servers++;
@@ -448,8 +448,8 @@ add_objects (BonoboSelector *widget)
 static gint
 server_list_compare (gconstpointer a, gconstpointer b)
 {
-	return strcmp (od_server_info_get_name ((ODServerInfo *)a),
-		       od_server_info_get_name ((ODServerInfo *)b));
+	return strcmp (bonobo_directory_get_server_info_name ((ODServerInfo *)a),
+		       bonobo_directory_get_server_info_name ((ODServerInfo *)b));
 
 }
 
@@ -478,7 +478,7 @@ get_filtered_objects (BonoboSelector *widget)
 		}
 	}
 
-	priv->servers = od_get_server_list(inters);
+	priv->servers = bonobo_directory_get_server_list(inters);
 
 	/* Free our temporary criteria */
 	if (priv->interfaces_required == NULL)

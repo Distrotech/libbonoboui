@@ -94,17 +94,17 @@ ui_event (BonoboUIComponent           *component,
 }
 
 static CORBA_char *
-impl_describe_verbs (PortableServer_Servant servant,
-		     CORBA_Environment     *ev)
+impl_Bonobo_UIComponent_describeVerbs (PortableServer_Servant servant,
+				       CORBA_Environment     *ev)
 {
 	g_warning ("FIXME: Describe verbs unimplemented");
 	return CORBA_string_dup ("<NoUIVerbDescriptionCodeYet/>");
 }
 
 static void
-impl_exec_verb (PortableServer_Servant servant,
-		const CORBA_char      *cname,
-		CORBA_Environment     *ev)
+impl_Bonobo_UIComponent_execVerb (PortableServer_Servant servant,
+				  const CORBA_char      *cname,
+				  CORBA_Environment     *ev)
 {
 	BonoboUIComponent *component;
 	UIVerb *verb;
@@ -129,11 +129,11 @@ impl_exec_verb (PortableServer_Servant servant,
 }
 
 static void
-impl_ui_event (PortableServer_Servant             servant,
-	       const CORBA_char                  *id,
-	       const Bonobo_UIComponent_EventType type,
-	       const CORBA_char                  *state,
-	       CORBA_Environment                 *ev)
+impl_Bonobo_UIComponent_uiEvent (PortableServer_Servant             servant,
+				 const CORBA_char                  *id,
+				 const Bonobo_UIComponent_EventType type,
+				 const CORBA_char                  *state,
+				 CORBA_Environment                 *ev)
 {
 	BonoboUIComponent *component;
 
@@ -400,9 +400,9 @@ bonobo_ui_component_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_UIComponent__epv, 1);
 
-	epv->describe_verbs = impl_describe_verbs;
-	epv->exec_verb = impl_exec_verb;
-	epv->ui_event  = impl_ui_event;
+	epv->describeVerbs = impl_Bonobo_UIComponent_describeVerbs;
+	epv->execVerb      = impl_Bonobo_UIComponent_execVerb;
+	epv->uiEvent       = impl_Bonobo_UIComponent_uiEvent;
 
 	return epv;
 }
@@ -539,7 +539,7 @@ impl_xml_set (BonoboUIComponent  *component,
 
 	name = component->priv->name ? component->priv->name : "";
 
-	Bonobo_UIContainer_node_set (container, path, xml,
+	Bonobo_UIContainer_setNode (container, path, xml,
 				     name, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
@@ -618,7 +618,7 @@ impl_xml_get (BonoboUIComponent *component,
 		real_ev = &tmp_ev;
 	}
 
-	xml = Bonobo_UIContainer_node_get (container, path, !recurse, real_ev);
+	xml = Bonobo_UIContainer_getNode (container, path, !recurse, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION) {
 		if (!ev)
@@ -686,7 +686,7 @@ impl_xml_rm (BonoboUIComponent  *component,
 
 	priv = component->priv;
 
-	Bonobo_UIContainer_node_remove (
+	Bonobo_UIContainer_removeNode (
 		container, path, priv->name, real_ev);
 
 	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
@@ -718,7 +718,7 @@ bonobo_ui_component_object_set (BonoboUIComponent  *component,
 		real_ev = &tmp_ev;
 	}
 
-	Bonobo_UIContainer_object_set (container, path, control, real_ev);
+	Bonobo_UIContainer_setObject (container, path, control, real_ev);
 
 	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
 		g_warning ("Serious exception setting object '%s' '%s'",
@@ -750,7 +750,7 @@ bonobo_ui_component_object_get (BonoboUIComponent  *component,
 		real_ev = &tmp_ev;
 	}
 
-	ret = Bonobo_UIContainer_object_get (container, path, real_ev);
+	ret = Bonobo_UIContainer_getObject (container, path, real_ev);
 
 	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
 		g_warning ("Serious exception getting object '%s' '%s'",
@@ -985,7 +985,7 @@ impl_exists (BonoboUIComponent *component,
 		real_ev = &tmp_ev;
 	}
 
-	ret = Bonobo_UIContainer_node_exists (container, path, real_ev);
+	ret = Bonobo_UIContainer_exists (container, path, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION) {
 		ret = FALSE;
@@ -1036,7 +1036,7 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component)
 
 		name = component->priv->name ? component->priv->name : "";
 
-		Bonobo_UIContainer_deregister_component (
+		Bonobo_UIContainer_deregisterComponent (
 			component->priv->container, name, &ev);
 		
 		if (ev._major != CORBA_NO_EXCEPTION)
@@ -1074,7 +1074,7 @@ bonobo_ui_component_set_container (BonoboUIComponent *component,
 
 		name = component->priv->name ? component->priv->name : "";
 
-		Bonobo_UIContainer_register_component (
+		Bonobo_UIContainer_registerComponent (
 			ref_cont, name, corba_component, &ev);
 
 		if (ev._major != CORBA_NO_EXCEPTION)

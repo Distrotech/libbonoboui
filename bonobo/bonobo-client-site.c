@@ -37,11 +37,11 @@ static BonoboObjectClass *bonobo_client_site_parent_class;
 static guint bonobo_client_site_signals [LAST_SIGNAL];
 
 static Bonobo_ItemContainer
-impl_Bonobo_client_site_get_container (PortableServer_Servant servant, CORBA_Environment *ev)
+impl_Bonobo_ClientSite_getContainer (PortableServer_Servant servant, CORBA_Environment *ev)
 {
-	BonoboObject     *object = bonobo_object_from_servant (servant);
+	BonoboObject         *object = bonobo_object_from_servant (servant);
 	Bonobo_ItemContainer  corba_object;
-	BonoboClientSite *client_site = BONOBO_CLIENT_SITE (object);
+	BonoboClientSite     *client_site = BONOBO_CLIENT_SITE (object);
 
 	corba_object = bonobo_object_corba_objref (
 		BONOBO_OBJECT (client_site->container));
@@ -50,7 +50,7 @@ impl_Bonobo_client_site_get_container (PortableServer_Servant servant, CORBA_Env
 }
 
 static void
-impl_Bonobo_client_site_show_window (PortableServer_Servant servant, CORBA_boolean shown,
+impl_Bonobo_ClientSite_showWindow (PortableServer_Servant servant, CORBA_boolean shown,
 				    CORBA_Environment *ev)
 {
 	BonoboClientSite *client_site = BONOBO_CLIENT_SITE (bonobo_object_from_servant (servant));
@@ -62,7 +62,7 @@ impl_Bonobo_client_site_show_window (PortableServer_Servant servant, CORBA_boole
 }
 
 static Bonobo_Persist_Status
-impl_Bonobo_client_site_save_object (PortableServer_Servant servant, CORBA_Environment *ev)
+impl_Bonobo_ClientSite_saveObject (PortableServer_Servant servant, CORBA_Environment *ev)
 {
 	BonoboObject *object = bonobo_object_from_servant (servant);
 	Bonobo_Persist_Status status;
@@ -133,9 +133,9 @@ bonobo_client_site_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_ClientSite__epv, 1);
 
-	epv->get_container = impl_Bonobo_client_site_get_container;
-	epv->show_window   = impl_Bonobo_client_site_show_window;
-	epv->save_object   = impl_Bonobo_client_site_save_object;
+	epv->getContainer = impl_Bonobo_ClientSite_getContainer;
+	epv->showWindow   = impl_Bonobo_ClientSite_showWindow;
+	epv->saveObject   = impl_Bonobo_ClientSite_saveObject;
 
 	return epv;
 }
@@ -342,7 +342,7 @@ bonobo_client_site_bind_embeddable (BonoboClientSite   *client_site,
 	Bonobo_Unknown_unref (bonobo_object_corba_objref (
 		BONOBO_OBJECT (object)), &ev);
 
-	Bonobo_Embeddable_set_client_site (
+	Bonobo_Embeddable_setClientSite (
 		embeddable_object, 
 		bonobo_object_corba_objref (BONOBO_OBJECT (client_site)),
 		&ev);
@@ -454,7 +454,7 @@ bonobo_client_site_new_view_full (BonoboClientSite  *client_site,
 	 */
 	server_object = bonobo_object_corba_objref (BONOBO_OBJECT (client_site->bound_embeddable));
 	CORBA_exception_init (&ev);
- 	view = Bonobo_Embeddable_new_view (
+ 	view = Bonobo_Embeddable_createView (
 		server_object,
 		bonobo_object_corba_objref (BONOBO_OBJECT (view_frame)),
 		&ev);

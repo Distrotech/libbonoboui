@@ -82,7 +82,7 @@ verb_XmlDump_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
 	SampleApp *app = user_data;
 
-	bonobo_win_dump (BONOBO_WIN (app->app), "On request");
+	bonobo_window_dump (BONOBO_WINDOW (app->app), "On request");
 }
 
 static void

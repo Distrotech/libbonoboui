@@ -32,7 +32,7 @@ ECHO_CORBA_GENERATED =		\
 libEcho_a_SOURCES = $(ECHO_CORBA_GENERATED)
 
 $(ECHO_CORBA_GENERATED): Echo.idl 
-	orbit-idl -I`$(GNOME_CONFIG) --datadir`/idl -I$(top_srcdir)/idl $(srcdir)/Echo.idl
+	orbit-idl -I$(top_srcdir)/idl -I`$(GNOME_CONFIG) --datadir`/idl $(srcdir)/Echo.idl
 	touch my_echo_idl
 
 

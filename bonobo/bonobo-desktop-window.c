@@ -94,7 +94,7 @@ bonobo_desktop_window_new (GtkWindow *toplevel)
 }
 
 static CORBA_char *
-impl_desktop_window_get_title (PortableServer_Servant servant, CORBA_Environment * ev)
+impl_Desktop_Window_get_title (PortableServer_Servant servant, CORBA_Environment * ev)
 {
 	BonoboDesktopWindow *desk_win = BONOBO_DESKTOP_WINDOW (bonobo_object_from_servant (servant));
 
@@ -102,7 +102,7 @@ impl_desktop_window_get_title (PortableServer_Servant servant, CORBA_Environment
 }
 
 static void
-impl_desktop_window_set_title (PortableServer_Servant servant,
+impl_Desktop_Window_set_title (PortableServer_Servant servant,
 			       const CORBA_char *value,
 			       CORBA_Environment * ev)
 {
@@ -112,8 +112,8 @@ impl_desktop_window_set_title (PortableServer_Servant servant,
 }
 
 static Bonobo_Desktop_Window_Geometry
-impl_desktop_window_get_geometry (PortableServer_Servant servant,
-				  CORBA_Environment * ev)
+impl_Desktop_Window_getGeometry (PortableServer_Servant servant,
+				 CORBA_Environment * ev)
 {
 	BonoboDesktopWindow *desk_win = BONOBO_DESKTOP_WINDOW (bonobo_object_from_servant (servant));
 	Bonobo_Desktop_Window_Geometry geo;
@@ -129,9 +129,9 @@ impl_desktop_window_get_geometry (PortableServer_Servant servant,
 }
 
 static void
-impl_desktop_window_set_geometry (PortableServer_Servant               servant,
-				  const Bonobo_Desktop_Window_Geometry *geo,
-				  CORBA_Environment                   *ev)
+impl_Desktop_Window_setGeometry (PortableServer_Servant               servant,
+				 const Bonobo_Desktop_Window_Geometry *geo,
+				 CORBA_Environment                   *ev)
 {
 	BonoboDesktopWindow *desk_win = BONOBO_DESKTOP_WINDOW (bonobo_object_from_servant (servant));
 
@@ -140,7 +140,7 @@ impl_desktop_window_set_geometry (PortableServer_Servant               servant,
 }
 
 static CORBA_unsigned_long
-impl_desktop_window_get_window_id (PortableServer_Servant servant, CORBA_Environment * ev)
+impl_Desktop_Window_getWindowId (PortableServer_Servant servant, CORBA_Environment * ev)
 {
 	BonoboDesktopWindow *desk_win = BONOBO_DESKTOP_WINDOW (bonobo_object_from_servant (servant));
 
@@ -157,11 +157,11 @@ bonobo_desktop_window_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_Desktop_Window__epv, 1);
 
-	epv->_get_title = impl_desktop_window_get_title;
-	epv->_set_title = impl_desktop_window_set_title;
-	epv->get_geometry = impl_desktop_window_get_geometry;
-	epv->set_geometry = impl_desktop_window_set_geometry;
-	epv->get_window_id = impl_desktop_window_get_window_id;
+	epv->_get_title = impl_Desktop_Window_get_title;
+	epv->_set_title = impl_Desktop_Window_set_title;
+	epv->getGeometry = impl_Desktop_Window_getGeometry;
+	epv->setGeometry = impl_Desktop_Window_setGeometry;
+	epv->getWindowId = impl_Desktop_Window_getWindowId;
 
 	return epv;
 }

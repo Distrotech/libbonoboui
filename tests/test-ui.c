@@ -30,13 +30,13 @@ cb_do_quit (GtkWindow *window, gpointer dummy)
 }
 
 static void
-cb_do_dump (GtkWindow *window, BonoboWin *win)
+cb_do_dump (GtkWindow *window, BonoboWindow *win)
 {
-	bonobo_win_dump (win, "on User input");
+	bonobo_window_dump (win, "on User input");
 }
 
 static void
-cb_do_popup (GtkWindow *window, BonoboWin *win)
+cb_do_popup (GtkWindow *window, BonoboWindow *win)
 {
 	GtkWidget *menu;
 	GtkWidget *menuitem;
@@ -46,14 +46,14 @@ cb_do_popup (GtkWindow *window, BonoboWin *win)
 	gtk_widget_show (menuitem);
 	gtk_menu_append (GTK_MENU (menu), menuitem);
 
-	bonobo_win_add_popup (win, GTK_MENU (menu), "/popups/MyStuff");
+	bonobo_window_add_popup (win, GTK_MENU (menu), "/popups/MyStuff");
 
 	gtk_widget_show (GTK_WIDGET (menu));
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 3, 0);
 }
 
 static void
-cb_do_hide_toolbar (GtkWindow *window, BonoboWin *win)
+cb_do_hide_toolbar (GtkWindow *window, BonoboWindow *win)
 {
 	const char path [] = "/toolbar";
 	char *val;
@@ -154,7 +154,7 @@ BonoboUIVerb verbs [] = {
 int
 main (int argc, char **argv)
 {
-	BonoboWin *win;
+	BonoboWindow *win;
 	CORBA_ORB  orb;
 	BonoboUIComponent *componenta;
 	BonoboUIComponent *componentb;
@@ -277,7 +277,7 @@ main (int argc, char **argv)
 		g_free (b);
 	}
 
-	win = BONOBO_WIN (bonobo_win_new ("Win", "My Test Application"));
+	win = BONOBO_WINDOW (bonobo_window_new ("Win", "My Test Application"));
 	container = bonobo_ui_container_new ();
 	bonobo_ui_container_set_win (container, win);
 
@@ -325,7 +325,7 @@ main (int argc, char **argv)
 		gtk_box_pack_start_defaults (GTK_BOX (box), state_entry);
 
 		gtk_widget_show (GTK_WIDGET (box));
-		bonobo_win_set_contents (win, box);
+		bonobo_window_set_contents (win, box);
 	}
 
 	gtk_signal_connect (GTK_OBJECT (win), "size_request", 

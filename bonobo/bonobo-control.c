@@ -63,7 +63,7 @@ struct _BonoboControlPrivate {
  * Return value: the X11 window id.
  **/
 inline static guint32
-window_id_demangle (Bonobo_Control_windowid id)
+window_id_demangle (Bonobo_Control_windowId id)
 {
 	guint32 x11_id;
 	char **elements;
@@ -93,7 +93,7 @@ window_id_demangle (Bonobo_Control_windowid id)
  * 
  * Return value: the string; free after use.
  **/
-Bonobo_Control_windowid
+Bonobo_Control_windowId
 bonobo_control_windowid_from_x11 (guint32 x11_id)
 {
 	CORBA_char *str;
@@ -212,7 +212,7 @@ impl_Bonobo_Control_activate (PortableServer_Servant servant,
 
 	
 static void
-impl_Bonobo_Control_set_frame (PortableServer_Servant servant,
+impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 			       Bonobo_ControlFrame frame,
 			       CORBA_Environment *ev)
 {
@@ -270,9 +270,9 @@ remove_destroy_idle (GtkWidget *socket,
 }
 
 static void
-impl_Bonobo_Control_set_window (PortableServer_Servant   servant,
-				Bonobo_Control_windowid  id,
-				CORBA_Environment       *ev)
+impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
+				 Bonobo_Control_windowId id,
+				 CORBA_Environment      *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 	GtkWidget     *local_socket;
@@ -352,7 +352,7 @@ impl_Bonobo_Control_set_window (PortableServer_Servant   servant,
 }
 
 static void
-impl_Bonobo_Control_size_allocate (PortableServer_Servant  servant,
+impl_Bonobo_Control_setSize (PortableServer_Servant  servant,
 				   const CORBA_short       width,
 				   const CORBA_short       height,
 				   CORBA_Environment      *ev)
@@ -367,7 +367,7 @@ impl_Bonobo_Control_size_allocate (PortableServer_Servant  servant,
 }
 
 static void
-impl_Bonobo_Control_size_request (PortableServer_Servant  servant,
+impl_Bonobo_Control_getDesiredSize (PortableServer_Servant  servant,
 				  CORBA_short            *desired_width,
 				  CORBA_short            *desired_height,
 				  CORBA_Environment      *ev)
@@ -403,7 +403,7 @@ bonobo_control_gtk_state_from_corba (const Bonobo_Control_State state)
 }
 
 static void
-impl_Bonobo_Control_set_state (PortableServer_Servant      servant,
+impl_Bonobo_Control_setState (PortableServer_Servant      servant,
 			       const Bonobo_Control_State  state,
 			       CORBA_Environment          *ev)
 {
@@ -417,7 +417,7 @@ impl_Bonobo_Control_set_state (PortableServer_Servant      servant,
 }
 
 static Bonobo_PropertyBag
-impl_Bonobo_Control_get_property_bag (PortableServer_Servant  servant,
+impl_Bonobo_Control_getProperties (PortableServer_Servant  servant,
 				      CORBA_Environment      *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
@@ -649,13 +649,13 @@ bonobo_control_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_Control__epv, 1);
 
-	epv->activate            = impl_Bonobo_Control_activate;
-	epv->size_allocate       = impl_Bonobo_Control_size_allocate;
-	epv->set_window          = impl_Bonobo_Control_set_window;
-	epv->set_state           = impl_Bonobo_Control_set_state;
-	epv->set_frame           = impl_Bonobo_Control_set_frame;
-	epv->size_request        = impl_Bonobo_Control_size_request;
-	epv->get_property_bag    = impl_Bonobo_Control_get_property_bag;
+	epv->activate       = impl_Bonobo_Control_activate;
+	epv->setSize        = impl_Bonobo_Control_setSize;
+	epv->setWindowId    = impl_Bonobo_Control_setWindowId;
+	epv->setState       = impl_Bonobo_Control_setState;
+	epv->setFrame       = impl_Bonobo_Control_setFrame;
+	epv->getDesiredSize = impl_Bonobo_Control_getDesiredSize;
+	epv->getProperties  = impl_Bonobo_Control_getProperties;
 
 	return epv;
 }
@@ -746,7 +746,7 @@ bonobo_control_set_ui_component (BonoboControl     *control,
 }
 
 /**
- * bonobo_control_set_property_bag:
+ * bonobo_control_set_properties:
  * @control: A #BonoboControl object.
  * @pb: A #BonoboPropertyBag.
  *
@@ -754,7 +754,7 @@ bonobo_control_set_ui_component (BonoboControl     *control,
  * for its property bag, @pb will be used in the responses.
  */
 void
-bonobo_control_set_property_bag (BonoboControl *control, BonoboPropertyBag *pb)
+bonobo_control_set_properties (BonoboControl *control, BonoboPropertyBag *pb)
 {
 	BonoboPropertyBag *old_bag;
 
@@ -772,13 +772,13 @@ bonobo_control_set_property_bag (BonoboControl *control, BonoboPropertyBag *pb)
 }
 
 /**
- * bonobo_control_get_property_bag:
+ * bonobo_control_get_properties:
  * @control: A #BonoboControl whose PropertyBag has already been set.
  *
  * Returns: The #BonoboPropertyBag bound to @control.
  */
 BonoboPropertyBag *
-bonobo_control_get_property_bag (BonoboControl *control)
+bonobo_control_get_properties (BonoboControl *control)
 {
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
@@ -815,7 +815,7 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 		real_ev = &tmp_ev;
 	}
 
-	pbag = Bonobo_ControlFrame_get_ambient_properties (
+	pbag = Bonobo_ControlFrame_getAmbientProperties (
 		control_frame, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION) {
@@ -848,7 +848,7 @@ bonobo_control_get_remote_ui_container (BonoboControl *control)
 
 	CORBA_exception_init (&ev);
 
-	ui_component = Bonobo_ControlFrame_get_ui_handler (control->priv->control_frame, &ev);
+	ui_component = Bonobo_ControlFrame_getUIHandler (control->priv->control_frame, &ev);
 
 	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, &ev);
 

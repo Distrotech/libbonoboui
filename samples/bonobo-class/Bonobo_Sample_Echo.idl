@@ -1,7 +1,6 @@
 /*
- * Sample file that demostrates how to create new Bonobo interfaces.
- *
- *
+ *  Sample file that demostrates how to create new
+ * Bonobo interfaces.
  */
 
 #include <Bonobo.idl>

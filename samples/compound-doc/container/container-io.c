@@ -24,7 +24,7 @@ save_component (BonoboStorage    *storage,
 
 	CORBA_exception_init (&ev);
 
-	corba_subdir = Bonobo_Storage_open_storage 
+	corba_subdir = Bonobo_Storage_openStorage 
 		(corba_storage, curr_dir, Bonobo_Storage_CREATE, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION)
@@ -33,7 +33,7 @@ save_component (BonoboStorage    *storage,
 		Bonobo_Stream       corba_stream;
 		BonoboObjectClient *embeddable;
 
-		corba_stream = Bonobo_Storage_open_stream 
+		corba_stream = Bonobo_Storage_openStream 
 			(corba_subdir, GOAD_FILE, Bonobo_Storage_CREATE, &ev);
 
 		bonobo_stream_client_write_string (corba_stream,
@@ -46,7 +46,7 @@ save_component (BonoboStorage    *storage,
 		embeddable = bonobo_client_site_get_embeddable (
 			BONOBO_CLIENT_SITE (site));
 
-		corba_stream = Bonobo_Storage_open_stream 
+		corba_stream = Bonobo_Storage_openStream 
 			(corba_subdir, DATA_FILE, Bonobo_Storage_CREATE, &ev);
 
 		object_save (embeddable, corba_stream, &ev);
@@ -105,7 +105,7 @@ load_component_id (Bonobo_Storage     storage,
 	Bonobo_Stream  corba_stream;
 	char *goad_id;
 
-	corba_stream = Bonobo_Storage_open_stream (storage, GOAD_FILE,
+	corba_stream = Bonobo_Storage_openStream (storage, GOAD_FILE,
 						   Bonobo_Storage_READ, ev);
 
 	if (ev->_major != CORBA_NO_EXCEPTION)
@@ -136,7 +136,7 @@ load_component (SampleApp *app, BonoboStorage *storage, int index)
 	CORBA_Environment ev;
 	CORBA_exception_init (&ev);
 
-	corba_subdir = Bonobo_Storage_open_storage (corba_storage,
+	corba_subdir = Bonobo_Storage_openStorage (corba_storage,
 						    curr_dir,
 						    Bonobo_Storage_READ,
 						    &ev);
@@ -150,7 +150,7 @@ load_component (SampleApp *app, BonoboStorage *storage, int index)
 			BonoboObjectClient *embeddable;
 
 			corba_stream =
-				Bonobo_Storage_open_stream (corba_subdir, DATA_FILE,
+				Bonobo_Storage_openStream (corba_subdir, DATA_FILE,
 							    Bonobo_Storage_READ, &ev);
 
 			if (ev._major != CORBA_NO_EXCEPTION)
@@ -192,7 +192,7 @@ sample_container_load (SampleApp *app, const char *filename)
 	corba_storage =
 	    bonobo_object_corba_objref (BONOBO_OBJECT (storage));
 
-	list = Bonobo_Storage_list_contents (corba_storage, "/", 0, &ev);
+	list = Bonobo_Storage_listContents (corba_storage, "/", 0, &ev);
 
 	if (!list) {
 		CORBA_exception_free (&ev);

@@ -75,14 +75,14 @@ Bonobo_UIContainer          bonobo_control_get_remote_ui_container (BonoboContro
 void                        bonobo_control_set_control_frame       (BonoboControl       *control,
 								    Bonobo_ControlFrame  control_frame);
 Bonobo_ControlFrame         bonobo_control_get_control_frame       (BonoboControl       *control);
-void                        bonobo_control_set_property_bag        (BonoboControl       *control,
+void                        bonobo_control_set_properties          (BonoboControl       *control,
 								    BonoboPropertyBag   *pb);
-BonoboPropertyBag          *bonobo_control_get_property_bag        (BonoboControl       *control);
+BonoboPropertyBag          *bonobo_control_get_properties          (BonoboControl       *control);
 Bonobo_PropertyBag          bonobo_control_get_ambient_properties  (BonoboControl       *control,
 								    CORBA_Environment   *ev);
 void                        bonobo_control_activate_notify         (BonoboControl       *control,
 								    gboolean             activated);
-Bonobo_Control_windowid     bonobo_control_windowid_from_x11       (guint32              x11_id);
+Bonobo_Control_windowId     bonobo_control_windowid_from_x11       (guint32              x11_id);
 POA_Bonobo_Control__epv    *bonobo_control_get_epv                 (void);
 
 END_GNOME_DECLS

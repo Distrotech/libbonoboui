@@ -43,7 +43,7 @@ add_listener (GtkCList *clist)
 
 	corba_listener = bonobo_object_corba_objref (BONOBO_OBJECT (listener));
 
-	Bonobo_PropertyBag_add_change_listener (pb, "running", corba_listener, &ev);
+	Bonobo_PropertyBag_addChangeListener (pb, "running", corba_listener, &ev);
 
 	if (BONOBO_EX (&ev))
 		g_warning ("Listener exception: %s\n",
@@ -216,14 +216,14 @@ container_create (void)
 	GtkWindow       *window;
 	GtkWidget       *app;
 
-	app = bonobo_win_new ("sample-control-container",
+	app = bonobo_window_new ("sample-control-container",
 			      "Sample Bonobo Control Container");
 
 	window = GTK_WINDOW (app);
 	
 	uic = bonobo_ui_container_new ();
 
-	bonobo_ui_container_set_win (uic, BONOBO_WIN (app));
+	bonobo_ui_container_set_win (uic, BONOBO_WINDOW (app));
 
 	gtk_window_set_default_size (window, 500, 440);
 	gtk_window_set_policy (window, TRUE, TRUE, FALSE);
@@ -235,7 +235,7 @@ container_create (void)
 			    GTK_SIGNAL_FUNC (app_destroy_cb), uic);
 
 	box = gtk_vbox_new (FALSE, 0);
-	bonobo_win_set_contents (BONOBO_WIN (app), box);
+	bonobo_window_set_contents (BONOBO_WINDOW (app), box);
 
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_calculator:fab8c2a7-9576-437c-aa3a-a8617408970f",
