@@ -4,15 +4,14 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui (cvs)\n"
-"POT-Creation-Date: 2002-08-05 15:52+0100\n"
-"PO-Revision-Date: 2002-03-01 01:44+0100\n"
-"Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
+"Project-Id-Version: libbonoboui HEAD\n"
+"POT-Creation-Date: 2002-08-05 17:54+0200\n"
+"PO-Revision-Date: 2002-08-03 15:23+0100\n"
+"Last-Translator: Christian Neumair <christian-neumair@web.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.5\n"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
@@ -28,17 +27,15 @@ msgstr "CORBA-UI-Container"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr "Der Benutzerschnittstellen-Container"
+msgstr "Der Benutzeroberflächen-Container"
 
 #: bonobo/bonobo-dock-item-grip.c:236
-#, fuzzy
 msgid "Dock the toolbar"
-msgstr "Die Werkzeugleiste anpassen"
+msgstr "Die Werkzeugleiste andocken"
 
 #: bonobo/bonobo-dock-item-grip.c:237
-#, fuzzy
 msgid "Un dock the toolbar"
-msgstr "Die Werkzeugleiste anpassen"
+msgstr "Die Werkzeugleiste abdocken"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
@@ -47,7 +44,7 @@ msgstr "Schattenart"
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
 #: bonobo/bonobo-ui-toolbar.c:1085 bonobo/bonobo-ui-toolbar.c:1086
 msgid "Orientation"
-msgstr "Orientierung"
+msgstr "Ausrichtung"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
 #: bonobo/bonobo-ui-toolbar.c:1104 bonobo/bonobo-ui-toolbar.c:1105
@@ -61,11 +58,11 @@ msgstr "Bevorzugte Höhe"
 
 #: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
-msgstr "Eine Datei zum Öffnen auswählen"
+msgstr "Eine zu öffnende Datei auswählen"
 
 #: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
-msgstr "Dateien zum Öffnen auswählen"
+msgstr "Zu öffnende Dateien auswählen"
 
 #: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
@@ -77,7 +74,7 @@ msgstr "Ereignis-Weiterleitung"
 
 #: bonobo/bonobo-plug.c:359
 msgid "Whether X events should be forwarded"
-msgstr "Ob X-Ereignis weitergeleitet werden sollen"
+msgstr "Ob X-Ereignisse weitergeleitet werden sollen"
 
 #: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
 msgid "Name"
@@ -89,7 +86,7 @@ msgstr "Beschreibung"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "Schnittstellen erforderlich"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -97,14 +94,17 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"Eine NULL-terminiertes Array von Schnittstellen, die ein Server unterstützen "
+"muss, um in der Auswahlliste zu erscheinen. Falls keine Schnittstellen "
+"aufgelistet werden, sind die Vorgaben »IDL:Bonobo/Embeddable:1.0«."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "Von der Schnittstelle benötigter Eintrag"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Eine der benötigten Schnittstellen"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -143,9 +143,8 @@ msgid "_Text and Icon"
 msgstr "_Text und Icon"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "_Text und Icon"
+msgstr "Nur Text"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -153,100 +152,100 @@ msgstr "_Priorität nur Text"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr "UI konfigurieren"
+msgstr "Benutzeroberfläche konfigurieren"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "Zu setzende GDK-Fehlerdiagnoseoptionen"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
-msgstr ""
+msgstr "OPTIONEN"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "Zu deaktivierende GDK-Fehlerdiagnoseoptionen"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "Zu verwendende X-Anzeige"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "ANZEIGE"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "X screen to use"
-msgstr ""
+msgstr "Zu verwendender X-Bildschirm"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "BILDSCHIRM"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "X-Aufrufe snychron durchführen"
 
 #: bonobo/bonobo-ui-init-gtk.c:135
 msgid "Don't use X shared memory extension"
-msgstr ""
+msgstr "Die X-Erweiterung für gemeinsamen Speicher nicht nutzen"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "Anwendungsname wie vom Fenstermanager verwendet"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "NAME"
-msgstr ""
+msgstr "NAME"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "Anwendungsklasse wie vom Fenstermanager verwendet"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "CLASS"
-msgstr ""
+msgstr "KLASSE"
 
 #: bonobo/bonobo-ui-init-gtk.c:146
 msgid "HOST"
-msgstr ""
+msgstr "RECHNER"
 
 #: bonobo/bonobo-ui-init-gtk.c:150
 msgid "PORT"
-msgstr ""
+msgstr "PORT"
 
 #: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
-msgstr ""
+msgstr "STIL"
 
 #: bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "Zu setzende GTK+-Fehlerdiagnoseoptionen"
 
 #: bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "Zu deaktivierende GTK+-Fehlerdiagnoseoptionen"
 
 #: bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "Alle Warnungen wie schwerwiegende Fehler behandeln"
 
 #: bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "Ein zusätzliches GTK-Modul laden"
 
 #: bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
-msgstr ""
+msgstr "MODUL"
 
 #: bonobo/bonobo-ui-init-gtk.c:180
 msgid "GTK+"
-msgstr ""
+msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
-msgstr ""
+msgstr "Unterstützung für grafische Bonobo-Benutzeroberfläche"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "B_oth"
@@ -286,20 +285,19 @@ msgstr "Ob die Werkzeugleiste schwebend ist"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr ""
+msgstr "_Inhalt"
 
 #: bonobo/bonobo-ui-util.c:584
-#, fuzzy
 msgid "View help for this application"
-msgstr "Über diese Anwendung"
+msgstr "Die für diese Anwendung verfügbare Hilfe betrachten"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "Name des Fensters - verwendet für die Serialisierung der Konfiguration"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "Zoomstufe"
+msgstr "Vergrößerungsstufe"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
@@ -307,7 +305,7 @@ msgstr "Der Grad der Vergrößerung"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "Minimale Zoomstufe"
+msgstr "Minimale Vergrößerungsstufe"
 
 # CHECK vielleicht nicht ganz perfekt
 #: bonobo/bonobo-zoomable.c:336
@@ -316,7 +314,7 @@ msgstr "Der minimale Grad der Vergrößerung"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "Maximale Zoomstufe"
+msgstr "Maximale Vergrößerungsstufe"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
@@ -324,19 +322,19 @@ msgstr "Der maximale Grad der Vergrößerung"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "Hat eine minimale Zoomstufe"
+msgstr "Hat eine minimale Vergrößerungsstufe"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Ob es eine gültige minimale Zoomstufe gibt"
+msgstr "Ob es eine gültige minimale Vergrößerungsstufe gibt"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Hat eine maximale Zoomstufe"
+msgstr "Hat eine maximale Vergrößerungsstufe"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Ob es eine gültige maximale Zoomstufe gibt"
+msgstr "Ob es eine gültige maximale Vergrößerungsstufe gibt"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -360,7 +358,7 @@ msgstr "_Info..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "B_earbeiten"
+msgstr "_Bearbeiten"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
@@ -393,4 +391,4 @@ msgstr "Der libbonoboui-Code konnte nicht initialisiert werden"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr ""
+msgstr "Bonobo-Benutzeroberfläche konnte nicht initialisiert werden"
