@@ -1,3 +1,11 @@
+2003-03-04  Radek Doulik  <rodo@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c (execute_state_updates):
+	increase/decrease bonobo_ui_engine_inhibit_events counter
+	(real_exec_verb): return if bonobo_ui_engine_inhibit_events
+	counter > 0
+	(real_emit_ui_event): ditto
+
 2003-03-01  Dave Camp  <dave@ximian.com>
 
 	* bonobo/bonobo-ui-toolbar-control-item.c: (impl_set_tooltip),
