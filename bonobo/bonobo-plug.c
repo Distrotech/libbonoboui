@@ -280,9 +280,16 @@ bonobo_plug_button_event (GtkWidget      *widget,
 	if (!BONOBO_PLUG (widget)->priv->forward_events || !GTK_WIDGET_TOPLEVEL (widget))
 		return FALSE;
 
-	if (event->type == GDK_BUTTON_PRESS)
+	if (event->type == GDK_BUTTON_PRESS) {
 		xevent.xbutton.type = ButtonPress;
-	else
+
+		/* X does an automatic pointer grab on button press
+		 * if we have both button press and release events
+		 * selected.
+		 * We don't want to hog the pointer on our parent.
+		 */
+		gdk_pointer_ungrab (GDK_CURRENT_TIME);
+	} else
 		xevent.xbutton.type = ButtonRelease;
     
 	xevent.xbutton.display     = GDK_WINDOW_XDISPLAY (widget->window);
