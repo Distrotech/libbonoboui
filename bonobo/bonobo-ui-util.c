@@ -368,7 +368,6 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 
 		if (prepend_menu) {
 			char *fullname = g_strconcat ("Menu_", text, NULL);
-			fprintf (stderr, "Fullname '%s'\n", fullname);
 			icon_pixbuf = get_stock_pixbuf (fullname);
 			g_free (fullname);
 		} else
