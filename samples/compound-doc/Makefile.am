@@ -35,8 +35,5 @@ oafdir = $(datadir)/oaf
 oaf_DATA =	Bonobo_Sample_Paint.oafinfo	\
 		Bonobo_Sample_CanvasItem.oafinfo
 
-oafdir = $(datadir)/oaf
-oaf_DATA = paint-component-simple.oafinfo
-
 EXTRA_DIST = $(oaf_DATA)
 
