@@ -24,6 +24,13 @@ clicked_fn (GtkButton *button, GtkWidget *control)
 	gtk_widget_destroy (control);
 }
 
+static int
+exit_cb (GtkWidget *widget, gpointer user_data)
+{
+	gtk_main_quit ();
+	return FALSE;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -45,6 +52,9 @@ main (int argc, char **argv)
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW (window), "Focus test");
+	gtk_signal_connect (GTK_OBJECT (window),
+			    "delete_event",
+			    GTK_SIGNAL_FUNC (exit_cb), NULL);
 
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox);

@@ -52,7 +52,7 @@ bonobo_entry_control_new (void)
 		GTK_SIGNAL_FUNC (activate_cb), control);
 
 	pspecs = g_object_class_list_properties (
-		G_OBJECT_CLASS (entry), &n_pspecs);
+		G_OBJECT_GET_CLASS (entry), &n_pspecs);
 
 	bonobo_property_bag_map_params (
 		pb, G_OBJECT (entry), pspecs, n_pspecs);

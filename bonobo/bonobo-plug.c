@@ -71,7 +71,7 @@ bonobo_plug_init (BonoboPlug *plug)
 }
 
 static void
-bonobo_plug_class_init (BonoboPlugClass *class)
+bonobo_plug_class_init (BonoboPlugClass *klass)
 {
 	parent_class = gtk_type_class (GTK_TYPE_PLUG);
 }

@@ -143,8 +143,6 @@ check_ambient_propbag (BonoboControlFrame *control_frame)
 	}
 
 	control_frame->priv->propbag = pb;
-
-	add_toplevel_prop (control_frame);
 }
 
 static Bonobo_PropertyBag
