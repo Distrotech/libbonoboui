@@ -1,24 +1,24 @@
 # Serbian translation of libbonoboui
-# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003.
-# 
+# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003, 2004.
+#
 # This file is distributed under the same license as the libbonoboui package.
-# 
+#
 # Maintainer: Вељко М. Станојевић <veljko@vms.homelinux.net>
+# Reviewed on 2004-02-03 by: Данило Шеган <dsegan@gmx.net>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2004-01-15 09:07+0000\n"
-"PO-Revision-Date: 2003-08-23 18:28+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-02-12 01:20+0100\n"
+"PO-Revision-Date: 2004-02-03 16:21+0100\n"
 "Last-Translator: Veljko M. Stanojevic <veljko@vms.homelinux.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 "Plural-Forms: nplurals=3;    plural=n%10==1 && n%100!=11 ? 0 :    n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: KBabel 1.0\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -30,43 +30,43 @@ msgstr "Показивач творнице"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
-msgstr "складиште corba корисничког сучеља"
+msgstr "садржалац corba корисничког сучеља"
 
 #: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
-msgstr "Складиште корисничких сучеља"
-
-#: bonobo/bonobo-dock-item-grip.c:248
-msgid "Dock the toolbar"
-msgstr "Прикључи линију са алатима"
+msgstr "Садржалац корисничког сучеља"
 
 #: bonobo/bonobo-dock-item-grip.c:249
-msgid "Un dock the toolbar"
-msgstr "Искључи линију са алатима"
+msgid "Dock the toolbar"
+msgstr "Прикачи траку са алатима"
 
-#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-dock-item-grip.c:250
+msgid "Un dock the toolbar"
+msgstr "Откачи траку са алатима"
+
+#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Врста сенке"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:225 bonobo/bonobo-dock-item.c:226
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
-msgstr "Оријентација"
+msgstr "Усмерење"
 
-#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-dock-item.c:236 bonobo/bonobo-dock-item.c:237
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Жељена ширина"
 
-#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-dock-item.c:245 bonobo/bonobo-dock-item.c:246
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Жељена висина"
 
 #: bonobo/bonobo-file-selector-util.c:361
 msgid "Select a file to open"
-msgstr "Одаберите даѕтотеку за отварање"
+msgstr "Одаберите датотеку за отварање"
 
 #: bonobo/bonobo-file-selector-util.c:389
 msgid "Select files to open"
@@ -76,11 +76,11 @@ msgstr "Одаберите датотеке за отварање"
 msgid "Select a filename to save"
 msgstr "Одаберите име датотеке за снимање"
 
-#: bonobo/bonobo-plug.c:411
+#: bonobo/bonobo-plug.c:412
 msgid "Event Forwarding"
 msgstr "Прослеђивање догађаја"
 
-#: bonobo/bonobo-plug.c:412
+#: bonobo/bonobo-plug.c:413
 msgid "Whether X events should be forwarded"
 msgstr "Да ли треба проследити Икс догађаје"
 
@@ -102,9 +102,9 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Празним низом (NULL) завршени низ променљивих спрега које сервер мора "
-"подржавати да би био наведен у одабирачу. Подразумевана вредност је „IDL:"
-"Bonobo/Embeddable:1.0“ уколико спрега није наведена"
+"Празном ниском (NULL) завршени низ спрега које сервер мора подржавати да би "
+"био наведен у избирачу. Подразумевана вредност је „IDL:Bonobo/"
+"Embeddable:1.0“ уколико ниједна спрега није наведена"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -114,47 +114,48 @@ msgstr "Упис неопходне спреге"
 msgid "One of the interfaces that's required"
 msgstr "Једна од неопходних спрега"
 
-#: bonobo/bonobo-ui-config-widget.c:267
+#: bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
 msgstr "Видљиво"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:275
 msgid "_Show"
 msgstr "_Прикажи"
 
-#: bonobo/bonobo-ui-config-widget.c:281
+#: bonobo/bonobo-ui-config-widget.c:282
 msgid "_Hide"
 msgstr "_Сакриј"
 
-#: bonobo/bonobo-ui-config-widget.c:287
+# tooltip -> облачић
+#: bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
 msgstr "По_гледај савете"
 
-#: bonobo/bonobo-ui-config-widget.c:292
+#: bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
-msgstr "Линије са алатима"
+msgstr "Траке са алатима"
 
-#: bonobo/bonobo-ui-config-widget.c:302
+#: bonobo/bonobo-ui-config-widget.c:303
 msgid "toolbars"
-msgstr "линије са алатима"
+msgstr "траке са алатима"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Изглед"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
-msgstr "_Иконица"
+msgstr "_Икона"
 
-#: bonobo/bonobo-ui-config-widget.c:328
+#: bonobo/bonobo-ui-config-widget.c:329
 msgid "_Text and Icon"
-msgstr "_Текст и иконица"
+msgstr "_Текст и икона"
 
-#: bonobo/bonobo-ui-config-widget.c:334
+#: bonobo/bonobo-ui-config-widget.c:335
 msgid "Text only"
 msgstr "Само текст"
 
-#: bonobo/bonobo-ui-config-widget.c:340
+#: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
 msgstr "Само _важан текст"
 
@@ -168,9 +169,9 @@ msgstr "Из_баци XML"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Избаци сав XML опис корисничког сучеља на конзолу"
+msgstr "Избаци сав опис корисничког сучеља као XML на конзолу"
 
-#: bonobo/bonobo-ui-engine-config.c:521
+#: bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
 msgstr "Подешавање корисничког сучеља"
 
@@ -179,21 +180,21 @@ msgid "Gdk debugging flags to set"
 msgstr "Које Гдк заставице за отклањање грешки поставити"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
 msgid "FLAGS"
-msgstr "ЗАСТАВИЦЕ"
+msgstr "АРГУМЕНТИ"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr "Које Гдк заставице за отклањање грешки склонити"
+msgstr "Које Гдк аргументе за отклањање грешки склонити"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr "Икс приказ који ће се користити"
+msgstr "Који Икс монитор користити"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr "ПРИКАЗ"
+msgstr "МОНИТОР"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
@@ -205,15 +206,15 @@ msgstr "ЕКРАН"
 
 #: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
-msgstr "Ѕсагласи Икс позиве"
+msgstr "Усклади Икс позиве"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
-msgstr "Немој користити продужетак за заједничку меморију Икс-а"
+msgstr "Не користи проширење за дељену меморију Икса"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
-msgstr "Назив програма који и уређивач прозора користи"
+msgstr "Назив програма који користи управљач прозорима"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
@@ -221,45 +222,33 @@ msgstr "НАЗИВ"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
-msgstr "Класа програма коју и уређивач прозора користи"
+msgstr "Класа програма коју користи управљач прозорима"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
 msgstr "КЛАСА"
 
-#: bonobo/bonobo-ui-init-gtk.c:145
-msgid "HOST"
-msgstr "ДОМАЋИН"
-
-#: bonobo/bonobo-ui-init-gtk.c:149
-msgid "PORT"
-msgstr "ПОРТ"
-
-#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
-msgid "STYLE"
-msgstr "СТИЛ"
-
-#: bonobo/bonobo-ui-init-gtk.c:161
+#: bonobo/bonobo-ui-init-gtk.c:144
 msgid "Gtk+ debugging flags to set"
 msgstr "Које Гтк+ заставице за отклањање грешки поставити"
 
-#: bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:147
 msgid "Gtk+ debugging flags to unset"
 msgstr "Које Гтк+ заставице за отклањање грешки склонити"
 
-#: bonobo/bonobo-ui-init-gtk.c:167
+#: bonobo/bonobo-ui-init-gtk.c:150
 msgid "Make all warnings fatal"
-msgstr "Да сва упозорења буду крајња"
+msgstr "Учини сва упозорења кобним"
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:153
 msgid "Load an additional Gtk module"
 msgstr "Учитај додатни Гтк модул"
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:153
 msgid "MODULE"
 msgstr "МОДУЛ"
 
-#: bonobo/bonobo-ui-init-gtk.c:179
+#: bonobo/bonobo-ui-init-gtk.c:162
 msgid "GTK+"
 msgstr "ГТК+"
 
@@ -285,7 +274,7 @@ msgstr "Прикажи са_вете"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "_Сакриј линију са алатима"
+msgstr "_Сакриј траку са алатима"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
@@ -293,7 +282,7 @@ msgstr "Прила_годи"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "Прилагоди линију са алатима"
+msgstr "Прилагоди траку са алатима"
 
 #: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
@@ -301,11 +290,11 @@ msgstr "је плутајућа"
 
 #: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
-msgstr "да ли је линија са алатима плутајућа"
+msgstr "да ли је трака са алатима плутајућа"
 
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
-msgstr "Изглед косе ивице око линије са алатима"
+msgstr "Изглед косе ивице око траке са алатима"
 
 #: bonobo/bonobo-ui-util.c:629
 msgid "_Contents"
@@ -313,35 +302,35 @@ msgstr "_Садржај"
 
 #: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
-msgstr "Види помоћ за овај програм"
+msgstr "Погледај помоћ за овај програм"
 
 #: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
-msgstr "Назив прозора - користи се за аутоматизацију уређивања"
+msgstr "Назив прозора — користи се за серијализацију подешавања."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "Ниво увеличања"
+msgstr "Ниво увећања"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "Степен увеличања"
+msgstr "Степен увећања"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "Најнижи ниво увеличања"
+msgstr "Најмањи ниво увећања"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "Најнижи степен увеличања"
+msgstr "Најмањи степен увећања"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "Највиши ниво увеличања"
+msgstr "Највећи ниво увећања"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "Највиши степен увеличања"
+msgstr "Највећи степен увећања"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
@@ -349,23 +338,23 @@ msgstr "Има најнижи ниво увеличања"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Да ли имамо исправан најнижи ниво увеличања"
+msgstr "Да ли имамо исправан најмањи ниво увећања"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Има највичи ниво увеличања"
+msgstr "Има највећи ниво увећања"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Да ли имамо исправан највиши ниво увеличања"
+msgstr "Да ли имамо исправан највећи ниво увећања"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr "Јесте непрекидан"
+msgstr "Непрекидан је"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Да ли непрекидно увеличавамо/умањујемо (супротно од скоковитом"
+msgstr "Да ли непрекидно увећавамо и умањујемо (насупрот по корацима)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -373,7 +362,7 @@ msgstr "О овом програму"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr "Одаберите"
+msgstr "Одабери"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
@@ -389,8 +378,9 @@ msgstr "_Датотека"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "_Изаберите"
+msgstr "Ода_бери"
 
+# Свиђа ми се „пука“, свака част Вељко ;) — Данило
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
 msgstr "Ово не ради ништа, пука демонстрација."
@@ -401,7 +391,7 @@ msgstr "BonoboUI поздрав"
 
 #: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr "Гном поздрав"
+msgstr "Поздрав Гнома"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
@@ -410,8 +400,17 @@ msgstr "Здраво свете!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "Не могу да покрене libbonoboui код"
+msgstr "Не могу да покренем код libbonoboui-а"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Неуспело покретање Бонобо графичког сучеља"
+
+#~ msgid "HOST"
+#~ msgstr "ДОМАЋИН"
+
+#~ msgid "PORT"
+#~ msgstr "ПОРТ"
+
+#~ msgid "STYLE"
+#~ msgstr "СТИЛ"
