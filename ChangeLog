@@ -1,3 +1,9 @@
+2003-07-28  Padraig O'Briain  <padraig.obriain@sun.com>
+
+	* bonobo/bonobo-dock-item-grip.c:
+	Check what widget still exists before referring to it.
+	This fixes bug #118041.
+
 2003-07-23  Federico Mena Quintero  <federico@ximian.com>
 
 	* bonobo/bonobo-socket.c (bonobo_socket_instance_init): Create a

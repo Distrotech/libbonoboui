@@ -31,7 +31,7 @@ static guint signals [LAST_SIGNAL];
 static AtkObjectClass *a11y_parent_class = NULL;
 
 GNOME_CLASS_BOILERPLATE (BonoboDockItemGrip, bonobo_dock_item_grip,
-			 GtkWidget, GTK_TYPE_WIDGET);
+			 GtkWidget, GTK_TYPE_WIDGET)
 
 static gint
 bonobo_dock_item_grip_expose (GtkWidget      *widget,
@@ -90,10 +90,14 @@ grip_item_a11y_ref_state_set (AtkObject *accessible)
 {
 	AtkStateSet *state_set;
 	BonoboDockItemGrip *grip;
+	GtkWidget *widget;
 
 	state_set = a11y_parent_class->ref_state_set (accessible);
-	grip = BONOBO_DOCK_ITEM_GRIP (
-		GTK_ACCESSIBLE (accessible)->widget);
+	widget = GTK_ACCESSIBLE (accessible)->widget;
+	if (widget == NULL)
+		return state_set;
+
+	grip = BONOBO_DOCK_ITEM_GRIP (widget);
 
 	if (grip == NULL)
 		return state_set;
@@ -171,9 +175,13 @@ bonobo_dock_item_grip_do_action (AtkAction *action,
 				 gint       i)
 {
 	BonoboDockItemGrip *grip;
+	GtkWidget *widget;
 
-	grip = BONOBO_DOCK_ITEM_GRIP (
-		GTK_ACCESSIBLE (action)->widget);
+	widget = GTK_ACCESSIBLE (action)->widget;
+	if (widget == NULL)
+		return FALSE;
+
+	grip = BONOBO_DOCK_ITEM_GRIP (widget);
 
 	if (grip->item->behavior & BONOBO_DOCK_ITEM_BEH_LOCKED)
 		return FALSE;
@@ -195,9 +203,13 @@ static gint
 bonobo_dock_item_grip_get_n_actions (AtkAction *action)
 {
 	BonoboDockItemGrip *grip;
+	GtkWidget *widget;
 
-	grip = BONOBO_DOCK_ITEM_GRIP (
-		GTK_ACCESSIBLE (action)->widget);
+	widget = GTK_ACCESSIBLE (action)->widget;
+	if (widget == NULL)
+		return 0;
+
+	grip = BONOBO_DOCK_ITEM_GRIP (widget);
 
 	if (grip->item->behavior & BONOBO_DOCK_ITEM_BEH_LOCKED)
 		return 0;
