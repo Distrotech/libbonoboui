@@ -163,7 +163,7 @@ impl_Bonobo_Zoomable__get_preferredLevels (PortableServer_Servant  servant,
 	list = Bonobo_ZoomLevelList__alloc ();
 	list->_maximum = zoomable->priv->preferred_zoom_levels->len;
 	list->_length  = zoomable->priv->preferred_zoom_levels->len;
-	list->_buffer  = (Bonobo_ZoomLevelName *) zoomable->priv->preferred_zoom_levels->data;
+	list->_buffer  = (Bonobo_ZoomLevel *) zoomable->priv->preferred_zoom_levels->data;
 
 	/*  set_release defaults to FALSE - CORBA_sequence_set_release (list, FALSE) */ 
 
@@ -183,7 +183,7 @@ impl_Bonobo_Zoomable__get_preferredLevelNames (PortableServer_Servant  servant,
 
 	list->_maximum = zoomable->priv->preferred_zoom_level_names->len;
 	list->_length  = zoomable->priv->preferred_zoom_level_names->len;
-	list->_buffer  = zoomable->priv->preferred_zoom_level_names->data;
+	list->_buffer  = (Bonobo_ZoomLevelName *) zoomable->priv->preferred_zoom_level_names->data;
 
 	/*  set_release defaults to FALSE - CORBA_sequence_set_release (list, FALSE) */ 
 
