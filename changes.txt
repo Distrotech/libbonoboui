@@ -1,0 +1,13 @@
+bonobo-client-site.[ch]:
+	Signatures of
+		  bonobo_client_site_bind_embeddable,
+		  bonobo_client_site_get_embeddable
+	changed to remove BonoboObjectClient ( now Bonobo_Embeddable here )
+	removed QI in bind_embeddable, implicit in signature.
+
+bonobo-widget.[ch]:
+	Removed bonobo_widget_get_server, redundany BonoboObjectClient variant,
+	use bonobo_widget_get_objref instead.
+
+bonobo-desktop-window.[ch]:
+	Removed - stale, deprecated.		  
