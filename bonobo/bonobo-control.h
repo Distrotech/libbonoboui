@@ -30,28 +30,37 @@ struct _GnomeControl {
 
 struct _GnomeControlClass {
 	GnomeObjectClass parent_class;
+
+	/*
+	 * Signals.
+	 */
+	void (*activate)            (GnomeControl *control, gboolean state);
+	void (*undo_last_operation) (GnomeControl *control);
 };
 
-GtkType		         gnome_control_get_type	              (void);
-GnomeControl	        *gnome_control_construct	      (GnomeControl *control,
-		        				       GNOME_Control corba_control,
-		        				       GtkWidget *widget);
-GNOME_Control	         gnome_control_corba_object_create    (GnomeObject *object);
-GnomeControl            *gnome_control_new                    (GtkWidget *widget);
-		        				      	   
-void		         gnome_control_set_control_frame      (GnomeControl *control,
-		        				       GNOME_ControlFrame control_frame);
-GNOME_ControlFrame       gnome_control_get_control_frame      (GnomeControl *control);
-		        				      	   
-void		         gnome_control_set_property_bag       (GnomeControl *control,
-		        				       GnomePropertyBag *pb);
-GnomePropertyBag        *gnome_control_get_property_bag       (GnomeControl *control);
-GNOME_UIHandler		 gnome_control_get_remote_ui_handler  (GnomeControl *control);
-GnomePropertyBagClient  *gnome_control_get_ambient_properties (GnomeControl *control);
+GtkType		         gnome_control_get_type	                (void);
+GnomeControl	        *gnome_control_construct	        (GnomeControl *control,
+		        				         GNOME_Control corba_control,
+		        				         GtkWidget *widget);
+GNOME_Control	         gnome_control_corba_object_create      (GnomeObject *object);
+GnomeControl            *gnome_control_new                      (GtkWidget *widget);
+		        				             
+void		         gnome_control_set_control_frame        (GnomeControl *control,
+		        				         GNOME_ControlFrame control_frame);
+GNOME_ControlFrame       gnome_control_get_control_frame        (GnomeControl *control);
+		        				             
+void		         gnome_control_set_property_bag         (GnomeControl *control,
+		        				         GnomePropertyBag *pb);
+GnomePropertyBag        *gnome_control_get_property_bag         (GnomeControl *control);
+GNOME_UIHandler		 gnome_control_get_remote_ui_handler    (GnomeControl *control);
+GnomePropertyBagClient  *gnome_control_get_ambient_properties   (GnomeControl *control);
 
-GNOME_Control_windowid   gnome_control_windowid_from_x11      (guint32 x11_id);
+void                     gnome_control_activate_notify          (GnomeControl *control,
+								 gboolean      activated);
 
-POA_GNOME_Control__epv *gnome_control_get_epv		      (void);
+GNOME_Control_windowid   gnome_control_windowid_from_x11        (guint32 x11_id);
+
+POA_GNOME_Control__epv  *gnome_control_get_epv		        (void);
 
 /* CORBA default vector methods we provide */
 extern POA_GNOME_Control__epv gnome_control_epv;

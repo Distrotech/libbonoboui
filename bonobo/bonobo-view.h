@@ -39,8 +39,6 @@ struct _GnomeViewClass {
 	/*
 	 * Signals
 	 */
-	void (*view_activate)            (GnomeView *view, gboolean state);
-	void (*view_undo_last_operation) (GnomeView *view);
 	void (*do_verb)                  (GnomeView *view,
 					  const CORBA_char *verb_name);
 	void (*set_zoom_factor)          (GnomeView *view, double zoom);

@@ -258,7 +258,7 @@ component_add_view (Component *component)
 	 * emitted from the view frame.  It is at that point that we
 	 * actually remove the cover so that events can get through.
 	 */
-	gtk_signal_connect (GTK_OBJECT (view_frame), "view_activated",
+	gtk_signal_connect (GTK_OBJECT (view_frame), "activated",
 			    GTK_SIGNAL_FUNC (component_view_activated_cb), component);
 
 	/*

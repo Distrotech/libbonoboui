@@ -1,12 +1,12 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/* -*- mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
  * GNOME control object
  *
  * Author:
- *   Miguel de Icaza (miguel@kernel.org)
- *   Nat Friedman (nat@nat.org)
+ *   Nat Friedman (nat@helixcode.com)
+ *   Miguel de Icaza (miguel@helixcode.com)
  *
- * Copyright 1999 Helix Code, Inc.
+ * Copyright 1999, 2000 Helix Code, Inc.
  */
 #include <config.h>
 #include <stdlib.h>
@@ -16,6 +16,14 @@
 #include <bonobo/gnome-main.h>
 #include <bonobo/gnome-control.h>
 #include <gdk/gdkprivate.h>
+
+enum {
+	ACTIVATE,
+	UNDO_LAST_OPERATION,
+	LAST_SIGNAL
+};
+
+static guint control_signals [LAST_SIGNAL];
 
 /* Parent object class in GTK hierarchy */
 static GnomeObjectClass *gnome_control_parent_class;
@@ -116,6 +124,27 @@ gnome_control_plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer clo
 	return FALSE;
 }
 
+static void
+impl_GNOME_Control_activate (PortableServer_Servant servant,
+			     CORBA_boolean activated,
+			     CORBA_Environment *ev)
+{
+	GnomeControl *control = GNOME_CONTROL (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (GTK_OBJECT (control), control_signals [ACTIVATE], (gboolean) activated);
+}
+
+
+static void
+impl_GNOME_Control_reactivate_and_undo (PortableServer_Servant servant,
+					CORBA_Environment *ev)
+{
+	GnomeControl *control = GNOME_CONTROL (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (GTK_OBJECT (control), control_signals [ACTIVATE], TRUE);
+	gtk_signal_emit (GTK_OBJECT (control), control_signals [UNDO_LAST_OPERATION]);
+}
+	
 static void
 impl_GNOME_Control_set_frame (PortableServer_Servant servant,
 			      GNOME_ControlFrame frame,
@@ -317,11 +346,13 @@ gnome_control_get_epv (void)
 
 	epv = g_new0 (POA_GNOME_Control__epv, 1);
 
-	epv->size_allocate     = impl_GNOME_Control_size_allocate;
-	epv->set_window        = impl_GNOME_Control_set_window;
-	epv->set_frame         = impl_GNOME_Control_set_frame;
-	epv->size_request      = impl_GNOME_Control_size_request;
-	epv->get_property_bag  = impl_GNOME_Control_get_property_bag;
+	epv->reactivate_and_undo = impl_GNOME_Control_reactivate_and_undo;
+	epv->activate            = impl_GNOME_Control_activate;
+	epv->size_allocate       = impl_GNOME_Control_size_allocate;
+	epv->set_window          = impl_GNOME_Control_set_window;
+	epv->set_frame           = impl_GNOME_Control_set_frame;
+	epv->size_request        = impl_GNOME_Control_size_request;
+	epv->get_property_bag    = impl_GNOME_Control_get_property_bag;
 
 	return epv;
 }
@@ -478,12 +509,59 @@ gnome_control_get_remote_ui_handler (GnomeControl *control)
 	return uih;
 }
 
+/**
+ * gnome_control_activate_notify:
+ * @control: A #GnomeControl object which is bound
+ * to a remote ControlFrame.
+ * @activated: Whether or not @control has been activated.
+ *
+ * Notifies the remote ControlFrame which is associated with
+ * @control that @control has been activated/deactivated.
+ */
+void
+gnome_control_activate_notify (GnomeControl *control,
+			       gboolean      activated)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (GNOME_IS_CONTROL (control));
+	g_return_if_fail (control->priv->control_frame != CORBA_OBJECT_NIL);
+	
+	CORBA_exception_init (&ev);
+
+	GNOME_ControlFrame_activated (control->priv->control_frame, activated, &ev);
+
+	gnome_object_check_env (GNOME_OBJECT (control), control->priv->control_frame, &ev);
+
+	CORBA_exception_free (&ev);
+}
+
 static void
 gnome_control_class_init (GnomeControlClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *)klass;
 
 	gnome_control_parent_class = gtk_type_class (gnome_object_get_type ());
+
+	control_signals [ACTIVATE] =
+                gtk_signal_new ("activate",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET (GnomeControlClass, activate),
+                                gtk_marshal_NONE__BOOL,
+                                GTK_TYPE_NONE, 1,
+				GTK_TYPE_BOOL);
+
+	control_signals [UNDO_LAST_OPERATION] =
+                gtk_signal_new ("undo_last_operation",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET (GnomeControlClass, undo_last_operation),
+                                gtk_marshal_NONE__NONE,
+                                GTK_TYPE_NONE, 0);
+
+	gtk_object_class_add_signals (object_class, control_signals, LAST_SIGNAL);
 
 	object_class->destroy = gnome_control_destroy;
 	init_control_corba_class ();

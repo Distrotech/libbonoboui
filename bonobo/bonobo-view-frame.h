@@ -30,8 +30,6 @@ typedef struct {
 	/*
 	 * Signals.
 	 */
-	void (*view_activated)      (GnomeViewFrame *view_frame, gboolean state);
-	void (*undo_last_operation) (GnomeViewFrame *view_frame);
 	void (*user_activate)       (GnomeViewFrame *view_frame);
 	void (*user_context)        (GnomeViewFrame *view_frame);
 } GnomeViewFrameClass;
@@ -53,6 +51,9 @@ char		 *gnome_view_frame_popup_verbs	   (GnomeViewFrame *view_frame);
 
 void		  gnome_view_frame_set_covered     (GnomeViewFrame *view_frame,
 						    gboolean covered);
+
+void              gnome_view_frame_set_ui_handler  (GnomeViewFrame *view_frame, GnomeUIHandler *uih);
+GnomeUIHandler   *gnome_view_frame_get_ui_handler  (GnomeViewFrame *view_frame);
 /*
  * A GnomeViewFrame acts as a proxy for the remote GnomeView object to
  * which it is bound.  These functions act as wrappers which a
@@ -61,7 +62,6 @@ void		  gnome_view_frame_set_covered     (GnomeViewFrame *view_frame,
  */
 void		  gnome_view_frame_view_activate   (GnomeViewFrame *view_frame);
 void		  gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame);
-
 
 void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
 						    const char *verb_name);

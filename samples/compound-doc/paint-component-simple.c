@@ -525,9 +525,9 @@ view_factory (GnomeEmbeddable *embeddable,
 
 	/*
 	 * When our container wants to activate a given view of this
-	 * component, we will get the "view_activate" signal.
+	 * component, we will get the "activate" signal.
 	 */
-	gtk_signal_connect (GTK_OBJECT (view), "view_activate",
+	gtk_signal_connect (GTK_OBJECT (view), "activate",
 			    GTK_SIGNAL_FUNC (view_activate_cb), view_data);
 
 	/*

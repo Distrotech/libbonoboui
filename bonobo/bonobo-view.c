@@ -25,7 +25,6 @@ POA_GNOME_Control__epv gnome_view_overridden_control_epv;
 POA_GNOME_View__vepv   gnome_view_vepv;
 
 enum {
-	VIEW_ACTIVATE,
 	VIEW_UNDO_LAST_OPERATION,
 	DO_VERB,
 	SET_ZOOM_FACTOR,
@@ -41,26 +40,6 @@ struct _GnomeViewPrivate {
 	GHashTable *verb_callback_closures;
 };
 
-static void
-impl_GNOME_View_view_activate (PortableServer_Servant servant,
-			       CORBA_boolean activated,
-			       CORBA_Environment *ev)
-{
-	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-
-	gtk_signal_emit (GTK_OBJECT (view), view_signals [VIEW_ACTIVATE], (gboolean) activated);
-}
-
-static void
-impl_GNOME_View_reactivate_and_undo (PortableServer_Servant servant,
-				     CORBA_Environment *ev)
-{
-	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-
-	gtk_signal_emit (GTK_OBJECT (view), view_signals [VIEW_ACTIVATE], TRUE);
-	gtk_signal_emit (GTK_OBJECT (view), view_signals [VIEW_UNDO_LAST_OPERATION]);
-}
-	
 static void
 impl_GNOME_View_do_verb (PortableServer_Servant servant,
 			 const CORBA_char      *verb_name,
@@ -104,6 +83,7 @@ gnome_view_corba_object_create (GnomeObject *object)
 	CORBA_exception_init (&ev);
 	POA_GNOME_View__init ((PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
+
 		g_free (servant);
 		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;
@@ -240,10 +220,8 @@ gnome_view_get_epv (void)
 
 	epv = g_new0 (POA_GNOME_View__epv, 1);
 
-	epv->view_activate	 = impl_GNOME_View_view_activate;
-	epv->do_verb		 = impl_GNOME_View_do_verb;
-	epv->reactivate_and_undo = impl_GNOME_View_reactivate_and_undo;
-	epv->set_zoom_factor	 = impl_GNOME_View_set_zoom_factor;
+	epv->do_verb	     = impl_GNOME_View_do_verb;
+	epv->set_zoom_factor = impl_GNOME_View_set_zoom_factor;
 
 	return epv;
 }
@@ -275,23 +253,6 @@ gnome_view_class_init (GnomeViewClass *klass)
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
 	gnome_view_parent_class = gtk_type_class (gnome_control_get_type ());
-
-	view_signals [VIEW_ACTIVATE] =
-                gtk_signal_new ("view_activate",
-                                GTK_RUN_LAST,
-                                object_class->type,
-                                GTK_SIGNAL_OFFSET (GnomeViewClass, view_activate), 
-                                gtk_marshal_NONE__BOOL,
-                                GTK_TYPE_NONE, 1,
-				GTK_TYPE_BOOL);
-
-	view_signals [VIEW_UNDO_LAST_OPERATION] =
-                gtk_signal_new ("view_undo_last_operation",
-                                GTK_RUN_LAST,
-                                object_class->type,
-                                GTK_SIGNAL_OFFSET (GnomeViewClass, view_undo_last_operation),
-                                gtk_marshal_NONE__NONE,
-                                GTK_TYPE_NONE, 0);
 
 	view_signals [DO_VERB] =
                 gtk_signal_new ("do_verb",
@@ -336,7 +297,7 @@ gnome_view_get_type (void)
 
 	if (!type){
 		GtkTypeInfo info = {
-			"IDL:GNOME/View:1.0",
+			"GNOMEView",
 			sizeof (GnomeView),
 			sizeof (GnomeViewClass),
 			(GtkClassInitFunc) gnome_view_class_init,
@@ -487,18 +448,10 @@ gnome_view_get_remote_ui_handler (GnomeView *view)
 void
 gnome_view_activate_notify (GnomeView *view, gboolean activated)
 {
-	CORBA_Environment ev;
-
 	g_return_if_fail (view != NULL);
 	g_return_if_fail (GNOME_IS_VIEW (view));
 
-	CORBA_exception_init (&ev);
-
-	GNOME_ViewFrame_view_activated (view->view_frame, activated, &ev);
-
-	gnome_object_check_env (GNOME_OBJECT (view), view->view_frame, &ev);
-
-	CORBA_exception_free (&ev);
+	gnome_control_activate_notify (GNOME_CONTROL (view), activated);
 }
 
 

@@ -6,7 +6,7 @@
  *   Nat Friedman    (nat@helixcode.com)
  *   Miguel de Icaza (miguel@kernel.org)
  *
- * Copyright 1999 Helix Code, Inc.
+ * Copyright 1999, 2000 Helix Code, Inc.
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -21,6 +21,8 @@
 #include <gtk/gtksocket.h>
 
 enum {
+	ACTIVATED,
+	UNDO_LAST_OPERATION,
 	ACTIVATE_URI,
 	LAST_SIGNAL
 };
@@ -39,6 +41,31 @@ struct _GnomeControlFramePrivate {
 	GnomeUIHandler   *uih;
 	GnomePropertyBag *propbag;
 };
+
+static void
+impl_GNOME_ControlFrame_activated (PortableServer_Servant servant,
+				   const CORBA_boolean state,
+				   CORBA_Environment *ev)
+{
+	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (GTK_OBJECT (control_frame),
+			 control_frame_signals [ACTIVATED], state);
+}
+
+static void
+impl_GNOME_ControlFrame_deactivate_and_undo (PortableServer_Servant servant,
+					     CORBA_Environment *ev)
+{
+	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (GTK_OBJECT (control_frame),
+			 control_frame_signals [ACTIVATED], FALSE);
+
+	gtk_signal_emit (GTK_OBJECT (control_frame),
+			 control_frame_signals [UNDO_LAST_OPERATION]);
+}
+
 
 static GNOME_UIHandler
 impl_GNOME_ControlFrame_get_ui_handler (PortableServer_Servant servant,
@@ -234,6 +261,8 @@ gnome_control_frame_get_epv (void)
 
 	epv = g_new0 (POA_GNOME_ControlFrame__epv, 1);
 
+	epv->activated              = impl_GNOME_ControlFrame_activated;
+	epv->deactivate_and_undo    = impl_GNOME_ControlFrame_deactivate_and_undo;
 	epv->get_ui_handler         = impl_GNOME_ControlFrame_get_ui_handler;
 	epv->queue_resize           = impl_GNOME_ControlFrame_queue_resize;
 	epv->activate_uri           = impl_GNOME_ControlFrame_activate_uri;
@@ -270,6 +299,24 @@ gnome_control_frame_class_init (GnomeControlFrameClass *klass)
 	GtkObjectClass *object_class = (GtkObjectClass *)klass;
 
 	gnome_control_frame_parent_class = gtk_type_class (GNOME_OBJECT_TYPE);
+
+	control_frame_signals [ACTIVATED] =
+		gtk_signal_new ("activated",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GnomeControlFrameClass, activated),
+				gtk_marshal_NONE__BOOL,
+				GTK_TYPE_NONE, 1,
+				GTK_TYPE_BOOL);
+
+	
+	control_frame_signals [UNDO_LAST_OPERATION] =
+		gtk_signal_new ("undo_last_operation",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GnomeControlFrameClass, undo_last_operation),
+				gtk_marshal_NONE__NONE,
+				GTK_TYPE_NONE, 0);
 
 	control_frame_signals [ACTIVATE_URI] =
 		gtk_signal_new ("activate_uri",
@@ -323,6 +370,77 @@ gnome_control_frame_get_type (void)
 	}
 
 	return type;
+}
+
+/**
+ * gnome_control_frame_control_activate:
+ * @control_frame: The GnomeControlFrame object whose control should be
+ * activated.
+ *
+ * Activates the GnomeControl embedded in @control_frame by calling the
+ * activate() #GNOME_Control interface method on it.
+ */
+void
+gnome_control_frame_control_activate (GnomeControlFrame *control_frame)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
+
+	/*
+	 * Check that this ControLFrame actually has a Control associated
+	 * with it.
+	 */
+	g_return_if_fail (control_frame->priv->control != CORBA_OBJECT_NIL);
+
+	CORBA_exception_init (&ev);
+
+	GNOME_Control_activate (control_frame->priv->control, TRUE, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (
+			GNOME_OBJECT (control_frame),
+			(CORBA_Object) control_frame->priv->control, &ev);
+	}
+
+	CORBA_exception_free (&ev);
+}
+
+
+/**
+ * gnome_control_frame_control_deactivate:
+ * @control_frame: The GnomeControlFrame object whose control should be
+ * deactivated.
+ *
+ * Deactivates the GnomeControl embedded in @control_frame by calling
+ * the activate() CORBA method on it with the parameter %FALSE.
+ */
+void
+gnome_control_frame_control_deactivate (GnomeControlFrame *control_frame)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
+
+	/*
+	 * Check that this ControlFrame actually has a Control associated
+	 * with it.
+	 */
+	g_return_if_fail (control_frame->priv->control != CORBA_OBJECT_NIL);
+
+	CORBA_exception_init (&ev);
+
+	GNOME_Control_activate (control_frame->priv->control, FALSE, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (
+			GNOME_OBJECT (control_frame),
+			(CORBA_Object) control_frame->priv->control, &ev);
+	}
+
+	CORBA_exception_free (&ev);
 }
 
 /**

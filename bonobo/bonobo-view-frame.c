@@ -3,10 +3,10 @@
  * GNOME view frame object.
  *
  * Authors:
- *   Nat Friedman    (nat@nat.org)
+ *   Nat Friedman    (nat@helixcode.com)
  *   Miguel de Icaza (miguel@kernel.org)
  *
- * Copyright 1999 Helix Code, Inc.
+ * Copyright 1999, 2000 Helix Code, Inc.
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -19,8 +19,6 @@
 #include <libgnomeui/gnome-canvas.h>
 
 enum {
-	VIEW_ACTIVATED,
-	UNDO_LAST_OPERATION,
 	USER_ACTIVATE,
 	USER_CONTEXT,
 	LAST_SIGNAL
@@ -49,30 +47,6 @@ impl_GNOME_ViewFrame_get_client_site (PortableServer_Servant servant,
 
 	return CORBA_Object_duplicate (
 		gnome_object_corba_objref (GNOME_OBJECT (view_frame->priv->client_site)), ev);
-}
-
-static void
-impl_GNOME_ViewFrame_view_activated (PortableServer_Servant servant,
-				     const CORBA_boolean state,
-				     CORBA_Environment *ev)
-{
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
-
-	gtk_signal_emit (GTK_OBJECT (view_frame),
-			 view_frame_signals [VIEW_ACTIVATED], state);
-}
-
-static void
-impl_GNOME_ViewFrame_view_deactivate_and_undo (PortableServer_Servant servant,
-					       CORBA_Environment *ev)
-{
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
-
-	gtk_signal_emit (GTK_OBJECT (view_frame),
-			 view_frame_signals [VIEW_ACTIVATED], FALSE);
-
-	gtk_signal_emit (GTK_OBJECT (view_frame),
-			 view_frame_signals [UNDO_LAST_OPERATION]);
 }
 
 static CORBA_Object
@@ -242,9 +216,7 @@ gnome_view_frame_get_epv (void)
 
 	epv = g_new0 (POA_GNOME_ViewFrame__epv, 1);
 
-	epv->get_client_site	 = impl_GNOME_ViewFrame_get_client_site;
-	epv->view_activated	 = impl_GNOME_ViewFrame_view_activated;
-	epv->deactivate_and_undo = impl_GNOME_ViewFrame_view_deactivate_and_undo;
+	epv->get_client_site = impl_GNOME_ViewFrame_get_client_site;
 
 	return epv;
 }
@@ -259,34 +231,11 @@ init_view_frame_corba_class (void)
 }
 
 static void
-gnome_view_frame_activated (GnomeViewFrame *view_frame, gboolean state)
-{
-	
-}
-
-static void
 gnome_view_frame_class_init (GnomeViewFrameClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
 	gnome_view_frame_parent_class = gtk_type_class (GNOME_CONTROL_FRAME_TYPE);
-
-	view_frame_signals [VIEW_ACTIVATED] =
-		gtk_signal_new ("view_activated",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, view_activated),
-				gtk_marshal_NONE__BOOL,
-				GTK_TYPE_NONE, 1,
-				GTK_TYPE_BOOL);
-
-	view_frame_signals [UNDO_LAST_OPERATION] =
-		gtk_signal_new ("undo_last_operation",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, undo_last_operation),
-				gtk_marshal_NONE__NONE,
-				GTK_TYPE_NONE, 0);
 
 	view_frame_signals [USER_ACTIVATE] =
 		gtk_signal_new ("user_activate",
@@ -310,8 +259,6 @@ gnome_view_frame_class_init (GnomeViewFrameClass *klass)
 		LAST_SIGNAL);
 
 	object_class->destroy = gnome_view_frame_destroy;
-
-	klass->view_activated = gnome_view_frame_activated;
 
 	init_view_frame_corba_class ();
 }
@@ -419,39 +366,23 @@ gnome_view_frame_set_covered (GnomeViewFrame *view_frame, gboolean covered)
 	gnome_wrapper_set_covered (GNOME_WRAPPER (wrapper), covered);
 }
 
+
 /**
  * gnome_view_frame_view_activate:
  * @view_frame: The GnomeViewFrame object whose view should be
  * activated.
  *
  * Activates the GnomeView embedded in @view_frame by calling the
- * activate() #GNOME_View interface method on it.
+ * activate() #GNOME_Control interface method on it.
  */
 void
 gnome_view_frame_view_activate (GnomeViewFrame *view_frame)
 {
-	CORBA_Environment ev;
-
 	g_return_if_fail (view_frame != NULL);
 	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
 
-	/*
-	 * Check that this ViewFrame actually has a View associated
-	 * with it.
-	 */
-	g_return_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL);
-
-	CORBA_exception_init (&ev);
-
-	GNOME_View_view_activate (view_frame->priv->view, TRUE, &ev);
-
-	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (view_frame),
-			(CORBA_Object) view_frame->priv->view, &ev);
-	}
-
-	CORBA_exception_free (&ev);
+	gnome_control_frame_control_activate (
+		GNOME_CONTROL_FRAME (view_frame));
 }
 
 
@@ -466,29 +397,13 @@ gnome_view_frame_view_activate (GnomeViewFrame *view_frame)
 void
 gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame)
 {
-	CORBA_Environment ev;
-
 	g_return_if_fail (view_frame != NULL);
 	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
 
-	/*
-	 * Check that this ViewFrame actually has a View associated
-	 * with it.
-	 */
-	g_return_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL);
-
-	CORBA_exception_init (&ev);
-
-	GNOME_View_view_activate (view_frame->priv->view, FALSE, &ev);
-
-	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (view_frame),
-			(CORBA_Object) view_frame->priv->view, &ev);
-	}
-
-	CORBA_exception_free (&ev);
+	gnome_control_frame_control_deactivate (
+		GNOME_CONTROL_FRAME (view_frame));
 }
+
 
 /**
  * gnome_view_frame_view_do_verb:
