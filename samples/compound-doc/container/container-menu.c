@@ -114,23 +114,23 @@ verb_FileExit_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
  */
 static char ui_commands [] =
 "<commands>\n"
-"	<cmd name=\"AddEmbeddable\" label=\"A_dd Embeddable\"/>\n"
-"	<cmd name=\"FileOpen\" label=\"_Open\"\n"
-"		pixtype=\"stock\" pixname=\"Open\" tip=\"Open a file\"/>\n"
-"	<cmd name=\"FileSaveAs\" label=\"Save _As...\"\n"
+"	<cmd name=\"AddEmbeddable\" _label=\"A_dd Embeddable\"/>\n"
+"	<cmd name=\"FileOpen\" _label=\"_Open\"\n"
+"		pixtype=\"stock\" pixname=\"Open\" _tip=\"Open a file\"/>\n"
+"	<cmd name=\"FileSaveAs\" _label=\"Save _As...\"\n"
 "		pixtype=\"stock\" pixname=\"Save\"\n"
-"		tip=\"Save the current file with a different name\"/>\n"
-"	<cmd name=\"XmlDump\" label=\"Xml dump\"/>\n"
-"	<cmd name=\"PrintPreview\" label=\"Print Pre_view\"/>\n"
-"	<cmd name=\"FileExit\" label=\"E_xit\" tip=\"Exit the program\"\n"
+"		_tip=\"Save the current file with a different name\"/>\n"
+"	<cmd name=\"XmlDump\" _label=\"Xml dump\"/>\n"
+"	<cmd name=\"PrintPreview\" _label=\"Print Pre_view\"/>\n"
+"	<cmd name=\"FileExit\" _label=\"E_xit\" _tip=\"Exit the program\"\n"
 "		pixtype=\"stock\" pixname=\"Quit\" accel=\"*Control*q\"/>\n"
-"	<cmd name=\"HelpAbout\" label=\"_About...\" tip=\"About this application\"\n"
+"	<cmd name=\"HelpAbout\" _label=\"_About...\" _tip=\"About this application\"\n"
 "		pixtype=\"stock\" pixname=\"About\"/>\n"
 "</commands>";
 
 static char ui_data [] =
 "<menu>\n"
-"	<submenu name=\"File\" label=\"_File\">\n"
+"	<submenu name=\"File\" _label=\"_File\">\n"
 "		<menuitem name=\"AddEmbeddable\" verb=\"\"/>\n"
 "		<separator/>"
 "		<menuitem name=\"FileOpen\" verb=\"\"/>\n"
@@ -146,7 +146,7 @@ static char ui_data [] =
 "		<menuitem name=\"FileExit\" verb=\"\"/>\n"
 "	</submenu>\n"
 "\n"
-"	<submenu name=\"Help\" label=\"_Help\">\n"
+"	<submenu name=\"Help\" _label=\"_Help\">\n"
 "		<menuitem name=\"HelpAbout\" verb=\"\"/>\n"
 "	</submenu>\n"
 "</menu>";
@@ -172,8 +172,8 @@ sample_app_fill_menu (SampleApp *app)
 	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (app->ui_container));
 	bonobo_ui_component_set_container (uic, corba_container);
 
-	bonobo_ui_component_set (uic, "/", ui_commands, NULL);
-	bonobo_ui_component_set (uic, "/", ui_data, NULL);
+	bonobo_ui_component_set_translate (uic, "/", ui_commands, NULL);
+	bonobo_ui_component_set_translate (uic, "/", ui_data, NULL);
 
 	bonobo_ui_component_add_verb_list_with_data (uic, sample_app_verbs, app);
 

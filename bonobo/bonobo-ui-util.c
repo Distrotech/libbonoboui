@@ -604,7 +604,13 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 		id = g_strdup_printf ("Help%s%s", app_name, buf);
 		bonobo_ui_node_set_attr (node, "name", id);
 		bonobo_ui_node_set_attr (node, "verb", id);
-		bonobo_ui_node_set_attr (node, "label", s);
+		
+		{
+			char *encoded = bonobo_ui_util_encode_str (s);
+			bonobo_ui_node_set_attr (node, "label", encoded);
+			g_free (encoded);
+		}
+
 		bonobo_ui_node_add_child (parent, node);
 
 		/* Create help menu entry */
@@ -675,11 +681,17 @@ bonobo_ui_util_new_menu (gboolean    submenu,
 		node = bonobo_ui_node_new ("menuitem");
 
 	bonobo_ui_node_set_attr (node, "name", name);
-	if (label)
-		bonobo_ui_node_set_attr (node, "label", label);
+	if (label) {
+		char *encoded = bonobo_ui_util_encode_str (label);
+		bonobo_ui_node_set_attr (node, "label", encoded);
+		g_free (encoded);
+	}
 
-	if (tip)
-		bonobo_ui_node_set_attr (node, "tip", tip);
+	if (tip) {
+		char *encoded = bonobo_ui_util_encode_str (tip);
+		bonobo_ui_node_set_attr (node, "tip", encoded);
+		g_free (encoded);
+	}
 
 	if (verb)
 		bonobo_ui_node_set_attr (node, "verb", verb);
@@ -747,10 +759,16 @@ bonobo_ui_util_new_std_toolbar (const char *name,
 	node = bonobo_ui_node_new ("toolitem");
 	bonobo_ui_node_set_attr (node, "name", name);
 	
-	if (label)
-		bonobo_ui_node_set_attr (node, "label", label);
-	if (tip)
-		bonobo_ui_node_set_attr (node, "tip", tip);
+	if (label) {
+		char *encoded = bonobo_ui_util_encode_str (label);
+		bonobo_ui_node_set_attr (node, "label", encoded);
+		g_free (encoded);
+	}
+	if (tip) {
+		char *encoded = bonobo_ui_util_encode_str (tip);
+		bonobo_ui_node_set_attr (node, "tip", encoded);
+		g_free (encoded);
+	}
 	if (verb)
 		bonobo_ui_node_set_attr (node, "verb", verb);
 
@@ -771,10 +789,16 @@ bonobo_ui_util_new_toggle_toolbar (const char *name,
 	bonobo_ui_node_set_attr (node, "type", "toggle");
 	bonobo_ui_node_set_attr (node, "name", name);
 	
-	if (label)
-		bonobo_ui_node_set_attr (node, "label", label);
-	if (tip)
-		bonobo_ui_node_set_attr (node, "tip", tip);
+	if (label) {
+		char *encoded = bonobo_ui_util_encode_str (label);
+		bonobo_ui_node_set_attr (node, "label", encoded);
+		g_free (encoded);
+	}
+	if (tip) {
+		char *encoded = bonobo_ui_util_encode_str (tip);
+		bonobo_ui_node_set_attr (node, "tip", encoded);
+		g_free (encoded);
+	}
 	if (id)
 		bonobo_ui_node_set_attr (node, "id", id);
 
@@ -873,15 +897,19 @@ bonobo_ui_util_translate_ui (BonoboUINode *bnode)
 		value = xmlNodeListGetString (NULL, prop->val, 1);
 
 		/* Find translatable properties */
-		if (prop->name && prop->name [0] == '_')
-			xmlNewProp (node, &prop->name [1],
-				    _(value));
-		else
+		if (prop->name && prop->name [0] == '_') {
+			char *encoded;
+			encoded = bonobo_ui_util_encode_str (_(value));
+			xmlNewProp (node, &prop->name [1], encoded);
+			g_free (encoded);
+		} else
 			xmlNewProp (node, prop->name, value);
 
 		if (value)
 			bonobo_ui_node_free_string (value);
 	}
+
+	/* FIXME: we seem to leak property lists like a sieve here */
 
 	for (l = bonobo_ui_node_children (bnode); l; l = bonobo_ui_node_next (l))
 		bonobo_ui_util_translate_ui (l);
@@ -1330,3 +1358,139 @@ bonobo_ui_util_set_pixbuf (BonoboUIComponent *component,
 
 	g_free (parent_path);
 }
+
+/*
+ *   Evil routines; see invocation above for rational,
+ * use a subset of utf-8 encoding to save extra library
+ * dependencies and yet more complexity.
+ */
+#ifdef IF_ONLY_LIBXML1_COULD_COPE_WITH_UTF8
+
+char *
+bonobo_ui_util_encode_str (const char *str)
+{
+	const guint8 *a;
+	guint8       *b, *ret;
+	int           encoded_len;
+
+	if (!str)
+		return NULL;
+
+	return g_strdup (str);
+
+	encoded_len = 0;
+	for (a = str; *a; a++)
+		encoded_len += *a > 0x7f ? 2 : 1;
+
+	ret = g_malloc (encoded_len + 1);
+
+	b = ret;
+	for (a = str; *a; a++) {
+		if (*a > 0x7f) {
+			*b++ = 0xc0 | ((*a) >> 6);
+			*b++ = 0x80 | ((*a) & 0x3f);
+		} else
+			*b++ = *a;
+	}
+	*b = '\0';
+
+	return ret;
+}
+
+char *
+bonobo_ui_util_decode_str (const char *str, gboolean *err)
+{
+	const guint8 *a;
+	guint8       *b, *ret;
+
+	g_return_val_if_fail (err != NULL, NULL);
+	*err = FALSE;
+
+	if (!str)
+		return NULL;
+
+	return g_strdup (str);
+
+	ret = g_malloc (strlen (str) + 1);
+
+	b = ret;
+	for (a = str; *a; a++) {
+		if (*a > 0x7f && *(a + 1) != '\0') {
+			*b++ = (*a << 6) | (*(a + 1) & 0x3f);
+			a++;
+		} else
+			*b++ = *a;
+	}
+	*b = '\0';
+
+	return ret;
+}
+
+#else
+
+/*
+ *  And here we start to have a major headache.
+ * Not only does libxml1 not support utf-8 encoding
+ * correctly; [ mostly this is in xmlSetProp and
+ * variants ] but it seems impossible to discover
+ * whether a translated string is encoded as utf8 as
+ * opposed to some other 8 bit encoding. Consequently
+ * I add a simple hexification encoding. This has the
+ * merits of being totaly libxml1 clean, avoiding any
+ * utf problems, only doubling the size, and being
+ * detectable later.
+ */
+char *
+bonobo_ui_util_encode_str (const char *str)
+{
+	const char *a;
+	char       *b, *ret;
+
+	if (!str)
+		return NULL;
+
+	ret = g_malloc (strlen (str) * 2 + 1);
+
+	b = ret;
+	for (a = str; *a; a++) {
+		write_byte (b, *a);
+		b += 2;
+	}
+	*b = '\0';
+
+	return ret;
+}
+
+char *
+bonobo_ui_util_decode_str (const char *str, gboolean *err)
+{
+	const char *a;
+	char       *b, *ret;
+	int         encoded_len;
+
+	g_return_val_if_fail (err != NULL, NULL);
+	*err = FALSE;
+		
+	if (!str)
+		return NULL;
+
+	encoded_len = 0;
+	for (a = str; *a; a++) {
+		if (! ((*a >= '0' && *a <= '9') ||
+		       (*a >= 'a' && *a <= 'f'))) {
+			*err = TRUE;
+			return NULL;
+		}
+		encoded_len++;
+	}
+
+	ret = g_malloc ((encoded_len + 1) / 2 + 1);
+
+	b = ret;
+	for (a = str; *a && *(a + 1); a += 2)
+		*b++ = read_byte (a);
+	*b = '\0';
+
+	return ret;
+}
+#endif

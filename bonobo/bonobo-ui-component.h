@@ -131,6 +131,11 @@ void               bonobo_ui_component_set          (BonoboUIComponent  *compone
 						     const char         *xml,
 						     CORBA_Environment  *ev);
 
+void               bonobo_ui_component_set_translate(BonoboUIComponent  *component,
+						     const char         *path,
+						     const char         *xml,
+						     CORBA_Environment  *ev);
+
 void               bonobo_ui_component_set_tree     (BonoboUIComponent  *component,
 						     const char         *path,
 						     BonoboUINode       *node,

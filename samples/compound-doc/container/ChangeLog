@@ -1,3 +1,8 @@
+2000-10-11  Michael Meeks  <michael@helixcode.com>
+
+	* container-menu.c (sample_app_fill_menu): use
+	bonobo_ui_component_set_translate.
+
 2000-10-09  Michael Meeks  <michael@helixcode.com>
 
 	* component.c (component_user_context_cb): emasculate.

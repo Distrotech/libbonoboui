@@ -1270,7 +1270,8 @@ put_hint_in_statusbar (GtkWidget *menuitem, BonoboWinPrivate *priv)
 {
 	BonoboUINode *node = widget_get_node (menuitem);
 	BonoboUINode *cmd_node = cmd_get_node (priv, node);
-	char *hint;
+	char *hint, *txt;
+	gboolean err;
 
 	g_return_if_fail (priv != NULL);
 	g_return_if_fail (node != NULL);
@@ -1284,13 +1285,22 @@ put_hint_in_statusbar (GtkWidget *menuitem, BonoboWinPrivate *priv)
 	if (!hint)
 		return;
 
+	txt = bonobo_ui_util_decode_str (hint, &err);
+	if (err) {
+		g_warning ("Encoding error in tip on '%s', ensure you are "
+			   "translating this node, and using component_set_trans_prop",
+			   bonobo_ui_xml_make_path (node));
+		return;
+	}
+
 	if (priv->main_status) {
 		guint id;
 
 		id = gtk_statusbar_get_context_id (priv->main_status,
 						  "BonoboWin:menu-hint");
-		gtk_statusbar_push (priv->main_status, id, hint);
+		gtk_statusbar_push (priv->main_status, id, txt);
 	}
+	g_free (txt);
 	bonobo_ui_node_free_string (hint);
 }
 
@@ -1521,7 +1531,8 @@ menu_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	NodeInfo     *info;
 	GtkWidget    *menu_widget;
 	BonoboUINode *cmd_node;
-	char         *sensitive = NULL, *hidden = NULL, *state = NULL, *type, *txt;
+	char         *sensitive = NULL, *hidden = NULL, *state = NULL;
+	char         *type, *txt, *label_attr;
 	static int    warned = 0;
 
 	info = bonobo_ui_xml_get_data (priv->tree, node);
@@ -1590,9 +1601,18 @@ menu_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		}
 	}
 
-	if ((txt = cmd_get_attr (node, cmd_node, "label"))) {
+	if ((label_attr = cmd_get_attr (node, cmd_node, "label"))) {
 		GtkWidget *label;
 		guint      keyval;
+		gboolean   err;
+
+		txt = bonobo_ui_util_decode_str (label_attr, &err);
+		if (err) {
+			g_warning ("Encoding error in label on '%s', ensure you are "
+				   "translating this node, and using component_set_trans_prop",
+				   bonobo_ui_xml_make_path (node));
+			return;
+		}
 
 		label = gtk_accel_label_new (txt);
 
@@ -1615,7 +1635,8 @@ menu_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	
 		keyval = gtk_label_parse_uline (GTK_LABEL (label), txt);
 
-		bonobo_ui_node_free_string (txt);
+		bonobo_ui_node_free_string (label_attr);
+		g_free (txt);
 
 		if (keyval != GDK_VoidSymbol) {
 			if (GTK_IS_MENU (parent))
@@ -1931,30 +1952,6 @@ toolbar_build_placeholder (BonoboWinPrivate *priv,
 	return widget;
 }
 
-static char *
-de_accelerate_string (const char *in)
-{
-	char       *ret;
-	const char *a;
-	char       *b;
-
-	g_return_val_if_fail (in != NULL, NULL);
-
-	ret = g_malloc (strlen (in) + 1);
-			
-	a = in;
-	for (b = ret; *a; a++, b++) {
-		*b = *a;
-		if (*b == '_')
-			b--;
-	}
-	*b = '\0';
-
-/*	g_warning ("Testme: made '%s' from '%s'", ret, in); */
-
-	return ret;
-}
-
 static void
 toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		    GtkWidget *widget, GtkWidget *parent)
@@ -2006,7 +2003,14 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		}
 
 		if (label) {
-			char *txt = de_accelerate_string (label);
+			gboolean err;
+			char *txt = bonobo_ui_util_decode_str (label, &err);
+			if (err) {
+				g_warning ("Encoding error in label on '%s', ensure you are "
+					   "translating this node, and using component_set_trans_prop",
+					   bonobo_ui_xml_make_path (node));
+				return;
+			}
 
 			bonobo_ui_toolbar_button_item_set_label (
 				BONOBO_UI_TOOLBAR_BUTTON_ITEM (widget), txt);

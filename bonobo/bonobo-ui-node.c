@@ -228,7 +228,6 @@ bonobo_ui_node_to_string (BonoboUINode *node,
 
 	xmlFreeDoc (doc);
 
-	/* I'm assuming xmlDocDumpMemory nul-terminated this */
 	return mem;
 }
 

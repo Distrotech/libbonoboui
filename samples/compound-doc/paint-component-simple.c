@@ -207,15 +207,15 @@ view_create_menus (view_data_t *view_data)
 
 	const char *ui_commands =
 		"<commands>\n"
-		"	<cmd name=\"ColorWhite\" state=\"0\" label=\"White\" group=\"Color\"/>\n"
-		"	<cmd name=\"ColorRed\" state=\"1\" label=\"Red\" group=\"Color\"/>\n"
-		"	<cmd name=\"ColorGreen\" state=\"2\" label=\"Green\" group=\"Color\"/>\n"
-		"	<cmd name=\"ColorBlack\" state=\"3\" label=\"Black\" group=\"Color\"/>\n"
+		"	<cmd name=\"ColorWhite\" state=\"0\" _label=\"White\" group=\"Color\"/>\n"
+		"	<cmd name=\"ColorRed\" state=\"1\" _label=\"Red\" group=\"Color\"/>\n"
+		"	<cmd name=\"ColorGreen\" state=\"2\" _label=\"Green\" group=\"Color\"/>\n"
+		"	<cmd name=\"ColorBlack\" state=\"3\" _label=\"Black\" group=\"Color\"/>\n"
 		"</commands>\n";
 
 	const char *ui_menus =
 		"<menu>\n"
-		"	<submenu name=\"Colors\" label=\"Colors\">\n"
+		"	<submenu name=\"Colors\" _label=\"Colors\">\n"
 		"		<menuitem name=\"ColorWhite\" type=\"radio\" verb=\"\"/>\n"
 		"		<menuitem name=\"ColorRed\" type=\"radio\" verb=\"\"/>\n"
 		"		<menuitem name=\"ColorGreen\" type=\"radio\" verb=\"\"/>\n"
@@ -248,8 +248,8 @@ view_create_menus (view_data_t *view_data)
 	 */
 	bonobo_ui_component_set_container (uic, remote_uic);
 
-	bonobo_ui_component_set (uic, "/", ui_commands, NULL);
-	bonobo_ui_component_set (uic, "/", ui_menus, NULL);
+	bonobo_ui_component_set_translate (uic, "/", ui_commands, NULL);
+	bonobo_ui_component_set_translate (uic, "/", ui_menus, NULL);
 
 	bonobo_ui_component_add_listener (uic, "Color", color_listener_cb, view_data);
 

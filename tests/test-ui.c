@@ -1,6 +1,9 @@
 /*
  * app.c: A test application to hammer the Bonobo UI api.
  *
+ * NB. To run this program and test the xml IO code you
+ * need to do something like ln -s /{prefix}/bonobo/doc/std-ui.xml ~/.gnome/ui
+ *
  * Author:
  *	Michael Meeks (michael@helixcode.com)
  *
@@ -115,49 +118,49 @@ main (int argc, char **argv)
 	BonoboUIContainer *container;
 	Bonobo_UIContainer corba_container;
 	CORBA_Environment  ev;
-	char *txt;
+	char *txt, *fname;
 
 	char simplea [] =
 		"<menu>\n"
-		"	<submenu name=\"File\" label=\"_File\">\n"
-		"		<menuitem name=\"open\" label=\"_Open\" pixtype=\"stock\" pixname=\"Open\" descr=\"Wibble\"/>\n"
+		"	<submenu name=\"File\" _label=\"_Gå\">\n"
+		"		<menuitem name=\"open\" _label=\"_Open\" pixtype=\"stock\" pixname=\"Open\" _tip=\"Wibble\"/>\n"
 		"		<control name=\"MyControl\"/>\n"
 		"		<control name=\"ThisIsEmpty\"/>\n"
 		"	</submenu>\n"
 		"</menu>";
 	char simpleb [] =
-		"<submenu name=\"File\" label=\"_FileB\">\n"
-		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Open\" descr=\"Open you fool\"/>\n"
+		"<submenu name=\"File\">\n"
+		"	<menuitem name=\"open\" _label=\"_OpenB\" pixtype=\"stock\" pixname=\"Open\" _tip=\"Open you fool\"/>\n"
 		"       <menuitem/>\n"
-		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\" accel=\"*Control*t\"/>\n"
+		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" _label=\"_ToggleMe\" accel=\"*Control*t\"/>\n"
 		"       <placeholder name=\"Nice\" delimit=\"top\"/>\n"
-		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" "
+		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" _label=\"_CloseB\" "
 		"        pixtype=\"stock\" pixname=\"Close\" accel=\"*Control*q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
-		"<submenu name=\"File\" label=\"_FileC\">\n"
+		"<submenu name=\"File\" _label=\"_FileC\">\n"
 		"    <placeholder name=\"Nice\" delimit=\"top\">\n"
-		"	<menuitem name=\"fooa\" label=\"_FooA\" type=\"radio\" group=\"foogroup\" descr=\"Radio1\"/>\n"
-		"	<menuitem name=\"foob\" label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
-		"	<menuitem name=\"wibble\" verb=\"ThisForcesAnError\" label=\"_Baa\" pixtype=\"stock\" pixname=\"Open\" sensitive=\"0\"/>\n"
+		"	<menuitem name=\"fooa\" _label=\"_FooA\" type=\"radio\" group=\"foogroup\" _tip=\"Radio1\"/>\n"
+		"	<menuitem name=\"foob\" _label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
+		"	<menuitem name=\"wibble\" verb=\"ThisForcesAnError\" _label=\"_Baa\" pixtype=\"stock\" pixname=\"Open\" sensitive=\"0\"/>\n"
 		"       <separator/>\n"
 		"    </placeholder>\n"
 		"</submenu>\n";
 	char simpled [] =
-		"<menuitem name=\"save\" label=\"_SaveD\" pixtype=\"stock\" pixname=\"Save\"/>\n";
+		"<menuitem name=\"save\" _label=\"_SaveD\" pixtype=\"stock\" pixname=\"Save\"/>\n";
 	char simplee [] =
-		"<menuitem name=\"fish\" label=\"_Inplace\" pixtype=\"stock\" pixname=\"Save\"/>\n";
+		"<menuitem name=\"fish\" _label=\"_Inplace\" pixtype=\"stock\" pixname=\"Save\"/>\n";
 	char toola [] =
 		"<dockitem name=\"toolbar\" homogeneous=\"0\" look=\"both\">\n"
-		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"
+		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" _label=\"TogSave\" _tip=\"My tooltip\"/>\n"
 		"	<separator/>\n"
-		"	<toolitem name=\"baa\" pixtype=\"stock\" pixname=\"Open\" label=\"baa\" descr=\"My 2nd tooltip\" verb=\"testme\"/>\n"
+		"	<toolitem name=\"baa\" pixtype=\"stock\" pixname=\"Open\" _label=\"baa\" _tip=\"My 2nd tooltip\" verb=\"testme\"/>\n"
 		"	<control name=\"AControl\"/>\n"
 		"</dockitem>";
 	char toolb [] =
 		"<dockitem name=\"toolbar\" look=\"icon\" relief=\"none\">\n"
-		"	<toolitem name=\"foo1\" label=\"Insensitive\" hidden=\"0\"/>\n"
-		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\" label=\"TogSame\" descr=\"My tooltip\"/>\n"
+		"	<toolitem name=\"foo1\" _label=\"Insensitive\" hidden=\"0\"/>\n"
+		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\" _label=\"TogSame\" _tip=\"My tooltip\"/>\n"
 		"</dockitem>";
 	char statusa [] =
 		"<item name=\"main\">Kippers</item>\n";
@@ -179,6 +182,51 @@ main (int argc, char **argv)
 		g_error (_("Could not initialize Bonobo!\n"));
 
 	bonobo_activate ();
+
+	{ /* Test encode / decode str */
+		char *a, *b, *c;
+		int   i;
+		gboolean err;
+
+		a = g_malloc (256);
+		for (i = 0; i < 256; i++) {
+			if (i == 255)
+				*(a + i) = '\0';
+			else
+				*(a + i) = i + 1;
+		}
+
+		b = bonobo_ui_util_encode_str (a);
+		c = bonobo_ui_util_decode_str (a, &err); /* sanity check */
+		g_free (c);
+
+		c = bonobo_ui_util_decode_str (b, &err);
+		g_assert (err == FALSE);
+		if (strcmp (a, c)) {
+			g_warning ("Strings differ lengths %d should be %d",
+				   strlen (c), strlen (a));
+
+			for (i = 0; i < 256; i++) {
+				if (a [i] != b [i])
+					printf ("a [%d] (=%d) != b [%d] (=%d)\n",
+						i, a [i], i, b [i]);
+			}
+		} else
+			printf ("String encode / decode worked\n");
+
+		g_free (c);
+		g_free (b);
+		g_free (a);
+
+		b = bonobo_ui_util_encode_str ("Hello World");
+		c = bonobo_ui_util_decode_str (b, &err);
+		g_assert (err == FALSE);
+
+		printf ("Encode to '%s' and back to '%s'\n", b, c);
+
+		g_free (c);
+		g_free (b);
+	}
 
 	win = BONOBO_WIN (bonobo_win_new ("Win", "My Test Application"));
 	container = bonobo_ui_container_new ();
@@ -237,36 +285,41 @@ main (int argc, char **argv)
 
 	CORBA_exception_init (&ev);
 
-	if (g_file_exists ("ui.xml")) {
-		fprintf (stderr, "\n\n--- Add ui.xml ---\n\n\n");
-		bonobo_ui_util_set_ui (componenta, NULL, "ui.xml",
+	fname = bonobo_ui_util_get_ui_fname (NULL, "std-ui.xml");
+	if (fname && g_file_exists (fname)) {
+		fprintf (stderr, "\n\n--- Add std-ui.xml ---\n\n\n");
+		bonobo_ui_util_set_ui (componenta, NULL, "std-ui.xml",
 				       "gnomecal");
 		bonobo_ui_component_thaw (componenta, NULL);
 
-		bonobo_ui_component_set_prop (
+/*		bonobo_ui_component_set_prop (
 			componenta, "/menu/Preferences",
-			"pixname", "/demo/a.xpm", NULL);
+			"pixname", "/demo/a.xpm", NULL);*/
 
 		gtk_widget_show (GTK_WIDGET (win));
 
 		gtk_main ();
-	} else
-		g_warning ("Can't find ui.xml");
+	} else {
+		g_warning ("Can't find ~/.gnome/ui/std-ui.xml, perhaps "
+			   " you need to symlink bonobo/doc/std-ui.xml there");
+		gtk_widget_show (GTK_WIDGET (win));
+	}
+	g_free (fname);
 
 	bonobo_ui_component_freeze (componenta, NULL);
 
 	fprintf (stderr, "\n\n--- Remove A ---\n\n\n");
 	bonobo_ui_component_rm (componenta, "/", &ev);
 
-	bonobo_ui_component_set (componentb, "/status", statusa, &ev);
+	bonobo_ui_component_set_translate (componentb, "/status", statusa, &ev);
 
-	bonobo_ui_component_set (componenta, "/", simplea, &ev);
+	bonobo_ui_component_set_translate (componenta, "/", simplea, &ev);
 
-	bonobo_ui_component_set (componentb, "/",
+	bonobo_ui_component_set_translate (componentb, "/",
 				 "<popups> <popup name=\"MyStuff\"/> </popups>", &ev);
-	bonobo_ui_component_set (componenta, "/popups/MyStuff", simpleb, &ev);
+	bonobo_ui_component_set_translate (componenta, "/popups/MyStuff", simpleb, &ev);
 
-	bonobo_ui_component_set (componentb, "/",   toola, &ev);
+	bonobo_ui_component_set_translate (componentb, "/",   toola, &ev);
 
 	{
 		GtkWidget *widget = gtk_button_new_with_label ("My Label");
@@ -295,10 +348,10 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
 
-	bonobo_ui_component_set (componentb, "/",     statusb, &ev);
+	bonobo_ui_component_set_translate (componentb, "/",     statusb, &ev);
 
 	/* Duplicate set */
-	bonobo_ui_component_set (componenta, "/", simplea, &ev);
+	bonobo_ui_component_set_translate (componenta, "/", simplea, &ev);
 
 	bonobo_ui_component_thaw (componenta, NULL);
 
@@ -310,19 +363,22 @@ main (int argc, char **argv)
 	bonobo_ui_component_set_tree (componenta, "/keybindings", accel, &ev);
 	bonobo_ui_node_free (accel);
 
-	bonobo_ui_component_set (componentb, "/menu", simpleb, &ev);
-	bonobo_ui_component_set (componenta, "/",     toolb, &ev);
+	bonobo_ui_component_set_translate (componentb, "/menu", simpleb, &ev);
+	bonobo_ui_component_set_translate (componenta, "/",     toolb, &ev);
+
+	bonobo_ui_component_set_prop (componenta, "/menu/File", "label",
+				      "_Gå", NULL);
 
 	/* A 'transparent' node merge */
 	txt = bonobo_ui_component_get_prop (componenta, "/toolbar", "look", NULL);
 	printf ("Before merge look '%s'\n", txt);
-	bonobo_ui_component_set (componenta, "/", "<dockitem name=\"toolbar\"/>", &ev);
+	bonobo_ui_component_set_translate (componenta, "/", "<dockitem name=\"toolbar\"/>", &ev);
 	txt = bonobo_ui_component_get_prop (componenta, "/toolbar", "look", NULL);
 	printf ("After merge look '%s'\n", txt);
 	if (txt == NULL || strcmp (txt, "icon"))
 		g_warning ("Serious transparency regression");
 
-	bonobo_ui_component_set (componenta, "/menu/File/Nice", simplee, &ev);
+	bonobo_ui_component_set_translate (componenta, "/menu/File/Nice", simplee, &ev);
 
 	{
 		GtkWidget *widget = gtk_progress_bar_new ();
@@ -345,11 +401,11 @@ main (int argc, char **argv)
 	gtk_main ();
 	bonobo_ui_component_freeze (componenta, NULL);
 
-	bonobo_ui_component_set (componentc, "/commands",
+	bonobo_ui_component_set_translate (componentc, "/commands",
 				 "<cmd name=\"MyFoo\" sensitive=\"0\"/>", &ev);
-	bonobo_ui_component_set (componentc, "/menu", simplec, &ev);
+	bonobo_ui_component_set_translate (componentc, "/menu", simplec, &ev);
 	
-	bonobo_ui_component_set (componentc, "/menu/File", simpled, &ev);
+	bonobo_ui_component_set_translate (componentc, "/menu/File", simpled, &ev);
 
 	bonobo_ui_component_thaw (componenta, NULL);
 	gtk_main ();

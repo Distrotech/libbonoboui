@@ -427,6 +427,24 @@ bonobo_ui_component_set_tree (BonoboUIComponent *component,
 	bonobo_ui_node_free_string (str);
 }
 
+void
+bonobo_ui_component_set_translate (BonoboUIComponent  *component,
+				   const char         *path,
+				   const char         *xml,
+				   CORBA_Environment  *ev)
+{
+	BonoboUINode *node;
+
+	if (!xml)
+		return;
+
+	node = bonobo_ui_node_from_string (xml);
+
+	bonobo_ui_util_translate_ui (node);
+
+	bonobo_ui_component_set_tree (component, path, node, ev);
+}
+
 char *
 bonobo_ui_component_get (BonoboUIComponent *component,
 			 const char        *path,
@@ -700,7 +718,12 @@ bonobo_ui_component_set_prop (BonoboUIComponent  *component,
 			      const char         *value,
 			      CORBA_Environment  *opt_ev)
 {
-	GET_CLASS (component)->set_prop (component, path, prop, value, opt_ev);
+	if (prop && (!strcmp (prop, "label") || !strcmp (prop, "tip"))) {
+		char *encoded = bonobo_ui_util_encode_str (value);
+		GET_CLASS (component)->set_prop (component, path, prop, encoded, opt_ev);
+		g_free (encoded);
+	} else
+		GET_CLASS (component)->set_prop (component, path, prop, value, opt_ev);
 }
 
 static void
@@ -741,7 +764,23 @@ bonobo_ui_component_get_prop (BonoboUIComponent *component,
 			      const char        *prop,
 			      CORBA_Environment *opt_ev)
 {
-	return GET_CLASS (component)->get_prop (component, path, prop, opt_ev);
+	char *txt;
+
+	txt = GET_CLASS (component)->get_prop (component, path, prop, opt_ev);
+	
+	if (prop && (!strcmp (prop, "label") || !strcmp (prop, "tip"))) {
+		char *decoded;
+		gboolean err;
+
+		decoded = bonobo_ui_util_decode_str (txt, &err);
+		if (err)
+			g_warning ("Encoding error getting prop '%s' at path '%s'",
+				   prop, path);
+		g_free (txt);
+
+		return decoded;
+	} else
+		return txt;
 }
 
 static gchar *

@@ -433,11 +433,17 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 
 	bonobo_ui_node_set_attr (node, "name", uii->label);
 
-	if (uii->label)
-		bonobo_ui_node_set_attr (node, "label", L_(uii->label));
+	if (uii->label) {
+		char *str = bonobo_ui_util_encode_str (L_(uii->label));
+		bonobo_ui_node_set_attr (node, "label", str);
+		g_free (str);
+	}
 
-	if (uii->hint)
-		bonobo_ui_node_set_attr (node, "descr", L_(uii->hint));
+	if (uii->hint) {
+		char *str = bonobo_ui_util_encode_str (L_(uii->hint));
+		bonobo_ui_node_set_attr (node, "tip", str);
+		g_free (str);
+	}
 
 	verb = uii->label;
 
@@ -938,11 +944,17 @@ compat_toolbar_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 	bonobo_ui_node_set_attr (node, "name", uii->label);
 	verb = uii->label;
 
-	if (uii->label)
-		bonobo_ui_node_set_attr (node, "label", L_(uii->label));
+	if (uii->label) {
+		char *str = bonobo_ui_util_encode_str (L_(uii->label));
+		bonobo_ui_node_set_attr (node, "label", str);
+		g_free (str);
+	}
 
-	if (uii->hint)
-		bonobo_ui_node_set_attr (node, "descr", L_(uii->hint));
+	if (uii->hint) {
+		char *str = bonobo_ui_util_encode_str (L_(uii->hint));
+		bonobo_ui_node_set_attr (node, "tip", str);
+		g_free (str);
+	}
 
 	if (uii->type == GNOME_APP_UI_ITEM ||
 /*	    uii->type == GNOME_APP_UI_RADIOITEM ||*/
