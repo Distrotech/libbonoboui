@@ -80,9 +80,10 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 
 		resize_grip = bonobo_ui_node_peek_attr (node, "resize_grip");
 
-		if (resize_grip)
+		if (atoi (resize_grip) == 0)
 			gtk_statusbar_set_has_resize_grip (msync->main_status,
-							   atoi (resize_grip));
+							   FALSE);
+
 		
 		id_str = bonobo_ui_engine_node_get_id (sync->engine, node);
 
@@ -144,10 +145,6 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 	if (!strcmp (name, "main")) {
 		widget = gtk_statusbar_new ();
 		
-		/* We disable the resize grip by default */
-		gtk_statusbar_set_has_resize_grip (
-			GTK_STATUSBAR (widget), FALSE);
-
 		gtk_signal_connect (GTK_OBJECT (widget),
 				    "size_request",
 				    GTK_SIGNAL_FUNC (clobber_request_cb), NULL);
