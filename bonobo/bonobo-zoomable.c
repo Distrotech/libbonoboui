@@ -451,8 +451,22 @@ bonobo_zoomable_corba_object_create (BonoboObject *object)
 	return (Bonobo_Zoomable) bonobo_object_activate_servant (object, servant);
 }
 
+/**
+ * bonobo_zoomable_set_parameters:
+ * 
+ * This is used by the component to set new zooming parameters (and to set the
+ * initial zooming parameters including the initial zoom level after creating
+ * the BonoboZoomable) - for instance after loading a new file.
+ *
+ * If any of the zoom parameters such as the minimum or maximum zoom level has
+ * changed, it is likely that the zoom level has become invalid as well - at
+ * least, the container must query it in any case, so we set it here.
+ * 
+ * Return value: 
+ **/
 void
 bonobo_zoomable_set_parameters (BonoboZoomable	*p,
+				float            zoom_level,
 				float		 min_zoom_level,
 				float		 max_zoom_level,
 				gboolean	 has_min_zoom_level,
@@ -464,6 +478,7 @@ bonobo_zoomable_set_parameters (BonoboZoomable	*p,
 	g_return_if_fail (p != NULL);
 	g_return_if_fail (BONOBO_IS_ZOOMABLE (p));
 
+	p->priv->zoom_level = zoom_level;
 	p->priv->min_zoom_level = min_zoom_level;
 	p->priv->max_zoom_level = max_zoom_level;
 	p->priv->has_min_zoom_level = has_min_zoom_level;
@@ -523,6 +538,21 @@ bonobo_zoomable_new (void)
 	return bonobo_zoomable_construct (p, corba_p);
 }
 
+/**
+ * bonobo_zoomable_report_zoom_level_changed:
+ *
+ * @new_zoom_level: The new zoom level.
+ * 
+ * Reports the BonoboZoomableFrame that the zoom level has changed (but the
+ * other zoom parameters are still the same).
+ *
+ * This is called after the component has successfully completed a zooming
+ * operation - the @new_zoom_level may have been modified from what the
+ * container requested to match what the component actually displays at the
+ * moment.
+ * 
+ * Return value: 
+ **/
 void
 bonobo_zoomable_report_zoom_level_changed (BonoboZoomable *zoomable,
 					   float           new_zoom_level)
@@ -544,6 +574,18 @@ bonobo_zoomable_report_zoom_level_changed (BonoboZoomable *zoomable,
 	CORBA_exception_free (&ev);
 }
 
+/**
+ * bonobo_zoomable_report_zoom_parameters_changed:
+ *
+ * Reports the BonoboZoomableFrame that the zoom parameters have changed;
+ * this also includes the zoom level.
+ *
+ * On the container side (the BonoboZoomableFrame) this implies that the
+ * zoom level has changed as well, so you need to query the BonoboZoomable
+ * for the new zoom level as well.
+ * 
+ * Return value: 
+ **/
 void
 bonobo_zoomable_report_zoom_parameters_changed (BonoboZoomable *zoomable)
 {

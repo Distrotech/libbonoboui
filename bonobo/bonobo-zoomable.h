@@ -71,6 +71,7 @@ BonoboZoomable	*bonobo_zoomable_construct			(BonoboZoomable	*zoomable,
 								 Bonobo_Zoomable corba_zoomable);
 
 void		 bonobo_zoomable_set_parameters			(BonoboZoomable	*zoomable,
+								 float           zoom_level,
 								 float		 min_zoom_level,
 								 float		 max_zoom_level,
 								 gboolean	 has_min_zoom_level,
