@@ -42,4 +42,6 @@ GtkType       bonobo_ui_sync_toolbar_get_type (void);
 BonoboUISync *bonobo_ui_sync_toolbar_new      (BonoboUIEngine *engine,
 					       GnomeDock      *dock);
 
+END_GNOME_DECLS
+
 #endif /* _BONOBO_UI_SYNC_TOOLBAR_H_ */

@@ -108,8 +108,6 @@ gboolean                  bonobo_ui_toolbar_item_get_pack_end     (BonoboUIToolb
 
 void                      bonobo_ui_toolbar_item_activate         (BonoboUIToolbarItem     *item);
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+END_GNOME_DECLS
 
 #endif /* __BONOBO_UI_TOOLBAR_ITEM_H__ */

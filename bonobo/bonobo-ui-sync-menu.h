@@ -57,4 +57,6 @@ void          bonobo_ui_sync_menu_add_popup    (BonoboUISyncMenu *sync,
 						GtkMenu          *menu,
 						const char       *path);
 
+END_GNOME_DECLS
+
 #endif /* _BONOBO_UI_SYNC_MENU_H_ */

@@ -172,4 +172,6 @@ void             bonobo_ui_engine_set_ui_container(BonoboUIEngine    *engine,
 void             bonobo_ui_engine_freeze          (BonoboUIEngine    *engine);
 void             bonobo_ui_engine_thaw            (BonoboUIEngine    *engine);
 
+END_GNOME_DECLS
+
 #endif /* _BONOBO_UI_ENGINE_H_ */

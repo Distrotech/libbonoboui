@@ -150,4 +150,6 @@ void       bonobo_ui_engine_dump             (BonoboUIEngine   *engine,
 					      FILE             *out,
 					      const char       *msg);
 
+END_GNOME_DECLS
+
 #endif /* _BONOBO_UI_SYNC_H_ */

@@ -46,4 +46,6 @@ gint          bonobo_ui_sync_keys_binding_handle (GtkWidget        *widget,
 						  GdkEventKey      *event,
 						  BonoboUISyncKeys *msync);
 
+END_GNOME_DECLS
+
 #endif /* _BONOBO_UI_SYNC_KEYS_H_ */

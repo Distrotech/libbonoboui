@@ -44,4 +44,6 @@ GtkType       bonobo_ui_sync_status_get_type (void);
 BonoboUISync *bonobo_ui_sync_status_new      (BonoboUIEngine *engine,
 					      GtkBox         *status);
 
+END_GNOME_DECLS
+
 #endif /* _BONOBO_UI_SYNC_STATUS_H_ */
