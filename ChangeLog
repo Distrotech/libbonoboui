@@ -1,3 +1,22 @@
+2001-10-24  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: add gconf; yuck.
+
+	* bonobo/bonobo-ui-preferences.[ch]: impl.
+
+	* bonobo/bonobo-ui-sync-status.c (impl_bonobo_ui_sync_status_build): 
+	upd. prefs
+
+	* bonobo/bonobo-selector-widget.c (bonobo_selector_widget_init): 
+	upd. prefs.
+
+	* bonobo/bonobo-window.c (construct_priv): upd. prefs.
+
+	* bonobo/bonobo-ui-sync-toolbar.c (parse_look),
+	(create_dockitem): upd. prefs.
+
+	* bonobo/bonobo-ui-sync-menu.c (add_tearoff): upd prefs.
+
 2001-10-23  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-moniker.c (display_as_stream): upd.

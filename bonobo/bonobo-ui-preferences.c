@@ -10,21 +10,49 @@
  */
 
 #include <config.h>
-#include <gconf.h>
-#include "bonobo/bonobo-ui-preferences.h"
+#include <gconf/gconf-client.h>
 
-#define DEFINE_DESKTOP_PROP_BOOLEAN(c_name, prop_name)  \
-gboolean                                                \
-gnome_preferences_get_ ## c_name (void)                 \
-{                                                       \
-	return gconf_get_value_gboolean ("/desktop/gnome/interface/" prop_name); \
+#include <bonobo/bonobo-ui-preferences.h>
+
+/*
+ *   Yes Gconf's C API sucks, yes bonobo-config is a far better
+ * way to access configuration, yes I hate this code; Michael.
+ */
+static gboolean
+get (const char *key, gboolean def)
+{
+	gboolean           ret;
+	GError             *err = NULL;
+	static GConfClient *client = NULL;
+
+	if (!client)					
+		client = gconf_client_get_default ();	
+
+	ret = gconf_client_get_bool (client, key, &err); 
+
+	if (err) {
+		static int warned = 0;
+		if (!warned++)
+			g_warning ("Failed to get '%s': '%s'", key, err->message);
+		g_error_free (err);
+		ret = def;
+	}
+
+	return ret;
 }
 
-DEFINE_DESKTOP_PROP_BOOLEAN (toolbar_labels,     "toolbar-labels");
-DEFINE_DESKTOP_PROP_BOOLEAN (toolbar_detachable, "toolbar-detachable");
-DEFINE_DESKTOP_PROP_BOOLEAN (toolbar_relief,     "toolbar-relief");
+#define DEFINE_BONOBO_UI_PREFERENCE(c_name, prop_name, def)      \
+gboolean                                                         \
+bonobo_ui_preferences_get_ ## c_name (void)                      \
+{                                                                \
+	return get ("/desktop/gnome/interface/" prop_name, def); \
+}
 
-DEFINE_DESKTOP_PROP_BOOLEAN (menus_have_icons,   "menus-have-icons");
-DEFINE_DESKTOP_PROP_BOOLEAN (menus_have_tearoff, "menus-have-tearoff");
-DEFINE_DESKTOP_PROP_BOOLEAN (menubar_detachable, "menubar-detachable");
-DEFINE_DESKTOP_PROP_BOOLEAN (menubar_relief,     "menubar-relief");
+DEFINE_BONOBO_UI_PREFERENCE (toolbar_labels,     "toolbar-labels",     TRUE);
+DEFINE_BONOBO_UI_PREFERENCE (toolbar_detachable, "toolbar-detachable", TRUE);
+DEFINE_BONOBO_UI_PREFERENCE (toolbar_relief,     "toolbar-relief",     TRUE);
+
+DEFINE_BONOBO_UI_PREFERENCE (menus_have_icons,   "menus-have-icons",   TRUE);
+DEFINE_BONOBO_UI_PREFERENCE (menus_have_tearoff, "menus-have-tearoff", TRUE);
+DEFINE_BONOBO_UI_PREFERENCE (menubar_detachable, "menubar-detachable", TRUE);
+DEFINE_BONOBO_UI_PREFERENCE (menubar_relief,     "menubar-relief",     TRUE);

@@ -5,7 +5,7 @@
  * Author:
  *     Michael Meeks (michael@helixcode.com)
  *
- * Copyright 1999, 2000 Helix Code, Inc.
+ * Copyright 1999, 2001 Ximian, Inc.
  */
 #ifndef _BONOBO_UI_COMPONENT_H_
 #define _BONOBO_UI_COMPONENT_H_

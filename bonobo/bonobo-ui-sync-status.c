@@ -15,13 +15,12 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <libgnome/gnome-preferences.h>
-
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-sync.h>
 #include <bonobo/bonobo-ui-sync-status.h>
+#include <bonobo/bonobo-ui-preferences.h>
 
 #include <bonobo/bonobo-ui-toolbar-separator-item.h>
 
@@ -154,7 +153,7 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 		/* insert a little padding so text isn't jammed against frame */
 		gtk_misc_set_padding (
 			GTK_MISC (GTK_STATUSBAR (widget)->label),
-			GNOME_PAD, 0);
+			BONOBO_UI_PAD, 0);
 		gtk_widget_show (GTK_WIDGET (widget));
 
 		gtk_box_pack_start (GTK_BOX (parent), widget, TRUE, TRUE, 0);

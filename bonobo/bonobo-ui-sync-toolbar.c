@@ -15,7 +15,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-i18n.h>
-#include <libgnome/gnome-preferences.h>
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
@@ -23,6 +22,7 @@
 #include <bonobo/bonobo-ui-engine-config.h>
 #include <bonobo/bonobo-ui-sync.h>
 #include <bonobo/bonobo-ui-sync-toolbar.h>
+#include <bonobo/bonobo-ui-preferences.h>
 
 #include <bonobo/bonobo-ui-toolbar.h>
 #include <bonobo/bonobo-ui-toolbar-button-item.h>
@@ -464,7 +464,7 @@ parse_look (const char *look)
 			return BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT;	
 	}
 
-	return gnome_preferences_get_toolbar_labels ()
+	return bonobo_ui_preferences_get_toolbar_labels ()
 		? BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT
 		: BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
 }
@@ -650,13 +650,13 @@ create_dockitem (BonoboUISyncToolbar *sync,
 		g_strfreev (behavior_array);
 	}
 
-	if (!force_detachable && !gnome_preferences_get_toolbar_detachable())
+	if (!force_detachable && !bonobo_ui_preferences_get_toolbar_detachable ())
 		beh |= BONOBO_DOCK_ITEM_BEH_LOCKED;
 
 	item = BONOBO_DOCK_ITEM (bonobo_dock_item_new (
 		dockname, beh));
 
-	if (gnome_preferences_get_toolbar_relief ())
+	if (bonobo_ui_preferences_get_toolbar_relief ())
 		bonobo_dock_item_set_shadow_type (item, GTK_SHADOW_OUT);
 	else
 		bonobo_dock_item_set_shadow_type (item, GTK_SHADOW_NONE);

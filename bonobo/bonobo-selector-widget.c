@@ -20,9 +20,9 @@
 #include <glib.h>
 #include <bonobo/bonobo-i18n.h>
 #include <libgnome/gnome-i18n.h>
-#include <libgnome/gnome-preferences.h>
 #include <libbonoboui.h>
 #include <bonobo/bonobo-selector-widget.h>
+#include <bonobo/bonobo-ui-preferences.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "bonobo-insert-component.xpm"
@@ -338,9 +338,9 @@ bonobo_selector_widget_init (GtkWidget *widget)
 	pixmap = gtk_image_new_from_pixbuf (pixbuf);
 	gdk_pixbuf_unref (pixbuf);
 
-	gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, TRUE, GNOME_PAD_SMALL);
+	gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, TRUE, BONOBO_UI_PAD_SMALL);
 	
-	gtk_box_pack_start (GTK_BOX (hbox), priv->desc_label, TRUE, TRUE, GNOME_PAD_SMALL);
+	gtk_box_pack_start (GTK_BOX (hbox), priv->desc_label, TRUE, TRUE, BONOBO_UI_PAD_SMALL);
 	gtk_container_add (GTK_CONTAINER (frame), hbox);
 	
 	gtk_widget_set_usize (widget, 400, 300); 

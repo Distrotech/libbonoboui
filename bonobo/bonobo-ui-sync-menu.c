@@ -14,14 +14,13 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
-#include <libgnome/gnome-preferences.h>
-
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-sync.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
+#include <bonobo/bonobo-ui-preferences.h>
 
 #undef WIDGET_SYNC_DEBUG
 
@@ -114,7 +113,7 @@ add_tearoff (BonoboUINode *node, GtkMenu *menu, gboolean popup_init)
 	char         *txt;
 	gboolean      has_tearoff;
 
-	has_tearoff = gnome_preferences_get_menus_have_tearoff ();
+	has_tearoff = bonobo_ui_preferences_get_menus_have_tearoff ();
 
 	if (node) {
 		txt = bonobo_ui_node_get_attr (node, "tearoff");

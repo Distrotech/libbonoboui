@@ -20,6 +20,7 @@ noinst_HEADERS = \
 	bonobo-ui-engine-config.h		\
 	bonobo-ui-engine-private.h		\
 	bonobo-ui-node-private.h		\
+	bonobo-ui-preferences.h			\
 	bonobo-ui-sync-menu.h			\
 	bonobo-ui-sync-keys.h			\
 	bonobo-ui-sync-status.h			\
@@ -94,6 +95,7 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-ui-engine.c			\
 	bonobo-ui-engine-config.c		\
 	bonobo-ui-node.c                 	\
+	bonobo-ui-preferences.c			\
 	bonobo-ui-sync.c			\
 	bonobo-ui-sync-menu.c			\
 	bonobo-ui-sync-keys.c			\

@@ -10,10 +10,10 @@
 #include "config.h"
 #include <bonobo/bonobo-dock-item.h>
 #include <bonobo/bonobo-dock.h>
-#include <libgnome/gnome-preferences.h>
 #include <bonobo/bonobo-window.h>
 #include <libbonobo.h>
 
+#include <bonobo/bonobo-ui-preferences.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
 #include <bonobo/bonobo-ui-sync-keys.h>
@@ -191,7 +191,7 @@ construct_priv (BonoboWindow *win)
 
 	behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
 		    | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
-	if (!gnome_preferences_get_menubar_detachable ())
+	if (!bonobo_ui_preferences_get_menubar_detachable ())
 		behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
 
 	priv->menu_item = BONOBO_DOCK_ITEM (bonobo_dock_item_new (
@@ -210,7 +210,7 @@ construct_priv (BonoboWindow *win)
 #ifdef FIXME
 	gtk_menu_bar_set_shadow_type (GTK_MENU_BAR (priv->menu), GTK_SHADOW_NONE);
 #endif
-	if (gnome_preferences_get_menubar_relief ()) {
+	if (bonobo_ui_preferences_get_menubar_relief ()) {
 		guint border_width;
 
 		gtk_container_set_border_width (GTK_CONTAINER (priv->menu_item), 2);
