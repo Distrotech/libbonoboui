@@ -205,7 +205,7 @@ view_create_menus (view_data_t *view_data)
 					   N_("Set the current drawing color"),
 					   1,
 					   GNOME_UI_HANDLER_PIXMAP_NONE, NULL,
-					   0, 0);
+					   0, (GdkModifierType)0);
 	gnome_ui_handler_menu_new_radiogroup (uih, "/Colors/color radiogroup");
 
 	gnome_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/White",

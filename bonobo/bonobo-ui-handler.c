@@ -6995,6 +6995,7 @@ gnome_ui_handler_toolbar_fetch (GnomeUIHandler *uih, char *path)
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 
+	g_warning ("Unimplemented toolbar method");
 	return NULL;
 }
 
@@ -7005,6 +7006,7 @@ gnome_ui_handler_toolbar_fetch_by_callback (GnomeUIHandler *uih,
 	g_return_val_if_fail (uih != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
 
+	g_warning ("Unimplemented toolbar method");
 	return NULL;
 }
 
@@ -7015,6 +7017,7 @@ gnome_ui_handler_toolbar_fetch_by_callback_data (GnomeUIHandler *uih,
 	g_return_val_if_fail (uih != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
 
+	g_warning ("Unimplemented toolbar method");
 	return NULL;
 }
 
@@ -7025,6 +7028,7 @@ gnome_ui_handler_toolbar_get_pos (GnomeUIHandler *uih, char *path)
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), -1);
 	g_return_val_if_fail (path != NULL, -1);
 
+	g_warning ("Unimplemented toolbar method");
 	return -1;
 }
 
@@ -7035,6 +7039,7 @@ gnome_ui_handler_toolbar_parse_uiinfo_one (GnomeUIHandler *uih, GnomeUIInfo *uii
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (uii != NULL, NULL);
 
+	g_warning ("Unimplemented toolbar method");
 	return NULL;
 }
 
@@ -7045,6 +7050,7 @@ gnome_ui_handler_toolbar_parse_uiinfo_list (GnomeUIHandler *uih, GnomeUIInfo *ui
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (uii != NULL, NULL);
 
+	g_warning ("Unimplemented toolbar method");
 	return NULL;
 }
 
@@ -7055,7 +7061,63 @@ gnome_ui_handler_toolbar_parse_uiinfo_tree (GnomeUIHandler *uih, GnomeUIInfo *ui
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (uii != NULL, NULL);
 
+	g_warning ("Unimplemented toolbar method");
 	return NULL;
+}
+
+GnomeUIHandlerToolbarItem *
+gnome_ui_handler_toolbar_parse_uiinfo_one_with_data (GnomeUIHandler *uih, GnomeUIInfo *uii, gpointer data)
+{
+	g_return_val_if_fail (uih != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (uii != NULL, NULL);
+
+	g_warning ("Unimplemented toolbar method");
+	return NULL;
+}
+
+GnomeUIHandlerToolbarItem *
+gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIHandler *uih, GnomeUIInfo *uii, gpointer data)
+{
+	g_return_val_if_fail (uih != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (uii != NULL, NULL);
+
+	g_warning ("Unimplemented toolbar method");
+	return NULL;
+}
+
+GnomeUIHandlerToolbarItem *
+gnome_ui_handler_toolbar_parse_uiinfo_tree_with_data (GnomeUIHandler *uih, GnomeUIInfo *uii, gpointer data)
+{
+	g_return_val_if_fail (uih != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (uii != NULL, NULL);
+
+	g_warning ("Unimplemented toolbar method");
+	return NULL;
+}
+
+void
+gnome_ui_handler_toolbar_free_one (GnomeUIHandlerToolbarItem *item)
+{
+	g_return_if_fail (item != NULL);
+
+	g_warning ("Unimplemented toolbar method");
+}
+
+void gnome_ui_handler_toolbar_free_list (GnomeUIHandlerToolbarItem *item)
+{
+	g_return_if_fail (item != NULL);
+
+	g_warning ("Unimplemented toolbar method");
+}
+
+void gnome_ui_handler_toolbar_free_tree (GnomeUIHandlerToolbarItem *item)
+{
+	g_return_if_fail (item != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 void
@@ -7065,6 +7127,8 @@ gnome_ui_handler_toolbar_set_sensitivity (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 gboolean
@@ -7074,6 +7138,7 @@ gnome_ui_handler_toolbar_get_sensitivity (GnomeUIHandler *uih, char *path)
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
+	g_warning ("Unimplemented toolbar method");
 	return FALSE;
 }
 
@@ -7084,6 +7149,8 @@ gnome_ui_handler_toolbar_set_label (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 gchar *
@@ -7093,6 +7160,7 @@ gnome_ui_handler_toolbar_get_label (GnomeUIHandler *uih, char *path)
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 
+	g_warning ("Unimplemented toolbar method");
 	return NULL;
 }
 
@@ -7103,6 +7171,8 @@ gnome_ui_handler_toolbar_set_pixmap (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 void
@@ -7112,6 +7182,8 @@ gnome_ui_handler_toolbar_get_pixmap (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 void
@@ -7121,6 +7193,8 @@ gnome_ui_handler_toolbar_set_accel (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 void
@@ -7130,6 +7204,8 @@ gnome_ui_handler_toolbar_get_accel (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 void
@@ -7140,6 +7216,8 @@ gnome_ui_handler_toolbar_set_callback (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 void
@@ -7150,6 +7228,8 @@ gnome_ui_handler_toolbar_get_callback (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 gboolean
@@ -7159,6 +7239,7 @@ gnome_ui_handler_toolbar_toggle_get_state (GnomeUIHandler *uih, char *path)
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
+	g_warning ("Unimplemented toolbar method");
 	return FALSE;
 }
 
@@ -7170,6 +7251,8 @@ gnome_ui_handler_toolbar_toggle_set_state (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
 
 gboolean
@@ -7179,6 +7262,7 @@ gnome_ui_handler_toolbar_radio_get_state (GnomeUIHandler *uih, char *path)
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
+	g_warning ("Unimplemented toolbar method");
 	return FALSE;
 }
 
@@ -7188,4 +7272,6 @@ gnome_ui_handler_toolbar_radio_set_state (GnomeUIHandler *uih, char *path, gbool
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
 }
