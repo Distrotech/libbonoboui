@@ -1,5 +1,11 @@
 2003-08-04  Federico Mena Quintero  <federico@ximian.com>
 
+	Released 2.2.4.
+
+	* configure.in: Bumped version number to 2.2.4.
+
+2003-08-04  Federico Mena Quintero  <federico@ximian.com>
+
 	Fixes #118705.
 
 	* bonobo/bonobo-socket.c (BonoboSocketPrivate): Removed the

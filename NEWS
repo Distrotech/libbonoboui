@@ -1,3 +1,9 @@
+libbonoboui 2.2.4
+
+	* Bugs fixed
+		+ Chain to BonoboSocket's hierarchy_changed parent
+		  handler - #118705 (Federico)
+
 libbonoboui 2.2.3
 
 	* Bugs fixed
