@@ -1,17 +1,18 @@
 # Translation into the walloon language.
 #
-# Si vos voloz donner on côp di spale pol ratoûrnaedje di Gnome (ou des
-# ôtes libes programes) sicrijhoz-mu a l' adresse emile
+# Si vos voloz donner on côp di spale pol ratournaedje di Gnome (ou des
+# ôtes libes programes) sicrijhoz mu a l' adresse emile
 # <srtxg@chanae.alphanet.ch>; nos avans co bråmint di l' ovraedje a fé.
 #
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Pablo Saratxaga <srtxg@chanae.alphanet.ch> 2001
+# Pablo Saratxaga <pablo@walon.org>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 1999-02-07 17:37+0100\n"
+"POT-Creation-Date: 2003-07-07 13:10+0200\n"
+"PO-Revision-Date: 2003-07-07 23:27+0200\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: walon <linux-wa@chanae.alphanet.ch>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +21,7 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
-msgstr ""
+msgstr "oujhene corba"
 
 #: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
@@ -35,19 +36,17 @@ msgid "The User interface container"
 msgstr ""
 
 #: bonobo/bonobo-dock-item-grip.c:236
-#, fuzzy
 msgid "Dock the toolbar"
-msgstr "Apontyî l' bår ås usteyes a vosse môde"
+msgstr ""
 
 #: bonobo/bonobo-dock-item-grip.c:237
-#, fuzzy
 msgid "Un dock the toolbar"
-msgstr "Apontyî l' bår ås usteyes a vosse môde"
+msgstr ""
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
-msgstr "Sôrte d' ombion"
+msgstr "Sôre d' ombion"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
 #: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
@@ -66,15 +65,15 @@ msgstr "Preferêye hôteu"
 
 #: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
-msgstr "Tchwezixhoz li fitchî a drovî"
+msgstr "Tchoezixhoz li fitchî a drovi"
 
 #: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
-msgstr "Tchwezixhoz les fitchîs a drovî"
+msgstr "Tchoezixhoz les fitchîs a drovi"
 
 #: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
-msgstr "Tchwezixhoz on no d' fitchî po schaper"
+msgstr "Tchoezixhoz on no d' fitchî po schaper"
 
 #: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
@@ -153,11 +152,11 @@ msgstr "Tecse seulmint"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr "Seulmint les tecses di _prumîristé"
+msgstr "Seulmint les tecses di _prumiristé"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
-msgstr ""
+msgstr "Disbugaedje"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
@@ -169,11 +168,11 @@ msgstr ""
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr "Apontyî l' eterface ûzeu"
+msgstr "Apontyî l' eterface uzeu"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "Drapeas di disbugaedje di Gdk a mete"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
@@ -182,15 +181,15 @@ msgstr "DRAPEAS"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "Drapeas di disbugaedje di Gdk a dismete"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "Håynaedje X a eployî"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "HÅYNAEDJE"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
@@ -202,15 +201,15 @@ msgstr "WAITROÛLE"
 
 #: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "Rinde les houcaedjes di X sincrones"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
-msgstr ""
+msgstr "Èn nén eployî li stindowe pårteye memwere di X"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "No do programe té kel manaedjeu di purnea s' endè sievrè"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
@@ -218,7 +217,7 @@ msgstr "NO"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "Classe do programe té kel manaedjeu di purnea s' endè sievrè"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
@@ -238,23 +237,23 @@ msgstr "ESTÎLE"
 
 #: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "Drapeas di disbugaedje di Gtk+ a mete"
 
 #: bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "Drapeas di disbugaedje di Gtk+ a dismete"
 
 #: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "Tos les adviertixhmints dvèt esse fatås"
 
 #: bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "Tcherdjî eco on module Gtk did pus"
 
 #: bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
-msgstr "MÔDULE"
+msgstr "MODULE"
 
 #: bonobo/bonobo-ui-init-gtk.c:179
 msgid "GTK+"
@@ -306,7 +305,7 @@ msgstr ""
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
-msgstr ""
+msgstr "Å d_vins"
 
 #: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
@@ -318,7 +317,7 @@ msgstr ""
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr ""
+msgstr "Zoumaedje"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
@@ -326,7 +325,7 @@ msgstr ""
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "Zoumaedje minimom"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
@@ -334,7 +333,7 @@ msgstr ""
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "Zoumaedje macsimom"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
@@ -366,19 +365,19 @@ msgstr ""
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr ""
+msgstr "Å dfait di ci programe chal"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr ""
+msgstr "Tchoezi"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr ""
+msgstr "Å _dfait..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr ""
+msgstr "_Candjî"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
@@ -412,30 +411,3 @@ msgstr "Dji n' pout nén enonder li côde libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr ""
-
-#~ msgid "Can not bonobo_ui_init"
-#~ msgstr "Dji n' pout nén enonder l' eterface ûzeu di bonobo"
-
-#~ msgid "Select an object"
-#~ msgstr "Tchwezixhoz on objet"
-
-#~ msgid "Can not activate object_server"
-#~ msgstr "Dji n' pout nén mete en alaedje object_server"
-
-#~ msgid "Can not bind object server to client_site"
-#~ msgstr "Dji n' pout nén loyî li sierveu d' objets avou client_site"
-
-#~ msgid "Can not activate server"
-#~ msgstr "Dji n' pout nén mete en alaedje li sierveu"
-
-#~ msgid "Could not launch bonobo object."
-#~ msgstr "Dji n' pout nén enonder l' objet bonobo."
-
-#~ msgid "Could not launch Embeddable."
-#~ msgstr "Dji n' pout nén enonder ene ravaleye aplicåcion"
-
-#~ msgid "Could not launch Control."
-#~ msgstr "Dji n' pout nén enonder li contrôle."
-
-#~ msgid "Can not bonobo_init"
-#~ msgstr "Dji n' pout nén enonder bonobo"
