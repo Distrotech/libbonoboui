@@ -131,6 +131,7 @@ libbonoboinclude_HEADERS =			\
 	bonobo-property-types.h			\
 	bonobo-property.h			\
 	bonobo-selector.h			\
+	bonobo-selector-widget.h		\
 	bonobo-socket.h				\
 	bonobo-storage-plugin.h			\
 	bonobo-storage.h			\
@@ -178,6 +179,7 @@ libbonobox_la_SOURCES =				\
 	bonobo-plug.c				\
 	bonobo-property-bag-xml.c		\
 	bonobo-selector.c			\
+	bonobo-selector-widget.c		\
 	bonobo-socket.c				\
 	bonobo-ui-component.c            	\
 	bonobo-ui-container.c            	\

@@ -18,18 +18,19 @@
 #define __BONOBO_SELECTOR_H__
 
 #include <libgnomeui/gnome-dialog.h>
+#include <bonobo/bonobo-selector-widget.h>
 
 BEGIN_GNOME_DECLS
 
-#define BONOBO_SELECTOR(obj)	GTK_CHECK_CAST(obj, bonobo_selector_get_type (), BonoboSelector)
-#define BONOBO_SELECTOR_CLASS	GTK_CHECK_CLASS_CAST (klass, bonobo_selector_get_type (), BonoboSelectorClass)
-#define GNOME_IS_BONOBO_SELECTOR(obj)	GTK_CHECK_TYPE (obj, bonobo_selector_get_type ())
+#define BONOBO_SELECTOR(obj)		GTK_CHECK_CAST(obj, bonobo_selector_get_type (), BonoboSelector)
+#define BONOBO_SELECTOR_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, bonobo_selector_get_type (), BonoboSelectorClass)
+#define BONOBO_IS_SELECTOR(obj)		GTK_CHECK_TYPE (obj, bonobo_selector_get_type ())
 
 typedef struct _BonoboSelectorPrivate BonoboSelectorPrivate;
 
 typedef struct {
 	GnomeDialog dialog;
-		
+
 	BonoboSelectorPrivate *priv;
 } BonoboSelector;
 
@@ -42,8 +43,13 @@ typedef struct {
 
 GtkType	   bonobo_selector_get_type        (void);
 
+GtkWidget *bonobo_selector_construct       (BonoboSelector       *sel,
+					    const gchar          *title,
+					    BonoboSelectorWidget *selector);
+
 GtkWidget *bonobo_selector_new             (const gchar *title,
 					    const gchar **interfaces_required);
+
 
 gchar	  *bonobo_selector_get_selected_id          (BonoboSelector *sel);
 gchar     *bonobo_selector_get_selected_name        (BonoboSelector *sel);
