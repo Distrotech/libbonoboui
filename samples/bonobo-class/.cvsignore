@@ -1,11 +1,12 @@
+.deps
+.libs
 Makefile
 Makefile.in
 Echo-stubs.c
 Echo-skels.c
 Echo-common.c
 Echo.h
-.libs
 bonobo-echo
 echo-client
-.deps
 my_echo_idl
+Bonobo_Sample_Echo.oaf
