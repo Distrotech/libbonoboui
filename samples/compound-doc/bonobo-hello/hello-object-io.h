@@ -22,11 +22,9 @@
 
 #include "hello-object.h"
 
-int hello_object_pstream_load (BonoboPersistStream *ps,
-			       Bonobo_Stream stream,
-			       void *data);
-int hello_object_pstream_save (BonoboPersistStream *ps,
-			       Bonobo_Stream stream,
-			       void *data);
+int hello_object_pstream_load (BonoboPersistStream * ps,
+			       Bonobo_Stream stream, void *data);
+int hello_object_pstream_save (BonoboPersistStream * ps,
+			       Bonobo_Stream stream, void *data);
 
 #endif

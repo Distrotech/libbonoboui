@@ -25,27 +25,25 @@
 
 #include "container.h"
 
-struct _Component
-{
-    SampleApp	  *container;
+struct _Component {
+	SampleApp *container;
 
-    BonoboClientSite   *client_site;
-    BonoboObjectClient *server;
-    gchar              *goad_id;
-    
-    GtkWidget	  *widget;
-    GtkWidget	  *views_hbox;
-    GList         *views;
+	BonoboClientSite *client_site;
+	BonoboObjectClient *server;
+	gchar *goad_id;
+
+	GtkWidget *widget;
+	GtkWidget *views_hbox;
+	GList *views;
 };
 
-void component_add_view (Component *component);
-void component_del_view (Component *component);
-void component_del (Component *component);
+void component_add_view (Component * component);
+void component_del_view (Component * component);
+void component_del (Component * component);
 
-void component_print (Component *component, GnomePrintContext *ctx,
-		      gdouble x, gdouble y,
-		      gdouble width, gdouble height);
+void component_print (Component * component, GnomePrintContext * ctx,
+		      gdouble x, gdouble y, gdouble width, gdouble height);
 
-GtkWidget *component_create_frame (Component *component, gchar *goad_id);
+GtkWidget *component_create_frame (Component * component, gchar * goad_id);
 
 #endif

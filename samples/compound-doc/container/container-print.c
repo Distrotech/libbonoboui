@@ -1,3 +1,4 @@
+
 /* $Id */
 /*
   Bonobo-Sample Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
@@ -25,30 +26,30 @@
 #include "component.h"
 
 void
-sample_app_print_preview (SampleApp *app)
+sample_app_print_preview (SampleApp * app)
 {
-    GList *l;
-    GnomePrintMaster *pm;
-    GnomePrintContext *ctx;
-    GnomePrintMasterPreview *pv;
-    double ypos = 0.0;
-    
-    pm = gnome_print_master_new ();
-    ctx = gnome_print_master_get_context (pm);
-    
-    for (l = app->components; l; l = l->next) {
-	Component *component = l->data;
-	component_print (component, ctx, 0.0, ypos, 100.0, 150.0);
-	
-	ypos += 150.0;
-    }
-    
-    gnome_print_showpage (ctx);
-    gnome_print_context_close (ctx);
-    
-    pv = gnome_print_master_preview_new (pm, "Component demo");
-    gtk_widget_show (GTK_WIDGET (pv));
-    gtk_main ();
-    gtk_object_unref (GTK_OBJECT (pv));
-    gtk_object_unref (GTK_OBJECT (pm));
+	GList *l;
+	GnomePrintMaster *pm;
+	GnomePrintContext *ctx;
+	GnomePrintMasterPreview *pv;
+	double ypos = 0.0;
+
+	pm = gnome_print_master_new ();
+	ctx = gnome_print_master_get_context (pm);
+
+	for (l = app->components; l; l = l->next) {
+		Component *component = l->data;
+		component_print (component, ctx, 0.0, ypos, 100.0, 150.0);
+
+		ypos += 150.0;
+	}
+
+	gnome_print_showpage (ctx);
+	gnome_print_context_close (ctx);
+
+	pv = gnome_print_master_preview_new (pm, "Component demo");
+	gtk_widget_show (GTK_WIDGET (pv));
+	gtk_main ();
+	gtk_object_unref (GTK_OBJECT (pv));
+	gtk_object_unref (GTK_OBJECT (pm));
 }

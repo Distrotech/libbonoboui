@@ -22,6 +22,6 @@
 
 #include "container.h"
 
-void sample_app_print_preview (SampleApp *app);
+void sample_app_print_preview (SampleApp * app);
 
 #endif

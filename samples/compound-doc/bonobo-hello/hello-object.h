@@ -25,6 +25,7 @@
 
 BonoboEmbeddableFactory *factory;
 
-BonoboObject* hello_object_factory (BonoboEmbeddableFactory *this, void *data);
+BonoboObject *hello_object_factory (BonoboEmbeddableFactory * this,
+				    void *data);
 
 #endif

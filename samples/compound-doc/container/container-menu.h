@@ -22,6 +22,6 @@
 
 #include "container.h"
 
-void sample_app_fill_menu (SampleApp *app);
+void sample_app_fill_menu (SampleApp * app);
 
 #endif

@@ -24,10 +24,10 @@
 #include <libgnomeprint/gnome-print.h>
 
 void
-hello_object_print (GnomePrintContext         *ctx,
-		    double                     width,
-		    double                     height,
-		    const Bonobo_PrintScissor *scissor,
-		    gpointer                   user_data);
+ hello_object_print (GnomePrintContext * ctx,
+		     double width,
+		     double height,
+		     const Bonobo_PrintScissor * scissor,
+		     gpointer user_data);
 
 #endif

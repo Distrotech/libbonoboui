@@ -24,14 +24,14 @@
 
 /* The struct holding the Model (the data structure) */
 typedef struct {
-    BonoboEmbeddable *bonobo_object;
-    
-    gchar *text;
+	BonoboEmbeddable *bonobo_object;
+
+	gchar *text;
 } Hello;
 
-void hello_model_init (Hello *hello, BonoboEmbeddable *bonobo_object);
-void hello_model_set_text (Hello *hello, gchar *text);
-void hello_model_clear (Hello *hello);
-void hello_model_destroy (Hello *obj);
+void hello_model_init (Hello * hello, BonoboEmbeddable * bonobo_object);
+void hello_model_set_text (Hello * hello, gchar * text);
+void hello_model_clear (Hello * hello);
+void hello_model_destroy (Hello * obj);
 
 #endif

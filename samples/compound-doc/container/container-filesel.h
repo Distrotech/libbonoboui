@@ -22,8 +22,7 @@
 
 #include "container.h"
 
-void container_request_file (SampleApp *app,
+void container_request_file (SampleApp * app,
 			     gboolean save,
-			     GtkSignalFunc cb,
-			     gpointer user_data);
+			     GtkSignalFunc cb, gpointer user_data);
 #endif

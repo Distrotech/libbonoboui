@@ -1,3 +1,4 @@
+
 /* $Id */
 /*
   Bonobo-Hello Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
@@ -25,91 +26,87 @@
 
 #include "hello-view.h"
 
-static int register_interfaces (Hello *obj);
+static int register_interfaces (Hello * obj);
 
-static void hello_object_destroy (Hello *obj);
+static void hello_object_destroy (Hello * obj);
 
 /* Instance counting */
 static int hello_object_num = 0;
 
 static void
-hello_object_destroy (Hello *obj)
+hello_object_destroy (Hello * obj)
 {
-    /* Destroy the instance */
-    hello_model_destroy (obj);
+	/* Destroy the instance */
+	hello_model_destroy (obj);
 
-    /* Destroy the factory if there are no more instances */
-    if ((--hello_object_num) <= 0)
-	if (factory)
-	{
-	    bonobo_object_unref (BONOBO_OBJECT (factory));
-	    factory = NULL;
-	    gtk_main_quit ();
-	}   
+	/* Destroy the factory if there are no more instances */
+	if ((--hello_object_num) <= 0)
+		if (factory) {
+			bonobo_object_unref (BONOBO_OBJECT (factory));
+			factory = NULL;
+			gtk_main_quit ();
+		}
 }
 
 /* Register CORBA interfaces we implement */
 static int
-register_interfaces (Hello *obj)
+register_interfaces (Hello * obj)
 {
-    BonoboPersistStream *stream;
-    BonoboPrint *print;
+	BonoboPersistStream *stream;
+	BonoboPrint *print;
 
-    /* Register the Bonobo::PersistStream interface. */
-    stream = bonobo_persist_stream_new (hello_object_pstream_load,
-					hello_object_pstream_save,
-					obj);
-    g_return_val_if_fail (stream, -1);
-    
-    bonobo_object_add_interface (BONOBO_OBJECT (obj->bonobo_object),
-				 BONOBO_OBJECT (stream));
+	/* Register the Bonobo::PersistStream interface. */
+	stream = bonobo_persist_stream_new (hello_object_pstream_load,
+					    hello_object_pstream_save,
+					    obj);
+	g_return_val_if_fail (stream, -1);
 
-    /* Register the Bonobo::Print interface */
-    print = bonobo_print_new (hello_object_print,
-			      obj);
-    g_return_val_if_fail (print, -1);
-    
-    bonobo_object_add_interface (BONOBO_OBJECT (obj->bonobo_object),
-				 BONOBO_OBJECT (print));
-    
-    
-    return 0;
+	bonobo_object_add_interface (BONOBO_OBJECT (obj->bonobo_object),
+				     BONOBO_OBJECT (stream));
+
+	/* Register the Bonobo::Print interface */
+	print = bonobo_print_new (hello_object_print, obj);
+	g_return_val_if_fail (print, -1);
+
+	bonobo_object_add_interface (BONOBO_OBJECT (obj->bonobo_object),
+				     BONOBO_OBJECT (print));
+
+
+	return 0;
 }
 
 /* The "factory" is the function creating new Object instances */
 BonoboObject *
-hello_object_factory (BonoboEmbeddableFactory *this, void *data)
+hello_object_factory (BonoboEmbeddableFactory * this, void *data)
 {
-    BonoboEmbeddable *bonobo_object;
-    Hello *obj;
-    
-    g_return_val_if_fail (obj = g_new0 (Hello, 1), NULL);
+	BonoboEmbeddable *bonobo_object;
+	Hello *obj;
 
-    hello_object_num++;
-    
-    /* Creates the BonoboObject server */
-    bonobo_object = bonobo_embeddable_new (hello_view_factory, obj);
-    if (bonobo_object == NULL){
-	g_free (obj);
-	return NULL;
-    }
+	g_return_val_if_fail (obj = g_new0 (Hello, 1), NULL);
 
-    /* Install destructor */
-    gtk_signal_connect (GTK_OBJECT (bonobo_object), "destroy",
-			GTK_SIGNAL_FUNC (hello_object_destroy),
-			bonobo_object);
+	hello_object_num++;
 
-    /* Initialize object data */
-    hello_model_init (obj, bonobo_object);
+	/* Creates the BonoboObject server */
+	bonobo_object = bonobo_embeddable_new (hello_view_factory, obj);
+	if (bonobo_object == NULL) {
+		g_free (obj);
+		return NULL;
+	}
 
-    /* Register CORBA interfaces */
-    if (register_interfaces (obj))
-    {
-	gtk_object_unref (GTK_OBJECT (obj->bonobo_object));
-	g_free (obj);
-	return NULL;
-    }	
-    
-    return BONOBO_OBJECT (bonobo_object);
+	/* Install destructor */
+	gtk_signal_connect (GTK_OBJECT (bonobo_object), "destroy",
+			    GTK_SIGNAL_FUNC (hello_object_destroy),
+			    bonobo_object);
+
+	/* Initialize object data */
+	hello_model_init (obj, bonobo_object);
+
+	/* Register CORBA interfaces */
+	if (register_interfaces (obj)) {
+		gtk_object_unref (GTK_OBJECT (obj->bonobo_object));
+		g_free (obj);
+		return NULL;
+	}
+
+	return BONOBO_OBJECT (bonobo_object);
 }
-

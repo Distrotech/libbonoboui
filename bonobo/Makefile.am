@@ -69,9 +69,9 @@ $(CORBA_SOURCE): $(idls)
 libbonobo_la_LDFLAGS = -version-info 2:0:1 $(gnome_libs)
 
 libbonobo_la_SOURCES =			\
+	$(CORBA_SOURCE)			\
 	bonobo-arg.h			\
 	bonobo-arg.c			\
-	$(CORBA_SOURCE)			\
 	bonobo-object-directory.c	\
 	$(OBJECT_DIRECTORY_IMPL)	\
 	bonobo-ui-handler.c		\

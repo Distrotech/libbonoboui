@@ -41,14 +41,14 @@ struct _SampleApp {
 
 	BonoboViewFrame *curr_view;
 	GList *components;
-    
+
 	GtkWidget *app;
 	GtkWidget *box;
 	GtkWidget *fileselection;
 };
 
 
-Component* sample_app_add_component (SampleApp *app, gchar *goad_id);
-void sample_app_remove_component (SampleApp *app, Component *component);
-void sample_app_exit (SampleApp *app);
+Component *sample_app_add_component (SampleApp * app, gchar * goad_id);
+void sample_app_remove_component (SampleApp * app, Component * component);
+void sample_app_exit (SampleApp * app);
 #endif

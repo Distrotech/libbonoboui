@@ -34,45 +34,44 @@
 poptContext ctx;
 
 void
-sample_app_exit (SampleApp *app)
+sample_app_exit (SampleApp * app)
 {
 	GList *l;
 
 	for (l = app->components; l;) {
-		GList *tmp = l->next; /* Store the next pointer 
-					 as component_del invalidates l */
+		GList *tmp = l->next;	/* Store the next pointer 
+					   as component_del invalidates l */
 		component_del (l->data);
 		l = tmp;
 	}
-	
+
 	bonobo_object_destroy (BONOBO_OBJECT (app->container));
 	gtk_main_quit ();
 }
 
 static void
-delete_cb (GtkWidget *caller, SampleApp *inst)
+delete_cb (GtkWidget * caller, SampleApp * inst)
 {
 	sample_app_exit (inst);
 }
 
 static SampleApp *
 sample_app_create (void)
-{   
+{
 	SampleApp *inst = g_new0 (SampleApp, 1);
 	GtkWidget *app, *box;
-    
+
 	/* Create widgets */
 	app = inst->app = gnome_app_new ("container",
 					 "Sample Bonobo container");
 	box = inst->box = gtk_vbox_new (FALSE, 10);
-    
-	gtk_signal_connect (GTK_OBJECT (app), "destroy",
-			    delete_cb, inst);
-    
+
+	gtk_signal_connect (GTK_OBJECT (app), "destroy", delete_cb, inst);
+
 	/* Do the packing stuff */
 	gnome_app_set_contents (GNOME_APP (app), box);
 	gtk_widget_set_usize (app, 400, 400);
-    
+
 	inst->container = bonobo_container_new ();
 	inst->ui_handler = bonobo_ui_handler_new ();
 	bonobo_ui_handler_set_app (inst->ui_handler, GNOME_APP (app));
@@ -86,9 +85,8 @@ sample_app_create (void)
 }
 
 static void
-create_component_frame (SampleApp *inst,
-			Component *component,
-			gchar *name)
+create_component_frame (SampleApp * inst,
+			Component * component, gchar * name)
 {
 	GtkWidget *widget = component_create_frame (component, name);
 
@@ -97,44 +95,44 @@ create_component_frame (SampleApp *inst,
 }
 
 static BonoboObjectClient *
-launch_component (BonoboClientSite *client_site,
-		  BonoboContainer  *container,
-		  gchar            *component_id)
+launch_component (BonoboClientSite * client_site,
+		  BonoboContainer * container, gchar * component_id)
 {
 	BonoboObjectClient *object_server;
-    
+
 	/*
 	 * Launch the component.
 	 */
-	object_server = bonobo_object_activate_with_oaf_id (
-		component_id, 0);
-    
+	object_server =
+	    bonobo_object_activate_with_oaf_id (component_id, 0);
+
 	if (!object_server)
 		return NULL;
-    
+
 	/*
 	 * Bind it to the local ClientSite.  Every embedded component
 	 * has a local BonoboClientSite object which serves as a
 	 * container-side point of contact for the embeddable.  The
 	 * container talks to the embeddable through its ClientSite
 	 */
-	if (!bonobo_client_site_bind_embeddable (client_site, object_server)) {
+	if (!bonobo_client_site_bind_embeddable
+	    (client_site, object_server)) {
 		bonobo_object_unref (BONOBO_OBJECT (object_server));
 		return NULL;
 	}
-    
+
 	/*
 	 * The BonoboContainer object maintains a list of the
 	 * ClientSites which it manages.  Here we add the new
 	 * ClientSite to that list.
 	 */
 	bonobo_container_add (container, BONOBO_OBJECT (client_site));
-    
+
 	return object_server;
 }
 
-Component*
-sample_app_add_component (SampleApp *inst, gchar *obj_id)
+Component *
+sample_app_add_component (SampleApp * inst, gchar * obj_id)
 {
 	Component *component;
 	BonoboClientSite *client_site;
@@ -145,25 +143,25 @@ sample_app_add_component (SampleApp *inst, gchar *obj_id)
 	 * between BonoboClientSites and BonoboEmbeddables.
 	 */
 	client_site = bonobo_client_site_new (inst->container);
-    
+
 	/*
 	 * A BonoboObjectClient is a simple wrapper for a remote
 	 * BonoboObject (a server supporting Bonobo::Unknown).
 	 */
-	server = launch_component (client_site, inst->container,
-				   obj_id);
+	server = launch_component (client_site, inst->container, obj_id);
 
 	if (!server) {
 		gchar *error_msg;
-	
-		error_msg = g_strdup_printf (_("Could not launch Embeddable %s!"),
-					     obj_id);
+
+		error_msg =
+		    g_strdup_printf (_("Could not launch Embeddable %s!"),
+				     obj_id);
 		gnome_warning_dialog (error_msg);
 		g_free (error_msg);
-	
+
 		return NULL;
 	}
-    
+
 	/*
 	 * Create the internal data structure which we will use to
 	 * keep track of this component.
@@ -184,18 +182,17 @@ sample_app_add_component (SampleApp *inst, gchar *obj_id)
 }
 
 void
-sample_app_remove_component (SampleApp *inst,
-			    Component *component)
+sample_app_remove_component (SampleApp * inst, Component * component)
 {
 	inst->components = g_list_remove (inst->components, component);
-    
+
 	/* Destroy the container widget */
 	gtk_container_remove (GTK_CONTAINER (component->container->box),
 			      component->widget);
 }
 
 typedef struct {
-	SampleApp   *app;
+	SampleApp *app;
 	const char **startup_files;
 } setup_data_t;
 
@@ -204,7 +201,7 @@ typedef struct {
  * and we can handle CORBA properly.
  */
 static guint
-final_setup (setup_data_t *sd)
+final_setup (setup_data_t * sd)
 {
 	const gchar **filenames = sd->startup_files;
 
@@ -212,7 +209,7 @@ final_setup (setup_data_t *sd)
 		sample_container_load (sd->app, *filenames);
 		filenames++;
 	}
-	
+
 	return FALSE;
 }
 
@@ -222,19 +219,17 @@ main (int argc, char **argv)
 	setup_data_t init_data;
 	CORBA_Environment ev;
 	CORBA_ORB orb;
-    
+
 	CORBA_exception_init (&ev);
 #if USING_OAF
 	gnome_init_with_popt_table ("container", VERSION,
-				    argc, argv,
-				    oaf_popt_options, 0, &ctx);
-    
+				    argc, argv, oaf_popt_options, 0, &ctx);
+
 	orb = oaf_init (argc, argv);
 #else
 	gnome_CORBA_init_with_popt_table ("container", VERSION,
 					  &argc, argv,
-					  NULL, 0, &ctx,
-					  0, &ev);
+					  NULL, 0, &ctx, 0, &ev);
 
 	CORBA_exception_free (&ev);
 	orb = gnome_CORBA_ORB ();
@@ -242,18 +237,18 @@ main (int argc, char **argv)
 
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error (_("Could not initialize Bonobo!\n"));
-    
+
 	init_data.app = sample_app_create ();
 
 	if (ctx)
 		init_data.startup_files = poptGetArgs (ctx);
 	else
 		init_data.startup_files = NULL;
-    
+
 	gtk_idle_add ((GtkFunction) final_setup, &init_data);
-  
+
 	bonobo_main ();
-    
+
 	if (ctx)
 		poptFreeContext (ctx);
 

@@ -25,8 +25,8 @@
 #include "container.h"
 #include "component.h"
 
-void component_load (Component *component, Bonobo_Stream stream);
-void component_save (Component *component, Bonobo_Stream stream);
-void component_save_id (Component *component, Bonobo_Stream stream);
+void component_load (Component * component, Bonobo_Stream stream);
+void component_save (Component * component, Bonobo_Stream stream);
+void component_save_id (Component * component, Bonobo_Stream stream);
 
 #endif
