@@ -1,5 +1,11 @@
 2002-01-10  Michael Meeks  <michael@ximian.com>
 
+	* Version 1.109.1
+
+2002-01-10  Michael Meeks  <michael@ximian.com>
+
+	* samples/controls/Makefile.am: fix dist.
+	
 	* Version 1.109.0
 
 2002-01-09  Michael Meeks  <michael@ximian.com>
