@@ -158,10 +158,10 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 			BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget), hdisp, vdisp);
 
 		txt = bonobo_ui_node_peek_attr (node, "sensitive");
-		if (txt && atoi (txt))
-			sensitive = TRUE;
+		if (txt)
+			sensitive = atoi (txt);
 		else
-			sensitive = FALSE;
+			sensitive = TRUE;
 
 		bonobo_ui_toolbar_control_item_set_sensitive (
 			BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget), sensitive);
