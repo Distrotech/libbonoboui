@@ -1,3 +1,14 @@
+2002-01-18  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar-item.c
+	(impl_set_style): move optimization
+	(bonobo_ui_toolbar_item_set_style): here for speed
+	in bonobo case.
+
+	* bonobo/bonobo-ui-component.c (impl_freeze):
+	optimize for repeated freeze/thaws.
+	(impl_thaw): ditto.
+
 2002-01-16  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-util.c (lookup_stock_compat):

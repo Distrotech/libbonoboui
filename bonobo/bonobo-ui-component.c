@@ -47,6 +47,7 @@ struct _BonoboUIComponentPrivate {
 	GHashTable        *listeners;
 	char              *name;
 	Bonobo_UIContainer container;
+	int                frozenness;
 };
 
 static inline BonoboUIComponent *
@@ -1004,9 +1005,10 @@ bonobo_ui_component_add_verb_list (BonoboUIComponent  *component,
  * @component: the component
  * @ev: the (optional) CORBA exception environment
  * 
- * This increments the freeze count on the remote associated
- * #BonoboUIContainer, this means that a batch of update operations
- * can be performed without a re-render penalty per update.
+ * This increments the freeze count on the associated
+ * #BonoboUIContainer, (if not already frozen) this means that
+ * a batch of update operations can be performed without a
+ * re-render penalty per update.
  *
  * NB. if your GUI is frozen / not updating you probably have a
  * freeze / thaw reference leak/
@@ -1024,27 +1026,31 @@ static void
 impl_freeze (BonoboUIComponent *component,
 	     CORBA_Environment *ev)
 {
-	CORBA_Environment *real_ev, tmp_ev;
-	Bonobo_UIContainer container;
+	if (component->priv->frozenness == 0) {
+		CORBA_Environment *real_ev, tmp_ev;
+		Bonobo_UIContainer container;
 
-	container = component->priv->container;
-	g_return_if_fail (container != CORBA_OBJECT_NIL);
+		container = component->priv->container;
+		g_return_if_fail (container != CORBA_OBJECT_NIL);
 
-	if (ev)
-		real_ev = ev;
-	else {
-		CORBA_exception_init (&tmp_ev);
-		real_ev = &tmp_ev;
+		if (ev)
+			real_ev = ev;
+		else {
+			CORBA_exception_init (&tmp_ev);
+			real_ev = &tmp_ev;
+		}
+
+		Bonobo_UIContainer_freeze (container, real_ev);
+
+		if (BONOBO_EX (real_ev) && !ev)
+			g_warning ("Serious exception on UI freeze '$%s'",
+				   bonobo_exception_get_text (real_ev));
+
+		if (!ev)
+			CORBA_exception_free (&tmp_ev);
 	}
 
-	Bonobo_UIContainer_freeze (container, real_ev);
-
-	if (BONOBO_EX (real_ev) && !ev)
-		g_warning ("Serious exception on UI freeze '$%s'",
-			   bonobo_exception_get_text (real_ev));
-
-	if (!ev)
-		CORBA_exception_free (&tmp_ev);
+	component->priv->frozenness++;
 }
 
 /**
@@ -1053,8 +1059,9 @@ impl_freeze (BonoboUIComponent *component,
  * @ev: the (optional) CORBA exception environment
  * 
  * This decrements the freeze count on the remote associated
- * #BonoboUIContainer, this means that a batch of update operations
- * can be performed without a re-render penalty per update.
+ * #BonoboUIContainer, (if frozen). This means that a batch
+ * of update operations can be performed without a re-render
+ * penalty per update.
  *
  * NB. if your GUI is frozen / not updating you probably have a
  * freeze / thaw reference leak/
@@ -1072,27 +1079,34 @@ static void
 impl_thaw (BonoboUIComponent *component,
 	   CORBA_Environment *ev)
 {
-	CORBA_Environment *real_ev, tmp_ev;
-	Bonobo_UIContainer container;
+	component->priv->frozenness--;
 
-	container = component->priv->container;
-	g_return_if_fail (container != CORBA_OBJECT_NIL);
+	if (component->priv->frozenness == 0) {
+		CORBA_Environment *real_ev, tmp_ev;
+		Bonobo_UIContainer container;
 
-	if (ev)
-		real_ev = ev;
-	else {
-		CORBA_exception_init (&tmp_ev);
-		real_ev = &tmp_ev;
-	}
+		container = component->priv->container;
+		g_return_if_fail (container != CORBA_OBJECT_NIL);
 
-	Bonobo_UIContainer_thaw (container, real_ev);
+		if (ev)
+			real_ev = ev;
+		else {
+			CORBA_exception_init (&tmp_ev);
+			real_ev = &tmp_ev;
+		}
 
-	if (BONOBO_EX (real_ev) && !ev)
-		g_warning ("Serious exception on UI thaw '$%s'",
-			   bonobo_exception_get_text (real_ev));
+		Bonobo_UIContainer_thaw (container, real_ev);
 
-	if (!ev)
-		CORBA_exception_free (&tmp_ev);
+		if (BONOBO_EX (real_ev) && !ev)
+			g_warning ("Serious exception on UI thaw '$%s'",
+				   bonobo_exception_get_text (real_ev));
+
+		if (!ev)
+			CORBA_exception_free (&tmp_ev);
+
+	} else if (component->priv->frozenness < 0)
+		g_warning ("Freeze/thaw mismatch on '%s'",
+			   component->priv->name ? component->priv->name : "<Null>");
 }
 
 /**

@@ -159,15 +159,6 @@ static void
 impl_set_style (BonoboUIToolbarItem *item,
 		BonoboUIToolbarItemStyle style)
 {
-	BonoboUIToolbarItemPrivate *priv;
-
-	priv = item->priv;
-
-	if (priv->style == style)
-		return;
-
-	priv->style = style;
-
 	gtk_widget_queue_resize (GTK_WIDGET (item));
 }
 
@@ -364,14 +355,23 @@ bonobo_ui_toolbar_item_get_orientation (BonoboUIToolbarItem *item)
 
 void
 bonobo_ui_toolbar_item_set_style (BonoboUIToolbarItem *item,
-			       BonoboUIToolbarItemStyle style)
+				  BonoboUIToolbarItemStyle style)
 {
+	BonoboUIToolbarItemPrivate *priv;
+
 	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
-	g_return_if_fail (style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_ONLY
-			  || style == BONOBO_UI_TOOLBAR_ITEM_STYLE_TEXT_ONLY
-			  || style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_HORIZONTAL
-			  || style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL);
+	g_return_if_fail (style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_ONLY ||
+			  style == BONOBO_UI_TOOLBAR_ITEM_STYLE_TEXT_ONLY ||
+			  style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_HORIZONTAL ||
+			  style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL);
+
+	priv = item->priv;
+
+	if (priv->style == style)
+		return;
+
+	priv->style = style;
 
 	gtk_signal_emit (GTK_OBJECT (item), signals[SET_STYLE], style);
 }

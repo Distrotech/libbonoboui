@@ -879,6 +879,7 @@ bonobo_control_frame_get_control_property_bag (BonoboControlFrame *frame,
 
 	control = frame->priv->control;
 
+	/* FIXME: we could cache this here - is it called a lot ? */
 	pbag = Bonobo_Control_getProperties (control, real_ev);
 
 	if (BONOBO_EX (real_ev)) {

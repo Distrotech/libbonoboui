@@ -15,6 +15,7 @@
 
 #include <bonobo/bonobo-ui-preferences.h>
 #include <bonobo/bonobo-ui-engine.h>
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
 #include <bonobo/bonobo-ui-sync-keys.h>
 #include <bonobo/bonobo-ui-sync-status.h>
