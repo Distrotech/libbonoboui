@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-11-30 13:49+1100\n"
-"PO-Revision-Date: 2001-07-09 00:19+0200\n"
+"POT-Creation-Date: 2001-12-04 02:04+0100\n"
+"PO-Revision-Date: 2001-12-04 02:04+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,15 +33,15 @@ msgstr "Föredragen höjd"
 
 #: bonobo/bonobo-file-selector-util.c:367
 msgid "Select a file to open"
-msgstr ""
+msgstr "Väj en fil att öppna"
 
 #: bonobo/bonobo-file-selector-util.c:395
 msgid "Select files to open"
-msgstr ""
+msgstr "Välj filer att öppna"
 
 #: bonobo/bonobo-file-selector-util.c:424
 msgid "Select a filename to save"
-msgstr ""
+msgstr "Välj ett filnamn att spara"
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -121,73 +121,72 @@ msgstr "Anpassa verktygsraden"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr ""
+msgstr "Zoomnivå"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr ""
+msgstr "Graden av förstoring"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "Minsta zoomnivån"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr ""
+msgstr "Minsta graden av förstoring"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "Största zoomnivån"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "Största graden av förstoring"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minumum Zoom level"
-msgstr ""
+msgstr "Har en minsta zoomnivå"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "Huruvida vi har en giltig minsta zoomnivå"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr ""
+msgstr "Har en största zoomnivå"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "Huruvida vi har en giltig största zoomnivå"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr ""
+msgstr "Är kontinuerlig"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "Huruvida vi zoomar kontinuerligt (i motsats till hopp)"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr ""
+msgstr "Detta gör ingenting; det är bara en demonstration."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr ""
+msgstr "BonoboUI-hej."
 
 #: samples/bonoboui/hello.c:195
 msgid "Gnome Hello"
-msgstr ""
+msgstr "Gnome-hej"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:250
 msgid "Hello, World!"
-msgstr ""
+msgstr "Hej världen!"
 
 #: samples/bonoboui/hello.c:290 tests/test-ui.c:267
-#, fuzzy
 msgid "Cannot init libbonoboui code"
-msgstr "Kan inte initiera bonobo"
+msgstr "Kan inte initiera libbonoboui-koden"
 
 #: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
@@ -196,6 +195,9 @@ msgstr "Kan inte utföra bonobo_ui_init"
 #: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Välj ett objekt"
+
+#~ msgid "Has a minimum Zoom level"
+#~ msgstr "Har en minsta zoomnivå"
 
 #~ msgid "Can not activate object_server"
 #~ msgstr "Kan inte aktivera objekt_server"
