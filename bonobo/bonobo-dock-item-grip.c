@@ -127,6 +127,7 @@ static void
 bonobo_dock_item_grip_dock (BonoboDockItemGrip *grip)
 {
 	BonoboDock *dock;
+	int placement;
 
 	g_return_if_fail (BONOBO_IS_DOCK_ITEM_GRIP (grip));
 
@@ -143,9 +144,15 @@ bonobo_dock_item_grip_dock (BonoboDockItemGrip *grip)
 		GTK_CONTAINER (
 			GTK_WIDGET (grip->item)->parent),
 		GTK_WIDGET (grip->item));
+
+	if (grip->item->orientation == GTK_ORIENTATION_HORIZONTAL)
+		placement = BONOBO_DOCK_TOP;
+	else
+		placement = BONOBO_DOCK_LEFT;
+
 	bonobo_dock_add_item (
 		dock, grip->item,
-		BONOBO_DOCK_TOP, 2, 0, 0, TRUE);
+		placement, 2, 0, 0, TRUE);
 	g_object_unref (G_OBJECT (grip->item));
 }
 
@@ -270,7 +277,7 @@ bonobo_dock_item_grip_activate (BonoboDockItemGrip *grip)
 static void
 bonobo_dock_item_grip_instance_init (BonoboDockItemGrip *grip)
 {
-/*	GTK_WIDGET_SET_FLAGS (grip, GTK_CAN_FOCUS); */
+	GTK_WIDGET_SET_FLAGS (grip, GTK_CAN_FOCUS); 
 	GTK_WIDGET_SET_FLAGS (grip, GTK_NO_WINDOW);
 }
 
