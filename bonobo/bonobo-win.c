@@ -705,6 +705,9 @@ cmd_get_node (BonoboWinPrivate *priv,
 
 	g_return_val_if_fail (priv != NULL, NULL);
 
+	if (!from_node)
+		return NULL;
+
 	if (!(cmd_name = node_get_id (from_node)))
 		return NULL;
 
@@ -1246,12 +1249,18 @@ static void
 put_hint_in_statusbar (GtkWidget *menuitem, BonoboWinPrivate *priv)
 {
 	BonoboUINode *node = widget_get_node (menuitem);
+	BonoboUINode *cmd_node = cmd_get_node (priv, node);
 	char *hint;
 
 	g_return_if_fail (priv != NULL);
 	g_return_if_fail (node != NULL);
 
-	hint = bonobo_ui_node_get_attr (node, "tip");
+	hint = cmd_get_attr (node, cmd_node, "tip");
+
+/*	g_warning ("Getting tooltip on '%s', '%s' : '%s'",
+		   bonobo_ui_xml_make_path (node),
+		   cmd_node ? bonobo_ui_xml_make_path (cmd_node) : "no cmd",
+		   hint);*/
 	if (!hint)
 		return;
 
@@ -1905,6 +1914,30 @@ toolbar_build_placeholder (BonoboWinPrivate *priv,
 	return widget;
 }
 
+static char *
+de_accelerate_string (const char *in)
+{
+	char       *ret;
+	const char *a;
+	char       *b;
+
+	g_return_val_if_fail (in != NULL, NULL);
+
+	ret = g_malloc (strlen (in) + 1);
+			
+	a = in;
+	for (b = ret; *a; a++, b++) {
+		*b = *a;
+		if (*b == '_')
+			b--;
+	}
+	*b = '\0';
+
+	g_warning ("Testme: made '%s' from '%s'", ret, in);
+
+	return ret;
+}
+
 static void
 toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		    GtkWidget *widget, GtkWidget *parent)
@@ -1954,9 +1987,14 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 			gdk_pixbuf_unref (icon_pixbuf);
 		}
 
-		if (label)
+		if (label) {
+			char *txt = de_accelerate_string (label);
+
 			bonobo_ui_toolbar_button_item_set_label (
-				BONOBO_UI_TOOLBAR_BUTTON_ITEM (widget), label);
+				BONOBO_UI_TOOLBAR_BUTTON_ITEM (widget), txt);
+
+			g_free (txt);
+		}
 	}
 
 	bonobo_ui_node_free_string (type);
