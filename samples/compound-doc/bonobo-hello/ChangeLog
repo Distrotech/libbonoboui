@@ -1,3 +1,8 @@
+2001-02-06  Michael Meeks  <michael@ximian.com>
+
+	* hello-view.c (hello_bonobo_view_get_type): upd.
+	(hello_bonobo_view_factory): upd.
+
 2001-01-18  Dietmar Maurer  <dietmar@ximian.com>
 
 	* bonobo-hello.c: use the new factory macros

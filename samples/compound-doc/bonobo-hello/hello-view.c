@@ -63,24 +63,16 @@ hello_bonobo_view_factory (BonoboEmbeddable      *embeddable,
 			   const Bonobo_ViewFrame view_frame,
 			   void                  *closure)
 {
-	Bonobo_View      corba_view;
 	HelloBonoboView *view;
 	GtkWidget       *widget;
 
 	view = gtk_type_new (HELLO_BONOBO_VIEW_TYPE);
 
-	corba_view = bonobo_view_corba_object_create (BONOBO_OBJECT (view));
-	if (corba_view == CORBA_OBJECT_NIL) {
-		bonobo_object_unref (BONOBO_OBJECT (view));
-		return NULL;
-	}
-
 	widget = view_new (view);
 	gtk_widget_show_all (widget);
 	
 	view = HELLO_BONOBO_VIEW (
-		bonobo_view_construct (BONOBO_VIEW (view),
-				       corba_view, widget));
+		bonobo_view_construct (BONOBO_VIEW (view), widget));
 	if (!view)
 		return NULL;
 
@@ -148,7 +140,9 @@ hello_bonobo_view_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (bonobo_view_get_type (), &info);
+		type = bonobo_x_type_unique (
+			bonobo_view_get_type (),
+			NULL, NULL, 0, &info);
 	}
 
 	return type;

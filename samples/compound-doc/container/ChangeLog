@@ -1,3 +1,8 @@
+2001-02-06  Michael Meeks  <michael@ximian.com>
+
+	* component.c (sample_client_site_get_type): upd.
+	(sample_client_site_new): upd.
+
 2001-01-17  Michael Meeks  <michael@helixcode.com>
 
 	* component.c (sample_client_site_new): upd.

@@ -337,7 +337,10 @@ sample_client_site_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (bonobo_client_site_get_type (), &info);
+		type = bonobo_x_type_unique (
+			bonobo_client_site_get_type (),
+			NULL, NULL, 0,
+			&info);
 	}
 
 	return type;
@@ -408,7 +411,6 @@ sample_client_site_new (BonoboItemContainer *container,
 			const char          *embeddable_id)
 {
 	SampleClientSite *site;
-	Bonobo_ClientSite corba_client_site;
 
 	g_return_val_if_fail (app != NULL, NULL);
 	g_return_val_if_fail (embeddable_id != NULL, NULL);
@@ -416,16 +418,9 @@ sample_client_site_new (BonoboItemContainer *container,
 	g_return_val_if_fail (BONOBO_IS_ITEM_CONTAINER (container), NULL);
 	
 	site = gtk_type_new (sample_client_site_get_type ());
-	corba_client_site = bonobo_client_site_corba_object_create
-		(BONOBO_OBJECT (site));
-
-	if (corba_client_site == CORBA_OBJECT_NIL) {
-		bonobo_object_unref (BONOBO_OBJECT (site));
-		return NULL;
-	}
 	
 	site = SAMPLE_CLIENT_SITE (bonobo_client_site_construct (
-		BONOBO_CLIENT_SITE (site), corba_client_site, container));
+		BONOBO_CLIENT_SITE (site), container));
 
 	if (site) {
 		bonobo_client_site_bind_embeddable (BONOBO_CLIENT_SITE (site),
