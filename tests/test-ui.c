@@ -81,7 +81,7 @@ main (int argc, char **argv)
 		"<status>\n"
 		"	<statusitem name=\"left\"/>\n"
 		"</status>\n";
-	xmlNode *help, *accel;
+	xmlNode *help, *accel, *file;
 
 	free (malloc (8));
 
@@ -161,6 +161,21 @@ main (int argc, char **argv)
 	bonobo_ui_component_rm (componentc, corba_app, "/", &ev);
 
 	gtk_main ();
+
+	fprintf (stderr, "\n\n--- Remove 1 ---\n\n\n");
+	bonobo_ui_component_rm (componenta, corba_app, "/", &ev);
+
+	gtk_main ();
+
+	if (g_file_exists ("ui.xml")) {
+		fprintf (stderr, "\n\n--- Add ui.xml ---\n\n\n");
+		file = bonobo_ui_util_new_ui ("ui.xml");
+		bonobo_ui_component_set_tree (componentc, corba_app,
+					      "/", file, &ev);
+		gtk_main ();
+
+	} else
+		g_warning ("Can't find ui.xml");
 
 	bonobo_object_unref (BONOBO_OBJECT (componenta));
 	bonobo_object_unref (BONOBO_OBJECT (componentb));

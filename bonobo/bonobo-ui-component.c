@@ -22,8 +22,6 @@ POA_Bonobo_UIComponent__vepv bonobo_ui_component_vepv;
 
 typedef struct {
 	char *cname;
-	char *label;
-	char *descr;
 	BonoboUIVerbFn cb;
 	gpointer       user_data;
 } Verb;
@@ -54,8 +52,6 @@ verb_destroy (Verb *verb)
 {
 	if (verb) {
 		g_free (verb->cname);
-		g_free (verb->label);
-		g_free (verb->descr);
 		g_free (verb);
 	}
 }
@@ -157,8 +153,6 @@ impl_ui_event (PortableServer_Servant             servant,
 void
 bonobo_ui_component_add_verb (BonoboUIComponent  *component,
 			      const char         *cname,
-			      const char         *label,
-			      const char         *descr,
 			      BonoboUIVerbFn      fn,
 			      gpointer            user_data)
 {
@@ -170,8 +164,6 @@ bonobo_ui_component_add_verb (BonoboUIComponent  *component,
 
 	verb = g_new (Verb, 1);
 	verb->cname = g_strdup (cname);
-	verb->label = g_strdup (label);
-	verb->descr = g_strdup (descr);
 	verb->cb        = fn;
 	verb->user_data = user_data;
 

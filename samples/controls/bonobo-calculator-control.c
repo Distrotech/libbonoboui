@@ -16,14 +16,6 @@
 #include "bonobo-calculator-control.h"
 
 static void
-bonobo_calculator_clear (BonoboUIHandler *uih,
-			 gpointer         data,
-			 const char      *path)
-{
-	gnome_calculator_clear (data, TRUE);
-}
-
-static void
 set_prop (BonoboPropertyBag *bag,
 	  const BonoboArg   *arg,
 	  guint              arg_id,

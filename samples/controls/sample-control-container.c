@@ -9,13 +9,7 @@
  */
 #include <config.h>
 #include <gnome.h>
-
-#if USING_OAF
 #include <liboaf/liboaf.h>
-#else
-#include <libgnorba/gnorba.h>
-#endif
-
 #include <bonobo.h>
 
 Bonobo_PropertyBag pb = CORBA_OBJECT_NIL;
@@ -145,7 +139,7 @@ app_destroy_cb (GtkWidget *app, BonoboUIHandler *uih)
 	pb = CORBA_OBJECT_NIL;
 
 	gtk_main_quit ();
-	g_warning ("Main level %d\n", gtk_main_level ());
+/*	g_warning ("Main level %d\n", gtk_main_level ());*/
 }
 
 static int
@@ -158,42 +152,54 @@ app_delete_cb (GtkWidget *widget, GdkEvent *event, gpointer dummy)
 static guint
 container_create (void)
 {
-	GtkWidget       *app;
 	GtkWidget       *control;
 	GtkWidget       *proplist;
 	GtkWidget       *box;
 	GtkWidget       *button;
 	BonoboUIHandler *uih;
 	BonoboControlFrame *cf;
+	GtkWindow       *window;
+#ifdef USE_UI_HANDLER
+	GtkWidget       *app;
 
 	app = gnome_app_new ("sample-control-container",
 			     "Sample Bonobo Control Container");
-	gtk_window_set_default_size (GTK_WINDOW (app), 500, 440);
-	gtk_window_set_policy (GTK_WINDOW (app), TRUE, TRUE, FALSE);
+	window = GTK_WINDOW (app); 
 
 	uih = bonobo_ui_handler_new ();
 
-	gtk_signal_connect (GTK_OBJECT (app), "delete_event",
+	bonobo_ui_handler_set_app (uih, GNOME_APP (app));
+#else
+	BonoboApp *app;
+
+	app = bonobo_app_new ("sample-control-container",
+			      "Sample Bonobo Control Container");
+	window = GTK_WINDOW (bonobo_app_get_window (app));
+	
+	uih = bonobo_ui_handler_new_for_app (app);
+#endif
+
+	gtk_window_set_default_size (window, 500, 440);
+	gtk_window_set_policy (window, TRUE, TRUE, FALSE);
+
+	gtk_signal_connect (GTK_OBJECT (window), "delete_event",
 			    GTK_SIGNAL_FUNC (app_delete_cb), NULL);
 
-	gtk_signal_connect (GTK_OBJECT (app), "destroy",
+	gtk_signal_connect (GTK_OBJECT (window), "destroy",
 			    GTK_SIGNAL_FUNC (app_destroy_cb), uih);
 
-	bonobo_ui_handler_set_app (uih, GNOME_APP (app));
 	bonobo_ui_handler_create_menubar (uih);
 
 	box = gtk_vbox_new (FALSE, 0);
+#ifdef USE_UI_HANDLER
 	gnome_app_set_contents (GNOME_APP (app), box);
+#else
+	bonobo_app_set_contents (app, box);
+#endif
 
-#if USING_OAF
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_calculator:fab8c2a7-9576-437c-aa3a-a8617408970f",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
-#else
-	control = bonobo_widget_new_control (
-  	        "control:calculator",
-		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
-#endif
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
@@ -201,15 +207,9 @@ container_create (void)
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    (GtkSignalFunc)incr_calc, control);
 
-#if USING_OAF
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_clock:d42cc651-44ae-4f69-a10d-a0b6b2cc6ecc",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
-#else
-	control = bonobo_widget_new_control (
-		"control:clock",
-		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
-#endif
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
@@ -218,15 +218,9 @@ container_create (void)
 
 	proplist = create_proplist (control);
 
-#if USING_OAF
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_entry_factory:ef3e3c33-43e2-4f7c-9ca9-9479104608d6",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
-#else
-	control = bonobo_widget_new_control (
-		"control:entry",
-		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
-#endif
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
@@ -234,7 +228,7 @@ container_create (void)
 
 	gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 0);
 
-	gtk_widget_show_all (app);
+	gtk_widget_show_all (GTK_WIDGET (window));
 
 	return FALSE;
 }
@@ -249,17 +243,10 @@ main (int argc, char **argv)
 	/* Encorage -lefence to play ball */
 	{ char *tmp = malloc (4); if (tmp) free (tmp); }
 
-#if USING_OAF
-        gnome_init_with_popt_table("sample-control-container", "0.0",
-				   argc, argv,
-				   oaf_popt_options, 0, NULL); 
+        gnome_init_with_popt_table ("sample-control-container", "0.0",
+				    argc, argv,
+				    oaf_popt_options, 0, NULL); 
 	orb = oaf_init (argc, argv);
-#else
-	gnome_CORBA_init_with_popt_table (
-      	"sample-control-container", "0.0",
-	&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
-	orb = gnome_CORBA_ORB ();
-#endif
 
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error ("Could not initialize Bonobo");

@@ -3,6 +3,8 @@
 
 #undef BONOBO_UI_XML_DUMP
 
+#define XML_FREE(a) (a?xmlFree(a):a)
+
 static GtkObjectClass *bonobo_ui_xml_parent_class;
 
 enum {
@@ -32,6 +34,7 @@ void
 bonobo_ui_xml_strip (xmlNode *node)
 {
 	xmlNode *l;
+	xmlAttr *a;
 
 	if (!node)
 		return;
@@ -39,6 +42,9 @@ bonobo_ui_xml_strip (xmlNode *node)
 	node->ns = NULL;
 	node->doc = NULL;
 	node->nsDef = NULL;
+
+	for (a = node->properties; a; a = a->next)
+		a->ns = NULL;
 
 	for (l = node->childs; l; l = l->next)
 		bonobo_ui_xml_strip (l);
@@ -139,6 +145,7 @@ static void
 dump_internals (BonoboUIXml *tree, xmlNode *node)
 {
 	int i;
+	char *txt;
 	xmlNode *l;
 	static int indent = -4;
 	BonoboUIXmlData *data = bonobo_ui_xml_get_data (tree, node);
@@ -149,7 +156,9 @@ dump_internals (BonoboUIXml *tree, xmlNode *node)
 		fprintf (stderr, " ");
 
 	fprintf (stderr, "%s name=\"%s\" ", node->name,
-		 xmlGetProp (node, "name"));
+		 (txt = xmlGetProp (node, "name")));
+	if (txt)
+		xmlFree (txt);
 	fprintf (stderr, "%d len %d", data->dirty,
 		 g_slist_length (data->overridden));
 	if (tree->dump)
@@ -521,13 +530,17 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 	xmlNode *a, *b, *nexta, *nextb;
 
 	for (a = current->childs; a; a = nexta) {
+		xmlChar *a_name = NULL;
+		xmlChar *b_name = NULL;
+			
 		nexta = a->next;
 		nextb = NULL;
 
 		for (b = *new; b; b = nextb) {
-			xmlChar *a_name, *b_name;
-
 			nextb = b->next;
+
+			XML_FREE (a_name);
+			XML_FREE (b_name);
 
 /*			printf ("'%s' '%s' with '%s' '%s'\n",
 				a->name, xmlGetProp (a, "name"),
@@ -547,6 +560,8 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 			if (!strcmp (a_name, b_name))
 				break;
 		}
+		XML_FREE (a_name);
+		XML_FREE (b_name);
 
 		if (b == *new)
 			*new = nextb;
@@ -581,7 +596,7 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 	}
 
 	*new = NULL;
-	bonobo_ui_xml_dump (tree, current, "After all");
+/*	bonobo_ui_xml_dump (tree, current, "After all"); */
 }
 
 void
@@ -597,15 +612,16 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 	if (nodes == NULL)
 		return;
 
-	set_id (tree, nodes, id);
 	bonobo_ui_xml_strip (nodes);
+	set_id (tree, nodes, id);
 
 	current = bonobo_ui_xml_get_path (tree, path);
 
-/*	fprintf (stderr, "PATH: '%s' '%s\n", current->name,
-	xmlGetProp (current, "name"));*/
+	fprintf (stderr, "\n\n\nPATH: '%s' '%s\n", current->name,
+		 xmlGetProp (current, "name"));
 
-/*	bonobo_ui_xml_dump (tree, tree->root, "Merging in");*/
+	bonobo_ui_xml_dump (tree, tree->root, "Merging in");
+	bonobo_ui_xml_dump (tree, nodes, "this load");
 
 	merge (tree, current, &nodes);
 
@@ -625,6 +641,8 @@ bonobo_ui_xml_rm (BonoboUIXml *tree,
 		reinstate_node (tree, current, id);
 	else
 		g_warning ("Removing unknown path '%s'", path);
+
+	bonobo_ui_xml_dump (tree, tree->root, "After remove");
 }
 
 static void

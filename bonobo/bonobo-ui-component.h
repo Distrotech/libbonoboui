@@ -53,8 +53,6 @@ BonoboUIComponent *bonobo_ui_component_new          (const char         *name);
 
 void               bonobo_ui_component_add_verb     (BonoboUIComponent  *component,
 						     const char         *cname,
-						     const char         *label,
-						     const char         *descr,
 						     BonoboUIVerbFn      fn,
 						     gpointer            user_data);
 

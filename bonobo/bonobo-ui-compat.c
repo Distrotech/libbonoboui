@@ -21,7 +21,7 @@ typedef struct {
 
 static int busk_name = 0;
 
-#define MAGIC_UI_HANDLER_KEY "Bonobo::CompatUIKey"
+#define MAGIC_UI_HANDLER_KEY "Bonobo::CompatUIPrivKey"
 
 static BonoboUIHandlerPrivate *
 get_priv (BonoboUIHandler *uih)
@@ -344,7 +344,7 @@ compat_add_verb (BonoboUIComponent *component, const char *verb,
 		c->user_data = user_data;
 
 		bonobo_ui_component_add_verb (component, verb,
-					      NULL, NULL, verb_to_cb, c);
+					      verb_to_cb, c);
 		gtk_signal_connect (GTK_OBJECT (component),
 				    "destroy", (GtkSignalFunc) free_closure, c);
 }
@@ -1142,3 +1142,16 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 	g_free (xml_path);
 	xmlFreeNode (node);
 }
+
+void
+bonobo_ui_handler_set_app (BonoboUIHandler *uih, GnomeApp *app)
+{
+	g_warning ("Deprecated function; you need to use bonobo_app");
+}
+
+GnomeApp *
+bonobo_ui_handler_get_app (BonoboUIHandler *uih)
+{
+	return NULL;
+}
+

@@ -57,6 +57,11 @@ xmlNode   *bonobo_ui_util_new_toggle_toolbar(const char        *name,
 					     const char        *label,
 					     const char        *descr,
 					     const char        *id);
-					     
+
+char      *bonobo_ui_util_get_ui_fname      (const char        *component_name);
+
+xmlNode   *bonobo_ui_util_new_ui            (const char        *fname);
+
+void       bonobo_ui_util_translate_ui      (xmlNode           *node);
 
 #endif /* _BONOBO_UI_XML_UTIL_H_ */

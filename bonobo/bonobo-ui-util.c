@@ -220,7 +220,7 @@ bonobo_ui_util_xml_get_pixmap (GtkWidget *window, xmlNode *node)
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if (! (type = xmlGetProp (node, "pixtype")))
+	if (!(type = xmlGetProp (node, "pixtype")))
 		return NULL;
 
 	if (!strcmp (type, "stock")) {
@@ -228,13 +228,13 @@ bonobo_ui_util_xml_get_pixmap (GtkWidget *window, xmlNode *node)
 
 		text = xmlGetProp (node, "pixname");
 		pixmap = gnome_stock_pixmap_widget (window, text);
-
+		xmlFree (text);
 	} else if (!strcmp (type, "filename")) {
 		char *name, *text;
 
 		text = xmlGetProp (node, "pixname");
-
 		name = gnome_pixmap_file (text);
+		xmlFree (text);
 
 		if (name == NULL)
 			g_warning ("Could not find GNOME pixmap file %s", text);
@@ -253,6 +253,8 @@ bonobo_ui_util_xml_get_pixmap (GtkWidget *window, xmlNode *node)
 		
 		/* Get pointer to GdkPixbuf */
 		pixbuf = bonobo_ui_util_xml_to_pixbuf (text);
+		xmlFree (text);
+
 		g_return_val_if_fail (pixbuf != NULL, NULL);
 
 		pixmap = gnome_pixmap_new_from_pixbuf (pixbuf);
@@ -260,6 +262,8 @@ bonobo_ui_util_xml_get_pixmap (GtkWidget *window, xmlNode *node)
 		gdk_pixbuf_unref (pixbuf);
 	} else
 		g_warning ("Unknown pixmap type '%s'", type);
+
+	xmlFree (type);
 
 	return pixmap;
 }
@@ -394,10 +398,8 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 		entry->name = g_strdup (app_name);
 		entry->path = g_strdup (buf);
 
-		bonobo_ui_component_add_verb (listener,
-					      id, s, s, 
-					      bonobo_help_display_cb,
-					      entry);
+		bonobo_ui_component_add_verb (listener, id,
+					      bonobo_help_display_cb, entry);
 
 		gtk_signal_connect (GTK_OBJECT (listener), "destroy",
 				    (GtkSignalFunc) free_help_menu_entry, 
@@ -489,7 +491,6 @@ bonobo_ui_util_set_radiogroup (xmlNode    *node,
 {
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (group_name != NULL);
-	g_return_if_fail (xmlGetProp (node, "pixtype") != NULL);
 
 	xmlSetProp (node, "type", "radio");
 	xmlSetProp (node, "group", group_name);
@@ -501,7 +502,6 @@ bonobo_ui_util_set_toggle (xmlNode    *node,
 			   const char *init_state)
 {
 	g_return_if_fail (node != NULL);
-	g_return_if_fail (xmlGetProp (node, "pixtype") != NULL);
 
 	xmlSetProp (node, "type", "toggle");
 	if (id)
@@ -558,3 +558,99 @@ bonobo_ui_util_new_toggle_toolbar (const char *name,
 	return node;
 }
 					     
+
+/**
+ * bonobo_ui_util_get_ui_fname:
+ * @component_name: the name of the component.
+ * 
+ * Builds a path to the ui.xml file that stores the GUI.
+ * 
+ * Return value: the path to the file that describes the
+ * UI or NULL if it is not found.
+ **/
+char *
+bonobo_ui_util_get_ui_fname (const char *component_name)
+{
+	char *fname, *name;
+
+	name  = g_strdup_printf ("%s/ui.xml", component_name);
+	fname = gnome_datadir_file (name);
+	g_free (name);
+
+	return fname;
+}
+
+
+/**
+ * bonobo_ui_util_translate_ui:
+ * @node: the node to start at.
+ * 
+ *  Quest through a tree looking for translatable properties
+ * ( those prefixed with an '_' ). Translates the value of the
+ * property and removes the leading '_'.
+ **/
+void
+bonobo_ui_util_translate_ui (xmlNode *node)
+{
+	xmlNode *l;
+	xmlAttr *prop, *old_props;
+
+	if (!node)
+		return;
+
+	old_props = node->properties;
+	node->properties = NULL;
+
+	for (prop = old_props; prop; prop = prop->next) {
+		xmlChar *value;
+
+		value = xmlNodeListGetString (NULL, prop->val, 1);
+
+		/* Find translatable properties */
+		if (prop->name && prop->name [0] == '_')
+			xmlNewProp (node, &prop->name [1],
+				    _(value));
+		else
+			xmlNewProp (node, prop->name, value);
+
+		if (value)
+			xmlFree (value);
+	}
+
+	for (l = node->childs; l; l = l->next)
+		bonobo_ui_util_translate_ui (l);
+}
+
+
+/**
+ * bonobo_ui_util_new_ui:
+ * @fname: Filename of the UI file
+ * 
+ *  Loads an xml tree from a file, cleans the 
+ * doc cruft from its nodes; and translates the nodes.
+ * 
+ * Return value: The translated tree ready to be merged.
+ **/
+xmlNode *
+bonobo_ui_util_new_ui (const char *fname)
+{
+	xmlDoc  *doc;
+	xmlNode *node;
+
+	g_return_val_if_fail (fname != NULL, NULL);
+	
+	doc = xmlParseFile (fname);
+
+	g_return_val_if_fail (doc != NULL, NULL);
+
+	node = doc->root;
+
+	doc->root = NULL;
+	xmlFreeDoc (doc);
+
+	bonobo_ui_xml_strip (node);
+
+	bonobo_ui_util_translate_ui (node);
+
+	return node;
+}

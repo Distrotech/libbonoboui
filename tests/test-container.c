@@ -767,20 +767,36 @@ application_new (void)
 	BonoboUIHandlerMenuItem *menu_list;
 
 	app = g_new0 (Application, 1);
-	app->app = gnome_app_new ("test-container",
-				  "Sample Container Application");
 	app->container = BONOBO_CONTAINER (bonobo_container_new ());
-
 	app->box = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (app->box);
+
+#ifdef USE_UI_HANDLER
+	app->app = gnome_app_new ("test-container",
+				  "Sample Container Application");
+
 	gnome_app_set_contents (GNOME_APP (app->app), app->box);
+
+	app->uih = bonobo_ui_handler_new ();
+
+	bonobo_ui_handler_set_app (app->uih, GNOME_APP (app->app));
+#else
+	{
+		BonoboApp *bonobo_app;
+		
+		bonobo_app = bonobo_app_new ("test-container",
+					     "Sample Container Application");
+
+		bonobo_app_set_contents (bonobo_app, app->box);
+		app->app = bonobo_app_get_window (bonobo_app);
+
+		app->uih = bonobo_ui_handler_new_for_app (bonobo_app);
+	}
+#endif
 
 	/*
 	 * Create the menus.
 	 */
-	app->uih = bonobo_ui_handler_new ();
-
-	bonobo_ui_handler_set_app (app->uih, GNOME_APP (app->app));
 	bonobo_ui_handler_create_menubar (app->uih);
 
 	menu_list = bonobo_ui_handler_menu_parse_uiinfo_list_with_data (container_main_menu, app);
