@@ -1,3 +1,7 @@
+2001-07-31  Abel Cheung  <maddog@linux.org.hk>
+
+	* configure.in: Added zh_TW.Big5 to ALL_LINGUAS.
+
 2001-07-31  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-ui.c, 

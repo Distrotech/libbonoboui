@@ -25,7 +25,7 @@ GNOME_COMPILE_WARNINGS
 dnl utility conditional
 AM_CONDITIONAL(FALSE, test "x" = "y")
 
-ALL_LINGUAS="az es fr it nn no sk sv wa"
+ALL_LINGUAS="az es fr it nn no sk sv wa zh_TW.Big5"
 AM_GNOME2_GETTEXT
 
 AC_SUBST(CFLAGS)

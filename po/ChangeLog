@@ -1,26 +1,8 @@
-2001-07-30  gettextize  <bug-gnu-utils@gnu.org>
+2001-07-31  Abel Cheung  <maddog@linux.org.hk>
 
-	* Makefile.in.in: Upgrade to gettext-0.10.38.
-
-2001-07-30  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.38.
-
-2001-07-29  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.38.
-
-2001-07-28  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.38.
-
-2001-07-26  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.38.
-
-2001-07-26  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.38.
+	* zh_TW.Big5.po: New traditional Chinese translation by
+	  Joe Man <trmetal@yahoo.com.hk>.
+	* ChangeLog: Removed repeating gettextize spam.
 
 2001-07-26  gettextize  <bug-gnu-utils@gnu.org>
 
