@@ -55,7 +55,7 @@ launch_server (GnomeClientSite *client_site, GnomeContainer *container, char *go
 		return NULL;
 	}
 
-	if (!gnome_client_site_bind_bonobo_object (client_site, object_server)){
+	if (!gnome_client_site_bind_embeddable (client_site, object_server)){
 		g_warning (_("Can not bind object server to client_site\n"));
 		return NULL;
 	}
@@ -226,11 +226,11 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 	printf ("Good: Embeddable supports PersistStream\n");
 	
-	stream = gnome_stream_fs_open (NULL, "/usr/dict/words",
+	stream = gnome_stream_fs_open (NULL, "/etc/passwd",
 				       GNOME_Storage_READ);
 
 	if (stream == NULL){
-		printf ("I could not open /usr/dict/words!\n");
+		printf ("I could not open /etc/passwd!\n");
 		return;
 	}
 	

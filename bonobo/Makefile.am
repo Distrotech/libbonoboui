@@ -41,8 +41,7 @@ idls =						\
 	$(top_srcdir)/idl/gnome-moniker.idl	\
 	$(top_srcdir)/idl/gnome-persist.idl	\
 	$(top_srcdir)/idl/gnome-storage.idl	\
-	$(top_srcdir)/idl/gnome-progressive.idl \
-	$(top_srcdir)/idl/gnome-ui-handler.idl
+	$(top_srcdir)/idl/gnome-progressive.idl
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl`
 
@@ -78,7 +77,6 @@ libbonobo_la_SOURCES =			\
 	gnome-view.c			\
 	gnome-view-frame.c		\
 	gnome-wrapper.c
-
 
 
 libbonoboincludedir = $(includedir)/bonobo

@@ -189,7 +189,7 @@ gnome_view_class_init (GnomeViewClass *class)
                 gtk_signal_new ("do_verb",
                                 GTK_RUN_LAST,
                                 object_class->type,
-                                GTK_SIGNAL_OFFSET(GnomeViewClass, do_verb), 
+                                GTK_SIGNAL_OFFSET (GnomeViewClass, do_verb), 
                                 gtk_marshal_NONE__POINTER,
                                 GTK_TYPE_NONE, 1,
 				GTK_TYPE_STRING);

@@ -29,6 +29,16 @@ static POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
 static POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
 
 static GNOME_ClientSite
+impl_GNOME_ViewFrame_get_ui_handler (PortableServer_Servant servant,
+				     CORBA_Environment *ev)
+{
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
+
+	return CORBA_Object_duplicate (
+		gnome_object_corba_objref (GNOME_OBJECT (view_frame->uih)), ev);
+}
+
+static GNOME_ClientSite
 impl_GNOME_ViewFrame_get_client_site (PortableServer_Servant servant,
 				      CORBA_Environment *ev)
 {
@@ -223,6 +233,7 @@ gnome_view_frame_get_type (void)
 	return type;
 }
 
+
 /**
  * gnome_view_frame_get_wrapper:
  * @view_frame: A GnomeViewFrame object.
@@ -236,4 +247,41 @@ gnome_view_frame_get_wrapper (GnomeViewFrame *view_frame)
 	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
 
 	return GTK_WIDGET (view_frame->wrapper);
+}
+
+/**
+ * gnome_view_frame_set_ui_handler:
+ * @view_frame: A GnomeViewFrame object.
+ * @uih: A GnomeUIHandler object to be associated with this ViewFrame.
+ *
+ * Sets the GnomeUIHandler object for this ViewFrame.  When the
+ * ViewFrame's View requests its container's UIHandler interface, the
+ * ViewFrame will pass it the UIHandler specified here.  See also
+ * gnome_view_frame_get_ui_handler().
+ */
+void
+gnome_view_frame_set_ui_handler (GnomeViewFrame *view_frame, GnomeUIHandler *uih)
+{
+	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+
+	view_frame->uih = uih;
+}
+
+/**
+ * gnome_view_frame_get_ui_handler:
+ * @view_frame: A GnomeViewFrame object.
+ *
+ * Returns: The GNOMEUIHandler associated with this ViewFrame.  See
+ * also gnome_view_frame_set_ui_handler().
+ */
+GnomeUIHandler *
+gnome_view_frame_get_ui_handler (GnomeViewFrame *view_frame)
+{
+	g_return_val_if_fail (view_frame != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+
+	return view_frame->uih;
 }

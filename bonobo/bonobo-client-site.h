@@ -40,8 +40,8 @@ GnomeClientSite *gnome_client_site_construct      (GnomeClientSite  *client_site
 void             gnome_client_site_set_moniker    (GnomeClientSite *client_site,
 						   GnomeMoniker   *moniker);
 
-gboolean         gnome_client_site_bind_bonobo_object (GnomeClientSite *client_site,
-						   GnomeObjectClient *object);
+gboolean         gnome_client_site_bind_embeddable (GnomeClientSite *client_site,
+						    GnomeObjectClient *object);
 
 extern POA_GNOME_ClientSite__epv gnome_client_site_epv;
 

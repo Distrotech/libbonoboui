@@ -7,6 +7,7 @@
 #include <bonobo/gnome-object.h>
 #include <bonobo/gnome-client-site.h>
 #include <bonobo/gnome-wrapper.h>
+#include <bonobo/gnome-ui-handler.h>
 
 BEGIN_GNOME_DECLS
  
@@ -22,6 +23,7 @@ typedef struct {
 	GnomeWrapper    *wrapper; 
 
 	GnomeClientSite *client_site;
+	GnomeUIHandler  *uih;
 } GnomeViewFrame;
 
 typedef struct {
@@ -33,19 +35,17 @@ typedef struct {
 	void (*view_activated) (GnomeViewFrame *view_frame, gboolean state);
 } GnomeViewFrameClass;
 
-GtkType           gnome_view_frame_get_type    (void);
-GnomeViewFrame   *gnome_view_frame_construct   (GnomeViewFrame *view_frame,
-						GNOME_ViewFrame corba_view_frame,
-						GnomeWrapper   *wrapper,
-						GnomeClientSite *client_site);
-GnomeViewFrame   *gnome_view_frame_new         (GnomeClientSite *client_site);
-GtkWidget        *gnome_view_frame_get_wrapper (GnomeViewFrame *view_frame);
+GtkType           gnome_view_frame_get_type       (void);
+GnomeViewFrame   *gnome_view_frame_construct      (GnomeViewFrame *view_frame,
+						   GNOME_ViewFrame corba_view_frame,
+						   GnomeWrapper   *wrapper,
+						   GnomeClientSite *client_site);
+GnomeViewFrame   *gnome_view_frame_new            (GnomeClientSite *client_site);
+GtkWidget        *gnome_view_frame_get_wrapper    (GnomeViewFrame *view_frame);
+void		  gnome_view_frame_set_ui_handler (GnomeViewFrame *view_frame,
+						   GnomeUIHandler *uih);
+GnomeUIHandler   *gnome_view_frame_get_ui_handler (GnomeViewFrame *view_frame);
 
 END_GNOME_DECLS
 
 #endif /* _GNOME_VIEW_FRAME_H_ */
-
-
-
-
-

@@ -258,9 +258,10 @@ gnome_client_site_construct (GnomeClientSite  *client_site,
  * gnome_client_site_new:
  * @container: The container to which this client_site belongs.
  *
- * Programs should provide a GnomeClientSite GTK object (ie, a
- * GNOME::ClientSite CORBA server) for each bonobo object they embed.  This
- * is the contact end point for the remote GNOME::Embeddable object.
+ * Container programs should provide a GnomeClientSite GTK object (ie,
+ * a GNOME::ClientSite CORBA server) for each Embeddable which they
+ * embed.  This is the contact end point for the remote
+ * GNOME::Embeddable object.
  *
  * This routine creates a new GnomeClientSite.
  *
@@ -317,15 +318,21 @@ gnome_client_site_get_type (void)
 }
 
 /** 
- * gnome_client_site_bind_bonobo_object:
- * @client_site: the client site where we hook the object
- * @object: remote GNOME::Embeddable object
+ * gnome_client_site_bind_embeddable:
+ * @client_site: the client site to which the remote Embeddable object will be bound.
+ * @object: The remote object which supports the GNOME::Embeddable interface.
  *
- * Returns: %TRUE if the code successfully bound the remote object to this
+ * This routine binds a remote Embeddable object to a local
+ * GnomeClientSite object.  The idea is that there is always a
+ * one-to-one mapping between GnomeClientSites and GnomeEmbeddables.
+ * The Embeddable uses its GnomeClientSite to communicate with the
+ * container in which it is embedded.
+ *
+ * Returns: %TRUE if @objecdt was successfully bound to @client_site
  * @client_site.
  */
 gboolean
-gnome_client_site_bind_bonobo_object (GnomeClientSite *client_site, GnomeObjectClient *object)
+gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClient *object)
 {
 	CORBA_Object corba_object;
 	GnomeObject *gnome_object;
