@@ -1,3 +1,9 @@
+2001-07-29  Maciej Stachowiak  <mjs@noisehavoc.org>
+
+	* samples/bonoboui-hello/helloapp.h: Include
+	<bonobo/bonobo-window.h> instead of <bonobo/bonobo-win.h> to fix
+	build.
+
 2001-07-29  Murray Cumming  <murrayc@usa.net>
 
 	* samples/bonoboui-hello/helloapp.c: Corrected the
