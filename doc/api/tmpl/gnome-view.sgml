@@ -25,7 +25,7 @@ View object for exporting a view of a GnomeEmbeddable component
    handler using gnome_view_get_ui_handler().
 </para>
 
-v<para>
+<para>
    You can register verbs in the View by using the
    gnome_view_register_verb().  When you want to stop supporting a
    verb, you can use the gnome_view_unregister_verb().  Alternatively,
@@ -35,9 +35,9 @@ v<para>
 
 <para>
    #GnomeView objects get a chance to tell their containers their
-   desired by responding to the "size_query" signal.  They will get
-   their size assigned later.  The size assignment happens on the
-   GtkWidget using the normal Gtk+ size allocation procedure.  
+   desired size by responding to the "size_query" signal.  They will
+   get their size assigned later.  The size assignment happens on the
+   GtkWidget using the normal Gtk+ size allocation procedure.
 </para>
 
 <para>
