@@ -340,7 +340,7 @@ bonobo_ui_container_set_win (BonoboUIContainer *container,
 
 	container->win = win;
 
-	bonobo_window_set_ui_container (win, container);
+	bonobo_window_set_ui_container (win, BONOBO_OBJECT (container));
 
 	gtk_signal_connect (GTK_OBJECT (win), "destroy",
 			    (GtkSignalFunc) blank_win, container);
