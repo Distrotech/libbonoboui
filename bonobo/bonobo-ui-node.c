@@ -86,8 +86,7 @@ bonobo_ui_node_copy (BonoboUINode *node,
 	copy = g_new0 (BonoboUINode, 1);
 	copy->name_id = node->name_id;
 
-	if (node->content)
-		copy->content = g_strdup (node->content);
+	copy->content = g_strdup (node->content);
 
 	bonobo_ui_node_copy_attrs (node, copy);
 
@@ -860,12 +859,12 @@ bonobo_ui_node_from_string (const char *xml)
 	g_return_val_if_fail (xml != NULL, NULL);
 
 	len = strlen (xml);
-	if (len < 4)
+	if (len < 3)
 		return NULL;
 	
 	ps = parse_state_new ();
 
-	if (xmlSAXUserParseMemory (&bonoboSAXParser, ps, (char *)xml, len) < 0) {
+	if (xmlSAXUserParseMemory (&bonoboSAXParser, ps, (char *) xml, len) < 0) {
 		g_warning ("XML not well formed!");
 		parse_state_free (ps, TRUE);
 		return NULL;
