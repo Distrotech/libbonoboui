@@ -350,7 +350,7 @@ main (int argc, char **argv)
 	if (fname && g_file_test (fname, G_FILE_TEST_EXISTS)) {
 		fprintf (stderr, "\n\n--- Add std-ui.xml ---\n\n\n");
 		bonobo_ui_util_set_ui (componenta, NULL, "../doc/std-ui.xml",
-				       "gnomecal", NULL);
+				       "gdm", NULL);
 
 /*		bonobo_ui_component_set_prop (
 			componenta, "/menu/Preferences",

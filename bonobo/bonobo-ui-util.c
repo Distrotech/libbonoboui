@@ -13,6 +13,8 @@
 #include <gtk/gtkimage.h>
 #include <gtk/gtkiconfactory.h>
 
+#include <libgnome/gnome-help.h>
+#include <libgnome/gnome-init.h>
 #include <libgnome/gnome-program.h>
 
 #include <bonobo/bonobo-ui-xml.h>
@@ -470,13 +472,23 @@ bonobo_ui_util_xml_set_pixbuf (BonoboUINode *node,
 	g_free (data);
 }
 
-#ifdef FIXME
+typedef struct {
+	char         *app_prefix;
+	char         *app_name;
+	GnomeProgram *program;
+} HelpDisplayClosure;
+
 static void
-free_help_menu_entry (GtkWidget *widget, GnomeHelpMenuEntry *entry)
+help_display_closure_free (gpointer  user_data,
+			   GClosure *closure)
 {
-       g_free (entry->name);
-       g_free (entry->path);
-       g_free (entry);
+	HelpDisplayClosure *cl = user_data;
+
+	g_free (cl->app_prefix);
+	g_free (cl->app_name);
+	if (cl->program)
+		g_object_unref (cl->program);
+	g_free (cl);
 }
 
 static void
@@ -484,56 +496,62 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 			gpointer           user_data,
 			const char        *cname)
 {
-	gnome_help_display (component, user_data);
-}
+	char *file_name;
+	GError *error = NULL;
+	const char *doc_id;
+	HelpDisplayClosure *cl = user_data;
 
-/*
- * Cut and paste job so we can overcome gnome-libs brokenness.
- */
-static char *
-bonobo_help_file_find_file (const char *prefix, const char *app,
-			    const char *path)
-{
-	const GList *language_list;
-	GString *buf;
-	
-	gchar *res= NULL;
-	gchar *p, c = 0;
-	
-	language_list= gnome_i18n_get_language_list ("LC_MESSAGES");
-	
-	while (!res && language_list) {
-		const gchar *lang;
-		
-		lang = language_list->data;
-		
-		buf = g_string_new (NULL);
-		g_string_sprintf (buf, "%s/gnome/help/%s/%s/%s",
-				  prefix, app, lang, path);
-		res = g_strdup (buf->str);
-		p = strrchr (res, '#');
-		if (p) {
-			c = *p;
-			*p = '\0';
-		}
-		g_string_free (buf, TRUE);
-		
-		if (!g_file_exists (res)) {
-			g_free (res);
-			res = NULL;
+	if (cl->app_name)
+		doc_id = cl->app_name;
+	else
+		doc_id = gnome_program_get_app_id (gnome_program_get ());
+
+	if (!cl->program) {
+		int   argc = 1;
+		char *argv[2];
+		char *prefix;
+		char *datadir;
+
+		argv [0] = (char *) (doc_id ? doc_id : "unknown-lib");
+		argv [1] = NULL;
+
+		if (cl->app_prefix)
+			prefix = g_strdup (cl->app_prefix);
+		else {
+			g_object_get (G_OBJECT (gnome_program_get ()),
+				      GNOME_PARAM_APP_PREFIX, &prefix, NULL);
+			if (!prefix)
+				g_object_get (G_OBJECT (gnome_program_get ()),
+					      GNOME_PARAM_GNOME_PREFIX, &prefix, NULL);
 		}
 
-		if (c && res) {
-			*p = c;
-			c = 0;
-		}
-		
-		language_list = language_list->next;
+		/* sub-optimal, but what can you do */
+		if (prefix)
+			datadir = g_strdup_printf ("%s/share", prefix);
+		else
+			datadir = g_strdup (BONOBO_DATADIR);
+
+		cl->program = gnome_program_init (
+			doc_id, "2.1",
+			LIBGNOME_MODULE,
+			argc, argv, 
+			GNOME_PARAM_APP_PREFIX, prefix,
+			GNOME_PARAM_APP_DATADIR, datadir,
+			NULL);
+
+		g_free (datadir);
+		g_free (prefix);
 	}
-	
-	return res;
+
+	gnome_help_display_with_doc_id (
+		cl->program, doc_id, doc_id, NULL, &error);
+
+	if (error) {
+		/* FIXME: better error handling ? */
+		g_warning ("Error: '%s'", error->message);
+		g_error_free (error);
+	}
 }
-#endif
 
 /**
  * bonobo_ui_util_build_help_menu:
@@ -551,75 +569,36 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 				const char        *app_name,
 				BonoboUINode      *parent)
 {
-#ifdef FIXME
-	char buf [1024];
-	char *topic_file;
-	FILE *file;
+	static int unique = 0;
+	char *id, *help_path;
+	BonoboUINode *node;
+	HelpDisplayClosure *cl;
+ 
+	node = bonobo_ui_node_new ("menuitem");
 
-	g_return_if_fail (parent != NULL);
-	g_return_if_fail (app_name != NULL);
-	g_return_if_fail (BONOBO_IS_UI_COMPONENT (listener));
+	id = g_strdup_printf ("Help%s%d",
+			      app_name ? app_name : "main",
+			      unique++);
+	bonobo_ui_node_set_attr (node, "name", id);
+	bonobo_ui_node_set_attr (node, "verb", "");
+	bonobo_ui_node_set_attr (node, "label", _("_Contents"));
+	bonobo_ui_node_set_attr (node, "tip", _("View help for this application"));
+	bonobo_ui_node_set_attr (node, "pixtype", "stock");
+	bonobo_ui_node_set_attr (node, "pixname", "gtk-help");
 
-	/* Try to open help topics file */
-	topic_file = gnome_help_file_find_file ((char *)app_name, "topic.dat");
-	
-	/* Do something sensible */
-	if (!topic_file && app_prefix)
-		topic_file = bonobo_help_file_find_file (
-			app_prefix, app_name, "topic.dat");
+	help_path = g_strdup ("foo");
 
-	if (!topic_file || !(file = fopen (topic_file, "rt"))) {
-		g_warning ("Could not open help topics file %s for app %s", 
-				topic_file ? topic_file : "NULL", app_name);
+	cl = g_new0 (HelpDisplayClosure, 1);
+	cl->app_name = g_strdup (app_name);
+	cl->app_prefix = g_strdup (app_prefix);
 
-		g_free (topic_file);
-		return;
-	}
-	g_free (topic_file);
-	
-	/* Read in the help topics and create menu items for them */
-	while (fgets (buf, sizeof (buf), file)) {
-		unsigned char *s, *id;
-		GnomeHelpMenuEntry *entry;
-		BonoboUINode *node;
+	bonobo_ui_component_add_verb_full (
+		listener, id,
+		g_cclosure_new (
+			G_CALLBACK (bonobo_help_display_cb),
+			cl, help_display_closure_free));
 
-		/* Format of lines is "help_file_name whitespace* menu_title" */
-		for (s = buf; *s && !g_ascii_isspace (*s); s++)
-			;
-
-		*s++ = '\0';
-
-		for (; *s && g_ascii_isspace (*s); s++)
-			;
-
-		if (s [strlen (s) - 1] == '\n')
-			s [strlen (s) - 1] = '\0';
-
-		node = bonobo_ui_node_new ("menuitem");
-		/* Try and make something unique */
-		id = g_strdup_printf ("Help%s%s", app_name, buf);
-		bonobo_ui_node_set_attr (node, "name", id);
-		bonobo_ui_node_set_attr (node, "verb", id);
-		bonobo_ui_node_set_attr (node, "label", s);
-
-		bonobo_ui_node_add_child (parent, node);
-
-		/* Create help menu entry */
-		entry = g_new (GnomeHelpMenuEntry, 1);
-		entry->name = g_strdup (app_name);
-		entry->path = g_strdup (buf);
-
-		bonobo_ui_component_add_verb (listener, id,
-					      bonobo_help_display_cb, entry);
-
-		g_signal_connect (GTK_OBJECT (listener), "destroy",
-				    (GtkSignalFunc) free_help_menu_entry, 
-				    entry);
-		g_free (id);
-	}
-
-	fclose (file);
-#endif
+	bonobo_ui_node_add_child (parent, node);
 }
 
 /**
