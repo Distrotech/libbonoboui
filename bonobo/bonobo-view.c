@@ -20,8 +20,8 @@
 static GnomeObjectClass *gnome_view_parent_class;
 
 /* The entry point vectors for the server we provide */
-static POA_GNOME_View__epv gnome_view_epv;
-static POA_GNOME_View__vepv gnome_view_vepv;
+POA_GNOME_View__epv gnome_view_epv;
+POA_GNOME_View__vepv gnome_view_vepv;
 
 enum {
 	VIEW_ACTIVATE,

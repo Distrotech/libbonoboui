@@ -83,6 +83,11 @@ void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
 						    char *verb_name);
 void              gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom);
 
+
+/* The entry point vectors for the server we provide */
+extern POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
+extern POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
+
 END_GNOME_DECLS
 
 #endif /* _GNOME_VIEW_FRAME_H_ */

@@ -32,8 +32,8 @@ static guint view_frame_signals [LAST_SIGNAL];
 static GnomeObjectClass *gnome_view_frame_parent_class;
 
 /* The entry point vectors for the server we provide */
-static POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
-static POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
+POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
+POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
 
 static GNOME_ClientSite
 impl_GNOME_ViewFrame_get_ui_handler (PortableServer_Servant servant,

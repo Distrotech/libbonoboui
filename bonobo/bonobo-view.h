@@ -80,6 +80,10 @@ void		 gnome_view_register_verb	(GnomeView *view,
 void		 gnome_view_unregister_verb	(GnomeView *view,
 						 const char *verb_name);
 
+/* CORBA default vector methods we provide */
+extern POA_GNOME_View__epv gnome_view_epv;
+extern POA_GNOME_View__vepv gnome_view_vepv;
+
 END_GNOME_DECLS
 
 #endif /* _GNOME_VIEW_H_ */
