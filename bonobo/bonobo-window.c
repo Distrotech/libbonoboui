@@ -1390,7 +1390,6 @@ static void
 update_menus (BonoboWinPrivate *priv, BonoboUINode *node)
 {
 	BonoboUINode  *l;
-	gboolean       hide = FALSE;
 	NodeInfo      *info = bonobo_ui_xml_get_data (priv->tree, node);
 
 	if (info->widget)
@@ -1589,6 +1588,19 @@ build_toolbar_control (BonoboWinPrivate *priv, BonoboUINode *node)
 				  BONOBO_UI_TOOLBAR_ITEM (item), -1);
 }
 
+static gboolean 
+string_array_contains (char **str_array, const char *match)
+{
+	int i = 0;
+	char *string;
+
+	while ((string = str_array[i++]) != NULL)
+		if (strcmp (string, match) == 0)
+			return TRUE;
+
+	return FALSE;
+}
+
 static GnomeDockItem *
 create_dockitem (BonoboWinPrivate *priv,
 		 BonoboUINode     *node,
@@ -1597,6 +1609,7 @@ create_dockitem (BonoboWinPrivate *priv,
 	GnomeDockItem *item;
 	GnomeDockItemBehavior beh = 0;
 	char *prop;
+	char **behavior_array;
 
 	gboolean force_detachable = FALSE;
 	GnomeDockPlacement placement = GNOME_DOCK_TOP;
@@ -1606,9 +1619,25 @@ create_dockitem (BonoboWinPrivate *priv,
 	gboolean in_new_band = TRUE;
 
 	if ((prop = bonobo_ui_node_get_attr (node, "behavior"))) {
-		if (!strcmp (prop, "detachable"))
-			force_detachable = TRUE;
+		behavior_array = g_strsplit (prop, ",", -1);
 		bonobo_ui_node_free_string (prop);
+	
+		if (string_array_contains (behavior_array, "detachable"))
+			force_detachable = TRUE;
+
+		if (string_array_contains (behavior_array, "exclusive"))
+			beh |= GNOME_DOCK_ITEM_BEH_EXCLUSIVE;
+
+		if (string_array_contains (behavior_array, "never vertical"))
+			beh |= GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL;
+
+		if (string_array_contains (behavior_array, "never floating"))
+			beh |= GNOME_DOCK_ITEM_BEH_NEVER_FLOATING;
+
+		if (string_array_contains (behavior_array, "never horizontal"))
+			beh |= GNOME_DOCK_ITEM_BEH_NEVER_HORIZONTAL;
+
+		g_strfreev (behavior_array);
 	}
 
 	if (!force_detachable && !gnome_preferences_get_toolbar_detachable())
