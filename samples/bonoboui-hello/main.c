@@ -21,7 +21,7 @@
 /*** gnomehello */
 
 #include <config.h>
-#include <libgnome/libgnome.h>
+#include <libgnome.h>
 #include <bonobo/bonobo-ui-main.h>
 
 
