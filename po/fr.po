@@ -1,14 +1,14 @@
 # libbonoboui fr.po
 # Copyright (C) 2001-2002 Free Software Foundation, Inc.
-# Christophe Merlet (RedFox) <redfox@eikonex.org>, 2001-2002.
+# maintainer : Christophe Merlet (RedFox) <christophe@merlet.net>, 2001-2002.
 # Christophe Fergeau <teuf@users.sourceforge.net>, 2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 1.113.0\n"
-"POT-Creation-Date: 2002-04-15 18:38+0100\n"
-"PO-Revision-Date: 2002-04-11 21:54+0200\n"
-"Last-Translator: Christophe Fergeau <teuf@users.sourceforge.net>\n"
+"Project-Id-Version: libbonoboui 1.115.0\n"
+"POT-Creation-Date: 2002-04-20 21:51+0200\n"
+"PO-Revision-Date: 2002-04-20 21:47+0200\n"
+"Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,11 +55,11 @@ msgstr "Sélectionner le nom du fichier à enregistrer"
 
 #: bonobo/bonobo-plug.c:358
 msgid "Event Forwarding"
-msgstr ""
+msgstr "Suivi d'événement"
 
 #: bonobo/bonobo-plug.c:359
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "Si les événements X doivent être relayé"
 
 #: bonobo/bonobo-selector-widget.c:300
 msgid "Name"
@@ -147,7 +147,7 @@ msgstr "Niveau de zoom"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr ""
+msgstr "Le degré d'élargissement"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
@@ -155,7 +155,7 @@ msgstr "Niveau de zoom minimum"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr ""
+msgstr "Le degré minimum d'élargissement"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
@@ -163,7 +163,7 @@ msgstr "Niveau de zoom maximum"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "Le degré maximum d'élargissement"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
@@ -197,7 +197,7 @@ msgstr "fabrique corba"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr ""
+msgstr "La pointeur d'usine"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
@@ -230,11 +230,11 @@ msgstr "Drapeaux de debuggage Gdk à désactiver"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr "« display » X à utiliser"
+msgstr "Visuel X à utiliser"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr "DISPLAY"
+msgstr "VISUEL"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "Make X calls synchronous"
@@ -246,7 +246,7 @@ msgstr "Ne pas utiliser l'extension X de mémoire partagée"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "Nom du programme utilisé par le gestionnaire de fenêtres"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "NAME"
@@ -254,7 +254,7 @@ msgstr "NOM"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "Classe du programme utilisé par le gestionnaire de fenêtres"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "CLASS"
@@ -331,7 +331,7 @@ msgstr "Sélectionner"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "_À propos..."
+msgstr "À _propos..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
