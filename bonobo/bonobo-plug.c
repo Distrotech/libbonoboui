@@ -34,6 +34,15 @@
 
 static GtkWindowClass *parent_class = NULL;
 
+/**
+ * bonobo_plug_construct:
+ * @plug: The #BonoboPlug.
+ * @socket_id: the XID of the socket's window.
+ *
+ * Finish the creation of a #BonoboPlug widget. This function
+ * will generally only be used by classes deriving
+ * from #BonoboPlug.
+ */
 void
 bonobo_plug_construct (BonoboPlug *plug, guint32 socket_id)
 {
@@ -46,6 +55,15 @@ bonobo_plug_construct (BonoboPlug *plug, guint32 socket_id)
 	}
 }
 
+/**
+ * bonobo_plug_new:
+ * @socket_id: the XID of the socket's window.
+ *
+ * Create a new plug widget inside the #GtkSocket identified
+ * by @socket_id.
+ *
+ * Returns: the new #BonoboPlug widget.
+ */
 GtkWidget*
 bonobo_plug_new (guint32 socket_id)
 {

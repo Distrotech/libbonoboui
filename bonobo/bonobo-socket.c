@@ -171,6 +171,12 @@ bonobo_socket_destroy (GtkObject *object)
 		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
 
+/**
+ * bonobo_socket_new:
+ *
+ * Create a new empty #BonoboSocket.
+ * Returns: A new #BonoboSocket.
+ */
 GtkWidget*
 bonobo_socket_new (void)
 {
@@ -181,6 +187,14 @@ bonobo_socket_new (void)
 	return GTK_WIDGET (socket);
 }
 
+/**
+ * bonobo_socket_steal:
+ * @socket: the #BonoboSocket.
+ * @id: the XID of an existing toplevel window.
+ *
+ * Reparents a pre-existing toplevel window into a
+ * #BonoboSocket.
+ */
 void
 bonobo_socket_steal (BonoboSocket *socket, guint32 id)
 {

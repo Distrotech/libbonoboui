@@ -152,6 +152,18 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 	return bonobo_widget_construct_control_from_objref (bw, control, uih);
 }
 
+/**
+ * bonobo_widget_new_control_from_objref:
+ * @control: A CORBA Object reference to an IDL:Bonobo/Control:1.0
+ * @uih: Bonobo_UIContainer for the launched object.
+ *
+ * This function is a simple wrapper for easily embedding controls
+ * into applications.  This function is used when you have already
+ * a CORBA object reference to an IDL:Bonobo/Control:1.0 (the
+ * @control) argument. 
+ *
+ * Returns: the @control wrapped as a #GtkWidget.
+ */
 GtkWidget *
 bonobo_widget_new_control_from_objref (Bonobo_Control     control,
 				       Bonobo_UIContainer uih)
@@ -170,17 +182,31 @@ bonobo_widget_new_control_from_objref (Bonobo_Control     control,
 	return GTK_WIDGET (bw);
 }
 
+/**
+ * bonobo_widget_new_control:
+ * @object_desc: Description of the object to be activated 
+ * @uih: Bonobo_UIContainer for the launched object.
+ *
+ * This function is a simple wrapper for easily embedding controls
+ * into applications.  It will launch the component identified by @id
+ * and will return it as a GtkWidget.
+ *
+ * FIXME: this function should really be using bonobo_get_object() instead
+ * of bonobo_activate_object() to launch the object.
+ *
+ * Returns: A #GtkWidget that is bound to the Bonobo Control. 
+ */
 GtkWidget *
-bonobo_widget_new_control (const char        *goad_id,
+bonobo_widget_new_control (const char        *id,
 			   Bonobo_UIContainer uih)
 {
 	BonoboWidget *bw;
 
-	g_return_val_if_fail (goad_id != NULL, NULL);
+	g_return_val_if_fail (id != NULL, NULL);
 
 	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
 
-	bw = bonobo_widget_construct_control (bw, goad_id, uih);
+	bw = bonobo_widget_construct_control (bw, id, uih);
 
 	if (bw == NULL)
 		return NULL;
@@ -188,13 +214,23 @@ bonobo_widget_new_control (const char        *goad_id,
 		return GTK_WIDGET (bw);
 }
 
+/**
+ * bonobo_widget_get_control_frame:
+ * @bonobo_widget: a Bonobo Widget returned by one of the bonobo_widget_new() functions.
+ *
+ * Every IDL:Bonobo/Control:1.0 needs to be placed inside an
+ * IDL:Bonobo/ControlFrame:1.0.  This returns the BonoboControlFrame
+ * object that wraps the Control in the @bonobo_widget. 
+ * 
+ * Returns: The BonoboControlFrame associated with the @bonobo_widget
+ */
 BonoboControlFrame *
-bonobo_widget_get_control_frame (BonoboWidget *bw)
+bonobo_widget_get_control_frame (BonoboWidget *bonobo_widget)
 {
-	g_return_val_if_fail (bw != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bw), NULL);
+	g_return_val_if_fail (bonobo_widget != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return bw->priv->control_frame;
+	return bonobo_widget->priv->control_frame;
 }
 
 
@@ -260,6 +296,22 @@ bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
 	return bw;
 }
 
+/**
+ * bonobo_widget_new_subdoc:
+ * @object_desc: description of the Object to be activated.
+ * @uih: Bonobo_UIContainer for the launched object.
+ *
+ * This function is a simple wrapper for easily embedding documents
+ * into applications.  It will launch the component identified by @id
+ * and will return it as a GtkWidget.
+ *
+ * This will launch a single view of the embeddable activated by @object_desc.
+ *
+ * FIXME: this function should really be using bonobo_get_object() instead
+ * of bonobo_activate_object() to launch the object.
+ *
+ * Returns: A #GtkWidget that is bound to the Bonobo Control. 
+ */
 GtkWidget *
 bonobo_widget_new_subdoc (const char        *object_desc,
 			  Bonobo_UIContainer uih)
@@ -283,41 +335,74 @@ bonobo_widget_new_subdoc (const char        *object_desc,
 	return GTK_WIDGET (bw);
 }
 
-
+/**
+ * bonobo_widget_get_container
+ * @bonobo_widget: the #BonoboWidget to query.
+ *
+ * This operation is only valid for BonoboWidgets that were created
+ * by the bonobo_widget_new_subdoc(). 
+ *
+ * Returns: the BonoboItemContainer associated with this @bonobo_widget
+ */
 BonoboItemContainer *
-bonobo_widget_get_container (BonoboWidget *bw)
+bonobo_widget_get_container (BonoboWidget *bonobo_widget)
 {
-	g_return_val_if_fail (bw != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bw), NULL);
+	g_return_val_if_fail (bonobo_widget != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return bw->priv->container;
+	return bonobo_widget->priv->container;
 }
 
+/**
+ * bonobo_widget_get_client_site:
+ * @bonobo_widget: the #BonoboWidget to query.
+ *
+ * This operation is only valid for BonoboWidgets that were created
+ * by the bonobo_widget_new_subdoc(). 
+ *
+ * Returns: the #BonoboClientSite associated with this @bonobo_widget
+ */
 BonoboClientSite *
-bonobo_widget_get_client_site (BonoboWidget *bw)
+bonobo_widget_get_client_site (BonoboWidget *bonobo_widget)
 {
-	g_return_val_if_fail (bw != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bw), NULL);
+	g_return_val_if_fail (bonobo_widget != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return bw->priv->client_site;
+	return bonobo_widget->priv->client_site;
 }
 
+/**
+ * bonobo_widget_get_view_frame:
+ * @bonobo_widget: the #BonoboWidget to query.
+ *
+ * This operation is only valid for BonoboWidgets that were created
+ * by the bonobo_widget_new_subdoc(). 
+ *
+ * Returns: The #BonoboViewFrame associated with this @bonobo_widget.
+ */
 BonoboViewFrame *
-bonobo_widget_get_view_frame (BonoboWidget *bw)
+bonobo_widget_get_view_frame (BonoboWidget *bonobo_widget)
 {
-	g_return_val_if_fail (bw != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bw), NULL);
+	g_return_val_if_fail (bonobo_widget != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return bw->priv->view_frame;
+	return bonobo_widget->priv->view_frame;
 }
 
+/**
+ * bonobo_widget_get_uih:
+ * @bonobo_widget: the #BonoboWidget to query.
+ *
+ * Returns: the CORBA object reference to the Bonobo_UIContainer
+ * associated with the @bonobo_widget.
+ */
 Bonobo_UIContainer
-bonobo_widget_get_uih (BonoboWidget *bw)
+bonobo_widget_get_uih (BonoboWidget *bonobo_widget)
 {
-	g_return_val_if_fail (bw != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bw), NULL);
+	g_return_val_if_fail (bonobo_widget != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return bw->priv->uih;
+	return bonobo_widget->priv->uih;
 }
 
 
@@ -327,13 +412,21 @@ bonobo_widget_get_uih (BonoboWidget *bw)
  * Generic (non-control/subdoc specific) BonoboWidget stuff.
  *
  */
-BonoboObjectClient *
-bonobo_widget_get_server (BonoboWidget *bw)
-{
-	g_return_val_if_fail (bw != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bw), NULL);
 
-	return bw->priv->server;
+/**
+ * bonobo_widget_get_server:
+ * @bonobo_widget: the #BonoboWidget to query.
+ *
+ * Returns: The BonoboObjectClient (a wrapper for the CORBA object
+ * reference) to the object that this BonoboWidget is wrapping. 
+ */ 
+BonoboObjectClient *
+bonobo_widget_get_server (BonoboWidget *bonobo_widget)
+{
+	g_return_val_if_fail (bonobo_widget != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
+
+	return bonobo_widget->priv->server;
 }
 
 static void
@@ -446,6 +539,29 @@ bonobo_widget_get_type (void)
 	return type;
 }
 
+/**
+ * bonobo_widget_set_property:
+ * @control: A #BonoboWidget that represents an IDL:Bonobo/Control:1.0
+ * @first_prop: first property name to set.
+ *
+ * This is a utility function used to set a number of properties
+ * in the Bonobo Control in @control.
+ *
+ * This function takes a variable list of arguments that must be NULL
+ * terminated.  Arguments come in tuples: a string (for the argument
+ * name) and the data type that is to be transfered.  The
+ * implementation of the actual setting of the PropertyBag values is
+ * done by the bonobo_property_bag_client_setv() function).
+ *
+ * FIXME: This function is error prone because it depends on the
+ * client and the server to agree on the data types to be sent.  If
+ * the server arguments change the data type, this routine will not
+ * be able to cope gracefully with this condition.
+ *
+ * This only works for BonoboWidgets that represent controls (ie,
+ * that were returned by bonobo_widget_new_control_from_objref() or
+ * bonobo_widget_new_control().
+ */
 void
 bonobo_widget_set_property (BonoboWidget      *control,
 			    const char        *first_prop, ...)
@@ -484,6 +600,29 @@ bonobo_widget_set_property (BonoboWidget      *control,
 }
 
 
+/**
+ * bonobo_widget_get_property:
+ * @control: A #BonoboWidget that represents an IDL:Bonobo/Control:1.0
+ * @first_prop: first property name to set.
+ *
+ * This is a utility function used to get a number of properties
+ * in the Bonobo Control in @control.
+ *
+ * This function takes a variable list of arguments that must be NULL
+ * terminated.  Arguments come in tuples: a string (for the argument
+ * name) and a pointer where the data will be stored.  The
+ * implementation of the actual setting of the PropertyBag values is
+ * done by the bonobo_property_bag_client_setv() function).
+ *
+ * FIXME: This function is error prone because it depends on the
+ * client and the server to agree on the data types to be sent.  If
+ * the server arguments change the data type, this routine will not
+ * be able to cope gracefully with this condition.
+ *
+ * This only works for BonoboWidgets that represent controls (ie,
+ * that were returned by bonobo_widget_new_control_from_objref() or
+ * bonobo_widget_new_control().
+ */
 void
 bonobo_widget_get_property (BonoboWidget      *control,
 			    const char        *first_prop, ...)

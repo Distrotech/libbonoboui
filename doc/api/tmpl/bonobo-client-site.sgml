@@ -6,83 +6,83 @@ Container side object embedding server.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-   The <classname>GnomeClientSite</classname> implements the
+   The <classname>BonoboClientSite</classname> implements the
    <classname>Bonobo::ClientSite</classname> CORBA interface.  It acts
    as the container-side contact for
-   <classname>GnomeEmbeddable</classname> objects.
+   <classname>BonoboEmbeddable</classname> objects.
 </para>
 
 <para>
    For each object embedded in your application, you should create a
-   <classname>GnomeClientSite</classname> object.  
+   <classname>BonoboClientSite</classname> object.  
 </para>
 
 <para>
    Once you have a handle on a remote object that implements the
    <classname>Bonobo::Embeddable</classname> interface (typically
-   returned by gnome_object_activate_with_goad_id() or
-   gnome_object_activate () or wrapper with
-   gnome_object_client_from_corba ()) of type
-   <classname>GnomeObjectClient</classname>), you will have to bind
-   this object to the <classname>GnomeClientSite</classname> using the
-   gnome_client_site_bind_embeddable ().  Once this is done, you will
-   be able to request a #GnomeView on the #GnomeClientSite.  
+   returned by bonobo_object_activate() or
+   bonobo_get_object () or wrapper with
+   bonobo_object_client_from_corba ()) of type
+   <classname>BonoboObjectClient</classname>), you will have to bind
+   this object to the <classname>BonoboClientSite</classname> using the
+   bonobo_client_site_bind_embeddable ().  Once this is done, you will
+   be able to request a #BonoboView on the #BonoboClientSite.  
 </para>
 
 <para>
-   The #GnomeClientSite object also provides access to the remote
-   GnomeEmbeddable object's verb list.  
+   The #BonoboClientSite object also provides access to the remote
+   BonoboEmbeddable object's verb list.  
 </para>
 
 <example>
    <title>Sample usage</title>
 
    <para>
-      This demostrates the use of the #GnomeClientSite object.  This
-      launches the object specified, creates a #GnomeClientSite,
-      then requests a new #GnomeViewFrame and finally it returns the
+      This demostrates the use of the #BonoboClientSite object.  This
+      launches the object specified, creates a #BonoboClientSite,
+      then requests a new #BonoboViewFrame and finally it returns the
       widget that represents that component.
    </para>
       
    <programlisting>
 GtkWidget *
-create_widget_from_component (GnomeContainer *container, const char *goad_id)
+create_widget_from_component (BonoboContainer *container, const char *id)
 {
-	GnomeObjectClient *server;
-	GnomeClientSite   *client_site;
-	GnomeViewFrame    *view_frame;
+	BonoboObjectClient *server;
+	BonoboClientSite   *client_site;
+	BonoboViewFrame    *view_frame;
 
 	/*
 	 * Launch the requested component
 	 */
-	server = gnome_object_activate (goad_id, 0);
+	server = bonobo_object_activate (id, 0);
 	if (!server){
 		printf ("Could not activate the server");
 		return NULL;
 	}
 
-	client_site = gnome_client_site_new (app->container);
+	client_site = bonobo_client_site_new (app->container);
 
 	/*
 	 * Add this client site to the container
 	 */
-	gnome_container_add (container, GNOME_OBJECT (client_site));
+	bonobo_container_add (container, BONOBO_OBJECT (client_site));
 
 	/*
 	 * Bind the component to the client site
 	 */
-	gnome_client_site_bind_embeddable (client_site, server);
+	bonobo_client_site_bind_embeddable (client_site, server);
 
 	/*
-	 * Create a new GnomeView, and then get a GtkWidget
+	 * Create a new BonoboView, and then get a GtkWidget
 	 */
-	view_frame = gnome_client_site_embeddable_new_view (client_site);
+	view_frame = bonobo_client_site_embeddable_new_view (client_site);
 
 	/*
 	 * Get the widget for this view.
 	 */
 
-	 return gnome_view_frame_get_wrapper (view_frame);
+	 return bonobo_view_frame_get_wrapper (view_frame);
 }
 
    </programlisting>
@@ -90,13 +90,13 @@ create_widget_from_component (GnomeContainer *container, const char *goad_id)
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-  #GnomeEmbeddable #GnomeContainer #GnomeObjectClient #GnomeViewFrame
+  #BonoboEmbeddable, #BonoboContainer, #BonoboObjectClient, #BonoboViewFrame
 </para>
 
 <!-- ##### MACRO BONOBO_CLIENT_SITE_TYPE ##### -->
 <para>
   Returns the GtkType associated with the
-  <classname>GnomeClientSite</classname> object. 
+  <classname>BonoboClientSite</classname> object. 
 </para>
 
 

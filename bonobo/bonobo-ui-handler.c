@@ -2,7 +2,7 @@
 /*
  * Bonobo::UIHandler.
  *
- * Copyright 1999 Helix Code, Inc.
+ * Copyright 1999, 2000 Helix Code, Inc.
  *
  * Authors:
  *    Nat Friedman  (nat@helixcode.com)
