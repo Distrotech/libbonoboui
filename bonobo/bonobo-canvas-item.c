@@ -479,6 +479,7 @@ gbi_finalize (GtkObject *object)
 		ItemProxyServant *proxy = gbi->priv->proxy;
 		
 		PortableServer_POA_deactivate_object (bonobo_poa (), proxy->oid, &ev);
+		POA_GNOME_Unknown__fini ((void *) proxy);
 		CORBA_free (proxy->oid);
 		g_free (proxy);
 	}
