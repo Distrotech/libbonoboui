@@ -27,6 +27,7 @@
 #include <bonobo/bonobo-property-bag-client.h>
 
 enum {
+	PLUG_CREATED,
 	DISCONNECTED,
 	SET_FRAME,
 	ACTIVATE,
@@ -284,6 +285,8 @@ create_plug (BonoboControl *control)
 	if (control->priv->widget)
 		gtk_container_add (GTK_CONTAINER (plug),
 				   control->priv->widget);
+
+	g_signal_emit (control, control_signals [PLUG_CREATED], 0);
 
 	g_object_unref (G_OBJECT (plug));
 }
@@ -994,6 +997,15 @@ bonobo_control_class_init (BonoboControlClass *klass)
 
 	bonobo_control_parent_class = g_type_class_peek_parent (klass);
 
+	control_signals [PLUG_CREATED] =
+                g_signal_new ("plug_created",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
+			      G_STRUCT_OFFSET (BonoboControlClass, plug_created),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
+
 	control_signals [DISCONNECTED] =
                 g_signal_new ("disconnected",
 			      G_TYPE_FROM_CLASS (object_class),
@@ -1343,6 +1355,18 @@ bonobo_control_set_plug (BonoboControl *control,
 		bonobo_plug_set_control (plug, control);
 }
 
+/**
+ * bonobo_control_get_plug:
+ * @control: the control.a
+ * 
+ * This methods returns the current plug associated with
+ * the control. If the remote container re-parents the
+ * control - the plug will die, and a new plug has to be
+ * created. Thus this should really only be called from
+ * a 'plug_created' signal handler.
+ * 
+ * Return value: the _current_ plug.
+ **/
 BonoboPlug *
 bonobo_control_get_plug (BonoboControl *control)
 {

@@ -1,3 +1,9 @@
+2003-12-06  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control.c (create_plug):
+	emit 'plug_created' signal.
+	(bonobo_control_get_plug): expose and document.
+
 2003-10-29  Michael Meeks  <michael@ximian.com>
 
 	* Makefile.am (DISTCLEANFILES): add .
