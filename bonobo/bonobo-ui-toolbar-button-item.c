@@ -8,6 +8,7 @@
  */
 
 #include <config.h>
+#include <string.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <bonobo-ui-private.h>
 #include <bonobo-ui-toolbar-button-item.h>
@@ -79,19 +80,31 @@ static void
 set_label (BonoboUIToolbarButtonItem *button_item,
 	   const char *label)
 {
+	GtkLabel *l_widget;
 	BonoboUIToolbarButtonItemPrivate *priv;
 
 	priv = button_item->priv;
 
-	/* FIXME: we should really do a string compare
-	   on the label's contents perhaps before this: */
-	if (priv->label != NULL)
-		gtk_widget_destroy (priv->label);
+	if (!priv->label) {
+		if (!label)
+			return;
+		else
+			priv->label = gtk_label_new (label);
+	}
 
-	if (label != NULL)
-		priv->label = gtk_label_new (label);
-	else
+	if (!label) {
+		gtk_widget_destroy (priv->label);
 		priv->label = NULL;
+		return;
+	}
+
+	l_widget = GTK_LABEL (priv->label);
+
+	if (label && l_widget->label &&
+	    !strcmp (label, l_widget->label))
+		return;
+	else
+		gtk_label_set_text (l_widget, label);
 }
 
 

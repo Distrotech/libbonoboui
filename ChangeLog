@@ -1,3 +1,9 @@
+2002-10-08  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar-button-item.c
+	(set_label): re-write for Morten to make
+	it substantially more efficient.
+
 2002-10-01  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.0.3.1
