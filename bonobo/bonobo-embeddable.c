@@ -189,7 +189,7 @@ create_gnome_bonobo_object (GnomeObject *object)
 	POA_GNOME_BonoboObject *servant;
 	CORBA_Object o;
 	
-	servant = g_new0 (POA_GNOME_BonoboObject, 1);
+	servant = (POA_GNOME_BonoboObject *)g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_bonobo_object_vepv;
 
 	POA_GNOME_BonoboObject__init ((PortableServer_Servant) servant, &object->ev);

@@ -96,7 +96,6 @@ static void
 impl_GNOME_client_site__destroy (PortableServer_Servant servant, CORBA_Environment *ev)
 {
 	POA_GNOME_ClientSite__fini ((POA_GNOME_ClientSite *) servant, ev);
-	gnome_object_drop_binding_by_servant (servant);
 	g_free (servant);
 }
 
@@ -211,7 +210,7 @@ create_client_site (GnomeObject *object)
 {
 	POA_GNOME_ClientSite *servant;
 
-	servant = g_new0 (POA_GNOME_ClientSite, 1);
+	servant = (POA_GNOME_ClientSite *)g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_client_site_vepv;
 
 	POA_GNOME_ClientSite__init ((PortableServer_Servant) servant, &object->ev);

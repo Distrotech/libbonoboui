@@ -56,7 +56,7 @@ create_gnome_view (GnomeObject *object)
 	POA_GNOME_View *servant;
 	CORBA_Object o;
 	
-	servant = g_new0 (POA_GNOME_View, 1);
+	servant = (POA_GNOME_View *) g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_view_vepv;
 
 	POA_GNOME_View__init ((PortableServer_Servant) servant, &object->ev);
