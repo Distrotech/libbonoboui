@@ -137,6 +137,8 @@ glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
 static GladeWidgetBuildData widget_data[] = {
     { "BonoboWidget", glade_bonobo_widget_new, NULL,
       bonobo_widget_get_type },
+    { "BonoboWindow", glade_bonobo_widget_new, NULL,
+      bonobo_window_get_type },
     { NULL, NULL, NULL, 0, 0 }
 };
 
