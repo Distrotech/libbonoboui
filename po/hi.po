@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-08-30 16:39+0100\n"
-"PO-Revision-Date: 2002-06-08 14:30+0530\n"
+"POT-Creation-Date: 2002-09-04 05:12+0200\n"
+"PO-Revision-Date: 2002-09-04 20:36+0530\n"
 "Last-Translator: Anurag Seetha <anuragseetha@yahoo.com>\n"
 "Language-Team: Hindi <indlinux-hindi-gnome@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -31,11 +31,11 @@ msgstr "यूजर इंटरफेस धारक"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
-msgstr ""
+msgstr "Dock the toolbar"
 
 #: bonobo/bonobo-dock-item-grip.c:237
 msgid "Un dock the toolbar"
-msgstr ""
+msgstr "Un dock the toolbar"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
@@ -70,13 +70,13 @@ msgstr "संग्रहित करने के लिए एक फाइ�
 
 #: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
-msgstr ""
+msgstr "Event Forwarding"
 
 #: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
 msgstr "क्या x घटना को अग्रेषित किया जाना है"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "नाम"
 
@@ -86,7 +86,7 @@ msgstr "वर्णन"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "Interfaces required"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -94,18 +94,21 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "Interface required entry"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "One of the interfaces that's required"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
-msgstr "दश्य"
+msgstr "दर्श्य" 
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
@@ -140,9 +143,8 @@ msgid "_Text and Icon"
 msgstr "पाठ्य तथा आइकान"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "पाठ्य तथा आइकान"
+msgstr "केवल पाठ्य"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -174,13 +176,12 @@ msgid "DISPLAY"
 msgstr "डिस्प्ले"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
-#, fuzzy
 msgid "X screen to use"
-msgstr "X डिस्प्ले का प्रयोग करें"
+msgstr "प्रयोग के लिए X सक्रीन्"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "सक्रीन्"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -282,18 +283,17 @@ msgstr "क्या गतिशील है?"
 msgid "whether the toolbar is floating"
 msgstr "क्या टूलबार गतिशील है?"
 
-#: bonobo/bonobo-ui-util.c:610
+#: bonobo/bonobo-ui-util.c:598
 msgid "_Contents"
-msgstr ""
+msgstr "तत्व"
 
-#: bonobo/bonobo-ui-util.c:611
-#, fuzzy
+#: bonobo/bonobo-ui-util.c:599
 msgid "View help for this application"
-msgstr "इस अनुप्रयोग के बारे में"
+msgstr "इस अनुप्रयोग के बारे में सहायता"
 
-#: bonobo/bonobo-window.c:446
+#: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "विंडो का नाम - used for configuration serialization"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -301,7 +301,7 @@ msgstr "जूम स्तर"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "आकार व=द्धि का अंश"
+msgstr "आकार वृद्धि का अंश"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
@@ -309,7 +309,7 @@ msgstr "न्यूनतम जूम स्तर"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "न्यूनतम आकार व=द्धि का अंश"
+msgstr "न्यूनतम आकार वृद्धि का अंश"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
@@ -317,7 +317,7 @@ msgstr "अधिकतम जूम स्तर"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "आकार व=द्धि का अधिकतम अंश"
+msgstr "आकार वृद्धि का अधिकतम अंश"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
