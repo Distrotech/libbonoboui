@@ -110,6 +110,44 @@ add_image_cmd (GtkWidget *widget, Application *app)
 }
 
 static void
+add_text_cmd (GtkWidget *widget, Application *app)
+{
+	GnomeObjectClient *object;
+	GnomeStream *stream;
+	GNOME_PersistStream persist;
+
+	object = add_cmd (widget, app, "component:text-plain");
+	if (object == NULL)
+	  {
+	    gnome_warning_dialog (_("Could not launch component."));
+	    return;
+	  }
+
+	persist = GNOME_obj_query_interface (
+		GNOME_OBJECT (object)->object,
+		"IDL:GNOME/PersistStream:1.0", &ev);
+
+        if (ev._major != CORBA_NO_EXCEPTION)
+                return;
+
+        if (persist == CORBA_OBJECT_NIL)
+                return;
+
+	printf ("Good: Component supports PersistStream");
+	
+	stream = gnome_stream_fs_open (NULL, "/etc/fstab",
+				       GNOME_Storage_READ);
+
+	if (stream == NULL){
+		printf ("I could not open /etc/fstab!\n");
+		return;
+	}
+	
+	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
+
+}
+
+static void
 exit_cmd (void)
 {
 	gtk_main_quit ();
@@ -118,6 +156,7 @@ exit_cmd (void)
 static GnomeUIInfo container_file_menu [] = {
 	GNOMEUIINFO_ITEM_NONE(N_("_Add a new object"), NULL, add_demo_cmd),
 	GNOMEUIINFO_ITEM_NONE(N_("_Add a new image/x-png handler"), NULL, add_image_cmd),
+	GNOMEUIINFO_ITEM_NONE(N_("_Add a new text/plain handler"), NULL, add_text_cmd),
 	GNOMEUIINFO_SEPARATOR,
 	GNOMEUIINFO_MENU_EXIT_ITEM (exit_cmd, NULL),
 	GNOMEUIINFO_END
