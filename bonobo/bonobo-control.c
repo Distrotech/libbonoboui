@@ -43,6 +43,7 @@ struct _BonoboControlPrivate {
 	Bonobo_PropertyBag   propbag;
 	BonoboUIContainer   *popup_ui_container;
 	BonoboUIComponent   *popup_ui_component;
+	BonoboUIEngine      *popup_ui_engine;
 	BonoboUISync        *popup_ui_sync;
 
 	GtkWidget           *plug;
@@ -565,6 +566,10 @@ bonobo_control_destroy (BonoboObject *object)
 
 	control->priv->popup_ui_container = bonobo_object_unref (
 		(BonoboObject *) control->priv->popup_ui_container);
+
+	if (control->priv->popup_ui_engine)
+		g_object_unref (G_OBJECT (control->priv->popup_ui_engine));
+	control->priv->popup_ui_engine = NULL;
 
 	control->priv->popup_ui_component = bonobo_object_unref (
 		(BonoboObject *) control->priv->popup_ui_component);
@@ -1179,25 +1184,20 @@ bonobo_control_get_popup_ui_container (BonoboControl *control)
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
 	if (!control->priv->popup_ui_container) {
-		BonoboUIEngine *engine;
-
-		engine = bonobo_ui_engine_new (G_OBJECT (control));
+		control->priv->popup_ui_engine = bonobo_ui_engine_new (
+			G_OBJECT (control));
 
 		control->priv->popup_ui_sync = bonobo_ui_sync_menu_new (
-			engine, NULL, NULL, NULL);
+			control->priv->popup_ui_engine, NULL, NULL, NULL);
 
 		bonobo_ui_engine_add_sync (
-			engine, control->priv->popup_ui_sync);
+			control->priv->popup_ui_engine,
+			control->priv->popup_ui_sync);
 
 		control->priv->popup_ui_container = bonobo_ui_container_new ();
 		bonobo_ui_container_set_engine (
-			control->priv->popup_ui_container, engine);
-
-		g_signal_connect_closure (
-			G_OBJECT (control->priv->popup_ui_container),
-			"destroy",
-			g_cclosure_new_swap (
-				G_CALLBACK (g_object_unref), engine, NULL), 0);
+			control->priv->popup_ui_container,
+			control->priv->popup_ui_engine);
 	}
 
 	return control->priv->popup_ui_container;

@@ -2445,9 +2445,8 @@ bonobo_ui_engine_build_control (BonoboUIEngine *engine,
 
 	} else if (info->object != CORBA_OBJECT_NIL) {
 
-		control = bonobo_widget_new_control_from_objref
-			(bonobo_object_dup_ref (info->object, NULL),
-			 CORBA_OBJECT_NIL);
+		control = bonobo_widget_new_control_from_objref (
+			info->object, CORBA_OBJECT_NIL);
 		g_return_val_if_fail (control != NULL, NULL);
 		
 		info->type |= CUSTOM_WIDGET;

@@ -366,7 +366,6 @@ main (int argc, char **argv)
 	}
 	g_free (fname);
 
-#if 1
 
 	bonobo_ui_component_freeze (componenta, NULL);
 
@@ -390,7 +389,6 @@ main (int argc, char **argv)
 	bonobo_ui_component_set_translate (componentb, "/",   toola, ev);
 	g_assert (!BONOBO_EX (ev));
 
-#if 1
 	{
 		GtkWidget *widget = gtk_button_new_with_label ("My Label");
 		BonoboControl *control = bonobo_control_new (widget);
@@ -398,8 +396,8 @@ main (int argc, char **argv)
 
 		gtk_signal_connect (GTK_OBJECT (widget), "button_press_event",
 				    G_CALLBACK (do_sane_popup), control);
-#if 0
 		componentp = bonobo_control_get_popup_ui_component (control);
+#if 1
 		bonobo_ui_component_set (componentp, "/", "<popups>"
 					 "<popup name=\"button3\"/></popups>", ev);
 		g_assert (!BONOBO_EX (ev));
@@ -407,17 +405,15 @@ main (int argc, char **argv)
 			componentp, "/popups/button3", simpleb, ev);
 		g_assert (!BONOBO_EX (ev));
 #endif
-		
+
 		gtk_widget_show (widget);
 		bonobo_ui_component_object_set (componenta,
 						"/menu/File/MyControl",
 						BONOBO_OBJREF (control),
 						ev);
-		g_assert (!BONOBO_EX (ev));
-
 		bonobo_object_unref (BONOBO_OBJECT (control));
+		g_assert (!BONOBO_EX (ev));
 	}
-#endif
 
 	{
 		GtkWidget *widget = gtk_entry_new ();
@@ -488,8 +484,6 @@ main (int argc, char **argv)
 
 	bonobo_main ();
 
-#endif
-#if 0
 	bonobo_ui_component_freeze (componenta, ev);
 	g_assert (!BONOBO_EX (ev));
 
@@ -602,7 +596,6 @@ main (int argc, char **argv)
 	bonobo_ui_component_thaw (componenta, ev);
 	g_assert (!BONOBO_EX (ev));
 
-#endif
 	bonobo_main ();
 
 	bonobo_object_unref (BONOBO_OBJECT (componenta));

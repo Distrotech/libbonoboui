@@ -1,5 +1,16 @@
 2001-12-13  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control.c
+	(bonobo_control_get_popup_ui_container): upd.
+	(bonobo_control_destroy): upd.
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_build_control): upd. referencing.
+
+	* tests/test-ui.c: update.
+
+2001-12-13  Michael Meeks  <michael@ximian.com>
+
 	* tests/test-reparent.c (main): destroy the
 	window after use.
 
