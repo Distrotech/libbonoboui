@@ -1,3 +1,10 @@
+2002-11-01  Gustavo Carneiro <gjc@inescporto.pt>
+
+	* bonobo/bonobo-ui-engine.c
+	(add_debug_menu): impl.
+	(bonobo_ui_engine_construct): do it if
+	BONOBO_DEBUG is defined.
+
 2002-11-01  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.1.0

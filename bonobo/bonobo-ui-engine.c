@@ -22,6 +22,7 @@
 
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-xml.h>
+#include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-container.h>
 #include <bonobo/bonobo-ui-private.h>
@@ -71,6 +72,25 @@ enum {
 };
 
 static guint signals [LAST_SIGNAL] = { 0 };
+
+static void
+add_debug_menu (BonoboUIEngine *engine)
+{
+	char *xml;
+	BonoboUINode *node;
+
+	xml = g_strdup_printf (
+		"<menu>"
+		"  <submenu name=\"BonoboDebug\" label=\"%s\">"
+		"      <menuitem name=\"BonoboUIDump\" verb=\"\""
+		"       label=\"%s\" tip=\"%s\"/>"
+		"  </submenu>"
+		"</menu>", _("Debug"), _("_Dump XML"),
+		_("Dump the entire UI's XML description to the console"));
+
+	node = bonobo_ui_node_from_string (xml);
+	bonobo_ui_engine_xml_merge_tree (engine, "/", node, "BuiltIn");
+}
 
 /*
  *  Mapping from nodes to their synchronization
@@ -2019,6 +2039,9 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine,
 	priv->config = bonobo_ui_engine_config_new (engine, opt_parent);
 
 	build_skeleton (priv->tree);
+
+	if (g_getenv ("BONOBO_DEBUG"))
+		add_debug_menu (engine);
 
 	g_signal_connect (priv->tree, "override",
 			  (GtkSignalFunc) override_fn, engine);
