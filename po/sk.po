@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-06-10 21:46+0200\n"
-"PO-Revision-Date: 2001-06-10 21:46+0200\n"
+"POT-Creation-Date: 2001-08-07 08:44+0200\n"
+"PO-Revision-Date: 2001-08-07 08:49+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -29,115 +29,90 @@ msgstr "Preferovaná ¹írka"
 msgid "Preferred height"
 msgstr "Preferovaná vý¹ka"
 
-#: bonobo/bonobo-selector-widget.c:211
+#: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
 msgstr "Meno"
 
-#: bonobo/bonobo-selector-widget.c:235
+#: bonobo/bonobo-selector-widget.c:380
 msgid "Description"
 msgstr "Popis"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "Visible"
 msgstr "Viditeµný"
 
-#: bonobo/bonobo-ui-config-widget.c:280
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Ukáza»"
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "_Hide"
 msgstr "S_kry»"
 
-#: bonobo/bonobo-ui-config-widget.c:300
+#: bonobo/bonobo-ui-config-widget.c:294
 msgid "_View tooltips"
 msgstr "Ukáza» _nástrojové tipy"
 
-#: bonobo/bonobo-ui-config-widget.c:307
+#: bonobo/bonobo-ui-config-widget.c:301
 msgid "Toolbars"
 msgstr "Li¹ty nástrojov"
 
-#: bonobo/bonobo-ui-config-widget.c:317 bonobo/bonobo-ui-sync-toolbar.c:509
+#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "Vzhµad"
 
-#: bonobo/bonobo-ui-config-widget.c:327 bonobo/bonobo-ui-sync-toolbar.c:511
+#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "_Ikona"
 
-#: bonobo/bonobo-ui-config-widget.c:337
+#: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Text and Icon"
 msgstr "_Text a ikona"
 
-#: bonobo/bonobo-ui-config-widget.c:347
+#: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
 msgstr "Len _prioritný text"
 
-#: bonobo/bonobo-ui-engine-config.c:517
+#: bonobo/bonobo-ui-engine-config.c:513
 msgid "Configure UI"
 msgstr "Konfigurova» pou¾ívateµské rozhranie"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:510
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
 msgstr "_Obidvoje"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:512
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
 msgstr "T_ext"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:513
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
 msgstr "Skry» t_ipy"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:514
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
 msgstr "Ukáza» t_ipy"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:515
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
 msgstr "S_kry» li¹tu nástrojov"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:516
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
 msgstr "Prispôso_bi»"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:517
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
 msgstr "Prispôsobi» li¹tu nástrojov"
 
-#: tests/selector_test.c:20
+#: tests/test-focus.c:31 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+msgid "Can not bonobo_ui_init"
+msgstr "Nemô¾em bonobo_ui_init"
+
+#: tests/test-selector.c:13
 msgid "Select an object"
 msgstr "Vybra» objekt"
 
-#: tests/test-container.c:65 tests/test-container.c:95
-msgid "Can not activate object_server"
-msgstr "Nemô¾em aktivova» object_server"
-
-#: tests/test-container.c:70 tests/test-container.c:100
-msgid "Can not bind object server to client_site"
-msgstr "Nemô¾em pripoji» server objektov do client_site"
-
-#: tests/test-container.c:269
-msgid "Can not activate server"
-msgstr "Nemô¾em aktivova» server"
-
-#: tests/test-container.c:319 tests/test-container.c:364
-msgid "Could not launch bonobo object."
-msgstr "Nemô¾em spusti» objekt bonobo."
-
-#: tests/test-container.c:562
-msgid "Could not launch Embeddable."
-msgstr "Nemô¾em spusti» Vlo¾iteµný."
-
-#: tests/test-container.c:596
-msgid "Could not launch Control."
-msgstr "Nemô¾em spusti» Ovládaè."
-
-#: tests/test-container.c:861
-msgid "Can not bonobo_init"
-msgstr "Nemô¾em bonobo_init"
-
-#: tests/test-focus.c:31 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-#: tests/test-ui.c:224
-msgid "Can not bonobo_ui_init"
-msgstr "Nemô¾em bonobo_ui_init"
+#: tests/test-ui.c:229
+msgid "Cannot init libbonoboui code"
+msgstr "Nemô¾em inicializova» kód libbonoboui"
