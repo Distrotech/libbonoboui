@@ -541,7 +541,7 @@ size_allocate_horizontally (BonoboUIToolbar *toolbar,
 
 		gtk_widget_get_child_requisition (widget, &child_requisition);
 
-		if (available_width < child_requisition.width) {
+		if (available_width < child_requisition.width && p != priv->items) {
 			priv->first_not_fitting_item = p;
 			break;
 		}
@@ -604,7 +604,7 @@ size_allocate_vertically (BonoboUIToolbar *toolbar,
 
 		gtk_widget_get_child_requisition (widget, &child_requisition);
 
-		if (available_height < child_requisition.height) {
+		if (available_height < child_requisition.height  && p != priv->items) {
 			priv->first_not_fitting_item = p;
 			break;
 		}
