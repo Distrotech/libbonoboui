@@ -1,3 +1,8 @@
+Sun Sep 02 23:32:07 2001  George Lebl <jirka@5z.com>
+
+	* bonobo/bonobo-ui-main.c (bonobo_ui_init_full):
+	  libgnome_module_info is now libgnome_module_info_get ()
+
 Sun Sep 02 00:50:00 2001  George Lebl <jirka@5z.com>
 
 	* bonobo/bonobo-file-selector-util.c (create_control):

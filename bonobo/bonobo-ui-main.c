@@ -113,7 +113,7 @@ bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 		 * Initialize all our dependencies.
 		 */
 		gnome_program_init (
-			app_name, app_version, &libgnome_module_info,
+			app_name, app_version, libgnome_module_info_get (),
 			*argc, argv, NULL);
 	}
 
