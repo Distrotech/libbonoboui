@@ -11,7 +11,7 @@
  */
 #include <config.h>
 
-#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-private.h>
@@ -110,7 +110,7 @@ do_low_level_init (void)
 	CORBA_exception_init (&ev);
 	CORBA_Context_set_one_value (
 		context, "display",
-		gdk_get_display (),
+		DisplayString (gdk_display),
 		&ev);
 	CORBA_exception_free (&ev);
 }

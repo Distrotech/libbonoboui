@@ -1,9 +1,15 @@
+2002-04-28  Anders Carlsson  <andersca@gnu.org>
+
+	* bonobo/bonobo-ui-main.c (do_low_level_init): Revert change
+	made by Alex Graveley since it breaks nautilus (and probably
+	other things too).
+	
 2002-04-28  Murray Cumming  <murrayc@usa.net>
 
 	* Corrected libglade version requirement, because jamesh
 	decremented the libglade version.
 
-in2002-04-26  Alex Graveley <alex@ximian.com>
+2002-04-26  Alex Graveley <alex@ximian.com>
 
 	* bonobo/bonobo-ui-main.c (do_low_level_init): Use
 	gdk_get_display(), instead of the gdk internal variable
