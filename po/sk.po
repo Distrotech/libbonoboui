@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-05-21 22:55+0200\n"
+"POT-Creation-Date: 2002-05-27 12:51+0100\n"
 "PO-Revision-Date: 2002-05-21 23:00+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
@@ -56,15 +56,15 @@ msgstr "Preferovaná ¹írka"
 msgid "Preferred height"
 msgstr "Preferovaná vý¹ka"
 
-#: bonobo/bonobo-file-selector-util.c:376
+#: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
 msgstr "Vybra» súbor na otvorenie"
 
-#: bonobo/bonobo-file-selector-util.c:404
+#: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
 msgstr "Vybra» súbory na otvorenie"
 
-#: bonobo/bonobo-file-selector-util.c:433
+#: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
 msgstr "Vybra» meno súboru na ulo¾enie"
 
@@ -106,47 +106,52 @@ msgstr "Vy¾adovaná polo¾ka rozhrania"
 msgid "One of the interfaces that's required"
 msgstr "Jedno z rozhraní, ktoré je vy¾adované"
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "Viditeµný"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Ukáza»"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "S_kry»"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "Ukáza» _nástrojové tipy"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "Li¹ty nástrojov"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "li¹ty nástrojov"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Vzhµad"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Ikona"
 
-#: bonobo/bonobo-ui-config-widget.c:320
+#: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "_Text a ikona"
 
-#: bonobo/bonobo-ui-config-widget.c:326
+#: bonobo/bonobo-ui-config-widget.c:334
+#, fuzzy
+msgid "Text only"
+msgstr "_Text a ikona"
+
+#: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "Len _prioritný text"
 
-#: bonobo/bonobo-ui-engine-config.c:516
+#: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Konfigurova» pou¾ívateµské rozhranie"
 

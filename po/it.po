@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"POT-Creation-Date: 2002-05-20 12:06+0100\n"
+"POT-Creation-Date: 2002-05-27 12:51+0100\n"
 "PO-Revision-Date: 2002-03-03 16:29+0100\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@cgabriel.org>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -58,15 +58,15 @@ msgstr "Larghezza preferita"
 msgid "Preferred height"
 msgstr "Altezza preferita"
 
-#: bonobo/bonobo-file-selector-util.c:376
+#: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
 msgstr "Selezionare un file da aprire"
 
-#: bonobo/bonobo-file-selector-util.c:404
+#: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
 msgstr "Selezionare i file da aprire"
 
-#: bonobo/bonobo-file-selector-util.c:433
+#: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
 msgstr "Selezione il nome del file da salvare"
 
@@ -105,47 +105,52 @@ msgstr ""
 msgid "One of the interfaces that's required"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "Visibile"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Mostra"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "_Nascondi"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "_Suggerimenti"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "Barre strumenti"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "barre strumenti"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Aspetto"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Icona"
 
-#: bonobo/bonobo-ui-config-widget.c:320
+#: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "_Testo e icona"
 
-#: bonobo/bonobo-ui-config-widget.c:326
+#: bonobo/bonobo-ui-config-widget.c:334
+#, fuzzy
+msgid "Text only"
+msgstr "_Testo e icona"
+
+#: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "_Priorità al solo testo"
 
-#: bonobo/bonobo-ui-engine-config.c:516
+#: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Configurazione UI"
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-05-20 12:06+0100\n"
+"POT-Creation-Date: 2002-05-27 12:51+0100\n"
 "PO-Revision-Date: 2002-02-26 00:23+0100\n"
 "Last-Translator: Andraž Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: slovenian <sl@li.org>\n"
@@ -55,15 +55,15 @@ msgstr "Želena širina"
 msgid "Preferred height"
 msgstr "Želena višina"
 
-#: bonobo/bonobo-file-selector-util.c:376
+#: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
 msgstr "Izberi datoteko za odprtje"
 
-#: bonobo/bonobo-file-selector-util.c:404
+#: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
 msgstr "Izberi datoteke za odprtje"
 
-#: bonobo/bonobo-file-selector-util.c:433
+#: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
 msgstr "Izberite ime datoteke za shranitev"
 
@@ -102,47 +102,52 @@ msgstr ""
 msgid "One of the interfaces that's required"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "Vidno"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Kaži"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "_Skrij"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "_Kaži namige orodij"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "Orodjarne"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "orodjarne"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Pogled"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Ikona"
 
-#: bonobo/bonobo-ui-config-widget.c:320
+#: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "_Besedilo in ikone"
 
-#: bonobo/bonobo-ui-config-widget.c:326
+#: bonobo/bonobo-ui-config-widget.c:334
+#, fuzzy
+msgid "Text only"
+msgstr "_Besedilo in ikone"
+
+#: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "Le _prednostno besedilo"
 
-#: bonobo/bonobo-ui-engine-config.c:516
+#: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Nastavljiv uporabniški vmesnik"
 

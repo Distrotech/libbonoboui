@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.112.1\n"
-"POT-Creation-Date: 2002-05-20 12:06+0100\n"
+"POT-Creation-Date: 2002-05-27 12:51+0100\n"
 "PO-Revision-Date: 2002-03-11 23:03+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -59,15 +59,15 @@ msgstr "希望する幅"
 msgid "Preferred height"
 msgstr "希望する高さ"
 
-#: bonobo/bonobo-file-selector-util.c:376
+#: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
 msgstr "開きたいファイルを選択"
 
-#: bonobo/bonobo-file-selector-util.c:404
+#: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
 msgstr "開きたいファイルを選択"
 
-#: bonobo/bonobo-file-selector-util.c:433
+#: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
 msgstr "保存するファイル名を選択"
 
@@ -107,47 +107,52 @@ msgstr ""
 msgid "One of the interfaces that's required"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "可視"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "表示(_S)"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "隠す(_H)"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "ツールチップを表示(_V)"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "ツールバー"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "ツールバー"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "外観"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "アイコン(_I)"
 
-#: bonobo/bonobo-ui-config-widget.c:320
+#: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "テキストとアイコン(_T)"
 
-#: bonobo/bonobo-ui-config-widget.c:326
+#: bonobo/bonobo-ui-config-widget.c:334
+#, fuzzy
+msgid "Text only"
+msgstr "テキストとアイコン(_T)"
+
+#: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "テキストのみ(_P)"
 
-#: bonobo/bonobo-ui-engine-config.c:516
+#: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "UI の設定"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tamil libbonoboui2 1.7\n"
-"POT-Creation-Date: 2002-05-20 12:06+0100\n"
+"POT-Creation-Date: 2002-05-27 12:51+0100\n"
 "PO-Revision-Date: 2001-09-28 18:53-0500\n"
 "Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -58,15 +58,15 @@ msgstr "≈¢’Ù¿¡°… ´∏ƒı"
 msgid "Preferred height"
 msgstr "≈¢’Ù¿¡°… Ø¬√ı"
 
-#: bonobo/bonobo-file-selector-util.c:376
+#: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:404
+#: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:433
+#: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
 msgstr ""
 
@@ -105,48 +105,53 @@ msgstr ""
 msgid "One of the interfaces that's required"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "¿°˜Ï∏ÏÏ‹ ¬–"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_∏°Ò¿¢"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "_¡®»"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "_∏’≈¢ Øæ≈¢∏®« ∏°Ò¿¢"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "∏’≈¢Ù ¿ƒ®∏∏˚"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:302
 #, fuzzy
 msgid "toolbars"
 msgstr "∏’≈¢Ù ¿ƒ®∏∏˚"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "¿°˜"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Ã’ı¿ºı"
 
-#: bonobo/bonobo-ui-config-widget.c:320
+#: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "_Ø®√‘ı Ã’ı¿º”ı"
 
-#: bonobo/bonobo-ui-config-widget.c:326
+#: bonobo/bonobo-ui-config-widget.c:334
+#, fuzzy
+msgid "Text only"
+msgstr "_Ø®√‘ı Ã’ı¿º”ı"
+
+#: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "_”˝€√¢®¡ Ø®√ ¡Œı"
 
-#: bonobo/bonobo-ui-engine-config.c:516
+#: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "UI≥ Ø’≈°ÏÃ"
 
