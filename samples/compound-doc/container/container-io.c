@@ -61,7 +61,7 @@ create_stream (Bonobo_Storage storage, char *path)
 #define DATA_FILE "data"
 
 static void
-save_component (BonoboStorage * storage, Component * component, int index)
+save_component (BonoboStorage *storage, Component *component, int index)
 {
 	char *curr_dir = g_strdup_printf ("%08d", index);
 
@@ -78,10 +78,15 @@ save_component (BonoboStorage * storage, Component * component, int index)
 	if (!corba_subdir)
 		g_warning ("Can't create '%s'", curr_dir);
 	else {
-		component_save_id (component,
-				   create_stream (corba_subdir, GOAD_FILE));
-		component_save (component,
-				create_stream (corba_subdir, DATA_FILE));
+		Bonobo_Stream corba_stream;
+
+		corba_stream = create_stream (corba_subdir, GOAD_FILE);
+		component_save_id (component, corba_stream);
+		Bonobo_Stream_close (corba_stream, &ev);
+
+		corba_stream = create_stream (corba_subdir, DATA_FILE);
+		component_save (component, corba_stream);
+		Bonobo_Stream_close (corba_stream, &ev);
 	}
 
 	CORBA_exception_free (&ev);
