@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-05-27 12:51+0100\n"
-"PO-Revision-Date: 2002-04-01 01:25+0000\n"
+"POT-Creation-Date: 2002-05-28 02:30+0100\n"
+"PO-Revision-Date: 2002-05-28 02:35+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -86,7 +86,7 @@ msgstr "Descrição"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "Interfaces requeridos"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -94,14 +94,17 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"Um array de interfaces terminado em NULL que um servidor tem de suportar por "
+"forma a ser listado no selector. Por omissão é \"IDL:Bonobo/Embeddable:1.0\" se "
+"nenhum interface for listado"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "Entrada de interface requerido"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Um dos interfaces que é requerido"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -140,9 +143,8 @@ msgid "_Text and Icon"
 msgstr "_Texto e Ícones"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "_Texto e Ícones"
+msgstr "Apenas texto"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -174,13 +176,12 @@ msgid "DISPLAY"
 msgstr "ECRA"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
-#, fuzzy
 msgid "X screen to use"
 msgstr "Ecrã X a utilizar"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "ECRA"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -284,16 +285,15 @@ msgstr "se a barra de ferramentas está ou não a flutuar"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr ""
+msgstr "_Conteudos"
 
 #: bonobo/bonobo-ui-util.c:584
-#, fuzzy
 msgid "View help for this application"
-msgstr "Sobre esta aplicação"
+msgstr "Ver a ajuda desta aplicação"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "Nome da janela - utilizada para serialização da configuração."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
