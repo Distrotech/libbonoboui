@@ -1047,7 +1047,7 @@ impl_set_property (GObject      *object,
 			toolbar, g_value_get_enum (value));
 		break;
 	case PROP_IS_FLOATING:
-		priv->is_floating = g_value_get_uint (value);
+		priv->is_floating = g_value_get_boolean (value);
 		break;
 	default:
 		break;
