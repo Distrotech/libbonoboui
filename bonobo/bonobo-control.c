@@ -595,7 +595,7 @@ bonobo_control_finalize (GtkObject *object)
 	 * needed because there is no plug.  
 	 */
 	if (control->priv->plug) {
-		gtk_object_unref (GTK_OBJECT (control->priv->plug));
+		gtk_object_destroy (GTK_OBJECT (control->priv->plug));
 		control->priv->plug = NULL;
 	}
 
