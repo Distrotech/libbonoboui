@@ -406,6 +406,20 @@ destroy_view_frame (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
 }
 
 static void
+size_request (GtkWidget *widget, GtkRequisition *requisition, GnomeViewFrame *view_frame)
+{
+	GNOME_View view = gnome_view_frame_get_view (view_frame);
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+	GNOME_View_size_query (view, &requisition->width, &requisition->height, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION)
+		gnome_object_check_env (GNOME_OBJECT (view_frame), view, &ev);
+	CORBA_exception_free (&ev);
+
+}
+
+static void
 size_allocate (GtkWidget *widget, GtkAllocation *allocation, GnomeViewFrame *view_frame)
 {
 	GNOME_View view = gnome_view_frame_get_view (view_frame);
@@ -501,8 +515,12 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
 			    GTK_SIGNAL_FUNC (destroy_view_frame), client_site);
 
-	gtk_signal_connect (GTK_OBJECT (wrapper), "size_allocate",
+	gtk_signal_connect (GTK_OBJECT (wrapper->bin.child), "size_allocate",
 			    GTK_SIGNAL_FUNC (size_allocate), view_frame);
+
+	gtk_signal_connect (GTK_OBJECT (wrapper->bin.child), "size_request",
+			    GTK_SIGNAL_FUNC (size_request), view_frame);
+
 
 	CORBA_exception_free (&ev);		
 	return view_frame;

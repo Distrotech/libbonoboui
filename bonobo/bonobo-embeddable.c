@@ -236,6 +236,11 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 	if (view == NULL)
 		return CORBA_OBJECT_NIL;
 
+	if (gnome_object_corba_objref (view) == CORBA_OBJECT_NIL){
+		g_warning ("Returned view does not have a CORBA object bound\n");
+		gtk_object_destroy (GTK_OBJECT (view));
+		return CORBA_OBJECT_NIL;
+	}
 	gnome_view_set_view_frame (view, view_frame);
 	gnome_view_set_embeddable (view, embeddable);
 
