@@ -1,3 +1,13 @@
+2002-01-07  Rodrigo Moya <rodrigo@ximian.com>
+
+	* monikers/bonobo-moniker-config.c: implemented config: moniker, based
+	in GConf
+
+	* monikers/bonobo-config-bag.[ch]: PropertyBag implementation for the
+	config: moniker, based on bonobo-config's BonoboConfigBag
+
+	* monikers/bonobo-moniker-extra.[ch]: added new moniker
+
 2002-01-07  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-widget.c (bonobo_widget_construct_control):
