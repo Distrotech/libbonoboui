@@ -23,6 +23,7 @@
 #include <gdk/gdktypes.h>
 #include <gtk/gtkhbox.h>
 #include <bonobo/bonobo-socket.h>
+#include <bonobo/bonobo-exception.h>
 
 enum {
 	ACTIVATED,
@@ -203,13 +204,14 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 	 * If we are not yet bound to a remote control, don't do
 	 * anything.
 	 */
-	if (control == CORBA_OBJECT_NIL)
+	if (control == CORBA_OBJECT_NIL || !socket)
 		return;
 
 	/*
 	 * Sync the server, since the XID may have been created on the
 	 * client side without communication with the X server.
 	 */
+	/* FIXME: not very convinced about this flush */
 	gdk_flush ();
 
 	/*
@@ -236,6 +238,10 @@ bonobo_control_frame_create_socket (BonoboControlFrame *control_frame)
 	 */
 	control_frame->priv->socket = bonobo_socket_new ();
 	gtk_widget_show (control_frame->priv->socket);
+
+	bonobo_socket_set_control_frame (
+		BONOBO_SOCKET (control_frame->priv->socket),
+		control_frame);
 
 	/*
 	 * Connect to the focus events on the socket so
@@ -279,15 +285,6 @@ bonobo_control_frame_create_socket (BonoboControlFrame *control_frame)
 	gtk_box_pack_start (GTK_BOX (control_frame->priv->container),
 			    control_frame->priv->socket,
 			    TRUE, TRUE, 0);
-
-	/*
-	 * When the socket is realized, we pass its Window ID to our
-	 * Control.
-	 */
-	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
-			    "realize",
-			    GTK_SIGNAL_FUNC (bonobo_control_frame_set_remote_window),
-			    control_frame);
 }
 				
 
@@ -376,6 +373,8 @@ bonobo_control_frame_destroy (GtkObject *object)
 	control_frame->priv->control = CORBA_OBJECT_NIL;
 
 	if (control_frame->priv->socket) {
+		bonobo_socket_set_control_frame (
+			BONOBO_SOCKET (control_frame->priv->socket), NULL);
 		gtk_signal_disconnect_by_data (
 			GTK_OBJECT (control_frame->priv->socket),
 			control_frame);
@@ -816,12 +815,6 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 		bonobo_control_frame_create_socket (control_frame);
 
 	/*
-	 * Attach the control to the socket
-	 */
-	bonobo_socket_set_control (BONOBO_SOCKET (control_frame->priv->socket),
-				   control_frame->priv->control);
-
-	/*
 	 * If the socket is realized, then we transfer the
 	 * window ID to the remote control.
 	 */
@@ -969,4 +962,74 @@ bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
 	*desired_height = height;
 
 	CORBA_exception_free (&ev);
+}
+
+/*
+ *  These methods are used by the bonobo-socket to
+ * sync the X pipe with the CORBA connection.
+ */
+void
+bonobo_control_frame_sync_realize (BonoboControlFrame *frame)
+{
+	Bonobo_Control control;
+	CORBA_Environment ev;
+
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
+	
+	if (!frame->priv || frame->priv->control == CORBA_OBJECT_NIL)
+		return;
+
+	control = frame->priv->control;
+
+	bonobo_control_frame_set_remote_window (
+		frame->priv->socket, frame);
+
+	/*
+	 * We sync here so that we make sure that if the XID for
+	 * our window is passed to another application, SubstructureRedirectMask
+	 * will be set by the time the other app creates its window.
+	 */
+	gdk_flush ();
+
+	if (control == CORBA_OBJECT_NIL)
+		return;
+
+	CORBA_exception_init (&ev);
+
+	Bonobo_Control_realize (control, &ev);
+	if (BONOBO_EX (&ev))
+		g_warning ("Exception on unrealize '%s'",
+			   bonobo_exception_get_text (&ev));
+
+	CORBA_exception_free (&ev);
+
+	gdk_flush ();
+}
+
+void
+bonobo_control_frame_sync_unrealize (BonoboControlFrame *frame)
+{
+	Bonobo_Control control;
+	CORBA_Environment ev;
+
+	if (!frame->priv || frame->priv->control == CORBA_OBJECT_NIL)
+		return;
+
+	control = frame->priv->control;
+
+	gdk_flush ();
+
+	if (control == CORBA_OBJECT_NIL)
+		return;
+
+	CORBA_exception_init (&ev);
+
+	Bonobo_Control_unrealize (control, &ev);
+	if (BONOBO_EX (&ev))
+		g_warning ("Exception on unrealize '%s'",
+			   bonobo_exception_get_text (&ev));
+
+	CORBA_exception_free (&ev);
+
+	gdk_flush ();
 }

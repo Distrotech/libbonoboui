@@ -102,6 +102,10 @@ POA_Bonobo_ControlFrame__epv *bonobo_control_frame_get_epv                   (vo
 void  bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
 					int *desired_width,
 					int *desired_height);
+
+/* You almost certainly don't want these methods */
+void  bonobo_control_frame_sync_realize   (BonoboControlFrame *frame);
+void  bonobo_control_frame_sync_unrealize (BonoboControlFrame *frame);
     
 END_GNOME_DECLS
 

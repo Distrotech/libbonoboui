@@ -32,11 +32,12 @@
 #include <gtk/gtkwindow.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkdnd.h>
-#include "bonobo/bonobo-socket.h"
+#include <bonobo/bonobo-socket.h>
+#include <bonobo/bonobo-control-frame.h>
 
 struct _BonoboSocketPrivate {
 	/* The control on the other side which we use to gdk_flush() */
-	Bonobo_Control control;
+	BonoboControlFrame *frame;
 
 	guint16 request_width;
 	guint16 request_height;
@@ -137,7 +138,7 @@ bonobo_socket_init (BonoboSocket *socket)
 	priv = g_new (BonoboSocketPrivate, 1);
 	socket->priv = priv;
 
-	priv->control = CORBA_OBJECT_NIL;
+	priv->frame = NULL;
 
 	priv->request_width = 0;
 	priv->request_height = 0;
@@ -295,7 +296,7 @@ bonobo_socket_realize (GtkWidget *widget)
 
 	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
 
-	bonobo_control_sync_realize (socket->priv->control);
+	bonobo_control_frame_sync_realize (socket->priv->frame);
 }
 
 static void
@@ -322,17 +323,17 @@ bonobo_socket_unrealize (GtkWidget *widget)
 	if (GTK_WIDGET_CLASS (parent_class)->unrealize)
 		(* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
 
-	bonobo_control_sync_unrealize (priv->control);
+	bonobo_control_frame_sync_unrealize (priv->frame);
 }
 
 void
-bonobo_socket_set_control (BonoboSocket  *socket,
-			   Bonobo_Control control)
+bonobo_socket_set_control_frame (BonoboSocket       *socket,
+				 BonoboControlFrame *frame)
 {
 	g_return_if_fail (BONOBO_IS_SOCKET (socket));
 
 	if (socket->priv)
-		socket->priv->control = control;
+		socket->priv->frame = frame;
 }
 
 static void 
@@ -493,11 +494,9 @@ bonobo_socket_focus_out_event (GtkWidget *widget, GdkEventFocus *event)
 	/* FIXME: can we just check the return value of 
 	 * XGetWindowAttributes? */
 	if (toplevel && attr.map_state == IsViewable)
-	{
 		XSetInputFocus (GDK_DISPLAY (),
 				GDK_WINDOW_XWINDOW (toplevel->window),
 				RevertToParent, CurrentTime); /* FIXME? */
-	}
 
 	priv->focus_in = FALSE;
 

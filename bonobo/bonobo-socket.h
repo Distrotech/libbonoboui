@@ -52,10 +52,10 @@ typedef struct {
 } BonoboSocketClass;
 
 
-GtkWidget*     bonobo_socket_new         (void);
-guint          bonobo_socket_get_type    (void);
-void           bonobo_socket_set_control (BonoboSocket  *socket,
-					  Bonobo_Control control);
+GtkWidget*     bonobo_socket_new               (void);
+guint          bonobo_socket_get_type          (void);
+void           bonobo_socket_set_control_frame (BonoboSocket       *socket,
+						BonoboControlFrame *frame);
 
 /* Unused */
 void           bonobo_socket_steal       (BonoboSocket    *socket,

@@ -3222,8 +3222,8 @@ bonobo_window_finalize (GtkObject *object)
 
 char *
 bonobo_window_xml_get (BonoboWindow  *win,
-		    const char *path,
-		    gboolean    node_only)
+		       const char *path,
+		       gboolean    node_only)
 {
  	char *str;
  	BonoboUINode    *node;
@@ -3244,7 +3244,7 @@ bonobo_window_xml_get (BonoboWindow  *win,
 
 gboolean
 bonobo_window_xml_node_exists (BonoboWindow  *win,
-			    const char *path)
+			       const char *path)
 {
 	BonoboUINode *node;
 	gboolean      wildcard;
@@ -3499,13 +3499,13 @@ construct_priv (BonoboWindow *win)
 
 	priv = g_new0 (BonoboWindowPrivate, 1);
 
-	priv->win    = win;	
+	priv->win = win;	
 
 	/* Keybindings; the gtk_binding stuff is just too evil */
 	gtk_signal_connect (GTK_OBJECT (win), "key_press_event",
 			    (GtkSignalFunc) bonobo_window_binding_handle, priv);
 
-	priv->dock   = GNOME_DOCK (gnome_dock_new ());
+	priv->dock = GNOME_DOCK (gnome_dock_new ());
 	gtk_container_add (GTK_CONTAINER (win),
 			   GTK_WIDGET    (priv->dock));
 

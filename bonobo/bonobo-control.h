@@ -83,10 +83,6 @@ void                        bonobo_control_activate_notify         (BonoboContro
 Bonobo_Control_windowId     bonobo_control_windowid_from_x11       (guint32              x11_id);
 POA_Bonobo_Control__epv    *bonobo_control_get_epv                 (void);
 
-/* You almost certainly don't want these methods */
-void                        bonobo_control_sync_realize            (Bonobo_Control       control);
-void                        bonobo_control_sync_unrealize          (Bonobo_Control       control);
-
 END_GNOME_DECLS
 
 #endif /* _BONOBO_CONTROL_H_ */

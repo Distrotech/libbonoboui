@@ -459,64 +459,11 @@ impl_Bonobo_Control_realize (PortableServer_Servant servant,
 	process_events (servant);
 }
 
-/*
- *  These methods are used by the bonobo-socket to
- * sync the X pipe with the CORBA connection.
- */
-void
-bonobo_control_sync_realize (Bonobo_Control control)
-{
-	CORBA_Environment ev;
-
-	/*
-	 * We sync here so that we make sure that if the XID for
-	 * our window is passed to another application, SubstructureRedirectMask
-	 * will be set by the time the other app creates its window.
-	 */
-	gdk_flush ();
-
-	if (control == CORBA_OBJECT_NIL)
-		return;
-
-	CORBA_exception_init (&ev);
-
-	Bonobo_Control_realize (control, &ev);
-	if (BONOBO_EX (&ev))
-		g_warning ("Exception on unrealize '%s'",
-			   bonobo_exception_get_text (&ev));
-
-	CORBA_exception_free (&ev);
-
-	gdk_flush ();
-}
-
 static void
 impl_Bonobo_Control_unrealize (PortableServer_Servant servant,
 			       CORBA_Environment     *ev)
 {
 	process_events (servant);
-}
-
-void
-bonobo_control_sync_unrealize (Bonobo_Control control)
-{
-	CORBA_Environment ev;
-
-	gdk_flush ();
-
-	if (control == CORBA_OBJECT_NIL)
-		return;
-
-	CORBA_exception_init (&ev);
-
-	Bonobo_Control_unrealize (control, &ev);
-	if (BONOBO_EX (&ev))
-		g_warning ("Exception on unrealize '%s'",
-			   bonobo_exception_get_text (&ev));
-
-	CORBA_exception_free (&ev);
-
-	gdk_flush ();
 }
 
 /**
