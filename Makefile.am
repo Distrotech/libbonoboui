@@ -1,9 +1,9 @@
-SUBDIRS = bonobo samples tests po intl
+SUBDIRS = bonobo samples tests po intl doc
 
 libincludedir = $(includedir)/gnome/2
 libinclude_HEADERS =    \
 	bonobo.h	\
 	libbonoboui.h
 
-EXTRA_DIST = message-of-doom
+EXTRA_DIST = message-of-doom changes.txt
 

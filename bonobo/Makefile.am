@@ -119,8 +119,8 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-zoomable-frame.c			\
 	bonoboui-marshal-main.c
 
-BUILT_SOURCES = \
-	bonoboui-marshal.c		\
+marshal_sources = \
+	bonoboui-marshal.c \
 	bonoboui-marshal.h
 
 bonoboui-marshal.h: bonoboui-marshal.list
@@ -138,4 +138,7 @@ bonoboui-marshal.c: bonoboui-marshal.list bonoboui-marshal.h
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbonoboui-2.0.pc
 
-EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in bonoboui-marshal.list
+EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in \
+	bonoboui-marshal.list $(marshal_sources)
+MAINTAINERCLEANFILES = $(marshal_sources)
+BUILT_SOURCES = $(marshal_sources)

@@ -1,3 +1,7 @@
+2001-08-05  Michael Meeks  <michael@ximian.com>
+
+	* Makefile.am: add changes.txt
+
 2001-08-01  Darin Adler  <darin@bentspoon.com>
 
 	* samples/bonoboui-hello/main.c:
