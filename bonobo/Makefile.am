@@ -55,7 +55,6 @@ libbonobo_la_LDFLAGS = \
 	-version-info $(BONOBO_CURRENT):$(BONOBO_REVISION):$(BONOBO_AGE) \
 	$(PROF_LDFLAGS) \
 	$(gnome_libs)
-	
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
@@ -107,7 +106,6 @@ libbonoboinclude_HEADERS =			\
 	bonobo-canvas-component.h		\
 	bonobo-canvas-item.h			\
 	bonobo-client-site.h			\
-	bonobo-component-io.h			\
 	bonobo-control-frame.h			\
 	bonobo-control.h			\
 	bonobo-context.h			\
