@@ -152,6 +152,17 @@ impl_Bonobo_UIComponent_uiEvent (PortableServer_Servant             servant,
 }
 
 
+/**
+ * bonobo_ui_component_add_verb_full:
+ * @component: the component to add it to
+ * @cname: the programmatic name of the verb
+ * @fn: the callback function for invoking it
+ * @user_data: the associated user data for the callback
+ * @destroy_fn: a destroy function for the callback data
+ * 
+ * Add a verb to the UI component, that can be invoked by
+ * the container.
+ **/
 void
 bonobo_ui_component_add_verb_full (BonoboUIComponent  *component,
 				   const char         *cname,
@@ -181,6 +192,16 @@ bonobo_ui_component_add_verb_full (BonoboUIComponent  *component,
 	g_hash_table_insert (priv->verbs, verb->cname, verb);
 }
 
+/**
+ * bonobo_ui_component_add_verb:
+ * @component: the component to add it to
+ * @cname: the programmatic name of the verb
+ * @fn: the callback function for invoking it
+ * @user_data: the associated user data for the callback
+ *
+ * Add a verb to the UI component, that can be invoked by
+ * the container.
+ **/
 void
 bonobo_ui_component_add_verb (BonoboUIComponent  *component,
 			      const char         *cname,
@@ -223,6 +244,13 @@ remove_verb (gpointer	key,
 	return FALSE;
 }
 
+/**
+ * bonobo_ui_component_remove_verb:
+ * @component: the component to add it to
+ * @cname: the programmatic name of the verb
+ * 
+ * Remove a verb by it's unique name
+ **/
 void
 bonobo_ui_component_remove_verb (BonoboUIComponent  *component,
 				 const char         *cname)
@@ -237,6 +265,13 @@ bonobo_ui_component_remove_verb (BonoboUIComponent  *component,
 	g_hash_table_foreach_remove (component->priv->verbs, remove_verb, &info);
 }
 
+/**
+ * bonobo_ui_component_remove_verb_by_func:
+ * @component: the component to add it to
+ * @fn: the function pointer
+ * 
+ * remove any verb handled by @fn.
+ **/
 void
 bonobo_ui_component_remove_verb_by_func (BonoboUIComponent  *component,
 					 BonoboUIVerbFn      fn)
@@ -251,6 +286,13 @@ bonobo_ui_component_remove_verb_by_func (BonoboUIComponent  *component,
 	g_hash_table_foreach_remove (component->priv->verbs, remove_verb, &info);
 }
 
+/**
+ * bonobo_ui_component_remove_verb_by_func:
+ * @component: the component to add it to
+ * @user_data: the function pointer
+ * 
+ * remove any verb with associated @user_data pointer
+ **/
 void
 bonobo_ui_component_remove_verb_by_data (BonoboUIComponent  *component,
 					 gpointer            user_data)
@@ -265,6 +307,16 @@ bonobo_ui_component_remove_verb_by_data (BonoboUIComponent  *component,
 	g_hash_table_foreach_remove (component->priv->verbs, remove_verb, &info);
 }
 
+/**
+ * bonobo_ui_component_add_listener_full:
+ * @component: the component to add it to
+ * @id: the programmatic name of the id
+ * @fn: the callback function for invoking it
+ * @user_data: the associated user data for the callback
+ * @destroy_fn: a destroy function for the callback data
+ * 
+ * Add a listener for stateful events.
+ **/
 void
 bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
 				       const char         *id,
@@ -295,6 +347,15 @@ bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
 	g_hash_table_insert (priv->listeners, list->id, list);	
 }
 
+/**
+ * bonobo_ui_component_add_listener:
+ * @component: the component to add it to
+ * @id: the programmatic name of the id
+ * @fn: the callback function for invoking it
+ * @user_data: the associated user data for the callback
+ * 
+ * Add a listener for stateful events.
+ **/
 void
 bonobo_ui_component_add_listener (BonoboUIComponent  *component,
 				  const char         *id,
@@ -328,6 +389,13 @@ remove_listener (gpointer	key,
 	return FALSE;
 }
 
+/**
+ * bonobo_ui_component_remove_listener:
+ * @component: the component to add it to
+ * @cname: the programmatic name of the id
+ * 
+ * Remove any listener by its unique id
+ **/
 void
 bonobo_ui_component_remove_listener (BonoboUIComponent  *component,
 				     const char         *cname)
@@ -342,6 +410,13 @@ bonobo_ui_component_remove_listener (BonoboUIComponent  *component,
 	g_hash_table_foreach_remove (component->priv->listeners, remove_listener, &info);
 }
 
+/**
+ * bonobo_ui_component_remove_by_func:
+ * @component: the component to add it to
+ * @fn: the function pointer
+ * 
+ * Remove any listener with associated function @fn
+ **/
 void
 bonobo_ui_component_remove_listener_by_func (BonoboUIComponent  *component,
 					     BonoboUIListenerFn      fn)
@@ -356,6 +431,13 @@ bonobo_ui_component_remove_listener_by_func (BonoboUIComponent  *component,
 	g_hash_table_foreach_remove (component->priv->listeners, remove_listener, &info);
 }
 
+/**
+ * bonobo_ui_component_remove_by_data:
+ * @component: the component to add it to
+ * @user_data: the user_data pointer
+ * 
+ * Remove any listener with associated user_data @user_data
+ **/
 void
 bonobo_ui_component_remove_listener_by_data (BonoboUIComponent  *component,
 					     gpointer            user_data)
@@ -397,6 +479,15 @@ bonobo_ui_component_destroy (GtkObject *object)
 	bonobo_ui_component_parent_class->destroy (object);
 }
 
+/**
+ * bonobo_ui_component_construct:
+ * @ui_component: the UI component itself
+ * @name: the name of the UI component
+ * 
+ * Construct the UI component with name @name
+ * 
+ * Return value: a constructed UI component or NULL on error
+ **/
 BonoboUIComponent *
 bonobo_ui_component_construct (BonoboUIComponent *ui_component,
 			       const char        *name)
@@ -408,6 +499,14 @@ bonobo_ui_component_construct (BonoboUIComponent *ui_component,
 	return ui_component;
 }
 
+/**
+ * bonobo_ui_component_new:
+ * @name: the name of the UI component
+ * 
+ * Create a new UI component with the specified name
+ * 
+ * Return value: a new UI component 
+ **/
 BonoboUIComponent *
 bonobo_ui_component_new (const char *name)
 {
@@ -422,6 +521,15 @@ bonobo_ui_component_new (const char *name)
 			component, name));
 }
 
+/**
+ * bonobo_ui_component_new_default:
+ * @void: 
+ * 
+ * Create a UI component with a unique default name
+ * constructed from various available system properties.
+ * 
+ * Return value: a new UI component
+ **/
 BonoboUIComponent *
 bonobo_ui_component_new_default (void)
 {
@@ -443,6 +551,13 @@ bonobo_ui_component_new_default (void)
 	return component;
 }
 
+/**
+ * bonobo_ui_component_set_name:
+ * @component: the UI component
+ * @name: the new name
+ * 
+ * Set the @name of the UI @component
+ **/
 void
 bonobo_ui_component_set_name (BonoboUIComponent  *component,
 			      const char         *name)
@@ -454,6 +569,12 @@ bonobo_ui_component_set_name (BonoboUIComponent  *component,
 	component->priv->name = g_strdup (name);
 }
 
+/**
+ * bonobo_ui_component_get_name:
+ * @component: the UI component
+ * 
+ * Return value: the name of the UI @component
+ **/
 const char *
 bonobo_ui_component_get_name (BonoboUIComponent  *component)
 {
@@ -462,6 +583,20 @@ bonobo_ui_component_get_name (BonoboUIComponent  *component)
 	return component->priv->name;
 }
 
+/**
+ * bonobo_ui_component_set:
+ * @component: the component
+ * @path: the path to set
+ * @xml: the xml to set
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * Set the @xml fragment into the remote #BonoboUIContainer's tree
+ * attached to @component at the specified @path
+ *
+ * If you see blank menu items ( or just separators ) it's
+ * likely that you should be using #bonobo_ui_component_set_translate
+ * which substantialy deprecates this routine.
+ **/
 void
 bonobo_ui_component_set (BonoboUIComponent  *component,
 			 const char         *path,
@@ -505,6 +640,17 @@ impl_xml_set (BonoboUIComponent  *component,
 		CORBA_exception_free (&tmp_ev);
 }
 
+/**
+ * bonobo_ui_component_set_tree:
+ * @component: the component
+ * @path: the path to set
+ * @node: the #BonoboUINode representation of an xml tree to set
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * Set the @xml fragment into the remote #BonoboUIContainer's tree
+ * attached to @component at the specified @path
+ * 
+ **/
 void
 bonobo_ui_component_set_tree (BonoboUIComponent *component,
 			      const char        *path,
@@ -523,6 +669,17 @@ bonobo_ui_component_set_tree (BonoboUIComponent *component,
 	bonobo_ui_node_free_string (str);
 }
 
+/**
+ * bonobo_ui_component_set_translate:
+ * @component: the component
+ * @path: the path to set
+ * @xml: the non translated xml to set
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * This routine parses the XML strings, and converts any:
+ * _label="Hello World" type strings into the translated,
+ * and encoded format expected by the remote #BonoboUIContainer.
+ **/
 void
 bonobo_ui_component_set_translate (BonoboUIComponent  *component,
 				   const char         *path,
@@ -543,6 +700,20 @@ bonobo_ui_component_set_translate (BonoboUIComponent  *component,
 	bonobo_ui_node_free (node);
 }
 
+/**
+ * bonobo_ui_component_get:
+ * @component: the component
+ * @path: the path to get
+ * @recurse: whether to get child nodes of @path
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * This routine fetches a chunk of the XML tree in the
+ * #BonoboUIContainer associated with @component pointed
+ * to by @path. If @recurse then the child nodes of @path
+ * are returned too, otherwise they are not.
+ *
+ * Return value: an XML string
+ **/
 CORBA_char *
 bonobo_ui_component_get (BonoboUIComponent *component,
 			 const char        *path,
@@ -585,6 +756,20 @@ impl_xml_get (BonoboUIComponent *component,
 	return xml;
 }
 
+/**
+ * bonobo_ui_component_get_tree:
+ * @component: the component
+ * @path: the path to get
+ * @recurse: whether to get child nodes of @path
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * This routine fetches a chunk of the XML tree in the
+ * #BonoboUIContainer associated with @component pointed
+ * to by @path. If @recurse then the child nodes of @path
+ * are returned too, otherwise they are not.
+ *
+ * Return value: an #BonoboUINode XML representation
+ **/
 BonoboUINode *
 bonobo_ui_component_get_tree (BonoboUIComponent  *component,
 			      const char         *path,
@@ -609,6 +794,16 @@ bonobo_ui_component_get_tree (BonoboUIComponent  *component,
 	return node;
 }
 
+/**
+ * bonobo_ui_component_rm:
+ * @component: the component
+ * @path: the path to set
+ * @ev: the (optional) CORBA exception environment
+ *
+ * This routine removes a chunk of the XML tree in the
+ * #BonoboUIContainer associated with @component pointed
+ * to by @path.
+ **/
 void
 bonobo_ui_component_rm (BonoboUIComponent  *component,
 			const char         *path,
@@ -651,6 +846,18 @@ impl_xml_rm (BonoboUIComponent  *component,
 }
 
 
+/**
+ * bonobo_ui_component_object_set:
+ * @component: the component
+ * @path: the path to set
+ * @control: a CORBA object reference
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * This registers the @control CORBA object into the
+ * #BonoboUIContainer associated with this @component at
+ * the specified @path. This is most often used to associate
+ * controls with a certain path.
+ **/
 void
 bonobo_ui_component_object_set (BonoboUIComponent  *component,
 				const char         *path,
@@ -681,6 +888,18 @@ bonobo_ui_component_object_set (BonoboUIComponent  *component,
 		CORBA_exception_free (&tmp_ev);
 }
 
+/**
+ * bonobo_ui_component_object_get:
+ * @component: the component
+ * @path: the path to set
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * This returns the @control CORBA object registered with the
+ * #BonoboUIContainer associated with this @component at
+ * the specified @path.
+ *
+ * Returns: the associated remote CORBA object.
+ **/
 Bonobo_Unknown
 bonobo_ui_component_object_get (BonoboUIComponent  *component,
 				const char         *path,
@@ -715,6 +934,16 @@ bonobo_ui_component_object_get (BonoboUIComponent  *component,
 	return ret;
 }
 
+/**
+ * bonobo_ui_component_add_verb_list_with_data:
+ * @component: the component
+ * @list: the list of verbs
+ * @user_data: the user data passed to the verb callbacks
+ * 
+ * This is a helper function to save registering verbs individualy
+ * it allows registration of a great batch of verbs at one time
+ * in a list of #BonoboUIVerb terminated by #BONOBO_UI_VERB_END
+ **/
 void
 bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *component,
 					     BonoboUIVerb       *list,
@@ -732,6 +961,14 @@ bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *component,
 	}
 }
 
+/**
+ * bonobo_ui_component_add_verb_list:
+ * @component: the component
+ * @list: the list of verbs.
+ * 
+ * Add a list of verbs with no associated user_data, you probably
+ * want #bonobo_ui_component_add_verb_list_with_data
+ **/
 void
 bonobo_ui_component_add_verb_list (BonoboUIComponent  *component,
 				   BonoboUIVerb       *list)
@@ -739,6 +976,18 @@ bonobo_ui_component_add_verb_list (BonoboUIComponent  *component,
 	bonobo_ui_component_add_verb_list_with_data (component, list, NULL);
 }
 
+/**
+ * bonobo_ui_component_freeze:
+ * @component: the component
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * This increments the freeze count on the remote associated
+ * #BonoboUIContainer, this means that a batch of update operations
+ * can be performed without a re-render penalty per update.
+ *
+ * NB. if your GUI is frozen / not updating you probably have a
+ * freeze / thaw reference leak/
+ **/
 void
 bonobo_ui_component_freeze (BonoboUIComponent *component,
 			    CORBA_Environment *ev)
@@ -774,6 +1023,18 @@ impl_freeze (BonoboUIComponent *component,
 		CORBA_exception_free (&tmp_ev);
 }
 
+/**
+ * bonobo_ui_component_thaw:
+ * @component: the component
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * This decrements the freeze count on the remote associated
+ * #BonoboUIContainer, this means that a batch of update operations
+ * can be performed without a re-render penalty per update.
+ *
+ * NB. if your GUI is frozen / not updating you probably have a
+ * freeze / thaw reference leak/
+ **/
 void
 bonobo_ui_component_thaw (BonoboUIComponent *component,
 			  CORBA_Environment *ev)
@@ -809,6 +1070,19 @@ impl_thaw (BonoboUIComponent *component,
 		CORBA_exception_free (&tmp_ev);
 }
 
+/**
+ * bonobo_ui_component_set_prop:
+ * @component: the component
+ * @path: the path to set the property on
+ * @prop: the property name
+ * @value: the property value
+ * @opt_ev: the (optional) CORBA exception environment
+ * 
+ * This helper function sets an XML property ( or attribute )
+ * on the XML node pointed at by @path. It does this by
+ * a read / modify / write process. If you find yourself
+ * doing this a lot, you need to consider batching this process.
+ **/
 void
 bonobo_ui_component_set_prop (BonoboUIComponent  *component,
 			      const char         *path,
@@ -856,6 +1130,20 @@ impl_set_prop (BonoboUIComponent  *component,
 	bonobo_ui_node_free (node);
 }
 
+/**
+ * bonobo_ui_component_get_prop:
+ * @component: the component
+ * @path: the path to set the property on
+ * @prop: the property name
+ * @value: the property value
+ * @opt_ev: the (optional) CORBA exception environment
+ * 
+ * This helper function fetches an XML property ( or attribute )
+ * from the XML node pointed at by @path in the #BonoboUIContainer
+ * associated with @component
+ * 
+ * Return value: the xml property value or NULL - free with g_free.
+ **/
 gchar *
 bonobo_ui_component_get_prop (BonoboUIComponent *component,
 			      const char        *path,
@@ -910,6 +1198,14 @@ impl_get_prop (BonoboUIComponent *component,
 	return ret;
 }
 
+/**
+ * bonobo_ui_component_path_exists:
+ * @component: the component
+ * @path: the path to set the property on
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * Return value: TRUE if the path exists in the container.
+ **/
 gboolean
 bonobo_ui_component_path_exists (BonoboUIComponent *component,
 				 const char        *path,
@@ -953,6 +1249,17 @@ impl_exists (BonoboUIComponent *component,
 	return ret;
 }
 
+/**
+ * bonobo_ui_component_set_status:
+ * @component: the component
+ * @text: the new status text
+ * @ev: the (optional) CORBA exception environment
+ * 
+ * This sets the contents of the status bar to @text in the
+ * remote #BonoboUIContainer associated with @component.
+ * This is done by setting the contents of the /status/main
+ * node.
+ **/
 void
 bonobo_ui_component_set_status (BonoboUIComponent *component,
 				const char        *text,
@@ -974,6 +1281,13 @@ bonobo_ui_component_set_status (BonoboUIComponent *component,
 	}
 }
 
+/**
+ * bonobo_ui_component_unset_container:
+ * @component: the component
+ * 
+ * This dis-associates the @component from its associated
+ * #BonoboUIContainer.
+ **/
 void
 bonobo_ui_component_unset_container (BonoboUIComponent *component)
 {
@@ -1004,6 +1318,14 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component)
 	component->priv->container = CORBA_OBJECT_NIL;
 }
 
+/**
+ * bonobo_ui_component_set_container:
+ * @component: the component
+ * @container: a remote container object.
+ * 
+ * This associates this @component with a remote @container
+ * object.
+ **/
 void
 bonobo_ui_component_set_container (BonoboUIComponent *component,
 				   Bonobo_UIContainer container)
@@ -1042,6 +1364,12 @@ bonobo_ui_component_set_container (BonoboUIComponent *component,
 	component->priv->container = ref_cont;
 }
 
+/**
+ * bonobo_ui_component_get_container:
+ * @component: the component.
+ * 
+ * Return value: the associated remote container
+ **/
 Bonobo_UIContainer
 bonobo_ui_component_get_container (BonoboUIComponent *component)
 {

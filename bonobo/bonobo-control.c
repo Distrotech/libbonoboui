@@ -589,14 +589,10 @@ bonobo_control_get_widget (BonoboControl *control)
  * @automerge: Whether or not menus and toolbars should be
  * automatically merged when the control is activated.
  *
- * This Method is deprecated and will not do anything useful.
- *
  * Sets whether or not the control handles menu/toolbar merging
  * automatically.  If automerge is on, the control will automatically
- * create its menus and toolbars when it is activated and destroy them
- * when it is deactivated.  The menus and toolbars which it merges are
- * specified with bonobo_control_set_menus() and
- * bonobo_control_set_toolbars().
+ * register its BonoboUIComponent with the remote BonoboUIContainer
+ * when it is activated.
  */
 void
 bonobo_control_set_automerge (BonoboControl *control,
@@ -610,8 +606,6 @@ bonobo_control_set_automerge (BonoboControl *control,
 /**
  * bonobo_control_get_automerge:
  * @control: A #BonoboControl.
- *
- * This Method is deprecated and will not do anything useful.
  *
  * Returns: Whether or not the control is set to automerge its
  * menus/toolbars.  See bonobo_control_set_automerge().
