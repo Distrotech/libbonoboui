@@ -320,11 +320,11 @@ bonobo_ui_sync_status_new (BonoboUIEngine *engine,
 
 	sync->status = status;
 
-	gtk_signal_connect (GTK_OBJECT (engine), "add_hint",
-			    (GtkSignalFunc) set_hint_cb, sync);
+	g_signal_connect (G_OBJECT (engine), "add_hint",
+			  G_CALLBACK (set_hint_cb), sync);
 
-	gtk_signal_connect (GTK_OBJECT (engine), "remove_hint",
-			    (GtkSignalFunc) remove_hint_cb, sync);
+	g_signal_connect (G_OBJECT (engine), "remove_hint",
+			  G_CALLBACK (remove_hint_cb), sync);
 
 	return bonobo_ui_sync_construct (
 		BONOBO_UI_SYNC (sync), engine, FALSE, TRUE);

@@ -1,3 +1,8 @@
+2001-07-22  Joe Shaw  <joe@ximian.com>
+
+	* bonobo/bonobo-ui-sync-status.c (bonobo_ui_sync_status_new): Use
+	the GObject signal functions since BonoboUIEngine is a GObject now.
+
 2001-07-21  Dan Damian  <dand@dnttm.ro>
 
 	* libbonoboui.h: changed reference from bonobo-win.h
