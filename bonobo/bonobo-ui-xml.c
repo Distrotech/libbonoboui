@@ -446,7 +446,7 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 
 	g_assert (data->id);
 
-	override = !same;
+	override = !same && !transparent;
 
 	if (override) {
 
