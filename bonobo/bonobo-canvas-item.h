@@ -9,8 +9,8 @@
 #ifndef _BONOBO_CANVAS_ITEM_H_
 #define _BONOBO_CANVAS_ITEM_H_
 
-#include <libgnome/gnome-defs.h>
-#include <libgnomeui/gnome-canvas.h>
+#include <libgnomebase/gnome-defs.h>
+#include <libgnomecanvas/gnome-canvas.h>
 #include <bonobo/bonobo-embeddable.h>
 
 #define BONOBO_CANVAS_ITEM(obj)          (GTK_CHECK_CAST((obj), bonobo_canvas_item_get_type (), BonoboCanvasItem))

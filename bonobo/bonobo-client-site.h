@@ -10,9 +10,9 @@
 #ifndef _BONOBO_CLIENT_SITE_H_
 #define _BONOBO_CLIENT_SITE_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <gtk/gtkobject.h>
-#include <libgnomeui/gnome-canvas.h>
+#include <libgnomecanvas/gnome-canvas.h>
 #include <bonobo/bonobo-xobject.h>
 #include <bonobo/bonobo-object-client.h>
 #include <bonobo/bonobo-item-container.h>

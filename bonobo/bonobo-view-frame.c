@@ -17,7 +17,7 @@
 #include <bonobo/bonobo-view.h>
 #include <bonobo/bonobo-view-frame.h>
 #include <gdk/gdkprivate.h>
-#include <libgnomeui/gnome-canvas.h>
+#include <libgnomecanvas/gnome-canvas.h>
 #include <gdk/gdkkeysyms.h>
 
 enum {

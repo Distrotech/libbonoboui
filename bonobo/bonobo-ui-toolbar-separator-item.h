@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_TOOLBAR_SEPARATOR_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_SEPARATOR_ITEM_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include "bonobo-ui-toolbar-item.h"
 
 BEGIN_GNOME_DECLS

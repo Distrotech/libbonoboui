@@ -11,7 +11,7 @@
 #ifndef _BONOBO_VIEW_H_
 #define _BONOBO_VIEW_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-view-frame.h>
 

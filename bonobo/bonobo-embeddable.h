@@ -11,9 +11,9 @@
 #ifndef _BONOBO_EMBEDDABLE_H_
 #define _BONOBO_EMBEDDABLE_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <gtk/gtkobject.h>
-#include <libgnomeui/gnome-canvas.h>
+#include <libgnomecanvas/gnome-canvas.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-xobject.h>
 #include <bonobo/bonobo-canvas-component.h>

@@ -15,11 +15,11 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <libgnome/gnome-config.h>
 
 #define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE
-#include <libgnome/gnome-i18n.h>
+#include <libgnomebase/gnome-i18n.h>
 
 #include <libgnomeui/gnome-stock.h>
 #include <libgnomeui/gnome-dialog.h>

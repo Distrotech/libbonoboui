@@ -11,7 +11,7 @@
 #ifndef _BONOBO_CANVAS_COMPONENT_H_
 #define _BONOBO_CANVAS_COMPONENT_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <bonobo/bonobo-xobject.h>
 
 BEGIN_GNOME_DECLS

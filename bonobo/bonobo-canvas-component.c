@@ -11,7 +11,7 @@
 #include <config.h>
 #include <gtk/gtksignal.h>
 #include <bonobo/Bonobo.h>
-#include <libgnomeui/gnome-canvas.h>
+#include <libgnomecanvas/gnome-canvas.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>
 #include <bonobo/bonobo-exception.h>

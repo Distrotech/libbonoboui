@@ -10,7 +10,7 @@
 #ifndef _BONOBO_UI_TOOLBAR_BUTTON_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_BUTTON_ITEM_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "bonobo-ui-toolbar-item.h"

@@ -10,7 +10,7 @@
 #ifndef _BONOBO_DESKTOP_WINDOW_H_
 #define _BONOBO_DESKTOP_WINDOW_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwindow.h>
 #include <bonobo/bonobo-xobject.h>

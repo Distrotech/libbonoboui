@@ -12,7 +12,7 @@
 #define _BONOBO_UI_TOOLBAR_H_
 
 #include <gtk/gtkcontainer.h>
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include "bonobo-ui-toolbar-item.h"
 
 BEGIN_GNOME_DECLS

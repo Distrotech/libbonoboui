@@ -10,7 +10,7 @@
 #ifndef _BONOBO_UI_TOOLBAR_CONTROL_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_CONTROL_ITEM_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include "bonobo-ui-toolbar-button-item.h"
 #include "bonobo-widget.h"
 

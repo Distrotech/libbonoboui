@@ -12,7 +12,7 @@
 #ifndef _GNOME_COMPONENT_FACTORY_H_
 #define _GNOME_COMPONENT_FACTORY_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-object.h>

@@ -13,9 +13,9 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE
-#include <libgnome/gnome-i18n.h>
+#include <libgnomebase/gnome-i18n.h>
 #include <libgnomeui/gnome-preferences.h>
 
 #include <bonobo/bonobo-ui-xml.h>

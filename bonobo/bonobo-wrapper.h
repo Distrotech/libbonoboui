@@ -10,7 +10,7 @@
 #ifndef BONOBO_WRAPPER_H
 #define BONOBO_WRAPPER_H
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <gtk/gtkbin.h>
 
 BEGIN_GNOME_DECLS

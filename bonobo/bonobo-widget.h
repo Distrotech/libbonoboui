@@ -10,7 +10,7 @@
 #ifndef _BONOBO_WIDGET_H_
 #define _BONOBO_WIDGET_H_
 
-#include <libgnome/gnome-defs.h>
+#include <libgnomebase/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-object.h>
