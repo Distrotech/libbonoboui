@@ -17,6 +17,10 @@
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-node-private.h>
 
+/* To debug plug/socket/control render issues */
+#undef DEBUG_CONTROL
+
+/* To dump lots of sequence information */
 #undef DEBUG_UI
 
 void       bonobo_ui_preferences_shutdown (void);
@@ -37,7 +41,7 @@ static inline void dprintf (const char *format, ...) { };
 
 #define dprintf(format...) fprintf(stderr, format)
 
-#endif /* DEBUG_CONTROL */
+#endif /* DEBUG_UI */
 
 #endif /* _BONOBO_UI_PRIVATE_H_ */
 

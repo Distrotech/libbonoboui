@@ -1159,7 +1159,8 @@ impl_set_prop (BonoboUIComponent  *component,
 	}
 
 	Bonobo_UIContainer_setAttr (
-		container, path, prop, value, real_ev);
+		container, path, prop, value,
+		component->priv->name, real_ev);
 
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);

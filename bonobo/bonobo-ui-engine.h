@@ -96,7 +96,8 @@ void          bonobo_ui_engine_widget_set_node   (BonoboUIEngine   *engine,
 BonoboUIError bonobo_ui_engine_xml_set_prop      (BonoboUIEngine   *engine,
 						  const char       *path,
 						  const char       *property,
-						  const char       *value);
+						  const char       *value,
+						  const char       *component);
 CORBA_char   *bonobo_ui_engine_xml_get_prop      (BonoboUIEngine   *engine,
 						  const char       *path,
 						  const char       *prop,

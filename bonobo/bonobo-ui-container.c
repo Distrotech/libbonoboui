@@ -128,13 +128,14 @@ impl_Bonobo_UIContainer_setAttr (PortableServer_Servant   servant,
 				 const CORBA_char        *path,
 				 const CORBA_char        *attr,
 				 const CORBA_char        *value,
+				 const CORBA_char        *component,
 				 CORBA_Environment       *ev)
 {
 	BonoboUIEngine *engine = get_engine (servant);
 
 	/* Ignore the error for speed */
 	bonobo_ui_engine_xml_set_prop (
-		engine, path, attr, value);
+		engine, path, attr, value, component);
 }
 
 static CORBA_char *
@@ -393,4 +394,3 @@ bonobo_ui_container_get_engine (BonoboUIContainer *container)
 
 	return container->priv->engine;
 }
-

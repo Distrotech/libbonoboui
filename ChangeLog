@@ -1,3 +1,27 @@
+2002-01-21  Michael Meeks  <michael@ximian.com>
+
+	* glade/glade-bonobo.c (glade_bonobo_widget_new):
+	release the property bag after using it.
+
+	* configure.in: require libbonobo >= 1.109.1
+
+	* bonobo/bonobo-ui-component.c
+	(impl_set_prop): upd.
+	
+	* bonobo/bonobo-ui-container.c
+	(impl_Bonobo_UIContainer_setAttr): upd.
+
+	* bonobo/bonobo-ui-engine.c (get_parent_path),
+	(bonobo_ui_engine_xml_set_prop): forward port from
+	stable - fix node ownership issues, add component
+	argument.
+
+2002-01-18  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control-frame.c
+	(impl_Bonobo_ControlFrame_queueResize): queue resize
+	on the socket.
+
 2002-01-20  Hasbullah Bin Pit <sebol@ikhlas.com>
 
 	* configure.ini: Added Malay (ms)to ALL_LINGUAS.

@@ -112,7 +112,7 @@ impl_size_allocate (GtkWidget *widget,
 	widget->allocation = *allocation;
 
 	child = GTK_BIN (widget)->child;
-	if (child == NULL)
+	if (child == NULL || !GTK_WIDGET_VISIBLE (child))
 		return;
 
 	border_width = GTK_CONTAINER (widget)->border_width;

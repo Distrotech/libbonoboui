@@ -142,12 +142,16 @@ static void
 impl_Bonobo_ControlFrame_queueResize (PortableServer_Servant  servant,
 				      CORBA_Environment      *ev)
 {
-	/*
-	 * Nothing.
-	 *
-	 * In the Gnome implementation of Bonobo, all size negotiation
-	 * is handled by GtkPlug/GtkSocket for us.
-	 */
+	/* Supposedly Gtk+ handles size negotiation properly for us */
+/*	BonoboSocket *socket;
+	BonoboControlFrame *frame;
+
+	frame = BONOBO_CONTROL_FRAME (bonobo_object (servant));
+
+	if ((socket = frame->priv->socket)) {
+		GTK_SOCKET (socket)->have_size = FALSE;
+		gtk_widget_queue_resize (GTK_WIDGET (socket));
+		} */
 }
 
 static void

@@ -1205,6 +1205,27 @@ bonobo_ui_engine_object_get (BonoboUIEngine    *engine,
 	return BONOBO_UI_ERROR_OK;
 }
 
+static char *
+get_parent_path (const char *path)
+{
+	int i, last_slash = 0;
+	char *ret;
+
+	for (i = 0; path [i]; i++) {
+		if (path [i] == '/')
+			last_slash = i;
+	}
+
+	if (!last_slash)
+		return NULL;
+
+	ret = g_malloc (last_slash + 1);
+	memcpy (ret, path, last_slash);
+	ret [last_slash] = '\0';
+
+	return ret;
+}
+
 /**
  * bonobo_ui_engine_xml_set_prop:
  * @engine: the engine
@@ -1222,25 +1243,33 @@ BonoboUIError
 bonobo_ui_engine_xml_set_prop (BonoboUIEngine    *engine,
 			       const char        *path,
 			       const char        *property,
-			       const char        *value)
+			       const char        *value,
+			       const char        *component)
 {
-	BonoboUINode *node;
+	char *parent_path;
+	BonoboUINode *copy;
+	BonoboUINode *original;
 	
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), 
 			      BONOBO_UI_ERROR_BAD_PARAM);
 
-	node = bonobo_ui_engine_get_path (engine, path);
+	original = bonobo_ui_engine_get_path (engine, path);
 
-	if (!node) 
+	if (!original) 
 		return BONOBO_UI_ERROR_INVALID_PATH;
 
-	bonobo_ui_node_set_attr (node, property, value);
-	bonobo_ui_xml_set_dirty (engine->priv->tree, node);
-	
-	bonobo_ui_engine_update (engine);
+	copy = bonobo_ui_node_new (bonobo_ui_node_get_name (original));
+	bonobo_ui_node_copy_attrs (original, copy);
+	bonobo_ui_node_set_attr (copy, property, value);
+
+	parent_path = get_parent_path (path);
+	bonobo_ui_engine_xml_merge_tree (
+		engine, parent_path, copy, component);
+	g_free (parent_path);
 	
 	return BONOBO_UI_ERROR_OK;
 }
+
 
 /**
  * bonobo_ui_engine_xml_merge_tree:

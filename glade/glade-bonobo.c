@@ -145,6 +145,8 @@ glade_bonobo_widget_new (GladeXML        *xml,
 		}
 	}
 
+	bonobo_object_release_unref (pb, NULL);
+
 	return widget;
 }
 
