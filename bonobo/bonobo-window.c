@@ -490,6 +490,12 @@ bonobo_window_get_name (BonoboWindow *win)
 		return NULL;
 }
 
+/**
+ * bonobo_window_get_ui_engine:
+ * @win: the bonobo window
+ * 
+ * Return value: the #BonoboUIEngine
+ **/
 BonoboUIEngine *
 bonobo_window_get_ui_engine (BonoboWindow *win)
 {
@@ -499,6 +505,16 @@ bonobo_window_get_ui_engine (BonoboWindow *win)
 	return win->priv->engine;
 }
 
+/**
+ * bonobo_window_construct:
+ * @win: the window to construct
+ * @win_name: the window name
+ * @title: the window's title for the title bar
+ * 
+ * Construct a new BonbooWindow
+ * 
+ * Return value: a constructed window
+ **/
 GtkWidget *
 bonobo_window_construct (BonoboWindow *win,
 			 const char   *win_name,
@@ -514,6 +530,13 @@ bonobo_window_construct (BonoboWindow *win,
 	return GTK_WIDGET (win);
 }
 
+/**
+ * bonobo_window_new:
+ * @win_name: the window name
+ * @title: the window's title for the title bar
+ * 
+ * Return value: a new BonoboWindow
+ **/
 GtkWidget *
 bonobo_window_new (const char   *win_name,
 		   const char   *title)

@@ -1235,16 +1235,30 @@ BONOBO_IS_WIDGET_CLASS
 
 <SECTION>
 <FILE>bonobo-win</FILE>
-BonoboWindow
-BonoboWindowClass
 bonobo_window_construct
 bonobo_window_new
 bonobo_window_set_contents
 bonobo_window_get_contents
-bonobo_window_freeze
-bonobo_window_thaw
 bonobo_window_set_name
 bonobo_window_get_name
+bonobo_window_get_accel_group
+bonobo_window_set_ui_container
+bonobo_window_component_get
+bonobo_window_add_popup
+bonobo_window_remove_popup
+bonobo_window_get_ui_engine
+<SUBSECTION Standard>
+bonobo_window_get_type
+BonoboWindow
+BonoboWindowClass
+BonoboWindowPrivate
+BONOBO_TYPE_WINDOW
+BONOBO_WINDOW
+BONOBO_IS_WINDOW
+BONOBO_WINDOW_CLASS
+BONOBO_IS_WINDOW_CLASS
+bonobo_window_freeze
+bonobo_window_thaw
 bonobo_window_xml_merge
 bonobo_window_xml_merge_tree
 bonobo_window_xml_get
@@ -1252,26 +1266,12 @@ bonobo_window_xml_node_exists
 bonobo_window_xml_rm
 bonobo_window_object_set
 bonobo_window_object_get
-bonobo_window_get_accel_group
-bonobo_window_set_ui_container
-bonobo_window_dump
-bonobo_window_register_component
-bonobo_window_deregister_component
-bonobo_window_component_get
-bonobo_window_add_popup
-bonobo_window_remove_popup
 bonobo_window_deregister_component_by_ref
 bonobo_window_deregister_dead_components
 bonobo_window_deregister_get_component_names
-bonobo_window_get_ui_engine
-<SUBSECTION Standard>
-bonobo_window_get_type
-BonoboWindowPrivate
-BONOBO_TYPE_WINDOW
-BONOBO_WINDOW
-BONOBO_IS_WINDOW
-BONOBO_WINDOW_CLASS
-BONOBO_IS_WINDOW_CLASS
+bonobo_window_dump
+bonobo_window_register_component
+bonobo_window_deregister_component
 </SECTION>
 
 <SECTION>

@@ -63,6 +63,22 @@ Simplified embedding of widgets in Bonobo.
         </informalexample>
       </para>
     </listitem>
+
+    <listitem>
+      <para>
+        To provide an extremely simple wrapper for using Monikers. In
+      fact all BonoboWidget use uses the OAFIID: moniker to activate
+      its sub-components. However monikers (#bonobo-moniker-util) are
+      far more powerful than this:
+        <informalexample>
+          <programlisting>
+	         bw = bonobo_widget_new_control ("file:/demo/a.jpeg");
+          </programlisting>
+        </informalexample>
+	will launch an application that can render a jpeg as a control,
+      usualy the Eye Of Gnome (EOG), and embed it as a control.
+      </para>
+    </listitem>
   </orderedlist>
 </para>
 

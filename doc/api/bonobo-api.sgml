@@ -174,7 +174,6 @@
       &bonobo-plug;
       &bonobo-socket;
       &bonobo-wrapper;
-      &bonobo-object-directory;
       &bonobo-selector;
       &bonobo-async;
   </chapter>
@@ -192,6 +191,7 @@
       &bonobo-zoomable;
       &bonobo-zoomable-frame;
       &bonobo-desktop-window;
+      &bonobo-object-directory;
       &bonobo-object-io;
       &bonobo-component-io;
   </chapter>

@@ -1,12 +1,14 @@
 <!-- ##### SECTION Title ##### -->
-bonobo-ui-sync
+BonoboUISync
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A Synchronizer object to keep a widget tree in sync with an XML tree.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The BonoboUISynchronizer is used internaly by the #BonoboUIEngine. Writing
+one is a very advanced topic, and should only be attempted by carefuly study
+of the code. No normal user should need to write his own synchronizer.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
