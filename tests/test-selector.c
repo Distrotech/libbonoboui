@@ -6,7 +6,7 @@
 #include <bonobo/bonobo-selector.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-ui-main.h>
-#include <bonobo/bonobo-win.h>
+#include <bonobo/bonobo-window.h>
 
 #include <liboaf/liboaf.h>
 

@@ -163,7 +163,7 @@ bonobo_ui_xml_set_dirty (BonoboUIXml *tree, BonoboUINode *node)
 
 		/*
 		 * FIXME: the placeholder functionality is broken and should
-		 * live in bonobo-win.c for cleanliness and never in this
+		 * live in bonobo-window.c for cleanliness and never in this
 		 * more generic code.
 		 */
 

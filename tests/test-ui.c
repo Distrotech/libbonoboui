@@ -18,7 +18,7 @@
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
-#include <bonobo/bonobo-win.h>
+#include <bonobo/bonobo-window.h>
 
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-ui-main.h>

@@ -1,3 +1,25 @@
+2001-07-19  Anders Carlsson  <andersca@gnome.org>
+
+	* tests/test-selector.c: Change include of bonobo-win.h
+	to bonobo-window.h
+
+	* tests/test-ui.c: Change include of bonobo-win.h to 
+	bonobo-window.h
+
+	* bonobo/bonobo-win.c: Remove file.
+	
+	* bonobo/bonobo-win.h: Remove file.
+
+	* bonobo/bonobo-ui-xml.c (bonobo_ui_xml_set_dirty): Change
+	reference to bonobo-window.c
+
+	* bonobo/Makefile.am (libbonoboinclude_HEADERS): Change
+	bonobo-win.h to bonobo-window.h
+	(libbonoboui_2_la_SOURCES): Change bonobo-win.c to
+	bonobo-window.c
+
+	* changes.txt: Add change about bonobo-window.[ch]
+
 2001-07-19  Martin Baulig  <baulig@suse.de>
 
 	* bonobo/bonobo-ui-sync-menu.c, bonobo/bonobo-ui-sync-toolbar.c:

@@ -19,6 +19,9 @@ bonobo-control.[ch]
 
 
 bonobo-win.[ch]
+	have been renamed to bonobo-window.[ch]
+
+bonobo-window.[ch]
 	Deprecated methods removed:
 		bonobo_window_deregister_dead_components
 		bonobo_window_register_component

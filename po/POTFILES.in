@@ -3,9 +3,9 @@ bonobo/bonobo-selector-widget.c
 bonobo/bonobo-ui-config-widget.c
 bonobo/bonobo-ui-engine-config.c
 bonobo/bonobo-ui-sync-toolbar.c
-tests/selector_test.c
 tests/test-container.c
 tests/test-focus.c
 tests/test-sensitivity.c
+tests/test-selector.c
 tests/test-toolbar.c
 tests/test-ui.c
