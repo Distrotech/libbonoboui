@@ -17,81 +17,74 @@
 #include <gnome-xml/tree.h>
 #include <gnome-xml/parser.h>
 
-static void
+static const char write_lut[16] = {
+	'0', '1', '2', '3', '4', '5', '6', '7',
+	'8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+};
+
+static const gint8 read_lut[128] = {
+	 -1, -1, -1, -1, -1, -1, -1, -1,		/* 0x00 -> 0x07 */
+	 -1, -1, -1, -1, -1, -1, -1, -1,
+	 -1, -1, -1, -1, -1, -1, -1, -1,		/* 0x10 -> 0x17 */
+	 -1, -1, -1, -1, -1, -1, -1, -1,
+	 -1, -1, -1, -1, -1, -1, -1, -1,		/* 0x20 -> 0x27 */
+	 -1, -1, -1, -1, -1, -1, -1, -1,
+	 0,  1,  2,  3,  4,  5,  6,  7,			/* 0x30 -> 0x37 */
+	 8,  9, -1, -1, -1, -1, -1, -1,
+	 -1, 10, 11, 12, 13, 14, 15, -1,		/* 0x40 -> 0x47 */
+	 -1, -1, -1, -1, -1, -1, -1, -1,
+	 -1, -1, -1, -1, -1, -1, -1, -1,		/* 0x50 -> 0x57 */
+	 -1, -1, -1, -1, -1, -1, -1, -1,
+	 -1, 10, 11, 12, 13, 14, 15, -1,		/* 0x60 -> 0x67 */
+	 -1, -1, -1, -1, -1, -1, -1, -1,
+	 -1, -1, -1, -1, -1, -1, -1, -1,		/* 0x70 -> 0x77 */
+	 -1, -1, -1, -1, -1, -1, -1, -1,
+};
+
+static inline void
 write_byte (char *start, guint8 byte)
 {
-	int chunk;
-
-	chunk = (byte >> 4) & 0xf;
-
-	if (chunk < 10)
-		*start++ = '0' + chunk;
-	else
-		*start++ = 'a' + chunk - 10;
-
-	chunk = byte & 0xf;
-
-	if (chunk < 10)
-		*start = '0' + chunk;
-	else
-		*start = 'a' + chunk - 10;
+	start[0] = write_lut[byte >> 4];
+	start[1] = write_lut[byte & 15];
 }
 
-static char *
+static inline void
 write_four_bytes (char *pos, int value) 
 {
-	write_byte (pos, value >> 24);
-	pos += 2;
-	write_byte (pos, value >> 16);
-	pos += 2;
-	write_byte (pos, value >> 8);
-	pos += 2;
-	write_byte (pos, value);
-	pos += 2;
-
-	return pos;
+	write_byte (pos + 0, value >> 24);
+	write_byte (pos + 2, value >> 16);
+	write_byte (pos + 4, value >> 8);
+	write_byte (pos + 6, value);
 }
 
-static guint8
+static void
+read_warning (const char *start)
+{
+	g_warning ("Format error in stream '%c', '%c'", start[0], start[1]);
+}
+
+static inline guint8
 read_byte (const char *start)
 {
-	int chunk = 0;
+	guint8 byte1, byte2;
+	gint8 nibble1, nibble2;
 
-	if (*start >= '0' &&
-	    *start <= '9')
-		chunk |= *start - '0';
+	byte1 = start[0];
+	byte2 = start[1];
 
-	else if (*start >= 'a' &&
-		 *start <= 'f')
-		chunk |= *start - 'a' + 10;
+	if (byte1 >= 128 || byte2 >= 128)
+		read_warning (start);
 
-	else if (*start >= 'A' &&
-		 *start <= 'F')
-		chunk |= *start - 'A' + 10;
-	else
-		g_warning ("Format error in stream '%c'", *start);
+	nibble1 = read_lut[byte1];
+	nibble2 = read_lut[byte2];
 
-	chunk <<= 4;
-	start++;
+	if (nibble1 < 0 || nibble2 < 0)
+		read_warning (start);
 
-	if (*start >= '0' &&
-	    *start <= '9')
-		chunk |= *start - '0';
-
-	else if (*start >= 'a' &&
-		 *start <= 'f')
-		chunk |= *start - 'a' + 10;
-
-	else if (*start >= 'A' &&
-		 *start <= 'F')
-		chunk |= *start - 'A' + 10;
-	else
-		g_warning ("Format error in stream '%c'", *start);
-
-	return chunk;
+	return (nibble1 << 4) + nibble2;
 }
 
-static const guint32
+static inline const guint32
 read_four_bytes (const char *pos)
 {
 	return ((read_byte (pos) << 24) |
