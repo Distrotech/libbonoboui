@@ -1696,6 +1696,10 @@ impl_dispose (GObject *object)
 
 	engine = BONOBO_UI_ENGINE (object);
 
+	while (engine->priv->components)
+		sub_component_destroy (
+			engine, engine->priv->components->data);
+
 	bonobo_ui_engine_set_ui_container (engine, NULL);
 	
 	G_OBJECT_CLASS (parent_class)->dispose (object);
@@ -1714,10 +1718,6 @@ impl_finalize (GObject *object)
 	priv = engine->priv;
 
 	g_object_unref (G_OBJECT (priv->config));
-
-	while (priv->components)
-		sub_component_destroy (
-			engine, priv->components->data);
 
 	g_object_unref (G_OBJECT (priv->tree));
 	priv->tree = NULL;

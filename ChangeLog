@@ -1,5 +1,17 @@
 2002-01-10  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-sync-menu.c (impl_dispose):
+	destroy the hash table here.
+	(impl_finalize): kill this.
+	(init): setup the hash with free methods.
+	(radio_group_remove): upd.
+	(radio_group_destroy): kill.
+	(radio_group_add): upd.
+
+	* bonobo/bonobo-ui-engine.c
+	(impl_dispose): move component de-register to here
+	(impl_finalize): from here.
+
 	* Version 1.109.1
 
 2002-01-10  Michael Meeks  <michael@ximian.com>

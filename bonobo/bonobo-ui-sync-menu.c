@@ -183,32 +183,33 @@ static void
 radio_group_remove (GtkRadioMenuItem *menuitem,
 		    char             *group_name)
 {
-	GtkRadioMenuItem *master;
-	char             *orig_key;
+	GtkRadioMenuItem *master, *insert;
+	BonoboUISyncMenu *menu_sync;
 	GSList           *l;
-	BonoboUISyncMenu *menu_sync =
-		gtk_object_get_data (GTK_OBJECT (menuitem),
-				     MAGIC_RADIO_GROUP_KEY);
 
-	if (!g_hash_table_lookup_extended
-	    (menu_sync->radio_groups, group_name, (gpointer *)&orig_key,
-	     (gpointer *)&master)) {
-		g_warning ("Radio group hash inconsistancy");
-		return;
-	}
-	
+	menu_sync = g_object_get_data (
+		G_OBJECT (menuitem), MAGIC_RADIO_GROUP_KEY);
+
+	master = g_hash_table_lookup (menu_sync->radio_groups, group_name);
+	g_return_if_fail (master != NULL);
+
 	l = master->group;
 	while (l && l->data == menuitem)
 		l = l->next;
+
+	if (l)
+		insert = g_object_ref (G_OBJECT (l->data));
+	else
+		insert = NULL;
 	
 	g_hash_table_remove (menu_sync->radio_groups, group_name);
-	g_free (orig_key);
 
-	if (l) { /* Entries left in group */
-		g_hash_table_insert (menu_sync->radio_groups,
-				     group_name, l->data);
-	} else /* alloced in signal_connect; grim hey */
-		g_free (group_name);
+	if (insert)/* Entries left in group */
+		g_hash_table_insert (
+			menu_sync->radio_groups,
+			g_strdup (group_name), insert);
+
+	g_object_unref (G_OBJECT (menu_sync));
 }
 
 static void
@@ -222,13 +223,14 @@ radio_group_add (BonoboUISyncMenu *menu_sync,
 	g_return_if_fail (menu_sync != NULL);
 	g_return_if_fail (group_name != NULL);
 
-	if (!(master = g_hash_table_lookup (menu_sync->radio_groups, group_name))) {
-		g_hash_table_insert (menu_sync->radio_groups, g_strdup (group_name),
-				     menuitem);
-	} else {
+	if (!(master = g_hash_table_lookup (menu_sync->radio_groups, group_name)))
+		g_hash_table_insert (menu_sync->radio_groups,
+				     g_strdup (group_name),
+				     g_object_ref (G_OBJECT (menuitem)));
+
+	else {
 		gtk_radio_menu_item_set_group (
 			menuitem, gtk_radio_menu_item_group (master));
-		
 		/* 
 		 * Since we created this item without a group, it's
 		 * active, but now we are adding it to a group so it
@@ -238,11 +240,14 @@ radio_group_add (BonoboUISyncMenu *menu_sync,
 	}
 
 	gtk_object_set_data (GTK_OBJECT (menuitem),
-			     MAGIC_RADIO_GROUP_KEY, menu_sync);
+			     MAGIC_RADIO_GROUP_KEY,
+			     g_object_ref (G_OBJECT (menu_sync)));
 
-	gtk_signal_connect (GTK_OBJECT (menuitem), "destroy",
-			    (GtkSignalFunc) radio_group_remove,
-			    g_strdup (group_name));
+	g_signal_connect_data (G_OBJECT (menuitem),
+			       "destroy", 
+			       G_CALLBACK (radio_group_remove),
+			       g_strdup (group_name),
+			       (GClosureNotify) g_free, 0);
 }
 
 static GtkWidget *
@@ -750,17 +755,6 @@ impl_bonobo_ui_sync_menu_state_update (BonoboUISync *sync,
 			   GTK_CLASS_NAME (GTK_OBJECT_GET_CLASS (widget)));
 }
 
-static gboolean
-radio_group_destroy (gpointer	key,
-		     gpointer	value,
-		     gpointer	user_data)
-{
-	g_free (key);
-	g_slist_free (value);
-
-	return TRUE;
-}
-
 static void
 impl_dispose (GObject *object)
 {
@@ -781,22 +775,14 @@ impl_dispose (GObject *object)
 		sync->accel_group = NULL;
 	}
 
+	if (sync->radio_groups) {
+		GHashTable *dest = sync->radio_groups;
+
+		sync->radio_groups = NULL;
+		g_hash_table_destroy (dest);
+	}
+
 	parent_class->dispose (object);
-}
-
-static void
-impl_finalize (GObject *object)
-{
-	BonoboUISyncMenu *sync;
-
-	sync = BONOBO_UI_SYNC_MENU (object);
-
-	g_hash_table_foreach_remove (sync->radio_groups,
-				     radio_group_destroy, NULL);
-	g_hash_table_destroy (sync->radio_groups);
-	sync->radio_groups = NULL;
-
-	parent_class->finalize (object);
 }
 
 static gboolean
@@ -885,7 +871,6 @@ class_init (BonoboUISyncClass *sync_class)
 
 	object_class = G_OBJECT_CLASS (sync_class);
 	object_class->dispose  = impl_dispose;
-	object_class->finalize = impl_finalize;
 
 	sync_class->sync_state = impl_bonobo_ui_sync_menu_state;
 	sync_class->build      = impl_bonobo_ui_sync_menu_build;
@@ -905,8 +890,10 @@ class_init (BonoboUISyncClass *sync_class)
 static void
 init (BonoboUISyncMenu *sync)
 {
-	sync->radio_groups = g_hash_table_new (
-		g_str_hash, g_str_equal);
+	sync->radio_groups = g_hash_table_new_full (
+		g_str_hash, g_str_equal,
+		(GDestroyNotify) g_free,
+		(GDestroyNotify) g_object_unref);
 }
 
 GType
