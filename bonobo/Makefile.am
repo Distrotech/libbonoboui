@@ -23,6 +23,7 @@ noinst_HEADERS = \
 	bonobo-ui-marshal.h			\
 	bonobo-ui-node-private.h		\
 	bonobo-ui-preferences.h			\
+	bonobo-ui-private.h			\
 	bonobo-ui-sync-menu.h			\
 	bonobo-ui-sync-keys.h			\
 	bonobo-ui-sync-status.h			\

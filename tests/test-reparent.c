@@ -121,7 +121,8 @@ main (int argc, char **argv)
 	gtk_widget_show_all (window);
 	g_timeout_add (0, idle_init, NULL);
 	bonobo_main ();
-  
-	return bonobo_debug_shutdown ();
-}
 
+	gtk_widget_destroy (window);
+  
+	return bonobo_ui_debug_shutdown ();
+}

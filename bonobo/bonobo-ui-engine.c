@@ -18,6 +18,7 @@
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-container.h>
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-engine-config.h>
 #include <bonobo/bonobo-ui-engine-private.h>
@@ -319,6 +320,7 @@ info_free_fn (BonoboUIXmlData *data)
 	NodeInfo *info = (NodeInfo *) data;
 
 	if (info->object != CORBA_OBJECT_NIL) {
+		dprintf ("** Releasing object %p on info %p\n", info->object, info);
 		bonobo_object_release_unref (info->object, NULL);
 		info->object = CORBA_OBJECT_NIL;
 	}
@@ -1118,11 +1120,9 @@ bonobo_ui_engine_object_set (BonoboUIEngine   *engine,
 			gtk_widget_destroy (info->widget);
 		info->widget = NULL;
 	}
-
-	if (object != CORBA_OBJECT_NIL)
-		info->object = bonobo_object_dup_ref (object, ev);
-	else
-		info->object = CORBA_OBJECT_NIL;
+	
+	dprintf ("** Setting object %p on info %p\n", object, info);
+	info->object = bonobo_object_dup_ref (object, ev);
 
 	bonobo_ui_xml_set_dirty (engine->priv->tree, node);
 
@@ -1134,7 +1134,6 @@ bonobo_ui_engine_object_set (BonoboUIEngine   *engine,
 /*	bonobo_ui_engine_dump (win, "After object set updatew");*/
 
 	return BONOBO_UI_ERROR_OK;
-	
 }
 
 /**
@@ -1684,6 +1683,8 @@ impl_finalize (GObject *object)
 	BonoboUIEnginePrivate *priv;
 	GSList *l;
 
+	dprintf ("bonobo_ui_engine_finalize %p\n", object);
+       
 	engine = BONOBO_UI_ENGINE (object);
 	priv = engine->priv;
 

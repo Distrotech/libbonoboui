@@ -206,5 +206,5 @@ main (int argc, char **argv)
 
 	bonobo_main ();
 
-	return bonobo_debug_shutdown ();
+	return bonobo_ui_debug_shutdown ();
 }

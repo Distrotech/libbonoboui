@@ -259,6 +259,19 @@ run_tests (GtkContainer *parent,
 	gtk_widget_destroy (GTK_WIDGET (vbox));
 }
 
+static void
+simple_tests (void)
+{
+	BonoboControl *control;
+	GtkWidget     *widget = gtk_button_new_with_label ("Foo");
+
+	control = bonobo_control_new (widget);
+	bonobo_object_unref (BONOBO_OBJECT (control));
+
+	control = bonobo_control_new (gtk_entry_new ());
+	bonobo_object_unref (BONOBO_OBJECT (control));
+}
+
 int
 main (int argc, char **argv)
 {
@@ -281,10 +294,12 @@ main (int argc, char **argv)
 
 	gtk_widget_show_all (window);
 
+	simple_tests ();
+
 	run_tests (GTK_CONTAINER (window), TRUE, TRUE);
 	run_tests (GTK_CONTAINER (window), FALSE, TRUE);
 
 	gtk_widget_destroy (window);
 
-	return bonobo_debug_shutdown ();
+	return bonobo_ui_debug_shutdown ();
 }

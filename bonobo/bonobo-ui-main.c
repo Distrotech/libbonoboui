@@ -13,6 +13,7 @@
 
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-main.h>
 #include <bonobo/bonobo-main.h>
 
@@ -132,4 +133,12 @@ bonobo_ui_main (void)
 	bonobo_activate ();
 
 	gtk_main ();
+}
+
+int
+bonobo_ui_debug_shutdown (void)
+{
+	bonobo_ui_preferences_shutdown ();
+	
+	return bonobo_debug_shutdown ();
 }

@@ -58,8 +58,8 @@ interactions:
 	Control: GObject ref -> Plug
 	Plug: Bonobo ref -> Control
 
-	NB. Actual 'ownership' of references somewhat confused between
-modules to give more lucid encapsulation.
+	NB. The plug only holds it's bonobo ref on the control when
+it's realized.
 
 
 * Destruction interaction (B1)

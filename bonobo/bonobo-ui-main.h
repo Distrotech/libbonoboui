@@ -30,6 +30,8 @@ gboolean   bonobo_ui_init_full          (const gchar *app_name,
                                          PortableServer_POAManager manager,
 					 gboolean full_init);
 void       bonobo_setup_x_error_handler (void);
+/* internal */
+int        bonobo_ui_debug_shutdown     (void);
 
 G_END_DECLS
 

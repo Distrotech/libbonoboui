@@ -14,5 +14,5 @@ main (int argc, char *argv[])
 
 	g_free (text);
 	
-	return 0;
+	return bonobo_ui_debug_shutdown ();
 }

@@ -10,9 +10,12 @@
  */
 
 #include <config.h>
+#include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
-
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-preferences.h>
+
+static GConfClient *client = NULL;
 
 /*
  *   Yes Gconf's C API sucks, yes bonobo-config is a far better
@@ -23,12 +26,11 @@ get (const char *key, gboolean def)
 {
 	gboolean           ret;
 	GError             *err = NULL;
-	static GConfClient *client = NULL;
 
 	if (!client)					
 		client = gconf_client_get_default ();	
 
-	ret = gconf_client_get_bool (client, key, &err); 
+	ret = gconf_client_get_bool (client, key, &err);
 
 	if (err) {
 		static int warned = 0;
@@ -40,6 +42,28 @@ get (const char *key, gboolean def)
 
 	return ret;
 }
+
+void
+bonobo_ui_preferences_shutdown (void)
+{
+	if (client) {
+		g_object_unref (G_OBJECT (client));
+
+#if 0
+		/* If people don't provide shutdown methods
+		 * they get their API screwed with */
+		GConfEngine *engine;
+
+		engine = gconf_engine_get_default ();
+
+		gconf_engine_unref (engine);
+
+		gconf_engine_unref (engine);
+#endif
+		client = NULL;
+	}
+}
+
 
 #define DEFINE_BONOBO_UI_PREFERENCE(c_name, prop_name, def)      \
 gboolean                                                         \

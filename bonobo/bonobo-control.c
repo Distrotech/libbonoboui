@@ -546,11 +546,11 @@ bonobo_control_get_automerge (BonoboControl *control)
 }
 
 static void
-bonobo_control_dispose (GObject *object)
+bonobo_control_destroy (BonoboObject *object)
 {
 	BonoboControl *control = (BonoboControl *) object;
 
-	dprintf ("bonobo_control_dispose %p\n", object);
+	dprintf ("bonobo_control_destroy %p\n", object);
 
 	if (control->priv->plug)
 		bonobo_control_set_plug (control, NULL);
@@ -572,7 +572,7 @@ bonobo_control_dispose (GObject *object)
 	control->priv->popup_ui_sync = NULL;
 	control->priv->inproc_frame  = NULL;
 
-	bonobo_control_parent_class->dispose (object);
+	BONOBO_OBJECT_CLASS (bonobo_control_parent_class)->destroy (object);
 }
 
 static void
@@ -814,6 +814,7 @@ static void
 bonobo_control_class_init (BonoboControlClass *klass)
 {
 	GObjectClass *object_class = (GObjectClass *)klass;
+	BonoboObjectClass *bonobo_object_class = (BonoboObjectClass *)klass;
 	POA_Bonobo_Control__epv *epv;
 
 	bonobo_control_parent_class = g_type_class_peek_parent (klass);
@@ -837,8 +838,8 @@ bonobo_control_class_init (BonoboControlClass *klass)
 			      G_TYPE_NONE, 1,
 			      G_TYPE_BOOLEAN);
 
-	object_class->dispose  = bonobo_control_dispose;
 	object_class->finalize = bonobo_control_finalize;
+	bonobo_object_class->destroy = bonobo_control_destroy;
 
 	epv = &klass->epv;
 
@@ -1149,7 +1150,6 @@ bonobo_control_set_plug (BonoboControl *control,
 		bonobo_plug_set_control (old_plug, NULL);
 		g_object_unref (G_OBJECT (old_plug));
 	}
-
 }
 
 BonoboPlug *

@@ -88,15 +88,14 @@ bonobo_plug_set_control (BonoboPlug    *plug,
 	old_control = plug->control;
 
 	if (control) {
-		plug->control = BONOBO_CONTROL (
-			bonobo_object_ref (BONOBO_OBJECT (control)));
+		plug->control = g_object_ref (G_OBJECT (control));
 		bonobo_control_set_plug (control, plug);
 	} else
 		plug->control = NULL;
 
 	if (old_control) {
 		bonobo_control_set_plug (old_control, NULL);
-		bonobo_object_unref (BONOBO_OBJECT (old_control));
+		g_object_unref (G_OBJECT (old_control));
 	}
 }
 
@@ -112,9 +111,27 @@ bonobo_plug_delete_event (GtkWidget   *widget,
 static void
 bonobo_plug_realize (GtkWidget *widget)
 {
-	dprintf ("bonobo_plug_realize %p\n", widget);
+	BonoboPlug *plug = (BonoboPlug *) widget;
+
+	dprintf ("bonobo_plug_realize %p\n", plug);
+
+	if (plug->control)
+		bonobo_object_ref (BONOBO_OBJECT (plug->control));
 
 	GTK_WIDGET_CLASS (parent_class)->realize (widget);
+}
+
+static void
+bonobo_plug_unrealize (GtkWidget *widget)
+{
+	BonoboPlug *plug = (BonoboPlug *) widget;
+
+	dprintf ("bonobo_plug_unrealize %p\n", plug);
+
+	if (plug->control)
+		bonobo_object_unref (BONOBO_OBJECT (plug->control));
+
+	GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
 }
 
 static void
@@ -312,6 +329,7 @@ bonobo_plug_class_init (GObjectClass *klass)
 	klass->get_property = bonobo_plug_get_property;
 
 	widget_class->realize              = bonobo_plug_realize;
+	widget_class->unrealize            = bonobo_plug_unrealize;
 	widget_class->delete_event         = bonobo_plug_delete_event;
 	widget_class->size_request         = bonobo_plug_size_request;
 	widget_class->size_allocate        = bonobo_plug_size_allocate;

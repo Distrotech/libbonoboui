@@ -352,5 +352,5 @@ main (int argc, char **argv)
 	while (global_mto.async && !async_done)
 		g_main_iteration (TRUE);
 
-	return bonobo_debug_shutdown ();
+	return bonobo_ui_debug_shutdown ();
 }

@@ -1,3 +1,44 @@
+2001-12-13  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-reparent.c (main): destroy the
+	window after use.
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_class_init): upd.
+	(bonobo_control_dispose): rename to
+	(bonobo_control_destroy): this.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_class_init): upd.
+	(bonobo_plug_unrealize, bonobo_plug_realize): impl,
+	upd. take / release ref on realize / unrealize.
+	(bonobo_plug_set_control): only hold a g_object ref.
+
+	* tests/control/test-control.c (simple_tests): impl.
+	(main): upd.
+
+	* bonobo/bonobo-ui-toolbar-control-item.c
+	(bonobo_ui_toolbar_control_item_construct): upd.
+	ref counting.
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_set_container): only take a CORBA
+	ref on the container.
+	(bonobo_ui_component_unset_container): upd.
+
+	* bonobo/bonobo-ui-preferences.c
+	(bonobo_ui_preferences_shutdown): impl.
+
+	* bonobo/bonobo-ui-private.h: add.
+
+	* bonobo/Makefile.am: upd.
+
+	* tests/test-ui.c (main): Do a bonobo_ui_debug_shutdown.
+
+	* tests/test-selector.c (main): ditto.
+
+	* bonobo/bonobo-ui-main.c (bonobo_ui_debug_shutdown):
+	add for internal use.
+
 2001-12-13  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-plug.c:

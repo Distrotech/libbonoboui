@@ -10,11 +10,10 @@
 #ifndef _BONOBO_CONTROL_INTERNAL_H_
 #define _BONOBO_CONTROL_INTERNAL_H_
 
-#undef DEBUG_CONTROL
-
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-socket.h>
 #include <bonobo/bonobo-control.h>
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-control-frame.h>
 
 void     bonobo_control_add_listener            (CORBA_Object        object,
@@ -47,17 +46,5 @@ void                bonobo_control_set_plug         (BonoboControl      *control
 void                bonobo_plug_set_control         (BonoboPlug         *plug,
 						     BonoboControl      *control);
 gboolean            bonobo_socket_disposed          (BonoboSocket       *socket);
-
-#ifndef   DEBUG_CONTROL
-
-static inline void dprintf (const char *format, ...) { };
-
-#else  /* DEBUG_CONTROL */
-
-#include <stdio.h>
-
-#define dprintf(format...) fprintf(stderr, format)
-
-#endif /* DEBUG_CONTROL */
 
 #endif /* _BONOBO_CONTROL_INTERNAL_H_ */

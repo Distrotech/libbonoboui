@@ -1323,7 +1323,7 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component,
 			g_free (err);
 		}
 
-		bonobo_object_release_unref (container, ev);
+		CORBA_Object_release (container, ev);
 
 		if (!opt_ev)
 			CORBA_exception_free (&temp_ev);
@@ -1362,7 +1362,7 @@ bonobo_ui_component_set_container (BonoboUIComponent *component,
 		} else
 			ev = opt_ev;
 
-		ref_cont = bonobo_object_dup_ref (container, ev);
+		ref_cont = CORBA_Object_duplicate (container, ev);
 
 		corba_component = BONOBO_OBJREF (component);
 

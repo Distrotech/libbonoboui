@@ -294,7 +294,7 @@ bonobo_ui_toolbar_control_item_construct (
 {
         BonoboUIToolbarControlItemPrivate *priv = control_item->priv;
 	GtkWidget *w  = bonobo_widget_new_control_from_objref (
-                bonobo_object_dup_ref (control_ref, NULL), CORBA_OBJECT_NIL);
+		control_ref, CORBA_OBJECT_NIL);
 
         if (!w)
                 return NULL;

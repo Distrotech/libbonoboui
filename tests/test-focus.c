@@ -77,5 +77,5 @@ main (int argc, char **argv)
 
 	gtk_main ();
 
-	return bonobo_debug_shutdown ();
+	return bonobo_ui_debug_shutdown ();
 }
