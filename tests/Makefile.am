@@ -4,7 +4,9 @@ noinst_PROGRAMS =		\
 	test-selector		\
 	test-focus		\
 	test-sensitivity	\
-	test-reparent		\
+	test-reparent
+
+bin_PROGRAMS = \
 	test-moniker
 
 INCLUDES =	\

@@ -68,6 +68,7 @@ struct poptOption moniker_test_options [] = {
 	{ "storage",   'r', POPT_ARG_NONE, &global_mto.pr, 'r', "request Bonobo/Storage", NULL },
 	{ "control",   'c', POPT_ARG_NONE, &global_mto.pc, 'c', "request Bonobo/Control", NULL },
 	{ "html",      'h', POPT_ARG_NONE, &global_mto.ph, 'h', "request Bonobo/Stream and display as HTML", NULL },
+	POPT_AUTOHELP
 	{ NULL, 0, 0, NULL, 0, 0 }
 };
 
