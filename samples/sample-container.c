@@ -191,7 +191,7 @@ component_add_view (Component *component)
 	/*
 	 * Create the remote view and the local ViewFrame.
 	 */
-	view_frame = gnome_client_site_embeddable_new_view (component->client_site);
+	view_frame = gnome_client_site_new_view (component->client_site);
 	component->view_frame = view_frame;
 
 	/*
@@ -266,9 +266,107 @@ component_load_cancel_cb (GtkWidget *button, gpointer data)
 
 
 static void
+component_create_fs (Component *component,
+		     char *title, GtkSignalFunc ok_cb,
+		     GtkSignalFunc cancel_cb)
+{
+	GtkWidget *fs;
+
+	/*
+	 * Create a file selection dialog.
+	 */
+
+	fs = gtk_file_selection_new (title);
+	gtk_file_selection_hide_fileop_buttons (GTK_FILE_SELECTION (fs));
+
+	component->fs = fs;
+
+	gtk_window_set_position (GTK_WINDOW (fs),
+				 GTK_WIN_POS_MOUSE);
+
+	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->ok_button),
+			    "clicked", ok_cb, component);
+
+	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->cancel_button),
+			    "clicked", cancel_cb, component);
+
+	gtk_window_set_modal (GTK_WINDOW (fs), TRUE);
+	
+	gtk_widget_show (fs);
+}
+
+static void
+component_load_pf_ok_cb (GtkWidget *button, gpointer data)
+{
+	Component *component = (Component *) data;
+	GNOME_PersistFile persist;
+	CORBA_Environment ev;
+	char *filename;
+
+	/*
+	 * First grab the filename.
+	 */
+	filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (component->fs));
+
+	/*
+	 * Destroy the file selector.
+	 */
+	gtk_widget_destroy (component->fs);
+
+	/*
+	 * Now get the PersistFile interface off the embedded
+	 * component.
+	 */
+	CORBA_exception_init (&ev);
+
+	persist = GNOME_Unknown_query_interface (
+		gnome_object_corba_objref (GNOME_OBJECT (component->server)),
+		"IDL:GNOME/PersistFile:1.0",
+		&ev);
+
+	/*
+	 * If the component doesn't support PersistFile (and it really
+	 * ought to -- we query it to see if it supports PersistStream
+	 * before we even give the user the option of loading data
+	 * into it with PersistStream), then we destroy the stream we
+	 * created and bail.
+	 */
+	if (ev._major != CORBA_NO_EXCEPTION ||
+	    persist == CORBA_OBJECT_NIL) {
+		gnome_warning_dialog (_("The component now claims that it "
+					"doesn't support PersistFile!"));
+		CORBA_exception_free (&ev);
+		return;
+	}
+
+	/*
+	 * Load the file into the component using PersistFilea.
+	 */
+	GNOME_PersistFile_load (persist, (CORBA_char *) filename, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_warning_dialog (_("An exception occured while trying "
+					"to load data into the component with "
+					"PersistFile"));
+	}
+
+	/*
+	 * Now we destroy the PersistFile object.
+	 */
+	GNOME_Unknown_unref (persist, &ev);
+	CORBA_Object_release (persist, &ev);
+
+	CORBA_exception_free (&ev);
+}
+
+static void
 component_load_pf_cb (GtkWidget *button, gpointer data)
 {
 	Component *component = (Component *) data;
+
+	component_create_fs (component,
+			     _("Choose a file to load into the component using PersistFile"),
+			     component_load_pf_ok_cb, component_load_cancel_cb);
 }
 
 /*
@@ -321,12 +419,11 @@ component_load_ps_ok_cb (GtkWidget *button, gpointer data)
 		&ev);
 
 	/*
-	 * If the component doesn't support PersistStream
-	 * (and it really ought to -- we query it to
-	 * see if it supports PersistStream before we
-	 * even give the user the option of loading
-	 * data into it with PersistStream), then we
-	 * destroy the stream we created and bail.
+	 * If the component doesn't support PersistStream (and it
+	 * really ought to -- we query it to see if it supports
+	 * PersistStream before we even give the user the option of
+	 * loading data into it with PersistStream), then we destroy
+	 * the stream we created and bail.
 	 */
 	if (ev._major != CORBA_NO_EXCEPTION ||
 	    persist == CORBA_OBJECT_NIL) {
@@ -367,36 +464,26 @@ static void
 component_load_ps_cb (GtkWidget *button, gpointer data)
 {
 	Component *component = (Component *) data;
-	GtkWidget *fs;
 
-	/*
-	 * Create a file selecting dialog.
-	 */
-	fs = gtk_file_selection_new ("Choose a file to load into the component");
-	gtk_file_selection_hide_fileop_buttons (fs);
-
-	component->fs = fs;
-
-	gtk_window_set_position (GTK_WINDOW (fs),
-				 GTK_WIN_POS_MOUSE);
-
-	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->ok_button),
-			    "clicked", GTK_SIGNAL_FUNC (component_load_ps_ok_cb),
-			    component);
-
-	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->cancel_button),
-			    "clicked", GTK_SIGNAL_FUNC (component_load_cancel_cb),
-			    component);
-
-	gtk_window_set_modal (GTK_WINDOW (fs), TRUE);
-	
-	gtk_widget_show (fs);
+	component_create_fs (component, _("Choose a file to load into the component"),
+			     component_load_ps_ok_cb, component_load_cancel_cb);
 }
 
 static void
 component_destroy_cb (GtkWidget *button, gpointer data)
 {
 	Component *component = (Component *) data;
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+
+	GNOME_Unknown_unref (
+		gnome_object_corba_objref (GNOME_OBJECT (component->server)),
+		&ev);
+
+	CORBA_exception_free (&ev);
+
+	gtk_widget_destroy (component->frame);
 }
 
 static GnomeObjectClient *
@@ -570,7 +657,8 @@ container_activate_component (Container *container, char *component_goad_id)
 	/*
 	 * The ClientSite is the container-side point of contact for
 	 * the Embeddable.  So there is a one-to-one correspondence
-	 * between GnomeClientSites and GnomeEmbeddables.  */
+	 * between GnomeClientSites and GnomeEmbeddables.
+	 */
 	client_site = gnome_client_site_new (container->container);
 
 	/*
@@ -610,14 +698,12 @@ container_activate_component (Container *container, char *component_goad_id)
 static void
 container_add_embeddable_cmd (GtkWidget *widget, Container *container)
 {
-	char *required_interfaces[2];
+	char *required_interfaces[2] = { "IDL:GNOME/Embeddable:1.0", NULL };
 	char *goad_id;
 
 	/*
 	 * Ask the user to select a component.
 	 */
-	required_interfaces[0] = "IDL:GNOME/Embeddable:1.0";
-	required_interfaces[1] = NULL;
 	goad_id = gnome_bonobo_select_goad_id (
 		_("Select an embeddable Bonobo component to add"),
 		(const gchar **) required_interfaces);
@@ -702,7 +788,7 @@ main (int argc, char **argv)
 
 	container_create ();
 
-	gtk_main ();
+	bonobo_main ();
 
 	return 0;
 }

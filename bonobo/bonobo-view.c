@@ -195,18 +195,21 @@ GNOME_View
 gnome_view_corba_object_create (GnomeObject *object)
 {
 	POA_GNOME_View *servant;
+	CORBA_Environment ev;
 	
 	servant = (POA_GNOME_View *) g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_view_vepv;
 
-	POA_GNOME_View__init ((PortableServer_Servant) servant, &object->ev);
-	if (object->ev._major != CORBA_NO_EXCEPTION){
+	CORBA_exception_init (&ev);
+	POA_GNOME_View__init ((PortableServer_Servant) servant, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION){
 		g_free (servant);
+		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;
 	}
 
+	CORBA_exception_free (&ev);
 	return (GNOME_View) gnome_object_activate_servant (object, servant);
-	
 }
 
 /**

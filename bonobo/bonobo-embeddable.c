@@ -190,7 +190,7 @@ gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
 
 static GNOME_View
 impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
-				const GNOME_ViewFrame view_frame,
+				GNOME_ViewFrame view_frame,
 				CORBA_Environment *ev)
 {
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
@@ -251,15 +251,19 @@ GNOME_Embeddable
 gnome_embeddable_corba_object_create (GnomeObject *object)
 {
 	POA_GNOME_Embeddable *servant;
+	CORBA_Environment ev;
 	
 	servant = (POA_GNOME_Embeddable *)g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_embeddable_vepv;
 
-	POA_GNOME_Embeddable__init ((PortableServer_Servant) servant, &object->ev);
-	if (object->ev._major != CORBA_NO_EXCEPTION){
+	CORBA_exception_init (&ev);
+	POA_GNOME_Embeddable__init ((PortableServer_Servant) servant, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION){
 		g_free (servant);
+		CORBA_exception_free (&ev);
 		return CORBA_OBJECT_NIL;
 	}
+	CORBA_exception_free (&ev);
 
 	return gnome_object_activate_servant (object, servant);
 }

@@ -33,6 +33,7 @@ struct _GnomeClientSite {
 
 	GnomeContainer    *container;
 	GnomeObjectClient *bound_object;
+	GList		  *view_frames;
 	int               child_shown:1;
 };
 
@@ -57,12 +58,6 @@ GnomeObjectClient *gnome_client_site_get_embeddable	(GnomeClientSite *client_sit
 GnomeViewFrame    *gnome_client_site_new_view		(GnomeClientSite *client_site);
 GList		  *gnome_client_site_get_verbs		(GnomeClientSite *client_site);
 void		   gnome_client_site_free_verbs		(GList *verb_list);
-
-/*
- * Compatibility macros for Miguel.
- */
-#define gnome_client_site_embeddable_new_view gnome_client_site_new_view
-#define gnome_client_site_embeddable_get_verbs gnome_client_site_get_verbs
 
 extern POA_GNOME_ClientSite__epv gnome_client_site_epv;
 

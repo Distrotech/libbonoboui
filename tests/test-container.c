@@ -198,7 +198,7 @@ add_view (GtkWidget *widget, Application *app,
 	GtkWidget *view_widget;
 	GtkWidget *frame;
 	
-	view_frame = gnome_client_site_embeddable_new_view (client_site);
+	view_frame = gnome_client_site_new_view (client_site);
 
 	gtk_signal_connect (GTK_OBJECT (view_frame), "user_activate",
 			    GTK_SIGNAL_FUNC (user_activation_request_cb), NULL);
@@ -381,8 +381,6 @@ static void
 add_paint_cmd (GtkWidget *widget, Application *app)
 {
 	GnomeObjectClient *object;
-	GnomeStream *stream;
-	GNOME_PersistStream persist;
 
 	object = add_cmd (widget, app, "embeddable:paint-component-simple", &paint_client_site);
 	if (object == NULL)

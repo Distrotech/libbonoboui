@@ -695,10 +695,16 @@ init_server_factory (int argc, char **argv)
 int
 main (int argc, char **argv)
 {
+	/*
+	 * Setup the factory.
+	 */
 	init_server_factory (argc, argv);
 	init_simple_paint_factory ();
 
-	gtk_main ();
+	/*
+	 * Start processing.
+	 */
+	bonobo_main ();
 
 	return 0;
 }

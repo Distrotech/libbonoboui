@@ -64,6 +64,8 @@ GtkWidget        *gnome_view_frame_get_wrapper     (GnomeViewFrame *view_frame);
 
 char		 *gnome_view_frame_popup_verbs	   (GnomeViewFrame *view_frame);
 
+void		  gnome_view_frame_set_covered     (GnomeViewFrame *view_frame,
+						    gboolean covered);
 /*
  * A GnomeViewFrame acts as a proxy for the remote GnomeView object to
  * which it is bound.  These functions act as wrappers which a
@@ -79,9 +81,6 @@ void		  gnome_view_frame_size_request	   (GnomeViewFrame *view_frame,
 
 void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
 						    char *verb_name);
-
-void		  gnome_view_frame_set_covered     (GnomeViewFrame *view_frame,
-						    gboolean covered);
 void              gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom);
 
 END_GNOME_DECLS

@@ -50,7 +50,6 @@ $(CORBA_SOURCE): $(idls)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
-	gtk-interfaces.c		\
 	gnome-bonobo-selector.c		\
 	gnome-client-site.c		\
 	gnome-container.c		\
@@ -81,7 +80,6 @@ libbonoboincludedir = $(includedir)/bonobo
 
 libbonoboinclude_HEADERS =		\
 	bonobo.h			\
-	gtk-interfaces.h		\
 	gnome-bonobo.h			\
 	gnome-bonobo-selector.h		\
 	gnome-client-site.h		\
@@ -128,7 +126,7 @@ test_container_autoload_LDADD = $(bonobo_libs)
 object_test_SOURCES =		\
 	object_test.c
 
-object_test_LDADD = gtk-interfaces.o $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS)
+object_test_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS)
 
 sample_server_SOURCES =		\
 	sample-server.c

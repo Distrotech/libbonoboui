@@ -8,7 +8,6 @@ CORBA_Environment ev;
 CORBA_ORB orb;
 
 void panel_callback (GtkWidget *widget, gpointer data);
-void act_callback (GtkWidget *widget, gpointer data);
 void noact_callback (GtkWidget *widget, gpointer data);
 void quit_callback (GtkWidget *widget, gpointer data);
 
@@ -32,11 +31,6 @@ int main(int argc, char *argv[])
 	button = gtk_button_new_with_label ("Get goad id");
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 		GTK_SIGNAL_FUNC (noact_callback), NULL);
-	gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 5);
-
-	button = gtk_button_new_with_label ("Get goad id and activate");
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		GTK_SIGNAL_FUNC (act_callback), NULL);
 	gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 5);
 
 	button = gtk_button_new_with_label ("Get goad id of panel applet");
@@ -64,18 +58,6 @@ void panel_callback (GtkWidget *widget, gpointer data)
 		g_free(text);
 }
 
-void act_callback (GtkWidget *widget, gpointer data)
-{
-/* it executes! */ 
-	const gchar *ints [] = { "IDL:GNOME/Embeddable:1.0", NULL };
-	gchar *text;
-
-	text = gnome_bonobo_select_activate(
-		_("Select an object"), ints, GOAD_ACTIVATE_ASYNC);
-	g_print("%s\n", text);
-	if (text != NULL)
-		g_free(text);
-}
 void noact_callback (GtkWidget *widget, gpointer data)
 {
 	/* This is also a demonstration of default being what we just did above */ 

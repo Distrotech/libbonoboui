@@ -10,7 +10,7 @@
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
- *   Nat Friedman (nat@nat.org)
+ *   Nat Friedman    (nat@nat.org)
  *
  * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
@@ -117,17 +117,25 @@ gnome_client_site_destroy (GtkObject *object)
 	GtkObjectClass *object_class;
 	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
 	GnomeObject *gnome_object = GNOME_OBJECT (client_site->bound_object);
+	GList *l;
 	
 	object_class = (GtkObjectClass *)gnome_client_site_parent_class;
 
-	gnome_container_remove (
-		client_site->container,
-		GNOME_OBJECT (object));
+	gnome_container_remove (client_site->container, GNOME_OBJECT (object));
+
+	/*
+	 * Destroy all the view frames.
+	 */
+	for (l = client_site->view_frames; l != NULL; l = l->next) {
+		GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (l->data);
+
+		gnome_object_destroy (GNOME_OBJECT (view_frame));
+	}
 
 	/* Destroy the object on the other end */
 	g_warning ("FIXME: Should we unref twice?");
 
-	gtk_object_unref (GTK_OBJECT (gnome_object));
+	gnome_object_unref (GNOME_OBJECT (gnome_object));
 	object_class->destroy (object);
 }
 
@@ -197,15 +205,21 @@ static CORBA_Object
 create_client_site (GnomeObject *object)
 {
 	POA_GNOME_ClientSite *servant;
+	CORBA_Environment ev;
 
 	servant = (POA_GNOME_ClientSite *)g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_client_site_vepv;
 
-	POA_GNOME_ClientSite__init ((PortableServer_Servant) servant, &object->ev);
-	if (object->ev._major != CORBA_NO_EXCEPTION){
+	CORBA_exception_init (&ev);
+
+	POA_GNOME_ClientSite__init ((PortableServer_Servant) servant, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION){
+		CORBA_exception_free (&ev);
 		g_free (servant);
 		return CORBA_OBJECT_NIL;
 	}
+
+	CORBA_exception_free (&ev);
 
 	return gnome_object_activate_servant (object, servant);
 }
@@ -322,40 +336,50 @@ gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClie
 {
 	CORBA_Object corba_object;
 	GnomeObject *gnome_object;
+	CORBA_Environment ev;
 	
 	g_return_val_if_fail (client_site != NULL, FALSE);
 	g_return_val_if_fail (object != NULL, FALSE);
 	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), FALSE);
 	g_return_val_if_fail (GNOME_IS_OBJECT_CLIENT (object), FALSE);
 
+	CORBA_exception_init (&ev);
+
 	gnome_object = GNOME_OBJECT (object);
-	
+
 	corba_object = GNOME_Unknown_query_interface (
 		gnome_object_corba_objref (gnome_object), "IDL:GNOME/Embeddable:1.0",
-		&gnome_object->ev);
+		&ev);
 
-	if (gnome_object->ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION){
 		gnome_object_check_env (
 			gnome_object,
 			gnome_object_corba_objref (gnome_object),
-			&gnome_object->ev);
+			&ev);
+		CORBA_exception_free (&ev);
 		return FALSE;
 	}
 	
-	if (corba_object == CORBA_OBJECT_NIL)
+	if (corba_object == CORBA_OBJECT_NIL) {
+		CORBA_exception_free (&ev);
 		return FALSE;
+	}
 
 	GNOME_Embeddable_set_client_site (
 		corba_object, 
 		gnome_object_corba_objref (GNOME_OBJECT (client_site)),
-		&GNOME_OBJECT (client_site)->ev);
+		&ev);
 		
-	if (gnome_object->ev._major != CORBA_NO_EXCEPTION){
-		gnome_object_check_env (gnome_object, corba_object, &GNOME_OBJECT (client_site)->ev);
+	if (ev._major != CORBA_NO_EXCEPTION){
+		CORBA_exception_free (&ev);
+		gnome_object_check_env (gnome_object, corba_object, &ev);
 		return FALSE;
 	}
-	
+
 	client_site->bound_object = object;
+
+	CORBA_exception_free (&ev);
+
 	return TRUE;
 }
 
@@ -391,9 +415,12 @@ set_remote_window (GtkWidget *socket, GnomeViewFrame *view_frame)
 }
 
 static void
-destroy_view_frame (GnomeViewFrame *view_frame, GnomeObjectClient *server_object)
+destroy_view_frame (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
 {
-	server_object->view_frames = g_list_remove (server_object->view_frames, view_frame);
+	/*
+	 * Remove this view frame.
+	 */
+	client_site->view_frames = g_list_remove (client_site->view_frames, view_frame);
 }
 
 static void
@@ -491,7 +518,7 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 	 * 4. Add this new view frame to the list of ViewFrames for
 	 * this embedded component.
 	 */
-	server_object->view_frames = g_list_prepend (server_object->view_frames, view_frame);
+	client_site->view_frames = g_list_prepend (client_site->view_frames, view_frame);
 	
 	/*
 	 * 5. Now wait until the socket->window is realized.
@@ -500,7 +527,7 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 			    GTK_SIGNAL_FUNC (set_remote_window), view_frame);
 
 	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
-			    GTK_SIGNAL_FUNC (destroy_view_frame), server_object);
+			    GTK_SIGNAL_FUNC (destroy_view_frame), client_site);
 
 	gtk_signal_connect (GTK_OBJECT (wrapper), "size_allocate",
 			    GTK_SIGNAL_FUNC (size_allocate), view_frame);
@@ -529,6 +556,7 @@ gnome_client_site_get_verbs (GnomeClientSite *client_site)
 	GNOME_Embeddable object;
 	GnomeObjectClient *server_object;
 	GnomeObject *gobject;
+	CORBA_Environment ev;
 	GList *l;
 	int i;
 	
@@ -536,15 +564,18 @@ gnome_client_site_get_verbs (GnomeClientSite *client_site)
 	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
 	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
 
+	CORBA_exception_init (&ev);
+
 	server_object = client_site->bound_object;
 
 	gobject = GNOME_OBJECT (server_object);
 	object = (GNOME_Embeddable) gnome_object_corba_objref (gobject);
 
-	list = GNOME_Embeddable_get_verb_list (object, &gobject->ev);
+	list = GNOME_Embeddable_get_verb_list (object, &ev);
 
-	if (gobject->ev._major != CORBA_NO_EXCEPTION){
-		gnome_object_check_env (GNOME_OBJECT (client_site), object, &gobject->ev);
+	if (ev._major != CORBA_NO_EXCEPTION){
+		gnome_object_check_env (GNOME_OBJECT (client_site), object, &ev);
+		CORBA_exception_free (&ev);
 		return NULL;
 	}
 
@@ -558,7 +589,8 @@ gnome_client_site_get_verbs (GnomeClientSite *client_site)
 
 		l = g_list_prepend (l, verb);
 	}
-	
+
+	CORBA_exception_free (&ev);
 	CORBA_free (list);
 
 	return l;
