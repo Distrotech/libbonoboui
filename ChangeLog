@@ -1,3 +1,7 @@
+2004-09-25  Federico Mena Quintero  <federico@ximian.com>
+
+	* Merged the fixes from the toolbar-rework branch.
+
 2004-09-13  Mark McLoughlin  <mark@skynet.ie>
 
 	* configure.in: Version 2.8.0.
