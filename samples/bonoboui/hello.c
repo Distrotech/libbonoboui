@@ -219,12 +219,6 @@ hello_create_main_window (void)
 	/* All the callback's user_data pointers will be set to 'win' */
 	bonobo_ui_component_add_verb_list_with_data (ui_component, hello_verbs, win);
 
-	/* TODO: */
-	/* - How can I add stock menu items without specifying all the details? */
-	/* - There are stock pixmaps, but how can I find a list of all the possible pixmap names? */
-	/* - Toolbar items tend to share details and callbacks with menu items, but the cmd can't */
-	/*     just be reused because toolbar items don't parse the navigation underscore.        */
-
 	return win;
 }
 
