@@ -211,6 +211,13 @@ bonobo_socket_size_request (GtkWidget      *widget,
 }
 
 static gboolean
+bonobo_socket_show_all (GtkWidget *widget)
+{
+	/* Do nothing - we don't want this to
+	 * propagate to an in-proc plug */
+}
+
+static gboolean
 bonobo_socket_plug_removed (GtkSocket *socket)
 {
 	dprintf ("bonobo_socket_plug_removed %p\n", socket);
@@ -240,6 +247,7 @@ bonobo_socket_class_init (GObjectClass *klass)
 	widget_class->size_request    = bonobo_socket_size_request;
 	widget_class->size_allocate   = bonobo_socket_size_allocate;
 	widget_class->expose_event    = bonobo_socket_expose_event;
+	widget_class->show_all        = bonobo_socket_show_all;
 
 	socket_class->plug_removed    = bonobo_socket_plug_removed;
 }
