@@ -284,7 +284,7 @@ toolbar_build_widget (BonoboUISync *sync,
 			len = strlen (label);
 			for (i = 0; i < len; i++) {
 				if (label [i] == '_') {
-					strcpy (label+i, label+i+1);
+					memmove (label+i, label+i+1, strlen (label+i+1) + 1);
 					len--;
 				}
 			}
