@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-14 16:47+0000\n"
-"PO-Revision-Date: 2005-01-14 16:50+0000\n"
+"PO-Revision-Date: 2005-01-14 16:58+0000\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "Docio'r bar offer"
 
 #: bonobo/bonobo-dock-item-grip.c:257
 msgid "Undock the toolbar"
-msgstr "Dad-docio'r bar offer"
+msgstr "Dad-ddocio'r bar offer"
 
 #: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
 #: bonobo/bonobo-ui-toolbar.c:1175
