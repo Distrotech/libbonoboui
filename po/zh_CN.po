@@ -1,14 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # Wang Jian <lark@linux.net.cn>, 2001
+# Funda Wang <fundawang@linux.net.cn>, 2003
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2002-07-24 11:52+0100\n"
-"Last-Translator: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
-"Language-Team: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-08-08 20:53+0200\n"
+"PO-Revision-Date: 2003-08-09 04:13+0100\n"
+"Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
+"Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,16 +34,14 @@ msgid "The User interface container"
 msgstr "用户界面容器"
 
 # SUN CHANGED MESSAGE
-#: bonobo/bonobo-dock-item-grip.c:236
-#, fuzzy
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
-msgstr "停靠工具拦"
+msgstr "停靠工具栏"
 
 # SUN CHANGED MESSAGE
-#: bonobo/bonobo-dock-item-grip.c:237
-#, fuzzy
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
-msgstr "取消停靠工具拦"
+msgstr "取消停靠工具栏"
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
 #: bonobo/bonobo-ui-toolbar.c:1176
@@ -98,14 +98,13 @@ msgstr "必需的界面"
 
 # SUN NEW TRANSLATION
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"界面的 NULL_terminated 数组，服务器必须支持该数组才能列在选择器中。如果没有列"
-"出界面，默认值为“IDL:Bonobo/Embeddable:1.0”"
+"界面以 NULL 结尾的数组，服务器必须支持该数组才能列在选择器中。如果没有列出界"
+"面，默认值为“IDL:Bonobo/Embeddable:1.0”"
 
 # SUN NEW TRANSLATION
 #: bonobo/bonobo-selector.c:348
@@ -156,7 +155,6 @@ msgstr "文本和图标(_T)"
 
 # SUN CHANGED MESSAGE
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
 msgstr "仅有文本"
 
@@ -167,15 +165,15 @@ msgstr "仅优先级文本(_P)"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
-msgstr ""
+msgstr "调试"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr ""
+msgstr "转存 XML(_D)"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "将全部 UI 的 XML 描述转存到控制台"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -336,7 +334,7 @@ msgstr "工具栏是否浮动"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "工具栏立体效果的样式"
 
 # SUN NEW TRANSLATION
 #: bonobo/bonobo-ui-util.c:623
@@ -345,7 +343,6 @@ msgstr "目录(_C)"
 
 # SUN CHANGED MESSAGE
 #: bonobo/bonobo-ui-util.c:624
-#, fuzzy
 msgid "View help for this application"
 msgstr "查看此应用程序的帮助"
 
@@ -451,9 +448,3 @@ msgstr "无法初始化 libbonoboui 代码"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "无法初始化 Bonobo UI"
-
-#~ msgid "Can not bonobo_ui_init"
-#~ msgstr "无法 bonobo_ui_init"
-
-#~ msgid "Select an object"
-#~ msgstr "选择一个对象"
