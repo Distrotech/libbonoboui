@@ -6,27 +6,27 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
-"POT-Creation-Date: 2003-05-06 00:22+0100\n"
-"PO-Revision-Date: 2003-05-06 00:22+0100\n"
+"POT-Creation-Date: 2003-05-26 21:35+0000\n"
+"PO-Revision-Date: 2003-05-26 21:36+0100\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:647
+#: bonobo/bonobo-canvas-item.c:655
 msgid "corba factory"
 msgstr "fábrica corba"
 
-#: bonobo/bonobo-canvas-item.c:648
+#: bonobo/bonobo-canvas-item.c:656
 msgid "The factory pointer"
 msgstr "O apontador de fábrica"
 
-#: bonobo/bonobo-canvas-item.c:657
+#: bonobo/bonobo-canvas-item.c:665
 msgid "corba UI container"
 msgstr "contentor UI corba"
 
-#: bonobo/bonobo-canvas-item.c:658
+#: bonobo/bonobo-canvas-item.c:666
 msgid "The User interface container"
 msgstr "O contentor do interface de utilizador"
 
@@ -92,8 +92,8 @@ msgstr "Interfaces requeridos"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
 "Um array de interfaces terminado em NULL que um servidor tem de suportar por "
@@ -287,7 +287,7 @@ msgstr "Customi_zar"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "Customizar a barra de ferramentas"
+msgstr "Costumizar a barra de ferramentas"
 
 #: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
