@@ -548,24 +548,20 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 
 		if (cl->app_prefix)
 			prefix = g_strdup (cl->app_prefix);
-		else {
+		else
+			prefix = NULL;
+
+		if (prefix)
+			datadir = g_strdup_printf ("%s/share", prefix);
+
+ 		else {
+			datadir = NULL;
 			g_object_get (G_OBJECT (gnome_program_get ()),
-				      GNOME_PARAM_APP_PREFIX, &prefix, NULL);
-			if (!prefix)
-				g_object_get (G_OBJECT (gnome_program_get ()),
-					      GNOME_PARAM_GNOME_PREFIX, &prefix, NULL);
+				      GNOME_PARAM_APP_DATADIR, &datadir, NULL);
 		}
 
-		datadir = NULL;
-		g_object_get (G_OBJECT (gnome_program_get ()),
-		              GNOME_PARAM_APP_DATADIR, &datadir, NULL);
-		if (!datadir) {
-			/* sub-optimal, but what can you do */
-			if (prefix)
-				datadir = g_strdup_printf ("%s/share", prefix);
-			else
-				datadir = g_strdup (BONOBO_DATADIR);
-		}
+		if (!datadir) /* desparate fallback */
+			datadir = g_strdup (BONOBO_DATADIR);
 
 		cl->program = gnome_program_init (
 			doc_id, "2.1",
