@@ -19,12 +19,13 @@ extern "C" {
 #include <bonobo/bonobo-moniker.h>
 #include <bonobo/bonobo-exception.h>
 
-#include <bonobo/bonobo-container.h>
+#include <bonobo/bonobo-item-container.h>
 #include <bonobo/bonobo-object-client.h>
 #include <bonobo/bonobo-moniker-util.h>
 #include <bonobo/bonobo-client-site.h>
 
 #include <bonobo/bonobo-property-bag.h>
+#include <bonobo/bonobo-property-listener.h>
 #include <bonobo/bonobo-property-bag-client.h>
 
 #include <bonobo/bonobo-control.h>

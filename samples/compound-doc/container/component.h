@@ -28,10 +28,10 @@ typedef struct {
 } SampleClientSiteClass;
 
 GtkType           sample_client_site_get_type   (void);
-SampleClientSite *sample_client_site_new        (BonoboContainer    *container,
-						 SampleApp          *app,
-						 BonoboObjectClient *embeddable,
-						 const char         *embeddable_id);
+SampleClientSite *sample_client_site_new        (BonoboItemContainer *container,
+						 SampleApp           *app,
+						 BonoboObjectClient  *embeddable,
+						 const char          *embeddable_id);
 
 GtkWidget        *sample_client_site_get_widget (SampleClientSite   *site);
 

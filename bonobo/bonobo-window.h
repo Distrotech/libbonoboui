@@ -55,7 +55,7 @@ BonoboUIXmlError     bonobo_win_xml_merge           (BonoboWin  *win,
 
 BonoboUIXmlError     bonobo_win_xml_merge_tree      (BonoboWin  *win,
 						     const char *path,
-						     xmlNode    *tree,
+						     BonoboUINode    *tree,
 						     const char *component);
 
 char                *bonobo_win_xml_get             (BonoboWin  *win,

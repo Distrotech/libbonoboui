@@ -9,6 +9,8 @@
 #include <gnome.h>
 #include <bonobo.h>
 #include <bonobo/bonobo-ui-component.h>
+#include <gnome-xml/tree.h>
+#include <gnome-xml/parser.h>
 
 static BonoboObjectClass *bonobo_ui_component_parent_class;
 enum {
@@ -454,31 +456,19 @@ void
 bonobo_ui_component_set_tree (BonoboUIComponent  *component,
 			      Bonobo_UIContainer  container,
 			      const char         *path,
-			      xmlNode            *node,
+			      BonoboUINode            *node,
 			      CORBA_Environment  *ev)
 {
-	xmlDoc     *doc;
-	xmlChar    *mem = NULL;
-	int         size;
+	char *str;
 
-	doc = xmlNewDoc ("1.0");
-	g_return_if_fail (doc != NULL);
-
-	doc->root = node;
-
-	xmlDocDumpMemory (doc, &mem, &size);
-
-	g_return_if_fail (mem != NULL);
-
-	doc->root = NULL;
-	xmlFreeDoc (doc);
+	str = bonobo_ui_node_to_string (node, TRUE);	
 
 /*	fprintf (stderr, "Merging '%s'\n", mem);*/
 	
 	bonobo_ui_component_set (
-		component, container, path, mem, ev);
+		component, container, path, str, ev);
 
-	xmlFree (mem);
+	bonobo_ui_node_free_string (str);
 }
 
 char *
@@ -511,28 +501,22 @@ bonobo_ui_container_get (Bonobo_UIContainer  container,
 	return xml;
 }
 
-xmlNode *
+BonoboUINode *
 bonobo_ui_container_get_tree (Bonobo_UIContainer  container,
 			      const char         *path,
 			      gboolean            recurse,
 			      CORBA_Environment  *ev)
 {	
 	char *xml = bonobo_ui_container_get (container, path, recurse, ev);
-	xmlNode *node;
-	xmlDoc  *doc;
+	BonoboUINode *node;
 
 	if (!xml)
 		return NULL;
 
-	doc = xmlParseDoc ((char *)xml);
+	node = bonobo_ui_node_from_string (xml);
 
-	if (!doc)
+	if (!node)
 		return NULL;
-
-	node = doc->root;
-	doc->root = NULL;
-	
-	xmlFreeDoc (doc);
 
 	bonobo_ui_xml_strip (node);
 
@@ -719,7 +703,7 @@ bonobo_ui_container_set_prop (Bonobo_UIContainer  container,
 			      const char         *value,
 			      CORBA_Environment  *opt_ev)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 	char *parent_path;
 
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
@@ -729,7 +713,7 @@ bonobo_ui_container_set_prop (Bonobo_UIContainer  container,
 
 	g_return_if_fail (node != NULL);
 
-	xmlSetProp (node, prop, value);
+	bonobo_ui_node_set_attr (node, prop, value);
 
 	parent_path = bonobo_ui_xml_get_parent_path (path);
 
@@ -739,7 +723,7 @@ bonobo_ui_container_set_prop (Bonobo_UIContainer  container,
 
 	g_free (parent_path);
 
-	xmlFreeNode (node);
+	bonobo_ui_node_free (node);
 }
 
 gchar *
@@ -748,7 +732,7 @@ bonobo_ui_container_get_prop (Bonobo_UIContainer  container,
 			      const char         *prop,
 			      CORBA_Environment  *opt_ev)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 	xmlChar *ans;
 	gchar   *ret;
 
@@ -759,14 +743,14 @@ bonobo_ui_container_get_prop (Bonobo_UIContainer  container,
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	ans = xmlGetProp (node, prop);
+	ans = bonobo_ui_node_get_attr (node, prop);
 	if (ans) {
 		ret = g_strdup (ans);
-		xmlFree (ans);
+		bonobo_ui_node_free_string (ans);
 	} else
 		ret = NULL;
 
-	xmlFreeNode (node);
+	bonobo_ui_node_free (node);
 
 	return ret;
 }

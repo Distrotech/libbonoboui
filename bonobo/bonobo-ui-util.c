@@ -14,7 +14,8 @@
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 
-#define XML_FREE(a) ((a)?xmlFree(a):(a))
+#include <gnome-xml/tree.h>
+#include <gnome-xml/parser.h>
 
 static void
 write_byte (char *start, guint8 byte)
@@ -224,28 +225,28 @@ gnome_pixmap_new_from_pixbuf (GdkPixbuf *pixbuf)
 }
 
 GtkWidget *
-bonobo_ui_util_xml_get_pixmap (GtkWidget *window, xmlNode *node)
+bonobo_ui_util_xml_get_pixmap (GtkWidget *window, BonoboUINode *node)
 {
 	GtkWidget *pixmap = NULL;
 	char      *type;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if (!(type = xmlGetProp (node, "pixtype")))
+	if (!(type = bonobo_ui_node_get_attr (node, "pixtype")))
 		return NULL;
 
 	if (!strcmp (type, "stock")) {
 		char      *text;
 
-		text = xmlGetProp (node, "pixname");
+		text = bonobo_ui_node_get_attr (node, "pixname");
 		pixmap = gnome_stock_pixmap_widget (window, text);
-		xmlFree (text);
+		bonobo_ui_node_free_string (text);
 	} else if (!strcmp (type, "filename")) {
 		char *name, *text;
 
-		text = xmlGetProp (node, "pixname");
+		text = bonobo_ui_node_get_attr (node, "pixname");
 		name = gnome_pixmap_file (text);
-		xmlFree (text);
+		bonobo_ui_node_free_string (text);
 
 		if (name == NULL)
 			g_warning ("Could not find GNOME pixmap file %s", text);
@@ -258,13 +259,13 @@ bonobo_ui_util_xml_get_pixmap (GtkWidget *window, xmlNode *node)
 		char      *text;
 		GdkPixbuf *pixbuf;
 
-		text = xmlGetProp (node, "pixname");
+		text = bonobo_ui_node_get_attr (node, "pixname");
 
 		g_return_val_if_fail (text != NULL, NULL);
 		
 		/* Get pointer to GdkPixbuf */
 		pixbuf = bonobo_ui_util_xml_to_pixbuf (text);
-		xmlFree (text);
+		bonobo_ui_node_free_string (text);
 
 		g_return_val_if_fail (pixbuf != NULL, NULL);
 
@@ -274,13 +275,13 @@ bonobo_ui_util_xml_get_pixmap (GtkWidget *window, xmlNode *node)
 	} else
 		g_warning ("Unknown pixmap type '%s'", type);
 
-	xmlFree (type);
+	bonobo_ui_node_free_string (type);
 
 	return pixmap;
 }
 
 void
-bonobo_ui_util_xml_set_pixbuf (xmlNode     *node,
+bonobo_ui_util_xml_set_pixbuf (BonoboUINode     *node,
 				GdkPixbuf   *pixbuf)
 {
 	char *data;
@@ -288,14 +289,14 @@ bonobo_ui_util_xml_set_pixbuf (xmlNode     *node,
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (pixbuf != NULL);
 
-	xmlSetProp (node, "pixtype", "pixbuf");
+	bonobo_ui_node_set_attr (node, "pixtype", "pixbuf");
 	data = bonobo_ui_util_pixbuf_to_xml (pixbuf);
-	xmlSetProp (node, "pixname", data);
+	bonobo_ui_node_set_attr (node, "pixname", data);
 	g_free (data);
 }
 
 void
-bonobo_ui_util_xml_set_pix_xpm (xmlNode     *node,
+bonobo_ui_util_xml_set_pix_xpm (BonoboUINode     *node,
 				const char **xpm)
 {
 	GdkPixbuf *pixbuf;
@@ -311,25 +312,25 @@ bonobo_ui_util_xml_set_pix_xpm (xmlNode     *node,
 }
 				     
 void
-bonobo_ui_util_xml_set_pix_stock (xmlNode     *node,
+bonobo_ui_util_xml_set_pix_stock (BonoboUINode     *node,
 				  const char  *name)
 {
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (name != NULL);
 
-	xmlSetProp (node, "pixtype", "stock");
-	xmlSetProp (node, "pixname", name);
+	bonobo_ui_node_set_attr (node, "pixtype", "stock");
+	bonobo_ui_node_set_attr (node, "pixname", name);
 }
 
 void
-bonobo_ui_util_xml_set_pix_fname (xmlNode     *node,
+bonobo_ui_util_xml_set_pix_fname (BonoboUINode     *node,
 				  const char  *name)
 {
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (name != NULL);
 	
-	xmlSetProp (node, "pixtype", "filename");
-	xmlSetProp (node, "pixname", name);
+	bonobo_ui_node_set_attr (node, "pixtype", "filename");
+	bonobo_ui_node_set_attr (node, "pixname", name);
 }
 
 
@@ -352,7 +353,7 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 void
 bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 				const char        *app_name,
-				xmlNode           *parent)
+				BonoboUINode           *parent)
 {
 	char buf [1024];
 	char *topic_file;
@@ -378,7 +379,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 	while (fgets (buf, sizeof (buf), file)) {
 		char *s, *id;
 		GnomeHelpMenuEntry *entry;
-		xmlNode *node;
+		BonoboUINode *node;
 
 		/* Format of lines is "help_file_name whitespace* menu_title" */
 		for (s = buf; *s && !isspace (*s); s++)
@@ -392,13 +393,13 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 		if (s [strlen (s) - 1] == '\n')
 			s [strlen (s) - 1] = '\0';
 
-		node = xmlNewNode (NULL, "menuitem");
+		node = bonobo_ui_node_new ("menuitem");
 		/* Try and make something unique */
 		id = g_strdup_printf ("Help%s%s", app_name, buf);
-		xmlSetProp (node, "name", id);
-		xmlSetProp (node, "verb", id);
-		xmlSetProp (node, "label", s);
-		xmlAddChild (parent, node);
+		bonobo_ui_node_set_attr (node, "name", id);
+		bonobo_ui_node_set_attr (node, "verb", id);
+		bonobo_ui_node_set_attr (node, "label", s);
+		bonobo_ui_node_add_child (parent, node);
 
 		/* Create help menu entry */
 		entry = g_new (GnomeHelpMenuEntry, 1);
@@ -416,161 +417,161 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 	fclose (file);
 }
 
-xmlNode *
+BonoboUINode *
 bonobo_ui_util_build_accel (guint           accelerator_key,
 			    GdkModifierType accelerator_mods,
 			    const char     *verb)
 {
 	char    *name;
-	xmlNode *ret;
+	BonoboUINode *ret;
 
 	name = bonobo_ui_util_accel_name (accelerator_key, accelerator_mods);
-	ret = xmlNewNode (NULL, "accel");
-	xmlSetProp (ret, "name", name);
+	ret = bonobo_ui_node_new ("accel");
+	bonobo_ui_node_set_attr (ret, "name", name);
 	g_free (name);
-	xmlSetProp (ret, "verb", verb);
+	bonobo_ui_node_set_attr (ret, "verb", verb);
 
 	return ret;
 
 	/* Old Kludge due to brokenness in gnome-xml */
 /*	char    *name;
 	xmlDoc  *doc;
-	xmlNode *ret;
+	BonoboUINode *ret;
 
 	name = bonobo_ui_util_accel_name (accelerator_key, accelerator_mods);
 	
 	doc = xmlNewDoc ("1.0");
 	ret = xmlNewDocNode (doc, NULL, "accel", NULL);
-	xmlSetProp (ret, "name", name);
+	bonobo_ui_node_set_attr (ret, "name", name);
 	g_free (name);
-	xmlSetProp (ret, "verb", verb);
+	bonobo_ui_node_set_attr (ret, "verb", verb);
 	doc->root = NULL;
 	bonobo_ui_xml_strip (ret);
-	xmlFreeDoc (doc);
+	bonobo_ui_node_free_stringDoc (doc);
 
 	return ret;*/
 }
 
-xmlNode *
+BonoboUINode *
 bonobo_ui_util_new_menu (gboolean    submenu,
 			 const char *name,
 			 const char *label,
 			 const char *descr,
 			 const char *verb)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 
 	g_return_val_if_fail (name != NULL, NULL);
 
 	if (submenu)
-		node = xmlNewNode (NULL, "submenu");
+		node = bonobo_ui_node_new ("submenu");
 	else
-		node = xmlNewNode (NULL, "menuitem");
+		node = bonobo_ui_node_new ("menuitem");
 
-	xmlSetProp (node, "name", name);
+	bonobo_ui_node_set_attr (node, "name", name);
 	if (label)
-		xmlSetProp (node, "label", label);
+		bonobo_ui_node_set_attr (node, "label", label);
 
 	if (descr)
-		xmlSetProp (node, "descr", descr);
+		bonobo_ui_node_set_attr (node, "descr", descr);
 
 	if (verb)
-		xmlSetProp (node, "verb", verb);
+		bonobo_ui_node_set_attr (node, "verb", verb);
 
 	return node;
 }
 
-xmlNode *
+BonoboUINode *
 bonobo_ui_util_new_placeholder (const char *name,
 				gboolean    top,
 				gboolean    bottom)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 	
-	node = xmlNewNode (NULL, "placeholder");
+	node = bonobo_ui_node_new ("placeholder");
 
 	if (name)
-		xmlSetProp (node, "name", name);
+		bonobo_ui_node_set_attr (node, "name", name);
 
 	if (top && bottom)
-		xmlSetProp (node, "delimit", "both");
+		bonobo_ui_node_set_attr (node, "delimit", "both");
 	else if (top)
-		xmlSetProp (node, "delimit", "top");
+		bonobo_ui_node_set_attr (node, "delimit", "top");
 	else if (bottom)
-		xmlSetProp (node, "delimit", "bottom");
+		bonobo_ui_node_set_attr (node, "delimit", "bottom");
 
 	return node;
 }
 
 void
-bonobo_ui_util_set_radiogroup (xmlNode    *node,
+bonobo_ui_util_set_radiogroup (BonoboUINode    *node,
 			       const char *group_name)
 {
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (group_name != NULL);
 
-	xmlSetProp (node, "type", "radio");
-	xmlSetProp (node, "group", group_name);
+	bonobo_ui_node_set_attr (node, "type", "radio");
+	bonobo_ui_node_set_attr (node, "group", group_name);
 }
 
 void
-bonobo_ui_util_set_toggle (xmlNode    *node,
+bonobo_ui_util_set_toggle (BonoboUINode    *node,
 			   const char *id,
 			   const char *init_state)
 {
 	g_return_if_fail (node != NULL);
 
-	xmlSetProp (node, "type", "toggle");
+	bonobo_ui_node_set_attr (node, "type", "toggle");
 	if (id)
-		xmlSetProp (node, "id", id);
+		bonobo_ui_node_set_attr (node, "id", id);
 	if (init_state)
-		xmlSetProp (node, "state", init_state);
+		bonobo_ui_node_set_attr (node, "state", init_state);
 }
 
-xmlNode *
+BonoboUINode *
 bonobo_ui_util_new_std_toolbar (const char *name,
 				const char *label,
 				const char *descr,
 				const char *verb)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 
 	g_return_val_if_fail (name != NULL, NULL);
 	
-	node = xmlNewNode (NULL, "toolitem");
-	xmlSetProp (node, "type", "std");
-	xmlSetProp (node, "name", name);
+	node = bonobo_ui_node_new ("toolitem");
+	bonobo_ui_node_set_attr (node, "type", "std");
+	bonobo_ui_node_set_attr (node, "name", name);
 	
 	if (label)
-		xmlSetProp (node, "label", label);
+		bonobo_ui_node_set_attr (node, "label", label);
 	if (descr)
-		xmlSetProp (node, "descr", descr);
+		bonobo_ui_node_set_attr (node, "descr", descr);
 	if (verb)
-		xmlSetProp (node, "verb", verb);
+		bonobo_ui_node_set_attr (node, "verb", verb);
 
 	return node;
 }
 					     
-xmlNode *
+BonoboUINode *
 bonobo_ui_util_new_toggle_toolbar (const char *name,
 				   const char *label,
 				   const char *descr,
 				   const char *id)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 
 	g_return_val_if_fail (name != NULL, NULL);
 	
-	node = xmlNewNode (NULL, "toolitem");
-	xmlSetProp (node, "type", "toggle");
-	xmlSetProp (node, "name", name);
+	node = bonobo_ui_node_new ("toolitem");
+	bonobo_ui_node_set_attr (node, "type", "toggle");
+	bonobo_ui_node_set_attr (node, "name", name);
 	
 	if (label)
-		xmlSetProp (node, "label", label);
+		bonobo_ui_node_set_attr (node, "label", label);
 	if (descr)
-		xmlSetProp (node, "descr", descr);
+		bonobo_ui_node_set_attr (node, "descr", descr);
 	if (id)
-		xmlSetProp (node, "id", id);
+		bonobo_ui_node_set_attr (node, "id", id);
 
 	return node;
 }
@@ -578,7 +579,8 @@ bonobo_ui_util_new_toggle_toolbar (const char *name,
 
 /**
  * bonobo_ui_util_get_ui_fname:
- * @component_name: the name of the component.
+ * @component_prefix: the prefix for the component.
+ * @file_name: the file name of the xml file.
  * 
  * Builds a path to the xml file that stores the GUI.
  * 
@@ -587,7 +589,7 @@ bonobo_ui_util_new_toggle_toolbar (const char *name,
  **/
 char *
 bonobo_ui_util_get_ui_fname (const char *component_prefix,
-			     const char *component_name)
+			     const char *file_name)
 {
 	char *fname, *name;
 
@@ -595,7 +597,7 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 	 * The user copy ?
 	 */
 	fname = g_strdup_printf ("%s/.gnome/ui/%s",
-				 g_get_home_dir (), component_name);
+				 g_get_home_dir (), file_name);
 
 	/*
 	 * FIXME: we should compare timestamps vs. the master copy.
@@ -608,18 +610,23 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 	 * The master copy
 	 */
 	fname = g_strdup_printf ("%s/gnome/ui/%s",
-				 component_prefix, component_name);
+				 component_prefix, file_name);
 	if (g_file_exists (fname))
 		return fname;
 	g_free (fname);
 
-	name  = g_strdup_printf ("gnome/ui/%s", component_name);
+	name  = g_strdup_printf ("gnome/ui/%s", file_name);
 	fname = gnome_unconditional_datadir_file (name);
 	g_free (name);
 
 	return fname;
 }
 
+
+/* To avoid exporting property iterators on BonoboUINode
+ * (not sure those should be public), this hack is used.
+ */
+#define XML_NODE(x) ((xmlNode*)(x))
 
 /**
  * bonobo_ui_util_translate_ui:
@@ -630,9 +637,10 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
  * property and removes the leading '_'.
  **/
 void
-bonobo_ui_util_translate_ui (xmlNode *node)
+bonobo_ui_util_translate_ui (BonoboUINode *bnode)
 {
-	xmlNode *l;
+        BonoboUINode *l;
+        xmlNode *node = XML_NODE (bnode);
 	xmlAttr *prop, *old_props;
 
 	if (!node)
@@ -654,27 +662,27 @@ bonobo_ui_util_translate_ui (xmlNode *node)
 			xmlNewProp (node, prop->name, value);
 
 		if (value)
-			xmlFree (value);
+			bonobo_ui_node_free_string (value);
 	}
 
-	for (l = node->childs; l; l = l->next)
+	for (l = bonobo_ui_node_children (bnode); l; l = bonobo_ui_node_next (l))
 		bonobo_ui_util_translate_ui (l);
 }
 
 void
 bonobo_ui_util_fixup_help (BonoboUIComponent *component,
-			   xmlNode           *node,
+			   BonoboUINode           *node,
 			   const char        *app_name)
 {
-	xmlNode *l;
+	BonoboUINode *l;
 	gboolean build_here = FALSE;
 	
-	if (!strcmp (node->name, "placeholder")) {
+	if (bonobo_ui_node_has_name (node, "placeholder")) {
 		char *txt;
 
-		if ((txt = xmlGetProp (node, "name"))) {
+		if ((txt = bonobo_ui_node_get_attr (node, "name"))) {
 			build_here = !strcmp (txt, "BuiltMenuItems");
-			xmlFree (txt);
+			bonobo_ui_node_free_string (txt);
 		}
 	}
 
@@ -683,14 +691,14 @@ bonobo_ui_util_fixup_help (BonoboUIComponent *component,
 			component, app_name, node);
 	}
 
-	for (l = node->childs; l; l = l->next)
+	for (l = bonobo_ui_node_children (node); l; l = bonobo_ui_node_next (l))
 		bonobo_ui_util_fixup_help (component, l, app_name);
 }
 
 /**
  * bonobo_ui_util_new_ui:
  * @component: The component help callback should be on
- * @fname: Filename of the UI file
+ * @file_name: Filename of the UI file
  * @app_name: Application name ( for finding help )
  * 
  *  Loads an xml tree from a file, cleans the 
@@ -698,25 +706,17 @@ bonobo_ui_util_fixup_help (BonoboUIComponent *component,
  * 
  * Return value: The translated tree ready to be merged.
  **/
-xmlNode *
+BonoboUINode *
 bonobo_ui_util_new_ui (BonoboUIComponent *component,
-		       const char        *fname,
+		       const char        *file_name,
 		       const char        *app_name)
 {
-	xmlDoc  *doc;
-	xmlNode *node;
+	BonoboUINode *node;
 
-	g_return_val_if_fail (fname != NULL, NULL);
-	
-	doc = xmlParseFile (fname);
+	g_return_val_if_fail (file_name != NULL, NULL);
 
-	g_return_val_if_fail (doc != NULL, NULL);
-
-	node = doc->root;
-
-	doc->root = NULL;
-	xmlFreeDoc (doc);
-
+        node = bonobo_ui_node_from_file (file_name);
+        
 	bonobo_ui_xml_strip (node);
 
 	bonobo_ui_util_translate_ui (node);
@@ -726,12 +726,34 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 	return node;
 }
 
-static void
-add_node (xmlNode *parent, const char *name)
+void
+bonobo_ui_util_set_ui (BonoboUIComponent *component,
+		       Bonobo_UIContainer container,
+		       const char        *component_prefix,
+		       const char        *file_name,
+		       const char        *app_name)
 {
-	xmlNode *node = xmlNewNode (NULL, name);
+	char *fname;
+	BonoboUINode *ui;
+	
+	fname = bonobo_ui_util_get_ui_fname (component_prefix, file_name);
+/*	g_warning ("Attempting ui load from '%s'", file);*/
+	
+	ui = bonobo_ui_util_new_ui (component, fname, app_name);
+	
+	bonobo_ui_component_set_tree (component, container, "/", ui, NULL);
+	
+	g_free (fname);
+	bonobo_ui_node_free (ui);
+	/* FIXME: we could be caching the tree here */
+}
 
-	xmlAddChild (parent, node);
+static void
+add_node (BonoboUINode *parent, const char *name)
+{
+        BonoboUINode *node = bonobo_ui_node_new (name);
+
+	bonobo_ui_node_add_child (parent, node);
 }
 
 /**
@@ -740,7 +762,7 @@ add_node (xmlNode *parent, const char *name)
  *  Create a skeleton structure so paths work nicely.
  * should be merged into any new ui_xml objects.
  * 
- * Return value: a tree, free it with xmlFreeNode.
+ * Return value: a tree, free it with bonobo_ui_node_free.
  **/
 void
 bonobo_ui_util_build_skeleton (BonoboUIXml *xml)
@@ -1051,4 +1073,26 @@ bonobo_ui_util_accel_name (guint              accelerator_key,
 	strcpy (accelerator + l, keyval_name);
 
 	return accelerator;
+}
+
+void
+bonobo_ui_util_set_pixbuf (Bonobo_UIContainer container,
+			   const char        *path,
+			   GdkPixbuf         *pixbuf)
+{
+	char *parent_path;
+	BonoboUINode *node;
+
+	node = bonobo_ui_container_get_tree (container, path, FALSE, NULL);
+
+	g_return_if_fail (node != NULL);
+
+	bonobo_ui_util_xml_set_pixbuf (node, pixbuf);
+
+	parent_path = bonobo_ui_xml_get_parent_path (path);
+	bonobo_ui_component_set_tree (NULL, container, parent_path, node, NULL);
+
+	bonobo_ui_node_free (node);
+
+	g_free (parent_path);
 }

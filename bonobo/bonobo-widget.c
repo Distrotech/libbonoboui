@@ -67,10 +67,10 @@ struct _BonoboWidgetPrivate {
 	/*
 	 * Subdocument (Embeddable/View) things.
 	 */
-	BonoboContainer	   *container;
-	BonoboClientSite   *client_site;
-	BonoboViewFrame    *view_frame;
-	Bonobo_UIContainer  uih;
+	BonoboItemContainer *container;
+	BonoboClientSite    *client_site;
+	BonoboViewFrame     *view_frame;
+	Bonobo_UIContainer   uih;
 };
 
 static BonoboWrapperClass *bonobo_widget_parent_class;
@@ -211,7 +211,7 @@ bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
 	 * Create the BonoboContainer.  This will contain
 	 * just one BonoboClientSite.
 	 */
-	bw->priv->container = bonobo_container_new ();
+	bw->priv->container = bonobo_item_container_new ();
 
 	bw->priv->server = bonobo_widget_launch_component (object_desc);
 	if (bw->priv->server == NULL)
@@ -235,7 +235,7 @@ bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
 	 * basically just there as a place holder; this is the only
 	 * client site that will ever be added to it.
 	 */
-	bonobo_container_add (bw->priv->container, BONOBO_OBJECT (bw->priv->client_site));
+	bonobo_item_container_add (bw->priv->container, BONOBO_OBJECT (bw->priv->client_site));
 
 	/*
 	 * Now create a new view for the remote object.
@@ -279,7 +279,7 @@ bonobo_widget_new_subdoc (const char        *object_desc,
 }
 
 
-BonoboContainer *
+BonoboItemContainer *
 bonobo_widget_get_container (BonoboWidget *bw)
 {
 	g_return_val_if_fail (bw != NULL, NULL);

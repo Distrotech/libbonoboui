@@ -82,7 +82,7 @@ void               bonobo_ui_component_set          (BonoboUIComponent  *compone
 void               bonobo_ui_component_set_tree     (BonoboUIComponent  *component,
 						     Bonobo_UIContainer  container,
 						     const char         *path,
-						     xmlNode            *node,
+						     BonoboUINode            *node,
 						     CORBA_Environment  *ev);
 
 void               bonobo_ui_component_rm           (BonoboUIComponent  *component,
@@ -99,7 +99,7 @@ char              *bonobo_ui_container_get          (Bonobo_UIContainer  contain
 						     gboolean            recurse,
 						     CORBA_Environment  *ev);
 
-xmlNode           *bonobo_ui_container_get_tree     (Bonobo_UIContainer  container,
+BonoboUINode           *bonobo_ui_container_get_tree     (Bonobo_UIContainer  container,
 						     const char         *path,
 						     gboolean            recurse,
 						     CORBA_Environment  *ev);

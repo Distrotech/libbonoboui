@@ -8,15 +8,15 @@ typedef struct _SampleApp        SampleApp;
 typedef struct _SampleClientSite SampleClientSite;
 
 struct _SampleApp {
-	BonoboContainer *container;
-	BonoboUIHandler *ui_handler;
+	BonoboItemContainer *container;
+	BonoboUIHandler     *ui_handler;
 
-	BonoboViewFrame *curr_view;
-	GList           *components;
+	BonoboViewFrame     *curr_view;
+	GList               *components;
 
-	GtkWidget *app;
-	GtkWidget *box;
-	GtkWidget *fileselection;
+	GtkWidget           *app;
+	GtkWidget           *box;
+	GtkWidget           *fileselection;
 };
 
 SampleClientSite *sample_app_add_component    (SampleApp        *app,

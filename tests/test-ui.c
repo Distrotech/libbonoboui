@@ -149,7 +149,7 @@ main (int argc, char **argv)
 		"	<item name=\"main\">Nothing</item>\n"
 		"	<control name=\"Progress\"/>\n"
 		"</status>";
-	xmlNode *accel, *file;
+	BonoboUINode *accel, *file;
 
 	free (malloc (8));
 

@@ -73,7 +73,7 @@ print_preview_cb (GtkWidget *caller, SampleApp *app)
 static void
 xml_dump_cb (GtkWidget *caller, SampleApp *app)
 {
-	bonobo_win_dump (app->app, "On request");
+	bonobo_win_dump (BONOBO_WIN (app->app), "On request");
 }
 
 static void

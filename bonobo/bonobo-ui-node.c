@@ -187,8 +187,8 @@ bonobo_ui_node_get_name (BonoboUINode *node)
 }
 
 gboolean
-bonobo_ui_node_has_name    (BonoboUINode *node,
-                            const char   *name)
+bonobo_ui_node_has_name (BonoboUINode *node,
+			 const char   *name)
 {
         return strcmp (XML_NODE (node)->name, name) == 0;
 }
@@ -215,9 +215,11 @@ bonobo_ui_node_to_string (BonoboUINode *node,
 	g_return_val_if_fail (doc->root != NULL, NULL);
 
 	if (!recurse && bonobo_ui_node_children (BNODE(doc->root))) {
-		BonoboUINode *tmp = bonobo_ui_node_children (BNODE(doc->root));
-		xmlUnlinkNode (XML_NODE(tmp));
-		bonobo_ui_node_free (tmp);
+		BonoboUINode *tmp;
+		while ((tmp = bonobo_ui_node_children (BNODE(doc->root)))) {
+			xmlUnlinkNode (XML_NODE(tmp));
+			bonobo_ui_node_free (tmp);
+		}
 	}
 
 	xmlDocDumpMemory (doc, &mem, &size);

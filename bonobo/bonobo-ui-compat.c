@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
  * bonobo-ui-compat.c: Compatibility functions for the old GnomeUI stuff,
  *                    and the old Bonobo UI handler API.
@@ -19,6 +20,10 @@
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-container.h>
 #include <bonobo/bonobo-ui-compat.h>
+#include <bonobo/bonobo-ui-node.h>
+
+#include <gnome-xml/tree.h>
+#include <gnome-xml/parser.h>
 
 #undef COMPAT_DEBUG
 
@@ -70,8 +75,8 @@ get_priv (BonoboUIHandler *uih)
 
 static void
 compat_set (BonoboUIHandlerPrivate *priv,
-	    const char *xml_path,
-	    const char *xml)
+            const char *xml_path,
+            const char *xml)
 {
 #ifdef COMPAT_DEBUG
 	fprintf (stderr, "Merge to '%s' : '%s'\n", xml_path, xml);
@@ -90,7 +95,7 @@ compat_set (BonoboUIHandlerPrivate *priv,
 static void
 compat_set_tree (BonoboUIHandlerPrivate *priv,
 		 const char *xml_path,
-		 xmlNode    *node)
+                 BonoboUINode *node)
 {
 #ifdef COMPAT_DEBUG
 	{
@@ -101,7 +106,7 @@ compat_set_tree (BonoboUIHandlerPrivate *priv,
 		doc = xmlNewDoc ("1.0");
 		g_return_if_fail (doc != NULL);
 
-		doc->root = node;
+		doc->root = (xmlNode*)node;
 
 		xmlDocDumpMemory (doc, &mem, &size);
 
@@ -130,21 +135,21 @@ compat_set_tree (BonoboUIHandlerPrivate *priv,
 static void
 compat_set_siblings (BonoboUIHandlerPrivate *priv,
 		     const char *xml_path,
-		     xmlNode    *node)
+                     BonoboUINode *node)
 {
-	xmlNode *l;
-
+        BonoboUINode *l;
+        
 	if (priv && priv->component && priv->container != CORBA_OBJECT_NIL) {
-		for (; node->prev; node = node->prev)
-			;
-		for (l = node; l; l = l->next) {
-			xmlNode *copy = xmlCopyNode (l, TRUE);
+                for (; bonobo_ui_node_prev (node); node = bonobo_ui_node_prev (node))
+                        ;
+		for (l = node; l; l = bonobo_ui_node_next (l)) {
+			BonoboUINode *copy = bonobo_ui_node_copy (l, TRUE);
 			
 			bonobo_ui_component_set_tree (
 				priv->component, priv->container,
 				xml_path, copy, NULL);
 			
-			xmlFreeNode (copy);
+			bonobo_ui_node_free (copy);
 		}
 	}
 }
@@ -180,7 +185,7 @@ bonobo_ui_handler_create_menubar (BonoboUIHandler *uih)
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
 
 	g_return_if_fail (priv != NULL);
-
+        
 	compat_set (priv, "/", "<menu/>");
 }
 
@@ -309,12 +314,13 @@ bonobo_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, gpointe
 }
 
 static void
-add_accel (xmlNode *node,
-	   guint key, GdkModifierType ac_mods)
+add_accel (BonoboUINode *node,
+	   guint key,
+           GdkModifierType ac_mods)
 {
 	if (key) {
 		char *name = bonobo_ui_util_accel_name (key, ac_mods);
-		xmlSetProp (node, "accel", name);
+		bonobo_ui_node_set_attr (node, "accel", name);
 		g_free (name);
 	}
 }		
@@ -370,13 +376,13 @@ compat_add_verb (BonoboUIComponent *component, const char *verb,
 		(GDestroyNotify) verb_free_closure);
 }
 
-static xmlNode *
+static BonoboUINode *
 compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv, 
 					 GnomeUIInfo            *uii,
 					 void                   *data,
-					 xmlNode                *parent)
+					 BonoboUINode                *parent)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 	char    *verb;
 
 	if (uii->type == GNOME_APP_UI_ITEM_CONFIGURABLE)
@@ -387,12 +393,12 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 		return NULL;
 
 	case GNOME_APP_UI_ITEM:
-		node = xmlNewNode (NULL, "menuitem");
+		node = bonobo_ui_node_new ("menuitem");
 		break;
 
 	case GNOME_APP_UI_TOGGLEITEM:
-		node = xmlNewNode (NULL, "menuitem");
-		xmlSetProp (node, "type", "toggle");
+		node = bonobo_ui_node_new ("menuitem");
+		bonobo_ui_node_set_attr (node, "type", "toggle");
 		break;
 
 	case GNOME_APP_UI_RADIOITEMS:
@@ -408,11 +414,11 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 
 	case GNOME_APP_UI_SUBTREE:
 	case GNOME_APP_UI_SUBTREE_STOCK:
-		node = xmlNewNode (NULL, "submenu");
+		node = bonobo_ui_node_new ("submenu");
 		break;
 
 	case GNOME_APP_UI_SEPARATOR:
-		node = xmlNewNode (NULL, "menuitem");
+		node = bonobo_ui_node_new ("menuitem");
 		break;
 
 	case GNOME_APP_UI_HELP:
@@ -425,7 +431,7 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 		g_error ("Configurable item!");
 
 	case BONOBO_APP_UI_PLACEHOLDER:
-		node = xmlNewNode (NULL, "placeholder");
+		node = bonobo_ui_node_new ("placeholder");
 		break;
 
 	default:
@@ -433,13 +439,13 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 		return NULL;
 	}
 
-	xmlSetProp (node, "name", uii->label);
+	bonobo_ui_node_set_attr (node, "name", uii->label);
 
 	if (uii->label)
-		xmlSetProp (node, "label", L_(uii->label));
+		bonobo_ui_node_set_attr (node, "label", L_(uii->label));
 
 	if (uii->hint)
-		xmlSetProp (node, "descr", L_(uii->hint));
+		bonobo_ui_node_set_attr (node, "descr", L_(uii->hint));
 
 	verb = uii->label;
 
@@ -448,7 +454,7 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 	    uii->type == GNOME_APP_UI_TOGGLEITEM) {
 		compat_add_verb (priv->component, verb, uii->moreinfo,
 				 data ? data : uii->user_data, "DummyPath", NULL);
-		xmlSetProp (node, "verb", verb);
+                bonobo_ui_node_set_attr (node, "verb", verb);
 	}
 
 	if (uii->pixmap_info) {
@@ -471,7 +477,7 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 
 	add_accel (node, uii->accelerator_key, uii->ac_mods);
 
-	xmlAddChild (parent, node);
+        bonobo_ui_node_add_child (parent, node);
 
 	return node;
 }
@@ -480,13 +486,13 @@ static void
 compat_menu_parse_uiinfo_tree_with_data (BonoboUIHandlerPrivate *priv, 
 					 GnomeUIInfo            *uii,
 					 void                   *data,
-					 xmlNode                *parent);
+					 BonoboUINode                *parent);
 
 static void
 compat_menu_parse_uiinfo_list_with_data (BonoboUIHandlerPrivate *priv, 
 					 GnomeUIInfo            *uii,
 					 void                   *data,
-					 xmlNode                *parent)
+					 BonoboUINode                *parent)
 {
 	GnomeUIInfo *curr_uii;
 
@@ -506,9 +512,9 @@ static void
 compat_menu_parse_uiinfo_tree_with_data (BonoboUIHandlerPrivate *priv, 
 					 GnomeUIInfo            *uii,
 					 void                   *data,
-					 xmlNode                *parent)
+					 BonoboUINode                *parent)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 
 	node = compat_menu_parse_uiinfo_one_with_data (
 		priv, uii, data, parent);
@@ -594,7 +600,7 @@ bonobo_ui_handler_menu_add_one (BonoboUIHandler *uih, const char *parent_path,
 				BonoboUIHandlerMenuItem *item)
 {
 	char    *xml_path;
-	xmlNode *parent = xmlNewNode (NULL, "dummy");
+	BonoboUINode *parent = bonobo_ui_node_new ("dummy");
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
 
 	g_return_if_fail (priv != NULL);
@@ -616,8 +622,8 @@ bonobo_ui_handler_menu_add_one (BonoboUIHandler *uih, const char *parent_path,
 		break;
 	}
 
-	compat_set_siblings (priv, xml_path, parent->childs);
-	xmlFreeNode (parent);
+	compat_set_siblings (priv, xml_path, bonobo_ui_node_children (parent));
+	bonobo_ui_node_free (parent);
 
 	g_free (xml_path);
 }
@@ -660,43 +666,15 @@ bonobo_ui_handler_toolbar_free_list (BonoboUIHandlerMenuItem *item)
 	g_free (item);
 }
 
-/**
- * xmlHasProp:
- *  Only implemented in gnome-xml 2.0
- */
-static xmlAttrPtr
-xmlHasProp(xmlNodePtr node, const xmlChar *name) {
-    xmlAttrPtr prop;
-
-    if ((node == NULL) || (name == NULL)) return(NULL);
-    /*
-     * Check on the properties attached to the node
-     */
-    prop = node->properties;
-    while (prop != NULL) {
-        if (!xmlStrcmp(prop->name, name))  {
-	    return(prop);
-        }
-	prop = prop->next;
-    }
-
-    return(NULL);
-}
-
 static void
 deal_with_pixmap (BonoboUIHandlerPixmapType pixmap_type,
-		  gpointer pixmap_data, xmlNode *node)
+		  gpointer pixmap_data, BonoboUINode *node)
 {
-	xmlAttr *attr;
-
 	/* Flush out pre-existing pixmap if any */
-	if ((attr = xmlHasProp (node, "pixtype")))
-		xmlRemoveProp (attr);
+        bonobo_ui_node_remove_attr (node, "pixtype");
+        bonobo_ui_node_remove_attr (node, "pixname");
 
-	if ((attr = xmlHasProp (node, "pixname")))
-		xmlRemoveProp (attr);
-
-	xmlNodeSetContent (node, NULL);
+	bonobo_ui_node_set_content (node, NULL);
 
 	switch (pixmap_type) {
 	case BONOBO_UI_HANDLER_PIXMAP_NONE:
@@ -730,7 +708,7 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 			    BonoboUIHandlerCallback callback,
 			    gpointer callback_data)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 	char    *cname;
 	char    *verb;
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
@@ -751,8 +729,8 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 
 	switch (type) {
 	case BONOBO_UI_HANDLER_MENU_PLACEHOLDER:
-		node = xmlNewNode (NULL, "placeholder");
-		xmlSetProp (node, "name", cname);
+		node = bonobo_ui_node_new ("placeholder");
+		bonobo_ui_node_set_attr (node, "name", cname);
 		goto add_menu_item;
 
 	case BONOBO_UI_HANDLER_MENU_RADIOGROUP:
@@ -770,10 +748,10 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 
 	switch (type) {
 	case BONOBO_UI_HANDLER_MENU_RADIOITEM:
-		xmlSetProp (node, "type", "radio");
+		bonobo_ui_node_set_attr (node, "type", "radio");
 		break;
 	case BONOBO_UI_HANDLER_MENU_TOGGLEITEM:
-		xmlSetProp (node, "type", "toggle");
+		bonobo_ui_node_set_attr (node, "type", "toggle");
 		break;
 	default:
 		break;
@@ -784,9 +762,9 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 	case BONOBO_UI_HANDLER_MENU_RADIOITEM:
 	case BONOBO_UI_HANDLER_MENU_TOGGLEITEM:
 		compat_add_verb (priv->component, verb,
-				 callback, callback_data, path, NULL);
+                                 callback, callback_data, path, NULL);
 		add_accel (node, accelerator_key, ac_mods);
-		xmlSetProp (node, "verb", cname);
+		bonobo_ui_node_set_attr (node, "verb", cname);
 		break;
 	case BONOBO_UI_HANDLER_MENU_SEPARATOR:
 	case BONOBO_UI_HANDLER_MENU_SUBTREE:
@@ -799,13 +777,13 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 	if (accelerator_key) {
 		char *name = bonobo_ui_util_accel_name (accelerator_key,
 							ac_mods);
-		xmlSetProp (node, "accel", name);
+		bonobo_ui_node_set_attr (node, "accel", name);
 		g_free (name);
 	}
 
 	{
 		char *xml_path;
-
+                
 	add_menu_item:
 		/*
 		 * This will never work for evil like /wibble/radio\/ group/etc.
@@ -819,7 +797,7 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 			p = strrchr (real_path, '/');
 			g_return_if_fail (p != NULL);
 			*p = '\0';
-			xmlSetProp (node, "group", p + 1);
+			bonobo_ui_node_set_attr (node, "group", p + 1);
 
 			xml_path = make_path ("/menu", real_path, FALSE);
 			g_free (real_path);
@@ -827,7 +805,7 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 			xml_path = make_path ("/menu", path, TRUE);
 
 		compat_set_tree (priv, xml_path, node);
-		xmlFreeNode (node);
+                bonobo_ui_node_free (node);
 
 		g_free (xml_path);
 	}
@@ -916,13 +894,13 @@ bonobo_ui_handler_menu_get_pos (BonoboUIHandler *uih, const char *path)
 }
 
 
-static xmlNode *
+static BonoboUINode *
 compat_toolbar_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv, 
 					   GnomeUIInfo            *uii,
 					   void                   *data,
-					   xmlNode                *parent)
+					   BonoboUINode                *parent)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 	char    *verb;
 
 	if (uii->type == GNOME_APP_UI_ITEM_CONFIGURABLE)
@@ -933,12 +911,12 @@ compat_toolbar_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 		return NULL;
 
 	case GNOME_APP_UI_ITEM:
-		node = xmlNewNode (NULL, "toolitem");
+		node = bonobo_ui_node_new ("toolitem");
 		break;
 
 	case GNOME_APP_UI_TOGGLEITEM:
-		node = xmlNewNode (NULL, "toolitem");
-		xmlSetProp (node, "type", "toggle");
+		node = bonobo_ui_node_new ("toolitem");
+		bonobo_ui_node_set_attr (node, "type", "toggle");
 		break;
 
 	case GNOME_APP_UI_RADIOITEMS:
@@ -950,21 +928,21 @@ compat_toolbar_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 		return NULL;
 	}
 
-	xmlSetProp (node, "name", uii->label);
+	bonobo_ui_node_set_attr (node, "name", uii->label);
 	verb = uii->label;
 
 	if (uii->label)
-		xmlSetProp (node, "label", L_(uii->label));
+		bonobo_ui_node_set_attr (node, "label", L_(uii->label));
 
 	if (uii->hint)
-		xmlSetProp (node, "descr", L_(uii->hint));
+		bonobo_ui_node_set_attr (node, "descr", L_(uii->hint));
 
 	if (uii->type == GNOME_APP_UI_ITEM ||
 /*	    uii->type == GNOME_APP_UI_RADIOITEM ||*/
 	    uii->type == GNOME_APP_UI_TOGGLEITEM) {
 		compat_add_verb (priv->component, verb, uii->moreinfo,
 				 data ? data : uii->user_data, "DummyPath", NULL);
-		xmlSetProp (node, "verb", verb);
+                bonobo_ui_node_set_attr (node, "verb", verb);
 	}
 
 	if (uii->pixmap_info) {
@@ -987,7 +965,7 @@ compat_toolbar_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 
 	add_accel (node, uii->accelerator_key, uii->ac_mods);
 
-	xmlAddChild (parent, node);
+        bonobo_ui_node_add_child (parent, node);
 
 	return node;
 }
@@ -996,7 +974,7 @@ static void
 compat_toolbar_parse_uiinfo_list_with_data (BonoboUIHandlerPrivate *priv, 
 					 GnomeUIInfo            *uii,
 					 void                   *data,
-					 xmlNode                *parent)
+					 BonoboUINode                *parent)
 {
 	GnomeUIInfo *curr_uii;
 
@@ -1017,18 +995,25 @@ bonobo_ui_handler_toolbar_add_list (BonoboUIHandler *uih, const char *parent_pat
 				    BonoboUIHandlerToolbarItem *item)
 {
 	char    *xml_path;
-	xmlNode *parent = xmlNewNode (NULL, "dummy");
+	BonoboUINode *parent = bonobo_ui_node_new ("dummy");
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
 
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("", parent_path, TRUE);
 
+	if (!parent) {
+		g_warning ("Path '%s' does not exist", xml_path);
+		g_free (xml_path);
+		return;
+	}
+
 	compat_toolbar_parse_uiinfo_list_with_data (
 		priv, item->uii, item->data, parent);
 
-	compat_set_siblings (priv, xml_path, parent->childs);
-	xmlFreeNode (parent);
+	compat_set_siblings (priv, xml_path,
+                             bonobo_ui_node_children (parent));
+        bonobo_ui_node_free (parent);
 
 	g_free (xml_path);
 }
@@ -1044,7 +1029,7 @@ bonobo_ui_handler_toolbar_new (BonoboUIHandler *uih, const char *path,
 			      BonoboUIHandlerCallback callback,
 			      gpointer callback_data)
 {
-	xmlNode *node;
+        BonoboUINode *node;
 	char    *cname = strrchr (path, '/');
 	char    *verb;
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
@@ -1091,7 +1076,7 @@ bonobo_ui_handler_toolbar_new (BonoboUIHandler *uih, const char *path,
 		char *xml_path = make_path ("", path, TRUE);
 
 		compat_set_tree (priv, xml_path, node);
-		xmlFreeNode (node);
+                bonobo_ui_node_free (node);
 
 		g_free (xml_path);
 	}
@@ -1200,7 +1185,7 @@ do_set_pixmap (BonoboUIHandlerPrivate *priv,
 	       BonoboUIHandlerPixmapType type, gpointer data)
 {
 	char    *parent_path;
-	xmlNode *node;
+	BonoboUINode *node;
 	
 	parent_path = bonobo_ui_xml_get_parent_path (xml_path);
 
@@ -1217,7 +1202,7 @@ do_set_pixmap (BonoboUIHandlerPrivate *priv,
 				      node, NULL);
 
 	g_free (parent_path);
-	xmlFreeNode (node);
+	bonobo_ui_node_free (node);
 }
 
 void
@@ -1440,7 +1425,7 @@ bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
 				     gpointer callback_data,
 				     GDestroyNotify callback_data_destroy_notify)
 {
-	xmlNode *node;
+	BonoboUINode *node;
 	char *xml_path;
 	char *verb;
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
@@ -1455,7 +1440,7 @@ bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
 
 	g_return_if_fail (node != NULL);
 
-	if ((verb = xmlGetProp (node, "verb"))) {
+	if ((verb = bonobo_ui_node_get_attr (node, "verb"))) {
 		compat_add_verb (priv->component, verb,
 				 callback, callback_data, path,
 				 callback_data_destroy_notify);
@@ -1463,7 +1448,7 @@ bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
 		g_warning ("No verb to add callback to");
 
 	g_free (xml_path);
-	xmlFreeNode (node);
+	bonobo_ui_node_free (node);
 }
 
 void
@@ -1646,7 +1631,7 @@ GList *
 bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent_path)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
-	xmlNode *node, *l;
+	BonoboUINode *node, *l;
 	GList *ret = NULL, *i;
 	char *xml_path;
 
@@ -1664,16 +1649,16 @@ bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	for (l = node->childs; l; l = l->next) {
+	for (l = bonobo_ui_node_children (node); l; l = bonobo_ui_node_next (l)) {
 		xmlChar *txt;
-		if ((txt = xmlGetProp (l, "name"))) {
+		if ((txt = bonobo_ui_node_get_attr (l, "name"))) {
 			ret = g_list_prepend (ret, g_strdup (txt));
-			xmlFree (txt);
+			bonobo_ui_node_free_string (txt);
 		} else
-			ret = g_list_prepend (ret, g_strdup (l->name));
+			ret = g_list_prepend (ret, g_strdup (bonobo_ui_node_get_name(l)));
 	}
 
-	xmlFreeNode (node);
+	bonobo_ui_node_free (node);
 
 	if (ret)
 		for (i = ret; i; i = i->next)

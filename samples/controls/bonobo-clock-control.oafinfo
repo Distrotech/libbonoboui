@@ -2,7 +2,7 @@
 
 <oaf_server iid="OAFIID:bonobo_clock_factory:ec4961f3-7a16-4ace-9463-b112e4bc4186" type="exe" location="sample-control-factory">
 <oaf_attribute name="repo_ids" type="stringv">
-<item value="IDL:GNOME/GenericFactory:1.0"/>
+<item value="IDL:GNOME/ObjectFactory:1.0"/>
 </oaf_attribute>
 <oaf_attribute name="name" type="string" value="Clock control factory"/>
 <oaf_attribute name="description" type="string" value="Factory for the sample BonoboClock control"/>
@@ -19,7 +19,7 @@
 
 <oaf_server iid="OAFIID:bonobo_entry_factory:ef3e3c33-43e2-4f7c-9ca9-9479104608d6" type="exe" location="sample-control-factory">
 <oaf_attribute name="repo_ids" type="stringv">
-<item value="IDL:GNOME/GenericFactory:1.0"/>
+<item value="IDL:GNOME/ObjectFactory:1.0"/>
 </oaf_attribute>
 <oaf_attribute name="name" type="string" value="Entry control factory"/>
 <oaf_attribute name="description" type="string" value="Factory for the sample GtkEntry control"/>

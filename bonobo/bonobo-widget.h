@@ -57,19 +57,19 @@ BonoboControlFrame *bonobo_widget_get_control_frame        (BonoboWidget      *b
 /*
  * Gnome Bonobo Widget for subdocuments (Embeddables with a single View).
  */
-GtkWidget          *bonobo_widget_new_subdoc               (const char        *object_desc,
-							    Bonobo_UIContainer uih);
-BonoboContainer    *bonobo_widget_get_container            (BonoboWidget      *bw);
-BonoboClientSite   *bonobo_widget_get_client_site          (BonoboWidget      *bw);
-BonoboViewFrame    *bonobo_widget_get_view_frame           (BonoboWidget      *bw);
-Bonobo_UIContainer  bonobo_widget_get_uih                  (BonoboWidget      *bw);
+GtkWidget           *bonobo_widget_new_subdoc               (const char        *object_desc,
+							     Bonobo_UIContainer uih);
+BonoboItemContainer *bonobo_widget_get_container            (BonoboWidget      *bw);
+BonoboClientSite    *bonobo_widget_get_client_site          (BonoboWidget      *bw);
+BonoboViewFrame     *bonobo_widget_get_view_frame           (BonoboWidget      *bw);
+Bonobo_UIContainer   bonobo_widget_get_uih                  (BonoboWidget      *bw);
 
-void                bonobo_widget_set_property            (BonoboWidget       *control,
-							   const char         *first_prop,
-							   ...);
-void                bonobo_widget_get_property            (BonoboWidget       *control,
-							   const char         *first_prop,
-							   ...);
+void                 bonobo_widget_set_property            (BonoboWidget       *control,
+							    const char         *first_prop,
+							    ...);
+void                 bonobo_widget_get_property            (BonoboWidget       *control,
+							    const char         *first_prop,
+							    ...);
 
 END_GNOME_DECLS
 

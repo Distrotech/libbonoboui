@@ -15,7 +15,7 @@
 #include <libgnomeui/gnome-canvas.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-object-client.h>
-#include <bonobo/bonobo-container.h>
+#include <bonobo/bonobo-item-container.h>
 
 BEGIN_GNOME_DECLS
  
@@ -33,11 +33,11 @@ typedef struct _BonoboClientSitePrivate BonoboClientSitePrivate;
 struct _BonoboClientSite {
 	BonoboObject base;
 
-	BonoboContainer    *container;
-	BonoboObjectClient *bound_embeddable; /* IDL:Bonobo/Embeddable:1.0 */
-	GList		   *view_frames;
-	GList              *canvas_items;
-	unsigned int        child_shown:1;
+	BonoboItemContainer *container;
+	BonoboObjectClient  *bound_embeddable; /* IDL:Bonobo/Embeddable:1.0 */
+	GList		    *view_frames;
+	GList               *canvas_items;
+	unsigned int         child_shown:1;
 
 	BonoboClientSitePrivate *priv;
 };
@@ -50,16 +50,16 @@ typedef struct {
 	void (*save_object)  (BonoboClientSite *, Bonobo_Persist_Status *status);
 } BonoboClientSiteClass;
 
-GtkType                     bonobo_client_site_get_type         (void);
-Bonobo_ClientSite           bonobo_client_site_corba_object_create (BonoboObject *object);
-BonoboClientSite           *bonobo_client_site_new              (BonoboContainer    *container);
-BonoboClientSite           *bonobo_client_site_construct        (BonoboClientSite   *client_site,
-								 Bonobo_ClientSite   corba_client_site,
-								 BonoboContainer    *container);
-gboolean                    bonobo_client_site_bind_embeddable  (BonoboClientSite   *client_site,
-								 BonoboObjectClient *object);
-BonoboObjectClient         *bonobo_client_site_get_embeddable   (BonoboClientSite   *client_site);
-BonoboContainer            *bonobo_client_site_get_container    (BonoboClientSite   *client_site);
+GtkType                     bonobo_client_site_get_type            (void);
+Bonobo_ClientSite           bonobo_client_site_corba_object_create (BonoboObject        *object);
+BonoboClientSite           *bonobo_client_site_new                 (BonoboItemContainer *container);
+BonoboClientSite           *bonobo_client_site_construct           (BonoboClientSite    *client_site,
+								    Bonobo_ClientSite    corba_client_site,
+								    BonoboItemContainer *container);
+gboolean                    bonobo_client_site_bind_embeddable     (BonoboClientSite    *client_site,
+								    BonoboObjectClient  *object);
+BonoboObjectClient         *bonobo_client_site_get_embeddable      (BonoboClientSite    *client_site);
+BonoboItemContainer        *bonobo_client_site_get_container       (BonoboClientSite    *client_site);
 
 /*
  * Proxy/Utility functions.

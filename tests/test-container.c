@@ -46,18 +46,18 @@ char *server_id = "OAFIID:test_bonobo_object:b1ff15bb-d54f-4814-ba53-d67d3afd70f
 
 typedef struct {
 	GtkWidget *app;
-	BonoboContainer *container;
+	BonoboItemContainer *container;
 	GtkWidget *box;
 	Bonobo_View view;
 	BonoboUIHandler *uih;
 } Application;
 
 static BonoboObjectClient *
-launch_server (BonoboClientSite *client_site, BonoboContainer *container, char *id)
+launch_server (BonoboClientSite *client_site, BonoboItemContainer *container, char *id)
 {
 	BonoboObjectClient *object_server;
 	
-	bonobo_container_add (container, BONOBO_OBJECT (client_site));
+	bonobo_item_container_add (container, BONOBO_OBJECT (client_site));
 
 	printf ("Launching...\n");
 	object_server = bonobo_object_activate (id, 0);
@@ -76,15 +76,15 @@ launch_server (BonoboClientSite *client_site, BonoboContainer *container, char *
 }
 
 static BonoboObjectClient *
-launch_server_moniker (BonoboClientSite  *client_site,
-		       BonoboContainer   *container,
-		       Bonobo_Moniker     moniker,
-		       CORBA_Environment *ev)
+launch_server_moniker (BonoboClientSite    *client_site,
+		       BonoboItemContainer *container,
+		       Bonobo_Moniker       moniker,
+		       CORBA_Environment   *ev)
 {
 	char *moniker_name;
 	BonoboObjectClient *object_server;
 	
-	bonobo_container_add (container, BONOBO_OBJECT (client_site));
+	bonobo_item_container_add (container, BONOBO_OBJECT (client_site));
 
 	moniker_name = bonobo_moniker_client_get_name (moniker, ev);
 	printf ("Launching moniker '%s' ...\n", moniker_name);
@@ -767,7 +767,7 @@ application_new (void)
 	BonoboUIHandlerMenuItem *menu_list;
 
 	app = g_new0 (Application, 1);
-	app->container = BONOBO_CONTAINER (bonobo_container_new ());
+	app->container = BONOBO_ITEM_CONTAINER (bonobo_item_container_new ());
 	app->box = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (app->box);
 

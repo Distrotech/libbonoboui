@@ -426,18 +426,18 @@ sample_client_site_get_widget (SampleClientSite *site)
 }
 
 SampleClientSite *
-sample_client_site_new (BonoboContainer *container,
-			SampleApp       *app,
-			BonoboObjectClient *embeddable,
-			const char         *embeddable_id)
+sample_client_site_new (BonoboItemContainer *container,
+			SampleApp           *app,
+			BonoboObjectClient  *embeddable,
+			const char          *embeddable_id)
 {
 	SampleClientSite *site;
 	Bonobo_ClientSite corba_client_site;
 
 	g_return_val_if_fail (app != NULL, NULL);
 	g_return_val_if_fail (embeddable_id != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_CONTAINER (container), NULL);
 	g_return_val_if_fail (BONOBO_IS_OBJECT_CLIENT (embeddable), NULL);
+	g_return_val_if_fail (BONOBO_IS_ITEM_CONTAINER (container), NULL);
 	
 	site = gtk_type_new (sample_client_site_get_type ());
 	corba_client_site = bonobo_client_site_corba_object_create
@@ -455,8 +455,7 @@ sample_client_site_new (BonoboContainer *container,
 		bonobo_client_site_bind_embeddable (BONOBO_CLIENT_SITE (site),
 						    embeddable);
 		bonobo_object_unref (BONOBO_OBJECT (embeddable));
-		bonobo_container_add (container,
-				      BONOBO_OBJECT (site));
+		bonobo_item_container_add (container, BONOBO_OBJECT (site));
 
 		site->app = app;
 		g_free (site->obj_id);

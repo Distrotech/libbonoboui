@@ -23,7 +23,7 @@ idls =							\
 	$(top_srcdir)/idl/bonobo-advise.idl		\
 	$(top_srcdir)/idl/bonobo-app.idl		\
 	$(top_srcdir)/idl/bonobo-canvas.idl 		\
-	$(top_srcdir)/idl/bonobo-container.idl		\
+	$(top_srcdir)/idl/bonobo-item-container.idl	\
 	$(top_srcdir)/idl/bonobo-control.idl		\
 	$(top_srcdir)/idl/bonobo-client-site.idl	\
 	$(top_srcdir)/idl/bonobo-embeddable.idl		\
@@ -52,7 +52,6 @@ libbonobo_la_SOURCES =			\
 	bonobo-object-directory.c	\
 	bonobo-generic-factory.c	\
 	bonobo-main.c			\
-	bonobo-listener.c		\
 	bonobo-moniker.c		\
 	bonobo-moniker-util.c		\
 	bonobo-object.c			\
@@ -62,6 +61,7 @@ libbonobo_la_SOURCES =			\
 	bonobo-persist-stream.c		\
 	bonobo-persist.c		\
 	bonobo-progressive.c		\
+	bonobo-property-listener.c	\
 	bonobo-storage.c		\
 	bonobo-stream.c			\
 	bonobo-stream-client.c		\
@@ -85,7 +85,7 @@ libbonoboinclude_HEADERS =		\
 	bonobo-canvas-component.h	\
 	bonobo-client-site.h		\
 	bonobo-component-io.h		\
-	bonobo-container.h		\
+	bonobo-item-container.h		\
 	bonobo-control.h		\
 	bonobo-control-frame.h		\
 	bonobo-desktop-window.h		\
@@ -93,7 +93,6 @@ libbonoboinclude_HEADERS =		\
 	bonobo-embeddable-factory.h	\
 	bonobo-exception.h		\
 	bonobo-generic-factory.h	\
-	bonobo-listener.h		\
 	bonobo-main.h			\
 	bonobo-moniker.h		\
 	bonobo-moniker-util.h		\
@@ -106,6 +105,7 @@ libbonoboinclude_HEADERS =		\
 	bonobo-persist.h		\
 	bonobo-plug.h			\
 	bonobo-progressive.h		\
+	bonobo-property-listener.h	\
 	bonobo-sizeable.h		\
 	bonobo-socket.h			\
 	bonobo-storage.h		\
@@ -117,6 +117,7 @@ libbonoboinclude_HEADERS =		\
 	bonobo-ui-container.h		\
 	bonobo-ui-compat.h		\
 	bonobo-ui-item.h		\
+	bonobo-ui-node.h		\
 	bonobo-ui-toolbar.h		\
 	bonobo-win.h			\
 	bonobo-ui-xml.h			\
@@ -136,6 +137,7 @@ libbonobox_la_SOURCES =			\
 	bonobo-ui-util.c		\
 	bonobo-ui-xml.c			\
 	bonobo-ui-item.c		\
+	bonobo-ui-node.c		\
 	bonobo-ui-toolbar.c		\
 	bonobo-ui-compat.c		\
 					\
@@ -144,7 +146,7 @@ libbonobox_la_SOURCES =			\
 	bonobo-widget.c			\
 	bonobo-canvas-component.c	\
 	bonobo-client-site.c		\
-	bonobo-container.c		\
+	bonobo-item-container.c		\
 	bonobo-control.c		\
 	bonobo-control-frame.c		\
 	bonobo-desktop-window.c		\

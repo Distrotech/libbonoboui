@@ -36,11 +36,11 @@ enum {
 static BonoboObjectClass *bonobo_client_site_parent_class;
 static guint bonobo_client_site_signals [LAST_SIGNAL];
 
-static Bonobo_Container
+static Bonobo_ItemContainer
 impl_Bonobo_client_site_get_container (PortableServer_Servant servant, CORBA_Environment *ev)
 {
 	BonoboObject     *object = bonobo_object_from_servant (servant);
-	Bonobo_Container  corba_object;
+	Bonobo_ItemContainer  corba_object;
 	BonoboClientSite *client_site = BONOBO_CLIENT_SITE (object);
 
 	corba_object = bonobo_object_corba_objref (
@@ -101,7 +101,7 @@ bonobo_client_site_destroy (GtkObject *object)
 		bonobo_object_unref (BONOBO_OBJECT (item));
 	}
 
-	bonobo_container_remove (client_site->container, BONOBO_OBJECT (object));
+	bonobo_item_container_remove (client_site->container, BONOBO_OBJECT (object));
 
 	if (client_site->bound_embeddable) {
 		bonobo_object_unref (BONOBO_OBJECT (client_site->bound_embeddable));
@@ -223,20 +223,20 @@ bonobo_client_site_corba_object_create (BonoboObject *object)
  * Returns: the constructed BonoboClientSite @client_site.
  */
 BonoboClientSite *
-bonobo_client_site_construct (BonoboClientSite  *client_site,
-			      Bonobo_ClientSite  corba_client_site,
-			      BonoboContainer   *container)
+bonobo_client_site_construct (BonoboClientSite    *client_site,
+			      Bonobo_ClientSite    corba_client_site,
+			      BonoboItemContainer *container)
 {
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 	g_return_val_if_fail (container != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (BONOBO_IS_ITEM_CONTAINER (container), NULL);
 	g_return_val_if_fail (corba_client_site != CORBA_OBJECT_NIL, NULL);
 	
 	bonobo_object_construct (BONOBO_OBJECT (client_site), corba_client_site);
 	
 	BONOBO_CLIENT_SITE (client_site)->container = container;
-	bonobo_container_add (container, BONOBO_OBJECT (client_site));
+	bonobo_item_container_add (container, BONOBO_OBJECT (client_site));
 
 	return client_site;
 }
@@ -256,13 +256,13 @@ bonobo_client_site_construct (BonoboClientSite  *client_site,
  * container.
  */
 BonoboClientSite *
-bonobo_client_site_new (BonoboContainer *container)
+bonobo_client_site_new (BonoboItemContainer *container)
 {
 	Bonobo_ClientSite corba_client_site;
 	BonoboClientSite *client_site;
 
 	g_return_val_if_fail (container != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (BONOBO_IS_ITEM_CONTAINER (container), NULL);
 	
 	client_site = gtk_type_new (bonobo_client_site_get_type ());
 	corba_client_site = bonobo_client_site_corba_object_create (BONOBO_OBJECT (client_site));
@@ -389,7 +389,7 @@ bonobo_client_site_get_embeddable (BonoboClientSite *client_site)
  * Returns: The BonoboObjectClient object which corresponds to the
  * remote BonoboObject to which @client_site is bound.
  **/
-BonoboContainer *
+BonoboItemContainer *
 bonobo_client_site_get_container (BonoboClientSite *client_site)
 {
 	g_return_val_if_fail (

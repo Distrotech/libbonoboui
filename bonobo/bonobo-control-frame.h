@@ -78,7 +78,7 @@ Bonobo_UIContainer            bonobo_control_frame_get_ui_handler            (Bo
 /* Object construction stuff */
 BonoboControlFrame           *bonobo_control_frame_construct                 (BonoboControlFrame  *control_frame,
 									      Bonobo_ControlFrame  corba_control_frame,
-									      Bonobo_Container     uih);
+									      Bonobo_UIContainer   uih);
 GtkType                       bonobo_control_frame_get_type                  (void);
 POA_Bonobo_ControlFrame__epv *bonobo_control_frame_get_epv                   (void);
 

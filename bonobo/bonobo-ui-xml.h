@@ -3,10 +3,7 @@
 #define _BONOBO_UI_XML_H_
 
 #include <gtk/gtk.h>
-
-#include <gnome-xml/parser.h>
-#include <gnome-xml/parserInternals.h>
-#include <gnome-xml/xmlmemory.h>
+#include <bonobo/bonobo-ui-node.h>
 
 #define BONOBO_UI_XML_TYPE        (bonobo_ui_xml_get_type ())
 #define BONOBO_UI_XML(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_XML_TYPE, BonoboUIXml))
@@ -34,8 +31,8 @@ typedef gboolean         (*BonoboUIXmlCompareFn)   (gpointer         id_a,
 typedef BonoboUIXmlData *(*BonoboUIXmlDataNewFn)   (void);
 typedef void             (*BonoboUIXmlDataFreeFn)  (BonoboUIXmlData *data);
 typedef void             (*BonoboUIXmlDumpFn)      (BonoboUIXmlData *data);
-typedef void             (*BonoboUIXmlAddNode)     (xmlNode         *parent,
-						    xmlNode         *child);
+typedef void             (*BonoboUIXmlAddNode)     (BonoboUINode         *parent,
+						    BonoboUINode         *child);
 
 struct _BonoboUIXml {
 	GtkObject              object;
@@ -46,7 +43,7 @@ struct _BonoboUIXml {
 	BonoboUIXmlDumpFn      dump;
 	BonoboUIXmlAddNode     add_node;
 
-	xmlNode               *root;
+	BonoboUINode               *root;
 	
 	gpointer               dummy;
 };
@@ -54,53 +51,53 @@ struct _BonoboUIXml {
 typedef struct {
 	GtkObjectClass         object_klass;
 
-	void                 (*override)          (xmlNode *node);
-	void                 (*replace_override)  (xmlNode *new,
-						   xmlNode *old);
-	void                 (*reinstate)         (xmlNode *node);
-	void                 (*remove)            (xmlNode *node);
+	void                 (*override)          (BonoboUINode *node);
+	void                 (*replace_override)  (BonoboUINode *new,
+						   BonoboUINode *old);
+	void                 (*reinstate)         (BonoboUINode *node);
+	void                 (*remove)            (BonoboUINode *node);
 
 	gpointer               dummy;
 } BonoboUIXmlClass;
 
-GtkType          bonobo_ui_xml_get_type  (void);
+GtkType          bonobo_ui_xml_get_type          (void);
 
-BonoboUIXml     *bonobo_ui_xml_new       (BonoboUIXmlCompareFn  compare,
-					  BonoboUIXmlDataNewFn  data_new,
-					  BonoboUIXmlDataFreeFn data_free,
-					  BonoboUIXmlDumpFn     dump,
-					  BonoboUIXmlAddNode    add_node);
+BonoboUIXml     *bonobo_ui_xml_new               (BonoboUIXmlCompareFn  compare,
+						  BonoboUIXmlDataNewFn  data_new,
+						  BonoboUIXmlDataFreeFn data_free,
+						  BonoboUIXmlDumpFn     dump,
+						  BonoboUIXmlAddNode    add_node);
 
 /* Nominaly BonoboUIXmlData * */
-gpointer         bonobo_ui_xml_get_data  (BonoboUIXml *tree,
-					  xmlNode     *node);
+gpointer         bonobo_ui_xml_get_data          (BonoboUIXml  *tree,
+						  BonoboUINode *node);
 
-void             bonobo_ui_xml_set_dirty (BonoboUIXml *tree,
-					  xmlNode     *node,
-					  gboolean     dirty);
+void             bonobo_ui_xml_set_dirty         (BonoboUIXml  *tree,
+						  BonoboUINode *node,
+						  gboolean      dirty);
 
-xmlNode         *bonobo_ui_xml_get_path          (BonoboUIXml *tree,
-						  const char  *path);
-xmlNode         *bonobo_ui_xml_get_path_wildcard (BonoboUIXml *tree,
-						  const char  *path,
-						  gboolean    *wildcard);
+BonoboUINode    *bonobo_ui_xml_get_path          (BonoboUIXml  *tree,
+						  const char   *path);
+BonoboUINode    *bonobo_ui_xml_get_path_wildcard (BonoboUIXml  *tree,
+						  const char   *path,
+						  gboolean     *wildcard);
 
-char            *bonobo_ui_xml_make_path (xmlNode     *node);
-char            *bonobo_ui_xml_get_parent_path (const char *path);
+char            *bonobo_ui_xml_make_path         (BonoboUINode *node);
+char            *bonobo_ui_xml_get_parent_path   (const char   *path);
 
-BonoboUIXmlError bonobo_ui_xml_merge     (BonoboUIXml *tree,
-					  const char  *path,
-					  xmlNode     *nodes,
-					  gpointer     id);
+BonoboUIXmlError bonobo_ui_xml_merge             (BonoboUIXml  *tree,
+						  const char   *path,
+						  BonoboUINode *nodes,
+						  gpointer      id);
 
-BonoboUIXmlError bonobo_ui_xml_rm        (BonoboUIXml *tree,
-					  const char  *path,
-					  gpointer     id);
+BonoboUIXmlError bonobo_ui_xml_rm                (BonoboUIXml  *tree,
+						  const char   *path,
+						  gpointer      id);
 
-void             bonobo_ui_xml_dump      (BonoboUIXml *tree,
-					  xmlNode     *node,
-					  const char  *msg);
+void             bonobo_ui_xml_dump              (BonoboUIXml  *tree,
+						  BonoboUINode *node,
+						  const char   *msg);
 
-void             bonobo_ui_xml_strip     (xmlNode     *node);
+void             bonobo_ui_xml_strip             (BonoboUINode *node);
 
 #endif /* _BONOBO_UI_XML_H_ */

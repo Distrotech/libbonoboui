@@ -51,7 +51,7 @@ sample_app_create (void)
 	bonobo_win_set_contents (BONOBO_WIN (app->app), app->box);
 	gtk_widget_set_usize (app_widget, 400, 600);
 
-	app->container = bonobo_container_new ();
+	app->container = bonobo_item_container_new ();
 
 	app->ui_handler = bonobo_ui_handler_new ();
 	bonobo_ui_handler_set_app (app->ui_handler, BONOBO_WIN (app->app));

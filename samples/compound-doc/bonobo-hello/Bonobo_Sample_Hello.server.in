@@ -2,7 +2,7 @@
 
 <oaf_server iid="OAFIID:bonobo-hello-factory:413433d0-c643-4618-9c3e-2c99f4d1b2a0" type="exe" location="bonobo-hello">
   <oaf_attribute name="repo_ids" type="stringv">
-    <item value="IDL:Bonobo/GenericFactory:1.0"/>
+    <item value="IDL:Bonobo/ObjectFactory:1.0"/>
   </oaf_attribute>
   <oaf_attribute name="description" type="string" value="Bonobo-Hello factory"/>
 </oaf_server>

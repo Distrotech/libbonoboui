@@ -13,6 +13,44 @@
 #include <bonobo.h>
 
 Bonobo_PropertyBag pb = CORBA_OBJECT_NIL;
+BonoboPropertyListener *listener = NULL;
+
+static void
+prop_changed_cb (BonoboPropertyListener *listener, gchar *name, 
+		 BonoboArg *arg, GtkCList *clist)
+{
+	gchar *value;
+
+	value = g_strdup_printf ("%s", BONOBO_ARG_GET_BOOLEAN (arg) ? "TRUE" :"FALSE");
+
+	gtk_clist_set_text (clist, 0, 1, value);
+
+	g_free (value);
+}
+
+static void
+add_listener (GtkCList *clist)
+{
+	Bonobo_PropertyListener corba_listener;
+	CORBA_Environment ev;
+	
+	CORBA_exception_init (&ev);
+
+	/* Set up the change listener */
+	listener = bonobo_property_listener_new ();
+	gtk_signal_connect (GTK_OBJECT (listener), "prop_changed",
+			    GTK_SIGNAL_FUNC (prop_changed_cb), clist);
+
+	corba_listener = bonobo_object_corba_objref (BONOBO_OBJECT (listener));
+
+	Bonobo_PropertyBag_add_change_listener (pb, "running", corba_listener, &ev);
+
+	if (BONOBO_EX (&ev))
+		g_warning ("Listener exception: %s\n",
+			   bonobo_exception_get_text (&ev));
+
+	CORBA_exception_free (&ev);
+}
 
 static void
 populate_property_list (GtkWidget *bw, GtkCList *clist)
@@ -117,6 +155,8 @@ create_proplist (GtkWidget *bw)
  
 	populate_property_list (bw, GTK_CLIST (clist));
 
+	add_listener (GTK_CLIST (clist));
+
 	return clist;
 }
 
@@ -131,12 +171,26 @@ incr_calc (GtkButton *button, BonoboWidget *control)
 }
 
 static void
+toggle_clock (GtkButton *button, BonoboWidget *control)
+{
+	CORBA_boolean state;
+
+	bonobo_widget_get_property (control, "running", &state, NULL);
+
+	bonobo_widget_set_property (control, "running", !state, NULL);
+}
+
+static void
 app_destroy_cb (GtkWidget *app, BonoboUIHandler *uih)
 {
 	bonobo_object_unref (BONOBO_OBJECT (uih));
 	if (pb != CORBA_OBJECT_NIL)
 		bonobo_object_release_unref (pb, NULL);
 	pb = CORBA_OBJECT_NIL;
+
+	if (listener)
+		bonobo_object_unref (BONOBO_OBJECT (listener));
+	listener = NULL;
 
 	gtk_main_quit ();
 /*	g_warning ("Main level %d\n", gtk_main_level ());*/
@@ -156,6 +210,7 @@ container_create (void)
 	GtkWidget       *proplist;
 	GtkWidget       *box;
 	GtkWidget       *button;
+	GtkWidget       *clock_button;
 	BonoboUIHandler *uih;
 	BonoboControlFrame *cf;
 	GtkWindow       *window;
@@ -186,7 +241,7 @@ container_create (void)
 
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_calculator:fab8c2a7-9576-437c-aa3a-a8617408970f",
-		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
+		bonobo_ui_compat_get_container (uih));
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
@@ -196,9 +251,15 @@ container_create (void)
 
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_clock:d42cc651-44ae-4f69-a10d-a0b6b2cc6ecc",
-		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
+		bonobo_ui_compat_get_container (uih));
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
+
+	clock_button = gtk_button_new_with_label ("Pause/Resume Clock");
+	gtk_signal_connect (GTK_OBJECT (clock_button), "clicked",
+			    (GtkSignalFunc) toggle_clock, control);
+
+	gtk_box_pack_start (GTK_BOX (box), clock_button, TRUE, TRUE, 0);
 
 	cf = bonobo_widget_get_control_frame (BONOBO_WIDGET (control));
 	pb = bonobo_control_frame_get_control_property_bag (cf, NULL);
@@ -207,7 +268,7 @@ container_create (void)
 
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_entry_factory:ef3e3c33-43e2-4f7c-9ca9-9479104608d6",
-		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
+		bonobo_ui_compat_get_container (uih));
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
