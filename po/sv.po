@@ -1,0 +1,144 @@
+# Swedish messgaes for libbonoboui.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Christian Rose <menthos@menthos.com>, 2001.
+#
+# $Id$
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui\n"
+"POT-Creation-Date: 2001-07-06 20:33+0200\n"
+"PO-Revision-Date: 2001-07-06 21:02+0200\n"
+"Last-Translator: Christian Rose <menthos@menthos.com>\n"
+"Language-Team: Swedish <sv@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+msgid "Shadow type"
+msgstr "Skuggtyp"
+
+#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+msgid "Orientation"
+msgstr "Orientering"
+
+#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+msgid "Preferred width"
+msgstr "Föredragen bredd"
+
+#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+msgid "Preferred height"
+msgstr "Föredragen höjd"
+
+#: bonobo/bonobo-selector-widget.c:211
+msgid "Name"
+msgstr "Namn"
+
+#: bonobo/bonobo-selector-widget.c:235
+msgid "Description"
+msgstr "Beskrivning"
+
+#: bonobo/bonobo-ui-config-widget.c:272
+msgid "Visible"
+msgstr "Synlig"
+
+#: bonobo/bonobo-ui-config-widget.c:280
+msgid "_Show"
+msgstr "_Visa"
+
+#: bonobo/bonobo-ui-config-widget.c:290
+msgid "_Hide"
+msgstr "_Göm"
+
+#: bonobo/bonobo-ui-config-widget.c:300
+msgid "_View tooltips"
+msgstr "V_isa verktygstips"
+
+#: bonobo/bonobo-ui-config-widget.c:307
+msgid "Toolbars"
+msgstr "Verktygsrader"
+
+#: bonobo/bonobo-ui-config-widget.c:317 bonobo/bonobo-ui-sync-toolbar.c:510
+msgid "Look"
+msgstr "Utseende"
+
+#: bonobo/bonobo-ui-config-widget.c:327 bonobo/bonobo-ui-sync-toolbar.c:512
+msgid "_Icon"
+msgstr "_Ikon"
+
+#: bonobo/bonobo-ui-config-widget.c:337
+msgid "_Text and Icon"
+msgstr "_Text och ikon"
+
+#: bonobo/bonobo-ui-config-widget.c:347
+msgid "_Priority text only"
+msgstr "_Endast prioritetstext"
+
+#: bonobo/bonobo-ui-engine-config.c:524
+msgid "Configure UI"
+msgstr "Konfigurera användargränssnitt"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:511
+msgid "B_oth"
+msgstr "B_åda"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:513
+msgid "T_ext"
+msgstr "Te_xt"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:514
+msgid "Hide t_ips"
+msgstr "Göm t_ips"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:515
+msgid "Show t_ips"
+msgstr "Visa t_ips"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:516
+msgid "_Hide toolbar"
+msgstr "_Göm verktygsrad"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:517
+msgid "Customi_ze"
+msgstr "Anpa_ssa"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:518
+msgid "Customize the toolbar"
+msgstr "Anpassa verktygsraden"
+
+#: tests/selector_test.c:20
+msgid "Select an object"
+msgstr "Välj ett objekt"
+
+#: tests/test-container.c:65 tests/test-container.c:95
+msgid "Can not activate object_server"
+msgstr "Kan inte aktivera objekt_server"
+
+#: tests/test-container.c:70 tests/test-container.c:100
+msgid "Can not bind object server to client_site"
+msgstr "Kan inte binda objektserver till klient_sajt"
+
+#: tests/test-container.c:269
+msgid "Can not activate server"
+msgstr "Kan inte aktivera server"
+
+#: tests/test-container.c:319 tests/test-container.c:364
+msgid "Could not launch bonobo object."
+msgstr "Kunde inte starta bonobo-objektet."
+
+#: tests/test-container.c:562
+msgid "Could not launch Embeddable."
+msgstr "Kunde inte starta Embeddable."
+
+#: tests/test-container.c:596
+msgid "Could not launch Control."
+msgstr "Kunde inte starta kontroll."
+
+#: tests/test-container.c:861
+msgid "Can not bonobo_init"
+msgstr "Kan inte utföra bonobo_init"
+
+#: tests/test-focus.c:31 tests/test-sensitivity.c:197 tests/test-toolbar.c:50 tests/test-ui.c:225
+msgid "Can not bonobo_ui_init"
+msgstr "Kan inte utföra bonobo_ui_init"
