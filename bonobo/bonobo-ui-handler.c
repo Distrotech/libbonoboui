@@ -164,6 +164,7 @@ typedef struct {
 /*
  * Prototypes for some internal functions.
  */
+static void                       init_ui_handler_corba_class           (void);
 static char			 *path_escape_forward_slashes		(char *str);
 static char			 *path_unescape_forward_slashes		(char *str);
 static gchar			**path_tokenize				(char *path);
@@ -233,7 +234,7 @@ static void			  menu_toplevel_put_hint_in_statusbar	(GtkWidget *menu_item, gpoin
 static void			  menu_toplevel_remove_hint_from_statusbar (GtkWidget *menu_item, gpointer data);
 static void			  menu_toplevel_create_hint		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
 									 GtkWidget *menu_item);
-static gint			  menu_toplevel_item_activated		(GtkWidget *menu_item, gpointer data);
+static gint			  menu_toplevel_item_activated		(GtkWidget *menu_item, MenuItemInternal *internal);
 static MenuItemInternal		 *menu_toplevel_store_data		(GnomeUIHandler *uih, GNOME_UIHandler uih_corba,
 									 GnomeUIHandlerMenuItem *item);
 static void			  menu_toplevel_override_notify_recursive(GnomeUIHandler *uih, char *path);
@@ -463,53 +464,6 @@ gnome_ui_handler_destroy (GtkObject *object)
 	/* FIXME: Fill me in */
 
 	GTK_OBJECT_CLASS (gnome_ui_handler_parent_class)->destroy (object);
-}
-
-static void
-init_ui_handler_corba_class (void)
-{
-	/*
-	 * The entry point vectors for the GNOME::UIHandler class.
-	 */
-
-	/* General server management. */
-	gnome_ui_handler_epv.register_containee = impl_register_containee;
-	gnome_ui_handler_epv.unregister_containee = impl_unregister_containee;
-	gnome_ui_handler_epv.get_toplevel = impl_get_toplevel;
-
-	/* Menu management. */
-	gnome_ui_handler_epv.menu_create = impl_menu_create;
-	gnome_ui_handler_epv.menu_remove = impl_menu_remove;
-	gnome_ui_handler_epv.menu_fetch = impl_menu_fetch;
-	gnome_ui_handler_epv.menu_get_children = impl_menu_get_children;
-	gnome_ui_handler_epv.menu_get_pos = impl_menu_get_pos;
-	gnome_ui_handler_epv.menu_set_sensitivity = impl_menu_set_sensitivity;
-	gnome_ui_handler_epv.menu_get_sensitivity = impl_menu_get_sensitivity;
-	gnome_ui_handler_epv.menu_set_label = impl_menu_set_label;
-	gnome_ui_handler_epv.menu_get_label = impl_menu_get_label;
-	gnome_ui_handler_epv.menu_set_hint = impl_menu_set_hint;
-	gnome_ui_handler_epv.menu_get_hint = impl_menu_get_hint;
-	gnome_ui_handler_epv.menu_set_pixmap = impl_menu_set_pixmap;
-	gnome_ui_handler_epv.menu_get_pixmap = impl_menu_get_pixmap;
-	gnome_ui_handler_epv.menu_set_accel = impl_menu_set_accel;
-	gnome_ui_handler_epv.menu_get_accel = impl_menu_get_accel;
-	gnome_ui_handler_epv.menu_set_toggle_state = impl_menu_set_toggle_state;
-	gnome_ui_handler_epv.menu_get_toggle_state = impl_menu_get_toggle_state;
-	
-	/* Menu notification. */
-	gnome_ui_handler_epv.menu_activated = impl_menu_activated;
-	gnome_ui_handler_epv.menu_removed = impl_menu_removed;
-	gnome_ui_handler_epv.menu_overridden = impl_menu_overridden;
-	gnome_ui_handler_epv.menu_reinstated = impl_menu_reinstated;
-
-	/* Toolbar functions. */
-	gnome_ui_handler_epv.toolbar_create = impl_toolbar_create;
-	gnome_ui_handler_epv.toolbar_create_item = impl_toolbar_create_item;
-	gnome_ui_handler_epv.toolbar_overridden = impl_toolbar_overridden;
-
-	/* Setup the vector of epvs */
-	gnome_ui_handler_vepv.GNOME_Unknown_epv = &gnome_object_epv;
-	gnome_ui_handler_vepv.GNOME_UIHandler_epv = &gnome_ui_handler_epv;
 }
 
 static void
@@ -2724,10 +2678,8 @@ menu_toplevel_create_hint (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item, Gt
  * the first to know about it.
  */
 static gint
-menu_toplevel_item_activated (GtkWidget *menu_item, gpointer data)
+menu_toplevel_item_activated (GtkWidget *menu_item, MenuItemInternal *internal)
 {
-	MenuItemInternal *internal = (MenuItemInternal *) data;
-
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
@@ -4964,6 +4916,7 @@ menu_remote_get_pixmap (GnomeUIHandler *uih, char *path,
 			GnomeUIHandlerPixmapType *type, gpointer *data)
 {
 	/* FIXME: Implement me! */
+	g_warning ("Unimplemented: remote get pixmap");
 }
 
 static void
@@ -4974,6 +4927,7 @@ impl_menu_get_pixmap (PortableServer_Servant servant,
 		      CORBA_Environment *ev)
 {
 	/* FIXME: Implement me! */
+	g_warning ("Unimplemented: remote get pixmap");
 }
 
 /**
@@ -5546,8 +5500,8 @@ struct _ToolbarToolbarInternal {
 };
 
 struct _ToolbarItemLocalInternal {
-	gpointer	 callback;
-	gpointer	 callback_data;
+	GnomeUIHandlerCallbackFunc callback;
+	gpointer	           callback_data;
 };
 
 struct _ToolbarToolbarLocalInternal {
@@ -6080,14 +6034,23 @@ impl_toolbar_create (PortableServer_Servant servant,
 }
 
 /**
- * gnome_ui_handler_toolbar_create:
- */
+ * gnome_ui_handler_create_toolbar:
+ * @uih: UI handle
+ * @name: Name of toolbar eg. 'pdf', must not
+ * include leading or trailing '/'s
+ * 
+ * creates a toolbar, at the path given by 'name'.
+ * heirarchical toolbars are quite meaningless, hence
+ * only a single level of toolbar path is needed.
+ * 
+ **/
 void
 gnome_ui_handler_create_toolbar (GnomeUIHandler *uih, char *name)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (name != NULL);
+	g_return_if_fail (name[0] != '/');
 
 	toolbar_local_toolbar_create (uih, name);
 
@@ -6102,6 +6065,7 @@ gnome_ui_handler_create_toolbar (GnomeUIHandler *uih, char *name)
 static void
 toolbar_toplevel_toolbar_remove (GnomeUIHandler *uih, char *name)
 {
+	g_warning ("toolbar remove unimplemented");
 }
 
 static void
@@ -6113,8 +6077,7 @@ toolbar_remote_toolbar_remove (GnomeUIHandler *uih, char *name)
 
 	GNOME_UIHandler_toolbar_remove (uih->top_level_uih,
 					gnome_object_corba_objref (GNOME_OBJECT (uih)),
-					name,
-					&ev);
+					name, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
@@ -6129,9 +6092,9 @@ impl_toolbar_remove (PortableServer_Servant servant,
 		     GNOME_UIHandler containee,
 		     CORBA_char *name,
 		     CORBA_Environment *ev)
-
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	g_warning ("toolbar remove unimplemented");
 }
 
 /**
@@ -6333,10 +6296,43 @@ toolbar_toplevel_item_check_override (GnomeUIHandler *uih, char *path)
 }
 
 static gint
-toolbar_toplevel_item_activated (GtkWidget *widget, gpointer user_data)
+toolbar_toplevel_item_activated (GtkWidget *widget, ToolbarItemInternal *internal)
 {
-	/* FIXME: implement me */
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+
+	GNOME_UIHandler_toolbar_activated (internal->uih_corba, internal->item->path, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (
+			GNOME_OBJECT (internal->uih),
+			(CORBA_Object) internal->uih_corba, &ev);
+	}
+	
+	CORBA_exception_free (&ev);
+
 	return FALSE;
+}
+
+static void
+impl_toolbar_activated (PortableServer_Servant servant,
+			CORBA_char *path,
+			CORBA_Environment *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	ToolbarItemLocalInternal *internal_cb;
+
+	internal_cb = toolbar_local_get_item (uih, path);
+
+	if (internal_cb == NULL) {
+		g_warning ("Received activation notification about a toolbar item I don't own [%s]!\n", path);
+		return;
+	}
+
+	if (internal_cb->callback != NULL)
+		internal_cb->callback (uih, internal_cb->callback_data, path);
+	
+	gtk_signal_emit (GTK_OBJECT (uih), uih_signals [MENU_ITEM_ACTIVATED], path, internal_cb->callback_data);
 }
 
 static GtkToolbarChildType
@@ -7717,3 +7713,64 @@ gnome_ui_handler_toolbar_radio_set_state (GnomeUIHandler *uih, char *path, gbool
 
 	g_warning ("Unimplemented toolbar method");
 }
+
+static void
+init_ui_handler_corba_class (void)
+{
+	/*
+	 * The entry point vectors for the GNOME::UIHandler class.
+	 */
+
+	/* General server management. */
+	gnome_ui_handler_epv.register_containee = impl_register_containee;
+	gnome_ui_handler_epv.unregister_containee = impl_unregister_containee;
+	gnome_ui_handler_epv.get_toplevel = impl_get_toplevel;
+
+	/* Menu management. */
+	gnome_ui_handler_epv.menu_create = impl_menu_create;
+	gnome_ui_handler_epv.menu_remove = impl_menu_remove;
+	gnome_ui_handler_epv.menu_fetch  = impl_menu_fetch;
+	gnome_ui_handler_epv.menu_get_children = impl_menu_get_children;
+	gnome_ui_handler_epv.menu_get_pos = impl_menu_get_pos;
+	gnome_ui_handler_epv.menu_set_sensitivity = impl_menu_set_sensitivity;
+	gnome_ui_handler_epv.menu_get_sensitivity = impl_menu_get_sensitivity;
+	gnome_ui_handler_epv.menu_set_label  = impl_menu_set_label;
+	gnome_ui_handler_epv.menu_get_label  = impl_menu_get_label;
+	gnome_ui_handler_epv.menu_set_hint   = impl_menu_set_hint;
+	gnome_ui_handler_epv.menu_get_hint   = impl_menu_get_hint;
+	gnome_ui_handler_epv.menu_set_pixmap = impl_menu_set_pixmap;
+	gnome_ui_handler_epv.menu_get_pixmap = impl_menu_get_pixmap;
+	gnome_ui_handler_epv.menu_set_accel  = impl_menu_set_accel;
+	gnome_ui_handler_epv.menu_get_accel  = impl_menu_get_accel;
+	gnome_ui_handler_epv.menu_set_toggle_state = impl_menu_set_toggle_state;
+	gnome_ui_handler_epv.menu_get_toggle_state = impl_menu_get_toggle_state;
+	
+	/* Menu notification. */
+	gnome_ui_handler_epv.menu_activated  = impl_menu_activated;
+	gnome_ui_handler_epv.menu_removed    = impl_menu_removed;
+	gnome_ui_handler_epv.menu_overridden = impl_menu_overridden;
+	gnome_ui_handler_epv.menu_reinstated = impl_menu_reinstated;
+
+	/* Toolbar management. */
+	gnome_ui_handler_epv.toolbar_create = impl_toolbar_create;
+	gnome_ui_handler_epv.toolbar_remove = impl_toolbar_remove;
+	gnome_ui_handler_epv.toolbar_get_pos     = impl_toolbar_get_pos;
+	gnome_ui_handler_epv.toolbar_set_sensitivity = impl_toolbar_set_sensitivity;
+	gnome_ui_handler_epv.toolbar_get_sensitivity = impl_toolbar_get_sensitivity;
+	gnome_ui_handler_epv.toolbar_remove_item = impl_toolbar_remove_item;
+	gnome_ui_handler_epv.toolbar_create_item = impl_toolbar_create_item;
+
+	/* Toolbar notification. */
+	gnome_ui_handler_epv.toolbar_activated  = impl_toolbar_activated;
+	gnome_ui_handler_epv.toolbar_removed    = impl_toolbar_removed;
+	gnome_ui_handler_epv.toolbar_reinstated = impl_toolbar_reinstated;
+	gnome_ui_handler_epv.toolbar_overridden = impl_toolbar_overridden;
+
+	/* Setup the vector of epvs */
+	gnome_ui_handler_vepv.GNOME_Unknown_epv = &gnome_object_epv;
+	gnome_ui_handler_vepv.GNOME_UIHandler_epv = &gnome_ui_handler_epv;
+}
+
+
+
+
