@@ -6,7 +6,7 @@
 
 	* configure.in: require gtk2 >= 2.3.1
 
-2004-01-14  The Written Word  <bugzilla-gnome@thewrittenword.com>
+2004-01-14  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* bonobo/bonobo-dock-item.h, bonobo/bonobo-dock-band.h,
 	bonobo/bonobo-dock.h: fix (signed) enum bitfields
