@@ -57,7 +57,7 @@ void bonobo_ui_engine_update (BonoboUIEngine *engine);
 #define BONOBO_IS_UI_ENGINE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_ENGINE))
 #define BONOBO_IS_UI_ENGINE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_UI_ENGINE))
 
-GtkType         bonobo_ui_engine_get_type      (void) G_GNUC_CONST;
+GType         bonobo_ui_engine_get_type      (void) G_GNUC_CONST;
 
 /* Private - implementation details */
 #ifdef BONOBO_UI_INTERNAL
