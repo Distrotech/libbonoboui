@@ -21,6 +21,7 @@
 
 G_BEGIN_DECLS
 
+#define BONOBO_TYPE_SELECTOR            (bonobo_selector_get_type ())
 #define BONOBO_SELECTOR(obj)		GTK_CHECK_CAST(obj, bonobo_selector_get_type (), BonoboSelector)
 #define BONOBO_SELECTOR_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, bonobo_selector_get_type (), BonoboSelectorClass)
 #define BONOBO_IS_SELECTOR(obj)		GTK_CHECK_TYPE (obj, bonobo_selector_get_type ())
