@@ -63,6 +63,9 @@ GnomeObjectClient *gnome_client_site_get_embeddable	(GnomeClientSite *client_sit
 /*
  * Proxy/Utility functions.
  */
+GnomeViewFrame	  *gnome_client_site_new_view_full	(GnomeClientSite *client_site,
+							 gboolean visible_cover,
+							 gboolean active_view);
 GnomeViewFrame    *gnome_client_site_new_view		(GnomeClientSite *client_site);
 GnomeCanvasItem   *gnome_client_site_new_item           (GnomeClientSite *client_site,
 							 GnomeCanvasGroup *group);

@@ -10,18 +10,72 @@
 #include <libgnorba/gnorba.h>
 #include <bonobo/gnome-bonobo.h>
 
+GList *property_list;
+
+#define CORBA_boolean__alloc() (CORBA_boolean *) CORBA_octet_allocbuf (sizeof (CORBA_boolean))
+
+static void populate_property_list (GtkWidget *bw, GtkCList *clist);
+
+static void
+edit_property (GtkCList *clist, GdkEventButton *event, GnomeBonoboWidget *bw)
+{
+	GNOME_Property prop;
+	CORBA_Environment ev;
+	gint row, col;
+	CORBA_any *any, *newany;
+	CORBA_boolean *b;
+
+	if (event->button == 3) {
+		CORBA_exception_init (&ev);
+		gtk_clist_get_selection_info (clist, event->x, event->y,
+		                              &row, &col);
+
+		/* Get the value of the property they clicked on. */
+		prop = g_list_nth_data (property_list, row);
+		any = GNOME_Property_get_value (prop, &ev);
+
+		/* Change it appropriately. */
+		switch (any->_type->kind) {
+		case CORBA_tk_boolean:
+			b = CORBA_boolean__alloc();
+			*b = ! *((CORBA_boolean *) any->_value);
+			newany = CORBA_any__alloc();
+			newany->_type = (CORBA_TypeCode) TC_boolean;
+			newany->_value = b;
+			CORBA_any_set_release (newany, TRUE);
+			GNOME_Property_set_value (prop, newany, &ev);
+			break;
+		default:
+			g_warning ("Cannot set_value this type of property yet, sorry.");
+			break;
+			
+		}
+
+
+		CORBA_exception_free (&ev);
+
+		/* Redraw the property list. */
+		gtk_clist_clear (clist);
+		populate_property_list (GTK_WIDGET(bw), clist);
+	}
+
+}
+
+
 static void
 populate_property_list (GtkWidget *bw, GtkCList *clist)
 {
 	GnomePropertyBagClient *pbc;
 	GnomeControlFrame *cf;
-	GList *property_list, *l;
+	GList *l;
 	CORBA_Environment ev;
 
 	/* Get the list of properties. */
-	cf = gnome_bonobo_widget_get_control_frame (GNOME_BONOBO_WIDGET (bw));
-	pbc = gnome_control_frame_get_control_property_bag (cf);
-	property_list = gnome_property_bag_client_get_properties (pbc);
+	if (property_list == NULL) {
+		cf = gnome_bonobo_widget_get_control_frame (GNOME_BONOBO_WIDGET (bw));
+		pbc = gnome_control_frame_get_control_property_bag (cf);
+		property_list = gnome_property_bag_client_get_properties (pbc);
+	}
 
 	CORBA_exception_init (&ev);
 	for (l = property_list; l != NULL; l = l->next) {
@@ -106,7 +160,9 @@ table_create (GtkWidget *control)
 
 	/* Put the property CList on the bottom. */
 	clist = gtk_clist_new_with_titles (2, clist_titles);
-
+	gtk_signal_connect (GTK_OBJECT (clist), "button_press_event",
+		GTK_SIGNAL_FUNC (edit_property), control);
+ 
 	gtk_table_attach (GTK_TABLE (table), clist,
 			  0, 3, 2, 3,
 			  GTK_EXPAND | GTK_FILL, 

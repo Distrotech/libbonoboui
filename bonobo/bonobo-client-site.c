@@ -405,9 +405,10 @@ destroy_view_frame (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
 }
 
 /**
- * gnome_client_site_new_view:
- * @client_site: the client site that contains a remote Embeddable
- * object.
+ * gnome_client_site_new_view_full:
+ * @client_site: the client site that contains a remote Embeddable object.
+ * @visible_cover: %TRUE if the cover should draw a border when it is active.
+ * @active_view: %TRUE if the view should be uncovered when it is created.
  *
  * Creates a ViewFrame and asks the remote @server_object (which must
  * support the GNOME::Embeddable interface) to provide a new view of
@@ -419,7 +420,9 @@ destroy_view_frame (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
  * the new view of @server_object.
  */
 GnomeViewFrame *
-gnome_client_site_new_view (GnomeClientSite *client_site)
+gnome_client_site_new_view_full (GnomeClientSite *client_site,
+				 gboolean visible_cover,
+				 gboolean active_view)
 {
 	GnomeObjectClient *server_object;
 	GnomeViewFrame *view_frame;
@@ -446,6 +449,8 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 	 */
 	view_frame = gnome_view_frame_new (client_site);
 	wrapper = GNOME_WRAPPER (gnome_view_frame_get_wrapper (view_frame));
+	gnome_wrapper_set_visibility (wrapper, visible_cover);
+	gnome_wrapper_set_covered (wrapper, ! active_view);
 
 	gtk_container_add (GTK_CONTAINER (wrapper), socket);
 
@@ -488,6 +493,24 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 
 	CORBA_exception_free (&ev);		
 	return view_frame;
+}
+
+/**
+ * gnome_client_site_new_view:
+ * @client_site: the client site that contains a remote Embeddable
+ * object.
+ *
+ * The same as gnome_client_site_new_view_full() with an inactive,
+ * visible cover.
+ * 
+ * Returns: A GnomeViewFrame object that contains the view frame for
+ * the new view of @server_object.
+ */
+GnomeViewFrame *
+gnome_client_site_new_view (GnomeClientSite *client_site)
+{
+
+	return gnome_client_site_new_view_full (client_site, TRUE, FALSE);
 }
 
 static void
