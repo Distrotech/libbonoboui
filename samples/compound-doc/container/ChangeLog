@@ -1,3 +1,23 @@
+2000-08-11  Michael Meeks  <michael@helixcode.com>
+
+	* container.c (final_setup): make dependent on environment
+	variable: BONOBO_MONIKER_TEST
+
+2000-08-10  Michael Meeks  <michael@helixcode.com>
+
+	* component.c (sample_site_add_frame): publicize and rename
+	to (sample_client_site_add_frame): this. (add_frame_cb): upd.
+
+	* container.c (sample_app_add_component): split part into
+	(sample_app_add_embeddable): here, and publicize.
+	(sample_app_add_embeddable): add a frame.
+
+2000-08-09  Michael Meeks  <michael@helixcode.com>
+
+	* container.c (final_setup): add moniker test code.
+
+	* component.c (load_stream_cb): txt -> text.
+
 2000-08-02  Michael Meeks  <michael@helixcode.com>
 
 	* container.c (sample_app_exit): unref the UI handler here.

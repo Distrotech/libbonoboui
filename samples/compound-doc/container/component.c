@@ -127,8 +127,8 @@ component_user_context_cb (BonoboViewFrame  *view_frame,
 	g_free (executed_verb);
 }
 
-static void
-sample_site_add_frame (SampleClientSite *site)
+void
+sample_client_site_add_frame (SampleClientSite *site)
 {
 	BonoboViewFrame *view_frame;
 	GtkWidget       *view_widget;
@@ -213,7 +213,7 @@ sample_site_del_frame (SampleClientSite *site)
 static void
 add_frame_cb (GtkWidget *caller, SampleClientSite *site)
 {
-	sample_site_add_frame (site);
+	sample_client_site_add_frame (site);
 }
 
 static void
@@ -291,7 +291,7 @@ load_stream_cb (GtkWidget *caller, SampleClientSite *site)
 					   "", &ev);
 
 		if (ev._major != CORBA_NO_EXCEPTION) {
-			char *msg = bonobo_exception_get_txt (&ev);
+			char *msg = bonobo_exception_get_text (&ev);
 			gnome_warning_dialog (msg);
 			g_free (msg);
 		}

@@ -19,9 +19,11 @@ struct _SampleApp {
 	GtkWidget *fileselection;
 };
 
-SampleClientSite *sample_app_add_component    (SampleApp *app, gchar            *goad_id);
-void              sample_app_remove_component (SampleApp *app, SampleClientSite *site);
-void              sample_app_exit             (SampleApp *app);
+SampleClientSite *sample_app_add_component    (SampleApp        *app,
+					       gchar            *goad_id);
+void              sample_app_remove_component (SampleApp        *app,
+					       SampleClientSite *site);
+void              sample_app_exit             (SampleApp        *app);
 
 #endif /* SAMPLE_CONTAINER_H */
 

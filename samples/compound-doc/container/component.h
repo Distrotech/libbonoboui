@@ -35,6 +35,8 @@ SampleClientSite *sample_client_site_new        (BonoboContainer    *container,
 
 GtkWidget        *sample_client_site_get_widget (SampleClientSite   *site);
 
+void              sample_client_site_add_frame  (SampleClientSite *site);
+
 void              object_print                  (BonoboObjectClient *object,
 						 GnomePrintContext  *ctx,
 						 gdouble x, gdouble y,

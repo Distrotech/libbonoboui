@@ -63,26 +63,12 @@ sample_app_create (void)
 	return app;
 }
 
-SampleClientSite *
-sample_app_add_component (SampleApp *app,
-			  gchar     *object_id)
+static SampleClientSite *
+sample_app_add_embeddable (SampleApp          *app,
+			   BonoboObjectClient *server,
+			   char               *object_id)
 {
-	SampleClientSite   *site;
-	BonoboObjectClient *server;
-
-	server = bonobo_object_activate_with_oaf_id (object_id, 0);
-
-	if (!server) {
-		gchar *error_msg;
-
-		error_msg =
-		    g_strdup_printf (_("Could not launch Embeddable %s!"),
-				     object_id);
-		gnome_warning_dialog (error_msg);
-		g_free (error_msg);
-
-		return NULL;
-	}
+	SampleClientSite *site;
 
 	/*
 	 * The ClientSite is the container-side point of contact for
@@ -101,15 +87,93 @@ sample_app_add_component (SampleApp *app,
 	gtk_box_pack_start (GTK_BOX (app->box),
 			    sample_client_site_get_widget (site),
 			    FALSE, FALSE, 0);
+
+	sample_client_site_add_frame (site);
+
 	gtk_widget_show_all (GTK_WIDGET (app->box));
 	
 	return site;
+}
+
+SampleClientSite *
+sample_app_add_component (SampleApp *app,
+			  gchar     *object_id)
+{
+	BonoboObjectClient *server;
+
+	server = bonobo_object_activate_with_oaf_id (object_id, 0);
+
+	if (!server) {
+		gchar *error_msg;
+
+		error_msg =
+		    g_strdup_printf (_("Could not launch Embeddable %s!"),
+				     object_id);
+		gnome_warning_dialog (error_msg);
+		g_free (error_msg);
+
+		return NULL;
+	}
+
+	return sample_app_add_embeddable (app, server, object_id);
 }
 
 typedef struct {
 	SampleApp *app;
 	const char **startup_files;
 } setup_data_t;
+
+static Bonobo_Moniker
+make_moniker (const char *name)
+{
+	Bonobo_Moniker      moniker;
+	CORBA_Environment   ev;
+
+	CORBA_exception_init (&ev);
+
+	moniker = bonobo_moniker_client_new_from_name (name, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		g_warning ("Moniker new exception '%s'\n",
+			   bonobo_exception_get_text (&ev));
+		return CORBA_OBJECT_NIL;
+	}
+	
+	return moniker;
+}
+
+static void
+resolve_and_add (SampleApp *app, Bonobo_Moniker moniker, const char *interface)
+{
+	Bonobo_Embeddable embeddable;
+	SampleClientSite *site;
+	CORBA_Environment ev;
+	char             *name;
+
+	CORBA_exception_init (&ev);
+
+	embeddable = bonobo_moniker_client_resolve_default (
+		moniker, interface, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		g_warning ("Moniker resolve exception '%s'\n",
+			 bonobo_exception_get_text (&ev));
+		return;
+	}
+
+	name = bonobo_moniker_client_get_name (moniker, &ev);
+	g_print ("My moniker looks like '%s'\n", name);
+	
+	if (ev._major != CORBA_NO_EXCEPTION)
+		g_warning ("Moniker get name exception '%s'\n",
+			   bonobo_exception_get_text (&ev));
+
+	site = sample_app_add_embeddable (
+		app, bonobo_object_client_from_corba (embeddable),
+		name);
+
+	if (!site)
+		g_warning ("Failed to add embeddable to app");
+}
 
 /*
  *  This is placed after the Bonobo main loop has started
@@ -123,6 +187,22 @@ final_setup (setup_data_t *sd)
 	while (filenames && *filenames) {
 		sample_container_load (sd->app, *filenames);
 		filenames++;
+	}
+
+	if (g_getenv ("BONOBO_MONIKER_TEST")) {
+		Bonobo_Moniker moniker;
+
+		moniker = make_moniker ("file:/demo/a.jpeg");
+		resolve_and_add (sd->app, moniker, "IDL:Bonobo/Embeddable:1.0");
+		bonobo_object_release_unref (moniker, NULL);
+
+		moniker = make_moniker ("OAFIID:bonobo_application-x-mines:804d34a8-57dd-428b-9c94-7aa3a8365230");
+		resolve_and_add (sd->app, moniker, "IDL:Bonobo/Embeddable:1.0");
+		bonobo_object_release_unref (moniker, NULL);
+
+		moniker = make_moniker ("query:(bonobo:supported_mime_types.has ('image/x-png'))");
+		resolve_and_add (sd->app, moniker, "IDL:Bonobo/Embeddable:1.0");
+		bonobo_object_release_unref (moniker, NULL);
 	}
 
 	return FALSE;

@@ -185,7 +185,6 @@ load_component (SampleApp *app, BonoboStorage *storage, int index)
 	g_free (curr_dir);
 }
 
-
 void
 sample_container_load (SampleApp *app, const char *filename)
 {
