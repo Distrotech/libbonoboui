@@ -19,6 +19,8 @@
 #include <bonobo/bonobo-ui-item.h>
 #include <bonobo/bonobo-ui-toolbar.h>
 
+#undef NAUTILUS_LOOP
+
 #define XML_FREE(a) ((a)?xmlFree(a):(a))
 
 #define	BINDING_MOD_MASK()				\
@@ -121,9 +123,9 @@ node_get_parent_widget (BonoboUIXml *tree, xmlNode *node)
 
 	do {
 		info = bonobo_ui_xml_get_data (tree, node->parent);
-		if (info->widget)
+		if (info && info->widget)
 			return info->widget;
-	} while ((node = node->parent));
+	} while ((node = node->parent) && (node->parent));
 
 	return NULL;
 }
@@ -497,6 +499,7 @@ set_cmd_state (BonoboWinPrivate *priv, xmlNode *cmd_node, const char *prop,
 {
 	xmlNode *node;
 	char    *cmd_name;
+	char    *old_value;
 
 	g_return_if_fail (priv != NULL);
 	g_return_if_fail (prop != NULL);
@@ -513,6 +516,25 @@ set_cmd_state (BonoboWinPrivate *priv, xmlNode *cmd_node, const char *prop,
 
 	node = get_cmd_state (priv, cmd_name);
 
+	old_value = xmlGetProp (node, prop);
+
+#ifdef NAUTILUS_LOOP
+	fprintf (stderr, "Set '%s' : '%s' to '%s' (%d)",
+		 cmd_name, prop, value, immediate_update);
+#endif
+	/* We set it to the same thing */
+	if (old_value && !strcmp (old_value, value)) {
+		g_free (cmd_name);
+#ifdef NAUTILUS_LOOP
+		fprintf (stderr, "same\n");
+#endif
+		return;
+	}
+#ifdef NAUTILUS_LOOP
+	else
+		fprintf (stderr, "different\n");
+#endif
+
 	xmlSetProp (node, prop, value);
 
 	if (immediate_update)
@@ -523,7 +545,6 @@ set_cmd_state (BonoboWinPrivate *priv, xmlNode *cmd_node, const char *prop,
 
 		data->dirty = TRUE;
 	}
-
 	g_free (cmd_name);
 }
 
@@ -1208,11 +1229,10 @@ build_control (BonoboWinPrivate *priv,
 	GtkWidget *control = NULL;
 	NodeInfo  *info = bonobo_ui_xml_get_data (priv->tree, node);
 
-	fprintf (stderr, "Control '%p', type '%d' object '%p'\n",
-		 info->widget, info->type, info->object);
+/*	fprintf (stderr, "Control '%p', type '%d' object '%p'\n",
+	info->widget, info->type, info->object);*/
 
 	if (info->widget) {
-		fprintf (stderr, "Non null widget\n");
 		control = info->widget;
 		g_assert (info->widget->parent == NULL);
 	} else if (info->object != CORBA_OBJECT_NIL) {
@@ -1224,12 +1244,11 @@ build_control (BonoboWinPrivate *priv,
 		
 		info->type |= CUSTOM_WIDGET;
 		info->widget = control;
-		fprintf (stderr, "Setup widget\n");
 	}
 
-	fprintf (stderr, "Type on '%s' '%s' is %d widget %p\n",
+/*	fprintf (stderr, "Type on '%s' '%s' is %d widget %p\n",
 		 node->name, xmlGetProp (node, "name"),
-		 info->type, info->widget);
+		 info->type, info->widget);*/
 
 	return control;
 }
@@ -1356,6 +1375,18 @@ update_menus (BonoboWinPrivate *priv, xmlNode *node)
 		gtk_widget_hide (GTK_WIDGET (info->widget));
 
 	container_destroy_siblings (priv->tree, info->widget, node->childs);
+
+	/*
+	 * Create the tearoff item at the beginning of the menu shell,
+	 * if appropriate.
+	 */
+	if (info->widget &&
+	    node_get_parent_widget (priv->tree, node) &&
+	    gnome_preferences_get_menus_have_tearoff ()) {
+		GtkWidget *tearoff = gtk_tearoff_menu_item_new ();
+		gtk_widget_show (tearoff);
+		gtk_menu_shell_prepend (GTK_MENU_SHELL (info->widget), tearoff);
+	}
 
 	for (l = node->childs; l; l = l->next)
 		build_menu_widget (priv, l);
@@ -1697,8 +1728,10 @@ static void
 update_status (BonoboWinPrivate *priv, xmlNode *node)
 {
 	xmlNode *l;
+	char *txt;
+	GtkWidget *item = GTK_WIDGET (priv->status);
 
-	gtk_widget_hide (GTK_WIDGET (priv->status));
+	gtk_widget_hide (item);
 
 	container_destroy_siblings (priv->tree, GTK_WIDGET (priv->status), node->childs);
 
@@ -1717,6 +1750,10 @@ update_status (BonoboWinPrivate *priv, xmlNode *node)
 
 			widget = gtk_statusbar_new ();
 			priv->main_status = GTK_STATUSBAR (widget);
+			/* insert a little padding so text isn't jammed against frame */
+			gtk_misc_set_padding (
+				GTK_MISC (GTK_STATUSBAR (widget)->label),
+				GNOME_PAD, 0);
 			gtk_widget_show (GTK_WIDGET (widget));
 			gtk_box_pack_start (priv->status, widget, TRUE, TRUE, 0);
 			
@@ -1748,7 +1785,15 @@ update_status (BonoboWinPrivate *priv, xmlNode *node)
 		xmlFree (name);
 	}
 
-	gtk_widget_show (GTK_WIDGET (priv->status));
+	if ((txt = xmlGetProp (node, "hidden"))) {
+		if (atoi (txt)) {
+			gtk_widget_hide (item);
+			return;
+		} else
+			gtk_widget_show (item);
+	} else {
+		gtk_widget_show (item);
+	}
 }
 
 typedef enum {
@@ -2141,6 +2186,9 @@ bonobo_win_dump (BonoboWin  *app,
 		 const char *msg)
 {
 	g_return_if_fail (BONOBO_IS_WIN (app));
+
+	fprintf (stderr, "Bonobo Win '%s': frozen '%d'\n",
+		 app->priv->name, app->priv->frozen);
 
 	bonobo_ui_xml_dump (app->priv->tree, app->priv->tree->root, msg);
 }

@@ -114,13 +114,13 @@ main (int argc, char **argv)
 		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Open you fool\"/>\n"
 		"       <menuitem/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\" accel=\"&lt;Control&gt;t\"/>\n"
-		"       <placeholder delimit=\"both\"/>\n"
+		"       <placeholder name=\"Nice\" delimit=\"both\"/>\n"
 		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" "
 		"        pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"&lt;Control&gt;q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
 		"<submenu name=\"File\" label=\"_FileC\">\n"
-		"    <placeholder>\n"
+		"    <placeholder name=\"Nice\" delimit=\"both\">\n"
 		"	<menuitem name=\"fooa\" label=\"_FooA\" type=\"radio\" group=\"foogroup\" descr=\"Radio1\"/>\n"
 		"	<menuitem name=\"foob\" label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
 		"	<menuitem name=\"wibble\" label=\"_Baa\" pixtype=\"stock\" pixname=\"Menu_Open\" sensitive=\"0\"/>\n"
@@ -128,6 +128,8 @@ main (int argc, char **argv)
 		"</submenu>\n";
 	char simpled [] =
 		"<menuitem name=\"save\" label=\"_SaveD\" pixtype=\"stock\" pixname=\"Menu_Save\"/>\n";
+	char simplee [] =
+		"<menuitem name=\"fish\" label=\"_Inplace\" pixtype=\"stock\" pixname=\"Menu_Save\"/>\n";
 	char toola [] =
 		"<dockitem name=\"toolbar\" homogeneous=\"0\">\n"
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"
@@ -259,6 +261,7 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_set (componentb, corba_container, "/menu", simpleb, &ev);
 	bonobo_ui_component_set (componenta, corba_container, "/",     toolb, &ev);
+	bonobo_ui_component_set (componenta, corba_container, "/menu/File/Nice", simplee, &ev);
 
 	{
 		GtkWidget *widget = gtk_progress_bar_new ();

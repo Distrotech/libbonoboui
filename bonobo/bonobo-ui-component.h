@@ -56,10 +56,22 @@ void               bonobo_ui_component_add_verb     (BonoboUIComponent  *compone
 						     BonoboUIVerbFn      fn,
 						     gpointer            user_data);
 
+void               bonobo_ui_component_add_verb_full(BonoboUIComponent  *component,
+						     const char         *cname,
+						     BonoboUIVerbFn      fn,
+						     gpointer            user_data,
+						     GDestroyNotify      destroy_fn);
+
 void               bonobo_ui_component_add_listener (BonoboUIComponent  *component,
 						     const char         *id,
 						     BonoboUIListenerFn  fn,
 						     gpointer            user_data);
+
+void               bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
+							  const char         *id,
+							  BonoboUIListenerFn  fn,
+							  gpointer            user_data,
+							  GDestroyNotify      destroy_fn);
 
 void               bonobo_ui_component_set          (BonoboUIComponent  *component,
 						     Bonobo_UIContainer  container,
@@ -129,6 +141,7 @@ typedef struct {
 	char          *cname;
 	BonoboUIVerbFn cb;
 	gpointer       user_data;
+	gpointer       dummy;
 } BonoboUIVerb;
 
 #define BONOBO_UI_VERB(name,cb)           { (name), ((BonoboUIVerbFn)(cb)), NULL   }

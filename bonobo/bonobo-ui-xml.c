@@ -111,6 +111,26 @@ bonobo_ui_xml_set_dirty (BonoboUIXml *tree,
 		bonobo_ui_xml_set_dirty (tree, l, dirty);
 }
 
+static void
+set_node_dirty (BonoboUIXml *tree, xmlNode *node)
+{
+	int i;
+	xmlNode *l;
+
+	l = node;
+	for (i = 0; (i < 2) && l; i++) {
+		BonoboUIXmlData *data;
+
+		if (!strcmp (l->name, "placeholder"))
+			i--;
+
+		data = bonobo_ui_xml_get_data (tree, l);
+		data->dirty = TRUE;
+
+		l = l->parent;
+	}
+}
+
 char *
 bonobo_ui_xml_get_parent_path (const char *path)
 {
@@ -341,11 +361,7 @@ override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 	if (!new->properties)
 		new->properties = xmlCopyPropList (new, old->properties);
 
-	data->dirty = TRUE;
-	if (new->parent) {
-		data = bonobo_ui_xml_get_data (tree, new->parent);
-		data->dirty = TRUE;
-	}
+	set_node_dirty (tree, new);
 
 	if (same)
 		node_free (tree, old);
@@ -381,18 +397,14 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 		xmlReplaceNode (node, old);
 
 		/* Mark dirty */
-		old_data->dirty = TRUE;
-		if (old->parent) {
-			data = bonobo_ui_xml_get_data (tree, old->parent);
-			data->dirty = TRUE;
-		}
+		set_node_dirty (tree, old);
 
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REINSTATE], old);
 	} else if (node->childs) { /* We need to leave the node here */
 		/* Re-tag the node */
 		BonoboUIXmlData *child_data = 
 			bonobo_ui_xml_get_data (tree, node->childs);
-		
+
 		data->id = child_data->id;
 		return;
 	} else {
@@ -400,10 +412,7 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 		node->name, xmlGetProp (node, "name"));*/
 
 		/* Mark dirty */
-		if (node->parent) {
-			data = bonobo_ui_xml_get_data (tree, node->parent);
-			data->dirty = TRUE;
-		}
+		set_node_dirty (tree, node);
 
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
 		xmlUnlinkNode (node);
@@ -729,8 +738,6 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 	}
 
 	for (b = *new; b; b = nextb) {
-		BonoboUIXmlData *data;
-
 		nextb = b->next;
 		
 /*		fprintf (stderr, "Transfering '%s' '%s' into '%s' '%s'\n",
@@ -744,11 +751,7 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 		else
 			xmlAddChild (current, b);
 
-		data = bonobo_ui_xml_get_data (tree, b);
-		data->dirty = TRUE;
-
-		data = bonobo_ui_xml_get_data (tree, current);
-		data->dirty = TRUE;
+		set_node_dirty (tree, b);
 
 /*		DUMP_XML (tree, current, "After transfer");*/
 	}
@@ -790,10 +793,6 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 
 	DUMP_XML (tree, tree->root, "Merging in");
 	DUMP_XML (tree, nodes, "this load");
-
-	/*
-	 * FIXME: ok; so we need to create a peer to merge against here.
-	 */
 
 	merge (tree, current, &nodes);
 

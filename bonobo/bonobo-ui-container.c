@@ -71,10 +71,20 @@ impl_node_set (PortableServer_Servant   servant,
 	       CORBA_Environment       *ev)
 {
 	BonoboWin *app = bonobo_ui_container_from_servant (servant);
+	BonoboUIXmlError err;
 
-	if (bonobo_win_xml_merge (app, path, xml, component_name))
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_Bonobo_UIContainer_MalFormedXML, NULL);
+	err = bonobo_win_xml_merge (app, path, xml, component_name);
+
+	if (err) {
+		if (err == BONOBO_UI_XML_INVALID_PATH)
+			CORBA_exception_set (
+				ev, CORBA_USER_EXCEPTION,
+				ex_Bonobo_UIContainer_InvalidPath, NULL);
+		else
+			CORBA_exception_set (
+				ev, CORBA_USER_EXCEPTION,
+				ex_Bonobo_UIContainer_MalFormedXML, NULL);
+	}
 }
 
 static CORBA_char *

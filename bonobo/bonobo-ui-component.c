@@ -24,7 +24,15 @@ typedef struct {
 	char              *id;
 	BonoboUIListenerFn cb;
 	gpointer           user_data;
-} Listener;
+	GDestroyNotify     destroy_fn;
+} UIListener;
+
+typedef struct {
+	char          *cname;
+	BonoboUIVerbFn cb;
+	gpointer       user_data;
+	GDestroyNotify destroy_fn;
+} UIVerb;
 
 /*
  * FIXME: should all be hashed for speed.
@@ -42,9 +50,12 @@ bonobo_ui_from_servant (PortableServer_Servant servant)
 }
 
 static gboolean
-verb_destroy (gpointer key, BonoboUIVerb *verb, gpointer user_data)
+verb_destroy (gpointer dummy, UIVerb *verb, gpointer dummy2)
 {
 	if (verb) {
+		if (verb->destroy_fn)
+			verb->destroy_fn (verb->user_data);
+		verb->destroy_fn = NULL;
 		g_free (verb->cname);
 		g_free (verb);
 	}
@@ -52,9 +63,12 @@ verb_destroy (gpointer key, BonoboUIVerb *verb, gpointer user_data)
 }
 
 static gboolean
-listener_destroy (gpointer key, Listener *l, gpointer user_data)
+listener_destroy (gpointer dummy, UIListener *l, gpointer dummy2)
 {
 	if (l) {
+		if (l->destroy_fn)
+			l->destroy_fn (l->user_data);
+		l->destroy_fn = NULL;
 		g_free (l->id);
 		g_free (l);
 	}
@@ -67,7 +81,7 @@ ui_event (BonoboUIComponent           *component,
 	  Bonobo_UIComponent_EventType type,
 	  const char                  *state)
 {
-	Listener *list;
+	UIListener *list;
 
 	list = g_hash_table_lookup (component->priv->listeners, id);
 	if (list && list->cb)
@@ -80,7 +94,7 @@ impl_describe_verbs (PortableServer_Servant servant,
 		     CORBA_Environment     *ev)
 {
 	g_warning ("FIXME: Describe verbs unimplemented");
-	return CORBA_string_dup ("<NoBonoboUIVerbDescriptionCodeYet/>");
+	return CORBA_string_dup ("<NoUIVerbDescriptionCodeYet/>");
 }
 
 static void
@@ -89,7 +103,7 @@ impl_exec_verb (PortableServer_Servant servant,
 		CORBA_Environment     *ev)
 {
 	BonoboUIComponent *component;
-	BonoboUIVerb *verb;
+	UIVerb *verb;
 
 	component = bonobo_ui_from_servant (servant);
 
@@ -133,25 +147,72 @@ impl_ui_event (PortableServer_Servant             servant,
 
 
 void
-bonobo_ui_component_add_verb (BonoboUIComponent  *component,
-			      const char         *cname,
-			      BonoboUIVerbFn      fn,
-			      gpointer            user_data)
+bonobo_ui_component_add_verb_full (BonoboUIComponent  *component,
+				   const char         *cname,
+				   BonoboUIVerbFn      fn,
+				   gpointer            user_data,
+				   GDestroyNotify      destroy_fn)
 {
-	BonoboUIVerb *verb;
+	UIVerb *verb;
 	BonoboUIComponentPrivate *priv;
 
 	g_return_if_fail (cname != NULL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
-	verb = g_new (BonoboUIVerb, 1);
-	verb->cname = g_strdup (cname);
-	verb->cb        = fn;
-	verb->user_data = user_data;
+	priv = component->priv;
+
+	if ((verb = g_hash_table_lookup (priv->verbs, cname))) {
+		g_hash_table_remove (priv->verbs, cname);
+		verb_destroy (NULL, verb, NULL);
+	}
+
+	verb = g_new (UIVerb, 1);
+	verb->cname      = g_strdup (cname);
+	verb->cb         = fn;
+	verb->user_data  = user_data;
+	verb->destroy_fn = destroy_fn;
+
+	g_hash_table_insert (priv->verbs, verb->cname, verb);
+}
+
+void
+bonobo_ui_component_add_verb (BonoboUIComponent  *component,
+			      const char         *cname,
+			      BonoboUIVerbFn      fn,
+			      gpointer            user_data)
+{
+	bonobo_ui_component_add_verb_full (
+		component, cname, fn, user_data, NULL);
+}
+
+void
+bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
+				       const char         *id,
+				       BonoboUIListenerFn  fn,
+				       gpointer            user_data,
+				       GDestroyNotify      destroy_fn)
+{
+	UIListener *list;
+	BonoboUIComponentPrivate *priv;
+
+	g_return_if_fail (fn != NULL);
+	g_return_if_fail (id != NULL);
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
 	priv = component->priv;
 
-	g_hash_table_insert (priv->verbs, verb->cname, verb);
+	if ((list = g_hash_table_lookup (priv->listeners, id))) {
+		g_hash_table_remove (priv->listeners, id);
+		listener_destroy (NULL, list, NULL);
+	}
+
+	list = g_new (UIListener, 1);
+	list->cb = fn;
+	list->id = g_strdup (id);
+	list->user_data = user_data;
+	list->destroy_fn = destroy_fn;
+
+	g_hash_table_insert (priv->listeners, list->id, list);	
 }
 
 void
@@ -160,20 +221,8 @@ bonobo_ui_component_add_listener (BonoboUIComponent  *component,
 				  BonoboUIListenerFn  fn,
 				  gpointer            user_data)
 {
-	Listener *list;
-	BonoboUIComponentPrivate *priv;
-
-	g_return_if_fail (fn != NULL);
-	g_return_if_fail (id != NULL);
-	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
-
-	list = g_new (Listener, 1);
-	list->cb = fn;
-	list->id = g_strdup (id);
-	list->user_data = user_data;
-
-	priv = component->priv;
-	g_hash_table_insert (priv->listeners, list->id, list);
+	bonobo_ui_component_add_listener_full (
+		component, id, fn, user_data, NULL);
 }
 
 static void
@@ -394,8 +443,8 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 				     name, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
-		g_warning ("Serious exception on node_set '$%s' of '%s'",
-			   bonobo_exception_get_text (real_ev), xml);
+		g_warning ("Serious exception on node_set '$%s' of '%s' to '%s'",
+			   bonobo_exception_get_text (real_ev), xml, path);
 
 	if (!ev)
 		CORBA_exception_free (&tmp_ev);
