@@ -40,6 +40,8 @@ void helloapp_on_menu_edit_undo(BonoboUIComponent *uic, gpointer user_data, cons
 void helloapp_on_menu_edit_redo(BonoboUIComponent *uic, gpointer user_data, const gchar* verbname);
 void helloapp_on_menu_help_about(BonoboUIComponent *uic, gpointer user_data, const gchar* verbname);
 void helloapp_check_for_ui_xml_file(const gchar* filename);
+BonoboWindow* helloapp_create_main_window(void);
+
 
 
 void helloapp_on_menu_file_new(BonoboUIComponent *uic, gpointer user_data, const gchar* verbname)
