@@ -41,11 +41,13 @@ G_BEGIN_DECLS
 #define BONOBO_PLUG_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_plug_get_type (), BonoboPlugClass)
 #define BONOBO_IS_PLUG(obj)       GTK_CHECK_TYPE (obj, bonobo_plug_get_type ())
 
-struct _BonoboPlug {
-	GtkPlug        plug;
+typedef struct _BonoboPlugPrivate BonoboPlugPrivate;
 
-	BonoboControl *control;
-	gpointer       priv;
+struct _BonoboPlug {
+	GtkPlug            plug;
+
+	BonoboControl     *control;
+	BonoboPlugPrivate *priv;
 };
 
 typedef struct {

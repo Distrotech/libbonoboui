@@ -7,7 +7,8 @@ noinst_PROGRAMS =		\
 	test-filesel		\
 	test-focus		\
 	test-sensitivity	\
-	test-reparent
+	test-reparent		\
+	test-events
 
 bin_PROGRAMS = \
 	test-moniker

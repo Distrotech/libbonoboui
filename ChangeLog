@@ -1,3 +1,16 @@
+2001-12-13  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-plug.c:
+	(bonobo_plug_set_property), (bonobo_plug_get_property),
+	(bonobo_plug_finalize), (bonobo_plug_class_init),
+	(bonobo_plug_init): add "event_forwarding" property.
+	(bonobo_plug_button_event): impl forwarding of button events.
+	(bonobo_plug_class_init): upd.
+
+	* tests/test-events.c: test it.
+
+	* tests/Makefile.am: upd.
+
 2001-12-12  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-engine.c

@@ -12,9 +12,19 @@
 
 #include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
+#include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-internal.h>
+
+struct _BonoboPlugPrivate {
+	gboolean forward_events;
+};
+
+enum {
+	PROP_0,
+	PROP_FORWARD_EVENTS
+};
 
 static GObjectClass *parent_class = NULL;
 
@@ -129,6 +139,62 @@ bonobo_plug_dispose (GObject *object)
 }
 
 static void
+bonobo_plug_finalize (GObject *object)
+{
+	BonoboPlug *plug = (BonoboPlug *) object;
+
+	if (plug->priv)
+		g_free (plug->priv);
+
+	parent_class->finalize (object);
+}
+
+static void
+bonobo_plug_set_property (GObject      *object,
+			  guint         param_id,
+			  const GValue *value,
+			  GParamSpec   *pspec)
+{
+	BonoboPlug *plug;
+
+	g_return_if_fail (object && BONOBO_IS_PLUG (object));
+
+	plug = BONOBO_PLUG (object);
+
+	switch (param_id) {
+	case PROP_FORWARD_EVENTS:
+		plug->priv->forward_events = g_value_get_boolean (value);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+		break;
+	}
+}
+
+static void
+bonobo_plug_get_property (GObject    *object,
+			  guint       param_id,
+			  GValue     *value,
+			  GParamSpec *pspec)
+{
+
+	BonoboPlug *plug;
+
+	g_return_if_fail (object && BONOBO_IS_PLUG (object));
+
+	plug = BONOBO_PLUG (object);
+
+	switch (param_id) {
+	case PROP_FORWARD_EVENTS:
+		g_value_set_boolean (value, plug->priv->forward_events);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+		break;
+	}
+}
+
+static void
 bonobo_plug_size_allocate (GtkWidget     *widget,
 			   GtkAllocation *allocation)
 {
@@ -178,9 +244,59 @@ bonobo_plug_expose_event (GtkWidget      *widget,
 	return retval;
 }
 
+static gboolean
+bonobo_plug_button_event (GtkWidget      *widget,
+			  GdkEventButton *event)
+{
+	XEvent      xevent;
+
+	g_return_if_fail (widget && BONOBO_IS_PLUG (widget));
+
+	if (!BONOBO_PLUG (widget)->priv->forward_events || !GTK_WIDGET_TOPLEVEL (widget))
+		return FALSE;
+
+	if (event->type == GDK_BUTTON_PRESS)
+		xevent.xbutton.type = ButtonPress;
+	else
+		xevent.xbutton.type = ButtonRelease;
+    
+	xevent.xbutton.display     = GDK_WINDOW_XDISPLAY (widget->window);
+	xevent.xbutton.window      = GDK_WINDOW_XWINDOW (GTK_PLUG (widget)->socket_window);
+	xevent.xbutton.root        = GDK_ROOT_WINDOW (); /* FIXME */
+	/*
+	 * FIXME: the following might cause
+	 *        big problems for non-GTK apps
+	 */
+	xevent.xbutton.x           = 0;
+	xevent.xbutton.y           = 0;
+	xevent.xbutton.x_root      = 0;
+	xevent.xbutton.y_root      = 0;
+	xevent.xbutton.state       = event->state;
+	xevent.xbutton.button      = event->button;
+	xevent.xbutton.same_screen = TRUE; /* FIXME ? */
+
+	gdk_error_trap_push ();
+
+	XSendEvent (GDK_DISPLAY (),
+		    GDK_WINDOW_XWINDOW (GTK_PLUG (widget)->socket_window),
+		    False, NoEventMask, &xevent);
+
+	gdk_flush ();
+	gdk_error_trap_pop ();
+
+	return TRUE;
+}
+
 static void
 bonobo_plug_init (BonoboPlug *plug)
 {
+	BonoboPlugPrivate *priv;
+
+	priv = g_new0 (BonoboPlugPrivate, 1);
+
+	plug->priv = priv;
+
+	priv->forward_events = TRUE;
 }
 
 static void
@@ -190,13 +306,27 @@ bonobo_plug_class_init (GObjectClass *klass)
 
 	parent_class = g_type_class_peek_parent (klass);
 
-	klass->dispose = bonobo_plug_dispose;
+	klass->dispose      = bonobo_plug_dispose;
+	klass->finalize     = bonobo_plug_finalize;
+	klass->set_property = bonobo_plug_set_property;
+	klass->get_property = bonobo_plug_get_property;
 
-	widget_class->realize = bonobo_plug_realize;
-	widget_class->delete_event  = bonobo_plug_delete_event;
-	widget_class->size_request  = bonobo_plug_size_request;
-	widget_class->size_allocate = bonobo_plug_size_allocate;
-	widget_class->expose_event  = bonobo_plug_expose_event;
+	widget_class->realize              = bonobo_plug_realize;
+	widget_class->delete_event         = bonobo_plug_delete_event;
+	widget_class->size_request         = bonobo_plug_size_request;
+	widget_class->size_allocate        = bonobo_plug_size_allocate;
+	widget_class->expose_event         = bonobo_plug_expose_event;
+	widget_class->button_press_event   = bonobo_plug_button_event;
+	widget_class->button_release_event = bonobo_plug_button_event;
+
+	g_object_class_install_property (
+		klass,
+		PROP_FORWARD_EVENTS,
+		g_param_spec_boolean ("event_forwarding",
+				    _("Event Forwarding"),
+				    _("Whether X events should be forwarded"),
+				      TRUE,
+				      G_PARAM_READABLE | G_PARAM_WRITABLE));
 }
 
 GtkType
