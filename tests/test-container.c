@@ -9,6 +9,7 @@
 CORBA_Environment ev;
 CORBA_ORB orb;
 
+/* A handle to the last text/plain widget created. */
 GnomeObjectClient *text_obj;
 
 char *server_goadid = "Test_server_component";
@@ -112,6 +113,10 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
 }
 
+/*
+ * This function uses GNOME::PersistStream to load a set of data into
+ * the text/plain component.
+ */
 static void
 add_text_cmd (GtkWidget *widget, Application *app)
 {
@@ -152,36 +157,157 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 }
 
+/*
+ * These functions handle the progressive transmission of data
+ * to the text/plain component.  */
+
+/*
+ * Just a quick struct to pass to the timeout function which sends a
+ * new line to the text/plain component.
+ */
+struct progressive_timeout {
+	GNOME_ProgressiveDataSink psink;
+	GNOME_SimpleDataSource ssource;
+	FILE *f;
+
+	char *outqueue;
+	size_t outqueue_sz;
+};
+
+/*
+ * This is the GNOME::SimpleDataSource:pop_data method implementation.
+ */
+static int
+ssource_pop_data (GnomeSimpleDataSource *ssource,
+		  const CORBA_long count,
+		  GNOME_SimpleDataSource_iobuf **buffer,
+		  void *data)
+{
+	struct progressive_timeout *tmt = (struct progressive_timeout *) data;
+	CORBA_octet *outbuff;
+
+	*buffer = GNOME_SimpleDataSource_iobuf__alloc ();
+	CORBA_sequence_set_release (*buffer, TRUE);
+
+	outbuff = CORBA_sequence_CORBA_octet_allocbuf (count);
+
+	memcpy (outbuff, tmt->outqueue, count);
+
+	(*buffer)->_buffer = outbuff;
+	(*buffer)->_length = count;
+
+	memmove (tmt->outqueue, tmt->outqueue + count,
+		 tmt->outqueue_sz - count);
+	tmt->outqueue_sz -= count;
+
+	if (tmt->outqueue_sz == 0)
+	{
+		g_free (tmt->outqueue);
+		tmt->outqueue = NULL;
+	}
+	else
+		tmt->outqueue = g_realloc (tmt->outqueue, tmt->outqueue_sz);
+
+	return 0;
+} /* ssource_pop_data */
+
+static CORBA_long
+ssource_remaining_data (GnomeSimpleDataSource *ssource,
+			void *data)
+{
+	struct progressive_timeout *tmt = (struct progressive_timeout *) data;
+
+	return (CORBA_long) tmt->outqueue_sz;
+} /* ssource_remaining_data */
+
+/*
+ * Send a new line to the text/plain component.
+ */
+static gboolean
+timeout_next_line (gpointer data)
+{
+	struct progressive_timeout *tmt = (struct progressive_timeout *) data;
+	char line[1024];
+	int line_len;
+	
+	if (fgets (line, sizeof (line), tmt->f) == NULL)
+	{
+		if (tmt->outqueue != NULL)
+			g_free (tmt->outqueue);
+		g_free (tmt->outqueue);
+
+		return FALSE;
+	}
+
+	line_len = strlen (line);
+
+	tmt->outqueue = g_realloc (tmt->outqueue,
+				   tmt->outqueue_sz + line_len);
+
+	memcpy (tmt->outqueue + tmt->outqueue_sz, line, line_len);
+	tmt->outqueue_sz += line_len;
+
+	GNOME_ProgressiveDataSink_add_data (tmt->psink, tmt->outqueue_sz,
+					    tmt->ssource, &ev);
+
+	return TRUE;
+} /* timeout_add_more_data */
+
+/*
+ * Setup a timer to send a new line to the text/plain component using
+ * ProgressiveDataSink.
+ */
 static void
 send_text_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeObjectClient *object = text_obj;
-	GnomeStream *stream;
-	GNOME_PersistStream persist;
+	GnomeSimpleDataSource *ssource;
+	GNOME_ProgressiveDataSink psink;
+	struct progressive_timeout *tmt;
+	FILE *f;
 
-	persist = GNOME_obj_query_interface (
-		GNOME_OBJECT (object)->object,
-		"IDL:GNOME/PersistStream:1.0", &ev);
+	if (text_obj == NULL)
+		return;
+
+	psink = GNOME_obj_query_interface (
+		GNOME_OBJECT (text_obj)->object,
+		"IDL:GNOME/ProgressiveDataSink:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)
                 return;
 
-        if (persist == CORBA_OBJECT_NIL)
+        if (psink == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: Component supports PersistStream");
-	
-	stream = gnome_stream_fs_open (NULL, "/tmp/pipe",
-				       GNOME_Storage_READ);
+	printf ("Good: Component supports ProgressiveDataSink");
 
-	if (stream == NULL){
-		printf ("I could not open /tmp/pipe!\n");
+	tmt = g_new0 (struct progressive_timeout, 1);
+
+	ssource = gnome_simple_data_source_new (ssource_pop_data,
+						NULL, /* remaining_data */
+						tmt);
+
+	if (ssource == NULL){
+		printf ("I could not create a GnomeSimpleDataSource!\n");
 		return;
 	}
-	
-	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
 
-}
+	GNOME_ProgressiveDataSink_start (psink, &ev);
+
+	CORBA_exception_free (&ev);
+
+	f = fopen ("/usr/dict/words", "r");
+	if (f == NULL) {
+		printf ("I could not open /usr/dict/words!\n");
+		return;
+	}
+
+	
+	tmt->psink = psink;
+	tmt->ssource = (GNOME_SimpleDataSource) GNOME_OBJECT (ssource)->object;
+	tmt->f = f;
+	
+	g_timeout_add (500, timeout_next_line, (gpointer) tmt);
+} /* send_text_cmd */
 
 static void
 exit_cmd (void)
@@ -190,10 +316,10 @@ exit_cmd (void)
 }
 
 static GnomeUIInfo container_file_menu [] = {
-	GNOMEUIINFO_ITEM_NONE(N_("_Add a new object"), NULL, add_demo_cmd),
-	GNOMEUIINFO_ITEM_NONE(N_("_Add a new image/x-png handler"), NULL, add_image_cmd),
-	GNOMEUIINFO_ITEM_NONE(N_("_Add a new text/plain handler"), NULL, add_text_cmd),
-	GNOMEUIINFO_ITEM_NONE(N_("Send data from /tmp/pipe to an existing text component (to show off progressive loading)"), NULL, send_text_cmd),
+	GNOMEUIINFO_ITEM_NONE(N_("Add a new _object"), NULL, add_demo_cmd),
+	GNOMEUIINFO_ITEM_NONE(N_("Add a new _image/x-png handler"), NULL, add_image_cmd),
+	GNOMEUIINFO_ITEM_NONE(N_("Add a new _text/plain handler"), NULL, add_text_cmd),
+	GNOMEUIINFO_ITEM_NONE(N_("_Send progressive data to an existing text component"), NULL, send_text_cmd),
 	GNOMEUIINFO_SEPARATOR,
 	GNOMEUIINFO_MENU_EXIT_ITEM (exit_cmd, NULL),
 	GNOMEUIINFO_END
