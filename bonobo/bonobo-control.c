@@ -35,9 +35,6 @@ static guint control_signals [LAST_SIGNAL];
 /* Parent object class in GTK hierarchy */
 static BonoboObjectClass *bonobo_control_parent_class;
 
-/* The entry point vectors for the server we provide */
-POA_Bonobo_Control__vepv bonobo_control_vepv;
-
 struct _BonoboControlPrivate {
 	GtkWidget                  *widget;
 	Bonobo_ControlFrame         control_frame;

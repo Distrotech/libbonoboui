@@ -22,8 +22,6 @@
 
 static GtkObjectClass *bonobo_ui_container_parent_class;
 
-POA_Bonobo_UIContainer__vepv bonobo_ui_container_vepv;
-
 struct _BonoboUIContainerPrivate {
 	BonoboUIEngine *engine;
 	int             flags;
