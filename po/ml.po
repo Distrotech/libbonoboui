@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version:libbonoboui.HEAD\n"
-"POT-Creation-Date: 2003-12-09 00:17+0000\n"
+"POT-Creation-Date: 2004-01-15 09:07+0000\n"
 "PO-Revision-Date: 2003-07-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
@@ -44,23 +44,23 @@ msgid "Un dock the toolbar"
 msgstr "എങ്ങനെ ഉപകരണപ്പട്ട വരയ‌്ക്കാം"
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
-#: bonobo/bonobo-ui-toolbar.c:1176
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "പ്രതിബിംബതരം"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
-#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "സ്ഥാന നിര്ണ്ണയം"
 
 #: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
-#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 #, fuzzy
 msgid "Preferred width"
 msgstr "സ്ഥിര വീതി"
 
 #: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
-#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 #, fuzzy
 msgid "Preferred height"
 msgstr "തിരനോട്ട ഉയരം"
@@ -312,25 +312,25 @@ msgstr "യഥേഷ്ടം"
 msgid "Customize the toolbar"
 msgstr "ഉപകരണപ്പട്ട സജ്ജീകരിക്കുക"
 
-#: bonobo/bonobo-ui-toolbar.c:1130
+#: bonobo/bonobo-ui-toolbar.c:1129
 #, fuzzy
 msgid "is floating"
 msgstr "വരയ്‌ക്കുന്ന"
 
-#: bonobo/bonobo-ui-toolbar.c:1131
+#: bonobo/bonobo-ui-toolbar.c:1130
 #, fuzzy
 msgid "whether the toolbar is floating"
 msgstr "സ്ഥാനസൂചി മിന്നുന്ന സമയത്ത്"
 
-#: bonobo/bonobo-ui-toolbar.c:1177
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
 msgstr "ആയുധപ്പട്ടയുടെ അഭിവിന്യാസം"
 
-#: bonobo/bonobo-ui-util.c:623
+#: bonobo/bonobo-ui-util.c:629
 msgid "_Contents"
 msgstr "ഉള്ളടക്കം"
 
-#: bonobo/bonobo-ui-util.c:624
+#: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
 msgstr "ഈ പ്രയോഗത്തിന‍് സഹായം ലഭിക്കുക"
 

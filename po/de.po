@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-12-09 00:17+0000\n"
+"POT-Creation-Date: 2004-01-15 09:07+0000\n"
 "PO-Revision-Date: 2003-05-05 17:50+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -39,22 +39,22 @@ msgid "Un dock the toolbar"
 msgstr "Die Werkzeugleiste abdocken"
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
-#: bonobo/bonobo-ui-toolbar.c:1176
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Schattentyp"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
-#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Ausrichtung"
 
 #: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
-#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Bevorzugte Breite"
 
 #: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
-#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Bevorzugte Höhe"
 
@@ -291,23 +291,23 @@ msgstr "_Anpassen"
 msgid "Customize the toolbar"
 msgstr "Die Werkzeugleiste anpassen"
 
-#: bonobo/bonobo-ui-toolbar.c:1130
+#: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
 msgstr "schwebt"
 
-#: bonobo/bonobo-ui-toolbar.c:1131
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
 msgstr "Ob die Werkzeugleiste schweben soll"
 
-#: bonobo/bonobo-ui-toolbar.c:1177
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
 msgstr "Stil des Rands um die Werkzeugleiste"
 
-#: bonobo/bonobo-ui-util.c:623
+#: bonobo/bonobo-ui-util.c:629
 msgid "_Contents"
 msgstr "I_nhalt"
 
-#: bonobo/bonobo-ui-util.c:624
+#: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
 msgstr "Die zu dieser Anwendung verfügbare Hilfe anzeigen"
 

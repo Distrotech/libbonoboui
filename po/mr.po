@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.x\n"
-"POT-Creation-Date: 2003-12-09 00:17+0000\n"
+"POT-Creation-Date: 2004-01-15 09:07+0000\n"
 "PO-Revision-Date: 2002-09-10 18:30+0530\n"
 "Last-Translator: Vikas Chavan <vh_chavan@rediffmail.com>\n"
 "Language-Team: Marathi <www.indictrans.org>\n"
@@ -38,22 +38,22 @@ msgid "Un dock the toolbar"
 msgstr "Un dock the toolbar"
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
-#: bonobo/bonobo-ui-toolbar.c:1176
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "छाया प्रकार"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
-#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "दिशा"
 
 #: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
-#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "मान्यता रुंदी "
 
 #: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
-#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "मान्यता ऊंची "
 
@@ -289,23 +289,23 @@ msgstr "आवशक्यतानुसार बनवा  (_z)"
 msgid "Customize the toolbar"
 msgstr "टूलबार ला  आवश्यकतानुसार बनवा"
 
-#: bonobo/bonobo-ui-toolbar.c:1130
+#: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
 msgstr "काय गतिशील आहे ?"
 
-#: bonobo/bonobo-ui-toolbar.c:1131
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
 msgstr "काय  टूलबार गतिशील आहे ?"
 
-#: bonobo/bonobo-ui-toolbar.c:1177
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
 msgstr ""
 
-#: bonobo/bonobo-ui-util.c:623
+#: bonobo/bonobo-ui-util.c:629
 msgid "_Contents"
 msgstr "तत्व (_C)"
 
-#: bonobo/bonobo-ui-util.c:624
+#: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
 msgstr "ह्या अर्जा बद्दल मदत "
 

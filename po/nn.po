@@ -9,14 +9,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-25 01:51+0100\n"
+"POT-Creation-Date: 2004-01-15 09:07+0000\n"
 "PO-Revision-Date: 2003-12-26 17:22+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.0.2\n"
 
 #: bonobo/bonobo-canvas-item.c:667
@@ -306,11 +306,11 @@ msgstr "om verktøylinja er flytande"
 msgid "Style of bevel around the toolbar"
 msgstr "Stil på kanten rundt verktøylinja"
 
-#: bonobo/bonobo-ui-util.c:623
+#: bonobo/bonobo-ui-util.c:629
 msgid "_Contents"
 msgstr "_Innhald"
 
-#: bonobo/bonobo-ui-util.c:624
+#: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
 msgstr "Vis hjelpeteksten til dette programmet"
 
@@ -797,4 +797,3 @@ msgstr "Kunne ikkje starta Bonobo-UI"
 #, fuzzy
 #~ msgid "no listening to this property"
 #~ msgstr "Legg ei fil til prosjektet"
-

@@ -1,3 +1,11 @@
+2004-01-15  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.5.2
+
+2004-01-15  Jason Leach  <leach@wam.umd.edu>
+
+	* configure.in: require gtk2 >= 2.3.1
+
 2004-01-14  The Written Word  <bugzilla-gnome@thewrittenword.com>
 
 	* bonobo/bonobo-dock-item.h, bonobo/bonobo-dock-band.h,

@@ -1,3 +1,18 @@
+libbonoboui 2.5.2
+
+	* bugs fixed
+		+ require the right gtk+ (Jason Leach)
+		+ AIX portability (The Written Word)
+		+ svg icon image size (Sergey V. Udaltsov)
+		+ status bar grip problem (Michael)
+		+ control 'activate' signal (Federico, JP)
+		+ memove not strcpy for overlap (JP)
+		+ dock size allocation problem (Michael)
+	* featurelets
+		+ status bar packing improvement (Alexander Larsson)
+
+libbonoboui 2.5.1
+
 libbonoboui 2.3.6
 
 	* bugs fixed
