@@ -206,7 +206,7 @@ void               bonobo_ui_component_set_status   (BonoboUIComponent  *compone
 						     CORBA_Environment  *opt_ev);
 
 typedef struct {
-	char          *cname;
+	const char    *cname;
 	BonoboUIVerbFn cb;
 	gpointer       user_data;
 	gpointer       dummy;
