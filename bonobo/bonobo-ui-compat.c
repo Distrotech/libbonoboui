@@ -1505,8 +1505,8 @@ gboolean
 bonobo_ui_handler_dock_add (BonoboUIHandler       *uih,
 			    const char            *name,
 			    Bonobo_Control         control,
-			    GnomeDockItemBehavior  behavior,
-			    GnomeDockPlacement     placement,
+			    BonoboDockItemBehavior behavior,
+			    BonoboDockPlacement    placement,
 			    gint                   band_num,
 			    gint                   band_position,
 			    gint                   offset)

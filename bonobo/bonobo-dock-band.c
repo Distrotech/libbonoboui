@@ -1,4 +1,4 @@
-/* gnome-dock-band.c
+/* bonobo-dock-band.c
 
    Copyright (C) 1998 Free Software Foundation
 
@@ -22,16 +22,16 @@
 
 #include <gtk/gtk.h>
 
-#include "gnome-dock.h"
-#include "gnome-dock-band.h"
-#include "gnome-dock-item.h"
+#include <bonobo/bonobo-dock.h>
+#include <bonobo/bonobo-dock-band.h>
+#include <bonobo/bonobo-dock-item.h>
 
 
 
-#define noGNOME_DOCK_BAND_DEBUG
+#define noBONOBO_DOCK_BAND_DEBUG
 
 /* FIXME: To be removed.  */
-#if defined GNOME_DOCK_BAND_DEBUG && defined __GNUC__
+#if defined BONOBO_DOCK_BAND_DEBUG && defined __GNUC__
 #define DEBUG(x)                                        \
   do                                                    \
     {                                                   \
@@ -46,93 +46,93 @@
 
 
 
-struct _GnomeDockBandPrivate
+struct _BonoboDockBandPrivate
 {
 	int dummy;
 	/* Nothing right now, needs to get filled with the private things */
 	/* XXX: When stuff is added, uncomment the allocation in the
-	 * gnome_dock_band_init function! */
+	 * bonobo_dock_band_init function! */
 };
 
 
 
-static void     gnome_dock_band_class_init    (GnomeDockBandClass *class);
+static void     bonobo_dock_band_class_init    (BonoboDockBandClass *class);
 
-static void     gnome_dock_band_init          (GnomeDockBand *app);
+static void     bonobo_dock_band_init          (BonoboDockBand *app);
 
-static void     gnome_dock_band_size_request  (GtkWidget *widget,
+static void     bonobo_dock_band_size_request  (GtkWidget *widget,
                                                GtkRequisition *requisition);
 
-static void     gnome_dock_band_size_allocate (GtkWidget *widget,
+static void     bonobo_dock_band_size_allocate (GtkWidget *widget,
                                                GtkAllocation *allocation);
 
-static void     gnome_dock_band_map           (GtkWidget *widget);
-static void     gnome_dock_band_unmap         (GtkWidget *widget);
+static void     bonobo_dock_band_map           (GtkWidget *widget);
+static void     bonobo_dock_band_unmap         (GtkWidget *widget);
 
-static void     gnome_dock_band_add           (GtkContainer *container,
+static void     bonobo_dock_band_add           (GtkContainer *container,
                                                GtkWidget *child);
 
-static void     gnome_dock_band_remove        (GtkContainer *container,
+static void     bonobo_dock_band_remove        (GtkContainer *container,
                                                GtkWidget *widget);
 
-static void     gnome_dock_band_forall        (GtkContainer *container,
+static void     bonobo_dock_band_forall        (GtkContainer *container,
                                                gboolean include_internals,
                                                GtkCallback callback,
                                                gpointer callback_data);
 
-static void     gnome_dock_band_destroy       (GtkObject *object);
-static void     gnome_dock_band_finalize      (GObject *object);
+static void     bonobo_dock_band_destroy       (GtkObject *object);
+static void     bonobo_dock_band_finalize      (GObject *object);
 
-static void     size_allocate_child           (GnomeDockBand *band,
-                                               GnomeDockBandChild *child,
+static void     size_allocate_child           (BonoboDockBand *band,
+                                               BonoboDockBandChild *child,
                                                guint space,
                                                GtkAllocation *child_allocation);
 
-static void     size_allocate_small           (GnomeDockBand *band,
+static void     size_allocate_small           (BonoboDockBand *band,
                                                GtkAllocation *allocation,
                                                guint space,
                                                guint requested_space);
 
-static gboolean docking_allowed               (GnomeDockBand *band,
-                                               GnomeDockItem *item);
+static gboolean docking_allowed               (BonoboDockBand *band,
+                                               BonoboDockItem *item);
 
-static GList   *find_child                    (GnomeDockBand *band,
+static GList   *find_child                    (BonoboDockBand *band,
                                                GtkWidget *child);
 
-static GList   *prev_if_floating              (GnomeDockBand *band,
+static GList   *prev_if_floating              (BonoboDockBand *band,
                                                GList *c);
 
-static GList   *next_if_floating              (GnomeDockBand *band,
+static GList   *next_if_floating              (BonoboDockBand *band,
                                                GList *c);
 
-static GList   *prev_not_floating             (GnomeDockBand *band,
+static GList   *prev_not_floating             (BonoboDockBand *band,
                                                GList *c);
 
-static GList   *next_not_floating             (GnomeDockBand *band,
+static GList   *next_not_floating             (BonoboDockBand *band,
                                                GList *c);
 
-static void     calc_prev_and_foll_space      (GnomeDockBand *band);
+static void     calc_prev_and_foll_space      (BonoboDockBand *band);
 
-static guint    attempt_move_backward         (GnomeDockBand *band,
+static guint    attempt_move_backward         (BonoboDockBand *band,
                                                GList *child,
                                                guint amount);
 
-static guint    attempt_move_forward          (GnomeDockBand *band,
+static guint    attempt_move_forward          (BonoboDockBand *band,
                                                GList *child,
                                                guint amount);
 
-static gboolean dock_nonempty                 (GnomeDockBand *band,
-                                               GnomeDockItem *item,
+static gboolean dock_nonempty                 (BonoboDockBand *band,
+                                               BonoboDockItem *item,
                                                GList *where,
                                                gint x, gint y);
 
-static gboolean dock_empty                    (GnomeDockBand *band,
-                                               GnomeDockItem *item,
+static gboolean dock_empty                    (BonoboDockBand *band,
+                                               BonoboDockItem *item,
                                                GList *where,
                                                gint x, gint y);
 
-static gboolean dock_empty_right              (GnomeDockBand *band,
-                                               GnomeDockItem *item,
+static gboolean dock_empty_right              (BonoboDockBand *band,
+                                               BonoboDockItem *item,
                                                GList *where,
                                                gint x, gint y);
 
@@ -146,7 +146,7 @@ static GtkContainerClass *parent_class = NULL;
 
 
 static void
-gnome_dock_band_class_init (GnomeDockBandClass *class)
+bonobo_dock_band_class_init (BonoboDockBandClass *class)
 {
   GtkObjectClass *object_class;
   GObjectClass *gobject_class;
@@ -160,27 +160,27 @@ gnome_dock_band_class_init (GnomeDockBandClass *class)
 
   parent_class = gtk_type_class (gtk_container_get_type ());
 
-  object_class->destroy = gnome_dock_band_destroy;
-  gobject_class->finalize = gnome_dock_band_finalize;
+  object_class->destroy = bonobo_dock_band_destroy;
+  gobject_class->finalize = bonobo_dock_band_finalize;
 
-  widget_class->map = gnome_dock_band_map;
-  widget_class->unmap = gnome_dock_band_unmap;
-  widget_class->size_request = gnome_dock_band_size_request;
-  widget_class->size_allocate = gnome_dock_band_size_allocate;
+  widget_class->map = bonobo_dock_band_map;
+  widget_class->unmap = bonobo_dock_band_unmap;
+  widget_class->size_request = bonobo_dock_band_size_request;
+  widget_class->size_allocate = bonobo_dock_band_size_allocate;
 
-  container_class->add = gnome_dock_band_add;
-  container_class->remove = gnome_dock_band_remove;
-  container_class->forall = gnome_dock_band_forall;
+  container_class->add = bonobo_dock_band_add;
+  container_class->remove = bonobo_dock_band_remove;
+  container_class->forall = bonobo_dock_band_forall;
 }
 
 static void
-gnome_dock_band_init (GnomeDockBand *band)
+bonobo_dock_band_init (BonoboDockBand *band)
 {
   GTK_WIDGET_SET_FLAGS (band, GTK_NO_WINDOW);
 
   band->_priv = NULL;
   /* XXX: when there is some private stuff enable this
-  band->_priv = g_new0(GnomeDockBandPrivate, 1);
+  band->_priv = g_new0(BonoboDockBandPrivate, 1);
   */
 
   band->orientation = GTK_ORIENTATION_HORIZONTAL;
@@ -204,15 +204,15 @@ gnome_dock_band_init (GnomeDockBand *band)
 
 
 static void
-gnome_dock_band_size_request (GtkWidget *widget,
+bonobo_dock_band_size_request (GtkWidget *widget,
                               GtkRequisition *requisition)
 {
-  GnomeDockBand *band;
+  BonoboDockBand *band;
   GList *lp;
 
   DEBUG (("entering function"));
 
-  band = GNOME_DOCK_BAND (widget);
+  band = BONOBO_DOCK_BAND (widget);
 
   band->max_space_requisition = 0;
   band->tot_offsets = 0;
@@ -222,7 +222,7 @@ gnome_dock_band_size_request (GtkWidget *widget,
 
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
-      GnomeDockBandChild *c = lp->data;
+      BonoboDockBandChild *c = lp->data;
 
       if (GTK_WIDGET_VISIBLE (c->widget))
         {
@@ -230,8 +230,8 @@ gnome_dock_band_size_request (GtkWidget *widget,
 
 	  req.width = req.height = 0;
 
-          if (GNOME_IS_DOCK_ITEM (c->widget))
-            gnome_dock_item_handle_size_request(GNOME_DOCK_ITEM (c->widget),
+          if (BONOBO_IS_DOCK_ITEM (c->widget))
+            bonobo_dock_item_handle_size_request(BONOBO_DOCK_ITEM (c->widget),
                                                 &req);
 	  else
 	    gtk_widget_size_request (c->widget, &req);
@@ -289,8 +289,8 @@ gnome_dock_band_size_request (GtkWidget *widget,
 
 
 static void
-size_allocate_child (GnomeDockBand *band,
-                     GnomeDockBandChild *child,
+size_allocate_child (BonoboDockBand *band,
+                     BonoboDockBandChild *child,
                      guint space,
                      GtkAllocation *child_allocation)
 {
@@ -326,7 +326,7 @@ size_allocate_child (GnomeDockBand *band,
 /* The allocated space is smaller than the space needed to show all
    the items completely.  */
 static void
-size_allocate_small (GnomeDockBand *band,
+size_allocate_small (BonoboDockBand *band,
                      GtkAllocation *allocation,
                      guint space,
                      guint requested_space)
@@ -344,7 +344,7 @@ size_allocate_small (GnomeDockBand *band,
 
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
-      GnomeDockBandChild *child;
+      BonoboDockBandChild *child;
 
       child = lp->data;
 
@@ -376,7 +376,7 @@ size_allocate_small (GnomeDockBand *band,
 
   if (lp != NULL)
     {
-      GnomeDockBandChild *child;
+      BonoboDockBandChild *child;
       guint child_space, child_requested_space;
 
       child = lp->data;
@@ -404,7 +404,7 @@ size_allocate_small (GnomeDockBand *band,
 
   for (; lp != NULL; lp = lp->next)
     {
-      GnomeDockBandChild *child;
+      BonoboDockBandChild *child;
 
       child = lp->data;
 
@@ -428,7 +428,7 @@ size_allocate_small (GnomeDockBand *band,
 /* The allocation is enough to show all the items completely, but not
    to satisfy all the requested offsets.  */
 static void
-size_allocate_medium (GnomeDockBand *band,
+size_allocate_medium (BonoboDockBand *band,
                       GtkAllocation *allocation,
                       guint space,
                       guint requested_space)
@@ -449,7 +449,7 @@ size_allocate_medium (GnomeDockBand *band,
   /* Shrink the offsets proportionally.  */
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
-      GnomeDockBandChild *child;
+      BonoboDockBandChild *child;
 
       child = lp->data;
 
@@ -467,7 +467,7 @@ size_allocate_medium (GnomeDockBand *band,
 /* The allocation is enough to show all the items completely, with the
    requested offsets.  */
 static void
-size_allocate_large (GnomeDockBand *band,
+size_allocate_large (BonoboDockBand *band,
                      GtkAllocation *allocation,
                      guint space,
                      guint requested_space)
@@ -482,7 +482,7 @@ size_allocate_large (GnomeDockBand *band,
 
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
-      GnomeDockBandChild *child;
+      BonoboDockBandChild *child;
 
       child = lp->data;
 
@@ -498,13 +498,13 @@ size_allocate_large (GnomeDockBand *band,
 }
 
 static void
-gnome_dock_band_size_allocate (GtkWidget *widget,
+bonobo_dock_band_size_allocate (GtkWidget *widget,
                                GtkAllocation *allocation)
 {
-  GnomeDockBand *band;
+  BonoboDockBand *band;
   guint space, requested_space;
 
-  band = GNOME_DOCK_BAND (widget);
+  band = BONOBO_DOCK_BAND (widget);
 
   widget->allocation = *allocation;
 
@@ -512,17 +512,17 @@ gnome_dock_band_size_allocate (GtkWidget *widget,
      whole space to it.  */
   if (band->num_children == 1)
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
-      c = (GnomeDockBandChild *) band->children->data;
-      if (GNOME_IS_DOCK_ITEM (c->widget) && GTK_WIDGET_VISIBLE (c->widget))
+      c = (BonoboDockBandChild *) band->children->data;
+      if (BONOBO_IS_DOCK_ITEM (c->widget) && GTK_WIDGET_VISIBLE (c->widget))
         {
-          GnomeDockItemBehavior behavior;
-          GnomeDockItem *item;
+          BonoboDockItemBehavior behavior;
+          BonoboDockItem *item;
 
-          item = GNOME_DOCK_ITEM (c->widget);
-          behavior = gnome_dock_item_get_behavior (item);
-          if (behavior & GNOME_DOCK_ITEM_BEH_EXCLUSIVE)
+          item = BONOBO_DOCK_ITEM (c->widget);
+          behavior = bonobo_dock_item_get_behavior (item);
+          if (behavior & BONOBO_DOCK_ITEM_BEH_EXCLUSIVE)
             {
               gtk_widget_size_allocate (c->widget, allocation);
               return;
@@ -554,20 +554,20 @@ gnome_dock_band_size_allocate (GtkWidget *widget,
 
 
 static void
-gnome_dock_band_map (GtkWidget *widget)
+bonobo_dock_band_map (GtkWidget *widget)
 {
-  GnomeDockBand *band = GNOME_DOCK_BAND (widget);
+  BonoboDockBand *band = BONOBO_DOCK_BAND (widget);
   GList *lp;
 
   g_return_if_fail(widget != NULL);
-  g_return_if_fail(GNOME_IS_DOCK_BAND(widget));
+  g_return_if_fail(BONOBO_IS_DOCK_BAND(widget));
 
   if (GTK_WIDGET_CLASS (parent_class)->map != NULL)
     (* GTK_WIDGET_CLASS (parent_class)->map) (widget);
 
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
       c = lp->data;
       if (GTK_WIDGET_VISIBLE (c->widget) && ! GTK_WIDGET_MAPPED (c->widget))
@@ -576,20 +576,20 @@ gnome_dock_band_map (GtkWidget *widget)
 }
 
 static void
-gnome_dock_band_unmap (GtkWidget *widget)
+bonobo_dock_band_unmap (GtkWidget *widget)
 {
-  GnomeDockBand *band = GNOME_DOCK_BAND (widget);
+  BonoboDockBand *band = BONOBO_DOCK_BAND (widget);
   GList *lp;
 
   g_return_if_fail(widget != NULL);
-  g_return_if_fail(GNOME_IS_DOCK_BAND(widget));
+  g_return_if_fail(BONOBO_IS_DOCK_BAND(widget));
 
   if (GTK_WIDGET_CLASS (parent_class)->unmap != NULL)
     (* GTK_WIDGET_CLASS (parent_class)->unmap) (widget);
 
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
       c = lp->data;
       if (GTK_WIDGET_VISIBLE (c->widget) && GTK_WIDGET_MAPPED (c->widget))
@@ -601,20 +601,20 @@ gnome_dock_band_unmap (GtkWidget *widget)
 /* GtkContainer methods.  */
 
 static void
-gnome_dock_band_add (GtkContainer *container, GtkWidget *child)
+bonobo_dock_band_add (GtkContainer *container, GtkWidget *child)
 {
-  GnomeDockBand *band = GNOME_DOCK_BAND (container);
+  BonoboDockBand *band = BONOBO_DOCK_BAND (container);
 
-  g_return_if_fail (gnome_dock_band_prepend (band, child, 0));
+  g_return_if_fail (bonobo_dock_band_prepend (band, child, 0));
 }
 
 static void
-gnome_dock_band_remove (GtkContainer *container, GtkWidget *widget)
+bonobo_dock_band_remove (GtkContainer *container, GtkWidget *widget)
 {
-  GnomeDockBand *band;
+  BonoboDockBand *band;
   GList *child;
 
-  band = GNOME_DOCK_BAND (container);
+  band = BONOBO_DOCK_BAND (container);
   if (band->num_children == 0)
     return;
 
@@ -639,9 +639,9 @@ gnome_dock_band_remove (GtkContainer *container, GtkWidget *widget)
 
           for (p = band->children; p != NULL; p = p->next)
             {
-              GnomeDockBandChild *c;
+              BonoboDockBandChild *c;
 
-              c = (GnomeDockBandChild *) p->data;
+              c = (BonoboDockBandChild *) p->data;
               c->offset = c->real_offset = c->drag_offset;
             }
         }
@@ -654,16 +654,16 @@ gnome_dock_band_remove (GtkContainer *container, GtkWidget *widget)
 }
 
 static void
-gnome_dock_band_forall (GtkContainer *container,
+bonobo_dock_band_forall (GtkContainer *container,
                         gboolean include_internals,
                         GtkCallback callback,
                         gpointer callback_data)
 {
-  GnomeDockBand *band;
-  GnomeDockBandChild *child;
+  BonoboDockBand *band;
+  BonoboDockBandChild *child;
   GList *children;
 
-  band = GNOME_DOCK_BAND (container);
+  band = BONOBO_DOCK_BAND (container);
 
   children = band->children;
   while (children)
@@ -675,7 +675,7 @@ gnome_dock_band_forall (GtkContainer *container,
 }
 
 static void
-gnome_dock_band_destroy (GtkObject *object)
+bonobo_dock_band_destroy (GtkObject *object)
 {
   /* remember, destroy can be run multiple times! */
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
@@ -683,9 +683,9 @@ gnome_dock_band_destroy (GtkObject *object)
 }
 
 static void
-gnome_dock_band_finalize (GObject *object)
+bonobo_dock_band_finalize (GObject *object)
 {
-  GnomeDockBand *self = GNOME_DOCK_BAND (object);
+  BonoboDockBand *self = BONOBO_DOCK_BAND (object);
 
   g_free (self->_priv);
   self->_priv = NULL;
@@ -698,24 +698,24 @@ gnome_dock_band_finalize (GObject *object)
 /* Utility functions.  */
 
 static gboolean
-docking_allowed (GnomeDockBand *band, GnomeDockItem *item)
+docking_allowed (BonoboDockBand *band, BonoboDockItem *item)
 {
-  GnomeDockItemBehavior behavior;
-  GnomeDockBandChild *c;
+  BonoboDockItemBehavior behavior;
+  BonoboDockBandChild *c;
 
   if (band->num_children == 0)
     return TRUE;
 
-  behavior = gnome_dock_item_get_behavior (item);
+  behavior = bonobo_dock_item_get_behavior (item);
 
-  if (behavior & GNOME_DOCK_ITEM_BEH_EXCLUSIVE)
+  if (behavior & BONOBO_DOCK_ITEM_BEH_EXCLUSIVE)
     return FALSE;
 
-  c = (GnomeDockBandChild *) band->children->data;
-  if (GNOME_IS_DOCK_ITEM (c->widget))
+  c = (BonoboDockBandChild *) band->children->data;
+  if (BONOBO_IS_DOCK_ITEM (c->widget))
     {
-      behavior = gnome_dock_item_get_behavior (GNOME_DOCK_ITEM (c->widget));
-      if (behavior & GNOME_DOCK_ITEM_BEH_EXCLUSIVE)
+      behavior = bonobo_dock_item_get_behavior (BONOBO_DOCK_ITEM (c->widget));
+      if (behavior & BONOBO_DOCK_ITEM_BEH_EXCLUSIVE)
           return c->widget == GTK_WIDGET (item);
     }
 
@@ -723,7 +723,7 @@ docking_allowed (GnomeDockBand *band, GnomeDockItem *item)
 }
 
 static GList *
-find_child (GnomeDockBand *band, GtkWidget *child)
+find_child (BonoboDockBand *band, GtkWidget *child)
 {
   GList *children;
 
@@ -731,9 +731,9 @@ find_child (GnomeDockBand *band, GtkWidget *child)
 
   while (children != NULL)
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
-      c = (GnomeDockBandChild *) children->data;
+      c = (BonoboDockBandChild *) children->data;
       if (c->widget == child)
         return children;
 
@@ -744,7 +744,7 @@ find_child (GnomeDockBand *band, GtkWidget *child)
 }
 
 static GList *
-next_if_floating (GnomeDockBand *band, GList *c)
+next_if_floating (BonoboDockBand *band, GList *c)
 {
   if (c != NULL && c == band->floating_child)
     return c->next;
@@ -753,7 +753,7 @@ next_if_floating (GnomeDockBand *band, GList *c)
 }
 
 static GList *
-prev_if_floating (GnomeDockBand *band, GList *c)
+prev_if_floating (BonoboDockBand *band, GList *c)
 {
   if (c != NULL && c == band->floating_child)
     return c->prev;
@@ -762,7 +762,7 @@ prev_if_floating (GnomeDockBand *band, GList *c)
 }
 
 static GList *
-next_not_floating (GnomeDockBand *band, GList *c)
+next_not_floating (BonoboDockBand *band, GList *c)
 {
   if (c == NULL)
     return NULL;
@@ -771,7 +771,7 @@ next_not_floating (GnomeDockBand *band, GList *c)
 }
 
 static GList *
-prev_not_floating (GnomeDockBand *band, GList *c)
+prev_not_floating (BonoboDockBand *band, GList *c)
 {
   if (c == NULL)
     return NULL;
@@ -782,7 +782,7 @@ prev_not_floating (GnomeDockBand *band, GList *c)
 
 
 static GList *
-find_where (GnomeDockBand *band, gint offset, gboolean *is_empty)
+find_where (BonoboDockBand *band, gint offset, gboolean *is_empty)
 {
   guint count;                  /* FIXME: used for debugging only */
   gint offs;
@@ -795,7 +795,7 @@ find_where (GnomeDockBand *band, gint offset, gboolean *is_empty)
   count = 0;                    /* FIXME */
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
-      GnomeDockBandChild *child;
+      BonoboDockBandChild *child;
 
       child = lp->data;
 
@@ -875,7 +875,7 @@ find_where (GnomeDockBand *band, gint offset, gboolean *is_empty)
 
 
 static void
-calc_prev_and_foll_space (GnomeDockBand *band)
+calc_prev_and_foll_space (BonoboDockBand *band)
 {
   GtkWidget *widget;
   GList *lp;
@@ -888,7 +888,7 @@ calc_prev_and_foll_space (GnomeDockBand *band)
   lp = next_if_floating (band, band->children);
   if (lp != NULL)
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
       guint prev_space, foll_space;
 
       prev_space = 0;
@@ -946,7 +946,7 @@ calc_prev_and_foll_space (GnomeDockBand *band)
 
 
 static guint
-attempt_move_backward (GnomeDockBand *band, GList *child, guint amount)
+attempt_move_backward (BonoboDockBand *band, GList *child, guint amount)
 {
   GList *lp;
   guint effective_amount;
@@ -957,7 +957,7 @@ attempt_move_backward (GnomeDockBand *band, GList *child, guint amount)
        lp != NULL && amount > 0;
        lp = prev_not_floating (band, lp))
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
       c = lp->data;
 
@@ -980,7 +980,7 @@ attempt_move_backward (GnomeDockBand *band, GList *child, guint amount)
 }
 
 static guint
-attempt_move_forward (GnomeDockBand *band, GList *child, guint requirement)
+attempt_move_forward (BonoboDockBand *band, GList *child, guint requirement)
 {
   GList *lp;
   guint effective_amount;
@@ -990,7 +990,7 @@ attempt_move_forward (GnomeDockBand *band, GList *child, guint requirement)
        lp != NULL && requirement > 0;
        lp = next_not_floating (band, lp))
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
       c = lp->data;
 
@@ -1016,30 +1016,30 @@ attempt_move_forward (GnomeDockBand *band, GList *child, guint requirement)
 
 
 static void
-reparent_if_needed (GnomeDockBand *band,
-                    GnomeDockItem *item,
+reparent_if_needed (BonoboDockBand *band,
+                    BonoboDockItem *item,
                     gint x, gint y)
 {
   if (GTK_WIDGET (item)->parent != GTK_WIDGET (band))
     {
-      gnome_dock_item_attach (item, GTK_WIDGET (band), x, y);
+      bonobo_dock_item_attach (item, GTK_WIDGET (band), x, y);
 
       /* Reparenting causes the new floating child to be the first
          item on the child list (see the `remove' method).  */
       band->floating_child = band->children;
 
       /* Reparenting will remove the grab, so we need to redo it.  */
-      gnome_dock_item_grab_pointer (item);
+      bonobo_dock_item_grab_pointer (item);
     }
 }
 
 static gboolean
-dock_nonempty (GnomeDockBand *band,
-               GnomeDockItem *item,
+dock_nonempty (BonoboDockBand *band,
+               BonoboDockItem *item,
                GList *where,
                gint x, gint y)
 {
-  GnomeDockBandChild *c, *floating_child;
+  BonoboDockBandChild *c, *floating_child;
   GtkOrientation orig_item_orientation;
   GtkRequisition item_requisition;
   GList *lp, *next;
@@ -1058,12 +1058,12 @@ dock_nonempty (GnomeDockBand *band,
 
   c = lp->data;
 
-  orig_item_orientation = gnome_dock_item_get_orientation (item);
+  orig_item_orientation = bonobo_dock_item_get_orientation (item);
   if (orig_item_orientation != band->orientation
-      && ! gnome_dock_item_set_orientation (item, band->orientation))
+      && ! bonobo_dock_item_set_orientation (item, band->orientation))
     return FALSE;
 
-  gnome_dock_item_handle_size_request (item, &item_requisition);
+  bonobo_dock_item_handle_size_request (item, &item_requisition);
   if (band->orientation == GTK_ORIENTATION_HORIZONTAL)
     requirement = item_requisition.width;
   else
@@ -1077,7 +1077,7 @@ dock_nonempty (GnomeDockBand *band,
 
       /* Restore original orientation.  */
       if (orig_item_orientation != band->orientation)
-        gnome_dock_item_set_orientation (item, orig_item_orientation);
+        bonobo_dock_item_set_orientation (item, orig_item_orientation);
 
       return FALSE;
     }
@@ -1132,13 +1132,13 @@ dock_nonempty (GnomeDockBand *band,
 }
 
 static gboolean
-dock_empty (GnomeDockBand *band,
-            GnomeDockItem *item,
+dock_empty (BonoboDockBand *band,
+            BonoboDockItem *item,
             GList *where,
             gint x, gint y)
 {
-  GnomeDockBandChild *floating_child;
-  GnomeDockBandChild *c1, *c2;
+  BonoboDockBandChild *floating_child;
+  BonoboDockBandChild *c1, *c2;
   GtkOrientation orig_item_orientation;
   GtkRequisition item_requisition;
   GList *lp;
@@ -1168,9 +1168,9 @@ dock_empty (GnomeDockBand *band,
       if (lp == NULL)
         {
           /* Only one floating element.  Easy.  */
-          GnomeDockBandChild *c;
+          BonoboDockBandChild *c;
 
-          if (! gnome_dock_item_set_orientation (item, band->orientation))
+          if (! bonobo_dock_item_set_orientation (item, band->orientation))
             return FALSE;
 
           if (band->orientation == GTK_ORIENTATION_HORIZONTAL)
@@ -1200,8 +1200,8 @@ dock_empty (GnomeDockBand *band,
 
   item_widget = GTK_WIDGET (item);
 
-  orig_item_orientation = gnome_dock_item_get_orientation (item);
-  if (! gnome_dock_item_set_orientation (item, band->orientation))
+  orig_item_orientation = bonobo_dock_item_get_orientation (item);
+  if (! bonobo_dock_item_set_orientation (item, band->orientation))
     return FALSE;
 
   /* Check whether there is enough space for the widget.  */
@@ -1219,7 +1219,7 @@ dock_empty (GnomeDockBand *band,
           space += c2->widget->allocation.height - c2->widget->requisition.height;
       }
 
-    gnome_dock_item_handle_size_request (item, &item_requisition);
+    bonobo_dock_item_handle_size_request (item, &item_requisition);
     if (space < (band->orientation == GTK_ORIENTATION_HORIZONTAL
                  ? item_requisition.width
                  : item_requisition.height))
@@ -1228,7 +1228,7 @@ dock_empty (GnomeDockBand *band,
 
         /* Restore original orientation.  */
         if (orig_item_orientation != band->orientation)
-          gnome_dock_item_set_orientation (item, orig_item_orientation);
+          bonobo_dock_item_set_orientation (item, orig_item_orientation);
 
         return FALSE;
       }
@@ -1279,7 +1279,7 @@ dock_empty (GnomeDockBand *band,
 
       for (lp1 = lp; lp1 != NULL && requisition > 0; )
         {
-          GnomeDockBandChild *tmp = lp1->data;
+          BonoboDockBandChild *tmp = lp1->data;
           GList *lp1next;
 
           if (tmp->drag_offset > requisition)
@@ -1316,7 +1316,7 @@ dock_empty (GnomeDockBand *band,
   else
     reparent_if_needed (band, item, GTK_WIDGET (band)->allocation.x, y);
 
-  floating_child = (GnomeDockBandChild *) band->floating_child->data;
+  floating_child = (BonoboDockBandChild *) band->floating_child->data;
   floating_child->real_offset = floating_child->offset = new_offset;
 
   band->children = g_list_remove_link (band->children, band->floating_child);
@@ -1336,18 +1336,18 @@ dock_empty (GnomeDockBand *band,
       where->next = band->floating_child;
     }
 
-  gtk_widget_queue_resize (((GnomeDockBandChild *) band->floating_child->data)->widget);
+  gtk_widget_queue_resize (((BonoboDockBandChild *) band->floating_child->data)->widget);
 
   return TRUE;
 }
 
 static gboolean
-dock_empty_right (GnomeDockBand *band,
-                  GnomeDockItem *item,
+dock_empty_right (BonoboDockBand *band,
+                  BonoboDockItem *item,
                   GList *where,
                   gint x, gint y)
 {
-  GnomeDockBandChild *c, *floating_child;
+  BonoboDockBandChild *c, *floating_child;
   GtkOrientation orig_item_orientation;
   GtkRequisition item_requisition;
   GtkWidget *item_widget;
@@ -1365,12 +1365,12 @@ dock_empty_right (GnomeDockBand *band,
 
   c = where->data;
 
-  orig_item_orientation = gnome_dock_item_get_orientation (item);
+  orig_item_orientation = bonobo_dock_item_get_orientation (item);
   if (orig_item_orientation != band->orientation
-      && ! gnome_dock_item_set_orientation (item, band->orientation))
+      && ! bonobo_dock_item_set_orientation (item, band->orientation))
     return FALSE;
 
-  gnome_dock_item_handle_size_request (item, &item_requisition);
+  bonobo_dock_item_handle_size_request (item, &item_requisition);
   if (c->drag_prev_space + c->drag_foll_space
       < (guint) (band->orientation == GTK_ORIENTATION_HORIZONTAL
                  ? item_requisition.width
@@ -1380,7 +1380,7 @@ dock_empty_right (GnomeDockBand *band,
 
       /* Restore original orientation.  */
       if (orig_item_orientation != band->orientation)
-        gnome_dock_item_set_orientation (item, orig_item_orientation);
+        bonobo_dock_item_set_orientation (item, orig_item_orientation);
 
       return FALSE;
     }
@@ -1464,19 +1464,19 @@ check_guint_arg (GObject *object,
 /* Exported interface.  */
 
 /**
- * gnome_dock_band_new:
+ * bonobo_dock_band_new:
  *
- * Description: Create a new GnomeDockBand widget.
+ * Description: Create a new BonoboDockBand widget.
  *
- * Returns: The new GnomeDockBand widget.
+ * Returns: The new BonoboDockBand widget.
  **/
 GtkWidget *
-gnome_dock_band_new (void)
+bonobo_dock_band_new (void)
 {
-  GnomeDockBand *band;
+  BonoboDockBand *band;
   GtkWidget *widget;
 
-  band = gtk_type_new (gnome_dock_band_get_type ());
+  band = gtk_type_new (bonobo_dock_band_get_type ());
   widget = GTK_WIDGET (band);
 
   if (GTK_WIDGET_VISIBLE (widget))
@@ -1486,7 +1486,7 @@ gnome_dock_band_new (void)
 }
 
 GtkType
-gnome_dock_band_get_type (void)
+bonobo_dock_band_get_type (void)
 {
   static GtkType band_type = 0;
 
@@ -1494,11 +1494,11 @@ gnome_dock_band_get_type (void)
     {
       GtkTypeInfo band_info =
       {
-	"GnomeDockBand",
-	sizeof (GnomeDockBand),
-	sizeof (GnomeDockBandClass),
-	(GtkClassInitFunc) gnome_dock_band_class_init,
-	(GtkObjectInitFunc) gnome_dock_band_init,
+	"BonoboDockBand",
+	sizeof (BonoboDockBand),
+	sizeof (BonoboDockBandClass),
+	(GtkClassInitFunc) bonobo_dock_band_class_init,
+	(GtkObjectInitFunc) bonobo_dock_band_init,
         /* reserved_1 */ NULL,
 	/* reserved_2 */ NULL,
 	(GtkClassInitFunc) NULL,
@@ -1511,14 +1511,14 @@ gnome_dock_band_get_type (void)
 }
 
 /**
- * gnome_dock_band_set_orientation:
- * @band: A GnomeDockBand widget
+ * bonobo_dock_band_set_orientation:
+ * @band: A BonoboDockBand widget
  * @orientation: New orientation for @band
  *
  * Description: Set the orientation for @band.
  **/
 void
-gnome_dock_band_set_orientation (GnomeDockBand *band,
+bonobo_dock_band_set_orientation (BonoboDockBand *band,
                                  GtkOrientation orientation)
 {
   g_return_if_fail (orientation == GTK_ORIENTATION_HORIZONTAL
@@ -1528,22 +1528,22 @@ gnome_dock_band_set_orientation (GnomeDockBand *band,
 }
 
 /**
- * gnome_dock_band_get_orientation:
- * @band: A GnomeDockBand widget
+ * bonobo_dock_band_get_orientation:
+ * @band: A BonoboDockBand widget
  *
  * Description: Retrieve the orientation of the specified @band.
  *
  * Returns: The orientation of @band.
  **/
 GtkOrientation
-gnome_dock_band_get_orientation (GnomeDockBand *band)
+bonobo_dock_band_get_orientation (BonoboDockBand *band)
 {
   return band->orientation;
 }
 
 /**
- * gnome_dock_band_insert:
- * @band: A GnomeDockBand widget
+ * bonobo_dock_band_insert:
+ * @band: A BonoboDockBand widget
  * @child: The widget to be added to @band
  * @offset: Offset from the previous item
  * @position: Position within the @band
@@ -1555,23 +1555,23 @@ gnome_dock_band_get_orientation (GnomeDockBand *band)
  * Returns: %TRUE if successful, %FALSE if the operation fails.
  **/
 gboolean
-gnome_dock_band_insert (GnomeDockBand *band,
+bonobo_dock_band_insert (BonoboDockBand *band,
                         GtkWidget *child,
                         guint offset,
                         gint position)
 {
-  GnomeDockBandChild *band_child;
+  BonoboDockBandChild *band_child;
 
   DEBUG (("%08x", (unsigned int) band));
 
-  if (GNOME_IS_DOCK_ITEM (child)
-      && !docking_allowed (band, GNOME_DOCK_ITEM (child)))
+  if (BONOBO_IS_DOCK_ITEM (child)
+      && !docking_allowed (band, BONOBO_DOCK_ITEM (child)))
     return FALSE;
 
   if (position < 0 || position > (gint) band->num_children)
     position = band->num_children;
 
-  band_child = g_new (GnomeDockBandChild, 1);
+  band_child = g_new (BonoboDockBandChild, 1);
   band_child->widget = child;
   band_child->offset = offset;
   band_child->real_offset = 0;
@@ -1588,8 +1588,8 @@ gnome_dock_band_insert (GnomeDockBand *band,
       g_list_prepend (p, band_child);
     }
 
-  if (GNOME_IS_DOCK_ITEM (child)
-      && ! gnome_dock_item_set_orientation (GNOME_DOCK_ITEM (child),
+  if (BONOBO_IS_DOCK_ITEM (child)
+      && ! bonobo_dock_item_set_orientation (BONOBO_DOCK_ITEM (child),
                                             band->orientation))
       return FALSE;
 
@@ -1613,7 +1613,7 @@ gnome_dock_band_insert (GnomeDockBand *band,
 }
 
 void
-gnome_dock_band_move_child (GnomeDockBand *band,
+bonobo_dock_band_move_child (BonoboDockBand *band,
                             GList *old_child,
                             guint new_num)
 {
@@ -1637,8 +1637,8 @@ gnome_dock_band_move_child (GnomeDockBand *band,
 }
 
 /**
- * gnome_dock_band_prepend:
- * @band: A GnomeDockBand widget
+ * bonobo_dock_band_prepend:
+ * @band: A BonoboDockBand widget
  * @child: A widget to be added to @band
  * @offset: Offset (in pixels) from the beginning of the band
  *
@@ -1648,16 +1648,16 @@ gnome_dock_band_move_child (GnomeDockBand *band,
  * Returns: %TRUE if successful, %FALSE if the operation fails.
  **/
 gboolean
-gnome_dock_band_prepend (GnomeDockBand *band,
+bonobo_dock_band_prepend (BonoboDockBand *band,
                          GtkWidget *child,
                          guint offset)
 {
-  return gnome_dock_band_insert (band, child, offset, 0);
+  return bonobo_dock_band_insert (band, child, offset, 0);
 }
 
 /**
- * gnome_dock_band_append:
- * @band: A GnomeDockBand widget
+ * bonobo_dock_band_append:
+ * @band: A BonoboDockBand widget
  * @child: A widget to be added to @band
  * @offset: Offset (in pixels) from the last item of the band
  *
@@ -1667,23 +1667,23 @@ gnome_dock_band_prepend (GnomeDockBand *band,
  * Returns: %TRUE if successful, %FALSE if the operation fails.
  **/
 gboolean
-gnome_dock_band_append (GnomeDockBand *band,
+bonobo_dock_band_append (BonoboDockBand *band,
                         GtkWidget *child,
                         guint offset)
 {
-  return gnome_dock_band_insert (band, child, offset, -1);
+  return bonobo_dock_band_insert (band, child, offset, -1);
 }
 
 /**
- * gnome_dock_band_set_child_offset:
- * @band: A GnomeDockBand widget
+ * bonobo_dock_band_set_child_offset:
+ * @band: A BonoboDockBand widget
  * @child: Child of @band whose offset must be changed
  * @offset: New offset value for @child
  *
  * Description: Set the offset for the specified @child of @band.
  **/
 void
-gnome_dock_band_set_child_offset (GnomeDockBand *band,
+bonobo_dock_band_set_child_offset (BonoboDockBand *band,
                                   GtkWidget *child,
                                   guint offset)
 {
@@ -1692,17 +1692,17 @@ gnome_dock_band_set_child_offset (GnomeDockBand *band,
   p = find_child (band, child);
   if (p != NULL)
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
-      c = (GnomeDockBandChild *) p->data;
+      c = (BonoboDockBandChild *) p->data;
       c->offset = offset;
       gtk_widget_queue_resize (c->widget);
     }
 }
 
 /**
- * gnome_dock_band_get_child_offset:
- * @band: A GnomeDockBand widget
+ * bonobo_dock_band_get_child_offset:
+ * @band: A BonoboDockBand widget
  * @child: Child of @band whose offset must be retrieved
  *
  * Description: Retrieve the offset of @child in @band.
@@ -1710,7 +1710,7 @@ gnome_dock_band_set_child_offset (GnomeDockBand *band,
  * Returns: The offset of @child.
  **/
 guint
-gnome_dock_band_get_child_offset (GnomeDockBand *band,
+bonobo_dock_band_get_child_offset (BonoboDockBand *band,
                                   GtkWidget *child)
 {
   GList *p;
@@ -1718,9 +1718,9 @@ gnome_dock_band_get_child_offset (GnomeDockBand *band,
   p = find_child (band, child);
   if (p != NULL)
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
-      c = (GnomeDockBandChild *) p->data;
+      c = (BonoboDockBandChild *) p->data;
       return c->offset;
     }
 
@@ -1728,15 +1728,15 @@ gnome_dock_band_get_child_offset (GnomeDockBand *band,
 }
 
 /**
- * gnome_dock_band_get_num_children:
- * @band: A GnomeDockBand widget
+ * bonobo_dock_band_get_num_children:
+ * @band: A BonoboDockBand widget
  *
  * Description: Retrieve the number of children in @band.
  *
  * Returns: The number of children in @band.
  **/
 guint
-gnome_dock_band_get_num_children (GnomeDockBand *band)
+bonobo_dock_band_get_num_children (BonoboDockBand *band)
 {
   return band->num_children;
 }
@@ -1746,7 +1746,7 @@ gnome_dock_band_get_num_children (GnomeDockBand *band)
 /* Private interface.  */
 
 void
-gnome_dock_band_drag_begin (GnomeDockBand *band, GnomeDockItem *item)
+bonobo_dock_band_drag_begin (BonoboDockBand *band, BonoboDockItem *item)
 {
   GList *lp;
   GtkWidget *floating_widget;
@@ -1760,7 +1760,7 @@ gnome_dock_band_drag_begin (GnomeDockBand *band, GnomeDockItem *item)
 
   for (lp = band->children; lp != NULL;)
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
       c = lp->data;
 
@@ -1793,7 +1793,7 @@ gnome_dock_band_drag_begin (GnomeDockBand *band, GnomeDockItem *item)
     {
       for (lp = band->floating_child->prev; lp != NULL; lp = lp->prev)
         {
-          GnomeDockBandChild *c;
+          BonoboDockBandChild *c;
 
           c = lp->data;
           if (band->orientation == GTK_ORIENTATION_HORIZONTAL)
@@ -1803,7 +1803,7 @@ gnome_dock_band_drag_begin (GnomeDockBand *band, GnomeDockItem *item)
         }
       for (lp = band->floating_child->next; lp != NULL; lp = lp->next)
         {
-          GnomeDockBandChild *c;
+          BonoboDockBandChild *c;
 
           c = lp->data;
           if (band->orientation == GTK_ORIENTATION_HORIZONTAL)
@@ -1818,8 +1818,8 @@ gnome_dock_band_drag_begin (GnomeDockBand *band, GnomeDockItem *item)
 }
 
 gboolean
-gnome_dock_band_drag_to (GnomeDockBand *band,
-                         GnomeDockItem *item,
+bonobo_dock_band_drag_to (BonoboDockBand *band,
+                         BonoboDockItem *item,
                          gint x, gint y)
 {
   GtkAllocation *allocation;
@@ -1856,7 +1856,7 @@ gnome_dock_band_drag_to (GnomeDockBand *band,
          p != NULL;
          p = next_not_floating (band, p))
       {
-        GnomeDockBandChild *c = p->data;
+        BonoboDockBandChild *c = p->data;
 
         c->real_offset = c->offset = c->drag_offset;
       }
@@ -1869,7 +1869,7 @@ gnome_dock_band_drag_to (GnomeDockBand *band,
 }
 
 void
-gnome_dock_band_drag_end (GnomeDockBand *band, GnomeDockItem *item)
+bonobo_dock_band_drag_end (BonoboDockBand *band, BonoboDockItem *item)
 {
   g_return_if_fail (band->doing_drag);
 
@@ -1877,10 +1877,10 @@ gnome_dock_band_drag_end (GnomeDockBand *band, GnomeDockItem *item)
 
   if (band->floating_child != NULL)
     {
-      GnomeDockBandChild *f;
+      BonoboDockBandChild *f;
 
       /* Minimal sanity check.  */
-      f = (GnomeDockBandChild *) band->floating_child->data;
+      f = (BonoboDockBandChild *) band->floating_child->data;
       g_return_if_fail (f->widget == GTK_WIDGET (item));
 
       gtk_widget_queue_resize (f->widget);
@@ -1894,8 +1894,8 @@ gnome_dock_band_drag_end (GnomeDockBand *band, GnomeDockItem *item)
 
 
 /**
- * gnome_dock_band_get_item_by_name:
- * @band: A GnomeDockBand widget
+ * bonobo_dock_band_get_item_by_name:
+ * @band: A BonoboDockBand widget
  * @name: Name of the child to be retrieved
  * @position_return: Pointer to a variable holding the position of
  * the named child
@@ -1908,8 +1908,8 @@ gnome_dock_band_drag_end (GnomeDockBand *band, GnomeDockItem *item)
  * Return value: The child whose name is @name, or %NULL if no child
  * of @band has such name.
  **/
-GnomeDockItem *
-gnome_dock_band_get_item_by_name (GnomeDockBand *band,
+BonoboDockItem *
+bonobo_dock_band_get_item_by_name (BonoboDockBand *band,
                                   const char *name,
                                   guint *position_return,
                                   guint *offset_return)
@@ -1919,14 +1919,14 @@ gnome_dock_band_get_item_by_name (GnomeDockBand *band,
 
   for (lp = band->children, pos = 0; lp != NULL; lp = lp->next, pos++)
     {
-      GnomeDockBandChild *c;
+      BonoboDockBandChild *c;
 
       c = lp->data;
-      if (GNOME_IS_DOCK_ITEM (c->widget))
+      if (BONOBO_IS_DOCK_ITEM (c->widget))
         {
-          GnomeDockItem *item;
+          BonoboDockItem *item;
 
-          item = GNOME_DOCK_ITEM (c->widget);
+          item = BONOBO_DOCK_ITEM (c->widget);
           if (strcmp (item->name, name) == 0)
             {
               if (position_return != NULL)
@@ -1944,9 +1944,9 @@ gnome_dock_band_get_item_by_name (GnomeDockBand *band,
 
 
 void
-gnome_dock_band_layout_add (GnomeDockBand *band,
-                            GnomeDockLayout *layout,
-                            GnomeDockPlacement placement,
+bonobo_dock_band_layout_add (BonoboDockBand *band,
+                            BonoboDockLayout *layout,
+                            BonoboDockPlacement placement,
                             guint band_num)
 {
   guint child_num;
@@ -1956,15 +1956,15 @@ gnome_dock_band_layout_add (GnomeDockBand *band,
        lp != NULL;
        lp = lp->next, child_num++)
     {
-      GnomeDockBandChild *child;
+      BonoboDockBandChild *child;
       GtkWidget *item;
 
       child = lp->data;
       item = child->widget;
 
-      if (GNOME_IS_DOCK_ITEM (item))
-        gnome_dock_layout_add_item (layout,
-                                    GNOME_DOCK_ITEM (item),
+      if (BONOBO_IS_DOCK_ITEM (item))
+        bonobo_dock_layout_add_item (layout,
+                                    BONOBO_DOCK_ITEM (item),
                                     placement, band_num,
                                     child_num, child->offset);
     }

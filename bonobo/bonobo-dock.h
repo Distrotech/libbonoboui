@@ -1,6 +1,4 @@
-/* WARNING ____ IMMATURE API ____ liable to change */
-
-/* gnome-dock.h
+/* bonobo-dock.h
 
    Copyright (C) 1998 Free Software Foundation
 
@@ -27,43 +25,43 @@
   @NOTATION@
 */
 
-#ifndef _GNOME_DOCK_H
-#define _GNOME_DOCK_H
+#ifndef _BONOBO_DOCK_H
+#define _BONOBO_DOCK_H
 
 
 
 G_BEGIN_DECLS
 
-#define GNOME_TYPE_DOCK            (gnome_dock_get_type ())
-#define GNOME_DOCK(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_DOCK, GnomeDock))
-#define GNOME_DOCK_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_DOCK, GnomeDockClass))
-#define GNOME_IS_DOCK(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_DOCK))
-#define GNOME_IS_DOCK_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_DOCK))
-#define GNOME_DOCK_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), GNOME_TYPE_DOCK, GnomeDockClass))
+#define BONOBO_TYPE_DOCK            (bonobo_dock_get_type ())
+#define BONOBO_DOCK(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_DOCK, BonoboDock))
+#define BONOBO_DOCK_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_DOCK, BonoboDockClass))
+#define BONOBO_IS_DOCK(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_DOCK))
+#define BONOBO_IS_DOCK_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_DOCK))
+#define BONOBO_DOCK_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), BONOBO_TYPE_DOCK, BonoboDockClass))
 
 typedef enum
 {
-  GNOME_DOCK_TOP,
-  GNOME_DOCK_RIGHT,
-  GNOME_DOCK_BOTTOM,
-  GNOME_DOCK_LEFT,
-  GNOME_DOCK_FLOATING
-} GnomeDockPlacement;
+  BONOBO_DOCK_TOP,
+  BONOBO_DOCK_RIGHT,
+  BONOBO_DOCK_BOTTOM,
+  BONOBO_DOCK_LEFT,
+  BONOBO_DOCK_FLOATING
+} BonoboDockPlacement;
 
-typedef struct _GnomeDock GnomeDock;
-typedef struct _GnomeDockPrivate GnomeDockPrivate;
-typedef struct _GnomeDockClass GnomeDockClass;
+typedef struct _BonoboDock BonoboDock;
+typedef struct _BonoboDockPrivate BonoboDockPrivate;
+typedef struct _BonoboDockClass BonoboDockClass;
 
-#include "gnome-dock-band.h"
-#include "gnome-dock-layout.h"
+#include <bonobo/bonobo-dock-band.h>
+#include <bonobo/bonobo-dock-layout.h>
 
-struct _GnomeDock
+struct _BonoboDock
 {
   GtkContainer container;
 
   GtkWidget *client_area;
 
-  /* GnomeDockBands associated with this dock.  */
+  /* BonoboDockBands associated with this dock.  */
   GList *top_bands;
   GList *bottom_bands;
   GList *right_bands;
@@ -78,52 +76,52 @@ struct _GnomeDock
   gboolean floating_items_allowed : 1;
 
   /*< private >*/
-  GnomeDockPrivate *_priv;
+  BonoboDockPrivate *_priv;
 };
 
-struct _GnomeDockClass
+struct _BonoboDockClass
 {
   GtkContainerClass parent_class;
 
-  void (* layout_changed) (GnomeDock *dock);
+  void (* layout_changed) (BonoboDock *dock);
 };
 
-GtkWidget     *gnome_dock_new               (void);
-guint          gnome_dock_get_type          (void) G_GNUC_CONST;
+GtkWidget     *bonobo_dock_new               (void);
+guint          bonobo_dock_get_type          (void) G_GNUC_CONST;
 
-void           gnome_dock_allow_floating_items
-                                            (GnomeDock *dock,
+void           bonobo_dock_allow_floating_items
+                                            (BonoboDock *dock,
                                              gboolean enable);
                                             
-void           gnome_dock_add_item          (GnomeDock             *dock,
-                                             GnomeDockItem         *item,
-                                             GnomeDockPlacement  placement,
+void           bonobo_dock_add_item          (BonoboDock             *dock,
+                                             BonoboDockItem         *item,
+                                             BonoboDockPlacement  placement,
                                              guint                  band_num,
                                              gint                   position,
                                              guint                  offset,
                                              gboolean               in_new_band);
 
-void           gnome_dock_add_floating_item (GnomeDock *dock,
-                                             GnomeDockItem *widget,
+void           bonobo_dock_add_floating_item (BonoboDock *dock,
+                                             BonoboDockItem *widget,
                                              gint x, gint y,
                                              GtkOrientation orientation);
           
-void           gnome_dock_set_client_area   (GnomeDock             *dock,
+void           bonobo_dock_set_client_area   (BonoboDock             *dock,
                                              GtkWidget             *widget);
 
-GtkWidget     *gnome_dock_get_client_area   (GnomeDock             *dock);
+GtkWidget     *bonobo_dock_get_client_area   (BonoboDock             *dock);
   
-GnomeDockItem *gnome_dock_get_item_by_name  (GnomeDock *dock,
+BonoboDockItem *bonobo_dock_get_item_by_name  (BonoboDock *dock,
                                              const gchar *name,
-                                             GnomeDockPlacement *placement_return,
+                                             BonoboDockPlacement *placement_return,
                                              guint *num_band_return,
                                              guint *band_position_return,
                                              guint *offset_return);
  
-GnomeDockLayout *gnome_dock_get_layout      (GnomeDock *dock);
+BonoboDockLayout *bonobo_dock_get_layout      (BonoboDock *dock);
 
-gboolean       gnome_dock_add_from_layout   (GnomeDock *dock,
-                                             GnomeDockLayout *layout);
+gboolean       bonobo_dock_add_from_layout   (BonoboDock *dock,
+                                             BonoboDockLayout *layout);
 
 G_END_DECLS
 

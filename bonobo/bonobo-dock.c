@@ -1,4 +1,4 @@
-/* gnome-dock.c
+/* bonobo-dock.c
 
    Copyright (C) 1998 Free Software Foundation
 
@@ -25,16 +25,16 @@
 
 #include <gtk/gtk.h>
 
-#include "gnome-dock.h"
-#include "gnome-dock-band.h"
-#include "gnome-dock-item.h"
+#include <bonobo/bonobo-dock.h>
+#include <bonobo/bonobo-dock-band.h>
+#include <bonobo/bonobo-dock-item.h>
 
 
 
-#define noGNOME_DOCK_DEBUG
+#define noBONOBO_DOCK_DEBUG
 
 /* FIXME: To be removed.  */
-#if defined GNOME_DOCK_DEBUG && defined __GNUC__
+#if defined BONOBO_DOCK_DEBUG && defined __GNUC__
 #define DEBUG(x)                                        \
   do                                                    \
     {                                                   \
@@ -49,12 +49,12 @@
 
 
 
-struct _GnomeDockPrivate
+struct _BonoboDockPrivate
 {
 	int dummy;
 	/* Nothing right now, needs to get filled with the private things */
 	/* XXX: When stuff is added, uncomment the allocation in the
-	 * gnome_dock_init function! */
+	 * bonobo_dock_init function! */
 };
 
 
@@ -65,24 +65,24 @@ enum {
 
 
 
-static void     gnome_dock_class_init          (GnomeDockClass *class);
-static void     gnome_dock_init                (GnomeDock *app);
-static void     gnome_dock_size_request        (GtkWidget *widget,
+static void     bonobo_dock_class_init          (BonoboDockClass *class);
+static void     bonobo_dock_init                (BonoboDock *app);
+static void     bonobo_dock_size_request        (GtkWidget *widget,
                                                 GtkRequisition *requisition);
-static void     gnome_dock_size_allocate       (GtkWidget *widget,
+static void     bonobo_dock_size_allocate       (GtkWidget *widget,
                                                 GtkAllocation *allocation);
-static void     gnome_dock_map                 (GtkWidget *widget);
-static void     gnome_dock_unmap               (GtkWidget *widget);
-static void     gnome_dock_add                 (GtkContainer *container,
+static void     bonobo_dock_map                 (GtkWidget *widget);
+static void     bonobo_dock_unmap               (GtkWidget *widget);
+static void     bonobo_dock_add                 (GtkContainer *container,
                                                 GtkWidget *child);
-static void     gnome_dock_remove              (GtkContainer *container,
+static void     bonobo_dock_remove              (GtkContainer *container,
                                                 GtkWidget *widget);
-static void     gnome_dock_forall              (GtkContainer *container,
+static void     bonobo_dock_forall              (GtkContainer *container,
                                                 gboolean include_internals,
                                                 GtkCallback callback,
                                                 gpointer callback_data);
-static void     gnome_dock_destroy             (GtkObject *object);
-static void     gnome_dock_finalize            (GObject *object);
+static void     bonobo_dock_destroy             (GtkObject *object);
+static void     bonobo_dock_finalize            (GObject *object);
 
 static void     size_request_v                 (GList *list,
                                                 GtkRequisition *requisition);
@@ -103,7 +103,7 @@ static void     unmap_widget_foreach             (gpointer data,
                                                 gpointer user_data);
 static void     unmap_band_list                  (GList *list);
 static gboolean remove_from_band_list          (GList **list,
-                                                GnomeDockBand *child);
+                                                BonoboDockBand *child);
 static void     forall_helper                  (GList *list,
                                                 GtkCallback callback,
                                                 gpointer callback_data);
@@ -111,46 +111,46 @@ static void     forall_helper                  (GList *list,
 static void     drag_begin                     (GtkWidget *widget,
                                                 gpointer data);
 static void     drag_end_bands                 (GList **list,
-                                                GnomeDockItem *item);
+                                                BonoboDockItem *item);
 static void     drag_end                       (GtkWidget *widget,
                                                 gpointer data);
-static gboolean drag_new                       (GnomeDock *dock,
-                                                GnomeDockItem *item,
+static gboolean drag_new                       (BonoboDock *dock,
+                                                BonoboDockItem *item,
                                                 GList **area,
                                                 GList *where,
                                                 gint x, gint y,
                                                 gboolean is_vertical);
-static gboolean drag_to                        (GnomeDock *dock,
-                                                GnomeDockItem *item,
+static gboolean drag_to                        (BonoboDock *dock,
+                                                BonoboDockItem *item,
                                                 GList *where,
                                                 gint x, gint y,
                                                 gboolean is_vertical);
-static gboolean drag_floating                  (GnomeDock *dock,
-                                                GnomeDockItem *item,
+static gboolean drag_floating                  (BonoboDock *dock,
+                                                BonoboDockItem *item,
                                                 gint x, gint y,
                                                 gint rel_x, gint rel_y);
-static gboolean drag_check                     (GnomeDock *dock,
-                                                GnomeDockItem *item,
+static gboolean drag_check                     (BonoboDock *dock,
+                                                BonoboDockItem *item,
                                                 GList **area,
                                                 gint x, gint y,
                                                 gboolean is_vertical);
-static void     drag_snap                      (GnomeDock *dock,
+static void     drag_snap                      (BonoboDock *dock,
                                                 GtkWidget *widget,
                                                 gint x, gint y);
 static void     drag_motion                    (GtkWidget *widget,
                                                 gint x, gint y,
                                                 gpointer data);
 
-static GnomeDockItem *get_docked_item_by_name  (GnomeDock *dock,
+static BonoboDockItem *get_docked_item_by_name  (BonoboDock *dock,
                                                 const gchar *name,
-                                                GnomeDockPlacement *placement_return,
+                                                BonoboDockPlacement *placement_return,
                                                 guint *num_band_return,
                                                 guint *band_position_return,
                                                 guint *offset_return);
-static GnomeDockItem *get_floating_item_by_name (GnomeDock *dock,
+static BonoboDockItem *get_floating_item_by_name (BonoboDock *dock,
                                                  const gchar *name);
 
-static void           connect_drag_signals      (GnomeDock *dock,
+static void           connect_drag_signals      (BonoboDock *dock,
                                                  GtkWidget *item);
 
 
@@ -161,7 +161,7 @@ static guint dock_signals[LAST_SIGNAL] = { 0 };
 
 
 static void
-gnome_dock_class_init (GnomeDockClass *class)
+bonobo_dock_class_init (BonoboDockClass *class)
 {
   GtkObjectClass *object_class;
   GObjectClass *gobject_class;
@@ -175,36 +175,36 @@ gnome_dock_class_init (GnomeDockClass *class)
 
   parent_class = gtk_type_class (gtk_container_get_type ());
 
-  object_class->destroy = gnome_dock_destroy;
-  gobject_class->finalize = gnome_dock_finalize;
+  object_class->destroy = bonobo_dock_destroy;
+  gobject_class->finalize = bonobo_dock_finalize;
 
-  widget_class->size_request = gnome_dock_size_request;
-  widget_class->size_allocate = gnome_dock_size_allocate;
-  widget_class->map = gnome_dock_map;
-  widget_class->unmap = gnome_dock_unmap;
+  widget_class->size_request = bonobo_dock_size_request;
+  widget_class->size_allocate = bonobo_dock_size_allocate;
+  widget_class->map = bonobo_dock_map;
+  widget_class->unmap = bonobo_dock_unmap;
 
-  container_class->add = gnome_dock_add;
-  container_class->remove = gnome_dock_remove;
-  container_class->forall = gnome_dock_forall;
+  container_class->add = bonobo_dock_add;
+  container_class->remove = bonobo_dock_remove;
+  container_class->forall = bonobo_dock_forall;
 
   dock_signals[LAYOUT_CHANGED] =
     gtk_signal_new ("layout_changed",
                     GTK_RUN_LAST,
                     GTK_CLASS_TYPE (object_class),
-                    GTK_SIGNAL_OFFSET (GnomeDockClass, layout_changed),
+                    GTK_SIGNAL_OFFSET (BonoboDockClass, layout_changed),
                     gtk_marshal_NONE__NONE,
                     GTK_TYPE_NONE, 0);
 
 }
 
 static void
-gnome_dock_init (GnomeDock *dock)
+bonobo_dock_init (BonoboDock *dock)
 {
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (dock), GTK_NO_WINDOW);
 
   dock->_priv = NULL;
   /* XXX: when there is some private stuff enable this
-  dock->_priv = g_new0(GnomeDockPrivate, 1);
+  dock->_priv = g_new0(BonoboDockPrivate, 1);
   */
 
   dock->client_area = NULL;
@@ -252,12 +252,12 @@ size_request_h (GList *list, GtkRequisition *requisition)
 }
 
 static void
-gnome_dock_size_request (GtkWidget *widget, GtkRequisition *requisition)
+bonobo_dock_size_request (GtkWidget *widget, GtkRequisition *requisition)
 {
-  GnomeDock *dock;
+  BonoboDock *dock;
   GList *lp;
 
-  dock = GNOME_DOCK (widget);
+  dock = BONOBO_DOCK (widget);
 
   if (dock->client_area != NULL && GTK_WIDGET_VISIBLE (dock->client_area))
     gtk_widget_size_request (dock->client_area, requisition);
@@ -360,15 +360,15 @@ size_allocate_v (GList *list, gint start_x, gint start_y, guint height,
 }
 
 static void
-gnome_dock_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
+bonobo_dock_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
-  GnomeDock *dock;
+  BonoboDock *dock;
   gint top_bands_y, bottom_bands_y;
   gint left_bands_x, right_bands_x;
   GtkAllocation child_allocation;
   GList *lp;
 
-  dock = GNOME_DOCK (widget);
+  dock = BONOBO_DOCK (widget);
 
   widget->allocation = *allocation;
 
@@ -483,17 +483,17 @@ unmap_band_list (GList *list)
 }
 
 static void
-gnome_dock_map (GtkWidget *widget)
+bonobo_dock_map (GtkWidget *widget)
 {
-  GnomeDock *dock;
+  BonoboDock *dock;
 
   g_return_if_fail (widget != NULL);
-  g_return_if_fail (GNOME_IS_DOCK(widget));
+  g_return_if_fail (BONOBO_IS_DOCK(widget));
 
   if (GTK_WIDGET_CLASS (parent_class)->map != NULL)
     (* GTK_WIDGET_CLASS (parent_class)->map) (widget);
 
-  dock = GNOME_DOCK (widget);
+  dock = BONOBO_DOCK (widget);
 
   map_widget (dock->client_area);
 
@@ -506,14 +506,14 @@ gnome_dock_map (GtkWidget *widget)
 }
 
 static void
-gnome_dock_unmap (GtkWidget *widget)
+bonobo_dock_unmap (GtkWidget *widget)
 {
-  GnomeDock *dock;
+  BonoboDock *dock;
 
   g_return_if_fail (widget != NULL);
-  g_return_if_fail (GNOME_IS_DOCK(widget));
+  g_return_if_fail (BONOBO_IS_DOCK(widget));
 
-  dock = GNOME_DOCK (widget);
+  dock = BONOBO_DOCK (widget);
 
   unmap_widget (dock->client_area);
 
@@ -533,16 +533,16 @@ gnome_dock_unmap (GtkWidget *widget)
 /* GtkContainer methods.  */
 
 static void
-gnome_dock_add (GtkContainer *container, GtkWidget *child)
+bonobo_dock_add (GtkContainer *container, GtkWidget *child)
 {
-  GnomeDock *dock;
+  BonoboDock *dock;
 
-  dock = GNOME_DOCK (container);
-  gnome_dock_add_item (dock, GNOME_DOCK_ITEM(child), GNOME_DOCK_TOP, 0, 0, 0, TRUE);
+  dock = BONOBO_DOCK (container);
+  bonobo_dock_add_item (dock, BONOBO_DOCK_ITEM(child), BONOBO_DOCK_TOP, 0, 0, 0, TRUE);
 }
 
 static gboolean
-remove_from_band_list (GList **list, GnomeDockBand *child)
+remove_from_band_list (GList **list, BonoboDockBand *child)
 {
   GList *lp;
 
@@ -562,11 +562,11 @@ remove_from_band_list (GList **list, GnomeDockBand *child)
 }
 
 static void
-gnome_dock_remove (GtkContainer *container, GtkWidget *widget)
+bonobo_dock_remove (GtkContainer *container, GtkWidget *widget)
 {
-  GnomeDock *dock;
+  BonoboDock *dock;
 
-  dock = GNOME_DOCK (container);
+  dock = BONOBO_DOCK (container);
 
   if (dock->client_area == widget)
     {
@@ -601,11 +601,11 @@ gnome_dock_remove (GtkContainer *container, GtkWidget *widget)
 
       /* Then it must be one of the bands.  */
       {
-        GnomeDockBand *band;
+        BonoboDockBand *band;
 
-        g_return_if_fail (GNOME_IS_DOCK_BAND (widget));
+        g_return_if_fail (BONOBO_IS_DOCK_BAND (widget));
 
-        band = GNOME_DOCK_BAND (widget);
+        band = BONOBO_DOCK_BAND (widget);
         if (remove_from_band_list (&dock->top_bands, band)
             || remove_from_band_list (&dock->bottom_bands, band)
             || remove_from_band_list (&dock->left_bands, band)
@@ -634,19 +634,19 @@ forall_helper (GList *list,
 }
 
 static void
-gnome_dock_forall (GtkContainer *container,
+bonobo_dock_forall (GtkContainer *container,
                    gboolean include_internals,
                    GtkCallback callback,
                    gpointer callback_data)
 {
-  GnomeDock *dock;
+  BonoboDock *dock;
   GList *lp;
 
   g_return_if_fail (container != NULL);
-  g_return_if_fail (GNOME_IS_DOCK (container));
+  g_return_if_fail (BONOBO_IS_DOCK (container));
   g_return_if_fail (callback != NULL);
 
-  dock = GNOME_DOCK (container);
+  dock = BONOBO_DOCK (container);
 
   forall_helper (dock->top_bands, callback, callback_data);
   forall_helper (dock->bottom_bands, callback, callback_data);
@@ -668,7 +668,7 @@ gnome_dock_forall (GtkContainer *container,
 }
 
 static void
-gnome_dock_destroy (GtkObject *object)
+bonobo_dock_destroy (GtkObject *object)
 {
   /* remember, destroy can be run multiple times! */
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
@@ -676,9 +676,9 @@ gnome_dock_destroy (GtkObject *object)
 }
 
 static void
-gnome_dock_finalize (GObject *object)
+bonobo_dock_finalize (GObject *object)
 {
-  GnomeDock *self = GNOME_DOCK (object);
+  BonoboDock *self = BONOBO_DOCK (object);
 
   g_free (self->_priv);
   self->_priv = NULL;
@@ -702,14 +702,14 @@ gnome_dock_finalize (GObject *object)
    docking area `area'.  If `where' is NULL, the band becomes the
    first one in `area'.  */
 static gboolean
-drag_new (GnomeDock *dock,
-          GnomeDockItem *item,
+drag_new (BonoboDock *dock,
+          BonoboDockItem *item,
           GList **area,
           GList *where,
           gint x, gint y,
           gboolean is_vertical)
 {
-  GnomeDockBand *new_band;
+  BonoboDockBand *new_band;
   GList *next;
 
   DEBUG (("entering function"));
@@ -727,25 +727,25 @@ drag_new (GnomeDock *dock,
     next = where->next;
   if (next != NULL)
     {
-      GnomeDockBand *band;
+      BonoboDockBand *band;
       guint num_children;
 
-      band = GNOME_DOCK_BAND (next->data);
+      band = BONOBO_DOCK_BAND (next->data);
 
-      num_children = gnome_dock_band_get_num_children (band);
+      num_children = bonobo_dock_band_get_num_children (band);
 
       if (num_children == 0
           || (num_children == 1
               && GTK_WIDGET (band) == GTK_WIDGET (item)->parent))
-        new_band = GNOME_DOCK_BAND (next->data);
+        new_band = BONOBO_DOCK_BAND (next->data);
     }
 
   /* Create the new band and make it our child if we cannot re-use an
      existing one.  */
   if (new_band == NULL)
     {
-      new_band = GNOME_DOCK_BAND (gnome_dock_band_new ());
-      gnome_dock_band_set_orientation (new_band,
+      new_band = BONOBO_DOCK_BAND (bonobo_dock_band_new ());
+      bonobo_dock_band_set_orientation (new_band,
                                        (is_vertical
                                         ? GTK_ORIENTATION_VERTICAL
                                         : GTK_ORIENTATION_HORIZONTAL));
@@ -768,17 +768,17 @@ drag_new (GnomeDock *dock,
 
   /* Move the item to the new band.  (This is a no-op if we are using
      `where->next' and it already contains `item'.)  */
-  gnome_dock_item_attach (item, GTK_WIDGET (new_band), x, y);
+  bonobo_dock_item_attach (item, GTK_WIDGET (new_band), x, y);
 
   /* Prepare the band for dragging of `item'.  */
-  gnome_dock_band_drag_begin (new_band, item);
+  bonobo_dock_band_drag_begin (new_band, item);
 
   /* Set the offset of `item' in the band.  */
   if (is_vertical)
-    gnome_dock_band_set_child_offset (new_band, GTK_WIDGET (item),
+    bonobo_dock_band_set_child_offset (new_band, GTK_WIDGET (item),
                                       MAX (y - dock->client_rect.y, 0));
   else
-    gnome_dock_band_set_child_offset (new_band, GTK_WIDGET (item),
+    bonobo_dock_band_set_child_offset (new_band, GTK_WIDGET (item),
                                       MAX (x - GTK_WIDGET (dock)->allocation.x, 0));
 
   return TRUE;
@@ -786,21 +786,21 @@ drag_new (GnomeDock *dock,
 
 /* Case (II): Drag into an existing band.  */
 static gboolean
-drag_to (GnomeDock *dock,
-         GnomeDockItem *item,
+drag_to (BonoboDock *dock,
+         BonoboDockItem *item,
          GList *where,
          gint x, gint y,
          gboolean is_vertical)
 {
   DEBUG (("x %d y %d", x, y));
 
-  return gnome_dock_band_drag_to (GNOME_DOCK_BAND (where->data), item, x, y);
+  return bonobo_dock_band_drag_to (BONOBO_DOCK_BAND (where->data), item, x, y);
 }
 
 /* Case (III): Move a floating (i.e. floating) item.  */
 static gboolean
-drag_floating (GnomeDock *dock,
-               GnomeDockItem *item,
+drag_floating (BonoboDock *dock,
+               BonoboDockItem *item,
                gint x,
                gint y,
                gint rel_x,
@@ -847,9 +847,9 @@ drag_floating (GnomeDock *dock,
 	  gtk_widget_map (item_widget);
 	  gtk_widget_queue_resize (item_widget);
 
-	  gnome_dock_item_detach (item, x, y);
+	  bonobo_dock_item_detach (item, x, y);
           if (item->in_drag)
-            gnome_dock_item_grab_pointer (item);
+            bonobo_dock_item_grab_pointer (item);
 
           gtk_widget_unref (item_widget);
         }
@@ -858,7 +858,7 @@ drag_floating (GnomeDock *dock,
     {
       /* The item is already floating; all we have to do is move it to
          the current dragging position.  */
-      gnome_dock_item_drag_floating (item, x, y);
+      bonobo_dock_item_drag_floating (item, x, y);
     }
 
   return TRUE;
@@ -870,8 +870,8 @@ drag_floating (GnomeDock *dock,
    area `area'.  If so, dock it and return TRUE; otherwise, return
    FALSE.  */
 static gboolean
-drag_check (GnomeDock *dock,
-            GnomeDockItem *item,
+drag_check (BonoboDock *dock,
+            BonoboDockItem *item,
             GList **area,
             gint x, gint y,
             gboolean is_vertical)
@@ -881,9 +881,9 @@ drag_check (GnomeDock *dock,
 
   for (lp = *area; lp != NULL; lp = lp->next)
     {
-      GnomeDockBand *band;
+      BonoboDockBand *band;
 
-      band = GNOME_DOCK_BAND (lp->data);
+      band = BONOBO_DOCK_BAND (lp->data);
 
       if (! band->new_for_drag)
         {
@@ -915,27 +915,27 @@ drag_check (GnomeDock *dock,
   return FALSE;
 }
 
-/* Snap the GnomeDockItem `widget' to `dock' at the specified
+/* Snap the BonoboDockItem `widget' to `dock' at the specified
    position.  */
 static void
-drag_snap (GnomeDock *dock,
+drag_snap (BonoboDock *dock,
            GtkWidget *widget,
            gint x, gint y)
 {
 #define SNAP 50
-  GnomeDockItem *item;
-  GnomeDockItemBehavior item_behavior;
+  BonoboDockItem *item;
+  BonoboDockItemBehavior item_behavior;
   gint win_x, win_y;
   gint rel_x, rel_y;
   gboolean item_allows_horizontal, item_allows_vertical;
 
-  item = GNOME_DOCK_ITEM (widget);
+  item = BONOBO_DOCK_ITEM (widget);
 
-  item_behavior = gnome_dock_item_get_behavior (item);
+  item_behavior = bonobo_dock_item_get_behavior (item);
   item_allows_horizontal = ! (item_behavior
-                              & GNOME_DOCK_ITEM_BEH_NEVER_HORIZONTAL);
+                              & BONOBO_DOCK_ITEM_BEH_NEVER_HORIZONTAL);
   item_allows_vertical = ! (item_behavior
-                            & GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL);
+                            & BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
 
   gdk_window_get_origin (GTK_WIDGET (dock)->window, &win_x, &win_y);
   rel_x = x - win_x;
@@ -992,13 +992,13 @@ drag_snap (GnomeDock *dock,
   /* We are not in any "interesting" area: the item must be floating
      if allowed to.  */
   if (dock->floating_items_allowed
-      && ! (item_behavior & GNOME_DOCK_ITEM_BEH_NEVER_DETACH))
+      && ! (item_behavior & BONOBO_DOCK_ITEM_BEH_NEVER_DETACH))
     drag_floating (dock, item, x, y, rel_x, rel_y);
 
   /* If still not floating, fall back to moving the item in its own
      band.  */
   if (! item->is_floating)
-    gnome_dock_band_drag_to (GNOME_DOCK_BAND (GTK_WIDGET (item)->parent),
+    bonobo_dock_band_drag_to (BONOBO_DOCK_BAND (GTK_WIDGET (item)->parent),
                              item, rel_x, rel_y);
 }
 
@@ -1008,20 +1008,20 @@ drag_snap (GnomeDock *dock,
 static void
 drag_begin (GtkWidget *widget, gpointer data)
 {
-  GnomeDock *dock;
-  GnomeDockItem *item;
+  BonoboDock *dock;
+  BonoboDockItem *item;
 
   DEBUG (("entering function"));
 
-  dock = GNOME_DOCK (data);
-  item = GNOME_DOCK_ITEM (widget);
+  dock = BONOBO_DOCK (data);
+  item = BONOBO_DOCK_ITEM (widget);
 
   /* Communicate all the bands that `widget' is currently being
      dragged.  */
-  g_list_foreach (dock->top_bands, (GFunc) gnome_dock_band_drag_begin, item);
-  g_list_foreach (dock->bottom_bands, (GFunc) gnome_dock_band_drag_begin, item);
-  g_list_foreach (dock->right_bands, (GFunc) gnome_dock_band_drag_begin, item);
-  g_list_foreach (dock->left_bands, (GFunc) gnome_dock_band_drag_begin, item);
+  g_list_foreach (dock->top_bands, (GFunc) bonobo_dock_band_drag_begin, item);
+  g_list_foreach (dock->bottom_bands, (GFunc) bonobo_dock_band_drag_begin, item);
+  g_list_foreach (dock->right_bands, (GFunc) bonobo_dock_band_drag_begin, item);
+  g_list_foreach (dock->left_bands, (GFunc) bonobo_dock_band_drag_begin, item);
 }
 
 
@@ -1029,18 +1029,18 @@ drag_begin (GtkWidget *widget, gpointer data)
 /* "drag_end" signal handling.  */
 
 static void
-drag_end_bands (GList **list, GnomeDockItem *item)
+drag_end_bands (GList **list, BonoboDockItem *item)
 {
   GList *lp;
-  GnomeDockBand *band;
+  BonoboDockBand *band;
 
   lp = *list;
   while (lp != NULL)
     {
-      band = GNOME_DOCK_BAND(lp->data);
-      gnome_dock_band_drag_end (band, item);
+      band = BONOBO_DOCK_BAND(lp->data);
+      bonobo_dock_band_drag_end (band, item);
 
-      if (gnome_dock_band_get_num_children (band) == 0)
+      if (bonobo_dock_band_get_num_children (band) == 0)
         {
           GList *next;
 
@@ -1059,13 +1059,13 @@ drag_end_bands (GList **list, GnomeDockItem *item)
 static void
 drag_end (GtkWidget *widget, gpointer data)
 {
-  GnomeDockItem *item;
-  GnomeDock *dock;
+  BonoboDockItem *item;
+  BonoboDock *dock;
 
   DEBUG (("entering function"));
 
-  item = GNOME_DOCK_ITEM (widget);
-  dock = GNOME_DOCK (data);
+  item = BONOBO_DOCK_ITEM (widget);
+  dock = BONOBO_DOCK (data);
 
   /* Communicate to all the bands that `item' is no longer being
      dragged.  */
@@ -1081,24 +1081,24 @@ drag_end (GtkWidget *widget, gpointer data)
 
 /* "drag_motion" signal handling.  */
 
-/* Handle a drag motion on the GnomeDockItem `widget'.  This is
+/* Handle a drag motion on the BonoboDockItem `widget'.  This is
    connected to the "drag_motion" of all the children being added to
-   the GnomeDock, and tries to dock the dragged item at the current
+   the BonoboDock, and tries to dock the dragged item at the current
    (`x', `y') position of the pointer.  */
 static void
 drag_motion (GtkWidget *widget,
              gint x, gint y,
              gpointer data)
 {
-  drag_snap (GNOME_DOCK (data), widget, x, y);
+  drag_snap (BONOBO_DOCK (data), widget, x, y);
 }
 
 
 
-static GnomeDockItem *
-get_docked_item_by_name (GnomeDock *dock,
+static BonoboDockItem *
+get_docked_item_by_name (BonoboDock *dock,
                          const gchar *name,
-                         GnomeDockPlacement *placement_return,
+                         BonoboDockPlacement *placement_return,
                          guint *num_band_return,
                          guint *band_position_return,
                          guint *offset_return)
@@ -1107,15 +1107,15 @@ get_docked_item_by_name (GnomeDock *dock,
     struct
     {
       GList *band_list;
-      GnomeDockPlacement placement;
+      BonoboDockPlacement placement;
     }
     areas[] =
     {
-      { NULL, GNOME_DOCK_TOP },
-      { NULL, GNOME_DOCK_BOTTOM },
-      { NULL, GNOME_DOCK_LEFT },
-      { NULL, GNOME_DOCK_RIGHT },
-      { NULL, GNOME_DOCK_FLOATING },
+      { NULL, BONOBO_DOCK_TOP },
+      { NULL, BONOBO_DOCK_BOTTOM },
+      { NULL, BONOBO_DOCK_LEFT },
+      { NULL, BONOBO_DOCK_RIGHT },
+      { NULL, BONOBO_DOCK_FLOATING },
     };
     GList *lp;
     guint i;
@@ -1133,11 +1133,11 @@ get_docked_item_by_name (GnomeDock *dock,
              lp != NULL;
              lp = lp->next, num_band++)
           {
-            GnomeDockBand *band;
-            GnomeDockItem *item;
+            BonoboDockBand *band;
+            BonoboDockItem *item;
 
-            band = GNOME_DOCK_BAND(lp->data);
-            item = gnome_dock_band_get_item_by_name (band,
+            band = BONOBO_DOCK_BAND(lp->data);
+            item = bonobo_dock_band_get_item_by_name (band,
                                                      name,
                                                      band_position_return,
                                                      offset_return);
@@ -1157,12 +1157,12 @@ get_docked_item_by_name (GnomeDock *dock,
   return NULL;
 }
 
-static GnomeDockItem *
-get_floating_item_by_name (GnomeDock *dock,
+static BonoboDockItem *
+get_floating_item_by_name (BonoboDock *dock,
                            const gchar *name)
 {
   GList *lp;
-  GnomeDockItem *item;
+  BonoboDockItem *item;
 
   for (lp = dock->floating_children; lp != NULL; lp = lp->next)
     {
@@ -1175,10 +1175,10 @@ get_floating_item_by_name (GnomeDock *dock,
 }
 
 static void
-connect_drag_signals (GnomeDock *dock,
+connect_drag_signals (BonoboDock *dock,
                       GtkWidget *item)
 {
-  if (GNOME_IS_DOCK_ITEM (item))
+  if (BONOBO_IS_DOCK_ITEM (item))
     {
       DEBUG (("here"));
       gtk_signal_connect (GTK_OBJECT (item), "dock_drag_begin",
@@ -1193,7 +1193,7 @@ connect_drag_signals (GnomeDock *dock,
 
 
 GtkType
-gnome_dock_get_type (void)
+bonobo_dock_get_type (void)
 {
   static GtkType dock_type = 0;
 
@@ -1201,11 +1201,11 @@ gnome_dock_get_type (void)
     {
       GtkTypeInfo dock_info =
       {
-	"GnomeDock",
-	sizeof (GnomeDock),
-	sizeof (GnomeDockClass),
-	(GtkClassInitFunc) gnome_dock_class_init,
-	(GtkObjectInitFunc) gnome_dock_init,
+	"BonoboDock",
+	sizeof (BonoboDock),
+	sizeof (BonoboDockClass),
+	(GtkClassInitFunc) bonobo_dock_class_init,
+	(GtkObjectInitFunc) bonobo_dock_init,
         /* reserved_1 */ NULL,
 	/* reserved_2 */ NULL,
 	(GtkClassInitFunc) NULL,
@@ -1218,19 +1218,19 @@ gnome_dock_get_type (void)
 }
 
 /**
- * gnome_dock_new:
+ * bonobo_dock_new:
  *
- * Description: Creates a new #GnomeDock widget.
+ * Description: Creates a new #BonoboDock widget.
  *
  * Return value: The new widget.
  **/
 GtkWidget *
-gnome_dock_new (void)
+bonobo_dock_new (void)
 {
-  GnomeDock *dock;
+  BonoboDock *dock;
   GtkWidget *widget;
 
-  dock = gtk_type_new (gnome_dock_get_type ());
+  dock = gtk_type_new (bonobo_dock_get_type ());
   widget = GTK_WIDGET (dock);
 
 #if 0                           /* FIXME: should I? */
@@ -1242,23 +1242,23 @@ gnome_dock_new (void)
 }
 
 /**
- * gnome_dock_allow_floating_items:
- * @dock: A pointer to a #GnomeDock widget
+ * bonobo_dock_allow_floating_items:
+ * @dock: A pointer to a #BonoboDock widget
  * @enable: Specifies whether floating items are allowed in this dock
  *
  * Description: Enable or disable floating items on @dock, according
  * to @enable.
  **/
 void
-gnome_dock_allow_floating_items (GnomeDock *dock,
+bonobo_dock_allow_floating_items (BonoboDock *dock,
                                  gboolean enable)
 {
   dock->floating_items_allowed = enable;
 }
 
 /**
- * gnome_dock_add_item:
- * @dock: A pointer to a #GnomeDock widget
+ * bonobo_dock_add_item:
+ * @dock: A pointer to a #BonoboDock widget
  * @item: The item to add
  * @placement: Placement for the new item
  * @band_num: Number of the band the new item must be added to
@@ -1267,22 +1267,22 @@ gnome_dock_allow_floating_items (GnomeDock *dock,
  * @in_new_band: Specifies whether a new band must be created for this item
  *
  * Description: Add @item to @dock.  @placement can be either
- * %GNOME_DOCK_TOP, %GNOME_DOCK_RIGHT, %GNOME_DOCK_BOTTOM or
- * %GNOME_DOCK_LEFT, and specifies what area of the dock should
+ * %BONOBO_DOCK_TOP, %BONOBO_DOCK_RIGHT, %BONOBO_DOCK_BOTTOM or
+ * %BONOBO_DOCK_LEFT, and specifies what area of the dock should
  * contain the item.  If @in_new_band is %TRUE, a new dock band is
  * created at the position specified by @band_num; otherwise, the item
  * is added to the @band_num'th band.
  **/
 void
-gnome_dock_add_item (GnomeDock *dock,
-                     GnomeDockItem *item,
-                     GnomeDockPlacement placement,
+bonobo_dock_add_item (BonoboDock *dock,
+                     BonoboDockItem *item,
+                     BonoboDockPlacement placement,
                      guint band_num,
                      gint position,
                      guint offset,
                      gboolean in_new_band)
 {
-  GnomeDockBand *band;
+  BonoboDockBand *band;
   GList **band_ptr;
   GList *p;
 
@@ -1291,20 +1291,20 @@ gnome_dock_add_item (GnomeDock *dock,
 
   switch (placement)
     {
-    case GNOME_DOCK_TOP:
+    case BONOBO_DOCK_TOP:
       band_ptr = &dock->top_bands;
       break;
-    case GNOME_DOCK_BOTTOM:
+    case BONOBO_DOCK_BOTTOM:
       band_ptr = &dock->bottom_bands;
       break;
-    case GNOME_DOCK_LEFT:
+    case BONOBO_DOCK_LEFT:
       band_ptr = &dock->left_bands;
       break;
-    case GNOME_DOCK_RIGHT:
+    case BONOBO_DOCK_RIGHT:
       band_ptr = &dock->right_bands;
       break;
-    case GNOME_DOCK_FLOATING:
-      g_warning ("Floating dock items not supported by `gnome_dock_add_item'.");
+    case BONOBO_DOCK_FLOATING:
+      g_warning ("Floating dock items not supported by `bonobo_dock_add_item'.");
       return;
     default:
       g_error ("Unknown dock placement.");
@@ -1316,7 +1316,7 @@ gnome_dock_add_item (GnomeDock *dock,
     {
       GtkWidget *new_band;
 
-      new_band = gnome_dock_band_new ();
+      new_band = bonobo_dock_band_new ();
 
       /* FIXME: slow.  */
       if (in_new_band)
@@ -1332,11 +1332,11 @@ gnome_dock_add_item (GnomeDock *dock,
           p = g_list_last (*band_ptr);
         }
 
-      if (placement == GNOME_DOCK_TOP || placement == GNOME_DOCK_BOTTOM)
-        gnome_dock_band_set_orientation (GNOME_DOCK_BAND (new_band),
+      if (placement == BONOBO_DOCK_TOP || placement == BONOBO_DOCK_BOTTOM)
+        bonobo_dock_band_set_orientation (BONOBO_DOCK_BAND (new_band),
                                          GTK_ORIENTATION_HORIZONTAL);
       else
-        gnome_dock_band_set_orientation (GNOME_DOCK_BAND (new_band),
+        bonobo_dock_band_set_orientation (BONOBO_DOCK_BAND (new_band),
                                          GTK_ORIENTATION_VERTICAL);
 
       gtk_widget_set_parent (new_band, GTK_WIDGET (dock));
@@ -1344,8 +1344,8 @@ gnome_dock_add_item (GnomeDock *dock,
       gtk_widget_queue_resize (GTK_WIDGET (dock));
     }
 
-  band = GNOME_DOCK_BAND (p->data);
-  gnome_dock_band_insert (band, GTK_WIDGET(item), offset, position);
+  band = BONOBO_DOCK_BAND (p->data);
+  bonobo_dock_band_insert (band, GTK_WIDGET(item), offset, position);
 
   connect_drag_signals (dock, GTK_WIDGET(item));
 
@@ -1353,8 +1353,8 @@ gnome_dock_add_item (GnomeDock *dock,
 }
 
 /**
- * gnome_dock_add_floating_item:
- * @dock: A #GnomeDock widget
+ * bonobo_dock_add_floating_item:
+ * @dock: A #BonoboDock widget
  * @item: The item to be added
  * @x: X-coordinate for the floating item
  * @y: Y-coordinate for the floating item
@@ -1365,16 +1365,16 @@ gnome_dock_add_item (GnomeDock *dock,
  * screen).
  **/
 void
-gnome_dock_add_floating_item (GnomeDock *dock,
-                              GnomeDockItem *item,
+bonobo_dock_add_floating_item (BonoboDock *dock,
+                              BonoboDockItem *item,
                               gint x, gint y,
                               GtkOrientation orientation)
 {
   GtkWidget *widget;
 
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (item));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (item));
 
-  gnome_dock_item_set_orientation (item, orientation);
+  bonobo_dock_item_set_orientation (item, orientation);
 
   widget = GTK_WIDGET(item);
   gtk_widget_ref (widget);
@@ -1397,7 +1397,7 @@ gnome_dock_add_floating_item (GnomeDock *dock,
       gtk_widget_queue_resize (widget);
     }
 
-  gnome_dock_item_detach (item, x, y);
+  bonobo_dock_item_detach (item, x, y);
   dock->floating_children = g_list_prepend (dock->floating_children, widget);
 
   connect_drag_signals (dock, widget);
@@ -1408,14 +1408,14 @@ gnome_dock_add_floating_item (GnomeDock *dock,
 }
 
 /**
- * gnome_dock_set_client_area:
- * @dock: A #GnomeDock widget
+ * bonobo_dock_set_client_area:
+ * @dock: A #BonoboDock widget
  * @widget: The widget to be used for the client area.
  *
  * Description: Specify a widget for the dock's client area.
  **/
 void
-gnome_dock_set_client_area (GnomeDock *dock, GtkWidget *widget)
+bonobo_dock_set_client_area (BonoboDock *dock, GtkWidget *widget)
 {
   g_return_if_fail (dock != NULL);
 
@@ -1453,8 +1453,8 @@ gnome_dock_set_client_area (GnomeDock *dock, GtkWidget *widget)
 }
 
 /**
- * gnome_dock_get_client_area:
- * @dock: A #GnomeDock widget.
+ * bonobo_dock_get_client_area:
+ * @dock: A #BonoboDock widget.
  *
  * Description: Retrieve the widget being used as the client area in
  * @dock.
@@ -1462,14 +1462,14 @@ gnome_dock_set_client_area (GnomeDock *dock, GtkWidget *widget)
  * Returns: The client area widget.
  **/
 GtkWidget *
-gnome_dock_get_client_area (GnomeDock *dock)
+bonobo_dock_get_client_area (BonoboDock *dock)
 {
   return dock->client_area;
 }
 
 /**
- * gnome_dock_get_item_by_name:
- * @dock: A #GnomeDock widget.
+ * bonobo_dock_get_item_by_name:
+ * @dock: A #BonoboDock widget.
  * @name: The name of the dock item to retrieve
  * @placement_return: A pointer to a variable holding the item's placement
  * @num_band_return: A pointer to a variable holding the band number
@@ -1481,21 +1481,21 @@ gnome_dock_get_client_area (GnomeDock *dock)
  * Description: Retrieve the dock item named @name; information about
  * its position in the dock is returned via @placement_return,
  * @num_band_return, @band_position_return and @offset_return.  If
- * the placement is %GNOME_DOCK_FLOATING *@num_band_return,
+ * the placement is %BONOBO_DOCK_FLOATING *@num_band_return,
  * *@band_position_return and *@offset_return are not set.
  *
- * Returns: The named #GnomeDockItem widget, or %NULL if no item with
+ * Returns: The named #BonoboDockItem widget, or %NULL if no item with
  * such name exists.
  **/
-GnomeDockItem *
-gnome_dock_get_item_by_name (GnomeDock *dock,
+BonoboDockItem *
+bonobo_dock_get_item_by_name (BonoboDock *dock,
                              const gchar *name,
-                             GnomeDockPlacement *placement_return,
+                             BonoboDockPlacement *placement_return,
                              guint *num_band_return,
                              guint *band_position_return,
                              guint *offset_return)
 {
-  GnomeDockItem *item;
+  BonoboDockItem *item;
 
   item = get_docked_item_by_name (dock,
                                   name,
@@ -1510,7 +1510,7 @@ gnome_dock_get_item_by_name (GnomeDock *dock,
   if (item != NULL)
     {
       if (placement_return != NULL)
-        *placement_return = GNOME_DOCK_FLOATING;
+        *placement_return = BONOBO_DOCK_FLOATING;
       return item;
     }
 
@@ -1522,8 +1522,8 @@ gnome_dock_get_item_by_name (GnomeDock *dock,
 /* Layout functions.  */
 
 static void
-layout_add_floating (GnomeDock *dock,
-                     GnomeDockLayout *layout)
+layout_add_floating (BonoboDock *dock,
+                     BonoboDockLayout *layout)
 {
   GList *lp;
 
@@ -1531,23 +1531,23 @@ layout_add_floating (GnomeDock *dock,
     {
       GtkOrientation orientation;
       gint x, y;
-      GnomeDockItem *item;
+      BonoboDockItem *item;
 
-      item = GNOME_DOCK_ITEM (lp->data);
+      item = BONOBO_DOCK_ITEM (lp->data);
 
-      orientation = gnome_dock_item_get_orientation (item);
-      gnome_dock_item_get_floating_position (item, &x, &y);
+      orientation = bonobo_dock_item_get_orientation (item);
+      bonobo_dock_item_get_floating_position (item, &x, &y);
 
-      gnome_dock_layout_add_floating_item (layout, item,
+      bonobo_dock_layout_add_floating_item (layout, item,
                                            x, y,
                                            orientation);
     }
 }
 
 static void
-layout_add_bands (GnomeDock *dock,
-                  GnomeDockLayout *layout,
-                  GnomeDockPlacement placement,
+layout_add_bands (BonoboDock *dock,
+                  BonoboDockLayout *layout,
+                  BonoboDockPlacement placement,
                   GList *band_list)
 {
   guint band_num;
@@ -1557,32 +1557,32 @@ layout_add_bands (GnomeDock *dock,
        lp != NULL;
        lp = lp->next, band_num++)
     {
-      GnomeDockBand *band;
+      BonoboDockBand *band;
 
-      band = GNOME_DOCK_BAND(lp->data);
-      gnome_dock_band_layout_add (band, layout, placement, band_num);
+      band = BONOBO_DOCK_BAND(lp->data);
+      bonobo_dock_band_layout_add (band, layout, placement, band_num);
     }
 }
 
 /**
- * gnome_dock_get_layout:
- * @dock: A #GnomeDock widget
+ * bonobo_dock_get_layout:
+ * @dock: A #BonoboDock widget
  *
  * Description: Retrieve the layout of @dock.
  *
- * Returns: @dock's layout as a #GnomeDockLayout object.
+ * Returns: @dock's layout as a #BonoboDockLayout object.
  **/
-GnomeDockLayout *
-gnome_dock_get_layout (GnomeDock *dock)
+BonoboDockLayout *
+bonobo_dock_get_layout (BonoboDock *dock)
 {
-  GnomeDockLayout *layout;
+  BonoboDockLayout *layout;
 
-  layout = gnome_dock_layout_new ();
+  layout = bonobo_dock_layout_new ();
 
-  layout_add_bands (dock, layout, GNOME_DOCK_TOP, dock->top_bands);
-  layout_add_bands (dock, layout, GNOME_DOCK_BOTTOM, dock->bottom_bands);
-  layout_add_bands (dock, layout, GNOME_DOCK_LEFT, dock->left_bands);
-  layout_add_bands (dock, layout, GNOME_DOCK_RIGHT, dock->right_bands);
+  layout_add_bands (dock, layout, BONOBO_DOCK_TOP, dock->top_bands);
+  layout_add_bands (dock, layout, BONOBO_DOCK_BOTTOM, dock->bottom_bands);
+  layout_add_bands (dock, layout, BONOBO_DOCK_LEFT, dock->left_bands);
+  layout_add_bands (dock, layout, BONOBO_DOCK_RIGHT, dock->right_bands);
 
   layout_add_floating (dock, layout);
 
@@ -1590,17 +1590,17 @@ gnome_dock_get_layout (GnomeDock *dock)
 }
 
 /**
- * gnome_dock_add_from_layout:
- * @dock: The #GnomeDock widget
- * @layout: A #GnomeDockLayout widget
+ * bonobo_dock_add_from_layout:
+ * @dock: The #BonoboDock widget
+ * @layout: A #BonoboDockLayout widget
  *
  * Description: Add all the items in @layout to the specified @dock.
  *
  * Returns: %TRUE if the operation succeeds, %FALSE if it fails.
  **/
 gboolean
-gnome_dock_add_from_layout (GnomeDock *dock,
-                            GnomeDockLayout *layout)
+bonobo_dock_add_from_layout (BonoboDock *dock,
+                            BonoboDockLayout *layout)
 {
-  return gnome_dock_layout_add_to_dock (layout, dock);
+  return bonobo_dock_layout_add_to_dock (layout, dock);
 }

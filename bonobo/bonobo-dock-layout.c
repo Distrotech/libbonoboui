@@ -1,4 +1,4 @@
-/* gnome-dock-layout.c
+/* bonobo-dock-layout.c
 
    Copyright (C) 1998 Free Software Foundation
 
@@ -28,16 +28,16 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 
-#include "gnome-dock-layout.h"
+#include <bonobo/bonobo-dock-layout.h>
 
-/* TODO: handle incorrect GNOME_DOCK_ITEM_BEH_EXCLUSIVE situations.  */
+/* TODO: handle incorrect BONOBO_DOCK_ITEM_BEH_EXCLUSIVE situations.  */
 
-struct _GnomeDockLayoutPrivate
+struct _BonoboDockLayoutPrivate
 {
 	int dummy;
 	/* Nothing right now, needs to get filled with the private things */
 	/* XXX: When stuff is added, uncomment the allocation in the
-	 * gnome_dock_layout_init function! */
+	 * bonobo_dock_layout_init function! */
 };
 
 
@@ -45,12 +45,12 @@ static GtkObjectClass *parent_class = NULL;
 
 
 
-static void   gnome_dock_layout_class_init   (GnomeDockLayoutClass  *class);
+static void   bonobo_dock_layout_class_init   (BonoboDockLayoutClass  *class);
 
-static void   gnome_dock_layout_init         (GnomeDockLayout *layout);
+static void   bonobo_dock_layout_init         (BonoboDockLayout *layout);
 
-static void   gnome_dock_layout_destroy      (GtkObject *object);
-static void   gnome_dock_layout_finalize     (GObject *object);
+static void   bonobo_dock_layout_destroy      (GtkObject *object);
+static void   bonobo_dock_layout_finalize     (GObject *object);
 
 static gint   item_compare_func              (gconstpointer a,
                                               gconstpointer b);
@@ -61,16 +61,16 @@ static gint   compare_item_by_name           (gconstpointer a,
 static gint   compare_item_by_pointer        (gconstpointer a,
                                               gconstpointer b);
 
-static GList *find                           (GnomeDockLayout *layout,
+static GList *find                           (BonoboDockLayout *layout,
                                               gconstpointer a,
                                               GCompareFunc func);
 
-static void   remove_item                    (GnomeDockLayout *layout,
+static void   remove_item                    (BonoboDockLayout *layout,
                                               GList *list);
 
 
 static void
-gnome_dock_layout_class_init (GnomeDockLayoutClass  *class)
+bonobo_dock_layout_class_init (BonoboDockLayoutClass  *class)
 {
   GtkObjectClass *object_class;
   GObjectClass *gobject_class;
@@ -78,30 +78,30 @@ gnome_dock_layout_class_init (GnomeDockLayoutClass  *class)
   object_class = (GtkObjectClass *) class;
   gobject_class = (GObjectClass *) class;
 
-  object_class->destroy = gnome_dock_layout_destroy;
-  gobject_class->finalize = gnome_dock_layout_finalize;
+  object_class->destroy = bonobo_dock_layout_destroy;
+  gobject_class->finalize = bonobo_dock_layout_finalize;
 
   parent_class = gtk_type_class (gtk_object_get_type ());
 }
 
 static void
-gnome_dock_layout_init (GnomeDockLayout *layout)
+bonobo_dock_layout_init (BonoboDockLayout *layout)
 {
   layout->_priv = NULL;
   /* XXX: when there is some private stuff enable this
-  layout->_priv = g_new0(GnomeDockLayoutPrivate, 1);
+  layout->_priv = g_new0(BonoboDockLayoutPrivate, 1);
   */
   layout->items = NULL;
 }
 
 static void
-gnome_dock_layout_destroy (GtkObject *object)
+bonobo_dock_layout_destroy (GtkObject *object)
 {
-  GnomeDockLayout *layout;
+  BonoboDockLayout *layout;
 
   /* remember, destroy can be run multiple times! */
 
-  layout = GNOME_DOCK_LAYOUT (object);
+  layout = BONOBO_DOCK_LAYOUT (object);
 
   while (layout->items)
     remove_item (layout, layout->items);
@@ -111,11 +111,11 @@ gnome_dock_layout_destroy (GtkObject *object)
 }
 
 static void
-gnome_dock_layout_finalize (GObject *object)
+bonobo_dock_layout_finalize (GObject *object)
 {
-  GnomeDockLayout *layout;
+  BonoboDockLayout *layout;
 
-  layout = GNOME_DOCK_LAYOUT (object);
+  layout = BONOBO_DOCK_LAYOUT (object);
 
   /* Free the private structure */
   g_free (layout->_priv);
@@ -131,7 +131,7 @@ static gint
 item_compare_func (gconstpointer a,
                    gconstpointer b)
 {
-  const GnomeDockLayoutItem *item_a, *item_b;
+  const BonoboDockLayoutItem *item_a, *item_b;
 
   item_a = a;
   item_b = b;
@@ -139,7 +139,7 @@ item_compare_func (gconstpointer a,
   if (item_a->placement != item_b->placement)
     return item_b->placement - item_a->placement;
 
-  if (item_a->placement == GNOME_DOCK_FLOATING)
+  if (item_a->placement == BONOBO_DOCK_FLOATING)
     return 0; /* Floating items don't need to be ordered.  */
   else
     {
@@ -155,7 +155,7 @@ item_compare_func (gconstpointer a,
 static gint
 compare_item_by_name (gconstpointer a, gconstpointer b)
 {
-  const GnomeDockItem *item;
+  const BonoboDockItem *item;
   const gchar *name;
 
   item = b;
@@ -171,13 +171,13 @@ compare_item_by_pointer (gconstpointer a, gconstpointer b)
 }
 
 static GList *
-find (GnomeDockLayout *layout, gconstpointer data, GCompareFunc func)
+find (BonoboDockLayout *layout, gconstpointer data, GCompareFunc func)
 {
   GList *p;
 
   for (p = layout->items; p != NULL; p = p->next)
     {
-      GnomeDockLayoutItem *item;
+      BonoboDockLayoutItem *item;
 
       item = p->data;
       if (! (* func) (data, item->item))
@@ -188,12 +188,12 @@ find (GnomeDockLayout *layout, gconstpointer data, GCompareFunc func)
 }
 
 static void
-remove_item (GnomeDockLayout *layout,
+remove_item (BonoboDockLayout *layout,
              GList *list)
 {
-  GnomeDockItem *item;
+  BonoboDockItem *item;
 
-  item = ((GnomeDockLayoutItem *) list->data)->item;
+  item = ((BonoboDockLayoutItem *) list->data)->item;
 
   gtk_widget_unref (GTK_WIDGET (item));
 
@@ -206,7 +206,7 @@ remove_item (GnomeDockLayout *layout,
 
 
 guint
-gnome_dock_layout_get_type (void)
+bonobo_dock_layout_get_type (void)
 {
   static guint layout_type = 0;
 	
@@ -214,11 +214,11 @@ gnome_dock_layout_get_type (void)
     {
       GtkTypeInfo layout_info =
       {
-        "GnomeDockLayout",
-        sizeof (GnomeDockLayout),
-        sizeof (GnomeDockLayoutClass),
-        (GtkClassInitFunc) gnome_dock_layout_class_init,
-        (GtkObjectInitFunc) gnome_dock_layout_init,
+        "BonoboDockLayout",
+        sizeof (BonoboDockLayout),
+        sizeof (BonoboDockLayoutClass),
+        (GtkClassInitFunc) bonobo_dock_layout_class_init,
+        (GtkObjectInitFunc) bonobo_dock_layout_init,
         NULL,
         NULL,
 	NULL
@@ -231,26 +231,26 @@ gnome_dock_layout_get_type (void)
 }
 
 /**
- * gnome_dock_layout_new:
+ * bonobo_dock_layout_new:
  * 
- * Description: Create a new #GnomeDockLayout widget.
+ * Description: Create a new #BonoboDockLayout widget.
  * 
- * Returns: The new #GnomeDockLayout widget.
+ * Returns: The new #BonoboDockLayout widget.
  **/
    
-GnomeDockLayout *
-gnome_dock_layout_new (void)
+BonoboDockLayout *
+bonobo_dock_layout_new (void)
 {
-  GnomeDockLayout *new;
+  BonoboDockLayout *new;
 
-  new = gtk_type_new (gnome_dock_layout_get_type ());
+  new = gtk_type_new (bonobo_dock_layout_get_type ());
 
   return new;
 }
 
 /**
- * gnome_dock_layout_add_item:
- * @layout: A #GnomeDockLayout widget
+ * bonobo_dock_layout_add_item:
+ * @layout: A #BonoboDockLayout widget
  * @item: The dock item to be added to @layout
  * @placement: Placement of @item in @layout
  * @band_num: Band number
@@ -262,16 +262,16 @@ gnome_dock_layout_new (void)
  * Returns: %TRUE if the operation succeeds, %FALSE if it fails.
  **/
 gboolean
-gnome_dock_layout_add_item (GnomeDockLayout *layout,
-                            GnomeDockItem *item,
-                            GnomeDockPlacement placement,
+bonobo_dock_layout_add_item (BonoboDockLayout *layout,
+                            BonoboDockItem *item,
+                            BonoboDockPlacement placement,
                             gint band_num,
                             gint band_position,
                             gint offset)
 {
-  GnomeDockLayoutItem *new;
+  BonoboDockLayoutItem *new;
 
-  new = g_new (GnomeDockLayoutItem, 1);
+  new = g_new (BonoboDockLayoutItem, 1);
   new->item = item;
   new->placement = placement;
   new->position.docked.band_num = band_num;
@@ -286,8 +286,8 @@ gnome_dock_layout_add_item (GnomeDockLayout *layout,
 }
 
 /**
- * gnome_dock_layout_add_floating_item:
- * @layout: A #GnomeDockLayout widget
+ * bonobo_dock_layout_add_floating_item:
+ * @layout: A #BonoboDockLayout widget
  * @item: The dock item to be added to @layout
  * @x: X-coordinate for the floating item
  * @y: Y-coordinate for the floating item
@@ -300,16 +300,16 @@ gnome_dock_layout_add_item (GnomeDockLayout *layout,
  **/
    
 gboolean
-gnome_dock_layout_add_floating_item (GnomeDockLayout *layout,
-                                     GnomeDockItem *item,
+bonobo_dock_layout_add_floating_item (BonoboDockLayout *layout,
+                                     BonoboDockItem *item,
                                      gint x, gint y,
                                      GtkOrientation orientation)
 {
-  GnomeDockLayoutItem *new;
+  BonoboDockLayoutItem *new;
 
-  new = g_new (GnomeDockLayoutItem, 1);
+  new = g_new (BonoboDockLayoutItem, 1);
   new->item = item;
-  new->placement = GNOME_DOCK_FLOATING;
+  new->placement = BONOBO_DOCK_FLOATING;
   new->position.floating.x = x;
   new->position.floating.y = y;
   new->position.floating.orientation = orientation;
@@ -322,17 +322,17 @@ gnome_dock_layout_add_floating_item (GnomeDockLayout *layout,
 }
 
 /**
- * gnome_dock_layout_get_item:
- * @layout: A #GnomeDockLayout widget
- * @item: The #GnomeDockItem to be retrieved
+ * bonobo_dock_layout_get_item:
+ * @layout: A #BonoboDockLayout widget
+ * @item: The #BonoboDockItem to be retrieved
  * 
  * Description: Retrieve a layout item.
  * 
- * Returns: The retrieved #GnomeDockLayoutItem widget.
+ * Returns: The retrieved #BonoboDockLayoutItem widget.
  **/
-GnomeDockLayoutItem *
-gnome_dock_layout_get_item (GnomeDockLayout *layout,
-                            GnomeDockItem *item)
+BonoboDockLayoutItem *
+bonobo_dock_layout_get_item (BonoboDockLayout *layout,
+                            BonoboDockItem *item)
 {
   GList *list;
 
@@ -345,16 +345,16 @@ gnome_dock_layout_get_item (GnomeDockLayout *layout,
 }
 
 /**
- * gnome_dock_layout_get_item_by_name:
- * @layout: A #GnomeDockLayout widget
+ * bonobo_dock_layout_get_item_by_name:
+ * @layout: A #BonoboDockLayout widget
  * @name: Name of the item to be retrieved
  * 
  * Description: Retrieve the dock item named @name.
  * 
- * Returns: The named #GnomeDockLayoutItem widget.
+ * Returns: The named #BonoboDockLayoutItem widget.
  **/
-GnomeDockLayoutItem *
-gnome_dock_layout_get_item_by_name (GnomeDockLayout *layout,
+BonoboDockLayoutItem *
+bonobo_dock_layout_get_item_by_name (BonoboDockLayout *layout,
                                     const gchar *name)
 {
   GList *list;
@@ -368,17 +368,17 @@ gnome_dock_layout_get_item_by_name (GnomeDockLayout *layout,
 }
 
 /**
- * gnome_dock_layout_remove_item:
- * @layout: A #GnomeDockLayout widget
- * @item: The #GnomeDockItem to be removed
+ * bonobo_dock_layout_remove_item:
+ * @layout: A #BonoboDockLayout widget
+ * @item: The #BonoboDockItem to be removed
  * 
  * Description: Remove the specified @item from @layout.
  * 
  * Returns: %TRUE if the operation succeeds, %FALSE if it fails.
  **/
 gboolean
-gnome_dock_layout_remove_item (GnomeDockLayout *layout,
-                               GnomeDockItem *item)
+bonobo_dock_layout_remove_item (BonoboDockLayout *layout,
+                               BonoboDockItem *item)
 {
   GList *list;
 
@@ -392,16 +392,16 @@ gnome_dock_layout_remove_item (GnomeDockLayout *layout,
 }
 
 /**
- * gnome_dock_layout_remove_item_by_name:
- * @layout: A #GnomeDockLayout widget
- * @name: Name of the #GnomeDockItem to be removed
+ * bonobo_dock_layout_remove_item_by_name:
+ * @layout: A #BonoboDockLayout widget
+ * @name: Name of the #BonoboDockItem to be removed
  * 
  * Description: Remove the item named @name from @layout.
  * 
  * Returns: %TRUE if the operation succeeds, %FALSE if it fails.
  **/
 gboolean
-gnome_dock_layout_remove_item_by_name (GnomeDockLayout *layout,
+bonobo_dock_layout_remove_item_by_name (BonoboDockLayout *layout,
                                        const gchar *name)
 {
   GList *list;
@@ -418,21 +418,21 @@ gnome_dock_layout_remove_item_by_name (GnomeDockLayout *layout,
 
 
 /**
- * gnome_dock_layout_add_to_dock:
- * @layout: A #GnomeDockLayout widget
- * @dock: The #GnomeDock widget the layout items must be added to
+ * bonobo_dock_layout_add_to_dock:
+ * @layout: A #BonoboDockLayout widget
+ * @dock: The #BonoboDock widget the layout items must be added to
  * 
  * Description: Add all the items in @layout to the specified @dock.
  * 
  * Returns: %TRUE if the operation succeeds, %FALSE if it fails.
  **/
 gboolean
-gnome_dock_layout_add_to_dock (GnomeDockLayout *layout,
-                               GnomeDock *dock)
+bonobo_dock_layout_add_to_dock (BonoboDockLayout *layout,
+                               BonoboDock *dock)
 {
-  GnomeDockLayoutItem *item;
+  BonoboDockLayoutItem *item;
   GList *lp;
-  GnomeDockPlacement last_placement;
+  BonoboDockPlacement last_placement;
   gint last_band_num;
 
   if (layout->items == NULL)
@@ -442,16 +442,16 @@ gnome_dock_layout_add_to_dock (GnomeDockLayout *layout,
 
   item = layout->items->data;
 
-  last_placement = GNOME_DOCK_FLOATING;
+  last_placement = BONOBO_DOCK_FLOATING;
   last_band_num = 0;
 
   for (lp = layout->items; lp != NULL; lp = lp->next)
     {
       item = lp->data;
 
-      if (item->placement == GNOME_DOCK_FLOATING)
+      if (item->placement == BONOBO_DOCK_FLOATING)
         {
-          gnome_dock_add_floating_item (dock,
+          bonobo_dock_add_floating_item (dock,
                                         item->item,
                                         item->position.floating.x,
                                         item->position.floating.y,
@@ -467,7 +467,7 @@ gnome_dock_layout_add_to_dock (GnomeDockLayout *layout,
           else
             need_new = FALSE;
 
-          gnome_dock_add_item (dock,
+          bonobo_dock_add_item (dock,
                                item->item,
                                item->placement,
                                0,
@@ -490,15 +490,15 @@ gnome_dock_layout_add_to_dock (GnomeDockLayout *layout,
 /* Layout string functions.  */
 
 /**
- * gnome_dock_layout_create_string:
- * @layout: A #GnomeDockLayout widget
+ * bonobo_dock_layout_create_string:
+ * @layout: A #BonoboDockLayout widget
  * 
  * Description: Generate a string describing the layout in @layout.
  * 
  * Returns: The (malloced) layout string for @layout.
  **/
 gchar *
-gnome_dock_layout_create_string (GnomeDockLayout *layout)
+bonobo_dock_layout_create_string (BonoboDockLayout *layout)
 {
   GList *lp;
   guint tmp_count, tmp_alloc;
@@ -515,7 +515,7 @@ gnome_dock_layout_create_string (GnomeDockLayout *layout)
 
   for (lp = layout->items; lp != NULL; lp = lp->next)
     {
-      GnomeDockLayoutItem *i;
+      BonoboDockLayoutItem *i;
 
       i = lp->data;
 
@@ -525,7 +525,7 @@ gnome_dock_layout_create_string (GnomeDockLayout *layout)
           tmp = g_renew (char *, tmp, tmp_alloc);
         }
 
-      if (i->placement == GNOME_DOCK_FLOATING)
+      if (i->placement == BONOBO_DOCK_FLOATING)
         tmp[tmp_count] = g_strdup_printf ("%s\\%d,%d,%d,%d",
                                           i->item->name,
                                           (gint) i->placement,
@@ -552,8 +552,8 @@ gnome_dock_layout_create_string (GnomeDockLayout *layout)
 }
 
 /**
- * gnome_dock_layout_parse_string:
- * @layout: A #GnomeDockLayout widget
+ * bonobo_dock_layout_parse_string:
+ * @layout: A #BonoboDockLayout widget
  * @string: A layout string to be parsed
  * 
  * Description: Parse the layout string @string, and move around the
@@ -562,7 +562,7 @@ gnome_dock_layout_create_string (GnomeDockLayout *layout)
  * Returns: %TRUE if the operation succeeds, %FALSE if it fails.
  **/
 gboolean
-gnome_dock_layout_parse_string (GnomeDockLayout *layout,
+bonobo_dock_layout_parse_string (BonoboDockLayout *layout,
 				const gchar *string)
 {
   gchar **tmp, **p;
@@ -589,7 +589,7 @@ gnome_dock_layout_parse_string (GnomeDockLayout *layout,
 
       if (lp != NULL)
         {
-          GnomeDockLayoutItem *i;
+          BonoboDockLayoutItem *i;
           gint p1, p2, p3, p4;
 
           if (sscanf (*(p + 1), "%d,%d,%d,%d", &p1, &p2, &p3, &p4) != 4)
@@ -598,18 +598,18 @@ gnome_dock_layout_parse_string (GnomeDockLayout *layout,
               return FALSE;
             }
 
-          if (p1 != (gint) GNOME_DOCK_TOP
-              && p1 != (gint) GNOME_DOCK_BOTTOM
-              && p1 != (gint) GNOME_DOCK_LEFT
-              && p1 != (gint) GNOME_DOCK_RIGHT
-              && p1 != (gint) GNOME_DOCK_FLOATING)
+          if (p1 != (gint) BONOBO_DOCK_TOP
+              && p1 != (gint) BONOBO_DOCK_BOTTOM
+              && p1 != (gint) BONOBO_DOCK_LEFT
+              && p1 != (gint) BONOBO_DOCK_RIGHT
+              && p1 != (gint) BONOBO_DOCK_FLOATING)
             return FALSE;
           
           i = lp->data;
 
-          i->placement = (GnomeDockPlacement) p1;
+          i->placement = (BonoboDockPlacement) p1;
 
-          if (i->placement == GNOME_DOCK_FLOATING)
+          if (i->placement == BONOBO_DOCK_FLOATING)
             {
               i->position.floating.x = p2;
               i->position.floating.y = p3;

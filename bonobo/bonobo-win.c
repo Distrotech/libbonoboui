@@ -8,8 +8,8 @@
  * Copyright 2000 Helix Code, Inc.
  */
 #include "config.h"
-#include <libgnomeui/gnome-dock-item.h>
-#include <libgnomeui/gnome-dock.h>
+#include <bonobo/bonobo-dock-item.h>
+#include <bonobo/bonobo-dock.h>
 #include <libgnomeui/gnome-preferences.h>
 #include <bonobo/bonobo-win.h>
 #include <libbonobo.h>
@@ -34,9 +34,9 @@ struct _BonoboWindowPrivate {
 	BonoboUISync   *sync_status;
 	BonoboUISync   *sync_toolbar;
 	
-	GnomeDock      *dock;
+	BonoboDock     *dock;
 
-	GnomeDockItem  *menu_item;
+	BonoboDockItem *menu_item;
 	GtkMenuBar     *menu;
 
 	GtkAccelGroup  *accel_group;
@@ -487,28 +487,28 @@ static BonoboWindowPrivate *
 construct_priv (BonoboWindow *win)
 {
 	BonoboWindowPrivate *priv;
-	GnomeDockItemBehavior behavior;
+	BonoboDockItemBehavior behavior;
 
 	priv = g_new0 (BonoboWindowPrivate, 1);
 
 	priv->engine = bonobo_ui_engine_new ();
 
-	priv->dock = GNOME_DOCK (gnome_dock_new ());
+	priv->dock = BONOBO_DOCK (bonobo_dock_new ());
 	gtk_container_add (GTK_CONTAINER (win),
 			   GTK_WIDGET    (priv->dock));
 
-	behavior = (GNOME_DOCK_ITEM_BEH_EXCLUSIVE
-		    | GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL);
+	behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
+		    | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
 	if (!gnome_preferences_get_menubar_detachable ())
-		behavior |= GNOME_DOCK_ITEM_BEH_LOCKED;
+		behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
 
-	priv->menu_item = GNOME_DOCK_ITEM (gnome_dock_item_new (
+	priv->menu_item = BONOBO_DOCK_ITEM (bonobo_dock_item_new (
 		"menu", behavior));
 	priv->menu      = GTK_MENU_BAR (gtk_menu_bar_new ());
 	gtk_container_add (GTK_CONTAINER (priv->menu_item),
 			   GTK_WIDGET    (priv->menu));
-	gnome_dock_add_item (priv->dock, priv->menu_item,
-			     GNOME_DOCK_TOP, 0, 0, 0, TRUE);
+	bonobo_dock_add_item (priv->dock, priv->menu_item,
+			     BONOBO_DOCK_TOP, 0, 0, 0, TRUE);
 
 	/* 
 	 * To have menubar relief agree with the toolbar (and have the relief outside of
@@ -525,10 +525,10 @@ construct_priv (BonoboWindow *win)
 			border_width -= 2;
 		gtk_container_set_border_width (GTK_CONTAINER (priv->menu), border_width);
 	} else
-		gnome_dock_item_set_shadow_type (GNOME_DOCK_ITEM (priv->menu_item), GTK_SHADOW_NONE);
+		bonobo_dock_item_set_shadow_type (BONOBO_DOCK_ITEM (priv->menu_item), GTK_SHADOW_NONE);
 
 	priv->main_vbox = gtk_vbox_new (FALSE, 0);
-	gnome_dock_set_client_area (priv->dock, priv->main_vbox);
+	bonobo_dock_set_client_area (priv->dock, priv->main_vbox);
 
 	priv->client_area = gtk_vbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (priv->main_vbox), priv->client_area, TRUE, TRUE, 0);
@@ -552,7 +552,7 @@ construct_priv (BonoboWindow *win)
 
 
 	priv->sync_toolbar = bonobo_ui_sync_toolbar_new (
-		priv->engine, GNOME_DOCK (priv->dock));
+		priv->engine, BONOBO_DOCK (priv->dock));
 
 	bonobo_ui_engine_add_sync (priv->engine, priv->sync_toolbar);
 

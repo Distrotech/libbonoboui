@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_SYNC_TOOLBAR_H_
 #define _BONOBO_UI_SYNC_TOOLBAR_H_
 
-#include <libgnomeui/gnome-dock.h>
+#include <bonobo/bonobo-dock.h>
 #include <bonobo/bonobo-ui-toolbar.h>
 #include <bonobo/bonobo-ui-sync.h>
 
@@ -28,7 +28,7 @@ typedef struct _BonoboUISyncToolbarPrivate BonoboUISyncToolbarPrivate;
 typedef struct {
 	BonoboUISync parent;
 
-	GnomeDock       *dock;
+	BonoboDock       *dock;
 
 	BonoboUISyncToolbarPrivate *priv;
 } BonoboUISyncToolbar;
@@ -38,7 +38,7 @@ typedef struct {
 } BonoboUISyncToolbarClass;
 
 BonoboUISync *bonobo_ui_sync_toolbar_new      (BonoboUIEngine *engine,
-					       GnomeDock      *dock);
+					       BonoboDock     *dock);
 BonoboUIToolbarStyle bonobo_ui_sync_toolbar_get_look (BonoboUIEngine *engine,
 						      BonoboUINode   *node);
 

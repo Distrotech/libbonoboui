@@ -39,6 +39,14 @@ libbonoboui_2_la_LIBADD = \
 	$(LIBGNOME_LIBS)
 
 libbonoboui_2_la_SOURCES = \
+	bonobo-dock.c				\
+	bonobo-dock.h				\
+	bonobo-dock-item.c			\
+	bonobo-dock-item.h			\
+	bonobo-dock-band.c			\
+	bonobo-dock-band.h			\
+	bonobo-dock-layout.c			\
+	bonobo-dock-layout.h			\
 	bonobo-canvas-component.c		\
 	bonobo-canvas-item.c			\
 	bonobo-client-site.c			\

@@ -367,7 +367,7 @@ impl_bonobo_ui_sync_toolbar_build_placeholder (BonoboUISync     *sync,
 	return widget;
 }
 
-static GnomeDockItem *
+static BonoboDockItem *
 get_dock_item (BonoboUISyncToolbar *sync,
 	       const char          *dockname)
 {
@@ -375,7 +375,7 @@ get_dock_item (BonoboUISyncToolbar *sync,
 	
 	g_return_val_if_fail (dockname != NULL, NULL);
 
-	return gnome_dock_get_item_by_name (sync->dock,
+	return bonobo_dock_get_item_by_name (sync->dock,
 					    dockname,
 					    &dummy, &dummy,
 					    &dummy, &dummy);
@@ -386,7 +386,7 @@ impl_bonobo_ui_sync_toolbar_get_widgets (BonoboUISync *sync,
 					 BonoboUINode *node)
 {
 	char          *dockname;
-	GnomeDockItem *item;
+	BonoboDockItem *item;
 
 	dockname = bonobo_ui_node_get_attr (node, "name");
 	item = get_dock_item (BONOBO_UI_SYNC_TOOLBAR (sync), dockname);
@@ -602,17 +602,17 @@ config_verb_fn (BonoboUIEngineConfig *config,
 		bonobo_ui_engine_config_serialize (config);
 }
 
-static GnomeDockItem *
+static BonoboDockItem *
 create_dockitem (BonoboUISyncToolbar *sync,
 		 BonoboUINode        *node,
 		 const char          *dockname)
 {
-	GnomeDockItem *item;
-	GnomeDockItemBehavior beh = 0;
+	BonoboDockItem *item;
+	BonoboDockItemBehavior beh = 0;
 	char *prop;
 	char **behavior_array;
 	gboolean force_detachable = FALSE;
-	GnomeDockPlacement placement = GNOME_DOCK_TOP;
+	BonoboDockPlacement placement = BONOBO_DOCK_TOP;
 	gint band_num = 1;
 	gint position = 0;
 	guint offset = 0;
@@ -634,44 +634,44 @@ create_dockitem (BonoboUISyncToolbar *sync,
 			force_detachable = TRUE;
 
 		if (string_array_contains (behavior_array, "exclusive"))
-			beh |= GNOME_DOCK_ITEM_BEH_EXCLUSIVE;
+			beh |= BONOBO_DOCK_ITEM_BEH_EXCLUSIVE;
 
 		if (string_array_contains (behavior_array, "never vertical"))
-			beh |= GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL;
+			beh |= BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL;
 
 		if (string_array_contains (behavior_array, "never floating"))
-			beh |= GNOME_DOCK_ITEM_BEH_NEVER_FLOATING;
+			beh |= BONOBO_DOCK_ITEM_BEH_NEVER_FLOATING;
 
 		if (string_array_contains (behavior_array, "never horizontal"))
-			beh |= GNOME_DOCK_ITEM_BEH_NEVER_HORIZONTAL;
+			beh |= BONOBO_DOCK_ITEM_BEH_NEVER_HORIZONTAL;
 
 		g_strfreev (behavior_array);
 	}
 
 	if (!force_detachable && !gnome_preferences_get_toolbar_detachable())
-		beh |= GNOME_DOCK_ITEM_BEH_LOCKED;
+		beh |= BONOBO_DOCK_ITEM_BEH_LOCKED;
 
-	item = GNOME_DOCK_ITEM (gnome_dock_item_new (
+	item = BONOBO_DOCK_ITEM (bonobo_dock_item_new (
 		dockname, beh));
 
 	if (gnome_preferences_get_toolbar_relief ())
-		gnome_dock_item_set_shadow_type (item, GTK_SHADOW_OUT);
+		bonobo_dock_item_set_shadow_type (item, GTK_SHADOW_OUT);
 	else
-		gnome_dock_item_set_shadow_type (item, GTK_SHADOW_NONE);
+		bonobo_dock_item_set_shadow_type (item, GTK_SHADOW_NONE);
 
 	gtk_container_set_border_width (GTK_CONTAINER (item), 2);
 
 	if ((prop = bonobo_ui_node_get_attr (node, "placement"))) {
 		if (!strcmp (prop, "top"))
-			placement = GNOME_DOCK_TOP;
+			placement = BONOBO_DOCK_TOP;
 		else if (!strcmp (prop, "right"))
-			placement = GNOME_DOCK_RIGHT;
+			placement = BONOBO_DOCK_RIGHT;
 		else if (!strcmp (prop, "bottom"))
-			placement = GNOME_DOCK_BOTTOM;
+			placement = BONOBO_DOCK_BOTTOM;
 		else if (!strcmp (prop, "left"))
-			placement = GNOME_DOCK_LEFT;
+			placement = BONOBO_DOCK_LEFT;
 		else if (!strcmp (prop, "floating"))
-			placement = GNOME_DOCK_FLOATING;
+			placement = BONOBO_DOCK_FLOATING;
 		bonobo_ui_node_free_string (prop);
 	}
 
@@ -695,7 +695,7 @@ create_dockitem (BonoboUISyncToolbar *sync,
 		bonobo_ui_node_free_string (prop);
 	}	
 
-	gnome_dock_add_item (sync->dock, item,
+	bonobo_dock_add_item (sync->dock, item,
 			     placement, band_num,
 			     position, offset, in_new_band);
 
@@ -737,7 +737,7 @@ impl_bonobo_ui_sync_toolbar_remove_root (BonoboUISync *sync,
 	char *name = bonobo_ui_node_get_attr (node, "name");
 
 	if (name) {
-		GnomeDockItem *item;
+		BonoboDockItem *item;
 
 		item = get_dock_item (BONOBO_UI_SYNC_TOOLBAR (sync), name);
 
@@ -755,7 +755,7 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 	char          *txt;
 	char          *dockname = bonobo_ui_node_get_attr (node, "name");
 	gboolean       tooltips;
-	GnomeDockItem *item;
+	BonoboDockItem *item;
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarStyle look;
 
@@ -881,7 +881,7 @@ bonobo_ui_sync_toolbar_get_type (void)
 
 BonoboUISync *
 bonobo_ui_sync_toolbar_new (BonoboUIEngine  *engine,
-			    GnomeDock       *dock)
+			    BonoboDock       *dock)
 {
 	BonoboUISyncToolbar *sync;
 

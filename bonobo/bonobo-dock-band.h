@@ -1,6 +1,4 @@
-/* WARNING ____ IMMATURE API ____ liable to change */
-
-/* gnome-dock-band.h
+/* bonobo-dock-band.h
 
    Copyright (C) 1998 Free Software Foundation
    All rights reserved.
@@ -26,36 +24,36 @@
   @NOTATION@
 */
 
-#ifndef _GNOME_DOCK_BAND_H
-#define _GNOME_DOCK_BAND_H
+#ifndef _BONOBO_DOCK_BAND_H
+#define _BONOBO_DOCK_BAND_H
 
 
 
 G_BEGIN_DECLS
 
-#define GNOME_TYPE_DOCK_BAND            (gnome_dock_band_get_type ())
-#define GNOME_DOCK_BAND(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_DOCK_BAND, GnomeDockBand))
-#define GNOME_DOCK_BAND_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_DOCK_BAND, GnomeDockBandClass))
-#define GNOME_IS_DOCK_BAND(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_DOCK_BAND))
-#define GNOME_IS_DOCK_BAND_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_DOCK_BAND))
-#define GNOME_DOCK_BAND_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), GNOME_TYPE_DOCK_BAND, GnomeDockBandClass))
+#define BONOBO_TYPE_DOCK_BAND            (bonobo_dock_band_get_type ())
+#define BONOBO_DOCK_BAND(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_DOCK_BAND, BonoboDockBand))
+#define BONOBO_DOCK_BAND_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_DOCK_BAND, BonoboDockBandClass))
+#define BONOBO_IS_DOCK_BAND(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_DOCK_BAND))
+#define BONOBO_IS_DOCK_BAND_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_DOCK_BAND))
+#define BONOBO_DOCK_BAND_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), BONOBO_TYPE_DOCK_BAND, BonoboDockBandClass))
 
-typedef struct _GnomeDockBand GnomeDockBand;
-typedef struct _GnomeDockBandPrivate GnomeDockBandPrivate;
-typedef struct _GnomeDockBandClass GnomeDockBandClass;
-typedef struct _GnomeDockBandChild GnomeDockBandChild;
+typedef struct _BonoboDockBand BonoboDockBand;
+typedef struct _BonoboDockBandPrivate BonoboDockBandPrivate;
+typedef struct _BonoboDockBandClass BonoboDockBandClass;
+typedef struct _BonoboDockBandChild BonoboDockBandChild;
 
-#include "gnome-dock.h"
-#include "gnome-dock-item.h"
-#include "gnome-dock-layout.h"
+#include <bonobo/bonobo-dock.h>
+#include <bonobo/bonobo-dock-item.h>
+#include <bonobo/bonobo-dock-layout.h>
 
-struct _GnomeDockBand
+struct _BonoboDockBand
 {
   GtkContainer container;
 
-  GList *children;              /* GnomeDockBandChild */
+  GList *children;              /* BonoboDockBandChild */
 
-  GList *floating_child;        /* GnomeDockBandChild */
+  GList *floating_child;        /* BonoboDockBandChild */
 
   /* This used to remember the allocation before the drag begin: it is
      necessary to do so because we actually decide what docking action
@@ -73,15 +71,15 @@ struct _GnomeDockBand
   GtkOrientation orientation : 1;
 
   /*< private >*/
-  GnomeDockBandPrivate *_priv;
+  BonoboDockBandPrivate *_priv;
 };
 
-struct _GnomeDockBandClass
+struct _BonoboDockBandClass
 {
   GtkContainerClass parent_class;
 };
 
-struct _GnomeDockBandChild
+struct _BonoboDockBandChild
 {
   GtkWidget *widget;
 
@@ -101,51 +99,51 @@ struct _GnomeDockBandChild
   guint16 max_space_requisition;
 };
 
-GtkWidget     *gnome_dock_band_new              (void);
-guint          gnome_dock_band_get_type         (void) G_GNUC_CONST;
+GtkWidget     *bonobo_dock_band_new              (void);
+guint          bonobo_dock_band_get_type         (void) G_GNUC_CONST;
    
-void           gnome_dock_band_set_orientation  (GnomeDockBand *band,
+void           bonobo_dock_band_set_orientation  (BonoboDockBand *band,
                                                  GtkOrientation orientation);
-GtkOrientation gnome_dock_band_get_orientation  (GnomeDockBand *band);
+GtkOrientation bonobo_dock_band_get_orientation  (BonoboDockBand *band);
    
-gboolean       gnome_dock_band_insert           (GnomeDockBand *band,
+gboolean       bonobo_dock_band_insert           (BonoboDockBand *band,
                                                  GtkWidget *child,
                                                  guint offset,
                                                  gint position);
-gboolean       gnome_dock_band_prepend          (GnomeDockBand *band,
+gboolean       bonobo_dock_band_prepend          (BonoboDockBand *band,
                                                  GtkWidget *child,
                                                  guint offset);
-gboolean       gnome_dock_band_append           (GnomeDockBand *band,
+gboolean       bonobo_dock_band_append           (BonoboDockBand *band,
                                                  GtkWidget *child,
                                                  guint offset);
     
-void           gnome_dock_band_set_child_offset (GnomeDockBand *band,
+void           bonobo_dock_band_set_child_offset (BonoboDockBand *band,
                                                  GtkWidget *child,
                                                  guint offset);
-guint          gnome_dock_band_get_child_offset (GnomeDockBand *band,
+guint          bonobo_dock_band_get_child_offset (BonoboDockBand *band,
                                                  GtkWidget *child); 
-void           gnome_dock_band_move_child       (GnomeDockBand *band,
+void           bonobo_dock_band_move_child       (BonoboDockBand *band,
                                                  GList *old_child,
                                                  guint new_num);
    
-guint          gnome_dock_band_get_num_children (GnomeDockBand *band);
+guint          bonobo_dock_band_get_num_children (BonoboDockBand *band);
     
-void           gnome_dock_band_drag_begin       (GnomeDockBand *band,
-                                                 GnomeDockItem *item);
-gboolean       gnome_dock_band_drag_to          (GnomeDockBand *band,
-                                                 GnomeDockItem *item,
+void           bonobo_dock_band_drag_begin       (BonoboDockBand *band,
+                                                 BonoboDockItem *item);
+gboolean       bonobo_dock_band_drag_to          (BonoboDockBand *band,
+                                                 BonoboDockItem *item,
                                                  gint x, gint y);
-void           gnome_dock_band_drag_end         (GnomeDockBand *band,
-                                                 GnomeDockItem *item);
+void           bonobo_dock_band_drag_end         (BonoboDockBand *band,
+                                                 BonoboDockItem *item);
    
-GnomeDockItem *gnome_dock_band_get_item_by_name (GnomeDockBand *band,
+BonoboDockItem *bonobo_dock_band_get_item_by_name (BonoboDockBand *band,
                                                  const char *name,
                                                  guint *position_return,
                                                  guint *offset_return);
 
-void           gnome_dock_band_layout_add       (GnomeDockBand *band,
-                                                 GnomeDockLayout *layout,
-                                                 GnomeDockPlacement placement,
+void           bonobo_dock_band_layout_add       (BonoboDockBand *band,
+                                                 BonoboDockLayout *layout,
+                                                 BonoboDockPlacement placement,
                                                  guint band_num);
 G_END_DECLS
 

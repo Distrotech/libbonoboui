@@ -1,3 +1,13 @@
+2001-04-25  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/bonobo-dock.[ch], bonobo/bonobo-dock-item.[ch],
+	bonobo/bonobo-dock-band.[ch], bonobo/bonobo-dock-layout.[ch]:
+	Moved here from libgnomeui/libgnomeui/gnome-dock*.[ch] and
+	renamed from GnomeDock -> BonoboDock.
+
+	* bonobo/bonobo-ui-sync-toolbar.[ch], bonobo/bonobo-win.c:
+	s/GnomeDock/BonoboDock/g; s/gnome_dock/bonobo_dock/g;.
+
 2001-04-24  Martin Baulig  <baulig@suse.de>
 
 	* bonobo/bonobo-ui-sync-menu.c (impl_bonobo_ui_sync_menu_state):

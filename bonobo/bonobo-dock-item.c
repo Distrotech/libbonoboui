@@ -1,4 +1,4 @@
-/* gnome-dock-item.c
+/* bonobo-dock-item.c
  *
  * Copyright (C) 1998 Ettore Perazzoli
  * Copyright (C) 1998 Elliot Lee
@@ -30,15 +30,15 @@
 #include <gtk/gtktoolbar.h>
 #include <gtk/gtkwindow.h>
 
-#include "gnome-dock-item.h"
+#include <bonobo/bonobo-dock-item.h>
 #include <libgnome/gnome-i18n.h>
 
-struct _GnomeDockItemPrivate
+struct _BonoboDockItemPrivate
 {
 	int dummy;
 	/* Nothing right now, needs to get filled with the private things */
 	/* XXX: When stuff is added, uncomment the allocation in the
-	 * gnome_dock_item_init function! */
+	 * bonobo_dock_item_init function! */
 };
 
 
@@ -62,44 +62,44 @@ enum {
 };
 
 
-static guint     get_preferred_width   (GnomeDockItem *item);
-static guint     get_preferred_height  (GnomeDockItem *item);
+static guint     get_preferred_width   (BonoboDockItem *item);
+static guint     get_preferred_height  (BonoboDockItem *item);
 
-static void gnome_dock_item_class_init     (GnomeDockItemClass *klass);
-static void gnome_dock_item_init           (GnomeDockItem      *dock_item);
-static void gnome_dock_item_set_property   (GObject            *object,
+static void bonobo_dock_item_class_init     (BonoboDockItemClass *klass);
+static void bonobo_dock_item_init           (BonoboDockItem      *dock_item);
+static void bonobo_dock_item_set_property   (GObject            *object,
 					    guint               param_id,
 					    const GValue       *value,
 					    GParamSpec         *pspec);
-static void gnome_dock_item_get_property   (GObject            *object,
+static void bonobo_dock_item_get_property   (GObject            *object,
 					    guint               param_id,
 					    GValue             *value,
 					    GParamSpec         *pspec);
-static void gnome_dock_item_destroy        (GtkObject         *object);
-static void gnome_dock_item_finalize       (GObject           *object);
-static void gnome_dock_item_map            (GtkWidget         *widget);
-static void gnome_dock_item_unmap          (GtkWidget         *widget);
-static void gnome_dock_item_realize        (GtkWidget         *widget);
-static void gnome_dock_item_unrealize      (GtkWidget         *widget);
-static void gnome_dock_item_style_set      (GtkWidget         *widget,
+static void bonobo_dock_item_destroy        (GtkObject         *object);
+static void bonobo_dock_item_finalize       (GObject           *object);
+static void bonobo_dock_item_map            (GtkWidget         *widget);
+static void bonobo_dock_item_unmap          (GtkWidget         *widget);
+static void bonobo_dock_item_realize        (GtkWidget         *widget);
+static void bonobo_dock_item_unrealize      (GtkWidget         *widget);
+static void bonobo_dock_item_style_set      (GtkWidget         *widget,
                                             GtkStyle          *previous_style);
-static void gnome_dock_item_size_request   (GtkWidget         *widget,
+static void bonobo_dock_item_size_request   (GtkWidget         *widget,
                                             GtkRequisition    *requisition);
-static void gnome_dock_item_size_allocate  (GtkWidget         *widget,
+static void bonobo_dock_item_size_allocate  (GtkWidget         *widget,
                                             GtkAllocation     *real_allocation);
-static void gnome_dock_item_add            (GtkContainer      *container,
+static void bonobo_dock_item_add            (GtkContainer      *container,
                                             GtkWidget         *widget);
-static void gnome_dock_item_remove         (GtkContainer      *container,
+static void bonobo_dock_item_remove         (GtkContainer      *container,
                                             GtkWidget         *widget);
-static void gnome_dock_item_paint          (GtkWidget         *widget,
+static void bonobo_dock_item_paint          (GtkWidget         *widget,
                                             GdkEventExpose    *event);
-static gint gnome_dock_item_expose         (GtkWidget         *widget,
+static gint bonobo_dock_item_expose         (GtkWidget         *widget,
                                             GdkEventExpose    *event);
-static gint gnome_dock_item_button_changed (GtkWidget         *widget,
+static gint bonobo_dock_item_button_changed (GtkWidget         *widget,
                                             GdkEventButton    *event);
-static gint gnome_dock_item_motion         (GtkWidget         *widget,
+static gint bonobo_dock_item_motion         (GtkWidget         *widget,
                                             GdkEventMotion    *event);
-static gint gnome_dock_item_delete_event   (GtkWidget         *widget,
+static gint bonobo_dock_item_delete_event   (GtkWidget         *widget,
                                             GdkEventAny       *event);
 
 
@@ -131,7 +131,7 @@ check_guint_arg (GObject *object,
 }
 
 static guint
-get_preferred_width (GnomeDockItem *dock_item)
+get_preferred_width (BonoboDockItem *dock_item)
 {
   GtkWidget *child;
   guint preferred_width;
@@ -147,7 +147,7 @@ get_preferred_width (GnomeDockItem *dock_item)
     }
 
   if (dock_item->orientation == GTK_ORIENTATION_HORIZONTAL)
-    preferred_width += GNOME_DOCK_ITEM_NOT_LOCKED (dock_item) ? DRAG_HANDLE_SIZE : 0;
+    preferred_width += BONOBO_DOCK_ITEM_NOT_LOCKED (dock_item) ? DRAG_HANDLE_SIZE : 0;
 
   preferred_width += GTK_CONTAINER (dock_item)->border_width * 2;
 
@@ -155,7 +155,7 @@ get_preferred_width (GnomeDockItem *dock_item)
 }
 
 static guint
-get_preferred_height (GnomeDockItem *dock_item)
+get_preferred_height (BonoboDockItem *dock_item)
 {
   GtkWidget *child;
   guint preferred_height;
@@ -171,7 +171,7 @@ get_preferred_height (GnomeDockItem *dock_item)
     }
 
   if (dock_item->orientation == GTK_ORIENTATION_VERTICAL)
-    preferred_height += GNOME_DOCK_ITEM_NOT_LOCKED (dock_item) ? DRAG_HANDLE_SIZE : 0;
+    preferred_height += BONOBO_DOCK_ITEM_NOT_LOCKED (dock_item) ? DRAG_HANDLE_SIZE : 0;
 
   preferred_height += GTK_CONTAINER (dock_item)->border_width * 2;
 
@@ -180,7 +180,7 @@ get_preferred_height (GnomeDockItem *dock_item)
 
 
 guint
-gnome_dock_item_get_type (void)
+bonobo_dock_item_get_type (void)
 {
   static guint dock_item_type = 0;
 
@@ -188,11 +188,11 @@ gnome_dock_item_get_type (void)
     {
       GtkTypeInfo dock_item_info =
       {
-	"GnomeDockItem",
-	sizeof (GnomeDockItem),
-	sizeof (GnomeDockItemClass),
-	(GtkClassInitFunc) gnome_dock_item_class_init,
-	(GtkObjectInitFunc) gnome_dock_item_init,
+	"BonoboDockItem",
+	sizeof (BonoboDockItem),
+	sizeof (BonoboDockItemClass),
+	(GtkClassInitFunc) bonobo_dock_item_class_init,
+	(GtkObjectInitFunc) bonobo_dock_item_init,
 	/* reserved_1 */ NULL,
         /* reserved_2 */ NULL,
         (GtkClassInitFunc) NULL,
@@ -205,7 +205,7 @@ gnome_dock_item_get_type (void)
 }
 
 static void
-gnome_dock_item_class_init (GnomeDockItemClass *class)
+bonobo_dock_item_class_init (BonoboDockItemClass *class)
 {
   GtkObjectClass *object_class;
   GObjectClass *gobject_class;
@@ -219,8 +219,8 @@ gnome_dock_item_class_init (GnomeDockItemClass *class)
 
   parent_class = gtk_type_class (gtk_bin_get_type ());
 
-  gobject_class->set_property = gnome_dock_item_set_property;
-  gobject_class->get_property = gnome_dock_item_get_property;
+  gobject_class->set_property = bonobo_dock_item_set_property;
+  gobject_class->get_property = bonobo_dock_item_get_property;
   
   g_object_class_install_property (gobject_class,
 				   PROP_SHADOW,
@@ -261,7 +261,7 @@ gnome_dock_item_class_init (GnomeDockItemClass *class)
     gtk_signal_new ("dock_drag_begin",
                     GTK_RUN_LAST,
 		    GTK_CLASS_TYPE (object_class),
-                    GTK_SIGNAL_OFFSET (GnomeDockItemClass, dock_drag_begin),
+                    GTK_SIGNAL_OFFSET (BonoboDockItemClass, dock_drag_begin),
                     gtk_marshal_NONE__NONE,
                     GTK_TYPE_NONE, 0);
 
@@ -269,7 +269,7 @@ gnome_dock_item_class_init (GnomeDockItemClass *class)
     gtk_signal_new ("dock_drag_motion",
                     GTK_RUN_LAST,
 		    GTK_CLASS_TYPE (object_class),
-                    GTK_SIGNAL_OFFSET (GnomeDockItemClass, dock_drag_motion),
+                    GTK_SIGNAL_OFFSET (BonoboDockItemClass, dock_drag_motion),
                     gtk_marshal_NONE__INT_INT,
                     GTK_TYPE_NONE, 2,
                     GTK_TYPE_INT,
@@ -279,7 +279,7 @@ gnome_dock_item_class_init (GnomeDockItemClass *class)
     gtk_signal_new ("dock_drag_end",
                     GTK_RUN_LAST,
 		    GTK_CLASS_TYPE (object_class),
-                    GTK_SIGNAL_OFFSET (GnomeDockItemClass, dock_drag_end),
+                    GTK_SIGNAL_OFFSET (BonoboDockItemClass, dock_drag_end),
                     gtk_marshal_NONE__NONE,
                     GTK_TYPE_NONE, 0);
 
@@ -287,7 +287,7 @@ gnome_dock_item_class_init (GnomeDockItemClass *class)
     gtk_signal_new ("dock_detach",
                     GTK_RUN_LAST,
 		    GTK_CLASS_TYPE (object_class),
-                    GTK_SIGNAL_OFFSET (GnomeDockItemClass, dock_detach),
+                    GTK_SIGNAL_OFFSET (BonoboDockItemClass, dock_detach),
                     gtk_marshal_NONE__NONE,
                     GTK_TYPE_NONE, 0);
 
@@ -295,39 +295,39 @@ gnome_dock_item_class_init (GnomeDockItemClass *class)
     gtk_signal_new ("orientation_changed",
 		    GTK_RUN_LAST,
 		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GnomeDockItemClass, orientation_changed),
+		    GTK_SIGNAL_OFFSET (BonoboDockItemClass, orientation_changed),
 		    gtk_marshal_VOID__ENUM,
 		    GTK_TYPE_NONE, 0, GTK_TYPE_ENUM);
 
   
-  object_class->destroy = gnome_dock_item_destroy;
-  gobject_class->finalize = gnome_dock_item_finalize;
+  object_class->destroy = bonobo_dock_item_destroy;
+  gobject_class->finalize = bonobo_dock_item_finalize;
 
-  widget_class->map = gnome_dock_item_map;
-  widget_class->unmap = gnome_dock_item_unmap;
-  widget_class->realize = gnome_dock_item_realize;
-  widget_class->unrealize = gnome_dock_item_unrealize;
-  widget_class->style_set = gnome_dock_item_style_set;
-  widget_class->size_request = gnome_dock_item_size_request;
-  widget_class->size_allocate = gnome_dock_item_size_allocate;
-  widget_class->expose_event = gnome_dock_item_expose;
-  widget_class->button_press_event = gnome_dock_item_button_changed;
-  widget_class->button_release_event = gnome_dock_item_button_changed;
-  widget_class->motion_notify_event = gnome_dock_item_motion;
-  widget_class->delete_event = gnome_dock_item_delete_event;
+  widget_class->map = bonobo_dock_item_map;
+  widget_class->unmap = bonobo_dock_item_unmap;
+  widget_class->realize = bonobo_dock_item_realize;
+  widget_class->unrealize = bonobo_dock_item_unrealize;
+  widget_class->style_set = bonobo_dock_item_style_set;
+  widget_class->size_request = bonobo_dock_item_size_request;
+  widget_class->size_allocate = bonobo_dock_item_size_allocate;
+  widget_class->expose_event = bonobo_dock_item_expose;
+  widget_class->button_press_event = bonobo_dock_item_button_changed;
+  widget_class->button_release_event = bonobo_dock_item_button_changed;
+  widget_class->motion_notify_event = bonobo_dock_item_motion;
+  widget_class->delete_event = bonobo_dock_item_delete_event;
 
-  container_class->add = gnome_dock_item_add;
-  container_class->remove = gnome_dock_item_remove;
+  container_class->add = bonobo_dock_item_add;
+  container_class->remove = bonobo_dock_item_remove;
 }
 
 static void
-gnome_dock_item_init (GnomeDockItem *dock_item)
+bonobo_dock_item_init (BonoboDockItem *dock_item)
 {
   GTK_WIDGET_UNSET_FLAGS (dock_item, GTK_NO_WINDOW);
 
   dock_item->_priv = NULL;
   /* XXX: when there is some private stuff enable this
-  dock_item->_priv = g_new0(GnomeDockItemPrivate, 1);
+  dock_item->_priv = g_new0(BonoboDockItemPrivate, 1);
   */
 
   dock_item->bin_window = NULL;
@@ -335,7 +335,7 @@ gnome_dock_item_init (GnomeDockItem *dock_item)
   dock_item->shadow_type = GTK_SHADOW_OUT;
 
   dock_item->orientation = GTK_ORIENTATION_HORIZONTAL;
-  dock_item->behavior = GNOME_DOCK_ITEM_BEH_NORMAL;
+  dock_item->behavior = BONOBO_DOCK_ITEM_BEH_NORMAL;
 
   dock_item->float_window_mapped = FALSE;
   dock_item->is_floating = FALSE;
@@ -349,25 +349,25 @@ gnome_dock_item_init (GnomeDockItem *dock_item)
 }
 
 static void
-gnome_dock_item_set_property (GObject            *object,
+bonobo_dock_item_set_property (GObject            *object,
 			      guint               param_id,
 			      const GValue       *value,
 			      GParamSpec         *pspec)
 {
-  GnomeDockItem *dock_item;
+  BonoboDockItem *dock_item;
 
   g_return_if_fail (object != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (object));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (object));
 
-  dock_item = GNOME_DOCK_ITEM (object);
+  dock_item = BONOBO_DOCK_ITEM (object);
 
   switch (param_id)
     {
     case PROP_SHADOW:
-      gnome_dock_item_set_shadow_type (dock_item, g_value_get_enum (value));
+      bonobo_dock_item_set_shadow_type (dock_item, g_value_get_enum (value));
       break;
     case PROP_ORIENTATION:
-      gnome_dock_item_set_orientation (dock_item, g_value_get_enum (value));
+      bonobo_dock_item_set_orientation (dock_item, g_value_get_enum (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
@@ -376,25 +376,25 @@ gnome_dock_item_set_property (GObject            *object,
 }
 
 static void
-gnome_dock_item_get_property (GObject            *object,
+bonobo_dock_item_get_property (GObject            *object,
 			      guint               param_id,
 			      GValue             *value,
 			      GParamSpec         *pspec)
 {
-  GnomeDockItem *dock_item;
+  BonoboDockItem *dock_item;
 
   g_return_if_fail (object != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (object));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (object));
 
-  dock_item = GNOME_DOCK_ITEM (object);
+  dock_item = BONOBO_DOCK_ITEM (object);
 
   switch (param_id)
     {
     case PROP_SHADOW:
-      g_value_set_enum (value, gnome_dock_item_get_shadow_type (dock_item));
+      g_value_set_enum (value, bonobo_dock_item_get_shadow_type (dock_item));
       break;
     case PROP_ORIENTATION:
-      g_value_set_enum (value, gnome_dock_item_get_orientation (dock_item));
+      g_value_set_enum (value, bonobo_dock_item_get_orientation (dock_item));
       break;
     case PROP_PREFERRED_HEIGHT:
       g_value_set_uint (value, get_preferred_height (dock_item));
@@ -409,16 +409,16 @@ gnome_dock_item_get_property (GObject            *object,
 }
 
 static void
-gnome_dock_item_destroy (GtkObject *object)
+bonobo_dock_item_destroy (GtkObject *object)
 {
-  GnomeDockItem *di;
+  BonoboDockItem *di;
 
   /* remember, destroy can be run multiple times! */
 
   g_return_if_fail (object != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (object));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (object));
 
-  di = GNOME_DOCK_ITEM (object);
+  di = BONOBO_DOCK_ITEM (object);
 
   g_free (di->name);
   di->name = NULL;
@@ -428,14 +428,14 @@ gnome_dock_item_destroy (GtkObject *object)
 }
 
 static void
-gnome_dock_item_finalize (GObject *object)
+bonobo_dock_item_finalize (GObject *object)
 {
-  GnomeDockItem *di;
+  BonoboDockItem *di;
 
   g_return_if_fail (object != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (object));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (object));
 
-  di = GNOME_DOCK_ITEM (object);
+  di = BONOBO_DOCK_ITEM (object);
 
   /* Free the private structure */
   g_free (di->_priv);
@@ -446,25 +446,25 @@ gnome_dock_item_finalize (GObject *object)
 }
 
 static void
-gnome_dock_item_map (GtkWidget *widget)
+bonobo_dock_item_map (GtkWidget *widget)
 {
   GtkBin *bin;
-  GnomeDockItem *di;
+  BonoboDockItem *di;
 
   g_return_if_fail (widget != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (widget));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (widget));
 
   GTK_WIDGET_SET_FLAGS (widget, GTK_MAPPED);
 
   bin = GTK_BIN (widget);
-  di = GNOME_DOCK_ITEM (widget);
+  di = BONOBO_DOCK_ITEM (widget);
 
   gdk_window_show (di->bin_window);
   if (! di->is_floating)
     gdk_window_show (widget->window);
 
   if (di->is_floating && !di->float_window_mapped)
-    gnome_dock_item_detach (di, di->float_x, di->float_y);
+    bonobo_dock_item_detach (di, di->float_x, di->float_y);
 
   if (bin->child
       && GTK_WIDGET_VISIBLE (bin->child)
@@ -473,16 +473,16 @@ gnome_dock_item_map (GtkWidget *widget)
 }
 
 static void
-gnome_dock_item_unmap (GtkWidget *widget)
+bonobo_dock_item_unmap (GtkWidget *widget)
 {
-  GnomeDockItem *di;
+  BonoboDockItem *di;
 
   g_return_if_fail (widget != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (widget));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (widget));
 
   GTK_WIDGET_UNSET_FLAGS (widget, GTK_MAPPED);
 
-  di = GNOME_DOCK_ITEM (widget);
+  di = BONOBO_DOCK_ITEM (widget);
 
   gdk_window_hide (widget->window);
   if (di->float_window_mapped)
@@ -493,16 +493,16 @@ gnome_dock_item_unmap (GtkWidget *widget)
 }
 
 static void
-gnome_dock_item_realize (GtkWidget *widget)
+bonobo_dock_item_realize (GtkWidget *widget)
 {
   GdkWindowAttr attributes;
   gint attributes_mask;
-  GnomeDockItem *di;
+  BonoboDockItem *di;
 
   g_return_if_fail (widget != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (widget));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (widget));
 
-  di = GNOME_DOCK_ITEM (widget);
+  di = BONOBO_DOCK_ITEM (widget);
 
   GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
 
@@ -564,18 +564,18 @@ gnome_dock_item_realize (GtkWidget *widget)
   gdk_window_set_back_pixmap (widget->window, NULL, TRUE);
 
   if (di->is_floating)
-    gnome_dock_item_detach (di, di->float_x, di->float_y);
+    bonobo_dock_item_detach (di, di->float_x, di->float_y);
 }
 
 static void
-gnome_dock_item_unrealize (GtkWidget *widget)
+bonobo_dock_item_unrealize (GtkWidget *widget)
 {
-  GnomeDockItem *di;
+  BonoboDockItem *di;
 
   g_return_if_fail (widget != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (widget));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (widget));
 
-  di = GNOME_DOCK_ITEM (widget);
+  di = BONOBO_DOCK_ITEM (widget);
 
   gdk_window_set_user_data (di->bin_window, NULL);
   gdk_window_destroy (di->bin_window);
@@ -589,15 +589,15 @@ gnome_dock_item_unrealize (GtkWidget *widget)
 }
 
 static void
-gnome_dock_item_style_set (GtkWidget *widget,
+bonobo_dock_item_style_set (GtkWidget *widget,
                            GtkStyle  *previous_style)
 {
-  GnomeDockItem *di;
+  BonoboDockItem *di;
 
   g_return_if_fail (widget != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (widget));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (widget));
 
-  di = GNOME_DOCK_ITEM (widget);
+  di = BONOBO_DOCK_ITEM (widget);
 
   if (GTK_WIDGET_REALIZED (widget) &&
       !GTK_WIDGET_NO_WINDOW (widget))
@@ -612,19 +612,19 @@ gnome_dock_item_style_set (GtkWidget *widget,
 }
 
 static void
-gnome_dock_item_size_request (GtkWidget      *widget,
+bonobo_dock_item_size_request (GtkWidget      *widget,
                               GtkRequisition *requisition)
 {
   GtkBin *bin;
-  GnomeDockItem *dock_item;
+  BonoboDockItem *dock_item;
   GtkRequisition child_requisition;
 
   g_return_if_fail (widget != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (widget));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (widget));
   g_return_if_fail (requisition != NULL);
 
   bin = GTK_BIN (widget);
-  dock_item = GNOME_DOCK_ITEM (widget);
+  dock_item = BONOBO_DOCK_ITEM (widget);
 
   /* If our child is not visible, we still request its size, since
      we won't have any useful hint for our size otherwise.  */
@@ -639,7 +639,7 @@ gnome_dock_item_size_request (GtkWidget      *widget,
   if (dock_item->orientation == GTK_ORIENTATION_HORIZONTAL)
     {
       requisition->width = 
-        GNOME_DOCK_ITEM_NOT_LOCKED (dock_item) ? DRAG_HANDLE_SIZE : 0;
+        BONOBO_DOCK_ITEM_NOT_LOCKED (dock_item) ? DRAG_HANDLE_SIZE : 0;
       if (bin->child != NULL)
         {
           requisition->width += child_requisition.width;
@@ -651,7 +651,7 @@ gnome_dock_item_size_request (GtkWidget      *widget,
   else
     {
       requisition->height = 
-        GNOME_DOCK_ITEM_NOT_LOCKED (dock_item) ? DRAG_HANDLE_SIZE : 0;
+        BONOBO_DOCK_ITEM_NOT_LOCKED (dock_item) ? DRAG_HANDLE_SIZE : 0;
       if (bin->child != NULL)
         {
           requisition->width = child_requisition.width;
@@ -666,18 +666,18 @@ gnome_dock_item_size_request (GtkWidget      *widget,
 }
 
 static void
-gnome_dock_item_size_allocate (GtkWidget     *widget,
+bonobo_dock_item_size_allocate (GtkWidget     *widget,
                                GtkAllocation *allocation)
 {
   GtkBin *bin;
-  GnomeDockItem *di;
+  BonoboDockItem *di;
   
   g_return_if_fail (widget != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (widget));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (widget));
   g_return_if_fail (allocation != NULL);
   
   bin = GTK_BIN (widget);
-  di = GNOME_DOCK_ITEM (widget);
+  di = BONOBO_DOCK_ITEM (widget);
 
   widget->allocation = *allocation;
 
@@ -700,7 +700,7 @@ gnome_dock_item_size_allocate (GtkWidget     *widget,
       child_allocation.x = border_width;
       child_allocation.y = border_width;
 
-      if (GNOME_DOCK_ITEM_NOT_LOCKED(di))
+      if (BONOBO_DOCK_ITEM_NOT_LOCKED(di))
         {
           if (di->orientation == GTK_ORIENTATION_HORIZONTAL)
             child_allocation.x += DRAG_HANDLE_SIZE;
@@ -744,7 +744,7 @@ gnome_dock_item_size_allocate (GtkWidget     *widget,
 	  child_allocation.width = MAX (1, (int) widget->allocation.width - 2 * border_width);
 	  child_allocation.height = MAX (1, (int) widget->allocation.height - 2 * border_width);
 
-          if (GNOME_DOCK_ITEM_NOT_LOCKED (di))
+          if (BONOBO_DOCK_ITEM_NOT_LOCKED (di))
             {
               if (di->orientation == GTK_ORIENTATION_HORIZONTAL)
 		child_allocation.width = MAX ((int) child_allocation.width - DRAG_HANDLE_SIZE, 1);
@@ -775,22 +775,22 @@ draw_textured_frame (GtkWidget *widget, GdkWindow *window, GdkRectangle *rect, G
 }
 
 static void
-gnome_dock_item_paint (GtkWidget      *widget,
+bonobo_dock_item_paint (GtkWidget      *widget,
                        GdkEventExpose *event)
 {
   GtkBin *bin;
-  GnomeDockItem *di;
+  BonoboDockItem *di;
   guint width;
   guint height;
   guint border_width;
   GdkRectangle rect;
   gint drag_handle_size = DRAG_HANDLE_SIZE;
 
-  if (!GNOME_DOCK_ITEM_NOT_LOCKED (widget))
+  if (!BONOBO_DOCK_ITEM_NOT_LOCKED (widget))
     drag_handle_size = 0;
 
   bin = GTK_BIN (widget);
-  di = GNOME_DOCK_ITEM (widget);
+  di = BONOBO_DOCK_ITEM (widget);
 
   border_width = GTK_CONTAINER (di)->border_width;
 
@@ -830,7 +830,7 @@ gnome_dock_item_paint (GtkWidget      *widget,
   /* We currently draw the handle _above_ the relief of the dockitem.
      It could also be drawn on the same level...  */
 
-  if (GNOME_DOCK_ITEM_NOT_LOCKED (di))
+  if (BONOBO_DOCK_ITEM_NOT_LOCKED (di))
     {
       GdkRectangle dest;
 
@@ -859,16 +859,16 @@ gnome_dock_item_paint (GtkWidget      *widget,
 }
 
 static gint
-gnome_dock_item_expose (GtkWidget      *widget,
+bonobo_dock_item_expose (GtkWidget      *widget,
                         GdkEventExpose *event)
 {
   g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (GNOME_IS_DOCK_ITEM (widget), FALSE);
+  g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
   if (GTK_WIDGET_DRAWABLE (widget) && event->window != widget->window)
     {
-      gnome_dock_item_paint (widget, event);
+      bonobo_dock_item_paint (widget, event);
 
       return GTK_WIDGET_CLASS (parent_class)->expose_event ?
 	  GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event) : FALSE;
@@ -878,22 +878,22 @@ gnome_dock_item_expose (GtkWidget      *widget,
 }
 
 static gint
-gnome_dock_item_button_changed (GtkWidget      *widget,
+bonobo_dock_item_button_changed (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
-  GnomeDockItem *di;
+  BonoboDockItem *di;
   gboolean event_handled;
   
   g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (GNOME_IS_DOCK_ITEM (widget), FALSE);
+  g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  di = GNOME_DOCK_ITEM (widget);
+  di = BONOBO_DOCK_ITEM (widget);
 
   if (event->window != di->bin_window)
     return FALSE;
 
-  if (!GNOME_DOCK_ITEM_NOT_LOCKED(widget))
+  if (!BONOBO_DOCK_ITEM_NOT_LOCKED(widget))
     return FALSE;
 
   event_handled = FALSE;
@@ -931,7 +931,7 @@ gnome_dock_item_button_changed (GtkWidget      *widget,
 
 	  di->in_drag = TRUE;
 
-          gnome_dock_item_grab_pointer (di);
+          bonobo_dock_item_grab_pointer (di);
 
           gtk_signal_emit (GTK_OBJECT (widget),
                            dock_item_signals[DOCK_DRAG_BEGIN]);
@@ -954,17 +954,17 @@ gnome_dock_item_button_changed (GtkWidget      *widget,
 }
 
 static gint
-gnome_dock_item_motion (GtkWidget      *widget,
+bonobo_dock_item_motion (GtkWidget      *widget,
                         GdkEventMotion *event)
 {
-  GnomeDockItem *di;
+  BonoboDockItem *di;
   gint new_x, new_y;
 
   g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (GNOME_IS_DOCK_ITEM (widget), FALSE);
+  g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  di = GNOME_DOCK_ITEM (widget);
+  di = BONOBO_DOCK_ITEM (widget);
   if (!di->in_drag)
     return FALSE;
 
@@ -984,17 +984,17 @@ gnome_dock_item_motion (GtkWidget      *widget,
 }
 
 static void
-gnome_dock_item_add (GtkContainer *container,
+bonobo_dock_item_add (GtkContainer *container,
                      GtkWidget    *widget)
 {
-  GnomeDockItem *dock_item;
+  BonoboDockItem *dock_item;
   GParamSpec *pspec;
 
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (container));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (container));
   g_return_if_fail (GTK_BIN (container)->child == NULL);
   g_return_if_fail (widget->parent == NULL);
 
-  dock_item = GNOME_DOCK_ITEM (container);
+  dock_item = BONOBO_DOCK_ITEM (container);
 
   gtk_widget_set_parent_window (widget, dock_item->bin_window);
   GTK_CONTAINER_CLASS (parent_class)->add (container, widget);
@@ -1012,7 +1012,7 @@ gnome_dock_item_add (GtkContainer *container,
 }
 
 static void
-gnome_dock_item_set_floating (GnomeDockItem *item, gboolean val)
+bonobo_dock_item_set_floating (BonoboDockItem *item, gboolean val)
 {
   item->is_floating = val;
 
@@ -1031,19 +1031,19 @@ gnome_dock_item_set_floating (GnomeDockItem *item, gboolean val)
 }
 
 static void
-gnome_dock_item_remove (GtkContainer *container,
+bonobo_dock_item_remove (GtkContainer *container,
                         GtkWidget    *widget)
 {
-  GnomeDockItem *di;
+  BonoboDockItem *di;
 
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (container));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (container));
   g_return_if_fail (GTK_BIN (container)->child == widget);
 
-  di = GNOME_DOCK_ITEM (container);
+  di = BONOBO_DOCK_ITEM (container);
 
   if (di->is_floating)
     {
-      gnome_dock_item_set_floating (di, FALSE);
+      bonobo_dock_item_set_floating (di, FALSE);
       if (GTK_WIDGET_REALIZED (di))
 	{
 	  gdk_window_hide (di->float_window);
@@ -1062,11 +1062,11 @@ gnome_dock_item_remove (GtkContainer *container,
 }
 
 static gint
-gnome_dock_item_delete_event (GtkWidget *widget,
+bonobo_dock_item_delete_event (GtkWidget *widget,
                               GdkEventAny  *event)
 {
   g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (GNOME_IS_DOCK_ITEM (widget), FALSE);
+  g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
   return TRUE;
@@ -1075,68 +1075,68 @@ gnome_dock_item_delete_event (GtkWidget *widget,
 
 
 /**
- * gnome_dock_item_construct:
- * @new: a #GnomeDockItem.
+ * bonobo_dock_item_construct:
+ * @new: a #BonoboDockItem.
  * @name: Name for the new item
  * @behavior: Behavior for the new item
  * 
- * Description: Constructs the @new GnomeDockItem named @name, with the
+ * Description: Constructs the @new BonoboDockItem named @name, with the
  * specified @behavior.
  * 
- * Returns: A new GnomeDockItem widget.
+ * Returns: A new BonoboDockItem widget.
  **/
 void
-gnome_dock_item_construct (GnomeDockItem *new,
+bonobo_dock_item_construct (BonoboDockItem *new,
 			   const gchar *name,
-			   GnomeDockItemBehavior behavior)
+			   BonoboDockItemBehavior behavior)
 {
 	g_return_if_fail (new != NULL);
-	g_return_if_fail (GNOME_IS_DOCK_ITEM (new));
+	g_return_if_fail (BONOBO_IS_DOCK_ITEM (new));
 	
 	new->name = g_strdup (name);
 	new->behavior = behavior;
 }
 
 /**
- * gnome_dock_item_new:
+ * bonobo_dock_item_new:
  * @name: Name for the new item
  * @behavior: Behavior for the new item
  * 
- * Description: Create a new GnomeDockItem named @name, with the
+ * Description: Create a new BonoboDockItem named @name, with the
  * specified @behavior.
  * 
- * Returns: A new GnomeDockItem widget.
+ * Returns: A new BonoboDockItem widget.
  **/
 GtkWidget*
-gnome_dock_item_new (const gchar *name,
-                     GnomeDockItemBehavior behavior)
+bonobo_dock_item_new (const gchar *name,
+                     BonoboDockItemBehavior behavior)
 {
-  GnomeDockItem *new;
+  BonoboDockItem *new;
 
-  new = GNOME_DOCK_ITEM (gtk_type_new (gnome_dock_item_get_type ()));
+  new = BONOBO_DOCK_ITEM (gtk_type_new (bonobo_dock_item_get_type ()));
 
-  gnome_dock_item_construct (new, name, behavior);
+  bonobo_dock_item_construct (new, name, behavior);
 
   return GTK_WIDGET (new);
 }
 
 /**
- * gnome_dock_item_get_child:
- * @item: A GnomeDockItem widget
+ * bonobo_dock_item_get_child:
+ * @item: A BonoboDockItem widget
  * 
  * Description: Retrieve the child of @item.
  * 
  * Returns: The child of @item.
  **/
 GtkWidget *
-gnome_dock_item_get_child (GnomeDockItem *item)
+bonobo_dock_item_get_child (BonoboDockItem *item)
 {
   return GTK_BIN (item)->child;
 }
 
 /**
- * gnome_dock_item_get_name:
- * @item: A GnomeDockItem widget.
+ * bonobo_dock_item_get_name:
+ * @item: A BonoboDockItem widget.
  * 
  * Description: Retrieve the name of @item.
  * 
@@ -1144,24 +1144,24 @@ gnome_dock_item_get_child (GnomeDockItem *item)
  * string.
  **/
 gchar *
-gnome_dock_item_get_name (GnomeDockItem *item)
+bonobo_dock_item_get_name (BonoboDockItem *item)
 {
   return g_strdup (item->name);
 }
 
 /**
- * gnome_dock_item_set_shadow_type:
- * @dock_item: A GnomeDockItem widget
+ * bonobo_dock_item_set_shadow_type:
+ * @dock_item: A BonoboDockItem widget
  * @type: The shadow type for @dock_item
  * 
  * Description: Set the shadow type for @dock_item.
  **/
 void
-gnome_dock_item_set_shadow_type (GnomeDockItem  *dock_item,
+bonobo_dock_item_set_shadow_type (BonoboDockItem  *dock_item,
                                  GtkShadowType  type)
 {
   g_return_if_fail (dock_item != NULL);
-  g_return_if_fail (GNOME_IS_DOCK_ITEM (dock_item));
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (dock_item));
 
   if (dock_item->shadow_type != type)
     {
@@ -1174,25 +1174,25 @@ gnome_dock_item_set_shadow_type (GnomeDockItem  *dock_item,
 }
 
 /**
- * gnome_dock_item_get_shadow_type:
- * @dock_item: A GnomeDockItem widget.
+ * bonobo_dock_item_get_shadow_type:
+ * @dock_item: A BonoboDockItem widget.
  * 
  * Description: Retrieve the shadow type of @dock_item.
  * 
  * Returns: @dock_item's shadow type.
  **/
 GtkShadowType
-gnome_dock_item_get_shadow_type (GnomeDockItem  *dock_item)
+bonobo_dock_item_get_shadow_type (BonoboDockItem  *dock_item)
 {
   g_return_val_if_fail (dock_item != NULL, GTK_SHADOW_OUT);
-  g_return_val_if_fail (GNOME_IS_DOCK_ITEM (dock_item), GTK_SHADOW_OUT);
+  g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (dock_item), GTK_SHADOW_OUT);
 
   return dock_item->shadow_type;
 }
 
 /**
- * gnome_dock_item_set_orientation:
- * @dock_item: A GnomeDockItem widget
+ * bonobo_dock_item_set_orientation:
+ * @dock_item: A BonoboDockItem widget
  * @orientation: New orientation for @dock_item
  * 
  * Description: Set the orientation for @dock_item.
@@ -1200,18 +1200,18 @@ gnome_dock_item_get_shadow_type (GnomeDockItem  *dock_item)
  * Returns: %TRUE if the operation succeeds, %FALSE if it fails.
  **/
 gboolean
-gnome_dock_item_set_orientation (GnomeDockItem *dock_item,
+bonobo_dock_item_set_orientation (BonoboDockItem *dock_item,
                                  GtkOrientation orientation)
 {
   g_return_val_if_fail (dock_item != NULL, FALSE);
-  g_return_val_if_fail (GNOME_IS_DOCK_ITEM (dock_item), FALSE);
+  g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (dock_item), FALSE);
 
   if (dock_item->orientation != orientation)
     {
       if ((orientation == GTK_ORIENTATION_VERTICAL
-           && (dock_item->behavior & GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL))
+           && (dock_item->behavior & BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL))
           || (orientation == GTK_ORIENTATION_HORIZONTAL
-              && (dock_item->behavior & GNOME_DOCK_ITEM_BEH_NEVER_HORIZONTAL)))
+              && (dock_item->behavior & BONOBO_DOCK_ITEM_BEH_NEVER_HORIZONTAL)))
         return FALSE;
 
       dock_item->orientation = orientation;
@@ -1236,39 +1236,39 @@ gnome_dock_item_set_orientation (GnomeDockItem *dock_item,
 }
 
 /**
- * gnome_dock_item_get_orientation:
- * @dock_item: A GnomeDockItem widget.
+ * bonobo_dock_item_get_orientation:
+ * @dock_item: A BonoboDockItem widget.
  * 
  * Description: Retrieve the orientation of @dock_item.
  * 
  * Returns: The current orientation of @dock_item.
  **/
 GtkOrientation
-gnome_dock_item_get_orientation (GnomeDockItem *dock_item)
+bonobo_dock_item_get_orientation (BonoboDockItem *dock_item)
 {
   g_return_val_if_fail (dock_item != NULL,
                         GTK_ORIENTATION_HORIZONTAL);
-  g_return_val_if_fail (GNOME_IS_DOCK_ITEM (dock_item),
+  g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (dock_item),
                         GTK_ORIENTATION_HORIZONTAL);
 
   return dock_item->orientation;
 }
 
 /**
- * gnome_dock_item_get_behavior:
- * @dock_item: A GnomeDockItem widget.
+ * bonobo_dock_item_get_behavior:
+ * @dock_item: A BonoboDockItem widget.
  * 
  * Description: Retrieve the behavior of @dock_item.
  * 
  * Returns: The behavior of @dock_item.
  **/
-GnomeDockItemBehavior
-gnome_dock_item_get_behavior (GnomeDockItem *dock_item)
+BonoboDockItemBehavior
+bonobo_dock_item_get_behavior (BonoboDockItem *dock_item)
 {
   g_return_val_if_fail (dock_item != NULL,
-                        GNOME_DOCK_ITEM_BEH_NORMAL);
-  g_return_val_if_fail (GNOME_IS_DOCK_ITEM (dock_item),
-                        GNOME_DOCK_ITEM_BEH_NORMAL);
+                        BONOBO_DOCK_ITEM_BEH_NORMAL);
+  g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (dock_item),
+                        BONOBO_DOCK_ITEM_BEH_NORMAL);
 
   return dock_item->behavior;
 }
@@ -1278,7 +1278,7 @@ gnome_dock_item_get_behavior (GnomeDockItem *dock_item)
 /* Private interface.  */
 
 void
-gnome_dock_item_grab_pointer (GnomeDockItem *item)
+bonobo_dock_item_grab_pointer (BonoboDockItem *item)
 {
   GdkCursor *fleur;
 
@@ -1298,18 +1298,18 @@ gnome_dock_item_grab_pointer (GnomeDockItem *item)
 }
 
 gboolean
-gnome_dock_item_detach (GnomeDockItem *item, gint x, gint y)
+bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
 {
   GtkRequisition requisition;
   GtkAllocation allocation;
 
-  if (item->behavior & GNOME_DOCK_ITEM_BEH_NEVER_FLOATING)
+  if (item->behavior & BONOBO_DOCK_ITEM_BEH_NEVER_FLOATING)
     return FALSE;
 
   item->float_x = x;
   item->float_y = y;
 
-  gnome_dock_item_set_floating (item, TRUE);
+  bonobo_dock_item_set_floating (item, TRUE);
 
   if (! GTK_WIDGET_REALIZED (item))
     return TRUE;
@@ -1340,7 +1340,7 @@ gnome_dock_item_detach (GnomeDockItem *item, gint x, gint y)
 }
 
 void
-gnome_dock_item_attach (GnomeDockItem *item, GtkWidget *parent, gint x, gint y)
+bonobo_dock_item_attach (BonoboDockItem *item, GtkWidget *parent, gint x, gint y)
 {
   if (GTK_WIDGET (item)->parent != GTK_WIDGET (parent))
     {
@@ -1353,16 +1353,16 @@ gnome_dock_item_attach (GnomeDockItem *item, GtkWidget *parent, gint x, gint y)
       gdk_window_show (GTK_WIDGET (item)->window);
 
       item->float_window_mapped = FALSE;
-      gnome_dock_item_set_floating (item, FALSE);
+      bonobo_dock_item_set_floating (item, FALSE);
 
       gtk_widget_queue_resize (GTK_WIDGET (item));
 
-      gnome_dock_item_grab_pointer (item);
+      bonobo_dock_item_grab_pointer (item);
     }
 }
 
 void
-gnome_dock_item_drag_floating (GnomeDockItem *item, gint x, gint y)
+bonobo_dock_item_drag_floating (BonoboDockItem *item, gint x, gint y)
 {
   if (item->is_floating)
     {
@@ -1375,7 +1375,7 @@ gnome_dock_item_drag_floating (GnomeDockItem *item, gint x, gint y)
 }
 
 void
-gnome_dock_item_handle_size_request (GnomeDockItem *item,
+bonobo_dock_item_handle_size_request (BonoboDockItem *item,
                                      GtkRequisition *requisition)
 {
   GtkBin *bin;
@@ -1397,7 +1397,7 @@ gnome_dock_item_handle_size_request (GnomeDockItem *item,
 }
 
 void
-gnome_dock_item_get_floating_position (GnomeDockItem *item,
+bonobo_dock_item_get_floating_position (BonoboDockItem *item,
                                        gint *x, gint *y)
 {
   if (GTK_WIDGET_REALIZED (item) && item->is_floating)
