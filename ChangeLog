@@ -1,3 +1,8 @@
+2001-06-01  Joe Shaw  <joe@ximian.com>
+
+	* bonobo/bonobo-canvas-component.c: Added 
+	_bonobo_boolean_handled_accumulator(), ripped from gtk+/gtk/gtkmain.c.
+
 2001-05-31  Joe Shaw  <joe@ximian.com>
 
 	* bonobo/bonobo-canvas-component.c: GObjectify. Change calls to
