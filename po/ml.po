@@ -5,30 +5,30 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui-2.2.x\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2003-03-05 10:29+0530\n"
+"Project-Id-Version:libbonoboui.HEAD\n"
+"POT-Creation-Date: 2003-06-06 04:54+0200\n"
+"PO-Revision-Date: 2003-07-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:667
+#: bonobo/bonobo-canvas-item.c:655
 #, fuzzy
 msgid "corba factory"
 msgstr "സ്പന്ദന നിറ്മ്മാണശാല"
 
-#: bonobo/bonobo-canvas-item.c:668
+#: bonobo/bonobo-canvas-item.c:656
 #, fuzzy
 msgid "The factory pointer"
 msgstr "പ്രയോഗം"
 
-#: bonobo/bonobo-canvas-item.c:677
+#: bonobo/bonobo-canvas-item.c:665
 msgid "corba UI container"
 msgstr ""
 
-#: bonobo/bonobo-canvas-item.c:678
+#: bonobo/bonobo-canvas-item.c:666
 #, fuzzy
 msgid "The User interface container"
 msgstr "ഉപയോക്തൃ നാമം"
@@ -43,24 +43,24 @@ msgstr "എങ്ങനെ ഉപകരണപ്പട്ട വരയ‌്ക�
 msgid "Un dock the toolbar"
 msgstr "എങ്ങനെ ഉപകരണപ്പട്ട വരയ‌്ക്കാം"
 
-#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
-#: bonobo/bonobo-ui-toolbar.c:1176
+#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "പ്രതിബിംബതരം"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
-#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
+#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "സ്ഥാന നിര്ണ്ണയം"
 
-#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
-#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
+#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 #, fuzzy
 msgid "Preferred width"
 msgstr "സ്ഥിര വീതി"
 
-#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
-#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
+#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 #, fuzzy
 msgid "Preferred height"
 msgstr "തിരനോട്ട ഉയരം"
@@ -79,12 +79,12 @@ msgstr "താരതമ്യം ചെയ്യ‍ുന്നതിന് ആ�
 msgid "Select a filename to save"
 msgstr "സംരക്ഷിക്കാന്‌ ഒരു രചനാ നാമം തെരഞ്ഞെടുക്കുക"
 
-#: bonobo/bonobo-plug.c:411
+#: bonobo/bonobo-plug.c:372
 #, fuzzy
 msgid "Event Forwarding"
 msgstr "മാറ്റി അയയ‍്ക്കല് വാചകം:"
 
-#: bonobo/bonobo-plug.c:412
+#: bonobo/bonobo-plug.c:373
 #, fuzzy
 msgid "Whether X events should be forwarded"
 msgstr "താലം ഉപയോഗിക്കേണ്ടതുണ്ടോ"
@@ -171,9 +171,8 @@ msgid "Debug"
 msgstr "തിരുത്ത്"
 
 #: bonobo/bonobo-ui-engine.c:90
-#, fuzzy
 msgid "_Dump XML"
-msgstr "Dump XML"
+msgstr ""
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
@@ -189,7 +188,7 @@ msgid "Gdk debugging flags to set"
 msgstr ""
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr ""
 
@@ -205,78 +204,77 @@ msgstr "ഉപയോഗിക്കുന്നതിനായി X പ്രദ
 msgid "DISPLAY"
 msgstr "പ്രദ‌ര്ശനം"
 
-#: bonobo/bonobo-ui-init-gtk.c:124
+#: bonobo/bonobo-ui-init-gtk.c:125
 #, fuzzy
 msgid "X screen to use"
 msgstr "ഉപയോഗിക്കുന്നതിനായി X പ്രദര്ശനം"
 
-#: bonobo/bonobo-ui-init-gtk.c:124
+#: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:128
+#: bonobo/bonobo-ui-init-gtk.c:129
 #, fuzzy
 msgid "Make X calls synchronous"
 msgstr "അസമകാലികം"
 
-#: bonobo/bonobo-ui-init-gtk.c:134
+#: bonobo/bonobo-ui-init-gtk.c:135
 msgid "Don't use X shared memory extension"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:138
+#: bonobo/bonobo-ui-init-gtk.c:139
 msgid "Program name as used by the window manager"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:138
+#: bonobo/bonobo-ui-init-gtk.c:139
 msgid "NAME"
 msgstr "പേര‌്"
 
-#: bonobo/bonobo-ui-init-gtk.c:141
+#: bonobo/bonobo-ui-init-gtk.c:142
 msgid "Program class as used by the window manager"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:141
-#, fuzzy
+#: bonobo/bonobo-ui-init-gtk.c:142
 msgid "CLASS"
-msgstr "TCLASS"
+msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:145
+#: bonobo/bonobo-ui-init-gtk.c:146
 msgid "HOST"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:149
+#: bonobo/bonobo-ui-init-gtk.c:150
 msgid "PORT"
 msgstr "PORT"
 
-#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
+#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
 msgstr "STYLE"
 
-#: bonobo/bonobo-ui-init-gtk.c:161
+#: bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:167
+#: bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:179
+#: bonobo/bonobo-ui-init-gtk.c:180
 msgid "GTK+"
 msgstr ""
 
-#: bonobo/bonobo-ui-main.c:193
+#: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
 msgstr ""
 
@@ -314,19 +312,19 @@ msgstr "യഥേഷ്ടം"
 msgid "Customize the toolbar"
 msgstr "ഉപകരണപ്പട്ട സജ്ജീകരിക്കുക"
 
-#: bonobo/bonobo-ui-toolbar.c:1130
+#: bonobo/bonobo-ui-toolbar.c:1129
 #, fuzzy
 msgid "is floating"
 msgstr "വരയ്‌ക്കുന്ന"
 
-#: bonobo/bonobo-ui-toolbar.c:1131
+#: bonobo/bonobo-ui-toolbar.c:1130
 #, fuzzy
 msgid "whether the toolbar is floating"
 msgstr "സ്ഥാനസൂചി മിന്നുന്ന സമയത്ത്"
 
-#: bonobo/bonobo-ui-toolbar.c:1177
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "ആയുധപ്പട്ടയുടെ അഭിവിന്യാസം"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
@@ -413,7 +411,6 @@ msgid "_File"
 msgstr "ശേഖരം"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
-#, fuzzy
 msgid "_Select"
 msgstr "തെരഞ്ഞെടുക്കുക"
 
@@ -432,15 +429,14 @@ msgstr "ഗ്നോം"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
-#, fuzzy
 msgid "Hello, World!"
-msgstr "ഹലോ വേള്ഡ്"
+msgstr ""
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
 msgstr ""
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:133
 #, fuzzy
 msgid "Could not initialize Bonobo UI"
 msgstr "നിറം സംസ്ഥാപിക്കാന്‌ കഴിയുന്നില്ല"
