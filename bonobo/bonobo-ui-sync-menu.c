@@ -35,6 +35,8 @@ static GObjectClass *parent_class = NULL;
 
 static GQuark menu_id = 0;
 static GQuark popups_id = 0;
+static GQuark submenu_id = 0;
+static GQuark menuitem_id = 0;
 
 typedef struct {
 	GtkMenu          *menu;
@@ -855,10 +857,14 @@ impl_bonobo_ui_sync_menu_can_handle (BonoboUISync *sync,
 	if (!menu_id) {
 		menu_id = g_quark_from_static_string ("menu");
 		popups_id = g_quark_from_static_string ("popups");
+		submenu_id = g_quark_from_static_string ("submenu");
+		menuitem_id = g_quark_from_static_string ("menuitem");
 	}
 	
 	return (node->name_id == menu_id ||
-		node->name_id == popups_id);
+		node->name_id == popups_id ||
+		node->name_id == submenu_id ||
+		node->name_id == menuitem_id);
 }
 
 /* We need to map the shell to the item */

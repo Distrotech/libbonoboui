@@ -1,3 +1,19 @@
+2002-02-20  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c (class_init): add
+	cmd_id & commands_id.
+	(find_sync_for_node): we have no sync. for commands.
+
+	* bonobo/bonobo-ui-sync-keys.c
+	(impl_bonobo_ui_sync_keys_can_handle): accel.
+
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_bonobo_ui_sync_menu_can_handle): expand
+	scope to accelerate.
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(impl_bonobo_ui_sync_toolbar_can_handle): ditto.
+
 2002-02-19  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-sync-menu.c

@@ -50,10 +50,12 @@
 static GObjectClass *parent_class = NULL;
 
 static GQuark id_id        = 0;
+static GQuark cmd_id       = 0;
 static GQuark verb_id      = 0;
 static GQuark name_id      = 0;
 static GQuark state_id     = 0;
 static GQuark hidden_id    = 0;
+static GQuark commands_id  = 0;
 static GQuark sensitive_id = 0;
 
 enum {
@@ -94,10 +96,12 @@ find_sync_for_node (BonoboUIEngine *engine,
 	GSList       *l;
 	BonoboUISync *ret = NULL;
 
-	if (!node) {
-/*		fprintf (stderr, "Could not find sync for some path\n");*/
+	if (!node)
 		return NULL;
-	}
+
+	if (node->name_id == cmd_id ||
+	    node->name_id == commands_id)
+		return NULL;
 
 	for (l = engine->priv->syncs; l; l = l->next) {
 		if (bonobo_ui_sync_can_handle (l->data, node)) {
@@ -1836,10 +1840,12 @@ class_init (BonoboUIEngineClass *engine_class)
 	parent_class = g_type_class_peek_parent (engine_class);
  
  	id_id        = g_quark_from_static_string ("id");
+	cmd_id       = g_quark_from_static_string ("cmd");
  	verb_id      = g_quark_from_static_string ("verb");
  	name_id      = g_quark_from_static_string ("name");
 	state_id     = g_quark_from_static_string ("state");
  	hidden_id    = g_quark_from_static_string ("hidden");
+	commands_id  = g_quark_from_static_string ("commands");
  	sensitive_id = g_quark_from_static_string ("sensitive");
 
 	object_class = G_OBJECT_CLASS (engine_class);

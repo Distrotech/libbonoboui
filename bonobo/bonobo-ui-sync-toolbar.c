@@ -35,6 +35,7 @@
 static GObjectClass *parent_class = NULL;
 
 static GQuark dockitem_id = 0;
+static GQuark toolitem_id = 0;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
@@ -811,10 +812,13 @@ static gboolean
 impl_bonobo_ui_sync_toolbar_can_handle (BonoboUISync *sync,
 					BonoboUINode *node)
 {
-	if (!dockitem_id)
+	if (!dockitem_id) {
 		dockitem_id = g_quark_from_static_string ("dockitem");
+		toolitem_id = g_quark_from_static_string ("toolitem");
+	}
 
-	return node->name_id == dockitem_id;
+	return (node->name_id == dockitem_id ||
+		node->name_id == toolitem_id);
 }
 
 static void

@@ -18,6 +18,9 @@
 #include <bonobo/bonobo-ui-sync-keys.h>
 #include <bonobo/bonobo-ui-private.h>
 
+static GQuark accel_id = 0;
+static GQuark keybindings_id = 0;
+
 static BonoboUISyncClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
@@ -167,7 +170,13 @@ static gboolean
 impl_bonobo_ui_sync_keys_can_handle (BonoboUISync *sync,
 				     BonoboUINode *node)
 {
-	return bonobo_ui_node_has_name (node, "keybindings");
+	if (!accel_id) {
+		accel_id = g_quark_from_static_string ("accel");
+		keybindings_id = g_quark_from_static_string ("keybindings");
+	}
+
+	return (node->name_id == accel_id ||
+		node->name_id == keybindings_id);
 }
 
 /* We need to map the shell to the item */
