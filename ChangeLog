@@ -1,3 +1,12 @@
+2003-12-06  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-ui.c (main): add keys test.
+
+	* bonobo/bonobo-ui-engine.c
+	(impl_emit_verb_on, impl_emit_event_on): inhibit
+	event / verb emission on insensitive command nodes,
+	fixes keybindings problem; thanks to Chris Toshok.
+
 2003-08-04  Federico Mena Quintero  <federico@ximian.com>
 
 	Released 2.2.4.
