@@ -36,7 +36,7 @@ enum {
 	LAST_SIGNAL
 };
 
-guint bonobo_selector_signals [LAST_SIGNAL] = { 0, 0 };
+static guint bonobo_selector_signals [LAST_SIGNAL] = { 0, 0 };
 
 static void       
 bonobo_selector_finalize (GObject *object)

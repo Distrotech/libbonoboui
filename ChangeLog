@@ -1,3 +1,8 @@
+2002-03-28  jacob berkman  <jacob@ximian.com>
+
+	* bonobo/bonobo-selector.c (signals): 
+	* bonobo/bonobo-ui-engine.c (signals): these should be static
+
 2002-03-28  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-file-selector-util.c
