@@ -80,14 +80,6 @@ PKG_CHECK_MODULES(BONOBOUI, $BONOBOUI_MODULES)
 AC_SUBST(BONOBOUI_CFLAGS)
 AC_SUBST(BONOBOUI_LIBS)
 
-AC_MSG_CHECKING([for gtk+ multihead support])
-if $PKG_CONFIG --atleast-version 2.1.0 gtk+-2.0; then
-   AC_DEFINE(HAVE_GTK_MULTIHEAD,,[gtk+ with multihead support found])
-   AC_MSG_RESULT(yes)
-else
-   AC_MSG_RESULT(no)
-fi
-
 AC_MSG_CHECKING([for broken, old development packages])
 if $PKG_CONFIG --exists gdk_pixbuf; then
 	if $PKG_CONFIG --modversion 'gdk_pixbuf >= 0.12'; then

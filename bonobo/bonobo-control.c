@@ -288,7 +288,6 @@ create_plug (BonoboControl *control)
 	g_object_unref (G_OBJECT (plug));
 }
 
-#ifdef HAVE_GTK_MULTIHEAD
 static int
 parse_cookie (const CORBA_char *cookie)
 {
@@ -341,7 +340,6 @@ parse_failed:
 
 	return retval;
 }
-#endif /* HAVE_GTK_MULTIHEAD */
 
 static CORBA_char *
 impl_Bonobo_Control_getWindowId (PortableServer_Servant servant,
@@ -351,17 +349,14 @@ impl_Bonobo_Control_getWindowId (PortableServer_Servant servant,
 	guint32        x11_id;
 	BonoboControl *control = BONOBO_CONTROL (
 		bonobo_object_from_servant (servant));
-#ifdef HAVE_GTK_MULTIHEAD
 	GdkScreen *gdkscreen;
 	int        screen_num;
-#endif
 
 	if (!control->priv->plug)
 		create_plug (control);
 
 	g_assert (control->priv->plug != NULL);
 
-#ifdef HAVE_GTK_MULTIHEAD
 	screen_num = parse_cookie (cookie);
 	if (screen_num != -1)
 		gdkscreen = gdk_display_get_screen (
@@ -370,7 +365,6 @@ impl_Bonobo_Control_getWindowId (PortableServer_Servant servant,
 		gdkscreen = gdk_screen_get_default ();
 
 	gtk_window_set_screen (GTK_WINDOW (control->priv->plug), gdkscreen);
-#endif
 
 	gtk_widget_show (control->priv->plug);
 
@@ -1450,11 +1444,9 @@ bonobo_control_do_popup_full (BonoboControl       *control,
 
 	g_free (path);
 
-#ifdef HAVE_GTK_MULTIHEAD
 	gtk_menu_set_screen (
 		GTK_MENU (menu),
 		gtk_window_get_screen (GTK_WINDOW (control->priv->plug)));
-#endif /* HAVE_GTK_MULTIHEAD */
 
 	gtk_widget_show (menu);
 

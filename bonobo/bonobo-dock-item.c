@@ -530,12 +530,8 @@ bonobo_dock_item_realize (GtkWidget *widget)
   if (di->_priv->grip)
     gtk_widget_set_parent_window (di->_priv->grip, di->bin_window);
 
-#ifdef HAVE_GTK_MULTIHEAD
-  root_window = gdk_screen_get_root_window (
-			gdk_drawable_get_screen (GDK_DRAWABLE (widget->window)));
-#else
-  root_window = gdk_get_default_root_window ();
-#endif
+  root_window = gdk_screen_get_root_window
+	  (gdk_drawable_get_screen (GDK_DRAWABLE (widget->window)));
   
   attributes.x = 0;
   attributes.y = 0;
@@ -931,12 +927,8 @@ bonobo_dock_item_motion (GtkWidget      *widget,
   if (event->window != di->bin_window)
     return FALSE;
 
-#ifdef HAVE_GTK_MULTIHEAD
-  root_window = gdk_screen_get_root_window (
-			gdk_drawable_get_screen (GDK_DRAWABLE (event->window)));
-#else
-  root_window = gdk_get_default_root_window ();
-#endif
+  root_window = gdk_screen_get_root_window
+	  (gdk_drawable_get_screen (GDK_DRAWABLE (event->window)));
 
   gdk_window_get_pointer (root_window, &new_x, &new_y, NULL);
   

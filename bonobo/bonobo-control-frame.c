@@ -247,7 +247,6 @@ static CORBA_char *
 bonobo_control_frame_get_remote_window_id (BonoboControlFrame *frame,
 					   CORBA_Environment  *ev)
 {
-#ifdef HAVE_GTK_MULTIHEAD
 	CORBA_char  *retval;
 	char        *cookie;
 	int          screen;
@@ -263,10 +262,6 @@ bonobo_control_frame_get_remote_window_id (BonoboControlFrame *frame,
 	g_free (cookie);
 
 	return retval;
-#else
-	return Bonobo_Control_getWindowId (
-				frame->priv->control, "", ev);
-#endif /* HAVE_GTK_MULTIHEAD */
 }
 
 void

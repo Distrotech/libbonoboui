@@ -1,3 +1,18 @@
+2003-06-10  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: bin multi-head checks.
+
+	* bonobo/bonobo-ui-init-gtk.c (bonobo_ui_gtk_options),
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_motion),
+	* bonobo/bonobo-control.c (impl_Bonobo_Control_getWindowId),
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_realize),
+	* bonobo/bonobo-control.c (bonobo_control_do_popup_full): 
+	bin multi-head conditionals.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_get_remote_window_id): clean out
+	the not HAVE_MULTIHEAD path.
+
 2003-06-10  Morten Welinder  <mortenw@gnome.org>
 
 	* bonobo/bonobo-dock-item.c (bonobo_dock_item_drag_end) 
