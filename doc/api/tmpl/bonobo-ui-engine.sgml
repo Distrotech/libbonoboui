@@ -58,6 +58,45 @@ onto it, effecively forcing a certain look.
 </para>
 
 
+<!-- ##### SIGNAL BonoboUIEngine::add-hint ##### -->
+<para>
+
+</para>
+
+@bonobouiengine: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL BonoboUIEngine::destroy ##### -->
+<para>
+
+</para>
+
+@bonobouiengine: the object which received the signal.
+
+<!-- ##### SIGNAL BonoboUIEngine::emit-event-on ##### -->
+<para>
+
+</para>
+
+@bonobouiengine: the object which received the signal.
+@arg1: 
+@arg2: 
+
+<!-- ##### SIGNAL BonoboUIEngine::emit-verb-on ##### -->
+<para>
+
+</para>
+
+@bonobouiengine: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL BonoboUIEngine::remove-hint ##### -->
+<para>
+
+</para>
+
+@bonobouiengine: the object which received the signal.
+
 <!-- ##### FUNCTION bonobo_ui_engine_deregister_dead_components ##### -->
 <para>
 
@@ -189,11 +228,17 @@ onto it, effecively forcing a certain look.
 </para>
 
 
-<!-- ##### TYPEDEF BonoboUIEngineClass ##### -->
+<!-- ##### STRUCT BonoboUIEngineClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@add_hint: 
+@remove_hint: 
+@emit_verb_on: 
+@emit_event_on: 
+@destroy: 
 
 <!-- ##### FUNCTION bonobo_ui_engine_construct ##### -->
 <para>
@@ -626,43 +671,4 @@ onto it, effecively forcing a certain look.
 @state: 
 @ev: 
 
-
-<!-- ##### SIGNAL BonoboUIEngine::add-hint ##### -->
-<para>
-
-</para>
-
-@bonobouiengine: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL BonoboUIEngine::destroy ##### -->
-<para>
-
-</para>
-
-@bonobouiengine: the object which received the signal.
-
-<!-- ##### SIGNAL BonoboUIEngine::emit-event-on ##### -->
-<para>
-
-</para>
-
-@bonobouiengine: the object which received the signal.
-@arg1: 
-@arg2: 
-
-<!-- ##### SIGNAL BonoboUIEngine::emit-verb-on ##### -->
-<para>
-
-</para>
-
-@bonobouiengine: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL BonoboUIEngine::remove-hint ##### -->
-<para>
-
-</para>
-
-@bonobouiengine: the object which received the signal.
 

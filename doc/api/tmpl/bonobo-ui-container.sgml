@@ -55,11 +55,14 @@ Here is how your code should interact with the BonoboUIContainer
 </para>
 
 
-<!-- ##### TYPEDEF BonoboUIContainerClass ##### -->
+<!-- ##### STRUCT BonoboUIContainerClass ##### -->
 <para>
 
 </para>
 
+@parent: 
+@epv: 
+@dummy: 
 
 <!-- ##### FUNCTION bonobo_ui_container_new ##### -->
 <para>

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonobui\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
+"POT-Creation-Date: 2003-12-09 00:17+0000\n"
 "PO-Revision-Date: 2003-08-31 04:38\n"
 "Last-Translator: Pawan Chitrakar <pawan@nplinux.org>\n"
 "Language-Team: Nepali<info@mpp.org.np>\n"
@@ -54,15 +54,15 @@ msgstr "रोजिएको चौडाइ"
 msgid "Preferred height"
 msgstr "रोजिएको उचाइ"
 
-#: bonobo/bonobo-file-selector-util.c:383
+#: bonobo/bonobo-file-selector-util.c:361
 msgid "Select a file to open"
 msgstr "खोल्नु पर्ने फाइल छनोट गर"
 
-#: bonobo/bonobo-file-selector-util.c:411
+#: bonobo/bonobo-file-selector-util.c:389
 msgid "Select files to open"
 msgstr "खोल्नु पर्ने फाइलहरू छनोट गर"
 
-#: bonobo/bonobo-file-selector-util.c:440
+#: bonobo/bonobo-file-selector-util.c:418
 msgid "Select a filename to save"
 msgstr "संचित गर्नु पर्ने फाइलको नाम छनोट गर"
 

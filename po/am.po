@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
+"POT-Creation-Date: 2003-12-09 00:17+0000\n"
 "PO-Revision-Date: 2003-02-03 10:16+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"
 "Language-Team: Amharic <locales@geez.org>\n"
@@ -59,15 +59,15 @@ msgstr ""
 msgid "Preferred height"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:383
+#: bonobo/bonobo-file-selector-util.c:361
 msgid "Select a file to open"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:411
+#: bonobo/bonobo-file-selector-util.c:389
 msgid "Select files to open"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:440
+#: bonobo/bonobo-file-selector-util.c:418
 msgid "Select a filename to save"
 msgstr "ለማስቀመጥ የፋይል ስም ምረጡ"
 

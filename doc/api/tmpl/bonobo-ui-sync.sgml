@@ -53,11 +53,25 @@ of the code. No normal user should need to write his own synchronizer.
 </para>
 
 
-<!-- ##### TYPEDEF BonoboUISyncClass ##### -->
+<!-- ##### STRUCT BonoboUISyncClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@sync_state: 
+@sync_state_placeholder: 
+@build: 
+@build_placeholder: 
+@update_root: 
+@remove_root: 
+@get_widgets: 
+@state_update: 
+@ignore_widget: 
+@can_handle: 
+@stamp_root: 
+@get_attached: 
+@wrap_widget: 
 
 <!-- ##### FUNCTION bonobo_ui_sync_construct ##### -->
 <para>

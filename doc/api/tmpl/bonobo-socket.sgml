@@ -109,11 +109,13 @@ as between a #BonoboPlug and a #BonoboSocket.
 </para>
 
 
-<!-- ##### TYPEDEF BonoboSocketClass ##### -->
+<!-- ##### STRUCT BonoboSocketClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@dummy: 
 
 <!-- ##### FUNCTION bonobo_socket_new ##### -->
 <para>

@@ -26,11 +26,18 @@ bonobo-window
 </para>
 
 
-<!-- ##### TYPEDEF BonoboWindowClass ##### -->
+<!-- ##### ARG BonoboWindow:win-name ##### -->
 <para>
 
 </para>
 
+<!-- ##### STRUCT BonoboWindowClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@dummy: 
 
 <!-- ##### FUNCTION bonobo_window_construct ##### -->
 <para>

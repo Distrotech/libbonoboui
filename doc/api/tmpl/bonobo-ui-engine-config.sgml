@@ -20,17 +20,21 @@ bonobo-ui-engine-config
 </para>
 
 
-<!-- ##### TYPEDEF BonoboUIEngineConfig ##### -->
+<!-- ##### STRUCT BonoboUIEngineConfig ##### -->
 <para>
 
 </para>
 
+@parent: 
+@priv: 
 
-<!-- ##### TYPEDEF BonoboUIEngineConfigClass ##### -->
+<!-- ##### STRUCT BonoboUIEngineConfigClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@dummy: 
 
 <!-- ##### FUNCTION bonobo_ui_engine_config_construct ##### -->
 <para>

@@ -1444,15 +1444,15 @@ bonobo_control_get_popup_ui_component (BonoboControl *control)
 }
 
 gboolean
-bonobo_control_do_popup_full (BonoboControl       *control,
+bonobo_control_do_popup_path (BonoboControl       *control,
 			      GtkWidget           *parent_menu_shell,
 			      GtkWidget           *parent_menu_item,
 			      GtkMenuPositionFunc  func,
 			      gpointer             data,
 			      guint                button,
+			      const char          *popup_path,
 			      guint32              activate_time)
 {
-	char      *path;
 	GtkWidget *menu;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), FALSE);
@@ -1460,15 +1460,11 @@ bonobo_control_do_popup_full (BonoboControl       *control,
 	if (!control->priv->popup_ui_container)
 		return FALSE;
 
-	path = g_strdup_printf ("/popups/button%d", button);
-
 	menu = gtk_menu_new ();
 
 	bonobo_ui_sync_menu_add_popup (
 		BONOBO_UI_SYNC_MENU (control->priv->popup_ui_sync),
-		GTK_MENU (menu), path);
-
-	g_free (path);
+		GTK_MENU (menu), popup_path);
 
 	gtk_menu_set_screen (
 		GTK_MENU (menu),
@@ -1482,6 +1478,29 @@ bonobo_control_do_popup_full (BonoboControl       *control,
 			button, activate_time);
 
 	return TRUE;
+}
+
+gboolean
+bonobo_control_do_popup_full (BonoboControl       *control,
+			      GtkWidget           *parent_menu_shell,
+			      GtkWidget           *parent_menu_item,
+			      GtkMenuPositionFunc  func,
+			      gpointer             data,
+			      guint                button,
+			      guint32              activate_time)
+{
+	char    *path;
+	gboolean retval;
+
+	path = g_strdup_printf ("/popups/button%d", button);
+
+	retval = bonobo_control_do_popup_path
+		(control, parent_menu_shell, parent_menu_item,
+		 func, data, button, path, activate_time);
+
+	g_free (path);
+
+	return retval;
 }
 
 gboolean

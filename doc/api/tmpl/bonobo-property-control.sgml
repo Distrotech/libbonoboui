@@ -20,6 +20,15 @@ bonobo-property-control
 </para>
 
 
+<!-- ##### SIGNAL BonoboPropertyControl::action ##### -->
+<para>
+
+</para>
+
+@bonobopropertycontrol: the object which received the signal.
+@arg1: 
+@arg2: 
+
 <!-- ##### STRUCT BonoboPropertyControlPrivate ##### -->
 <para>
 
@@ -44,11 +53,15 @@ bonobo-property-control
 @Returns: 
 
 
-<!-- ##### TYPEDEF BonoboPropertyControlClass ##### -->
+<!-- ##### STRUCT BonoboPropertyControlClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@epv: 
+@dummy: 
+@action: 
 
 <!-- ##### FUNCTION bonobo_property_control_construct ##### -->
 <para>

@@ -90,17 +90,53 @@ needs to be done every time the control is activated.
 </para>
 
 
+<!-- ##### SIGNAL BonoboControl::activate ##### -->
+<para>
+
+</para>
+
+@bonobocontrol: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL BonoboControl::disconnected ##### -->
+<para>
+
+</para>
+
+@bonobocontrol: the object which received the signal.
+
+<!-- ##### SIGNAL BonoboControl::plug-created ##### -->
+<para>
+
+</para>
+
+@bonobocontrol: the object which received the signal.
+
+<!-- ##### SIGNAL BonoboControl::set-frame ##### -->
+<para>
+
+</para>
+
+@bonobocontrol: the object which received the signal.
+
 <!-- ##### STRUCT BonoboControlPrivate ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### TYPEDEF BonoboControlClass ##### -->
+<!-- ##### STRUCT BonoboControlClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@epv: 
+@dummy: 
+@plug_created: 
+@disconnected: 
+@set_frame: 
+@activate: 
 
 <!-- ##### FUNCTION bonobo_control_new ##### -->
 <para>
@@ -422,26 +458,4 @@ needs to be done every time the control is activated.
 
 @Returns: 
 
-
-<!-- ##### SIGNAL BonoboControl::activate ##### -->
-<para>
-
-</para>
-
-@bonobocontrol: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL BonoboControl::disconnected ##### -->
-<para>
-
-</para>
-
-@bonobocontrol: the object which received the signal.
-
-<!-- ##### SIGNAL BonoboControl::set-frame ##### -->
-<para>
-
-</para>
-
-@bonobocontrol: the object which received the signal.
 

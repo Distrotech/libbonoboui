@@ -38,17 +38,24 @@ pipe, to ensure synchronization between the X and CORBA transports.
 </para>
 
 
+<!-- ##### ARG BonoboPlug:event-forwarding ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT BonoboPlugPrivate ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### TYPEDEF BonoboPlugClass ##### -->
+<!-- ##### STRUCT BonoboPlugClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@dummy: 
 
 <!-- ##### FUNCTION bonobo_plug_construct ##### -->
 <para>
@@ -67,9 +74,4 @@ pipe, to ensure synchronization between the X and CORBA transports.
 @socket_id: 
 @Returns: 
 
-
-<!-- ##### ARG BonoboPlug:event-forwarding ##### -->
-<para>
-
-</para>
 

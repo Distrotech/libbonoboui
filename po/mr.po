@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.x\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
+"POT-Creation-Date: 2003-12-09 00:17+0000\n"
 "PO-Revision-Date: 2002-09-10 18:30+0530\n"
 "Last-Translator: Vikas Chavan <vh_chavan@rediffmail.com>\n"
 "Language-Team: Marathi <www.indictrans.org>\n"
@@ -57,15 +57,15 @@ msgstr "मान्यता रुंदी "
 msgid "Preferred height"
 msgstr "मान्यता ऊंची "
 
-#: bonobo/bonobo-file-selector-util.c:383
+#: bonobo/bonobo-file-selector-util.c:361
 msgid "Select a file to open"
 msgstr "उघडण्यासाठी  एक फाइल निवडा "
 
-#: bonobo/bonobo-file-selector-util.c:411
+#: bonobo/bonobo-file-selector-util.c:389
 msgid "Select files to open"
 msgstr "उघडण्यासाठी  फाइल्स  निवडा"
 
-#: bonobo/bonobo-file-selector-util.c:440
+#: bonobo/bonobo-file-selector-util.c:418
 msgid "Select a filename to save"
 msgstr "संग्रहित करण्यासाठी  एक फाइल नाव  निवडा "
 

@@ -1,3 +1,11 @@
+2003-12-08  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.5.1
+
+	* bonobo/bonobo-control.c (bonobo_control_do_popup_full),
+	(bonobo_control_do_popup_path): split out / add a more
+	useful API variant.
+
 2003-12-05  Jan Arne Petersen  <jpetersen@uni-bonn.de>
 
 	* bonobo/bonobo-file-selector-util.c: (response_cb),

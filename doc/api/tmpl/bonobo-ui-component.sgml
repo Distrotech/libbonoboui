@@ -153,6 +153,24 @@ installed help files can be deduced.
 </para>
 
 
+<!-- ##### SIGNAL BonoboUIComponent::exec-verb ##### -->
+<para>
+
+</para>
+
+@bonobouicomponent: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL BonoboUIComponent::ui-event ##### -->
+<para>
+
+</para>
+
+@bonobouicomponent: the object which received the signal.
+@arg1: 
+@arg2: 
+@arg3: 
+
 <!-- ##### STRUCT BonoboUIComponentPrivate ##### -->
 <para>
 
@@ -181,11 +199,24 @@ installed help files can be deduced.
 @cname: 
 
 
-<!-- ##### TYPEDEF BonoboUIComponentClass ##### -->
+<!-- ##### STRUCT BonoboUIComponentClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@epv: 
+@dummy: 
+@exec_verb: 
+@ui_event: 
+@freeze: 
+@thaw: 
+@xml_set: 
+@xml_get: 
+@xml_rm: 
+@set_prop: 
+@get_prop: 
+@exists: 
 
 <!-- ##### FUNCTION bonobo_ui_component_construct ##### -->
 <para>
@@ -521,11 +552,15 @@ installed help files can be deduced.
 @opt_ev: 
 
 
-<!-- ##### TYPEDEF BonoboUIVerb ##### -->
+<!-- ##### STRUCT BonoboUIVerb ##### -->
 <para>
 
 </para>
 
+@cname: 
+@cb: 
+@user_data: 
+@dummy: 
 
 <!-- ##### MACRO BONOBO_UI_VERB ##### -->
 <para>
@@ -594,22 +629,4 @@ The terminator BonoboUIVerb structure for a list of BonoboUIVerbs.
 @list: 
 @user_data: 
 
-
-<!-- ##### SIGNAL BonoboUIComponent::exec-verb ##### -->
-<para>
-
-</para>
-
-@bonobouicomponent: the object which received the signal.
-@arg1: 
-
-<!-- ##### SIGNAL BonoboUIComponent::ui-event ##### -->
-<para>
-
-</para>
-
-@bonobouicomponent: the object which received the signal.
-@arg1: 
-@arg2: 
-@arg3: 
 

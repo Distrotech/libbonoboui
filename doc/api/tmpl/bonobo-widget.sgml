@@ -83,11 +83,13 @@ Simplified embedding of widgets in Bonobo.
 </para>
 
 
-<!-- ##### TYPEDEF BonoboWidgetClass ##### -->
+<!-- ##### STRUCT BonoboWidgetClass ##### -->
 <para>
 
 </para>
 
+@bin_class: 
+@dummy: 
 
 <!-- ##### FUNCTION bonobo_widget_get_objref ##### -->
 <para>

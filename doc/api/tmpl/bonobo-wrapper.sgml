@@ -20,17 +20,20 @@ bonobo-wrapper
 </para>
 
 
-<!-- ##### TYPEDEF BonoboWrapper ##### -->
+<!-- ##### STRUCT BonoboWrapper ##### -->
 <para>
 
 </para>
 
+@bin: 
+@priv: 
 
-<!-- ##### TYPEDEF BonoboWrapperClass ##### -->
+<!-- ##### STRUCT BonoboWrapperClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
 
 <!-- ##### FUNCTION bonobo_wrapper_new ##### -->
 <para>

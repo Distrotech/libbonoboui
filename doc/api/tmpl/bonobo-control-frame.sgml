@@ -87,17 +87,39 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 </para>
 
 
+<!-- ##### SIGNAL BonoboControlFrame::activate-uri ##### -->
+<para>
+
+</para>
+
+@bonobocontrolframe: the object which received the signal.
+@arg1: 
+@arg2: 
+
+<!-- ##### SIGNAL BonoboControlFrame::activated ##### -->
+<para>
+
+</para>
+
+@bonobocontrolframe: the object which received the signal.
+@arg1: 
+
 <!-- ##### STRUCT BonoboControlFramePrivate ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### TYPEDEF BonoboControlFrameClass ##### -->
+<!-- ##### STRUCT BonoboControlFrameClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@epv: 
+@dummy: 
+@activated: 
+@activate_uri: 
 
 <!-- ##### MACRO BONOBO_CONTROL_FRAME_TOPLEVEL_PROP ##### -->
 <para>
@@ -278,21 +300,4 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 @opt_ev: 
 @Returns: 
 
-
-<!-- ##### SIGNAL BonoboControlFrame::activate-uri ##### -->
-<para>
-
-</para>
-
-@bonobocontrolframe: the object which received the signal.
-@arg1: 
-@arg2: 
-
-<!-- ##### SIGNAL BonoboControlFrame::activated ##### -->
-<para>
-
-</para>
-
-@bonobocontrolframe: the object which received the signal.
-@arg1: 
 

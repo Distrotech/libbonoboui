@@ -47,11 +47,34 @@ the user to select.
 </para>
 
 
-<!-- ##### TYPEDEF BonoboSelectorClass ##### -->
+<!-- ##### SIGNAL BonoboSelector::cancel ##### -->
 <para>
 
 </para>
 
+@bonoboselector: the object which received the signal.
+
+<!-- ##### SIGNAL BonoboSelector::ok ##### -->
+<para>
+
+</para>
+
+@bonoboselector: the object which received the signal.
+
+<!-- ##### ARG BonoboSelector:interfaces-required ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT BonoboSelectorClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@ok: 
+@cancel: 
+@dummy: 
 
 <!-- ##### FUNCTION bonobo_selector_construct ##### -->
 <para>
@@ -110,23 +133,4 @@ the user to select.
 @interfaces_required: 
 @Returns: 
 
-
-<!-- ##### SIGNAL BonoboSelector::cancel ##### -->
-<para>
-
-</para>
-
-@bonoboselector: the object which received the signal.
-
-<!-- ##### SIGNAL BonoboSelector::ok ##### -->
-<para>
-
-</para>
-
-@bonoboselector: the object which received the signal.
-
-<!-- ##### ARG BonoboSelector:interfaces-required ##### -->
-<para>
-
-</para>
 

@@ -20,17 +20,26 @@ bonobo-selector-widget
 </para>
 
 
-<!-- ##### TYPEDEF BonoboSelectorWidget ##### -->
+<!-- ##### STRUCT BonoboSelectorWidget ##### -->
 <para>
 
 </para>
 
+@parent: 
+@priv: 
 
-<!-- ##### TYPEDEF BonoboSelectorWidgetClass ##### -->
+<!-- ##### STRUCT BonoboSelectorWidgetClass ##### -->
 <para>
 
 </para>
 
+@parent_class: 
+@get_id: 
+@get_name: 
+@get_description: 
+@set_interfaces: 
+@final_select: 
+@dummy: 
 
 <!-- ##### FUNCTION bonobo_selector_widget_new ##### -->
 <para>

@@ -126,6 +126,14 @@ gboolean                    bonobo_control_do_popup_full           (BonoboContro
 								    gpointer             data,
 								    guint                button,
 								    guint32              activate_time);
+gboolean                    bonobo_control_do_popup_path           (BonoboControl       *control,
+								    GtkWidget           *parent_menu_shell,
+								    GtkWidget           *parent_menu_item,
+								    GtkMenuPositionFunc  func,
+								    gpointer             data,
+								    guint                button,
+								    const char          *popup_path,
+								    guint32              activate_time);
 
 /* Simple lifecycle helpers - using the 'disconnected' signal */
 typedef void (*BonoboControlLifeCallback) (void);
