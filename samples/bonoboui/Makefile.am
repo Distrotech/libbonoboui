@@ -17,3 +17,5 @@ bonobo_hello_SOURCES =	\
 
 uidir = $(datadir)/gnome-2.0/ui
 ui_DATA = Bonobo_Sample_Hello.xml
+
+EXTRA_DIST=$(ui_DATA)
