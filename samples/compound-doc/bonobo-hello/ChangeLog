@@ -1,3 +1,7 @@
+2001-08-18  Darin Adler  <darin@bentspoon.com>
+
+	* Makefile.am: Removed extra -I directives.
+
 2001-08-14  Michael Meeks  <michael@ximian.com>
 
 	* Makefile.am: s/oaf/server/ fixup generation & translation

@@ -1,3 +1,7 @@
+2001-08-18  Darin Adler  <darin@bentspoon.com>
+
+	* Makefile.am: Removed extra -I directives.
+
 2001-08-13  Michael Meeks  <michael@ximian.com>
 
 	* doc-view.c: kill warnings.
