@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.8-branch\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-16 17:36+0200\n"
+"POT-Creation-Date: 2004-12-03 10:26+0200\n"
 "PO-Revision-Date: 2004-12-02 14:06+0200\n"
 "Last-Translator: Zuza Software Foundation <info@translate.org.za>\n"
 "Language-Team: Zulu <translate-discuss-zu@lists.sourceforge.net>\n"
@@ -22,33 +22,33 @@ msgstr "ifektri corba"
 
 #: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
-msgstr "Isikhombi sefektri"
+msgstr "Umkhombandlela wefektri"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
-msgstr "Isitsha esiphatha corba UI"
+msgstr "Isitsha sokuphatha corba UI"
 
 #: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
-msgstr "Isitsha esiphatha umsebenzisi wohlanganisa imiboniso"
+msgstr "Isitsha sokuphatha umsebenzisi wohlanganisa imiboniso"
 
 #: bonobo/bonobo-dock-item-grip.c:256
 msgid "Dock the toolbar"
-msgstr "Ngenisa isiqobolo"
+msgstr "Zishintshele isiqobolo"
 
 #: bonobo/bonobo-dock-item-grip.c:257
 msgid "Un dock the toolbar"
-msgstr "Ungsingenisi isiqobolo"
+msgstr "Ungazishintsheli isiqobolo"
 
 #: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
-msgstr "Inhlobo enomthunzi"
+msgstr "Inhlobo enganakekile"
 
 #: bonobo/bonobo-dock-item.c:243 bonobo/bonobo-dock-item.c:244
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
-msgstr "Ukuma"
+msgstr "Ukutshengisa"
 
 #: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
@@ -93,13 +93,14 @@ msgid "Interfaces required"
 msgstr "Kudingeka imiboniso"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
-#, review - short
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr "Umlinganiselo NULL-ogcinisiwe wemiboniso lapho umnikezi kumele awuxhase "
+msgstr ""
+"Umlinganiselo NULL-ogcinisiwe wemiboniso lapho umnikezi kumele awuxhase "
+"ukuze ingeniswe phakathi kokhetho. Amaphutha ku \"IDL:Bonobo/ethwalisiwe:1.0"
+"\" uma kungekho okuhleliwe okungena ngaphakthi"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -235,12 +236,10 @@ msgid "Make all warnings fatal"
 msgstr "Yenza zonke izixwayiso ukuba zibe nokubulala"
 
 #: bonobo/bonobo-ui-init-gtk.c:153
-#, review - translation of module
 msgid "Load an additional Gtk module"
-msgstr "Faka isexwayiso esinye Gtk"
+msgstr "Faka enye futhi Gtk module"
 
 #: bonobo/bonobo-ui-init-gtk.c:153
-#, fuzzy
 msgid "MODULE"
 msgstr "MODULE"
 
@@ -400,4 +399,3 @@ msgstr "Ihlulekile kwikhodi ye init libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Ihlulekile ukuqala ikhodi Bonobo UI"
-
