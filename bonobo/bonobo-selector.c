@@ -248,7 +248,8 @@ gnome_bonobo_selector_init (GtkWidget *widget)
 	GnomeBonoboSelector *sel = GNOME_BONOBO_SELECTOR (widget);
 	GtkWidget *scrolled;
 	GnomeBonoboSelectorPrivate *priv;
-	gchar *titles[] = { _ ("Bonobo object description"), "goadid", NULL };
+	gchar *titles[] = { N_("Bonobo object description"), "goadid", NULL };
+	int i;
 	
 	g_return_if_fail (widget != NULL);
 	
@@ -258,7 +259,9 @@ gnome_bonobo_selector_init (GtkWidget *widget)
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 		GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	
+
+	titles[0] = gettext(titles[0]);
+
 	priv->clist = gtk_clist_new_with_titles (2, titles);
 	gtk_clist_set_selection_mode (GTK_CLIST (priv->clist),
 		GTK_SELECTION_BROWSE);
