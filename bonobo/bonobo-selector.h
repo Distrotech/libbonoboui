@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef __GNOME_BONOBO_SELECTOR_H__
 #define __GNOME_BONOBO_SELECTOR_H__
 

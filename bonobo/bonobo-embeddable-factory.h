@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #ifndef _GNOME_COMPONENT_FACTORY_H_
 #define _GNOME_COMPONENT_FACTORY_H_
 

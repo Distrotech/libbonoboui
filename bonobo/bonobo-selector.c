@@ -1,3 +1,4 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #include <config.h>
 #include "gnome-bonobo-selector.h"
 #include <string.h> /* strcmp */
