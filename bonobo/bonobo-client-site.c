@@ -117,7 +117,6 @@ gnome_client_site_destroy (GtkObject *object)
 	GtkObjectClass *object_class;
 	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
 	GnomeObject *gnome_object = GNOME_OBJECT (client_site->bound_object);
-	GList *l;
 	
 	object_class = (GtkObjectClass *)gnome_client_site_parent_class;
 
@@ -126,8 +125,8 @@ gnome_client_site_destroy (GtkObject *object)
 	/*
 	 * Destroy all the view frames.
 	 */
-	for (l = client_site->view_frames; l != NULL; l = l->next) {
-		GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (l->data);
+	while (client_site->view_frames) {
+		GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (client_site->view_frames->data);
 
 		gnome_object_destroy (GNOME_OBJECT (view_frame));
 	}

@@ -117,6 +117,8 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 {
 	GnomeView *view = GNOME_VIEW (closure);
 
+	if (view->plug != plug)
+		g_warning ("Destroying incorrect plug");
 	/*
 	 * Set the plug to NULL here so that we don't try to
 	 * destroy it later.  It will get destroyed on its
@@ -289,7 +291,12 @@ gnome_view_destroy_remove_verb (gpointer key, gpointer value,
 static void
 gnome_view_destroy (GtkObject *object)
 {
-	GnomeView *view = GNOME_VIEW (object);
+	GnomeView *view;
+
+	g_return_if_fail (object != NULL);
+	g_return_if_fail (GNOME_IS_VIEW (object));
+	
+	view = GNOME_VIEW (object);
 
 	/*
 	 * Free up all the verbs associated with this View.
@@ -314,9 +321,10 @@ gnome_view_destroy (GtkObject *object)
 	 * have triggered the destruction of the View.  Which is why
 	 * we're here now.
 	 */
-	if (view->plug != NULL) {
+	if (view->plug) {
 		gtk_signal_disconnect (GTK_OBJECT (view->plug), view->plug_destroy_id);
 		gtk_object_unref (GTK_OBJECT (view->plug));
+		view->plug = NULL;
 	}
 
 	GTK_OBJECT_CLASS (gnome_view_parent_class)->destroy (object);
