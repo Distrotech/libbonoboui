@@ -27,7 +27,7 @@ hello_embeddable_factory (BonoboGenericFactory *f, gpointer data)
 {
 	HelloBonoboEmbeddable *embeddable;
 
-	embeddable = gtk_type_new (HELLO_BONOBO_EMBEDDABLE_TYPE);
+	embeddable = gtk_type_new (HELLO_BONOBO_TYPE_EMBEDDABLE);
 
 	g_return_val_if_fail(embeddable != NULL, NULL);
 

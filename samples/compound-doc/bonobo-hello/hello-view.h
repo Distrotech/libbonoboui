@@ -3,11 +3,11 @@
 
 #include <bonobo.h>
 
-#define HELLO_BONOBO_VIEW_TYPE        (hello_bonobo_view_get_type ())
-#define HELLO_BONOBO_VIEW(o)          (GTK_CHECK_CAST ((o), HELLO_BONOBO_VIEW_TYPE, HelloBonoboView))
-#define HELLO_BONOBO_VIEW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), HELLO_BONOBO_VIEW_TYPE, HelloBonoboViewClass))
-#define HELLO_BONOBO_IS_VIEW(o)       (GTK_CHECK_TYPE ((o), HELLO_BONOBO_VIEW_TYPE))
-#define HELLO_BONOBO_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), HELLO_BONOBO_VIEW_TYPE))
+#define HELLO_BONOBO_TYPE_VIEW        (hello_bonobo_view_get_type ())
+#define HELLO_BONOBO_VIEW(o)          (GTK_CHECK_CAST ((o), HELLO_BONOBO_TYPE_VIEW, HelloBonoboView))
+#define HELLO_BONOBO_VIEW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), HELLO_BONOBO_TYPE_VIEW, HelloBonoboViewClass))
+#define HELLO_BONOBO_IS_VIEW(o)       (GTK_CHECK_TYPE ((o), HELLO_BONOBO_TYPE_VIEW))
+#define HELLO_BONOBO_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), HELLO_BONOBO_TYPE_VIEW))
 
 struct _HelloBonoboView {
 	BonoboView view;

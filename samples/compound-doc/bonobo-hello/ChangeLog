@@ -1,3 +1,12 @@
+2001-10-29  Seth Nickell  <snickell@stanford.edu>
+
+	* bonobo-hello.c: (hello_embeddable_factory):
+	* hello-embeddable.h:
+	* hello-view.c: (hello_bonobo_view_factory):
+	* hello-view.h:
+
+	Fix type macro inconsistencies.
+	
 2001-08-18  Darin Adler  <darin@bentspoon.com>
 
 	* Makefile.am: Removed extra -I directives.

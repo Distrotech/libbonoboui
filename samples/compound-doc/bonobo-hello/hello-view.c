@@ -66,7 +66,7 @@ hello_bonobo_view_factory (BonoboEmbeddable      *embeddable,
 	HelloBonoboView *view;
 	GtkWidget       *widget;
 
-	view = gtk_type_new (HELLO_BONOBO_VIEW_TYPE);
+	view = gtk_type_new (HELLO_BONOBO_TYPE_VIEW);
 
 	widget = view_new (view);
 	gtk_widget_show_all (widget);

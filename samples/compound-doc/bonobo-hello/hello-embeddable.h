@@ -6,11 +6,11 @@
 typedef struct _HelloBonoboEmbeddable HelloBonoboEmbeddable;
 typedef struct _HelloBonoboView       HelloBonoboView;
 
-#define HELLO_BONOBO_EMBEDDABLE_TYPE        (hello_bonobo_embeddable_get_type ())
-#define HELLO_BONOBO_EMBEDDABLE(o)          (GTK_CHECK_CAST ((o), HELLO_BONOBO_EMBEDDABLE_TYPE, HelloBonoboEmbeddable))
-#define HELLO_BONOBO_EMBEDDABLE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), HELLO_BONOBO_EMBEDDABLE_TYPE, HelloBonoboEmbeddableClass))
-#define HELLO_BONOBO_IS_EMBEDDABLE(o)       (GTK_CHECK_TYPE ((o), HELLO_BONOBO_EMBEDDABLE_TYPE))
-#define HELLO_BONOBO_IS_EMBEDDABLE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), HELLO_BONOBO_EMBEDDABLE_TYPE))
+#define HELLO_BONOBO_TYPE_EMBEDDABLE        (hello_bonobo_embeddable_get_type ())
+#define HELLO_BONOBO_EMBEDDABLE(o)          (GTK_CHECK_CAST ((o), HELLO_BONOBO_TYPE_EMBEDDABLE, HelloBonoboEmbeddable))
+#define HELLO_BONOBO_EMBEDDABLE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), HELLO_BONOBO_TYPE_EMBEDDABLE, HelloBonoboEmbeddableClass))
+#define HELLO_BONOBO_IS_EMBEDDABLE(o)       (GTK_CHECK_TYPE ((o), HELLO_BONOBO_TYPE_EMBEDDABLE))
+#define HELLO_BONOBO_IS_EMBEDDABLE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), HELLO_BONOBO_TYPE_EMBEDDABLE))
 
 struct _HelloBonoboEmbeddable {
 	BonoboEmbeddable embeddable;
