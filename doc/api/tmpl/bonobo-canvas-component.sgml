@@ -42,7 +42,7 @@ my_item_creator (BonoboEmbeddable *embeddable,
                 "outline_color", "black",
                 NULL);
 
-        return gnome_canvas_component_new (item);
+        return bonobo_canvas_component_new (item);
 }
 
 /*
