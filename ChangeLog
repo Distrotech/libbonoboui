@@ -1,3 +1,16 @@
+2003-12-05  Jan Arne Petersen  <jpetersen@uni-bonn.de>
+
+	* bonobo/bonobo-file-selector-util.c: (response_cb),
+	(create_gtk_selector): Replace GtkFileSelection with
+	GtkFileChooser.
+
+	* samples/compound-doc/container/container-filesel.c:
+	(container_request_file):
+	* samples/compound-doc/container/container-filesel.h:
+	* samples/compound-doc/container/container-menu.c:
+	(load_response_cb), (save_response_cb), (verb_FileSaveAs_cb),
+	(verb_FileLoad_cb): ditto.
+
 2003-12-06  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-ui.c (main): add keys test.
@@ -6,7 +19,7 @@
 	(impl_emit_verb_on, impl_emit_event_on): inhibit
 	event / verb emission on insensitive command nodes,
 	fixes keybindings problem; thanks to Chris Toshok.
-
+	
 	* bonobo/bonobo-control.c (create_plug):
 	emit 'plug_created' signal.
 	(bonobo_control_get_plug): expose and document.
