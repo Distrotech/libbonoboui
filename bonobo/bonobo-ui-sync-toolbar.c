@@ -289,8 +289,7 @@ toolbar_style_changed (GtkWidget       *toolbar,
         items = toolbar_get_children (toolbar);
 	orientation = gtk_toolbar_get_orientation (GTK_TOOLBAR (toolbar));
 
-	for (l = items; l != NULL; l = l->next) {
-
+	for (l = items; l; l = l->next) {
 		if (BONOBO_IS_UI_TOOLBAR_ITEM (l->data))
 			set_attributes_on_child (l->data, orientation, style);
 	}
@@ -302,13 +301,6 @@ toolbar_style_changed (GtkWidget       *toolbar,
 
 #warning Must implement proxy for controls ...
 #if 0
-static void
-toolbar_menuitem_activate (BonoboUIToolbarButtonItem *item,
-			   GtkWidget *menu_item)
-{
-        bonobo_ui_toolbar_item_activate (BONOBO_UI_TOOLBAR_ITEM (item));
-}
-
 static gboolean
 toolbar_button_create_proxy (GtkToolItem *item,
 			     gpointer data)
@@ -826,8 +818,7 @@ create_dockitem (BonoboUISyncToolbar *sync,
 			      placement, band_num,
 			      position, offset, in_new_band);
 
-		
-	toolbar = bonobo_ui_internal_toolbar_new(); //gtk_toolbar_new ();
+	toolbar = bonobo_ui_internal_toolbar_new();
 
 	gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
 	gtk_container_add (GTK_CONTAINER (item),
