@@ -1,8 +1,10 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
-/* 
- * Copyright (C) 2000 Helix Code, Inc.
+/**
+ * bonobo-ui-toolbar-button-item.h: a toolbar button
  *
  * Author: Ettore Perazzoli
+ *
+ * Copyright (C) 2000 Helix Code, Inc.
  */
 
 #ifndef _BONOBO_UI_TOOLBAR_BUTTON_ITEM_H_

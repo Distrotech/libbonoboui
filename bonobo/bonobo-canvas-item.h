@@ -1,3 +1,11 @@
+/**
+ * bonobo-bonobo-item.h: Canvas item implementation for embedding remote canvas-items
+ *
+ * Author:
+ *     Miguel de Icaza (miguel@kernel.org)
+ *
+ * (C) 1999, 2000 Helix Code, Inc.
+ */
 #ifndef _BONOBO_CANVAS_ITEM_H_
 #define _BONOBO_CANVAS_ITEM_H_
 

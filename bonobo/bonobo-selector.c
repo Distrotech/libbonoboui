@@ -1,4 +1,19 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * bonobo-selector.c: Bonobo Component Selector
+ *
+ * Authors:
+ *   Richard Hestilow (hestgray@ionet.net)
+ *   Miguel de Icaza  (miguel@kernel.org)
+ *   Martin Baulig    (martin@
+ *   Anders Carlsson  (andersca@gnu.org)
+ *   Havoc Pennington (hp@redhat.com)
+ *   Dietmar Maurer   (dietmar@maurer-it.com)
+ *
+ * Copyright 1999, 2000 Richard Hestilow, Helix Code, Inc,
+ *                      Martin Baulig, Anders Carlsson,
+ *                      Havoc Pennigton, Dietmar Maurer
+ */
 #include <config.h>
 #include "bonobo-selector.h"
 #include <string.h> /* strcmp */

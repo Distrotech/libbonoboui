@@ -1,4 +1,16 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * bonobo-ui-compat.c: Compatibility functions for the old GnomeUI stuff,
+ *                    and the old Bonobo UI handler API.
+ *
+ *  This module acts as an excercise in filthy coding habits
+ * take a look around.
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
+ */
 #ifndef _BONOBO_UI_COMPAT_H_
 #define _BONOBO_UI_COMPAT_H_
 

@@ -1,4 +1,12 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * bonobo-win.c: The Bonobo Window implementation.
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
+ */
 #ifndef _BONOBO_WIN_H_
 #define _BONOBO_WIN_H_
 

@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * GNOME view frame object.
+ * bonobo-view-frame.c: view frame object.
  *
  * Authors:
  *   Nat Friedman    (nat@helixcode.com)

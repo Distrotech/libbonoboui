@@ -1,4 +1,13 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * bonobo-view.h: a view object of an embeddable
+ *
+ * Authors:
+ *   Miguel de Icaza (miguel@kernel.org)
+ *   Nat Friedman    (nat@nat.org)
+ *
+ * Copyright 1999 Helix Code, Inc.
+ */
 #ifndef _BONOBO_VIEW_H_
 #define _BONOBO_VIEW_H_
 

@@ -1,3 +1,11 @@
+/*
+ * bonobo-ui-util.h: Bonobo UI utility functions
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
+ */
 #ifndef _BONOBO_UI_XML_UTIL_H_
 #define _BONOBO_UI_XML_UTIL_H_
 

@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * GNOME ClientSite object.
+ * bonobo-client-site.h: a ClientSite object.
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)

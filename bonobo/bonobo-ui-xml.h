@@ -1,4 +1,12 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/*
+ * bonobo-ui-xml.h: A module for merging, overlaying and de-merging XML 
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
+ */
 #ifndef _BONOBO_UI_XML_H_
 #define _BONOBO_UI_XML_H_
 

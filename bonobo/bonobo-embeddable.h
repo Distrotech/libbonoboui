@@ -6,7 +6,7 @@
  *   Miguel de Icaza (miguel@kernel.org)
  *   Nat Friedman    (nat@nat.org)
  *
- * Copyright 1999 Helix Code, Inc.
+ * Copyright 1999,2000 Helix Code, Inc.
  */
 #ifndef _BONOBO_EMBEDDABLE_H_
 #define _BONOBO_EMBEDDABLE_H_

@@ -1,9 +1,11 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/*
+/**
  * gnome-component-ui.c: Client UI signal multiplexer and verb repository.
  *
  * Author:
- *   Michael Meeks (michael@helixcode.com)
+ *     Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 1999, 2000 Helix Code, Inc.
  */
 #include <config.h>
 #include <gnome.h>

@@ -1,9 +1,11 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
-/* bonobo-ui-toolbar-popup-item.h
+/**
+ * bonobo-ui-toolbar-popup-item.h
+ *
+ * Author:
+ *    Ettore Perazzoli
  *
  * Copyright (C) 2000 Helix Code, Inc.
- *
- * Author: Ettore Perazzoli
  */
 
 #ifndef _BONOBO_UI_TOOLBAR_POPUP_ITEM_H_

@@ -1,4 +1,13 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * bonobo-canvas-component.h: implements the CORBA interface for
+ * the Bonobo::Canvas:Item interface used in Bonobo::Views.
+ *
+ * Author:
+ *   Miguel de Icaza (miguel@kernel.org)
+ *
+ * (C) 1999 Helix Code, Inc.
+ */
 #ifndef _BONOBO_CANVAS_COMPONENT_H_
 #define _BONOBO_CANVAS_COMPONENT_H_
 

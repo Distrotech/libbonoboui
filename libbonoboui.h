@@ -1,9 +1,10 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/*
+/**
  * Main include file for the Bonobo component model
  *
  * FIXME: We should try to optimize the order of the include
- * files here to minimize repeated inclussion of files.
+ * files here to minimize repeated inclussion of files, and split
+ * this into X vs. non X headers.
  *
  * Copyright 1999 Helix Code, Inc.
  */

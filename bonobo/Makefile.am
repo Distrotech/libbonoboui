@@ -120,7 +120,6 @@ libbonoboinclude_HEADERS =			\
 	bonobo-ui-compat.h               	\
 	bonobo-ui-component.h            	\
 	bonobo-ui-container.h            	\
-	bonobo-ui-item.h                 	\
 	bonobo-ui-node.h                 	\
 	bonobo-ui-toolbar-button-item.h  	\
 	bonobo-ui-toolbar-control-item.h  	\
@@ -156,7 +155,6 @@ libbonobox_la_SOURCES =				\
 	bonobo-ui-compat.c               	\
 	bonobo-ui-component.c            	\
 	bonobo-ui-container.c            	\
-	bonobo-ui-item.c                 	\
 	bonobo-ui-node.c                 	\
 	bonobo-ui-toolbar-button-item.c  	\
 	bonobo-ui-toolbar-control-item.c  	\

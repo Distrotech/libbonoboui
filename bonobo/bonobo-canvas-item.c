@@ -1,4 +1,4 @@
-/*
+/**
  * bonobo-bonobo-item.c: Canvas item implementation for embedding remote canvas-items
  *
  * Author:

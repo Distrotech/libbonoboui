@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * GNOME view object
+ * bonobo-view.c: a view object of an embeddable
  *
  * Authors:
  *   Miguel de Icaza (miguel@kernel.org)

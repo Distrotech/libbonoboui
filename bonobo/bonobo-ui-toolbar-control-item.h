@@ -1,4 +1,12 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
+/**
+ * bonobo-ui-toolbar-control-item.c: A special toolbar item for controls.
+ *
+ * Author:
+ *	Jon K Hellan (hellan@acm.org)
+ *
+ * Copyright 2000 Jon K Hellan.
+ */
 #ifndef _BONOBO_UI_TOOLBAR_CONTROL_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_CONTROL_ITEM_H_
 

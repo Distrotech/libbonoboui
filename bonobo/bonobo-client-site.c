@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * Bonobo ClientSite object.
+ * bonobo-client-site.h: a ClientSite object.
  *
  * A BonoboClientSite object acts as the point-of-contact for an
  * embedded component: the contained Bonobo::Embeddable object

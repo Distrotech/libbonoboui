@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/*
+/**
  * bonobo-ui-node.c: Code to manipulate BonoboUINode objects
  *
  * Author:

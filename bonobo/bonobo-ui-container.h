@@ -1,4 +1,12 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/*
+ * bonobo-ui-container.h: The server side CORBA impl. for BonoboWin.
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
+ */
 #ifndef _BONOBO_UI_CONTAINER_H_
 #define _BONOBO_UI_CONTAINER_H_
 

@@ -1,4 +1,12 @@
-
+/**
+ * Bonobo Desktop Window Control implementation.
+ * Enables applications to export their geometry control through CORBA.
+ *
+ * Author:
+ *   Miguel de Icaza (miguel@kernel.org)
+ *
+ * Copyright 1999 Helix Code, Inc.
+ */
 #ifndef _BONOBO_VIEW_H_
 #define _BONOBO_VIEW_H_
 

@@ -1,4 +1,13 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * Bonobo control object
+ *
+ * Author:
+ *   Nat Friedman (nat@helixcode.com)
+ *   Miguel de Icaza (miguel@helixcode.com)
+ *
+ * Copyright 1999, 2000 Helix Code, Inc.
+ */
 #ifndef _BONOBO_CONTROL_H_
 #define _BONOBO_CONTROL_H_
 

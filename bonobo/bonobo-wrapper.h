@@ -1,9 +1,10 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/* Wrapper for plug/socket children in Bonobo
- *
- * Copyright (C) 1999 the Free Software Foundation
+/**
+ * bonobo-wrapper.h: Wrapper for plug/socket children in Bonobo
  *
  * Author: Federico Mena <federico@nuclecu.unam.mx>
+ *
+ * Copyright (C) 1999 the Free Software Foundation
  */
 
 #ifndef BONOBO_WRAPPER_H

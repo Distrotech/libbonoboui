@@ -1,4 +1,13 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * bonobo-view-frame.h: view frame object.
+ *
+ * Authors:
+ *   Nat Friedman    (nat@helixcode.com)
+ *   Miguel de Icaza (miguel@kernel.org)
+ *
+ * Copyright 1999, 2000 Helix Code, Inc.
+ */
 #ifndef _BONOBO_VIEW_FRAME_H_
 #define _BONOBO_VIEW_FRAME_H_
 

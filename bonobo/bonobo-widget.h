@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * GNOME Bonobo Widget object.
+ * bonobo-widget.h: Bonobo Widget object.
  *
  * Authors:
  *   Nat Friedman    (nat@nat.org)

@@ -1,4 +1,12 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+/**
+ * bonobo-ui-node.h: Code to manipulate BonoboUINode objects
+ *
+ * Author:
+ *	Havoc Pennington <hp@redhat.com>
+ *
+ * Copyright 2000 Red Hat, Inc.
+ */
 #ifndef _BONOBO_UI_NODE_H_
 #define _BONOBO_UI_NODE_H_
 

@@ -1,4 +1,4 @@
-/*
+/**
  * bonobo-canvas-component.c: implements the CORBA interface for
  * the Bonobo::Canvas:Item interface used in Bonobo::Views.
  *
@@ -6,7 +6,6 @@
  *   Miguel de Icaza (miguel@kernel.org)
  *
  * (C) 1999 Helix Code, Inc.
- *
  */
 #include <stdio.h>
 #include <config.h>
