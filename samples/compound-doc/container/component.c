@@ -1,6 +1,7 @@
 /* $Id$ */
 /*
   Bonobo-Hello Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
+  Copyright (C) 2000 Helix Code, Inc.
   
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License version 2
@@ -15,6 +16,10 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+  Authors:
+     ÉRDI Gergõ <cactus@cactus.rulez.org>
+     Michael Meeks <michael@helixcode.com>
 */
 
 #include "component.h"
@@ -22,24 +27,8 @@
 #include "component-io.h"
 #include "container-filesel.h"
 
-static void activate_request_cb (BonoboViewFrame * view_frame,
-				 Component * component);
-static void view_activated_cb (BonoboViewFrame * view_frame,
-			       gboolean activated, Component * component);
-static void deactivate (Component * component);
-
-/* Context menu ("right-click menu") stuff */
-static void component_user_context_cb (BonoboViewFrame * view_frame,
-				       Component * component);
-
-/* Button callbacks */
-static void add_view_cb (GtkWidget * caller, Component * component);
-static void del_view_cb (GtkWidget * caller, Component * component);
-static void del_cb (GtkWidget * caller, Component * component);
-static void fill_cb (GtkWidget * caller, Component * component);
-
 static void
-deactivate (Component * component)
+deactivate (Component *component)
 {
 	SampleApp *container = component->container;
 
@@ -60,18 +49,109 @@ deactivate (Component * component)
 		 * to NULL.  Which is why this check is here.
 		 */
 		if (container->curr_view)
-			bonobo_view_frame_set_covered (container->
-						       curr_view, TRUE);
+			bonobo_view_frame_set_covered (
+				container->curr_view, TRUE);
 
 		container->curr_view = NULL;
 	}
 }
 
+static void
+activate_request_cb (BonoboViewFrame * view_frame, Component * component)
+{
+	/*
+	 * If there is already an active View, deactivate it.
+	 */
+	deactivate (component);
+
+	/*
+	 * Activate the View which the user clicked on.  This just
+	 * sends a request to the embedded View to activate itself.
+	 * When it agrees to be activated, it will notify its
+	 * ViewFrame, and our view_activated_cb callback will be
+	 * called.
+	 *
+	 * We do not uncover the View here, because it may not wish to
+	 * be activated, and so we wait until it notifies us that it
+	 * has been activated to uncover it.
+	 */
+	bonobo_view_frame_view_activate (view_frame);
+}
+
+static void
+view_activated_cb (BonoboViewFrame * view_frame, gboolean activated,
+		   Component * component)
+{
+	SampleApp *container = component->container;
+
+	if (activated) {
+		/*
+		 * If the View is requesting to be activated, then we
+		 * check whether or not there is already an active
+		 * View.
+		 */
+		if (container->curr_view) {
+			g_warning ("View requested to be activated but "
+				   "there is already an active View!\n");
+			return;
+		}
+
+		/*
+		 * Otherwise, uncover it so that it can receive
+		 * events, and set it as the active View.
+		 */
+		bonobo_view_frame_set_covered (view_frame, FALSE);
+		container->curr_view = view_frame;
+	} else {
+		/*
+		 * If the View is asking to be deactivated, always
+		 * oblige.  We may have already deactivated it (see
+		 * user_activation_request_cb), but there's no harm in
+		 * doing it again.  There is always the possibility
+		 * that a View will ask to be deactivated when we have
+		 * not told it to deactivate itself, and that is
+		 * why we cover the view here.
+		 */
+		bonobo_view_frame_set_covered (view_frame, TRUE);
+
+		if (view_frame == container->curr_view)
+			container->curr_view = NULL;
+	}
+}
+
+static void
+component_user_context_cb (BonoboViewFrame *view_frame,
+			   Component       *component)
+{
+	char  *executed_verb;
+	GList *l;
+
+	/*
+	 * See if the remote BonoboEmbeddable supports any verbs at
+	 * all.
+	 */
+	l = bonobo_client_site_get_verbs (component->client_site);
+	if (!l)
+		return;
+	bonobo_client_site_free_verbs (l);
+
+	/*
+	 * Popup the verb popup and execute the chosen verb.  This
+	 * function saves us the work of creating the menu, connecting
+	 * the callback, and executing the verb on the remove
+	 * BonoboView.  We could implement all this functionality
+	 * ourselves if we wanted.
+	 */
+	executed_verb = bonobo_view_frame_popup_verbs (view_frame);
+
+	g_free (executed_verb);
+}
+
 void
-component_add_view (Component * component)
+component_add_view (Component *component)
 {
 	BonoboViewFrame *view_frame;
-	GtkWidget *view_widget;
+	GtkWidget       *view_widget;
 
 	/*
 	 * Create the remote view and the local ViewFrame.  This also
@@ -80,11 +160,11 @@ component_add_view (Component * component)
 	 * so that it can merge menu and toolbar items when it gets
 	 * activated.
 	 */
-	view_frame = bonobo_client_site_new_view (component->client_site,
-						  bonobo_object_corba_objref
-						  (BONOBO_OBJECT
-						   (component->container->
-						    ui_handler)));
+	view_frame = bonobo_client_site_new_view (
+		component->client_site,
+		bonobo_object_corba_objref (
+			BONOBO_OBJECT (component->container->
+				       ui_handler)));
 
 	/*
 	 * Embed the view frame into the application.
@@ -134,11 +214,10 @@ component_add_view (Component * component)
 	 * Show the component.
 	 */
 	gtk_widget_show_all (view_widget);
-
 }
 
 void
-component_del_view (Component * component)
+component_del_view (Component *component)
 {
 	BonoboViewFrame *last_view;
 
@@ -152,14 +231,13 @@ component_del_view (Component * component)
 	if (component->container->curr_view == last_view)
 		deactivate (component);
 
-
 	gtk_container_remove (GTK_CONTAINER (component->views_hbox),
 			      bonobo_view_frame_get_wrapper (last_view));
 	bonobo_object_unref (BONOBO_OBJECT (last_view));
 }
 
 void
-component_del (Component * component)
+component_del (Component *component)
 {
 	bonobo_object_unref (BONOBO_OBJECT (component->server));
 
@@ -168,13 +246,14 @@ component_del (Component * component)
 }
 
 void
-component_print (Component * component,
-		 GnomePrintContext * ctx,
-		 gdouble x, gdouble y, gdouble width, gdouble height)
+component_print (Component *component,
+		 GnomePrintContext *ctx,
+		 gdouble x, gdouble y,
+		 gdouble width, gdouble height)
 {
 	BonoboObjectClient *client = component->server;
-	BonoboPrintClient *print_client = bonobo_print_client_get (client);
-	BonoboPrintData *print_data;
+	BonoboPrintClient  *print_client = bonobo_print_client_get (client);
+	BonoboPrintData    *print_data;
 
 	if (!print_client)
 		return;
@@ -185,171 +264,27 @@ component_print (Component * component,
 	bonobo_print_data_free (print_data);
 }
 
-static void
-activate_request_cb (BonoboViewFrame * view_frame, Component * component)
-{
-	/*
-	 * If there is already an active View, deactivate it.
-	 */
-	deactivate (component);
-
-	/*
-	 * Activate the View which the user clicked on.  This just
-	 * sends a request to the embedded View to activate itself.
-	 * When it agrees to be activated, it will notify its
-	 * ViewFrame, and our view_activated_cb callback will be
-	 * called.
-	 *
-	 * We do not uncover the View here, because it may not wish to
-	 * be activated, and so we wait until it notifies us that it
-	 * has been activated to uncover it.
-	 */
-	bonobo_view_frame_view_activate (view_frame);
-}
 
 static void
-view_activated_cb (BonoboViewFrame * view_frame, gboolean activated,
-		   Component * component)
-{
-	SampleApp *container = component->container;
-
-	if (activated) {
-		/*
-		 * If the View is requesting to be activated, then we
-		 * check whether or not there is already an active
-		 * View.
-		 */
-		if (container->curr_view) {
-			g_warning
-			    ("View requested to be activated but there is already "
-			     "an active View!\n");
-			return;
-		}
-
-		/*
-		 * Otherwise, uncover it so that it can receive
-		 * events, and set it as the active View.
-		 */
-		bonobo_view_frame_set_covered (view_frame, FALSE);
-		container->curr_view = view_frame;
-	}
-	else {
-		/*
-		 * If the View is asking to be deactivated, always
-		 * oblige.  We may have already deactivated it (see
-		 * user_activation_request_cb), but there's no harm in
-		 * doing it again.  There is always the possibility
-		 * that a View will ask to be deactivated when we have
-		 * not told it to deactivate itself, and that is
-		 * why we cover the view here.
-		 */
-		bonobo_view_frame_set_covered (view_frame, TRUE);
-
-		if (view_frame == container->curr_view)
-			container->curr_view = NULL;
-	}
-}
-
-static void
-component_user_context_cb (BonoboViewFrame * view_frame,
-			   Component * component)
-{
-	char *executed_verb;
-	GList *l;
-
-	/*
-	 * See if the remote BonoboEmbeddable supports any verbs at
-	 * all.
-	 */
-	l = bonobo_client_site_get_verbs (component->client_site);
-	if (l == NULL)
-		return;
-	bonobo_client_site_free_verbs (l);
-
-	/*
-	 * Popup the verb popup and execute the chosen verb.  This
-	 * function saves us the work of creating the menu, connecting
-	 * the callback, and executing the verb on the remove
-	 * BonoboView.  We could implement all this functionality
-	 * ourselves if we wanted.
-	 */
-	executed_verb = bonobo_view_frame_popup_verbs (view_frame);
-
-	g_free (executed_verb);
-}
-
-GtkWidget *
-component_create_frame (Component * component, gchar * goad_id)
-{
-	GtkWidget *frame;
-	GtkWidget *vbox, *hbox;
-	GtkWidget *new_view_button, *del_view_button,
-	    *del_comp_button, *fill_comp_button;
-
-	/* Display widgets */
-	frame = component->widget = gtk_frame_new (goad_id);
-	vbox = gtk_vbox_new (FALSE, 10);
-	hbox = gtk_hbox_new (TRUE, 5);
-	new_view_button = gtk_button_new_with_label ("New view");
-	del_view_button = gtk_button_new_with_label ("Remove view");
-	del_comp_button = gtk_button_new_with_label ("Remove component");
-
-	/* The views of the component */
-	component->views_hbox = gtk_hbox_new (FALSE, 2);
-	gtk_signal_connect (GTK_OBJECT (new_view_button), "clicked",
-			    GTK_SIGNAL_FUNC (add_view_cb), component);
-	gtk_signal_connect (GTK_OBJECT (del_view_button), "clicked",
-			    GTK_SIGNAL_FUNC (del_view_cb), component);
-	gtk_signal_connect (GTK_OBJECT (del_comp_button), "clicked",
-			    GTK_SIGNAL_FUNC (del_cb), component);
-
-	gtk_container_add (GTK_CONTAINER (hbox), new_view_button);
-	gtk_container_add (GTK_CONTAINER (hbox), del_view_button);
-	gtk_container_add (GTK_CONTAINER (hbox), del_comp_button);
-
-	if (bonobo_object_client_has_interface (component->server,
-						"IDL:Bonobo/PersistStream:1.0",
-						NULL)) {
-		fill_comp_button =
-		    gtk_button_new_with_label ("Fill with stream");
-		gtk_container_add (GTK_CONTAINER (hbox), fill_comp_button);
-
-		gtk_signal_connect (GTK_OBJECT (fill_comp_button),
-				    "clicked", GTK_SIGNAL_FUNC (fill_cb),
-				    component);
-	}
-
-
-	gtk_container_add (GTK_CONTAINER (vbox), component->views_hbox);
-	gtk_container_add (GTK_CONTAINER (vbox), hbox);
-	gtk_container_add (GTK_CONTAINER (frame), vbox);
-
-	component->goad_id = g_strdup (goad_id);
-
-	return frame;
-}
-
-
-static void
-add_view_cb (GtkWidget * caller, Component * component)
+add_view_cb (GtkWidget *caller, Component *component)
 {
 	component_add_view (component);
 }
 
 static void
-del_view_cb (GtkWidget * caller, Component * component)
+del_view_cb (GtkWidget *caller, Component *component)
 {
 	component_del_view (component);
 }
 
 static void
-del_cb (GtkWidget * caller, Component * component)
+del_cb (GtkWidget *caller, Component *component)
 {
 	component_del (component);
 }
 
 static void
-load_stream_cb (GtkWidget * caller, Component * component)
+load_stream_cb (GtkWidget *caller, Component *component)
 {
 	GtkWidget *fs = component->container->fileselection;
 	gchar *filename = g_strdup (gtk_file_selection_get_filename
@@ -361,10 +296,9 @@ load_stream_cb (GtkWidget * caller, Component * component)
 		Bonobo_PersistStream persist;
 		BonoboStream *stream;
 
-		stream =
-		    bonobo_stream_fs_open (filename, Bonobo_Storage_READ);
+		stream = bonobo_stream_fs_open (filename, Bonobo_Storage_READ);
 
-		if (stream == NULL) {
+		if (!stream) {
 			gchar *error_msg;
 
 			error_msg =
@@ -380,11 +314,9 @@ load_stream_cb (GtkWidget * caller, Component * component)
 		 * Now get the PersistStream interface off the embedded
 		 * component.
 		 */
-		persist =
-		    bonobo_object_client_query_interface (component->
-							  server,
-							  "IDL:Bonobo/PersistStream:1.0",
-							  NULL);
+		persist = bonobo_object_client_query_interface (
+			component->server,
+			"IDL:Bonobo/PersistStream:1.0", NULL);
 
 		/*
 		 * If the component doesn't support PersistStream (and it
@@ -435,8 +367,59 @@ load_stream_cb (GtkWidget * caller, Component * component)
 }
 
 static void
-fill_cb (GtkWidget * caller, Component * component)
+fill_cb (GtkWidget *caller, Component *component)
 {
 	container_request_file (component->container, FALSE,
 				load_stream_cb, component);
+}
+
+GtkWidget *
+component_create_frame (Component *component, gchar *goad_id)
+{
+	GtkWidget *frame;
+	GtkWidget *vbox, *hbox;
+	GtkWidget *new_view_button, *del_view_button;
+	GtkWidget *del_comp_button, *fill_comp_button;
+
+	/* Display widgets */
+	frame = component->widget = gtk_frame_new (goad_id);
+	vbox = gtk_vbox_new (FALSE, 10);
+	hbox = gtk_hbox_new (TRUE, 5);
+	new_view_button = gtk_button_new_with_label ("New view");
+	del_view_button = gtk_button_new_with_label ("Remove view");
+	del_comp_button = gtk_button_new_with_label ("Remove component");
+
+	/* The views of the component */
+	component->views_hbox = gtk_hbox_new (FALSE, 2);
+	gtk_signal_connect (GTK_OBJECT (new_view_button), "clicked",
+			    GTK_SIGNAL_FUNC (add_view_cb), component);
+	gtk_signal_connect (GTK_OBJECT (del_view_button), "clicked",
+			    GTK_SIGNAL_FUNC (del_view_cb), component);
+	gtk_signal_connect (GTK_OBJECT (del_comp_button), "clicked",
+			    GTK_SIGNAL_FUNC (del_cb), component);
+
+	gtk_container_add (GTK_CONTAINER (hbox), new_view_button);
+	gtk_container_add (GTK_CONTAINER (hbox), del_view_button);
+	gtk_container_add (GTK_CONTAINER (hbox), del_comp_button);
+
+	if (bonobo_object_client_has_interface (component->server,
+						"IDL:Bonobo/PersistStream:1.0",
+						NULL)) {
+		fill_comp_button =
+		    gtk_button_new_with_label ("Fill with stream");
+		gtk_container_add (GTK_CONTAINER (hbox), fill_comp_button);
+
+		gtk_signal_connect (GTK_OBJECT (fill_comp_button),
+				    "clicked", GTK_SIGNAL_FUNC (fill_cb),
+				    component);
+	}
+
+
+	gtk_container_add (GTK_CONTAINER (vbox),  component->views_hbox);
+	gtk_container_add (GTK_CONTAINER (vbox),  hbox);
+	gtk_container_add (GTK_CONTAINER (frame), vbox);
+
+	component->goad_id = g_strdup (goad_id);
+
+	return frame;
 }

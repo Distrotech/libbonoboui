@@ -34,7 +34,7 @@
 poptContext ctx;
 
 void
-sample_app_exit (SampleApp * app)
+sample_app_exit (SampleApp *app)
 {
 	GList *l;
 
@@ -45,12 +45,12 @@ sample_app_exit (SampleApp * app)
 		l = tmp;
 	}
 
-	bonobo_object_destroy (BONOBO_OBJECT (app->container));
+	bonobo_object_unref (BONOBO_OBJECT (app->container));
 	gtk_main_quit ();
 }
 
 static void
-delete_cb (GtkWidget * caller, SampleApp * inst)
+delete_cb (GtkWidget *caller, SampleApp *inst)
 {
 	sample_app_exit (inst);
 }
@@ -85,8 +85,9 @@ sample_app_create (void)
 }
 
 static void
-create_component_frame (SampleApp * inst,
-			Component * component, gchar * name)
+create_component_frame (SampleApp *inst,
+			Component *component,
+			gchar     *name)
 {
 	GtkWidget *widget = component_create_frame (component, name);
 
@@ -95,8 +96,9 @@ create_component_frame (SampleApp * inst,
 }
 
 static BonoboObjectClient *
-launch_component (BonoboClientSite * client_site,
-		  BonoboContainer * container, gchar * component_id)
+launch_component (BonoboClientSite *client_site,
+		  BonoboContainer  *container,
+		  gchar            *component_id)
 {
 	BonoboObjectClient *object_server;
 
@@ -115,8 +117,8 @@ launch_component (BonoboClientSite * client_site,
 	 * container-side point of contact for the embeddable.  The
 	 * container talks to the embeddable through its ClientSite
 	 */
-	if (!bonobo_client_site_bind_embeddable
-	    (client_site, object_server)) {
+	if (!bonobo_client_site_bind_embeddable (
+		client_site, object_server)) {
 		bonobo_object_unref (BONOBO_OBJECT (object_server));
 		return NULL;
 	}
@@ -132,11 +134,13 @@ launch_component (BonoboClientSite * client_site,
 }
 
 Component *
-sample_app_add_component (SampleApp * inst, gchar * obj_id)
+sample_app_add_component (SampleApp *inst,
+			  gchar     *obj_id)
 {
-	Component *component;
-	BonoboClientSite *client_site;
+	Component          *component;
+	BonoboClientSite   *client_site;
 	BonoboObjectClient *server;
+
 	/*
 	 * The ClientSite is the container-side point of contact for
 	 * the Embeddable.  So there is a one-to-one correspondence
@@ -178,11 +182,12 @@ sample_app_add_component (SampleApp * inst, gchar * obj_id)
 	 * the embeddable in, when the user adds views for it.
 	 */
 	create_component_frame (inst, component, obj_id);
+
 	return component;
 }
 
 void
-sample_app_remove_component (SampleApp * inst, Component * component)
+sample_app_remove_component (SampleApp *inst, Component *component)
 {
 	inst->components = g_list_remove (inst->components, component);
 
@@ -201,7 +206,7 @@ typedef struct {
  * and we can handle CORBA properly.
  */
 static guint
-final_setup (setup_data_t * sd)
+final_setup (setup_data_t *sd)
 {
 	const gchar **filenames = sd->startup_files;
 

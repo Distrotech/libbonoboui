@@ -19,7 +19,7 @@
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdktypes.h>
-#include <gtk/gtksocket.h>
+#include <bonobo/bonobo-socket.h>
 
 enum {
 	ACTIVATED,
@@ -253,7 +253,7 @@ bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 	 * Now create the GtkSocket which will be used to embed
 	 * the Control.
 	 */
-	control_frame->priv->socket = gtk_socket_new ();
+	control_frame->priv->socket = bonobo_socket_new ();
 	gtk_widget_show (control_frame->priv->socket);
 
 	/*

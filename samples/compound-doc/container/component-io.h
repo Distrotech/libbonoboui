@@ -1,6 +1,7 @@
 /* $Id */
 /*
   Sample-Container Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
+  Copyright (C) 2000 Helix Code, Inc.
   
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License version 2
@@ -25,8 +26,13 @@
 #include "container.h"
 #include "component.h"
 
-void component_load (Component * component, Bonobo_Stream stream);
-void component_save (Component * component, Bonobo_Stream stream);
-void component_save_id (Component * component, Bonobo_Stream stream);
+void component_load    (Component *component, Bonobo_Stream stream,
+			CORBA_Environment *ev);
+
+void component_save    (Component *component, Bonobo_Stream stream,
+			CORBA_Environment *ev);
+
+void component_save_id (Component *component, Bonobo_Stream stream,
+			CORBA_Environment *ev);
 
 #endif

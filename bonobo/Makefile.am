@@ -99,7 +99,9 @@ libbonobo_la_SOURCES =			\
 	bonobo-persist-file.c		\
 	bonobo-persist-stream.c		\
 	bonobo-persist.c		\
+	bonobo-plug.c			\
 	bonobo-progressive.c		\
+	bonobo-socket.c			\
 	bonobo-storage.c		\
 	bonobo-stream.c			\
 	bonobo-stream-client.c		\
@@ -143,8 +145,10 @@ libbonoboinclude_HEADERS =		\
 	bonobo-persist-file.h		\
 	bonobo-persist-stream.h		\
 	bonobo-persist.h		\
+	bonobo-plug.h			\
 	bonobo-progressive.h		\
 	bonobo-storage.h		\
+	bonobo-socket.h			\
 	bonobo-stream.h			\
 	bonobo-stream-client.h		\
 	bonobo-stream-fs.h		\

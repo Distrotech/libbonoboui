@@ -1,3 +1,21 @@
+2000-07-06  Michael Meeks  <michael@helixcode.com>
+
+	* container-io.c (save_component): unref the sub directory.
+
+	* component.c: re-order to kill ugly prototypes.
+
+	* container.c (sample_app_exit): unref not destroy container.
+
+	* container-io.c (save_component): release the stream.
+	(load_component_id): unref stream.
+	(open_stream): remove; use CORBA interface instead.
+	(sample_container_save): unref storage after use.
+
+	* component-io.c: Totaly re-stucture, fix exception handling and
+	the mess with CORBA_Environments.
+
+	* component-io.h: update.
+
 2000-07-05  Michael Meeks  <michael@helixcode.com>
 
 	* component-io.c (component_save_id): use write_string as you should.

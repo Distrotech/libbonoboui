@@ -151,8 +151,7 @@ bonobo_selector_destroy (GtkObject *object)
 	g_free (priv);
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy)
-		 (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
-	
+		 (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);	
 }
 
 /**
@@ -245,8 +244,8 @@ gnome_bonobo_select_id (const gchar *title,
 gchar *
 bonobo_selector_get_selected_goad_id (BonoboSelector *sel)
 {
-	od_assert_using_goad();
-	return bonobo_selector_get_selected_id(sel);
+	od_assert_using_goad ();
+	return bonobo_selector_get_selected_id (sel);
 }
 
 /**
@@ -305,8 +304,8 @@ gchar *
 gnome_bonobo_select_oaf_id (const gchar *title,
 			     const gchar **interfaces_required)
 {
-	od_assert_using_oaf();
-	return gnome_bonobo_select_id(title, interfaces_required);
+	od_assert_using_oaf ();
+	return gnome_bonobo_select_id (title, interfaces_required);
 }
 
 static void
@@ -367,7 +366,7 @@ bonobo_selector_init (GtkWidget *widget)
 {
 	BonoboSelector *sel = BONOBO_SELECTOR (widget);
 	GtkWidget *scrolled, *pixmap;
-	GtkWidget *vbox, *hbox;
+	GtkWidget *hbox;
 	GtkWidget *frame;
 	
 	BonoboSelectorPrivate *priv;
@@ -379,8 +378,6 @@ bonobo_selector_init (GtkWidget *widget)
 	sel->priv = g_new0 (BonoboSelectorPrivate, 1);
 	priv = sel->priv;
 
-	vbox = gtk_vbox_new (FALSE, 0);
-	
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 		GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);

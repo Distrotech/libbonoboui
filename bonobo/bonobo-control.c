@@ -12,8 +12,8 @@
 #include <stdlib.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
-#include <gtk/gtkplug.h>
 #include <bonobo/bonobo-main.h>
+#include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
 #include <gdk/gdkprivate.h>
 
@@ -280,7 +280,7 @@ impl_Bonobo_Control_set_window (PortableServer_Servant   servant,
 		old_plug            = control->priv->plug;
 
 		/* Create the new plug */
-		control->priv->plug = gtk_plug_new (x11_id);
+		control->priv->plug = bonobo_plug_new (x11_id);
 
 		gtk_signal_connect (GTK_OBJECT (control->priv->plug), "destroy_event",
 				    GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_event_cb), control);

@@ -88,14 +88,12 @@ add_cb (GtkWidget * caller, SampleApp * inst)
 	obj_id =
 	    gnome_bonobo_select_oaf_id (_
 					("Select an embeddable Bonobo component to add"),
-					(const gchar **)
-required_interfaces);
+					(const gchar **) required_interfaces);
 #else
 	obj_id =
 	    gnome_bonobo_select_goad_id (_
 					 ("Select an embeddable Bonobo component to add"),
-					 (const gchar **)
-required_interfaces);
+					 (const gchar **) required_interfaces);
 #endif
 
 	if (!obj_id)
