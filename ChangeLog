@@ -1,3 +1,8 @@
+2003-08-06  Yuedong Du  <yuedong.du@sun.com>
+
+	* bonobo/bonobo-ui-util.c: (bonobo_ui_util_build_help_menu): add
+	shortcut F1 to help menu entry, fix bug 47376
+
 2003-08-04  Federico Mena Quintero  <federico@ximian.com>
 
 	Fixes #118705.
