@@ -6,7 +6,7 @@ INCLUDES = \
 	-DG_LOG_DOMAIN=\"BonoboUI\"			\
 	$(BONOBOUI_GLADE_CFLAGS)
 
-glademoduledir = $(GLADE_MODULE_DIR)
+glademoduledir = $(libdir)/libglade/2.0
 glademodule_LTLIBRARIES = libbonobo.la
 
 libbonobo_la_LIBADD = \
