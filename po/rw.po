@@ -1,0 +1,630 @@
+# translation of libbonoboui to Kinyarwanda.
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libbonoboui package.
+# Steve Murphy <murf@e-tools.com>, 2005
+# Steve performed initial rough translation from compendium built from translations provided by the following translators:
+# Philibert Ndandali  <ndandali@yahoo.fr>, 2005.
+# Viateur MUGENZI <muvia1@yahoo.fr>, 2005.
+# Noëlla Mupole <s24211045@tuks.co.za>, 2005.
+# Carole Karema <karemacarole@hotmail.com>, 2005.
+# JEAN BAPTISTE NGENDAHAYO <ngenda_denis@yahoo.co.uk>, 2005.
+# Augustin KIBERWA  <akiberwa@yahoo.co.uk>, 2005.
+# Donatien NSENGIYUMVA <ndonatienuk@yahoo.co.uk>, 2005..
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-03-31 20:01-0700\n"
+"PO-Revision-Date: 2005-03-31 20:55-0700\n"
+"Last-Translator: Steve Murphy <murf@e-tools.com>\n"
+"Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"ULL NAME <EMAIL@ADDRESS>\n"
+
+#: bonobo/bonobo-canvas-item.c:667
+msgid "corba factory"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:668
+#, fuzzy
+msgid "The factory pointer"
+msgstr "Mweretsi"
+
+#: bonobo/bonobo-canvas-item.c:677
+msgid "corba UI container"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:678
+msgid "The User interface container"
+msgstr ""
+
+#: bonobo/bonobo-dock-item-grip.c:257
+#, fuzzy
+msgid "Dock the toolbar"
+msgstr "i Umwanyabikoresho"
+
+#: bonobo/bonobo-dock-item-grip.c:258
+#, fuzzy
+msgid "Undock the toolbar"
+msgstr "i Umwanyabikoresho"
+
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
+#: bonobo/bonobo-ui-toolbar.c:1175
+#, fuzzy
+msgid "Shadow type"
+msgstr "Ubwoko"
+
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
+msgid "Orientation"
+msgstr "Icyerekezo"
+
+#: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
+#, fuzzy
+msgid "Preferred width"
+msgstr "Ubugari"
+
+#: bonobo/bonobo-dock-item.c:264 bonobo/bonobo-dock-item.c:265
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
+#, fuzzy
+msgid "Preferred height"
+msgstr "Ubuhagarike"
+
+#: bonobo/bonobo-file-selector-util.c:351
+#, fuzzy
+msgid "Select a file to open"
+msgstr "a IDOSIYE Kuri Gufungura"
+
+#: bonobo/bonobo-file-selector-util.c:379
+#, fuzzy
+msgid "Select files to open"
+msgstr "Idosiye Kuri Gufungura"
+
+#: bonobo/bonobo-file-selector-util.c:408
+#, fuzzy
+msgid "Select a filename to save"
+msgstr "a Izina ry'idosiye: Kuri Kubika"
+
+#: bonobo/bonobo-plug.c:412
+msgid "Event Forwarding"
+msgstr ""
+
+#: bonobo/bonobo-plug.c:413
+#, fuzzy
+msgid "Whether X events should be forwarded"
+msgstr "Ibyabaye"
+
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
+#: tools/browser/component-details.c:114 tools/browser/component-list.c:381
+msgid "Name"
+msgstr "Izina"
+
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\moptions.src:RID_MACROOPTIONS.RID_FT_DESCR.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\moptions.src:RID_MACROOPTIONS.text
+#: bonobo/bonobo-selector-widget.c:322 tools/browser/component-details.c:115
+msgid "Description"
+msgstr "Isobanuramiterere"
+
+#: bonobo/bonobo-selector.c:345
+#, fuzzy
+msgid "Interfaces required"
+msgstr "Bya ngombwa"
+
+#: bonobo/bonobo-selector.c:346
+#, fuzzy
+msgid ""
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+"A Imbonerahamwe Bya a Seriveri Gushigikira in Itondekanya Kuri in i Kuri 1. "
+"0 NIBA Oya"
+
+#: bonobo/bonobo-selector.c:348
+#, fuzzy
+msgid "Interface required entry"
+msgstr "Bya ngombwa Icyinjijwe"
+
+#: bonobo/bonobo-selector.c:349
+#, fuzzy
+msgid "One of the interfaces that's required"
+msgstr "Bya i Bya ngombwa"
+
+# 6488
+#: bonobo/bonobo-ui-config-widget.c:268
+msgid "Visible"
+msgstr "kigaragara"
+
+# basctl/source\basicide\objdlg.src:RID_BASICIDE_OBJCAT.RID_TB_TOOLBOX.TBITEM_SHOW.text
+#: bonobo/bonobo-ui-config-widget.c:275
+#, fuzzy
+msgid "_Show"
+msgstr "Garagaza"
+
+# basctl/source\basicide\basidesh.src:RID_POPUP_TABBAR.SID_BASICIDE_HIDECURPAGE.text
+#: bonobo/bonobo-ui-config-widget.c:282
+#, fuzzy
+msgid "_Hide"
+msgstr "Gushisha"
+
+#: bonobo/bonobo-ui-config-widget.c:288
+msgid "_View tooltips"
+msgstr ""
+
+# sfx2/source\dialog\cfg.src:DLG_CONFIG.1.TP_CONFIG_OBJECTBAR.text
+#: bonobo/bonobo-ui-config-widget.c:293
+msgid "Toolbars"
+msgstr "Imyanyabikoresho"
+
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\basidesh.src:RID_BASICMENU.MN_VIEW.S~ymbolleisten.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\basidesh.src:RID_BASICPLUGINMENU.MN_PLVIEW.S~ymbolleisten.text
+#: bonobo/bonobo-ui-config-widget.c:303
+#, fuzzy
+msgid "toolbars"
+msgstr "Imyanya y'ibikoresho"
+
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:566
+msgid "Look"
+msgstr ""
+
+# sfx2/source\toolbox\tbxopdlg.src:TP_CONFIG_OBJECTBAR.STR_SYMBOL.text
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:566
+#, fuzzy
+msgid "_Icon"
+msgstr "Agashushondanga"
+
+#: bonobo/bonobo-ui-config-widget.c:329
+#, fuzzy
+msgid "_Text and Icon"
+msgstr "Na"
+
+#: bonobo/bonobo-ui-config-widget.c:335
+msgid "Text only"
+msgstr "Umwandiko gusa"
+
+#: bonobo/bonobo-ui-config-widget.c:341
+#, fuzzy
+msgid "_Priority text only"
+msgstr "Umwandiko"
+
+# Debug menu items
+#: bonobo/bonobo-ui-engine.c:90
+msgid "Debug"
+msgstr "Kosora amakosa"
+
+#: bonobo/bonobo-ui-engine.c:90
+msgid "_Dump XML"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine.c:91
+#, fuzzy
+msgid "Dump the entire UI's XML description to the console"
+msgstr "i Isobanuramiterere Kuri i"
+
+#: bonobo/bonobo-ui-engine-config.c:522
+msgid "Configure UI"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:113
+#, fuzzy
+msgid "Gdk debugging flags to set"
+msgstr "Amabendera Kuri Gushyiraho"
+
+# svx/source\gallery2\galtheme.src:RID_GALLERYSTR_THEME_FLAGS.text
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
+#, fuzzy
+msgid "FLAGS"
+msgstr "Amabendera"
+
+#: bonobo/bonobo-ui-init-gtk.c:116
+#, fuzzy
+msgid "Gdk debugging flags to unset"
+msgstr "Amabendera Kuri"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+#, fuzzy
+msgid "X display to use"
+msgstr "Kugaragaza Kuri Gukoresha"
+
+# offmgr/source\offapp\dialog\optgdlg.src:OFA_TP_VIEW.GB_APPEARANCE.text
+#: bonobo/bonobo-ui-init-gtk.c:120
+#, fuzzy
+msgid "DISPLAY"
+msgstr "Kugaragaza"
+
+#: bonobo/bonobo-ui-init-gtk.c:124
+#, fuzzy
+msgid "X screen to use"
+msgstr "Mugaragaza Kuri Gukoresha"
+
+# offmgr/source\offapp\dialog\fontsubs.src:RID_SVX_FONT_SUBSTITUTION.STR_HEADER2.text
+#: bonobo/bonobo-ui-init-gtk.c:124
+#, fuzzy
+msgid "SCREEN"
+msgstr "Mugaragaza"
+
+#: bonobo/bonobo-ui-init-gtk.c:128
+#, fuzzy
+msgid "Make X calls synchronous"
+msgstr "Amahamagara:"
+
+#: bonobo/bonobo-ui-init-gtk.c:134
+#, fuzzy
+msgid "Don't use X shared memory extension"
+msgstr "Gukoresha Ububiko Umugereka"
+
+#: bonobo/bonobo-ui-init-gtk.c:138
+#, fuzzy
+msgid "Program name as used by the window manager"
+msgstr "Izina: Nka ku i Idirishya Muyobozi"
+
+#: bonobo/bonobo-ui-init-gtk.c:138
+#, fuzzy
+msgid "NAME"
+msgstr "Izina"
+
+#: bonobo/bonobo-ui-init-gtk.c:141
+#, fuzzy
+msgid "Program class as used by the window manager"
+msgstr "ishuri Nka ku i Idirishya Muyobozi"
+
+# so3/src\svuidlg.src:MD_INSERT_OBJECT_APPLET.FT_CLASSFILE.text
+#: bonobo/bonobo-ui-init-gtk.c:141
+#, fuzzy
+msgid "CLASS"
+msgstr "Igice"
+
+#: bonobo/bonobo-ui-init-gtk.c:144
+#, fuzzy
+msgid "Gtk+ debugging flags to set"
+msgstr "Amabendera Kuri Gushyiraho"
+
+#: bonobo/bonobo-ui-init-gtk.c:147
+#, fuzzy
+msgid "Gtk+ debugging flags to unset"
+msgstr "Amabendera Kuri"
+
+#: bonobo/bonobo-ui-init-gtk.c:150
+#, fuzzy
+msgid "Make all warnings fatal"
+msgstr "Byose Iburira"
+
+#: bonobo/bonobo-ui-init-gtk.c:153
+#, fuzzy
+msgid "Load an additional Gtk module"
+msgstr "Modire"
+
+# basctl/source\basicide\basidesh.src:RID_STR_STDMODULENAME.text
+#: bonobo/bonobo-ui-init-gtk.c:153
+#, fuzzy
+msgid "MODULE"
+msgstr "Modire"
+
+#: bonobo/bonobo-ui-init-gtk.c:162
+msgid "GTK+"
+msgstr ""
+
+#: bonobo/bonobo-ui-main.c:202
+#, fuzzy
+msgid "Bonobo GUI support"
+msgstr "Gushigikira"
+
+# sc/source\ui\src\autofmt.src:RID_SCDLG_AUTOFORMAT.STR_NORTH.text
+#: bonobo/bonobo-ui-sync-toolbar.c:566
+#, fuzzy
+msgid "B_oth"
+msgstr "Byombi"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:566
+#, fuzzy
+msgid "T_ext"
+msgstr "Umwandiko"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:567
+#, fuzzy
+msgid "Hide t_ips"
+msgstr "Inyobora"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:567
+#, fuzzy
+msgid "Show t_ips"
+msgstr "Inyobora"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:568
+#, fuzzy
+msgid "_Hide toolbar"
+msgstr "Hisha UmwanyaBikoresho"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:568
+#, fuzzy
+msgid "Customi_ze"
+msgstr "Kunoza"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:569
+#, fuzzy
+msgid "Customize the toolbar"
+msgstr "i Umwanyabikoresho"
+
+#: bonobo/bonobo-ui-toolbar.c:1129
+#, fuzzy
+msgid "is floating"
+msgstr "ni Bihindagurika"
+
+#: bonobo/bonobo-ui-toolbar.c:1130
+#, fuzzy
+msgid "whether the toolbar is floating"
+msgstr "i Umwanyabikoresho ni Bihindagurika"
+
+#: bonobo/bonobo-ui-toolbar.c:1176
+#, fuzzy
+msgid "Style of bevel around the toolbar"
+msgstr "Bya i Umwanyabikoresho"
+
+# #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
+# sc/source\ui\dbgui\validate.src:TP_VALIDATION_INPUTHELP.FL_CONTENT.text
+# #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
+# sc/source\ui\dbgui\validate.src:TP_VALIDATION_ERROR.FL_CONTENT.text
+# #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
+# sc/source\ui\navipi\navipi.src:RID_SCDLG_NAVIGATOR.TBX_CMD.IID_ZOOMOUT.text
+# #-#-#-#-#  sc.pot (PACKAGE VERSION)  #-#-#-#-#
+# sc/source\ui\navipi\navipi.src:SCSTR_CONTENT_ROOT.text
+#: bonobo/bonobo-ui-util.c:630
+#, fuzzy
+msgid "_Contents"
+msgstr "Ibigize"
+
+#: bonobo/bonobo-ui-util.c:631
+#, fuzzy
+msgid "View help for this application"
+msgstr "Ifashayobora kugirango iyi Porogaramu"
+
+#: bonobo/bonobo-window.c:347
+#, fuzzy
+msgid "Name of the window - used for configuration serialization."
+msgstr "Bya i Idirishya kugirango Iboneza"
+
+#: bonobo/bonobo-zoomable.c:326
+#, fuzzy
+msgid "Zoom level"
+msgstr "urwego"
+
+#: bonobo/bonobo-zoomable.c:327
+#, fuzzy
+msgid "The degree of enlargment"
+msgstr "Dogere Bya"
+
+#: bonobo/bonobo-zoomable.c:335
+#, fuzzy
+msgid "Minimum Zoom level"
+msgstr "urwego"
+
+#: bonobo/bonobo-zoomable.c:336
+#, fuzzy
+msgid "The minimum degree of enlargment"
+msgstr "Gito Dogere Bya"
+
+#: bonobo/bonobo-zoomable.c:344
+#, fuzzy
+msgid "Maximum Zoom level"
+msgstr "urwego"
+
+#: bonobo/bonobo-zoomable.c:345
+#, fuzzy
+msgid "The maximum degree of enlargment"
+msgstr "Kinini Dogere Bya"
+
+#: bonobo/bonobo-zoomable.c:353
+#, fuzzy
+msgid "Has a minimum Zoom level"
+msgstr "a Gito urwego"
+
+#: bonobo/bonobo-zoomable.c:354
+#, fuzzy
+msgid "Whether we have a valid minimum zoom level"
+msgstr "Twebwe a Byemewe Gito Ihindurangano urwego"
+
+#: bonobo/bonobo-zoomable.c:361
+#, fuzzy
+msgid "Has a maximum Zoom level"
+msgstr "a Kinini urwego"
+
+#: bonobo/bonobo-zoomable.c:362
+#, fuzzy
+msgid "Whether we have a valid maximum zoom level"
+msgstr "Twebwe a Byemewe Kinini Ihindurangano urwego"
+
+#: bonobo/bonobo-zoomable.c:369
+#, fuzzy
+msgid "Is continuous"
+msgstr "Gikomeza"
+
+#: bonobo/bonobo-zoomable.c:370
+#, fuzzy
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "Twebwe Ihindurangano Nka Kuri"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+#, fuzzy
+msgid "About this application"
+msgstr "iyi Porogaramu"
+
+# basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_INSERT_SELECT.text
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr "Guhitamo"
+
+# offmgr/source\offapp\intro\intro.hrc:TEXT_DEFAULTABOUT.text
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+#, fuzzy
+msgid "_About..."
+msgstr "Ibyerekeye"
+
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\basidesh.src:RID_BASICMENU.MN_EDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\basidesh.src:RID_BASICPLUGINMENU.MN_PLEDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\macrodlg.src:RID_MACROCHOOSER.RID_PB_EDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\moduldlg.src:RID_TP_MODULS.RID_PB_EDIT.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\moduldlg.src:RID_TP_LIBS.RID_PB_EDIT.text
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+#, fuzzy
+msgid "_Edit"
+msgstr "Guhindura"
+
+# sc/source\ui\src\globstr.src:RID_GLOBSTR.STR_HFCMD_FILE.text
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#: tools/browser/bonobo-browser.xml.h:4
+#, fuzzy
+msgid "_File"
+msgstr "IDOSIYE"
+
+# basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_INSERT_SELECT.text
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+#, fuzzy
+msgid "_Select"
+msgstr "Guhitamo"
+
+#: samples/bonoboui/hello.c:63
+#, fuzzy
+msgid "This does nothing; it is only a demonstration."
+msgstr "ni a Iyerekana"
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr ""
+
+#: samples/bonoboui/hello.c:217
+msgid "Gnome Hello"
+msgstr ""
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:272
+#, fuzzy
+msgid "Hello, World!"
+msgstr "Wiriwe Isi!"
+
+#: samples/bonoboui/hello.c:312
+#, fuzzy
+msgid "Cannot init libbonoboui code"
+msgstr "ITEGEKONGENGA"
+
+#: samples/controls/bonobo-sample-controls.c:131
+#, fuzzy
+msgid "Could not initialize Bonobo UI"
+msgstr "OYA gutangiza"
+
+#: tools/browser/bonobo-browser.desktop.in.h:1
+msgid "Bonobo Component Browser"
+msgstr ""
+
+#: tools/browser/bonobo-browser.desktop.in.h:2
+#, fuzzy
+msgid "Shows available Bonobo components"
+msgstr "Bihari"
+
+#: tools/browser/bonobo-browser.xml.h:1
+#, fuzzy
+msgid "About this program..."
+msgstr "iyi Porogaramu"
+
+#: tools/browser/bonobo-browser.xml.h:2
+#, fuzzy
+msgid "Close the current window"
+msgstr "Funga i KIGEZWEHO Idirishya"
+
+#: tools/browser/bonobo-browser.xml.h:3
+#, fuzzy
+msgid "Open a new window"
+msgstr "a Gishya Idirishya"
+
+#: tools/browser/bonobo-browser.xml.h:5
+#, fuzzy
+msgid "_Help"
+msgstr "Ifashayobora"
+
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+#. Build the general tab
+#: tools/browser/component-details.c:109
+msgid "General"
+msgstr "Rusange"
+
+#: tools/browser/component-details.c:116 tools/browser/component-list.c:401
+msgid "IID"
+msgstr ""
+
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Agenda.Elements.Location.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Fax.Save.AutoPath.text
+# #-#-#-#-#  officecfg.pot (PACKAGE VERSION)  #-#-#-#-#
+# officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Wizard.Memo.Save.AutoDocName.text
+#: tools/browser/component-details.c:117
+msgid "Location"
+msgstr "Ahantu"
+
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (PACKAGE VERSION)  #-#-#-#-#
+#. Build the details tab
+#: tools/browser/component-details.c:167
+msgid "Details"
+msgstr "Birambuye"
+
+#: tools/browser/component-details.c:168
+#, fuzzy
+msgid "Detailed Information"
+msgstr "Ibisobanuro birambuye"
+
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\basidesh.src:RID_POPUP_BRKPROPS.RID_ACTIV.text
+# #-#-#-#-#  basctl.pot (PACKAGE VERSION)  #-#-#-#-#
+# basctl/source\basicide\brkdlg.src:RID_BASICIDE_BREAKPOINTDLG.RID_CHKB_ACTIVE.text
+#: tools/browser/component-list.c:370
+msgid "Active"
+msgstr "Gikora"
+
+# filter/source\xsltdialog\xmlfilterdialogstrings.src:STR_COLUMN_HEADER_TYPE.text
+#: tools/browser/component-list.c:391
+msgid "Type"
+msgstr "Ubwoko"
+
+#: tools/browser/window.c:169
+msgid "Component Details"
+msgstr ""
+
+#: tools/browser/window.c:214
+msgid "Bonobo Browser"
+msgstr ""
+
+#: tools/browser/window.c:215
+msgid "Copyright 2001, The GNOME Foundation"
+msgstr ""
+
+#: tools/browser/window.c:216
+#, fuzzy
+msgid "Bonobo component browser"
+msgstr "Mucukumbuzi"
+
+#. create the window
+#: tools/browser/window.c:246
+msgid "Component Browser"
+msgstr ""
