@@ -1,4 +1,5 @@
 bonobo/bonobo-dock-item.c
+bonobo/bonobo-file-selector-util.c
 bonobo/bonobo-selector-widget.c
 bonobo/bonobo-ui-config-widget.c
 bonobo/bonobo-ui-engine-config.c

@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2001-08-11 22:47+0200\n"
-"PO-Revision-Date: 2001-08-11 22:48+0200\n"
+"POT-Creation-Date: 2001-09-19 17:56+0200\n"
+"PO-Revision-Date: 2001-09-19 17:57+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,6 +28,18 @@ msgstr "Foretrukket bredde"
 #: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 msgid "Preferred height"
 msgstr "Foretrukket høyde"
+
+#: bonobo/bonobo-file-selector-util.c:369
+msgid "Select a file to open"
+msgstr "Velg en fil som skal åpnes"
+
+#: bonobo/bonobo-file-selector-util.c:397
+msgid "Select files to open"
+msgstr "Velg filer som skal åpnes"
+
+#: bonobo/bonobo-file-selector-util.c:426
+msgid "Select a filename to save"
+msgstr "Velg et fil som skal lagres"
 
 #: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
@@ -105,15 +117,15 @@ msgstr "Tilpas_s"
 msgid "Customize the toolbar"
 msgstr "Tilpass verktøylinjen"
 
-#: tests/test-focus.c:31 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Kan ikke kjøre bonobo_ui_init"
 
-#: tests/test-selector.c:13
+#: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Velg et objekt"
 
-#: tests/test-ui.c:229
+#: tests/test-ui.c:230
 msgid "Cannot init libbonoboui code"
 msgstr "Kan ikke initiere libbonoboui"
 
@@ -575,9 +587,6 @@ msgstr "Kan ikke initiere libbonoboui"
 
 #~ msgid "The component now claims that it doesn't support PersistStream!"
 #~ msgstr "Komponenten påstår nå at den ikke støtter PersistStream!"
-
-#~ msgid "Select file"
-#~ msgstr "Velg fil"
 
 #~ msgid "Select an embeddable Bonobo component to add"
 #~ msgstr "Velg en innebygget Bonobo-komponent som skal legges til"
