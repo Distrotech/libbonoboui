@@ -263,7 +263,7 @@ bonobo_dock_item_grip_dispose (GObject *object)
 static void
 bonobo_dock_item_grip_instance_init (BonoboDockItemGrip *grip)
 {
-	GTK_WIDGET_SET_FLAGS (grip, GTK_CAN_FOCUS);
+/*	GTK_WIDGET_SET_FLAGS (grip, GTK_CAN_FOCUS); */
 	GTK_WIDGET_SET_FLAGS (grip, GTK_NO_WINDOW);
 }
 

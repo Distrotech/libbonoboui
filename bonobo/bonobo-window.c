@@ -51,8 +51,6 @@ struct _BonoboWindowPrivate {
 	char           *prefix;		/* Win prefix */
 
 	GtkBox         *status;
-
-	gboolean        allow_all_focus;
 };
 
 enum {
@@ -266,13 +264,6 @@ bonobo_window_key_press_event (GtkWidget *widget,
 	BonoboUISyncKeys *sync;
 	BonoboWindow *window = (BonoboWindow *) widget;
 
-	if (event->state & GDK_CONTROL_MASK) {
-		window->priv->allow_all_focus = TRUE;
-
-		if (event->keyval == GDK_F10)
-			bonobo_dock_focus_roll (window->priv->dock);
-	}
-
 	handled = GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
 	if (handled)
 		return TRUE;
@@ -288,12 +279,6 @@ static gboolean
 bonobo_window_key_release_event (GtkWidget *widget,
 				 GdkEventKey *event)
 {
-	BonoboWindow *window = (BonoboWindow *) widget;
-
-	if (event->keyval == GDK_Control_L ||
-	    event->keyval == GDK_Control_R)
-		window->priv->allow_all_focus = FALSE;
-
 	return GTK_WIDGET_CLASS (parent_class)->key_release_event (widget, event);
 }
 
@@ -307,9 +292,6 @@ bonobo_window_focus (GtkWidget        *widget,
   GtkWidget *parent;
   GtkWidget *child;
   BonoboWindow *win = (BonoboWindow *) widget;
-
-  if (win->priv->allow_all_focus)
-	  return GTK_WIDGET_CLASS (parent_class)->focus (widget, direction);
 
   container = GTK_CONTAINER (widget);
   window = GTK_WINDOW (widget);

@@ -1,3 +1,17 @@
+2003-04-14  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-dock-item-grip.c
+	(bonobo_dock_item_grip_instance_init): disable can-focus.
+
+	* bonobo/bonobo-ui-toolbar-button-item.c
+	(bonobo_ui_toolbar_button_item_construct): ditto.
+
+	* bonobo/bonobo-dock.c (bonobo_dock_focus_roll): bin this.
+
+	* bonobo/bonobo-window.c (bonobo_window_key_press_event) 
+	(bonobo_window_key_release_event, bonobo_window_focus): bin
+	allow_all_focus nonsense.
+
 2003-04-11  Padraig O'Briain  <padraig.obriain@sun.com>
 
 	* bonobo/bonobo-canvas-component.c, bonobo/bonobo-control-frame.c,
