@@ -107,8 +107,8 @@ char			*bonobo_ui_handler_build_path			(const char *base, ...);
 char			*bonobo_ui_handler_build_path_v			(const char *base, va_list path_components);
 
 /* Toplevel menu routines. */
-void			 bonobo_ui_handler_set_app			(BonoboUIHandler *uih, GnomeApp *app);
-GnomeApp                *bonobo_ui_handler_get_app                      (BonoboUIHandler *uih);
+void			 bonobo_ui_handler_set_app			(BonoboUIHandler *uih, BonoboApp *app);
+BonoboApp               *bonobo_ui_handler_get_app                      (BonoboUIHandler *uih);
 
 void			 bonobo_ui_handler_set_toolbar			(BonoboUIHandler *uih, const char *name,
 									 GtkWidget *toolbar);

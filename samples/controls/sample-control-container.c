@@ -159,25 +159,16 @@ container_create (void)
 	BonoboUIHandler *uih;
 	BonoboControlFrame *cf;
 	GtkWindow       *window;
-#ifdef USE_UI_HANDLER
 	GtkWidget       *app;
-
-	app = gnome_app_new ("sample-control-container",
-			     "Sample Bonobo Control Container");
-	window = GTK_WINDOW (app); 
-
-	uih = bonobo_ui_handler_new ();
-
-	bonobo_ui_handler_set_app (uih, GNOME_APP (app));
-#else
-	BonoboApp *app;
 
 	app = bonobo_app_new ("sample-control-container",
 			      "Sample Bonobo Control Container");
-	window = GTK_WINDOW (bonobo_app_get_window (app));
+
+	window = GTK_WINDOW (app);
 	
-	uih = bonobo_ui_handler_new_for_app (app);
-#endif
+	uih = bonobo_ui_handler_new ();
+
+	bonobo_ui_handler_set_app (uih, BONOBO_APP (app));
 
 	gtk_window_set_default_size (window, 500, 440);
 	gtk_window_set_policy (window, TRUE, TRUE, FALSE);
@@ -191,11 +182,7 @@ container_create (void)
 	bonobo_ui_handler_create_menubar (uih);
 
 	box = gtk_vbox_new (FALSE, 0);
-#ifdef USE_UI_HANDLER
-	gnome_app_set_contents (GNOME_APP (app), box);
-#else
-	bonobo_app_set_contents (app, box);
-#endif
+	bonobo_app_set_contents (BONOBO_APP (app), box);
 
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_calculator:fab8c2a7-9576-437c-aa3a-a8617408970f",

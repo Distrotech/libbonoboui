@@ -14,11 +14,7 @@ struct _SampleApp {
 	BonoboViewFrame *curr_view;
 	GList           *components;
 
-#ifdef USE_UI_HANDLER
 	GtkWidget *app;
-#else
-	BonoboApp *app;
-#endif
 	GtkWidget *box;
 	GtkWidget *fileselection;
 };

@@ -30,4 +30,4 @@ sample_container_LDADD =				\
 	$(top_builddir)/bonobo/libbonobox.la		\
 	$(top_builddir)/bonobo/libbonobo-print.la	\
 	$(BONOBOX_TEST_LIBS)				\
-	$(INTLLIBS) 
+	$(INTLLIBS)

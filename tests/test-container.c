@@ -687,13 +687,13 @@ exit_cmd (void)
 }
 
 static GnomeUIInfo container_text_plain_menu [] = {
-	GNOMEUIINFO_ITEM_NONE (N_("_Add a new text/plain component"), NULL,
+	GNOMEUIINFO_ITEM_NONE (N_("_Add a new text\\plain component"), NULL,
 			       add_text_cmd),
 	GNOMEUIINFO_ITEM_NONE (
-	N_("_Send progressive data to an existing text/plain component"),
+	N_("_Send progressive data to an existing text\\plain component"),
 			       NULL, send_text_cmd),
 	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new _view to an existing text/plain component"),
+		N_("Add a new _view to an existing text\\plain component"),
 			       NULL, add_text_view),
 	GNOMEUIINFO_END
 };
@@ -710,17 +710,17 @@ static GnomeUIInfo container_paint_menu [] = {
 
 static GnomeUIInfo container_image_png_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
-		N_("_Add a new application/x-png component"), NULL,
+		N_("_Add a new application\\x-png component"), NULL,
 		add_image_cmd),
  	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new _view to an existing application/x-png component"),
+		N_("Add a new _view to an existing application\\x-png component"),
 			       NULL, add_image_view),
 	GNOMEUIINFO_END
 };
 
 static GnomeUIInfo container_image_pdf_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
-		N_("_Add a new application/x-pdf component"), NULL,
+		N_("_Add a new application\\x-pdf component"), NULL,
 		add_pdf_cmd),
 	GNOMEUIINFO_END
 };
@@ -751,9 +751,9 @@ static GnomeUIInfo container_canvas_menu [] = {
 
 static GnomeUIInfo container_main_menu [] = {
 	GNOMEUIINFO_MENU_FILE_TREE (container_file_menu),
-	GNOMEUIINFO_SUBTREE (N_("_text/plain"), container_text_plain_menu),
-	GNOMEUIINFO_SUBTREE (N_("_image/x-png"), container_image_png_menu),
-	GNOMEUIINFO_SUBTREE (N_("_app/x-pdf"), container_image_pdf_menu),
+	GNOMEUIINFO_SUBTREE (N_("_text\\plain"), container_text_plain_menu),
+	GNOMEUIINFO_SUBTREE (N_("_image\\x-png"), container_image_png_menu),
+	GNOMEUIINFO_SUBTREE (N_("_app\\x-pdf"), container_image_pdf_menu),
 	GNOMEUIINFO_SUBTREE (N_("paint sample"), container_paint_menu),
 	GNOMEUIINFO_SUBTREE (N_("Gnumeric"), container_gnumeric_menu),
 	GNOMEUIINFO_SUBTREE (N_("Canvas-based"), container_canvas_menu),
@@ -771,28 +771,13 @@ application_new (void)
 	app->box = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (app->box);
 
-#ifdef USE_UI_HANDLER
-	app->app = gnome_app_new ("test-container",
-				  "Sample Container Application");
+	app->app = bonobo_app_new ("test-container",
+				   "Sample Container Application");
 
-	gnome_app_set_contents (GNOME_APP (app->app), app->box);
+	bonobo_app_set_contents (BONOBO_APP (app->app), app->box);
 
 	app->uih = bonobo_ui_handler_new ();
-
-	bonobo_ui_handler_set_app (app->uih, GNOME_APP (app->app));
-#else
-	{
-		BonoboApp *bonobo_app;
-		
-		bonobo_app = bonobo_app_new ("test-container",
-					     "Sample Container Application");
-
-		bonobo_app_set_contents (bonobo_app, app->box);
-		app->app = bonobo_app_get_window (bonobo_app);
-
-		app->uih = bonobo_ui_handler_new_for_app (bonobo_app);
-	}
-#endif
+	bonobo_ui_handler_set_app (app->uih, BONOBO_APP (app->app));
 
 	/*
 	 * Create the menus.

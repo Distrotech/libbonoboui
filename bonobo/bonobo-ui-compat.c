@@ -6,11 +6,11 @@
 #include "bonobo.h"
 #include "bonobo-ui-compat.h"
 
-#define COMPAT_DEBUG
+#undef COMPAT_DEBUG
 
 typedef struct {
 	BonoboUIComponent *component;
-	BonoboApp         *app;
+	BonoboApp         *application;
 
 	char              *name;
 
@@ -202,32 +202,6 @@ bonobo_ui_handler_new (void)
 	priv->component = object;
 
 	return (BonoboUIHandler *)object;
-}
-
-/*
- * This constructs a new container
- */
-BonoboUIHandler *
-bonobo_ui_handler_new_for_app (BonoboApp *app)
-{
-	BonoboUIHandlerPrivate *priv;
-
-	setup_priv (BONOBO_OBJECT (app));
-
-	priv = get_priv ((BonoboUIHandler *)app);
-	g_return_val_if_fail (priv != NULL, NULL);
-
-	priv->app = app;
-	priv->component = bonobo_ui_component_new ("toplevel");
-	gtk_object_set_data (GTK_OBJECT (priv->component),
-			     MAGIC_UI_HANDLER_KEY, priv);
-
-	/* Festering lice */
-	bonobo_ui_handler_set_container (
-		(BonoboUIHandler *) app,
-		bonobo_object_corba_objref (BONOBO_OBJECT (app)));
-
-	return (BonoboUIHandler *)app;
 }
 
 BonoboUIHandlerMenuItem *
@@ -454,6 +428,15 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 		}
 	}
 
+	if (uii->accelerator_key) {
+		char *name = gtk_accelerator_name (uii->accelerator_key,
+						   uii->ac_mods);
+/*		fprintf (stderr, "Accel name is '%s'\n", name);*/
+		xmlSetProp (node, "accel", name);
+/*		fprintf (stderr, "Accel name is now '%s'\n", xmlGetProp (node, "accel"));*/
+		g_free (name);
+	}
+	
 	add_accel_verb (priv, uii->accelerator_key, uii->ac_mods, verb);
 	xmlAddChild (parent, node);
 
@@ -1177,7 +1160,7 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 
 	g_return_if_fail (priv != NULL);
 
-	xml_path = make_path ("", "dockitem", path, TRUE);
+	xml_path = make_path ("", "dockitem", path, FALSE);
 
 	node = bonobo_ui_container_get_tree (priv->container,
 					     xml_path, FALSE, NULL);
@@ -1196,15 +1179,31 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 }
 
 void
-bonobo_ui_handler_set_app (BonoboUIHandler *uih, GnomeApp *app)
+bonobo_ui_handler_set_app (BonoboUIHandler *uih, BonoboApp *app)
 {
-	g_warning ("Deprecated function; you need to use bonobo_app");
+	BonoboUIHandlerPrivate *priv;
+	BonoboUIContainer *container;
+
+	priv = get_priv (uih);
+	g_return_if_fail (priv != NULL);
+
+	priv->application = app;
+
+	container = bonobo_ui_container_new ();
+	bonobo_ui_handler_set_container (
+		uih, bonobo_object_corba_objref (BONOBO_OBJECT (container)));
+	bonobo_ui_container_set_app (container, app);
 }
 
-GnomeApp *
+BonoboApp *
 bonobo_ui_handler_get_app (BonoboUIHandler *uih)
 {
-	return NULL;
+	BonoboUIHandlerPrivate *priv;
+
+	priv = get_priv (uih);
+	g_return_val_if_fail (priv != NULL, NULL);
+
+	return priv->application;
 }
 
 GtkType
@@ -1408,16 +1407,6 @@ bonobo_ui_compat_get_component (BonoboUIHandler *uih)
 	g_return_val_if_fail (priv != NULL, NULL);
 
 	return priv->component;
-}
-
-BonoboApp *
-bonobo_ui_compat_get_app (BonoboUIHandler *uih)
-{
-	BonoboUIHandlerPrivate *priv = get_priv (uih);
-
-	g_return_val_if_fail (priv != NULL, NULL);
-
-	return priv->app;
 }
 
 Bonobo_UIContainer

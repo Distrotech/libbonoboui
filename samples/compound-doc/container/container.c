@@ -19,14 +19,17 @@ sample_app_exit (SampleApp *app)
 
 	bonobo_object_unref (BONOBO_OBJECT (app->container));
 	bonobo_object_unref (BONOBO_OBJECT (app->ui_handler));
+	gtk_widget_destroy (app->app);
 
 	gtk_main_quit ();
 }
 
-static void
-delete_cb (GtkWidget *caller, SampleApp *app)
+static gint
+delete_cb (GtkWidget *caller, GdkEvent *event, SampleApp *app)
 {
 	sample_app_exit (app);
+
+	return TRUE;
 }
 
 static SampleApp *
@@ -35,52 +38,29 @@ sample_app_create (void)
 	SampleApp *app = g_new0 (SampleApp, 1);
 	GtkWidget *app_widget;
 
-#ifdef USE_UI_HANDLER	
-
 	/* Create widgets */
-	app_widget = app->app = gnome_app_new ("sample-container",
-					       _("Sample Bonobo container"));
+	app_widget = app->app = bonobo_app_new ("sample-container",
+						_("Sample Bonobo container"));
+
 	app->box = gtk_vbox_new (FALSE, 10);
 
-	gtk_signal_connect (GTK_OBJECT (app_widget), "destroy", delete_cb, app);
+	gtk_signal_connect (GTK_OBJECT (app_widget), "delete_event",
+			    (GtkSignalFunc) delete_cb, app);
 
 	/* Do the packing stuff */
-	gnome_app_set_contents (GNOME_APP (app_widget), app->box);
+	bonobo_app_set_contents (BONOBO_APP (app->app), app->box);
 	gtk_widget_set_usize (app_widget, 400, 600);
 
 	app->container = bonobo_container_new ();
+
 	app->ui_handler = bonobo_ui_handler_new ();
-	bonobo_ui_handler_set_app (app->ui_handler, GNOME_APP (app_widget));
+	bonobo_ui_handler_set_app (app->ui_handler, BONOBO_APP (app->app));
 
 	/* Create menu bar */
 	bonobo_ui_handler_create_menubar (app->ui_handler);
 	sample_app_fill_menu (app);
 
 	gtk_widget_show_all (app_widget);
-#else
-	/* Create widgets */
-	app->app = bonobo_app_new ("sample-container",
-				   _("Sample Bonobo container"));
-	app_widget = bonobo_app_get_window (app->app);
-
-	app->box = gtk_vbox_new (FALSE, 10);
-
-	gtk_signal_connect (GTK_OBJECT (app_widget),
-			    "destroy", delete_cb, app);
-
-	/* Do the packing stuff */
-	bonobo_app_set_contents (app->app, app->box);
-	gtk_widget_set_usize (app_widget, 400, 600);
-
-	app->container = bonobo_container_new ();
-	app->ui_handler = bonobo_ui_handler_new_for_app (app->app);
-
-	/* Create menu bar */
-	bonobo_ui_handler_create_menubar (app->ui_handler);
-	sample_app_fill_menu (app);
-
-	gtk_widget_show_all (app_widget);
-#endif
 
 	return app;
 }

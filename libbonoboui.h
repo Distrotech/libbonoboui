@@ -51,6 +51,7 @@ extern "C" {
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
+#include <bonobo/bonobo-ui-container.h>
 #include <bonobo/bonobo-app.h>
 
 #include <bonobo/bonobo-object-io.h>

@@ -426,6 +426,7 @@ bonobo_ui_util_build_accel (guint           accelerator_key,
 	doc = xmlNewDoc ("1.0");
 	ret = xmlNewDocNode (doc, NULL, "accel", NULL);
 	xmlSetProp (ret, "name", name);
+	g_free (name);
 	xmlSetProp (ret, "verb", verb);
 	doc->root = NULL;
 	bonobo_ui_xml_strip (ret);
@@ -563,7 +564,7 @@ bonobo_ui_util_new_toggle_toolbar (const char *name,
  * bonobo_ui_util_get_ui_fname:
  * @component_name: the name of the component.
  * 
- * Builds a path to the ui.xml file that stores the GUI.
+ * Builds a path to the xml file that stores the GUI.
  * 
  * Return value: the path to the file that describes the
  * UI or NULL if it is not found.
@@ -573,7 +574,7 @@ bonobo_ui_util_get_ui_fname (const char *component_name)
 {
 	char *fname, *name;
 
-	name  = g_strdup_printf ("%s/ui.xml", component_name);
+	name  = g_strdup_printf ("gnome/ui/%s", component_name);
 	fname = gnome_unconditional_datadir_file (name);
 	g_free (name);
 

@@ -42,8 +42,9 @@ main (int argc, char **argv)
 	BonoboUIComponent *componenta;
 	BonoboUIComponent *componentb;
 	BonoboUIComponent *componentc;
+	BonoboUIContainer *container;
 	CORBA_Environment  ev;
-	Bonobo_UIContainer corba_app;
+	Bonobo_UIContainer corba_container;
 
 	char simplea [] =
 		"<submenu name=\"file\" label=\"_File\">\n"
@@ -52,9 +53,10 @@ main (int argc, char **argv)
 	char simpleb [] =
 		"<submenu name=\"file\" label=\"_FileB\">\n"
 		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Open you fool\"/>\n"
-		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\"/>\n"
+		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\" accel=\"&lt;Control&gt;t\"/>\n"
 		"       <placeholder delimit=\"both\"/>\n"
-		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"&lt;Control&gt;q\"/>\n"
+		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" "
+		"        pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"&lt;Control&gt;q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
 		"<submenu name=\"file\" label=\"_FileC\">\n"
@@ -96,7 +98,10 @@ main (int argc, char **argv)
 	bonobo_activate ();
 
 	app = BONOBO_APP (bonobo_app_new ("App", "My Test Application"));
-	corba_app = bonobo_object_corba_objref (BONOBO_OBJECT (app));
+	container = bonobo_ui_container_new ();
+	bonobo_ui_container_set_app (container, app);
+
+	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (container));
 
 	{
 		GtkWidget *box = gtk_vbox_new (FALSE, 0);
@@ -124,56 +129,56 @@ main (int argc, char **argv)
 
 	CORBA_exception_init (&ev);
 
-	bonobo_ui_component_set (componentb, corba_app, "/status", statusa, &ev);
+	bonobo_ui_component_set (componentb, corba_container, "/status", statusa, &ev);
 
-	bonobo_ui_component_set (componenta, corba_app, "/menu", simplea, &ev);
+	bonobo_ui_component_set (componenta, corba_container, "/menu", simplea, &ev);
 
-	bonobo_ui_component_set (componentb, corba_app, "/",     toola, &ev);
+	bonobo_ui_component_set (componentb, corba_container, "/",     toola, &ev);
 
 	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
 
-	gtk_widget_show (bonobo_app_get_window (app));
+	gtk_widget_show (GTK_WIDGET (app));
 	gtk_main ();
 
 	help = bonobo_ui_util_build_help_menu (componenta, "gnomecal");
-	bonobo_ui_component_set_tree (componenta, corba_app, "/menu", help, &ev);
+	bonobo_ui_component_set_tree (componenta, corba_container, "/menu", help, &ev);
 
 	accel = bonobo_ui_util_build_accel (GDK_A, GDK_CONTROL_MASK, "KeyWibbleVerb");
-	bonobo_ui_component_set_tree (componenta, corba_app, "/keybindings", accel, &ev);
+	bonobo_ui_component_set_tree (componenta, corba_container, "/keybindings", accel, &ev);
 
-	bonobo_ui_component_set (componentb, corba_app, "/menu", simpleb, &ev);
-	bonobo_ui_component_set (componenta, corba_app, "/",     toolb, &ev);
-	bonobo_ui_component_set (componentb, corba_app, "/status", statusb, &ev);
+	bonobo_ui_component_set (componentb, corba_container, "/menu", simpleb, &ev);
+	bonobo_ui_component_set (componenta, corba_container, "/",     toolb, &ev);
+	bonobo_ui_component_set (componentb, corba_container, "/status", statusb, &ev);
 
 	gtk_main ();
 
-	bonobo_ui_component_set (componentc, corba_app, "/commands",
+	bonobo_ui_component_set (componentc, corba_container, "/commands",
 				 "<cmd name=\"MyFoo\" sensitive=\"0\"/>", &ev);
-	bonobo_ui_component_set (componentc, corba_app, "/menu", simplec, &ev);
+	bonobo_ui_component_set (componentc, corba_container, "/menu", simplec, &ev);
 	
-	bonobo_ui_component_set (componentc, corba_app, "/menu/submenu/#file", simpled, &ev);
+	bonobo_ui_component_set (componentc, corba_container, "/menu/submenu/#file", simpled, &ev);
 
 	gtk_main ();
 
 	fprintf (stderr, "\n\n--- Remove 2 ---\n\n\n");
-	bonobo_ui_component_rm (componentb, corba_app, "/", &ev);
+	bonobo_ui_component_rm (componentb, corba_container, "/", &ev);
 
 	gtk_main ();
 
 	fprintf (stderr, "\n\n--- Remove 3 ---\n\n\n");
-	bonobo_ui_component_rm (componentc, corba_app, "/", &ev);
+	bonobo_ui_component_rm (componentc, corba_container, "/", &ev);
 
 	gtk_main ();
 
 	fprintf (stderr, "\n\n--- Remove 1 ---\n\n\n");
-	bonobo_ui_component_rm (componenta, corba_app, "/", &ev);
+	bonobo_ui_component_rm (componenta, corba_container, "/", &ev);
 
 	gtk_main ();
 
 	if (g_file_exists ("ui.xml")) {
 		fprintf (stderr, "\n\n--- Add ui.xml ---\n\n\n");
 		file = bonobo_ui_util_new_ui ("ui.xml");
-		bonobo_ui_component_set_tree (componentc, corba_app,
+		bonobo_ui_component_set_tree (componentc, corba_container,
 					      "/", file, &ev);
 		gtk_main ();
 
@@ -184,7 +189,8 @@ main (int argc, char **argv)
 	bonobo_object_unref (BONOBO_OBJECT (componentb));
 	bonobo_object_unref (BONOBO_OBJECT (componentc));
 
-	bonobo_object_unref (BONOBO_OBJECT (app));
+	bonobo_object_unref (BONOBO_OBJECT (container));
+	gtk_widget_destroy (GTK_WIDGET (app));
 
 	CORBA_exception_free (&ev);
 

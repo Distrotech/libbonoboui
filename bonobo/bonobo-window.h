@@ -2,17 +2,8 @@
 #ifndef _BONOBO_APP_H_
 #define _BONOBO_APP_H_
 
-#include <bonobo/bonobo-object.h>
 #include <gnome.h>
-
-/*
- * FIXME:
- * bonobo-widget.c: 257
- * bonobo-control.c: 190, 693
- * bonobo-control-frame.c: 359
- * bonobo-view.c: 578
- * bonobo-view-frame.c: 564
- */
+#include <bonobo/bonobo-object.h>
 
 #define BONOBO_APP_TYPE        (bonobo_app_get_type ())
 #define BONOBO_APP(o)          (GTK_CHECK_CAST ((o), BONOBO_APP_TYPE, BonoboApp))
@@ -25,50 +16,67 @@ typedef struct _BonoboAppPrivate BonoboAppPrivate;
 typedef struct _BonoboAppClass   BonoboAppClass;
 
 struct _BonoboApp {
-	BonoboObject      base;
-	BonoboAppPrivate *priv;
+	GtkWindow          parent;
+	
+	BonoboAppPrivate  *priv;
 };
 
 struct _BonoboAppClass {
-	BonoboObjectClass parent;
+	GtkWindowClass    parent_class;
 };
 
-GtkType                      bonobo_app_get_type            (void);
-POA_Bonobo_UIContainer__epv *bonobo_app_get_epv             (void);
-Bonobo_UIContainer           bonobo_app_corba_object_create (BonoboObject      *object);
-BonoboApp                   *bonobo_app_construct           (BonoboApp         *app,
-							     Bonobo_UIContainer corba_app,
-							     const char        *app_name,
-							     const char        *title);
+GtkType              bonobo_app_get_type            (void);
 
-BonoboApp           *bonobo_app_new                 (const char *app_name,
+GtkWidget           *bonobo_app_new                 (const char *app_name,
 						     const char *title);
 
 void                 bonobo_app_set_contents        (BonoboApp  *app,
 						     GtkWidget  *contents);
 GtkWidget           *bonobo_app_get_contents        (BonoboApp  *app);
-GtkWidget           *bonobo_app_get_window          (BonoboApp  *app);
 
 gboolean             bonobo_app_xml_merge           (BonoboApp  *app,
 						     const char *path,
 						     const char *xml,
-						     gpointer    listener);
+						     const char *component);
 
 void                 bonobo_app_xml_merge_tree      (BonoboApp  *app,
 						     const char *path,
 						     xmlNode    *tree,
-						     gpointer    listener);
+						     const char *component);
+
+char                *bonobo_app_xml_get             (BonoboApp  *app,
+						     const char *path,
+						     gboolean    node_only);
+
+gboolean             bonobo_app_xml_node_exists     (BonoboApp  *app,
+						     const char *path);
 
 void                 bonobo_app_xml_rm              (BonoboApp  *app,
 						     const char *path,
-						     gpointer    by_listner);
+						     const char *by_component);
+
+void                 bonobo_app_object_set          (BonoboApp  *app,
+						     const char *path,
+						     Bonobo_Unknown object,
+						     CORBA_Environment *ev);
+
+Bonobo_Unknown       bonobo_app_object_get          (BonoboApp  *app,
+						     const char *path,
+						     CORBA_Environment *ev);
 
 GtkAccelGroup       *bonobo_app_get_accel_group     (BonoboApp  *app);
 
 void                 bonobo_app_dump                (BonoboApp  *app,
 						     const char *msg);
 
-/* Compat function; may disappear any second now. */
-BonoboApp           *bonobo_app_from_window         (GtkWindow *window);
+void                 bonobo_app_register_component   (BonoboApp     *app,
+						      const char    *name,
+						      Bonobo_Unknown component);
+
+void                 bonobo_app_deregister_component (BonoboApp     *app,
+						      const char    *name);
+
+Bonobo_Unknown       bonobo_app_component_get        (BonoboApp     *app,
+						      const char    *name);
 
 #endif /* _BONOBO_APP_H_ */

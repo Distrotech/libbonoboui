@@ -553,7 +553,8 @@ bonobo_ui_container_object_get (Bonobo_UIContainer  container,
 	CORBA_Environment *real_ev, tmp_ev;
 	Bonobo_Unknown     ret;
 
-	g_return_if_fail (container != CORBA_OBJECT_NIL);
+	g_return_val_if_fail (container != CORBA_OBJECT_NIL,
+			      CORBA_OBJECT_NIL);
 
 	if (ev)
 		real_ev = ev;

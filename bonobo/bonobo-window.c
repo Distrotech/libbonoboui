@@ -10,19 +10,16 @@
 #include "bonobo-app-item.h"
 #include "bonobo-app-toolbar.h"
 
-GtkObjectClass *bonobo_app_parent_class = NULL;
-
-#define BONOBO_APP_WINDOW_KEY "Bonobo::BonoboApp"
+#define XML_FREE(a) ((a)?xmlFree(a):(a))
 
 #define	BINDING_MOD_MASK()				\
 	(gtk_accelerator_get_default_mod_mask () | GDK_RELEASE_MASK)
 
-POA_Bonobo_UIContainer__vepv bonobo_app_vepv;
-
-#define XML_FREE(a) (a?xmlFree(a):a)
+GtkWindowClass *bonobo_app_parent_class = NULL;
 
 struct _BonoboAppPrivate {
-	GtkWidget     *window;
+	BonoboApp     *app;
+
 	GnomeDock     *dock;
 
 	GnomeDockItem *menu_item;
@@ -46,12 +43,6 @@ struct _BonoboAppPrivate {
 
 	GtkWidget     *client_area;
 };
-
-static inline BonoboApp *
-bonobo_app_from_servant (PortableServer_Servant servant)
-{
-	return BONOBO_APP (bonobo_object_from_servant (servant));
-}
 
 typedef struct {
 	BonoboUIXmlData parent;
@@ -198,6 +189,19 @@ app_component_objref (BonoboAppPrivate *priv, const char *name)
 	return component->object;
 }
 
+/*
+ * Use the pointer identity instead of a costly compare
+ */
+static char *
+app_component_cmp_name (BonoboAppPrivate *priv, const char *name)
+{
+	AppComponent *component = app_component_get (priv, name);
+
+	g_return_val_if_fail (component != NULL, NULL);
+
+	return component->name;
+}
+
 static void
 app_component_destroy (BonoboAppPrivate *priv, AppComponent *component)
 {
@@ -211,37 +215,37 @@ app_component_destroy (BonoboAppPrivate *priv, AppComponent *component)
 	}
 }
 
-static void
-impl_register_component (PortableServer_Servant   servant,
-			 const CORBA_char        *component_name,
-			 const Bonobo_Unknown     object,
-			 CORBA_Environment       *ev)
+void
+bonobo_app_register_component (BonoboApp     *app,
+			       const char    *name,
+			       Bonobo_Unknown component)
 {
-	AppComponent *component;
-	BonoboApp    *app = bonobo_app_from_servant (servant);
+	AppComponent *appcomp;
 
-	if ((component = app_component_get (app->priv, component_name))) {
-		if (component->object != CORBA_OBJECT_NIL)
-			bonobo_object_release_unref (component->object, NULL);
+	g_return_if_fail (BONOBO_IS_APP (app));
+
+	if ((appcomp = app_component_get (app->priv, name))) {
+		if (appcomp->object != CORBA_OBJECT_NIL)
+			bonobo_object_release_unref (appcomp->object, NULL);
 	}
 
-	component->object = bonobo_object_dup_ref (object, NULL);
+	appcomp->object = bonobo_object_dup_ref (component, NULL);
 }
 
-static void
-impl_deregister_component (PortableServer_Servant servant,
-			   const CORBA_char      *component_name,
-			   CORBA_Environment     *ev)
+void
+bonobo_app_deregister_component (BonoboApp     *app,
+				 const char    *name)
 {
 	AppComponent *component;
-	BonoboApp    *app = bonobo_app_from_servant (servant);
 
-	if ((component = app_component_get (app->priv, component_name))) {
+	g_return_if_fail (BONOBO_IS_APP (app));
+
+	if ((component = app_component_get (app->priv, name))) {
 		bonobo_app_xml_rm (app, "/", component->name);
 		app_component_destroy (app->priv, component);
 	} else
 		g_warning ("Attempting to deregister non-registered "
-			   "component '%s'", component_name);
+			   "component '%s'", name);
 }
 
 static xmlNode *
@@ -416,6 +420,8 @@ real_emit_ui_event (BonoboAppPrivate *priv, const char *component_name,
 	if (!component_name) /* Auto-created entry, no-one can listen to it */
 		return;
 
+	gtk_object_ref (GTK_OBJECT (priv->app));
+
 	component = app_component_objref (priv, component_name);
 
 	if (component != CORBA_OBJECT_NIL) {
@@ -435,6 +441,8 @@ real_emit_ui_event (BonoboAppPrivate *priv, const char *component_name,
 		CORBA_exception_free (&ev);
 	} else
 		g_warning ("NULL Corba handle of name '%s'", component_name);
+
+	gtk_object_unref (GTK_OBJECT (priv->app));
 }
 
 static void
@@ -593,6 +601,8 @@ real_exec_verb (BonoboAppPrivate *priv,
 	g_return_if_fail (verb != NULL);
 	g_return_if_fail (component_name != NULL);
 
+	gtk_object_ref (GTK_OBJECT (priv->app));
+
 	component = app_component_objref (priv, component_name);
 
 	if (component != CORBA_OBJECT_NIL) {
@@ -612,6 +622,8 @@ real_exec_verb (BonoboAppPrivate *priv,
 		CORBA_exception_free (&ev);
 	} else
 		g_warning ("NULL Corba handle of name '%s'", component_name);
+
+	gtk_object_unref (GTK_OBJECT (priv->app));
 }
 
 static gint
@@ -910,15 +922,22 @@ menu_item_set_global_accels (BonoboAppPrivate *priv, xmlNode *node,
 	if ((text = xmlGetProp (node, "accel"))) {
 		guint           key;
 		GdkModifierType mods;
+		char           *signal;
 
+/*		fprintf (stderr, "Accel name is afterwards '%s'\n", text); */
 		gtk_accelerator_parse (text, &key, &mods);
 		xmlFree (text);
 
 		if (!key)
 			return;
 
+/*		if (GTK_IS_CHECK_MENU_ITEM (menu_widget))
+			signal = "toggled";
+			else*/
+		signal = "activate";
+
 		gtk_widget_add_accelerator (menu_widget,
-					    "activate",
+					    signal,
 					    priv->accel_group,
 					    key, mods,
 					    GTK_ACCEL_VISIBLE);
@@ -1494,8 +1513,6 @@ seek_dirty (BonoboAppPrivate *priv, xmlNode *node, UIUpdateType type)
 		for (l = node->childs; l; l = l->next)
 			seek_dirty (priv, l, type);
 	}
-
-/*	gtk_widget_show_all (GTK_WIDGET (priv->window));*/
 }
 
 static void
@@ -1546,16 +1563,6 @@ bonobo_app_get_contents (BonoboApp *app)
 	return GTK_BIN (app->priv->client_area)->child;
 }
 
-GtkWidget *
-bonobo_app_get_window (BonoboApp *app)
-{
-	g_return_val_if_fail (app != NULL, NULL);
-	g_return_val_if_fail (app->priv != NULL, NULL);
-	g_return_val_if_fail (app->priv->dock != NULL, NULL);
-
-	return app->priv->window;
-}
-
 static gboolean
 radio_group_destroy (gpointer	key,
 		     gpointer	value,
@@ -1570,29 +1577,36 @@ radio_group_destroy (gpointer	key,
 static void
 destroy_priv (BonoboAppPrivate *priv)
 {
-	gtk_widget_destroy (priv->window);
-		
+	priv->app = NULL;
+
 	gtk_object_unref (GTK_OBJECT (priv->tree));
+	priv->tree = NULL;
 
 	g_free (priv->name);
+	priv->name = NULL;
+
 	g_free (priv->prefix);
+	priv->prefix = NULL;
 
 	g_hash_table_foreach_remove (priv->radio_groups,
 				     radio_group_destroy, NULL);
 	g_hash_table_destroy (priv->radio_groups);
+	priv->radio_groups = NULL;
 
 	g_hash_table_foreach_remove (priv->keybindings,
 				     keybindings_free, NULL);
 	g_hash_table_destroy (priv->keybindings);
+	priv->keybindings = NULL;
 
 	while (priv->components)
 		app_component_destroy (priv, priv->components->data);
+	priv->components = NULL;
 	
 	g_free (priv);
 }
 
 static void
-bonobo_app_destroy (GtkObject *object)
+bonobo_app_finalize (GtkObject *object)
 {
 	BonoboApp *app = (BonoboApp *)object;
 	
@@ -1601,49 +1615,30 @@ bonobo_app_destroy (GtkObject *object)
 			destroy_priv (app->priv);
 		app->priv = NULL;
 	}
-	GTK_OBJECT_CLASS (bonobo_app_parent_class)->destroy (object);
+	GTK_OBJECT_CLASS (bonobo_app_parent_class)->finalize (object);
 }
 
-static void
-impl_node_set (PortableServer_Servant   servant,
-	       const CORBA_char        *path,
-	       const CORBA_char        *xml,
-	       const CORBA_char        *component_name,
-	       CORBA_Environment       *ev)
+char *
+bonobo_app_xml_get (BonoboApp  *app,
+		    const char *path,
+		    gboolean    node_only)
 {
-	BonoboApp *app = bonobo_app_from_servant (servant);
-	AppComponent *component = app_component_get (app->priv, component_name);
-
-	if (!bonobo_app_xml_merge (app, path, xml, component->name))
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_Bonobo_UIContainer_MalFormedXML, NULL);
-}
-
-static CORBA_char *
-impl_node_get (PortableServer_Servant servant,
-	       const CORBA_char      *path,
-	       const CORBA_boolean    nodeOnly,
-	       CORBA_Environment     *ev)
-{
-	BonoboApp  *app = bonobo_app_from_servant (servant);
 	xmlDoc     *doc;
 	xmlChar    *mem = NULL;
 	xmlNode    *node;
 	int         size;
 	CORBA_char *ret;
 
+	g_return_val_if_fail (BONOBO_IS_APP (app), NULL);
+
 	doc = xmlNewDoc ("1.0");
-	g_return_val_if_fail (
-		doc != NULL,
-		CORBA_string_dup ("<Error name=\"memory\"/>"));
+	g_return_val_if_fail (doc != NULL, NULL);
 
 	node = bonobo_ui_xml_get_path (app->priv->tree, path);
 	doc->root = xmlCopyNode (node, TRUE);
-	g_return_val_if_fail (
-		doc->root != NULL,
-		CORBA_string_dup ("<Error name=\"tree\"/>"));
+	g_return_val_if_fail (doc->root != NULL, NULL);
 
-	if (nodeOnly && doc->root->childs) {
+	if (node_only && doc->root->childs) {
 		xmlNode *tmp = doc->root->childs;
 		xmlUnlinkNode (tmp);
 		xmlFreeNode (tmp);
@@ -1651,9 +1646,7 @@ impl_node_get (PortableServer_Servant servant,
 
 	xmlDocDumpMemory (doc, &mem, &size);
 
-	g_return_val_if_fail (
-		mem != NULL,
-		CORBA_string_dup ("<Error name=\"dump\"/>"));
+	g_return_val_if_fail (mem != NULL, NULL);
 
 	xmlFreeDoc (doc);
 
@@ -1663,40 +1656,25 @@ impl_node_get (PortableServer_Servant servant,
 	return ret;
 }
 
-static void
-impl_node_remove (PortableServer_Servant servant,
-		  const CORBA_char      *path,
-		  const CORBA_char      *component_name,
-		  CORBA_Environment     *ev)
+gboolean
+bonobo_app_xml_node_exists (BonoboApp  *app,
+			    const char *path)
 {
-	BonoboApp *app = bonobo_app_from_servant (servant);
-	AppComponent *component = app_component_get (app->priv, component_name);
-
-	bonobo_app_xml_rm (app, path, component->name);
-}
-
-static CORBA_boolean
-impl_node_exists (PortableServer_Servant servant,
-		  const CORBA_char      *path,
-		  CORBA_Environment     *ev)
-{
-	BonoboApp *app = bonobo_app_from_servant (servant);
+	g_return_val_if_fail (BONOBO_IS_APP (app), FALSE);
 
 	return bonobo_ui_xml_exists (app->priv->tree, path);
 }
 
-static void
-impl_object_set (PortableServer_Servant servant,
-		 const CORBA_char      *path,
-		 const Bonobo_Unknown   control,
-		 CORBA_Environment     *ev)
+void
+bonobo_app_object_set (BonoboApp  *app,
+		       const char *path,
+		       Bonobo_Unknown object,
+		       CORBA_Environment *ev)
 {
-	BonoboApp *app = bonobo_app_from_servant (servant);
 	xmlNode   *node;
 	NodeInfo  *info;
 
-	g_return_if_fail (app != NULL);
-	g_return_if_fail (app->priv != NULL);
+	g_return_if_fail (BONOBO_IS_APP (app));
 
 	node = bonobo_ui_xml_get_path (app->priv->tree, path);
 	g_return_if_fail (node != NULL);
@@ -1706,20 +1684,18 @@ impl_object_set (PortableServer_Servant servant,
 	if (info->object)
 		bonobo_object_release_unref (info->object, ev);
 
-	info->object = bonobo_object_dup_ref (control, ev);
+	info->object = bonobo_object_dup_ref (object, ev);
 }
 
-static Bonobo_Unknown
-impl_object_get (PortableServer_Servant servant,
-		 const CORBA_char      *path,
-		 CORBA_Environment     *ev)
+Bonobo_Unknown
+bonobo_app_object_get (BonoboApp  *app,
+		       const char *path,
+		       CORBA_Environment *ev)
 {
-	BonoboApp *app = bonobo_app_from_servant (servant);
-	xmlNode   *node;
-	NodeInfo  *info;
+	xmlNode *node;
+	NodeInfo *info;
 
-	g_return_val_if_fail (app != NULL, CORBA_OBJECT_NIL);
-	g_return_val_if_fail (app->priv != NULL, CORBA_OBJECT_NIL);
+	g_return_val_if_fail (BONOBO_IS_APP (app), CORBA_OBJECT_NIL);
 
 	node = bonobo_ui_xml_get_path (app->priv->tree, path);
 	g_return_val_if_fail (node != NULL, CORBA_OBJECT_NIL);
@@ -1728,6 +1704,94 @@ impl_object_get (PortableServer_Servant servant,
 
 	return bonobo_object_dup_ref (info->object, ev);
 }
+
+void
+bonobo_app_xml_merge_tree (BonoboApp  *app,
+			   const char *path,
+			   xmlNode    *tree,
+			   const char *component)
+{
+	g_return_if_fail (app != NULL);
+	g_return_if_fail (app->priv != NULL);
+	g_return_if_fail (app->priv->tree != NULL);
+
+	if (!tree || !tree->name)
+		return;
+
+	/*
+	 *  Because peer to peer merging makes the code hard, and
+	 * paths non-inituitive and since we want to merge root
+	 * elements as peers to save lots of redundant CORBA calls
+	 * we special case root.
+	 */
+	if (!strcmp (tree->name, "Root")) {
+		bonobo_ui_xml_strip (tree);
+		bonobo_ui_xml_merge (app->priv->tree, path,
+				     tree->childs,
+				     app_component_cmp_name (app->priv, component));
+	} else
+		bonobo_ui_xml_merge (app->priv->tree, path, tree,
+				     app_component_cmp_name (app->priv, component));
+
+	update_widgets (app->priv);
+}
+
+gboolean
+bonobo_app_xml_merge (BonoboApp  *app,
+		      const char *path,
+		      const char *xml,
+		      const char *component)
+{
+	xmlDoc  *doc;
+
+	g_return_val_if_fail (app != NULL, FALSE);
+	g_return_val_if_fail (xml != NULL, FALSE);
+	g_return_val_if_fail (app->priv != NULL, FALSE);
+	g_return_val_if_fail (app->priv->tree != NULL, FALSE);
+
+	doc = xmlParseDoc ((char *)xml);
+
+	g_return_val_if_fail (doc != NULL, FALSE);
+
+	bonobo_app_xml_merge_tree (app, path, doc->root, component);
+	doc->root = NULL;
+	
+	xmlFreeDoc (doc);
+
+	return TRUE;
+}
+
+void
+bonobo_app_xml_rm (BonoboApp  *app,
+		   const char *path,
+		   const char *by_component)
+{
+	g_return_if_fail (app != NULL);
+	g_return_if_fail (app->priv != NULL);
+	g_return_if_fail (app->priv->tree != NULL);
+
+	bonobo_ui_xml_rm (app->priv->tree, "/",
+			  app_component_cmp_name (app->priv, by_component));
+	update_widgets (app->priv);
+}
+
+void
+bonobo_app_dump (BonoboApp  *app,
+		 const char *msg)
+{
+	g_return_if_fail (BONOBO_IS_APP (app));
+
+	bonobo_ui_xml_dump (app->priv->tree, app->priv->tree->root, msg);
+}
+
+GtkAccelGroup *
+bonobo_app_get_accel_group (BonoboApp *app)
+{
+	g_return_val_if_fail (BONOBO_IS_APP (app), NULL);
+
+	return app->priv->accel_group;
+}
+
 
 static gint
 bonobo_app_binding_handle (GtkWidget        *widget,
@@ -1758,50 +1822,6 @@ bonobo_app_binding_handle (GtkWidget        *widget,
 	return FALSE;
 }
 
-/**
- * bonobo_app_get_epv:
- */
-POA_Bonobo_UIContainer__epv *
-bonobo_app_get_epv (void)
-{
-	POA_Bonobo_UIContainer__epv *epv;
-
-	epv = g_new0 (POA_Bonobo_UIContainer__epv, 1);
-
-	epv->register_component   = impl_register_component;
-	epv->deregister_component = impl_deregister_component;
-
-	epv->node_set    = impl_node_set;
-	epv->node_get    = impl_node_get;
-	epv->node_remove = impl_node_remove;
-	epv->node_exists = impl_node_exists;
-
-	epv->object_set  = impl_object_set;
-	epv->object_get  = impl_object_get;
-
-	return epv;
-}
-
-static void
-bonobo_app_corba_class_init ()
-{
-	bonobo_app_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
-	bonobo_app_vepv.Bonobo_UIContainer_epv = bonobo_app_get_epv ();
-}
-
-static void
-bonobo_app_class_init (BonoboAppClass *klass)
-{
-	GtkObjectClass *object_class = (GtkObjectClass *) klass;
-
-	bonobo_app_parent_class =
-		gtk_type_class (bonobo_object_get_type ());
-
-	object_class->destroy = bonobo_app_destroy;
-
-	bonobo_app_corba_class_init ();
-}
-
 static BonoboAppPrivate *
 construct_priv (BonoboApp  *app,
 		const char *app_name,
@@ -1812,21 +1832,20 @@ construct_priv (BonoboApp  *app,
 
 	priv = g_new0 (BonoboAppPrivate, 1);
 
+	priv->app    = app;
+
 	priv->name   = g_strdup (app_name);
 	priv->prefix = g_strconcat ("/", app_name, "/", NULL);
 
-	priv->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	if (title)
-		gtk_window_set_title (GTK_WINDOW (priv->window), title);
-	gtk_object_set_data (GTK_OBJECT (priv->window),
-			     BONOBO_APP_WINDOW_KEY, app);
+		gtk_window_set_title (GTK_WINDOW (app), title);
 
 	/* Keybindings; the gtk_binding stuff is just too evil */
-	gtk_signal_connect (GTK_OBJECT (priv->window), "key_press_event",
+	gtk_signal_connect (GTK_OBJECT (app), "key_press_event",
 			    (GtkSignalFunc) bonobo_app_binding_handle, priv);
 
 	priv->dock   = GNOME_DOCK (gnome_dock_new ());
-	gtk_container_add (GTK_CONTAINER (priv->window),
+	gtk_container_add (GTK_CONTAINER (app),
 			   GTK_WIDGET    (priv->dock));
 
 	behavior = (GNOME_DOCK_ITEM_BEH_EXCLUSIVE
@@ -1867,7 +1886,7 @@ construct_priv (BonoboApp  *app,
 			    (GtkSignalFunc) remove_fn, priv);
 
 	priv->accel_group = gtk_accel_group_new ();
-	gtk_window_add_accel_group (GTK_WINDOW (priv->window),
+	gtk_window_add_accel_group (GTK_WINDOW (app),
 				    priv->accel_group);
 
 	gtk_widget_show_all (GTK_WIDGET (priv->dock));
@@ -1880,6 +1899,30 @@ construct_priv (BonoboApp  *app,
 					      keybinding_compare_fn);	
 
 	return priv;
+}
+
+static void
+bonobo_app_class_init (BonoboAppClass *klass)
+{
+	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+
+	bonobo_app_parent_class =
+		gtk_type_class (gtk_window_get_type ());
+
+	object_class->finalize = bonobo_app_finalize;
+}
+
+GtkWidget *
+bonobo_app_new (const char   *app_name,
+		const char   *title)
+{
+	BonoboApp *app;
+
+	app = gtk_type_new (BONOBO_APP_TYPE);
+
+	app->priv = construct_priv (app, app_name, title);
+
+	return GTK_WIDGET (app);
 }
 
 /**
@@ -1904,167 +1947,8 @@ bonobo_app_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (bonobo_object_get_type (), &info);
+		type = gtk_type_unique (gtk_window_get_type (), &info);
 	}
 
 	return type;
-}
-
-/**
- * bonobo_app_corba_object_create:
- * @object: The GtkObject that will wrap the CORBA object.
- *
- * Creates an activates the CORBA object that is wrapped
- * by the BonoboObject @object.
- *
- * Returns: An activated object reference to the created object or
- * %CORBA_OBJECT_NIL in case of failure.
- */
-Bonobo_UIContainer
-bonobo_app_corba_object_create (BonoboObject *object)
-{
-	POA_Bonobo_UIContainer *servant;
-	CORBA_Environment ev;
-	
-	servant = (POA_Bonobo_UIContainer *)g_new0 (BonoboObjectServant, 1);
-	servant->vepv = &bonobo_app_vepv;
-
-	CORBA_exception_init (&ev);
-
-	POA_Bonobo_UIContainer__init ((PortableServer_Servant) servant, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
-		g_free (servant);
-		CORBA_exception_free (&ev);
-		return CORBA_OBJECT_NIL;
-	}
-	CORBA_exception_free (&ev);
-
-	return bonobo_object_activate_servant (object, servant);
-}
-
-BonoboApp *
-bonobo_app_construct (BonoboApp  *app,
-		      Bonobo_UIContainer  corba_app,
-		      const char *app_name,
-		      const char *title)
-{
-	g_return_val_if_fail (app != NULL, NULL);
-	g_return_val_if_fail (app_name != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_APP (app), NULL);
-	g_return_val_if_fail (corba_app != CORBA_OBJECT_NIL, NULL);
-
-	bonobo_object_construct (BONOBO_OBJECT (app), corba_app);
-	
-	app->priv = construct_priv (app, app_name, title);
-
-	return app;
-}
-
-BonoboApp *
-bonobo_app_new (const char   *app_name,
-		const char   *title)
-{
-	Bonobo_UIContainer corba_app;
-	BonoboApp *app;
-
-	app = gtk_type_new (BONOBO_APP_TYPE);
-
-	corba_app = bonobo_app_corba_object_create (BONOBO_OBJECT (app));
-	if (corba_app == CORBA_OBJECT_NIL) {
-		bonobo_object_unref (BONOBO_OBJECT (app));
-		return NULL;
-	}
-	
-	return bonobo_app_construct (app, corba_app, app_name, title);
-}
-
-void
-bonobo_app_xml_merge_tree (BonoboApp  *app,
-			   const char *path,
-			   xmlNode    *tree,
-			   gpointer    listener)
-{
-	g_return_if_fail (app != NULL);
-	g_return_if_fail (app->priv != NULL);
-	g_return_if_fail (app->priv->tree != NULL);
-
-	if (!tree || !tree->name)
-		return;
-
-	/*
-	 *  Because peer to peer merging makes the code hard, and
-	 * paths non-inituitive and since we want to merge root
-	 * elements as peers to save lots of redundant CORBA calls
-	 * we special case root.
-	 */
-	if (!strcmp (tree->name, "Root")) {
-		bonobo_ui_xml_strip (tree);
-		bonobo_ui_xml_merge (app->priv->tree, path,
-				     tree->childs, listener);
-	} else
-		bonobo_ui_xml_merge (app->priv->tree, path, tree, listener);
-
-	update_widgets (app->priv);
-}
-
-gboolean
-bonobo_app_xml_merge (BonoboApp  *app,
-		      const char *path,
-		      const char *xml,
-		      gpointer    listener)
-{
-	xmlDoc  *doc;
-
-	g_return_val_if_fail (app != NULL, FALSE);
-	g_return_val_if_fail (xml != NULL, FALSE);
-	g_return_val_if_fail (app->priv != NULL, FALSE);
-	g_return_val_if_fail (app->priv->tree != NULL, FALSE);
-
-	doc = xmlParseDoc ((char *)xml);
-
-	g_return_val_if_fail (doc != NULL, FALSE);
-
-	bonobo_app_xml_merge_tree (app, path, doc->root, listener);
-	doc->root = NULL;
-	
-	xmlFreeDoc (doc);
-
-	return TRUE;
-}
-
-void
-bonobo_app_xml_rm (BonoboApp  *app,
-		   const char *path,
-		   gpointer    by_listener)
-{
-	g_return_if_fail (app != NULL);
-	g_return_if_fail (app->priv != NULL);
-	g_return_if_fail (app->priv->tree != NULL);
-
-	bonobo_ui_xml_rm (app->priv->tree, "/", by_listener);
-	update_widgets (app->priv);
-}
-
-void
-bonobo_app_dump (BonoboApp  *app,
-		 const char *msg)
-{
-	g_return_if_fail (BONOBO_IS_APP (app));
-
-	bonobo_ui_xml_dump (app->priv->tree, app->priv->tree->root, msg);
-}
-
-BonoboApp *
-bonobo_app_from_window (GtkWindow *window)
-{
-	return gtk_object_get_data (GTK_OBJECT (window),
-				    BONOBO_APP_WINDOW_KEY);
-}
-
-GtkAccelGroup *
-bonobo_app_get_accel_group (BonoboApp *app)
-{
-	g_return_val_if_fail (BONOBO_IS_APP (app), NULL);
-
-	return app->priv->accel_group;
 }

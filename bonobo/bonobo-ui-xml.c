@@ -54,7 +54,7 @@ do_strip (xmlNode *node)
 		a->ns = NULL;
 
 	for (l = node->childs; l; l = l->next)
-		bonobo_ui_xml_strip (l);
+		do_strip (l);
 }
 
 void
@@ -355,6 +355,9 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
 		xmlUnlinkNode (node);
 	}
+
+	if (node == tree->root) /* Ugly special case */
+		tree->root = NULL;
 
 	/* Destroy the old node */
 	node_free (tree, node);
@@ -818,6 +821,7 @@ bonobo_ui_xml_destroy (GtkObject *object)
 		if (tree->root) {
 			free_nodedata_tree (tree, tree->root, TRUE);
 			xmlFreeNode (tree->root);
+			tree->root = NULL;
 		}
 	}
 }
