@@ -7,7 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-12-09 00:17+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-12-28 21:47+0000\n"
 "PO-Revision-Date: 2003-02-07 16:57+0000\n"
 "Last-Translator: erkaN <erkaN@linux-sevenler.de>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org\n"
@@ -40,22 +41,22 @@ msgid "Un dock the toolbar"
 msgstr "Araç çubuğundan çıkar"
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
-#: bonobo/bonobo-ui-toolbar.c:1176
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Gölge tipi"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
-#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Yönlendirme"
 
 #: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
-#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Tercih edilen genişlik"
 
 #: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
-#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Tercih edilen yükseklik"
 
@@ -291,15 +292,15 @@ msgstr "Özelle_ştir"
 msgid "Customize the toolbar"
 msgstr "Araç ç_ubuğunu özelleştir"
 
-#: bonobo/bonobo-ui-toolbar.c:1130
+#: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
 msgstr "kayandır"
 
-#: bonobo/bonobo-ui-toolbar.c:1131
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
 msgstr "Acaba araç çubugu kayanmıdır"
 
-#: bonobo/bonobo-ui-toolbar.c:1177
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
 msgstr ""
 
