@@ -1,3 +1,8 @@
+2002-02-18  Gediminas Paulauskas <menesis@delfi.lt>
+
+	* configure.in: remove GNOME_COMMON_INIT, GNOME_PLATFORM_GNOME_2
+	macros to match latest gnome-common.
+
 2002-02-17  Zbigniew Chyla  <cyba@gnome.pl>
 
 	* bonobo/bonobo-zoomable.c (bonobo_zoomable_class_init):
