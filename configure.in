@@ -49,7 +49,7 @@ bonobo/Makefile
 bonobo/libbonoboui-2.0.pc
 samples/Makefile
 samples/controls/Makefile
-samples/bonoboui-hello/Makefile
+samples/bonoboui/Makefile
 samples/compound-doc/Makefile
 samples/compound-doc/container/Makefile
 tests/Makefile

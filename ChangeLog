@@ -1,3 +1,7 @@
+2001-10-20  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: update bonoboui-hello to bonoboui
+
 2001-10-18  Michael Meeks  <michael@ximian.com>
 
 	* samples/controls/bonobo-sample-controls.c

@@ -1,1 +1,1 @@
-SUBDIRS = controls compound-doc bonoboui-hello
+SUBDIRS = bonoboui controls compound-doc 

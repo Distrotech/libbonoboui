@@ -1,4 +1,4 @@
-noinst_PROGRAMS = bonoboui-hello
+#noinst_PROGRAMS = bonoboui-hello
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
