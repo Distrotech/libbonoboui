@@ -311,6 +311,14 @@ gnome_control_destroy (GtkObject *object)
 	GnomeControl *control = GNOME_CONTROL (object);
 	
 	/*
+	 * If we have a UIHandler, destroy it.
+	 */
+	if (control->priv->uih != NULL) {
+		gnome_ui_handler_unset_container (control->priv->uih);
+		gnome_object_destroy (GNOME_OBJECT (control->priv->uih));
+	}
+
+	/*
 	 * Destroy the control's top-level widget.
 	 */
 	if (control->priv->widget)

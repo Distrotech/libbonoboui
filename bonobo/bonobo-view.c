@@ -189,14 +189,6 @@ gnome_view_destroy (GtkObject *object)
 	view = GNOME_VIEW (object);
 
 	/*
-	 * If we have a UIHandler, destroy it.
-	 */
-	if (view->uih != NULL) {
-		gnome_ui_handler_unset_container (view->uih);
-		gnome_object_destroy (GNOME_OBJECT (view->uih));
-	}
-
-	/*
 	 * Free up all the verbs associated with this View.
 	 */
 	g_hash_table_foreach_remove (view->priv->verb_callbacks,
