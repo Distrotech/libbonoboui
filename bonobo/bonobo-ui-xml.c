@@ -15,10 +15,16 @@ static guint signals[LAST_SIGNAL] = { 0 };
 inline static gboolean
 identical (BonoboUIXml *tree, gpointer a, gpointer b)
 {
+	gboolean val;
+
 	if (tree->compare)
-		return tree->compare (a, b);
+		val = tree->compare (a, b);
 	else
-		return a == b;
+		val = (a == b);
+
+/*	fprintf (stderr, "Identical ? '%p' '%p' : %d\n", a, b, val);*/
+
+	return val;
 }
 
 static void
@@ -128,8 +134,15 @@ set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
 static void
 dump_internals (BonoboUIXml *tree, xmlNode *node)
 {
+	int i;
 	xmlNode *l;
+	static int indent = -4;
 	BonoboUIXmlData *data = bonobo_ui_xml_get_data (tree, node);
+
+	indent += 2;
+
+	for (i = 0; i < indent; i++)
+		fprintf (stderr, " ");
 
 	fprintf (stderr, "%s name=\"%s\" ", node->name,
 		 xmlGetProp (node, "name"));
@@ -141,21 +154,25 @@ dump_internals (BonoboUIXml *tree, xmlNode *node)
 		fprintf (stderr, "\n");
 
 	if (data->overridden) {
-		int indent = 4;
 		GSList *l;
+		int     old_indent;
 		fprintf (stderr, "overrides:\n");
-		
-		for (l = data->overridden; l; indent += 4, l = l->next) {
-			int i;
 
+		old_indent = indent;
+		for (l = data->overridden; l; l = l->next) {
+			fprintf (stderr, ">");
 			for (i = 0; i < indent; i++)
 				fprintf (stderr, " ");
 			dump_internals (tree, l->data);
+			indent += 4;
 		}
+		indent = old_indent;
 	}
 
 	for (l = node->childs; l; l = l->next)
 		dump_internals (tree, l);
+
+	indent -= 2;
 }
 
 void
@@ -195,7 +212,6 @@ move_children (xmlNode *from, xmlNode *to)
 		next = l->next;
 		
 		xmlUnlinkNode (l);
-		/* FIXME: are we reversing node order here ? */
 		xmlAddChild (to, l);
 	}
 
@@ -217,9 +233,12 @@ override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 
 		if (tree->override)
 			tree->override (old_data);
-		
-	} else
+
+		data->overridden = g_slist_prepend (old_data->overridden, old);
+	} else {
 		data->overridden = old_data->overridden;
+		g_warning ("Replace override of '%s' by '%s'", old->name, new->name);
+	}
 
 	old_data->overridden = NULL;
 
@@ -269,7 +288,13 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 		
 		/* Switch node back into tree */
 		xmlReplaceNode (node, old);
+
+		/* Mark dirty */
 		old_data->dirty = TRUE;
+		if (old->parent) {
+			data = bonobo_ui_xml_get_data (tree, old->parent);
+			data->dirty = TRUE;
+		}
 
 		if (tree->reinstate)
 			tree->reinstate (old_data);
@@ -278,6 +303,8 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 	} else {
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",
 		node->name, xmlGetProp (node, "name"));*/
+
+		/* Mark dirty */
 		if (node->parent) {
 			data = bonobo_ui_xml_get_data (tree, node->parent);
 			data->dirty = TRUE;
@@ -286,8 +313,7 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 	}
 
 	/* Destroy the old node */
-	free_nodedata_tree (tree, node, TRUE);
-	xmlFreeNode (node);
+	node_free (tree, node);
 }
 
 static xmlNode *
@@ -322,7 +348,7 @@ find_sibling (xmlNode *node, const char *name)
 }
 
 static xmlNode *
-xml_get_path (BonoboUIXml *tree, const char *path)
+xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 {
 	xmlNode *ret;
 
@@ -350,13 +376,19 @@ xml_get_path (BonoboUIXml *tree, const char *path)
 			if (names [i] [0] == '#') {
 				if ((next = find_sibling (ret, &names [i] [1])))
 					ret = next;
-				else
+				else {
+					if (!create)
+						return NULL;
 					xmlSetProp (ret, "name", &names [i] [1]);
+				}
 			} else {
 				if ((next = find_child (ret, names [i])))
 					ret = next;
-				else /* Create the node */
+				else {
+					if (!create)
+						return NULL;
 					ret = xmlNewChild (ret, NULL, names [i], NULL);
+				}
 			}
 		}
 		
@@ -366,8 +398,20 @@ xml_get_path (BonoboUIXml *tree, const char *path)
 	return ret;
 }
 
+xmlNode *
+bonobo_ui_xml_get_path (BonoboUIXml *tree, const char *path)
+{
+	return xml_get_path (tree, path, TRUE);
+}
+
+gboolean
+bonobo_ui_xml_exists (BonoboUIXml *tree, const char *path)
+{
+	return xml_get_path (tree, path, FALSE) != NULL;
+}
+
 char *
-bonobo_ui_xml_get_path  (xmlNode *node)
+bonobo_ui_xml_make_path  (xmlNode *node)
 {
 	GString *path;
 	char    *tmp;
@@ -433,8 +477,8 @@ reinstate_node (BonoboUIXml *tree, xmlNode *node, gpointer id)
 
 	if (identical (tree, data->id, id))
 		reinstate_old_node (tree, node);
-	else
-		prune_overrides_by_id (tree, data, id);
+
+	prune_overrides_by_id (tree, data, id);
 }
 
 /**
@@ -526,7 +570,7 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 	set_id (tree, nodes, id);
 	remove_floating_pointers (nodes);
 
-	current = xml_get_path (tree, path);
+	current = bonobo_ui_xml_get_path (tree, path);
 
 /*	fprintf (stderr, "PATH: '%s' '%s\n", current->name,
 	xmlGetProp (current, "name"));*/
@@ -545,10 +589,12 @@ bonobo_ui_xml_rm (BonoboUIXml *tree,
 {
 	xmlNode *current;
 
-	current = xml_get_path (tree, path);
+	current = xml_get_path (tree, path, FALSE);
 
 	if (current)
 		reinstate_node (tree, current, id);
+	else
+		g_warning ("Removing unknown path '%s'", path);
 }
 
 static void

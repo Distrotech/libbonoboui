@@ -33,15 +33,16 @@ struct _BonoboAppClass {
 	BonoboObjectClass parent;
 };
 
-GtkType              bonobo_app_get_type            (void);
-POA_Bonobo_App__epv *bonobo_app_get_epv             (void);
-Bonobo_App           bonobo_app_corba_object_create (BonoboObject *object);
-BonoboApp           *bonobo_app_construct           (BonoboApp  *app,
-						     Bonobo_App  corba_app,
-						     const char *app_name,
+GtkType                      bonobo_app_get_type            (void);
+POA_Bonobo_UIContainer__epv *bonobo_app_get_epv             (void);
+Bonobo_UIContainer           bonobo_app_corba_object_create (BonoboObject      *object);
+BonoboApp                   *bonobo_app_construct           (BonoboApp         *app,
+							     Bonobo_UIContainer corba_app,
+							     const char        *app_name,
+							     const char        *title);
+
+BonoboApp           *bonobo_app_new                 (const char *app_name,
 						     const char *title);
-BonoboApp           *bonobo_app_new                 (const char   *app_name,
-						     const char   *title);
 
 void                 bonobo_app_set_contents        (BonoboApp  *app,
 						     GtkWidget  *contents);
@@ -50,6 +51,11 @@ GtkWidget           *bonobo_app_get_contents        (BonoboApp  *app);
 void                 bonobo_app_xml_merge           (BonoboApp  *app,
 						     const char *path,
 						     const char *xml,
+						     gpointer    listener);
+
+void                 bonobo_app_xml_merge_tree      (BonoboApp  *app,
+						     const char *path,
+						     xmlNode    *tree,
 						     gpointer    listener);
 
 void                 bonobo_app_xml_rm              (BonoboApp  *app,

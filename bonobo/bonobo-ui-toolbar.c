@@ -82,13 +82,10 @@ bonobo_app_toolbar_get_type (void)
 
 void
 bonobo_app_toolbar_add (BonoboAppToolbar *toolbar,
-			GtkWidget        *widget,
-			const char       *descr)
+			GtkWidget        *widget)
 {
-	gtk_box_pack_end_defaults (GTK_BOX (toolbar), widget);
-	if (descr)
-		gtk_tooltips_set_tip (toolbar->tooltips, widget,
-				      descr, NULL);
+	gtk_box_pack_start (GTK_BOX (toolbar), widget,
+			    FALSE, FALSE, 0);
 }
 
 GtkWidget *
@@ -142,3 +139,23 @@ bonobo_app_toolbar_set_style  (BonoboAppToolbar *toolbar,
 	bonobo_app_toolbar_update_style (toolbar);
 }
 
+void
+bonobo_app_toolbar_set_tooltips (BonoboAppToolbar *toolbar,
+				 gboolean          enable)
+{
+	g_return_if_fail (toolbar != NULL);
+	g_return_if_fail (BONOBO_IS_APP_TOOLBAR (toolbar));
+
+	if (enable)
+		gtk_tooltips_enable (toolbar->tooltips);
+	else
+		gtk_tooltips_disable (toolbar->tooltips);
+}
+
+GtkTooltips *
+bonobo_app_toolbar_get_tooltips (BonoboAppToolbar *toolbar)
+{
+	g_return_val_if_fail (BONOBO_IS_APP_TOOLBAR (toolbar), NULL);
+
+	return toolbar->tooltips;
+}

@@ -22,8 +22,8 @@ typedef struct {
 	GSList  *overridden;
 } BonoboUIXmlData;
 
-typedef gboolean         (*BonoboUIXmlCompareFn)   (BonoboUIXmlData *a,
-						    BonoboUIXmlData *b);
+typedef gboolean         (*BonoboUIXmlCompareFn)   (gpointer         id_a,
+						    gpointer         id_b);
 typedef BonoboUIXmlData *(*BonoboUIXmlDataNewFn)   (void);
 typedef void             (*BonoboUIXmlDataFreeFn)  (BonoboUIXmlData *data);
 typedef void             (*BonoboUIXmlOverrideFn)  (BonoboUIXmlData *data);
@@ -71,7 +71,9 @@ void             bonobo_ui_xml_set_dirty (BonoboUIXml *tree,
 					  xmlNode     *node,
 					  gboolean     dirty);
 
-char            *bonobo_ui_xml_get_path  (xmlNode     *node);
+xmlNode         *bonobo_ui_xml_get_path  (BonoboUIXml *tree, const char *path);
+char            *bonobo_ui_xml_make_path (xmlNode     *node);
+gboolean         bonobo_ui_xml_exists    (BonoboUIXml *tree, const char *path);
 
 void             bonobo_ui_xml_merge     (BonoboUIXml *tree,
 					  const char  *path,

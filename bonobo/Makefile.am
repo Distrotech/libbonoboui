@@ -21,6 +21,7 @@ CORBA_SOURCE =			\
 idls =							\
 	$(top_srcdir)/idl/Bonobo.idl			\
 	$(top_srcdir)/idl/bonobo-advise.idl		\
+	$(top_srcdir)/idl/bonobo-app.idl		\
 	$(top_srcdir)/idl/bonobo-canvas.idl 		\
 	$(top_srcdir)/idl/bonobo-container.idl		\
 	$(top_srcdir)/idl/bonobo-control.idl		\
@@ -112,6 +113,9 @@ libbonoboinclude_HEADERS =		\
 	bonobo-stream-fs.h		\
 	bonobo-stream-memory.h		\
 	bonobo-ui-handler.h		\
+	bonobo-app.h			\
+	bonobo-ui-xml.h			\
+	bonobo-ui-util.h		\
 	bonobo-view.h			\
 	bonobo-view-frame.h		\
 	bonobo-wrapper.h		\
@@ -121,11 +125,25 @@ libbonoboinclude_HEADERS =		\
 	bonobo-property-types.h
 
 libbonobox_la_SOURCES =			\
+	bonobo-app.c			\
+	bonobo-app.h			\
+	bonobo-ui-component.c		\
+	bonobo-ui-component.h		\
+	bonobo-ui-helper.c		\
+	bonobo-ui-helper.h		\
+	bonobo-ui-util.c		\
+	bonobo-ui-xml.c			\
+	bonobo-app-item.c		\
+	bonobo-app-item.h		\
+	bonobo-app-toolbar.c		\
+	bonobo-app-toolbar.h		\
+					\
 	bonobo-ui-handler.c		\
 	bonobo-uih-menu.c		\
 	bonobo-uih-toolbar.c		\
 	bonobo-uih-dock.c		\
 	bonobo-uih-private.h		\
+					\
 	bonobo-canvas-item.c		\
 	bonobo-selector.c		\
 	bonobo-widget.c			\
@@ -154,6 +172,16 @@ libbonobo_printinclude_HEADERS =		\
 	Bonobo.h			\
 	bonobo-print.h		\
 	bonobo-print-client.h
+
+noinst_PROGRAMS = test-app
+
+test_app_SOURCES = app.c
+
+test_app_LDADD =					\
+	$(top_builddir)/bonobo/libbonobo.la		\
+	$(top_builddir)/bonobo/libbonobox.la		\
+	$(top_builddir)/bonobo/libbonobo-print.la	\
+	$(BONOBOX_TEST_LIBS)
 
 BUILT_SOURCES=$(CORBA_SOURCE)
 

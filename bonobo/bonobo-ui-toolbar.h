@@ -36,21 +36,26 @@ typedef struct {
 	gpointer          dummy;
 } BonoboAppToolbarClass;
 
-GtkType    bonobo_app_toolbar_get_type (void);
-GtkWidget *bonobo_app_toolbar_new        (void);
+GtkType    bonobo_app_toolbar_get_type     (void);
+GtkWidget *bonobo_app_toolbar_new          (void);
 
-void       bonobo_app_toolbar_add        (BonoboAppToolbar *toolbar,
-					  GtkWidget        *widget,
-					  const char       *descr);
+void       bonobo_app_toolbar_add          (BonoboAppToolbar *toolbar,
+					    GtkWidget        *widget);
 
-void       bonobo_app_toolbar_set_relief (BonoboAppToolbar *toolbar,
-					  GtkReliefStyle    relief);
+void       bonobo_app_toolbar_set_relief   (BonoboAppToolbar *toolbar,
+					    GtkReliefStyle    relief);
 
-void       bonobo_app_toolbar_set_style  (BonoboAppToolbar *toolbar,
-					  GtkToolbarStyle   look);
+void       bonobo_app_toolbar_set_style    (BonoboAppToolbar *toolbar,
+					    GtkToolbarStyle   look);
 
+void       bonobo_app_toolbar_set_tooltips (BonoboAppToolbar *toolbar,
+					    gboolean          enable);
+
+GtkTooltips *bonobo_app_toolbar_get_tooltips (BonoboAppToolbar *toolbar);
 
 END_GNOME_DECLS
 
 #endif /* _BONOBO_APP_TOOLBAR_H_ */
+
+
 

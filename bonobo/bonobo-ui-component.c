@@ -97,7 +97,7 @@ impl_exec_verb (PortableServer_Servant servant,
 
 	component = bonobo_ui_from_servant (servant);
 	
-	g_warning ("TESTME: Exec verb '%s'", cname);
+/*	g_warning ("TESTME: Exec verb '%s'", cname);*/
 
 	for (l = component->priv->verbs; l; l = l->next) {
 		Verb *verb = l->data;
@@ -130,10 +130,10 @@ impl_ui_event (PortableServer_Servant             servant,
 
 	component = bonobo_ui_from_servant (servant);
 
-	g_warning ("TESTME: Event '%s' '%d' '%s'\n", path, type, state);
+/*	g_warning ("TESTME: Event '%s' '%d' '%s'\n", path, type, state);*/
 
 	gtk_signal_emit (GTK_OBJECT (component),
-			 signals [EXEC_VERB], path, type, state);
+			 signals [UI_EVENT], path, type, state);
 }
 
 
@@ -174,6 +174,7 @@ bonobo_ui_component_add_listener (BonoboUIComponent  *component,
 
 	g_return_if_fail (fn != NULL);
 	g_return_if_fail (path != NULL);
+	g_return_if_fail (path [0] == '/');
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
 	list = g_new (Listener, 1);
@@ -249,7 +250,7 @@ bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
 		object_class->type,
 		GTK_SIGNAL_OFFSET (BonoboUIComponentClass, ui_event),
 		gtk_marshal_NONE__POINTER_INT_POINTER,
-		GTK_TYPE_NONE, 1, GTK_TYPE_STRING, GTK_TYPE_INT,
+		GTK_TYPE_NONE, 3, GTK_TYPE_STRING, GTK_TYPE_INT,
 		GTK_TYPE_STRING);
 
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
