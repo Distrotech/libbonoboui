@@ -415,12 +415,19 @@ impl_Bonobo_Control_setState (PortableServer_Servant      servant,
 			       CORBA_Environment          *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
+	GtkStateType gtk_state = bonobo_control_gtk_state_from_corba (state);
 
 	g_return_if_fail (control->priv->widget != NULL);
 
-	gtk_widget_set_state (
-		control->priv->widget,
-		bonobo_control_gtk_state_from_corba (state));
+	if (gtk_state == GTK_STATE_INSENSITIVE)
+		gtk_widget_set_sensitive (control->priv->widget, FALSE);
+	else {
+		if (! GTK_WIDGET_SENSITIVE (control->priv->widget))
+			gtk_widget_set_sensitive (control->priv->widget, TRUE);
+
+		gtk_widget_set_state (control->priv->widget,
+				      gtk_state);
+	}
 }
 
 static Bonobo_PropertyBag

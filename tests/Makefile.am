@@ -2,7 +2,8 @@ noinst_PROGRAMS =		\
 	test-ui			\
 	test-toolbar		\
 	selector_test		\
-	test-focus
+	test-focus		\
+	test-sensitivity
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -25,3 +26,5 @@ test_toolbar_SOURCES = test-toolbar.c
 
 selector_test_SOURCES =					\
 	selector_test.c
+
+test_sensitivity_SOURCES = test-sensitivity.c

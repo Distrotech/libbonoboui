@@ -144,7 +144,7 @@ bonobo_control_frame_autoactivate_focus_out (GtkWidget     *widget,
 
 
 static void
-bonobo_control_frame_socket_state_changed (GtkWidget    *socket,
+bonobo_control_frame_socket_state_changed (GtkWidget    *container,
 					   GtkStateType  previous_state,
 					   gpointer      user_data)
 {
@@ -155,7 +155,7 @@ bonobo_control_frame_socket_state_changed (GtkWidget    *socket,
 
 	bonobo_control_frame_control_set_state (
 		control_frame,
-		GTK_WIDGET_STATE (control_frame->priv->socket));
+		GTK_WIDGET_STATE (control_frame->priv->container));
 }
 
 
@@ -234,14 +234,6 @@ bonobo_control_frame_create_socket (BonoboControlFrame *control_frame)
 			    control_frame);
 
 	/*
-	 * Setup a handler to proxy state changes.
-	 */
-	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
-			    "state_changed",
-			    bonobo_control_frame_socket_state_changed,
-			    control_frame);
-
-	/*
 	 * Setup a handler for socket destroy.
 	 */
 	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
@@ -303,6 +295,15 @@ bonobo_control_frame_construct (BonoboControlFrame *control_frame,
 	gtk_widget_ref (control_frame->priv->container);
 	gtk_object_sink (GTK_OBJECT (control_frame->priv->container));
 	gtk_widget_show (control_frame->priv->container);
+
+	/*
+	 * Setup a handler to proxy state from the container.
+	 */
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->container),
+			    "state_changed",
+			    bonobo_control_frame_socket_state_changed,
+			    control_frame);
+
 
 	bonobo_control_frame_create_socket (control_frame);
 
