@@ -1,3 +1,11 @@
+2002-04-14  Murray Cumming  <murrayc@usa.net>
+
+	* bonobo/bonobo-selector.[h|c] BonoboSelector now has an
+	"interfaces_required" property, and the child BonoboSelectorWidget
+	is instantiated in the *_instance_init() function, so that
+	bonobo_selector_new() can now be just a convenience wrapper for
+	g_object_new().
+	
 2002-04-13  Murray Cumming  <murrayc@usa.net>
 
 	* bonobo/bonobo-window.[h|c]: bonobo_window_new() is now just
