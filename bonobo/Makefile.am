@@ -72,6 +72,7 @@ libbonobo_la_SOURCES =			\
 libbonoboincludedir = $(includedir)/bonobo
 
 libbonoboinclude_HEADERS =		\
+	bonobo.h			\
 	gtk-interfaces.h		\
 	gnome-bind-context.h		\
 	gnome-bonobo.h			\

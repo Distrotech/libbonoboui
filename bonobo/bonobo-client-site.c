@@ -139,7 +139,7 @@ gnome_client_site_destroy (GtkObject *object)
 	/* Destroy the object on the other end */
 	g_warning ("FIXME: Should we unref twice?");
 	
-	GNOME_object_unref (client_site->bound_object->corba_object);
+	GNOME_object_unref (client_site->bound_object->object, &client_site->bound_object->ev);
 	object_class->destroy (object);
 }
 
