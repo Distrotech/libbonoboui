@@ -220,7 +220,7 @@ look_cb (GtkWidget            *button,
 		value = "both";
 
 	else if (button == config->priv->priority_text)
-		value = "text";
+		value = "both_horiz";
 
 	else
 		g_warning ("Unknown look selection");
