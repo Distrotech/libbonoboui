@@ -1,3 +1,10 @@
+2001-12-06  Rodrigo Moya <rodrigo@gnome-db.org>
+
+	* samples/compound-doc/bonobo-hello/Makefile.am:
+	* samples/controls/Makefile.am: install sample servers in
+	$(prefix)/lib/bonobo-2.0/samples, and added server.in.in files
+	and needed Makefile rules for converting them to server.in
+
 2001-12-04  Darin Adler  <darin@bentspoon.com>
 
 	* bonobo/bonobo-ui-toolbar.c: (impl_destroy): Sink the tooltips

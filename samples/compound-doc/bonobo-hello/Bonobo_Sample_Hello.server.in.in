@@ -1,7 +1,7 @@
 <oaf_info>
 
 <oaf_server iid="OAFIID:Bonobo_Sample_Hello_EmbeddableFactory" type="exe"
-	location="bonobo-sample-hello">
+	location="@prefix@/lib/bonobo-2.0/samples/bonobo-sample-hello">
   <oaf_attribute name="repo_ids" type="stringv">
     <item value="IDL:GNOME/ObjectFactory:1.0"/>
   </oaf_attribute>

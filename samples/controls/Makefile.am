@@ -1,4 +1,8 @@
-bin_PROGRAMS = bonobo-sample-controls-2
+Bonobo_Sample_Controls.server.in: Bonobo_Sample_Controls.server.in.in
+	sed -e "s|\@prefix\@|$(prefix)|" $< > $@
+
+samplesdir = $(prefix)/lib/bonobo-2.0/samples
+samples_PROGRAMS = bonobo-sample-controls-2
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \

@@ -1,9 +1,13 @@
+Bonobo_Sample_Hello.server.in: Bonobo_Sample_Hello.server.in.in
+	sed -e "s|\@prefix\@|$(prefix)|" $< > $@
+
 INCLUDES =						\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(top_srcdir) 				\
 	$(LIBBONOBOUI_CFLAGS)
 
-bin_PROGRAMS = bonobo-sample-hello
+samplesdir = $(prefix)/lib/bonobo-2.0/samples
+samples_PROGRAMS = bonobo-sample-hello
 
 bonobo_sample_hello_SOURCES =	\
 	bonobo-hello.c		\
