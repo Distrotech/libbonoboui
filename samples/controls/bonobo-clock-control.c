@@ -33,6 +33,16 @@ bonobo_clock_control_prop_value_changed_cb (BonoboPropertyBag *pb, char *name, c
 	}
 }
 
+/*
+ * Callback routine used to release any values we associated with the control
+ * dynamically.
+ */
+static void
+release_data (GtkObject *object, void *data)
+{
+	g_free (data);
+}
+
 static BonoboObject *
 bonobo_clock_factory (BonoboGenericFactory *Factory, void *closure)
 {
@@ -61,6 +71,11 @@ bonobo_clock_factory (BonoboGenericFactory *Factory, void *closure)
 	bonobo_property_bag_add (pb, "running", "boolean",
 				(gpointer) running,
 				NULL, "Whether or not the clock is running", 0);
+
+	/*
+	 * Release "running" when the object is destroyed
+	 */
+	gtk_signal_connect (GTK_OBJECT (pb), "destroy", GTK_SIGNAL_FUNC (release_data), running);
 
 	return BONOBO_OBJECT (control);
 }
