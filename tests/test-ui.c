@@ -34,9 +34,7 @@ dump_prefs (void)
 
 	fprintf (stderr, "Toolbar:\n");
 
-	PRINT_PREF ("labels", toolbar_labels);
 	PRINT_PREF ("detachable", toolbar_detachable);
-	PRINT_PREF ("relief", toolbar_relief);
 
 	fprintf (stderr, "Menus:\n");
 
@@ -46,7 +44,6 @@ dump_prefs (void)
 	fprintf (stderr, "Menubar:\n");
 
 	PRINT_PREF ("detachable", menubar_detachable);
-	PRINT_PREF ("relief", menubar_relief);
 }
 
 #undef PRINT_PREF

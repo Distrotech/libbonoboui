@@ -1,3 +1,26 @@
+2002-01-14  Anders Carlsson  <andersca@gnu.org>
+
+	* bonobo/bonobo-ui-engine.c: (impl_dispose),
+	(bonobo_ui_engine_construct):
+	Add/remove engine from preferences list;
+	
+	* bonobo/bonobo-ui-preferences.c: (update_engines_idle_callback),
+	(keys_changed_fn), (bonobo_ui_preferences_add_engine),
+	(bonobo_ui_preferences_remove_engine),
+	(bonobo_ui_preferences_get_toolbar_style):
+	Add support for notification, remove unused functions.
+	
+	* bonobo/bonobo-ui-preferences.h:
+	* bonobo/bonobo-ui-sync-menu.c: (impl_bonobo_ui_sync_menu_state),
+	(impl_bonobo_ui_sync_menu_build):
+	Always create image menu items, update image in sync_state.
+	
+	* bonobo/bonobo-ui-sync-toolbar.c: (parse_look), (create_dockitem):
+	Use bonobo_ui_preferences_get_toolbar_style.
+	* bonobo/bonobo-window.c: (construct_priv):
+	* tests/test-ui.c: (dump_prefs):
+	Remove unneeded calls.
+	
 2002-01-10  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-sync-menu.c (impl_dispose):

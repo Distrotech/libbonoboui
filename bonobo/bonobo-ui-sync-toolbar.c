@@ -459,9 +459,7 @@ parse_look (const char *look)
 			return BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT;	
 	}
 
-	return bonobo_ui_preferences_get_toolbar_labels ()
-		? BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT
-		: BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
+	return bonobo_ui_preferences_get_toolbar_style ();
 }
 
 BonoboUIToolbarStyle
@@ -643,11 +641,7 @@ create_dockitem (BonoboUISyncToolbar *sync,
 	item = BONOBO_DOCK_ITEM (bonobo_dock_item_new (
 		dockname, beh));
 
-	if (bonobo_ui_preferences_get_toolbar_relief ())
-		bonobo_dock_item_set_shadow_type (item, GTK_SHADOW_OUT);
-	else
-		bonobo_dock_item_set_shadow_type (item, GTK_SHADOW_NONE);
-
+	bonobo_dock_item_set_shadow_type (item, GTK_SHADOW_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (item), 2);
 
 	if ((prop = bonobo_ui_node_peek_attr (node, "placement"))) {

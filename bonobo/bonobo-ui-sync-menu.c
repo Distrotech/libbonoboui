@@ -361,19 +361,23 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 	if ((type = bonobo_ui_engine_get_attr (node, cmd_node, "type")))
 		bonobo_ui_node_free_string (type);
 	else {
-		if (GTK_IS_IMAGE_MENU_ITEM (menu_widget)) {
-			GdkPixbuf        *pixbuf;
-			GtkImageMenuItem *image_menu_item;
-
+		GdkPixbuf        *pixbuf;
+		GtkImageMenuItem *image_menu_item;
+		
+		image_menu_item = (GtkImageMenuItem *) menu_widget;
+		
+		if (!bonobo_ui_preferences_get_menus_have_icons ()) {
+			gtk_image_menu_item_set_image (image_menu_item, NULL);
+		}
+		else {
+			
 			pixbuf = cmd_get_menu_pixbuf (menu_widget, node, cmd_node);
-
-			image_menu_item = (GtkImageMenuItem *) menu_widget;
-
+			
 			if (pixbuf) {
 				GtkWidget *image;
-			       
+				
 				image = gtk_image_menu_item_get_image (image_menu_item);
-
+				
 				if (!image) {
 					image = gtk_image_new_from_pixbuf (pixbuf);
 					gtk_widget_show (image);
@@ -385,7 +389,7 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 			}
 		}
 	}
-
+	
 	if ((label_attr = bonobo_ui_engine_get_attr (node, cmd_node, "label"))) {
 		GtkWidget *label;
 
@@ -622,16 +626,8 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 
 			bonobo_ui_node_free_string (type);
 		} else {
-			char *txt;
-			
-			/* FIXME: why not always create image menu items ? */
-			if ((txt = bonobo_ui_engine_get_attr (node, cmd_node, "pixtype")) &&
-			    bonobo_ui_preferences_get_menus_have_icons ())
-				menu_widget = gtk_image_menu_item_new ();
-			else
-				menu_widget = gtk_menu_item_new ();
-
-			bonobo_ui_node_free_string (txt);
+			/* We always use an image menu item, it doesn't hurt. */
+			menu_widget = gtk_image_menu_item_new ();
 		}
 
 		if (!menu_widget)

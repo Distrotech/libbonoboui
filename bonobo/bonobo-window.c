@@ -208,6 +208,7 @@ construct_priv (BonoboWindow *win)
 #ifdef FIXME
 	gtk_menu_bar_set_shadow_type (GTK_MENU_BAR (priv->menu), GTK_SHADOW_NONE);
 #endif
+#if 0
 	if (bonobo_ui_preferences_get_menubar_relief ()) {
 		guint border_width;
 
@@ -217,7 +218,7 @@ construct_priv (BonoboWindow *win)
 			border_width -= 2;
 		gtk_container_set_border_width (GTK_CONTAINER (priv->menu), border_width);
 	} else
-		bonobo_dock_item_set_shadow_type (BONOBO_DOCK_ITEM (priv->menu_item), GTK_SHADOW_NONE);
+#endif
 
 	priv->main_vbox = gtk_vbox_new (FALSE, 0);
 	bonobo_dock_set_client_area (priv->dock, priv->main_vbox);

@@ -25,6 +25,7 @@
 #include <bonobo/bonobo-ui-engine-private.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-marshal.h>
+#include <bonobo/bonobo-ui-preferences.h>
 
 #include <bonobo/bonobo-ui-node-private.h>
 
@@ -1701,7 +1702,10 @@ impl_dispose (GObject *object)
 			engine, engine->priv->components->data);
 
 	bonobo_ui_engine_set_ui_container (engine, NULL);
-	
+
+	/* Remove the engine from the configuration notify list */
+	bonobo_ui_preferences_remove_engine (engine);
+
 	G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
@@ -1902,6 +1906,9 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine,
 	g_signal_connect (G_OBJECT (priv->tree), "remove",
 			  (GtkSignalFunc) remove_fn, engine);
 
+	/* Add the engine to the configuration notify list */
+	bonobo_ui_preferences_add_engine (engine);
+	
 	return engine;
 }
 
