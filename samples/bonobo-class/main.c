@@ -9,7 +9,7 @@
 #include <config.h>
 #include <bonobo.h>
 
-#include "Echo.h"
+#include "Bonobo_Sample_Echo.h"
 #include "echo.h"
 
 static BonoboObject *

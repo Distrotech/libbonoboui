@@ -1,5 +1,9 @@
 2001-01-25  Michael Meeks  <michael@helixcode.com>
 
+	* main.c: fix include.
+
+2001-01-25  Michael Meeks  <michael@helixcode.com>
+
 	* Bonobo_Sample_Echo.idl: re-namespace.
 
 	* Makefile.am (idl_DATA): upd.
