@@ -26,7 +26,7 @@
 
 #include <config.h>
 #include <bonobo/bonobo-main.h>
-#include <bonobo/gnome-bonobo-widget.h>
+#include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-handler.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtklabel.h>
