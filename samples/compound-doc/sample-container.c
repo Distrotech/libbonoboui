@@ -212,6 +212,8 @@ component_shutdown (Component *component)
 	component->container->components = g_list_remove (component->container->components,
 							  component);
 
+	component->container->active_view_frame = NULL;
+
 	gtk_widget_destroy (component->frame);
 	gtk_widget_destroy (component->fs);
 
@@ -527,6 +529,10 @@ component_destroy_cb (GtkWidget *button, Component *component)
 	CORBA_exception_free (&ev);
 
 	gtk_widget_destroy (component->frame);
+
+	component->container->components = g_list_remove (component->container->components,
+							  component);
+	component->container->active_view_frame = NULL;
 }
 
 static BonoboObjectClient *
