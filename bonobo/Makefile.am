@@ -4,6 +4,7 @@ corba_DATA = sample.gnorba
 
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
+	-DSTORAGE_LIB=\""$(libdir)"\"			\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. 						\
 	-I$(top_builddir)				\
@@ -75,7 +76,6 @@ libbonobo_la_SOURCES =			\
 	gnome-storage.c			\
 	gnome-stream.c			\
 	gnome-stream-client.c		\
-	gnome-stream-fs.c		\
 	gnome-stream-memory.c		\
 	gnome-ui-handler.c		\
 	gnome-view.c			\
