@@ -1,9 +1,18 @@
+/*
+ * bonobo-ui-util.c: Bonobo UI utility functions
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
+ */
+
 #include "config.h"
 #include <gnome.h>
 #include <ctype.h>
 
-#include "bonobo-ui-xml.h"
-#include "bonobo-ui-util.h"
+#include <bonobo/bonobo-ui-xml.h>
+#include <bonobo/bonobo-ui-util.h>
 
 #define XML_FREE(a) ((a)?xmlFree(a):(a))
 

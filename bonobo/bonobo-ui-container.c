@@ -1,19 +1,28 @@
+/*
+ * bonobo-ui-container.c: The server side CORBA impl. for BonoboWin.
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
+ */
+
 #include "config.h"
 #include <gnome.h>
 #include <bonobo.h>
 #include <liboaf/liboaf.h>
 
-#include "Bonobo.h"
-#include "bonobo-ui-xml.h"
-#include "bonobo-ui-util.h"
-#include "bonobo-app.h"
-#include "bonobo-ui-container.h"
+#include <bonobo/Bonobo.h>
+#include <bonobo/bonobo-ui-xml.h>
+#include <bonobo/bonobo-ui-util.h>
+#include <bonobo/bonobo-win.h>
+#include <bonobo/bonobo-ui-container.h>
 
 POA_Bonobo_UIContainer__vepv bonobo_ui_container_vepv;
 
 #define APP_DESTROYED 0x1
 
-static inline BonoboApp *
+static inline BonoboWin *
 bonobo_ui_container_from_servant (PortableServer_Servant servant)
 {
 	BonoboUIContainer *container;
@@ -36,9 +45,9 @@ impl_register_component (PortableServer_Servant   servant,
 			 const Bonobo_Unknown     object,
 			 CORBA_Environment       *ev)
 {
-	BonoboApp *app = bonobo_ui_container_from_servant (servant);
+	BonoboWin *app = bonobo_ui_container_from_servant (servant);
 
-	bonobo_app_register_component (app, component_name, object);
+	bonobo_win_register_component (app, component_name, object);
 }
 
 static void
@@ -46,12 +55,12 @@ impl_deregister_component (PortableServer_Servant servant,
 			   const CORBA_char      *component_name,
 			   CORBA_Environment     *ev)
 {
-	BonoboApp *app = bonobo_ui_container_from_servant (servant);
+	BonoboWin *app = bonobo_ui_container_from_servant (servant);
 
 	if (!app)
 		return;
 
-	bonobo_app_deregister_component (app, component_name);
+	bonobo_win_deregister_component (app, component_name);
 }
 
 static void
@@ -61,9 +70,9 @@ impl_node_set (PortableServer_Servant   servant,
 	       const CORBA_char        *component_name,
 	       CORBA_Environment       *ev)
 {
-	BonoboApp *app = bonobo_ui_container_from_servant (servant);
+	BonoboWin *app = bonobo_ui_container_from_servant (servant);
 
-	if (!bonobo_app_xml_merge (app, path, xml, component_name))
+	if (!bonobo_win_xml_merge (app, path, xml, component_name))
 		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
 				     ex_Bonobo_UIContainer_MalFormedXML, NULL);
 }
@@ -74,10 +83,10 @@ impl_node_get (PortableServer_Servant servant,
 	       const CORBA_boolean    nodeOnly,
 	       CORBA_Environment     *ev)
 {
-	BonoboApp  *app = bonobo_ui_container_from_servant (servant);
+	BonoboWin  *app = bonobo_ui_container_from_servant (servant);
 	CORBA_char *xml;
 
-	xml = bonobo_app_xml_get (app, path, nodeOnly);
+	xml = bonobo_win_xml_get (app, path, nodeOnly);
 	if (!xml)
 		return CORBA_string_dup ("<Error/>");
 
@@ -90,12 +99,12 @@ impl_node_remove (PortableServer_Servant servant,
 		  const CORBA_char      *component_name,
 		  CORBA_Environment     *ev)
 {
-	BonoboApp *app = bonobo_ui_container_from_servant (servant);
+	BonoboWin *app = bonobo_ui_container_from_servant (servant);
 
 	if (!app)
 		return;
 
-	bonobo_app_xml_rm (app, path, component_name);
+	bonobo_win_xml_rm (app, path, component_name);
 }
 
 static CORBA_boolean
@@ -103,9 +112,9 @@ impl_node_exists (PortableServer_Servant servant,
 		  const CORBA_char      *path,
 		  CORBA_Environment     *ev)
 {
-	BonoboApp *app = bonobo_ui_container_from_servant (servant);
+	BonoboWin *app = bonobo_ui_container_from_servant (servant);
 
-	return bonobo_app_xml_node_exists (app, path);
+	return bonobo_win_xml_node_exists (app, path);
 }
 
 static void
@@ -114,9 +123,9 @@ impl_object_set (PortableServer_Servant servant,
 		 const Bonobo_Unknown   control,
 		 CORBA_Environment     *ev)
 {
-	BonoboApp *app = bonobo_ui_container_from_servant (servant);
+	BonoboWin *app = bonobo_ui_container_from_servant (servant);
 
-	bonobo_app_object_set (app, path, control, ev);
+	bonobo_win_object_set (app, path, control, ev);
 }
 
 static Bonobo_Unknown
@@ -124,9 +133,9 @@ impl_object_get (PortableServer_Servant servant,
 		 const CORBA_char      *path,
 		 CORBA_Environment     *ev)
 {
-	BonoboApp *app = bonobo_ui_container_from_servant (servant);
+	BonoboWin *app = bonobo_ui_container_from_servant (servant);
 
-	return bonobo_app_object_get (app, path, ev);
+	return bonobo_win_object_get (app, path, ev);
 }
 
 /**
@@ -259,7 +268,7 @@ blank_app (GtkObject *app, BonoboUIContainer *container)
 
 void
 bonobo_ui_container_set_app (BonoboUIContainer *container,
-			     BonoboApp         *app)
+			     BonoboWin         *app)
 {
 	g_return_if_fail (BONOBO_IS_UI_CONTAINER (container));
 

@@ -1,11 +1,20 @@
+/*
+ * app.c: A test application to hammer the Bonobo UI api.
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
+ */
+
 #include "config.h"
 #include <gnome.h>
 #include <bonobo.h>
 #include <liboaf/liboaf.h>
 
-#include "bonobo-ui-xml.h"
-#include "bonobo-ui-util.h"
-#include "bonobo-app.h"
+#include <bonobo/bonobo-ui-xml.h>
+#include <bonobo/bonobo-ui-util.h>
+#include <bonobo/bonobo-win.h>
 
 poptContext ctx;
 
@@ -17,9 +26,9 @@ cb_do_quit (GtkWindow *window, gpointer dummy)
 }
 
 static int
-cb_do_dump (GtkWindow *window, BonoboApp *app)
+cb_do_dump (GtkWindow *window, BonoboWin *app)
 {
-	bonobo_app_dump (app, "on User input");
+	bonobo_win_dump (app, "on User input");
 	return 1;
 }
 
@@ -37,7 +46,7 @@ toggled_cb (BonoboUIComponent           *component,
 int
 main (int argc, char **argv)
 {
-	BonoboApp *app;
+	BonoboWin *app;
 	CORBA_ORB  orb;
 	BonoboUIComponent *componenta;
 	BonoboUIComponent *componentb;
@@ -98,7 +107,7 @@ main (int argc, char **argv)
 
 	bonobo_activate ();
 
-	app = BONOBO_APP (bonobo_app_new ("App", "My Test Application"));
+	app = BONOBO_WIN (bonobo_win_new ("App", "My Test Application"));
 	container = bonobo_ui_container_new ();
 	bonobo_ui_container_set_app (container, app);
 
@@ -121,7 +130,7 @@ main (int argc, char **argv)
 		gtk_box_pack_start_defaults (GTK_BOX (box), button);
 
 		gtk_widget_show (GTK_WIDGET (box));
-		bonobo_app_set_contents (app, box);
+		bonobo_win_set_contents (app, box);
 	}
 
 	componenta = bonobo_ui_component_new ("A");

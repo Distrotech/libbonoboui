@@ -771,13 +771,13 @@ application_new (void)
 	app->box = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (app->box);
 
-	app->app = bonobo_app_new ("test-container",
+	app->app = bonobo_win_new ("test-container",
 				   "Sample Container Application");
 
-	bonobo_app_set_contents (BONOBO_APP (app->app), app->box);
+	bonobo_win_set_contents (BONOBO_WIN (app->app), app->box);
 
 	app->uih = bonobo_ui_handler_new ();
-	bonobo_ui_handler_set_app (app->uih, BONOBO_APP (app->app));
+	bonobo_ui_handler_set_app (app->uih, BONOBO_WIN (app->app));
 
 	/*
 	 * Create the menus.

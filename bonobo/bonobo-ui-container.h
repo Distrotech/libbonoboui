@@ -4,6 +4,7 @@
 
 #include <gnome.h>
 #include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-win.h>
 
 #define BONOBO_UI_CONTAINER_TYPE        (bonobo_ui_container_get_type ())
 #define BONOBO_UI_CONTAINER(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_CONTAINER_TYPE, BonoboUIContainer))
@@ -14,13 +15,11 @@
 typedef struct _BonoboUIContainer        BonoboUIContainer;
 typedef struct _BonoboUIContainerClass   BonoboUIContainerClass;
 
-#include <bonobo/bonobo-app.h>
-
 struct _BonoboUIContainer {
 	BonoboObject              base;
 
 	int                       flags;
-	BonoboApp                *app;
+	BonoboWin                *app;
 };
 
 struct _BonoboUIContainerClass {
@@ -36,6 +35,6 @@ BonoboUIContainer           *bonobo_ui_container_construct           (BonoboUICo
 BonoboUIContainer           *bonobo_ui_container_new                 (void);
 
 void                         bonobo_ui_container_set_app             (BonoboUIContainer  *container,
-								      BonoboApp        *app);
+								      BonoboWin        *app);
 
 #endif /* _BONOBO_UI_CONTAINER_H_ */

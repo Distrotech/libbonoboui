@@ -1,16 +1,30 @@
 /*
+ * bonobo-ui-compat.c: Compatibility functions for the old GnomeUI stuff,
+ *                    and the old Bonobo UI handler API.
+ *
  *  This module acts as an excercise in filthy coding habits
  * take a look around.
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
  */
 
-#include "bonobo.h"
-#include "bonobo-ui-compat.h"
+#include <glib.h>
+#include <unistd.h>
+#include <bonobo/Bonobo.h>
+#include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-ui-xml.h>
+#include <bonobo/bonobo-ui-util.h>
+#include <bonobo/bonobo-ui-container.h>
+#include <bonobo/bonobo-ui-compat.h>
 
 #undef COMPAT_DEBUG
 
 typedef struct {
 	BonoboUIComponent *component;
-	BonoboApp         *application;
+	BonoboWin         *application;
 
 	char              *name;
 
@@ -187,9 +201,10 @@ BonoboUIHandler *
 bonobo_ui_handler_new (void)
 {
 	BonoboUIComponent *object;
-	char              *name = g_strdup_printf ("Busk%d", busk_name++);
+	char              *name;
 	BonoboUIHandlerPrivate *priv;
 
+	name = g_strdup_printf ("Busk%d", (getpid () * 10) + busk_name++);
 	object = bonobo_ui_component_new (name);
 
 	g_free (name);
@@ -1179,7 +1194,7 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 }
 
 void
-bonobo_ui_handler_set_app (BonoboUIHandler *uih, BonoboApp *app)
+bonobo_ui_handler_set_app (BonoboUIHandler *uih, BonoboWin *app)
 {
 	BonoboUIHandlerPrivate *priv;
 	BonoboUIContainer *container;
@@ -1195,7 +1210,7 @@ bonobo_ui_handler_set_app (BonoboUIHandler *uih, BonoboApp *app)
 	bonobo_ui_container_set_app (container, app);
 }
 
-BonoboApp *
+BonoboWin *
 bonobo_ui_handler_get_app (BonoboUIHandler *uih)
 {
 	BonoboUIHandlerPrivate *priv;

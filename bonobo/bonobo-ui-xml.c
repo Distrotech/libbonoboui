@@ -1,5 +1,14 @@
+/*
+ * bonobo-ui-xml.c: A module for merging, overlaying and de-merging XML 
+ *
+ * Author:
+ *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
+ */
+
 #include "config.h"
-#include "bonobo-ui-xml.h"
+#include <bonobo/bonobo-ui-xml.h>
 
 #undef UI_XML_DEBUG
 #undef BONOBO_UI_XML_DUMP
@@ -40,11 +49,17 @@ identical (BonoboUIXml *tree, gpointer a, gpointer b)
 static void
 do_strip (xmlNode *node)
 {
-	xmlNode *l;
+	xmlNode *l, *next;
 	xmlAttr *a;
 
 	if (!node)
 		return;
+
+	if (node->type == XML_COMMENT_NODE) {
+		xmlUnlinkNode (node);
+		xmlFreeNode   (node);
+		return;
+	}
 
 	node->ns = NULL;
 	node->doc = NULL;
@@ -53,8 +68,10 @@ do_strip (xmlNode *node)
 	for (a = node->properties; a; a = a->next)
 		a->ns = NULL;
 
-	for (l = node->childs; l; l = l->next)
+	for (l = node->childs; l; l = next) {
+		next = l->next;
 		do_strip (l);
+	}
 }
 
 void
@@ -166,7 +183,7 @@ do_set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
 	}
 
 	for (node = node->childs; node; node = node->next)
-		set_id (tree, node, id);
+		do_set_id (tree, node, id);
 }
 
 static void

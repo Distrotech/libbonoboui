@@ -1,16 +1,16 @@
 /*
- * gnome-app-toolbar.c: Sample toolbar-system based App implementation
- *
- * This is the toolbar based App implementation.
+ * bonobo-ui-toolbar.c: To be clever toolbar, waiting for Ettore.
  *
  * Author:
  *	Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 2000 Helix Code, Inc.
  */
 #include <config.h>
 #include <gnome.h>
 
-#include "bonobo-app-toolbar.h"
-#include "bonobo-app-item.h"
+#include <bonobo/bonobo-ui-toolbar.h>
+#include <bonobo/bonobo-ui-item.h>
 
 enum {
 	GEOMETRY_CHANGED,
@@ -19,7 +19,7 @@ enum {
 static guint signals[LAST_SIGNAL] = { 0 };
 
 static void
-app_toolbar_class_init (BonoboAppToolbarClass *klass)
+ui_toolbar_class_init (BonoboUIToolbarClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
@@ -28,7 +28,7 @@ app_toolbar_class_init (BonoboAppToolbarClass *klass)
 	signals [GEOMETRY_CHANGED] = gtk_signal_new (
 		"geometry_changed", GTK_RUN_FIRST,
 		object_class->type,
-		GTK_SIGNAL_OFFSET (BonoboAppToolbarClass, geometry_changed),
+		GTK_SIGNAL_OFFSET (BonoboUIToolbarClass, geometry_changed),
 		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
 
 	gtk_object_class_add_signals (
@@ -36,7 +36,7 @@ app_toolbar_class_init (BonoboAppToolbarClass *klass)
 }
 
 static void
-app_toolbar_init (BonoboAppToolbar *toolbar)
+ui_toolbar_init (BonoboUIToolbar *toolbar)
 {
 	toolbar->tooltips = gtk_tooltips_new ();
 
@@ -53,22 +53,22 @@ app_toolbar_init (BonoboAppToolbar *toolbar)
 }
 
 /**
- * bonobo_app_toolbar_get_type:
+ * bonobo_ui_toolbar_get_type:
  *
- * Returns the GtkType for the BonoboAppToolbar class.
+ * Returns the GtkType for the BonoboUIToolbar class.
  */
 GtkType
-bonobo_app_toolbar_get_type (void)
+bonobo_ui_toolbar_get_type (void)
 {
 	static GtkType type = 0;
 
 	if (!type) {
 		GtkTypeInfo info = {
-			"BonoboAppToolbar",
-			sizeof (BonoboAppToolbar),
-			sizeof (BonoboAppToolbarClass),
-			(GtkClassInitFunc) app_toolbar_class_init,
-			(GtkObjectInitFunc) app_toolbar_init,
+			"BonoboUIToolbar",
+			sizeof (BonoboUIToolbar),
+			sizeof (BonoboUIToolbarClass),
+			(GtkClassInitFunc) ui_toolbar_class_init,
+			(GtkObjectInitFunc) ui_toolbar_init,
 			NULL, /* reserved 1 */
 			NULL, /* reserved 2 */
 			(GtkClassInitFunc) NULL
@@ -81,7 +81,7 @@ bonobo_app_toolbar_get_type (void)
 }
 
 void
-bonobo_app_toolbar_add (BonoboAppToolbar *toolbar,
+bonobo_ui_toolbar_add (BonoboUIToolbar *toolbar,
 			GtkWidget        *widget)
 {
 	gtk_box_pack_start (GTK_BOX (toolbar), widget,
@@ -89,13 +89,13 @@ bonobo_app_toolbar_add (BonoboAppToolbar *toolbar,
 }
 
 GtkWidget *
-bonobo_app_toolbar_new ()
+bonobo_ui_toolbar_new ()
 {
-	return gtk_type_new (BONOBO_APP_TOOLBAR_TYPE);
+	return gtk_type_new (BONOBO_UI_TOOLBAR_TYPE);
 }
 
 static void
-bonobo_app_toolbar_update_style (BonoboAppToolbar *toolbar)
+bonobo_ui_toolbar_update_style (BonoboUIToolbar *toolbar)
 {
 	GList *l;
 	GList *children =
@@ -105,8 +105,8 @@ bonobo_app_toolbar_update_style (BonoboAppToolbar *toolbar)
 	for (l = children; l; l = l->next) {
 		GtkWidget *widget = l->data;
 
-		if (BONOBO_IS_APP_ITEM (widget))
-			bonobo_app_item_set_style (BONOBO_APP_ITEM (widget),
+		if (BONOBO_IS_UI_ITEM (widget))
+			bonobo_ui_item_set_style (BONOBO_UI_ITEM (widget),
 						   toolbar->relief,
 						   toolbar->look);
 	}
@@ -120,31 +120,31 @@ bonobo_app_toolbar_update_style (BonoboAppToolbar *toolbar)
 }
 
 void
-bonobo_app_toolbar_set_relief (BonoboAppToolbar *toolbar,
+bonobo_ui_toolbar_set_relief (BonoboUIToolbar *toolbar,
 			       GtkReliefStyle    relief)
 {
 	g_return_if_fail (toolbar != NULL);
 
 	toolbar->relief = relief;
-	bonobo_app_toolbar_update_style (toolbar);
+	bonobo_ui_toolbar_update_style (toolbar);
 }
 
 void
-bonobo_app_toolbar_set_style  (BonoboAppToolbar *toolbar,
+bonobo_ui_toolbar_set_style  (BonoboUIToolbar *toolbar,
 			       GtkToolbarStyle   look)
 {
 	g_return_if_fail (toolbar != NULL);
 
 	toolbar->look = look;
-	bonobo_app_toolbar_update_style (toolbar);
+	bonobo_ui_toolbar_update_style (toolbar);
 }
 
 void
-bonobo_app_toolbar_set_tooltips (BonoboAppToolbar *toolbar,
+bonobo_ui_toolbar_set_tooltips (BonoboUIToolbar *toolbar,
 				 gboolean          enable)
 {
 	g_return_if_fail (toolbar != NULL);
-	g_return_if_fail (BONOBO_IS_APP_TOOLBAR (toolbar));
+	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
 
 	if (enable)
 		gtk_tooltips_enable (toolbar->tooltips);
@@ -153,9 +153,9 @@ bonobo_app_toolbar_set_tooltips (BonoboAppToolbar *toolbar,
 }
 
 GtkTooltips *
-bonobo_app_toolbar_get_tooltips (BonoboAppToolbar *toolbar)
+bonobo_ui_toolbar_get_tooltips (BonoboUIToolbar *toolbar)
 {
-	g_return_val_if_fail (BONOBO_IS_APP_TOOLBAR (toolbar), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar), NULL);
 
 	return toolbar->tooltips;
 }

@@ -2,14 +2,14 @@
 #ifndef _BONOBO_UI_COMPAT_H_
 #define _BONOBO_UI_COMPAT_H_
 
-#include <bonobo/bonobo-object.h>
-#include <gtk/gtkwidget.h>
 #include <glib.h>
+#include <gtk/gtkwidget.h>
 #include <gtk/gtkmenushell.h>
 #include <gtk/gtkcheckmenuitem.h>
 #include <gtk/gtkaccelgroup.h>
 #include <gnome-xml/tree.h>
-#include <bonobo/bonobo-app.h>
+#include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-win.h>
 #include <bonobo/bonobo-ui-component.h>
 
 #define BONOBO_UI_HANDLER_TYPE        (bonobo_ui_handler_get_type ())
@@ -88,11 +88,10 @@ typedef enum {
  * _new_for_app to create the toplevel UI handler
  * _new to create the normal old style handler.
  */
-BonoboUIHandler         *bonobo_ui_handler_new_for_app			(BonoboApp       *app);
 BonoboUIHandler		*bonobo_ui_handler_new				(void);
 
 BonoboUIComponent       *bonobo_ui_compat_get_component                 (BonoboUIHandler *uih);
-BonoboApp               *bonobo_ui_compat_get_app                       (BonoboUIHandler *uih);
+BonoboWin               *bonobo_ui_compat_get_app                       (BonoboUIHandler *uih);
 Bonobo_UIContainer       bonobo_ui_compat_get_container                 (BonoboUIHandler *uih);
 
 /*
@@ -107,8 +106,8 @@ char			*bonobo_ui_handler_build_path			(const char *base, ...);
 char			*bonobo_ui_handler_build_path_v			(const char *base, va_list path_components);
 
 /* Toplevel menu routines. */
-void			 bonobo_ui_handler_set_app			(BonoboUIHandler *uih, BonoboApp *app);
-BonoboApp               *bonobo_ui_handler_get_app                      (BonoboUIHandler *uih);
+void			 bonobo_ui_handler_set_app			(BonoboUIHandler *uih, BonoboWin *app);
+BonoboWin               *bonobo_ui_handler_get_app                      (BonoboUIHandler *uih);
 
 void			 bonobo_ui_handler_set_toolbar			(BonoboUIHandler *uih, const char *name,
 									 GtkWidget *toolbar);

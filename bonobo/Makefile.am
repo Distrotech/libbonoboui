@@ -116,9 +116,9 @@ libbonoboinclude_HEADERS =		\
 	bonobo-ui-component.h		\
 	bonobo-ui-container.h		\
 	bonobo-ui-compat.h		\
-	bonobo-app-item.h		\
-	bonobo-app-toolbar.h		\
-	bonobo-app.h			\
+	bonobo-ui-item.h		\
+	bonobo-ui-toolbar.h		\
+	bonobo-win.h			\
 	bonobo-ui-xml.h			\
 	bonobo-ui-util.h		\
 	bonobo-view.h			\
@@ -130,14 +130,13 @@ libbonoboinclude_HEADERS =		\
 	bonobo-property-types.h
 
 libbonobox_la_SOURCES =			\
-	bonobo-app.c			\
-	bonobo-app.h			\
+	bonobo-win.c			\
 	bonobo-ui-component.c		\
 	bonobo-ui-container.c		\
 	bonobo-ui-util.c		\
 	bonobo-ui-xml.c			\
-	bonobo-app-item.c		\
-	bonobo-app-toolbar.c		\
+	bonobo-ui-item.c		\
+	bonobo-ui-toolbar.c		\
 	bonobo-ui-compat.c		\
 					\
 	bonobo-canvas-item.c		\
