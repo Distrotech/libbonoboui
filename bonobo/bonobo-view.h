@@ -74,7 +74,7 @@ void		 gnome_view_execute_verb	  (GnomeView *view,
 						   const char *verb_name);
 char		*gnome_view_popup_verbs		  (GnomeView *view);
 
-POA_GNOME_View__epv *gnome_view_get_epv (void);
+POA_GNOME_View__epv *gnome_view_get_epv (gboolean duplicate);
 
 /* CORBA default vector methods we provide */
 extern POA_GNOME_View__vepv gnome_view_vepv;

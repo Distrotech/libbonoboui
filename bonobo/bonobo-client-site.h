@@ -72,7 +72,7 @@ GnomeCanvasItem   *gnome_client_site_new_item           (GnomeClientSite *client
 GList		  *gnome_client_site_get_verbs		(GnomeClientSite *client_site);
 void		   gnome_client_site_free_verbs		(GList *verb_list);
 
-POA_GNOME_ClientSite__epv *gnome_client_site_get_epv	(void);
+POA_GNOME_ClientSite__epv *gnome_client_site_get_epv	(gboolean duplicate);
 
 extern POA_GNOME_ClientSite__vepv gnome_client_site_vepv;
 

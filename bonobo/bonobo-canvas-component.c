@@ -550,25 +550,31 @@ gcc_set_bounds (PortableServer_Servant servant, GNOME_Canvas_DRect *bbox, CORBA_
  * gnome_canvas_item_get_epv:
  *
  */
+static POA_GNOME_Canvas_Item__epv gcc_epv = {
+  NULL,
+  gcc_update,
+  gcc_realize,
+  gcc_unrealize,
+  gcc_map,
+  gcc_unmap,
+  gcc_draw,
+  gcc_render,
+  gcc_contains,
+  gcc_bounds,
+  gcc_event,
+  gcc_size_set,
+  gcc_set_bounds
+};
 POA_GNOME_Canvas_Item__epv *
-gnome_canvas_item_get_epv (void)
+gnome_canvas_item_get_epv (gboolean duplicate)
 {
 	POA_GNOME_Canvas_Item__epv *epv;
 
-	epv = g_new0 (POA_GNOME_Canvas_Item__epv, 1);
-
-	epv->update    = gcc_update;
-	epv->realize   = gcc_realize;
-	epv->unrealize = gcc_unrealize;
-	epv->map       = gcc_map;
-	epv->unmap     = gcc_unmap;
-	epv->draw      = gcc_draw;
-	epv->render    = gcc_render;
-	epv->bounds    = gcc_bounds;
-	epv->event     = gcc_event;
-	epv->contains  = gcc_contains;
-	epv->canvas_size_set = gcc_size_set;
-	epv->set_bounds = gcc_set_bounds;
+	if(duplicate) {
+	  epv = g_new0 (POA_GNOME_Canvas_Item__epv, 1);
+	  memcpy(epv, &gcc_epv, sizeof(gcc_epv));
+	} else
+	  epv = &gcc_epv;
 
 	return epv;
 }
@@ -579,8 +585,8 @@ gcc_corba_class_init (void)
 	/*
 	 * Initialize the VEPV
 	 */
-	gnome_canvas_item_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_canvas_item_vepv.GNOME_Canvas_Item_epv = gnome_canvas_item_get_epv ();
+	gnome_canvas_item_vepv.GNOME_Unknown_epv = gnome_object_get_epv (FALSE);
+	gnome_canvas_item_vepv.GNOME_Canvas_Item_epv = gnome_canvas_item_get_epv (FALSE);
 	
 }
 

@@ -216,16 +216,22 @@ gnome_view_destroy (GtkObject *object)
  * gnome_view_get_epv:
  */
 POA_GNOME_View__epv *
-gnome_view_get_epv (void)
+gnome_view_get_epv (gboolean duplicate)
 {
 	POA_GNOME_View__epv *epv;
+	static POA_GNOME_View__epv view_epv = {
+		NULL,
+		impl_GNOME_View_view_activate,
+		impl_GNOME_View_do_verb,
+		impl_GNOME_View_reactivate_and_undo,
+		impl_GNOME_View_set_zoom_factor
+	};
 
-	epv = g_new0 (POA_GNOME_View__epv, 1);
-
-	epv->view_activate	 = impl_GNOME_View_view_activate;
-	epv->do_verb		 = impl_GNOME_View_do_verb;
-	epv->reactivate_and_undo = impl_GNOME_View_reactivate_and_undo;
-	epv->set_zoom_factor	 = impl_GNOME_View_set_zoom_factor;
+	if (duplicate) {
+		epv = g_new0 (POA_GNOME_View__epv, 1);
+		memcpy(epv, &view_epv, sizeof(view_epv));
+	} else
+		epv = &view_epv;
 
 	return epv;
 }
@@ -233,9 +239,9 @@ gnome_view_get_epv (void)
 static void
 init_view_corba_class (void)
 {
-	gnome_view_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_view_vepv.GNOME_Control_epv = gnome_control_get_epv ();
-	gnome_view_vepv.GNOME_View_epv	  = gnome_view_get_epv ();
+	gnome_view_vepv.GNOME_Unknown_epv = gnome_object_get_epv (FALSE);
+	gnome_view_vepv.GNOME_Control_epv = gnome_control_get_epv (FALSE);
+	gnome_view_vepv.GNOME_View_epv	  = gnome_view_get_epv (FALSE);
 }
 
 static void 

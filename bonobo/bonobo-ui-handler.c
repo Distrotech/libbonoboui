@@ -7646,56 +7646,63 @@ gnome_ui_handler_toolbar_radio_set_state (GnomeUIHandler *uih, char *path, gbool
  * gnome_ui_handler_get_epv:
  */
 POA_GNOME_UIHandler__epv *
-gnome_ui_handler_get_epv (void)
+gnome_ui_handler_get_epv (gboolean duplicate)
 {
 	POA_GNOME_UIHandler__epv *epv;
+	static POA_GNOME_UIHandler__epv uih_epv = {
+		NULL,
 
-	epv = g_new0 (POA_GNOME_UIHandler__epv, 1);
+		/* General server management. */
+		impl_register_containee,
+		impl_unregister_containee,
+		impl_get_toplevel,
 
-	/* General server management. */
-	epv->register_containee = impl_register_containee;
-	epv->unregister_containee = impl_unregister_containee;
-	epv->get_toplevel = impl_get_toplevel;
-
-	/* Menu management. */
-	epv->menu_create = impl_menu_create;
-	epv->menu_remove = impl_menu_remove;
-	epv->menu_fetch  = impl_menu_fetch;
-	epv->menu_get_children = impl_menu_get_children;
-	epv->menu_get_pos = impl_menu_get_pos;
-	epv->menu_set_sensitivity = impl_menu_set_sensitivity;
-	epv->menu_get_sensitivity = impl_menu_get_sensitivity;
-	epv->menu_set_label  = impl_menu_set_label;
-	epv->menu_get_label  = impl_menu_get_label;
-	epv->menu_set_hint   = impl_menu_set_hint;
-	epv->menu_get_hint   = impl_menu_get_hint;
-	epv->menu_set_pixmap = impl_menu_set_pixmap;
-	epv->menu_get_pixmap = impl_menu_get_pixmap;
-	epv->menu_set_accel  = impl_menu_set_accel;
-	epv->menu_get_accel  = impl_menu_get_accel;
-	epv->menu_set_toggle_state = impl_menu_set_toggle_state;
-	epv->menu_get_toggle_state = impl_menu_get_toggle_state;
+		/* Menu management. */
+		impl_menu_create,
+		impl_menu_remove,
+		impl_menu_fetch,
+		impl_menu_get_children,
+		impl_menu_get_pos,
+		impl_menu_set_sensitivity,
+		impl_menu_get_sensitivity,
+		impl_menu_set_label,
+		impl_menu_get_label,
+		impl_menu_set_hint,
+		impl_menu_get_hint,
+		impl_menu_set_pixmap,
+		impl_menu_get_pixmap,
+		impl_menu_set_accel,
+		impl_menu_get_accel,
+		impl_menu_set_toggle_state,
+		impl_menu_get_toggle_state,
 	
-	/* Menu notification. */
-	epv->menu_activated  = impl_menu_activated;
-	epv->menu_removed    = impl_menu_removed;
-	epv->menu_overridden = impl_menu_overridden;
-	epv->menu_reinstated = impl_menu_reinstated;
+		/* Menu notification. */
+		impl_menu_activated,
+		impl_menu_removed,
+		impl_menu_overridden,
+		impl_menu_reinstated,
 
 	/* Toolbar management. */
-	epv->toolbar_create = impl_toolbar_create;
-	epv->toolbar_remove = impl_toolbar_remove;
-	epv->toolbar_get_pos     = impl_toolbar_get_pos;
-	epv->toolbar_set_sensitivity = impl_toolbar_set_sensitivity;
-	epv->toolbar_get_sensitivity = impl_toolbar_get_sensitivity;
-	epv->toolbar_remove_item = impl_toolbar_remove_item;
-	epv->toolbar_create_item = impl_toolbar_create_item;
+		impl_toolbar_create,
+		impl_toolbar_remove,
+		impl_toolbar_get_pos,
+		impl_toolbar_set_sensitivity,
+		impl_toolbar_get_sensitivity,
+		impl_toolbar_remove_item,
+		impl_toolbar_create_item,
 
-	/* Toolbar notification. */
-	epv->toolbar_activated  = impl_toolbar_activated;
-	epv->toolbar_removed    = impl_toolbar_removed;
-	epv->toolbar_reinstated = impl_toolbar_reinstated;
-	epv->toolbar_overridden = impl_toolbar_overridden;
+		/* Toolbar notification. */
+		impl_toolbar_activated,
+		impl_toolbar_removed,
+		impl_toolbar_reinstated,
+		impl_toolbar_overridden
+	};
+
+	if(duplicate) {
+		epv = g_new0 (POA_GNOME_UIHandler__epv, 1);
+		memcpy(epv, &uih_epv, sizeof(uih_epv));
+	} else
+		epv = &uih_epv;
 
 	return epv;
 }
@@ -7704,6 +7711,6 @@ static void
 init_ui_handler_corba_class (void)
 {
 	/* Setup the vector of epvs */
-	gnome_ui_handler_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_ui_handler_vepv.GNOME_UIHandler_epv = gnome_ui_handler_get_epv ();
+	gnome_ui_handler_vepv.GNOME_Unknown_epv = gnome_object_get_epv (FALSE);
+	gnome_ui_handler_vepv.GNOME_UIHandler_epv = gnome_ui_handler_get_epv (FALSE);
 }

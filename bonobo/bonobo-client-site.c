@@ -119,16 +119,22 @@ default_save_object (GnomeClientSite *cs, GNOME_Persist_Status *status)
  * gnome_client_site_get_epv:
  *
  */
+static POA_GNOME_ClientSite__epv cs_epv = {
+	NULL,
+	&impl_GNOME_client_site_get_container,
+	&impl_GNOME_client_site_show_window,
+	&impl_GNOME_client_site_save_object
+};
 POA_GNOME_ClientSite__epv *
-gnome_client_site_get_epv (void)
+gnome_client_site_get_epv (gboolean duplicate)
 {
 	POA_GNOME_ClientSite__epv *epv;
 
-	epv = g_new0 (POA_GNOME_ClientSite__epv, 1);
-
-	epv->get_container = impl_GNOME_client_site_get_container;
-	epv->show_window   = impl_GNOME_client_site_show_window;
-	epv->save_object   = impl_GNOME_client_site_save_object;
+	if(duplicate) {
+		epv = g_new0 (POA_GNOME_ClientSite__epv, 1);
+		memcpy(epv, &cs_epv, sizeof(cs_epv));
+	} else
+		epv = &cs_epv;
 
 	return epv;
 }
@@ -136,8 +142,8 @@ gnome_client_site_get_epv (void)
 static void
 init_client_site_corba_class ()
 {
-	gnome_client_site_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_client_site_vepv.GNOME_ClientSite_epv = gnome_client_site_get_epv ();
+	gnome_client_site_vepv.GNOME_Unknown_epv = gnome_object_get_epv (FALSE);
+	gnome_client_site_vepv.GNOME_ClientSite_epv = gnome_client_site_get_epv (FALSE);
 }
 
 static void

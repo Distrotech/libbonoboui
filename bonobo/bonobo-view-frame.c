@@ -247,16 +247,22 @@ gnome_view_frame_destroy (GtkObject *object)
  * gnome_view_frame_get_epv:
  */
 POA_GNOME_ViewFrame__epv *
-gnome_view_frame_get_epv (void)
+gnome_view_frame_get_epv (gboolean duplicate)
 {
 	POA_GNOME_ViewFrame__epv *epv;
+	static POA_GNOME_ViewFrame__epv vf_epv = {
+		NULL,
+		impl_GNOME_ViewFrame_get_client_site,
+		impl_GNOME_ViewFrame_get_ui_handler,
+		impl_GNOME_ViewFrame_view_activated,
+		impl_GNOME_ViewFrame_view_deactivate_and_undo
+	};
 
-	epv = g_new0 (POA_GNOME_ViewFrame__epv, 1);
-
-	epv->get_client_site	 = impl_GNOME_ViewFrame_get_client_site;
-	epv->get_ui_handler	 = impl_GNOME_ViewFrame_get_ui_handler;
-	epv->view_activated	 = impl_GNOME_ViewFrame_view_activated;
-	epv->deactivate_and_undo = impl_GNOME_ViewFrame_view_deactivate_and_undo;
+	if(duplicate) {
+		epv = g_new0 (POA_GNOME_ViewFrame__epv, 1);
+		memcpy(epv, &vf_epv, sizeof(vf_epv));
+	} else
+		epv = &vf_epv;
 
 	return epv;
 }
@@ -265,9 +271,9 @@ static void
 init_view_frame_corba_class (void)
 {
 	/* Setup the vector of epvs */
-	gnome_view_frame_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_view_frame_vepv.GNOME_ControlFrame_epv = gnome_control_frame_get_epv ();
-	gnome_view_frame_vepv.GNOME_ViewFrame_epv = gnome_view_frame_get_epv ();
+	gnome_view_frame_vepv.GNOME_Unknown_epv = gnome_object_get_epv (FALSE);
+	gnome_view_frame_vepv.GNOME_ControlFrame_epv = gnome_control_frame_get_epv (FALSE);
+	gnome_view_frame_vepv.GNOME_ViewFrame_epv = gnome_view_frame_get_epv (FALSE);
 }
 
 static void

@@ -38,7 +38,7 @@ void                gnome_desktop_window_control   (GnomeObject *object,
 						    GtkWindow *win);
 GNOME_Desktop_Window gnome_desktop_window_corba_object_create (GnomeObject *object);
 
-POA_GNOME_Desktop_Window__epv *gnome_desktop_window_get_epv   (void);
+POA_GNOME_Desktop_Window__epv *gnome_desktop_window_get_epv   (gboolean duplicate);
 
 /* CORBA default vector methods we provide */
 extern POA_GNOME_Desktop_Window__vepv gnome_desktop_window_vepv;
