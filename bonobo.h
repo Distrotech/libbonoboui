@@ -12,6 +12,7 @@
 #include <bonobo/gnome-bind-context.h>
 
 #include <bonobo/gnome-moniker.h>
+#include <bonobo/gnome-moniker-client.h>
 #include <bonobo/gnome-file-moniker.h>
 #include <bonobo/gnome-item-moniker.h>
 #include <bonobo/gnome-composite-moniker.h>
