@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-11-05 10:03+1100\n"
-"PO-Revision-Date: 2001-10-21 20:06+0200\n"
+"POT-Creation-Date: 2001-11-18 23:38+0100\n"
+"PO-Revision-Date: 2001-11-19 00:46+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -117,6 +117,54 @@ msgstr "Prispôso_bi»"
 msgid "Customize the toolbar"
 msgstr "Prispôsobi» li¹tu nástrojov"
 
+#: bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "Priblí¾enie"
+
+#: bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "Uhol zväè¹enia"
+
+#: bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "Minimálne priblí¾enie"
+
+#: bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "Minimálny uhol zväè¹enia"
+
+#: bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "Maximálne priblí¾enie"
+
+#: bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "Maximálny uhol zväè¹enia"
+
+#: bonobo/bonobo-zoomable.c:353
+msgid "Has a minumum Zoom level"
+msgstr "Má minimálne priblí¾enie"
+
+#: bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "Èi máme platné minimálne zväè¹enie"
+
+#: bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "Má maximálne priblí¾enie"
+
+#: bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "Èi máme platné maximálne zväè¹enie"
+
+#: bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "Je spojitý"
+
+#: bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "Èi budeme zväè¹ova» spojito (nie skokom)"
+
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
 msgstr "Toto nerobí niè, je to len uká¾ka."
@@ -134,7 +182,7 @@ msgstr "Gnome Ahoj"
 msgid "Hello, World!"
 msgstr "Ahoj, svet!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:267
 msgid "Cannot init libbonoboui code"
 msgstr "Nemô¾em inicializova» kód libbonoboui"
 
