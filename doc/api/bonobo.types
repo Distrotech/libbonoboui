@@ -6,7 +6,6 @@ bonobo_client_site_get_type
 bonobo_control_frame_get_type
 bonobo_control_get_type
 bonobo_desktop_window_get_type
-bonobo_embeddable_factory_get_type
 bonobo_embeddable_get_type
 bonobo_generic_factory_get_type
 bonobo_item_container_get_type
@@ -18,7 +17,6 @@ bonobo_persist_get_type
 bonobo_persist_stream_get_type
 bonobo_plug_get_type
 bonobo_progressive_data_sink_get_type
-bonobo_property_listener_get_type
 bonobo_selector_get_type
 bonobo_socket_get_type
 bonobo_storage_get_type

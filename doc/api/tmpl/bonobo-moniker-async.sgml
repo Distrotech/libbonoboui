@@ -2,11 +2,15 @@
 bonobo-moniker-async
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Asynchronous moniker maniplulation methods
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+These methods complement the standard moniker construction
+and resolution methods, but in addition are asynchronous,
+allowing the operation to timeout and giving control back
+to the main process which can continue working while a
+( potentialy slow ) moniker operation occurs.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

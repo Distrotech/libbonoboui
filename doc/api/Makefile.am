@@ -15,7 +15,6 @@ LDFLAGS="`gnome-config --libs bonobox bonobox_print`"
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
 tmpl_sources = 					\
-        tmpl/bonobo-activation-context.sgml	\
         tmpl/bonobo-arg.sgml			\
         tmpl/bonobo-canvas-component.sgml	\
         tmpl/bonobo-canvas-item.sgml		\
@@ -110,7 +109,6 @@ scan:
 	&& env CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) \
 		 gtkdoc-scanobj --module=$(DOC_MODULE) \
 	&& gtkdoc-scan --module=$(DOC_MODULE) 		\
-		../../bonobo/bonobo-activation-context.h	\
 		../../bonobo/bonobo-arg.h			\
 		../../bonobo/bonobo-canvas-component.h		\
 		../../bonobo/bonobo-canvas-item.h		\

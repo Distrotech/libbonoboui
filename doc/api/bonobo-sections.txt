@@ -626,21 +626,6 @@ BonoboPropertyBagPrivate
 </SECTION>
 
 <SECTION>
-<FILE>bonobo-property-listener</FILE>
-BonoboPropertyListener
-BONOBO_PROPERTY_LISTENER_TYPE
-BONOBO_PROPERTY_LISTENER
-BONOBO_PROPERTY_LISTENER_CLASS
-BONOBO_IS_PROPERTY_LISTENER
-BONOBO_IS_PROPERTY_LISTENER_CLASS
-BonoboPropertyListenerClass
-bonobo_property_listener_get_epv
-bonobo_property_listener_new
-<SUBSECTION Standard>
-bonobo_property_listener_get_type
-</SECTION>
-
-<SECTION>
 <FILE>bonobo-property-types</FILE>
 bonobo_property_marshal_boolean
 bonobo_property_marshal_string
@@ -1376,12 +1361,3 @@ bonobo_context_add
 bonobo_context_get
 <SUBSECTION Standard>
 </SECTION>
-
-<SECTION>
-<FILE>bonobo-activation-context</FILE>
-bonobo_activation_context_new
-<SUBSECTION Standard>
-BonoboActivationContextPrivate
-</SECTION>
-
-

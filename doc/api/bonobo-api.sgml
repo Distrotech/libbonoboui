@@ -1,5 +1,4 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
-<!entity bonobo-activation-context SYSTEM "sgml/bonobo-activation-context.sgml">
 <!entity bonobo-arg SYSTEM "sgml/bonobo-arg.sgml">
 <!entity bonobo-canvas-component SYSTEM "sgml/bonobo-canvas-component.sgml">
 <!entity bonobo-canvas-item SYSTEM "sgml/bonobo-canvas-item.sgml">
@@ -9,8 +8,6 @@
 <!entity bonobo-control-frame SYSTEM "sgml/bonobo-control-frame.sgml">
 <!entity bonobo-control SYSTEM "sgml/bonobo-control.sgml">
 <!entity bonobo-desktop-window SYSTEM "sgml/bonobo-desktop-window.sgml">
-<!entity bonobo-embeddable-factory SYSTEM "sgml/bonobo-embeddable-factory.sgml">
-<!entity bonobo-embeddable-factory SYSTEM "sgml/bonobo-embeddable-factory.sgml">
 <!entity bonobo-embeddable SYSTEM "sgml/bonobo-embeddable.sgml">
 <!entity bonobo-event-source SYSTEM "sgml/bonobo-event-source.sgml">
 <!entity bonobo-exception SYSTEM "sgml/bonobo-exception.sgml">
@@ -37,7 +34,6 @@
 <!entity bonobo-property-bag-client SYSTEM "sgml/bonobo-property-bag-client.sgml">
 <!entity bonobo-property-bag-xml SYSTEM "sgml/bonobo-property-bag-xml.sgml">
 <!entity bonobo-property-control SYSTEM "sgml/bonobo-property-control.sgml">
-<!entity bonobo-property-listener SYSTEM "sgml/bonobo-property-listener.sgml">
 <!entity bonobo-property SYSTEM "sgml/bonobo-property.sgml">
 <!entity bonobo-property-types SYSTEM "sgml/bonobo-property-types.sgml">
 <!entity bonobo-selector SYSTEM "sgml/bonobo-selector.sgml">
@@ -83,7 +79,7 @@
       <sect1 id="bonobo-object-activation">
         <title>Object Activation and Lifecycle</title>
           &bonobo-context;
-          &bonobo-activation-context;
+          &bonobo-moniker;
           &bonobo-moniker-util;
           &bonobo-moniker-async;
           &bonobo-object-client;
@@ -98,7 +94,6 @@
   	  &bonobo-property-types;
   	  &bonobo-property-bag-client;
   	  &bonobo-arg;
-  	  &bonobo-property-listener;
   	  &bonobo-property-bag-xml;
           &bonobo-transient;
       </sect1>
