@@ -1829,7 +1829,12 @@ keybinding_compare_fn (gconstpointer a,
 static void
 update_keybindings (BonoboWinPrivate *priv, BonoboUINode *node)
 {
-	BonoboUINode *l;
+	BonoboUINode    *l;
+	BonoboUIXmlData *data;
+
+	data = bonobo_ui_xml_get_data (priv->tree, node);
+	if (!data->dirty)
+		return;
 
 	g_hash_table_foreach_remove (priv->keybindings, keybindings_free, NULL);
 
@@ -1853,14 +1858,21 @@ update_keybindings (BonoboWinPrivate *priv, BonoboUINode *node)
 
 		g_hash_table_insert (priv->keybindings, binding, binding);
 	}
+
+	bonobo_ui_xml_clean (priv->tree, node);
 }
 
 static void
 update_status (BonoboWinPrivate *priv, BonoboUINode *node)
 {
-	BonoboUINode *l;
-	char *txt;
-	GtkWidget *item = GTK_WIDGET (priv->status);
+	char            *txt;
+	GtkWidget       *item = GTK_WIDGET (priv->status);
+	BonoboUINode    *l;
+	BonoboUIXmlData *data;
+
+	data = bonobo_ui_xml_get_data (priv->tree, node);
+	if (!data->dirty)
+		return;
 
 	container_destroy_siblings (
 		priv->tree, GTK_WIDGET (priv->status),
@@ -1928,6 +1940,8 @@ update_status (BonoboWinPrivate *priv, BonoboUINode *node)
 	} else {
 		gtk_widget_show (item);
 	}
+
+	bonobo_ui_xml_clean (priv->tree, node);
 }
 
 typedef enum {

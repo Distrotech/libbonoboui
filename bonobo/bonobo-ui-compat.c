@@ -902,7 +902,7 @@ static BonoboUINode *
 compat_toolbar_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv, 
 					   GnomeUIInfo            *uii,
 					   void                   *data,
-					   BonoboUINode                *parent)
+					   BonoboUINode           *parent)
 {
 	BonoboUINode *node;
 	char    *verb;
@@ -927,6 +927,11 @@ compat_toolbar_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 		g_warning ("FIXME: radioitems ...");
 
 		return NULL;
+
+	case GNOME_APP_UI_SEPARATOR:
+		node = bonobo_ui_node_new ("toolitem");
+		break;
+
 	default:
 		g_warning ("Unknown UIInfo Type: %d", uii->type);
 		return NULL;
@@ -1004,7 +1009,7 @@ bonobo_ui_handler_toolbar_add_list (BonoboUIHandler *uih, const char *parent_pat
 
 	g_return_if_fail (priv != NULL);
 
-	xml_path = make_path ("", parent_path, TRUE);
+	xml_path = make_path ("", parent_path, FALSE);
 
 	if (!parent) {
 		g_warning ("Path '%s' does not exist", xml_path);
