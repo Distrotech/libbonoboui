@@ -490,23 +490,23 @@ impl_Bonobo_Control_focus (PortableServer_Servant servant,
 		break;
 
 	case Bonobo_Control_TAB_BACKWARD:
-		corba_direction = GTK_DIR_TAB_BACKWARD;
+		direction = GTK_DIR_TAB_BACKWARD;
 		break;
 
 	case Bonobo_Control_UP:
-		corba_direction = GTK_DIR_UP;
+		direction = GTK_DIR_UP;
 		break;
 
 	case Bonobo_Control_DOWN:
-		corba_direction = GTK_DIR_DOWN;
+		direction = GTK_DIR_DOWN;
 		break;
 
 	case Bonobo_Control_LEFT:
-		corba_direction = GTK_DIR_LEFT;
+		direction = GTK_DIR_LEFT;
 		break;
 
 	case Bonobo_Control_RIGHT:
-		corba_direction = GTK_DIR_RIGHT;
+		direction = GTK_DIR_RIGHT;
 		break;
 
 	default:
