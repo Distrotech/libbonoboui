@@ -3,7 +3,7 @@
  * bonobo-selector-widget.c: Bonobo Component Selector widget
  *
  * Authors:
- *   Michael Meeks    (michael@helixcode.com)
+ *   Michael Meeks    (michael@ximian.com)
  *   Richard Hestilow (hestgray@ionet.net)
  *   Miguel de Icaza  (miguel@kernel.org)
  *   Martin Baulig    (martin@
@@ -11,7 +11,7 @@
  *   Havoc Pennington (hp@redhat.com)
  *   Dietmar Maurer   (dietmar@maurer-it.com)
  *
- * Copyright 1999, 2000 Richard Hestilow, Helix Code, Inc,
+ * Copyright 1999, 2001 Richard Hestilow, Ximian, Inc,
  *                      Martin Baulig, Anders Carlsson,
  *                      Havoc Pennigton, Dietmar Maurer
  */
@@ -20,8 +20,8 @@
 #include <glib.h>
 #include <bonobo/bonobo-i18n.h>
 #include <libgnome/gnome-preferences.h>
+#include <libbonoboui.h>
 #include <bonobo/bonobo-selector-widget.h>
-#include <bonobo/bonobo-object-directory.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "bonobo-insert-component.xpm"
@@ -40,23 +40,111 @@ static guint signals [LAST_SIGNAL] = { 0 };
 struct _BonoboSelectorWidgetPrivate {
 	GtkWidget    *clist;
 	GtkWidget    *desc_label;
-	GList        *servers;
 };
 
-static gint
-server_list_compare (gconstpointer a, gconstpointer b)
+static char *
+build_id_query_fragment (const char **required_ids)
 {
-	return strcmp (bonobo_directory_get_server_info_name ((ODServerInfo *)a),
-		       bonobo_directory_get_server_info_name ((ODServerInfo *)b));
+        const char **required_ids_iter;
+	const char **query_components_iter;
+        char       **query_components;
+	char        *query;
+        guint        n_required = 0;
 
+        /* We need to build a query up from the required_ids */
+        required_ids_iter = required_ids;
+
+        while (required_ids && *required_ids_iter) {
+                ++n_required;
+                ++required_ids_iter;
+        }
+
+        query_components = g_new0 (gchar*, n_required + 1);
+
+        query_components_iter = (const gchar **) query_components;
+        required_ids_iter = required_ids;
+
+        while (*required_ids_iter) {
+                *query_components_iter = g_strconcat ("repo_ids.has('",
+                                                      *required_ids_iter,
+                                                      "')",
+                                                      NULL);
+                ++query_components_iter;
+                ++required_ids_iter;
+        }
+
+        query = g_strjoinv (" AND ", query_components);
+
+        g_strfreev (query_components);
+
+	return query;
 }
 
-static GList *
-get_filtered_objects (const gchar **interfaces_required)
+static void
+get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
+		      const gchar **required_ids)
 {
-	return g_list_sort (
-		bonobo_directory_get_server_list (interfaces_required),
-		server_list_compare);
+        guint               i, j;
+        gchar              *query;
+        CORBA_Environment   ev;
+        OAF_ServerInfoList *servers;
+        
+        g_return_if_fail (required_ids != NULL);
+        g_return_if_fail (*required_ids != NULL);
+
+	query = build_id_query_fragment (required_ids);
+
+	/* FIXME: sorting ? can we get oaf to do it ? - would be nice. */
+
+        CORBA_exception_init (&ev);
+        servers = oaf_query (query, NULL, &ev);
+        g_free (query);
+        CORBA_exception_free (&ev);
+
+        if (!servers)
+                return;
+
+	for (i = 0; i < servers->_length; i++) {
+                OAF_ServerInfo *oafinfo = &servers->_buffer[i];
+		gchar *name = NULL, *desc = NULL;
+		char *text [4];
+
+		for (j = 0; j < oafinfo->props._length; j++) {
+			if (oafinfo->props._buffer[j].v._d != OAF_P_STRING)
+				continue;
+
+			if (strcmp (oafinfo->props._buffer[j].name, "name") == 0)
+				name = oafinfo->props._buffer[j].v._u.value_string;
+
+			else if (strcmp (oafinfo->props._buffer[j].name, "description") == 0)
+				desc = oafinfo->props._buffer[j].v._u.value_string;
+
+			/* FIXME: internationalize here */
+		}
+
+		/*
+		 * If no name attribute exists, use the description attribute.
+		 *  If no description attribute exists, use the name attribute.
+		 *  If neither a description attribute nor a name attribute exists, use the oafiid
+		 */
+		if (!name && !desc)
+			name = desc = oafinfo->iid;
+
+		if (!name)
+			name = desc;
+
+		if (!desc)
+			desc = name;
+
+		text [0] = name;
+		text [1] = oafinfo->iid;
+		text [2] = desc;
+		text [3] = NULL;
+			
+		gtk_clist_append (GTK_CLIST (priv->clist), (gchar **) text);
+        }
+
+        CORBA_free (servers);
 }
 
 static void
@@ -260,7 +348,6 @@ static void
 impl_set_interfaces (BonoboSelectorWidget *widget,
 		     const char           **required_interfaces)
 {
-	GList *servers;
 	BonoboSelectorWidgetPrivate *priv;
 	
 	g_return_if_fail (widget != NULL);
@@ -273,23 +360,7 @@ impl_set_interfaces (BonoboSelectorWidget *widget,
 
 	gtk_clist_clear (GTK_CLIST (priv->clist));
 
-	servers = get_filtered_objects (required_interfaces);
-	
-	if (servers) {
-		GList *l;
-
-		for (l = servers; l; l = l->next) {
-			const gchar *text [4];
-
-			text [0] = bonobo_directory_get_server_info_name (l->data);
-			text [1] = bonobo_directory_get_server_info_id   (l->data);
-			text [2] = bonobo_directory_get_server_info_description (l->data);
-			text [3] = NULL;
-			
-			gtk_clist_append (GTK_CLIST (priv->clist), (gchar **) text);
-		}
-		bonobo_directory_free_server_list (servers);
-	}
+	get_filtered_objects (priv, required_interfaces);
 
 	gtk_clist_thaw (GTK_CLIST (priv->clist));
 }

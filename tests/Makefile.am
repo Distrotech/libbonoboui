@@ -1,7 +1,7 @@
 noinst_PROGRAMS =		\
 	test-ui			\
 	test-toolbar		\
-	selector_test		\
+	test-selector		\
 	test-focus		\
 	test-sensitivity	\
 	test-reparent		\
@@ -27,7 +27,7 @@ test_focus_SOURCES = test-focus.c
 
 test_toolbar_SOURCES = test-toolbar.c
 
-selector_test_SOURCES =	selector_test.c
+test_selector_SOURCES =	test-selector.c
 
 test_sensitivity_SOURCES = test-sensitivity.c
 

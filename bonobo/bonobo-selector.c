@@ -17,7 +17,7 @@
  */
 #include <config.h>
 #include <string.h> /* strcmp */
-#include <bonobo/bonobo-object-directory.h>
+#include <libbonoboui.h>
 #include <bonobo/bonobo-selector.h>
 
 #define DEFAULT_INTERFACE "IDL:Bonobo/Embeddable:1.0"

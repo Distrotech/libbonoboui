@@ -1,3 +1,13 @@
+2001-07-18  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-selector-widget.c (server_list_compare): kill.
+	(get_filtered_objects): impl.
+	(build_id_query_fragment): impl. - essentialy use oaf directly,
+	thus removing bonobo_directory_* permanantly.
+
+	* tests/Makefile.am: rename selector_test to conform to the
+	grand plan.
+
 2001-07-19  Martin Baulig  <baulig@suse.de>
 
 	* bonobo/bonobo-ui-engine.[ch]: Ported to GObject.
