@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-07-06 20:33+0200\n"
-"PO-Revision-Date: 2001-07-06 21:02+0200\n"
+"POT-Creation-Date: 2001-07-09 00:18+0200\n"
+"PO-Revision-Date: 2001-07-09 00:19+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -135,10 +135,18 @@ msgstr "Kunde inte starta Embeddable."
 msgid "Could not launch Control."
 msgstr "Kunde inte starta kontroll."
 
-#: tests/test-container.c:861
+#: tests/test-container.c:860
 msgid "Can not bonobo_init"
 msgstr "Kan inte utföra bonobo_init"
 
-#: tests/test-focus.c:31 tests/test-sensitivity.c:197 tests/test-toolbar.c:50 tests/test-ui.c:225
+#: tests/test-focus.c:31 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Kan inte utföra bonobo_ui_init"
+
+#: tests/test-ui.c:228
+msgid "Cannot init bonobo"
+msgstr "Kan inte initiera bonobo"
+
+#: tests/test-ui.c:232
+msgid "Cannot bonobo UI code"
+msgstr "Kan inte bonobo-UI-kod"
