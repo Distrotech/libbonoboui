@@ -22,7 +22,7 @@ bonobo_libs = 			\
 
 lib_LTLIBRARIES = libbonobo.la
 noinst_PROGRAMS = object_test test-container sample-server \
-			test-container-autoload
+			test-container-autoload selector_test
 
 CORBA_SOURCE =			\
 	bonobo.h		\
@@ -51,6 +51,7 @@ libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
 	gtk-interfaces.c		\
 	gnome-bind-context.c		\
+	gnome-bonobo-selector.c		\
 	gnome-client-site.c		\
 	gnome-component.c		\
 	gnome-component-client.c	\
@@ -83,6 +84,7 @@ libbonoboinclude_HEADERS =		\
 	gtk-interfaces.h		\
 	gnome-bind-context.h		\
 	gnome-bonobo.h			\
+	gnome-bonobo-selector.h		\
 	gnome-client-site.h		\
 	gnome-component.h		\
 	gnome-component-client.h	\
@@ -128,6 +130,11 @@ sample_server_SOURCES =		\
 	sample-server.c
 
 sample_server_LDADD = $(bonobo_libs)
+
+selector_test_SOURCES =		\
+	selector_test.c
+	
+selector_test_LDADD = $(bonobo_libs)
 
 BUILT_SOURCES=$(CORBA_SOURCE)
 

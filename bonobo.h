@@ -41,4 +41,5 @@
 
 #include <bonobo/gnome-storage.h>
 
+#include <bonobo/gnome-bonobo-selector.h>
 
