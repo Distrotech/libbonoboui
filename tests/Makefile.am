@@ -67,4 +67,4 @@ TESTS_ENVIRONMENT =					\
 	LD_LIBRARY_PATH=$(top_builddir)/bonobo/.libs/	\
 	BONOBO_PLUGIN_PATH=$(top_builddir)/storage-modules/.libs
 
-TESTS = test-storage
+TESTS = test-storage test-any
