@@ -13,130 +13,132 @@
 #include <config.h>
 #endif
 
+#include <popt.h>
 #include <glib.h>
-#include <gnome.h>
 #include <liboaf/liboaf.h>
 #include <bonobo.h>
 
-static void display_as_interface (const char *moniker, CORBA_Environment *ev);
-static void display_as_stream (const char *moniker, CORBA_Environment *ev);
-static void display_as_storage_file_list (const char *moniker, CORBA_Environment *ev);
-static void display_as_html (const char *moniker, CORBA_Environment *ev);
-static void display_as_control (const char *moniker, CORBA_Environment *ev);
+#define STD_SIG (const char *moniker, CORBA_Environment *ev)
+
+static void display_as_interface         STD_SIG;
+static void display_as_stream            STD_SIG;
+static void display_as_storage_file_list STD_SIG;
+static void display_as_html              STD_SIG;
+static void display_as_control           STD_SIG;
 
 typedef enum {
-    AS_NONE = 0,
-    AS_INTERFACE,
-    AS_STREAM,
-    AS_STORAGE_FILE_LIST,
-    AS_HTML,
-    AS_CONTROL
+	AS_NONE = 0,
+	AS_INTERFACE,
+	AS_STREAM,
+	AS_STORAGE_FILE_LIST,
+	AS_HTML,
+	AS_CONTROL
 } MonikerTestDisplayAs;
 
 typedef void (*MonikerDisplayFunction) (const char *moniker, CORBA_Environment *ev);
 
 typedef struct {
-    MonikerTestDisplayAs   disp_as;
-    MonikerDisplayFunction func;
+	MonikerTestDisplayAs   disp_as;
+	MonikerDisplayFunction func;
 } MonikerTestDisplayers;
 
 MonikerTestDisplayers displayers[] = {
-    {AS_INTERFACE, display_as_interface},
-    {AS_STREAM, display_as_stream},
-    {AS_STORAGE_FILE_LIST, display_as_storage_file_list},
-    {AS_HTML, display_as_html},
-    {AS_CONTROL, display_as_control},
-    {0}
+	{ AS_INTERFACE, display_as_interface },
+	{ AS_STREAM, display_as_stream },
+	{ AS_STORAGE_FILE_LIST, display_as_storage_file_list },
+	{ AS_HTML, display_as_html },
+	{ AS_CONTROL, display_as_control },
+	{0 }
 };
 
 typedef struct {
-    gchar *requested_interface;
-    gchar *requested_moniker;
-    MonikerTestDisplayAs display_as;
-    gchar *moniker;
+	gchar *requested_interface;
+	gchar *requested_moniker;
+	MonikerTestDisplayAs display_as;
+	gchar *moniker;
 
-    int ps, pr, pc, ph;
+	int ps, pr, pc, ph;
 } MonikerTestOptions;
 
 MonikerTestOptions global_mto = { NULL };
 
 struct poptOption moniker_test_options [] = {
-    {"interface", 'i', POPT_ARG_STRING, &global_mto.requested_interface, 'i', "request specific interface", "interface"},
-    {"stream",    's', POPT_ARG_NONE, &global_mto.ps, 's', "request Bonobo/Stream", NULL },
-    {"storage",   'r', POPT_ARG_NONE, &global_mto.pr, 'r', "request Bonobo/Storage", NULL },
-    {"control",   'c', POPT_ARG_NONE, &global_mto.pc, 'c', "request Bonobo/Control", NULL },
-    {"html",      'h', POPT_ARG_NONE, &global_mto.ph, 'h', "request Bonobo/Stream and display as HTML", NULL },
-    {NULL, 0, 0, NULL, 0, 0}
+	{ "interface", 'i', POPT_ARG_STRING, &global_mto.requested_interface, 'i', "request specific interface", "interface" },
+	{ "stream",    's', POPT_ARG_NONE, &global_mto.ps, 's', "request Bonobo/Stream", NULL },
+	{ "storage",   'r', POPT_ARG_NONE, &global_mto.pr, 'r', "request Bonobo/Storage", NULL },
+	{ "control",   'c', POPT_ARG_NONE, &global_mto.pc, 'c', "request Bonobo/Control", NULL },
+	{ "html",      'h', POPT_ARG_NONE, &global_mto.ph, 'h', "request Bonobo/Stream and display as HTML", NULL },
+	{ NULL, 0, 0, NULL, 0, 0 }
 };
 
 
 static void
 do_moniker_magic (void)
 {
-    CORBA_Environment ev;
-    MonikerTestDisplayers *iter = displayers;
-    CORBA_exception_init (&ev);
+	CORBA_Environment ev;
+	MonikerTestDisplayers *iter = displayers;
+	CORBA_exception_init (&ev);
 
-    while (iter->disp_as) {
-        if (iter->disp_as == global_mto.display_as) {
-            (*iter->func) (global_mto.requested_moniker, &ev);
-            CORBA_exception_free (&ev);
-            return;
-        }
-        iter++;
-    }
+	while (iter->disp_as) {
+		if (iter->disp_as == global_mto.display_as) {
+			(*iter->func) (global_mto.requested_moniker, &ev);
+			CORBA_exception_free (&ev);
+			return;
+		}
+		iter++;
+	}
 
-    g_error ("Didn't find handler!");
+	g_error ("Didn't find handler!");
 }
 
 static void
 display_as_interface (const char *moniker, CORBA_Environment *ev)
 {
-    Bonobo_Unknown the_unknown;
+	Bonobo_Unknown the_unknown;
 
-    the_unknown = bonobo_get_object (moniker, global_mto.requested_interface, ev);
-    if (ev->_major == CORBA_NO_EXCEPTION && the_unknown) {
-        fprintf (stderr, "Requesting interface %s: SUCCESS\n", global_mto.requested_interface);
-        bonobo_object_release_unref (the_unknown, ev);
-        return;
-    }
+	the_unknown = bonobo_get_object (moniker, global_mto.requested_interface, ev);
+	if (ev->_major == CORBA_NO_EXCEPTION && the_unknown) {
+		fprintf (stderr, "Requesting interface %s: SUCCESS\n", global_mto.requested_interface);
+		bonobo_object_release_unref (the_unknown, ev);
+		return;
+	}
 
-    fprintf (stderr, "Requesting interface: %s: EXCEPTION: %s\n",
-             global_mto.requested_interface,
-             ev->_repo_id);
+	fprintf (stderr, "Requesting interface: %s: EXCEPTION: %s\n",
+		 global_mto.requested_interface,
+		 BONOBO_EX_REPOID (ev));
 }
 
 static void
 display_as_stream (const char *moniker, CORBA_Environment *ev)
 {
-    Bonobo_Stream the_stream;
+	Bonobo_Stream the_stream;
 
-    the_stream = bonobo_get_object (moniker, "IDL:Bonobo/Stream:1.0", ev);
-    if (ev->_major != CORBA_NO_EXCEPTION || !the_stream) {
-        g_error ("Couldn't get Bonobo/Stream interface");
-    }
+	the_stream = bonobo_get_object (moniker, "IDL:Bonobo/Stream:1.0", ev);
+	if (ev->_major != CORBA_NO_EXCEPTION || !the_stream) {
+		g_error ("Couldn't get Bonobo/Stream interface");
+	}
 
-    fprintf (stderr, "Writing stream to stdout...\n");
-    do {
-        Bonobo_Stream_iobuf *stream_iobuf;
-        Bonobo_Stream_read (the_stream, 512, &stream_iobuf, ev);
-        if (ev->_major != CORBA_NO_EXCEPTION) {
-            bonobo_object_release_unref (the_stream, ev);
-            g_error ("got exception %s while reading from stream!",
-                     ev->_repo_id);
-        }
+	fprintf (stderr, "Writing stream to stdout...\n");
+	do {
+		Bonobo_Stream_iobuf *stream_iobuf;
+		Bonobo_Stream_read (the_stream, 512, &stream_iobuf, ev);
+		if (ev->_major != CORBA_NO_EXCEPTION) {
+			bonobo_object_release_unref (the_stream, ev);
+			g_error ("got exception %s while reading from stream!",
+				 BONOBO_EX_REPOID (ev));
+		}
 
-        if (stream_iobuf->_length == 0) {
-            CORBA_free (stream_iobuf);
-            bonobo_object_release_unref (the_stream, ev);
-            return;
-        }
+		if (stream_iobuf->_length == 0) {
+			CORBA_free (stream_iobuf);
+			bonobo_object_release_unref (the_stream, ev);
+			return;
+		}
 
-        fwrite (stream_iobuf->_buffer, stream_iobuf->_length, 1,
-                stdout);
+		fwrite (stream_iobuf->_buffer, stream_iobuf->_length, 1,
+			stdout);
 
-	CORBA_free (stream_iobuf);
-    } while (1);
+		CORBA_free (stream_iobuf);
+	} while (1);
 }
 
 static void
@@ -226,23 +228,26 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 int
 main (int argc, char **argv)
 {
-	CORBA_ORB   orb;
+	int nextopt;
 	poptContext ctx = NULL;
-
-	bindtextdomain (PACKAGE, GNOMELOCALEDIR);
-	textdomain (PACKAGE);
 
 	free (malloc (8)); /* -lefence */
 
-	gnomelib_register_popt_table (oaf_popt_options, _("Oaf options"));
+	ctx = poptGetContext ("test-moniker", argc,
+			      (const char **) argv,
+			      moniker_test_options, 0);
 
-	gnome_init_with_popt_table ("moniker-test", "0.0", argc, argv,
-				    moniker_test_options, 0, &ctx);
+	while ((nextopt = poptGetNextOpt (ctx)) > 0)
+		/* do nothing */ ;
 
-	if ((orb = oaf_init (argc, argv)) == NULL)
-		g_error ("Cannot init oaf");
+	if (nextopt != -1) {
+		printf ("Error on option %s: %s.\nRun '%s --help' to "
+			" see a full list of available command line options.\n",
+			poptBadOption (ctx, 0), poptStrerror (nextopt), argv [0]);
+		exit (1);
+	}
 
-	if (bonobo_init (orb, NULL, NULL) == FALSE)
+	if (bonobo_init (&argc, argv) == FALSE)
 		g_error ("Cannot init bonobo");
 
 	if (global_mto.ps + global_mto.pr + global_mto.ph +

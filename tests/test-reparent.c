@@ -8,7 +8,6 @@
  * Copyright (C) 2001 Ximian, Inc.
  */
 
-#include <gnome.h>
 #include <bonobo.h>
 
 gboolean do_remote = FALSE;
@@ -97,13 +96,7 @@ quit_cb (GtkWindow *window, GdkEvent *event, gpointer dummy)
 int
 main (int argc, char **argv)
 {
-	CORBA_ORB orb;
-
-	gnome_init_with_popt_table ("Fun test", "1.0", argc, argv, 
-				    oaf_popt_options, 0, NULL);
-	orb = oaf_init (argc, argv);
-
-	if (bonobo_init (orb, CORBA_OBJECT_NIL, CORBA_OBJECT_NIL) == FALSE) {
+	if (bonobo_init (&argc, argv) == FALSE) {
 		g_error ("Bigger problems than controls not working");
 		exit (0);
 	}

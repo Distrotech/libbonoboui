@@ -3,7 +3,9 @@ noinst_PROGRAMS =		\
 	test-toolbar		\
 	selector_test		\
 	test-focus		\
-	test-sensitivity
+	test-sensitivity	\
+	test-reparent		\
+	test-moniker
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -28,3 +30,7 @@ test_toolbar_SOURCES = test-toolbar.c
 selector_test_SOURCES =	selector_test.c
 
 test_sensitivity_SOURCES = test-sensitivity.c
+
+test_reparent_SOURCES = test-reparent.c
+
+test_moniker_SOURCES = test-moniker.c
