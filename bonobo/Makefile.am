@@ -122,15 +122,10 @@ libbonoboinclude_HEADERS =			\
 	bonobo-ui-container.h            	\
 	bonobo-ui-node.h                 	\
 	bonobo-ui-toolbar-button-item.h  	\
-	bonobo-ui-toolbar-control-item.h  	\
 	bonobo-ui-toolbar-icon.h         	\
 	bonobo-ui-toolbar-item.h		\
-	bonobo-ui-toolbar-popup-item.h		\
-	bonobo-ui-toolbar-separator-item.h	\
 	bonobo-ui-toolbar-toggle-button-item.h	\
-	bonobo-ui-toolbar.h			\
 	bonobo-ui-util.h			\
-	bonobo-ui-xml.c				\
 	bonobo-ui-xml.h				\
 	bonobo-view-frame.h			\
 	bonobo-view.h				\
@@ -139,6 +134,12 @@ libbonoboinclude_HEADERS =			\
 	bonobo-wrapper.h			\
 	bonobo-zoomable.h			\
 	bonobo-zoomable-frame.h
+
+noinst_HEADERS =				\
+	bonobo-ui-toolbar.h			\
+	bonobo-ui-toolbar-control-item.h  	\
+	bonobo-ui-toolbar-popup-item.h		\
+	bonobo-ui-toolbar-separator-item.h
 
 libbonobox_la_SOURCES =				\
 	bonobo-canvas-component.c		\
