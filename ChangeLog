@@ -1,3 +1,12 @@
+Sat Nov 13 01:05:27 2004  Jonathan Blandford  <jrb@redhat.com>
+
+	* bonobo/bonobo-canvas-item.c:
+	* bonobo/bonobo-selector-widget.c:
+	* bonobo/bonobo-selector.c:
+	* bonobo/bonobo-ui-toolbar.c:
+	* bonobo/bonobo-window.c:
+	* tests/test-filesel.c: s/libgnome\/gnome-i18n.h/glib/gi18n.h/g
+
 2004-10-21  Marco Pesenti Gritti  <marco@gnome.org>
 
 	reviewed by: Michael Meeks <michael@ximian.com>
