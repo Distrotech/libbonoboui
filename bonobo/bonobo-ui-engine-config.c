@@ -212,8 +212,10 @@ bonobo_ui_engine_config_hydrate (BonoboUIEngineConfig *config)
 				config, strs [0], strs [1], strs [2]);
 
 		g_strfreev (strs);
+		g_free (argv [i]);
 	}
 
+	g_free (argv);
 	bonobo_ui_engine_thaw (config->priv->engine);
 }
 
