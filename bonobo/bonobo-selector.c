@@ -415,7 +415,6 @@ get_filtered_objects (BonoboSelector *widget)
 {
 	int i = 0;
 	const gchar **inters;
-	GList *objects = NULL;
 	BonoboSelectorPrivate *priv;
 	int n_inters = 0;
 	
@@ -441,9 +440,6 @@ get_filtered_objects (BonoboSelector *widget)
 	/* Free our temporary criteria */
 	if (priv->interfaces_required == NULL)
 		g_free (inters);
-	
-	if (priv->servers == NULL)
-		return NULL;
-	else
-		return objects;
+
+	return priv->servers;
 }
