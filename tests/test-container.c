@@ -49,7 +49,8 @@ typedef struct {
 	BonoboItemContainer *container;
 	GtkWidget *box;
 	Bonobo_View view;
-	BonoboUIHandler *uih;
+	BonoboUIContainer *ui_container;
+	BonoboUIComponent *uic;
 } Application;
 
 static BonoboObjectClient *
@@ -201,8 +202,7 @@ view_activated_cb (BonoboViewFrame *view_frame, gboolean activated)
 }                                                                               
 
 static BonoboViewFrame *
-add_view (GtkWidget *widget, Application *app,
-	  BonoboClientSite *client_site, BonoboObjectClient *server) 
+add_view (Application *app, BonoboClientSite *client_site, BonoboObjectClient *server) 
 {
 	BonoboViewFrame *view_frame;
 	GtkWidget *view_widget;
@@ -228,8 +228,7 @@ add_view (GtkWidget *widget, Application *app,
 } /* add_view */
 
 static BonoboObjectClient *
-add_cmd (GtkWidget *widget, Application *app, char *server_id,
-	 BonoboClientSite **client_site)
+add_cmd (Application *app, char *server_id, BonoboClientSite **client_site)
 {
 	BonoboObjectClient *server;
 	
@@ -239,13 +238,12 @@ add_cmd (GtkWidget *widget, Application *app, char *server_id,
 	if (server == NULL)
 		return NULL;
 
-	add_view (widget, app, *client_site, server);
+	add_view (app, *client_site, server);
 	return server;
 }
 
 static BonoboObjectClient *
-add_cmd_moniker (GtkWidget *widget, Application *app,
-		 Bonobo_Moniker moniker, BonoboClientSite **client_site,
+add_cmd_moniker (Application *app, Bonobo_Moniker moniker, BonoboClientSite **client_site,
 		 CORBA_Environment *ev)
 {
 	BonoboObjectClient *server;
@@ -257,25 +255,28 @@ add_cmd_moniker (GtkWidget *widget, Application *app,
 	if (server == NULL)
 		return NULL;
 
-	add_view (widget, app, *client_site, server);
+	add_view (app, *client_site, server);
 	return server;
 }
 
 static void
-add_demo_cmd (GtkWidget *widget, Application *app)
+verb_AddObject_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
 	BonoboClientSite *client_site;
-	add_cmd (widget, app, server_id, &client_site);
+
+	add_cmd (app, server_id, &client_site);
 }
 
 static void
-add_image_cmd (GtkWidget *widget, Application *app)
+verb_AddImage_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
 	BonoboObjectClient *object;
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
-	object = add_cmd (widget, app, "OAFIID:bonobo_image-x-png:716e8910-656b-4b3b-b5cd-5eda48b71a79",
+	object = add_cmd (app, "OAFIID:bonobo_image-x-png:716e8910-656b-4b3b-b5cd-5eda48b71a79",
 			  &image_client_site);
 
 
@@ -312,14 +313,15 @@ add_image_cmd (GtkWidget *widget, Application *app)
 }
 
 static void
-add_pdf_cmd (GtkWidget *widget, Application *app)
+verb_AddPdf_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
 	BonoboObjectClient *object;
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
 	g_error ("Wrong oafid for pdf");
-	object = add_cmd (widget, app, "bonobo-object:application-x-pdf", &image_client_site);
+	object = add_cmd (app, "bonobo-object:application-x-pdf", &image_client_site);
 
 	if (object == NULL)
 	  {
@@ -356,17 +358,20 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
  * Add a new view for the existing application/x-png Embeddable.
  */
 static void
-add_image_view (GtkWidget *widget, Application *app)
+verb_AddImageView_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
+
 	if (image_png_obj == NULL)
 		return;
 
-	add_view (NULL, app, image_client_site, image_png_obj);
+	add_view (app, image_client_site, image_png_obj);
 } /* add_image_view */
 
 static void
-add_gnumeric_cmd (GtkWidget *widget, Application *app)
+verb_AddGnumeric_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
 	BonoboClientSite *client_site;
 	Bonobo_Moniker    moniker;
 	CORBA_Environment ev;
@@ -376,7 +381,7 @@ add_gnumeric_cmd (GtkWidget *widget, Application *app)
 	moniker = bonobo_moniker_client_new_from_name (
 		"file:/tmp/sales.gnumeric!Sheet1!A1:D1", &ev);
 
-	add_cmd_moniker (widget, app, moniker, &client_site, &ev); 
+	add_cmd_moniker (app, moniker, &client_site, &ev); 
 
 	bonobo_object_release_unref (moniker, &ev);
 
@@ -421,7 +426,7 @@ item_event_handler (GnomeCanvasItem *item, GdkEvent *event)
 }
 
 static void
-do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
+do_add_canvas_cmd (Application *app, gboolean aa)
 {
 	BonoboClientSite *client_site;
 	GtkWidget *canvas, *frame, *sw;
@@ -491,23 +496,28 @@ do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 }
 
 static void
-add_canvas_cmd (GtkWidget *widget, Application *app)
+verb_AddCanvas_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
-	do_add_canvas_cmd (widget, app, FALSE);
+	Application *app = user_data;
+
+	do_add_canvas_cmd (app, FALSE);
 }
 
 static void
-add_canvas_aa_cmd (GtkWidget *widget, Application *app)
+verb_AddCanvasAA_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
-	do_add_canvas_cmd (widget, app, TRUE);
+	Application *app = user_data;
+
+	do_add_canvas_cmd (app, TRUE);
 }
 
 static void
-add_paint_cmd (GtkWidget *widget, Application *app)
+verb_AddPaint_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
 	BonoboObjectClient *object;
 
-	object = add_cmd (widget, app, 
+	object = add_cmd (app, 
 			  "OAFIID:paint_component_simple:9c04da1c-d44c-4041-9991-fed1ed1ed079",
 			  &paint_client_site);
 
@@ -521,12 +531,14 @@ add_paint_cmd (GtkWidget *widget, Application *app)
 }
 
 static void
-add_paint_view (GtkWidget *widget, Application *app)
+verb_AddPaintView_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
+
 	if (paint_obj == NULL)
 		return;
 
-	add_view (NULL, app, paint_client_site, paint_obj);
+	add_view (app, paint_client_site, paint_obj);
 }
 
 /*
@@ -534,13 +546,14 @@ add_paint_view (GtkWidget *widget, Application *app)
  * the text/plain Embeddable.
  */
 static void
-add_text_cmd (GtkWidget *widget, Application *app)
+verb_AddText_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
 	BonoboObjectClient *object;
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
-	object = add_cmd (widget, app,
+	object = add_cmd (app,
 			  "OAFIID:bonobo_text-plain:26e1f6ba-90dd-4783-b304-6122c4b6c821",
 			  &text_client_site);
 
@@ -628,12 +641,14 @@ timeout_next_line (gpointer data)
  * Add a new view for the existing text Embeddable.
  */
 static void
-add_text_view (GtkWidget *widget, Application *app)
+verb_AddTextView_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
+
 	if (text_obj == NULL)
 		return;
 
-	add_view (NULL, app, text_client_site, text_obj);
+	add_view (app, text_client_site, text_obj);
 } /* add_text_view */
 
 /*
@@ -641,7 +656,7 @@ add_text_view (GtkWidget *widget, Application *app)
  * ProgressiveDataSink.
  */
 static void
-send_text_cmd (GtkWidget *widget, Application *app)
+verb_SendText_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
 	Bonobo_ProgressiveDataSink psink;
 	struct progressive_timeout *tmt;
@@ -681,90 +696,84 @@ send_text_cmd (GtkWidget *widget, Application *app)
 } /* send_text_cmd */
 
 static void
-exit_cmd (void)
+verb_Exit_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
 	gtk_main_quit ();
 }
 
-static GnomeUIInfo container_text_plain_menu [] = {
-	GNOMEUIINFO_ITEM_NONE (N_("_Add a new text\\plain component"), NULL,
-			       add_text_cmd),
-	GNOMEUIINFO_ITEM_NONE (
-	N_("_Send progressive data to an existing text\\plain component"),
-			       NULL, send_text_cmd),
-	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new _view to an existing text\\plain component"),
-			       NULL, add_text_view),
-	GNOMEUIINFO_END
+static const char *commands =
+"<commands>\n"
+"	<cmd name=\"AddText\" label=\"_Add a new text/plain component\"/>\n"
+"	<cmd name=\"SendText\" label=\"_Send progressive data to an existing text/plain component\"/>\n"
+"	<cmd name=\"AddTextView\" label=\"Add a new _view to an existing text/plain component\"/>\n"
+"	<cmd name=\"AddPaint\" label=\"_Add a new simple paint component\"/>\n"
+"	<cmd name=\"AddPaintView\" label=\"Add a new _view to an existing paint component\"/>\n"
+"	<cmd name=\"AddImage\" label=\"_Add a new application/x-png component\"/>\n"
+"	<cmd name=\"AddImageView\" label=\"Add a new _view to an existing application/x-png component\"/>\n"
+"	<cmd name=\"AddPdf\" label=\"_Add a new application\\x-pdf component\"/>\n"
+"	<cmd name=\"AddGnumeric\" label=\"Add a new Gnumeric instance through monikers\"/>\n"
+"	<cmd name=\"AddObject\" label=\"Add a new _object\"/>\n"
+"	<cmd name=\"AddCanvasAA\" label=\"Add a new Sample-Canvas item on an AA canvas\"/>\n"
+"	<cmd name=\"AddCanvas\" label=\"Add a new Sample-Canvas item on a regular canvas\"/>\n"
+"	<cmd name=\"Exit\" label=\"_Exit\" tip=\"Exits the application\" pixtype=\"stock\"\n"
+"		pixname=\"Quit\" accel=\"*Control*q\"/>\n"
+"</commands>";
+
+static const char *menus =
+"<menu>\n"
+"	<submenu name=\"File\" label=\"_File\">\n"
+"		<menuitem name=\"AddObject\" verb=\"\"/>\n"
+"		<separator/>\n"
+"		<menuitem name=\"Exit\"  verb=\"\"/>\n"
+"	</submenu>\n"
+"	<submenu name=\"TextPlain\" label=\"_text/plain\">\n"
+"		<menuitem name=\"AddText\" verb=\"\"/>\n"
+"		<menuitem name=\"SendText\" verb=\"\"/>\n"
+"		<menuitem name=\"AddTextView\" verb=\"\"/>\n"
+"	</submenu>\n"
+"	<submenu name=\"ImagePng\" label=\"_image/x-png\">\n"
+"		<menuitem name=\"AddImage\" verb=\"\"/>\n"
+"		<menuitem name=\"AddImageView\" verb=\"\"/>\n"
+"	</submenu>\n"
+"	<submenu name=\"AppPdf\" label=\"_app/x-pdf\">\n"
+"		<menuitem name=\"AddPdf\" verb=\"\"/>\n"
+"	</submenu>\n"
+"	<submenu name=\"PaintSample\" label=\"paint sample\">\n"
+"		<menuitem name=\"AddPaint\" verb=\"\"/>\n"
+"		<menuitem name=\"AddPaintView\" verb=\"\"/>\n"
+"	</submenu>\n"
+"	<submenu name=\"Gnumeric\" label=\"Gnumeric\">\n"
+"		<menuitem name=\"AddGnumeric\" verb=\"\"/>\n"
+"	</submenu>\n"
+"	<submenu name=\"Canvas\" label=\"Canvas-based\">\n"
+"		<menuitem name=\"AddCanvasAA\" verb=\"\"/>\n"
+"		<menuitem name=\"AddCanvas\" verb=\"\"/>\n"
+"	</submenu>\n"
+"</menu>";
+
+static BonoboUIVerb verbs [] = {
+	BONOBO_UI_VERB ("AddText", verb_AddText_cb),
+	BONOBO_UI_VERB ("SendText", verb_SendText_cb),
+	BONOBO_UI_VERB ("AddTextView", verb_AddTextView_cb),
+	BONOBO_UI_VERB ("AddPaint", verb_AddPaint_cb),
+	BONOBO_UI_VERB ("AddPaintView", verb_AddPaintView_cb),
+	BONOBO_UI_VERB ("AddImage", verb_AddImage_cb),
+	BONOBO_UI_VERB ("AddImageView", verb_AddImageView_cb),
+	BONOBO_UI_VERB ("AddPdf", verb_AddPdf_cb),
+	BONOBO_UI_VERB ("AddGnumeric", verb_AddGnumeric_cb),
+	BONOBO_UI_VERB ("AddObject", verb_AddObject_cb),
+	BONOBO_UI_VERB ("AddCanvasAA", verb_AddCanvasAA_cb),
+	BONOBO_UI_VERB ("AddCanvas", verb_AddCanvas_cb),
+	BONOBO_UI_VERB ("Exit", verb_Exit_cb),
+	BONOBO_UI_VERB_END
 };
 
-static GnomeUIInfo container_paint_menu [] = {
-	GNOMEUIINFO_ITEM_NONE (
-		N_("_Add a new simple paint component"), NULL,
-		add_paint_cmd),
-	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new _view to an existing paint component"), NULL,
-		add_paint_view),
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo container_image_png_menu [] = {
-	GNOMEUIINFO_ITEM_NONE (
-		N_("_Add a new application\\x-png component"), NULL,
-		add_image_cmd),
- 	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new _view to an existing application\\x-png component"),
-			       NULL, add_image_view),
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo container_image_pdf_menu [] = {
-	GNOMEUIINFO_ITEM_NONE (
-		N_("_Add a new application\\x-pdf component"), NULL,
-		add_pdf_cmd),
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo container_gnumeric_menu [] = {
-	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new Gnumeric instance through monikers"),
-		NULL, add_gnumeric_cmd),
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo container_file_menu [] = {
-	GNOMEUIINFO_ITEM_NONE(N_("Add a new _object"), NULL, add_demo_cmd),
-	GNOMEUIINFO_SEPARATOR,
-	GNOMEUIINFO_MENU_EXIT_ITEM (exit_cmd, NULL),
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo container_canvas_menu [] = {
-	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new Sample-Canvas item on an AA canvas"),
-		NULL, add_canvas_aa_cmd),
-	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new Sample-Canvas item on a regular canvas"),
-		NULL, add_canvas_cmd),
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo container_main_menu [] = {
-	GNOMEUIINFO_MENU_FILE_TREE (container_file_menu),
-	GNOMEUIINFO_SUBTREE (N_("_text\\plain"), container_text_plain_menu),
-	GNOMEUIINFO_SUBTREE (N_("_image\\x-png"), container_image_png_menu),
-	GNOMEUIINFO_SUBTREE (N_("_app\\x-pdf"), container_image_pdf_menu),
-	GNOMEUIINFO_SUBTREE (N_("paint sample"), container_paint_menu),
-	GNOMEUIINFO_SUBTREE (N_("Gnumeric"), container_gnumeric_menu),
-	GNOMEUIINFO_SUBTREE (N_("Canvas-based"), container_canvas_menu),
-	GNOMEUIINFO_END
-};
 
 static Application *
 application_new (void)
 {
 	Application *app;
-	BonoboUIHandlerMenuItem *menu_list;
+	Bonobo_UIContainer corba_container;
 
 	app = g_new0 (Application, 1);
 	app->container = BONOBO_ITEM_CONTAINER (bonobo_item_container_new ());
@@ -776,24 +785,20 @@ application_new (void)
 
 	bonobo_win_set_contents (BONOBO_WIN (app->app), app->box);
 
-	app->uih = bonobo_ui_handler_new ();
-	bonobo_ui_handler_set_app (app->uih, BONOBO_WIN (app->app));
+	app->ui_container = bonobo_ui_container_new ();
+	bonobo_ui_container_set_win (app->ui_container, BONOBO_WIN (app->app));
+	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (app->ui_container));
+
+	app->uic = bonobo_ui_component_new ("test-container");
+	bonobo_ui_component_set_container (app->uic, corba_container);
 
 	/*
 	 * Create the menus.
 	 */
-	bonobo_ui_handler_create_menubar (app->uih);
+	bonobo_ui_component_set (app->uic, "/", commands, NULL);
+	bonobo_ui_component_set (app->uic, "/", menus, NULL);
 
-	menu_list = bonobo_ui_handler_menu_parse_uiinfo_list_with_data (container_main_menu, app);
-	bonobo_ui_handler_menu_add_list (app->uih, "/", menu_list);
-	bonobo_ui_handler_menu_free_list (menu_list);
-
-	bonobo_ui_handler_create_toolbar (app->uih, "Common");
-	bonobo_ui_handler_toolbar_new_item (app->uih,
-					   "/Common/item 1",
-					   "Container-added Item 1", "I am the container.  Hear me roar.",
-					   0, BONOBO_UI_HANDLER_PIXMAP_NONE, NULL, 0, 0,
-					   NULL, NULL);
+	bonobo_ui_component_add_verb_list_with_data (app->uic, verbs, app);
 
 	gtk_widget_show (app->app);
 
