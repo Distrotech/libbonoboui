@@ -1,0 +1,140 @@
+A discussion of a control's lifecycle - 0.1
+  Michael Meeks <michael@ximian.com>
+
+* Overview
+
+	With a control we have a relatively complicated situation,
+with several Bonobo and Gtk objects all associated loosely. It is
+important to codify carefuly what is involved in the various
+interactions:
+
+        ControlFrame <-> Socket
+             ^             ^
+             |             |
+           CORBA           X
+             |             |
+             v             v
+        Control <------> Plug
+
+* Creation interaction (A)
+
+	1. Control creation
+	2. Passes it's reference
+        3.                       _control_frame_new
+	4.			 creates ControlFrame
+	5.			 creates Socket
+	6.			 _control_frame_bind_to_control
+	7.			 takes a B. Control ref.
+	8.			 Control->setFrame
+	9. takes a C. control_frame ref
+	10.			 Control->setWindowId
+OR.
+	on socket realize:	 Control->setWindowId
+
+
+* Steady state referencing
+
+        ControlFrame: GObject ref -> Socket
+	Socket: Bonobo ref -> ControlFrame
+
+	ControlFrame: CORBA ref -> Control
+	----------------------------------
+	Control: CORBA ref -> ControlFrame
+
+	Control: GObject ref -> Plug
+	Plug: Bonobo ref -> Control
+
+* Destruction interaction (B1)
+
+	Toplevel gtk_widget_destroy.
+
+	1.                       Socket dispose
+	2.			 unset control
+	3.			 B. unref Control
+
+	4. connection broken    <--.
+and:			           | interchangeable Note 1.
+	5. X connection broken  <--'
+
+	6. unref plug -> dispose
+	7. plug unset control frame
+	8. plug B. unref ControlFrame
+
+Leaves:
+	finalized plug, unref Control
+	finalized socket, unref ControlFrame
+
+** Note 1.
+	  X connection broken invokes 'destroy' on plug.
+	  CORBA connection broken invokes 'broken' on
+	control_frame->connection
+	  When we have both - track in the Control; unref plug.
+
+
+* Destruction interaction (B2)
+
+	Fatal error: ControlFrame dies.
+
+	1. Fatal ControlFrame error;
+
+	B1 - 4,5,6,7,8
+
+Leaves:
+	finalized plug, unref Control
+	finalized socket, unref ControlFrame
+
+* Destruction interaction (B3)
+
+	Fatal error: Control dies.
+
+	[ don't destroy socket, it holds our place
+	  in the widget hierarchy for any re-started
+	  control ].
+
+	1. Fatal Control error;
+	2.                       connection broken    <--.
+and:			   interchangeable Note 2.       | 
+	3.                       X connection broken  <--'
+
+
+** Note 2.
+	  X connection broken yields no signal.
+	  CORBA connection broken invokes 'broken' on
+	control->connection
+	  When we have both - track in the ControlFrame; unref socket.
+
+
+* Destruction interaction (B4)
+
+	Client remove of Control (?)
+
+	Minority usefuleness; FIXME - work out.
+
+
+* Size request interaction (CX)
+* Size request interaction (CB)
+* Sensitivity interaction ()
+
+* CORBA connection 'broken' signal
+
+	This signal is totaly unaffected by CORBA reference counting,
+and will happily leave an object with a broken connection - but we'll
+get a nice signal.
+
+	We only get this signal using Unix Domain Sockets - FIXME,
+check whether this is at all portable - are we notified by poll of
+broken connections on Solaris etc. or do we need periodic ping
+evilness there; if so - can we use some other mechanism.
+
+* FIXME:
+
+	Consider the effect of extraneous Bonobo or CORBA refs on both
+the Control and ControlFrame references - and their affect on the
+destruction sequence.
+
+	Consider the local case - are there any obvious optimizations
+possible / neccessary here; we don't get a 'broken' signal, but we get
+Gtk+ signals instead. We can reliably detect this by a lack of
+connection on the Bonobo_Unknown references though. [ unless we have
+invoked an async method on them ]. But also possibly from
+plug->socket_window and socket->plug_window [ these may race ].
