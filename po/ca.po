@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
 "POT-Creation-Date: 2001-09-21 20:29+0200\n"
-"PO-Revision-Date: 2001-09-21 14:32+0200\n"
+"PO-Revision-Date: 2001-09-21 20:57+0200\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <info@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,15 +32,15 @@ msgstr "Alçada preferida"
 
 #: bonobo/bonobo-file-selector-util.c:371
 msgid "Select a file to open"
-msgstr ""
+msgstr "Seleccioneu un fitxer per obrir"
 
 #: bonobo/bonobo-file-selector-util.c:399
 msgid "Select files to open"
-msgstr ""
+msgstr "Seleccioneu els fitxers a obrir"
 
 #: bonobo/bonobo-file-selector-util.c:428
 msgid "Select a filename to save"
-msgstr ""
+msgstr "Seleccioneu un nom de fitxer per desar"
 
 #: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
@@ -127,9 +127,8 @@ msgid "Select an object"
 msgstr "Seleccioneu un objecte"
 
 #: tests/test-ui.c:230
-#, fuzzy
 msgid "Cannot init libbonoboui code"
-msgstr "No es pot inicialitzar el bonobo"
+msgstr "No es pot inicialitzar el codi del libbonoboui"
 
 #~ msgid "Can not activate object_server"
 #~ msgstr "No es pot activar object_server"

@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2001-08-13 11:24+0200\n"
-"PO-Revision-Date: 2001-08-15 14:15+0200\n"
+"POT-Creation-Date: 2001-09-21 20:29+0200\n"
+"PO-Revision-Date: 2001-09-22 02:15+0200\n"
 "Last-Translator: Ömer Fadýl USTA <omer_fad@hotmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,6 +28,18 @@ msgstr "Tercih edilen geniþlik"
 #: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 msgid "Preferred height"
 msgstr "Tercih edilen yükseklik"
+
+#: bonobo/bonobo-file-selector-util.c:371
+msgid "Select a file to open"
+msgstr "Açmak için bir dosya seçin"
+
+#: bonobo/bonobo-file-selector-util.c:399
+msgid "Select files to open"
+msgstr "Açýlacak dosyalarý seçin"
+
+#: bonobo/bonobo-file-selector-util.c:428
+msgid "Select a filename to save"
+msgstr "Kaydetmek için bir isim belirleyin"
 
 #: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
@@ -105,14 +117,14 @@ msgstr "Özelle_þtir"
 msgid "Customize the toolbar"
 msgstr "Araç ç_ubuðunu özelleþtir"
 
-#: tests/test-focus.c:31 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Bonoboui çalýþtýrýlamý_yor"
 
-#: tests/test-selector.c:13
+#: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Bir nesne seçin"
 
-#: tests/test-ui.c:229
+#: tests/test-ui.c:230
 msgid "Cannot init libbonoboui code"
 msgstr "Libbonoboui kodu çalýþtýrýlamýyor"
