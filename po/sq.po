@@ -1,14 +1,14 @@
 # Përkthimi i mesazheve të libbonoboui në shqip
 # This file is distributed under the same license as the libbonoboui package.
-# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
-# Laurent Dhima <laurenti@alblinux.net>, 2003, 2004.
+# Copyright (C) 2003, 2004, 2005 Free Software Foundation, Inc.
+# Laurent Dhima <laurenti@alblinux.net>, 2003, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-19 12:43+0200\n"
-"PO-Revision-Date: 2004-10-19 18:29+0200\n"
+"POT-Creation-Date: 2005-01-14 12:32+0100\n"
+"PO-Revision-Date: 2005-01-14 17:56+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -36,8 +36,8 @@ msgid "Dock the toolbar"
 msgstr "Spiranco panelin e instrumentëve"
 
 #: bonobo/bonobo-dock-item-grip.c:257
-msgid "Un dock the toolbar"
-msgstr "Hiq spirancën nga paneli i instrumentëve"
+msgid "Undock the toolbar"
+msgstr "Shkëput panelin e instrumentëve"
 
 #: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
 #: bonobo/bonobo-ui-toolbar.c:1175
@@ -134,11 +134,11 @@ msgstr "Panelët e instrumentëve"
 msgid "toolbars"
 msgstr "panelët e instrumentëve"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "Look"
 msgstr "Paraqitja"
 
-#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "_Icon"
 msgstr "_Ikonë"
 
@@ -251,31 +251,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Suporti Bonobo GUI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "B_oth"
 msgstr "_Të dy"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "T_ext"
 msgstr "T_eksti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Hide t_ips"
 msgstr "Fshih propoz_imet"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Show t_ips"
 msgstr "Trego propoz_imet"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Hide toolbar"
 msgstr "_Fshih panelin e instrumentëve"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "Customi_ze"
 msgstr "Personali_zo"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:560
+#: bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Customize the toolbar"
 msgstr "Personalizo panelin e instrumentëve"
 
