@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-02-19 09:43+0000\n"
-"PO-Revision-Date: 2002-01-10 09:55+0100\n"
+"POT-Creation-Date: 2002-02-25 08:32+0100\n"
+"PO-Revision-Date: 2002-02-25 08:38+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -32,15 +32,15 @@ msgstr "Preferovaná ¹írka"
 msgid "Preferred height"
 msgstr "Preferovaná vý¹ka"
 
-#: bonobo/bonobo-file-selector-util.c:402
+#: bonobo/bonobo-file-selector-util.c:412
 msgid "Select a file to open"
 msgstr "Vybra» súbor na otvorenie"
 
-#: bonobo/bonobo-file-selector-util.c:430
+#: bonobo/bonobo-file-selector-util.c:440
 msgid "Select files to open"
 msgstr "Vybra» súbory na otvorenie"
 
-#: bonobo/bonobo-file-selector-util.c:459
+#: bonobo/bonobo-file-selector-util.c:469
 msgid "Select a filename to save"
 msgstr "Vybra» meno súboru na ulo¾enie"
 
@@ -81,15 +81,14 @@ msgid "Toolbars"
 msgstr "Li¹ty nástrojov"
 
 #: bonobo/bonobo-ui-config-widget.c:299
-#, fuzzy
 msgid "toolbars"
-msgstr "Li¹ty nástrojov"
+msgstr "li¹ty nástrojov"
 
-#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "Vzhµad"
 
-#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "_Ikona"
 
@@ -105,31 +104,31 @@ msgstr "Len _prioritný text"
 msgid "Configure UI"
 msgstr "Konfigurova» pou¾ívateµské rozhranie"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
 msgstr "_Obidvoje"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
 msgstr "T_ext"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
 msgstr "Skry» t_ipy"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
 msgstr "Ukáza» t_ipy"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
 msgstr "S_kry» li¹tu nástrojov"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
 msgstr "Prispôso_bi»"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
 msgstr "Prispôsobi» li¹tu nástrojov"
 
@@ -158,13 +157,12 @@ msgid "The maximum degree of enlargment"
 msgstr "Maximálny uhol zväè¹enia"
 
 #: bonobo/bonobo-zoomable.c:353
-#, fuzzy
 msgid "Has a minimum Zoom level"
 msgstr "Má minimálne priblí¾enie"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Èi máme platné minimálne zväè¹enie"
+msgstr "Èi máme platné minimálne priblí¾enie"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
@@ -172,7 +170,7 @@ msgstr "Má maximálne priblí¾enie"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Èi máme platné maximálne zväè¹enie"
+msgstr "Èi máme platné maximálne priblí¾enie"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -180,31 +178,31 @@ msgstr "Je spojitý"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Èi budeme zväè¹ova» spojito (nie skokom)"
+msgstr "Èi budeme pribli¾ova» spojito (nie skokom)"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr ""
+msgstr "továreò corba"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr ""
+msgstr "Smerník na továreò"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
-msgstr ""
+msgstr "kontajner UI corba"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr ""
+msgstr "Kontajner pou¾ívateµského rozhrania"
 
 #: bonobo/bonobo-ui-toolbar.c:1099
 msgid "is floating"
-msgstr ""
+msgstr "je plávajúca"
 
 #: bonobo/bonobo-ui-toolbar.c:1100
 msgid "whether the toolbar is floating"
-msgstr ""
+msgstr "èi je li¹ta nástrojov plávajúca"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -250,29 +248,3 @@ msgstr "_Súbor"
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
 msgstr "_Vybra»"
-
-#~ msgid "Extra Moniker factory"
-#~ msgstr "Továreò extra monikera"
-
-#~ msgid "GConf moniker"
-#~ msgstr "Moniker GConf"
-
-#~ msgid "config indirect moniker"
-#~ msgstr "nepriamy moniker konfigurácie"
-
-#~ msgid "Key %s not found in configuration"
-#~ msgstr "Kµúè %s nebol nájdený v konfigurácii"
-
-#~ msgid ""
-#~ "An exception occured while trying to load data into the component with "
-#~ "PersistStorage"
-#~ msgstr ""
-#~ "Vyskytla sa výnimka pri pokuse o naèítanie dát do komponentu pomocou "
-#~ "PersistStorage"
-
-#~ msgid ""
-#~ "An exception occured while trying to save data from the component with "
-#~ "PersistStorage"
-#~ msgstr ""
-#~ "Vyskytla sa výnimka pri pokuse o ulo¾enie dát z komponentu pomocou "
-#~ "PersistStorage"
