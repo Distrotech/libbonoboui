@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2002-06-02 13:21+0200\n"
+"POT-Creation-Date: 2002-06-01 18:31+0100\n"
 "PO-Revision-Date: 2002-06-02 18:22+0100\n"
 "Last-Translator: Juan Manuel García Molina <juanma_gm@wanadoo.es>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -95,8 +95,8 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Para que un servidor sea listado en el selector, debe sportar un arreglo de interfaces "
-"terminado en nulo.  Por omisión es «IDL:Bonobo/Embeddable:1.0» si "
+"Para que un servidor sea listado en el selector, debe sportar un arreglo de "
+"interfaces terminado en nulo.  Por omisión es «IDL:Bonobo/Embeddable:1.0» si "
 "no se listan las interfaces."
 
 #: bonobo/bonobo-selector.c:348
@@ -392,4 +392,3 @@ msgstr "No se puede inicializar el código de libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "No se pudo iniciar la interfaz de Bonobo"
-

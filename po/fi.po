@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2002-05-28 09:27+0200\n"
+"POT-Creation-Date: 2002-06-01 18:31+0100\n"
 "PO-Revision-Date: 2002-05-31 18:10+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -40,29 +40,22 @@ msgstr "Telakoi työkalupalkki"
 msgid "Un dock the toolbar"
 msgstr "Irrota työkalupalkki"
 
-#: bonobo/bonobo-dock-item.c:285
-#: bonobo/bonobo-dock-item.c:286
+#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
 msgid "Shadow type"
 msgstr "Varjotyyppi"
 
-#: bonobo/bonobo-dock-item.c:296
-#: bonobo/bonobo-dock-item.c:297
-#: bonobo/bonobo-ui-toolbar.c:1094
-#: bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
+#: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
 msgid "Orientation"
 msgstr "Suunta"
 
-#: bonobo/bonobo-dock-item.c:307
-#: bonobo/bonobo-dock-item.c:308
-#: bonobo/bonobo-ui-toolbar.c:1113
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
+#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred width"
 msgstr "Haluttu leveys"
 
-#: bonobo/bonobo-dock-item.c:316
-#: bonobo/bonobo-dock-item.c:317
-#: bonobo/bonobo-ui-toolbar.c:1122
-#: bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
+#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred height"
 msgstr "Haluttu korkeus"
 
@@ -78,16 +71,15 @@ msgstr "Valitse avattavat tiedostot"
 msgid "Select a filename to save"
 msgstr "Valitse tallennettava tiedostonimi"
 
-#: bonobo/bonobo-plug.c:363
+#: bonobo/bonobo-plug.c:364
 msgid "Event Forwarding"
 msgstr "Tapahtumien edelleen välitys"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:365
 msgid "Whether X events should be forwarded"
 msgstr "Välittyvätkö X-tapahtumat edelleen"
 
-#: bonobo/bonobo-selector-widget.c:300
-#: bonobo/bonobo-window.c:447
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
 msgid "Name"
 msgstr "Nimi"
 
@@ -100,8 +92,14 @@ msgid "Interfaces required"
 msgstr "Vaaditut rajapinnat"
 
 #: bonobo/bonobo-selector.c:346
-msgid "A NULL_terminated array of interfaces which a server must support in order to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
-msgstr "NULL-päätteinen taulukko rajapinnoista, joita palvelimen täytyy tukea, jotta se näkyisi valitsimessa. Oletus on \"IDL:Bonobo/Embeddable:1.0\" jos rajapintoja ei ole annettu."
+msgid ""
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+"NULL-päätteinen taulukko rajapinnoista, joita palvelimen täytyy tukea, jotta "
+"se näkyisi valitsimessa. Oletus on \"IDL:Bonobo/Embeddable:1.0\" jos "
+"rajapintoja ei ole annettu."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -135,13 +133,11 @@ msgstr "Työkalupalkit"
 msgid "toolbars"
 msgstr "työkalupalkit"
 
-#: bonobo/bonobo-ui-config-widget.c:313
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Katso"
 
-#: bonobo/bonobo-ui-config-widget.c:322
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Kuvake"
 
@@ -165,10 +161,8 @@ msgstr "Muokkaa käyttöliittymäasetuksia"
 msgid "Gdk debugging flags to set"
 msgstr "Asetettavat Gdk-vianetsintäliput"
 
-#: bonobo/bonobo-ui-init-gtk.c:113
-#: bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "LIPUT"
 
@@ -224,8 +218,7 @@ msgstr "ISÄNTÄ"
 msgid "PORT"
 msgstr "PORTTI"
 
-#: bonobo/bonobo-ui-init-gtk.c:155
-#: bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
 msgstr "TYYLI"
 
@@ -398,7 +391,6 @@ msgstr "Tervehdys!"
 msgid "Cannot init libbonoboui code"
 msgstr "Ei voi alustaa libbonoboui'n koodia"
 
-#: samples/controls/bonobo-sample-controls.c:121
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Ei voinut alustaa Bonobo-UI:ta"
-
