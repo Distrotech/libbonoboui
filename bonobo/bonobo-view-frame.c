@@ -129,7 +129,7 @@ bonobo_view_frame_construct (BonoboViewFrame *view_frame,
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 
 	bonobo_control_frame_construct (BONOBO_CONTROL_FRAME (view_frame), corba_view_frame);
-	
+
 	view_frame->priv->client_site = client_site;
 	
 	/*

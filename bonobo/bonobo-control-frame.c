@@ -204,17 +204,17 @@ bonobo_control_frame_construct (BonoboControlFrame *control_frame,
 	 * container is needed solely for the sake of bypassing
 	 * plug/socket in the local case.
 	 */
-	control_frame->priv->container = gtk_frame_new(NULL);
-	gtk_frame_set_shadow_type ( GTK_FRAME (control_frame->priv->container), GTK_SHADOW_NONE);
+	control_frame->priv->container = gtk_frame_new (NULL);
+	gtk_frame_set_shadow_type (GTK_FRAME (control_frame->priv->container), GTK_SHADOW_NONE);
 	gtk_container_set_border_width (GTK_CONTAINER (control_frame->priv->container), 0);
-	gtk_container_add (GTK_CONTAINER (control_frame->priv->container), 
+	gtk_container_add (GTK_CONTAINER (control_frame->priv->container),
 			   control_frame->priv->socket);
 	gtk_widget_show (control_frame->priv->container);
 
-
 	/*
 	 * When the socket is realized, we pass its Window ID to our
-	 * Control.  */
+	 * Control.
+	 */
 	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
 			    "realize",
 			    GTK_SIGNAL_FUNC (bonobo_control_frame_set_remote_window),

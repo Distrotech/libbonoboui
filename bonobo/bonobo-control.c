@@ -18,6 +18,7 @@
 #include <gdk/gdkprivate.h>
 
 enum {
+	SET_FRAME,
 	ACTIVATE,
 	UNDO_LAST_OPERATION,
 	LAST_SIGNAL
@@ -128,8 +129,8 @@ bonobo_control_plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer cl
 
 static void
 impl_Bonobo_Control_activate (PortableServer_Servant servant,
-			     CORBA_boolean activated,
-			     CORBA_Environment *ev)
+			      CORBA_boolean activated,
+			      CORBA_Environment *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 
@@ -139,7 +140,7 @@ impl_Bonobo_Control_activate (PortableServer_Servant servant,
 
 static void
 impl_Bonobo_Control_reactivate_and_undo (PortableServer_Servant servant,
-					CORBA_Environment *ev)
+					 CORBA_Environment *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 
@@ -149,8 +150,8 @@ impl_Bonobo_Control_reactivate_and_undo (PortableServer_Servant servant,
 	
 static void
 impl_Bonobo_Control_set_frame (PortableServer_Servant servant,
-			      Bonobo_ControlFrame frame,
-			      CORBA_Environment *ev)
+			       Bonobo_ControlFrame frame,
+			       CORBA_Environment *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 
@@ -159,30 +160,31 @@ impl_Bonobo_Control_set_frame (PortableServer_Servant servant,
 
 
 
-GtkWidget *bonobo_gtk_widget_from_x11_id(guint32 xid)
+GtkWidget *
+bonobo_gtk_widget_from_x11_id (guint32 xid)
 {
 	GdkWindow *window;
 	gpointer data;
 
 	window = gdk_window_lookup (xid);
 	
-	if (!window) {
+	if (! window) {
 		return NULL;
 	}
 
 	gdk_window_get_user_data(window, &data);
 
-	if (!data || !GTK_IS_WIDGET(data)) {
+	if (!data || !GTK_IS_WIDGET (data)) {
 		return NULL;
 	} else {
-		return GTK_WIDGET(data);
+		return GTK_WIDGET (data);
 	}
 }
 
 static void
 impl_Bonobo_Control_set_window (PortableServer_Servant servant,
-			       Bonobo_Control_windowid id,
-			       CORBA_Environment *ev)
+				Bonobo_Control_windowid id,
+				CORBA_Environment *ev)
 {
 	guint32 x11_id;
 	GtkWidget *local_socket;
@@ -211,9 +213,9 @@ impl_Bonobo_Control_set_window (PortableServer_Servant servant,
 
 static void
 impl_Bonobo_Control_size_allocate (PortableServer_Servant servant,
-				  const CORBA_short width,
-				  const CORBA_short height,
-				  CORBA_Environment *ev)
+				   const CORBA_short width,
+				   const CORBA_short height,
+				   CORBA_Environment *ev)
 {
 	/*
 	 * Nothing.
@@ -226,9 +228,9 @@ impl_Bonobo_Control_size_allocate (PortableServer_Servant servant,
 
 static void
 impl_Bonobo_Control_size_request (PortableServer_Servant servant,
-				 CORBA_short *desired_width,
-				 CORBA_short *desired_height,
-				 CORBA_Environment *ev)
+				  CORBA_short *desired_width,
+				  CORBA_short *desired_height,
+				  CORBA_Environment *ev)
 {
 	/*
 	 * Nothing.
@@ -237,7 +239,7 @@ impl_Bonobo_Control_size_request (PortableServer_Servant servant,
 
 static Bonobo_PropertyBag
 impl_Bonobo_Control_get_property_bag (PortableServer_Servant servant,
-				     CORBA_Environment *ev)
+				      CORBA_Environment *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 	Bonobo_PropertyBag corba_propbag;
@@ -285,7 +287,9 @@ bonobo_control_corba_object_create (BonoboObject *object)
 }
 
 BonoboControl *
-bonobo_control_construct (BonoboControl *control, Bonobo_Control corba_control, GtkWidget *widget)
+bonobo_control_construct (BonoboControl  *control,
+			  Bonobo_Control  corba_control,
+			  GtkWidget      *widget)
 {
 	g_return_val_if_fail (control != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
@@ -432,6 +436,8 @@ bonobo_control_set_control_frame (BonoboControl *control, Bonobo_ControlFrame co
 	control->priv->control_frame = CORBA_Object_duplicate (control_frame, &ev);
 	
 	CORBA_exception_free (&ev);
+
+	gtk_signal_emit (GTK_OBJECT (control), control_signals [SET_FRAME]);
 }
 
 /**
@@ -583,6 +589,9 @@ bonobo_control_get_remote_ui_handler (BonoboControl *control)
 	g_return_val_if_fail (control != NULL, CORBA_OBJECT_NIL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
 
+	g_return_val_if_fail (control->priv->control_frame != CORBA_OBJECT_NIL,
+			      CORBA_OBJECT_NIL);
+
 	CORBA_exception_init (&ev);
 
 	uih = Bonobo_ControlFrame_get_ui_handler (control->priv->control_frame, &ev);
@@ -628,6 +637,14 @@ bonobo_control_class_init (BonoboControlClass *klass)
 	GtkObjectClass *object_class = (GtkObjectClass *)klass;
 
 	bonobo_control_parent_class = gtk_type_class (bonobo_object_get_type ());
+
+	control_signals [SET_FRAME] =
+                gtk_signal_new ("set_frame",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET (BonoboControlClass, set_frame),
+                                gtk_marshal_NONE__BOOL,
+                                GTK_TYPE_NONE, 0);
 
 	control_signals [ACTIVATE] =
                 gtk_signal_new ("activate",
