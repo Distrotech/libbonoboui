@@ -1015,7 +1015,10 @@ impl_get_property (GObject    *object,
 {
 	BonoboUIToolbar *toolbar = BONOBO_UI_TOOLBAR (object);
 	BonoboUIToolbarPrivate *priv = toolbar->priv;
+	gint border_width;
 
+	border_width = GTK_CONTAINER (object)->border_width;
+	
 	switch (property_id) {
 	case PROP_ORIENTATION:
 		g_value_set_uint (
@@ -1028,17 +1031,17 @@ impl_get_property (GObject    *object,
 		update_sizes (toolbar);
 		if (bonobo_ui_toolbar_get_orientation (toolbar) ==
 		    GTK_ORIENTATION_HORIZONTAL)
-			g_value_set_uint (value, priv->total_width);
+			g_value_set_uint (value, priv->total_width + 2 * border_width);
 		else
-			g_value_set_uint (value, priv->max_width);
+			g_value_set_uint (value, priv->max_width + 2 * border_width);
 		break;
 	case PROP_PREFERRED_HEIGHT:
 		update_sizes (toolbar);
 		if (bonobo_ui_toolbar_get_orientation (toolbar) ==
 		    GTK_ORIENTATION_HORIZONTAL)
-			g_value_set_uint (value, priv->max_height);
+			g_value_set_uint (value, priv->max_height + 2 * border_width);
 		else
-			g_value_set_uint (value, priv->total_height);
+			g_value_set_uint (value, priv->total_height + 2 * border_width);
 		break;
 	default:
 		break;
