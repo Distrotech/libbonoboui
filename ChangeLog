@@ -1,3 +1,8 @@
+2001-07-29  Murray Cumming  <murrayc@usa.net>
+
+	* samples/bonoboui-hello/helloapp.c: Corrected the
+	  'can't find xml' warning.
+
 2001-07-28  Murray Cumming  <murrayc@usa.net>
 
 	* samples/bonoboui-hello: Added this example, which is

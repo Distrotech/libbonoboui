@@ -191,8 +191,10 @@ void helloapp_check_for_ui_xml_file(const gchar* filename)
 	if (!filepath || !(g_file_test (filepath, G_FILE_TEST_EXISTS))) //If the file isn't there.
   {
 		g_warning ("\nCan't find <prefix>/share/gnome/ui/bonoboui-hello-ui.xml\n"
-			   "You need to run 'make install', or symlink it like so:\n"
-         "e.g. ln -s downloadpath/bonoboui-hello/src/%s %s/%s", filename, HELLO_DATADIR, filename);
+			   "You need to symlink it like so:\n"
+         "e.g. ln -s <downloadpath>/libbonoboui/samples/bonoboui-hello/%s %s/%s\n"
+         "A normal application would install the xml file as part of 'make install'.\n",
+         filename, HELLO_DATADIR, filename);
 	}
 	g_free (filepath);
 }
