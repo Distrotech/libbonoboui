@@ -664,7 +664,7 @@ init_simple_paint_factory (void)
 static void
 init_server_factory (int argc, char **argv)
 {
-	CORBA_Environment;
+	CORBA_Environment ev;
 	CORBA_ORB orb;
 
 	CORBA_exception_init (&ev);
