@@ -13,7 +13,6 @@
  *  - use gnome_preferences_[get/set]_[menus/toolbars] !
  *  - radio items / radio groups.
  *  - routines to override the toolbar characteristics
- *  - popup menus
  *  - implement set_pos.
  *  - docs.
  *  - Make toplevel checks raise an exception of some sort.
@@ -1774,6 +1773,32 @@ gnome_ui_handler_get_menubar (GnomeUIHandler *uih)
 }
 
 /**
+ * gnome_ui_handler_create_popup_menu:
+ */
+void
+gnome_ui_handler_create_popup_menu (GnomeUIHandler *uih)
+{
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+
+	uih->top->menubar = gtk_menu_new ();
+}
+
+/**
+ * gnome_ui_handler_do_popup_menu:
+ */
+void
+gnome_ui_handler_do_popup_menu (GnomeUIHandler *uih)
+{
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+
+	gtk_menu_popup (GTK_MENU (uih->top->menubar), NULL, NULL, NULL, NULL, NULL,
+			GDK_CURRENT_TIME);
+	gtk_main ();
+}
+
+/**
  * gnome_ui_handler_set_statusbar:
  */
 void
@@ -2315,7 +2340,7 @@ menu_toplevel_create_item_widget (GnomeUIHandler *uih, char *parent_path, GnomeU
 		break;
 
 	case GNOME_UI_HANDLER_MENU_RADIOGROUP:
-		g_warning ("FIXME: Fix radiogroups.\n");
+		g_assert_not_reached ();
 		return NULL;
 
 	default:
@@ -2393,6 +2418,10 @@ menu_toplevel_create_widgets (GnomeUIHandler *uih, char *parent_path, MenuItemIn
 
 	item = internal->item;
 
+	/* No widgets to create for a radio group. */
+	if (item->type == GNOME_UI_HANDLER_MENU_RADIOGROUP)
+		return;
+	
 	/*
 	 * Make sure that the parent exists before creating the item.
 	 */

@@ -90,12 +90,45 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 	gtk_widget_size_allocate (view->plug, &allocation);
 }
 
+static gint
+plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
+{
+	GnomeView *view = GNOME_VIEW (closure);
+
+	printf ("Plug Delete !\n");
+
+	/*
+	 * Set the plug to NULL here so that we don't try to
+	 * destroy it later.  It will get destroyed on its
+	 * own.
+	 */
+	view->plug = NULL;
+
+	gtk_signal_disconnect (GTK_OBJECT (plug), view->plug_destroy_id);
+	
+	gnome_object_destroy (GNOME_OBJECT (view));
+
+	gdk_error_trap_push ();
+
+	gdk_flush ();
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+
+	gdk_error_trap_pop ();
+
+	
+	return FALSE;
+}
+
 static void
 impl_GNOME_View_set_window (PortableServer_Servant servant, GNOME_View_windowid id, CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 
 	view->plug = gtk_plug_new (id);
+	view->plug_destroy_id = gtk_signal_connect (GTK_OBJECT (view->plug), "destroy_event",
+						    GTK_SIGNAL_FUNC (plug_destroy_cb), view);
 
 	gtk_widget_show_all (view->plug);
 
@@ -177,6 +210,11 @@ gnome_view_new (GtkWidget *widget)
 	
 	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+
+	/*
+	 * FIXME: This should probably be explained.
+	 */
+	bonobo_setup_x_error_handler ();
 
 	view = gtk_type_new (gnome_view_get_type ());
 
@@ -313,8 +351,8 @@ gnome_view_set_embeddable (GnomeView *view, GnomeEmbeddable *embeddable)
 GnomeEmbeddable *
 gnome_view_get_embeddable (GnomeView *view)
 {
-	g_return_if_fail (view != NULL);
-	g_return_if_fail (GNOME_IS_VIEW (view));
+	g_return_val_if_fail (view != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_VIEW (view), NULL);
 
 	return view->embeddable;
 }

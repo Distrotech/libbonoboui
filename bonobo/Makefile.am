@@ -24,7 +24,7 @@ bonobo_libs = 			\
 
 lib_LTLIBRARIES = libbonobo.la
 noinst_PROGRAMS = object_test test-container sample-server \
-			test-container-autoload selector_test test-storage
+			test-container-autoload selector_test test-storage test-ui-handler
 
 CORBA_SOURCE =			\
 	bonobo.h		\
@@ -125,6 +125,12 @@ test_container_SOURCES =		\
 	test-container.c
 
 test_container_LDADD = $(bonobo_libs)
+
+
+test_ui_handler_SOURCES =		\
+	test-ui-handler.c
+
+test_ui_handler_LDADD = $(bonobo_libs)
 
 test_container_autoload_SOURCES =		\
 	test-container-autoload.c

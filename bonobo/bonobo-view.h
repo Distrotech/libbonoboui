@@ -29,6 +29,8 @@ struct _GnomeView {
 	GtkWidget *widget;
 	GtkWidget *plug;
 
+	int plug_destroy_id;
+
 	GNOME_ViewFrame view_frame;
 
 	GnomeEmbeddable *embeddable;
