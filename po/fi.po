@@ -12,8 +12,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2002-11-02 22:42+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-06-17 20:59+0300\n"
+"PO-Revision-Date: 2003-06-16 21:08+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -97,7 +98,6 @@ msgid "Interfaces required"
 msgstr "Vaaditut rajapinnat"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
@@ -105,7 +105,7 @@ msgid ""
 msgstr ""
 "NULL-päätteinen taulukko rajapinnoista, joita palvelimen täytyy tukea, jotta "
 "se näkyisi valitsimessa. Oletus on \"IDL:Bonobo/Embeddable:1.0\" jos "
-"rajapintoja ei ole annettu."
+"rajapintoja ei ole lueteltu"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -306,7 +306,7 @@ msgstr "kelluuko työkalupalkki"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Työkalupalkin reunuksen tyyli"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
