@@ -1,3 +1,8 @@
+2000-07-05  Michael Meeks  <michael@helixcode.com>
+
+	* hello-object-io.c (hello_object_pstream_load): update read_string
+	call.
+
 2000-06-27  Michael Meeks  <michael@helixcode.com>
 
 	* hello-view.c (view_clicked_cb): prettify.

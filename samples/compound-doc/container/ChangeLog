@@ -1,3 +1,7 @@
+2000-07-05  Michael Meeks  <michael@helixcode.com>
+
+	* component-io.c (component_save_id): use write_string as you should.
+
 2000-07-03  Michael Meeks  <michael@helixcode.com>
 
 	* container-io.c (load_component_id_stream_read): update.

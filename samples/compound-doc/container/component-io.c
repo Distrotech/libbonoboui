@@ -97,34 +97,17 @@ component_save (Component * component, Bonobo_Stream stream)
 }
 
 void
-component_save_id (Component * component, Bonobo_Stream stream)
+component_save_id (Component *component, Bonobo_Stream stream)
 {
-	Bonobo_Stream_iobuf *buffer;
-	Bonobo_Stream corba_stream = stream;
-	size_t pos = 0, length = strlen (component->goad_id);
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
-	buffer = Bonobo_Stream_iobuf__alloc ();
-	buffer->_length = length;
-	buffer->_buffer = component->goad_id;
+	bonobo_stream_client_write_string (stream, component->goad_id,
+					   TRUE, &ev);
+	
+	if (ev._major != CORBA_NO_EXCEPTION)
+		g_warning ("Error saving object_id '%s'", component->goad_id);
 
-	while (pos < length) {
-		CORBA_long bytes_written;
-
-		bytes_written =
-		    Bonobo_Stream_write (corba_stream, buffer, &ev);
-
-		if (ev._major != CORBA_NO_EXCEPTION) {
-			CORBA_free (buffer);
-			CORBA_exception_free (&ev);
-			return;
-		}
-
-		pos += bytes_written;
-	}
-
-	CORBA_free (buffer);
 	CORBA_exception_free (&ev);
 }

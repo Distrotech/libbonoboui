@@ -36,7 +36,8 @@ hello_object_pstream_load (BonoboPersistStream       *ps,
 	hello_model_clear (obj);
 
 	/* 2. Read the new text data. */
-	if (bonobo_stream_client_read_string (stream, &str, ev) > 0) {
+	bonobo_stream_client_read_string (stream, &str, ev);
+	if (ev->_major == CORBA_NO_EXCEPTION) {
 		hello_model_set_text (obj, str);
 		g_free (str);
 	}
