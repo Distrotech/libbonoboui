@@ -956,6 +956,8 @@ bonobo_ui_util_set_ui (BonoboUIComponent *component,
 			component, fname, app_datadir, app_name);
 
 		ui = bonobo_ui_node_to_string (node, TRUE);
+		if (!ui)
+			return;
 
 		bonobo_ui_node_free (node);
 		
