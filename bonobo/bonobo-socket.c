@@ -643,12 +643,10 @@ bonobo_socket_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer data
 		if (!socket->plug_window)
 			bonobo_socket_add_window (socket, xcre->window);
 
-		/* FIXME: it seems it is possible to have a NULL socket->plug_window
-		   but this crashes stuff */
-		if (xcre->window == GDK_WINDOW_XWINDOW (socket->plug_window))
-		{
-			if (xcre->value_mask & (CWWidth | CWHeight))
-			{
+		if (socket->plug_window &&
+		    xcre->window == GDK_WINDOW_XWINDOW (socket->plug_window)) {
+
+			if (xcre->value_mask & (CWWidth | CWHeight)) {
 				socket->request_width = xcre->width;
 				socket->request_height = xcre->height;
 				socket->have_size = TRUE;
@@ -659,11 +657,9 @@ bonobo_socket_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer data
 						    socket->request_height));
 		
 				gtk_widget_queue_resize (widget);
-			}
-			else if (xcre->value_mask & (CWX | CWY))
-			{
+			} else if (xcre->value_mask & (CWX | CWY))
 				bonobo_socket_send_configure_event (socket);
-			}
+
 			/* Ignore stacking requests. */
 	    
 			return_val = GDK_FILTER_REMOVE;
@@ -724,7 +720,8 @@ bonobo_socket_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer data
 		if (!socket->plug_window)
 			bonobo_socket_add_window (socket, xevent->xmaprequest.window);
 	
-		if (xevent->xmaprequest.window ==
+		if (socket->plug_window &&
+		    xevent->xmaprequest.window ==
 		    GDK_WINDOW_XWINDOW (socket->plug_window))
 		{
 			GTK_NOTE(PLUGSOCKET,

@@ -1694,7 +1694,7 @@ bonobo_control_get_ui_handler (BonoboControl *control)
 Bonobo_Unknown
 bonobo_control_get_remote_ui_handler (BonoboControl *control)
 {
-	return (Bonobo_Unknown) bonobo_control_get_ui_component (control);
+	return (Bonobo_Unknown) bonobo_control_get_remote_ui_container (control);
 }
 
 Bonobo_Unknown
