@@ -227,7 +227,8 @@ bonobo_widget_create_subdoc_object (BonoboWidget     *bw,
 	 * Bind the local ClientSite object to the remote Embeddable
 	 * component.
 	 */
-	bonobo_client_site_bind_embeddable (bw->priv->client_site, bw->priv->server);
+	if (!bonobo_client_site_bind_embeddable (bw->priv->client_site, bw->priv->server))
+		return NULL;
 
 	/*
 	 * Add the client site to the container.  This container is
