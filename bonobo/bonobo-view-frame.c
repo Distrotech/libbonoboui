@@ -593,6 +593,32 @@ gnome_view_frame_size_request (GnomeViewFrame *view_frame, int *desired_width, i
 	CORBA_exception_free (&ev);
 }
 
+/**
+ * gnome_view_frame_set_zoom_factor:
+ * @view_frame: A GnomeViewFrame object.
+ * @zoom: a zoom factor.  1.0 means one-to-one mapping.
+ *
+ * Requests the associated view to change its zoom factor the the value in @zoom.
+ */
+void
+gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (zoom > 0.0);
+
+	CORBA_exception_init (&ev);
+	GNOME_View_set_zoom_factory (view_frame->view, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (
+			GNOME_OBJECT (view_frame),
+			(CORBA_Object) view_frame->view, &ev);
+	}
+	CORBA_exception_free (&ev);
+}
+
 static void
 gnome_view_frame_verb_selected_cb (GnomeUIHandler *uih, void *user_data, char *path)
 {
