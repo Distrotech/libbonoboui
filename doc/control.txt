@@ -24,7 +24,7 @@ interactions:
 	4.			 creates ControlFrame
 	5.			 creates Socket
 	6.			 _control_frame_bind_to_control
-	7.			 takes a B. Control ref.
+	7.			 takes a C. Control ref.
 	8.			 Control->setFrame
 	9. takes a C. control_frame ref
 	10.			 Control->setWindowId
@@ -53,12 +53,13 @@ OR.
 	3.			 B. unref Control
 
 	4. connection broken    <--.
-and:			           | interchangeable Note 1.
+and:			           | interchangeable: Note 1.
 	5. X connection broken  <--'
-
-	6. unref plug -> dispose
-	7. plug unset control frame
-	8. plug B. unref ControlFrame
+	6. Instantiate glib mainloop idle handler: Note 2.
+...
+	7. unref plug -> dispose
+	8. plug unset control frame
+	9. plug B. unref ControlFrame
 
 Leaves:
 	finalized plug, unref Control
@@ -70,6 +71,11 @@ Leaves:
 	control_frame->connection
 	  When we have both - track in the Control; unref plug.
 
+** Note 2.
+	  As Darin points out, the connection broken signal
+	can occur 'inside' or during a CORBA method leading
+	to some confusion. Thus it is best to delay the actual
+	destruction invocations until the glib mainloop is hit.
 
 * Destruction interaction (B2)
 
@@ -77,7 +83,7 @@ Leaves:
 
 	1. Fatal ControlFrame error;
 
-	B1 - 4,5,6,7,8
+	B1 - 4,5,6,7,8,9
 
 Leaves:
 	finalized plug, unref Control
@@ -93,11 +99,11 @@ Leaves:
 
 	1. Fatal Control error;
 	2.                       connection broken    <--.
-and:			   interchangeable Note 2.       | 
+and:			   interchangeable Note 3.       | 
 	3.                       X connection broken  <--'
 
 
-** Note 2.
+** Note 3.
 	  X connection broken yields no signal.
 	  CORBA connection broken invokes 'broken' on
 	control->connection
@@ -121,10 +127,10 @@ and:			   interchangeable Note 2.       |
 and will happily leave an object with a broken connection - but we'll
 get a nice signal.
 
-	We only get this signal using Unix Domain Sockets - FIXME,
-check whether this is at all portable - are we notified by poll of
-broken connections on Solaris etc. or do we need periodic ping
-evilness there; if so - can we use some other mechanism.
+	We only get this signal quickly using Unix Domain Sockets,
+this manifests itself as a HUP under Linux and a POLL_IN + 0 length or
+erroneous read under Solaris / others.
+
 
 * FIXME:
 
@@ -138,3 +144,8 @@ Gtk+ signals instead. We can reliably detect this by a lack of
 connection on the Bonobo_Unknown references though. [ unless we have
 invoked an async method on them ]. But also possibly from
 plug->socket_window and socket->plug_window [ these may race ].
+
+	Investigate where the "destroy_event" comes into it all.
+
+	Consider the 'activation' side of it all; what does activation
+entail, and what happens in failure modes.
