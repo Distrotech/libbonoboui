@@ -1,3 +1,17 @@
+2001-07-19  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-selector.c (bonobo_selector_construct):
+	connect the "response" not "clicked" signal on GtkDialog.
+	s/button_callback/response/callback/, don't listen on "close"
+	(response_callback): upd.
+	use bonobo_main_quit.
+	(cancel_callback): remove: redundant.
+	(ok_callback): upd.
+	(bonobo_selector_select_id): upd & handle dialog_run correctly.
+
+	* tests/test-selector.c (main): hack out loads of cruft,
+	simplify to a single function.
+
 2001-07-19  Anders Carlsson  <andersca@gnome.org>
 
 	* tests/test-selector.c: Change include of bonobo-win.h

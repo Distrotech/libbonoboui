@@ -106,13 +106,6 @@ ok_callback (GtkWidget *widget, gpointer data)
 		BONOBO_SELECTOR (widget));
 
 	gtk_object_set_user_data (GTK_OBJECT (widget), text);
-	gtk_main_quit ();
-}
-
-static void
-cancel_callback (GtkWidget *widget, gpointer data)
-{
-	gtk_main_quit ();
 }
 
 /**
@@ -141,20 +134,24 @@ bonobo_selector_select_id (const gchar  *title,
 
 	gtk_signal_connect (GTK_OBJECT (sel), "ok",
 			    GTK_SIGNAL_FUNC (ok_callback), NULL);
-
-	gtk_signal_connect (GTK_OBJECT (sel), "cancel",
-			    GTK_SIGNAL_FUNC (cancel_callback), NULL);
 	
 	gtk_object_set_user_data (GTK_OBJECT (sel), NULL);
 	
 	gtk_widget_show (sel);
 		
 	n = gtk_dialog_run (GTK_DIALOG (sel));
-	if (n == -1)
-		return NULL;
 
-	if (n == 0)
+	switch (n) {
+	case GTK_RESPONSE_CANCEL:
+		name = NULL;
+		break;
+	case GTK_RESPONSE_APPLY:
+	case GTK_RESPONSE_OK:
 		name = gtk_object_get_user_data (GTK_OBJECT (sel));
+		break;
+	default:
+		break;
+	}
 		
 	gtk_widget_destroy (sel);
 
@@ -162,16 +159,16 @@ bonobo_selector_select_id (const gchar  *title,
 }
 
 static void
-button_callback (GtkWidget *widget,
-		 gint       button_number,
-		 gpointer   data) 
+response_callback (GtkWidget *widget,
+		   gint       response_id,
+		   gpointer   data) 
 {
-	switch (button_number) {
-		case 0:
+	switch (response_id) {
+		case GTK_RESPONSE_OK:
 			gtk_signal_emit (GTK_OBJECT (data), 
 					 bonobo_selector_signals [OK]);
 			break;
-		case 1:
+		case GTK_RESPONSE_CANCEL:
 			gtk_signal_emit (GTK_OBJECT (data),
 					 bonobo_selector_signals [CANCEL]);
 		default:
@@ -282,10 +279,8 @@ bonobo_selector_construct (BonoboSelector       *sel,
 			       GTK_RESPONSE_CANCEL);
 	gtk_dialog_set_default_response (GTK_DIALOG (sel), GTK_RESPONSE_OK);
 	
-	gtk_signal_connect (GTK_OBJECT (sel),
-		"clicked", GTK_SIGNAL_FUNC (button_callback), sel);
-	gtk_signal_connect (GTK_OBJECT (sel), "close",
-		GTK_SIGNAL_FUNC (button_callback), sel);
+	gtk_signal_connect (GTK_OBJECT (sel), "response",
+			    GTK_SIGNAL_FUNC (response_callback), sel);
 	
 	gtk_widget_set_usize (GTK_WIDGET (sel), 400, 300); 
 	gtk_widget_show_all  (GTK_DIALOG (sel)->vbox);
