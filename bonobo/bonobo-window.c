@@ -23,6 +23,7 @@
 #include <bonobo/bonobo-ui-toolbar-toggle-button-item.h>
 #include <bonobo/bonobo-ui-toolbar-separator-item.h>
 #include <bonobo/bonobo-ui-toolbar-popup-item.h>
+#include <bonobo/bonobo-ui-toolbar-control-item.h>
 
 #include <bonobo/bonobo-ui-node.h>
 #include <gnome-xml/tree.h>
@@ -1926,19 +1927,27 @@ toolbar_build_control (BonoboWinPrivate *priv,
 		       GtkWidget        *parent)
 {
 	GtkWidget  *item;
-	GtkWidget  *control;
-
+	
 	g_return_val_if_fail (priv != NULL, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
-	control = build_control (priv, node);
-	if (!control)
+	if (info->widget) {
+		item = info->widget;
+		g_assert (info->widget->parent == NULL);
+
+	} else if (info->object != CORBA_OBJECT_NIL) {
+		item = bonobo_ui_toolbar_control_item_new (
+			bonobo_object_dup_ref (info->object, NULL));
+		if (!item) {
+			return NULL;
+		}
+
+		info->type |= CUSTOM_WIDGET;
+	} else {
 		return NULL;
+	}
 
-	item = bonobo_ui_toolbar_item_new ();
-	gtk_container_add (GTK_CONTAINER (item), control);
-
-	gtk_widget_show (GTK_WIDGET (item));
+	gtk_widget_show (item);
 
 	bonobo_ui_toolbar_insert (BONOBO_UI_TOOLBAR (parent),
 				  BONOBO_UI_TOOLBAR_ITEM (item),
@@ -2051,6 +2060,9 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 
 	cmd_node = cmd_get_node (priv, node);
 
+	/*FIXME: to debug control problem */
+	gtk_widget_show (widget);
+
 	if ((hidden    = bonobo_ui_node_get_attr (node, "hidden")) ||
 	    (sensitive = bonobo_ui_node_get_attr (node, "sensitive")) ||
 	    (state     = bonobo_ui_node_get_attr (node, "state"))) {
@@ -2089,10 +2101,6 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 
 		g_strfreev (behavior_array);
 	}
-
-	/* if it's a control, exit now, since the rest isn't relevant */
-	if (bonobo_ui_node_has_name (node, "control"))
-		return;
 
 	icon_pixbuf = cmd_get_toolbar_pixbuf (node, cmd_node);
 

@@ -1302,7 +1302,14 @@ bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
 	gtk_object_sink (GTK_OBJECT (item));
 
 	priv = toolbar->priv;
-	priv->items = g_list_insert (priv->items, item, position);
+
+	/*
+	 *  This ugly hack is here since we might have unparented
+	 * a widget and then re-added it to the toolbar at a later
+	 * date, and un-parenting doesn't work quite properly yet.
+	 */
+	if (!g_list_find (priv->items, item))
+		priv->items = g_list_insert (priv->items, item, position);
 
 	gtk_signal_connect_while_alive (GTK_OBJECT (item), "destroy",
 					GTK_SIGNAL_FUNC (item_destroy_cb), toolbar,
@@ -1325,7 +1332,17 @@ bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
 GList *
 bonobo_ui_toolbar_get_children (BonoboUIToolbar *toolbar)
 {
+	GList *ret = NULL, *l;
+
 	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar), NULL);
 
-	return g_list_copy (toolbar->priv->items);
+	for (l = toolbar->priv->items; l; l = l->next) {
+		GtkWidget *item_widget;
+
+		item_widget = GTK_WIDGET (l->data);
+		if (item_widget->parent != NULL) /* Unparented but still here */
+			ret = g_list_prepend (ret, item_widget);
+	}
+
+	return g_list_reverse (ret);
 }

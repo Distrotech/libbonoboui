@@ -80,9 +80,9 @@ void                  bonobo_ui_toolbar_insert           (BonoboUIToolbar      *
 							  BonoboUIToolbarItem  *item,
 							  int                   position);
 
-GtkTooltips          *bonobo_ui_toolbar_get_tooltips     (BonoboUIToolbar *toolbar);
+GtkTooltips          *bonobo_ui_toolbar_get_tooltips     (BonoboUIToolbar      *toolbar);
 
-GList                *bonobo_ui_toolbar_get_children     (BonoboUIToolbar *toolbar);
+GList                *bonobo_ui_toolbar_get_children     (BonoboUIToolbar      *toolbar);
 
 END_GNOME_DECLS
 

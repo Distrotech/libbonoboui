@@ -177,7 +177,7 @@ main (int argc, char **argv)
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" _label=\"TogSave\" _tip=\"My tooltip\"/>\n"
 		"	<separator/>\n"
 		"	<toolitem name=\"baa\" pixtype=\"stock\" pixname=\"Open\" _label=\"baa\" _tip=\"My 2nd tooltip\" verb=\"testme\"/>\n"
-		"	<control name=\"AControl\"/>\n"
+		"	<control name=\"AControl\" _tip=\"a tip on a control\" hidden=\"0\"/>\n"
 		"</dockitem>";
 	char toolb [] =
 		"<dockitem name=\"toolbar\" look=\"icon\" relief=\"none\">\n"

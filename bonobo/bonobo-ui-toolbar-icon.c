@@ -197,6 +197,9 @@ bonobo_ui_toolbar_icon_class_init (BonoboUIToolbarIconClass *class)
         widget_class->size_request = bonobo_ui_toolbar_icon_size_request;
 	object_class->get_arg = bonobo_ui_toolbar_icon_get_arg;
 	object_class->set_arg = bonobo_ui_toolbar_icon_set_arg;
+
+	/* We are going to be using gdk_pixbuf_render_* */
+	gdk_rgb_init ();
 }
 
 static void
