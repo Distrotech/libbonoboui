@@ -195,7 +195,7 @@ gnome_view_destroy (GtkObject *object)
 	 */
 	if (view->uih != NULL) {
 		gnome_ui_handler_unset_container (view->uih);
-		gnome_object_destroy (view->uih);
+		gnome_object_destroy (GNOME_OBJECT (view->uih));
 	}
 
 	/*

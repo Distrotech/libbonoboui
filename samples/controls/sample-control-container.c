@@ -86,7 +86,16 @@ populate_property_list (GtkWidget *bw, GtkCList *clist)
 
 		prop = l->data;
 		property_name = GNOME_Property_get_name (prop, &ev);
+
+		if (ev._major != CORBA_NO_EXCEPTION) {
+			g_error ("populate_property_list: Exception trying to get property name");
+		}
+		
 		any = GNOME_Property_get_value (prop, &ev);
+
+		if (ev._major != CORBA_NO_EXCEPTION) {
+			g_error ("populate_property_list: Exception trying to get property value");
+		}
 
 		row_array [0] = property_name;
 
