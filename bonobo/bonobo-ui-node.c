@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * bonobo-node.c: Code to manipulate BonoboNode objects
+ * bonobo-ui-node.c: Code to manipulate BonoboUINode objects
  *
  * Authors:
  *	Havoc Pennington <hp@redhat.com>
@@ -10,7 +10,7 @@
  *           2001 Ximian, Inc.
  */
 #include "config.h"
-#include <bonobo/bonobo-node.h>
+#include <bonobo/bonobo-ui-node.h>
 
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -21,29 +21,29 @@
 #endif
 
 /* Having this struct here makes debugging nicer. */
-struct _BonoboNode {
+struct _BonoboUINode {
 	xmlNode real_node;
 };
 
 #define XML_NODE(x) (&(x)->real_node)
-#define BNODE(x) ((BonoboNode *)(x))
+#define BNODE(x) ((BonoboUINode *)(x))
 
 /**
- * bonobo_node_new:
+ * bonobo_ui_node_new:
  * @name: The name for the node
  * 
  * Creates a new node with name @name
  * 
  * Return value: a new node pointer
  **/
-BonoboNode*
-bonobo_node_new (const char *name)
+BonoboUINode*
+bonobo_ui_node_new (const char *name)
 {
         return BNODE (xmlNewNode (NULL, name));
 }
 
 /**
- * bonobo_node_new_child:
+ * bonobo_ui_node_new_child:
  * @parent: the parent
  * @name: the name of the new child
  * 
@@ -51,15 +51,15 @@ bonobo_node_new (const char *name)
  * 
  * Return value: pointer to the new child
  **/
-BonoboNode*
-bonobo_node_new_child (BonoboNode *parent,
+BonoboUINode*
+bonobo_ui_node_new_child (BonoboUINode *parent,
                           const char   *name)
 {
         return BNODE (xmlNewChild (XML_NODE (parent), NULL, name, NULL));
 }
 
 /**
- * bonobo_node_copy:
+ * bonobo_ui_node_copy:
  * @node: the node
  * @recursive: whether to dup children too.
  * 
@@ -67,49 +67,49 @@ bonobo_node_new_child (BonoboNode *parent,
  * 
  * Return value: a copy of the noce
  **/
-BonoboNode*
-bonobo_node_copy (BonoboNode *node,
+BonoboUINode*
+bonobo_ui_node_copy (BonoboUINode *node,
                      gboolean recursive)
 {
         return BNODE (xmlCopyNode (XML_NODE (node), recursive));
 }
 
 /**
- * bonobo_node_free:
+ * bonobo_ui_node_free:
  * @node: a node.
  * 
  * Frees the memory associated with the @node and unlink it from the tree
  **/
 void
-bonobo_node_free (BonoboNode *node)
+bonobo_ui_node_free (BonoboUINode *node)
 {
         xmlFreeNode (XML_NODE (node));
 }
 
 /**
- * bonobo_node_set_data:
+ * bonobo_ui_node_set_data:
  * @node: the node
  * @data: user data
  * 
  * Associates some user data with the node pointer
  **/
 void
-bonobo_node_set_data (BonoboNode *node,
+bonobo_ui_node_set_data (BonoboUINode *node,
                          gpointer      data)
 {
         XML_NODE (node)->_private = data;
 }
 
 /**
- * bonobo_node_get_data:
+ * bonobo_ui_node_get_data:
  * @node: the node
  * 
  * Gets user data associated with @node
  * 
- * Return value: the user data, see bonobo_node_set_data
+ * Return value: the user data, see bonobo_ui_node_set_data
  **/
 gpointer
-bonobo_node_get_data (BonoboNode *node)
+bonobo_ui_node_get_data (BonoboUINode *node)
 {
         return XML_NODE (node)->_private;
 }
@@ -135,7 +135,7 @@ get_attr (xmlNode *node, const char *name)
 }
 
 /**
- * bonobo_node_set_attr:
+ * bonobo_ui_node_set_attr:
  * @node: The node
  * @name: the name of the attr
  * @value: the value for the attr
@@ -144,7 +144,7 @@ get_attr (xmlNode *node, const char *name)
  * previous values of that attr.
  **/
 void
-bonobo_node_set_attr (BonoboNode *node,
+bonobo_ui_node_set_attr (BonoboUINode *node,
                          const char   *name,
                          const char   *value)
 {
@@ -158,24 +158,24 @@ bonobo_node_set_attr (BonoboNode *node,
 }
 
 /**
- * bonobo_node_get_attr:
+ * bonobo_ui_node_get_attr:
  * @node: the node
  * @name: the name of the attr to get
  * 
  * Fetch the value of an attr of name @name from @node
- * see also: bonobo_node_free_string
+ * see also: bonobo_ui_node_free_string
  * 
  * Return value: the attr text.
  **/
 char*
-bonobo_node_get_attr (BonoboNode *node,
+bonobo_ui_node_get_attr (BonoboUINode *node,
                          const char   *name)
 {
         return xmlGetProp (XML_NODE (node), name);
 }
 
 /**
- * bonobo_node_has_attr:
+ * bonobo_ui_node_has_attr:
  * @node: the node
  * @name: the name of the attr to detect
  * 
@@ -184,21 +184,21 @@ bonobo_node_get_attr (BonoboNode *node,
  * Return value: TRUE if the attr exists
  **/
 gboolean
-bonobo_node_has_attr (BonoboNode *node,
+bonobo_ui_node_has_attr (BonoboUINode *node,
                          const char   *name)
 {
         return get_attr (XML_NODE (node), name) != NULL;
 }
 
 /**
- * bonobo_node_remove_attr:
+ * bonobo_ui_node_remove_attr:
  * @node: the node
  * @name: name of the attribute
  * 
  * remove any attribute with name @name from @node
  **/
 void
-bonobo_node_remove_attr (BonoboNode *node,
+bonobo_ui_node_remove_attr (BonoboUINode *node,
                             const char   *name)
 {
         xmlAttrPtr attr = get_attr (XML_NODE (node), name);
@@ -207,47 +207,47 @@ bonobo_node_remove_attr (BonoboNode *node,
 }
 
 /**
- * bonobo_node_add_child:
+ * bonobo_ui_node_add_child:
  * @parent: the parent
  * @child: the new child
  * 
  * Add a @child node to the @parent node ( after the other children )
  **/
 void
-bonobo_node_add_child (BonoboNode *parent,
-			  BonoboNode *child)
+bonobo_ui_node_add_child (BonoboUINode *parent,
+			  BonoboUINode *child)
 {
         xmlAddChild (XML_NODE (parent), XML_NODE (child));
 }
 
 /**
- * bonobo_node_insert_before:
+ * bonobo_ui_node_insert_before:
  * @sibling: the node to insert
  * @prev_sibling: the placeholder for insertion
  * 
  * Insert a @sibling before @prev_sibling in a node list
  **/
 void
-bonobo_node_insert_before (BonoboNode *sibling,
-                              BonoboNode *prev_sibling)
+bonobo_ui_node_insert_before (BonoboUINode *sibling,
+                              BonoboUINode *prev_sibling)
 {
         xmlAddPrevSibling (XML_NODE (sibling), XML_NODE (prev_sibling));
 }
 
 /**
- * bonobo_node_unlink:
+ * bonobo_ui_node_unlink:
  * @node: the node
  * 
  * Unlink @node from its tree, ie. disassociate it with its parent
  **/
 void
-bonobo_node_unlink (BonoboNode *node)
+bonobo_ui_node_unlink (BonoboUINode *node)
 {
 	xmlUnlinkNode (XML_NODE (node));
 }
 
 /**
- * bonobo_node_replace:
+ * bonobo_ui_node_replace:
  * @old_node: node to be replaced
  * @new_node: node to replace with
  * 
@@ -255,8 +255,8 @@ bonobo_node_unlink (BonoboNode *node)
  * left unlinked and floating with its children.
  **/
 void
-bonobo_node_replace (BonoboNode *old_node,
-			BonoboNode *new_node)
+bonobo_ui_node_replace (BonoboUINode *old_node,
+			BonoboUINode *new_node)
 {
 	/* libxml has these args indisputably backward */
 	xmlReplaceNode (XML_NODE (new_node),
@@ -264,132 +264,132 @@ bonobo_node_replace (BonoboNode *old_node,
 }
 
 /**
- * bonobo_node_set_content:
+ * bonobo_ui_node_set_content:
  * @node: the node
  * @content: the new content
  * 
  * Set the textual content of @node to @content
  **/
 void
-bonobo_node_set_content (BonoboNode *node,
+bonobo_ui_node_set_content (BonoboUINode *node,
                             const char   *content)
 {
         xmlNodeSetContent (XML_NODE (node), content);
 }
 
 /**
- * bonobo_node_get_content:
+ * bonobo_ui_node_get_content:
  * @node: the node
  * 
- * see also: bonobo_node_free_string
+ * see also: bonobo_ui_node_free_string
  *
  * Return value: the content of @node
  **/
 char *
-bonobo_node_get_content (BonoboNode *node)
+bonobo_ui_node_get_content (BonoboUINode *node)
 {
         return xmlNodeGetContent (XML_NODE (node));
 }
 
 /**
- * bonobo_node_next:
+ * bonobo_ui_node_next:
  * @node: the node
  * 
  * Return value: the node after @node in the list
  **/
-BonoboNode*
-bonobo_node_next (BonoboNode *node)
+BonoboUINode*
+bonobo_ui_node_next (BonoboUINode *node)
 {
         return BNODE (XML_NODE (node)->next);
 }
 
 /**
- * bonobo_node_prev:
+ * bonobo_ui_node_prev:
  * @node: the node
  * 
  * Return value: the node after @node in the list
  **/
-BonoboNode*
-bonobo_node_prev (BonoboNode *node)
+BonoboUINode*
+bonobo_ui_node_prev (BonoboUINode *node)
 {
         return BNODE (XML_NODE (node)->prev);
 }
 
 /**
- * bonobo_node_children:
+ * bonobo_ui_node_children:
  * @node: the node
  * 
  * Return value: the first child of @node
  **/
-BonoboNode*
-bonobo_node_children (BonoboNode *node)
+BonoboUINode*
+bonobo_ui_node_children (BonoboUINode *node)
 {
         return BNODE (XML_NODE (node)->xmlChildrenNode);
 }
 
 /**
- * bonobo_node_parent:
+ * bonobo_ui_node_parent:
  * @node: the node
  * 
  * Return value: the parent node of @node
  **/
-BonoboNode*
-bonobo_node_parent (BonoboNode *node)
+BonoboUINode*
+bonobo_ui_node_parent (BonoboUINode *node)
 {
         return BNODE (XML_NODE (node)->parent);
 }
 
 /**
- * bonobo_node_get_name:
+ * bonobo_ui_node_get_name:
  * @node: the node
  * 
  * Return value: the name of @node
  **/
 const char*
-bonobo_node_get_name (BonoboNode *node)
+bonobo_ui_node_get_name (BonoboUINode *node)
 {
         return XML_NODE (node)->name;
 }
 
 /**
- * bonobo_node_has_name:
+ * bonobo_ui_node_has_name:
  * @node: the node
  * @name: a name the node might have
  * 
  * Return value: TRUE if @node has name == @name
  **/
 gboolean
-bonobo_node_has_name (BonoboNode *node,
+bonobo_ui_node_has_name (BonoboUINode *node,
 			 const char   *name)
 {
         return strcmp (XML_NODE (node)->name, name) == 0;
 }
 
 /**
- * bonobo_node_free_string:
+ * bonobo_ui_node_free_string:
  * @str: the string to free.
  * 
  * Frees a string returned by any of the get routines.
  **/
 void
-bonobo_node_free_string (char *str)
+bonobo_ui_node_free_string (char *str)
 {
         if (str)
                 xmlFree (str);
 }
 
 /**
- * bonobo_node_to_string:
+ * bonobo_ui_node_to_string:
  * @node: the node tree
  * @recurse: whether to dump its children as well
  * 
  * Convert the Node to its XML string representation
- * see also: bonobo_node_free_string
+ * see also: bonobo_ui_node_free_string
  * 
  * Return value: the string representation or NULL on error
  **/
 char *
-bonobo_node_to_string (BonoboNode *node,
+bonobo_ui_node_to_string (BonoboUINode *node,
 			  gboolean      recurse)
 {
 	xmlDoc     *doc;
@@ -399,14 +399,14 @@ bonobo_node_to_string (BonoboNode *node,
 	doc = xmlNewDoc ("1.0");
 	g_return_val_if_fail (doc != NULL, NULL);
 
-	doc->xmlRootNode = XML_NODE(bonobo_node_copy (node, TRUE));
+	doc->xmlRootNode = XML_NODE(bonobo_ui_node_copy (node, TRUE));
 	g_return_val_if_fail (doc->xmlRootNode != NULL, NULL);
 
-	if (!recurse && bonobo_node_children (BNODE (doc->xmlRootNode))) {
-		BonoboNode *tmp;
-		while ((tmp = bonobo_node_children (BNODE (doc->xmlRootNode)))) {
+	if (!recurse && bonobo_ui_node_children (BNODE (doc->xmlRootNode))) {
+		BonoboUINode *tmp;
+		while ((tmp = bonobo_ui_node_children (BNODE (doc->xmlRootNode)))) {
 			xmlUnlinkNode (XML_NODE(tmp));
-			bonobo_node_free (tmp);
+			bonobo_ui_node_free (tmp);
 		}
 	}
 
@@ -420,19 +420,19 @@ bonobo_node_to_string (BonoboNode *node,
 }
 
 /**
- * bonobo_node_from_string:
+ * bonobo_ui_node_from_string:
  * @xml: the xml string
  * 
  * Parses a string into an XML tree
  * 
  * Return value: the xml tree.
  **/
-BonoboNode*
-bonobo_node_from_string (const char *xml)
+BonoboUINode*
+bonobo_ui_node_from_string (const char *xml)
 {
 	/* We have crap error reporting for this function */
 	xmlDoc  *doc;
-	BonoboNode *node;
+	BonoboUINode *node;
 	
 	doc = xmlParseDoc ((char *)xml);
 	if (!doc)
@@ -444,27 +444,27 @@ bonobo_node_from_string (const char *xml)
 	
 	xmlFreeDoc (doc);
 
-	bonobo_node_strip (&node);
+	bonobo_ui_node_strip (&node);
 
 	return node;
 }
 
 /**
- * bonobo_node_from_file:
+ * bonobo_ui_node_from_file:
  * @fname: the filename containing the xml
  * 
  * Loads and parses the filename into an XML tree
  * 
  * Return value: the xml tree.
  **/
-BonoboNode*
-bonobo_node_from_file (const char *fname)
+BonoboUINode*
+bonobo_ui_node_from_file (const char *fname)
 {
 	/* Error reporting blows here too (because it blows
 	 * in libxml)
 	 */
 	xmlDoc  *doc;
-	BonoboNode *node;
+	BonoboUINode *node;
 
 	g_return_val_if_fail (fname != NULL, NULL);
 	
@@ -481,7 +481,7 @@ bonobo_node_from_file (const char *fname)
 }
 
 /**
- * bonobo_node_transparent:
+ * bonobo_ui_node_transparent:
  * @node: the node
  * 
  * Determines whether @node is transparent. A node is
@@ -491,7 +491,7 @@ bonobo_node_from_file (const char *fname)
  * Return value: TRUE if transparent
  **/
 gboolean
-bonobo_node_transparent (BonoboNode *node)
+bonobo_ui_node_transparent (BonoboUINode *node)
 {
 	xmlNode *n = XML_NODE (node);
 	gboolean ret = FALSE;
@@ -513,7 +513,7 @@ bonobo_node_transparent (BonoboNode *node)
 }
 
 /**
- * bonobo_node_copy_attrs:
+ * bonobo_ui_node_copy_attrs:
  * @src: the attr source node
  * @dest: where to dump the attrs.
  * 
@@ -521,8 +521,8 @@ bonobo_node_transparent (BonoboNode *node)
  * effectively cloning the @src node as @dest
  **/
 void
-bonobo_node_copy_attrs (BonoboNode *src,
-			   BonoboNode *dest)
+bonobo_ui_node_copy_attrs (BonoboUINode *src,
+			   BonoboUINode *dest)
 {
 	xmlAttr *attr;
 	
@@ -610,7 +610,7 @@ do_strip (xmlNode *node)
 }
 
 /**
- * bonobo_node_strip:
+ * bonobo_ui_node_strip:
  * @node: a pointer to the node's pointer
  * 
  *   This function is used to purge unwanted content from
@@ -618,12 +618,12 @@ do_strip (xmlNode *node)
  * NS pointers that cause serious trouble later.
  **/
 void
-bonobo_node_strip (BonoboNode **node)
+bonobo_ui_node_strip (BonoboUINode **node)
 {
-	BonoboNode *next, *l;
+	BonoboUINode *next, *l;
 
 	for (l = *node; l; l = next) {
-		next = bonobo_node_next (l);
+		next = bonobo_ui_node_next (l);
 		if (l == *node && do_strip (XML_NODE (l)))
 			*node = next;
 	}
