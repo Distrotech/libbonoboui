@@ -1,0 +1,64 @@
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+#ifndef _BONOBO_ZOOMABLE_H_
+#define _BONOBO_ZOOMABLE_H_
+
+#include <bonobo/bonobo-object.h>
+
+BEGIN_GNOME_DECLS
+
+#define BONOBO_ZOOMABLE_TYPE		(bonobo_zoomable_get_type ())
+#define BONOBO_ZOOMABLE(o)		(GTK_CHECK_CAST ((o), BONOBO_ZOOMABLE_TYPE, BonoboZoomable))
+#define BONOBO_ZOOMABLE_CLASS(k)	(GTK_CHECK_CLASS_CAST((k), BONOBO_ZOOMABLE_TYPE, BonoboZoomableClass))
+#define BONOBO_IS_ZOOMABLE(o)		(GTK_CHECK_TYPE ((o), BONOBO_ZOOMABLE_TYPE))
+#define BONOBO_IS_ZOOMABLE_CLASS(k)	(GTK_CHECK_CLASS_TYPE ((k), BONOBO_ZOOMABLE_TYPE))
+
+typedef struct _BonoboZoomable		BonoboZoomable;
+typedef struct _BonoboZoomablePrivate	BonoboZoomablePrivate;
+typedef struct _BonoboZoomableClass	BonoboZoomableClass;
+
+struct _BonoboZoomable {
+        BonoboObject		object;
+
+	BonoboZoomablePrivate	*priv;
+};
+
+struct _BonoboZoomableClass {
+	BonoboObjectClass	parent;
+
+	void (*set_zoom_level)	(BonoboZoomable *zoomable,
+				 float zoom_level);
+
+	void (*zoom_in)		(BonoboZoomable *zoomable);
+	void (*zoom_out)	(BonoboZoomable *zoomable);
+	void (*zoom_to_fit)	(BonoboZoomable *zoomable);
+	void (*zoom_to_default)	(BonoboZoomable *zoomable);
+};
+
+POA_Bonobo_Zoomable__epv *bonobo_zoomable_get_epv  (void);
+
+GtkType		 bonobo_zoomable_get_type (void);
+Bonobo_Zoomable	 bonobo_zoomable_corba_object_create		(BonoboObject   *object);
+
+BonoboZoomable	*bonobo_zoomable_new				(void);
+
+BonoboZoomable	*bonobo_zoomable_construct			(BonoboZoomable	*zoomable,
+								 Bonobo_Zoomable corba_zoomable);
+
+void		 bonobo_zoomable_set_parameters			(BonoboZoomable	*zoomable,
+								 float		 min_zoom_level,
+								 float		 max_zoom_level,
+								 gboolean	 has_min_zoom_level,
+								 gboolean	 has_max_zoom_level,
+								 gboolean	 is_continuous,
+								 float		*preferred_zoom_levels,
+								 int		 num_preferred_zoom_levels);
+
+void		 bonobo_zoomable_report_zoom_level_changed	(BonoboZoomable	*zoomable,
+								 float		 new_zoom_level);
+
+void		 bonobo_zoomable_report_zoom_parameters_changed	(BonoboZoomable	*zoomable);
+
+
+END_GNOME_DECLS
+
+#endif /* _BONOBO_ZOOMABLE_H_ */
