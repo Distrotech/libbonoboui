@@ -252,7 +252,7 @@ bonobo_widget_clobber_focus (GtkWidget        *widget,
   else
     children = gtk_container_get_children (container);
 
-  if (direction == GTK_DIR_TAB_BACKWARD)
+  if (direction == GTK_DIR_TAB_BACKWARD || direction == GTK_DIR_LEFT)
     children = g_list_reverse (children);
 
   return_val = bonobo_gtk_container_focus_move (container, children, direction);
