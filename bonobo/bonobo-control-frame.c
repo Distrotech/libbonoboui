@@ -1041,6 +1041,38 @@ BonoboUIComponent *
 bonobo_control_frame_get_popup_component (BonoboControlFrame *control_frame,
 					  CORBA_Environment  *opt_ev)
 {
-	/* FIXME: impl. me */
-	return CORBA_OBJECT_NIL;
+	CORBA_Environment *ev, tmp_ev;
+	BonoboUIComponent *ui_component;
+	Bonobo_UIContainer popup_container;
+
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
+
+	if (control_frame->priv->control == CORBA_OBJECT_NIL)
+		return NULL;
+
+	ui_component = bonobo_ui_component_new_default ();
+
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
+
+	popup_container = Bonobo_Control_getPopupContainer (
+		control_frame->priv->control, ev);
+
+	bonobo_ui_component_set_container (ui_component, popup_container, ev);
+
+	Bonobo_Unknown_unref (popup_container, ev);
+
+	if (ev->_major != CORBA_NO_EXCEPTION) {
+		bonobo_object_unref (BONOBO_OBJECT (ui_component));
+		ui_component = NULL;
+	}
+
+	if (!opt_ev) {
+		CORBA_exception_free (ev);
+	}
+
+	return ui_component;
 }

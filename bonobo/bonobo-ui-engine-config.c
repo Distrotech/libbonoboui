@@ -22,6 +22,8 @@
 #include <bonobo/bonobo-ui-engine-config.h>
 #include <bonobo/bonobo-ui-engine-private.h>
 
+#include <gconf/gconf-client.h>
+
 #define PARENT_TYPE G_TYPE_OBJECT
 
 static GObjectClass *parent_class = NULL;
@@ -77,37 +79,36 @@ clobbers_free (BonoboUIEngineConfig *config)
 void
 bonobo_ui_engine_config_serialize (BonoboUIEngineConfig *config)
 {
-	GPtrArray *array;
-	GSList    *l;
-	int        i;
+	GSList      *l;
+	GSList      *values = NULL;
+	GConfClient *client;
 
 	g_return_if_fail (config->priv->path != NULL);
 
-	array = g_ptr_array_new ();
-
 	for (l = config->priv->clobbers; l; l = l->next) {
-		clobber_t *cl = l->data;
+		clobber_t   *cl = l->data;
+		char        *str;
 
-		g_ptr_array_add (
-			array,
-			g_strconcat (cl->path, ":",
-				     cl->attr, ":",
-				     cl->value, NULL));
+		/* This sucks, but so does gconf */
+		str = g_strconcat (cl->path, ":",
+				   cl->attr, ":",
+				   cl->value, NULL);
+
+		values = g_slist_prepend (values, str);
 	}
+
+	client = gconf_client_get_default ();
 	
-#ifdef FIXME
-	gnome_config_set_vector (config->priv->path,
-				 array->len, (const char * const *) array->pdata);
-#endif
+	gconf_client_set_list (
+		client, config->priv->path,
+		GCONF_VALUE_STRING, values, NULL);
 
-	for (i = 0; i < array->len; i++)
-		g_free (g_ptr_array_index (array, i));
+	g_slist_foreach (values, (GFunc) g_free, NULL);
+	g_slist_free (values);
 
-	g_ptr_array_free (array, TRUE);
+	gconf_client_suggest_sync (client, NULL);
 
-#ifdef FIXME
-	gnome_config_sync ();
-#endif
+	g_object_unref (client);
 }
 
 static void
@@ -191,10 +192,8 @@ bonobo_ui_engine_config_remove (BonoboUIEngineConfig *config,
 void
 bonobo_ui_engine_config_hydrate (BonoboUIEngineConfig *config)
 {
-#warning Bonobo UI Engine configuration needs monikerizing.
-#ifdef FIXME
-	char **argv;
-	int    argc, i;
+	GSList *l, *values;
+	GConfClient *client;
 
 	g_return_if_fail (config->priv->path != NULL);
 
@@ -202,25 +201,29 @@ bonobo_ui_engine_config_hydrate (BonoboUIEngineConfig *config)
 
 	clobbers_free (config);
 
-	gnome_config_get_vector (config->priv->path,
-				 &argc, &argv);
+	client = gconf_client_get_default ();
 
-	for (i = 0; i < argc; i++) {
-		char **strs = g_strsplit (argv [i], ":", -1);
+	values = gconf_client_get_list (
+		client, config->priv->path, GCONF_VALUE_STRING, NULL);
+
+	for (l = values; l; l = l->next) {
+		char **strs = g_strsplit (l->data, ":", -1);
 
 		if (!strs || !strs [0] || !strs [1] || !strs [2] || strs [3])
-			g_warning ("Syntax error in '%s'", argv [i]);
+			g_warning ("Syntax error in '%s'", (char *) l->data);
 		else
 			bonobo_ui_engine_config_add (
 				config, strs [0], strs [1], strs [2]);
 
 		g_strfreev (strs);
-		g_free (argv [i]);
+		g_free (l->data);
 	}
 
-	g_free (argv);
+	g_slist_free (values);
+
 	bonobo_ui_engine_thaw (config->priv->engine);
-#endif
+
+	g_object_unref (client);
 }
 
 typedef struct {
