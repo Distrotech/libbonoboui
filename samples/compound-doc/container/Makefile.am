@@ -35,6 +35,7 @@ sample_container_SOURCES =	\
 
 sample_container_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la		\
+	$(top_builddir)/bonobo/libbonobox.la		\
 	$(GPRINT_LIBS)				        \
 	$(GTK_LIBS)					\
 	$(GNOME_LIBDIR)					\

@@ -31,7 +31,7 @@ bonobo_libs = 			\
 	$(gnome_libs)
 
 
-lib_LTLIBRARIES = libbonobo.la libbonobo-print.la
+lib_LTLIBRARIES = libbonobo.la libbonobox.la libbonobo-print.la
 
 test_programs = \
 	test-container 		\
@@ -78,21 +78,6 @@ libbonobo_la_SOURCES =			\
 	bonobo-arg.c			\
 	bonobo-object-directory.c	\
 	$(OBJECT_DIRECTORY_IMPL)	\
-	bonobo-ui-handler.c		\
-	bonobo-uih-menu.c		\
-	bonobo-uih-toolbar.c		\
-	bonobo-uih-dock.c		\
-	bonobo-uih-private.h		\
-	bonobo-canvas-item.c		\
-	bonobo-selector.c		\
-	bonobo-widget.c			\
-	bonobo-canvas-component.c	\
-	bonobo-client-site.c		\
-	bonobo-container.c		\
-	bonobo-control.c		\
-	bonobo-control-frame.c		\
-	bonobo-desktop-window.c		\
-	bonobo-embeddable.c		\
 	bonobo-generic-factory.c	\
 	bonobo-main.c			\
 	bonobo-moniker.c		\
@@ -103,18 +88,12 @@ libbonobo_la_SOURCES =			\
 	bonobo-persist-file.c		\
 	bonobo-persist-stream.c		\
 	bonobo-persist.c		\
-	bonobo-plug.c			\
 	bonobo-progressive.c		\
-	bonobo-sizeable.c		\
-	bonobo-socket.c			\
 	bonobo-storage.c		\
 	bonobo-stream.c			\
 	bonobo-stream-client.c		\
 	bonobo-stream-fs.c		\
 	bonobo-stream-memory.c		\
-	bonobo-view.c			\
-	bonobo-view-frame.c		\
-	bonobo-wrapper.c		\
 	bonobo-property.c		\
 	bonobo-property-bag.c		\
 	bonobo-property-bag-client.c
@@ -168,6 +147,30 @@ libbonoboinclude_HEADERS =		\
 	bonobo-property-bag-client.h	\
 	bonobo-property-types.h
 
+libbonobox_la_SOURCES =			\
+	bonobo-ui-handler.c		\
+	bonobo-uih-menu.c		\
+	bonobo-uih-toolbar.c		\
+	bonobo-uih-dock.c		\
+	bonobo-uih-private.h		\
+	bonobo-canvas-item.c		\
+	bonobo-selector.c		\
+	bonobo-widget.c			\
+	bonobo-canvas-component.c	\
+	bonobo-client-site.c		\
+	bonobo-container.c		\
+	bonobo-control.c		\
+	bonobo-control-frame.c		\
+	bonobo-desktop-window.c		\
+	bonobo-embeddable.c		\
+	bonobo-plug.c			\
+	bonobo-sizeable.c		\
+	bonobo-socket.c			\
+	bonobo-view.c			\
+	bonobo-view-frame.c		\
+	bonobo-wrapper.c
+
+
 libbonobo_print_la_SOURCES =		\
 	bonobo-print.c			\
 	bonobo-print-client.c
@@ -182,12 +185,12 @@ libbonobo_printinclude_HEADERS =		\
 test_container_SOURCES =		\
 	test-container.c
 
-test_container_LDADD = $(bonobo_libs)
+test_container_LDADD = $(bonobo_libs) libbonobox.la
 
 test_container_autoload_SOURCES =	\
 	test-container-autoload.c
 
-test_container_autoload_LDADD = $(bonobo_libs)
+test_container_autoload_LDADD = $(bonobo_libs) libbonobox.la
 
 test_storage_SOURCES = test-storage.c
 
@@ -196,7 +199,7 @@ test_storage_LDADD = $(bonobo_libs)
 selector_test_SOURCES =			\
 	selector_test.c
 
-selector_test_LDADD = $(bonobo_libs)
+selector_test_LDADD = $(bonobo_libs) libbonobox.la
 
 BUILT_SOURCES=$(CORBA_SOURCE)
 

@@ -25,6 +25,7 @@ sample_control_factory_SOURCES =			\
 
 sample_control_factory_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la		\
+	$(top_builddir)/bonobo/libbonobox.la		\
 	$(GTK_LIBS)					\
 	$(GNOME_LIBDIR)					\
 	$(OBJECT_DIRECTORY_LIBS)			\
@@ -35,6 +36,7 @@ sample_control_container_SOURCES =			\
 
 sample_control_container_LDADD =			\
 	$(top_builddir)/bonobo/libbonobo.la		\
+	$(top_builddir)/bonobo/libbonobox.la		\
 	$(GTK_LIBS)					\
 	$(GNOME_LIBDIR)					\
 	$(OBJECT_DIRECTORY_LIBS)			\

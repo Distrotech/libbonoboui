@@ -18,6 +18,7 @@ bonobo_echo_SOURCES =		\
 
 bonobo_echo_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la	\
+	$(top_builddir)/bonobo/libbonobox.la	\
 	$(GTK_LIBS)				\
 	$(GNOME_LIBDIR)				\
 	$(OBJECT_DIRECTORY_LIBS)                \
