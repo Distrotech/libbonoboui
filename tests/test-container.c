@@ -137,6 +137,9 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	}
 	
 	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
+
+	GNOME_obj_unref (persist, &ev);
+	CORBA_Object_release (persist, &ev);
 }
 
 /*
@@ -191,8 +194,11 @@ add_text_cmd (GtkWidget *widget, Application *app)
 		return;
 	}
 	
-	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
+	GNOME_PersistStream_load (
+	     persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
 
+	GNOME_obj_unref (persist, &ev);
+	CORBA_Object_release (persist, &ev);
 } /* add_text_cmd */
 
 /*
