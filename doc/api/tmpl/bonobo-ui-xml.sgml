@@ -14,45 +14,6 @@ A XML tree wrapper that implements tree merging logic
 
 </para>
 
-<!-- ##### MACRO BONOBO_UI_XML_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_UI_XML ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_UI_XML_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_XML ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_XML_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### STRUCT BonoboUIXml ##### -->
 <para>
 

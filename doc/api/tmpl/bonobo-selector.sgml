@@ -14,30 +14,6 @@ BonoboSelector
 
 </para>
 
-<!-- ##### MACRO BONOBO_IS_SELECTOR ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_SELECTOR ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_SELECTOR_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
 <!-- ##### TYPEDEF BonoboSelector ##### -->
 <para>
 

@@ -22,53 +22,6 @@ a bonobo toolbar icon widget
 @BONOBO_UI_TOOLBAR_ICON_SIMPLE: 
 @BONOBO_UI_TOOLBAR_ICON_COLOR: 
 
-<!-- ##### MACRO BONOBO_TYPE_UI_TOOLBAR_ICON ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_UI_TOOLBAR_ICON ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_UI_TOOLBAR_ICON_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_TOOLBAR_ICON ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_TOOLBAR_ICON_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
-<!-- ##### MACRO BONOBO_UI_TOOLBAR_ICON_GET_CLASS ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
 <!-- ##### TYPEDEF BonoboUIToolbarIcon ##### -->
 <para>
 

@@ -478,8 +478,12 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		
 		gtk_signal_emit (GTK_OBJECT (tree), signals [RENAME], node);
 		return;
-	} else
+	} else {
+		/* Mark parent & up dirty */
+		bonobo_ui_xml_set_dirty (tree, node);
+
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
+	}
 
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",
 		node->name, bonobo_ui_node_get_attr (node, "name"));*/

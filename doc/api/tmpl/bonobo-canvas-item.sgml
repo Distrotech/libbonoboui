@@ -23,30 +23,6 @@ Canvas Items.
    #BonoboCanvasComponent, #BonoboEmbeddable, #BonoboObjectClient.
 </para>
 
-<!-- ##### MACRO BONOBO_CANVAS_ITEM ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_CANVAS_ITEM_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_CANVAS_ITEM ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
 <!-- ##### TYPEDEF BonoboCanvasItem ##### -->
 <para>
 

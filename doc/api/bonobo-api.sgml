@@ -123,8 +123,6 @@
       &bonobo-control;
       &bonobo-control-frame;
       &bonobo-property-control;
-      &bonobo-zoomable;
-      &bonobo-zoomable-frame;
   </chapter>
 
   <chapter id="bonobo-documents">
@@ -180,7 +178,13 @@
       &bonobo-object-directory;
       &bonobo-selector;
       &bonobo-async;
+  </chapter>
+
+  <chapter id="misc-ugly">
+    <title>Strange stuff</title>
       &bonobo-object-io;
       &bonobo-component-io;
+      &bonobo-zoomable;
+      &bonobo-zoomable-frame;
   </chapter>
 </book>

@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-bonobo-item-handler
+BonoboItemHandler
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -13,45 +13,6 @@ bonobo-item-handler
 <para>
    A simplistic implementation exists in #BonoboItemContainer.
 </para>
-
-<!-- ##### MACRO BONOBO_ITEM_HANDLER ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_ITEM_HANDLER ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_ITEM_HANDLER_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_ITEM_HANDLER_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_ITEM_HANDLER_TYPE ##### -->
-<para>
-
-</para>
-
-
 
 <!-- ##### STRUCT BonoboItemHandler ##### -->
 <para>

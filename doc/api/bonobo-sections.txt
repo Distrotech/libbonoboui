@@ -1,8 +1,5 @@
 <SECTION>
 <FILE>bonobo-selector</FILE>
-BONOBO_IS_SELECTOR
-BONOBO_SELECTOR
-BONOBO_SELECTOR_CLASS
 BonoboSelector
 BonoboSelectorClass
 bonobo_selector_new
@@ -14,15 +11,13 @@ bonobo_selector_select_id
 <SUBSECTION Standard>
 BonoboSelectorPrivate
 bonobo_selector_get_type
+BONOBO_IS_SELECTOR
+BONOBO_SELECTOR
+BONOBO_SELECTOR_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-canvas-component</FILE>
-BONOBO_CANVAS_COMPONENT_TYPE
-BONOBO_CANVAS_COMPONENT
-BONOBO_CANVAS_COMPONENT_CLASS
-BONOBO_IS_CANVAS_COMPONENT
-BONOBO_IS_CANVAS_COMPONENT_CLASS
 BonoboCanvasComponent
 BonoboCanvasComponentClass
 bonobo_canvas_new
@@ -35,28 +30,28 @@ bonobo_canvas_component_ungrab
 <SUBSECTION Standard>
 BonoboCanvasComponentPrivate
 bonobo_canvas_component_get_type
+BONOBO_CANVAS_COMPONENT_TYPE
+BONOBO_CANVAS_COMPONENT
+BONOBO_CANVAS_COMPONENT_CLASS
+BONOBO_IS_CANVAS_COMPONENT
+BONOBO_IS_CANVAS_COMPONENT_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-canvas-item</FILE>
-BONOBO_CANVAS_ITEM
-BONOBO_CANVAS_ITEM_CLASS
-BONOBO_IS_CANVAS_ITEM
 BonoboCanvasItem
 BonoboCanvasItemClass
 bonobo_canvas_item_set_bounds
 <SUBSECTION Standard>
 bonobo_canvas_item_get_type
+BONOBO_CANVAS_ITEM
+BONOBO_CANVAS_ITEM_CLASS
+BONOBO_IS_CANVAS_ITEM
 BonoboCanvasItemPrivate
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-client-site</FILE>
-BONOBO_CLIENT_SITE_TYPE
-BONOBO_CLIENT_SITE
-BONOBO_CLIENT_SITE_CLASS
-BONOBO_IS_CLIENT_SITE
-BONOBO_IS_CLIENT_SITE_CLASS
 BonoboClientSite
 BonoboClientSiteClass
 bonobo_client_site_new
@@ -72,6 +67,11 @@ bonobo_client_site_free_verbs
 <SUBSECTION Standard>
 BonoboClientSitePrivate
 bonobo_client_site_get_type
+BONOBO_CLIENT_SITE_TYPE
+BONOBO_CLIENT_SITE
+BONOBO_CLIENT_SITE_CLASS
+BONOBO_IS_CLIENT_SITE
+BONOBO_IS_CLIENT_SITE_CLASS
 </SECTION>
 
 <SECTION>
@@ -86,11 +86,6 @@ gnome_get_class_id_from_file
 
 <SECTION>
 <FILE>bonobo-control-frame</FILE>
-BONOBO_CONTROL_FRAME_TYPE
-BONOBO_CONTROL_FRAME
-BONOBO_CONTROL_FRAME_CLASS
-BONOBO_IS_CONTROL_FRAME
-BONOBO_IS_CONTROL_FRAME_CLASS
 BonoboControlFrame
 BonoboControlFrameClass
 bonobo_control_frame_new
@@ -115,17 +110,17 @@ bonobo_control_frame_sync_realize
 bonobo_control_frame_sync_unrealize
 <SUBSECTION Standard>
 bonobo_control_frame_get_type
+BONOBO_CONTROL_FRAME_TYPE
+BONOBO_CONTROL_FRAME
+BONOBO_CONTROL_FRAME_CLASS
+BONOBO_IS_CONTROL_FRAME
+BONOBO_IS_CONTROL_FRAME_CLASS
 BonoboControlFramePrivate
 bonobo_control_frame_focus
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-control</FILE>
-BONOBO_CONTROL_TYPE
-BONOBO_CONTROL
-BONOBO_CONTROL_CLASS
-BONOBO_IS_CONTROL
-BONOBO_IS_CONTROL_CLASS
 BonoboControl
 BonoboControlClass
 bonobo_control_new
@@ -147,16 +142,16 @@ bonobo_control_activate_notify
 bonobo_control_windowid_from_x11
 <SUBSECTION Standard>
 bonobo_control_get_type
+BONOBO_CONTROL_TYPE
+BONOBO_CONTROL
+BONOBO_CONTROL_CLASS
+BONOBO_IS_CONTROL
+BONOBO_IS_CONTROL_CLASS
 BonoboControlPrivate
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-desktop-window</FILE>
-BONOBO_DESKTOP_WINDOW_TYPE
-BONOBO_DESKTOP_WINDOW
-BONOBO_DESKTOP_WINDOW_CLASS
-BONOBO_IS_DESKTOP_WINDOW
-BONOBO_IS_DESKTOP_WINDOW_CLASS
 BonoboDesktopWindow
 BonoboDesktopWindowClass
 bonobo_desktop_window_construct
@@ -165,15 +160,15 @@ bonobo_desktop_window_control
 <SUBSECTION Standard>
 bonobo_desktop_window_get_type
 BonoboDesktopWindowPrivate
+BONOBO_DESKTOP_WINDOW_TYPE
+BONOBO_DESKTOP_WINDOW
+BONOBO_DESKTOP_WINDOW_CLASS
+BONOBO_IS_DESKTOP_WINDOW
+BONOBO_IS_DESKTOP_WINDOW_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-embeddable</FILE>
-BONOBO_EMBEDDABLE_TYPE
-BONOBO_EMBEDDABLE
-BONOBO_EMBEDDABLE_CLASS
-BONOBO_IS_EMBEDDABLE
-BONOBO_IS_EMBEDDABLE_CLASS
 BonoboEmbeddable
 BONOBO_VIEW_FACTORY
 BonoboViewFactory
@@ -193,6 +188,11 @@ bonobo_embeddable_foreach_item
 <SUBSECTION Standard>
 bonobo_embeddable_get_type
 BonoboEmbeddablePrivate
+BONOBO_EMBEDDABLE_TYPE
+BONOBO_EMBEDDABLE
+BONOBO_EMBEDDABLE_CLASS
+BONOBO_IS_EMBEDDABLE
+BONOBO_IS_EMBEDDABLE_CLASS
 </SECTION>
 
 <SECTION>
@@ -238,11 +238,6 @@ BonoboGenericFactoryPrivate
 
 <SECTION>
 <FILE>bonobo-item-container</FILE>
-BONOBO_ITEM_CONTAINER_TYPE
-BONOBO_ITEM_CONTAINER
-BONOBO_ITEM_CONTAINER_CLASS
-BONOBO_IS_ITEM_CONTAINER
-BONOBO_IS_ITEM_CONTAINER_CLASS
 BonoboClientSiteList
 BonoboItemContainer
 BonoboItemContainerClass
@@ -252,15 +247,15 @@ bonobo_item_container_remove_by_name
 <SUBSECTION Standard>
 bonobo_item_container_get_type
 BonoboItemContainerPrivate
+BONOBO_ITEM_CONTAINER_TYPE
+BONOBO_ITEM_CONTAINER
+BONOBO_ITEM_CONTAINER_CLASS
+BONOBO_IS_ITEM_CONTAINER
+BONOBO_IS_ITEM_CONTAINER_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-item-handler</FILE>
-BONOBO_ITEM_HANDLER
-BONOBO_IS_ITEM_HANDLER
-BONOBO_ITEM_HANDLER_CLASS
-BONOBO_IS_ITEM_HANDLER_CLASS
-BONOBO_ITEM_HANDLER_TYPE 
 BonoboItemHandler
 BonoboItemHandlerClass
 BonoboItemHandlerEnumObjectsFn
@@ -273,6 +268,11 @@ bonobo_item_handler_construct
 <SUBSECTION Standard>
 bonobo_item_handler_get_type
 BonoboItemHandlerPrivate
+BONOBO_ITEM_HANDLER
+BONOBO_IS_ITEM_HANDLER
+BONOBO_ITEM_HANDLER_CLASS
+BONOBO_IS_ITEM_HANDLER_CLASS
+BONOBO_ITEM_HANDLER_TYPE 
 </SECTION>
 
 <SECTION>
@@ -323,12 +323,6 @@ bonobo_async_handle_get_recv
 
 <SECTION>
 <FILE>bonobo-moniker</FILE>
-BonoboMonikerPrivate
-BONOBO_MONIKER_TYPE
-BONOBO_MONIKER
-BONOBO_MONIKER_CLASS
-BONOBO_IS_MONIKER
-BONOBO_IS_MONIKER_CLASS
 BonoboMoniker
 BonoboMonikerClass
 bonobo_moniker_construct
@@ -343,6 +337,12 @@ bonobo_moniker_set_case_sensitive
 bonobo_moniker_get_prefix
 <SUBSECTION Standard>
 bonobo_moniker_get_type
+BonoboMonikerPrivate
+BONOBO_MONIKER_TYPE
+BONOBO_MONIKER
+BONOBO_MONIKER_CLASS
+BONOBO_IS_MONIKER
+BONOBO_IS_MONIKER_CLASS
 </SECTION>
 
 <SECTION>
@@ -381,11 +381,6 @@ BONOBO_IS_MONIKER_EXTENDER
 
 <SECTION>
 <FILE>bonobo-object-client</FILE>
-BONOBO_OBJECT_CLIENT_TYPE
-BONOBO_OBJECT_CLIENT
-BONOBO_OBJECT_CLIENT_CLASS
-BONOBO_IS_OBJECT_CLIENT
-BONOBO_IS_OBJECT_CLIENT_CLASS
 BonoboObjectClient
 BonoboObjectClientClass
 BonoboObjectClientAsyncCallback
@@ -399,6 +394,11 @@ bonobo_object_client_ref
 bonobo_object_client_unref
 <SUBSECTION Standard>
 bonobo_object_client_get_type
+BONOBO_OBJECT_CLIENT_TYPE
+BONOBO_OBJECT_CLIENT
+BONOBO_OBJECT_CLIENT_CLASS
+BONOBO_IS_OBJECT_CLIENT
+BONOBO_IS_OBJECT_CLIENT_CLASS
 </SECTION>
 
 <SECTION>
@@ -434,9 +434,6 @@ bonobo_object_save_to_stream
 
 <SECTION>
 <FILE>bonobo-xobject</FILE>
-BONOBO_X_OBJECT_TYPE
-BONOBO_X_OBJECT
-BONOBO_X_OBJECT_CLASS
 BONOBO_IS_X_OBJECT
 BONOBO_IS_X_OBJECT_CLASS
 BONOBO_X_SERVANT_GET_OBJECT
@@ -456,15 +453,13 @@ BONOBO_X_CORBA_GET_SERVANT
 BONOBO_X_CORBA_GET_OBJECT
 BONOBO_X_SERVANT_GET_CORBA
 BONOBO_X_OBJECT_GET_CORBA
+BONOBO_X_OBJECT_TYPE
+BONOBO_X_OBJECT
+BONOBO_X_OBJECT_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-object</FILE>
-BONOBO_OBJECT_TYPE
-BONOBO_OBJECT
-BONOBO_OBJECT_CLASS
-BONOBO_IS_OBJECT
-BONOBO_IS_OBJECT_CLASS
 BonoboObjectServant
 BonoboObject
 BonoboObjectClass
@@ -497,30 +492,30 @@ bonobo_unknown_ping
 <SUBSECTION Standard>
 bonobo_object_get_type
 BonoboObjectPrivate
+BONOBO_OBJECT_TYPE
+BONOBO_OBJECT
+BONOBO_OBJECT_CLASS
+BONOBO_IS_OBJECT
+BONOBO_IS_OBJECT_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-persist</FILE>
-BONOBO_PERSIST_TYPE
-BONOBO_PERSIST
-BONOBO_PERSIST_CLASS
-BONOBO_IS_PERSIST
-BONOBO_IS_PERSIST_CLASS
 BonoboPersist
 BonoboPersistClass
 bonobo_persist_generate_content_types
 <SUBSECTION Standard>
 bonobo_persist_get_type
 BonoboPersistPrivate
+BONOBO_PERSIST_TYPE
+BONOBO_PERSIST
+BONOBO_PERSIST_CLASS
+BONOBO_IS_PERSIST
+BONOBO_IS_PERSIST_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-persist-file</FILE>
-BONOBO_PERSIST_FILE_TYPE
-BONOBO_PERSIST_FILE
-BONOBO_PERSIST_FILE_CLASS
-BONOBO_IS_PERSIST_FILE
-BONOBO_IS_PERSIST_FILE_CLASS
 BonoboPersistFile
 BonoboPersistFileIOFn
 BonoboPersistFileClass
@@ -530,15 +525,15 @@ bonobo_persist_file_construct
 <SUBSECTION Standard>
 bonobo_persist_file_get_type
 BonoboPersistFilePrivate
+BONOBO_PERSIST_FILE_TYPE
+BONOBO_PERSIST_FILE
+BONOBO_PERSIST_FILE_CLASS
+BONOBO_IS_PERSIST_FILE
+BONOBO_IS_PERSIST_FILE_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-persist-stream</FILE>
-BONOBO_PERSIST_STREAM_TYPE
-BONOBO_PERSIST_STREAM
-BONOBO_PERSIST_STREAM_CLASS
-BONOBO_IS_PERSIST_STREAM
-BONOBO_IS_PERSIST_STREAM_CLASS
 BonoboPersistStream
 BonoboPersistStreamIOFn
 BonoboPersistStreamMaxFn
@@ -550,28 +545,28 @@ bonobo_persist_stream_construct
 <SUBSECTION Standard>
 bonobo_persist_stream_get_type
 BonoboPersistStreamPrivate
+BONOBO_PERSIST_STREAM_TYPE
+BONOBO_PERSIST_STREAM
+BONOBO_PERSIST_STREAM_CLASS
+BONOBO_IS_PERSIST_STREAM
+BONOBO_IS_PERSIST_STREAM_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-plug</FILE>
-BONOBO_PLUG
-BONOBO_PLUG_CLASS
-BONOBO_IS_PLUG
 BonoboPlug
 BonoboPlugClass
 bonobo_plug_construct
 bonobo_plug_new
 <SUBSECTION Standard>
 bonobo_plug_get_type
+BONOBO_PLUG
+BONOBO_PLUG_CLASS
+BONOBO_IS_PLUG
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-print-client</FILE>
-BONOBO_PRINT_CLIENT_TYPE
-BONOBO_PRINT_CLIENT
-BONOBO_PRINT_CLIENT_CLASS
-BONOBO_IS_PRINT_CLIENT
-BONOBO_IS_PRINT_CLIENT_CLASS
 BonoboPrintClient
 BonoboPrintClientClass
 BonoboPrintData
@@ -584,15 +579,15 @@ bonobo_print_data_free
 bonobo_print_data_get_meta
 bonobo_print_data_render
 <SUBSECTION Standard>
+BONOBO_PRINT_CLIENT_TYPE
+BONOBO_PRINT_CLIENT
+BONOBO_PRINT_CLIENT_CLASS
+BONOBO_IS_PRINT_CLIENT
+BONOBO_IS_PRINT_CLIENT_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-print</FILE>
-BONOBO_PRINT_TYPE
-BONOBO_PRINT
-BONOBO_PRINT_CLASS
-BONOBO_IS_PRINT
-BONOBO_IS_PRINT_CLASS
 BonoboPrint
 BonoboPrintClass
 bonobo_print_get_type
@@ -600,15 +595,15 @@ bonobo_print_construct
 bonobo_print_new
 <SUBSECTION Standard>
 bonobo_print_client_get_type
+BONOBO_PRINT_TYPE
+BONOBO_PRINT
+BONOBO_PRINT_CLASS
+BONOBO_IS_PRINT
+BONOBO_IS_PRINT_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-progressive</FILE>
-BONOBO_PROGRESSIVE_DATA_SINK_TYPE
-BONOBO_PROGRESSIVE_DATA_SINK
-BONOBO_PROGRESSIVE_DATA_SINK_CLASS
-BONOBO_IS_PROGRESSIVE_DATA_SINK
-BONOBO_IS_PROGRESSIVE_DATA_SINK_CLASS
 BonoboProgressiveDataSink
 BonoboProgressiveDataSinkStartFn
 BonoboProgressiveDataSinkEndFn
@@ -620,6 +615,11 @@ bonobo_progressive_data_sink_construct
 <SUBSECTION Standard>
 bonobo_progressive_data_sink_get_type
 BonoboProgressiveDataSinkPrivate
+BONOBO_PROGRESSIVE_DATA_SINK_TYPE
+BONOBO_PROGRESSIVE_DATA_SINK
+BONOBO_PROGRESSIVE_DATA_SINK_CLASS
+BONOBO_IS_PROGRESSIVE_DATA_SINK
+BONOBO_IS_PROGRESSIVE_DATA_SINK_CLASS
 </SECTION>
 
 <SECTION>
@@ -667,11 +667,6 @@ BonoboPropertyFlags
 BonoboPropertyGetFn
 BonoboPropertySetFn
 BonoboPropertyBagClass
-BONOBO_PROPERTY_BAG_TYPE
-BONOBO_PROPERTY_BAG
-BONOBO_PROPERTY_BAG_CLASS
-BONOBO_IS_PROPERTY_BAG
-BONOBO_IS_PROPERTY_BAG_CLASS
 bonobo_property_bag_get_type
 bonobo_property_bag_new
 bonobo_property_bag_new_full
@@ -691,13 +686,15 @@ bonobo_property_bag_get_prop_list
 <SUBSECTION Standard>
 bonobo_property_bag_get_type
 BonoboPropertyBagPrivate
+BONOBO_PROPERTY_BAG_TYPE
+BONOBO_PROPERTY_BAG
+BONOBO_PROPERTY_BAG_CLASS
+BONOBO_IS_PROPERTY_BAG
+BONOBO_IS_PROPERTY_BAG_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-socket</FILE>
-BONOBO_SOCKET
-BONOBO_SOCKET_CLASS
-BONOBO_IS_SOCKET
 BonoboSocket
 BonoboSocketClass
 bonobo_socket_new
@@ -706,6 +703,9 @@ bonobo_socket_steal
 <SUBSECTION Standard>
 bonobo_socket_get_type
 BonoboSocketPrivate
+BONOBO_SOCKET
+BONOBO_SOCKET_CLASS
+BONOBO_IS_SOCKET
 </SECTION>
 
 <SECTION>
@@ -724,11 +724,6 @@ bonobo_storage_plugin_find
 
 <SECTION>
 <FILE>bonobo-storage</FILE>
-BONOBO_STORAGE_TYPE
-BONOBO_STORAGE
-BONOBO_STORAGE_CLASS
-BONOBO_IS_STORAGE
-BONOBO_IS_STORAGE_CLASS
 BonoboStorage
 BonoboStorageClass
 bonobo_storage_open
@@ -739,6 +734,11 @@ bonobo_stream_write_class_id
 <SUBSECTION Standard>
 bonobo_storage_get_type
 BonoboStoragePrivate
+BONOBO_STORAGE_TYPE
+BONOBO_STORAGE
+BONOBO_STORAGE_CLASS
+BONOBO_IS_STORAGE
+BONOBO_IS_STORAGE_CLASS
 </SECTION>
 
 <SECTION>
@@ -756,11 +756,6 @@ bonobo_stream_client_get_length
 <FILE>bonobo-stream-memory</FILE>
 BonoboStreamMem
 BonoboStorageMem
-BONOBO_STREAM_MEM_TYPE
-BONOBO_STREAM_MEM
-BONOBO_STREAM_MEM_CLASS
-BONOBO_IS_STREAM_MEM
-BONOBO_IS_STREAM_MEM_CLASS
 BonoboStreamMemClass
 bonobo_stream_mem_construct
 bonobo_stream_mem_create
@@ -769,6 +764,11 @@ bonobo_stream_mem_get_size
 <SUBSECTION Standard>
 bonobo_stream_mem_get_type
 BonoboStreamMemPrivate
+BONOBO_STREAM_MEM_TYPE
+BONOBO_STREAM_MEM
+BONOBO_STREAM_MEM_CLASS
+BONOBO_IS_STREAM_MEM
+BONOBO_IS_STREAM_MEM_CLASS
 </SECTION>
 
 <SECTION>
@@ -776,11 +776,6 @@ BonoboStreamMemPrivate
 BONOBO_IO_DRIVER_FS
 BONOBO_IO_DRIVER_EFS
 BONOBO_IO_DRIVER_VFS
-BONOBO_STREAM_TYPE
-BONOBO_STREAM
-BONOBO_STREAM_CLASS
-BONOBO_IS_STREAM
-BONOBO_IS_STREAM_CLASS
 BonoboStream
 BonoboStreamClass
 bonobo_stream_get_epv
@@ -789,15 +784,15 @@ bonobo_stream_open
 bonobo_stream_open_full
 <SUBSECTION Standard>
 bonobo_stream_get_type
+BONOBO_STREAM_TYPE
+BONOBO_STREAM
+BONOBO_STREAM_CLASS
+BONOBO_IS_STREAM
+BONOBO_IS_STREAM_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-transient</FILE>
-BONOBO_TRANSIENT_TYPE
-BONOBO_TRANSIENT
-BONOBO_TRANSIENT_CLASS
-BONOBO_IS_TRANSIENT
-BONOBO_IS_TRANSIENT_CLASS
 BonoboTransient
 BonoboTransientClass
 BonoboTransientServantNew
@@ -808,15 +803,15 @@ bonobo_transient_create_objref
 <SUBSECTION Standard>
 bonobo_transient_get_type
 BonoboTransientPriv
+BONOBO_TRANSIENT_TYPE
+BONOBO_TRANSIENT
+BONOBO_TRANSIENT_CLASS
+BONOBO_IS_TRANSIENT
+BONOBO_IS_TRANSIENT_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-ui-component</FILE>
-BONOBO_UI_COMPONENT_TYPE
-BONOBO_UI_COMPONENT
-BONOBO_UI_COMPONENT_CLASS
-BONOBO_IS_UI_COMPONENT
-BONOBO_IS_UI_COMPONENT_CLASS
 BonoboUIComponent
 BonoboUIListenerFn
 BonoboUIVerbFn
@@ -864,15 +859,15 @@ bonobo_ui_component_add_verb_list_with_data
 <SUBSECTION Standard>
 BonoboUIComponentPrivate
 bonobo_ui_component_get_type
+BONOBO_UI_COMPONENT_TYPE
+BONOBO_UI_COMPONENT
+BONOBO_UI_COMPONENT_CLASS
+BONOBO_IS_UI_COMPONENT
+BONOBO_IS_UI_COMPONENT_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-ui-container</FILE>
-BONOBO_UI_CONTAINER_TYPE
-BONOBO_UI_CONTAINER
-BONOBO_UI_CONTAINER_CLASS
-BONOBO_IS_UI_CONTAINER
-BONOBO_IS_UI_CONTAINER_CLASS
 BonoboUIContainer
 BonoboUIContainerClass
 bonobo_ui_container_construct
@@ -884,15 +879,15 @@ bonobo_ui_container_get_win
 <SUBSECTION Standard>
 bonobo_ui_container_get_type
 BonoboUIContainerPrivate
+BONOBO_UI_CONTAINER_TYPE
+BONOBO_UI_CONTAINER
+BONOBO_UI_CONTAINER_CLASS
+BONOBO_IS_UI_CONTAINER
+BONOBO_IS_UI_CONTAINER_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-ui-engine</FILE>
-BONOBO_TYPE_UI_ENGINE
-BONOBO_UI_ENGINE
-BONOBO_UI_ENGINE_CLASS
-BONOBO_IS_UI_ENGINE
-BONOBO_IS_UI_ENGINE_CLASS
 BonoboUIEngine
 BonoboUIEngineClass
 BonoboUIError
@@ -948,6 +943,11 @@ bonobo_ui_engine_thaw
 <SUBSECTION Standard>
 bonobo_ui_engine_get_type
 BonoboUIEnginePrivate
+BONOBO_TYPE_UI_ENGINE
+BONOBO_UI_ENGINE
+BONOBO_UI_ENGINE_CLASS
+BONOBO_IS_UI_ENGINE
+BONOBO_IS_UI_ENGINE_CLASS
 </SECTION>
 
 <SECTION>
@@ -987,11 +987,6 @@ bonobo_ui_node_strip
 
 <SECTION>
 <FILE>bonobo-ui-toolbar-button-item</FILE>
-BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM
-BONOBO_UI_TOOLBAR_BUTTON_ITEM
-BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS
-BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM
-BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM_CLASS
 BonoboUIToolbarButtonItem
 BonoboUIToolbarButtonItemClass
 bonobo_ui_toolbar_button_item_construct
@@ -1002,17 +997,16 @@ bonobo_ui_toolbar_button_item_get_button_widget
 <SUBSECTION Standard>
 bonobo_ui_toolbar_button_item_get_type
 BonoboUIToolbarButtonItemPrivate
+BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM
+BONOBO_UI_TOOLBAR_BUTTON_ITEM
+BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS
+BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM
+BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-ui-toolbar-icon</FILE>
 BonoboUIToolbarIconDrawMode
-BONOBO_TYPE_UI_TOOLBAR_ICON
-BONOBO_UI_TOOLBAR_ICON
-BONOBO_UI_TOOLBAR_ICON_CLASS
-BONOBO_IS_UI_TOOLBAR_ICON
-BONOBO_IS_UI_TOOLBAR_ICON_CLASS
-BONOBO_UI_TOOLBAR_ICON_GET_CLASS
 BonoboUIToolbarIcon
 BonoboUIToolbarIconClass
 bonobo_ui_toolbar_icon_new
@@ -1037,15 +1031,16 @@ bonobo_ui_toolbar_icon_set_alpha_threshold
 bonobo_ui_toolbar_icon_get_alpha_threshold
 <SUBSECTION Standard>
 bonobo_ui_toolbar_icon_get_type
+BONOBO_TYPE_UI_TOOLBAR_ICON
+BONOBO_UI_TOOLBAR_ICON
+BONOBO_UI_TOOLBAR_ICON_CLASS
+BONOBO_IS_UI_TOOLBAR_ICON
+BONOBO_IS_UI_TOOLBAR_ICON_CLASS
+BONOBO_UI_TOOLBAR_ICON_GET_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-ui-toolbar-item</FILE>
-BONOBO_TYPE_UI_TOOLBAR_ITEM
-BONOBO_UI_TOOLBAR_ITEM
-BONOBO_UI_TOOLBAR_ITEM_CLASS
-BONOBO_IS_UI_TOOLBAR_ITEM
-BONOBO_IS_UI_TOOLBAR_ITEM_CLASS
 BonoboUIToolbarItemStyle
 BonoboUIToolbarItem
 BonoboUIToolbarItemClass
@@ -1067,15 +1062,15 @@ bonobo_ui_toolbar_item_activate
 <SUBSECTION Standard>
 BonoboUIToolbarItemPrivate
 bonobo_ui_toolbar_item_get_type
+BONOBO_TYPE_UI_TOOLBAR_ITEM
+BONOBO_UI_TOOLBAR_ITEM
+BONOBO_UI_TOOLBAR_ITEM_CLASS
+BONOBO_IS_UI_TOOLBAR_ITEM
+BONOBO_IS_UI_TOOLBAR_ITEM_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-ui-toolbar-toggle-button-item</FILE>
-BONOBO_TYPE_UI_TOOLBAR_TOGGLE_BUTTON_ITEM
-BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM
-BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_CLASS
-BONOBO_IS_UI_TOOLBAR_TOGGLE_BUTTON_ITEM
-BONOBO_IS_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_CLASS
 BonoboUIToolbarToggleButtonItem
 BonoboUIToolbarToggleButtonItemClass
 bonobo_ui_toolbar_toggle_button_item_construct
@@ -1085,6 +1080,11 @@ bonobo_ui_toolbar_toggle_button_item_get_active
 <SUBSECTION Standard>
 bonobo_ui_toolbar_toggle_button_item_get_type
 BonoboUIToolbarToggleButtonItemPrivate
+BONOBO_TYPE_UI_TOOLBAR_TOGGLE_BUTTON_ITEM
+BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM
+BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_CLASS
+BONOBO_IS_UI_TOOLBAR_TOGGLE_BUTTON_ITEM
+BONOBO_IS_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_CLASS
 </SECTION>
 
 <SECTION>
@@ -1121,11 +1121,6 @@ bonobo_ui_util_encode_str
 
 <SECTION>
 <FILE>bonobo-ui-xml</FILE>
-BONOBO_UI_XML_TYPE
-BONOBO_UI_XML
-BONOBO_UI_XML_CLASS
-BONOBO_IS_UI_XML
-BONOBO_IS_UI_XML_CLASS
 BonoboUIXml
 BonoboUIXmlData
 BonoboUIXmlCompareFn
@@ -1152,15 +1147,15 @@ bonobo_ui_xml_add_watch
 bonobo_ui_xml_set_watch_fn
 <SUBSECTION Standard>
 bonobo_ui_xml_get_type
+BONOBO_UI_XML_TYPE
+BONOBO_UI_XML
+BONOBO_UI_XML_CLASS
+BONOBO_IS_UI_XML
+BONOBO_IS_UI_XML_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-view-frame</FILE>
-BONOBO_VIEW_FRAME_TYPE
-BONOBO_VIEW_FRAME
-BONOBO_VIEW_FRAME_CLASS
-BONOBO_IS_VIEW_FRAME
-BONOBO_IS_VIEW_FRAME_CLASS
 BonoboViewFrame
 BonoboViewFrameClass
 bonobo_view_frame_construct
@@ -1177,15 +1172,15 @@ bonobo_view_frame_set_zoom_factor
 <SUBSECTION Standard>
 bonobo_view_frame_get_type
 BonoboViewFramePrivate
+BONOBO_VIEW_FRAME_TYPE
+BONOBO_VIEW_FRAME
+BONOBO_VIEW_FRAME_CLASS
+BONOBO_IS_VIEW_FRAME
+BONOBO_IS_VIEW_FRAME_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-view</FILE>
-BONOBO_VIEW_TYPE
-BONOBO_VIEW
-BONOBO_VIEW_CLASS
-BONOBO_IS_VIEW
-BONOBO_IS_VIEW_CLASS
 BonoboView
 BonoboViewClass
 BONOBO_VIEW_VERB_FUNC
@@ -1202,15 +1197,15 @@ bonobo_view_activate_notify
 <SUBSECTION Standard>
 bonobo_view_get_type
 BonoboViewPrivate
+BONOBO_VIEW_TYPE
+BONOBO_VIEW
+BONOBO_VIEW_CLASS
+BONOBO_IS_VIEW
+BONOBO_IS_VIEW_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-widget</FILE>
-BONOBO_WIDGET_TYPE
-BONOBO_WIDGET
-BONOBO_WIDGET_CLASS
-BONOBO_IS_WIDGET
-BONOBO_IS_WIDGET_CLASS
 BonoboWidget
 BonoboWidgetClass
 bonobo_widget_get_server
@@ -1230,15 +1225,15 @@ bonobo_widget_get_property
 <SUBSECTION Standard>
 bonobo_widget_get_type
 BonoboWidgetPrivate
+BONOBO_WIDGET_TYPE
+BONOBO_WIDGET
+BONOBO_WIDGET_CLASS
+BONOBO_IS_WIDGET
+BONOBO_IS_WIDGET_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-win</FILE>
-BONOBO_TYPE_WINDOW
-BONOBO_WINDOW
-BONOBO_IS_WINDOW
-BONOBO_WINDOW_CLASS
-BONOBO_IS_WINDOW_CLASS
 BonoboWindow
 BonoboWindowClass
 bonobo_window_construct
@@ -1271,15 +1266,15 @@ bonobo_window_get_ui_engine
 <SUBSECTION Standard>
 bonobo_window_get_type
 BonoboWindowPrivate
+BONOBO_TYPE_WINDOW
+BONOBO_WINDOW
+BONOBO_IS_WINDOW
+BONOBO_WINDOW_CLASS
+BONOBO_IS_WINDOW_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-wrapper</FILE>
-GNOME_TYPE_WRAPPER
-BONOBO_WRAPPER
-BONOBO_WRAPPER_CLASS
-BONOBO_IS_WRAPPER
-BONOBO_IS_WRAPPER_CLASS
 BonoboWrapper
 BonoboWrapperClass
 bonobo_wrapper_new
@@ -1290,15 +1285,15 @@ bonobo_wrapper_set_visibility
 <SUBSECTION Standard>
 BonoboWrapperPrivate
 bonobo_wrapper_get_type
+GNOME_TYPE_WRAPPER
+BONOBO_WRAPPER
+BONOBO_WRAPPER_CLASS
+BONOBO_IS_WRAPPER
+BONOBO_IS_WRAPPER_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-zoomable-frame</FILE>
-BONOBO_ZOOMABLE_FRAME_TYPE
-BONOBO_ZOOMABLE_FRAME
-BONOBO_ZOOMABLE_FRAME_CLASS
-BONOBO_IS_ZOOMABLE_FRAME
-BONOBO_IS_ZOOMABLE_FRAME_CLASS
 BonoboZoomableFrame
 BonoboZoomableFrameClass
 bonobo_zoomable_frame_get_type
@@ -1323,15 +1318,15 @@ bonobo_zoomable_frame_bind_to_zoomable
 bonobo_zoomable_frame_get_zoomable
 <SUBSECTION Standard>
 BonoboZoomableFramePrivate
+BONOBO_ZOOMABLE_FRAME_TYPE
+BONOBO_ZOOMABLE_FRAME
+BONOBO_ZOOMABLE_FRAME_CLASS
+BONOBO_IS_ZOOMABLE_FRAME
+BONOBO_IS_ZOOMABLE_FRAME_CLASS
 </SECTION>
 
 <SECTION>
 <FILE>bonobo-zoomable</FILE>
-BONOBO_ZOOMABLE_TYPE
-BONOBO_ZOOMABLE
-BONOBO_ZOOMABLE_CLASS
-BONOBO_IS_ZOOMABLE
-BONOBO_IS_ZOOMABLE_CLASS
 BonoboZoomable
 BonoboZoomableClass
 bonobo_zoomable_get_epv
@@ -1346,6 +1341,11 @@ bonobo_zoomable_add_preferred_zoom_level
 <SUBSECTION Standard>
 bonobo_zoomable_get_type
 BonoboZoomablePrivate
+BONOBO_ZOOMABLE_TYPE
+BONOBO_ZOOMABLE
+BONOBO_ZOOMABLE_CLASS
+BONOBO_IS_ZOOMABLE
+BONOBO_IS_ZOOMABLE_CLASS
 </SECTION>
 
 <SECTION>
@@ -1415,11 +1415,6 @@ BonoboListenerPrivate
 
 <SECTION>
 <FILE>bonobo-property-control</FILE>
-BONOBO_PROPERTY_CONTROL
-BONOBO_IS_PROPERTY_CONTROL
-BONOBO_PROPERTY_CONTROL_CLASS
-BONOBO_IS_PROPERTY_CONTROL_CLASS
-BONOBO_PROPERTY_CONTROL_TYPE
 BonoboPropertyControl
 BonoboPropertyControlClass
 BonoboPropertyControlGetControlFn
@@ -1432,6 +1427,11 @@ BONOBO_PROPERTY_CONTROL_CHANGED
 <SUBSECTION Standard>
 BonoboPropertyControlPrivate
 bonobo_property_control_get_type
+BONOBO_PROPERTY_CONTROL
+BONOBO_IS_PROPERTY_CONTROL
+BONOBO_PROPERTY_CONTROL_CLASS
+BONOBO_IS_PROPERTY_CONTROL_CLASS
+BONOBO_PROPERTY_CONTROL_TYPE
 </SECTION>
 
 <SECTION>

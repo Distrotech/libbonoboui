@@ -14,45 +14,6 @@ The container interface as implemented for BonoboWindow
 
 </para>
 
-<!-- ##### MACRO BONOBO_UI_CONTAINER_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_UI_CONTAINER ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_UI_CONTAINER_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_CONTAINER ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_CONTAINER_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### TYPEDEF BonoboUIContainer ##### -->
 <para>
 

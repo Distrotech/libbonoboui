@@ -82,45 +82,6 @@ Simplified embedding of widgets in Bonobo.
    #BonoboEmbeddable, #BonoboUIContainer, #BonoboItemContainer. 
 </para>
 
-<!-- ##### MACRO BONOBO_WIDGET_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_WIDGET ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_WIDGET_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_WIDGET ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_WIDGET_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### STRUCT BonoboWidget ##### -->
 <para>
 

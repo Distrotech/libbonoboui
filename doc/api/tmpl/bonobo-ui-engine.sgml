@@ -52,45 +52,6 @@ onto it, effecively forcing a certain look.
 
 </para>
 
-<!-- ##### MACRO BONOBO_TYPE_UI_ENGINE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_UI_ENGINE ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_UI_ENGINE_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_ENGINE ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_ENGINE_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
 <!-- ##### STRUCT BonoboUIEngine ##### -->
 <para>
 

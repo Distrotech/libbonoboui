@@ -14,45 +14,6 @@ This implementation is mostly deprecated, see #BonoboItemHandler
    #BonoboItemHandler
 </para>
 
-<!-- ##### MACRO BONOBO_ITEM_CONTAINER_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_ITEM_CONTAINER ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_ITEM_CONTAINER_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_ITEM_CONTAINER ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_ITEM_CONTAINER_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### TYPEDEF BonoboClientSiteList ##### -->
 <para>
 

@@ -14,45 +14,6 @@ an abstract bonobo toolbar item
 
 </para>
 
-<!-- ##### MACRO BONOBO_TYPE_UI_TOOLBAR_ITEM ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_UI_TOOLBAR_ITEM ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_UI_TOOLBAR_ITEM_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_TOOLBAR_ITEM ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_TOOLBAR_ITEM_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
 <!-- ##### ENUM BonoboUIToolbarItemStyle ##### -->
 <para>
 

@@ -14,45 +14,6 @@ An interface for Control frames for things that might zoom.
 
 </para>
 
-<!-- ##### MACRO BONOBO_ZOOMABLE_FRAME_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_ZOOMABLE_FRAME ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_ZOOMABLE_FRAME_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_ZOOMABLE_FRAME ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_ZOOMABLE_FRAME_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### TYPEDEF BonoboZoomableFrame ##### -->
 <para>
 

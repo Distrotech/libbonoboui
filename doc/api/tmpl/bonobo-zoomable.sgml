@@ -14,45 +14,6 @@ An interface for Controls that can zoom their contents
 
 </para>
 
-<!-- ##### MACRO BONOBO_ZOOMABLE_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_ZOOMABLE ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_ZOOMABLE_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_ZOOMABLE ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_ZOOMABLE_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### TYPEDEF BonoboZoomable ##### -->
 <para>
 

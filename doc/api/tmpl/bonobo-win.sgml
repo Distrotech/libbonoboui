@@ -14,45 +14,6 @@ the toplevel application window implementation
 
 </para>
 
-<!-- ##### MACRO BONOBO_TYPE_WINDOW ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_WINDOW ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_WINDOW ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_WINDOW_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_WINDOW_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### TYPEDEF BonoboWindow ##### -->
 <para>
 

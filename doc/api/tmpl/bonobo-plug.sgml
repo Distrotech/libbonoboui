@@ -31,30 +31,6 @@ inside the first applications window.
    #BonoboSocket.
 </para>
 
-<!-- ##### MACRO BONOBO_PLUG ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_PLUG_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
-<!-- ##### MACRO BONOBO_IS_PLUG ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
 <!-- ##### TYPEDEF BonoboPlug ##### -->
 <para>
 

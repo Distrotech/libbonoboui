@@ -73,45 +73,6 @@ BonoboEmbeddable *make_embeddable (void)
   #BonoboEmbeddable, #BonoboCanvasItem
 </para>
 
-<!-- ##### MACRO BONOBO_CANVAS_COMPONENT_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_CANVAS_COMPONENT ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_CANVAS_COMPONENT_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_CANVAS_COMPONENT ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_CANVAS_COMPONENT_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### TYPEDEF BonoboCanvasComponent ##### -->
 <para>
 

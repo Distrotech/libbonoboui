@@ -14,45 +14,6 @@ A UI interface that handles UI merging for a component
 
 </para>
 
-<!-- ##### MACRO BONOBO_UI_COMPONENT_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_UI_COMPONENT ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_UI_COMPONENT_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_COMPONENT ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_COMPONENT_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### STRUCT BonoboUIComponent ##### -->
 <para>
 

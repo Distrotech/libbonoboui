@@ -14,45 +14,6 @@ a bonobo toolbar button item
 
 </para>
 
-<!-- ##### MACRO BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_UI_TOOLBAR_BUTTON_ITEM ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
-<!-- ##### MACRO BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM_CLASS ##### -->
-<para>
-
-</para>
-
-@klass: 
-
-
 <!-- ##### TYPEDEF BonoboUIToolbarButtonItem ##### -->
 <para>
 

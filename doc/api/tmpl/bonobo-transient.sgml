@@ -169,45 +169,6 @@ init_transient ()
   <classname>BonoboPropertyBag</classname>
 </para>
 
-<!-- ##### MACRO BONOBO_TRANSIENT_TYPE ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_TRANSIENT ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_TRANSIENT_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_TRANSIENT ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_TRANSIENT_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### TYPEDEF BonoboTransient ##### -->
 <para>
 

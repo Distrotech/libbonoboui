@@ -93,46 +93,6 @@ create_widget_from_component (BonoboContainer *container, const char *id)
   #BonoboEmbeddable, #BonoboContainer, #BonoboObjectClient, #BonoboViewFrame
 </para>
 
-<!-- ##### MACRO BONOBO_CLIENT_SITE_TYPE ##### -->
-<para>
-  Returns the GtkType associated with the
-  <classname>BonoboClientSite</classname> object. 
-</para>
-
-
-
-<!-- ##### MACRO BONOBO_CLIENT_SITE ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_CLIENT_SITE_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
-<!-- ##### MACRO BONOBO_IS_CLIENT_SITE ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_CLIENT_SITE_CLASS ##### -->
-<para>
-
-</para>
-
-@k: 
-
-
 <!-- ##### STRUCT BonoboClientSite ##### -->
 <para>
 
