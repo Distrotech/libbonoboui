@@ -1,3 +1,13 @@
+Wed Dec 12 10:36:55 2001  George Lebl <jirka@5z.com>
+
+	* bonobo/bonobo-dock-item.c, bonobo/bonobo-plug.c,
+	  bonobo/bonobo-selector-widget.c, bonobo/bonobo-selector.c,
+	  bonobo/bonobo-ui-config-widget.c:  s/guint/GtkType/
+	  inside the _get_type methods, for greater enjoyment on
+	  64 bit platforms
+
+	* bonobo/bonobo-ui-util.c: Patch a small memleak
+
 2001-12-12  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.108.0

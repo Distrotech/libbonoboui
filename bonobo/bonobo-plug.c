@@ -215,7 +215,7 @@ bonobo_plug_class_init (GObjectClass *klass)
 GtkType
 bonobo_plug_get_type ()
 {
-	static guint plug_type = 0;
+	static GtkType plug_type = 0;
 
 	if (!plug_type) {
 		static const GtkTypeInfo plug_info = {

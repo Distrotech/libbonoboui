@@ -420,7 +420,7 @@ bonobo_selector_widget_class_init (BonoboSelectorWidgetClass *klass)
 GtkType
 bonobo_selector_widget_get_type (void)
 {
-	static guint bonobo_selector_widget_type = 0;
+	static GtkType bonobo_selector_widget_type = 0;
 
 	if (!bonobo_selector_widget_type) {
 		GtkTypeInfo bonobo_selector_widget_info = {

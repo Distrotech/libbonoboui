@@ -222,7 +222,7 @@ bonobo_selector_class_init (BonoboSelectorClass *klass)
 GtkType
 bonobo_selector_get_type (void)
 {
-	static guint bonobo_selector_type = 0;
+	static GtkType bonobo_selector_type = 0;
 
 	if (!bonobo_selector_type) {
 		GtkTypeInfo bonobo_selector_info = {

@@ -257,6 +257,7 @@ lookup_stock_compat (const char *id)
 	}
 
 	g_free (lower);
+	g_free (new_id);
 
 	/* FIXME: does this catch them all ? */
 
