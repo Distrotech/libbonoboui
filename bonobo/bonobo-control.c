@@ -206,7 +206,8 @@ impl_Bonobo_Control_activate (PortableServer_Servant servant,
 			bonobo_control_auto_unmerge (control);
 	}
 
-	gtk_signal_emit (GTK_OBJECT (control), control_signals [ACTIVATE], (gboolean) activated);
+	if (control->priv->active != activated)
+		gtk_signal_emit (GTK_OBJECT (control), control_signals [ACTIVATE], (gboolean) activated);
 
 	control->priv->active = activated;
 }
