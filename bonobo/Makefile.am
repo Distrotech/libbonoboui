@@ -62,6 +62,10 @@ libbonobo_la_SOURCES =			\
 	gnome-object.c			\
 	gnome-persist-stream.c		\
 	gnome-persist.c			\
+	gnome-storage.c			\
+	gnome-storage-fs.c		\
+	gnome-stream.c			\
+	gnome-stream-fs.c		\
 	gnome-view.c
 
 
@@ -86,6 +90,10 @@ libbonoboinclude_HEADERS =		\
 	gnome-object.h			\
 	gnome-persist-stream.h		\
 	gnome-persist.h			\
+	gnome-storage.h			\
+	gnome-storage-fs.h		\
+	gnome-stream.h			\
+	gnome-stream-fs.h		\
 	gnome-view.h
 
 test_container_SOURCES =		\
@@ -104,3 +112,4 @@ sample_server_SOURCES =		\
 sample_server_LDADD = $(bonobo_libs)
 
 BUILT_SOURCES=$(CORBA_SOURCE)
+
