@@ -308,11 +308,17 @@ component_load_pf_ok_cb (GtkWidget *button, gpointer data)
 	 */
 	filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (component->fs));
 
+	if (filename)
+		filename = g_strdup (filename);
+
 	/*
 	 * Destroy the file selector.
 	 */
 	gtk_widget_destroy (component->fs);
 
+	if (!filename)
+		return;
+	
 	/*
 	 * Now get the PersistFile interface off the embedded
 	 * component.
@@ -331,11 +337,11 @@ component_load_pf_ok_cb (GtkWidget *button, gpointer data)
 	 * into it with PersistStream), then we destroy the stream we
 	 * created and bail.
 	 */
-	if (ev._major != CORBA_NO_EXCEPTION ||
-	    persist == CORBA_OBJECT_NIL) {
+	if (persist == CORBA_OBJECT_NIL) {
 		gnome_warning_dialog (_("The component now claims that it "
 					"doesn't support PersistFile!"));
 		CORBA_exception_free (&ev);
+		g_free (filename);
 		return;
 	}
 
@@ -349,14 +355,13 @@ component_load_pf_ok_cb (GtkWidget *button, gpointer data)
 					"to load data into the component with "
 					"PersistFile"));
 	}
+	if (ev._major != CORBA_SYSTEM_EXCEPTION)
+		CORBA_Object_release (persist, &ev);
 
-	/*
-	 * Now we destroy the PersistFile object.
-	 */
 	GNOME_Unknown_unref (persist, &ev);
-	CORBA_Object_release (persist, &ev);
-
+	
 	CORBA_exception_free (&ev);
+	g_free (filename);
 }
 
 static void
@@ -425,8 +430,7 @@ component_load_ps_ok_cb (GtkWidget *button, gpointer data)
 	 * loading data into it with PersistStream), then we destroy
 	 * the stream we created and bail.
 	 */
-	if (ev._major != CORBA_NO_EXCEPTION ||
-	    persist == CORBA_OBJECT_NIL) {
+	if (ev._major != CORBA_NO_EXCEPTION || persist == CORBA_OBJECT_NIL) {
 		gnome_warning_dialog (_("The component now claims that it "
 					"doesn't support PersistStream!"));
 		gnome_object_unref (GNOME_OBJECT (stream));
@@ -531,23 +535,23 @@ gnome_object_has_interface (GnomeObject *obj, char *interface)
 {
 	CORBA_Environment ev;
 	CORBA_Object requested_interface;
-
+	gboolean retval;
+	
 	CORBA_exception_init (&ev);
 
 	requested_interface = GNOME_Unknown_query_interface (
 		gnome_object_corba_objref (obj), interface, &ev);
 
-	CORBA_exception_free (&ev);
-
-	if (!CORBA_Object_is_nil(requested_interface, &ev) &&
-	    ev._major == CORBA_NO_EXCEPTION)
+	if (!CORBA_Object_is_nil(requested_interface, &ev) && ev._major == CORBA_NO_EXCEPTION)
 	{
-		/* Get rid of the interface we've been passed */
+		GNOME_Unknown_unref (requested_interface, &ev);
 		CORBA_Object_release (requested_interface, &ev);
-		return TRUE;
-	}
+		retval = TRUE;
+	} else
+		retval = FALSE;
 
-	return FALSE;
+	CORBA_exception_free (&ev);
+	return retval;
 }
 
 static void

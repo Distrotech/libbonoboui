@@ -378,6 +378,8 @@ gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClie
 
 	client_site->bound_object = object;
 
+	GNOME_Unknown_unref (gnome_object_corba_objref (gnome_object), &ev);
+	
 	CORBA_exception_free (&ev);
 
 	return TRUE;

@@ -683,6 +683,7 @@ main (int argc, char *argv [])
 	app = application_new ();
 	
 	add_gnumeric_cmd (NULL, app);
+	bonobo_activate ();
 	gtk_main ();
 
 	CORBA_exception_free (&ev);
