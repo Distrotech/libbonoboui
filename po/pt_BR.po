@@ -5,8 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2003-02-26 11:08-0300\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-06-16 16:19-0300\n"
+"PO-Revision-Date: 2003-06-16 16:20-0300\n"
 "Last-Translator: Evandro Fernandes Giovanini <evandrofg@ig.com.br>\n"
 "Language-Team: Brazilian Portuguese <gnome-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -90,15 +91,11 @@ msgid "Interfaces required"
 msgstr "Interfaces necessárias"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr ""
-"Uma matriz terminada_por_NULL de interfaces à qual um servidor deve dar "
-"suporte para ser listado no seletor.  Assumirá por padrão \"IDL:Bonobo/"
-"Embeddable:1.0\" se nenhuma interface for listada"
+msgstr "Um vetor terminado por NULL de interfaces às quais um servidor deve dar suporte para ser listado no seletor.  Assumirá por padrão \"IDL:Bonobo/Embeddable:1.0\" se nenhuma interface for listada"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
