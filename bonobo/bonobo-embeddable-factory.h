@@ -18,6 +18,7 @@
 #include <bonobo/gnome-object.h>
 #include <bonobo/gnome-view.h>
 #include <bonobo/gnome-embeddable.h>
+#include <bonobo/gnome-generic-factory.h>
 
 BEGIN_GNOME_DECLS
  
