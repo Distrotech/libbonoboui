@@ -24,12 +24,9 @@ BONOBO_IS_CANVAS_COMPONENT
 BONOBO_IS_CANVAS_COMPONENT_CLASS
 BonoboCanvasComponent
 BonoboCanvasComponentClass
-bonobo_canvas_component_object_create
-bonobo_canvas_component_set_proxy
 bonobo_canvas_component_construct
 bonobo_canvas_component_new
 bonobo_canvas_component_get_item
-bonobo_canvas_component_get_epv
 <SUBSECTION Standard>
 BonoboCanvasComponentPrivate
 bonobo_canvas_component_get_type
@@ -58,7 +55,6 @@ BONOBO_IS_CLIENT_SITE
 BONOBO_IS_CLIENT_SITE_CLASS
 BonoboClientSite
 BonoboClientSiteClass
-bonobo_client_site_corba_object_create
 bonobo_client_site_new
 bonobo_client_site_construct
 bonobo_client_site_bind_embeddable
@@ -69,7 +65,6 @@ bonobo_client_site_new_view
 bonobo_client_site_new_item
 bonobo_client_site_get_verbs
 bonobo_client_site_free_verbs
-bonobo_client_site_get_epv
 <SUBSECTION Standard>
 BonoboClientSitePrivate
 bonobo_client_site_get_type
@@ -111,7 +106,6 @@ bonobo_control_frame_bind_to_control
 bonobo_control_frame_get_control
 bonobo_control_frame_get_ui_container
 bonobo_control_frame_construct
-bonobo_control_frame_get_epv
 bonobo_control_frame_size_request
 <SUBSECTION Standard>
 bonobo_control_frame_get_type
@@ -134,7 +128,6 @@ bonobo_control_get_automerge
 bonobo_control_set_property
 bonobo_control_get_property
 bonobo_control_construct
-bonobo_control_corba_object_create
 bonobo_control_get_ui_component
 bonobo_control_set_ui_component
 bonobo_control_get_remote_ui_container
@@ -145,7 +138,6 @@ bonobo_control_get_properties
 bonobo_control_get_ambient_properties
 bonobo_control_activate_notify
 bonobo_control_windowid_from_x11
-bonobo_control_get_epv
 bonobo_control_sync_realize
 bonobo_control_sync_unrealize
 <SUBSECTION Standard>
@@ -165,8 +157,6 @@ BonoboDesktopWindowClass
 bonobo_desktop_window_construct
 bonobo_desktop_window_new
 bonobo_desktop_window_control
-bonobo_desktop_window_corba_object_create
-bonobo_desktop_window_get_epv
 <SUBSECTION Standard>
 bonobo_desktop_window_get_type
 BonoboDesktopWindowPrivate
@@ -190,13 +180,11 @@ bonobo_embeddable_new
 bonobo_embeddable_new_canvas_item
 bonobo_embeddable_construct
 bonobo_embeddable_construct_full
-bonobo_embeddable_corba_object_create
 bonobo_embeddable_set_view_factory
 bonobo_embeddable_get_uri
 bonobo_embeddable_set_uri
 bonobo_embeddable_foreach_view
 bonobo_embeddable_foreach_item
-bonobo_embeddable_get_epv
 <SUBSECTION Standard>
 bonobo_embeddable_get_type
 BonoboEmbeddablePrivate
@@ -230,7 +218,6 @@ bonobo_generic_factory_new
 bonobo_generic_factory_new_multi
 bonobo_generic_factory_construct
 bonobo_generic_factory_set
-bonobo_generic_factory_get_epv
 <SUBSECTION Standard>
 bonobo_generic_factory_get_type
 BonoboGenericFactoryPrivate
@@ -251,7 +238,6 @@ bonobo_item_container_construct
 bonobo_item_container_get_moniker
 bonobo_item_container_add
 bonobo_item_container_remove
-bonobo_item_container_get_epv
 <SUBSECTION Standard>
 bonobo_item_container_get_type
 BonoboItemContainerPrivate
@@ -270,7 +256,6 @@ BonoboItemHandlerEnumObjectsFn
 BonoboItemHandlerGetObjectFn
 bonobo_item_handler_new
 bonobo_item_handler_construct
-bonobo_item_handler_get_epv
 <SUBSECTION Standard>
 bonobo_item_handler_get_type
 BonoboItemHandlerPrivate
@@ -325,8 +310,6 @@ BONOBO_IS_MONIKER
 BONOBO_IS_MONIKER_CLASS
 BonoboMoniker
 BonoboMonikerClass
-bonobo_moniker_get_epv
-bonobo_moniker_corba_object_create
 bonobo_moniker_get_parent
 bonobo_moniker_set_parent
 bonobo_moniker_get_name
@@ -412,7 +395,6 @@ bonobo_object_dup_ref
 bonobo_object_release_unref
 bonobo_object_ref
 bonobo_object_unref
-bonobo_object_get_epv
 bonobo_object_init
 bonobo_object_trace_refs
 bonobo_object_dump_interfaces
@@ -435,7 +417,6 @@ BonoboPersist
 BonoboPersistClass
 bonobo_persist_construct
 bonobo_persist_generate_content_types
-bonobo_persist_get_epv
 <SUBSECTION Standard>
 bonobo_persist_get_type
 BonoboPersistPrivate
@@ -454,7 +435,6 @@ BonoboPersistFileClass
 bonobo_persist_file_set_dirty
 bonobo_persist_file_new
 bonobo_persist_file_construct
-bonobo_persist_file_get_epv
 <SUBSECTION Standard>
 bonobo_persist_file_get_type
 BonoboPersistFilePrivate
@@ -475,7 +455,6 @@ BonoboPersistStreamClass
 bonobo_persist_stream_set_dirty
 bonobo_persist_stream_new
 bonobo_persist_stream_construct
-bonobo_persist_stream_get_epv
 <SUBSECTION Standard>
 bonobo_persist_stream_get_type
 BonoboPersistStreamPrivate
@@ -524,9 +503,7 @@ BONOBO_IS_PRINT
 BONOBO_IS_PRINT_CLASS
 BonoboPrint
 BonoboPrintClass
-bonobo_print_get_epv
 bonobo_print_get_type
-bonobo_print_corba_object_create
 bonobo_print_construct
 bonobo_print_new
 <SUBSECTION Standard>
@@ -548,7 +525,6 @@ BonoboProgressiveDataSinkSetSizeFn
 BonoboProgressiveDataSinkClass
 bonobo_progressive_data_sink_new
 bonobo_progressive_data_sink_construct
-bonobo_progressive_get_epv
 <SUBSECTION Standard>
 bonobo_progressive_data_sink_get_type
 BonoboProgressiveDataSinkPrivate
@@ -619,7 +595,6 @@ bonobo_property_bag_add_listener
 bonobo_property_bag_remove_listener
 bonobo_property_bag_notify_listeners
 bonobo_property_bag_get_prop_list
-bonobo_property_bag_get_epv
 <SUBSECTION Standard>
 bonobo_property_bag_get_type
 BonoboPropertyBagPrivate
@@ -704,10 +679,8 @@ bonobo_storage_construct
 bonobo_storage_open
 bonobo_storage_open_full
 bonobo_storage_copy_to
-bonobo_storage_corba_object_create
 bonobo_storage_write_class_id
 bonobo_stream_write_class_id
-bonobo_storage_get_epv
 <SUBSECTION Standard>
 bonobo_storage_get_type
 BonoboStoragePrivate
@@ -822,8 +795,6 @@ bonobo_ui_component_thaw
 bonobo_ui_component_set_prop
 bonobo_ui_component_get_prop
 bonobo_ui_component_set_status
-bonobo_ui_component_get_epv
-bonobo_ui_component_corba_object_create
 BonoboUIVerb
 BONOBO_UI_VERB
 BONOBO_UI_VERB_DATA
@@ -846,8 +817,6 @@ BONOBO_IS_UI_CONTAINER
 BONOBO_IS_UI_CONTAINER_CLASS
 BonoboUIContainer
 BonoboUIContainerClass
-bonobo_ui_container_get_epv
-bonobo_ui_container_corba_object_create
 bonobo_ui_container_construct
 bonobo_ui_container_new
 bonobo_ui_container_set_win
@@ -1078,7 +1047,6 @@ bonobo_view_frame_get_ui_container
 bonobo_view_frame_view_activate
 bonobo_view_frame_view_deactivate
 bonobo_view_frame_set_zoom_factor
-bonobo_view_frame_get_epv
 <SUBSECTION Standard>
 bonobo_view_frame_get_type
 BonoboViewFramePrivate
@@ -1097,7 +1065,6 @@ BONOBO_VIEW_VERB_FUNC
 BonoboViewVerbFunc
 bonobo_view_construct
 bonobo_view_new
-bonobo_view_corba_object_create
 bonobo_view_set_embeddable
 bonobo_view_get_embeddable
 bonobo_view_set_view_frame
@@ -1105,7 +1072,6 @@ bonobo_view_get_view_frame
 bonobo_view_get_remote_ui_container
 bonobo_view_get_ui_component
 bonobo_view_activate_notify
-bonobo_view_get_epv
 <SUBSECTION Standard>
 bonobo_view_get_type
 BonoboViewPrivate
@@ -1205,6 +1171,7 @@ BONOBO_IS_ZOOMABLE_FRAME_CLASS
 BonoboZoomableFrame
 BonoboZoomableFrameClass
 bonobo_zoomable_frame_get_type
+bonobo_zoomable_frame_get_epv
 bonobo_zoomable_frame_corba_object_create
 bonobo_zoomable_frame_new
 bonobo_zoomable_frame_construct
@@ -1225,7 +1192,6 @@ bonobo_zoomable_frame_bind_to_zoomable
 bonobo_zoomable_frame_get_zoomable
 <SUBSECTION Standard>
 BonoboZoomableFramePrivate
-bonobo_zoomable_frame_get_epv
 </SECTION>
 
 <SECTION>
@@ -1306,8 +1272,6 @@ BonoboListenerClass
 BonoboListenerCallbackFn
 bonobo_listener_new
 bonobo_listener_construct
-bonobo_listener_get_epv
-bonobo_listener_corba_object_create
 <SUBSECTION Standard>
 bonobo_listener_get_type
 BonoboListenerPrivate
@@ -1326,8 +1290,6 @@ BonoboPropertyControlGetControlFn
 bonobo_property_control_new
 bonobo_property_control_construct
 bonobo_property_control_changed
-bonobo_property_control_get_epv
-bonobo_property_control_corba_object_create
 <SUBSECTION Standard>
 BonoboPropertyControlPrivate
 bonobo_property_control_get_type
@@ -1335,7 +1297,6 @@ bonobo_property_control_get_type
 
 <SECTION>
 <FILE>bonobo-event-source</FILE>
-bonobo_event_source_get_epv
 BONOBO_EVENT_SOURCE
 BONOBO_IS_EVENT_SOURCE
 BONOBO_EVENT_SOURCE_CLASS
@@ -1346,7 +1307,6 @@ BonoboEventSourceClass
 bonobo_event_source_new
 bonobo_event_source_construct
 bonobo_event_source_notify_listeners
-bonobo_event_source_corba_object_create
 <SUBSECTION Standard>
 BonoboEventSourcePrivate
 bonobo_event_source_get_type

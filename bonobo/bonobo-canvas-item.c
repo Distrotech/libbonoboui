@@ -1,4 +1,4 @@
-/**
+/*
  * bonobo-canvas-item.c: GnomeCanvasItem implementation to serve as a client-
  *			 proxy for embedding remote canvas-items.
  *

@@ -35,7 +35,6 @@
 <!entity bonobo-property-bag-xml SYSTEM "sgml/bonobo-property-bag-xml.sgml">
 <!entity bonobo-property-control SYSTEM "sgml/bonobo-property-control.sgml">
 <!entity bonobo-property SYSTEM "sgml/bonobo-property.sgml">
-<!entity bonobo-property-types SYSTEM "sgml/bonobo-property-types.sgml">
 <!entity bonobo-selector SYSTEM "sgml/bonobo-selector.sgml">
 <!entity bonobo-socket SYSTEM "sgml/bonobo-socket.sgml">
 <!entity bonobo-storage-plugin SYSTEM "sgml/bonobo-storage-plugin.sgml">
@@ -79,7 +78,6 @@
       <sect1 id="bonobo-object-activation">
         <title>Object Activation and Lifecycle</title>
           &bonobo-context;
-          &bonobo-moniker;
           &bonobo-moniker-util;
           &bonobo-moniker-async;
           &bonobo-object-client;
@@ -91,7 +89,6 @@
         <title>Properties</title>
   	  &bonobo-property-bag;
   	  &bonobo-property;
-  	  &bonobo-property-types;
   	  &bonobo-property-bag-client;
   	  &bonobo-arg;
   	  &bonobo-property-bag-xml;
