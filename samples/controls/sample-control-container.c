@@ -10,36 +10,86 @@
 #include <libgnorba/gnorba.h>
 #include <bonobo/gnome-bonobo.h>
 
-static GtkWidget *
-table_create (GtkWidget *center)
+static void
+populate_property_list (GtkWidget *bw, GtkCList *clist)
 {
+	GnomePropertyBagClient *pbc;
+	GnomeControlFrame *cf;
+	GList *property_list, *l;
+	CORBA_Environment ev;
+
+	/* Get the list of properties. */
+	cf = gnome_bonobo_widget_get_control_frame (GNOME_BONOBO_WIDGET (bw));
+	pbc = gnome_control_frame_get_control_property_bag (cf);
+	property_list = gnome_property_bag_client_get_properties (pbc);
+
+	CORBA_exception_init (&ev);
+	for (l = property_list; l != NULL; l = l->next) {
+		GNOME_Property prop;
+		CORBA_any *any;
+		char *property_name;
+		char *row_array[2];
+
+		prop = l->data;
+		property_name = GNOME_Property_get_name (prop, &ev);
+		any = GNOME_Property_get_value (prop, &ev);
+
+		row_array [0] = property_name;
+
+		switch (any->_type->kind) {
+		case CORBA_tk_boolean:
+			row_array [1] = g_strdup (*((CORBA_boolean *) any->_value) ? "TRUE" : "FALSE");
+			break;
+		}
+
+		gtk_clist_append (clist, row_array);
+	}
+	CORBA_exception_free (&ev);
+}
+
+static GtkWidget *
+table_create (GtkWidget *control)
+{
+	gchar *clist_titles[] = {"Property Name", "Value"};
 	GtkWidget *table;
-	GtkWidget *text;
+	GtkWidget *label;
+	GtkWidget *clist;
 	int i, j;
 
-	table = gtk_table_new (3, 3, FALSE);
+	table = gtk_table_new (3, 3, TRUE);
 
+	/* Put some dead space around the sides. */
 	for (i = 0; i < 3; i ++)
-		for (j = 0; j < 3; j ++) {
+		for (j = 0; j < 2; j ++) {
 
 			if (i == 1 && j == 1)
 				continue;
 
-			if (i == 0 && j == 0)
-				continue;
-
-			text = gtk_text_new (NULL, NULL);
-			gtk_table_attach (GTK_TABLE (table), text,
+			label = gtk_label_new ("Dead space");
+			gtk_widget_set_usize (label, 100, 100);
+			gtk_table_attach (GTK_TABLE (table), label,
 					  i, i + 1,
 					  j, j + 1,
 					  0, 0,
 					  0, 0);
 		}
 
-	gtk_table_attach (GTK_TABLE (table), center,
+	/* Put the control in the center. */
+	gtk_table_attach (GTK_TABLE (table), control,
 			  1, 2, 1, 2,
 			  0, 0,
 			  0, 0);
+
+	/* Put the property CList on the bottom. */
+	clist = gtk_clist_new_with_titles (2, clist_titles);
+
+	gtk_table_attach (GTK_TABLE (table), clist,
+			  0, 3, 2, 3,
+			  GTK_EXPAND | GTK_FILL, 
+			  GTK_EXPAND | GTK_FILL, 
+			  0, 0);
+
+	populate_property_list (control, GTK_CLIST (clist));
 
 	return table;
 }

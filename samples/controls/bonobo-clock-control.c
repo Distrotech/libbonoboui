@@ -50,6 +50,8 @@ bonobo_clock_factory (GnomeGenericFactory *Factory, void *closure)
 
 	/* Create the properties. */
 	pb = gnome_property_bag_new ();
+	gnome_control_set_property_bag (control, pb);
+
 	gtk_signal_connect (GTK_OBJECT (pb), "value_changed",
 			    bonobo_clock_control_prop_value_changed_cb,
 			    clock);
@@ -59,7 +61,6 @@ bonobo_clock_factory (GnomeGenericFactory *Factory, void *closure)
 	gnome_property_bag_add (pb, "running", "boolean",
 				(gpointer) running,
 				NULL, "Whether or not the clock is running", 0);
-
 
 	return GNOME_OBJECT (control);
 }
