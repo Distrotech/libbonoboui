@@ -1,4 +1,10 @@
+2001-07-13  Darin Adler  <darin@bentspoon.com>
+
+	* configure.in: Remove duplicate macros.
+	* doc/.cvsignore: Ignore some generated files.
+
 2001-07-12  Murray Cumming <murrayc@usa.net>
+
 	* doc directory: Added some files from the original bonobo module,
 	which deal with UI stuff. Maybe others should go in too, but
 	I don't know whether the component stuff is in libbonobo or
