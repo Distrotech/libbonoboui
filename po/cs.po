@@ -1,12 +1,14 @@
 # Czech translation of libbonoboui
 # Copyright (C) 2002 Free Software Foundation, Inc.
-# Miloslav Trmac <mitr@volny.cz>, 2002.
+# Copyright (C) 2004 Miloslav Trmac <mitr@volny.cz>
+# Miloslav Trmac <mitr@volny.cz>, 2002, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2004-01-15 09:07+0000\n"
-"PO-Revision-Date: 2003-05-20 15:33+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-24 04:53+0100\n"
+"PO-Revision-Date: 2004-01-27 16:18+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -172,7 +174,7 @@ msgid "Gdk debugging flags to set"
 msgstr "Nastavit ladicí volby Gdk"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
 msgid "FLAGS"
 msgstr "VOLBY"
 
@@ -220,39 +222,27 @@ msgstr "Třída programu, jak ji používá manažer oken"
 msgid "CLASS"
 msgstr "TŘÍDA"
 
-#: bonobo/bonobo-ui-init-gtk.c:145
-msgid "HOST"
-msgstr "POČÍTAČ"
-
-#: bonobo/bonobo-ui-init-gtk.c:149
-msgid "PORT"
-msgstr "PORT"
-
-#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
-msgid "STYLE"
-msgstr "STYL"
-
-#: bonobo/bonobo-ui-init-gtk.c:161
+#: bonobo/bonobo-ui-init-gtk.c:144
 msgid "Gtk+ debugging flags to set"
 msgstr "Nastavit ladicí volby Gtk+"
 
-#: bonobo/bonobo-ui-init-gtk.c:164
+#: bonobo/bonobo-ui-init-gtk.c:147
 msgid "Gtk+ debugging flags to unset"
 msgstr "Zrušit ladicí volby Gtk+"
 
-#: bonobo/bonobo-ui-init-gtk.c:167
+#: bonobo/bonobo-ui-init-gtk.c:150
 msgid "Make all warnings fatal"
 msgstr "Všechna varování považovat za fatální"
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:153
 msgid "Load an additional Gtk module"
 msgstr "Nahrát přídavný modul Gtk"
 
-#: bonobo/bonobo-ui-init-gtk.c:170
+#: bonobo/bonobo-ui-init-gtk.c:153
 msgid "MODULE"
 msgstr "MODUL"
 
-#: bonobo/bonobo-ui-init-gtk.c:179
+#: bonobo/bonobo-ui-init-gtk.c:162
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -302,7 +292,7 @@ msgstr "Velikost okrajů okolo lišty nástrojů"
 
 #: bonobo/bonobo-ui-util.c:629
 msgid "_Contents"
-msgstr "O_bsah"
+msgstr "_Obsah"
 
 #: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
@@ -370,7 +360,7 @@ msgstr "Vybrat"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "_O programu..."
+msgstr "O _aplikaci..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
@@ -403,8 +393,17 @@ msgstr "Ahoj, světe!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "Nelze inicializovat kód libbonoboui"
+msgstr "Nemohu inicializovat kód libbonoboui"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr "Nelze inicializovat Bonobo UI"
+msgstr "Nemohu inicializovat Bonobo UI"
+
+#~ msgid "HOST"
+#~ msgstr "POČÍTAČ"
+
+#~ msgid "PORT"
+#~ msgstr "PORT"
+
+#~ msgid "STYLE"
+#~ msgstr "STYL"
