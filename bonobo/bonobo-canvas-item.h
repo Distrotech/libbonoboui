@@ -9,7 +9,7 @@
 #ifndef _BONOBO_CANVAS_ITEM_H_
 #define _BONOBO_CANVAS_ITEM_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <libgnomecanvas/gnome-canvas.h>
 #include <bonobo/bonobo-embeddable.h>
 

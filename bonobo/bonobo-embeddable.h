@@ -11,14 +11,14 @@
 #ifndef _BONOBO_EMBEDDABLE_H_
 #define _BONOBO_EMBEDDABLE_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtkobject.h>
 #include <libgnomecanvas/gnome-canvas.h>
 #include <bonobo/Bonobo.h>
-#include <bonobo/bonobo-xobject.h>
+#include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-canvas-component.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_EMBEDDABLE_TYPE        (bonobo_embeddable_get_type ())
 #define BONOBO_EMBEDDABLE(o)          (GTK_CHECK_CAST ((o), BONOBO_EMBEDDABLE_TYPE, BonoboEmbeddable))
@@ -43,7 +43,7 @@ typedef void (*BonoboEmbeddableForeachViewFn) (BonoboView *view, void *data);
 typedef void (*BonoboEmbeddableForeachItemFn) (BonoboCanvasComponent *comp, void *data);
 
 struct _BonoboEmbeddable {
-	BonoboXObject base;
+	BonoboObject base;
 
 	char *host_name;
 	char *host_appname;
@@ -58,7 +58,7 @@ struct _BonoboEmbeddable {
 };
 
 struct _BonoboEmbeddableClass {
-	BonoboXObjectClass parent_class;
+	BonoboObjectClass parent_class;
 
 	POA_Bonobo_Embeddable__epv epv;
 
@@ -96,7 +96,7 @@ void             bonobo_embeddable_foreach_item      (BonoboEmbeddable *embeddab
 						      BonoboEmbeddableForeachItemFn fn,
 						      void             *data);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif
 

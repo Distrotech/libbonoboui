@@ -26,7 +26,7 @@
 #include <gdk/gdkx.h>
 #include <gdk/gdktypes.h>
 
-#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 enum {
 	SHOW_WINDOW,
@@ -204,7 +204,7 @@ bonobo_client_site_new (BonoboItemContainer *container)
 	return bonobo_client_site_construct (client_site, container);
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboClientSite, 
+BONOBO_TYPE_FUNC_FULL (BonoboClientSite, 
 			   Bonobo_ClientSite,
 			   PARENT_TYPE,
 			   bonobo_client_site);

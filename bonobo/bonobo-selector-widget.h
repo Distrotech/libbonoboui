@@ -12,7 +12,7 @@
 
 #include <gtk/gtk.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_SELECTOR_WIDGET(obj)		GTK_CHECK_CAST(obj,  bonobo_selector_widget_get_type (), BonoboSelectorWidget)
 #define BONOBO_SELECTOR_WIDGET_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, bonobo_selector_widget_get_type (), BonoboSelectorWidgetClass)
@@ -52,7 +52,7 @@ gchar     *bonobo_selector_widget_get_name        (BonoboSelectorWidget *sel);
 gchar     *bonobo_selector_widget_get_description (BonoboSelectorWidget *sel);
 
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* BONOBO_SELECTOR_H */
 

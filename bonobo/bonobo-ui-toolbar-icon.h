@@ -13,7 +13,7 @@
 
 #include "libgnomebase/gnome-defs.h"
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 typedef enum {
         /* update struct when adding enum values */
@@ -123,6 +123,6 @@ void  bonobo_ui_toolbar_icon_set_alpha_threshold  (BonoboUIToolbarIcon *gpixmap,
 gint  bonobo_ui_toolbar_icon_get_alpha_threshold  (BonoboUIToolbarIcon *gpixmap);
 
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* __BONOBO_UI_TOOLBAR_ICON_H__ */

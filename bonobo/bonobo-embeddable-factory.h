@@ -12,7 +12,7 @@
 #ifndef _GNOME_COMPONENT_FACTORY_H_
 #define _GNOME_COMPONENT_FACTORY_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtkobject.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-object.h>
@@ -20,7 +20,7 @@
 #include <bonobo/bonobo-embeddable.h>
 #include <bonobo/bonobo-generic-factory.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_EMBEDDABLE_FACTORY_TYPE        BONOBO_GENERIC_FACTORY_TYPE
 #define BONOBO_EMBEDDABLE_FACTORY(o)          BONOBO_GENERIC_FACTORY(o)
@@ -37,6 +37,6 @@ typedef BonoboGenericFactoryFn BonoboEmbeddableFactoryFn;
 #define bonobo_embeddable_factory_construct bonobo_generic_factory_construct
 #define bonobo_embeddable_factory_set       bonobo_generic_factory_set
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif

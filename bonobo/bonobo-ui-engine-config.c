@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <libgnome/gnome-config.h>
 
 #define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE

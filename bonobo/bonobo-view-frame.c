@@ -237,7 +237,7 @@ bonobo_view_frame_init (BonoboObject *object)
 	view_frame->priv = g_new0 (BonoboViewFramePrivate, 1);
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboViewFrame, 
+BONOBO_TYPE_FUNC_FULL (BonoboViewFrame, 
 			   Bonobo_ViewFrame,
 			   PARENT_TYPE,
 			   bonobo_view_frame);

@@ -10,10 +10,10 @@
 #ifndef _BONOBO_UI_COMPONENT_H_
 #define _BONOBO_UI_COMPONENT_H_
 
-#include <bonobo/bonobo-xobject.h>
+#include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-ui-node.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_UI_COMPONENT_TYPE        (bonobo_ui_component_get_type ())
 #define BONOBO_UI_COMPONENT(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_COMPONENT_TYPE, BonoboUIComponent))
@@ -35,12 +35,12 @@ typedef void (*BonoboUIVerbFn)    (BonoboUIComponent           *component,
 				   const char                  *cname);
 
 struct _BonoboUIComponent {
-	BonoboXObject             object;
+	BonoboObject             object;
 	BonoboUIComponentPrivate *priv;
 };
 
 typedef struct {
-	BonoboXObjectClass          parent_class;
+	BonoboObjectClass          parent_class;
 
 	POA_Bonobo_UIComponent__epv epv;
 
@@ -231,6 +231,6 @@ void    bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *compone
 						     BonoboUIVerb       *list,
 						     gpointer            user_data);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_UI_COMPONENT_H_ */

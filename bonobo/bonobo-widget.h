@@ -10,13 +10,13 @@
 #ifndef _BONOBO_WIDGET_H_
 #define _BONOBO_WIDGET_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtkobject.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-wrapper.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_WIDGET_TYPE        (bonobo_widget_get_type ())
 #define BONOBO_WIDGET(o)          (GTK_CHECK_CAST ((o), BONOBO_WIDGET_TYPE, BonoboWidget))
@@ -84,6 +84,6 @@ void                 bonobo_widget_get_property            (BonoboWidget       *
 							    const char         *first_prop,
 							    ...);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif

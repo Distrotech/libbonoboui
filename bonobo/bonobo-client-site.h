@@ -10,14 +10,14 @@
 #ifndef _BONOBO_CLIENT_SITE_H_
 #define _BONOBO_CLIENT_SITE_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtkobject.h>
 #include <libgnomecanvas/gnome-canvas.h>
-#include <bonobo/bonobo-xobject.h>
+#include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-object-client.h>
 #include <bonobo/bonobo-item-container.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_CLIENT_SITE_TYPE        (bonobo_client_site_get_type ())
 #define BONOBO_CLIENT_SITE(o)          (GTK_CHECK_CAST ((o), BONOBO_CLIENT_SITE_TYPE, BonoboClientSite))
@@ -31,7 +31,7 @@ typedef struct _BonoboClientSitePrivate BonoboClientSitePrivate;
 #include <bonobo/bonobo-view-frame.h>
 
 struct _BonoboClientSite {
-	BonoboXObject base;
+	BonoboObject base;
 
 	BonoboItemContainer *container;
 	BonoboObjectClient  *bound_embeddable; /* IDL:Bonobo/Embeddable:1.0 */
@@ -43,7 +43,7 @@ struct _BonoboClientSite {
 };
 
 typedef struct {
-	BonoboXObjectClass parent_class;
+	BonoboObjectClass parent_class;
 
 	POA_Bonobo_ClientSite__epv epv;
 
@@ -76,6 +76,6 @@ GnomeCanvasItem            *bonobo_client_site_new_item         (BonoboClientSit
 GList                      *bonobo_client_site_get_verbs        (BonoboClientSite   *client_site);
 void                        bonobo_client_site_free_verbs       (GList              *verb_list);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif

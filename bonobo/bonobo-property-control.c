@@ -31,7 +31,7 @@ enum {
 	LAST_SIGNAL
 };
 
-#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 static GtkObjectClass *parent_class;
 
@@ -158,7 +158,7 @@ bonobo_property_control_init (BonoboPropertyControl *property_control)
 	property_control->priv = priv;
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboPropertyControl, 
+BONOBO_TYPE_FUNC_FULL (BonoboPropertyControl, 
 			   Bonobo_PropertyControl,
 			   PARENT_TYPE,
 			   bonobo_property_control);

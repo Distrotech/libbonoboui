@@ -15,7 +15,7 @@
 #include <bonobo/bonobo-ui-toolbar.h>
 #include <bonobo/bonobo-ui-sync.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_SYNC_TOOLBAR            (bonobo_ui_sync_toolbar_get_type ())
 #define BONOBO_UI_SYNC_TOOLBAR(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC_TOOLBAR, BonoboUISyncToolbar))
@@ -42,6 +42,6 @@ BonoboUISync *bonobo_ui_sync_toolbar_new      (BonoboUIEngine *engine,
 BonoboUIToolbarStyle bonobo_ui_sync_toolbar_get_look (BonoboUIEngine *engine,
 						      BonoboUINode   *node);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_UI_SYNC_TOOLBAR_H_ */

@@ -24,7 +24,7 @@
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-embeddable.h>
 
-#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 static GtkObjectClass *bonobo_embeddable_parent_class;
 
@@ -473,7 +473,7 @@ bonobo_embeddable_init (BonoboObject *object)
 	embeddable->priv = g_new0 (BonoboEmbeddablePrivate, 1);
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboEmbeddable, 
+BONOBO_TYPE_FUNC_FULL (BonoboEmbeddable, 
 			   Bonobo_Embeddable,
 			   PARENT_TYPE,
 			   bonobo_embeddable);

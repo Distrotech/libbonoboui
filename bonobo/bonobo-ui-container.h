@@ -11,7 +11,7 @@
 #define _BONOBO_UI_CONTAINER_H_
 
 #include <bonobo/bonobo-win.h>
-#include <bonobo/bonobo-xobject.h>
+#include <bonobo/bonobo-object.h>
 
 #define BONOBO_UI_CONTAINER_TYPE        (bonobo_ui_container_get_type ())
 #define BONOBO_UI_CONTAINER(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_CONTAINER_TYPE, BonoboUIContainer))
@@ -22,7 +22,7 @@
 typedef struct _BonoboUIContainerPrivate BonoboUIContainerPrivate;
 
 typedef struct {
-	BonoboXObject base;
+	BonoboObject base;
 
 	BonoboUIContainerPrivate *priv;
 
@@ -31,7 +31,7 @@ typedef struct {
 } BonoboUIContainer;
 
 typedef struct {
-	BonoboXObjectClass parent;
+	BonoboObjectClass parent;
 
 	POA_Bonobo_UIContainer__epv epv;
 } BonoboUIContainerClass;

@@ -20,7 +20,7 @@
 #include <libgnomeui/gnome-dialog.h>
 #include <bonobo/bonobo-selector-widget.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_SELECTOR(obj)		GTK_CHECK_CAST(obj, bonobo_selector_get_type (), BonoboSelector)
 #define BONOBO_SELECTOR_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, bonobo_selector_get_type (), BonoboSelectorClass)
@@ -58,7 +58,7 @@ gchar     *bonobo_selector_get_selected_description (BonoboSelector *sel);
 gchar	  *bonobo_selector_select_id       (const gchar *title,
 					    const gchar **interfaces_required);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* __BONOBO_SELECTOR_H__ */
 

@@ -33,7 +33,7 @@ struct _BonoboCanvasComponentPrivate {
 	GnomeCanvasItem   *item;
 };
 
-#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 /* Returns the GnomeCanvasItemClass of an object */
 #define ICLASS(x) GNOME_CANVAS_ITEM_CLASS ((GTK_OBJECT (x)->klass))
@@ -666,7 +666,7 @@ bonobo_canvas_component_init (GtkObject *object)
 	gcc->priv = g_new0 (BonoboCanvasComponentPrivate, 1);
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboCanvasComponent, 
+BONOBO_TYPE_FUNC_FULL (BonoboCanvasComponent, 
 			   Bonobo_Canvas_Component,
 			   PARENT_TYPE,
 			   bonobo_canvas_component);

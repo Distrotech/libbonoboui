@@ -11,11 +11,11 @@
 #ifndef _BONOBO_VIEW_FRAME_H_
 #define _BONOBO_VIEW_FRAME_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-ui-container.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_VIEW_FRAME_TYPE        (bonobo_view_frame_get_type ())
 #define BONOBO_VIEW_FRAME(o)          (GTK_CHECK_CAST ((o), BONOBO_VIEW_FRAME_TYPE, BonoboViewFrame))
@@ -71,6 +71,6 @@ void                       bonobo_view_frame_view_deactivate  (BonoboViewFrame  
 void                       bonobo_view_frame_set_zoom_factor  (BonoboViewFrame  *view_frame,
 							       double            zoom);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_VIEW_FRAME_H_ */

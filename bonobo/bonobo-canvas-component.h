@@ -11,10 +11,10 @@
 #ifndef _BONOBO_CANVAS_COMPONENT_H_
 #define _BONOBO_CANVAS_COMPONENT_H_
 
-#include <libgnomebase/gnome-defs.h>
-#include <bonobo/bonobo-xobject.h>
+#include <gmacros.h>
+#include <bonobo/bonobo-object.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_CANVAS_COMPONENT_TYPE        (bonobo_canvas_component_get_type ())
 #define BONOBO_CANVAS_COMPONENT(o)          (GTK_CHECK_CAST ((o), BONOBO_CANVAS_COMPONENT_TYPE, BonoboCanvasComponent))
@@ -25,12 +25,12 @@ BEGIN_GNOME_DECLS
 typedef struct _BonoboCanvasComponentPrivate BonoboCanvasComponentPrivate;
 
 typedef struct {
-	BonoboXObject base;
+	BonoboObject base;
 	BonoboCanvasComponentPrivate *priv;
 } BonoboCanvasComponent;
 
 typedef struct {
-	BonoboXObjectClass parent_class;
+	BonoboObjectClass parent_class;
 	
 	POA_Bonobo_Canvas_Component__epv epv;
 
@@ -58,6 +58,6 @@ Bonobo_UIContainer      bonobo_canvas_component_get_ui_container (BonoboCanvasCo
 GnomeCanvas *bonobo_canvas_new (gboolean                     is_aa,
 				Bonobo_Canvas_ComponentProxy proxy);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* */

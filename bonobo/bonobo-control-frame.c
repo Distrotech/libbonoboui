@@ -31,7 +31,7 @@ enum {
 	LAST_SIGNAL
 };
 
-#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 static guint control_frame_signals [LAST_SIGNAL];
 
@@ -440,7 +440,7 @@ bonobo_control_frame_init (BonoboObject *object)
 	control_frame->priv->autostate    = TRUE;
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboControlFrame, 
+BONOBO_TYPE_FUNC_FULL (BonoboControlFrame, 
 			   Bonobo_ControlFrame,
 			   PARENT_TYPE,
 			   bonobo_control_frame);

@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_ENGINE_H_
 #define _BONOBO_UI_ENGINE_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <bonobo/bonobo-object.h>
 
 typedef struct _BonoboUIEngine BonoboUIEngine;
@@ -25,7 +25,7 @@ typedef enum {
 
 #include <bonobo/bonobo-ui-sync.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_ENGINE            (bonobo_ui_engine_get_type ())
 #define BONOBO_UI_ENGINE(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_ENGINE, BonoboUIEngine))
@@ -183,6 +183,6 @@ void             bonobo_ui_engine_set_ui_container(BonoboUIEngine    *engine,
 void             bonobo_ui_engine_freeze          (BonoboUIEngine    *engine);
 void             bonobo_ui_engine_thaw            (BonoboUIEngine    *engine);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_UI_ENGINE_H_ */

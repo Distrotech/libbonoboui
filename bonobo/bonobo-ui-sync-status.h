@@ -15,7 +15,7 @@
 
 #include <bonobo/bonobo-ui-sync.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_SYNC_STATUS            (bonobo_ui_sync_status_get_type ())
 #define BONOBO_UI_SYNC_STATUS(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC_STATUS, BonoboUISyncStatus))
@@ -41,6 +41,6 @@ typedef struct {
 BonoboUISync *bonobo_ui_sync_status_new      (BonoboUIEngine *engine,
 					      GtkBox         *status);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_UI_SYNC_STATUS_H_ */

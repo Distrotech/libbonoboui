@@ -171,7 +171,7 @@ bonobo_view_init (BonoboView *view)
 	view->priv = g_new0 (BonoboViewPrivate, 1);
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboView, 
+BONOBO_TYPE_FUNC_FULL (BonoboView, 
 			   Bonobo_View,
 			   PARENT_TYPE,
 			   bonobo_view);

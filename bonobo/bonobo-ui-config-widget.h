@@ -13,7 +13,7 @@
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-ui-engine.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_UI_CONFIG_WIDGET(obj)		GTK_CHECK_CAST(obj,  bonobo_ui_config_widget_get_type (), BonoboUIConfigWidget)
 #define BONOBO_UI_CONFIG_WIDGET_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, bonobo_ui_config_widget_get_type (), BonoboUIConfigWidgetClass)
@@ -42,6 +42,6 @@ GtkWidget *bonobo_ui_config_widget_construct (BonoboUIConfigWidget *config,
 GtkWidget *bonobo_ui_config_widget_new       (BonoboUIEngine       *engine,
 					      GtkAccelGroup        *accel_group);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* BONOBO_UI_CONFIG_WIDGET_H */

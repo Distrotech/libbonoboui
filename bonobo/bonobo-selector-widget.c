@@ -18,7 +18,7 @@
 #include <config.h>
 #include <string.h> /* strcmp */
 #include <glib.h>
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE
 #include <libgnomebase/gnome-i18n.h>
 #include <libgnomeui/gnome-pixmap.h>

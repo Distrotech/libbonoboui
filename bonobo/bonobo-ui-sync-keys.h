@@ -15,7 +15,7 @@
 
 #include <bonobo/bonobo-ui-sync.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_SYNC_KEYS            (bonobo_ui_sync_keys_get_type ())
 #define BONOBO_UI_SYNC_KEYS(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC_KEYS, BonoboUISyncKeys))
@@ -43,6 +43,6 @@ gint          bonobo_ui_sync_keys_binding_handle (GtkWidget        *widget,
 						  GdkEventKey      *event,
 						  BonoboUISyncKeys *msync);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_UI_SYNC_KEYS_H_ */

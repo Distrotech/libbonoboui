@@ -11,16 +11,16 @@
 #ifndef _BONOBO_CONTROL_H_
 #define _BONOBO_CONTROL_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
-#include <bonobo/bonobo-xobject.h>
+#include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-property-bag.h>
 #include <bonobo/bonobo-property-bag-client.h>
 #include <bonobo/bonobo-ui-component.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_CONTROL_TYPE        (bonobo_control_get_type ())
 #define BONOBO_CONTROL(o)          (GTK_CHECK_CAST ((o), BONOBO_CONTROL_TYPE, BonoboControl))
@@ -31,13 +31,13 @@ BEGIN_GNOME_DECLS
 typedef struct _BonoboControlPrivate BonoboControlPrivate;
 
 typedef struct {
-	BonoboXObject base;
+	BonoboObject base;
 
 	BonoboControlPrivate *priv;
 } BonoboControl;
 
 typedef struct {
-	BonoboXObjectClass      parent_class;
+	BonoboObjectClass      parent_class;
 
 	POA_Bonobo_Control__epv epv;
 
@@ -80,6 +80,6 @@ void                        bonobo_control_activate_notify         (BonoboContro
 								    gboolean             activated);
 Bonobo_Control_windowId     bonobo_control_windowid_from_x11       (guint32              x11_id);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_CONTROL_H_ */

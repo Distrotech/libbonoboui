@@ -11,11 +11,11 @@
 #ifndef _BONOBO_VIEW_H_
 #define _BONOBO_VIEW_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-view-frame.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_VIEW_TYPE        (bonobo_view_get_type ())
 #define BONOBO_VIEW(o)          (GTK_CHECK_CAST ((o), BONOBO_VIEW_TYPE, BonoboView))
@@ -66,6 +66,6 @@ BonoboUIComponent    *bonobo_view_get_ui_component       (BonoboView         *vi
 void                  bonobo_view_activate_notify        (BonoboView         *view,
 							  gboolean            activated);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_VIEW_H_ */

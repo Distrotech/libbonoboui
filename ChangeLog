@@ -1,5 +1,16 @@
 2001-04-19  Michael Meeks  <michael@ximian.com>
 
+	* *.[ch]:
+	s/bonobo-xobject/bonobo-object/g;
+	s/BonoboXObject/BonoboObject/g;
+	s/bonobo_x_object/bonobo_object/g;
+	s/BONOBO_X_/BONOBO_/g;
+	s/<libgnomebase\/gnome-defs.h>/<gmacros.h>/;
+	s/BEGIN_GNOME_DECLS/G_BEGIN_DECLS/g;
+	s/END_GNOME_DECLS/G_END_DECLS/g;
+	
+2001-04-19  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/Makefile.am: add.
 
 	* bonobo/libbonoboui-2.0.pc.in: add.

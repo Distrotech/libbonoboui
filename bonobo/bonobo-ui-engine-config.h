@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_ENGINE_CONFIG_H_
 #define _BONOBO_UI_ENGINE_CONFIG_H_
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-engine.h>
@@ -74,6 +74,6 @@ void    bonobo_ui_engine_config_configure (BonoboUIEngineConfig   *config);
 
 BonoboUIEngine *bonobo_ui_engine_config_get_engine (BonoboUIEngineConfig *config);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_UI_ENGINE_CONFIG_H_ */

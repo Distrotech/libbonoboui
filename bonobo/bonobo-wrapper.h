@@ -10,10 +10,10 @@
 #ifndef BONOBO_WRAPPER_H
 #define BONOBO_WRAPPER_H
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtkbin.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 
 #define GNOME_TYPE_WRAPPER            (bonobo_wrapper_get_type ())
@@ -46,6 +46,6 @@ gboolean	 bonobo_wrapper_is_covered	(BonoboWrapper *wrapper);
 gboolean	 bonobo_wrapper_get_visibility	(BonoboWrapper *wrapper);
 void		 bonobo_wrapper_set_visibility	(BonoboWrapper *wrapper, gboolean visible);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif

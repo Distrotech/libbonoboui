@@ -11,14 +11,14 @@
 #ifndef _BONOBO_CONTROL_FRAME_H_
 #define _BONOBO_CONTROL_FRAME_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
-#include <bonobo/bonobo-xobject.h>
+#include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-wrapper.h>
 #include <bonobo/bonobo-property-bag-client.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_CONTROL_FRAME_TYPE        (bonobo_control_frame_get_type ())
 #define BONOBO_CONTROL_FRAME(o)          (GTK_CHECK_CAST ((o), BONOBO_CONTROL_FRAME_TYPE, BonoboControlFrame))
@@ -29,12 +29,12 @@ BEGIN_GNOME_DECLS
 typedef struct _BonoboControlFramePrivate BonoboControlFramePrivate;
 
 typedef struct {
-	BonoboXObject base;
+	BonoboObject base;
 	BonoboControlFramePrivate *priv;
 } BonoboControlFrame;
 
 typedef struct {
-	BonoboXObjectClass parent_class;
+	BonoboObjectClass parent_class;
 
 	POA_Bonobo_ControlFrame__epv epv;
 
@@ -108,6 +108,6 @@ void  bonobo_control_frame_sync_unrealize (BonoboControlFrame *frame);
 /* Or this.  It exists just so that BonoboSocket can use it. */
 gboolean bonobo_control_frame_focus (BonoboControlFrame *frame, GtkDirectionType direction);
     
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_CONTROL_FRAME_H_ */

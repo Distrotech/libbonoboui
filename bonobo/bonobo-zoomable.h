@@ -29,7 +29,7 @@
 
 #include <bonobo/bonobo-object.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_ZOOMABLE_TYPE		(bonobo_zoomable_get_type ())
 #define BONOBO_ZOOMABLE(o)		(GTK_CHECK_CAST ((o), BONOBO_ZOOMABLE_TYPE, BonoboZoomable))
@@ -95,6 +95,6 @@ void		 bonobo_zoomable_report_zoom_level_changed	(BonoboZoomable	*zoomable,
 void		 bonobo_zoomable_report_zoom_parameters_changed	(BonoboZoomable	*zoomable);
 
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_ZOOMABLE_H_ */

@@ -13,7 +13,7 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE
 #include <libgnomebase/gnome-i18n.h>
 #include <libgnomeui/gnome-preferences.h>

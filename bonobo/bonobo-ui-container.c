@@ -18,7 +18,7 @@
 #include <bonobo/bonobo-win.h>
 #include <bonobo/bonobo-ui-container.h>
 
-#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 static GtkObjectClass *bonobo_ui_container_parent_class;
 
@@ -260,7 +260,7 @@ bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 	epv->thaw       = impl_Bonobo_UIContainer_thaw;
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboUIContainer, 
+BONOBO_TYPE_FUNC_FULL (BonoboUIContainer, 
 			   Bonobo_UIContainer,
 			   PARENT_TYPE,
 			   bonobo_ui_container);

@@ -16,7 +16,7 @@
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 
-#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 /**
  * bonobo_desktop_window_construct:
@@ -128,7 +128,7 @@ bonobo_desktop_window_init (GtkObject *object)
 	/* nothing to do */
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboDesktopWindow, 
+BONOBO_TYPE_FUNC_FULL (BonoboDesktopWindow, 
 			   Bonobo_Desktop_Window,
 			   PARENT_TYPE,
 			   bonobo_desktop_window);

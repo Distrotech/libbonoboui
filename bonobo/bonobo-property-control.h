@@ -13,7 +13,7 @@
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-event-source.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 typedef struct _BonoboPropertyControl        BonoboPropertyControl;
 typedef struct _BonoboPropertyControlPrivate BonoboPropertyControlPrivate;
@@ -31,13 +31,13 @@ typedef BonoboControl *(* BonoboPropertyControlGetControlFn) (BonoboPropertyCont
 							      void *closure);
 
 struct _BonoboPropertyControl {
-        BonoboXObject		object;
+        BonoboObject		object;
 
 	BonoboPropertyControlPrivate *priv;
 };
 
 typedef struct {
-	BonoboXObjectClass parent_class;
+	BonoboObjectClass parent_class;
 
 	POA_Bonobo_PropertyControl__epv epv;
 
@@ -63,7 +63,7 @@ void                   bonobo_property_control_changed   (BonoboPropertyControl 
 							  CORBA_Environment     *opt_ev);
 BonoboEventSource *bonobo_property_control_get_event_source (BonoboPropertyControl *property_control);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_PROPERTY_CONTROL_H_ */
 

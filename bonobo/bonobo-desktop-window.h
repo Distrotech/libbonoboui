@@ -10,12 +10,12 @@
 #ifndef _BONOBO_DESKTOP_WINDOW_H_
 #define _BONOBO_DESKTOP_WINDOW_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwindow.h>
-#include <bonobo/bonobo-xobject.h>
+#include <bonobo/bonobo-object.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
  
 #define BONOBO_DESKTOP_WINDOW_TYPE        (bonobo_desktop_window_get_type ())
 #define BONOBO_DESKTOP_WINDOW(o)          (GTK_CHECK_CAST ((o), BONOBO_DESKTOP_WINDOW_TYPE, BonoboDesktopWindow))
@@ -26,13 +26,13 @@ BEGIN_GNOME_DECLS
 typedef struct _BonoboDesktopWindowPrivate BonoboDesktopWindowPrivate;
 
 typedef struct {
-	BonoboXObject base;
+	BonoboObject base;
 	GtkWindow   *window;
 	BonoboDesktopWindowPrivate *priv;
 } BonoboDesktopWindow;
 
 typedef struct {
-	BonoboXObjectClass parent_class;
+	BonoboObjectClass parent_class;
 
 	POA_Bonobo_Desktop_Window__epv epv;
 } BonoboDesktopWindowClass;
@@ -44,6 +44,6 @@ BonoboDesktopWindow *bonobo_desktop_window_new       (GtkWindow           *tople
 void                 bonobo_desktop_window_control   (BonoboObject        *object,
 						      GtkWindow           *win);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_DESKTOP_WINDOW_H_ */

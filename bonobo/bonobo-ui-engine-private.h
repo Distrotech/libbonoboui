@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_ENGINE_PRIVATE_H_
 #define _BONOBO_UI_ENGINE_PRIVATE_H_
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-engine.h>
@@ -20,6 +20,6 @@ BEGIN_GNOME_DECLS
 BonoboUIXml          *bonobo_ui_engine_get_xml    (BonoboUIEngine *engine);
 BonoboUIEngineConfig *bonobo_ui_engine_get_config (BonoboUIEngine *engine);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_UI_ENGINE_H_ */

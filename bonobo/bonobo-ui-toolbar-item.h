@@ -10,10 +10,10 @@
 #ifndef _BONOBO_UI_TOOLBAR_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_ITEM_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtk.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_TOOLBAR_ITEM			(bonobo_ui_toolbar_item_get_type ())
 #define BONOBO_UI_TOOLBAR_ITEM(obj)			(GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR_ITEM, BonoboUIToolbarItem))
@@ -105,6 +105,6 @@ gboolean                  bonobo_ui_toolbar_item_get_pack_end     (BonoboUIToolb
 
 void                      bonobo_ui_toolbar_item_activate         (BonoboUIToolbarItem     *item);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* __BONOBO_UI_TOOLBAR_ITEM_H__ */

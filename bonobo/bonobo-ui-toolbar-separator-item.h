@@ -11,10 +11,10 @@
 #ifndef _BONOBO_UI_TOOLBAR_SEPARATOR_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_SEPARATOR_ITEM_H_
 
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include "bonobo-ui-toolbar-item.h"
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_TOOLBAR_SEPARATOR_ITEM            (bonobo_ui_toolbar_separator_item_get_type ())
 #define BONOBO_UI_TOOLBAR_SEPARATOR_ITEM(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR_SEPARATOR_ITEM, BonoboUIToolbarSeparatorItem))
@@ -39,6 +39,6 @@ typedef struct {
 GtkType    bonobo_ui_toolbar_separator_item_get_type (void);
 GtkWidget *bonobo_ui_toolbar_separator_item_new      (void);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_UI_TOOLBAR_SEPARATOR_ITEM_H_ */

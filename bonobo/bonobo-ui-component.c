@@ -15,7 +15,7 @@
 #include <gnome-xml/tree.h>
 #include <gnome-xml/parser.h>
 
-#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 static GtkObjectClass *bonobo_ui_component_parent_class;
 
@@ -1436,7 +1436,7 @@ bonobo_ui_component_init (BonoboUIComponent *component)
 	component->priv = priv;
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboUIComponent, 
+BONOBO_TYPE_FUNC_FULL (BonoboUIComponent, 
 			   Bonobo_UIComponent,
 			   PARENT_TYPE,
 			   bonobo_ui_component);

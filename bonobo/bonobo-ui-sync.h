@@ -12,7 +12,7 @@
 #define _BONOBO_UI_SYNC_H_
 
 #include <stdio.h>
-#include <libgnomebase/gnome-defs.h>
+#include <gmacros.h>
 #include <gtk/gtkcontainer.h>
 #include <bonobo/bonobo-ui-node.h>
 
@@ -20,7 +20,7 @@ typedef struct _BonoboUISync BonoboUISync;
 
 #include <bonobo/bonobo-ui-engine.h>
 
-BEGIN_GNOME_DECLS
+G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_SYNC            (bonobo_ui_sync_get_type ())
 #define BONOBO_UI_SYNC(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_SYNC, BonoboUISync))
@@ -156,6 +156,6 @@ GtkType bonobo_ui_sync_menu_get_type    (void);
 GtkType bonobo_ui_sync_status_get_type  (void);
 GtkType bonobo_ui_sync_toolbar_get_type (void);
 
-END_GNOME_DECLS
+G_END_DECLS
 
 #endif /* _BONOBO_UI_SYNC_H_ */

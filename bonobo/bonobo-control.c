@@ -22,7 +22,7 @@
 #include <gtk/gtkbox.h>
 #include <gtk/gtkmain.h>
 
-#define PARENT_TYPE BONOBO_X_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 enum {
 	SET_FRAME,
@@ -961,7 +961,7 @@ bonobo_control_init (BonoboControl *control)
 	control->priv->control_frame = CORBA_OBJECT_NIL;
 }
 
-BONOBO_X_TYPE_FUNC_FULL (BonoboControl, 
+BONOBO_TYPE_FUNC_FULL (BonoboControl, 
 			 Bonobo_Control,
 			 PARENT_TYPE,
 			 bonobo_control);
