@@ -153,8 +153,7 @@ bonobo_plug_size_allocate (GtkWidget     *widget,
 		 g_type_name_from_instance ((gpointer)GTK_BIN (widget)->child):
 		 "No child!");
 
-	return GTK_WIDGET_CLASS (parent_class)->size_allocate (
-		widget, allocation);
+	GTK_WIDGET_CLASS (parent_class)->size_allocate (widget, allocation);
 }
 
 static void
@@ -164,8 +163,7 @@ bonobo_plug_size_request (GtkWidget      *widget,
 	dprintf ("bonobo_plug_size_request: %d, %d\n",
 		 requisition->width, requisition->height);
 
-	return GTK_WIDGET_CLASS (parent_class)->size_request (
-		widget, requisition);
+	GTK_WIDGET_CLASS (parent_class)->size_request (widget, requisition);
 }
 
 static gboolean

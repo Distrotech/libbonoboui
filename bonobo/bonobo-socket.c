@@ -165,8 +165,7 @@ bonobo_socket_size_allocate (GtkWidget     *widget,
 		 allocation->x, allocation->y,
 		 allocation->width, allocation->height);
 	
-	return GTK_WIDGET_CLASS (parent_class)->size_allocate (
-		widget, allocation);
+	GTK_WIDGET_CLASS (parent_class)->size_allocate (widget, allocation);
 }
 
 static void
