@@ -1,3 +1,16 @@
+2002-02-05  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: require GConf >= 1.1.7
+
+	* bonobo/bonobo-ui-main.c
+	(bonobo_ui_debug_shutdown): upd.
+
+	* bonobo/bonobo-ui-preferences.c
+	remove no_gconf boolean throught.
+	(bonobo_ui_gconf_leaks_refs): remove.
+	(bonobo_ui_preferences_shutdown): do a
+	gconf_debug_shutdown.
+
 2002-02-05  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-ui-sync-menu.c: (impl_bonobo_ui_sync_menu_build):

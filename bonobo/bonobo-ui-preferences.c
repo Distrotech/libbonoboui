@@ -19,8 +19,6 @@
 
 #define GLOBAL_INTERFACE_KEY "/desktop/gnome/interface"
 
-static gboolean no_gconf = FALSE;
-
 static GConfEnumStringPair toolbar_styles[] = {
         { BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT, "text" },
         { BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY, "icons" },
@@ -60,9 +58,6 @@ update_engines_idle_callback (gpointer data)
 void
 bonobo_ui_preferences_add_engine (BonoboUIEngine *engine)
 {
-	if (no_gconf)
-		return;
-
 	if (!client)
 		client = gconf_client_get_default ();
 	
@@ -81,9 +76,6 @@ bonobo_ui_preferences_add_engine (BonoboUIEngine *engine)
 void
 bonobo_ui_preferences_remove_engine (BonoboUIEngine *engine)
 {
-	if (no_gconf)
-		return;
-
 	if (!g_slist_find (engine_list, engine))
 		return;
 
@@ -108,9 +100,6 @@ get (const char *key, gboolean def)
 	gboolean ret;
 	GError  *err = NULL;
 
-	if (no_gconf)
-		return def;
-
 	if (!client)					
 		client = gconf_client_get_default ();	
 
@@ -127,25 +116,21 @@ get (const char *key, gboolean def)
 	return ret;
 }
 
-void
+int
 bonobo_ui_preferences_shutdown (void)
 {
+	int ret = 0;
+
 	if (client) {
-		g_object_unref (G_OBJECT (client));
-
-#if 0
-		/* If people don't provide shutdown methods
-		 * they get their API screwed with */
-		GConfEngine *engine;
-
-		engine = gconf_engine_get_default ();
-
-		gconf_engine_unref (engine);
-
-		gconf_engine_unref (engine);
-#endif
+/* Re-enable this when GConf >= 1.1.8 comes out */
+/*		g_object_unref (G_OBJECT (client)); */
 		client = NULL;
+		ret = gconf_debug_shutdown ();
+		if (ret)
+			g_warning ("GConf's dirty shutdown");
 	}
+
+	return ret;
 }
 
 #define DEFINE_BONOBO_UI_PREFERENCE(c_name, prop_name, def)      \
@@ -169,9 +154,6 @@ bonobo_ui_preferences_get_toolbar_style (void)
 {
 	BonoboUIToolbarStyle style;
 	char *str;
-
-	if (no_gconf)
-		return BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
 
 	if (!client)
 		client = gconf_client_get_default ();
@@ -220,10 +202,4 @@ keys_changed_fn (GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer
 		return;
 
 	update_engines_idle_id = gtk_idle_add (update_engines_idle_callback, NULL);
-}
-
-void
-bonobo_ui_gconf_leaks_refs (void)
-{
-	no_gconf = TRUE;
 }

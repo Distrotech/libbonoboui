@@ -138,7 +138,8 @@ bonobo_ui_main (void)
 int
 bonobo_ui_debug_shutdown (void)
 {
-	bonobo_ui_preferences_shutdown ();
+	if (bonobo_ui_preferences_shutdown ())
+		return 1;
 	
 	return bonobo_debug_shutdown ();
 }

@@ -24,8 +24,7 @@
 /* To dump lots of sequence information */
 #undef DEBUG_UI
 
-void       bonobo_ui_gconf_leaks_refs     (void);
-void       bonobo_ui_preferences_shutdown (void);
+int        bonobo_ui_preferences_shutdown (void);
 void       bonobo_ui_image_set_pixbuf     (GtkImage       *image,
 					   GdkPixbuf      *pixbuf);
 GdkPixbuf *bonobo_ui_util_xml_get_pixbuf  (GtkWidget      *widget,

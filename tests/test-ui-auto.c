@@ -188,8 +188,6 @@ main (int argc, char **argv)
 
 	free (malloc (8)); /* -lefence */
 
-	bonobo_ui_gconf_leaks_refs ();
-
 	if (!bonobo_ui_init_full ("test-ui-auto", VERSION,
 				  &argc, argv,
 				  CORBA_OBJECT_NIL,

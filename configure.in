@@ -39,7 +39,7 @@ dnl Start of pkg-config checks
 dnl
 BONOBOUI_MODULES="libgnomecanvas-2.0 >= 1.110.0 libbonobo-2.0 >= 1.110.0 \
 		  libgnome-2.0 >= 1.110.0 bonobo-activation-2.0 >= 0.9.3 \
-		  gconf-2.0 >= 1.1.5 gtk+-2.0 >= 1.3.12"
+		  gconf-2.0 >= 1.1.7 gtk+-2.0 >= 1.3.12"
 PKG_CHECK_MODULES(BONOBOUI, $BONOBOUI_MODULES)
 AC_SUBST(BONOBOUI_CFLAGS)
 AC_SUBST(BONOBOUI_LIBS)
