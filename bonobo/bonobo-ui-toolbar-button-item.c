@@ -73,9 +73,6 @@ create_pixmap_widget_from_pixbuf (GdkPixbuf *pixbuf)
 	pixmap_widget = bonobo_ui_toolbar_icon_new_from_pixbuf (pixbuf);
 	bonobo_ui_toolbar_icon_set_draw_mode (BONOBO_UI_TOOLBAR_ICON (pixmap_widget),
 					      BONOBO_UI_TOOLBAR_ICON_COLOR);
-
-	bonobo_ui_toolbar_icon_set_alpha_threshold (BONOBO_UI_TOOLBAR_ICON (pixmap_widget), 0);
-
 	return pixmap_widget;
 }
 
