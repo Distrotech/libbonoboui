@@ -1,3 +1,8 @@
+2004-03-05  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-file-selector-util.c (response_cb):
+	don't do bad things.
+
 2004-03-04  Guntupalli Karunakar  <karunakar@freedomink.org>
 
         * configure.in: Added "pa" (Punjabi) to ALL_LINGUAS.

@@ -173,7 +173,6 @@ response_cb (GtkFileChooser *chooser, gint response, gpointer data)
 		gtk_widget_hide (GTK_WIDGET (chooser));
 		gtk_main_quit ();
 
-		/* FIXME: possible leak ? */
 		g_object_set_qdata (G_OBJECT (chooser),
 				    user_data_id,
 				    NULL);
@@ -184,40 +183,31 @@ response_cb (GtkFileChooser *chooser, gint response, gpointer data)
 
 	if (file_name == NULL || !strlen (file_name)) {
 		g_free (file_name);
-
 		return;
 	}
 	
-	/* Change into directory if that's what user selected */
-	if (g_file_test (file_name, G_FILE_TEST_IS_DIR)) {
-		gtk_file_chooser_set_current_folder (chooser, file_name);
-
-	} else if (GET_MODE (chooser) == FILESEL_OPEN_MULTI) {
+	if (GET_MODE (chooser) == FILESEL_OPEN_MULTI) {
 		gchar **strv;
 		GSList *files = gtk_file_chooser_get_filenames (chooser);
 		GSList *iter;
 		int i;
 
-		strv = g_malloc (sizeof (gchar *) * (g_slist_length (files) + 1));
+		strv = g_new (gchar *, (g_slist_length (files) + 1));
 
-		for (iter = files, i = 0; iter != NULL; iter = iter->next, i++) {
+		for (iter = files, i = 0; iter != NULL; iter = iter->next, i++)
 			strv[i] = iter->data;
-		}
 		strv[i] = NULL;
 		g_slist_free (files);
 
 		g_object_set_qdata (G_OBJECT (chooser),
 				    user_data_id, strv);
-		gtk_main_quit ();
-
-	} else {
-		gtk_widget_hide (GTK_WIDGET (chooser));
-
+	} else
 		g_object_set_qdata (G_OBJECT (chooser),
 				    user_data_id,
 				    g_strdup (file_name));
-		gtk_main_quit ();
-	}
+
+	gtk_widget_hide (GTK_WIDGET (chooser));
+	gtk_main_quit ();
 
 	g_free (file_name);
 }
