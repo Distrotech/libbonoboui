@@ -1,13 +1,14 @@
 # Hungarian translation for libbonoboui
 # Copyright (C) 2002 Free Software Foundation, Inc.
 # Emese Kovacs <emese@gnome.hu>, 2002.
+# Andras Timar <timar@gnome.hu>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2002-12-04 16:37+0100\n"
-"Last-Translator: Emese Kovacs <emese@gnome.hu>\n"
+"POT-Creation-Date: 2003-07-09 13:20+0200\n"
+"PO-Revision-Date: 2003-07-09 13:27+0200\n"
+"Last-Translator: Andras Timar <timar@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +41,7 @@ msgstr "Az eszköztár dokkolásának megszüntetése"
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
-msgstr "Árnyéktípus"
+msgstr "Árnyék típusa"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
 #: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
@@ -90,7 +91,6 @@ msgid "Interfaces required"
 msgstr "Szükséges interfészek"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
@@ -183,7 +183,7 @@ msgstr "Kikapcsolandó Gdk debug jelzőbitek"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr "Használandó X megjelenítő"
+msgstr "Használandó X-megjelenítő"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
@@ -191,7 +191,7 @@ msgstr "DISPLAY"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
-msgstr "Használandó X képernyő"
+msgstr "Használandó X-képernyő"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
@@ -299,7 +299,7 @@ msgstr "legyen-e lebegő az eszköztár"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Az eszköztár körüli fazetta stílusa"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
@@ -307,7 +307,7 @@ msgstr "_Tartalom"
 
 #: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
-msgstr "Az alkalmazás súgójának megtekintése"
+msgstr "Az alkalmazás súgója"
 
 #: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
@@ -371,7 +371,7 @@ msgstr "Kijelölés"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "_Névjegy"
+msgstr "_Névjegy..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
@@ -404,7 +404,7 @@ msgstr "Szia világ!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "A libbonobo kód initje sikertelen"
+msgstr "A libbonoboui kód initje sikertelen"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
