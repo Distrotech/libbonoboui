@@ -120,8 +120,13 @@ node_get_id (xmlNode *node)
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if (!(txt = xmlGetProp (node, "id")))
+	if (!(txt = xmlGetProp (node, "id"))) {
 		txt = xmlGetProp (node, "verb");
+		if (txt && txt [0] == '\0') {
+			xmlFree (txt);
+			txt = xmlGetProp (node, "name");
+		}
+	}
 
 	if (txt) {
 		ret = g_strdup (txt);
@@ -624,13 +629,16 @@ exec_verb_cb (GtkWidget *item, xmlNode *node)
 	data = bonobo_ui_xml_get_data (NULL, node);
 	g_return_val_if_fail (data != NULL, FALSE);
 
-	if (!data->id)
-		return FALSE;
-
-	verb = xmlGetProp (node, "verb");
+	verb = node_get_id (node);
 	if (!verb) {
 		g_warning ("No verb on '%s' '%s'",
 			   node->name, xmlGetProp (node, "name"));
+		return FALSE;
+	}
+
+	if (!data->id) {
+		g_warning ("Wierd; no ID on verb '%s'", verb);
+		xmlFree (verb);
 		return FALSE;
 	}
 
@@ -1620,7 +1628,7 @@ impl_node_get (PortableServer_Servant servant,
 	BonoboApp  *app = bonobo_app_from_servant (servant);
 	xmlDoc     *doc;
 	xmlChar    *mem = NULL;
-	xmlNode    *children;
+	xmlNode    *node;
 	int         size;
 	CORBA_char *ret;
 
@@ -1629,26 +1637,24 @@ impl_node_get (PortableServer_Servant servant,
 		doc != NULL,
 		CORBA_string_dup ("<Error name=\"memory\"/>"));
 
-	doc->root = bonobo_ui_xml_get_path (app->priv->tree, path);
+	node = bonobo_ui_xml_get_path (app->priv->tree, path);
+	doc->root = xmlCopyNode (node, TRUE);
 	g_return_val_if_fail (
 		doc->root != NULL,
 		CORBA_string_dup ("<Error name=\"tree\"/>"));
 
-	children = doc->root->childs;
-
-	if (nodeOnly)
-		doc->root->childs = NULL;
+	if (nodeOnly && doc->root->childs) {
+		xmlNode *tmp = doc->root->childs;
+		xmlUnlinkNode (tmp);
+		xmlFreeNode (tmp);
+	}
 
 	xmlDocDumpMemory (doc, &mem, &size);
-
-	if (nodeOnly)
-		doc->root->childs = children;
 
 	g_return_val_if_fail (
 		mem != NULL,
 		CORBA_string_dup ("<Error name=\"dump\"/>"));
 
-	doc->root = NULL;
 	xmlFreeDoc (doc);
 
 	ret = CORBA_string_dup (mem);

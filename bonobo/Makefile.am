@@ -183,7 +183,9 @@ libbonobo_printinclude_HEADERS =		\
 	bonobo-print.h		\
 	bonobo-print-client.h
 
-noinst_PROGRAMS = test-app bonobo-ui-extract
+noinst_PROGRAMS = test-app
+
+bin_PROGRAMS = bonobo-ui-extract
 
 test_app_SOURCES = app.c
 

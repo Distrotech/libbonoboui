@@ -332,8 +332,8 @@ free_help_menu_entry (GtkWidget *widget, GnomeHelpMenuEntry *entry)
 
 static void
 bonobo_help_display_cb (BonoboUIComponent *component,
-			const char        *cname,
-			gpointer           user_data)
+			gpointer           user_data,
+			const char        *cname)
 {
 	gnome_help_display (component, user_data);
 }
@@ -574,7 +574,7 @@ bonobo_ui_util_get_ui_fname (const char *component_name)
 	char *fname, *name;
 
 	name  = g_strdup_printf ("%s/ui.xml", component_name);
-	fname = gnome_datadir_file (name);
+	fname = gnome_unconditional_datadir_file (name);
 	g_free (name);
 
 	return fname;

@@ -22,8 +22,8 @@ typedef void (*BonoboUIListenerFn) (BonoboUIComponent           *component,
 				    gpointer                     user_data);
 
 typedef void (*BonoboUIVerbFn)    (BonoboUIComponent           *component,
-				   const char                  *cname,
-				   gpointer                     user_data);
+				   gpointer                     user_data,
+				   const char                  *cname);
 
 struct _BonoboUIComponent {
 	BonoboObject              object;
@@ -88,8 +88,33 @@ xmlNode           *bonobo_ui_container_get_tree     (Bonobo_UIContainer  contain
 						     gboolean            recurse,
 						     CORBA_Environment  *ev);
 
+void               bonobo_ui_container_object_set   (Bonobo_UIContainer  container,
+						     const char         *path,
+						     Bonobo_Unknown      control,
+						     CORBA_Environment  *ev);
+
+Bonobo_Unknown     bonobo_ui_container_object_get   (Bonobo_UIContainer  container,
+						     const char         *path,
+						     CORBA_Environment  *ev);
+
 POA_Bonobo_UIComponent__epv *bonobo_ui_component_get_epv (void);
 Bonobo_UIComponent bonobo_ui_component_corba_object_create (BonoboObject *object);
+
+typedef struct {
+	char          *cname;
+	BonoboUIVerbFn cb;
+	gpointer       user_data;
+} BonoboUIVerb;
+
+#define BONOBO_UI_VERB(name,cb)           { (name), ((BonoboUIVerbFn)(cb)), NULL   }
+#define BONOBO_UI_VERB_DATA(name,cb,data) { (name), ((BonoboUIVerbFn)(cb)), (data) }
+#define BONOBO_UI_VERB_END                { NULL, NULL, NULL }
+
+void    bonobo_ui_component_add_verb_list           (BonoboUIComponent  *component,
+						     BonoboUIVerb       *list);
+void    bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *component,
+						     BonoboUIVerb       *list,
+						     gpointer            user_data);
 
 END_GNOME_DECLS
 

@@ -642,7 +642,9 @@ bonobo_socket_filter_func (GdkXEvent *gdk_xevent, GdkEvent *event, gpointer data
 	
 		if (!socket->plug_window)
 			bonobo_socket_add_window (socket, xcre->window);
-	
+
+		/* FIXME: it seems it is possible to have a NULL socket->plug_window
+		   but this crashes stuff */
 		if (xcre->window == GDK_WINDOW_XWINDOW (socket->plug_window))
 		{
 			if (xcre->value_mask & (CWWidth | CWHeight))

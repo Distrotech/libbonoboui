@@ -21,12 +21,6 @@ static guint signals[LAST_SIGNAL] = { 0 };
 POA_Bonobo_UIComponent__vepv bonobo_ui_component_vepv;
 
 typedef struct {
-	char *cname;
-	BonoboUIVerbFn cb;
-	gpointer       user_data;
-} Verb;
-
-typedef struct {
 	char              *id;
 	BonoboUIListenerFn cb;
 	gpointer           user_data;
@@ -48,7 +42,7 @@ bonobo_ui_from_servant (PortableServer_Servant servant)
 }
 
 static void
-verb_destroy (Verb *verb)
+verb_destroy (BonoboUIVerb *verb)
 {
 	if (verb) {
 		g_free (verb->cname);
@@ -88,7 +82,7 @@ impl_describe_verbs (PortableServer_Servant servant,
 		     CORBA_Environment     *ev)
 {
 	g_warning ("FIXME: Describe verbs unimplemented");
-	return CORBA_string_dup ("<NoVerbDescriptionCodeYet/>");
+	return CORBA_string_dup ("<NoBonoboUIVerbDescriptionCodeYet/>");
 }
 
 static void
@@ -107,12 +101,11 @@ impl_exec_verb (PortableServer_Servant servant,
 /*	g_warning ("TESTME: Exec verb '%s'", cname);*/
 
 	for (l = component->priv->verbs; l; l = l->next) {
-		Verb *verb = l->data;
+		BonoboUIVerb *verb = l->data;
 
 		if (!strcmp (verb->cname, cname)) {
 			if (verb->cb)
-				verb->cb (component,
-					  cname, verb->user_data);
+				verb->cb (component, verb->user_data, cname);
 			found = TRUE;
 		}
 	}
@@ -156,13 +149,13 @@ bonobo_ui_component_add_verb (BonoboUIComponent  *component,
 			      BonoboUIVerbFn      fn,
 			      gpointer            user_data)
 {
-	Verb *verb;
+	BonoboUIVerb *verb;
 	BonoboUIComponentPrivate *priv;
 
 	g_return_if_fail (cname != NULL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
-	verb = g_new (Verb, 1);
+	verb = g_new (BonoboUIVerb, 1);
 	verb->cname = g_strdup (cname);
 	verb->cb        = fn;
 	verb->user_data = user_data;
@@ -516,6 +509,91 @@ bonobo_ui_component_rm (BonoboUIComponent  *component,
 	Bonobo_UIContainer_deregister_component (
 		container, priv->name, real_ev);
 
+	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
+		g_warning ("Serious exception removing path  '%s' '%s'",
+			   path, bonobo_exception_get_text (real_ev));
+
 	if (!ev)
 		CORBA_exception_free (&tmp_ev);
+}
+
+
+void
+bonobo_ui_container_object_set (Bonobo_UIContainer  container,
+				const char         *path,
+				Bonobo_Unknown      control,
+				CORBA_Environment  *ev)
+{
+	CORBA_Environment *real_ev, tmp_ev;
+
+	g_return_if_fail (container != CORBA_OBJECT_NIL);
+
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
+
+	Bonobo_UIContainer_object_set (container, path, control, real_ev);
+
+	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
+		g_warning ("Serious exception setting object '%s' '%s'",
+			   path, bonobo_exception_get_text (real_ev));
+
+	if (!ev)
+		CORBA_exception_free (&tmp_ev);
+}
+
+Bonobo_Unknown
+bonobo_ui_container_object_get (Bonobo_UIContainer  container,
+				const char         *path,
+				CORBA_Environment  *ev)
+{
+	CORBA_Environment *real_ev, tmp_ev;
+	Bonobo_Unknown     ret;
+
+	g_return_if_fail (container != CORBA_OBJECT_NIL);
+
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
+
+	ret = Bonobo_UIContainer_object_get (container, path, real_ev);
+
+	if (!ev && real_ev->_major != CORBA_NO_EXCEPTION)
+		g_warning ("Serious exception getting object '%s' '%s'",
+			   path, bonobo_exception_get_text (real_ev));
+
+	if (!ev)
+		CORBA_exception_free (&tmp_ev);
+
+	return ret;
+}
+
+void
+bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *component,
+					     BonoboUIVerb       *list,
+					     gpointer            user_data)
+{
+	BonoboUIVerb *l;
+
+	g_return_if_fail (list != NULL);
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
+	for (l = list; l && l->cname; l++) {
+		bonobo_ui_component_add_verb (
+			component, l->cname, l->cb,
+			user_data?user_data:l->user_data);
+	}
+}
+
+void
+bonobo_ui_component_add_verb_list (BonoboUIComponent  *component,
+				   BonoboUIVerb       *list)
+{
+	bonobo_ui_component_add_verb_list_with_data (component, list, NULL);
 }

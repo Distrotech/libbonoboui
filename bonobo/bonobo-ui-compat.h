@@ -10,6 +10,7 @@
 #include <gtk/gtkaccelgroup.h>
 #include <gnome-xml/tree.h>
 #include <bonobo/bonobo-app.h>
+#include <bonobo/bonobo-ui-component.h>
 
 #define BONOBO_UI_HANDLER_TYPE        (bonobo_ui_handler_get_type ())
 #define BONOBO_UI_HANDLER(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_HANDLER_TYPE, BonoboUIHandler))
@@ -89,6 +90,10 @@ typedef enum {
  */
 BonoboUIHandler         *bonobo_ui_handler_new_for_app			(BonoboApp       *app);
 BonoboUIHandler		*bonobo_ui_handler_new				(void);
+
+BonoboUIComponent       *bonobo_ui_compat_get_component                 (BonoboUIHandler *uih);
+BonoboApp               *bonobo_ui_compat_get_app                       (BonoboUIHandler *uih);
+Bonobo_UIContainer       bonobo_ui_compat_get_container                 (BonoboUIHandler *uih);
 
 /*
  * Compat functions; no special use needed

@@ -37,8 +37,8 @@ identical (BonoboUIXml *tree, gpointer a, gpointer b)
 	return val;
 }
 
-void
-bonobo_ui_xml_strip (xmlNode *node)
+static void
+do_strip (xmlNode *node)
 {
 	xmlNode *l;
 	xmlAttr *a;
@@ -55,6 +55,13 @@ bonobo_ui_xml_strip (xmlNode *node)
 
 	for (l = node->childs; l; l = l->next)
 		bonobo_ui_xml_strip (l);
+}
+
+void
+bonobo_ui_xml_strip (xmlNode *node)
+{
+	for (; node; node = node->next)
+		do_strip (node);
 }
 
 gpointer
@@ -137,7 +144,7 @@ free_nodedata_tree (BonoboUIXml *tree, xmlNode *node, gboolean do_overrides)
 }
 
 static void
-set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
+do_set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
 {
 	BonoboUIXmlData *data =
 		bonobo_ui_xml_get_data (tree, node);
@@ -160,6 +167,13 @@ set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
 
 	for (node = node->childs; node; node = node->next)
 		set_id (tree, node, id);
+}
+
+static void
+set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
+{
+	for (; node; node = node->next)
+		do_set_id (tree, node, id);
 }
 
 static void
@@ -680,7 +694,9 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 			nextb = b->next;
 
 			XML_FREE (a_name);
+			a_name = NULL;
 			XML_FREE (b_name);
+			b_name = NULL;
 
 /*			printf ("'%s' '%s' with '%s' '%s'\n",
 				a->name, xmlGetProp (a, "name"),
@@ -771,7 +787,9 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 
 	merge (tree, current, &nodes);
 
-	DUMP_XML (tree, tree->root, "Merged to");
+#ifdef UI_XML_DEBUG
+	bonobo_ui_xml_dump (tree, tree->root, "Merged to");
+#endif
 }
 
 void

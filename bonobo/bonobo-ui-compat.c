@@ -219,6 +219,8 @@ bonobo_ui_handler_new_for_app (BonoboApp *app)
 
 	priv->app = app;
 	priv->component = bonobo_ui_component_new ("toplevel");
+	gtk_object_set_data (GTK_OBJECT (priv->component),
+			     MAGIC_UI_HANDLER_KEY, priv);
 
 	/* Festering lice */
 	bonobo_ui_handler_set_container (
@@ -316,8 +318,8 @@ typedef struct {
 
 static void
 verb_to_cb (BonoboUIComponent *component,
-	    const char        *cname,
-	    gpointer           user_data)
+	    gpointer           user_data,
+	    const char        *cname)
 {
 	VerbClosure *c = user_data;
 
@@ -747,7 +749,17 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 	switch (type) {
 	case BONOBO_UI_HANDLER_MENU_RADIOITEM:
 		xmlSetProp (node, "type", "radio");
+		break;
+	case BONOBO_UI_HANDLER_MENU_TOGGLEITEM:
+		xmlSetProp (node, "type", "toggle");
+		break;
+	default:
+		break;
+	}
+
+	switch (type) {
 	case BONOBO_UI_HANDLER_MENU_ITEM:
+	case BONOBO_UI_HANDLER_MENU_RADIOITEM:
 	case BONOBO_UI_HANDLER_MENU_TOGGLEITEM:
 		compat_add_verb (priv->component, verb,
 				 callback, callback_data, path);
@@ -1223,8 +1235,32 @@ bonobo_ui_handler_menu_set_toggle_state	(BonoboUIHandler *uih, const char *path,
 gboolean
 bonobo_ui_handler_menu_get_toggle_state	(BonoboUIHandler *uih, const char *path)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_get_toggel_state unimplemented\n");
-	return FALSE;
+	xmlNode *node;
+	char *xml_path;
+	char *state;
+	gboolean ans;
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_val_if_fail (priv != NULL, FALSE);
+
+	xml_path = make_path ("/menu", "submenu", path, FALSE);
+
+	node = bonobo_ui_container_get_tree (priv->container,
+					     xml_path, FALSE, NULL);
+
+	g_return_val_if_fail (node != NULL, FALSE);
+
+	bonobo_ui_xml_dump (priv->ui, node, "Gotten toggle state");
+	if ((state = xmlGetProp (node, "state"))) {
+		ans = atoi (state);
+		xmlFree (state);
+	} else
+		ans = FALSE;
+
+	g_free (xml_path);
+	xmlFreeNode (node);
+	
+	return ans;
 }
 
 void
@@ -1281,7 +1317,29 @@ bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
 				     gpointer callback_data,
 				     GDestroyNotify callback_data_destroy_notify)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_set_callback unimplemented\n");
+	xmlNode *node;
+	char *xml_path;
+	char *verb;
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_if_fail (priv != NULL);
+
+	xml_path = make_path ("/menu", "submenu", path, FALSE);
+
+	node = bonobo_ui_container_get_tree (priv->container,
+					     xml_path, FALSE, NULL);
+
+	g_return_if_fail (node != NULL);
+
+	bonobo_ui_xml_dump (priv->ui, node, "Set menu callback");
+	if ((verb = xmlGetProp (node, "verb"))) {
+		compat_add_verb (priv->component, verb,
+				 callback, callback_data, path);
+	} else
+		g_warning ("No verb to add callback to");
+
+	g_free (xml_path);
+	xmlFreeNode (node);
 }
 
 void
@@ -1340,4 +1398,34 @@ bonobo_ui_handler_dock_get_sensitive (BonoboUIHandler       *uih,
 {
 	fprintf (stderr, "bonobo_ui_handler_dock_get_sensitive unimplemented\n");
 	return TRUE;
+}
+
+BonoboUIComponent *
+bonobo_ui_compat_get_component (BonoboUIHandler *uih)
+{
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_val_if_fail (priv != NULL, NULL);
+
+	return priv->component;
+}
+
+BonoboApp *
+bonobo_ui_compat_get_app (BonoboUIHandler *uih)
+{
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_val_if_fail (priv != NULL, NULL);
+
+	return priv->app;
+}
+
+Bonobo_UIContainer
+bonobo_ui_compat_get_container (BonoboUIHandler *uih)
+{
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_val_if_fail (priv != NULL, NULL);
+
+	return priv->container;
 }
