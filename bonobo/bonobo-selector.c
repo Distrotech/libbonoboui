@@ -204,7 +204,7 @@ gnome_bonobo_select_goad_id (const gchar *title,
 	
 	gtk_widget_show (sel);
 		
-	n = gnome_dialog_run (sel);
+	n = gnome_dialog_run (GNOME_DIALOG(sel));
 	if (n == -1)
 		return NULL;
 	if (n == 0)

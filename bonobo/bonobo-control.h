@@ -35,18 +35,21 @@ struct _GnomeControlClass {
 	void (*size_query)               (GnomeControl *control, int *desired_width, int *desired_height);
 };
 
-GtkType		   gnome_control_get_type	   (void);
-GnomeControl	  *gnome_control_construct	   (GnomeControl *control,
-						    GNOME_Control corba_control,
-						    GtkWidget *widget);
-GnomeControl      *gnome_control_new               (GtkWidget *widget);
+GtkType		   gnome_control_get_type            (void);
+GnomeControl	  *gnome_control_construct	     (GnomeControl *control,
+						      GNOME_Control corba_control,
+						      GtkWidget *widget);
 
-void		   gnome_control_set_control_frame (GnomeControl *control,
-						    GNOME_ControlFrame control_frame);
-GNOME_ControlFrame gnome_control_get_control_frame (GnomeControl *control);
+GNOME_Control      gnome_control_corba_object_create (GnomeObject *object);
 
-void               gnome_control_request_resize    (GnomeControl *control,
-						    int width, int height);
+GnomeControl      *gnome_control_new                 (GtkWidget *widget);
+
+void		   gnome_control_set_control_frame   (GnomeControl *control,
+						      GNOME_ControlFrame control_frame);
+GNOME_ControlFrame gnome_control_get_control_frame   (GnomeControl *control);
+
+void               gnome_control_request_resize      (GnomeControl *control,
+						      int width, int height);
 
 /* CORBA default vector methods we provide */
 extern POA_GNOME_Control__epv gnome_control_epv;
