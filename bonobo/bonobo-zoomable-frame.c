@@ -1,12 +1,29 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/*
- * bonobo-zoomable: Handling for arbitrairly zoomable controls
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Author:
- *     Martin Baulig (baulig@suse.de)
+ *  Bonobo::ZoomableFrame - container side part of Bonobo::Zoomable.
  *
- * Copyright 2000 SuSE GmbH.
+ *  Copyright (C) 2000 Eazel, Inc.
+ *                2000 SuSE GmbH.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free
+ *  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *  Authors: Maciej Stachowiak <mjs@eazel.com>
+ *           Martin Baulig <baulig@suse.de>
+ *
  */
+
 #include <config.h>
 #include <bonobo/bonobo-zoomable-frame.h>
 #include <gtk/gtksignal.h>
