@@ -1,6 +1,6 @@
 SUBDIRS = bonobo glade samples tests po doc
 
-libincludedir = $(includedir)/gnome-2.0
+libincludedir = $(includedir)/libbonoboui-2.0
 libinclude_HEADERS =    \
 	bonobo.h	\
 	libbonoboui.h

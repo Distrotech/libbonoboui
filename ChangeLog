@@ -1,3 +1,10 @@
+2001-10-30  jacob berkman  <jacob@ximian.com>
+
+	* bonobo/libbonoboui-2.0.pc.in (Cflags): 
+	* bonobo/Makefile.am (libbonoboincludedir): 
+	* Makefile.am (libincludedir): use libbonoboui-2.0 rather than
+	gnome-2.0
+
 2001-10-31  Michael Meeks  <michael@ximian.com>
 
 	* configure.in: add test-control.c
