@@ -24,7 +24,6 @@ static guint bonobo_object_signals [LAST_SIGNAL];
 
 static void
 impl_GNOME_BonoboObject_do_verb (PortableServer_Servant servant,
-				 const CORBA_short verb,
 				 const CORBA_char *verb_name,
 				 CORBA_Environment *ev)
 {
@@ -33,7 +32,7 @@ impl_GNOME_BonoboObject_do_verb (PortableServer_Servant servant,
 	gtk_signal_emit (
 		GTK_OBJECT (bonobo_object),
 		bonobo_object_signals [DO_VERB],
-		(gint)verb, (gchar*)verb_name);
+		(gchar *) verb_name);
 }
 
 static void
@@ -112,19 +111,15 @@ impl_GNOME_BonoboObject_get_verb_list (PortableServer_Servant servant,
 	
 	list->_length = len;
 	list->_maximum = len;
-	list->_buffer = CORBA_sequence_GNOME_BonoboObject_VerbInfo_allocbuf (len);
+	list->_buffer = CORBA_sequence_CORBA_string_allocbuf (len);
 
 	if (list->_buffer == NULL){
 		CORBA_free (list);
 		return NULL;
 	}
 
-	for (i = 0, l = bonobo_object->verbs; l; l = l->next, i++){
-		GnomeBonoboObjectVerb *vi = l->data;
-
-		list->_buffer [i].verb = vi->verb_code;
-		list->_buffer [i].verb_desc = CORBA_string_dup (vi->verb_string);
-	}
+	for (i = 0, l = bonobo_object->verbs; l; l = l->next, i++)
+		list->_buffer [i] = CORBA_string_dup (l->data);
 	
 	return list;
 }
@@ -267,12 +262,9 @@ gnome_bonobo_object_destroy (GtkObject *object)
 	/*
 	 * Release the verbs
 	 */
-	for (l = bonobo_object->verbs; l; l = l->next){
-		GnomeBonoboObjectVerb *verb = l->data;
+	for (l = bonobo_object->verbs; l; l = l->next)
+		g_free (l->data);
 
-		g_free (verb->verb_string);
-		g_free (verb);
-	}
 	g_list_free (bonobo_object->verbs);
 	
 	GTK_OBJECT_CLASS (gnome_bonobo_object_parent_class)->destroy (object);
@@ -351,38 +343,26 @@ gnome_bonobo_object_set_view_factory (GnomeBonoboObject *bonobo_object,
 }
 
 void
-gnome_bonobo_object_add_verb (GnomeBonoboObject *bonobo_object, const char *verb_name, int verb_code)
+gnome_bonobo_object_add_verb (GnomeBonoboObject *bonobo_object, const char *verb_name)
 {
-	GnomeBonoboObjectVerb *vi;
-
 	g_return_if_fail (bonobo_object != NULL);
 	g_return_if_fail (GNOME_IS_BONOBO_OBJECT (bonobo_object));
 	g_return_if_fail (verb_name != NULL);
 
-	vi = g_new (GnomeBonoboObjectVerb, 1);
-	vi->verb_string = g_strdup (verb_name);
-	vi->verb_code = verb_code;
-		
-	bonobo_object->verbs = g_list_prepend (bonobo_object->verbs, vi);
+	bonobo_object->verbs = g_list_prepend (bonobo_object->verbs, g_strdup (verb_name));
 }
 
 void
-gnome_bonobo_object_add_verbs (GnomeBonoboObject *bonobo_object, GnomeBonoboObjectVerb *verbs)
+gnome_bonobo_object_add_verbs (GnomeBonoboObject *bonobo_object, const char **verbs)
 {
-	GnomeBonoboObjectVerb *vi;
 	int i;
 	
 	g_return_if_fail (bonobo_object != NULL);
 	g_return_if_fail (GNOME_IS_BONOBO_OBJECT (bonobo_object));
 	g_return_if_fail (verbs != NULL);
 
-	for (i = 0; verbs [i].verb_string != NULL; i++){
-		vi = g_new (GnomeBonoboObjectVerb, 1);
-
-		vi->verb_string = g_strdup (verbs [i].verb_string);
-		vi->verb_code = verbs [i].verb_code;
-
-		bonobo_object->verbs = g_list_prepend (bonobo_object->verbs, vi);
+	for (i = 0; verbs [i] != NULL; i++){
+		bonobo_object->verbs = g_list_prepend (bonobo_object->verbs, g_strdup (verbs [i]));
 	}
 }
 
@@ -396,14 +376,11 @@ gnome_bonobo_object_remove_verb (GnomeBonoboObject *bonobo_object, const char *v
 	g_return_if_fail (verb_name != NULL);
 
 	for (l = bonobo_object->verbs; l; l = l->data){
-		GnomeBonoboObjectVerb *vi = l->data;
-
-		if (strcmp (verb_name, vi->verb_string))
+		if (strcmp (verb_name, l->data))
 			continue;
 
-		bonobo_object->verbs = g_list_remove (bonobo_object->verbs, vi);
-		g_free (vi->verb_string);
-		g_free (vi);
+		bonobo_object->verbs = g_list_remove (bonobo_object->verbs, l->data);
+		g_free (l->data);
 		return;
 	}
 }

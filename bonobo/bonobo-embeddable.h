@@ -51,11 +51,6 @@ typedef struct {
 	void (*host_name_changed)  (GnomeBonoboObject *comp);
 } GnomeBonoboObjectClass;
 
-typedef struct {
-	int   verb_code;
-	char *verb_string;
-} GnomeBonoboObjectVerb;
-
 GtkType            gnome_bonobo_object_get_type           (void);
 GnomeBonoboObject *gnome_bonobo_object_new                (GnomeViewFactory factory,
 							   void *data);
@@ -64,9 +59,9 @@ GnomeBonoboObject *gnome_bonobo_object_construct          (GnomeBonoboObject *bo
 							   GnomeViewFactory factory,
 							   void *data);
 void               gnome_bonobo_object_add_verb           (GnomeBonoboObject *bonobo_object,
-							   const char *verb_name, int verb_code);
+							   const char *verb_name);
 void               gnome_bonobo_object_add_verbs          (GnomeBonoboObject *bonobo_object,
-							   GnomeBonoboObjectVerb *verbs);
+							   const char **verb_list);
 void               gnome_bonobo_object_remove_verb        (GnomeBonoboObject *bonobo_object,
 							   const char *verb_name);
 void               gnome_bonobo_object_set_view_factory   (GnomeBonoboObject *bonobo_object,
