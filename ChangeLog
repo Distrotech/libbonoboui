@@ -3,6 +3,8 @@
 	* bonobo/bonobo-zoomable.c (bonobo_zoomable_class_init):
 	Fixed typo in translatable string.
 
+	* configure.in (ALL_LINGUAS): Added pl (Polish).
+
 2002-02-15  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/Makefile.am: add deprecated flags.
