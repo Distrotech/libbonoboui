@@ -159,11 +159,30 @@ static void
 bonobo_socket_size_allocate (GtkWidget     *widget,
 			     GtkAllocation *allocation)
 {
-	dprintf ("bonobo_socket_size_allocate: (%d, %d), (%d, %d)\n",
-		 allocation->x, allocation->y,
+	GtkSocket *socket = (GtkSocket *) widget;
+
+	dprintf ("bonobo_socket_size_allocate %p: (%d, %d), (%d, %d)\n",
+		 widget, allocation->x, allocation->y,
 		 allocation->width, allocation->height);
-	
-	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, size_allocate, (widget, allocation));
+
+	/* Work around curious local case handling in gtk_socket_size_allocate */
+	widget->allocation = *allocation;
+	if (socket->plug_widget) { /* do our own thing */
+		GtkAllocation child_allocation;
+
+		if (GTK_WIDGET_REALIZED (widget))
+			gdk_window_move_resize (widget->window,
+						allocation->x, allocation->y,
+						allocation->width, allocation->height);
+		
+		child_allocation.x = 0;
+		child_allocation.y = 0;
+		child_allocation.width = allocation->width;
+		child_allocation.height = allocation->height;
+		
+		gtk_widget_size_allocate (socket->plug_widget, &child_allocation);
+	} else
+		GNOME_CALL_PARENT (GTK_WIDGET_CLASS, size_allocate, (widget, allocation));
 }
 
 static void
@@ -184,7 +203,7 @@ bonobo_socket_size_request (GtkWidget      *widget,
 		 GTK_WIDGET_VISIBLE (gtk_socket)) {
 
 		requisition->width = gtk_socket->request_width;
-		requisition->width = gtk_socket->request_height;
+		requisition->height = gtk_socket->request_height;
 
 	} else {
 		CORBA_Environment tmp_ev, *ev;
@@ -197,14 +216,14 @@ bonobo_socket_size_request (GtkWidget      *widget,
 		if (!BONOBO_EX (ev)) {
 			gtk_socket->have_size = TRUE;
 			gtk_socket->request_width = requisition->width;
-			gtk_socket->request_height = requisition->width;
+			gtk_socket->request_height = requisition->height;
 		}
 
 		CORBA_exception_free (ev);
 	}
 
-	dprintf ("bonobo_socket_size_request: %d, %d\n",
-		 requisition->width, requisition->height);
+	dprintf ("bonobo_socket_size_request %p: %d, %d\n",
+		 widget, requisition->width, requisition->height);
 }
 
 static void

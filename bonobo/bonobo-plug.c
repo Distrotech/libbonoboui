@@ -221,7 +221,8 @@ static void
 bonobo_plug_size_allocate (GtkWidget     *widget,
 			   GtkAllocation *allocation)
 {
-	dprintf ("bonobo_plug_size_allocate: (%d, %d), (%d, %d) %d! %s\n",
+	dprintf ("bonobo_plug_size_allocate %p: (%d, %d), (%d, %d) %d! %s\n",
+		 widget,
 		 allocation->x, allocation->y,
 		 allocation->width, allocation->height,
 		 GTK_WIDGET_TOPLEVEL (widget),
@@ -236,8 +237,8 @@ static void
 bonobo_plug_size_request (GtkWidget      *widget,
 			  GtkRequisition *requisition)
 {
-	dprintf ("bonobo_plug_size_request: %d, %d\n",
-		 requisition->width, requisition->height);
+	dprintf ("bonobo_plug_size_request %p: %d, %d\n",
+		 widget, requisition->width, requisition->height);
 
 	GTK_WIDGET_CLASS (parent_class)->size_request (widget, requisition);
 }

@@ -1,3 +1,19 @@
+2002-05-31  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-socket.c
+	(bonobo_socket_size_request): fix some truly stupid things
+	happening with mixed up widths / heights.
+
+	* bonobo/bonobo-control.c
+	(impl_Bonobo_Control_setSize): fill out a bit.
+
+	* bonobo/bonobo-socket.c
+	(bonobo_socket_instance_init): immediate resize.
+	(bonobo_socket_size_allocate): for in-proc chain
+	immediately to size alloc the child.
+	(bonobo_socket_size_request): fix something very dumb
+	with mixed up / uninitialized width / height.
+
 2002-05-30  Kristian Rietveld  <kris@gtk.org>
 
 	* bonobo/bonobo-dock-item.c (bonobo_dock_item_set_behavior): added
@@ -20,7 +36,6 @@
 	crashing, so 'Cancel' works - sigh.
 
 2002-05-23  Michael Meeks  <michael@ximian.com>
-
 
 	* bonobo/bonobo-ui-engine-config.c
 	(bonobo_ui_engine_config_construct),

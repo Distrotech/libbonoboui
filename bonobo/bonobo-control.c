@@ -339,6 +339,14 @@ impl_Bonobo_Control_setSize (PortableServer_Servant  servant,
 			     const CORBA_short       height,
 			     CORBA_Environment      *ev)
 {
+	GtkAllocation  size;
+	BonoboControl *control = BONOBO_CONTROL (
+		bonobo_object_from_servant (servant));
+	
+	size.x = size.y = 0;
+	size.width = width;
+	size.height = height;
+
 	/*
 	 * Nothing.
 	 *
@@ -346,6 +354,10 @@ impl_Bonobo_Control_setSize (PortableServer_Servant  servant,
 	 * is handled by GtkPlug/GtkSocket for us, or GtkFrame in the
 	 * local case.
 	 */
+
+	g_warning ("setSize untested");
+
+	gtk_widget_size_allocate (GTK_WIDGET (control->priv->plug), &size);
 }
 
 static Bonobo_Gtk_Requisition
