@@ -1,3 +1,10 @@
+2003-09-15  Martin Kretzschmar  <m_kretzschmar@gmx.net>
+
+	* bonobo/bonobo-ui-sync-menu.c (impl_bonobo_ui_sync_menu_build)
+	(impl_bonobo_ui_sync_menu_build_placeholder): use
+	gtk_separator_menu_item_new to create separators, fixes #122314
+	( screen reader menu item count) (Michael gave the hint).
+
 2003-09-09  Taneem Ahmed  <taneem@bengalinux.org>
 
 	* configure.in: Added "bn" to ALL_LINGUAS.
