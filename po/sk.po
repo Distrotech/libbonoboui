@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-03-18 13:47+0000\n"
-"PO-Revision-Date: 2002-02-25 08:38+0100\n"
+"POT-Creation-Date: 2002-03-22 10:10+0100\n"
+"PO-Revision-Date: 2002-03-22 10:23+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -206,88 +206,88 @@ msgstr "èi je li¹ta nástrojov plávajúca"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "Nastavi» ladiace príznaky Gdk"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
-msgstr ""
+msgstr "PRÍZNAKY"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "Zru¹i» ladiace príznaky Gdk"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "Pu¾i» tento X displej"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "DISPLEJ"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "Pou¾íva» synchrónne volania X"
 
 #: bonobo/bonobo-ui-init-gtk.c:130
 msgid "Don't use X shared memory extension"
-msgstr ""
+msgstr "Nepou¾íva» roz¹írenie zdieµanej pamäte X"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "Názov programu, ako je pou¾ívaný správcom okien"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "NAME"
-msgstr ""
+msgstr "NÁZOV"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "Trieda programu, ako je pou¾ívaný správcom okien"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "CLASS"
-msgstr ""
+msgstr "TRIEDA"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "HOST"
-msgstr ""
+msgstr "HOSTITE¥"
 
 #: bonobo/bonobo-ui-init-gtk.c:145
 msgid "PORT"
-msgstr ""
+msgstr "PORT"
 
 #: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
 msgid "STYLE"
-msgstr ""
+msgstr "©TÝL"
 
 #: bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "Nastavi» ladiace príznaky Gtk+"
 
 #: bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "Zru¹i» ladiace príznaky Gtk+"
 
 #: bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "Bra» v¹etky upozornenia ako fatálne"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "Nahra» prídavný modul Gtk"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
-msgstr ""
+msgstr "MODUL"
 
 #: bonobo/bonobo-ui-init-gtk.c:175
 msgid "GTK+"
-msgstr ""
+msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:187
 msgid "Bonobo GUI support"
-msgstr ""
+msgstr "Podpora Bonobo GUI"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -336,4 +336,4 @@ msgstr "_Vybra»"
 
 #: samples/controls/bonobo-sample-controls.c:121
 msgid "Could not initialize Bonobo UI"
-msgstr ""
+msgstr "Nemô¾em inicializova» Bonobo UI"
