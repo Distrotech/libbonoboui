@@ -722,6 +722,7 @@ impl_dispose (GObject *object)
 	BonoboUISyncMenu *sync = (BonoboUISyncMenu *) object;
 
 	if (sync->menu) {
+		gtk_widget_destroy (GTK_WIDGET (sync->menu));
 		g_object_unref (sync->menu);
 		sync->menu = NULL;
 	}

@@ -315,11 +315,11 @@ parse_cookie (const CORBA_char *cookie)
 		case '=':
 			if (!ident || value)
 				goto parse_failed;
-			value = g_string_new ("");
+			value = g_string_new (NULL);
 			break;
 		default:
 			if (!ident)
-				ident = g_string_new ("");
+				ident = g_string_new (NULL);
 			
 			if (value)
 				g_string_append_c (value, *p);

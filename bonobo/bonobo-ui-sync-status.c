@@ -267,6 +267,7 @@ impl_dispose (GObject *object)
 	BonoboUISyncStatus *sync = (BonoboUISyncStatus *) object;
 
 	if (sync->status) {
+		gtk_widget_destroy (GTK_WIDGET (sync->status));
 		g_object_unref (sync->status);
 		sync->status = NULL;
 	}
