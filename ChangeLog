@@ -1,5 +1,7 @@
 2003-06-10  Michael Meeks  <michael@ximian.com>
 
+	* doc/api/Makefile.am (INCLUDES): setup right.
+
 	* bonobo/Makefile.am: fix write-protected srcdir horrors.
 
 	* samples/container/Makefile.am: dist -ui.xml

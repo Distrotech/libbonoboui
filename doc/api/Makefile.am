@@ -1,3 +1,5 @@
+INCLUDES = -I$(top_srcdir) -I$(top_builddir)
+
 ## Process this file with automake to produce Makefile.in
 AUTOMAKE_OPTIONS = 1.6
 
