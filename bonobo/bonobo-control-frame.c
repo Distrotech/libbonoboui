@@ -243,7 +243,6 @@ bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 				Bonobo_ControlFrame  corba_control_frame,
 				Bonobo_UIHandler     uih)
 {
-	g_return_val_if_fail (control_frame != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
 	bonobo_object_construct (BONOBO_OBJECT (control_frame), corba_control_frame);
@@ -486,7 +485,6 @@ bonobo_control_frame_control_activate (BonoboControlFrame *control_frame)
 {
 	CORBA_Environment ev;
 
-	g_return_if_fail (control_frame != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 
 	/*
@@ -523,7 +521,6 @@ bonobo_control_frame_control_deactivate (BonoboControlFrame *control_frame)
 {
 	CORBA_Environment ev;
 
-	g_return_if_fail (control_frame != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 
 	/*
@@ -562,7 +559,6 @@ void
 bonobo_control_frame_set_autoactivate (BonoboControlFrame  *control_frame,
 				       gboolean             autoactivate)
 {
-	g_return_if_fail (control_frame != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 
 	control_frame->priv->autoactivate = autoactivate;
@@ -580,7 +576,6 @@ bonobo_control_frame_set_autoactivate (BonoboControlFrame  *control_frame,
 gboolean
 bonobo_control_frame_get_autoactivate (BonoboControlFrame *control_frame)
 {
-	g_return_val_if_fail (control_frame != NULL, FALSE);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), FALSE);
 
 	return control_frame->priv->autoactivate;
@@ -627,7 +622,6 @@ bonobo_control_frame_control_set_state (BonoboControlFrame  *control_frame,
 	Bonobo_Control_State  corba_state;
 	CORBA_Environment     ev;
 
-	g_return_if_fail (control_frame != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 	g_return_if_fail (control_frame->priv->control != CORBA_OBJECT_NIL);
 
@@ -660,7 +654,6 @@ void
 bonobo_control_frame_set_autostate (BonoboControlFrame  *control_frame,
 				    gboolean             autostate)
 {
-	g_return_if_fail (control_frame != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 
 	control_frame->priv->autostate = autostate;
@@ -676,7 +669,6 @@ bonobo_control_frame_set_autostate (BonoboControlFrame  *control_frame,
 gboolean
 bonobo_control_frame_get_autostate (BonoboControlFrame *control_frame)
 {
-	g_return_val_if_fail (control_frame != NULL,                   FALSE);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), FALSE);
 
 	return control_frame->priv->autostate;
@@ -694,7 +686,6 @@ bonobo_control_frame_get_autostate (BonoboControlFrame *control_frame)
 Bonobo_UIHandler
 bonobo_control_frame_get_ui_handler (BonoboControlFrame *control_frame)
 {
-	g_return_val_if_fail (control_frame != NULL,                   CORBA_OBJECT_NIL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), CORBA_OBJECT_NIL);
 
 	return control_frame->priv->uih;
@@ -713,7 +704,6 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 {
 	CORBA_Environment ev;
 
-	g_return_if_fail (control_frame != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 
 	/*
@@ -757,7 +747,6 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 Bonobo_Control
 bonobo_control_frame_get_control (BonoboControlFrame *control_frame)
 {
-	g_return_val_if_fail (control_frame != NULL, CORBA_OBJECT_NIL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), CORBA_OBJECT_NIL);
 
 	return control_frame->priv->control;
@@ -779,7 +768,6 @@ bonobo_control_frame_get_control (BonoboControlFrame *control_frame)
 GtkWidget *
 bonobo_control_frame_get_widget (BonoboControlFrame *control_frame)
 {
-	g_return_val_if_fail (control_frame != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
 	return control_frame->priv->container;
@@ -800,9 +788,7 @@ void
 bonobo_control_frame_set_propbag (BonoboControlFrame  *control_frame,
 				 BonoboPropertyBag   *propbag)
 {
-	g_return_if_fail (control_frame != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
-	g_return_if_fail (propbag != NULL);
 	g_return_if_fail (BONOBO_IS_PROPERTY_BAG (propbag));
 
 	control_frame->priv->propbag = propbag;
@@ -819,7 +805,6 @@ bonobo_control_frame_set_propbag (BonoboControlFrame  *control_frame,
 BonoboPropertyBag *
 bonobo_control_frame_get_propbag (BonoboControlFrame  *control_frame)
 {
-	g_return_val_if_fail (control_frame != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
 	return control_frame->priv->propbag;

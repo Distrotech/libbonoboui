@@ -245,7 +245,7 @@ bonobo_gtk_widget_from_x11_id (guint32 xid)
 
 	gdk_window_get_user_data(window, &data);
 
-	if (!data || !GTK_IS_WIDGET (data)) {
+	if (!GTK_IS_WIDGET (data)) {
 		return NULL;
 	} else {
 		return GTK_WIDGET (data);
@@ -441,10 +441,8 @@ bonobo_control_construct (BonoboControl  *control,
 			  Bonobo_Control  corba_control,
 			  GtkWidget      *widget)
 {
-	g_return_val_if_fail (control != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 	g_return_val_if_fail (corba_control != CORBA_OBJECT_NIL, NULL);
-	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
 	/*
@@ -480,7 +478,6 @@ bonobo_control_new (GtkWidget *widget)
 	BonoboControl *control;
 	Bonobo_Control corba_control;
 	
-	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
 	control = gtk_type_new (bonobo_control_get_type ());
@@ -511,7 +508,6 @@ void
 bonobo_control_set_automerge (BonoboControl *control,
 			      gboolean       automerge)
 {
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
 	control->priv->automerge = automerge;
@@ -527,7 +523,6 @@ bonobo_control_set_automerge (BonoboControl *control,
 gboolean
 bonobo_control_get_automerge (BonoboControl *control)
 {
-	g_return_val_if_fail (control != NULL,             FALSE);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), FALSE);
 
 	return control->priv->automerge;
@@ -551,7 +546,6 @@ bonobo_control_set_menus_with_data (BonoboControl  *control,
 {
 	BonoboUIHandlerMenuItem *list;
 
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
 	if (control->priv->menus != NULL) {
@@ -587,7 +581,6 @@ bonobo_control_set_menus (BonoboControl  *control,
 {
 	BonoboUIHandlerMenuItem *list;
 
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
 	if (control->priv->menus != NULL) {
@@ -617,7 +610,6 @@ bonobo_control_set_menus (BonoboControl  *control,
 BonoboUIHandlerMenuItem *
 bonobo_control_get_menus (BonoboControl *control)
 {
-	g_return_val_if_fail (control != NULL,             NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
 	return control->priv->menus;
@@ -641,7 +633,6 @@ bonobo_control_set_toolbars_with_data (BonoboControl  *control,
 {
 	BonoboUIHandlerToolbarItem *list;
 
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
 	if (control->priv->toolbars != NULL) {
@@ -675,7 +666,6 @@ bonobo_control_set_toolbars (BonoboControl *control,
 {
 	BonoboUIHandlerToolbarItem *list;
 
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
 	if (control->priv->toolbars != NULL) {
@@ -704,7 +694,6 @@ bonobo_control_set_toolbars (BonoboControl *control,
 BonoboUIHandlerToolbarItem *
 bonobo_control_get_toolbars (BonoboControl *control)
 {
-	g_return_val_if_fail (control != NULL,             NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
 	return control->priv->toolbars;
@@ -794,7 +783,6 @@ bonobo_control_set_control_frame (BonoboControl *control, Bonobo_ControlFrame co
 {
 	CORBA_Environment ev;
 
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
 	CORBA_exception_init (&ev);
@@ -823,7 +811,6 @@ bonobo_control_get_control_frame (BonoboControl *control)
 	Bonobo_ControlFrame control_frame;
 	CORBA_Environment ev;
 	
-	g_return_val_if_fail (control != NULL, CORBA_OBJECT_NIL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
 
 	CORBA_exception_init (&ev);
@@ -843,9 +830,7 @@ bonobo_control_get_control_frame (BonoboControl *control)
 BonoboUIHandler *
 bonobo_control_get_ui_handler (BonoboControl *control)
 {
-	g_return_val_if_fail (control != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
-
 
 	return control->priv->uih;
 }
@@ -861,9 +846,7 @@ bonobo_control_get_ui_handler (BonoboControl *control)
 void
 bonobo_control_set_property_bag (BonoboControl *control, BonoboPropertyBag *pb)
 {
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
-	g_return_if_fail (pb != NULL);
 	g_return_if_fail (BONOBO_IS_PROPERTY_BAG (pb));
 
 	control->priv->propbag = pb;
@@ -878,7 +861,6 @@ bonobo_control_set_property_bag (BonoboControl *control, BonoboPropertyBag *pb)
 BonoboPropertyBag *
 bonobo_control_get_property_bag (BonoboControl *control)
 {
-	g_return_val_if_fail (control != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
 	return control->priv->propbag;
@@ -899,7 +881,6 @@ bonobo_control_get_ambient_properties (BonoboControl *control)
 	Bonobo_PropertyBag pbag;
 	CORBA_Environment ev;
 
-	g_return_val_if_fail (control != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
 	control_frame = control->priv->control_frame;
@@ -935,7 +916,6 @@ bonobo_control_get_remote_ui_handler (BonoboControl *control)
 	CORBA_Environment ev;
 	Bonobo_UIHandler uih;
 
-	g_return_val_if_fail (control != NULL, CORBA_OBJECT_NIL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
 
 	g_return_val_if_fail (control->priv->control_frame != CORBA_OBJECT_NIL,
@@ -967,7 +947,6 @@ bonobo_control_activate_notify (BonoboControl *control,
 {
 	CORBA_Environment ev;
 
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 	g_return_if_fail (control->priv->control_frame != CORBA_OBJECT_NIL);
 	
@@ -1064,7 +1043,6 @@ bonobo_control_set_property (BonoboControl       *control,
 	va_list args;
 	va_start (args, first_prop);
 
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 	g_return_if_fail (first_prop != NULL);
 
@@ -1090,7 +1068,6 @@ bonobo_control_get_property (BonoboControl       *control,
 	va_list args;
 	va_start (args, first_prop);
 
-	g_return_if_fail (control != NULL);
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 	g_return_if_fail (first_prop != NULL);
 
