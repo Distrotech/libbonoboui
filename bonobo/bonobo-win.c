@@ -9,7 +9,9 @@
  */
 
 #include "config.h"
-#include <gnome.h>
+#include <libgnomeui/gnome-dock-item.h>
+#include <libgnomeui/gnome-dock.h>
+#include <libgnomeui/gnome-preferences.h>
 #include <bonobo.h>
 #include <liboaf/liboaf.h>
 
