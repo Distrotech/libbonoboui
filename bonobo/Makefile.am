@@ -169,6 +169,15 @@ bonobo-ui-type-builtins.h: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
 		$(libbonoboui_h_sources) > xgen-gth \
 	&& cp xgen-gth $(@F) \
 	&& rm -f xgen-gth
+libbonoboui.defs: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
+	$(GLIB_MKENUMS) --comments ";; @comment@" \
+			--fprod "; enumerations from \"@filename@\"\n " \
+	                --vhead "(define-@type@ @EnumName@" \
+	                --vprod "   (@valuenick@ @VALUENAME@)" \
+	                --vtail ")" \
+	                $(libbonoboui_h_sources) > xgen-gdef \
+	&& (cmp -s xgen-gdef libbonoboui.defs || cp xgen-gdef libbonoboui.defs) \
+	&& rm -f xgen-gdef
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbonoboui-2.0.pc

@@ -1,5 +1,8 @@
 2001-12-07  jacob berkman  <jacob@ximian.com>
 
+	* bonobo/Makefile.am (libbonoboui.defs): forgot to add a rule for
+	libbonoboui.defs
+
 	* configure.in: look for glib-mkenums
 
 2001-12-06  jacob berkman  <jacob@ximian.com>
