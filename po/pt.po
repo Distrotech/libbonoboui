@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-10 21:49+0000\n"
-"PO-Revision-Date: 2005-01-10 22:00+0000\n"
+"POT-Creation-Date: 2005-01-24 20:07+0000\n"
+"PO-Revision-Date: 2005-01-24 20:10+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -31,30 +31,30 @@ msgstr "contentor UI corba"
 msgid "The User interface container"
 msgstr "O contentor do interface de utilizador"
 
-#: bonobo/bonobo-dock-item-grip.c:256
+#: bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
 msgstr "Anexar a barra de ferramentas"
 
-#: bonobo/bonobo-dock-item-grip.c:257
-msgid "Un dock the toolbar"
+#: bonobo/bonobo-dock-item-grip.c:258
+msgid "Undock the toolbar"
 msgstr "Desanexar a barra de ferramentas"
 
-#: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Tipo de sombra"
 
-#: bonobo/bonobo-dock-item.c:243 bonobo/bonobo-dock-item.c:244
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientação"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Largura preferida"
 
-#: bonobo/bonobo-dock-item.c:263 bonobo/bonobo-dock-item.c:264
+#: bonobo/bonobo-dock-item.c:264 bonobo/bonobo-dock-item.c:265
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Altura preferida"
