@@ -1,3 +1,8 @@
+2003-12-30  Federico Mena Quintero  <federico@ximian.com>
+
+	* bonobo/bonobo-control.c (impl_Bonobo_Control_activate): Ahem,
+	flip my reversed condition.
+
 2003-12-29  Federico Mena Quintero  <federico@ximian.com>
 
 	* bonobo/bonobo-control.c (impl_Bonobo_Control_activate): Fixed

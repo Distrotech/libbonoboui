@@ -228,7 +228,7 @@ impl_Bonobo_Control_activate (PortableServer_Servant servant,
 	 * if our active state is not what we are changing it to, then
 	 * don't emit the signal
 	 */
-	if (control->priv->active != old_activated)
+	if (control->priv->active == old_activated)
 		return;
 
 	g_signal_emit (control, control_signals [ACTIVATE], 0, control->priv->active);
