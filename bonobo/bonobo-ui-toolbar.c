@@ -309,9 +309,11 @@ show_popup_window (BonoboUIToolbar *toolbar)
 	BonoboUIToolbarPrivate *priv;
 	const GtkAllocation *toolbar_allocation;
 	gint x, y;
+#ifdef HAVE_GTK_MULTIHEAD
 	GdkScreen *screen;
 	gint screen_width, screen_height;
 	gint window_width, window_height;
+#endif
 
 	priv = toolbar->priv;
 
@@ -326,6 +328,7 @@ show_popup_window (BonoboUIToolbar *toolbar)
 	else
 		y += toolbar_allocation->y + toolbar_allocation->height;
 
+#ifdef HAVE_GTK_MULTIHEAD
 	gtk_window_get_size (GTK_WINDOW (priv->popup_window),
 			     &window_width, &window_height);
 	screen = gtk_widget_get_screen (GTK_WIDGET (toolbar));
@@ -335,6 +338,7 @@ show_popup_window (BonoboUIToolbar *toolbar)
 		x -= window_width;
 	if ((y + window_height) > screen_height)
 		x += toolbar_allocation->width;
+#endif
 
 	gtk_window_move (GTK_WINDOW (priv->popup_window), x, y);
 

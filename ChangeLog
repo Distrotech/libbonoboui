@@ -1,3 +1,10 @@
+2003-12-06  Rodney Dawes  <dobey@ximian.com>
+
+	Fixes #122137.
+	
+	* configure.in: Only require GTK+ >= 2.0.6, not >= 2.2.0
+	* bonobo/bonobo-ui-toolbar.c: #ifdef the multihead bits
+
 2003-12-06  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-ui.c (main): add keys test.
