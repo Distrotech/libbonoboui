@@ -5,7 +5,8 @@ corba_DATA = sample.gnorba
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
         -I$(includedir)                                 \
-	-I$(..)						\
+	-I$(srcdir) -I$(top_srcdir) 			\
+	-I. \
         $(GNOME_INCLUDEDIR)
 
 gnome_libs =			\
@@ -86,3 +87,5 @@ sample_server_SOURCES =		\
 	sample-server.c
 
 sample_server_LDADD = $(bonobo_libs)
+
+BUILT_SOURCES=$(CORBA_SOURCE)
