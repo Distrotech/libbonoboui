@@ -1,21 +1,23 @@
+# translation of libbonoboui.HEAD.ar.po to 
 # translation of libbonoboui.po to Arabic
 # translation of libbonoboui.po to
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) 2003 THE PACKAGE'S COPYRIGHT HOLDER
-# Isam Bayazidi <bayazidi@arabeyes.org>, 2002
-# Arafat Medini <lumina@silverpen.de>, 2003
+# Isam Bayazidi <bayazidi@arabeyes.org>, 2002.
+# Arafat Medini <lumina@silverpen.de>, 2003, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui\n"
+"Project-Id-Version: libbonoboui.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-05 15:33+0000\n"
-"PO-Revision-Date: 2004-02-29 11:15+0100\n"
-"Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"POT-Creation-Date: 2004-12-30 12:36+0100\n"
+"PO-Revision-Date: 2004-12-30 15:25+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -33,31 +35,30 @@ msgstr "حاوي واجهة مستخدم Corba"
 msgid "The User interface container"
 msgstr "حاوي واجهة المستخدم"
 
-#: bonobo/bonobo-dock-item-grip.c:257
+#: bonobo/bonobo-dock-item-grip.c:256
 msgid "Dock the toolbar"
 msgstr "إرساء شريط الأدوات"
 
-#: bonobo/bonobo-dock-item-grip.c:258
-#, fuzzy
-msgid "Undock the toolbar"
+#: bonobo/bonobo-dock-item-grip.c:257
+msgid "Un dock the toolbar"
 msgstr "فصل شريط الأدوات"
 
-#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
+#: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "نوع الظل"
 
-#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
+#: bonobo/bonobo-dock-item.c:243 bonobo/bonobo-dock-item.c:244
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "الإتجاه"
 
-#: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
+#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "العرض المفضّل"
 
-#: bonobo/bonobo-dock-item.c:264 bonobo/bonobo-dock-item.c:265
+#: bonobo/bonobo-dock-item.c:263 bonobo/bonobo-dock-item.c:264
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "الإرتفاع المفضّل"
@@ -406,86 +407,76 @@ msgstr "لم يمكن تشغيل واجهة مستخدم بونوبو"
 
 #: tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr ""
+msgstr "متصفحّ مكوّنات بونوبو"
 
 #: tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr ""
+msgstr "يعرض مكوّنات بونوبو المتوفّرة"
 
 #: tools/browser/bonobo-browser.xml.h:1
-#, fuzzy
 msgid "About this program..."
-msgstr "حول هذا التطبيق"
+msgstr "حول هذا البرنامج..."
 
 #: tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr ""
+msgstr "غلق النّافذة الحاليّة"
 
 #: tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
-msgstr ""
+msgstr "فتح نافذة جديدة"
 
 #: tools/browser/bonobo-browser.xml.h:5
-#, fuzzy
 msgid "_Help"
-msgstr "_إخفاء"
+msgstr "_مساعدة"
 
 #. Build the general tab
 #: tools/browser/component-details.c:109
 msgid "General"
-msgstr ""
+msgstr "عامّ"
 
 #: tools/browser/component-details.c:116 tools/browser/component-list.c:401
 msgid "IID"
-msgstr ""
+msgstr "IID"
 
 #: tools/browser/component-details.c:117
 msgid "Location"
-msgstr ""
+msgstr "الموقع"
 
 #. Build the details tab
 #: tools/browser/component-details.c:167
 msgid "Details"
-msgstr ""
+msgstr "التّفاصيل"
 
 #: tools/browser/component-details.c:168
 msgid "Detailed Information"
-msgstr ""
+msgstr "معلومات مفصّلة"
 
 #: tools/browser/component-list.c:370
 msgid "Active"
-msgstr ""
+msgstr "نشط"
 
 #: tools/browser/component-list.c:391
 msgid "Type"
-msgstr ""
+msgstr "النّوع"
 
 #: tools/browser/window.c:169
 msgid "Component Details"
-msgstr ""
+msgstr "تفاصيل المكوّن"
 
 #: tools/browser/window.c:214
 msgid "Bonobo Browser"
-msgstr ""
+msgstr "متصفّح بونوبو"
 
 #: tools/browser/window.c:215
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr ""
+msgstr "جميع الحقوق محفوظة 2001، مؤسّسة جنوم"
 
 #: tools/browser/window.c:216
 msgid "Bonobo component browser"
-msgstr ""
+msgstr "متصفّح مكوّنات بونوبو"
 
 #. create the window
 #: tools/browser/window.c:246
 msgid "Component Browser"
-msgstr ""
+msgstr "متصفّح المكوّنات"
 
-#~ msgid "HOST"
-#~ msgstr "المضيف"
-
-#~ msgid "PORT"
-#~ msgstr "المنفذ"
-
-#~ msgid "STYLE"
-#~ msgstr "الأسلوب"
