@@ -744,11 +744,8 @@ create_dockitem (BonoboUISyncToolbar *sync,
 			      position, offset, in_new_band);
 
 	toolbar = bonobo_ui_internal_toolbar_new();
-
-	gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
-	gtk_container_add (GTK_CONTAINER (item),
-			   GTK_WIDGET (toolbar));
-	gtk_widget_show (GTK_WIDGET (toolbar));
+	gtk_container_add (GTK_CONTAINER (item), toolbar);
+	gtk_widget_show (toolbar);
 
 	if ((prop = bonobo_ui_node_peek_attr (node, "config")))
 		can_config = atoi (prop);
@@ -857,7 +854,7 @@ impl_bonobo_ui_sync_toolbar_can_handle (BonoboUISync *sync,
 		node->name_id == toolitem_id);
 }
 
-GtkWidget *
+static GtkWidget *
 impl_bonobo_ui_sync_toolbar_wrap_widget (BonoboUISync *sync,
 					 GtkWidget    *custom_widget)
 {

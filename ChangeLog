@@ -1,3 +1,15 @@
+2004-02-20  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar-separator-item.[ch]: bin, no
+	longer required.
+
+	* bonobo/bonobo-ui-toolbar*.h: add deprecated guards,
+	people should use GtkToolItem* in combination with
+	bonobo_ui_component_widget_set.
+
+	* bonobo/bonobo-ui-sync-toolbar.c (create_dockitem):
+	bin set_border_width for Soeren.
+
 2004-02-20  Arvind Samptur <arvind.samptur@wipro.com>
 
 	* bonobo/bonobo-ui-internal-toolbar.c:

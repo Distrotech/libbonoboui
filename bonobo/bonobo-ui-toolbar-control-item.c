@@ -472,3 +472,10 @@ bonobo_ui_toolbar_control_item_set_sensitive (BonoboUIToolbarControlItem *item,
 		bonobo_widget_get_control_frame (item->priv->control),
 		sensitive ? Bonobo_Gtk_StateNormal : Bonobo_Gtk_StateInsensitive);
 }
+
+GtkToolItem *
+bonobo_ui_toolbar_control_item_create_wrapped (GtkWidget *widget)
+{
+	
+	return widget;
+}
