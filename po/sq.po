@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-23 05:16+0200\n"
+"POT-Creation-Date: 2004-07-28 04:01+0200\n"
 "PO-Revision-Date: 2004-02-20 12:16+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -153,7 +153,6 @@ msgstr "Vetëm tekst"
 msgid "_Priority text only"
 msgstr "Vetëm teksti _prioritar"
 
-#. GRUT modified this item
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Gjetja dhe korrigjimi i gabimeve"
@@ -183,7 +182,6 @@ msgstr "FLAGS"
 msgid "Gdk debugging flags to unset"
 msgstr "Flag të debug të Gdk që duhen anulluar"
 
-#. GRUT modified this item
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
 msgstr "Monitori X që duhet përdorur"
@@ -376,9 +374,10 @@ msgstr "_File"
 msgid "_Select"
 msgstr "_Zgjidh"
 
+#. GRUT modified this item
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Nuk bën asgjë, është vetëm një shembull."
+msgstr "Nuk bën asgjë; është vetëm një shembull."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
