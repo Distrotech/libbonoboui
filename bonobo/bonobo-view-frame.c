@@ -713,3 +713,18 @@ gnome_view_frame_popup_verbs (GnomeViewFrame *view_frame)
 	return verb;
 }
 
+/**
+ * gnome_view_frame_get_client_site:
+ * @view_frame: The view frame
+ *
+ * Returns the GnomeClientSite associated with this view frame
+ */
+GnomeClientSite *
+gnome_view_frame_get_client_site (GnomeViewFrame *view_frame)
+{
+	g_return_val_if_fail (view_frame != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+
+	return view_frame->priv->client_site;
+}
+
