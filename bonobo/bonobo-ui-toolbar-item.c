@@ -96,7 +96,6 @@ impl_size_request (GtkWidget *widget,
 	toolbar_item = BONOBO_UI_TOOLBAR_ITEM (widget);
 	priv = toolbar_item->priv;
 
-
 	border_width = GTK_CONTAINER (widget)->border_width;
 	requisition_return->width  = border_width;
 	requisition_return->height = border_width;
@@ -107,9 +106,8 @@ impl_size_request (GtkWidget *widget,
 
 	gtk_widget_size_request (child, &child_requisition);
 
-	if (child_requisition.width < priv->minimum_width) {
+	if (child_requisition.width < priv->minimum_width)
 		child_requisition.width = priv->minimum_width;
-	}
 	
 	requisition_return->width  += child_requisition.width;
 	requisition_return->height += child_requisition.height;
