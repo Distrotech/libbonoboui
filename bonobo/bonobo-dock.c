@@ -23,16 +23,13 @@
   @NOTATION@
 */
 
+#include <config.h>
 #include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include <bonobo/bonobo-dock.h>
-#include <bonobo/bonobo-dock-band.h>
-#include <bonobo/bonobo-dock-item.h>
-#include <libgnome/gnome-macros.h>
-
-GNOME_CLASS_BOILERPLATE (BonoboDock, bonobo_dock,
-			 GtkContainer, GTK_TYPE_CONTAINER);
+#include "bonobo-dock.h"
+#include "bonobo-dock-band.h"
+#include "bonobo-dock-item.h"
 
 #define noBONOBO_DOCK_DEBUG
 
@@ -78,7 +75,6 @@ static void     bonobo_dock_forall              (GtkContainer *container,
                                                 gboolean include_internals,
                                                 GtkCallback callback,
                                                 gpointer callback_data);
-static void     bonobo_dock_destroy             (GtkObject *object);
 static void     bonobo_dock_finalize            (GObject *object);
 
 static void     size_request_v                 (GList *list,
@@ -155,6 +151,8 @@ static guint dock_signals[LAST_SIGNAL] = { 0 };
 
 
 
+G_DEFINE_TYPE (BonoboDock, bonobo_dock, GTK_TYPE_CONTAINER);
+
 static void
 bonobo_dock_class_init (BonoboDockClass *class)
 {
@@ -168,7 +166,6 @@ bonobo_dock_class_init (BonoboDockClass *class)
   widget_class = (GtkWidgetClass *) class;
   container_class = (GtkContainerClass *) class;
 
-  object_class->destroy = bonobo_dock_destroy;
   gobject_class->finalize = bonobo_dock_finalize;
 
   widget_class->size_request = bonobo_dock_size_request;
@@ -193,7 +190,7 @@ bonobo_dock_class_init (BonoboDockClass *class)
 }
 
 static void
-bonobo_dock_instance_init (BonoboDock *dock)
+bonobo_dock_init (BonoboDock *dock)
 {
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (dock), GTK_NO_WINDOW);
 
@@ -485,7 +482,7 @@ bonobo_dock_map (GtkWidget *widget)
   g_return_if_fail (widget != NULL);
   g_return_if_fail (BONOBO_IS_DOCK(widget));
 
-  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, map, (widget));
+  GTK_WIDGET_CLASS (parent_class)-> map, (widget);
 
   dock = BONOBO_DOCK (widget);
 
@@ -518,7 +515,7 @@ bonobo_dock_unmap (GtkWidget *widget)
 
   g_list_foreach (dock->floating_children, unmap_widget_foreach, NULL);
 
-  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, unmap, (widget));
+  GTK_WIDGET_CLASS (parent_class)-> unmap (widget);
 }
 
 
@@ -661,14 +658,6 @@ bonobo_dock_forall (GtkContainer *container,
 }
 
 static void
-bonobo_dock_destroy (GtkObject *object)
-{
-  /* remember, destroy can be run multiple times! */
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
-}
-
-static void
 bonobo_dock_finalize (GObject *object)
 {
   BonoboDock *self = BONOBO_DOCK (object);
@@ -676,8 +665,7 @@ bonobo_dock_finalize (GObject *object)
   g_free (self->_priv);
   self->_priv = NULL;
 
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    (* G_OBJECT_CLASS (parent_class)->finalize) (object);
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 
@@ -1657,7 +1645,7 @@ insert_into_band_list (BonoboDock     *dock,
 }
 
 gint
-bonobo_dock_handle_key_nav (BonoboDock     *dock,
+_bonobo_dock_handle_key_nav (BonoboDock     *dock,
 			    BonoboDockBand *band,
 			    BonoboDockItem *item,
 			    GdkEventKey    *event)
@@ -1820,3 +1808,4 @@ bonobo_dock_handle_key_nav (BonoboDock     *dock,
 
   return TRUE;
 }
+

@@ -1,3 +1,21 @@
+2004-01-23  Jody Goldberg <jody@gnome.org>
+
+	* bonobo/bonobo-dock-band.h : Use the  G_TYPE macros in place of
+	  GTK_CHECK
+	* bonobo/bonobo-dock-item-grip.h : ditto.
+	* bonobo/bonobo-dock-item.h : ditto.
+	* bonobo/bonobo-dock-layout.h : ditto.
+	* bonobo/bonobo-dock.h : ditto.
+
+	* bonobo/bonobo-dock-band.c : Port to G_DEFINE_TYPE in place of
+	  GNOME_CLASS_BOILERPLATE
+	* bonobo/bonobo-dock-item-grip.c : ditto.
+	* bonobo/bonobo-dock-item.c : ditto.
+	* bonobo/bonobo-dock.c : ditto.
+
+	* configure.in  : bump gobject req to 2.3.2 to enable the use of
+	  G_DEFINE_TYPE
+
 2004-01-21  Fernando Herrera  <fherrera@onirica.com>
 
 	* bonobo/bonobo-ui-init-gtk.c: Remove gxid-host and gxid-port 

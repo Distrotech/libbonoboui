@@ -28,16 +28,16 @@
 #ifndef _BONOBO_DOCK_H
 #define _BONOBO_DOCK_H
 
-
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_DOCK            (bonobo_dock_get_type ())
-#define BONOBO_DOCK(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_DOCK, BonoboDock))
-#define BONOBO_DOCK_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_DOCK, BonoboDockClass))
-#define BONOBO_IS_DOCK(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_DOCK))
-#define BONOBO_IS_DOCK_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_DOCK))
-#define BONOBO_DOCK_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), BONOBO_TYPE_DOCK, BonoboDockClass))
+#define BONOBO_DOCK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_DOCK, BonoboDock))
+#define BONOBO_DOCK_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_DOCK, BonoboDockClass))
+#define BONOBO_IS_DOCK(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_DOCK))
+#define BONOBO_IS_DOCK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_DOCK))
+#define BONOBO_DOCK_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BONOBO_TYPE_DOCK, BonoboDockClass))
 
 typedef enum
 {
@@ -52,8 +52,8 @@ typedef struct _BonoboDock BonoboDock;
 typedef struct _BonoboDockPrivate BonoboDockPrivate;
 typedef struct _BonoboDockClass BonoboDockClass;
 
-#include <bonobo/bonobo-dock-band.h>
-#include <bonobo/bonobo-dock-layout.h>
+#include "bonobo-dock-band.h"
+#include "bonobo-dock-layout.h"
 
 struct _BonoboDock
 {
@@ -124,6 +124,14 @@ BonoboDockLayout *bonobo_dock_get_layout      (BonoboDock *dock);
 
 gboolean          bonobo_dock_add_from_layout (BonoboDock *dock,
 					       BonoboDockLayout *layout);
+
+/* protected */
+#ifdef BONOBO_UI_INTERNAL
+gint _bonobo_dock_handle_key_nav (BonoboDock     *dock,
+				  BonoboDockBand *band,
+				  BonoboDockItem *item,
+				  GdkEventKey    *event);
+#endif /* BONOBO_UI_INTERNAL */
 
 G_END_DECLS
 
