@@ -1,0 +1,129 @@
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Valek Filippov <frob@df.ru>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui\n"
+"POT-Creation-Date: 2001-10-13 20:11+0400\n"
+"PO-Revision-Date: 2001-10-13 20:15+0400\n"
+"Last-Translator: Valek Filippov <frob@df.ru>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+msgid "Shadow type"
+msgstr "Тип тени"
+
+#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+msgid "Orientation"
+msgstr "Ориентация"
+
+#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+msgid "Preferred width"
+msgstr "Предпочтительная ширина"
+
+#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+msgid "Preferred height"
+msgstr "Предпочтительная высота"
+
+#: bonobo/bonobo-file-selector-util.c:371
+msgid "Select a file to open"
+msgstr "Выбрать файл для открытия"
+
+#: bonobo/bonobo-file-selector-util.c:399
+msgid "Select files to open"
+msgstr "Выбрать файлы для открытия"
+
+#: bonobo/bonobo-file-selector-util.c:428
+msgid "Select a filename to save"
+msgstr "Выбрать имя файла для сохранения"
+
+#: bonobo/bonobo-selector-widget.c:356
+msgid "Name"
+msgstr "Имя"
+
+#: bonobo/bonobo-selector-widget.c:380
+msgid "Description"
+msgstr "Описание"
+
+#: bonobo/bonobo-ui-config-widget.c:266
+msgid "Visible"
+msgstr "Видимый"
+
+#: bonobo/bonobo-ui-config-widget.c:274
+msgid "_Show"
+msgstr "Показать"
+
+#: bonobo/bonobo-ui-config-widget.c:284
+msgid "_Hide"
+msgstr "Скрыть"
+
+#: bonobo/bonobo-ui-config-widget.c:294
+msgid "_View tooltips"
+msgstr "Просмотр подсказок"
+
+#: bonobo/bonobo-ui-config-widget.c:301
+msgid "Toolbars"
+msgstr "Панели"
+
+#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "Look"
+msgstr ""
+
+#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "_Icon"
+msgstr "Пиктограмма"
+
+#: bonobo/bonobo-ui-config-widget.c:331
+msgid "_Text and Icon"
+msgstr "Текст и пиктограмма"
+
+#: bonobo/bonobo-ui-config-widget.c:341
+msgid "_Priority text only"
+msgstr ""
+
+#: bonobo/bonobo-ui-engine-config.c:513
+msgid "Configure UI"
+msgstr "Настроить интерфейс"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "B_oth"
+msgstr "Оба"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "T_ext"
+msgstr "Текст"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:550
+msgid "Hide t_ips"
+msgstr "Скрыть подсказки"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:550
+msgid "Show t_ips"
+msgstr "Показать подсказки"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:551
+msgid "_Hide toolbar"
+msgstr "Скрыть панель"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:551
+msgid "Customi_ze"
+msgstr "Настроить"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:552
+msgid "Customize the toolbar"
+msgstr "Настроить панель"
+
+#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+msgid "Can not bonobo_ui_init"
+msgstr "Невозможно выполнить bonobo_ui_init"
+
+#: tests/test-selector.c:12
+msgid "Select an object"
+msgstr "Выбрать объект"
+
+#: tests/test-ui.c:230
+msgid "Cannot init libbonoboui code"
+msgstr "Невозможно инициализировать код libbonoboui"
