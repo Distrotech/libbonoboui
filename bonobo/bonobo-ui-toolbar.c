@@ -184,8 +184,13 @@ item_set_want_label_cb (BonoboUIToolbarItem *item,
 			void *data)
 {
 	BonoboUIToolbar *toolbar;
+	BonoboUIToolbarPrivate *priv;
 
 	toolbar = BONOBO_UI_TOOLBAR (data);
+	priv = toolbar->priv;
+
+	set_attributes_on_child (item, priv->orientation, priv->style);
+
 	gtk_widget_queue_resize (GTK_WIDGET (toolbar));
 }
 
