@@ -2,13 +2,51 @@
 /**
  * GNOME BonoboWidget object.
  *
- * Bonobo component embedding for hydrocephalic imbeciles.
- *
  * Authors:
  *   Nat Friedman    (nat@nat.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
+ * 
+ * Bonobo component embedding for hydrocephalic imbeciles.
+ *
+ * Pure cane sugar.
+ *
+ * This purpose of GnomeBonoboWidget is to make container-side use of
+ * Bonobo as easy as pie.  This widget has two functions:
+ *
+ *   1. Provide a simple wrapper for embedding a single-view
+ *      subdocument.  In this case, GnomeBonoboWidget handles creating
+ *      the embeddable, binding it to a local GnomeClientSite,
+ *      creating a view for it, and displaying the view.  You can use
+ *      the accessor functions (gnome_bonobo_widget_get_view_frame,
+ *      etc) to get at the actual Bonobo objects which underlie the
+ *      whole process.
+ *
+ *      In order to do this, just call:
+ * 
+ *        bw = gnome_bonobo_widget_new_subdoc ("goad id of subdoc embddable",
+ *                                             top_level_uihandler);
+ * 
+ *      And then insert the 'bw' widget into the widget tree of your
+ *      application like so:
+ *
+ *        gtk_container_add (some_container, bw);
+ *
+ *      You are free to make the UIHandler argument to
+ *      gnome_bonobo_widget_new_subdoc() be NULL.
+ *
+ *   2. Provide a simple wrapper for embedding Controls.  Embedding
+ *      controls is already really easy, but GnomeBonoboWidget reduces
+ *      the work from about 5 lines to 1.  To embed a given control,
+ *      just do:
+ *
+ *        bw = gnome_bonobo_widget_new_control ("goad id for control");
+ *        gtk_container_add (some_container, bw);
+ *
+ *      Ta da!
+ *
  */
+
 #include <config.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
@@ -16,6 +54,25 @@
 #include <bonobo/gnome-main.h>
 #include <bonobo/gnome-object.h>
 #include <bonobo/gnome-bonobo-widget.h>
+
+struct _GnomeBonoboWidgetPrivate {
+
+	GnomeObjectClient *server;
+
+	/*
+	 * Control stuff.
+	 */
+	GnomeControlFrame *control_frame;
+	
+	/*
+	 * Subdocument (Embeddable/View) things.
+	 */
+	GnomeContainer	  *container;
+	GnomeClientSite   *client_site;
+	GnomeViewFrame    *view_frame;
+	GnomeUIHandler	  *uih;
+
+};
 
 static GnomeWrapperClass *gnome_bonobo_widget_parent_class;
 
@@ -29,8 +86,104 @@ gnome_bonobo_widget_launch_component (char *object_desc)
 	return server;
 }
 
+
+/*
+ *
+ * Control support for GnomeBonoboWidget.
+ *
+ */
+static GnomeBonoboWidget *
+gnome_bonobo_widget_construct_control_from_objref (GnomeBonoboWidget *bw,
+						   GNOME_Control control)
+{
+	GtkWidget    *control_frame_widget;
+
+	/*
+	 * Create a local ControlFrame for it.
+	 */
+	bw->priv->control_frame = gnome_control_frame_new ();
+	gnome_control_frame_bind_to_control (bw->priv->control_frame,
+					     control);
+
+	/*
+	 * Grab the actual widget which visually contains the remote
+	 * Control.  This is a GtkSocket, in reality.
+	 */
+	control_frame_widget = gnome_control_frame_get_widget (bw->priv->control_frame);
+
+	/*
+	 * Now stick it into this GnomeBonoboWidget.
+	 */
+	gtk_container_add (GTK_CONTAINER (bw),
+			   control_frame_widget);
+	gtk_widget_show (control_frame_widget);
+	
+	return bw;
+}
+
+static GnomeBonoboWidget *
+gnome_bonobo_widget_construct_control (GnomeBonoboWidget *bw,
+				       char *goad_id)
+{
+	GNOME_Control control;
+
+	/*
+	 * Create the remote Control object.
+	 */
+	bw->priv->server = gnome_bonobo_widget_launch_component (goad_id);
+	if (bw->priv->server == NULL) {
+		gtk_object_unref (GTK_OBJECT (bw));
+		return NULL;
+	}
+
+	control = gnome_object_corba_objref (GNOME_OBJECT (bw->priv->server));
+
+	return gnome_bonobo_widget_construct_control_from_objref (bw, control);
+}
+
+GtkWidget *
+gnome_bonobo_widget_new_control_from_objref (GNOME_Control control)
+{
+	GnomeBonoboWidget *bw;
+
+	g_return_val_if_fail (control != CORBA_OBJECT_NIL, NULL);
+
+	bw = gtk_type_new (GNOME_BONOBO_WIDGET_TYPE);
+
+	return GTK_WIDGET (gnome_bonobo_widget_construct_control_from_objref (bw, control));
+}
+
+GtkWidget *
+gnome_bonobo_widget_new_control (char *goad_id)
+{
+	GnomeBonoboWidget *bw;
+
+	g_return_val_if_fail (goad_id != NULL, NULL);
+
+	bw = gtk_type_new (GNOME_BONOBO_WIDGET_TYPE);
+
+	return GTK_WIDGET (gnome_bonobo_widget_construct_control (bw, goad_id));
+}
+
+GnomeControlFrame *
+gnome_bonobo_widget_get_control_frame (GnomeBonoboWidget *bw)
+{
+	g_return_val_if_fail (bw != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_BONOBO_WIDGET (bw), NULL);
+
+	return bw->priv->control_frame;
+}
+
+
+
+
+/*
+ *
+ * Subdocument support for GnomeBonoboWidget.
+ *
+ */
 static void
-gnome_bonobo_widget_create_object (GnomeBonoboWidget *bw, char *object_desc)
+gnome_bonobo_widget_create_subdoc_object (GnomeBonoboWidget *bw, char *object_desc)
 {
 	GtkWidget *view_widget;
 
@@ -38,110 +191,115 @@ gnome_bonobo_widget_create_object (GnomeBonoboWidget *bw, char *object_desc)
 	 * Create the GnomeContainer.  This will contain
 	 * just one GnomeClientSite.
 	 */
-	bw->container = gnome_container_new ();
+	bw->priv->container = gnome_container_new ();
 
-	bw->server = gnome_bonobo_widget_launch_component (object_desc);
+	bw->priv->server = gnome_bonobo_widget_launch_component (object_desc);
 
 	/*
 	 * Create the client site.  This is the container-side point
 	 * of contact for the remote component.
 	 */
-	bw->client_site = gnome_client_site_new (bw->container);
+	bw->priv->client_site = gnome_client_site_new (bw->priv->container);
 
 	/*
 	 * Bind the local ClientSite object to the remote Embeddable
 	 * component.
 	 */
-	gnome_client_site_bind_embeddable (bw->client_site, bw->server);
+	gnome_client_site_bind_embeddable (bw->priv->client_site, bw->priv->server);
 
 	/*
 	 * Add the client site to the container.  This container is
 	 * basically just there as a place holder; this is the only
 	 * client site that will ever be added to it.
 	 */
-	gnome_container_add (bw->container, GNOME_OBJECT (bw->client_site));
+	gnome_container_add (bw->priv->container, GNOME_OBJECT (bw->priv->client_site));
 
 	/*
 	 * Now create a new view for the remote object.
 	 */
-	bw->view_frame = gnome_client_site_new_view (bw->client_site);
+	bw->priv->view_frame = gnome_client_site_new_view (bw->priv->client_site);
 
 	/*
 	 * Add the view frame.
 	 */
-	view_widget = gnome_view_frame_get_wrapper (bw->view_frame);
+	view_widget = gnome_view_frame_get_wrapper (bw->priv->view_frame);
 	gtk_container_add (GTK_CONTAINER (bw), view_widget);
 	gtk_widget_show (view_widget);
 }
 
-GnomeBonoboWidget *
-gnome_bonobo_widget_new (char *object_desc,
-			 GnomeUIHandler *uih)
+GtkWidget *
+gnome_bonobo_widget_new_subdoc (char *object_desc,
+				GnomeUIHandler *uih)
 {
 	GnomeBonoboWidget *bw;
-	GtkWidget *view_widget;
-	int width, height;
 
 	g_return_val_if_fail (object_desc != NULL, NULL);
 
 	bw = gtk_type_new (GNOME_BONOBO_WIDGET_TYPE);
 
-	gnome_bonobo_widget_create_object (bw, object_desc);
+	gnome_bonobo_widget_create_subdoc_object (bw, object_desc);
 
-	gtk_widget_show (GTK_WIDGET (bw));
+	gnome_view_frame_set_covered (bw->priv->view_frame, FALSE);
 
-	gnome_view_frame_size_request (bw->view_frame, &width, &height);
+	return GTK_WIDGET (bw);
+}
 
-	view_widget = gnome_view_frame_get_wrapper (bw->view_frame);
 
-	gtk_widget_set_usize (view_widget, width, height);
+GnomeContainer *
+gnome_bonobo_widget_get_container (GnomeBonoboWidget *bw)
+{
+	g_return_val_if_fail (bw != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_BONOBO_WIDGET (bw), NULL);
 
-	return bw;
+	return bw->priv->container;
+}
+
+GnomeClientSite *
+gnome_bonobo_widget_get_client_site (GnomeBonoboWidget *bw)
+{
+	g_return_val_if_fail (bw != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_BONOBO_WIDGET (bw), NULL);
+
+	return bw->priv->client_site;
+}
+
+GnomeViewFrame *
+gnome_bonobo_widget_get_view_frame (GnomeBonoboWidget *bw)
+{
+	g_return_val_if_fail (bw != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_BONOBO_WIDGET (bw), NULL);
+
+	return bw->priv->view_frame;
+}
+
+GnomeUIHandler *
+gnome_bonobo_widget_get_uih (GnomeBonoboWidget *bw)
+{
+	g_return_val_if_fail (bw != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_BONOBO_WIDGET (bw), NULL);
+
+	return bw->priv->uih;
+}
+
+
+
+/*
+ *
+ * Generic (non-control/subdoc specific) GnomeBonoboWidget stuff.
+ *
+ */
+GnomeObjectClient *
+gnome_bonobo_widget_get_server (GnomeBonoboWidget *bw)
+{
+	g_return_val_if_fail (bw != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_BONOBO_WIDGET (bw), NULL);
+
+	return bw->priv->server;
 }
 
 static void
 gnome_bonobo_widget_destroy (GtkObject *object)
 {
-}
-
-static void
-gnome_bonobo_widget_realize (GtkWidget *widget)
-{
-	GnomeBonoboWidget *bw;
-	GdkWindowAttr attributes;
-	gint attributes_mask;
-	gint border_width;
-
-	g_return_if_fail (widget != NULL);
-	g_return_if_fail (GNOME_IS_BONOBO_WIDGET (widget));
-
-	bw = GNOME_BONOBO_WIDGET (widget);
-	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
-
-	border_width = GTK_CONTAINER (widget)->border_width;
-
-	attributes.window_type = GDK_WINDOW_CHILD;
-	attributes.x = widget->allocation.x + border_width;
-	attributes.y = widget->allocation.y + border_width;
-	attributes.width = widget->allocation.width - border_width * 2;
-	attributes.height = widget->allocation.height - border_width * 2;
-	attributes.wclass = GDK_INPUT_OUTPUT;
-	attributes.visual = gtk_widget_get_visual (widget);
-	attributes.colormap = gtk_widget_get_colormap (widget);
-	attributes.event_mask = gtk_widget_get_events (widget);
-	attributes.event_mask |= (GDK_EXPOSURE_MASK |
-				  GDK_BUTTON_PRESS_MASK |
-				  GDK_BUTTON_RELEASE_MASK |
-				  GDK_ENTER_NOTIFY_MASK |
-				  GDK_LEAVE_NOTIFY_MASK);
-
-	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-
-	widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
-	gdk_window_set_user_data (widget->window, bw);
-
-	widget->style = gtk_style_attach (widget->style, widget->window);
-	gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 }
 
 static void
@@ -156,16 +314,13 @@ gnome_bonobo_widget_size_request (GtkWidget *widget,
 
 	bin = GTK_BIN (widget);
 
-	requisition->width = GTK_CONTAINER (widget)->border_width * 2;
-	requisition->height = GTK_CONTAINER (widget)->border_width * 2;
-
 	if (bin->child && GTK_WIDGET_VISIBLE (bin->child)) {
 		GtkRequisition child_requisition;
       
 		gtk_widget_size_request (bin->child, &child_requisition);
 
-		requisition->width += child_requisition.width;
-		requisition->height += child_requisition.height;
+		requisition->width = child_requisition.width;
+		requisition->height = child_requisition.height;
 	}
 }
 
@@ -183,22 +338,11 @@ gnome_bonobo_widget_size_allocate (GtkWidget *widget,
 	widget->allocation = *allocation;
 	bin = GTK_BIN (widget);
 
-	child_allocation.x = 0;
-	child_allocation.y = 0;
-	child_allocation.width = MAX (allocation->width - GTK_CONTAINER (widget)->border_width * 2, 0);
-	child_allocation.height = MAX (allocation->height - GTK_CONTAINER (widget)->border_width * 2, 0);
+	child_allocation.x = allocation->x;
+	child_allocation.y = allocation->y;
+	child_allocation.width = allocation->width;
+	child_allocation.height = allocation->height;
 
-/*
- * If left in this creates an event loop in this function.
- *
-	if (GTK_WIDGET_REALIZED (widget)) {
-		gdk_window_move_resize (widget->window,
-					allocation->x + GTK_CONTAINER (widget)->border_width,
-					allocation->y + GTK_CONTAINER (widget)->border_width,
-					child_allocation.width,
-					child_allocation.height);
-					}*/
-  
 	if (bin->child) {
 		gtk_widget_size_allocate (bin->child, &child_allocation);
 	}
@@ -212,7 +356,6 @@ gnome_bonobo_widget_class_init (GnomeBonoboWidgetClass *class)
 
 	gnome_bonobo_widget_parent_class = gtk_type_class (GTK_TYPE_BIN);
 
-/*	widget_class->realize = gnome_bonobo_widget_realize; */
 	widget_class->size_request = gnome_bonobo_widget_size_request;
 	widget_class->size_allocate = gnome_bonobo_widget_size_allocate;
 
@@ -222,6 +365,7 @@ gnome_bonobo_widget_class_init (GnomeBonoboWidgetClass *class)
 static void
 gnome_bonobo_widget_init (GnomeBonoboWidget *bw)
 {
+	bw->priv = g_new0 (GnomeBonoboWidgetPrivate, 1);
 }
 
 GtkType

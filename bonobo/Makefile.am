@@ -50,7 +50,8 @@ idls =						\
 	$(top_srcdir)/idl/gnome-persist.idl	\
 	$(top_srcdir)/idl/gnome-storage.idl	\
 	$(top_srcdir)/idl/gnome-progressive.idl \
-	$(top_srcdir)/idl/gnome-ui-handler.idl
+	$(top_srcdir)/idl/gnome-ui-handler.idl	\
+	$(top_srcdir)/idl/gnome-property.idl
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 
@@ -88,8 +89,10 @@ libbonobo_la_SOURCES =			\
 	gnome-ui-handler.c		\
 	gnome-view.c			\
 	gnome-view-frame.c		\
-	gnome-wrapper.c
-
+	gnome-wrapper.c			\
+	gnome-property.c		\
+	gnome-property-bag.c		\
+	gnome-property-bag-client.c
 
 libbonoboincludedir = $(includedir)/bonobo
 
@@ -127,7 +130,10 @@ libbonoboinclude_HEADERS =		\
 	gnome-ui-handler.h		\
 	gnome-view.h			\
 	gnome-view-frame.h		\
-	gnome-wrapper.h
+	gnome-wrapper.h			\
+	gnome-property.h		\
+	gnome-property-bag.h		\
+	gnome-property-bag-client.h
 
 #test_ui_handler_SOURCES =		\
 #	 test-ui-handler.c

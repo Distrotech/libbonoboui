@@ -72,21 +72,6 @@ container_exit_cmd (GtkWidget *widget, Container *container)
 }
 
 static void
-component_view_set_size (Component *component, GtkWidget *view_widget, int width, int height)
-{
-	/*
-	 * Clamp this to our (arbitrarily chosen) constraints.
-	 */
-	width = CLAMP (width, 10, 500);
-	height = CLAMP (height, 10, 500);
-
-	/*
-	 * Now set the size.
-	 */
-	gtk_widget_set_usize (view_widget, width, height);
-}
-
-static void
 component_user_activate_request_cb (GnomeViewFrame *view_frame, Component *component)
 {
 	Container *container = component->container;
@@ -198,16 +183,6 @@ component_user_context_cb (GnomeViewFrame *view_frame, Component *component)
 }
 
 static void
-component_request_resize_cb (GnomeViewFrame *view_frame, int width, int height, Component *component)
-{
-	GtkWidget *view_widget;
-
-	view_widget = gnome_view_frame_get_wrapper (view_frame);
-
-	component_view_set_size (component, view_widget, width, height);
-}
-
-static void
 component_shutdown (Component *component)
 {
 	gtk_widget_destroy (component->frame);
@@ -232,8 +207,6 @@ component_add_view (Component *component)
 {
 	GnomeViewFrame *view_frame;
 	GtkWidget *view_widget;
-	int component_width;
-	int component_height;
 
 	/*
 	 * Create the remote view and the local ViewFrame.
@@ -298,26 +271,9 @@ component_add_view (Component *component)
 			    GTK_SIGNAL_FUNC (component_user_context_cb), component);
 
 	/*
-	 * The "request_resize" signal is emitted by the view frame
-	 * when the embedded component wants to be resized.
-	 */
-	gtk_signal_connect (GTK_OBJECT (view_frame), "request_resize",
-			    GTK_SIGNAL_FUNC (component_request_resize_cb), component);
-
-	/*
 	 * Show the component.
 	 */
 	gtk_widget_show_all (view_widget);
-
-	/*
-	 * Ask the embedded component what size it wants to be.
-	 */
-	gnome_view_frame_size_request (view_frame, &component_width, &component_height);
-
-	/*
-	 * Set the size.
-	 */
-	component_view_set_size (component, view_widget, component_width, component_height);
 }
 
 
@@ -845,7 +801,7 @@ container_create (void)
 	container = g_new0 (Container, 1);
 
 	container->app = gnome_app_new ("sample-container",
-					"Sample Bonobo Container");
+					"Sample Bonobo Subdocument Container");
 
 	gtk_window_set_default_size (GTK_WINDOW (container->app), 400, 400);
 	gtk_window_set_policy (GTK_WINDOW (container->app), TRUE, TRUE, FALSE);

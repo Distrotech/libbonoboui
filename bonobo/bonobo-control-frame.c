@@ -6,7 +6,7 @@
  *   Nat Friedman    (nat@nat.org)
  *   Miguel de Icaza (miguel@kernel.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -16,9 +16,11 @@
 #include <bonobo/gnome-control.h>
 #include <bonobo/gnome-control-frame.h>
 #include <gdk/gdkprivate.h>
+#include <gdk/gdkx.h>
+#include <gdk/gdktypes.h>
+#include <gtk/gtksocket.h>
 
 enum {
-	REQUEST_RESIZE,
 	ACTIVATE_URI,
 	LAST_SIGNAL
 };
@@ -29,30 +31,28 @@ static guint control_frame_signals [LAST_SIGNAL];
 static GnomeObjectClass *gnome_control_frame_parent_class;
 
 /* The entry point vectors for the server we provide */
-POA_GNOME_ControlFrame__epv  gnome_control_frame_epv;
 POA_GNOME_ControlFrame__vepv gnome_control_frame_vepv;
 
 struct _GnomeControlFramePrivate {
 	GNOME_Control	 control;
+	GtkWidget	*socket;
 };
 
 static void
-impl_GNOME_ControlFrame_request_resize (PortableServer_Servant servant,
-					const CORBA_short new_width,
-					const CORBA_short new_height,
-					CORBA_Environment *ev)
+impl_GNOME_ControlFrame_queue_resize (PortableServer_Servant servant,
+				      CORBA_Environment *ev)
 {
-	GnomeControlFrame *control_frame = GNOME_CONTROL_FRAME (gnome_object_from_servant (servant));
-
-	gtk_signal_emit (GTK_OBJECT (control_frame),
-			 control_frame_signals [REQUEST_RESIZE],
-			 (gint) new_width,
-			 (gint) new_height);
+	/*
+	 * Nothing.
+	 *
+	 * In the Gnome implementation of Bonobo, all size negotiation
+	 * is handled by GtkPlug/GtkSocket for us.
+	 */
 }
 
 static void
 impl_GNOME_ControlFrame_activate_uri (PortableServer_Servant servant,
-				      const CORBA_char *uri,
+				      CORBA_char *uri,
 				      CORBA_boolean relative,
 				      CORBA_Environment *ev)
 {
@@ -84,6 +84,30 @@ create_gnome_control_frame (GnomeObject *object)
 	return gnome_object_activate_servant (object, servant);
 }
 
+static void
+gnome_control_frame_set_remote_window (GtkWidget *socket, GnomeControlFrame *control_frame)
+{
+	GNOME_Control control = gnome_control_frame_get_control (control_frame);
+	CORBA_Environment ev;
+
+	/*
+	 * If we are not yet bound to a remote control, don't do
+	 * anything.
+	 */
+	if (control == CORBA_OBJECT_NIL)
+		return;
+
+	/*
+	 * Otherwise, pass the window ID of our GtkSocket to the
+	 * remote Control.
+	 */
+	CORBA_exception_init (&ev);
+	GNOME_Control_set_window (control, GDK_WINDOW_XWINDOW (socket->window), &ev);
+	if (ev._major != CORBA_NO_EXCEPTION)
+		gnome_object_check_env (GNOME_OBJECT (control_frame), control, &ev);
+	CORBA_exception_free (&ev);
+}
+
 /**
  * gnome_control_frame_construct:
  * @control_frame: The GnomeControlFrame object to be initialized.
@@ -102,7 +126,23 @@ gnome_control_frame_construct (GnomeControlFrame *control_frame,
 	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), NULL);
 
 	gnome_object_construct (GNOME_OBJECT (control_frame), corba_control_frame);
-	
+
+	/*
+	 * Now create the GtkSocket which will be used to embed
+	 * the Control.
+	 */
+	control_frame->priv->socket = gtk_socket_new ();
+	gtk_widget_show (control_frame->priv->socket);
+
+	/*
+	 * When the socket is realized, we pass its Window ID to our
+	 * Control.
+	 */
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
+			    "realize",
+			    GTK_SIGNAL_FUNC (gnome_control_frame_set_remote_window),
+			    control_frame);
+
 	return control_frame;
 }
 
@@ -110,14 +150,14 @@ gnome_control_frame_construct (GnomeControlFrame *control_frame,
  * gnome_control_frame_new:
  *
  * Returns: GnomeControlFrame object that implements the
- * GNOME::ControlFrame CORBA service.
+ * GNOME::ControlFrame CORBA service. 
  */
 GnomeControlFrame *
 gnome_control_frame_new (void)
 {
 	GNOME_ControlFrame corba_control_frame;
 	GnomeControlFrame *control_frame;
-	
+
 	control_frame = gtk_type_new (GNOME_CONTROL_FRAME_TYPE);
 
 	corba_control_frame = create_gnome_control_frame (GNOME_OBJECT (control_frame));
@@ -125,7 +165,7 @@ gnome_control_frame_new (void)
 		gtk_object_destroy (GTK_OBJECT (control_frame));
 		return NULL;
 	}
-	
+
 	return gnome_control_frame_construct (control_frame, corba_control_frame);
 }
 
@@ -148,16 +188,28 @@ gnome_control_frame_destroy (GtkObject *object)
 	GTK_OBJECT_CLASS (gnome_control_frame_parent_class)->destroy (object);
 }
 
+/**
+ * gnome_control_frame_get_epv:
+ */
+POA_GNOME_ControlFrame__epv *
+gnome_control_frame_get_epv (void)
+{
+	POA_GNOME_ControlFrame__epv *epv;
+
+	epv = g_new0 (POA_GNOME_ControlFrame__epv, 1);
+
+	epv->queue_resize   = impl_GNOME_ControlFrame_queue_resize;
+	epv->activate_uri   = impl_GNOME_ControlFrame_activate_uri;
+
+	return epv;
+}
+
 static void
 init_control_frame_corba_class (void)
 {
-	/* The entry point vectors for this GNOME::Control class */
-	gnome_control_frame_epv.request_resize = &impl_GNOME_ControlFrame_request_resize;
-	gnome_control_frame_epv.activate_uri = &impl_GNOME_ControlFrame_activate_uri;
-	
 	/* Setup the vector of epvs */
-	gnome_control_frame_vepv.GNOME_Unknown_epv = &gnome_object_epv;
-	gnome_control_frame_vepv.GNOME_ControlFrame_epv = &gnome_control_frame_epv;
+	gnome_control_frame_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_control_frame_vepv.GNOME_ControlFrame_epv = gnome_control_frame_get_epv ();
 }
 
 typedef void (*GnomeSignal_NONE__STRING_BOOL) (GtkObject *, const char *, gboolean, gpointer);
@@ -180,15 +232,6 @@ gnome_control_frame_class_init (GnomeControlFrameClass *class)
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
 	gnome_control_frame_parent_class = gtk_type_class (GNOME_OBJECT_TYPE);
-
-	control_frame_signals [REQUEST_RESIZE] =
-		gtk_signal_new ("request_resize",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeControlFrameClass, request_resize),
-				gtk_marshal_NONE__INT_INT,
-				GTK_TYPE_NONE, 2,
-				GTK_TYPE_INT, GTK_TYPE_INT);
 
 	control_frame_signals [ACTIVATE_URI] =
 		gtk_signal_new ("activate_uri",
@@ -220,8 +263,7 @@ gnome_control_frame_init (GnomeObject *object)
 /**
  * gnome_control_frame_get_type:
  *
- * Returns: The GtkType for the GnomeControlFrame class.
- */
+ * Returns: The GtkType for the GnomeControlFrame class.  */
 GtkType
 gnome_control_frame_get_type (void)
 {
@@ -249,7 +291,7 @@ gnome_control_frame_get_type (void)
  * gnome_control_frame_bind_to_control:
  * @control_frame: A GnomeControlFrame object.
  * @control: The CORBA object for the GnomeControl embedded
- * in this ViewFrame.
+ * in this GnomeControlFrame.
  *
  * Associates @control with this @control_frame.
  */
@@ -261,9 +303,99 @@ gnome_control_frame_bind_to_control (GnomeControlFrame *control_frame, GNOME_Con
 	g_return_if_fail (control_frame != NULL);
 	g_return_if_fail (GNOME_IS_CONTROL_FRAME (control_frame));
 
+	/*
+	 * Keep a local handle to the Control.
+	 */
 	CORBA_exception_init (&ev);
 	GNOME_Control_ref (control, &ev);
 	control_frame->priv->control = CORBA_Object_duplicate (control, &ev);
 	CORBA_exception_free (&ev);
+
+	/*
+	 * Introduce ourselves to the Control.
+	 */
+	CORBA_exception_init (&ev);
+	GNOME_Control_set_frame (control,
+				 gnome_object_corba_objref (GNOME_OBJECT (control_frame)),
+				 &ev);
+	if (ev._major != CORBA_NO_EXCEPTION)
+		gnome_object_check_env (GNOME_OBJECT (control_frame), control, &ev);
+	CORBA_exception_free (&ev);
+
+	/*
+	 * If the socket is realized, then we transfer the
+	 * window ID to the remote control.
+	 */
+	if (GTK_WIDGET_REALIZED (control_frame->priv->socket)) {
+		gnome_control_frame_set_remote_window (control_frame->priv->socket,
+						       control_frame);
+	}
 }
 
+/**
+ * gnome_control_frame_get_control:
+ * @control_frame: A GnomeControlFrame which is bound to a remote
+ * GnomeControl.
+ *
+ * Returns: The GNOME_Control CORBA interface for the remote Control
+ * which is bound to @frame.  See also
+ * gnome_control_frame_bind_to_control().
+ */
+GNOME_Control
+gnome_control_frame_get_control (GnomeControlFrame *control_frame)
+{
+	g_return_val_if_fail (control_frame != NULL, CORBA_OBJECT_NIL);
+	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), CORBA_OBJECT_NIL);
+
+	return control_frame->priv->control;
+}
+
+/**
+ * gnome_control_frame_get_widget:
+ * @frame: The GnomeControlFrame whose widget is being requested.a
+ *
+ * Use this function when you want to embed a GnomeControl into your
+ * container's widget hierarchy.  Once you have bound the
+ * GnomeControlFrame to a remote GnomeControl, place the widget
+ * returned by gnome_control_frame_get_widget() into your widget
+ * hierarchy and the control will appear in your application.
+ *
+ * Returns: A GtkWidget which has the remote GnomeControl physically
+ * inside it.
+ */
+GtkWidget *
+gnome_control_frame_get_widget (GnomeControlFrame *control_frame)
+{
+	g_return_val_if_fail (control_frame != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CONTROL_FRAME (control_frame), NULL);
+
+	return control_frame->priv->socket;
+}
+
+
+/**
+ * gnome_control_frame_get_control_property_bag:
+ */
+GnomePropertyBagClient *
+gnome_control_frame_get_control_property_bag (GnomeControlFrame *control_frame)
+{
+	GNOME_PropertyBag pbag;
+	CORBA_Environment ev;
+	GNOME_Control control;
+
+	control = control_frame->priv->control;
+
+	CORBA_exception_init (&ev);
+
+	pbag = GNOME_Control_get_property_bag (control, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (GNOME_OBJECT (control_frame), control, &ev);
+		CORBA_exception_free (&ev);
+		return NULL;
+	}
+
+	CORBA_exception_free (&ev);
+
+	return gnome_property_bag_client_new (pbag);
+}

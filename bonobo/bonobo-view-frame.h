@@ -20,9 +20,9 @@ typedef struct _GnomeViewFrame GnomeViewFrame;
 #include <bonobo/gnome-client-site.h>
 
 struct _GnomeViewFrame {
-	GnomeControlFrame base;
-	GnomeUIHandler  *uih;
-	GnomeViewFramePrivate *priv;
+	GnomeControlFrame	 base;
+	GnomeUIHandler		*uih;
+	GnomeViewFramePrivate	*priv;
 };
 
 typedef struct {
@@ -40,7 +40,6 @@ typedef struct {
 GtkType           gnome_view_frame_get_type        (void);
 GnomeViewFrame   *gnome_view_frame_construct       (GnomeViewFrame *view_frame,
 						    GNOME_ViewFrame corba_view_frame,
-						    GnomeWrapper   *wrapper,
 						    GnomeClientSite *client_site);
 GnomeViewFrame   *gnome_view_frame_new             (GnomeClientSite *client_site);
 void		  gnome_view_frame_bind_to_view	   (GnomeViewFrame *view_frame,
@@ -67,16 +66,14 @@ void		  gnome_view_frame_set_covered     (GnomeViewFrame *view_frame,
 void		  gnome_view_frame_view_activate   (GnomeViewFrame *view_frame);
 void		  gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame);
 
-void		  gnome_view_frame_size_request	   (GnomeViewFrame *view_frame,
-						    int *desired_width,
-						    int *desired_height);
 
 void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
 						    char *verb_name);
 void              gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom);
 
+POA_GNOME_ViewFrame__epv *gnome_view_frame_get_epv (void);
+
 /* The entry point vectors for the server we provide */
-extern POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
 extern POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
 
 END_GNOME_DECLS

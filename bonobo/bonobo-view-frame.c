@@ -6,7 +6,7 @@
  *   Nat Friedman    (nat@nat.org)
  *   Miguel de Icaza (miguel@kernel.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -32,22 +32,21 @@ static guint view_frame_signals [LAST_SIGNAL];
 static GnomeControlFrameClass *gnome_view_frame_parent_class;
 
 /* The entry point vectors for the server we provide */
-POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
 POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
 
 struct _GnomeViewFramePrivate {
-	GnomeWrapper    *wrapper; 
+	GtkWidget	*wrapper; 
 	GnomeClientSite *client_site;
 	GNOME_View       view;
 };
 
-static GNOME_ClientSite
+static GNOME_UIHandler
 impl_GNOME_ViewFrame_get_ui_handler (PortableServer_Servant servant,
 				     CORBA_Environment *ev)
 {
 	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
 
-	if (view_frame->uih == CORBA_OBJECT_NIL)
+	if (view_frame->uih == NULL)
 		return CORBA_OBJECT_NIL;
 	
 	return CORBA_Object_duplicate (
@@ -109,39 +108,6 @@ create_gnome_view_frame (GnomeObject *object)
 	return gnome_object_activate_servant (object, servant);
 }
 
-/**
- * gnome_view_frame_construct:
- * @view_frame: The GnomeViewFrame object to be initialized.
- * @corba_view_frame: A CORBA object for the GNOME_ViewFrame interface.
- * @wrapper: A GnomeWrapper widget which the new ViewFrame will use to cover its enclosed View.
- * @client_site: the client site to which the newly-created ViewFrame will belong.
- *
- * Initializes @view_frame with the parameters.
- *
- * Returns: the initialized GnomeViewFrame object @view_frame that implements the
- * GNOME::ViewFrame CORBA service.
- */
-GnomeViewFrame *
-gnome_view_frame_construct (GnomeViewFrame *view_frame,
-			    GNOME_ViewFrame corba_view_frame,
-			    GnomeWrapper   *wrapper,
-			    GnomeClientSite *client_site)
-{
-	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
-	g_return_val_if_fail (wrapper != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_WRAPPER (wrapper), NULL);
-	g_return_val_if_fail (client_site != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
-
-	gnome_control_frame_construct (GNOME_CONTROL_FRAME (view_frame), corba_view_frame);
-	
-	view_frame->priv->client_site = client_site;
-	view_frame->priv->wrapper = wrapper;
-
-	return view_frame;
-}
-
 static gboolean
 gnome_view_frame_wrapper_button_press_cb (GtkWidget *wrapper,
 					  GdkEventButton *event,
@@ -161,6 +127,74 @@ gnome_view_frame_wrapper_button_press_cb (GtkWidget *wrapper,
 	return FALSE;
 } 
 
+static gboolean
+gnome_view_frame_key_press_cb (GtkWidget *wrapper,
+			       GdkEventKey *event,
+			       gpointer data)
+{
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (data);
+
+	/* Hitting enter will activate the embedded component too. */
+	if (event->keyval == GDK_Return)
+		gtk_signal_emit (GTK_OBJECT (view_frame), view_frame_signals [USER_ACTIVATE]);
+
+	return FALSE;
+}
+
+/**
+ * gnome_view_frame_construct:
+ * @view_frame: The GnomeViewFrame object to be initialized.
+ * @corba_view_frame: A CORBA object for the GNOME_ViewFrame interface.
+ * @wrapper: A GnomeWrapper widget which the new ViewFrame will use to cover its enclosed View.
+ * @client_site: the client site to which the newly-created ViewFrame will belong.
+ *
+ * Initializes @view_frame with the parameters.
+ *
+ * Returns: the initialized GnomeViewFrame object @view_frame that implements the
+ * GNOME::ViewFrame CORBA service.
+ */
+GnomeViewFrame *
+gnome_view_frame_construct (GnomeViewFrame *view_frame,
+			    GNOME_ViewFrame corba_view_frame,
+			    GnomeClientSite *client_site)
+{
+	GtkWidget *wrapper;
+
+	g_return_val_if_fail (view_frame != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+	g_return_val_if_fail (client_site != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+
+	gnome_control_frame_construct (GNOME_CONTROL_FRAME (view_frame), corba_view_frame);
+	
+	view_frame->priv->client_site = client_site;
+	
+	/*
+	 * Create the GnomeWrapper which will cover the remote
+	 * GnomeView.
+	 */
+	wrapper = gnome_wrapper_new ();
+	if (wrapper == NULL) {
+		gtk_object_unref (GTK_OBJECT (view_frame));
+		return NULL;
+	}
+	view_frame->priv->wrapper = wrapper;
+
+	/*
+	 * Connect signal handlers to catch activation events (double
+	 * click and hitting Enter) on the wrapper.  These will cause
+	 * the ViewFrame to emit the USER_ACTIVATE signal.
+	 */
+	gtk_signal_connect (GTK_OBJECT (wrapper), "button_press_event",
+			    GTK_SIGNAL_FUNC (gnome_view_frame_wrapper_button_press_cb),
+			    view_frame);
+	gtk_signal_connect (GTK_OBJECT (wrapper), "key_press_event",
+			    GTK_SIGNAL_FUNC (gnome_view_frame_key_press_cb),
+			    view_frame);
+	
+	return view_frame;
+}
+
 /**
  * gnome_view_frame_new:
  * @client_site: the client site to which the newly-created ViewFrame will belong.
@@ -173,35 +207,19 @@ gnome_view_frame_new (GnomeClientSite *client_site)
 {
 	GNOME_ViewFrame corba_view_frame;
 	GnomeViewFrame *view_frame;
-	GnomeWrapper   *wrapper;
 	
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
 
 	view_frame = gtk_type_new (GNOME_VIEW_FRAME_TYPE);
 
-	wrapper = GNOME_WRAPPER (gnome_wrapper_new ());
-	if (wrapper == NULL) {
-	       gtk_object_unref (GTK_OBJECT (view_frame));
-	       return NULL;
-	}
-
-	/*
-	 * Connect a signal handler so that we can catch double clicks
-	 * on the wrapper.
-	 */
-	gtk_signal_connect (GTK_OBJECT (wrapper), "button_press_event",
-			    GTK_SIGNAL_FUNC (gnome_view_frame_wrapper_button_press_cb),
-			    view_frame);
-
 	corba_view_frame = create_gnome_view_frame (GNOME_OBJECT (view_frame));
 	if (corba_view_frame == CORBA_OBJECT_NIL) {
 		gtk_object_destroy (GTK_OBJECT (view_frame));
 		return NULL;
 	}
-	
 
-	return gnome_view_frame_construct (view_frame, corba_view_frame, wrapper, client_site);
+	return gnome_view_frame_construct (view_frame, corba_view_frame, client_site);
 }
 
 static void
@@ -218,26 +236,37 @@ gnome_view_frame_destroy (GtkObject *object)
 		CORBA_exception_free (&ev);
 	}
 	
-	GTK_OBJECT_CLASS (gnome_view_frame_parent_class)->destroy (object);
-
 	gtk_object_destroy (GTK_OBJECT (view_frame->priv->wrapper));
 	g_free (view_frame->priv);
+	
+	GTK_OBJECT_CLASS (gnome_view_frame_parent_class)->destroy (object);
+}
 
+/**
+ * gnome_view_frame_get_epv:
+ */
+POA_GNOME_ViewFrame__epv *
+gnome_view_frame_get_epv (void)
+{
+	POA_GNOME_ViewFrame__epv *epv;
+
+	epv = g_new0 (POA_GNOME_ViewFrame__epv, 1);
+
+	epv->get_client_site	 = impl_GNOME_ViewFrame_get_client_site;
+	epv->get_ui_handler	 = impl_GNOME_ViewFrame_get_ui_handler;
+	epv->view_activated	 = impl_GNOME_ViewFrame_view_activated;
+	epv->deactivate_and_undo = impl_GNOME_ViewFrame_view_deactivate_and_undo;
+
+	return epv;
 }
 
 static void
 init_view_frame_corba_class (void)
 {
-	/* The entry point vectors for this GNOME::View class */
-	gnome_view_frame_epv.get_client_site = impl_GNOME_ViewFrame_get_client_site;
-	gnome_view_frame_epv.get_ui_handler = impl_GNOME_ViewFrame_get_ui_handler;
-	gnome_view_frame_epv.view_activated = impl_GNOME_ViewFrame_view_activated;
-	gnome_view_frame_epv.deactivate_and_undo = impl_GNOME_ViewFrame_view_deactivate_and_undo;
-	
 	/* Setup the vector of epvs */
-	gnome_view_frame_vepv.GNOME_Unknown_epv = &gnome_object_epv;
-	gnome_view_frame_vepv.GNOME_ControlFrame_epv = &gnome_control_frame_epv;
-	gnome_view_frame_vepv.GNOME_ViewFrame_epv = &gnome_view_frame_epv;
+	gnome_view_frame_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_view_frame_vepv.GNOME_ControlFrame_epv = gnome_control_frame_get_epv ();
+	gnome_view_frame_vepv.GNOME_ViewFrame_epv = gnome_view_frame_get_epv ();
 }
 
 static void
@@ -425,7 +454,7 @@ gnome_view_frame_view_activate (GnomeViewFrame *view_frame)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_View_activate (view_frame->priv->view, TRUE, &ev);
+	GNOME_View_view_activate (view_frame->priv->view, TRUE, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
@@ -461,7 +490,7 @@ gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_View_activate (view_frame->priv->view, FALSE, &ev);
+	GNOME_View_view_activate (view_frame->priv->view, FALSE, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
@@ -551,44 +580,6 @@ gnome_view_frame_get_ui_handler (GnomeViewFrame *view_frame)
 	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
 
 	return view_frame->uih;
-}
-
-/**
- * gnome_view_frame_size_request:
- * @view_frame: A GnomeViewFrame object.
- * @desired_width: pointer to an integer, where the desired width of the View is stored
- * @desired_height: pointer to an integer, where the desired height of the View is stored
- *
- * Returns: The default desired_width and desired_height the component
- * wants to use.
- */
-void
-gnome_view_frame_size_request (GnomeViewFrame *view_frame, int *desired_width, int *desired_height)
-{
-	CORBA_short dw, dh;
-	CORBA_Environment ev;
-	
-	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
-	g_return_if_fail (desired_height != NULL);
-	g_return_if_fail (desired_width  != NULL);
-
-	dw = 0;
-	dh = 0;
-	
-	CORBA_exception_init (&ev);
-	GNOME_View_size_query (view_frame->priv->view, &dw, &dh, &ev);
-	if (ev._major == CORBA_NO_EXCEPTION){
-		*desired_width = dw;
-		*desired_height = dh;
-	} else {
-		if (ev._major != CORBA_NO_EXCEPTION) {
-			gnome_object_check_env (
-				GNOME_OBJECT (view_frame),
-				(CORBA_Object) view_frame->priv->view, &ev);
-		}
-	}
-	CORBA_exception_free (&ev);
 }
 
 /**

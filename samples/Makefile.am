@@ -1,3 +1,4 @@
+SUBDIRS = controls
 
 bin_PROGRAMS = paint-component-simple sample-container
 

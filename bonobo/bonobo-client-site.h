@@ -5,7 +5,7 @@
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #ifndef _GNOME_CLIENT_SITE_H_
 #define _GNOME_CLIENT_SITE_H_
@@ -69,7 +69,9 @@ GnomeCanvasItem   *gnome_client_site_new_item           (GnomeClientSite *client
 GList		  *gnome_client_site_get_verbs		(GnomeClientSite *client_site);
 void		   gnome_client_site_free_verbs		(GList *verb_list);
 
-extern POA_GNOME_ClientSite__epv gnome_client_site_epv;
+POA_GNOME_ClientSite__epv *gnome_client_site_get_epv	(void);
+
+extern POA_GNOME_ClientSite__vepv gnome_client_site_vepv;
 
 END_GNOME_DECLS
 

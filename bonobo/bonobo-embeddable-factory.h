@@ -7,7 +7,7 @@
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #ifndef _GNOME_COMPONENT_FACTORY_H_
 #define _GNOME_COMPONENT_FACTORY_H_
@@ -35,7 +35,7 @@ typedef GnomeGenericFactoryFn GnomeEmbeddableFactoryFn;
 #define gnome_embeddable_factory_get_type  gnome_generic_factory_get_type
 #define gnome_embeddable_factory_new       gnome_generic_factory_new
 #define gnome_embeddable_factory_construct gnome_generic_factory_construct
-#define gnome_embeddable_factory_set       gnome_generic_factory_set (
+#define gnome_embeddable_factory_set       gnome_generic_factory_set
 
 END_GNOME_DECLS
 

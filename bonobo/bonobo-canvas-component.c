@@ -5,7 +5,7 @@
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
  *
- * (C) 1999 International GNOME Support
+ * (C) 1999 Helix Code, Inc.
  *
  */
 #include <stdio.h>
@@ -41,7 +41,6 @@ struct _GnomeCanvasComponentPrivate {
  */
 #define ICLASS(x) GNOME_CANVAS_ITEM_CLASS ((GTK_OBJECT (x)->klass))
 
-POA_GNOME_Canvas_Item__epv  gnome_canvas_item_epv;
 POA_GNOME_Canvas_Item__vepv gnome_canvas_item_vepv;
 
 static GnomeObjectClass *gcc_parent_class;
@@ -547,30 +546,41 @@ gcc_set_bounds (PortableServer_Servant servant, GNOME_Canvas_DRect *bbox, CORBA_
 	gtk_signal_emit (GTK_OBJECT (gcc), gcc_signals [SET_BOUNDS], bbox, &ev);
 }
 
+/**
+ * gnome_canvas_item_get_epv:
+ *
+ */
+POA_GNOME_Canvas_Item__epv *
+gnome_canvas_item_get_epv (void)
+{
+	POA_GNOME_Canvas_Item__epv *epv;
+
+	epv = g_new0 (POA_GNOME_Canvas_Item__epv, 1);
+
+	epv->update    = gcc_update;
+	epv->realize   = gcc_realize;
+	epv->unrealize = gcc_unrealize;
+	epv->map       = gcc_map;
+	epv->unmap     = gcc_unmap;
+	epv->draw      = gcc_draw;
+	epv->render    = gcc_render;
+	epv->bounds    = gcc_bounds;
+	epv->event     = gcc_event;
+	epv->contains  = gcc_contains;
+	epv->canvas_size_set = gcc_size_set;
+	epv->set_bounds = gcc_set_bounds;
+
+	return epv;
+}
+
 static void
 gcc_corba_class_init (void)
 {
 	/*
-	 * Initialize the EPV
-	 */
-	gnome_canvas_item_epv.update    = gcc_update;
-	gnome_canvas_item_epv.realize   = gcc_realize;
-	gnome_canvas_item_epv.unrealize = gcc_unrealize;
-	gnome_canvas_item_epv.map       = gcc_map;
-	gnome_canvas_item_epv.unmap     = gcc_unmap;
-	gnome_canvas_item_epv.draw      = gcc_draw;
-	gnome_canvas_item_epv.render    = gcc_render;
-	gnome_canvas_item_epv.bounds    = gcc_bounds;
-	gnome_canvas_item_epv.event     = gcc_event;
-	gnome_canvas_item_epv.contains  = gcc_contains;
-	gnome_canvas_item_epv.canvas_size_set = gcc_size_set;
-	gnome_canvas_item_epv.set_bounds = gcc_set_bounds;
-
-	/*
 	 * Initialize the VEPV
 	 */
-	gnome_canvas_item_vepv.GNOME_Unknown_epv = &gnome_object_epv;
-	gnome_canvas_item_vepv.GNOME_Canvas_Item_epv = &gnome_canvas_item_epv;
+	gnome_canvas_item_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_canvas_item_vepv.GNOME_Canvas_Item_epv = gnome_canvas_item_get_epv ();
 	
 }
 

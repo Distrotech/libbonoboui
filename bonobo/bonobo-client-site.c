@@ -12,7 +12,7 @@
  *   Miguel de Icaza (miguel@kernel.org)
  *   Nat Friedman    (nat@nat.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #include <config.h>
 #include <stdio.h>
@@ -25,6 +25,8 @@
 #include <gdk/gdkx.h>
 #include <gdk/gdktypes.h>
 #include <gtk/gtksocket.h>
+
+POA_GNOME_ClientSite__vepv gnome_client_site_vepv;
 
 enum {
 	SHOW_WINDOW,
@@ -52,10 +54,9 @@ impl_GNOME_client_site_show_window (PortableServer_Servant servant, CORBA_boolea
 	GnomeClientSite *client_site = GNOME_CLIENT_SITE (gnome_object_from_servant (servant));
 	GnomeObject *object = GNOME_OBJECT (client_site);
 
-	gtk_signal_emit (
-		GTK_OBJECT (object),
-		gnome_client_site_signals [SHOW_WINDOW],
-		shown);
+	gtk_signal_emit (GTK_OBJECT (object),
+			 gnome_client_site_signals [SHOW_WINDOW],
+			 shown);
 }
 
 static GNOME_Persist_Status
@@ -73,21 +74,10 @@ impl_GNOME_client_site_save_object (PortableServer_Servant servant, CORBA_Enviro
 }
 
 static void
-impl_GNOME_client_site__destroy (PortableServer_Servant servant, CORBA_Environment *ev)
-{
-	POA_GNOME_ClientSite__fini ((POA_GNOME_ClientSite *) servant, ev);
-	g_free (servant);
-}
-
-POA_GNOME_ClientSite__epv gnome_client_site_epv;
-static POA_GNOME_ClientSite__vepv gnome_client_site_vepv;
-
-static void
 gnome_client_site_destroy (GtkObject *object)
 {
 	GtkObjectClass *object_class;
 	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
-	GnomeObject *gnome_object = GNOME_OBJECT (client_site->bound_object);
 	
 	object_class = (GtkObjectClass *)gnome_client_site_parent_class;
 
@@ -125,16 +115,29 @@ default_save_object (GnomeClientSite *cs, GNOME_Persist_Status *status)
 {
 }
 
+/**
+ * gnome_client_site_get_epv:
+ *
+ */
+POA_GNOME_ClientSite__epv *
+gnome_client_site_get_epv (void)
+{
+	POA_GNOME_ClientSite__epv *epv;
+
+	epv = g_new0 (POA_GNOME_ClientSite__epv, 1);
+
+	epv->get_container = impl_GNOME_client_site_get_container;
+	epv->show_window   = impl_GNOME_client_site_show_window;
+	epv->save_object   = impl_GNOME_client_site_save_object;
+
+	return epv;
+}
+
 static void
 init_client_site_corba_class ()
 {
-	gnome_client_site_epv.get_container = &impl_GNOME_client_site_get_container;
-	gnome_client_site_epv.show_window = &impl_GNOME_client_site_show_window;
-	gnome_client_site_epv.save_object = &impl_GNOME_client_site_save_object;
-	
-	gnome_client_site_vepv._base_epv = NULL;
-	gnome_client_site_vepv.GNOME_Unknown_epv = &gnome_object_epv;
-	gnome_client_site_vepv.GNOME_ClientSite_epv = &gnome_client_site_epv;
+	gnome_client_site_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_client_site_vepv.GNOME_ClientSite_epv = gnome_client_site_get_epv ();
 }
 
 static void
@@ -149,15 +152,15 @@ gnome_client_site_class_init (GnomeClientSiteClass *class)
 		gtk_signal_new ("show_window",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET(GnomeClientSiteClass,show_window), 
+				GTK_SIGNAL_OFFSET (GnomeClientSiteClass, show_window), 
 				gtk_marshal_NONE__INT,
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_INT); 
-	gnome_client_site_signals [SHOW_WINDOW] =
+	gnome_client_site_signals [SAVE_OBJECT] =
 		gtk_signal_new ("save_object",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET(GnomeClientSiteClass,save_object), 
+				GTK_SIGNAL_OFFSET (GnomeClientSiteClass, save_object), 
 				gtk_marshal_NONE__POINTER,
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_POINTER); 
@@ -188,7 +191,7 @@ create_client_site (GnomeObject *object)
 
 	CORBA_exception_init (&ev);
 
-	POA_GNOME_ClientSite__init ((PortableServer_Servant) servant, &ev);
+	POA_GNOME_ClientSite__init ( (PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
 		CORBA_exception_free (&ev);
 		g_free (servant);
@@ -198,8 +201,8 @@ create_client_site (GnomeObject *object)
 	CORBA_exception_free (&ev);
 
 	return gnome_object_activate_servant (object, servant);
-}
 
+}
 /**
  * gnome_client_site_construct:
  * @client_site: The GnomeClientSite object to initialize
@@ -207,7 +210,7 @@ create_client_site (GnomeObject *object)
  * @container: a GnomeContainer to bind to.
  *
  * This initializes an object of type GnomeClientSite.  See the description
- * for gnome_client_site_new() for more details.
+ * for gnome_client_site_new () for more details.
  *
  * Returns: the constructed GnomeClientSite @client_site.
  */
@@ -280,11 +283,11 @@ gnome_client_site_get_type (void)
 			"IDL:GNOME/ClientSite:1.0",
 			sizeof (GnomeClientSite),
 			sizeof (GnomeClientSiteClass),
-			(GtkClassInitFunc) gnome_client_site_class_init,
-			(GtkObjectInitFunc) gnome_client_site_init,
+			 (GtkClassInitFunc) gnome_client_site_class_init,
+			 (GtkObjectInitFunc) gnome_client_site_init,
 			NULL, /* reserved 1 */
 			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
+			 (GtkClassInitFunc) NULL
 		};
 
 		type = gtk_type_unique (gnome_object_get_type (), &info);
@@ -401,33 +404,6 @@ destroy_view_frame (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
 	client_site->view_frames = g_list_remove (client_site->view_frames, view_frame);
 }
 
-static void
-size_request (GtkWidget *widget, GtkRequisition *requisition, GnomeViewFrame *view_frame)
-{
-	GNOME_View view = gnome_view_frame_get_view (view_frame);
-	CORBA_Environment ev;
-
-	CORBA_exception_init (&ev);
-	GNOME_View_size_query (view, &requisition->width, &requisition->height, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
-		gnome_object_check_env (GNOME_OBJECT (view_frame), view, &ev);
-	CORBA_exception_free (&ev);
-
-}
-
-static void
-size_allocate (GtkWidget *widget, GtkAllocation *allocation, GnomeViewFrame *view_frame)
-{
-	GNOME_View view = gnome_view_frame_get_view (view_frame);
-	CORBA_Environment ev;
-
-	CORBA_exception_init (&ev);
-	GNOME_View_size_allocate (view, allocation->width, allocation->height, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
-		gnome_object_check_env (GNOME_OBJECT (view_frame), view, &ev);
-	CORBA_exception_free (&ev);
-}
-
 /**
  * gnome_client_site_new_view:
  * @client_site: the client site that contains a remote Embeddable
@@ -510,13 +486,6 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
 			    GTK_SIGNAL_FUNC (destroy_view_frame), client_site);
 
-	gtk_signal_connect (GTK_OBJECT (wrapper->bin.child), "size_allocate",
-			    GTK_SIGNAL_FUNC (size_allocate), view_frame);
-
-	gtk_signal_connect (GTK_OBJECT (wrapper->bin.child), "size_request",
-			    GTK_SIGNAL_FUNC (size_request), view_frame);
-
-
 	CORBA_exception_free (&ev);		
 	return view_frame;
 }
@@ -569,7 +538,7 @@ gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *grou
  * supported by the Embeddable @server_object.
  *
  * The GnomeVerbs can be deallocated with a call to
- * gnome_embeddable_free_verbs().
+ * gnome_embeddable_free_verbs ().
  */
 GList *
 gnome_client_site_get_verbs (GnomeClientSite *client_site)
@@ -613,7 +582,7 @@ gnome_client_site_get_verbs (GnomeClientSite *client_site)
 	}
 
 	CORBA_exception_free (&ev);
-	CORBA_free (list);
+	CORBA_free (list);	/* FIXME: This does not make any sense at all to me */
 
 	return l;
 }

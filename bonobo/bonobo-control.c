@@ -4,8 +4,9 @@
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
+ *   Nat Friedman (nat@nat.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -19,15 +20,7 @@
 static GnomeObjectClass *gnome_control_parent_class;
 
 /* The entry point vectors for the server we provide */
-POA_GNOME_Control__epv gnome_control_epv;
 POA_GNOME_Control__vepv gnome_control_vepv;
-
-enum {
-	SIZE_QUERY,
-	LAST_SIGNAL
-};
-
-static guint control_signals [LAST_SIGNAL];
 
 struct _GnomeControlPrivate {
 	GtkWidget *plug;
@@ -35,27 +28,11 @@ struct _GnomeControlPrivate {
 	int plug_destroy_id;
 
 	GtkWidget  *widget;
+
+	GNOME_ControlFrame control_frame;
+
+	GnomePropertyBag *propbag;
 };
-
-static void
-impl_GNOME_Control_size_allocate (PortableServer_Servant servant,
-				  const CORBA_short width,
-				  const CORBA_short height,
-				  CORBA_Environment *ev)
-{
-	GnomeControl *control = GNOME_CONTROL (gnome_object_from_servant (servant));
-	GtkAllocation allocation;
-
-	if (control->priv->plug == NULL)
-		return;
-
-	allocation.x = control->priv->plug->allocation.x;
-	allocation.y = control->priv->plug->allocation.y;
-
-	allocation.width = width;
-	allocation.height = height;
-	gtk_widget_size_allocate (control->priv->plug, &allocation);
-}
 
 /*
  * This callback is invoked when the plug is unexpectedly destroyed.
@@ -64,7 +41,7 @@ impl_GNOME_Control_size_allocate (PortableServer_Servant servant,
  * normally, i.e. the user unrefs the GnomeControl away.
  */
 static gint
-plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
+gnome_control_plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 {
 	GnomeControl *control = GNOME_CONTROL (closure);
 
@@ -77,13 +54,23 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 	 * own.
 	 */
 	control->priv->plug = NULL;
-	gtk_signal_disconnect (GTK_OBJECT (plug), control->priv->plug_destroy_id);
-        /*
-         * Destroy this plug's GnomeControl.
-         */
+
+	/*
+	 * Destroy this plug's GnomeControl.
+	 */
 	gnome_object_destroy (GNOME_OBJECT (control));
 
 	return FALSE;
+}
+
+static void
+impl_GNOME_Control_set_frame (PortableServer_Servant servant,
+			      GNOME_ControlFrame frame,
+			      CORBA_Environment *ev)
+{
+	GnomeControl *control = GNOME_CONTROL (gnome_object_from_servant (servant));
+
+	gnome_control_set_control_frame (control, frame);
 }
 
 static void
@@ -95,30 +82,56 @@ impl_GNOME_Control_set_window (PortableServer_Servant servant,
 
 	control->priv->plug = gtk_plug_new (id);
 	control->priv->plug_destroy_id = gtk_signal_connect (
-		GTK_OBJECT (control->priv->plug), "delete_event",
-		GTK_SIGNAL_FUNC (plug_destroy_cb), control);
+		GTK_OBJECT (control->priv->plug), "destroy_event",
+		GTK_SIGNAL_FUNC (gnome_control_plug_destroy_cb), control);
 
-	gtk_widget_show_all (control->priv->plug);
 
 	gtk_container_add (GTK_CONTAINER (control->priv->plug), control->priv->widget);
+
+	gtk_widget_show_all (control->priv->plug);
 }
 
 static void
-impl_GNOME_Control_size_query (PortableServer_Servant servant,
-			       CORBA_short *desired_width,
-			       CORBA_short *desired_height,
-			       CORBA_Environment *ev)
+impl_GNOME_Control_size_allocate (PortableServer_Servant servant,
+				  const CORBA_short width,
+				  const CORBA_short height,
+				  CORBA_Environment *ev)
+{
+	/*
+	 * Nothing.
+	 *
+	 * In the Gnome implementation of Bonobo, all size negotiation
+	 * is handled by GtkPlug/GtkSocket for us.
+	 */
+}
+
+static void
+impl_GNOME_Control_size_request (PortableServer_Servant servant,
+				 CORBA_short *desired_width,
+				 CORBA_short *desired_height,
+				 CORBA_Environment *ev)
+{
+	/*
+	 * Nothing.
+	 */
+}
+
+static GNOME_PropertyBag
+impl_GNOME_Control_get_property_bag (PortableServer_Servant servant,
+				     CORBA_Environment *ev)
 {
 	GnomeControl *control = GNOME_CONTROL (gnome_object_from_servant (servant));
-	int dh = -1;
-	int dw = -1;
-	
-	gtk_signal_emit (
-		GTK_OBJECT (control),
-		control_signals [SIZE_QUERY], &dw, &dh);
+	GNOME_PropertyBag corba_propbag;
 
-	*desired_height = dh;
-	*desired_width = dw;
+	if (control->priv->propbag == NULL)
+		return CORBA_OBJECT_NIL;
+
+	corba_propbag = (GNOME_PropertyBag)
+		gnome_object_corba_objref (GNOME_OBJECT (control->priv->propbag));
+
+	corba_propbag = CORBA_Object_duplicate (corba_propbag, ev);
+
+	return corba_propbag;
 }
 
 /**
@@ -181,7 +194,7 @@ gnome_control_construct (GnomeControl *control, GNOME_Control corba_control, Gtk
  * @widget: a GTK widget that contains the control and will be passed to the
  * container process.
  *
- * This function creates a new GnomeControl object for @widget
+ * This function creates a new GnomeControl object for @widget.
  *
  * Returns: a GnomeControl object that implements the GNOME::Control CORBA
  * service that will transfer the @widget to the container process.
@@ -215,7 +228,7 @@ gnome_control_destroy (GtkObject *object)
 	 * Destroy the control's top-level widget.
 	 */
 	if (control->priv->widget)
-		gtk_object_unref (GTK_OBJECT (control->priv->widget));
+		gtk_object_destroy (GTK_OBJECT (control->priv->widget));
 
 	/*
 	 * If the plug still exists, destroy it.  The plug might not
@@ -234,45 +247,32 @@ gnome_control_destroy (GtkObject *object)
 	g_free (control->priv);
 }
 
+/**
+ * gnome_control_get_epv:
+ *
+ */
+POA_GNOME_Control__epv *
+gnome_control_get_epv (void)
+{
+	POA_GNOME_Control__epv *epv;
+
+	epv = g_new0 (POA_GNOME_Control__epv, 1);
+
+	epv->size_allocate     = impl_GNOME_Control_size_allocate;
+	epv->set_window        = impl_GNOME_Control_set_window;
+	epv->set_frame         = impl_GNOME_Control_set_frame;
+	epv->size_request      = impl_GNOME_Control_size_request;
+	epv->get_property_bag  = impl_GNOME_Control_get_property_bag;
+
+	return epv;
+}
+
 static void
 init_control_corba_class (void)
 {
-	/* The entry point vectors for this GNOME::Control class */
-	gnome_control_epv.size_allocate = impl_GNOME_Control_size_allocate;
-	gnome_control_epv.set_window = impl_GNOME_Control_set_window;
-	gnome_control_epv.size_query = impl_GNOME_Control_size_query;
-	
 	/* Setup the vector of epvs */
-	gnome_control_vepv.GNOME_Unknown_epv = &gnome_object_epv;
-	gnome_control_vepv.GNOME_Control_epv = &gnome_control_epv;
-}
-
-/**
- * gnome_control_request_resize:
- * @control: A GnomeControl object which we are requesting to resize.
- * @width: The requested width.
- * @height: The requested height.
- *
- * Asks the ControlFrame associated with @control to resize the control.  If
- * the ControlFrame acquiesces, the toplevel widget associated with @control
- * will get a "size_allocate" signal.
- */
-void
-gnome_control_request_resize (GnomeControl *control, int width, int height)
-{
-	CORBA_Environment ev;
-
-	g_return_if_fail (control != NULL);
-	g_return_if_fail (GNOME_IS_CONTROL (control));
-	g_return_if_fail (control->control_frame != CORBA_OBJECT_NIL); 
-
-	CORBA_exception_init (&ev);
-
-	GNOME_ControlFrame_request_resize (control->control_frame,
-					   width, height,
-					   &ev);
-
-	CORBA_exception_free (&ev);
+	gnome_control_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_control_vepv.GNOME_Control_epv = gnome_control_get_epv ();
 }
 
 /**
@@ -294,7 +294,7 @@ gnome_control_set_control_frame (GnomeControl *control, GNOME_ControlFrame contr
 
 	GNOME_Unknown_ref (control_frame, &ev);
 
-	control->control_frame = CORBA_Object_duplicate (control_frame, &ev);
+	control->priv->control_frame = CORBA_Object_duplicate (control_frame, &ev);
 	
 	CORBA_exception_free (&ev);
 }
@@ -318,10 +318,77 @@ gnome_control_get_control_frame (GnomeControl *control)
 	g_return_val_if_fail (GNOME_IS_CONTROL (control), CORBA_OBJECT_NIL);
 
 	CORBA_exception_init (&ev);
-	control_frame = CORBA_Object_duplicate (control->control_frame, &ev);
+	control_frame = CORBA_Object_duplicate (control->priv->control_frame, &ev);
 	CORBA_exception_free (&ev);
 
 	return control_frame;
+}
+
+/**
+ * gnome_control_set_property_bag:
+ *
+ */
+void
+gnome_control_set_property_bag (GnomeControl *control, GnomePropertyBag *pb)
+{
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (GNOME_IS_CONTROL (control));
+	g_return_if_fail (pb != NULL);
+	g_return_if_fail (GNOME_IS_PROPERTY_BAG (pb));
+
+	control->priv->propbag = pb;
+}
+
+/**
+ * gnome_control_get_property_bag:
+ * @control: A #GnomeControl whose PropertyBag has already been set.
+ *
+ * Returns: The #GnomePropertyBag bound to @control.
+ */
+GnomePropertyBag *
+gnome_control_get_property_bag (GnomeControl *control)
+{
+	g_return_val_if_fail (control != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CONTROL (control), NULL);
+
+	return control->priv->propbag;
+}
+
+/**
+ * gnome_control_get_ambient_properties:
+ * @control: A #GnomeControl which is bound to a remote
+ * #GnomeControlFrame.
+ *
+ * Returns: A #GnomePropertyBagClient bound to the bag of ambient
+ * properties associated with this #Control's #ControlFrame.
+ */
+GnomePropertyBagClient *
+gnome_control_get_ambient_properties (GnomeControl *control)
+{
+	GNOME_ControlFrame control_frame;
+	GNOME_PropertyBag pbag;
+	CORBA_Environment ev;
+
+	g_return_val_if_fail (control != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CONTROL (control), NULL);
+
+	control_frame = control->priv->control_frame;
+
+	if (control_frame == CORBA_OBJECT_NIL)
+		return NULL;
+
+	CORBA_exception_init (&ev);
+
+	pbag = GNOME_ControlFrame_get_ambient_properties (control_frame, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (GNOME_OBJECT (control), control_frame, &ev);
+		return NULL;
+	}
+
+	CORBA_exception_free (&ev);
+
+	return gnome_property_bag_client_new (pbag);
 }
 
 static void
@@ -330,17 +397,6 @@ gnome_control_class_init (GnomeControlClass *class)
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
 	gnome_control_parent_class = gtk_type_class (gnome_object_get_type ());
-
-	control_signals [SIZE_QUERY] =
-                gtk_signal_new ("size_query",
-                                GTK_RUN_LAST,
-                                object_class->type,
-                                GTK_SIGNAL_OFFSET (GnomeControlClass, size_query), 
-                                gtk_marshal_NONE__POINTER_POINTER,
-                                GTK_TYPE_NONE, 2,
-				GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-
-	gtk_object_class_add_signals (object_class, control_signals, LAST_SIGNAL);
 
 	object_class->destroy = gnome_control_destroy;
 	init_control_corba_class ();
@@ -379,3 +435,4 @@ gnome_control_get_type (void)
 
 	return type;
 }
+

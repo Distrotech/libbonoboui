@@ -39,44 +39,44 @@ struct _GnomeViewClass {
 	/*
 	 * Signals
 	 */
-	void (*view_activate)            (GnomeView *view,
-					  gboolean activate);
+	void (*view_activate)            (GnomeView *view, gboolean state);
 	void (*view_undo_last_operation) (GnomeView *view);
 	void (*do_verb)                  (GnomeView *view,
 					  const CORBA_char *verb_name);
 	void (*set_zoom_factor)          (GnomeView *view, double zoom);
 };
 
-GtkType		 gnome_view_get_type		(void);
-GnomeView	*gnome_view_construct		(GnomeView *view,
-						 GNOME_View corba_view,
-						 GtkWidget *widget);
-GnomeView	*gnome_view_new                 (GtkWidget *widget);
-GNOME_View	 gnome_view_corba_object_create	(GnomeObject *object);
-void		 gnome_view_set_embeddable	(GnomeView *view,
-						 GnomeEmbeddable *embeddable);
-GnomeEmbeddable *gnome_view_get_embeddable	(GnomeView *view);
-void		 gnome_view_set_view_frame	(GnomeView *view,
-						 GNOME_ViewFrame view_frame);
-GNOME_ViewFrame  gnome_view_get_view_frame	(GnomeView *view);
-GNOME_UIHandler  gnome_view_get_remote_ui_handler(GnomeView *view);
-void		 gnome_view_activate_notify	(GnomeView *view, gboolean activated);
-void		 gnome_view_set_ui_handler	(GnomeView *view, GnomeUIHandler *uih);
-GnomeUIHandler	*gnome_view_get_ui_handler	(GnomeView *view);
-void		 gnome_view_request_resize	(GnomeView *view,
-						 int width, int height);
-void		 gnome_view_register_verb	(GnomeView *view,
-						 const char *verb_name,
-						 GnomeViewVerbFunc callback,
-						 gpointer user_data);
-void		 gnome_view_unregister_verb	(GnomeView *view,
-						 const char *verb_name);
-void		 gnome_view_execute_verb	(GnomeView *view,
-						 const char *verb_name);
-char		 *gnome_view_popup_verbs	(GnomeView *view);
+GtkType		 gnome_view_get_type		  (void);
+GnomeView	*gnome_view_construct		  (GnomeView *view,
+						   GNOME_View corba_view,
+						   GtkWidget *widget);
+GnomeView	*gnome_view_new                   (GtkWidget *widget);
+GNOME_View	 gnome_view_corba_object_create	  (GnomeObject *object);
+void		 gnome_view_set_embeddable	  (GnomeView *view,
+						   GnomeEmbeddable *embeddable);
+GnomeEmbeddable *gnome_view_get_embeddable	  (GnomeView *view);
+void		 gnome_view_set_view_frame	  (GnomeView *view,
+						   GNOME_ViewFrame view_frame);
+GNOME_ViewFrame  gnome_view_get_view_frame	  (GnomeView *view);
+GNOME_UIHandler  gnome_view_get_remote_ui_handler (GnomeView *view);
+void		 gnome_view_set_ui_handler	  (GnomeView *view, GnomeUIHandler *uih);
+GnomeUIHandler	*gnome_view_get_ui_handler	  (GnomeView *view);
+void		 gnome_view_activate_notify	  (GnomeView *view, gboolean activated);
+						  
+/* Verbs. */					  
+void		 gnome_view_register_verb	  (GnomeView *view,
+						   const char *verb_name,
+						   GnomeViewVerbFunc callback,
+						   gpointer user_data);
+void		 gnome_view_unregister_verb	  (GnomeView *view,
+						   const char *verb_name);
+void		 gnome_view_execute_verb	  (GnomeView *view,
+						   const char *verb_name);
+char		*gnome_view_popup_verbs		  (GnomeView *view);
+
+POA_GNOME_View__epv *gnome_view_get_epv (void);
 
 /* CORBA default vector methods we provide */
-extern POA_GNOME_View__epv gnome_view_epv;
 extern POA_GNOME_View__vepv gnome_view_vepv;
 
 END_GNOME_DECLS

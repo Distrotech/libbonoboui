@@ -24,6 +24,7 @@ BEGIN_GNOME_DECLS
 
 typedef struct _GnomeWrapper GnomeWrapper;
 typedef struct _GnomeWrapperClass GnomeWrapperClass;
+typedef struct _GnomeWrapperPrivate GnomeWrapperPrivate;
 
 struct _GnomeWrapper {
 	GtkBin bin;
@@ -31,8 +32,8 @@ struct _GnomeWrapper {
 	/* The InputOnly window that covers the child */
 	GdkWindow *cover;
 
-	/* Whether the child is covered or not */
-	int covered : 1;
+	/* Private data. */
+	GnomeWrapperPrivate *priv;
 };
 
 struct _GnomeWrapperClass {
@@ -40,13 +41,14 @@ struct _GnomeWrapperClass {
 };
 
 
-GtkType gnome_wrapper_get_type (void);
-GtkWidget *gnome_wrapper_new (void);
+GtkType		 gnome_wrapper_get_type		(void);
+GtkWidget	*gnome_wrapper_new		(void);
 
-void gnome_wrapper_set_covered (GnomeWrapper *wrapper, gboolean covered);
-gboolean gnome_wrapper_is_covered (GnomeWrapper *wrapper);
+void		 gnome_wrapper_set_covered	(GnomeWrapper *wrapper, gboolean covered);
+gboolean	 gnome_wrapper_is_covered	(GnomeWrapper *wrapper);
 
-
+gboolean	 gnome_wrapper_get_visibility	(GnomeWrapper *wrapper);
+void		 gnome_wrapper_set_visibility	(GnomeWrapper *wrapper, gboolean visible);
 
 END_GNOME_DECLS
 

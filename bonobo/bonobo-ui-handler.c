@@ -2,7 +2,7 @@
 /*
  * GNOME::UIHandler.
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  *
  * Author:
  *    Nat Friedman (nat@nat.org)
@@ -24,6 +24,7 @@
 
 #include <config.h>
 #include <bonobo/gnome-main.h>
+#include <bonobo/gnome-bonobo-widget.h>
 #include <bonobo/gnome-ui-handler.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtklabel.h>
@@ -54,8 +55,7 @@ static GnomeObjectClass *gnome_ui_handler_parent_class;
  * The entry point vectors for the GNOME_UIHandler server used to
  * handle remote menu/toolbar merging.
  */
-static POA_GNOME_UIHandler__epv gnome_ui_handler_epv;
-static POA_GNOME_UIHandler__vepv gnome_ui_handler_vepv;
+POA_GNOME_UIHandler__vepv gnome_ui_handler_vepv;
 
 /*
  * Forward declarations.
@@ -163,6 +163,81 @@ typedef struct {
 } MenuItemLocalInternal;
 
 /*
+ * This structure is used to maintain an internal representation of a
+ * toolbar item.
+ */
+
+struct _ToolbarItemInternal {
+	/*
+	 * The GnomeUIHandler.
+	 */
+	GnomeUIHandler *uih;
+
+	/*
+	 * A copy of the GnomeUIHandlerToolbarItem for this toolbar item.
+	 */
+	GnomeUIHandlerToolbarItem *item;
+
+	/*
+	 * The UIHandler CORBA interface for the containee which owns
+	 * this particular menu item.
+	 */
+	GNOME_UIHandler uih_corba;
+
+	/*
+	 * If this item is a radio group, then this list points to the
+	 * ToolbarItemInternal structures for the members of the group.
+	 */
+	GSList *radio_items;
+
+	/*
+	 * In the world of toolbars, only radio groups can have
+	 * children.
+	 */
+	GList *children;
+
+	gboolean sensitive;
+	gboolean active;
+};
+
+/*
+ * The internal data for a toolbar.
+ */
+struct _ToolbarToolbarInternal {
+
+	/*
+	 * This toolbar's name. e.g. "Common"
+	 * The path for a toolbar item will be something like "/Common/Help"
+	 */
+	char			 *name;
+
+	/*
+	 * A list of paths for the items in this toolbar.
+	 */
+	GList			 *children;
+
+	/*
+	 * The owner for this toolbar.
+	 */
+	GNOME_UIHandler		 uih_corba;
+
+	GtkOrientation		 orientation;
+	GtkToolbarStyle		 style;
+	GtkToolbarSpaceStyle	 space_style;
+	int			 space_size;
+	GtkReliefStyle		 relief;
+};
+
+struct _ToolbarItemLocalInternal {
+	GnomeUIHandlerCallbackFunc callback;
+	gpointer	           callback_data;
+};
+
+struct _ToolbarToolbarLocalInternal {
+	GList		*children;
+};
+
+/*
  * Prototypes for some internal functions.
  */
 static void                       init_ui_handler_corba_class           (void);
@@ -204,6 +279,8 @@ static void			  menu_toplevel_remove_parent_entry	(GnomeUIHandler *uih, char *pa
 /*
  * Prototypes for some internal Toolbar functions.
  */
+static void			  toolbar_toplevel_remove_item_internal (GnomeUIHandler *uih,
+									 ToolbarItemInternal *internal);
 static void			  toolbar_toplevel_set_toggle_state_internal (GnomeUIHandler *uih,
 									      ToolbarItemInternal *internal,
 									      gboolean active);
@@ -565,9 +642,7 @@ gnome_ui_handler_unset_container (GnomeUIHandler *uih)
 				(CORBA_Object) uih->top_level_uih, &ev);
 		}
 		
-#if 0
 		CORBA_Object_release (uih->top_level_uih, &ev);
-#endif
 
 		/* FIXME: Check the exception */
 
@@ -644,6 +719,48 @@ menu_toplevel_prune_compare_function (gconstpointer a, gconstpointer b)
 }
 
 static void
+toolbar_toplevel_find_containee_items (gpointer path, gpointer value, gpointer user_data)
+{
+	removal_closure_t *closure = (removal_closure_t *) user_data;
+	GList *l = (GList *) value;
+	GList *curr;
+	CORBA_Environment ev;
+
+	/*
+	 * Walk the list and add all internal items to the removal list
+	 * if they match the specified containee.
+	 */
+	CORBA_exception_init (&ev);
+	for (curr = l; curr != NULL; curr = curr->next) {
+		ToolbarItemInternal *internal = (ToolbarItemInternal *) curr->data;
+
+		if (CORBA_Object_is_equivalent (internal->uih_corba, closure->containee, &ev)) {
+			closure->removal_list = g_list_prepend (closure->removal_list, internal);
+		}
+	}
+	CORBA_exception_free (&ev);
+}
+
+static gint
+toolbar_toplevel_prune_compare_function (gconstpointer a, gconstpointer b)
+{
+	ToolbarItemInternal *ai, *bi;
+	int len_a, len_b;
+
+	ai = (ToolbarItemInternal *) a;
+	bi = (ToolbarItemInternal *) b;
+
+	len_a = strlen (ai->item->path);
+	len_b = strlen (bi->item->path);
+
+	if (len_a > len_b)
+		return -1;
+	if (len_a < len_b)
+		return 1;
+	return 0;
+}
+
+static void
 uih_toplevel_unregister_containee (GnomeUIHandler *uih, GNOME_UIHandler containee)
 {
 	removal_closure_t *closure;
@@ -670,11 +787,9 @@ uih_toplevel_unregister_containee (GnomeUIHandler *uih, GNOME_UIHandler containe
 		return;
 
 	uih->top->containee_uihs = g_list_remove (uih->top->containee_uihs, remove_me);
-#if 0				/* FIXME: fuckity fuck */
 	CORBA_exception_init (&ev);
 	CORBA_Object_release (remove_me, &ev);
 	CORBA_exception_free (&ev);
-#endif
 
 	/*
 	 * Create a simple closure to pass some data into the removal
@@ -697,7 +812,8 @@ uih_toplevel_unregister_containee (GnomeUIHandler *uih, GNOME_UIHandler containe
 	 * are removed from the list, or (b) the children are
 	 * earlier in the list, so that they get removed first.
 	 *
-	 * This takes care of that.
+	 * This takes care of that by putting the children first in
+	 * the list.
 	 */
 	closure->removal_list = g_list_sort (closure->removal_list, menu_toplevel_prune_compare_function);
 
@@ -708,8 +824,27 @@ uih_toplevel_unregister_containee (GnomeUIHandler *uih, GNOME_UIHandler containe
 	g_free (closure);
 
 	/*
-	 * FIXME: Do the same for toolbars
+	 * Create a simple closure to pass some data into the removal
+	 * function.
 	 */
+	closure = g_new0 (removal_closure_t, 1);
+	closure->uih = uih;
+	closure->containee = containee;
+
+	/*
+	 * Remove the toolbar items associated with this containee.
+	 */
+
+	/* Build a list of itnernal toolbar item structures to remove. */
+	g_hash_table_foreach (uih->top->path_to_toolbar_item, toolbar_toplevel_find_containee_items, closure);
+
+	closure->removal_list = g_list_sort (closure->removal_list, toolbar_toplevel_prune_compare_function);
+	
+	/* Remove them */
+	for (curr = closure->removal_list; curr != NULL; curr = curr->next)
+		toolbar_toplevel_remove_item_internal (uih, (ToolbarItemInternal *) curr->data);
+	g_list_free (closure->removal_list);
+	g_free (closure);
 }
 
 static void
@@ -2196,19 +2331,23 @@ menu_toplevel_save_accels (gpointer data)
 }
 
 static void
-menu_toplevel_install_global_accelerators (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item, GtkWidget *menu_widget)
+menu_toplevel_install_global_accelerators (GnomeUIHandler *uih,
+					   GnomeUIHandlerMenuItem *item,
+					   GtkWidget *menu_widget)
 {
 	static guint save_accels_id = 0;
 	char *globalaccelstr;
 
+	if (! save_accels_id)
+		save_accels_id = gtk_quit_add (1, menu_toplevel_save_accels, NULL);
+
 	g_return_if_fail (gnome_app_id != NULL);
-	globalaccelstr = g_strconcat (gnome_app_id, ">", item->path, "<", NULL);
+	globalaccelstr = g_strconcat (gnome_app_id, ">",
+				      item->path, "<", NULL);
 	gtk_item_factory_add_foreign (menu_widget, globalaccelstr, uih->top->accelgroup,
 				      item->accelerator_key, item->ac_mods);
 	g_free (globalaccelstr);
 
-	if (! save_accels_id)
-		save_accels_id = gtk_quit_add (1, menu_toplevel_save_accels, NULL);
 
 }
 
@@ -3151,7 +3290,13 @@ menu_toplevel_remove_data (GnomeUIHandler *uih, MenuItemInternal *internal)
 		g_free ((char *) curr->data);
 	g_list_free (internal->children);
 
-	g_slist_free (internal->radio_items);
+	/*
+	 * FIXME
+	 *
+	 * This g_slist_free() (or maybe the other one in this file)
+	 * seems to corrupt the SList allocator's free list
+	 */
+/*	g_slist_free (internal->radio_items); */
 	g_free (internal);
 	g_free (path);
 }
@@ -5217,84 +5362,10 @@ gnome_ui_handler_menu_get_radio_state (GnomeUIHandler *uih, char *path)
  * toolbars.
  */
 
-/*
- * This structure is used to maintain an internal representation of a
- * toolbar item.
- */
-
-struct _ToolbarItemInternal {
-	/*
-	 * The GnomeUIHandler.
-	 */
-	GnomeUIHandler *uih;
-
-	/*
-	 * A copy of the GnomeUIHandlerToolbarItem for this toolbar item.
-	 */
-	GnomeUIHandlerToolbarItem *item;
-
-	/*
-	 * The UIHandler CORBA interface for the containee which owns
-	 * this particular menu item.
-	 */
-	GNOME_UIHandler uih_corba;
-
-	/*
-	 * If this item is a radio group, then this list points to the
-	 * ToolbarItemInternal structures for the members of the group.
-	 */
-	GSList *radio_items;
-
-	/*
-	 * In the world of toolbars, only radio groups can have
-	 * children.
-	 */
-	GList *children;
-
-	gboolean sensitive;
-	gboolean active;
-};
-
-/*
- * The internal data for a toolbar.
- */
-struct _ToolbarToolbarInternal {
-
-	/*
-	 * This toolbar's name. e.g. "Common"
-	 * The path for a toolbar item will be something like "/Common/Help"
-	 */
-	char			 *name;
-
-	/*
-	 * A list of paths for the items in this toolbar.
-	 */
-	GList			 *children;
-
-	/*
-	 * The owner for this toolbar.
-	 */
-	GNOME_UIHandler		 uih_corba;
-
-	GtkOrientation		 orientation;
-	GtkToolbarStyle		 style;
-	GtkToolbarSpaceStyle	 space_style;
-	int			 space_size;
-	GtkReliefStyle		 relief;
-};
-
-struct _ToolbarItemLocalInternal {
-	GnomeUIHandlerCallbackFunc callback;
-	gpointer	           callback_data;
-};
-
-struct _ToolbarToolbarLocalInternal {
-	GList		*children;
-};
-
 static GnomeUIHandlerToolbarItem *
 toolbar_make_item (char *path, GnomeUIHandlerToolbarItemType type,
 		   char *label, char *hint, int pos,
+		   GNOME_Control control,
 		   GnomeUIHandlerPixmapType pixmap_type,
 		   gpointer pixmap_data, guint accelerator_key,
 		   GdkModifierType ac_mods,
@@ -5310,6 +5381,7 @@ toolbar_make_item (char *path, GnomeUIHandlerToolbarItemType type,
 	item->label = label;
 	item->hint = hint;
 	item->pos = pos;
+	item->control = control;
 	item->pixmap_type = pixmap_type;
 	item->pixmap_data = pixmap_data;
 	item->accelerator_key = accelerator_key;
@@ -5324,6 +5396,7 @@ static GnomeUIHandlerToolbarItem *
 toolbar_copy_item (GnomeUIHandlerToolbarItem *item)
 {
 	GnomeUIHandlerToolbarItem *copy;
+	CORBA_Environment ev;
 
 	copy = g_new0 (GnomeUIHandlerToolbarItem, 1);
 
@@ -5331,8 +5404,8 @@ toolbar_copy_item (GnomeUIHandlerToolbarItem *item)
 	copy->type = item->type;
 	copy->hint = COPY_STRING (item->hint);
 	copy->pos = item->pos;
+
 	copy->label = COPY_STRING (item->label);
-	copy->children = NULL;
 
 	copy->pixmap_data = pixmap_copy_data (item->pixmap_type, item->pixmap_data);
 	copy->pixmap_type = item->pixmap_type;
@@ -5342,6 +5415,10 @@ toolbar_copy_item (GnomeUIHandlerToolbarItem *item)
 
 	copy->callback = item->callback;
 	copy->callback_data = item->callback_data;
+
+	CORBA_exception_init (&ev);
+	copy->control = CORBA_Object_duplicate (item->control, &ev);
+	CORBA_exception_free (&ev);
 
 	return copy;
 }
@@ -5391,6 +5468,9 @@ toolbar_type_to_corba (GnomeUIHandlerToolbarItemType type)
 	case GNOME_UI_HANDLER_TOOLBAR_SEPARATOR:
 		return GNOME_UIHandler_ToolbarTypeSeparator;
 
+	case GNOME_UI_HANDLER_TOOLBAR_CONTROL:
+		return GNOME_UIHandler_ToolbarTypeControl;
+
 	default:
 		g_warning ("toolbar_type_to_corba: Unknown toolbar type [%d]!\n", (gint) type);
 	}
@@ -5420,6 +5500,9 @@ toolbar_corba_to_type (GNOME_UIHandler_ToolbarType type)
 
 	case GNOME_UIHandler_ToolbarTypeToggleItem:
 		return GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM;
+
+	case GNOME_UIHandler_ToolbarTypeControl:
+		return GNOME_UI_HANDLER_TOOLBAR_CONTROL;
 
 	default:
 		g_warning ("toolbar_corba_to_type: Unknown toolbar type [%d]!\n", (gint) type);
@@ -6059,16 +6142,19 @@ impl_toolbar_overridden (PortableServer_Servant servant,
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	ToolbarItemLocalInternal *internal_cb;
+	char *parent_path;
+
+	parent_path = path_get_parent (path);
 
 	internal_cb = toolbar_local_get_item (uih, path);
 
-	if (internal_cb == NULL) {
+	if (internal_cb == NULL && strcmp (parent_path, "/")) {
 		g_warning ("Received override notification for a toolbar item I don't own [%s]!\n", path);
 		return;
 	}
 
 	gtk_signal_emit (GTK_OBJECT (uih), uih_signals [TOOLBAR_ITEM_OVERRIDDEN],
-			 path, internal_cb->callback_data);
+			 path, internal_cb ? internal_cb->callback_data : NULL);
 }
 
 static void
@@ -6175,6 +6261,23 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 
 	toolbar_item = NULL;
 	switch (internal->item->type) {
+
+	case GNOME_UI_HANDLER_TOOLBAR_CONTROL:
+		toolbar_item = gnome_bonobo_widget_new_control_from_objref (internal->item->control);
+
+		gtk_widget_show (toolbar_item);
+
+		if (internal->item->pos > 0)
+			gtk_toolbar_insert_widget (GTK_TOOLBAR (toolbar),
+						   toolbar_item,
+						   internal->item->hint, NULL,
+						   internal->item->pos);
+		else
+			gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar),
+						   toolbar_item,
+						   internal->item->hint, NULL);
+
+		break;
 
 	case GNOME_UI_HANDLER_TOOLBAR_SEPARATOR:
 		gtk_toolbar_insert_space (GTK_TOOLBAR (toolbar), internal->item->pos);
@@ -6381,6 +6484,7 @@ toolbar_remote_create_item (GnomeUIHandler *uih, char *parent_path,
 					     CORBIFY_STRING (item->label),
 					     CORBIFY_STRING (item->hint),
 					     item->pos,
+					     item->control,
 					     pixmap_type_to_corba (item->pixmap_type),
 					     pixmap_buf,
 					     (CORBA_unsigned_long) item->accelerator_key,
@@ -6402,6 +6506,7 @@ impl_toolbar_create_item (PortableServer_Servant servant,
 			  CORBA_char *label,
 			  CORBA_char *hint,
 			  CORBA_long pos,
+			  GNOME_Control control,
 			  GNOME_UIHandler_PixmapType pixmap_type,
 			  GNOME_UIHandler_iobuf *pixmap_data,
 			  CORBA_unsigned_long accelerator_key,
@@ -6417,6 +6522,7 @@ impl_toolbar_create_item (PortableServer_Servant servant,
 				  UNCORBIFY_STRING (label),
 				  UNCORBIFY_STRING (hint),
 				  pos,
+				  control,
 				  pixmap_corba_to_type (pixmap_type),
 				  pixmap_corba_to_data (pixmap_type, pixmap_data),
 				  (guint) accelerator_key, (GdkModifierType) modifier,
@@ -6500,7 +6606,8 @@ void
 gnome_ui_handler_toolbar_new (GnomeUIHandler *uih, char *path,
 			      GnomeUIHandlerToolbarItemType type,
 			      char *label, char *hint,
-			      int pos, GnomeUIHandlerPixmapType pixmap_type,
+			      int pos, GNOME_Control control,
+			      GnomeUIHandlerPixmapType pixmap_type,
 			      gpointer pixmap_data, guint accelerator_key,
 			      GdkModifierType ac_mods,
 			      GnomeUIHandlerCallbackFunc callback,
@@ -6513,8 +6620,8 @@ gnome_ui_handler_toolbar_new (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
-	item = toolbar_make_item (path, type, label, hint, pos, pixmap_type, pixmap_data,
-				  accelerator_key, ac_mods, callback, callback_data);
+	item = toolbar_make_item (path, type, label, hint, pos, control, pixmap_type,
+				  pixmap_data, accelerator_key, ac_mods, callback, callback_data);
 
 	parent_path = path_get_parent (path);
 	g_return_if_fail (parent_path != NULL);
@@ -6539,10 +6646,23 @@ gnome_ui_handler_toolbar_new_item (GnomeUIHandler *uih, char *path,
 {
 	gnome_ui_handler_toolbar_new (uih, path,
 				      GNOME_UI_HANDLER_TOOLBAR_ITEM,
-				      label, hint, pos, pixmap_type,
+				      label, hint, pos, CORBA_OBJECT_NIL, pixmap_type,
 				      pixmap_data, accelerator_key,
 				      ac_mods, callback, callback_data);
 }
+
+/**
+ * gnome_ui_handler_toolbar_new_control:
+ */
+void
+gnome_ui_handler_toolbar_new_control (GnomeUIHandler *uih, char *path, int pos, GNOME_Control control)
+{
+	gnome_ui_handler_toolbar_new (uih, path,
+				      GNOME_UI_HANDLER_TOOLBAR_CONTROL,
+				      NULL, NULL, pos, control, GNOME_UI_HANDLER_PIXMAP_NONE,
+				      NULL, 0, 0, NULL, NULL);
+}
+
 
 /**
  * gnome_ui_handler_toolbar_new_separator:
@@ -6552,7 +6672,8 @@ gnome_ui_handler_toolbar_new_separator (GnomeUIHandler *uih, char *path, int pos
 {
 	gnome_ui_handler_toolbar_new (uih, path,
 				      GNOME_UI_HANDLER_TOOLBAR_SEPARATOR,
-				      NULL, NULL, pos, GNOME_UI_HANDLER_PIXMAP_NONE,
+				      NULL, NULL, pos, CORBA_OBJECT_NIL,
+				      GNOME_UI_HANDLER_PIXMAP_NONE,
 				      NULL, 0, 0, NULL, NULL);
 }
 
@@ -6563,7 +6684,8 @@ void
 gnome_ui_handler_toolbar_new_radiogroup (GnomeUIHandler *uih, char *path)
 {
 	gnome_ui_handler_toolbar_new (uih, path, GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP,
-				      NULL, NULL, -1, GNOME_UI_HANDLER_PIXMAP_NONE,
+				      NULL, NULL, -1, CORBA_OBJECT_NIL,
+				      GNOME_UI_HANDLER_PIXMAP_NONE,
 				      NULL, 0, 0, NULL, NULL);
 }
 
@@ -6578,7 +6700,8 @@ gnome_ui_handler_toolbar_new_radioitem (GnomeUIHandler *uih, char *path,
 					gpointer callback_data)
 {
 	gnome_ui_handler_toolbar_new (uih, path, GNOME_UI_HANDLER_TOOLBAR_RADIOITEM,
-				      label, hint, pos, GNOME_UI_HANDLER_PIXMAP_NONE,
+				      label, hint, pos, CORBA_OBJECT_NIL,
+				      GNOME_UI_HANDLER_PIXMAP_NONE,
 				      NULL, accelerator_key, ac_mods, callback, callback_data);
 }
 
@@ -6593,7 +6716,8 @@ gnome_ui_handler_toolbar_new_toggleitem (GnomeUIHandler *uih, char *path,
 					 gpointer callback_data)
 {
 	gnome_ui_handler_toolbar_new (uih, path, GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM,
-				      label, hint, pos, GNOME_UI_HANDLER_PIXMAP_NONE,
+				      label, hint, pos, CORBA_OBJECT_NIL,
+				      GNOME_UI_HANDLER_PIXMAP_NONE,
 				      NULL, accelerator_key, ac_mods, callback,
 				      callback_data);
 }
@@ -6750,7 +6874,13 @@ toolbar_toplevel_item_remove_data (GnomeUIHandler *uih, ToolbarItemInternal *int
 
 	toolbar_free (internal->item);
 
-	g_slist_free (internal->radio_items);
+	/*
+	 * FIXME
+	 *
+	 * This g_slist_free() (or maybe the other one in this file)
+	 * seems to corrupt the SList allocator's free list
+	 */
+/*	g_slist_free (internal->radio_items); */
 	g_free (internal);
 	g_free (path);
 }
@@ -7505,59 +7635,68 @@ gnome_ui_handler_toolbar_radio_set_state (GnomeUIHandler *uih, char *path, gbool
 	g_warning ("Unimplemented toolbar method");
 }
 
+/**
+ * gnome_ui_handler_get_epv:
+ */
+POA_GNOME_UIHandler__epv *
+gnome_ui_handler_get_epv (void)
+{
+	POA_GNOME_UIHandler__epv *epv;
+
+	epv = g_new0 (POA_GNOME_UIHandler__epv, 1);
+
+	/* General server management. */
+	epv->register_containee = impl_register_containee;
+	epv->unregister_containee = impl_unregister_containee;
+	epv->get_toplevel = impl_get_toplevel;
+
+	/* Menu management. */
+	epv->menu_create = impl_menu_create;
+	epv->menu_remove = impl_menu_remove;
+	epv->menu_fetch  = impl_menu_fetch;
+	epv->menu_get_children = impl_menu_get_children;
+	epv->menu_get_pos = impl_menu_get_pos;
+	epv->menu_set_sensitivity = impl_menu_set_sensitivity;
+	epv->menu_get_sensitivity = impl_menu_get_sensitivity;
+	epv->menu_set_label  = impl_menu_set_label;
+	epv->menu_get_label  = impl_menu_get_label;
+	epv->menu_set_hint   = impl_menu_set_hint;
+	epv->menu_get_hint   = impl_menu_get_hint;
+	epv->menu_set_pixmap = impl_menu_set_pixmap;
+	epv->menu_get_pixmap = impl_menu_get_pixmap;
+	epv->menu_set_accel  = impl_menu_set_accel;
+	epv->menu_get_accel  = impl_menu_get_accel;
+	epv->menu_set_toggle_state = impl_menu_set_toggle_state;
+	epv->menu_get_toggle_state = impl_menu_get_toggle_state;
+	
+	/* Menu notification. */
+	epv->menu_activated  = impl_menu_activated;
+	epv->menu_removed    = impl_menu_removed;
+	epv->menu_overridden = impl_menu_overridden;
+	epv->menu_reinstated = impl_menu_reinstated;
+
+	/* Toolbar management. */
+	epv->toolbar_create = impl_toolbar_create;
+	epv->toolbar_remove = impl_toolbar_remove;
+	epv->toolbar_get_pos     = impl_toolbar_get_pos;
+	epv->toolbar_set_sensitivity = impl_toolbar_set_sensitivity;
+	epv->toolbar_get_sensitivity = impl_toolbar_get_sensitivity;
+	epv->toolbar_remove_item = impl_toolbar_remove_item;
+	epv->toolbar_create_item = impl_toolbar_create_item;
+
+	/* Toolbar notification. */
+	epv->toolbar_activated  = impl_toolbar_activated;
+	epv->toolbar_removed    = impl_toolbar_removed;
+	epv->toolbar_reinstated = impl_toolbar_reinstated;
+	epv->toolbar_overridden = impl_toolbar_overridden;
+
+	return epv;
+}
+
 static void
 init_ui_handler_corba_class (void)
 {
-	/*
-	 * The entry point vectors for the GNOME::UIHandler class.
-	 */
-
-	/* General server management. */
-	gnome_ui_handler_epv.register_containee = impl_register_containee;
-	gnome_ui_handler_epv.unregister_containee = impl_unregister_containee;
-	gnome_ui_handler_epv.get_toplevel = impl_get_toplevel;
-
-	/* Menu management. */
-	gnome_ui_handler_epv.menu_create = impl_menu_create;
-	gnome_ui_handler_epv.menu_remove = impl_menu_remove;
-	gnome_ui_handler_epv.menu_fetch  = impl_menu_fetch;
-	gnome_ui_handler_epv.menu_get_children = impl_menu_get_children;
-	gnome_ui_handler_epv.menu_get_pos = impl_menu_get_pos;
-	gnome_ui_handler_epv.menu_set_sensitivity = impl_menu_set_sensitivity;
-	gnome_ui_handler_epv.menu_get_sensitivity = impl_menu_get_sensitivity;
-	gnome_ui_handler_epv.menu_set_label  = impl_menu_set_label;
-	gnome_ui_handler_epv.menu_get_label  = impl_menu_get_label;
-	gnome_ui_handler_epv.menu_set_hint   = impl_menu_set_hint;
-	gnome_ui_handler_epv.menu_get_hint   = impl_menu_get_hint;
-	gnome_ui_handler_epv.menu_set_pixmap = impl_menu_set_pixmap;
-	gnome_ui_handler_epv.menu_get_pixmap = impl_menu_get_pixmap;
-	gnome_ui_handler_epv.menu_set_accel  = impl_menu_set_accel;
-	gnome_ui_handler_epv.menu_get_accel  = impl_menu_get_accel;
-	gnome_ui_handler_epv.menu_set_toggle_state = impl_menu_set_toggle_state;
-	gnome_ui_handler_epv.menu_get_toggle_state = impl_menu_get_toggle_state;
-	
-	/* Menu notification. */
-	gnome_ui_handler_epv.menu_activated  = impl_menu_activated;
-	gnome_ui_handler_epv.menu_removed    = impl_menu_removed;
-	gnome_ui_handler_epv.menu_overridden = impl_menu_overridden;
-	gnome_ui_handler_epv.menu_reinstated = impl_menu_reinstated;
-
-	/* Toolbar management. */
-	gnome_ui_handler_epv.toolbar_create = impl_toolbar_create;
-	gnome_ui_handler_epv.toolbar_remove = impl_toolbar_remove;
-	gnome_ui_handler_epv.toolbar_get_pos     = impl_toolbar_get_pos;
-	gnome_ui_handler_epv.toolbar_set_sensitivity = impl_toolbar_set_sensitivity;
-	gnome_ui_handler_epv.toolbar_get_sensitivity = impl_toolbar_get_sensitivity;
-	gnome_ui_handler_epv.toolbar_remove_item = impl_toolbar_remove_item;
-	gnome_ui_handler_epv.toolbar_create_item = impl_toolbar_create_item;
-
-	/* Toolbar notification. */
-	gnome_ui_handler_epv.toolbar_activated  = impl_toolbar_activated;
-	gnome_ui_handler_epv.toolbar_removed    = impl_toolbar_removed;
-	gnome_ui_handler_epv.toolbar_reinstated = impl_toolbar_reinstated;
-	gnome_ui_handler_epv.toolbar_overridden = impl_toolbar_overridden;
-
 	/* Setup the vector of epvs */
-	gnome_ui_handler_vepv.GNOME_Unknown_epv = &gnome_object_epv;
-	gnome_ui_handler_vepv.GNOME_UIHandler_epv = &gnome_ui_handler_epv;
+	gnome_ui_handler_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_ui_handler_vepv.GNOME_UIHandler_epv = gnome_ui_handler_get_epv ();
 }

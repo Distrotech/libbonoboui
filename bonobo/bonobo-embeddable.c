@@ -13,7 +13,7 @@
  *   Miguel de Icaza (miguel@kernel.org)
  *   Nat Friedman    (nat@nat.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -32,6 +32,8 @@ enum {
 };
 
 static guint embeddable_signals [LAST_SIGNAL];
+
+POA_GNOME_Embeddable__vepv gnome_embeddable_vepv;
 
 struct _GnomeEmbeddablePrivate {
 	/*
@@ -334,31 +336,36 @@ impl_GNOME_Embeddable_new_canvas_item (PortableServer_Servant servant,
 	return CORBA_Object_duplicate (gnome_object_corba_objref (GNOME_OBJECT (component)), ev);
 }
 
-POA_GNOME_Embeddable__epv gnome_embeddable_epv = {
-	NULL,
-};
+/**
+ * gnome_embeddable_get_epv:
+ */
+POA_GNOME_Embeddable__epv *
+gnome_embeddable_get_epv (void)
+{
+	POA_GNOME_Embeddable__epv *epv;
 
-static POA_GNOME_Embeddable__vepv gnome_embeddable_vepv = {
-	&gnome_object_base_epv,
-	&gnome_object_epv,
-	&gnome_embeddable_epv
-};
+	epv = g_new0 (POA_GNOME_Embeddable__epv, 1);
+
+	epv->set_client_site = impl_GNOME_Embeddable_set_client_site;
+	epv->get_client_site = impl_GNOME_Embeddable_get_client_site;
+	epv->set_host_name   = impl_GNOME_Embeddable_set_host_name;
+	epv->close           = impl_GNOME_Embeddable_close;
+	epv->get_verb_list   = impl_GNOME_Embeddable_get_verb_list;
+	epv->advise          = impl_GNOME_Embeddable_advise;
+	epv->unadvise        = impl_GNOME_Embeddable_unadvise;
+	epv->get_misc_status = impl_GNOME_Embeddable_get_misc_status;
+	epv->new_view        = impl_GNOME_Embeddable_new_view;
+	epv->set_uri         = impl_GNOME_Embeddable_set_uri;
+	epv->new_canvas_item = impl_GNOME_Embeddable_new_canvas_item;
+
+	return epv;
+}
 
 static void
 gnome_embeddable_corba_class_init ()
 {
-	/* the epv */
-	gnome_embeddable_epv.set_client_site = &impl_GNOME_Embeddable_set_client_site;
-	gnome_embeddable_epv.get_client_site = &impl_GNOME_Embeddable_get_client_site;
-	gnome_embeddable_epv.set_host_name   = &impl_GNOME_Embeddable_set_host_name;
-	gnome_embeddable_epv.close           = &impl_GNOME_Embeddable_close;
-	gnome_embeddable_epv.get_verb_list   = &impl_GNOME_Embeddable_get_verb_list;
-	gnome_embeddable_epv.advise          = &impl_GNOME_Embeddable_advise;
-	gnome_embeddable_epv.unadvise        = &impl_GNOME_Embeddable_unadvise;
-	gnome_embeddable_epv.get_misc_status = &impl_GNOME_Embeddable_get_misc_status;
-	gnome_embeddable_epv.new_view        = &impl_GNOME_Embeddable_new_view;
-	gnome_embeddable_epv.set_uri         = &impl_GNOME_Embeddable_set_uri;
-	gnome_embeddable_epv.new_canvas_item = &impl_GNOME_Embeddable_new_canvas_item;
+	gnome_embeddable_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_embeddable_vepv.GNOME_Embeddable_epv = gnome_embeddable_get_epv ();
 }
 
 /**

@@ -6,7 +6,7 @@
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #include <config.h>
 #include <gtk/gtkplug.h>
@@ -19,7 +19,6 @@
 static GnomeObjectClass *gnome_desktop_window_parent_class;
 
 /* The entry point vectors for the server we provide */
-POA_GNOME_Desktop_Window__epv gnome_desktop_window_epv;
 POA_GNOME_Desktop_Window__vepv gnome_desktop_window_vepv;
 
 GNOME_Desktop_Window
@@ -148,19 +147,31 @@ impl_desktop_window_get_window_id (PortableServer_Servant servant, CORBA_Environ
 	return GDK_WINDOW_XWINDOW (GTK_WIDGET (desk_win->window)->window);
 }
 
+/**
+ * gnome_desktop_window_get_epv:
+ */
+POA_GNOME_Desktop_Window__epv *
+gnome_desktop_window_get_epv (void)
+{
+	POA_GNOME_Desktop_Window__epv *epv;
+
+	epv = g_new0 (POA_GNOME_Desktop_Window__epv, 1);
+
+	epv->_get_title = impl_desktop_window_get_title;
+	epv->_set_title = impl_desktop_window_set_title;
+	epv->get_geometry = impl_desktop_window_get_geometry;
+	epv->set_geometry = impl_desktop_window_set_geometry;
+	epv->get_window_id = impl_desktop_window_get_window_id;
+
+	return epv;
+}
+
 static void
 init_desktop_window_corba_class (void)
 {
-	/* The entry point vectors for this GNOME::Desktop_Window class */
-	gnome_desktop_window_epv._get_title = impl_desktop_window_get_title;
-	gnome_desktop_window_epv._set_title = impl_desktop_window_set_title;
-	gnome_desktop_window_epv.get_geometry = impl_desktop_window_get_geometry;
-	gnome_desktop_window_epv.set_geometry = impl_desktop_window_set_geometry;
-	gnome_desktop_window_epv.get_window_id = impl_desktop_window_get_window_id;
-	
 	/* Setup the vector of epvs */
-	gnome_desktop_window_vepv.GNOME_Unknown_epv = &gnome_object_epv;
-	gnome_desktop_window_vepv.GNOME_Desktop_Window_epv = &gnome_desktop_window_epv;
+	gnome_desktop_window_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_desktop_window_vepv.GNOME_Desktop_Window_epv = gnome_desktop_window_get_epv ();
 }
 
 static void

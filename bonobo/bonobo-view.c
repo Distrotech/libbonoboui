@@ -6,7 +6,7 @@
  *   Miguel de Icaza (miguel@kernel.org)
  *   Nat Friedman    (nat@nat.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -20,8 +20,9 @@
 static GnomeControlClass *gnome_view_parent_class;
 
 /* The entry point vectors for the server we provide */
-POA_GNOME_View__epv gnome_view_epv;
-POA_GNOME_View__vepv gnome_view_vepv;
+POA_GNOME_View__epv    gnome_view_epv;
+POA_GNOME_Control__epv gnome_view_overridden_control_epv;
+POA_GNOME_View__vepv   gnome_view_vepv;
 
 enum {
 	VIEW_ACTIVATE,
@@ -38,13 +39,12 @@ typedef void (*GnomeSignal_NONE__DOUBLE) (GtkObject *object, double arg1, gpoint
 struct _GnomeViewPrivate {
 	GHashTable *verb_callbacks;
 	GHashTable *verb_callback_closures;
-
 };
 
 static void
-impl_GNOME_View_activate (PortableServer_Servant servant,
-			  CORBA_boolean activated,
-			  CORBA_Environment *ev)
+impl_GNOME_View_view_activate (PortableServer_Servant servant,
+			       CORBA_boolean activated,
+			       CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 
@@ -78,9 +78,8 @@ impl_GNOME_View_set_zoom_factor (PortableServer_Servant servant,
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 
-	gtk_signal_emit (
-		GTK_OBJECT (view),
-		view_signals [SET_ZOOM_FACTOR], zoom);
+	gtk_signal_emit (GTK_OBJECT (view),
+			 view_signals [SET_ZOOM_FACTOR], zoom);
 }
 
 /**
@@ -205,19 +204,30 @@ gnome_view_destroy (GtkObject *object)
 	GTK_OBJECT_CLASS (gnome_view_parent_class)->destroy (object);
 }
 
+/**
+ * gnome_view_get_epv:
+ */
+POA_GNOME_View__epv *
+gnome_view_get_epv (void)
+{
+	POA_GNOME_View__epv *epv;
+
+	epv = g_new0 (POA_GNOME_View__epv, 1);
+
+	epv->view_activate	 = impl_GNOME_View_view_activate;
+	epv->do_verb		 = impl_GNOME_View_do_verb;
+	epv->reactivate_and_undo = impl_GNOME_View_reactivate_and_undo;
+	epv->set_zoom_factor	 = impl_GNOME_View_set_zoom_factor;
+
+	return epv;
+}
+
 static void
 init_view_corba_class (void)
 {
-	/* The entry point vectors for this GNOME::View class */
-	gnome_view_epv.do_verb = impl_GNOME_View_do_verb;
-	gnome_view_epv.activate = impl_GNOME_View_activate;
-	gnome_view_epv.reactivate_and_undo = impl_GNOME_View_reactivate_and_undo;
-	gnome_view_epv.set_zoom_factor = impl_GNOME_View_set_zoom_factor;
-	
-	/* Setup the vector of epvs */
-	gnome_view_vepv.GNOME_Unknown_epv = &gnome_object_epv;
-	gnome_view_vepv.GNOME_Control_epv = &gnome_control_epv;
-	gnome_view_vepv.GNOME_View_epv = &gnome_view_epv;
+	gnome_view_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
+	gnome_view_vepv.GNOME_Control_epv = gnome_control_get_epv ();
+	gnome_view_vepv.GNOME_View_epv	  = gnome_view_get_epv ();
 }
 
 static void 
@@ -391,12 +401,6 @@ gnome_view_get_view_frame (GnomeView *view)
 	return view->view_frame;
 }
 
-void
-gnome_view_request_resize (GnomeView *view, int width, int height)
-{
-	return gnome_control_request_resize (GNOME_CONTROL (view), width, height);
-}
-
 /**
  * gnome_view_set_ui_handler:
  * @view: A GnomeView object.
@@ -459,7 +463,7 @@ gnome_view_get_remote_ui_handler (GnomeView *view)
 
 /**
  * gnome_view_activate_notify:
- * @view: A GnomeView object which is bound to a remote GnomeViewFrame.
+ * @view: A GnomeView object which is bound to a remote GnomeViewFrame..
  * @activate: %TRUE if the view is activated, %FALSE otherwise.
  *
  * This function notifies @view's remote ViewFrame that the activation
@@ -481,6 +485,7 @@ gnome_view_activate_notify (GnomeView *view, gboolean activated)
 
 	CORBA_exception_free (&ev);
 }
+
 
 /**
  * gnome_view_register_verb:

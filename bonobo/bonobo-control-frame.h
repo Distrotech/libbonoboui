@@ -7,7 +7,7 @@
 #include <gtk/gtkwidget.h>
 #include <bonobo/gnome-object.h>
 #include <bonobo/gnome-wrapper.h>
-#include <bonobo/gnome-ui-handler.h>
+#include <bonobo/gnome-property-bag-client.h>
 
 BEGIN_GNOME_DECLS
  
@@ -32,18 +32,25 @@ typedef struct {
 	 * Signals.
 	 */
 	void (*activate_uri)        (GnomeControlFrame *control_frame, const char *uri, gboolean relative);
-	void (*request_resize)      (GnomeControlFrame *control_frame, gint requested_width, gint requested_height);
+
 } GnomeControlFrameClass;
 
-GtkType            gnome_control_frame_get_type        (void);
-GnomeControlFrame *gnome_control_frame_construct       (GnomeControlFrame *control_frame,
-						        GNOME_ControlFrame corba_control_frame);
-GnomeControlFrame *gnome_control_frame_new             (void);
-void		   gnome_control_frame_bind_to_control (GnomeControlFrame *control_frame,
-							GNOME_Control control);
-GNOME_Control	   gnome_control_frame_get_control     (GnomeControlFrame *control_frame);
-void               gnome_control_frame_bind_to_control (GnomeControlFrame *control_frame,
-							GNOME_Control control);
+
+GtkType                	gnome_control_frame_get_type        (void);
+GnomeControlFrame      *gnome_control_frame_construct       (GnomeControlFrame *control_frame,
+		       					     GNOME_ControlFrame corba_control_frame);
+GnomeControlFrame      *gnome_control_frame_new             (void);
+		       
+void		       	gnome_control_frame_bind_to_control (GnomeControlFrame *control_frame,
+		       					     GNOME_Control control);
+GNOME_Control	       	gnome_control_frame_get_control     (GnomeControlFrame *control_frame);
+		       
+GtkWidget	       *gnome_control_frame_get_widget      (GnomeControlFrame *frame);
+
+GnomePropertyBagClient *gnome_control_frame_get_control_property_bag (GnomeControlFrame *control_frame);
+								       
+
+POA_GNOME_ControlFrame__epv *gnome_control_frame_get_epv (void);
 
 /*
  * A GnomeControlFrame acts as a proxy for the remote GnomeControl object to

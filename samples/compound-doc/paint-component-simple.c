@@ -124,8 +124,8 @@ view_update (view_data_t *view_data)
 			 MIN (view_data->height, view_data->embeddable_data->height));
 }
 
-void 
-update_view (GnomeView *view)
+static void 
+update_view_foreach (GnomeView *view, void *data)
 {
 	view_data_t *view_data;
 
@@ -144,7 +144,7 @@ embeddable_update_all_views (embeddable_data_t *embeddable_data)
 
 	embeddable = embeddable_data->embeddable;
 
-	gnome_embeddable_foreach_view (embeddable, update_view, NULL);
+	gnome_embeddable_foreach_view (embeddable, update_view_foreach, NULL);
 }
 
 /*
@@ -240,6 +240,7 @@ view_create_menus (view_data_t *view_data)
 					     -1,
 					     0, (GdkModifierType) 0,
 					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
+
 }
 
 /*
@@ -311,31 +312,6 @@ view_expose_cb (GtkWidget *drawing_area, GdkEventExpose *event, view_data_t *vie
 }
 
 /*
- * This callback is invoked when the container asks a view what size
- * it wants to be.
- */
-static void
-view_size_query_cb (GnomeView *view, int *desired_width, int *desired_height,
-		    view_data_t *view_data)
-{
-	*desired_width  = view_data->embeddable_data->width;
-	*desired_height = view_data->embeddable_data->height;
-}
-
-/*
- * This callback will be invoked when the container assigns us a size.
- */
-static void
-view_size_allocate_cb (GtkWidget *drawing_area, GtkAllocation *allocation,
-		       view_data_t *view_data)
-{
-	view_data->width = allocation->width;
-	view_data->height = allocation->height;
-
-	view_update (view_data);
-}
-
-/*
  * This callback is invoked whenever the user moves the mouse
  * over the drawing area.
  */
@@ -403,8 +379,9 @@ static void
 embeddable_clear_image (embeddable_data_t *embeddable_data)
 {
 	GdkGC *temp_gc;
-	
+
 	temp_gc = gdk_gc_new (embeddable_data->pixmap);
+
 	gdk_draw_rectangle (embeddable_data->pixmap,
 			    temp_gc,
 			    TRUE, 0, 0,
@@ -462,14 +439,22 @@ view_factory (GnomeEmbeddable *embeddable,
 
 	view_data->last_x = -1;
 	view_data->last_y = -1;
-	view_data->width = 0;
-	view_data->height = 0;
+	view_data->width = embeddable_data->width;
+	view_data->height = embeddable_data->width;
 
 	/*
 	 * Now create the drawing area which will be used to display
 	 * the current image in this view.
 	 */
 	view_data->drawing_area = gtk_drawing_area_new ();
+
+	gtk_drawing_area_size (GTK_DRAWING_AREA (view_data->drawing_area),
+			       view_data->width,
+			       view_data->height);
+
+	gtk_widget_set_usize (view_data->drawing_area,
+			      view_data->width,
+			      view_data->height);
 
 	/*
 	 * We will use this event to actually draw into the
@@ -537,19 +522,6 @@ view_factory (GnomeEmbeddable *embeddable,
 				  GNOME_VIEW_VERB_FUNC (view_clear_image_cb),
 				  view_data);
 
-	/*
-	 * The "size_query" signal is raised when the container asks
-	 * the component what size it wants to be.
-	 */
-	gtk_signal_connect (GTK_OBJECT (view), "size_query",
-			    GTK_SIGNAL_FUNC (view_size_query_cb), view_data);
-
-	/*
-	 * When the container assigns us a size, we will get a
-	 * "size_allocate" signal raised on our top-level widget.
-	 */
-	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "size_allocate",
-			    GTK_SIGNAL_FUNC (view_size_allocate_cb), view_data);
 
 	/*
 	 * When our container wants to activate a given view of this

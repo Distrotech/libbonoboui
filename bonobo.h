@@ -5,7 +5,7 @@
  * FIXME: We should try to optimize the order of the include
  * files here to minimize repeated inclussion of files.
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 
 #include <bonobo/gnome-object.h>
@@ -16,6 +16,9 @@
 #include <bonobo/gnome-container.h>
 #include <bonobo/gnome-object-client.h>
 #include <bonobo/gnome-client-site.h>
+
+#include <bonobo/gnome-property-bag.h>
+#include <bonobo/gnome-property-bag-client.h>
 
 #include <bonobo/gnome-control.h>
 #include <bonobo/gnome-control-frame.h>
@@ -47,3 +50,4 @@
 #include <bonobo/gnome-bonobo-selector.h>
 
 #include <bonobo/gnome-bonobo-widget.h>
+

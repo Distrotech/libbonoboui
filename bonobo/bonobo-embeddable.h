@@ -6,7 +6,7 @@
  *   Miguel de Icaza (miguel@kernel.org)
  *   Nat Friedman    (nat@nat.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #ifndef _GNOME_EMBEDDABLE_H_
 #define _GNOME_EMBEDDABLE_H_
@@ -141,6 +141,8 @@ void             gnome_embeddable_foreach_view     (GnomeEmbeddable *embeddable,
 void             gnome_embeddable_foreach_item     (GnomeEmbeddable *embeddable,
 						    GnomeEmbeddableForeachItemFn fn,
 						    void *data);
+
+POA_GNOME_Embeddable__epv *gnome_embeddable_get_epv (void);
 
 extern POA_GNOME_Embeddable__epv gnome_embeddable_epv;
 

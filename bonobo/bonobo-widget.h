@@ -5,7 +5,7 @@
  * Authors:
  *   Nat Friedman    (nat@nat.org)
  *
- * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
+ * Copyright 1999 Helix Code, Inc.
  */
 #ifndef _GNOME_BONOBO_WIDGET_H_
 #define _GNOME_BONOBO_WIDGET_H_
@@ -27,26 +27,40 @@ BEGIN_GNOME_DECLS
 struct _GnomeBonoboWidget;
 typedef struct _GnomeBonoboWidget GnomeBonoboWidget;
 
+struct _GnomeBonoboWidgetPrivate;
+typedef struct _GnomeBonoboWidgetPrivate GnomeBonoboWidgetPrivate;
+
 #include <bonobo/gnome-view.h>
 
 struct _GnomeBonoboWidget {
-	GtkBin		   bin;
+	GtkBin		          bin;
 
-	GnomeObjectClient *server;
-	GnomeContainer	  *container;
-	GnomeClientSite   *client_site;
-	GnomeViewFrame    *view_frame;
-
-	GnomeUIHandler	  *uih;
+	GnomeBonoboWidgetPrivate *priv;
 };
 
 typedef struct {
 	GtkBinClass	 bin_class;
 } GnomeBonoboWidgetClass;
 
-GtkType            gnome_bonobo_widget_get_type       (void);
-GnomeBonoboWidget *gnome_bonobo_widget_new            (char *object_desc,
-						       GnomeUIHandler *uih);
+GtkType            gnome_bonobo_widget_get_type                (void);
+GnomeObjectClient *gnome_bonobo_widget_get_server              (GnomeBonoboWidget *bw);
+
+/*
+ * GnomeBonoboWidget for Controls.
+ */
+GtkWidget	  *gnome_bonobo_widget_new_control	       (char *goad_id);
+GtkWidget	  *gnome_bonobo_widget_new_control_from_objref (GNOME_Control control);
+GnomeControlFrame *gnome_bonobo_widget_get_control_frame       (GnomeBonoboWidget *bw);
+
+/*
+ * Gnome Bonobo Widget for subdocuments (Embeddables with a single View).
+ */
+GtkWidget	  *gnome_bonobo_widget_new_subdoc              (char *object_desc,
+							       	GnomeUIHandler *uih);
+GnomeContainer	  *gnome_bonobo_widget_get_container           (GnomeBonoboWidget *bw);
+GnomeClientSite	  *gnome_bonobo_widget_get_client_site         (GnomeBonoboWidget *bw);
+GnomeViewFrame	  *gnome_bonobo_widget_get_view_frame          (GnomeBonoboWidget *bw);
+GnomeUIHandler	  *gnome_bonobo_widget_get_uih	               (GnomeBonoboWidget *bw);
 
 END_GNOME_DECLS
 
