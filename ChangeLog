@@ -1,3 +1,24 @@
+2004-05-06  Federico Mena Quintero  <federico@ximian.com>
+
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_realize): Don't
+	initialize attributes unnecessarily.
+	(bonobo_dock_item_realize): Set the correct screen for the
+	floating window.
+	(bonobo_dock_item_realize): Connect to the floating window's
+	signals here.
+	(bonobo_dock_item_detach): Don't connect to the floating window's
+	signals here.
+	(bonobo_dock_item_add): Check that we don't have a child already.
+	(bonobo_dock_item_float_window_expose): Fix prototype.
+	(bonobo_dock_item_expose): Likewise.
+	(button_changed): Likewise.
+	(bonobo_dock_item_float_window_button_changed): Likewise.
+	(bonobo_dock_item_button_changed): Likewise.
+	(widget_motion): Likewise.
+	(bonobo_dock_item_float_window_motion): Likewise.
+	(bonobo_dock_item_motion): Likewise.
+	(bonobo_dock_item_delete_event): Likewise.
+
 2004-04-05  Arvind Samptur  <arvind.samptur@wipro.com>
 
 	* bonobo/bonobo-dock.c: (drag_floating): Check if
@@ -213,6 +234,8 @@
 	(bonobo_ui_sync_toolbar_init): Initialize the new members of
 	BonoboUISyncToolbarPrivate (GtkToolbarStyle, GtkOrientation)
 	(bonobo_ui_sync_toolbar_get_type): add the bonobo_ui_sync_toolbar_init
+
+==== branched ====
 
 2004-02-18  Michael Meeks  <michael@ximian.com>
 

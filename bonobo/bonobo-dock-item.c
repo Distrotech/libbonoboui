@@ -113,14 +113,21 @@ static void bonobo_dock_item_forall         (GtkContainer     *container,
 					     gpointer          callback_data);
 static void bonobo_dock_item_paint          (GtkWidget         *widget,
 					     GdkEventExpose    *event);
-static gint bonobo_dock_item_expose         (GtkWidget         *widget,
+static gboolean bonobo_dock_item_expose     (GtkWidget         *widget,
 					     GdkEventExpose    *event);
-static gint bonobo_dock_item_button_changed (GtkWidget         *widget,
-					     GdkEventButton    *event);
-static gint bonobo_dock_item_motion         (GtkWidget         *widget,
+static gboolean bonobo_dock_item_button_changed (GtkWidget         *widget,
+						 GdkEventButton    *event);
+static gboolean bonobo_dock_item_motion     (GtkWidget         *widget,
 					     GdkEventMotion    *event);
-static gint bonobo_dock_item_delete_event   (GtkWidget         *widget,
-					     GdkEventAny       *event);
+static gboolean bonobo_dock_item_delete_event (GtkWidget         *widget,
+					       GdkEventAny       *event);
+
+static void bonobo_dock_item_float_window_size_request (GtkWidget *widget, GtkRequisition *requisition, gpointer data);
+static void bonobo_dock_item_float_window_size_allocate (GtkWidget *widget, GtkAllocation *allocation, gpointer data);
+
+static gboolean bonobo_dock_item_float_window_expose (GtkWidget *widget, GdkEventExpose *event, gpointer data);
+static gboolean bonobo_dock_item_float_window_button_changed (GtkWidget *widget, GdkEventButton *event, gpointer data);
+static gboolean bonobo_dock_item_float_window_motion (GtkWidget *widget, GdkEventMotion *event, gpointer data);
 
 static guint        dock_item_signals[LAST_SIGNAL] = { 0 };
 
@@ -543,24 +550,34 @@ bonobo_dock_item_realize (GtkWidget *widget)
   root_window = gdk_screen_get_root_window
 	  (gdk_drawable_get_screen (GDK_DRAWABLE (widget->window)));
   
-  attributes.x = 0;
-  attributes.y = 0;
-  attributes.width = widget->requisition.width;
-  attributes.height = widget->requisition.height;
-  attributes.window_type = GDK_WINDOW_TOPLEVEL;
-  attributes.wclass = GDK_INPUT_OUTPUT;
-  attributes.visual = gtk_widget_get_visual (widget);
-  attributes.colormap = gtk_widget_get_colormap (widget);
-  attributes.event_mask = (gtk_widget_get_events (widget) |
-			   GDK_KEY_PRESS_MASK |
-			   GDK_ENTER_NOTIFY_MASK |
-			   GDK_LEAVE_NOTIFY_MASK |
-			   GDK_FOCUS_CHANGE_MASK |
-			   GDK_STRUCTURE_MASK);
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
   di->_priv->float_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_screen (GTK_WINDOW (di->_priv->float_window), gtk_widget_get_screen (widget));
   gtk_window_set_decorated (GTK_WINDOW (di->_priv->float_window), FALSE);
-  
+
+  g_signal_connect (di->_priv->float_window, "size_allocate",
+		    G_CALLBACK (bonobo_dock_item_float_window_size_allocate),
+		    di);
+
+  g_signal_connect (di->_priv->float_window, "size_request",
+		    G_CALLBACK (bonobo_dock_item_float_window_size_request),
+		    di);
+   
+  g_signal_connect (di->_priv->float_window, "expose_event",
+		    G_CALLBACK (bonobo_dock_item_float_window_expose),
+		    di);
+
+  g_signal_connect (di->_priv->float_window, "button_press_event",
+		    G_CALLBACK (bonobo_dock_item_float_window_button_changed),
+		    di);
+
+  g_signal_connect (di->_priv->float_window, "button_release_event",
+		    G_CALLBACK (bonobo_dock_item_float_window_button_changed),
+		    di);
+
+  g_signal_connect (di->_priv->float_window, "motion_notify_event",
+		    G_CALLBACK (bonobo_dock_item_float_window_motion),
+		    di);
+
   widget->style = gtk_style_attach (widget->style, widget->window);
   gtk_style_set_background (widget->style, widget->window, GTK_WIDGET_STATE (di));
   gtk_style_set_background (widget->style, di->bin_window, GTK_WIDGET_STATE (di));
@@ -915,7 +932,7 @@ bonobo_dock_item_paint (GtkWidget      *widget,
 
 }
 
-static gint
+static gboolean
 bonobo_dock_item_float_window_expose (GtkWidget *widget,
 				      GdkEventExpose *event,
 				      gpointer data)
@@ -934,7 +951,7 @@ bonobo_dock_item_float_window_expose (GtkWidget *widget,
   return FALSE;
 }
 
-static gint
+static gboolean
 bonobo_dock_item_expose (GtkWidget      *widget,
 			 GdkEventExpose *event)
 {
@@ -965,7 +982,7 @@ bonobo_dock_item_drag_end (BonoboDockItem *di)
   g_signal_emit (di, dock_item_signals [DOCK_DRAG_END], 0);
 }
 
-static int
+static gboolean
 button_changed (GtkWidget *widget,
 		GdkEventButton *event,
 		BonoboDockItem *di)
@@ -1026,7 +1043,7 @@ button_changed (GtkWidget *widget,
   return event_handled;
 }
 
-static gint 
+static gboolean
 bonobo_dock_item_float_window_button_changed (GtkWidget *widget,
 					      GdkEventButton *event,
 					      gpointer data)
@@ -1046,7 +1063,7 @@ bonobo_dock_item_float_window_button_changed (GtkWidget *widget,
 
 }
 
-static gint
+static gboolean
 bonobo_dock_item_button_changed (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
@@ -1068,7 +1085,7 @@ bonobo_dock_item_button_changed (GtkWidget      *widget,
 
 }
 
-static gint
+static gboolean
 widget_motion (GtkWidget *widget,
 	       GdkEventMotion *event,
 	       BonoboDockItem *di)
@@ -1090,7 +1107,7 @@ widget_motion (GtkWidget *widget,
   return TRUE;
 }
 
-static gint
+static gboolean
 bonobo_dock_item_float_window_motion (GtkWidget *widget,
 				      GdkEventMotion *event,
 				      gpointer data)
@@ -1108,7 +1125,7 @@ bonobo_dock_item_float_window_motion (GtkWidget *widget,
   return widget_motion (widget, event, di);
 }
 
-static gint
+static gboolean
 bonobo_dock_item_motion (GtkWidget      *widget,
 			 GdkEventMotion *event)
 {
@@ -1140,10 +1157,9 @@ bonobo_dock_item_add (GtkContainer *container,
 
   /*  Is this needed ? We hit this assertion when 
       calling from bonobo_dock_item_unfloat()
-
-      g_return_if_fail (GTK_BIN (container)->child == NULL);
-
   */
+
+  g_return_if_fail (GTK_BIN (container)->child == NULL);
 
   g_return_if_fail (widget->parent == NULL);
 	
@@ -1232,9 +1248,9 @@ bonobo_dock_item_forall (GtkContainer *container,
     callback (bin->child, callback_data);
 }
 
-static gint
+static gboolean
 bonobo_dock_item_delete_event (GtkWidget *widget,
-                              GdkEventAny  *event)
+			       GdkEventAny  *event)
 {
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (widget), FALSE);
@@ -1607,32 +1623,6 @@ bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
     <michael> but not do a signal connection for the float_window
    
    */
-
-   g_signal_connect (item->_priv->float_window, "size_allocate",
-		     G_CALLBACK (bonobo_dock_item_float_window_size_allocate),
-		     item);
-
-   g_signal_connect (item->_priv->float_window, "size_request",
-		     G_CALLBACK (bonobo_dock_item_float_window_size_request),
-		     item);
-
-   
-   g_signal_connect (item->_priv->float_window, "expose_event",
-		     G_CALLBACK (bonobo_dock_item_float_window_expose),
-		     item);
-
-
-   g_signal_connect (item->_priv->float_window, "button_press_event",
-		     G_CALLBACK (bonobo_dock_item_float_window_button_changed),
-		     item);
-
-   g_signal_connect (item->_priv->float_window, "button_release_event",
-		     G_CALLBACK (bonobo_dock_item_float_window_button_changed),
-		     item);
-
-   g_signal_connect (item->_priv->float_window, "motion_notify_event",
-		     G_CALLBACK (bonobo_dock_item_float_window_motion),
-		     item);
 
    gtk_container_add (GTK_CONTAINER (item->_priv->float_window), box);
 
