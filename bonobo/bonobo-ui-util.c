@@ -258,7 +258,7 @@ bonobo_ui_util_xml_get_pixmap (GtkWidget *window, xmlNode *node)
 		char      *text;
 		GdkPixbuf *pixbuf;
 
-		text = xmlNodeGetContent (node);
+		text = xmlGetProp (node, "pixname");
 
 		g_return_val_if_fail (text != NULL, NULL);
 		
@@ -288,9 +288,9 @@ bonobo_ui_util_xml_set_pixbuf (xmlNode     *node,
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (pixbuf != NULL);
 
-	xmlSetProp    (node, "pixtype", "pixbuf");
+	xmlSetProp (node, "pixtype", "pixbuf");
 	data = bonobo_ui_util_pixbuf_to_xml (pixbuf);
-	xmlNodeSetContent (node, data);
+	xmlSetProp (node, "pixname", data);
 	g_free (data);
 }
 
@@ -578,6 +578,19 @@ char *
 bonobo_ui_util_get_ui_fname (const char *component_name)
 {
 	char *fname, *name;
+
+	fname = g_strdup_printf ("%s/.gnome/ui/%s",
+				 g_get_home_dir (), component_name);
+
+	/*
+	 * FIXME: we should compare timestamps vs. the master copy.
+	 */
+	if (g_file_exists (fname))
+		return fname;
+/*	else
+	g_warning ("Can't find '%s'", fname);*/
+
+	g_free (fname);
 
 	name  = g_strdup_printf ("gnome/ui/%s", component_name);
 	fname = gnome_unconditional_datadir_file (name);

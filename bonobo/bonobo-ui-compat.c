@@ -742,6 +742,10 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 
 	cname++;
 
+#ifdef COMPAT_DEBUG
+	fprintf (stderr, "ui_handler_menu_new '%s'", path);
+#endif
+
 	switch (type) {
 	case BONOBO_UI_HANDLER_MENU_PLACEHOLDER:
 		node = xmlNewNode (NULL, "placeholder");
@@ -1624,7 +1628,7 @@ bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent
 
 	xml_path = make_path ("/menu", parent_path, FALSE);
 
-	g_message ("Get child paths from '%s' '%s'", parent_path, xml_path);
+	fprintf (stderr, "Get child paths from '%s' '%s'", parent_path, xml_path);
 	node = bonobo_ui_container_get_tree (
 		priv->container, xml_path, TRUE, NULL);
 
@@ -1643,9 +1647,11 @@ bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent
 
 	xmlFreeNode (node);
 
-	for (i = ret; i; i = i->next) {
-		g_message ("> '%s'\n", (char *)i->data);
-	}
+	if (ret)
+		for (i = ret; i; i = i->next)
+			fprintf (stderr, "> '%s'\n", (char *)i->data);
+	else
+		fprintf (stderr, "No items\n");
 
 	return g_list_reverse (ret);
 }
