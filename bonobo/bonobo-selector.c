@@ -34,6 +34,15 @@ static void add_gnorba_objects (GnomeBonoboSelector *widget);
 static GList *get_filtered_objects (GnomeBonoboSelector *widget);
 static gboolean stringlist_contains (gchar **list, const gchar *word);
 
+
+/* fixme: revove this as soon it is included in gnome-dialog */
+void       
+gnome_dialog_clicked (GnomeDialog *dialog, gint button_num)
+{
+	gtk_signal_emit_by_name(GTK_OBJECT(dialog), "clicked", button_num);
+}              
+
+
 static void
 gnome_bonobo_selector_class_init (GnomeBonoboSelectorClass *klass)
 {
@@ -253,7 +262,7 @@ select_row (GtkCList *clist, gint row, gint col,
 	    GdkEvent *event, GnomeBonoboSelector *sel)
 {
 	if (event && event->type == GDK_2BUTTON_PRESS)
-		gtk_signal_emit_by_name(GTK_OBJECT(sel), "clicked", 0);
+		gnome_dialog_clicked ( GNOME_DIALOG (sel), 0);
 	else {
 		GtkCListClass *cl;
 
