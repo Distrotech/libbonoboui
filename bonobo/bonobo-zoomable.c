@@ -50,6 +50,7 @@ struct _BonoboZoomablePrivate {
 };
 
 enum {
+	SET_FRAME,
 	SET_ZOOM_LEVEL,
 	ZOOM_IN,
 	ZOOM_OUT,
@@ -230,6 +231,7 @@ impl_Bonobo_Zoomable_set_frame (PortableServer_Servant  servant,
 
 	g_assert (zoomable->priv->zoomable_frame == CORBA_OBJECT_NIL);
 	zoomable->priv->zoomable_frame = CORBA_Object_duplicate (zoomable_frame, ev);
+	gtk_signal_emit (GTK_OBJECT (zoomable), signals[SET_FRAME]);
 }
 
 
@@ -336,6 +338,13 @@ bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 	gtk_object_add_arg_type("BonoboZoomable::is_continuous",
 				GTK_TYPE_FLOAT, GTK_ARG_READABLE, ARG_IS_CONTINUOUS);
 
+	signals[SET_FRAME] =
+		gtk_signal_new ("set_frame",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (BonoboZoomableClass, set_frame),
+				gtk_marshal_NONE__NONE,
+				GTK_TYPE_NONE, 0);
 	signals[SET_ZOOM_LEVEL] =
 		gtk_signal_new ("set_zoom_level",
 				GTK_RUN_LAST,

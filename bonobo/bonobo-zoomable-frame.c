@@ -143,7 +143,7 @@ bonobo_zoomable_frame_class_init (BonoboZoomableFrameClass *klass)
 				GTK_RUN_LAST,
 				object_class->type,
 				GTK_SIGNAL_OFFSET (BonoboZoomableFrameClass, zoom_parameters_changed),
-				marshal_NONE__FLOAT,
+				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);

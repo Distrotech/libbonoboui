@@ -50,6 +50,7 @@ struct _BonoboZoomable {
 struct _BonoboZoomableClass {
 	BonoboObjectClass	parent;
 
+	void (*set_frame)	(BonoboZoomable *zoomable);
 	void (*set_zoom_level)	(BonoboZoomable *zoomable,
 				 float zoom_level);
 
