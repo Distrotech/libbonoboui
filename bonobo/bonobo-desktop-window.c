@@ -1,7 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
  * GNOME Desktop Window Control implementation.
- * Enables applications to export their geometry control trough CORBA.
+ * Enables applications to export their geometry control through CORBA.
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
@@ -19,7 +19,7 @@
 static GnomeObjectClass *gnome_desktop_window_parent_class;
 
 /* The entry point vectors for the server we provide */
-POA_GNOME_Desktop_Window__epv gnome_deskop_window_epv;
+POA_GNOME_Desktop_Window__epv gnome_desktop_window_epv;
 POA_GNOME_Desktop_Window__vepv gnome_desktop_window_vepv;
 
 GNOME_Desktop_Window
@@ -52,9 +52,9 @@ gnome_desktop_window_object_create (GnomeObject *object)
  * Returns: the intialized GnomeDesktopWindow object.
  */
 GnomeDesktopWindow *
-gnome_view_construct (GnomeDesktopWindow *desk_win,
-		      GNOME_Desktop_Window corba_desktop_window,
-		      GtkWindow *toplevel)
+gnome_desktop_window_construct (GnomeDesktopWindow *desk_win,
+				GNOME_Desktop_Window corba_desktop_window,
+				GtkWindow *toplevel)
 {
 	g_return_val_if_fail (desk_win != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_DESKTOP_WINDOW (desk_win), NULL);
@@ -85,7 +85,7 @@ gnome_desktop_window_new (GtkWindow *toplevel)
 
 	desktop_window = gtk_type_new (gnome_desktop_window_get_type ());
 
-	corba_desktop_window = gnome_desktop_window_corba_object_create (GNOME_OBJECT (desktop_window));
+	corba_desktop_window = gnome_desktop_window_object_create (GNOME_OBJECT (desktop_window));
 	if (corba_desktop_window == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (desktop_window));
 		return NULL;
