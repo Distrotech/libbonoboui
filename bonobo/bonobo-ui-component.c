@@ -1309,7 +1309,13 @@ bonobo_ui_component_set_status (BonoboUIComponent *component,
 				CORBA_Environment *opt_ev)
 {
 	if (text == NULL ||
-	    text [0] == '\0') { /* Remove what was there to reveal other msgs */
+	    text [0] == '\0') {
+		/*
+		 * FIXME: Remove what was there to reveal other msgs
+		 * NB. if we're using the same UI component as the view
+		 * was merged in with, this will result in us loosing our
+		 * status bar altogether - sub-optimal.
+		 */
 		bonobo_ui_component_rm (component, "/status/main", opt_ev);
 	} else {
 		char *str, *tmp;
