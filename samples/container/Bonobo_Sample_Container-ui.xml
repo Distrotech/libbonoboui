@@ -5,13 +5,19 @@
 	     pixtype="stock" pixname="gtk-quit"/>
 	<cmd name="HelpAbout" label="_About" tip="About this application"
 	     pixtype="stock" pixname="About"/>
+	<cmd name="Activate" label="_Activate" tip="Activate the control"
+	     pixtype="stock" pixname="Help"/>
 </commands>
 
 <menu>
         <submenu name="File" label="_File">
+		<menuitem name="Activate" verb=""/>
+		<separator/>
 		<menuitem name="FileExit" verb=""/>
 	</submenu>
         <submenu name="Edit" label="_Edit">
+	</submenu>
+        <submenu name="View" label="_View">
 	</submenu>
         <submenu name="Insert" label="_Insert">
 	</submenu>
@@ -27,9 +33,14 @@
                   pixname="Exit" verb=""/>
 </dockitem>
 
+<status>
+        <!-- the name "main" is required by Bonobo -->
+        <item name="main"/>
+</status>
+
 <popups>
-        <popup name="main">
-	      <menuitem name="HelpAbout" verb=""/>
+        <popup name="main" tearoff="0">
+	       <menuitem name="HelpAbout" verb=""/>
         </popup>
 </popups>
 

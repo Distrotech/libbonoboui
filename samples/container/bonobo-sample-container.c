@@ -48,9 +48,21 @@ verb_FileExit ( BonoboUIComponent * uic, gpointer user_data,
         bonobo_main_quit (  );
 }
 
+static void
+verb_Activate ( BonoboUIComponent * uic, gpointer user_data,
+                const char *cname )
+{
+        bonobo_control_frame_control_activate
+            ( bonobo_widget_get_control_frame
+              ( BONOBO_WIDGET
+                ( bonobo_window_get_contents
+                  ( BONOBO_WINDOW ( user_data ) ) ) ) );
+}
+
 static BonoboUIVerb bonobo_app_verbs[] = {
         BONOBO_UI_VERB ( "FileExit", verb_FileExit ),
         BONOBO_UI_VERB ( "HelpAbout", verb_HelpAbout ),
+        BONOBO_UI_VERB ( "Activate", verb_Activate ),
         BONOBO_UI_VERB_END
 };
 
@@ -94,9 +106,9 @@ window_create ( const char *moniker, gboolean use_gtk )
                 return;
         }
 
-        if( use_gtk )
+        if( use_gtk ) {
                 gtk_container_add ( GTK_CONTAINER ( window ), control );
-        else
+        } else
                 bonobo_window_set_contents ( BONOBO_WINDOW ( window ),
                                              control );
 
