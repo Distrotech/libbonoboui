@@ -203,5 +203,5 @@ keys_changed_fn (GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer
 	if (update_engines_idle_id != 0)
 		return;
 
-	update_engines_idle_id = gtk_idle_add (update_engines_idle_callback, NULL);
+	update_engines_idle_id = g_idle_add (update_engines_idle_callback, NULL);
 }

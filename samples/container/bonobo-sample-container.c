@@ -3,7 +3,7 @@
 #include <glib.h>
 
 #ifndef POPT_TABLEEND /* popt < 1.6.2 */
-#define POPT_TABLEEND { NULL, '\0', 0, 0, 0, NULL, NULL }
+#define POPT_TABLEEND { NULL, '\0', 0, NULL, 0, NULL, NULL }
 #endif
 
 #define APPNAME "TestContainer"

@@ -259,7 +259,7 @@ bonobo_selector_internal_construct (BonoboSelector       *sel)
 static void
 bonobo_selector_instance_init (BonoboSelector *sel)
 {
-	BonoboSelectorWidget *selectorwidget = 0;
+	BonoboSelectorWidget *selectorwidget = NULL;
 	
 	sel->priv = g_new0 (BonoboSelectorPrivate, 1);
 	
@@ -278,10 +278,10 @@ bonobo_selector_set_property (GObject *object, guint prop_id, const GValue *valu
 	case PROP_INTERFACES:
 	{
 		const gchar *query [2] = { DEFAULT_INTERFACE, NULL }; /* the default interfaces_required. */
-		BonoboSelectorWidget *selectorwidget = 0;
+		BonoboSelectorWidget *selectorwidget = NULL;
 		
 		/* Get the supplied array or interfaces, replacing it with a default if none have been provided: */
-		const gchar **interfaces_required = 0;
+		const gchar **interfaces_required = NULL;
 		if (!interfaces_required)
 			interfaces_required = query;
 		

@@ -1,5 +1,26 @@
 2004-08-11  Kjartan Maraas  <kmaraas@gnome.org>
 
+	* bonobo/bonobo-control.c: (bonobo_control_get_ambient_properties),
+	(bonobo_control_set_transient_for): NULL vs 0 stuff.
+	* bonobo/bonobo-dock-layout.c: (bonobo_dock_layout_create_string):
+	Same.
+	* bonobo/bonobo-selector.c: (bonobo_selector_instance_init),
+	(bonobo_selector_set_property): Same here too.
+	* bonobo/bonobo-socket.c: Use correct type for the bitfield.
+	* bonobo/bonobo-ui-preferences.c: (keys_changed_fn):
+	gtk_idle_add() is deprecated. Use g_idle_add instead.
+	* bonobo/bonobo-ui-sync-status.c: 
+	(impl_bonobo_ui_sync_status_state): Cast to avoid a warning.
+	* bonobo/bonobo-ui-sync-toolbar.c: (get_dock_item): Fix warning.
+	* bonobo/bonobo-window.c: (bonobo_window_instance_init):
+	NULL vs 0 again
+	* samples/compound-doc/container/document.c: (sample_doc_new):
+	Ansi argument list again.
+	* samples/container/bonobo-sample-container.c: NULL vs 0 again.
+	* tests/test-moniker.c: Same here.
+
+2004-08-11  Kjartan Maraas  <kmaraas@gnome.org>
+
 	* configure.in: Added nb to ALL_LINGUAS.
 
 2004-06-25  Muktha  <muktha.narayan@wipro.com>

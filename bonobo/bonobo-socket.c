@@ -34,7 +34,7 @@ typedef struct {
 	/* Whether a descendant of us has the focus.  If this is the case, it
 	 * means that we are out-of-process.
 	 */
-	gboolean descendant_has_focus : 1;
+	guint descendant_has_focus : 1;
 } BonoboSocketPrivate;
 
 GNOME_CLASS_BOILERPLATE (BonoboSocket, bonobo_socket,

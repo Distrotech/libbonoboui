@@ -122,7 +122,7 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 			    !atoi (hidden))
 				has_grip = FALSE;
 		}
-		if (has_item_to_the_right (parent, widget))
+		if (has_item_to_the_right (GTK_BOX(parent), widget))
 			has_grip = FALSE;
 
 		gtk_statusbar_set_has_resize_grip (msync->main_status, has_grip);

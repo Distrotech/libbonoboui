@@ -352,7 +352,7 @@ bonobo_window_class_init (BonoboWindowClass *klass)
 static void
 bonobo_window_instance_init (BonoboWindow *win)
 {
-	BonoboUIContainer *ui_container = 0;
+	BonoboUIContainer *ui_container = NULL;
 	
 	win->priv = construct_priv (win);
 	

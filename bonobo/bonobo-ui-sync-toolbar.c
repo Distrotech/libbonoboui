@@ -386,12 +386,13 @@ get_dock_item (BonoboUISyncToolbar *sync,
 	       const char          *dockname)
 {
 	guint dummy;
+	BonoboDockPlacement *dummy_placement = NULL;
 	
 	g_return_val_if_fail (dockname != NULL, NULL);
 
 	return bonobo_dock_get_item_by_name (sync->dock,
 					    dockname,
-					    &dummy, &dummy,
+					    dummy_placement, &dummy,
 					    &dummy, &dummy);
 }
 

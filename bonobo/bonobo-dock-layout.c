@@ -519,7 +519,7 @@ bonobo_dock_layout_create_string (BonoboDockLayout *layout)
       tmp_count++;
     }
 
-  tmp[tmp_count] = 0;
+  tmp[tmp_count] = NULL;
 
   retval = g_strjoinv ("\\", tmp);
   g_strfreev (tmp);

@@ -888,7 +888,7 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 {
 	Bonobo_ControlFrame frame;
 	Bonobo_PropertyBag pbag;
-	CORBA_Environment *ev = 0, tmp_ev;
+	CORBA_Environment *ev = NULL, tmp_ev;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
@@ -1256,7 +1256,7 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 	GdkDisplay         *display;
 	GdkWindow          *win;
 	guint32             x11_id;
-	CORBA_Environment  *ev = 0, tmp_ev;
+	CORBA_Environment  *ev = NULL, tmp_ev;
 	Bonobo_ControlFrame frame;
 
 	g_return_if_fail (GTK_IS_WINDOW (window));
