@@ -852,10 +852,12 @@ impl_remove (GtkContainer *container,
 	toolbar = BONOBO_UI_TOOLBAR (container);
 	priv = toolbar->priv;
 
-	gtk_widget_unparent (child);
-
 	if (child == GTK_WIDGET (priv->popup_item))
 		priv->popup_item = NULL;
+	else if (child->parent == GTK_WIDGET (container))
+		priv->items = g_list_remove (priv->items, child);
+
+	gtk_widget_unparent (child);
 
 	gtk_widget_queue_resize (GTK_WIDGET (container));
 }
