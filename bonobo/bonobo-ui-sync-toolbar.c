@@ -255,8 +255,7 @@ toolbar_build_control (BonoboUISync     *sync,
 			sync->engine, node);
 
 		if (control != CORBA_OBJECT_NIL) {
-			item = bonobo_ui_toolbar_control_item_new (
-				bonobo_object_dup_ref (control, NULL));
+			item = bonobo_ui_toolbar_control_item_new (control);
 
 			if (!item)
 				return NULL;
