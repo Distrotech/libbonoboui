@@ -1,3 +1,8 @@
+2001-05-06  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/bonobo-ui-toolbar-control-item.c
+	(set_control_property_bag_value): Use the new bonobo_pbclient_set_value().
+
 2001-05-02  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-embeddable.c (impl_Bonobo_Embeddable_advise),

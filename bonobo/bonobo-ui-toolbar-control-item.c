@@ -13,6 +13,7 @@
 #include "bonobo-ui-toolbar-control-item.h"
 
 #include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-property-bag-client.h>
 
 static BonoboUIToolbarButtonItemClass *parent_class = NULL;
 
@@ -36,20 +37,10 @@ set_control_property_bag_value (BonoboUIToolbarControlItem *item,
 {
 	BonoboControlFrame *frame;
 	Bonobo_PropertyBag bag;
-	Bonobo_Property property;
-	CORBA_Environment ev;
 	
 	frame = bonobo_widget_get_control_frame (item->priv->control);
 	bag = bonobo_control_frame_get_control_property_bag (frame, NULL);
-	if (bag == CORBA_OBJECT_NIL)
-		return;
-        property = bonobo_property_bag_client_get_property (bag, name, NULL);
-	if (property != CORBA_OBJECT_NIL) {
-		CORBA_exception_init (&ev);
-		Bonobo_Property_setValue (property, value, &ev);
-		CORBA_Object_release (property, &ev);
-		CORBA_exception_free (&ev);
-	}
+	bonobo_pbclient_set_value (bag, name, value, NULL);
 	bonobo_object_release_unref (bag, NULL);
 }
 
