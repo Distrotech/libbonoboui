@@ -337,9 +337,10 @@ bonobo_control_frame_destroy (GtkObject *object)
 	if (control_frame->priv->control != CORBA_OBJECT_NIL)
 		bonobo_object_release_unref( control_frame->priv->control, NULL);
 
-	gtk_widget_unref (control_frame->priv->container);
+	gtk_widget_destroy (control_frame->priv->container);
 
 	g_free (control_frame->priv);
+	control_frame->priv = NULL;
 	
 	GTK_OBJECT_CLASS (bonobo_control_frame_parent_class)->destroy (object);
 }
@@ -695,7 +696,8 @@ bonobo_control_frame_get_ui_handler (BonoboControlFrame *control_frame)
  * Associates @control with this @control_frame.
  */
 void
-bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_Control control)
+bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame,
+				      Bonobo_Control      control)
 {
 	CORBA_Environment ev;
 
@@ -718,9 +720,17 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 				  bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
 				  &ev);
 	if (ev._major != CORBA_NO_EXCEPTION)
-		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
-	CORBA_exception_free (&ev);
+		bonobo_object_check_env (BONOBO_OBJECT (control_frame),
+					 control, &ev);
 
+	bonobo_socket_set_control (BONOBO_SOCKET (control_frame->priv->socket),
+				   control, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION)
+		bonobo_object_check_env (BONOBO_OBJECT (control_frame),
+					 control, &ev);
+
+	CORBA_exception_free (&ev);
 	/*
 	 * If the socket is realized, then we transfer the
 	 * window ID to the remote control.

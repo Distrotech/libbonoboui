@@ -126,7 +126,7 @@ bonobo_control_plug_destroy_event_cb (GtkWidget   *plug,
 	 * destroy it later.  It will get destroyed on its
 	 * own.
 	 */
-	control->priv->plug            = NULL;
+	control->priv->plug = NULL;
 
 	/*
 	 * Destroy this plug's BonoboControl.
@@ -277,7 +277,7 @@ impl_Bonobo_Control_set_window (PortableServer_Servant   servant,
 		GtkWidget *old_plug;
 
 
-		old_plug            = control->priv->plug;
+		old_plug = control->priv->plug;
 
 		/* Create the new plug */
 		control->priv->plug = bonobo_plug_new (x11_id);
@@ -348,6 +348,52 @@ impl_Bonobo_Control_size_request (PortableServer_Servant  servant,
 	/*
 	 * Nothing.
 	 */
+}
+
+static void
+impl_Bonobo_Control_realize (PortableServer_Servant servant,
+			     CORBA_Environment     *ev)
+{
+	BonoboControl *control;
+	BonoboControlPrivate *priv;
+
+	control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (control->priv != NULL);
+
+	priv = control->priv;
+	if (priv->is_local ||
+	    priv->plug == NULL)
+		return;
+
+	g_return_if_fail (BONOBO_IS_PLUG (priv->plug));
+
+	gtk_widget_realize (GTK_WIDGET (priv->plug));
+	gdk_flush ();
+}
+
+static void
+impl_Bonobo_Control_unrealize (PortableServer_Servant servant,
+			       CORBA_Environment     *ev)
+{
+	BonoboControl *control;
+	BonoboControlPrivate *priv;
+
+	control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (control->priv != NULL);
+
+	priv = control->priv;
+	if (priv->is_local ||
+	    priv->plug == NULL)
+		return;
+
+	g_return_if_fail (BONOBO_IS_PLUG (priv->plug));
+
+	gtk_widget_unrealize (GTK_WIDGET (priv->plug));
+	gdk_flush ();
 }
 
 static GtkStateType
@@ -792,6 +838,8 @@ bonobo_control_get_epv (void)
 	epv->set_frame           = impl_Bonobo_Control_set_frame;
 	epv->size_request        = impl_Bonobo_Control_size_request;
 	epv->get_property_bag    = impl_Bonobo_Control_get_property_bag;
+	epv->realize             = impl_Bonobo_Control_realize;
+	epv->unrealize           = impl_Bonobo_Control_unrealize;
 
 	return epv;
 }

@@ -79,6 +79,14 @@ bonobo_plug_unrealize (GtkWidget *widget)
 }
 
 static void
+bonobo_plug_destroy (GtkObject *object)
+{
+	g_warning ("Bonobo plug destroy '%p'", object);
+
+	GTK_OBJECT_CLASS (parent_class)->destroy (object);
+}
+
+static void
 bonobo_plug_realize (GtkWidget *widget)
 {
 	GtkWindow *window;
@@ -417,13 +425,17 @@ bonobo_plug_init (BonoboPlug *plug)
 static void
 bonobo_plug_class_init (BonoboPlugClass *class)
 {
+	GtkObjectClass *object_class;
 	GtkWidgetClass *widget_class;
 	GtkWindowClass *window_class;
 
+	object_class = (GtkObjectClass *)class;
 	widget_class = (GtkWidgetClass *)class;
 	window_class = (GtkWindowClass *)class;
 
 	parent_class = gtk_type_class (gtk_window_get_type ());
+
+	object_class->destroy = bonobo_plug_destroy;
 
 	widget_class->realize = bonobo_plug_realize;
 	widget_class->unrealize = bonobo_plug_unrealize;
