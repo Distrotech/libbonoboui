@@ -8,9 +8,9 @@ GtkObject
         BonoboWrapper
   BonoboObject
     BonoboClientSite
-    BonoboContainer
     BonoboGenericFactory
     BonoboEmbeddable
+    BonoboMoniker
     Handle to remote Bonobo::Unknown
     BonoboPersist
       BonoboPersistFile
@@ -24,5 +24,3 @@ GtkObject
       BonoboViewFrame
     BonoboControl
       BonoboView
-    BonoboUIHandler
-  BonoboMoniker

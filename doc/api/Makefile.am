@@ -10,7 +10,7 @@ DOC_MAIN_SGML_FILE=bonobo-api.sgml
 DOC_SOURCE_DIR=$(top_srcdir)/bonobo
 
 CFLAGS="-I../.. `gnome-config --cflags bonobo`"
-LDFLAGS=`gnome-config --libs bonobo`
+LDFLAGS=`gnome-config --libs bonobox`
 
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
@@ -53,7 +53,7 @@ scan:
 		../../bonobo/bonobo-property-bag-client.h ../../bonobo/bonobo-control.h \
 		../../bonobo/bonobo-control-frame.h ../../bonobo/bonobo-view.h ../../bonobo/bonobo-generic-factory.h \
 		../../bonobo/bonobo-embeddable.h ../../bonobo/bonobo-embeddable-factory.h \
-		../../bonobo/bonobo-sizeable.h ../../bonobo/bonobo-main.h ../../bonobo/bonobo-stream.h \
+		../../bonobo/bonobo-main.h ../../bonobo/bonobo-stream.h \
 		../../bonobo/bonobo-stream-client.h ../../bonobo/bonobo-stream-fs.h ../../bonobo/bonobo-persist.h \
 		../../bonobo/bonobo-persist-file.h ../../bonobo/bonobo-persist-stream.h ../../bonobo/bonobo-ui-xml.h \
 		../../bonobo/bonobo-ui-util.h ../../bonobo/bonobo-ui-component.h ../../bonobo/bonobo-ui-container.h \

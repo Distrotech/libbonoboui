@@ -1,8 +1,7 @@
-#include <bonobo/bonobo.h>
+#include <bonobo.h>
 
 bonobo_selector_get_type
 bonobo_client_site_get_type
-bonobo_container_get_type
 bonobo_embeddable_factory_get_type
 bonobo_embeddable_get_type
 bonobo_moniker_get_type
