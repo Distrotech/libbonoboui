@@ -131,6 +131,8 @@ check_guint_arg (GObject *object,
 {
   GParamSpec *pspec;
 
+  g_return_val_if_fail (object != NULL, FALSE);
+
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object), name);
   if (pspec != NULL) {
     GValue value = { 0, };
@@ -152,6 +154,9 @@ get_preferred_width (BonoboDockItem *dock_item)
   guint preferred_width;
 
   child = GTK_BIN (dock_item)->child;
+
+  if (!child)
+    return 0;
 
   if (! check_guint_arg (G_OBJECT (child), "preferred_width", &preferred_width))
     {
@@ -176,6 +181,9 @@ get_preferred_height (BonoboDockItem *dock_item)
   guint preferred_height;
 
   child = GTK_BIN (dock_item)->child;
+
+  if (!child)
+    return 0;
 
   if (! check_guint_arg (G_OBJECT (child), "preferred_height", &preferred_height))
     {

@@ -1,3 +1,10 @@
+2004-02-18  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-dock-item.c (check_guint_arg): 
+	add pre-condition.
+	(get_preferred_height, get_preferred_width): return 0
+	if we have no child; odd.
+
 2004-02-07  Robert Sedak  <robert.sedak@sk.htnet.hr>
 
         * configure.in: Added "hr" (Croatian) to ALL_LINGUAS.
