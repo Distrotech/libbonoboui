@@ -415,7 +415,7 @@ item_event_handler (GnomeCanvasItem *item, GdkEvent *event)
 }
 
 static void
-add_canvas_cmd (GtkWidget *widget, Application *app)
+do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 {
 	GnomeClientSite *client_site;
 	GtkWidget *canvas, *frame, *sw;
@@ -436,11 +436,15 @@ add_canvas_cmd (GtkWidget *widget, Application *app)
 	 * Setup our demostration canvas
 	 */
 	sw = gtk_scrolled_window_new (NULL, NULL);
-	gtk_widget_push_visual (gdk_rgb_get_visual());
-	gtk_widget_push_colormap (gdk_rgb_get_cmap());
-	canvas = gnome_canvas_new_aa ();
-	gtk_widget_pop_visual ();
-	gtk_widget_pop_colormap ();
+	if (aa){
+		gtk_widget_push_visual (gdk_rgb_get_visual());
+		gtk_widget_push_colormap (gdk_rgb_get_cmap());
+		canvas = gnome_canvas_new_aa ();
+		gtk_widget_pop_visual ();
+		gtk_widget_pop_colormap ();
+	} else
+		canvas = gnome_canvas_new ();
+	
 	gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas), -100, -100, 200, 200);
 	gtk_widget_set_usize (canvas, 100, 100);
 
@@ -475,6 +479,18 @@ add_canvas_cmd (GtkWidget *widget, Application *app)
 	gtk_container_add (GTK_CONTAINER (frame), sw);
 	gtk_container_add (GTK_CONTAINER (sw), canvas);
 	gtk_widget_show_all (frame);
+}
+
+static void
+add_canvas_cmd (GtkWidget *widget, Application *app)
+{
+	do_add_canvas_cmd (widget, app, FALSE);
+}
+
+static void
+add_canvas_aa_cmd (GtkWidget *widget, Application *app)
+{
+	do_add_canvas_cmd (widget, app, TRUE);
 }
 
 static void
@@ -716,7 +732,10 @@ static GnomeUIInfo container_file_menu [] = {
 
 static GnomeUIInfo container_canvas_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new Sample-Canvas item"),
+		N_("Add a new Sample-Canvas item on an AA canvas"),
+		NULL, add_canvas_aa_cmd),
+	GNOMEUIINFO_ITEM_NONE (
+		N_("Add a new Sample-Canvas item on a regular canvas"),
 		NULL, add_canvas_cmd),
 	GNOMEUIINFO_END
 };

@@ -190,11 +190,19 @@ gcc_update (PortableServer_Servant servant,
 
 static void
 gcc_realize (PortableServer_Servant servant,
+	     GNOME_Canvas_window_id window,
 	     CORBA_Environment      *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
+	GdkWindow *gdk_window = gdk_window_foreign_new (window);
+
+	if (gdk_window == NULL){
+		g_warning ("Invalid window id passed=0x%x\n", window);
+		return;
+	}
 	
+	item->canvas->layout.bin_window = gdk_window;
 	ICLASS (item)->realize (item);
 }
 
@@ -204,8 +212,13 @@ gcc_unrealize (PortableServer_Servant servant,
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
-	
+
 	ICLASS (item)->unrealize (item);
+
+	if (item->canvas->layout.bin_window){
+		gdk_pixmap_unref (item->canvas->layout.bin_window);
+		item->canvas->layout.bin_window = NULL;
+	}
 }
 
 static void
@@ -237,9 +250,18 @@ gcc_draw (PortableServer_Servant servant,
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
-	GdkPixmap *pix = gdk_pixmap_foreign_new (drawable);
+	GdkPixmap *pix;
+	
+	pix = gdk_pixmap_foreign_new (drawable);
+
+	if (pix == NULL){
+		g_warning ("Invalid window id passed=0x%x\n", drawable);
+		return;
+	}
 	
 	ICLASS (item)->draw (item, pix, x, y, width, height);
+
+	gdk_pixmap_unref (pix);
 }
 
 static void

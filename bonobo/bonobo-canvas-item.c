@@ -196,7 +196,10 @@ gbi_realize (GnomeCanvasItem *item)
 		(*gbi_parent_class->realize) (item);
 	
 	CORBA_exception_init (&ev);
-	GNOME_Canvas_Item_realize (gbi->priv->object, &ev);
+	GNOME_Canvas_Item_realize (
+		gbi->priv->object, 
+		GDK_WINDOW_XWINDOW (item->canvas->layout.bin_window),
+		&ev);
 	CORBA_exception_free (&ev);
 }
 
@@ -224,8 +227,9 @@ gbi_draw (GnomeCanvasItem *item, GdkDrawable *drawable, int x, int y, int width,
 	CORBA_Environment ev;
 	
 	if (getenv ("DEBUG_BI"))
-		printf ("gbi_draw\n");
-	
+		printf ("gbi_draw: 0x%x\n", GDK_WINDOW_XWINDOW (drawable));
+
+	gdk_flush ();
 	CORBA_exception_init (&ev);
 	GNOME_Canvas_Item_draw (gbi->priv->object, GDK_WINDOW_XWINDOW (drawable), x, y, width, height, &ev);
 	CORBA_exception_free (&ev);
