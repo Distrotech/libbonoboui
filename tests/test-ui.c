@@ -422,6 +422,7 @@ main (int argc, char **argv)
 	bonobo_ui_component_set_status (componenta, "WhatA1", &ev);
 	bonobo_ui_component_set_status (componentb, "WhatB2", &ev);
 	bonobo_ui_component_set_status (componenta, "WhatA3", &ev);
+	bonobo_ui_component_rm (componenta, "/status", &ev);
 	bonobo_ui_component_set_status (componentb, "WhatB4", &ev);
 	bonobo_ui_component_set_status (componenta, "WhatA5", &ev);
 	bonobo_ui_component_set_status (componenta, "WhatA6", &ev);
