@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-03-20 23:47+0100\n"
-"PO-Revision-Date: 2002-03-20 23:48+0100\n"
+"POT-Creation-Date: 2002-03-28 21:53+0100\n"
+"PO-Revision-Date: 2002-03-28 21:56+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,6 +35,14 @@ msgstr "Preferowana szerokość"
 #: bonobo/bonobo-ui-toolbar.c:1 bonobo/bonobo-ui-toolbar.c:1
 msgid "Preferred height"
 msgstr "Preferowana szerokość"
+
+#: bonobo/bonobo-dock-item-grip.c:1
+msgid "Dock the toolbar"
+msgstr "Zadokuj pasek narzędziowy"
+
+#: bonobo/bonobo-dock-item-grip.c:1
+msgid "Un dock the toolbar"
+msgstr "Oderwij pasek narzędziowy"
 
 #: bonobo/bonobo-file-selector-util.c:1
 msgid "Select a file to open"
