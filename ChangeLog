@@ -1,3 +1,14 @@
+2003-01-27  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
+
+	* doc/api/Makefile.am (content_files): Added ui-faq.xml.
+
+	* doc/api/libbonoboui-docs.sgml: Include the new FAQ in the docs.
+
+	* doc/api/ui-faq.xml: ditto
+
+	* doc/ui-faq.txt: Converted all of this to docbook and moved to
+	api/ui-faq.xml
+
 2003-01-22  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
 
 	* doc/api/libbonoboui-sections.txt: Removed canvas sections.

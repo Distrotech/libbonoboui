@@ -64,7 +64,7 @@ IGNORE_HFILES= bonobo-client-site.h		\
 HTML_IMAGES = 
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
-content_files =
+content_files = ui-faq.xml
 
 # Other files to distribute.
 extra_files =

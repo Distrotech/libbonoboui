@@ -2,6 +2,7 @@
 <!-- -*- xml-lite -*- -->
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
     "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+    <!ENTITY ui-faq SYSTEM "ui-faq.xml">
     <!ENTITY bonobo-control-frame SYSTEM "xml/bonobo-control-frame.xml">
     <!ENTITY bonobo-control SYSTEM "xml/bonobo-control.xml">
     <!ENTITY bonobo-plug SYSTEM "xml/bonobo-plug.xml">
@@ -31,6 +32,8 @@
     <bookinfo>
 	<title>LibBonoboUI API Reference Manual</title>
     </bookinfo>
+
+    &ui-faq;
 
     <chapter>
 	<title>Object Hierarchy</title>
