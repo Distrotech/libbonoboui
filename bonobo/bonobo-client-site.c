@@ -288,6 +288,11 @@ gnome_client_site_new (GnomeContainer *container)
 	return client_site;
 }
 
+/**
+ * gnome_client_site_get_type:
+ *
+ * Returns: The GtkType for the GnomeClient object
+ */
 GtkType
 gnome_client_site_get_type (void)
 {
