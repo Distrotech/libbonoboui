@@ -539,7 +539,7 @@ bonobo_control_construct (BonoboControl  *control,
 	gtk_object_ref (GTK_OBJECT (widget));
 	gtk_object_sink (GTK_OBJECT (widget));
 
-	control->priv->ui_component = bonobo_ui_component_new_default ();
+	control->priv->ui_component = NULL;
 	control->priv->propbag = NULL;
 
 	return control;
@@ -601,6 +601,9 @@ bonobo_control_set_automerge (BonoboControl *control,
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
 	control->priv->automerge = automerge;
+
+	if (automerge && !control->priv->ui_component)
+		control->priv->ui_component = bonobo_ui_component_new_default ();
 }
 
 /**
@@ -646,7 +649,7 @@ bonobo_control_destroy (GtkObject *object)
 	CORBA_exception_free (&ev);
 
 	/*
-	 * If we have a UIHandler, destroy it.
+	 * If we have a UIComponent, destroy it.
 	 */
 	if (control->priv->ui_component != NULL) {
 		bonobo_ui_component_unset_container (control->priv->ui_component);
@@ -750,6 +753,9 @@ BonoboUIComponent *
 bonobo_control_get_ui_component (BonoboControl *control)
 {
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
+
+	if (!control->priv->ui_component)
+		control->priv->ui_component = bonobo_ui_component_new_default ();
 
 	return control->priv->ui_component;
 }
@@ -861,7 +867,7 @@ Bonobo_UIContainer
 bonobo_control_get_remote_ui_container (BonoboControl *control)
 {
 	CORBA_Environment  ev;
-	Bonobo_UIContainer ui_component;
+	Bonobo_UIContainer ui_container;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
 
@@ -870,13 +876,13 @@ bonobo_control_get_remote_ui_container (BonoboControl *control)
 
 	CORBA_exception_init (&ev);
 
-	ui_component = Bonobo_ControlFrame_getUIHandler (control->priv->control_frame, &ev);
+	ui_container = Bonobo_ControlFrame_getUIHandler (control->priv->control_frame, &ev);
 
 	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, &ev);
 
 	CORBA_exception_free (&ev);
 
-	return ui_component;
+	return ui_container;
 }
 
 /**
