@@ -99,7 +99,7 @@ char              *bonobo_ui_container_get          (Bonobo_UIContainer  contain
 						     gboolean            recurse,
 						     CORBA_Environment  *ev);
 
-BonoboUINode           *bonobo_ui_container_get_tree     (Bonobo_UIContainer  container,
+BonoboUINode      *bonobo_ui_container_get_tree     (Bonobo_UIContainer  container,
 						     const char         *path,
 						     gboolean            recurse,
 						     CORBA_Environment  *ev);

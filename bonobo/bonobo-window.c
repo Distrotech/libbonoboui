@@ -1799,8 +1799,6 @@ update_status (BonoboWinPrivate *priv, BonoboUINode *node)
 	char *txt;
 	GtkWidget *item = GTK_WIDGET (priv->status);
 
-	gtk_widget_hide (item);
-
 	container_destroy_siblings (
 		priv->tree, GTK_WIDGET (priv->status),
 		bonobo_ui_node_children (node));
@@ -1850,7 +1848,7 @@ update_status (BonoboWinPrivate *priv, BonoboUINode *node)
 				return;
 
 			gtk_widget_show (widget);
-			gtk_box_pack_end (priv->status, widget, TRUE, TRUE, 0);
+			gtk_box_pack_end (priv->status, widget, FALSE, FALSE, 0);
 		}
 		bonobo_ui_node_free_string (name);
 	}
