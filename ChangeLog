@@ -1,5 +1,35 @@
 2003-06-10  Michael Meeks  <michael@ximian.com>
 
+	* configure.in: require libbonobo >= 2.3.3
+
+	* bonobo/Makefile.am: add -DGDK_MULTIHEAD_SAFE
+
+	* bonobo/bonobo-canvas-component.c
+	(impl_Bonobo_Canvas_Component_realize),
+	(impl_Bonobo_Canvas_Component_draw): upd.
+
+	* bonobo/bonobo-canvas-item.c (gbi_draw, gbi_realize):
+	handle the wid more sanely.
+
+2003-06-10  Morten Welinder  <mortenw@gnome.org>
+
+	* bonobo/bonobo-canvas-component.c
+	(impl_Bonobo_Canvas_Component_realize),
+	(impl_Bonobo_Canvas_Component_draw),
+	* bonobo/bonobo-canvas-item.c
+	(impl_Bonobo_Canvas_ComponentProxy_grabFocus),
+	* bonobo/bonobo-control-frame.c (bonobo_control_frame_get_remote_window),
+	* bonobo/bonobo-control.c (bonobo_control_set_transient_for):
+	multi-head fixes.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_button_event) 
+	(bonobo_plug_button_event, bonobo_plug_button_event): ditto.
+
+2003-06-10  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-plug.c (bonobo_plug_new_for_display): impl.
+	(bonobo_plug_construct_full): impl.
+	
 	* configure.in: bin multi-head checks.
 
 	* bonobo/bonobo-ui-init-gtk.c (bonobo_ui_gtk_options),

@@ -306,10 +306,12 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 		CORBA_free (id);
 
 		{
+			GdkDisplay *display = gtk_widget_get_display (frame->priv->socket);
 			gpointer user_data = NULL;
-			if (gdk_window_lookup (xid)) {
-				gdk_window_get_user_data (gdk_window_lookup (xid),
-							  &user_data);
+			if (gdk_window_lookup_for_display (display, xid)) {
+				gdk_window_get_user_data
+					(gdk_window_lookup_for_display (display, xid),
+					 &user_data);
 				plug = user_data;
 			}
 		}

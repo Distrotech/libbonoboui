@@ -17,6 +17,7 @@
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>
 #include <gtk/gtk.h>
+#include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-canvas-component.h>
@@ -279,15 +280,17 @@ static GdkGC *the_gc;
 
 static void
 impl_Bonobo_Canvas_Component_realize (PortableServer_Servant  servant,
-				      Bonobo_Canvas_window_id window,
+				      const CORBA_char       *window,
 				      CORBA_Environment      *ev)
 {
 	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
-	GdkWindow *gdk_window = gdk_window_foreign_new (window);
+	GdkWindow *gdk_window = gdk_window_foreign_new_for_display
+		(gtk_widget_get_display (GTK_WIDGET (item->canvas)),
+		 bonobo_control_x11_from_window_id (window));
 
 	if (gdk_window == NULL) {
-		g_warning ("Invalid window id passed=0x%x", window);
+		g_warning ("Invalid window id passed='%s'", window);
 		return;
 	}
 
@@ -351,7 +354,7 @@ my_gdk_pixmap_foreign_release (GdkPixmap *pixmap)
 static void
 impl_Bonobo_Canvas_Component_draw (PortableServer_Servant        servant,
 				   const Bonobo_Canvas_State    *state,
-				   const Bonobo_Canvas_window_id drawable,
+				   const CORBA_char             *drawable_id,
 				   CORBA_short                   x,
 				   CORBA_short                   y,
 				   CORBA_short                   width,
@@ -363,10 +366,12 @@ impl_Bonobo_Canvas_Component_draw (PortableServer_Servant        servant,
 	GdkPixmap *pix;
 	
 	gdk_flush ();
-	pix = gdk_pixmap_foreign_new (drawable);
+	pix = gdk_pixmap_foreign_new_for_display
+		(gtk_widget_get_display (GTK_WIDGET (item->canvas)),
+		 bonobo_control_x11_from_window_id (drawable_id));
 
 	if (pix == NULL){
-		g_warning ("Invalid window id passed=0x%x", drawable);
+		g_warning ("Invalid window id passed='%s'", drawable_id);
 		return;
 	}
 

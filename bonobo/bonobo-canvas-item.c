@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <bonobo/Bonobo.h>
+#include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-canvas-item.h>
 #include <bonobo/bonobo-object.h>
@@ -241,6 +242,8 @@ static void
 gbi_realize (GnomeCanvasItem *item)
 {
 	Gbi *gbi = GBI (item);
+	Bonobo_Gdk_WindowId id;
+
 	CORBA_Environment ev;
 
 	if (getenv ("DEBUG_BI"))
@@ -263,10 +266,14 @@ gbi_realize (GnomeCanvasItem *item)
 
 	CORBA_exception_init (&ev);
 	gdk_flush ();
-	Bonobo_Canvas_Component_realize (
-		gbi->priv->object, 
-		GDK_WINDOW_XWINDOW (item->canvas->layout.bin_window),
-		&ev);
+
+	id = bonobo_control_window_id_from_x11
+		(GDK_WINDOW_XWINDOW (item->canvas->layout.bin_window));
+
+	Bonobo_Canvas_Component_realize (gbi->priv->object, id, &ev);
+
+	CORBA_free (id);
+
 	CORBA_exception_free (&ev);
 }
 
@@ -294,6 +301,7 @@ gbi_draw (GnomeCanvasItem *item, GdkDrawable *drawable, int x, int y, int width,
 	Gbi *gbi = GBI (item);
 	CORBA_Environment ev;
 	Bonobo_Canvas_State state;
+	Bonobo_Gdk_WindowId id;
 	
 	if (getenv ("DEBUG_BI"))
 		g_message ("draw: %d %d %d %d", x, y, width, height);
@@ -305,12 +313,16 @@ gbi_draw (GnomeCanvasItem *item, GdkDrawable *drawable, int x, int y, int width,
 	CORBA_exception_init (&ev);
 
 	prepare_state (item, &state);
+	id = bonobo_control_window_id_from_x11
+		(GDK_WINDOW_XWINDOW (drawable));
+	
 	Bonobo_Canvas_Component_draw (
 		gbi->priv->object,
 		&state,
-		GDK_WINDOW_XWINDOW (drawable),
-		x, y, width, height,
+		id, x, y, width, height,
 		&ev);
+
+	CORBA_free (id);
 	CORBA_exception_free (&ev);
 }
 
@@ -728,7 +740,9 @@ impl_Bonobo_Canvas_ComponentProxy_grabFocus (PortableServer_Servant servant,
 	ComponentProxyServant *item_proxy = (ComponentProxyServant *) servant;
 	GdkCursor *cursor;
 
-	cursor = gdk_cursor_new ((GdkCursorType) cursor_type);
+	cursor = gdk_cursor_new_for_display
+		(gtk_widget_get_display (GTK_WIDGET (item_proxy->item_bound->canvas)),
+		 (GdkCursorType) cursor_type);
 
 	gnome_canvas_item_grab (item_proxy->item_bound, mask, cursor, time);
 }

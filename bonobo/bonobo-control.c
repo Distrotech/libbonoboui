@@ -1240,6 +1240,7 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 				  CORBA_Environment *opt_ev)
 {
 	CORBA_char         *id;
+	GdkDisplay         *display;
 	GdkWindow          *win;
 	guint32             x11_id;
 	CORBA_Environment  *ev = 0, tmp_ev;
@@ -1276,7 +1277,8 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 	CORBA_free (id);
 
 	/* FIXME: Special case the local case ? */
-	win = gdk_window_foreign_new (x11_id);
+	display = gtk_widget_get_display (GTK_WIDGET (window));
+	win = gdk_window_foreign_new_for_display (display, x11_id);
 	g_return_if_fail (win != NULL);
 
 	window_set_transient_for_gdk (window, win);
