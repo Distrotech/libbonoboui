@@ -14,12 +14,16 @@
 #include <glade/glade-init.h>
 #include <glade/glade-build.h>
 
+#define INT(s)   (strtol ((s), NULL, 0))
+#define UINT(s)  (strtoul ((s), NULL, 0))
+#define BOOL(s)  (g_ascii_tolower (*(s)) == 't' || g_ascii_tolower (*(s)) == 'y' || INT (s))
+#define FLOAT(s) (g_strtod ((s), NULL))
+
 static void
 dock_allow_floating (GladeXML *xml, GtkWidget *widget,
 		     const char *name, const char *value)
 {
-	bonobo_dock_allow_floating_items (BONOBO_DOCK (widget),
-					  *value == 'y');
+	bonobo_dock_allow_floating_items (BONOBO_DOCK (widget), BOOL (value));
 }
 
 static void
@@ -197,11 +201,11 @@ add_dock_item (GladeXML *xml,
 				BONOBO_TYPE_DOCK_PLACEMENT,
 				value);
 		else if (!strcmp (name, "band"))
-			band = strtoul (value, NULL, 10);
+			band = UINT (value);
 		else if (!strcmp (name, "position"))
-			position = strtol (value, NULL, 10);
+			position = INT (value);
 		else if (!strcmp (name, "offset"))
-			offset = strtoul (value, NULL, 10);
+			offset = UINT (value);
 		else if (!strcmp (name, "behavior"))
 			behavior = glade_flags_from_string (
 				BONOBO_TYPE_DOCK_ITEM_BEHAVIOR,

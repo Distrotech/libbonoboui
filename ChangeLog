@@ -1,3 +1,7 @@
+2001-12-10  jacob berkman  <jacob@ximian.com>
+
+	* glade/glade-bonobo.c: allow more values for boolean true
+
 2001-12-09  James Henstridge  <james@daa.com.au>
 
 	* bonobo/bonobo-ui-config-widget.c (widgets_init): use mnemonics
