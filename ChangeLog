@@ -1,3 +1,10 @@
+2001-05-01  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c (bonobo_ui_component_set_container),
+	(bonobo_ui_component_unset_container, impl_set_prop),
+	(bonobo_ui_component_add_verb_list_with_data):  kill theoretical
+	re-enterancy issues.
+
 2001-05-01  Martin Baulig  <baulig@suse.de>
 
 	* bonobo/bonobo-control.[ch]: Use GObject, not GtkObject.

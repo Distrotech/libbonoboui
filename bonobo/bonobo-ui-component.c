@@ -635,7 +635,7 @@ impl_xml_set (BonoboUIComponent  *component,
 	name = component->priv->name ? component->priv->name : "";
 
 	Bonobo_UIContainer_setNode (container, path, xml,
-				     name, real_ev);
+				    name, real_ev);
 
 	if (BONOBO_EX (real_ev) && !ev)
 		g_warning ("Serious exception on node_set '$%s' of '%s' to '%s'",
@@ -959,11 +959,15 @@ bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *component,
 	g_return_if_fail (list != NULL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
+	bonobo_object_ref (BONOBO_OBJECT (component));
+
 	for (l = list; l && l->cname; l++) {
 		bonobo_ui_component_add_verb (
 			component, l->cname, l->cb,
 			user_data?user_data:l->user_data);
 	}
+
+	bonobo_object_unref (BONOBO_OBJECT (component));
 }
 
 /**
@@ -1118,6 +1122,8 @@ impl_set_prop (BonoboUIComponent  *component,
 	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
+	bonobo_object_ref (BONOBO_OBJECT (component));
+
 	node = bonobo_ui_component_get_tree (
 		component, path, FALSE, opt_ev);
 
@@ -1133,6 +1139,8 @@ impl_set_prop (BonoboUIComponent  *component,
 	g_free (parent_path);
 
 	bonobo_ui_node_free (node);
+
+	bonobo_object_unref (BONOBO_OBJECT (component));
 }
 
 /**
@@ -1298,6 +1306,8 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component)
 {
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
+	bonobo_object_ref (BONOBO_OBJECT (component));
+
 	if (component->priv->container != CORBA_OBJECT_NIL) {
 		CORBA_Environment  ev;
 		char              *name;
@@ -1321,6 +1331,8 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component)
 	}
 
 	component->priv->container = CORBA_OBJECT_NIL;
+
+	bonobo_object_unref (BONOBO_OBJECT (component));
 }
 
 /**
@@ -1338,6 +1350,8 @@ bonobo_ui_component_set_container (BonoboUIComponent *component,
 	Bonobo_UIContainer ref_cont;
 
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
+	bonobo_object_ref (BONOBO_OBJECT (component));
 
 	if (container != CORBA_OBJECT_NIL) {
 		Bonobo_UIComponent corba_component;
@@ -1367,6 +1381,8 @@ bonobo_ui_component_set_container (BonoboUIComponent *component,
 	bonobo_ui_component_unset_container (component);
 
 	component->priv->container = ref_cont;
+
+	bonobo_object_unref (BONOBO_OBJECT (component));
 }
 
 /**
