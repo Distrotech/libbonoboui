@@ -63,6 +63,8 @@ void                 bonobo_app_xml_rm              (BonoboApp  *app,
 						     const char *path,
 						     gpointer    by_listner);
 
+GtkAccelGroup       *bonobo_app_get_accel_group     (BonoboApp  *app);
+
 void                 bonobo_app_dump                (BonoboApp  *app,
 						     const char *msg);
 

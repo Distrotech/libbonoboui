@@ -218,6 +218,14 @@ view_create_menus (view_data_t *view_data)
 	 */
 	bonobo_ui_handler_set_container (uih, remote_uih);
 
+
+	bonobo_ui_handler_menu_new_item (uih, "/NonExistant/Wibble",
+					 N_("Wibble"),
+					 N_("Wibbles profusely"),
+					 -1,
+					 BONOBO_UI_HANDLER_PIXMAP_NONE, NULL,
+					 0, (GdkModifierType) 0,
+					 NULL, NULL);
 	/*
 	 * Create our menu entries.
 	 */

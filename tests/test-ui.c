@@ -47,11 +47,11 @@ main (int argc, char **argv)
 
 	char simplea [] =
 		"<submenu name=\"file\" label=\"_File\">\n"
-		"	<menuitem name=\"open\" label=\"_Open\" pixtype=\"stock\" pixname=\"Menu_Open\"/>\n"
+		"	<menuitem name=\"open\" label=\"_Open\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Wibble\"/>\n"
 		"</submenu>\n";
 	char simpleb [] =
 		"<submenu name=\"file\" label=\"_FileB\">\n"
-		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\"/>\n"
+		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Open you fool\"/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\"/>\n"
 		"       <placeholder delimit=\"both\"/>\n"
 		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"&lt;Control&gt;q\"/>\n"
@@ -59,7 +59,7 @@ main (int argc, char **argv)
 	char simplec [] =
 		"<submenu name=\"file\" label=\"_FileC\">\n"
 		"    <placeholder>\n"
-		"	<menuitem name=\"fooa\" label=\"_FooA\" type=\"radio\" group=\"foogroup\"/>\n"
+		"	<menuitem name=\"fooa\" label=\"_FooA\" type=\"radio\" group=\"foogroup\" descr=\"Radio1\"/>\n"
 		"	<menuitem name=\"foob\" label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
 		"	<menuitem name=\"wibble\" label=\"_Baa\" pixtype=\"stock\" pixname=\"Menu_Open\" sensitive=\"0\"/>\n"
 		"    </placeholder>\n"
@@ -78,9 +78,9 @@ main (int argc, char **argv)
 		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\" label=\"TogSame\" descr=\"My tooltip\"/>\n"
 		"</dockitem>";
 	char statusa [] =
-		"<status>\n"
-		"	<statusitem name=\"left\"/>\n"
-		"</status>\n";
+		"<item name=\"main\">Kippers</item>\n";
+	char statusb [] =
+		"<item name=\"main\">Nothing</item>\n";
 	xmlNode *help, *accel, *file;
 
 	free (malloc (8));
@@ -124,6 +124,8 @@ main (int argc, char **argv)
 
 	CORBA_exception_init (&ev);
 
+	bonobo_ui_component_set (componentb, corba_app, "/status", statusa, &ev);
+
 	bonobo_ui_component_set (componenta, corba_app, "/menu", simplea, &ev);
 
 	bonobo_ui_component_set (componentb, corba_app, "/",     toola, &ev);
@@ -141,6 +143,7 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_set (componentb, corba_app, "/menu", simpleb, &ev);
 	bonobo_ui_component_set (componenta, corba_app, "/",     toolb, &ev);
+	bonobo_ui_component_set (componentb, corba_app, "/status", statusb, &ev);
 
 	gtk_main ();
 

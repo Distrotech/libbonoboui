@@ -68,11 +68,11 @@ read_byte (const char *start)
 
 	else if (*start >= 'a' &&
 		 *start <= 'f')
-		chunk |= *start - 'a';
+		chunk |= *start - 'a' + 10;
 
 	else if (*start >= 'A' &&
 		 *start <= 'F')
-		chunk |= *start - 'A';
+		chunk |= *start - 'A' + 10;
 	else
 		g_warning ("Format error in stream '%c'", *start);
 
@@ -161,8 +161,6 @@ bonobo_ui_util_xml_to_pixbuf (const char *xml)
 	xml += 4 * 2;
 	height = read_four_bytes (xml);
 	xml += 4 * 2;
-
-	g_warning ("width %d height %d", width, height);
 
 	if (*xml == 'A')
 		has_alpha = TRUE;

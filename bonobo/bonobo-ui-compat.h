@@ -149,8 +149,6 @@ void			 bonobo_ui_handler_menu_add_list       		(BonoboUIHandler *uih, const cha
 void			 bonobo_ui_handler_menu_add_tree       		(BonoboUIHandler *uih, const char *parent_path,
 									 BonoboUIHandlerMenuItem *item);
 void			 bonobo_ui_handler_menu_remove			(BonoboUIHandler *uih, const char *path);
-BonoboUIHandlerMenuItem	*bonobo_ui_handler_menu_fetch_one		(BonoboUIHandler *uih, const char *path);
-
 gboolean                 bonobo_ui_handler_menu_path_exists             (BonoboUIHandler *uih, const char *path);
 void			 bonobo_ui_handler_menu_free_one		(BonoboUIHandlerMenuItem *item);
 void			 bonobo_ui_handler_menu_free_list		(BonoboUIHandlerMenuItem *item);
@@ -248,6 +246,8 @@ void                             bonobo_ui_handler_toolbar_free_list    (BonoboU
 void				 bonobo_ui_handler_toolbar_add_list	(BonoboUIHandler *uih, const char *parent_path,
 									 BonoboUIHandlerToolbarItem *item);
 
+void			 bonobo_ui_handler_set_statusbar			(BonoboUIHandler *uih, GtkWidget *statusbar);
+GtkWidget		*bonobo_ui_handler_get_statusbar			(BonoboUIHandler *uih);
 
 gboolean  bonobo_ui_handler_dock_add            (BonoboUIHandler       *uih,
 						 const char            *name,

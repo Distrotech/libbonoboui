@@ -28,9 +28,6 @@ struct _BonoboAppPrivate {
 	GnomeDockItem *menu_item;
 	GtkMenuBar    *menu;
 
-	GnomeDockItem *status_item;
-	GtkBox        *status;
-
 	BonoboUIXml   *tree;
 
 	GtkAccelGroup *accel_group;
@@ -41,6 +38,13 @@ struct _BonoboAppPrivate {
 	GHashTable    *radio_groups;
 	GHashTable    *keybindings;
 	GSList        *components;
+
+	GtkWidget     *main_vbox;
+
+	GtkBox        *status;
+	GtkStatusbar  *main_status;
+
+	GtkWidget     *client_area;
 };
 
 static inline BonoboApp *
@@ -703,12 +707,60 @@ app_item_emit_ui_event (BonoboAppItem *item, const char *state, xmlNode *node)
 	return FALSE;
 }
 
+#define BONOBO_APP_MENU_ITEM_KEY "BonoboApp::Priv"
+
+static void
+put_hint_in_statusbar (GtkWidget *menuitem, xmlNode *node)
+{
+	BonoboAppPrivate *priv;
+	char *hint;
+
+	priv = gtk_object_get_data (GTK_OBJECT (menuitem),
+				    BONOBO_APP_MENU_ITEM_KEY);
+
+	g_return_if_fail (priv != NULL);
+	g_return_if_fail (node != NULL);
+
+	hint = xmlGetProp (node, "descr");
+	g_return_if_fail (hint != NULL);
+
+	if (priv->main_status) {
+		guint id;
+
+		id = gtk_statusbar_get_context_id (priv->main_status,
+						  "BonoboApp:menu-hint");
+		gtk_statusbar_push (priv->main_status, id, hint);
+	}
+	xmlFree (hint);
+}
+
+static void
+remove_hint_from_statusbar (GtkWidget *menuitem, xmlNode *node)
+{
+	BonoboAppPrivate *priv;
+
+	priv = gtk_object_get_data (GTK_OBJECT (menuitem),
+				    BONOBO_APP_MENU_ITEM_KEY);
+
+	g_return_if_fail (priv != NULL);
+	g_return_if_fail (node != NULL);
+
+	if (priv->main_status) {
+		guint id;
+
+		id = gtk_statusbar_get_context_id (priv->main_status,
+						  "BonoboApp:menu-hint");
+		gtk_statusbar_pop (priv->main_status, id);
+	}
+}
+
 static GtkWidget *
 menu_item_create (BonoboAppPrivate *priv, xmlNode *node)
 {
 	GtkWidget *menu_widget;
 	NodeInfo  *info;
 	char      *type;
+	char      *hint;
 
 	info = bonobo_ui_xml_get_data (priv->tree, node);
 
@@ -772,6 +824,21 @@ menu_item_create (BonoboAppPrivate *priv, xmlNode *node)
 			menu_widget = gtk_menu_item_new ();
 
 		info->widget = menu_widget;
+	}
+
+	if ((hint = xmlGetProp (node, "descr"))) {
+		gtk_object_set_data (GTK_OBJECT (menu_widget),
+				     BONOBO_APP_MENU_ITEM_KEY, priv);
+
+		gtk_signal_connect (GTK_OBJECT (menu_widget),
+				    "select",
+				    GTK_SIGNAL_FUNC (put_hint_in_statusbar),
+				    node);
+		
+		gtk_signal_connect (GTK_OBJECT (menu_widget),
+				    "deselect",
+				    GTK_SIGNAL_FUNC (remove_hint_from_statusbar),
+				    node);
 	}
 
 	return menu_widget;
@@ -1326,9 +1393,66 @@ update_keybindings (BonoboAppPrivate *priv, xmlNode *node)
 	}
 }
 
+static void
+update_status (BonoboAppPrivate *priv, xmlNode *node)
+{
+	xmlNode *l;
+
+	gtk_container_foreach (GTK_CONTAINER (priv->status),
+			       (GtkCallback) gtk_widget_destroy,
+			       NULL);
+	priv->main_status = NULL;
+
+	for (l = node->childs; l; l = l->next) {
+		char *name;
+		GtkWidget *widget;
+		
+		name = xmlGetProp (l, "name");
+		if (!name)
+			continue;
+
+		if (!strcmp (name, "main")) {
+			char *txt;
+
+			widget = gtk_statusbar_new ();
+			priv->main_status = GTK_STATUSBAR (widget);
+			gtk_widget_show (GTK_WIDGET (widget));
+			gtk_box_pack_end (priv->status, widget, TRUE, TRUE, 0);
+			
+			if ((txt = xmlNodeGetContent (l))) {
+				guint id;
+
+				id = gtk_statusbar_get_context_id (priv->main_status,
+								   "BonoboApp:data");
+
+				gtk_statusbar_push (priv->main_status, id, txt);
+				xmlFree (txt);
+			}
+		} else {
+			NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, l);
+
+			g_warning ("TESTME: untested code path");
+
+			if (!info->object) {
+				g_warning ("Unknown status bar object");
+				xmlFree (name);
+				continue;
+			}
+
+			widget = bonobo_app_item_new_control (info->object);
+			g_return_if_fail (widget != NULL);
+			gtk_widget_show (GTK_WIDGET (widget));
+			
+			gtk_box_pack_end (priv->status, widget, TRUE, TRUE, 0);
+		}
+		xmlFree (name);
+	}
+
+	gtk_widget_show (GTK_WIDGET (priv->status));
+}
+
 typedef enum {
 	UI_UPDATE_MENU,
-	UI_UPDATE_STATUS,
 	UI_UPDATE_DOCKITEM
 } UIUpdateType;
 
@@ -1353,7 +1477,7 @@ seek_dirty (BonoboAppPrivate *priv, xmlNode *node, UIUpdateType type)
 			update_dockitem (priv, node);
 			break;
 		default:
-			g_warning ("No status support yet");
+			g_warning ("Looking for unhandled super type");
 			break;
 		}
 	} else {
@@ -1378,15 +1502,15 @@ update_widgets (BonoboAppPrivate *priv)
 		if (!strcmp (node->name, "menu")) {
 			seek_dirty (priv, node, UI_UPDATE_MENU);
 
-		} else if (!strcmp (node->name, "status")) {
-			seek_dirty (priv, node, UI_UPDATE_STATUS);
-
 		} else if (!strcmp (node->name, "dockitem")) {
 			seek_dirty (priv, node, UI_UPDATE_DOCKITEM);
 
 		} else if (!strcmp (node->name, "keybindings")) {
 			update_keybindings (priv, node);
-				
+
+		} else if (!strcmp (node->name, "status")) {
+			update_status (priv, node);
+
 		} /* else unknown */
 	}
 
@@ -1399,9 +1523,9 @@ bonobo_app_set_contents (BonoboApp *app,
 {
 	g_return_if_fail (app != NULL);
 	g_return_if_fail (app->priv != NULL);
-	g_return_if_fail (app->priv->dock != NULL);
+	g_return_if_fail (app->priv->client_area != NULL);
 
-	gnome_dock_set_client_area (app->priv->dock, contents);
+	gtk_container_add (GTK_CONTAINER (app->priv->client_area), contents);
 }
 
 GtkWidget *
@@ -1411,7 +1535,7 @@ bonobo_app_get_contents (BonoboApp *app)
 	g_return_val_if_fail (app->priv != NULL, NULL);
 	g_return_val_if_fail (app->priv->dock != NULL, NULL);
 
-	return gnome_dock_get_client_area (app->priv->dock);
+	return GTK_BIN (app->priv->client_area)->child;
 }
 
 GtkWidget *
@@ -1712,15 +1836,14 @@ construct_priv (BonoboApp  *app,
 	gnome_dock_add_item (priv->dock, priv->menu_item,
 			     GNOME_DOCK_TOP, 0, 0, 0, TRUE);
 
-	priv->status_item = GNOME_DOCK_ITEM (gnome_dock_item_new (
-		"status",
-		(GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL |
-		 GNOME_DOCK_ITEM_BEH_LOCKED)));
-	priv->status      = GTK_BOX (gtk_hbox_new (FALSE, 0));
-	gtk_container_add (GTK_CONTAINER (priv->status_item),
-			   GTK_WIDGET    (priv->status));
-	gnome_dock_add_item (priv->dock, priv->status_item,
-			     GNOME_DOCK_BOTTOM, 0, 0, 0, TRUE);
+	priv->main_vbox = gtk_vbox_new (FALSE, 0);
+	gnome_dock_set_client_area (priv->dock, priv->main_vbox);
+
+	priv->client_area = gtk_vbox_new (FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (priv->main_vbox), priv->client_area, TRUE, TRUE, 0);
+
+	priv->status = GTK_BOX (gtk_hbox_new (FALSE, 0));
+	gtk_box_pack_start (GTK_BOX (priv->main_vbox), GTK_WIDGET (priv->status), FALSE, FALSE, 0);
 
 	priv->tree = bonobo_ui_xml_new (NULL,
 					info_new_fn,
@@ -1742,12 +1865,13 @@ construct_priv (BonoboApp  *app,
 				    priv->accel_group);
 
 	gtk_widget_show_all (GTK_WIDGET (priv->dock));
+	gtk_widget_hide (GTK_WIDGET (priv->status));
 
 	priv->radio_groups = g_hash_table_new (
 		g_str_hash, g_str_equal);
 
 	priv->keybindings = g_hash_table_new (keybinding_hash_fn, 
-					      keybinding_compare_fn);
+					      keybinding_compare_fn);	
 
 	return priv;
 }
@@ -1929,4 +2053,12 @@ bonobo_app_from_window (GtkWindow *window)
 {
 	return gtk_object_get_data (GTK_OBJECT (window),
 				    BONOBO_APP_WINDOW_KEY);
+}
+
+GtkAccelGroup *
+bonobo_app_get_accel_group (BonoboApp *app)
+{
+	g_return_val_if_fail (BONOBO_IS_APP (app), NULL);
+
+	return app->priv->accel_group;
 }

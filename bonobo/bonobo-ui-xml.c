@@ -1,8 +1,8 @@
 #include "config.h"
 #include "bonobo-ui-xml.h"
 
-#define UI_XML_DEBUG
-#define BONOBO_UI_XML_DUMP
+#undef UI_XML_DEBUG
+#undef BONOBO_UI_XML_DUMP
 
 #ifdef BONOBO_UI_XML_DUMP
 #	define DUMP_XML(a,b,c) (bonobo_ui_xml_dump ((a), (b), (c)))

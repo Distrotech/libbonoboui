@@ -75,7 +75,7 @@ compat_sync (BonoboUIHandlerPrivate *priv, const char *parent_path,
 		for (; node->prev; node = node->prev)
 			;
 		for (l = node; l; l = l->next) {
-			xmlNode *copy = xmlCopyNode (node, TRUE);
+			xmlNode *copy = xmlCopyNode (l, TRUE);
 			
 			bonobo_ui_component_set_tree (
 				priv->component, priv->container,
@@ -582,7 +582,7 @@ bonobo_ui_handler_menu_add_one (BonoboUIHandler *uih, const char *parent_path,
 
 	g_return_if_fail (priv != NULL);
 
-	xml_path = make_path ("/menu", "submenu", parent_path, TRUE);
+	xml_path = make_path ("/menu", "submenu", parent_path, FALSE);
 	parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
 
 	switch (item->type) {
@@ -1199,4 +1199,145 @@ GtkType
 bonobo_ui_handler_get_type (void)
 {
 	return GTK_TYPE_OBJECT;
+}
+
+void
+bonobo_ui_handler_set_statusbar (BonoboUIHandler *uih, GtkWidget *statusbar)
+{
+	g_warning ("Not setting statusbar '%p'", statusbar);
+}
+
+GtkWidget *
+bonobo_ui_handler_get_statusbar (BonoboUIHandler *uih)
+{
+	return NULL;
+}
+
+void
+bonobo_ui_handler_menu_set_toggle_state	(BonoboUIHandler *uih, const char *path,
+					 gboolean state)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_set_toggel_state unimplemented\n");
+}
+
+gboolean
+bonobo_ui_handler_menu_get_toggle_state	(BonoboUIHandler *uih, const char *path)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_get_toggel_state unimplemented\n");
+	return FALSE;
+}
+
+void
+bonobo_ui_handler_menu_set_radio_state (BonoboUIHandler *uih, const char *path,
+					gboolean state)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_set_radio_state unimplemented\n");
+}
+
+gboolean
+bonobo_ui_handler_menu_get_radio_state (BonoboUIHandler *uih, const char *path)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_get_radio_state unimplemented\n");
+	return FALSE;
+}
+
+void
+bonobo_ui_handler_menu_remove (BonoboUIHandler *uih, const char *path)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_remove unimplemented\n");
+}
+
+void
+bonobo_ui_handler_menu_set_sensitivity (BonoboUIHandler *uih, const char *path,
+					gboolean sensitive)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_set_sensitivity unimplemented\n");
+}
+
+void
+bonobo_ui_handler_menu_set_label (BonoboUIHandler *uih, const char *path,
+				  const gchar *label)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_set_label unimplemented\n");
+}
+
+void
+bonobo_ui_handler_menu_set_hint (BonoboUIHandler *uih, const char *path,
+				 const gchar *hint)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_set_hint unimplemented\n");
+}
+
+void
+bonobo_ui_handler_menu_set_pixmap (BonoboUIHandler *uih, const char *path,
+				   BonoboUIHandlerPixmapType type, gpointer data)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_set_pixmap unimplemented\n");
+}
+
+void
+bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
+				     BonoboUIHandlerCallback callback,
+				     gpointer callback_data,
+				     GDestroyNotify callback_data_destroy_notify)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_set_callback unimplemented\n");
+}
+
+void
+bonobo_ui_handler_menu_get_callback (BonoboUIHandler *uih, const char *path,
+				     BonoboUIHandlerCallback *callback,
+				     gpointer *callback_data,
+				     GDestroyNotify *callback_data_destroy_notify)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_get_callback unimplemented\n");
+	*callback = NULL;
+	*callback_data = NULL;
+	*callback_data_destroy_notify = NULL;
+}
+
+void
+bonobo_ui_handler_menu_remove_callback_no_notify (BonoboUIHandler *uih,
+						  const char *path)
+{
+	fprintf (stderr, "bonobo_ui_handler_remove_callback_no_notify unimplemented\n");
+}
+
+gboolean
+bonobo_ui_handler_dock_add (BonoboUIHandler       *uih,
+			    const char            *name,
+			    Bonobo_Control         control,
+			    GnomeDockItemBehavior  behavior,
+			    GnomeDockPlacement     placement,
+			    gint                   band_num,
+			    gint                   band_position,
+			    gint                   offset)
+{
+	fprintf (stderr, "bonobo_ui_handler_dock_add unimplemented\n");
+	return TRUE;
+}
+
+gboolean
+bonobo_ui_handler_dock_remove (BonoboUIHandler       *uih,
+			       const char            *name)
+{
+	fprintf (stderr, "bonobo_ui_handler_dock_remove unimplemented\n");
+	return TRUE;
+}
+
+gboolean
+bonobo_ui_handler_dock_set_sensitive (BonoboUIHandler       *uih,
+				      const char            *name,
+				      gboolean               sensitivity)
+{
+	fprintf (stderr, "bonobo_ui_handler_dock_set_sensitive unimplemented\n");
+	return TRUE;
+}
+
+gboolean
+bonobo_ui_handler_dock_get_sensitive (BonoboUIHandler       *uih,
+				      const char            *name)
+{
+	fprintf (stderr, "bonobo_ui_handler_dock_get_sensitive unimplemented\n");
+	return TRUE;
 }
