@@ -90,18 +90,43 @@ popup_destroy (GtkObject *menu, Popup *popup)
 	popup_remove (smenu, popup);
 }
 
+static gboolean
+node_is_popup (BonoboUINode *node)
+{
+	if (!node)
+		return FALSE;
+
+	if (bonobo_ui_node_has_name (node, "popup"))
+		return TRUE;
+	
+	else if (bonobo_ui_node_has_name (node, "menu"))
+		return FALSE;
+
+	else
+		return node_is_popup (bonobo_ui_node_parent (node));
+}
+
 static void
-add_tearoff (BonoboUINode *node, GtkMenu *menu)
+add_tearoff (BonoboUINode *node, GtkMenu *menu, gboolean popup_init)
 {
 	GtkWidget    *tearoff;
 	char         *txt;
 	gboolean      has_tearoff;
 
-	if (node && (txt = bonobo_ui_node_get_attr (node, "tearoff"))) {
-		has_tearoff = atoi (txt);
+	has_tearoff = gnome_preferences_get_menus_have_tearoff ();
+
+	if (node) {
+		txt = bonobo_ui_node_get_attr (node, "tearoff");
+
+		if (txt)
+			has_tearoff = atoi (txt);
+		else
+			has_tearoff = !node_is_popup (node);
+
 		bonobo_ui_node_free_string (txt);
-	} else
-		has_tearoff = gnome_preferences_get_menus_have_tearoff ();
+
+	} else if (popup_init)
+		has_tearoff = FALSE;
 
 	/*
 	 * Create the tearoff item at the beginning of the menu shell,
@@ -138,7 +163,8 @@ bonobo_ui_sync_menu_add_popup (BonoboUISyncMenu *smenu,
 		g_list_free (children);
 	}
 
-	add_tearoff (bonobo_ui_engine_get_path (smenu->parent.engine, path), menu);;
+	add_tearoff (bonobo_ui_engine_get_path (
+		smenu->parent.engine, path), menu, TRUE);
 
 	smenu->popups = g_slist_prepend (smenu->popups, popup);
 
@@ -602,7 +628,7 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 
 		gtk_menu_set_accel_group (menu, menu_sync->accel_group);
 
-		add_tearoff (node, GTK_MENU (menu));
+		add_tearoff (node, GTK_MENU (menu), FALSE);
 
 		/*
 		 * Associate this menu shell with the menu item for
