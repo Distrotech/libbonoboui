@@ -1,6 +1,6 @@
 2003-05-08  Anders Carlsson  <andersca@codefactory.se>
 
-	* libgnomeui/gnome-app-helper.c: Add a NULL entry last
+	* bonobo/bonobo-ui-preferences.c: Add a NULL entry last
 	in the list of toolbar styles so we won't get a segfault
 	when the gconf key is invalid.
 
