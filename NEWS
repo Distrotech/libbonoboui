@@ -10,6 +10,15 @@ libbonoboui 1.117.0
 		+ more regression tests (Michael)
 		+ transient dialog fixage (Michael, Jon-Kare Hellan)
 
+libbonoboui 1.116.0
+
+	* Bugs fixed
+		+ GladeWidgetInfo updated (Murray Cumming)
+		+ bogus construct function removal (Murray)
+		+ construction property addition (Murray)
+		+ status signal mis-management (Michael, Morten Welinder)
+		+ don't auto-activate stuff confusingly (Michael)
+
 libbonoboui 1.115.0
 
 	* Bugs fixed
