@@ -16,7 +16,7 @@ INCLUDES =	\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
-	$(BONOBOX_TEST_FLAGS)
+	$(BONOBOX_TEST_CFLAGS)
 
 test_properties_server_SOURCES =			\
 	test-properties-server.c
