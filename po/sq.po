@@ -1,4 +1,3 @@
-# translation of libbonoboui.HEAD.sq.po to Albanian
 # Albanian translation of libbonoboui
 # This file is distributed under the same license as the libbonoboui package.
 # Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
@@ -8,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-31 19:09+0100\n"
-"PO-Revision-Date: 2004-01-31 19:08+0100\n"
+"POT-Creation-Date: 2004-02-12 15:01+0100\n"
+"PO-Revision-Date: 2004-02-12 12:51+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -298,7 +297,7 @@ msgstr "_Përmbajtja"
 
 #: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
-msgstr "Shiko ndihmën në lidhje me këtë aplikativ"
+msgstr "Shiko ndihmën në lidhje me këtë program"
 
 #: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
@@ -354,7 +353,7 @@ msgstr "Se zmadhimi është i vazhdueshëm"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "Informacione mbi këtë aplikativ"
+msgstr "Informacione mbi këtë program"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
