@@ -23,18 +23,6 @@ bonobo_calculator_clear (BonoboUIHandler *uih,
 	gnome_calculator_clear (data, TRUE);
 }
 
-static GnomeUIInfo calc_menu [] = {
-	GNOMEUIINFO_MENU_NEW_ITEM (N_("_Clear"),
-				   N_("Clear the calculator and reset it"),
-				   bonobo_calculator_clear, NULL),
-	GNOMEUIINFO_END
-};
-
-static GnomeUIInfo control_menus [] = {
-	GNOMEUIINFO_SUBTREE (N_("Calculator"), calc_menu),
-	GNOMEUIINFO_END
-};
-
 static void
 set_prop (BonoboPropertyBag *bag,
 	  const BonoboArg   *arg,
@@ -74,7 +62,6 @@ bonobo_calculator_factory (BonoboGenericFactory *Factory, void *closure)
 				 "Caluculation result", 0);
 
 	bonobo_control_set_automerge (control, TRUE);
-	bonobo_control_set_menus_with_data (control, control_menus, calc);
 
 	return BONOBO_OBJECT (control);
 }

@@ -40,11 +40,13 @@ struct _BonoboControlPrivate {
 	GtkWidget                  *plug;
 	gboolean                    is_local;
 	gboolean                    xid_received;
-				   
+			
 	BonoboUIHandler            *uih;
 	gboolean                    automerge;
+#ifdef STALE_NOT_USED
 	BonoboUIHandlerMenuItem    *menus;
 	BonoboUIHandlerToolbarItem *toolbars;
+#endif
 				   
 	BonoboPropertyBag          *propbag;
 };
@@ -174,10 +176,12 @@ bonobo_control_auto_merge (BonoboControl *control)
 
 	bonobo_ui_handler_set_container (control->priv->uih, remote_uih);
 
+#ifdef STALE_NOT_USED
 	if (control->priv->menus != NULL) {
 		bonobo_ui_handler_menu_add_list (
 			control->priv->uih, "/", control->priv->menus);
 	}
+#endif
 }
 
 
@@ -546,6 +550,7 @@ bonobo_control_get_automerge (BonoboControl *control)
 	return control->priv->automerge;
 }
 
+#ifdef STALE_NOT_USED
 /**
  * bonobo_control_set_menus_with_data:
  * @control: A #BonoboControl.
@@ -716,6 +721,7 @@ bonobo_control_get_toolbars (BonoboControl *control)
 
 	return control->priv->toolbars;
 }
+#endif /* STALE_NOT_USED */
 
 static void
 bonobo_control_destroy (GtkObject *object)
@@ -733,6 +739,7 @@ bonobo_control_destroy (GtkObject *object)
 
 	CORBA_exception_free (&ev);
 
+#ifdef STALE_NOT_USED
 	/*
 	 * If we have a UIHandler, destroy it.
 	 */
@@ -740,6 +747,7 @@ bonobo_control_destroy (GtkObject *object)
 		bonobo_ui_handler_unset_container (control->priv->uih);
 		bonobo_object_unref (BONOBO_OBJECT (control->priv->uih));
 	}
+#endif
 }
 
 static void

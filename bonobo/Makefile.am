@@ -76,6 +76,22 @@ libbonoboincludedir = $(includedir)/bonobo
 libbonobodir = $(includedir)
 libbonobo_HEADERS = bonobo.h
 
+if USE_UI_HANDLER
+UI_HDRS =				\
+	bonobo-ui-handler.h
+UI_SRCS =				\
+	bonobo-ui-handler.c		\
+	bonobo-uih-menu.c		\
+	bonobo-uih-toolbar.c		\
+	bonobo-uih-dock.c		\
+	bonobo-uih-private.h
+else
+UI_HDRS =				\
+	bonobo-ui-compat.h
+UI_SRCS =				\
+	bonobo-ui-compat.c
+endif
+
 libbonoboinclude_HEADERS =		\
 	Bonobo.h			\
 	bonobo-arg.h			\
@@ -113,6 +129,7 @@ libbonoboinclude_HEADERS =		\
 	bonobo-stream-fs.h		\
 	bonobo-stream-memory.h		\
 	bonobo-ui-handler.h		\
+	$(UI_HDRS)			\
 	bonobo-ui-component.h		\
 	bonobo-app-item.h		\
 	bonobo-app-toolbar.h		\
@@ -135,12 +152,7 @@ libbonobox_la_SOURCES =			\
 	bonobo-ui-xml.c			\
 	bonobo-app-item.c		\
 	bonobo-app-toolbar.c		\
-					\
-	bonobo-ui-handler.c		\
-	bonobo-uih-menu.c		\
-	bonobo-uih-toolbar.c		\
-	bonobo-uih-dock.c		\
-	bonobo-uih-private.h		\
+	$(UI_SRCS)			\
 					\
 	bonobo-canvas-item.c		\
 	bonobo-selector.c		\

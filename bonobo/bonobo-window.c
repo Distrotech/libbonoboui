@@ -1649,7 +1649,7 @@ bonobo_app_construct (BonoboApp  *app,
 	return app;
 }
 
-BonoboApp *
+GtkWidget *
 bonobo_app_new (const char   *app_name,
 		const char   *title)
 {
@@ -1664,7 +1664,8 @@ bonobo_app_new (const char   *app_name,
 		return NULL;
 	}
 	
-	return bonobo_app_construct (app, corba_app, app_name, title);
+	return GTK_WIDGET (
+		bonobo_app_construct (app, corba_app, app_name, title));
 }
 
 void

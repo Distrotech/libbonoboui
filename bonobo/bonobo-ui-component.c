@@ -377,17 +377,30 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 			 CORBA_Environment  *ev)
 {
 	BonoboUIComponentPrivate *priv;
+	CORBA_Environment *real_ev, tmp_ev;
 
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
 
 	priv = component->priv;
 
 	Bonobo_UIContainer_register_component (
 		container, priv->name,
-		bonobo_object_corba_objref (BONOBO_OBJECT (component)), ev);
+		bonobo_object_corba_objref (BONOBO_OBJECT (component)),
+		real_ev);
 
-	Bonobo_UIContainer_node_set (container, path, xml, priv->name, ev);
+	Bonobo_UIContainer_node_set (container, path, xml,
+				     priv->name, real_ev);
+
+	if (!ev)
+		CORBA_exception_free (&tmp_ev);
 }
 
 void
@@ -426,12 +439,23 @@ bonobo_ui_component_rm (BonoboUIComponent  *component,
 			CORBA_Environment  *ev)
 {
 	BonoboUIComponentPrivate *priv;
+	CORBA_Environment *real_ev, tmp_ev;
 
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
+
 	priv = component->priv;
 
 	Bonobo_UIContainer_deregister_component (
-		container, priv->name, ev);
+		container, priv->name, real_ev);
+
+	if (!ev)
+		CORBA_exception_free (&tmp_ev);
 }

@@ -45,19 +45,22 @@ GtkWidget                  *bonobo_control_get_widget              (BonoboContro
 void                        bonobo_control_set_automerge           (BonoboControl *control,
 								    gboolean       automerge);
 gboolean                    bonobo_control_get_automerge           (BonoboControl *control);
+
+#ifdef STALE_NOT_USED
 void                        bonobo_control_set_menus               (BonoboControl *control,
 								    GnomeUIInfo   *menus);
 void                        bonobo_control_set_menus_with_data     (BonoboControl *control,
 								    GnomeUIInfo   *menus,
 								    gpointer       closure);
 BonoboUIHandlerMenuItem    *bonobo_control_get_menus               (BonoboControl *control);
+
 void                        bonobo_control_set_toolbars            (BonoboControl *control,
 								    GnomeUIInfo   *toolbars);
 void                        bonobo_control_set_toolbars_with_data  (BonoboControl *control,
 								    GnomeUIInfo   *toolbars,
 								    gpointer       closure);
 BonoboUIHandlerToolbarItem *bonobo_control_get_toolbars            (BonoboControl *control);
-
+#endif
 
 void                        bonobo_control_set_property            (BonoboControl       *control,
 								    const char          *first_prop,

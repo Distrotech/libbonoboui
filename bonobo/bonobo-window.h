@@ -41,7 +41,7 @@ BonoboApp                   *bonobo_app_construct           (BonoboApp         *
 							     const char        *app_name,
 							     const char        *title);
 
-BonoboApp           *bonobo_app_new                 (const char *app_name,
+GtkWidget           *bonobo_app_new                 (const char *app_name,
 						     const char *title);
 
 void                 bonobo_app_set_contents        (BonoboApp  *app,

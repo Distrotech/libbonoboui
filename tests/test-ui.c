@@ -95,7 +95,7 @@ main (int argc, char **argv)
 
 	bonobo_activate ();
 
-	app = bonobo_app_new ("App", "My Test Application");
+	app = BONOBO_APP (bonobo_app_new ("App", "My Test Application"));
 	corba_app = bonobo_object_corba_objref (BONOBO_OBJECT (app));
 
 	{

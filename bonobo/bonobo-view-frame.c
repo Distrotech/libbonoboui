@@ -543,6 +543,7 @@ bonobo_view_frame_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
 char *
 bonobo_view_frame_popup_verbs (BonoboViewFrame *view_frame)
 {
+#ifdef STALE_NOT_USED
 	BonoboUIHandler *popup;
 	GList *verbs, *l;
 	char *verb;
@@ -596,6 +597,9 @@ bonobo_view_frame_popup_verbs (BonoboViewFrame *view_frame)
 	gtk_object_remove_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name");
 
 	return verb;
+#else
+	return NULL;
+#endif /* STALE_NOT_USED */
 }
 
 /**

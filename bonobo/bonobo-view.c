@@ -40,14 +40,20 @@ struct _BonoboViewPrivate {
 	GHashTable *verb_callback_closures;
 };
 
+static void bonobo_view_execute_verb (BonoboView *view, const char *verb_name);
+
 static void
 impl_Bonobo_View_do_verb (PortableServer_Servant servant,
 			 const CORBA_char      *verb_name,
 			 CORBA_Environment     *ev)
 {
+#ifdef USE_UI_HANDLER
 	BonoboView *view = BONOBO_VIEW (bonobo_object_from_servant (servant));
 
 	bonobo_view_execute_verb (view, verb_name);
+#else
+	g_warning ("Verbs have jumped interface");
+#endif
 }
 
 static void
@@ -482,6 +488,7 @@ bonobo_view_unregister_verb (BonoboView *view, const char *verb_name)
 	g_free (original_key);
 }
 
+#ifdef STALE_NOT_USED
 /**
  * bonobo_view_execute_verb:
  * @view: A BonoboView object.
@@ -492,6 +499,10 @@ bonobo_view_unregister_verb (BonoboView *view, const char *verb_name)
  * exists for @verb_name on @view.
  */
 void
+bonobo_view_execute_verb (BonoboView *view, const char *verb_name)
+#endif
+
+static void
 bonobo_view_execute_verb (BonoboView *view, const char *verb_name)
 {
 	BonoboViewVerbFunc callback;
@@ -518,6 +529,7 @@ bonobo_view_execute_verb (BonoboView *view, const char *verb_name)
 	}
 }
 
+#ifdef STALE_NOT_USED
 static void
 bonobo_view_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
 			     const char *path)
@@ -544,6 +556,7 @@ bonobo_view_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
 			     g_strdup (verb_name));
 	
 }
+#endif /* STALE_NOT_USED */
 
 /**
  * bonobo_view_popup_verbs:
@@ -557,6 +570,7 @@ bonobo_view_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
 char *
 bonobo_view_popup_verbs (BonoboView *view)
 {
+#ifdef STALE_NOT_USED
 	BonoboUIHandler *popup;
 	const GList *verbs;
 	const GList *l;
@@ -610,4 +624,7 @@ bonobo_view_popup_verbs (BonoboView *view)
 	gtk_object_remove_data (GTK_OBJECT (view), "view_executed_verb_name");
 
 	return verb;
+#else
+	return NULL;
+#endif /* STALE_NOT_USED */
 }
