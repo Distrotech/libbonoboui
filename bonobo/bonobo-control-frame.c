@@ -174,8 +174,25 @@ bonobo_control_frame_set_remote_window (BonoboControlFrame *frame)
 
 	dprintf ("gtk_socket_add_id %d\n", frame->priv->plug_xid);
 
-	gtk_socket_add_id (GTK_SOCKET (frame->priv->socket),
-			   frame->priv->plug_xid);
+	if (frame->priv->inproc_control) {
+		/* FIXME: brutal hack to get round bugs in gtkplug */
+		BonoboPlug *plug = bonobo_control_get_plug (
+			frame->priv->inproc_control);
+
+		dprintf ("Ugly in-proc hacks %p\n", plug);
+		if (plug) {
+			g_assert (GTK_WIDGET (frame->priv->socket)->window != NULL);
+			GTK_PLUG (plug)->socket_window = 
+				GTK_WIDGET (frame->priv->socket)->window;
+		}
+
+		gtk_socket_add_id (GTK_SOCKET (frame->priv->socket),
+				   frame->priv->plug_xid);
+		
+		gdk_window_show (GTK_WIDGET (plug)->window);
+	} else /* Ok out of proc */
+		gtk_socket_add_id (GTK_SOCKET (frame->priv->socket),
+				   frame->priv->plug_xid);
 }
 
 /**

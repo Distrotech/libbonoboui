@@ -1,5 +1,25 @@
 2001-11-07  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_set_remote_window): add disgusting
+	hacks around GtkPlug brokenness in the in-proc case.
+
+	* bonobo/bonobo-widget.c
+	(bonobo_widget_construct_control_from_objref): remove
+	sinking feeling.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_set_remote_window): an ugly,
+	ugly hack to make the control play ball in-proc.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_realize): impl.
+	(bonobo_plug_class_init): hook.
+
+	* tests/control/test-control.c (create_frame):
+	remove bogus remote faking, we need to fool Gdk too.
+
+2001-11-07  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-component.c (impl_get_prop): make the
 	check faster.
 

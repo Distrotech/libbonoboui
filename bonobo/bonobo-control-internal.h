@@ -10,7 +10,7 @@
 #ifndef _BONOBO_CONTROL_INTERNAL_H_
 #define _BONOBO_CONTROL_INTERNAL_H_
 
-#undef DEBUG_CONTROL
+#define DEBUG_CONTROL
 
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-socket.h>

@@ -94,9 +94,18 @@ static gboolean
 bonobo_plug_destroy_event (GtkWidget   *widget,
 			   GdkEventAny *event)
 {
-	dprintf ("bonobo_plug_destroy_event");
+	dprintf ("bonobo_plug_destroy_event\n");
 
 	return FALSE;
+}
+
+
+static void
+bonobo_plug_realize (GtkWidget *widget)
+{
+	dprintf ("bonobo_plug_realize\n");
+
+	GTK_WIDGET_CLASS (parent_class)->realize (widget);
 }
 
 static void
@@ -136,6 +145,7 @@ bonobo_plug_class_init (GObjectClass *klass)
 
 	klass->dispose = bonobo_plug_dispose;
 
+	widget_class->realize = bonobo_plug_realize;
 	widget_class->destroy_event = bonobo_plug_destroy_event;
 }
 

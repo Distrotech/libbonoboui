@@ -62,9 +62,22 @@ destroy_test (Test *test, DestroyType type)
 }
 
 static void
+destroy_cb (GObject *object, Test *text)
+{
+	dprintf ("destroy %s %p\n",
+		 g_type_name_from_instance (
+			 (GTypeInstance *) object),
+		 object);
+}
+
+static void
 create_control (Test *test)
 {
 	test->control_widget = gtk_entry_new ();
+	g_signal_connect (G_OBJECT (test->control_widget),
+			  "destroy", G_CALLBACK (destroy_cb),
+			  test);
+
 	g_assert (test->control_widget != NULL);
 	gtk_widget_show (test->control_widget);
 
@@ -73,6 +86,11 @@ create_control (Test *test)
 
 	test->plug = bonobo_control_get_plug (test->control);
 	g_assert (test->plug != NULL);
+
+	g_signal_connect (G_OBJECT (test->plug),
+			  "destroy", G_CALLBACK (destroy_cb),
+			  test);
+
 }
 
 /* An ugly hack into the ORB */
@@ -84,8 +102,8 @@ create_frame (Test *test, gboolean fake_remote)
 	Bonobo_Control control;
 
 	control = BONOBO_OBJREF (test->control);
-	if (fake_remote)
-		control = ORBit_objref_get_proxy (control);
+/*	if (fake_remote)
+	control = ORBit_objref_get_proxy (control);*/
 
 	test->bonobo_widget = bonobo_widget_new_control_from_objref (
 		control, CORBA_OBJECT_NIL);
@@ -134,6 +152,26 @@ mainloop_for (gulong interval)
 		;
 }
 
+#if 0
+static void
+realize_cb (GtkWidget *socket, gpointer user_data)
+{
+	GtkWidget *plug, *w;
+
+	g_warning ("Realize");
+
+	plug = gtk_plug_new (0);
+	w = gtk_button_new_with_label ("Baa");
+	gtk_widget_show_all (w);
+	gtk_widget_show (plug);
+	gtk_container_add (GTK_CONTAINER (plug), w);
+	GTK_PLUG (plug)->socket_window = GTK_WIDGET (socket)->window;
+	gtk_socket_add_id (GTK_SOCKET (socket),
+			   gtk_plug_get_id (GTK_PLUG (plug)));
+	gdk_window_show (GTK_WIDGET (plug)->window);
+}
+#endif
+
 static void
 run_tests (GtkContainer *parent,
 	   gboolean      wait_for_realize,
@@ -147,7 +185,23 @@ run_tests (GtkContainer *parent,
 	gtk_widget_show (vbox);
 	gtk_container_add (parent, vbox);
 
+
+#if 0
+	{ /* Test raw plug / socket */
+		GtkWidget *socket;
+
+		g_warning ("Foo Bar. !!!");
+
+		socket = gtk_socket_new ();
+		g_signal_connect (G_OBJECT (socket), "realize",
+				  G_CALLBACK (realize_cb), NULL);
+		gtk_widget_show (GTK_WIDGET (socket));
+		gtk_box_pack_start (GTK_BOX (vbox), socket, TRUE, TRUE, 2);
+	}
+#endif
+
 	for (t = 0; t < DESTROY_TYPE_LAST; t++) {
+
 		tests [t] = create_test (fake_remote);
 
 		gtk_box_pack_start (
@@ -157,7 +211,7 @@ run_tests (GtkContainer *parent,
 	}
 
 	if (wait_for_realize)
-		mainloop_for (1000);
+		mainloop_for (10000);
 
 	for (t = 0; t < DESTROY_TYPE_LAST; t++) {
 		destroy_test (tests [t], t);

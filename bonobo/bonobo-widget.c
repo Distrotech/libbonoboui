@@ -98,18 +98,13 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 	/* Create a local ControlFrame for it. */
 	bw->priv->frame = bonobo_control_frame_new (uic);
 
-	bonobo_control_frame_bind_to_control
-		(bw->priv->frame, control, ev);
-
-	/* People that pass us controls get them sunk. */
-	bonobo_object_release_unref (control, ev);
+	bonobo_control_frame_bind_to_control (
+		bw->priv->frame, control, ev);
 
 	bonobo_control_frame_set_autoactivate (bw->priv->frame, TRUE);
 
-	/*
-	 * Grab the actual widget which visually contains the remote
-	 * Control.  This is a GtkSocket, in reality.
-	 */
+	/* Grab the actual widget which visually contains the remote
+	 * Control.  This is a GtkSocket, in reality. */
 	frame_widget = bonobo_control_frame_get_widget (bw->priv->frame);
 
 	/* Now stick it into this BonoboWidget. */
