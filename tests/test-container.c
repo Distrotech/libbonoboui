@@ -33,13 +33,13 @@ CORBA_ORB orb;
  * views to existing components.
  */
 BonoboObjectClient *text_obj;
-BonoboClientSite *text_client_site;
+BonoboClientSite   *text_client_site;
 
 BonoboObjectClient *image_png_obj;
 BonoboClientSite   *image_client_site;
 
 BonoboObjectClient *paint_obj;
-BonoboClientSite *paint_client_site;
+BonoboClientSite   *paint_client_site;
 
 /*
  * The currently active view.  We keep track of this
@@ -85,21 +85,30 @@ launch_server (BonoboClientSite *client_site, BonoboContainer *container, char *
 }
 
 static BonoboObjectClient *
-launch_server_moniker (BonoboClientSite *client_site, BonoboContainer *container, char *moniker)
+launch_server_moniker (BonoboClientSite  *client_site,
+		       BonoboContainer   *container,
+		       Bonobo_Moniker     moniker,
+		       CORBA_Environment *ev)
 {
+	char *moniker_name;
 	BonoboObjectClient *object_server;
 	
 	bonobo_container_add (container, BONOBO_OBJECT (client_site));
 
-	printf ("Launching moniker %s...\n", moniker);
-	object_server = bonobo_object_activate (moniker, 0);
+	moniker_name = bonobo_moniker_client_get_name (moniker, ev);
+	printf ("Launching moniker '%s' ...\n", moniker_name);
+	CORBA_free (moniker_name);
+
+	object_server = bonobo_moniker_client_resolve_client_default (
+		moniker, "IDL:Bonobo/Embeddable:1.0", ev);
+
 	printf ("Return: %p\n", object_server);
-	if (!object_server){
+	if (!object_server) {
 		g_warning (_("Can not activate object_server"));
 		return NULL;
 	}
 
-	if (!bonobo_client_site_bind_embeddable (client_site, object_server)){
+	if (!bonobo_client_site_bind_embeddable (client_site, object_server)) {
 		g_warning (_("Can not bind object server to client_site"));
 		return NULL;
 	}
@@ -244,13 +253,16 @@ add_cmd (GtkWidget *widget, Application *app, char *server_id,
 }
 
 static BonoboObjectClient *
-add_cmd_moniker (GtkWidget *widget, Application *app, char *moniker, BonoboClientSite **client_site)
+add_cmd_moniker (GtkWidget *widget, Application *app,
+		 Bonobo_Moniker moniker, BonoboClientSite **client_site,
+		 CORBA_Environment *ev)
 {
 	BonoboObjectClient *server;
 	
 	*client_site = bonobo_client_site_new (app->container);
 
-	server = launch_server_moniker (*client_site, app->container, moniker);
+	server = launch_server_moniker (*client_site, app->container,
+					moniker, ev);
 	if (server == NULL)
 		return NULL;
 
@@ -373,24 +385,19 @@ static void
 add_gnumeric_cmd (GtkWidget *widget, Application *app)
 {
 	BonoboClientSite *client_site;
-	BonoboMoniker *moniker;
-	char *moniker_string_rep;
+	Bonobo_Moniker    moniker;
+	CORBA_Environment ev;
 
-	/* FIXME: the GOADID thing there is almost certainly wrong for OAF,
-	   but I have no clue what it is supposed to do. */
-	moniker = bonobo_moniker_new ();
-	bonobo_moniker_set_server (
-		moniker,
-		"GOADID:GNOME:Gnumeric:Workbook:1.0",
-		"/tmp/sales.gnumeric");
-	bonobo_moniker_append_item_name (
-		moniker,
-		"Sheet 1!A1:D1");
-	moniker_string_rep = bonobo_moniker_get_as_string (moniker);
-	bonobo_object_unref (BONOBO_OBJECT (moniker));
-	
-	add_cmd_moniker (widget, app, moniker_string_rep, &client_site); 
-	g_free (moniker_string_rep);
+	CORBA_exception_init (&ev);
+
+	moniker = bonobo_moniker_client_new_from_name (
+		"file:/tmp/sales.gnumeric!Sheet1!A1:D1", &ev);
+
+	add_cmd_moniker (widget, app, moniker, &client_site, &ev); 
+
+	bonobo_object_release_unref (moniker, &ev);
+
+	CORBA_exception_free (&ev);
 }
 
 static int
@@ -461,9 +468,9 @@ do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 	 * Setup our demostration canvas
 	 */
 	sw = gtk_scrolled_window_new (NULL, NULL);
-	if (aa){
-		gtk_widget_push_visual (gdk_rgb_get_visual());
-		gtk_widget_push_colormap (gdk_rgb_get_cmap());
+	if (aa) {
+		gtk_widget_push_visual (gdk_rgb_get_visual ());
+		gtk_widget_push_colormap (gdk_rgb_get_cmap ());
 		canvas = gnome_canvas_new_aa ();
 		gtk_widget_pop_visual ();
 		gtk_widget_pop_colormap ();
