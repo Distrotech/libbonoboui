@@ -13,6 +13,12 @@
 #include <bonobo/gnome-bonobo.h>
 
 /*
+ * Number of running objects
+ */ 
+static int running_objects = 0;
+static GnomeEmbeddableFactory *factory = NULL;
+
+/*
  * The Embeddable data.
  *
  * This is where we store the document's abstract data.  Each
@@ -70,6 +76,15 @@ embeddable_destroy_cb (GnomeEmbeddable *embeddable, embeddable_data_t *embeddabl
 {
 	gdk_pixmap_unref (embeddable_data->pixmap);
 	g_free (embeddable_data); 
+
+	running_objects--;
+	if (running_objects > 0)
+		return;
+	/*
+	 * When last object has gone unref the factory & quit.
+	 */
+	gnome_object_unref (GNOME_OBJECT (factory));
+	gtk_main_quit ();
 }
 
 /*
@@ -613,7 +628,8 @@ embeddable_factory (GnomeEmbeddableFactory *this,
 		g_free (embeddable_data);
 		return NULL;
 	}
-
+	
+	running_objects++;
 	embeddable_data->embeddable = embeddable;
 
 	/*
@@ -698,8 +714,6 @@ init_server_factory (int argc, char **argv)
 int
 main (int argc, char **argv)
 {
-	GnomeEmbeddableFactory *factory;
-
 	/*
 	 * Setup the factory.
 	 */
