@@ -12,13 +12,13 @@
 
 #include <config.h>
 #include <gnome.h>
-#include <bonobo/gnome-bonobo.h>
+#include <bonobo.h>
 
 typedef struct {
-	GnomeContainer  *container;
-	GnomeUIHandler  *uih;
+	BonoboContainer  *container;
+	BonoboUIHandler  *uih;
 
-	GnomeViewFrame  *active_view_frame;
+	BonoboViewFrame  *active_view_frame;
 
 	GtkWidget	*app;
 	GtkWidget	*vbox;
@@ -27,8 +27,8 @@ typedef struct {
 typedef struct {
 	Container	  *container;
 
-	GnomeClientSite   *client_site;
-	GnomeObjectClient *server;
+	BonoboClientSite   *client_site;
+	BonoboObjectClient *server;
 
 	GtkWidget	  *frame;
 	GtkWidget	  *views_hbox;
@@ -66,13 +66,13 @@ container_exit_cmd (GtkWidget *widget, Container *container)
 	/*
 	 * Destroying the container will destroy all the components.
 	 */
-	gnome_object_destroy (GNOME_OBJECT (container->container));
+	bonobo_object_destroy (BONOBO_OBJECT (container->container));
 
 	gtk_main_quit ();
 }
 
 static void
-component_user_activate_request_cb (GnomeViewFrame *view_frame, Component *component)
+component_user_activate_request_cb (BonoboViewFrame *view_frame, Component *component)
 {
 	Container *container = component->container;
 
@@ -86,7 +86,7 @@ component_user_activate_request_cb (GnomeViewFrame *view_frame, Component *compo
 		 * cover it so that it does not receive any Gtk
 		 * events.
 		 */
-                gnome_view_frame_view_deactivate (container->active_view_frame);
+                bonobo_view_frame_view_deactivate (container->active_view_frame);
 
 		/*
 		 * Here we manually cover it if it hasn't acquiesced.
@@ -96,7 +96,7 @@ component_user_activate_request_cb (GnomeViewFrame *view_frame, Component *compo
 		 * to NULL.  Which is why this check is here.
 		 */
 		if (container->active_view_frame != NULL)
-			gnome_view_frame_set_covered (container->active_view_frame, TRUE);
+			bonobo_view_frame_set_covered (container->active_view_frame, TRUE);
 									     
 		container->active_view_frame = NULL;
 	}
@@ -112,11 +112,11 @@ component_user_activate_request_cb (GnomeViewFrame *view_frame, Component *compo
 	 * be activated, and so we wait until it notifies us that it
 	 * has been activated to uncover it.
 	 */
-        gnome_view_frame_view_activate (view_frame);
+        bonobo_view_frame_view_activate (view_frame);
 }
 
 static void
-component_view_activated_cb (GnomeViewFrame *view_frame, gboolean activated, Component *component)
+component_view_activated_cb (BonoboViewFrame *view_frame, gboolean activated, Component *component)
 {
 	Container *container = component->container;
 
@@ -136,7 +136,7 @@ component_view_activated_cb (GnomeViewFrame *view_frame, gboolean activated, Com
 		 * Otherwise, uncover it so that it can receive
 		 * events, and set it as the active View.
 		 */
-		gnome_view_frame_set_covered (view_frame, FALSE);
+		bonobo_view_frame_set_covered (view_frame, FALSE);
                 container->active_view_frame = view_frame;
         } else {
 		/*
@@ -148,7 +148,7 @@ component_view_activated_cb (GnomeViewFrame *view_frame, gboolean activated, Com
 		 * not told it to deactivate itself, and that is
 		 * why we cover the view here.
 		 */
-		gnome_view_frame_set_covered (view_frame, TRUE);
+		bonobo_view_frame_set_covered (view_frame, TRUE);
 
 		if (view_frame == container->active_view_frame)
 			container->active_view_frame = NULL;
@@ -156,28 +156,28 @@ component_view_activated_cb (GnomeViewFrame *view_frame, gboolean activated, Com
 }
 
 static void
-component_user_context_cb (GnomeViewFrame *view_frame, Component *component)
+component_user_context_cb (BonoboViewFrame *view_frame, Component *component)
 {
 	char *executed_verb;
 	GList *l;
 
 	/*
-	 * See if the remote GnomeEmbeddable supports any verbs at
+	 * See if the remote BonoboEmbeddable supports any verbs at
 	 * all.
 	 */
-	l = gnome_client_site_get_verbs (component->client_site);
+	l = bonobo_client_site_get_verbs (component->client_site);
 	if (l == NULL)
 		return;
-	gnome_client_site_free_verbs (l);
+	bonobo_client_site_free_verbs (l);
 
 	/*
 	 * Popup the verb popup and execute the chosen verb.  This
 	 * function saves us the work of creating the menu, connecting
 	 * the callback, and executing the verb on the remove
-	 * GnomeView.  We could implement all this functionality
+	 * BonoboView.  We could implement all this functionality
 	 * ourselves if we wanted.
 	 */
-	executed_verb = gnome_view_frame_popup_verbs (view_frame);
+	executed_verb = bonobo_view_frame_popup_verbs (view_frame);
 
 	g_free (executed_verb);
 }
@@ -188,28 +188,28 @@ component_shutdown (Component *component)
 	gtk_widget_destroy (component->frame);
 	gtk_widget_destroy (component->fs);
 
-	gnome_object_destroy (GNOME_OBJECT (component->client_site));
+	bonobo_object_destroy (BONOBO_OBJECT (component->client_site));
 
 	g_free (component);
 }
 
 static void
-component_view_frame_system_exception_cb (GnomeViewFrame *view_frame, CORBA_Object cobject,
+component_view_frame_system_exception_cb (BonoboViewFrame *view_frame, CORBA_Object cobject,
 					  CORBA_Environment *ev, gpointer data)
 {
-	gnome_object_destroy (GNOME_OBJECT (view_frame));
+	bonobo_object_destroy (BONOBO_OBJECT (view_frame));
 }
 
 static void
 component_add_view (Component *component)
 {
-	GnomeViewFrame *view_frame;
+	BonoboViewFrame *view_frame;
 	GtkWidget *view_widget;
 
 	/*
 	 * Create the remote view and the local ViewFrame.
 	 */
-	view_frame = gnome_client_site_new_view (component->client_site);
+	view_frame = bonobo_client_site_new_view (component->client_site);
 
 	/*
 	 * Connect to the "system_exception" signal on the
@@ -221,17 +221,17 @@ component_add_view (Component *component)
 			    component_view_frame_system_exception_cb, component);
 
 	/*
-	 * Set the GnomeUIHandler for this ViewFrame.  That way, the
+	 * Set the BonoboUIHandler for this ViewFrame.  That way, the
 	 * embedded component can get access to our UIHandler server
 	 * so that it can merge menu and toolbar items when it gets
 	 * activated.
 	 */
-	gnome_view_frame_set_ui_handler (view_frame, component->container->uih);
+	bonobo_view_frame_set_ui_handler (view_frame, component->container->uih);
 
 	/*
 	 * Embed the view frame into the application.
 	 */
-	view_widget = gnome_view_frame_get_wrapper (view_frame);
+	view_widget = bonobo_view_frame_get_wrapper (view_frame);
 	gtk_box_pack_start (GTK_BOX (component->views_hbox), view_widget,
 			    FALSE, FALSE, 5);
 
@@ -251,7 +251,7 @@ component_add_view (Component *component)
 	 * After the user double clicks on the component, our signal
 	 * callback (component_user_activate_request_cb()) asks the
 	 * component to activate itself (see
-	 * gnome_view_frame_view_activate()).  The component can then
+	 * bonobo_view_frame_view_activate()).  The component can then
 	 * choose to either accept or refuse activation.  When an
 	 * embedded component notifies us of its decision to change
 	 * its activation state, the "view_activated" signal is
@@ -320,7 +320,7 @@ component_create_fs (Component *component,
 static void
 component_load_pf_ok_cb (GtkWidget *button, Component *component)
 {
-	GNOME_PersistFile persist;
+	Bonobo_PersistFile persist;
 	CORBA_Environment ev;
 	char *filename;
 
@@ -344,7 +344,7 @@ component_load_pf_ok_cb (GtkWidget *button, Component *component)
 	 * Now get the PersistFile interface off the embedded
 	 * component.
 	 */
-	persist = gnome_object_client_query_interface (component->server,
+	persist = bonobo_object_client_query_interface (component->server,
 						       "IDL:GNOME/PersistFile:1.0",
 						       NULL);
 
@@ -367,14 +367,14 @@ component_load_pf_ok_cb (GtkWidget *button, Component *component)
 	/*
 	 * Load the file into the component using PersistFilea.
 	 */
-	GNOME_PersistFile_load (persist, (CORBA_char *) filename, &ev);
+	Bonobo_PersistFile_load (persist, (CORBA_char *) filename, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_warning_dialog (_("An exception occured while trying "
 					"to load data into the component with "
 					"PersistFile"));
 	} else {
-	  GNOME_Unknown_unref (persist, &ev);
+	  Bonobo_Unknown_unref (persist, &ev);
 	
 	  CORBA_Object_release (persist, &ev);
 	}
@@ -401,9 +401,9 @@ component_load_pf_cb (GtkWidget *button, Component *component)
 static void
 component_load_ps_ok_cb (GtkWidget *button, Component *component)
 {
-	GNOME_PersistStream persist;
+	Bonobo_PersistStream persist;
 	CORBA_Environment ev;
-	GnomeStream *stream;
+	BonoboStream *stream;
 	char *filename;
 
 	/*
@@ -411,7 +411,7 @@ component_load_ps_ok_cb (GtkWidget *button, Component *component)
 	 */
 	filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (component->fs));
 
-	stream = gnome_stream_fs_open (filename, GNOME_Storage_READ);
+	stream = bonobo_stream_fs_open (filename, Bonobo_Storage_READ);
 
 	if (stream == NULL) {
 		char *error_msg;
@@ -432,7 +432,7 @@ component_load_ps_ok_cb (GtkWidget *button, Component *component)
 	 * Now get the PersistStream interface off the embedded
 	 * component.
 	 */
-	persist = gnome_object_client_query_interface (component->server,
+	persist = bonobo_object_client_query_interface (component->server,
 						       "IDL:GNOME/PersistStream:1.0",
 						       NULL);
 
@@ -446,7 +446,7 @@ component_load_ps_ok_cb (GtkWidget *button, Component *component)
 	if (persist == CORBA_OBJECT_NIL) {
 		gnome_warning_dialog (_("The component now claims that it "
 					"doesn't support PersistStream!"));
-		gnome_object_unref (GNOME_OBJECT (stream));
+		bonobo_object_unref (BONOBO_OBJECT (stream));
 		return;
 	}
 
@@ -455,8 +455,8 @@ component_load_ps_ok_cb (GtkWidget *button, Component *component)
 	/*
 	 * Load the file into the component using PersistStream.
 	 */
-	GNOME_PersistStream_load (persist,
-	  (GNOME_Stream) gnome_object_corba_objref (GNOME_OBJECT (stream)),
+	Bonobo_PersistStream_load (persist,
+	  (Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)),
 				  &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
@@ -468,7 +468,7 @@ component_load_ps_ok_cb (GtkWidget *button, Component *component)
 	/*
 	 * Now we destroy the PersistStream object.
 	 */
-	GNOME_Unknown_unref (persist, &ev);
+	Bonobo_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
 
 	CORBA_exception_free (&ev);
@@ -492,8 +492,8 @@ component_destroy_cb (GtkWidget *button, Component *component)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_Unknown_unref (
-		gnome_object_corba_objref (GNOME_OBJECT (component->server)),
+	Bonobo_Unknown_unref (
+		bonobo_object_corba_objref (BONOBO_OBJECT (component->server)),
 		&ev);
 
 	CORBA_exception_free (&ev);
@@ -501,17 +501,17 @@ component_destroy_cb (GtkWidget *button, Component *component)
 	gtk_widget_destroy (component->frame);
 }
 
-static GnomeObjectClient *
-container_launch_component (GnomeClientSite *client_site,
-			    GnomeContainer *container,
+static BonoboObjectClient *
+container_launch_component (BonoboClientSite *client_site,
+			    BonoboContainer *container,
 			    char *component_goad_id)
 {
-	GnomeObjectClient *object_server;
+	BonoboObjectClient *object_server;
 
 	/*
 	 * Launch the component.
 	 */
-	object_server = gnome_object_activate_with_goad_id (
+	object_server = bonobo_object_activate_with_goad_id (
 		NULL, component_goad_id, 0, NULL);
 
 	if (object_server == NULL)
@@ -519,21 +519,21 @@ container_launch_component (GnomeClientSite *client_site,
 
 	/*
 	 * Bind it to the local ClientSite.  Every embedded component
-	 * has a local GnomeClientSite object which serves as a
+	 * has a local BonoboClientSite object which serves as a
 	 * container-side point of contact for the embeddable.  The
 	 * container talks to the embeddable through its ClientSite
 	 */
-	if (! gnome_client_site_bind_embeddable (client_site, object_server)) {
-		gnome_object_unref (GNOME_OBJECT (object_server));
+	if (! bonobo_client_site_bind_embeddable (client_site, object_server)) {
+		bonobo_object_unref (BONOBO_OBJECT (object_server));
 		return NULL;
 	}
 
 	/*
-	 * The GnomeContainer object maintains a list of the
+	 * The BonoboContainer object maintains a list of the
 	 * ClientSites which it manages.  Here we add the new
 	 * ClientSite to that list.
 	 */
-	gnome_container_add (container, GNOME_OBJECT (client_site));
+	bonobo_container_add (container, BONOBO_OBJECT (client_site));
 
 	return object_server;
 }
@@ -587,7 +587,7 @@ container_create_component_frame (Container *container, Component *component, ch
 	/*
 	 * Create the 'Load component with PersistFile' button.
 	 */
-	if (gnome_object_client_has_interface (component->server,
+	if (bonobo_object_client_has_interface (component->server,
 					       "IDL:GNOME/PersistFile:1.0",
 					       NULL)) {
 		
@@ -604,7 +604,7 @@ container_create_component_frame (Container *container, Component *component, ch
 	/*
 	 * Create the 'Load component with PersistStream' button.
 	 */
-	if (gnome_object_client_has_interface (component->server,
+	if (bonobo_object_client_has_interface (component->server,
 					"IDL:GNOME/PersistStream:1.0",
 					       NULL)) {
 		button = gtk_button_new_with_label (_("Load with PersistStream"));
@@ -638,7 +638,7 @@ container_create_component_frame (Container *container, Component *component, ch
 }
 
 static void
-component_client_site_system_exception_cb (GnomeObject *client, CORBA_Object cobject,
+component_client_site_system_exception_cb (BonoboObject *client, CORBA_Object cobject,
 					   CORBA_Environment *ev, gpointer data)
 {
 	Component *component = (Component *) data;
@@ -650,19 +650,19 @@ static void
 container_activate_component (Container *container, char *component_goad_id)
 {
 	Component *component;
-	GnomeClientSite *client_site;
-	GnomeObjectClient *server;
+	BonoboClientSite *client_site;
+	BonoboObjectClient *server;
 
 	/*
 	 * The ClientSite is the container-side point of contact for
 	 * the Embeddable.  So there is a one-to-one correspondence
-	 * between GnomeClientSites and GnomeEmbeddables.
+	 * between BonoboClientSites and BonoboEmbeddables.
 	 */
-	client_site = gnome_client_site_new (container->container);
+	client_site = bonobo_client_site_new (container->container);
 
 	/*
-	 * A GnomeObjectClient is a simple wrapper for a remote
-	 * GnomeObject (a server supporting GNOME::Unknown).
+	 * A BonoboObjectClient is a simple wrapper for a remote
+	 * BonoboObject (a server supporting Bonobo::Unknown).
 	 */
 	server = container_launch_component (client_site, container->container,
 					     component_goad_id);
@@ -687,7 +687,7 @@ container_activate_component (Container *container, char *component_goad_id)
 	component->server = server;
 
 	/*
-	 * Now we have a GnomeEmbeddable bound to our local
+	 * Now we have a BonoboEmbeddable bound to our local
 	 * ClientSite.  Here we create a little on-screen box to store
 	 * the embeddable in, when the user adds views for it.
 	 */
@@ -730,32 +730,32 @@ container_add_embeddable_cmd (GtkWidget *widget, Container *container)
 static void
 container_create_menus (Container *container)
 {
-	GnomeUIHandlerMenuItem *menu_list;
+	BonoboUIHandlerMenuItem *menu_list;
 
-	gnome_ui_handler_create_menubar (container->uih);
+	bonobo_ui_handler_create_menubar (container->uih);
 
 	/*
 	 * Create the basic menus out of UIInfo structures.
 	 */
-	menu_list = gnome_ui_handler_menu_parse_uiinfo_list_with_data (container_main_menu, container);
-	gnome_ui_handler_menu_add_list (container->uih, "/", menu_list);
-	gnome_ui_handler_menu_free_list (menu_list);
+	menu_list = bonobo_ui_handler_menu_parse_uiinfo_list_with_data (container_main_menu, container);
+	bonobo_ui_handler_menu_add_list (container->uih, "/", menu_list);
+	bonobo_ui_handler_menu_free_list (menu_list);
 }
 
 /*
- * This callback is invoked if the GnomeContainer raises a
+ * This callback is invoked if the BonoboContainer raises a
  * system_exception signal, signifying that a fatal CORBA exception
  * has been encountered.
  */
 static void
-container_container_system_exception_cb (GnomeObject *container_object, CORBA_Object cobject,
+container_container_system_exception_cb (BonoboObject *container_object, CORBA_Object cobject,
 					 CORBA_Environment *ev, gpointer data)
 {
 	Container *container = (Container *) data;
 
 	gnome_warning_dialog (_("Container encountered a fatal CORBA exception!  Shutting down..."));
 
-	gnome_object_destroy (GNOME_OBJECT (container->container));
+	bonobo_object_destroy (BONOBO_OBJECT (container->container));
 	gtk_widget_destroy (container->app);
 
 	gtk_main_quit ();
@@ -774,11 +774,11 @@ container_create (void)
 	gtk_window_set_default_size (GTK_WINDOW (container->app), 400, 400);
 	gtk_window_set_policy (GTK_WINDOW (container->app), TRUE, TRUE, FALSE);
 
-	container->container = gnome_container_new ();
+	container->container = bonobo_container_new ();
 
 	/*
 	 * The "system_exception" signal will notify us if a fatal CORBA
-	 * exception has rendered the GnomeContainer defunct.
+	 * exception has rendered the BonoboContainer defunct.
 	 */
 	gtk_signal_connect (GTK_OBJECT (container->container), "system_exception",
 			    container_container_system_exception_cb, container);
@@ -790,13 +790,13 @@ container_create (void)
 	gnome_app_set_contents (GNOME_APP (container->app), container->vbox);
 
 	/*
-	 * Create the GnomeUIHandler object which will be used to
+	 * Create the BonoboUIHandler object which will be used to
 	 * create the container's menus and toolbars.  The UIHandler
 	 * also creates a CORBA server which embedded components use
 	 * to do menu/toolbar merging.
 	 */
-	container->uih = gnome_ui_handler_new ();
-	gnome_ui_handler_set_app (container->uih, GNOME_APP (container->app));
+	container->uih = bonobo_ui_handler_new ();
+	bonobo_ui_handler_set_app (container->uih, GNOME_APP (container->app));
 
 	/*
 	 * Create the menus.

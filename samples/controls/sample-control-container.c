@@ -8,16 +8,16 @@
 #include <config.h>
 #include <gnome.h>
 #include <libgnorba/gnorba.h>
-#include <bonobo/gnome-bonobo.h>
+#include <bonobo.h>
 
-GnomePropertyBagClient *pbc;
+BonoboPropertyBagClient *pbc;
 
 #define CORBA_boolean__alloc() (CORBA_boolean *) CORBA_octet_allocbuf (sizeof (CORBA_boolean))
 
 static void populate_property_list (GtkWidget *bw, GtkCList *clist);
 
 static void
-edit_property (GtkCList *clist, GdkEventButton *event, GnomeBonoboWidget *bw)
+edit_property (GtkCList *clist, GdkEventButton *event, BonoboWidget *bw)
 {
 	gchar *prop;
 	gint row, col;
@@ -28,17 +28,17 @@ edit_property (GtkCList *clist, GdkEventButton *event, GnomeBonoboWidget *bw)
 		gtk_clist_get_selection_info (clist, event->x, event->y,
 		                              &row, &col);
 		if (row < 0) return;
-		l = gnome_property_bag_client_get_property_names (pbc);
+		l = bonobo_property_bag_client_get_property_names (pbc);
 		if (row > g_list_length (l) - 1) return;
 
 		/* Get the value of the property they clicked on. */
 		prop = g_list_nth_data (l, row);
 		/* Change it appropriately. */
-		tc = gnome_property_bag_client_get_property_type (pbc, prop);
+		tc = bonobo_property_bag_client_get_property_type (pbc, prop);
 		switch (tc->kind) {
 		case CORBA_tk_boolean:
-			gnome_property_bag_client_set_value_boolean (pbc, prop,
-				!gnome_property_bag_client_get_value_boolean (pbc, prop));
+			bonobo_property_bag_client_set_value_boolean (pbc, prop,
+				!bonobo_property_bag_client_get_value_boolean (pbc, prop));
 			break;
 		default:
 			g_warning ("Cannot set_value this type of property yet, sorry.");
@@ -58,16 +58,16 @@ edit_property (GtkCList *clist, GdkEventButton *event, GnomeBonoboWidget *bw)
 static void
 populate_property_list (GtkWidget *bw, GtkCList *clist)
 {
-	GnomeControlFrame *cf;
+	BonoboControlFrame *cf;
 	GList *property_list, *l;
 
 	/* Get the list of properties. */
 	if (pbc == NULL) {
-		cf = gnome_bonobo_widget_get_control_frame (GNOME_BONOBO_WIDGET (bw));
-		pbc = gnome_control_frame_get_control_property_bag (cf);
+		cf = bonobo_widget_get_control_frame (BONOBO_WIDGET (bw));
+		pbc = bonobo_control_frame_get_control_property_bag (cf);
 	}
 
-	property_list = gnome_property_bag_client_get_property_names (pbc);
+	property_list = bonobo_property_bag_client_get_property_names (pbc);
 	for (l = property_list; l != NULL; l = l->next) {
 		char *row_array[2];
 		CORBA_TypeCode tc;
@@ -75,31 +75,31 @@ populate_property_list (GtkWidget *bw, GtkCList *clist)
 
 		row_array [0] = name;
 
-		tc = gnome_property_bag_client_get_property_type (pbc, name);
+		tc = bonobo_property_bag_client_get_property_type (pbc, name);
 		switch (tc->kind) {
 		case CORBA_tk_boolean:
-			row_array [1] = g_strdup (gnome_property_bag_client_get_value_boolean (pbc, name) ? "TRUE" : "FALSE");
+			row_array [1] = g_strdup (bonobo_property_bag_client_get_value_boolean (pbc, name) ? "TRUE" : "FALSE");
 			break;
 		case CORBA_tk_string:
-			row_array [1] = g_strdup (gnome_property_bag_client_get_value_string (pbc, name));
+			row_array [1] = g_strdup (bonobo_property_bag_client_get_value_string (pbc, name));
 			break;
 		case CORBA_tk_short:
-			row_array [1] = g_strdup_printf ("%d", gnome_property_bag_client_get_value_short (pbc, name));
+			row_array [1] = g_strdup_printf ("%d", bonobo_property_bag_client_get_value_short (pbc, name));
 			break;
 		case CORBA_tk_ushort:
-			row_array [1] = g_strdup_printf ("%d", gnome_property_bag_client_get_value_ushort (pbc, name));
+			row_array [1] = g_strdup_printf ("%d", bonobo_property_bag_client_get_value_ushort (pbc, name));
 			break;
 		case CORBA_tk_long:
-			row_array [1] = g_strdup_printf ("%ld", gnome_property_bag_client_get_value_long (pbc, name));
+			row_array [1] = g_strdup_printf ("%ld", bonobo_property_bag_client_get_value_long (pbc, name));
 			break;
 		case CORBA_tk_ulong:
-			row_array [1] = g_strdup_printf ("%ld", gnome_property_bag_client_get_value_ulong (pbc, name));
+			row_array [1] = g_strdup_printf ("%ld", bonobo_property_bag_client_get_value_ulong (pbc, name));
 			break;
 		case CORBA_tk_float:
-			row_array [1] = g_strdup_printf ("%f", gnome_property_bag_client_get_value_float (pbc, name));
+			row_array [1] = g_strdup_printf ("%f", bonobo_property_bag_client_get_value_float (pbc, name));
 			break;
 		case CORBA_tk_double:
-			row_array [1] = g_strdup_printf ("%g", gnome_property_bag_client_get_value_double (pbc, name));
+			row_array [1] = g_strdup_printf ("%g", bonobo_property_bag_client_get_value_double (pbc, name));
 			break;
 		default:
 			row_array [1] = g_strdup ("Unhandled Property Type");
@@ -157,7 +157,7 @@ table_create (GtkWidget *control)
 
 	populate_property_list (control, GTK_CLIST (clist));
 
-	control = gnome_bonobo_widget_new_control ("control:calculator");
+	control = bonobo_widget_new_control ("control:calculator");
 	gtk_widget_show (control);
 	gtk_table_attach (GTK_TABLE (table), control,
 			  0, 1, 0, 1,
@@ -178,7 +178,7 @@ container_create (void)
 	gtk_window_set_default_size (GTK_WINDOW (app), 500, 440);
 	gtk_window_set_policy (GTK_WINDOW (app), TRUE, TRUE, FALSE);
 
-	control = gnome_bonobo_widget_new_control ("control:clock");
+	control = bonobo_widget_new_control ("control:clock");
 	gnome_app_set_contents (GNOME_APP (app), table_create (control));
 
 	gtk_widget_show_all (app);

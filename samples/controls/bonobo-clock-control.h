@@ -1,7 +1,7 @@
 #ifndef __BONOBO_CLOCK_CONTROL_H__
 #define __BONOBO_CLOCK_CONTROL_H__
 
-#include <bonobo/gnome-control.h>
+#include <bonobo/bonobo-control.h>
 
 void             bonobo_clock_factory_init (void);
 

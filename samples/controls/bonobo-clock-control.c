@@ -10,14 +10,14 @@
 #include <config.h>
 #include <gnome.h>
 #include <libgnorba/gnorba.h>
-#include <bonobo/gnome-bonobo.h>
+#include <bonobo.h>
 
 #include <libgnomeui/gtk-clock.h>
 
 #include "bonobo-clock-control.h"
 
 static void
-bonobo_clock_control_prop_value_changed_cb (GnomePropertyBag *pb, char *name, char *type,
+bonobo_clock_control_prop_value_changed_cb (BonoboPropertyBag *pb, char *name, char *type,
 					    gpointer old_value, gpointer new_value,
 					    gpointer user_data)
 {
@@ -33,11 +33,11 @@ bonobo_clock_control_prop_value_changed_cb (GnomePropertyBag *pb, char *name, ch
 	}
 }
 
-static GnomeObject *
-bonobo_clock_factory (GnomeGenericFactory *Factory, void *closure)
+static BonoboObject *
+bonobo_clock_factory (BonoboGenericFactory *Factory, void *closure)
 {
-	GnomePropertyBag  *pb;
-	GnomeControl      *control;
+	BonoboPropertyBag  *pb;
+	BonoboControl      *control;
 	GtkWidget	  *clock;
 	CORBA_boolean	  *running;
 
@@ -46,11 +46,11 @@ bonobo_clock_factory (GnomeGenericFactory *Factory, void *closure)
 	gtk_clock_start (GTK_CLOCK (clock));
 	gtk_widget_show (clock);
 
-	control = gnome_control_new (clock);
+	control = bonobo_control_new (clock);
 
 	/* Create the properties. */
-	pb = gnome_property_bag_new ();
-	gnome_control_set_property_bag (control, pb);
+	pb = bonobo_property_bag_new ();
+	bonobo_control_set_property_bag (control, pb);
 
 	gtk_signal_connect (GTK_OBJECT (pb), "value_changed",
 			    bonobo_clock_control_prop_value_changed_cb,
@@ -58,23 +58,23 @@ bonobo_clock_factory (GnomeGenericFactory *Factory, void *closure)
 
 	running = g_new0 (gboolean, 1);
 	*running = TRUE;
-	gnome_property_bag_add (pb, "running", "boolean",
+	bonobo_property_bag_add (pb, "running", "boolean",
 				(gpointer) running,
 				NULL, "Whether or not the clock is running", 0);
 
-	return GNOME_OBJECT (control);
+	return BONOBO_OBJECT (control);
 }
 
 void
 bonobo_clock_factory_init (void)
 {
-	static GnomeGenericFactory *bonobo_clock_control_factory = NULL;
+	static BonoboGenericFactory *bonobo_clock_control_factory = NULL;
 
 	if (bonobo_clock_control_factory != NULL)
 		return;
 
 	bonobo_clock_control_factory =
-		gnome_generic_factory_new (
+		bonobo_generic_factory_new (
 			"control-factory:clock",
 			bonobo_clock_factory, NULL);
 

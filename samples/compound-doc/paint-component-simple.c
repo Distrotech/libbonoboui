@@ -10,23 +10,23 @@
 
 #include <config.h>
 #include <gnome.h>
-#include <bonobo/gnome-bonobo.h>
+#include <bonobo.h>
 
 /*
  * Number of running objects
  */ 
 static int running_objects = 0;
-static GnomeEmbeddableFactory *factory = NULL;
+static BonoboEmbeddableFactory *factory = NULL;
 
 /*
  * The Embeddable data.
  *
  * This is where we store the document's abstract data.  Each
- * on-screen representation of the document (a GnomeView) will be
+ * on-screen representation of the document (a BonoboView) will be
  * based on the data in this structure.
  */
 typedef struct {
-	GnomeEmbeddable     *embeddable;
+	BonoboEmbeddable     *embeddable;
 
 	/*
 	 * We store the image data internally in a GdkPixmap.
@@ -40,7 +40,7 @@ typedef struct {
  * The per-view data.
  */
 typedef struct {
-	GnomeView	    *view;
+	BonoboView	    *view;
 	embeddable_data_t   *embeddable_data;
 
 	/*
@@ -69,10 +69,10 @@ typedef struct {
 } view_data_t;
 
 /*
- * Clean up our supplementary GnomeEmbeddable data sturctures.
+ * Clean up our supplementary BonoboEmbeddable data sturctures.
  */
 static void
-embeddable_destroy_cb (GnomeEmbeddable *embeddable, embeddable_data_t *embeddable_data)
+embeddable_destroy_cb (BonoboEmbeddable *embeddable, embeddable_data_t *embeddable_data)
 {
 	gdk_pixmap_unref (embeddable_data->pixmap);
 	g_free (embeddable_data); 
@@ -83,29 +83,29 @@ embeddable_destroy_cb (GnomeEmbeddable *embeddable, embeddable_data_t *embeddabl
 	/*
 	 * When last object has gone unref the factory & quit.
 	 */
-	gnome_object_unref (GNOME_OBJECT (factory));
+	bonobo_object_unref (BONOBO_OBJECT (factory));
 	gtk_main_quit ();
 }
 
 /*
- * This callback is invoked when the GnomeEmbeddable object
+ * This callback is invoked when the BonoboEmbeddable object
  * encounters a fatal CORBA exception.
  */
 static void
-embeddable_system_exception_cb (GnomeEmbeddable *embeddable, CORBA_Object corba_object,
+embeddable_system_exception_cb (BonoboEmbeddable *embeddable, CORBA_Object corba_object,
 				CORBA_Environment *ev, gpointer data)
 {
-	gnome_object_destroy (GNOME_OBJECT (embeddable));
+	bonobo_object_destroy (BONOBO_OBJECT (embeddable));
 }
 
 /*
  * The view encounters a fatal corba exception.
  */
 static void
-view_system_exception_cb (GnomeView *view, CORBA_Object corba_object,
+view_system_exception_cb (BonoboView *view, CORBA_Object corba_object,
 			  CORBA_Environment *ev, gpointer data)
 {
-	gnome_object_destroy (GNOME_OBJECT (view));
+	bonobo_object_destroy (BONOBO_OBJECT (view));
 }
 
 /*
@@ -125,7 +125,7 @@ view_update (view_data_t *view_data)
 }
 
 static void 
-update_view_foreach (GnomeView *view, void *data)
+update_view_foreach (BonoboView *view, void *data)
 {
 	view_data_t *view_data;
 
@@ -140,11 +140,11 @@ update_view_foreach (GnomeView *view, void *data)
 static void
 embeddable_update_all_views (embeddable_data_t *embeddable_data)
 {
-	GnomeEmbeddable *embeddable;
+	BonoboEmbeddable *embeddable;
 
 	embeddable = embeddable_data->embeddable;
 
-	gnome_embeddable_foreach_view (embeddable, update_view_foreach, NULL);
+	bonobo_embeddable_foreach_view (embeddable, update_view_foreach, NULL);
 }
 
 /*
@@ -165,7 +165,7 @@ view_set_color (view_data_t *view_data, char *color)
 }
 
 static void
-view_color_select_cb (GnomeUIHandler *uih, view_data_t *view_data, char *path)
+view_color_select_cb (BonoboUIHandler *uih, view_data_t *view_data, char *path)
 {
 	if (strstr (path, "Red") != NULL)
 		view_set_color (view_data, "red");
@@ -182,19 +182,19 @@ view_color_select_cb (GnomeUIHandler *uih, view_data_t *view_data, char *path)
 static void
 view_create_menus (view_data_t *view_data)
 {
-	GNOME_UIHandler  remote_uih;
-	GnomeView       *view = view_data->view;
-	GnomeUIHandler  *uih;
+	Bonobo_UIHandler  remote_uih;
+	BonoboView       *view = view_data->view;
+	BonoboUIHandler  *uih;
 
 	/*
-	 * Grab our GnomeUIHandler object.
+	 * Grab our BonoboUIHandler object.
 	 */
-	uih = gnome_view_get_ui_handler (view);
+	uih = bonobo_view_get_ui_handler (view);
 
 	/*
 	 * Get our container's UIHandler server.
 	 */
-	remote_uih = gnome_view_get_remote_ui_handler (view);
+	remote_uih = bonobo_view_get_remote_ui_handler (view);
 
 	/*
 	 * We have to deal gracefully with containers
@@ -204,38 +204,38 @@ view_create_menus (view_data_t *view_data)
 		return;
 
 	/*
-	 * Give our GnomeUIHandler object a reference to the
+	 * Give our BonoboUIHandler object a reference to the
 	 * container's UIhandler server.
 	 */
-	gnome_ui_handler_set_container (uih, remote_uih);
+	bonobo_ui_handler_set_container (uih, remote_uih);
 
 	/*
 	 * Create our menu entries.
 	 */
-	gnome_ui_handler_menu_new_subtree (uih, "/Colors",
+	bonobo_ui_handler_menu_new_subtree (uih, "/Colors",
 					   N_("Select drawing color..."),
 					   N_("Set the current drawing color"),
 					   1,
-					   GNOME_UI_HANDLER_PIXMAP_NONE, NULL,
+					   BONOBO_UI_HANDLER_PIXMAP_NONE, NULL,
 					   0, (GdkModifierType)0);
 
-	gnome_ui_handler_menu_new_radiogroup (uih, "/Colors/color radiogroup");
+	bonobo_ui_handler_menu_new_radiogroup (uih, "/Colors/color radiogroup");
 
-	gnome_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/White",
+	bonobo_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/White",
 					     N_("White"),
 					     N_("Set the current drawing color to white"),
 					     -1,
 					     0, (GdkModifierType) 0,
 					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
 
-	gnome_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Red",
+	bonobo_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Red",
 					     N_("Red"),
 					     N_("Set the current drawing color to red"),
 					     -1, 
 					     0, (GdkModifierType) 0,
 					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
 
-	gnome_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Green",
+	bonobo_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Green",
 					     N_("Green"),
 					     N_("Set the current drawing color to green"),
 					     -1,
@@ -250,26 +250,26 @@ view_create_menus (view_data_t *view_data)
 static void
 view_remove_menus (view_data_t *view_data)
 {
-	GnomeView *view = view_data->view;
-	GnomeUIHandler *uih;
+	BonoboView *view = view_data->view;
+	BonoboUIHandler *uih;
 
-	uih = gnome_view_get_ui_handler (view);
+	uih = bonobo_view_get_ui_handler (view);
 
-	gnome_ui_handler_unset_container (uih);
+	bonobo_ui_handler_unset_container (uih);
 }
 
 static void
-view_activate_cb (GnomeView *view, gboolean activate, view_data_t *view_data)
+view_activate_cb (BonoboView *view, gboolean activate, view_data_t *view_data)
 {
 	/*
 	 * The ViewFrame has just asked the View (that's us) to be
 	 * activated or deactivated.  We must reply to the ViewFrame
 	 * and say whether or not we want our activation state to
-	 * change.  We are an acquiescent GnomeView, so we just agree
+	 * change.  We are an acquiescent BonoboView, so we just agree
 	 * with whatever the ViewFrame told us.  Most components
 	 * should behave this way.
 	 */
-	gnome_view_activate_notify (view, activate);
+	bonobo_view_activate_notify (view, activate);
 
 	/*
 	 * If we were just activated, we merge in our menu entries.
@@ -286,7 +286,7 @@ view_activate_cb (GnomeView *view, gboolean activate, view_data_t *view_data)
  * free up our ancillary view-centric data structures.
  */
 static void
-view_destroy_cb (GnomeView *view, view_data_t *view_data)
+view_destroy_cb (BonoboView *view, view_data_t *view_data)
 {
 	gdk_gc_destroy (view_data->gc);
 	g_free (view_data);
@@ -373,7 +373,7 @@ view_button_press_cb (GtkWidget *drawing_area,
 
 	if (event->type == GDK_BUTTON_PRESS &&
 	    event->button == 3)
-		gnome_view_popup_verbs (view_data->view);
+		bonobo_view_popup_verbs (view_data->view);
 }
 
 static void
@@ -396,7 +396,7 @@ embeddable_clear_image (embeddable_data_t *embeddable_data)
  * the component.
  */
 static void
-view_clear_image_cb (GnomeView *view, const char *verb_name, view_data_t *view_data)
+view_clear_image_cb (BonoboView *view, const char *verb_name, view_data_t *view_data)
 {
 	embeddable_data_t *embeddable_data;
 
@@ -418,18 +418,18 @@ view_clear_image_cb (GnomeView *view, const char *verb_name, view_data_t *view_d
  *
  * Views can differ in a few small ways: they can be at different
  * zooms, can have different undo histories, and so on.  But using
- * GnomeViews to implement two radically different representations of
+ * BonoboViews to implement two radically different representations of
  * a piece of data (e.g. a hexadecimal dump of an image and the image
  * itself) is a misuse of the classes.
  */
-static GnomeView *
-view_factory (GnomeEmbeddable *embeddable,
-	      const GNOME_ViewFrame view_frame,
+static BonoboView *
+view_factory (BonoboEmbeddable *embeddable,
+	      const Bonobo_ViewFrame view_frame,
 	      embeddable_data_t *embeddable_data)
 {
 	view_data_t *view_data;
-	GnomeUIHandler *uih;
-	GnomeView *view;
+	BonoboUIHandler *uih;
+	BonoboView *view;
 	GtkWidget *vbox;
 
 	/*
@@ -503,24 +503,24 @@ view_factory (GnomeEmbeddable *embeddable,
 	view_data->gc = gdk_gc_new (embeddable_data->pixmap);
 
 	/*
-	 * Create the GnomeView object.
+	 * Create the BonoboView object.
 	 */
-	view = gnome_view_new (vbox);
+	view = bonobo_view_new (vbox);
 	view_data->view = view;
 	gtk_object_set_data (GTK_OBJECT (view), "view_data", view_data);
 
 	/*
-	 * Create the GnomeUIHandler for this view.  It will be used
+	 * Create the BonoboUIHandler for this view.  It will be used
 	 * to merge menu and toolbar items when the view is activated.
 	 */
-	uih = gnome_ui_handler_new ();
-	gnome_view_set_ui_handler (view, uih);
+	uih = bonobo_ui_handler_new ();
+	bonobo_view_set_ui_handler (view, uih);
 
 	/*
 	 * Register a callback to handle the ClearImage verb.
 	 */
-	gnome_view_register_verb (view, "ClearImage",
-				  GNOME_VIEW_VERB_FUNC (view_clear_image_cb),
+	bonobo_view_register_verb (view, "ClearImage",
+				  BONOBO_VIEW_VERB_FUNC (view_clear_image_cb),
 				  view_data);
 
 
@@ -532,7 +532,7 @@ view_factory (GnomeEmbeddable *embeddable,
 			    GTK_SIGNAL_FUNC (view_activate_cb), view_data);
 
 	/*
-	 * The "system_exception" signal is raised when the GnomeView
+	 * The "system_exception" signal is raised when the BonoboView
 	 * encounters a fatal CORBA exception.
 	 */
 	gtk_signal_connect (GTK_OBJECT (view), "system_exception",
@@ -551,13 +551,13 @@ view_factory (GnomeEmbeddable *embeddable,
 /*
  * When a container asks our EmbeddableFactory for a new paint
  * component, this function is called.  It creates the new
- * GnomeEmbeddable object and returns it.
+ * BonoboEmbeddable object and returns it.
  */
-static GnomeObject *
-embeddable_factory (GnomeEmbeddableFactory *this,
+static BonoboObject *
+embeddable_factory (BonoboEmbeddableFactory *this,
 		    void *data)
 {
-	GnomeEmbeddable *embeddable;
+	BonoboEmbeddable *embeddable;
 	embeddable_data_t *embeddable_data;
 
 	/*
@@ -592,9 +592,9 @@ embeddable_factory (GnomeEmbeddableFactory *this,
 	embeddable_clear_image (embeddable_data);
 	
 	/*
-	 * Create the GnomeEmbeddable object.
+	 * Create the BonoboEmbeddable object.
 	 */
-	embeddable = gnome_embeddable_new (GNOME_VIEW_FACTORY (view_factory),
+	embeddable = bonobo_embeddable_new (BONOBO_VIEW_FACTORY (view_factory),
 					   embeddable_data);
 
 	if (embeddable == NULL) {
@@ -609,10 +609,10 @@ embeddable_factory (GnomeEmbeddableFactory *this,
 	 * Add some verbs to the embeddable.
 	 *
 	 * Verbs are simple non-paramameterized actions which the
-	 * component can perform.  The GnomeEmbeddable must maintain a
+	 * component can perform.  The BonoboEmbeddable must maintain a
 	 * list of the verbs which a component supports, and the
 	 * component author must register callbacks for each of his
-	 * verbs with the GnomeView.
+	 * verbs with the BonoboView.
 	 *
 	 * The container application will then have the programmatic
 	 * ability to execute the verbs on the component.  It will
@@ -623,7 +623,7 @@ embeddable_factory (GnomeEmbeddableFactory *this,
 	 * We provide one simple verb whose job it is to clear the
 	 * window.
 	 */
-	gnome_embeddable_add_verb (embeddable,
+	bonobo_embeddable_add_verb (embeddable,
 				   "ClearImage",
 				   _("_Clear Image"),
 				   _("Clear the image to black"));
@@ -633,7 +633,7 @@ embeddable_factory (GnomeEmbeddableFactory *this,
 	 * will emit a "system_exception" signal, notifying us that
 	 * the object is defunct.  Our callback --
 	 * embeddable_system_exception_cb() -- destroys the defunct
-	 * GnomeEmbeddable object.
+	 * BonoboEmbeddable object.
 	 */
 	gtk_signal_connect (GTK_OBJECT (embeddable), "system_exception",
 			    GTK_SIGNAL_FUNC (embeddable_system_exception_cb),
@@ -648,10 +648,10 @@ embeddable_factory (GnomeEmbeddableFactory *this,
 			    GTK_SIGNAL_FUNC (embeddable_destroy_cb),
 			    embeddable_data);
 
-	return GNOME_OBJECT (embeddable);
+	return BONOBO_OBJECT (embeddable);
 }
 
-static GnomeEmbeddableFactory *
+static BonoboEmbeddableFactory *
 init_simple_paint_factory (void)
 {
 	/*
@@ -660,7 +660,7 @@ init_simple_paint_factory (void)
 	 * component, it will ask the factory to create one, and the
 	 * factory will invoke our embeddable_factory() function.
 	 */
-	return gnome_embeddable_factory_new (
+	return bonobo_embeddable_factory_new (
 		"embeddable-factory:paint-component-simple",
 		embeddable_factory, NULL);
 }
