@@ -374,11 +374,21 @@ bonobo_socket_focus_in_event (GtkWidget *widget, GdkEventFocus *event)
 
 	if (socket->focus_in && socket->plug_window)
 	{
+		XWindowAttributes attr;
+
 		gdk_error_trap_push ();
-		XSetInputFocus (GDK_DISPLAY (),
-				GDK_WINDOW_XWINDOW (socket->plug_window),
-				RevertToParent, GDK_CURRENT_TIME);
+
+		XGetWindowAttributes (GDK_DISPLAY (),
+				      GDK_WINDOW_XWINDOW (socket->plug_window),
+				      &attr);
+
+		if (attr.map_state == IsViewable)
+			XSetInputFocus (GDK_DISPLAY (),
+					GDK_WINDOW_XWINDOW (socket->plug_window),
+					RevertToParent, GDK_CURRENT_TIME);
+
 		gdk_flush();
+
 		gdk_error_trap_pop ();
 	}
   
