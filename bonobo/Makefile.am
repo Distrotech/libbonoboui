@@ -125,11 +125,15 @@ $(libbonoboui_2_la_OBJECTS): $(libbonoboui_built_sources)
 libbonoboui_built_public_sources = \
 	bonobo-ui-type-builtins.h
 
-libbonoboui_built_sources = \
+libbonoboui_built_private_sources = \
 	bonobo-ui-type-builtins.c	\
 	bonobo-ui-marshal.c 		\
 	bonobo-ui-marshal.h		\
 	libbonoboui.defs
+
+libbonoboui_built_sources = \
+	$(libbonoboui_built_public_sources)	\
+	$(libbonoboui_built_private_sources)
 
 libbonoboinclude_HEADERS = \
 	$(libbonoboui_h_sources) \
@@ -184,9 +188,9 @@ pkgconfig_DATA = libbonoboui-2.0.pc
 
 EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in \
 	bonobo-ui-marshal.list
-CLEANFILES = $(bonobo_built_sources)
+CLEANFILES = $(libbonoboui_built_sources)
 
-DONT_DIST_SOURCE = $(bonobo_built_sources)
+DONT_DIST_SOURCE = $(libbonoboui_built_sources)
 
 dist-hook:
 	for file in $(DONT_DIST_SOURCE) ; do \

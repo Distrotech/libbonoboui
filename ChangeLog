@@ -1,5 +1,7 @@
 2001-12-07  jacob berkman  <jacob@ximian.com>
 
+	* bonobo/Makefile.am: some fixes to generated files
+	
 	* bonobo/Makefile.am (libbonoboui.defs): forgot to add a rule for
 	libbonoboui.defs
 
