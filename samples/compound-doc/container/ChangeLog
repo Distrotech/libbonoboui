@@ -1,5 +1,18 @@
 2000-06-24  Michael Meeks  <michael@helixcode.com>
 
+	* container-io.c (sample_container_save): simplify logic.
+
+	* component-io.c (component_load): add check on stream.
+
+	* container-io.c: kill redundant prototypes.
+	(open_stream): add mode flag.
+	(create_stream, load_component_id ,load_component): use it.
+	(load_component): free the id.
+	(load_component_id_stream_read): re-write.
+	(load_component_id): robustify.
+
+2000-06-24  Michael Meeks  <michael@helixcode.com>
+
 	* container-io.c (save_component): make it more robust.
 
 2000-06-23  Michael Meeks  <michael@helixcode.com>

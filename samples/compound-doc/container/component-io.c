@@ -18,13 +18,19 @@
 */
 
 #include "component.h"
+#include "component-io.h"
 
 void
-component_load (Component * component, Bonobo_Stream stream)
+component_load (Component *component, Bonobo_Stream stream)
 {
 	Bonobo_PersistStream persist;
 	Bonobo_Stream corba_stream = stream;
 	CORBA_Environment ev;
+
+	if (!stream) {
+		g_warning ("No stream to load component from");
+		return;
+	}
 
 	/* Get the PersistStream interface of our component */
 	persist = bonobo_object_client_query_interface (component->server,

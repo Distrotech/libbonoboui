@@ -24,17 +24,9 @@
 
 #define STORAGE_TYPE "vfs"
 
-static Bonobo_Stream open_stream (Bonobo_Storage storage, gchar * path);
-static Bonobo_Stream create_stream (Bonobo_Storage storage, gchar * path);
-static gchar *load_component_id (Bonobo_Storage storage);
-static void save_component (BonoboStorage * storage,
-			    Component * component, int index);
-static void load_component (SampleApp * app,
-			    BonoboStorage * storage, int index);
-
-
 static Bonobo_Stream
-open_stream (Bonobo_Storage storage, gchar * path)
+open_stream (Bonobo_Storage storage, char *path,
+	     Bonobo_Storage_OpenMode mode)
 {
 	Bonobo_Storage corba_storage = storage;
 	Bonobo_Stream corba_stream;
@@ -43,9 +35,7 @@ open_stream (Bonobo_Storage storage, gchar * path)
 	CORBA_exception_init (&ev);
 
 	corba_stream = Bonobo_Storage_open_stream (corba_storage,
-						   path,
-						   Bonobo_Storage_WRITE,
-						   &ev);
+						   path, mode, &ev);
 
 	CORBA_exception_free (&ev);
 
@@ -53,7 +43,7 @@ open_stream (Bonobo_Storage storage, gchar * path)
 }
 
 static Bonobo_Stream
-create_stream (Bonobo_Storage storage, gchar * path)
+create_stream (Bonobo_Storage storage, char *path)
 {
 	Bonobo_Storage corba_storage = storage;
 	CORBA_Environment ev;
@@ -64,7 +54,7 @@ create_stream (Bonobo_Storage storage, gchar * path)
 
 	CORBA_exception_free (&ev);
 
-	return open_stream (storage, path);
+	return open_stream (storage, path, Bonobo_Storage_WRITE);
 }
 
 #define GOAD_FILE "goad.id"
@@ -73,7 +63,7 @@ create_stream (Bonobo_Storage storage, gchar * path)
 static void
 save_component (BonoboStorage * storage, Component * component, int index)
 {
-	gchar *curr_dir = g_strdup_printf ("%08d", index);
+	char *curr_dir = g_strdup_printf ("%08d", index);
 
 	Bonobo_Storage corba_storage =
 	    bonobo_object_corba_objref (BONOBO_OBJECT (storage));
@@ -100,67 +90,67 @@ save_component (BonoboStorage * storage, Component * component, int index)
 /*    bonobo_object_unref (BONOBO_OBJECT (subdir));*/
 }
 
-static gchar *
+static char *
 load_component_id_stream_read (Bonobo_Stream stream)
 {
 	Bonobo_Stream_iobuf *buffer;
-	CORBA_long bytes_read;
-	CORBA_Environment ev;
-	gchar *charbuf = g_new0 (gchar, 0);
-	size_t last_len = 0;
+	CORBA_Environment    ev;
+	CORBA_long           bytes_read;
+	GString             *str;
+	char                *ans;
 
+	str = g_string_sized_new (32);
 	CORBA_exception_init (&ev);
 
 	/* We will read the data in chunks of the specified size */
 #define READ_CHUNK_SIZE 65536
 	do {
+		int i;
+
 		bytes_read =
 		    Bonobo_Stream_read (stream, READ_CHUNK_SIZE, &buffer,
 					&ev);
-
-		charbuf = g_realloc (charbuf, last_len + buffer->_length);
-		memcpy (charbuf + last_len, buffer->_buffer,
-			buffer->_length);
-		last_len += buffer->_length;
+		for (i = 0; i < bytes_read && i < buffer->_length; i++)
+			g_string_append_c (str, buffer->_buffer [i]);
 
 		CORBA_free (buffer);
+
 	} while (bytes_read > 0);
 #undef READ_CHUNK_SIZE
 
 	CORBA_exception_free (&ev);
 
-	if (bytes_read < 0) {
-		g_free (charbuf);
-		return NULL;
-	}
+	ans = str->str;
+	g_string_free (str, FALSE);
 
-	g_free (charbuf);
-
-	return charbuf;
+	return ans;
 }
 
-static gchar *
+static char *
 load_component_id (Bonobo_Storage storage)
 {
 	Bonobo_Storage corba_storage = storage;
 	Bonobo_Stream corba_stream;
-	gchar *goad_id;
-	CORBA_Environment ev;
+	char *goad_id;
 
-	CORBA_exception_init (&ev);
+	corba_stream = open_stream (corba_storage, GOAD_FILE,
+				    Bonobo_Storage_READ);
 
-	corba_stream = open_stream (corba_storage, GOAD_FILE);
-	goad_id = load_component_id_stream_read (corba_stream);
+	if (corba_stream)
+		goad_id = load_component_id_stream_read (corba_stream);
+	else {
+		g_warning ("Can't find '%s'", GOAD_FILE);
+		goad_id = NULL;
+	}
 
-	CORBA_exception_free (&ev);
 	return goad_id;
 }
 
 static void
 load_component (SampleApp * inst, BonoboStorage * storage, int index)
 {
-	gchar *curr_dir = g_strdup_printf ("%08d", index);
-	gchar *goad_id;
+	char *curr_dir = g_strdup_printf ("%08d", index);
+	char *goad_id;
 	Bonobo_Storage corba_subdir;
 	Bonobo_Storage corba_storage =
 	    bonobo_object_corba_objref (BONOBO_OBJECT (storage));
@@ -175,9 +165,19 @@ load_component (SampleApp * inst, BonoboStorage * storage, int index)
 						    &ev);
 	goad_id = load_component_id (corba_subdir);
 	if (goad_id) {
+		Bonobo_Stream corba_stream;
+
 		component = sample_app_add_component (inst, goad_id);
-		component_load (component,
-				open_stream (corba_subdir, DATA_FILE));
+
+		if (component) {
+			corba_stream = open_stream (corba_subdir, DATA_FILE,
+						    Bonobo_Storage_READ);
+
+			component_load (component, corba_stream);
+		} else
+			g_warning ("Component '%s' activation failed", goad_id);
+
+		g_free (goad_id);
 	}
 
 
@@ -189,7 +189,7 @@ load_component (SampleApp * inst, BonoboStorage * storage, int index)
 
 
 void
-sample_container_load (SampleApp *inst, const gchar *filename)
+sample_container_load (SampleApp *inst, const char *filename)
 {
 	CORBA_Environment ev;
 	BonoboStorage *storage;
@@ -222,7 +222,7 @@ sample_container_load (SampleApp *inst, const gchar *filename)
 }
 
 void
-sample_container_save (SampleApp *inst, const gchar *filename)
+sample_container_save (SampleApp *inst, const char *filename)
 {
 	CORBA_Environment ev;
 	BonoboStorage *storage;
@@ -241,9 +241,10 @@ sample_container_save (SampleApp *inst, const gchar *filename)
 	corba_storage =
 	    bonobo_object_corba_objref (BONOBO_OBJECT (storage));
 
-	for (components = g_list_first (inst->components), i = 0;
-	     components; components = g_list_next (components), i++)
-		save_component (storage, components->data, i);
+	i = 0;
+	for (components = g_list_first (inst->components);
+	     components; components = g_list_next (components))
+		save_component (storage, components->data, i++);
 
 	CORBA_exception_free (&ev);
 
