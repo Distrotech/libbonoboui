@@ -311,7 +311,8 @@ gnome_component_new_view (GnomeObject *server_object)
 		return NULL;
 	}
 	gtk_widget_show (socket);
-
+	gtk_container_add (GTK_CONTAINER (cover), socket);
+	
 	CORBA_exception_init (&ev);
 	view = GNOME_Component_new_view (GNOME_OBJECT (server_object)->object, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
