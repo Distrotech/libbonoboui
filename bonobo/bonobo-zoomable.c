@@ -350,7 +350,7 @@ bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 		object_class,
 		PARAM_HAS_MIN_ZOOM_LEVEL,
 		g_param_spec_boolean ("has_min_zoom_level",
-				    _("Has a minumum Zoom level"),
+				    _("Has a minimum Zoom level"),
 				    _("Whether we have a valid minimum zoom level"),
 				      FALSE, G_PARAM_READABLE));
 				    
