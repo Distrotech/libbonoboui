@@ -209,6 +209,7 @@ main (int argc, char **argv)
 		"	<submenu name=\"File\" _label=\"_Ga'\">\n"
 		"		<menuitem name=\"open\" pos=\"bottom\" _label=\"_Open\" verb=\"FileOpen\" pixtype=\"stock\" pixname=\"Open\" _tip=\"Wibble\"/>\n"
 		"		<control name=\"MyControl\"/>\n"
+		"		<control name=\"MyControl2\"/>\n"
 		"		<control name=\"ThisIsEmpty\"/>\n"
 		"		<menuitem name=\"close\" noplace=\"1\" verb=\"FileExit\" _label=\"_CloseA\" _tip=\"hi\""
 		"		pixtype=\"stock\" pixname=\"Close\" accel=\"*Control*q\"/>\n"
@@ -411,6 +412,12 @@ main (int argc, char **argv)
 						ev);
 		bonobo_object_unref (BONOBO_OBJECT (control));
 		g_assert (!BONOBO_EX (ev));
+
+		widget = gtk_menu_item_new_with_mnemonic ("_Foo item");
+		gtk_widget_show (widget);
+		bonobo_ui_component_widget_set (componenta,
+						"/menu/File/MyControl2",
+						widget, ev);
 	}
 
 #ifdef OLD_STUFF
