@@ -500,8 +500,8 @@ do_add_canvas_cmd (Application *app, gboolean aa)
 	} else
 		canvas = gnome_canvas_new ();
 	
-	gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas), -100, -100, 200, 200);
-	gtk_widget_set_usize (canvas, 100, 100);
+	gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas), 0, 0, 400, 400);
+	gtk_widget_set_usize (canvas, 400, 400);
 
 	/*
 	 * Add a background
@@ -511,8 +511,8 @@ do_add_canvas_cmd (Application *app, gboolean aa)
 		gnome_canvas_rect_get_type (),
 		"x1", 0.0,
 		"y1", 0.0,
-		"x2", 100.0,
-		"y2", 100.0,
+		"x2", 400.0,
+		"y2", 400.0,
 		"fill_color", "red",
 		"outline_color", "blue",
 		"width_pixels", 8,
@@ -741,7 +741,7 @@ static const char *commands =
 "	<cmd name=\"AddObject\" _label=\"Add a new _object\"/>\n"
 "	<cmd name=\"AddCanvasAA\" _label=\"Add a new Sample-Canvas item on an AA canvas\"/>\n"
 "	<cmd name=\"AddCanvas\" _label=\"Add a new Sample-Canvas item on a regular canvas\"/>\n"
-"	<cmd name=\"Exit\" _label=\"_Exit\" _tip=\"Exits the application\" pixtype=\"stock\"\n"
+"	<cmd name=\"Exit\" _label=\"E_xit\" _tip=\"Exits the application\" pixtype=\"stock\"\n"
 "		pixname=\"Quit\" accel=\"*Control*q\"/>\n"
 "</commands>";
 
@@ -806,7 +806,8 @@ application_new (void)
 	gtk_widget_show (app->box);
 
 	app->app = bonobo_window_new ("test-container",
-				   "Sample Container Application");
+				      "Sample Container Application");
+	gtk_widget_set_usize (GTK_WIDGET (app->app), 600, 600);
 
 	bonobo_window_set_contents (BONOBO_WINDOW (app->app), app->box);
 

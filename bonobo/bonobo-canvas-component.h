@@ -49,7 +49,10 @@ BonoboCanvasComponent  *bonobo_canvas_component_construct        (BonoboCanvasCo
 								  GnomeCanvasItem             *item);
 BonoboCanvasComponent  *bonobo_canvas_component_new              (GnomeCanvasItem             *item);
 GnomeCanvasItem        *bonobo_canvas_component_get_item         (BonoboCanvasComponent       *comp);
-
+void                    bonobo_canvas_component_set_ui_component (BonoboCanvasComponent       *comp,
+								  Bonobo_UIComponent           ui_component);
+Bonobo_UIComponent      bonobo_canvas_component_get_ui_component (BonoboCanvasComponent       *comp);
+					  
 POA_Bonobo_Canvas_Component__epv *bonobo_canvas_component_get_epv  (void);
 
 END_GNOME_DECLS
