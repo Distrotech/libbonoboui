@@ -1,0 +1,228 @@
+# Dutch translation of libbonoboUI.
+# Nederlandse vertaling van libbonboUI.
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libbonoboUI package.
+# Huib Kleinhout <huib@stack.nl>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui 2.0\n"
+"POT-Creation-Date: 2002-02-06 08:10-0500\n"
+"PO-Revision-Date: 2002-02-07 08:23+0100\n"
+"Last-Translator: Huib Kleinhout <huib@stack.nl>\n"
+"Language-Team: Dutch <NL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bonobo/bonobo-dock-item.c:228
+#: bonobo/bonobo-dock-item.c:229
+msgid "Shadow type"
+msgstr "Type schaduw"
+
+#: bonobo/bonobo-dock-item.c:237
+#: bonobo/bonobo-dock-item.c:238
+msgid "Orientation"
+msgstr "Oriëntatie"
+
+#: bonobo/bonobo-dock-item.c:246
+#: bonobo/bonobo-dock-item.c:247
+msgid "Preferred width"
+msgstr "Gewenste breedte"
+
+#: bonobo/bonobo-dock-item.c:254
+#: bonobo/bonobo-dock-item.c:255
+msgid "Preferred height"
+msgstr "Gewenste hoogte"
+
+#: bonobo/bonobo-file-selector-util.c:394
+msgid "Select a file to open"
+msgstr "Selecteer het te openen bestand"
+
+#: bonobo/bonobo-file-selector-util.c:422
+msgid "Select files to open"
+msgstr "Selecteer de te openen bestanden"
+
+#: bonobo/bonobo-file-selector-util.c:451
+msgid "Select a filename to save"
+msgstr "Selecteer het bestand om op te slaan"
+
+#: bonobo/bonobo-plug.c:350
+msgid "Event Forwarding"
+msgstr "Gebeurtenissen doorsturen"
+
+#: bonobo/bonobo-plug.c:351
+msgid "Whether X events should be forwarded"
+msgstr "Of gebeurtenissen van X doorgestuurd moeten worden"
+
+#: bonobo/bonobo-selector-widget.c:302
+msgid "Name"
+msgstr "Naam"
+
+#: bonobo/bonobo-selector-widget.c:326
+msgid "Description"
+msgstr "Omschrijving"
+
+#: bonobo/bonobo-ui-config-widget.c:260
+msgid "Visible"
+msgstr "Zichtbaar"
+
+#: bonobo/bonobo-ui-config-widget.c:267
+msgid "_Show"
+msgstr "_Toon"
+
+#: bonobo/bonobo-ui-config-widget.c:274
+msgid "_Hide"
+msgstr "_Verbergen"
+
+#: bonobo/bonobo-ui-config-widget.c:280
+msgid "_View tooltips"
+msgstr "T_oon tooltips"
+
+#: bonobo/bonobo-ui-config-widget.c:285
+msgid "Toolbars"
+msgstr "Gereedschapsbalken"
+
+#: bonobo/bonobo-ui-config-widget.c:295
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "Look"
+msgstr "Uiterlijk"
+
+#: bonobo/bonobo-ui-config-widget.c:304
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "_Icon"
+msgstr "_Pictogram"
+
+#: bonobo/bonobo-ui-config-widget.c:310
+msgid "_Text and Icon"
+msgstr "_Tekst en Pictogram"
+
+#: bonobo/bonobo-ui-config-widget.c:316
+msgid "_Priority text only"
+msgstr "Alleen _belangrijke tekst"
+
+#: bonobo/bonobo-ui-engine-config.c:513
+msgid "Configure UI"
+msgstr "Gebruikersinterface instellen"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "B_oth"
+msgstr "_Beide"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "T_ext"
+msgstr "T_ekst"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:550
+msgid "Hide t_ips"
+msgstr "Verberg t_ips"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:550
+msgid "Show t_ips"
+msgstr "Toon _tips"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:551
+msgid "_Hide toolbar"
+msgstr "_Verberg gereedschapsbalk"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:551
+msgid "Customi_ze"
+msgstr "_Aanpassen"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:552
+msgid "Customize the toolbar"
+msgstr "Gereedschapsbalk aanpassen"
+
+#: bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "Standaard zoomniveau"
+
+#: bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "Mate van vergrooting"
+
+#: bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "Minimale zoomniveau"
+
+#: bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "Minimale mate van vergrooting"
+
+#: bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "Maximale zoomniveau"
+
+#: bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "Maximale mate van vergrooting"
+
+#: bonobo/bonobo-zoomable.c:353
+msgid "Has a minumum Zoom level"
+msgstr "Heeft een minimaal Zoomniveau"
+
+#: bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "Of er een geldig minimaal zoomniveau is"
+
+#: bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "Heeft een maximaal Zoomniveau"
+
+#: bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "Of er een geldig maximaal zoomniveau is"
+
+#: bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "Verloopt vloeiend"
+
+#: bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "Of er vloeiend gezoomd wordt (in plaats van met stappen)"
+
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "Hier gebeurt niets; Dit is alleen maar een demonstratie."
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Hallo."
+
+#: samples/bonoboui/hello.c:217
+msgid "Gnome Hello"
+msgstr "Gnome Hallo"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:272
+msgid "Hello, World!"
+msgstr "Hallo, Wereld!"
+
+#: samples/bonoboui/hello.c:312
+msgid "Cannot init libbonoboui code"
+msgstr "De libbonoboui code kan niet geinitialiseerd worden"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "Over dit programma"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr "Selecteer"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr "_Over..."
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr "B_ewerken"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+msgid "_File"
+msgstr "_Bestand"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr "_Selecteer"
+
