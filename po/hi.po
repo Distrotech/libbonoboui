@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-01-06 12:16+0000\n"
-"PO-Revision-Date: 2002-09-04 20:36+0530\n"
+"Project-Id-Version: libbonoboui 2.x\n"
+"POT-Creation-Date: 2003-01-10 04:00+0100\n"
+"PO-Revision-Date: 2002-09-10 18:30+0530\n"
 "Last-Translator: Anurag Seetha <anuragseetha@yahoo.com>\n"
 "Language-Team: Hindi <indlinux-hindi-gnome@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -112,15 +112,15 @@ msgstr "दर्श्य"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr "दिखाएं"
+msgstr "दिखाएं (_S)"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
-msgstr "छुपाएं"
+msgstr "छुपाएं (_H)"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr "टूलटिप्स दिखाएं"
+msgstr "टूलटिप्स दिखाएं  (_V)"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
@@ -136,11 +136,11 @@ msgstr "लुक"
 
 #: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
-msgstr "आइकान"
+msgstr "आइकान (_I)"
 
 #: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
-msgstr "पाठ्य तथा आइकान"
+msgstr "पाठ्य तथा आइकान (_T)"
 
 #: bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
@@ -148,19 +148,19 @@ msgstr "केवल पाठ्य"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr "केवल पाठ्य की प्राथमिकता"
+msgstr "केवल पाठ्य की प्राथमिकता (_P)"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "डिबग"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "XML फेकें (_D)"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "पूरे UI का XML विवरण कन्सोल पर फेकें"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -261,27 +261,27 @@ msgstr "बोनबो GUI का प्रयोग "
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
-msgstr "दोनों"
+msgstr "दोनों (_o)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
-msgstr "पाठ्य"
+msgstr "पाठ्य (_e)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr "टिप्स (संकेतों) को छुपाएं"
+msgstr "टिप्स (संकेतों) को छुपाएं (_i)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
-msgstr "टिप्स (संकेतों) को दिखाएं"
+msgstr "टिप्स (संकेतों) को दिखाएं (_i)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "टूलबार छुपाएं"
+msgstr "टूलबार छुपाएं (_H)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
-msgstr "आवश्यकतानुसार बनाइये"
+msgstr "आवश्यकतानुसार बनाइये (_z)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
@@ -297,7 +297,7 @@ msgstr "क्या टूलबार गतिशील है?"
 
 #: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
-msgstr "तत्व"
+msgstr "तत्व (_C)"
 
 #: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
@@ -365,19 +365,19 @@ msgstr "चयन करें"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "के बारे में"
+msgstr "के बारे में... (_A)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "संशोधित करें"
+msgstr "संशोधित करें (_E)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
-msgstr "फाइल"
+msgstr "फाइल (_F)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "चयन करें"
+msgstr "चयन करें (_S)"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -394,7 +394,7 @@ msgstr "Gnome हैलो"
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "हैलो दुनिया"
+msgstr "नमस्कार, दुनिया!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
