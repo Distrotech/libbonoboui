@@ -9,9 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2003-01-02 01:59+0100\n"
-"Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
+"POT-Creation-Date: 2003-06-27 16:17+0200\n"
+"PO-Revision-Date: 2003-06-27 16:21--100\n"
+"Last-Translator: Gnome PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -94,15 +94,14 @@ msgid "Interfaces required"
 msgstr "Wymagane interfejsy"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Zakończona wartością NULL tablica nazwa interfejsów, które serwer musi "
-"obsługiwać, aby był wyświetlony na liście wyboru. Jeśli nie zostaną podane "
-"żadne interfejsy, domyślną wartością jest \"IDL:Bonobo/Embeddable:1.0\"."
+"Zakończona wartością NULL tablica interfejsów, które serwer musi obsługiwać, "
+"aby był wyświetlony na liście wyboru. Jeśli nie zostaną podane żadne "
+"interfejsy, domyślną wartością jest \"IDL:Bonobo/Embeddable:1.0\"."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -303,7 +302,7 @@ msgstr "Określa, czy pasek narzędziowy jest oderwany"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Styl kantu wokół paska narzędziowego"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
