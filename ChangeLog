@@ -1,5 +1,12 @@
 2001-05-01  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/bonobo-ui-main.[ch]: New files.
+	(bonobo_ui_init, bonobo_ui_init_full): New functions to
+	initialize libbonoboui.
+	(bonobo_setup_x_error_handler): Moved here from libbonobo.
+
+2001-05-01  Martin Baulig  <baulig@suse.de>
+
 	* tests/*.c: Make the tests actually work.
 
 	* Makefile.am (SUBDIRS): Added tests/.
