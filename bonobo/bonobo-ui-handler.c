@@ -554,17 +554,14 @@ impl_get_toplevel (PortableServer_Servant servant,
 		   CORBA_Environment *ev)
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
-	GNOME_UIHandler ret;
 
 	g_return_val_if_fail (uih_toplevel_check_toplevel (uih), CORBA_OBJECT_NIL);
 
 	if (uih->top_level_uih == CORBA_OBJECT_NIL)
-		return gnome_object_corba_objref (GNOME_OBJECT (uih));
+		return CORBA_Object_duplicate(gnome_object_corba_objref (GNOME_OBJECT (uih)), ev);
 
 
-	ret = CORBA_Object_duplicate (uih->top_level_uih, ev);
-
-	return ret;
+	return CORBA_Object_duplicate (uih->top_level_uih, ev);
 }
 
 /**
