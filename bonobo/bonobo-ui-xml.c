@@ -451,6 +451,7 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 		data->id = old_data->id;
 		data->overridden = old_data->overridden;
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REPLACE_OVERRIDE], new, old);
+
 /*		fprintf (stderr, "Replace override of '%s' '%s' with '%s' '%s'",
 			 old->name, bonobo_ui_node_get_attr (old, "name"),
 			 new->name, bonobo_ui_node_get-attr (new, "name"));*/
@@ -838,8 +839,8 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 			b_name = bonobo_ui_node_get_attr (b, "name");
 
 			if (!a_name && !b_name &&
-                            bonobo_ui_node_has_name (a,
-                                                     bonobo_ui_node_get_name (b)))
+                            bonobo_ui_node_has_name (
+				    a, bonobo_ui_node_get_name (b)))
 				break;
 
 			if (!a_name || !b_name)

@@ -419,7 +419,7 @@ bonobo_ui_component_set_tree (BonoboUIComponent *component,
 
 	str = bonobo_ui_node_to_string (node, TRUE);	
 
-/*	fprintf (stderr, "Merging '%s'\n", mem);*/
+/*	fprintf (stderr, "Merging '%s'\n", str); */
 	
 	bonobo_ui_component_set (
 		component, path, str, ev);

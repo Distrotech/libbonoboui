@@ -401,7 +401,6 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 		
 		/* Get pointer to GdkPixbuf */
 		icon_pixbuf = bonobo_ui_util_xml_to_pixbuf (text);
-		bonobo_ui_node_free_string (text);
 
 		g_return_val_if_fail (icon_pixbuf != NULL, NULL);
 	} else

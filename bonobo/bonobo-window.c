@@ -117,18 +117,48 @@ info_free_fn (BonoboUIXmlData *data)
 	g_free (data);
 }
 
+#define WIDGET_NODE_KEY "BonoboWin:NodeKey"
+
+static BonoboUINode *
+widget_get_node (GtkWidget *widget)
+{
+	g_return_val_if_fail (widget != NULL, NULL);
+	
+	return gtk_object_get_data (GTK_OBJECT (widget),
+				    WIDGET_NODE_KEY);
+}
+
 /* We need to map the shell to the item */
 static GtkWidget *
 get_item_widget (GtkWidget *widget)
 {
+	GtkWidget *ret;
+
 	if (!widget)
 		return NULL;
 
-	if (GTK_IS_MENU (widget))
-		return gtk_menu_get_attach_widget (
+	if (GTK_IS_MENU (widget)) {
+		ret = gtk_menu_get_attach_widget (
 			GTK_MENU (widget));
-	else
-		return widget;
+	} else
+		ret = widget;
+
+	return ret;
+}
+
+static void
+widget_set_node (GtkWidget    *widget,
+		 BonoboUINode *node)
+{
+	if (widget) {
+		gtk_object_set_data (GTK_OBJECT (widget),
+				     WIDGET_NODE_KEY, node);
+
+		if ((widget = get_item_widget (widget)))
+
+			gtk_object_set_data (GTK_OBJECT (widget),
+					     WIDGET_NODE_KEY, node);
+	}
 }
 
 static char *
@@ -321,26 +351,6 @@ widget_is_special (GtkWidget *widget)
 	return FALSE;
 }
 
-#define WIDGET_NODE_KEY "BonoboWin:NodeKey"
-
-static BonoboUINode *
-widget_get_node (GtkWidget *widget)
-{
-	g_return_val_if_fail (widget != NULL, NULL);
-	
-	return gtk_object_get_data (GTK_OBJECT (widget),
-				    WIDGET_NODE_KEY);
-}
-
-static void
-widget_set_node (GtkWidget    *widget,
-		 BonoboUINode *node)
-{
-	if (widget)
-		gtk_object_set_data (GTK_OBJECT (widget),
-				     WIDGET_NODE_KEY, node);
-}
-
 static gboolean
 node_is_dirty (BonoboWinPrivate *priv, BonoboUINode *node)
 {
@@ -476,7 +486,7 @@ sync_generic_widgets (BonoboWinPrivate *priv,
 
 #ifdef WIDGET_SYNC_DEBUG
 		printf ("Node '%s' Dirty '%d' same %d on b %d widget %p\n",
-			bonobo_ui_node_get_name (a),
+			bonobo_ui_xml_make_path (a),
 			node_is_dirty (priv, a), same, b != NULL, b?b->data:NULL);
 #endif
 
@@ -519,6 +529,10 @@ sync_generic_widgets (BonoboWinPrivate *priv,
 					widget_set_node (widget, a);
 					ss (priv, a, widget, parent);
 				}
+#ifdef WIDGET_SYNC_DEBUG
+				else
+					printf ("Failed to build widget");
+#endif
 
 				nextb = b; /* NB. don't advance 'b' */
 			}
@@ -677,8 +691,7 @@ update_commands_state (BonoboWinPrivate *priv)
 	if (!cmds)
 		return;
 
-	for (l = bonobo_ui_node_children (cmds);
-             l;
+	for (l = bonobo_ui_node_children (cmds); l;
              l = bonobo_ui_node_next (l)) {
 		BonoboUIXmlData *data = bonobo_ui_xml_get_data (priv->tree, l);
 		char *cmd_name;
@@ -970,9 +983,10 @@ prune_widget_info (BonoboWinPrivate *priv,
 		if (!NODE_IS_ROOT_WIDGET (info) && !save) {
 			GtkWidget *item = get_item_widget (info->widget);
 
+/*			printf ("Destroy widget '%s' '%p'\n",
+			bonobo_ui_xml_make_path (node), item);*/
+
 			gtk_widget_destroy (item);
-/*			printf ("Destroy widget '%s'\n",
-			bonobo_ui_xml_make_path (node));*/
 		} else {
 			if (save)
 				custom_widget_unparent (info);
@@ -997,7 +1011,7 @@ override_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 	real_emit_ui_event (priv, info->parent.id, id,
 			    Bonobo_UIComponent_OVERRIDDEN, "");
 
-/*	fprintf (stderr, "XOverride '%s'\n", id);*/
+/*	fprintf (stderr, "XOverride '%s'\n", id); */
 
 	g_free (id);
 }
@@ -1008,7 +1022,7 @@ reinstate_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 	char     *id = node_get_id_or_path (node);
 	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
-/*	printf ("Reinstate '%s'\n", 
+/*	fprintf (stderr, "Reinstate '%s'\n", 
 	bonobo_ui_xml_make_path (node));*/
 
 	prune_widget_info (priv, node, TRUE);
@@ -1030,7 +1044,7 @@ remove_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 	real_emit_ui_event (priv, info->parent.id, id,
 			    Bonobo_UIComponent_REMOVED, "");
 
-/*	printf ("Remove on '%s'\n",
+/*	fprintf (stderr, "Remove on '%s'\n",
 	bonobo_ui_xml_make_path (node));*/
 
 	prune_widget_info (priv, node, FALSE);
@@ -1481,9 +1495,6 @@ menu_build_item (BonoboWinPrivate *priv,
 	} else
 		ret_widget = menu_widget;
 
-	if (ret_widget != menu_widget)
-		widget_set_node (menu_widget, node);
-
 	if (!GTK_IS_CHECK_MENU_ITEM (menu_widget))
 		gtk_signal_connect (GTK_OBJECT (menu_widget), "activate",
 				    (GtkSignalFunc) exec_verb_cb, priv);
@@ -1932,6 +1943,9 @@ de_accelerate_string (const char *in)
 			b--;
 	}
 	*b = '\0';
+
+/*	g_warning ("Testme: made '%s' from '%s'", ret, in); */
+
 	return ret;
 }
 
@@ -1940,7 +1954,7 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		    GtkWidget *widget, GtkWidget *parent)
 {
 	char *type, *sensitive = NULL, *state = NULL, *label, *txt, *hidden = NULL;
-	char *min_width = NULL;
+	char *min_width;
 	GdkPixbuf    *icon_pixbuf;
 	BonoboUINode *cmd_node;
 	static int    warned = 0;
@@ -1977,7 +1991,7 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	type = cmd_get_attr (node, cmd_node, "type");
 	label = cmd_get_attr (node, cmd_node, "label");
 	
-	if (!type || !strcmp (type, "std") || !strcmp (type, "toggle")) {
+	if (!type || !strcmp (type, "toggle")) {
 
 		if (icon_pixbuf) {
 			bonobo_ui_toolbar_button_item_set_icon (
@@ -1998,8 +2012,7 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	bonobo_ui_node_free_string (type);
 	bonobo_ui_node_free_string (label);
 
-	min_width = cmd_get_attr (node, cmd_node, "min_width");
-	if (min_width != NULL) {
+	if ((min_width = cmd_get_attr (node, cmd_node, "min_width"))) {
 		bonobo_ui_toolbar_item_set_minimum_width (BONOBO_UI_TOOLBAR_ITEM (widget),
 							  atoi (min_width));
 		g_free (min_width);
@@ -2760,6 +2773,8 @@ bonobo_win_xml_merge_tree (BonoboWin  *win,
 		err = bonobo_ui_xml_merge (
 			win->priv->tree, path, tree,
 			win_component_cmp_name (win->priv, component));
+
+/*	bonobo_win_dump (win, "after merge"); */
 
 	update_widgets (win->priv);
 

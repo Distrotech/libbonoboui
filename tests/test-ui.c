@@ -243,6 +243,10 @@ main (int argc, char **argv)
 				       "gnomecal");
 		bonobo_ui_component_thaw (componenta, NULL);
 
+		bonobo_ui_component_set_prop (
+			componenta, "/menu/Preferences",
+			"pixname", "/demo/a.xpm", NULL);
+
 		gtk_widget_show (GTK_WIDGET (win));
 
 		gtk_main ();
