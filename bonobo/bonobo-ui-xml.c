@@ -369,7 +369,10 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 {
 	BonoboUIXmlData *data = bonobo_ui_xml_get_data (tree, new);
 	BonoboUIXmlData *old_data = bonobo_ui_xml_get_data (tree, old);
-	gboolean         same;
+	gboolean         same, transparent;
+
+	/* Is it just a path / grouping simplifying entry with no content ? */
+	transparent = bonobo_ui_node_transparent (new);
 
 	same = identical (tree, data->id, old_data->id);
 
@@ -404,14 +407,8 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 
 	g_assert (bonobo_ui_node_children (old) == NULL);
 
-	/*
-	 *   A path simplifying entry: FIXME ignore just a name too
-	 * and hook into 'Same' code.
-	 */
-	if (!XML_NODE (new)->properties)
-		XML_NODE (new)->properties =
-			xmlCopyPropList (XML_NODE (new),
-					 XML_NODE (old)->properties);
+	if (transparent)
+		bonobo_ui_node_copy_attrs (old, new);
 
 	bonobo_ui_xml_set_dirty (tree, new);
 

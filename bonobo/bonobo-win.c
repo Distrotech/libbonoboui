@@ -1249,7 +1249,7 @@ build_menu_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 {
 	NodeInfo  *info;
 	GtkWidget *parent, *menu_widget;
-	char      *verb, *sensitive;
+	char      *verb, *sensitive, *hidden;
 
 	g_return_if_fail (priv != NULL);
 	g_return_if_fail (node != NULL);
@@ -1345,7 +1345,15 @@ build_menu_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 		set_cmd_state (priv, node, "sensitive", sensitive, FALSE);
 		bonobo_ui_node_free_string (sensitive);
 	}
-	
+
+	if ((hidden = bonobo_ui_node_get_attr (node, "hidden"))) {
+		if (atoi (hidden))
+			gtk_widget_hide (menu_widget);
+		else
+			gtk_widget_show (menu_widget);
+		bonobo_ui_node_free_string (hidden);
+	}
+
 	set_cmd_dirty (priv, node);
 
 	gtk_widget_show (menu_widget);

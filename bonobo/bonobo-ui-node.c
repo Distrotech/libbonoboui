@@ -274,3 +274,41 @@ bonobo_ui_node_from_file   (const char *fname)
 
 	return node;
 }
+
+gboolean
+bonobo_ui_node_transparent (BonoboUINode *node)
+{
+	xmlNode *n = XML_NODE (node);
+	gboolean ret = FALSE;
+
+	g_return_val_if_fail (n != NULL, TRUE);
+
+	if (!n->properties)
+		ret = TRUE;
+
+	else if (!n->properties->next) {
+		if (!strcmp (n->properties->name, "name"))
+			ret = TRUE;
+	}
+
+	fprintf (stderr, "Node '%s' transparent %d\n", n->name, ret);
+
+	return ret;
+}
+
+void
+bonobo_ui_node_copy_attrs (BonoboUINode *src,
+			   BonoboUINode *dest)
+{
+	xmlAttr *attr;
+	
+	for (attr = XML_NODE (src)->properties; attr; attr = attr->next) {
+		char *txt = xmlGetProp (XML_NODE (src), attr->name);
+
+		g_assert (txt != NULL);
+
+		xmlSetProp (XML_NODE (dest), attr->name, txt);
+
+		xmlFree (txt);
+	}
+}

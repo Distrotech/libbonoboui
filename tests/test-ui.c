@@ -115,6 +115,7 @@ main (int argc, char **argv)
 	BonoboUIContainer *container;
 	Bonobo_UIContainer corba_container;
 	CORBA_Environment  ev;
+	char *txt;
 
 	char simplea [] =
 		"<menu>\n"
@@ -305,6 +306,16 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_set (componentb, "/menu", simpleb, &ev);
 	bonobo_ui_component_set (componenta, "/",     toolb, &ev);
+
+	/* A 'transparent' node merge */
+	txt = bonobo_ui_component_get_prop (componenta, "/toolbar", "look", NULL);
+	printf ("Before merge look '%s'\n", txt);
+	bonobo_ui_component_set (componenta, "/", "<dockitem name=\"toolbar\"/>", &ev);
+	txt = bonobo_ui_component_get_prop (componenta, "/toolbar", "look", NULL);
+	printf ("After merge look '%s'\n", txt);
+	if (txt == NULL || strcmp (txt, "icon"))
+		g_warning ("Serious transparency regression");
+
 	bonobo_ui_component_set (componenta, "/menu/File/Nice", simplee, &ev);
 
 	{
