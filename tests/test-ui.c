@@ -445,7 +445,8 @@ main (int argc, char **argv)
 	bonobo_ui_component_thaw (componenta, NULL);
 	bonobo_main ();
 
-	for (i = 0; i < 1000; i++) {
+	g_warning ("Begginning stress test, this may take some time ...");
+	for (i = 0; i < 100; i++) {
 		bonobo_ui_component_freeze (componenta, NULL);
 		
 		bonobo_ui_component_set_translate (componentc, "/commands",
@@ -456,6 +457,7 @@ main (int argc, char **argv)
 		
 		bonobo_ui_component_thaw (componenta, NULL);
 	}
+	g_warning ("Done stress test");
 	bonobo_main ();
 	bonobo_ui_component_freeze (componenta, NULL);
 

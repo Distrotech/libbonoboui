@@ -118,7 +118,7 @@ bonobo_item_factory (BonoboGenericFactory *factory, void *closure)
 	return (BonoboObject*) server;
 }
 
-BONOBO_OAF_FACTORY ("OAFIID:Bonobo_Sample_CanvasItem_Factory",
-		    "bonobo-sample-canvas-item", VERSION, 
-		    bonobo_item_factory,
-		    NULL)
+BONOBO_ACTIVATION_FACTORY ("OAFIID:Bonobo_Sample_CanvasItem_Factory",
+			   "bonobo-sample-canvas-item", VERSION, 
+			   bonobo_item_factory,
+			   NULL)

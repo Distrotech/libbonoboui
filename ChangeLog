@@ -1,5 +1,15 @@
 2001-10-24  Michael Meeks  <michael@ximian.com>
 
+	* Upd. all factories from _OAF_FACTORY to _ACTIVATION_FACTORY.
+	
+	* tests/test-ui.c (main): add a friendly warning so people know
+	it hasn't crashed.
+
+	* bonobo/bonobo-ui-sync-menu.c (impl_bonobo_ui_sync_menu_build):
+	honour get_menus_have_icons.
+	
+2001-10-24  Michael Meeks  <michael@ximian.com>
+
 	* configure.in: add gconf; yuck.
 
 	* bonobo/bonobo-ui-preferences.[ch]: impl.

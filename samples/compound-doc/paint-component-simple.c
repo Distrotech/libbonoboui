@@ -608,7 +608,7 @@ embeddable_factory (BonoboGenericFactory *this,
 	return BONOBO_OBJECT (embeddable);
 }
 
-BONOBO_OAF_FACTORY ("OAFIID:Bonobo_Sample_Paint_EmbeddableFactory",
-		    "bonobo-simple-paint", VERSION,
-		    embeddable_factory,
-		    NULL)
+BONOBO_ACTIVATION_FACTORY ("OAFIID:Bonobo_Sample_Paint_EmbeddableFactory",
+			   "bonobo-simple-paint", VERSION,
+			   embeddable_factory,
+			   NULL)

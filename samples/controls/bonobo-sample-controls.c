@@ -55,7 +55,7 @@ bonobo_entry_control_new (void)
 		G_OBJECT_GET_CLASS (entry), &n_pspecs);
 
 	bonobo_property_bag_map_params (
-		pb, G_OBJECT (entry), pspecs, n_pspecs);
+		pb, G_OBJECT (entry), (const GParamSpec **)pspecs, n_pspecs);
 
 	g_free (pspecs);
 
@@ -78,7 +78,7 @@ control_factory (BonoboGenericFactory *this,
 	return object;
 }
 
-BONOBO_OAF_FACTORY_MULTI ("OAFIID:Bonobo_Sample_ControlFactory",
-			  "bonobo-sample-controls-2", VERSION,
-			  control_factory,
-			  NULL)
+BONOBO_ACTIVATION_FACTORY ("OAFIID:Bonobo_Sample_ControlFactory",
+			   "bonobo-sample-controls-2", VERSION,
+			   control_factory,
+			   NULL)

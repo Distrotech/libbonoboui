@@ -36,7 +36,7 @@ hello_embeddable_factory (BonoboGenericFactory *f, gpointer data)
 	return BONOBO_OBJECT (embeddable);
 }
 
-BONOBO_OAF_FACTORY ("OAFIID:Bonobo_Sample_Hello_EmbeddableFactory",
-		    "bonobo hello", VERSION,
-		    hello_embeddable_factory,
-		    NULL)
+BONOBO_ACTIVATION_FACTORY ("OAFIID:Bonobo_Sample_Hello_EmbeddableFactory",
+			   "bonobo hello", VERSION,
+			   hello_embeddable_factory,
+			   NULL)
