@@ -1,0 +1,28 @@
+GtkObject
+  GtkWidget
+    GtkContainer
+      GtkBin
+        GtkWindow
+          GnomeDialog
+            BonoboSelector
+        BonoboWrapper
+  BonoboObject
+    BonoboClientSite
+    BonoboContainer
+    BonoboGenericFactory
+    BonoboEmbeddable
+    Handle to remote Bonobo::Unknown
+    BonoboPersist
+      BonoboPersistFile
+      BonoboPersistStream
+    BonoboProgressiveDataSink
+    BonoboStorage
+    BonoboStream
+      BonoboStreamFS
+      BonoboStreamMem
+    BonoboControlFrame
+      BonoboViewFrame
+    BonoboControl
+      BonoboView
+    BonoboUIHandler
+  BonoboMoniker
