@@ -277,3 +277,23 @@ same radio verbs, but they cannot share the same group.
 
 	You really want to add a menu item with the builtin verb
 'BonoboCustomize' that should magically do what you want.
+
+* In a UI file I have two <menu> elements, and the menu items inside
+  the second <menu> do not show up in the application. What's wrong?
+
+  You have to put all menu items in a UI file in a single <menu>
+element. Instead of this:
+
+<menu>
+    <menuitem foo/>
+</menu>
+<menu>
+    <menuitem foo2/>
+</menu>
+ 
+  Use this:
+
+<menu>
+    <menuitem foo/>
+    <menuitem foo2/>
+</menu>
