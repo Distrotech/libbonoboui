@@ -55,3 +55,8 @@ selector_test_LDADD =					\
 	$(bonobo_libs)					\
 	$(top_builddir)/bonobo/libbonobox.la
 
+TESTS_ENVIRONMENT =					\
+	LD_LIBRARY_PATH=$(top_builddir)/bonobo/.libs/	\
+	BONOBO_PLUGIN_PATH=$(top_builddir)/storage-modules/.libs/
+
+TESTS = test-storage
