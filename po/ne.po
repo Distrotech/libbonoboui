@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonobui\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-08 21:40+0000\n"
+"POT-Creation-Date: 2004-04-28 10:22+0100\n"
 "PO-Revision-Date: 2003-08-31 04:38\n"
 "Last-Translator: Pawan Chitrakar <pawan@nplinux.org>\n"
 "Language-Team: Nepali<info@mpp.org.np>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -34,22 +34,22 @@ msgstr "टूलबार डक गर"
 msgid "Un dock the toolbar"
 msgstr "टूलबार डक नगर"
 
-#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-dock-item.c:225 bonobo/bonobo-dock-item.c:226
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
 msgstr "छायां प्रकार"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:236 bonobo/bonobo-dock-item.c:237
 #: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
 msgid "Orientation"
 msgstr "दिशानिर्देस"
 
-#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-dock-item.c:247 bonobo/bonobo-dock-item.c:248
 #: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
 msgid "Preferred width"
 msgstr "रोजिएको चौडाइ"
 
-#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-dock-item.c:256 bonobo/bonobo-dock-item.c:257
 #: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
 msgid "Preferred height"
 msgstr "रोजिएको उचाइ"

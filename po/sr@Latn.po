@@ -8,14 +8,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-08 21:40+0000\n"
+"POT-Creation-Date: 2004-04-28 10:22+0100\n"
 "PO-Revision-Date: 2003-08-23 18:28+0200\n"
 "Last-Translator: Veljko M. Stanojevic <veljko@vms.homelinux.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "Plural-Forms: nplurals=3;    plural=n%10==1 && n%100!=11 ? 0 :    n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: KBabel 1.0\n"
@@ -44,22 +44,22 @@ msgstr "Priključi liniju sa alatima"
 msgid "Un dock the toolbar"
 msgstr "Isključi liniju sa alatima"
 
-#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-dock-item.c:225 bonobo/bonobo-dock-item.c:226
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
 msgstr "Vrsta senke"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:236 bonobo/bonobo-dock-item.c:237
 #: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
 msgid "Orientation"
 msgstr "Orijentacija"
 
-#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-dock-item.c:247 bonobo/bonobo-dock-item.c:248
 #: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
 msgid "Preferred width"
 msgstr "Željena širina"
 
-#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-dock-item.c:256 bonobo/bonobo-dock-item.c:257
 #: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
 msgid "Preferred height"
 msgstr "Željena visina"

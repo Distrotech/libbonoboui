@@ -1414,6 +1414,8 @@ check_guint_arg (GObject *object,
 {
   GParamSpec *pspec;
 
+  g_return_val_if_fail (object != NULL, FALSE);
+
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object), name);
   if (pspec != NULL) {
     GValue value = { 0, };
