@@ -603,6 +603,9 @@ impl_xml_set (BonoboUIComponent  *component,
 	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
+	if (xml [0] == '\0')
+		return;
+
 	if (ev)
 		real_ev = ev;
 	else {

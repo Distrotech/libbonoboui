@@ -210,7 +210,7 @@ main (int argc, char **argv)
 		"</dockitem>";
 	char toolb [] =
 		"<dockitem name=\"Toolbar\" look=\"icon\" relief=\"none\">\n"
-		"	<toolitem name=\"foo1\" _label=\"Insensitive\" hidden=\"0\" priority=\"1\"/>\n"
+		"	<toolitem name=\"foo1\" _label=\"Insensitive\" sensitive=\"0\" hidden=\"0\" priority=\"1\"/>\n"
 		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\""
 		"	 _label=\"TogSame\" _tip=\"My tooltip\"/>\n"
 		"</dockitem>";

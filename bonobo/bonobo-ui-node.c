@@ -441,6 +441,7 @@ bonobo_ui_node_from_string (const char *xml)
 	
 	node = BNODE (doc->xmlRootNode);
 
+	xmlUnlinkNode (XML_NODE (node));
 	doc->xmlRootNode = NULL;
 	
 	xmlFreeDoc (doc);

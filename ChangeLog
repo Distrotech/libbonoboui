@@ -1,3 +1,19 @@
+2001-08-20  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-ui.c (main): Make the 'Insensitive' item
+	insensitive - woah !
+
+	* bonobo/bonobo-ui-container.c
+	(impl_Bonobo_UIContainer_setNode): silently accept
+	xml being empty without doing anything.
+
+	* bonobo/bonobo-ui-component.c (impl_xml_set): return
+	if xml is empty.
+
+	* bonobo/bonobo-ui-node.c
+	(bonobo_ui_node_from_string): unlink the root node
+	from the doc.
+
 2001-08-18  Darin Adler  <darin@bentspoon.com>
 
 	* configure.in: Add GLIB_GENMARSHAL.

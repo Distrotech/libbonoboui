@@ -84,13 +84,16 @@ impl_Bonobo_UIContainer_setNode (PortableServer_Servant   servant,
 	if (!xml)
 		err = BONOBO_UI_ERROR_BAD_PARAM;
 	else {
-		node = bonobo_ui_node_from_string (xml);
-		
-		if (!node)
-			err = BONOBO_UI_ERROR_INVALID_XML;
-		else
-			err = bonobo_ui_engine_xml_merge_tree (
-				engine, path, node, component_name);
+		if (xml [0] == '\0')
+			err = BONOBO_UI_ERROR_OK;
+		else {
+			if (!(node = bonobo_ui_node_from_string (xml)))
+				err = BONOBO_UI_ERROR_INVALID_XML;
+
+			else
+				err = bonobo_ui_engine_xml_merge_tree (
+					engine, path, node, component_name);
+		}
 	}
 
 	if (err) {
