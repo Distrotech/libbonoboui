@@ -46,14 +46,6 @@ enum {
 
 static guint signals[LAST_SIGNAL];
 
-typedef struct {
-	POA_Bonobo_ZoomableFrame	 servant;
-
-	BonoboZoomableFrame		*gtk_object;
-} impl_POA_Bonobo_ZoomableFrame;
-
-POA_Bonobo_ZoomableFrame__vepv bonobo_zoomable_frame_vepv;
-
 static inline BonoboZoomableFrame *
 bonobo_zoomable_frame_from_servant (PortableServer_Servant servant)
 {
@@ -85,44 +77,6 @@ impl_Bonobo_ZoomableFrame_onParametersChanged (PortableServer_Servant  servant,
 	gtk_signal_emit (GTK_OBJECT (zoomable_frame), signals[ZOOM_PARAMETERS_CHANGED]);
 }
 
-
-/**
- * bonobo_zoomable_frame_get_epv:
- *
- * Returns: The EPV for the default BonoboZoomableFrame implementation.  
- */
-POA_Bonobo_ZoomableFrame__epv *
-bonobo_zoomable_frame_get_epv (void)
-{
-	POA_Bonobo_ZoomableFrame__epv *epv;
-
-	epv = g_new0 (POA_Bonobo_ZoomableFrame__epv, 1);
-
-	epv->onLevelChanged = impl_Bonobo_ZoomableFrame_onLevelChanged;
-	epv->onParametersChanged = impl_Bonobo_ZoomableFrame_onParametersChanged;
-
-	return epv;
-}
-
-static void
-init_zoomable_corba_class (void)
-{
-	/* The VEPV */
-	bonobo_zoomable_frame_vepv.Bonobo_Unknown_epv  = bonobo_object_get_epv ();
-	bonobo_zoomable_frame_vepv.Bonobo_ZoomableFrame_epv = bonobo_zoomable_frame_get_epv ();
-}
-
-static void
-marshal_NONE__FLOAT (GtkObject *object,
-		      GtkSignalFunc func,
-		      gpointer func_data,
-		      GtkArg *args)
-{
-	(* (void (*)(GtkObject *, float, gpointer)) func)
-		(object,
-		 GTK_VALUE_FLOAT (args[0]),
-		 func_data);
-}
 
 static void
 bonobo_zoomable_frame_destroy (GtkObject *object)
@@ -160,6 +114,8 @@ bonobo_zoomable_frame_finalize (GObject *object)
 static void
 bonobo_zoomable_frame_class_init (BonoboZoomableFrameClass *klass)
 {
+	POA_Bonobo_ZoomableFrame__epv *epv = &klass->epv;
+
 	GtkObjectClass *object_class;
 	GObjectClass *gobject_class;
 	
@@ -174,20 +130,21 @@ bonobo_zoomable_frame_class_init (BonoboZoomableFrameClass *klass)
 				GTK_RUN_LAST,
 				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboZoomableFrameClass, zoom_level_changed),
-				(GtkSignalMarshaller) marshal_NONE__FLOAT,
+				g_cclosure_marshal_VOID__FLOAT,
 				GTK_TYPE_NONE, 1, GTK_TYPE_FLOAT);
 	signals[ZOOM_PARAMETERS_CHANGED] =
 		gtk_signal_new ("zoom_parameters_changed",
 				GTK_RUN_LAST,
 				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboZoomableFrameClass, zoom_parameters_changed),
-				gtk_marshal_NONE__NONE,
+				gtk_marshal_VOID__VOID,
 				GTK_TYPE_NONE, 0);
 
 	object_class->destroy = bonobo_zoomable_frame_destroy;
 	gobject_class->finalize = bonobo_zoomable_frame_finalize;
 
-	init_zoomable_corba_class ();
+	epv->onLevelChanged = impl_Bonobo_ZoomableFrame_onLevelChanged;
+	epv->onParametersChanged = impl_Bonobo_ZoomableFrame_onParametersChanged;
 }
 
 static void
@@ -197,68 +154,9 @@ bonobo_zoomable_frame_init (BonoboZoomableFrame *zoomable)
 
 }
 
-/**
- * bonobo_zoomable_frame_get_type:
- *
- * Returns: the GtkType for a BonoboZoomableFrame object.
- */
-GtkType
-bonobo_zoomable_frame_get_type (void)
-{
-	static GtkType type = 0;
+BONOBO_TYPE_FUNC_FULL (BonoboZoomableFrame, Bonobo_ZoomableFrame,
+		       BONOBO_OBJECT_TYPE, bonobo_zoomable_frame);
 
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboZoomableFrame",
-			sizeof (BonoboZoomableFrame),
-			sizeof (BonoboZoomableFrameClass),
-			(GtkClassInitFunc) bonobo_zoomable_frame_class_init,
-			(GtkObjectInitFunc) bonobo_zoomable_frame_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = gtk_type_unique (bonobo_object_get_type (), &info);
-	}
-
-	return type;
-}
-
-Bonobo_ZoomableFrame
-bonobo_zoomable_frame_corba_object_create (BonoboObject *object)
-{
-	POA_Bonobo_ZoomableFrame *servant;
-	CORBA_Environment ev;
-
-	servant = (POA_Bonobo_ZoomableFrame *) g_new0 (BonoboObjectServant, 1);
-	servant->vepv = &bonobo_zoomable_frame_vepv;
-
-	CORBA_exception_init (&ev);
-
-	POA_Bonobo_ZoomableFrame__init ((PortableServer_Servant) servant, &ev);
-	if (BONOBO_EX (&ev)){
-                g_free (servant);
-		CORBA_exception_free (&ev);
-                return CORBA_OBJECT_NIL;
-        }
-
-	CORBA_exception_free (&ev);
-	return (Bonobo_ZoomableFrame) bonobo_object_activate_servant (object, servant);
-}
-
-BonoboZoomableFrame *
-bonobo_zoomable_frame_construct (BonoboZoomableFrame	*p,
-				 Bonobo_ZoomableFrame	 corba_p)
-{
-	g_return_val_if_fail (p != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_ZOOMABLE_FRAME (p), NULL);
-	g_return_val_if_fail (corba_p != NULL, NULL);
-
-	bonobo_object_construct (BONOBO_OBJECT (p), corba_p);
-
-	return p;
-}
 
 /**
  * bonobo_zoomable_frame_new:
@@ -271,19 +169,12 @@ bonobo_zoomable_frame_construct (BonoboZoomableFrame	*p,
 BonoboZoomableFrame *
 bonobo_zoomable_frame_new (void)
 {
-	BonoboZoomableFrame	*p;
-	Bonobo_ZoomableFrame	 corba_p;
+	BonoboZoomableFrame *p;
 
 	p = gtk_type_new (bonobo_zoomable_frame_get_type ());
 	g_return_val_if_fail (p != NULL, NULL);
 
-	corba_p = bonobo_zoomable_frame_corba_object_create (BONOBO_OBJECT (p));
-	if (corba_p == CORBA_OBJECT_NIL){
-		bonobo_object_unref (BONOBO_OBJECT (p));
-		return NULL;
-	}
-
-	return bonobo_zoomable_frame_construct (p, corba_p);
+	return p;
 }
 
 /**

@@ -48,20 +48,16 @@ typedef struct {
 typedef struct {
 	BonoboObjectClass		parent;
 
+	POA_Bonobo_ZoomableFrame__epv   epv;
+
 	void (*zoom_level_changed)	(BonoboZoomableFrame *zframe,
 					 float zoom_level);
 	void (*zoom_parameters_changed)	(BonoboZoomableFrame *zframe);
 } BonoboZoomableFrameClass;
 
-POA_Bonobo_ZoomableFrame__epv *bonobo_zoomable_frame_get_epv  (void);
-
-GtkType			 bonobo_zoomable_frame_get_type			(void);
-Bonobo_ZoomableFrame	 bonobo_zoomable_frame_corba_object_create	(BonoboObject		*object);
+GType			 bonobo_zoomable_frame_get_type			(void);
 
 BonoboZoomableFrame	*bonobo_zoomable_frame_new			(void);
-
-BonoboZoomableFrame	*bonobo_zoomable_frame_construct		(BonoboZoomableFrame	*zframe,
-									 Bonobo_ZoomableFrame	 corba_zframe);
 
 float		 bonobo_zoomable_frame_get_zoom_level			(BonoboZoomableFrame	*zframe);
 

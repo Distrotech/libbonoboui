@@ -1,5 +1,23 @@
 2001-04-24  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/bonobo-zoomable.h (BonoboZoomableClass):
+	Added `POA_Bonobo_Zoomable__epv epv'.
+	(bonobo_zoomable_get_epv): Removed.
+	(bonobo_zoomable_corba_object_create): Removed.
+	(bonobo_zoomable_construct): Removed.
+
+	* bonobo/bonobo-zoomable-frame.h (BonoboZoomableFrameClass):
+	Added `POA_Bonobo_ZoomableFrame__epv epv'.
+	(bonobo_zoomable_frame_get_epv): Removed.
+	(bonobo_zoomable_frame_corba_object_create): Removed.
+	(bonobo_zoomable_frame_construct): Removed.
+
+	* bonobo/bonobo-zoomable.c, bonobo/bonobo-zoomable-frame.c:
+	Use the new BonoboObject API (the code which was formerly known
+	as BonoboXObject).
+
+2001-04-24  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/*.c: Did the basic GTK+ 2.0 porting work, but without
 	any real code changes.
 

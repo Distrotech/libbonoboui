@@ -28,7 +28,6 @@
 #define _BONOBO_ZOOMABLE_H_
 
 #include <bonobo/bonobo-object.h>
-#include <gtk/gtktypeutils.h>
 
 G_BEGIN_DECLS
 
@@ -49,6 +48,8 @@ typedef struct {
 typedef struct {
 	BonoboObjectClass	parent;
 
+	POA_Bonobo_Zoomable__epv epv;
+
 	void (*set_frame)	(BonoboZoomable *zoomable);
 	void (*set_zoom_level)	(BonoboZoomable *zoomable,
 				 float zoom_level);
@@ -59,15 +60,10 @@ typedef struct {
 	void (*zoom_to_default)	(BonoboZoomable *zoomable);
 } BonoboZoomableClass;
 
-POA_Bonobo_Zoomable__epv *bonobo_zoomable_get_epv  (void);
-
-GtkType		 bonobo_zoomable_get_type (void);
+GType		 bonobo_zoomable_get_type (void);
 Bonobo_Zoomable	 bonobo_zoomable_corba_object_create		(BonoboObject   *object);
 
 BonoboZoomable	*bonobo_zoomable_new				(void);
-
-BonoboZoomable	*bonobo_zoomable_construct			(BonoboZoomable	*zoomable,
-								 Bonobo_Zoomable corba_zoomable);
 
 void		 bonobo_zoomable_set_parameters			(BonoboZoomable	*zoomable,
 								 float           zoom_level,
