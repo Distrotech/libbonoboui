@@ -5,6 +5,8 @@
 #include <gdk/gdkx.h>
 #include <bonobo/gnome-bonobo.h>
 #include <bonobo/gnome-stream-fs.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 CORBA_Environment ev;
 CORBA_ORB orb;
@@ -179,7 +181,10 @@ timeout_next_line (gpointer data)
 	int line_len;
 	
 	if (fgets (line, sizeof (line), tmt->f) == NULL)
-	  return FALSE;
+	{
+		GNOME_ProgressiveDataSink_end (tmt->psink, &ev);
+		return FALSE;
+	}
 
 	line_len = strlen (line);
 
@@ -204,6 +209,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
 {
 	GNOME_ProgressiveDataSink psink;
 	struct progressive_timeout *tmt;
+	struct stat statbuf;
 	FILE *f;
 
 	if (text_obj == NULL)
@@ -225,17 +231,20 @@ send_text_cmd (GtkWidget *widget, Application *app)
 
 	GNOME_ProgressiveDataSink_start (psink, &ev);
 
-	CORBA_exception_free (&ev);
-
-	f = fopen ("/usr/dict/words", "r");
+	f = fopen ("/etc/passwd", "r");
 	if (f == NULL) {
 		printf ("I could not open /usr/dict/words!\n");
 		return;
 	}
 	
+	fstat (fileno (f), &statbuf);
+	GNOME_ProgressiveDataSink_set_size (psink,
+					    (CORBA_long) statbuf.st_size,
+					    &ev);
+
 	tmt->psink = psink;
 	tmt->f = f;
-	
+
 	g_timeout_add (500, timeout_next_line, (gpointer) tmt);
 } /* send_text_cmd */
 
