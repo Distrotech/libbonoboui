@@ -159,7 +159,7 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 		&x1, &y1, &x2, &y2,
 		&ev);
 
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major == CORBA_NO_EXCEPTION){
 		if (cuta->width > 0){
 			ArtUta *uta;
 
@@ -479,7 +479,7 @@ gbi_finalize (GtkObject *object)
 		ItemProxyServant *proxy = gbi->priv->proxy;
 		
 		PortableServer_POA_deactivate_object (bonobo_poa (), proxy->oid, &ev);
-		POA_GNOME_Unknown__fini ((void *) proxy);
+		POA_GNOME_Unknown__fini ((void *) proxy, &ev);
 		CORBA_free (proxy->oid);
 		g_free (proxy);
 	}
@@ -651,7 +651,7 @@ gnome_bonobo_item_new (GnomeCanvasGroup *parent, GnomeViewFrame *view_frame)
 	 */
 	gtk_signal_connect (
 		GTK_OBJECT (bonobo_item->canvas), "size_allocate",
-		proxy_size_allocate, bonobo_item);
+		proxy_size_allocate, GNOME_CANVAS_ITEM (bonobo_item));
 
 	/*
 	 * Configure the BonoboItem

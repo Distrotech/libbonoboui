@@ -266,7 +266,8 @@ gcc_render (PortableServer_Servant servant,
 		canvas_buf.is_buf = 1;
 	else
 		canvas_buf.is_buf = 0;
-	
+
+	memset (buf->rgb_buf._buffer, 0, buf->row_stride * (buf->rect.y1 - buf->rect.y0));
 	ICLASS (item)->render (item, &canvas_buf);
 }
 
@@ -722,6 +723,9 @@ gnome_canvas_component_set_proxy (GnomeCanvasComponent *comp, GNOME_Canvas_ItemP
 	g_return_if_fail (comp != NULL);
 	g_return_if_fail (GNOME_IS_CANVAS_COMPONENT (comp));
 
+	g_warning ("Retruning\n");
+	return;
+	
 	canvas = comp->priv->item->canvas;
 	
 	comp->priv->original_root = canvas->root;
