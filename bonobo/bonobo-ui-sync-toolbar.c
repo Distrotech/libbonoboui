@@ -733,7 +733,7 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarStyle look;
 
-	dockname = bonobo_ui_node_get_attr (node, "name");
+	dockname = bonobo_ui_node_peek_attr (node, "name");
 
 	g_return_if_fail (dockname != NULL);
 

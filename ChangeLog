@@ -1,3 +1,8 @@
+2002-01-03  Anders Carlsson  <andersca@gnu.org>
+
+	* bonobo/bonobo-ui-sync-toolbar.c (impl_bonobo_ui_sync_toolbar_update_root): 
+	Plug a leak.
+
 2002-01-02  Dave Camp  <dave@ximian.com>
 
 	* bonobo/bonobo-control-frame.c (impl_Bonobo_ControlFrame_notifyActivated): 
