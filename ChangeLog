@@ -1,3 +1,16 @@
+2003-08-04  Federico Mena Quintero  <federico@ximian.com>
+
+	* bonobo/bonobo-socket.c (BonoboSocketPrivate): Removed the
+	toplevel field, as GtkSocket already has such a field.
+	(bonobo_socket_hierarchy_changed): Oops, chain to the parent
+	handler.
+	(bonobo_socket_finalize): Don't tweak priv->toplevel.
+	(bonobo_socket_instance_init): Likewise.
+	(bonobo_socket_dispose): Use the GtkSocket's toplevel.
+
+	* bonobo/bonobo-ui-toolbar-button-item.c
+	(bonobo_ui_toolbar_button_item_construct): Unset GTK_CAN_FOCUS.
+
 2003-07-28  Padraig O'Briain  <padraig.obriain@sun.com>
 
 	* bonobo/bonobo-dock-item-grip.c:

@@ -27,9 +27,6 @@
 
 /* Private part of the BonoboSocket structure */
 typedef struct {
-	/* Our toplevel, used to track the currently-focused widget */
-	GtkWidget *toplevel;
-
 	/* Signal handler ID for the toplevel's GtkWindow::set_focus() */
 	gulong set_focus_id;
 
@@ -53,7 +50,6 @@ bonobo_socket_finalize (GObject *object)
 	socket = BONOBO_SOCKET (object);
 	priv = socket->priv;
 
-	priv->toplevel = NULL;
 	priv->descendant_has_focus = FALSE;
 
 	g_free (priv);
@@ -76,7 +72,7 @@ bonobo_socket_dispose (GObject *object)
 
 	dprintf ("bonobo_socket_dispose %p\n", object);
 
-	priv= socket->priv;
+	priv = socket->priv;
 
 	if (socket->frame) {
 		bonobo_socket_set_control_frame (socket, NULL);
@@ -84,8 +80,8 @@ bonobo_socket_dispose (GObject *object)
 	}
 
 	if (priv->set_focus_id) {
-		g_assert (priv->toplevel != NULL);
-		g_signal_handler_disconnect (priv->toplevel, priv->set_focus_id);
+		g_assert (socket->socket.toplevel != NULL);
+		g_signal_handler_disconnect (socket->socket.toplevel, priv->set_focus_id);
 		priv->set_focus_id = 0;
 	}
 
@@ -182,7 +178,7 @@ toplevel_set_focus_cb (GtkWindow *window, GtkWidget *focus, gpointer data)
 	socket = BONOBO_SOCKET (data);
 	priv = socket->priv;
 
-	g_assert (priv->toplevel == GTK_WIDGET (window));
+	g_assert (socket->socket.toplevel == GTK_WIDGET (window));
 
 	socket_widget = GTK_WIDGET (socket);
 
@@ -219,25 +215,21 @@ bonobo_socket_hierarchy_changed (GtkWidget *widget, GtkWidget *previous_toplevel
 {
 	BonoboSocket *socket;
 	BonoboSocketPrivate *priv;
-	GtkWidget *new_toplevel;
 
 	socket = BONOBO_SOCKET (widget);
 	priv = socket->priv;
 
-	g_assert (priv->toplevel == previous_toplevel);
-
 	if (priv->set_focus_id) {
-		g_assert (priv->toplevel != NULL);
-		g_signal_handler_disconnect (priv->toplevel, priv->set_focus_id);
+		g_assert (socket->socket.toplevel != NULL);
+		g_signal_handler_disconnect (socket->socket.toplevel, priv->set_focus_id);
 		priv->set_focus_id = 0;
 	}
 
-	new_toplevel = gtk_widget_get_toplevel (widget);
-	if (new_toplevel && GTK_IS_WINDOW (new_toplevel)) {
-		priv->toplevel = new_toplevel;
-		priv->set_focus_id = g_signal_connect_after (priv->toplevel, "set_focus",
+	(* GTK_WIDGET_CLASS (parent_class)->hierarchy_changed) (widget, previous_toplevel);
+
+	if (socket->socket.toplevel && GTK_IS_WINDOW (socket->socket.toplevel))
+		priv->set_focus_id = g_signal_connect_after (socket->socket.toplevel, "set_focus",
 							     G_CALLBACK (toplevel_set_focus_cb), socket);
-	}
 }
 
 /* NOTE: This will only get called in the out-of-process case.  GTK+ only sends
@@ -405,8 +397,6 @@ bonobo_socket_instance_init (BonoboSocket *socket)
 
 	priv = g_new0 (BonoboSocketPrivate, 1);
 	socket->priv = priv;
-
-	priv->toplevel = NULL;
 }
 
 /**
