@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
-"PO-Revision-Date: 2003-06-16 16:20-0300\n"
+"POT-Creation-Date: 2003-09-30 11:43-0400\n"
+"PO-Revision-Date: 2003-09-30 11:41-0400\n"
 "Last-Translator: Evandro Fernandes Giovanini <evandrofg@ig.com.br>\n"
 "Language-Team: Brazilian Portuguese <gnome-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -16,11 +16,11 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
-msgstr "gerador de corba"
+msgstr "fábrica corba"
 
 #: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
-msgstr "O ponteiro do gerador"
+msgstr "O ponteiro da fábrica"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
@@ -96,9 +96,9 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Um vetor terminado por NULL de interfaces às quais um servidor deve dar "
-"suporte para ser listado no seletor.  Assumirá por padrão \"IDL:Bonobo/"
-"Embeddable:1.0\" se nenhuma interface for listada"
+"Um vetor de interfaces terminado por NULL à qual um servidor deve dar "
+"suporte para ser listado no seletor. Se nenhuma interface for listada, o "
+"padrão é \"IDL:Bonobo/Embeddable:1.0\""
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -118,7 +118,7 @@ msgstr "Mo_strar"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
-msgstr "_Ocultar"
+msgstr "_Esconder"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
@@ -271,7 +271,7 @@ msgstr "T_exto"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr "Ocultar d_icas"
+msgstr "Esconder d_icas"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
@@ -279,7 +279,7 @@ msgstr "Mostrar d_icas"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "_Ocultar barra de ferramentas"
+msgstr "_Esconder barra de ferramentas"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
