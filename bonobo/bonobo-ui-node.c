@@ -282,10 +282,13 @@ bonobo_ui_node_transparent (BonoboUINode *node)
 
 	g_return_val_if_fail (n != NULL, TRUE);
 
-	if (!n->properties)
+	if (n->content) {
+		ret = FALSE;
+
+	} else if (!n->properties) {
 		ret = TRUE;
 
-	else if (!n->properties->next) {
+	} else if (!n->properties->next) {
 		if (!strcmp (n->properties->name, "name"))
 			ret = TRUE;
 	}
