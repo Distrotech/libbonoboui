@@ -1,3 +1,9 @@
+Wed Oct 25 11:04:03 2000  Dietmar Maurer  <dietmar@maurer-it.com>
+
+	* container-io.c: use Bonobo_Storage_open_stream instead of
+	Bonobo_Storage_create_stream, and Bonobo_Unknown_unref instead
+	of Bonobo_Stream_close.
+
 Thu Oct 19 10:30:28 2000  Dietmar Maurer  <dietmar@maurer-it.com>
 
 	* component.c (load_stream_cb): use bonobo_stream_open instead of

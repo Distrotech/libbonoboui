@@ -5,20 +5,6 @@
 
 #define STORAGE_TYPE "efs"
 
-static Bonobo_Stream
-create_stream (Bonobo_Storage     storage,
-	       char              *path,
-	       CORBA_Environment *ev)
-{
-	Bonobo_Storage corba_storage = storage;
-
-	Bonobo_Storage_create_stream (corba_storage, path, ev);
-	if (ev->_major != CORBA_NO_EXCEPTION)
-		return CORBA_OBJECT_NIL;
-
-	return Bonobo_Storage_open_stream (storage, path,
-					   Bonobo_Storage_WRITE, ev);
-}
 
 #define GOAD_FILE "goad.id"
 #define DATA_FILE "data"
@@ -38,32 +24,32 @@ save_component (BonoboStorage    *storage,
 
 	CORBA_exception_init (&ev);
 
-	corba_subdir = Bonobo_Storage_create_storage (corba_storage,
-						      curr_dir, &ev);
-	if (!corba_subdir)
+	corba_subdir = Bonobo_Storage_open_storage 
+		(corba_storage, curr_dir, Bonobo_Storage_CREATE, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION)
 		g_warning ("Can't create '%s'", curr_dir);
 	else {
 		Bonobo_Stream       corba_stream;
 		BonoboObjectClient *embeddable;
 
-		corba_stream = create_stream (corba_subdir, GOAD_FILE, &ev);
+		corba_stream = Bonobo_Storage_open_stream 
+			(corba_subdir, GOAD_FILE, Bonobo_Storage_CREATE, &ev);
 
 		bonobo_stream_client_write_string (corba_stream,
 						   site->obj_id,
 						   TRUE, &ev);
 
-		Bonobo_Stream_close (corba_stream, &ev);
 		Bonobo_Unknown_unref (corba_stream, &ev);
 		CORBA_Object_release (corba_stream, &ev);
 
 		embeddable = bonobo_client_site_get_embeddable (
 			BONOBO_CLIENT_SITE (site));
 
-		corba_stream = create_stream (corba_subdir, DATA_FILE, &ev);
+		corba_stream = Bonobo_Storage_open_stream 
+			(corba_subdir, DATA_FILE, Bonobo_Storage_CREATE, &ev);
 
 		object_save (embeddable, corba_stream, &ev);
-
-		Bonobo_Stream_close (corba_stream, &ev);
 
 		Bonobo_Unknown_unref (corba_stream, &ev);
 		CORBA_Object_release (corba_stream, &ev);
@@ -191,7 +177,7 @@ sample_container_load (SampleApp *app, const char *filename)
 	CORBA_Environment ev;
 	BonoboStorage *storage;
 	Bonobo_Storage corba_storage;
-	Bonobo_Storage_directory_list *list;
+	Bonobo_Storage_DirectoryList *list;
 	int i;
 
 	storage = bonobo_storage_open (STORAGE_TYPE, filename,
@@ -206,7 +192,7 @@ sample_container_load (SampleApp *app, const char *filename)
 	corba_storage =
 	    bonobo_object_corba_objref (BONOBO_OBJECT (storage));
 
-	list = Bonobo_Storage_list_contents (corba_storage, "/", &ev);
+	list = Bonobo_Storage_list_contents (corba_storage, "/", 0, &ev);
 
 	if (!list) {
 		CORBA_exception_free (&ev);
