@@ -1,3 +1,7 @@
+2003-08-27  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.4.0
+
 2003-08-22  Samúel Jón Gunnarsson  <sammi@techattack.nu>
 
 	* configure.in: Added "is" to ALL_LINGUAS.
