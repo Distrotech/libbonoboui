@@ -22,11 +22,11 @@ static void
 remove_and_add (GtkWidget *click, gpointer useless_user_data)
 {
 	if (do_remote) {
-		gtk_object_ref (GTK_OBJECT (remote_widget));
+		g_object_ref (remote_widget);
 		gtk_container_remove (GTK_CONTAINER (placeholder1), remote_widget);
 	}
 	if (do_local) {
-		gtk_object_ref (GTK_OBJECT (inproc_widget));
+		g_object_ref (inproc_widget);
 		gtk_container_remove (GTK_CONTAINER (placeholder2), inproc_widget);
 	}
 	g_print ("Removed............\n");

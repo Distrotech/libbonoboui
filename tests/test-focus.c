@@ -19,8 +19,10 @@
 static void
 clicked_fn (GtkButton *button, GtkWidget *control)
 {
-	gtk_signal_disconnect_by_data (
-		GTK_OBJECT (button), control);
+	g_signal_handlers_disconnect_matched (
+		button, G_SIGNAL_MATCH_DATA,
+		0, 0, NULL, NULL, control);
+
 	gtk_widget_destroy (control);
 }
 
@@ -69,8 +71,8 @@ main (int argc, char **argv)
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), control);
 
 	tmp = gtk_button_new_with_label ("Destroy remote control");
-	g_signal_connect (GTK_OBJECT (tmp), "clicked",
-			    G_CALLBACK (clicked_fn), control);
+	g_signal_connect (tmp, "clicked",
+			  G_CALLBACK (clicked_fn), control);
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), tmp);
 
 	gtk_widget_show_all (window);

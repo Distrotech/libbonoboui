@@ -21,7 +21,7 @@
 static void
 app_destroy_cb (GtkWidget *app, BonoboUIContainer *uic)
 {
-	gtk_exit (0);
+	gtk_main_quit ();
 }
 
 static void
@@ -69,10 +69,10 @@ container_create (void)
 	uic = bonobo_window_get_ui_container (BONOBO_WINDOW (app));
 
 	gtk_window_set_default_size (window, 500, 440);
-	gtk_window_set_policy (window, TRUE, TRUE, FALSE);
+	gtk_window_set_resizable (window, TRUE);
 
-	g_signal_connect (GTK_OBJECT (window), "destroy",
-			    G_CALLBACK (app_destroy_cb), uic);
+	g_signal_connect (window, "destroy",
+			  G_CALLBACK (app_destroy_cb), uic);
 
 	box = gtk_vbox_new (FALSE, 5);
 	bonobo_window_set_contents (BONOBO_WINDOW (app), box);

@@ -19,7 +19,9 @@
 #include <string.h> /* strcmp */
 #include <glib.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtk.h>
 #include <libgnome/gnome-i18n.h>
+#include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-selector-widget.h>
@@ -27,9 +29,12 @@
 
 #include "bonobo-insert-component.xpm"
 
-#define GET_CLASS(o) BONOBO_SELECTOR_WIDGET_CLASS (GTK_OBJECT_GET_CLASS (o))
+GNOME_CLASS_BOILERPLATE (BonoboSelectorWidget,
+			 bonobo_selector_widget,
+			 GObject, GTK_TYPE_VBOX);
 
-static GtkHBoxClass *parent_class;
+
+#define GET_CLASS(o) BONOBO_SELECTOR_WIDGET_CLASS (GTK_OBJECT_GET_CLASS (o))
 
 enum {
 	FINAL_SELECT,
@@ -39,7 +44,9 @@ enum {
 static guint signals [LAST_SIGNAL] = { 0 };
 
 struct _BonoboSelectorWidgetPrivate {
-	GtkWidget    *clist;
+	GtkTreeView  *list_view;
+	GtkListStore *list_store;
+
 	GtkWidget    *desc_label;
 };
 
@@ -125,7 +132,7 @@ get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
 	for (i = 0; i < servers->_length; i++) {
                 Bonobo_ServerInfo *oafinfo = &servers->_buffer[i];
 		const gchar *name = NULL, *desc = NULL;
-		char *text [4];
+		GtkTreeIter iter;
 
 		name = bonobo_server_info_prop_lookup (oafinfo, "name", lang_list);
 		desc = bonobo_server_info_prop_lookup (oafinfo, "description", lang_list);
@@ -139,12 +146,12 @@ get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
 		if (!desc)
 			desc = name;
 
-		text [0] = (char *)name;
-		text [1] = (char *)oafinfo->iid;
-		text [2] = (char *)desc;
-		text [3] = NULL;
-			
-		gtk_clist_append (GTK_CLIST (priv->clist), (gchar **) text);
+		gtk_list_store_append (priv->list_store, &iter);
+		gtk_list_store_set (priv->list_store, &iter,
+				    0, name,
+				    1, desc,
+				    2, oafinfo->iid,
+				    -1);
         }
 
         CORBA_free (servers);
@@ -153,32 +160,37 @@ get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
 static void
 bonobo_selector_widget_finalize (GObject *object)
 {
-	g_return_if_fail (BONOBO_IS_SELECTOR_WIDGET (object));
-
 	g_free (BONOBO_SELECTOR_WIDGET (object)->priv);
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+}
+
+static gchar *
+get_field (BonoboSelectorWidget *sel, int col)
+{
+	gchar *text;
+	GtkTreeIter iter;
+	GtkTreeSelection *selection;
+	BonoboSelectorWidgetPrivate *priv; 
+
+	g_return_val_if_fail (sel != NULL, NULL);
+	priv = sel->priv;	
+
+	selection = gtk_tree_view_get_selection (priv->list_view);
+
+	if (!gtk_tree_selection_get_selected (selection, NULL, &iter))
+		return NULL;
+
+	gtk_tree_model_get (GTK_TREE_MODEL (priv->list_store),
+			    &iter, col, &text, -1);
+
+	return text;
 }
 
 static gchar *
 impl_get_id (BonoboSelectorWidget *sel)
 {
-	GList *selection;
-	gchar *text;
-	BonoboSelectorWidgetPrivate *priv; 
-
-	g_return_val_if_fail (sel != NULL, NULL);
-	priv = sel->priv;	
-	selection = GTK_CLIST (priv->clist)->selection;
-	
-	if (!selection)
-		return NULL;
-
-	gtk_clist_get_text (GTK_CLIST (priv->clist),
-			    GPOINTER_TO_INT (selection->data),
-			    1, &text);
-
-	return g_strdup (text);	
+	return get_field (sel, 2);
 }
 
 /**
@@ -199,22 +211,7 @@ bonobo_selector_widget_get_id (BonoboSelectorWidget *sel)
 static gchar *
 impl_get_name (BonoboSelectorWidget *sel)
 {
-	GList *selection;
-	gchar *text;
-	BonoboSelectorWidgetPrivate *priv; 
-
-	g_return_val_if_fail (sel != NULL, NULL);
-	priv = sel->priv;	
-	selection = GTK_CLIST (priv->clist)->selection;
-	
-	if (!selection)
-		return NULL;
-
-	gtk_clist_get_text (GTK_CLIST (priv->clist),
-			    GPOINTER_TO_INT (selection->data),
-			    0, &text);
-
-	return g_strdup (text);
+	return get_field (sel, 0);
 }
 
 /**
@@ -235,22 +232,7 @@ bonobo_selector_widget_get_name (BonoboSelectorWidget *sel)
 static gchar *
 impl_get_description (BonoboSelectorWidget *sel)
 {
-	GList *selection;
-	gchar *text;
-	BonoboSelectorWidgetPrivate *priv; 
-
-	g_return_val_if_fail (sel != NULL, NULL);
-	priv = sel->priv;	
-	selection = GTK_CLIST (priv->clist)->selection;
-	
-	if (!selection)
-		return NULL;
-
-	gtk_clist_get_text (GTK_CLIST (priv->clist),
-			    GPOINTER_TO_INT (selection->data),
-			    2, &text);
-
-	return g_strdup (text);
+	return get_field (sel, 1);
 }
 
 /**
@@ -269,62 +251,76 @@ bonobo_selector_widget_get_description (BonoboSelectorWidget *sel)
 }
 
 static void
-select_row (GtkCList *clist, gint row, gint col, 
-	    GdkEvent *event, BonoboSelectorWidget *sel)
+row_activated (GtkTreeView          *tree_view,
+	       GtkTreePath          *path,
+	       GtkTreeViewColumn    *column,
+	       BonoboSelectorWidget *sel)
 {
+/* FIXME: oddness here */
+#if 0
 	if (event && event->type == GDK_2BUTTON_PRESS) {
 		g_signal_emit (sel, signals [FINAL_SELECT], 0, NULL);
 
-	} else {
-		GtkCListClass *cl;
+	} else 
+#endif
+	{
 		gchar *text;
-		
-		gtk_clist_get_text (GTK_CLIST (clist), row,
-				    2, &text);
-		gtk_label_set_text (GTK_LABEL (sel->priv->desc_label), text);
-		
-		cl = gtk_type_class (GTK_TYPE_CLIST);
 
-		if (cl->select_row)
-			cl->select_row (clist, row, col, event);
+		text = get_field (sel, 1);
+		gtk_label_set_text (GTK_LABEL (sel->priv->desc_label), text);
+		g_free (text);
 	}
 }
 
 static void
-bonobo_selector_widget_init (GtkWidget *widget)
+bonobo_selector_widget_instance_init (BonoboSelectorWidget *widget)
 {
 	BonoboSelectorWidget *sel = BONOBO_SELECTOR_WIDGET (widget);
 	GtkWidget *scrolled, *pixmap;
 	GtkWidget *hbox;
 	GtkWidget *frame;
 	BonoboSelectorWidgetPrivate *priv;
-	gchar *titles [] = { N_("Name"), "Description", "ID", NULL };
 	GdkPixbuf *pixbuf;
 	
 	g_return_if_fail (sel != NULL);
 
-	titles [0] = gettext (titles [0]);
 	priv = sel->priv = g_new0 (BonoboSelectorWidgetPrivate, 1);
 
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 		GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	priv->clist = gtk_clist_new_with_titles (3, titles);
-	gtk_clist_set_selection_mode (GTK_CLIST (priv->clist),
-		GTK_SELECTION_BROWSE);
-	g_signal_connect (GTK_OBJECT (priv->clist), "select-row",
-			    G_CALLBACK (select_row), sel);
-	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 1, FALSE);
-	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 2, FALSE);
-	gtk_clist_column_titles_passive (GTK_CLIST (priv->clist));
+	priv->list_store = gtk_list_store_new (
+		3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 
-	gtk_container_add (GTK_CONTAINER (scrolled), priv->clist);
+	priv->list_view = GTK_TREE_VIEW (gtk_tree_view_new_with_model (
+		GTK_TREE_MODEL (priv->list_store)));
+
+	gtk_tree_view_insert_column_with_attributes (
+		priv->list_view,0, _("Name"),
+		gtk_cell_renderer_text_new (),
+		"text", 0, NULL);
+
+/*	gtk_tree_view_insert_column_with_attributes (
+		priv->list_view,0, _("Description"),
+		gtk_cell_renderer_text_new (),
+		"text", 1, NULL); */
+
+	gtk_tree_selection_set_mode (
+		gtk_tree_view_get_selection (priv->list_view),
+		GTK_SELECTION_BROWSE);
+
+	g_signal_connect (priv->list_view, "row_activated",
+			  G_CALLBACK (row_activated), sel);
+
+	gtk_tree_view_set_headers_clickable (priv->list_view, FALSE);
+
+	gtk_container_add (GTK_CONTAINER (scrolled),
+			   GTK_WIDGET (priv->list_view));
 	gtk_box_pack_start (GTK_BOX (sel), scrolled, TRUE, TRUE, 0);
 
 	frame = gtk_frame_new (_("Description"));
 	gtk_box_pack_start (GTK_BOX (sel), frame, FALSE, TRUE, 0);
-
 	
 	priv->desc_label = gtk_label_new ("");
 	gtk_misc_set_alignment (GTK_MISC (priv->desc_label), 0.0, 0.5);
@@ -341,9 +337,8 @@ bonobo_selector_widget_init (GtkWidget *widget)
 	
 	gtk_box_pack_start (GTK_BOX (hbox), priv->desc_label, TRUE, TRUE, BONOBO_UI_PAD_SMALL);
 	gtk_container_add (GTK_CONTAINER (frame), hbox);
-	
-	gtk_widget_set_usize (widget, 400, 300); 
-	gtk_widget_show_all (widget);
+
+	gtk_widget_show_all (GTK_WIDGET (widget));
 }
 
 static void
@@ -356,15 +351,11 @@ impl_set_interfaces (BonoboSelectorWidget *widget,
 	
 	priv = widget->priv;
 	
-	g_return_if_fail (priv->clist != NULL);
-	
-	gtk_clist_freeze (GTK_CLIST (priv->clist));
+	g_return_if_fail (priv->list_view != NULL);
 
-	gtk_clist_clear (GTK_CLIST (priv->clist));
+	gtk_list_store_clear (priv->list_store);
 
 	get_filtered_objects (priv, required_interfaces);
-
-	gtk_clist_thaw (GTK_CLIST (priv->clist));
 }
 
 void
@@ -378,7 +369,7 @@ bonobo_selector_widget_set_interfaces (BonoboSelectorWidget *widget,
  * bonobo_selector_widget_new:
  *
  * Creates a new BonoboSelectorWidget widget, this contains
- * a CList and a description pane for each component.
+ * a list and a description pane for each component.
  *
  * Returns: A pointer to the newly-created BonoboSelectorWidget widget.
  */
@@ -396,7 +387,6 @@ bonobo_selector_widget_class_init (BonoboSelectorWidgetClass *klass)
 	g_return_if_fail (klass != NULL);
 	
 	object_class = (GObjectClass *) klass;
-	parent_class = gtk_type_class (gtk_vbox_get_type ());
 
 	klass->get_id          = impl_get_id;
 	klass->get_name        = impl_get_name;
@@ -416,31 +406,3 @@ bonobo_selector_widget_class_init (BonoboSelectorWidgetClass *klass)
 	object_class->finalize = bonobo_selector_widget_finalize;
 }
 
-/**
- * bonobo_selector_widget_get_type:
- *
- * Returns: The GtkType for the BonoboSelectorWidget object class.
- */
-GtkType
-bonobo_selector_widget_get_type (void)
-{
-	static GtkType bonobo_selector_widget_type = 0;
-
-	if (!bonobo_selector_widget_type) {
-		GtkTypeInfo bonobo_selector_widget_info = {
-			"BonoboSelectorWidget",
-			sizeof (BonoboSelectorWidget),
-			sizeof (BonoboSelectorWidgetClass),
-			(GtkClassInitFunc)  bonobo_selector_widget_class_init,
-			(GtkObjectInitFunc) bonobo_selector_widget_init,
-			NULL,
-			NULL
-		};
-
-		bonobo_selector_widget_type = gtk_type_unique (
-			gtk_vbox_get_type (),
-			&bonobo_selector_widget_info);
-	}
-
-	return bonobo_selector_widget_type;
-}

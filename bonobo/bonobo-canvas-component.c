@@ -642,7 +642,7 @@ bonobo_canvas_component_class_init (BonoboCanvasComponentClass *klass)
 
 	gcc_signals [SET_BOUNDS] = 
                 g_signal_new ("set_bounds",
-			      G_OBJECT_CLASS_TYPE(object_class),
+			      G_OBJECT_CLASS_TYPE (object_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET(BonoboCanvasComponentClass, set_bounds),
 			      NULL, NULL,
@@ -652,7 +652,7 @@ bonobo_canvas_component_class_init (BonoboCanvasComponentClass *klass)
 
 	gcc_signals [EVENT] = 
 		g_signal_new ("event", 
-			      G_OBJECT_CLASS_TYPE(object_class),
+			      G_OBJECT_CLASS_TYPE (object_class),
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET(BonoboCanvasComponentClass, event),
 			      _bonobo_boolean_handled_accumulator, NULL,

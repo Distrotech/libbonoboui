@@ -195,16 +195,18 @@ bonobo_selector_class_init (BonoboSelectorClass *klass)
 	object_class->finalize = bonobo_selector_finalize;
 
 	bonobo_selector_signals [OK] =
-		g_signal_new ("ok", G_SIGNAL_RUN_LAST,
+		g_signal_new ("ok",
 			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (BonoboSelectorClass, ok),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE, 0);
 	
 	bonobo_selector_signals [CANCEL] =
-		g_signal_new ("cancel", G_SIGNAL_RUN_LAST,
+		g_signal_new ("cancel",
 			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (BonoboSelectorClass, cancel),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID,

@@ -167,10 +167,10 @@ mainloop_for (gulong interval)
 
 	g_timeout_add (interval, timeout_cb, &mainloop_done);
 
-	while (g_main_pending ())
-		g_main_iteration (FALSE);
+	while (g_main_context_pending (NULL))
+		g_main_context_iteration (NULL, FALSE);
 	
-	while (g_main_iteration (TRUE) && !mainloop_done)
+	while (g_main_context_iteration (NULL, TRUE) && !mainloop_done)
 		;
 }
 

@@ -1,4 +1,23 @@
+2002-02-13  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-selector.c
+	(bonobo_selector_class_init): fix signal_new
+	arg. ordering.
+
+	* bonobo/bonobo-ui-engine.c
+	(get_parent_path): rename to
+	(find_last_slash): this.
+	(bonobo_ui_engine_xml_set_prop): upd. to
+	re-write the parent path on the stack.
+
+	* tests/*.c: port.
+
+	* bonobo/*.c: more deprecated bits removal.
+
 2002-02-12  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-selector-widget.c: port from
+	CList, re-write several innards.
 
 	* configure.in: depend on gconf >= 1.1.8
 

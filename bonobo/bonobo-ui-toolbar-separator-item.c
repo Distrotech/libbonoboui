@@ -12,18 +12,17 @@
 #include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-ui-toolbar-separator-item.h>
 
-
-#define PARENT_TYPE bonobo_ui_toolbar_item_get_type ()
-static BonoboUIToolbarItemClass *parent_class = NULL;
+GNOME_CLASS_BOILERPLATE (BonoboUIToolbarSeparatorItem,
+			 bonobo_ui_toolbar_separator_item,
+			 BonoboUIToolbarItem,
+			 bonobo_ui_toolbar_item_get_type ());
 
-
 #define BORDER_WIDTH        2
 
 #define SPACE_LINE_DIVISION 10
 #define SPACE_LINE_START    3
 #define SPACE_LINE_END      7
 
-
 /* GtkWidget methods.  */
 
 static void
@@ -73,51 +72,24 @@ impl_expose_event (GtkWidget *widget,
 	return FALSE;
 }
 
-
 static void
-class_init (BonoboUIToolbarSeparatorItemClass *separator_item_class)
+bonobo_ui_toolbar_separator_item_class_init (
+	BonoboUIToolbarSeparatorItemClass *separator_item_class)
 {
-	GtkWidgetClass *widget_class;
+	GtkWidgetClass *widget_class = (GtkWidgetClass *) separator_item_class;
 
-	widget_class = GTK_WIDGET_CLASS (separator_item_class);
 	widget_class->size_request = impl_size_request;
-	/* widget_class->draw         = impl_draw; */
 	widget_class->expose_event = impl_expose_event;
-
-	parent_class = gtk_type_class (bonobo_ui_toolbar_item_get_type ());
 }
 
 static void
-init (BonoboUIToolbarSeparatorItem *toolbar_separator_item)
+bonobo_ui_toolbar_separator_item_instance_init (
+	BonoboUIToolbarSeparatorItem *toolbar_separator_item)
 {
 	gtk_container_set_border_width (GTK_CONTAINER (toolbar_separator_item), BORDER_WIDTH);
 }
 
-
-GtkType
-bonobo_ui_toolbar_separator_item_get_type (void)
-{
-	static GtkType type = 0;
 
-	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUIToolbarSeparatorItem",
-			sizeof (BonoboUIToolbarSeparatorItem),
-			sizeof (BonoboUIToolbarSeparatorItemClass),
-			(GtkClassInitFunc) class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
-		};
-
-		type = gtk_type_unique (PARENT_TYPE, &info);
-	}
-
-	return type;
-}
-
-
 GtkWidget *
 bonobo_ui_toolbar_separator_item_new (void)
 {

@@ -1219,25 +1219,17 @@ bonobo_ui_engine_object_get (BonoboUIEngine    *engine,
 	return BONOBO_UI_ERROR_OK;
 }
 
-static char *
-get_parent_path (const char *path)
+static int
+find_last_slash (const char *path)
 {
 	int i, last_slash = 0;
-	char *ret;
 
 	for (i = 0; path [i]; i++) {
 		if (path [i] == '/')
 			last_slash = i;
 	}
 
-	if (!last_slash)
-		return NULL;
-
-	ret = g_malloc (last_slash + 1);
-	memcpy (ret, path, last_slash);
-	ret [last_slash] = '\0';
-
-	return ret;
+	return last_slash;
 }
 
 /**
@@ -1291,6 +1283,7 @@ bonobo_ui_engine_xml_set_prop (BonoboUIEngine *engine,
 			bonobo_ui_engine_update (engine);
 		}
 	} else {
+		int last_slash;
 		char *parent_path;
 		BonoboUINode *copy;
 
@@ -1300,13 +1293,15 @@ bonobo_ui_engine_xml_set_prop (BonoboUIEngine *engine,
 		bonobo_ui_node_copy_attrs (original, copy);
 		bonobo_ui_node_set_attr (copy, property, value);
 
-		parent_path = get_parent_path (path);
+		last_slash = find_last_slash (path);
+
+		parent_path = g_alloca (last_slash + 1);
+		memcpy (parent_path, path, last_slash);
+		parent_path [last_slash] = '\0';
 
 		bonobo_ui_xml_merge (
 			engine->priv->tree, parent_path,
 			copy, cmp_name);
-
-		g_free (parent_path);
 
 		bonobo_ui_engine_update (engine);
 	}

@@ -351,7 +351,7 @@ main (int argc, char **argv)
 	do_moniker_magic ();
 
 	while (global_mto.async && !async_done)
-		g_main_iteration (TRUE);
+		g_main_context_iteration (NULL, TRUE);
 
 	return bonobo_ui_debug_shutdown ();
 }

@@ -12,8 +12,10 @@
 #include <bonobo/bonobo-ui-toolbar-popup-item.h>
 #include <libgnome/gnome-macros.h>
 
-#define PARENT_TYPE bonobo_ui_toolbar_toggle_button_item_get_type ()
-static BonoboUIToolbarToggleButtonItemClass *parent_class = NULL;
+GNOME_CLASS_BOILERPLATE (BonoboUIToolbarPopupItem,
+			 bonobo_ui_toolbar_popup_item,
+			 BonoboUIToolbarToggleButtonItem,
+			 bonobo_ui_toolbar_toggle_button_item_get_type ());
 
 static GdkPixbuf *right_arrow_pixbuf = NULL;
 static GdkPixbuf *down_arrow_pixbuf = NULL;
@@ -83,8 +85,8 @@ impl_set_orientation (BonoboUIToolbarItem *item,
 	GtkWidget *image;
 	GdkPixbuf *icon;
 
-	if (BONOBO_UI_TOOLBAR_ITEM_CLASS (parent_class)->set_orientation != NULL)
-		(* BONOBO_UI_TOOLBAR_ITEM_CLASS (parent_class)->set_orientation) (item, orientation);
+	GNOME_CALL_PARENT (
+		BONOBO_UI_TOOLBAR_ITEM_CLASS, set_orientation, (item, orientation));
 
 	popup_item = BONOBO_UI_TOOLBAR_POPUP_ITEM (item);
 
@@ -94,48 +96,22 @@ impl_set_orientation (BonoboUIToolbarItem *item,
 	bonobo_ui_toolbar_button_item_set_image (BONOBO_UI_TOOLBAR_BUTTON_ITEM (item), image);
 }
 
-
 static void
-class_init (BonoboUIToolbarPopupItemClass *popup_item_class)
+bonobo_ui_toolbar_popup_item_class_init (
+	BonoboUIToolbarPopupItemClass *popup_item_class)
 {
 	BonoboUIToolbarItemClass *toolbar_item_class;
 
 	toolbar_item_class = BONOBO_UI_TOOLBAR_ITEM_CLASS (popup_item_class);
 	toolbar_item_class->set_orientation = impl_set_orientation;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
-
 	create_arrow_pixbufs ();
 }
 
 static void
-init (BonoboUIToolbarPopupItem *toolbar_popup_item)
+bonobo_ui_toolbar_popup_item_instance_init (
+	BonoboUIToolbarPopupItem *toolbar_popup_item)
 {
-	/* Nothing to do here.  */
-}
-
-
-GtkType
-bonobo_ui_toolbar_popup_item_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUIToolbarPopupItem",
-			sizeof (BonoboUIToolbarPopupItem),
-			sizeof (BonoboUIToolbarPopupItemClass),
-			(GtkClassInitFunc) class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
-		};
-
-		type = gtk_type_unique (PARENT_TYPE, &info);
-	}
-
-	return type;
 }
 
 void

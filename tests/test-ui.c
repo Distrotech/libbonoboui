@@ -133,14 +133,16 @@ disconnect_progress (GtkObject *progress, gpointer dummy)
 }
 
 static gboolean
-update_progress (GtkProgress *progress)
+update_progress (GtkProgressBar *progress)
 {
-	float pos = gtk_progress_get_current_percentage (progress);
+	double pos = gtk_progress_bar_get_fraction (progress);
 
 	if (pos < 0.95)
-		gtk_progress_set_percentage (progress, pos + 0.05);
+		pos += 0.05;
 	else
-		gtk_progress_set_percentage (progress, 0);
+		pos = 0;
+
+	gtk_progress_bar_set_fraction (progress, pos);
 
 	return TRUE;
 }
@@ -513,7 +515,6 @@ main (int argc, char **argv)
 		BonoboControl *control = bonobo_control_new (widget);
 		guint id;
 
-		gtk_progress_bar_update (GTK_PROGRESS_BAR (widget), 0.5);
 		gtk_widget_show (widget);
 		bonobo_ui_component_object_set (componenta, "/status/Progress",
 						BONOBO_OBJREF (control),
