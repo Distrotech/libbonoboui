@@ -1,296 +1,297 @@
 # Copyright (C) 2001-2002 Free Software Foundation, Inc.
 # Valek Filippov <frob@df.ru>, 2001-2002.
+# Dmitry G. Mastrukov <dmitry@taurussoft.org>, 2002
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "POT-Creation-Date: 2002-03-18 13:47+0000\n"
-"PO-Revision-Date: 2002-03-15 13:55+0300\n"
-"Last-Translator: Valek Filippov <frob@df.ru>\n"
+"PO-Revision-Date: 2002-04-10 11:31+0400\n"
+"Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
 msgid "Shadow type"
-msgstr "Тип тени"
+msgstr "п╒п╦п© я┌п╣п╫п╦"
 
 #: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
 #: bonobo/bonobo-ui-toolbar.c:1089 bonobo/bonobo-ui-toolbar.c:1090
 msgid "Orientation"
-msgstr "Ориентация"
+msgstr "п·я─п╦п╣п╫я┌п╟я├п╦я▐"
 
 #: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
 #: bonobo/bonobo-ui-toolbar.c:1108 bonobo/bonobo-ui-toolbar.c:1109
 msgid "Preferred width"
-msgstr "Предпочтительная ширина"
+msgstr "п÷я─п╣п╢п©п╬я┤я┌п╦я┌п╣п╩я▄п╫п╟я▐ я┬п╦я─п╦п╫п╟"
 
 #: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
 #: bonobo/bonobo-ui-toolbar.c:1117 bonobo/bonobo-ui-toolbar.c:1118
 msgid "Preferred height"
-msgstr "Предпочтительная высота"
+msgstr "п÷я─п╣п╢п©п╬я┤я┌п╦я┌п╣п╩я▄п╫п╟я▐ п╡я▀я│п╬я┌п╟"
 
 #: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
-msgstr "Выбрать файл для открытия"
+msgstr "п▓я▀п╠я─п╟я┌я▄ я└п╟п╧п╩ п╢п╩я▐ п╬я┌п╨я─я▀я┌п╦я▐"
 
 #: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
-msgstr "Выбрать файлы для открытия"
+msgstr "п▓я▀п╠я─п╟я┌я▄ я└п╟п╧п╩я▀ п╢п╩я▐ п╬я┌п╨я─я▀я┌п╦я▐"
 
 #: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
-msgstr "Выбрать имя файла для сохранения"
+msgstr "п▓я▀п╠я─п╟я┌я▄ п╦п╪я▐ я└п╟п╧п╩п╟ п╢п╩я▐ я│п╬я┘я─п╟п╫п╣п╫п╦я▐"
 
 #: bonobo/bonobo-plug.c:351
 msgid "Event Forwarding"
-msgstr "Пересылка события"
+msgstr "п÷п╣я─п╣я│я▀п╩п╨п╟ я│п╬п╠я▀я┌п╦я▐"
 
 #: bonobo/bonobo-plug.c:352
 msgid "Whether X events should be forwarded"
-msgstr "Должны ли пересылаться события X"
+msgstr "п■п╬п╩п╤п╫я▀ п╩п╦ п©п╣я─п╣я│я▀п╩п╟я┌я▄я│я▐ я│п╬п╠я▀я┌п╦я▐ X"
 
 #: bonobo/bonobo-selector-widget.c:300
 msgid "Name"
-msgstr "Имя"
+msgstr "п≤п╪я▐"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
-msgstr "Описание"
+msgstr "п·п©п╦я│п╟п╫п╦п╣"
 
 #: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
-msgstr "Видимый"
+msgstr "п▓п╦п╢п╦п╪п╬я│я┌я▄"
 
 #: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
-msgstr "Показать"
+msgstr "п÷п╬п╨п╟п╥я▀п╡п╟я┌я▄"
 
 #: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
-msgstr "Скрыть"
+msgstr "п║п╨я─я▀п╡п╟я┌я▄"
 
 #: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
-msgstr "Просмотр подсказок"
+msgstr "п÷п╬п╨п╟п╥я▀п╡п╟я┌я▄ п©п╬п╢я│п╨п╟п╥п╨п╦"
 
 #: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
-msgstr "Панели"
+msgstr "п÷п╟п╫п╣п╩п╦"
 
 #: bonobo/bonobo-ui-config-widget.c:294
 msgid "toolbars"
-msgstr "панели"
+msgstr "п©п╟п╫п╣п╩п╦"
 
 #: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
-msgstr "Посмотреть"
+msgstr "п▓п╦п╢"
 
 #: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
-msgstr "Пиктограмма"
+msgstr "п÷п╦п╨я┌п╬пЁя─п╟п╪п╪п╟"
 
 #: bonobo/bonobo-ui-config-widget.c:320
 msgid "_Text and Icon"
-msgstr "Текст и пиктограмма"
+msgstr "п╒п╣п╨я│я┌ п╦ п©п╦п╨я┌п╬пЁя─п╟п╪п╪п╟"
 
 #: bonobo/bonobo-ui-config-widget.c:326
 msgid "_Priority text only"
-msgstr "Только текст приоритета"
+msgstr "п╒п╬п╩я▄п╨п╬ я┌п╣п╨я│я┌"
 
 #: bonobo/bonobo-ui-engine-config.c:516
 msgid "Configure UI"
-msgstr "Настроить интерфейс"
+msgstr "п²п╟я│я┌я─п╬п╦я┌я▄ п╦п╫я┌п╣я─я└п╣п╧я│"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
-msgstr "Оба"
+msgstr "п▓я│я▒"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
-msgstr "Текст"
+msgstr "п╒п╣п╨я│я┌"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
-msgstr "Скрыть подсказки"
+msgstr "п║п╨я─я▀я┌я▄ п©п╬п╢я│п╨п╟п╥п╨п╦"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
-msgstr "Показать подсказки"
+msgstr "п÷п╬п╨п╟п╥п╟я┌я▄ п©п╬п╢я│п╨п╟п╥п╨п╦"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
-msgstr "Скрыть панель"
+msgstr "п║п╨я─я▀я┌я▄ п©п╟п╫п╣п╩я▄"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
-msgstr "Настроить"
+msgstr "п═п╟п╥п╫п╬п╬п╠я─п╟п╥п╦я┌я▄"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
-msgstr "Настроить панель"
+msgstr "п═п╟п╥п╫п╬п╬п╠я─п╟п╥п╦я┌я▄ п©п╟п╫п╣п╩я▄"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "Масштаб"
+msgstr "п°п╟я│я┬я┌п╟п╠"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "Степень увеличения"
+msgstr "п║я┌п╣п©п╣п╫я▄ я┐п╡п╣п╩п╦я┤п╣п╫п╦я▐"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "Минимальный масштаб"
+msgstr "п°п╦п╫п╦п╪п╟п╩я▄п╫я▀п╧ п╪п╟я│я┬я┌п╟п╠"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "Минимальная степень увеличения"
+msgstr "п°п╦п╫п╦п╪п╟п╩я▄п╫п╟я▐ я│я┌п╣п©п╣п╫я▄ я┐п╡п╣п╩п╦я┤п╣п╫п╦я▐"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "Максимальный масштаб"
+msgstr "п°п╟п╨я│п╦п╪п╟п╩я▄п╫я▀п╧ п╪п╟я│я┬я┌п╟п╠"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "Максимальная степень увеличения"
+msgstr "п°п╟п╨я│п╦п╪п╟п╩я▄п╫п╟я▐ я│я┌п╣п©п╣п╫я▄ я┐п╡п╣п╩п╦я┤п╣п╫п╦я▐"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "Имеет минимальный масштаб"
+msgstr "п≤п╪п╣п╣я┌ п╪п╦п╫п╦п╪п╟п╩я▄п╫я▀п╧ п╪п╟я│я┬я┌п╟п╠"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Имеется ли допустимый минимальный масштаб"
+msgstr "п≤п╪п╣п╣я┌я│я▐ п╩п╦ п╢п╬п©я┐я│я┌п╦п╪я▀п╧ п╪п╦п╫п╦п╪п╟п╩я▄п╫я▀п╧ п╪п╟я│я┬я┌п╟п╠"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Имеет максимальный масштаб"
+msgstr "п≤п╪п╣п╣я┌ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫я▀п╧ п╪п╟я│я┬я┌п╟п╠"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Имеется ли допустимый максимальный масштаб"
+msgstr "п≤п╪п╣п╣я┌я│я▐ п╩п╦ п╢п╬п©я┐я│я┌п╦п╪я▀п╧ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫я▀п╧ п╪п╟я│я┬я┌п╟п╠"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr "Непрерывный"
+msgstr "п²п╣п©я─п╣я─я▀п╡п╫я▀п╧"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Непрерывен ли масштаб (в отличие от дискретного)"
+msgstr "п²п╣п©я─п╣я─я▀п╡п╣п╫ п╩п╦ п╪п╟я│я┬я┌п╟п╠ (п╡ п╬я┌п╩п╦я┤п╦п╣ п╬я┌ п╢п╦я│п╨я─п╣я┌п╫п╬пЁп╬)"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr "фабрика corba"
+msgstr "я└п╟п╠я─п╦п╨п╟ corba"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr "Указатель фабрики"
+msgstr "пёп╨п╟п╥п╟я┌п╣п╩я▄ я└п╟п╠я─п╦п╨п╦"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
-msgstr "контейнер интерфейса пользователя corba"
+msgstr "п╨п╬п╫я┌п╣п╧п╫п╣я─ п╦п╫я┌п╣я─я└п╣п╧я│п╟ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐ corba"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr "Контейнер интерфейса пользователя"
+msgstr "п п╬п╫я┌п╣п╧п╫п╣я─ п╦п╫я┌п╣я─я└п╣п╧я│п╟ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐"
 
 #: bonobo/bonobo-ui-toolbar.c:1099
 msgid "is floating"
-msgstr "плавающий"
+msgstr "п©п╩п╟п╡п╟я▌я┴п╟я▐"
 
 #: bonobo/bonobo-ui-toolbar.c:1100
 msgid "whether the toolbar is floating"
-msgstr "является ли панель плавающей"
+msgstr "я▐п╡п╩я▐п╣я┌я│я▐ п╩п╦ п©п╟п╫п╣п╩я▄ п©п╩п╟п╡п╟я▌я┴п╣п╧"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "п╓п╩п╟пЁп╦ п╬я┌п╩п╟п╢п╨п╦ Gdk, п╨п╬я┌п╬я─я▀п╣ п╫п╟п╢п╬ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
-msgstr ""
+msgstr "п╓п⌡п░п⌠п≤"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "п╓п╩п╟пЁп╦ п╬я┌п╩п╟п╢п╨п╦ Gdk, п╨п╬я┌п╬я─я▀п╣ п╫п╟п╢п╬ я│п╫я▐я┌я▄"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "п■п╦я│п©п╩п╣п╧ X, п╨п╬я┌п╬я─я▀п╧ п╫п╟п╢п╬ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "п■п≤п║п÷п⌡п∙п≥"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "п▓я▀п©п╬п╩п╫я▐я┌я▄ п╡я▀п╥п╬п╡я▀ X я│п╦п╫я┘я─п╬п╫п╫п╬"
 
 #: bonobo/bonobo-ui-init-gtk.c:130
 msgid "Don't use X shared memory extension"
-msgstr ""
+msgstr "п²п╣ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ я─п╟я│я┬п╦я─п╣п╫п╦п╣ \"X shared memory\""
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "п²п╟п╦п╪п╣п╫п╬п╡п╟п╫п╦п╣ п©я─п╬пЁя─п╟п╪п╪я▀ п╢п╩я▐ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦я▐ п╬п╨п╬п╫п╫я▀п╪ п╪п╣п╫п╣п╢п╤п╣я─п╬п╪"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "NAME"
-msgstr ""
+msgstr "п²п░п≤п°п∙п²п·п▓п░п²п≤п∙"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "п п╩п╟я│я│ п©я─п╬пЁя─п╟п╪п╪я▀ п╢п╩я▐ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦я▐ п╬п╨п╬п╫п╫я▀п╪ п╪п╣п╫п╣п╢п╤п╣я─п╬п╪"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "CLASS"
-msgstr ""
+msgstr "п п⌡п░п║п║"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "HOST"
-msgstr ""
+msgstr "п╔п·п║п╒"
 
 #: bonobo/bonobo-ui-init-gtk.c:145
 msgid "PORT"
-msgstr ""
+msgstr "п÷п·п═п╒"
 
 #: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
 msgid "STYLE"
-msgstr ""
+msgstr "п║п╒п≤п⌡п╛"
 
 #: bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "п╓п╩п╟пЁп╦ п╬я┌п╩п╟п╢п╨п╦ Gtk+, п╨п╬я┌п╬я─я▀п╣ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄"
 
 #: bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "п╓п╩п╟пЁп╦ п╬я┌п╩п╟п╢п╨п╦ Gtk+, п╨п╬я┌п╬я─я▀п╣ п╫п╟п╢п╬ я│п╫я▐я┌я▄"
 
 #: bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "п║я┤п╦я┌п╟я┌я▄ п╡я│п╣ п©я─п╣п╢я┐п©я─п╣п╤п╢п╣п╫п╦я▐ я└п╟я┌п╟п╩я▄п╫я▀п╪п╦"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "п≈п╟пЁя─я┐п╥п╦я┌я▄ п╢п╬п©п╬п╩п╫п╦я┌п╣п╩я▄п╫я▀п╧ п╪п╬п╢я┐п╩я▄ Gtk"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
-msgstr ""
+msgstr "п°п·п■пёп⌡п╛"
 
 #: bonobo/bonobo-ui-init-gtk.c:175
 msgid "GTK+"
-msgstr ""
+msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:187
 msgid "Bonobo GUI support"
-msgstr ""
+msgstr "п÷п╬п╢п╢п╣я─п╤п╨п╟ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▄я│п╨п╬пЁп╬ п╦п╫я┌п╣я─я└п╣п╧я│п╟ Bonobo"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Ничего не делает -- это просто демонстрация."
+msgstr "п²п╦я┤п╣пЁп╬ п╫п╣ п╢п╣п╩п╟п╣я┌ -- я█я┌п╬ п©я─п╬я│я┌п╬ п╢п╣п╪п╬п╫я│я┌я─п╟я├п╦я▐."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -303,36 +304,36 @@ msgstr "Gnome Hello"
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "Здравствуй, мир!"
+msgstr "п≈п╢я─п╟п╡я│я┌п╡я┐п╧, п╪п╦я─!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "Невозможно инициализировать код libbonoboui"
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╦п╫п╦я├п╦п╟п╩п╦п╥п╦я─п╬п╡п╟я┌я▄ п╨п╬п╢ libbonoboui"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "Об этом приложении"
+msgstr "п·п╠ я█я┌п╬п╪ п©я─п╦п╩п╬п╤п╣п╫п╦п╦"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr "Выбрать"
+msgstr "п▓я▀п╠я─п╟я┌я▄"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "О программе"
+msgstr "п· п©я─п╬пЁя─п╟п╪п╪п╣"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "Правка"
+msgstr "п÷я─п╟п╡п╨п╟"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
-msgstr "Файл"
+msgstr "п╓п╟п╧п╩"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "Выбрать"
+msgstr "п▓я▀п╠я─п╟я┌я▄"
 
 #: samples/controls/bonobo-sample-controls.c:121
 msgid "Could not initialize Bonobo UI"
-msgstr "Не удалось инициализировать Bonobo UI"
+msgstr "п²п╣ я┐п╢п╟п╩п╬я│я▄ п╦п╫п╦я├п╦п╟п╩п╦п╥п╦я─п╬п╡п╟я┌я▄ Bonobo UI"
