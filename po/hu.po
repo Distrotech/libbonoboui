@@ -1,19 +1,21 @@
-# Hungarian translation for libbonoboui
-# Copyright (C) 2002 Free Software Foundation, Inc.
+# Hungarian translation of libbonoboui.
+# Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libbonoboui package.
 # Emese Kovacs <emese@gnome.hu>, 2002.
-# Andras Timar <timar@gnome.hu>, 2003.
+# Andras Timar <timar@gnome.hu>, 2003, 2004.
+# Laszlo Dvornik <dvornik@gnome.hu>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2004-05-14 11:09+0100\n"
-"PO-Revision-Date: 2003-07-10 10:45+0200\n"
-"Last-Translator: Andras Timar <timar@gnome.hu>\n"
-"Language-Team: Hungarian <hu@gnome.hu>\n"
+"Project-Id-Version: libbonoboui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-08-26 12:06+0200\n"
+"PO-Revision-Date: 2004-08-26 15:31+0200\n"
+"Last-Translator: Laszlo Dvornik <dvornik@gnome.hu>\n"
+"Language-Team: Hungarian <gnome@gnome.hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -123,7 +125,7 @@ msgstr "_Elrejtés"
 
 #: bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
-msgstr "_Tippek megjelenítése"
+msgstr "_Buboréksúgó megjelenítése"
 
 #: bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
@@ -133,11 +135,11 @@ msgstr "Eszköztárak"
 msgid "toolbars"
 msgstr "eszköztárak"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "Kinézet"
 
-#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "_Ikon"
 
@@ -250,31 +252,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI támogatás"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
 msgstr "Mind_kettő"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
 msgstr "_Szöveg"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
-msgstr "T_ippek mutatása"
-
-#: bonobo/bonobo-ui-sync-toolbar.c:553
-msgid "Show t_ips"
-msgstr "T_ippek elrejtése"
+msgstr "_Buboréksúgó elrejtése"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
+msgid "Show t_ips"
+msgstr "_Buboréksúgó megjelenítése"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
 msgstr "Eszköztár _elrejtése"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
 msgstr "Testres_zabás"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
 msgstr "Az eszköztár testreszabása"
 
@@ -284,7 +286,7 @@ msgstr "lebegő"
 
 #: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
-msgstr "legyen-e lebegő az eszköztár"
+msgstr "lebegő legyen-e az eszköztár"
 
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
@@ -296,7 +298,7 @@ msgstr "_Tartalom"
 
 #: bonobo/bonobo-ui-util.c:630
 msgid "View help for this application"
-msgstr "Az alkalmazás súgója"
+msgstr "Az alkalmazás súgójának megtekintése"
 
 #: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
@@ -376,7 +378,7 @@ msgstr "_Kijelölés"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Ez semmit nem csinál, csak demo"
+msgstr "Ez semmit nem csinál, csak demó."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -397,13 +399,4 @@ msgstr "A libbonoboui kód initje sikertelen"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr "Nem sikerült inicializálni a Bonobo UI-t"
-
-#~ msgid "HOST"
-#~ msgstr "HOST"
-
-#~ msgid "PORT"
-#~ msgstr "PORT"
-
-#~ msgid "STYLE"
-#~ msgstr "STYLE"
+msgstr "Nem lehet inicializálni a Bonobo UI-t"
