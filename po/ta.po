@@ -1,13 +1,13 @@
 # Tamil translation of libbonoboui2.
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# Dinesh Nadarajah <n_dinesh@yahoo.com>, 2001.
+# Balaji Narayanan <balaji.narayanan@wipro.com>, 2001..
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Tamil libbonoboui2 1.7\n"
 "POT-Creation-Date: 2001-08-14 23:13-0500\n"
 "PO-Revision-Date: 2001-09-28 18:53-0500\n"
-"Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
+"Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
