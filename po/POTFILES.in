@@ -1,6 +1,7 @@
 # List of source files containing translatable strings.
 # Please keep this list in alphabetic order.
 bonobo/bonobo-dock-item.c
+bonobo/bonobo-dock-item-grip.c
 bonobo/bonobo-file-selector-util.c
 bonobo/bonobo-plug.c
 bonobo/bonobo-selector-widget.c

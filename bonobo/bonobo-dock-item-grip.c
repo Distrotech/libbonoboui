@@ -8,12 +8,14 @@
  * Copyright (C) 2002 Sun Microsystems, Inc.
  */
 
+#include <string.h>
 #include <glib-object.h>
 #include <atk/atkstateset.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkaccessible.h>
 #include <gtk/gtkbindings.h>
 #include <libgnome/gnome-macros.h>
+#include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-a11y.h>
 #include <bonobo/bonobo-dock-band.h>
 #include <bonobo/bonobo-dock-item-grip.h>
@@ -78,6 +80,7 @@ static void
 grip_item_a11y_initialize (AtkObject *accessible, gpointer widget)
 {
 	accessible->role = ATK_ROLE_SEPARATOR;
+	atk_object_set_name (accessible, "grip");
 
 	a11y_parent_class->initialize (accessible, widget);
 }
@@ -106,6 +109,102 @@ grip_item_a11y_ref_state_set (AtkObject *accessible)
 	return state_set;
 }
 
+static BonoboDock *
+get_dock (GtkWidget *widget)
+{
+	while (widget && !BONOBO_IS_DOCK (widget))
+		widget = widget->parent;
+
+	return (BonoboDock *) widget;
+}
+
+static void
+bonobo_dock_item_grip_dock (BonoboDockItemGrip *grip)
+{
+	BonoboDock *dock;
+
+	g_return_if_fail (BONOBO_IS_DOCK_ITEM_GRIP (grip));
+
+	if (!grip->item->is_floating)
+		return;
+
+	dock = get_dock (GTK_WIDGET (grip->item));
+	g_return_if_fail (dock != NULL);
+
+	bonobo_dock_item_unfloat (grip->item);
+		
+	g_object_ref (G_OBJECT (grip->item));
+	gtk_container_remove (
+		GTK_CONTAINER (
+			GTK_WIDGET (grip->item)->parent),
+		GTK_WIDGET (grip->item));
+	bonobo_dock_add_item (
+		dock, grip->item,
+		BONOBO_DOCK_TOP, 2, 0, 0, TRUE);
+	g_object_unref (G_OBJECT (grip->item));
+}
+
+static void
+bonobo_dock_item_grip_undock (BonoboDockItemGrip *grip)
+{
+	guint x, y;
+
+	g_return_if_fail (BONOBO_IS_DOCK_ITEM_GRIP (grip));
+
+	if (grip->item->is_floating)
+		return;
+
+	gdk_window_get_position (
+		GTK_WIDGET (grip)->window, &x, &y);
+
+	bonobo_dock_item_detach (grip->item, x, y);
+}
+
+enum {
+	ACTION_DOCK,
+	ACTION_UNDOCK,
+	ACTION_LAST
+};
+
+static gboolean
+bonobo_dock_item_grip_do_action (AtkAction *action,
+				 gint       i)
+{
+	BonoboDockItemGrip *grip;
+
+	grip = BONOBO_DOCK_ITEM_GRIP (
+		GTK_ACCESSIBLE (action)->widget);
+
+	if (grip->item->behavior & BONOBO_DOCK_ITEM_BEH_LOCKED)
+		return FALSE;
+
+	switch (i) {
+	case ACTION_DOCK:
+		bonobo_dock_item_grip_dock (grip);
+		break;
+	case ACTION_UNDOCK:
+		bonobo_dock_item_grip_undock (grip);
+		break;
+	default:
+		break;
+	}
+	return FALSE;
+}
+
+static gint
+bonobo_dock_item_grip_get_n_actions (AtkAction *action)
+{
+	BonoboDockItemGrip *grip;
+
+	grip = BONOBO_DOCK_ITEM_GRIP (
+		GTK_ACCESSIBLE (action)->widget);
+
+	if (grip->item->behavior & BONOBO_DOCK_ITEM_BEH_LOCKED)
+		return 0;
+	else
+		return ACTION_LAST;
+}
+
 static void
 grip_item_a11y_class_init (AtkObjectClass *klass)
 {
@@ -118,47 +217,41 @@ grip_item_a11y_class_init (AtkObjectClass *klass)
 static AtkObject *
 bonobo_dock_item_grip_get_accessible (GtkWidget *widget)
 {
-	return bonobo_a11y_create_accessible_for (
-		widget, NULL, grip_item_a11y_class_init);
-}
+	AtkObject *accessible;
+	static GType a11y_type = 0;
 
+	if (!a11y_type) {
+		AtkActionIface action_if;
 
-static BonoboDock *
-get_dock (GtkWidget *widget)
-{
-	while (widget && !BONOBO_IS_DOCK (widget))
-		widget = widget->parent;
+		a11y_type = bonobo_a11y_get_derived_type_for (
+			BONOBO_TYPE_DOCK_ITEM_GRIP,
+			NULL, grip_item_a11y_class_init);
 
-	return (BonoboDock *) widget;
+		memset (&action_if, 0, sizeof (AtkActionIface));
+		action_if.do_action = bonobo_dock_item_grip_do_action;
+		action_if.get_n_actions = bonobo_dock_item_grip_get_n_actions;
+
+		bonobo_a11y_add_actions_interface (
+			a11y_type, &action_if,
+			ACTION_DOCK,   "dock",   _("Dock the toolbar"),    "<Enter>",
+			ACTION_UNDOCK, "undock", _("Un dock the toolbar"), "<Enter>",
+			-1);
+	}
+
+	if ((accessible = bonobo_a11y_get_atk_object (widget)))
+		return accessible;
+
+	return bonobo_a11y_set_atk_object_ret (
+		widget, g_object_new (a11y_type, NULL));
 }
 
 static void
 bonobo_dock_item_grip_activate (BonoboDockItemGrip *grip)
 {
-	if (grip->item->is_floating) {
-		BonoboDock *dock;
-
-		dock = get_dock (GTK_WIDGET (grip->item));
-		g_return_if_fail (dock != NULL);
-
-		bonobo_dock_item_unfloat (grip->item);
-		
-		g_object_ref (G_OBJECT (grip->item));
-		gtk_container_remove (
-			GTK_CONTAINER (
-				GTK_WIDGET (grip->item)->parent),
-			GTK_WIDGET (grip->item));
-		bonobo_dock_add_item (
-			dock, grip->item,
-			BONOBO_DOCK_TOP, 2, 0, 0, TRUE);
-		g_object_unref (G_OBJECT (grip->item));
-
-	} else {
-		guint x, y;
-		gdk_window_get_position (
-			GTK_WIDGET (grip)->window, &x, &y);
-		bonobo_dock_item_detach (grip->item, x, y);
-	}
+	if (grip->item->is_floating)
+		bonobo_dock_item_grip_dock (grip);
+	else
+		bonobo_dock_item_grip_undock (grip);
 }
 
 static void

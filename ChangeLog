@@ -1,3 +1,47 @@
+2002-03-26  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-dock-item-grip.c
+	(bonobo_dock_item_grip_dock),
+	(bonobo_dock_item_grip_undock): split out of
+	(bonobo_dock_item_grip_activate): here.
+	(bonobo_dock_item_grip_do_action): use them.
+	(bonobo_dock_item_grip_get_n_actions): impl.
+
+2002-03-25  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-a11y.c
+	(bonobo_a11y_get_atk_object),
+	(bonobo_a11y_set_atk_object): impl.
+	(bonobo_a11y_get_derived_type_for): publicise.a
+	(bonobo_a11y_add_actions_interface): impl.
+	(bonobo_a11y_action_get_name),
+	(bonobo_a11y_action_get_keybinding),
+	(bonobo_a11y_action_do_action),
+	(bonobo_a11y_action_get_n_actions),
+	(bonobo_a11y_action_get_description): impl.
+	(bonobo_a11y_action_set_description): don't impl.
+	(bonobo_a11y_action_get_type),
+	(bonobo_a11y_action_if_finalize),
+	(bonobo_a11y_action_if_init): impl.
+
+	* bonobo/bonobo-ui-toolbar-separator-item.c
+	(impl_get_accessible): upd.
+
+	* bonobo/bonobo-dock-item-grip.c
+	(grip_item_do_action): impl.
+
+	* bonobo/bonobo-ui-toolbar.c
+	(bonobo_ui_toolbar_instance_init): don't let it
+	focus.
+
+	* bonobo/bonobo-a11y.c
+	(bonobo_a11y_create_accessible_for): add custom
+	interface addition vararag.
+	(bonobo_a11y_get_derived_type_for): do it.
+
+	* tests/test-ui.c (cb_do_popup): destroy the
+	popup after use.
+
 2002-03-25  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-window.c

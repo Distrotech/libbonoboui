@@ -157,5 +157,5 @@ static AtkObject *
 impl_get_accessible (GtkWidget *widget)
 {
 	return bonobo_a11y_create_accessible_for (
-		widget, NULL, separator_item_a11y_class_init);
+		widget, NULL, separator_item_a11y_class_init, 0);
 }

@@ -1147,7 +1147,6 @@ bonobo_ui_toolbar_instance_init (BonoboUIToolbar *toolbar)
 	BonoboUIToolbarStyle style;
 
 	GTK_WIDGET_SET_FLAGS (toolbar, GTK_NO_WINDOW);
-	GTK_WIDGET_UNSET_FLAGS (toolbar, GTK_CAN_FOCUS);
 
 	priv = g_new (BonoboUIToolbarPrivate, 1);
 

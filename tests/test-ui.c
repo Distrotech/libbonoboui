@@ -72,8 +72,9 @@ cb_do_popup (GtkWindow *window, BonoboWindow *win)
 
 	bonobo_window_add_popup (win, GTK_MENU (menu), "/popups/MyStuff");
 
-	gtk_widget_show (GTK_WIDGET (menu));
+	gtk_widget_show (menu);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 3, 0);
+	gtk_widget_destroy (menu);
 }
 
 static void
