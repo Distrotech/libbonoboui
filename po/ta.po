@@ -1,13 +1,13 @@
-# Tamil translation of libbonoboui.
+# Tamil translation of libbonoboui2.
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# Balaji Narayanan <balaji.narayanan@wipro.com>, 2001.
+# Dinesh Nadarajah <n_dinesh@yahoo.com>, 2001.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Tamil Translation of libbonoboui 1.4.1\n"
-"POT-Creation-Date: 2001-09-27 08:01+1000\n"
-"PO-Revision-Date: 2001-09-19 22:37-0500\n"
-"Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
+"Project-Id-Version: Tamil libbonoboui2 1.7\n"
+"POT-Creation-Date: 2001-08-14 23:13-0500\n"
+"PO-Revision-Date: 2001-09-28 18:53-0500\n"
+"Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -23,23 +23,11 @@ msgstr "¾¢¨º «¨Á×"
 
 #: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
 msgid "Preferred width"
-msgstr " Å¢ÕôÀÁ'É «¸Äõ"
+msgstr "Å¢ÕôÀÁ¡É «¸Äõ"
 
 #: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 msgid "Preferred height"
-msgstr " Å¢ÕôÀÁ'É ¯ÂÃõ"
-
-#: bonobo/bonobo-file-selector-util.c:371
-msgid "Select a file to open"
-msgstr "¾¢Èì¸ §ÅñÊÂ §¸¡ô¨À ¦¾Ã¢× ¦ºöÂ×õ"
-
-#: bonobo/bonobo-file-selector-util.c:399
-msgid "Select files to open"
-msgstr "¾¢Èì¸ §ÅñÊÂ §¸¡ôÒ¸¨Ç ¦¾Ã¢× ¦ºöÂ×õ"
-
-#: bonobo/bonobo-file-selector-util.c:428
-msgid "Select a filename to save"
-msgstr "§ºÁ¢ì¸ §ÅñÊÂ §¸¡ôÒô ¦ÀÂ¨Ã ¦¾Ã¢× ¦ºöÂ×õ"
+msgstr "Å¢ÕôÀÁ¡É ¯ÂÃõ"
 
 #: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
@@ -51,7 +39,7 @@ msgstr "Å¢ÅÃ¢ôÒ"
 
 #: bonobo/bonobo-ui-config-widget.c:266
 msgid "Visible"
-msgstr "À'÷ì¸"
+msgstr "À¡÷ì¸ììÜÊÂĞ"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
@@ -117,14 +105,15 @@ msgstr "_¾É¢ôÀÂÉ¡ìÌ"
 msgid "Customize the toolbar"
 msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
 
-#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: tests/test-focus.c:31 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "bonobo_ui_init ­ÂÄÅ¢ø¨Ä"
 
-#: tests/test-selector.c:12
+#: tests/test-selector.c:13
 msgid "Select an object"
 msgstr "´Õ ­Äì¨¸ §¾÷× ¦ºö"
 
-#: tests/test-ui.c:230
+#: tests/test-ui.c:229
 msgid "Cannot init libbonoboui code"
 msgstr "libbonoboui ÌÈ¢Ó¨È¨Â ¦¾¡¼ì¸ ­ÂÄÅ¢ø¨Ä"
+
