@@ -213,14 +213,16 @@ gnome_view_frame_destroy (GtkObject *object)
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);
+                GNOME_Unknown_unref (view_frame->priv->view, &ev);
 		CORBA_Object_release (view_frame->priv->view, &ev);
 		CORBA_exception_free (&ev);
 	}
 	
+	GTK_OBJECT_CLASS (gnome_view_frame_parent_class)->destroy (object);
+
 	gtk_object_destroy (GTK_OBJECT (view_frame->priv->wrapper));
 	g_free (view_frame->priv);
-	
-	GTK_OBJECT_CLASS (gnome_view_frame_parent_class)->destroy (object);
+
 }
 
 static void

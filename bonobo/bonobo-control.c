@@ -78,10 +78,9 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 	 */
 	control->priv->plug = NULL;
 	gtk_signal_disconnect (GTK_OBJECT (plug), control->priv->plug_destroy_id);
-
-	/*
-	 * Destroy this plug's GnomeControl.
-	 */
+        /*
+         * Destroy this plug's GnomeControl.
+         */
 	gnome_object_destroy (GNOME_OBJECT (control));
 
 	return FALSE;
@@ -96,7 +95,7 @@ impl_GNOME_Control_set_window (PortableServer_Servant servant,
 
 	control->priv->plug = gtk_plug_new (id);
 	control->priv->plug_destroy_id = gtk_signal_connect (
-		GTK_OBJECT (control->priv->plug), "destroy_event",
+		GTK_OBJECT (control->priv->plug), "delete_event",
 		GTK_SIGNAL_FUNC (plug_destroy_cb), control);
 
 	gtk_widget_show_all (control->priv->plug);
@@ -228,7 +227,7 @@ gnome_control_destroy (GtkObject *object)
 	 */
 	if (control->priv->plug) {
 		gtk_signal_disconnect (GTK_OBJECT (control->priv->plug), control->priv->plug_destroy_id);
-		gtk_object_unref (GTK_OBJECT (control->priv->plug));
+		gtk_object_destroy (GTK_OBJECT (control->priv->plug));
 		control->priv->plug = NULL;
 	}
 

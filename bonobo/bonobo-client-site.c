@@ -91,8 +91,6 @@ gnome_client_site_destroy (GtkObject *object)
 	
 	object_class = (GtkObjectClass *)gnome_client_site_parent_class;
 
-	gnome_container_remove (client_site->container, GNOME_OBJECT (object));
-
 	/*
 	 * Destroy all the view frames.
 	 */
@@ -111,10 +109,8 @@ gnome_client_site_destroy (GtkObject *object)
 		gnome_object_destroy (GNOME_OBJECT (item));
 	}
 
-	/* Destroy the object on the other end */
-	g_warning ("FIXME: Should we unref twice?");
+	gnome_container_remove (client_site->container, GNOME_OBJECT (object));
 
-	gnome_object_unref (GNOME_OBJECT (gnome_object));
 	object_class->destroy (object);
 }
 
