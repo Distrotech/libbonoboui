@@ -122,8 +122,7 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 }
 
 static void
-main_status_null (GtkObject        *dummy,
-		  BonoboUISyncStatus *msync)
+main_status_null (BonoboUISyncStatus *msync)
 {
 	msync->main_status = NULL;
 }
@@ -165,8 +164,9 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 
 		msync->main_status = GTK_STATUSBAR (widget);
 
-		g_signal_connect (GTK_OBJECT (widget), "destroy",
-				    G_CALLBACK (main_status_null), msync);
+		g_signal_connect_object (widget, "destroy",
+					 G_CALLBACK (main_status_null),
+					 msync, G_CONNECT_SWAPPED);
 
 		/* insert a little padding so text isn't jammed against frame */
 		gtk_misc_set_padding (

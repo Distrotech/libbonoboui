@@ -1,5 +1,16 @@
 2002-04-15  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-sync-status.c
+	(impl_bonobo_ui_sync_status_build): get signal
+	connection lifetime right - thanks to Morten.
+
+	* bonobo/bonobo-widget.c
+	(bonobo_widget_construct_control_from_objref):
+	don't auto-activate the control; this sucked and
+	confused people lots.
+
+2002-04-15  Michael Meeks  <michael@ximian.com>
+
 	* Version 1.115.0
 
 2002-04-15  Michael Meeks  <michael@ximian.com>
