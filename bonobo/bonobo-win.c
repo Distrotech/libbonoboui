@@ -41,7 +41,9 @@
 GtkWindowClass *bonobo_window_parent_class = NULL;
 
 struct _BonoboWindowPrivate {
-	BonoboWindow     *win;
+	BonoboWindow  *win;
+
+	BonoboObject  *container;
 
 	int            frozen;
 
@@ -266,6 +268,36 @@ win_component_get (BonoboWindowPrivate *priv, const char *name)
 	return component;
 }
 
+static WinComponent *
+win_component_get_by_ref (BonoboWindowPrivate *priv, CORBA_Object obj)
+{
+	GSList *l;
+	WinComponent *component = NULL;
+	CORBA_Environment ev;
+
+	g_return_val_if_fail (priv != NULL, NULL);
+	g_return_val_if_fail (obj != CORBA_OBJECT_NIL, NULL);
+
+	CORBA_exception_init (&ev);
+
+	for (l = priv->components; l; l = l->next) {
+		gboolean equiv;
+		component = l->data;
+
+		equiv = CORBA_Object_is_equivalent (component->object, obj, &ev);
+
+		if (BONOBO_EX (&ev)) { /* Something very badly wrong */
+			component = NULL;
+			break;
+		} else if (equiv)
+			break;
+	}
+
+	CORBA_exception_free (&ev);
+
+	return component;
+}
+
 static Bonobo_Unknown
 win_component_objref (BonoboWindowPrivate *priv, const char *name)
 {
@@ -336,7 +368,7 @@ bonobo_window_register_component (BonoboWindow     *win,
 {
 	WinComponent *wincomp;
 
-	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
 
 	if ((wincomp = win_component_get (win->priv, name))) {
 		if (wincomp->object != CORBA_OBJECT_NIL)
@@ -350,12 +382,12 @@ bonobo_window_register_component (BonoboWindow     *win,
 }
 
 void
-bonobo_window_deregister_component (BonoboWindow     *win,
-				 const char    *name)
+bonobo_window_deregister_component (BonoboWindow *win,
+				    const char   *name)
 {
 	WinComponent *component;
 
-	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
 
 	if ((component = win_component_get (win->priv, name))) {
 		bonobo_window_xml_rm (win, "/", component->name);
@@ -363,6 +395,22 @@ bonobo_window_deregister_component (BonoboWindow     *win,
 	} else
 		g_warning ("Attempting to deregister non-registered "
 			   "component '%s'", name);
+}
+
+void
+bonobo_window_deregister_component_by_ref (BonoboWindow  *win,
+					   Bonobo_Unknown ref)
+{
+	WinComponent *component;
+
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
+
+	if ((component = win_component_get_by_ref (win->priv, ref))) {
+		bonobo_window_xml_rm (win, "/", component->name);
+		win_component_destroy (win->priv, component);
+	} else
+		g_warning ("Attempting to deregister non-registered "
+			   "component");
 }
 
 static gboolean
@@ -962,11 +1010,14 @@ real_emit_ui_event (BonoboWindowPrivate *priv, const char *component_name,
 		Bonobo_UIComponent_uiEvent (
 			component, id, type, new_state, &ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION) {
-			/* FIXME: so if it is a sys exception do we de-merge ? */
-			g_warning ("Exception emitting state change to %d '%s' '%s'",
-				   type, id, new_state);
-		}
+		if (priv->container)
+			bonobo_object_check_env (
+				priv->container, component, &ev);
+
+		if (ev._major != CORBA_NO_EXCEPTION)
+			g_warning ("Exception emitting state change to %d '%s' '%s'"
+				   "major %d, %s",
+				   type, id, new_state, ev._major, ev._repo_id);
 		
 		CORBA_exception_free (&ev);
 	} else
@@ -1250,11 +1301,14 @@ real_exec_verb (BonoboWindowPrivate *priv,
 		Bonobo_UIComponent_execVerb (
 			component, verb, &ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION) {
-			/* FIXME: so if it is a sys exception do we de-merge ? */
-			g_warning ("Exception executing verb '%s' on '%s'",
-				   verb, component_name);
-		}
+		if (priv->container)
+			bonobo_object_check_env (
+				priv->container, component, &ev);
+
+		if (ev._major != CORBA_NO_EXCEPTION)
+			g_warning ("Exception executing verb '%s' '%s'"
+				   "major %d, %s",
+				   verb, component_name, ev._major, ev._repo_id);
 		
 		CORBA_exception_free (&ev);
 	} else
@@ -2760,7 +2814,7 @@ bonobo_window_remove_popup (BonoboWindow     *win,
 	GSList *l, *next;
 
 	g_return_if_fail (path != NULL);
-	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
 	g_return_if_fail (win->priv != NULL);
 
 	for (l = win->priv->popups; l; l = next) {
@@ -2780,7 +2834,6 @@ popup_destroy (GtkObject *menu, WinPopup *popup)
 
 	g_return_if_fail (priv != NULL);
 	popup_remove (priv, popup);
-/*	g_warning ("Popup destroy ..."); */
 }
 
 void
@@ -2794,7 +2847,7 @@ bonobo_window_add_popup (BonoboWindow *win,
 
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (GTK_IS_MENU (menu));
-	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
 
 	bonobo_window_remove_popup (win, path);
 
@@ -2822,7 +2875,7 @@ bonobo_window_add_popup (BonoboWindow *win,
 
 void
 bonobo_window_set_contents (BonoboWindow *win,
-			 GtkWidget *contents)
+			    GtkWidget    *contents)
 {
 	g_return_if_fail (win != NULL);
 	g_return_if_fail (win->priv != NULL);
@@ -2865,6 +2918,10 @@ radio_group_destroy (gpointer	key,
 static void
 destroy_priv (BonoboWindowPrivate *priv)
 {
+	if (priv->container)
+		gtk_signal_disconnect_by_data (
+			GTK_OBJECT (priv->container), priv->win);
+
 	priv->win = NULL;
 
 	while (priv->popups)
@@ -2917,7 +2974,7 @@ bonobo_window_xml_get (BonoboWindow  *win,
  	BonoboUINode    *node;
   	CORBA_char *ret;
   
-  	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
+  	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
   
   	node = bonobo_ui_xml_get_path (win->priv->tree, path);
   	if (!node)
@@ -2937,7 +2994,7 @@ bonobo_window_xml_node_exists (BonoboWindow  *win,
 	BonoboUINode *node;
 	gboolean      wildcard;
 
-	g_return_val_if_fail (BONOBO_IS_WIN (win), FALSE);
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win), FALSE);
 
 	node = bonobo_ui_xml_get_path_wildcard (
 		win->priv->tree, path, &wildcard);
@@ -2958,7 +3015,8 @@ bonobo_window_object_set (BonoboWindow  *win,
 	BonoboUINode   *node;
 	NodeInfo  *info;
 
-	g_return_val_if_fail (BONOBO_IS_WIN (win), BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win),
+			      BONOBO_UI_XML_BAD_PARAM);
 
 	node = bonobo_ui_xml_get_path (win->priv->tree, path);
 	if (!node)
@@ -3000,7 +3058,7 @@ bonobo_window_object_get (BonoboWindow  *win,
 	NodeInfo *info;
 
 	g_return_val_if_fail (object != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (BONOBO_IS_WIN (win), BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win), BONOBO_UI_XML_BAD_PARAM);
 
 	*object = CORBA_OBJECT_NIL;
 
@@ -3109,7 +3167,7 @@ bonobo_window_xml_rm (BonoboWindow  *win,
 void
 bonobo_window_freeze (BonoboWindow *win)
 {
-	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
 
 	win->priv->frozen++;
 }
@@ -3117,7 +3175,7 @@ bonobo_window_freeze (BonoboWindow *win)
 void
 bonobo_window_thaw (BonoboWindow *win)
 {
-	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
 	
 	if (--win->priv->frozen <= 0) {
 		update_widgets (win->priv);
@@ -3129,7 +3187,7 @@ void
 bonobo_window_dump (BonoboWindow  *win,
 		 const char *msg)
 {
-	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
 
 	fprintf (stderr, "Bonobo Win '%s': frozen '%d'\n",
 		 win->priv->name, win->priv->frozen);
@@ -3142,7 +3200,7 @@ bonobo_window_dump (BonoboWindow  *win,
 GtkAccelGroup *
 bonobo_window_get_accel_group (BonoboWindow *win)
 {
-	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
 
 	return win->priv->accel_group;
 }
@@ -3291,13 +3349,34 @@ bonobo_window_init (BonoboWindow *win)
 	win->priv = construct_priv (win);
 }
 
+static void
+blank_container (BonoboUIContainer *container, BonoboWindow *win)
+{
+	if (win->priv)
+		win->priv->container = NULL;
+}
+
+void
+bonobo_window_set_ui_container (BonoboWindow *win,
+				BonoboObject *container)
+{
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
+	g_return_if_fail (!container ||
+			  BONOBO_IS_OBJECT (container));
+
+	win->priv->container = container;
+	if (container)
+		gtk_signal_connect (GTK_OBJECT (container), "destroy",
+				    (GtkSignalFunc) blank_container, win);
+}
+
 void
 bonobo_window_set_name (BonoboWindow  *win,
-		     const char *win_name)
+			const char *win_name)
 {
 	BonoboWindowPrivate *priv;
 
-	g_return_if_fail (BONOBO_IS_WIN (win));
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
 
 	priv = win->priv;
 
@@ -3316,7 +3395,7 @@ bonobo_window_set_name (BonoboWindow  *win,
 char *
 bonobo_window_get_name (BonoboWindow *win)
 {
-	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
 	g_return_val_if_fail (win->priv != NULL, NULL);
 
 	if (win->priv->name)
@@ -3326,11 +3405,11 @@ bonobo_window_get_name (BonoboWindow *win)
 }
 
 GtkWidget *
-bonobo_window_construct (BonoboWindow  *win,
-		      const char *win_name,
-		      const char *title)
+bonobo_window_construct (BonoboWindow *win,
+			 const char   *win_name,
+			 const char   *title)
 {
-	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
 
 	bonobo_window_set_name (win, win_name);
 

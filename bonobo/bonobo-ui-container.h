@@ -41,6 +41,7 @@ BonoboUIContainer           *bonobo_ui_container_construct           (BonoboUICo
 BonoboUIContainer           *bonobo_ui_container_new                 (void);
 
 void                         bonobo_ui_container_set_win             (BonoboUIContainer  *container,
-								      BonoboWindow          *win);
+								      BonoboWindow       *win);
+BonoboWindow                *bonobo_ui_container_get_win             (BonoboUIContainer  *container);
 
 #endif /* _BONOBO_UI_CONTAINER_H_ */

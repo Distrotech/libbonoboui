@@ -18,8 +18,8 @@
 #define BONOBO_TYPE_WINDOW        (bonobo_window_get_type ())
 #define BONOBO_WINDOW(o)          (GTK_CHECK_CAST ((o), BONOBO_TYPE_WINDOW, BonoboWindow))
 #define BONOBO_WINDOW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_WINDOW, BonoboWindowClass))
-#define BONOBO_IS_WIN(o)       (GTK_CHECK_TYPE ((o), BONOBO_TYPE_WINDOW))
-#define BONOBO_IS_WIN_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_WINDOW))
+#define BONOBO_IS_WINDOW(o)       (GTK_CHECK_TYPE ((o), BONOBO_TYPE_WINDOW))
+#define BONOBO_IS_WINDOW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_WINDOW))
 
 typedef struct _BonoboWindow        BonoboWindow;
 typedef struct _BonoboWindowPrivate BonoboWindowPrivate;
@@ -38,14 +38,14 @@ struct _BonoboWindowClass {
 GtkType              bonobo_window_get_type            (void);
 
 GtkWidget           *bonobo_window_construct           (BonoboWindow  *win,
-						     const char *win_name,
-						     const char *title);
+							const char *win_name,
+							const char *title);
 
 GtkWidget           *bonobo_window_new                 (const char *win_name,
-						     const char *title);
+							const char *title);
 
 void                 bonobo_window_set_contents        (BonoboWindow  *win,
-						     GtkWidget  *contents);
+							GtkWidget  *contents);
 GtkWidget           *bonobo_window_get_contents        (BonoboWindow  *win);
 
 void                 bonobo_window_freeze              (BonoboWindow *win);
@@ -53,65 +53,71 @@ void                 bonobo_window_freeze              (BonoboWindow *win);
 void                 bonobo_window_thaw                (BonoboWindow *win);
 
 void                 bonobo_window_set_name            (BonoboWindow  *win,
-						     const char *win_name);
+							const char *win_name);
 
 char                *bonobo_window_get_name            (BonoboWindow *win);
 
-BonoboUIXmlError     bonobo_window_xml_merge           (BonoboWindow  *win,
-						     const char *path,
-						     const char *xml,
-						     const char *component);
+BonoboUIXmlError     bonobo_window_xml_merge           (BonoboWindow *win,
+							const char   *path,
+							const char   *xml,
+							const char   *component);
 
-BonoboUIXmlError     bonobo_window_xml_merge_tree      (BonoboWindow  *win,
-						     const char *path,
-						     BonoboUINode    *tree,
-						     const char *component);
+BonoboUIXmlError     bonobo_window_xml_merge_tree      (BonoboWindow *win,
+							const char   *path,
+							BonoboUINode *tree,
+							const char   *component);
 
-char                *bonobo_window_xml_get             (BonoboWindow  *win,
-						     const char *path,
-						     gboolean    node_only);
+char                *bonobo_window_xml_get             (BonoboWindow *win,
+							const char   *path,
+							gboolean      node_only);
 
-gboolean             bonobo_window_xml_node_exists     (BonoboWindow  *win,
-						     const char *path);
+gboolean             bonobo_window_xml_node_exists     (BonoboWindow *win,
+							const char   *path);
 
-BonoboUIXmlError     bonobo_window_xml_rm              (BonoboWindow  *win,
-						     const char *path,
-						     const char *by_component);
+BonoboUIXmlError     bonobo_window_xml_rm              (BonoboWindow *win,
+							const char   *path,
+							const char   *by_component);
 
 BonoboUIXmlError     bonobo_window_object_set          (BonoboWindow  *win,
-						     const char *path,
-						     Bonobo_Unknown object,
-						     CORBA_Environment *ev);
+							const char    *path,
+							Bonobo_Unknown object,
+							CORBA_Environment *ev);
 
-BonoboUIXmlError     bonobo_window_object_get          (BonoboWindow  *win,
-						     const char *path,
-						     Bonobo_Unknown *object,
-						     CORBA_Environment *ev);
+BonoboUIXmlError     bonobo_window_object_get          (BonoboWindow   *win,
+							const char     *path,
+							Bonobo_Unknown *object,
+							CORBA_Environment *ev);
 
-GtkAccelGroup       *bonobo_window_get_accel_group     (BonoboWindow  *win);
+GtkAccelGroup       *bonobo_window_get_accel_group      (BonoboWindow  *win);
 
-void                 bonobo_window_dump                (BonoboWindow  *win,
-						     const char *msg);
+void                 bonobo_window_dump                 (BonoboWindow  *win,
+							 const char    *msg);
 
-void                 bonobo_window_register_component   (BonoboWindow     *win,
-						      const char    *name,
-						      Bonobo_Unknown component);
+void                 bonobo_window_register_component   (BonoboWindow  *win,
+							 const char    *name,
+							 Bonobo_Unknown component);
 
-void                 bonobo_window_deregister_component (BonoboWindow     *win,
-						      const char    *name);
+void                 bonobo_window_deregister_component (BonoboWindow  *win,
+							 const char    *name);
 
-Bonobo_Unknown       bonobo_window_component_get        (BonoboWindow     *win,
-						      const char    *name);
+void                 bonobo_window_deregister_component_by_ref (BonoboWindow  *win,
+								Bonobo_Unknown component);
 
-void                 bonobo_window_add_popup            (BonoboWindow     *win,
-						      GtkMenu       *popup,
-						      const char    *path);
+Bonobo_Unknown       bonobo_window_component_get        (BonoboWindow  *win,
+							 const char    *name);
+
+void                 bonobo_window_add_popup            (BonoboWindow  *win,
+							 GtkMenu       *popup,
+							 const char    *path);
+
+void                 bonobo_window_set_ui_container     (BonoboWindow      *win,
+							 BonoboObject      *container);
 
 /*
  * NB. popups are automaticaly removed on destroy, you probably don't
  * want to use this.
  */
 void                 bonobo_window_remove_popup         (BonoboWindow     *win,
-						      const char    *path);
+							 const char    *path);
 
 #endif /* _BONOBO_WINDOW_H_ */

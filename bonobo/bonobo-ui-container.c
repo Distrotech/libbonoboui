@@ -189,6 +189,16 @@ impl_Bonobo_UIContainer_thaw (PortableServer_Servant   servant,
 	bonobo_window_thaw (win);
 }
 
+static void
+bonobo_ui_container_destroy (GtkObject *object)
+{
+	BonoboUIContainer *container = (BonoboUIContainer *) object;
+
+	if (container->win)
+		gtk_signal_disconnect_by_data (
+			GTK_OBJECT (container->win), container);
+}
+
 /**
  * bonobo_ui_container_get_epv:
  */
@@ -217,10 +227,12 @@ bonobo_ui_container_get_epv (void)
 }
 
 static void
-bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
+bonobo_ui_container_class_init (GtkObjectClass *klass)
 {
 	bonobo_ui_container_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
 	bonobo_ui_container_vepv.Bonobo_UIContainer_epv = bonobo_ui_container_get_epv ();
+
+	klass->destroy = bonobo_ui_container_destroy;
 }
 
 /**
@@ -322,12 +334,22 @@ blank_win (GtkObject *win, BonoboUIContainer *container)
 
 void
 bonobo_ui_container_set_win (BonoboUIContainer *container,
-			     BonoboWindow         *win)
+			     BonoboWindow      *win)
 {
 	g_return_if_fail (BONOBO_IS_UI_CONTAINER (container));
 
 	container->win = win;
 
+	bonobo_window_set_ui_container (win, container);
+
 	gtk_signal_connect (GTK_OBJECT (win), "destroy",
 			    (GtkSignalFunc) blank_win, container);
+}
+
+BonoboWindow *
+bonobo_ui_container_get_win (BonoboUIContainer *container)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_CONTAINER (container), NULL);
+
+	return container->win;
 }
