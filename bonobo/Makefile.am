@@ -19,9 +19,10 @@ bonobo_libs = 			\
 	libbonobo.la 		\
 	$(gnome_libs)
 
-
+ 
 lib_LTLIBRARIES = libbonobo.la
-noinst_PROGRAMS = object_test test-container sample-server
+noinst_PROGRAMS = object_test test-container sample-server \
+			test-container-autoload
 
 CORBA_SOURCE =			\
 	bonobo.h		\
@@ -108,6 +109,11 @@ test_container_SOURCES =		\
 	test-container.c
 
 test_container_LDADD = $(bonobo_libs)
+
+test_container_autoload_SOURCES =		\
+	test-container-autoload.c
+
+test_container_autoload_LDADD = $(bonobo_libs)
 
 object_test_SOURCES =		\
 	object_test.c
