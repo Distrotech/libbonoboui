@@ -1,3 +1,15 @@
+2002-04-09  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_bonobo_ui_sync_menu_state): don't re-build
+	accel labels when we don't need to, freeze / thaw
+	the label appropriately.
+
+2002-04-06  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-focus.c (add_control): split out.
+	(main): from here & add 'new control' button.
+
 2002-04-09  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
 
 	* bonobo/bonobo-dock-item.c: (bonobo_dock_item_size_allocate):

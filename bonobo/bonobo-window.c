@@ -515,8 +515,8 @@ bonobo_window_construct (BonoboWindow      *win,
  * Return value: a new BonoboWindow
  **/
 GtkWidget *
-bonobo_window_new (const char   *win_name,
-		   const char   *title)
+bonobo_window_new (const char *win_name,
+		   const char *title)
 {
 	BonoboWindow      *win;
 	BonoboUIContainer *ui_container;

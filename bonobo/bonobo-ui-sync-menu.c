@@ -401,25 +401,31 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 		GtkWidget *label;
 
 		if (!label_same (GTK_BIN (menu_widget), label_attr)) {
-			label = gtk_accel_label_new (label_attr);
+			if (!GTK_BIN (menu_widget)->child) {
+				label = gtk_accel_label_new (label_attr);
 
-			/* this widget has a mnemonic */
-			gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
+				g_object_freeze_notify (G_OBJECT (label));
 
-			/* Setup the widget. */
-			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-			gtk_widget_show (label);
-			
-			/*
-			 * Insert it into the menu item widget and setup the
-			 * accelerator. FIXME: rather inefficient.
-			 */
-			if (GTK_BIN (menu_widget)->child)
-				gtk_widget_destroy (GTK_BIN (menu_widget)->child);
-			
-			gtk_container_add (GTK_CONTAINER (menu_widget), label);
+				/* this widget has a mnemonic */
+				gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
+
+				/* Setup the widget. */
+				gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+				gtk_widget_show (label);
+				gtk_container_add (GTK_CONTAINER (menu_widget), label);
+
+			} else {
+				label = GTK_BIN (menu_widget)->child;
+
+				g_object_freeze_notify (G_OBJECT (label));
+
+				gtk_label_set_text (GTK_LABEL (label), label_attr);
+			}
+
 			gtk_accel_label_set_accel_widget (
 				GTK_ACCEL_LABEL (label), menu_widget);
+
+			g_object_thaw_notify (G_OBJECT (label));
 		} /* else
 			g_warning ("No change in label '%s'", label_attr); */
 

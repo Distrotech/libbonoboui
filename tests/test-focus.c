@@ -24,6 +24,7 @@ clicked_fn (GtkButton *button, GtkWidget *control)
 		0, 0, NULL, NULL, control);
 
 	gtk_widget_destroy (control);
+	gtk_widget_destroy (GTK_WIDGET (button));
 }
 
 static int
@@ -33,12 +34,35 @@ exit_cb (GtkWidget *widget, gpointer user_data)
 	return FALSE;
 }
 
+static void
+add_control (GtkBox *box)
+{
+	GtkWidget *tmp, *control;
+
+	control = bonobo_widget_new_control ("OAFIID:Bonobo_Sample_Entry", NULL);
+	gtk_box_pack_start_defaults (box, control);
+	gtk_widget_show (control);
+
+	tmp = gtk_button_new_with_label ("Destroy remote control");
+	g_signal_connect (tmp, "clicked",
+			  G_CALLBACK (clicked_fn), control);
+	gtk_box_pack_start_defaults (box, tmp);
+	gtk_widget_show (tmp);
+}
+
+
+static void
+add_fn (GtkButton *button, GtkBox *box)
+{
+	add_control (box);
+}
+
 int
 main (int argc, char **argv)
 {
+	GtkWidget *tmp;
 	GtkWidget *window;
 	GtkWidget *vbox;
-	GtkWidget *tmp, *control;
 	CORBA_ORB  orb;
 
 	free (malloc (8));
@@ -68,12 +92,11 @@ main (int argc, char **argv)
 	tmp = gtk_button_new_with_label ("In Container A");
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), tmp);
 
-	control = bonobo_widget_new_control ("OAFIID:Bonobo_Sample_Entry", NULL);
-	gtk_box_pack_start_defaults (GTK_BOX (vbox), control);
+	add_control (GTK_BOX (vbox));
 
-	tmp = gtk_button_new_with_label ("Destroy remote control");
+	tmp = gtk_button_new_with_label ("add control");
 	g_signal_connect (tmp, "clicked",
-			  G_CALLBACK (clicked_fn), control);
+			  G_CALLBACK (add_fn), vbox);
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), tmp);
 
 	gtk_widget_show_all (window);
