@@ -33,7 +33,10 @@ GtkType	   bonobo_selector_get_type        (void);
 
 GtkWidget *bonobo_selector_new             (const gchar *title,
 					    const gchar **interfaces_required);
-gchar	  *bonobo_selector_get_selected_id (BonoboSelector *sel);
+
+gchar	  *bonobo_selector_get_selected_id          (BonoboSelector *sel);
+gchar     *bonobo_selector_get_selected_name        (BonoboSelector *sel);
+gchar     *bonobo_selector_get_selected_description (BonoboSelector *sel);
 
 gchar	  *bonobo_selector_select_id       (const gchar *title,
 					    const gchar **interfaces_required);

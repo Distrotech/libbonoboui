@@ -176,7 +176,59 @@ bonobo_selector_get_selected_id (BonoboSelector *sel)
 	
 	if (selection == NULL) return NULL;
 	gtk_clist_get_text (GTK_CLIST (priv->clist), (int) selection->data,
-			1, &text);
+			    1, &text);
+	return g_strdup (text);
+}
+
+/**
+ * bonobo_selector_get_selected_name:
+ * @sel: A BonoboSelector widget.
+ *
+ * Returns: A newly-allocated string containing the name of the
+ * currently-selected CORBA server (i.e., the corba server whose name
+ * is highlighted in the list).  The user of this function is
+ * responsible for freeing this.
+ */
+gchar *
+bonobo_selector_get_selected_name (BonoboSelector *sel)
+{
+	GList *selection;
+	gchar *text;
+	BonoboSelectorPrivate *priv; 
+
+	g_return_val_if_fail (sel != NULL, NULL);
+	priv = sel->priv;	
+	selection = GTK_CLIST (priv->clist)->selection;
+	
+	if (selection == NULL) return NULL;
+	gtk_clist_get_text (GTK_CLIST (priv->clist), (int) selection->data,
+			    0, &text);
+	return g_strdup (text);
+}
+
+/**
+ * bonobo_selector_get_selected_description:
+ * @sel: A BonoboSelector widget.
+ *
+ * Returns: A newly-allocated string containing the description of the
+ * currently-selected CORBA server (i.e., the corba server whose name
+ * is highlighted in the list).  The user of this function is
+ * responsible for freeing this.
+ */
+gchar *
+bonobo_selector_get_selected_description (BonoboSelector *sel)
+{
+	GList *selection;
+	gchar *text;
+	BonoboSelectorPrivate *priv; 
+
+	g_return_val_if_fail (sel != NULL, NULL);
+	priv = sel->priv;	
+	selection = GTK_CLIST (priv->clist)->selection;
+	
+	if (selection == NULL) return NULL;
+	gtk_clist_get_text (GTK_CLIST (priv->clist), (int) selection->data,
+			    2, &text);
 	return g_strdup (text);
 }
 
