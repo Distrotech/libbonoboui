@@ -122,9 +122,6 @@ bonobo_plug_realize (GtkWidget *widget)
 
 	dprintf ("bonobo_plug_realize %p\n", plug);
 
-	if (plug->control)
-		bonobo_object_ref (BONOBO_OBJECT (plug->control));
-
 	GTK_WIDGET_CLASS (parent_class)->realize (widget);
 }
 
@@ -134,9 +131,6 @@ bonobo_plug_unrealize (GtkWidget *widget)
 	BonoboPlug *plug = (BonoboPlug *) widget;
 
 	dprintf ("bonobo_plug_unrealize %p\n", plug);
-
-	if (plug->control)
-		bonobo_object_unref (BONOBO_OBJECT (plug->control));
 
 	GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
 }

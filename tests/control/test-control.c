@@ -75,6 +75,16 @@ destroy_test (Test *test, DestroyType type)
 	}
 
 	g_assert (test->control_widget == NULL);
+
+	switch (type) {
+	case DESTROY_CONTAINED:
+		gtk_widget_destroy (test->bonobo_widget);
+		break;
+	default:
+		break;
+	}
+
+	g_assert (test->bonobo_widget == NULL);
 }
 
 static void
@@ -273,6 +283,8 @@ run_tests (GtkContainer *parent,
 			GTK_BOX (vbox), 
 			GTK_WIDGET (tests [t]->bonobo_widget),
 			TRUE, TRUE, 2);
+
+		g_object_unref (tests [t]->bonobo_widget);
 	}
 
 	if (wait_for_realize)

@@ -1,3 +1,16 @@
+2002-06-28  Michael Meeks  <michael@ximian.com>
+
+	* tests/control/test-control.c (run_tests): get
+	re-parenting ref counting right ...
+	(destroy_test): assert that the container widget
+	got correctly destroyed.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_realize),
+	(bonobo_plug_unrealize): remove bogus ref/unref on
+	control - originally not being used, but exposing a
+	nasty leak since Mark removed the show () after plug
+	creation. Thanks to Dave Camp for the lead.
+
 2002-06-27  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-dock-item.c: include config.h.

@@ -20,11 +20,11 @@
 
 G_BEGIN_DECLS
 
-/* To debug plug/socket/control render issues */
-#define noDEBUG_CONTROL
-
 /* To dump lots of sequence information */
 #define noDEBUG_UI
+
+/* To debug render issues in plug/socket/control */
+#define noDEBUG_CONTROL
 
 int        bonobo_ui_preferences_shutdown (void);
 void       bonobo_ui_image_set_pixbuf     (GtkImage       *image,
