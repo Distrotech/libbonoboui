@@ -24,8 +24,8 @@
  *
  *      In order to do this, just call:
  * 
- *        bw = bonobo_widget_new_subdoc ("goad id of subdoc embddable",
- *                                             top_level_uihandler);
+ *        bw = bonobo_widget_new_subdoc ("moniker of subdoc embddable",
+ *                                        top_level_uicontainer);
  * 
  *      And then insert the 'bw' widget into the widget tree of your
  *      application like so:
@@ -40,11 +40,13 @@
  *      the work from about 5 lines to 1.  To embed a given control,
  *      just do:
  *
- *        bw = bonobo_widget_new_control ("goad id for control");
+ *        bw = bonobo_widget_new_control ("moniker for control");
  *        gtk_container_add (some_container, bw);
  *
  *      Ta da!
  *
+ *      NB. A simple moniker might look like 'file:/tmp/a.jpeg' or
+ *      OAFIID:GNOME_Evolution_Calendar_Control
  */
 
 #include <config.h>
@@ -54,6 +56,8 @@
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-widget.h>
+#include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-moniker-util.h>
 
 struct _BonoboWidgetPrivate {
 
@@ -70,19 +74,36 @@ struct _BonoboWidgetPrivate {
 	BonoboItemContainer *container;
 	BonoboClientSite    *client_site;
 	BonoboViewFrame     *view_frame;
-	Bonobo_UIContainer   uih;
+	Bonobo_UIContainer   uic;
 };
 
 static BonoboWrapperClass *bonobo_widget_parent_class;
 
 static BonoboObjectClient *
-bonobo_widget_launch_component (const char *object_desc)
+bonobo_widget_launch_component (const char *moniker,
+				const char *if_name)
 {
+	Bonobo_Unknown corba_ref;
 	BonoboObjectClient *server;
+	CORBA_Environment ev;
 
-	server = bonobo_object_activate (object_desc, 0);
+	CORBA_exception_init (&ev);
+	corba_ref = bonobo_get_object (moniker, if_name, &ev);
 
-	return server;
+	if (BONOBO_EX (&ev)) {
+		char *txt;
+		g_warning ("Activation exception '%s'",
+			   (txt = bonobo_exception_get_text (&ev)));
+		g_free (txt);
+		server = CORBA_OBJECT_NIL;
+	}
+
+	CORBA_exception_free (&ev);
+
+	if (corba_ref == CORBA_OBJECT_NIL)
+		return NULL;
+
+	return bonobo_object_client_from_corba (corba_ref);
 }
 
 
@@ -94,14 +115,14 @@ bonobo_widget_launch_component (const char *object_desc)
 static BonoboWidget *
 bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 					     Bonobo_Control     control,
-					     Bonobo_UIContainer uih)
+					     Bonobo_UIContainer uic)
 {
 	GtkWidget    *control_frame_widget;
 
 	/*
 	 * Create a local ControlFrame for it.
 	 */
-	bw->priv->control_frame = bonobo_control_frame_new (uih);
+	bw->priv->control_frame = bonobo_control_frame_new (uic);
 
 	bonobo_control_frame_bind_to_control (bw->priv->control_frame, control);
 
@@ -125,23 +146,24 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 			   control_frame_widget);
 	gtk_widget_show (control_frame_widget);
 
-	if (uih != CORBA_OBJECT_NIL)
-		bw->priv->uih = bonobo_object_dup_ref (uih, NULL);
+	if (uic != CORBA_OBJECT_NIL)
+		bw->priv->uic = bonobo_object_dup_ref (uic, NULL);
 
 	return bw;
 }
 
 static BonoboWidget *
 bonobo_widget_construct_control (BonoboWidget      *bw,
-				 const char        *goad_id,
-				 Bonobo_UIContainer uih)
+				 const char        *moniker,
+				 Bonobo_UIContainer uic)
 {
 	Bonobo_Control control;
 
 	/*
 	 * Create the remote Control object.
 	 */
-	bw->priv->server = bonobo_widget_launch_component (goad_id);
+	bw->priv->server = bonobo_widget_launch_component (
+		moniker, "IDL:Bonobo/Control:1.0");
 	if (bw->priv->server == NULL) {
 		gtk_object_unref (GTK_OBJECT (bw));
 		return NULL;
@@ -149,13 +171,13 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 
 	control = bonobo_object_corba_objref (BONOBO_OBJECT (bw->priv->server));
 
-	return bonobo_widget_construct_control_from_objref (bw, control, uih);
+	return bonobo_widget_construct_control_from_objref (bw, control, uic);
 }
 
 /**
  * bonobo_widget_new_control_from_objref:
  * @control: A CORBA Object reference to an IDL:Bonobo/Control:1.0
- * @uih: Bonobo_UIContainer for the launched object.
+ * @uic: Bonobo_UIContainer for the launched object.
  *
  * This function is a simple wrapper for easily embedding controls
  * into applications.  This function is used when you have already
@@ -166,7 +188,7 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
  */
 GtkWidget *
 bonobo_widget_new_control_from_objref (Bonobo_Control     control,
-				       Bonobo_UIContainer uih)
+				       Bonobo_UIContainer uic)
 {
 	BonoboWidget *bw;
 
@@ -174,7 +196,7 @@ bonobo_widget_new_control_from_objref (Bonobo_Control     control,
 
 	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
 
-	bw = bonobo_widget_construct_control_from_objref (bw, control, uih);
+	bw = bonobo_widget_construct_control_from_objref (bw, control, uic);
 
 	if (bw == NULL)
 		return NULL;
@@ -184,8 +206,8 @@ bonobo_widget_new_control_from_objref (Bonobo_Control     control,
 
 /**
  * bonobo_widget_new_control:
- * @object_desc: Description of the object to be activated 
- * @uih: Bonobo_UIContainer for the launched object.
+ * @moniker: A Moniker describing the object to be activated 
+ * @uic: Bonobo_UIContainer for the launched object.
  *
  * This function is a simple wrapper for easily embedding controls
  * into applications.  It will launch the component identified by @id
@@ -197,16 +219,16 @@ bonobo_widget_new_control_from_objref (Bonobo_Control     control,
  * Returns: A #GtkWidget that is bound to the Bonobo Control. 
  */
 GtkWidget *
-bonobo_widget_new_control (const char        *id,
-			   Bonobo_UIContainer uih)
+bonobo_widget_new_control (const char        *moniker,
+			   Bonobo_UIContainer uic)
 {
 	BonoboWidget *bw;
 
-	g_return_val_if_fail (id != NULL, NULL);
+	g_return_val_if_fail (moniker != NULL, NULL);
 
 	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
 
-	bw = bonobo_widget_construct_control (bw, id, uih);
+	bw = bonobo_widget_construct_control (bw, moniker, uic);
 
 	if (bw == NULL)
 		return NULL;
@@ -233,8 +255,6 @@ bonobo_widget_get_control_frame (BonoboWidget *bonobo_widget)
 	return bonobo_widget->priv->control_frame;
 }
 
-
-
 
 /*
  *
@@ -243,8 +263,8 @@ bonobo_widget_get_control_frame (BonoboWidget *bonobo_widget)
  */
 static BonoboWidget *
 bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
-				    const char        *object_desc,
-				    Bonobo_UIContainer uih)
+				    const char        *moniker,
+				    Bonobo_UIContainer uic)
 {
 	GtkWidget *view_widget;
 	
@@ -254,7 +274,8 @@ bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
 	 */
 	bw->priv->container = bonobo_item_container_new ();
 
-	bw->priv->server = bonobo_widget_launch_component (object_desc);
+	bw->priv->server = bonobo_widget_launch_component (
+		moniker, "IDL:Bonobo/Embeddable:1.0");
 	if (bw->priv->server == NULL)
 		return NULL;
 	
@@ -281,7 +302,7 @@ bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
 	/*
 	 * Now create a new view for the remote object.
 	 */
-	bw->priv->view_frame = bonobo_client_site_new_view (bw->priv->client_site, uih);
+	bw->priv->view_frame = bonobo_client_site_new_view (bw->priv->client_site, uic);
 
 	/*
 	 * Add the view frame.
@@ -290,22 +311,22 @@ bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
 	gtk_container_add (GTK_CONTAINER (bw), view_widget);
 	gtk_widget_show (view_widget);
 
-	if (uih != CORBA_OBJECT_NIL)
-		bw->priv->uih = bonobo_object_dup_ref (uih, NULL);
+	if (uic != CORBA_OBJECT_NIL)
+		bw->priv->uic = bonobo_object_dup_ref (uic, NULL);
 	
 	return bw;
 }
 
 /**
  * bonobo_widget_new_subdoc:
- * @object_desc: description of the Object to be activated.
- * @uih: Bonobo_UIContainer for the launched object.
+ * @moniker: A moniker description of the Object to be activated.
+ * @uic: Bonobo_UIContainer for the launched object.
  *
  * This function is a simple wrapper for easily embedding documents
  * into applications.  It will launch the component identified by @id
  * and will return it as a GtkWidget.
  *
- * This will launch a single view of the embeddable activated by @object_desc.
+ * This will launch a single view of the embeddable activated by @moniker.
  *
  * FIXME: this function should really be using bonobo_get_object() instead
  * of bonobo_activate_object() to launch the object.
@@ -313,19 +334,19 @@ bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
  * Returns: A #GtkWidget that is bound to the Bonobo Control. 
  */
 GtkWidget *
-bonobo_widget_new_subdoc (const char        *object_desc,
-			  Bonobo_UIContainer uih)
+bonobo_widget_new_subdoc (const char        *moniker,
+			  Bonobo_UIContainer uic)
 {
 	BonoboWidget *bw;
 
-	g_return_val_if_fail (object_desc != NULL, NULL);
+	g_return_val_if_fail (moniker != NULL, NULL);
 
 	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
 
 	if (bw == NULL)
 		return NULL;
 
-	if (!bonobo_widget_create_subdoc_object (bw, object_desc, uih)) {
+	if (!bonobo_widget_create_subdoc_object (bw, moniker, uic)) {
 		gtk_object_destroy (GTK_OBJECT (bw));
 		return NULL;
 	}
@@ -402,7 +423,7 @@ bonobo_widget_get_uih (BonoboWidget *bonobo_widget)
 	g_return_val_if_fail (bonobo_widget != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return bonobo_widget->priv->uih;
+	return bonobo_widget->priv->uic;
 }
 
 
@@ -443,8 +464,8 @@ bonobo_widget_destroy (GtkObject *object)
 		bonobo_object_unref (BONOBO_OBJECT (priv->client_site));
 	if (priv->view_frame)
 		bonobo_object_unref (BONOBO_OBJECT (priv->view_frame));
-	if (priv->uih != CORBA_OBJECT_NIL)
-		bonobo_object_release_unref (priv->uih, NULL);
+	if (priv->uic != CORBA_OBJECT_NIL)
+		bonobo_object_release_unref (priv->uic, NULL);
 
 	g_free (priv);
 	GTK_OBJECT_CLASS (bonobo_widget_parent_class)->destroy (object);

@@ -232,17 +232,15 @@ bonobo_gtk_widget_from_x11_id (guint32 xid)
 
 	window = gdk_window_lookup (xid);
 	
-	if (! window) {
+	if (!window)
 		return NULL;
-	}
 
 	gdk_window_get_user_data(window, &data);
 
-	if (!GTK_IS_WIDGET (data)) {
+	if (!GTK_IS_WIDGET (data))
 		return NULL;
-	} else {
+	else
 		return GTK_WIDGET (data);
-	}
 }
 
 static gint
@@ -264,9 +262,8 @@ static void
 remove_destroy_idle (GtkWidget *socket,
 		     BonoboControl *control)
 {
-	if (control->priv->destroy_idle_id != 0) {
+	if (control->priv->destroy_idle_id != 0)
 		gtk_idle_remove (control->priv->destroy_idle_id);
-	}
 
 	control->priv->destroy_idle_id = 0;
 }
@@ -295,7 +292,6 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 	if (! local_socket) {
 		GtkWidget *old_plug;
 
-
 		old_plug            = control->priv->plug;
 
 		/* Create the new plug */
@@ -323,7 +319,9 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 		}
 
 		gtk_widget_show (control->priv->plug);
-		
+
+		control->priv->is_local = FALSE;
+
 	} else {
 		GtkWidget *socket_parent;
 
@@ -355,9 +353,9 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 
 static void
 impl_Bonobo_Control_setSize (PortableServer_Servant  servant,
-				   const CORBA_short       width,
-				   const CORBA_short       height,
-				   CORBA_Environment      *ev)
+			     const CORBA_short       width,
+			     const CORBA_short       height,
+			     CORBA_Environment      *ev)
 {
 	/*
 	 * Nothing.
@@ -439,18 +437,26 @@ impl_Bonobo_Control_getProperties (PortableServer_Servant  servant,
 }
 
 static void
-process_events (void)
+process_events (PortableServer_Servant servant)
 {
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-	gdk_flush ();
+	BonoboControl *control =
+		BONOBO_CONTROL (bonobo_object_from_servant (servant));
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (control->priv != NULL);
+
+	if (!control->priv->is_local) {
+		while (gtk_events_pending ())
+			gtk_main_iteration ();
+		gdk_flush ();
+	}
 }
 
 static void
 impl_Bonobo_Control_realize (PortableServer_Servant servant,
 			     CORBA_Environment     *ev)
 {
-	process_events ();
+	process_events (servant);
 }
 
 /*
@@ -488,7 +494,7 @@ static void
 impl_Bonobo_Control_unrealize (PortableServer_Servant servant,
 			       CORBA_Environment     *ev)
 {
-	process_events ();
+	process_events (servant);
 }
 
 void

@@ -241,17 +241,18 @@ container_create (void)
 		"OAFIID:bonobo_calculator:fab8c2a7-9576-437c-aa3a-a8617408970f",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
 
-	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
+	if (control)
+		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
 	button = gtk_button_new_with_label ("Increment result");
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    (GtkSignalFunc)incr_calc, control);
-
 	control = bonobo_widget_new_control (
 		"OAFIID:bonobo_clock:d42cc651-44ae-4f69-a10d-a0b6b2cc6ecc",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
 
-	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
+	if (control)
+		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
 	clock_button = gtk_button_new_with_label ("Pause/Resume Clock");
 	gtk_signal_connect (GTK_OBJECT (clock_button), "clicked",
@@ -268,7 +269,8 @@ container_create (void)
 		"OAFIID:bonobo_entry_factory:ef3e3c33-43e2-4f7c-9ca9-9479104608d6",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
 
-	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
+	if (control)
+		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
 	gtk_box_pack_start (GTK_BOX (box), proplist, TRUE, TRUE, 0);
 

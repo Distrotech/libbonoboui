@@ -48,17 +48,17 @@ BonoboObjectClient *bonobo_widget_get_server               (BonoboWidget     *bw
 /*
  * BonoboWidget for Controls.
  */
-GtkWidget          *bonobo_widget_new_control              (const char        *goad_id,
-							    Bonobo_UIContainer uih);
+GtkWidget          *bonobo_widget_new_control              (const char        *moniker,
+							    Bonobo_UIContainer uic);
 GtkWidget          *bonobo_widget_new_control_from_objref  (Bonobo_Control     control,
-							    Bonobo_UIContainer uih);
+							    Bonobo_UIContainer uic);
 BonoboControlFrame *bonobo_widget_get_control_frame        (BonoboWidget      *bw);
 
 /*
  * Gnome Bonobo Widget for subdocuments (Embeddables with a single View).
  */
-GtkWidget           *bonobo_widget_new_subdoc               (const char        *object_desc,
-							     Bonobo_UIContainer uih);
+GtkWidget           *bonobo_widget_new_subdoc               (const char        *moniker,
+							     Bonobo_UIContainer uic);
 BonoboItemContainer *bonobo_widget_get_container            (BonoboWidget      *bw);
 BonoboClientSite    *bonobo_widget_get_client_site          (BonoboWidget      *bw);
 BonoboViewFrame     *bonobo_widget_get_view_frame           (BonoboWidget      *bw);
