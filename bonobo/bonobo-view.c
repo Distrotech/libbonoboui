@@ -93,6 +93,7 @@ bonobo_view_corba_object_create (BonoboObject *object)
 	return (Bonobo_View) bonobo_object_activate_servant (object, servant);
 }
 
+#if 0
 /**
  * bonobo_view_activate:
  * @view: 
@@ -107,6 +108,7 @@ bonobo_view_activate (BonoboView *view, gboolean activate, gpointer user_data)
 {
 	bonobo_view_activate_notify (view, activate);
 }
+#endif
 
 /**
  * bonobo_view_construct:

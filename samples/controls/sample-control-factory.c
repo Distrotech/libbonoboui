@@ -14,6 +14,7 @@
 #include <bonobo.h>
 
 #include "bonobo-clock-control.h"
+#include "bonobo-calculator-control.h"
 
 CORBA_Environment ev;
 CORBA_ORB orb;

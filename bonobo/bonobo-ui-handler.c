@@ -1145,6 +1145,7 @@ path_escape_forward_slashes (char *str)
 	return final;
 }
 
+#if 0
 /*
  * This helper function replaces all instances of "\/" with "/"
  * and all instances of "\\" with "\".
@@ -1179,6 +1180,7 @@ path_unescape_forward_slashes (char *str)
 	g_free (new);
 	return final;
 }
+#endif
 
 /*
  * The path-building routine.
@@ -1749,10 +1751,10 @@ menu_make_item (const char *path, BonoboUIHandlerMenuItemType type,
 	BonoboUIHandlerMenuItem *item;
 
 	item = g_new0 (BonoboUIHandlerMenuItem, 1);
-	item->path        = path;
+	item->path        = strdup (path);
 	item->type        = type;
-	item->label       = label;
-	item->hint        = hint;
+	item->label       = strdup (label);
+	item->hint        = strdup (hint);
 	item->pos         = pos;
 	item->pixmap_type = pixmap_type;
 	item->pixmap_data = pixmap_data;
@@ -4710,6 +4712,7 @@ menu_remote_set_hint (BonoboUIHandler *uih, const char *path,
 	menu_remote_attribute_data_set (uih, path, attrs);
 }
 
+#if 0
 static void
 toolbar_item_remote_set_hint (BonoboUIHandler *uih, const char *path,
 			      const char *hint)
@@ -4723,6 +4726,7 @@ toolbar_item_remote_set_hint (BonoboUIHandler *uih, const char *path,
 	attrs->hint = CORBA_string_dup (CORBIFY_STRING (hint));
 	toolbar_item_remote_attribute_data_set (uih, path, attrs);
 }
+#endif
 
 /**
  * bonobo_ui_handler_menu_set_hint:
@@ -5012,6 +5016,7 @@ menu_remote_set_accel (BonoboUIHandler *uih, const char *path,
 	menu_remote_attribute_data_set (uih, path, attrs);
 }
 
+#if 0
 static void
 toolbar_item_remote_set_accel (BonoboUIHandler *uih, const char *path,
 			       guint accelerator_key, GdkModifierType ac_mods)
@@ -5025,6 +5030,7 @@ toolbar_item_remote_set_accel (BonoboUIHandler *uih, const char *path,
 	attrs->ac_mods = ac_mods;
 	toolbar_item_remote_attribute_data_set (uih, path, attrs);
 }
+#endif
 
 /**
  * bonobo_ui_handler_menu_set_accel:
@@ -5076,6 +5082,7 @@ menu_remote_get_accel (BonoboUIHandler *uih, const char *path,
 	ui_remote_attribute_data_free (attrs);
 }
 
+#if 0
 static void
 toolbar_item_remote_get_accel (BonoboUIHandler *uih, const char *path,
 			       guint *accelerator_key, GdkModifierType *ac_mods)
@@ -5093,6 +5100,7 @@ toolbar_item_remote_get_accel (BonoboUIHandler *uih, const char *path,
 
 	ui_remote_attribute_data_free (attrs);
 }
+#endif
 
 /**
  * bonobo_ui_handler_menu_get_accel:
@@ -5229,6 +5237,7 @@ menu_remote_set_toggle_state (BonoboUIHandler *uih, const char *path,
 	menu_remote_attribute_data_set (uih, path, attrs);
 }
 
+#if 0
 static void
 toolbar_item_remote_set_toggle_state (BonoboUIHandler *uih, const char *path,
 				      gboolean state)
@@ -5241,6 +5250,7 @@ toolbar_item_remote_set_toggle_state (BonoboUIHandler *uih, const char *path,
 	attrs->toggle_state = state;
 	toolbar_item_remote_attribute_data_set (uih, path, attrs);
 }
+#endif
 
 /**
  * bonobo_ui_handler_menu_set_toggle_state:
@@ -5331,12 +5341,14 @@ menu_remote_set_radio_state (BonoboUIHandler *uih, const char *path,
 	menu_remote_set_toggle_state (uih, path, state);
 }
 
+#if 0
 static void
 toolbar_item_remote_set_radio_state (BonoboUIHandler *uih, const char *path,
 				     gboolean state)
 {
 	toolbar_item_remote_set_toggle_state (uih, path, state);
 }
+#endif
 
 /**
  * bonobo_ui_handler_menu_set_radio_state:
@@ -5487,7 +5499,7 @@ toolbar_make_item (const char *path, BonoboUIHandlerToolbarItemType type,
 		   const char *label, const char *hint, int pos,
 		   const Bonobo_Control control,
 		   BonoboUIHandlerPixmapType pixmap_type,
-		   gconstpointer pixmap_data, guint accelerator_key,
+		   gpointer pixmap_data, guint accelerator_key,
 		   GdkModifierType ac_mods,
 		   BonoboUIHandlerCallbackFunc callback,
 		   gpointer callback_data)
@@ -5496,10 +5508,10 @@ toolbar_make_item (const char *path, BonoboUIHandlerToolbarItemType type,
 
 	item = g_new0 (BonoboUIHandlerToolbarItem, 1);
 
-	item->path = path;
+	item->path = strdup (path);
 	item->type = type;
-	item->label = label;
-	item->hint = hint;
+	item->label = strdup (label);
+	item->hint = strdup (hint);
 	item->pos = pos;
 	item->control = control;
 	item->pixmap_type = pixmap_type;
@@ -6854,7 +6866,7 @@ bonobo_ui_handler_toolbar_new (BonoboUIHandler *uih, const char *path,
 			      const char *label, const char *hint,
 			      int pos, const Bonobo_Control control,
 			      BonoboUIHandlerPixmapType pixmap_type,
-			      gconstpointer pixmap_data, guint accelerator_key,
+			      gpointer pixmap_data, guint accelerator_key,
 			      GdkModifierType ac_mods,
 			      BonoboUIHandlerCallbackFunc callback,
 			      gpointer callback_data)
@@ -6885,7 +6897,7 @@ void
 bonobo_ui_handler_toolbar_new_item (BonoboUIHandler *uih, const char *path,
 				   const char *label, const char *hint, int pos,
 				   BonoboUIHandlerPixmapType pixmap_type,
-				   gconstpointer pixmap_data,
+				   gpointer pixmap_data,
 				   guint accelerator_key, GdkModifierType ac_mods,
 				   BonoboUIHandlerCallbackFunc callback,
 				   gpointer callback_data)
@@ -7235,7 +7247,8 @@ impl_toolbar_remove_item (PortableServer_Servant servant,
 				     ex_Bonobo_UIHandler_PathNotFound, NULL);
 		return;
 	}
-	toolbar_toplevel_remove_item_internal (uih, containee_uih);
+
+	toolbar_toplevel_remove_item_internal (uih, internal);
 }
 
 /**
