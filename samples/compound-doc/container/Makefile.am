@@ -3,7 +3,7 @@ INCLUDES =	\
 	-I$(top_srcdir) 				\
 	$(BONOBOUI_CFLAGS)
 
-bin_PROGRAMS = sample-container-2
+noinst_PROGRAMS = sample-container-2
 
 sample_container_2_SOURCES =	\
 	container.c		\

@@ -1,3 +1,8 @@
+2002-07-16  Brian Cameron  <Brian.Cameron@sun.com>
+
+	* samples/compound-doc/container/Makefile.am
+	No longer install sample-container-2.
+
 2002-07-11  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-node.c
