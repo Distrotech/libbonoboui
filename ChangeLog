@@ -1,3 +1,7 @@
+2001-06-21  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* configure.in: Added Catalan (ca) to $ALL_LINGUAS
+
 2001-09-20  Frank Belew <frb@ximian.com>
 
 	* configure.in: removed AM_CONDITIONAL(FALSE...)

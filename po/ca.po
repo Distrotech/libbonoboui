@@ -1,156 +1,156 @@
-# Translation into the walloon language.
-#
-# Si vos voloz donner on côp di spale pol ratoûrnaedje di Gnome (ou des
-# ôtes libes programes) sicrijhoz-mu a l' adresse emile
-# <srtxg@chanae.alphanet.ch>; nos avans co bråmint di l' ovraedje a fé.
-#
+# libbonoboui translation to Catalan.
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# Pablo Saratxaga <srtxg@chanae.alphanet.ch> 2001
+# Softcatalà <info@softcatala.org>, 2001.
 #
+# Traducció per Softcatalà <info@softcatala.org>
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
 "POT-Creation-Date: 2001-09-21 20:29+0200\n"
-"PO-Revision-Date: 1999-02-07 17:37+0100\n"
-"Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
-"Language-Team: walon <linux-wa@chanae.alphanet.ch>\n"
+"PO-Revision-Date: 2001-09-21 14:32+0200\n"
+"Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
+"Language-Team: Catalan <info@softcatala.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
 msgid "Shadow type"
-msgstr "Sôrte d' ombion"
+msgstr "Tipus d'ombra"
 
 #: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
 msgid "Orientation"
-msgstr "Plaeçmint"
+msgstr "Orientació"
 
 #: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
 msgid "Preferred width"
-msgstr "Preferêye lårdjeu"
+msgstr "Amplada preferida"
 
 #: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 msgid "Preferred height"
-msgstr "Preferêye hôteu"
+msgstr "Alçada preferida"
 
 #: bonobo/bonobo-file-selector-util.c:371
 msgid "Select a file to open"
-msgstr "Tchwezixhoz li fitchî a drovî"
+msgstr ""
 
 #: bonobo/bonobo-file-selector-util.c:399
 msgid "Select files to open"
-msgstr "Tchwezixhoz les fitchîs a drovî"
+msgstr ""
 
 #: bonobo/bonobo-file-selector-util.c:428
 msgid "Select a filename to save"
-msgstr "Tchwezixhoz on no d' fitchî po schaper"
+msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
-msgstr "No"
+msgstr "Nom"
 
 #: bonobo/bonobo-selector-widget.c:380
 msgid "Description"
-msgstr "Discrijhaedje"
+msgstr "Descripció"
 
 #: bonobo/bonobo-ui-config-widget.c:266
 msgid "Visible"
-msgstr "Veyåve"
+msgstr "Visible"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr "_Vey"
+msgstr "_Mostra"
 
 #: bonobo/bonobo-ui-config-widget.c:284
 msgid "_Hide"
-msgstr "_Catchî"
+msgstr "_Amaga"
 
 #: bonobo/bonobo-ui-config-widget.c:294
 msgid "_View tooltips"
-msgstr "_Vey racsegnes"
+msgstr "_Mostra els rètols indicadors de funció"
 
 #: bonobo/bonobo-ui-config-widget.c:301
 msgid "Toolbars"
-msgstr "Bårs ås usteyes"
+msgstr "Barres d'eines"
 
 #: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
-msgstr "Rivnance"
+msgstr "Aspecte"
 
 #: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
-msgstr "_Imådjete"
+msgstr "_Icona"
 
 #: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Text and Icon"
-msgstr "_Tecse et imådjete"
+msgstr "_Texte i icona"
 
 #: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
-msgstr "Seulmint les tecses di _prumîristé"
+msgstr "Només el text de _prioritat"
 
 #: bonobo/bonobo-ui-engine-config.c:513
 msgid "Configure UI"
-msgstr "Apontyî l' eterface ûzeu"
+msgstr "Configura la UI"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
-msgstr "Les _deus"
+msgstr "A_mbdues"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
-msgstr "_Tecse"
+msgstr "T_ext"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
-msgstr "Catchî les _racsegnes"
+msgstr "Amaga els c_onsells"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
-msgstr "Mostrer les _racsegnes"
+msgstr "Mostra els c_onsells"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
-msgstr "_Catchî l' bår ås usteyes"
+msgstr "_Amaga la barra d'eines"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
-msgstr "A _vosse môde"
+msgstr "Personalit_za"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
-msgstr "Apontyî l' bår ås usteyes a vosse môde"
+msgstr "Personalitza la barra d'eines"
 
 #: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
-msgstr "Dji n' pout nén enonder l' eterface ûzeu di bonobo"
+msgstr "No es pot bonobo_ui_init"
 
 #: tests/test-selector.c:12
 msgid "Select an object"
-msgstr "Tchwezixhoz on objet"
+msgstr "Seleccioneu un objecte"
 
 #: tests/test-ui.c:230
+#, fuzzy
 msgid "Cannot init libbonoboui code"
-msgstr "Dji n' pout nén enonder li côde libbonoboui"
+msgstr "No es pot inicialitzar el bonobo"
 
-msgid "Can not activate object_server"
-msgstr "Dji n' pout nén mete en alaedje object_server"
+#~ msgid "Can not activate object_server"
+#~ msgstr "No es pot activar object_server"
 
-msgid "Can not bind object server to client_site"
-msgstr "Dji n' pout nén loyî li sierveu d' objets avou client_site"
+#~ msgid "Can not bind object server to client_site"
+#~ msgstr "No es pot vincular el servidor d'objectes a client_site"
 
-msgid "Can not activate server"
-msgstr "Dji n' pout nén mete en alaedje li sierveu"
+#~ msgid "Can not activate server"
+#~ msgstr "No es pot activar el servidor"
 
-msgid "Could not launch bonobo object."
-msgstr "Dji n' pout nén enonder l' objet bonobo."
+#~ msgid "Could not launch bonobo object."
+#~ msgstr "No es pot executar l'objecte del bonobo."
 
-msgid "Could not launch Embeddable."
-msgstr "Dji n' pout nén enonder ene ravaleye aplicåcion"
+#~ msgid "Could not launch Embeddable."
+#~ msgstr "No es pot executar l'Embeddable."
 
-msgid "Could not launch Control."
-msgstr "Dji n' pout nén enonder li contrôle."
+#~ msgid "Could not launch Control."
+#~ msgstr "No es pot executar el Control."
 
-msgid "Can not bonobo_init"
-msgstr "Dji n' pout nén enonder bonobo"
+#~ msgid "Can not bonobo_init"
+#~ msgstr "No es pot bonobo_init"
+
+#~ msgid "Cannot bonobo UI code"
+#~ msgstr "No es pot fer bonobo al codi UI"
