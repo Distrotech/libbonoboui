@@ -11,7 +11,8 @@ INCLUDES =                                              \
         -I$(includedir)                                 \
 	$(GNOME_INCLUDEDIR)				\
 	$(OAF_CFLAGS)					\
-	$(GDK_PIXBUF_CFLAGS)
+	$(GDK_PIXBUF_CFLAGS)				\
+	$(PROF_CFLAGS)
 
 lib_LTLIBRARIES = libbonobo.la libbonobox.la libbonobo-print.la
 
