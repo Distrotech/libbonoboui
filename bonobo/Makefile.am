@@ -52,6 +52,7 @@ libbonobo_la_SOURCES =			\
 	gnome-bind-context.c		\
 	gnome-client-site.c		\
 	gnome-component.c		\
+	gnome-component-client.c	\
 	gnome-component-factory.c 	\
 	gnome-container.c		\
 	gnome-file-moniker.c		\
@@ -60,6 +61,7 @@ libbonobo_la_SOURCES =			\
 	gnome-main.c			\
 	gnome-moniker.c			\
 	gnome-object.c			\
+	gnome-object-client.c		\
 	gnome-persist-stream.c		\
 	gnome-persist.c			\
 	gnome-storage.c			\
@@ -80,6 +82,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-bonobo.h			\
 	gnome-client-site.h		\
 	gnome-component.h		\
+	gnome-component-client.h	\
 	gnome-component-factory.h	\
 	gnome-component-io.h		\
 	gnome-composite-moniker.h	\
@@ -91,6 +94,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-main.h			\
 	gnome-moniker.h			\
 	gnome-object.h			\
+	gnome-object-client.h		\
 	gnome-persist-stream.h		\
 	gnome-persist.h			\
 	gnome-storage.h			\

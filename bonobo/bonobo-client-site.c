@@ -129,6 +129,7 @@ gnome_client_site_destroy (GtkObject *object)
 {
 	GtkObjectClass *object_class;
 	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
+	GnomeObject *gnome_object = GNOME_OBJECT (client_site->bound_object);
 	
 	object_class = (GtkObjectClass *)gnome_client_site_parent_class;
 
@@ -138,8 +139,8 @@ gnome_client_site_destroy (GtkObject *object)
 
 	/* Destroy the object on the other end */
 	g_warning ("FIXME: Should we unref twice?");
-	
-	GNOME_object_unref (client_site->bound_object->object, &client_site->bound_object->ev);
+
+	gtk_object_unref (GTK_OBJECT (client_site->bound_object));
 	object_class->destroy (object);
 }
 
@@ -222,6 +223,17 @@ create_client_site (GnomeObject *object)
 	return gnome_object_activate_servant (object, servant);
 }
 
+/**
+ * gnome_client_site_construct:
+ * @client_site: The GnomeClientSite object to initialize
+ * @corba_client_site: The CORBA server that implements the service
+ * @container: a GnomeContainer to bind to.
+ *
+ * This initializes an object of type GnomeClientSite.  See the description
+ * for gnome_client_site_new() for more details.
+ *
+ * Returns the constructed GnomeClientSite @client_site.
+ */
 GnomeClientSite *
 gnome_client_site_construct (GnomeClientSite  *client_site,
 			     GNOME_ClientSite  corba_client_site,
@@ -241,6 +253,19 @@ gnome_client_site_construct (GnomeClientSite  *client_site,
 	return client_site;
 }
 
+/**
+ * gnome_client_site_new:
+ * @container: The container to which this client_site belongs.
+ *
+ * Programs should provide a GnomeClientSite GTK object (ie, a
+ * GNOME::ClientSite CORBA server) for each component they embed.  This
+ * is the contact end point for the remote GNOME::Component object.
+ *
+ * This routine creates a new GnomeClientSite.
+ *
+ * Returns: The activated GnomeClientSite object bound to the @container
+ * container.
+ */
 GnomeClientSite *
 gnome_client_site_new (GnomeContainer *container)
 {
@@ -285,21 +310,32 @@ gnome_client_site_get_type (void)
 	return type;
 }
 
+/** 
+ * gnome_client_site_bind_component:
+ * @client_site: the client site where we hook the object
+ * @object: remote GNOME::Component object
+ *
+ * Returns %TRUE if the code successfully bound the remote object to this
+ * @client_site.
+ */
 gboolean
-gnome_client_site_bind_component (GnomeClientSite *client_site, GnomeObject *object)
+gnome_client_site_bind_component (GnomeClientSite *client_site, GnomeObjectClient *object)
 {
 	CORBA_Object corba_object;
+	GnomeObject *gnome_object;
 	
 	g_return_val_if_fail (client_site != NULL, FALSE);
 	g_return_val_if_fail (object != NULL, FALSE);
 	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), FALSE);
-	g_return_val_if_fail (GNOME_IS_OBJECT (object), FALSE);
+	g_return_val_if_fail (GNOME_IS_OBJECT_CLIENT (object), FALSE);
 
+	gnome_object = GNOME_OBJECT (object);
+	
 	corba_object = GNOME_object_query_interface (
-		object->object, "IDL:GNOME/Component:1.0",
-		&object->ev);
+		gnome_object->object, "IDL:GNOME/Component:1.0",
+		&gnome_object->ev);
 
-	if (object->ev._major != CORBA_NO_EXCEPTION)
+	if (gnome_object->ev._major != CORBA_NO_EXCEPTION)
 		return FALSE;
 	
 	if (corba_object == CORBA_OBJECT_NIL)
@@ -311,7 +347,7 @@ gnome_client_site_bind_component (GnomeClientSite *client_site, GnomeObject *obj
 		&GNOME_OBJECT (client_site)->ev);
 	client_site->bound_object = object;
 		
-	if (object->ev._major != CORBA_NO_EXCEPTION)
+	if (gnome_object->ev._major != CORBA_NO_EXCEPTION)
 		return FALSE;
 	
 	return TRUE;

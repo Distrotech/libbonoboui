@@ -4,6 +4,7 @@
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <bonobo/gnome-object.h>
+#include <bonobo/gnome-object-client.h>
 #include <bonobo/gnome-container.h>
 
 BEGIN_GNOME_DECLS
@@ -17,9 +18,9 @@ BEGIN_GNOME_DECLS
 typedef struct {
 	GnomeObject base;
 
-	GnomeContainer *container;
-	GnomeObject    *bound_object;
-	int            child_shown:1;
+	GnomeContainer    *container;
+	GnomeObjectClient *bound_object;
+	int               child_shown:1;
 } GnomeClientSite;
 
 typedef struct {
@@ -40,7 +41,7 @@ void             gnome_client_site_set_moniker    (GnomeClientSite *client_site,
 						   GnomeMoniker   *moniker);
 
 gboolean         gnome_client_site_bind_component (GnomeClientSite *client_site,
-						   GnomeObject *object);
+						   GnomeObjectClient *object);
 
 extern POA_GNOME_ClientSite__epv gnome_client_site_epv;
 

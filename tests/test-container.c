@@ -17,11 +17,11 @@ typedef struct {
 	GNOME_View view;
 } Application;
 
-static GnomeObject *
+static GnomeObjectClient *
 launch_server (GnomeContainer *container, char *goadid)
 {
 	GnomeClientSite *client_site;
-	GnomeObject     *object_server;
+	GnomeObjectClient *object_server;
 	
 	client_site = gnome_client_site_new (container);
 	gnome_container_add (container, GNOME_OBJECT (client_site));
@@ -42,11 +42,11 @@ launch_server (GnomeContainer *container, char *goadid)
 	return object_server;
 }
 
-static GnomeObject *
+static GnomeObjectClient *
 add_cmd (GtkWidget *widget, Application *app, char *server_goadid)
 {
 	GtkWidget *frame, *socket, *w;
-	GnomeObject *server;
+	GnomeObjectClient *server;
 	GNOME_View view;
 	GNOME_View_windowid id;
 	
@@ -75,14 +75,16 @@ add_demo_cmd (GtkWidget *widget, Application *app)
 static void
 add_image_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeObject *object;
+	GnomeObjectClient *object;
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
-	
-	object = add_cmd (widget, app, "component:image-x-png");
-	persist = GNOME_object_query_interface (object->object, "IDL:GNOME/PersistStream:1.0", &object->ev);
 
-        if (object->ev._major != CORBA_NO_EXCEPTION)
+	object = add_cmd (widget, app, "component:image-x-png");
+	persist = GNOME_object_query_interface (
+		GNOME_OBJECT (object)->object,
+		"IDL:GNOME/PersistStream:1.0", &ev);
+
+        if (ev._major != CORBA_NO_EXCEPTION)
                 return;
 
         if (persist == CORBA_OBJECT_NIL)
@@ -92,7 +94,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	
 	stream = gnome_stream_fs_open (NULL, "/tmp/a.png", GNOME_Storage_READ);
 	
-	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &object->ev);
+	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
 }
 
 static void

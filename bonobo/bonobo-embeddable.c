@@ -5,15 +5,11 @@
  *   Miguel de Icaza (miguel@kernel.org)
  */
 #include <config.h>
-#include <gdk/gdkprivate.h>
-#include <gdk/gdkx.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
-#include <gtk/gtksocket.h>
 #include <bonobo/bonobo.h>
 #include <bonobo/gnome-main.h>
 #include <bonobo/gnome-component.h>
-#include <bonobo/gnome-wrapper.h>
 
 static GnomeObjectClass *gnome_component_parent_class;
 
@@ -209,6 +205,21 @@ gnome_component_construct (GnomeComponent  *component,
 	return component;
 }
 
+/**
+ * gnome_component_new:
+ * @factory: Factory routine that provides new views of the component on demand
+ * @data: pointer passed to the @factory routine to provide context.
+ *
+ * This routine creates a GNOME::Component CORBA server and activates it.  The
+ * @factory routine will be invoked by this CORBA server when a request arrives
+ * to get a new view of the component (component should be able to provide
+ * multiple views of themselves upon demand).  The @data pointer is passed
+ * to this factory routine untouched to allow the factory to get some context
+ * on what it should create.
+ *
+ * Returns a GnomeComponent that contains an activated GNOME::Component
+ * CORBA server.
+ */
 GnomeComponent *
 gnome_component_new (GnomeViewFactory factory, void *data)
 {
@@ -303,57 +314,4 @@ gnome_component_set_view_factory (GnomeComponent *component,
 	component->view_factory = factory;
 }
 
-static void
-set_remote_window (GtkWidget *socket, GNOME_View view)
-{
-	CORBA_Environment ev;
-
-	CORBA_exception_init (&ev);
-	GNOME_View_set_window (view, GDK_WINDOW_XWINDOW (socket->window), &ev);
-	CORBA_exception_free (&ev);
-}
-
-GtkWidget *
-gnome_component_new_view (GnomeObject *server_object)
-{
-	GtkWidget *socket, *cover;
-	GNOME_View view;
-	CORBA_Environment ev;
-
-	g_return_val_if_fail (server_object != NULL, NULL);
-	g_return_val_if_fail (GNOME_OBJECT (server_object), NULL);
-
-	cover = gnome_wrapper_new ();
-	if (!cover)
-		return NULL;
-			
-	socket = gtk_socket_new ();
-	if (!socket){
-		gtk_object_unref (GTK_OBJECT (cover));
-		return NULL;
-	}
-	gtk_widget_show (socket);
-	gtk_container_add (GTK_CONTAINER (cover), socket);
-	
-	CORBA_exception_init (&ev);
-	view = GNOME_Component_new_view (GNOME_OBJECT (server_object)->object, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
-		gtk_object_unref (GTK_OBJECT (socket));
-		gtk_object_unref (GTK_OBJECT (cover));
-		CORBA_exception_free (&ev);
-		return NULL;
-	}
-
-	gtk_container_add (GTK_CONTAINER (cover), socket);
-	gtk_widget_show (cover);
-			 
-	/*
-	 * Now wait until the socket->window is realized
-	 */
-	gtk_signal_connect (GTK_OBJECT (socket), "realize",
-			    GTK_SIGNAL_FUNC (set_remote_window), view);
-	
-	CORBA_exception_free (&ev);		
-	return cover;
-}
 

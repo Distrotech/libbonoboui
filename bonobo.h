@@ -1,3 +1,9 @@
+/*
+ * Main include file for the Bonobo component model
+ *
+ * FIXME: We should try to optimize the order of the include
+ * files here to minimize repeated inclussion of files.
+ */
 #include <bonobo/gtk-interfaces.h>
 
 #include <bonobo/gnome-object.h>
@@ -10,12 +16,15 @@
 #include <bonobo/gnome-composite-moniker.h>
 
 #include <bonobo/gnome-container.h>
+#include <bonobo/gnome-object-client.h>
 #include <bonobo/gnome-client-site.h>
 
 #include <bonobo/gnome-view.h>
 #include <bonobo/gnome-component.h>
 #include <bonobo/gnome-component-factory.h>
 #include <bonobo/gnome-component-io.h>
+
+#include <bonobo/gnome-component-client.h>
 
 #include <bonobo/gnome-inplace-component.h>
 #include <bonobo/gnome-inplace-site.h>

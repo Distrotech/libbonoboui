@@ -76,6 +76,13 @@ gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 	return view;
 }
 
+/**
+ * gnome_view_new:
+ * @widget: a GTK widget that represents the view to pass to the container process
+ *
+ * Returns a GnomeView object that implements the GNOME::View CORBA service that
+ * will transfer the @widget to the container process.
+ */
 GnomeView *
 gnome_view_new (GtkWidget *widget)
 {
