@@ -3,18 +3,10 @@
 	* be.po: Updated Belarusian translation
 	* from Belarusian team <i18n@infonet.by>.
 
-<<<<<<< ChangeLog
-2002-11-09  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
-
-	* be.po: Updated Belarusian translation
-	* from Belarusian team <i18n@infonet.by>.
-
-=======
 2002-11-08  Daniel Yacob  <locales@geez.org>
 
 	* am.po: Added Amharic translation.
 
->>>>>>> 1.168.2.4
 2002-11-06  Yuriy Syrota  <rastaman@renome.rovno.ua>
 
 	* uk.po: Updated Ukrainian translation.
