@@ -1,4 +1,4 @@
-# Swedish messgaes for libbonoboui.
+# Swedish messages for libbonoboui.
 # Copyright (C) 2001, 2002 Free Software Foundation, Inc.
 # Christian Rose <menthos@menthos.com>, 2001, 2002.
 #
