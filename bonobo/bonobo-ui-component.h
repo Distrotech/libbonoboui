@@ -219,9 +219,9 @@ typedef struct {
 #define BONOBO_UI_VERB_END                       { NULL, NULL, NULL }
 
 void    bonobo_ui_component_add_verb_list           (BonoboUIComponent  *component,
-						     BonoboUIVerb       *list);
+						     const BonoboUIVerb *list);
 void    bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *component,
-						     BonoboUIVerb       *list,
+						     const BonoboUIVerb *list,
 						     gpointer            user_data);
 
 G_END_DECLS

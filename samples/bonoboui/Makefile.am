@@ -8,7 +8,7 @@ INCLUDES =	\
 	-DVERSION=\"$(VERSION)\"			\
 	$(WARN_CFLAGS)					\
 	$(BONOBOUI_CFLAGS)				\
-	-DHELLO_SRCDIR=\""$(srcdir)"\"
+	-DHELLO_SRCDIR=\""$(srcdir)"/\"
 
 LDADD =	$(top_builddir)/bonobo/libbonoboui-2.la
 

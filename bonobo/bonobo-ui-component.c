@@ -937,10 +937,10 @@ bonobo_ui_component_object_get (BonoboUIComponent  *component,
  **/
 void
 bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *component,
-					     BonoboUIVerb       *list,
+					     const BonoboUIVerb *list,
 					     gpointer            user_data)
 {
-	BonoboUIVerb *l;
+	const BonoboUIVerb *l;
 
 	g_return_if_fail (list != NULL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
@@ -950,7 +950,7 @@ bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *component,
 	for (l = list; l && l->cname; l++) {
 		bonobo_ui_component_add_verb (
 			component, l->cname, l->cb,
-			user_data?user_data:l->user_data);
+			user_data ? user_data : l->user_data);
 	}
 
 	bonobo_object_unref (BONOBO_OBJECT (component));
@@ -966,7 +966,7 @@ bonobo_ui_component_add_verb_list_with_data (BonoboUIComponent  *component,
  **/
 void
 bonobo_ui_component_add_verb_list (BonoboUIComponent  *component,
-				   BonoboUIVerb       *list)
+				   const BonoboUIVerb *list)
 {
 	bonobo_ui_component_add_verb_list_with_data (component, list, NULL);
 }

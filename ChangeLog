@@ -1,5 +1,13 @@
 2001-10-20  Michael Meeks  <michael@ximian.com>
 
+	* samples/bonoboui/hello.c: finish re-write.
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_add_verb_list_with_data),
+	(bonobo_ui_component_add_verb_list): constipate.
+
+2001-10-20  Michael Meeks  <michael@ximian.com>
+
 	* samples/bonoboui/hello.c: kill all redundant forward
 	prototypes, substantialy re-write, clean the mess.
 	Remove swathes of C++ style comments.

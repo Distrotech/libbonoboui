@@ -41,19 +41,14 @@ static GSList *app_list = NULL;
 
 /*   A single forward prototype - try and keep these
  * to a minumum by ordering your code nicely */
-static GtkWidget *hello_new (const gchar *message,
-			     const gchar *geometry);
+static GtkWidget *hello_new (void);
 
 static void
 hello_on_menu_file_new (BonoboUIComponent *uic,
-			   gpointer           user_data,
-			   const gchar       *verbname)
+			gpointer           user_data,
+			const gchar       *verbname)
 {
-	GtkWidget *app;
-
-	app = hello_new (_("Hello, World!"), NULL);
-	
-	gtk_widget_show_all(app);
+	gtk_widget_show_all (hello_new ());
 }
 
 static void
@@ -194,43 +189,41 @@ static BonoboWindow *
 hello_create_main_window (void)
 {
 	BonoboWindow      *win;
-
-	win = BONOBO_WINDOW (bonobo_window_new (PACKAGE, _("Gnome Hello")));
-
-#if 0
 	BonoboUIContainer *ui_container;
 	BonoboUIComponent *ui_component;
+
+	win = BONOBO_WINDOW (bonobo_window_new (PACKAGE, _("Gnome Hello")));
 
 	/* Create Container: */
 	ui_container = bonobo_window_get_ui_container (win);
 
-	/* TODO: What does this do? */
-	bonobo_ui_engine_config_set_path ( bonobo_window_get_ui_engine (win),
-					   "/my-application-name/UIConfig/kvps");
+	/* This determines where the UI configuration info. will be stored */
+	bonobo_ui_engine_config_set_path (bonobo_window_get_ui_engine (win),
+					  "/hello-app/UIConfig/kvps");
 
-	/* Set up Window's UI: */
-	ui_component = bonobo_ui_component_new ("my-app");
+	/* Create a UI component with which to communicate with the window */
+	ui_component = bonobo_ui_component_new_default ();
 
 	/* Associate the BonoboUIComponent with the container */
 	bonobo_ui_component_set_container (
 		ui_component, BONOBO_OBJREF (ui_container), NULL);
 
-	/* Tell the BonoboUIComponent to use the UI XML file, in <prefix>/share/gnome/ */
-	hello_check_for_ui_xml_file(ui_xml_filename); /*Tell user to symlink it if necessary. */
-	bonobo_ui_util_set_ui (
-		ui_component, HELLO_DATADIR, HELLO_UI_XML,
-		 "my-app"); /* XML file describing the menus, toolbars, etc */
+	/* NB. this creates a relative file name from the current dir,
+	 * in production you want to pass the application's datadir
+	 * see Makefile.am to see how HELLO_SRCDIR gets set. */
+	bonobo_ui_util_set_ui (ui_component, "", /* data dir */
+			       HELLO_SRCDIR HELLO_UI_XML,
+			       "bonobo-hello");
+
+	/* Associate our verb -> callback mapping with the BonoboWindow */
+	/* All the callback's user_data pointers will be set to 'win' */
+	bonobo_ui_component_add_verb_list_with_data (ui_component, hello_verbs, win);
 
 	/* TODO: */
 	/* - How can I add stock menu items without specifying all the details? */
 	/* - There are stock pixmaps, but how can I find a list of all the possible pixmap names? */
 	/* - Toolbar items tend to share details and callbacks with menu items, but the cmd can't */
 	/*     just be reused because toolbar items don't parse the navigation underscore.        */
-
-	/* Associate our verb -> callback mapping with the BonoboWindow */
-	/* All the callback's user_data pointers will be set to 'win' */
-	bonobo_ui_component_add_verb_list_with_data (ui_component, hello_verbs, win);
-#endif
 
 	return win;
 }
@@ -246,8 +239,7 @@ delete_event_cb (GtkWidget *window, GdkEventAny *e, gpointer user_data)
 }
 
 static GtkWidget *
-hello_new (const gchar *message,
-	   const gchar *geometry)
+hello_new (void)
 {
 	GtkWidget    *label;
 	GtkWidget    *frame;
@@ -256,14 +248,12 @@ hello_new (const gchar *message,
 
 	win = hello_create_main_window();
 
-	/* Add some widgets to the main BonoboWindow: */
-
 	/* Create Button: */
 	button = gtk_button_new ();
 	gtk_container_set_border_width (GTK_CONTAINER (button), 10);
 
 	/* Create Label and put it in the Button: */
-	label = gtk_label_new (message ? message : _("Hello, World!"));
+	label = gtk_label_new (_("Hello, World!"));
 	gtk_container_add (GTK_CONTAINER (button), label);
 
 	/* Connect the Button's 'clicked' signal to the signal handler:
@@ -287,159 +277,29 @@ hello_new (const gchar *message,
 			    GTK_SIGNAL_FUNC (delete_event_cb),
 			    NULL);
 
-
-	/*** gnomehello-geometry */
-	/*
-	  if (geometry != NULL) 
-	  {
-	  gint x, y, w, h;
-	  if ( gnome_parse_geometry( geometry, 
-	  &x, &y, &w, &h ) ) 
-	  {
-          if (x != -1)
-	  {
-	  gtk_widget_set_uposition(app, x, y);
-	  }
-
-          if (w != -1) 
-	  {
-	  gtk_window_set_default_size(GTK_WINDOW(app), w, h);
-	  }
-	  }
-	  else 
-	  {
-          g_error(_("Could not parse geometry string `%s'"), geometry);
-	  }
-	  }
-	*/
-
 	/* Append ourself to the list of windows */
 	app_list = g_slist_prepend (app_list, win);
 
 	return GTK_WIDGET(win);
 }
 
-#if 0
-/*** gnomehello-popttable */
-static char* message  = NULL;
-static char* geometry = NULL;
-
-struct poptOption options[] = {
-  { 
-    "message",
-    'm',
-    POPT_ARG_STRING,
-    &message,
-    0,
-    N_("Specify a message other than \"Hello, World!\""),
-    N_("MESSAGE")
-  },
-  { 
-    "geometry",
-    '\0',
-    POPT_ARG_STRING,
-    &geometry,
-    0,
-    N_("Specify the geometry of the main window"),
-    N_("GEOMETRY")
-  },
-  {
-    NULL,
-    '\0',
-    0,
-    NULL,
-    0,
-    NULL,
-    NULL
-  }
-};
-/* gnomehello-popttable ***/
-#endif
-
 int 
-main(int argc, char* argv[])
+main (int argc, char* argv[])
 {
-	/*** gnomehello-parsing */
-	GtkWidget* app;
+	GtkWidget *app;
 
-	//GnomeClient* client;
-	bindtextdomain(PACKAGE, GNOMELOCALEDIR);  
-	textdomain(PACKAGE);
+	/* Setup translaton domain */
+	bindtextdomain (PACKAGE, GNOMELOCALEDIR);  
+	textdomain (PACKAGE);
 
-	if (!bonobo_ui_init_full ("BonoboUI-Hello", VERSION, &argc, argv, NULL, NULL, NULL, TRUE))
+	if (!bonobo_ui_init ("bonobo-hello", VERSION, &argc, argv))
 		g_error (_("Cannot init libbonoboui code"));
 
-#if 0
-	/* Argument parsing */
-	//args = poptGetArgs(pctx);
-	//poptFreeContext(pctx);
+	app = hello_new ();
 
-	/* gnomehello-parsing ***/
-
-	/* Session Management */
-  
-	/*** gnomehello-client */
-/*
-  client = gnome_master_client ();
-  gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
-  GTK_SIGNAL_FUNC (save_session), argv[0]);
-  gtk_signal_connect (GTK_OBJECT (client), "die",
-  GTK_SIGNAL_FUNC (session_die), NULL);
-*/
-	/* gnomehello-client ***/
-
-  
-	/* Main app */
-#endif
-
-	app = hello_new (NULL, NULL); /* message, geometry);*/
-
-	gtk_widget_show_all (GTK_WIDGET(app));
+	gtk_widget_show_all (GTK_WIDGET (app));
 
 	bonobo_main ();
 
 	return 0;
 }
-
-#if 0
-/*** gnomehello-save-session */
-
-static gint
-save_session (GnomeClient *client, gint phase, GnomeSaveStyle save_style,
-              gint is_shutdown, GnomeInteractStyle interact_style,
-              gint is_fast, gpointer client_data)
-{
-  gchar** argv;
-  guint argc;
-
-  /* allocate 0-filled, so it will be NULL-terminated */
-  argv = g_malloc0(sizeof(gchar*)*4);
-  argc = 1;
-
-  argv[0] = client_data;
-
-  if (message)
-    {
-      argv[1] = "--message";
-      argv[2] = message;
-      argc = 3;
-    }
-  
-  gnome_client_set_clone_command (client, argc, argv);
-  gnome_client_set_restart_command (client, argc, argv);
-
-  return TRUE;
-}
-
-/* gnomehello-save-session ***/
-
-/*** gnomehello-session-die */
-
-static void
-session_die(GnomeClient* client, gpointer client_data)
-{
-  gtk_main_quit ();
-}
-
-/* gnomehello-session-die ***/
-#endif
