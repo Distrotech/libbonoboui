@@ -619,7 +619,7 @@ create_dockitem (BonoboUISyncToolbar *sync,
 	item = GNOME_DOCK_ITEM (gnome_dock_item_new (
 		dockname, beh));
 
-	if (gnome_preferences_get_toolbar_relief ()
+	if (gnome_preferences_get_toolbar_relief ())
 		gnome_dock_item_set_shadow_type (item, GTK_SHADOW_OUT);
 	else
 		gnome_dock_item_set_shadow_type (item, GTK_SHADOW_NONE);
