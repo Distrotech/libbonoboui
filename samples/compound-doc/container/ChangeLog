@@ -1,7 +1,7 @@
 2000-07-13  Michael Meeks  <michael@helixcode.com>
 
 	* container-print.c (sample_app_print_preview): kill unref of print
-	preview widget.
+	preview widget, and also context.
 
 	* component.c (load_stream_cb): update to show exception nicely.
 

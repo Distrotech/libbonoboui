@@ -46,9 +46,9 @@ sample_app_print_preview (SampleApp * app)
 
 	gnome_print_showpage (ctx);
 	gnome_print_context_close (ctx);
+	gnome_print_master_close (pm);
 
 	pv = gnome_print_master_preview_new (pm, "Component demo");
 	gtk_widget_show (GTK_WIDGET (pv));
-	gtk_main ();
 	gtk_object_unref (GTK_OBJECT (pm));
 }
