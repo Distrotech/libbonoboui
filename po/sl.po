@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-03-07 12:30+0100\n"
+"POT-Creation-Date: 2002-03-12 23:07+0100\n"
 "PO-Revision-Date: 2002-02-26 00:23+0100\n"
 "Last-Translator: Andraž Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: slovenian <sl@li.org>\n"
@@ -248,13 +248,6 @@ msgstr "_Datoteka"
 msgid "_Select"
 msgstr "_Izberi"
 
-
-# Smart report:
-# Total untranslated messages in file: 58 
-# Translations made:
-# full: 34
-# smart: 3
-# cond: 26
-# total: 63 ; distinct: 31
-
-
+#: samples/controls/bonobo-sample-controls.c:121
+msgid "Could not initialize Bonobo UI"
+msgstr "Nisem mogel inicializirati uporabniškega vmesnika Bonoba"
