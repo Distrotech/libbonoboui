@@ -269,7 +269,5 @@ main (int argc, char **argv)
 	if (ctx)
 		poptFreeContext (ctx);
 
-	bonobo_shutdown ();
-
 	return 0;
 }

@@ -50,6 +50,5 @@ sample_app_print_preview (SampleApp * app)
 	pv = gnome_print_master_preview_new (pm, "Component demo");
 	gtk_widget_show (GTK_WIDGET (pv));
 	gtk_main ();
-	gtk_object_unref (GTK_OBJECT (pv));
 	gtk_object_unref (GTK_OBJECT (pm));
 }

@@ -123,7 +123,5 @@ main (int argc, char **argv)
 
 	bonobo_main ();
 
-	bonobo_shutdown ();
-
 	return 0;
 }

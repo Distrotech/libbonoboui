@@ -346,10 +346,9 @@ load_stream_cb (GtkWidget *caller, Component *component)
 					   "", &ev);
 
 		if (ev._major != CORBA_NO_EXCEPTION) {
-			gnome_warning_dialog (_
-					      ("An exception occured while trying "
-					       "to load data into the component with "
-					       "PersistStream"));
+			char *msg = bonobo_exception_get_txt (&ev);
+			gnome_warning_dialog (msg);
+			g_free (msg);
 		}
 
 		/*
