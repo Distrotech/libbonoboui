@@ -66,7 +66,7 @@ void             gnome_embeddable_set_view_factory (GnomeEmbeddable *bonobo_obje
 						    GnomeViewFactory factory,
 						    void *data);
 
-POA_GNOME_Embeddable__epv gnome_embeddable_epv;
+extern POA_GNOME_Embeddable__epv gnome_embeddable_epv;
 
 END_GNOME_DECLS
 
