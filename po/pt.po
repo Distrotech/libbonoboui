@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-01-28 11:03+0000\n"
+"POT-Creation-Date: 2002-02-04 17:02+0000\n"
 "PO-Revision-Date: 2002-01-08 23:59+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <none@none.org>\n"
@@ -29,15 +29,15 @@ msgstr "Largura preferida"
 msgid "Preferred height"
 msgstr "Altura preferida"
 
-#: bonobo/bonobo-file-selector-util.c:375
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select a file to open"
 msgstr "Seleccione ficheiro a abrir"
 
-#: bonobo/bonobo-file-selector-util.c:403
+#: bonobo/bonobo-file-selector-util.c:422
 msgid "Select files to open"
 msgstr "Seleccione ficheiros a abrir"
 
-#: bonobo/bonobo-file-selector-util.c:432
+#: bonobo/bonobo-file-selector-util.c:451
 msgid "Select a filename to save"
 msgstr "Seleccione um nome de ficheiro a gravar"
 
@@ -181,16 +181,16 @@ msgstr "Isto não faz nada; é apenas uma demonstração."
 msgid "BonoboUI-Hello."
 msgstr "Olá-BonoboUI."
 
-#: samples/bonoboui/hello.c:195
+#: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
 msgstr "Olá Gnome"
 
 #. Create Label and put it in the Button:
-#: samples/bonoboui/hello.c:250
+#: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
 msgstr "Olá, Mundo!"
 
-#: samples/bonoboui/hello.c:290
+#: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
 msgstr "Incapaz de inicializar código libbonoboui"
 

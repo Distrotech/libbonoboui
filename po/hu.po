@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2002-01-28 11:03+0000\n"
+"POT-Creation-Date: 2002-02-04 17:02+0000\n"
 "PO-Revision-Date: 2002-01-28 20:43-0100\n"
 "Last-Translator: Emese Kovacs <emese@ganome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
@@ -29,15 +29,15 @@ msgstr "Előnyben részesített szélesség"
 msgid "Preferred height"
 msgstr "Előnyben részesített magasság"
 
-#: bonobo/bonobo-file-selector-util.c:375
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select a file to open"
 msgstr "Válaszd ki a megnyitandó fájlt"
 
-#: bonobo/bonobo-file-selector-util.c:403
+#: bonobo/bonobo-file-selector-util.c:422
 msgid "Select files to open"
 msgstr "Válaszd ki a megnyitandó fájlokat"
 
-#: bonobo/bonobo-file-selector-util.c:432
+#: bonobo/bonobo-file-selector-util.c:451
 msgid "Select a filename to save"
 msgstr "Válaszd ki az elmentendő fájl nevét"
 
@@ -181,16 +181,16 @@ msgstr "Ez semmit nem csinál, csak demo"
 msgid "BonoboUI-Hello."
 msgstr "BonoboUI-Hello."
 
-#: samples/bonoboui/hello.c:195
+#: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
 msgstr "Gnome Hello"
 
 #. Create Label and put it in the Button:
-#: samples/bonoboui/hello.c:250
+#: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
 msgstr "Szia világ!"
 
-#: samples/bonoboui/hello.c:290
+#: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
 msgstr "A libbonobo kód initje sikertlen"
 

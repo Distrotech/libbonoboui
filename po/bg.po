@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2002-01-28 11:03+0000\n"
+"POT-Creation-Date: 2002-02-04 17:02+0000\n"
 "PO-Revision-Date: 2002-01-26 11:35+2000\n"
 "Last-Translator: Alexander Shopov <al_shopov@web.bg>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -30,15 +30,15 @@ msgstr "Предпочитана ширина"
 msgid "Preferred height"
 msgstr "Предпочитана височина"
 
-#: bonobo/bonobo-file-selector-util.c:375
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select a file to open"
 msgstr "Избери файл за отваряне"
 
-#: bonobo/bonobo-file-selector-util.c:403
+#: bonobo/bonobo-file-selector-util.c:422
 msgid "Select files to open"
 msgstr "Избери файлове за отваряне"
 
-#: bonobo/bonobo-file-selector-util.c:432
+#: bonobo/bonobo-file-selector-util.c:451
 msgid "Select a filename to save"
 msgstr "Избери име на файл за запис"
 
@@ -182,16 +182,16 @@ msgstr "Не прави нищо, това е само демонстрация"
 msgid "BonoboUI-Hello."
 msgstr "BonoboUI-Здравей"
 
-#: samples/bonoboui/hello.c:195
+#: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
 msgstr "Гном здравей"
 
 #. Create Label and put it in the Button:
-#: samples/bonoboui/hello.c:250
+#: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
 msgstr "Здравей, Свят!"
 
-#: samples/bonoboui/hello.c:290
+#: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
 msgstr "Не мога да инициализирам кода на libbonoboui"
 

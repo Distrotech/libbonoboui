@@ -223,7 +223,7 @@ main (int argc, char **argv)
 		"</submenu>\n";
 	char simplec [] =
 		"<submenu name=\"File\" _label=\"_FileC\" _tip=\"what!\">\n"
-		"    <placeholder name=\"Nice\" delimit=\"top\" hidden=\"1\">\n"
+		"    <placeholder name=\"Nice\" delimit=\"top\" hidden=\"0\">\n"
 		"	<menuitem name=\"fooa\" _label=\"_FooA\" type=\"radio\" group=\"foogroup\" _tip=\"Radio1\"/>\n"
 		"	<menuitem name=\"foob\" _label=\"_FooB\" type=\"radio\" group=\"foogroup\" _tip=\"kippers\"/>\n"
 		"	<menuitem name=\"wibble\" verb=\"ThisForcesAnError\" _label=\"_Baa\""
@@ -348,7 +348,6 @@ main (int argc, char **argv)
 		fprintf (stderr, "\n\n--- Add std-ui.xml ---\n\n\n");
 		bonobo_ui_util_set_ui (componenta, NULL, "../doc/std-ui.xml",
 				       "gnomecal", NULL);
-		bonobo_ui_component_thaw (componenta, NULL);
 
 /*		bonobo_ui_component_set_prop (
 			componenta, "/menu/Preferences",
@@ -538,7 +537,7 @@ main (int argc, char **argv)
 
 	g_warning ("Begginning stress test, this may take some time ...");
 	for (i = 0; i < 100; i++) {
-		bonobo_ui_component_freeze (componenta, ev);
+		bonobo_ui_component_freeze (componentc, ev);
 		g_assert (!BONOBO_EX (ev));
 		
 		bonobo_ui_component_set_translate (componentc, "/commands",
@@ -551,7 +550,7 @@ main (int argc, char **argv)
 		bonobo_ui_component_set_translate (componentc, "/menu/File", simpled, ev);
 		g_assert (!BONOBO_EX (ev));
 
-		bonobo_ui_component_thaw (componenta, ev);
+		bonobo_ui_component_thaw (componentc, ev);
 		g_assert (!BONOBO_EX (ev));
 	}
 	g_warning ("Done stress test");
