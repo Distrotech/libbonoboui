@@ -33,11 +33,17 @@ AC_SUBST(LDFLAGS)
 dnl
 dnl Start of pkg-config checks
 dnl
-PKG_CHECK_MODULES(BONOBOUI, libgnomecanvas-2.0 >= 1.96.0 \
-		  libbonobo-2.0 >= 1.101.2 libgnome-2.0 >= 1.96.0 \
-		  bonobo-activation-2.0 >= 0.9.1 gconf-2.0)
+BONOBOUI_MODULES="libgnomecanvas-2.0 >= 1.96.0 libbonobo-2.0 >= 1.101.2 libgnome-2.0 >= 1.96.0 bonobo-activation-2.0 >= 0.9.1 gconf-2.0"
+PKG_CHECK_MODULES(BONOBOUI, $BONOBOUI_MODULES)
 AC_SUBST(BONOBOUI_CFLAGS)
 AC_SUBST(BONOBOUI_LIBS)
+
+PKG_CHECK_MODULES(BONOBOUI_GLADE, $BONOBOUI_MODULES libglade-2.0 >= 1.99.3)
+AC_SUBST(BONOBOUI_GLADE_CFLAGS)
+AC_SUBST(BONOBOUI_GLADE_LIBS)
+ 
+GLADE_MODULE_DIR="`$PKG_CONFIG --variable=moduledir libglade-2.0`"
+AC_SUBST(GLADE_MODULE_DIR)
 
 # glib-genmarshal
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
@@ -47,6 +53,7 @@ Makefile
 po/Makefile.in
 bonobo/Makefile
 bonobo/libbonoboui-2.0.pc
+glade/Makefile
 samples/Makefile
 samples/controls/Makefile
 samples/bonoboui/Makefile
