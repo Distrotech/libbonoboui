@@ -22,13 +22,12 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_UI_TOOLBAR_ITEM_CLASS(klass)		(GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR_ITEM))
 
 
-typedef enum _BonoboUIToolbarItemStyle BonoboUIToolbarItemStyle;
-enum _BonoboUIToolbarItemStyle {
+typedef enum {
 	BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL,
 	BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_HORIZONTAL,
 	BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_ONLY,
 	BONOBO_UI_TOOLBAR_ITEM_STYLE_TEXT_ONLY
-};
+} BonoboUIToolbarItemStyle;
 
 
 typedef struct _BonoboUIToolbarItem        BonoboUIToolbarItem;

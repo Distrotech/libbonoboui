@@ -1,26 +1,46 @@
 GtkObject
-  GtkWidget
-    GtkContainer
-      GtkBin
-        GtkWindow
-          GnomeDialog
-            BonoboSelector
-        BonoboWrapper
   BonoboObject
+    BonoboCanvasComponent
     BonoboClientSite
+    BonoboControlFrame
+      BonoboViewFrame
+    BonoboControl
+      BonoboView
+    BonoboDesktopWindow
     BonoboGenericFactory
     BonoboEmbeddable
+    BonoboItemContainer
     BonoboMoniker
     Handle to remote Bonobo::Unknown
     BonoboPersist
       BonoboPersistFile
       BonoboPersistStream
     BonoboProgressiveDataSink
+    BonoboPropertyListener
     BonoboStorage
     BonoboStream
-      BonoboStreamFS
       BonoboStreamMem
-    BonoboControlFrame
-      BonoboViewFrame
-    BonoboControl
-      BonoboView
+    BonoboUIComponent
+    BonoboUIContainer
+    BonoboZoomableFrame
+    BonoboZoomable
+  GnomeCanvasItem
+    BonoboCanvasItem
+  GtkWidget
+    GtkContainer
+      GtkBin
+        GtkWindow
+          BonoboPlug
+          GnomeDialog
+            BonoboSelector
+          BonoboWin
+        BonoboUIToolbarItem
+          BonoboUIToolbarButtonItem
+            BonoboUIToolbarToggleButtonItem
+        BonoboWidget
+        BonoboWrapper
+      BonoboSocket
+    GtkMisc
+      BonoboUIToolbarIcon
+  BonoboTransient
+  BonoboUIXml

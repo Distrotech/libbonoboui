@@ -46,21 +46,61 @@ scan:
 	&& env CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) \
 		 gtkdoc-scanobj --module=$(DOC_MODULE) \
 	&& gtkdoc-scan --module=$(DOC_MODULE) \
-		../../bonobo/bonobo-object.h ../../bonobo/bonobo-moniker.h \
+		../../bonobo/bonobo-canvas-component.h \
+		../../bonobo/bonobo-canvas-item.h \
+		../../bonobo/bonobo-client-site.h \
+		../../bonobo/bonobo-component-io.h \
+		../../bonobo/bonobo-control-frame.h \
+		../../bonobo/bonobo-control.h \
+		../../bonobo/bonobo-desktop-window.h \
+		../../bonobo/bonobo-embeddable-factory.h \
+		../../bonobo/bonobo-embeddable.h \
 		../../bonobo/bonobo-exception.h \
-		../../bonobo/bonobo-item-container.h ../../bonobo/bonobo-object-client.h \
-		../../bonobo/bonobo-moniker-util.h ../../bonobo/bonobo-property-listener.h \
-		../../bonobo/bonobo-property-bag-client.h ../../bonobo/bonobo-control.h \
-		../../bonobo/bonobo-control-frame.h ../../bonobo/bonobo-view.h ../../bonobo/bonobo-generic-factory.h \
-		../../bonobo/bonobo-embeddable.h ../../bonobo/bonobo-embeddable-factory.h \
-		../../bonobo/bonobo-main.h ../../bonobo/bonobo-stream.h \
-		../../bonobo/bonobo-stream-client.h ../../bonobo/bonobo-stream-fs.h ../../bonobo/bonobo-persist.h \
-		../../bonobo/bonobo-persist-file.h ../../bonobo/bonobo-persist-stream.h ../../bonobo/bonobo-ui-xml.h \
-		../../bonobo/bonobo-ui-util.h ../../bonobo/bonobo-ui-component.h ../../bonobo/bonobo-ui-container.h \
-		../../bonobo/bonobo-win.h ../../bonobo/bonobo-object-io.h ../../bonobo/bonobo-progressive.h \
-		../../bonobo/bonobo-storage.h ../../bonobo/bonobo-selector.h ../../bonobo/bonobo-widget.h \
-		../../bonobo/bonobo-print.h ../../bonobo/bonobo-print-client.h )
-
+		../../bonobo/bonobo-generic-factory.h \
+		../../bonobo/bonobo-item-container.h \
+		../../bonobo/bonobo-main.h \
+		../../bonobo/bonobo-moniker-util.h \
+		../../bonobo/bonobo-moniker.h \
+		../../bonobo/bonobo-object-client.h \
+		../../bonobo/bonobo-object-directory.h \
+		../../bonobo/bonobo-object-io.h \
+		../../bonobo/bonobo-object.h \
+		../../bonobo/bonobo-persist-file.h \
+		../../bonobo/bonobo-persist-stream.h \
+		../../bonobo/bonobo-persist.h \
+		../../bonobo/bonobo-plug.h \
+		../../bonobo/bonobo-print-client.h \
+		../../bonobo/bonobo-print.h \
+		../../bonobo/bonobo-progressive.h \
+		../../bonobo/bonobo-property-bag-client.h \
+		../../bonobo/bonobo-property-bag.h \
+		../../bonobo/bonobo-property-listener.h \
+		../../bonobo/bonobo-property-types.h \
+		../../bonobo/bonobo-property.h \
+		../../bonobo/bonobo-selector.h \
+		../../bonobo/bonobo-socket.h \
+		../../bonobo/bonobo-storage-plugin.h \
+		../../bonobo/bonobo-storage.h \
+		../../bonobo/bonobo-stream-client.h \
+		../../bonobo/bonobo-stream-memory.h \
+		../../bonobo/bonobo-stream.h \
+		../../bonobo/bonobo-transient.h \
+		../../bonobo/bonobo-ui-component.h \
+		../../bonobo/bonobo-ui-container.h \
+		../../bonobo/bonobo-ui-node.h \
+		../../bonobo/bonobo-ui-toolbar-button-item.h \
+		../../bonobo/bonobo-ui-toolbar-icon.h \
+		../../bonobo/bonobo-ui-toolbar-item.h \
+		../../bonobo/bonobo-ui-toolbar-toggle-button-item.h \
+		../../bonobo/bonobo-ui-util.h \
+		../../bonobo/bonobo-ui-xml.h \
+		../../bonobo/bonobo-view-frame.h \
+		../../bonobo/bonobo-view.h \
+		../../bonobo/bonobo-widget.h \
+		../../bonobo/bonobo-win.h \
+		../../bonobo/bonobo-wrapper.h \
+		../../bonobo/bonobo-zoomable-frame.h \
+		../../bonobo/bonobo-zoomable.h )
 
 templates: scan
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
