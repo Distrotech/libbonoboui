@@ -1,4 +1,4 @@
-# GNOME yn Gymraeg.
+# libbonoboui yn Gymraeg.
 # Copyright (C) 2003 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libbonoboui package.
 # Dafydd Harries <daf@parnassus.ath.cx>, 2003
@@ -6,8 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
-"PO-Revision-Date: 2003-05-30 22:27+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-08-19 02:57+0100\n"
+"PO-Revision-Date: 2003-08-26 21:23+0100\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
@@ -154,7 +155,7 @@ msgstr "Testun _pwysig yn unig"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
-msgstr "Dadchwilenni"
+msgstr "Datnamu"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
@@ -166,11 +167,11 @@ msgstr "Dadlwytho holl ddisgrifiad XML y rhyngwyned defnyddiwr i'r consol"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr "Ffurfweddi'r Rhyngwyneb Defnyddiwr"
+msgstr "Cyflunio'r Rhyngwyneb Defnyddiwr"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr "Baneri dadchwilenni Gdk i'w gosod"
+msgstr "Baneri datnamu Gdk i'w gosod"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
@@ -179,7 +180,7 @@ msgstr "BANNERI"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr "Baneri dadchwilenni Gdk i'w dadosod"
+msgstr "Baneri datnamu Gdk i'w dadosod"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
@@ -195,7 +196,7 @@ msgstr "Y sgrîn X i'w ddefnyddio"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
-msgstr "SGRÎN"
+msgstr "SGÎÎN"
 
 #: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
@@ -235,11 +236,11 @@ msgstr "ARDDULL"
 
 #: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
-msgstr "Baneri dadchwilenni Gtk+ i'w gosod"
+msgstr "Baneri datnamu Gtk+ i'w gosod"
 
 #: bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
-msgstr "Baneri dadchwilenni Gtk+ i'w dadosod"
+msgstr "Baneri datnamu Gtk+ i'w dadosod"
 
 #: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
@@ -310,10 +311,9 @@ msgstr "_Cynnwys"
 msgid "View help for this application"
 msgstr "Dangos cymorth ar gyfer y rhaglen hwn"
 
-# EFALLAI (cyfresoli?)
 #: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
-msgstr "Enw'r ffenest - defnyddir ar gyfer cyfresoli ffurfweddiad."
+msgstr "Enw'r ffenest - defnyddir ar gyfer cyfresoli cyfluniad."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
