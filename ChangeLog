@@ -1,4 +1,10 @@
-2002-04-14  Murray Cumming  <murrayc@usa.net>
+2002-04-22  Murray Cumming  <murrayc@usa.net>
+
+	* glade/glade-bonobo.h: reverted part of previous commit - I
+	had committed part of another pending patch that depends on a
+	not-yet-applied libglade patch.
+
+2002-04-22  Murray Cumming  <murrayc@usa.net>
 
 	* bonobo/bonobo-selector.[h|c] BonoboSelector now has an
 	"interfaces_required" property, and the child BonoboSelectorWidget
@@ -6,7 +12,7 @@
 	bonobo_selector_new() can now be just a convenience wrapper for
 	g_object_new().
 	
-2002-04-13  Murray Cumming  <murrayc@usa.net>
+2002-04-22  Murray Cumming  <murrayc@usa.net>
 
 	* bonobo/bonobo-window.[h|c]: bonobo_window_new() is now just
 	a convenience wrapper for g_object_new(). This is possible because
