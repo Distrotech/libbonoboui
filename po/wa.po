@@ -124,20 +124,20 @@ msgstr "Apontyî l' bår ås usteyes a vosse môde"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr ""
+msgstr "Çouchal ni fwait rén; c' est djusse on egzimpe."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr ""
+msgstr "BonoboUI-Bondjoû."
 
 #: samples/bonoboui/hello.c:195
 msgid "Gnome Hello"
-msgstr ""
+msgstr "GnomeBondjoû"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:250
 msgid "Hello, World!"
-msgstr ""
+msgstr "Bondjoû, Daegn!"
 
 #: samples/bonoboui/hello.c:290 tests/test-ui.c:254
 msgid "Cannot init libbonoboui code"
