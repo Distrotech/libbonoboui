@@ -102,6 +102,7 @@ bonobo-ui-component.[ch]:
 	replaced by:
 	bonobo_ui_component_remove_verb_by_closure,
 	bonobo_ui_component_remove_listener_by_closure.
-
+	bonobo_ui_component_set_container: added optional ev.
+	bonobo_ui_component_get_container: added optional ev.
 
 

@@ -106,8 +106,10 @@ void               bonobo_ui_component_set_name        (BonoboUIComponent  *comp
 const char        *bonobo_ui_component_get_name        (BonoboUIComponent  *component);
 
 void               bonobo_ui_component_set_container   (BonoboUIComponent  *component,
-							Bonobo_UIContainer  container);
-void               bonobo_ui_component_unset_container (BonoboUIComponent  *component);
+							Bonobo_UIContainer  container,
+							CORBA_Environment  *opt_ev);
+void               bonobo_ui_component_unset_container (BonoboUIComponent  *component,
+							CORBA_Environment  *opt_ev);
 Bonobo_UIContainer bonobo_ui_component_get_container   (BonoboUIComponent  *component);
 
 void               bonobo_ui_component_add_verb        (BonoboUIComponent  *component,

@@ -172,7 +172,7 @@ sample_app_fill_menu (SampleApp *app)
 	uic = bonobo_ui_component_new ("sample");
 	corba_uic = BONOBO_OBJREF (bonobo_window_get_ui_container (
 						BONOBO_WINDOW (app->win)));
-	bonobo_ui_component_set_container (uic, corba_uic);
+	bonobo_ui_component_set_container (uic, corba_uic, NULL);
 
 	bonobo_ui_component_set_translate (uic, "/", ui_commands, NULL);
 	bonobo_ui_component_set_translate (uic, "/", ui_data, NULL);

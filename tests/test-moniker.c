@@ -116,7 +116,8 @@ display_as_stream (const char *moniker, CORBA_Environment *ev)
 
 	the_stream = bonobo_get_object (moniker, "IDL:Bonobo/Stream:1.0", ev);
 	if (ev->_major != CORBA_NO_EXCEPTION || !the_stream) {
-		g_error ("Couldn't get Bonobo/Stream interface");
+		g_error ("Couldn't get Bonobo/Stream interface '%s'",
+			 bonobo_exception_get_text (ev));
 	}
 
 	fprintf (stderr, "Writing stream to stdout...\n");

@@ -237,7 +237,7 @@ BonoboWindow* helloapp_create_main_window()
 
   /* Associate the BonoboUIComponent with the container */
   bonobo_ui_component_set_container (
-          ui_component, BONOBO_OBJREF (ui_container) );
+          ui_component, BONOBO_OBJREF (ui_container), NULL);
 
   /* Tell the BonoboUIComponent to use the UI XML file, in <prefix>/share/gnome/ */
   helloapp_check_for_ui_xml_file(ui_xml_filename); /*Tell user to symlink it if necessary. */

@@ -296,9 +296,9 @@ main (int argc, char **argv)
 	componentb = bonobo_ui_component_new ("B");
 	componentc = bonobo_ui_component_new ("C");
 
-	bonobo_ui_component_set_container (componenta, corba_container);
-	bonobo_ui_component_set_container (componentb, corba_container);
-	bonobo_ui_component_set_container (componentc, corba_container);
+	bonobo_ui_component_set_container (componenta, corba_container, NULL);
+	bonobo_ui_component_set_container (componentb, corba_container, NULL);
+	bonobo_ui_component_set_container (componentc, corba_container, NULL);
 
 	global_component = componenta;
 

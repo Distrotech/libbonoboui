@@ -1,3 +1,21 @@
+2001-07-31  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-ui.c (main): fixup set_containers.
+
+2001-07-31  Jamil Geor <geor@ihug.co.nz>
+
+	* bonobo/bonobo-ui-component.c (bonobo_ui_component_unset_container),
+	(bonobo_ui_component_set_container): add opt_ev.
+
+	* bonobo/bonobo-control.c (bonobo_control_finalize), 
+	(bonobo_control_auto_merge): upd.
+
+2001-07-30  Michael Meeks  <michael@ximian.com>
+
+	* samples/bonoboui-hello/helloapp.c: kill libgnomeui includes.
+
+	* tests/test-moniker.c (display_as_stream): show helpful exceptions.
+
 2001-07-30  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-component.c (bonobo_ui_component_add_verb): upd.

@@ -178,7 +178,7 @@ bonobo_control_auto_merge (BonoboControl *control)
 		return;
 
 	bonobo_ui_component_set_container (
-		control->priv->ui_component, remote_container);
+		control->priv->ui_component, remote_container, NULL);
 
 	bonobo_object_release_unref (remote_container, NULL);
 }
@@ -190,7 +190,7 @@ bonobo_control_auto_unmerge (BonoboControl *control)
 	if (control->priv->ui_component == NULL)
 		return;
 	
-	bonobo_ui_component_unset_container (control->priv->ui_component);
+	bonobo_ui_component_unset_container (control->priv->ui_component, NULL);
 }
 
 static void
@@ -650,7 +650,7 @@ bonobo_control_finalize (GObject *object)
 	 * If we have a UIComponent, destroy it.
 	 */
 	if (control->priv->ui_component != NULL) {
-		bonobo_ui_component_unset_container (control->priv->ui_component);
+		bonobo_ui_component_unset_container (control->priv->ui_component, NULL);
 		bonobo_object_unref (BONOBO_OBJECT (control->priv->ui_component));
 	}
 

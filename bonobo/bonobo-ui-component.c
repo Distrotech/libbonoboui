@@ -1277,32 +1277,41 @@ bonobo_ui_component_set_status (BonoboUIComponent *component,
  * #BonoboUIContainer.
  **/
 void
-bonobo_ui_component_unset_container (BonoboUIComponent *component)
+bonobo_ui_component_unset_container (BonoboUIComponent *component,
+				     CORBA_Environment *opt_ev)
 {
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
 	bonobo_object_ref (BONOBO_OBJECT (component));
 
 	if (component->priv->container != CORBA_OBJECT_NIL) {
-		CORBA_Environment  ev;
+		CORBA_Environment *ev, temp_ev;
 		char              *name;
+		
+		if (!opt_ev) {
+			CORBA_exception_init (&temp_ev);
+			ev = &temp_ev;
+		} else
+			ev = opt_ev;
 
-		bonobo_ui_component_rm (component, "/", NULL);
-
-		CORBA_exception_init (&ev);
+		bonobo_ui_component_rm (component, "/", ev);
 
 		name = component->priv->name ? component->priv->name : "";
 
 		Bonobo_UIContainer_deregisterComponent (
-			component->priv->container, name, &ev);
+			component->priv->container, name, ev);
 		
-		if (BONOBO_EX (&ev))
+		if (!opt_ev && BONOBO_EX (ev)) {
+			char *err;
 			g_warning ("Serious exception deregistering component '%s'",
-				   bonobo_exception_get_text (&ev));
+				   (err = bonobo_exception_get_text (ev)));
+			g_free (err);
+		}
 
-		CORBA_exception_free (&ev);
+		bonobo_object_release_unref (component->priv->container, ev);
 
-		bonobo_object_release_unref (component->priv->container, NULL);
+		if (!opt_ev)
+			CORBA_exception_free (&temp_ev);
 	}
 
 	component->priv->container = CORBA_OBJECT_NIL;
@@ -1320,7 +1329,8 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component)
  **/
 void
 bonobo_ui_component_set_container (BonoboUIComponent *component,
-				   Bonobo_UIContainer container)
+				   Bonobo_UIContainer container,
+				   CORBA_Environment *opt_ev)
 {
 	Bonobo_UIContainer ref_cont;
 
@@ -1330,30 +1340,37 @@ bonobo_ui_component_set_container (BonoboUIComponent *component,
 
 	if (container != CORBA_OBJECT_NIL) {
 		Bonobo_UIComponent corba_component;
+		CORBA_Environment *ev, temp_ev;
 		char              *name;
-		CORBA_Environment  ev;
+		
+		if (!opt_ev) {
+			CORBA_exception_init (&temp_ev);
+			ev = &temp_ev;
+		} else
+			ev = opt_ev;
 
-		ref_cont = 		
-			bonobo_object_dup_ref (container, NULL);
-
-		CORBA_exception_init (&ev);
+		ref_cont = bonobo_object_dup_ref (container, ev);
 
 		corba_component = BONOBO_OBJREF (component);
 
 		name = component->priv->name ? component->priv->name : "";
 
 		Bonobo_UIContainer_registerComponent (
-			ref_cont, name, corba_component, &ev);
+			ref_cont, name, corba_component, ev);
 
-		if (BONOBO_EX (&ev))
-			g_warning ("Serious exception registering component '$%s'",
-				   bonobo_exception_get_text (&ev));
+		if (!opt_ev && BONOBO_EX (ev)) {
+			char *err;
+			g_warning ("Serious exception registering component '%s'",
+				   (err = bonobo_exception_get_text (ev)));
+			g_free (err);
+		}
 		
-		CORBA_exception_free (&ev);
+		if (!opt_ev)
+			CORBA_exception_free (&temp_ev);
 	} else
 		ref_cont = CORBA_OBJECT_NIL;
 
-	bonobo_ui_component_unset_container (component);
+	bonobo_ui_component_unset_container (component, NULL);
 
 	component->priv->container = ref_cont;
 
