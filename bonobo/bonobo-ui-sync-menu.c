@@ -20,6 +20,7 @@
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-sync.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-preferences.h>
 
 #undef WIDGET_SYNC_DEBUG
@@ -109,21 +110,21 @@ node_is_popup (BonoboUINode *node)
 static void
 add_tearoff (BonoboUINode *node, GtkMenu *menu, gboolean popup_init)
 {
-	GtkWidget    *tearoff;
-	char         *txt;
-	gboolean      has_tearoff;
+	GtkWidget *tearoff;
+	gboolean   has_tearoff;
 
 	has_tearoff = bonobo_ui_preferences_get_menus_have_tearoff ();
 
 	if (node) {
-		txt = bonobo_ui_node_get_attr (node, "tearoff");
+		const char *txt;
+
+		txt = bonobo_ui_node_peek_attr (node, "tearoff");
 
 		if (txt)
 			has_tearoff = atoi (txt);
+
 		else if (node_is_popup (node))
 			has_tearoff = FALSE;
-
-		bonobo_ui_node_free_string (txt);
 
 	} else if (popup_init)
 		has_tearoff = FALSE;
@@ -258,23 +259,18 @@ get_item_widget (GtkWidget *widget)
 }
 
 static GtkWidget *
-cmd_get_menu_pixmap (BonoboUINode     *node,
-		     BonoboUINode     *cmd_node)
+cmd_get_menu_pixmap (BonoboUINode *node,
+		     BonoboUINode *cmd_node)
 {
-	GtkWidget *pixmap;
-	char      *type;
+	const char *type;
 
-	if ((type = bonobo_ui_node_get_attr (node, "pixtype"))) {
-		pixmap = bonobo_ui_util_xml_get_icon_widget (node, GTK_ICON_SIZE_MENU);
-		bonobo_ui_node_free_string (type);
-		return pixmap;
-	}
+	if ((type = bonobo_ui_node_peek_attr (node, "pixtype")))
+		return bonobo_ui_util_xml_get_icon_widget (
+			node, GTK_ICON_SIZE_MENU);
 
-	if ((type = bonobo_ui_node_get_attr (cmd_node, "pixtype"))) {
-		pixmap = bonobo_ui_util_xml_get_icon_widget (cmd_node, GTK_ICON_SIZE_MENU);
-		bonobo_ui_node_free_string (type);
-		return pixmap;
-	}
+	if ((type = bonobo_ui_node_peek_attr (cmd_node, "pixtype")))
+		return bonobo_ui_util_xml_get_icon_widget (
+			cmd_node, GTK_ICON_SIZE_MENU);
 
 	return NULL;
 }

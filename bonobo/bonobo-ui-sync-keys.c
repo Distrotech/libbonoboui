@@ -16,6 +16,7 @@
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-sync.h>
 #include <bonobo/bonobo-ui-sync-keys.h>
+#include <bonobo/bonobo-ui-private.h>
 
 static BonoboUISyncClass *parent_class = NULL;
 
@@ -125,15 +126,14 @@ update_keybindings (BonoboUISyncKeys *msync,
 	     l = bonobo_ui_node_next (l)) {
 		guint           key;
 		GdkModifierType mods;
-		char           *name;
+		const char     *name;
 		Binding        *binding;
 		
-		name = bonobo_ui_node_get_attr (l, "name");
+		name = bonobo_ui_node_peek_attr (l, "name");
 		if (!name)
 			continue;
 		
 		bonobo_ui_util_accel_parse (name, &key, &mods);
-		bonobo_ui_node_free_string (name);
 
 		binding       = g_new0 (Binding, 1);
 		binding->mods = mods & BINDING_MOD_MASK ();

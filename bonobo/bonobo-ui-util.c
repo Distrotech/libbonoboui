@@ -19,7 +19,7 @@
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-i18n.h>
-#include <bonobo/bonobo-ui-node-private.h>
+#include <bonobo/bonobo-ui-private.h>
 
 static gchar *find_pixmap_in_path (const gchar *filename);
 
@@ -285,18 +285,16 @@ bonobo_ui_util_xml_get_pixbuf (BonoboUINode *node,
 GtkWidget *
 bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 {
-	char      *type, *text;
-	GtkWidget *image = NULL;
+	const char *type, *text;
+	GtkWidget  *image = NULL;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if (!(type = bonobo_ui_node_get_attr (node, "pixtype")))
+	if (!(type = bonobo_ui_node_peek_attr (node, "pixtype")))
 		return NULL;
 
-	if (!(text = bonobo_ui_node_get_attr (node, "pixname"))) {
-		bonobo_ui_node_free_string (type);
+	if (!(text = bonobo_ui_node_peek_attr (node, "pixname")))
 		return NULL;
-	}
 
 	if (!text)
 		return NULL;
@@ -338,9 +336,6 @@ bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 		}
 	} else
 		g_warning ("Unknown icon_pixbuf type '%s'", type);
-
-	bonobo_ui_node_free_string (text);
-	bonobo_ui_node_free_string (type);
 
 	if (image)
 		gtk_widget_show (image);
@@ -633,12 +628,10 @@ bonobo_ui_util_fixup_help (BonoboUIComponent *component,
 		return;
 
 	if (bonobo_ui_node_has_name (node, "placeholder")) {
-		char *txt;
+		const char *txt;
 
-		if ((txt = bonobo_ui_node_get_attr (node, "name"))) {
+		if ((txt = bonobo_ui_node_peek_attr (node, "name")))
 			build_here = !strcmp (txt, "BuiltMenuItems");
-			bonobo_ui_node_free_string (txt);
-		}
 	}
 
 	if (build_here) {
@@ -663,18 +656,16 @@ bonobo_ui_util_fixup_icons (BonoboUINode *node)
 {
 	BonoboUINode *l;
 	gboolean fixup_here = FALSE;
-	char *txt;
+	const char *txt;
 
 	if (!node)
 		return;
 
-	if ((txt = bonobo_ui_node_get_attr (node, "pixtype"))) {
+	if ((txt = bonobo_ui_node_peek_attr (node, "pixtype")))
 		fixup_here = !strcmp (txt, "filename");
-		bonobo_ui_node_free_string (txt);
-	}
 
 	if (fixup_here &&
-	    ((txt = bonobo_ui_node_get_attr (node, "pixname")))) {
+	    ((txt = bonobo_ui_node_peek_attr (node, "pixname")))) {
 		GdkPixbuf *pixbuf = NULL;
 
 		if (g_path_is_absolute (txt))
@@ -695,8 +686,6 @@ bonobo_ui_util_fixup_icons (BonoboUINode *node)
 			bonobo_ui_node_set_attr (node, "pixname", xml);
 			g_free (xml);
 		}
-
-		bonobo_ui_node_free_string (txt);
 	}
 
 	for (l = bonobo_ui_node_children (node); l; l = bonobo_ui_node_next (l))
@@ -971,7 +960,7 @@ is_release (const gchar *string)
  * problems.
  **/
 void
-bonobo_ui_util_accel_parse (char              *accelerator,
+bonobo_ui_util_accel_parse (const char        *accelerator,
 			    guint             *accelerator_key,
 			    GdkModifierType   *accelerator_mods)
 {

@@ -11,6 +11,7 @@
 #include <config.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 #include <glib-object.h>
 
@@ -1005,9 +1006,8 @@ bonobo_ui_engine_xml_get_prop (BonoboUIEngine *engine,
 			       const char     *prop,
 			       gboolean       *invalid_path)
 {
- 	char         *str;
+ 	const char   *str;
  	BonoboUINode *node;
-  	CORBA_char   *ret;
   
   	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
 
@@ -1020,12 +1020,12 @@ bonobo_ui_engine_xml_get_prop (BonoboUIEngine *engine,
 		if (invalid_path)
 			*invalid_path = FALSE;
   
- 		str = bonobo_ui_node_get_attr (node, prop);
+ 		str = bonobo_ui_node_peek_attr (node, prop);
+
 		if (!str)
 			return NULL;
- 		ret = CORBA_string_dup (str);
- 		bonobo_ui_node_free_string (str);
- 		return ret;
+
+ 		return CORBA_string_dup (str);
   	}
 }
 
@@ -1569,24 +1569,23 @@ set_cmd_attr (BonoboUIEngine *engine,
 
 #ifdef STATE_SYNC_DEBUG
 	fprintf (stderr, "Set '%s' : '%s' to '%s'",
-		 bonobo_ui_node_get_attr (cmd_node, "name"),
+		 bonobo_ui_node_peek_attr (cmd_node, "name"),
 		 prop, value);
 #endif
 
 	bonobo_ui_node_set_attr (cmd_node, prop, value);
 
 	if (event) {
-		GSList *updates;
-		char   *cmd_name = bonobo_ui_node_get_attr (
-			cmd_node, "name");
+		GSList     *updates;
+		const char *cmd_name;
 
+		cmd_name = bonobo_ui_node_peek_attr (cmd_node, "name");
 
 		updates = make_updates_for_command (
 			engine, NULL, cmd_node, cmd_name);
 
 		execute_state_updates (updates);
 
-		bonobo_ui_node_free_string (cmd_name);
 	} else {
 		BonoboUIXmlData *data =
 			bonobo_ui_xml_get_data (
@@ -2117,9 +2116,9 @@ bonobo_ui_engine_sync (BonoboUIEngine   *engine,
 					g_warning ("non dirty node, but widget mismatch "
 						   "a: '%s:%s', b: '%s:%s' '%p'",
 						   bonobo_ui_node_get_name (a),
-						   bonobo_ui_node_get_attr (a, "name"),
+						   bonobo_ui_node_peek_attr (a, "name"),
 						   bn ? bonobo_ui_node_get_name (bn) : "NULL",
-						   bn ? bonobo_ui_node_get_attr (bn, "name") : "NULL",
+						   bn ? bonobo_ui_node_peek_attr (bn, "name") : "NULL",
 						   info->widget);
 				}
 			}
@@ -2478,7 +2477,7 @@ bonobo_ui_engine_build_control (BonoboUIEngine *engine,
 
 /*	fprintf (stderr, "Type on '%s' '%s' is %d widget %p\n",
 		 bonobo_ui_node_get_name (node),
-		 bonobo_ui_node_get_attr (node, "name"),
+		 bonobo_ui_node_peek_attr (node, "name"),
 		 info->type, info->widget);*/
 
 	return control;

@@ -282,8 +282,8 @@ static void
 dump_internals (BonoboUIXml *tree, BonoboUINode *node)
 {
 	int i;
-	char *txt;
 	BonoboUINode *l;
+	const char *txt;
 	static int indent = -4;
 	BonoboUIXmlData *data = bonobo_ui_xml_get_data (tree, node);
 
@@ -293,9 +293,7 @@ dump_internals (BonoboUIXml *tree, BonoboUINode *node)
 		fprintf (stderr, " ");
 
 	fprintf (stderr, "%10s name=\"%10s\" ", bonobo_ui_node_get_name (node),
-		 (txt = bonobo_ui_node_get_attr (node, "name")) ? txt : "NULL");
-	if (txt)
-		bonobo_ui_node_free_string (txt);
+		 (txt = bonobo_ui_node_peek_attr (node, "name")) ? txt : "NULL");
 
 	fprintf (stderr, "%d len %d", data->dirty,
 		 g_slist_length (data->overridden));
@@ -405,8 +403,8 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 			       signals [REPLACE_OVERRIDE], 0, new, old);
 
 /*		fprintf (stderr, "Replace override of '%s' '%s' with '%s' '%s'",
-			 old->name, bonobo_ui_node_get_attr (old, "name"),
-			 new->name, bonobo_ui_node_get-attr (new, "name"));*/
+			 old->name, bonobo_ui_node_peek_attr (old, "name"),
+			 new->name, bonobo_ui_node_peek_attr (new, "name"));*/
 	}
 
 	old_data->overridden = NULL;
@@ -492,7 +490,7 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 	}
 
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",
-		node->name, bonobo_ui_node_get_attr (node, "name"));*/
+		node->name, bonobo_ui_node_peek_attr (node, "name"));*/
 			
 	bonobo_ui_node_unlink (node);
 	
@@ -847,8 +845,8 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 			b_name = NULL;
 
 /*			printf ("'%s' '%s' with '%s' '%s'\n",
-				a->name, bonobo_ui_node_get_attr (a, "name"),
-				b->name, bonobo_ui_node_get_attr (b, "name"));*/
+				a->name, bonobo_ui_node_peek_attr (a, "name"),
+				b->name, bonobo_ui_node_peek_attr (b, "name"));*/
 			
 			b_name = bonobo_ui_node_get_attr_by_id (b, name_id);
 
@@ -880,8 +878,8 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 		nextb = b->next;
 		
 /*		fprintf (stderr, "Transfering '%s' '%s' into '%s' '%s'\n",
-			 b->name, bonobo_ui_node_get_attr (b, "name"),
-			 current->name, bonobo_ui_node_get_attr (current, "name"));*/
+			 b->name, bonobo_ui_node_peek_attr (b, "name"),
+			 current->name, bonobo_ui_node_peek_attr (current, "name"));*/
 
 		bonobo_ui_node_unlink (b);
 
@@ -949,8 +947,7 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 	{
 		char *txt;
 		fprintf (stderr, "\n\n\nPATH: '%s' '%s\n", current->name,
-			 (txt = bonobo_ui_node_get_attr (current, "name")));
-		bonobo_ui_node_free_string (txt);
+			 bonobo_ui_node_peek_attr (current, "name"));
 	}
 #endif
 

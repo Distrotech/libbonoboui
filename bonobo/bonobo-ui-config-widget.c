@@ -12,6 +12,7 @@
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-ui-util.h>
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-engine-private.h>
 #include <bonobo/bonobo-ui-config-widget.h>
 #include <bonobo/bonobo-ui-sync-toolbar.h>
@@ -64,14 +65,12 @@ select_child_cb (GtkList	      *list,
 	gtk_widget_set_sensitive (config->priv->right_attrs, node != NULL);
 
 	if (node) {
-		char    *txt;
-		gboolean hidden = FALSE;
-		gboolean tooltips = TRUE;
+		const char *txt;
+		gboolean    hidden = FALSE;
+		gboolean    tooltips = TRUE;
 
-		if ((txt = bonobo_ui_node_get_attr (node, "hidden"))) {
+		if ((txt = bonobo_ui_node_peek_attr (node, "hidden")))
 			hidden = atoi (txt);
-			bonobo_ui_node_free_string (txt);
-		}
 
 		if (hidden)
 			gtk_toggle_button_set_active (
@@ -82,10 +81,8 @@ select_child_cb (GtkList	      *list,
 				GTK_TOGGLE_BUTTON (config->priv->show),
 				TRUE);
 
-		if ((txt = bonobo_ui_node_get_attr (node, "tips"))) {
+		if ((txt = bonobo_ui_node_peek_attr (node, "tips")))
 			tooltips = atoi (txt);
-			bonobo_ui_node_free_string (txt);
-		}
 		
 		gtk_toggle_button_set_active (
 			GTK_TOGGLE_BUTTON (config->priv->tooltips),
@@ -112,10 +109,10 @@ populate_list (GtkWidget            *list,
 	     l = bonobo_ui_node_next (l)) {
 
 		if (bonobo_ui_node_has_name (l, "dockitem")) {
-			char *name;
+			const char *name;
 
-			if ((name = bonobo_ui_node_get_attr (l, "tip")) ||
-			    (name = bonobo_ui_node_get_attr (l, "name"))) {
+			if ((name = bonobo_ui_node_peek_attr (l, "tip")) ||
+			    (name = bonobo_ui_node_peek_attr (l, "name"))) {
 
 				GtkWidget *w = gtk_list_item_new_with_label (name);
 				char      *path = bonobo_ui_xml_make_path (l);
@@ -127,8 +124,6 @@ populate_list (GtkWidget            *list,
 
 				gtk_widget_show (w);
 				items = g_list_prepend (items, w);
-
-				bonobo_ui_node_free_string (name);
 			}
 		}
 	}
@@ -203,7 +198,7 @@ set_values (BonoboUIConfigWidget *config)
 {
 	BonoboUIToolbarStyle style;
 	BonoboUINode *node;
-	char *value;
+	const char *value;
 
 	g_return_if_fail (config->priv->cur_path != NULL);
 
@@ -229,11 +224,11 @@ set_values (BonoboUIConfigWidget *config)
 	}
 	
 	/* Set the tooltips */
-	value = bonobo_ui_node_get_attr (node, "tips");
-	if (value != NULL) {
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->tooltips), atoi (value));
-		bonobo_ui_node_free_string (value);
-	}
+	value = bonobo_ui_node_peek_attr (node, "tips");
+	if (value)
+		gtk_toggle_button_set_active (
+			GTK_TOGGLE_BUTTON (config->priv->tooltips),
+			atoi (value));
 }
 
 static void

@@ -13,6 +13,7 @@
 #include <gtk/gtkmisc.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <bonobo/bonobo-ui-node.h>
+#include <bonobo/bonobo-ui-node-private.h>
 
 #undef DEBUG_UI
 

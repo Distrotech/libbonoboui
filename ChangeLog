@@ -1,5 +1,10 @@
 2001-12-20  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/*.c: use bonobo_ui_node_peek_attr to save doing
+	lots of wasteful malloc / frees all over the shop.
+
+2001-12-20  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-util.c
 	(bonobo_ui_util_xml_get_pixbuf): stub.
 

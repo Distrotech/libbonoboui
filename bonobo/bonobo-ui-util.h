@@ -61,7 +61,7 @@ void            bonobo_ui_util_set_pixbuf   (BonoboUIComponent *component,
 gchar          *bonobo_ui_util_accel_name   (guint              accelerator_key,
 					     GdkModifierType    accelerator_mods);
 
-void            bonobo_ui_util_accel_parse  (char              *name,
+void            bonobo_ui_util_accel_parse  (const char        *name,
 					     guint             *accelerator_key,
 					     GdkModifierType   *accelerator_mods);
 

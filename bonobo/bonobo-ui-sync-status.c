@@ -21,6 +21,7 @@
 #include <bonobo/bonobo-ui-sync.h>
 #include <bonobo/bonobo-ui-sync-status.h>
 #include <bonobo/bonobo-ui-preferences.h>
+#include <bonobo/bonobo-ui-private.h>
 
 #include <bonobo/bonobo-ui-toolbar-separator-item.h>
 
@@ -66,10 +67,10 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 				  GtkWidget        *widget,
 				  GtkWidget        *parent)
 {
-	char             *name;
+	const char         *name;
 	BonoboUISyncStatus *msync = BONOBO_UI_SYNC_STATUS (sync);
 		
-	name = bonobo_ui_node_get_attr (node, "name");
+	name = bonobo_ui_node_peek_attr (node, "name");
 	if (!name)
 		return;
 
@@ -96,8 +97,6 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 			bonobo_ui_node_free_string (txt);
 		}
 	}
-
-	bonobo_ui_node_free_string (name);
 }
 
 static void
@@ -127,11 +126,11 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 				  int              *pos,
 				  GtkWidget        *parent)
 {
-	char *name;
+	const char *name;
 	GtkWidget *widget = NULL;
 	BonoboUISyncStatus *msync = BONOBO_UI_SYNC_STATUS (sync);
 		
-	name = bonobo_ui_node_get_attr (node, "name");
+	name = bonobo_ui_node_peek_attr (node, "name");
 	if (!name)
 		return NULL;
 
@@ -166,7 +165,6 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 			gtk_box_pack_end (GTK_BOX (parent), widget,
 					  FALSE, FALSE, 0);
 	}
-	bonobo_ui_node_free_string (name);
 
 	if (widget)
 		gtk_box_reorder_child (msync->status, widget, (*pos)++);

@@ -16,6 +16,7 @@
 
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-ui-util.h>
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
 #include <bonobo/bonobo-ui-config-widget.h>
 #include <bonobo/bonobo-ui-engine-config.h>
@@ -140,13 +141,12 @@ bonobo_ui_engine_config_add (BonoboUIEngineConfig *config,
 	clobber_add (config, path, attr, value);
 
 	if ((node = bonobo_ui_xml_get_path (config->priv->tree, path))) {
-		char *existing;
-		gboolean set = TRUE;
+		const char *existing;
+		gboolean    set = TRUE;
 
-		if ((existing = bonobo_ui_node_get_attr (node, attr))) {
+		if ((existing = bonobo_ui_node_peek_attr (node, attr))) {
 			if (!strcmp (existing, value))
 				set = FALSE;
-			bonobo_ui_node_free_string (existing);
 		}
 
 		if (set) {

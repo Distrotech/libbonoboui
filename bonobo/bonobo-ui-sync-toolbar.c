@@ -23,6 +23,7 @@
 #include <bonobo/bonobo-ui-sync.h>
 #include <bonobo/bonobo-ui-sync-toolbar.h>
 #include <bonobo/bonobo-ui-preferences.h>
+#include <bonobo/bonobo-ui-private.h>
 
 #include <bonobo/bonobo-ui-toolbar.h>
 #include <bonobo/bonobo-ui-toolbar-button-item.h>
@@ -39,20 +40,15 @@ static GtkWidget *
 cmd_get_toolbar_image (BonoboUINode     *node,
 		       BonoboUINode     *cmd_node)
 {
-	GtkWidget *image;
-	char      *type;
+	const char *type;
 
-	if ((type = bonobo_ui_node_get_attr (node, "pixtype"))) {
-		image = bonobo_ui_util_xml_get_icon_widget (node, GTK_ICON_SIZE_SMALL_TOOLBAR);
-		bonobo_ui_node_free_string (type);
-		return image;
-	}
+	if ((type = bonobo_ui_node_peek_attr (node, "pixtype")))
+		return bonobo_ui_util_xml_get_icon_widget (
+			node, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
-	if ((type = bonobo_ui_node_get_attr (cmd_node, "pixtype"))) {
-		image = bonobo_ui_util_xml_get_icon_widget (cmd_node, GTK_ICON_SIZE_SMALL_TOOLBAR);
-		bonobo_ui_node_free_string (type);
-		return image;
-	}
+	if ((type = bonobo_ui_node_peek_attr (cmd_node, "pixtype")))
+		return bonobo_ui_util_xml_get_icon_widget (
+			cmd_node, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 	return NULL;
 }
@@ -149,16 +145,14 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	bonobo_ui_node_free_string (label);
 
 	if (bonobo_ui_node_has_name (node, "control")) {
-		char *txt;
+		const char *txt;
 		BonoboUIToolbarControlDisplay hdisp, vdisp;
 		
-		txt = bonobo_ui_node_get_attr (node, "hdisplay");
+		txt = bonobo_ui_node_peek_attr (node, "hdisplay");
 		hdisp = decode_control_disp (txt);
-		bonobo_ui_node_free_string (txt);
 
-		txt = bonobo_ui_node_get_attr (node, "vdisplay");
+		txt = bonobo_ui_node_peek_attr (node, "vdisplay");
 		vdisp = decode_control_disp (txt);
-		bonobo_ui_node_free_string (txt);
 
 		bonobo_ui_toolbar_control_item_set_display (
 			BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget), hdisp, vdisp);
@@ -397,12 +391,11 @@ static GList *
 impl_bonobo_ui_sync_toolbar_get_widgets (BonoboUISync *sync,
 					 BonoboUINode *node)
 {
-	char          *dockname;
+	const char     *dockname;
 	BonoboDockItem *item;
 
-	dockname = bonobo_ui_node_get_attr (node, "name");
+	dockname = bonobo_ui_node_peek_attr (node, "name");
 	item = get_dock_item (BONOBO_UI_SYNC_TOOLBAR (sync), dockname);
-	bonobo_ui_node_free_string (dockname);
 
 	if (!item) {
 		g_warning ("Serious internal error building toolbar");
@@ -473,27 +466,25 @@ BonoboUIToolbarStyle
 bonobo_ui_sync_toolbar_get_look (BonoboUIEngine *engine,
 				 BonoboUINode   *node)
 {
-	char      *txt;
+	const char *txt;
 	BonoboUIToolbarStyle look;
 
-	if ((txt = bonobo_ui_node_get_attr (node, "look")))
+	if ((txt = bonobo_ui_node_peek_attr (node, "look")))
 		look = parse_look (txt);
 
 	else {
-		GtkWidget           *widget;
+		GtkWidget *widget;
 
 		widget = bonobo_ui_engine_node_get_widget (engine, node);
 
 		if (!widget || !BONOBO_IS_UI_TOOLBAR (widget) ||
 		    bonobo_ui_toolbar_get_orientation (BONOBO_UI_TOOLBAR (widget)) ==
 		    GTK_ORIENTATION_HORIZONTAL) {
-			txt = bonobo_ui_node_get_attr (node, "hlook");
+			txt = bonobo_ui_node_peek_attr (node, "hlook");
 			look = parse_look (txt);
-			bonobo_ui_node_free_string (txt);
 		} else {
-			txt = bonobo_ui_node_get_attr (node, "vlook");
+			txt = bonobo_ui_node_peek_attr (node, "vlook");
 			look = parse_look (txt);
-			bonobo_ui_node_free_string (txt);
 		}
 	}		
 	
@@ -505,20 +496,19 @@ do_config_popup (BonoboUIEngineConfig *config,
 		 BonoboUINode         *config_node,
 		 BonoboUIEngine       *popup_engine)
 {
-	char *txt;
+	char *ret;
 	gboolean tip;
+	const char *txt;
 	BonoboUIToolbarStyle style;
 	
 	tip = TRUE;
-	if ((txt = bonobo_ui_node_get_attr (config_node, "tips"))) {
+	if ((txt = bonobo_ui_node_peek_attr (config_node, "tips")))
 		tip = atoi (txt);
-		bonobo_ui_node_free_string (txt);
-	}
 
 	style = bonobo_ui_sync_toolbar_get_look (bonobo_ui_engine_config_get_engine (config),
 						 config_node);
 
-	txt = g_strdup_printf (
+	ret = g_strdup_printf (
 		"<Root>"
 		"<commands>"
 		"<cmd name=\"LookBoth\" state=\"%d\"/>"
@@ -551,7 +541,7 @@ do_config_popup (BonoboUIEngineConfig *config,
 		_("_Hide toolbar"), _("Customi_ze"),
 		_("Customize the toolbar"));
 
-	return txt;
+	return ret;
 }
 
 static void
@@ -561,13 +551,13 @@ config_verb_fn (BonoboUIEngineConfig *config,
 		BonoboUIEngine       *popup_engine,
 		BonoboUINode         *popup_node)
 {
-	char *verb;
+	const char *verb;
 	gboolean changed = TRUE;
 
-	if ((verb = bonobo_ui_node_get_attr (popup_node, "verb"))) {
-		char *set;
+	if ((verb = bonobo_ui_node_peek_attr (popup_node, "verb"))) {
+		const char *set;
 
-		set = bonobo_ui_node_get_attr (popup_node, "set");
+		set = bonobo_ui_node_peek_attr (popup_node, "set");
 
 		if (!strcmp (verb, "Hide"))
 			bonobo_ui_engine_config_add (
@@ -594,9 +584,6 @@ config_verb_fn (BonoboUIEngineConfig *config,
 
 		} else
 			g_warning ("Unknown verb '%s'", verb);
-
-		bonobo_ui_node_free_string (verb);
-		bonobo_ui_node_free_string (set);
 	}
 
 
@@ -611,8 +598,8 @@ create_dockitem (BonoboUISyncToolbar *sync,
 {
 	BonoboDockItem *item;
 	BonoboDockItemBehavior beh = 0;
-	char *prop;
-	char **behavior_array;
+	const char *prop;
+	char      **behavior_array;
 	gboolean force_detachable = FALSE;
 	BonoboDockPlacement placement = BONOBO_DOCK_TOP;
 	gint band_num = 1;
@@ -622,15 +609,13 @@ create_dockitem (BonoboUISyncToolbar *sync,
 	gboolean can_config = TRUE;
 	BonoboUIToolbar *toolbar;
 
-	if ((prop = bonobo_ui_node_get_attr (node, "behavior"))) {
+	if ((prop = bonobo_ui_node_peek_attr (node, "behavior"))) {
 		if (!strcmp (prop, "detachable"))
 			force_detachable = TRUE;
-		bonobo_ui_node_free_string (prop);
 	}
 
-	if ((prop = bonobo_ui_node_get_attr (node, "behavior"))) {
+	if ((prop = bonobo_ui_node_peek_attr (node, "behavior"))) {
 		behavior_array = g_strsplit (prop, ",", -1);
-		bonobo_ui_node_free_string (prop);
 	
 		if (string_array_contains (behavior_array, "detachable"))
 			force_detachable = TRUE;
@@ -663,7 +648,7 @@ create_dockitem (BonoboUISyncToolbar *sync,
 
 	gtk_container_set_border_width (GTK_CONTAINER (item), 2);
 
-	if ((prop = bonobo_ui_node_get_attr (node, "placement"))) {
+	if ((prop = bonobo_ui_node_peek_attr (node, "placement"))) {
 		if (!strcmp (prop, "top"))
 			placement = BONOBO_DOCK_TOP;
 		else if (!strcmp (prop, "right"))
@@ -674,32 +659,23 @@ create_dockitem (BonoboUISyncToolbar *sync,
 			placement = BONOBO_DOCK_LEFT;
 		else if (!strcmp (prop, "floating"))
 			placement = BONOBO_DOCK_FLOATING;
-		bonobo_ui_node_free_string (prop);
 	}
 
-	if ((prop = bonobo_ui_node_get_attr (node, "band_num"))) {
+	if ((prop = bonobo_ui_node_peek_attr (node, "band_num")))
 		band_num = atoi (prop);
-		bonobo_ui_node_free_string (prop);
-	}
 
-	if ((prop = bonobo_ui_node_get_attr (node, "position"))) {
+	if ((prop = bonobo_ui_node_peek_attr (node, "position")))
 		position = atoi (prop);
-		bonobo_ui_node_free_string (prop);
-	}
 
-	if ((prop = bonobo_ui_node_get_attr (node, "offset"))) {
+	if ((prop = bonobo_ui_node_peek_attr (node, "offset")))
 		offset = atoi (prop);
-		bonobo_ui_node_free_string (prop);
-	}
 
-	if ((prop = bonobo_ui_node_get_attr (node, "in_new_band"))) {
+	if ((prop = bonobo_ui_node_peek_attr (node, "in_new_band")))
 		in_new_band = atoi (prop);
-		bonobo_ui_node_free_string (prop);
-	}	
 
 	bonobo_dock_add_item (sync->dock, item,
-			     placement, band_num,
-			     position, offset, in_new_band);
+			      placement, band_num,
+			      position, offset, in_new_band);
 
 		
 	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
@@ -708,10 +684,9 @@ create_dockitem (BonoboUISyncToolbar *sync,
 			   GTK_WIDGET (toolbar));
 	gtk_widget_show (GTK_WIDGET (toolbar));
 
-	if ((prop = bonobo_ui_node_get_attr (node, "config"))) {
+	if ((prop = bonobo_ui_node_peek_attr (node, "config")))
 		can_config = atoi (prop);
-		bonobo_ui_node_free_string (prop);
-	} else
+	else
 		can_config = TRUE;
 
 	if (can_config) {
@@ -736,9 +711,9 @@ static void
 impl_bonobo_ui_sync_toolbar_remove_root (BonoboUISync *sync,
 					 BonoboUINode *node)
 {
-	char *name = bonobo_ui_node_get_attr (node, "name");
+	const char *name;
 
-	if (name) {
+	if ((name = bonobo_ui_node_get_attr (node, "name"))) {
 		BonoboDockItem *item;
 
 		item = get_dock_item (BONOBO_UI_SYNC_TOOLBAR (sync), name);
@@ -746,20 +721,20 @@ impl_bonobo_ui_sync_toolbar_remove_root (BonoboUISync *sync,
 		if (item)
 			gtk_widget_destroy (GTK_WIDGET (item));
 	}
-
-	bonobo_ui_node_free_string (name);
 }
 
 static void
 impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 					 BonoboUINode *node)
 {
-	char          *txt;
-	char          *dockname = bonobo_ui_node_get_attr (node, "name");
-	gboolean       tooltips;
+	const char *txt;
+	const char *dockname;
+	gboolean    tooltips;
 	BonoboDockItem *item;
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarStyle look;
+
+	dockname = bonobo_ui_node_get_attr (node, "name");
 
 	g_return_if_fail (dockname != NULL);
 
@@ -773,21 +748,18 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 
 	bonobo_ui_engine_stamp_root (sync->engine, node, GTK_WIDGET (toolbar));
 
-	if ((txt = bonobo_ui_node_get_attr (node, "look"))) {
+	if ((txt = bonobo_ui_node_peek_attr (node, "look"))) {
 		look = parse_look (txt);
 		bonobo_ui_toolbar_set_hv_styles (toolbar, look, look);
-		bonobo_ui_node_free_string (txt);
 
 	} else {
 		BonoboUIToolbarStyle vlook, hlook;
 
-		txt = bonobo_ui_node_get_attr (node, "hlook");
+		txt = bonobo_ui_node_peek_attr (node, "hlook");
 		hlook = parse_look (txt);
-		bonobo_ui_node_free_string (txt);
 
-		txt = bonobo_ui_node_get_attr (node, "vlook");
+		txt = bonobo_ui_node_peek_attr (node, "vlook");
 		vlook = parse_look (txt);
-		bonobo_ui_node_free_string (txt);
 
 		bonobo_ui_toolbar_set_hv_styles (toolbar, hlook, vlook);
 	}		
@@ -809,11 +781,11 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 	}
 #endif
 
-	tooltips = TRUE;
-	if ((txt = bonobo_ui_node_get_attr (node, "tips"))) {
+	if ((txt = bonobo_ui_node_peek_attr (node, "tips")))
 		tooltips = atoi (txt);
-		bonobo_ui_node_free_string (txt);
-	}
+	else
+		tooltips = TRUE;
+
 	bonobo_ui_toolbar_show_tooltips (toolbar, tooltips);
 
        /*
@@ -824,8 +796,6 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 	if (bonobo_ui_sync_do_show_hide (sync, node, NULL, GTK_WIDGET (item)))
 		gtk_widget_queue_resize (GTK_WIDGET (
 			BONOBO_UI_SYNC_TOOLBAR (sync)->dock));
-
-	bonobo_ui_node_free_string (dockname);
 }
 
 static gboolean
