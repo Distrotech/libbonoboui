@@ -492,6 +492,22 @@ bonobo_control_new (GtkWidget *widget)
 }
 
 /**
+ * bonobo_control_get_widget:
+ * @control: a BonoboControl
+ *
+ * Returns the GtkWidget associated with a BonoboControl.
+ *
+ * Return value: the BonoboControl's widget
+ **/
+GtkWidget *
+bonobo_control_get_widget (BonoboControl *control)
+{
+	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
+
+	return control->priv->widget;
+}
+
+/**
  * bonobo_control_set_automerge:
  * @control: A #BonoboControl.
  * @automerge: Whether or not menus and toolbars should be

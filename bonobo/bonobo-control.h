@@ -41,6 +41,7 @@ struct _BonoboControlClass {
 
 /* The main API */
 BonoboControl              *bonobo_control_new                     (GtkWidget     *widget);
+GtkWidget                  *bonobo_control_get_widget              (BonoboControl *control);
 void                        bonobo_control_set_automerge           (BonoboControl *control,
 								    gboolean       automerge);
 gboolean                    bonobo_control_get_automerge           (BonoboControl *control);
