@@ -165,6 +165,7 @@ bonobo_control_frame_autoactivate_focus_out (GtkWidget     *widget,
 	return FALSE;
 }
 
+
 static void
 bonobo_control_frame_socket_state_changed (GtkWidget    *socket,
 					   GtkStateType  previous_state,
@@ -179,6 +180,16 @@ bonobo_control_frame_socket_state_changed (GtkWidget    *socket,
 		control_frame,
 		GTK_WIDGET_STATE (control_frame->priv->socket));
 }
+
+
+static void
+bonobo_control_frame_socket_destroy (GtkWidget          *socket,
+				     BonoboControlFrame *control_frame)
+{
+	gtk_widget_unref (control_frame->priv->socket);
+	control_frame->priv->socket = NULL;
+}
+
 
 static void
 bonobo_control_frame_set_remote_window (GtkWidget          *socket,
@@ -214,6 +225,70 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 	CORBA_exception_free (&ev);
 }
 
+static void
+bonobo_control_frame_create_socket (BonoboControlFrame  *control_frame)
+{
+	/*
+	 * Now create the GtkSocket which will be used to embed
+	 * the Control.
+	 */
+	control_frame->priv->socket = bonobo_socket_new ();
+	gtk_widget_show (control_frame->priv->socket);
+
+	/*
+	 * Connect to the focus events on the socket so
+	 * that we can provide the autoactivation feature.
+	 */
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
+			    "focus_in_event",
+			    GTK_SIGNAL_FUNC (bonobo_control_frame_autoactivate_focus_in),
+			    control_frame);
+
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
+			    "focus_out_event",
+			    GTK_SIGNAL_FUNC (bonobo_control_frame_autoactivate_focus_out),
+			    control_frame);
+
+	/*
+	 * Setup a handler to proxy state changes.
+	 */
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
+			    "state_changed",
+			    bonobo_control_frame_socket_state_changed,
+			    control_frame);
+
+	/*
+	 * Setup a handler for socket destroy.
+	 */
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
+			    "destroy",
+			    bonobo_control_frame_socket_destroy,
+			    control_frame);
+
+	/*
+	 * Ref the socket so we can handle the case of the control destroying it for bypass.
+	 */
+	gtk_object_ref (GTK_OBJECT (control_frame->priv->socket));
+
+
+	/*
+	 * Pack into the hack box
+	 */
+	gtk_box_pack_start (GTK_BOX (control_frame->priv->container),
+			    control_frame->priv->socket,
+			    TRUE, TRUE, 0);
+
+	/*
+	 * When the socket is realized, we pass its Window ID to our
+	 * Control.
+	 */
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
+			    "realize",
+			    GTK_SIGNAL_FUNC (bonobo_control_frame_set_remote_window),
+			    control_frame);
+}
+				
+
 /**
  * bonobo_control_frame_construct:
  * @control_frame: The #BonoboControlFrame object to be initialized.
@@ -247,56 +322,17 @@ bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 	control_frame->priv->ui_container = ui_container;
 
 	/*
-	 * Now create the GtkSocket which will be used to embed
-	 * the Control.
-	 */
-	control_frame->priv->socket = bonobo_socket_new ();
-	gtk_widget_show (control_frame->priv->socket);
-
-	/*
-	 * Connect to the focus events on the socket so
-	 * that we can provide the autoactivation feature.
-	 */
-	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
-			    "focus_in_event",
-			    GTK_SIGNAL_FUNC (bonobo_control_frame_autoactivate_focus_in),
-			    control_frame);
-
-	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
-			    "focus_out_event",
-			    GTK_SIGNAL_FUNC (bonobo_control_frame_autoactivate_focus_out),
-			    control_frame);
-
-	/*
-	 * Setup a handler to proxy state changes.
-	 */
-	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
-			    "state_changed",
-			    bonobo_control_frame_socket_state_changed,
-			    control_frame);
-
-	/*
 	 * Finally, create a box to hold the socket; this no-window
 	 * container is needed solely for the sake of bypassing
 	 * plug/socket in the local case.
 	 */
 	control_frame->priv->container = gtk_hbox_new (FALSE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (control_frame->priv->container), 0);
-	gtk_box_pack_end (GTK_BOX (control_frame->priv->container),
-			  control_frame->priv->socket,
-			  TRUE, TRUE, 0);
 	gtk_widget_ref (control_frame->priv->container);
 	gtk_object_sink (GTK_OBJECT (control_frame->priv->container));
 	gtk_widget_show (control_frame->priv->container);
 
-	/*
-	 * When the socket is realized, we pass its Window ID to our
-	 * Control.
-	 */
-	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
-			    "realize",
-			    GTK_SIGNAL_FUNC (bonobo_control_frame_set_remote_window),
-			    control_frame);
+	bonobo_control_frame_create_socket (control_frame);
 
 	return control_frame;
 }
@@ -708,10 +744,17 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);
 
+	/* 
+	 * Re-create the socket if it got destroyed by the Control before.
+	 */
+	if (control_frame->priv->socket == NULL) 
+		bonobo_control_frame_create_socket (control_frame);
+
 	/*
 	 * If the socket is realized, then we transfer the
 	 * window ID to the remote control.
 	 */
+
 	if (GTK_WIDGET_REALIZED (control_frame->priv->socket))
 		bonobo_control_frame_set_remote_window (control_frame->priv->socket,
 							control_frame);

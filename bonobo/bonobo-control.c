@@ -38,8 +38,10 @@ struct _BonoboControlPrivate {
 	gboolean                    active;
 
 	GtkWidget                  *plug;
+	GtkWidget                  *socket;
 	gboolean                    is_local;
 	gboolean                    xid_received;
+	guint                       destroy_idle_id;
 			
 	BonoboUIComponent          *ui_component;
 	gboolean                    automerge;
@@ -238,6 +240,28 @@ bonobo_gtk_widget_from_x11_id (guint32 xid)
 	}
 }
 
+static gboolean
+idle_destroy_socket (BonoboControl *control)
+{
+	control->priv->destroy_idle_id = 0;
+
+	gtk_widget_destroy (control->priv->socket);
+
+	return FALSE;
+}
+
+
+static void
+remove_destroy_idle (GtkWidget *socket,
+		     BonoboControl *control)
+{
+	if (control->priv->destroy_idle_id != 0) {
+		gtk_idle_remove (control->priv->destroy_idle_id);
+	}
+
+	control->priv->destroy_idle_id = 0;
+}
+
 static void
 impl_Bonobo_Control_set_window (PortableServer_Servant   servant,
 				Bonobo_Control_windowid  id,
@@ -301,6 +325,15 @@ impl_Bonobo_Control_set_window (PortableServer_Servant   servant,
 
 		socket_parent = local_socket->parent;
 		gtk_widget_hide (local_socket);
+
+		control->priv->socket = local_socket;
+		control->priv->destroy_idle_id = gtk_idle_add (idle_destroy_socket, control);
+
+		gtk_signal_connect (GTK_OBJECT (local_socket),
+				    "destroy",
+				    remove_destroy_idle,
+				    control);
+
 
 		gtk_box_pack_end (GTK_BOX (socket_parent),
 				  control->priv->widget,
@@ -539,6 +572,11 @@ bonobo_control_destroy (GtkObject *object)
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
+
+	if (control->priv->destroy_idle_id != 0) {
+		gtk_idle_remove (control->priv->destroy_idle_id);
+	}
+	control->priv->destroy_idle_id = 0;
 
 	if (control->priv->active)
 		Bonobo_ControlFrame_activated (control->priv->control_frame,
