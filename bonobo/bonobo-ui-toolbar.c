@@ -1102,7 +1102,6 @@ bonobo_ui_toolbar_class_init (BonoboUIToolbarClass *toolbar_class)
 	widget_class->map           = impl_map;
 	widget_class->unmap         = impl_unmap;
 	widget_class->expose_event  = impl_expose_event;
-	widget_class->focus         = bonobo_widget_clobber_focus;
 
 	container_class = GTK_CONTAINER_CLASS (toolbar_class);
 	container_class->remove = impl_remove;

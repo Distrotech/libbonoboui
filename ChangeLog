@@ -1,3 +1,20 @@
+2003-05-12  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar.c
+	(bonobo_ui_toolbar_class_init): bin clobber_focus.
+
+	* bonobo/bonobo-ui-toolbar-item.c
+	(bonobo_ui_toolbar_item_class_init): bin clobber_focus
+
+	* bonobo/bonobo-dock-item.c
+	(bonobo_gtk_container_focus_move): bin this.
+	(bonobo_widget_clobber_focus): bin this too.
+	(bonobo_dock_item_class_init): upd. #78220
+
+2003-05-06  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: bump version to 2.3.1
+
 2003-05-29  Jody Goldberg <jody@gnome.org>
 
 	* bonobo/bonobo-dock-item.c (bonobo_dock_item_size_allocate) : respect

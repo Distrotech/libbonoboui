@@ -194,80 +194,6 @@ get_preferred_height (BonoboDockItem *dock_item)
   return preferred_height;
 }
 
-static gboolean
-bonobo_gtk_container_focus_move (GtkContainer     *container,
-				 GList            *children,
-				 GtkDirectionType  direction)
-{
-  GtkWidget *focus_child;
-  GtkWidget *child;
-
-  focus_child = container->focus_child;
-
-  while (children)
-    {
-      child = children->data;
-      children = children->next;
-
-      if (!child)
-	continue;
-      
-      if (focus_child)
-        {
-          if (focus_child == child)
-            {
-              focus_child = NULL;
-
-		if (gtk_widget_child_focus (child, direction))
-		  return TRUE;
-            }
-        }
-      else if (GTK_WIDGET_DRAWABLE (child) &&
-               gtk_widget_is_ancestor (child, GTK_WIDGET (container)))
-        {
-          if (gtk_widget_child_focus (child, direction))
-            return TRUE;
-        }
-    }
-
-  return FALSE;
-}
-
-/*
- * FIXME: this is a hack because in un-docked toolbars
- * bad things happen if we traverse up the GdkWindow
- * hierarchy doing dumb things like GtkContainer does.
- */
-gboolean
-bonobo_widget_clobber_focus (GtkWidget        *widget,
-			     GtkDirectionType  direction)
-{
-  gboolean has_focus_chain;
-  GList *focus_chain = NULL;
-  GList *children = NULL;
-  gboolean return_val = FALSE;
-  GtkContainer *container;
-
-  container = GTK_CONTAINER (widget);
-
-  has_focus_chain = gtk_container_get_focus_chain (
-	  container, &focus_chain);
-
-  if (has_focus_chain)
-    children = g_list_copy (focus_chain);
-  else
-    children = gtk_container_get_children (container);
-
-  if (direction == GTK_DIR_TAB_BACKWARD || direction == GTK_DIR_LEFT)
-    children = g_list_reverse (children);
-
-  return_val = bonobo_gtk_container_focus_move (container, children, direction);
-
-  g_list_free (children);
-
-  return return_val;
-}
-
 static void
 bonobo_dock_item_class_init (BonoboDockItemClass *class)
 {
@@ -374,7 +300,6 @@ bonobo_dock_item_class_init (BonoboDockItemClass *class)
 
   widget_class->map = bonobo_dock_item_map;
   widget_class->unmap = bonobo_dock_item_unmap;
-  widget_class->focus = bonobo_widget_clobber_focus;
   widget_class->realize = bonobo_dock_item_realize;
   widget_class->unrealize = bonobo_dock_item_unrealize;
   widget_class->style_set = bonobo_dock_item_style_set;

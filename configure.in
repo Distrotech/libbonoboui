@@ -1,7 +1,7 @@
 AC_INIT(bonobo/bonobo-ui-engine.h)
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(libbonoboui, 2.2.0)
+AM_INIT_AUTOMAKE(libbonoboui, 2.3.1)
 
 AM_MAINTAINER_MODE
 
@@ -108,13 +108,7 @@ AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
 # glib-mkenums
 AC_PATH_PROG(GLIB_MKENUMS, glib-mkenums)
 
-dnl **************************
-dnl *** Checks for gtk-doc ***
-dnl **************************
-
 GTK_DOC_CHECK([1.0])
-
-
 
 AC_OUTPUT([
 Makefile
