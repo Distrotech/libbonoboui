@@ -443,10 +443,10 @@ bonobo_ui_node_from_string (const char *xml)
 
 	xmlUnlinkNode (XML_NODE (node));
 	doc->xmlRootNode = NULL;
-	
-	xmlFreeDoc (doc);
 
 	bonobo_ui_node_strip (&node);
+	
+	xmlFreeDoc (doc);
 
 	g_assert (XML_NODE (node)->parent == NULL);
 
@@ -478,7 +478,11 @@ bonobo_ui_node_from_file (const char *fname)
 
 	node = BNODE (doc->xmlRootNode);
 
+	xmlUnlinkNode (XML_NODE (node));
 	doc->xmlRootNode = NULL;
+
+	bonobo_ui_node_strip (&node);
+
 	xmlFreeDoc (doc);
 
 	return node;
