@@ -112,7 +112,19 @@ bonobo_widget_launch_component (const char *moniker,
  * Control support for BonoboWidget.
  *
  */
-static BonoboWidget *
+/**
+ * bonobo_widget_construct_control_from_objref:
+ * @bw: A BonoboWidget to construct
+ * @control: A CORBA Object reference to an IDL:Bonobo/Control:1.0
+ * @uic: Bonobo_UIContainer for the launched object.
+ *
+ * This is a constructor function.  Only usable for wrapping and
+ * derivation of new objects.  For normal use, please refer to
+ * #bonobo_widget_new_control_from_objref.
+ *
+ * Returns: A #BonoboWidget (the @bw)
+ */
+BonoboWidget *
 bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 					     Bonobo_Control     control,
 					     Bonobo_UIContainer uic)
@@ -152,7 +164,23 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 	return bw;
 }
 
-static BonoboWidget *
+/**
+ * bonobo_widget_construct_control:
+ * @bw: A BonoboWidget to construct
+ * @moniker: A Moniker describing the object to be activated 
+ * @uic: Bonobo_UIContainer for the launched object.
+ *
+ * This is a constructor function.  Only usable for wrapping and
+ * derivation of new objects.  For normal use, please refer to
+ * #bonobo_widget_new_control.
+ *
+ * This function will unref the passed in @bw in case it cannot launch
+ * the component and return %NULL in such a case.  Otherwise it returns
+ * the @bw itself.
+ *
+ * Returns: A #BonoboWidget or %NULL
+ */
+BonoboWidget *
 bonobo_widget_construct_control (BonoboWidget      *bw,
 				 const char        *moniker,
 				 Bonobo_UIContainer uic)

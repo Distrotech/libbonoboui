@@ -227,7 +227,7 @@ bonobo_ui_component_remove_verb (BonoboUIComponent  *component,
 {
 	RemoveInfo info;
 
-	memset (&info, sizeof (info), 0);
+	memset (&info, 0, sizeof (info));
 
 	info.by_name = TRUE;
 	info.name = cname;
@@ -241,7 +241,7 @@ bonobo_ui_component_remove_verb_by_func (BonoboUIComponent  *component,
 {
 	RemoveInfo info;
 
-	memset (&info, sizeof (info), 0);
+	memset (&info, 0, sizeof (info));
 
 	info.by_func = TRUE;
 	info.func = (gpointer) fn;
@@ -255,7 +255,7 @@ bonobo_ui_component_remove_verb_by_data (BonoboUIComponent  *component,
 {
 	RemoveInfo info;
 
-	memset (&info, sizeof (info), 0);
+	memset (&info, 0, sizeof (info));
 
 	info.by_data = TRUE;
 	info.user_data = user_data;
@@ -332,7 +332,7 @@ bonobo_ui_component_remove_listener (BonoboUIComponent  *component,
 {
 	RemoveInfo info;
 
-	memset (&info, sizeof (info), 0);
+	memset (&info, 0, sizeof (info));
 
 	info.by_name = TRUE;
 	info.name = cname;
@@ -346,7 +346,7 @@ bonobo_ui_component_remove_listener_by_func (BonoboUIComponent  *component,
 {
 	RemoveInfo info;
 
-	memset (&info, sizeof (info), 0);
+	memset (&info, 0, sizeof (info));
 
 	info.by_func = TRUE;
 	info.func = (gpointer) fn;
@@ -360,7 +360,7 @@ bonobo_ui_component_remove_listener_by_data (BonoboUIComponent  *component,
 {
 	RemoveInfo info;
 
-	memset (&info, sizeof (info), 0);
+	memset (&info, 0, sizeof (info));
 
 	info.by_data = TRUE;
 	info.user_data = user_data;

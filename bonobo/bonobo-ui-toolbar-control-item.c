@@ -217,7 +217,7 @@ proxy_activate_cb (GtkWidget *button, GtkObject *item)
 	gtk_signal_emit_by_name (item, "activate");
 }
 
-static GtkWidget *
+GtkWidget *
 bonobo_ui_toolbar_control_item_construct (
         BonoboUIToolbarControlItem *control_item,
         Bonobo_Control              control_ref)

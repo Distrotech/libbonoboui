@@ -55,6 +55,16 @@ GtkWidget          *bonobo_widget_new_control_from_objref  (Bonobo_Control     c
 BonoboControlFrame *bonobo_widget_get_control_frame        (BonoboWidget      *bw);
 
 /*
+ * Constructors (for derivation and wrapping only)
+ */
+BonoboWidget       *bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
+								 Bonobo_Control     control,
+								 Bonobo_UIContainer uic);
+BonoboWidget       *bonobo_widget_construct_control         (BonoboWidget      *bw,
+							     const char        *moniker,
+							     Bonobo_UIContainer uic);
+
+/*
  * Gnome Bonobo Widget for subdocuments (Embeddables with a single View).
  */
 GtkWidget           *bonobo_widget_new_subdoc               (const char        *moniker,

@@ -42,6 +42,8 @@ typedef struct {
 
 GtkType       bonobo_ui_toolbar_control_item_get_type    (void);
 GtkWidget    *bonobo_ui_toolbar_control_item_new         (Bonobo_Control control_ref);
+GtkWidget    *bonobo_ui_toolbar_control_item_construct   (BonoboUIToolbarControlItem *control_item,
+							  Bonobo_Control              control_ref);
 void          bonobo_ui_toolbar_control_item_set_display (BonoboUIToolbarControlItem    *item,
 							  BonoboUIToolbarControlDisplay  hdisplay,
 							  BonoboUIToolbarControlDisplay  vdisplay);
