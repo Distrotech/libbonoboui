@@ -17,6 +17,10 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtksignal.h>
 
+/* FIXME: do something more sane here.  this is needed to see
+ * CORBA_Object->connection in the control frame code */
+#define ORBIT2_INTERNAL_API 1
+
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
