@@ -13,7 +13,7 @@ add_cb (GtkWidget *caller, SampleApp *inst)
 	char *obj_id;
 
 	/* Ask the user to select a component. */
-	obj_id = gnome_bonobo_select_id (
+	obj_id = bonobo_selector_select_id (
 		_("Select an embeddable Bonobo component to add"),
 		(const gchar **) required_interfaces);
 

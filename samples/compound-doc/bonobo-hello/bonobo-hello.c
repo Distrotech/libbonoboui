@@ -19,11 +19,7 @@
 
 #include <gnome.h>
 #include "config.h"
-#if USING_OAF
 #include <liboaf/liboaf.h>
-#else
-#include <libgnorba/gnorba.h>
-#endif
 #include <bonobo.h>
 
 #include "hello-embeddable.h"
@@ -72,16 +68,10 @@ hello_embeddable_factory (BonoboEmbeddableFactory *f, gpointer data)
 static void
 hello_bonobo_init (void)
 {
-#if USING_OAF
 	factory =
 		bonobo_embeddable_factory_new (
 			"OAFIID:bonobo-hello-factory:413433d0-c643-4618-9c3e-2c99f4d1b2a0",
 			hello_embeddable_factory, NULL);
-#else
-	factory =
-		bonobo_embeddable_factory_new ("bonobo-object-factory:hello",
-					       hello_embeddable_factory, NULL);
-#endif
 	if (!factory)
 		g_warning ("Couldn't register hello object factory");
 }
@@ -94,18 +84,9 @@ server_factory_init (int argc, char **argv)
 
 	CORBA_exception_init (&ev);
 
-#if USING_OAF
 	gnome_init_with_popt_table (PACKAGE, VERSION,
 				    argc, argv, oaf_popt_options, 0, NULL);
 	orb = oaf_init (argc, argv);
-#else
-	gnome_CORBA_init_with_popt_table (PACKAGE, VERSION,	/* Name of the component */
-					  &argc, argv,	/* Command-line arguments */
-					  NULL, 0, NULL,	/* popt table to parse arguments */
-					  GNORBA_INIT_SERVER_FUNC, &ev	/* GNORBA options */
-	    );
-	orb = gnome_CORBA_ORB ();
-#endif
 
 	if (!bonobo_init (orb,
 			  CORBA_OBJECT_NIL,

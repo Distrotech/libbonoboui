@@ -1112,6 +1112,7 @@ bonobo_control_get_property (BonoboControl       *control,
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 	g_return_if_fail (first_prop != NULL);
 
+	bonobo_object_ref (BONOBO_OBJECT (control->priv->propbag));
 	bag = (Bonobo_PropertyBag)
 		bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
 	cl = bonobo_property_bag_client_new (bag);

@@ -1,11 +1,7 @@
 #include <gnome.h>
 #include <bonobo.h>
 #include "config.h"
-#if USING_OAF
 #include <liboaf/liboaf.h>
-#else
-#include <libgnorba/gnorba.h>
-#endif
 
 #include "container.h"
 #include "component.h"
@@ -101,7 +97,7 @@ sample_app_add_component (SampleApp *app,
 {
 	BonoboObjectClient *server;
 
-	server = bonobo_object_activate_with_oaf_id (object_id, 0);
+	server = bonobo_object_activate (object_id, 0);
 
 	if (!server) {
 		gchar *error_msg;
@@ -216,19 +212,10 @@ main (int argc, char **argv)
 	CORBA_ORB orb;
 
 	CORBA_exception_init (&ev);
-#if USING_OAF
 	gnome_init_with_popt_table ("container", VERSION,
 				    argc, argv, oaf_popt_options, 0, &ctx);
 
 	orb = oaf_init (argc, argv);
-#else
-	gnome_CORBA_init_with_popt_table ("container", VERSION,
-					  &argc, argv,
-					  NULL, 0, &ctx, 0, &ev);
-
-	CORBA_exception_free (&ev);
-	orb = gnome_CORBA_ORB ();
-#endif
 
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error (_("Could not initialize Bonobo!\n"));

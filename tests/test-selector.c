@@ -19,7 +19,7 @@ noact_callback (GtkWidget *widget, gpointer data)
 {
 	gchar *text;
 
-	text = gnome_bonobo_select_id (_("Select an object"), NULL);
+	text = bonobo_selector_select_id (_("Select an object"), NULL);
 	g_print("%s\n", text);
 
 	if (text)

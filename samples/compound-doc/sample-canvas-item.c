@@ -1,12 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #include <config.h>
 #include <gnome.h>
-
-#if USING_OAF
 #include <liboaf/liboaf.h>
-#else
-#include <libgnorba/gnorba.h>
-#endif
 
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo.h>
@@ -49,13 +44,8 @@ bonobo_item_factory (BonoboEmbeddableFactory *factory, void *closure)
 static void
 init_server_factory (void)
 {
-#if USING_OAF
 	bonobo_embeddable_factory_new (
 		"OAFIID:test_canvas_item_factory:db20642e-25a0-46d0-bbe0-84b79ab64e05", bonobo_item_factory, NULL);
-#else
-	bonobo_embeddable_factory_new (
-		"Test_item_server_factory", bonobo_item_factory, NULL);
-#endif
 }
 
 int
@@ -63,15 +53,10 @@ main (int argc, char *argv [])
 {
 	CORBA_exception_init (&ev);
 
-#if USING_OAF
         gnome_init_with_popt_table("MyServer", "1.0",
 				   argc, argv,
 				   oaf_popt_options, 0, NULL); 
 	orb = oaf_init (argc, argv);
-#else
-	gnome_CORBA_init_with_popt_table ("MyServer", "1.0", &argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
-	orb = gnome_CORBA_ORB ();
-#endif
 	
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error ("Can not bonobo_init");

@@ -1,3 +1,9 @@
+2000-08-12  Michael Meeks  <michael@helixcode.com>
+
+	* container-menu.c (add_cb): selector update.
+
+	* container.c (sample_app_add_component): update activation
+
 2000-08-11  Michael Meeks  <michael@helixcode.com>
 
 	* container.c (final_setup): make dependent on environment

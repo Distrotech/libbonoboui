@@ -1,12 +1,3 @@
-
-if OAF
-OBJECT_DIRECTORY_LIBS=$(OAF_LIBS) $(GNOME_LIBS)
-OBJECT_DIRECTORY_IMPL=bonobo-object-directory-oaf.c
-else
-OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
-OBJECT_DIRECTORY_IMPL=bonobo-object-directory-goad.c
-endif
-
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-DSTORAGE_LIB=\""$(libdir)"\"			\
@@ -23,7 +14,8 @@ gnome_libs =				\
 	$(GNOME_LIBDIR)			\
 	$(GDK_PIXBUF_LIBS) 		\
         $(GNOMEUI_LIBS)			\
-	$(OBJECT_DIRECTORY_LIBS) 	\
+	$(OAF_LIBS)		 	\
+	$(GNOME_LIBS)			\
 	$(INTLLIBS)
 
 bonobo_libs = 			\
@@ -69,7 +61,6 @@ libbonobo_la_SOURCES =			\
 	bonobo-arg.h			\
 	bonobo-arg.c			\
 	bonobo-object-directory.c	\
-	$(OBJECT_DIRECTORY_IMPL)	\
 	bonobo-generic-factory.c	\
 	bonobo-main.c			\
 	bonobo-moniker.c		\
@@ -177,6 +168,4 @@ BUILT_SOURCES=$(CORBA_SOURCE)
 
 CLEANFILES += $(BUILT_SOURCES)
 
-EXTRA_DIST = bonobo-insert-component.xpm 	\
-	     bonobo-object-directory-goad.c 	\
-	     bonobo-object-directory-oaf.c
+EXTRA_DIST = bonobo-insert-component.xpm

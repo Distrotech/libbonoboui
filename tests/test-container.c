@@ -12,12 +12,7 @@
  
 #include <config.h>
 #include <gnome.h>
-
-#if USING_OAF
 #include <liboaf/liboaf.h>
-#else
-#include <libgnorba/gnorba.h>
-#endif
 
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
@@ -47,11 +42,7 @@ BonoboClientSite   *paint_client_site;
  */
 BonoboViewFrame *active_view_frame;
 
-#if USING_OAF
 char *server_id = "OAFIID:test_bonobo_object:b1ff15bb-d54f-4814-ba53-d67d3afd70fe";
-#else
-char *server_id = "Test_server_bonobo_object";
-#endif
 
 typedef struct {
 	GtkWidget *app;
@@ -284,13 +275,8 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
-#if USING_OAF
 	object = add_cmd (widget, app, "OAFIID:bonobo_image-x-png:716e8910-656b-4b3b-b5cd-5eda48b71a79",
 			  &image_client_site);
-#else
-	object = add_cmd (widget, app, "embeddable:image-x-png",
-			  &image_client_site);
-#endif
 
 
 	if (object == NULL) {
@@ -332,12 +318,9 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
-#if USING_OAF
-	/* FIXME: use the OAFIID of the pdf component once ported. */
+	g_error ("Wrong oafid for pdf");
 	object = add_cmd (widget, app, "bonobo-object:application-x-pdf", &image_client_site);
-#else
-	object = add_cmd (widget, app, "bonobo-object:application-x-pdf", &image_client_site);
-#endif
+
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch bonobo object."));
@@ -448,18 +431,12 @@ do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 	
 	client_site = bonobo_client_site_new (app->container);
 
-#if USING_OAF
-	server = launch_server (client_site, app->container, "OAFIID:test_canvas_item:82a8a7cc-8b08-401b-9501-4debf6c96619");
-#else
-	server = launch_server (client_site, app->container, "Test_item_server_bonobo_object");
-#endif
+	server = launch_server (
+		client_site, app->container,
+		"OAFIID:test_canvas_item:82a8a7cc-8b08-401b-9501-4debf6c96619");
 
-	if (server == NULL){
-#if USING_OAF
+	if (server == NULL) {
 		g_warning ("Can not activate OAFIID:test_canvas_item:82a8a7cc-8b08-401b-9501-4debf6c96619");
-#else
-		g_warning ("Can not activate Test_item_server_bonobo_object");
-#endif
 		return;
 	}
 	CORBA_exception_init (&ev);
@@ -530,11 +507,9 @@ add_paint_cmd (GtkWidget *widget, Application *app)
 {
 	BonoboObjectClient *object;
 
-#if USING_OAF
-	object = add_cmd (widget, app, "OAFIID:paint_component_simple:9c04da1c-d44c-4041-9991-fed1ed1ed079", &paint_client_site);
-#else
-	object = add_cmd (widget, app, "embeddable:paint-component-simple", &paint_client_site);
-#endif
+	object = add_cmd (widget, app, 
+			  "OAFIID:paint_component_simple:9c04da1c-d44c-4041-9991-fed1ed1ed079",
+			  &paint_client_site);
 
 	if (object == NULL)
 	  {
@@ -565,17 +540,14 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
-#if USING_OAF
-	object = add_cmd (widget, app, "OAFIID:bonobo_text-plain:26e1f6ba-90dd-4783-b304-6122c4b6c821", &text_client_site);
-#else
-	object = add_cmd (widget, app, "bonobo-object:hello", &text_client_site);
-#endif
+	object = add_cmd (widget, app,
+			  "OAFIID:bonobo_text-plain:26e1f6ba-90dd-4783-b304-6122c4b6c821",
+			  &text_client_site);
 
-	if (object == NULL)
-	  {
-	    gnome_warning_dialog (_("Could not launch Embeddable."));
-	    return;
-	  }
+	if (object == NULL) {
+		gnome_warning_dialog (_("Could not launch Embeddable."));
+		return;
+	}
 
 	text_obj = object;
 
@@ -832,22 +804,17 @@ main (int argc, char *argv [])
 {
 	Application *app;
 
-	if (argc != 1){
+	if (argc != 1)
 		server_id = argv [1];
-	}
 	
 	CORBA_exception_init (&ev);
 	
-#if USING_OAF
-        gnome_init_with_popt_table("MyShell", "1.0",
-				   argc, argv,
-				   oaf_popt_options, 0, NULL); 
+        gnome_init_with_popt_table ("MyShell", "1.0",
+				    argc, argv,
+				    oaf_popt_options, 0, NULL); 
+
 	orb = oaf_init (argc, argv);
-#else
-	gnome_CORBA_init ("MyShell", "1.0", &argc, argv, 0, &ev);
-	orb = gnome_CORBA_ORB ();
-#endif
-	
+
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error (_("Can not bonobo_init"));
 
