@@ -73,6 +73,8 @@ enum {
 
 static guint signals [LAST_SIGNAL] = { 0 };
 
+static gint bonobo_ui_engine_inhibit_events = 0;
+
 static void
 add_debug_menu (BonoboUIEngine *engine)
 {
@@ -1512,6 +1514,9 @@ real_exec_verb (BonoboUIEngine *engine,
 	g_return_if_fail (component_name != NULL);
 	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
 
+	if (bonobo_ui_engine_inhibit_events > 0)
+		return;
+
 	g_object_ref (engine);
 
 	component = sub_component_objref (engine, component_name);
@@ -1669,6 +1674,8 @@ execute_state_updates (GSList *updates)
 {
 	GSList *l;
 
+	bonobo_ui_engine_inhibit_events ++;
+
 	for (l = updates; l; l = l->next) {
 		StateUpdate *su = l->data;
 
@@ -1679,6 +1686,8 @@ execute_state_updates (GSList *updates)
 		state_update_destroy (l->data);
 
 	g_slist_free (updates);
+
+	bonobo_ui_engine_inhibit_events --;
 }
 
 /*
@@ -1751,6 +1760,8 @@ real_emit_ui_event (BonoboUIEngine *engine,
 	g_return_if_fail (new_state != NULL);
 
 	if (!component_name) /* Auto-created entry, no-one can listen to it */
+		return;
+	if (bonobo_ui_engine_inhibit_events > 0)
 		return;
 
 	g_object_ref (engine);
