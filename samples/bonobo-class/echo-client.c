@@ -35,6 +35,14 @@ init_bonobo (int argc, char *argv [])
 	bonobo_activate ();
 }
 
+static void
+usage (void)
+{
+	fprintf (stderr, "To use this program run oaf-slay, then type\n"
+		 "bonobo-echo & # to register the echoing server\n"
+		 "then run echo-client to see the echo\n");
+}
+
 int 
 main (int argc, char *argv [])
 {
@@ -61,10 +69,10 @@ main (int argc, char *argv [])
 	 */
 	echo_server = BONOBO_OBJREF (server);
 
-	/*
-	 * Send a message
-	 */
+	/* Send a message */
 	Bonobo_Sample_Echo_echo (echo_server, "This is the message from the client\n", &ev);
+	if (BONOBO_EX (&ev))
+		usage ();
 
 	CORBA_exception_free (&ev);
 
