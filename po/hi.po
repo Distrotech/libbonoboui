@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.x\n"
-"POT-Creation-Date: 2004-03-09 11:44+0000\n"
+"POT-Creation-Date: 2004-03-29 16:41+0100\n"
 "PO-Revision-Date: 2003-08-07 14:30+0530\n"
 "Last-Translator: Anurag Seetha <anuragseetha@yahoo.com>\n"
 "Language-Team: Gnome Hindi Team <indlinux-hindi-gnome@lists.sourceforge."

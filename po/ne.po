@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonobui\n"
-"POT-Creation-Date: 2004-03-09 11:44+0000\n"
+"POT-Creation-Date: 2004-03-29 16:41+0100\n"
 "PO-Revision-Date: 2003-08-31 04:38\n"
 "Last-Translator: Pawan Chitrakar <pawan@nplinux.org>\n"
 "Language-Team: Nepali<info@mpp.org.np>\n"

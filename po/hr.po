@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 0\n"
-"POT-Creation-Date: 2004-03-13 13:11+0100\n"
+"POT-Creation-Date: 2004-03-29 16:41+0100\n"
 "PO-Revision-Date: 2004-03-13 13:11+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
@@ -94,7 +94,10 @@ msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr "NULL-završno polje sučelja koje poslužitelj mora podržavati kako bi mogao biti popisan u izborniku. Uobičajeno u \"IDL:Bonobo/Embeddable:1.0\" ukoliko nije niti jedno sučelje na popisu"
+msgstr ""
+"NULL-završno polje sučelja koje poslužitelj mora podržavati kako bi mogao "
+"biti popisan u izborniku. Uobičajeno u \"IDL:Bonobo/Embeddable:1.0\" ukoliko "
+"nije niti jedno sučelje na popisu"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -393,4 +396,3 @@ msgstr "ne mogu pokrenuti libbonoboui kod"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Ne mogu pokrenuti Bonobo korisničko sučelje"
-

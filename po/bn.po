@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2004-03-09 11:44+0000\n"
+"POT-Creation-Date: 2004-03-29 16:41+0100\n"
 "PO-Revision-Date: 2003-07-18 09:35+0600\n"
 "Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
