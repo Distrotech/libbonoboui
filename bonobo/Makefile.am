@@ -131,6 +131,7 @@ libbonobo_HEADERS = bonobo.h
 
 libbonoboinclude_HEADERS =		\
 	Bonobo.h			\
+	bonobo-arg.h			\
 	bonobo-canvas-item.h		\
 	bonobo-selector.h		\
 	bonobo-widget.h 		\
@@ -164,7 +165,6 @@ libbonoboinclude_HEADERS =		\
 	bonobo-view-frame.h		\
 	bonobo-wrapper.h		\
 	bonobo-property.h		\
-	bonobo-property-types.h		\
 	bonobo-property-bag.h		\
 	bonobo-property-bag-client.h
 
