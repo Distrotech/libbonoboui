@@ -19,7 +19,6 @@
 #include <liboaf/liboaf.h>
 #include <bonobo.h>
 
-
 static void display_as_interface (const char *moniker, CORBA_Environment *ev);
 static void display_as_stream (const char *moniker, CORBA_Environment *ev);
 static void display_as_storage_file_list (const char *moniker, CORBA_Environment *ev);
@@ -60,29 +59,32 @@ typedef struct {
     int ps, pr, pc, ph;
 } MonikerTestOptions;
 
-MonikerTestOptions global_mto = { 0 };
+MonikerTestOptions global_mto = { NULL };
 
 struct poptOption moniker_test_options[] = {
-    {"interface", 'i', POPT_ARG_STRING, &global_mto.requested_interface, 'i', "requested interface", "interface"},
-    {"stream", 's', 0, &global_mto.ps, 's', "request Bonobo/Stream" },
-    {"storage", 'r', 0, &global_mto.pr, 'r', "request Bonobo/Storage" },
-    {"control", 'c', 0, &global_mto.pc, 'c', "request Bonobo/Control" },
-    {"html", 'h', 0, &global_mto.ph, 'h', "request Bonobo/Stream and display as HTML" },
-    {NULL, 0, 0, NULL, 0}
+    {"interface", 'i', POPT_ARG_STRING, &global_mto.requested_interface, 'i', "request specific interface", "interface"},
+    {"stream",    's', POPT_ARG_NONE, &global_mto.ps, 's', "request Bonobo/Stream", NULL },
+    {"storage",   'r', POPT_ARG_NONE, &global_mto.pr, 'r', "request Bonobo/Storage", NULL },
+    {"control",   'c', POPT_ARG_NONE, &global_mto.pc, 'c', "request Bonobo/Control", NULL },
+    {"html",      'h', POPT_ARG_NONE, &global_mto.ph, 'h', "request Bonobo/Stream and display as HTML", NULL },
+    {NULL, 0, 0, NULL, 0, 0}
 };
 
 
 static void do_moniker_magic (void);
-
 
 int
 main (int argc, char **argv)
 {
     CORBA_ORB orb;
 
-    poptContext ctx;
+    poptContext ctx = NULL;
     int i;
 
+    bindtextdomain (PACKAGE, GNOMELOCALEDIR);
+    textdomain (PACKAGE);
+
+    gnomelib_register_popt_table (oaf_popt_options, _("Oaf options"));
     gnome_init_with_popt_table ("moniker-test", "0.0", argc, argv, moniker_test_options, 0, &ctx);
     if ((orb = oaf_init (argc, argv)) == NULL)
         g_error ("Cannot init oaf");
@@ -112,7 +114,8 @@ main (int argc, char **argv)
     else if (global_mto.pc)
         global_mto.display_as = AS_CONTROL;
     else {
-        poptPrintUsage (ctx, stderr, 0);
+        fprintf (stderr, "Usage: %s [-i interface] [-srch] <moniker>\n", argv[0]);
+        fprintf (stderr, "Run %s --help for more info\n", argv[0]);
         return 1;
     }
 
@@ -120,7 +123,8 @@ main (int argc, char **argv)
     poptSetOtherOptionHelp (ctx, "<moniker>");
     global_mto.requested_moniker = g_strdup (poptGetArg (ctx));
     if (!global_mto.requested_moniker) {
-        poptPrintUsage (ctx, stderr, 0);
+        fprintf (stderr, "Usage: %s [-i interface] [-srch] <moniker>\n", argv[0]);
+        fprintf (stderr, "Run %s --help for more info\n", argv[0]);
         return 1;
     }
 
@@ -137,6 +141,8 @@ main (int argc, char **argv)
         default: fprintf (stderr, "???"); break;
     }
     fprintf (stderr, "\n");
+
+    bonobo_activate ();
 
     do_moniker_magic ();
     return 0;
@@ -165,13 +171,49 @@ do_moniker_magic (void)
 static void
 display_as_interface (const char *moniker, CORBA_Environment *ev)
 {
-    g_error ("Not implemented");
+    Bonobo_Unknown the_unknown;
+
+    the_unknown = bonobo_get_object (moniker, global_mto.requested_interface, ev);
+    if (ev->_major == CORBA_NO_EXCEPTION && the_unknown) {
+        fprintf (stderr, "Requesting interface %s: SUCCESS\n", global_mto.requested_interface);
+        bonobo_object_release_unref (the_unknown, ev);
+        return;
+    }
+
+    fprintf (stderr, "Requesting interface: %s: EXCEPTION: %s\n",
+             global_mto.requested_interface,
+             ev->_repo_id);
 }
 
 static void
 display_as_stream (const char *moniker, CORBA_Environment *ev)
 {
-    g_error ("Not implemented");
+    Bonobo_Stream the_stream;
+
+    the_stream = bonobo_get_object (moniker, "IDL:Bonobo/Stream:1.0", ev);
+    if (ev->_major != CORBA_NO_EXCEPTION || !the_stream) {
+        g_error ("Couldn't get Bonobo/Stream interface");
+    }
+
+    fprintf (stderr, "Writing stream to stdout...\n");
+    do {
+        Bonobo_Stream_iobuf *stream_iobuf;
+        Bonobo_Stream_read (the_stream, 512, &stream_iobuf, ev);
+        if (ev->_major != CORBA_NO_EXCEPTION) {
+            bonobo_object_release_unref (the_stream, ev);
+            g_error ("got exception %s while reading from stream!",
+                     ev->_repo_id);
+        }
+
+        if (stream_iobuf->_length == 0) {
+            CORBA_free (stream_iobuf);
+            bonobo_object_release_unref (the_stream, ev);
+            return;
+        }
+
+        fwrite (stream_iobuf->_buffer, stream_iobuf->_length, 1,
+                stdout);
+    } while (1);
 }
 
 static void
@@ -183,8 +225,8 @@ display_as_storage_file_list (const char *moniker, CORBA_Environment *ev)
     int i;
 
     the_storage = bonobo_get_object (moniker, "IDL:Bonobo/Storage:1.0", ev);
-    if (!the_storage) {
-        g_error ("Couldn't get Bonobo/Storage interface\n");
+    if (ev->_major != CORBA_NO_EXCEPTION || !the_storage) {
+        g_error ("Couldn't get Bonobo/Storage interface");
     }
 
     storage_contents = Bonobo_Storage_listContents (the_storage,
@@ -209,6 +251,7 @@ display_as_storage_file_list (const char *moniker, CORBA_Environment *ev)
                 bsi[i].content_type);
     }
 
+    bonobo_object_release_unref (the_storage, ev);
     /* how do I free the silly dirlist? */
 }
 
@@ -221,5 +264,28 @@ display_as_html (const char *moniker, CORBA_Environment *ev)
 static void
 display_as_control (const char *moniker, CORBA_Environment *ev)
 {
+    Bonobo_Control the_control;
+    GtkWidget *widget;
+
+    GtkWidget *window;
+
+    the_control = bonobo_get_object (moniker, "IDL:Bonobo/Control:1.0", ev);
+    if (ev->_major != CORBA_NO_EXCEPTION || !the_control) {
+        g_error ("Couldn't get Bonobo/Control interface");
+    }
+
+    widget = bonobo_widget_new_control_from_objref (the_control, CORBA_OBJECT_NIL);
+    if (ev->_major != CORBA_NO_EXCEPTION || !widget) {
+        g_error ("Couldn't get a widget from the_control");
+    }
+
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_default_size (GTK_WINDOW (window), 400, 350);
+    gtk_container_add (GTK_CONTAINER (window), widget);
+    gtk_signal_connect (GTK_OBJECT (window), "destroy",
+                        GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+
+    gtk_widget_show_all (window);
+    gtk_main ();
 }
 
