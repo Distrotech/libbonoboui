@@ -38,13 +38,6 @@
 
 #include <libbonoboui.h>
 
-#ifndef ENABLE_NLS
-/* a slight optimisation when gettext is off */
-#  define glade_xml_gettext(xml, msgid) (msgid)
-#endif
-#undef _
-#define _(msgid) (glade_xml_gettext(xml, msgid))
-
 static GtkWidget *
 glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
 			 GladeWidgetInfo *info)
@@ -101,7 +94,7 @@ glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
 	    GValue gvalue = { 0 };
 
 	    if (glade_xml_set_value_from_string(pspec, value, &gvalue)) {
-		g_object_set_property(widget, name, &gvalue);
+		g_object_set_property(G_OBJECT(widget), name, &gvalue);
 		g_value_unset(&gvalue);
 	    }
 	} else if (pb != CORBA_OBJECT_NIL) {
