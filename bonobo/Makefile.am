@@ -5,6 +5,7 @@ INCLUDES =                                              \
 	-DBONOBO_UIDIR=\""$(datadir)/gnome/ui/"\"	\
 	-DPLUGIN_DIR=\""$(PLUGIN_DIR)"\"		\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
+	-DBONOBO_LOCALEDIR=\""$(bonobolocaledir)"\"	\
 	-I. 						\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I$(top_builddir)				\

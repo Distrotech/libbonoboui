@@ -222,6 +222,8 @@ main (int argc, char **argv)
 	gnome_init_with_popt_table ("container", VERSION,
 				    argc, argv, oaf_popt_options, 0, &ctx);
 
+	textdomain (PACKAGE);
+
 	orb = oaf_init (argc, argv);
 
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
