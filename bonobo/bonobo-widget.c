@@ -51,8 +51,6 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <bonobo/Bonobo.h>
-#include <bonobo/bonobo-exception.h>
-#include <bonobo/bonobo-moniker-util.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-widget.h>
@@ -81,21 +79,8 @@ static BonoboObjectClient *
 bonobo_widget_launch_component (const char *object_desc)
 {
 	BonoboObjectClient *server;
-	CORBA_Environment ev;
 
-	CORBA_exception_init (&ev);
-	server = bonobo_get_object (object_desc,
-				    "IDL:Bonobo/Unknown:1.0",
-				    &ev);
-	if (BONOBO_EX (&ev)) {
-		char *txt;
-		g_warning ("Activation exception '%s'",
-			   (txt = bonobo_exception_get_text (&ev)));
-		g_free (txt);
-		server = CORBA_OBJECT_NIL;
-	}
-	
-	CORBA_exception_free (&ev);
+	server = bonobo_object_activate (object_desc, 0);
 
 	return server;
 }
