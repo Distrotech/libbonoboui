@@ -532,7 +532,20 @@ component_destroy_cb (GtkWidget *button, Component *component)
 
 	component->container->components = g_list_remove (component->container->components,
 							  component);
+
+	/* note that the below assignment is not 
+	   perfect since you should check that the 
+	   active_view_frame is one of the component 
+	   being destroyed but doing so would require 
+	   some access to the internal structs of the
+	   BonoboClientSite and it's evil. And anyway
+	   this corrects the main pb in 90% cases.
+	   Anyway, People who use this code to _really_ test
+	   many components had better get a psychotherapy.
+	*/
 	component->container->active_view_frame = NULL;
+
+	g_free (component);
 }
 
 static BonoboObjectClient *
