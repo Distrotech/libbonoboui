@@ -139,7 +139,7 @@ main (int argc, char **argv)
 		"    <placeholder name=\"Nice\" delimit=\"top\">\n"
 		"	<menuitem name=\"fooa\" label=\"_FooA\" type=\"radio\" group=\"foogroup\" descr=\"Radio1\"/>\n"
 		"	<menuitem name=\"foob\" label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
-		"	<menuitem name=\"wibble\" label=\"_Baa\" pixtype=\"stock\" pixname=\"Open\" sensitive=\"0\"/>\n"
+		"	<menuitem name=\"wibble\" verb=\"ThisForcesAnError\" label=\"_Baa\" pixtype=\"stock\" pixname=\"Open\" sensitive=\"0\"/>\n"
 		"       <separator/>\n"
 		"    </placeholder>\n"
 		"</submenu>\n";
@@ -156,7 +156,7 @@ main (int argc, char **argv)
 		"</dockitem>";
 	char toolb [] =
 		"<dockitem name=\"toolbar\" look=\"icon\" relief=\"none\">\n"
-		"	<toolitem name=\"foo1\" label=\"Insensitive\" sensitive=\"0\"/>\n"
+		"	<toolitem name=\"foo1\" label=\"Insensitive\" hidden=\"0\"/>\n"
 		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\" label=\"TogSame\" descr=\"My tooltip\"/>\n"
 		"</dockitem>";
 	char statusa [] =

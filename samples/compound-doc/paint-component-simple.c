@@ -376,21 +376,6 @@ view_motion_notify_cb (GtkWidget *drawing_area, GdkEventMotion *event,
 	embeddable_update_all_views (embeddable_data);
 }
 
-/*
- * FIXME: Comment.
- */
-static void
-view_button_press_cb (GtkWidget *drawing_area,
-		      GdkEventButton *event,
-		      gpointer data)
-{
-	view_data_t *view_data = (view_data_t *) data;
-
-	if (event->type == GDK_BUTTON_PRESS &&
-	    event->button == 3)
-		bonobo_view_popup_verbs (view_data->view);
-}
-
 static void
 embeddable_clear_image (embeddable_data_t *embeddable_data)
 {
@@ -404,21 +389,6 @@ embeddable_clear_image (embeddable_data_t *embeddable_data)
 			    embeddable_data->width,
 			    embeddable_data->height);
 	gdk_gc_destroy (temp_gc);
-}
-
-/*
- * This function is called when the "ClearImage" verb is executed on
- * the component.
- */
-static void
-view_clear_image_cb (BonoboView *view, const char *verb_name, view_data_t *view_data)
-{
-	embeddable_data_t *embeddable_data;
-
-	embeddable_data = view_data->embeddable_data;
-
-	embeddable_clear_image (embeddable_data);
-	embeddable_update_all_views (embeddable_data);
 }
 
 /*
@@ -480,9 +450,6 @@ view_factory (BonoboEmbeddable       *embeddable,
 			       GDK_BUTTON_MOTION_MASK |
 			       GDK_BUTTON_PRESS_MASK);
 
-	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "button_press_event",
-			    GTK_SIGNAL_FUNC (view_button_press_cb), view_data);
-
 	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "motion_notify_event",
 			    GTK_SIGNAL_FUNC (view_motion_notify_cb), view_data);
 
@@ -522,14 +489,6 @@ view_factory (BonoboEmbeddable       *embeddable,
 	view = bonobo_view_new (vbox);
 	view_data->view = view;
 	gtk_object_set_data (GTK_OBJECT (view), "view_data", view_data);
-
-	/*
-	 * Register a callback to handle the ClearImage verb.
-	 */
-	bonobo_view_register_verb (view, "ClearImage",
-				  BONOBO_VIEW_VERB_FUNC (view_clear_image_cb),
-				  view_data);
-
 
 	/*
 	 * When our container wants to activate a given view of this
@@ -654,29 +613,6 @@ embeddable_factory (BonoboGenericFactory *this,
 	
 	running_objects++;
 	embeddable_data->embeddable = embeddable;
-
-	/*
-	 * Add some verbs to the embeddable.
-	 *
-	 * Verbs are simple non-paramameterized actions which the
-	 * component can perform.  The BonoboEmbeddable must maintain a
-	 * list of the verbs which a component supports, and the
-	 * component author must register callbacks for each of his
-	 * verbs with the BonoboView.
-	 *
-	 * The container application will then have the programmatic
-	 * ability to execute the verbs on the component.  It will
-	 * also provide a simple mechanism whereby the user can
-	 * right-click on the component to create a popup menu
-	 * listing the available verbs.
-	 *
-	 * We provide one simple verb whose job it is to clear the
-	 * window.
-	 */
-	bonobo_embeddable_add_verb (embeddable,
-				   "ClearImage",
-				   _("_Clear Image"),
-				   _("Clear the image to black"));
 
 	/*
 	 * If the Embeddable encounters a fatal CORBA exception, it

@@ -453,9 +453,14 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 		switch (uii->pixmap_type) {
 		case GNOME_APP_PIXMAP_NONE:
 			break;
-		case GNOME_APP_PIXMAP_STOCK:
-			bonobo_ui_util_xml_set_pix_stock (node, uii->pixmap_info);
+		case GNOME_APP_PIXMAP_STOCK: {
+			const char *name = uii->pixmap_info;
+			if (strncmp (name, "Menu_", 5))
+				bonobo_ui_util_xml_set_pix_stock (node, name);
+			else 
+				bonobo_ui_util_xml_set_pix_stock (node, name + 5);
 			break;
+		}
 		case GNOME_APP_PIXMAP_FILENAME:
 			bonobo_ui_util_xml_set_pix_fname (node, uii->pixmap_info);
 			break;
@@ -657,7 +662,8 @@ bonobo_ui_handler_toolbar_free_list (BonoboUIHandlerMenuItem *item)
 
 static void
 deal_with_pixmap (BonoboUIHandlerPixmapType pixmap_type,
-		  gpointer pixmap_data, BonoboUINode *node)
+		  gpointer pixmap_data, BonoboUINode *node,
+		  gboolean chop_menu)
 {
 	/* Flush out pre-existing pixmap if any */
         bonobo_ui_node_remove_attr (node, "pixtype");
@@ -669,9 +675,14 @@ deal_with_pixmap (BonoboUIHandlerPixmapType pixmap_type,
 	case BONOBO_UI_HANDLER_PIXMAP_NONE:
 		break;
 
-	case BONOBO_UI_HANDLER_PIXMAP_STOCK:
-		bonobo_ui_util_xml_set_pix_stock (node, pixmap_data);
+	case BONOBO_UI_HANDLER_PIXMAP_STOCK: {
+		const char *name = pixmap_data;
+		if (strncmp (name, "Menu_", 5))
+			bonobo_ui_util_xml_set_pix_stock (node, name);
+		else 
+			bonobo_ui_util_xml_set_pix_stock (node, name + 5);
 		break;
+	}
 
 	case BONOBO_UI_HANDLER_PIXMAP_FILENAME:
 		bonobo_ui_util_xml_set_pix_fname (node, pixmap_data);
@@ -733,7 +744,7 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 
 	node = bonobo_ui_util_new_menu (type == BONOBO_UI_HANDLER_MENU_SUBTREE,
 					cname, label, hint, NULL);
-	deal_with_pixmap (pixmap_type, pixmap_data, node);
+	deal_with_pixmap (pixmap_type, pixmap_data, node, TRUE);
 
 	switch (type) {
 	case BONOBO_UI_HANDLER_MENU_RADIOITEM:
@@ -1066,7 +1077,7 @@ bonobo_ui_handler_toolbar_new (BonoboUIHandler *uih, const char *path,
 		return;
 	}
 
-	deal_with_pixmap (pixmap_type, pixmap_data, node);
+	deal_with_pixmap (pixmap_type, pixmap_data, node, FALSE);
 
 	{
 		char *xml_path = make_path ("", path, TRUE);
@@ -1181,7 +1192,8 @@ bonobo_ui_handler_toolbar_new_toggleitem (BonoboUIHandler *uih, const char *path
 static void
 do_set_pixmap (BonoboUIHandlerPrivate *priv,
 	       const char             *xml_path,
-	       BonoboUIHandlerPixmapType type, gpointer data)
+	       BonoboUIHandlerPixmapType type,
+	       gpointer data, gboolean chop_menu)
 {
 	char    *parent_path;
 	BonoboUINode *node;
@@ -1193,7 +1205,7 @@ do_set_pixmap (BonoboUIHandlerPrivate *priv,
 
 	g_return_if_fail (node != NULL);
 
-	deal_with_pixmap (type, data, node);
+	deal_with_pixmap (type, data, node, chop_menu);
 
 	bonobo_ui_component_set_tree (priv->component,
 				      parent_path,
@@ -1216,7 +1228,7 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 	xml_path = make_path ("", path, FALSE);
 	SLOPPY_CHECK (priv->component, xml_path, NULL);
 	no_sideffect_event_inhibit++;
-	do_set_pixmap (priv, xml_path, type, data);
+	do_set_pixmap (priv, xml_path, type, data, FALSE);
 	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }
@@ -1422,7 +1434,7 @@ bonobo_ui_handler_menu_set_pixmap (BonoboUIHandler *uih, const char *path,
 	xml_path = make_path ("/menu", path, FALSE);
 	SLOPPY_CHECK (priv->component, xml_path, NULL);
 	no_sideffect_event_inhibit++;
-	do_set_pixmap (priv, xml_path, type, data);
+	do_set_pixmap (priv, xml_path, type, data, TRUE);
 	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }

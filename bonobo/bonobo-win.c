@@ -1507,8 +1507,10 @@ menu_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	    (sensitive = bonobo_ui_node_get_attr (node, "sensitive")) ||
 	    (state     = bonobo_ui_node_get_attr (node, "state"))) {
 		if (cmd_node && !warned++) {
-			g_warning ("FIXME: We have a non-cmd/widget attribute on "
-				   "%s, please fix", bonobo_ui_xml_make_path (node));
+			g_warning ("FIXME: We have an attribute '%s' at '%s' breaking "
+				   "cmd/widget separation, please fix",
+				   hidden?"hidden":((sensitive)?"sensitive":((state)?"state":"error")),
+				   bonobo_ui_xml_make_path (node));
 			if (hidden)
 				set_cmd_attr (priv, cmd_node, "hidden", hidden, FALSE);
 			if (sensitive)
@@ -1915,8 +1917,10 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	    (sensitive = bonobo_ui_node_get_attr (node, "sensitive")) ||
 	    (state     = bonobo_ui_node_get_attr (node, "state"))) {
 		if (cmd_node && !warned++) {
-			g_warning ("FIXME: We have a non-cmd/widget attribute on "
-				   "%s, please fix", bonobo_ui_xml_make_path (node));
+			g_warning ("FIXME: We have an attribute '%s' at '%s' breaking "
+				   "cmd/widget separation, please fix",
+				   hidden?"hidden":((sensitive)?"sensitive":((state)?"state":"error")),
+				   bonobo_ui_xml_make_path (node));
 			if (hidden)
 				set_cmd_attr (priv, cmd_node, "hidden", hidden, FALSE);
 			if (sensitive)

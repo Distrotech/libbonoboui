@@ -26,7 +26,6 @@ POA_Bonobo_View__vepv   bonobo_view_vepv;
 
 enum {
 	VIEW_UNDO_LAST_OPERATION,
-	DO_VERB,
 	SET_ZOOM_FACTOR,
 	LAST_SIGNAL
 };
@@ -39,20 +38,6 @@ struct _BonoboViewPrivate {
 	GHashTable *verb_callbacks;
 	GHashTable *verb_callback_closures;
 };
-
-static void
-impl_Bonobo_View_do_verb (PortableServer_Servant servant,
-			 const CORBA_char      *verb_name,
-			 CORBA_Environment     *ev)
-{
-#ifdef STALE_NOT_USED
-	BonoboView *view = BONOBO_VIEW (bonobo_object_from_servant (servant));
-
-	bonobo_view_execute_verb (view, verb_name);
-#else
-	g_warning ("Verbs have jumped interface");
-#endif
-}
 
 static void
 impl_Bonobo_View_set_zoom_factor (PortableServer_Servant servant,
@@ -136,9 +121,6 @@ bonobo_view_construct (BonoboView *view, Bonobo_View corba_view, GtkWidget *widg
 	
 	bonobo_control_construct (BONOBO_CONTROL (view), corba_view, widget);
 
-	view->priv->verb_callbacks = g_hash_table_new (g_str_hash, g_str_equal);
-	view->priv->verb_callback_closures = g_hash_table_new (g_str_hash, g_str_equal);
-
 /*	gtk_signal_connect (GTK_OBJECT (view), "view_activate",
 			    GTK_SIGNAL_FUNC (bonobo_view_activate),
 			    NULL);*/
@@ -175,15 +157,6 @@ bonobo_view_new (GtkWidget *widget)
 	return bonobo_view_construct (view, corba_view, widget);
 }
 
-static gboolean
-bonobo_view_destroy_remove_verb (gpointer key, gpointer value,
-				gpointer user_data)
-{
-	g_free (key);
-
-	return TRUE;
-}
-
 static void
 bonobo_view_destroy (GtkObject *object)
 {
@@ -193,15 +166,6 @@ bonobo_view_destroy (GtkObject *object)
 	g_return_if_fail (BONOBO_IS_VIEW (object));
 	
 	view = BONOBO_VIEW (object);
-
-	/*
-	 * Free up all the verbs associated with this View.
-	 */
-	g_hash_table_foreach_remove (view->priv->verb_callbacks,
-				     bonobo_view_destroy_remove_verb, NULL);
-	g_hash_table_destroy (view->priv->verb_callbacks);
-
-	g_hash_table_destroy (view->priv->verb_callback_closures);
 
 	g_free (view->priv);
 	
@@ -220,7 +184,6 @@ bonobo_view_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_View__epv, 1);
 
-	epv->do_verb	     = impl_Bonobo_View_do_verb;
 	epv->set_zoom_factor = impl_Bonobo_View_set_zoom_factor;
 
 	return epv;
@@ -253,15 +216,6 @@ bonobo_view_class_init (BonoboViewClass *klass)
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
 	bonobo_view_parent_class = gtk_type_class (bonobo_control_get_type ());
-
-	view_signals [DO_VERB] =
-                gtk_signal_new ("do_verb",
-                                GTK_RUN_LAST,
-                                object_class->type,
-                                GTK_SIGNAL_OFFSET (BonoboViewClass, do_verb), 
-                                gtk_marshal_NONE__POINTER,
-                                GTK_TYPE_NONE, 1,
-				GTK_TYPE_STRING);
 
 	view_signals [SET_ZOOM_FACTOR] =
                 gtk_signal_new ("set_zoom_factor",
@@ -433,191 +387,4 @@ bonobo_view_activate_notify (BonoboView *view, gboolean activated)
 	g_return_if_fail (BONOBO_IS_VIEW (view));
 
 	bonobo_control_activate_notify (BONOBO_CONTROL (view), activated);
-}
-
-
-/**
- * bonobo_view_register_verb:
- * @view: A BonoboView object.
- * @verb_name: The name of the verb to register.
- * @callback: A function to call when @verb_name is executed on @view.
- * @user_data: A closure to pass to @callback when it is invoked.
- *
- * Registers a verb called @verb_name against @view.  When @verb_name
- * is executed, the View will dispatch to @callback.
- */
-void
-bonobo_view_register_verb (BonoboView *view, const char *verb_name,
-			  BonoboViewVerbFunc callback, gpointer user_data)
-{
-	char *key;
-
-	g_return_if_fail (view != NULL);
-	g_return_if_fail (BONOBO_IS_VIEW (view));
-	g_return_if_fail (verb_name != NULL);
-
-	key = g_strdup (verb_name);
-
-	g_hash_table_insert (view->priv->verb_callbacks, key, callback);
-	g_hash_table_insert (view->priv->verb_callback_closures, key, user_data);
-}
-
-/**
- * bonobo_view_unregister_verb:
- * @view: A BonoboView object.
- * @verb_name: The name of a verb to be unregistered.
- *
- * Unregisters the verb called @verb_name from @view.
- */
-void
-bonobo_view_unregister_verb (BonoboView *view, const char *verb_name)
-{
-	gchar *original_key;
-
-	g_return_if_fail (view != NULL);
-	g_return_if_fail (BONOBO_IS_VIEW (view));
-	g_return_if_fail (verb_name != NULL);
-
-	if (! g_hash_table_lookup_extended (view->priv->verb_callbacks, verb_name,
-					    (gpointer *) &original_key, NULL))
-		return;
-	g_hash_table_remove (view->priv->verb_callbacks, verb_name);
-	g_hash_table_remove (view->priv->verb_callback_closures, verb_name);
-	g_free (original_key);
-}
-
-#ifdef STALE_NOT_USED
-/**
- * bonobo_view_execute_verb:
- * @view: A BonoboView object.
- * @verb_name: The name of the verb to execute on @view.
- *
- * Executes the verb specified by @verb_name on @view, emitting a
- * "do_verb" signal and calling the registered verb callback, if one
- * exists for @verb_name on @view.
- */
-void
-bonobo_view_execute_verb (BonoboView *view, const char *verb_name)
-{
-	BonoboViewVerbFunc callback;
-
-	/*
-	 * Always emit a signal when a verb is executed.
-	 */
-	gtk_signal_emit (
-		GTK_OBJECT (view),
-		view_signals [DO_VERB],
-		(gchar *) verb_name);
-
-	/*
-	 * The user may have registered a callback for this particular
-	 * verb.  If so, dispatch to that callback.
-	 */
-	callback = g_hash_table_lookup (view->priv->verb_callbacks, verb_name);
-	if (callback != NULL) {
-		void *user_data;
-
-		user_data = g_hash_table_lookup (view->priv->verb_callback_closures, verb_name);
-
-		(*callback) (view, (const char *) verb_name, user_data);
-	}
-}
-
-static void
-bonobo_view_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
-			     const char *path)
-{
-	BonoboView  *view = BONOBO_VIEW (user_data);
-	const char *verb_name;
-
-	g_assert (path != NULL);
-
-	/*
-	 * Extract the verb name from the selected verb.
-	 */
-	verb_name = path + 1;
-
-	/*
-	 * Execute it.
-	 */
-	bonobo_view_execute_verb (view, verb_name);
-
-	/*
-	 * Store the verb name.
-	 */
-	gtk_object_set_data (GTK_OBJECT (view), "view_executed_verb_name",
-			     g_strdup (verb_name));
-	
-}
-#endif /* STALE_NOT_USED */
-
-/**
- * bonobo_view_popup_verbs:
- * @view: A BonoboView object.
- *
- * Creates a popup menu, filling it with the list of verbs supported
- * by @view.  If a verb is selected, it is executed on @view.  Returns
- * a newly-allocated string containing the name of the selected verb,
- * or %NULL if no verb is selected.
- */
-char *
-bonobo_view_popup_verbs (BonoboView *view)
-{
-#ifdef STALE_NOT_USED
-	BonoboUIHandler *popup;
-	const GList *verbs;
-	const GList *l;
-	char *verb;
-
-	g_return_val_if_fail (view != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_VIEW (view), NULL);
-	g_return_val_if_fail (view->embeddable != NULL, NULL);
-
-	/*
-	 * Get a list of the available verbs from our embeddable.
-	 */
-	verbs = bonobo_embeddable_get_verbs (view->embeddable);
-
-	/*
-	 * Build the menu.
-	 */
-	popup = bonobo_ui_handler_new ();
-	bonobo_ui_handler_create_popup_menu (popup);
-
-	for (l = verbs; l != NULL; l = l->next) {
-		const GnomeVerb *verb = (GnomeVerb *) l->data;
-		char *path;
-
-		path = g_strconcat ("/", verb->name, NULL);
-		bonobo_ui_handler_menu_new_item (popup, path,
-						verb->label, verb->hint,
-						-1,
-						BONOBO_UI_HANDLER_PIXMAP_NONE, NULL,
-						0, (GdkModifierType) 0,
-						bonobo_view_verb_selected_cb,
-						view);
-
-		g_free (path);
-	}
-
-	/*
-	 * Pop up the menu.
-	 */
-	bonobo_ui_handler_do_popup_menu (popup);
-
-	/*
-	 * Destroy it.
-	 */
-	bonobo_object_unref (BONOBO_OBJECT (popup));
-
-	/*
-	 * Grab the name of the executed verb.
-	 */
-	verb = gtk_object_get_data (GTK_OBJECT (view), "view_executed_verb_name");
-	gtk_object_remove_data (GTK_OBJECT (view), "view_executed_verb_name");
-
-	return verb;
-#else
-	return NULL;
-#endif /* STALE_NOT_USED */
 }

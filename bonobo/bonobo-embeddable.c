@@ -116,41 +116,6 @@ impl_Bonobo_Embeddable_close (PortableServer_Servant servant,
 {
 }
 
-static Bonobo_Embeddable_verb_list *
-impl_Bonobo_Embeddable_get_verb_list (PortableServer_Servant servant,
-				     CORBA_Environment *ev)
-{
-	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
-	Bonobo_Embeddable_verb_list *verb_list;
-
-	GList *l;
-	int len;
-	int i;
-
-	len = g_list_length (embeddable->verbs);
-
-	verb_list = Bonobo_Embeddable_verb_list__alloc ();
-	verb_list->_length = len;
-
-	if (len == 0)
-		return verb_list;
-
-	verb_list->_buffer = CORBA_sequence_Bonobo_Embeddable_GnomeVerb_allocbuf (len);
-
-	for (i = 0, l = embeddable->verbs; l != NULL; l = l->next, i ++) {
-		Bonobo_Embeddable_GnomeVerb *corba_verb;
-		GnomeVerb *verb = (GnomeVerb *) l->data;
-
-		corba_verb = & verb_list->_buffer [i];
-#define CORBIFY_STRING(s) ((s) == NULL ? "" : (s))
-		corba_verb->name  = CORBA_string_dup (CORBIFY_STRING (verb->name));
-		corba_verb->label = CORBA_string_dup (CORBIFY_STRING (verb->label));
-		corba_verb->hint  = CORBA_string_dup (CORBIFY_STRING (verb->hint));
-	}
-
-	return verb_list;
-}
-
 static void
 impl_Bonobo_Embeddable_advise (PortableServer_Servant servant,
 			      const Bonobo_AdviseSink advise,
@@ -343,7 +308,6 @@ bonobo_embeddable_get_epv (void)
 	epv->get_client_site = impl_Bonobo_Embeddable_get_client_site;
 	epv->set_host_name   = impl_Bonobo_Embeddable_set_host_name;
 	epv->close           = impl_Bonobo_Embeddable_close;
-	epv->get_verb_list   = impl_Bonobo_Embeddable_get_verb_list;
 	epv->advise          = impl_Bonobo_Embeddable_advise;
 	epv->unadvise        = impl_Bonobo_Embeddable_unadvise;
 	epv->get_misc_status = impl_Bonobo_Embeddable_get_misc_status;
@@ -536,7 +500,6 @@ static void
 bonobo_embeddable_destroy (GtkObject *object)
 {
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (object);
-	GList *l;
 
 	/*
 	 * Destroy all our views.
@@ -554,19 +517,6 @@ bonobo_embeddable_destroy (GtkObject *object)
 		bonobo_object_unref (BONOBO_OBJECT (comp));
 	}
 	
-	/*
-	 * Release the verbs
-	 */
-	for (l = embeddable->verbs; l; l = l->next) {
-		GnomeVerb *verb = (GnomeVerb *) l->data;
-
-		g_free (verb->name);
-		g_free (verb->label);
-		g_free (verb->hint);
-		g_free (verb);
-	}
-	g_list_free (embeddable->verbs);
-
 	if (embeddable->uri)
 		g_free (embeddable->uri);
 	
@@ -675,109 +625,6 @@ bonobo_embeddable_set_view_factory (BonoboEmbeddable *embeddable,
 	embeddable->priv->view_factory = factory;
 	embeddable->priv->view_factory_closure = data;
 }
-
-/**
- * bonobo_embeddable_add_verb:
- * @embeddable: The embeddable object to operate on.
- * @verb_name: The key which is used to uniquely identify the verb.
- * @verb_label: A localizable string which identifies the verb.
- * @verb_hint: A localizable string which gives a verbose description
- * of the verb's function.
- *
- * This routine adds @verb_name to the list of verbs supported
- * by this @embeddable.
- */
-void
-bonobo_embeddable_add_verb (BonoboEmbeddable *embeddable,
-			   const char *verb_name, const char *verb_label, const char *verb_hint)
-{
-	GnomeVerb *verb;
-
-	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
-	g_return_if_fail (verb_name != NULL);
-
-	verb = g_new0 (GnomeVerb, 1);
-	verb->name = g_strdup (verb_name);
-	verb->label = g_strdup (verb_label);
-	verb->hint = g_strdup (verb_hint);
-
-	embeddable->verbs = g_list_prepend (embeddable->verbs, verb);
-}
-
-/**
- * bonobo_embeddable_add_verbs:
- * @embeddable: The embeddable object to operate on.
- * @verbs: An array of GnomeVerbs to be added.
- *
- * This routine adds the list of verbs in the NULL terminated array
- * in @verbs to the exported verbs for the component.
- */
-void
-bonobo_embeddable_add_verbs (BonoboEmbeddable *embeddable, const GnomeVerb *verbs)
-{
-	int i;
-
-	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
-	g_return_if_fail (verbs != NULL);
-
-	for (i = 0; verbs [i].name != NULL; i++)
-		bonobo_embeddable_add_verb (embeddable, verbs[i].name, verbs[i].label, verbs[i].hint);
-}
-
-/**
- * bonobo_embeddable_remove_verb:
- * @embeddable: The embeddable object to operate on.
- * @verb_name: a verb name
- *
- * This routine removes the verb called @verb_name from the list
- * of exported verbs for this embeddable object
- */
-void
-bonobo_embeddable_remove_verb (BonoboEmbeddable *embeddable, const char *verb_name)
-{
-	GList *l;
-	
-	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
-	g_return_if_fail (verb_name != NULL);
-
-	for (l = embeddable->verbs; l != NULL; l = l->next) {
-		GnomeVerb *verb = (GnomeVerb *) l->data;
-
-		if (! strcmp (verb_name, verb->name)) {
-			embeddable->verbs = g_list_remove_link (embeddable->verbs, l);
-			g_list_free_1 (l);
-
-			g_free (verb->name);
-			g_free (verb->label);
-			g_free (verb->hint);
-			g_free (verb);
-
-			return;
-		}
-	}
-
-	g_warning ("Verb [%s] not found!", verb_name);
-}
-
-/**
- * bonobo_embeddable_get_verbs:
- * @embeddable: A BonoboEmbeddable object.
- *
- * Returns the internal copy of the list of verbs supported by this
- * Embeddable object.
- */
-const GList *
-bonobo_embeddable_get_verbs (BonoboEmbeddable *embeddable)
-{
-	g_return_val_if_fail (embeddable != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_EMBEDDABLE (embeddable), NULL);
-
-	return (const GList *) embeddable->verbs;
-}
-
 
 /**
  * bonobo_embeddable_get_uri:

@@ -436,36 +436,6 @@ bonobo_view_frame_view_deactivate (BonoboViewFrame *view_frame)
 		BONOBO_CONTROL_FRAME (view_frame));
 }
 
-
-/**
- * bonobo_view_frame_view_do_verb:
- * @view_frame: A BonoboViewFrame object which has an associated BonoboView.
- * @verb_name: The name of the verb to perform on @view_frame's BonoboView.
- *
- * Performs the verb specified by @verb_name on the remote BonoboView
- * object associated with @view_frame.
- */
-void
-bonobo_view_frame_view_do_verb (BonoboViewFrame *view_frame,
-			       const char *verb_name)
-{
-	CORBA_Environment ev;
-
-	g_return_if_fail (verb_name != NULL);
-	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
-	g_return_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL);
-
-	CORBA_exception_init (&ev);
-	Bonobo_View_do_verb (view_frame->priv->view, verb_name, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION) {
-		bonobo_object_check_env (
-			BONOBO_OBJECT (view_frame),
-			(CORBA_Object) view_frame->priv->view, &ev);
-	}
-	CORBA_exception_free (&ev);
-}
-
 /**
  * bonobo_view_frame_get_wrapper:
  * @view_frame: A BonoboViewFrame object.

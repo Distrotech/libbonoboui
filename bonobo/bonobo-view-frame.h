@@ -46,7 +46,6 @@ void                       bonobo_view_frame_bind_to_view     (BonoboViewFrame  
 Bonobo_View                bonobo_view_frame_get_view         (BonoboViewFrame  *view_frame);
 BonoboClientSite          *bonobo_view_frame_get_client_site  (BonoboViewFrame  *view_frame);
 GtkWidget                 *bonobo_view_frame_get_wrapper      (BonoboViewFrame  *view_frame);
-char                      *bonobo_view_frame_popup_verbs      (BonoboViewFrame  *view_frame);
 void                       bonobo_view_frame_set_covered      (BonoboViewFrame  *view_frame,
 							       gboolean          covered);
 
@@ -60,8 +59,6 @@ Bonobo_UIContainer         bonobo_view_frame_get_ui_container (BonoboViewFrame *
  */
 void                       bonobo_view_frame_view_activate    (BonoboViewFrame  *view_frame);
 void                       bonobo_view_frame_view_deactivate  (BonoboViewFrame  *view_frame);
-void                       bonobo_view_frame_view_do_verb     (BonoboViewFrame  *view_frame,
-							       const char       *verb_name);
 void                       bonobo_view_frame_set_zoom_factor  (BonoboViewFrame  *view_frame,
 							       double            zoom);
 POA_Bonobo_ViewFrame__epv *bonobo_view_frame_get_epv          (void);

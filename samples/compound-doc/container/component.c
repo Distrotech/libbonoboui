@@ -103,30 +103,7 @@ static void
 component_user_context_cb (BonoboViewFrame  *view_frame,
 			   SampleClientSite *site)
 {
-	char  *executed_verb;
-	GList *l;
-
-	/*
-	 * See if the remote BonoboEmbeddable supports any verbs at
-	 * all.
-	 */
-	l = bonobo_client_site_get_verbs (BONOBO_CLIENT_SITE (site));
-	if (!l)
-		return;
-	bonobo_client_site_free_verbs (l);
-
-#if 0
-	/*
-	 * Popup the verb popup and execute the chosen verb.  This
-	 * function saves us the work of creating the menu, connecting
-	 * the callback, and executing the verb on the remove
-	 * BonoboView.  We could implement all this functionality
-	 * ourselves if we wanted.
-	 */
-	executed_verb = bonobo_view_frame_popup_verbs (view_frame);
-#endif
-
-	g_free (executed_verb);
+	g_warning ("We need some standardized verb stuff here...");
 }
 
 void
