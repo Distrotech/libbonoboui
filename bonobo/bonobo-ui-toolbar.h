@@ -23,13 +23,11 @@ G_BEGIN_DECLS
 #define BONOBO_IS_UI_TOOLBAR(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR))
 #define BONOBO_IS_UI_TOOLBAR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR))
 
-
-enum _BonoboUIToolbarStyle {
+typedef enum {
 	BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT,
 	BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT,
 	BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY
-};
-typedef enum _BonoboUIToolbarStyle BonoboUIToolbarStyle;
+} BonoboUIToolbarStyle;
 
 typedef struct _BonoboUIToolbarPrivate BonoboUIToolbarPrivate;
 
@@ -47,7 +45,6 @@ typedef struct {
 	void (* style_changed)   (BonoboUIToolbar *toolbar);
 } BonoboUIToolbarClass;
 
-
 GtkType               bonobo_ui_toolbar_get_type         (void) G_GNUC_CONST;
 void                  bonobo_ui_toolbar_construct        (BonoboUIToolbar      *toolbar);
 GtkWidget            *bonobo_ui_toolbar_new              (void);

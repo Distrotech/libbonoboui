@@ -1,3 +1,25 @@
+2001-12-07  jacob berkman  <jacob@ximian.com>
+
+	* configure.in: look for glib-mkenums
+
+2001-12-06  jacob berkman  <jacob@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar.h (BonoboUIToolbarStyle): reformat so
+	that glib-mkenums likes us
+
+	* bonobo/bonobo-dock-layout.[ch]: make it a GObject rather than a
+	GtkObject
+
+	* bonobo/Makefile.am: add builtin type files
+
+	* glade/glade-bonobo.c (dock_allow_floating): 
+	(dock_item_set_shadow_type): handle some properties
+	(dock_item_build): set the dock name
+	(add_dock_item):
+	(dock_build_children): ported from libglade 1
+	(glade_module_register_widgets): tell glade about the new widgets
+	we can do
+
 2001-12-06  Rodrigo Moya <rodrigo@gnome-db.org>
 
 	* samples/compound-doc/bonobo-hello/Makefile.am:

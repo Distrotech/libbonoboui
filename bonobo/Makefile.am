@@ -20,6 +20,7 @@ noinst_HEADERS = \
 	bonobo-control-internal.h		\
 	bonobo-ui-engine-config.h		\
 	bonobo-ui-engine-private.h		\
+	bonobo-ui-marshal.h			\
 	bonobo-ui-node-private.h		\
 	bonobo-ui-preferences.h			\
 	bonobo-ui-sync-menu.h			\
@@ -34,7 +35,7 @@ noinst_HEADERS = \
 
 libbonoboincludedir = $(includedir)/libbonoboui-2.0/bonobo
 
-libbonoboinclude_HEADERS = \
+libbonoboui_h_sources = \
 	bonobo-canvas-component.h		\
 	bonobo-canvas-item.h			\
 	bonobo-control-frame.h			\
@@ -109,6 +110,7 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-ui-toolbar-separator-item.c	\
 	bonobo-ui-toolbar-toggle-button-item.c	\
 	bonobo-ui-toolbar.c			\
+	bonobo-ui-type-builtins.c		\
 	bonobo-ui-util.c			\
 	bonobo-ui-xml.c				\
 	bonobo-widget.c				\
@@ -117,25 +119,65 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-zoomable-frame.c			\
 	bonobo-ui-marshal-main.c
 
-marshal_sources = \
-	bonobo-ui-marshal.c \
-	bonobo-ui-marshal.h
 
-$(libbonoboui_2_la_OBJECTS): $(marshal_sources)
+$(libbonoboui_2_la_OBJECTS): $(libbonoboui_built_sources)
+
+libbonoboui_built_public_sources = \
+	bonobo-ui-type-builtins.h
+
+libbonoboui_built_sources = \
+	bonobo-ui-type-builtins.c	\
+	bonobo-ui-marshal.c 		\
+	bonobo-ui-marshal.h		\
+	libbonoboui.defs
+
+libbonoboinclude_HEADERS = \
+	$(libbonoboui_h_sources) \
+	$(libbonoboui_built_public_sources)
 
 bonobo-ui-marshal.h: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
 	$(GLIB_GENMARSHAL) $< --header --prefix=bonobo_ui_marshal > $@
 bonobo-ui-marshal.c: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
 	$(GLIB_GENMARSHAL) $< --body --prefix=bonobo_ui_marshal > $@
+bonobo-ui-type-builtins.c: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
+	$(GLIB_MKENUMS) \
+			--fhead "#include \"libbonoboui.h\"\n\n" \
+			--fhead "#include \"bonobo-ui-type-builtins.h\"\n\n" \
+			--fprod "\n/* enumerations from \"@filename@\" */" \
+			--vhead "static const G@Type@Value _@enum_name@_values[] = {" \
+			--vprod "  { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
+			--vtail "  { 0, NULL, NULL }\n};\n\n" \
+			--vtail "GType\n@enum_name@_get_type (void)\n{\n" \
+			--vtail "  static GType type = 0;\n\n" \
+			--vtail "  if (!type)\n" \
+			--vtail "    type = g_@type@_register_static (\"@EnumName@\", _@enum_name@_values);\n\n" \
+			--vtail "  return type;\n}\n\n" \
+		$(libbonoboui_h_sources) > xgen-gtbec \
+	&& cp xgen-gtbec $(@F) \
+	&& rm -f xgen-gtbec
+bonobo-ui-type-builtins.h: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
+	$(GLIB_MKENUMS) \
+			--fhead "#ifndef __BONOBO_UI_TYPE_BUILTINS_H__\n" \
+			--fhead "#define __BONOBO_UI_TYPE_BUILTINS_H__ 1\n\n" \
+			--fhead "#include <glib-object.h>\n\n" \
+			--fhead "G_BEGIN_DECLS\n\n" \
+			--ftail "G_END_DECLS\n\n" \
+			--ftail "#endif /* __BONOBO_UI_TYPE_BUILTINS_H__ */\n" \
+			--fprod "\n/* --- @filename@ --- */" \
+			--eprod "#define BONOBO_TYPE_@ENUMSHORT@ @enum_name@_get_type()\n" \
+			--eprod "GType @enum_name@_get_type (void);\n" \
+		$(libbonoboui_h_sources) > xgen-gth \
+	&& cp xgen-gth $(@F) \
+	&& rm -f xgen-gth
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libbonoboui-2.0.pc
 
 EXTRA_DIST = bonobo-insert-component.xpm libbonoboui-2.0.pc.in \
 	bonobo-ui-marshal.list
-CLEANFILES = $(marshal_sources)
+CLEANFILES = $(bonobo_built_sources)
 
-DONT_DIST_SOURCE = $(marshal_sources)
+DONT_DIST_SOURCE = $(bonobo_built_sources)
 
 dist-hook:
 	for file in $(DONT_DIST_SOURCE) ; do \

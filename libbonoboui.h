@@ -35,6 +35,14 @@ G_BEGIN_DECLS
 #include <bonobo/bonobo-zoomable.h>
 #include <bonobo/bonobo-zoomable-frame.h>
 
+#include <bonobo/bonobo-dock-item.h>
+#include <bonobo/bonobo-dock.h>
+#include <bonobo/bonobo-ui-engine.h>
+#include <bonobo/bonobo-ui-toolbar-item.h>
+#include <bonobo/bonobo-ui-toolbar.h>
+
+#include <bonobo/bonobo-ui-type-builtins.h>
+
 G_END_DECLS
 
 #endif /* LIBBONOBOUI_H */

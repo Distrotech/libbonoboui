@@ -1,8 +1,9 @@
 /*
  * glade-bonobo.c: support for bonobo widgets in libglade.
  *
- * Author:
- *      Michael Meeks (michael@helixcode.com)
+ * Authors:
+ *      Michael Meeks (michael@ximian.com)
+ *      Jacob Berkman (jacob@ximian.com>
  *
  * Copyright (C) 2000,2001 Ximian, Inc., 2001 James Henstridge.
  */
@@ -12,6 +13,37 @@
 #include <libbonoboui.h>
 #include <glade/glade-init.h>
 #include <glade/glade-build.h>
+
+static void
+dock_allow_floating (GladeXML *xml, GtkWidget *widget,
+		     const char *name, const char *value)
+{
+	bonobo_dock_allow_floating_items (BONOBO_DOCK (widget),
+					  *value == 'y');
+}
+
+static void
+dock_item_set_shadow_type (GladeXML *xml, GtkWidget *widget,
+			   const char *name, const char *value)
+{
+	bonobo_dock_item_set_shadow_type (
+		BONOBO_DOCK_ITEM (widget),
+		glade_enum_from_string (GTK_TYPE_SHADOW_TYPE, value));
+}
+
+static GtkWidget *
+dock_item_build (GladeXML *xml, GType widget_type,
+		 GladeWidgetInfo *info)
+{
+	GtkWidget *w;
+
+	w = glade_standard_build_widget (xml, widget_type, info);
+
+	BONOBO_DOCK_ITEM (w)->name = g_strdup (info->name);
+
+	return w;
+}
+
 
 static GtkWidget *
 glade_bonobo_widget_new (GladeXML        *xml,
@@ -139,17 +171,96 @@ bonobo_window_find_internal_child (GladeXML    *xml,
     return NULL;
 }
 
+static void
+add_dock_item (GladeXML *xml, 
+	       GtkWidget *parent,
+	       GladeWidgetInfo *info,
+	       GladeChildInfo *childinfo)
+{
+	BonoboDockPlacement placement;
+	guint band, offset;
+	int position;
+	BonoboDockItemBehavior behavior;
+	int i;
+	GtkWidget *child;
+	
+	band = offset = position = 0;
+	placement = BONOBO_DOCK_TOP;
+	behavior  = BONOBO_DOCK_ITEM_BEH_NORMAL;
+	
+	for (i = 0; i < childinfo->child->n_properties; i++) {
+		const char *name  = childinfo->child->properties[i].name;
+		const char *value = childinfo->child->properties[i].value;
+		
+		if (!strcmp (name, "placement"))
+			placement = glade_enum_from_string (
+				BONOBO_TYPE_DOCK_PLACEMENT,
+				value);
+		else if (!strcmp (name, "band"))
+			band = strtoul (value, NULL, 10);
+		else if (!strcmp (name, "position"))
+			position = strtol (value, NULL, 10);
+		else if (!strcmp (name, "offset"))
+			offset = strtoul (value, NULL, 10);
+		else if (!strcmp (name, "behavior"))
+			behavior = glade_flags_from_string (
+				BONOBO_TYPE_DOCK_ITEM_BEHAVIOR,
+				value);
+	}
+
+	child = glade_xml_build_widget (xml, childinfo->child);
+
+	bonobo_dock_add_item (BONOBO_DOCK (parent),
+			      BONOBO_DOCK_ITEM (child),
+			      placement, band, position, offset, 
+			      FALSE);
+}
+				
+
+static void
+dock_build_children (GladeXML *xml, GtkWidget *w, GladeWidgetInfo *info)
+{
+	int i;
+	GtkWidget *child;
+	GladeChildInfo *childinfo;
+
+	for (i = 0; i < info->n_children; i++) {
+		childinfo = &info->children[i];
+
+		if (!strcmp (childinfo->child->class, "BonoboDockItem")) {
+			add_dock_item (xml, w, info, childinfo);
+			continue;
+		}
+		
+		if (bonobo_dock_get_client_area (BONOBO_DOCK (w)))
+			g_warning ("Multiple client areas for BonoboDock found.");
+		
+		child = glade_xml_build_widget (xml, childinfo->child);
+		bonobo_dock_set_client_area (BONOBO_DOCK (w), child);
+	}
+}
+
 /* this macro puts a version check function into the module */
 GLADE_MODULE_CHECK_INIT
 
 void
 glade_module_register_widgets (void)
 {
-	glade_provide ("bonobo");
+	glade_require ("gtk");
+
+	glade_register_custom_prop (BONOBO_TYPE_DOCK, "allow_floating", dock_allow_floating);
+	glade_register_custom_prop (BONOBO_TYPE_DOCK_ITEM, "shadow_type", dock_item_set_shadow_type);
+
 	glade_register_widget (BONOBO_TYPE_WIDGET,
 			       glade_bonobo_widget_new,
 			       NULL, NULL);
 	glade_register_widget (BONOBO_TYPE_WINDOW,
 			       NULL, glade_standard_build_children,
 			       bonobo_window_find_internal_child);
+	glade_register_widget (BONOBO_TYPE_DOCK,
+			       NULL, dock_build_children,
+			       NULL);
+	glade_register_widget (BONOBO_TYPE_DOCK_ITEM,
+			       dock_item_build, glade_standard_build_children, NULL);
+	glade_provide ("bonobo");
 }

@@ -50,6 +50,8 @@ AC_SUBST(BONOBOUI_GLADE_LIBS)
  
 # glib-genmarshal
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
+# glib-mkenums
+AC_PATH_PROG(GLIB_MKENUMS, glib-mkenums)
 
 AC_OUTPUT([
 Makefile

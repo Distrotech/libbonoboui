@@ -74,7 +74,7 @@ struct _BonoboDockLayoutItem
 
 struct _BonoboDockLayout
 {
-  GtkObject object;
+  GObject object;
 
   GList *items;                 /* BonoboDockLayoutItem */
 
@@ -88,7 +88,7 @@ struct _BonoboDockLayoutClass
 };
 
 BonoboDockLayout     *bonobo_dock_layout_new      (void);
-GtkType               bonobo_dock_layout_get_type (void) G_GNUC_CONST;
+GType                 bonobo_dock_layout_get_type (void) G_GNUC_CONST;
    
 gboolean             bonobo_dock_layout_add_item (BonoboDockLayout *layout,
                                                  BonoboDockItem *item,

@@ -42,16 +42,14 @@ struct _BonoboDockLayoutPrivate
 	 * bonobo_dock_layout_init function! */
 };
 
-
-static GtkObjectClass *parent_class = NULL;
+static GObjectClass *parent_class = NULL;
 
 
 
 static void   bonobo_dock_layout_class_init   (BonoboDockLayoutClass  *class);
 
-static void   bonobo_dock_layout_init         (BonoboDockLayout *layout);
+static void   bonobo_dock_layout_instance_init(BonoboDockLayout *layout);
 
-static void   bonobo_dock_layout_destroy      (GtkObject *object);
 static void   bonobo_dock_layout_finalize     (GObject *object);
 
 static gint   item_compare_func              (gconstpointer a,
@@ -74,20 +72,15 @@ static void   remove_item                    (BonoboDockLayout *layout,
 static void
 bonobo_dock_layout_class_init (BonoboDockLayoutClass  *class)
 {
-  GtkObjectClass *object_class;
-  GObjectClass *gobject_class;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
 
-  object_class = (GtkObjectClass *) class;
-  gobject_class = (GObjectClass *) class;
-
-  object_class->destroy = bonobo_dock_layout_destroy;
   gobject_class->finalize = bonobo_dock_layout_finalize;
 
-  parent_class = gtk_type_class (gtk_object_get_type ());
+  parent_class = g_type_class_ref (G_TYPE_OBJECT);
 }
 
 static void
-bonobo_dock_layout_init (BonoboDockLayout *layout)
+bonobo_dock_layout_instance_init (BonoboDockLayout *layout)
 {
   layout->_priv = NULL;
   /* XXX: when there is some private stuff enable this
@@ -97,27 +90,14 @@ bonobo_dock_layout_init (BonoboDockLayout *layout)
 }
 
 static void
-bonobo_dock_layout_destroy (GtkObject *object)
-{
-  BonoboDockLayout *layout;
-
-  /* remember, destroy can be run multiple times! */
-
-  layout = BONOBO_DOCK_LAYOUT (object);
-
-  while (layout->items)
-    remove_item (layout, layout->items);
-
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
-}
-
-static void
 bonobo_dock_layout_finalize (GObject *object)
 {
   BonoboDockLayout *layout;
 
   layout = BONOBO_DOCK_LAYOUT (object);
+
+  while (layout->items)
+    remove_item (layout, layout->items);
 
   /* Free the private structure */
   g_free (layout->_priv);
@@ -207,28 +187,26 @@ remove_item (BonoboDockLayout *layout,
 
 
 
-GtkType
+GType
 bonobo_dock_layout_get_type (void)
 {
-  static guint layout_type = 0;
+  static GType layout_type = 0;
 	
   if (layout_type == 0)
     {
-      GtkTypeInfo layout_info =
-      {
-        "BonoboDockLayout",
-        sizeof (BonoboDockLayout),
-        sizeof (BonoboDockLayoutClass),
-        (GtkClassInitFunc) bonobo_dock_layout_class_init,
-        (GtkObjectInitFunc) bonobo_dock_layout_init,
-        NULL,
-        NULL,
-	NULL
+      GTypeInfo layout_info = {
+	sizeof (BonoboDockLayoutClass),
+	NULL, NULL,
+	(GClassInitFunc)bonobo_dock_layout_class_init,
+	NULL, NULL,
+	sizeof (BonoboDockLayout),
+	0,
+	(GInstanceInitFunc)bonobo_dock_layout_instance_init
       };
-		
-      layout_type = gtk_type_unique (gtk_object_get_type (), &layout_info);
-    }
 
+      layout_type = g_type_register_static (G_TYPE_OBJECT, "BonoboDockLayout", &layout_info, 0);
+    }
+  
   return layout_type;
 }
 
@@ -243,11 +221,7 @@ bonobo_dock_layout_get_type (void)
 BonoboDockLayout *
 bonobo_dock_layout_new (void)
 {
-  BonoboDockLayout *new;
-
-  new = gtk_type_new (bonobo_dock_layout_get_type ());
-
-  return new;
+  return BONOBO_DOCK_LAYOUT (g_object_new (BONOBO_TYPE_DOCK_LAYOUT, NULL));
 }
 
 /**
