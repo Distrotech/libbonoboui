@@ -28,10 +28,13 @@ enum {
 	VIEW_UNDO_LAST_OPERATION,
 	SIZE_QUERY,
 	DO_VERB,
+	SET_ZOOM_FACTOR,
 	LAST_SIGNAL
 };
 
 static guint view_signals [LAST_SIGNAL];
+
+typedef void (*GnomeSignal_NONE__DOUBLE) (GtkObject *object, double arg1, gpointer user_data);
 
 static void
 impl_GNOME_View_activate (PortableServer_Servant servant,
@@ -164,6 +167,19 @@ impl_GNOME_View_size_query (PortableServer_Servant servant,
 	*desired_height = dh;
 	*desired_width = dw;
 }
+
+static void
+impl_GNOME_View_set_zoom_factor (PortableServer_Servant servant,
+				 const CORBA_double zoom,
+				 CORBA_Environment *ev)
+{
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (
+		GTK_OBJECT (view),
+		view_signals [SET_ZOOM_FACTOR], zoom);
+}
+
 
 /**
  * gnome_view_corba_object_create:
@@ -315,10 +331,24 @@ init_view_corba_class (void)
 	gnome_view_epv.activate = impl_GNOME_View_activate;
 	gnome_view_epv.reactivate_and_undo = impl_GNOME_View_reactivate_and_undo;
 	gnome_view_epv.size_query = impl_GNOME_View_size_query;
+	gnome_view_epv.set_zoom_factor = impl_GNOME_View_set_zoom_factor;
 	
 	/* Setup the vector of epvs */
 	gnome_view_vepv.GNOME_Unknown_epv = &gnome_object_epv;
 	gnome_view_vepv.GNOME_View_epv = &gnome_view_epv;
+}
+
+static void 
+gnome_marshal_NONE__DOUBLE (GtkObject * object,
+			    GtkSignalFunc func,
+			    gpointer func_data,
+			    GtkArg * args)
+{
+	GnomeSignal_NONE__DOUBLE rfunc;
+	rfunc = (GnomeSignal_NONE__DOUBLE) func;
+	(*rfunc) (object,
+		  GTK_VALUE_DOUBLE (args[0]),
+		  func_data);
 }
 
 static void
@@ -364,6 +394,14 @@ gnome_view_class_init (GnomeViewClass *class)
                                 GTK_TYPE_NONE, 1,
 				GTK_TYPE_STRING);
 
+	view_signals [SET_ZOOM_FACTOR] =
+                gtk_signal_new ("set_zoom_factor",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET (GnomeViewClass, set_zoom_factor), 
+                                gnome_marshal_NONE__DOUBLE,
+                                GTK_TYPE_NONE, 1,
+				GTK_TYPE_DOUBLE);
 	gtk_object_class_add_signals (object_class, view_signals,
 				      LAST_SIGNAL);
 

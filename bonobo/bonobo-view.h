@@ -54,7 +54,7 @@ struct _GnomeViewClass {
 	void (*size_query)               (GnomeView *view, int *desired_width, int *desired_height);
 	void (*do_verb)                  (GnomeView *view,
 					  const CORBA_char *verb_name);
-					  
+	void (*set_zoom_factor)          (GnomeView *view, double zoom);
 };
 
 GtkType		 gnome_view_get_type		(void);
