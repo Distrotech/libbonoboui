@@ -93,7 +93,7 @@ ui_event (BonoboUIComponent           *component,
 	list = g_hash_table_lookup (component->priv->listeners, id);
 	if (list && list->closure)
 		bonobo_closure_invoke (
-			list->closure, NULL,
+			list->closure, G_TYPE_NONE,
 			BONOBO_UI_COMPONENT_TYPE, component,
 			G_TYPE_STRING, id,
 			G_TYPE_ENUM, type,
@@ -127,7 +127,7 @@ impl_Bonobo_UIComponent_execVerb (PortableServer_Servant servant,
 		/* We need a funny arg order here - so for
 		   our C closure we do odd things ! */
 		bonobo_closure_invoke (
-			verb->closure, NULL,
+			verb->closure, G_TYPE_NONE,
 			BONOBO_UI_COMPONENT_TYPE, component,
 			G_TYPE_STRING, cname, 0);
 	else
