@@ -29,6 +29,12 @@
 
 #include <bonobo/bonobo-ui-node-private.h>
 
+#ifdef LOWLEVEL_DEBUG
+#  define ACCESS(str) access (str, 0)
+#else
+#  define ACCESS(str)
+#endif
+
 /* Various debugging output defines */
 #undef STATE_SYNC_DEBUG
 #undef WIDGET_SYNC_DEBUG
@@ -1250,6 +1256,7 @@ bonobo_ui_engine_xml_set_prop (BonoboUIEngine *engine,
 			       const char     *component)
 {
 	char *parent_path;
+	const char *old_value;
 	BonoboUINode *copy;
 	BonoboUINode *original;
 	
@@ -1260,6 +1267,13 @@ bonobo_ui_engine_xml_set_prop (BonoboUIEngine *engine,
 
 	if (!original) 
 		return BONOBO_UI_ERROR_INVALID_PATH;
+
+	old_value = bonobo_ui_node_peek_attr (original, property);
+	if (!old_value && !value)
+		return BONOBO_UI_ERROR_OK;
+
+	if (old_value && value && !strcmp (old_value, value))
+		return BONOBO_UI_ERROR_OK;
 
 	copy = bonobo_ui_node_new (bonobo_ui_node_get_name (original));
 	bonobo_ui_node_copy_attrs (original, copy);
@@ -2441,16 +2455,16 @@ bonobo_ui_engine_update (BonoboUIEngine *engine)
 	if (engine->priv->frozen || !engine->priv->tree)
 		return;
 
-	access ("Bonobo: UI engine update - start", 0);
+	ACCESS ("Bonobo: UI engine update - start");
 
 	for (l = engine->priv->syncs; l; l = l->next)
 		bonobo_ui_sync_stamp_root (l->data);
 
-	access ("Bonobo: UI engine update - after stamp", 0);
+	ACCESS ("Bonobo: UI engine update - after stamp");
 
 	move_dirt_cmd_to_widget (engine);
 
-	access ("Bonobo: UI engine update - after dirt transfer", 0);
+	ACCESS ("Bonobo: UI engine update - after dirt transfer");
 
 /*	bonobo_ui_engine_dump (priv->win, "before update");*/
 
@@ -2466,15 +2480,15 @@ bonobo_ui_engine_update (BonoboUIEngine *engine)
 		bonobo_ui_engine_update_node (engine, sync, node);
 	}
 
-	access ("Bonobo: UI engine update - after update nodes", 0);
+	ACCESS ("Bonobo: UI engine update - after update nodes");
 
 	update_commands_state (engine);
 
-	access ("Bonobo: UI engine update - after cmd state", 0);
+	ACCESS ("Bonobo: UI engine update - after cmd state");
 
 	process_state_updates (engine);
 
-	access ("Bonobo: UI engine update - end", 0);
+	ACCESS ("Bonobo: UI engine update - end");
 
 /*	bonobo_ui_engine_dump (priv->win, "after update");*/
 }

@@ -1,3 +1,11 @@
+2002-02-06  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_update): remove access
+	syscalls slowing us down.
+	(bonobo_ui_engine_xml_set_prop): optimize
+	setting the same prop multiple times.
+
 2002-02-05  Michael Meeks  <michael@ximian.com>
 
 	* configure.in: require GConf >= 1.1.7
