@@ -98,7 +98,8 @@ BonoboUIError bonobo_ui_engine_xml_set_prop      (BonoboUIEngine   *engine,
 						  const char       *value);
 CORBA_char   *bonobo_ui_engine_xml_get_prop      (BonoboUIEngine   *engine,
 						  const char       *path,
-						  const char       *prop);
+						  const char       *prop,
+						  gboolean         *invalid_path);
 void          bonobo_ui_engine_prune_widget_info (BonoboUIEngine   *engine,
 						  BonoboUINode     *node,
 						  gboolean          save_custom);

@@ -12,10 +12,9 @@
 #define _BONOBO_WIDGET_H_
 
 #include <glib/gmacros.h>
-#include <gtk/gtkobject.h>
+#include <gtk/gtkbin.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-object.h>
-#include <bonobo/bonobo-wrapper.h>
 
 G_BEGIN_DECLS
  

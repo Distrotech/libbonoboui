@@ -1,3 +1,30 @@
+2001-11-07  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c (impl_get_prop): make the
+	check faster.
+
+	* tests/test-ui.c (main): update test.
+
+	* bonobo/bonobo-ui-container.c
+	(impl_Bonobo_UIContainer_getAttr): check it & fire the
+	right exceptions.
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_xml_get_prop): add invalid_path arg.
+
+	* bonobo/bonobo-ui-xml.c (bonobo_ui_xml_finalize):
+	chain to parent properly & upd.
+	(bonobo_ui_xml_dispose): impl.
+	(bonobo_ui_xml_class_init): hook.
+
+	* bonobo/bonobo-ui-preferences.c
+	(DEFINE_BONOBO_UI_PREFERENCE): cache the value localy.
+
+	* bonobo/Makefile.am: don't build / install bonobo-wrapper.h
+
+	* bonobo/bonobo-widget.c (bonobo_widget_class_init): upd.
+	(bonobo_widget_remove): impl.
+
 2001-11-05  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-ui-toolbar.c: (size_allocate_helper):
@@ -13,7 +40,7 @@
 	(impl_Bonobo_Zoomable__get_preferredLevels): use a memcpy
 	to be slightly efficient.
 	(impl_Bonobo_Zoomable__get_preferredLevelNames): 
-	make legivle.
+	make legible.
 
 2001-11-06  Michael Meeks  <michael@ximian.com>
 

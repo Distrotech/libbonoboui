@@ -997,23 +997,29 @@ state_update_now (BonoboUIEngine *engine,
  * This function fetches the property @prop at node
  * at @path in the internal structure.
  *
- * Return value: the XML string - use bonobo_ui_node_free_string to free
+ * Return value: a CORBA allocated string
  **/
 CORBA_char *
 bonobo_ui_engine_xml_get_prop (BonoboUIEngine *engine,
 			       const char     *path,
-			       const char     *prop)
+			       const char     *prop,
+			       gboolean       *invalid_path)
 {
  	char         *str;
  	BonoboUINode *node;
   	CORBA_char   *ret;
   
   	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
-  
+
   	node = bonobo_ui_xml_get_path (engine->priv->tree, path);
-  	if (!node)
+  	if (!node) {
+		if (invalid_path)
+			*invalid_path = TRUE;
   		return NULL;
- 	else {
+ 	} else {
+		if (invalid_path)
+			*invalid_path = FALSE;
+  
  		str = bonobo_ui_node_get_attr (node, prop);
 		if (!str)
 			return NULL;

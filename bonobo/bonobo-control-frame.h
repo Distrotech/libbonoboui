@@ -14,7 +14,6 @@
 #include <glib/gmacros.h>
 #include <gtk/gtkwidget.h>
 #include <bonobo/bonobo-object.h>
-#include <bonobo/bonobo-wrapper.h>
 #include <bonobo/bonobo-property-bag-client.h>
 
 typedef struct _BonoboControlFrame BonoboControlFrame;

@@ -333,7 +333,7 @@ main (int argc, char **argv)
 	fname = bonobo_ui_util_get_ui_fname (NULL, "../doc/std-ui.xml");
 	if (fname && g_file_test (fname, G_FILE_TEST_EXISTS)) {
 		fprintf (stderr, "\n\n--- Add std-ui.xml ---\n\n\n");
-		bonobo_ui_util_set_ui (componenta, NULL, "std-ui.xml",
+		bonobo_ui_util_set_ui (componenta, NULL, "../doc/std-ui.xml",
 				       "gnomecal", NULL);
 		bonobo_ui_component_thaw (componenta, NULL);
 
@@ -356,9 +356,6 @@ main (int argc, char **argv)
 	bonobo_ui_component_rm (componenta, "/", &ev);
 
 	bonobo_ui_component_set_translate (componentb, "/status", statusa, &ev);
-
-	g_assert (bonobo_ui_component_get_prop (
-		componentb, "/status/main", "non-existant", NULL) == NULL);
 
 	bonobo_ui_component_set_translate (componenta, "/", simplea, &ev);
 
@@ -413,6 +410,9 @@ main (int argc, char **argv)
 	bonobo_ui_component_set_status (componenta, "WhatA6>", &ev);
 	bonobo_ui_component_set_status (componentb, "WhatB7", &ev);
 	bonobo_ui_component_set_status (componentb, "", &ev);
+
+	g_assert (bonobo_ui_component_get_prop (
+		componentb, "/status/main", "non-existant", NULL) == NULL);
 
   	{
   		char *txt = bonobo_ui_component_get (componenta, "/status/main", TRUE, NULL);

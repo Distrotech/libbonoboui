@@ -147,15 +147,23 @@ impl_Bonobo_UIContainer_getAttr (PortableServer_Servant servant,
 				 const CORBA_char      *attr,
 				 CORBA_Environment     *ev)
 {
-	CORBA_char *xml;
+	CORBA_char     *xml;
 	BonoboUIEngine *engine = get_engine (servant);
+	gboolean        invalid_path = FALSE;
 
-	xml = bonobo_ui_engine_xml_get_prop (engine, path, attr);
+	xml = bonobo_ui_engine_xml_get_prop (
+		engine, path, attr, &invalid_path);
 	
 	if (!xml) {
-		CORBA_exception_set (
-			ev, CORBA_USER_EXCEPTION,
-			ex_Bonobo_UIContainer_InvalidPath, NULL);
+		if (invalid_path)
+			CORBA_exception_set (
+				ev, CORBA_USER_EXCEPTION,
+				ex_Bonobo_UIContainer_InvalidPath, NULL);
+		else
+			CORBA_exception_set (
+				ev, CORBA_USER_EXCEPTION,
+				ex_Bonobo_UIContainer_NonExistantAttr, NULL);
+
 		return NULL;
 	}
 

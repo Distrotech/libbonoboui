@@ -1172,12 +1172,10 @@ impl_get_prop (BonoboUIComponent *component,
 		container, path, prop, ev);
 
 	if (BONOBO_EX (ev)) {
-		if (strcmp (BONOBO_EX_REPOID (ev),
-			    ex_Bonobo_UIContainer_NonExistantAttr)) {
-			if (!opt_ev)
-				g_warning ("Invalid path '%s' on prop '%s' get",
-					   path, prop);
-		}
+		if (!opt_ev && strcmp (BONOBO_EX_REPOID (ev),
+				       ex_Bonobo_UIContainer_NonExistantAttr))
+			g_warning ("Invalid path '%s' on prop '%s' get",
+				   path, prop);
 		ret = NULL;
 	}
 

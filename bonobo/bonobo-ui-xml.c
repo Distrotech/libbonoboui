@@ -31,7 +31,7 @@ static void watch_update  (BonoboUIXml  *tree,
 			   BonoboUINode *node);
 static void watch_destroy (gpointer      data);
 
-static GObjectClass *bonobo_ui_xml_parent_class;
+static GObjectClass *parent_class = NULL;
 
 enum {
 	OVERRIDE,
@@ -991,24 +991,31 @@ bonobo_ui_xml_rm (BonoboUIXml *tree,
 }
 
 static void
+bonobo_ui_xml_dispose (GObject *object)
+{
+	GSList      *l;
+	BonoboUIXml *tree = (BonoboUIXml *) object;
+
+	for (l = tree->watches; l; l = l->next)
+		watch_destroy (l->data);
+	g_slist_free (tree->watches);
+	tree->watches = NULL;
+
+	parent_class->dispose (object);
+}
+
+static void
 bonobo_ui_xml_finalize (GObject *object)
 {
-	BonoboUIXml *tree = BONOBO_UI_XML (object);
-
-	if (tree) {
-		GSList *l;
-
-		if (tree->root) {
-			free_nodedata_tree (tree, tree->root, TRUE);
-			bonobo_ui_node_free (tree->root);
-			tree->root = NULL;
-		}
-
-		for (l = tree->watches; l; l = l->next)
-			watch_destroy (l->data);
-		g_slist_free (tree->watches);
-		tree->watches = NULL;
+	BonoboUIXml *tree = (BonoboUIXml *) object;
+	
+	if (tree->root) {
+		free_nodedata_tree (tree, tree->root, TRUE);
+		bonobo_ui_node_free (tree->root);
+		tree->root = NULL;
 	}
+
+	parent_class->finalize (object);
 }
 
 static void
@@ -1016,12 +1023,13 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 {
 	GObjectClass *object_class = (GObjectClass *) klass;
 	
-	bonobo_ui_xml_parent_class = g_type_class_peek_parent (klass);
+	parent_class = g_type_class_peek_parent (klass);
 
 	pos_id         = g_quark_from_static_string ("pos");
  	name_id        = g_quark_from_static_string ("name");
  	placeholder_id = g_quark_from_static_string ("placeholder");
 
+	object_class->dispose  = bonobo_ui_xml_dispose;
 	object_class->finalize = bonobo_ui_xml_finalize;
 
 	signals [OVERRIDE] =

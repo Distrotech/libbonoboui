@@ -63,7 +63,6 @@ libbonoboinclude_HEADERS = \
 	bonobo-ui-util.h			\
 	bonobo-widget.h				\
 	bonobo-window.h				\
-	bonobo-wrapper.h			\
 	bonobo-zoomable-frame.h			\
 	bonobo-zoomable.h
 
@@ -113,7 +112,6 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-ui-xml.c				\
 	bonobo-widget.c				\
 	bonobo-window.c				\
-	bonobo-wrapper.c			\
 	bonobo-zoomable.c			\
 	bonobo-zoomable-frame.c			\
 	bonobo-ui-marshal-main.c

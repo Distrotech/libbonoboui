@@ -45,7 +45,11 @@ get (const char *key, gboolean def)
 gboolean                                                         \
 bonobo_ui_preferences_get_ ## c_name (void)                      \
 {                                                                \
-	return get ("/desktop/gnome/interface/" prop_name, def); \
+	static int got = 0;					 \
+	static gboolean value;					 \
+	if (!(got++))						 \
+		value = get ("/desktop/gnome/interface/" prop_name, def); \
+	return value;							  \
 }
 
 DEFINE_BONOBO_UI_PREFERENCE (toolbar_labels,     "toolbar-labels",     TRUE);

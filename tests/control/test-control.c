@@ -192,5 +192,7 @@ main (int argc, char **argv)
 	run_tests (GTK_CONTAINER (window), TRUE, TRUE);
 	run_tests (GTK_CONTAINER (window), FALSE, TRUE);
 
+	gtk_widget_destroy (window);
+
 	return bonobo_debug_shutdown ();
 }

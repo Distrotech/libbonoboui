@@ -43,7 +43,7 @@ struct _BonoboWidgetPrivate {
 	BonoboControlFrame *frame;
 };
 
-static BonoboWrapperClass *bonobo_widget_parent_class;
+static GObjectClass *parent_class;
 
 static Bonobo_Unknown
 bonobo_widget_launch_component (const char        *moniker,
@@ -113,8 +113,7 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 	frame_widget = bonobo_control_frame_get_widget (bw->priv->frame);
 
 	/* Now stick it into this BonoboWidget. */
-	gtk_container_add (GTK_CONTAINER (bw),
-			   frame_widget);
+	gtk_container_add (GTK_CONTAINER (bw), frame_widget);
 	gtk_widget_show (frame_widget);
 
 	return bw;
@@ -344,7 +343,7 @@ bonobo_widget_dispose (GObject *object)
 	
 	priv->frame = NULL;
 
-	G_OBJECT_CLASS (bonobo_widget_parent_class)->dispose (object);
+	parent_class->dispose (object);
 }
 
 static void
@@ -354,7 +353,7 @@ bonobo_widget_finalize (GObject *object)
 	
 	g_free (bw->priv);
 
-	G_OBJECT_CLASS (bonobo_widget_parent_class)->finalize (object);
+	parent_class->finalize (object);
 }
 
 static void
@@ -403,12 +402,26 @@ bonobo_widget_size_allocate (GtkWidget *widget,
 }
 
 static void
+bonobo_widget_remove (GtkContainer *container,
+		      GtkWidget    *widget)
+{
+	BonoboWidget *bw = (BonoboWidget *) container;
+
+	bw->priv->frame = NULL;
+
+	GTK_CONTAINER_CLASS (parent_class)->remove (container, widget);
+}
+
+static void
 bonobo_widget_class_init (BonoboWidgetClass *klass)
 {
 	GObjectClass *object_class = (GObjectClass *) klass;
 	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
+	GtkContainerClass *container_class = (GtkContainerClass *) klass;
 
-	bonobo_widget_parent_class = gtk_type_class (GTK_TYPE_BIN);
+	parent_class = g_type_class_peek_parent (klass);
+
+	container_class->remove = bonobo_widget_remove;
 
 	widget_class->size_request = bonobo_widget_size_request;
 	widget_class->size_allocate = bonobo_widget_size_allocate;
