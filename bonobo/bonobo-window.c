@@ -1932,9 +1932,6 @@ de_accelerate_string (const char *in)
 			b--;
 	}
 	*b = '\0';
-
-	g_warning ("Testme: made '%s' from '%s'", ret, in);
-
 	return ret;
 }
 
@@ -1943,6 +1940,7 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		    GtkWidget *widget, GtkWidget *parent)
 {
 	char *type, *sensitive = NULL, *state = NULL, *label, *txt, *hidden = NULL;
+	char *min_width = NULL;
 	GdkPixbuf    *icon_pixbuf;
 	BonoboUINode *cmd_node;
 	static int    warned = 0;
@@ -1978,7 +1976,7 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 
 	type = cmd_get_attr (node, cmd_node, "type");
 	label = cmd_get_attr (node, cmd_node, "label");
-
+	
 	if (!type || !strcmp (type, "std") || !strcmp (type, "toggle")) {
 
 		if (icon_pixbuf) {
@@ -2000,6 +1998,13 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	bonobo_ui_node_free_string (type);
 	bonobo_ui_node_free_string (label);
 
+	min_width = cmd_get_attr (node, cmd_node, "min_width");
+	if (min_width != NULL) {
+		bonobo_ui_toolbar_item_set_minimum_width (BONOBO_UI_TOOLBAR_ITEM (widget),
+							  atoi (min_width));
+		g_free (min_width);
+	}
+	
 	if ((txt = cmd_get_attr (node, cmd_node, "tip"))) {
 
 		bonobo_ui_toolbar_item_set_tooltip (

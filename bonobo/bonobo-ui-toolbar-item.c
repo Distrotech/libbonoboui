@@ -41,7 +41,10 @@ struct _BonoboUIToolbarItemPrivate {
 	GtkOrientation orientation;
 
 	/* Style for this item.  */
-	BonoboUIToolbarItemStyle style;
+	BonoboUIToolbarItemStyle style;	
+	
+	/* minimum width (or height, if rotated) for this item */
+	int minimum_width;
 };
 
 enum {
@@ -80,9 +83,15 @@ static void
 impl_size_request (GtkWidget *widget,
 		   GtkRequisition *requisition_return)
 {
+	BonoboUIToolbarItem *toolbar_item;
+	BonoboUIToolbarItemPrivate *priv;
 	GtkRequisition child_requisition;
 	GtkWidget *child;
 	int border_width;
+
+	toolbar_item = BONOBO_UI_TOOLBAR_ITEM (widget);
+	priv = toolbar_item->priv;
+
 
 	border_width = GTK_CONTAINER (widget)->border_width;
 	requisition_return->width  = border_width;
@@ -94,6 +103,10 @@ impl_size_request (GtkWidget *widget,
 
 	gtk_widget_size_request (child, &child_requisition);
 
+	if (child_requisition.width < priv->minimum_width) {
+		child_requisition.width = priv->minimum_width;
+	}
+	
 	requisition_return->width  += child_requisition.width;
 	requisition_return->height += child_requisition.height;
 }
@@ -252,7 +265,8 @@ init (GtkObject *object)
 	priv->want_label  = FALSE;
 	priv->orientation = GTK_ORIENTATION_HORIZONTAL;
 	priv->style       = BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL;
-
+	priv->minimum_width = 0;
+	
 	toolbar_item->priv = priv;
 }
 
@@ -409,4 +423,13 @@ bonobo_ui_toolbar_item_activate (BonoboUIToolbarItem *item)
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
 	gtk_signal_emit (GTK_OBJECT (item), signals[ACTIVATE]);
+}
+
+void
+bonobo_ui_toolbar_item_set_minimum_width (BonoboUIToolbarItem *item, int minimum_width)
+{
+	g_return_if_fail (item != NULL);
+	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
+
+	item->priv->minimum_width = minimum_width;
 }

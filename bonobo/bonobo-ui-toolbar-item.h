@@ -84,6 +84,9 @@ struct _BonoboUIToolbarItemClass {
 GtkType                  bonobo_ui_toolbar_item_get_type         (void);
 GtkWidget               *bonobo_ui_toolbar_item_new              (void);
 
+void			 bonobo_ui_toolbar_item_set_minimum_width(BonoboUIToolbarItem *item,
+								  int minimum_width);
+
 void                     bonobo_ui_toolbar_item_set_tooltip      (BonoboUIToolbarItem     *item,
 								  GtkTooltips             *tooltips,
 								  const char              *tooltip);
