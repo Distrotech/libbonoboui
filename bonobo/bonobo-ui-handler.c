@@ -171,14 +171,14 @@ static void			  uih_toplevel_add_containee		(GnomeUIHandler *uih, GNOME_UIHandle
 static void			  pixmap_free_data			(GnomeUIHandlerPixmapType pixmap_type,
 									 gpointer pixmap_info);
 static gpointer			  pixmap_copy_data			(GnomeUIHandlerPixmapType pixmap_type,
-									 gpointer pixmap_info);
-static gpointer			  pixmap_xpm_copy_data			(gpointer data);
+									 const gconstpointer pixmap_info);
+static gpointer			  pixmap_xpm_copy_data			(const gconstpointer data);
 static GNOME_UIHandler_iobuf	 *pixmap_data_to_corba			(GnomeUIHandlerPixmapType type, gpointer data);
 static gpointer	                  pixmap_corba_to_data			(GNOME_UIHandler_PixmapType corba_pixmap_type,
 									 GNOME_UIHandler_iobuf *corba_pixmap_data);
 static GNOME_UIHandler_PixmapType pixmap_corba_to_type			(GNOME_UIHandler_PixmapType type);
 static GNOME_UIHandler_PixmapType pixmap_type_to_corba			(GnomeUIHandlerPixmapType type);
-static gint			  pixmap_xpm_get_length			(gpointer data, int *num_lines);
+static gint			  pixmap_xpm_get_length			(const gconstpointer data, int *num_lines);
 
 /*
  * Prototypes for some internal menu functions.
@@ -244,9 +244,9 @@ create_gnome_ui_handler (GnomeObject *object)
 static void
 gnome_ui_handler_destroy (GtkObject *object)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (object);
+/*	GnomeUIHandler *uih = GNOME_UI_HANDLER (object);*/
 
-	/* FIXME: Fill me in */
+	g_warning ("gnome ui handler destroy not fully implemented");
 
 	GTK_OBJECT_CLASS (gnome_ui_handler_parent_class)->destroy (object);
 }
@@ -1090,7 +1090,7 @@ pixmap_free_data (GnomeUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
 }
 
 static gpointer 
-pixmap_copy_data (GnomeUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
+pixmap_copy_data (GnomeUIHandlerPixmapType pixmap_type, const gconstpointer pixmap_info)
 {
 	switch (pixmap_type) {
 	case GNOME_UI_HANDLER_PIXMAP_NONE:
@@ -1157,7 +1157,7 @@ pixmap_corba_to_type (GNOME_UIHandler_PixmapType type)
 }
 
 static gint
-pixmap_xpm_get_length (gpointer data, int *num_lines)
+pixmap_xpm_get_length (const gconstpointer data, int *num_lines)
 {
 	int width, height, num_colors, chars_per_pixel;
 	char **lines;
@@ -1178,7 +1178,7 @@ pixmap_xpm_get_length (gpointer data, int *num_lines)
 }
 
 static gpointer
-pixmap_xpm_copy_data (gpointer src)
+pixmap_xpm_copy_data (const gconstpointer src)
 {
 	int num_lines;
 	char **dest;
@@ -1294,7 +1294,6 @@ pixmap_data_to_corba (GnomeUIHandlerPixmapType type, gpointer data)
 
 	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
 	case GNOME_UI_HANDLER_PIXMAP_STOCK:
-		g_warning ("Marshalling pixmap filename across CORBA!\n");
 		buffer->_length = strlen ((char *) data) + 1;
 		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (strlen ((char *) data));
 		strcpy (buffer->_buffer, (char *) data);
@@ -5444,6 +5443,12 @@ toolbar_local_get_item (GnomeUIHandler *uih, char *path)
 	return (ToolbarItemLocalInternal *) l->data;
 }
 
+static GtkWidget *
+toolbar_toplevel_get_widget (GnomeUIHandler *uih, char *path)
+{
+	return g_hash_table_lookup (uih->top->path_to_toolbar_item_widget, path);
+}
+
 static ToolbarToolbarLocalInternal *
 toolbar_local_get_toolbar (GnomeUIHandler *uih, char *path)
 {
@@ -5878,7 +5883,7 @@ impl_toolbar_remove (PortableServer_Servant servant,
 		     CORBA_char *name,
 		     CORBA_Environment *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+/*	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));*/
 
 	g_warning ("toolbar remove unimplemented");
 }
@@ -7230,7 +7235,7 @@ toolbar_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarItemInter
 	if (! toolbar_toplevel_item_is_head (uih, internal))
 		return;
 
-	toolbar_widget = g_hash_table_lookup (uih->top->name_to_toolbar_widget, internal->item->path);
+	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->item->path);
 	g_return_if_fail (toolbar_widget != NULL);
 
 	gtk_widget_set_sensitive (toolbar_widget, sensitive);
