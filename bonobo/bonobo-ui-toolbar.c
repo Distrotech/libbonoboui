@@ -151,6 +151,7 @@ item_destroy_cb (GtkObject *object,
 
 	widget = GTK_WIDGET (object);
 	priv->items = g_list_remove (priv->items, object);
+	g_object_unref (object);
 }
 
 static void
@@ -692,12 +693,14 @@ impl_dispose (GObject *object)
 {
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
-	GList *p, *next;
+	GList *items, *p, *next;
 
 	toolbar = BONOBO_UI_TOOLBAR (object);
 	priv = toolbar->priv;
 
-	for (p = priv->items; p != NULL; p = next) {
+	items = priv->items;
+	priv->items = NULL;
+	for (p = items; p != NULL; p = next) {
 		GtkWidget *item_widget;
 
 		next = p->next;
@@ -705,6 +708,7 @@ impl_dispose (GObject *object)
 		if (item_widget->parent == NULL)
 			gtk_widget_destroy (item_widget);
 	}
+	g_list_free (items);
 
 	if (priv->popup_item &&
 	    GTK_WIDGET (priv->popup_item)->parent == NULL)
@@ -725,11 +729,7 @@ impl_dispose (GObject *object)
 static void
 impl_finalize (GObject *object)
 {
-	BonoboUIToolbar *toolbar;
-
-	toolbar = BONOBO_UI_TOOLBAR (object);
-
-	g_list_free (toolbar->priv->items);
+	BonoboUIToolbar *toolbar = (BonoboUIToolbar *) object;
 	
 	g_free (toolbar->priv);
 
@@ -1280,18 +1280,21 @@ bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
-	g_object_ref (item);
-	gtk_object_sink (GTK_OBJECT (item));
-
 	priv = toolbar->priv;
 
 	/*
 	 *  This ugly hack is here since we might have unparented
 	 * a widget and then re-added it to the toolbar at a later
 	 * date, and un-parenting doesn't work quite properly yet.
+	 *
+	 *  Un-parenting is down to the widget possibly being a
+	 * child of either this widget, or the popup window.
 	 */
-	if (!g_list_find (priv->items, item))
+	if (!g_list_find (priv->items, item)) {
+		g_object_ref (item);
+		gtk_object_sink (GTK_OBJECT (item));
 		priv->items = g_list_insert (priv->items, item, position);
+	}
 
 	g_signal_connect_object (
 		item, "destroy",

@@ -106,6 +106,7 @@ bonobo_ui_node_copy (BonoboUINode *node,
 				child->prev = last;
 				last->next  = child;
 			}
+			last = child;
 		}
 	}
 
@@ -128,14 +129,12 @@ bonobo_ui_node_add_child (BonoboUINode *parent,
 	for (l = parent->children; l; l = l->next)
 		last = l;
 
-	if (!last) {
+	child->prev = last;
+	child->next = NULL;
+	if (!last)
 		parent->children = child;
-		child->prev = NULL;
-		child->next = NULL;
-	} else {
+	else
 		last->next  = child;
-		child->prev = last;
-	}
 	child->parent = parent;
 }
 

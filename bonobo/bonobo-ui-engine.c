@@ -520,15 +520,13 @@ prune_node (BonoboUIEngine *engine,
 #endif
 
 			gtk_widget_destroy (item);
+			widget_unref (&info->widget);
 		} else {
 			if (save)
 				custom_widget_unparent (info);
 /*			printf ("leave widget '%s'\n",
 			bonobo_ui_xml_make_path (node));*/
 		}
-
-		if (!save)
-			widget_unref (&info->widget);
 	}
 }
 

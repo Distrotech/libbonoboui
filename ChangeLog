@@ -1,3 +1,24 @@
+2002-09-17  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar.c
+	(impl_dispose): free list here no in finalize
+	(impl_finalize): upd.
+	(bonobo_ui_toolbar_insert): only sink/ref
+	if we didn't own it already.
+	(item_destroy_cb): unref the object on remove.
+
+2002-09-16  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c (prune_node):
+	never unref a root widget.
+
+2002-09-12  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-node.c
+	(bonobo_ui_node_copy): fix; not that anyone
+	uses it in fact.
+	(bonobo_ui_node_add_child): simplify.
+
 2002-09-09  Gustavo Carneiro <gjc@inescporto.pt>
 
 	* doc/ui-faq.txt: add BonoboCustomize note.
