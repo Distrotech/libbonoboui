@@ -126,9 +126,11 @@ bonobo_plug_dispose (GObject *object)
 		BonoboControl *control = plug->control;
 		gboolean       inproc_parent_died = FALSE;
 
-		inproc_parent_died = 
-			(GTK_WIDGET (plug)->parent &&
-			 GTK_OBJECT_DESTROYED (GTK_WIDGET (plug)->parent));
+		if (BONOBO_IS_SOCKET (GTK_WIDGET (plug)->parent))
+			inproc_parent_died = bonobo_socket_disposed (
+				BONOBO_SOCKET (GTK_WIDGET (plug)->parent));
+		else
+			inproc_parent_died = FALSE;
 
 		bonobo_plug_set_control (plug, NULL);
 

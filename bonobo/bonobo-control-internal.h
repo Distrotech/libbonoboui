@@ -50,6 +50,7 @@ void                bonobo_control_set_plug         (BonoboControl      *control
 						     BonoboPlug         *plug);
 void                bonobo_plug_set_control         (BonoboPlug         *plug,
 						     BonoboControl      *control);
+gboolean            bonobo_socket_disposed          (BonoboSocket       *socket);
 
 #ifndef   DEBUG_CONTROL
 

@@ -1,3 +1,11 @@
+2001-11-19  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-plug.c (bonobo_plug_dispose): update
+	to use bonobo_socket_disposed.
+
+	* bonobo/bonobo-socket.c (bonobo_socket_disposed): impl.
+	internal method to replace GTK_OBJECT_DESTROYED
+
 2001-11-18  Peter Williams  <peterw@ximian.com>
 
 	* bonobo/bonobo-ui-marshal-main.c: Same.

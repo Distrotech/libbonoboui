@@ -29,6 +29,12 @@ bonobo_socket_finalize (GObject *object)
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+gboolean
+bonobo_socket_disposed (BonoboSocket *socket)
+{
+	return (socket->frame == NULL);
+}
+
 static void
 bonobo_socket_dispose (GObject *object)
 {

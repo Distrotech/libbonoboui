@@ -64,6 +64,10 @@ modules to give more lucid encapsulation.
 
 * Destruction interaction (B1)
 
+*** FIXME *** connection sharing is going to screw up the out of proc
+lifecycle case ! ( we need to add an explicit notify ).
+
+
 ** Out of proc
 
 	Toplevel gtk_widget_destroy.
