@@ -1,3 +1,7 @@
+2001-07-30  Mikael Hallendal  <micke@codefactory.se>
+
+	* tests/test-selector.c: include libgnome/libgnome.h instead
+
 2001-07-31  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-ui.c (main): fixup set_containers.
