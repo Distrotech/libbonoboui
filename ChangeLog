@@ -1,3 +1,7 @@
+2004-10-02  Jesus Bravo Alvarez  <suso@trasno.net>
+
+	* configure.in: Added gl (Galician) to ALL_LINGUAS.
+
 2004-09-29 Matthias Clasen <mclasen@redhat.com>
 
 	Merged from the gnome-2-8 branch by Federico Mena Quintero <federico@ximian.com>:
