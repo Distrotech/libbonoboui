@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * Bonobo accessibility wrappers
+ * Bonobo accessibility helpers
  *
  * Author:
  *   Michael Meeks (michael@ximian.com)
@@ -10,12 +10,12 @@
 #ifndef _BONOBO_A11Y_H_
 #define _BONOBO_A11Y_H_
 
-#include <glib-object.h>
+#include <gtk/gtkwidget.h>
 
-void   bonobo_a11y_clobber_atk_junk_code (void);
-void   bonobo_a11y_register_type_for     (GType          atk_object_type,
-					  GType          gtk_widget_type);
-GType  bonobo_a11y_get_derived_type_for  (GType          widget_type,
-					  GClassInitFunc class_init);
+typedef void  (*BonoboA11YClassInitFn)   (AtkObjectClass *klass);
+
+AtkObject *bonobo_a11y_create_accessible_for (GtkWidget            *widget,
+					      const char           *gail_parent_class,
+					      BonoboA11YClassInitFn class_init);
 
 #endif /* _BONOBO_A11Y_H_ */

@@ -17,6 +17,7 @@
 #include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-main.h>
 #include <bonobo/bonobo-main.h>
+#include <bonobo/bonobo-a11y.h>
 
 #include <libgnome/gnome-init.h>
 

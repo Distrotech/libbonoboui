@@ -1,3 +1,27 @@
+2002-03-21  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-a11y.c
+	Remove ugly get_accessible clobbering code.
+	(bonobo_a11y_get_derived_type_for): remove the cruft,
+	we'll just override get_accessible for each widget.
+	(bonobo_a11y_create_accessible_for): impl.
+
+	* bonobo/bonobo-ui-toolbar-separator-item.c
+	(impl_get_accessible),
+	(separator_ref_state_set),
+	(separator_item_a11y_init),
+	(separator_item_a11y_class_init): impl.
+
+2002-03-21  Michael Meeks  <michael@ximian.com>
+	
+	* bonobo/bonobo-a11y.c
+	(bonobo_a11y_register_type_for): impl.
+	(bonobo_a11y_clobber_atk_junk_code): do the
+	hacks neccessary to make a11y clean enough to use.
+	(recursive_a11y_clobber): ug.
+	(bonobo_a11y_get_accessible): urgh.
+	(bonobo_a11y_get_derived_type_for): impl.
+
 2002-03-19  Murray Cumming  <murrayc@usa.net>
 
 	* bonobo/libbonobo-2.0.pc.in: Added libgnome dependency. 
