@@ -188,7 +188,7 @@ bonobo_ui_handler_create_toolbar (BonoboUIHandler *uih, const char *name)
 
 	g_return_if_fail (priv != NULL);
 
-	xml = g_strdup_printf ("<dockitem name=\"%s\"/>", name);
+	xml = g_strdup_printf ("<dockitem name=\"%s\" behavior=\"exclusive\"/>", name);
 	compat_set (priv, "/", xml);
 	g_free (xml);
 }
