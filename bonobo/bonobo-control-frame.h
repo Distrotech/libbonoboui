@@ -17,6 +17,10 @@
 #include <bonobo/bonobo-wrapper.h>
 #include <bonobo/bonobo-property-bag-client.h>
 
+typedef struct _BonoboControlFrame BonoboControlFrame;
+
+#include <bonobo/bonobo-socket.h>
+
 G_BEGIN_DECLS
  
 #define BONOBO_TYPE_CONTROL_FRAME        (bonobo_control_frame_get_type ())
@@ -27,10 +31,10 @@ G_BEGIN_DECLS
 
 typedef struct _BonoboControlFramePrivate BonoboControlFramePrivate;
 
-typedef struct {
+struct _BonoboControlFrame {
 	BonoboObject base;
 	BonoboControlFramePrivate *priv;
-} BonoboControlFrame;
+};
 
 typedef struct {
 	BonoboObjectClass parent_class;
@@ -45,13 +49,19 @@ typedef struct {
 
 #define BONOBO_CONTROL_FRAME_TOPLEVEL_PROP "bonobo:toplevel"
 
+/* Object construction stuff */
+GType                         bonobo_control_frame_get_type                  (void) G_GNUC_CONST;
+BonoboControlFrame           *bonobo_control_frame_construct                 (BonoboControlFrame  *control_frame,
+									      Bonobo_UIContainer   ui_container,
+									      CORBA_Environment   *ev);
 BonoboControlFrame           *bonobo_control_frame_new                       (Bonobo_UIContainer   ui_container);
 
 GtkWidget                    *bonobo_control_frame_get_widget                (BonoboControlFrame  *frame);
 
 /* This is only allowed when the Control is deactivated */
 void                          bonobo_control_frame_set_ui_container          (BonoboControlFrame  *control_frame,
-									      Bonobo_UIContainer   uic);
+									      Bonobo_UIContainer   uic,
+									      CORBA_Environment   *ev);
 
 /* Activating remote controls */
 void                          bonobo_control_frame_control_activate          (BonoboControlFrame  *control_frame);
@@ -76,7 +86,6 @@ void                          bonobo_control_frame_set_autostate             (Bo
 									      gboolean             autostate);
 gboolean                      bonobo_control_frame_get_autostate             (BonoboControlFrame  *control_frame);
 
-
 /* Connecting to the remote control */
 void                          bonobo_control_frame_bind_to_control           (BonoboControlFrame  *control_frame,
 									      Bonobo_Control       control,
@@ -85,30 +94,6 @@ void                          bonobo_control_frame_bind_to_control           (Bo
 Bonobo_Control                bonobo_control_frame_get_control               (BonoboControlFrame  *control_frame);
 
 Bonobo_UIContainer            bonobo_control_frame_get_ui_container          (BonoboControlFrame  *control_frame);
-
-
-/* Object construction stuff */
-GType                         bonobo_control_frame_get_type                  (void) G_GNUC_CONST;
-BonoboControlFrame           *bonobo_control_frame_construct                 (BonoboControlFrame  *control_frame,
-									      Bonobo_UIContainer   ui_container);
-
-/*
- * A BonoboControlFrame acts as a proxy for the remote BonoboControl object to
- * which it is bound.  These functions act as wrappers which a
- * container can use to communicate with the BonoboControl associated with
- * a given BonoboControlFrame.
- */
-void  bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
-					 int                *desired_width,
-					 int                *desired_height,
-					 CORBA_Environment  *opt_ev);
-					 
-/* You almost certainly don't want these methods */
-void  bonobo_control_frame_sync_realize   (BonoboControlFrame *frame);
-void  bonobo_control_frame_sync_unrealize (BonoboControlFrame *frame);
-
-/* Or this.  It exists just so that BonoboSocket can use it. */
-gboolean bonobo_control_frame_focus (BonoboControlFrame *frame, GtkDirectionType direction);
     
 G_END_DECLS
 

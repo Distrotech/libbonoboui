@@ -23,13 +23,15 @@
  * files for a list of changes.  These files are distributed with
  * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
  */
-
 #ifndef __BONOBO_SOCKET_H__
 #define __BONOBO_SOCKET_H__
 
 #include <glib/gmacros.h>
 #include <gtk/gtksocket.h>
-#include <bonobo/bonobo-control.h>
+
+typedef struct _BonoboSocket BonoboSocket;
+
+#include <bonobo/bonobo-control-frame.h>
 
 G_BEGIN_DECLS
 
@@ -37,23 +39,20 @@ G_BEGIN_DECLS
 #define BONOBO_SOCKET_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_socket_get_type (), BonoboSocketClass)
 #define BONOBO_IS_SOCKET(obj)       GTK_CHECK_TYPE (obj, bonobo_socket_get_type ())
 
-typedef struct _BonoboSocketPrivate BonoboSocketPrivate;
+struct _BonoboSocket {
+	GtkSocket           socket;
 
-typedef struct {
-	GtkSocket socket;
-
-	BonoboSocketPrivate *priv;
-} BonoboSocket;
+	BonoboControlFrame *frame;
+	gpointer            priv;
+};
 
 typedef struct {
 	GtkSocketClass parent_class;
 } BonoboSocketClass;
 
 
-GtkWidget*     bonobo_socket_new               (void);
-guint          bonobo_socket_get_type          (void);
-void           bonobo_socket_set_control_frame (BonoboSocket       *socket,
-						BonoboControlFrame *frame);
+GtkType             bonobo_socket_get_type          (void);
+GtkWidget*          bonobo_socket_new               (void);
 
 G_END_DECLS
 

@@ -16,35 +16,34 @@
 #include <gtk/gtkdnd.h>
 #include <bonobo/bonobo-socket.h>
 #include <bonobo/bonobo-control-frame.h>
-
-struct _BonoboSocketPrivate {
-	/* The control on the other side which we use to gdk_flush() */
-	BonoboControlFrame *frame;
-};
-
-/* Local data */
+#include <bonobo/bonobo-control-internal.h>
 
 static GtkSocketClass *parent_class = NULL;
 
-/* Destroy handler for the socket */
 static void
 bonobo_socket_finalize (GObject *object)
 {
-	BonoboSocket *socket;
-	BonoboSocketPrivate *priv;
-
-	g_return_if_fail (object != NULL);
-	g_return_if_fail (BONOBO_IS_SOCKET (object));
-
-	socket = BONOBO_SOCKET (object);
-	priv = socket->priv;
-
-	g_free (priv);
-	socket->priv = NULL;
+	dprintf ("bonobo_socket_finalize\n");
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+static void
+bonobo_socket_dispose (GObject *object)
+{
+	BonoboSocket *socket = (BonoboSocket *) object;
+
+	dprintf ("bonobo_socket_dispose\n");
+
+	if (socket->frame) {
+		BonoboObject *object = BONOBO_OBJECT (socket->frame);
+
+		bonobo_socket_set_control_frame (socket, NULL);
+		bonobo_object_unref (object);
+	}
+
+	G_OBJECT_CLASS (parent_class)->dispose (object);
+}
 
 static void
 bonobo_socket_realize (GtkWidget *widget)
@@ -59,23 +58,78 @@ bonobo_socket_realize (GtkWidget *widget)
 	if (GTK_WIDGET_CLASS (parent_class)->realize)
 		(* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
 
-	bonobo_control_frame_sync_realize (socket->priv->frame);
+	if (socket->frame) {
+		CORBA_Environment ev;
+
+		CORBA_exception_init (&ev);
+		bonobo_control_frame_set_remote_window (
+			socket->frame, &ev);
+		CORBA_exception_free (&ev);
+	}
 }
 
 static void
-bonobo_socket_unrealize (GtkWidget *widget)
+bonobo_socket_state_changed (GtkWidget   *widget,
+			     GtkStateType previous_state)
 {
-	BonoboSocket *socket;
+	BonoboSocket *socket = BONOBO_SOCKET (widget);
 
-	g_return_if_fail (widget != NULL);
-	g_return_if_fail (BONOBO_IS_SOCKET (widget));
+	if (!socket->frame)
+		return;
 
-	socket = BONOBO_SOCKET (widget);
+	if (!bonobo_control_frame_get_autostate (socket->frame))
+		return;
 
-	if (GTK_WIDGET_CLASS (parent_class)->unrealize)
-		(* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
+	bonobo_control_frame_control_set_state (
+		socket->frame, GTK_WIDGET_STATE (widget));
+}
 
-	bonobo_control_frame_sync_unrealize (socket->priv->frame);
+static gint
+bonobo_socket_focus_in (GtkWidget     *widget,
+			GdkEventFocus *focus)
+{
+	BonoboSocket *socket = BONOBO_SOCKET (widget);
+
+	if (!socket->frame)
+		return FALSE;
+
+	if (!bonobo_control_frame_get_autoactivate (socket->frame))
+		return FALSE;
+
+	bonobo_control_frame_control_activate (socket->frame);
+
+	return FALSE;
+}
+
+static gint
+bonobo_socket_focus_out (GtkWidget     *widget,
+			 GdkEventFocus *focus)
+{
+	BonoboSocket *socket = BONOBO_SOCKET (widget);
+
+	if (!socket->frame)
+		return FALSE;
+
+	if (!bonobo_control_frame_get_autoactivate (socket->frame))
+		return FALSE;
+
+	bonobo_control_frame_control_deactivate (socket->frame);
+
+	return FALSE;
+}
+
+static void
+bonobo_socket_size_request (GtkWidget      *widget,
+			    GtkRequisition *requisition)
+{
+	BonoboSocket *socket = (BonoboSocket *) widget;
+	
+	if (GTK_WIDGET_REALIZED (widget) || !socket->frame)
+		GTK_WIDGET_CLASS (parent_class)->size_request (
+			widget, requisition);
+	else
+		bonobo_control_frame_size_request (
+			socket->frame, requisition, NULL);
 }
 
 static void
@@ -85,23 +139,17 @@ bonobo_socket_class_init (GObjectClass *klass)
 
 	widget_class = (GtkWidgetClass*) klass;
 
-	parent_class = gtk_type_class (GTK_TYPE_SOCKET);
+	parent_class = g_type_class_peek_parent (klass);
 
 	klass->finalize = bonobo_socket_finalize;
+	klass->dispose  = bonobo_socket_dispose;
 
-	widget_class->realize = bonobo_socket_realize;
-	widget_class->unrealize = bonobo_socket_unrealize;
+	widget_class->realize         = bonobo_socket_realize;
+	widget_class->state_changed   = bonobo_socket_state_changed;
+	widget_class->focus_in_event  = bonobo_socket_focus_in;
+	widget_class->focus_out_event = bonobo_socket_focus_out;
+	widget_class->size_request    = bonobo_socket_size_request;
 }
-
-static void
-bonobo_socket_init (BonoboSocket *socket)
-{
-	BonoboSocketPrivate *priv;
-
-	priv = g_new (BonoboSocketPrivate, 1);
-	socket->priv = priv;
-}
-
 
 guint
 bonobo_socket_get_type ()
@@ -114,12 +162,13 @@ bonobo_socket_get_type ()
 			sizeof (BonoboSocket),
 			sizeof (BonoboSocketClass),
 			(GtkClassInitFunc) bonobo_socket_class_init,
-			(GtkObjectInitFunc) bonobo_socket_init,
+			(GtkObjectInitFunc) NULL,
 			NULL,
 			NULL
 		};
 
-		socket_type = gtk_type_unique (gtk_socket_get_type (), &socket_info);
+		socket_type = gtk_type_unique (
+			gtk_socket_get_type (), &socket_info);
 	}
 
 	return socket_type;
@@ -142,13 +191,35 @@ bonobo_socket_new (void)
 	return GTK_WIDGET (socket);
 }
 
+BonoboControlFrame *
+bonobo_socket_get_control_frame (BonoboSocket *socket)
+{
+	g_return_val_if_fail (BONOBO_IS_SOCKET (socket), NULL);
+
+	return socket->frame;
+}
+
 void
 bonobo_socket_set_control_frame (BonoboSocket       *socket,
 				 BonoboControlFrame *frame)
 {
+	BonoboControlFrame *old_frame;
+
 	g_return_if_fail (BONOBO_IS_SOCKET (socket));
 
-	if (socket->priv)
-		socket->priv->frame = frame;
-}
+	if (socket->frame == frame)
+		return;
 
+	old_frame = socket->frame;
+
+	if (frame) {
+		socket->frame = g_object_ref (G_OBJECT (frame));
+		bonobo_control_frame_set_socket (frame, socket);
+	} else
+		socket->frame = NULL;
+
+	if (old_frame) {
+		bonobo_control_frame_set_socket (old_frame, NULL);
+		g_object_unref (G_OBJECT (old_frame));
+	}
+}

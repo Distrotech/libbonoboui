@@ -32,15 +32,22 @@ struct _BonoboUIToolbarControlItemPrivate {
 
 static void
 set_control_property_bag_value (BonoboUIToolbarControlItem *item,
-				const char *name,
-				BonoboArg *value)
+				const char                 *name,
+				BonoboArg                  *value)
 {
 	BonoboControlFrame *frame;
 	Bonobo_PropertyBag bag;
 	
 	frame = bonobo_widget_get_control_frame (item->priv->control);
+	if (!frame)
+		return;
+
 	bag = bonobo_control_frame_get_control_property_bag (frame, NULL);
+	if (bag == CORBA_OBJECT_NIL)
+		return;
+
 	bonobo_pbclient_set_value (bag, name, value, NULL);
+
 	bonobo_object_release_unref (bag, NULL);
 }
 

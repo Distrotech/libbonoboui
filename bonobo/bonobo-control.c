@@ -2,28 +2,27 @@
 /*
  * Bonobo control object
  *
- * Author:
- *   Nat Friedman      (nat@helixcode.com)
- *   Miguel de Icaza   (miguel@helixcode.com)
+ * Authors:
+ *   Michael Meeks     (michael@ximian.com)
+ *   Nat Friedman      (nat@ximian.com)
+ *   Miguel de Icaza   (miguel@ximian.com)
  *   Maciej Stachowiak (mjs@eazel.com)
  *
- * Copyright 1999, 2000 Helix Code, Inc.
+ * Copyright 1999, 2001 Ximian, Inc.
  *                 2000 Eazel, Inc.
  */
 #include <config.h>
 #include <stdlib.h>
+
+#include <gdk/gdkx.h>
 #include <gtk/gtksignal.h>
-#include <gtk/gtkmarshal.h>
+
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-exception.h>
-#include <gdk/gdkprivate.h>
-#include <gdk/gdkx.h>
-#include <gtk/gtkbox.h>
-#include <gtk/gtkmain.h>
-
-#define PARENT_TYPE BONOBO_TYPE_OBJECT
+#include <bonobo/bonobo-control-internal.h>
+#include <bonobo/bonobo-property-bag-client.h>
 
 enum {
 	SET_FRAME,
@@ -33,8 +32,8 @@ enum {
 
 static guint control_signals [LAST_SIGNAL];
 
-/* Parent object class in GTK hierarchy */
-static BonoboObjectClass *bonobo_control_parent_class;
+/* Parent object class in GObject hierarchy */
+static GObjectClass *bonobo_control_parent_class = NULL;
 
 struct _BonoboControlPrivate {
 	GtkWidget                  *widget;
@@ -43,15 +42,46 @@ struct _BonoboControlPrivate {
 
 	GtkWidget                  *plug;
 	GtkWidget                  *socket;
-	gboolean                    is_local;
 	gboolean                    xid_received;
-	guint                       destroy_idle_id;
 			
 	BonoboUIComponent          *ui_component;
 	gboolean                    automerge;
 				   
 	Bonobo_PropertyBag          propbag;
 };
+
+/*
+ * Control lifecycle grind ...
+ */
+void
+bonobo_control_notify_plug_died (BonoboControl *control)
+{
+	Bonobo_ControlFrame frame;
+	gboolean            end_of_life;
+
+	frame = control->priv->control_frame;
+
+	dprintf ("bonobo_control_notify_plug_died: ");
+
+	if (frame != CORBA_OBJECT_NIL && frame->connection != NULL) {
+		if (LINC_CONNECTION (frame->connection)->status != LINC_CONNECTED) {
+			dprintf ("connection broken\n");
+			end_of_life = TRUE;
+		} else {
+			dprintf ("valid connection\n");
+			g_warning ("FIXME: We need to wait for 'broken' on the "
+				   "connection - to allow re-parenting");
+			end_of_life = TRUE;
+		}
+	} else {
+		dprintf ("no frame\n");
+		end_of_life = TRUE;
+	}
+
+	if (end_of_life)
+		bonobo_object_unref (BONOBO_OBJECT (control));
+}
+
 
 /**
  * bonobo_control_window_id_from_x11:
@@ -62,7 +92,7 @@ struct _BonoboControlPrivate {
  * 
  * Return value: the string; free after use.
  **/
-Bonobo_Control_windowId
+Bonobo_Gdk_WindowId
 bonobo_control_window_id_from_x11 (guint32 x11_id)
 {
 	guchar                  str[32];
@@ -106,66 +136,6 @@ bonobo_control_x11_from_window_id (const CORBA_char *id)
 
 	return x11_id;
 }
-
-/*
- * This callback is invoked when the plug is unexpectedly destroyed by
- * way of its associated X window dying.  This usually indicates that
- * the container application has died.  This callback is _not_ invoked
- * if the BonoboControl is destroyed normally, i.e. the user unrefs
- * the BonoboControl away.
- */
-static gboolean
-bonobo_control_plug_destroy_event_cb (GtkWidget   *plug,
-				      GdkEventAny *event,
-				      gpointer     closure)
-{
-	BonoboControl *control = BONOBO_CONTROL (closure);
-
-	if (control->priv->plug == NULL)
-		return FALSE;
-
-	if (control->priv->plug != plug)
-		g_warning ("Destroying incorrect plug!");
-
-	/*
-	 * Set the plug to NULL here so that we don't try to
-	 * destroy it later.  It will get destroyed on its
-	 * own.
-	 */
-	bonobo_control_set_plug (control, NULL);
-
-	/*
-	 * Destroy this plug's BonoboControl.
-	 */
-	bonobo_object_unref (BONOBO_OBJECT (control));
-
-	return FALSE;
-}
-
-/*
- * This callback is invoked when the plug is unexpectedly destroyed
- * through normal Gtk channels. FIXME FIXME FIXME 
- */
-static void
-bonobo_control_plug_destroy_cb (GtkWidget *plug,
-				gpointer   closure)
-{
-	BonoboControl *control = BONOBO_CONTROL (closure);
-
-	if (control->priv->plug == NULL)
-		return;
-
-	if (control->priv->plug != plug)
-		g_warning ("Destroying incorrect plug!");
-
-	/*
-	 * Set the plug to NULL here so that we don't try to
-	 * destroy it later.  It will get destroyed on its
-	 * own.
-	 */
-	bonobo_control_set_plug (control, NULL);
-}
-
 
 static void
 bonobo_control_auto_merge (BonoboControl *control)
@@ -227,134 +197,52 @@ impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 }
 
 
-static GtkWidget *
-bonobo_gtk_widget_from_x11_id (guint32 xid)
-{
-	GdkWindow *window;
-	gpointer data;
-
-	window = gdk_window_lookup (xid);
-	
-	if (!window)
-		return NULL;
-
-	gdk_window_get_user_data(window, &data);
-
-	if (!GTK_IS_WIDGET (data))
-		return NULL;
-	else
-		return GTK_WIDGET (data);
-}
-
-static gint
-idle_destroy_socket (gpointer data)
-{
-	BonoboControl *control = BONOBO_CONTROL (data);
-
-	g_return_val_if_fail (control != NULL, FALSE);
-
-	control->priv->destroy_idle_id = 0;
-
-	gtk_widget_destroy (control->priv->socket);
-
-	return FALSE;
-}
-
-
-static void
-remove_destroy_idle (GtkWidget *socket,
-		     BonoboControl *control)
-{
-	if (control->priv->destroy_idle_id != 0)
-		gtk_idle_remove (control->priv->destroy_idle_id);
-
-	control->priv->destroy_idle_id = 0;
-}
-
 static void
 impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 				 const CORBA_char       *id,
 				 CORBA_Environment      *ev)
 {
-	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
-	GtkWidget     *local_socket;
+	GtkWidget     *plug, *old_plug;
+	BonoboControl *control;
 	guint32        x11_id;
+
+	control = BONOBO_CONTROL (bonobo_object (servant));
 
 	g_return_if_fail (control->priv->widget != NULL);
 
+	dprintf ("setWindowId '%s'\n", id);
+
 	x11_id = bonobo_control_x11_from_window_id (id);
 
-	/*
-	 * Check to see if this XID is local to the application.  In
-	 * that case, we bypass the GtkPlug/GtkSocket mechanism and
-	 * embed the control directly into the widget hierarchy.  This
-	 * avoids a lot of the problems that Plug/Socket give us.
-	 */
-	local_socket = bonobo_gtk_widget_from_x11_id (x11_id);
-
-	if (! local_socket) {
-		GtkWidget *old_plug;
-
-		old_plug = control->priv->plug;
-		if (old_plug)
-			bonobo_plug_set_control (BONOBO_PLUG (old_plug), NULL);
-
-		/* Create the new plug */
-		bonobo_control_set_plug (control, BONOBO_PLUG (
-			bonobo_plug_new (x11_id)));
-
-		gtk_signal_connect_while_alive (GTK_OBJECT (control->priv->plug), "destroy_event",
-						GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_event_cb),
-						control, (GtkObject *) control);
-		gtk_signal_connect_while_alive (GTK_OBJECT (control->priv->plug), "destroy",
-						GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_cb),
-						control, (GtkObject *) control);
-
-		/*
-		 * Put the control widget inside the plug.  If we
-		 * already have a plug, then reparent the control into
-		 * the new plug.
-		 */
-		if (control->priv->xid_received) {
-
-			if (old_plug != NULL)
-				gtk_object_unref (GTK_OBJECT (old_plug));
-
-			gtk_widget_reparent (control->priv->widget, control->priv->plug);
-		} else
- 			gtk_container_add (GTK_CONTAINER (control->priv->plug), control->priv->widget);
-
-		gtk_widget_show (control->priv->plug);
-
-		control->priv->is_local = FALSE;
-
-	} else {
-		GtkWidget *socket_parent;
-
-		if (control->priv->xid_received)
-			return;
-
-		control->priv->is_local = TRUE;
-
-		socket_parent = local_socket->parent;
-		gtk_widget_hide (local_socket);
-
-		control->priv->socket = local_socket;
-		control->priv->destroy_idle_id = gtk_idle_add (
-			idle_destroy_socket, control);
-
-		gtk_signal_connect_while_alive (GTK_OBJECT (local_socket),
-						"destroy",
-						GTK_SIGNAL_FUNC (remove_destroy_idle),
-						control, (GtkObject *) control);
-
-
-		gtk_box_pack_end (GTK_BOX (socket_parent),
-				  control->priv->widget,
-				  TRUE, TRUE, 0);
+	old_plug = control->priv->plug;
+	if (old_plug) {
+		g_warning ("TESTME: Unusual code path - a control being re-stuffed");
+		bonobo_plug_set_control (BONOBO_PLUG (old_plug), NULL);
 	}
 
-	control->priv->xid_received = TRUE;
+	plug = bonobo_plug_new (x11_id);
+	bonobo_control_set_plug (control, BONOBO_PLUG (plug));
+	
+	/*
+	 * Put the control widget inside the plug.  If we
+	 * already have a plug, then reparent the control into
+	 * the new plug.
+	 */
+	if (control->priv->xid_received) {
+		/* FIXME: this looks to be riddled with referenceing issues */
+		g_warning ("TESTME: Unusual code path - reparenting the plug");
+		if (old_plug)
+			gtk_object_destroy (GTK_OBJECT (old_plug));
+		
+		gtk_widget_reparent (control->priv->widget, control->priv->plug);
+	} else {
+		control->priv->xid_received = TRUE;
+		gtk_container_add (GTK_CONTAINER (control->priv->plug),
+				   control->priv->widget);
+	}
+	
+	gtk_widget_show (control->priv->plug);
+	
 }
 
 static void
@@ -372,38 +260,41 @@ impl_Bonobo_Control_setSize (PortableServer_Servant  servant,
 	 */
 }
 
-static void
-impl_Bonobo_Control_getDesiredSize (PortableServer_Servant  servant,
-				    CORBA_short            *desired_width,
-				    CORBA_short            *desired_height,
-				    CORBA_Environment      *ev)
+static Bonobo_Gtk_Requisition
+impl_Bonobo_Control_getDesiredSize (PortableServer_Servant servant,
+				    CORBA_Environment     *ev)
 {
-	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
-	GtkRequisition requisition;
+	BonoboControl         *control;
+	GtkRequisition         requisition;
+	Bonobo_Gtk_Requisition req;
+
+	control = BONOBO_CONTROL (bonobo_object (servant));
 
 	gtk_widget_size_request (control->priv->widget, &requisition);
 
-	*desired_width = requisition.width;
-	*desired_height = requisition.height;
+	req.width  = requisition.width;
+	req.height = requisition.height;
+
+	return req;
 }
 
 static GtkStateType
-bonobo_control_gtk_state_from_corba (const Bonobo_Control_State state)
+bonobo_control_gtk_state_from_corba (const Bonobo_Gtk_State state)
 {
 	switch (state) {
-	case Bonobo_Control_StateNormal:
+	case Bonobo_Gtk_StateNormal:
 		return GTK_STATE_NORMAL;
 
-	case Bonobo_Control_StateActive:
+	case Bonobo_Gtk_StateActive:
 		return GTK_STATE_ACTIVE;
 
-	case Bonobo_Control_StatePrelight:
+	case Bonobo_Gtk_StatePrelight:
 		return GTK_STATE_PRELIGHT;
 
-	case Bonobo_Control_StateSelected:
+	case Bonobo_Gtk_StateSelected:
 		return GTK_STATE_SELECTED;
 
-	case Bonobo_Control_StateInsensitive:
+	case Bonobo_Gtk_StateInsensitive:
 		return GTK_STATE_INSENSITIVE;
 
 	default:
@@ -413,12 +304,12 @@ bonobo_control_gtk_state_from_corba (const Bonobo_Control_State state)
 }
 
 static void
-impl_Bonobo_Control_setState (PortableServer_Servant      servant,
-			       const Bonobo_Control_State  state,
-			       CORBA_Environment          *ev)
+impl_Bonobo_Control_setState (PortableServer_Servant  servant,
+			       const Bonobo_Gtk_State state,
+			       CORBA_Environment     *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
-	GtkStateType gtk_state = bonobo_control_gtk_state_from_corba (state);
+	GtkStateType   gtk_state = bonobo_control_gtk_state_from_corba (state);
 
 	g_return_if_fail (control->priv->widget != NULL);
 
@@ -444,46 +335,16 @@ impl_Bonobo_Control_getProperties (PortableServer_Servant  servant,
 	return bonobo_object_dup_ref (control->priv->propbag, ev);
 }
 
-static void
-process_events (PortableServer_Servant servant)
-{
-	BonoboControl *control =
-		BONOBO_CONTROL (bonobo_object_from_servant (servant));
-
-	g_return_if_fail (control != NULL);
-	g_return_if_fail (control->priv != NULL);
-
-	if (!control->priv->is_local) {
-		while (g_main_context_pending (NULL))
-			g_main_context_iteration (NULL, FALSE);
-		gdk_flush ();
-	}
-}
-
-static void
-impl_Bonobo_Control_realize (PortableServer_Servant servant,
-			     CORBA_Environment     *ev)
-{
-	process_events (servant);
-}
-
-static void
-impl_Bonobo_Control_unrealize (PortableServer_Servant servant,
-			       CORBA_Environment     *ev)
-{
-	process_events (servant);
-}
-
 static CORBA_boolean
 impl_Bonobo_Control_focus (PortableServer_Servant servant,
-			   Bonobo_Control_FocusDirection corba_direction,
-			   CORBA_Environment *ev)
+			   Bonobo_Gtk_Direction   corba_direction,
+			   CORBA_Environment     *ev)
 {
-	BonoboControl *control;
+	BonoboControl        *control;
+	GtkDirectionType      direction;
 	BonoboControlPrivate *priv;
-	GtkDirectionType direction;
 
-	control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
+	control = BONOBO_CONTROL (bonobo_object (servant));
 	priv = control->priv;
 
 	/* FIXME: this will not work for local controls. */
@@ -492,27 +353,27 @@ impl_Bonobo_Control_focus (PortableServer_Servant servant,
 		return FALSE;
 
 	switch (corba_direction) {
-	case Bonobo_Control_TAB_FORWARD:
+	case Bonobo_Gtk_DirectionTabForward:
 		direction = GTK_DIR_TAB_FORWARD;
 		break;
 
-	case Bonobo_Control_TAB_BACKWARD:
+	case Bonobo_Gtk_DirectionTabBackward:
 		direction = GTK_DIR_TAB_BACKWARD;
 		break;
 
-	case Bonobo_Control_UP:
+	case Bonobo_Gtk_DirectionUp:
 		direction = GTK_DIR_UP;
 		break;
 
-	case Bonobo_Control_DOWN:
+	case Bonobo_Gtk_DirectionDown:
 		direction = GTK_DIR_DOWN;
 		break;
 
-	case Bonobo_Control_LEFT:
+	case Bonobo_Gtk_DirectionLeft:
 		direction = GTK_DIR_LEFT;
 		break;
 
-	case Bonobo_Control_RIGHT:
+	case Bonobo_Gtk_DirectionRight:
 		direction = GTK_DIR_RIGHT;
 		break;
 
@@ -544,6 +405,9 @@ bonobo_control_construct (BonoboControl  *control,
 
 	control->priv->ui_component = NULL;
 	control->priv->propbag = CORBA_OBJECT_NIL;
+
+	/* Hold a ref on ourselves */
+	bonobo_object_ref (BONOBO_OBJECT (control));
 
 	return control;
 }
@@ -627,49 +491,37 @@ bonobo_control_get_automerge (BonoboControl *control)
 static void
 bonobo_control_dispose (GObject *object)
 {
+	CORBA_Environment ev;
 	BonoboControl *control = (BonoboControl *) object;
+
+	dprintf ("bonobo_control_dispose\n");
 
 	if (control->priv->plug)
 		bonobo_control_set_plug (control, NULL);
-}
-
-static void
-bonobo_control_finalize (GObject *object)
-{
-	BonoboControl *control = BONOBO_CONTROL (object);
-	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
-	if (control->priv->destroy_idle_id != 0)
-		gtk_idle_remove (control->priv->destroy_idle_id);
-	control->priv->destroy_idle_id = 0;
-
-	if (control->priv->propbag != CORBA_OBJECT_NIL)
-		bonobo_object_release_unref (control->priv->propbag, NULL);
-	control->priv->propbag = CORBA_OBJECT_NIL;
-
 	if (control->priv->control_frame != CORBA_OBJECT_NIL) {
 		if (control->priv->active)
-			Bonobo_ControlFrame_activated (control->priv->control_frame,
-						       FALSE, &ev);
+			Bonobo_ControlFrame_notifyActivated (
+				control->priv->control_frame,
+				FALSE, &ev);
 		
 		CORBA_Object_release (control->priv->control_frame, &ev);
 	}
 
-	CORBA_exception_free (&ev);
+	if (control->priv->propbag != CORBA_OBJECT_NIL)
+		bonobo_object_release_unref (control->priv->propbag, &ev);
+	control->priv->propbag = CORBA_OBJECT_NIL;
 
-	/*
-	 * If we have a UIComponent, destroy it.
-	 */
 	if (control->priv->ui_component != NULL) {
-		bonobo_ui_component_unset_container (control->priv->ui_component, NULL);
+		bonobo_ui_component_unset_container (control->priv->ui_component, &ev);
 		bonobo_object_unref (BONOBO_OBJECT (control->priv->ui_component));
 	}
 
-	/*
-	 * Destroy the control's top-level widget.
-	 */
+	CORBA_exception_free (&ev);
+
+	/* Destroy the control's top-level widget. */
 	if (control->priv->widget)
 		gtk_object_unref (GTK_OBJECT (control->priv->widget));
 
@@ -678,7 +530,7 @@ bonobo_control_finalize (GObject *object)
 	 * exist in the case where the container application died,
 	 * taking the plug out with it, or the optimized local case
 	 * where the plug/socket mechanism was bypassed.  In the
-	 * formaer case, plug_destroy_cb() would have been invoked,
+	 * former case, plug_destroy_cb() would have been invoked,
 	 * and it would have triggered the destruction of the Control,
 	 * which is why we're here now. In the latter case, it's not
 	 * needed because there is no plug.  
@@ -688,9 +540,19 @@ bonobo_control_finalize (GObject *object)
 		bonobo_control_set_plug (control, NULL);
 	}
 
+	bonobo_control_parent_class->dispose (object);
+}
+
+static void
+bonobo_control_finalize (GObject *object)
+{
+	BonoboControl *control = BONOBO_CONTROL (object);
+
+	dprintf ("bonobo_control_finalize\n");
+
 	g_free (control->priv);
 
-	G_OBJECT_CLASS (bonobo_control_parent_class)->finalize (object);
+	bonobo_control_parent_class->finalize (object);
 }
 
 /**
@@ -710,25 +572,30 @@ bonobo_control_set_control_frame (BonoboControl       *control,
 
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
+	if (control->priv->control_frame == control_frame)
+		return;
+		
 	if (!opt_ev) {
 		CORBA_exception_init (&tmp_ev);
 		ev = &tmp_ev;
 	} else
 		ev = opt_ev;
-		
+
 	if (control->priv->control_frame != CORBA_OBJECT_NIL)
 		CORBA_Object_release (control->priv->control_frame, ev);
 	
 	if (control_frame == CORBA_OBJECT_NIL)
 		control->priv->control_frame = CORBA_OBJECT_NIL;
-	else
-		control->priv->control_frame = CORBA_Object_duplicate (control_frame, ev);
+	else {
+		control->priv->control_frame = CORBA_Object_duplicate (
+			control_frame, ev);
+	}
 	
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
 	
 	g_signal_emit (G_OBJECT (control), control_signals [SET_FRAME], 0);
-	}
+}
 
 /**
  * bonobo_control_get_control_frame:
@@ -851,7 +718,7 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 {
 	Bonobo_ControlFrame control_frame;
 	Bonobo_PropertyBag pbag;
-	CORBA_Environment *real_ev = 0, tmp_ev;
+	CORBA_Environment *ev = 0, tmp_ev;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
@@ -861,16 +728,16 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 		return NULL;
 
 	if (opt_ev)
-		real_ev = opt_ev;
+		ev = opt_ev;
 	else {
 		CORBA_exception_init (&tmp_ev);
-		real_ev = &tmp_ev;
+		ev = &tmp_ev;
 	}
 
 	pbag = Bonobo_ControlFrame_getAmbientProperties (
-		control_frame, real_ev);
+		control_frame, ev);
 
-	if (BONOBO_EX (real_ev)) {
+	if (BONOBO_EX (ev)) {
 		if (!opt_ev)
 			CORBA_exception_free (&tmp_ev);
 		pbag = CORBA_OBJECT_NIL;
@@ -941,7 +808,7 @@ bonobo_control_activate_notify (BonoboControl     *control,
 	} else
 		ev = opt_ev;
 
-	Bonobo_ControlFrame_activated (control->priv->control_frame, activated, ev);
+	Bonobo_ControlFrame_notifyActivated (control->priv->control_frame, activated, ev);
 
 	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, ev);
 
@@ -981,16 +848,15 @@ bonobo_control_class_init (BonoboControlClass *klass)
 
 	epv = &klass->epv;
 
-	epv->activate       = impl_Bonobo_Control_activate;
-	epv->setSize        = impl_Bonobo_Control_setSize;
-	epv->setWindowId    = impl_Bonobo_Control_setWindowId;
-	epv->setState       = impl_Bonobo_Control_setState;
-	epv->setFrame       = impl_Bonobo_Control_setFrame;
-	epv->getDesiredSize = impl_Bonobo_Control_getDesiredSize;
 	epv->getProperties  = impl_Bonobo_Control_getProperties;
-	epv->realize        = impl_Bonobo_Control_realize;
-	epv->unrealize      = impl_Bonobo_Control_unrealize;
+	epv->getDesiredSize = impl_Bonobo_Control_getDesiredSize;
+	epv->setFrame       = impl_Bonobo_Control_setFrame;
+	epv->setWindowId    = impl_Bonobo_Control_setWindowId;
+	epv->setSize        = impl_Bonobo_Control_setSize;
+	epv->setState       = impl_Bonobo_Control_setState;
+	epv->activate       = impl_Bonobo_Control_activate;
 	epv->focus          = impl_Bonobo_Control_focus;
+	epv->unImplemented  = NULL;
 }
 
 static void
@@ -1003,7 +869,7 @@ bonobo_control_init (BonoboControl *control)
 
 BONOBO_TYPE_FUNC_FULL (BonoboControl, 
 		       Bonobo_Control,
-		       PARENT_TYPE,
+		       BONOBO_OBJECT_TYPE,
 		       bonobo_control);
 
 /*
@@ -1186,36 +1052,50 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 				  GtkWindow         *window,
 				  CORBA_Environment *opt_ev)
 {
-	Bonobo_PropertyBag pb;
-	char              *id;
-	GdkWindow         *win;
-	guint32            x11_id;
+	CORBA_char         *id;
+	GdkWindow          *win;
+	guint32             x11_id;
+	CORBA_Environment  *ev = 0, tmp_ev;
+	Bonobo_ControlFrame control_frame;
 
 	g_return_if_fail (GTK_IS_WINDOW (window));
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
-	pb = bonobo_control_get_ambient_properties (control, NULL);
+	/* FIXME: special case the local case !
+	 * we can only do this if set_transient is virtualized
+	 * and thus we can catch it in BonoboSocket and chain up
+	 * again if we are embedded inside an embedded thing. */
 
-	g_return_if_fail (pb != CORBA_OBJECT_NIL);
+	control_frame = control->priv->control_frame;
 
-	id = bonobo_property_bag_client_get_value_string (
-		pb, "bonobo:toplevel", opt_ev);
+	if (control_frame == CORBA_OBJECT_NIL)
+		return;
 
+	if (opt_ev)
+		ev = opt_ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	}
+
+	id = Bonobo_ControlFrame_getToplevelId (control_frame, ev);
 	g_return_if_fail (id != NULL);
 
-	x11_id = strtol (id, NULL, 10);
+	x11_id = bonobo_control_x11_from_window_id (id);
 
 #ifdef TRANSIENT_DEBUG
 	g_warning ("Got id '%s' -> %d", id, x11_id);
 #endif
+	CORBA_free (id);
 
 	/* FIXME: Special case the local case ? */
-
 	win = gdk_window_foreign_new (x11_id);
-
 	g_return_if_fail (win != NULL);
 
 	window_set_transient_for_gdk (window, win);
+
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 }
 
 /**
@@ -1250,18 +1130,26 @@ void
 bonobo_control_set_plug (BonoboControl *control,
 			 BonoboPlug    *plug)
 {
+	BonoboPlug *old_plug;
+
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
 	if ((BonoboPlug *) control->priv->plug == plug)
 		return;
 
-	if (control->priv->plug) {
-		bonobo_plug_set_control (BONOBO_PLUG (control->priv->plug), NULL);
-		g_object_unref (G_OBJECT (control->priv->plug));
+	old_plug = (BonoboPlug *) control->priv->plug;
+
+	if (plug) {
+		control->priv->plug = g_object_ref (G_OBJECT (plug));
+		bonobo_plug_set_control (plug, control);
+	} else
+		control->priv->plug = NULL;
+
+	if (old_plug) {
+		bonobo_plug_set_control (old_plug, NULL);
+		g_object_unref (G_OBJECT (old_plug));
 	}
 
-	if (plug)
-		control->priv->plug = g_object_ref (G_OBJECT (plug));
 }
 
 BonoboPlug *
@@ -1269,5 +1157,5 @@ bonobo_control_get_plug (BonoboControl *control)
 {
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
-	return BONOBO_PLUG (control->priv->plug);
+	return (BonoboPlug *) control->priv->plug;
 }

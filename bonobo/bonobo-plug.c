@@ -14,6 +14,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
+#include <bonobo/bonobo-control-internal.h>
 
 static GObjectClass *parent_class = NULL;
 
@@ -29,7 +30,7 @@ static GObjectClass *parent_class = NULL;
 void
 bonobo_plug_construct (BonoboPlug *plug, guint32 socket_id)
 {
-    gtk_plug_construct (GTK_PLUG (plug), socket_id);
+	gtk_plug_construct (GTK_PLUG (plug), socket_id);
 }
 
 /**
@@ -47,7 +48,11 @@ bonobo_plug_new (guint32 socket_id)
 	BonoboPlug *plug;
 
 	plug = BONOBO_PLUG (g_object_new (bonobo_plug_get_type (), NULL));
+
 	bonobo_plug_construct (plug, socket_id);
+
+	dprintf ("bonobo_plug_new => %p\n", plug);
+
 	return GTK_WIDGET (plug);
 }
 
@@ -57,25 +62,62 @@ bonobo_plug_get_control (BonoboPlug *plug)
 	g_return_val_if_fail (BONOBO_IS_PLUG (plug), NULL);
 
 	return plug->control;
-	
 }
 
 void
 bonobo_plug_set_control (BonoboPlug    *plug,
 			 BonoboControl *control)
 {
+	BonoboControl *old_control;
+
 	g_return_if_fail (BONOBO_IS_PLUG (plug));
 
 	if (plug->control == control)
 		return;
 
-	if (plug->control) {
-		bonobo_control_set_plug (plug->control, NULL);
-		g_object_unref (G_OBJECT (plug->control));
+	old_control = plug->control;
+
+	if (control) {
+		plug->control = g_object_ref (G_OBJECT (control));
+		bonobo_control_set_plug (control, plug);
+	} else
+		plug->control = NULL;
+
+	if (old_control) {
+		bonobo_control_set_plug (old_control, NULL);
+		g_object_unref (G_OBJECT (old_control));
 	}
 
-	if (control)
-		plug->control = g_object_ref (G_OBJECT (control));
+}
+
+/*
+ * This method is called when the plug's associated X window dies.
+ * This indicates either that the container application has died, or
+ * that the widget is being re-parented.
+ */
+static gboolean
+bonobo_plug_destroy_event (GtkWidget   *widget,
+			   GdkEventAny *event)
+{
+	BonoboPlug    *plug = BONOBO_PLUG (widget);
+	BonoboControl *control;
+
+	dprintf ("bonobo_plug_destroy_event");
+
+	if (!(control = plug->control))
+		return FALSE;
+
+	/*
+	 * Set the plug to NULL here so that we don't try to
+	 * destroy it later.  It will get destroyed on its
+	 * own.
+	 */
+	bonobo_control_set_plug (control, NULL);
+
+	/* Destroy this plug's BonoboControl. */
+	bonobo_object_unref (BONOBO_OBJECT (control));
+
+	return FALSE;
 }
 
 static void
@@ -83,8 +125,15 @@ bonobo_plug_dispose (GObject *object)
 {
 	BonoboPlug *plug = (BonoboPlug *) object;
 
-	if (plug->control)
+	dprintf ("bonobo_plug_dispose %p\n", plug);
+
+	if (plug->control) {
+		BonoboControl *control = plug->control;
+
 		bonobo_plug_set_control (plug, NULL);
+
+		bonobo_control_notify_plug_died (control);
+	}
 
 	parent_class->dispose (object);
 }
@@ -97,9 +146,13 @@ bonobo_plug_init (BonoboPlug *plug)
 static void
 bonobo_plug_class_init (GObjectClass *klass)
 {
-	parent_class = gtk_type_class (GTK_TYPE_PLUG);
+	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
+
+	parent_class = g_type_class_peek_parent (klass);
 
 	klass->dispose = bonobo_plug_dispose;
+
+	widget_class->destroy_event = bonobo_plug_destroy_event;
 }
 
 GtkType

@@ -549,10 +549,12 @@ bonobo_ui_util_get_ui_fname (const char *component_datadir,
 		return name;
 	g_free (name);
 
-	name = g_strconcat (component_datadir, "/", file_name, NULL);
-	if (g_file_test (name, G_FILE_TEST_EXISTS))
-		return name;
-	g_free (name);
+	if (component_datadir) {
+		name = g_strconcat (component_datadir, "/", file_name, NULL);
+		if (g_file_test (name, G_FILE_TEST_EXISTS))
+			return name;
+		g_free (name);
+	}
 	
 	return NULL;
 }

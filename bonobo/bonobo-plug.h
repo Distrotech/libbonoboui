@@ -44,6 +44,7 @@ struct _BonoboPlug {
 	GtkPlug        plug;
 
 	BonoboControl *control;
+	gpointer       priv;
 };
 
 typedef struct {
@@ -54,9 +55,6 @@ GtkType        bonobo_plug_get_type    (void) G_GNUC_CONST;
 void           bonobo_plug_construct   (BonoboPlug    *plug,
 					guint32        socket_id);
 GtkWidget*     bonobo_plug_new         (guint32        socket_id);
-BonoboControl *bonobo_plug_get_control (BonoboPlug    *plug);
-void           bonobo_plug_set_control (BonoboPlug    *plug,
-					BonoboControl *control);
 
 G_END_DECLS
 

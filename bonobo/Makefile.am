@@ -17,6 +17,7 @@ INCLUDES = \
 lib_LTLIBRARIES = libbonoboui-2.la
 
 noinst_HEADERS = \
+	bonobo-control-internal.h		\
 	bonobo-ui-engine-config.h		\
 	bonobo-ui-engine-private.h		\
 	bonobo-ui-node-private.h		\
