@@ -102,6 +102,10 @@ guint32                     bonobo_control_x11_from_window_id      (const CORBA_
 			    bonobo_control_window_id_from_x11(a)
 
 /* Popup API */
+#define                     BONOBO_CONTROL_POPUP_BUTTON1           "/popups/button1"
+#define                     BONOBO_CONTROL_POPUP_BUTTON2           "/popups/button2"
+#define                     BONOBO_CONTROL_POPUP_BUTTON3           "/popups/button3"
+
 BonoboUIContainer          *bonobo_control_get_popup_ui_container  (BonoboControl       *control);
 BonoboUIComponent          *bonobo_control_get_popup_ui_component  (BonoboControl       *control);
 void                        bonobo_control_set_popup_ui_container  (BonoboControl       *control,

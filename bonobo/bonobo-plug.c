@@ -124,13 +124,67 @@ bonobo_plug_dispose (GObject *object)
 
 	if (plug->control) {
 		BonoboControl *control = plug->control;
+		gboolean       inproc_parent_died = FALSE;
+
+		inproc_parent_died = 
+			(GTK_WIDGET (plug)->parent &&
+			 GTK_OBJECT_DESTROYED (GTK_WIDGET (plug)->parent));
 
 		bonobo_plug_set_control (plug, NULL);
 
-		bonobo_control_notify_plug_died (control);
+		bonobo_control_notify_plug_died (
+			control, inproc_parent_died);
 	}
 
 	parent_class->dispose (object);
+}
+
+static void
+bonobo_plug_size_allocate (GtkWidget     *widget,
+			   GtkAllocation *allocation)
+{
+	dprintf ("bonobo_plug_size_allocate: (%d, %d), (%d, %d) %d! %s\n",
+		 allocation->x, allocation->y,
+		 allocation->width, allocation->height,
+		 GTK_WIDGET_TOPLEVEL (widget),
+		 GTK_BIN (widget)->child ?
+		 g_type_name_from_instance ((gpointer)GTK_BIN (widget)->child):
+		 "No child!");
+
+	return GTK_WIDGET_CLASS (parent_class)->size_allocate (
+		widget, allocation);
+}
+
+static void
+bonobo_plug_size_request (GtkWidget      *widget,
+			  GtkRequisition *requisition)
+{
+	dprintf ("bonobo_plug_size_request: %d, %d\n",
+		 requisition->width, requisition->height);
+
+	return GTK_WIDGET_CLASS (parent_class)->size_request (
+		widget, requisition);
+}
+
+static gboolean
+bonobo_plug_expose_event (GtkWidget      *widget,
+			  GdkEventExpose *event)
+{
+	dprintf ("bonobo_plug_expose_event %p (%d, %d), (%d, %d)\n",
+		 widget,
+		 event->area.x, event->area.y,
+		 event->area.width, event->area.height);
+
+#ifdef DEBUG_CONTROL
+	gdk_draw_line (widget->window,
+		       widget->style->black_gc,
+		       event->area.x + event->area.width,
+		       event->area.y,
+		       event->area.x, 
+		       event->area.y + event->area.height);
+#endif
+
+	return FALSE;
 }
 
 static void
@@ -148,7 +202,10 @@ bonobo_plug_class_init (GObjectClass *klass)
 	klass->dispose = bonobo_plug_dispose;
 
 	widget_class->realize = bonobo_plug_realize;
-	widget_class->delete_event = bonobo_plug_delete_event;
+	widget_class->delete_event  = bonobo_plug_delete_event;
+	widget_class->size_request  = bonobo_plug_size_request;
+	widget_class->size_allocate = bonobo_plug_size_allocate;
+	widget_class->expose_event  = bonobo_plug_expose_event;
 }
 
 GtkType

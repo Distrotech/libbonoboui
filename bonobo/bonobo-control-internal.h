@@ -10,7 +10,7 @@
 #ifndef _BONOBO_CONTROL_INTERNAL_H_
 #define _BONOBO_CONTROL_INTERNAL_H_
 
-#define DEBUG_CONTROL
+#undef DEBUG_CONTROL
 
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-socket.h>
@@ -22,7 +22,7 @@ void     bonobo_control_add_listener            (CORBA_Object        object,
 						 gpointer            user_data,
 						 CORBA_Environment  *ev);
 
-void     bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
+void     bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 						 CORBA_Environment  *opt_ev);
 gboolean bonobo_control_frame_focus             (BonoboControlFrame *frame,
 						 GtkDirectionType    direction);
@@ -34,7 +34,8 @@ void     bonobo_control_frame_set_inproc_widget (BonoboControlFrame *frame,
 						 GtkWidget          *control_widget);
 
 
-void                bonobo_control_notify_plug_died (BonoboControl      *control);
+void                bonobo_control_notify_plug_died (BonoboControl      *control,
+						     gboolean            inproc_parent_died);
 
 BonoboSocket       *bonobo_control_frame_get_socket (BonoboControlFrame *frame);
 BonoboControlFrame *bonobo_socket_get_control_frame (BonoboSocket       *socket);

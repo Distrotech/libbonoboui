@@ -163,8 +163,55 @@ impl_Bonobo_ControlFrame_activateURI (PortableServer_Servant  servant,
 			 (const char *) uri, (gboolean) relative);
 }
 
+#ifdef DEBUG_CONTROL
+static void
+dump_geom (GdkWindow *window)
+{
+	gint x, y, width, height, depth;
+	
+	gdk_window_get_geometry (window, &x, &y,
+				 &width, &height, &depth);
+	
+	fprintf (stderr, "geom (%d, %d), (%d, %d), %d ",
+		 x, y, width, height, depth);
+}
+
+static void
+dump_gdk_tree (GdkWindow *window)
+{
+	GList     *l;
+	GtkWidget *widget = NULL;
+
+	gdk_window_get_user_data (window, (gpointer) &widget);
+
+	fprintf (stderr, "Window %p (parent %p) ", window,
+		 gdk_window_get_parent (window));
+
+	dump_geom (window);
+
+	if (widget) {
+		fprintf (stderr, "has widget '%s' %s ",
+			 g_type_name_from_instance ((gpointer) widget),
+			 GTK_WIDGET_VISIBLE (widget) ? "visible" : "hidden");
+	} else
+		fprintf (stderr, "No widget ");
+
+	fprintf (stderr, "gdk: %s %s ", 
+		 gdk_window_is_visible (window) ? "visible" : "invisible",
+		 gdk_window_is_viewable (window) ? "viewable" : "not viewable");
+	
+	l = gdk_window_peek_children (window);
+	fprintf (stderr, "%d children:\n", g_list_length (l));
+
+	for (; l; l = l->next)
+		dump_gdk_tree (l->data);
+
+	fprintf (stderr, "\n");
+}
+#endif
+
 void
-bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
+bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 					CORBA_Environment  *opt_ev)
 					
 {
@@ -173,7 +220,10 @@ bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
 
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
 
-	dprintf ("bonobo_control_frame_set_remote_window %p\n", frame);
+	dprintf ("bonobo_control_frame_get_remote_window "
+		 "%p %p %d %p\n", frame->priv, frame->priv->socket,
+		 GTK_WIDGET_REALIZED (frame->priv->socket),
+		 frame->priv->control);
 
 	if (!frame->priv || !frame->priv->socket ||
 	    !GTK_WIDGET_REALIZED (frame->priv->socket) ||
@@ -189,36 +239,52 @@ bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
 	/* Introduce ourselves to the Control. */
 	id = Bonobo_Control_getWindowId (frame->priv->control, "", ev);
 
-	if (BONOBO_EX (ev))
+	if (BONOBO_EX (ev)) {
+		dprintf ("getWindowId exception\n");
 		bonobo_object_check_env (BONOBO_OBJECT (frame),
 					 frame->priv->control, ev);
 
-	else {
+	} else {
 		guint32 xid;
+		BonoboPlug *plug = NULL;
 
 		xid = bonobo_control_x11_from_window_id (id);
 		dprintf ("setFrame id '%s' (=%d)\n", id, xid);
 		CORBA_free (id);
 
-		if (frame->priv->inproc_control) {
+		{
+			gpointer user_data = NULL;
+			if (gdk_window_lookup (xid)) {
+				gdk_window_get_user_data (gdk_window_lookup (xid),
+							  &user_data);
+				plug = user_data;
+			}
+		}
+
+		/* FIXME: how is in_proc between CORBA and X not tying up !? */
+
+		if (plug && !frame->priv->inproc_control) {
+			g_warning ("ARGH - serious ORB screwup");
+			frame->priv->inproc_control = bonobo_plug_get_control (plug);
+		} else if (!plug && frame->priv->inproc_control) 
+			g_warning ("ARGH - different serious ORB screwup");
+
+		if (plug) {
 			/* FIXME: brutal hack to get round bugs in gtkplug */
-			BonoboPlug *plug = bonobo_control_get_plug (
-				frame->priv->inproc_control);
-			
-			if (!plug)
-				g_warning ("Extreme oddness !");
+/*			BonoboPlug *plug = bonobo_control_get_plug ( 
+			frame->priv->inproc_control); */
 			
 			dprintf ("Ugly in-proc hacks %p\n", plug);
-			if (plug) {
-				g_assert (GTK_WIDGET (frame->priv->socket)->window != NULL);
-				GTK_PLUG (plug)->socket_window = 
-					GTK_WIDGET (frame->priv->socket)->window;
-			}
-			
+
+			g_assert (GTK_WIDGET_REALIZED (frame->priv->socket));
+			g_assert (GTK_WIDGET (frame->priv->socket)->window != NULL);
+			GTK_PLUG (plug)->socket_window = 
+				GTK_WIDGET (frame->priv->socket)->window;
+
 			gtk_socket_add_id (GTK_SOCKET (frame->priv->socket), xid);
-			
-			if (plug)
-				gdk_window_show (GTK_WIDGET (plug)->window);
+		
+			gdk_window_show (GTK_WIDGET (plug)->window);
+
 		} else /* Ok out of proc */
 			gtk_socket_add_id (GTK_SOCKET (frame->priv->socket), xid);
 	}		
@@ -709,7 +775,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 			frame->priv->control,
 			BONOBO_OBJREF (frame), ev);
 
-		bonobo_control_frame_set_remote_window (frame, ev);
+		bonobo_control_frame_get_remote_window (frame, ev);
 	}
 
 	g_object_unref (G_OBJECT (frame));
@@ -984,4 +1050,12 @@ bonobo_control_frame_get_socket (BonoboControlFrame *frame)
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (frame), NULL);
 
 	return (BonoboSocket *) frame->priv->socket;
+}
+
+BonoboUIComponent *
+bonobo_control_frame_get_popup_component (BonoboControlFrame *control_frame,
+					  CORBA_Environment  *opt_ev)
+{
+	/* FIXME: impl. me */
+	return CORBA_OBJECT_NIL;
 }

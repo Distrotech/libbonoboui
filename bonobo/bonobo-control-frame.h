@@ -14,6 +14,7 @@
 #include <glib/gmacros.h>
 #include <gtk/gtkwidget.h>
 #include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-property-bag-client.h>
 
 typedef struct _BonoboControlFrame BonoboControlFrame;
@@ -93,6 +94,9 @@ void                          bonobo_control_frame_bind_to_control           (Bo
 Bonobo_Control                bonobo_control_frame_get_control               (BonoboControlFrame  *control_frame);
 
 Bonobo_UIContainer            bonobo_control_frame_get_ui_container          (BonoboControlFrame  *control_frame);
+
+BonoboUIComponent            *bonobo_control_frame_get_popup_component       (BonoboControlFrame  *control_frame,
+									      CORBA_Environment   *opt_ev);
     
 G_END_DECLS
 

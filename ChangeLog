@@ -1,3 +1,48 @@
+2001-11-15  Michael Meeks  <michael@ximian.com>
+
+	* tests/control/test-control.c (run_tests): beef up
+	the tests with some re-parenting action.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_expose_event): 
+	add debug rendering.
+
+	* bonobo/bonobo-control-internal.h: turn off control
+	debugging for a cleaner feel ...
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_set_remote_window): rename to
+	(bonobo_control_frame_get_remote_window): this to
+	better reflect function.
+	(bonobo_control_frame_get_remote_window): make it map
+	the widget too.
+	(dump_geom, dump_gdk_tree): debugging tools ...
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_notify_plug_died): handle an inproc
+	unrealize differently to a destroy.
+	(bonobo_control_init): split out
+	(impl_Bonobo_Control_getWindowId): demand re-create
+	plug.
+	(create_plug): impl & upd.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_size_allocate),
+	(bonobo_plug_expose_event, bonobo_plug_size_request): add.
+	(bonobo_plug_dispose): distinguish between a parent's
+	unrealize and a dispose
+
+	* bonobo/bonobo-socket.c (bonobo_socket_size_allocate),
+	(bonobo_plug_expose_event, bonobo_socket_size_request):
+	add for debugging.
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_unset_container): forward port
+	fix from stable.
+
+2001-11-14  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_get_popup_component): stub.
+
 2001-11-14  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-ui.c (do_sane_popup, main): test it.

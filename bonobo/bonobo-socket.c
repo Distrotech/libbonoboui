@@ -57,14 +57,14 @@ bonobo_socket_realize (GtkWidget *widget)
 
 	socket = BONOBO_SOCKET (widget);
 
-	dprintf ("bonobo_socket_realize\n");
+	dprintf ("bonobo_socket_realize %p\n", widget);
 
 	if (GTK_WIDGET_CLASS (parent_class)->realize)
 		(* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
 
 	if (socket->frame) {
 		g_object_ref (G_OBJECT (socket->frame));
-		bonobo_control_frame_set_remote_window (socket->frame, NULL);
+		bonobo_control_frame_get_remote_window (socket->frame, NULL);
 		g_object_unref (G_OBJECT (socket->frame));
 	}
 
@@ -83,7 +83,26 @@ bonobo_socket_unrealize (GtkWidget *widget)
 	GTK_WIDGET_UNSET_FLAGS (widget, GTK_REALIZED);
 
 	GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
-	dprintf ("unrealize done %p\n", widget);
+}
+
+static gboolean
+bonobo_socket_expose_event (GtkWidget      *widget,
+			    GdkEventExpose *event)
+{
+	dprintf ("bonobo_socket_expose_event %p (%d, %d), (%d, %d)\n",
+		 widget,
+		 event->area.x, event->area.y,
+		 event->area.width, event->area.height);
+
+#ifdef DEBUG_CONTROL
+	gdk_draw_line (widget->window,
+		       widget->style->black_gc,
+		       event->area.x, event->area.y,
+		       event->area.x + event->area.width,
+		       event->area.y + event->area.height);
+#endif
+
+	return FALSE;
 }
 
 static void
@@ -133,6 +152,18 @@ bonobo_socket_focus_out (GtkWidget     *widget,
 }
 
 static void
+bonobo_socket_size_allocate (GtkWidget     *widget,
+			     GtkAllocation *allocation)
+{
+	dprintf ("bonobo_socket_size_allocate: (%d, %d), (%d, %d)\n",
+		 allocation->x, allocation->y,
+		 allocation->width, allocation->height);
+	
+	return GTK_WIDGET_CLASS (parent_class)->size_allocate (
+		widget, allocation);
+}
+
+static void
 bonobo_socket_size_request (GtkWidget      *widget,
 			    GtkRequisition *requisition)
 {
@@ -168,6 +199,9 @@ bonobo_socket_size_request (GtkWidget      *widget,
 
 		CORBA_exception_free (ev);
 	}
+
+	dprintf ("bonobo_socket_size_request: %d, %d\n",
+		 requisition->width, requisition->height);
 }
 
 static gboolean
@@ -198,6 +232,8 @@ bonobo_socket_class_init (GObjectClass *klass)
 	widget_class->focus_in_event  = bonobo_socket_focus_in;
 	widget_class->focus_out_event = bonobo_socket_focus_out;
 	widget_class->size_request    = bonobo_socket_size_request;
+	widget_class->size_allocate   = bonobo_socket_size_allocate;
+	widget_class->expose_event    = bonobo_socket_expose_event;
 
 	socket_class->plug_removed    = bonobo_socket_plug_removed;
 }

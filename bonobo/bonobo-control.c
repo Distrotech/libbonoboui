@@ -90,14 +90,16 @@ bonobo_control_add_listener (CORBA_Object        object,
 
 /* Control lifecycle grind ... */
 void
-bonobo_control_notify_plug_died (BonoboControl *control)
+bonobo_control_notify_plug_died (BonoboControl *control,
+				 gboolean       inproc_parent_died)
 {
 	Bonobo_ControlFrame frame;
 	gboolean            end_of_life;
 
 	frame = control->priv->frame;
 
-	dprintf ("bonobo_control_notify_plug_died: ");
+	dprintf ("bonobo_control_notify_plug_died (%d): ",
+		 inproc_parent_died);
 
 	if (frame != CORBA_OBJECT_NIL) {
 		end_of_life = TRUE; /* Hack for now */
@@ -112,7 +114,7 @@ bonobo_control_notify_plug_died (BonoboControl *control)
 			dprintf ("connection broken\n");
 			break;
 		case ORBIT_CONNECTION_IN_PROC:
-			dprintf ("in proc\n");
+			end_of_life = inproc_parent_died;
 			break;
 		}
 	} else {
@@ -258,29 +260,40 @@ bonobo_control_unset_control_frame (BonoboControl     *control,
 		CORBA_exception_free (&tmp_ev);
 }
 
+static void
+create_plug (BonoboControl *control)
+{
+	GtkWidget *plug;
+	
+	plug = bonobo_plug_new (0);
+	gtk_widget_show (plug);
+	
+	bonobo_control_set_plug (control, BONOBO_PLUG (plug));
+
+	if (control->priv->widget)
+		gtk_container_add (GTK_CONTAINER (plug),
+				   control->priv->widget);
+}
+
 static CORBA_char *
 impl_Bonobo_Control_getWindowId (PortableServer_Servant servant,
 				 const CORBA_char      *cookie,
 				 CORBA_Environment     *ev)
 {
-	CORBA_char    *ret;
+	guint32        x11_id;
 	BonoboControl *control = BONOBO_CONTROL (
 		bonobo_object_from_servant (servant));
 
-	if (control->priv->plug) {
-		guint32 x11_id;
+	if (!control->priv->plug)
+		create_plug (control);
 
-		x11_id = gtk_plug_get_id (GTK_PLUG (control->priv->plug));
+	g_assert (control->priv->plug != NULL);
+
+	x11_id = gtk_plug_get_id (GTK_PLUG (control->priv->plug));
 		
-		dprintf ("plug id %d\n", x11_id);
+	dprintf ("plug id %d\n", x11_id);
 
-		ret = bonobo_control_window_id_from_x11 (x11_id);
-	} else {
-		bonobo_exception_set (ev, ex_Bonobo_Control_NoContents);
-		ret = NULL;
-	}
-
-	return ret;
+	return bonobo_control_window_id_from_x11 (x11_id);
 }
 
 static Bonobo_UIContainer
@@ -883,16 +896,11 @@ bonobo_control_class_init (BonoboControlClass *klass)
 static void
 bonobo_control_init (BonoboControl *control)
 {
-	GtkWidget *plug;
-
 	control->priv = g_new0 (BonoboControlPrivate, 1);
 
 	control->priv->frame = CORBA_OBJECT_NIL;
 
-	plug = bonobo_plug_new (0);
-	gtk_widget_show (plug);
-
-	bonobo_control_set_plug (control, BONOBO_PLUG (plug));
+	create_plug (control);
 }
 
 BONOBO_TYPE_FUNC_FULL (BonoboControl, 

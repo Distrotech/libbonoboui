@@ -1312,10 +1312,9 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component,
 		} else
 			ev = opt_ev;
 
-		bonobo_ui_component_rm (component, "/", ev);
-
 		name = component->priv->name ? component->priv->name : "";
 
+		Bonobo_UIContainer_removeNode (container, "/", name, ev);
 		Bonobo_UIContainer_deregisterComponent (container, name, ev);
 		
 		if (!opt_ev && BONOBO_EX (ev)) {

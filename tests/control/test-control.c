@@ -177,7 +177,7 @@ run_tests (GtkContainer *parent,
 	   gboolean      wait_for_realize,
 	   gboolean      fake_remote)
 {
-	GtkWidget  *vbox;
+	GtkWidget  *vbox, *vbox2;
 	DestroyType t;
 	Test       *tests[DESTROY_TYPE_LAST];
 
@@ -200,6 +200,7 @@ run_tests (GtkContainer *parent,
 	}
 #endif
 
+	printf ("create\n");
 	for (t = 0; t < DESTROY_TYPE_LAST; t++) {
 
 		tests [t] = create_test (fake_remote);
@@ -213,6 +214,42 @@ run_tests (GtkContainer *parent,
 	if (wait_for_realize)
 		mainloop_for (100);
 
+	printf ("show / hide\n");
+	gtk_widget_hide (GTK_WIDGET (parent));
+
+	if (wait_for_realize)
+		mainloop_for (100);
+
+	gtk_widget_show (GTK_WIDGET (parent));
+
+	if (wait_for_realize)
+		mainloop_for (100);
+
+	printf ("re-add\n");
+	g_object_ref (G_OBJECT (vbox));
+	gtk_container_remove (parent, vbox);
+	gtk_container_add (parent, vbox);
+
+	if (wait_for_realize)
+		mainloop_for (100);
+
+	printf ("re-parent\n");
+	for (t = 0; t < DESTROY_TYPE_LAST; t++) {
+
+		g_object_ref (tests [t]->bonobo_widget);
+		gtk_container_remove (GTK_CONTAINER (GTK_BOX (vbox)),
+				      tests [t]->bonobo_widget);
+
+		gtk_box_pack_start (
+			GTK_BOX (vbox), 
+			GTK_WIDGET (tests [t]->bonobo_widget),
+			TRUE, TRUE, 2);
+	}
+
+	if (wait_for_realize)
+		mainloop_for (100);
+
+	printf ("destroy\n");
 	for (t = 0; t < DESTROY_TYPE_LAST; t++) {
 		destroy_test (tests [t], t);
 		mainloop_for (0);
