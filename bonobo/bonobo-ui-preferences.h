@@ -22,7 +22,7 @@ G_BEGIN_DECLS
 #define BONOBO_UI_PAD_BIG      12
 
 /* Add a UI engine to the configuration list */
-void bonobo_ui_preferences_add_engine (BonoboUIEngine *engine);
+void bonobo_ui_preferences_add_engine    (BonoboUIEngine *engine);
 void bonobo_ui_preferences_remove_engine (BonoboUIEngine *engine);
 
 /* Default toolbar style */

@@ -77,7 +77,8 @@ bonobo_ui_preferences_add_engine (BonoboUIEngine *engine)
 void
 bonobo_ui_preferences_remove_engine (BonoboUIEngine *engine)
 {
-	g_assert (g_slist_find (engine_list, engine));
+	if (!g_slist_find (engine_list, engine))
+		return;
 
 	engine_list = g_slist_remove (engine_list, engine);
 

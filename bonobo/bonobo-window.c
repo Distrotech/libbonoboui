@@ -138,6 +138,7 @@ bonobo_window_dispose (GObject *object)
 	BonoboWindow *win = (BonoboWindow *)object;
 	
 	if (win->priv->engine) {
+		bonobo_ui_engine_dispose (win->priv->engine);
 		g_object_unref (G_OBJECT (win->priv->engine));
 		win->priv->engine = NULL;
 	}

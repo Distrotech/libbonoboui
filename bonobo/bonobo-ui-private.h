@@ -14,17 +14,18 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtkimage.h>
 #include <bonobo/bonobo-ui-node.h>
+#include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-node-private.h>
 
 #undef DEBUG_UI
 
 void       bonobo_ui_preferences_shutdown (void);
-void       bonobo_ui_image_set_pixbuf     (GtkImage     *image,
-					   GdkPixbuf    *pixbuf);
-GdkPixbuf *bonobo_ui_util_xml_get_pixbuf  (GtkWidget    *widget,
-					   BonoboUINode *node,
-					   GtkIconSize   icon_size);
-
+void       bonobo_ui_image_set_pixbuf     (GtkImage       *image,
+					   GdkPixbuf      *pixbuf);
+GdkPixbuf *bonobo_ui_util_xml_get_pixbuf  (GtkWidget      *widget,
+					   BonoboUINode   *node,
+					   GtkIconSize     icon_size);
+void       bonobo_ui_engine_dispose       (BonoboUIEngine *engine);
 
 #ifndef   DEBUG_UI
 

@@ -292,7 +292,7 @@ dump_internals (BonoboUIXml *tree, BonoboUINode *node)
 	for (i = 0; i < indent; i++)
 		fprintf (stderr, " ");
 
-	fprintf (stderr, "%10s name=\"%10s\" ", bonobo_ui_node_get_name (node),
+	fprintf (stderr, "%16s name=\"%10s\" ", bonobo_ui_node_get_name (node),
 		 (txt = bonobo_ui_node_peek_attr (node, "name")) ? txt : "NULL");
 
 	fprintf (stderr, "%d len %d", data->dirty,

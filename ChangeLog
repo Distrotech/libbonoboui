@@ -1,3 +1,22 @@
+2002-01-15  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-preferences.c
+	(bonobo_ui_preferences_remove_engine): remove assert,
+	we can double dispose.
+
+	* bonobo/bonobo-ui-engine.c (impl_finalize): move loads
+	of guff into
+	(bonobo_ui_engine_dispose): here.
+	(bonobo_ui_engine_update): tolerate a NULL tree.
+
+	* bonobo/bonobo-window.c (bonobo_window_dispose): do an
+	explicit dispose on the engine.
+
+	* bonobo/bonobo-ui-engine.c (impl_dispose):
+	freeze/thaw the engine, since we can get bogus 'updates'
+	happening from re-enterancy as we release the tree.
+	(bonobo_ui_engine_dispose): split from dispose.
+
 2002-01-14  Anders Carlsson  <andersca@gnu.org>
 
 	* bonobo/bonobo-ui-engine.c: (impl_dispose),

@@ -1690,21 +1690,52 @@ impl_emit_event_on (BonoboUIEngine *engine,
 	g_free (component_id);
 }
 
-static void
-impl_dispose (GObject *object)
+void
+bonobo_ui_engine_dispose (BonoboUIEngine *engine)
 {
-	BonoboUIEngine *engine;
+	GSList *l;
+	BonoboUIEnginePrivate *priv = engine->priv;
 
-	engine = BONOBO_UI_ENGINE (object);
+	dprintf ("bonobo_ui_engine_dispose %p\n", engine);
 
-	while (engine->priv->components)
+	bonobo_ui_engine_freeze (engine);
+
+	while (priv->components)
 		sub_component_destroy (
-			engine, engine->priv->components->data);
+			engine, priv->components->data);
 
 	bonobo_ui_engine_set_ui_container (engine, NULL);
 
 	/* Remove the engine from the configuration notify list */
 	bonobo_ui_preferences_remove_engine (engine);
+
+	if (priv->config) {
+		g_object_unref (G_OBJECT (priv->config));
+		priv->config = NULL;
+	}
+
+	if (priv->tree) {
+		g_object_unref (G_OBJECT (priv->tree));
+		priv->tree = NULL;
+	}
+
+	g_hash_table_foreach_remove (
+		priv->cmd_to_node,
+		cmd_to_node_clear_hash,
+		NULL);
+
+	for (l = priv->syncs; l; l = l->next)
+		g_object_unref (G_OBJECT (l->data));
+	g_slist_free (priv->syncs);
+	priv->syncs = NULL;
+
+	bonobo_ui_engine_thaw (engine);
+}
+
+static void
+impl_dispose (GObject *object)
+{
+	bonobo_ui_engine_dispose (BONOBO_UI_ENGINE (object));
 
 	G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -1713,32 +1744,14 @@ static void
 impl_finalize (GObject *object)
 {
 	BonoboUIEngine *engine;
-	BonoboUIEnginePrivate *priv;
-	GSList *l;
 
 	dprintf ("bonobo_ui_engine_finalize %p\n", object);
        
 	engine = BONOBO_UI_ENGINE (object);
-	priv = engine->priv;
 
-	g_object_unref (G_OBJECT (priv->config));
+	g_hash_table_destroy (engine->priv->cmd_to_node);
 
-	g_object_unref (G_OBJECT (priv->tree));
-	priv->tree = NULL;
-
-	for (l = priv->syncs; l; l = l->next)
-		g_object_unref (G_OBJECT (l->data));
-	g_slist_free (priv->syncs);
-	priv->syncs = NULL;
-
-	g_hash_table_foreach_remove (
-		priv->cmd_to_node,
-		cmd_to_node_clear_hash,
-		NULL);
-	g_hash_table_destroy (priv->cmd_to_node);
-	priv->cmd_to_node = NULL;
-
-	g_free (priv);
+	g_free (engine->priv);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -2388,7 +2401,7 @@ bonobo_ui_engine_update (BonoboUIEngine *engine)
 
 	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
 
-	if (engine->priv->frozen)
+	if (engine->priv->frozen || !engine->priv->tree)
 		return;
 
 	access ("Bonobo: UI engine update - start", 0);
