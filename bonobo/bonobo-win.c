@@ -1727,19 +1727,6 @@ update_menus (BonoboWinPrivate *priv, BonoboUINode *node)
 	g_list_free  (widgets);
 }
 
-static gboolean 
-string_array_contains (char **str_array, const char *match)
-{
-	int i = 0;
-	char *string;
-
-	while ((string = str_array[i++]) != NULL)
-		if (strcmp (string, match) == 0)
-			return TRUE;
-
-	return FALSE;
-}
-
 static GnomeDockItem *
 create_dockitem (BonoboWinPrivate *priv,
 		 BonoboUINode     *node,
@@ -1952,12 +1939,27 @@ toolbar_build_placeholder (BonoboWinPrivate *priv,
 	return widget;
 }
 
+static gboolean 
+string_array_contains (char **str_array, const char *match)
+{
+	int i = 0;
+	char *string;
+
+	while ((string = str_array[i++]) != NULL)
+		if (strcmp (string, match) == 0)
+			return TRUE;
+
+	return FALSE;
+}
+
 static void
 toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 		    GtkWidget *widget, GtkWidget *parent)
 {
 	char *type, *sensitive = NULL, *state = NULL, *label, *txt, *hidden = NULL;
 	char *min_width;
+	char *behavior;
+	char **behavior_array;
 	GdkPixbuf    *icon_pixbuf;
 	BonoboUINode *cmd_node;
 	static int    warned = 0;
@@ -1986,6 +1988,19 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	bonobo_ui_node_free_string (sensitive);
 	bonobo_ui_node_free_string (hidden);
 
+	/* behaviors can apply to controls, so we need to handle them here */
+	if ((behavior = cmd_get_attr (node, cmd_node, "behavior"))) {
+		
+		behavior_array = g_strsplit (behavior, ",", -1);
+		bonobo_ui_node_free_string (behavior);
+
+		bonobo_ui_toolbar_item_set_expandable (BONOBO_UI_TOOLBAR_ITEM (widget),
+					string_array_contains (behavior_array, "expandable"));
+		g_strfreev (behavior_array);
+		
+	}
+
+	/* if it's a control, exit now, since the rest isn't relevant */
 	if (bonobo_ui_node_has_name (node, "control"))
 		return;
 
