@@ -1,3 +1,7 @@
+2002-08-31  Jacob Berkman  <jacob@ximian.com>
+
+	* tests/Makefile.am (LDADD): add -lpopt
+
 2002-08-30  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.0.3
