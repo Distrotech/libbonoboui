@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2003-05-20 11:48+0200\n"
+"POT-Creation-Date: 2003-07-04 18:32+0200\n"
+"PO-Revision-Date: 2003-07-04 18:34+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -120,7 +120,7 @@ msgstr "_Visa"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
-msgstr "_Göm"
+msgstr "_Dölj"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
@@ -273,7 +273,7 @@ msgstr "Te_xt"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr "Göm t_ips"
+msgstr "Dölj t_ips"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
@@ -281,7 +281,7 @@ msgstr "Visa t_ips"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "_Göm verktygsrad"
+msgstr "_Dölj verktygsrad"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
