@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2002-11-26 10:17+0000\n"
-"PO-Revision-Date: 2002-05-25 21:26+0200\n"
+"POT-Creation-Date: 2002-11-27 00:41+0100\n"
+"PO-Revision-Date: 2002-11-27 00:41+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -154,15 +154,15 @@ msgstr "Kun _prioritetstekst"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "Fejlretning"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "_Udskriv XML"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "Udskriv hele grænsefladens XML-beskrivelse på konsollen"
 
 # vinduestitel så der er godt med plads
 #: bonobo/bonobo-ui-engine-config.c:521
