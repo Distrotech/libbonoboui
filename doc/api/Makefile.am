@@ -16,6 +16,7 @@ TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
 tmpl_sources = 					\
         tmpl/bonobo-arg.sgml			\
+        tmpl/bonobo-async.sgml			\
         tmpl/bonobo-canvas-component.sgml	\
         tmpl/bonobo-canvas-item.sgml		\
         tmpl/bonobo-client-site.sgml		\
@@ -32,7 +33,6 @@ tmpl_sources = 					\
         tmpl/bonobo-item-handler.sgml		\
         tmpl/bonobo-listener.sgml		\
         tmpl/bonobo-main.sgml			\
-        tmpl/bonobo-moniker-async.sgml		\
         tmpl/bonobo-moniker-util.sgml		\
         tmpl/bonobo-moniker.sgml		\
         tmpl/bonobo-object-client.sgml		\
@@ -61,6 +61,7 @@ tmpl_sources = 					\
         tmpl/bonobo-transient.sgml		\
         tmpl/bonobo-ui-component.sgml		\
         tmpl/bonobo-ui-container.sgml		\
+        tmpl/bonobo-ui-engine.sgml		\
         tmpl/bonobo-ui-node.sgml		\
         tmpl/bonobo-ui-toolbar-button-item.sgml	\
         tmpl/bonobo-ui-toolbar-icon.sgml	\
@@ -108,6 +109,7 @@ scan:
 		 gtkdoc-scanobj --module=$(DOC_MODULE) \
 	&& gtkdoc-scan --module=$(DOC_MODULE) 		\
 		../../bonobo/bonobo-arg.h			\
+		../../bonobo/bonobo-async.h			\
 		../../bonobo/bonobo-canvas-component.h		\
 		../../bonobo/bonobo-canvas-item.h		\
 		../../bonobo/bonobo-client-site.h		\
@@ -118,7 +120,7 @@ scan:
 		../../bonobo/bonobo-desktop-window.h		\
 		../../bonobo/bonobo-embeddable.h		\
 		../../bonobo/bonobo-event-source.h		\
-		../../bonobo/bonobo-exception.h		\
+		../../bonobo/bonobo-exception.h			\
 		../../bonobo/bonobo-generic-factory.h		\
 		../../bonobo/bonobo-item-handler.h		\
 		../../bonobo/bonobo-item-container.h		\
@@ -128,7 +130,7 @@ scan:
 		../../bonobo/bonobo-moniker.h			\
 		../../bonobo/bonobo-object-client.h		\
 		../../bonobo/bonobo-object-directory.h		\
-		../../bonobo/bonobo-object-io.h		\
+		../../bonobo/bonobo-object-io.h			\
 		../../bonobo/bonobo-object.h			\
 		../../bonobo/bonobo-persist-file.h		\
 		../../bonobo/bonobo-persist-stream.h		\
@@ -147,9 +149,10 @@ scan:
 		../../bonobo/bonobo-stream-client.h		\
 		../../bonobo/bonobo-stream-memory.h		\
 		../../bonobo/bonobo-stream.h			\
-		../../bonobo/bonobo-transient.h		\
+		../../bonobo/bonobo-transient.h			\
 		../../bonobo/bonobo-ui-component.h            	\
 		../../bonobo/bonobo-ui-container.h            	\
+		../../bonobo/bonobo-ui-engine.h            	\
 		../../bonobo/bonobo-ui-node.h                 	\
 		../../bonobo/bonobo-ui-toolbar-button-item.h  	\
 		../../bonobo/bonobo-ui-toolbar-icon.h         	\
@@ -167,7 +170,7 @@ scan:
 		../../bonobo/bonobo-print.h			\
 		../../bonobo/bonobo-print-client.h )
 
-templates: scan
+templates:
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
 
 sgml:

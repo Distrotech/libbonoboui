@@ -176,6 +176,7 @@ bonobo_socket_destroy (GtkObject *object)
  * bonobo_socket_new:
  *
  * Create a new empty #BonoboSocket.
+ *
  * Returns: A new #BonoboSocket.
  */
 GtkWidget*

@@ -1,5 +1,6 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
 <!entity bonobo-arg SYSTEM "sgml/bonobo-arg.sgml">
+<!entity bonobo-async SYSTEM "sgml/bonobo-async.sgml">
 <!entity bonobo-canvas-component SYSTEM "sgml/bonobo-canvas-component.sgml">
 <!entity bonobo-canvas-item SYSTEM "sgml/bonobo-canvas-item.sgml">
 <!entity bonobo-client-site SYSTEM "sgml/bonobo-client-site.sgml">
@@ -45,6 +46,7 @@
 <!entity bonobo-transient SYSTEM "sgml/bonobo-transient.sgml">
 <!entity bonobo-ui-component SYSTEM "sgml/bonobo-ui-component.sgml">
 <!entity bonobo-ui-container SYSTEM "sgml/bonobo-ui-container.sgml">
+<!entity bonobo-ui-engine SYSTEM "sgml/bonobo-ui-engine.sgml">
 <!entity bonobo-ui-node SYSTEM "sgml/bonobo-ui-node.sgml">
 <!entity bonobo-ui-toolbar-button-item SYSTEM "sgml/bonobo-ui-toolbar-button-item.sgml">
 <!entity bonobo-ui-toolbar-icon SYSTEM "sgml/bonobo-ui-toolbar-icon.sgml">
@@ -147,11 +149,12 @@
 	  &bonobo-ui-component;
 	  &bonobo-ui-container;
           &bonobo-ui-node;
+	  &bonobo-ui-xml;
+	  &bonobo-ui-engine;
           &bonobo-ui-toolbar-button-item;
           &bonobo-ui-toolbar-icon;
           &bonobo-ui-toolbar-item;
           &bonobo-ui-toolbar-toggle-button-item;
-	  &bonobo-ui-xml;
 	  &bonobo-win;
           &bonobo-desktop-window;
       </sect1>
@@ -176,5 +179,6 @@
       &bonobo-wrapper;
       &bonobo-object-directory;
       &bonobo-selector;
+      &bonobo-async;
   </chapter>
 </book>

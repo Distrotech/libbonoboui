@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/**
+/*
  * bonobo-selector.c: Bonobo Component Selector
  *
  * Authors:
@@ -27,8 +27,7 @@
 
 static GtkDialogClass *parent_class;
 
-struct _BonoboSelectorPrivate 
-{
+struct _BonoboSelectorPrivate {
 	BonoboSelectorWidget *selector;
 };
 
