@@ -1627,7 +1627,7 @@ pixmap_data_to_corba (BonoboUIHandlerPixmapType type, gpointer data)
 	case BONOBO_UI_HANDLER_PIXMAP_FILENAME:
 	case BONOBO_UI_HANDLER_PIXMAP_STOCK:
 		buffer->_length = strlen ((char *) data) + 1;
-		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (strlen ((char *) data));
+		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (buffer->_length);
 		strcpy (buffer->_buffer, (char *) data);
 		return buffer;
 
