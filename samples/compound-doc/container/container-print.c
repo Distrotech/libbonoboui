@@ -1,8 +1,8 @@
 #include <gnome.h>
 
 #include <libgnomeprint/gnome-print.h>
-#include <libgnomeprint/gnome-print-master.h>
-#include <libgnomeprint/gnome-print-master-preview.h>
+#include <libgnomeprint/gnome-print-job.h>
+#include <libgnomeprint/gnome-print-job-preview.h>
 
 #include "container-print.h"
 #include "component.h"
@@ -16,8 +16,8 @@ sample_app_print_preview (SampleApp *app)
 	GnomePrintContext *ctx;
 	GnomePrintMasterPreview *pv;
 
-	pm = gnome_print_master_new ();
-	ctx = gnome_print_master_get_context (pm);
+	pm = gnome_print_job_new (NULL);
+	ctx = gnome_print_job_get_context (pm);
 
 	for (l = app->components; l; l = l->next) {
 		BonoboClientSite *site = l->data;
@@ -29,9 +29,9 @@ sample_app_print_preview (SampleApp *app)
 
 	gnome_print_showpage (ctx);
 	gnome_print_context_close (ctx);
-	gnome_print_master_close (pm);
+	gnome_print_job_close (pm);
 
-	pv = gnome_print_master_preview_new (pm, "Component demo");
+	pv = gnome_print_job_preview_new (pm, "Component demo");
 	gtk_widget_show  (GTK_WIDGET (pv));
 	gtk_object_unref (GTK_OBJECT (pm));
 }

@@ -780,14 +780,18 @@ bonobo_dock_item_size_allocate (GtkWidget     *widget,
 
 	  grip_alloc.x = grip_alloc.y = 0;
 
-          if (di->orientation == GTK_ORIENTATION_HORIZONTAL) {
-            child_allocation.x += DRAG_HANDLE_SIZE;
-
-            grip_alloc.width = DRAG_HANDLE_SIZE;
-          } else {
-            child_allocation.y += DRAG_HANDLE_SIZE;
-
+          if (di->orientation != GTK_ORIENTATION_HORIZONTAL) {
             grip_alloc.height = DRAG_HANDLE_SIZE;
+            child_allocation.y += DRAG_HANDLE_SIZE;
+          } else {
+            grip_alloc.width = DRAG_HANDLE_SIZE;
+	    if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR) {
+	      child_allocation.x += DRAG_HANDLE_SIZE;
+	    } else {
+	      GtkRequisition child_requisition;
+	      gtk_widget_get_child_requisition (child, &child_requisition);
+	      grip_alloc.x = child_requisition.width;
+	    }
 	  }
 
 	  gtk_widget_size_allocate (di->_priv->grip, &grip_alloc);
@@ -855,34 +859,9 @@ bonobo_dock_item_paint (GtkWidget      *widget,
 {
   GtkBin *bin;
   BonoboDockItem *di;
-  guint width;
-  guint height;
-  guint border_width;
-  gint drag_handle_size = DRAG_HANDLE_SIZE;
-
-  if (!BONOBO_DOCK_ITEM_NOT_LOCKED (widget))
-    drag_handle_size = 0;
 
   bin = GTK_BIN (widget);
   di = BONOBO_DOCK_ITEM (widget);
-
-  border_width = GTK_CONTAINER (di)->border_width;
-
-  if (di->is_floating)
-    {
-      width = bin->child->allocation.width + 2 * border_width;
-      height = bin->child->allocation.height + 2 * border_width;
-    }
-  else if (di->orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-      width = widget->allocation.width - drag_handle_size;
-      height = widget->allocation.height;
-    }
-  else
-    {
-      width = widget->allocation.width;
-      height = widget->allocation.height - drag_handle_size;
-    }
 
   if (!event)
     gtk_paint_box(widget->style,
@@ -966,7 +945,10 @@ bonobo_dock_item_button_changed (GtkWidget      *widget,
       switch (di->orientation)
 	{
 	case GTK_ORIENTATION_HORIZONTAL:
-	  in_handle = event->x < DRAG_HANDLE_SIZE;
+	  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
+	    in_handle = event->x < DRAG_HANDLE_SIZE;
+	  else
+	    in_handle = event->x > widget->allocation.width - DRAG_HANDLE_SIZE;
 	  break;
 	case GTK_ORIENTATION_VERTICAL:
 	  in_handle = event->y < DRAG_HANDLE_SIZE;

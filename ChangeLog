@@ -1,3 +1,10 @@
+2003-05-29  Jody Goldberg <jody@gnome.org>
+
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_size_allocate) : respect
+	  widget direction.
+	(bonobo_dock_item_button_changed) : ditto.
+	(bonobo_dock_item_paint) : remove some dead code.
+
 2003-05-23  Telsa Gwynne  <hobbit@aloss.ukuu.org.uk>
 
 	* configure.in: Added "cy" (Welsh) to ALL_LINGUAS
