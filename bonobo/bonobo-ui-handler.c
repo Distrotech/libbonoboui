@@ -2372,13 +2372,22 @@ menu_toplevel_create_label (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
 {
 	GtkWidget *label;
 	guint keyval;
+	gchar *label_text;
 
 	/*
 	 * Create the label, translating the provided text, which is
 	 * supposed to be untranslated.  This text gets translated in
-	 * the domain of the application.
+	 * the domain of the application or in the "gnome-libs" domain.
 	 */
-	label = gtk_accel_label_new (gettext (item->label));
+	if ( item->label [0] == '\0' ) 
+		label_text = item->label;
+	else {
+		label_text = gettext(item->label);
+		if ( label_text == item->label )
+			label_text = dgettext ("gnome-libs", item->label);
+	}
+
+	label = gtk_accel_label_new (label_text);
 
 	/*
 	 * Setup the widget.
@@ -2398,7 +2407,7 @@ menu_toplevel_create_label (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
 	 *
 	 * FIXME: Should this be an option?
 	 */
-	keyval = gtk_label_parse_uline (GTK_LABEL (label), item->label);
+	keyval = gtk_label_parse_uline (GTK_LABEL (label), label_text);
 
 	if (keyval != GDK_VoidSymbol) {
 		if (GTK_IS_MENU (parent_menu_shell_widget))
@@ -4684,7 +4693,7 @@ menu_remote_set_hint (GnomeUIHandler *uih, const char *path,
 	if (!attrs)
 		return;
 	CORBA_free (attrs->hint);
-	attrs->label = CORBA_string_dup (CORBIFY_STRING (hint));
+	attrs->hint = CORBA_string_dup (CORBIFY_STRING (hint));
 	menu_remote_attribute_data_set (uih, path, attrs);
 }
 
@@ -4698,7 +4707,7 @@ toolbar_item_remote_set_hint (GnomeUIHandler *uih, const char *path,
 	if (!attrs)
 		return;
 	CORBA_free (attrs->hint);
-	attrs->label = CORBA_string_dup (CORBIFY_STRING (hint));
+	attrs->hint = CORBA_string_dup (CORBIFY_STRING (hint));
 	toolbar_item_remote_attribute_data_set (uih, path, attrs);
 }
 
