@@ -7,6 +7,9 @@ bonobo-ui-util.[ch]:
 	       bonobo_ui_util_new_std_toolbar
 	       bonobo_ui_util_new_toggle_toolbar
 	       bonobo_ui_util_build_accel
+	       bonobo_ui_util_xml_set_pix_xpm
+	       bonobo_ui_util_xml_set_pix_stock
+	       bonobo_ui_util_xml_set_pix_fname
 	rename bonobo_ui_util_xml_get_icon_pixmap_widget to
 	bonobo_ui_util_xml_get_icon_widget.
 

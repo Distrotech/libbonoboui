@@ -1,5 +1,10 @@
 2001-07-19  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-util.c (lookup_stock_compat): impl.
+	(bonobo_ui_util_xml_get_icon_widget): obfuscate stock
+	code to provide reasonable backwards compat, show the
+	widget we return.
+
 	* tests/test-ui.c (main): upd.
 
 	* bonobo/bonobo-ui-util.c (bonobo_ui_util_new_menu),
@@ -8,6 +13,9 @@
 	(bonobo_ui_util_set_toggle),
 	(bonobo_ui_util_new_std_toolbar): 
 	(bonobo_ui_util_new_toggle_toolbar),
+	(bonobo_ui_util_xml_set_pix_fname),
+	(bonobo_ui_util_xml_set_pix_stock),
+	(bonobo_ui_util_xml_set_pix_xpm),
 	(bonobo_ui_util_build_accel): kill.
 
 	* changes.txt: upd.

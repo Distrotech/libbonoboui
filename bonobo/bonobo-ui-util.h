@@ -21,12 +21,6 @@ GtkWidget *bonobo_ui_util_xml_get_icon_widget (BonoboUINode      *node,
 
 void       bonobo_ui_util_xml_set_pixbuf      (BonoboUINode      *node,
 					       GdkPixbuf         *pixbuf);
-void       bonobo_ui_util_xml_set_pix_xpm     (BonoboUINode      *node,
-					       const char       **xpm);
-void       bonobo_ui_util_xml_set_pix_stock   (BonoboUINode      *node,
-					       const char        *name);
-void       bonobo_ui_util_xml_set_pix_fname   (BonoboUINode      *node,
-					       const char        *name);
 
 void       bonobo_ui_util_build_help_menu     (BonoboUIComponent *listener,
 					       const char        *app_prefix,

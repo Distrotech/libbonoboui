@@ -7,10 +7,11 @@
  * Copyright 2000 Helix Code, Inc.
  */
 
-#include "config.h"
+#include <config.h>
 #include <ctype.h>
 #include <string.h>
 
+#include <gtk/gtkstock.h>
 #include <gtk/gtkimage.h>
 #include <gtk/gtkiconfactory.h>
 
@@ -238,6 +239,35 @@ find_pixmap_in_path (const gchar *filename)
 	return file;
 }
 
+static char *
+lookup_stock_compat (const char *id)
+{
+	GtkStockItem item;
+	char *lower = g_ascii_strdown ((char *)id);
+	char *new_id = g_strconcat ("gtk-", lower, NULL);
+	char *retval = NULL;
+
+	if (gtk_stock_lookup (new_id, &item)) {
+		g_free (lower);
+
+		return new_id;
+	}
+
+	g_free (new_id);
+	new_id = g_strconcat ("gnome-stock-pixmap-", lower, NULL);
+
+	if (gtk_stock_lookup (new_id, &item)) {
+		g_free (lower);
+		return new_id;
+	}
+
+	g_free (lower);
+
+	/* FIXME: does this catch them all ? */
+
+	return NULL;
+}
+
 /**
  * bonobo_ui_util_xml_get_icon_widget:
  * @node: the node
@@ -268,10 +298,20 @@ bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 		return NULL;
 
 	if (!strcmp (type, "stock")) {
+		GtkStockItem item;
 
-		g_message (G_STRLOC ": |%s|", text);
+		if (gtk_stock_lookup (text, &item))
+			image = gtk_image_new_from_stock (text, icon_size);
+		else {
+			char *mapped;
 
-		image = gtk_image_new_from_stock (text, icon_size);
+			if ((mapped = lookup_stock_compat (text))) {
+				
+				image = gtk_image_new_from_stock (mapped, icon_size);
+				g_free (mapped);
+			} else
+				g_warning ("Unknown stock icon '%s', stock names all changed in Gtk+ 2.0", text);
+		}
 
 	} else if (!strcmp (type, "filename")) {
 		char *name = find_pixmap_in_path (text);
@@ -282,6 +322,7 @@ bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 			image = gtk_image_new_from_file (name);
 
 		g_free (name);
+
 	} else if (!strcmp (type, "pixbuf")) {
 		GdkPixbuf *icon_pixbuf;
 		
@@ -296,6 +337,8 @@ bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 
 	bonobo_ui_node_free_string (text);
 	bonobo_ui_node_free_string (type);
+
+	gtk_widget_show (image);
 
 	return image;
 }
@@ -322,66 +365,6 @@ bonobo_ui_util_xml_set_pixbuf (BonoboUINode *node,
 	bonobo_ui_node_set_attr (node, "pixname", data);
 	g_free (data);
 }
-
-/**
- * bonobo_ui_util_xml_set_pix_xpm:
- * @node: the node
- * @xpm: an xpm
- * 
- * Associate @xpm with this @node by stringifying it and setting
- * the requisite attributes.
- **/
-void
-bonobo_ui_util_xml_set_pix_xpm (BonoboUINode     *node,
-				const char **xpm)
-{
-	GdkPixbuf *pixbuf;
-
-	g_return_if_fail (xpm != NULL);
-	g_return_if_fail (node != NULL);
-
-	pixbuf = gdk_pixbuf_new_from_xpm_data (xpm);
-
-	bonobo_ui_util_xml_set_pixbuf (node, pixbuf);
-
-	gdk_pixbuf_unref (pixbuf);
-}
-/**
- * bonobo_ui_util_xml_set_pix_stock:
- * @node: the node
- * @name: the stock name
- * 
- * Associate the stock pixmap named @name with this @node
- **/
-void
-bonobo_ui_util_xml_set_pix_stock (BonoboUINode *node,
-				  const char   *name)
-{
-	g_return_if_fail (node != NULL);
-	g_return_if_fail (name != NULL);
-
-	bonobo_ui_node_set_attr (node, "pixtype", "stock");
-	bonobo_ui_node_set_attr (node, "pixname", name);
-}
-
-/**
- * bonobo_ui_util_xml_set_pix_fname:
- * @node: the node
- * @name: the filename
- * 
- * Associate a pixmap filename @name with a @node
- **/
-void
-bonobo_ui_util_xml_set_pix_fname (BonoboUINode *node,
-				  const char   *name)
-{
-	g_return_if_fail (node != NULL);
-	g_return_if_fail (name != NULL);
-	
-	bonobo_ui_node_set_attr (node, "pixtype", "filename");
-	bonobo_ui_node_set_attr (node, "pixname", name);
-}
-
 
 #ifdef FIXME
 static void
