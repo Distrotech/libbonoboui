@@ -36,6 +36,7 @@ struct _BonoboUIConfigWidgetPrivate {
 	GtkWidget    *tooltips;
 
 	GtkWidget    *icon;
+	GtkWidget    *text;
 	GtkWidget    *icon_and_text;
 	GtkWidget    *priority_text;
 
@@ -81,6 +82,10 @@ set_values (BonoboUIConfigWidget *config)
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->icon_and_text), TRUE);
 		break;
 
+	case BONOBO_UI_TOOLBAR_STYLE_TEXT_ONLY:
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->text), TRUE);
+		break;
+		
 	case BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT:
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->priority_text), TRUE);
 		break;
@@ -219,6 +224,9 @@ look_cb (GtkWidget            *button,
 	else if (button == config->priv->icon_and_text)
 		value = "both";
 
+	else if (button == config->priv->text)
+		value = "text";
+
 	else if (button == config->priv->priority_text)
 		value = "both_horiz";
 
@@ -257,7 +265,7 @@ widgets_init (BonoboUIConfigWidget *config,
 			  (GtkAttachOptions) (GTK_FILL), 0, 0);
 
 	frame6 = gtk_frame_new (_("Visible"));
-	gtk_box_pack_start (GTK_BOX (vbox6), frame6, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox6), frame6, FALSE, FALSE, 0);
 
 	vbox7 = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (frame6), vbox7);
@@ -322,6 +330,12 @@ widgets_init (BonoboUIConfigWidget *config,
 			  G_CALLBACK (look_cb), config);
 	look_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (priv->icon_and_text));
 	gtk_box_pack_start (GTK_BOX (vbox5), priv->icon_and_text, FALSE, FALSE, 0);
+
+	priv->text = gtk_radio_button_new_with_mnemonic (look_group, _("Text only"));
+	g_signal_connect (priv->text, "clicked",
+			  G_CALLBACK (look_cb), config);
+	look_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (priv->text));
+	gtk_box_pack_start (GTK_BOX (vbox5), priv->text, FALSE, FALSE, 0);
 
 	priv->priority_text = gtk_radio_button_new_with_mnemonic (look_group, _("_Priority text only"));
 	g_signal_connect (priv->priority_text, "clicked",

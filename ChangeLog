@@ -1,5 +1,10 @@
 2002-05-22  Gustavo Giráldez  <gustavo.giraldez@gmx.net>
 
+	* bonobo/bonobo-ui-config-widget.c (look_cb, set_values,
+	widgets_init): Add "Text only" option.
+	
+2002-05-22  Gustavo Giráldez  <gustavo.giraldez@gmx.net>
+
 	* bonobo/bonobo-ui-config-widget.c (look_cb): Changed "text" by
 	"both_horiz" for priority text setting.
 
