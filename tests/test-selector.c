@@ -7,7 +7,9 @@ main (int argc, char *argv[])
 {
 	gchar *text;
 
-	bonobo_ui_init ("BonoboSelector Test", VERSION, &argc, argv);
+	gnome_program_init ("bonobo-selector", VERSION,
+			    LIBBONOBOUI_MODULE,
+			    argc, argv, NULL);
 
 	text = bonobo_selector_select_id (_("Select an object"), NULL);
 	g_print ("OAFIID: '%s'\n", text ? text : "<Null>");

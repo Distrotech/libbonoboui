@@ -124,10 +124,11 @@ bonobo_ui_preferences_shutdown (void)
 	if (client) {
 		g_object_unref (client);
 		client = NULL;
-		ret = gconf_debug_shutdown ();
-		if (ret)
-			g_warning ("GConf's dirty shutdown");
 	}
+
+	ret = gconf_debug_shutdown ();
+	if (ret)
+		g_warning ("GConf's dirty shutdown");
 
 	return ret;
 }

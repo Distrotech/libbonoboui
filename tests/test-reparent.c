@@ -97,8 +97,9 @@ quit_cb (GtkWindow *window, GdkEvent *event, gpointer dummy)
 int
 main (int argc, char **argv)
 {
-	if (bonobo_ui_init ("test-reparent", VERSION, &argc, argv) == FALSE)
-		g_error ("Bigger problems than controls not working");
+	gnome_program_init ("test-reparent", VERSION,
+			    LIBBONOBOUI_MODULE,
+			    argc, argv, NULL);
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	vbox = gtk_vbox_new (FALSE, 0);

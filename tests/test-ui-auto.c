@@ -288,13 +288,9 @@ main (int argc, char **argv)
 
 	free (malloc (8)); /* -lefence */
 
-	if (!bonobo_ui_init_full ("test-ui-auto", VERSION,
-				  &argc, argv,
-				  CORBA_OBJECT_NIL,
-				  CORBA_OBJECT_NIL,
-				  CORBA_OBJECT_NIL,
-				  FALSE)) /* avoid gconf init */
-		g_error (_("Cannot init libbonoboui code"));
+	gnome_program_init ("test-ui-uao", VERSION,
+			    LIBBONOBOUI_MODULE,
+			    argc, argv, NULL);
 
 	bonobo_activate ();
 

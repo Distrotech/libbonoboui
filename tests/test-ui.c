@@ -265,9 +265,9 @@ main (int argc, char **argv)
 
 	free (malloc (8));
 
-	if (!bonobo_ui_init_full ("test-ui", VERSION, &argc, argv,
-				  NULL, NULL, NULL, TRUE))
-		g_error (_("Cannot init libbonoboui code"));
+	gnome_program_init ("test-ui", VERSION,
+			    LIBBONOBOUI_MODULE,
+			    argc, argv, NULL);
 
 	textdomain (GETTEXT_PACKAGE);
 

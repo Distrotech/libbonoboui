@@ -46,8 +46,9 @@ main (int argc, char **argv)
 	/* ElectricFence rules. */
 	free (malloc (1));
 
-	if (!bonobo_ui_init ("test-toolbar", VERSION, &argc, argv))
-		g_error (_("Can not bonobo_ui_init"));
+	gnome_program_init ("test-toolbar", VERSION,
+			    LIBBONOBOUI_MODULE,
+			    argc, argv, NULL);
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 

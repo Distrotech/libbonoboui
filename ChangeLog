@@ -1,3 +1,12 @@
+2002-03-14  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-preferences.c
+	(bonobo_ui_preferences_shutdown): always
+	shutdown gconf.
+
+	* tests/*.c: use gnome_program_init so we get
+	a11y support where neccessary.
+
 2002-03-13  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-main.c

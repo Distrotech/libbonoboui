@@ -51,8 +51,9 @@ main (int argc, char **argv)
 
 	textdomain (GETTEXT_PACKAGE);
 
-	if (!bonobo_ui_init ("test-events", VERSION, &argc, argv))
-		g_error (_("Can not bonobo_ui_init"));
+	gnome_program_init ("test-events", VERSION,
+			    LIBBONOBOUI_MODULE,
+			    argc, argv, NULL);
 
 	bonobo_activate ();
 

@@ -290,8 +290,9 @@ main (int argc, char **argv)
 		exit (1);
 	}
 
-	if (bonobo_ui_init ("test-moniker", "1.0", &argc, argv) == FALSE)
-		g_error ("Cannot init bonobo");
+	gnome_program_init ("test-moniker", VERSION,
+			    LIBBONOBOUI_MODULE,
+			    argc, argv, NULL);
 
 	if (global_mto.ps + global_mto.pr + global_mto.pc > 1) {
 		poptPrintUsage (ctx, stderr, 0);

@@ -193,8 +193,9 @@ main (int argc, char **argv)
 	/* Encorage -lefence to play ball */
 	{ char *tmp = malloc (4); if (tmp) free (tmp); }
 
-	if (!bonobo_ui_init ("test-sensitivity", VERSION, &argc, argv))
-		g_error (_("Can not bonobo_ui_init"));
+	gnome_program_init ("test-sensitivity", VERSION,
+			    LIBBONOBOUI_MODULE,
+			    argc, argv, NULL);
 
 	orb = bonobo_orb ();
 

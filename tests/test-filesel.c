@@ -53,8 +53,9 @@ main (int argc, char *argv[])
 
 	textdomain (GETTEXT_PACKAGE);
 
-	if (!bonobo_ui_init ("test-filesel", VERSION, &argc, argv))
-		g_error (_("Cannot bonobo_ui_init ()"));
+	gnome_program_init ("test-filesel", VERSION,
+			    LIBBONOBOUI_MODULE,
+			    argc, argv, NULL);
 
 	bonobo_activate ();
 
