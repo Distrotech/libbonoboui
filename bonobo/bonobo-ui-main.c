@@ -25,7 +25,7 @@
 
 #include <X11/Xlib.h>
 
-static int (*gdk_x_error) (Display *, XErrorEvent *);
+static int (*gdk_x_error_func) (Display *, XErrorEvent *);
 
 static int
 bonobo_x_error_handler (Display *display, XErrorEvent *error)
@@ -47,7 +47,7 @@ bonobo_x_error_handler (Display *display, XErrorEvent *error)
 	 * Otherwise, let gdk deal.
 	 */
 
-	return gdk_x_error (display, error);
+	return gdk_x_error_func (display, error);
 }
 
 /**
@@ -79,7 +79,7 @@ bonobo_setup_x_error_handler (void)
 
 	error_handler_setup = TRUE;
 
-	gdk_x_error = XSetErrorHandler (bonobo_x_error_handler);
+	gdk_x_error_func = XSetErrorHandler (bonobo_x_error_handler);
 }
 
 static gboolean bonobo_ui_inited = FALSE;

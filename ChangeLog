@@ -1,3 +1,8 @@
+2002-03-29  Jody Goldberg <jody@gnome.org>
+
+	* bonobo/bonobo-ui-main.c (gdk_x_error) : replace with
+	  gdk_x_error_func so that gdb does not get confused.
+
 2002-04-11  Murray Cumming  <murrayc@usa.net>
 
 	* bonobo/bonobo-dock-item.c: Corrected "orientation-changed" 
