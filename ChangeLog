@@ -1,3 +1,7 @@
+2001-09-20  Frank Belew <frb@ximian.com>
+
+	* configure.in: removed AM_CONDITIONAL(FALSE...)
+
 2001-09-20  Fatih Demir <kabalak@gtranslator.org>
 
 	* configure.in: Added "ta" to the languages list.

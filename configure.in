@@ -28,9 +28,6 @@ AC_PATH_PROGS(PATH_TO_XRDB, "xrdb")
 
 GNOME_COMPILE_WARNINGS
 
-dnl utility conditional
-AM_CONDITIONAL(FALSE, test "x" = "y")
-
 ALL_LINGUAS="az es fr it nn no sk sv ta tr wa zh_TW"
 AM_GNOME2_GETTEXT
 
