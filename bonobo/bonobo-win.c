@@ -220,8 +220,16 @@ win_component_objref (BonoboWinPrivate *priv, const char *name)
 static char *
 win_component_cmp_name (BonoboWinPrivate *priv, const char *name)
 {
-	WinComponent *component = win_component_get (priv, name);
+	WinComponent *component;
 
+	/*
+	 * NB. For overriding if we get a NULL we just update the
+	 * node without altering the id.
+	 */
+	if (!name || name [0] == '\0')
+		return NULL;
+
+	component = win_component_get (priv, name);
 	g_return_val_if_fail (component != NULL, NULL);
 
 	return component->name;
@@ -329,7 +337,10 @@ bonobo_win_register_component (BonoboWin     *app,
 			bonobo_object_release_unref (appcomp->object, NULL);
 	}
 
-	appcomp->object = bonobo_object_dup_ref (component, NULL);
+	if (component != CORBA_OBJECT_NIL)
+		appcomp->object = bonobo_object_dup_ref (component, NULL);
+	else
+		appcomp->object = CORBA_OBJECT_NIL;
 }
 
 void
@@ -1169,15 +1180,15 @@ build_menu_placeholder (BonoboWinPrivate *priv, xmlNode *node, GtkWidget *parent
 
 static GtkWidget *
 build_control (BonoboWinPrivate *priv,
-		    xmlNode          *node,
-		    GtkWidget        *parent)
+	       xmlNode          *node,
+	       GtkWidget        *parent)
 {
 	GtkWidget *control = NULL;
 	NodeInfo  *info = bonobo_ui_xml_get_data (priv->tree, node);
 
 	if (info->widget) { /* Re-parent the widget */
 		control = info->widget;
-	} else if (info->object != NULL) {
+	} else if (info->object != CORBA_OBJECT_NIL) {
 
 		control = bonobo_widget_new_control_from_objref
 			(bonobo_object_dup_ref (info->object, NULL),
@@ -1662,19 +1673,17 @@ update_status (BonoboWinPrivate *priv, xmlNode *node)
 		} else if (!strcmp (l->name, "control")) {
 			NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, l);
 
-			if (!info->object) {
+			if (info->object == CORBA_OBJECT_NIL) {
 				xmlFree (name);
 				continue;
 			}
 
-			/* FIXME: non working code path */
-
-			widget = bonobo_ui_item_new_control (info->object);
-			g_return_if_fail (widget != NULL);
+			widget = build_control (
+				priv, l, GTK_WIDGET (priv->status));
+			if (!widget)
+				return;
 
 			gtk_widget_show (widget);
-			info->widget = widget;
-			
 			gtk_box_pack_end (priv->status, widget, TRUE, TRUE, 0);
 		}
 		xmlFree (name);
@@ -1930,10 +1939,13 @@ bonobo_win_object_set (BonoboWin  *app,
 
 	info = bonobo_ui_xml_get_data (app->priv->tree, node);
 
-	if (info->object)
+	if (info->object != CORBA_OBJECT_NIL)
 		bonobo_object_release_unref (info->object, ev);
 
-	info->object = bonobo_object_dup_ref (object, ev);
+	if (object != CORBA_OBJECT_NIL)
+		info->object = bonobo_object_dup_ref (object, ev);
+	else
+		info->object = CORBA_OBJECT_NIL;
 
 	return BONOBO_UI_XML_OK;
 }
@@ -1958,7 +1970,8 @@ bonobo_win_object_get (BonoboWin  *app,
 
 	info = bonobo_ui_xml_get_data (app->priv->tree, node);
 
-	*object = bonobo_object_dup_ref (info->object, ev);
+	if (info->object != CORBA_OBJECT_NIL)
+		*object = bonobo_object_dup_ref (info->object, ev);
 
 	return BONOBO_UI_XML_OK;
 }

@@ -18,6 +18,8 @@
 
 poptContext ctx;
 
+Bonobo_UIContainer corba_container;
+
 static int
 cb_do_quit (GtkWindow *window, gpointer dummy)
 {
@@ -30,6 +32,20 @@ cb_do_dump (GtkWindow *window, BonoboWin *app)
 {
 	bonobo_win_dump (app, "on User input");
 	return 1;
+}
+
+static void
+cb_set_state (GtkEntry *state_entry, GtkEntry *path_entry)
+{
+	char *path, *state;
+
+	path = gtk_entry_get_text (path_entry);
+	state = gtk_entry_get_text (state_entry);
+
+	g_warning ("Set state on '%s' to '%s'", path, state);
+
+	bonobo_ui_component_set_prop (
+		NULL, corba_container, path, "state", state, NULL);
 }
 
 static void
@@ -53,7 +69,6 @@ main (int argc, char **argv)
 	BonoboUIComponent *componentc;
 	BonoboUIContainer *container;
 	CORBA_Environment  ev;
-	Bonobo_UIContainer corba_container;
 
 	char simplea [] =
 		"<menu>\n"
@@ -123,6 +138,7 @@ main (int argc, char **argv)
 	{
 		GtkWidget *box = gtk_vbox_new (FALSE, 0);
 		GtkWidget *button;
+		GtkWidget *path_entry, *state_entry;
 
 		button = gtk_button_new_with_label ("Xml merge / demerge");
 		gtk_signal_connect (GTK_OBJECT (button), "clicked",
@@ -136,6 +152,18 @@ main (int argc, char **argv)
 		gtk_widget_show (GTK_WIDGET (button));
 		gtk_box_pack_start_defaults (GTK_BOX (box), button);
 
+		path_entry = gtk_entry_new ();
+		gtk_entry_set_text (GTK_ENTRY (path_entry), "/menu/File/toggle");
+		gtk_widget_show (GTK_WIDGET (path_entry));
+		gtk_box_pack_start_defaults (GTK_BOX (box), path_entry);
+
+		state_entry = gtk_entry_new ();
+		gtk_entry_set_text (GTK_ENTRY (state_entry), "1");
+		gtk_signal_connect (GTK_OBJECT (state_entry), "changed",
+				    (GtkSignalFunc) cb_set_state, path_entry);
+		gtk_widget_show (GTK_WIDGET (state_entry));
+		gtk_box_pack_start_defaults (GTK_BOX (box), state_entry);
+
 		gtk_widget_show (GTK_WIDGET (box));
 		bonobo_win_set_contents (app, box);
 	}
@@ -145,6 +173,8 @@ main (int argc, char **argv)
 	componentc = bonobo_ui_component_new ("C");
 
 	CORBA_exception_init (&ev);
+
+	bonobo_ui_container_freeze (corba_container, NULL);
 
 	bonobo_ui_component_set (componentb, corba_container, "/status", statusa, &ev);
 
@@ -181,9 +211,16 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_set (componentb, corba_container, "/",     statusb, &ev);
 
+	/* Duplicate set */
+	bonobo_ui_component_set (componenta, corba_container, "/", simplea, &ev);
+
+	bonobo_ui_container_thaw (corba_container, NULL);
+
 	gtk_widget_show (GTK_WIDGET (app));
 
 	gtk_main ();
+
+	bonobo_ui_container_freeze (corba_container, NULL);
 
 	accel = bonobo_ui_util_build_accel (GDK_A, GDK_CONTROL_MASK, "KeyWibbleVerb");
 	bonobo_ui_component_set_tree (componenta, corba_container, "/keybindings", accel, &ev);
@@ -192,10 +229,10 @@ main (int argc, char **argv)
 	bonobo_ui_component_set (componenta, corba_container, "/",     toolb, &ev);
 
 	{
-		GtkWidget *widget = gtk_button_new_with_label ("A progress bar");
+		GtkWidget *widget = gtk_progress_bar_new ();
 		BonoboControl *control = bonobo_control_new (widget);
 
-/*		gtk_progress_bar_update (GTK_PROGRESS_BAR (widget), 0.5);*/
+		gtk_progress_bar_update (GTK_PROGRESS_BAR (widget), 0.5);
 		gtk_widget_show (widget);
 		bonobo_ui_container_object_set (
 			corba_container,
@@ -203,7 +240,10 @@ main (int argc, char **argv)
 			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
 			NULL);
 	}
+
+	bonobo_ui_container_thaw (corba_container, NULL);
 	gtk_main ();
+	bonobo_ui_container_freeze (corba_container, NULL);
 
 	bonobo_ui_component_set (componentc, corba_container, "/commands",
 				 "<cmd name=\"MyFoo\" sensitive=\"0\"/>", &ev);
@@ -211,28 +251,37 @@ main (int argc, char **argv)
 	
 	bonobo_ui_component_set (componentc, corba_container, "/menu/File", simpled, &ev);
 
+	bonobo_ui_container_thaw (corba_container, NULL);
 	gtk_main ();
+	bonobo_ui_container_freeze (corba_container, NULL);
 
 	fprintf (stderr, "\n\n--- Remove 2 ---\n\n\n");
 	bonobo_ui_component_rm (componentb, corba_container, "/", &ev);
 
+	bonobo_ui_container_thaw (corba_container, NULL);
 	gtk_main ();
+	bonobo_ui_container_freeze (corba_container, NULL);
 
 	fprintf (stderr, "\n\n--- Remove 3 ---\n\n\n");
 	bonobo_ui_component_rm (componentc, corba_container, "/", &ev);
 
+	bonobo_ui_container_thaw (corba_container, NULL);
 	gtk_main ();
+	bonobo_ui_container_freeze (corba_container, NULL);
 
 	fprintf (stderr, "\n\n--- Remove 1 ---\n\n\n");
 	bonobo_ui_component_rm (componenta, corba_container, "/", &ev);
 
+	bonobo_ui_container_thaw (corba_container, NULL);
 	gtk_main ();
+	bonobo_ui_container_freeze (corba_container, NULL);
 
 	if (g_file_exists ("ui.xml")) {
 		fprintf (stderr, "\n\n--- Add ui.xml ---\n\n\n");
 		file = bonobo_ui_util_new_ui (componentc, "ui.xml", "gnomecal");
 		bonobo_ui_component_set_tree (componentc, corba_container,
 					      "/", file, &ev);
+		bonobo_ui_container_thaw (corba_container, NULL);
 		gtk_main ();
 
 	} else

@@ -1202,12 +1202,13 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 					   gpointer data)
 {
 	xmlNode *node;
-	char *xml_path;
+	char *xml_path, *parent_path;
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
 
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("", path, FALSE);
+	parent_path = make_path ("", path, TRUE);
 
 	node = bonobo_ui_container_get_tree (priv->container,
 					     xml_path, FALSE, NULL);
@@ -1218,10 +1219,11 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 
 	bonobo_ui_component_set_tree (priv->component,
 				      priv->container,
-				      xml_path,
+				      parent_path,
 				      node, NULL);
 
 	g_free (xml_path);
+	g_free (parent_path);
 	xmlFreeNode (node);
 }
 
@@ -1275,7 +1277,7 @@ void
 bonobo_ui_handler_menu_set_toggle_state	(BonoboUIHandler *uih, const char *path,
 					 gboolean state)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_set_toggel_state unimplemented\n");
+	fprintf (stderr, "bonobo_ui_handler_menu_set_toggle_state unimplemented\n");
 }
 
 gboolean
@@ -1341,6 +1343,13 @@ bonobo_ui_handler_menu_set_label (BonoboUIHandler *uih, const char *path,
 				  const gchar *label)
 {
 	fprintf (stderr, "bonobo_ui_handler_menu_set_label unimplemented\n");
+}
+
+gchar *
+bonobo_ui_handler_menu_get_label (BonoboUIHandler *uih, const char *path)
+{
+	fprintf (stderr, "bonobo_ui_handler_menu_get_label unimplemented\n");
+	return g_strdup ("Kippers");
 }
 
 void
@@ -1563,4 +1572,16 @@ bonobo_ui_handler_build_path (const char *base, ...)
 	va_end (args);
 	
 	return path;
+}
+
+GList *
+bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent_path)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (parent_path != NULL, NULL);
+
+	g_warning ("FIXME: unimplemented bonobo_ui_handler_menu_"
+		   "get_child_paths; a wierd function");
+
+	return NULL;
 }

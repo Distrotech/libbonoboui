@@ -357,11 +357,12 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 			 const char         *xml,
 			 CORBA_Environment  *ev)
 {
-	BonoboUIComponentPrivate *priv;
 	CORBA_Environment *real_ev, tmp_ev;
+	Bonobo_UIComponent corba_component;
+	char *name;
 
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
-	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+	g_return_if_fail (!component || BONOBO_IS_UI_COMPONENT (component));
 
 	if (ev)
 		real_ev = ev;
@@ -370,19 +371,27 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 		real_ev = &tmp_ev;
 	}
 
-	priv = component->priv;
+	if (component)
+		name = component->priv->name;
+	else
+		name = "";
+
+	if (component != NULL)
+		corba_component = 
+			bonobo_object_corba_objref (BONOBO_OBJECT (component));
+	else
+		corba_component = CORBA_OBJECT_NIL;
 
 	Bonobo_UIContainer_register_component (
-		container, priv->name,
-		bonobo_object_corba_objref (BONOBO_OBJECT (component)),
-		real_ev);
+		container, name,
+		corba_component, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
 		g_warning ("Serious exception registering component '$%s'",
 			   bonobo_exception_get_text (real_ev));
 
 	Bonobo_UIContainer_node_set (container, path, xml,
-				     priv->name, real_ev);
+				     name, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
 		g_warning ("Serious exception on node_set '$%s' of '%s'",
@@ -637,4 +646,66 @@ bonobo_ui_container_thaw (Bonobo_UIContainer  container,
 
 	if (!ev)
 		CORBA_exception_free (&tmp_ev);
+}
+
+void
+bonobo_ui_component_set_prop (BonoboUIComponent  *component,
+			      Bonobo_UIContainer  container,
+			      const char         *path,
+			      const char         *prop,
+			      const char         *value,
+			      CORBA_Environment  *opt_ev)
+{
+	xmlNode *node;
+	char *parent_path, *p;
+
+	g_return_if_fail (container != CORBA_OBJECT_NIL);
+	g_return_if_fail (!component || BONOBO_IS_UI_COMPONENT (component));
+
+	node = bonobo_ui_container_get_tree (
+		container, path, FALSE, opt_ev);
+
+	g_return_if_fail (node != NULL);
+
+	xmlSetProp (node, prop, value);
+
+	parent_path = g_strdup (path);
+
+	if ((p = strrchr (parent_path, '/')))
+		*p = '\0';
+
+	bonobo_ui_component_set_tree (
+		component, container,
+		parent_path, node, opt_ev);
+
+	xmlFreeNode (node);
+}
+
+gchar *
+bonobo_ui_component_get_prop (Bonobo_UIContainer  container,
+			      const char         *path,
+			      const char         *prop,
+			      CORBA_Environment  *opt_ev)
+{
+	xmlNode *node;
+	xmlChar *ans;
+	gchar   *ret;
+
+	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
+
+	node = bonobo_ui_container_get_tree (
+		container, path, FALSE, opt_ev);
+
+	g_return_val_if_fail (node != NULL, NULL);
+
+	ans = xmlGetProp (node, prop);
+	if (ans) {
+		ret = g_strdup (ans);
+		xmlFree (ans);
+	} else
+		ret = NULL;
+
+	xmlFreeNode (node);
+
+	return ret;
 }

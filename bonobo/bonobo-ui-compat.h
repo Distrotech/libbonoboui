@@ -174,6 +174,7 @@ int			 bonobo_ui_handler_menu_get_pos			(BonoboUIHandler *uih, const char *path)
 void			 bonobo_ui_handler_menu_set_sensitivity		(BonoboUIHandler *uih, const char *path,
 									 gboolean sensitive);
 
+gchar                   *bonobo_ui_handler_menu_get_label               (BonoboUIHandler *uih, const char *path);
 void			 bonobo_ui_handler_menu_set_label		(BonoboUIHandler *uih, const char *path,
 									 const gchar *label);
 

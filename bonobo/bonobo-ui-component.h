@@ -95,13 +95,26 @@ void               bonobo_ui_container_object_set   (Bonobo_UIContainer  contain
 
 Bonobo_Unknown     bonobo_ui_container_object_get   (Bonobo_UIContainer  container,
 						     const char         *path,
-						     CORBA_Environment  *ev);
+						     CORBA_Environment  *opt_ev);
 
 void               bonobo_ui_container_freeze       (Bonobo_UIContainer  container,
-						     CORBA_Environment  *ev);
+						     CORBA_Environment  *opt_ev);
 
 void               bonobo_ui_container_thaw         (Bonobo_UIContainer  container,
-						     CORBA_Environment  *ev);
+						     CORBA_Environment  *opt_ev);
+
+void               bonobo_ui_component_set_prop     (BonoboUIComponent  *componetn,
+						     Bonobo_UIContainer  container,
+						     const char         *path,
+						     const char         *prop,
+						     const char         *value,
+						     CORBA_Environment  *opt_ev);
+
+gchar             *bonobo_ui_component_get_prop     (Bonobo_UIContainer  container,
+						     const char         *path,
+						     const char         *prop,
+						     CORBA_Environment  *opt_ev);
+
 
 POA_Bonobo_UIComponent__epv *bonobo_ui_component_get_epv (void);
 Bonobo_UIComponent bonobo_ui_component_corba_object_create (BonoboObject *object);

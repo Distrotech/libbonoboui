@@ -289,6 +289,12 @@ override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 	gboolean         same;
 
 	same = identical (tree, data->id, old_data->id);
+
+	if (!data->id) {
+		same = TRUE;
+		data->id = old_data->id;
+	}
+
 	if (!same) {
 		gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
 
