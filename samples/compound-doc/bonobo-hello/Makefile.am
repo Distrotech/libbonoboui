@@ -6,7 +6,7 @@ INCLUDES =						\
 	-I$(top_srcdir) 				\
 	$(LIBBONOBOUI_CFLAGS)
 
-samplesdir = $(prefix)/lib/bonobo-2.0/samples
+samplesdir = $(libdir)/bonobo-2.0/samples
 samples_PROGRAMS = bonobo-sample-hello
 
 bonobo_sample_hello_SOURCES =	\
