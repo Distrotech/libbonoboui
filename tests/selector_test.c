@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 #include <config.h>
-#include <libgnome/libgnome.h>
+#include <libgnome.h>
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-selector.h>
