@@ -1,5 +1,5 @@
 /*
- * app.c: A test application to hammer the Bonobo UI api.
+ * test-ui.c: A test application to hammer the Bonobo UI api.
  *
  * NB. To run this program and test the xml IO code you
  * need to do something like ln -s /{prefix}/bonobo/doc/std-ui.xml ~/.gnome/ui
@@ -7,7 +7,7 @@
  * Author:
  *	Michael Meeks (michael@helixcode.com)
  *
- * Copyright 2000 Helix Code, Inc.
+ * Copyright 2000 Ximian, Inc.
  */
 
 #include "config.h"

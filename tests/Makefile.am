@@ -1,14 +1,15 @@
 noinst_PROGRAMS =		\
 	test-any		\
 	test-ui			\
-	test-container 		\
 	test-moniker		\
 	test-properties-server	\
 	test-properties-client	\
 	test-storage		\
 	test-toolbar		\
 	selector_test		\
-	test-event-source 	
+	test-event-source 	\
+	test-focus
+#	test-container 		\
 
 bonobo_libs =						\
 	$(top_builddir)/bonobo/libbonobo.la		\
@@ -50,6 +51,11 @@ test_ui_LDADD =						\
 	$(top_builddir)/bonobo/libbonobox.la		\
 	$(top_builddir)/bonobo/libbonobo-print.la
 
+test_focus_SOURCES = test-focus.c
+test_focus_LDADD =					\
+	$(bonobo_libs)					\
+	$(top_builddir)/bonobo/libbonobox.la
+
 test_toolbar_SOURCES = test-toolbar.c
 test_toolbar_LDADD =					\
 	$(bonobo_libs)					\
@@ -62,12 +68,15 @@ test_moniker_LDADD =					\
 	$(bonobo_libs)					\
 	$(top_builddir)/bonobo/libbonobox.la
 
-test_container_SOURCES =				\
-	test-container.c
-
-test_container_LDADD =					\
-	$(bonobo_libs)					\
-	$(top_builddir)/bonobo/libbonobox.la
+#
+# Old, super ugly, leaky and broken.
+#
+#test_container_SOURCES =				\
+#	test-container.c
+#
+#test_container_LDADD =					\
+#	$(bonobo_libs)					\
+#	$(top_builddir)/bonobo/libbonobox.la
 
 selector_test_SOURCES =					\
 	selector_test.c

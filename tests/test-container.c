@@ -720,6 +720,10 @@ verb_SendText_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 static void
 verb_Exit_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+	Application *app = user_data;
+
+	gtk_widget_destroy (app->app);
+
 	gtk_main_quit ();
 }
 
@@ -837,6 +841,15 @@ main (int argc, char *argv [])
 		server_id = argv [1];
 	
 	CORBA_exception_init (&ev);
+
+#warning DO NOT BASE New code on this test
+#warning See instead samples/compound-doc/sample-container
+#warning And samples/controls/sample-control-container
+
+	gnome_message_box ("Do not base any new application code on this\n"
+			   "instead see samples/controls/sample-control-container\n"
+			   "or bonobo/samples/compound-doc/sample-container\n"
+			   "this is a horribly hacked, leaky and badly architected test\n");
 	
         gnome_init_with_popt_table ("MyShell", "1.0",
 				    argc, argv,
