@@ -1,4 +1,4 @@
-# Norwegian translation of Bonobo (bokmål dialect).
+# Norwegian translation of Bonobo (bokmÃ¥l dialect).
 # Copyright (C) 1999-2001 Free Software Foundation, Inc.
 # Kjartan Maraas <kmaraas@gnome.org>, 1999-2001.
 #
@@ -10,7 +10,7 @@ msgstr ""
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
@@ -27,15 +27,15 @@ msgstr "Foretrukket bredde"
 
 #: bonobo/bonobo-dock-item.c:221 bonobo/bonobo-dock-item.c:222
 msgid "Preferred height"
-msgstr "Foretrukket høyde"
+msgstr "Foretrukket hÃ¸yde"
 
 #: bonobo/bonobo-file-selector-util.c:394
 msgid "Select a file to open"
-msgstr "Velg en fil som skal åpnes"
+msgstr "Velg en fil som skal Ã¥pnes"
 
 #: bonobo/bonobo-file-selector-util.c:422
 msgid "Select files to open"
-msgstr "Velg filer som skal åpnes"
+msgstr "Velg filer som skal Ã¥pnes"
 
 #: bonobo/bonobo-file-selector-util.c:451
 msgid "Select a filename to save"
@@ -71,11 +71,11 @@ msgstr "_Skjul"
 
 #: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
-msgstr "_Vis verktøytips"
+msgstr "_Vis verktÃ¸ytips"
 
 #: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
-msgstr "Verktøylinjer"
+msgstr "VerktÃ¸ylinjer"
 
 #: bonobo/bonobo-ui-config-widget.c:294 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Look"
@@ -115,7 +115,7 @@ msgstr "Vis t_ips"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Hide toolbar"
-msgstr "Sk_jul verktøylinjen"
+msgstr "Sk_jul verktÃ¸ylinjen"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customi_ze"
@@ -123,47 +123,47 @@ msgstr "Tilpas_s"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Customize the toolbar"
-msgstr "Tilpass verktøylinjen"
+msgstr "Tilpass verktÃ¸ylinjen"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "Zoom-nivå"
+msgstr "Zoom-nivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "Graden av forstørring"
+msgstr "Graden av forstÃ¸rring"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "Minste zoom-nivå"
+msgstr "Minste zoom-nivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "Minste grad av forstørring"
+msgstr "Minste grad av forstÃ¸rring"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "Største zoom-nivå"
+msgstr "StÃ¸rste zoom-nivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "Største grad av forstørring"
+msgstr "StÃ¸rste grad av forstÃ¸rring"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minumum Zoom level"
-msgstr "Har et minste zoom-nivå"
+msgstr "Har et minste zoom-nivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Om vi har et gyldig minste zoom-nivå"
+msgstr "Om vi har et gyldig minste zoom-nivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Har et maksimalt zoom-nivå"
+msgstr "Har et maksimalt zoom-nivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Om vi har et gyldig største zoom-nivå"
+msgstr "Om vi har et gyldig stÃ¸rste zoom-nivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -175,7 +175,7 @@ msgstr "Om vi zoomer kontinuerlig (i motsetning til sprangvis)"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Dette gjør ingenting; kun en demonstrasjon."
+msgstr "Dette gjÃ¸r ingenting; kun en demonstrasjon."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
