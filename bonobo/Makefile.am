@@ -65,6 +65,7 @@ libbonobo_la_SOURCES =			\
 	gnome-moniker.c			\
 	gnome-object.c			\
 	gnome-object-client.c		\
+	gnome-object-io.c		\
 	gnome-persist-file.c		\
 	gnome-persist-stream.c		\
 	gnome-persist.c			\
@@ -72,6 +73,7 @@ libbonobo_la_SOURCES =			\
 	gnome-storage.c			\
 	gnome-storage-fs.c		\
 	gnome-stream.c			\
+	gnome-stream-client.c		\
 	gnome-stream-fs.c		\
 	gnome-stream-memory.c		\
 	gnome-ui-handler.c		\
@@ -103,6 +105,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-moniker.h			\
 	gnome-object.h			\
 	gnome-object-client.h		\
+	gnome-object-io.h		\
 	gnome-persist-file.h		\
 	gnome-persist-stream.h		\
 	gnome-persist.h			\
@@ -110,6 +113,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-storage.h			\
 	gnome-storage-fs.h		\
 	gnome-stream.h			\
+	gnome-stream-client.h		\
 	gnome-stream-fs.h		\
 	gnome-stream-memory.h		\
 	gnome-ui-handler.h		\
