@@ -419,7 +419,7 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 
 				g_object_freeze_notify (G_OBJECT (label));
 
-				gtk_label_set_text (GTK_LABEL (label), label_attr);
+				gtk_label_set_text_with_mnemonic (GTK_LABEL (label), label_attr);
 			}
 
 			gtk_accel_label_set_accel_widget (

@@ -1,3 +1,9 @@
+2002-04-11  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_bonobo_ui_sync_menu_state): set the
+	mnemonic (doh).
+
 2002-04-09  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-sync-menu.c
