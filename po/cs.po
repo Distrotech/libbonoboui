@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
-"PO-Revision-Date: 2002-12-06 12:36+0100\n"
+"POT-Creation-Date: 2003-02-26 12:29+0100\n"
+"PO-Revision-Date: 2003-02-26 18:36+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -38,21 +38,22 @@ msgid "Un dock the toolbar"
 msgstr "Odtrhnout nástrojovou lištu"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-ui-toolbar.c:1172
 msgid "Shadow type"
 msgstr "Typ stínu"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1116 bonobo/bonobo-ui-toolbar.c:1117
 msgid "Orientation"
 msgstr "Orientace"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-ui-toolbar.c:1135 bonobo/bonobo-ui-toolbar.c:1136
 msgid "Preferred width"
 msgstr "Preferovaná šířka"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-ui-toolbar.c:1144 bonobo/bonobo-ui-toolbar.c:1145
 msgid "Preferred height"
 msgstr "Preferovaná výška"
 
@@ -287,13 +288,17 @@ msgstr "_Upravit"
 msgid "Customize the toolbar"
 msgstr "_Upravit lištu nástrojů"
 
-#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1126
 msgid "is floating"
 msgstr "je plovoucí"
 
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1127
 msgid "whether the toolbar is floating"
 msgstr "jestli je lišta nástrojů plovoucí"
+
+#: bonobo/bonobo-ui-toolbar.c:1173
+msgid "Style of bevel around the toolbar"
+msgstr "Velikost okrajů okolo lišty nástrojů"
 
 #: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
