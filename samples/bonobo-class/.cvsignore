@@ -1,0 +1,9 @@
+Makefile
+Makefile.in
+Echo-stubs.c
+Echo-skels.c
+Echo-common.c
+Echo.h
+.libs
+bonobo-echo
+echo-client

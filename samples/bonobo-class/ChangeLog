@@ -1,0 +1,5 @@
+2000-03-26  Miguel de Icaza  <miguel@helixcode.com>
+
+	* New directory.  Contains a sample skeleton for creating Bonobo
+	components.
+
