@@ -24,7 +24,7 @@ bonobo_clock_control_prop_value_changed_cb (GnomePropertyBag *pb, char *name, ch
 	GtkClock *clock = user_data;
 
 	if (! strcmp (name, "running")) {
-		CORBA_boolean *b = new_value;
+		gboolean *b = new_value;
 
 		if (*b)
 			gtk_clock_start (clock);
@@ -56,7 +56,7 @@ bonobo_clock_factory (GnomeGenericFactory *Factory, void *closure)
 			    bonobo_clock_control_prop_value_changed_cb,
 			    clock);
 
-	running = g_new0 (CORBA_boolean, 1);
+	running = g_new0 (gboolean, 1);
 	*running = TRUE;
 	gnome_property_bag_add (pb, "running", "boolean",
 				(gpointer) running,

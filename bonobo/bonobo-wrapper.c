@@ -77,12 +77,40 @@ gnome_wrapper_get_type (void)
 	return wrapper_type;
 }
 
+static void
+gnome_wrapper_destroy (GtkObject *object)
+{
+	GnomeWrapper *wrapper;
+
+	g_return_if_fail (object != NULL);
+	g_return_if_fail (GNOME_IS_WRAPPER (object));
+
+	wrapper = GNOME_WRAPPER (object);
+
+	if (wrapper->priv->gc[0] != NULL)
+		gdk_gc_destroy (wrapper->priv->gc[0]);
+
+	if (wrapper->priv->gc[1] != NULL)
+		gdk_gc_destroy (wrapper->priv->gc[1]);
+
+	if (wrapper->priv->cover != NULL) {
+		gdk_window_set_user_data (wrapper->priv->cover, NULL);
+		gdk_window_destroy (wrapper->priv->cover);
+	}
+
+	g_free (wrapper->priv);
+
+	(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+}
+
 /* Standard class initialization function */
 static void
 gnome_wrapper_class_init (GnomeWrapperClass *class)
 {
+	GtkObjectClass *object_class;
 	GtkWidgetClass *widget_class;
 
+	object_class = (GtkObjectClass *) class;
 	widget_class = (GtkWidgetClass *) class;
 
 	parent_class = gtk_type_class (GTK_TYPE_BIN);
@@ -95,6 +123,8 @@ gnome_wrapper_class_init (GnomeWrapperClass *class)
 	widget_class->size_allocate = gnome_wrapper_size_allocate;
 	widget_class->expose_event = gnome_wrapper_expose;
 	widget_class->draw = gnome_wrapper_draw;
+
+	object_class->destroy = gnome_wrapper_destroy;
 }
 
 /* Standard object initialization function */
@@ -244,10 +274,12 @@ gnome_wrapper_unrealize (GtkWidget *widget)
 
 	gdk_gc_destroy (wrapper->priv->gc[0]);
 	gdk_gc_destroy (wrapper->priv->gc[1]);
+	wrapper->priv->gc[0] = NULL;
+	wrapper->priv->gc[1] = NULL;
 
 	gdk_window_set_user_data (wrapper->priv->cover, NULL);
 	gdk_window_destroy (wrapper->priv->cover);
-	wrapper->priv->cover= NULL;
+	wrapper->priv->cover = NULL;
 
 	gdk_window_set_user_data (widget->window, NULL);
 	gdk_window_destroy (widget->window);
@@ -399,7 +431,6 @@ gnome_wrapper_set_covered (GnomeWrapper *wrapper, gboolean covered)
 		if (GTK_WIDGET_MAPPED (wrapper)) {
 			gdk_window_hide (wrapper->priv->cover);
 			gtk_widget_queue_resize (GTK_WIDGET (wrapper));
-			gnome_wrapper_paint (GTK_WIDGET (wrapper));
 		}
 	} else if (!wrapper->priv->covered && covered) {
 		wrapper->priv->covered = TRUE;
@@ -407,7 +438,6 @@ gnome_wrapper_set_covered (GnomeWrapper *wrapper, gboolean covered)
 		if (GTK_WIDGET_MAPPED (wrapper)) {
 			gdk_window_show (wrapper->priv->cover);
 			gtk_widget_queue_resize (GTK_WIDGET (wrapper));
-			gnome_wrapper_paint (GTK_WIDGET (wrapper));
 		}
 	}
 }
@@ -449,10 +479,11 @@ gnome_wrapper_set_visibility (GnomeWrapper *wrapper, gboolean visible)
 	g_return_if_fail (wrapper != NULL);
 	g_return_if_fail (GNOME_IS_WRAPPER (wrapper));
 
+	if (wrapper->priv->visible == visible)
+		return;
+	
 	wrapper->priv->visible = visible;
-
-
-	/* FIXME: Need to actually make the change */
+	gtk_widget_queue_resize (GTK_WIDGET (wrapper));
 }
 
 /**
@@ -469,6 +500,4 @@ gnome_wrapper_get_visibility (GnomeWrapper *wrapper)
 	g_return_val_if_fail (GNOME_IS_WRAPPER (wrapper), FALSE);
 
 	return wrapper->priv->visible;
-
-	/* FIXME: Need to actually make the change */
 }

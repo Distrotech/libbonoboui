@@ -23,7 +23,7 @@ bonobo_libs = 			\
 	$(gnome_libs)
 
 
-lib_LTLIBRARIES = libbonobo.la
+lib_LTLIBRARIES = libbonobo.la libbonobo-xml.la
 noinst_PROGRAMS = 		\
 	test-container 		\
 	sample-server 		\
@@ -91,6 +91,7 @@ libbonobo_la_SOURCES =			\
 	gnome-view-frame.c		\
 	gnome-wrapper.c			\
 	gnome-property.c		\
+	gnome-property-types.c		\
 	gnome-property-bag.c		\
 	gnome-property-bag-client.c
 
@@ -132,13 +133,19 @@ libbonoboinclude_HEADERS =		\
 	gnome-view-frame.h		\
 	gnome-wrapper.h			\
 	gnome-property.h		\
+	gnome-property-types.h		\
 	gnome-property-bag.h		\
 	gnome-property-bag-client.h
 
-#test_ui_handler_SOURCES =		\
-#	 test-ui-handler.c
-#
-#test_ui_handler_LDADD = $(bonobo_libs)
+libbonobo_xml_la_SOURCES =		\
+	gnome-property-bag-xml.c
+
+libbonobo_xmlincludedir = $(includedir)/bonobo
+
+libbonobo_xmlinclude_HEADERS =		\
+	bonobo.h			\
+	gnome-property-bag.h		\
+	gnome-property-bag-xml.h
 
 test_bw_SOURCES =			\
 	test-bw.c

@@ -1,0 +1,151 @@
+#!/bin/sh
+#
+# An ugly shell script to run a test.
+#
+
+
+testname="Unknown"
+
+rterror () {
+    if [ $TERM != "emacs" ];
+    then
+	echo -e "\033[33;40;1mBonoboTester\033[0;0;0m:\033[31;40;2m " $@ "\033[0;0;0m"
+    else
+	echo -e "BonoboTester: " $@
+    fi
+    
+}
+
+rtstatus () {
+    if [ $TERM != "emacs" ];
+    then
+	echo -e "\033[33;40;1mBonoboTester\033[0;0;0m: " $@
+    else
+	echo -e "BonoboTester: " $@
+    fi
+}
+
+finish_test () {
+
+    result=$@
+
+    killall -9 $killproc1 2> /dev/null > /dev/null
+    killall -9 $killproc2 2> /dev/null > /dev/null
+
+    if [ $result = 1 ];
+    then
+	if [ $TERM != "emacs" ];
+	then
+	    echo -e "\033[33;40;1mBonoboTester\033[0;0;0m: Test $testname \033[31;40;2mfailed\033[0;0;0m"
+	else
+	    echo -e "run-test: Test $testname *** FAILED ***"
+	fi
+
+	exit 1
+    fi
+
+    if [ $TERM != "emacs" ];
+    then
+	echo -e "\033[33;40;1mrun-test\033[0;0;0m: Test $1 \033[32;40;2mpassed\033[0;0;0m"
+    else
+	echo "run-test: Test $testname passed"
+    fi
+
+    exit 0
+}
+
+compare_file () {
+    if [ ! -f models/$@ ];
+    then
+	rterror Model file models/$@ does not exist!
+	finish_test 1
+    fi
+
+    diffs=`diff --side-by-side $@ models/$@ |grep -v ARBITRARY |grep \|`
+
+    if [ "${diffs}"x != ""x ];
+    then
+	rterror File $@ differs from model!
+	finish_test 1
+    fi
+
+    rtstatus "File $@ matches model."
+}
+
+run_simple_test () {
+    ./$testname | sed "s/^/[$testname]: /g"
+    finish_test $?
+    return 0
+}
+
+run_cliserv_test () {
+    serverout=runtest-output-$testname-server.output
+    clientout=runtest-output-$testname-client.output
+    killproc1=$testname-server
+    killproc2=$testname-client
+
+    rtstatus "Killing lingering processes..."
+    killall -9 $killproc1 $killproc2 > /dev/null 2> /dev/null
+
+    rtstatus "Running $testname server..."
+    rm -f $serverout 2> /dev/null
+    touch $serverout
+    (tail -f $serverout |sed "s/^/[$testname-server]: /g") &
+    ./$testname-server 2>> $serverout >> $serverout &
+
+    rtstatus "Waiting for the IOR..."
+    sleep 5
+    ior=`grep IOR $serverout | head -1`
+    if [ x$ior = x ];
+    then
+	rterror "Couldn't find IOR"
+	finish_test 1
+    fi
+
+    rtstatus "Running $testname client..."
+
+    rm $clientout 2> /dev/null
+    touch $clientout
+    (tail -f $clientout |sed "s/^/[$testname-client]: /g") &
+
+    ./$testname-client $ior 2>&1 >> $clientout |sed "s/^/[$testname-client]: /g"
+
+    if [ $? = 1 ];
+    then
+	finish_test $?
+    fi
+    
+    rtstatus "Returned from $testname client.  Killing server..."
+    killall -9 $killproc1
+
+    rtstatus "Comparing output files..."
+    compare_file $serverout
+    compare_file $clientout
+}
+
+testname=$1
+
+if [ "${1}"x = ""x ];
+then
+	echo "Usage: run-test <test name>"
+	exit 1
+fi
+
+if [ -x $1 ];
+then
+    run_simple_test
+fi
+
+if [ ! -x ./$1-server ];
+then
+    rterror "Could not find server program: " $1-server
+    exit 1
+fi
+
+if [ ! -x ./$1-client ];
+then
+    echo "run-test: Could not find client program: " $1-client
+    exit 1
+fi
+
+run_cliserv_test

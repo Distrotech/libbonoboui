@@ -24,7 +24,6 @@
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdktypes.h>
-#include <gtk/gtksocket.h>
 
 POA_GNOME_ClientSite__vepv gnome_client_site_vepv;
 
@@ -372,24 +371,7 @@ gnome_client_site_get_embeddable (GnomeClientSite *client_site)
 }
 
 static void
-set_remote_window (GtkWidget *socket, GnomeViewFrame *view_frame)
-{
-	GNOME_View view = gnome_view_frame_get_view (view_frame);
-	GNOME_Control_windowid id;
-	CORBA_Environment ev;
-
-	CORBA_exception_init (&ev);
-	id = gnome_control_windowid_from_x11 (GDK_WINDOW_XWINDOW (socket->window));
-	GNOME_View_set_window (view, id, &ev);
-	g_free (id);
-	if (ev._major != CORBA_NO_EXCEPTION)
-		gnome_object_check_env (GNOME_OBJECT (view_frame), view, &ev);
-
-	CORBA_exception_free (&ev);
-}
-
-static void
-destroy_view_frame (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
+gnome_client_site_view_frame_destroy (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
 {
 	/*
 	 * Remove this view frame.
@@ -420,7 +402,6 @@ gnome_client_site_new_view_full (GnomeClientSite *client_site,
 	GnomeObjectClient *server_object;
 	GnomeViewFrame *view_frame;
 	GnomeWrapper *wrapper;
-	GtkWidget *socket;
 	GNOME_View view;
 
 	CORBA_Environment ev;
@@ -432,23 +413,15 @@ gnome_client_site_new_view_full (GnomeClientSite *client_site,
 	server_object = client_site->bound_object;
 
 	/*
-	 * 1. Get the end points where the containee is embedded.
-	 */
-	socket = gtk_socket_new ();
-	gtk_widget_show (socket);
-
-	/*
-	 * 2. Create the view frame.
+	 * 1. Create the view frame.
 	 */
 	view_frame = gnome_view_frame_new (client_site);
 	wrapper = GNOME_WRAPPER (gnome_view_frame_get_wrapper (view_frame));
 	gnome_wrapper_set_visibility (wrapper, visible_cover);
 	gnome_wrapper_set_covered (wrapper, ! active_view);
 
-	gtk_container_add (GTK_CONTAINER (wrapper), socket);
-
 	/*
-	 * 3. Now, create the view.
+	 * 2. Now, create the view.
 	 */
 	CORBA_exception_init (&ev);
  	view = GNOME_Embeddable_new_view (
@@ -460,7 +433,6 @@ gnome_client_site_new_view_full (GnomeClientSite *client_site,
 			GNOME_OBJECT (client_site),
 			gnome_object_corba_objref (GNOME_OBJECT (server_object)),
 			&ev);
-		gtk_object_unref   (GTK_OBJECT (socket));
 		gnome_object_unref (GNOME_OBJECT (view_frame));
 		CORBA_exception_free (&ev);
 		return NULL;
@@ -470,19 +442,13 @@ gnome_client_site_new_view_full (GnomeClientSite *client_site,
 	CORBA_Object_release (view, &ev);
 	
 	/*
-	 * 4. Add this new view frame to the list of ViewFrames for
+	 * 3. Add this new view frame to the list of ViewFrames for
 	 * this embedded component.
 	 */
 	client_site->view_frames = g_list_prepend (client_site->view_frames, view_frame);
 	
-	/*
-	 * 5. Now wait until the socket->window is realized.
-	 */
-	gtk_signal_connect (GTK_OBJECT (socket), "realize",
-			    GTK_SIGNAL_FUNC (set_remote_window), view_frame);
-
 	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
-			    GTK_SIGNAL_FUNC (destroy_view_frame), client_site);
+			    GTK_SIGNAL_FUNC (gnome_client_site_view_frame_destroy), client_site);
 
 	CORBA_exception_free (&ev);		
 	return view_frame;
@@ -598,7 +564,7 @@ gnome_client_site_get_verbs (GnomeClientSite *client_site)
 	}
 
 	CORBA_exception_free (&ev);
-	CORBA_free (list);	/* FIXME: This does not make any sense at all to me */
+	CORBA_free (list);
 
 	return l;
 }

@@ -44,6 +44,7 @@ edit_property (GtkCList *clist, GdkEventButton *event, GnomeBonoboWidget *bw)
 			newany->_value = b;
 			CORBA_any_set_release (newany, TRUE);
 			GNOME_Property_set_value (prop, newany, &ev);
+			CORBA_free (newany);
 			break;
 		default:
 			g_warning ("Cannot set_value this type of property yet, sorry.");

@@ -180,6 +180,8 @@ gnome_view_frame_construct (GnomeViewFrame *view_frame,
 		return NULL;
 	}
 	view_frame->priv->wrapper = wrapper;
+	gtk_container_add (GTK_CONTAINER (wrapper),
+			   gnome_control_frame_get_widget (GNOME_CONTROL_FRAME (view_frame)));
 
 	/*
 	 * Connect signal handlers to catch activation events (double
