@@ -49,16 +49,31 @@ static guint signals [LAST_SIGNAL] = { 0 };
 
 static void
 set_image (BonoboUIToolbarButtonItem *button_item,
-	   GtkWidget *image)
+	   gpointer                   image)
 {
+	gboolean is_pixbuf;
+	gboolean is_gtk_image;
 	BonoboUIToolbarButtonItemPrivate *priv;
 
 	priv = button_item->priv;
 
-	if (priv->icon != NULL)
-		gtk_widget_destroy (priv->icon);
+	is_pixbuf    = image && GDK_IS_PIXBUF (image);
+	is_gtk_image = priv->icon && GTK_IS_IMAGE (priv->icon);
 
-	priv->icon = image;
+	if (is_pixbuf && is_gtk_image)
+		bonobo_ui_image_set_pixbuf ((GtkImage *) priv->icon, image);
+
+	else {
+		if (priv->icon)
+			gtk_widget_destroy (priv->icon);
+
+		if (is_pixbuf)
+			priv->icon = gtk_image_new_from_pixbuf (image);
+		else {
+			g_return_if_fail (!image || GTK_IS_WIDGET (image));
+			priv->icon = image;
+		}
+	}
 }
 
 static void
@@ -244,7 +259,7 @@ impl_set_tooltip (BonoboUIToolbarItem *item,
 /* BonoboUIToolbarButtonItem virtual methods.  */
 static void
 impl_set_icon  (BonoboUIToolbarButtonItem *button_item,
-		GtkWidget                 *image)
+		gpointer                   image)
 {
 	set_image (button_item, image);
 
@@ -340,7 +355,6 @@ bonobo_ui_toolbar_button_item_construct (BonoboUIToolbarButtonItem *button_item,
 					 const char *label)
 {
 	BonoboUIToolbarButtonItemPrivate *priv;
-	GtkWidget *image;
 
 	g_return_if_fail (button_item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item));
@@ -365,9 +379,7 @@ bonobo_ui_toolbar_button_item_construct (BonoboUIToolbarButtonItem *button_item,
 
 	gtk_container_add (GTK_CONTAINER (button_item), GTK_WIDGET (button_widget));
 
-	image = gtk_image_new_from_pixbuf (pixbuf);
-
-	set_image  (button_item, image);
+	set_image (button_item, pixbuf);
 	set_label (button_item, label);
 
 	layout_pixmap_and_label (
@@ -385,7 +397,7 @@ bonobo_ui_toolbar_button_item_construct (BonoboUIToolbarButtonItem *button_item,
  * Return value: A pointer to the newly created widget.
  **/
 GtkWidget *
-bonobo_ui_toolbar_button_item_new (GdkPixbuf *icon,
+bonobo_ui_toolbar_button_item_new (GdkPixbuf  *icon,
 				   const char *label)
 {
 	BonoboUIToolbarButtonItem *button_item;
@@ -394,7 +406,8 @@ bonobo_ui_toolbar_button_item_new (GdkPixbuf *icon,
 	button_item = gtk_type_new (bonobo_ui_toolbar_button_item_get_type ());
 
 	button_widget = gtk_button_new ();
-	bonobo_ui_toolbar_button_item_construct (button_item, GTK_BUTTON (button_widget), icon, label);
+	bonobo_ui_toolbar_button_item_construct (
+		button_item, GTK_BUTTON (button_widget), icon, label);
 
 	return GTK_WIDGET (button_item);
 }
@@ -402,11 +415,10 @@ bonobo_ui_toolbar_button_item_new (GdkPixbuf *icon,
 
 void
 bonobo_ui_toolbar_button_item_set_image (BonoboUIToolbarButtonItem *button_item,
-					 GtkWidget *image)
+					 gpointer                   image)
 {
 	BonoboUIToolbarButtonItemClass *klass;
 
-	g_return_if_fail (button_item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item));
 
 	klass = BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS (
@@ -418,11 +430,10 @@ bonobo_ui_toolbar_button_item_set_image (BonoboUIToolbarButtonItem *button_item,
 
 void
 bonobo_ui_toolbar_button_item_set_label (BonoboUIToolbarButtonItem *button_item,
-				      const char *label)
+					 const char                *label)
 {
 	BonoboUIToolbarButtonItemClass *klass;
 
-	g_return_if_fail (button_item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item));
 
 	klass = BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS (
@@ -436,7 +447,6 @@ bonobo_ui_toolbar_button_item_set_label (BonoboUIToolbarButtonItem *button_item,
 GtkButton *
 bonobo_ui_toolbar_button_item_get_button_widget (BonoboUIToolbarButtonItem *button_item)
 {
-	g_return_val_if_fail (button_item != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item), NULL);
 
 	return GTK_BUTTON (GTK_BIN (button_item)->child);

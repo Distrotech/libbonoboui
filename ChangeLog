@@ -1,3 +1,25 @@
+2001-12-21  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_bonobo_ui_sync_menu_state): accelerate pixbuf sets.
+	(cmd_get_menu_pixbuf): upd.
+
+	* bonobo/bonobo-ui-toolbar-control-item.c
+	(impl_set_icon): upd. but this can never have worked.
+
+	* bonobo/bonobo-ui-toolbar-button-item.c
+	(bonobo_ui_toolbar_button_item_set_image): un-type
+	the image pointer so we can shoehorn GdkPixbufs in.
+	(bonobo_ui_toolbar_button_item_construct, impl_set_icon): upd.
+	(set_image): re-impl. for more efficiency.
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(cmd_get_toolbar_image): upd.
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_util_xml_get_pixbuf): update sig.
+	(bonobo_ui_image_set_pixbuf): impl.
+
 2001-12-20  Rodrigo Moya <rodrigo@gnome-db.org>
 
 	* tests/test-moniker.c: added exception's text to error messages

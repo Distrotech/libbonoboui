@@ -36,19 +36,18 @@ static BonoboUISyncClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
-static GtkWidget *
-cmd_get_toolbar_image (BonoboUINode     *node,
-		       BonoboUINode     *cmd_node)
+static GdkPixbuf *
+cmd_get_toolbar_image (GtkWidget    *widget,
+		       BonoboUINode *node,
+		       BonoboUINode *cmd_node)
 {
-	const char *type;
+	if (bonobo_ui_node_peek_attr (node, "pixtype"))
+		return bonobo_ui_util_xml_get_pixbuf (
+			widget, node, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
-	if ((type = bonobo_ui_node_peek_attr (node, "pixtype")))
-		return bonobo_ui_util_xml_get_icon_widget (
-			node, GTK_ICON_SIZE_SMALL_TOOLBAR);
-
-	if ((type = bonobo_ui_node_peek_attr (cmd_node, "pixtype")))
-		return bonobo_ui_util_xml_get_icon_widget (
-			cmd_node, GTK_ICON_SIZE_SMALL_TOOLBAR);
+	if (bonobo_ui_node_peek_attr (cmd_node, "pixtype"))
+		return bonobo_ui_util_xml_get_pixbuf (
+			widget, cmd_node, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 	return NULL;
 }
@@ -93,7 +92,7 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	char *min_width;
 	char *behavior;
 	char **behavior_array;
-	GtkWidget *image;
+	GdkPixbuf *image;
 	gboolean priority;
 
 	/* FIXME: to debug control problem */
@@ -124,12 +123,12 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	bonobo_ui_toolbar_item_set_want_label (
 		BONOBO_UI_TOOLBAR_ITEM (widget), priority);
 
-	image = cmd_get_toolbar_image (node, cmd_node);
-
 	type  = bonobo_ui_engine_get_attr (node, cmd_node, "type");
 	label = bonobo_ui_engine_get_attr (node, cmd_node, "label");
 	
 	if (!type || !strcmp (type, "toggle")) {
+
+		image = cmd_get_toolbar_image (widget, node, cmd_node);
 
 		if (image) {
 			bonobo_ui_toolbar_button_item_set_image (

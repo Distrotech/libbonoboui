@@ -74,8 +74,8 @@ MAKE_SET_CONTROL_PROPERTY_BAG_VALUE (string,   const char *, STRING)
 
 /* BonoboUIToolbarButtonItem virtual methods.  */
 static void
-impl_set_icon  (BonoboUIToolbarButtonItem *button_item,
-		GtkWidget                 *icon)
+impl_set_icon (BonoboUIToolbarButtonItem *button_item,
+	       gpointer                   image)
 {
 	BonoboUIToolbarControlItemPrivate *priv;
 	BonoboUIToolbarControlItem *control_item;
@@ -84,7 +84,7 @@ impl_set_icon  (BonoboUIToolbarButtonItem *button_item,
 	priv = control_item->priv;
 
 	bonobo_ui_toolbar_button_item_set_image (
-		BONOBO_UI_TOOLBAR_BUTTON_ITEM (priv->button), icon);
+		BONOBO_UI_TOOLBAR_BUTTON_ITEM (priv->button), image);
 }
 
 static void
@@ -235,12 +235,12 @@ class_init (BonoboUIToolbarControlItemClass *klass)
 	item_class = BONOBO_UI_TOOLBAR_ITEM_CLASS (klass);
 	object_class = G_OBJECT_CLASS (klass);
 
-        button_item_class->set_icon = impl_set_icon;
+        button_item_class->set_icon  = impl_set_icon;
         button_item_class->set_label = impl_set_label;
-        item_class->set_tooltip     = impl_set_tooltip;
-        item_class->set_orientation = impl_set_orientation;
-	item_class->set_style       = impl_set_style;
-	item_class->set_want_label  = impl_set_want_label;
+        item_class->set_tooltip      = impl_set_tooltip;
+        item_class->set_orientation  = impl_set_orientation;
+	item_class->set_style        = impl_set_style;
+	item_class->set_want_label   = impl_set_want_label;
 
 	object_class->dispose  = impl_dispose;
 	object_class->finalize = impl_finalize;

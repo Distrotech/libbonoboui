@@ -265,11 +265,81 @@ lookup_stock_compat (const char *id)
 }
 
 GdkPixbuf *
-bonobo_ui_util_xml_get_pixbuf (BonoboUINode *node,
+bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
+			       BonoboUINode *node,
 			       GtkIconSize   icon_size)
 {
-	/* FIXME: implement me */
-	return NULL;
+	GdkPixbuf  *pixbuf = NULL;
+	char       *key;
+	const char *type, *text;
+	/* FIXME: this cache needs to be invalidated on theme
+	 * changes */
+	static GHashTable *pixbuf_cache = NULL;
+
+	g_return_val_if_fail (node != NULL, NULL);
+
+	if (!(type = bonobo_ui_node_peek_attr (node, "pixtype")))
+		return NULL;
+
+	if (!(text = bonobo_ui_node_peek_attr (node, "pixname")))
+		return NULL;
+
+	key = g_strdup_printf ("%s:%s:%d:%d", type, text,
+			       icon_size,
+			       gtk_widget_get_direction (widget));
+
+	if (!pixbuf_cache)
+		pixbuf_cache = g_hash_table_new (g_str_hash, g_str_equal);
+
+	else if ((pixbuf = g_hash_table_lookup (pixbuf_cache, key))) {
+		g_free (key);
+		g_object_ref (G_OBJECT (pixbuf));
+		return pixbuf;
+	}
+
+	if (!strcmp (type, "stock")) {
+		GtkStockItem item;
+
+		if (gtk_stock_lookup (text, &item))
+			pixbuf = gtk_widget_render_icon (
+				widget, text, icon_size, "bonobo-ui");
+		else {
+			char *mapped;
+
+			if ((mapped = lookup_stock_compat (text))) {
+				
+				pixbuf = gtk_widget_render_icon (
+					widget, mapped, icon_size, "bonobo-ui");
+
+				g_free (mapped);
+			} else
+				g_warning ("Unknown stock icon '%s', stock names all changed in Gtk+ 2.0", text);
+		}
+
+	} else if (!strcmp (type, "filename")) {
+		char *name = find_pixmap_in_path (text);
+
+		if ((name == NULL) || !g_file_test (name, G_FILE_TEST_EXISTS))
+			g_warning ("Could not find GNOME pixmap file %s", text);
+		else
+			pixbuf = gdk_pixbuf_new_from_file (name, NULL);
+
+		g_free (name);
+
+	} else if (!strcmp (type, "pixbuf"))
+		pixbuf = bonobo_ui_util_xml_to_pixbuf (text);
+
+	else
+		g_warning ("Unknown icon_pixbuf type '%s'", type);
+
+	if (pixbuf) {
+		g_object_ref (G_OBJECT (pixbuf));
+		g_hash_table_insert (pixbuf_cache, key, pixbuf);
+	} else
+		g_free (key);
+
+
+	return pixbuf;
 }
 
 /**
@@ -279,7 +349,7 @@ bonobo_ui_util_xml_get_pixbuf (BonoboUINode *node,
  * 
  * This function extracts a pixbuf from the node and returns a GtkWidget
  * containing a display of the pixbuf.
- * 
+ *
  * Return value: the widget.
  **/
 GtkWidget *
@@ -341,6 +411,13 @@ bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 		gtk_widget_show (image);
 
 	return image;
+}
+
+void
+bonobo_ui_image_set_pixbuf (GtkImage *image, GdkPixbuf *pixbuf)
+{
+	if (gtk_image_get_pixbuf (image) != pixbuf)
+		gtk_image_set_from_pixbuf (image, pixbuf);
 }
 
 /**

@@ -258,19 +258,18 @@ get_item_widget (GtkWidget *widget)
 	return NULL;
 }
 
-static GtkWidget *
-cmd_get_menu_pixmap (BonoboUINode *node,
+static GdkPixbuf *
+cmd_get_menu_pixbuf (GtkWidget    *widget,
+		     BonoboUINode *node,
 		     BonoboUINode *cmd_node)
 {
-	const char *type;
+	if (bonobo_ui_node_peek_attr (node, "pixtype"))
+		return bonobo_ui_util_xml_get_pixbuf (
+			widget, node, GTK_ICON_SIZE_MENU);
 
-	if ((type = bonobo_ui_node_peek_attr (node, "pixtype")))
-		return bonobo_ui_util_xml_get_icon_widget (
-			node, GTK_ICON_SIZE_MENU);
-
-	if ((type = bonobo_ui_node_peek_attr (cmd_node, "pixtype")))
-		return bonobo_ui_util_xml_get_icon_widget (
-			cmd_node, GTK_ICON_SIZE_MENU);
+	if (bonobo_ui_node_peek_attr (cmd_node, "pixtype"))
+		return bonobo_ui_util_xml_get_pixbuf (
+			widget, cmd_node, GTK_ICON_SIZE_MENU);
 
 	return NULL;
 }
@@ -358,13 +357,25 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 		bonobo_ui_node_free_string (type);
 	else {
 		if (GTK_IS_IMAGE_MENU_ITEM (menu_widget)) {
-			GtkWidget *pixmap;
+			GdkPixbuf        *pixbuf;
+			GtkImageMenuItem *image_menu_item;
 
-			pixmap = cmd_get_menu_pixmap (node, cmd_node);
+			pixbuf = cmd_get_menu_pixbuf (menu_widget, node, cmd_node);
 
-			if (pixmap) {
-				gtk_widget_show (GTK_WIDGET (pixmap));
-				g_object_set (G_OBJECT (menu_widget), "image", pixmap, NULL);
+			image_menu_item = (GtkImageMenuItem *) menu_widget;
+
+			if (pixbuf) {
+				GtkWidget *image;
+			       
+				image = gtk_image_menu_item_get_image (image_menu_item);
+
+				if (!image) {
+					image = gtk_image_new_from_pixbuf (pixbuf);
+					gtk_widget_show (image);
+					g_object_set (G_OBJECT (menu_widget), "image",
+						      image, NULL);
+				} else
+					bonobo_ui_image_set_pixbuf (image, pixbuf);
 			}
 		}
 	}
