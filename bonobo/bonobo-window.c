@@ -2177,7 +2177,7 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	if ((min_width = cmd_get_attr (node, cmd_node, "min_width"))) {
 		bonobo_ui_toolbar_item_set_minimum_width (BONOBO_UI_TOOLBAR_ITEM (widget),
 							  atoi (min_width));
-		g_free (min_width);
+		bonobo_ui_node_free_string (min_width);
 	}
 	
 	if ((txt = cmd_get_attr (node, cmd_node, "tip"))) {
