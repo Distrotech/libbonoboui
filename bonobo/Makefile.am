@@ -2,6 +2,14 @@ corbadir = $(sysconfdir)/CORBA/servers
 
 corba_DATA = sample.gnorba item.gnorba
 
+if OAF
+OBJECT_DIRECTORY_LIBS=$(OAF_LIBS)
+OBJECT_DIRECTORY_IMPL=bonobo-object-directory-oaf.c
+else
+OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
+OBJECT_DIRECTORY_IMPL=bonobo-object-directory-goad.c
+endif
+
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-DSTORAGE_LIB=\""$(libdir)"\"			\
@@ -15,7 +23,7 @@ INCLUDES =                                              \
 gnome_libs =			\
 	$(GNOME_LIBDIR)		\
         $(GNOMEUI_LIBS)		\
-	$(GNOMEGNORBA_LIBS)	\
+	$(OBJECT_DIRECTORY_LIBS) \
 	$(INTLLIBS)
 
 bonobo_libs = 			\
@@ -24,7 +32,11 @@ bonobo_libs = 			\
 
 
 lib_LTLIBRARIES = libbonobo.la libbonobo-xml.la
-noinst_PROGRAMS = 		\
+
+if OAF
+test_programs =
+else
+test_programs = \
 	test-container 		\
 	sample-server 		\
 	sample-item 		\
@@ -32,6 +44,10 @@ noinst_PROGRAMS = 		\
 	selector_test		\
 	test-storage		\
 	test-bw
+endif
+
+noinst_PROGRAMS = 		\
+	$(test_programs)
 
 CORBA_SOURCE =			\
 	Bonobo.h		\
@@ -62,6 +78,9 @@ libbonobo_la_LDFLAGS = -version-info 1:0:0 #-rpath $(libdir)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
+	bonobo-object-directory.h	\
+	bonobo-object-directory.c	\
+	$(OBJECT_DIRECTORY_IMPL)	\
 	bonobo-ui-handler.c		\
 	bonobo-canvas-item.c		\
 	bonobo-selector.c		\

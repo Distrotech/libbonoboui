@@ -2,6 +2,8 @@
 #include <config.h>
 #include "bonobo-selector.h"
 #include <string.h> /* strcmp */
+#include <gnome.h>
+#include "bonobo-object-directory.h"
 
 #define DEFAULT_INTERFACE	"IDL:GNOME/Embeddable:1.0"
 
@@ -10,7 +12,7 @@ static GtkDialogClass *parent_class;
 struct _BonoboSelectorPrivate 
 {
 	GtkWidget *clist;
-	GoadServerList *servers;
+	GList *servers;
 	int n_servers;
 	const gchar **interfaces_required;
 };
@@ -32,7 +34,6 @@ static void ok_callback (GtkWidget *widget, gpointer data);
 static void cancel_callback (GtkWidget *widget, gpointer data);
 static void add_gnorba_objects (BonoboSelector *widget); 
 static GList *get_filtered_objects (BonoboSelector *widget);
-static gboolean stringlist_contains (gchar **list, const gchar *word);
 
 
 /* fixme: revove this as soon it is included in gnome-dialog */
@@ -145,7 +146,7 @@ bonobo_selector_destroy (GtkObject *object)
 	priv = sel->priv;
 
 	gtk_widget_destroy (priv->clist);
-	goad_server_list_free (priv->servers);
+	od_server_list_free (priv->servers);
 	g_free (priv);
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy)
@@ -153,21 +154,14 @@ bonobo_selector_destroy (GtkObject *object)
 	
 }
 
-/**
- * bonobo_selector_get_selected_goad_id:
- * @sel: A BonoboSelector widget.
- *
- * Returns: A newly-allocated string containing the GOAD ID of the
- * currently-selected CORBA server (i.e., the corba server whose
- * name is highlighted in the list).  The user of this function is
- * responsible for freeing this.
- */
-gchar *
-bonobo_selector_get_selected_goad_id (BonoboSelector *sel)
+static gchar *
+bonobo_selector_get_selected_id (BonoboSelector *sel)
 {
 	GList *selection;
 	gchar *text;
 	BonoboSelectorPrivate *priv; 
+
+	od_assert_using_goad();
 	
 	g_return_val_if_fail (sel != NULL, NULL);
 	priv = sel->priv;	
@@ -179,23 +173,9 @@ bonobo_selector_get_selected_goad_id (BonoboSelector *sel)
 	return g_strdup (text);
 }
 
-/**
- * gnome_bonobo_select_goad_id:
- * @title: The title to be used for the dialog.
- * @interfaces_required: A list of required interfaces.  See
- * bonobo_selector_new().
- *
- * Calls bonobo_selector_new() to create a new
- * BonoboSelector widget with the specified paramters, @title and
- * @interfaces_required.  Then runs the dialog modally and allows
- * the user to make a selection.
- *
- * Returns: The GOAD ID of the selected server, or NULL if no server
- * is selected.  The GOAD ID string has been allocated with g_strdup
- */
-gchar *
-gnome_bonobo_select_goad_id (const gchar *title,
-			     const gchar **interfaces_required)
+static gchar *
+gnome_bonobo_select_id (const gchar *title,
+			const gchar **interfaces_required)
 {
 	GtkWidget *sel = bonobo_selector_new (title, interfaces_required);
 	gchar *name = NULL;
@@ -224,6 +204,82 @@ gnome_bonobo_select_goad_id (const gchar *title,
 	return name;
 }
 
+/**
+ * bonobo_selector_get_selected_goad_id:
+ * @sel: A BonoboSelector widget.
+ *
+ * Returns: A newly-allocated string containing the GOAD ID of the
+ * currently-selected CORBA server (i.e., the corba server whose
+ * name is highlighted in the list).  The user of this function is
+ * responsible for freeing this.
+ */
+gchar *
+bonobo_selector_get_selected_goad_id (BonoboSelector *sel)
+{
+	od_assert_using_goad();
+	return bonobo_selector_get_selected_id(sel);
+}
+
+/**
+ * gnome_bonobo_select_goad_id:
+ * @title: The title to be used for the dialog.
+ * @interfaces_required: A list of required interfaces.  See
+ * bonobo_selector_new().
+ *
+ * Calls bonobo_selector_new() to create a new
+ * BonoboSelector widget with the specified paramters, @title and
+ * @interfaces_required.  Then runs the dialog modally and allows
+ * the user to make a selection.
+ *
+ * Returns: The GOAD ID of the selected server, or NULL if no server
+ * is selected.  The GOAD ID string has been allocated with g_strdup
+ */
+gchar *
+gnome_bonobo_select_goad_id (const gchar *title,
+			     const gchar **interfaces_required)
+{
+	od_assert_using_goad();
+	return gnome_bonobo_select_id(title, interfaces_required);
+}
+
+/**
+ * bonobo_selector_get_selected_oaf_id:
+ * @sel: A BonoboSelector widget.
+ *
+ * Returns: A newly-allocated string containing the OAF ID of the
+ * currently-selected CORBA server (i.e., the corba server whose
+ * name is highlighted in the list).  The user of this function is
+ * responsible for freeing this.
+ */
+gchar *
+bonobo_selector_get_selected_oaf_id (BonoboSelector *sel)
+{
+	od_assert_using_oaf();
+	return bonobo_selector_get_selected_id(sel);
+}
+
+/**
+ * gnome_bonobo_select_oaf_id:
+ * @title: The title to be used for the dialog.
+ * @interfaces_required: A list of required interfaces.  See
+ * bonobo_selector_new().
+ *
+ * Calls bonobo_selector_new() to create a new
+ * BonoboSelector widget with the specified paramters, @title and
+ * @interfaces_required.  Then runs the dialog modally and allows
+ * the user to make a selection.
+ *
+ * Returns: The OAF ID of the selected server, or NULL if no server
+ * is selected.  The OAF ID string has been allocated with g_strdup
+ */
+gchar *
+gnome_bonobo_select_oaf_id (const gchar *title,
+			     const gchar **interfaces_required)
+{
+	od_assert_using_oaf();
+	return gnome_bonobo_select_id(title, interfaces_required);
+}
+
 static void
 button_callback (GtkWidget *widget, gint button_number,
 		 gpointer data) 
@@ -245,7 +301,7 @@ button_callback (GtkWidget *widget, gint button_number,
 static void
 ok_callback (GtkWidget *widget, gpointer data)
 {
-	char *text = bonobo_selector_get_selected_goad_id (
+	char *text = bonobo_selector_get_selected_id (
 		BONOBO_SELECTOR (widget));
 	gtk_object_set_user_data (GTK_OBJECT (widget), text);
 	gtk_main_quit ();
@@ -278,7 +334,7 @@ bonobo_selector_init (GtkWidget *widget)
 	BonoboSelector *sel = BONOBO_SELECTOR (widget);
 	GtkWidget *scrolled;
 	BonoboSelectorPrivate *priv;
-	gchar *titles[] = { N_("Bonobo object description"), "goadid", NULL };
+	gchar *titles[] = { N_("Bonobo object description"), "ID", NULL };
 	
 	g_return_if_fail (widget != NULL);
 	
@@ -319,7 +375,7 @@ bonobo_selector_init (GtkWidget *widget)
 static void
 add_gnorba_objects (BonoboSelector *widget) 
 {
-	gchar *text[3];
+	const gchar *text[3];
 	GList *list = NULL;
 	BonoboSelectorPrivate *priv;
 	
@@ -344,9 +400,9 @@ add_gnorba_objects (BonoboSelector *widget)
 	
 	while (list != NULL)  
 	{
-		text[0] = ( (GoadServer *)list->data)->description;
-		text[1] = ( (GoadServer *)list->data)->server_id;
-		gtk_clist_append (GTK_CLIST (priv->clist), text);
+		text[0] = od_server_info_get_description(list->data);
+		text[1] = od_server_info_get_id(list->data);
+		gtk_clist_append (GTK_CLIST (priv->clist), (gchar**)text);
 		priv->n_servers++;
 		list = list->next;  	
 	}
@@ -357,79 +413,37 @@ add_gnorba_objects (BonoboSelector *widget)
 static GList *
 get_filtered_objects (BonoboSelector *widget) 
 {
-	int i = 0, j = 0, num = 0;
+	int i = 0;
 	const gchar **inters;
 	GList *objects = NULL;
-	int n_inters = 0;
-	int n_objects = 0;
 	BonoboSelectorPrivate *priv;
+	int n_inters = 0;
 	
 	g_return_val_if_fail (widget != NULL, NULL);
 
 	priv = widget->priv;
-	
-	priv->servers = goad_server_list_get ();
-	if (priv->servers == NULL) return NULL;
 
-	if (priv->interfaces_required == NULL) 
-	{
+	if (priv->interfaces_required == NULL) {
 		inters = g_malloc (sizeof (gpointer) * 2);
 		inters[0] = DEFAULT_INTERFACE;
 		inters[1] = NULL;
 		n_inters = 1;
-	} 
-	else 
-	{	
+	} else {	
 		inters = priv->interfaces_required;
-		while (inters[i] != NULL)
-		{
+		while (inters[i] != NULL) {
 			n_inters++;
 			i++;
 		}
 	}
-	
-	while (priv->servers->list[i].repo_id != NULL)
-	{
-		num = 0;
-		
-		for (j = 0; j < n_inters; j++) 
-		{
-			if (stringlist_contains (
-				priv->servers->list[i].repo_id, inters[j]))
-			{
-				num++;
-			}
-		}
-		if (num == n_inters) /* We have a match! */
-		{
-			objects = g_list_prepend (objects, 
-				&priv->servers->list[i]);
-			n_objects++;
-		}
-		i++;
-	}
-	objects = g_list_reverse (objects);
+
+	priv->servers = od_get_server_list(inters);
 
 	/* Free our temporary criteria */
-	if (priv->interfaces_required == NULL) g_free (inters); 
+	if (priv->interfaces_required == NULL)
+		g_free (inters);
 	
-	return objects;
-}
-
-static gboolean
-stringlist_contains (gchar **list, const gchar *word)
-{
-	int i = 0;
-	
-	if (list == NULL) return FALSE;
-	
-	while (list[i] != NULL) 
-	{
-		if (strcmp (list[i], word) == 0) 
-		{
-			return TRUE;
-		}
-		i++;
-	}
-	return FALSE;
+	if (priv->servers == NULL)
+		return NULL;
+	else
+		return objects;
 }

@@ -1,4 +1,8 @@
+if OAF
+bin_PROGRAMS=
+else
 bin_PROGRAMS=test-properties-server test-properties-client
+endif
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \

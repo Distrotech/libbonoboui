@@ -1,5 +1,9 @@
 
+if OAF
+bin_PROGRAMS =
+else
 bin_PROGRAMS = sample-control-factory sample-control-container
+endif
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -20,7 +24,7 @@ sample_control_factory_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(GTK_LIBS)					\
 	$(GNOME_LIBDIR)					\
-	$(GNOMEGNORBA_LIBS)				\
+	$(GNOMEGNORBA_LIBS)					\
 	$(INTLLIBS)
 
 sample_control_container_SOURCES =			\
@@ -30,7 +34,7 @@ sample_control_container_LDADD =			\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(GTK_LIBS)					\
 	$(GNOME_LIBDIR)					\
-	$(GNOMEGNORBA_LIBS)				\
+	$(GNOMEGNORBA_LIBS)					\
 	$(INTLLIBS)
 
 gnorbadir = $(sysconfdir)/CORBA/servers
@@ -38,4 +42,6 @@ gnorba_DATA =	bonobo-clock-control.gnorba		\
 		bonobo-calculator-control.gnorba
 
 EXTRA_DIST = $(gnorba_DATA)
+
+
 

@@ -4,7 +4,6 @@
 
 
 #include <gtk/gtk.h>
-#include <libgnorba/gnorba.h>
 #include <libgnomeui/gnome-dialog.h>
 
 BEGIN_GNOME_DECLS
@@ -38,6 +37,10 @@ GtkWidget  *bonobo_selector_new			(const gchar *title,
 							 const gchar **interfaces_required);
 gchar	   *bonobo_selector_get_selected_goad_id  (BonoboSelector *sel);
 gchar	   *gnome_bonobo_select_goad_id			(const gchar *title,
+							 const gchar **interfaces_required);
+
+gchar	   *bonobo_selector_get_selected_oaf_id   (BonoboSelector *sel);
+gchar	   *gnome_bonobo_select_oaf_id                  (const gchar *title,
 							 const gchar **interfaces_required);
 
 END_GNOME_DECLS

@@ -17,6 +17,7 @@
 #include <bonobo/bonobo-view-frame.h>
 #include <gdk/gdkprivate.h>
 #include <libgnomeui/gnome-canvas.h>
+#include <gdk/gdkkeysyms.h>
 
 enum {
 	USER_ACTIVATE,

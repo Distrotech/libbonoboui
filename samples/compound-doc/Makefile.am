@@ -1,5 +1,9 @@
 
+if OAF
+bin_PROGRAMS =
+else
 bin_PROGRAMS = paint-component-simple sample-container
+endif
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \

@@ -81,7 +81,7 @@ bonobo_widget_launch_component (char *object_desc)
 {
 	BonoboObjectClient *server;
 
-	server = bonobo_object_activate (object_desc, (GoadActivationFlags) 0);
+	server = bonobo_object_activate (object_desc, 0);
 
 	return server;
 }

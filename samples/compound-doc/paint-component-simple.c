@@ -11,6 +11,7 @@
 #include <config.h>
 #include <gnome.h>
 #include <bonobo.h>
+#include <libgnorba/gnorba.h>
 
 /*
  * Number of running objects
