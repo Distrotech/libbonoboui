@@ -12,7 +12,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkplug.h>
-#include <gtk/gtkframe.h>
+#include <gtk/gtkbox.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
@@ -200,15 +200,17 @@ bonobo_control_frame_construct (BonoboControlFrame *control_frame,
 	gtk_widget_show (control_frame->priv->socket);
 
 	/*
-	 * Finally, create a frame to hold the socket; this no-window
+	 * Finally, create a box to hold the socket; this no-window
 	 * container is needed solely for the sake of bypassing
 	 * plug/socket in the local case.
 	 */
-	control_frame->priv->container = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (control_frame->priv->container), GTK_SHADOW_NONE);
+	control_frame->priv->container = gtk_hbox_new (1, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (control_frame->priv->container), 0);
-	gtk_container_add (GTK_CONTAINER (control_frame->priv->container),
-			   control_frame->priv->socket);
+	gtk_box_pack_end (GTK_BOX (control_frame->priv->container),
+			  control_frame->priv->socket,
+			  TRUE, TRUE, 0);
+	gtk_widget_ref (control_frame->priv->container);
+	gtk_object_sink (GTK_OBJECT(control_frame->priv->container));
 	gtk_widget_show (control_frame->priv->container);
 
 	/*
@@ -260,6 +262,8 @@ bonobo_control_frame_destroy (GtkObject *object)
 		CORBA_exception_free (&ev);
 	}
 	
+	gtk_widget_unref (control_frame->priv->container);
+
 	g_free (control_frame->priv);
 	
 	GTK_OBJECT_CLASS (bonobo_control_frame_parent_class)->destroy (object);

@@ -160,7 +160,7 @@ impl_Bonobo_Control_set_frame (PortableServer_Servant servant,
 
 
 
-GtkWidget *
+static GtkWidget *
 bonobo_gtk_widget_from_x11_id (guint32 xid)
 {
 	GdkWindow *window;
@@ -198,9 +198,11 @@ impl_Bonobo_Control_set_window (PortableServer_Servant servant,
 		GtkWidget *socket_parent;
 		control->priv->is_local = TRUE;
 		socket_parent = local_socket->parent;
-		gtk_container_remove (GTK_CONTAINER (socket_parent), local_socket);
-		gtk_container_add (GTK_CONTAINER (socket_parent), control->priv->widget);
-		gtk_widget_show_all (control->priv->widget);
+		gtk_widget_hide(local_socket);
+
+		gtk_box_pack_end (GTK_BOX (socket_parent),
+				  control->priv->widget,
+				  TRUE, TRUE, 0);
 	} else {
 		control->priv->plug = gtk_plug_new (x11_id);
 		control->priv->plug_destroy_id = gtk_signal_connect (
