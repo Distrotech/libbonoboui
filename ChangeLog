@@ -1,3 +1,9 @@
+Sun Sep 02 00:50:00 2001  George Lebl <jirka@5z.com>
+
+	* bonobo/bonobo-file-selector-util.c (create_control):
+	  gnome_program_get_name is now called gnome_program_get_app_id
+	  so use that.
+
 2001-08-31  Abel Cheung  <maddog@linux.org.hk>
 
 	* configure.in (ALL_LINGUAS): zh_TW.Big5 -> zh_TW

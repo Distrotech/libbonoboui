@@ -103,7 +103,7 @@ create_control (gboolean enable_vfs, FileselMode mode)
 		"EnableVFS=%d;"
 		"MultipleSelection=%d;"
 		"SaveMode=%d",
-		gnome_program_get_name (gnome_program_get ()),
+		gnome_program_get_app_id (gnome_program_get ()),
 		enable_vfs,
 		mode == FILESEL_OPEN_MULTI, 
 		mode == FILESEL_SAVE);
