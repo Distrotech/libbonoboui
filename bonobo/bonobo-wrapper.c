@@ -5,10 +5,8 @@
  * Author: Federico Mena <federico@nuclecu.unam.mx>
  */
 
-#if 0
 #include <config.h>
-#endif
-#include "gnome-wrapper.h"
+#include <bonobo/gnome-wrapper.h>
 
 
 static void gnome_wrapper_class_init (GnomeWrapperClass *class);

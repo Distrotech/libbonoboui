@@ -13,6 +13,7 @@
 #include <bonobo/bonobo.h>
 #include <bonobo/gnome-main.h>
 #include <bonobo/gnome-component.h>
+#include <bonobo/gnome-wrapper.h>
 
 static GnomeObjectClass *gnome_component_parent_class;
 
@@ -293,26 +294,36 @@ set_remote_window (GtkWidget *socket, GNOME_View view)
 GtkWidget *
 gnome_component_new_view (GnomeObject *server_object)
 {
-	GtkWidget *socket;
+	GtkWidget *socket, *cover;
 	GNOME_View view;
 	CORBA_Environment ev;
 
 	g_return_val_if_fail (server_object != NULL, NULL);
 	g_return_val_if_fail (GNOME_OBJECT (server_object), NULL);
 
-	socket = gtk_socket_new ();
-	if (!socket)
+	cover = gnome_wrapper_new ();
+	if (!cover)
 		return NULL;
+			
+	socket = gtk_socket_new ();
+	if (!socket){
+		gtk_object_unref (GTK_OBJECT (cover));
+		return NULL;
+	}
 	gtk_widget_show (socket);
 
 	CORBA_exception_init (&ev);
 	view = GNOME_Component_new_view (GNOME_OBJECT (server_object)->object, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
 		gtk_object_unref (GTK_OBJECT (socket));
+		gtk_object_unref (GTK_OBJECT (cover));
 		CORBA_exception_free (&ev);
 		return NULL;
 	}
 
+	gtk_container_add (GTK_CONTAINER (cover), socket);
+	gtk_widget_show (cover);
+			 
 	/*
 	 * Now wait until the socket->window is realized
 	 */
@@ -320,6 +331,6 @@ gnome_component_new_view (GnomeObject *server_object)
 			    GTK_SIGNAL_FUNC (set_remote_window), view);
 	
 	CORBA_exception_free (&ev);		
-	return socket;
+	return cover;
 }
 

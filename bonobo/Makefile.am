@@ -66,7 +66,8 @@ libbonobo_la_SOURCES =			\
 	gnome-storage-fs.c		\
 	gnome-stream.c			\
 	gnome-stream-fs.c		\
-	gnome-view.c
+	gnome-view.c			\
+	gnome-wrapper.c
 
 
 libbonoboincludedir = $(includedir)/bonobo
@@ -95,7 +96,8 @@ libbonoboinclude_HEADERS =		\
 	gnome-storage-fs.h		\
 	gnome-stream.h			\
 	gnome-stream-fs.h		\
-	gnome-view.h
+	gnome-view.h			\
+	gnome-wrapper.h
 
 test_container_SOURCES =		\
 	test-container.c
