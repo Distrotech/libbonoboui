@@ -122,5 +122,6 @@ glade_module_register_widgets (void)
 			       glade_bonobo_widget_new,
 			       NULL, NULL);
 	glade_register_widget (BONOBO_TYPE_WINDOW,
-			       NULL, NULL, NULL);
+			       NULL, glade_standard_build_children,
+			       NULL);
 }
