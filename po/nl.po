@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2003-01-13 14:45+0100\n"
+"POT-Creation-Date: 2003-06-13 04:43+0200\n"
+"PO-Revision-Date: 2003-06-14 12:08+0100\n"
 "Last-Translator: Huib Kleinhout <huib@stack.nl>\n"
 "Language-Team: Dutch <NL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,11 +33,11 @@ msgstr "De Gebruikersinterface-container"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
-msgstr "Gereedschapsbalk vastzetten"
+msgstr "Werkbalk vastzetten"
 
 #: bonobo/bonobo-dock-item-grip.c:237
 msgid "Un dock the toolbar"
-msgstr "Gereedschapsbalk vrijmaken"
+msgstr "Werkbalk vrijmaken"
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
 #: bonobo/bonobo-ui-toolbar.c:1176
@@ -92,15 +92,15 @@ msgid "Interfaces required"
 msgstr "Interfaces benodigd"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Een NULL_getermineerde array van interfaces die een server moet ondersteunen "
-"teneinde in de selector te kunnen worden opgesomd. Staat standaard op \"IDL:"
-"Bonobo/Embeddable:1.0\" als er geeen interfaces worden genoemd."
+"Een met NULL afgesloten array van interfaces die een server moet "
+"ondersteunen teneinde in de selector te kunnen worden opgesomd. Staat "
+"standaard op \"IDL:Bonobo/Embeddable:1.0\" als er geen interfaces worden "
+"genoemd."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -128,11 +128,11 @@ msgstr "T_oon tooltips"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
-msgstr "Gereedschapsbalken"
+msgstr "Werkbalken"
 
 #: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
-msgstr "gereedschapsbalken"
+msgstr "werkbalken"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
@@ -281,7 +281,7 @@ msgstr "Toon _tips"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "_Verberg gereedschapsbalk"
+msgstr "Werkbalk _verbergen"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
@@ -289,7 +289,7 @@ msgstr "_Aanpassen"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "Gereedschapsbalk aanpassen"
+msgstr "Werkbalk aanpassen"
 
 #: bonobo/bonobo-ui-toolbar.c:1130
 msgid "is floating"
@@ -297,11 +297,11 @@ msgstr "is zwevend"
 
 #: bonobo/bonobo-ui-toolbar.c:1131
 msgid "whether the toolbar is floating"
-msgstr "of de gereedschapsbalk zwevend is"
+msgstr "of de werkbalk zwevend is"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Stijl van de schuine rand om de werkbalk"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
