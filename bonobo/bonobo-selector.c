@@ -505,9 +505,6 @@ get_filtered_objects (BonoboSelector *widget)
 	/* Free our temporary criteria */
 	if (priv->interfaces_required == NULL)
 		g_free (inters);
-
-	/* Sort the list */
-	g_list_sort (priv->servers, server_list_compare);
 	
-	return priv->servers;
+	return g_list_sort (priv->servers, server_list_compare);
 }
