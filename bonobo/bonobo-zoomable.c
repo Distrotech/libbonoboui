@@ -581,7 +581,7 @@ bonobo_zoomable_new (void)
 {
 	BonoboZoomable	*p;
 
-	p = gtk_type_new (bonobo_zoomable_get_type ());
+	p = g_object_new (bonobo_zoomable_get_type (), NULL);
 	g_return_val_if_fail (p != NULL, NULL);
 
 	return p;
