@@ -4,15 +4,15 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2001-11-30 13:49+1100\n"
-"PO-Revision-Date: 2001-09-23 00:23GMT +0200\n"
+"Project-Id-Version: libbonoboui 1.107.0\n"
+"POT-Creation-Date: 2001-11-24 14:19+0100\n"
+"PO-Revision-Date: 2001-11-28 23:45GMT+0200\n"
 "Last-Translator: Vasif İsmayıloğlu MD <azerb_linux@hotmail.com>\n"
-"Language-Team: Azerbaijani Turkish <linuxaz@azerimal.net>\n"
+"Language-Team: Azərbaycan Türkcəsi <linuxaz@azerimail.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.8\n"
+"X-Generator: KBabel 0.9.5\n"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
 msgid "Shadow type"
@@ -120,68 +120,68 @@ msgstr "Ləvazimat çubuğunu xüsusiləşdir"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr ""
+msgstr "Yaxınlıq səviyyəsi"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr ""
+msgstr "Böyütmə dərəcəsi"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "Ən Az Yaxınlıq səviyyəsi"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr ""
+msgstr "Böyütmənin ən az dərəcəsi"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "Ən Çox Yaxınlıq səviyyəsi"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "Böyütmənin ən böyük dərəcəsi"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minumum Zoom level"
-msgstr ""
+msgstr "Ən Az Yaxınlıq səviyyəsinə malikdir"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "Hökmlü ən kiçik yaxınlıq səviyyəsi yeri"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr ""
+msgstr "Ən Çox Yaxınlıq səviyyəsinə malikdir"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "Hökmlü ən böyük yaxınlıq səviyyəsi yeri"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr ""
+msgstr "Davamlıdır"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "Yaxlnlığın davamiyyəti"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr ""
+msgstr "Bir şey etmir; təkcə nümayişdir."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr ""
+msgstr "BonoboUI-Hello."
 
 #: samples/bonoboui/hello.c:195
 msgid "Gnome Hello"
-msgstr ""
+msgstr "Gnome Hello"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:250
 msgid "Hello, World!"
-msgstr ""
+msgstr "Xoş Gördük, Dünya!"
 
 #: samples/bonoboui/hello.c:290 tests/test-ui.c:267
 msgid "Cannot init libbonoboui code"
@@ -194,24 +194,3 @@ msgstr "Bonobo_ui_init edə bilmirəm"
 #: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Bir cism seç"
-
-#~ msgid "Can not activate object_server"
-#~ msgstr "Cism_vericisini fəallaşdıra bilmədim"
-
-#~ msgid "Can not bind object server to client_site"
-#~ msgstr "Cism vericisini alıcı_vericisi tərəfinə bağlaya bilmədim"
-
-#~ msgid "Can not activate server"
-#~ msgstr "Vericisini işə sala bilmədim"
-
-#~ msgid "Could not launch bonobo object."
-#~ msgstr "bonobo cismini başlada bilmədim."
-
-#~ msgid "Could not launch Embeddable."
-#~ msgstr "Daxili üzvü başlada bilmədim."
-
-#~ msgid "Could not launch Control."
-#~ msgstr "İdarəcini başlada bilmədim."
-
-#~ msgid "Can not bonobo_init"
-#~ msgstr "Bonobo_initi başlada bilmədim"
