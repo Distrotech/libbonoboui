@@ -21,7 +21,6 @@ typedef struct _GnomeViewFrame GnomeViewFrame;
 
 struct _GnomeViewFrame {
 	GnomeControlFrame	 base;
-	GnomeUIHandler		*uih;
 	GnomeViewFramePrivate	*priv;
 };
 

@@ -2557,13 +2557,16 @@ menu_toplevel_create_hint (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item, Gt
 	char *old_hint;
 
 	old_hint = gtk_object_get_data (GTK_OBJECT (menu_item), "menu_item_hint");
-	g_free (old_hint);
+	if (old_hint)
+		g_free (old_hint);
 
 	/* FIXME: Do we have to i18n this here? */
 	if (item->hint == NULL)
-		gtk_object_set_data (GTK_OBJECT (menu_item), "menu_item_hint", NULL);
+		gtk_object_set_data (GTK_OBJECT (menu_item),
+				     "menu_item_hint", NULL);
 	else
-		gtk_object_set_data (GTK_OBJECT (menu_item), "menu_item_hint", g_strdup (item->hint));
+		gtk_object_set_data (GTK_OBJECT (menu_item),
+				     "menu_item_hint", g_strdup (item->hint));
 
 	if (uih->top->statusbar == NULL)
 		return;

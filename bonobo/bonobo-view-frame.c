@@ -37,6 +37,7 @@ POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
 struct _GnomeViewFramePrivate {
 	GtkWidget	*wrapper; 
 	GnomeClientSite *client_site;
+	GnomeUIHandler	*uih;
 	GNOME_View       view;
 };
 
@@ -46,11 +47,11 @@ impl_GNOME_ViewFrame_get_ui_handler (PortableServer_Servant servant,
 {
 	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
 
-	if (view_frame->uih == NULL)
+	if (view_frame->priv->uih == NULL)
 		return CORBA_OBJECT_NIL;
 	
 	return CORBA_Object_duplicate (
-		gnome_object_corba_objref (GNOME_OBJECT (view_frame->uih)), ev);
+		gnome_object_corba_objref (GNOME_OBJECT (view_frame->priv->uih)), ev);
 }
 
 static GNOME_ClientSite
@@ -563,7 +564,7 @@ gnome_view_frame_set_ui_handler (GnomeViewFrame *view_frame, GnomeUIHandler *uih
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 
-	view_frame->uih = uih;
+	view_frame->priv->uih = uih;
 }
 
 /**
@@ -579,7 +580,7 @@ gnome_view_frame_get_ui_handler (GnomeViewFrame *view_frame)
 	g_return_val_if_fail (view_frame != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
 
-	return view_frame->uih;
+	return view_frame->priv->uih;
 }
 
 /**
