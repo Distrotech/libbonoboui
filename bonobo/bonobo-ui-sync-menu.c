@@ -375,7 +375,8 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 					g_object_set (G_OBJECT (menu_widget), "image",
 						      image, NULL);
 				} else
-					bonobo_ui_image_set_pixbuf (image, pixbuf);
+					bonobo_ui_image_set_pixbuf (
+						GTK_IMAGE (image), pixbuf);
 			}
 		}
 	}

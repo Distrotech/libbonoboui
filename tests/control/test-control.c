@@ -37,28 +37,37 @@ static void
 destroy_test (Test *test, DestroyType type)
 {
 	switch (type) {
-	case DESTROY_TOPLEVEL:
-		gtk_widget_destroy (test->bonobo_widget);
-		break;
 	case DESTROY_CONTAINED: {
 		BonoboControlFrame *frame;
 
 		gtk_widget_destroy (test->control_widget);
+
+		g_assert (test->control_widget == NULL);
 
 		frame = bonobo_widget_get_control_frame (
 			BONOBO_WIDGET (test->bonobo_widget));
 		g_assert (BONOBO_IS_CONTROL_FRAME (frame));
 		break;
 	}
+
 	case DESTROY_CONTROL:
 	case DESTROY_SOCKET:
 		g_warning ("unimpl");
+		/* drop through */
+	case DESTROY_TOPLEVEL:
 		gtk_widget_destroy (test->bonobo_widget);
+		g_assert (test->bonobo_widget == NULL);
+		g_assert (test->socket == NULL);
+		g_assert (test->frame == NULL);
 		break;
 	default:
 		g_assert_not_reached ();
 		break;
 	}
+
+	g_assert (test->control_widget == NULL);
+/*	g_assert (test->control == NULL); - hmm. */
+	g_assert (test->plug == NULL);
 }
 
 static void
@@ -66,8 +75,7 @@ destroy_cb (GObject *object, Test *text)
 {
 	dprintf ("destroy %s %p\n",
 		 g_type_name_from_instance (
-			 (GTypeInstance *) object),
-		 object);
+			 (GTypeInstance *) object), object);
 }
 
 static void
@@ -91,6 +99,12 @@ create_control (Test *test)
 			  "destroy", G_CALLBACK (destroy_cb),
 			  test);
 
+	g_object_add_weak_pointer (G_OBJECT (test->plug),
+				   (gpointer *) &test->plug);
+	g_object_add_weak_pointer (G_OBJECT (test->control),
+				   (gpointer *) &test->control);
+	g_object_add_weak_pointer (G_OBJECT (test->control_widget),
+				   (gpointer *) &test->control_widget);
 }
 
 /* An ugly hack into the ORB */
@@ -112,6 +126,13 @@ create_frame (Test *test, gboolean fake_remote)
 	test->frame = bonobo_widget_get_control_frame (
 		BONOBO_WIDGET (test->bonobo_widget));
 	test->socket = bonobo_control_frame_get_socket (test->frame);
+
+	g_object_add_weak_pointer (G_OBJECT (test->frame),
+				   (gpointer *) &test->frame);
+	g_object_add_weak_pointer (G_OBJECT (test->socket),
+				   (gpointer *) &test->socket);
+	g_object_add_weak_pointer (G_OBJECT (test->bonobo_widget),
+				   (gpointer *) &test->bonobo_widget);
 }
 
 static Test *
@@ -178,7 +199,7 @@ run_tests (GtkContainer *parent,
 	   gboolean      wait_for_realize,
 	   gboolean      fake_remote)
 {
-	GtkWidget  *vbox, *vbox2;
+	GtkWidget  *vbox;
 	DestroyType t;
 	Test       *tests[DESTROY_TYPE_LAST];
 

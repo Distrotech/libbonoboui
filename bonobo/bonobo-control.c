@@ -460,6 +460,8 @@ bonobo_control_construct (BonoboControl  *control,
 	bonobo_setup_x_error_handler ();
 
 	control->priv->widget = g_object_ref (G_OBJECT (widget));
+	gtk_object_sink (GTK_OBJECT (widget));
+
 	gtk_container_add (GTK_CONTAINER (control->priv->plug),
 			   control->priv->widget);
 

@@ -1,3 +1,19 @@
+2001-12-31  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_bonobo_ui_sync_menu_state): kill warning.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_dispose): kill
+	bogus ref.
+
+	* bonobo/bonobo-control.c (bonobo_control_construct):
+	sink the widget - we own it.
+
+	* tests/control/test-control.c (create_frame),
+	(create_control): add weak refs on the pointers we keep.
+	(destroy_test): do some checks on the objects to make
+	sure they are released.
+
 2001-12-29  Anders Carlsson  <andersca@gnu.org>
 
 	* doc/ui-xml.txt (Example): Update docs.
