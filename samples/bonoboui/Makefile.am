@@ -1,4 +1,4 @@
-#noinst_PROGRAMS = bonoboui-hello
+noinst_PROGRAMS = bonobo-hello
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -8,16 +8,12 @@ INCLUDES =	\
 	-DVERSION=\"$(VERSION)\"			\
 	$(WARN_CFLAGS)					\
 	$(BONOBOUI_CFLAGS)				\
-	-DHELLO_DATADIR=\""$(datadir)"\"
-
-# Notice that we #define HELLO_DATADIR here.
-# This would normally be done in your app's config.h
+	-DHELLO_SRCDIR=\""$(srcdir)"\"
 
 LDADD =	$(top_builddir)/bonobo/libbonoboui-2.la
 
-bonoboui_hello_SOURCES =	\
-	helloapp.c		\
-	helloapp.h	\
-	main.c
+bonobo_hello_SOURCES =	\
+	hello.c
 
-EXTRA_DIST = bonoboui-hello-ui.xml
+uidir = $(datadir)/gnome-2.0/ui
+ui_DATA = Bonobo_Sample_Hello.xml

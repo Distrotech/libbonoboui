@@ -1,5 +1,11 @@
 2001-10-20  Michael Meeks  <michael@ximian.com>
 
+	* samples/bonoboui/hello.c: kill all redundant forward
+	prototypes, substantialy re-write, clean the mess.
+	Remove swathes of C++ style comments.
+
+	* samples/bonoboui/Makefile.am: rewrite.
+
 	* configure.in: update bonoboui-hello to bonoboui
 
 2001-10-18  Michael Meeks  <michael@ximian.com>

@@ -1,5 +1,6 @@
+2001-10-20  Michael Meeks  <michael@ximian.com>
 
-
+	* POTFILES.in: add bonoboui/hello.c
 
 2001-10-13  Valek Filippov <frob@df.ru>
 
