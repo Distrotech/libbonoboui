@@ -1,7 +1,6 @@
 noinst_PROGRAMS =		\
 	test-any		\
 	test-container 		\
-	test-container-autoload	\
 	test-moniker		\
 	test-properties-server	\
 	test-properties-client	\
@@ -52,13 +51,6 @@ test_container_SOURCES =				\
 	test-container.c
 
 test_container_LDADD =					\
-	$(bonobo_libs)					\
-	$(top_builddir)/bonobo/libbonobox.la
-
-test_container_autoload_SOURCES =			\
-	test-container-autoload.c
-
-test_container_autoload_LDADD =				\
 	$(bonobo_libs)					\
 	$(top_builddir)/bonobo/libbonobox.la
 

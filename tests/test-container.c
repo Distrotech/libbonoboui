@@ -316,9 +316,8 @@ verb_AddImage_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
-	object = add_cmd (app, "OAFIID:bonobo_image-x-png:716e8910-656b-4b3b-b5cd-5eda48b71a79",
+	object = add_cmd (app, "OAFIID:GNOME_EOG_Control",
 			  &image_client_site);
-
 
 	if (object == NULL) {
 		gnome_warning_dialog (_("Could not launch bonobo object."));
@@ -480,10 +479,10 @@ do_add_canvas_cmd (Application *app, gboolean aa)
 
 	server = launch_server (
 		client_site, app->container,
-		"OAFIID:test_canvas_item:82a8a7cc-8b08-401b-9501-4debf6c96619");
+		"OAFIID:Bonobo_Sample_CanvasItem");
 
 	if (server == NULL) {
-		g_warning ("Can not activate OAFIID:test_canvas_item:82a8a7cc-8b08-401b-9501-4debf6c96619");
+		g_warning ("Can not activate OAFIID:Bonobo_SampleCanvasItem");
 		return;
 	}
 	CORBA_exception_init (&ev);
@@ -559,8 +558,7 @@ verb_AddPaint_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 	Application *app = user_data;
 	BonoboObjectClient *object;
 
-	object = add_cmd (app, 
-			  "OAFIID:paint_component_simple:9c04da1c-d44c-4041-9991-fed1ed1ed079",
+	object = add_cmd (app, "OAFIID:Bonobo_Sample_Paint_Embeddable",
 			  &paint_client_site);
 
 	if (object == NULL)
@@ -732,47 +730,47 @@ verb_Exit_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 
 static const char *commands =
 "<commands>\n"
-"	<cmd name=\"AddText\" label=\"_Add a new text/plain component\"/>\n"
-"	<cmd name=\"SendText\" label=\"_Send progressive data to an existing text/plain component\"/>\n"
-"	<cmd name=\"AddPaint\" label=\"_Add a new simple paint component\"/>\n"
-"	<cmd name=\"AddPaintView\" label=\"Add a new _view to an existing paint component\"/>\n"
-"	<cmd name=\"AddImage\" label=\"_Add a new application/x-png component\"/>\n"
-"	<cmd name=\"AddImageView\" label=\"Add a new _view to an existing application/x-png component\"/>\n"
-"	<cmd name=\"AddPdf\" label=\"_Add a new application\\x-pdf component\"/>\n"
-"	<cmd name=\"AddGnumeric\" label=\"Add a new Gnumeric instance through monikers\"/>\n"
-"	<cmd name=\"AddObject\" label=\"Add a new _object\"/>\n"
-"	<cmd name=\"AddCanvasAA\" label=\"Add a new Sample-Canvas item on an AA canvas\"/>\n"
-"	<cmd name=\"AddCanvas\" label=\"Add a new Sample-Canvas item on a regular canvas\"/>\n"
-"	<cmd name=\"Exit\" label=\"_Exit\" tip=\"Exits the application\" pixtype=\"stock\"\n"
+"	<cmd name=\"AddText\" _label=\"_Add a new text/plain component\"/>\n"
+"	<cmd name=\"SendText\" _label=\"_Send progressive data to an existing text/plain component\"/>\n"
+"	<cmd name=\"AddPaint\" _label=\"_Add a new simple paint component\"/>\n"
+"	<cmd name=\"AddPaintView\" _label=\"Add a new _view to an existing paint component\"/>\n"
+"	<cmd name=\"AddImage\" _label=\"_Add a new application/x-png component\"/>\n"
+"	<cmd name=\"AddImageView\" _label=\"Add a new _view to an existing application/x-png component\"/>\n"
+"	<cmd name=\"AddPdf\" _label=\"_Add a new application\\x-pdf component\"/>\n"
+"	<cmd name=\"AddGnumeric\" _label=\"Add a new Gnumeric instance through monikers\"/>\n"
+"	<cmd name=\"AddObject\" _label=\"Add a new _object\"/>\n"
+"	<cmd name=\"AddCanvasAA\" _label=\"Add a new Sample-Canvas item on an AA canvas\"/>\n"
+"	<cmd name=\"AddCanvas\" _label=\"Add a new Sample-Canvas item on a regular canvas\"/>\n"
+"	<cmd name=\"Exit\" _label=\"_Exit\" _tip=\"Exits the application\" pixtype=\"stock\"\n"
 "		pixname=\"Quit\" accel=\"*Control*q\"/>\n"
 "</commands>";
 
 static const char *menus =
 "<menu>\n"
-"	<submenu name=\"File\" label=\"_File\">\n"
+"	<submenu name=\"File\" _label=\"_File\">\n"
 "		<menuitem name=\"AddObject\" verb=\"\"/>\n"
 "		<separator/>\n"
 "		<menuitem name=\"Exit\"  verb=\"\"/>\n"
 "	</submenu>\n"
-"	<submenu name=\"TextPlain\" label=\"_text/plain\">\n"
+"	<submenu name=\"TextPlain\" _label=\"_text/plain\">\n"
 "		<menuitem name=\"AddText\" verb=\"\"/>\n"
 "		<menuitem name=\"SendText\" verb=\"\"/>\n"
 "	</submenu>\n"
-"	<submenu name=\"ImagePng\" label=\"_image/x-png\">\n"
+"	<submenu name=\"ImagePng\" _label=\"_image/x-png\">\n"
 "		<menuitem name=\"AddImage\" verb=\"\"/>\n"
 "		<menuitem name=\"AddImageView\" verb=\"\"/>\n"
 "	</submenu>\n"
-"	<submenu name=\"AppPdf\" label=\"_app/x-pdf\">\n"
+"	<submenu name=\"AppPdf\" _label=\"_app/x-pdf\">\n"
 "		<menuitem name=\"AddPdf\" verb=\"\"/>\n"
 "	</submenu>\n"
-"	<submenu name=\"PaintSample\" label=\"paint sample\">\n"
+"	<submenu name=\"PaintSample\" _label=\"paint sample\">\n"
 "		<menuitem name=\"AddPaint\" verb=\"\"/>\n"
 "		<menuitem name=\"AddPaintView\" verb=\"\"/>\n"
 "	</submenu>\n"
-"	<submenu name=\"Gnumeric\" label=\"Gnumeric\">\n"
+"	<submenu name=\"Gnumeric\" _label=\"Gnumeric\">\n"
 "		<menuitem name=\"AddGnumeric\" verb=\"\"/>\n"
 "	</submenu>\n"
-"	<submenu name=\"Canvas\" label=\"Canvas-based\">\n"
+"	<submenu name=\"Canvas\" _label=\"Canvas-based\">\n"
 "		<menuitem name=\"AddCanvasAA\" verb=\"\"/>\n"
 "		<menuitem name=\"AddCanvas\" verb=\"\"/>\n"
 "	</submenu>\n"
@@ -824,8 +822,8 @@ application_new (void)
 	/*
 	 * Create the menus.
 	 */
-	bonobo_ui_component_set (app->uic, "/", commands, NULL);
-	bonobo_ui_component_set (app->uic, "/", menus, NULL);
+	bonobo_ui_component_set_translate (app->uic, "/", commands, NULL);
+	bonobo_ui_component_set_translate (app->uic, "/", menus, NULL);
 
 	bonobo_ui_component_add_verb_list_with_data (app->uic, verbs, app);
 

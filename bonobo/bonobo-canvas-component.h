@@ -40,15 +40,15 @@ typedef struct {
 			     CORBA_Environment *ev);
 } BonoboCanvasComponentClass;
 
-GtkType           bonobo_canvas_component_get_type      (void);
-Bonobo_Canvas_Component bonobo_canvas_component_object_create (BonoboObject *object);
-void              bonobo_canvas_component_set_proxy     (BonoboCanvasComponent *comp,
-							Bonobo_Canvas_ComponentProxy proxy);
-BonoboCanvasComponent *bonobo_canvas_component_construct (BonoboCanvasComponent *comp,
-							Bonobo_Canvas_Component  corba_canvas_comp,
-							GnomeCanvasItem     *item);
-BonoboCanvasComponent *bonobo_canvas_component_new (GnomeCanvasItem *item);
-GnomeCanvasItem      *bonobo_canvas_component_get_item  (BonoboCanvasComponent *comp);
+GtkType                 bonobo_canvas_component_get_type         (void);
+Bonobo_Canvas_Component bonobo_canvas_component_object_create    (BonoboObject                *object);
+void                    bonobo_canvas_component_set_proxy        (BonoboCanvasComponent       *comp,
+								  Bonobo_Canvas_ComponentProxy proxy);
+BonoboCanvasComponent  *bonobo_canvas_component_construct        (BonoboCanvasComponent       *comp,
+								  Bonobo_Canvas_Component      corba_canvas_comp,
+								  GnomeCanvasItem             *item);
+BonoboCanvasComponent  *bonobo_canvas_component_new              (GnomeCanvasItem             *item);
+GnomeCanvasItem        *bonobo_canvas_component_get_item         (BonoboCanvasComponent       *comp);
 
 POA_Bonobo_Canvas_Component__epv *bonobo_canvas_component_get_epv  (void);
 

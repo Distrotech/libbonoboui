@@ -31,9 +31,9 @@ struct _BonoboCanvasComponentPrivate {
 	/*
 	 * The item
 	 */
-	GnomeCanvasItem *item;
+	GnomeCanvasItem   *item;
 
-	GnomeCanvasItem *original_root;
+	GnomeCanvasItem   *original_root;
 };
 
 /*
@@ -136,7 +136,7 @@ restore_state (GnomeCanvasItem *item, const Bonobo_Canvas_State *state)
 }
 
 static Bonobo_Canvas_ArtUTA *
-gcc_update (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_update (PortableServer_Servant servant,
 	    const Bonobo_Canvas_State     *state,
 	    const Bonobo_Canvas_affine     aff,
 	    const Bonobo_Canvas_SVP       *clip_path,
@@ -219,7 +219,7 @@ gcc_update (PortableServer_Servant servant,
 static GdkGC *the_gc;
 
 static void
-gcc_realize (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_realize (PortableServer_Servant servant,
 	     Bonobo_Canvas_window_id window,
 	     CORBA_Environment      *ev)
 {
@@ -238,7 +238,7 @@ gcc_realize (PortableServer_Servant servant,
 }
 
 static void
-gcc_unrealize (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_unrealize (PortableServer_Servant servant,
 	       CORBA_Environment      *ev)
 {
 	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
@@ -253,7 +253,7 @@ gcc_unrealize (PortableServer_Servant servant,
 }
 
 static void
-gcc_map (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_map (PortableServer_Servant servant,
 	 CORBA_Environment      *ev)
 {
 	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
@@ -263,7 +263,7 @@ gcc_map (PortableServer_Servant servant,
 }
 
 static void
-gcc_unmap (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_unmap (PortableServer_Servant servant,
 	   CORBA_Environment      *ev)
 {
 	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
@@ -288,7 +288,7 @@ my_gdk_pixmap_foreign_release (GdkPixmap *pixmap)
 }
 
 static void
-gcc_draw (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_draw (PortableServer_Servant servant,
 	  const Bonobo_Canvas_State *state,
 	  const Bonobo_Canvas_window_id drawable,
 	  CORBA_short x, CORBA_short y,
@@ -315,7 +315,7 @@ gcc_draw (PortableServer_Servant servant,
 }
 
 static void
-gcc_render (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_render (PortableServer_Servant servant,
 	    Bonobo_Canvas_Buf *buf,
 	    CORBA_Environment *ev)
 {
@@ -367,7 +367,7 @@ gcc_render (PortableServer_Servant servant,
 }
 
 static CORBA_boolean 
-gcc_contains (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_contains (PortableServer_Servant servant,
 	      CORBA_double x, CORBA_double y,
 	      CORBA_Environment *ev)
 {
@@ -385,7 +385,7 @@ gcc_contains (PortableServer_Servant servant,
 }
 
 static void
-gcc_bounds (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_bounds (PortableServer_Servant servant,
 	    const Bonobo_Canvas_State *state,
 	    CORBA_double * x1, CORBA_double * x2,
 	    CORBA_double * y1, CORBA_double * y2,
@@ -498,7 +498,7 @@ free_event (GdkEvent *event)
  * GdkEvent and forwards this to the CanvasItem
  */
 static CORBA_boolean
-gcc_event (PortableServer_Servant    servant,
+impl_Bonobo_Canvas_Component_event (PortableServer_Servant    servant,
 	   const Bonobo_Canvas_State *state,
 	   const Bonobo_Gdk_Event    *gnome_event,
 	   CORBA_Environment        *ev)
@@ -521,7 +521,7 @@ gcc_event (PortableServer_Servant    servant,
 }
 
 static void
-gcc_size_set (PortableServer_Servant servant,
+impl_Bonobo_Canvas_Component_setCanvasSize (PortableServer_Servant servant,
 	      CORBA_short x, CORBA_short y,
 	      CORBA_short width, CORBA_short height,
 	      CORBA_Environment *ev)
@@ -539,14 +539,39 @@ gcc_size_set (PortableServer_Servant servant,
 }
 
 static void
-gcc_set_bounds (PortableServer_Servant    servant,
-		const Bonobo_Canvas_DRect *bbox,
-		CORBA_Environment        *ev)
+impl_Bonobo_Canvas_Component_setBounds (PortableServer_Servant     servant,
+					const Bonobo_Canvas_DRect *bbox,
+					CORBA_Environment         *ev)
 {
 	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 
 	gtk_signal_emit (GTK_OBJECT (gcc), gcc_signals [SET_BOUNDS], bbox, &ev);
 }
+
+#if 0
+static void
+impl_Bonobo_Canvas_Component_setUIContainer (PortableServer_Servant   servant,
+					     const Bonobo_UIContainer container,
+					     CORBA_Environment       *ev)
+{
+	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
+
+	if (gcc->priv->ui_container != CORBA_OBJECT_NIL)
+		CORBA_Object_release (gcc->priv->ui_container, ev);
+
+	gcc->priv->ui_container = CORBA_Object_duplicate (container, ev);
+
+	gtk_signal_emit (GTK_OBJECT (gcc), gcc_signals [SET_UI_CONTAINER], container);
+}
+
+Bonobo_UIContainer
+bonobo_canvas_component_get_ui_container (BonoboCanvasComponent *comp)
+{
+	g_return_if_fail (BONOBO_IS_CANVAS_COMPONENT (comp));
+
+	return comp->priv->ui_container;
+}
+#endif
 
 /**
  * bonobo_canvas_component_get_epv:
@@ -560,18 +585,19 @@ bonobo_canvas_component_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_Canvas_Component__epv, 1);
 
-	epv->update    = gcc_update;
-	epv->realize   = gcc_realize;
-	epv->unrealize = gcc_unrealize;
-	epv->map       = gcc_map;
-	epv->unmap     = gcc_unmap;
-	epv->draw      = gcc_draw;
-	epv->render    = gcc_render;
-	epv->bounds    = gcc_bounds;
-	epv->event     = gcc_event;
-	epv->contains  = gcc_contains;
-	epv->setCanvasSize = gcc_size_set;
-	epv->setBounds = gcc_set_bounds;
+	epv->update         = impl_Bonobo_Canvas_Component_update;
+	epv->realize        = impl_Bonobo_Canvas_Component_realize;
+	epv->unrealize      = impl_Bonobo_Canvas_Component_unrealize;
+	epv->map            = impl_Bonobo_Canvas_Component_map;
+	epv->unmap          = impl_Bonobo_Canvas_Component_unmap;
+	epv->draw           = impl_Bonobo_Canvas_Component_draw;
+	epv->render         = impl_Bonobo_Canvas_Component_render;
+	epv->bounds         = impl_Bonobo_Canvas_Component_bounds;
+	epv->event          = impl_Bonobo_Canvas_Component_event;
+	epv->contains       = impl_Bonobo_Canvas_Component_contains;
+	epv->setCanvasSize  = impl_Bonobo_Canvas_Component_setCanvasSize;
+	epv->setBounds      = impl_Bonobo_Canvas_Component_setBounds;
+/*	epv->setUIContainer = impl_Bonobo_Canvas_Component_setUIContainer; */
 
 	return epv;
 }
