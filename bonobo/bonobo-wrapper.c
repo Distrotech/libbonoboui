@@ -379,27 +379,18 @@ bonobo_wrapper_paint (GtkWidget *widget)
 				    widget->allocation.width,
 				    widget->allocation.height);
  	}
-	/* The hack below succeeds at getting a real redraw
-	   done when switching between desktops.
-	   But it an *EVIL* hack which is why it is commented.
-	*/
-	/*	gtk_widget_queue_draw (widget);*/
-	g_warning ("paint called");
-
 }
 
 static void
 bonobo_wrapper_draw (GtkWidget *widget, GdkRectangle *area)
 {
 	bonobo_wrapper_paint (widget);
-	g_warning ("draw");
 }
 
 static gint
 bonobo_wrapper_expose (GtkWidget *widget, GdkEventExpose *event)
 {
 	bonobo_wrapper_paint (widget);
-	g_warning ("expose");
 	return TRUE;
 }
 
