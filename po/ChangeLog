@@ -1,3 +1,8 @@
+2004-11-09  Alexander Shopov  <ash@contact.bg>
+
+	* bg.po: Updated Bulgarian translation by
+	Vladimir Petkov <vpetkov@i-space.org>
+
 2004-11-06  Martin Willemoes Hansen  <mwh@sysrq.dk>
 
 	* da.po: Updated Danish translation.
@@ -7,9 +12,9 @@
 	* hu.po: Hungarian translation updated.
 
 2004-10-26  Gora Mohanty  <gmohanty@cvs.gnome.org>
-                                                                                
-        * or.po: Updated Oriya translation.
-                                                                                
+
+	* or.po: Updated Oriya translation.
+
 2004-10-23  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
 
 	* es.po: Updated Spanih translation.
