@@ -1,3 +1,9 @@
+2000-07-14  Michael Meeks  <michael@helixcode.com>
+
+	* hello.oafinfo: make uuids match.
+
+	* bonobo-hello.c (hello_bonobo_init): make uuids match
+
 2000-07-12  Michael Meeks  <michael@helixcode.com>
 
 	* bonobo-hello.c (main): add bonobo_shutdown.
