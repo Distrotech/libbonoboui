@@ -74,6 +74,7 @@ libbonobo_la_SOURCES =			\
 	gnome-stream.c			\
 	gnome-stream-fs.c		\
 	gnome-stream-memory.c		\
+	gnome-ui-handler.c		\
 	gnome-view.c			\
 	gnome-view-frame.c		\
 	gnome-wrapper.c
@@ -111,6 +112,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-stream.h			\
 	gnome-stream-fs.h		\
 	gnome-stream-memory.h		\
+	gnome-ui-handler.h		\
 	gnome-view.h			\
 	gnome-view-frame.h		\
 	gnome-wrapper.h
