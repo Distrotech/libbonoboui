@@ -166,16 +166,14 @@ gnome_bonobo_widget_size_request (GtkWidget *widget,
 	requisition->height = (GTK_CONTAINER (widget)->border_width + CHILD_SPACING +
 			       GTK_WIDGET (widget)->style->klass->ythickness) * 2;
 
-	if (GTK_WIDGET_CAN_DEFAULT (widget))
-	{
+	if (GTK_WIDGET_CAN_DEFAULT (widget)) {
 		requisition->width += (GTK_WIDGET (widget)->style->klass->xthickness * 2 +
 				       DEFAULT_SPACING);
 		requisition->height += (GTK_WIDGET (widget)->style->klass->ythickness * 2 +
 					DEFAULT_SPACING);
 	}
 
-	if (GTK_BIN (bw)->child && GTK_WIDGET_VISIBLE (GTK_BIN (bw)->child))
-	{
+	if (GTK_BIN (bw)->child && GTK_WIDGET_VISIBLE (GTK_BIN (bw)->child)) {
 		GtkRequisition child_requisition;
 
 		gtk_widget_size_request (GTK_BIN (bw)->child, &child_requisition);
@@ -200,17 +198,18 @@ gnome_bonobo_widget_size_allocate (GtkWidget *widget,
 	widget->allocation = *allocation;
 	border_width = GTK_CONTAINER (widget)->border_width;
 
+#if 0
 	if (GTK_WIDGET_REALIZED (widget))
 		gdk_window_move_resize (widget->window,
 					widget->allocation.x + border_width,
 					widget->allocation.y + border_width,
 					widget->allocation.width - border_width * 2,
 					widget->allocation.height - border_width * 2);
+#endif
 
 	bw = GNOME_BONOBO_WIDGET (widget);
 
-	if (GTK_BIN (bw)->child && GTK_WIDGET_VISIBLE (GTK_BIN (bw)->child))
-	{
+	if (GTK_BIN (bw)->child && GTK_WIDGET_VISIBLE (GTK_BIN (bw)->child)) {
 		child_allocation.x = (CHILD_SPACING + GTK_WIDGET (widget)->style->klass->xthickness);
 		child_allocation.y = (CHILD_SPACING + GTK_WIDGET (widget)->style->klass->ythickness);
 
@@ -219,8 +218,7 @@ gnome_bonobo_widget_size_allocate (GtkWidget *widget,
 		child_allocation.height = MAX (1, (gint)widget->allocation.height - child_allocation.y * 2 -
 					       border_width * 2);
 
-		if (GTK_WIDGET_CAN_DEFAULT (bw))
-		{
+		if (GTK_WIDGET_CAN_DEFAULT (bw)) {
 			child_allocation.x += (GTK_WIDGET (widget)->style->klass->xthickness +
 					       DEFAULT_LEFT_POS);
 			child_allocation.y += (GTK_WIDGET (widget)->style->klass->ythickness +
