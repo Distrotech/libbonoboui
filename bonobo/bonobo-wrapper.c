@@ -76,6 +76,7 @@ gnome_wrapper_class_init (GnomeWrapperClass *class)
 static void
 gnome_wrapper_init (GnomeWrapper *wrapper)
 {
+	GTK_WIDGET_UNSET_FLAGS (wrapper, GTK_NO_WINDOW);
 	wrapper->covered = TRUE;
 }
 
