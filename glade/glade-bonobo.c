@@ -47,7 +47,6 @@ glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
     GObjectClass *oclass;
     BonoboControlFrame *cf;
     Bonobo_PropertyBag pb;
-    GList *tmp;
     gint i;
 
     for (i = 0; i < info->n_properties; i++)
