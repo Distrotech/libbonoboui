@@ -30,7 +30,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 
-#include <bonobo/bonobo-dock-layout.h>
+#include "bonobo-dock-layout.h"
 
 /* TODO: handle incorrect BONOBO_DOCK_ITEM_BEH_EXCLUSIVE situations.  */
 

@@ -52,8 +52,8 @@ typedef struct _BonoboDock BonoboDock;
 typedef struct _BonoboDockPrivate BonoboDockPrivate;
 typedef struct _BonoboDockClass BonoboDockClass;
 
-#include "bonobo-dock-band.h"
-#include "bonobo-dock-layout.h"
+#include <bonobo/bonobo-dock-band.h>
+#include <bonobo/bonobo-dock-layout.h>
 
 struct _BonoboDock
 {

@@ -1,3 +1,10 @@
+2004-01-25  Jody Goldberg <jody@gnome.org>
+
+	* bonobo/bonobo-dock-* : revert the use of the G_DEFINE_TYPE macros
+	  until the new typename prefixed versions are put into a release.
+	  right now CVS prefixes, and 2.3.2 does not, but cvs has not yet
+	  bumped it version.  Which makes a mess.
+
 2004-01-25  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/*.c: add #include "config.h"s where they

@@ -32,10 +32,10 @@
  */
 
 #include <config.h>
-#include <bonobo/bonobo-dock-item.h>
-#include <bonobo/bonobo-dock-band.h>
-#include <bonobo/bonobo-dock-item-grip.h>
-#include <bonobo/bonobo-ui-marshal.h>
+#include "bonobo-dock-item.h"
+#include "bonobo-dock-band.h"
+#include "bonobo-dock-item-grip.h"
+#include "bonobo-ui-marshal.h"
 
 #include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
@@ -45,10 +45,14 @@
 #include <gtk/gtkwindow.h>
 
 #include <glib/gi18n.h>
+#include <libgnome/gnome-macros.h>
 
 struct _BonoboDockItemPrivate {
 	GtkWidget *grip;
 };
+
+GNOME_CLASS_BOILERPLATE (BonoboDockItem, bonobo_dock_item,
+			 GtkBin, GTK_TYPE_BIN);
 
 enum {
   PROP_0,
@@ -117,7 +121,6 @@ static gint bonobo_dock_item_delete_event   (GtkWidget         *widget,
 
 static guint        dock_item_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (BonoboDockItem, bonobo_dock_item, GTK_TYPE_BIN)
 
 /* Helper functions.  */
 
@@ -193,20 +196,19 @@ get_preferred_height (BonoboDockItem *dock_item)
 static void
 bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 {
-  GObjectClass *gobject_klass;
+  GObjectClass *gobject_class;
   GtkWidgetClass *widget_class;
   GtkContainerClass *container_class;
 
-  gobject_klass = (GObjectClass *) klass;
-  gobject_klass = (GObjectClass *) klass;
+  gobject_class = (GObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
   container_class = (GtkContainerClass *) klass;
 
-  gobject_klass->set_property = bonobo_dock_item_set_property;
-  gobject_klass->get_property = bonobo_dock_item_get_property;
+  gobject_class->set_property = bonobo_dock_item_set_property;
+  gobject_class->get_property = bonobo_dock_item_get_property;
   
   g_object_class_install_property (
-	  gobject_klass,
+	  gobject_class,
 	  PROP_SHADOW,
 	  g_param_spec_enum ("shadow",
 			     _("Shadow type"),
@@ -217,7 +219,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 			      G_PARAM_WRITABLE)));
 
   g_object_class_install_property (
-	  gobject_klass,
+	  gobject_class,
 	  PROP_ORIENTATION,
 	  g_param_spec_enum ("orientation",
 			     _("Orientation"),
@@ -228,7 +230,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 			      G_PARAM_WRITABLE)));
 
   g_object_class_install_property (
-	  gobject_klass,
+	  gobject_class,
 	  PROP_PREFERRED_WIDTH,
 	  g_param_spec_uint ("preferred_width",
 			     _("Preferred width"),
@@ -237,7 +239,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 			     G_PARAM_READABLE));
 
   g_object_class_install_property (
-	  gobject_klass,
+	  gobject_class,
 	  PROP_PREFERRED_HEIGHT,
 	  g_param_spec_uint ("preferred_height",
 			     _("Preferred height"),
@@ -247,7 +249,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 
   dock_item_signals[DOCK_DRAG_BEGIN] =
 	  g_signal_new ("dock_drag_begin",
-			G_TYPE_FROM_CLASS (gobject_klass),
+			G_TYPE_FROM_CLASS (gobject_class),
 			G_SIGNAL_RUN_LAST,
 			G_STRUCT_OFFSET (BonoboDockItemClass,
 					 dock_drag_begin),
@@ -257,7 +259,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 
   dock_item_signals[DOCK_DRAG_MOTION] =
 	  g_signal_new ("dock_drag_motion",
-			G_TYPE_FROM_CLASS (gobject_klass),
+			G_TYPE_FROM_CLASS (gobject_class),
 			G_SIGNAL_RUN_LAST,
 			G_STRUCT_OFFSET (BonoboDockItemClass, dock_drag_motion),
 			NULL, NULL,
@@ -266,7 +268,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 
   dock_item_signals[DOCK_DRAG_END] =
 	  g_signal_new ("dock_drag_end",
-			G_TYPE_FROM_CLASS (gobject_klass),
+			G_TYPE_FROM_CLASS (gobject_class),
 			G_SIGNAL_RUN_LAST,
 			G_STRUCT_OFFSET (BonoboDockItemClass, dock_drag_end),
 			NULL, NULL,
@@ -275,7 +277,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 
   dock_item_signals[DOCK_DETACH] =
 	  g_signal_new ("dock_detach",
-			G_TYPE_FROM_CLASS (gobject_klass),
+			G_TYPE_FROM_CLASS (gobject_class),
 			G_SIGNAL_RUN_LAST,
 			G_STRUCT_OFFSET (BonoboDockItemClass, dock_detach),
 			NULL, NULL,
@@ -284,14 +286,14 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 
   dock_item_signals[ORIENTATION_CHANGED] =
 	  g_signal_new ("orientation_changed",
-			G_TYPE_FROM_CLASS (gobject_klass),
+			G_TYPE_FROM_CLASS (gobject_class),
 			G_SIGNAL_RUN_LAST,
 			G_STRUCT_OFFSET (BonoboDockItemClass, orientation_changed),
 			NULL, NULL,
 			g_cclosure_marshal_VOID__ENUM,
 			G_TYPE_NONE, 1, GTK_TYPE_ORIENTATION);
   
-  gobject_klass->finalize = bonobo_dock_item_finalize;
+  gobject_class->finalize = bonobo_dock_item_finalize;
 
   widget_class->map = bonobo_dock_item_map;
   widget_class->unmap = bonobo_dock_item_unmap;
@@ -312,7 +314,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 }
 
 static void
-bonobo_dock_item_init (BonoboDockItem *dock_item)
+bonobo_dock_item_instance_init (BonoboDockItem *dock_item)
 {
   GTK_WIDGET_UNSET_FLAGS (dock_item, GTK_NO_WINDOW);
 
@@ -416,7 +418,7 @@ bonobo_dock_item_finalize (GObject *object)
   g_free (di->_priv);
   di->_priv = NULL;
 
-  G_OBJECT_CLASS (parent_class)-> finalize (object);
+  GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
 static void
@@ -575,7 +577,7 @@ bonobo_dock_item_unrealize (GtkWidget *widget)
   gdk_window_destroy (di->float_window);
   di->float_window = NULL;
 
-  GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
+  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, unrealize, (widget));
 }
 
 static void
@@ -950,7 +952,7 @@ bonobo_dock_item_add (GtkContainer *container,
   dock_item = BONOBO_DOCK_ITEM (container);
 
   gtk_widget_set_parent_window (widget, dock_item->bin_window);
-  GTK_CONTAINER_CLASS (parent_class)->add (container, widget);
+  GNOME_CALL_PARENT (GTK_CONTAINER_CLASS, add, (container, widget));
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (widget),
 					"orientation");
@@ -1022,7 +1024,8 @@ bonobo_dock_item_remove (GtkContainer *container,
   if (di->in_drag)
     bonobo_dock_item_drag_end (di);
 
-  GTK_CONTAINER_CLASS (parent_class)->remove (container, widget);
+  GNOME_CALL_PARENT (GTK_CONTAINER_CLASS,
+		     remove, (container, widget));
 }
 
 static void
@@ -1473,4 +1476,3 @@ bonobo_dock_item_get_grip (BonoboDockItem *item)
   else
     return item->_priv->grip;
 }
-
