@@ -1,3 +1,8 @@
+2002-05-30  Kristian Rietveld  <kris@gtk.org>
+
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_set_behavior): added
+	this (non-public, but exported) function.
+
 2002-05-28  Gustavo Giráldez  <gustavo.giraldez@gmx.net>
 
 	* bonobo/bonobo-ui-util.c (bonobo_ui_util_fixup_icons): Don't leak

@@ -72,6 +72,10 @@ enum {
   LAST_SIGNAL
 };
 
+/* this function is not public, but should be exported */
+void        bonobo_dock_item_set_behavior   (BonoboDockItem         *dock_item,
+                                             BonoboDockItemBehavior  behavior);
+
 
 static guint     get_preferred_width   (BonoboDockItem *item);
 static guint     get_preferred_height  (BonoboDockItem *item);
@@ -1318,6 +1322,42 @@ bonobo_dock_item_get_orientation (BonoboDockItem *dock_item)
                         GTK_ORIENTATION_HORIZONTAL);
 
   return dock_item->orientation;
+}
+
+/**
+ * bonobo_dock_item_set_behavior:
+ * @dock_item: A BonoboDockItem widget.
+ * @behavior: New behavior for @dock_item
+ *
+ * Description: Set the behavior for @dock_item.
+ */
+void
+bonobo_dock_item_set_behavior (BonoboDockItem         *dock_item,
+                               BonoboDockItemBehavior  behavior)
+{
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (dock_item));
+
+  if (dock_item->behavior == behavior)
+    return;
+
+  dock_item->behavior = behavior;
+
+  if (behavior & BONOBO_DOCK_ITEM_BEH_LOCKED)
+    bonobo_dock_item_set_locked (dock_item, TRUE);
+
+  if (behavior & BONOBO_DOCK_ITEM_BEH_NEVER_FLOATING &&
+      dock_item->is_floating)
+    bonobo_dock_item_unfloat (dock_item);
+
+  if (behavior & BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL &&
+      dock_item->orientation == GTK_ORIENTATION_VERTICAL)
+    bonobo_dock_item_set_orientation (dock_item, GTK_ORIENTATION_HORIZONTAL);
+
+  if (behavior & BONOBO_DOCK_ITEM_BEH_NEVER_HORIZONTAL &&
+      dock_item->orientation == GTK_ORIENTATION_HORIZONTAL)
+    bonobo_dock_item_set_orientation (dock_item, GTK_ORIENTATION_VERTICAL);
+
+  gtk_widget_queue_resize (GTK_WIDGET (dock_item));
 }
 
 /**
