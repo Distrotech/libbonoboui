@@ -896,6 +896,51 @@ bonobo_ui_node_from_file (const char *fname)
 	return parse_state_free (ps, FALSE);
 }
 
+/*
+ * Cut and paste from gmarkup.c: what a hack.
+ */
+static void
+append_escaped_text (GString     *str,
+                     const gchar *text)
+{
+	const gchar *p;
+
+	p = text;
+
+	while (*p != '\0') {
+		const gchar *next;
+		next = g_utf8_next_char (p);
+
+		switch (*p) {
+		case '&':
+			g_string_append (str, "&amp;");
+			break;
+
+		case '<':
+			g_string_append (str, "&lt;");
+			break;
+
+		case '>':
+			g_string_append (str, "&gt;");
+			break;
+
+		case '\'':
+			g_string_append (str, "&apos;");
+			break;
+
+		case '"':
+			g_string_append (str, "&quot;");
+			break;
+
+		default:
+			g_string_append_len (str, p, next - p);
+			break;
+		}
+		
+		p = next;
+	}
+}
+
 static void
 internal_to_string (GString      *str,
 		    BonoboUINode *node,
@@ -921,7 +966,7 @@ internal_to_string (GString      *str,
 		g_string_append   (str, g_quark_to_string (a->id));
 		g_string_append_c (str, '=');
 		g_string_append_c (str, '\"');
-		g_string_append   (str, a->value);
+		append_escaped_text (str, a->value);
 		g_string_append_c (str, '\"');
 	}
 
@@ -938,7 +983,7 @@ internal_to_string (GString      *str,
 		}
 
 		if (node->content)
-			g_string_append (str, node->content);
+			append_escaped_text (str, node->content);
 
 		g_string_append   (str, "</");
 		g_string_append   (str, tag_name);

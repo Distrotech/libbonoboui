@@ -1261,9 +1261,11 @@ bonobo_ui_component_set_status (BonoboUIComponent *component,
 	    text [0] == '\0') { /* Remove what was there to reveal other msgs */
 		bonobo_ui_component_rm (component, "/status/main", opt_ev);
 	} else {
-		char *str;
+		char *str, *tmp;
 
-		str = g_strdup_printf ("<item name=\"main\">%s</item>", text);
+		tmp = g_markup_escape_text (text, -1);
+		str = g_strdup_printf ("<item name=\"main\">%s</item>", tmp);
+		g_free (tmp);
 		
 		bonobo_ui_component_set (component, "/status", str, opt_ev);
 		

@@ -1,3 +1,13 @@
+2001-09-03  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c (bonobo_ui_component_set_status): 
+	do escaping on set string.
+
+	* bonobo/bonobo-ui-node.c (append_escaped_text): cpy from glib.
+	(internal_to_string): do entity encoding for basic entities.
+
+	* tests/test-ui.c (main): upd. regression tests.
+
 2001-09-06  Anders Carlsson  <andersca@gnu.org>
 
 	* bonobo/Makefile.am (libbonoboincludedir): Change includedir
