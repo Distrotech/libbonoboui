@@ -24,12 +24,10 @@
 #ifndef _BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_H_
 
+#include <libgnome/gnome-defs.h>
 #include "bonobo-ui-toolbar-button-item.h"
 
-#ifdef __cplusplus
-extern "C" {
-#pragma }
-#endif /* __cplusplus */
+BEGIN_GNOME_DECLS
 
 #define BONOBO_TYPE_UI_TOOLBAR_TOGGLE_BUTTON_ITEM             (bonobo_ui_toolbar_toggle_button_item_get_type ())
 #define BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM(obj)             (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR_TOGGLE_BUTTON_ITEM, BonoboUIToolbarToggleButtonItem))
@@ -64,8 +62,6 @@ void      bonobo_ui_toolbar_toggle_button_item_set_active  (BonoboUIToolbarToggl
 							 gboolean                       active);
 gboolean  bonobo_ui_toolbar_toggle_button_item_get_active  (BonoboUIToolbarToggleButtonItem *item);
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+END_GNOME_DECLS
 
 #endif /* _BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_H_ */

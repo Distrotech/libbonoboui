@@ -24,12 +24,10 @@
 #ifndef _BONOBO_UI_TOOLBAR_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_ITEM_H_
 
+#include <libgnome/gnome-defs.h>
 #include <gtk/gtkbin.h>
 
-#ifdef __cplusplus
-extern "C" {
-#pragma }
-#endif /* __cplusplus */
+BEGIN_GNOME_DECLS
 
 #define BONOBO_TYPE_UI_TOOLBAR_ITEM			(bonobo_ui_toolbar_item_get_type ())
 #define BONOBO_UI_TOOLBAR_ITEM(obj)			(GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR_ITEM, BonoboUIToolbarItem))
@@ -107,8 +105,6 @@ void                     bonobo_ui_toolbar_item_set_want_label   (BonoboUIToolba
 gboolean                 bonobo_ui_toolbar_item_get_want_label   (BonoboUIToolbarItem     *button_item);
 void                     bonobo_ui_toolbar_item_activate         (BonoboUIToolbarItem     *item);
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+END_GNOME_DECLS
 
 #endif /* __BONOBO_UI_TOOLBAR_ITEM_H__ */

@@ -25,13 +25,10 @@
 #define _BONOBO_UI_TOOLBAR_H_
 
 #include <gtk/gtkcontainer.h>
-
+#include <libgnome/gnome-defs.h>
 #include "bonobo-ui-toolbar-item.h"
 
-#ifdef __cplusplus
-extern "C" {
-#pragma }
-#endif /* __cplusplus */
+BEGIN_GNOME_DECLS
 
 #define BONOBO_TYPE_UI_TOOLBAR            (bonobo_ui_toolbar_get_type ())
 #define BONOBO_UI_TOOLBAR(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR, BonoboUIToolbar))
@@ -87,8 +84,7 @@ GtkTooltips          *bonobo_ui_toolbar_get_tooltips     (BonoboUIToolbar *toolb
 
 void                  bonobo_ui_toolbar_clean            (BonoboUIToolbar *toolbar);
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+END_GNOME_DECLS
 
 #endif /* _BONOBO_UI_TOOLBAR_H_ */
+
