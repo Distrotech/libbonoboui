@@ -680,7 +680,7 @@ gnome_view_frame_popup_verbs (GnomeViewFrame *view_frame)
 	/*
 	 * Destroy it.
 	 */
-	gtk_object_unref (GTK_OBJECT (popup));
+	gnome_object_unref (GNOME_OBJECT (popup));
 
 	/*
 	 * Grab the name of the executed verb.

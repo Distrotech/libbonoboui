@@ -295,8 +295,6 @@ gnome_view_destroy (GtkObject *object)
 				     gnome_view_destroy_remove_verb, NULL);
 	g_hash_table_destroy (view->verb_callbacks);
 
-	g_hash_table_foreach_remove (view->verb_callback_closures,
-				     gnome_view_destroy_remove_verb, NULL);
 	g_hash_table_destroy (view->verb_callback_closures);
 
 	/*

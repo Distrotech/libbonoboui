@@ -30,6 +30,7 @@ typedef struct {
 
 	GtkWidget	  *frame;
 	GtkWidget	  *views_hbox;
+	GtkWidget	  *fs;
 } Component;
 
 /*
@@ -256,18 +257,146 @@ component_new_view_cb (GtkWidget *button, gpointer data)
 }
 
 static void
-component_load_pf_cb (GtkWidget *button, gpointer data)
+component_load_cancel_cb (GtkWidget *button, gpointer data)
 {
+	Component *component = (Component *) data;
+
+	gtk_widget_destroy (component->fs);
 }
 
+
+static void
+component_load_pf_cb (GtkWidget *button, gpointer data)
+{
+	Component *component = (Component *) data;
+}
+
+/*
+ * This callback is invoked when the user has selected a file to load
+ * into a component using the PersistStream interface.  It must
+ * retrieve the PersistStream interface from the component, load the
+ * file into a stream, and pass the stream to the component's
+ * PersistStream interface.
+ */
+static void
+component_load_ps_ok_cb (GtkWidget *button, gpointer data)
+{
+	Component *component = (Component *) data;
+	GNOME_PersistStream persist;
+	CORBA_Environment ev;
+	GnomeStream *stream;
+	char *filename;
+
+	/*
+	 * First grab the filename and try to open the file.
+	 */
+	filename = gtk_file_selection_get_filename (GTK_FILE_SELECTION (component->fs));
+
+	stream = gnome_stream_fs_open (filename, GNOME_Storage_READ);
+
+	if (stream == NULL) {
+		char *error_msg;
+
+		error_msg = g_strdup_printf (_("Could not open file %s"), filename);
+		gnome_warning_dialog (error_msg);
+		g_free (error_msg);
+
+		return;
+	}
+
+	/*
+	 * Destroy the file selector.
+	 */
+	gtk_widget_destroy (component->fs);
+
+	/*
+	 * Now get the PersistStream interface off the embedded
+	 * component.
+	 */
+	CORBA_exception_init (&ev);
+
+	persist = GNOME_Unknown_query_interface (
+		gnome_object_corba_objref (GNOME_OBJECT (component->server)),
+		"IDL:GNOME/PersistStream:1.0",
+		&ev);
+
+	/*
+	 * If the component doesn't support PersistStream
+	 * (and it really ought to -- we query it to
+	 * see if it supports PersistStream before we
+	 * even give the user the option of loading
+	 * data into it with PersistStream), then we
+	 * destroy the stream we created and bail.
+	 */
+	if (ev._major != CORBA_NO_EXCEPTION ||
+	    persist == CORBA_OBJECT_NIL) {
+		gnome_warning_dialog (_("The component now claims that it "
+					"doesn't support PersistStream!"));
+		gnome_object_unref (GNOME_OBJECT (stream));
+		CORBA_exception_free (&ev);
+		return;
+	}
+
+	/*
+	 * Load the file into the component using PersistStream.
+	 */
+	GNOME_PersistStream_load (persist,
+	  (GNOME_Stream) gnome_object_corba_objref (GNOME_OBJECT (stream)),
+				  &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_warning_dialog (_("An exception occured while trying "
+					"to load data into the component with "
+					"PersistStream"));
+	}
+
+	/*
+	 * Now we destroy the PersistStream object.
+	 */
+	GNOME_Unknown_unref (persist, &ev);
+	CORBA_Object_release (persist, &ev);
+
+	CORBA_exception_free (&ev);
+}
+
+/*
+ * This callback is invoked when the user hits the 'Load data into
+ * component using PersistStream' button.
+ */
 static void
 component_load_ps_cb (GtkWidget *button, gpointer data)
 {
+	Component *component = (Component *) data;
+	GtkWidget *fs;
+
+	/*
+	 * Create a file selecting dialog.
+	 */
+	fs = gtk_file_selection_new ("Choose a file to load into the component");
+	gtk_file_selection_hide_fileop_buttons (fs);
+
+	component->fs = fs;
+
+	gtk_window_set_position (GTK_WINDOW (fs),
+				 GTK_WIN_POS_MOUSE);
+
+	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->ok_button),
+			    "clicked", GTK_SIGNAL_FUNC (component_load_ps_ok_cb),
+			    component);
+
+	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->cancel_button),
+			    "clicked", GTK_SIGNAL_FUNC (component_load_cancel_cb),
+			    component);
+
+	gtk_window_set_modal (GTK_WINDOW (fs), TRUE);
+	
+	gtk_widget_show (fs);
 }
 
 static void
 component_destroy_cb (GtkWidget *button, gpointer data)
 {
+	Component *component = (Component *) data;
 }
 
 static GnomeObjectClient *

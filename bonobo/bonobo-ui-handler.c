@@ -1832,6 +1832,12 @@ gnome_ui_handler_create_popup_menu (GnomeUIHandler *uih)
 	uih->top->menubar = gtk_menu_new ();
 }
 
+static void
+menu_toplevel_popup_deactivated (GtkMenuShell *menu_shell, gpointer data)
+{
+	gtk_main_quit ();
+}
+
 /**
  * gnome_ui_handler_do_popup_menu:
  */
@@ -1843,6 +1849,11 @@ gnome_ui_handler_do_popup_menu (GnomeUIHandler *uih)
 
 	gtk_menu_popup (GTK_MENU (uih->top->menubar), NULL, NULL, NULL, NULL, 0,
 			GDK_CURRENT_TIME);
+
+	gtk_signal_connect (GTK_OBJECT (uih->top->menubar), "deactivate",
+			    GTK_SIGNAL_FUNC (menu_toplevel_popup_deactivated),
+			    NULL);
+
 	gtk_main ();
 }
 

@@ -69,10 +69,8 @@ embeddable_destroy_cb (GnomeEmbeddable *embeddable, gpointer data)
 {
 	embeddable_data_t *embeddable_data = (embeddable_data_t *) data;
 
-#if 0
 	gdk_pixmap_unref (embeddable_data->pixmap);
 	g_free (embeddable_data); 
-#endif
 }
 
 /*
@@ -83,9 +81,7 @@ static void
 embeddable_system_exception_cb (GnomeEmbeddable *embeddable, CORBA_Object corba_object,
 				CORBA_Environment *ev, gpointer data)
 {
-#if 0
 	gnome_object_destroy (GNOME_OBJECT (embeddable));
-#endif
 }
 
 /*
@@ -95,9 +91,7 @@ static void
 view_system_exception_cb (GnomeView *view, CORBA_Object corba_object,
 			  CORBA_Environment *ev, gpointer data)
 {
-#if 0
 	gnome_object_destroy (GNOME_OBJECT (view));
-#endif
 }
 
 /*
@@ -283,10 +277,8 @@ view_destroy_cb (GnomeView *view, gpointer data)
 {
 	view_data_t *view_data = (view_data_t *) data;
 
-#if 0
 	gdk_gc_destroy (view_data->gc);
 	g_free (view_data);
-#endif
 }
 
 /*
