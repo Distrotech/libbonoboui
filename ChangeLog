@@ -1,5 +1,13 @@
 2001-11-08  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control.c (bonobo_control_construct):
+	don't hold a ref on ourselves.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_delete_event): don't
+	chain to a NULL pointer.
+
+2001-11-08  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-container.c
 	(impl_Bonobo_UIContainer_setNode): upd. spelling for Darin.
 	(impl_Bonobo_UIContainer_getAttr): upd.
@@ -141,7 +149,6 @@
 
 	* tests/test-ui.c (main): regression test it.
 
->>>>>>> 1.166
 2001-11-05  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.106.0

@@ -464,9 +464,6 @@ bonobo_control_construct (BonoboControl  *control,
 	control->priv->ui_component = NULL;
 	control->priv->propbag = CORBA_OBJECT_NIL;
 
-	/* Hold a ref on ourselves */
-	bonobo_object_ref (BONOBO_OBJECT (control));
-
 	return control;
 }
 

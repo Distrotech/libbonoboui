@@ -96,10 +96,8 @@ bonobo_plug_delete_event (GtkWidget   *widget,
 {
 	dprintf ("bonobo_plug_delete_event\n");
 
-	return GTK_WIDGET_CLASS (parent_class)->delete_event (
-		widget, event);
+	return FALSE;
 }
-
 
 static void
 bonobo_plug_realize (GtkWidget *widget)
