@@ -1,3 +1,9 @@
+2003-09-22  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* bonobo/bonobo-ui-sync-menu.h:
+	* bonobo/bonobo-ui-sync-toolbar.h: Added missing
+	prototypes to get rid of warnings. Fixes bug #122757.
+
 2003-09-15  Martin Kretzschmar  <m_kretzschmar@gmx.net>
 
 	* bonobo/bonobo-ui-sync-menu.c (impl_bonobo_ui_sync_menu_build)
