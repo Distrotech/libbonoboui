@@ -44,6 +44,7 @@ struct _BonoboZoomablePrivate {
 	CORBA_boolean		 is_continuous;
 
 	Bonobo_ZoomLevel	*preferred_zoom_levels;
+	Bonobo_ZoomLevelName	*preferred_zoom_level_names;
 	int			 num_preferred_zoom_levels;
 
 	Bonobo_ZoomableFrame	 zoomable_frame;
@@ -169,6 +170,25 @@ impl_Bonobo_Zoomable__get_preferred_zoom_levels (PortableServer_Servant  servant
 	return list;
 }
 
+static Bonobo_ZoomLevelNameList *
+impl_Bonobo_Zoomable__get_preferred_zoom_level_names (PortableServer_Servant  servant,
+						      CORBA_Environment      *ev)
+{
+	Bonobo_ZoomLevelNameList *list;
+	BonoboZoomable *zoomable;
+
+	zoomable = bonobo_zoomable_from_servant (servant);
+
+	list = Bonobo_ZoomLevelNameList__alloc ();
+	list->_maximum = zoomable->priv->num_preferred_zoom_levels;
+	list->_length = zoomable->priv->num_preferred_zoom_levels;
+	list->_buffer = zoomable->priv->preferred_zoom_level_names;
+	
+	/*  set_release defaults to FALSE - CORBA_sequence_set_release (list, FALSE) */ 
+
+	return list;
+}
+
 static void 
 impl_Bonobo_Zoomable_set_zoom_level (PortableServer_Servant  servant,
 				     const CORBA_float       zoom_level,
@@ -252,6 +272,7 @@ bonobo_zoomable_get_epv (void)
 	epv->_get_has_max_zoom_level = impl_Bonobo_Zoomable__get_has_max_zoom_level;
 	epv->_get_is_continuous = impl_Bonobo_Zoomable__get_is_continuous;
 	epv->_get_preferred_zoom_levels = impl_Bonobo_Zoomable__get_preferred_zoom_levels;
+	epv->_get_preferred_zoom_level_names = impl_Bonobo_Zoomable__get_preferred_zoom_level_names;
 
 	epv->zoom_in = impl_Bonobo_Zoomable_zoom_in;
 	epv->zoom_out = impl_Bonobo_Zoomable_zoom_out;
@@ -313,6 +334,52 @@ bonobo_zoomable_get_arg (GtkObject* obj, GtkArg* arg, guint arg_id)
 		g_message ("Unknown arg_id `%d'", arg_id);
 		break;
 	};
+}
+
+static void
+bonobo_zoomable_destroy (GtkObject *object)
+{
+	BonoboZoomable *zoomable;
+
+	g_return_if_fail (object != NULL);
+	g_return_if_fail (BONOBO_IS_ZOOMABLE (object));
+
+	zoomable = BONOBO_ZOOMABLE (object);
+
+	if (zoomable->priv->preferred_zoom_levels)
+		g_free (zoomable->priv->preferred_zoom_levels);
+	zoomable->priv->preferred_zoom_levels = NULL;
+
+	if (zoomable->priv->preferred_zoom_level_names) {
+		gint i;
+
+		for (i = 0; i < zoomable->priv->num_preferred_zoom_levels; i++)
+			g_free (zoomable->priv->preferred_zoom_level_names [i]);
+
+		g_free (zoomable->priv->preferred_zoom_level_names);
+	}
+
+	zoomable->priv->preferred_zoom_levels = NULL;
+	zoomable->priv->preferred_zoom_level_names = NULL;
+	zoomable->priv->num_preferred_zoom_levels = 0;
+
+	GTK_OBJECT_CLASS (bonobo_zoomable_parent_class)->destroy (object);
+}
+
+static void
+bonobo_zoomable_finalize (GtkObject *object)
+{
+	BonoboZoomable *zoomable;
+
+	g_return_if_fail (object != NULL);
+	g_return_if_fail (BONOBO_IS_ZOOMABLE (object));
+
+	zoomable = BONOBO_ZOOMABLE (object);
+
+	g_free (zoomable->priv);
+	zoomable->priv = NULL;
+
+	GTK_OBJECT_CLASS (bonobo_zoomable_parent_class)->finalize (object);
 }
 
 static void
@@ -385,6 +452,9 @@ bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 
 	object_class->get_arg = bonobo_zoomable_get_arg;
 
+	object_class->destroy = bonobo_zoomable_destroy;
+	object_class->finalize = bonobo_zoomable_finalize;
+
 	init_zoomable_corba_class ();
 }
 
@@ -398,7 +468,7 @@ bonobo_zoomable_init (BonoboZoomable *zoomable)
 	zoomable->priv->max_zoom_level = 0.0;
 	zoomable->priv->has_min_zoom_level = FALSE;
 	zoomable->priv->has_max_zoom_level = FALSE;
-	zoomable->priv->is_continuous = FALSE;
+	zoomable->priv->is_continuous = TRUE;
 }
 
 /**
@@ -452,7 +522,7 @@ bonobo_zoomable_corba_object_create (BonoboObject *object)
 }
 
 /**
- * bonobo_zoomable_set_parameters:
+ * bonobo_zoomable_set_parameters_full:
  * 
  * This is used by the component to set new zooming parameters (and to set the
  * initial zooming parameters including the initial zoom level after creating
@@ -465,15 +535,16 @@ bonobo_zoomable_corba_object_create (BonoboObject *object)
  * Return value: 
  **/
 void
-bonobo_zoomable_set_parameters (BonoboZoomable	*p,
-				float            zoom_level,
-				float		 min_zoom_level,
-				float		 max_zoom_level,
-				gboolean	 has_min_zoom_level,
-				gboolean	 has_max_zoom_level,
-				gboolean	 is_continuous,
-				float		*preferred_zoom_levels,
-				int		 num_preferred_zoom_levels)
+bonobo_zoomable_set_parameters_full (BonoboZoomable  *p,
+				     float            zoom_level,
+				     float            min_zoom_level,
+				     float            max_zoom_level,
+				     gboolean         has_min_zoom_level,
+				     gboolean         has_max_zoom_level,
+				     gboolean         is_continuous,
+				     float           *preferred_zoom_levels,
+				     const gchar    **preferred_zoom_level_names,
+				     gint             num_preferred_zoom_levels)
 {
 	g_return_if_fail (p != NULL);
 	g_return_if_fail (BONOBO_IS_ZOOMABLE (p));
@@ -488,8 +559,15 @@ bonobo_zoomable_set_parameters (BonoboZoomable	*p,
 	if (p->priv->preferred_zoom_levels) {
 		g_free (p->priv->preferred_zoom_levels);
 		p->priv->preferred_zoom_levels = NULL;
-		p->priv->num_preferred_zoom_levels = 0;
 	}
+
+	if (p->priv->preferred_zoom_level_names) {
+		g_free (p->priv->preferred_zoom_level_names);
+		p->priv->preferred_zoom_level_names = NULL;
+	}
+
+	p->priv->num_preferred_zoom_levels = num_preferred_zoom_levels;
+
 
 	if (preferred_zoom_levels) {
 		p->priv->preferred_zoom_levels = g_memdup
@@ -497,6 +575,42 @@ bonobo_zoomable_set_parameters (BonoboZoomable	*p,
 			 sizeof (float) * num_preferred_zoom_levels);
 		p->priv->num_preferred_zoom_levels = num_preferred_zoom_levels;
 	}
+
+	if (preferred_zoom_level_names) {
+		gint i;
+
+		p->priv->preferred_zoom_level_names = g_new0 (gchar *, num_preferred_zoom_levels+1);
+		for (i = 0; i < num_preferred_zoom_levels; i++)
+			p->priv->preferred_zoom_level_names [i] = g_strdup
+				(preferred_zoom_level_names [i]);
+	}
+}
+
+/**
+ * bonobo_zoomable_set_parameters:
+ * 
+ * This is a simple version of @bonobo_zoomable_set_parameters_full() for components
+ * which support continuous zooming. It does not override any of the parameters
+ * which can only be set by the _full version.
+ * 
+ * Return value: 
+ **/
+void
+bonobo_zoomable_set_parameters (BonoboZoomable  *p,
+                                float            zoom_level,
+                                float            min_zoom_level,
+                                float            max_zoom_level,
+                                gboolean         has_min_zoom_level,
+                                gboolean         has_max_zoom_level)
+{
+	g_return_if_fail (p != NULL);
+	g_return_if_fail (BONOBO_IS_ZOOMABLE (p));
+
+	p->priv->zoom_level = zoom_level;
+	p->priv->min_zoom_level = min_zoom_level;
+	p->priv->max_zoom_level = max_zoom_level;
+	p->priv->has_min_zoom_level = has_min_zoom_level;
+	p->priv->has_max_zoom_level = has_max_zoom_level;
 }
 
 BonoboZoomable *

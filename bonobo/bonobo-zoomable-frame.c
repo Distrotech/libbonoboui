@@ -490,12 +490,12 @@ bonobo_zoomable_frame_is_continuous (BonoboZoomableFrame *zoomable_frame)
 	return retval;
 }
 
-float *
-bonobo_zoomable_frame_get_preferred_zoom_levels (BonoboZoomableFrame *zoomable_frame, int *pnum_ret)
+GList *
+bonobo_zoomable_frame_get_preferred_zoom_levels (BonoboZoomableFrame *zoomable_frame)
 {
 	CORBA_Environment ev;
 	Bonobo_ZoomLevelList *zoom_levels;
-	float *zoom_level_ptr;
+	GList *list = NULL;
 	int i;
 
 	g_return_val_if_fail (zoomable_frame != NULL, NULL);
@@ -511,21 +511,53 @@ bonobo_zoomable_frame_get_preferred_zoom_levels (BonoboZoomableFrame *zoomable_f
 	}
 	CORBA_exception_free (&ev);
 
-	if (!zoom_levels)
+	if (zoom_levels == CORBA_OBJECT_NIL)
 		return NULL;
 
-	zoom_level_ptr = g_new0 (float, zoom_levels->_length+1);
+	for (i = 0; i < zoom_levels->_length; i++) {
+		float *this;
 
-	for (i = 0; i < zoom_levels->_length; ++i)
-		zoom_level_ptr [i] = zoom_levels->_buffer[i];
+		this = g_new0 (float, 1);
+		*this = zoom_levels->_buffer [i];
 
-	zoom_level_ptr [zoom_levels->_length] = 0.0;
-	if (pnum_ret)
-		*pnum_ret = zoom_levels->_length;
+		list = g_list_prepend (list, this);
+	}
 
 	CORBA_free (zoom_levels);
 
-	return zoom_level_ptr;
+	return g_list_reverse (list);
+}
+
+GList *
+bonobo_zoomable_frame_get_preferred_zoom_level_names (BonoboZoomableFrame *zoomable_frame)
+{
+	CORBA_Environment ev;
+	Bonobo_ZoomLevelNameList *zoom_level_names;
+	GList *list = NULL;
+	int i;
+
+	g_return_val_if_fail (zoomable_frame != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_ZOOMABLE_FRAME (zoomable_frame), NULL);
+
+	CORBA_exception_init (&ev);
+	zoom_level_names = Bonobo_Zoomable__get_preferred_zoom_level_names (zoomable_frame->priv->zoomable, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		bonobo_object_check_env (BONOBO_OBJECT (zoomable_frame),
+					 zoomable_frame->priv->zoomable, &ev);
+		CORBA_exception_free (&ev);
+		return NULL;
+	}
+	CORBA_exception_free (&ev);
+
+	if (zoom_level_names == CORBA_OBJECT_NIL)
+		return NULL;
+
+	for (i = 0; i < zoom_level_names->_length; i++)
+		list = g_list_prepend (list, g_strdup (zoom_level_names->_buffer [i]));
+
+	CORBA_free (zoom_level_names);
+
+	return g_list_reverse (list);
 }
 
 void

@@ -73,8 +73,8 @@ gboolean	 bonobo_zoomable_frame_has_min_zoom_level		(BonoboZoomableFrame	*zframe
 gboolean	 bonobo_zoomable_frame_has_max_zoom_level		(BonoboZoomableFrame	*zframe);
 gboolean	 bonobo_zoomable_frame_is_continuous			(BonoboZoomableFrame	*zframe);
 
-float		*bonobo_zoomable_frame_get_preferred_zoom_levels	(BonoboZoomableFrame	*zframe,
-									 int			*pnum_ret);
+GList		*bonobo_zoomable_frame_get_preferred_zoom_levels	(BonoboZoomableFrame	*zframe);
+GList		*bonobo_zoomable_frame_get_preferred_zoom_level_names	(BonoboZoomableFrame	*zframe);
 
 void		 bonobo_zoomable_frame_set_zoom_level			(BonoboZoomableFrame	*zframe,
 									 float			 zoom_level);
