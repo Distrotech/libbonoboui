@@ -142,7 +142,7 @@ table_create (GtkWidget *control)
 	GtkWidget *clist;
 	int i, j;
 
-	table = gtk_table_new (3, 3, TRUE);
+	table = gtk_table_new (3, 3, FALSE);
 
 	/* Put some dead space around the sides. */
 	for (i = 0; i < 3; i ++)
@@ -179,6 +179,13 @@ table_create (GtkWidget *control)
 			  0, 0);
 
 	populate_property_list (control, GTK_CLIST (clist));
+
+	control = gnome_bonobo_widget_new_control ("control:calculator");
+	gtk_widget_show (control);
+	gtk_table_attach (GTK_TABLE (table), control,
+			  0, 1, 0, 1,
+			  0, 0,
+			  0, 0);
 
 	return table;
 }

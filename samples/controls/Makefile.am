@@ -12,6 +12,8 @@ INCLUDES =	\
 sample_control_factory_SOURCES =			\
 	bonobo-clock-control.c				\
 	bonobo-clock-control.h				\
+	bonobo-calculator-control.c			\
+	bonobo-calculator-control.h			\
 	sample-control-factory.c
 
 sample_control_factory_LDADD =				\
@@ -32,7 +34,8 @@ sample_control_container_LDADD =			\
 	$(INTLLIBS)
 
 gnorbadir = $(sysconfdir)/CORBA/servers
-gnorba_DATA = bonobo-clock-control.gnorba
+gnorba_DATA =	bonobo-clock-control.gnorba		\
+		bonobo-calculator-control.gnorba
 
 EXTRA_DIST = $(gnorba_DATA)
 
