@@ -766,6 +766,7 @@ bonobo_ui_util_fixup_icons (BonoboUINode *node)
 			bonobo_ui_node_set_attr (node, "pixtype", "pixbuf");
 			bonobo_ui_node_set_attr (node, "pixname", xml);
 			g_free (xml);
+			g_object_unref (pixbuf);
 		}
 	}
 

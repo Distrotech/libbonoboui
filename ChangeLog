@@ -1,3 +1,8 @@
+2002-05-28  Gustavo Giráldez  <gustavo.giraldez@gmx.net>
+
+	* bonobo/bonobo-ui-util.c (bonobo_ui_util_fixup_icons): Don't leak
+	the pixbuf.
+
 2002-05-27  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.117.1
