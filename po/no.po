@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2001-11-05 10:03+1100\n"
-"PO-Revision-Date: 2001-09-19 17:57+0200\n"
+"POT-Creation-Date: 2001-11-11 14:08+0100\n"
+"PO-Revision-Date: 2001-11-11 14:11+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -117,23 +117,70 @@ msgstr "Tilpas_s"
 msgid "Customize the toolbar"
 msgstr "Tilpass verktøylinjen"
 
+#: bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "Zoom-nivå"
+
+#: bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "Graden av forstørring"
+
+#: bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "Minste zoom-nivå"
+
+#: bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "Minste grad av forstørring"
+
+#: bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "Største zoom-nivå"
+
+#: bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "Største grad av forstørring"
+
+#: bonobo/bonobo-zoomable.c:353
+msgid "Has a minumum Zoom level"
+msgstr "Har et minste zoom-nivå"
+
+#: bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "Om vi har et gyldig minste zoom-nivå"
+
+#: bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "Har et maksimalt zoom-nivå"
+
+#: bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "Om vi har et gyldig største zoom-nivå"
+
+#: bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "Er kontinuerlig"
+
+#: bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "Om vi zoomer kontinuerlig (i motsetning til sprangvis)"
+
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr ""
+msgstr "Dette gjør ingenting; kun en demonstrasjon."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr ""
+msgstr "BonoboUI-Hallo."
 
 #: samples/bonoboui/hello.c:195
-#, fuzzy
 msgid "Gnome Hello"
-msgstr "GNOME miner"
+msgstr "GNOME hallo"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:250
 msgid "Hello, World!"
-msgstr ""
+msgstr "Hallo verden!"
 
 #: samples/bonoboui/hello.c:290 tests/test-ui.c:254
 msgid "Cannot init libbonoboui code"
@@ -146,24 +193,6 @@ msgstr "Kan ikke kjøre bonobo_ui_init"
 #: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Velg et objekt"
-
-#~ msgid "Can not activate object_server"
-#~ msgstr "Kan ikke aktivere object_server"
-
-#~ msgid "Can not bind object server to client_site"
-#~ msgstr "Kan ikke binde objekt tjener til client_site"
-
-#~ msgid "Can not activate server"
-#~ msgstr "Kan ikke aktivere tjener"
-
-#~ msgid "Could not launch bonobo object."
-#~ msgstr "Kunne ikke starte bonobo objektet."
-
-#~ msgid "Could not launch Embeddable."
-#~ msgstr "Kunne ikke starte Embeddable.."
-
-#~ msgid "Could not launch Control."
-#~ msgstr "Kunne ikke starte kontroll."
 
 #~ msgid "Can not bonobo_init"
 #~ msgstr "Kan ikke kjøre bonobo_init"
@@ -513,9 +542,6 @@ msgstr "Velg et objekt"
 
 #~ msgid "New zoom level is %.3g."
 #~ msgstr "Nytt zoom-nivå er: %.3g."
-
-#~ msgid "Set zoom level:"
-#~ msgstr "Sett zoom-nivå:"
 
 #~ msgid "Could not initialize Bonobo!"
 #~ msgstr "Kunne ikke initialisere Bonobo!"
