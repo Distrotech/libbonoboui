@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
-"PO-Revision-Date: 2003-06-22 20:03+0200\n"
+"POT-Creation-Date: 2003-08-23 18:25+0200\n"
+"PO-Revision-Date: 2003-08-23 18:28+0200\n"
 "Last-Translator: Veljko M. Stanojevic <veljko@vms.homelinux.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -94,25 +94,22 @@ msgstr "Опис"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr "Неопходна сучеља"
+msgstr "Неопходне спреге"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr ""
-"Празним низом (NULL) завршени низ променљивих сучеља које сервер мора "
-"подржавати да би била наведена у одабирачу. Подразумевана вредност је „IDL:"
-"Bonobo/Embeddable:1.0“ уколико ниједно сучеље није наведено"
+msgstr "Празним низом (NULL) завршени низ променљивих спрега које сервер мора подржавати да би био наведен у одабирачу. Подразумевана вредност је „IDL:Bonobo/Embeddable:1.0“ уколико спрега није наведена"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "Упис неопходног сучеља"
+msgstr "Упис неопходне спреге"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr "Једно од неопходних сучеља"
+msgstr "Једна од неопходних спрега"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -120,15 +117,15 @@ msgstr "Видљиво"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr "Прикажи"
+msgstr "_Прикажи"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
-msgstr "Сакриј"
+msgstr "_Сакриј"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr "Приказ "
+msgstr "По_гледај савете"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
@@ -144,11 +141,11 @@ msgstr "Изглед"
 
 #: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
-msgstr "Иконица"
+msgstr "_Иконица"
 
 #: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
-msgstr "Текст и иконица"
+msgstr "_Текст и иконица"
 
 #: bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
@@ -156,7 +153,7 @@ msgstr "Само текст"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr "Првенствено само текст"
+msgstr "Само _важан текст"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
@@ -164,7 +161,7 @@ msgstr "Отклањање грешака"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "Избаци XML"
+msgstr "Из_баци XML"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
@@ -233,11 +230,11 @@ msgstr "ДОМАЋИН"
 
 #: bonobo/bonobo-ui-init-gtk.c:149
 msgid "PORT"
-msgstr "ВРАТА"
+msgstr "ПОРТ"
 
 #: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
 msgid "STYLE"
-msgstr "ОБЛИК"
+msgstr "СТИЛ"
 
 #: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
@@ -269,27 +266,27 @@ msgstr "Бонобо подршка за графичко корисничко �
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
-msgstr "Обадва"
+msgstr "_Оба"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
-msgstr "Текст"
+msgstr "Т_екст"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr "Склони савете"
+msgstr "Сакриј с_авете"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
-msgstr "Прикажи савете"
+msgstr "Прикажи са_вете"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "Склони линију са алатима"
+msgstr "_Сакриј линију са алатима"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
-msgstr "Прилагоди"
+msgstr "Прила_годи"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
@@ -309,7 +306,7 @@ msgstr "Изглед косе ивице око линије са алатима
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
-msgstr "Садржај"
+msgstr "_Садржај"
 
 #: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
@@ -377,19 +374,19 @@ msgstr "Одаберите"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "О..."
+msgstr "_О програму..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "Уредите"
+msgstr "_Уређивање"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
-msgstr "Датотека"
+msgstr "_Датотека"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "Одаберите"
+msgstr "_Изаберите"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -401,7 +398,7 @@ msgstr "BonoboUI поздрав"
 
 #: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr "Gnome поздрав"
+msgstr "Гном поздрав"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
