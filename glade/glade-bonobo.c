@@ -92,7 +92,7 @@ glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
 	if (pspec) {
 	    GValue gvalue = { 0 };
 
-	    if (glade_xml_set_value_from_string(pspec, value, &gvalue)) {
+	    if (glade_xml_set_value_from_string(xml, pspec, value, &gvalue)) {
 		g_object_set_property(G_OBJECT(widget), name, &gvalue);
 		g_value_unset(&gvalue);
 	    }
