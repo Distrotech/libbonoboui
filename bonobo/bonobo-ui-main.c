@@ -125,3 +125,11 @@ bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 
 	return TRUE;
 }
+
+void
+bonobo_ui_main (void)
+{
+	bonobo_activate ();
+
+	gtk_main ();
+}

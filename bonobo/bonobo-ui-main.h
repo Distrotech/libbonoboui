@@ -21,6 +21,7 @@ gboolean   bonobo_ui_is_initialized     (void);
 gboolean   bonobo_ui_init               (const gchar *app_name,
 					 const gchar *app_version,
 					 int *argc, char **argv);
+void       bonobo_ui_main               (void);
 gboolean   bonobo_ui_init_full          (const gchar *app_name,
 					 const gchar *app_version,
 					 int *argc, char **argv,

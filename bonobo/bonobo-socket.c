@@ -210,7 +210,7 @@ bonobo_socket_size_request (GtkWidget      *widget,
 		 requisition->width, requisition->height);
 }
 
-static gboolean
+static void
 bonobo_socket_show_all (GtkWidget *widget)
 {
 	/* Do nothing - we don't want this to
