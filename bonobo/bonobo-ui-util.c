@@ -608,7 +608,7 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 	 * The master copy
 	 */
 
-	fname = g_strdup_printf ("%s/.gnome/ui/%s",
+	fname = g_strdup_printf ("%s/gnome/ui/%s",
 				 component_prefix, component_name);
 	if (g_file_exists (fname))
 		return fname;
