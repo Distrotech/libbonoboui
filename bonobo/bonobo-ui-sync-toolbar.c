@@ -28,7 +28,6 @@
 #include <bonobo/bonobo-ui-toolbar.h>
 #include <bonobo/bonobo-ui-toolbar-button-item.h>
 #include <bonobo/bonobo-ui-toolbar-toggle-button-item.h>
-#include <bonobo/bonobo-ui-toolbar-separator-item.h>
 #include <bonobo/bonobo-ui-toolbar-popup-item.h>
 #include <bonobo/bonobo-ui-toolbar-control-item.h>
 
@@ -160,7 +159,6 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	    BONOBO_IS_UI_TOOLBAR_CONTROL_ITEM (widget)) {
 		const char *txt;
 		BonoboUIToolbarControlDisplay hdisp, vdisp;
-		gboolean sensitive;
 		
 		txt = bonobo_ui_node_peek_attr (node, "hdisplay");
 		hdisp = decode_control_disp (txt);
@@ -170,15 +168,6 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 
 		bonobo_ui_toolbar_control_item_set_display (
 			BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget), hdisp, vdisp);
-
-		txt = bonobo_ui_node_peek_attr (node, "sensitive");
-		if (txt)
-			sensitive = atoi (txt);
-		else
-			sensitive = TRUE;
-
-		bonobo_ui_toolbar_control_item_set_sensitive (
-			BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget), sensitive);
 	}
 	
 	if ((txt = bonobo_ui_engine_get_attr (node, cmd_node, "tip"))) {
