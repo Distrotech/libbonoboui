@@ -203,9 +203,9 @@ final_setup (setup_data_t *sd)
 		resolve_and_add (sd->app, moniker, "IDL:Bonobo/Embeddable:1.0");
 		bonobo_object_release_unref (moniker, NULL);
 
-		moniker = make_moniker ("query:(bonobo:supported_mime_types.has ('image/x-png'))");
+/*		moniker = make_moniker ("query:(bonobo:supported_mime_types.has ('image/x-png'))");
 		resolve_and_add (sd->app, moniker, "IDL:Bonobo/Embeddable:1.0");
-		bonobo_object_release_unref (moniker, NULL);
+		bonobo_object_release_unref (moniker, NULL);*/
 	}
 
 	return FALSE;
