@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-04-15 18:38+0100\n"
+"POT-Creation-Date: 2002-03-12 23:07+0100\n"
 "PO-Revision-Date: 2002-02-26 00:23+0100\n"
 "Last-Translator: Andraž Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: slovenian <sl@li.org>\n"
@@ -12,52 +12,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+#: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
 msgid "Shadow type"
 msgstr "Vrsta sence"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
-#: bonobo/bonobo-ui-toolbar.c:1091 bonobo/bonobo-ui-toolbar.c:1092
+#: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
+#: bonobo/bonobo-ui-toolbar.c:1089 bonobo/bonobo-ui-toolbar.c:1090
 msgid "Orientation"
 msgstr "Usmerjenost"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
-#: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
+#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-ui-toolbar.c:1108 bonobo/bonobo-ui-toolbar.c:1109
 msgid "Preferred width"
 msgstr "Želena širina"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
-#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
+#: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
+#: bonobo/bonobo-ui-toolbar.c:1117 bonobo/bonobo-ui-toolbar.c:1118
 msgid "Preferred height"
 msgstr "Želena višina"
 
-#: bonobo/bonobo-dock-item-grip.c:236
-#, fuzzy
-msgid "Dock the toolbar"
-msgstr "Prikroji orodno vrstico"
-
-#: bonobo/bonobo-dock-item-grip.c:237
-#, fuzzy
-msgid "Un dock the toolbar"
-msgstr "Prikroji orodno vrstico"
-
-#: bonobo/bonobo-file-selector-util.c:373
+#: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
 msgstr "Izberi datoteko za odprtje"
 
-#: bonobo/bonobo-file-selector-util.c:401
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
 msgstr "Izberi datoteke za odprtje"
 
-#: bonobo/bonobo-file-selector-util.c:430
+#: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
 msgstr "Izberite ime datoteke za shranitev"
 
-#: bonobo/bonobo-plug.c:358
+#: bonobo/bonobo-plug.c:351
 msgid "Event Forwarding"
 msgstr "Posredovanje dogodkov"
 
-#: bonobo/bonobo-plug.c:359
+#: bonobo/bonobo-plug.c:352
 msgid "Whether X events should be forwarded"
 msgstr "Ali naj bodo dogodki X posredovani"
 
@@ -205,98 +195,13 @@ msgstr "vsebovalnik corba uporabniškega vmesnika"
 msgid "The User interface container"
 msgstr "Vsebovalnik uporabniškega vmesnika"
 
-#: bonobo/bonobo-ui-toolbar.c:1101
+#: bonobo/bonobo-ui-toolbar.c:1099
 msgid "is floating"
 msgstr "je lebdelč"
 
-#: bonobo/bonobo-ui-toolbar.c:1102
+#: bonobo/bonobo-ui-toolbar.c:1100
 msgid "whether the toolbar is floating"
 msgstr "ali je orodjarna lebdeča"
-
-#: bonobo/bonobo-ui-init-gtk.c:113
-msgid "Gdk debugging flags to set"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
-msgid "FLAGS"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:116
-msgid "Gdk debugging flags to unset"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:120
-msgid "X display to use"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:120
-msgid "DISPLAY"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:124
-msgid "Make X calls synchronous"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:130
-msgid "Don't use X shared memory extension"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:134
-msgid "Program name as used by the window manager"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:134
-msgid "NAME"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:137
-msgid "Program class as used by the window manager"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:137
-msgid "CLASS"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:141
-msgid "HOST"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:145
-msgid "PORT"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
-msgid "STYLE"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:157
-msgid "Gtk+ debugging flags to set"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:160
-msgid "Gtk+ debugging flags to unset"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:163
-msgid "Make all warnings fatal"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:166
-msgid "Load an additional Gtk module"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:166
-msgid "MODULE"
-msgstr ""
-
-#: bonobo/bonobo-ui-init-gtk.c:175
-msgid "GTK+"
-msgstr ""
-
-#: bonobo/bonobo-ui-main.c:188
-msgid "Bonobo GUI support"
-msgstr ""
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
