@@ -496,7 +496,6 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 			gpointer           user_data,
 			const char        *cname)
 {
-	char *file_name;
 	GError *error = NULL;
 	const char *doc_id;
 	HelpDisplayClosure *cl = user_data;

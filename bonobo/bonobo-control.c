@@ -252,12 +252,17 @@ create_plug (BonoboControl *control)
 	
 	plug = bonobo_plug_new (0);
 	gtk_widget_show (plug);
+
+	g_object_ref (G_OBJECT (plug));
+	gtk_object_sink (GTK_OBJECT (plug));
 	
 	bonobo_control_set_plug (control, BONOBO_PLUG (plug));
 
 	if (control->priv->widget)
 		gtk_container_add (GTK_CONTAINER (plug),
 				   control->priv->widget);
+
+	g_object_unref (G_OBJECT (plug));
 }
 
 static CORBA_char *
@@ -584,8 +589,10 @@ bonobo_control_destroy (BonoboObject *object)
 	bonobo_control_set_properties      (control, CORBA_OBJECT_NIL, NULL);
 	bonobo_control_set_ui_component    (control, NULL);
 
-	if (control->priv->widget)
+	if (control->priv->widget) {
+		gtk_widget_destroy (GTK_WIDGET (control->priv->widget));
 		g_object_unref (control->priv->widget);
+	}
 	control->priv->widget = NULL;
 
 	control->priv->popup_ui_container = bonobo_object_unref (
@@ -1163,6 +1170,9 @@ bonobo_control_set_plug (BonoboControl *control,
 	if ((BonoboPlug *) control->priv->plug == plug)
 		return;
 
+	dprintf ("bonobo_control_set_plug (%p, %p) [%p]\n",
+		 control, plug, control->priv->plug);
+
 	old_plug = (BonoboPlug *) control->priv->plug;
 
 	if (plug)
@@ -1172,6 +1182,7 @@ bonobo_control_set_plug (BonoboControl *control,
 
 	if (old_plug) {
 		bonobo_plug_set_control (old_plug, NULL);
+		gtk_widget_destroy (GTK_WIDGET (old_plug));
 		g_object_unref (old_plug);
 	}
 

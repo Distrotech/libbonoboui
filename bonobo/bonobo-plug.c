@@ -87,6 +87,9 @@ bonobo_plug_set_control (BonoboPlug    *plug,
 	if (plug->control == control)
 		return;
 
+	dprintf ("bonobo_plug_set_control (%p, %p) [%p]\n",
+		 plug, control, plug->control);
+
 	old_control = plug->control;
 
 	if (control)

@@ -26,8 +26,8 @@ typedef struct {
 } Test;
 
 typedef enum {
-	DESTROY_TOPLEVEL,
 	DESTROY_CONTROL,
+	DESTROY_TOPLEVEL,
 	DESTROY_CONTAINED,
 	DESTROY_SOCKET,
 	DESTROY_TYPE_LAST
@@ -38,6 +38,7 @@ destroy_test (Test *test, DestroyType type)
 {
 	switch (type) {
 	case DESTROY_CONTAINED: {
+		/* Highly non-useful, should never happen */
 		BonoboControlFrame *frame;
 
 		gtk_widget_destroy (test->control_widget);
@@ -50,15 +51,23 @@ destroy_test (Test *test, DestroyType type)
 		break;
 	}
 
-	case DESTROY_CONTROL:
 	case DESTROY_SOCKET:
 		g_warning ("unimpl");
 		/* drop through */
+
+	case DESTROY_CONTROL:
+		bonobo_object_unref (test->control);
+		g_assert (test->plug == NULL);
+		g_assert (test->control_widget == NULL);
+		/* drop through */
+
 	case DESTROY_TOPLEVEL:
 		gtk_widget_destroy (test->bonobo_widget);
 		g_assert (test->bonobo_widget == NULL);
 		g_assert (test->socket == NULL);
 		g_assert (test->frame == NULL);
+		g_assert (test->plug == NULL);
+		g_assert (test->control == NULL);
 		break;
 	default:
 		g_assert_not_reached ();
@@ -66,8 +75,6 @@ destroy_test (Test *test, DestroyType type)
 	}
 
 	g_assert (test->control_widget == NULL);
-/*	g_assert (test->control == NULL); - hmm. */
-	g_assert (test->plug == NULL);
 }
 
 static void
@@ -293,6 +300,22 @@ simple_tests (void)
 	bonobo_object_unref (BONOBO_OBJECT (control));
 }
 
+static void
+test_gtk_weakrefs (void)
+{
+	gpointer   ref;
+	GtkObject *object = g_object_new (GTK_TYPE_OBJECT, NULL);
+
+	ref = object;
+	gtk_object_ref (object);
+	gtk_object_sink (object);
+	g_object_add_weak_pointer (ref, &ref);
+	gtk_object_destroy (object);
+	g_object_unref (object);
+
+	g_assert (ref == NULL);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -309,6 +332,8 @@ main (int argc, char **argv)
 	orb = bonobo_orb ();
 
 	bonobo_activate ();
+
+	test_gtk_weakrefs ();
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW (window), "Control test");

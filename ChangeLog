@@ -1,3 +1,16 @@
+2002-05-17  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: bump version to 1.116.1
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_destroy): destroy the widget
+	before unreffing it, so it's lifecycle is closely
+	coupled with the BonoboControl's, as expected.
+	(create_plug): sink the plug.
+
+	* tests/control/test-control.c: implement
+	(DESTROY_CONTROL) regression test.
+
 2002-05-15  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-util.c
