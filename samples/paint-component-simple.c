@@ -66,10 +66,8 @@ typedef struct {
  * Clean up our supplementary GnomeEmbeddable data sturctures.
  */
 static void
-embeddable_destroy_cb (GnomeEmbeddable *embeddable, gpointer data)
+embeddable_destroy_cb (GnomeEmbeddable *embeddable, embeddable_data_t *embeddable_data)
 {
-	embeddable_data_t *embeddable_data = (embeddable_data_t *) data;
-
 	gdk_pixmap_unref (embeddable_data->pixmap);
 	g_free (embeddable_data); 
 }
@@ -151,10 +149,8 @@ view_set_color (view_data_t *view_data, char *color)
 }
 
 static void
-view_color_select_cb (GnomeUIHandler *uih, void *data, char *path)
+view_color_select_cb (GnomeUIHandler *uih, view_data_t *view_data, char *path)
 {
-	view_data_t *view_data = (view_data_t *) data;
-
 	if (strstr (path, "Red") != NULL)
 		view_set_color (view_data, "red");
 	else if (strstr (path, "White") != NULL)
@@ -213,21 +209,21 @@ view_create_menus (view_data_t *view_data)
 					     N_("Set the current drawing color to white"),
 					     -1,
 					     0, (GdkModifierType) 0,
-					     view_color_select_cb, (gpointer) view_data);
+					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
 
 	gnome_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Red",
 					     N_("Red"),
 					     N_("Set the current drawing color to red"),
 					     -1, 
 					     0, (GdkModifierType) 0,
-					     view_color_select_cb, (gpointer) view_data);
+					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
 
 	gnome_ui_handler_menu_new_radioitem (uih, "/Colors/color radiogroup/Green",
 					     N_("Green"),
 					     N_("Set the current drawing color to green"),
 					     -1,
 					     0, (GdkModifierType) 0,
-					     view_color_select_cb, (gpointer) view_data);
+					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
 }
 
 /*
@@ -245,10 +241,8 @@ view_remove_menus (view_data_t *view_data)
 }
 
 static void
-view_activate_cb (GnomeView *view, gboolean activate, gpointer data)
+view_activate_cb (GnomeView *view, gboolean activate, view_data_t *view_data)
 {
-	view_data_t *view_data = (view_data_t *) data;
-
 	/*
 	 * The ViewFrame has just asked the View (that's us) to be
 	 * activated or deactivated.  We must reply to the ViewFrame
@@ -274,10 +268,8 @@ view_activate_cb (GnomeView *view, gboolean activate, gpointer data)
  * free up our ancillary view-centric data structures.
  */
 static void
-view_destroy_cb (GnomeView *view, gpointer data)
+view_destroy_cb (GnomeView *view, view_data_t *view_data)
 {
-	view_data_t *view_data = (view_data_t *) data;
-
 	gdk_gc_destroy (view_data->gc);
 	g_free (view_data);
 }
@@ -287,10 +279,8 @@ view_destroy_cb (GnomeView *view, gpointer data)
  * View window is actually realized.  We perform those here.
  */
 static void
-view_realize_cb (GtkWidget *drawing_area, gpointer data)
+view_realize_cb (GtkWidget *drawing_area, view_data_t *view_data)
 {
-	view_data_t *view_data = (view_data_t *) data;
-
 	view_set_color (view_data, "white");
 	view_update (view_data);
 }
@@ -299,10 +289,8 @@ view_realize_cb (GtkWidget *drawing_area, gpointer data)
  * When a part of the window is exposed, we must redraw it.
  */
 static void
-view_expose_cb (GtkWidget *drawing_area, GdkEventExpose *event, gpointer data)
+view_expose_cb (GtkWidget *drawing_area, GdkEventExpose *event, view_data_t *view_data)
 {
-	view_data_t *view_data = (view_data_t *) data;
-
 	view_update (view_data);
 }
 
@@ -312,10 +300,8 @@ view_expose_cb (GtkWidget *drawing_area, GdkEventExpose *event, gpointer data)
  */
 static void
 view_size_query_cb (GnomeView *view, int *desired_width, int *desired_height,
-		    gpointer data)
+		    view_data_t *view_data)
 {
-	view_data_t *view_data = (view_data_t *) data;
-
 	*desired_width = view_data->embeddable_data->width;
 	*desired_height = view_data->embeddable_data->height;
 }
@@ -325,10 +311,8 @@ view_size_query_cb (GnomeView *view, int *desired_width, int *desired_height,
  */
 static void
 view_size_allocate_cb (GtkWidget *drawing_area, GtkAllocation *allocation,
-		       gpointer data)
+		       view_data_t *view_data)
 {
-	view_data_t *view_data = (view_data_t *) data;
-
 	view_data->width = allocation->width;
 	view_data->height = allocation->height;
 
@@ -341,9 +325,8 @@ view_size_allocate_cb (GtkWidget *drawing_area, GtkAllocation *allocation,
  */
 static void
 view_motion_notify_cb (GtkWidget *drawing_area, GdkEventMotion *event,
-		       gpointer data)
+		       view_data_t *view_data)
 {
-	view_data_t *view_data = (view_data_t *) data;
 	embeddable_data_t *embeddable_data = view_data->embeddable_data;
 
 	/*
@@ -404,9 +387,8 @@ embeddable_clear_image (embeddable_data_t *embeddable_data)
  * the component.
  */
 static void
-view_clear_image_cb (GnomeView *view, const char *verb_name, void *user_data)
+view_clear_image_cb (GnomeView *view, const char *verb_name, view_data_t *view_data)
 {
-	view_data_t *view_data = (view_data_t *) user_data;
 	embeddable_data_t *embeddable_data;
 
 	embeddable_data = view_data->embeddable_data;
@@ -434,9 +416,8 @@ view_clear_image_cb (GnomeView *view, const char *verb_name, void *user_data)
 static GnomeView *
 view_factory (GnomeEmbeddable *embeddable,
 	      const GNOME_ViewFrame view_frame,
-	      void *data)
+	      embeddable_data_t *embeddable_data)
 {
-	embeddable_data_t *embeddable_data = (embeddable_data_t *) data;
 	view_data_t *view_data;
 	GnomeUIHandler *uih;
 	GnomeView *view;
@@ -517,7 +498,9 @@ view_factory (GnomeEmbeddable *embeddable,
 	/*
 	 * Register a callback to handle the ClearImage verb.
 	 */
-	gnome_view_register_verb (view, "ClearImage", view_clear_image_cb, view_data);
+	gnome_view_register_verb (view, "ClearImage",
+				  GNOME_VIEW_VERB_FUNC (view_clear_image_cb),
+				  view_data);
 
 	/*
 	 * The "size_query" signal is raised when the container asks
@@ -603,7 +586,8 @@ embeddable_factory (GnomeEmbeddableFactory *this,
 	/*
 	 * Create the GnomeEmbeddable object.
 	 */
-	embeddable = gnome_embeddable_new (view_factory, embeddable_data);
+	embeddable = gnome_embeddable_new (GNOME_VIEW_FACTORY (view_factory),
+					   embeddable_data);
 
 	if (embeddable == NULL) {
 		g_free (embeddable_data);

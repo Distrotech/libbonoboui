@@ -32,6 +32,7 @@ typedef struct _GnomeVerb GnomeVerb;
 
 #include <bonobo/gnome-view.h>
 
+#define GNOME_VIEW_FACTORY(fn) ((GnomeViewFactory)(fn))
 typedef GnomeView * (*GnomeViewFactory)(GnomeEmbeddable *embeddable, const GNOME_ViewFrame view_frame, void *closure);
 
 struct _GnomeEmbeddable {

@@ -23,6 +23,7 @@ typedef struct _GnomeViewClass GnomeViewClass;
 
 #include <bonobo/gnome-embeddable.h>
 
+#define GNOME_VIEW_VERB_FUNC(fn) ((GnomeViewVerbFunc)(fn))
 typedef void (*GnomeViewVerbFunc)(GnomeView *view, const char *verb_name, void *user_data);
 
 struct _GnomeView {

@@ -1,7 +1,10 @@
 /*
  * sample-container.c
  *
- * FIXME: Description.
+ *  This program is a sample Bonobo container. It allows the user to select
+ * an arbitrary component for inclusion, and to render an arbritary number of
+ * views of that component. It also affords easy testing of PersistStream and
+ * PersistFile interfaces.
  *
  * Author:
  *   Nat Friedman (nat@nat.org)
@@ -83,9 +86,8 @@ component_view_set_size (Component *component, GtkWidget *view_widget, int width
 }
 
 static void
-component_user_activate_request_cb (GnomeViewFrame *view_frame, gpointer data)
+component_user_activate_request_cb (GnomeViewFrame *view_frame, Component *component)
 {
-	Component *component = (Component *) data;
 	Container *container = component->container;
 
 	/*
@@ -128,9 +130,8 @@ component_user_activate_request_cb (GnomeViewFrame *view_frame, gpointer data)
 }
 
 static void
-component_view_activated_cb (GnomeViewFrame *view_frame, gboolean activated, gpointer data)
+component_view_activated_cb (GnomeViewFrame *view_frame, gboolean activated, Component *component)
 {
-	Component *component = (Component *) data;
 	Container *container = component->container;
 
         if (activated) {
@@ -169,9 +170,8 @@ component_view_activated_cb (GnomeViewFrame *view_frame, gboolean activated, gpo
 }
 
 static void
-component_user_context_cb (GnomeViewFrame *view_frame, gpointer data)
+component_user_context_cb (GnomeViewFrame *view_frame, Component *component)
 {
-	Component *component = (Component *) data;
 	char *executed_verb;
 	GList *l;
 
@@ -197,9 +197,8 @@ component_user_context_cb (GnomeViewFrame *view_frame, gpointer data)
 }
 
 static void
-component_request_resize_cb (GnomeViewFrame *view_frame, int width, int height, gpointer data)
+component_request_resize_cb (GnomeViewFrame *view_frame, int width, int height, Component *component)
 {
-	Component *component = (Component *) data;
 	GtkWidget *view_widget;
 
 	view_widget = gnome_view_frame_get_wrapper (view_frame);
@@ -294,18 +293,14 @@ component_add_view (Component *component)
 
 
 static void
-component_new_view_cb (GtkWidget *button, gpointer data)
+component_new_view_cb (GtkWidget *button, Component *component)
 {
-	Component *component = (Component *) data;
-
 	component_add_view (component);
 }
 
 static void
-component_load_cancel_cb (GtkWidget *button, gpointer data)
+component_load_cancel_cb (GtkWidget *button, Component *component)
 {
-	Component *component = (Component *) data;
-
 	gtk_widget_destroy (component->fs);
 }
 
@@ -340,9 +335,8 @@ component_create_fs (Component *component,
 }
 
 static void
-component_load_pf_ok_cb (GtkWidget *button, gpointer data)
+component_load_pf_ok_cb (GtkWidget *button, Component *component)
 {
-	Component *component = (Component *) data;
 	GNOME_PersistFile persist;
 	CORBA_Environment ev;
 	char *filename;
@@ -409,10 +403,8 @@ component_load_pf_ok_cb (GtkWidget *button, gpointer data)
 }
 
 static void
-component_load_pf_cb (GtkWidget *button, gpointer data)
+component_load_pf_cb (GtkWidget *button, Component *component)
 {
-	Component *component = (Component *) data;
-
 	component_create_fs (component,
 			     _("Choose a file to load into the component using PersistFile"),
 			     component_load_pf_ok_cb, component_load_cancel_cb);
@@ -426,9 +418,8 @@ component_load_pf_cb (GtkWidget *button, gpointer data)
  * PersistStream interface.
  */
 static void
-component_load_ps_ok_cb (GtkWidget *button, gpointer data)
+component_load_ps_ok_cb (GtkWidget *button, Component *component)
 {
-	Component *component = (Component *) data;
 	GNOME_PersistStream persist;
 	CORBA_Environment ev;
 	GnomeStream *stream;
@@ -509,18 +500,15 @@ component_load_ps_ok_cb (GtkWidget *button, gpointer data)
  * component using PersistStream' button.
  */
 static void
-component_load_ps_cb (GtkWidget *button, gpointer data)
+component_load_ps_cb (GtkWidget *button, Component *component)
 {
-	Component *component = (Component *) data;
-
 	component_create_fs (component, _("Choose a file to load into the component"),
 			     component_load_ps_ok_cb, component_load_cancel_cb);
 }
 
 static void
-component_destroy_cb (GtkWidget *button, gpointer data)
+component_destroy_cb (GtkWidget *button, Component *component)
 {
-	Component *component = (Component *) data;
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);

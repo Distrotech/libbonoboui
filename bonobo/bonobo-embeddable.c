@@ -213,7 +213,7 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 
 static void
 impl_GNOME_Embeddable_set_uri (PortableServer_Servant servant,
-			       const CORBA_char *uri,
+			       CORBA_char *uri,
 			       CORBA_Environment *ev)
 {
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
@@ -574,8 +574,8 @@ gnome_embeddable_remove_verb (GnomeEmbeddable *embeddable, const char *verb_name
 const char *
 gnome_embeddable_get_uri (GnomeEmbeddable *embeddable)
 {
-	g_return_if_fail (embeddable != NULL);
-	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_val_if_fail (embeddable != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_EMBEDDABLE (embeddable), NULL);
 
 	return embeddable->uri;
 }
