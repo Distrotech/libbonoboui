@@ -69,21 +69,6 @@ enum {
 
 static guint signals [LAST_SIGNAL] = { 0 };
 
-struct _BonoboUIEnginePrivate {
-	GObject      *view;
-
-	BonoboUIXml  *tree;
-	int           frozen;
-	GSList       *syncs;
-	GSList       *state_updates;
-	GSList       *components;
-
-	BonoboUIContainer    *container;
-	BonoboUIEngineConfig *config;
-
-	GHashTable   *cmd_to_node;
-};
-
 /*
  *  Mapping from nodes to their synchronization
  * class information functions.
@@ -1426,18 +1411,19 @@ bonobo_ui_engine_set_ui_container (BonoboUIEngine    *engine,
 
 	old_container = engine->priv->container;
 
-	if (ui_container) {
+	if (ui_container)
 		engine->priv->container = BONOBO_UI_CONTAINER (
 			bonobo_object_ref (BONOBO_OBJECT (ui_container)));
-
-		bonobo_ui_container_set_engine (ui_container, engine);
-	} else
+	else
 		engine->priv->container = NULL;
 
 	if (old_container) {
 		bonobo_ui_container_set_engine (old_container, NULL);
 		bonobo_object_unref (BONOBO_OBJECT (old_container));
 	}
+
+	if (ui_container)
+		bonobo_ui_container_set_engine (ui_container, engine);
 }
 
 /**

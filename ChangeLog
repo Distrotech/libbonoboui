@@ -1,3 +1,15 @@
+2002-05-13  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_set_ui_container): unset the old
+	engine before setting the new.
+
+	* tests/test-ui-auto.c (test_engine_container): add.
+	(test_ui_engine): upd.
+
+	* bonobo/bonobo-ui-engine-private.h: move
+	BonoboUIEnginePrivate here for the regression tests.
+
 2002-05-11  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-control-frame.c

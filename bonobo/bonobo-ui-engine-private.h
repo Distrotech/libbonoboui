@@ -17,6 +17,22 @@ G_BEGIN_DECLS
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-engine-config.h>
 
+
+struct _BonoboUIEnginePrivate {
+	GObject      *view;
+
+	BonoboUIXml  *tree;
+	int           frozen;
+	GSList       *syncs;
+	GSList       *state_updates;
+	GSList       *components;
+
+	BonoboUIContainer    *container;
+	BonoboUIEngineConfig *config;
+
+	GHashTable   *cmd_to_node;
+};
+
 BonoboUIXml          *bonobo_ui_engine_get_xml    (BonoboUIEngine *engine);
 BonoboUIEngineConfig *bonobo_ui_engine_get_config (BonoboUIEngine *engine);
 

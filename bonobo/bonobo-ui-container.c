@@ -372,11 +372,11 @@ bonobo_ui_container_set_engine (BonoboUIContainer *container,
 	old_engine = container->priv->engine;
 	container->priv->engine = engine;
 
-	if (engine)
-		bonobo_ui_engine_set_ui_container (engine, container);
-
 	if (old_engine)
 		bonobo_ui_engine_set_ui_container (old_engine, NULL);
+
+	if (engine)
+		bonobo_ui_engine_set_ui_container (engine, container);
 }
 
 /**

@@ -12,6 +12,7 @@
 #include <libbonoboui.h>
 #include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-node-private.h>
+#include <bonobo/bonobo-ui-engine-private.h>
 
 static const char *typical_pixbuf =
 	"000000130000000eA"
@@ -188,6 +189,33 @@ test_engine_misc (CORBA_Environment *ev)
 }
 
 static void
+test_engine_container (CORBA_Environment *ev)
+{
+	BonoboUIEngine *engine;
+	BonoboUIContainer *container;
+	BonoboUIContainer *new_container;
+
+	fprintf (stderr, "  UI container association ...\n");
+
+	engine = bonobo_ui_engine_new (NULL);
+	container = bonobo_ui_container_new ();
+	new_container = bonobo_ui_container_new ();
+
+	bonobo_ui_engine_set_ui_container (engine, container);
+	g_assert (engine->priv->container == container);
+	g_assert (bonobo_ui_container_get_engine (container) == engine);
+
+	bonobo_ui_engine_set_ui_container (engine, new_container);
+	g_assert (engine->priv->container == new_container);
+	g_assert (bonobo_ui_container_get_engine (container) == NULL);
+	g_assert (bonobo_ui_container_get_engine (new_container) == engine);
+
+	bonobo_object_unref (new_container);
+	bonobo_object_unref (container);
+	g_object_unref (engine);
+}
+
+static void
 test_engine_default_placeholder (CORBA_Environment *ev)
 {
 	BonoboUIEngine *engine;
@@ -237,6 +265,7 @@ test_ui_engine (CORBA_Environment *ev)
 	fprintf (stderr, "testing BonoboUIEngine ...\n");
 
 	test_engine_misc (ev);
+	test_engine_container (ev);
 	test_engine_default_placeholder (ev);
 }
 
