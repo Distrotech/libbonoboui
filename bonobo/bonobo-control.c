@@ -252,13 +252,46 @@ bonobo_control_unset_control_frame (BonoboControl     *control,
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
 }
-	
+
 static CORBA_char *
+impl_Bonobo_Control_getWindowId (PortableServer_Servant servant,
+				 const CORBA_char      *cookie,
+				 CORBA_Environment     *ev)
+{
+	CORBA_char    *ret;
+	BonoboControl *control = BONOBO_CONTROL (
+		bonobo_object_from_servant (servant));
+
+	if (control->priv->plug) {
+		guint32 x11_id;
+
+		x11_id = gtk_plug_get_id (GTK_PLUG (control->priv->plug));
+		
+		dprintf ("plug id %d\n", x11_id);
+
+		ret = bonobo_control_window_id_from_x11 (x11_id);
+	} else {
+		bonobo_exception_set (ev, ex_Bonobo_Control_NoContents);
+		ret = NULL;
+	}
+
+	return ret;
+}
+
+static Bonobo_UIContainer
+impl_Bonobo_Control_getPopupContainer (PortableServer_Servant servant,
+				       CORBA_Environment     *ev)
+{
+	g_warning ("getPopupContainer stubbed");
+
+	return CORBA_OBJECT_NIL;
+}
+	
+static void
 impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 			      Bonobo_ControlFrame    frame,
 			      CORBA_Environment     *ev)
 {
-	CORBA_char    *ret;
 	BonoboControl *control = BONOBO_CONTROL (
 		bonobo_object_from_servant (servant));
 
@@ -286,22 +319,7 @@ impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 		g_signal_emit (G_OBJECT (control), control_signals [SET_FRAME], 0);
 	}
 
-	if (control->priv->plug) {
-		guint32 x11_id;
-
-		x11_id = gtk_plug_get_id (GTK_PLUG (control->priv->plug));
-		
-		dprintf ("plug id %d\n", x11_id);
-
-		ret = bonobo_control_window_id_from_x11 (x11_id);
-	} else {
-		bonobo_exception_set (ev, ex_Bonobo_Control_NoContents);
-		ret = NULL;
-	}
-
 	g_object_unref (G_OBJECT (control));
-
-	return ret;
 }
 
 static void
@@ -755,7 +773,7 @@ bonobo_control_get_remote_ui_container (BonoboControl     *control,
 	} else
 		ev = opt_ev;
 
-	ui_container = Bonobo_ControlFrame_getUIHandler (control->priv->frame, ev);
+	ui_container = Bonobo_ControlFrame_getUIContainer (control->priv->frame, ev);
 
 	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->frame, ev);
 
@@ -831,14 +849,19 @@ bonobo_control_class_init (BonoboControlClass *klass)
 
 	epv = &klass->epv;
 
-	epv->getProperties  = impl_Bonobo_Control_getProperties;
-	epv->getDesiredSize = impl_Bonobo_Control_getDesiredSize;
-	epv->setFrame       = impl_Bonobo_Control_setFrame;
-	epv->setSize        = impl_Bonobo_Control_setSize;
-	epv->setState       = impl_Bonobo_Control_setState;
-	epv->activate       = impl_Bonobo_Control_activate;
-	epv->focus          = impl_Bonobo_Control_focus;
-	epv->unImplemented  = NULL;
+	epv->getProperties     = impl_Bonobo_Control_getProperties;
+	epv->getDesiredSize    = impl_Bonobo_Control_getDesiredSize;
+	epv->getAccessible     = NULL;
+	epv->getWindowId       = impl_Bonobo_Control_getWindowId;
+	epv->getPopupContainer = impl_Bonobo_Control_getPopupContainer;
+	epv->setFrame          = impl_Bonobo_Control_setFrame;
+	epv->setSize           = impl_Bonobo_Control_setSize;
+	epv->setState          = impl_Bonobo_Control_setState;
+	epv->activate          = impl_Bonobo_Control_activate;
+	epv->focus             = impl_Bonobo_Control_focus;
+	epv->unImplemented     = NULL;
+	epv->unImplemented2    = NULL;
+	epv->unImplemented3    = NULL;
 }
 
 static void

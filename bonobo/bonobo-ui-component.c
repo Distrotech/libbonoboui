@@ -585,6 +585,8 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 			 const char         *xml,
 			 CORBA_Environment  *opt_ev)
 {
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
 	GET_CLASS (component)->xml_set (component, path, xml, opt_ev);
 }
 
@@ -598,7 +600,6 @@ impl_xml_set (BonoboUIComponent  *component,
 	Bonobo_UIContainer container;
 	char              *name;
 
-	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
@@ -705,6 +706,8 @@ bonobo_ui_component_get (BonoboUIComponent *component,
 			 gboolean           recurse,
 			 CORBA_Environment *opt_ev)
 {
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), NULL);
+
 	return GET_CLASS (component)->xml_get (component, path, recurse, opt_ev);
 }
 
@@ -718,7 +721,6 @@ impl_xml_get (BonoboUIComponent *component,
 	CORBA_char *xml;
 	Bonobo_UIContainer container;
 
-	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), NULL);
 	container = component->priv->container;
 	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
 
@@ -800,6 +802,8 @@ bonobo_ui_component_rm (BonoboUIComponent  *component,
 			const char         *path,
 			CORBA_Environment  *ev)
 {
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
 	GET_CLASS (component)->xml_rm (component, path, ev);
 }
 
@@ -812,7 +816,6 @@ impl_xml_rm (BonoboUIComponent  *component,
 	CORBA_Environment *real_ev, tmp_ev;
 	Bonobo_UIContainer container;
 
-	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
@@ -987,6 +990,8 @@ void
 bonobo_ui_component_freeze (BonoboUIComponent *component,
 			    CORBA_Environment *ev)
 {
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
 	GET_CLASS (component)->freeze (component, ev);
 }
 
@@ -997,7 +1002,6 @@ impl_freeze (BonoboUIComponent *component,
 	CORBA_Environment *real_ev, tmp_ev;
 	Bonobo_UIContainer container;
 
-	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
@@ -1034,6 +1038,8 @@ void
 bonobo_ui_component_thaw (BonoboUIComponent *component,
 			  CORBA_Environment *ev)
 {
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
 	GET_CLASS (component)->thaw (component, ev);
 }
 
@@ -1044,7 +1050,6 @@ impl_thaw (BonoboUIComponent *component,
 	CORBA_Environment *real_ev, tmp_ev;
 	Bonobo_UIContainer container;
 
-	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
@@ -1085,6 +1090,8 @@ bonobo_ui_component_set_prop (BonoboUIComponent  *component,
 			      const char         *value,
 			      CORBA_Environment  *opt_ev)
 {
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
 	GET_CLASS (component)->set_prop (component, path, prop, value, opt_ev);
 }
 
@@ -1101,7 +1108,6 @@ impl_set_prop (BonoboUIComponent  *component,
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (prop != NULL);
 	g_return_if_fail (value != NULL);
-	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
 	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
@@ -1140,6 +1146,8 @@ bonobo_ui_component_get_prop (BonoboUIComponent *component,
 			      const char        *prop,
 			      CORBA_Environment *opt_ev)
 {
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), NULL);
+
 	return GET_CLASS (component)->get_prop (component, path, prop, opt_ev);
 }
 
@@ -1156,7 +1164,6 @@ impl_get_prop (BonoboUIComponent *component,
 
 	g_return_val_if_fail (path != NULL, NULL);
 	g_return_val_if_fail (prop != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), NULL);
 
 	container = component->priv->container;
 	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
@@ -1204,6 +1211,8 @@ bonobo_ui_component_path_exists (BonoboUIComponent *component,
 				 const char        *path,
 				 CORBA_Environment *ev)
 {
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), FALSE);
+
 	return GET_CLASS (component)->exists (component, path, ev);
 }
 
@@ -1216,7 +1225,6 @@ impl_exists (BonoboUIComponent *component,
 	Bonobo_UIContainer container;
 	CORBA_Environment *ev, tmp_ev;
 
-	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), FALSE);
 	container = component->priv->container;
 	g_return_val_if_fail (container != CORBA_OBJECT_NIL, FALSE);
 

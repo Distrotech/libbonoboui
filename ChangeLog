@@ -1,3 +1,37 @@
+2001-11-14  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_class_init): fill out the
+	unimplemented methods & upd handler.
+	(bonobo_control_frame_set_remote_window): use getWindowId
+	(bonobo_control_frame_bind_to_control): do a setFrame (always).
+	(impl_Bonobo_ControlFrame_getUIHandler): rename to
+	(impl_Bonobo_ControlFrame_getUIContainer): this.
+	(bonobo_control_frame_bind_to_control): upd. for new setFrame.
+
+	* bonobo/bonobo-control.c
+	(impl_Bonobo_Control_getWindowId): impl.
+	(impl_Bonobo_Control_getPopupContainer): stub.
+	(impl_Bonobo_Control_setFrame): upd - just set frame.
+	(bonobo_control_class_init): fill out the unimpl methods
+	& update to include the new methods.
+	(bonobo_control_get_remote_ui_container): upd. for new name.
+
+	* bonobo/bonobo-socket.c (bonobo_socket_focus_out),
+	(bonobo_socket_focus_in): upd. to chain always.
+
+2001-11-12  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c (impl_xml_get),
+	(bonobo_ui_component_get, bonobo_ui_component_set),
+	(impl_xml_set, bonobo_ui_component_rm, impl_xml_rm),
+	(bonobo_ui_component_freeze, impl_freeze),
+	(bonobo_ui_component_thaw, impl_thaw),
+	(bonobo_ui_component_set_prop, impl_set_prop),
+	(impl_get_prop, bonobo_ui_component_get_prop),
+	(bonobo_ui_component_path_exists, impl_exists): move
+	pre-conditions to somewhere actualy useful.
+
 2001-11-12  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-control.c

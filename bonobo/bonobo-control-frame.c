@@ -112,10 +112,11 @@ impl_Bonobo_ControlFrame_getAmbientProperties (PortableServer_Servant servant,
 }
 
 static Bonobo_UIContainer
-impl_Bonobo_ControlFrame_getUIHandler (PortableServer_Servant  servant,
-				       CORBA_Environment      *ev)
+impl_Bonobo_ControlFrame_getUIContainer (PortableServer_Servant  servant,
+					 CORBA_Environment      *ev)
 {
-	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
+	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (
+		bonobo_object_from_servant (servant));
 
 	if (frame->priv->ui_container == NULL)
 		return CORBA_OBJECT_NIL;
@@ -130,7 +131,8 @@ impl_Bonobo_ControlFrame_notifyActivated (PortableServer_Servant  servant,
 					  const CORBA_boolean     state,
 					  CORBA_Environment      *ev)
 {
-	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
+	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (
+		bonobo_object_from_servant (servant));
 
 	gtk_signal_emit (GTK_OBJECT (frame),
 			 control_frame_signals [ACTIVATED], state);
@@ -185,8 +187,8 @@ bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
 		ev = opt_ev;
 
 	/* Introduce ourselves to the Control. */
-	id = Bonobo_Control_setFrame (frame->priv->control,
-				      BONOBO_OBJREF (frame), ev);
+	id = Bonobo_Control_getWindowId (frame->priv->control, "", ev);
+
 	if (BONOBO_EX (ev))
 		bonobo_object_check_env (BONOBO_OBJECT (frame),
 					 frame->priv->control, ev);
@@ -347,12 +349,14 @@ bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 	
 	epv->getToplevelId        = impl_Bonobo_ControlFrame_getToplevelId;
 	epv->getAmbientProperties = impl_Bonobo_ControlFrame_getAmbientProperties;
-	epv->getUIHandler         = impl_Bonobo_ControlFrame_getUIHandler;
+	epv->getUIContainer       = impl_Bonobo_ControlFrame_getUIContainer;
 
 	epv->notifyActivated      = impl_Bonobo_ControlFrame_notifyActivated;
 	epv->queueResize          = impl_Bonobo_ControlFrame_queueResize;
 	epv->activateURI          = impl_Bonobo_ControlFrame_activateURI;
 	epv->unImplemented        = NULL;
+	epv->unImplemented2       = NULL;
+	epv->unImplemented3       = NULL;
 }
 
 static void
@@ -396,6 +400,8 @@ bonobo_control_frame_control_activate (BonoboControlFrame *frame)
 	 */
 	g_return_if_fail (frame->priv->control != CORBA_OBJECT_NIL);
 
+	g_warning ("Control activate!");
+	
 	CORBA_exception_init (&ev);
 
 	Bonobo_Control_activate (frame->priv->control, TRUE, &ev);
@@ -431,6 +437,8 @@ bonobo_control_frame_control_deactivate (BonoboControlFrame *frame)
 	 * with it.
 	 */
 	g_return_if_fail (frame->priv->control != CORBA_OBJECT_NIL);
+
+	g_warning ("Control de-activate!");
 
 	CORBA_exception_init (&ev);
 
@@ -671,18 +679,14 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 	g_object_ref (G_OBJECT (frame));
 
 	if (frame->priv->control != CORBA_OBJECT_NIL) {
-		CORBA_char *id;
-
 		if (!frame->priv->inproc_control)
 			ORBit_small_unlisten_for_broken (
 				frame->priv->control,
 				G_CALLBACK (control_connection_died_cb));
 
 		/* Unset ourselves as the frame */
-		id = Bonobo_Control_setFrame (frame->priv->control,
-					      CORBA_OBJECT_NIL, ev);
-		if (!BONOBO_EX (ev))
-			CORBA_free (id);
+		Bonobo_Control_setFrame (frame->priv->control,
+					 CORBA_OBJECT_NIL, ev);
 
 		if (frame->priv->control != CORBA_OBJECT_NIL)
 			CORBA_Object_release (frame->priv->control, ev);
@@ -704,6 +708,10 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 				frame->priv->control,
 				G_CALLBACK (control_connection_died_cb),
 				frame, ev);
+
+		Bonobo_Control_setFrame (
+			frame->priv->control,
+			BONOBO_OBJREF (frame), ev);
 
 		bonobo_control_frame_set_remote_window (frame, ev);
 	}

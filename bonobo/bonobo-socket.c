@@ -108,13 +108,11 @@ bonobo_socket_focus_in (GtkWidget     *widget,
 {
 	BonoboSocket *socket = BONOBO_SOCKET (widget);
 
-	if (!socket->frame)
-		return FALSE;
-
-	if (!bonobo_control_frame_get_autoactivate (socket->frame))
-		return FALSE;
-
-	bonobo_control_frame_control_activate (socket->frame);
+	if (socket->frame &&
+	    bonobo_control_frame_get_autoactivate (socket->frame))
+		bonobo_control_frame_control_activate (socket->frame);
+	else
+		dprintf ("No activate on focus in");
 
 	return GTK_WIDGET_CLASS (parent_class)->focus_in_event (widget, focus);
 }
@@ -125,13 +123,11 @@ bonobo_socket_focus_out (GtkWidget     *widget,
 {
 	BonoboSocket *socket = BONOBO_SOCKET (widget);
 
-	if (!socket->frame)
-		return FALSE;
-
-	if (!bonobo_control_frame_get_autoactivate (socket->frame))
-		return FALSE;
-
-	bonobo_control_frame_control_deactivate (socket->frame);
+	if (socket->frame &&
+	    bonobo_control_frame_get_autoactivate (socket->frame))
+		bonobo_control_frame_control_deactivate (socket->frame);
+	else
+		dprintf ("No de-activate on focus out");
 
 	return GTK_WIDGET_CLASS (parent_class)->focus_out_event (widget, focus);
 }
