@@ -155,7 +155,8 @@ libbonoboinclude_HEADERS =		\
 	bonobo-wrapper.h		\
 	bonobo-property.h		\
 	bonobo-property-bag.h		\
-	bonobo-property-bag-client.h
+	bonobo-property-bag-client.h	\
+	bonobo-property-types.h
 
 libbonobo_print_la_SOURCES =		\
 	bonobo-print.c			\
