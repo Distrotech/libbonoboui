@@ -22,7 +22,7 @@
 #include <bonobo/bonobo-ui-engine-config.h>
 #include <bonobo/bonobo-ui-engine-private.h>
 #include <bonobo/bonobo-exception.h>
-#include <bonobo/bonobo-marshal.h>
+#include <bonobo/bonobo-ui-marshal.h>
 
 #include <bonobo/bonobo-ui-node-private.h>
 
@@ -1750,7 +1750,7 @@ class_init (BonoboUIEngineClass *engine_class)
 				G_SIGNAL_RUN_LAST,
 				G_STRUCT_OFFSET (BonoboUIEngineClass, emit_event_on),
 				NULL, NULL,
-				bonobo_marshal_VOID__POINTER_STRING,
+				bonobo_ui_marshal_VOID__POINTER_STRING,
 				G_TYPE_NONE, 2, G_TYPE_POINTER, G_TYPE_STRING);
 
 	signals [DESTROY]

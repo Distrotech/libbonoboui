@@ -11,7 +11,7 @@
 #include <string.h>
 #include <gobject/gsignal.h>
 #include <bonobo/bonobo-ui-xml.h>
-#include <bonobo/bonobo-marshal.h>
+#include <bonobo/bonobo-ui-marshal.h>
 #include <bonobo/bonobo-ui-node-private.h>
 
 #undef UI_XML_DEBUG
@@ -1030,7 +1030,7 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 			      G_SIGNAL_RUN_FIRST,
 			      G_STRUCT_OFFSET (BonoboUIXmlClass, override),
 			      NULL, NULL,
-			      bonobo_marshal_VOID__POINTER_POINTER,
+			      bonobo_ui_marshal_VOID__POINTER_POINTER,
 			      G_TYPE_NONE, 2,
 			      G_TYPE_POINTER, G_TYPE_POINTER);
 	signals [REPLACE_OVERRIDE] =
@@ -1039,7 +1039,7 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 			      G_SIGNAL_RUN_FIRST,
 			      G_STRUCT_OFFSET (BonoboUIXmlClass, replace_override),
 			      NULL, NULL,
-			      bonobo_marshal_VOID__POINTER_POINTER,
+			      bonobo_ui_marshal_VOID__POINTER_POINTER,
 			      G_TYPE_NONE, 2,
 			      G_TYPE_POINTER, G_TYPE_POINTER);
 	signals [REINSTATE] =

@@ -19,7 +19,7 @@
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-canvas-component.h>
-#include <bonobo/bonobo-marshal.h>
+#include <bonobo/bonobo-ui-marshal.h>
 
 enum {
 	SET_BOUNDS,
@@ -650,7 +650,7 @@ bonobo_canvas_component_class_init (BonoboCanvasComponentClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET(BonoboCanvasComponentClass, set_bounds),
 			      NULL, NULL,
-			      bonobo_marshal_VOID__POINTER_POINTER,
+			      bonobo_ui_marshal_VOID__POINTER_POINTER,
 			      G_TYPE_NONE, 2,
 			      G_TYPE_POINTER, G_TYPE_POINTER);
 
@@ -660,7 +660,7 @@ bonobo_canvas_component_class_init (BonoboCanvasComponentClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET(BonoboCanvasComponentClass, event),
 			      _bonobo_boolean_handled_accumulator, NULL,
-			      bonobo_marshal_BOOLEAN__POINTER,
+			      bonobo_ui_marshal_BOOLEAN__POINTER,
 			      G_TYPE_BOOLEAN, 1,
 			      G_TYPE_POINTER);
 

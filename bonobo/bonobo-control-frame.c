@@ -24,7 +24,7 @@
 #include <gtk/gtkhbox.h>
 #include <bonobo/bonobo-socket.h>
 #include <bonobo/bonobo-exception.h>
-#include <bonobo/bonobo-marshal.h>
+#include <bonobo/bonobo-ui-marshal.h>
 
 enum {
 	ACTIVATED,
@@ -475,7 +475,7 @@ bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (BonoboControlFrameClass, activate_uri),
 			      NULL, NULL,
-			      bonobo_marshal_VOID__STRING_BOOLEAN,
+			      bonobo_ui_marshal_VOID__STRING_BOOLEAN,
 			      G_TYPE_NONE, 2,
 			      G_TYPE_STRING, G_TYPE_BOOLEAN);
 	

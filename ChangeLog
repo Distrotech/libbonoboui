@@ -1,3 +1,14 @@
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/bonobo-canvas-component.c: Use the bonobo-ui-marshal.[ch]
+	marshalling functions.
+	* bonobo/bonobo-control-frame.c: ditto.
+	* bonobo/bonobo-ui-engine.c: ditto.
+	* bonobo/bonobo-ui-xml.c: ditto.
+
+	* bonobo/bonobo-ui-marshal.list: Added `VOID:STRING,BOOLEAN',
+	`BOOLEAN:POINTER', `VOID:POINTER,STRING', `VOID:POINTER,POINTER'.
+
 2001-09-07 Glynn Foster <glynn.foster@sun.com>
 	
 	* Makefile.am: Change includedir to gnome-2.0/ instead of gnome/2/
