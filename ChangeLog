@@ -1,5 +1,11 @@
 2001-07-19  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-node.c (bonobo_ui_node_strip): NULL
+	all the node's parents: they are now orphand.
+
+	* bonobo/bonobo-ui-engine.c (bonobo_ui_engine_xml_merge_tree):
+	remove redundant strip.
+
 	* bonobo/bonobo-ui-util.c (lookup_stock_compat): impl.
 	(bonobo_ui_util_xml_get_icon_widget): obfuscate stock
 	code to provide reasonable backwards compat, show the

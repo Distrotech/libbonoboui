@@ -220,7 +220,6 @@ main (int argc, char **argv)
 		"	<item name=\"main\"/>\n"
 		"	<control name=\"Progress\"/>\n"
 		"</status>";
-	BonoboUINode *accel;
 
 	free (malloc (8));
 

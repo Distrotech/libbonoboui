@@ -447,6 +447,8 @@ bonobo_ui_node_from_string (const char *xml)
 
 	bonobo_ui_node_strip (&node);
 
+	g_assert (XML_NODE (node)->parent == NULL);
+
 	return node;
 }
 
@@ -628,4 +630,7 @@ bonobo_ui_node_strip (BonoboUINode **node)
 		if (l == *node && do_strip (XML_NODE (l)))
 			*node = next;
 	}
+
+	for (l = *node; l; l = bonobo_ui_node_next (l))
+		XML_NODE (l)->parent = NULL;
 }

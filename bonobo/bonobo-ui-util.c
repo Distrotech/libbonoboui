@@ -245,11 +245,9 @@ lookup_stock_compat (const char *id)
 	GtkStockItem item;
 	char *lower = g_ascii_strdown ((char *)id);
 	char *new_id = g_strconcat ("gtk-", lower, NULL);
-	char *retval = NULL;
 
 	if (gtk_stock_lookup (new_id, &item)) {
 		g_free (lower);
-
 		return new_id;
 	}
 
@@ -338,7 +336,8 @@ bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 	bonobo_ui_node_free_string (text);
 	bonobo_ui_node_free_string (type);
 
-	gtk_widget_show (image);
+	if (image)
+		gtk_widget_show (image);
 
 	return image;
 }
