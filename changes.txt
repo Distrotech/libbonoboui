@@ -40,6 +40,8 @@ bonobo-widget.[ch]:
 	Removed bonobo_widget_get_server, redundant BonoboObjectClient variant,
 	use bonobo_widget_get_objref instead.  Removed the subdoc variant.
 	Rename bonobo_widget_get_uih -> bonobo_widget_get_ui_container.
+	bonobo_widget_get_property, bonobo_widget_set_property: changed arg.
+	list to be name/type/val triplicates; 
 
 bonobo-desktop-window.[ch]:
 	Removed - stale, deprecated.		  

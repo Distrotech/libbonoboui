@@ -1,7 +1,14 @@
+2002-11-20  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-file-selector-util.c
+	(create_bonobo_selector): fix acute brokenness,
+	thanks to NotZed.
+
 2002-11-20  hhetter@suse.de
 
 	* bonobo/bonobo-ui-component.c (ui_event),
-	(impl_Bonobo_UIComponent_execVerb): 
+	(impl_Bonobo_UIComponent_execVerb): 64bit safe
+	va-list termination.
 
 2002-11-18  Michael Meeks  <michael@ximian.com>
 
