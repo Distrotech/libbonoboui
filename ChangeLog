@@ -1,3 +1,12 @@
+2002-01-04  jacob berkman  <jacob@ximian.com>
+
+	* bonobo/bonobo-control.c (bonobo_control_auto_merge): only set
+	the container if we are still active after getting the remote
+	container, as we could be de-activated before finishing with an
+	original activation call
+	(impl_Bonobo_Control_activate): only emit the activated signal if
+	we are still active (same deal as above)
+
 2002-01-04  Anders Carlsson  <andersca@gnu.org>
 
 	* bonobo/bonobo-ui-sync-status.c: Show the resize grip by default, and

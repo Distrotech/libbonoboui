@@ -151,12 +151,20 @@ bonobo_control_auto_merge (BonoboControl *control)
 	if (control->priv->ui_component == NULL)
 		return;
 
+	/* 
+	 * this makes a CORBA call, so re-entrancy can occur here
+	 */
 	remote_container = bonobo_control_get_remote_ui_container (control, NULL);
 	if (remote_container == CORBA_OBJECT_NIL)
 		return;
 
-	bonobo_ui_component_set_container (
-		control->priv->ui_component, remote_container, NULL);
+	/*
+	 * we could have been re-entereted in the previous call, so
+	 * make sure we are still active
+	 */
+	if (control->priv->active)
+		bonobo_ui_component_set_container (
+			control->priv->ui_component, remote_container, NULL);
 
 	bonobo_object_release_unref (remote_container, NULL);
 }
@@ -177,18 +185,33 @@ impl_Bonobo_Control_activate (PortableServer_Servant servant,
 			      CORBA_Environment *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
+	gboolean old_activated;
 
-	if (control->priv->automerge && control->priv->active != activated) {
+	if (activated == control->priv->active)
+		return;
+	
+	/* 
+	 * store the old activated value as we can be re-entered
+	 * during (un)merge
+	 */
+	old_activated = control->priv->active;
+	control->priv->active = activated;
+
+	if (control->priv->automerge) {
 		if (activated)
 			bonobo_control_auto_merge (control);
 		else
 			bonobo_control_auto_unmerge (control);
 	}
 
+	/* 
+	 * if our active state is not what we are changing it to, then
+	 * don't emit the signal
+	 */
 	if (control->priv->active != activated)
-		g_signal_emit (G_OBJECT (control), control_signals [ACTIVATE], 0, (gboolean) activated);
+		return;
 
-	control->priv->active = activated;
+	g_signal_emit (G_OBJECT (control), control_signals [ACTIVATE], 0, (gboolean) activated);
 }
 
 static void
