@@ -1,3 +1,23 @@
+2002-06-18  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-control-frame.c:
+	(bonobo_control_frame_get_remote_window_id): impl with
+	multiscreen support.
+	(bonobo_control_frame_get_remote_window): use it here.
+
+	* bonobo/bonobo-control.c: (create_plug): don't show the
+	plug here.
+	(parse_cookie): parse ',' delimited string returning the
+	screen number.
+	(impl_Bonobo_Control_getWindowId): parse the cookie and
+	set the screen on which the plug should realize accordingly.
+	(bonobo_control_do_popup_full): show the menu on the same
+	screen as the plug.
+
+	* bonobo/bonobo-ui-init-gtk.c: use HAVE_GTK_MULTIHEAD.
+
+	* configure.in: add check for multihead gtk+.
+
 2002-06-11  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-focus.c (add_control): switch back

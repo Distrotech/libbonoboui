@@ -119,7 +119,7 @@ static struct poptOption bonobo_ui_gtk_options [] = {
 	{ "display", '\0', POPT_ARG_STRING, NULL, 0,
 	  N_("X display to use"), N_("DISPLAY")},
 
-#ifdef HAVE_GDK_SCREEN_GET_NUMBER
+#ifdef HAVE_GTK_MULTIHEAD
 	/* X11 & multi-head only */
 	{ "screen", '\0', POPT_ARG_STRING, NULL, 0,
 	  N_("X screen to use"), N_("SCREEN")},

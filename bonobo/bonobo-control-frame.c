@@ -243,6 +243,32 @@ dump_gdk_tree (GdkWindow *window)
 }
 #endif
 
+static CORBA_char *
+bonobo_control_frame_get_remote_window_id (BonoboControlFrame *frame,
+					   CORBA_Environment  *ev)
+{
+#ifdef HAVE_GTK_MULTIHEAD
+	CORBA_char  *retval;
+	char        *cookie;
+	int          screen;
+
+	screen = gdk_screen_get_number (
+			gtk_widget_get_screen (frame->priv->socket));
+
+	cookie = g_strdup_printf ("screen=%d", screen);
+
+	retval = Bonobo_Control_getWindowId (
+				frame->priv->control, cookie, ev);
+
+	g_free (cookie);
+
+	return retval;
+#else
+	return Bonobo_Control_getWindowId (
+				frame->priv->control, "", ev);
+#endif /* HAVE_GTK_MULTIHEAD */
+}
+
 void
 bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 					CORBA_Environment  *opt_ev)
@@ -270,8 +296,7 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 		ev = opt_ev;
 
 	/* Introduce ourselves to the Control. */
-	id = Bonobo_Control_getWindowId (frame->priv->control, "", ev);
-
+	id = bonobo_control_frame_get_remote_window_id (frame, ev);
 	if (BONOBO_EX (ev)) {
 		dprintf ("getWindowId exception\n");
 		bonobo_object_check_env (BONOBO_OBJECT (frame),
