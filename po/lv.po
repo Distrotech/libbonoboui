@@ -5,14 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-08-30 16:39+0100\n"
-"PO-Revision-Date: 2002-08-20 19:54+0300\n"
-"Last-Translator: Peteris Krisjanis <peteris.krisjanis@os.lv>\n"
+"POT-Creation-Date: 2002-08-26 05:07+0200\n"
+"PO-Revision-Date: 2002-08-29 23:06GMT+0020\n"
+"Last-Translator: Pēteris Krišjānis <peteris.krisjanis@os.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 0.9.5\n"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
@@ -20,15 +20,15 @@ msgstr "corba ražotne"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr ""
+msgstr "Ražotnes punktieris"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
-msgstr ""
+msgstr "corba UI saturētājs"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr ""
+msgstr "Lietotāja saskarnes saturētājs"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
@@ -131,11 +131,11 @@ msgstr "Rīkjoslas"
 msgid "toolbars"
 msgstr "rīkjoslas"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Skatīties"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Ikona"
 
@@ -248,31 +248,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI atbalsts"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "B_oth"
 msgstr "_Abi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "T_ext"
 msgstr "Teksts"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:557
 msgid "Hide t_ips"
 msgstr "Slēpt kni_fus"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:557
 msgid "Show t_ips"
 msgstr "Rādīt kn_ifus"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:558
 msgid "_Hide toolbar"
 msgstr "_Slēpt rīkjoslu"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:558
 msgid "Customi_ze"
 msgstr "Pār_veidot"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:559
 msgid "Customize the toolbar"
 msgstr "Pārveidot rīkjoslu"
 
@@ -284,11 +284,11 @@ msgstr "'peldēšana'"
 msgid "whether the toolbar is floating"
 msgstr "vai rīkjosla 'peld'"
 
-#: bonobo/bonobo-ui-util.c:610
+#: bonobo/bonobo-ui-util.c:607
 msgid "_Contents"
 msgstr "_Saturs"
 
-#: bonobo/bonobo-ui-util.c:611
+#: bonobo/bonobo-ui-util.c:608
 msgid "View help for this application"
 msgstr "Skatīt palīdzību šai aplikācijai"
 
@@ -392,3 +392,4 @@ msgstr "Nevaru inicializēt libbonoboui kodu"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Nespēju inicializēt Bonobo UI"
+
