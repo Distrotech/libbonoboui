@@ -27,11 +27,7 @@ struct _GnomeBonoboSelector
 {
 	GnomeDialog dialog;
 		
-	/* Mess with these at your own risk. */
-	GtkWidget *clist;
-	GoadServerList *servers;
-	int n_servers;
-	const gchar **interfaces_required;
+	gpointer priv;
 };
 
 GtkType gnome_bonobo_selector_get_type	(void);

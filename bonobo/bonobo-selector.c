@@ -6,6 +6,16 @@
 
 static GtkDialogClass *parent_class;
 
+struct _GnomeBonoboSelectorPrivate 
+{
+	GtkWidget *clist;
+	GoadServerList *servers;
+	int n_servers;
+	const gchar **interfaces_required;
+};
+
+typedef struct _GnomeBonoboSelectorPrivate GnomeBonoboSelectorPrivate;
+
 enum {
 	OK,
 	CANCEL,
@@ -80,11 +90,14 @@ GtkWidget *gnome_bonobo_selector_new (const gchar *title,
 	const gchar **interfaces_required)
 {
 	GnomeBonoboSelector *sel;
+	GnomeBonoboSelectorPrivate *priv;
 
 	if (title == NULL) title = "";
+
 	
 	sel = gtk_type_new (gnome_bonobo_selector_get_type ());
-	sel->interfaces_required = interfaces_required;
+	priv = sel->priv;
+	priv->interfaces_required = interfaces_required;
 	add_gnorba_objects (sel);
 	gtk_window_set_title (GTK_WINDOW (sel), title);
 	return GTK_WIDGET (sel);
@@ -93,15 +106,16 @@ GtkWidget *gnome_bonobo_selector_new (const gchar *title,
 static void gnome_bonobo_selector_destroy (GtkObject *object)
 {
 	GnomeBonoboSelector *sel;
-
+	GnomeBonoboSelectorPrivate *priv; 
 	g_return_if_fail (object != NULL);
 	g_return_if_fail (GNOME_IS_BONOBO_SELECTOR (object));
 
 	sel = GNOME_BONOBO_SELECTOR(object);
-	
-	gtk_widget_destroy (sel->clist);
+	priv = sel->priv;
 
-	goad_server_list_free (sel->servers);
+	gtk_widget_destroy (priv->clist);
+	goad_server_list_free (priv->servers);
+	g_free(priv);
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy)
 		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -112,13 +126,14 @@ gchar *gnome_bonobo_selector_get_selected_goad_id (GnomeBonoboSelector *sel)
 {
 	GList *selection;
 	gchar *text;
+	GnomeBonoboSelectorPrivate *priv; 
 	
 	g_return_val_if_fail (sel != NULL, NULL);
-	
-	selection = GTK_CLIST (sel->clist)->selection;
+	priv = sel->priv;	
+	selection = GTK_CLIST (priv->clist)->selection;
 	
 	if (selection == NULL) return NULL;
-	gtk_clist_get_text (GTK_CLIST (sel->clist), (int) selection->data,
+	gtk_clist_get_text (GTK_CLIST (priv->clist), (int) selection->data,
 			1, &text);
 	return g_strdup(text);
 }
@@ -127,11 +142,15 @@ gchar *gnome_bonobo_selector_activate_selected (GnomeBonoboSelector *sel,
 	GoadActivationFlags flags)
 {
 	gchar *text;
+	GnomeBonoboSelectorPrivate *priv; 
+	
 	g_return_val_if_fail (sel != NULL, NULL);
+	
+	priv = sel->priv;
 	
 	text = gnome_bonobo_selector_get_selected_goad_id(sel);
 	if (text == NULL) return NULL;
-	goad_server_activate_with_id (sel->servers, text, flags, NULL);
+	goad_server_activate_with_id (priv->servers, text, flags, NULL);
 	return text;
 }
 
@@ -207,19 +226,23 @@ static void gnome_bonobo_selector_init (GtkWidget *widget)
 {
 	GnomeBonoboSelector *sel = GNOME_BONOBO_SELECTOR(widget);
 	GtkWidget *scrolled;
+	GnomeBonoboSelectorPrivate *priv;
 	gchar *titles[] = { _("Bonobo object description"), "goadid", NULL };
 	
 	g_return_if_fail (widget != NULL);
+	
+	sel->priv = g_new0(GnomeBonoboSelectorPrivate, 1);
+	priv = sel->priv;
 	
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 		GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	
-	sel->clist = gtk_clist_new_with_titles (2, titles);
-	gtk_clist_set_selection_mode (GTK_CLIST (sel->clist),
+	priv->clist = gtk_clist_new_with_titles (2, titles);
+	gtk_clist_set_selection_mode (GTK_CLIST (priv->clist),
 		GTK_SELECTION_BROWSE);
-	gtk_clist_set_column_visibility (GTK_CLIST (sel->clist), 1, FALSE);
-	gtk_container_add (GTK_CONTAINER (scrolled), sel->clist);
+	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 1, FALSE);
+	gtk_container_add (GTK_CONTAINER (scrolled), priv->clist);
 	
 	gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (sel)->vbox), scrolled,
 		TRUE, TRUE, 0);
@@ -233,8 +256,8 @@ static void gnome_bonobo_selector_init (GtkWidget *widget)
 	gtk_signal_connect (GTK_OBJECT (sel), "close",
 		GTK_SIGNAL_FUNC (button_callback), sel);
 	
-	gtk_widget_set_usize (sel->clist, 200, 200);
-	gtk_widget_show (sel->clist);
+	gtk_widget_set_usize (priv->clist, 200, 200);
+	gtk_widget_show (priv->clist);
 	gtk_widget_show (scrolled);
 }
 
@@ -242,20 +265,24 @@ static void add_gnorba_objects (GnomeBonoboSelector *widget)
 {
 	gchar *text[3];
 	GList *list = NULL;
+	GnomeBonoboSelectorPrivate *priv;
 	
 	text[2] = NULL;
 	
 	g_return_if_fail (widget != NULL);
-	g_return_if_fail (widget->clist != NULL);
 	
-	gtk_clist_freeze (GTK_CLIST (widget->clist));
+	priv = widget->priv;
 	
-	widget->n_servers = 0;
+	g_return_if_fail (priv->clist != NULL);
+	
+	gtk_clist_freeze (GTK_CLIST (priv->clist));
+	
+	priv->n_servers = 0;
 	list = get_filtered_objects (widget);
 	
-	if (widget->servers == NULL) 
+	if (priv->servers == NULL) 
 	{
-		gtk_clist_thaw (GTK_CLIST (widget->clist));
+		gtk_clist_thaw (GTK_CLIST (priv->clist));
 		return;
 	}
 	
@@ -263,12 +290,12 @@ static void add_gnorba_objects (GnomeBonoboSelector *widget)
 	{
 		text[0] = ((GoadServer *)list->data)->description;
 		text[1] = ((GoadServer *)list->data)->server_id;
-		gtk_clist_append (GTK_CLIST (widget->clist), text);
-		widget->n_servers++;
+		gtk_clist_append (GTK_CLIST (priv->clist), text);
+		priv->n_servers++;
 		list = list->next;  	
 	}
 
-	gtk_clist_thaw (GTK_CLIST (widget->clist));
+	gtk_clist_thaw (GTK_CLIST (priv->clist));
 }
 
 static GList *get_filtered_objects (GnomeBonoboSelector *widget) 
@@ -278,13 +305,16 @@ static GList *get_filtered_objects (GnomeBonoboSelector *widget)
 	GList *objects = NULL;
 	int n_inters = 0;
 	int n_objects = 0;
+	GnomeBonoboSelectorPrivate *priv;
 	
 	g_return_val_if_fail (widget != NULL, NULL);
 
-	widget->servers = goad_server_list_get();
-	if (widget->servers == NULL) return NULL;
+	priv = widget->priv;
+	
+	priv->servers = goad_server_list_get();
+	if (priv->servers == NULL) return NULL;
 
-	if (widget->interfaces_required == NULL) 
+	if (priv->interfaces_required == NULL) 
 	{
 		inters = g_malloc (sizeof(gpointer) * 2);
 		inters[0] = DEFAULT_INTERFACE;
@@ -293,7 +323,7 @@ static GList *get_filtered_objects (GnomeBonoboSelector *widget)
 	} 
 	else 
 	{	
-		inters = widget->interfaces_required;
+		inters = priv->interfaces_required;
 		while (inters[i] != NULL)
 		{
 			n_inters++;
@@ -301,14 +331,14 @@ static GList *get_filtered_objects (GnomeBonoboSelector *widget)
 		}
 	}
 	
-	while (widget->servers->list[i].repo_id != NULL)
+	while (priv->servers->list[i].repo_id != NULL)
 	{
 		num = 0;
 		
 		for (j = 0; j < n_inters; j++) 
 		{
 			if (stringlist_contains(
-				widget->servers->list[i].repo_id, inters[j]))
+				priv->servers->list[i].repo_id, inters[j]))
 			{
 				num++;
 			}
@@ -316,7 +346,7 @@ static GList *get_filtered_objects (GnomeBonoboSelector *widget)
 		if (num == n_inters) /* We have a match! */
 		{
 			objects = g_list_prepend(objects, 
-				&widget->servers->list[i]);
+				&priv->servers->list[i]);
 			n_objects++;
 		}
 		i++;
@@ -324,7 +354,7 @@ static GList *get_filtered_objects (GnomeBonoboSelector *widget)
 	objects = g_list_reverse(objects);
 
 	/* Free our temporary criteria */
-	if (widget->interfaces_required == NULL) g_free (inters); 
+	if (priv->interfaces_required == NULL) g_free (inters); 
 	
 	return objects;
 }
