@@ -1,11 +1,5 @@
 GPRINT_LIBS = $(top_builddir)/bonobo/libbonobo-print.la
 
-if OAF
-OBJECT_DIRECTORY_LIBS=$(OAF_LIBS) $(GNOMEUI_LIBS)
-else
-OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
-endif
-
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(srcdir) -I$(top_srcdir) 			\

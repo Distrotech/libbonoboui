@@ -14,7 +14,8 @@ gnome_libs =				\
 
 bonobo_libs =						\
 	$(top_builddir)/bonobo/libbonobo.la		\
-	$(gnome_libs)
+	$(gnome_libs)					\
+	$(OBJECT_DIRECTORY_LIBS)
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -22,7 +23,8 @@ INCLUDES =	\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)				\
-	$(GTK_CFLAGS)
+	$(GTK_CFLAGS)					\
+	$(OAF_CFLAGS)
 
 test_properties_server_SOURCES =			\
 	test-properties-server.c

@@ -1,11 +1,4 @@
-
 bin_PROGRAMS = sample-control-factory sample-control-container
-
-if OAF
-OBJECT_DIRECTORY_LIBS=$(OAF_LIBS) $(GNOMEUI_LIBS)
-else
-OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
-endif
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -42,19 +35,14 @@ sample_control_container_LDADD =			\
 	$(OBJECT_DIRECTORY_LIBS)			\
 	$(INTLLIBS)
 
-goaddir = $(sysconfdir)/CORBA/servers
 oafdir = $(datadir)/oaf
-
-GOAD_FILES =	bonobo-clock-control.gnorba		\
-		bonobo-calculator-control.gnorba
 
 OAF_FILES =	bonobo-clock-control.oafinfo		\
 		bonobo-calculator-control.oafinfo
 
-goad_DATA = $(GOAD_FILES)
 oaf_DATA = $(OAF_FILES)
 
-EXTRA_DIST = $(GOAD_FILES) $(OAF_FILES)
+EXTRA_DIST = $(OAF_FILES)
 
 
 
