@@ -49,7 +49,8 @@ bonobo_dock_item_grip_expose (GtkWidget      *widget,
 			  shadow,
 			  clip, widget, "dockitem",
 			  rect->x, rect->y, rect->width, rect->height, 
-			  grip->item->orientation);
+			  (grip->item->orientation == GTK_ORIENTATION_HORIZONTAL)
+			    ? GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL);
 
 	if (GTK_WIDGET_HAS_FOCUS (widget)) {
 		gint focus_width;

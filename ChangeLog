@@ -1,3 +1,10 @@
+2005-01-22  Benjamin Berg  <benjamin@sipsolutions.net>
+
+	* bonobo/bonobo-dock-item-grip.c (bonobo_dock_item_grip_expose):
+	The orientation passed to gtk_paint_handle should not be the same
+	as the orientation of the widget, but turned by 90°.
+	Fixes #162761.
+
 2004-01-10  Arvind Samptur  <arvind.samptur@wipro.com>
 
 	* bonobo/bonobo-dock-item.c (bonobo_dock_item_detach):
