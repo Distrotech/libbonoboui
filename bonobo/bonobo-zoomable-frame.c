@@ -122,6 +122,39 @@ marshal_NONE__FLOAT (GtkObject *object,
 }
 
 static void
+bonobo_zoomable_frame_destroy (GtkObject *object)
+{
+	BonoboZoomableFrame *zoomable_frame;
+
+	g_return_if_fail (object != NULL);
+	g_return_if_fail (BONOBO_IS_ZOOMABLE_FRAME (object));
+
+	zoomable_frame = BONOBO_ZOOMABLE_FRAME (object);
+
+	if (zoomable_frame->priv->zoomable != CORBA_OBJECT_NIL)
+		bonobo_object_release_unref (zoomable_frame->priv->zoomable, NULL);
+	zoomable_frame->priv->zoomable = CORBA_OBJECT_NIL;
+
+	GTK_OBJECT_CLASS (bonobo_zoomable_frame_parent_class)->destroy (object);
+}
+
+static void
+bonobo_zoomable_frame_finalize (GtkObject *object)
+{
+	BonoboZoomableFrame *zoomable_frame;
+
+	g_return_if_fail (object != NULL);
+	g_return_if_fail (BONOBO_IS_ZOOMABLE_FRAME (object));
+
+	zoomable_frame = BONOBO_ZOOMABLE_FRAME (object);
+
+	g_free (zoomable_frame->priv);
+	zoomable_frame->priv = NULL;
+
+	GTK_OBJECT_CLASS (bonobo_zoomable_frame_parent_class)->finalize (object);
+}
+
+static void
 bonobo_zoomable_frame_class_init (BonoboZoomableFrameClass *klass)
 {
 	GtkObjectClass *object_class;
@@ -147,6 +180,9 @@ bonobo_zoomable_frame_class_init (BonoboZoomableFrameClass *klass)
 				GTK_TYPE_NONE, 0);
 
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+
+	object_class->destroy = bonobo_zoomable_frame_destroy;
+	object_class->finalize = bonobo_zoomable_frame_finalize;
 
 	init_zoomable_corba_class ();
 }
