@@ -166,3 +166,10 @@ gnome_view_get_type (void)
 
 	return type;
 }
+
+
+
+
+
+
+

@@ -32,7 +32,7 @@ impl_GNOME_Component_do_verb (PortableServer_Servant servant,
 	gtk_signal_emit (
 		GTK_OBJECT (component),
 		component_signals [DO_VERB],
-		verb, verb_name);
+		(gint)verb, (gchar*)verb_name);
 }
 
 static void
