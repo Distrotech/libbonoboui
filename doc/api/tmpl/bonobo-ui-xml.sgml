@@ -2,7 +2,7 @@
 BonoboUIXml
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A XML tree wrapper that implements tree merging logic
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

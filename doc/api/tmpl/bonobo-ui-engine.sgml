@@ -28,10 +28,14 @@ bonobo_ui_engine_config_set_path (
     </programlisting>
   </example>
   where "UIConfig/kvps" is some convenient path into your
-gnome_config file. Key value pairs (kvps) are stored in
+gnome_config file.
+</para>
+<para>
+Key value pairs (kvps) are stored in
 this, mangled into a comma delimited string and these are
 used to clobber the XML on merges, eg.
   <example>
+    <title>User configuration format</title>
     <programlisting>
 [UIConfig]
 kvps=/Toolbar:look:both
@@ -92,8 +96,6 @@ onto it, effecively forcing a certain look.
 
 </para>
 
-@parent: 
-@priv: 
 
 <!-- ##### TYPEDEF BonoboUIEngineClass ##### -->
 <para>

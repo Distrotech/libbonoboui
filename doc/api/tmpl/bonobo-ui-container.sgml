@@ -2,7 +2,7 @@
 BonoboUIContainer
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The container interface as implemented for BonoboWindow
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

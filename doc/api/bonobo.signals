@@ -123,6 +123,34 @@ gchar *arg3
 </SIGNAL>
 
 <SIGNAL>
+<NAME>BonoboUIEngine::add-hint</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIEngine *bonobouiengine
+gchar *arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIEngine::remove-hint</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIEngine *bonobouiengine
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIEngine::emit-verb-on</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIEngine *bonobouiengine
+gpointer  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIEngine::emit-event-on</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIEngine *bonobouiengine
+gpointer  arg1
+gchar *arg2
+</SIGNAL>
+
+<SIGNAL>
 <NAME>BonoboUIToolbarButtonItem::clicked</NAME>
 <RETURNS>void</RETURNS>
 BonoboUIToolbarButtonItem *bonobouitoolbarbuttonitem

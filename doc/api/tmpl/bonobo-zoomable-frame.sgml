@@ -2,7 +2,7 @@
 BonoboZoomableFrame
 
 <!-- ##### SECTION Short_Description ##### -->
-
+An interface for Control frames for things that might zoom.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

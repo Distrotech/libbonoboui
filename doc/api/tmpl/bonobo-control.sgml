@@ -2,7 +2,7 @@
 BonoboControl
 
 <!-- ##### SECTION Short_Description ##### -->
-
+An implementation of the control interface for GtkWidgets
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

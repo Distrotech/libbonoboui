@@ -141,17 +141,17 @@
       <sect1 id="bonobo-ui">
         <title>Bonobo UI</title>
           &bonobo-widget;
-	  &bonobo-ui-util;
+	  &bonobo-win;
 	  &bonobo-ui-component;
 	  &bonobo-ui-container;
+	  &bonobo-ui-util;
           &bonobo-ui-node;
 	  &bonobo-ui-xml;
 	  &bonobo-ui-engine;
-          &bonobo-ui-toolbar-button-item;
-          &bonobo-ui-toolbar-icon;
           &bonobo-ui-toolbar-item;
+          &bonobo-ui-toolbar-icon;
+          &bonobo-ui-toolbar-button-item;
           &bonobo-ui-toolbar-toggle-button-item;
-	  &bonobo-win;
           &bonobo-desktop-window;
       </sect1>
 

@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-BonoboWin
+BonoboWindow
 
 <!-- ##### SECTION Short_Description ##### -->
-
+the toplevel application window implementation
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

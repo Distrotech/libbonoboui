@@ -2,7 +2,7 @@
 BonoboZoomable
 
 <!-- ##### SECTION Short_Description ##### -->
-
+An interface for Controls that can zoom their contents
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

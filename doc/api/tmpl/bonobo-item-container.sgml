@@ -2,11 +2,11 @@
 BonoboItemContainer
 
 <!-- ##### SECTION Short_Description ##### -->
-
+this implements a simple container interface for compound document containers
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+This implementation is mostly deprecated, see #BonoboItemHandler
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

@@ -7,7 +7,6 @@
  *
  * Copyright 2000 Helix Code, Inc.
  */
-
 #include "config.h"
 #include <libgnomeui/gnome-dock-item.h>
 #include <libgnomeui/gnome-dock.h>

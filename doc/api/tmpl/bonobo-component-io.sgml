@@ -2,7 +2,7 @@
 bonobo-component-io
 
 <!-- ##### SECTION Short_Description ##### -->
-
+routines to assist serializing embeddables.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

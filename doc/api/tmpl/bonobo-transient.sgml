@@ -83,6 +83,7 @@ Creates a server that will handle transient objects.
       The interface name implemented by the object named before.  This
       is the CORBA interface name that your object implements, for
       example "IDL:Echo/echo:1.0".
+    </para>
   </listitem>
 </itemizedlist>
 

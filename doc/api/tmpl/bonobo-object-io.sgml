@@ -2,7 +2,7 @@
 bonobo-object-io
 
 <!-- ##### SECTION Short_Description ##### -->
-
+routines to assist component serialization
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

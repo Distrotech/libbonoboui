@@ -2,7 +2,7 @@
 BonoboUIComponent
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A UI interface that handles UI merging for a component
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

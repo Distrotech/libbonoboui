@@ -2981,32 +2981,6 @@ BonoboPropertyControl *property_control,CORBA_Environment     *opt_ev
 <RETURNS>BonoboEventSource  *</RETURNS>
 BonoboPropertyControl *property_control
 </FUNCTION>
-<FUNCTION>
-<NAME>bonobo_property_servant_new</NAME>
-<RETURNS>PortableServer_Servant  </RETURNS>
-PortableServer_POA     poa,BonoboTransient        *bt,char                   *name,void                   *callback_data
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_property_servant_destroy</NAME>
-<RETURNS>void 	</RETURNS>
-PortableServer_Servant  servant,void                   *callback_data
-</FUNCTION>
-<TYPEDEF>
-<NAME>BonoboProperty</NAME>
-typedef struct {
-	char			*name;
-	int                      idx;
-	BonoboArgType            type;
-	BonoboArg               *default_value;
-	char			*docstring;
-	BonoboPropertyFlags	 flags;
-
-	BonoboPropertyGetFn      get_prop;
-	BonoboPropertySetFn      set_prop;
-	gpointer                 user_data;
-	GSList                  *listeners;
-} BonoboProperty;
-</TYPEDEF>
 <MACRO>
 <NAME>BONOBO_SELECTOR</NAME>
 #define BONOBO_SELECTOR(obj)		GTK_CHECK_CAST(obj, bonobo_selector_get_type (), BonoboSelector)

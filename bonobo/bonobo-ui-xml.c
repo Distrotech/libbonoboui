@@ -7,7 +7,6 @@
  *
  * Copyright 2000 Helix Code, Inc.
  */
-
 #include "config.h"
 #include <string.h>
 #include <gtk/gtksignal.h>
