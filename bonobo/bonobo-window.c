@@ -11,7 +11,7 @@
 #include <bonobo/bonobo-dock-item.h>
 #include <bonobo/bonobo-dock.h>
 #include <libgnome/gnome-preferences.h>
-#include <bonobo/bonobo-win.h>
+#include <bonobo/bonobo-window.h>
 #include <libbonobo.h>
 #include <liboaf/liboaf.h>
 

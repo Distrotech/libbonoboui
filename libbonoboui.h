@@ -26,14 +26,9 @@ G_BEGIN_DECLS
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-ui-container.h>
-#include <bonobo/bonobo-win.h>
+#include <bonobo/bonobo-window.h>
 #include <bonobo/bonobo-selector.h>
 #include <bonobo/bonobo-widget.h>
-
-#ifdef FIXME
-#include <bonobo/bonobo-print.h>
-#include <bonobo/bonobo-print-client.h>
-#endif
 
 G_END_DECLS
 
