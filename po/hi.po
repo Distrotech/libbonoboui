@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.x\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2002-09-10 18:30+0530\n"
 "Last-Translator: Anurag Seetha <anuragseetha@yahoo.com>\n"
 "Language-Team: Hindi <indlinux-hindi-gnome@lists.sourceforge.net>\n"
@@ -76,7 +76,7 @@ msgstr "Event Forwarding"
 msgid "Whether X events should be forwarded"
 msgstr "क्या x घटना को अग्रेषित किया जाना है"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "नाम"
 
@@ -303,7 +303,7 @@ msgstr "तत्व (_C)"
 msgid "View help for this application"
 msgstr "इस अनुप्रयोग के बारे में सहायता"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "विंडो का नाम - used for configuration serialization"
 

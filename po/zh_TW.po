@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.2.2\n"
-"POT-Creation-Date: 2003-05-30 07:11+0800\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-05-30 07:10+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -77,7 +77,7 @@ msgstr "傳遞動作"
 msgid "Whether X events should be forwarded"
 msgstr "輸入裝置發出的動作應否直接傳遞至 X"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "名稱"
 
@@ -304,7 +304,7 @@ msgstr "內容(_C)"
 msgid "View help for this application"
 msgstr "瀏覽有關本程式的說明文件"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 #, fuzzy
 msgid "Name of the window - used for configuration serialization."
 msgstr "視窗名稱"

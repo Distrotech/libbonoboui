@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2002-12-10 19:39+0200\n"
 "Last-Translator: Alexander Shopov <al_shopov@web.bg>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -78,7 +78,7 @@ msgstr "Препредаване на събития"
 msgid "Whether X events should be forwarded"
 msgstr "Дали X събитията да се препредават"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Име"
 
@@ -305,7 +305,7 @@ msgstr "_Съдържание"
 msgid "View help for this application"
 msgstr "Виж помощ за това приложение"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Име на прозореца - използва се за сериализация на конфигурацията."
 

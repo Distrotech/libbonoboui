@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-01-16 21:18+0100\n"
 "Last-Translator: Sanlig Badral <badral@chinggis.com>\n"
 "Language-Team: mongolian <mn@li.org>\n"
@@ -78,7 +78,7 @@ msgstr "Үйл явц цааш дамжуулах"
 msgid "Whether X events should be forwarded"
 msgstr "X үйл явцийг цааш дамжуулах эсэх"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Нэр"
 
@@ -305,7 +305,7 @@ msgstr "А_гуулга"
 msgid "View help for this application"
 msgstr "Энэ х.программд хүрэх тусламжийг харуулах"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Тохируулгын цуваанд хэрэглэгдэх - цонхны нэр"
 

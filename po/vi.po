@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-01-10 22:10+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
@@ -76,7 +76,7 @@ msgstr "Chuyển sự kiện"
 msgid "Whether X events should be forwarded"
 msgstr "Các sự kiện X có nên được chuyển đi hay không"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Tên"
 
@@ -303,7 +303,7 @@ msgstr "_Nội dung"
 msgid "View help for this application"
 msgstr "Xem trợ giúp về ứng dụng này"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Tên cửa sổ - được dùng để serialize cấu hình."
 

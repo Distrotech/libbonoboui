@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui-2.1.2\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-01-20 20:59+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
@@ -78,7 +78,7 @@ msgstr "Transmitere evenimente"
 msgid "Whether X events should be forwarded"
 msgstr "Dacă evenimentele X trebuie înaintate"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Nume"
 
@@ -305,7 +305,7 @@ msgstr "_Conţinut"
 msgid "View help for this application"
 msgstr "Consultaţi manualul acestei aplicaţii"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Numele ferestrei - folosit la serializarea configuraţiei."
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2002-10-14 21:12+0200\n"
 "Last-Translator: Gil 'Dolfin' Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -78,7 +78,7 @@ msgstr "העברת אירוע"
 msgid "Whether X events should be forwarded"
 msgstr "האם אירוע X צריך להיות מועבר הלאה"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "שם"
 
@@ -302,7 +302,7 @@ msgstr "_תכנים"
 msgid "View help for this application"
 msgstr "מציג עזרה עבור יישום זה"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "שם החלון - בשימוש עבור סידוריות ההגדרות."
 

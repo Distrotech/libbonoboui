@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.be\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-02-12 17:25+0200\n"
 "Last-Translator: Vital Khilko <dojlid@mova.org>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -79,7 +79,7 @@ msgstr "Перасылка падзеі"
 msgid "Whether X events should be forwarded"
 msgstr "Ці мусяць перасылацца X падзеі"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Назва"
 
@@ -306,7 +306,7 @@ msgstr "_Зьмест"
 msgid "View help for this application"
 msgstr "Адлюстраваць дапамогу для гэтага дастасаваньня"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Назва акна - выкарыстоўваецца для сэрыялізацыі канфігурацыі."
 

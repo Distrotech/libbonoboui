@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.1.1\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2002-12-15 16:42+0100\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -78,7 +78,7 @@ msgstr "Transfert des événements"
 msgid "Whether X events should be forwarded"
 msgstr "Si les événements X doivent être transférés"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Nom"
 
@@ -306,7 +306,7 @@ msgstr "_Contenu"
 msgid "View help for this application"
 msgstr "Affiche l'aide de cette application"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nom de la fenêtre - utilisé pour la sérialisation de la configuration."
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2002-02-26 00:23+0100\n"
 "Last-Translator: Andraž Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: slovenian <sl@li.org>\n"
@@ -75,7 +75,7 @@ msgstr "Posredovanje dogodkov"
 msgid "Whether X events should be forwarded"
 msgstr "Ali naj bodo dogodki X posredovani"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Ime"
 
@@ -302,7 +302,7 @@ msgstr "_Vsebina"
 msgid "View help for this application"
 msgstr "Glej pomoč za ta program"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Ime okna - uporabljeno za nastavitve."
 

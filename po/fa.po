@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-02-21 16:55+0330\n"
 "Last-Translator: Roozbeh Pournader <roozbeh@sharif.edu>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Whether X events should be forwarded"
 msgstr ""
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "نام"
 
@@ -300,7 +300,7 @@ msgstr "محتویات"
 msgid "View help for this application"
 msgstr ""
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
 

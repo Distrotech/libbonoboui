@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.1.2\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-01-13 03:45+0100\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -77,7 +77,7 @@ msgstr "Reenviament de l'esdeveniment"
 msgid "Whether X events should be forwarded"
 msgstr "Si els esdeveniments X haurien de ser reenviats"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Nom"
 
@@ -304,7 +304,7 @@ msgstr "_Continguts"
 msgid "View help for this application"
 msgstr "Visualitza l'ajuda per a aquesta aplicació"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
 "Nom de la finestra - utilitzat per a la serialització de la configuració"

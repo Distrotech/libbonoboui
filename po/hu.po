@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2002-12-04 16:37+0100\n"
 "Last-Translator: Emese Kovacs <emese@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
@@ -76,7 +76,7 @@ msgstr "Eseménytovábbítás"
 msgid "Whether X events should be forwarded"
 msgstr "Továbbítsa-e az X eseményeket, vagy ne"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Név"
 
@@ -303,7 +303,7 @@ msgstr "_Tartalom"
 msgid "View help for this application"
 msgstr "Az alkalmazás súgójának megtekintése"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Az ablak neve - a konfiguráció szerializációjához kell."
 

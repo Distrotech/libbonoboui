@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-06-29 15:15+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-06-29 04:31+0100\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -77,7 +77,7 @@ msgstr "Anfon Digwyddiadau Ymlaen"
 msgid "Whether X events should be forwarded"
 msgstr "Dylid anfon digwyddiadau X ymlaen"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Enw"
 
@@ -305,7 +305,7 @@ msgid "View help for this application"
 msgstr "Darllen cymorth ar gyfer y rhaglen hwn"
 
 # EFALLAI (cyfresoli?)
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Enw'r ffenest - defnyddir ar gyfer cyfresoli ffurfweddiad."
 

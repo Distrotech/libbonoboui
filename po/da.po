@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2002-11-27 00:41+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -78,7 +78,7 @@ msgstr "Hændelsesvideresendelse"
 msgid "Whether X events should be forwarded"
 msgstr "Om X-hændelser skal videresendes"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Navn"
 
@@ -306,7 +306,7 @@ msgstr "_Indhold"
 msgid "View help for this application"
 msgstr "Vis hjælp til dette program"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Vinduets navn - bruges til konfigurations serialisering"
 

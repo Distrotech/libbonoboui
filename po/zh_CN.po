@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2002-07-24 11:52+0100\n"
 "Last-Translator: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
 "Language-Team: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
@@ -82,7 +82,7 @@ msgstr "事件转发"
 msgid "Whether X events should be forwarded"
 msgstr "是否应转发 X 事件"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "名字"
 
@@ -344,7 +344,7 @@ msgid "View help for this application"
 msgstr "查看此应用程序的帮助"
 
 # SUN NEW TRANSLATION
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "窗口的名称 - 用于配置串行化。"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-02-06 10:27+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesia <id@li.org>\n"
@@ -77,7 +77,7 @@ msgstr "Event Forwarding"
 msgid "Whether X events should be forwarded"
 msgstr "Menentukan apakah event-event X harus diforward atau tidak"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Nama"
 
@@ -304,7 +304,7 @@ msgstr "_Isi"
 msgid "View help for this application"
 msgstr "Lihat layar bantu aplikasi ini"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nama window - digunakan untuk serialization konfigurasi"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui-2.2.x\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-03-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
@@ -88,7 +88,7 @@ msgstr "മാറ്റി അയയ‍്ക്കല് വാചകം:"
 msgid "Whether X events should be forwarded"
 msgstr "താലം ഉപയോഗിക്കേണ്ടതുണ്ടോ"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "പേര‍്"
 
@@ -331,7 +331,7 @@ msgstr "ഉള്ളടക്കം"
 msgid "View help for this application"
 msgstr "ഈ പ്രയോഗത്തിന‍് സഹായം ലഭിക്കുക"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
 

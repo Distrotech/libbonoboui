@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-01-05 12:34+0200\n"
 "Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -90,7 +90,7 @@ msgstr "Πότε τα γεγονότα Χ πρέπει να προωθούντα
 #
 # #-#-#-#-#  nautilus.nautilus-gnome-1.el.po (nautilus 0.8.3)  #-#-#-#-#
 #
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Όνομα"
 
@@ -347,7 +347,7 @@ msgstr "Περιε_χόμενα"
 msgid "View help for this application"
 msgstr "Εμφάνιση βοήθειας για την εφαρμογή"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
 "Το όνομα του παραθύρου - για χρήση στη μετατροπή κατ' αλληλουχία των "

@@ -1,3 +1,11 @@
+libbonoboui 2.2.3
+
+	* Bugs fixed
+		+ BonoboSocket would not autoactivate in-process
+		  controls (Federico).
+		+ Toolbars are no longer focusable; backport from HEAD
+		(Federico).
+
 libbonoboui 2.2.0.1
 
 	* Bugs fixed

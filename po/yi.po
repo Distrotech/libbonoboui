@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-03-19\n"
 "Last-Translator: Raphael Finkel <raphael@cs.uky.edu>\n"
 "Language-Team: Yiddish <raphael@cs.uky.edu>\n"
@@ -76,7 +76,7 @@ msgstr "טרעפֿעניש־װײַטערשיקן"
 msgid "Whether X events should be forwarded"
 msgstr "צי X־טרעפֿענישן זאָלן זיך װײַטער שיקן"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "נאָמען"
 
@@ -303,7 +303,7 @@ msgstr "אינהאַלט"
 msgid "View help for this application"
 msgstr "זע געהילף פֿאַר דער אַפּליקאַציע"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "פֿענצטער־נאָמען, גענוצט צוליב צופּאַס־סעריאַליזאַציע"
 

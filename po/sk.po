@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-01-12 23:47+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
@@ -76,7 +76,7 @@ msgstr "Preposielanie udalostí"
 msgid "Whether X events should be forwarded"
 msgstr "Či majú byť udalosti X preposielané"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Meno"
 
@@ -303,7 +303,7 @@ msgstr "_Obsah"
 msgid "View help for this application"
 msgstr "Pozrieť pomocníka pre túto aplikáciu"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Názov okna - použité pre konfiguráciu serializácie."
 

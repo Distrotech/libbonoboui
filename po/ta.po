@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tamil libbonoboui2 1.7\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-03-31 20:32+0600\n"
 "Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -76,7 +76,7 @@ msgstr "நிகழ்வு செலுத்துதல்"
 msgid "Whether X events should be forwarded"
 msgstr "X நிகழ்வுகளை செலுத்த வேண்டுமா"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "பெயர்"
 
@@ -302,7 +302,7 @@ msgstr "_உள்ளடக்கங்கள்"
 msgid "View help for this application"
 msgstr "இன்நிரலுக்கான உதவியைப் பார்க்கவும்"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "இச்சாளரத்தின் பெயர் - தொடர்நிலை அமைவுக்காக பயன்படுத்தப்படும்"
 

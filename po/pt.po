@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-02-01 23:45+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -76,7 +76,7 @@ msgstr "Reencaminhamento Eventos"
 msgid "Whether X events should be forwarded"
 msgstr "Se eventos X deveriam ser reencaminhados"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Nome"
 
@@ -303,7 +303,7 @@ msgstr "_Conteudos"
 msgid "View help for this application"
 msgstr "Ver a ajuda desta aplicação"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nome da janela - utilizada para serialização da configuração."
 

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
+"POT-Creation-Date: 2003-07-29 15:27-0500\n"
 "PO-Revision-Date: 2003-02-07 16:57+0000\n"
 "Last-Translator: erkaN <erkaN@linux-sevenler.de>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org\n"
@@ -78,7 +78,7 @@ msgstr "Olay yönlendirme"
 msgid "Whether X events should be forwarded"
 msgstr "Ava X olayları yönlendirilsin mi"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "İsim"
 
@@ -305,7 +305,7 @@ msgstr "_İçerik-"
 msgid "View help for this application"
 msgstr "Bu uygulama için yardım göster"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Pencere ismi - ayarların seri şekilde yapılması için kullanılacak."
 
