@@ -114,17 +114,13 @@ glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
 /* this macro puts a version check function into the module */
 GLADE_MODULE_CHECK_INIT
 
-static GladeWidgetBuildData widget_data[] = {
-	{ "BonoboWidget", glade_bonobo_widget_new,
-	  NULL, bonobo_widget_get_type },
-	{ "BonoboWindow", glade_standard_build_widget,
-	  glade_standard_build_children, bonobo_window_get_type },
-	{ NULL, NULL, NULL, 0, 0 }
-};
-
 void
 glade_module_register_widgets (void)
 {
 	glade_provide ("bonobo");
-	glade_register_widgets (widget_data);
+	glade_register_widget (BONOBO_WIDGET_TYPE,
+			       glade_bonobo_widget_new,
+			       NULL, NULL);
+	glade_register_widget (BONOBO_TYPE_WINDOW,
+			       NULL, NULL, NULL);
 }
