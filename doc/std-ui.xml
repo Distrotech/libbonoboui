@@ -70,7 +70,7 @@
         <cmd name="EditReplace" _label="Replace" _tip="Replace a string"
           pixtype="stock" pixname="Search/Replace" accel="F7"/>
 	
-        <cmd name="EditProperties" _label="Properties" _tip="Modify the file's properties"
+        <cmd name="EditProperties" _label="Properties" _tip="Modify the file&apos;s properties"
 	  pixtype="stock" pixname="Properties"/>
 
 	<cmd name="EditSelectAll" _label="Select All" _tip="Select everything"/>

@@ -694,14 +694,13 @@ bonobo_ui_util_translate_ui (BonoboUINode *node)
 
 		str = g_quark_to_string (a->id);
 		if (str [0] == '_') {
-			char *encoded;
+			char *old;
 
 			a->id = g_quark_from_static_string (str + 1);
 
-			encoded = bonobo_ui_util_encode_str (_(a->value));
-			xmlFree (a->value);
-			a->value = xmlStrdup (encoded);
-			g_free (encoded);
+			old = a->value;
+			a->value = xmlStrdup (_(a->value));
+			xmlFree (old);
 		}
 	}
 

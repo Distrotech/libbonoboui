@@ -1,3 +1,27 @@
+2002-04-15  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-node.c
+	(do_parse): set the replaceEntities flag on the context,
+	split out common code.
+	(bonobo_ui_node_from_file),
+	(bonobo_ui_node_from_string): upd.
+
+	* tests/test-ui-auto.c
+	(test_ui_node_parsing, test_xml_roundtrip): impl.
+
+	* bonobo/bonobo-ui-node.c (uiGetEntity): axe,
+	unneeded.
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_util_translate_ui): make it more
+	efficient and obvious.
+
+2002-04-12  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_get_remote_ui_container): set
+	ui_container to NIL on exception.
+
 2002-04-14  Murray Cumming  <murrayc@usa.net>
 
 	* bonobo/bonobo-dock-band.c: bonobo_dock_band_new() is now

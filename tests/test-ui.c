@@ -207,7 +207,7 @@ main (int argc, char **argv)
 
 	char simplea [] =
 		"<menu>\n"
-		"	<submenu name=\"File\" _label=\"_Ga\">\n"
+		"	<submenu name=\"File\" _label=\"_Ga'\">\n"
 		"		<menuitem name=\"open\" pos=\"bottom\" _label=\"_Open\" verb=\"FileOpen\" pixtype=\"stock\" pixname=\"Open\" _tip=\"Wibble\"/>\n"
 		"		<control name=\"MyControl\"/>\n"
 		"		<control name=\"ThisIsEmpty\"/>\n"

@@ -813,13 +813,6 @@ uiCharacters (ParseState *ps, const xmlChar *chars, int len)
 	g_string_append_len (ps->content, chars, len);
 }
 
-static xmlEntityPtr
-uiGetEntity (ParseState *ps, const xmlChar *name)
-{
-	/* FIXME: do we need this ? */
-	return xmlGetPredefinedEntity (name);
-}
-
 static void
 uiWarning (ParseState *ps, const char *msg, ...)
 {
@@ -856,7 +849,7 @@ static xmlSAXHandler bonoboSAXParser = {
 	NULL, /* hasInternalSubset */
 	NULL, /* hasExternalSubset */
 	NULL, /* resolveEntity */
-	(getEntitySAXFunc) uiGetEntity, /* getEntity */
+	NULL, /* getEntity */
 	NULL, /* entityDecl */
 	NULL, /* notationDecl */
 	NULL, /* attributeDecl */
@@ -877,6 +870,46 @@ static xmlSAXHandler bonoboSAXParser = {
 	(fatalErrorSAXFunc) uiFatalError, /* fatalError */
 };
 
+static BonoboUINode *
+do_parse (xmlParserCtxt *ctxt)
+{
+	int ret = 0;
+	ParseState *ps;
+	xmlSAXHandlerPtr oldsax;
+
+	if (!ctxt)
+		return NULL;
+
+	ps = parse_state_new ();
+    
+	oldsax = ctxt->sax;
+	ctxt->sax = &bonoboSAXParser;
+	ctxt->userData = ps;
+	/* Magic to make entities work as expected */
+	ctxt->replaceEntities = TRUE;
+
+	xmlParseDocument (ctxt);
+    
+	if (ctxt->wellFormed)
+		ret = 0;
+	else {
+		if (ctxt->errNo != 0)
+			ret = ctxt->errNo;
+		else
+			ret = -1;
+	}
+	ctxt->sax = oldsax;
+	xmlFreeParserCtxt (ctxt);
+
+	if (ret < 0) {
+		g_warning ("XML not well formed!");
+		parse_state_free (ps, TRUE);
+		return NULL;
+	}
+
+	return parse_state_free (ps, FALSE);
+}
+
 /**
  * bonobo_ui_node_from_string:
  * @xml: the xml string
@@ -888,24 +921,15 @@ static xmlSAXHandler bonoboSAXParser = {
 BonoboUINode*
 bonobo_ui_node_from_string (const char *xml)
 {
-	ParseState *ps;
-	GQuark      len;
+	guint len;
 
 	g_return_val_if_fail (xml != NULL, NULL);
 
 	len = strlen (xml);
 	if (len < 3)
 		return NULL;
-	
-	ps = parse_state_new ();
 
-	if (xmlSAXUserParseMemory (&bonoboSAXParser, ps, (char *) xml, len) < 0) {
-		g_warning ("XML not well formed!");
-		parse_state_free (ps, TRUE);
-		return NULL;
-	}
-
-	return parse_state_free (ps, FALSE);
+	return do_parse (xmlCreateMemoryParserCtxt ((char *) xml, len));
 }
 
 /**
@@ -919,19 +943,9 @@ bonobo_ui_node_from_string (const char *xml)
 BonoboUINode*
 bonobo_ui_node_from_file (const char *fname)
 {
-	ParseState *ps;
-
 	g_return_val_if_fail (fname != NULL, NULL);
 	
-	ps = parse_state_new ();
-
-	if (xmlSAXUserParseFile (&bonoboSAXParser, ps, fname) < 0) {
-		g_warning ("XML not well formed!");
-		parse_state_free (ps, TRUE);
-		return NULL;
-	}
-
-	return parse_state_free (ps, FALSE);
+	return do_parse (xmlCreateFileParserCtxt (fname));
 }
 
 /*

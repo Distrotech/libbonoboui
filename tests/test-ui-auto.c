@@ -102,12 +102,42 @@ test_ui_node_inserts (void)
 }
 
 static void
+test_xml_roundtrip (const char *txt)
+{
+	char *result;
+	BonoboUINode *node;
+
+	node = bonobo_ui_node_from_string (txt);
+	g_assert (node != NULL);
+
+	result = bonobo_ui_node_to_string (node, TRUE);
+	bonobo_ui_node_free (node);
+
+	if (strcmp (result, txt))
+		g_error ("'%s' => '%s'", txt, result);
+
+	bonobo_ui_node_free_string (result);
+}
+
+static void
+test_ui_node_parsing (void)
+{
+	fprintf (stderr, "  parsing ...\n");
+
+	test_xml_roundtrip ("<item/>\n");
+	test_xml_roundtrip ("<item name=\"Foo&quot;\"/>\n");
+	test_xml_roundtrip ("<item name=\"Foo&amp;\"/>\n");
+	test_xml_roundtrip ("<item name=\"Foo&apos;\"/>\n");
+}
+
+static void
 test_ui_node (void)
 {
 	fprintf (stderr, "testing BonoboUINode ...\n");
 
 	test_ui_node_attrs ();
 	test_ui_node_inserts ();
+	test_ui_node_parsing ();
 }
 
 static void

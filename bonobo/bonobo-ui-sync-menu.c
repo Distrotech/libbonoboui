@@ -367,7 +367,6 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 	
 	if ((label_attr = bonobo_ui_engine_get_attr (node, cmd_node, "label"))) {
 		GtkWidget *label;
-
 		if (!label_same (GTK_BIN (menu_widget), label_attr)) {
 			if (!GTK_BIN (menu_widget)->child) {
 				label = gtk_accel_label_new (label_attr);

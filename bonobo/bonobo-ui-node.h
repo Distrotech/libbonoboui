@@ -55,7 +55,6 @@ gboolean      bonobo_ui_node_transparent (BonoboUINode *node);
 void          bonobo_ui_node_copy_attrs  (const BonoboUINode *src,
 					  BonoboUINode *dest);
 
-/* This blows. libxml2 fixes it I guess. */
 void          bonobo_ui_node_free_string (char *str);
 void          bonobo_ui_node_strip       (BonoboUINode **node);
 

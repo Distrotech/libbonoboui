@@ -799,6 +799,9 @@ bonobo_control_get_remote_ui_container (BonoboControl     *control,
 
 	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->frame, ev);
 
+	if (BONOBO_EX (ev))
+		ui_container = CORBA_OBJECT_NIL;
+
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
 
