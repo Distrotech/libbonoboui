@@ -1,3 +1,8 @@
+2002-12-17  Kjartan Maraas <kmaraas@online.no>
+
+	* Fix Makefile.am's for libtool's non-understanding
+	of -pthread.
+
 2002-12-13  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-util.c (bonobo_help_display_cb):
