@@ -601,7 +601,7 @@ bonobo_control_frame_state_to_corba (const GtkStateType state)
 		return Bonobo_Control_StateInsensitive;
 
 	default:
-		g_warning ("bonobo_control_frame_state_to_corba: Unknown state: %d\n", (gint) state);
+		g_warning ("bonobo_control_frame_state_to_corba: Unknown state: %d", (gint) state);
 		return Bonobo_Control_StateNormal;
 	}
 }

@@ -237,7 +237,7 @@ main (int argc, char **argv)
 #endif
 
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error ("Could not initialize Bonobo\n");
+		g_error ("Could not initialize Bonobo");
 
 	/*
 	 * We can't make any CORBA calls unless we're in the main

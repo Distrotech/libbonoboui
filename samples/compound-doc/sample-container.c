@@ -149,7 +149,7 @@ component_view_activated_cb (BonoboViewFrame *view_frame, gboolean activated, Co
 		 */
 		if (container->active_view_frame != NULL) {
 			g_warning ("View requested to be activated but there is already "
-				   "an active View!\n");
+				   "an active View!");
 			return;
 		}
 
@@ -911,7 +911,7 @@ main (int argc, char **argv)
 #endif
 
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error (_("Could not initialize Bonobo!\n"));
+		g_error (_("Could not initialize Bonobo!"));
 
 	container_create ();
 

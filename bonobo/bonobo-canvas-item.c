@@ -164,7 +164,7 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 	int i;
 
 	if (getenv ("DEBUG_BI"))
-		g_message ("gbi_update\n");
+		g_message ("gbi_update");
 
 	if (gbi_parent_class)
 		(*gbi_parent_class->update)(item, item_affine, item_clip_path, item_flags);
@@ -198,7 +198,7 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 		item->y2 = y2;
 
 		if (getenv ("DEBUG_BI"))
-			g_message ("Bbox: %g %g %g %g\n", x1, y1, x2, y2);
+			g_message ("Bbox: %g %g %g %g", x1, y1, x2, y2);
 
 		CORBA_free (cuta);
 	}
@@ -215,7 +215,7 @@ gbi_realize (GnomeCanvasItem *item)
 	CORBA_Environment ev;
 
 	if (getenv ("DEBUG_BI"))
-		g_message ("gbi_realize\n");
+		g_message ("gbi_realize");
 	
 	if (gbi_parent_class)
 		(*gbi_parent_class->realize) (item);
@@ -241,7 +241,7 @@ gbi_unrealize (GnomeCanvasItem *item)
 	CORBA_Environment ev;
 	
 	if (getenv ("DEBUG_BI"))
-		g_message ("gbi_unrealize\n");
+		g_message ("gbi_unrealize");
 
 	if (gbi->priv->object != CORBA_OBJECT_NIL){
 		CORBA_exception_init (&ev);
@@ -261,7 +261,7 @@ gbi_draw (GnomeCanvasItem *item, GdkDrawable *drawable, int x, int y, int width,
 	Bonobo_Canvas_State state;
 	
 	if (getenv ("DEBUG_BI"))
-		g_message ("draw: %d %d %d %d\n", x, y, width, height);
+		g_message ("draw: %d %d %d %d", x, y, width, height);
 
 	/*
 	 * This call ensures the drawable XID is allocated on the X server
@@ -286,20 +286,20 @@ gbi_point (GnomeCanvasItem *item, double x, double y, int cx, int cy, GnomeCanva
 	CORBA_Environment ev;
 	
 	if (getenv ("DEBUG_BI"))
-		g_message ("gbi_point %g %g\n", x, y);
+		g_message ("gbi_point %g %g", x, y);
 	
 	CORBA_exception_init (&ev);
 	if (Bonobo_Canvas_Component_contains (gbi->priv->object, x, y, &ev)){
 		CORBA_exception_free (&ev);
 		*actual = item;
 		if (getenv ("DEBUG_BI"))
-			g_message ("event inside\n");
+			g_message ("event inside");
 		return 0.0;
 	}
 	CORBA_exception_free (&ev);
 
 	if (getenv ("DEBUG_BI"))
-		g_message ("event outside\n");
+		g_message ("event outside");
 	*actual = NULL;
 	return 1000.0;
 }
@@ -312,7 +312,7 @@ gbi_bounds (GnomeCanvasItem *item, double *x1, double *y1, double *x2, double *y
 	Bonobo_Canvas_State state;
 	
 	if (getenv ("DEBUG_BI"))
-		g_message ("gbi_bounds\n");
+		g_message ("gbi_bounds");
 	
 	CORBA_exception_init (&ev);
 	prepare_state (item, &state);
@@ -320,7 +320,7 @@ gbi_bounds (GnomeCanvasItem *item, double *x1, double *y1, double *x2, double *y
 	CORBA_exception_free (&ev);
 
 	if (getenv ("DEBUG_BI"))
-		g_message ("gbi_bounds %g %g %g %g\n", *x1, *y1, *x2, *y2);
+		g_message ("gbi_bounds %g %g %g %g", *x1, *y1, *x2, *y2);
 }
 
 static void
@@ -331,7 +331,7 @@ gbi_render (GnomeCanvasItem *item, GnomeCanvasBuf *buf)
 	CORBA_Environment ev;
 
 	if (getenv ("DEBUG_BI"))
-		g_message ("gbi_render (%d %d)-(%d %d)\n",
+		g_message ("gbi_render (%d %d)-(%d %d)",
 			buf->rect.x0, buf->rect.y0,
 			buf->rect.x1, buf->rect.y1);
 
@@ -493,7 +493,7 @@ gbi_event (GnomeCanvasItem *item, GdkEvent *event)
 	CORBA_boolean ret;
 	
 	if (getenv ("DEBUG_BI"))
-		g_message ("gbi_event\n");
+		g_message ("gbi_event");
 	
 	corba_event = gdk_event_to_bonobo_event (event);
 	if (corba_event == NULL)

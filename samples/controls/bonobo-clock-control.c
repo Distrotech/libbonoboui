@@ -40,7 +40,7 @@ get_prop (BonoboPropertyBag *bag,
 	}
 
 	default:
-		g_warning ("Unhandled arg %d\n", arg_id);
+		g_warning ("Unhandled arg %d", arg_id);
 		break;
 	}
 }
@@ -72,7 +72,7 @@ set_prop (BonoboPropertyBag *bag,
 	}
 
 	default:
-		g_warning ("Unhandled arg %d\n", arg_id);
+		g_warning ("Unhandled arg %d", arg_id);
 		break;
 	}
 }

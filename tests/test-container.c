@@ -72,12 +72,12 @@ launch_server (BonoboClientSite *client_site, BonoboContainer *container, char *
 	object_server = bonobo_object_activate (id, 0);
 	printf ("Return: %p\n", object_server);
 	if (!object_server){
-		g_warning (_("Can not activate object_server\n"));
+		g_warning (_("Can not activate object_server"));
 		return NULL;
 	}
 
 	if (!bonobo_client_site_bind_embeddable (client_site, object_server)){
-		g_warning (_("Can not bind object server to client_site\n"));
+		g_warning (_("Can not bind object server to client_site"));
 		return NULL;
 	}
 
@@ -95,12 +95,12 @@ launch_server_moniker (BonoboClientSite *client_site, BonoboContainer *container
 	object_server = bonobo_object_activate (moniker, 0);
 	printf ("Return: %p\n", object_server);
 	if (!object_server){
-		g_warning (_("Can not activate object_server\n"));
+		g_warning (_("Can not activate object_server"));
 		return NULL;
 	}
 
 	if (!bonobo_client_site_bind_embeddable (client_site, object_server)){
-		g_warning (_("Can not bind object server to client_site\n"));
+		g_warning (_("Can not bind object server to client_site"));
 		return NULL;
 	}
 
@@ -171,7 +171,7 @@ view_activated_cb (BonoboViewFrame *view_frame, gboolean activated)
 		 */
 		if (active_view_frame != NULL) {
 			g_warning ("View requested to be activated but there is already "
-				   "an active View!\n");
+				   "an active View!");
 			return FALSE;
 		}
 
@@ -842,7 +842,7 @@ main (int argc, char *argv [])
 #endif
 	
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error (_("Can not bonobo_init\n"));
+		g_error (_("Can not bonobo_init"));
 
 	app = application_new ();
 	

@@ -1023,7 +1023,7 @@ gboolean
 bonobo_ui_handler_toplevel_check_toplevel (BonoboUIHandler *uih)
 {
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
-		g_warning ("CORBA method invoked on non-toplevel UIHandler!\n");
+		g_warning ("CORBA method invoked on non-toplevel UIHandler!");
 		return FALSE;
 	}
 
@@ -1069,7 +1069,7 @@ bonobo_ui_handler_local_do_path (const char  *parent_path,
 		}
 
 		if (! paths_match)
-			g_warning ("uih_local_do_path: Item path [%s] does not jibe with parent path [%s]!\n",
+			g_warning ("uih_local_do_path: Item path [%s] does not jibe with parent path [%s]!",
 				   *item_path, parent_path);
 	}
 
@@ -1240,7 +1240,7 @@ bonobo_ui_handler_toplevel_create_pixmap (GtkWidget *window,
 		break;
 
 	default:
-		g_warning ("Unknown pixmap type: %d\n", pixmap_type);
+		g_warning ("Unknown pixmap type: %d", pixmap_type);
 		
 	}
 
@@ -1276,7 +1276,7 @@ bonobo_ui_handler_pixmap_free_data (BonoboUIHandlerPixmapType pixmap_type, gpoin
 		break;
 
 	default:
-		g_warning ("Unknown pixmap type: %d\n", pixmap_type);
+		g_warning ("Unknown pixmap type: %d", pixmap_type);
 		
 	}
 }
@@ -1302,7 +1302,7 @@ bonobo_ui_handler_pixmap_copy_data (BonoboUIHandlerPixmapType pixmap_type, const
 		return gdk_pixbuf_ref((GdkPixbuf *)pixmap_info);
 		
 	default:
-		g_warning ("Unknown pixmap type: %d\n", pixmap_type);
+		g_warning ("Unknown pixmap type: %d", pixmap_type);
 		return NULL;
 	}
 }
@@ -1322,7 +1322,7 @@ bonobo_ui_handler_pixmap_type_to_corba (BonoboUIHandlerPixmapType type)
 	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA:
 		return Bonobo_UIHandler_PixmapTypePixbufData;
 	default:
-		g_warning ("pixmap_type_to_corba: Unknown pixmap type [%d]!\n", (int) type);
+		g_warning ("pixmap_type_to_corba: Unknown pixmap type [%d]!", (int) type);
 		return Bonobo_UIHandler_PixmapTypeNone;
 	}
 }
@@ -1342,7 +1342,7 @@ bonobo_ui_handler_pixmap_corba_to_type (Bonobo_UIHandler_PixmapType type)
 	case Bonobo_UIHandler_PixmapTypePixbufData:
 		return BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA;
 	default:
-		g_warning ("pixmap_corba_to_type: Unknown pixmap type [%d]!\n", (int) type);
+		g_warning ("pixmap_corba_to_type: Unknown pixmap type [%d]!", (int) type);
 		return BONOBO_UI_HANDLER_PIXMAP_NONE;
 	}
 }
@@ -1617,7 +1617,7 @@ bonobo_ui_handler_pixmap_data_to_corba (BonoboUIHandlerPixmapType type, gpointer
 		return buffer;
 		
 	default:
-		g_warning ("bonobo_ui_handler_pixmap_data_to_corba: Unknown pixmap type [%d]\n", type);
+		g_warning ("bonobo_ui_handler_pixmap_data_to_corba: Unknown pixmap type [%d]", type);
 		buffer->_length = 1;
 		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (1);
 		return buffer;
@@ -1654,7 +1654,7 @@ bonobo_ui_handler_pixmap_corba_to_data (Bonobo_UIHandler_PixmapType corba_pixmap
 		return pixmap_data;
 		
 	default:
-		g_warning ("pixmap_corba_to_data: Unknown pixmap type [%d]\n", type);
+		g_warning ("pixmap_corba_to_data: Unknown pixmap type [%d]", type);
 		return NULL;
 	}
 }
@@ -1672,7 +1672,7 @@ bonobo_ui_handler_uiinfo_pixmap_type_to_uih (GnomeUIPixmapType ui_type)
 	case GNOME_APP_PIXMAP_DATA:
 		return BONOBO_UI_HANDLER_PIXMAP_XPM_DATA;
 	default:
-		g_warning ("Unknown GnomeUIPixmapType: %d\n", ui_type);
+		g_warning ("Unknown GnomeUIPixmapType: %d", ui_type);
 		return BONOBO_UI_HANDLER_PIXMAP_NONE;
 	}
 }

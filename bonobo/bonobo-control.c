@@ -368,7 +368,7 @@ bonobo_control_gtk_state_from_corba (const Bonobo_Control_State state)
 		return GTK_STATE_INSENSITIVE;
 
 	default:
-		g_warning ("bonobo_control_gtk_state_from_corba: Unknown state: %d\n", (gint) state);
+		g_warning ("bonobo_control_gtk_state_from_corba: Unknown state: %d", (gint) state);
 		return GTK_STATE_NORMAL;
 	}
 }
@@ -456,6 +456,7 @@ bonobo_control_construct (BonoboControl  *control,
 
 	control->priv->widget = GTK_WIDGET (widget);
 	gtk_object_ref (GTK_OBJECT (widget));
+	gtk_object_sink (GTK_OBJECT (widget));
 
 	control->priv->uih = bonobo_ui_handler_new ();
 	control->priv->propbag = NULL;

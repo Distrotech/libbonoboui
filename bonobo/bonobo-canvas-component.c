@@ -228,7 +228,7 @@ gcc_realize (PortableServer_Servant servant,
 	GdkWindow *gdk_window = gdk_window_foreign_new (window);
 
 	if (gdk_window == NULL){
-		g_warning ("Invalid window id passed=0x%x\n", window);
+		g_warning ("Invalid window id passed=0x%x", window);
 		return;
 	}
 
@@ -303,7 +303,7 @@ gcc_draw (PortableServer_Servant servant,
 	pix = gdk_pixmap_foreign_new (drawable);
 
 	if (pix == NULL){
-		g_warning ("Invalid window id passed=0x%x\n", drawable);
+		g_warning ("Invalid window id passed=0x%x", drawable);
 		return;
 	}
 

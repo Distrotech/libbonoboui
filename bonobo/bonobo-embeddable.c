@@ -239,7 +239,7 @@ impl_Bonobo_Embeddable_new_view (PortableServer_Servant servant,
 		return CORBA_OBJECT_NIL;
 
 	if (bonobo_object_corba_objref (BONOBO_OBJECT (view)) == CORBA_OBJECT_NIL){
-		g_warning ("Returned view does not have a CORBA object bound\n");
+		g_warning ("Returned view does not have a CORBA object bound");
 		gtk_object_destroy (GTK_OBJECT (view));
 		return CORBA_OBJECT_NIL;
 	}
@@ -766,7 +766,7 @@ bonobo_embeddable_remove_verb (BonoboEmbeddable *embeddable, const char *verb_na
 		}
 	}
 
-	g_warning ("Verb [%s] not found!\n", verb_name);
+	g_warning ("Verb [%s] not found!", verb_name);
 }
 
 /**
