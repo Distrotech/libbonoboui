@@ -346,12 +346,9 @@ component_load_pf_ok_cb (GtkWidget *button, Component *component)
 	 * Now get the PersistFile interface off the embedded
 	 * component.
 	 */
-	CORBA_exception_init (&ev);
-
-	persist = GNOME_Unknown_query_interface (
-		gnome_object_corba_objref (GNOME_OBJECT (component->server)),
-		"IDL:GNOME/PersistFile:1.0",
-		&ev);
+	persist = gnome_object_client_query_interface (component->server,
+						       "IDL:GNOME/PersistFile:1.0",
+						       NULL);
 
 	/*
 	 * If the component doesn't support PersistFile (and it really
@@ -363,10 +360,11 @@ component_load_pf_ok_cb (GtkWidget *button, Component *component)
 	if (persist == CORBA_OBJECT_NIL) {
 		gnome_warning_dialog (_("The component now claims that it "
 					"doesn't support PersistFile!"));
-		CORBA_exception_free (&ev);
 		g_free (filename);
 		return;
 	}
+
+	CORBA_exception_init (&ev);
 
 	/*
 	 * Load the file into the component using PersistFilea.
@@ -436,12 +434,9 @@ component_load_ps_ok_cb (GtkWidget *button, Component *component)
 	 * Now get the PersistStream interface off the embedded
 	 * component.
 	 */
-	CORBA_exception_init (&ev);
-
-	persist = GNOME_Unknown_query_interface (
-		gnome_object_corba_objref (GNOME_OBJECT (component->server)),
-		"IDL:GNOME/PersistStream:1.0",
-		&ev);
+	persist = gnome_object_client_query_interface (component->server,
+						       "IDL:GNOME/PersistStream:1.0",
+						       NULL);
 
 	/*
 	 * If the component doesn't support PersistStream (and it
@@ -450,13 +445,14 @@ component_load_ps_ok_cb (GtkWidget *button, Component *component)
 	 * loading data into it with PersistStream), then we destroy
 	 * the stream we created and bail.
 	 */
-	if (ev._major != CORBA_NO_EXCEPTION || persist == CORBA_OBJECT_NIL) {
+	if (persist == CORBA_OBJECT_NIL) {
 		gnome_warning_dialog (_("The component now claims that it "
 					"doesn't support PersistStream!"));
 		gnome_object_unref (GNOME_OBJECT (stream));
-		CORBA_exception_free (&ev);
 		return;
 	}
+
+	CORBA_exception_init (&ev);
 
 	/*
 	 * Load the file into the component using PersistStream.
@@ -544,34 +540,6 @@ container_launch_component (GnomeClientSite *client_site,
 	return object_server;
 }
 
-/*
- * Use query_interface to see if `obj' has `interface'.
- */
-static gboolean
-gnome_object_has_interface (GnomeObject *obj, char *interface)
-{
-	CORBA_Environment ev;
-	CORBA_Object requested_interface;
-	gboolean retval;
-	
-	CORBA_exception_init (&ev);
-
-	requested_interface = GNOME_Unknown_query_interface (
-		gnome_object_corba_objref (obj), interface, &ev);
-
-	if (!CORBA_Object_is_nil(requested_interface, &ev) && ev._major == CORBA_NO_EXCEPTION)
-	{
-		/* Get rid of the interface we've been passed */
-		GNOME_Unknown_unref (requested_interface, &ev);
-		CORBA_Object_release (requested_interface, &ev);
-		retval = TRUE;
-	} else
-		retval = FALSE;
-
-	CORBA_exception_free (&ev);
-	return retval;
-}
-
 static void
 container_create_component_frame (Container *container, Component *component, char *name)
 {
@@ -621,9 +589,10 @@ container_create_component_frame (Container *container, Component *component, ch
 	/*
 	 * Create the 'Load component with PersistFile' button.
 	 */
-	if (gnome_object_has_interface (GNOME_OBJECT (component->server),
-					"IDL:GNOME/PersistFile:1.0")) {
-
+	if (gnome_object_client_has_interface (component->server,
+					       "IDL:GNOME/PersistFile:1.0",
+					       NULL)) {
+		
 		button = gtk_button_new_with_label (_("Load with PersistFile"));
 
 		gtk_box_pack_start (GTK_BOX (button_hbox), button,
@@ -637,8 +606,9 @@ container_create_component_frame (Container *container, Component *component, ch
 	/*
 	 * Create the 'Load component with PersistStream' button.
 	 */
-	if (gnome_object_has_interface (GNOME_OBJECT (component->server),
-					"IDL:GNOME/PersistStream:1.0")) {
+	if (gnome_object_client_has_interface (component->server,
+					"IDL:GNOME/PersistStream:1.0",
+					       NULL)) {
 		button = gtk_button_new_with_label (_("Load with PersistStream"));
 
 		gtk_box_pack_start (GTK_BOX (button_hbox), button,

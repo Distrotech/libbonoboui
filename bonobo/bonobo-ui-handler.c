@@ -5738,10 +5738,18 @@ toolbar_toplevel_toolbar_remove_widgets_recursive (GnomeUIHandler *uih, char *na
 	g_hash_table_remove (uih->top->name_to_toolbar_widget, name);
 	g_free (orig_key);
 
-	/*
-	 * Now destroy the toolbar widget.
-	 */
-	gtk_widget_destroy (toolbar_widget);
+	if (GNOME_IS_DOCK_ITEM (toolbar_widget->parent)) {
+		/*
+		 * Since GnomeDock's get left floating, and since there is
+		 * no good api for removing toolbars we must assasinate our parent.
+		 */
+		gtk_widget_destroy (toolbar_widget->parent);
+	} else {
+		/*
+		 * just destroy ourselfs then
+		 */
+		gtk_widget_destroy (toolbar_widget);
+	}
 }
 
 static void

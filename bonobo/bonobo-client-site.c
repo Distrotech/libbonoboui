@@ -326,19 +326,9 @@ gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClie
 
 	gnome_object = GNOME_OBJECT (object);
 
-	corba_object = GNOME_Unknown_query_interface (
-		gnome_object_corba_objref (gnome_object), "IDL:GNOME/Embeddable:1.0",
-		&ev);
+	corba_object = gnome_object_client_query_interface (object,
+							    "IDL:GNOME/Embeddable:1.0", NULL);
 
-	if (ev._major != CORBA_NO_EXCEPTION){
-		gnome_object_check_env (
-			gnome_object,
-			gnome_object_corba_objref (gnome_object),
-			&ev);
-		CORBA_exception_free (&ev);
-		return FALSE;
-	}
-	
 	if (corba_object == CORBA_OBJECT_NIL) {
 		CORBA_exception_free (&ev);
 		return FALSE;

@@ -264,30 +264,28 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
-	object = add_cmd (widget, app, "embeddable:image-x-png", &image_client_site);
-	if (object == NULL)
-	  {
-	    gnome_warning_dialog (_("Could not launch bonobo object."));
-	    return;
-	  }
+	object = add_cmd (widget, app, "embeddable:image-x-png",
+			  &image_client_site);
+	if (object == NULL) {
+		gnome_warning_dialog (_("Could not launch bonobo object."));
+		return;
+	}
 
 	image_png_obj = object;
 
-	persist = GNOME_Unknown_query_interface (
-		gnome_object_corba_objref (GNOME_OBJECT (object)),
-		"IDL:GNOME/PersistStream:1.0", &ev);
+	persist = gnome_object_client_query_interface (object,
+						       "IDL:GNOME/PersistStream:1.0", NULL);
 
-        if (ev._major != CORBA_NO_EXCEPTION)
+        if (persist == CORBA_OBJECT_NIL) {
+		printf ("No persist-stream interface\n");
                 return;
-
-        if (persist == CORBA_OBJECT_NIL)
-                return;
+	}
 
 	printf ("Good: Embeddable supports PersistStream\n");
 	
 	stream = gnome_stream_fs_open ("/tmp/a.png", GNOME_Storage_READ);
 
-	if (stream == NULL){
+	if (stream == NULL) {
 		printf ("I could not open /tmp/a.png!\n");
 		return;
 	}
@@ -296,7 +294,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 		persist,
 		(GNOME_Stream) gnome_object_corba_objref (GNOME_OBJECT (stream)), &ev);
 
-	GNOME_Unknown_unref (persist, &ev);
+	GNOME_Unknown_unref  (persist, &ev);
 	CORBA_Object_release (persist, &ev);
 }
 
@@ -316,12 +314,8 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 
 	image_png_obj = object;
 
-	persist = GNOME_Unknown_query_interface (
-		gnome_object_corba_objref (GNOME_OBJECT (object)),
-		"IDL:GNOME/PersistStream:1.0", &ev);
-
-        if (ev._major != CORBA_NO_EXCEPTION)
-                return;
+	persist = gnome_object_client_query_interface (object,
+						       "IDL:GNOME/PersistStream:1.0", NULL);
 
         if (persist == CORBA_OBJECT_NIL)
                 return;
@@ -537,8 +531,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 	text_obj = object;
 
-	persist = GNOME_Unknown_query_interface (
-		gnome_object_corba_objref (GNOME_OBJECT (object)),
+	persist = gnome_object_client_query_interface (object,
 		"IDL:GNOME/PersistStream:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)
@@ -638,12 +631,8 @@ send_text_cmd (GtkWidget *widget, Application *app)
 	if (text_obj == NULL)
 		return;
 
-	psink = GNOME_Unknown_query_interface (
-		gnome_object_corba_objref (GNOME_OBJECT (text_obj)),
-		"IDL:GNOME/ProgressiveDataSink:1.0", &ev);
-
-        if (ev._major != CORBA_NO_EXCEPTION)
-                return;
+	psink = gnome_object_client_query_interface (text_obj,
+                 "IDL:GNOME/ProgressiveDataSink:1.0", NULL);
 
         if (psink == CORBA_OBJECT_NIL)
                 return;
