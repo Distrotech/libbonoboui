@@ -1201,15 +1201,24 @@ bonobo_control_get_popup_ui_container (BonoboControl *control)
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
 	if (!control->priv->popup_ui_container) {
-		control->priv->popup_ui_engine = bonobo_ui_engine_new (
-			G_OBJECT (control));
+		BonoboUIEngine *ui_engine;
+		BonoboUISync   *ui_sync;
 
-		control->priv->popup_ui_sync = bonobo_ui_sync_menu_new (
-			control->priv->popup_ui_engine, NULL, NULL, NULL);
+		ui_engine = bonobo_ui_engine_new (G_OBJECT (control));
 
-		bonobo_ui_engine_add_sync (
-			control->priv->popup_ui_engine,
-			control->priv->popup_ui_sync);
+		ui_sync = bonobo_ui_sync_menu_new (ui_engine, NULL, NULL, NULL);
+
+		bonobo_ui_engine_add_sync (ui_engine, ui_sync);
+
+		/* re-entrancy guard */
+		if (control->priv->popup_ui_container) {
+			g_object_unref (ui_engine);
+
+			return control->priv->popup_ui_container;
+		}
+
+		control->priv->popup_ui_engine = ui_engine;
+		control->priv->popup_ui_sync   = ui_sync;
 
 		control->priv->popup_ui_container = bonobo_ui_container_new ();
 		bonobo_ui_container_set_engine (

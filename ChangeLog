@@ -1,3 +1,9 @@
+2002-02-27  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-control.c:
+	(bonobo_control_get_popup_ui_container): fix
+	race condition/re-entrancy bug.
+
 2002-02-26  Paolo Maggi  <maggi@athena.polito.it>
 
 	* configure.in: now libbonoboui needs gtk+ 1.3.14
