@@ -824,6 +824,33 @@ reinstate_node (BonoboUIXml *tree, BonoboUINode *node,
 	}
 }
 
+static void
+do_insert (BonoboUINode *parent,
+	   BonoboUINode *child,
+	   BonoboUINode *insert)
+{
+	char    *pos;
+	gboolean added = FALSE;
+
+	if ((pos = bonobo_ui_node_get_attr (child, "pos"))) {
+		if (pos [0] == 't') {
+			bonobo_ui_node_insert_before (
+				bonobo_ui_node_children (parent),
+				child);
+			added = TRUE;
+		}
+		bonobo_ui_node_free_string (pos);
+	}
+
+	if (!added) {
+		if (insert)
+			bonobo_ui_node_insert_before (
+				insert, child);
+		else
+			bonobo_ui_node_add_child (parent, child);
+	}
+}
+
 /**
  * merge:
  * @current: the parent node
@@ -835,20 +862,21 @@ reinstate_node (BonoboUIXml *tree, BonoboUINode *node,
 static void
 merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 {
-	BonoboUINode *a, *b, *nexta, *nextb;
+	BonoboUINode *a, *b, *nexta, *nextb, *insert = NULL;
 
 	for (a = bonobo_ui_node_children (current); a; a = nexta) {
-		xmlChar *a_name = NULL;
+		BonoboUINode *result;
+		xmlChar *a_name;
 		xmlChar *b_name = NULL;
 			
 		nexta = bonobo_ui_node_next (a);
 		nextb = NULL;
 
+		a_name = bonobo_ui_node_get_attr (a, "name");
+
 		for (b = *new; b; b = nextb) {
 			nextb = bonobo_ui_node_next (b);
 
-			bonobo_ui_node_free_string (a_name);
-			a_name = NULL;
 			bonobo_ui_node_free_string (b_name);
 			b_name = NULL;
 
@@ -856,7 +884,6 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 				a->name, bonobo_ui_node_get_attr (a, "name"),
 				b->name, bonobo_ui_node_get_attr (b, "name"));*/
 			
-			a_name = bonobo_ui_node_get_attr (a, "name");
 			b_name = bonobo_ui_node_get_attr (b, "name");
 
 			if (!a_name && !b_name &&
@@ -870,7 +897,6 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 			if (!strcmp (a_name, b_name))
 				break;
 		}
-		bonobo_ui_node_free_string (a_name);
 		bonobo_ui_node_free_string (b_name);
 
 		if (b == *new)
@@ -878,6 +904,14 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 
 		if (b) /* Merger candidate */
 			override_node_with (tree, a, b);
+
+		result = b ? b : a;
+
+		if (!insert && !a_name &&
+		    bonobo_ui_node_has_name (result, "placeholder"))
+			insert = result;
+
+		bonobo_ui_node_free_string (a_name);
 	}
 
 	for (b = *new; b; b = nextb) {
@@ -891,10 +925,10 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 
 		bonobo_ui_node_unlink (b);
 
+		do_insert (current, b, insert);
+
 		if (tree->add_node)
 			tree->add_node (current, b, tree->user_data);
-		else
-			bonobo_ui_node_add_child (current, b);
 		
 		bonobo_ui_xml_set_dirty (tree, b);
 

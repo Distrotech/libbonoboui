@@ -163,7 +163,7 @@ main (int argc, char **argv)
 	char simplea [] =
 		"<menu>\n"
 		"	<submenu name=\"File\" _label=\"_Gå\">\n"
-		"		<menuitem name=\"open\" _label=\"_Open\" verb=\"FileOpen\"pixtype=\"stock\" pixname=\"Open\" _tip=\"Wibble\"/>\n"
+		"		<menuitem name=\"open\" pos=\"bottom\" _label=\"_Open\" verb=\"FileOpen\"pixtype=\"stock\" pixname=\"Open\" _tip=\"Wibble\"/>\n"
 		"		<control name=\"MyControl\"/>\n"
 		"		<control name=\"ThisIsEmpty\"/>\n"
 		"		<menuitem name=\"close\" noplace=\"1\" verb=\"FileExit\" _label=\"_CloseA\" _tip=\"hi\""
@@ -434,7 +434,7 @@ main (int argc, char **argv)
 
 	{
 		char *txt = bonobo_ui_component_get (componenta, "/status/main", TRUE, NULL);
-		if (strcmp (txt, "<?xml version=\"1.0\"?>\n<item name=\"main\">576861744136</item>\n")) {
+		if (!txt || strcmp (txt, "<?xml version=\"1.0\"?>\n<item name=\"main\">576861744136</item>\n")) {
 			g_warning ("Broken merging code '%s'", txt);
 			g_assert_not_reached ();
 		}

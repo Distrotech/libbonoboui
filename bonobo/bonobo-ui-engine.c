@@ -337,39 +337,17 @@ info_dump_fn (BonoboUIXml *tree, BonoboUINode *node)
 		fprintf (stderr, " very weird no data on node '%p'\n", node);
 }
 
-/*
- * Insert slightly cleverly.
- *  NB. it is no use inserting into the default placeholder here
- *  since this will screw up path addressing and subsequent merging.
- */
 static void
 add_node_fn (BonoboUINode *parent,
 	     BonoboUINode *child,
 	     gpointer      user_data)
 {
-	BonoboUINode *insert = parent;
-	char    *pos;
-
-	if (bonobo_ui_node_children (insert) &&
-	    (pos = bonobo_ui_node_get_attr (child, "pos"))) {
-		if (!strcmp (pos, "top")) {
-			g_warning ("TESTME: unused code branch");
-                        bonobo_ui_node_insert_before (bonobo_ui_node_children (insert),
-                                                      child);
-		} else
-			bonobo_ui_node_add_child (insert, child);
-		bonobo_ui_node_free_string (pos);
-
-	} else /* just add to bottom */
-		bonobo_ui_node_add_child (insert, child);
-
 	cmd_to_node_add_node (user_data, child, TRUE);
 }
 
 /*
  * BonoboUIXml signal functions
  */
-
 
 static void
 custom_widget_unparent (NodeInfo *info)

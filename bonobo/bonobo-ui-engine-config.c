@@ -544,6 +544,9 @@ null_dialog (GtkObject *object,
 void
 bonobo_ui_engine_config_configure (BonoboUIEngineConfig *config)
 {
+	if (!config->priv->path)
+		return;
+
 	/* Fire up a single non-modal dialog */
 	if (config->priv->dialog) {
 		gtk_window_activate_focus (
