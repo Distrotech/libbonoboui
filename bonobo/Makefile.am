@@ -61,7 +61,6 @@ libbonobo_la_SOURCES =			\
 	gnome-container.c		\
 	gnome-embeddable-factory.c 	\
 	gnome-embeddable.c		\
-	gnome-file-moniker.c		\
 	gnome-moniker-client.c		\
 	gnome-inplace-component.c	\
 	gnome-inplace-site.c		\
@@ -99,11 +98,9 @@ libbonoboinclude_HEADERS =		\
 	gnome-container.h		\
 	gnome-embeddable.h		\
 	gnome-embeddable-factory.h	\
-	gnome-file-moniker.h		\
 	gnome-moniker-client.h		\
 	gnome-inplace-site.h		\
 	gnome-inplace-component.h	\
-	gnome-item-moniker.h		\
 	gnome-main.h			\
 	gnome-moniker.h			\
 	gnome-object.h			\
