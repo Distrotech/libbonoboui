@@ -26,13 +26,9 @@ struct _GnomeViewFrame {
 	GnomeObject base;
 
 	GnomeWrapper    *wrapper; 
-
 	GnomeClientSite *client_site;
-
 	GNOME_View	 view;
-
 	GnomeUIHandler  *uih;
-
 	GnomeViewFramePrivate *priv;
 };
 
@@ -87,6 +83,9 @@ void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
 						    char *verb_name);
 void              gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom);
 
+void             *gnome_view_frame_get_canvas_item (GnomeViewFrame *view_frame);
+void              gnome_view_frame_set_canvas_item (GnomeViewFrame *view_frame,
+						    void *gnome_canvas_item);
 
 /* The entry point vectors for the server we provide */
 extern POA_GNOME_ViewFrame__epv gnome_view_frame_epv;

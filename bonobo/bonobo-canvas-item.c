@@ -511,15 +511,15 @@ gbi_set_arg (GtkObject *o, GtkArg *arg, guint arg_id)
 	Gbi *gbi = GBI (o);
 	GNOME_Canvas_Item corba_object;
 
-	g_warning ("Get the reference count for canvas items properly done");
-	
 	switch (arg_id){
 	case ARG_CORBA_CANVAS_ITEM:{
 		CORBA_Environment ev;
 		CORBA_exception_init (&ev);
 
-		if (gbi->priv->object)
+		if (gbi->priv->object){
+			GNOME_Canvas_Item_unref (gbi->priv->object, &ev);
 			CORBA_Object_release (gbi->priv->object, &ev);
+		}
 		
 		gbi->priv->object = CORBA_OBJECT_NIL;
 		corba_object = GTK_VALUE_POINTER (*arg);
@@ -539,8 +539,10 @@ gbi_finalize (GtkObject *object)
 
 	CORBA_exception_init (&ev);
 
-	if (gbi->priv->object != CORBA_OBJECT_NIL)
+	if (gbi->priv->object != CORBA_OBJECT_NIL){
+		GNOME_Canvas_Item_unref (gbi->priv->object, &ev);
 		CORBA_Object_release (gbi->priv->object, &ev);
+	}
 
 	if (gbi->priv->proxy){
 		ItemProxyServant *proxy = gbi->priv->proxy;
@@ -724,9 +726,14 @@ gnome_bonobo_item_new (GnomeCanvasGroup *parent, GnomeViewFrame *view_frame)
 	 * Configure the BonoboItem
 	 */
 	gnome_canvas_item_set (bonobo_item, "corba_canvas_item", remote_item, NULL);
+	CORBA_Object_release (remote_item, &ev);
+	remote_item = CORBA_OBJECT_NIL;
+	
 	GNOME_BONOBO_ITEM (bonobo_item)->view_frame = view_frame;
 	GNOME_BONOBO_ITEM (bonobo_item)->priv->proxy = proxy;
 
+	gnome_view_frame_set_canvas_item (view_frame, bonobo_item);
+	
 	/*
 	 * Initial size notification
 	 */

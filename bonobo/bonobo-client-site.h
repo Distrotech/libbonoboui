@@ -51,8 +51,6 @@ typedef struct {
 
 GtkType            gnome_client_site_get_type		(void);
 GnomeClientSite   *gnome_client_site_new		(GnomeContainer *container);
-GnomeCanvasItem   *gnome_client_site_new_item           (GnomeClientSite *client_site,
-							 GnomeCanvasGroup *group);
 GnomeClientSite   *gnome_client_site_construct		(GnomeClientSite  *client_site,
 							 GNOME_ClientSite corba_client_site,
 							 GnomeContainer   *container);
@@ -62,9 +60,12 @@ gboolean           gnome_client_site_bind_embeddable	(GnomeClientSite *client_si
 GnomeObjectClient *gnome_client_site_get_embeddable	(GnomeClientSite *client_site);
 
 /*
- * Proxy functions.
+ * Proxy/Utility functions.
  */
 GnomeViewFrame    *gnome_client_site_new_view		(GnomeClientSite *client_site);
+GnomeViewFrame    *gnome_client_site_new_item           (GnomeClientSite *client_site,
+							 GnomeCanvasGroup *group,
+							 GnomeCanvasItem **return_value);
 GList		  *gnome_client_site_get_verbs		(GnomeClientSite *client_site);
 void		   gnome_client_site_free_verbs		(GList *verb_list);
 

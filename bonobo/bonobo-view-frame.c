@@ -16,6 +16,7 @@
 #include <bonobo/gnome-view.h>
 #include <bonobo/gnome-view-frame.h>
 #include <gdk/gdkprivate.h>
+#include <libgnomeui/gnome-canvas.h>
 
 enum {
 	VIEW_ACTIVATED,
@@ -35,6 +36,10 @@ static GnomeObjectClass *gnome_view_frame_parent_class;
 /* The entry point vectors for the server we provide */
 POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
 POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
+
+struct _GnomeViewFramePrivate {
+	GnomeCanvasItem *gnome_canvas_item;
+};
 
 static GNOME_ClientSite
 impl_GNOME_ViewFrame_get_ui_handler (PortableServer_Servant servant,
@@ -235,6 +240,17 @@ gnome_view_frame_destroy (GtkObject *object)
 {
 	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (object);
 
+	if (view_frame->view != CORBA_OBJECT_NIL){
+		CORBA_Environment ev;
+
+		CORBA_exception_init (&ev);
+		GNOME_View_unref (view_frame->view, &ev);
+		CORBA_Object_release (view_frame->view, &ev);
+		CORBA_exception_free (&ev);
+	}
+	
+	g_free (view_frame->priv);
+	
 	gtk_object_unref (GTK_OBJECT (view_frame->wrapper));
 	GTK_OBJECT_CLASS (gnome_view_frame_parent_class)->destroy (object);
 }
@@ -348,6 +364,9 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 static void
 gnome_view_frame_init (GnomeObject *object)
 {
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (object);
+
+	view_frame->priv = g_new0 (GnomeViewFramePrivate, 1);
 }
 
 /**
@@ -396,7 +415,6 @@ gnome_view_frame_bind_to_view (GnomeViewFrame *view_frame, GNOME_View view)
 
 	CORBA_exception_init (&ev);
 
-	/* FIXME: Is it right to duplicate this? */
 	view_frame->view = CORBA_Object_duplicate (view, &ev);
 
 	CORBA_exception_free (&ev);
@@ -756,4 +774,24 @@ gnome_view_frame_popup_verbs (GnomeViewFrame *view_frame)
 	gtk_object_remove_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name");
 
 	return verb;
+}
+
+void
+gnome_view_frame_set_canvas_item (GnomeViewFrame *view_frame, void *gnome_canvas_item)
+{
+	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (gnome_canvas_item != NULL);
+	g_return_if_fail (GNOME_IS_CANVAS_ITEM (gnome_canvas_item));
+
+	view_frame->priv->gnome_canvas_item = gnome_canvas_item;
+}
+
+void *
+gnome_view_frame_get_canvas_item (GnomeViewFrame *view_frame)
+{
+	g_return_val_if_fail (view_frame != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+
+	return view_frame->priv->gnome_canvas_item;
 }

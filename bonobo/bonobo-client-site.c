@@ -504,7 +504,8 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 	}
 
 	gnome_view_frame_bind_to_view (view_frame, view);
-
+	CORBA_Object_release (view, &ev);
+	
 	/*
 	 * 4. Add this new view frame to the list of ViewFrames for
 	 * this embedded component.
@@ -527,14 +528,21 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 	return view_frame;
 }
 
+static void
+view_frame_destroyed (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
+{
+	client_site->view_frames = g_list_remove (client_site->view_frames, view_frame);
+}
+		      
 /**
  * gnome_client_site_new_item:
  * @client_site: The client site that contains a remote Embeddable object
- *
+ * @group: The Canvas group that will be the parent for the new item.
  *
  */
-GnomeCanvasItem *
-gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *group)
+GnomeViewFrame *
+gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *group,
+			    GnomeCanvasItem **return_item)
 {
 	GnomeObjectClient *server_object;
 	GnomeViewFrame *view_frame;
@@ -549,6 +557,9 @@ gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *grou
 	g_return_val_if_fail (group != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_GROUP (group), NULL);
 
+	if (return_item)
+		*return_item = NULL;
+	
 	server_object = client_site->bound_object;
 
 	/*
@@ -578,7 +589,8 @@ gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *grou
 	 * 3. Bind the view frame and the view
 	 */
 	gnome_view_frame_bind_to_view (view_frame, view);
-
+	CORBA_Object_release (view, &ev);
+	
 	item = gnome_bonobo_item_new (group, view_frame);
 
 	if (!item) {
@@ -586,15 +598,20 @@ gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *grou
 		CORBA_exception_free (&ev);		
 		return NULL;
 	}
-	
+
 	/*
 	 * 5. Add this new view frame to the list of ViewFrames for
 	 * this embedded component.
 	 */
 	client_site->view_frames = g_list_prepend (client_site->view_frames, view_frame);
+
+	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
+			    GTK_SIGNAL_FUNC (view_frame_destroyed), client_site);
+	
+	*return_item = item;
 	
 	CORBA_exception_free (&ev);
-	return item;
+	return view_frame;
 }
 
 /**

@@ -182,16 +182,19 @@ gnome_bonobo_selector_get_selected_goad_id (GnomeBonoboSelector *sel)
  * the user to make a selection.
  *
  * Returns: The GOAD ID of the selected server, or NULL if no server
- * is selected.
+ * is selected.  The GOAD ID string has been allocated with g_strdup
  */
 gchar *
 gnome_bonobo_select_goad_id (const gchar *title,
 			     const gchar **interfaces_required)
 {
-	gchar *name;
-	GtkWidget *sel = gnome_bonobo_selector_new (title, 
-		interfaces_required);
-	g_return_val_if_fail (sel != NULL, NULL);
+	GtkWidget *sel = gnome_bonobo_selector_new (title, interfaces_required);
+	gchar *name = NULL;
+	int n;
+
+	if (sel == NULL)
+		return NULL;
+
 	gtk_signal_connect (GTK_OBJECT (sel),
 		"ok", GTK_SIGNAL_FUNC (ok_callback), NULL);
 	gtk_signal_connect (GTK_OBJECT (sel),
@@ -201,9 +204,12 @@ gnome_bonobo_select_goad_id (const gchar *title,
 	
 	gtk_widget_show (sel);
 		
-	gtk_main ();
-	
-	name = gtk_object_get_user_data (GTK_OBJECT (sel));
+	n = gnome_dialog_run (sel);
+	if (n == -1)
+		return NULL;
+	if (n == 0)
+		name = gtk_object_get_user_data (GTK_OBJECT (sel));
+		
 	gtk_widget_destroy (sel);
 
 	return name;
