@@ -133,18 +133,16 @@ bonobo_window_get_contents (BonoboWindow *win)
 }
 
 static void
-destroy_priv (BonoboWindowPrivate *priv)
+bonobo_window_dispose (GObject *object)
 {
-	g_object_unref (G_OBJECT (priv->engine));
-	priv->engine = NULL;
-
-	g_free (priv->name);
-	priv->name = NULL;
-
-	g_free (priv->prefix);
-	priv->prefix = NULL;
+	BonoboWindow *win = (BonoboWindow *)object;
 	
-	g_free (priv);
+	if (win->priv->engine) {
+		g_object_unref (G_OBJECT (win->priv->engine));
+		win->priv->engine = NULL;
+	}
+
+	G_OBJECT_CLASS (bonobo_window_parent_class)->dispose (object);
 }
 
 static void
@@ -152,11 +150,11 @@ bonobo_window_finalize (GObject *object)
 {
 	BonoboWindow *win = (BonoboWindow *)object;
 	
-	if (win) {
-		if (win->priv)
-			destroy_priv (win->priv);
-		win->priv = NULL;
-	}
+	g_free (win->priv->name);
+	g_free (win->priv->prefix);
+	g_free (win->priv);
+
+	win->priv = NULL;
 
 	G_OBJECT_CLASS (bonobo_window_parent_class)->finalize (object);
 }
@@ -304,6 +302,7 @@ bonobo_window_class_init (BonoboWindowClass *klass)
 	bonobo_window_parent_class =
 		gtk_type_class (gtk_window_get_type ());
 
+	gobject_class->dispose  = bonobo_window_dispose;
 	gobject_class->finalize = bonobo_window_finalize;
 
 	widget_class->show_all = bonobo_window_show_all;

@@ -99,6 +99,32 @@ ui_event (BonoboUIComponent           *component,
 			G_TYPE_STRING, state, 0);
 }
 
+static void
+impl_Bonobo_UIComponent_setContainer (PortableServer_Servant   servant,
+				      const Bonobo_UIContainer container,
+				      CORBA_Environment       *ev)
+{
+	BonoboUIComponent *component = bonobo_ui_from_servant (servant);
+
+	bonobo_ui_component_set_container (component, container, ev);
+}
+
+static void
+impl_Bonobo_UIComponent_unsetContainer (PortableServer_Servant servant,
+					CORBA_Environment     *ev)
+{
+	BonoboUIComponent *component = bonobo_ui_from_servant (servant);
+
+	bonobo_ui_component_unset_container (component, ev);
+}
+
+static CORBA_string
+impl_Bonobo_UIComponent__get_name (PortableServer_Servant servant,
+				   CORBA_Environment     *ev)
+{
+	return CORBA_string_dup ("");
+}
+
 static CORBA_char *
 impl_Bonobo_UIComponent_describeVerbs (PortableServer_Servant servant,
 				       CORBA_Environment     *ev)
@@ -1313,7 +1339,6 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component,
 
 		name = component->priv->name ? component->priv->name : "";
 
-		Bonobo_UIContainer_removeNode (container, "/", name, ev);
 		Bonobo_UIContainer_deregisterComponent (container, name, ev);
 		
 		if (!opt_ev && BONOBO_EX (ev)) {
@@ -1444,9 +1469,12 @@ bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
 	uclass->get_prop = impl_get_prop;
 	uclass->exists   = impl_exists;
 
-	epv->describeVerbs = impl_Bonobo_UIComponent_describeVerbs;
-	epv->execVerb      = impl_Bonobo_UIComponent_execVerb;
-	epv->uiEvent       = impl_Bonobo_UIComponent_uiEvent;
+	epv->setContainer   = impl_Bonobo_UIComponent_setContainer;
+	epv->unsetContainer = impl_Bonobo_UIComponent_unsetContainer;
+	epv->_get_name      = impl_Bonobo_UIComponent__get_name;
+	epv->describeVerbs  = impl_Bonobo_UIComponent_describeVerbs;
+	epv->execVerb       = impl_Bonobo_UIComponent_execVerb;
+	epv->uiEvent        = impl_Bonobo_UIComponent_uiEvent;
 }
 
 static void

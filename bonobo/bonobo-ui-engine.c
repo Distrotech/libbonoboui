@@ -745,8 +745,15 @@ sub_component_destroy (BonoboUIEngine *engine, SubComponent *component)
 
 	if (component) {
 		g_free (component->name);
-		if (component->object != CORBA_OBJECT_NIL)
+		if (component->object != CORBA_OBJECT_NIL) {
+			CORBA_Environment ev;
+
+			CORBA_exception_init (&ev);
+			Bonobo_UIComponent_unsetContainer (component->object, &ev);
+			CORBA_exception_free (&ev);
+
 			bonobo_object_release_unref (component->object, NULL);
+		}
 		g_free (component);
 	}
 }

@@ -1,3 +1,27 @@
+2002-01-02  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c
+	(impl_Bonobo_UIComponent__get_name): stub.
+	(impl_Bonobo_UIComponent_unsetContainer),
+	(impl_Bonobo_UIComponent_setContainer): impl.
+	(bonobo_ui_component_class_init): fully populate epv.
+
+	* bonobo/bonobo-ui-engine.c (sub_component_destroy):
+	de-register the component.
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_unset_container): remove redundant
+	'rm' command; and just deregister.
+
+	* bonobo/bonobo-window.c (bonobo_window_dispose): impl.
+	(destroy_priv): fold into
+	(bonobo_window_finalize): here & upd.
+	(bonobo_window_class_init): upd.
+
+	* bonobo/bonobo-ui-sync-status.c
+	(impl_bonobo_ui_sync_status_state): kill
+	redundant braces - grr.
+
 2001-12-31  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-sync-menu.c
