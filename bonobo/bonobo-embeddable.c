@@ -163,6 +163,8 @@ impl_GNOME_BonoboObject_new_view (PortableServer_Servant servant,
 	if (view == NULL)
 		return CORBA_OBJECT_NIL;
 
+	view->view_frame = view_frame;
+
 	CORBA_exception_init (&evx);
 	ret = CORBA_Object_duplicate (GNOME_OBJECT (view)->object, &evx);
 	CORBA_exception_free (&evx);

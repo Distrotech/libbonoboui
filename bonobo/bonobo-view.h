@@ -5,6 +5,7 @@
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
 #include <bonobo/gnome-object.h>
+#include <bonobo/gnome-view-frame.h>
 
 BEGIN_GNOME_DECLS
  
@@ -19,6 +20,9 @@ typedef struct {
 
 	GtkWidget *widget;
 	GtkWidget *plug;
+
+	GNOME_ViewFrame view_frame;
+
 } GnomeView;
 
 typedef struct {
