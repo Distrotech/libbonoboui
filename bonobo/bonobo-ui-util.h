@@ -11,8 +11,8 @@ char      *bonobo_ui_util_pixbuf_to_xml        (GdkPixbuf    *pixbuf);
 
 GdkPixbuf *bonobo_ui_util_xml_to_pixbuf  (const char *xml);
 
-GdkPixbuf *bonobo_ui_util_xml_get_icon_pixbuf         (BonoboUINode *node);
-GtkWidget *bonobo_ui_util_xml_get_icon_pixmap_widget  (BonoboUINode *node);
+GdkPixbuf *bonobo_ui_util_xml_get_icon_pixbuf         (BonoboUINode *node, gboolean prepend_menu);
+GtkWidget *bonobo_ui_util_xml_get_icon_pixmap_widget  (BonoboUINode *node, gboolean prepend_menu);
 
 void  bonobo_ui_util_xml_set_pixbuf     (BonoboUINode  *node,
 					 GdkPixbuf     *pixbuf);

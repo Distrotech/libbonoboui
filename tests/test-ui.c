@@ -120,33 +120,33 @@ main (int argc, char **argv)
 	char simplea [] =
 		"<menu>\n"
 		"	<submenu name=\"File\" label=\"_File\">\n"
-		"		<menuitem name=\"open\" label=\"_Open\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Wibble\"/>\n"
+		"		<menuitem name=\"open\" label=\"_Open\" pixtype=\"stock\" pixname=\"Open\" descr=\"Wibble\"/>\n"
 		"		<control name=\"MyControl\"/>\n"
 		"		<control name=\"ThisIsEmpty\"/>\n"
 		"	</submenu>\n"
 		"</menu>";
 	char simpleb [] =
 		"<submenu name=\"File\" label=\"_FileB\">\n"
-		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Open you fool\"/>\n"
+		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Open\" descr=\"Open you fool\"/>\n"
 		"       <menuitem/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\" accel=\"*Control*t\"/>\n"
 		"       <placeholder name=\"Nice\" delimit=\"top\"/>\n"
 		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" "
-		"        pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"*Control*q\"/>\n"
+		"        pixtype=\"stock\" pixname=\"Close\" accel=\"*Control*q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
 		"<submenu name=\"File\" label=\"_FileC\">\n"
 		"    <placeholder name=\"Nice\" delimit=\"top\">\n"
 		"	<menuitem name=\"fooa\" label=\"_FooA\" type=\"radio\" group=\"foogroup\" descr=\"Radio1\"/>\n"
 		"	<menuitem name=\"foob\" label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
-		"	<menuitem name=\"wibble\" label=\"_Baa\" pixtype=\"stock\" pixname=\"Menu_Open\" sensitive=\"0\"/>\n"
+		"	<menuitem name=\"wibble\" label=\"_Baa\" pixtype=\"stock\" pixname=\"Open\" sensitive=\"0\"/>\n"
 		"       <separator/>\n"
 		"    </placeholder>\n"
 		"</submenu>\n";
 	char simpled [] =
-		"<menuitem name=\"save\" label=\"_SaveD\" pixtype=\"stock\" pixname=\"Menu_Save\"/>\n";
+		"<menuitem name=\"save\" label=\"_SaveD\" pixtype=\"stock\" pixname=\"Save\"/>\n";
 	char simplee [] =
-		"<menuitem name=\"fish\" label=\"_Inplace\" pixtype=\"stock\" pixname=\"Menu_Save\"/>\n";
+		"<menuitem name=\"fish\" label=\"_Inplace\" pixtype=\"stock\" pixname=\"Save\"/>\n";
 	char toola [] =
 		"<dockitem name=\"toolbar\" homogeneous=\"0\" look=\"both\">\n"
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"

@@ -351,7 +351,7 @@ get_stock_pixbuf (const char *name)
 }
 
 GdkPixbuf *
-bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node)
+bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 {
 	GdkPixbuf *icon_pixbuf = NULL;
 	char      *type;
@@ -362,10 +362,18 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node)
 		return NULL;
 
 	if (!strcmp (type, "stock")) {
-		char      *text;
+		char *text;
 
 		text = bonobo_ui_node_get_attr (node, "pixname");
-		icon_pixbuf = get_stock_pixbuf (text);
+
+		if (prepend_menu) {
+			char *fullname = g_strconcat ("Menu_", text, NULL);
+			fprintf (stderr, "Fullname '%s'\n", fullname);
+			icon_pixbuf = get_stock_pixbuf (fullname);
+			g_free (fullname);
+		} else
+			icon_pixbuf = get_stock_pixbuf (text);
+
 		bonobo_ui_node_free_string (text);
 	} else if (!strcmp (type, "filename")) {
 		char *name, *text;
@@ -405,14 +413,14 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node)
 }
 
 GtkWidget *
-bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node)
+bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_menu)
 {
 	GnomePixmap *gpixmap;
 	GdkPixbuf *pixbuf;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	pixbuf = bonobo_ui_util_xml_get_icon_pixbuf (node);
+	pixbuf = bonobo_ui_util_xml_get_icon_pixbuf (node, prepend_menu);
 	if (pixbuf == NULL)
 		return NULL;
 	
@@ -457,8 +465,8 @@ bonobo_ui_util_xml_set_pix_xpm (BonoboUINode     *node,
 }
 				     
 void
-bonobo_ui_util_xml_set_pix_stock (BonoboUINode     *node,
-				  const char  *name)
+bonobo_ui_util_xml_set_pix_stock (BonoboUINode *node,
+				  const char   *name)
 {
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (name != NULL);
@@ -468,8 +476,8 @@ bonobo_ui_util_xml_set_pix_stock (BonoboUINode     *node,
 }
 
 void
-bonobo_ui_util_xml_set_pix_fname (BonoboUINode     *node,
-				  const char  *name)
+bonobo_ui_util_xml_set_pix_fname (BonoboUINode *node,
+				  const char   *name)
 {
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (name != NULL);

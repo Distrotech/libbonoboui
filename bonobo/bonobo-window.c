@@ -752,20 +752,20 @@ cmd_get_attr (BonoboUINode     *node,
 }
 
 static GdkPixbuf *
-cmd_get_pixbuf (BonoboUINode     *node,
-		BonoboUINode     *cmd_node)
+cmd_get_toolbar_pixbuf (BonoboUINode     *node,
+			BonoboUINode     *cmd_node)
 {
 	GdkPixbuf *icon_pixbuf;
 	char      *type;
 
 	if ((type = bonobo_ui_node_get_attr (node, "pixtype"))) {
-		icon_pixbuf = bonobo_ui_util_xml_get_icon_pixbuf (node);
+		icon_pixbuf = bonobo_ui_util_xml_get_icon_pixbuf (node, FALSE);
 		bonobo_ui_node_free_string (type);
 		return icon_pixbuf;
 	}
 
 	if ((type = bonobo_ui_node_get_attr (cmd_node, "pixtype"))) {
-		icon_pixbuf = bonobo_ui_util_xml_get_icon_pixbuf (cmd_node);
+		icon_pixbuf = bonobo_ui_util_xml_get_icon_pixbuf (cmd_node, FALSE);
 		bonobo_ui_node_free_string (type);
 		return icon_pixbuf;
 	}
@@ -774,20 +774,20 @@ cmd_get_pixbuf (BonoboUINode     *node,
 }
 
 static GtkWidget *
-cmd_get_pixmap (BonoboUINode     *node,
-		BonoboUINode     *cmd_node)
+cmd_get_menu_pixmap (BonoboUINode     *node,
+		     BonoboUINode     *cmd_node)
 {
 	GtkWidget *pixmap;
 	char      *type;
 
 	if ((type = bonobo_ui_node_get_attr (node, "pixtype"))) {
-		pixmap = bonobo_ui_util_xml_get_icon_pixmap_widget (node);
+		pixmap = bonobo_ui_util_xml_get_icon_pixmap_widget (node, TRUE);
 		bonobo_ui_node_free_string (type);
 		return pixmap;
 	}
 
 	if ((type = bonobo_ui_node_get_attr (cmd_node, "pixtype"))) {
-		pixmap = bonobo_ui_util_xml_get_icon_pixmap_widget (node);
+		pixmap = bonobo_ui_util_xml_get_icon_pixmap_widget (cmd_node, TRUE);
 		bonobo_ui_node_free_string (type);
 		return pixmap;
 	}
@@ -1546,7 +1546,7 @@ menu_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 			GtkWidget *pixmap;
 			GtkPixmapMenuItem *gack = GTK_PIXMAP_MENU_ITEM (menu_widget);
 
-			pixmap = cmd_get_pixmap (node, cmd_node);
+			pixmap = cmd_get_menu_pixmap (node, cmd_node);
 
 			if (pixmap) {
 				/* Since this widget sucks we must claw inside its guts */
@@ -1934,7 +1934,7 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 	if (bonobo_ui_node_has_name (node, "control"))
 		return;
 
-	icon_pixbuf = cmd_get_pixbuf (node, cmd_node);
+	icon_pixbuf = cmd_get_toolbar_pixbuf (node, cmd_node);
 
 	type = cmd_get_attr (node, cmd_node, "type");
 	label = cmd_get_attr (node, cmd_node, "label");

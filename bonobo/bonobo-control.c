@@ -17,6 +17,7 @@
 #include <bonobo/bonobo-control.h>
 #include <gdk/gdkprivate.h>
 #include <gtk/gtkbox.h>
+#include <gtk/gtkmain.h>
 
 enum {
 	SET_FRAME,
@@ -240,9 +241,13 @@ bonobo_gtk_widget_from_x11_id (guint32 xid)
 	}
 }
 
-static gboolean
-idle_destroy_socket (BonoboControl *control)
+static gint
+idle_destroy_socket (gpointer data)
 {
+	BonoboControl *control = BONOBO_CONTROL (data);
+
+	g_return_val_if_fail (control != NULL, FALSE);
+
 	control->priv->destroy_idle_id = 0;
 
 	gtk_widget_destroy (control->priv->socket);
@@ -327,7 +332,8 @@ impl_Bonobo_Control_set_window (PortableServer_Servant   servant,
 		gtk_widget_hide (local_socket);
 
 		control->priv->socket = local_socket;
-		control->priv->destroy_idle_id = gtk_idle_add (idle_destroy_socket, control);
+		control->priv->destroy_idle_id = gtk_idle_add (
+			idle_destroy_socket, control);
 
 		gtk_signal_connect (GTK_OBJECT (local_socket),
 				    "destroy",
