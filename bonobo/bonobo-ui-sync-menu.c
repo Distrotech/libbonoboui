@@ -927,7 +927,7 @@ bonobo_ui_sync_menu_new (BonoboUIEngine *engine,
 		g_object_ref (menu_dock_item) :
 		menu_dock_item;
 
-	sync->accel_group = group ? g_object_ref (group) : NULL;
+	sync->accel_group = group ? g_object_ref (group) : gtk_accel_group_new ();
 
 	return bonobo_ui_sync_construct (
 		BONOBO_UI_SYNC (sync), engine, TRUE, TRUE);
