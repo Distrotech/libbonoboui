@@ -1,19 +1,22 @@
 # Greek translation of libbonoboui.
-# Copyright (C) 2002 Simos Xenitellis.
-# Simos Xenitellis <simos@hellug.gr>, 2002.
-# 
+# Copyright (C) 2003 Simos Xenitellis.
+# Simos Xenitellis <simos74@gmx.net>, 2002,2003.
+#
 # simos: 71 messages, 16Aug2002, initial translation.
+# simos: 92 messages, 05Nov2002, completed translation..
+# kostas : 05Jan2003 updated translation for Gnome 2.1x
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2002-11-26 10:17+0000\n"
-"PO-Revision-Date: 2002-08-17 13:18+0100\n"
-"Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
+"POT-Creation-Date: 2003-01-05 12:28+0200\n"
+"PO-Revision-Date: 2003-01-05 12:34+0200\n"
+"Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
 
 #
 #: bonobo/bonobo-canvas-item.c:647
@@ -21,24 +24,20 @@ msgid "corba factory"
 msgstr "εργοστάσιο CORBA"
 
 #: bonobo/bonobo-canvas-item.c:648
-#, fuzzy
 msgid "The factory pointer"
-msgstr "Τοπικός εκτυπωτής"
+msgstr "Ο δείκτης εργοστασίου"
 
 #: bonobo/bonobo-canvas-item.c:657
-#, fuzzy
 msgid "corba UI container"
-msgstr "Δοχείο-δείγμα Bonobo"
+msgstr "δοχείο γραφικής διασύνδεσης (UI) CORBA"
 
 #: bonobo/bonobo-canvas-item.c:658
-#, fuzzy
 msgid "The User interface container"
-msgstr "Διασύνδεση χρήστη"
+msgstr "Το δοχείο γραφικής διασύνδεσης"
 
 #: bonobo/bonobo-dock-item-grip.c:236
-#, fuzzy
 msgid "Dock the toolbar"
-msgstr "Παραμετροποίηση γραμμής εντολών"
+msgstr "Αγκύρωση της εργαλειοθήκης"
 
 #: bonobo/bonobo-dock-item-grip.c:237
 msgid "Un dock the toolbar"
@@ -81,7 +80,7 @@ msgstr "Προώθηση Γεγονότων"
 
 #: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "Πότε τα γεγονότα Χ πρέπει να προωθούνται"
 
 # #-#-#-#-#  bonobo.HEAD.el.po (bonobo 0.34)  #-#-#-#-#
 #
@@ -105,9 +104,8 @@ msgid "Description"
 msgstr "Περιγραφή"
 
 #: bonobo/bonobo-selector.c:345
-#, fuzzy
 msgid "Interfaces required"
-msgstr "Διασύνδεση"
+msgstr "Διασυνδέσεις που απαιτούνται"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -115,15 +113,18 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"Ένας πίνακας διασυνδέσεων διαχωριζόμενος με χαρακτήρες NULL που ο "
+"εξυπηρετητής πρέπει να υποστηρίζει για να εμφανίζεται στον επιλογέα. Εξ "
+"ορισμού το \"IDL:Bonobo/Embeddable:1.0\" αν δεν εμφανίζονται άλλες "
+"διασυνδέσεις"
 
 #: bonobo/bonobo-selector.c:348
-#, fuzzy
 msgid "Interface required entry"
-msgstr "Συναρτήσεις Δημιουργίας Διεπιφάνειας:"
+msgstr "Καταχώρηση απαίτησης διασύνδεσης"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Μία από τις διασυνδέσεις που απαιτούνται"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -174,15 +175,15 @@ msgstr "Μόνο κείμενο _προτεραιότητας"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "Αποσφαλμάτωση"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "_Απόρριψη XML"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "Απόρριψη ολόκληρης της περιγραφής UI's XML στην κονσόλα"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -329,27 +330,28 @@ msgid "Customize the toolbar"
 msgstr "Παραμετροποίηση γραμμής εντολών"
 
 #: bonobo/bonobo-ui-toolbar.c:1096
-#, fuzzy
 msgid "is floating"
-msgstr "Πληροφορίες Δίσκων"
+msgstr "αιωρείται"
 
 #: bonobo/bonobo-ui-toolbar.c:1097
 msgid "whether the toolbar is floating"
-msgstr ""
+msgstr "αν η εργαλειοθήκη αιωρήται"
 
-#: bonobo/bonobo-ui-util.c:615
+#: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
 msgstr "Περιε_χόμενα"
 
 # #-#-#-#-#  gnome-libs.gnome-libs-1-0.el.po (gnome-libs 1.2.12)  #-#-#-#-#
 #
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
 msgstr "Εμφάνιση βοήθειας για την εφαρμογή"
 
 #: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
+"Το όνομα του παραθύρου - για χρήση στη μετατροπή κατ' αλληλουχία των "
+"ρυθμίσεων."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -364,26 +366,24 @@ msgid "Minimum Zoom level"
 msgstr "Ελάχιστο επίπεδο Εστίασης"
 
 #: bonobo/bonobo-zoomable.c:336
-#, fuzzy
 msgid "The minimum degree of enlargment"
-msgstr "Αριθμός κατατμήσεων."
+msgstr "Ο ελάχιστος βαθμός μεγέθυνσης"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
 msgstr "Μέγιστο επίπεδο Εστίασης"
 
 #: bonobo/bonobo-zoomable.c:345
-#, fuzzy
 msgid "The maximum degree of enlargment"
-msgstr "Μέγιστος αριθμός γραμμών."
+msgstr "Ο μέγιστος βαθμός μεγέθυνσης"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr ""
+msgstr "Έχει ελάχιστο επίπεδο Εστίασης"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "Αν έχει ένα έγκυρο ελάχιστο επίπεδο εστίασης"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
@@ -391,7 +391,7 @@ msgstr "Έχει μέγιστο επίπεδο εστίασης"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "Αν έχει ένα έγκυρο μέγιστο επίπεδο εστίασης"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -399,7 +399,7 @@ msgstr "Είναι συνεχές"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "Αν η εστίαση γίνεται συνεχώς (σε αντίθεση τμηματικά)"
 
 # #-#-#-#-#  gnome-libs.gnome-libs-1-0.el.po (gnome-libs 1.2.12)  #-#-#-#-#
 #
@@ -447,7 +447,7 @@ msgstr "Επιλο_γή"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr ""
+msgstr "Δεν κάνει κάτι, είναι μόνο για παρουσίαση."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -468,6 +468,6 @@ msgid "Cannot init libbonoboui code"
 msgstr "Αποτυχία αρχικοποίησης κώδικα libbonoboui"
 
 #: samples/controls/bonobo-sample-controls.c:133
-#, fuzzy
 msgid "Could not initialize Bonobo UI"
-msgstr "Αδύνατη η αρχικοποίηση του Bonobo"
+msgstr "Αδύνατη η αρχικοποίηση της γραφικής διασύνδεσης του Bonobo "
+
