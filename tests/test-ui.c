@@ -54,7 +54,7 @@ main (int argc, char **argv)
 		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\"/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" label=\"_ToggleMe\"/>\n"
 		"       <placeholder delimit=\"both\"/>\n"
-		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" pixtype=\"stock\" pixname=\"Menu_Close\"/>\n"
+		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" pixtype=\"stock\" pixname=\"Menu_Close\" accel=\"&lt;Control&gt;q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
 		"<submenu name=\"file\" label=\"_FileC\">\n"

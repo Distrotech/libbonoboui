@@ -6,7 +6,7 @@
 #include "bonobo.h"
 #include "bonobo-ui-compat.h"
 
-#undef COMPAT_DEBUG
+#define COMPAT_DEBUG
 
 typedef struct {
 	BonoboUIComponent *component;
@@ -71,7 +71,7 @@ compat_sync (BonoboUIHandlerPrivate *priv, const char *parent_path,
 	if (do_siblings) {
 		xmlNode *l;
 
-		g_warning ("TESTME: do siblings");
+/*		g_warning ("TESTME: do siblings");*/
 		for (; node->prev; node = node->prev)
 			;
 		for (l = node; l; l = l->next) {
@@ -91,7 +91,7 @@ compat_sync (BonoboUIHandlerPrivate *priv, const char *parent_path,
 		else
 			copy = node;
 		
-		g_warning ("TESTME: do normal set");
+/*		g_warning ("TESTME: do normal set");*/
 
 		bonobo_ui_component_set_tree (
 			priv->component, priv->container,
@@ -311,6 +311,7 @@ add_accel_verb (BonoboUIHandlerPrivate *priv,
 typedef struct {
 	BonoboUIHandlerCallback cb;
 	gpointer                user_data;
+	char                   *old_path;
 } VerbClosure;
 
 static void
@@ -325,28 +326,31 @@ verb_to_cb (BonoboUIComponent *component,
 
 	/* Does anyone use the path field here ? */
 	c->cb ((BonoboUIHandler *)component, c->user_data,
-	    "Dummy path");
+	       c->old_path);
 }
 
 static void
 free_closure (gpointer object, gpointer closure)
 {
+	g_free (((VerbClosure *)closure)->old_path);
 	g_free (closure);
 }
 
 static void
 compat_add_verb (BonoboUIComponent *component, const char *verb,
-		 BonoboUIHandlerCallback cb, gpointer user_data)
+		 BonoboUIHandlerCallback cb, gpointer user_data,
+		 const char *old_path)
 {
-		VerbClosure *c = g_new (VerbClosure, 1);
+	VerbClosure *c = g_new (VerbClosure, 1);
 
-		c->cb        = cb;
-		c->user_data = user_data;
+	c->cb        = cb;
+	c->user_data = user_data;
+	c->old_path  = g_strdup (old_path);
 
-		bonobo_ui_component_add_verb (component, verb,
-					      verb_to_cb, c);
-		gtk_signal_connect (GTK_OBJECT (component),
-				    "destroy", (GtkSignalFunc) free_closure, c);
+	bonobo_ui_component_add_verb (component, verb,
+				      verb_to_cb, c);
+	gtk_signal_connect (GTK_OBJECT (component),
+			    "destroy", (GtkSignalFunc) free_closure, c);
 }
 
 static xmlNode *
@@ -426,7 +430,7 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 /*	    uii->type == GNOME_APP_UI_RADIOITEM ||*/
 	    uii->type == GNOME_APP_UI_TOGGLEITEM) {
 		compat_add_verb (priv->component, verb, uii->moreinfo,
-				 data ? data : uii->user_data);
+				 data ? data : uii->user_data, "DummyPath");
 		xmlSetProp (node, "verb", verb);
 	}
 
@@ -710,40 +714,76 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 			    gpointer callback_data)
 {
 	xmlNode *node, *parent;
-	char    *cname = strrchr (path, '/');
+	char    *cname;
 	char    *verb;
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
 
 	g_return_if_fail (priv != NULL);
+	cname = strrchr (path, '/');
 	g_return_if_fail (cname != NULL);
+
+	if (cname > path && *(cname - 1) == '\\')
+		cname = strrchr (cname - 1, '/');
+	g_return_if_fail (cname != NULL);
+
 	cname++;
+
+	switch (type) {
+	case BONOBO_UI_HANDLER_MENU_PLACEHOLDER:
+		g_warning ("CONVERTME: Placeholders not handled");
+	case BONOBO_UI_HANDLER_MENU_RADIOGROUP:
+	case BONOBO_UI_HANDLER_MENU_END:
+		return;
+	default:
+		break;
+	}
 	
 	verb = cname;
 
 	node = bonobo_ui_util_new_menu (type == BONOBO_UI_HANDLER_MENU_SUBTREE,
-					cname, label, hint, verb);
+					cname, label, hint, NULL);
 	deal_with_pixmap (pixmap_type, pixmap_data, node);
 
 	switch (type) {
-	case BONOBO_UI_HANDLER_MENU_ITEM:
 	case BONOBO_UI_HANDLER_MENU_RADIOITEM:
-	case BONOBO_UI_HANDLER_MENU_RADIOGROUP:
+		xmlSetProp (node, "type", "radio");
+	case BONOBO_UI_HANDLER_MENU_ITEM:
 	case BONOBO_UI_HANDLER_MENU_TOGGLEITEM:
-		compat_add_verb (priv->component, verb, callback, callback_data);
+		compat_add_verb (priv->component, verb,
+				 callback, callback_data, path);
 		add_accel_verb (priv, accelerator_key, ac_mods, verb);
+		xmlSetProp (node, "verb", cname);
 		break;
 	case BONOBO_UI_HANDLER_MENU_SEPARATOR:
-	case BONOBO_UI_HANDLER_MENU_PLACEHOLDER:
 	case BONOBO_UI_HANDLER_MENU_SUBTREE:
 		break;
-	case BONOBO_UI_HANDLER_MENU_END:
 	default:
 		g_warning ("Broken type for menu");
 		return;
 	}
 
 	{
-		char *xml_path = make_path ("/menu", "submenu", path, TRUE);
+		char *xml_path;
+
+		/*
+		 * This will never work for evil like /wibble/radio\/ group/etc.
+		 */
+		if (type == BONOBO_UI_HANDLER_MENU_RADIOITEM) {
+			char *real_path = g_strdup (path);
+			char *p;
+			p = strrchr (real_path, '/');
+			g_return_if_fail (p != NULL);
+			*p = '\0';
+			p = strrchr (real_path, '/');
+			g_return_if_fail (p != NULL);
+			*p = '\0';
+			xmlSetProp (node, "group", p + 1);
+
+			xml_path = make_path ("/menu", "submenu", real_path, FALSE);
+			g_free (real_path);
+		} else
+			xml_path = make_path ("/menu", "submenu", path, TRUE);
+
 		parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
 
 		xmlAddChild (parent, node);
@@ -883,7 +923,7 @@ compat_toolbar_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 /*	    uii->type == GNOME_APP_UI_RADIOITEM ||*/
 	    uii->type == GNOME_APP_UI_TOGGLEITEM) {
 		compat_add_verb (priv->component, verb, uii->moreinfo,
-				 data ? data : uii->user_data);
+				 data ? data : uii->user_data, "DummyPath");
 		xmlSetProp (node, "verb", verb);
 	}
 
@@ -983,13 +1023,13 @@ bonobo_ui_handler_toolbar_new (BonoboUIHandler *uih, const char *path,
 						       hint, verb);
 		add_accel_verb (priv, accelerator_key, ac_mods, verb);
 		compat_add_verb (priv->component, verb, callback,
-				 callback_data);
+				 callback_data, path);
 		break;
 	case BONOBO_UI_HANDLER_MENU_TOGGLEITEM:
 		node = bonobo_ui_util_new_toggle_toolbar (cname, label?label[0]?label:NULL:NULL,
 							  hint, verb);
 		compat_add_verb (priv->component, verb, callback,
-				 callback_data);
+				 callback_data, path);
 		add_accel_verb (priv, accelerator_key, ac_mods, verb);
 		/* Add Verb & Callback */
 		break;
@@ -1155,3 +1195,8 @@ bonobo_ui_handler_get_app (BonoboUIHandler *uih)
 	return NULL;
 }
 
+GtkType
+bonobo_ui_handler_get_type (void)
+{
+	return GTK_TYPE_OBJECT;
+}

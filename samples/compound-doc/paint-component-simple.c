@@ -160,6 +160,8 @@ view_set_color (view_data_t *view_data, char *color)
 	GdkColormap *colormap;
 	GdkColor gdk_color;
 
+	fprintf (stderr, "Set color to '%s'\n", color);
+
 	colormap = gtk_widget_get_colormap (view_data->drawing_area);
 
 	gdk_color_parse (color, &gdk_color);
@@ -177,6 +179,8 @@ view_color_select_cb (BonoboUIHandler *uih, view_data_t *view_data, char *path)
 		view_set_color (view_data, "white");
 	else if (strstr (path, "Green") != NULL)
 		view_set_color (view_data, "green");
+	else
+		g_error ("set to unknown color");
 }
 
 /*

@@ -1694,6 +1694,3 @@ bonobo_ui_handler_uiinfo_pixmap_type_to_uih (GnomeUIPixmapType ui_type)
 		return BONOBO_UI_HANDLER_PIXMAP_NONE;
 	}
 }
-
-
-

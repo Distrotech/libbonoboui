@@ -191,7 +191,7 @@ test_app_LDADD =					\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(top_builddir)/bonobo/libbonobox.la		\
 	$(top_builddir)/bonobo/libbonobo-print.la	\
-	$(BONOBOX_TEST_LIBS)
+	$(BONOBOX_TEST_LIBS) 
 
 bonobo_ui_extract_SOURCES = extract.c
 bonobo_ui_extract_LDADD =				\

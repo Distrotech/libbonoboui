@@ -1,7 +1,14 @@
 #include "config.h"
 #include "bonobo-ui-xml.h"
 
-#undef BONOBO_UI_XML_DUMP
+#define UI_XML_DEBUG
+#define BONOBO_UI_XML_DUMP
+
+#ifdef BONOBO_UI_XML_DUMP
+#	define DUMP_XML(a,b,c) (bonobo_ui_xml_dump ((a), (b), (c)))
+#else
+#	define DUMP_XML(a,b,c)
+#endif
 
 #define XML_FREE(a) (a?xmlFree(a):a)
 
@@ -137,6 +144,20 @@ set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
 
 	data->id = id;
 
+	/* Do some basic validation here ? */
+	{
+		char *p, *name;
+		
+		if ((name = xmlGetProp (node, "name"))) {
+			/*
+			 *  The consequences of this are so unthinkable
+			 * an assertion is warrented.
+			 */
+			for (p = name; *p; p++)
+				g_assert (*p != '/');
+		}
+	}
+
 	for (node = node->childs; node; node = node->next)
 		set_id (tree, node, id);
 }
@@ -189,7 +210,6 @@ dump_internals (BonoboUIXml *tree, xmlNode *node)
 void
 bonobo_ui_xml_dump (BonoboUIXml *tree, xmlNode *node, const char *descr)
 {
-#ifdef BONOBO_UI_XML_DUMP	
 	xmlDoc *doc;
 
 	doc = xmlNewDoc ("1.0");
@@ -204,7 +224,6 @@ bonobo_ui_xml_dump (BonoboUIXml *tree, xmlNode *node, const char *descr)
 	fprintf (stderr, "--- Internals ---\n");
 	dump_internals (tree, node);
 	fprintf (stderr, "---\n");
-#endif
 }
 
 /*
@@ -364,6 +383,123 @@ find_sibling (xmlNode *node, const char *name)
 	return ret;
 }
 
+/*
+ *  This monumental waste of time chewed 2 hours of my life
+ * and was to try and help Eazel not have to change their
+ * code at all; These routines worked fine, the compat ones
+ * were duff.
+ */
+/*
+char *
+bonobo_ui_xml_path_escape (const char *path)
+{
+	char *ret, *dest;
+	int   len = 0;
+	const char *p;
+
+	for (p = path; p && *p; p++) {
+		if (*p == '/')
+			len++;
+		len++;
+	}
+	
+	dest = ret = g_malloc (len + 1);
+
+	for (p = path; p && *p; p++) {
+		if (*p == '/' ||
+		    *p == '\\')
+			*dest++ = '\\';
+		*dest++ = *p;
+	}
+	dest [len] = '\0';
+
+	return ret;
+}
+
+char *
+bonobo_ui_xml_path_unescape (const char *path)
+{
+	char *ret, *dest;
+	const char *p;
+	
+	dest = ret = g_malloc (strlen (path) + 1);
+
+	for (p = path; p && *p; p++) {
+		if (*p == '\\')
+			p++;
+		*dest++ = *p;
+	}
+	*dest = '\0';
+	
+	return ret;
+}
+*/
+
+static char **
+bonobo_ui_xml_path_split (const char *path)
+{
+	return g_strsplit (path, "/", -1);
+/*	GSList *string_list = NULL, *l;
+	char *chunk, **ret;
+	int   i, chunks;
+	const char *p;
+
+	g_return_val_if_fail (path != NULL, NULL);
+
+	chunk = g_malloc (strlen (path) + 2);
+	p = path;
+
+	string_list = g_slist_prepend (string_list, chunk);
+	chunks = 1;
+	for (i = 0; p && *p; i++) {
+
+		if (*p == '\\') {
+			p++;
+			chunk [i] = *p++;
+		} else if (*p == '/') {
+			chunk [i] = '\0';
+			p++;
+			if (*p != '\0') {
+				string_list = g_slist_prepend (
+					string_list, &chunk [i] + 1);
+				chunks++;
+			}
+		} else
+			chunk [i] = *p++;
+	}
+	chunk [i] = '\0';
+	g_assert (i < strlen (path) + 2);
+
+	ret = g_new (char *, chunks + 1);
+	ret [chunks] = NULL;
+
+	l = string_list;
+	for (i = chunks - 1; i >= 0; i--) {
+		ret [i] = l->data;
+		l = l->next;
+	}
+	g_assert (l == NULL);
+	g_slist_free (string_list);
+	g_assert (ret [0] == chunk);
+
+	fprintf (stderr, "Split path '%s' to:\n", path);
+	for (i = 0; ret [i]; i++)
+		fprintf (stderr, "> %s\n", ret [i]);
+
+		return ret;*/
+}
+
+static void
+bonobo_ui_xml_path_freev (char **split)
+{
+	g_strfreev (split);
+
+/*	if (split)
+		g_free (*split);
+
+		g_free (split);*/
+}
+
 static xmlNode *
 xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 {
@@ -374,8 +510,10 @@ xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 	
 	g_return_val_if_fail (tree != NULL, NULL);
 
+#ifdef UI_XML_DEBUG
 	fprintf (stderr, "Find path '%s'\n", path);
-/*	bonobo_ui_xml_dump (tree, tree->root, "Before find path");*/
+#endif
+/*	DUMP_XML (tree, tree->root, "Before find path");*/
 
 	if (!path || path [0] == '\0')
 		return tree->root;
@@ -383,7 +521,7 @@ xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 	if (path [0] != '/')
 		g_warning ("non-absolute path brokenness '%s'", path);
 
-	names = g_strsplit (path, "/", -1);
+	names = bonobo_ui_xml_path_split (path);
 
 	ret = tree->root;
 	for (i = 0; names && names [i]; i++) {
@@ -403,6 +541,7 @@ xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
  
 				if (ret->properties) {
 					ret = xmlNewChild (ret->parent, NULL, ret->name, NULL);
+					bonobo_ui_xml_set_dirty (tree, ret->parent, TRUE);
 /*					g_warning ("TESTME: Created new sibling with name: '%s' '%s'",
 					ret->name, xmlGetProp (ret, "name"));*/
 				} /*else Use the node we created last time */
@@ -418,6 +557,7 @@ xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 				if (!create)
 					return NULL;
 				ret = xmlNewChild (ret, NULL, names [i], NULL);
+				bonobo_ui_xml_set_dirty (tree, ret->parent, TRUE);
 
 /*				g_warning ("TESTME: Created child with name: '%s' '%s'",
 				ret->name, xmlGetProp (ret, "name"));*/
@@ -425,9 +565,9 @@ xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 		}
 	}
 		
-	g_strfreev (names);
+	bonobo_ui_xml_path_freev (names);
 
-/*	bonobo_ui_xml_dump (tree, tree->root, "After clean find path");*/
+/*	DUMP_XML (tree, tree->root, "After clean find path");*/
 
 	return ret;
 }
@@ -592,11 +732,11 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 		data = bonobo_ui_xml_get_data (tree, current);
 		data->dirty = TRUE;
 
-/*		bonobo_ui_xml_dump (tree, current, "After transfer");*/
+/*		DUMP_XML (tree, current, "After transfer");*/
 	}
 
 	*new = NULL;
-/*	bonobo_ui_xml_dump (tree, current, "After all"); */
+/*	DUMP_XML (tree, current, "After all"); */
 }
 
 void
@@ -617,15 +757,21 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 
 	current = bonobo_ui_xml_get_path (tree, path);
 
-	fprintf (stderr, "\n\n\nPATH: '%s' '%s\n", current->name,
-		 xmlGetProp (current, "name"));
+#ifdef UI_XML_DEBUG
+	{
+		char *txt;
+		fprintf (stderr, "\n\n\nPATH: '%s' '%s\n", current->name,
+			 (txt = xmlGetProp (current, "name")));
+		XML_FREE (txt);
+	}
+#endif
 
-	bonobo_ui_xml_dump (tree, tree->root, "Merging in");
-	bonobo_ui_xml_dump (tree, nodes, "this load");
+	DUMP_XML (tree, tree->root, "Merging in");
+	DUMP_XML (tree, nodes, "this load");
 
 	merge (tree, current, &nodes);
 
-	bonobo_ui_xml_dump (tree, tree->root, "Merged to");
+	DUMP_XML (tree, tree->root, "Merged to");
 }
 
 void
@@ -642,7 +788,7 @@ bonobo_ui_xml_rm (BonoboUIXml *tree,
 	else
 		g_warning ("Removing unknown path '%s'", path);
 
-	bonobo_ui_xml_dump (tree, tree->root, "After remove");
+	DUMP_XML (tree, tree->root, "After remove");
 }
 
 static void

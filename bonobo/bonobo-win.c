@@ -12,6 +12,11 @@
 
 GtkObjectClass *bonobo_app_parent_class = NULL;
 
+#define BONOBO_APP_WINDOW_KEY "Bonobo::BonoboApp"
+
+#define	BINDING_MOD_MASK()				\
+	(gtk_accelerator_get_default_mod_mask () | GDK_RELEASE_MASK)
+
 POA_Bonobo_UIContainer__vepv bonobo_app_vepv;
 
 #define XML_FREE(a) (a?xmlFree(a):a)
@@ -34,6 +39,7 @@ struct _BonoboAppPrivate {
 	char          *prefix;		/* App prefix */
 
 	GHashTable    *radio_groups;
+	GHashTable    *keybindings;
 	GSList        *components;
 };
 
@@ -250,8 +256,8 @@ get_cmd_state (BonoboAppPrivate *priv, const char *cmd_name)
 static void
 set_cmd_dirty (BonoboAppPrivate *priv, xmlNode *cmd_node)
 {
-	xmlNode    *node;
-	const char *cmd_name;
+	char *cmd_name;
+	xmlNode *node;
 	BonoboUIXmlData *data;
 
 	g_return_if_fail (priv != NULL);
@@ -264,6 +270,8 @@ set_cmd_dirty (BonoboAppPrivate *priv, xmlNode *cmd_node)
 
 	data = bonobo_ui_xml_get_data (priv->tree, node);
 	data->dirty = TRUE;
+
+	g_free (cmd_name);
 }
 
 static void
@@ -464,6 +472,7 @@ remove_fn (GtkObject *object, xmlNode *node, BonoboAppPrivate *priv)
 
 	if (info->widget)
 		gtk_widget_destroy (info->widget);
+	info->widget = NULL;
 
 /*	fprintf (stderr, "XRemove '%s'\n", id);*/
 
@@ -817,6 +826,30 @@ menu_item_set_label (BonoboAppPrivate *priv, xmlNode *node,
 	}
 }
 
+static void
+menu_item_set_global_accels (BonoboAppPrivate *priv, xmlNode *node,
+			     GtkWidget *menu_widget)
+{
+	char *text;
+
+	if ((text = xmlGetProp (node, "accel"))) {
+		guint           key;
+		GdkModifierType mods;
+
+		gtk_accelerator_parse (text, &key, &mods);
+		xmlFree (text);
+
+		if (!key)
+			return;
+
+		gtk_widget_add_accelerator (menu_widget,
+					    "activate",
+					    priv->accel_group,
+					    key, mods,
+					    GTK_ACCEL_VISIBLE);
+	}
+}
+
 /*
  * Insert slightly cleverly.
  *  NB. it is no use inserting into the default placeholder here
@@ -852,7 +885,7 @@ add_node_fn (xmlNode *parent, xmlNode *child)
 static void build_menu_widget (BonoboAppPrivate *priv, xmlNode *node);
 
 static void
-build_placeholder (BonoboAppPrivate *priv, xmlNode *node, GtkWidget *parent)
+build_menu_placeholder (BonoboAppPrivate *priv, xmlNode *node, GtkWidget *parent)
 {
 	xmlNode   *l;
 	char      *delimit;
@@ -907,7 +940,7 @@ build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
 	parent = node_get_parent_widget (priv->tree, node);
 
 	if (!strcmp (node->name, "placeholder")) {
-		build_placeholder (priv, node, parent);
+		build_menu_placeholder (priv, node, parent);
 		return;
 	}
 
@@ -916,6 +949,8 @@ build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
 		return;
 
 	menu_item_set_label (priv, node, parent, menu_widget);
+
+	menu_item_set_global_accels (priv, node, menu_widget);
 
 	if (!strcmp (node->name, "submenu")) {
 		xmlNode      *l;
@@ -972,7 +1007,7 @@ build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
 
 		gtk_menu_shell_append (GTK_MENU_SHELL (parent), menu_widget);
 	} else {
-		g_warning ("FIXME: Unknown name type '%s'", node->name);
+		g_warning ("Unknown name type '%s'", node->name);
 		return;
 	}
 
@@ -1009,6 +1044,48 @@ update_menus (BonoboAppPrivate *priv, xmlNode *node)
 		build_menu_widget (priv, l);
 }
 
+static void build_toolbar_widget (BonoboAppPrivate *priv, xmlNode *node);
+
+static void
+build_toolbar_placeholder (BonoboAppPrivate *priv, xmlNode *node, GtkWidget *parent)
+{
+	xmlNode   *l;
+	char      *delimit;
+	gboolean   top = FALSE, bottom = FALSE;
+	GtkWidget *sep;
+
+	if ((delimit = xmlGetProp (node, "delimit"))) {
+		if (!strcmp (delimit, "top") ||
+		    !strcmp (delimit, "both"))
+			top = (node->childs != NULL) && (node->prev != NULL);
+
+		if (!strcmp (delimit, "bottom") ||
+		    !strcmp (delimit, "both"))
+			bottom = (node->childs != NULL) && (node->next != NULL);
+		xmlFree (delimit);
+	}
+
+	if (top) {
+		sep = bonobo_app_item_new_separator ();
+		gtk_widget_set_sensitive (sep, FALSE);
+		gtk_widget_show (sep);
+		bonobo_app_toolbar_add (BONOBO_APP_TOOLBAR (parent), sep);
+	}
+
+/*	g_warning ("Building placeholder %d %d %p %p %p", top, bottom,
+	node->childs, node->prev, node->next);*/
+		
+	for (l = node->childs; l; l = l->next)
+		build_toolbar_widget (priv, l);
+
+	if (bottom) {
+		sep = bonobo_app_item_new_separator ();
+		gtk_widget_set_sensitive (sep, FALSE);
+		gtk_widget_show (sep);
+		bonobo_app_toolbar_add (BONOBO_APP_TOOLBAR (parent), sep);
+	}
+}
+
 /*
  * see menu_toplevel_item_create_widget.
  */
@@ -1028,6 +1105,11 @@ build_toolbar_widget (BonoboAppPrivate *priv, xmlNode *node)
 
 	parent = node_get_parent_widget (priv->tree, node);
 
+	if (!strcmp (node->name, "placeholder")) {
+		build_toolbar_placeholder (priv, node, parent);
+		return;
+	}
+
 	/* Create toolbar item */
 	if ((type = xmlGetProp (node, "pixtype"))) {
 		pixmap = bonobo_ui_util_xml_get_pixmap (parent, node);
@@ -1037,10 +1119,6 @@ build_toolbar_widget (BonoboAppPrivate *priv, xmlNode *node)
 	} else
 		pixmap = NULL;
 
-	/*
-	 * FIXME: (toplevel_create_item_widget)
-	 *   Placeholder
-	 */ 
 	type = xmlGetProp (node, "type");
 	label = xmlGetProp (node, "label");
 	if (!type || !strcmp (type, "std"))
@@ -1178,28 +1256,80 @@ update_dockitem (BonoboAppPrivate *priv, xmlNode *node)
 	xmlFree (dockname);
 }
 
-static void
-update_keybinding (BonoboAppPrivate *priv, xmlNode *node)
-{
-	/*
-	 * FIXME: we should build a hash table here
-	 */
-/*	guint           key;
+typedef struct {
+	guint           key;
 	GdkModifierType mods;
-	char           *name;
+	xmlNode        *node;
+} Binding;
 
-	name = xmlGetProp (node, "name");
-	g_warning ("Keybinding with name '%s' '%s'", node->name, name);
-	gtk_accelerator_parse (name, &key, &mods);
-	
-	gtk_widget_add_accelerator (priv->accel_group, */
+static gboolean
+keybindings_free (gpointer key,
+		  gpointer value,
+		  gpointer user_data)
+{
+	g_free (key);
+
+	return TRUE;
+}
+
+/*
+ * Shamelessly stolen from gtkbindings.c
+ */
+static guint
+keybinding_hash_fn (gconstpointer  key)
+{
+  register const Binding *e = key;
+  register guint h;
+
+  h = e->key;
+  h ^= e->mods;
+
+  return h;
+}
+
+static gint
+keybinding_compare_fn (gconstpointer a,
+		       gconstpointer b)
+{
+	register const Binding *ba = a;
+	register const Binding *bb = b;
+
+	return (ba->key == bb->key && ba->mods == bb->mods);
+}
+
+static void
+update_keybindings (BonoboAppPrivate *priv, xmlNode *node)
+{
+	xmlNode *l;
+
+	g_hash_table_foreach_remove (priv->keybindings, keybindings_free, NULL);
+
+	for (l = node->childs; l; l = l->next) {
+		guint           key;
+		GdkModifierType mods;
+		char           *name;
+		Binding        *binding;
+		
+		name = xmlGetProp (l, "name");
+		if (!name)
+			continue;
+		
+		gtk_accelerator_parse (name, &key, &mods);
+		xmlFree (name);
+
+		binding       = g_new0 (Binding, 1);
+		binding->mods = mods & BINDING_MOD_MASK ();
+		binding->key  = gdk_keyval_to_lower (key);
+		binding->node = l;
+
+		g_hash_table_insert (priv->keybindings, binding, binding);
+	}
 }
 
 typedef enum {
 	UI_UPDATE_MENU,
 	UI_UPDATE_STATUS,
-	UI_UPDATE_DOCKITEM,
-	UI_UPDATE_KEYBINDING
+	UI_UPDATE_DOCKITEM
 } UIUpdateType;
 
 static void
@@ -1221,9 +1351,6 @@ seek_dirty (BonoboAppPrivate *priv, xmlNode *node, UIUpdateType type)
 			break;
 		case UI_UPDATE_DOCKITEM:
 			update_dockitem (priv, node);
-			break;
-		case UI_UPDATE_KEYBINDING:
-			update_keybinding (priv, node);
 			break;
 		default:
 			g_warning ("No status support yet");
@@ -1258,8 +1385,8 @@ update_widgets (BonoboAppPrivate *priv)
 			seek_dirty (priv, node, UI_UPDATE_DOCKITEM);
 
 		} else if (!strcmp (node->name, "keybindings")) {
-			seek_dirty (priv, node->childs, UI_UPDATE_KEYBINDING);
-
+			update_keybindings (priv, node);
+				
 		} /* else unknown */
 	}
 
@@ -1322,6 +1449,10 @@ destroy_priv (BonoboAppPrivate *priv)
 				     radio_group_destroy, NULL);
 	g_hash_table_destroy (priv->radio_groups);
 
+	g_hash_table_foreach_remove (priv->keybindings,
+				     keybindings_free, NULL);
+	g_hash_table_destroy (priv->keybindings);
+
 	while (priv->components)
 		app_component_destroy (priv, priv->components->data);
 	
@@ -1351,8 +1482,9 @@ impl_node_set (PortableServer_Servant   servant,
 	BonoboApp *app = bonobo_app_from_servant (servant);
 	AppComponent *component = app_component_get (app->priv, component_name);
 
-	/* FIXME: malformed xml / returning errors */
-	bonobo_app_xml_merge (app, path, xml, component->name);
+	if (!bonobo_app_xml_merge (app, path, xml, component->name))
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIContainer_MalFormedXML, NULL);
 }
 
 static CORBA_char *
@@ -1472,40 +1604,27 @@ bonobo_app_binding_handle (GtkWidget        *widget,
 			   GdkEventKey      *event,
 			   BonoboAppPrivate *priv)
 {
-	xmlNode *keys, *l;
-	guint    event_keyval = gdk_keyval_to_lower (event->keyval);
-	guint    event_modifiers = event->state &
-		(gtk_accelerator_get_default_mod_mask () | GDK_RELEASE_MASK);
+	Binding  lookup, *binding;
 
-	/* FIXME: should use a hash table ! */
-	keys = bonobo_ui_xml_get_path (priv->tree, "/keybindings");
-	if (!keys)
+	lookup.key  = gdk_keyval_to_lower (event->keyval);
+	lookup.mods = event->state & BINDING_MOD_MASK ();
+
+	if (!(binding = g_hash_table_lookup (priv->keybindings, &lookup)))
 		return FALSE;
-
-	for (l = keys->childs; l; l = l->next) {
-		guint           key;
-		GdkModifierType mods;
-		char           *name;
+	else {
+		BonoboUIXmlData *data;
+		char *verb;
 		
-		name = xmlGetProp (l, "name");
-		gtk_accelerator_parse (name, &key, &mods);
-		XML_FREE (name);
-/*		g_warning ("Keybinding with name '%s' '%s'", l->name, name);*/
-
-		if (event_keyval == key &&
-		    event_modifiers == mods) {
-			BonoboUIXmlData *data = bonobo_ui_xml_get_data (priv->tree, l);
-			char *verb;
-
-			g_return_val_if_fail (data != NULL, FALSE);
-
-			real_exec_verb (priv, data->id, (verb = xmlGetProp (l, "verb")));
-			XML_FREE (verb);
-
-			return TRUE;
-		}
+		data = bonobo_ui_xml_get_data (priv->tree, binding->node);
+		g_return_val_if_fail (data != NULL, FALSE);
+		
+		real_exec_verb (priv, data->id,
+				(verb = xmlGetProp (binding->node, "verb")));
+		XML_FREE (verb);
+		
+		return TRUE;
 	}
-
+	
 	return FALSE;
 }
 
@@ -1554,7 +1673,8 @@ bonobo_app_class_init (BonoboAppClass *klass)
 }
 
 static BonoboAppPrivate *
-construct_priv (const char *app_name,
+construct_priv (BonoboApp  *app,
+		const char *app_name,
 		const char *title)
 {
 	BonoboAppPrivate *priv;
@@ -1568,6 +1688,8 @@ construct_priv (const char *app_name,
 	priv->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	if (title)
 		gtk_window_set_title (GTK_WINDOW (priv->window), title);
+	gtk_object_set_data (GTK_OBJECT (priv->window),
+			     BONOBO_APP_WINDOW_KEY, app);
 
 	/* Keybindings; the gtk_binding stuff is just too evil */
 	gtk_signal_connect (GTK_OBJECT (priv->window), "key_press_event",
@@ -1623,6 +1745,9 @@ construct_priv (const char *app_name,
 
 	priv->radio_groups = g_hash_table_new (
 		g_str_hash, g_str_equal);
+
+	priv->keybindings = g_hash_table_new (keybinding_hash_fn, 
+					      keybinding_compare_fn);
 
 	return priv;
 }
@@ -1700,7 +1825,7 @@ bonobo_app_construct (BonoboApp  *app,
 
 	bonobo_object_construct (BONOBO_OBJECT (app), corba_app);
 	
-	app->priv = construct_priv (app_name, title);
+	app->priv = construct_priv (app, app_name, title);
 
 	return app;
 }
@@ -1752,7 +1877,7 @@ bonobo_app_xml_merge_tree (BonoboApp  *app,
 	update_widgets (app->priv);
 }
 
-void
+gboolean
 bonobo_app_xml_merge (BonoboApp  *app,
 		      const char *path,
 		      const char *xml,
@@ -1760,19 +1885,21 @@ bonobo_app_xml_merge (BonoboApp  *app,
 {
 	xmlDoc  *doc;
 
-	g_return_if_fail (app != NULL);
-	g_return_if_fail (xml != NULL);
-	g_return_if_fail (app->priv != NULL);
-	g_return_if_fail (app->priv->tree != NULL);
+	g_return_val_if_fail (app != NULL, FALSE);
+	g_return_val_if_fail (xml != NULL, FALSE);
+	g_return_val_if_fail (app->priv != NULL, FALSE);
+	g_return_val_if_fail (app->priv->tree != NULL, FALSE);
 
 	doc = xmlParseDoc ((char *)xml);
 
-	g_return_if_fail (doc != NULL);
+	g_return_val_if_fail (doc != NULL, FALSE);
 
 	bonobo_app_xml_merge_tree (app, path, doc->root, listener);
 	doc->root = NULL;
 	
 	xmlFreeDoc (doc);
+
+	return TRUE;
 }
 
 void
@@ -1795,4 +1922,11 @@ bonobo_app_dump (BonoboApp  *app,
 	g_return_if_fail (BONOBO_IS_APP (app));
 
 	bonobo_ui_xml_dump (app->priv->tree, app->priv->tree->root, msg);
+}
+
+BonoboApp *
+bonobo_app_from_window (GtkWindow *window)
+{
+	return gtk_object_get_data (GTK_OBJECT (window),
+				    BONOBO_APP_WINDOW_KEY);
 }

@@ -49,7 +49,7 @@ void                 bonobo_app_set_contents        (BonoboApp  *app,
 GtkWidget           *bonobo_app_get_contents        (BonoboApp  *app);
 GtkWidget           *bonobo_app_get_window          (BonoboApp  *app);
 
-void                 bonobo_app_xml_merge           (BonoboApp  *app,
+gboolean             bonobo_app_xml_merge           (BonoboApp  *app,
 						     const char *path,
 						     const char *xml,
 						     gpointer    listener);
@@ -65,5 +65,8 @@ void                 bonobo_app_xml_rm              (BonoboApp  *app,
 
 void                 bonobo_app_dump                (BonoboApp  *app,
 						     const char *msg);
+
+/* Compat function; may disappear any second now. */
+BonoboApp           *bonobo_app_from_window         (GtkWindow *window);
 
 #endif /* _BONOBO_APP_H_ */

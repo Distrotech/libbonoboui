@@ -162,6 +162,8 @@ bonobo_ui_util_xml_to_pixbuf (const char *xml)
 	height = read_four_bytes (xml);
 	xml += 4 * 2;
 
+	g_warning ("width %d height %d", width, height);
+
 	if (*xml == 'A')
 		has_alpha = TRUE;
 	else if (*xml == 'N')
