@@ -376,7 +376,7 @@ gnome_bonobo_object_remove_verb (GnomeBonoboObject *bonobo_object, const char *v
 	g_return_if_fail (verb_name != NULL);
 
 	for (l = bonobo_object->verbs; l; l = l->data){
-		if (strcmp (verb_name, l->data))
+		if (strcmp (verb_name, (char *) l->data))
 			continue;
 
 		bonobo_object->verbs = g_list_remove (bonobo_object->verbs, l->data);

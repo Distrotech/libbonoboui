@@ -11,8 +11,9 @@
 CORBA_Environment ev;
 CORBA_ORB orb;
 
-/* A handle to the last text/plain widget created. */
+/* A handle to some existing BonoboObjects so we can add views. */
 GnomeObjectClient *text_obj;
+GnomeObjectClient *image_png_obj;
 
 char *server_goadid = "Test_server_bonobo_object";
 
@@ -48,18 +49,11 @@ launch_server (GnomeContainer *container, char *goadid)
 	return object_server;
 }
 
-static GnomeObjectClient *
-add_cmd (GtkWidget *widget, Application *app, char *server_goadid)
+static GtkWidget *
+add_view (GtkWidget *widget, Application *app, GnomeObjectClient *server)
 {
 	GtkWidget *frame, *w;
-	GnomeObjectClient *server;
-	GNOME_View view;
-	GNOME_View_windowid id;
 	
-	server = launch_server (app->container, server_goadid);
-	if (server == NULL)
-		return NULL;
-
 	w = gnome_bonobo_object_new_view (server);
 
 	frame = gtk_frame_new ("BonoboObject");
@@ -71,6 +65,21 @@ add_cmd (GtkWidget *widget, Application *app, char *server_goadid)
 
 	gnome_bonobo_object_client_activate (server);
 
+	return w;
+}
+
+
+static GnomeObjectClient *
+add_cmd (GtkWidget *widget, Application *app, char *server_goadid)
+{
+	GtkWidget *w;
+	GnomeObjectClient *server;
+	
+	server = launch_server (app->container, server_goadid);
+	if (server == NULL)
+		return NULL;
+
+	w = add_view (widget, app, server);
 	return server;
 }
 
@@ -93,6 +102,9 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	    gnome_warning_dialog (_("Could not launch bonobo object."));
 	    return;
 	  }
+
+	image_png_obj = object;
+
 	persist = GNOME_obj_query_interface (
 		GNOME_OBJECT (object)->object,
 		"IDL:GNOME/PersistStream:1.0", &ev);
@@ -114,6 +126,18 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	
 	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
 }
+
+/*
+ * Add a new view for the existing image/x-png BonoboObject.
+ */
+static void
+add_image_view (GtkWidget *widget, Application *app)
+{
+	if (image_png_obj == NULL)
+		return;
+
+	add_view (NULL, app, image_png_obj);
+} /* add_image_view */
 
 /*
  * This function uses GNOME::PersistStream to load a set of data into
@@ -208,6 +232,18 @@ timeout_next_line (gpointer data)
 } /* timeout_add_more_data */
 
 /*
+ * Add a new view for the existing text BonoboObject.
+ */
+static void
+add_text_view (GtkWidget *widget, Application *app)
+{
+	if (text_obj == NULL)
+		return;
+
+	add_view (NULL, app, text_obj);
+} /* add_text_view */
+
+/*
  * Setup a timer to send a new line to the text/plain BonoboObject using
  * ProgressiveDataSink.
  */
@@ -240,7 +276,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
 
 	f = fopen ("/etc/passwd", "r");
 	if (f == NULL) {
-		printf ("I could not open /usr/dict/words!\n");
+		printf ("I could not open /etc/passwd!\n");
 		return;
 	}
 	
@@ -261,11 +297,31 @@ exit_cmd (void)
 	gtk_main_quit ();
 }
 
+static GnomeUIInfo container_text_plain_menu [] = {
+	GNOMEUIINFO_ITEM_NONE (N_("_Add a new text/plain component"), NULL,
+			       add_text_cmd),
+	GNOMEUIINFO_ITEM_NONE (
+	N_("_Send progressive data to an existing text/plain component"),
+			       NULL, send_text_cmd),
+	GNOMEUIINFO_ITEM_NONE (
+		N_("Add a new _view to an existing text/plain component"),
+			       NULL, add_text_view),
+	
+	GNOMEUIINFO_END
+};
+
+static GnomeUIInfo container_image_png_menu [] = {
+	GNOMEUIINFO_ITEM_NONE (N_("_Add a new image/x-png component"), NULL,
+			       add_image_cmd),
+ 	GNOMEUIINFO_ITEM_NONE (
+		N_("Add a new _view to an existing image/x-png component"),
+			       NULL, add_image_view),
+	
+	GNOMEUIINFO_END
+};
+
 static GnomeUIInfo container_file_menu [] = {
 	GNOMEUIINFO_ITEM_NONE(N_("Add a new _object"), NULL, add_demo_cmd),
-	GNOMEUIINFO_ITEM_NONE(N_("Add a new _image/x-png handler"), NULL, add_image_cmd),
-	GNOMEUIINFO_ITEM_NONE(N_("Add a new _text/plain handler"), NULL, add_text_cmd),
-	GNOMEUIINFO_ITEM_NONE(N_("_Send progressive data to an existing text bonobo_object"), NULL, send_text_cmd),
 	GNOMEUIINFO_SEPARATOR,
 	GNOMEUIINFO_MENU_EXIT_ITEM (exit_cmd, NULL),
 	GNOMEUIINFO_END
@@ -273,6 +329,8 @@ static GnomeUIInfo container_file_menu [] = {
 
 static GnomeUIInfo container_main_menu [] = {
 	GNOMEUIINFO_MENU_FILE_TREE (container_file_menu),
+	GNOMEUIINFO_SUBTREE (N_("_text/plain"), container_text_plain_menu),
+	GNOMEUIINFO_SUBTREE (N_("_image/x-png"), container_image_png_menu),
 	GNOMEUIINFO_END
 };
 
@@ -282,13 +340,15 @@ application_new (void)
 	Application *app;
 
 	app = g_new0 (Application, 1);
-	app->app = gnome_app_new ("test-container", "Sample Container Application");
+	app->app = gnome_app_new ("test-container",
+				  "Sample Container Application");
 	app->container = GNOME_CONTAINER (gnome_container_new ());
 
 	app->box = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (app->box);
 	gnome_app_set_contents (GNOME_APP (app->app), app->box);
-	gnome_app_create_menus_with_data (GNOME_APP (app->app), container_main_menu, app);
+	gnome_app_create_menus_with_data (GNOME_APP (app->app),
+					  container_main_menu, app);
 	gtk_widget_show (app->app);
 
 	return app;
