@@ -39,8 +39,8 @@ struct _BonoboWrapperPrivate {
 	/* Whether or not we should paint the cover. */
 	gboolean visible;
 
-	/* The GCs used for painting on the cover. */
-	GdkGC *gc[2];
+	/* The GC used for painting on the cover. */
+	GdkGC *gc;
 
 	/* The InputOnly window that covers the child */
 	GdkWindow *cover;
@@ -87,11 +87,8 @@ bonobo_wrapper_destroy (GtkObject *object)
 
 	wrapper = BONOBO_WRAPPER (object);
 
-	if (wrapper->priv->gc[0] != NULL)
-		gdk_gc_destroy (wrapper->priv->gc[0]);
-
-	if (wrapper->priv->gc[1] != NULL)
-		gdk_gc_destroy (wrapper->priv->gc[1]);
+	if (wrapper->priv->gc != NULL)
+		gdk_gc_destroy (wrapper->priv->gc);
 
 	if (wrapper->priv->cover != NULL) {
 		gdk_window_set_user_data (wrapper->priv->cover, NULL);
@@ -226,7 +223,7 @@ bonobo_wrapper_realize (GtkWidget *widget)
 	gdk_window_set_user_data (widget->window, wrapper);
 
 	/*
-	 * The GCs used to draw the cover.
+	 * The GC used to draw the cover.
 	 */
 	gc_values.fill = GDK_STIPPLED;
 	gc_values.stipple = gdk_bitmap_create_from_data (widget->window,
@@ -234,14 +231,11 @@ bonobo_wrapper_realize (GtkWidget *widget)
 							 BORDER_WIDTH, BORDER_WIDTH);
 	gc_values.subwindow_mode = GDK_CLIP_BY_CHILDREN;
 
-	wrapper->priv->gc[0] = gdk_gc_new_with_values (widget->window,
-						       &gc_values,
-						       GDK_GC_FILL | GDK_GC_STIPPLE | GDK_GC_SUBWINDOW);
-	gc_values.subwindow_mode = GDK_CLIP_BY_CHILDREN;
-
-	wrapper->priv->gc[1] = gdk_gc_new_with_values (widget->window,
-						       &gc_values,
-						       GDK_GC_FILL | GDK_GC_STIPPLE | GDK_GC_SUBWINDOW);
+	wrapper->priv->gc = gdk_gc_new_with_values (widget->window,
+						    &gc_values,
+						    GDK_GC_FILL | 
+						    GDK_GC_STIPPLE | 
+						    GDK_GC_SUBWINDOW);
 	gdk_pixmap_unref (gc_values.stipple);
 
 	/*
@@ -274,10 +268,8 @@ bonobo_wrapper_unrealize (GtkWidget *widget)
 
 	wrapper = BONOBO_WRAPPER (widget);
 
-	gdk_gc_destroy (wrapper->priv->gc[0]);
-	gdk_gc_destroy (wrapper->priv->gc[1]);
-	wrapper->priv->gc[0] = NULL;
-	wrapper->priv->gc[1] = NULL;
+	gdk_gc_destroy (wrapper->priv->gc);
+	wrapper->priv->gc = NULL;
 
 	gdk_window_set_user_data (wrapper->priv->cover, NULL);
 	gdk_window_destroy (wrapper->priv->cover);
@@ -355,13 +347,23 @@ bonobo_wrapper_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 		if (!wrapper->priv->covered && wrapper->priv->visible) {
 			child_allocation.x += BORDER_WIDTH;
 			child_allocation.y += BORDER_WIDTH;
-			child_allocation.width -= BORDER_WIDTH * 2;
-			child_allocation.height -= BORDER_WIDTH * 2;
+			if (child_allocation.width < BORDER_WIDTH * 2)
+				child_allocation.width = 0;
+			else
+				child_allocation.width -= BORDER_WIDTH * 2;
+			if (child_allocation.height < BORDER_WIDTH * 2)
+				child_allocation.height = 1;
+			else
+				child_allocation.height -= BORDER_WIDTH * 2;
 		}
-
 		gtk_widget_size_allocate (wrapper->bin.child, &child_allocation);
 	}
-
+	/* The above if/then/else are necesary because you have to 
+	   make sure you don't calculate a width and height which 
+	   are around 65xxx (ie: width and height are guint16 so if
+	   you substract BORDER_WIDTH*2, you may end with a size of
+	   65xxx or so).
+	 */
 
 	gtk_signal_emit_by_name (GTK_OBJECT (widget), "draw");
 }
@@ -373,7 +375,7 @@ bonobo_wrapper_paint (GtkWidget *widget)
 
 	if (wrapper->priv->visible && !wrapper->priv->covered) {
 		gdk_draw_rectangle (widget->window,
-				    wrapper->priv->gc[1],
+				    wrapper->priv->gc,
 				    TRUE,
 				    0, 0,
 				    widget->allocation.width,
@@ -391,7 +393,7 @@ static gint
 bonobo_wrapper_expose (GtkWidget *widget, GdkEventExpose *event)
 {
 	bonobo_wrapper_paint (widget);
-	return TRUE;
+	return FALSE;
 }
 
 /**
@@ -497,3 +499,19 @@ bonobo_wrapper_get_visibility (BonoboWrapper *wrapper)
 
 	return wrapper->priv->visible;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
