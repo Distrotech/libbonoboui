@@ -31,6 +31,8 @@
  * bin-compat.
  */
 
+#include <config.h>
+
 #include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkmain.h>
@@ -556,6 +558,7 @@ static void
 bonobo_dock_item_realize (GtkWidget *widget)
 {
   GdkWindowAttr attributes;
+  GdkWindow *root_window;
   gint attributes_mask;
   BonoboDockItem *di;
 
@@ -601,6 +604,13 @@ bonobo_dock_item_realize (GtkWidget *widget)
 
   if (di->_priv->grip)
     gtk_widget_set_parent_window (di->_priv->grip, di->bin_window);
+
+#ifdef HAVE_GTK_MULTIHEAD
+  root_window = gdk_screen_get_root_window (
+			gdk_drawable_get_screen (GDK_DRAWABLE (widget->window)));
+#else
+  root_window = gdk_get_default_root_window ();
+#endif
   
   attributes.x = 0;
   attributes.y = 0;
@@ -617,8 +627,8 @@ bonobo_dock_item_realize (GtkWidget *widget)
 			   GDK_FOCUS_CHANGE_MASK |
 			   GDK_STRUCTURE_MASK);
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-  di->float_window = gdk_window_new (NULL, &attributes, attributes_mask);
-  gdk_window_set_transient_for(di->float_window, gdk_window_get_toplevel(widget->window));
+  di->float_window = gdk_window_new (root_window, &attributes, attributes_mask);
+  gdk_window_set_transient_for (di->float_window, gdk_window_get_toplevel (widget->window));
   gdk_window_set_user_data (di->float_window, widget);
   gdk_window_set_decorations (di->float_window, 0);
   
@@ -995,9 +1005,10 @@ bonobo_dock_item_button_changed (GtkWidget      *widget,
 
 static gint
 bonobo_dock_item_motion (GtkWidget      *widget,
-                        GdkEventMotion *event)
+			 GdkEventMotion *event)
 {
   BonoboDockItem *di;
+  GdkWindow *root_window;
   gint new_x, new_y;
 
   g_return_val_if_fail (widget != NULL, FALSE);
@@ -1011,7 +1022,14 @@ bonobo_dock_item_motion (GtkWidget      *widget,
   if (event->window != di->bin_window)
     return FALSE;
 
-  gdk_window_get_pointer (NULL, &new_x, &new_y, NULL);
+#ifdef HAVE_GTK_MULTIHEAD
+  root_window = gdk_screen_get_root_window (
+			gdk_drawable_get_screen (GDK_DRAWABLE (event->window)));
+#else
+  root_window = gdk_get_default_root_window ();
+#endif
+
+  gdk_window_get_pointer (root_window, &new_x, &new_y, NULL);
   
   new_x -= di->dragoff_x;
   new_y -= di->dragoff_y;

@@ -1,3 +1,12 @@
+2002-06-27  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-dock-item.c: include config.h.
+	(bonobo_dock_item_realize): Use the root window on
+	same screen as the dock for the parent of the float
+	window.
+	(bonobo_dock_item_motion): also get the location of
+	the pointer relative to the same root window.
+
 2002-06-25  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-control.c: (impl_Bonobo_Control_getWindowId):
