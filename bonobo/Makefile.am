@@ -197,8 +197,6 @@ libbonobo_printinclude_HEADERS =		\
 
 noinst_PROGRAMS = test-app test-toolbar
 
-bin_PROGRAMS = bonobo-ui-extract
-
 test_app_SOURCES = app.c
 test_app_LDADD =					\
 	libbonobo.la					\
@@ -212,11 +210,6 @@ test_toolbar_LDADD =					\
 	libbonobox.la					\
 	libbonobo-print.la				\
 	$(BONOBOX_TEST_LIBS)
-
-bonobo_ui_extract_SOURCES = extract.c
-bonobo_ui_extract_LDADD =				\
-	$(GNOME_LIBS)					\
-	$(XML_LIBS)
 
 BUILT_SOURCES=$(CORBA_SOURCE)
 
