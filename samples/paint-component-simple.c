@@ -302,7 +302,7 @@ static void
 view_size_query_cb (GnomeView *view, int *desired_width, int *desired_height,
 		    view_data_t *view_data)
 {
-	*desired_width = view_data->embeddable_data->width;
+	*desired_width  = view_data->embeddable_data->width;
 	*desired_height = view_data->embeddable_data->height;
 }
 

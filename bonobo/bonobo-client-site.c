@@ -492,13 +492,13 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 		gnome_object_corba_objref (GNOME_OBJECT (server_object)),
 		gnome_object_corba_objref (GNOME_OBJECT (view_frame)),
 		&ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (client_site),
 			gnome_object_corba_objref (GNOME_OBJECT (server_object)),
 			&ev);
-		gtk_object_unref (GTK_OBJECT (socket));
-		gtk_object_unref (GTK_OBJECT (view_frame));
+		gtk_object_unref   (GTK_OBJECT (socket));
+		gnome_object_unref (GNOME_OBJECT (view_frame));
 		CORBA_exception_free (&ev);
 		return NULL;
 	}
@@ -564,12 +564,12 @@ gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *grou
 		gnome_object_corba_objref (GNOME_OBJECT (server_object)),
 		gnome_object_corba_objref (GNOME_OBJECT (view_frame)),
 		&ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (client_site),
 			gnome_object_corba_objref (GNOME_OBJECT (server_object)),
 			&ev);
-		gtk_object_unref (GTK_OBJECT (view_frame));
+		gnome_object_unref (GNOME_OBJECT (view_frame));
 		CORBA_exception_free (&ev);
 		return NULL;
 	}
@@ -581,8 +581,8 @@ gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *grou
 
 	item = gnome_bonobo_item_new (group, view_frame);
 
-	if (!item){
-		gtk_object_unref (GTK_OBJECT (view_frame));
+	if (!item) {
+		gnome_object_unref (GNOME_OBJECT (view_frame));
 		CORBA_exception_free (&ev);		
 		return NULL;
 	}

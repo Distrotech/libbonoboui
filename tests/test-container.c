@@ -307,7 +307,7 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
-	object = add_cmd (widget, app, "embeddable:image-x-pdf", &image_client_site);
+	object = add_cmd (widget, app, "bonobo-object:application-x-pdf", &image_client_site);
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch bonobo object."));
@@ -344,7 +344,7 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 }
 
 /*
- * Add a new view for the existing image/x-png Embeddable.
+ * Add a new view for the existing application/x-png Embeddable.
  */
 static void
 add_image_view (GtkWidget *widget, Application *app)
@@ -685,17 +685,17 @@ static GnomeUIInfo container_paint_menu [] = {
 
 static GnomeUIInfo container_image_png_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
-		N_("_Add a new image/x-png component"), NULL,
+		N_("_Add a new application/x-png component"), NULL,
 		add_image_cmd),
  	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new _view to an existing image/x-png component"),
+		N_("Add a new _view to an existing application/x-png component"),
 			       NULL, add_image_view),
 	GNOMEUIINFO_END
 };
 
 static GnomeUIInfo container_image_pdf_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
-		N_("_Add a new image/x-pdf component"), NULL,
+		N_("_Add a new application/x-pdf component"), NULL,
 		add_pdf_cmd),
 	GNOMEUIINFO_END
 };
@@ -725,7 +725,7 @@ static GnomeUIInfo container_main_menu [] = {
 	GNOMEUIINFO_MENU_FILE_TREE (container_file_menu),
 	GNOMEUIINFO_SUBTREE (N_("_text/plain"), container_text_plain_menu),
 	GNOMEUIINFO_SUBTREE (N_("_image/x-png"), container_image_png_menu),
-	GNOMEUIINFO_SUBTREE (N_("_image/x-pdf"), container_image_pdf_menu),
+	GNOMEUIINFO_SUBTREE (N_("_app/x-pdf"), container_image_pdf_menu),
 	GNOMEUIINFO_SUBTREE (N_("paint sample"), container_paint_menu),
 	GNOMEUIINFO_SUBTREE (N_("Gnumeric"), container_gnumeric_menu),
 	GNOMEUIINFO_SUBTREE (N_("Canvas-based"), container_canvas_menu),

@@ -162,5 +162,6 @@ selector_test_LDADD = $(bonobo_libs)
 
 BUILT_SOURCES=$(CORBA_SOURCE)
 
-EXTRA_DIST = $(corba_DATA)
+CLEANFILES += $(BUILT_SOURCES)
 
+EXTRA_DIST = $(corba_DATA)
