@@ -15,6 +15,7 @@
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkwindow.h>
+#include <gtk/gtkmenu.h>
 
 typedef struct _BonoboControl BonoboControl;
 
@@ -113,7 +114,13 @@ void                        bonobo_control_set_popup_ui_container  (BonoboContro
 gboolean                    bonobo_control_do_popup                (BonoboControl       *control,
 								    guint                button,
 								    guint32              activate_time);
-
+gboolean                    bonobo_control_do_popup_full           (BonoboControl       *control,
+								    GtkWidget           *parent_menu_shell,
+								    GtkWidget           *parent_menu_item,
+								    GtkMenuPositionFunc  func,
+								    gpointer             data,
+								    guint                button,
+								    guint32              activate_time);
 G_END_DECLS
 
 #endif /* _BONOBO_CONTROL_H_ */

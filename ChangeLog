@@ -1,3 +1,10 @@
+2001-12-14  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-control.[ch]:
+	(bonobo_control_do_popup_full): impl to expose
+	other gtk_menu_popup args.
+	(bonobo_control_do_popup): use.
+
 2001-12-13  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-control.c

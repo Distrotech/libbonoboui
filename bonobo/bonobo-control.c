@@ -15,7 +15,6 @@
 #include <stdlib.h>
 
 #include <gdk/gdkx.h>
-#include <gtk/gtkmenu.h>
 #include <gtk/gtksignal.h>
 
 #include <bonobo/bonobo-main.h>
@@ -1225,9 +1224,13 @@ bonobo_control_get_popup_ui_component (BonoboControl *control)
 }
 
 gboolean
-bonobo_control_do_popup (BonoboControl *control,
-			 guint          button,
-			 guint32        activate_time)
+bonobo_control_do_popup_full (BonoboControl       *control,
+			      GtkWidget           *parent_menu_shell,
+			      GtkWidget           *parent_menu_item,
+			      GtkMenuPositionFunc  func,
+			      gpointer             data,
+			      guint                button,
+			      guint32              activate_time)
 {
 	char      *path;
 	GtkWidget *menu;
@@ -1249,8 +1252,19 @@ bonobo_control_do_popup (BonoboControl *control,
 
 	gtk_widget_show (menu);
 
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
-			NULL, NULL, button, activate_time);
+	gtk_menu_popup (GTK_MENU (menu),
+			parent_menu_shell, parent_menu_item,
+			func, data,
+			button, activate_time);
 
 	return TRUE;
+}
+
+gboolean
+bonobo_control_do_popup (BonoboControl       *control,
+			 guint                button,
+			 guint32              activate_time)
+{
+	bonobo_control_do_popup_full (control, NULL, NULL, NULL, NULL,
+				      button, activate_time);
 }
