@@ -1,0 +1,228 @@
+# Copyright (C) 2001-2002 Free Software Foundation, Inc.
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Aktualną wersję tego pliku możesz odnaleźć w repozytorium cvs.gnome.pl
+# (:pserver:anonymous@cvs.gnome.pl:/home/cvs, puste hasło)
+# Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
+# pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas na adres:
+# translators@gnome.pl
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui\n"
+"POT-Creation-Date: 2002-02-17 15:11+0100\n"
+"PO-Revision-Date: 2002-02-17 15:33+0100\n"
+"Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
+"Language-Team: Polish <pl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bonobo/bonobo-dock-item.c:1 bonobo/bonobo-dock-item.c:1
+msgid "Shadow type"
+msgstr "Typ cienia"
+
+#: bonobo/bonobo-dock-item.c:1 bonobo/bonobo-dock-item.c:1
+msgid "Orientation"
+msgstr "Ułożenie"
+
+#: bonobo/bonobo-dock-item.c:1 bonobo/bonobo-dock-item.c:1
+msgid "Preferred width"
+msgstr "Preferowana szerokość"
+
+#: bonobo/bonobo-dock-item.c:1 bonobo/bonobo-dock-item.c:1
+msgid "Preferred height"
+msgstr "Preferowana szerokość"
+
+#: bonobo/bonobo-file-selector-util.c:1
+msgid "Select a file to open"
+msgstr "Wybór pliku do odczytu"
+
+#: bonobo/bonobo-file-selector-util.c:1
+msgid "Select files to open"
+msgstr "Wybór plików do odczytu"
+
+#: bonobo/bonobo-file-selector-util.c:1
+msgid "Select a filename to save"
+msgstr "Wybór pliku do zapisu"
+
+#: bonobo/bonobo-plug.c:1
+msgid "Event Forwarding"
+msgstr "Przesyłanie zdarzeń"
+
+#: bonobo/bonobo-plug.c:1
+msgid "Whether X events should be forwarded"
+msgstr "Określa, czy zdarzenia X powinny być przesyłane"
+
+#: bonobo/bonobo-selector-widget.c:1
+msgid "Name"
+msgstr "Nazwa"
+
+#: bonobo/bonobo-selector-widget.c:1
+msgid "Description"
+msgstr "Opis"
+
+#: bonobo/bonobo-ui-config-widget.c:1
+msgid "Visible"
+msgstr "Widoczność"
+
+#: bonobo/bonobo-ui-config-widget.c:1
+msgid "_Show"
+msgstr "_Widoczny"
+
+#: bonobo/bonobo-ui-config-widget.c:1
+msgid "_Hide"
+msgstr "_Ukryty"
+
+#: bonobo/bonobo-ui-config-widget.c:1
+msgid "_View tooltips"
+msgstr "Wyświetlanie p_odpowiedzi"
+
+#: bonobo/bonobo-ui-config-widget.c:1
+msgid "Toolbars"
+msgstr "Paski narzędziowe"
+
+#: bonobo/bonobo-ui-config-widget.c:1
+msgid "toolbars"
+msgstr "Paski narzędziowe"
+
+#: bonobo/bonobo-ui-config-widget.c:1 bonobo/bonobo-ui-sync-toolbar.c:1
+msgid "Look"
+msgstr "Wygląd"
+
+#: bonobo/bonobo-ui-config-widget.c:1 bonobo/bonobo-ui-sync-toolbar.c:1
+msgid "_Icon"
+msgstr "_Ikony"
+
+#: bonobo/bonobo-ui-config-widget.c:1
+msgid "_Text and Icon"
+msgstr "_Napisy i ikony"
+
+#: bonobo/bonobo-ui-config-widget.c:1
+msgid "_Priority text only"
+msgstr "_Tylko ważne napisy"
+
+#: bonobo/bonobo-ui-engine-config.c:1
+msgid "Configure UI"
+msgstr "Konfiguracja UI"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:1
+msgid "B_oth"
+msgstr "Tekst i i_kony"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:1
+msgid "T_ext"
+msgstr "_Tekst"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:1
+msgid "Hide t_ips"
+msgstr "Nie wyświetlaj p_odpowiedzi"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:1
+msgid "Show t_ips"
+msgstr "Wyświetlaj p_odpowiedzi"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:1
+msgid "_Hide toolbar"
+msgstr "_Ukryj pasek narzędziowy"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:1
+msgid "Customi_ze"
+msgstr "_Dopasuj"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:1
+msgid "Customize the toolbar"
+msgstr "Dopasuj pasek narzędziowy"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "Zoom level"
+msgstr "Poziom powiększenia"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "The degree of enlargment"
+msgstr "Stopień powiększenia"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "Minimum Zoom level"
+msgstr "Minimalny poziom powiększenia"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "The minimum degree of enlargment"
+msgstr "Minimalny stopień powiększenia"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "Maximum Zoom level"
+msgstr "Maksymalny poziom powiększenia"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "The maximum degree of enlargment"
+msgstr "Maksymalny stopień powiększenia"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "Has a minumum Zoom level"
+msgstr "Z minimalnym poziomem powiększenia"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "Whether we have a valid minimum zoom level"
+msgstr "Określa, czy zdefiniowany jest minimalny poziom powiększenia."
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "Has a maximum Zoom level"
+msgstr "Z maksymalnym poziomem powiększenia"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "Whether we have a valid maximum zoom level"
+msgstr "Określa, czy zdefiniowany jest maksymalny poziom powiększenia."
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "Is continuous"
+msgstr "Ciągłe"
+
+#: bonobo/bonobo-zoomable.c:1
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr ""
+"Określa, czy powiększenie odbywa się w sposób ciągły (zamiast skokowego)"
+
+#: samples/bonoboui/hello.c:1
+msgid "This does nothing; it is only a demonstration."
+msgstr "To tylko demonstracja."
+
+#: samples/bonoboui/hello.c:1
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Hello."
+
+#: samples/bonoboui/hello.c:1
+msgid "Gnome Hello"
+msgstr "Powitanie GNOME"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:1
+msgid "Hello, World!"
+msgstr "Witaj świecie!"
+
+#: samples/bonoboui/hello.c:1
+msgid "Cannot init libbonoboui code"
+msgstr "Nie można zainicjować kodu libbonoboui"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "Informacje o aplikacji"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "Select"
+msgstr "Zaznacza"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "_About..."
+msgstr "_Informacje o..."
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "_Edit"
+msgstr "_Edycja"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "_File"
+msgstr "_Plik"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "_Select"
+msgstr "_Zaznacz"
