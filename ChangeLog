@@ -1,3 +1,13 @@
+2003-04-18  Masahiro Sakai  <sakai@tom.sfc.keio.ac.jp>
+
+	* configure.in: call AC_LIBTOOL_WIN32_DLL.
+
+	* bonobo/Makefile.am (libbonoboui_2_la_LIBADD): add -lpopt.
+
+	* bonobo/Makefile.am (libbonoboui_2_la_LDFLAG): add -no-undefined.
+
+	* glade/Makefile.am (libbonobo_la_LDFLAGS): ditto.
+
 2003-04-15  Michael Meeks  <michael@ximian.com>
 
 	* samples/container/*: the start of a nice sample
