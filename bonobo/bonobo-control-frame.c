@@ -820,6 +820,9 @@ bonobo_control_frame_get_control_property_bag (BonoboControlFrame *control_frame
 	CORBA_Environment ev;
 	Bonobo_Control control;
 
+	g_return_val_if_fail (control_frame != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
+
 	control = control_frame->priv->control;
 
 	CORBA_exception_init (&ev);
