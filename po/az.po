@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.107.0\n"
-"POT-Creation-Date: 2002-04-15 18:38+0100\n"
+"POT-Creation-Date: 2002-04-29 15:45+0200\n"
 "PO-Revision-Date: 2001-11-28 23:45GMT+0200\n"
 "Last-Translator: Vasif İsmayıloğlu MD <azerb_linux@hotmail.com>\n"
 "Language-Team: Azərbaycan Türkcəsi <linuxaz@azerimail.net>\n"

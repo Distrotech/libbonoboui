@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.112.0\n"
-"POT-Creation-Date: 2002-04-15 18:38+0100\n"
+"POT-Creation-Date: 2002-04-29 15:45+0200\n"
 "PO-Revision-Date: 2002-03-20 15:23+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
