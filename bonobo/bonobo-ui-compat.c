@@ -31,12 +31,12 @@ static int no_sideffect_event_inhibit = 0;
 
 #ifdef COMPAT_DEBUG
 
-#define sloppy_check(c,a,ev)
-#define sloppy_check_val(c,a,ev,val)
+#define SLOPPY_CHECK(c,a,ev)
+#define SLOPPY_CHECK_VAL(c,a,ev,val)
 
 #else
 
-#define sloppy_check(c,a,ev)							\
+#define SLOPPY_CHECK(c,a,ev)							\
 	G_STMT_START {								\
 		if (!bonobo_ui_container_path_exists ((c), (a), (ev))) {	\
 			g_free (a);						\
@@ -44,7 +44,7 @@ static int no_sideffect_event_inhibit = 0;
 		}								\
 	} G_STMT_END
 
-#define sloppy_check_val(c,a,ev,val)						\
+#define SLOPPY_CHECK_VAL(c,a,ev,val)						\
 	G_STMT_START {								\
 		if (!bonobo_ui_container_path_exists ((c), (a), (ev))) {	\
 			g_free (a);						\
@@ -1218,7 +1218,7 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("", path, FALSE);
-	sloppy_check (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->container, xml_path, NULL);
 	do_set_pixmap (priv, xml_path, type, data);
 	g_free (xml_path);
 }
@@ -1286,7 +1286,7 @@ bonobo_ui_handler_menu_set_toggle_state	(BonoboUIHandler *uih, const char *path,
 
 	xml_path = make_path ("/menu", path, FALSE);
 
-	sloppy_check (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->container, xml_path, NULL);
 
 	bonobo_ui_container_set_prop (priv->container, xml_path, "state", txt, NULL);
 	g_free (xml_path);
@@ -1302,7 +1302,7 @@ bonobo_ui_handler_menu_get_toggle_state	(BonoboUIHandler *uih, const char *path)
 	g_return_val_if_fail (priv != NULL, FALSE);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	sloppy_check_val (priv->container, xml_path, NULL, FALSE);
+	SLOPPY_CHECK_VAL (priv->container, xml_path, NULL, FALSE);
 	txt = bonobo_ui_container_get_prop (priv->container, xml_path, "state", NULL);
 	ret = atoi (txt);
 	g_free (txt);
@@ -1333,7 +1333,7 @@ bonobo_ui_handler_menu_remove (BonoboUIHandler *uih, const char *path)
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	sloppy_check (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->container, xml_path, NULL);
 
 	bonobo_ui_component_rm (priv->component, priv->container, xml_path, NULL);
 
@@ -1350,7 +1350,7 @@ bonobo_ui_handler_menu_set_sensitivity (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	sloppy_check (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->container, xml_path, NULL);
 	no_sideffect_event_inhibit++;
 	if (sensitive)
 		bonobo_ui_container_set_prop (
@@ -1372,8 +1372,8 @@ bonobo_ui_handler_menu_set_label (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
+	SLOPPY_CHECK (priv->container, xml_path, NULL);
 	no_sideffect_event_inhibit++;
-	sloppy_check (priv->container, xml_path, NULL);
 	bonobo_ui_container_set_prop (priv->container, xml_path, "label", label, NULL);
 	no_sideffect_event_inhibit--;
 	g_free (xml_path);
@@ -1388,7 +1388,7 @@ bonobo_ui_handler_menu_get_label (BonoboUIHandler *uih, const char *path)
 	g_return_val_if_fail (priv != NULL, FALSE);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	sloppy_check_val (priv->container, xml_path, NULL, NULL);
+	SLOPPY_CHECK_VAL (priv->container, xml_path, NULL, NULL);
 	label = bonobo_ui_container_get_prop (priv->container, xml_path, "label", NULL);
 	g_free (xml_path);
 
@@ -1405,7 +1405,7 @@ bonobo_ui_handler_menu_set_hint (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	sloppy_check (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->container, xml_path, NULL);
 	no_sideffect_event_inhibit++;
 	bonobo_ui_container_set_prop (priv->container, xml_path, "hint", hint, NULL);
 	no_sideffect_event_inhibit--;
@@ -1422,7 +1422,7 @@ bonobo_ui_handler_menu_set_pixmap (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	sloppy_check (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->container, xml_path, NULL);
 	no_sideffect_event_inhibit++;
 	do_set_pixmap (priv, xml_path, type, data);
 	no_sideffect_event_inhibit--;
@@ -1443,7 +1443,7 @@ bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	sloppy_check (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->container, xml_path, NULL);
 
 	node = bonobo_ui_container_get_tree (priv->container,
 					     xml_path, FALSE, NULL);
