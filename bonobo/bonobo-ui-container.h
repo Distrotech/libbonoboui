@@ -10,6 +10,8 @@
 #ifndef _BONOBO_UI_CONTAINER_H_
 #define _BONOBO_UI_CONTAINER_H_
 
+#include <glib/gmacros.h>
+
 G_BEGIN_DECLS
 
 typedef struct _BonoboUIContainer BonoboUIContainer;

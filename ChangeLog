@@ -1,3 +1,8 @@
+2002-04-03  jacob berkman  <jacob@ximian.com>
+
+	* bonobo/bonobo-ui-container.h: include gmacros.h before using a
+	macro defined there (fixes nautilus build errors)
+
 2002-04-01  Murray Cumming  <murrayc@usa.net>
 
 	* bonobo/bonobo-a11y.h, bonobo/bonobo-control-internal.h,
