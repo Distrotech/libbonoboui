@@ -48,7 +48,6 @@ $(CORBA_SOURCE): $(idls)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
-	gtk-cover.c			\
 	gtk-interfaces.c		\
 	gnome-bind-context.c		\
 	gnome-client-site.c		\
@@ -75,7 +74,6 @@ libbonoboincludedir = $(includedir)/bonobo
 
 libbonoboinclude_HEADERS =		\
 	bonobo.h			\
-	gtk-cover.h			\
 	gtk-interfaces.h		\
 	gnome-bind-context.h		\
 	gnome-bonobo.h			\
