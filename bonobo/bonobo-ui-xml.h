@@ -12,19 +12,13 @@
 
 #include <gtk/gtkobject.h>
 #include <bonobo/bonobo-ui-node.h>
+#include <bonobo/bonobo-ui-engine.h>
 
 #define BONOBO_UI_XML_TYPE        (bonobo_ui_xml_get_type ())
 #define BONOBO_UI_XML(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_XML_TYPE, BonoboUIXml))
 #define BONOBO_UI_XML_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_UI_XML_TYPE, BonoboUIXmlClass))
 #define BONOBO_IS_UI_XML(o)       (GTK_CHECK_TYPE ((o), BONOBO_UI_XML_TYPE))
 #define BONOBO_IS_UI_XML_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_UI_XML_TYPE))
-
-typedef enum {
-	BONOBO_UI_XML_OK,
-	BONOBO_UI_XML_BAD_PARAM,
-	BONOBO_UI_XML_INVALID_PATH,
-	BONOBO_UI_XML_INVALID_XML
-} BonoboUIXmlError;
 
 typedef struct _BonoboUIXml BonoboUIXml;
 
@@ -60,7 +54,8 @@ struct _BonoboUIXml {
 typedef struct {
 	GtkObjectClass         object_klass;
 
-	void                 (*override)          (BonoboUINode *node);
+	void                 (*override)          (BonoboUINode *new_node,
+						   BonoboUINode *old_node);
 	void                 (*replace_override)  (BonoboUINode *new_node,
 						   BonoboUINode *old_node);
 	void                 (*reinstate)         (BonoboUINode *node);
@@ -97,12 +92,12 @@ BonoboUINode    *bonobo_ui_xml_get_path_wildcard (BonoboUIXml  *tree,
 char            *bonobo_ui_xml_make_path         (BonoboUINode *node);
 char            *bonobo_ui_xml_get_parent_path   (const char   *path);
 
-BonoboUIXmlError bonobo_ui_xml_merge             (BonoboUIXml  *tree,
+BonoboUIError    bonobo_ui_xml_merge             (BonoboUIXml  *tree,
 						  const char   *path,
 						  BonoboUINode *nodes,
 						  gpointer      id);
 
-BonoboUIXmlError bonobo_ui_xml_rm                (BonoboUIXml  *tree,
+BonoboUIError    bonobo_ui_xml_rm                (BonoboUIXml  *tree,
 						  const char   *path,
 						  gpointer      id);
 

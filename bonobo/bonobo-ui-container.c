@@ -75,26 +75,26 @@ impl_Bonobo_UIContainer_setNode (PortableServer_Servant   servant,
 				 const CORBA_char        *component_name,
 				 CORBA_Environment       *ev)
 {
-	BonoboUIEngine  *engine = get_engine (servant);
-	BonoboUIXmlError err;
-	BonoboUINode    *node;
+	BonoboUIEngine *engine = get_engine (servant);
+	BonoboUIError   err;
+	BonoboUINode   *node;
 
 /*	fprintf (stderr, "Merging :\n%s\n", xml);*/
 
 	if (!xml)
-		err = BONOBO_UI_XML_BAD_PARAM;
+		err = BONOBO_UI_ERROR_BAD_PARAM;
 	else {
 		node = bonobo_ui_node_from_string (xml);
 		
 		if (!node)
-			err = BONOBO_UI_XML_INVALID_XML;
+			err = BONOBO_UI_ERROR_INVALID_XML;
 		else
 			err = bonobo_ui_engine_xml_merge_tree (
 				engine, path, node, component_name);
 	}
 
 	if (err) {
-		if (err == BONOBO_UI_XML_INVALID_PATH)
+		if (err == BONOBO_UI_ERROR_INVALID_PATH)
 			CORBA_exception_set (
 				ev, CORBA_USER_EXCEPTION,
 				ex_Bonobo_UIContainer_InvalidPath, NULL);
@@ -131,7 +131,7 @@ impl_Bonobo_UIContainer_removeNode (PortableServer_Servant servant,
 				    CORBA_Environment     *ev)
 {
 	BonoboUIEngine *engine = get_engine (servant);
-	BonoboUIXmlError err;
+	BonoboUIError err;
 
 	if (!engine)
 		return;
@@ -162,7 +162,7 @@ impl_Bonobo_UIContainer_setObject (PortableServer_Servant servant,
 				   CORBA_Environment     *ev)
 {
 	BonoboUIEngine *engine = get_engine (servant);
-	BonoboUIXmlError err;
+	BonoboUIError err;
 
 	err = bonobo_ui_engine_object_set (engine, path, control, ev);
 
@@ -177,7 +177,7 @@ impl_Bonobo_UIContainer_getObject (PortableServer_Servant servant,
 				   CORBA_Environment     *ev)
 {
 	BonoboUIEngine *engine = get_engine (servant);
-	BonoboUIXmlError err;
+	BonoboUIError err;
 	Bonobo_Unknown object;
 
 	err = bonobo_ui_engine_object_get (engine, path, &object, ev);

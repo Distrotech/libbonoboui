@@ -43,7 +43,9 @@ struct _BonoboUIEnginePrivate {
 	GSList       *syncs;
 	GSList       *state_updates;
 	GSList       *components;
-	BonoboObject  *container;
+	BonoboObject *container;
+
+	char         *config_path;
 };
 
 
@@ -386,15 +388,16 @@ bonobo_ui_engine_prune_widget_info (BonoboUIEngine *engine,
 
 static void
 override_fn (GtkObject      *object,
-	     BonoboUINode   *node,
+	     BonoboUINode   *new,
+	     BonoboUINode   *old,
 	     BonoboUIEngine *engine)
 {
 #ifdef XML_MERGE_DEBUG
 	fprintf (stderr, "Override '%s'\n", 
-		 bonobo_ui_xml_make_path (node));
+		 bonobo_ui_xml_make_path (old));
 #endif
 
-	bonobo_ui_engine_prune_widget_info (engine, node, TRUE);
+	bonobo_ui_engine_prune_widget_info (engine, old, TRUE);
 }
 
 static void
@@ -821,7 +824,7 @@ bonobo_ui_engine_xml_node_exists (BonoboUIEngine   *engine,
 			bonobo_ui_node_children (node) != NULL);
 }
 
-BonoboUIXmlError
+BonoboUIError
 bonobo_ui_engine_object_set (BonoboUIEngine   *engine,
 			     const char       *path,
 			     Bonobo_Unknown    object,
@@ -831,11 +834,11 @@ bonobo_ui_engine_object_set (BonoboUIEngine   *engine,
 	BonoboUINode *node;
 
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), 
-			      BONOBO_UI_XML_BAD_PARAM);
+			      BONOBO_UI_ERROR_BAD_PARAM);
 
 	node = bonobo_ui_xml_get_path (engine->priv->tree, path);
 	if (!node)
-		return BONOBO_UI_XML_INVALID_PATH;
+		return BONOBO_UI_ERROR_INVALID_PATH;
 
 	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
 
@@ -860,11 +863,11 @@ bonobo_ui_engine_object_set (BonoboUIEngine   *engine,
 
 /*	bonobo_ui_engine_dump (win, "After object set updatew");*/
 
-	return BONOBO_UI_XML_OK;
+	return BONOBO_UI_ERROR_OK;
 	
 }
 
-BonoboUIXmlError
+BonoboUIError
 bonobo_ui_engine_object_get (BonoboUIEngine    *engine,
 			     const char        *path,
 			     Bonobo_Unknown    *object,
@@ -874,44 +877,44 @@ bonobo_ui_engine_object_get (BonoboUIEngine    *engine,
 	BonoboUINode *node;
 
 	g_return_val_if_fail (object != NULL,
-			      BONOBO_UI_XML_BAD_PARAM);
+			      BONOBO_UI_ERROR_BAD_PARAM);
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), 
-			      BONOBO_UI_XML_BAD_PARAM);
+			      BONOBO_UI_ERROR_BAD_PARAM);
 
 	*object = CORBA_OBJECT_NIL;
 
 	node = bonobo_ui_xml_get_path (engine->priv->tree, path);
 
 	if (!node)
-		return BONOBO_UI_XML_INVALID_PATH;
+		return BONOBO_UI_ERROR_INVALID_PATH;
 
 	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
 
 	if (info->object != CORBA_OBJECT_NIL)
 		*object = bonobo_object_dup_ref (info->object, ev);
 
-	return BONOBO_UI_XML_OK;
+	return BONOBO_UI_ERROR_OK;
 }
 
-BonoboUIXmlError
+BonoboUIError
 bonobo_ui_engine_xml_merge_tree (BonoboUIEngine    *engine,
 				 const char        *path,
 				 BonoboUINode      *tree,
 				 const char        *component)
 {
-	BonoboUIXmlError err;
+	BonoboUIError err;
 	
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), 
-			      BONOBO_UI_XML_BAD_PARAM);
+			      BONOBO_UI_ERROR_BAD_PARAM);
 
 	if (!tree || !bonobo_ui_node_get_name (tree))
-		return BONOBO_UI_XML_OK;
+		return BONOBO_UI_ERROR_OK;
 
 	bonobo_ui_xml_strip (&tree);
 
 	if (!tree) {
 		g_warning ("Stripped tree to nothing");
-		return BONOBO_UI_XML_OK;
+		return BONOBO_UI_ERROR_OK;
 	}
 
 	/*
@@ -939,15 +942,15 @@ bonobo_ui_engine_xml_merge_tree (BonoboUIEngine    *engine,
 	return err;
 }
 
-BonoboUIXmlError
+BonoboUIError
 bonobo_ui_engine_xml_rm (BonoboUIEngine *engine,
 			 const char     *path,
 			 const char     *by_component)
 {
-	BonoboUIXmlError err;
+	BonoboUIError err;
 
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine),
-			      BONOBO_UI_XML_BAD_PARAM);
+			      BONOBO_UI_ERROR_BAD_PARAM);
 
 	err = bonobo_ui_xml_rm (
 		engine->priv->tree, path,
@@ -1039,8 +1042,7 @@ real_exec_verb (BonoboUIEngine *engine,
 				   verb, component_name, ev._major, ev._repo_id);
 		
 		CORBA_exception_free (&ev);
-	} else
-		g_warning ("NULL Corba handle of name '%s'", component_name);
+	}
 
 	gtk_object_unref (GTK_OBJECT (engine));
 }
@@ -1279,8 +1281,7 @@ real_emit_ui_event (BonoboUIEngine *engine,
 				   type, id, new_state, ev._major, ev._repo_id);
 		
 		CORBA_exception_free (&ev);
-	} else
-		g_warning ("NULL Corba handle of name '%s'", component_name);
+	}
 
 	gtk_object_unref (GTK_OBJECT (engine));
 }
@@ -2315,4 +2316,22 @@ bonobo_ui_engine_clean_tree (BonoboUIEngine *engine,
 
 	if (node)
 		bonobo_ui_xml_clean (engine->priv->tree, node);
+}
+
+void
+bonobo_ui_engine_set_config_path (BonoboUIEngine *engine,
+				  const char     *path)
+{
+	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
+
+	g_free (engine->priv->config_path);
+	engine->priv->config_path = g_strdup (path);
+}
+
+const char *
+bonobo_ui_engine_get_config_path (BonoboUIEngine *engine)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
+	
+	return engine->priv->config_path;
 }

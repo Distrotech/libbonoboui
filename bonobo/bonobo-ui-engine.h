@@ -13,9 +13,15 @@
 
 #include <libgnome/gnome-defs.h>
 #include <bonobo/bonobo-object.h>
-#include <bonobo/bonobo-ui-xml.h>
 
 typedef struct _BonoboUIEngine BonoboUIEngine;
+
+typedef enum {
+	BONOBO_UI_ERROR_OK = 0,
+	BONOBO_UI_ERROR_BAD_PARAM,
+	BONOBO_UI_ERROR_INVALID_PATH,
+	BONOBO_UI_ERROR_INVALID_XML
+} BonoboUIError;
 
 #include <bonobo/bonobo-ui-sync.h>
 
@@ -54,6 +60,10 @@ typedef struct {
 GtkType         bonobo_ui_engine_get_type      (void);
 BonoboUIEngine *bonobo_ui_engine_construct     (BonoboUIEngine   *engine);
 BonoboUIEngine *bonobo_ui_engine_new           (void);
+
+void          bonobo_ui_engine_set_config_path (BonoboUIEngine   *engine,
+						const char       *path);
+const char   *bonobo_ui_engine_get_config_path (BonoboUIEngine   *engine);
 
 void          bonobo_ui_engine_add_sync        (BonoboUIEngine   *engine,
 						BonoboUISync     *sync);
@@ -152,18 +162,18 @@ CORBA_char      *bonobo_ui_engine_xml_get         (BonoboUIEngine   *engine,
 						   gboolean          node_only);
 gboolean         bonobo_ui_engine_xml_node_exists (BonoboUIEngine   *engine,
 						   const char       *path);
-BonoboUIXmlError bonobo_ui_engine_xml_merge_tree  (BonoboUIEngine    *engine,
+BonoboUIError    bonobo_ui_engine_xml_merge_tree  (BonoboUIEngine    *engine,
 						   const char        *path,
 						   BonoboUINode      *tree,
 						   const char        *component);
-BonoboUIXmlError bonobo_ui_engine_xml_rm          (BonoboUIEngine    *engine,
+BonoboUIError    bonobo_ui_engine_xml_rm          (BonoboUIEngine    *engine,
 						   const char        *path,
 						   const char        *by_component);
-BonoboUIXmlError bonobo_ui_engine_object_set      (BonoboUIEngine   *engine,
+BonoboUIError    bonobo_ui_engine_object_set      (BonoboUIEngine   *engine,
 						   const char       *path,
 						   Bonobo_Unknown    object,
 						   CORBA_Environment *ev);
-BonoboUIXmlError bonobo_ui_engine_object_get      (BonoboUIEngine    *engine,
+BonoboUIError    bonobo_ui_engine_object_get      (BonoboUIEngine    *engine,
 						   const char        *path,
 						   Bonobo_Unknown    *object,
 						   CORBA_Environment *ev);

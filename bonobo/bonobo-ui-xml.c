@@ -450,7 +450,8 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 
 	if (override) {
 
-		gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
+		gtk_signal_emit (GTK_OBJECT (tree),
+				 signals [OVERRIDE], new, old);
 
 		data->overridden = g_slist_prepend (old_data->overridden, old);
 		prune_overrides_by_id (tree, data, data->id);
@@ -459,7 +460,8 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 			data->id = old_data->id;
 
 		data->overridden = old_data->overridden;
-		gtk_signal_emit (GTK_OBJECT (tree), signals [REPLACE_OVERRIDE], new, old);
+		gtk_signal_emit (GTK_OBJECT (tree),
+				 signals [REPLACE_OVERRIDE], new, old);
 
 /*		fprintf (stderr, "Replace override of '%s' '%s' with '%s' '%s'",
 			 old->name, bonobo_ui_node_get_attr (old, "name"),
@@ -768,7 +770,7 @@ bonobo_ui_xml_make_path  (BonoboUINode *node)
 	g_return_val_if_fail (node != NULL, NULL);
 
 	path = g_string_new ("");
-	while (node) {
+	while (node && bonobo_ui_node_parent (node)) {
 
 		if ((tmp = bonobo_ui_node_get_attr (node, "name"))) {
 			g_string_prepend (path, tmp);
@@ -896,7 +898,7 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 /*	DUMP_XML (tree, current, "After all"); */
 }
 
-BonoboUIXmlError
+BonoboUIError
 bonobo_ui_xml_merge (BonoboUIXml  *tree,
 		     const char   *path,
 		     BonoboUINode *nodes,
@@ -904,10 +906,10 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 {
 	BonoboUINode *current;
 
-	g_return_val_if_fail (BONOBO_IS_UI_XML (tree), BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (BONOBO_IS_UI_XML (tree), BONOBO_UI_ERROR_BAD_PARAM);
 
 	if (nodes == NULL)
-		return BONOBO_UI_XML_OK;
+		return BONOBO_UI_ERROR_OK;
 
 	bonobo_ui_xml_strip (&nodes);
 	set_id (tree, nodes, id);
@@ -921,7 +923,7 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 			node_free (tree, BNODE (l));
 		}
 
-		return BONOBO_UI_XML_INVALID_PATH;
+		return BONOBO_UI_ERROR_INVALID_PATH;
 	}
 
 #ifdef UI_XML_DEBUG
@@ -942,10 +944,10 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 	bonobo_ui_xml_dump (tree, tree->root, "Merged to");
 #endif
 
-	return BONOBO_UI_XML_OK;
+	return BONOBO_UI_ERROR_OK;
 }
 
-BonoboUIXmlError
+BonoboUIError
 bonobo_ui_xml_rm (BonoboUIXml *tree,
 		  const char  *path,
 		  gpointer     id)
@@ -962,11 +964,11 @@ bonobo_ui_xml_rm (BonoboUIXml *tree,
 	if (current)
 		reinstate_node (tree, current, id, !wildcard);
 	else
-		return BONOBO_UI_XML_INVALID_PATH;
+		return BONOBO_UI_ERROR_INVALID_PATH;
 
 	DUMP_XML (tree, tree->root, "After remove");
 
-	return BONOBO_UI_XML_OK;
+	return BONOBO_UI_ERROR_OK;
 }
 
 static void
@@ -997,8 +999,8 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 		"override", GTK_RUN_FIRST,
 		object_class->type,
 		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, override),
-		gtk_marshal_NONE__POINTER,
-		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+		gtk_marshal_NONE__POINTER_POINTER,
+		GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 
 	signals [REPLACE_OVERRIDE] = gtk_signal_new (
 		"replace_override", GTK_RUN_FIRST,

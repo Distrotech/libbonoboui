@@ -684,7 +684,6 @@ impl_bonobo_ui_sync_menu_stamp_root (BonoboUISync *sync)
 {
 	BonoboUISyncMenu *smenu = BONOBO_UI_SYNC_MENU (sync);
 	BonoboUINode     *node;
-	GtkWidget        *widget;
 	GSList           *l;
 
 #ifdef WIDGET_SYNC_DEBUG
@@ -692,10 +691,12 @@ impl_bonobo_ui_sync_menu_stamp_root (BonoboUISync *sync)
 #endif
 
 	node = bonobo_ui_engine_get_path (sync->engine, "/menu");
-	widget = GTK_WIDGET (smenu->menu);
+	if (smenu->menu) {
+		GtkWidget *widget = GTK_WIDGET (smenu->menu);
 
-	bonobo_ui_engine_stamp_root (sync->engine, node, widget);
-	bonobo_ui_sync_do_show_hide (sync, node, NULL, widget);
+		bonobo_ui_engine_stamp_root (sync->engine, node, widget);
+		bonobo_ui_sync_do_show_hide (sync, node, NULL, widget);
+	}
 
 	for (l = smenu->popups; l; l = l->next) {
 		Popup *popup = l->data;
@@ -713,8 +714,7 @@ impl_bonobo_ui_sync_menu_stamp_root (BonoboUISync *sync)
 				   popup->path);
 	}
 
-	node = bonobo_ui_engine_get_path (sync->engine, "/popups");
-	if (node)
+	if ((node = bonobo_ui_engine_get_path (sync->engine, "/popups")))
 		bonobo_ui_engine_node_set_dirty (sync->engine, node, FALSE);
 }
 

@@ -153,7 +153,6 @@ libbonoboinclude_HEADERS =			\
 	bonobo-ui-toolbar-item.h		\
 	bonobo-ui-toolbar-toggle-button-item.h	\
 	bonobo-ui-util.h			\
-	bonobo-ui-xml.h				\
 	bonobo-view-frame.h			\
 	bonobo-view.h				\
 	bonobo-widget.h 			\
@@ -164,6 +163,7 @@ libbonoboinclude_HEADERS =			\
 
 noinst_HEADERS =				\
 	bonobo-activation-context.h		\
+	bonobo-ui-engine-config.h		\
 	bonobo-ui-sync-menu.h			\
 	bonobo-ui-sync-keys.h			\
 	bonobo-ui-sync-status.h			\
@@ -172,6 +172,7 @@ noinst_HEADERS =				\
 	bonobo-ui-toolbar-control-item.h  	\
 	bonobo-ui-toolbar-popup-item.h		\
 	bonobo-ui-toolbar-separator-item.h	\
+	bonobo-ui-xml.h				\
 	bonobo-running-context.h
 
 libbonobox_la_LDFLAGS = \
@@ -194,6 +195,7 @@ libbonobox_la_SOURCES =				\
 	bonobo-ui-component.c            	\
 	bonobo-ui-container.c            	\
 	bonobo-ui-engine.c			\
+	bonobo-ui-engine-config.c		\
 	bonobo-ui-node.c                 	\
 	bonobo-ui-sync.c			\
 	bonobo-ui-sync-menu.c			\

@@ -13,11 +13,14 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
+#include <libgnome/gnome-defs.h>
+#include <libgnome/gnome-i18n.h>
 #include <libgnomeui/gnome-preferences.h>
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-engine.h>
+#include <bonobo/bonobo-ui-engine-config.h>
 #include <bonobo/bonobo-ui-sync.h>
 #include <bonobo/bonobo-ui-sync-toolbar.h>
 
@@ -537,6 +540,31 @@ create_dockitem (BonoboUISyncToolbar *sync,
 	gnome_dock_add_item (sync->dock, item,
 			     placement, band_num,
 			     position, offset, in_new_band);
+
+#ifdef CONFIG_TOOLBARS
+	{
+		char *path;
+		static const char *popup_xml =
+			"<popups>"
+			"<popup>"
+			"<menuitem name=\"hide\" _label=\"_Hide\" dep_attr=\"hidden:bool:0\"/>"
+/* Drat we want to hide / show depending ... */
+			"<menuitem name=\"show\" _label=\"_Show\" dep_attr=\"hidden:bool:1\"/>"
+			"<menuitem name=\"Configure\" verb=\"\" _label=\"_Configure\"/>"
+			"</popup>"
+			"</popups>";
+/*		static const char *unused = {
+			N_("_Hide"),
+			N_("_Show")
+			};*/
+
+		bonobo_ui_engine_config_connect (
+			GTK_WIDGET (item), sync->parent.engine,
+			(path = bonobo_ui_xml_make_path (node)),
+			popup_xml);
+		g_free (path);
+	}
+#endif
 
 	return item;
 }

@@ -62,12 +62,12 @@ void                 bonobo_window_freeze                         (BonoboWindow 
 
 void                 bonobo_window_thaw                           (BonoboWindow      *win);
 
-BonoboUIXmlError     bonobo_window_xml_merge                      (BonoboWindow      *win,
+BonoboUIError        bonobo_window_xml_merge                      (BonoboWindow      *win,
 								   const char        *path,
 								   const char        *xml,
 								   const char        *component);
 
-BonoboUIXmlError     bonobo_window_xml_merge_tree                 (BonoboWindow      *win,
+BonoboUIError        bonobo_window_xml_merge_tree                 (BonoboWindow      *win,
 								   const char        *path,
 								   BonoboUINode      *tree,
 								   const char        *component);
@@ -79,16 +79,16 @@ char                *bonobo_window_xml_get                        (BonoboWindow 
 gboolean             bonobo_window_xml_node_exists                (BonoboWindow      *win,
 								   const char        *path);
 
-BonoboUIXmlError     bonobo_window_xml_rm                         (BonoboWindow      *win,
+BonoboUIError        bonobo_window_xml_rm                         (BonoboWindow      *win,
 								   const char        *path,
 								   const char        *by_component);
 
-BonoboUIXmlError     bonobo_window_object_set                     (BonoboWindow      *win,
+BonoboUIError        bonobo_window_object_set                     (BonoboWindow      *win,
 								   const char        *path,
 								   Bonobo_Unknown     object,
 								   CORBA_Environment *ev);
 
-BonoboUIXmlError     bonobo_window_object_get                     (BonoboWindow      *win,
+BonoboUIError        bonobo_window_object_get                     (BonoboWindow      *win,
 								   const char        *path,
 								   Bonobo_Unknown    *object,
 								   CORBA_Environment *ev);
@@ -119,9 +119,6 @@ void                 bonobo_window_add_popup                      (BonoboWindow 
 
 void                 bonobo_window_set_ui_container               (BonoboWindow      *win,
 								   BonoboObject      *container);
-
-void                 bonobo_window_set_config_path                (BonoboWindow      *win,
-								   const char        *path);
 
 /*
  * NB. popups are automaticaly removed on destroy, you probably don't

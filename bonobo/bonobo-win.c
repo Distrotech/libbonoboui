@@ -210,76 +210,76 @@ bonobo_window_xml_node_exists (BonoboWindow *win,
 		win->priv->engine, path);
 }
 
-BonoboUIXmlError
+BonoboUIError   
 bonobo_window_object_set (BonoboWindow  *win,
 			  const char    *path,
 			  Bonobo_Unknown object,
 			  CORBA_Environment *ev)
 {
 	g_return_val_if_fail (BONOBO_IS_WINDOW (win),
-			      BONOBO_UI_XML_BAD_PARAM);
+			      BONOBO_UI_ERROR_BAD_PARAM);
 
 	return bonobo_ui_engine_object_set (
 		win->priv->engine, path, object, ev);
 }
 
-BonoboUIXmlError
+BonoboUIError   
 bonobo_window_object_get (BonoboWindow   *win,
 			  const char     *path,
 			  Bonobo_Unknown *object,
 			  CORBA_Environment *ev)
 {
 	g_return_val_if_fail (BONOBO_IS_WINDOW (win),
-			      BONOBO_UI_XML_BAD_PARAM);
+			      BONOBO_UI_ERROR_BAD_PARAM);
 
 	return bonobo_ui_engine_object_get (
 		win->priv->engine, path, object, ev);
 }
 
-BonoboUIXmlError
+BonoboUIError   
 bonobo_window_xml_merge_tree (BonoboWindow *win,
 			      const char   *path,
 			      BonoboUINode *tree,
 			      const char   *component)
 {
 	g_return_val_if_fail (BONOBO_IS_WINDOW (win),
-			      BONOBO_UI_XML_BAD_PARAM);
+			      BONOBO_UI_ERROR_BAD_PARAM);
 
 	return bonobo_ui_engine_xml_merge_tree (
 		win->priv->engine, path, tree, component);
 }
 
-BonoboUIXmlError
+BonoboUIError   
 bonobo_window_xml_merge (BonoboWindow *win,
 			 const char   *path,
 			 const char   *xml,
 			 const char   *component)
 {
-	BonoboUIXmlError err;
+	BonoboUIError    err;
 	BonoboUINode *node;
 	
-	g_return_val_if_fail (win != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (xml != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (win->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win != NULL, BONOBO_UI_ERROR_BAD_PARAM);
+	g_return_val_if_fail (xml != NULL, BONOBO_UI_ERROR_BAD_PARAM);
+	g_return_val_if_fail (win->priv != NULL, BONOBO_UI_ERROR_BAD_PARAM);
 
 /*	fprintf (stderr, "Merging :\n%s\n", xml);*/
 
 	node = bonobo_ui_node_from_string (xml);
 	
 	if (!node)
-		return BONOBO_UI_XML_INVALID_XML;
+		return BONOBO_UI_ERROR_INVALID_XML;
 
 	err = bonobo_window_xml_merge_tree (win, path, node, component);
 
 	return err;
 }
 
-BonoboUIXmlError
+BonoboUIError   
 bonobo_window_xml_rm (BonoboWindow *win,
 		      const char   *path,
 		      const char   *by_component)
 {
-	g_return_val_if_fail (BONOBO_IS_WINDOW (win), BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win), BONOBO_UI_ERROR_BAD_PARAM);
 
 	return bonobo_ui_engine_xml_rm (
 		win->priv->engine, path, by_component);
@@ -318,13 +318,6 @@ bonobo_window_get_accel_group (BonoboWindow *win)
 	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
 
 	return win->priv->accel_group;
-}
-
-void
-bonobo_window_set_config_path (BonoboWindow *win,
-			       const char   *path)
-{
-	/* Stub */
 }
 
 static BonoboWindowPrivate *

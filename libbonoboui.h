@@ -54,7 +54,6 @@ extern "C" {
 #include <bonobo/bonobo-persist-file.h>
 #include <bonobo/bonobo-persist-stream.h>
 
-#include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-ui-container.h>
