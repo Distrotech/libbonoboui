@@ -3,9 +3,7 @@ INCLUDES =	\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
-	$(LIBGNOME_CFLAGS)				\
-	$(LIBGNOMECANVAS_CFLAGS)			\
-	$(LIBBONOBO_CFLAGS)
+	$(BONOBOUI_CFLAGS)
 
 bin_PROGRAMS = sample-container
 
@@ -25,7 +23,5 @@ sample_container_SOURCES =	\
 
 sample_container_LDADD =				\
 	$(top_builddir)/bonobo/libbonoboui-2.la		\
-	$(LIBGNOME_LIBS)				\
-	$(LIBGNOMECANVAS_LIBS)				\
-	$(LIBBONOBO_LIBS)				\
+	$(BONOBOUI_LIBS)				\
 	$(INTLLIBS)

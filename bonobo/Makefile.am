@@ -5,9 +5,7 @@ INCLUDES = \
 	-I$(builddir)					\
         -I$(includedir)                                 \
 	$(WARN_CFLAGS)					\
-	$(LIBGNOME_CFLAGS)				\
-	$(LIBBONOBO_CFLAGS)				\
-	$(LIBGNOMECANVAS_CFLAGS)			\
+	$(BONOBOUI_CFLAGS)				\
 	-DPLUGIN_DIR=\""$(PLUGIN_DIR)"\"		\
 	-DBONOBO_UIDIR=\""$(datadir)/gnome/ui/"\"	\
         -DBONOBO_LIBDIR=\""$(libdir)"\" 		\
@@ -70,8 +68,7 @@ libbonoboinclude_HEADERS = \
 	bonoboui-marshal.h
 
 libbonoboui_2_la_LIBADD = \
-	$(LIBGNOMECANVAS_LIBS) $(LIBBONOBO_LIBS) \
-	$(LIBGNOME_LIBS)
+	$(BONOBOUI_LIBS)
 
 libbonoboui_2_la_SOURCES = \
 	bonobo-dock.c				\

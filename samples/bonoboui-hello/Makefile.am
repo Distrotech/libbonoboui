@@ -9,10 +9,8 @@ INCLUDES =	\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-DVERSION=\"$(VERSION)\"			\
 	$(WARN_CFLAGS)					\
-	$(LIBBONOBO_CFLAGS)				\
-	$(LIBGNOMECANVAS_CFLAGS) \
-  $(LIBGNOME_CFLAGS) \
-  -DHELLO_DATADIR=\""$(datadir)"\"
+	$(BONOBOUI_CFLAGS)				\
+	-DHELLO_DATADIR=\""$(datadir)"\"
 
 # Notice that we #define HELLO_DATADIR here.
 # This would normally be done in your app's config.h

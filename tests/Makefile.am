@@ -18,8 +18,7 @@ INCLUDES =	\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-DVERSION=\"$(VERSION)\"			\
 	$(WARN_CFLAGS)					\
-	$(LIBBONOBO_CFLAGS)				\
-	$(LIBGNOMECANVAS_CFLAGS)
+	$(BONOBOUI_CFLAGS)
 
 LDADD =	$(top_builddir)/bonobo/libbonoboui-2.la
 
