@@ -1,5 +1,10 @@
 2001-05-01  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/bonobo-win.c (construct_priv): #ifdef FIXME call
+	to gtk_menu_bar_set_shadow_type().
+
+2001-05-01  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/bonobo-selector-widget.c: #include
 	<libgnome/gnome-preferences.h> instead of
 	<libgnomeui/gnome-uidefs.h>.
