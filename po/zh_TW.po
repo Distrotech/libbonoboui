@@ -24,19 +24,19 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
-msgstr ""
+msgstr "corba 界面容器元件"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr ""
+msgstr "使用者界面容器元件"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
-msgstr ""
+msgstr "嵌入工具列"
 
 #: bonobo/bonobo-dock-item-grip.c:237
 msgid "Un dock the toolbar"
-msgstr ""
+msgstr "卸離工具列"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
@@ -98,11 +98,11 @@ msgstr ""
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "必須存在的界面項目"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr "其中一個需要的界面"
+msgstr "其中一個必須存在的界面"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -211,11 +211,11 @@ msgstr "名稱"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "視窗管理員所需的程式類別名稱"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "CLASS"
-msgstr ""
+msgstr "類別"
 
 #: bonobo/bonobo-ui-init-gtk.c:146
 msgid "HOST"
