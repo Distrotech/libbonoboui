@@ -1,5 +1,11 @@
 2001-09-07  Martin Baulig  <baulig@suse.de>
 
+	* samples/bonoboui-hello/helloapp.c: Don't #include <libgnome.h>.
+	* samples/bonoboui-hello/main.c: ditto.
+	* tests/test-selector.c: ditto.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/bonobo-ui-component.c
 	(ui_event, impl_Bonobo_UIComponent_execVerb): Reflect latest
 	bonobo_closure_invoke() API changes.

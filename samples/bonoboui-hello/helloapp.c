@@ -23,8 +23,6 @@
 #include <config.h>
 #include "helloapp.h"
 
-#include <libgnome.h>
-
 /* Keep a list of all open application windows */
 static GSList* app_list = NULL;
 
