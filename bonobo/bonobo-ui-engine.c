@@ -2992,13 +2992,17 @@ bonobo_ui_engine_stamp_root (BonoboUIEngine *engine,
 			     GtkWidget      *widget)
 {
 	NodeInfo *info;
+	GtkWidget *new_root;
 
 	if (!node)
 		return;
 
 	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
 
-	info->widget = widget ? gtk_widget_ref (widget) : NULL;
+	new_root = widget ? gtk_widget_ref (widget) : NULL;
+	if (info->widget)
+		gtk_widget_unref (info->widget);
+	info->widget = new_root;
 	info->type |= ROOT_WIDGET;
 
 	bonobo_ui_engine_widget_attach_node (widget, node);
