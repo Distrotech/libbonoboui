@@ -1,3 +1,7 @@
+2001-05-01  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/libbonoboui-2.0.pc.in: Make this actually work.
+
 2001-04-25  Martin Baulig  <baulig@suse.de>
 
 	* bonobo/bonobo-dock.[ch], bonobo/bonobo-dock-item.[ch],
