@@ -1,5 +1,20 @@
 2001-05-01  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/bonobo-selector-widget.c: #include
+	<libgnome/gnome-preferences.h> instead of
+	<libgnomeui/gnome-uidefs.h>.
+	* bonobo/bonobo-ui-sync-static.c: Likewise.
+
+	* bonobo/bonobo-ui-sync-menu.c: #include
+	<libgnome/gnome-preferences.h> instead of
+	<libgnomeui/gnome-preferences.h>.
+	* bonobo/bonobo-ui-sync-toolbar.c: Likewise.
+	* bonobo/bonobo-win.c: Likewise.
+
+	* bonobo/bonobo-ui-sync-menu.h: #include <gtk/gtkmenubar.h>.
+
+2001-05-01  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/bonobo-ui-main.[ch]: New files.
 	(bonobo_ui_init, bonobo_ui_init_full): New functions to
 	initialize libbonoboui.

@@ -12,6 +12,7 @@
 #define _BONOBO_UI_SYNC_MENU_H_
 
 #include <gtk/gtkmenu.h>
+#include <gtk/gtkmenubar.h>
 #include <gtk/gtkaccelgroup.h>
 
 #include <bonobo/bonobo-ui-sync.h>

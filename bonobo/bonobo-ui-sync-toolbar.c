@@ -14,7 +14,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-i18n.h>
-#include <libgnomeui/gnome-preferences.h>
+#include <libgnome/gnome-preferences.h>
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>

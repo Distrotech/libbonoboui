@@ -10,7 +10,7 @@
 #include "config.h"
 #include <bonobo/bonobo-dock-item.h>
 #include <bonobo/bonobo-dock.h>
-#include <libgnomeui/gnome-preferences.h>
+#include <libgnome/gnome-preferences.h>
 #include <bonobo/bonobo-win.h>
 #include <libbonobo.h>
 #include <liboaf/liboaf.h>
