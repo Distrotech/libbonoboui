@@ -22,7 +22,7 @@
 #include "container-io.h"
 #include "component-io.h"
 
-#define STORAGE_TYPE "efs"
+#define STORAGE_TYPE "vfs"
 
 static Bonobo_Stream open_stream (Bonobo_Storage storage, gchar * path);
 static Bonobo_Stream create_stream (Bonobo_Storage storage, gchar * path);
@@ -185,7 +185,7 @@ load_component (SampleApp * inst, BonoboStorage * storage, int index)
 
 
 void
-sample_container_load (SampleApp * inst, const gchar * filename)
+sample_container_load (SampleApp *inst, const gchar *filename)
 {
 	CORBA_Environment ev;
 	BonoboStorage *storage;
@@ -218,7 +218,7 @@ sample_container_load (SampleApp * inst, const gchar * filename)
 }
 
 void
-sample_container_save (SampleApp * inst, const gchar * filename)
+sample_container_save (SampleApp *inst, const gchar *filename)
 {
 	CORBA_Environment ev;
 	BonoboStorage *storage;
