@@ -6,7 +6,6 @@
 #include <gtk/gtkobject.h>
 #include <bonobo/bonobo.h>
 #include <bonobo/gnome-object.h>
-#include <bonobo/gnome-view.h>
 
 BEGIN_GNOME_DECLS
  
@@ -19,6 +18,8 @@ BEGIN_GNOME_DECLS
 struct _GnomeEmbeddable;
 typedef struct _GnomeEmbeddable GnomeEmbeddable;
 typedef struct _GnomeVerb GnomeVerb;
+
+#include <bonobo/gnome-view.h>
 
 typedef GnomeView * (*GnomeViewFactory)(GnomeEmbeddable *embeddable, const GNOME_ViewFrame view_frame, void *closure);
 
@@ -34,6 +35,11 @@ struct _GnomeEmbeddable {
 	 */
 	GnomeViewFactory view_factory;
 	void *view_factory_closure;
+
+	/*
+	 * The instantiated views for this Embeddable.
+	 */
+	GList *views;
 
 	/*
 	 * A list of GnomeVerb structures for the verbs supported by
@@ -83,9 +89,10 @@ GtkType          gnome_embeddable_get_type         (void);
 GnomeEmbeddable *gnome_embeddable_new              (GnomeViewFactory factory,
 						    void *data);
 GnomeEmbeddable *gnome_embeddable_construct        (GnomeEmbeddable *bonobo_object,
-						    GNOME_Embeddable  corba_bonobo_object,
+						    GNOME_Embeddable corba_bonobo_object,
 						    GnomeViewFactory factory,
 						    void *data);
+GNOME_Embeddable gnome_embeddable_corba_object_create (GnomeObject *object);
 void             gnome_embeddable_add_verb         (GnomeEmbeddable *bonobo_object,
 						    const char *verb_name,
 						    const char *verb_label,

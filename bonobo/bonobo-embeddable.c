@@ -177,6 +177,9 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 		return CORBA_OBJECT_NIL;
 
 	gnome_view_set_view_frame (view, view_frame);
+	gnome_view_set_embeddable (view, embeddable);
+
+	embeddable->views = g_list_prepend (embeddable->views, view);
 
 	CORBA_exception_init (&evx);
 	ret = CORBA_Object_duplicate (gnome_object_corba_objref (GNOME_OBJECT (view)), &evx);
@@ -205,8 +208,18 @@ static POA_GNOME_Embeddable__vepv gnome_embeddable_vepv = {
 	&gnome_embeddable_epv
 };
 
-static CORBA_Object
-create_gnome_embeddable (GnomeObject *object)
+/**
+ * gnome_embeddable_corba_object_create:
+ * @object: The GtkObject that will wrap the CORBA object.
+ *
+ * Creates an activates the CORBA object that is wrapped
+ * by the GnomeObject @object.
+ *
+ * Returns: An activated object reference to the created object or
+ * %CORBA_OBJECT_NIL in case of failure.
+ */
+GNOME_Embeddable
+gnome_embeddable_corba_object_create (GnomeObject *object)
 {
 	POA_GNOME_Embeddable *servant;
 	
@@ -281,7 +294,8 @@ gnome_embeddable_new (GnomeViewFactory factory, void *data)
 	g_return_val_if_fail (factory != NULL, NULL);
 
 	embeddable = gtk_type_new (gnome_embeddable_get_type ());
-	corba_embeddable = create_gnome_embeddable (GNOME_OBJECT (embeddable));
+
+	corba_embeddable = gnome_embeddable_corba_object_create (GNOME_OBJECT (embeddable));
 	if (corba_embeddable == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (embeddable));
 		return NULL;

@@ -2673,7 +2673,18 @@ menu_toplevel_store_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, GnomeU
 {
 	MenuItemInternal *internal;
 	CORBA_Environment ev;
+	char *parent_path;
 	GList *l;
+
+	/*
+	 * Make sure the parent exists.
+	 */
+	parent_path = path_get_parent (item->path);
+	if (menu_toplevel_get_item (uih, parent_path) == NULL) {
+		g_free (parent_path);
+		return NULL;
+	}
+	g_free (parent_path);
 
 	/*
 	 * Create the internal representation of the menu item.
@@ -2761,8 +2772,6 @@ impl_menu_overridden (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemLocalInternal *internal_cb;
 
-	g_return_if_fail (menu_toplevel_check_toplevel (uih));
-
 	internal_cb = menu_local_get_item (uih, path);
 
 	if (internal_cb == NULL) {
@@ -2826,6 +2835,9 @@ menu_toplevel_create_item (GnomeUIHandler *uih, char *parent_path,
 	 * an internal representation of the menu item.
 	 */
 	internal_data = menu_toplevel_store_data (uih, uih_corba, item);
+
+	if (internal_data == NULL)
+		return;
 
 	/*
 	 * Create the menu item's widgets.
@@ -5816,6 +5828,16 @@ toolbar_remote_toolbar_remove (GnomeUIHandler *uih, char *name)
 					&ev);
 
 	CORBA_exception_free (&ev);
+}
+
+static void
+impl_toolbar_remove (PortableServer_Servant servant,
+		     GNOME_UIHandler containee,
+		     CORBA_char *name,
+		     CORBA_Environment *ev)
+
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 }
 
 /**

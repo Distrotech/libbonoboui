@@ -121,11 +121,6 @@ libbonoboinclude_HEADERS =		\
 	gnome-wrapper.h			\
 	gnome-ui-handler.h
 
-test_ui_handler_SOURCES =		\
-	test-ui-handler.c
-
-test_ui_handler_LDADD = $(bonobo_libs)
-
 test_container_SOURCES =		\
 	test-container.c
 

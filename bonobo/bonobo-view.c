@@ -282,6 +282,44 @@ gnome_view_get_type (void)
 }
 
 /**
+ * gnome_view_set_embeddable:
+ * @view: A GnomeView object.
+ * @embeddable: The GnomeEmbeddable object for which @view is a view.
+ *
+ * This function associates @view with the specified GnomeEmbeddabe
+ * object, @embeddable.
+ */
+void
+gnome_view_set_embeddable (GnomeView *view, GnomeEmbeddable *embeddable)
+{
+	g_return_if_fail (view != NULL);
+	g_return_if_fail (GNOME_IS_VIEW (view));
+	g_return_if_fail (embeddable != NULL);
+	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+
+	if (view->embeddable != NULL)
+		gtk_object_unref (GTK_OBJECT (view->embeddable));
+
+	view->embeddable = embeddable;
+	gtk_object_ref (GTK_OBJECT (view->embeddable));
+}
+
+/**
+ * gnome_view_get_embeddable:
+ * @view: A GnomeView object.
+ *
+ * Returns: The GnomeEmbeddable object for which @view is a GnomeView.
+ */
+GnomeEmbeddable *
+gnome_view_get_embeddable (GnomeView *view)
+{
+	g_return_if_fail (view != NULL);
+	g_return_if_fail (GNOME_IS_VIEW (view));
+
+	return view->embeddable;
+}
+
+/**
  * gnome_view_set_view_frame:
  * @view: A GnomeView object.
  * @view_frame: A CORBA interface for the ViewFrame which contains this View.
@@ -297,6 +335,8 @@ gnome_view_set_view_frame (GnomeView *view, GNOME_ViewFrame view_frame)
 	g_return_if_fail (GNOME_IS_VIEW (view));
 
 	CORBA_exception_init (&ev);
+
+	GNOME_Unknown_ref (view_frame, &ev);
 
 	view->view_frame = CORBA_Object_duplicate (view_frame, &ev);
 
