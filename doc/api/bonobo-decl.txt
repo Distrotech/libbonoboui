@@ -2168,6 +2168,178 @@ GList        **list
 GSList       **list
 </FUNCTION>
 <MACRO>
+<NAME>BONOBO_X_OBJECT_TYPE</NAME>
+#define BONOBO_X_OBJECT_TYPE        (bonobo_x_object_get_type ())
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_OBJECT</NAME>
+#define BONOBO_X_OBJECT(o)          (GTK_CHECK_CAST ((o), BONOBO_X_OBJECT_TYPE, BonoboXObject))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_OBJECT_CLASS</NAME>
+#define BONOBO_X_OBJECT_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_X_OBJECT_TYPE, BonoboXObjectClass))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_IS_X_OBJECT</NAME>
+#define BONOBO_IS_X_OBJECT(o)       (GTK_CHECK_TYPE ((o), BONOBO_X_OBJECT_TYPE))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_IS_X_OBJECT_CLASS</NAME>
+#define BONOBO_IS_X_OBJECT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_X_OBJECT_TYPE))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_OBJECT_HEADER_SIZE</NAME>
+#define BONOBO_X_OBJECT_HEADER_SIZE (sizeof (BonoboObject))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_OBJECT_GET_CORBA</NAME>
+#define BONOBO_X_OBJECT_GET_CORBA(o)   ((CORBA_Object)&(o)->object)
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_OBJECT_GET_SERVANT</NAME>
+#define BONOBO_X_OBJECT_GET_SERVANT(o) ((PortableServer_Servant)&(o)->servant)
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_CORBA_GET_OBJECT</NAME>
+#define BONOBO_X_CORBA_GET_OBJECT(o)   ((BonoboXObject *)((guchar *)(o)				\
+					     - BONOBO_X_OBJECT_HEADER_SIZE))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_CORBA_GET_SERVANT</NAME>
+#define BONOBO_X_CORBA_GET_SERVANT(o)  ((BonoboXObject *)((guchar *)(o)				\
+					     + sizeof (struct CORBA_Object_struct)	\
+					     + sizeof (gpointer) * 4))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_SERVANT_GET_CORBA</NAME>
+#define BONOBO_X_SERVANT_GET_CORBA(o)  ((BonoboXObject *)((guchar *)(o)				\
+					     - sizeof (struct CORBA_Object_struct)	\
+					     - sizeof (gpointer) * 4))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_SERVANT_GET_OBJECT</NAME>
+#define BONOBO_X_SERVANT_GET_OBJECT(o) ((BonoboXObject *)((guchar *)(o)				\
+					     - BONOBO_X_OBJECT_HEADER_SIZE			\
+					     - sizeof (struct CORBA_Object_struct)	\
+					     - sizeof (gpointer) * 4))
+</MACRO>
+<STRUCT>
+<NAME>BonoboXObject</NAME>
+</STRUCT>
+<FUNCTION>
+<NAME>bonobo_x_object</NAME>
+<RETURNS>BonoboXObject  *</RETURNS>
+gpointer p
+</FUNCTION>
+<STRUCT>
+<NAME>BonoboXObject</NAME>
+struct BonoboXObject {
+	BonoboObject               base;
+
+	/* Start: CORBA_Object */
+	struct CORBA_Object_struct object;
+	gpointer                   bincompat[4]; /* expansion */
+	/* End:   CORBA_Object */
+	
+	/* Start: BonoboObjectServant */
+	BonoboObjectServant        servant;
+	int                        flags;        /* discriminant */
+	/* End:   BonoboObjectServant */
+
+	gpointer                   dummy;
+
+	/* User data ... */
+};
+</STRUCT>
+<USER_FUNCTION>
+<NAME>BonoboXObjectPOAFn</NAME>
+<RETURNS>void </RETURNS>
+PortableServer_Servant servant,
+				    CORBA_Environment     *ev
+</USER_FUNCTION>
+<TYPEDEF>
+<NAME>BonoboXObjectClass</NAME>
+typedef struct {
+	BonoboObjectClass          parent_class;
+
+	BonoboXObjectPOAFn         poa_init_fn;
+	BonoboXObjectPOAFn         poa_fini_fn;
+
+	POA_Bonobo_Unknown__vepv  *vepv;
+
+	/* The offset of this class' additional epv */
+	int                        epv_struct_offset;
+
+	POA_Bonobo_Unknown__epv    epv;
+} BonoboXObjectClass;
+</TYPEDEF>
+<FUNCTION>
+<NAME>bonobo_x_object_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_x_type_unique</NAME>
+<RETURNS>GtkType  </RETURNS>
+GtkType            parent_type,BonoboXObjectPOAFn init_fn,BonoboXObjectPOAFn fini_fn,int                epv_struct_offset,const GtkTypeInfo *info
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_x_type_setup</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkType            type,BonoboXObjectPOAFn init_fn,BonoboXObjectPOAFn fini_fn,int                epv_struct_offset
+</FUNCTION>
+<MACRO>
+<NAME>BONOBO_X_TYPE_FUNC_FULL</NAME>
+#define BONOBO_X_TYPE_FUNC_FULL(class_name, corba_name, parent, prefix)     \
+GtkType                                                                       \
+prefix##_get_type (void)                                                      \
+{                                                                             \
+	GtkType ptype;                                                        \
+	static GtkType type = 0;                                              \
+                                                                              \
+	if (type == 0) {                                                      \
+		static GtkTypeInfo info = {                                   \
+			#class_name,                                          \
+			sizeof (class_name),                                  \
+			sizeof (class_name##Class),                           \
+			(GtkClassInitFunc)prefix##_class_init,                \
+			(GtkObjectInitFunc)prefix##_init,                     \
+			NULL, NULL, (GtkClassInitFunc) NULL                   \
+		};                                                            \
+		ptype = (parent);                                             \
+		type = bonobo_x_type_unique (ptype,                           \
+			POA_##corba_name##__init, POA_##corba_name##__fini,   \
+			GTK_STRUCT_OFFSET (class_name##Class, epv),           \
+			&info);                                               \
+	}                                                                     \
+	return type;                                                          \
+}
+</MACRO>
+<MACRO>
+<NAME>BONOBO_X_TYPE_FUNC</NAME>
+#define BONOBO_X_TYPE_FUNC(class_name, parent, prefix)                      \
+GtkType                                                                       \
+prefix##_get_type (void)                                                      \
+{                                                                             \
+	GtkType ptype;                                                        \
+	static GtkType type = 0;                                              \
+                                                                              \
+	if (type == 0) {                                                      \
+		static GtkTypeInfo info = {                                   \
+			#class_name,                                          \
+			sizeof (class_name),                                  \
+			sizeof (class_name##Class),                           \
+			(GtkClassInitFunc)prefix##_class_init,                \
+			(GtkObjectInitFunc)prefix##_init,                     \
+			NULL, NULL, (GtkClassInitFunc) NULL                   \
+		};                                                            \
+		ptype = (parent);                                             \
+		type = bonobo_x_type_unique (ptype, NULL, NULL, 0, &info);    \
+	}                                                                     \
+	return type;                                                          \
+}
+</MACRO>
+<MACRO>
 <NAME>BONOBO_PERSIST_FILE_TYPE</NAME>
 #define BONOBO_PERSIST_FILE_TYPE (bonobo_persist_file_get_type ())
 </MACRO>

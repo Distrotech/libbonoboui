@@ -39,6 +39,7 @@ tmpl_sources = 					\
         tmpl/bonobo-object-directory.sgml	\
         tmpl/bonobo-object-io.sgml		\
         tmpl/bonobo-object.sgml			\
+        tmpl/bonobo-xobject.sgml		\
         tmpl/bonobo-persist-file.sgml		\
         tmpl/bonobo-persist-stream.sgml		\
         tmpl/bonobo-persist.sgml		\
@@ -131,6 +132,7 @@ scan:
 		../../bonobo/bonobo-object-directory.h		\
 		../../bonobo/bonobo-object-io.h			\
 		../../bonobo/bonobo-object.h			\
+		../../bonobo/bonobo-xobject.h			\
 		../../bonobo/bonobo-persist-file.h		\
 		../../bonobo/bonobo-persist-stream.h		\
 		../../bonobo/bonobo-persist.h			\

@@ -23,6 +23,7 @@
 <!entity bonobo-object-directory SYSTEM "sgml/bonobo-object-directory.sgml">
 <!entity bonobo-object-io SYSTEM "sgml/bonobo-object-io.sgml">
 <!entity bonobo-object SYSTEM "sgml/bonobo-object.sgml">
+<!entity bonobo-xobject SYSTEM "sgml/bonobo-xobject.sgml">
 <!entity bonobo-persist-file SYSTEM "sgml/bonobo-persist-file.sgml">
 <!entity bonobo-persist-stream SYSTEM "sgml/bonobo-persist-stream.sgml">
 <!entity bonobo-persist SYSTEM "sgml/bonobo-persist.sgml">
@@ -72,6 +73,7 @@
       <sect1 id="bonobo-core-object">
         <title>Core Bonobo Objects</title>
           &bonobo-object;
+          &bonobo-xobject;
           &bonobo-main;
       </sect1>
 

@@ -398,6 +398,28 @@ bonobo_object_save_to_stream
 </SECTION>
 
 <SECTION>
+<FILE>bonobo-xobject</FILE>
+BONOBO_X_OBJECT_TYPE
+BONOBO_X_OBJECT
+BONOBO_X_OBJECT_CLASS
+BONOBO_IS_X_OBJECT
+BONOBO_IS_X_OBJECT_CLASS
+BONOBO_X_SERVANT_GET_OBJECT
+BONOBO_X_OBJECT_GET_SERVANT
+BonoboXObject
+BonoboXObjectClass
+BonoboXObjectPOAFn
+bonobo_x_object
+bonobo_x_type_unique
+bonobo_x_type_setup
+BONOBO_X_TYPE_FUNC_FULL
+BONOBO_X_TYPE_FUNC
+<SUBSECTION Standard>
+bonobo_x_object_get_type
+BonoboXObjectPrivate
+</SECTION>
+
+<SECTION>
 <FILE>bonobo-object</FILE>
 BONOBO_OBJECT_TYPE
 BONOBO_OBJECT
@@ -822,6 +844,7 @@ bonobo_ui_container_set_win
 bonobo_ui_container_get_win
 <SUBSECTION Standard>
 bonobo_ui_container_get_type
+BonoboUIContainerPrivate
 </SECTION>
 
 <SECTION>
@@ -885,6 +908,7 @@ bonobo_ui_engine_freeze
 bonobo_ui_engine_thaw
 <SUBSECTION Standard>
 bonobo_ui_engine_get_type
+BonoboUIEnginePrivate
 </SECTION>
 
 <SECTION>
@@ -1365,6 +1389,7 @@ bonobo_property_control_new_full
 bonobo_property_control_construct
 bonobo_property_control_changed
 bonobo_property_control_get_event_source
+BONOBO_PROPERTY_CONTROL_CHANGED
 <SUBSECTION Standard>
 BonoboPropertyControlPrivate
 bonobo_property_control_get_type
