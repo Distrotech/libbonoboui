@@ -8,14 +8,12 @@
  *
  * Copyright 2001 Ximian, Inc.
  */
-#ifndef BONOBO_H
-#define BONOBO_H 1
+#ifndef LIBBONOBOUI_H
+#define LIBBONOBOUI_H 1
 
 #include <libbonobo.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+G_BEGIN_DECLS
 
 #include <bonobo/bonobo-client-site.h>
 #include <bonobo/bonobo-control.h>
@@ -30,11 +28,12 @@ extern "C" {
 #include <bonobo/bonobo-win.h>
 #include <bonobo/bonobo-selector.h>
 #include <bonobo/bonobo-widget.h>
+
+#ifdef FIXME
 #include <bonobo/bonobo-print.h>
 #include <bonobo/bonobo-print-client.h>
-
-#ifdef __cplusplus
-}
 #endif
 
-#endif /* BONOBO_H */
+G_END_DECLS
+
+#endif /* LIBBONOBOUI_H */
