@@ -258,6 +258,7 @@ main (int argc, char **argv)
 
 	accel = bonobo_ui_util_build_accel (GDK_A, GDK_CONTROL_MASK, "KeyWibbleVerb");
 	bonobo_ui_component_set_tree (componenta, corba_container, "/keybindings", accel, &ev);
+	bonobo_ui_node_free (accel);
 
 	bonobo_ui_component_set (componentb, corba_container, "/menu", simpleb, &ev);
 	bonobo_ui_component_set (componenta, corba_container, "/",     toolb, &ev);

@@ -426,6 +426,10 @@ widget_set_state (GtkWidget *widget, BonoboUINode *node)
 		bonobo_ui_node_free_string (txt);
 	}
 
+	/*
+	 * FIXME: we should compare the current state before setting
+	 * and firing a load of unwanted events around the shop.
+	 */
 	if ((txt = bonobo_ui_node_get_attr (node, "state"))) {
 		if (BONOBO_IS_UI_TOOLBAR_ITEM (widget))
 			bonobo_ui_toolbar_item_set_state (

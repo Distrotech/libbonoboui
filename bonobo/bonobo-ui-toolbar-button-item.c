@@ -73,7 +73,6 @@ create_pixmap_widget_from_pixbuf (GdkPixbuf *pixbuf)
 	pixmap_widget = bonobo_ui_toolbar_icon_new_from_pixbuf (pixbuf);
 	bonobo_ui_toolbar_icon_set_draw_mode (BONOBO_UI_TOOLBAR_ICON (pixmap_widget),
 					      BONOBO_UI_TOOLBAR_ICON_COLOR);
-	bonobo_ui_toolbar_icon_set_alpha_threshold (BONOBO_UI_TOOLBAR_ICON (pixmap_widget), 0);
 
 	return pixmap_widget;
 }
@@ -365,7 +364,7 @@ bonobo_ui_toolbar_button_item_new (GdkPixbuf *icon,
 
 void
 bonobo_ui_toolbar_button_item_set_icon (BonoboUIToolbarButtonItem *button_item,
-				     GdkPixbuf *icon)
+					GdkPixbuf *icon)
 {
 	g_return_if_fail (button_item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item));
