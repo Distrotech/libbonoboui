@@ -991,7 +991,7 @@ menu_item_set_global_accels (BonoboWinPrivate *priv, xmlNode *node,
 		char           *signal;
 
 /*		fprintf (stderr, "Accel name is afterwards '%s'\n", text); */
-		gtk_accelerator_parse (text, &key, &mods);
+		bonobo_ui_util_accel_parse (text, &key, &mods);
 		xmlFree (text);
 
 		if (!key)
@@ -1515,6 +1515,17 @@ update_dockitem (BonoboWinPrivate *priv, xmlNode *node)
 
 	container_destroy_siblings (priv->tree, GTK_WIDGET (item), node->childs);
 
+
+	if ((txt = xmlGetProp (node, "hidden"))) {
+		if (atoi (txt)) {
+			gtk_widget_hide (GTK_WIDGET (item));
+			return;
+		} else
+			gtk_widget_show (GTK_WIDGET (item));
+	} else {
+		gtk_widget_show (GTK_WIDGET (item));
+	}
+
 	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
 
 	if ((txt = xmlGetProp (node, "homogeneous"))) {
@@ -1631,7 +1642,7 @@ update_keybindings (BonoboWinPrivate *priv, xmlNode *node)
 		if (!name)
 			continue;
 		
-		gtk_accelerator_parse (name, &key, &mods);
+		bonobo_ui_util_accel_parse (name, &key, &mods);
 		xmlFree (name);
 
 		binding       = g_new0 (Binding, 1);
@@ -2232,18 +2243,27 @@ bonobo_win_set_name (BonoboWin  *win,
 	priv = win->priv;
 
 	g_free (priv->name);
-	priv->name   = g_strdup (win_name);
-
 	g_free (priv->prefix);
-	priv->prefix = g_strconcat ("/", win_name, "/", NULL);
+
+	if (win_name) {
+		priv->name = g_strdup (win_name);
+		priv->prefix = g_strconcat ("/", win_name, "/", NULL);
+	} else {
+		priv->name = NULL;
+		priv->prefix = g_strdup ("/");
+	}
 }
 
 char *
 bonobo_win_get_name (BonoboWin *win)
 {
 	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
+	g_return_val_if_fail (win->priv != NULL, NULL);
 
-	return g_strdup (win->priv->name);
+	if (win->priv->name)
+		return g_strdup (win->priv->name);
+	else
+		return NULL;
 }
 
 GtkWidget *

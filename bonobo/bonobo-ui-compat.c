@@ -22,6 +22,31 @@
 
 #undef COMPAT_DEBUG
 
+#ifdef COMPAT_DEBUG
+
+#define sloppy_check(c,a,ev)
+#define sloppy_check_val(c,a,ev,val)
+
+#else
+
+#define sloppy_check(c,a,ev)							\
+	G_STMT_START {								\
+		if (!bonobo_ui_container_path_exists ((c), (a), (ev))) {	\
+			g_free (a);						\
+			return;							\
+		}								\
+	} G_STMT_END
+
+#define sloppy_check_val(c,a,ev,val)						\
+	G_STMT_START {								\
+		if (!bonobo_ui_container_path_exists ((c), (a), (ev))) {	\
+			g_free (a);						\
+			return (val);						\
+		}								\
+	} G_STMT_END
+
+#endif
+
 typedef struct {
 	BonoboUIComponent *component;
 	BonoboWin         *application;
@@ -453,8 +478,8 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 	}
 
 	if (uii->accelerator_key) {
-		char *name = gtk_accelerator_name (uii->accelerator_key,
-						   uii->ac_mods);
+		char *name = bonobo_ui_util_accel_name (uii->accelerator_key,
+							uii->ac_mods);
 /*		fprintf (stderr, "Accel name is '%s'\n", name);*/
 		xmlSetProp (node, "accel", name);
 /*		fprintf (stderr, "Accel name is now '%s'\n", xmlGetProp (node, "accel"));*/
@@ -791,6 +816,15 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 	default:
 		g_warning ("Broken type for menu");
 		return;
+	}
+
+	if (accelerator_key) {
+		char *name = bonobo_ui_util_accel_name (accelerator_key,
+							ac_mods);
+		fprintf (stderr, "Accel name is '%s'\n", name);
+		xmlSetProp (node, "accel", name);
+		fprintf (stderr, "Accel name is now '%s'\n", xmlGetProp (node, "accel"));
+		g_free (name);
 	}
 
 	{
@@ -1204,19 +1238,15 @@ bonobo_ui_handler_toolbar_new_toggleitem (BonoboUIHandler *uih, const char *path
 				      callback_data);
 }
 
-void
-bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *path,
-					   BonoboUIHandlerPixmapType type,
-					   gpointer data)
+static void
+do_set_pixmap (BonoboUIHandlerPrivate *priv,
+	       const char             *xml_path,
+	       BonoboUIHandlerPixmapType type, gpointer data)
 {
+	char    *parent_path;
 	xmlNode *node;
-	char *xml_path, *parent_path;
-	BonoboUIHandlerPrivate *priv = get_priv (uih);
-
-	g_return_if_fail (priv != NULL);
-
-	xml_path = make_path ("", path, FALSE);
-	parent_path = make_path ("", path, TRUE);
+	
+	parent_path = bonobo_ui_xml_get_parent_path (xml_path);
 
 	node = bonobo_ui_container_get_tree (priv->container,
 					     xml_path, FALSE, NULL);
@@ -1230,9 +1260,24 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 				      parent_path,
 				      node, NULL);
 
-	g_free (xml_path);
 	g_free (parent_path);
 	xmlFreeNode (node);
+}
+
+void
+bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *path,
+					   BonoboUIHandlerPixmapType type,
+					   gpointer data)
+{
+	char *xml_path;
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_if_fail (priv != NULL);
+
+	xml_path = make_path ("", path, FALSE);
+	sloppy_check (priv->container, xml_path, NULL);
+	do_set_pixmap (priv, xml_path, type, data);
+	g_free (xml_path);
 }
 
 void
@@ -1297,6 +1342,9 @@ bonobo_ui_handler_menu_set_toggle_state	(BonoboUIHandler *uih, const char *path,
 		txt = "0";
 
 	xml_path = make_path ("/menu", path, FALSE);
+
+	sloppy_check (priv->container, xml_path, NULL);
+
 	bonobo_ui_container_set_prop (priv->container, xml_path, "state", txt, NULL);
 	g_free (xml_path);
 }
@@ -1311,6 +1359,7 @@ bonobo_ui_handler_menu_get_toggle_state	(BonoboUIHandler *uih, const char *path)
 	g_return_val_if_fail (priv != NULL, FALSE);
 
 	xml_path = make_path ("/menu", path, FALSE);
+	sloppy_check_val (priv->container, xml_path, NULL, FALSE);
 	txt = bonobo_ui_container_get_prop (priv->container, xml_path, "state", NULL);
 	ret = atoi (txt);
 	g_free (txt);
@@ -1348,6 +1397,7 @@ bonobo_ui_handler_menu_set_sensitivity (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
+	sloppy_check (priv->container, xml_path, NULL);
 	if (sensitive)
 		bonobo_ui_container_set_prop (
 			priv->container, xml_path, "sensitive", "1", NULL);
@@ -1367,6 +1417,7 @@ bonobo_ui_handler_menu_set_label (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
+	sloppy_check (priv->container, xml_path, NULL);
 	bonobo_ui_container_set_prop (priv->container, xml_path, "label", label, NULL);
 	g_free (xml_path);
 }
@@ -1380,6 +1431,7 @@ bonobo_ui_handler_menu_get_label (BonoboUIHandler *uih, const char *path)
 	g_return_val_if_fail (priv != NULL, FALSE);
 
 	xml_path = make_path ("/menu", path, FALSE);
+	sloppy_check_val (priv->container, xml_path, NULL, NULL);
 	label = bonobo_ui_container_get_prop (priv->container, xml_path, "label", NULL);
 	g_free (xml_path);
 
@@ -1396,6 +1448,7 @@ bonobo_ui_handler_menu_set_hint (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
+	sloppy_check (priv->container, xml_path, NULL);
 	bonobo_ui_container_set_prop (priv->container, xml_path, "hint", hint, NULL);
 	g_free (xml_path);
 }
@@ -1404,7 +1457,15 @@ void
 bonobo_ui_handler_menu_set_pixmap (BonoboUIHandler *uih, const char *path,
 				   BonoboUIHandlerPixmapType type, gpointer data)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_set_pixmap unimplemented\n");
+	char *xml_path;
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_if_fail (priv != NULL);
+
+	xml_path = make_path ("/menu", path, FALSE);
+	sloppy_check (priv->container, xml_path, NULL);
+	do_set_pixmap (priv, xml_path, type, data);
+	g_free (xml_path);
 }
 
 void
@@ -1421,6 +1482,7 @@ bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
+	sloppy_check (priv->container, xml_path, NULL);
 
 	node = bonobo_ui_container_get_tree (priv->container,
 					     xml_path, FALSE, NULL);

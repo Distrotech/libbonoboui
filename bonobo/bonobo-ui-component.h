@@ -78,6 +78,10 @@ void               bonobo_ui_component_rm           (BonoboUIComponent  *compone
 						     const char         *path,
 						     CORBA_Environment  *ev);
 
+gboolean           bonobo_ui_container_path_exists  (Bonobo_UIContainer  container,
+						     const char         *path,
+						     CORBA_Environment  *ev);
+
 char              *bonobo_ui_container_get          (Bonobo_UIContainer  container,
 						     const char         *path,
 						     gboolean            recurse,

@@ -76,4 +76,11 @@ xmlNode   *bonobo_ui_util_new_ui            (BonoboUIComponent *component,
 					     const char        *fname,
 					     const char        *app_name);
 
+gchar     *bonobo_ui_util_accel_name        (guint              accelerator_key,
+					     GdkModifierType    accelerator_mods);
+
+void       bonobo_ui_util_accel_parse       (char              *name,
+					     guint             *accelerator_key,
+					     GdkModifierType   *accelerator_mods);
+
 #endif /* _BONOBO_UI_XML_UTIL_H_ */

@@ -421,12 +421,23 @@ bonobo_ui_util_build_accel (guint           accelerator_key,
 			    GdkModifierType accelerator_mods,
 			    const char     *verb)
 {
-	/* Kludge due to brokenness in gnome-xml */
 	char    *name;
+	xmlNode *ret;
+
+	name = bonobo_ui_util_accel_name (accelerator_key, accelerator_mods);
+	ret = xmlNewNode (NULL, "accel");
+	xmlSetProp (ret, "name", name);
+	g_free (name);
+	xmlSetProp (ret, "verb", verb);
+
+	return ret;
+
+	/* Old Kludge due to brokenness in gnome-xml */
+/*	char    *name;
 	xmlDoc  *doc;
 	xmlNode *ret;
 
-	name = gtk_accelerator_name (accelerator_key, accelerator_mods);
+	name = bonobo_ui_util_accel_name (accelerator_key, accelerator_mods);
 	
 	doc = xmlNewDoc ("1.0");
 	ret = xmlNewDocNode (doc, NULL, "accel", NULL);
@@ -437,7 +448,7 @@ bonobo_ui_util_build_accel (guint           accelerator_key,
 	bonobo_ui_xml_strip (ret);
 	xmlFreeDoc (doc);
 
-	return ret;
+	return ret;*/
 }
 
 xmlNode *
@@ -728,4 +739,306 @@ bonobo_ui_util_build_skeleton (BonoboUIXml *xml)
 
 	add_node (xml->root, "keybindings");
 	add_node (xml->root, "commands");
+}
+
+
+/*
+ * Evil code, cut and pasted from gtkaccelgroup.c
+ * needs de-Soptimizing :-)
+ */
+
+#define DELIM_PRE '*'
+#define DELIM_PRE_S "*"
+#define DELIM_POST '*'
+#define DELIM_POST_S "*"
+
+static inline gboolean
+is_alt (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 'a' || string[1] == 'A') &&
+		(string[2] == 'l' || string[2] == 'L') &&
+		(string[3] == 't' || string[3] == 'T') &&
+		(string[4] == DELIM_POST));
+}
+
+static inline gboolean
+is_ctl (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 'c' || string[1] == 'C') &&
+		(string[2] == 't' || string[2] == 'T') &&
+		(string[3] == 'l' || string[3] == 'L') &&
+		(string[4] == DELIM_POST));
+}
+
+static inline gboolean
+is_modx (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 'm' || string[1] == 'M') &&
+		(string[2] == 'o' || string[2] == 'O') &&
+		(string[3] == 'd' || string[3] == 'D') &&
+		(string[4] >= '1' && string[4] <= '5') &&
+		(string[5] == DELIM_POST));
+}
+
+static inline gboolean
+is_ctrl (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 'c' || string[1] == 'C') &&
+		(string[2] == 't' || string[2] == 'T') &&
+		(string[3] == 'r' || string[3] == 'R') &&
+		(string[4] == 'l' || string[4] == 'L') &&
+		(string[5] == DELIM_POST));
+}
+
+static inline gboolean
+is_shft (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 's' || string[1] == 'S') &&
+		(string[2] == 'h' || string[2] == 'H') &&
+		(string[3] == 'f' || string[3] == 'F') &&
+		(string[4] == 't' || string[4] == 'T') &&
+		(string[5] == DELIM_POST));
+}
+
+static inline gboolean
+is_shift (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 's' || string[1] == 'S') &&
+		(string[2] == 'h' || string[2] == 'H') &&
+		(string[3] == 'i' || string[3] == 'I') &&
+		(string[4] == 'f' || string[4] == 'F') &&
+		(string[5] == 't' || string[5] == 'T') &&
+		(string[6] == DELIM_POST));
+}
+
+static inline gboolean
+is_control (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 'c' || string[1] == 'C') &&
+		(string[2] == 'o' || string[2] == 'O') &&
+		(string[3] == 'n' || string[3] == 'N') &&
+		(string[4] == 't' || string[4] == 'T') &&
+		(string[5] == 'r' || string[5] == 'R') &&
+		(string[6] == 'o' || string[6] == 'O') &&
+		(string[7] == 'l' || string[7] == 'L') &&
+		(string[8] == DELIM_POST));
+}
+
+static inline gboolean
+is_release (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 'r' || string[1] == 'R') &&
+		(string[2] == 'e' || string[2] == 'E') &&
+		(string[3] == 'l' || string[3] == 'L') &&
+		(string[4] == 'e' || string[4] == 'E') &&
+		(string[5] == 'a' || string[5] == 'A') &&
+		(string[6] == 's' || string[6] == 'S') &&
+		(string[7] == 'e' || string[7] == 'E') &&
+		(string[8] == DELIM_POST));
+}
+
+void
+bonobo_ui_util_accel_parse (char              *accelerator,
+			    guint             *accelerator_key,
+			    GdkModifierType   *accelerator_mods)
+{
+	guint keyval;
+	GdkModifierType mods;
+	gint len;
+
+	g_return_if_fail (accelerator_key != NULL);
+	*accelerator_key = 0;
+	g_return_if_fail (accelerator_mods != NULL);
+	*accelerator_mods = 0;
+	g_return_if_fail (accelerator != NULL);
+  
+	if (accelerator_key)
+		*accelerator_key = 0;
+	if (accelerator_mods)
+		*accelerator_mods = 0;
+  
+	keyval = 0;
+	mods = 0;
+	len = strlen (accelerator);
+	while (len)
+	{
+		if (*accelerator == DELIM_PRE)
+		{
+			if (len >= 9 && is_release (accelerator))
+			{
+				accelerator += 9;
+				len -= 9;
+				mods |= GDK_RELEASE_MASK;
+			}
+			else if (len >= 9 && is_control (accelerator))
+			{
+				accelerator += 9;
+				len -= 9;
+				mods |= GDK_CONTROL_MASK;
+			}
+			else if (len >= 7 && is_shift (accelerator))
+			{
+				accelerator += 7;
+				len -= 7;
+				mods |= GDK_SHIFT_MASK;
+			}
+			else if (len >= 6 && is_shft (accelerator))
+			{
+				accelerator += 6;
+				len -= 6;
+				mods |= GDK_SHIFT_MASK;
+			}
+			else if (len >= 6 && is_ctrl (accelerator))
+			{
+				accelerator += 6;
+				len -= 6;
+				mods |= GDK_CONTROL_MASK;
+			}
+			else if (len >= 6 && is_modx (accelerator))
+			{
+				static const guint mod_vals[] = {
+					GDK_MOD1_MASK, GDK_MOD2_MASK, GDK_MOD3_MASK,
+					GDK_MOD4_MASK, GDK_MOD5_MASK
+				};
+
+				len -= 6;
+				accelerator += 4;
+				mods |= mod_vals[*accelerator - '1'];
+				accelerator += 2;
+			}
+			else if (len >= 5 && is_ctl (accelerator))
+			{
+				accelerator += 5;
+				len -= 5;
+				mods |= GDK_CONTROL_MASK;
+			}
+			else if (len >= 5 && is_alt (accelerator))
+			{
+				accelerator += 5;
+				len -= 5;
+				mods |= GDK_MOD1_MASK;
+			}
+			else
+			{
+				gchar last_ch;
+	      
+				last_ch = *accelerator;
+				while (last_ch && last_ch != DELIM_POST)
+				{
+					last_ch = *accelerator;
+					accelerator += 1;
+					len -= 1;
+				}
+			}
+		}
+		else
+		{
+			keyval = gdk_keyval_from_name (accelerator);
+			accelerator += len;
+			len -= len;
+		}
+	}
+  
+	if (accelerator_key)
+		*accelerator_key = gdk_keyval_to_lower (keyval);
+	if (accelerator_mods)
+		*accelerator_mods = mods;
+}
+
+gchar *
+bonobo_ui_util_accel_name (guint              accelerator_key,
+			   GdkModifierType    accelerator_mods)
+{
+	static const gchar text_release[] = DELIM_PRE_S "Release" DELIM_POST_S;
+	static const gchar text_shift[] = DELIM_PRE_S "Shift" DELIM_POST_S;
+	static const gchar text_control[] = DELIM_PRE_S "Control" DELIM_POST_S;
+	static const gchar text_mod1[] = DELIM_PRE_S "Alt" DELIM_POST_S;
+	static const gchar text_mod2[] = DELIM_PRE_S "Mod2" DELIM_POST_S;
+	static const gchar text_mod3[] = DELIM_PRE_S "Mod3" DELIM_POST_S;
+	static const gchar text_mod4[] = DELIM_PRE_S "Mod4" DELIM_POST_S;
+	static const gchar text_mod5[] = DELIM_PRE_S "Mod5" DELIM_POST_S;
+	guint l;
+	gchar *keyval_name;
+	gchar *accelerator;
+
+	accelerator_mods &= GDK_MODIFIER_MASK;
+
+	keyval_name = gdk_keyval_name (gdk_keyval_to_lower (accelerator_key));
+	if (!keyval_name)
+		keyval_name = "";
+
+	l = 0;
+	if (accelerator_mods & GDK_RELEASE_MASK)
+		l += sizeof (text_release) - 1;
+	if (accelerator_mods & GDK_SHIFT_MASK)
+		l += sizeof (text_shift) - 1;
+	if (accelerator_mods & GDK_CONTROL_MASK)
+		l += sizeof (text_control) - 1;
+	if (accelerator_mods & GDK_MOD1_MASK)
+		l += sizeof (text_mod1) - 1;
+	if (accelerator_mods & GDK_MOD2_MASK)
+		l += sizeof (text_mod2) - 1;
+	if (accelerator_mods & GDK_MOD3_MASK)
+		l += sizeof (text_mod3) - 1;
+	if (accelerator_mods & GDK_MOD4_MASK)
+		l += sizeof (text_mod4) - 1;
+	if (accelerator_mods & GDK_MOD5_MASK)
+		l += sizeof (text_mod5) - 1;
+	l += strlen (keyval_name);
+
+	accelerator = g_new (gchar, l + 1);
+
+	l = 0;
+	accelerator[l] = 0;
+	if (accelerator_mods & GDK_RELEASE_MASK)
+	{
+		strcpy (accelerator + l, text_release);
+		l += sizeof (text_release) - 1;
+	}
+	if (accelerator_mods & GDK_SHIFT_MASK)
+	{
+		strcpy (accelerator + l, text_shift);
+		l += sizeof (text_shift) - 1;
+	}
+	if (accelerator_mods & GDK_CONTROL_MASK)
+	{
+		strcpy (accelerator + l, text_control);
+		l += sizeof (text_control) - 1;
+	}
+	if (accelerator_mods & GDK_MOD1_MASK)
+	{
+		strcpy (accelerator + l, text_mod1);
+		l += sizeof (text_mod1) - 1;
+	}
+	if (accelerator_mods & GDK_MOD2_MASK)
+	{
+		strcpy (accelerator + l, text_mod2);
+		l += sizeof (text_mod2) - 1;
+	}
+	if (accelerator_mods & GDK_MOD3_MASK)
+	{
+		strcpy (accelerator + l, text_mod3);
+		l += sizeof (text_mod3) - 1;
+	}
+	if (accelerator_mods & GDK_MOD4_MASK)
+	{
+		strcpy (accelerator + l, text_mod4);
+		l += sizeof (text_mod4) - 1;
+	}
+	if (accelerator_mods & GDK_MOD5_MASK)
+	{
+		strcpy (accelerator + l, text_mod5);
+		l += sizeof (text_mod5) - 1;
+	}
+	strcpy (accelerator + l, keyval_name);
+
+	return accelerator;
 }

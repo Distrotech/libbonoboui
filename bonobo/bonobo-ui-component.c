@@ -721,3 +721,33 @@ bonobo_ui_container_set_status (Bonobo_UIContainer  container,
 
 	bonobo_ui_component_set (NULL, container, "/status", str, opt_ev);
 }
+
+gboolean
+bonobo_ui_container_path_exists (Bonobo_UIContainer  container,
+				 const char         *path,
+				 CORBA_Environment  *ev)
+{
+	gboolean ret;
+	CORBA_Environment *real_ev, tmp_ev;
+
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
+
+	ret = Bonobo_UIContainer_node_exists (container, path, real_ev);
+
+	if (real_ev->_major != CORBA_NO_EXCEPTION) {
+		ret = FALSE;
+		if (!ev)
+			g_warning ("Serious exception on path_exists '$%s'",
+				   bonobo_exception_get_text (real_ev));
+	}
+
+	if (!ev)
+		CORBA_exception_free (&tmp_ev);
+
+	return ret;
+}
