@@ -52,9 +52,11 @@ libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
 	bonobo-arg.h			\
 	bonobo-arg.c			\
+	bonobo-event-source.c		\
 	bonobo-exception.c		\
 	bonobo-object-directory.c	\
 	bonobo-generic-factory.c	\
+	bonobo-listener.c		\
 	bonobo-main.c			\
 	bonobo-moniker.c		\
 	bonobo-moniker-util.c		\
@@ -93,9 +95,11 @@ libbonoboinclude_HEADERS =			\
 	bonobo-desktop-window.h			\
 	bonobo-embeddable-factory.h		\
 	bonobo-embeddable.h			\
+	bonobo-event-source.h			\
 	bonobo-exception.h			\
 	bonobo-generic-factory.h		\
 	bonobo-item-container.h			\
+	bonobo-listener.h			\
 	bonobo-main.h				\
 	bonobo-moniker-util.h			\
 	bonobo-moniker.h			\
