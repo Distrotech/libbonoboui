@@ -97,7 +97,7 @@ impl_exec_verb (PortableServer_Servant servant,
 	
 /*	g_warning ("TESTME: Exec verb '%s'", cname);*/
 
-	verb = g_hash_table_lookup (component->priv->listeners, cname);
+	verb = g_hash_table_lookup (component->priv->verbs, cname);
 	if (verb && verb->cb)
 		verb->cb (component, verb->user_data, cname);
 	else
