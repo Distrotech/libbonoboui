@@ -1,3 +1,8 @@
+2002-07-17  Morten Welinder  <terra@diku.dk>
+
+	* bonobo/bonobo-ui-util.c (bonobo_ui_util_build_help_menu): No
+	foo.
+
 2002-07-16  Brian Cameron  <Brian.Cameron@sun.com>
 
 	* samples/compound-doc/container/Makefile.am

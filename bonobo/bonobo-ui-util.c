@@ -585,8 +585,6 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 	bonobo_ui_node_set_attr (node, "pixtype", "stock");
 	bonobo_ui_node_set_attr (node, "pixname", "gtk-help");
 
-	help_path = g_strdup ("foo");
-
 	cl = g_new0 (HelpDisplayClosure, 1);
 	cl->app_name = g_strdup (app_name);
 	cl->app_prefix = g_strdup (app_prefix);
