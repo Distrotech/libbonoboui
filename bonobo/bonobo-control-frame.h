@@ -11,7 +11,7 @@
 #ifndef _BONOBO_CONTROL_FRAME_H_
 #define _BONOBO_CONTROL_FRAME_H_
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <gtk/gtkwidget.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-wrapper.h>

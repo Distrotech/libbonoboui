@@ -10,7 +10,7 @@
 #ifndef _BONOBO_UI_TOOLBAR_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_ITEM_H_
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS

@@ -9,11 +9,12 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
+
+#include <glib/gmacros.h>
 #include <gtk/gtk.h>
 
-#include <gmacros.h>
 #include <bonobo/bonobo-i18n.h>
-
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
 #include <bonobo/bonobo-ui-config-widget.h>
@@ -200,6 +201,7 @@ bonobo_ui_engine_config_hydrate (BonoboUIEngineConfig *config)
 	clobbers_free (config);
 
 #ifdef FIXME
+#warning Bonobo UI Engine configuration needs monikerizing.
 	gnome_config_get_vector (config->priv->path,
 				 &argc, &argv);
 #endif

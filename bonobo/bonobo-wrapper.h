@@ -10,7 +10,7 @@
 #ifndef BONOBO_WRAPPER_H
 #define BONOBO_WRAPPER_H
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <gtk/gtkbin.h>
 
 G_BEGIN_DECLS

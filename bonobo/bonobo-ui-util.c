@@ -9,6 +9,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <string.h>
 
 #include <gtk/gtkimage.h>
 #include <gtk/gtkiconfactory.h>

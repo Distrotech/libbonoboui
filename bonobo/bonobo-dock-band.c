@@ -20,8 +20,9 @@
    Author: Ettore Perazzoli <ettore@comm2000.it>
 */
 
+#include <config.h>
+#include <string.h>
 #include <gtk/gtk.h>
-
 #include <bonobo/bonobo-dock.h>
 #include <bonobo/bonobo-dock-band.h>
 #include <bonobo/bonobo-dock-item.h>

@@ -11,8 +11,8 @@
 #ifndef _BONOBO_UI_TOOLBAR_H_
 #define _BONOBO_UI_TOOLBAR_H_
 
+#include <glib/gmacros.h>
 #include <gtk/gtkcontainer.h>
-#include <gmacros.h>
 #include "bonobo-ui-toolbar-item.h"
 
 G_BEGIN_DECLS

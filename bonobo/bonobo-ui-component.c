@@ -8,6 +8,8 @@
  * Copyright 1999, 2000 Helix Code, Inc.
  */
 #include <config.h>
+#include <string.h>
+#include <unistd.h>
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>

@@ -10,7 +10,7 @@
 #ifndef _BONOBO_UI_TOOLBAR_BUTTON_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_BUTTON_ITEM_H_
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "bonobo-ui-toolbar-item.h"

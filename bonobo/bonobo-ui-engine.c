@@ -10,8 +10,9 @@
 
 #include <config.h>
 #include <stdlib.h>
-#include <gtk/gtksignal.h>
 #include <stdio.h>
+#include <string.h>
+#include <gtk/gtksignal.h>
 
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-xml.h>

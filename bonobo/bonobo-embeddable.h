@@ -11,7 +11,7 @@
 #ifndef _BONOBO_EMBEDDABLE_H_
 #define _BONOBO_EMBEDDABLE_H_
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <libgnomecanvas/gnome-canvas.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-object.h>

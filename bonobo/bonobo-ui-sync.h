@@ -12,7 +12,7 @@
 #define _BONOBO_UI_SYNC_H_
 
 #include <stdio.h>
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <gtk/gtkcontainer.h>
 #include <bonobo/bonobo-ui-node.h>
 

@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_TOOLBAR_SEPARATOR_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_SEPARATOR_ITEM_H_
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include "bonobo-ui-toolbar-item.h"
 
 G_BEGIN_DECLS

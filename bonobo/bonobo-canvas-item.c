@@ -8,6 +8,8 @@
  * (C) 1999, 2000 Helix Code, Inc.
  */
 #include <config.h>
+#include <stdio.h>
+#include <string.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-canvas-item.h>
@@ -16,7 +18,6 @@
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtksignal.h>
-#include <stdio.h>
 
 static GnomeCanvasItemClass *gbi_parent_class;
 

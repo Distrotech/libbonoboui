@@ -11,7 +11,7 @@
 #ifndef _BONOBO_CANVAS_COMPONENT_H_
 #define _BONOBO_CANVAS_COMPONENT_H_
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <bonobo/bonobo-object.h>
 
 G_BEGIN_DECLS

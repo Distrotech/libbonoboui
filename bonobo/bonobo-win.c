@@ -595,7 +595,8 @@ bonobo_window_key_press_event (GtkWidget *widget,
 	if (handled)
 		return TRUE;
 
-	sync = BONOBO_WINDOW (widget)->priv->sync_keys;
+	sync = BONOBO_UI_SYNC_KEYS (
+		BONOBO_WINDOW (widget)->priv->sync_keys);
 	if (sync)
 		return bonobo_ui_sync_keys_binding_handle (widget, event, sync);
 

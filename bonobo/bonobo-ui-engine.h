@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_ENGINE_H_
 #define _BONOBO_UI_ENGINE_H_
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <bonobo/bonobo-object.h>
 
 typedef struct _BonoboUIEngine BonoboUIEngine;

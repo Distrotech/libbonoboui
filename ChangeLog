@@ -1,3 +1,11 @@
+2001-06-28  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/*.h: update for new gmacros location, requires HEAD
+	glib.
+
+	* *.c: include string.h where neccessary, update includes,
+	misc warning fixes.
+
 2001-06-26  Darin Adler  <darin@bentspoon.com>
 
         * bonobo/bonobo-win.c: (construct_priv): Don't connect

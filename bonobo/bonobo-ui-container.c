@@ -298,9 +298,9 @@ bonobo_ui_container_set_engine (BonoboUIContainer *container,
 		engine, BONOBO_OBJECT (container));
 
 	gtk_signal_connect_while_alive (
-		G_OBJECT (engine), "destroy",
+		GTK_OBJECT (engine), "destroy",
 		GTK_SIGNAL_FUNC (blank_engine),
-		container, G_OBJECT (container));
+		container, GTK_OBJECT (container));
 }
 
 /**
@@ -341,9 +341,9 @@ bonobo_ui_container_set_win (BonoboUIContainer *container,
 		container, bonobo_window_get_ui_engine (win));
 
 	gtk_signal_connect_while_alive (
-		G_OBJECT (win), "destroy",
+		GTK_OBJECT (win), "destroy",
 		(GtkSignalFunc) blank_engine,
-		container, G_OBJECT (container));
+		container, GTK_OBJECT (container));
 }
 
 /**

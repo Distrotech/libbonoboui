@@ -7,8 +7,9 @@
  *
  * (C) 1999-2001 Helix Code, Inc.
  */
-#include <stdio.h>
 #include <config.h>
+#include <stdio.h>
+#include <string.h>
 #include <gtk/gtksignal.h>
 #include <bonobo/Bonobo.h>
 #include <libgnomecanvas/gnome-canvas.h>
@@ -616,7 +617,7 @@ gcc_finalize (GObject *object)
 }
 
 /* Ripped from gtk+/gtk/gtkmain.c */
-gboolean
+static gboolean
 _bonobo_boolean_handled_accumulator (GSignalInvocationHint *ihint,
 				     GValue                *return_accu,
 				     const GValue          *handler_return,

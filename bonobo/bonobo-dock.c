@@ -24,7 +24,7 @@
 */
 
 #include <gtk/gtk.h>
-
+#include <string.h>
 #include <bonobo/bonobo-dock.h>
 #include <bonobo/bonobo-dock-band.h>
 #include <bonobo/bonobo-dock-item.h>

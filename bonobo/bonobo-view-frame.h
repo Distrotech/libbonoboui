@@ -11,7 +11,7 @@
 #ifndef _BONOBO_VIEW_FRAME_H_
 #define _BONOBO_VIEW_FRAME_H_
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-ui-container.h>
 

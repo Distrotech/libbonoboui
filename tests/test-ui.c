@@ -10,7 +10,8 @@
  * Copyright 2000 Ximian, Inc.
  */
 
-#include "config.h"
+#include <config.h>
+#include <string.h>
 #include <bonobo.h>
 #include <gdk/gdkkeysyms.h>
 #include <liboaf/liboaf.h>

@@ -519,7 +519,7 @@ impl_Bonobo_Control_focus (PortableServer_Servant servant,
 		return FALSE;
 	}
 
-	return gtk_widget_child_focus (GTK_CONTAINER (priv->plug), direction);
+	return gtk_widget_child_focus (GTK_WIDGET (priv->plug), direction);
 }
 
 BonoboControl *

@@ -27,7 +27,7 @@
 #ifndef __BONOBO_SOCKET_H__
 #define __BONOBO_SOCKET_H__
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <gtk/gtksocket.h>
 #include <bonobo/bonobo-control.h>
 

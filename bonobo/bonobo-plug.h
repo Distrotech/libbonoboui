@@ -26,7 +26,7 @@
 #ifndef __BONOBO_PLUG_H__
 #define __BONOBO_PLUG_H__
 
-#include <gmacros.h>
+#include <glib/gmacros.h>
 #include <gdk/gdk.h>
 #include <gtk/gtkplug.h>
 
