@@ -79,8 +79,19 @@ struct _BonoboUIToolbarItemClass {
 };
 
 
-GtkType                  bonobo_ui_toolbar_item_get_type         (void);
-GtkWidget               *bonobo_ui_toolbar_item_new              (void);
+GtkType                   bonobo_ui_toolbar_item_get_type         (void);
+GtkWidget                *bonobo_ui_toolbar_item_new              (void);
+void                      bonobo_ui_toolbar_item_set_tooltip      (BonoboUIToolbarItem      *item,
+								   GtkTooltips              *tooltips,
+								   const char               *tooltip);
+void                      bonobo_ui_toolbar_item_set_state        (BonoboUIToolbarItem      *item,
+								   const char               *new_state);
+void                      bonobo_ui_toolbar_item_set_orientation  (BonoboUIToolbarItem      *item,
+								   GtkOrientation            orientation);
+GtkOrientation            bonobo_ui_toolbar_item_get_orientation  (BonoboUIToolbarItem      *item);
+void                      bonobo_ui_toolbar_item_set_style        (BonoboUIToolbarItem      *item,
+								   BonoboUIToolbarItemStyle  style);
+BonoboUIToolbarItemStyle  bonobo_ui_toolbar_item_get_style        (BonoboUIToolbarItem      *item);
 
 void			 bonobo_ui_toolbar_item_set_minimum_width(BonoboUIToolbarItem *item,
 								  int minimum_width);
@@ -100,11 +111,18 @@ void                     bonobo_ui_toolbar_item_set_style        (BonoboUIToolba
 BonoboUIToolbarItemStyle bonobo_ui_toolbar_item_get_style        (BonoboUIToolbarItem     *item);
 
 /* FIXME ugly names.  */
-void                     bonobo_ui_toolbar_item_set_want_label   (BonoboUIToolbarItem     *button_item,
-								  gboolean                 prefer_text);
-gboolean                 bonobo_ui_toolbar_item_get_want_label   (BonoboUIToolbarItem     *button_item);
-void                     bonobo_ui_toolbar_item_activate         (BonoboUIToolbarItem     *item);
+void                      bonobo_ui_toolbar_item_set_want_label   (BonoboUIToolbarItem      *button_item,
+								   gboolean                  prefer_text);
+gboolean                  bonobo_ui_toolbar_item_get_want_label   (BonoboUIToolbarItem      *button_item);
 
-END_GNOME_DECLS
+void                      bonobo_ui_toolbar_item_set_expandable   (BonoboUIToolbarItem      *button_item,
+								   gboolean                  expandable);
+gboolean                  bonobo_ui_toolbar_item_get_expandable   (BonoboUIToolbarItem      *button_item);
+
+void                      bonobo_ui_toolbar_item_activate         (BonoboUIToolbarItem     *item);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* __BONOBO_UI_TOOLBAR_ITEM_H__ */

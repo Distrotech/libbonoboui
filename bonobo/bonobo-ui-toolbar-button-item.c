@@ -74,6 +74,8 @@ create_pixmap_widget_from_pixbuf (GdkPixbuf *pixbuf)
 	bonobo_ui_toolbar_icon_set_draw_mode (BONOBO_UI_TOOLBAR_ICON (pixmap_widget),
 					      BONOBO_UI_TOOLBAR_ICON_COLOR);
 
+	bonobo_ui_toolbar_icon_set_alpha_threshold (BONOBO_UI_TOOLBAR_ICON (pixmap_widget), 0);
+
 	return pixmap_widget;
 }
 
@@ -88,10 +90,14 @@ set_icon (BonoboUIToolbarButtonItem *button_item,
 	if (priv->icon != NULL)
 		gtk_widget_destroy (priv->icon);
 
+	gtk_widget_push_style (gtk_widget_get_style (GTK_WIDGET (priv->button_widget)));
+
 	if (pixbuf != NULL)
 		priv->icon = create_pixmap_widget_from_pixbuf (pixbuf);
 	else
 		priv->icon = NULL;
+
+	gtk_widget_pop_style ();
 }
 
 static void

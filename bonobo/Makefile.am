@@ -186,17 +186,23 @@ libbonobo_printinclude_HEADERS =		\
 	bonobo-print.h		\
 	bonobo-print-client.h
 
-noinst_PROGRAMS = test-app
+noinst_PROGRAMS = test-app test-toolbar
 
 bin_PROGRAMS = bonobo-ui-extract
 
 test_app_SOURCES = app.c
-
 test_app_LDADD =					\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(top_builddir)/bonobo/libbonobox.la		\
 	$(top_builddir)/bonobo/libbonobo-print.la	\
-	$(BONOBOX_TEST_LIBS) 
+	$(BONOBOX_TEST_LIBS)
+
+test_toolbar_SOURCES = test-toolbar.c
+test_toolbar_LDADD =				\
+	$(top_builddir)/bonobo/libbonobo.la		\
+	$(top_builddir)/bonobo/libbonobox.la		\
+	$(top_builddir)/bonobo/libbonobo-print.la	\
+	$(BONOBOX_TEST_LIBS)
 
 bonobo_ui_extract_SOURCES = extract.c
 bonobo_ui_extract_LDADD =				\

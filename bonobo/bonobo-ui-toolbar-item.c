@@ -33,9 +33,13 @@
 static GtkBinClass *parent_class = NULL;
 
 struct _BonoboUIToolbarItemPrivate {
-	/* Whether this button wants to have a label when the toolbar style is
+	/* Whether this item wants to have a label when the toolbar style is
            `BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT'.  */
 	gboolean want_label;
+
+	/* Whether this item wants to be expanded to all the available
+           width/height.  */
+	gboolean expandable;
 
 	/* Orientation for this item.  */
 	GtkOrientation orientation;
@@ -262,9 +266,10 @@ init (GtkObject *object)
 
 	priv = g_new (BonoboUIToolbarItemPrivate, 1);
 
-	priv->want_label  = FALSE;
-	priv->orientation = GTK_ORIENTATION_HORIZONTAL;
-	priv->style       = BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL;
+	priv->want_label    = FALSE;
+	priv->orientation   = GTK_ORIENTATION_HORIZONTAL;
+	priv->style         = BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL;
+	priv->expandable    = FALSE;
 	priv->minimum_width = 0;
 	
 	toolbar_item->priv = priv;
@@ -413,6 +418,36 @@ bonobo_ui_toolbar_item_get_want_label (BonoboUIToolbarItem *item)
 	priv = item->priv;
 
 	return priv->want_label;
+}
+
+void
+bonobo_ui_toolbar_item_set_expandable (BonoboUIToolbarItem *item,
+				       gboolean expandable)
+{
+	BonoboUIToolbarItemPrivate *priv;
+
+	g_return_if_fail (item != NULL);
+	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
+
+	priv = item->priv;
+
+	if ((priv->expandable && expandable) || (! priv->expandable && ! expandable))
+		return;
+
+	priv->expandable = expandable;
+	gtk_widget_queue_resize (GTK_WIDGET (item));
+}
+
+gboolean
+bonobo_ui_toolbar_item_get_expandable (BonoboUIToolbarItem *item)
+{
+	BonoboUIToolbarItemPrivate *priv;
+
+	g_return_val_if_fail (item != NULL, FALSE);
+	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item), FALSE);
+
+	priv = item->priv;
+	return priv->expandable;
 }
 
 

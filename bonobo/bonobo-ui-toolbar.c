@@ -37,10 +37,11 @@
 static GtkContainerClass *parent_class = NULL;
 
 enum {
-  ARG_0,
-  ARG_ORIENTATION,
-  ARG_IS_FLOATING,
+	ARG_0,
+	ARG_ORIENTATION,
+	ARG_IS_FLOATING,
 };
+
 struct _BonoboUIToolbarPrivate {
 	/* The orientation of this toolbar.  */
 	GtkOrientation orientation;
@@ -66,7 +67,7 @@ struct _BonoboUIToolbarPrivate {
 	GList *first_not_fitting_item;
 
 	/* The pop-up button.  When clicked, it pops up a window with all the
-X           items that don't fit.  */
+           items that don't fit.  */
 	BonoboUIToolbarItem *popup_item;
 
 	/* The window we pop-up when the pop-up item is clicked.  */
@@ -481,7 +482,7 @@ setup_popup_item (BonoboUIToolbar *toolbar)
 }
 
 /*
- *  This is a dirty hack.  We cannot hide the items with gtk_widget_hide ()
+ * This is a dirty hack.  We cannot hide the items with gtk_widget_hide ()
  * because we want to let the user be in control of the physical hidden/shown
  * state, so we just move the widget to a non-visible area.
  */
@@ -507,14 +508,19 @@ hide_not_fitting_items (BonoboUIToolbar *toolbar)
 }
 
 static void
-size_allocate_horizontally (BonoboUIToolbar *toolbar,
-			    const GtkAllocation *allocation)
+size_allocate_helper (BonoboUIToolbar *toolbar,
+		      const GtkAllocation *allocation)
 {
 	BonoboUIToolbarPrivate *priv;
 	GtkAllocation child_allocation;
-	GList *p;
-	int available_width;
 	int border_width;
+	int space_required;
+	int available_space;
+	int extra_space;
+	int num_expandable_items;
+	int popup_item_size;
+	gboolean first_expandable;
+	GList *p;
 
 	GTK_WIDGET (toolbar)->allocation = *allocation;
 
@@ -522,110 +528,97 @@ size_allocate_horizontally (BonoboUIToolbar *toolbar,
 
 	border_width = GTK_CONTAINER (toolbar)->border_width;
 
-	available_width = allocation->width - 2 * border_width;
-	if (available_width < 0)
-		available_width = 0;
+	popup_item_size = get_popup_item_size (toolbar);
+
+	if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
+		available_space = MAX ((int) allocation->width - 2 * border_width, popup_item_size);
+	else
+		available_space = MAX ((int) allocation->height - 2 * border_width, popup_item_size);
+
+	space_required = 0;
+	num_expandable_items = 0;
+	for (p = priv->items; p != NULL; p = p->next) {
+		BonoboUIToolbarItem *item;
+		GtkRequisition child_requisition;
+		int item_size;
+
+		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
+		if (! GTK_WIDGET_VISIBLE (item) || GTK_WIDGET (item)->parent != GTK_WIDGET (toolbar))
+			continue;
+
+		gtk_widget_get_child_requisition (GTK_WIDGET (item), &child_requisition);
+
+		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
+			item_size = child_requisition.width;
+		else
+			item_size = child_requisition.height;
+
+		if (p->next == NULL) {
+			if (space_required + item_size > available_space)
+				break;
+		} else {
+			if (space_required + item_size > available_space - popup_item_size)
+				break;
+		}
+
+		space_required += item_size;
+
+		if (bonobo_ui_toolbar_item_get_expandable (item))
+			num_expandable_items ++;
+	}
+
+	priv->first_not_fitting_item = p;
+
+	if (priv->first_not_fitting_item != NULL) {
+		extra_space = 0;
+	} else {
+		extra_space = available_space - space_required;
+		if (priv->first_not_fitting_item != NULL)
+			extra_space -= popup_item_size;
+	}
 
 	child_allocation.x = allocation->x + border_width;
 	child_allocation.y = allocation->y + border_width;
 
-	priv->first_not_fitting_item = NULL;
+	first_expandable = FALSE;
 
-	for (p = priv->items; p != NULL; p = p->next) {
-		GtkWidget *widget;
+	for (p = priv->items; p != priv->first_not_fitting_item; p = p->next) {
+		BonoboUIToolbarItem *item;
 		GtkRequisition child_requisition;
+		int expansion_amount;
 
-		widget = GTK_WIDGET (p->data);
-		if (! GTK_WIDGET_VISIBLE (widget) || widget->parent != GTK_WIDGET (toolbar))
+		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
+		if (! GTK_WIDGET_VISIBLE (item) || GTK_WIDGET (item)->parent != GTK_WIDGET (toolbar))
 			continue;
 
-		gtk_widget_get_child_requisition (widget, &child_requisition);
+		gtk_widget_get_child_requisition (GTK_WIDGET (item), &child_requisition);
 
-		if (available_width < child_requisition.width && p != priv->items) {
-			priv->first_not_fitting_item = p;
-			break;
+		if (! bonobo_ui_toolbar_item_get_expandable (item)) {
+			expansion_amount = 0;
+		} else {
+			g_assert (num_expandable_items != 0);
+
+			expansion_amount = extra_space / num_expandable_items;
+			if (first_expandable) {
+				expansion_amount += extra_space % num_expandable_items;
+				first_expandable = FALSE;
+			}
 		}
 
-		child_allocation.width  = child_requisition.width;
-		child_allocation.height = priv->max_height;
-
-		gtk_widget_size_allocate (widget, &child_allocation);
-
-		child_allocation.x += child_allocation.width;
-		available_width    -= child_allocation.width;
-	}
-
-	/* Something did not fit allocate the arrow */
-	if (p != NULL) {
-		/* Does the arrow fit ? */
-		available_width -= get_popup_item_size (toolbar);
-
-		/* Damn, it does not.  Remove the previous element if possible */
-		if (available_width < 0 && p->prev != NULL)
-			priv->first_not_fitting_item = p->prev;
-	}
-
-	hide_not_fitting_items (toolbar);
-	setup_popup_item (toolbar);
-}
-
-static void
-size_allocate_vertically (BonoboUIToolbar *toolbar,
-			  const GtkAllocation *allocation)
-{
-	BonoboUIToolbarPrivate *priv;
-	GtkAllocation child_allocation;
-	GList *p;
-	int available_height;
-	int border_width;
-
-	GTK_WIDGET (toolbar)->allocation = *allocation;
-
-	priv = toolbar->priv;
-
-	border_width = GTK_CONTAINER (toolbar)->border_width;
-
-	available_height = allocation->height - 2 * border_width;
-	if (available_height < 0)
-		available_height = 0;
-
-	child_allocation.x = allocation->x + border_width;
-	child_allocation.y = allocation->y + border_width;
-
-	priv->first_not_fitting_item = NULL;
-
-	for (p = priv->items; p != NULL; p = p->next) {
-		GtkWidget *widget;
-		GtkRequisition child_requisition;
-
-		widget = GTK_WIDGET (p->data);
-		if (! GTK_WIDGET_VISIBLE (widget) || widget->parent != GTK_WIDGET (toolbar))
-			continue;
-
-		gtk_widget_get_child_requisition (widget, &child_requisition);
-
-		if (available_height < child_requisition.height  && p != priv->items) {
-			priv->first_not_fitting_item = p;
-			break;
+		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL) {
+			child_allocation.width  = child_requisition.width + expansion_amount;
+			child_allocation.height = priv->max_height;
+		} else {
+			child_allocation.width  = priv->max_width;
+			child_allocation.height = child_requisition.height + expansion_amount;
 		}
 
-		child_allocation.width  = priv->max_width;
-		child_allocation.height = child_requisition.height;
+		gtk_widget_size_allocate (GTK_WIDGET (item), &child_allocation);
 
-		gtk_widget_size_allocate (widget, &child_allocation);
-
-		child_allocation.y += child_allocation.height;
-		available_height   -= child_allocation.height;
-	}
-
-	/* Something did not fit allocate the arrow */
-	if (p != NULL) {
-		/* Does the arrow fit ? */
-		available_height -= get_popup_item_size (toolbar);
-
-		/* Damn, it does not.  Remove the previous element if possible */
-		if (available_height < 0 && p->prev != NULL)
-			priv->first_not_fitting_item = p->prev;
+		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
+			child_allocation.x += child_allocation.width;
+		else
+			child_allocation.y += child_allocation.height;
 	}
 
 	hide_not_fitting_items (toolbar);
@@ -700,11 +693,11 @@ impl_size_request (GtkWidget *widget,
 		gtk_widget_size_request (GTK_WIDGET (priv->popup_item), &popup_item_requisition);
 
 		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL) {
-			requisition->width  = MAX (popup_item_requisition.width,  priv->total_width);
+			requisition->width  = popup_item_requisition.width;
 			requisition->height = MAX (popup_item_requisition.height, priv->max_height);
 		} else {
 			requisition->width  = MAX (popup_item_requisition.width,  priv->max_width);
-			requisition->height = MAX (popup_item_requisition.height, priv->total_height);
+			requisition->height = popup_item_requisition.height;
 		}
 	}
 
@@ -722,10 +715,7 @@ impl_size_allocate (GtkWidget *widget,
 	toolbar = BONOBO_UI_TOOLBAR (widget);
 	priv = toolbar->priv;
 
-	if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
-		size_allocate_horizontally (toolbar, allocation);
-	else
-		size_allocate_vertically (toolbar, allocation);
+	size_allocate_helper (toolbar, allocation);
 }
 
 static void
@@ -955,44 +945,43 @@ impl_set_style (BonoboUIToolbar *toolbar,
 }
 
 static void
-impl_get_arg(GtkObject* obj, GtkArg* arg, guint arg_id)
+impl_get_arg (GtkObject *obj,
+	      GtkArg *arg,
+	      guint arg_id)
 {
-  BonoboUIToolbar *toolbar = BONOBO_UI_TOOLBAR (obj);
-  BonoboUIToolbarPrivate *priv = toolbar->priv;
+	BonoboUIToolbar *toolbar = BONOBO_UI_TOOLBAR (obj);
+	BonoboUIToolbarPrivate *priv = toolbar->priv;
 
-  switch (arg_id) {
-  case ARG_ORIENTATION:
-    GTK_VALUE_UINT(*arg) = bonobo_ui_toolbar_get_orientation (toolbar);
-    break;
-
-  case ARG_IS_FLOATING :
-    GTK_VALUE_BOOL(*arg) = priv->is_floating;
-    break;
-
-  default:
-    break;
-  };
+	switch (arg_id) {
+	case ARG_ORIENTATION:
+		GTK_VALUE_UINT(*arg) = bonobo_ui_toolbar_get_orientation (toolbar);
+		break;
+	case ARG_IS_FLOATING:
+		GTK_VALUE_BOOL(*arg) = priv->is_floating;
+		break;
+	default:
+		break;
+	};
 }
 
 static void
-impl_set_arg(GtkObject* obj, GtkArg* arg, guint arg_id)
+impl_set_arg (GtkObject *obj,
+	      GtkArg *arg,
+	      guint arg_id)
 {
-  BonoboUIToolbar *toolbar = BONOBO_UI_TOOLBAR (obj);
-  BonoboUIToolbarPrivate *priv = toolbar->priv;
+	BonoboUIToolbar *toolbar = BONOBO_UI_TOOLBAR (obj);
+	BonoboUIToolbarPrivate *priv = toolbar->priv;
 
-  switch (arg_id) {
-
-  case ARG_ORIENTATION:
-    bonobo_ui_toolbar_set_orientation (toolbar, GTK_VALUE_UINT(*arg));
-    break;
-
-  case ARG_IS_FLOATING :
-    priv->is_floating = GTK_VALUE_BOOL(*arg);
-    break;
-
-  default:
-    break;
-  };
+	switch (arg_id) {
+	case ARG_ORIENTATION:
+		bonobo_ui_toolbar_set_orientation (toolbar, GTK_VALUE_UINT(*arg));
+		break;
+	case ARG_IS_FLOATING:
+		priv->is_floating = GTK_VALUE_BOOL(*arg);
+		break;
+	default:
+		break;
+	};
 }
 
 static void
