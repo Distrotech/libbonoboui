@@ -1,3 +1,12 @@
+2004-10-21  Marco Pesenti Gritti  <marco@gnome.org>
+
+	reviewed by: Michael Meeks <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-toolbar.c:
+	(impl_bonobo_ui_sync_toolbar_state), (toolbar_build_widget):
+
+	Deprecate pack-end behavior and add a space type for separators.
+
 2004-10-04  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
 
 	* bonobo/bonobo-control.c (bonobo_control_set_transient_for): See

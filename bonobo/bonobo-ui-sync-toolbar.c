@@ -91,7 +91,10 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 			gtk_tool_item_set_expand
 				(GTK_TOOL_ITEM (widget),
 				 string_array_contains (behavior_array, "expandable"));
-#warning 'Pack End' behavior !?
+			
+			/* The pack-end behavior is deprecated. You can use
+			   <separator type="space" behavior="expanded"/> to
+			   achieve the same result */
 		} else {
 			bonobo_ui_toolbar_item_set_expandable
 				(BONOBO_UI_TOOLBAR_ITEM (widget),
@@ -308,8 +311,14 @@ toolbar_build_widget (BonoboUISync *sync,
 		}
 	}
 
-	if (bonobo_ui_node_has_name (node, "separator"))
+	if (bonobo_ui_node_has_name (node, "separator")) {
 		tool_item = GTK_WIDGET (gtk_separator_tool_item_new ());
+
+		if (type && !strcmp (type, "space")) {
+			gtk_separator_tool_item_set_draw
+				(GTK_SEPARATOR_TOOL_ITEM (tool_item), FALSE);
+		}
+	}
 
 	else if (!type)
 		tool_item = GTK_WIDGET (gtk_tool_button_new (NULL, NULL));
