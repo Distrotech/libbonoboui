@@ -42,7 +42,6 @@ libbonoboinclude_HEADERS = \
 	bonobo-client-site.h			\
 	bonobo-control-frame.h			\
 	bonobo-control.h			\
-	bonobo-desktop-window.h			\
 	bonobo-dock-band.h			\
 	bonobo-dock-item.h			\
 	bonobo-dock-layout.h			\
@@ -96,7 +95,6 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-client-site.c			\
 	bonobo-control-frame.c			\
 	bonobo-control.c			\
-	bonobo-desktop-window.c			\
 	bonobo-embeddable.c			\
 	bonobo-plug.c				\
 	bonobo-selector.c			\

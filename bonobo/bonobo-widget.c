@@ -60,8 +60,8 @@
 #include <bonobo/bonobo-moniker-util.h>
 
 struct _BonoboWidgetPrivate {
-
-	BonoboObjectClient *server;
+	/* Either a Control or an Embeddable ref */
+	Bonobo_Unknown      server;
 
 	/*
 	 * Control stuff.
@@ -79,31 +79,30 @@ struct _BonoboWidgetPrivate {
 
 static BonoboWrapperClass *bonobo_widget_parent_class;
 
-static BonoboObjectClient *
+static Bonobo_Unknown
 bonobo_widget_launch_component (const char *moniker,
 				const char *if_name)
 {
-	Bonobo_Unknown corba_ref;
-	BonoboObjectClient *server;
+	Bonobo_Unknown component;
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
-	corba_ref = bonobo_get_object (moniker, if_name, &ev);
+	component = bonobo_get_object (moniker, if_name, &ev);
 
 	if (BONOBO_EX (&ev)) {
 		char *txt;
 		g_warning ("Activation exception '%s'",
 			   (txt = bonobo_exception_get_text (&ev)));
 		g_free (txt);
-		server = CORBA_OBJECT_NIL;
+		component = CORBA_OBJECT_NIL;
 	}
 
 	CORBA_exception_free (&ev);
 
-	if (corba_ref == CORBA_OBJECT_NIL)
+	if (component == CORBA_OBJECT_NIL)
 		return NULL;
 
-	return bonobo_object_client_from_corba (corba_ref);
+	return component;
 }
 
 
@@ -452,29 +451,13 @@ bonobo_widget_get_uih (BonoboWidget *bonobo_widget)
  *
  */
 
-/**
- * bonobo_widget_get_server:
- * @bonobo_widget: the #BonoboWidget to query.
- *
- * Returns: The BonoboObjectClient (a wrapper for the CORBA object
- * reference) to the object that this BonoboWidget is wrapping. 
- */ 
-BonoboObjectClient *
-bonobo_widget_get_server (BonoboWidget *bonobo_widget)
-{
-	g_return_val_if_fail (bonobo_widget != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
-
-	return bonobo_widget->priv->server;
-}
-
 Bonobo_Unknown
 bonobo_widget_get_objref (BonoboWidget *bonobo_widget)
 {
 	g_return_val_if_fail (bonobo_widget != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
 
-	return BONOBO_OBJREF (bonobo_widget->priv->server);
+	return bonobo_widget->priv->server;
 }
 
 static void

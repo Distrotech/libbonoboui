@@ -14,7 +14,6 @@
 #include <gtk/gtkobject.h>
 #include <libgnomecanvas/gnome-canvas.h>
 #include <bonobo/bonobo-object.h>
-#include <bonobo/bonobo-object-client.h>
 #include <bonobo/bonobo-item-container.h>
 
 G_BEGIN_DECLS
@@ -34,7 +33,7 @@ struct _BonoboClientSite {
 	BonoboObject base;
 
 	BonoboItemContainer *container;
-	BonoboObjectClient  *bound_embeddable; /* IDL:Bonobo/Embeddable:1.0 */
+	Bonobo_Embeddable    bound_embeddable;
 	GList		    *view_frames;
 	GList               *canvas_items;
 	unsigned int         child_shown:1;
@@ -57,8 +56,8 @@ BonoboClientSite           *bonobo_client_site_new                 (BonoboItemCo
 BonoboClientSite           *bonobo_client_site_construct           (BonoboClientSite    *client_site,
 								    BonoboItemContainer *container);
 gboolean                    bonobo_client_site_bind_embeddable     (BonoboClientSite    *client_site,
-								    BonoboObjectClient  *object);
-BonoboObjectClient         *bonobo_client_site_get_embeddable      (BonoboClientSite    *client_site);
+								    Bonobo_Embeddable    embeddable);
+Bonobo_Embeddable           bonobo_client_site_get_embeddable      (BonoboClientSite    *client_site);
 BonoboItemContainer        *bonobo_client_site_get_container       (BonoboClientSite    *client_site);
 
 /*

@@ -1,3 +1,23 @@
+2001-05-02  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-embeddable.c (impl_Bonobo_Embeddable_advise),
+	(impl_Bonobo_Embeddable_unadvise): kill.
+	(bonobo_embeddable_class_init): upd.
+
+	* changes.txt: add to document changes
+
+	* bonobo/Makefile.am: remove bonobo-desktop.[ch]
+
+	* bonobo/bonobo-desktop.[ch]: remove.
+
+2001-05-02  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-widget.c (bonobo_widget_launch_component),
+	(bonobo_widget_get_objref): kill BonoboObjectClient
+
+	* bonobo/bonobo-client-site.c (bonobo_client_site_bind_embeddable),
+	(bonobo_client_site_get_embeddable): kill BonoboObjectClient.
+
 2001-05-01  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-component.c (bonobo_ui_component_set_container),

@@ -208,7 +208,7 @@ BONOBO_TYPE_FUNC_FULL (BonoboClientSite,
 /** 
  * bonobo_client_site_bind_embeddable:
  * @client_site: the client site to which the remote Embeddable object will be bound.
- * @object: The remote object which supports the Bonobo::Embeddable interface.
+ * @embeddable: The remote object which supports the Bonobo::Embeddable interface.
  *
  * This routine binds a remote Embeddable object to a local
  * BonoboClientSite object.  The idea is that there is always a
@@ -220,44 +220,31 @@ BONOBO_TYPE_FUNC_FULL (BonoboClientSite,
  * @client_site.
  */
 gboolean
-bonobo_client_site_bind_embeddable (BonoboClientSite   *client_site,
-				    BonoboObjectClient *object)
+bonobo_client_site_bind_embeddable (BonoboClientSite *client_site,
+				    Bonobo_Embeddable embeddable)
 {
-	CORBA_Object embeddable_object;
 	CORBA_Environment ev;
 	
 	g_return_val_if_fail (client_site != NULL, FALSE);
-	g_return_val_if_fail (object != NULL, FALSE);
+	g_return_val_if_fail (embeddable != CORBA_OBJECT_NIL, FALSE);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), FALSE);
-	g_return_val_if_fail (BONOBO_IS_OBJECT_CLIENT (object), FALSE);
-
-	embeddable_object = bonobo_object_client_query_interface (
-		object, "IDL:Bonobo/Embeddable:1.0", NULL);
-
-	if (embeddable_object == CORBA_OBJECT_NIL)
-		return FALSE;
 
 	CORBA_exception_init (&ev);
 
-	/* The QI adds a ref */
-	Bonobo_Unknown_unref (BONOBO_OBJREF (object), &ev);
-
-	Bonobo_Embeddable_setClientSite (embeddable_object, 
-					 BONOBO_OBJREF (client_site), &ev);
+	Bonobo_Embeddable_setClientSite (embeddable, BONOBO_OBJREF (client_site), &ev);
 		
 	if (BONOBO_EX (&ev)) {
-		bonobo_object_check_env (BONOBO_OBJECT (object),
-					 embeddable_object, &ev);
+		bonobo_object_check_env (BONOBO_OBJECT (client_site),
+					 embeddable, &ev);
 		CORBA_exception_free (&ev);
 		return FALSE;
 	}
 	CORBA_exception_free (&ev);
 
 	if (client_site->bound_embeddable)
-		bonobo_object_unref (BONOBO_OBJECT (client_site->bound_embeddable));
+		bonobo_object_release_unref (client_site->bound_embeddable, NULL);
 
-	client_site->bound_embeddable = bonobo_object_client_from_corba (embeddable_object);
-	bonobo_object_client_ref (client_site->bound_embeddable, NULL);
+	client_site->bound_embeddable = bonobo_object_dup_ref (embeddable, NULL);
 
 	return TRUE;
 }
@@ -270,7 +257,7 @@ bonobo_client_site_bind_embeddable (BonoboClientSite   *client_site,
  * Returns: The BonoboObjectClient object which corresponds to the
  * remote BonoboObject to which @client_site is bound.
  */
-BonoboObjectClient *
+Bonobo_Embeddable
 bonobo_client_site_get_embeddable (BonoboClientSite *client_site)
 {
 	g_return_val_if_fail (

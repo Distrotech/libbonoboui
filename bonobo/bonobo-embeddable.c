@@ -108,18 +108,6 @@ impl_Bonobo_Embeddable_close (PortableServer_Servant servant,
 {
 }
 
-static void
-impl_Bonobo_Embeddable_advise (PortableServer_Servant servant,
-			      const Bonobo_AdviseSink advise,
-			      CORBA_Environment *ev)
-{
-}
-
-static void
-impl_Bonobo_Embeddable_unadvise (PortableServer_Servant servant, CORBA_Environment *ev)
-{
-}
-
 static CORBA_long
 impl_Bonobo_Embeddable_getMiscStatus (PortableServer_Servant servant,
 				      const CORBA_long type,
@@ -454,8 +442,6 @@ bonobo_embeddable_class_init (BonoboEmbeddableClass *klass)
 	epv->getClientSite    = impl_Bonobo_Embeddable_getClientSite;
 	epv->setHostName      = impl_Bonobo_Embeddable_setHostName;
 	epv->close            = impl_Bonobo_Embeddable_close;
-	epv->advise           = impl_Bonobo_Embeddable_advise;
-	epv->unadvise         = impl_Bonobo_Embeddable_unadvise;
 	epv->getMiscStatus    = impl_Bonobo_Embeddable_getMiscStatus;
 	epv->createView       = impl_Bonobo_Embeddable_createView;
 	epv->setURI           = impl_Bonobo_Embeddable_setURI;

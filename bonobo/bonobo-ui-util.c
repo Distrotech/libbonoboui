@@ -251,7 +251,7 @@ GtkWidget *
 bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_menu)
 {
 	char      *type, *text;
-	GtkWidget *image;
+	GtkWidget *image = NULL;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
