@@ -113,7 +113,6 @@ libbonoboinclude_HEADERS =		\
 	bonobo-generic-factory.h	\
 	bonobo-main.h			\
 	bonobo-moniker.h		\
-	bonobo-moniker-client.h		\
 	bonobo-object.h			\
 	bonobo-object-client.h		\
 	bonobo-object-directory.h	\
