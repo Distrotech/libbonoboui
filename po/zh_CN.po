@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo\n"
-"POT-Creation-Date: 2001-09-27 08:01+1000\n"
-"PO-Revision-Date: 2001-09-01 17:35+0800\n"
+"POT-Creation-Date: 2001-11-01 21:40+0800\n"
+"PO-Revision-Date: 2001-11-01 21:41+0800\n"
 "Last-Translator: Wang Jian <lark@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -23,29 +23,29 @@ msgstr "方向"
 
 #: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
 msgid "Preferred width"
-msgstr ""
+msgstr "首选宽度"
 
 #: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 msgid "Preferred height"
-msgstr ""
+msgstr "首选高度"
 
-#: bonobo/bonobo-file-selector-util.c:371
+#: bonobo/bonobo-file-selector-util.c:367
 msgid "Select a file to open"
 msgstr "选择要打开的文件"
 
-#: bonobo/bonobo-file-selector-util.c:399
+#: bonobo/bonobo-file-selector-util.c:395
 msgid "Select files to open"
 msgstr "选择要打开的文件"
 
-#: bonobo/bonobo-file-selector-util.c:428
+#: bonobo/bonobo-file-selector-util.c:424
 msgid "Select a filename to save"
 msgstr "选择要保存的文件名"
 
-#: bonobo/bonobo-selector-widget.c:356
+#: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
 msgstr "名字"
 
-#: bonobo/bonobo-selector-widget.c:380
+#: bonobo/bonobo-selector-widget.c:326
 msgid "Description"
 msgstr "描述"
 
@@ -117,14 +117,31 @@ msgstr "定制(_Z)"
 msgid "Customize the toolbar"
 msgstr "定制工具栏"
 
-#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "不做任何事；它仅仅是个演示。"
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Hello。"
+
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr "Gnome Hello"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr "Hello，World！"
+
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
+msgid "Cannot init libbonoboui code"
+msgstr "无法初始化 libbonoboui 代码"
+
+#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "无法 bonobo_ui_init"
 
 #: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "选择一个对象"
-
-#: tests/test-ui.c:230
-msgid "Cannot init libbonoboui code"
-msgstr "无法初始化 libbonoboui 代码"
