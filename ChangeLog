@@ -1,3 +1,13 @@
+2001-04-24  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/Makefile.am (INCLUDES, libbonoboui_la_LIBADD):
+	Use the correct CFLAGS and LIBS to make this actually work.
+	(libbonoboui_la_SOURCES): Removed bonobo-item-container.c and
+	bonobo-property-bag-xml.c.
+
+	* bonobo/bonobo-insert-component.xpm: Moved this here from the
+	staging directory.
+	
 2001-04-19  Michael Meeks  <michael@ximian.com>
 
 	* *.[ch]:

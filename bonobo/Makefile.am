@@ -5,10 +5,8 @@ INCLUDES = \
 	-I$(builddir)					\
         -I$(includedir)                                 \
 	$(WARN_CFLAGS)					\
-	$(GLIB_CFLAGS)					\
-	$(ORBIT_CFLAGS)					\
-	$(OAF_CFLAGS)					\
 	$(LIBBONOBO_CFLAGS)				\
+	$(LIBGNOMECANVAS_CFLAGS)			\
 	-DPLUGIN_DIR=\""$(PLUGIN_DIR)"\"		\
         -DBONOBO_LIBDIR=\""$(libdir)"\" 		\
         -DBONOBO_DATADIR=\""$(datadir)"\" 		\
@@ -35,7 +33,7 @@ noinst_HEADERS = \
 	bonobo-ui-xml.h
 
 libbonoboui_2_la_LIBADD = \
-	$(LIBBONOBO_LDFLAGS)
+	$(LIBGNOMECANVAS_LIBS) $(LIBBONOBO_LIBS)
 
 libbonoboui_2_la_SOURCES = \
 	bonobo-canvas-component.c		\
@@ -45,9 +43,7 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-control.c			\
 	bonobo-desktop-window.c			\
 	bonobo-embeddable.c			\
-	bonobo-item-container.c			\
 	bonobo-plug.c				\
-	bonobo-property-bag-xml.c		\
 	bonobo-selector.c			\
 	bonobo-selector-widget.c		\
 	bonobo-socket.c				\
@@ -79,9 +75,5 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-wrapper.c			\
 	bonobo-zoomable.c			\
 	bonobo-zoomable-frame.c
-
-BUILT_SOURCES=$(CORBA_SOURCE)
-
-CLEANFILES += $(BUILT_SOURCES)
 
 EXTRA_DIST = bonobo-insert-component.xpm libbonobo-2.0.pc.in
