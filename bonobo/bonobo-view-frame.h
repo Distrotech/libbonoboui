@@ -82,6 +82,7 @@ void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
 
 void		  gnome_view_frame_set_covered     (GnomeViewFrame *view_frame,
 						    gboolean covered);
+void              gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom);
 
 END_GNOME_DECLS
 
