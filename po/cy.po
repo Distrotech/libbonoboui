@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-08 08:49+0000\n"
-"PO-Revision-Date: 2005-01-08 08:50+0100\n"
+"POT-Creation-Date: 2005-01-14 16:47+0000\n"
+"PO-Revision-Date: 2005-01-14 16:50+0000\n"
 "Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
@@ -37,7 +37,7 @@ msgid "Dock the toolbar"
 msgstr "Docio'r bar offer"
 
 #: bonobo/bonobo-dock-item-grip.c:257
-msgid "Un dock the toolbar"
+msgid "Undock the toolbar"
 msgstr "Dad-docio'r bar offer"
 
 #: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
@@ -178,7 +178,7 @@ msgstr "Baneri datnamu Gdk i'w gosod"
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
 msgid "FLAGS"
-msgstr "BANNERI"
+msgstr "BANERI"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
