@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2002-02-23 16:50+0100\n"
-"PO-Revision-Date: 2002-02-23 16:52+0100\n"
+"POT-Creation-Date: 2002-03-19 21:21+0100\n"
+"PO-Revision-Date: 2002-03-19 21:45+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -34,15 +34,15 @@ msgstr "Foretrukket bredde"
 msgid "Preferred height"
 msgstr "Foretrukket højde"
 
-#: bonobo/bonobo-file-selector-util.c:412
+#: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
 msgstr "Vælg en fil som skal åbnes"
 
-#: bonobo/bonobo-file-selector-util.c:440
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
 msgstr "Vælg filer som skal åbnes"
 
-#: bonobo/bonobo-file-selector-util.c:469
+#: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
 msgstr "Vælg et filnavn at gemme som"
 
@@ -62,43 +62,43 @@ msgstr "Navn"
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: bonobo/bonobo-ui-config-widget.c:264
+#: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
 msgstr "Synlig"
 
-#: bonobo/bonobo-ui-config-widget.c:271
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
 msgstr "_Vis"
 
-#: bonobo/bonobo-ui-config-widget.c:278
+#: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
 msgstr "_Skjul"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
 msgstr "_Vis værktøjstip"
 
-#: bonobo/bonobo-ui-config-widget.c:289
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
 msgstr "Værktøjslinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:299
+#: bonobo/bonobo-ui-config-widget.c:294
 msgid "toolbars"
 msgstr "værktøjslinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "Udseende"
 
-#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "_Ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:325
+#: bonobo/bonobo-ui-config-widget.c:320
 msgid "_Text and Icon"
 msgstr "_Tekst og ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:326
 msgid "_Priority text only"
 msgstr "Kun _prioritetstekst"
 
@@ -207,6 +207,91 @@ msgstr "er flydende"
 msgid "whether the toolbar is floating"
 msgstr "Om værktøjslinjen flyder"
 
+#: bonobo/bonobo-ui-init-gtk.c:113
+msgid "Gdk debugging flags to set"
+msgstr "Gdk-fejlsøgningsflag som skal aktiveres"
+
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
+msgid "FLAGS"
+msgstr "FLAG"
+
+#: bonobo/bonobo-ui-init-gtk.c:116
+msgid "Gdk debugging flags to unset"
+msgstr "Gdk-fejlsøgningsflag som skal deaktiveres"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "X display to use"
+msgstr "X-terminal der skal benyttes"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "DISPLAY"
+msgstr "TERMINAL"
+
+#: bonobo/bonobo-ui-init-gtk.c:124
+msgid "Make X calls synchronous"
+msgstr "Gør kald til X synkrone"
+
+#: bonobo/bonobo-ui-init-gtk.c:130
+msgid "Don't use X shared memory extension"
+msgstr "Brug ikke X-udvidelse til delt hukommelse"
+
+#: bonobo/bonobo-ui-init-gtk.c:134
+msgid "Program name as used by the window manager"
+msgstr "Programnavn som benyttet af vindueshåndteringen"
+
+#: bonobo/bonobo-ui-init-gtk.c:134
+msgid "NAME"
+msgstr "NAVN"
+
+#: bonobo/bonobo-ui-init-gtk.c:137
+msgid "Program class as used by the window manager"
+msgstr "Programklasse som benyttet af vindueshåndteringen"
+
+#: bonobo/bonobo-ui-init-gtk.c:137
+msgid "CLASS"
+msgstr "KLASSE"
+
+#: bonobo/bonobo-ui-init-gtk.c:141
+msgid "HOST"
+msgstr "VÆRT"
+
+#: bonobo/bonobo-ui-init-gtk.c:145
+msgid "PORT"
+msgstr "PORT"
+
+#: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
+msgid "STYLE"
+msgstr "STIL"
+
+#: bonobo/bonobo-ui-init-gtk.c:157
+msgid "Gtk+ debugging flags to set"
+msgstr "Gtk+-fejlsøgningsflag som skal aktiveres"
+
+#: bonobo/bonobo-ui-init-gtk.c:160
+msgid "Gtk+ debugging flags to unset"
+msgstr "Gtk+-fejlsøgningsflag som skal deaktiveres"
+
+#: bonobo/bonobo-ui-init-gtk.c:163
+msgid "Make all warnings fatal"
+msgstr "Gør alle advarsler fatale"
+
+#: bonobo/bonobo-ui-init-gtk.c:166
+msgid "Load an additional Gtk module"
+msgstr "Indlæs et ekstra Gtk+-modul"
+
+#: bonobo/bonobo-ui-init-gtk.c:166
+msgid "MODULE"
+msgstr "MODUL"
+
+#: bonobo/bonobo-ui-init-gtk.c:175
+msgid "GTK+"
+msgstr "GTK+"
+
+#: bonobo/bonobo-ui-main.c:187
+msgid "Bonobo GUI support"
+msgstr "Bonobo GUI-understøttelse"
+
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
 msgstr "Dette gør ingenting; det er blot en demonstration"
@@ -252,5 +337,6 @@ msgstr "_Fil"
 msgid "_Select"
 msgstr "_Vælg"
 
-#~ msgid "Select an object"
-#~ msgstr "Vælg et objekt"
+#: samples/controls/bonobo-sample-controls.c:121
+msgid "Could not initialize Bonobo UI"
+msgstr "Kunne ikke klargøre Bonobo UI"
