@@ -147,7 +147,7 @@ make_moniker (const char *name)
 }
 
 static void
-do_add_cb (BonoboASyncReply  *handle,
+do_add_cb (BonoboAsyncReply  *handle,
 	   CORBA_Environment *ev,
 	   gpointer           user_data)
 {
@@ -194,10 +194,10 @@ resolve_and_add (SampleApp *app, Bonobo_Moniker moniker, const char *interface)
 
 	bonobo_object_release_unref (moniker, &ev);
 
-/*	name = bonobo_moniker_client_get_name (moniker, &ev);
+	name = bonobo_moniker_client_get_name (moniker, &ev);
 	g_print ("My moniker looks like '%s'\n", name);
 
-	CORBA_free (name);*/
+	CORBA_free (name);
 }
 
 /*
