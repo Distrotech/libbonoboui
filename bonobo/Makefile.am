@@ -79,6 +79,8 @@ libbonoboui_2_la_LIBADD = \
 	$(BONOBOUI_LIBS)
 
 libbonoboui_2_la_SOURCES = \
+	bonobo-a11y.c				\
+	bonobo-a11y.h				\
 	bonobo-dock.c				\
 	bonobo-dock.h				\
 	bonobo-dock-item.c			\
