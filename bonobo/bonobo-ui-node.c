@@ -772,10 +772,7 @@ uiEndElement (ParseState *ps, const xmlChar *name)
 static void
 uiCharacters (ParseState *ps, const xmlChar *chars, int len)
 {
-    int i;
-
-    for (i = 0; i < len; i++)
-	    g_string_append_c (ps->content, chars [i]);
+	g_string_append_len (ps->content, chars, len);
 }
 
 static xmlEntityPtr

@@ -1,5 +1,11 @@
 2001-08-22  Michael Meeks  <michael@ximian.com>
 
+	* tests/test-ui.c (main): do a batch of 1000 sets for profiling.
+
+	* bonobo/bonobo-ui-node.c (uiCharacters): use g_string_append_len
+
+2001-08-22  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/*: convert to GQuark more fully, use static
 	initializers.
 

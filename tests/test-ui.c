@@ -165,6 +165,7 @@ main (int argc, char **argv)
 	Bonobo_UIContainer corba_container;
 	CORBA_Environment  ev;
 	char *txt, *fname;
+	int i;
 
 	char simplea [] =
 		"<menu>\n"
@@ -441,15 +442,18 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_thaw (componenta, NULL);
 	bonobo_main ();
-	bonobo_ui_component_freeze (componenta, NULL);
 
-	bonobo_ui_component_set_translate (componentc, "/commands",
-				 "<cmd name=\"MyFoo\" sensitive=\"0\"/>", &ev);
-	bonobo_ui_component_set_translate (componentc, "/menu", simplec, &ev);
-	
-	bonobo_ui_component_set_translate (componentc, "/menu/File", simpled, &ev);
-
-	bonobo_ui_component_thaw (componenta, NULL);
+	for (i = 0; i < 1000; i++) {
+		bonobo_ui_component_freeze (componenta, NULL);
+		
+		bonobo_ui_component_set_translate (componentc, "/commands",
+						   "<cmd name=\"MyFoo\" sensitive=\"0\"/>", &ev);
+		bonobo_ui_component_set_translate (componentc, "/menu", simplec, &ev);
+		
+		bonobo_ui_component_set_translate (componentc, "/menu/File", simpled, &ev);
+		
+		bonobo_ui_component_thaw (componenta, NULL);
+	}
 	bonobo_main ();
 	bonobo_ui_component_freeze (componenta, NULL);
 
