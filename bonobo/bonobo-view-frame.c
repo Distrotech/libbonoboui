@@ -34,10 +34,10 @@ static BonoboControlFrameClass *bonobo_view_frame_parent_class;
 POA_Bonobo_ViewFrame__vepv bonobo_view_frame_vepv;
 
 struct _BonoboViewFramePrivate {
-	GtkWidget	 *wrapper; 
-	BonoboClientSite *client_site;
-	BonoboUIHandler	 *uih;
-	Bonobo_View       view;
+	GtkWidget	  *wrapper; 
+	BonoboClientSite  *client_site;
+	BonoboUIContainer *ui_container;
+	Bonobo_View        view;
 };
 
 static Bonobo_ClientSite
@@ -118,7 +118,7 @@ bonobo_view_frame_key_press_cb (GtkWidget *wrapper,
  * @corba_view_frame: A CORBA object for the Bonobo_ViewFrame interface.
  * @wrapper: A BonoboWrapper widget which the new ViewFrame will use to cover its enclosed View.
  * @client_site: the client site to which the newly-created ViewFrame will belong.
- * @uih: 
+ * @ui_container: 
  *
  * Initializes @view_frame with the parameters.
  *
@@ -129,7 +129,7 @@ BonoboViewFrame *
 bonobo_view_frame_construct (BonoboViewFrame   *view_frame,
 			     Bonobo_ViewFrame   corba_view_frame,
 			     BonoboClientSite  *client_site,
-			     Bonobo_UIContainer uih)
+			     Bonobo_UIContainer ui_container)
 {
 	GtkWidget *wrapper;
 
@@ -139,7 +139,7 @@ bonobo_view_frame_construct (BonoboViewFrame   *view_frame,
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 
 	bonobo_control_frame_construct (BONOBO_CONTROL_FRAME (view_frame),
-					corba_view_frame, uih);
+					corba_view_frame, ui_container);
 
 	view_frame->priv->client_site = client_site;
 	
@@ -175,14 +175,14 @@ bonobo_view_frame_construct (BonoboViewFrame   *view_frame,
 /**
  * bonobo_view_frame_new:
  * @client_site: the client site to which the newly-created ViewFrame will belong.
- * @uih: A CORBA object for the container's UIContainer server. 
+ * @ui_container: A CORBA object for the container's UIContainer server. 
  *
  * Returns: BonoboViewFrame object that implements the
  * Bonobo::ViewFrame CORBA service.
  */
 BonoboViewFrame *
 bonobo_view_frame_new (BonoboClientSite  *client_site,
-		       Bonobo_UIContainer uih)
+		       Bonobo_UIContainer ui_container)
 {
 	Bonobo_ViewFrame corba_view_frame;
 	BonoboViewFrame *view_frame;
@@ -198,7 +198,7 @@ bonobo_view_frame_new (BonoboClientSite  *client_site,
 		return NULL;
 	}
 
-	return bonobo_view_frame_construct (view_frame, corba_view_frame, client_site, uih);
+	return bonobo_view_frame_construct (view_frame, corba_view_frame, client_site, ui_container);
 }
 
 static void
@@ -383,19 +383,20 @@ bonobo_view_frame_set_covered (BonoboViewFrame *view_frame, gboolean covered)
 
 
 /**
- * bonobo_view_frame_get_ui_handler:
+ * bonobo_view_frame_get_ui_container:
  * @view_frame: A BonoboViewFrame object.
  *
  * Returns: The BonoboUIContainer associated with this ViewFrame.  See
- * also bonobo_view_frame_set_ui_handler().
+ * also bonobo_view_frame_set_ui_container().
  */
 Bonobo_UIContainer
-bonobo_view_frame_get_ui_handler (BonoboViewFrame *view_frame)
+bonobo_view_frame_get_ui_container (BonoboViewFrame *view_frame)
 {
 	g_return_val_if_fail (view_frame != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
 
-	return bonobo_control_frame_get_ui_handler (BONOBO_CONTROL_FRAME (view_frame));
+	return bonobo_control_frame_get_ui_container (
+		BONOBO_CONTROL_FRAME (view_frame));
 }
 
 /**
@@ -504,112 +505,6 @@ bonobo_view_frame_set_zoom_factor (BonoboViewFrame *view_frame, double zoom)
 			(CORBA_Object) view_frame->priv->view, &ev);
 	}
 	CORBA_exception_free (&ev);
-}
-
-#ifdef STALE_NOT_USED
-static void
-bonobo_view_frame_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
-				   const char *path)
-{
-	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (user_data);
-	const char     *verb_name;
-
-	g_assert (path != NULL);
-
-	/*
-	 * A verb was selected.  Extract the verb name from the menu
-	 * item path.
-	 */
-	verb_name = path + 1;
-
-	/*
-	 * Now execute the verb on the remote View.
-	 */
-	bonobo_view_frame_view_do_verb (view_frame, verb_name);
-
-	/*
-	 * Store the verb name.
-	 */
-	gtk_object_set_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name",
-			     g_strdup (verb_name));
-}
-#endif
-
-/**
- * bonobo_view_frame_popup_verbs:
- * @view_frame: A BonoboViewFrame object which is bound to a remote
- * BonoboView.
- *
- * This function creates a popup menu containing the available verbs
- * for the remote BonoboEmbeddable.  When the user selects a verb in
- * the menu, the menu is destroyed, and the verb is executed on the
- * view to which @view_frame is bound.  This function is meant to act
- * as a convenience, to save people the trouble of having to
- * reimplement this functionality over and over again.
- *
- * Returns: The name of the verb which the user selected, or %NULL if
- * no verb was selected.
- */
-char *
-bonobo_view_frame_popup_verbs (BonoboViewFrame *view_frame)
-{
-#ifdef STALE_NOT_USED
-	BonoboUIHandler *popup;
-	GList *verbs, *l;
-	char *verb;
-
-	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
-	g_return_val_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL, NULL);
-
-	/*
-	 * First get the list of available verbs from the remote
-	 * BonoboEmbeddable.
-	 */
-	verbs = bonobo_client_site_get_verbs (view_frame->priv->client_site);
-
-	/*
-	 * Now build a menu.
-	 */
-	popup = bonobo_ui_handler_new ();
-	bonobo_ui_handler_create_popup_menu (popup);
-
-	for (l = verbs; l != NULL; l = l->next) {
-		GnomeVerb *verb = (GnomeVerb *) l->data;
-		char *path;
-
-		path = g_strconcat ("/", verb->name, NULL);
-		bonobo_ui_handler_menu_new_item (popup, path,
-						verb->label, verb->hint,
-						-1,
-						BONOBO_UI_HANDLER_PIXMAP_NONE, NULL,
-						0, (GdkModifierType) 0,
-						bonobo_view_frame_verb_selected_cb,
-						view_frame);
-
-		g_free (path);
-	}
-
-	/*
-	 * Pop up the menu.
-	 */
-	bonobo_ui_handler_do_popup_menu (popup);
-
-	/*
-	 * Destroy it.
-	 */
-	bonobo_object_unref (BONOBO_OBJECT (popup));
-
-	/*
-	 * Grab the name of the executed verb.
-	 */
-	verb = gtk_object_get_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name");
-	gtk_object_remove_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name");
-
-	return verb;
-#else
-	return NULL;
-#endif /* STALE_NOT_USED */
 }
 
 /**

@@ -22,6 +22,8 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 POA_Bonobo_UIComponent__vepv bonobo_ui_component_vepv;
 
+#define GET_CLASS(c) (BONOBO_UI_COMPONENT_CLASS (GTK_OBJECT (c)->klass))
+
 typedef struct {
 	char              *id;
 	BonoboUIListenerFn cb;
@@ -36,13 +38,11 @@ typedef struct {
 	GDestroyNotify destroy_fn;
 } UIVerb;
 
-/*
- * FIXME: should all be hashed for speed.
- */
 struct _BonoboUIComponentPrivate {
-	GHashTable *verbs;
-	GHashTable *listeners;
-	char       *name;
+	GHashTable        *verbs;
+	GHashTable        *listeners;
+	char              *name;
+	Bonobo_UIContainer container;
 };
 
 static inline BonoboUIComponent *
@@ -266,81 +266,6 @@ bonobo_ui_component_get_epv (void)
 	return epv;
 }
 
-static void
-bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
-{
-	GtkObjectClass *object_class = (GtkObjectClass *) klass;
-	BonoboUIComponentClass *uclass = BONOBO_UI_COMPONENT_CLASS (klass);
-	
-	bonobo_ui_component_parent_class = gtk_type_class (BONOBO_OBJECT_TYPE);
-
-	object_class->destroy = bonobo_ui_component_destroy;
-
-	uclass->ui_event = ui_event;
-
-	bonobo_ui_component_vepv.Bonobo_Unknown_epv =
-		bonobo_object_get_epv ();
-	bonobo_ui_component_vepv.Bonobo_UIComponent_epv =
-		bonobo_ui_component_get_epv ();
-
-	signals [EXEC_VERB] = gtk_signal_new (
-		"exec_verb", GTK_RUN_FIRST,
-		object_class->type,
-		GTK_SIGNAL_OFFSET (BonoboUIComponentClass, exec_verb),
-		gtk_marshal_NONE__STRING,
-		GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
-
-	signals [UI_EVENT] = gtk_signal_new (
-		"ui_event", GTK_RUN_FIRST,
-		object_class->type,
-		GTK_SIGNAL_OFFSET (BonoboUIComponentClass, ui_event),
-		gtk_marshal_NONE__POINTER_INT_POINTER,
-		GTK_TYPE_NONE, 3, GTK_TYPE_STRING, GTK_TYPE_INT,
-		GTK_TYPE_STRING);
-
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
-}
-
-static void
-bonobo_ui_component_init (BonoboUIComponent *component)
-{
-	BonoboUIComponentPrivate *priv;
-
-	priv = g_new0 (BonoboUIComponentPrivate, 1);
-	priv->verbs = g_hash_table_new (g_str_hash, g_str_equal);
-	priv->listeners = g_hash_table_new (g_str_hash, g_str_equal);
-
-	component->priv = priv;
-}
-
-/**
- * bonobo_ui_component_get_type:
- *
- * Returns: the GtkType of the BonoboUIComponent class.
- */
-GtkType
-bonobo_ui_component_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboUIComponent",
-			sizeof (BonoboUIComponent),
-			sizeof (BonoboUIComponentClass),
-			(GtkClassInitFunc) bonobo_ui_component_class_init,
-			(GtkObjectInitFunc) bonobo_ui_component_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = gtk_type_unique (bonobo_object_get_type (), &info);
-	}
-
-	return type;
-}
-
 Bonobo_UIComponent
 bonobo_ui_component_corba_object_create (BonoboObject *object)
 {
@@ -401,19 +326,50 @@ bonobo_ui_component_new (const char *name)
 		component, corba_component, name));
 }
 
+BonoboUIComponent *
+bonobo_ui_component_new_default (void)
+{
+	char              *name;
+	BonoboUIComponent *component;
+
+	static int idx = 0;
+
+	name = g_strdup_printf (
+		"%s-%s-%d-%d",
+		gnome_app_id ? gnome_app_id : "unknown",
+		gnome_app_version ? gnome_app_version : "-.-",
+		getpid (), idx++);
+
+	component = bonobo_ui_component_new (name);
+	
+	g_free (name);
+
+	return component;
+}
+
 void
 bonobo_ui_component_set (BonoboUIComponent  *component,
-			 Bonobo_UIContainer  container,
 			 const char         *path,
 			 const char         *xml,
 			 CORBA_Environment  *ev)
 {
+	GET_CLASS (component)->xml_set (component, path, xml, ev);
+}
+
+static void
+impl_xml_set (BonoboUIComponent  *component,
+	      const char         *path,
+	      const char         *xml,
+	      CORBA_Environment  *ev)
+{
 	CORBA_Environment *real_ev, tmp_ev;
 	Bonobo_UIComponent corba_component;
 	char *name;
+	Bonobo_UIContainer container;
 
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
-	g_return_if_fail (!component || BONOBO_IS_UI_COMPONENT (component));
 
 	if (ev)
 		real_ev = ev;
@@ -453,11 +409,10 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 }
 
 void
-bonobo_ui_component_set_tree (BonoboUIComponent  *component,
-			      Bonobo_UIContainer  container,
-			      const char         *path,
-			      BonoboUINode            *node,
-			      CORBA_Environment  *ev)
+bonobo_ui_component_set_tree (BonoboUIComponent *component,
+			      const char        *path,
+			      BonoboUINode      *node,
+			      CORBA_Environment *ev)
 {
 	char *str;
 
@@ -466,20 +421,32 @@ bonobo_ui_component_set_tree (BonoboUIComponent  *component,
 /*	fprintf (stderr, "Merging '%s'\n", mem);*/
 	
 	bonobo_ui_component_set (
-		component, container, path, str, ev);
+		component, path, str, ev);
 
 	bonobo_ui_node_free_string (str);
 }
 
 char *
-bonobo_ui_container_get (Bonobo_UIContainer  container,
-			 const char         *path,
-			 gboolean            recurse,
-			 CORBA_Environment  *ev)
+bonobo_ui_component_get (BonoboUIComponent *component,
+			 const char        *path,
+			 gboolean           recurse,
+			 CORBA_Environment *ev)
+{
+	return GET_CLASS (component)->xml_get (component, path, recurse, ev);
+}
+
+static char *
+impl_xml_get (BonoboUIComponent *component,
+	      const char        *path,
+	      gboolean           recurse,
+	      CORBA_Environment *ev)
 {
 	CORBA_Environment *real_ev, tmp_ev;
 	CORBA_char *xml;
+	Bonobo_UIContainer container;
 
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), NULL);
+	container = component->priv->container;
 	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
 
 	if (ev)
@@ -502,13 +469,15 @@ bonobo_ui_container_get (Bonobo_UIContainer  container,
 }
 
 BonoboUINode *
-bonobo_ui_container_get_tree (Bonobo_UIContainer  container,
+bonobo_ui_component_get_tree (BonoboUIComponent  *component,
 			      const char         *path,
 			      gboolean            recurse,
 			      CORBA_Environment  *ev)
 {	
-	char *xml = bonobo_ui_container_get (container, path, recurse, ev);
+	char *xml;
 	BonoboUINode *node;
+
+	xml = bonobo_ui_component_get (component, path, recurse, ev);
 
 	if (!xml)
 		return NULL;
@@ -525,15 +494,24 @@ bonobo_ui_container_get_tree (Bonobo_UIContainer  container,
 
 void
 bonobo_ui_component_rm (BonoboUIComponent  *component,
-			Bonobo_UIContainer  container,
 			const char         *path,
 			CORBA_Environment  *ev)
 {
+	GET_CLASS (component)->xml_rm (component, path, ev);
+}
+
+static void
+impl_xml_rm (BonoboUIComponent  *component,
+	     const char         *path,
+	     CORBA_Environment  *ev)
+{
 	BonoboUIComponentPrivate *priv;
 	CORBA_Environment *real_ev, tmp_ev;
+	Bonobo_UIContainer container;
 
-	g_return_if_fail (container != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+	container = component->priv->container;
+	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
 	if (ev)
 		real_ev = ev;
@@ -566,13 +544,16 @@ bonobo_ui_component_rm (BonoboUIComponent  *component,
 
 
 void
-bonobo_ui_container_object_set (Bonobo_UIContainer  container,
+bonobo_ui_component_object_set (BonoboUIComponent  *component,
 				const char         *path,
 				Bonobo_Unknown      control,
 				CORBA_Environment  *ev)
 {
 	CORBA_Environment *real_ev, tmp_ev;
+	Bonobo_UIContainer container;
 
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
 	if (ev)
@@ -593,13 +574,17 @@ bonobo_ui_container_object_set (Bonobo_UIContainer  container,
 }
 
 Bonobo_Unknown
-bonobo_ui_container_object_get (Bonobo_UIContainer  container,
+bonobo_ui_component_object_get (BonoboUIComponent  *component,
 				const char         *path,
 				CORBA_Environment  *ev)
 {
 	CORBA_Environment *real_ev, tmp_ev;
 	Bonobo_Unknown     ret;
+	Bonobo_UIContainer container;
 
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component),
+			      CORBA_OBJECT_NIL);
+	container = component->priv->container;
 	g_return_val_if_fail (container != CORBA_OBJECT_NIL,
 			      CORBA_OBJECT_NIL);
 
@@ -647,11 +632,21 @@ bonobo_ui_component_add_verb_list (BonoboUIComponent  *component,
 }
 
 void
-bonobo_ui_container_freeze (Bonobo_UIContainer  container,
-			    CORBA_Environment  *ev)
+bonobo_ui_component_freeze (BonoboUIComponent *component,
+			    CORBA_Environment *ev)
+{
+	GET_CLASS (component)->freeze (component, ev);
+}
+
+static void
+impl_freeze (BonoboUIComponent *component,
+	     CORBA_Environment *ev)
 {
 	CORBA_Environment *real_ev, tmp_ev;
+	Bonobo_UIContainer container;
 
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
 	if (ev)
@@ -672,11 +667,21 @@ bonobo_ui_container_freeze (Bonobo_UIContainer  container,
 }
 
 void
-bonobo_ui_container_thaw (Bonobo_UIContainer  container,
-			  CORBA_Environment  *ev)
+bonobo_ui_component_thaw (BonoboUIComponent *component,
+			  CORBA_Environment *ev)
+{
+	GET_CLASS (component)->thaw (component, ev);
+}
+
+static void
+impl_thaw (BonoboUIComponent *component,
+	   CORBA_Environment *ev)
 {
 	CORBA_Environment *real_ev, tmp_ev;
+	Bonobo_UIContainer container;
 
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
 	if (ev)
@@ -697,19 +702,32 @@ bonobo_ui_container_thaw (Bonobo_UIContainer  container,
 }
 
 void
-bonobo_ui_container_set_prop (Bonobo_UIContainer  container,
+bonobo_ui_component_set_prop (BonoboUIComponent  *component,
 			      const char         *path,
 			      const char         *prop,
 			      const char         *value,
 			      CORBA_Environment  *opt_ev)
 {
+	GET_CLASS (component)->set_prop (component, path, prop, value, opt_ev);
+}
+
+static void
+impl_set_prop (BonoboUIComponent  *component,
+	       const char         *path,
+	       const char         *prop,
+	       const char         *value,
+	       CORBA_Environment  *opt_ev)
+{
 	BonoboUINode *node;
 	char *parent_path;
+	Bonobo_UIContainer container;
 
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
-	node = bonobo_ui_container_get_tree (
-		container, path, FALSE, opt_ev);
+	node = bonobo_ui_component_get_tree (
+		component, path, FALSE, opt_ev);
 
 	g_return_if_fail (node != NULL);
 
@@ -718,8 +736,7 @@ bonobo_ui_container_set_prop (Bonobo_UIContainer  container,
 	parent_path = bonobo_ui_xml_get_parent_path (path);
 
 	bonobo_ui_component_set_tree (
-		NULL, container,
-		parent_path, node, opt_ev);
+		component, parent_path, node, opt_ev);
 
 	g_free (parent_path);
 
@@ -727,19 +744,28 @@ bonobo_ui_container_set_prop (Bonobo_UIContainer  container,
 }
 
 gchar *
-bonobo_ui_container_get_prop (Bonobo_UIContainer  container,
-			      const char         *path,
-			      const char         *prop,
-			      CORBA_Environment  *opt_ev)
+bonobo_ui_component_get_prop (BonoboUIComponent *component,
+			      const char        *path,
+			      const char        *prop,
+			      CORBA_Environment *opt_ev)
+{
+	return GET_CLASS (component)->get_prop (component, path, prop, opt_ev);
+}
+
+static gchar *
+impl_get_prop (BonoboUIComponent *component,
+	       const char        *path,
+	       const char        *prop,
+	       CORBA_Environment *opt_ev)
 {
 	BonoboUINode *node;
 	xmlChar *ans;
 	gchar   *ret;
 
-	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), NULL);
 
-	node = bonobo_ui_container_get_tree (
-		container, path, FALSE, opt_ev);
+	node = bonobo_ui_component_get_tree (
+		component, path, FALSE, opt_ev);
 
 	g_return_val_if_fail (node != NULL, NULL);
 
@@ -755,29 +781,25 @@ bonobo_ui_container_get_prop (Bonobo_UIContainer  container,
 	return ret;
 }
 
-void
-bonobo_ui_container_set_status (Bonobo_UIContainer  container,
-				const char         *text,
-				CORBA_Environment  *opt_ev)
+gboolean
+bonobo_ui_component_path_exists (BonoboUIComponent *component,
+				 const char        *path,
+				 CORBA_Environment *ev)
 {
-	char *str;
-
-	g_return_if_fail (text != NULL);
-	g_return_if_fail (container != CORBA_OBJECT_NIL);
-
-	str = g_strdup_printf ("<item name=\"main\">%s</item>", text);
-
-	bonobo_ui_component_set (NULL, container, "/status", str, opt_ev);
+	return GET_CLASS (component)->exists (component, path, ev);
 }
 
-gboolean
-bonobo_ui_container_path_exists (Bonobo_UIContainer  container,
-				 const char         *path,
-				 CORBA_Environment  *ev)
+static gboolean
+impl_exists (BonoboUIComponent *component,
+	     const char        *path,
+	     CORBA_Environment *ev)
 {
 	gboolean ret;
+	Bonobo_UIContainer container;
 	CORBA_Environment *real_ev, tmp_ev;
 
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), FALSE);
+	container = component->priv->container;
 	g_return_val_if_fail (container != CORBA_OBJECT_NIL, FALSE);
 
 	if (ev)
@@ -801,3 +823,145 @@ bonobo_ui_container_path_exists (Bonobo_UIContainer  container,
 
 	return ret;
 }
+
+void
+bonobo_ui_component_set_status (BonoboUIComponent *component,
+				const char        *text,
+				CORBA_Environment *opt_ev)
+{
+	char *str;
+
+	g_return_if_fail (text != NULL);
+
+	str = g_strdup_printf ("<item name=\"main\">%s</item>", text);
+
+	bonobo_ui_component_set (component, "/status", str, opt_ev);
+}
+
+void
+bonobo_ui_component_unset_container (BonoboUIComponent *component)
+{
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
+	if (component->priv->container != CORBA_OBJECT_NIL) {
+		bonobo_ui_component_rm (component, "/", NULL);
+		bonobo_object_release_unref (component->priv->container, NULL);
+	}
+
+	component->priv->container = CORBA_OBJECT_NIL;
+}
+
+void
+bonobo_ui_component_set_container (BonoboUIComponent *component,
+				   Bonobo_UIContainer container)
+{
+	Bonobo_UIContainer ref_cont;
+
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
+	if (container != CORBA_OBJECT_NIL)
+		ref_cont = 		
+			bonobo_object_dup_ref (container, NULL);
+	else
+		ref_cont = CORBA_OBJECT_NIL;
+
+	bonobo_ui_component_unset_container (component);
+
+	component->priv->container = ref_cont;
+}
+
+Bonobo_UIContainer
+bonobo_ui_component_get_container (BonoboUIComponent *component)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component),
+			      CORBA_OBJECT_NIL);
+	
+	return component->priv->container;
+}
+
+static void
+bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
+{
+	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	BonoboUIComponentClass *uclass = BONOBO_UI_COMPONENT_CLASS (klass);
+	
+	bonobo_ui_component_parent_class = gtk_type_class (BONOBO_OBJECT_TYPE);
+
+	object_class->destroy = bonobo_ui_component_destroy;
+
+	uclass->ui_event = ui_event;
+
+	bonobo_ui_component_vepv.Bonobo_Unknown_epv =
+		bonobo_object_get_epv ();
+	bonobo_ui_component_vepv.Bonobo_UIComponent_epv =
+		bonobo_ui_component_get_epv ();
+
+	signals [EXEC_VERB] = gtk_signal_new (
+		"exec_verb", GTK_RUN_FIRST,
+		object_class->type,
+		GTK_SIGNAL_OFFSET (BonoboUIComponentClass, exec_verb),
+		gtk_marshal_NONE__STRING,
+		GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
+
+	signals [UI_EVENT] = gtk_signal_new (
+		"ui_event", GTK_RUN_FIRST,
+		object_class->type,
+		GTK_SIGNAL_OFFSET (BonoboUIComponentClass, ui_event),
+		gtk_marshal_NONE__POINTER_INT_POINTER,
+		GTK_TYPE_NONE, 3, GTK_TYPE_STRING, GTK_TYPE_INT,
+		GTK_TYPE_STRING);
+
+	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+
+	uclass->freeze   = impl_freeze;
+	uclass->thaw     = impl_thaw;
+	uclass->xml_set  = impl_xml_set;
+	uclass->xml_get  = impl_xml_get;
+	uclass->xml_rm   = impl_xml_rm;
+	uclass->set_prop = impl_set_prop;
+	uclass->get_prop = impl_get_prop;
+	uclass->exists   = impl_exists;
+
+}
+
+static void
+bonobo_ui_component_init (BonoboUIComponent *component)
+{
+	BonoboUIComponentPrivate *priv;
+
+	priv = g_new0 (BonoboUIComponentPrivate, 1);
+	priv->verbs = g_hash_table_new (g_str_hash, g_str_equal);
+	priv->listeners = g_hash_table_new (g_str_hash, g_str_equal);
+	priv->container = CORBA_OBJECT_NIL;
+
+	component->priv = priv;
+}
+
+/**
+ * bonobo_ui_component_get_type:
+ *
+ * Returns: the GtkType of the BonoboUIComponent class.
+ */
+GtkType
+bonobo_ui_component_get_type (void)
+{
+	static GtkType type = 0;
+
+	if (!type) {
+		GtkTypeInfo info = {
+			"BonoboUIComponent",
+			sizeof (BonoboUIComponent),
+			sizeof (BonoboUIComponentClass),
+			(GtkClassInitFunc) bonobo_ui_component_class_init,
+			(GtkObjectInitFunc) bonobo_ui_component_init,
+			NULL, /* reserved 1 */
+			NULL, /* reserved 2 */
+			(GtkClassInitFunc) NULL
+		};
+
+		type = gtk_type_unique (bonobo_object_get_type (), &info);
+	}
+
+	return type;
+}
+

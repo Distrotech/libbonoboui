@@ -19,6 +19,7 @@
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdktypes.h>
+#include <gtk/gtkhbox.h>
 #include <bonobo/bonobo-socket.h>
 
 enum {
@@ -40,7 +41,7 @@ struct _BonoboControlFramePrivate {
 	Bonobo_Control	   control;
 	GtkWidget         *container;
 	GtkWidget	  *socket;
-	Bonobo_UIContainer uic;
+	Bonobo_UIContainer ui_container;
 	BonoboPropertyBag *propbag;
 	gboolean           autoactivate;
 	gboolean           autostate;
@@ -77,10 +78,10 @@ impl_Bonobo_ControlFrame_get_ui_handler (PortableServer_Servant  servant,
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
-	if (control_frame->priv->uic == NULL)
+	if (control_frame->priv->ui_container == NULL)
 		return CORBA_OBJECT_NIL;
 
-	return bonobo_object_dup_ref (control_frame->priv->uic, ev);
+	return bonobo_object_dup_ref (control_frame->priv->ui_container, ev);
 }
 
 static Bonobo_PropertyBag
@@ -232,7 +233,7 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
  * bonobo_control_frame_construct:
  * @control_frame: The #BonoboControlFrame object to be initialized.
  * @corba_control_frame: A CORBA object for the Bonobo_ControlFrame interface.
- * @uic: A CORBA object for the UIContainer for the container application.
+ * @ui_container: A CORBA object for the UIContainer for the container application.
  *
  * Initializes @control_frame with the parameters.
  *
@@ -242,7 +243,7 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 BonoboControlFrame *
 bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 				Bonobo_ControlFrame  corba_control_frame,
-				Bonobo_UIContainer   uic)
+				Bonobo_UIContainer   ui_container)
 {
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
@@ -251,14 +252,14 @@ bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 	/*
 	 * See ui-faq.txt if this dies on you.
 	 */
-	if (uic != CORBA_OBJECT_NIL) {
+	if (ui_container != CORBA_OBJECT_NIL) {
 		CORBA_Environment ev;
 		CORBA_exception_init (&ev);
-		g_assert (CORBA_Object_is_a (uic, "IDL:Bonobo/UIContainer:1.0", &ev));
+		g_assert (CORBA_Object_is_a (ui_container, "IDL:Bonobo/UIContainer:1.0", &ev));
 		CORBA_exception_free (&ev);
 	}
 
-	control_frame->priv->uic = uic;
+	control_frame->priv->ui_container = ui_container;
 
 	/*
 	 * Now create the GtkSocket which will be used to embed
@@ -317,13 +318,13 @@ bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 
 /**
  * bonobo_control_frame_new:
- * @uic: The #Bonobo_UIContainer for the container application.
+ * @ui_container: The #Bonobo_UIContainer for the container application.
  *
  * Returns: BonoboControlFrame object that implements the
  * Bonobo::ControlFrame CORBA service. 
  */
 BonoboControlFrame *
-bonobo_control_frame_new (Bonobo_UIContainer uic)
+bonobo_control_frame_new (Bonobo_UIContainer ui_container)
 {
 	Bonobo_ControlFrame corba_control_frame;
 	BonoboControlFrame *control_frame;
@@ -336,7 +337,7 @@ bonobo_control_frame_new (Bonobo_UIContainer uic)
 		return NULL;
 	}
 
-	return bonobo_control_frame_construct (control_frame, corba_control_frame, uic);
+	return bonobo_control_frame_construct (control_frame, corba_control_frame, ui_container);
 }
 
 static void
@@ -681,19 +682,19 @@ bonobo_control_frame_get_autostate (BonoboControlFrame *control_frame)
 
 
 /**
- * bonobo_control_frame_get_ui_handler:
+ * bonobo_control_frame_get_ui_container:
  * @control_frame: A BonoboControlFrame object.
 
  * Returns: The Bonobo_UIContainer object reference associated with this
- * ControlFrame.  This uic is specified when the ControlFrame is
+ * ControlFrame.  This ui_container is specified when the ControlFrame is
  * created.  See bonobo_control_frame_new().
  */
 Bonobo_UIContainer
-bonobo_control_frame_get_ui_handler (BonoboControlFrame *control_frame)
+bonobo_control_frame_get_ui_container (BonoboControlFrame *control_frame)
 {
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), CORBA_OBJECT_NIL);
 
-	return control_frame->priv->uic;
+	return control_frame->priv->ui_container;
 }
 
 /**

@@ -4,6 +4,7 @@
 
 #include <libgnome/gnome-defs.h>
 #include <bonobo/bonobo-control-frame.h>
+#include <bonobo/bonobo-ui-container.h>
 
 BEGIN_GNOME_DECLS
  
@@ -49,7 +50,7 @@ char                      *bonobo_view_frame_popup_verbs      (BonoboViewFrame  
 void                       bonobo_view_frame_set_covered      (BonoboViewFrame  *view_frame,
 							       gboolean          covered);
 
-Bonobo_UIContainer         bonobo_view_frame_get_ui_handler   (BonoboViewFrame *view_frame);
+Bonobo_UIContainer         bonobo_view_frame_get_ui_container (BonoboViewFrame *view_frame);
 
 /*
  * A BonoboViewFrame acts as a proxy for the remote BonoboView object to

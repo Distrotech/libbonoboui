@@ -11,6 +11,10 @@
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-win.h>
 #include <bonobo/bonobo-ui-component.h>
+#include <bonobo/bonobo-control.h>
+#include <bonobo/bonobo-control-frame.h>
+#include <bonobo/bonobo-view.h>
+#include <bonobo/bonobo-view-frame.h>
 
 #define BONOBO_UI_HANDLER_TYPE        (bonobo_ui_handler_get_type ())
 #define BONOBO_UI_HANDLER(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_HANDLER_TYPE, BonoboUIHandler))
@@ -89,6 +93,7 @@ typedef enum {
  * _new to create the normal old style handler.
  */
 BonoboUIHandler		*bonobo_ui_handler_new				(void);
+BonoboUIHandler		*bonobo_ui_handler_new_from_component           (BonoboUIComponent *component);
 
 BonoboUIComponent       *bonobo_ui_compat_get_component                 (BonoboUIHandler *uih);
 BonoboWin               *bonobo_ui_compat_get_app                       (BonoboUIHandler *uih);
@@ -269,5 +274,17 @@ gboolean  bonobo_ui_handler_dock_set_sensitive  (BonoboUIHandler       *uih,
 						 gboolean               sensitivity);
 gboolean  bonobo_ui_handler_dock_get_sensitive  (BonoboUIHandler       *uih,
 						 const char            *name);
+
+/*
+ * Other misc. deprecated stuff.
+ */
+BonoboUIHandler *bonobo_control_get_ui_handler        (BonoboControl *control);
+Bonobo_Unknown   bonobo_control_get_remote_ui_handler (BonoboControl *control);
+
+BonoboUIHandler *bonobo_view_get_ui_handler           (BonoboView    *view);
+Bonobo_Unknown   bonobo_view_get_remote_ui_handler    (BonoboView    *view);
+
+Bonobo_Unknown   bonobo_view_frame_get_ui_handler    (BonoboViewFrame *view_frame);
+Bonobo_Unknown   bonobo_control_frame_get_ui_handler (BonoboControlFrame  *control_frame);
 
 #endif /* _BONOBO_UI_HANDLER_H_ */

@@ -933,13 +933,18 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 
 void
 bonobo_ui_util_set_ui (BonoboUIComponent *component,
-		       Bonobo_UIContainer container,
 		       const char        *app_prefix,
 		       const char        *file_name,
 		       const char        *app_name)
 {
 	char *fname;
 	BonoboUINode *ui;
+
+	if (bonobo_ui_component_get_container (component) == CORBA_OBJECT_NIL) {
+		g_warning ("Component must be associated with a container first "
+			   "see bonobo_component_set_container");
+		return;
+	}
 	
 	fname = bonobo_ui_util_get_ui_fname (app_prefix, file_name);
 	if (!fname) {
@@ -951,7 +956,7 @@ bonobo_ui_util_set_ui (BonoboUIComponent *component,
 	
 	if (ui)
 		bonobo_ui_component_set_tree (
-			component, container, "/", ui, NULL);
+			component, "/", ui, NULL);
 	
 	g_free (fname);
 	bonobo_ui_node_free (ui);
@@ -1286,21 +1291,21 @@ bonobo_ui_util_accel_name (guint              accelerator_key,
 }
 
 void
-bonobo_ui_util_set_pixbuf (Bonobo_UIContainer container,
+bonobo_ui_util_set_pixbuf (BonoboUIComponent *component,
 			   const char        *path,
 			   GdkPixbuf         *pixbuf)
 {
 	char *parent_path;
 	BonoboUINode *node;
 
-	node = bonobo_ui_container_get_tree (container, path, FALSE, NULL);
+	node = bonobo_ui_component_get_tree (component, path, FALSE, NULL);
 
 	g_return_if_fail (node != NULL);
 
 	bonobo_ui_util_xml_set_pixbuf (node, pixbuf);
 
 	parent_path = bonobo_ui_xml_get_parent_path (path);
-	bonobo_ui_component_set_tree (NULL, container, parent_path, node, NULL);
+	bonobo_ui_component_set_tree (component, parent_path, node, NULL);
 
 	bonobo_ui_node_free (node);
 

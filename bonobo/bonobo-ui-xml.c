@@ -675,6 +675,9 @@ bonobo_ui_xml_make_path  (BonoboUINode *node)
 			g_string_prepend (path, tmp);
 			g_string_prepend (path, "/");
 			bonobo_ui_node_free_string (tmp);
+		} else {
+			g_string_prepend (path, bonobo_ui_node_get_name (node));
+			g_string_prepend (path, "/");
 		}
 
 		node = bonobo_ui_node_parent (node);

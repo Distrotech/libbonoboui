@@ -78,12 +78,11 @@ BonoboUINode   *bonobo_ui_util_new_ui       (BonoboUIComponent *component,
 					     const char        *app_name);
 
 void            bonobo_ui_util_set_ui       (BonoboUIComponent *component,
-					     Bonobo_UIContainer container,
 					     const char        *app_prefix,
 					     const char        *file_name,
 					     const char        *app_name);
 
-void            bonobo_ui_util_set_pixbuf   (Bonobo_UIContainer container,
+void            bonobo_ui_util_set_pixbuf   (BonoboUIComponent *component,
 					     const char        *path,
 					     GdkPixbuf         *pixbuf);
 

@@ -389,33 +389,33 @@ bonobo_view_get_view_frame (BonoboView *view)
 }
 
 /**
- * bonobo_view_get_ui_handler:
- * @view: A BonoboView object for which a BonoboUIHandler has been created and set.
+ * bonobo_view_get_ui_component:
+ * @view: A BonoboView object for which a BonoboUIComponent has been created and set.
  *
- * Returns: The BonoboUIHandler which was associated with @view when it was created.
+ * Returns: The BonoboUIComponent which was associated with @view when it was created.
  */
-BonoboUIHandler *
-bonobo_view_get_ui_handler (BonoboView *view)
+BonoboUIComponent *
+bonobo_view_get_ui_component (BonoboView *view)
 {
 	g_return_val_if_fail (view != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_VIEW (view), NULL);
 
-	return bonobo_control_get_ui_handler (BONOBO_CONTROL (view));
+	return bonobo_control_get_ui_component (BONOBO_CONTROL (view));
 }
 
 /**
- * bonobo_view_get_remote_ui_handler:
+ * bonobo_view_get_remote_ui_container
  * @view: A BonoboView object which is bound to a remote BonoboViewFrame.
  *
- * Returns: The Bonobo_UIHandler CORBA server for the remote BonoboViewFrame.
+ * Returns: The Bonobo_UIContainer CORBA server for the remote BonoboViewFrame.
  */
 Bonobo_UIContainer
-bonobo_view_get_remote_ui_handler (BonoboView *view)
+bonobo_view_get_remote_ui_container (BonoboView *view)
 {
 	g_return_val_if_fail (view != NULL, CORBA_OBJECT_NIL);
 	g_return_val_if_fail (BONOBO_IS_VIEW (view), CORBA_OBJECT_NIL);
 
-	return bonobo_control_get_remote_ui_handler (BONOBO_CONTROL (view));
+	return bonobo_control_get_remote_ui_container (BONOBO_CONTROL (view));
 }
 
 /**

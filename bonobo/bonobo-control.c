@@ -16,6 +16,7 @@
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
 #include <gdk/gdkprivate.h>
+#include <gtk/gtkbox.h>
 
 enum {
 	SET_FRAME,
@@ -41,7 +42,7 @@ struct _BonoboControlPrivate {
 	gboolean                    is_local;
 	gboolean                    xid_received;
 			
-	BonoboUIHandler            *uih;
+	BonoboUIComponent          *ui_component;
 	gboolean                    automerge;
 				   
 	BonoboPropertyBag          *propbag;
@@ -161,35 +162,29 @@ bonobo_control_plug_destroy_cb (GtkWidget *plug,
 static void
 bonobo_control_auto_merge (BonoboControl *control)
 {
-	Bonobo_UIContainer remote_uih;
+	Bonobo_UIContainer remote_container;
 
-	if (control->priv->uih == NULL)
+	if (control->priv->ui_component == NULL)
 		return;
 
-	remote_uih = bonobo_control_get_remote_ui_handler (control);
-	if (remote_uih == CORBA_OBJECT_NIL)
+	remote_container = bonobo_control_get_remote_ui_container (control);
+	if (remote_container == CORBA_OBJECT_NIL)
 		return;
 
-	bonobo_ui_handler_set_container (control->priv->uih, remote_uih);
+	bonobo_ui_component_set_container (
+		control->priv->ui_component, remote_container);
 
-	bonobo_object_release_unref (remote_uih, NULL);
-
-#ifdef STALE_NOT_USED
-	if (control->priv->menus != NULL) {
-		bonobo_ui_handler_menu_add_list (
-			control->priv->uih, "/", control->priv->menus);
-	}
-#endif
+	bonobo_object_release_unref (remote_container, NULL);
 }
 
 
 static void
 bonobo_control_auto_unmerge (BonoboControl *control)
 {
-	if (control->priv->uih == NULL)
+	if (control->priv->ui_component == NULL)
 		return;
 	
-	bonobo_ui_handler_unset_container (control->priv->uih);
+	bonobo_ui_component_unset_container (control->priv->ui_component);
 }
 
 static void
@@ -460,7 +455,7 @@ bonobo_control_construct (BonoboControl  *control,
 	gtk_object_ref (GTK_OBJECT (widget));
 	gtk_object_sink (GTK_OBJECT (widget));
 
-	control->priv->uih = bonobo_ui_handler_new ();
+	control->priv->ui_component = bonobo_ui_component_new_default ();
 	control->priv->propbag = NULL;
 
 	return control;
@@ -567,9 +562,9 @@ bonobo_control_destroy (GtkObject *object)
 	/*
 	 * If we have a UIHandler, destroy it.
 	 */
-	if (control->priv->uih != NULL) {
-		bonobo_ui_handler_unset_container (control->priv->uih);
-		bonobo_object_unref (BONOBO_OBJECT (control->priv->uih));
+	if (control->priv->ui_component != NULL) {
+		bonobo_ui_component_unset_container (control->priv->ui_component);
+		bonobo_object_unref (BONOBO_OBJECT (control->priv->ui_component));
 	}
 }
 
@@ -686,18 +681,30 @@ bonobo_control_get_control_frame (BonoboControl *control)
 }
 
 /**
- * bonobo_control_get_ui_handler:
- * @control: A BonoboControl object for which a BonoboUIHandler has been
- * created and set.
- *
- * Returns: The #BonoboUIHandler which @control is using.
- */
-BonoboUIHandler *
-bonobo_control_get_ui_handler (BonoboControl *control)
+ * bonobo_control_get_ui_component:
+ * @control: The control
+ * 
+ * Return value: the associated UI component
+ **/
+BonoboUIComponent *
+bonobo_control_get_ui_component (BonoboControl *control)
 {
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
-	return control->priv->uih;
+	return control->priv->ui_component;
+}
+
+void
+bonobo_control_set_ui_component (BonoboControl     *control,
+				 BonoboUIComponent *component)
+{
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
+	if (control->priv->ui_component)
+		bonobo_object_unref (BONOBO_OBJECT (control->priv->ui_component));
+	
+	control->priv->ui_component = component;
 }
 
 /**
@@ -774,18 +781,18 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 }
 
 /**
- * bonobo_control_get_remote_ui_handler:
-
+ * bonobo_control_get_remote_ui_container:
+ *
  * @control: A BonoboControl object which is associated with a remote
  * ControlFrame.
  *
  * Returns: The Bonobo_UIContainer CORBA server for the remote BonoboControlFrame.
  */
-Bonobo_Unknown
-bonobo_control_get_remote_ui_handler (BonoboControl *control)
+Bonobo_UIContainer
+bonobo_control_get_remote_ui_container (BonoboControl *control)
 {
 	CORBA_Environment  ev;
-	Bonobo_UIContainer uih;
+	Bonobo_UIContainer ui_component;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
 
@@ -794,13 +801,13 @@ bonobo_control_get_remote_ui_handler (BonoboControl *control)
 
 	CORBA_exception_init (&ev);
 
-	uih = Bonobo_ControlFrame_get_ui_handler (control->priv->control_frame, &ev);
+	ui_component = Bonobo_ControlFrame_get_ui_handler (control->priv->control_frame, &ev);
 
 	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, &ev);
 
 	CORBA_exception_free (&ev);
 
-	return uih;
+	return ui_component;
 }
 
 /**

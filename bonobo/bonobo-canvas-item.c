@@ -13,6 +13,7 @@
 #include <bonobo/bonobo-main.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
+#include <gtk/gtksignal.h>
 #include <stdio.h>
 
 static GnomeCanvasItemClass *gbi_parent_class;

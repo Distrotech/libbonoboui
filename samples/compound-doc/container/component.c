@@ -115,6 +115,7 @@ component_user_context_cb (BonoboViewFrame  *view_frame,
 		return;
 	bonobo_client_site_free_verbs (l);
 
+#if 0
 	/*
 	 * Popup the verb popup and execute the chosen verb.  This
 	 * function saves us the work of creating the menu, connecting
@@ -123,6 +124,7 @@ component_user_context_cb (BonoboViewFrame  *view_frame,
 	 * ourselves if we wanted.
 	 */
 	executed_verb = bonobo_view_frame_popup_verbs (view_frame);
+#endif
 
 	g_free (executed_verb);
 }

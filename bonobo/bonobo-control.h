@@ -9,7 +9,7 @@
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-property-bag.h>
 #include <bonobo/bonobo-property-bag-client.h>
-#include <bonobo/bonobo-ui-compat.h>
+#include <bonobo/bonobo-ui-component.h>
 
 BEGIN_GNOME_DECLS
  
@@ -60,14 +60,16 @@ BonoboControl              *bonobo_control_construct               (BonoboContro
 								    Bonobo_Control       corba_control,
 								    GtkWidget           *widget);
 Bonobo_Control              bonobo_control_corba_object_create     (BonoboObject        *object);
+BonoboUIComponent          *bonobo_control_get_ui_component        (BonoboControl       *control);
+void                        bonobo_control_set_ui_component        (BonoboControl       *control,
+								    BonoboUIComponent   *component);
+Bonobo_UIContainer          bonobo_control_get_remote_ui_container (BonoboControl       *control);
 void                        bonobo_control_set_control_frame       (BonoboControl       *control,
 								    Bonobo_ControlFrame  control_frame);
 Bonobo_ControlFrame         bonobo_control_get_control_frame       (BonoboControl       *control);
-BonoboUIHandler            *bonobo_control_get_ui_handler          (BonoboControl       *control);
 void                        bonobo_control_set_property_bag        (BonoboControl       *control,
 								    BonoboPropertyBag   *pb);
 BonoboPropertyBag          *bonobo_control_get_property_bag        (BonoboControl       *control);
-Bonobo_Unknown              bonobo_control_get_remote_ui_handler   (BonoboControl       *control);
 Bonobo_PropertyBag          bonobo_control_get_ambient_properties  (BonoboControl       *control,
 								    CORBA_Environment   *ev);
 void                        bonobo_control_activate_notify         (BonoboControl       *control,

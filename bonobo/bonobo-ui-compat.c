@@ -38,7 +38,7 @@ static int no_sideffect_event_inhibit = 0;
 
 #define SLOPPY_CHECK(c,a,ev)							\
 	G_STMT_START {								\
-		if (!bonobo_ui_container_path_exists ((c), (a), (ev))) {	\
+		if (!bonobo_ui_component_path_exists ((c), (a), (ev))) {	\
 			g_free (a);						\
 			return;							\
 		}								\
@@ -46,7 +46,7 @@ static int no_sideffect_event_inhibit = 0;
 
 #define SLOPPY_CHECK_VAL(c,a,ev,val)						\
 	G_STMT_START {								\
-		if (!bonobo_ui_container_path_exists ((c), (a), (ev))) {	\
+		if (!bonobo_ui_component_path_exists ((c), (a), (ev))) {	\
 			g_free (a);						\
 			return (val);						\
 		}								\
@@ -57,13 +57,7 @@ static int no_sideffect_event_inhibit = 0;
 typedef struct {
 	BonoboUIComponent *component;
 	BonoboWin         *application;
-
-	char              *name;
-
-	Bonobo_UIContainer container;
 } BonoboUIHandlerPrivate;
-
-static int busk_name = 0;
 
 #define MAGIC_UI_HANDLER_KEY "Bonobo::CompatUIPrivKey"
 
@@ -83,8 +77,9 @@ compat_set (BonoboUIHandlerPrivate *priv,
 #ifdef COMPAT_DEBUG
 	fprintf (stderr, "Merge to '%s' : '%s'\n", xml_path, xml);
 #endif
-	if (priv && priv->component && priv->container != CORBA_OBJECT_NIL) {
-		bonobo_ui_component_set (priv->component, priv->container,
+	if (priv && priv->component &&
+	    bonobo_ui_component_get_container (priv->component) != CORBA_OBJECT_NIL) {
+		bonobo_ui_component_set (priv->component,
 					 xml_path, xml, NULL);
 #ifdef COMPAT_DEBUG
 		fprintf (stderr, "success\n");
@@ -123,8 +118,10 @@ compat_set_tree (BonoboUIHandlerPrivate *priv,
 	}
 #endif
 
-	if (priv && priv->component && priv->container != CORBA_OBJECT_NIL) {
-		bonobo_ui_component_set_tree (priv->component, priv->container,
+	if (priv && priv->component &&
+	    bonobo_ui_component_get_container (priv->component) != CORBA_OBJECT_NIL) {
+
+		bonobo_ui_component_set_tree (priv->component,
 					      xml_path, node, NULL);
 #ifdef COMPAT_DEBUG
 		fprintf (stderr, "success\n");
@@ -141,14 +138,16 @@ compat_set_siblings (BonoboUIHandlerPrivate *priv,
 {
         BonoboUINode *l;
         
-	if (priv && priv->component && priv->container != CORBA_OBJECT_NIL) {
+	if (priv && priv->component &&
+	    bonobo_ui_component_get_container (priv->component) != CORBA_OBJECT_NIL) {
+
                 for (; bonobo_ui_node_prev (node); node = bonobo_ui_node_prev (node))
                         ;
 		for (l = node; l; l = bonobo_ui_node_next (l)) {
 			BonoboUINode *copy = bonobo_ui_node_copy (l, TRUE);
 			
 			bonobo_ui_component_set_tree (
-				priv->component, priv->container,
+				priv->component,
 				xml_path, copy, NULL);
 			
 			bonobo_ui_node_free (copy);
@@ -160,25 +159,15 @@ void
 bonobo_ui_handler_set_container (BonoboUIHandler *uih,
 				 Bonobo_Unknown   cont)
 {
-	BonoboUIHandlerPrivate *priv = get_priv (uih);
-
-	g_return_if_fail (priv != NULL);
-
-	priv->container = bonobo_object_dup_ref (cont, NULL);
+	bonobo_ui_component_set_container (
+		BONOBO_UI_COMPONENT (uih), cont);
 }
 
 void
 bonobo_ui_handler_unset_container (BonoboUIHandler *uih)
 {
-	BonoboUIHandlerPrivate *priv = get_priv (uih);
-
-	g_return_if_fail (priv != NULL);
-
-	if (priv->container != CORBA_OBJECT_NIL) {
-		bonobo_ui_component_rm (priv->component, priv->container, "/", NULL);
-		bonobo_object_release_unref (priv->container, NULL);
-	}
-	priv->container = CORBA_OBJECT_NIL;
+	bonobo_ui_component_unset_container (
+		BONOBO_UI_COMPONENT (uih));
 }
 
 void
@@ -207,10 +196,6 @@ bonobo_ui_handler_create_toolbar (BonoboUIHandler *uih, const char *name)
 static void
 priv_destroy (GtkObject *object, BonoboUIHandlerPrivate *priv)
 {
-	if (priv->container)
-		bonobo_ui_handler_unset_container ((BonoboUIHandler *)object);
-
-	g_free (priv->name);
 	g_free (priv);
 }
 
@@ -226,29 +211,34 @@ setup_priv (BonoboObject *object)
 			     (GtkSignalFunc) priv_destroy, priv);
 }
 
+BonoboUIHandler *
+bonobo_ui_handler_new_from_component (BonoboUIComponent *component)
+{
+	BonoboUIHandlerPrivate *priv;
+
+	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), NULL);
+
+	priv = get_priv ((BonoboUIHandler *) component);
+
+	if (!priv)
+		setup_priv (BONOBO_OBJECT (component));
+
+	priv = get_priv ((BonoboUIHandler *) component);
+	g_return_val_if_fail (priv != NULL, NULL);
+
+	priv->component = component;
+
+	return (BonoboUIHandler *)component;
+}
+
 /*
  * This constructs a new component client
  */
 BonoboUIHandler *
 bonobo_ui_handler_new (void)
 {
-	BonoboUIComponent *object;
-	char              *name;
-	BonoboUIHandlerPrivate *priv;
-
-	name = g_strdup_printf ("Busk%d", (getpid () * 10) + busk_name++);
-	object = bonobo_ui_component_new (name);
-
-	g_free (name);
-
-	setup_priv (BONOBO_OBJECT (object));
-
-	priv = get_priv ((BonoboUIHandler *)object);
-	g_return_val_if_fail (priv != NULL, NULL);
-
-	priv->component = object;
-
-	return (BonoboUIHandler *)object;
+	return bonobo_ui_handler_new_from_component (
+		bonobo_ui_component_new_default ());
 }
 
 BonoboUIHandlerMenuItem *
@@ -581,16 +571,13 @@ bonobo_ui_handler_menu_path_exists (BonoboUIHandler *uih, const char *path)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
 	char *xml_path;
-	CORBA_Environment ev;
 	gboolean ans;
 
 	g_return_val_if_fail (priv != NULL, FALSE);
 
 	xml_path = make_path ("/menu", path, FALSE);
 
-	CORBA_exception_init (&ev);
-	ans = Bonobo_UIContainer_node_exists (priv->container, xml_path, &ev);
-	CORBA_exception_free (&ev);
+	ans = bonobo_ui_component_path_exists (priv->component, xml_path, NULL);
 
 	g_free (xml_path);
 
@@ -1201,7 +1188,7 @@ do_set_pixmap (BonoboUIHandlerPrivate *priv,
 	
 	parent_path = bonobo_ui_xml_get_parent_path (xml_path);
 
-	node = bonobo_ui_container_get_tree (priv->container,
+	node = bonobo_ui_component_get_tree (priv->component,
 					     xml_path, FALSE, NULL);
 
 	g_return_if_fail (node != NULL);
@@ -1209,7 +1196,6 @@ do_set_pixmap (BonoboUIHandlerPrivate *priv,
 	deal_with_pixmap (type, data, node);
 
 	bonobo_ui_component_set_tree (priv->component,
-				      priv->container,
 				      parent_path,
 				      node, NULL);
 
@@ -1228,7 +1214,7 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("", path, FALSE);
-	SLOPPY_CHECK (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->component, xml_path, NULL);
 	no_sideffect_event_inhibit++;
 	do_set_pixmap (priv, xml_path, type, data);
 	no_sideffect_event_inhibit--;
@@ -1236,7 +1222,7 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 }
 
 void
-bonobo_ui_handler_set_app (BonoboUIHandler *uih, BonoboWin *app)
+bonobo_ui_handler_set_app (BonoboUIHandler *uih, BonoboWin *win)
 {
 	BonoboUIHandlerPrivate *priv;
 	BonoboUIContainer *container;
@@ -1244,10 +1230,10 @@ bonobo_ui_handler_set_app (BonoboUIHandler *uih, BonoboWin *app)
 	priv = get_priv (uih);
 	g_return_if_fail (priv != NULL);
 
-	priv->application = app;
+	priv->application = win;
 
 	container = bonobo_ui_container_new ();
-	bonobo_ui_container_set_app (container, app);
+	bonobo_ui_container_set_win (container, win);
 	bonobo_ui_handler_set_container (
 		uih, bonobo_object_corba_objref (BONOBO_OBJECT (container)));
 }
@@ -1298,9 +1284,9 @@ bonobo_ui_handler_menu_set_toggle_state	(BonoboUIHandler *uih, const char *path,
 
 	xml_path = make_path ("/menu", path, FALSE);
 
-	SLOPPY_CHECK (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->component, xml_path, NULL);
 
-	bonobo_ui_container_set_prop (priv->container, xml_path, "state", txt, NULL);
+	bonobo_ui_component_set_prop (priv->component, xml_path, "state", txt, NULL);
 	g_free (xml_path);
 }
 
@@ -1314,8 +1300,8 @@ bonobo_ui_handler_menu_get_toggle_state	(BonoboUIHandler *uih, const char *path)
 	g_return_val_if_fail (priv != NULL, FALSE);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	SLOPPY_CHECK_VAL (priv->container, xml_path, NULL, FALSE);
-	txt = bonobo_ui_container_get_prop (priv->container, xml_path, "state", NULL);
+	SLOPPY_CHECK_VAL (priv->component, xml_path, NULL, FALSE);
+	txt = bonobo_ui_component_get_prop (priv->component, xml_path, "state", NULL);
 	ret = atoi (txt);
 	g_free (txt);
 	g_free (xml_path);
@@ -1345,9 +1331,9 @@ bonobo_ui_handler_menu_remove (BonoboUIHandler *uih, const char *path)
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	SLOPPY_CHECK (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->component, xml_path, NULL);
 
-	bonobo_ui_component_rm (priv->component, priv->container, xml_path, NULL);
+	bonobo_ui_component_rm (priv->component, xml_path, NULL);
 
 	g_free (xml_path);
 }
@@ -1362,14 +1348,14 @@ bonobo_ui_handler_menu_set_sensitivity (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	SLOPPY_CHECK (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->component, xml_path, NULL);
 	no_sideffect_event_inhibit++;
 	if (sensitive)
-		bonobo_ui_container_set_prop (
-			priv->container, xml_path, "sensitive", "1", NULL);
+		bonobo_ui_component_set_prop (
+			priv->component, xml_path, "sensitive", "1", NULL);
 	else
-		bonobo_ui_container_set_prop (
-			priv->container, xml_path, "sensitive", "0", NULL);
+		bonobo_ui_component_set_prop (
+			priv->component, xml_path, "sensitive", "0", NULL);
 	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }
@@ -1384,9 +1370,9 @@ bonobo_ui_handler_menu_set_label (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	SLOPPY_CHECK (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->component, xml_path, NULL);
 	no_sideffect_event_inhibit++;
-	bonobo_ui_container_set_prop (priv->container, xml_path, "label", label, NULL);
+	bonobo_ui_component_set_prop (priv->component, xml_path, "label", label, NULL);
 	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }
@@ -1400,8 +1386,8 @@ bonobo_ui_handler_menu_get_label (BonoboUIHandler *uih, const char *path)
 	g_return_val_if_fail (priv != NULL, FALSE);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	SLOPPY_CHECK_VAL (priv->container, xml_path, NULL, NULL);
-	label = bonobo_ui_container_get_prop (priv->container, xml_path, "label", NULL);
+	SLOPPY_CHECK_VAL (priv->component, xml_path, NULL, NULL);
+	label = bonobo_ui_component_get_prop (priv->component, xml_path, "label", NULL);
 	g_free (xml_path);
 
 	return label;
@@ -1417,9 +1403,9 @@ bonobo_ui_handler_menu_set_hint (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	SLOPPY_CHECK (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->component, xml_path, NULL);
 	no_sideffect_event_inhibit++;
-	bonobo_ui_container_set_prop (priv->container, xml_path, "hint", hint, NULL);
+	bonobo_ui_component_set_prop (priv->component, xml_path, "hint", hint, NULL);
 	no_sideffect_event_inhibit--;
 	g_free (xml_path);
 }
@@ -1434,7 +1420,7 @@ bonobo_ui_handler_menu_set_pixmap (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	SLOPPY_CHECK (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->component, xml_path, NULL);
 	no_sideffect_event_inhibit++;
 	do_set_pixmap (priv, xml_path, type, data);
 	no_sideffect_event_inhibit--;
@@ -1455,9 +1441,9 @@ bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
 	g_return_if_fail (priv != NULL);
 
 	xml_path = make_path ("/menu", path, FALSE);
-	SLOPPY_CHECK (priv->container, xml_path, NULL);
+	SLOPPY_CHECK (priv->component, xml_path, NULL);
 
-	node = bonobo_ui_container_get_tree (priv->container,
+	node = bonobo_ui_component_get_tree (priv->component,
 					     xml_path, FALSE, NULL);
 
 	g_return_if_fail (node != NULL);
@@ -1548,7 +1534,7 @@ bonobo_ui_compat_get_container (BonoboUIHandler *uih)
 
 	g_return_val_if_fail (priv != NULL, NULL);
 
-	return priv->container;
+	return bonobo_ui_component_get_container (BONOBO_UI_COMPONENT (uih));
 }
 
 static char *
@@ -1659,13 +1645,12 @@ bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent
 
 	g_return_val_if_fail (priv != NULL, NULL);
 	g_return_val_if_fail (parent_path != NULL, NULL);
-	g_return_val_if_fail (priv->container != CORBA_OBJECT_NIL, NULL);
 
 	xml_path = make_path ("/menu", parent_path, FALSE);
 
 	fprintf (stderr, "Get child paths from '%s' '%s'", parent_path, xml_path);
-	node = bonobo_ui_container_get_tree (
-		priv->container, xml_path, TRUE, NULL);
+	node = bonobo_ui_component_get_tree (
+		priv->component, xml_path, TRUE, NULL);
 
 	g_free (xml_path);
 
@@ -1689,4 +1674,60 @@ bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent
 		fprintf (stderr, "No items\n");
 
 	return g_list_reverse (ret);
+}
+
+BonoboUIHandler *
+bonobo_control_get_ui_handler (BonoboControl *control)
+{
+	static int warned = 0;
+
+	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
+
+	if (!warned++)
+		g_warning ("This routine is deprecated; "
+			   "use bonobo_control_get_ui_component");
+
+	return bonobo_ui_handler_new_from_component (
+		bonobo_control_get_ui_component (control));
+}
+
+Bonobo_Unknown
+bonobo_control_get_remote_ui_handler (BonoboControl *control)
+{
+	return (Bonobo_Unknown) bonobo_control_get_ui_component (control);
+}
+
+Bonobo_Unknown
+bonobo_view_get_remote_ui_handler (BonoboView *view)
+{
+	return bonobo_view_get_remote_ui_container (view);
+}
+
+BonoboUIHandler *
+bonobo_view_get_ui_handler (BonoboView *view)
+{
+	static int warned = 0;
+
+	g_return_val_if_fail (BONOBO_IS_VIEW (view), NULL);
+
+	if (!warned++)
+		g_warning ("This routine is deprecated; "
+			   "use bonobo_view_get_ui_component");
+
+	return bonobo_ui_handler_new_from_component (
+		bonobo_view_get_ui_component (view));
+}
+
+Bonobo_Unknown
+bonobo_view_frame_get_ui_handler (BonoboViewFrame *view_frame)
+{
+	return (Bonobo_Unknown) bonobo_view_frame_get_ui_handler
+		(BONOBO_VIEW_FRAME (view_frame));
+}
+
+Bonobo_Unknown
+bonobo_control_frame_get_ui_handler (BonoboControlFrame *control_frame)
+{
+	return (Bonobo_Unknown) bonobo_control_frame_get_ui_handler
+		(BONOBO_CONTROL_FRAME (control_frame));
 }

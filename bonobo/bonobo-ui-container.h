@@ -16,10 +16,10 @@ typedef struct _BonoboUIContainer        BonoboUIContainer;
 typedef struct _BonoboUIContainerClass   BonoboUIContainerClass;
 
 struct _BonoboUIContainer {
-	BonoboObject              base;
+	BonoboObject base;
 
-	int                       flags;
-	BonoboWin                *app;
+	int          flags;
+	BonoboWin   *win;
 };
 
 struct _BonoboUIContainerClass {
@@ -28,13 +28,13 @@ struct _BonoboUIContainerClass {
 
 GtkType                      bonobo_ui_container_get_type            (void);
 POA_Bonobo_UIContainer__epv *bonobo_ui_container_get_epv             (void);
-Bonobo_UIContainer           bonobo_ui_container_corba_object_create (BonoboObject      *object);
-BonoboUIContainer           *bonobo_ui_container_construct           (BonoboUIContainer   *container,
-								      Bonobo_UIContainer corba_container);
+Bonobo_UIContainer           bonobo_ui_container_corba_object_create (BonoboObject       *object);
+BonoboUIContainer           *bonobo_ui_container_construct           (BonoboUIContainer  *container,
+								      Bonobo_UIContainer  corba_container);
 
 BonoboUIContainer           *bonobo_ui_container_new                 (void);
 
-void                         bonobo_ui_container_set_app             (BonoboUIContainer  *container,
-								      BonoboWin        *app);
+void                         bonobo_ui_container_set_win             (BonoboUIContainer  *container,
+								      BonoboWin          *win);
 
 #endif /* _BONOBO_UI_CONTAINER_H_ */

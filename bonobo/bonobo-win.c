@@ -236,8 +236,10 @@ win_component_cmp_name (BonoboWinPrivate *priv, const char *name)
 	 * NB. For overriding if we get a NULL we just update the
 	 * node without altering the id.
 	 */
-	if (!name || name [0] == '\0')
+	if (!name || name [0] == '\0') {
+		g_warning ("This should never happen");
 		return NULL;
+	}
 
 	component = win_component_get (priv, name);
 	g_return_val_if_fail (component != NULL, NULL);
@@ -1256,6 +1258,8 @@ build_menu_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 
 	parent = node_get_parent_widget (priv->tree, node);
 
+	g_return_if_fail (parent != NULL);
+
 	if (bonobo_ui_node_has_name (node, "placeholder")) {
 		build_menu_placeholder (priv, node, parent);
 		return;
@@ -1946,8 +1950,14 @@ update_popups (BonoboWinPrivate *priv, BonoboUINode *node)
 {
 	BonoboUINode *l;
 
-	for (l = bonobo_ui_node_children (node); l; l = bonobo_ui_node_next (l))
-		seek_dirty (priv, l, UI_UPDATE_MENU);
+	for (l = bonobo_ui_node_children (node); l; l = bonobo_ui_node_next (l)) {
+		NodeInfo *info =
+			bonobo_ui_xml_get_data (priv->tree, l);
+		
+		if (info->widget)
+			seek_dirty (priv, l, UI_UPDATE_MENU);
+		/* else we don't have a widget at the moment */
+	}
 }
 
 static void
@@ -2549,7 +2559,7 @@ bonobo_win_new (const char   *win_name,
 {
 	BonoboWin *win;
 
-	win = gtk_type_new (BONOBO_WIN_TYPE);
+	win = gtk_type_new (BONOBO_TYPE_WIN);
 
 	return bonobo_win_construct (win, win_name, title);
 }

@@ -6,11 +6,11 @@
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-ui-xml.h>
 
-#define BONOBO_WIN_TYPE        (bonobo_win_get_type ())
-#define BONOBO_WIN(o)          (GTK_CHECK_CAST ((o), BONOBO_WIN_TYPE, BonoboWin))
-#define BONOBO_WIN_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_WIN_TYPE, BonoboWinClass))
-#define BONOBO_IS_WIN(o)       (GTK_CHECK_TYPE ((o), BONOBO_WIN_TYPE))
-#define BONOBO_IS_WIN_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_WIN_TYPE))
+#define BONOBO_TYPE_WIN        (bonobo_win_get_type ())
+#define BONOBO_WIN(o)          (GTK_CHECK_CAST ((o), BONOBO_TYPE_WIN, BonoboWin))
+#define BONOBO_WIN_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_WIN, BonoboWinClass))
+#define BONOBO_IS_WIN(o)       (GTK_CHECK_TYPE ((o), BONOBO_TYPE_WIN))
+#define BONOBO_IS_WIN_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_WIN))
 
 typedef struct _BonoboWin        BonoboWin;
 typedef struct _BonoboWinPrivate BonoboWinPrivate;
