@@ -11,7 +11,7 @@
 #include <gnome.h>
 #include <liboaf/liboaf.h>
 #include <bonobo.h>
-#include "Echo.h"
+#include "Bonobo_Sample_Echo.h"
 
 static void
 init_bonobo (int argc, char *argv [])
@@ -39,7 +39,7 @@ int
 main (int argc, char *argv [])
 {
 	BonoboObjectClient *server;
-	Demo_Echo           echo_server;
+	Bonobo_Sample_Echo           echo_server;
 	CORBA_Environment   ev;
 	char               *obj_id;
 
@@ -64,7 +64,7 @@ main (int argc, char *argv [])
 	/*
 	 * Send a message
 	 */
-	Demo_Echo_echo (echo_server, "This is the message from the client\n", &ev);
+	Bonobo_Sample_Echo_echo (echo_server, "This is the message from the client\n", &ev);
 
 	CORBA_exception_free (&ev);
 

@@ -1,3 +1,13 @@
+2001-01-25  Michael Meeks  <michael@helixcode.com>
+
+	* Bonobo_Sample_Echo.idl: re-namespace.
+
+	* Makefile.am (idl_DATA): upd.
+
+	* echo-client.c: re-namespace
+
+	* echo.c: re-namespace.
+
 2001-01-18  Dietmar Maurer  <dietmar@ximian.com>
 
 	* main.c: use the new factory macros

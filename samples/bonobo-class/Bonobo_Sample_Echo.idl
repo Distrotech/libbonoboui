@@ -5,10 +5,12 @@
 
 #include <Bonobo.idl>
 
-module Demo {
+module Bonobo {
+module Sample {
   
 	interface Echo : Bonobo::Unknown {
 		void echo (in string message);
 	};
 
+};
 };
