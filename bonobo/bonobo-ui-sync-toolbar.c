@@ -43,11 +43,11 @@ cmd_get_toolbar_image (GtkWidget    *widget,
 {
 	if (bonobo_ui_node_peek_attr (node, "pixtype"))
 		return bonobo_ui_util_xml_get_pixbuf (
-			widget, node, GTK_ICON_SIZE_SMALL_TOOLBAR);
+			widget, node, GTK_ICON_SIZE_LARGE_TOOLBAR);
 
 	if (bonobo_ui_node_peek_attr (cmd_node, "pixtype"))
 		return bonobo_ui_util_xml_get_pixbuf (
-			widget, cmd_node, GTK_ICON_SIZE_SMALL_TOOLBAR);
+			widget, cmd_node, GTK_ICON_SIZE_LARGE_TOOLBAR);
 
 	return NULL;
 }

@@ -165,15 +165,16 @@ Example:
     <control name="Foo"/> 
    </status>
 
-<status>     - encloses stuff to go in statusbar
+<status>            - encloses stuff to go in statusbar
 
-<item>       - a plain text statusbar; contents of node are the text to display
- name="main" - name of the standard statusbar 
+<item>              - a plain text statusbar; contents of node are the text to display
+ name="main"        - name of the standard statusbar 
+ resize_grip="1"    - 0 or 1, whether a resize grip should be visible or not.
 
-<control>    - a control to be inserted into the status area. If name="main" 
-	       it overrides the standard bar. Otherwise it gets packed
-	       into the right side of the status area.
- name="Foo"  - name of statusbar
+<control>           - a control to be inserted into the status area. If name="main" 
+		      it overrides the standard bar. Otherwise it gets packed
+	              into the right side of the status area.
+ name="Foo"         - name of statusbar
 
 * Key bindings
 
