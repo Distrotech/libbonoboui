@@ -1,3 +1,9 @@
+2002-02-19  James Willcox  <jwillcox@cs.indiana.edu>
+
+	* bonobo/bonobo-file-selector-util.c (run_file_selector):
+	Fixed the behavior of bonobo_file_selector_open returning a local
+	path instead of a text uri when using the GTK file selector.
+
 2002-02-19  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.112.0

@@ -25,6 +25,7 @@
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkeditable.h>
+#include <libgnomevfs/gnome-vfs.h>
 
 #include <bonobo/bonobo-i18n.h>
 
@@ -343,13 +344,17 @@ run_file_selector (GtkWindow  *parent,
 {
 	GtkWindow *dialog = NULL;
 	gpointer   retval;
-
+	gpointer   data;
+	gboolean   using_bonobo_filesel=FALSE;
+	
 	if (!user_data_id)
 		user_data_id = g_quark_from_static_string ("UserData");
 
-	if (!g_getenv ("GNOME_FILESEL_DISABLE_BONOBO"))
+	if (!g_getenv ("GNOME_FILESEL_DISABLE_BONOBO")) {
 		dialog = create_bonobo_selector (enable_vfs, mode, mime_types, 
 						 default_path, default_filename);
+		using_bonobo_filesel=TRUE;
+	}
 	if (!dialog)
 		dialog = create_gtk_selector (mode, default_path, default_filename);
 
@@ -369,7 +374,12 @@ run_file_selector (GtkWindow  *parent,
 
 	gtk_main ();
 
-	retval = g_object_get_qdata (G_OBJECT (dialog), user_data_id);
+	data = g_object_get_qdata (G_OBJECT (dialog), user_data_id);
+	if (enable_vfs && !using_bonobo_filesel) {
+		retval = gnome_vfs_get_uri_from_local_path (data);
+		g_free (data);
+	} else
+		retval = data;
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 
