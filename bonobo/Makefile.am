@@ -26,6 +26,7 @@ idls =							\
 	$(top_srcdir)/idl/bonobo-control.idl		\
 	$(top_srcdir)/idl/bonobo-client-site.idl	\
 	$(top_srcdir)/idl/bonobo-embeddable.idl		\
+	$(top_srcdir)/idl/bonobo-listener.idl		\
 	$(top_srcdir)/idl/bonobo-moniker.idl		\
 	$(top_srcdir)/idl/bonobo-persist.idl		\
 	$(top_srcdir)/idl/bonobo-progressive.idl	\
@@ -50,6 +51,7 @@ libbonobo_la_SOURCES =			\
 	bonobo-object-directory.c	\
 	bonobo-generic-factory.c	\
 	bonobo-main.c			\
+	bonobo-listener.c		\
 	bonobo-moniker.c		\
 	bonobo-moniker-util.c		\
 	bonobo-object.c			\
@@ -89,6 +91,7 @@ libbonoboinclude_HEADERS =		\
 	bonobo-embeddable.h		\
 	bonobo-embeddable-factory.h	\
 	bonobo-generic-factory.h	\
+	bonobo-listener.h		\
 	bonobo-main.h			\
 	bonobo-moniker.h		\
 	bonobo-moniker-util.h		\
