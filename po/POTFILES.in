@@ -11,4 +11,3 @@ bonobo/bonobo-zoomable.c
 samples/bonoboui/hello.c
 samples/bonoboui/Bonobo_Sample_Hello.xml
 samples/bonoboui/hello.c
-samples/compound-doc/container/embeddable-io.c
