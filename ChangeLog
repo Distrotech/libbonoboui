@@ -1,3 +1,9 @@
+2001-08-08  Cody Russell  <bratsche@gnome.org>
+
+	* bonobo/*.[ch]: Ensure that all get_type () functions are
+	declared as G_GNUC_CONST and that their return values are
+	either GType or GtkType, not guint.
+
 2001-08-07  Darin Adler  <darin@bentspoon.com>
 
 	* Makefile.am:

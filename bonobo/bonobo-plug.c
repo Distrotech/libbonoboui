@@ -76,7 +76,7 @@ bonobo_plug_class_init (BonoboPlugClass *class)
 	parent_class = gtk_type_class (GTK_TYPE_PLUG);
 }
 
-guint
+GtkType
 bonobo_plug_get_type ()
 {
 	static guint plug_type = 0;

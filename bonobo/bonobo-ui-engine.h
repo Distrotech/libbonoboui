@@ -61,7 +61,7 @@ typedef struct {
 
 } BonoboUIEngineClass;
 
-GtkType         bonobo_ui_engine_get_type      (void);
+GtkType         bonobo_ui_engine_get_type      (void) G_GNUC_CONST;
 BonoboUIEngine *bonobo_ui_engine_construct     (BonoboUIEngine   *engine,
 						GObject          *view);
 BonoboUIEngine *bonobo_ui_engine_new           (GObject          *view);

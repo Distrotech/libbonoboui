@@ -36,7 +36,7 @@ typedef struct {
 	gpointer       dummy;
 } BonoboUIEngineConfigClass;
 
-GType bonobo_ui_engine_config_get_type  (void);
+GType bonobo_ui_engine_config_get_type  (void) G_GNUC_CONST;
 
 BonoboUIEngineConfig *
         bonobo_ui_engine_config_construct (BonoboUIEngineConfig   *config,

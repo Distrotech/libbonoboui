@@ -42,7 +42,7 @@ typedef struct {
 	GtkBinClass	 bin_class;
 } BonoboWidgetClass;
 
-GtkType             bonobo_widget_get_type                 (void);
+GtkType             bonobo_widget_get_type                 (void) G_GNUC_CONST;
 Bonobo_Unknown      bonobo_widget_get_objref               (BonoboWidget      *bw);
 
 /*

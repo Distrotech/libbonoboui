@@ -33,7 +33,7 @@ typedef struct {
 	GtkVBoxClass parent_class;
 } BonoboUIConfigWidgetClass;
 
-GtkType	   bonobo_ui_config_widget_get_type  (void);
+GtkType	   bonobo_ui_config_widget_get_type  (void) G_GNUC_CONST;
 
 GtkWidget *bonobo_ui_config_widget_construct (BonoboUIConfigWidget *config,
 					      BonoboUIEngine       *engine,

@@ -28,7 +28,7 @@ typedef struct {
 	GnomeCanvasItemClass parent_class;
 } BonoboCanvasItemClass;
 
-GtkType          bonobo_canvas_item_get_type    (void);
+GtkType          bonobo_canvas_item_get_type    (void) G_GNUC_CONST;
 
 void		 bonobo_canvas_item_set_bounds (BonoboCanvasItem *item, double x1, double y1, double x2, double y2);
 

@@ -59,7 +59,7 @@ typedef struct {
 } BonoboUIToolbarItemClass;
 
 
-GtkType                   bonobo_ui_toolbar_item_get_type         (void);
+GtkType                   bonobo_ui_toolbar_item_get_type         (void) G_GNUC_CONST;
 GtkWidget                *bonobo_ui_toolbar_item_new              (void);
 void                      bonobo_ui_toolbar_item_set_tooltip      (BonoboUIToolbarItem      *item,
 								   GtkTooltips              *tooltips,

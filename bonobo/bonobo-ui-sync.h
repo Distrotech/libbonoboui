@@ -86,7 +86,7 @@ typedef struct {
 					  BonoboUINode     *node);
 } BonoboUISyncClass;
 
-GType      bonobo_ui_sync_get_type           (void);
+GType      bonobo_ui_sync_get_type           (void) G_GNUC_CONST;
 BonoboUISync *bonobo_ui_sync_construct       (BonoboUISync     *sync,
 					      BonoboUIEngine   *engine,
 					      gboolean          is_recursive,

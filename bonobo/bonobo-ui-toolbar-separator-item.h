@@ -36,7 +36,7 @@ typedef struct {
 } BonoboUIToolbarSeparatorItemClass;
 
 
-GtkType    bonobo_ui_toolbar_separator_item_get_type (void);
+GtkType    bonobo_ui_toolbar_separator_item_get_type (void) G_GNUC_CONST;
 GtkWidget *bonobo_ui_toolbar_separator_item_new      (void);
 
 G_END_DECLS

@@ -88,7 +88,7 @@ struct _BonoboDockLayoutClass
 };
 
 BonoboDockLayout     *bonobo_dock_layout_new      (void);
-guint                bonobo_dock_layout_get_type (void) G_GNUC_CONST;
+GtkType               bonobo_dock_layout_get_type (void) G_GNUC_CONST;
    
 gboolean             bonobo_dock_layout_add_item (BonoboDockLayout *layout,
                                                  BonoboDockItem *item,

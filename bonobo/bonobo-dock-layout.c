@@ -207,7 +207,7 @@ remove_item (BonoboDockLayout *layout,
 
 
 
-guint
+GtkType
 bonobo_dock_layout_get_type (void)
 {
   static guint layout_type = 0;

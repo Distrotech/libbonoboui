@@ -93,7 +93,7 @@ typedef struct {
 	gpointer            dummy;
 } BonoboUIComponentClass;
 
-GType              bonobo_ui_component_get_type        (void);
+GType              bonobo_ui_component_get_type        (void) G_GNUC_CONST;
 
 BonoboUIComponent *bonobo_ui_component_construct       (BonoboUIComponent  *component,
 							const char         *name);

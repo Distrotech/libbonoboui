@@ -179,7 +179,7 @@ get_preferred_height (BonoboDockItem *dock_item)
 }
 
 
-guint
+GtkType
 bonobo_dock_item_get_type (void)
 {
   static guint dock_item_type = 0;

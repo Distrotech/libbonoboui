@@ -44,7 +44,7 @@ typedef struct {
 	GtkPlugClass parent_class;
 } BonoboPlugClass;
 
-guint      bonobo_plug_get_type  (void);
+GtkType    bonobo_plug_get_type  (void) G_GNUC_CONST;
 void       bonobo_plug_construct (BonoboPlug *plug, guint32 socket_id);
 GtkWidget* bonobo_plug_new       (guint32 socket_id);
 

@@ -40,7 +40,7 @@ typedef struct {
 	void (* cancel)	(BonoboSelector *sel);
 } BonoboSelectorClass;
 
-GtkType	   bonobo_selector_get_type        (void);
+GtkType	   bonobo_selector_get_type        (void) G_GNUC_CONST;
 
 GtkWidget *bonobo_selector_construct       (BonoboSelector       *sel,
 					    const gchar          *title,

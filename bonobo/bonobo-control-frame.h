@@ -87,7 +87,7 @@ Bonobo_UIContainer            bonobo_control_frame_get_ui_container          (Bo
 
 
 /* Object construction stuff */
-GType                         bonobo_control_frame_get_type                  (void);
+GType                         bonobo_control_frame_get_type                  (void) G_GNUC_CONST;
 BonoboControlFrame           *bonobo_control_frame_construct                 (BonoboControlFrame  *control_frame,
 									      Bonobo_UIContainer   ui_container);
 

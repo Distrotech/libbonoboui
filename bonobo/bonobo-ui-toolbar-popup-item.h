@@ -34,7 +34,7 @@ typedef struct {
 } BonoboUIToolbarPopupItemClass;
 
 
-GtkType    bonobo_ui_toolbar_popup_item_get_type  (void);
+GtkType    bonobo_ui_toolbar_popup_item_get_type  (void) G_GNUC_CONST;
 GtkWidget *bonobo_ui_toolbar_popup_item_new       (void);
 void       bonobo_ui_toolbar_popup_item_construct (BonoboUIToolbarPopupItem *);
 

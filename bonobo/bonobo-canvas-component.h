@@ -43,7 +43,7 @@ typedef struct {
 			    GdkEvent              *event);
 } BonoboCanvasComponentClass;
 
-GType                   bonobo_canvas_component_get_type         (void);
+GType                   bonobo_canvas_component_get_type         (void) G_GNUC_CONST;
 BonoboCanvasComponent  *bonobo_canvas_component_construct        (BonoboCanvasComponent       *comp,
 								  GnomeCanvasItem             *item);
 BonoboCanvasComponent  *bonobo_canvas_component_new              (GnomeCanvasItem             *item);

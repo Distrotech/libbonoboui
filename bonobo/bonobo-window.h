@@ -34,7 +34,7 @@ typedef struct {
 	GtkWindowClass    parent_class;
 } BonoboWindowClass;
 
-GtkType              bonobo_window_get_type                       (void);
+GtkType              bonobo_window_get_type                       (void) G_GNUC_CONST;
 
 GtkWidget           *bonobo_window_construct                      (BonoboWindow      *win,
 								   BonoboUIContainer *ui_container,

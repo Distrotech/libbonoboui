@@ -40,7 +40,7 @@ typedef struct {
 	BonoboUIToolbarButtonItemClass parent_class;
 } BonoboUIToolbarControlItemClass;
 
-GtkType       bonobo_ui_toolbar_control_item_get_type    (void);
+GtkType       bonobo_ui_toolbar_control_item_get_type    (void) G_GNUC_CONST;
 GtkWidget    *bonobo_ui_toolbar_control_item_new         (Bonobo_Control control_ref);
 GtkWidget    *bonobo_ui_toolbar_control_item_construct   (BonoboUIToolbarControlItem *control_item,
 							  Bonobo_Control              control_ref);

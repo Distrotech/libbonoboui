@@ -87,7 +87,7 @@ struct _BonoboDockClass
 };
 
 GtkWidget     *bonobo_dock_new               (void);
-guint          bonobo_dock_get_type          (void) G_GNUC_CONST;
+GtkType        bonobo_dock_get_type          (void) G_GNUC_CONST;
 
 void           bonobo_dock_allow_floating_items
                                             (BonoboDock *dock,

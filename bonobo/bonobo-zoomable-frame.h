@@ -55,7 +55,7 @@ typedef struct {
 	void (*zoom_parameters_changed)	(BonoboZoomableFrame *zframe);
 } BonoboZoomableFrameClass;
 
-GType			 bonobo_zoomable_frame_get_type			(void);
+GType			 bonobo_zoomable_frame_get_type			(void) G_GNUC_CONST;
 
 BonoboZoomableFrame	*bonobo_zoomable_frame_new			(void);
 

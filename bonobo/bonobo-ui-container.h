@@ -34,7 +34,7 @@ typedef struct {
 	POA_Bonobo_UIContainer__epv epv;
 } BonoboUIContainerClass;
 
-GType                        bonobo_ui_container_get_type            (void);
+GType                        bonobo_ui_container_get_type            (void) G_GNUC_CONST;
 BonoboUIContainer           *bonobo_ui_container_construct           (BonoboUIContainer  *container,
 								      Bonobo_UIContainer  corba_container);
 

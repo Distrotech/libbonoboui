@@ -61,7 +61,7 @@ void                        bonobo_control_get_property            (BonoboContro
 								    ...);
 
 /* "Internal" stuff */
-GType                       bonobo_control_get_type                (void);
+GType                       bonobo_control_get_type                (void) G_GNUC_CONST;
 BonoboControl              *bonobo_control_construct               (BonoboControl       *control,
 								    GtkWidget           *widget);
 BonoboUIComponent          *bonobo_control_get_ui_component        (BonoboControl       *control);

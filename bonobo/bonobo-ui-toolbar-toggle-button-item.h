@@ -36,7 +36,7 @@ typedef struct {
 } BonoboUIToolbarToggleButtonItemClass;
 
 
-GtkType    bonobo_ui_toolbar_toggle_button_item_get_type   (void);
+GtkType    bonobo_ui_toolbar_toggle_button_item_get_type   (void) G_GNUC_CONST;
 void       bonobo_ui_toolbar_toggle_button_item_construct  (BonoboUIToolbarToggleButtonItem *toggle_button_item,
 							 GdkPixbuf                     *icon,
 							 const char                    *label);

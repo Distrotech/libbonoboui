@@ -45,7 +45,7 @@ typedef struct {
 			 Bonobo_PropertyControl_Action action);
 } BonoboPropertyControlClass;
 
-GtkType bonobo_property_control_get_type (void);
+GtkType bonobo_property_control_get_type (void) G_GNUC_CONST;
 
 BonoboPropertyControl *bonobo_property_control_construct (BonoboPropertyControl *property_control,
 							  BonoboEventSource     *event_source,
