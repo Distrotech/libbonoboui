@@ -49,8 +49,9 @@ struct _BonoboUIEnginePrivate {
 	BonoboObject *container;
 
 	BonoboUIEngineConfig *config;
-};
 
+	GHashTable   *cmd_to_node;
+};
 
 /*
  *  Mapping from nodes to their synchronization
@@ -116,6 +117,146 @@ bonobo_ui_engine_get_syncs (BonoboUIEngine *engine)
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
 
 	return g_slist_copy (engine->priv->syncs);
+}
+
+/*
+ * Cmd -> Node mapping functionality.
+ */
+
+typedef struct {
+	char   *name;
+	GSList *nodes;
+} CmdToNode;
+
+static char *
+node_get_id (BonoboUINode *node)
+{
+	char *txt;
+	char *ret;
+
+	g_return_val_if_fail (node != NULL, NULL);
+
+	if (!(txt = bonobo_ui_node_get_attr (node, "id"))) {
+		txt = bonobo_ui_node_get_attr (node, "verb");
+		if (txt && txt [0] == '\0') {
+			bonobo_ui_node_free_string (txt);
+			txt = bonobo_ui_node_get_attr (node, "name");
+		}
+	}
+
+	if (txt) {
+		ret = g_strdup (txt);
+		bonobo_ui_node_free_string (txt);
+	} else
+		ret = NULL;
+
+	return ret;
+}
+
+static void
+cmd_to_node_add_node (BonoboUIEngine *engine,
+		      BonoboUINode   *node,
+		      gboolean        recurse)
+{
+	CmdToNode *ctn;
+	char      *name;
+
+	if (recurse) {
+		BonoboUINode *l;
+
+		for (l = bonobo_ui_node_children (node); l;
+		     l = bonobo_ui_node_next (l))
+			cmd_to_node_add_node (engine, l, TRUE);
+	}
+
+	name = node_get_id (node);
+	if (!name)
+		return;
+
+	ctn = g_hash_table_lookup (
+		engine->priv->cmd_to_node, name);
+
+	if (!ctn) {
+		ctn = g_new (CmdToNode, 1);
+
+		ctn->name = name;
+		ctn->nodes = NULL;
+		g_hash_table_insert (
+			engine->priv->cmd_to_node, ctn->name, ctn);
+	} else
+		g_free (name);
+
+/*	fprintf (stderr, "Adding %d'th '%s'\n",
+	g_slist_length (ctn->nodes), ctn->name);*/
+
+	ctn->nodes = g_slist_prepend (ctn->nodes, node);
+}
+
+static void
+cmd_to_node_remove_node (BonoboUIEngine *engine,
+			 BonoboUINode   *node,
+			 gboolean        recurse)
+{
+	CmdToNode *ctn;
+	char      *name;
+
+	if (recurse) {
+		BonoboUINode *l;
+
+		for (l = bonobo_ui_node_children (node); l;
+		     l = bonobo_ui_node_next (l))
+			cmd_to_node_remove_node (engine, l, TRUE);
+	}
+
+	name = node_get_id (node);
+	if (!name)
+		return;
+
+	ctn = g_hash_table_lookup (
+		engine->priv->cmd_to_node, name);
+
+	if (!ctn)
+		g_warning ("Removing non-registered name '%s'", name);
+	else {
+/*		fprintf (stderr, "Removing %d'th '%s'\n",
+		g_slist_length (ctn->nodes), name);*/
+		ctn->nodes = g_slist_remove (ctn->nodes, node);
+	}
+
+	/*
+	 * NB. we leave the CmdToNode structures around
+	 * for future use.
+	 */
+	g_free (name);
+}
+
+static int
+cmd_to_node_clear_hash (gpointer key,
+			gpointer value,
+			gpointer user_data)
+{
+	CmdToNode *ctn = value;
+
+	g_free (ctn->name);
+	g_slist_free (ctn->nodes);
+	g_free (ctn);
+
+	return TRUE;
+}
+
+static const GSList *
+cmd_to_nodes (BonoboUIEngine *engine,
+	      const char     *name)
+{
+	CmdToNode *ctn;
+
+	if (!name)
+		return NULL;
+
+	ctn = g_hash_table_lookup (
+		engine->priv->cmd_to_node, name);
+
+	return ctn ? ctn->nodes : NULL;
 }
 
 #define NODE_IS_ROOT_WIDGET(n)   ((n->type & ROOT_WIDGET) != 0)
@@ -221,6 +362,8 @@ add_node_fn (BonoboUINode *parent,
 
 	} else /* just add to bottom */
 		bonobo_ui_node_add_child (insert, child);
+
+	cmd_to_node_add_node (user_data, child, TRUE);
 }
 
 /*
@@ -281,6 +424,9 @@ replace_override_fn (GtkObject      *object,
 
 	g_return_if_fail (info != NULL);
 	g_return_if_fail (old_info != NULL);
+
+	cmd_to_node_remove_node (engine, old, FALSE);
+	cmd_to_node_add_node    (engine, new, FALSE);
 
 /*	g_warning ("Replace override on '%s' '%s' widget '%p'",
 		   old->name, bonobo_ui_node_get_attr (old, "name"), old_info->widget);
@@ -394,6 +540,9 @@ override_fn (GtkObject      *object,
 		 bonobo_ui_xml_make_path (old));
 #endif
 	bonobo_ui_engine_prune_widget_info (engine, old, TRUE);
+
+	cmd_to_node_remove_node (engine, old, FALSE);
+	cmd_to_node_add_node    (engine, new, FALSE);
 }
 
 static void
@@ -408,6 +557,8 @@ reinstate_fn (GtkObject      *object,
 #endif
 
 	bonobo_ui_engine_prune_widget_info (engine, node, TRUE);
+
+	cmd_to_node_add_node (engine, node, TRUE);
 }
 
 static void
@@ -440,6 +591,8 @@ remove_fn (GtkObject      *object,
 		if (sync)
 			bonobo_ui_sync_remove_root (sync, node);
 	}
+
+	cmd_to_node_remove_node (engine, node, FALSE);
 }
 
 /*
@@ -979,31 +1132,6 @@ bonobo_ui_engine_set_ui_container (BonoboUIEngine *engine,
 				    (GtkSignalFunc) blank_container, engine);
 }
 
-static char *
-node_get_id (BonoboUINode *node)
-{
-	char *txt;
-	char *ret;
-
-	g_return_val_if_fail (node != NULL, NULL);
-
-	if (!(txt = bonobo_ui_node_get_attr (node, "id"))) {
-		txt = bonobo_ui_node_get_attr (node, "verb");
-		if (txt && txt [0] == '\0') {
-			bonobo_ui_node_free_string (txt);
-			txt = bonobo_ui_node_get_attr (node, "name");
-		}
-	}
-
-	if (txt) {
-		ret = g_strdup (txt);
-		bonobo_ui_node_free_string (txt);
-	} else
-		ret = NULL;
-
-	return ret;
-}
-
 static void
 real_exec_verb (BonoboUIEngine *engine,
 		const char     *component_name,
@@ -1127,26 +1255,30 @@ cmd_get_node (BonoboUIEngine *engine,
 
 static GSList *
 make_updates_for_command (BonoboUIEngine *engine,
-			  GSList         *list,
-			  BonoboUINode   *search,
 			  BonoboUINode   *state,
 			  const char     *search_id)
 {
-	BonoboUINode *l;
-	char *id = node_get_id (search);
+	const GSList *l;
+	GSList *list = NULL;
+
+	l = cmd_to_nodes (engine, search_id);
+
+	if (!l)
+		return NULL;
 
 /*	printf ("Update cmd state if %s == %s on node '%s'\n", search_id, id,
 	bonobo_ui_xml_make_path (search));*/
 
-	if (id && !strcmp (search_id, id)) { /* Sync its state */
+	for (; l; l = l->next) {
+
 		NodeInfo *info = bonobo_ui_xml_get_data (
-			engine->priv->tree, search);
+			engine->priv->tree, l->data);
 
 		if (info->widget) {
 			BonoboUISync *sync;
 			StateUpdate  *su;
 
-			sync = find_sync_for_node (engine, search);
+			sync = find_sync_for_node (engine, l->data);
 			g_return_val_if_fail (sync != NULL, list);
 
 			su = state_update_new (sync, info->widget, state);
@@ -1155,13 +1287,6 @@ make_updates_for_command (BonoboUIEngine *engine,
 				list = g_slist_prepend (list, su);
 		}
 	}
-
-	g_free (id);
-
-	for (l = bonobo_ui_node_children (search); l;
-             l = bonobo_ui_node_next (l))
-		list = make_updates_for_command (
-			engine, list, l, state, search_id);
 
 	return list;
 }
@@ -1178,7 +1303,7 @@ update_cmd_state (BonoboUIEngine *engine, BonoboUINode *search,
 	bonobo_ui_xml_make_path (state));*/
 
 	updates = make_updates_for_command (
-		engine, NULL, engine->priv->tree->root, state, search_id);
+		engine, state, search_id);
 
 	for (l = updates; l; l = l->next) {
 		StateUpdate *su = l->data;
@@ -1344,6 +1469,13 @@ impl_destroy (GtkObject *object)
 	g_slist_free (priv->syncs);
 	priv->syncs = NULL;
 
+	g_hash_table_foreach_remove (
+		priv->cmd_to_node,
+		cmd_to_node_clear_hash,
+		NULL);
+	g_hash_table_destroy (priv->cmd_to_node);
+	priv->cmd_to_node = NULL;
+
 	parent_class->destroy (object);
 }
 
@@ -1418,6 +1550,9 @@ init (BonoboUIEngine *engine)
 	priv = g_new0 (BonoboUIEnginePrivate, 1);
 
 	engine->priv = priv;
+
+	priv->cmd_to_node = g_hash_table_new (
+		g_str_hash, g_str_equal);
 }
 
 GtkType
@@ -1835,26 +1970,19 @@ bonobo_ui_engine_update_node (BonoboUIEngine *engine,
 }
 
 static void
-dirty_by_cmd (BonoboUIEnginePrivate *priv,
-	      BonoboUINode          *search,
-	      const char            *search_id)
+dirty_by_cmd (BonoboUIEngine *engine,
+	      const char     *search_id)
 {
-	BonoboUINode *l;
-	char         *id = node_get_id (search);
+	const GSList *l;
 
 	g_return_if_fail (search_id != NULL);
 
 /*	printf ("Dirty node by cmd if %s == %s on node '%s'\n", search_id, id,
 	bonobo_ui_xml_make_path (search));*/
 
-	if (id && !strcmp (search_id, id)) /* Dirty it */
-		bonobo_ui_xml_set_dirty (priv->tree, search);
-
-	g_free (id);
-
-	for (l = bonobo_ui_node_children (search); l;
-             l = bonobo_ui_node_next (l))
-		dirty_by_cmd (priv, l, search_id);
+	for (l = cmd_to_nodes (engine, search_id); l;
+	     l = l->next)
+		bonobo_ui_xml_set_dirty (engine->priv->tree, l->data);
 }
 
 static void
@@ -1878,9 +2006,7 @@ move_dirt_cmd_to_widget (BonoboUIEngine *engine)
 			if (!cmd_name)
 				g_warning ("Serious error, cmd without name");
 			else
-				dirty_by_cmd (engine->priv,
-					      engine->priv->tree->root,
-					      cmd_name);
+				dirty_by_cmd (engine, cmd_name);
 
 			bonobo_ui_node_free_string (cmd_name);
 		}
