@@ -1,3 +1,7 @@
+2002-03-11  Changwoo Ryu  <cwryu@debian.org>
+
+	* configure.in: Added 'ko' to ALL_LINGUAS.
+
 2002-03-08  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-main.c (bonobo_ui_init_full):
