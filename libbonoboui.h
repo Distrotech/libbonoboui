@@ -25,8 +25,6 @@
 #include <bonobo/gnome-embeddable.h>
 #include <bonobo/gnome-embeddable-factory.h>
 
-#include <bonobo/gnome-embeddable-client.h>
-
 #include <bonobo/gnome-inplace-component.h>
 #include <bonobo/gnome-inplace-site.h>
 
