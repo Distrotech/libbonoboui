@@ -14,6 +14,8 @@ INCLUDES =                                              \
 	$(GDK_PIXBUF_CFLAGS)				\
 	$(PROF_CFLAGS)
 
+LDFLAGS += $(PROF_LDFLAGS)
+
 lib_LTLIBRARIES = libbonobo.la libbonobox.la libbonobo-print.la
 
 CORBA_SOURCE =			\
@@ -51,7 +53,9 @@ $(CORBA_SOURCE): $(idls)
 
 libbonobo_la_LDFLAGS = \
 	-version-info $(BONOBO_CURRENT):$(BONOBO_REVISION):$(BONOBO_AGE) \
+	$(PROF_LDFLAGS) \
 	$(gnome_libs)
+	
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
