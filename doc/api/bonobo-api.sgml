@@ -17,7 +17,6 @@
 <!entity bonobo-item-handler SYSTEM "sgml/bonobo-item-handler.sgml">
 <!entity bonobo-listener SYSTEM "sgml/bonobo-listener.sgml">
 <!entity bonobo-main SYSTEM "sgml/bonobo-main.sgml">
-<!entity bonobo-moniker-async SYSTEM "sgml/bonobo-moniker-async.sgml">
 <!entity bonobo-moniker SYSTEM "sgml/bonobo-moniker.sgml">
 <!entity bonobo-moniker-util SYSTEM "sgml/bonobo-moniker-util.sgml">
 <!entity bonobo-object-client SYSTEM "sgml/bonobo-object-client.sgml">
@@ -81,7 +80,6 @@
         <title>Object Activation and Lifecycle</title>
           &bonobo-context;
           &bonobo-moniker-util;
-          &bonobo-moniker-async;
           &bonobo-object-client;
           &bonobo-generic-factory;
           &bonobo-exception;
