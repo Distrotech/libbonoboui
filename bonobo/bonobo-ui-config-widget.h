@@ -10,6 +10,9 @@
 #ifndef BONOBO_UI_CONFIG_WIDGET_H
 #define BONOBO_UI_CONFIG_WIDGET_H
 
+/* Should be purely internal */
+#ifndef BONOBO_UI_DISABLE_DEPRECATED
+
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-ui-engine.h>
 
@@ -32,6 +35,8 @@ typedef struct {
 
 typedef struct {
 	GtkVBoxClass parent_class;
+
+	gpointer dummy[2];
 } BonoboUIConfigWidgetClass;
 
 GtkType	   bonobo_ui_config_widget_get_type  (void) G_GNUC_CONST;
@@ -44,5 +49,7 @@ GtkWidget *bonobo_ui_config_widget_new       (BonoboUIEngine       *engine,
 					      GtkAccelGroup        *accel_group);
 
 G_END_DECLS
+
+#endif /* BONOBO_UI_DISABLE_DEPRECATED */
 
 #endif /* BONOBO_UI_CONFIG_WIDGET_H */

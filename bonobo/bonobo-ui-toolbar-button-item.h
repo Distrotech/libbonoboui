@@ -43,6 +43,8 @@ typedef struct {
 	/* Signals.  */
 	void (* clicked)	(BonoboUIToolbarButtonItem *toolbar_button_item);
 	void (* set_want_label) (BonoboUIToolbarButtonItem *toolbar_button_item);
+
+	gpointer dummy[2];
 } BonoboUIToolbarButtonItemClass;
 
 GtkType    bonobo_ui_toolbar_button_item_get_type           (void) G_GNUC_CONST;

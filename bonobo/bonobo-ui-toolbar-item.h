@@ -56,6 +56,8 @@ typedef struct {
 	void (* set_want_label)  (BonoboUIToolbarItem     *item,
 				  gboolean                 want_label);
 	void (* activate)        (BonoboUIToolbarItem     *item);
+
+	gpointer dummy[4];
 } BonoboUIToolbarItemClass;
 
 

@@ -46,6 +46,8 @@ typedef struct {
 
 	POA_Bonobo_Control__epv epv;
 
+	gpointer dummy[4];
+
 	/* Signals. */
 	void (*set_frame)      (BonoboControl *control);
 	void (*activate)       (BonoboControl *control, gboolean state);

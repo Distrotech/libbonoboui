@@ -75,6 +75,8 @@ struct _BonoboDockBand
 struct _BonoboDockBandClass
 {
   GtkContainerClass parent_class;
+
+  gpointer dummy[2];
 };
 
 struct _BonoboDockBandChild

@@ -36,6 +36,8 @@ typedef struct {
 	BonoboObjectClass parent;
 
 	POA_Bonobo_UIContainer__epv epv;
+
+	gpointer dummy[2];
 } BonoboUIContainerClass;
 
 GType                        bonobo_ui_container_get_type            (void) G_GNUC_CONST;

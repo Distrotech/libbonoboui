@@ -44,6 +44,8 @@ typedef struct {
 	void (*zoom_out)	(BonoboZoomable *zoomable);
 	void (*zoom_to_fit)	(BonoboZoomable *zoomable);
 	void (*zoom_to_default)	(BonoboZoomable *zoomable);
+
+	gpointer dummy[4];
 } BonoboZoomableClass;
 
 GType		 bonobo_zoomable_get_type                       (void) G_GNUC_CONST;

@@ -44,6 +44,8 @@ typedef struct {
 	void (* set_orientation) (BonoboUIToolbar *toolbar,
 				  GtkOrientation orientation);
 	void (* style_changed)   (BonoboUIToolbar *toolbar);
+
+	gpointer dummy[4];
 } BonoboUIToolbarClass;
 
 GtkType               bonobo_ui_toolbar_get_type         (void) G_GNUC_CONST;

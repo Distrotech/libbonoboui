@@ -41,6 +41,8 @@ typedef struct {
 
 	POA_Bonobo_PropertyControl__epv epv;
 
+	gpointer dummy[4];
+
 	void (* action) (BonoboPropertyControl *property_control, 
 			 Bonobo_PropertyControl_Action action);
 } BonoboPropertyControlClass;

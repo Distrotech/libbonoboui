@@ -1,3 +1,12 @@
+2002-06-05  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.0.0
+	
+2002-06-05  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/*.h: add dummy bin-compat padding for future
+	expansion.
+
 Mon Jun 03 15:30:08 2002  George Lebl <jirka@5z.com>
 
 	* configure.in, po/cs.po: add a basic Czech translation

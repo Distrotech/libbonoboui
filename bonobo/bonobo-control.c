@@ -1074,6 +1074,12 @@ window_set_transient_for_gdk (GtkWindow *window,
 			GTK_WIDGET (window)->window, parent);
 	}
 
+	/*
+	 * FIXME: we need to be able to get the screen from
+	 * the remote toplevel window for multi-head to work
+	 * could use an ambient property on the ControlFrame
+	 */
+
 	g_signal_connect (
 		window, "realize",
 		G_CALLBACK (window_transient_realize_gdk_cb), NULL);

@@ -49,6 +49,8 @@ struct _BonoboSocket {
 
 typedef struct {
 	GtkSocketClass parent_class;
+
+	gpointer dummy[4];
 } BonoboSocketClass;
 
 

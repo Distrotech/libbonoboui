@@ -41,10 +41,11 @@ typedef struct {
 
 	POA_Bonobo_ControlFrame__epv epv;
 
+	gpointer dummy[4];
+
 	/* Signals. */
 	void (*activated)           (BonoboControlFrame *control_frame, gboolean state);
 	void (*activate_uri)        (BonoboControlFrame *control_frame, const char *uri, gboolean relative);
-
 } BonoboControlFrameClass;
 
 #define BONOBO_CONTROL_FRAME_TOPLEVEL_PROP "bonobo:toplevel"

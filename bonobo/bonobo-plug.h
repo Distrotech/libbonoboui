@@ -52,6 +52,8 @@ struct _BonoboPlug {
 
 typedef struct {
 	GtkPlugClass parent_class;
+
+	gpointer dummy[4];
 } BonoboPlugClass;
 
 GtkType        bonobo_plug_get_type    (void) G_GNUC_CONST;

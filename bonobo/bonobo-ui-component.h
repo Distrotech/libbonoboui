@@ -45,6 +45,8 @@ typedef struct {
 
 	POA_Bonobo_UIComponent__epv epv;
 
+	gpointer dummy[6];
+
 	/* Signals */
 	void (*exec_verb) (BonoboUIComponent *comp,
 			   const char        *cname);
@@ -88,9 +90,6 @@ typedef struct {
 	gboolean (*exists) (BonoboUIComponent *component,
 			    const char        *path,
 			    CORBA_Environment *ev);
-	
-
-	gpointer            dummy;
 } BonoboUIComponentClass;
 
 GType              bonobo_ui_component_get_type        (void) G_GNUC_CONST;

@@ -101,6 +101,8 @@ struct _BonoboDockItemClass
   void (* dock_drag_end) (BonoboDockItem *item);
   void (* dock_detach) (BonoboDockItem *item);
   void (* orientation_changed) (BonoboDockItem *item, GtkOrientation new_orientation);
+
+  gpointer dummy[4];
 };
 
 /* Public methods.  */

@@ -40,6 +40,8 @@ struct _BonoboWidget {
 
 typedef struct {
 	GtkBinClass	 bin_class;
+
+	gpointer dummy[4];
 } BonoboWidgetClass;
 
 GtkType             bonobo_widget_get_type                 (void) G_GNUC_CONST;

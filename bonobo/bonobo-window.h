@@ -34,6 +34,8 @@ typedef struct {
 
 typedef struct {
 	GtkWindowClass    parent_class;
+
+	gpointer dummy[4];
 } BonoboWindowClass;
 
 GtkType              bonobo_window_get_type                       (void) G_GNUC_CONST;

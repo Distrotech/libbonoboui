@@ -84,7 +84,9 @@ struct _BonoboDockLayout
 
 struct _BonoboDockLayoutClass
 {
-  GtkObjectClass parent_class;
+  GObjectClass parent_class;
+
+  gpointer dummy[4];
 };
 
 BonoboDockLayout     *bonobo_dock_layout_new      (void);

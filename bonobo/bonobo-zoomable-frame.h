@@ -37,6 +37,8 @@ typedef struct {
 	void (*zoom_level_changed)	(BonoboZoomableFrame *zframe,
 					 float zoom_level);
 	void (*zoom_parameters_changed)	(BonoboZoomableFrame *zframe);
+
+	gpointer dummy[2];
 } BonoboZoomableFrameClass;
 
 GType			 bonobo_zoomable_frame_get_type			(void) G_GNUC_CONST;

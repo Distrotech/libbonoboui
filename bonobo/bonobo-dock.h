@@ -84,6 +84,8 @@ struct _BonoboDockClass
   GtkContainerClass parent_class;
 
   void (* layout_changed) (BonoboDock *dock);
+
+  gpointer dummy[4];
 };
 
 GtkWidget     *bonobo_dock_new               (void);

@@ -33,6 +33,8 @@ typedef struct {
 	BonoboUIToolbarButtonItemClass parent_class;
 
 	void (* toggled) (BonoboUIToolbarToggleButtonItem *toggle_button_item);
+
+	gpointer dummy[2];
 } BonoboUIToolbarToggleButtonItemClass;
 
 

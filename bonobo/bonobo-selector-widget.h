@@ -39,6 +39,8 @@ typedef struct {
 
 	/* User select */
 	void   (* final_select)    (BonoboSelectorWidget *sel);
+
+	gpointer dummy[2];
 } BonoboSelectorWidgetClass;
 
 GtkType	   bonobo_selector_widget_get_type (void) G_GNUC_CONST;

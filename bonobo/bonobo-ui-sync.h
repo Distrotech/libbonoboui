@@ -11,6 +11,7 @@
 #ifndef _BONOBO_UI_SYNC_H_
 #define _BONOBO_UI_SYNC_H_
 
+/* Internal API */
 #ifdef BONOBO_UI_INTERNAL
 
 #include <stdio.h>
