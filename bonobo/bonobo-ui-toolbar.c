@@ -51,9 +51,10 @@ struct _BonoboUIToolbarPrivate {
 	/* The style of this toolbar.  */
 	BonoboUIToolbarStyle style;
 
-	/* Thickness of the toolbar.  This is actually the height for
+	/* Sizes of the toolbar.  This is actually the height for
            horizontal toolbars and the width for vertical toolbars.  */
-	int thickness;
+	int max_width, max_height;
+	int total_width, total_height;
 
 	/* List of all the items in the toolbar.  Both the ones that have been
            unparented because they don't fit, and the ones that are visible.
@@ -363,7 +364,7 @@ popup_item_toggled_cb (BonoboUIToolbarToggleButtonItem *toggle_button_item,
 /* Layout handling.  */
 
 static int
-get_popup_item_width (BonoboUIToolbar *toolbar)
+get_popup_item_size (BonoboUIToolbar *toolbar)
 {
 	BonoboUIToolbarPrivate *priv;
 	GtkRequisition requisition;
@@ -378,22 +379,22 @@ get_popup_item_width (BonoboUIToolbar *toolbar)
 		return requisition.height;
 }
 
-/* Update the `thickness' value.  This is performed during ::size_request.  */
+/* Update the various sizes.  This is performed during ::size_request.  */
 static void
-update_thickness (BonoboUIToolbar *toolbar)
+update_sizes (BonoboUIToolbar *toolbar)
 {
 	BonoboUIToolbarPrivate *priv;
-	int thickness;
+	int max_width, max_height;
+	int total_width, total_height;
 	GList *p;
 
 	priv = toolbar->priv;
 
-	thickness = 0;
+	max_width = max_height = total_width = total_height = 0;
 
 	for (p = priv->items; p != NULL; p = p->next) {
 		GtkWidget *item_widget;
 		GtkRequisition item_requisition;
-		int item_thickness;
 
 		item_widget = GTK_WIDGET (p->data);
 		if (! GTK_WIDGET_VISIBLE (item_widget) || item_widget->parent != GTK_WIDGET (toolbar))
@@ -401,15 +402,16 @@ update_thickness (BonoboUIToolbar *toolbar)
 
 		gtk_widget_size_request (item_widget, &item_requisition);
 
-		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
-			item_thickness = item_requisition.height;
-		else
-			item_thickness = item_requisition.width;
-
-		thickness = MAX (item_thickness, thickness);
+		max_width     = MAX (max_width,  item_requisition.width);
+		total_width  += item_requisition.width;
+		max_height    = MAX (max_height, item_requisition.height);
+		total_height += item_requisition.height;
 	}
 
-	priv->thickness = thickness;
+	priv->max_width = max_width;
+	priv->total_width = total_width;
+	priv->max_height = max_height;
+	priv->total_height = total_height;
 }
 
 static void
@@ -509,12 +511,8 @@ size_allocate_horizontally (BonoboUIToolbar *toolbar,
 	BonoboUIToolbarPrivate *priv;
 	GtkAllocation child_allocation;
 	GList *p;
-	int popup_item_width;
 	int available_width;
 	int border_width;
-
-	/* FIXME: We calculate the width of the pop-up item a couple of times,
-           we could optimize this.  */
 
 	GTK_WIDGET (toolbar)->allocation = *allocation;
 
@@ -522,15 +520,8 @@ size_allocate_horizontally (BonoboUIToolbar *toolbar,
 
 	border_width = GTK_CONTAINER (toolbar)->border_width;
 
-	if (allocation->width > 2 * border_width)
-		available_width = allocation->width - 2 * border_width;
-	else
-		available_width = 0;
-
-	popup_item_width = get_popup_item_width (toolbar);
-	if (available_width > popup_item_width)
-		available_width -= popup_item_width;
-	else
+	available_width = allocation->width - 2 * border_width;
+	if (available_width < 0)
 		available_width = 0;
 
 	child_allocation.x = allocation->x + border_width;
@@ -554,12 +545,22 @@ size_allocate_horizontally (BonoboUIToolbar *toolbar,
 		}
 
 		child_allocation.width  = child_requisition.width;
-		child_allocation.height = priv->thickness;
+		child_allocation.height = priv->max_height;
 
 		gtk_widget_size_allocate (widget, &child_allocation);
 
 		child_allocation.x += child_allocation.width;
 		available_width    -= child_allocation.width;
+	}
+
+	/* Something did not fit allocate the arrow */
+	if (p != NULL) {
+		/* Does the arrow fit ? */
+		available_width -= get_popup_item_size (toolbar);
+
+		/* Damn, it does not.  Remove the previous element if possible */
+		if (available_width < 0 && p->prev != NULL)
+			priv->first_not_fitting_item = p->prev;
 	}
 
 	hide_not_fitting_items (toolbar);
@@ -573,28 +574,17 @@ size_allocate_vertically (BonoboUIToolbar *toolbar,
 	BonoboUIToolbarPrivate *priv;
 	GtkAllocation child_allocation;
 	GList *p;
-	int popup_item_height;
 	int available_height;
 	int border_width;
 
 	GTK_WIDGET (toolbar)->allocation = *allocation;
 
-	/* FIXME: We calculate the width of the pop-up item a couple of times,
-           we could optimize this.  */
-
 	priv = toolbar->priv;
 
 	border_width = GTK_CONTAINER (toolbar)->border_width;
 
-	if (allocation->height > 2 * border_width)
-		available_height = allocation->height - 2 * border_width;
-	else
-		available_height = 0;
-
-	popup_item_height = get_popup_item_width (toolbar);
-	if (available_height > popup_item_height)
-		available_height -= popup_item_height;
-	else
+	available_height = allocation->height - 2 * border_width;
+	if (available_height < 0)
 		available_height = 0;
 
 	child_allocation.x = allocation->x + border_width;
@@ -617,13 +607,23 @@ size_allocate_vertically (BonoboUIToolbar *toolbar,
 			break;
 		}
 
-		child_allocation.width  = priv->thickness;
+		child_allocation.width  = priv->max_width;
 		child_allocation.height = child_requisition.height;
 
 		gtk_widget_size_allocate (widget, &child_allocation);
 
 		child_allocation.y += child_allocation.height;
 		available_height   -= child_allocation.height;
+	}
+
+	/* Something did not fit allocate the arrow */
+	if (p != NULL) {
+		/* Does the arrow fit ? */
+		available_height -= get_popup_item_size (toolbar);
+
+		/* Damn, it does not.  Remove the previous element if possible */
+		if (available_height < 0 && p->prev != NULL)
+			priv->first_not_fitting_item = p->prev;
 	}
 
 	hide_not_fitting_items (toolbar);
@@ -670,7 +670,6 @@ impl_size_request (GtkWidget *widget,
 {
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
-	GtkRequisition popup_item_requisition;
 	int border_width;
 
 	toolbar = BONOBO_UI_TOOLBAR (widget);
@@ -678,18 +677,29 @@ impl_size_request (GtkWidget *widget,
 
 	g_assert (priv->popup_item != NULL);
 
-	update_thickness (toolbar);
+	update_sizes (toolbar);
 
 	border_width = GTK_CONTAINER (toolbar)->border_width;
 
-	gtk_widget_size_request (GTK_WIDGET (priv->popup_item), &popup_item_requisition);
-
-	if (priv->orientation == GTK_ORIENTATION_HORIZONTAL) {
-		requisition->width  = popup_item_requisition.width;
-		requisition->height = MAX (popup_item_requisition.height, priv->thickness);
+	if (priv->is_floating) {
+		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL) {
+			requisition->width  = priv->total_width;
+			requisition->height = priv->max_height;
+		} else {
+			requisition->width  = priv->max_width;
+			requisition->height = priv->total_height;
+		}
 	} else {
-		requisition->width  = MAX (popup_item_requisition.width, priv->thickness);
-		requisition->height = popup_item_requisition.height;
+		GtkRequisition popup_item_requisition;
+
+		gtk_widget_size_request (GTK_WIDGET (priv->popup_item), &popup_item_requisition);
+		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL) {
+			requisition->width  = popup_item_requisition.width;
+			requisition->height = MAX (popup_item_requisition.height, priv->max_height);
+		} else {
+			requisition->width  = MAX (popup_item_requisition.width, priv->max_width);
+			requisition->height = popup_item_requisition.height;
+		}
 	}
 
 	requisition->width  += 2 * border_width;
@@ -1042,7 +1052,10 @@ init (BonoboUIToolbar *toolbar)
 	priv->orientation                 = GTK_ORIENTATION_HORIZONTAL;
 	priv->is_floating		  = FALSE;
 	priv->style                       = BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
-	priv->thickness                   = 0;
+	priv->max_width			  = 0;
+	priv->total_width		  = 0;
+	priv->max_height		  = 0;
+	priv->total_height		  = 0;
 	priv->popup_item                  = NULL;
 	priv->items                       = NULL;
 	priv->first_not_fitting_item      = NULL;
