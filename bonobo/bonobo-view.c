@@ -49,8 +49,14 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 	GtkAllocation allocation;
 
-	allocation.x = view->plug->allocation.x;
-	allocation.y = view->plug->allocation.y;
+	if (view->plug != NULL) {
+		allocation.x = view->plug->allocation.x;
+		allocation.y = view->plug->allocation.y;
+	} else {
+		allocation.x = -1;
+		allocation.y = -1;
+	}
+
 	allocation.width = width;
 	allocation.height = height;
 	
