@@ -51,6 +51,8 @@ libbonobo_la_SOURCES =			\
 	gnome-component.c		\
 	gnome-component-factory.c 	\
 	gnome-container.c		\
+	gnome-inplace-component.c	\
+	gnome-inplace-site.c		\
 	gnome-main.c			\
 	gnome-object.c			\
 	gnome-view.c
@@ -61,6 +63,8 @@ libbonoboincludedir = $(includedir)/bonobo
 libbonoboinclude_HEADERS =		\
 	gtk-interfaces.h		\
 	gnome-client-site.h		\
+	gnome-inplace-site.h		\
+	gnome-inplace-component.h	\
 	gnome-component.h		\
 	gnome-component-factory.h	\
 	gnome-container.h		\
