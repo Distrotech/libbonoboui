@@ -41,8 +41,15 @@ impl_GNOME_BonoboObject_set_client_site (PortableServer_Servant servant,
 					 CORBA_Environment *ev)
 {
 	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	CORBA_Environment evx;
 
-	bonobo_object->client_site = client_site;
+	CORBA_exception_init (&evx);
+
+	if (bonobo_object->client_site != CORBA_OBJECT_NIL)
+		CORBA_Object_release (client_site, &evx);
+	
+	bonobo_object->client_site = CORBA_Object_duplicate (client_site, &evx);
+        CORBA_exception_free (&evx);							     
 }
 
 static GNOME_ClientSite
@@ -50,8 +57,14 @@ impl_GNOME_BonoboObject_get_client_site (PortableServer_Servant servant,
 					 CORBA_Environment *ev)
 {
 	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GNOME_ClientSite ret;
+	CORBA_Environment evx;
+	
+	CORBA_exception_init (&evx);
+	ret = CORBA_Object_duplicate (bonobo_object->client_site, &evx);
+        CORBA_exception_free (&evx);							     
 
-	return bonobo_object->client_site;
+	return ret;
 }
 
 static void
@@ -153,13 +166,19 @@ impl_GNOME_BonoboObject_new_view (PortableServer_Servant servant, CORBA_Environm
 {
 	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
 	GnomeView *view;
+	CORBA_Environment evx;
+	GNOME_View ret;
 	
 	view = bonobo_object->view_factory (bonobo_object, bonobo_object->view_factory_closure);
 
 	if (view == NULL)
 		return CORBA_OBJECT_NIL;
-	
-	return GNOME_OBJECT (view)->object;
+
+	CORBA_exception_init (&evx);
+	ret = CORBA_Object_duplicate (GNOME_OBJECT (view)->object, &evx);
+	CORBA_exception_free (&evx);
+
+	return ret;
 }
 
 POA_GNOME_BonoboObject__epv gnome_bonobo_object_epv = {
@@ -264,8 +283,18 @@ gnome_bonobo_object_destroy (GtkObject *object)
 	 */
 	for (l = bonobo_object->verbs; l; l = l->next)
 		g_free (l->data);
-
 	g_list_free (bonobo_object->verbs);
+
+	/*
+	 * Release any references we might keep
+	 */
+	if (bonobo_object->client_site != CORBA_OBJECT_NIL){
+		CORBA_Environment ev;
+
+		CORBA_exception_init (&ev);
+		CORBA_Object_release (bonobo_object->client_site, &ev);
+		CORBA_exception_free (&ev);
+	}
 	
 	GTK_OBJECT_CLASS (gnome_bonobo_object_parent_class)->destroy (object);
 }
