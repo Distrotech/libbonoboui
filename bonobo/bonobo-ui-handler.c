@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /*
- * GNOME::UIHandler.
+ * Bonobo::UIHandler.
  *
  * Copyright 1999 Helix Code, Inc.
  *
@@ -25,9 +25,9 @@
  */
 
 #include <config.h>
-#include <bonobo/gnome-main.h>
+#include <bonobo/bonobo-main.h>
 #include <bonobo/gnome-bonobo-widget.h>
-#include <bonobo/gnome-ui-handler.h>
+#include <bonobo/bonobo-ui-handler.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkmenu.h>
@@ -51,13 +51,13 @@
  */
 
 /* Parent object class in the GTK hierarchy. */
-static GnomeObjectClass *gnome_ui_handler_parent_class;
+static BonoboObjectClass *bonobo_ui_handler_parent_class;
 
 /*
- * The entry point vectors for the GNOME_UIHandler server used to
+ * The entry point vectors for the Bonobo_UIHandler server used to
  * handle remote menu/toolbar merging.
  */
-POA_GNOME_UIHandler__vepv gnome_ui_handler_vepv;
+POA_Bonobo_UIHandler__vepv bonobo_ui_handler_vepv;
 
 /*
  * Forward declarations.
@@ -108,14 +108,14 @@ static guint uih_signals [LAST_SIGNAL];
 typedef struct _MenuItemInternal {
 
 	/*
-	 * The GnomeUIHandler.
+	 * The BonoboUIHandler.
 	 */
-	GnomeUIHandler *uih;
+	BonoboUIHandler *uih;
 
 	/*
-	 * A copy of the GnomeUIHandlerMenuItem for this toolbar item.
+	 * A copy of the BonoboUIHandlerMenuItem for this toolbar item.
 	 */
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandlerMenuItem *item;
 
 	/*
 	 * If this item is a subtree or a radio group, this list
@@ -129,7 +129,7 @@ typedef struct _MenuItemInternal {
 	 * The UIHandler CORBA interface for the containee which owns
 	 * this particular menu item.
 	 */
-	GNOME_UIHandler uih_corba;
+	Bonobo_UIHandler uih_corba;
 
 	/*
 	 * If this item is a radio group, then this list points to the
@@ -160,7 +160,7 @@ typedef struct {
 	 */
 	GList				*children;
 
-	GnomeUIHandlerCallbackFunc	 callback;
+	BonoboUIHandlerCallbackFunc	 callback;
 	gpointer			 callback_data;
 } MenuItemLocalInternal;
 
@@ -171,20 +171,20 @@ typedef struct {
 
 struct _ToolbarItemInternal {
 	/*
-	 * The GnomeUIHandler.
+	 * The BonoboUIHandler.
 	 */
-	GnomeUIHandler *uih;
+	BonoboUIHandler *uih;
 
 	/*
-	 * A copy of the GnomeUIHandlerToolbarItem for this toolbar item.
+	 * A copy of the BonoboUIHandlerToolbarItem for this toolbar item.
 	 */
-	GnomeUIHandlerToolbarItem *item;
+	BonoboUIHandlerToolbarItem *item;
 
 	/*
 	 * The UIHandler CORBA interface for the containee which owns
 	 * this particular menu item.
 	 */
-	GNOME_UIHandler uih_corba;
+	Bonobo_UIHandler uih_corba;
 
 	/*
 	 * If this item is a radio group, then this list points to the
@@ -221,7 +221,7 @@ struct _ToolbarToolbarInternal {
 	/*
 	 * The owner for this toolbar.
 	 */
-	GNOME_UIHandler		 uih_corba;
+	Bonobo_UIHandler		 uih_corba;
 
 	GtkOrientation		 orientation;
 	GtkToolbarStyle		 style;
@@ -231,7 +231,7 @@ struct _ToolbarToolbarInternal {
 };
 
 struct _ToolbarItemLocalInternal {
-	GnomeUIHandlerCallbackFunc callback;
+	BonoboUIHandlerCallbackFunc callback;
 	gpointer	           callback_data;
 };
 
@@ -246,10 +246,10 @@ typedef struct {
 } UIRemoteAttributeData;
 
 typedef struct {
-	GNOME_UIHandler_ToolbarOrientation orientation;
-	GNOME_UIHandler_ToolbarStyle       style;
-	GNOME_UIHandler_ToolbarSpaceStyle  space_style;
-	GNOME_UIHandler_ReliefStyle        relief_style;
+	Bonobo_UIHandler_ToolbarOrientation orientation;
+	Bonobo_UIHandler_ToolbarStyle       style;
+	Bonobo_UIHandler_ToolbarSpaceStyle  space_style;
+	Bonobo_UIHandler_ReliefStyle        relief_style;
 	CORBA_long                         space_size;
 	CORBA_boolean                      sensitive;
 } ToolbarRemoteAttributeData;
@@ -258,37 +258,37 @@ typedef struct {
  * Prototypes for some internal functions.
  */
 static void                       init_ui_handler_corba_class           (void);
-static gboolean			  uih_toplevel_check_toplevel		(GnomeUIHandler *uih);
-static void			  uih_toplevel_add_containee		(GnomeUIHandler *uih, GNOME_UIHandler containee);
-static void			  pixmap_free_data			(GnomeUIHandlerPixmapType pixmap_type,
+static gboolean			  uih_toplevel_check_toplevel		(BonoboUIHandler *uih);
+static void			  uih_toplevel_add_containee		(BonoboUIHandler *uih, Bonobo_UIHandler containee);
+static void			  pixmap_free_data			(BonoboUIHandlerPixmapType pixmap_type,
 									 gpointer pixmap_info);
-static gpointer			  pixmap_copy_data			(GnomeUIHandlerPixmapType pixmap_type,
+static gpointer			  pixmap_copy_data			(BonoboUIHandlerPixmapType pixmap_type,
 									 const gconstpointer pixmap_info);
 static gpointer			  pixmap_xpm_copy_data			(const gconstpointer data);
-static GNOME_UIHandler_iobuf	 *pixmap_data_to_corba			(GnomeUIHandlerPixmapType type, gpointer data);
-static GNOME_UIHandler_PixmapType pixmap_corba_to_type			(GNOME_UIHandler_PixmapType type);
-static GNOME_UIHandler_PixmapType pixmap_type_to_corba			(GnomeUIHandlerPixmapType type);
+static Bonobo_UIHandler_iobuf	 *pixmap_data_to_corba			(BonoboUIHandlerPixmapType type, gpointer data);
+static Bonobo_UIHandler_PixmapType pixmap_corba_to_type			(Bonobo_UIHandler_PixmapType type);
+static Bonobo_UIHandler_PixmapType pixmap_type_to_corba			(BonoboUIHandlerPixmapType type);
 static gint			  pixmap_xpm_get_length			(const gconstpointer data, int *num_lines);
 
 /*
  * Prototypes for some internal menu functions.
  */
-static void			  menu_toplevel_remove_item_internal	(GnomeUIHandler *uih, MenuItemInternal *internal,
+static void			  menu_toplevel_remove_item_internal	(BonoboUIHandler *uih, MenuItemInternal *internal,
 									 gboolean replace);
-static void			  menu_toplevel_create_hint		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
+static void			  menu_toplevel_create_hint		(BonoboUIHandler *uih, BonoboUIHandlerMenuItem *item,
 									 GtkWidget *menu_item);
-static void			  menu_toplevel_set_toggle_state_internal(GnomeUIHandler *uih, MenuItemInternal *internal,
+static void			  menu_toplevel_set_toggle_state_internal(BonoboUIHandler *uih, MenuItemInternal *internal,
 				 					 gboolean state);
-static void			  menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+static void			  menu_toplevel_set_sensitivity_internal (BonoboUIHandler *uih, MenuItemInternal *internal,
 									 gboolean sensitivity);
-static void			  menu_toplevel_set_radio_state_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+static void			  menu_toplevel_set_radio_state_internal (BonoboUIHandler *uih, MenuItemInternal *internal,
 				 					 gboolean state);
 static gint			  menu_toplevel_item_activated		(GtkWidget *menu_item, MenuItemInternal *internal);
 
 /*
  * Prototypes for some internal Toolbar functions.
  */
-static void			  toolbar_toplevel_remove_item_internal (GnomeUIHandler *uih,
+static void			  toolbar_toplevel_remove_item_internal (BonoboUIHandler *uih,
 									 ToolbarItemInternal *internal);
 
 /*
@@ -296,20 +296,20 @@ static void			  toolbar_toplevel_remove_item_internal (GnomeUIHandler *uih,
  * NB. can be re-used for toolbars.
  */
 static UIRemoteAttributeData *
-menu_remote_attribute_data_get (GnomeUIHandler *uih, const char *path)
+menu_remote_attribute_data_get (BonoboUIHandler *uih, const char *path)
 {
 	UIRemoteAttributeData *attrs = g_new0 (UIRemoteAttributeData, 1);
 	CORBA_Environment        ev;
 
 	CORBA_exception_init   (&ev);
 
-	GNOME_UIHandler_menu_get_attributes (uih->top_level_uih,
-					     gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_menu_get_attributes (uih->top_level_uih,
+					     bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 					     path, &attrs->sensitive, &attrs->pos, &attrs->label, &attrs->hint,
 					     &attrs->accelerator_key, &attrs->ac_mods, &attrs->toggle_state, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 		CORBA_exception_free (&ev);
 		g_free (attrs);
@@ -321,22 +321,22 @@ menu_remote_attribute_data_get (GnomeUIHandler *uih, const char *path)
 }
 
 static UIRemoteAttributeData *
-toolbar_item_remote_attribute_data_get (GnomeUIHandler *uih, const char *path)
+toolbar_item_remote_attribute_data_get (BonoboUIHandler *uih, const char *path)
 {
 	UIRemoteAttributeData *attrs = g_new0 (UIRemoteAttributeData, 1);
 	CORBA_Environment        ev;
 
 	CORBA_exception_init   (&ev);
 
-	GNOME_UIHandler_toolbar_item_get_attributes (uih->top_level_uih,
-						     gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_toolbar_item_get_attributes (uih->top_level_uih,
+						     bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 						     path, &attrs->sensitive, &attrs->active,
 						     &attrs->pos, &attrs->label, &attrs->hint,
 						     &attrs->accelerator_key, &attrs->ac_mods,
 						     &attrs->toggle_state, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 		CORBA_exception_free (&ev);
 		g_free (attrs);
@@ -364,7 +364,7 @@ ui_remote_attribute_data_free (UIRemoteAttributeData *attrs)
  * Convenience function to set attributes + free data.
  */
 static gboolean
-menu_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
+menu_remote_attribute_data_set (BonoboUIHandler *uih, const char *path,
 				UIRemoteAttributeData *attrs)
 {
 	gboolean success = TRUE;
@@ -372,14 +372,14 @@ menu_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
 
 	CORBA_exception_init   (&ev);
 
-	GNOME_UIHandler_menu_set_attributes (uih->top_level_uih,
-					     gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_menu_set_attributes (uih->top_level_uih,
+					     bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 					     path, attrs->sensitive, attrs->pos, attrs->label, attrs->hint,
 					     attrs->accelerator_key, attrs->ac_mods, attrs->toggle_state, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 		success = FALSE;
 	}
@@ -391,7 +391,7 @@ menu_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
 }
 
 static gboolean
-toolbar_item_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
+toolbar_item_remote_attribute_data_set (BonoboUIHandler *uih, const char *path,
 					UIRemoteAttributeData *attrs)
 {
 	gboolean success = TRUE;
@@ -399,15 +399,15 @@ toolbar_item_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
 
 	CORBA_exception_init   (&ev);
 
-	GNOME_UIHandler_toolbar_item_set_attributes (uih->top_level_uih,
-						     gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_toolbar_item_set_attributes (uih->top_level_uih,
+						     bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 						     path, attrs->sensitive, attrs->active,
 						     attrs->pos, attrs->label, attrs->hint,
 						     attrs->accelerator_key, attrs->ac_mods, attrs->toggle_state, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 		success = FALSE;
 	}
@@ -419,22 +419,22 @@ toolbar_item_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
 }
 
 static ToolbarRemoteAttributeData *
-toolbar_remote_attribute_data_get (GnomeUIHandler *uih, const char *path)
+toolbar_remote_attribute_data_get (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarRemoteAttributeData *attrs = g_new0 (ToolbarRemoteAttributeData, 1);
 	CORBA_Environment        ev;
 
 	CORBA_exception_init   (&ev);
 
-	GNOME_UIHandler_toolbar_get_attributes (uih->top_level_uih,
-						gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_toolbar_get_attributes (uih->top_level_uih,
+						bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 						path, &attrs->orientation, &attrs->style,
 						&attrs->space_style, &attrs->relief_style,
 						&attrs->space_size, &attrs->sensitive, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 		CORBA_exception_free (&ev);
 		g_free (attrs);
@@ -456,7 +456,7 @@ toolbar_remote_attribute_data_free (ToolbarRemoteAttributeData *attrs)
  * Convenience function to set attributes + free data.
  */
 static gboolean
-toolbar_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
+toolbar_remote_attribute_data_set (BonoboUIHandler *uih, const char *path,
 				   ToolbarRemoteAttributeData *attrs)
 {
 	gboolean success = TRUE;
@@ -464,15 +464,15 @@ toolbar_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
 
 	CORBA_exception_init   (&ev);
 
-	GNOME_UIHandler_toolbar_set_attributes (uih->top_level_uih,
-						gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_toolbar_set_attributes (uih->top_level_uih,
+						bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 						path, attrs->orientation, attrs->style,
 						attrs->space_style, attrs->relief_style,
 						attrs->space_size, attrs->sensitive, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 		success = FALSE;
 	}
@@ -487,20 +487,20 @@ toolbar_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
 
  * Basic GtkObject management.
  *
- * These are the GnomeUIHandler construction/deconstruction functions.
+ * These are the BonoboUIHandler construction/deconstruction functions.
  */
 static CORBA_Object
-create_gnome_ui_handler (GnomeObject *object)
+create_bonobo_ui_handler (BonoboObject *object)
 {
-	POA_GNOME_UIHandler *servant;
+	POA_Bonobo_UIHandler *servant;
 	CORBA_Environment ev;
 	
-	servant = (POA_GNOME_UIHandler *) g_new0 (GnomeObjectServant, 1);
-	servant->vepv = &gnome_ui_handler_vepv;
+	servant = (POA_Bonobo_UIHandler *) g_new0 (BonoboObjectServant, 1);
+	servant->vepv = &bonobo_ui_handler_vepv;
 
 	CORBA_exception_init (&ev);
 
-	POA_GNOME_UIHandler__init ((PortableServer_Servant) servant, &ev);
+	POA_Bonobo_UIHandler__init ((PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		g_free (servant);
 		CORBA_exception_free (&ev);
@@ -508,33 +508,33 @@ create_gnome_ui_handler (GnomeObject *object)
 	}
 
 	CORBA_exception_free (&ev);
-	return gnome_object_activate_servant (object, servant);
+	return bonobo_object_activate_servant (object, servant);
 }
 
 static void
-gnome_ui_handler_destroy (GtkObject *object)
+bonobo_ui_handler_destroy (GtkObject *object)
 {
-/*	GnomeUIHandler *uih = GNOME_UI_HANDLER (object);*/
+/*	BonoboUIHandler *uih = BONOBO_UI_HANDLER (object);*/
 
 	g_warning ("gnome ui handler destroy not fully implemented");
 
-	GTK_OBJECT_CLASS (gnome_ui_handler_parent_class)->destroy (object);
+	GTK_OBJECT_CLASS (bonobo_ui_handler_parent_class)->destroy (object);
 }
 
 static void
-gnome_ui_handler_class_init (GnomeUIHandlerClass *klass)
+bonobo_ui_handler_class_init (BonoboUIHandlerClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
 
-	gnome_ui_handler_parent_class = gtk_type_class (gnome_object_get_type ());
+	bonobo_ui_handler_parent_class = gtk_type_class (bonobo_object_get_type ());
 
-	object_class->destroy = gnome_ui_handler_destroy;
+	object_class->destroy = bonobo_ui_handler_destroy;
 
 	uih_signals [MENU_ITEM_ACTIVATED] =
 		gtk_signal_new ("menu_item_activated",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeUIHandlerClass, menu_item_activated),
+				GTK_SIGNAL_OFFSET (BonoboUIHandlerClass, menu_item_activated),
 				gtk_marshal_NONE__POINTER_POINTER_POINTER,
 				GTK_TYPE_NONE, 3,
 				GTK_TYPE_POINTER,
@@ -545,7 +545,7 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *klass)
 		gtk_signal_new ("menu_item_removed",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeUIHandlerClass, menu_item_removed),
+				GTK_SIGNAL_OFFSET (BonoboUIHandlerClass, menu_item_removed),
 				gtk_marshal_NONE__POINTER_POINTER_POINTER,
 				GTK_TYPE_NONE, 3,
 				GTK_TYPE_POINTER,
@@ -556,7 +556,7 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *klass)
 		gtk_signal_new ("menu_item_reinstated",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeUIHandlerClass, menu_item_reinstated),
+				GTK_SIGNAL_OFFSET (BonoboUIHandlerClass, menu_item_reinstated),
 				gtk_marshal_NONE__POINTER_POINTER_POINTER,
 				GTK_TYPE_NONE, 3,
 				GTK_TYPE_POINTER,
@@ -567,7 +567,7 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *klass)
 		gtk_signal_new ("toolbar_item_activated",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeUIHandlerClass, toolbar_item_activated),
+				GTK_SIGNAL_OFFSET (BonoboUIHandlerClass, toolbar_item_activated),
 				gtk_marshal_NONE__POINTER_POINTER_POINTER,
 				GTK_TYPE_NONE, 3,
 				GTK_TYPE_POINTER,
@@ -578,7 +578,7 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *klass)
 		gtk_signal_new ("toolbar_item_removed",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeUIHandlerClass, toolbar_item_removed),
+				GTK_SIGNAL_OFFSET (BonoboUIHandlerClass, toolbar_item_removed),
 				gtk_marshal_NONE__POINTER_POINTER_POINTER,
 				GTK_TYPE_NONE, 3,
 				GTK_TYPE_POINTER,
@@ -589,7 +589,7 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *klass)
 		gtk_signal_new ("toolbar_item_reinstated",
 				GTK_RUN_LAST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeUIHandlerClass, toolbar_item_reinstated),
+				GTK_SIGNAL_OFFSET (BonoboUIHandlerClass, toolbar_item_reinstated),
 				gtk_marshal_NONE__POINTER_POINTER_POINTER,
 				GTK_TYPE_NONE, 3,
 				GTK_TYPE_POINTER,
@@ -603,55 +603,55 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *klass)
 }
 
 static void
-gnome_ui_handler_init (GnomeObject *object)
+bonobo_ui_handler_init (BonoboObject *object)
 {
 }
 
 /**
- * gnome_ui_handler_get_type:
+ * bonobo_ui_handler_get_type:
  *
- * Returns: the GtkType corresponding to the GnomeUIHandler class.
+ * Returns: the GtkType corresponding to the BonoboUIHandler class.
  */
 GtkType
-gnome_ui_handler_get_type (void)
+bonobo_ui_handler_get_type (void)
 {
 	static GtkType type = 0;
 
 	if (!type) {
 		GtkTypeInfo info = {
 			"IDL:GNOME/UIHandler:1.0",
-			sizeof (GnomeUIHandler),
-			sizeof (GnomeUIHandlerClass),
-			(GtkClassInitFunc) gnome_ui_handler_class_init,
-			(GtkObjectInitFunc) gnome_ui_handler_init,
+			sizeof (BonoboUIHandler),
+			sizeof (BonoboUIHandlerClass),
+			(GtkClassInitFunc) bonobo_ui_handler_class_init,
+			(GtkObjectInitFunc) bonobo_ui_handler_init,
 			NULL, /* reserved 1 */
 			NULL, /* reserved 2 */
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_object_get_type (), &info);
+		type = gtk_type_unique (bonobo_object_get_type (), &info);
 	}
 
 	return type;
 }
 
 /**
- * gnome_ui_handler_construct:
+ * bonobo_ui_handler_construct:
  */
-GnomeUIHandler *
-gnome_ui_handler_construct (GnomeUIHandler *ui_handler, GNOME_UIHandler corba_uihandler)
+BonoboUIHandler *
+bonobo_ui_handler_construct (BonoboUIHandler *ui_handler, Bonobo_UIHandler corba_uihandler)
 {
 	MenuItemLocalInternal *root_cb;
 	MenuItemInternal *root;
 	GList *l;
 
 	g_return_val_if_fail (ui_handler != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (ui_handler), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (ui_handler), NULL);
 	g_return_val_if_fail (corba_uihandler != CORBA_OBJECT_NIL, NULL);
 
-	gnome_object_construct (GNOME_OBJECT (ui_handler), corba_uihandler);
+	bonobo_object_construct (BONOBO_OBJECT (ui_handler), corba_uihandler);
 
-	ui_handler->top = g_new0 (GnomeUIHandlerTopLevelData, 1);
+	ui_handler->top = g_new0 (BonoboUIHandlerTopLevelData, 1);
 
 	/*
 	 * Initialize the hash tables.
@@ -677,7 +677,7 @@ gnome_ui_handler_construct (GnomeUIHandler *ui_handler, GNOME_UIHandler corba_ui
 	/* Create the toplevel entry. */
 	root = g_new0 (MenuItemInternal, 1);
 	root->uih = ui_handler;
-	root->uih_corba = gnome_object_corba_objref (GNOME_OBJECT (ui_handler));
+	root->uih_corba = bonobo_object_corba_objref (BONOBO_OBJECT (ui_handler));
 	root->sensitive = TRUE;
 	l = g_list_prepend (NULL, root);
 	g_hash_table_insert (ui_handler->top->path_to_menu_item, g_strdup ("/"), l);
@@ -692,89 +692,87 @@ gnome_ui_handler_construct (GnomeUIHandler *ui_handler, GNOME_UIHandler corba_ui
 
 
 /**
- * gnome_ui_handler_new:
+ * bonobo_ui_handler_new:
  */
-GnomeUIHandler *
-gnome_ui_handler_new (void)
+BonoboUIHandler *
+bonobo_ui_handler_new (void)
 {
-	GNOME_UIHandler corba_uihandler;
-	GnomeUIHandler *uih;
+	Bonobo_UIHandler corba_uihandler;
+	BonoboUIHandler *uih;
 	
-	uih = gtk_type_new (gnome_ui_handler_get_type ());
+	uih = gtk_type_new (bonobo_ui_handler_get_type ());
 
-	corba_uihandler = create_gnome_ui_handler (GNOME_OBJECT (uih));
+	corba_uihandler = create_bonobo_ui_handler (BONOBO_OBJECT (uih));
 	if (corba_uihandler == CORBA_OBJECT_NIL) {
 		gtk_object_destroy (GTK_OBJECT (uih));
 		return NULL;
 	}
 	
 
-	return gnome_ui_handler_construct (uih, corba_uihandler);
+	return bonobo_ui_handler_construct (uih, corba_uihandler);
 }
 
 /**
- * gnome_ui_handler_set_app:
+ * bonobo_ui_handler_set_app:
  *
  */
 void
-gnome_ui_handler_set_app (GnomeUIHandler *uih, GnomeApp *app)
+bonobo_ui_handler_set_app (BonoboUIHandler *uih, GnomeApp *app)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (app != NULL);
 	g_return_if_fail (GNOME_IS_APP (app));
 
 	uih->top->app = app;
 
 	if (uih->top->accelgroup == NULL && app->accel_group != NULL)
-		gnome_ui_handler_set_accelgroup (uih, app->accel_group);
+		bonobo_ui_handler_set_accelgroup (uih, app->accel_group);
 }
 
 static void
 impl_register_containee (PortableServer_Servant servant,
-			 GNOME_UIHandler        containee_uih,
+			 Bonobo_UIHandler        containee_uih,
 			 CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+
 	uih_toplevel_add_containee (uih, containee_uih);
 }
 
-static GNOME_UIHandler
+static Bonobo_UIHandler
 impl_get_toplevel (PortableServer_Servant servant,
 		   CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
+
+	g_return_val_if_fail (uih_toplevel_check_toplevel (uih), CORBA_OBJECT_NIL);
 
 	if (uih->top_level_uih == CORBA_OBJECT_NIL)
-		return CORBA_Object_duplicate (gnome_object_corba_objref (GNOME_OBJECT (uih)), ev);
+		return CORBA_Object_duplicate (bonobo_object_corba_objref (BONOBO_OBJECT (uih)), ev);
 
 	return CORBA_Object_duplicate (uih->top_level_uih, ev);
 }
 
 /**
- * gnome_ui_handler_set_container:
+ * bonobo_ui_handler_set_container:
  */
 void
-gnome_ui_handler_set_container (GnomeUIHandler *uih, GNOME_UIHandler container)
+bonobo_ui_handler_set_container (BonoboUIHandler *uih, Bonobo_UIHandler container)
 {
 	CORBA_Environment ev;
-	GNOME_UIHandler top_level;
+	Bonobo_UIHandler top_level;
 
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
 	/*
 	 * Unregister with our current top-level container, if we have one.
 	 */
-	gnome_ui_handler_unset_container (uih);
+	bonobo_ui_handler_unset_container (uih);
 
 	/*
 	 * Our container will hand us a pointer to the top-level
@@ -784,20 +782,20 @@ gnome_ui_handler_set_container (GnomeUIHandler *uih, GNOME_UIHandler container)
 	 */
 	CORBA_exception_init (&ev);
 
-	top_level = GNOME_UIHandler_get_toplevel (container, &ev);
+	top_level = Bonobo_UIHandler_get_toplevel (container, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION)
-		gnome_object_check_env (GNOME_OBJECT (uih), (CORBA_Object) container, &ev);
+		bonobo_object_check_env (BONOBO_OBJECT (uih), (CORBA_Object) container, &ev);
 	else {
 		uih->top_level_uih = CORBA_Object_duplicate (top_level, &ev);
 
 		/* Register with the top-level UIHandler. */
-		GNOME_UIHandler_register_containee (
+		Bonobo_UIHandler_register_containee (
 			uih->top_level_uih,
-			gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);
+			bonobo_object_corba_objref (BONOBO_OBJECT (uih)), &ev);
 
 		if (ev._major != CORBA_NO_EXCEPTION) {
-			gnome_object_check_env (
-				GNOME_OBJECT (uih),
+			bonobo_object_check_env (
+				BONOBO_OBJECT (uih),
 				(CORBA_Object) uih->top_level_uih, &ev);
 		}
 
@@ -806,15 +804,15 @@ gnome_ui_handler_set_container (GnomeUIHandler *uih, GNOME_UIHandler container)
 }
 
 /**
- * gnome_ui_handler_uset_container:
+ * bonobo_ui_handler_uset_container:
  */
 void
-gnome_ui_handler_unset_container (GnomeUIHandler *uih)
+bonobo_ui_handler_unset_container (BonoboUIHandler *uih)
 {
 	CORBA_Environment ev;
 
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 
 	CORBA_exception_init (&ev);
 
@@ -823,13 +821,13 @@ gnome_ui_handler_unset_container (GnomeUIHandler *uih)
 	 */
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
 
-		GNOME_UIHandler_unregister_containee (
+		Bonobo_UIHandler_unregister_containee (
 			uih->top_level_uih,
-			gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);
+			bonobo_object_corba_objref (BONOBO_OBJECT (uih)), &ev);
 
 		if (ev._major != CORBA_NO_EXCEPTION) {
-			gnome_object_check_env (
-				GNOME_OBJECT (uih),
+			bonobo_object_check_env (
+				BONOBO_OBJECT (uih),
 				(CORBA_Object) uih->top_level_uih, &ev);
 		}
 		
@@ -844,12 +842,12 @@ gnome_ui_handler_unset_container (GnomeUIHandler *uih)
 }
 
 static void
-uih_toplevel_add_containee (GnomeUIHandler *uih, GNOME_UIHandler containee)
+uih_toplevel_add_containee (BonoboUIHandler *uih, Bonobo_UIHandler containee)
 {
 	CORBA_Environment ev;
 
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (containee != CORBA_OBJECT_NIL);
 
 	CORBA_exception_init (&ev);
@@ -858,13 +856,13 @@ uih_toplevel_add_containee (GnomeUIHandler *uih, GNOME_UIHandler containee)
 }
 
 typedef struct {
-	GnomeUIHandler *uih;
-	GNOME_UIHandler containee;
+	BonoboUIHandler *uih;
+	Bonobo_UIHandler containee;
 	GList *removal_list;
 } removal_closure_t;
 
 /*
- * This is a helper function used by gnome_ui_handler_remove_containee
+ * This is a helper function used by bonobo_ui_handler_remove_containee
  * to find all of the menu items associated with a given containee.
  */
 static void
@@ -952,10 +950,10 @@ toolbar_toplevel_prune_compare_function (gconstpointer a, gconstpointer b)
 }
 
 static void
-uih_toplevel_unregister_containee (GnomeUIHandler *uih, GNOME_UIHandler containee)
+uih_toplevel_unregister_containee (BonoboUIHandler *uih, Bonobo_UIHandler containee)
 {
 	removal_closure_t *closure;
-	GNOME_UIHandler remove_me;
+	Bonobo_UIHandler remove_me;
 	CORBA_Environment ev;
 	GList *curr;
 
@@ -966,7 +964,7 @@ uih_toplevel_unregister_containee (GnomeUIHandler *uih, GNOME_UIHandler containe
 	for (curr = uih->top->containee_uihs; curr != NULL; curr = curr->next) {
 
 		CORBA_exception_init (&ev);
-		if (CORBA_Object_is_equivalent ((GNOME_UIHandler) curr->data, containee, &ev)) {
+		if (CORBA_Object_is_equivalent ((Bonobo_UIHandler) curr->data, containee, &ev)) {
 			remove_me = curr->data;
 			CORBA_exception_free (&ev);
 			break;
@@ -1039,43 +1037,39 @@ uih_toplevel_unregister_containee (GnomeUIHandler *uih, GNOME_UIHandler containe
 }
 
 static void
-uih_remote_unregister_containee (GnomeUIHandler *uih, GNOME_UIHandler containee)
+uih_remote_unregister_containee (BonoboUIHandler *uih, Bonobo_UIHandler containee)
 {
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_unregister_containee (uih->top_level_uih, containee, &ev);
+	Bonobo_UIHandler_unregister_containee (uih->top_level_uih, containee, &ev);
 
-	gnome_object_check_env (GNOME_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
+	bonobo_object_check_env (BONOBO_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
 	
 	CORBA_exception_free (&ev);
 }
 
 static void
 impl_unregister_containee (PortableServer_Servant servant,
-			   GNOME_UIHandler containee_uih,
+			   Bonobo_UIHandler containee_uih,
 			   CORBA_Environment *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+
 	uih_toplevel_unregister_containee (uih, containee_uih);
 }
 
 /**
- * gnome_ui_handler_remove_containee:
+ * bonobo_ui_handler_remove_containee:
  */
 void
-gnome_ui_handler_remove_containee (GnomeUIHandler *uih, GNOME_UIHandler containee)
+bonobo_ui_handler_remove_containee (BonoboUIHandler *uih, Bonobo_UIHandler containee)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (containee != CORBA_OBJECT_NIL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
@@ -1087,25 +1081,25 @@ gnome_ui_handler_remove_containee (GnomeUIHandler *uih, GNOME_UIHandler containe
 }
 
 /**
- * gnome_ui_handler_set_accelgroup:
+ * bonobo_ui_handler_set_accelgroup:
  */
 void
-gnome_ui_handler_set_accelgroup (GnomeUIHandler *uih, GtkAccelGroup *accelgroup)
+bonobo_ui_handler_set_accelgroup (BonoboUIHandler *uih, GtkAccelGroup *accelgroup)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 
 	uih->top->accelgroup = accelgroup;
 }
 
 /**
- * gnome_ui_handler_get_accelgroup:
+ * bonobo_ui_handler_get_accelgroup:
  */
 GtkAccelGroup *
-gnome_ui_handler_get_accelgroup (GnomeUIHandler *uih)
+bonobo_ui_handler_get_accelgroup (BonoboUIHandler *uih)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 
 	return uih->top->accelgroup;
 }
@@ -1184,7 +1178,7 @@ path_unescape_forward_slashes (char *str)
  * The path-building routine.
  */
 char *
-gnome_ui_handler_build_path (char *comp1, ...)
+bonobo_ui_handler_build_path (char *comp1, ...)
 {
 	char *path;
 	char *path_component;
@@ -1339,7 +1333,7 @@ path_get_parent (const char *path)
 } 
 
 static GtkWidget *
-uih_toplevel_create_pixmap (GtkWidget *window, GnomeUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
+uih_toplevel_create_pixmap (GtkWidget *window, BonoboUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
 {
 	GtkWidget *pixmap;
 	char *name;
@@ -1347,14 +1341,14 @@ uih_toplevel_create_pixmap (GtkWidget *window, GnomeUIHandlerPixmapType pixmap_t
 	pixmap = NULL;
 
 	switch (pixmap_type) {
-	case GNOME_UI_HANDLER_PIXMAP_NONE:
+	case BONOBO_UI_HANDLER_PIXMAP_NONE:
 		break;
 
-	case GNOME_UI_HANDLER_PIXMAP_STOCK:
+	case BONOBO_UI_HANDLER_PIXMAP_STOCK:
 		pixmap = gnome_stock_pixmap_widget (window, pixmap_info);
 		break;
 
-	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
+	case BONOBO_UI_HANDLER_PIXMAP_FILENAME:
 		name = gnome_pixmap_file (pixmap_info);
 
 		if (name == NULL)
@@ -1367,13 +1361,13 @@ uih_toplevel_create_pixmap (GtkWidget *window, GnomeUIHandlerPixmapType pixmap_t
 		g_free (name);
 		break;
 
-	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
 		if (pixmap_info != NULL)
 			pixmap = gnome_pixmap_new_from_xpm_d (pixmap_info);
 		break;
 
-	case GNOME_UI_HANDLER_PIXMAP_RGB_DATA:
-	case GNOME_UI_HANDLER_PIXMAP_RGBA_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
 		g_warning ("Unsupported pixmap type (RGB[A]_DATA)\n");
 		break;
 
@@ -1386,20 +1380,20 @@ uih_toplevel_create_pixmap (GtkWidget *window, GnomeUIHandlerPixmapType pixmap_t
 }
 
 static void
-pixmap_free_data (GnomeUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
+pixmap_free_data (BonoboUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
 {
 	int num_lines, i;
 
 	switch (pixmap_type) {
-	case GNOME_UI_HANDLER_PIXMAP_NONE:
+	case BONOBO_UI_HANDLER_PIXMAP_NONE:
 		break;
 
-	case GNOME_UI_HANDLER_PIXMAP_STOCK:
-	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
+	case BONOBO_UI_HANDLER_PIXMAP_STOCK:
+	case BONOBO_UI_HANDLER_PIXMAP_FILENAME:
 		g_free (pixmap_info);
 		break;
 
-	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
 		pixmap_xpm_get_length (pixmap_info, &num_lines);
 
 		for (i = 0; i < num_lines; i ++)
@@ -1408,8 +1402,8 @@ pixmap_free_data (GnomeUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
 		g_free (pixmap_info);
 		break;
 
-	case GNOME_UI_HANDLER_PIXMAP_RGB_DATA:
-	case GNOME_UI_HANDLER_PIXMAP_RGBA_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
 		g_warning ("Unsupported pixmap type (RGB[A]_DATA)\n");
 		break;
 
@@ -1420,19 +1414,19 @@ pixmap_free_data (GnomeUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
 }
 
 static gpointer 
-pixmap_copy_data (GnomeUIHandlerPixmapType pixmap_type, const gconstpointer pixmap_info)
+pixmap_copy_data (BonoboUIHandlerPixmapType pixmap_type, const gconstpointer pixmap_info)
 {
 	switch (pixmap_type) {
-	case GNOME_UI_HANDLER_PIXMAP_NONE:
+	case BONOBO_UI_HANDLER_PIXMAP_NONE:
 		return NULL;
 
-	case GNOME_UI_HANDLER_PIXMAP_STOCK:
+	case BONOBO_UI_HANDLER_PIXMAP_STOCK:
 		return g_strdup ((char *) pixmap_info);
 
-	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
+	case BONOBO_UI_HANDLER_PIXMAP_FILENAME:
 		return g_strdup ((char *) pixmap_info);
 
-	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
 		return pixmap_xpm_copy_data (pixmap_info);
 
 	default:
@@ -1441,48 +1435,48 @@ pixmap_copy_data (GnomeUIHandlerPixmapType pixmap_type, const gconstpointer pixm
 	}
 }
 
-static GNOME_UIHandler_PixmapType
-pixmap_type_to_corba (GnomeUIHandlerPixmapType type)
+static Bonobo_UIHandler_PixmapType
+pixmap_type_to_corba (BonoboUIHandlerPixmapType type)
 {
 	switch (type) {
-	case GNOME_UI_HANDLER_PIXMAP_NONE:
-		return GNOME_UIHandler_PixmapTypeNone;
-	case GNOME_UI_HANDLER_PIXMAP_STOCK:
-		return GNOME_UIHandler_PixmapTypeStock;
-	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
-		return GNOME_UIHandler_PixmapTypeFilename;
-	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
-		return GNOME_UIHandler_PixmapTypeXPMData;
-	case GNOME_UI_HANDLER_PIXMAP_RGB_DATA:
-		return GNOME_UIHandler_PixmapTypeRGBData;
-	case GNOME_UI_HANDLER_PIXMAP_RGBA_DATA:
-		return GNOME_UIHandler_PixmapTypeRGBAData;
+	case BONOBO_UI_HANDLER_PIXMAP_NONE:
+		return Bonobo_UIHandler_PixmapTypeNone;
+	case BONOBO_UI_HANDLER_PIXMAP_STOCK:
+		return Bonobo_UIHandler_PixmapTypeStock;
+	case BONOBO_UI_HANDLER_PIXMAP_FILENAME:
+		return Bonobo_UIHandler_PixmapTypeFilename;
+	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
+		return Bonobo_UIHandler_PixmapTypeXPMData;
+	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
+		return Bonobo_UIHandler_PixmapTypeRGBData;
+	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
+		return Bonobo_UIHandler_PixmapTypeRGBAData;
 	default:
 		g_warning ("pixmap_type_to_corba: Unknown pixmap type [%d]!\n", (int) type);
-		return GNOME_UIHandler_PixmapTypeNone;
+		return Bonobo_UIHandler_PixmapTypeNone;
 	}
 }
 
 
-static GnomeUIHandlerPixmapType
-pixmap_corba_to_type (GNOME_UIHandler_PixmapType type)
+static BonoboUIHandlerPixmapType
+pixmap_corba_to_type (Bonobo_UIHandler_PixmapType type)
 {
 	switch (type) {
-	case GNOME_UIHandler_PixmapTypeNone:
-		return GNOME_UI_HANDLER_PIXMAP_NONE;
-	case GNOME_UIHandler_PixmapTypeStock:
-		return GNOME_UI_HANDLER_PIXMAP_STOCK;
-	case GNOME_UIHandler_PixmapTypeFilename:
-		return GNOME_UI_HANDLER_PIXMAP_FILENAME;
-	case GNOME_UIHandler_PixmapTypeXPMData:
-		return GNOME_UI_HANDLER_PIXMAP_XPM_DATA;
-	case GNOME_UIHandler_PixmapTypeRGBData:
-		return GNOME_UI_HANDLER_PIXMAP_RGB_DATA;
-	case GNOME_UIHandler_PixmapTypeRGBAData:
-		return GNOME_UI_HANDLER_PIXMAP_RGBA_DATA;
+	case Bonobo_UIHandler_PixmapTypeNone:
+		return BONOBO_UI_HANDLER_PIXMAP_NONE;
+	case Bonobo_UIHandler_PixmapTypeStock:
+		return BONOBO_UI_HANDLER_PIXMAP_STOCK;
+	case Bonobo_UIHandler_PixmapTypeFilename:
+		return BONOBO_UI_HANDLER_PIXMAP_FILENAME;
+	case Bonobo_UIHandler_PixmapTypeXPMData:
+		return BONOBO_UI_HANDLER_PIXMAP_XPM_DATA;
+	case Bonobo_UIHandler_PixmapTypeRGBData:
+		return BONOBO_UI_HANDLER_PIXMAP_RGB_DATA;
+	case Bonobo_UIHandler_PixmapTypeRGBAData:
+		return BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA;
 	default:
 		g_warning ("pixmap_corba_to_type: Unknown pixmap type [%d]!\n", (int) type);
-		return GNOME_UI_HANDLER_PIXMAP_NONE;
+		return BONOBO_UI_HANDLER_PIXMAP_NONE;
 	}
 }
 
@@ -1607,36 +1601,36 @@ pixmap_xpm_unflatten (char *src, int length)
 	return unflattened;
 }
 
-static GNOME_UIHandler_iobuf *
-pixmap_data_to_corba (GnomeUIHandlerPixmapType type, gpointer data)
+static Bonobo_UIHandler_iobuf *
+pixmap_data_to_corba (BonoboUIHandlerPixmapType type, gpointer data)
 {
-	GNOME_UIHandler_iobuf *buffer;
+	Bonobo_UIHandler_iobuf *buffer;
 	gpointer temp_xpm_buffer;
 
-	buffer = GNOME_UIHandler_iobuf__alloc ();
+	buffer = Bonobo_UIHandler_iobuf__alloc ();
 	CORBA_sequence_set_release (buffer, TRUE);
 
 	switch (type) {
-	case GNOME_UI_HANDLER_PIXMAP_NONE:
+	case BONOBO_UI_HANDLER_PIXMAP_NONE:
 		buffer->_length = 1;
 		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (1);
 		return buffer;
 
-	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
-	case GNOME_UI_HANDLER_PIXMAP_STOCK:
+	case BONOBO_UI_HANDLER_PIXMAP_FILENAME:
+	case BONOBO_UI_HANDLER_PIXMAP_STOCK:
 		buffer->_length = strlen ((char *) data) + 1;
 		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (strlen ((char *) data));
 		strcpy (buffer->_buffer, (char *) data);
 		return buffer;
 
-	case GNOME_UI_HANDLER_PIXMAP_RGB_DATA:
-	case GNOME_UI_HANDLER_PIXMAP_RGBA_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
 		g_warning ("pixmap_data_to_corba: Pixmap type (RGB[A]) not yet supported!\n");
 		buffer->_length = 1;
 		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (1);
 		return buffer;
 
-	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
 		temp_xpm_buffer = pixmap_xpm_flatten (data, &(buffer->_length));
 		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (buffer->_length);
 		memcpy (buffer->_buffer, temp_xpm_buffer, buffer->_length);
@@ -1654,28 +1648,28 @@ pixmap_data_to_corba (GnomeUIHandlerPixmapType type, gpointer data)
 }
 
 static gpointer
-pixmap_corba_to_data (GNOME_UIHandler_PixmapType   corba_pixmap_type,
-		      const GNOME_UIHandler_iobuf *corba_pixmap_data)
+pixmap_corba_to_data (Bonobo_UIHandler_PixmapType   corba_pixmap_type,
+		      const Bonobo_UIHandler_iobuf *corba_pixmap_data)
 {
-	GnomeUIHandlerPixmapType type;
+	BonoboUIHandlerPixmapType type;
 	gpointer pixmap_data;
 
 	type = pixmap_corba_to_type (corba_pixmap_type);
 
 	switch (type) {
-	case GNOME_UI_HANDLER_PIXMAP_NONE:
+	case BONOBO_UI_HANDLER_PIXMAP_NONE:
 		return NULL;
 
-	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
-	case GNOME_UI_HANDLER_PIXMAP_STOCK:
+	case BONOBO_UI_HANDLER_PIXMAP_FILENAME:
+	case BONOBO_UI_HANDLER_PIXMAP_STOCK:
 		return g_strdup (corba_pixmap_data->_buffer);
 
-	case GNOME_UI_HANDLER_PIXMAP_RGB_DATA:
-	case GNOME_UI_HANDLER_PIXMAP_RGBA_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_RGB_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_RGBA_DATA:
 		g_warning ("pixmap_corba_to_data: Pixmap type (RGB[A]) not yet supported!\n");
 		return NULL;
 
-	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
+	case BONOBO_UI_HANDLER_PIXMAP_XPM_DATA:
 		pixmap_data = pixmap_xpm_unflatten (corba_pixmap_data->_buffer,
 						    corba_pixmap_data->_length);
 		return pixmap_data;
@@ -1686,21 +1680,21 @@ pixmap_corba_to_data (GNOME_UIHandler_PixmapType   corba_pixmap_type,
 	}
 }
 
-static GnomeUIHandlerPixmapType
+static BonoboUIHandlerPixmapType
 uiinfo_pixmap_type_to_uih (GnomeUIPixmapType ui_type)
 {
 	switch (ui_type) {
 	case GNOME_APP_PIXMAP_NONE:
-		return GNOME_UI_HANDLER_PIXMAP_NONE;
+		return BONOBO_UI_HANDLER_PIXMAP_NONE;
 	case GNOME_APP_PIXMAP_STOCK:
-		return GNOME_UI_HANDLER_PIXMAP_STOCK;
+		return BONOBO_UI_HANDLER_PIXMAP_STOCK;
 	case GNOME_APP_PIXMAP_FILENAME:
-		return GNOME_UI_HANDLER_PIXMAP_FILENAME;
+		return BONOBO_UI_HANDLER_PIXMAP_FILENAME;
 	case GNOME_APP_PIXMAP_DATA:
-		return GNOME_UI_HANDLER_PIXMAP_XPM_DATA;
+		return BONOBO_UI_HANDLER_PIXMAP_XPM_DATA;
 	default:
 		g_warning ("Unknown GnomeUIPixmapType: %d\n", ui_type);
-		return GNOME_UI_HANDLER_PIXMAP_NONE;
+		return BONOBO_UI_HANDLER_PIXMAP_NONE;
 	}
 }
 
@@ -1736,19 +1730,19 @@ uiinfo_pixmap_type_to_uih (GnomeUIPixmapType ui_type)
  * 
  * Return value: 
  **/
-static GnomeUIHandlerMenuItem *
-menu_make_item (const char *path, GnomeUIHandlerMenuItemType type,
+static BonoboUIHandlerMenuItem *
+menu_make_item (const char *path, BonoboUIHandlerMenuItemType type,
 		const char *label, const char *hint,
-		int pos, GnomeUIHandlerPixmapType pixmap_type,
+		int pos, BonoboUIHandlerPixmapType pixmap_type,
 		gpointer pixmap_data,
 		guint accelerator_key, GdkModifierType ac_mods,
-		GnomeUIHandlerCallbackFunc callback,
+		BonoboUIHandlerCallbackFunc callback,
 		gpointer callback_data)
 
 {
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandlerMenuItem *item;
 
-	item = g_new0 (GnomeUIHandlerMenuItem, 1);
+	item = g_new0 (BonoboUIHandlerMenuItem, 1);
 	item->path        = path;
 	item->type        = type;
 	item->label       = label;
@@ -1764,12 +1758,12 @@ menu_make_item (const char *path, GnomeUIHandlerMenuItemType type,
 	return item;
 }
 
-static GnomeUIHandlerMenuItem *
-menu_copy_item (GnomeUIHandlerMenuItem *item)
+static BonoboUIHandlerMenuItem *
+menu_copy_item (BonoboUIHandlerMenuItem *item)
 {
-	GnomeUIHandlerMenuItem *copy;	
+	BonoboUIHandlerMenuItem *copy;	
 
-	copy = g_new0 (GnomeUIHandlerMenuItem, 1);
+	copy = g_new0 (BonoboUIHandlerMenuItem, 1);
 
 	copy->path = COPY_STRING (item->path);
 	copy->type = item->type;
@@ -1790,7 +1784,7 @@ menu_copy_item (GnomeUIHandlerMenuItem *item)
 }
 
 static void
-menu_free_data (GnomeUIHandlerMenuItem *item)
+menu_free_data (BonoboUIHandlerMenuItem *item)
 {
 	g_free (item->path);
 	item->path = NULL;
@@ -1805,85 +1799,85 @@ menu_free_data (GnomeUIHandlerMenuItem *item)
 }
 
 static void
-menu_free (GnomeUIHandlerMenuItem *item)
+menu_free (BonoboUIHandlerMenuItem *item)
 {
 	menu_free_data (item);
 	g_free (item);
 }
 
-static GNOME_UIHandler_MenuType
-menu_type_to_corba (GnomeUIHandlerMenuItemType type)
+static Bonobo_UIHandler_MenuType
+menu_type_to_corba (BonoboUIHandlerMenuItemType type)
 {
 	switch (type) {
 
-	case GNOME_UI_HANDLER_MENU_END:
+	case BONOBO_UI_HANDLER_MENU_END:
 		g_warning ("Passing MenuTypeEnd through CORBA!\n");
-		return GNOME_UIHandler_MenuTypeEnd;
+		return Bonobo_UIHandler_MenuTypeEnd;
 
-	case GNOME_UI_HANDLER_MENU_ITEM:
-		return GNOME_UIHandler_MenuTypeItem;
+	case BONOBO_UI_HANDLER_MENU_ITEM:
+		return Bonobo_UIHandler_MenuTypeItem;
 
-	case GNOME_UI_HANDLER_MENU_SUBTREE:
-		return GNOME_UIHandler_MenuTypeSubtree;
+	case BONOBO_UI_HANDLER_MENU_SUBTREE:
+		return Bonobo_UIHandler_MenuTypeSubtree;
 
-	case GNOME_UI_HANDLER_MENU_RADIOITEM:
-		return GNOME_UIHandler_MenuTypeRadioItem;
+	case BONOBO_UI_HANDLER_MENU_RADIOITEM:
+		return Bonobo_UIHandler_MenuTypeRadioItem;
 
-	case GNOME_UI_HANDLER_MENU_RADIOGROUP:
-		return GNOME_UIHandler_MenuTypeRadioGroup;
+	case BONOBO_UI_HANDLER_MENU_RADIOGROUP:
+		return Bonobo_UIHandler_MenuTypeRadioGroup;
 
-	case GNOME_UI_HANDLER_MENU_TOGGLEITEM:
-		return GNOME_UIHandler_MenuTypeToggleItem;
+	case BONOBO_UI_HANDLER_MENU_TOGGLEITEM:
+		return Bonobo_UIHandler_MenuTypeToggleItem;
 
-	case GNOME_UI_HANDLER_MENU_SEPARATOR:
-		return GNOME_UIHandler_MenuTypeSeparator;
+	case BONOBO_UI_HANDLER_MENU_SEPARATOR:
+		return Bonobo_UIHandler_MenuTypeSeparator;
 
 	default:
-		g_warning ("Unknown GnomeUIHandlerMenuItemType %d!\n", (int) type);
-		return GNOME_UIHandler_MenuTypeItem;
+		g_warning ("Unknown BonoboUIHandlerMenuItemType %d!\n", (int) type);
+		return Bonobo_UIHandler_MenuTypeItem;
 		
 	}
 }
 
-static GnomeUIHandlerMenuItemType
-menu_corba_to_type (GNOME_UIHandler_MenuType type)
+static BonoboUIHandlerMenuItemType
+menu_corba_to_type (Bonobo_UIHandler_MenuType type)
 {
 	switch (type) {
-	case GNOME_UIHandler_MenuTypeEnd:
+	case Bonobo_UIHandler_MenuTypeEnd:
 		g_warning ("Warning: Getting MenuTypeEnd from CORBA!");
-		return GNOME_UI_HANDLER_MENU_END;
+		return BONOBO_UI_HANDLER_MENU_END;
 
-	case GNOME_UIHandler_MenuTypeItem:
-		return GNOME_UI_HANDLER_MENU_ITEM;
+	case Bonobo_UIHandler_MenuTypeItem:
+		return BONOBO_UI_HANDLER_MENU_ITEM;
 
-	case GNOME_UIHandler_MenuTypeSubtree:
-		return GNOME_UI_HANDLER_MENU_SUBTREE;
+	case Bonobo_UIHandler_MenuTypeSubtree:
+		return BONOBO_UI_HANDLER_MENU_SUBTREE;
 
-	case GNOME_UIHandler_MenuTypeRadioItem:
-		return GNOME_UI_HANDLER_MENU_RADIOITEM;
+	case Bonobo_UIHandler_MenuTypeRadioItem:
+		return BONOBO_UI_HANDLER_MENU_RADIOITEM;
 
-	case GNOME_UIHandler_MenuTypeRadioGroup:
-		return GNOME_UI_HANDLER_MENU_RADIOGROUP;
+	case Bonobo_UIHandler_MenuTypeRadioGroup:
+		return BONOBO_UI_HANDLER_MENU_RADIOGROUP;
 
-	case GNOME_UIHandler_MenuTypeToggleItem:
-		return GNOME_UI_HANDLER_MENU_TOGGLEITEM;
+	case Bonobo_UIHandler_MenuTypeToggleItem:
+		return BONOBO_UI_HANDLER_MENU_TOGGLEITEM;
 
-	case GNOME_UIHandler_MenuTypeSeparator:
-		return GNOME_UI_HANDLER_MENU_SEPARATOR;
+	case Bonobo_UIHandler_MenuTypeSeparator:
+		return BONOBO_UI_HANDLER_MENU_SEPARATOR;
 	default:
-		g_warning ("Unknown GNOME_UIHandler menu type %d!\n", (int) type);
-		return GNOME_UI_HANDLER_MENU_ITEM;
+		g_warning ("Unknown Bonobo_UIHandler menu type %d!\n", (int) type);
+		return BONOBO_UI_HANDLER_MENU_ITEM;
 		
 	}
 }
 /**
- * gnome_ui_handler_create_menubar:
+ * bonobo_ui_handler_create_menubar:
  */
 void
-gnome_ui_handler_create_menubar (GnomeUIHandler *uih)
+bonobo_ui_handler_create_menubar (BonoboUIHandler *uih)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (uih->top->app != NULL);
 	g_return_if_fail (GNOME_IS_APP (uih->top->app));
 
@@ -1893,13 +1887,13 @@ gnome_ui_handler_create_menubar (GnomeUIHandler *uih)
 }
 
 /**
- * gnome_ui_handler_set_menubar:
+ * bonobo_ui_handler_set_menubar:
  */
 void
-gnome_ui_handler_set_menubar (GnomeUIHandler *uih, GtkWidget *menubar)
+bonobo_ui_handler_set_menubar (BonoboUIHandler *uih, GtkWidget *menubar)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (menubar);
 	g_return_if_fail (GTK_IS_MENU_BAR (menubar));
 
@@ -1907,25 +1901,25 @@ gnome_ui_handler_set_menubar (GnomeUIHandler *uih, GtkWidget *menubar)
 }
 
 /**
- * gnome_ui_handler_get_menubar:
+ * bonobo_ui_handler_get_menubar:
  */
 GtkWidget *
-gnome_ui_handler_get_menubar (GnomeUIHandler *uih)
+bonobo_ui_handler_get_menubar (BonoboUIHandler *uih)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 
 	return uih->top->menubar;
 }
 
 /**
- * gnome_ui_handler_create_popup_menu:
+ * bonobo_ui_handler_create_popup_menu:
  */
 void
-gnome_ui_handler_create_popup_menu (GnomeUIHandler *uih)
+bonobo_ui_handler_create_popup_menu (BonoboUIHandler *uih)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 
 	uih->top->menubar = gtk_menu_new ();
 }
@@ -1937,13 +1931,13 @@ menu_toplevel_popup_deactivated (GtkMenuShell *menu_shell, gpointer data)
 }
 
 /**
- * gnome_ui_handler_do_popup_menu:
+ * bonobo_ui_handler_do_popup_menu:
  */
 void
-gnome_ui_handler_do_popup_menu (GnomeUIHandler *uih)
+bonobo_ui_handler_do_popup_menu (BonoboUIHandler *uih)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 
 	gtk_menu_popup (GTK_MENU (uih->top->menubar), NULL, NULL, NULL, NULL, 0,
 			GDK_CURRENT_TIME);
@@ -1956,13 +1950,13 @@ gnome_ui_handler_do_popup_menu (GnomeUIHandler *uih)
 }
 
 /**
- * gnome_ui_handler_set_statusbar:
+ * bonobo_ui_handler_set_statusbar:
  */
 void
-gnome_ui_handler_set_statusbar (GnomeUIHandler *uih, GtkWidget *statusbar)
+bonobo_ui_handler_set_statusbar (BonoboUIHandler *uih, GtkWidget *statusbar)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (statusbar != NULL);
 	g_return_if_fail (GTK_IS_STATUSBAR (statusbar) || GNOME_IS_APPBAR (statusbar));
 
@@ -1970,13 +1964,13 @@ gnome_ui_handler_set_statusbar (GnomeUIHandler *uih, GtkWidget *statusbar)
 }
 
 /**
- * gnome_ui_handler_get_statusbar:
+ * bonobo_ui_handler_get_statusbar:
  */
 GtkWidget *
-gnome_ui_handler_get_statusbar (GnomeUIHandler *uih)
+bonobo_ui_handler_get_statusbar (BonoboUIHandler *uih)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 
 	return uih->top->statusbar;
 }
@@ -2073,12 +2067,12 @@ uih_local_do_path (const char *parent_path, const char *item_label,
 
 /*
  * This function checks to make sure that the path of a given
- * GnomeUIHandlerMenuItem is consistent with the path of its parent.
+ * BonoboUIHandlerMenuItem is consistent with the path of its parent.
  * If the item does not have a path, one is created for it.  If the
  * path is not consistent with the parent's path, an error is printed
  */
 static void
-menu_local_do_path (const char *parent_path, GnomeUIHandlerMenuItem *item)
+menu_local_do_path (const char *parent_path, BonoboUIHandlerMenuItem *item)
 {
 	uih_local_do_path (parent_path, item->label, & item->path);
 }
@@ -2090,7 +2084,7 @@ menu_local_do_path (const char *parent_path, GnomeUIHandlerMenuItem *item)
  * own menu items.
  */
 static MenuItemLocalInternal *
-menu_local_get_item (GnomeUIHandler *uih, const char *path)
+menu_local_get_item (BonoboUIHandler *uih, const char *path)
 {
 	GList *l;
 
@@ -2102,7 +2096,7 @@ menu_local_get_item (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_local_remove_parent_entry (GnomeUIHandler *uih, const char *path,
+menu_local_remove_parent_entry (BonoboUIHandler *uih, const char *path,
 				gboolean warn)
 {
 	MenuItemLocalInternal *parent;
@@ -2131,7 +2125,7 @@ menu_local_remove_parent_entry (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-menu_local_add_parent_entry (GnomeUIHandler *uih, const char *path)
+menu_local_add_parent_entry (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemLocalInternal *parent_internal_cb;
 	char *parent_path;
@@ -2154,8 +2148,8 @@ menu_local_add_parent_entry (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_local_create_item (GnomeUIHandler *uih, const char *parent_path,
-			GnomeUIHandlerMenuItem *item)
+menu_local_create_item (BonoboUIHandler *uih, const char *parent_path,
+			BonoboUIHandlerMenuItem *item)
 {
 	MenuItemLocalInternal *internal_cb;
 	GList *l, *new_list;
@@ -2191,7 +2185,7 @@ menu_local_create_item (GnomeUIHandler *uih, const char *parent_path,
 }
 
 static void
-menu_local_remove_item (GnomeUIHandler *uih, const char *path)
+menu_local_remove_item (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemLocalInternal *internal_cb;
 	GList *l, *new_list, *curr;
@@ -2240,7 +2234,7 @@ menu_local_remove_item (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_local_remove_item_recursive (GnomeUIHandler *uih, const char *path)
+menu_local_remove_item_recursive (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemLocalInternal *internal_cb;
 
@@ -2269,7 +2263,7 @@ menu_local_remove_item_recursive (GnomeUIHandler *uih, const char *path)
  * given menu path string.
  */
 static MenuItemInternal *
-menu_toplevel_get_item (GnomeUIHandler *uih, const char *path)
+menu_toplevel_get_item (BonoboUIHandler *uih, const char *path)
 {
 	GList *l;
 
@@ -2282,8 +2276,8 @@ menu_toplevel_get_item (GnomeUIHandler *uih, const char *path)
 }
 
 static MenuItemInternal *
-menu_toplevel_get_item_for_containee (GnomeUIHandler *uih, const char *path,
-				      GNOME_UIHandler containee_uih)
+menu_toplevel_get_item_for_containee (BonoboUIHandler *uih, const char *path,
+				      Bonobo_UIHandler containee_uih)
 {
 	GList *l, *curr;
 
@@ -2310,7 +2304,7 @@ menu_toplevel_get_item_for_containee (GnomeUIHandler *uih, const char *path,
 }
 
 static gboolean
-menu_toplevel_item_is_head (GnomeUIHandler *uih, MenuItemInternal *internal)
+menu_toplevel_item_is_head (BonoboUIHandler *uih, MenuItemInternal *internal)
 {
 	GList *l;
 
@@ -2323,7 +2317,7 @@ menu_toplevel_item_is_head (GnomeUIHandler *uih, MenuItemInternal *internal)
 }
 
 static gboolean
-uih_toplevel_check_toplevel (GnomeUIHandler *uih)
+uih_toplevel_check_toplevel (BonoboUIHandler *uih)
 {
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
 		g_warning ("CORBA method invoked on non-toplevel UIHandler!\n");
@@ -2334,7 +2328,7 @@ uih_toplevel_check_toplevel (GnomeUIHandler *uih)
 }
 
 static GtkWidget *
-menu_toplevel_get_widget (GnomeUIHandler *uih, const char *path)
+menu_toplevel_get_widget (BonoboUIHandler *uih, const char *path)
 {
 	return g_hash_table_lookup (uih->top->path_to_menu_widget, path);
 }
@@ -2345,7 +2339,7 @@ menu_toplevel_get_widget (GnomeUIHandler *uih, const char *path)
  * not a subtree path (or "/").
  */
 static GtkWidget *
-menu_toplevel_get_shell (GnomeUIHandler *uih, const char *path)
+menu_toplevel_get_shell (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 	char *parent_path;
@@ -2354,7 +2348,7 @@ menu_toplevel_get_shell (GnomeUIHandler *uih, const char *path)
 		return uih->top->menubar;
 
 	internal = menu_toplevel_get_item (uih, path);
-	if (internal->item->type == GNOME_UI_HANDLER_MENU_RADIOGROUP) {
+	if (internal->item->type == BONOBO_UI_HANDLER_MENU_RADIOGROUP) {
 		GtkMenuShell *menu_shell;
 		parent_path = path_get_parent (path);
 
@@ -2373,7 +2367,7 @@ menu_toplevel_get_shell (GnomeUIHandler *uih, const char *path)
  * appropriately.
  */
 static GtkWidget *
-menu_toplevel_create_label (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
+menu_toplevel_create_label (BonoboUIHandler *uih, BonoboUIHandlerMenuItem *item,
 			    GtkWidget *parent_menu_shell_widget, GtkWidget *menu_widget)
 {
 	GtkWidget *label;
@@ -2424,21 +2418,21 @@ menu_toplevel_create_label (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
  * This routine creates the GtkMenuItem widget for a menu item.
  */
 static GtkWidget *
-menu_toplevel_create_item_widget (GnomeUIHandler *uih, const char *parent_path,
-				  GnomeUIHandlerMenuItem *item)
+menu_toplevel_create_item_widget (BonoboUIHandler *uih, const char *parent_path,
+				  BonoboUIHandlerMenuItem *item)
 {
 	GtkWidget *menu_widget;
 	MenuItemInternal *rg;
 
 	switch (item->type) {
-	case GNOME_UI_HANDLER_MENU_ITEM:
-	case GNOME_UI_HANDLER_MENU_SUBTREE:
+	case BONOBO_UI_HANDLER_MENU_ITEM:
+	case BONOBO_UI_HANDLER_MENU_SUBTREE:
 
 		/*
 		 * Create a GtkMenuItem widget if it's a plain item.  If it contains
 		 * a pixmap, create a GtkPixmapMenuItem.
 		 */
-		if (item->pixmap_data != NULL && item->pixmap_type != GNOME_UI_HANDLER_PIXMAP_NONE) {
+		if (item->pixmap_data != NULL && item->pixmap_type != BONOBO_UI_HANDLER_PIXMAP_NONE) {
 			GtkWidget *pixmap;
 
 			menu_widget = gtk_pixmap_menu_item_new ();
@@ -2455,7 +2449,7 @@ menu_toplevel_create_item_widget (GnomeUIHandler *uih, const char *parent_path,
 
 		break;
 
-	case GNOME_UI_HANDLER_MENU_RADIOITEM:
+	case BONOBO_UI_HANDLER_MENU_RADIOITEM:
 		/*
 		 * The parent path should be the path to the radio
 		 * group lead item.
@@ -2476,7 +2470,7 @@ menu_toplevel_create_item_widget (GnomeUIHandler *uih, const char *parent_path,
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu_widget), FALSE);
 		break;
 
-	case GNOME_UI_HANDLER_MENU_TOGGLEITEM:
+	case BONOBO_UI_HANDLER_MENU_TOGGLEITEM:
 		menu_widget = gtk_check_menu_item_new ();
 
 		/*
@@ -2486,7 +2480,7 @@ menu_toplevel_create_item_widget (GnomeUIHandler *uih, const char *parent_path,
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu_widget), FALSE);
 		break;
 
-	case GNOME_UI_HANDLER_MENU_SEPARATOR:
+	case BONOBO_UI_HANDLER_MENU_SEPARATOR:
 
 		/*
 		 * A separator is just a plain menu item with its sensitivity
@@ -2496,12 +2490,12 @@ menu_toplevel_create_item_widget (GnomeUIHandler *uih, const char *parent_path,
 		gtk_widget_set_sensitive (menu_widget, FALSE);
 		break;
 
-	case GNOME_UI_HANDLER_MENU_RADIOGROUP:
+	case BONOBO_UI_HANDLER_MENU_RADIOGROUP:
 		g_assert_not_reached ();
 		return NULL;
 
 	default:
-		g_warning ("menu_toplevel_create_item_widget: Invalid GnomeUIHandlerMenuItemType %d\n",
+		g_warning ("menu_toplevel_create_item_widget: Invalid BonoboUIHandlerMenuItemType %d\n",
 			   (int) item->type);
 		return NULL;
 			
@@ -2546,8 +2540,8 @@ menu_toplevel_save_accels (gpointer data)
 }
 
 static void
-menu_toplevel_install_global_accelerators (GnomeUIHandler *uih,
-					   GnomeUIHandlerMenuItem *item,
+menu_toplevel_install_global_accelerators (BonoboUIHandler *uih,
+					   BonoboUIHandlerMenuItem *item,
 					   GtkWidget *menu_widget)
 {
 	static guint save_accels_id = 0;
@@ -2578,17 +2572,17 @@ menu_toplevel_connect_signal (GtkWidget *menu_widget, MenuItemInternal *internal
  * item's GTK widgets.
  */
 static void
-menu_toplevel_create_widgets (GnomeUIHandler *uih, const char *parent_path,
+menu_toplevel_create_widgets (BonoboUIHandler *uih, const char *parent_path,
 			      MenuItemInternal *internal)
 {
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandlerMenuItem *item;
 	GtkWidget *parent_menu_shell_widget;
 	GtkWidget *menu_widget;
 
 	item = internal->item;
 
 	/* No widgets to create for a radio group. */
-	if (item->type == GNOME_UI_HANDLER_MENU_RADIOGROUP)
+	if (item->type == BONOBO_UI_HANDLER_MENU_RADIOGROUP)
 		return;
 	
 	/*
@@ -2613,7 +2607,7 @@ menu_toplevel_create_widgets (GnomeUIHandler *uih, const char *parent_path,
 	/*
 	 * If it's a subtree, create the menu shell.
 	 */
-	if (item->type == GNOME_UI_HANDLER_MENU_SUBTREE) {
+	if (item->type == BONOBO_UI_HANDLER_MENU_SUBTREE) {
 		GtkMenu *menu;
 		GtkWidget *tearoff;
 
@@ -2664,14 +2658,14 @@ menu_toplevel_create_widgets (GnomeUIHandler *uih, const char *parent_path,
 	/*
 	 * Set the item's active state.
 	 */
-	if (internal->item->type == GNOME_UI_HANDLER_MENU_TOGGLEITEM)
+	if (internal->item->type == BONOBO_UI_HANDLER_MENU_TOGGLEITEM)
 		menu_toplevel_set_toggle_state_internal (uih, internal, internal->active);
-	else if (internal->item->type == GNOME_UI_HANDLER_MENU_RADIOITEM)
+	else if (internal->item->type == BONOBO_UI_HANDLER_MENU_RADIOITEM)
 		menu_toplevel_set_radio_state_internal (uih, internal, internal->active);
 }
 
 static void
-menu_toplevel_create_widgets_recursive (GnomeUIHandler *uih, MenuItemInternal *internal)
+menu_toplevel_create_widgets_recursive (BonoboUIHandler *uih, MenuItemInternal *internal)
 {
 	char *parent_path;
 	GList *curr;
@@ -2772,7 +2766,7 @@ menu_toplevel_remove_hint_from_statusbar (GtkWidget *menu_item, gpointer data)
 }
 
 static void
-menu_toplevel_create_hint (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item, GtkWidget *menu_item)
+menu_toplevel_create_hint (BonoboUIHandler *uih, BonoboUIHandlerMenuItem *item, GtkWidget *menu_item)
 {
 	char *old_hint;
 
@@ -2826,10 +2820,10 @@ menu_toplevel_item_activated (GtkWidget *menu_item, MenuItemInternal *internal)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_menu_activated (internal->uih_corba, internal->item->path, &ev);
+	Bonobo_UIHandler_menu_activated (internal->uih_corba, internal->item->path, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (internal->uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (internal->uih),
 			(CORBA_Object) internal->uih_corba, &ev);
 	}
 	
@@ -2843,7 +2837,7 @@ impl_menu_activated (PortableServer_Servant servant,
 		     const CORBA_char      *path,
 		     CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemLocalInternal *internal_cb;
 
 	internal_cb = menu_local_get_item (uih, path);
@@ -2864,7 +2858,7 @@ impl_menu_activated (PortableServer_Servant servant,
  * parent's list of children.
  */
 static void
-menu_toplevel_remove_parent_entry (GnomeUIHandler *uih, const char *path,
+menu_toplevel_remove_parent_entry (BonoboUIHandler *uih, const char *path,
 				   gboolean warn)
 {
 	MenuItemInternal *parent;
@@ -2913,7 +2907,7 @@ menu_toplevel_remove_parent_entry (GnomeUIHandler *uih, const char *path,
  * Adds an entry to an item's parent's list of children.
  */
 static void
-menu_toplevel_add_parent_entry (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item)
+menu_toplevel_add_parent_entry (BonoboUIHandler *uih, BonoboUIHandlerMenuItem *item)
 {
 	MenuItemInternal *parent;
 	char *parent_path;
@@ -2954,7 +2948,7 @@ menu_toplevel_add_parent_entry (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *ite
  * given menu item.
  */
 static MenuItemInternal *
-menu_toplevel_store_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, GnomeUIHandlerMenuItem *item)
+menu_toplevel_store_data (BonoboUIHandler *uih, Bonobo_UIHandler uih_corba, BonoboUIHandlerMenuItem *item)
 {
 	MenuItemInternal *internal;
 	CORBA_Environment ev;
@@ -3014,7 +3008,7 @@ menu_toplevel_store_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, GnomeU
 }
 
 static void
-menu_toplevel_override_notify (GnomeUIHandler *uih, const char *path)
+menu_toplevel_override_notify (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 	CORBA_Environment ev;
@@ -3024,10 +3018,10 @@ menu_toplevel_override_notify (GnomeUIHandler *uih, const char *path)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_menu_overridden (internal->uih_corba, path, &ev);
+	Bonobo_UIHandler_menu_overridden (internal->uih_corba, path, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (internal->uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (internal->uih),
 			(CORBA_Object) internal->uih_corba, &ev);
 	}
 
@@ -3035,7 +3029,7 @@ menu_toplevel_override_notify (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_toplevel_override_notify_recursive (GnomeUIHandler *uih, const char *path)
+menu_toplevel_override_notify_recursive (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 	GList *curr;
@@ -3059,7 +3053,7 @@ impl_menu_overridden (PortableServer_Servant servant,
 		      const CORBA_char      *path,
 		      CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemLocalInternal *internal_cb;
 
 	internal_cb = menu_local_get_item (uih, path);
@@ -3074,7 +3068,7 @@ impl_menu_overridden (PortableServer_Servant servant,
 }
 
 static void
-menu_toplevel_remove_widgets (GnomeUIHandler *uih, const char *path)
+menu_toplevel_remove_widgets (BonoboUIHandler *uih, const char *path)
 {
 	GtkWidget *menu_widget;
 	GtkWidget *menu_shell_widget;
@@ -3110,7 +3104,7 @@ menu_toplevel_remove_widgets (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_toplevel_remove_widgets_recursive (GnomeUIHandler *uih, const char *path)
+menu_toplevel_remove_widgets_recursive (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 
@@ -3139,7 +3133,7 @@ menu_toplevel_remove_widgets_recursive (GnomeUIHandler *uih, const char *path)
  * top-level UIHandler to the appropriate containee.
  */
 static void
-menu_toplevel_check_override (GnomeUIHandler *uih, const char *path)
+menu_toplevel_check_override (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 
@@ -3168,8 +3162,8 @@ menu_toplevel_check_override (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_toplevel_create_item (GnomeUIHandler *uih, const char *parent_path,
-			   GnomeUIHandlerMenuItem *item, GNOME_UIHandler uih_corba)
+menu_toplevel_create_item (BonoboUIHandler *uih, const char *parent_path,
+			   BonoboUIHandlerMenuItem *item, Bonobo_UIHandler uih_corba)
 {
 	MenuItemInternal *internal_data;
 
@@ -3180,7 +3174,7 @@ menu_toplevel_create_item (GnomeUIHandler *uih, const char *parent_path,
 	menu_toplevel_check_override (uih, item->path);
 
 	/*
-	 * Duplicate the GnomeUIHandlerMenuItem structure and store
+	 * Duplicate the BonoboUIHandlerMenuItem structure and store
 	 * an internal representation of the menu item.
 	 */
 	internal_data = menu_toplevel_store_data (uih, uih_corba, item);
@@ -3195,18 +3189,18 @@ menu_toplevel_create_item (GnomeUIHandler *uih, const char *parent_path,
 }
 
 static void
-menu_remote_create_item (GnomeUIHandler *uih, const char *parent_path,
-			 GnomeUIHandlerMenuItem *item)
+menu_remote_create_item (BonoboUIHandler *uih, const char *parent_path,
+			 BonoboUIHandlerMenuItem *item)
 {
-	GNOME_UIHandler_iobuf *pixmap_buf;
+	Bonobo_UIHandler_iobuf *pixmap_buf;
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
 	pixmap_buf = pixmap_data_to_corba (item->pixmap_type, item->pixmap_data);
 
-	GNOME_UIHandler_menu_create (uih->top_level_uih,
-				     gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_menu_create (uih->top_level_uih,
+				     bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 				     item->path,
 				     menu_type_to_corba (item->type),
 				     CORBIFY_STRING (item->label),
@@ -3218,7 +3212,7 @@ menu_remote_create_item (GnomeUIHandler *uih, const char *parent_path,
 				     (CORBA_long) item->ac_mods,
 				     &ev);
 
-	gnome_object_check_env (GNOME_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
+	bonobo_object_check_env (BONOBO_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
 
 	CORBA_exception_free (&ev);
 
@@ -3227,28 +3221,23 @@ menu_remote_create_item (GnomeUIHandler *uih, const char *parent_path,
 
 static void
 impl_menu_create (PortableServer_Servant   servant,
-		  const GNOME_UIHandler    containee_uih,
+		  const Bonobo_UIHandler    containee_uih,
 		  const CORBA_char        *path,
-		  GNOME_UIHandler_MenuType menu_type,
+		  Bonobo_UIHandler_MenuType menu_type,
 		  const CORBA_char        *label,
 		  const CORBA_char        *hint,
 		  CORBA_long               pos,
-		  const GNOME_UIHandler_PixmapType pixmap_type,
-		  const GNOME_UIHandler_iobuf     *pixmap_data,
+		  const Bonobo_UIHandler_PixmapType pixmap_type,
+		  const Bonobo_UIHandler_iobuf     *pixmap_data,
 		  CORBA_unsigned_long              accelerator_key,
 		  CORBA_long                       modifier,
 		  CORBA_Environment               *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
+	BonoboUIHandlerMenuItem *item;
 	char *parent_path;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
 
 	item = menu_make_item (path, menu_corba_to_type (menu_type),
 			       UNCORBIFY_STRING (label),
@@ -3260,12 +3249,9 @@ impl_menu_create (PortableServer_Servant   servant,
 			       NULL, NULL);
 
 	parent_path = path_get_parent (path);
-	if (parent_path == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
-	} else {
-		menu_toplevel_create_item (uih, parent_path, item, containee_uih);
-	}
+	g_return_if_fail (parent_path != NULL);
+
+	menu_toplevel_create_item (uih, parent_path, item, containee_uih);
 
 	pixmap_free_data (item->pixmap_type, item->pixmap_data);
 
@@ -3274,13 +3260,13 @@ impl_menu_create (PortableServer_Servant   servant,
 }
 
 /**
- * gnome_ui_handler_menu_add_one:
+ * bonobo_ui_handler_menu_add_one:
  */
 void
-gnome_ui_handler_menu_add_one (GnomeUIHandler *uih, const char *parent_path, GnomeUIHandlerMenuItem *item)
+bonobo_ui_handler_menu_add_one (BonoboUIHandler *uih, const char *parent_path, BonoboUIHandlerMenuItem *item)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (parent_path != NULL);
 	g_return_if_fail (item != NULL);
 
@@ -3303,68 +3289,68 @@ gnome_ui_handler_menu_add_one (GnomeUIHandler *uih, const char *parent_path, Gno
 	 * We are the top-level UIHandler, and so we must create the
 	 * menu's widgets and so forth.
 	 */
-	menu_toplevel_create_item (uih, parent_path, item, gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	menu_toplevel_create_item (uih, parent_path, item, bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 }
 
 /**
- * gnome_ui_handler_menu_add_list:
+ * bonobo_ui_handler_menu_add_list:
  */
 void
-gnome_ui_handler_menu_add_list (GnomeUIHandler *uih, const char *parent_path,
-				GnomeUIHandlerMenuItem *item)
+bonobo_ui_handler_menu_add_list (BonoboUIHandler *uih, const char *parent_path,
+				BonoboUIHandlerMenuItem *item)
 {
-	GnomeUIHandlerMenuItem *curr;
+	BonoboUIHandlerMenuItem *curr;
 
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (parent_path != NULL);
 	g_return_if_fail (item != NULL);
 
-	for (curr = item; curr->type != GNOME_UI_HANDLER_MENU_END; curr ++)
-		gnome_ui_handler_menu_add_tree (uih, parent_path, curr);
+	for (curr = item; curr->type != BONOBO_UI_HANDLER_MENU_END; curr ++)
+		bonobo_ui_handler_menu_add_tree (uih, parent_path, curr);
 }
 
 /**
- * gnome_ui_handler_menu_add_tree:
+ * bonobo_ui_handler_menu_add_tree:
  */
 void
-gnome_ui_handler_menu_add_tree (GnomeUIHandler *uih, const char *parent_path,
-				GnomeUIHandlerMenuItem *item)
+bonobo_ui_handler_menu_add_tree (BonoboUIHandler *uih, const char *parent_path,
+				BonoboUIHandlerMenuItem *item)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (parent_path != NULL);
 	g_return_if_fail (item != NULL);
 
 	/*
 	 * Add this menu item.
 	 */
-	gnome_ui_handler_menu_add_one (uih, parent_path, item);
+	bonobo_ui_handler_menu_add_one (uih, parent_path, item);
 
 	/*
 	 * Recursive add its children.
 	 */
 	if (item->children != NULL)
-		gnome_ui_handler_menu_add_list (uih, item->path, item->children);
+		bonobo_ui_handler_menu_add_list (uih, item->path, item->children);
 }
 
 /**
- * gnome_ui_handler_menu_new:
+ * bonobo_ui_handler_menu_new:
  */
 void
-gnome_ui_handler_menu_new (GnomeUIHandler *uih, const char *path,
-			   GnomeUIHandlerMenuItemType type,
+bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
+			   BonoboUIHandlerMenuItemType type,
 			   const char *label, const char *hint,
-			   int pos, GnomeUIHandlerPixmapType pixmap_type,
+			   int pos, BonoboUIHandlerPixmapType pixmap_type,
 			   gpointer pixmap_data, guint accelerator_key,
-			   GdkModifierType ac_mods, GnomeUIHandlerCallbackFunc callback,
+			   GdkModifierType ac_mods, BonoboUIHandlerCallbackFunc callback,
 			   gpointer callback_data)
 {
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandlerMenuItem *item;
 	char *parent_path;
 
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	item = menu_make_item (path, type, label, hint, pos,
@@ -3374,99 +3360,99 @@ gnome_ui_handler_menu_new (GnomeUIHandler *uih, const char *path,
 	parent_path = path_get_parent (path);
 	g_return_if_fail (parent_path != NULL);
 
-	gnome_ui_handler_menu_add_one (uih, parent_path, item);
+	bonobo_ui_handler_menu_add_one (uih, parent_path, item);
 
 	g_free (item);
 	g_free (parent_path);
 }
 
 /**
- * gnome_ui_handler_menu_new_item:
+ * bonobo_ui_handler_menu_new_item:
  */
 void
-gnome_ui_handler_menu_new_item (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_new_item (BonoboUIHandler *uih, const char *path,
 				const char *label, const char *hint, int pos,
-				GnomeUIHandlerPixmapType pixmap_type,
+				BonoboUIHandlerPixmapType pixmap_type,
 				gpointer pixmap_data, guint accelerator_key,
 				GdkModifierType ac_mods,
-				GnomeUIHandlerCallbackFunc callback,
+				BonoboUIHandlerCallbackFunc callback,
 				gpointer callback_data)
 {
-	gnome_ui_handler_menu_new (uih, path, GNOME_UI_HANDLER_MENU_ITEM,
+	bonobo_ui_handler_menu_new (uih, path, BONOBO_UI_HANDLER_MENU_ITEM,
 				   label, hint, pos, pixmap_type,
 				   pixmap_data, accelerator_key, ac_mods,
 				   callback, callback_data);
 }
 
 /**
- * gnome_ui_handler_menu_new_subtree:
+ * bonobo_ui_handler_menu_new_subtree:
  */
 void
-gnome_ui_handler_menu_new_subtree (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_new_subtree (BonoboUIHandler *uih, const char *path,
 				   const char *label, const char *hint, int pos,
-				   GnomeUIHandlerPixmapType pixmap_type,
+				   BonoboUIHandlerPixmapType pixmap_type,
 				   gpointer pixmap_data, guint accelerator_key,
 				   GdkModifierType ac_mods)
 {
-	gnome_ui_handler_menu_new (uih, path, GNOME_UI_HANDLER_MENU_SUBTREE,
+	bonobo_ui_handler_menu_new (uih, path, BONOBO_UI_HANDLER_MENU_SUBTREE,
 				   label, hint, pos, pixmap_type, pixmap_data,
 				   accelerator_key, ac_mods, NULL, NULL);
 }
 
 /**
- * gnome_ui_handler_menu_new_separator:
+ * bonobo_ui_handler_menu_new_separator:
  */
 void
-gnome_ui_handler_menu_new_separator (GnomeUIHandler *uih, const char *path, int pos)
+bonobo_ui_handler_menu_new_separator (BonoboUIHandler *uih, const char *path, int pos)
 {
-	gnome_ui_handler_menu_new (uih, path, GNOME_UI_HANDLER_MENU_SEPARATOR,
-				   NULL, NULL, pos, GNOME_UI_HANDLER_PIXMAP_NONE,
+	bonobo_ui_handler_menu_new (uih, path, BONOBO_UI_HANDLER_MENU_SEPARATOR,
+				   NULL, NULL, pos, BONOBO_UI_HANDLER_PIXMAP_NONE,
 				   NULL, 0, 0, NULL, NULL);
 }
 
 /**
- * gnome_ui_handler_menu_new_radiogroup:
+ * bonobo_ui_handler_menu_new_radiogroup:
  */
 void
-gnome_ui_handler_menu_new_radiogroup (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_menu_new_radiogroup (BonoboUIHandler *uih, const char *path)
 {
-	gnome_ui_handler_menu_new (uih, path, GNOME_UI_HANDLER_MENU_RADIOGROUP,
-				   NULL, NULL, -1, GNOME_UI_HANDLER_PIXMAP_NONE,
+	bonobo_ui_handler_menu_new (uih, path, BONOBO_UI_HANDLER_MENU_RADIOGROUP,
+				   NULL, NULL, -1, BONOBO_UI_HANDLER_PIXMAP_NONE,
 				   NULL, 0, 0, NULL, NULL);
 }
 
 /**
- * gnome_ui_handler_menu_radioitem:
+ * bonobo_ui_handler_menu_radioitem:
  */
 void
-gnome_ui_handler_menu_new_radioitem (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_new_radioitem (BonoboUIHandler *uih, const char *path,
 				     const char *label, const char *hint, int pos,
 				     guint accelerator_key, GdkModifierType ac_mods,
-				     GnomeUIHandlerCallbackFunc callback,
+				     BonoboUIHandlerCallbackFunc callback,
 				     gpointer callback_data)
 {
-	gnome_ui_handler_menu_new (uih, path, GNOME_UI_HANDLER_MENU_RADIOITEM,
-				   label, hint, pos, GNOME_UI_HANDLER_PIXMAP_NONE,
+	bonobo_ui_handler_menu_new (uih, path, BONOBO_UI_HANDLER_MENU_RADIOITEM,
+				   label, hint, pos, BONOBO_UI_HANDLER_PIXMAP_NONE,
 				   NULL, accelerator_key, ac_mods, callback, callback_data);
 }
 
 /**
- * gnome_ui_handler_menu_new_toggleitem:
+ * bonobo_ui_handler_menu_new_toggleitem:
  */
 void
-gnome_ui_handler_menu_new_toggleitem (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_new_toggleitem (BonoboUIHandler *uih, const char *path,
 				      const char *label, const char *hint, int pos,
 				      guint accelerator_key, GdkModifierType ac_mods,
-				      GnomeUIHandlerCallbackFunc callback,
+				      BonoboUIHandlerCallbackFunc callback,
 				      gpointer callback_data)
 {
-	gnome_ui_handler_menu_new (uih, path, GNOME_UI_HANDLER_MENU_TOGGLEITEM,
-				   label, hint, pos, GNOME_UI_HANDLER_PIXMAP_NONE,
+	bonobo_ui_handler_menu_new (uih, path, BONOBO_UI_HANDLER_MENU_TOGGLEITEM,
+				   label, hint, pos, BONOBO_UI_HANDLER_PIXMAP_NONE,
 				   NULL, accelerator_key, ac_mods, callback, callback_data);
 }
 
 static void
-menu_toplevel_remove_data (GnomeUIHandler *uih, MenuItemInternal *internal)
+menu_toplevel_remove_data (BonoboUIHandler *uih, MenuItemInternal *internal)
 {
 	CORBA_Environment ev;
 	char *orig_key;
@@ -3531,13 +3517,13 @@ menu_toplevel_remove_data (GnomeUIHandler *uih, MenuItemInternal *internal)
 }
 
 static void
-menu_toplevel_remove_notify (GnomeUIHandler *uih, MenuItemInternal *internal)
+menu_toplevel_remove_notify (BonoboUIHandler *uih, MenuItemInternal *internal)
 {
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_menu_removed (internal->uih_corba, internal->item->path, &ev);
+	Bonobo_UIHandler_menu_removed (internal->uih_corba, internal->item->path, &ev);
 
 	CORBA_exception_free (&ev);
 }
@@ -3547,7 +3533,7 @@ impl_menu_removed (PortableServer_Servant servant,
 		   const CORBA_char      *path,
 		   CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemLocalInternal *internal_cb;
 
 	internal_cb = menu_local_get_item (uih, path);
@@ -3564,7 +3550,7 @@ impl_menu_removed (PortableServer_Servant servant,
 }
 
 static void
-menu_toplevel_reinstate_notify (GnomeUIHandler *uih, const char *path)
+menu_toplevel_reinstate_notify (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 	CORBA_Environment ev;
@@ -3573,10 +3559,10 @@ menu_toplevel_reinstate_notify (GnomeUIHandler *uih, const char *path)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_menu_reinstated (internal->uih_corba, internal->item->path, &ev);
+	Bonobo_UIHandler_menu_reinstated (internal->uih_corba, internal->item->path, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) internal->uih_corba, &ev);
 	}
 
@@ -3584,7 +3570,7 @@ menu_toplevel_reinstate_notify (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_toplevel_reinstate_notify_recursive (GnomeUIHandler *uih, const char *path)
+menu_toplevel_reinstate_notify_recursive (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 	GList *curr;
@@ -3608,7 +3594,7 @@ impl_menu_reinstated (PortableServer_Servant servant,
 		      const CORBA_char      *path,
 		      CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemLocalInternal *internal_cb;
 
 	internal_cb = menu_local_get_item (uih, path);
@@ -3624,7 +3610,7 @@ impl_menu_reinstated (PortableServer_Servant servant,
 }
 
 static void
-menu_toplevel_remove_item_internal (GnomeUIHandler *uih, MenuItemInternal *internal, gboolean replace)
+menu_toplevel_remove_item_internal (BonoboUIHandler *uih, MenuItemInternal *internal, gboolean replace)
 {
 	gboolean is_head;
 	char *path;
@@ -3670,7 +3656,7 @@ menu_toplevel_remove_item_internal (GnomeUIHandler *uih, MenuItemInternal *inter
 	 * Destroy the widgets associated with this item.
 	 */
 	if (is_head &&
-	    internal->item->type != GNOME_UI_HANDLER_MENU_RADIOGROUP)
+	    internal->item->type != BONOBO_UI_HANDLER_MENU_RADIOGROUP)
 		menu_toplevel_remove_widgets (uih, path);
 
 	/*
@@ -3716,7 +3702,7 @@ menu_toplevel_remove_item_internal (GnomeUIHandler *uih, MenuItemInternal *inter
 }
 
 static void
-menu_toplevel_remove_item (GnomeUIHandler *uih, const char *path)
+menu_toplevel_remove_item (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 
@@ -3727,44 +3713,38 @@ menu_toplevel_remove_item (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_remote_remove_item (GnomeUIHandler *uih, const char *path)
+menu_remote_remove_item (BonoboUIHandler *uih, const char *path)
 {
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_menu_remove (uih->top_level_uih,
-				     gnome_object_corba_objref (GNOME_OBJECT (uih)), path,
+	Bonobo_UIHandler_menu_remove (uih->top_level_uih,
+				     bonobo_object_corba_objref (BONOBO_OBJECT (uih)), path,
 				     &ev);
 
-	gnome_object_check_env (GNOME_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
+	bonobo_object_check_env (BONOBO_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
 
 	CORBA_exception_free (&ev);
 }
 
 static void
 impl_menu_remove (PortableServer_Servant servant,
-		  GNOME_UIHandler        containee_uih,
+		  Bonobo_UIHandler        containee_uih,
 		  const CORBA_char      *path,
 		  CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemInternal *internal;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
 
 	/*
 	 * Find the menu item belonging to this containee.
 	 */
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
+		/* FIXME: Set exception. */
 		return;
 	}
 
@@ -3775,13 +3755,13 @@ impl_menu_remove (PortableServer_Servant servant,
 }
 
 /**
- * gnome_ui_handler_menu_remove:
+ * bonobo_ui_handler_menu_remove:
  */
 void
-gnome_ui_handler_menu_remove (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_menu_remove (BonoboUIHandler *uih, const char *path)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	/*
@@ -3800,8 +3780,8 @@ gnome_ui_handler_menu_remove (GnomeUIHandler *uih, const char *path)
 	menu_toplevel_remove_item (uih, path);
 }
 
-static GnomeUIHandlerMenuItem *
-menu_toplevel_fetch (GnomeUIHandler *uih, const char *path)
+static BonoboUIHandlerMenuItem *
+menu_toplevel_fetch (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 
@@ -3813,41 +3793,46 @@ menu_toplevel_fetch (GnomeUIHandler *uih, const char *path)
 	return menu_copy_item (internal->item);
 }
 
-static GnomeUIHandlerMenuItem *
-menu_remote_fetch (GnomeUIHandler *uih, const char *path)
+static BonoboUIHandlerMenuItem *
+menu_remote_fetch (BonoboUIHandler *uih, const char *path)
 {
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandlerMenuItem *item;
 	CORBA_Environment ev;
+	CORBA_boolean exists;
 
-	GNOME_UIHandler_MenuType corba_menu_type;
+	Bonobo_UIHandler_MenuType corba_menu_type;
 	CORBA_char *corba_label;
 	CORBA_char *corba_hint;
 	CORBA_long corba_pos;
-	GNOME_UIHandler_PixmapType corba_pixmap_type;
-	GNOME_UIHandler_iobuf *corba_pixmap_iobuf;
+	Bonobo_UIHandler_PixmapType corba_pixmap_type;
+	Bonobo_UIHandler_iobuf *corba_pixmap_iobuf;
 	CORBA_long corba_accelerator_key;
 	CORBA_long corba_modifier_type;
 
-	item = g_new0 (GnomeUIHandlerMenuItem, 1);
+	item = g_new0 (BonoboUIHandlerMenuItem, 1);
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_menu_fetch (uih->top_level_uih,
-				    path, &corba_menu_type, &corba_label,
-				    &corba_hint, &corba_pos,
-				    &corba_pixmap_type, &corba_pixmap_iobuf,
-				    &corba_accelerator_key,
-				    &corba_modifier_type, &ev);
-
+	exists = Bonobo_UIHandler_menu_fetch (uih->top_level_uih,
+					     path, &corba_menu_type, &corba_label,
+					     &corba_hint, &corba_pos,
+					     &corba_pixmap_type, &corba_pixmap_iobuf,
+					     &corba_accelerator_key, &corba_modifier_type,
+					     &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 		CORBA_exception_free (&ev);
 		return NULL;
 	}
 
 	CORBA_exception_free (&ev);
+
+	if (exists == FALSE) {
+		g_free (item);
+		return NULL;
+	}
 
 	item->path = g_strdup (path);
 	item->label = g_strdup (corba_label);
@@ -3866,37 +3851,29 @@ menu_remote_fetch (GnomeUIHandler *uih, const char *path)
 	return item;
 }
 
-static void
+static CORBA_boolean
 impl_menu_fetch (PortableServer_Servant      servant,
 		 const CORBA_char           *path,
-		 GNOME_UIHandler_MenuType   *type,
+		 Bonobo_UIHandler_MenuType   *type,
 		 CORBA_char                **label,
 		 CORBA_char                **hint,
 		 CORBA_long                 *pos,
-		 GNOME_UIHandler_PixmapType *pixmap_type,
-		 GNOME_UIHandler_iobuf     **pixmap_data,
+		 Bonobo_UIHandler_PixmapType *pixmap_type,
+		 Bonobo_UIHandler_iobuf     **pixmap_data,
 		 CORBA_unsigned_long        *accelerator_key,
 		 CORBA_long                 *modifier,
 		 CORBA_Environment          *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
+	BonoboUIHandlerMenuItem *item;
 	MenuItemInternal *internal;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_val_if_fail (uih_toplevel_check_toplevel (uih), FALSE);
 
 	internal = menu_toplevel_get_item (uih, path);
 
-	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
-		return;
-	}
+	if (internal == NULL)
+		return FALSE;
 
 	item = internal->item;
 
@@ -3906,19 +3883,21 @@ impl_menu_fetch (PortableServer_Servant      servant,
 	*pos = item->pos;
 	*accelerator_key = (CORBA_unsigned_long) item->accelerator_key;
 	*modifier = (CORBA_long) item->ac_mods;
+
+	return TRUE;
 }
 
 /**
- * gnome_ui_handler_menu_fetch_one:
+ * bonobo_ui_handler_menu_fetch_one:
  */
-GnomeUIHandlerMenuItem *
-gnome_ui_handler_menu_fetch_one (GnomeUIHandler *uih, const char *path)
+BonoboUIHandlerMenuItem *
+bonobo_ui_handler_menu_fetch_one (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemLocalInternal *internal_cb;
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandlerMenuItem *item;
 
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 
 	/*
@@ -3944,10 +3923,10 @@ gnome_ui_handler_menu_fetch_one (GnomeUIHandler *uih, const char *path)
 }
 
 /**
- * gnome_ui_handler_menu_fetch_tree:
+ * bonobo_ui_handler_menu_fetch_tree:
  */
-GnomeUIHandlerMenuItem *
-gnome_ui_handler_menu_fetch_tree (GnomeUIHandler *uih, const char *path)
+BonoboUIHandlerMenuItem *
+bonobo_ui_handler_menu_fetch_tree (BonoboUIHandler *uih, const char *path)
 {
 	/* FIXME: Implement me */
 	g_error ("Implement fetch tree\n");
@@ -3955,10 +3934,10 @@ gnome_ui_handler_menu_fetch_tree (GnomeUIHandler *uih, const char *path)
 }
 
 /**
- * gnome_ui_handler_menu_free_one:
+ * bonobo_ui_handler_menu_free_one:
  */
 void
-gnome_ui_handler_menu_free_one (GnomeUIHandlerMenuItem *item)
+bonobo_ui_handler_menu_free_one (BonoboUIHandlerMenuItem *item)
 {
 	g_return_if_fail (item != NULL);
 
@@ -3966,21 +3945,21 @@ gnome_ui_handler_menu_free_one (GnomeUIHandlerMenuItem *item)
 }
 
 /**
- * gnome_ui_handler_menu_free_list:
- * @array: A NULL-terminated array of GnomeUIHandlerMenuItem structures to be freed.
+ * bonobo_ui_handler_menu_free_list:
+ * @array: A NULL-terminated array of BonoboUIHandlerMenuItem structures to be freed.
  *
  * Frees the list of menu items in @array and frees the array itself.
  */
 void
-gnome_ui_handler_menu_free_list (GnomeUIHandlerMenuItem *array)
+bonobo_ui_handler_menu_free_list (BonoboUIHandlerMenuItem *array)
 {
-	GnomeUIHandlerMenuItem *curr;
+	BonoboUIHandlerMenuItem *curr;
 
 	g_return_if_fail (array != NULL);
 
-	for (curr = array; curr->type != GNOME_UI_HANDLER_MENU_END; curr ++) {
+	for (curr = array; curr->type != BONOBO_UI_HANDLER_MENU_END; curr ++) {
 		if (curr->children != NULL)
-			gnome_ui_handler_menu_free_list (curr->children);
+			bonobo_ui_handler_menu_free_list (curr->children);
 
 		menu_free_data (curr);
 	}
@@ -3989,24 +3968,24 @@ gnome_ui_handler_menu_free_list (GnomeUIHandlerMenuItem *array)
 }
 
 /**
- * gnome_ui_handler_menu_free_tree:
+ * bonobo_ui_handler_menu_free_tree:
  */
 void
-gnome_ui_handler_menu_free_tree (GnomeUIHandlerMenuItem *tree)
+bonobo_ui_handler_menu_free_tree (BonoboUIHandlerMenuItem *tree)
 {
 	g_return_if_fail (tree != NULL);
 
-	if (tree->type == GNOME_UI_HANDLER_MENU_END)
+	if (tree->type == BONOBO_UI_HANDLER_MENU_END)
 		return;
 
 	if (tree->children != NULL)
-		gnome_ui_handler_menu_free_list (tree->children);
+		bonobo_ui_handler_menu_free_list (tree->children);
 
 	menu_free (tree);
 }
 
 static GList *
-menu_toplevel_get_children (GnomeUIHandler *uih, const char *parent_path)
+menu_toplevel_get_children (BonoboUIHandler *uih, const char *parent_path)
 {
 	MenuItemInternal *internal;
 	GList *children, *curr;
@@ -4027,26 +4006,27 @@ menu_toplevel_get_children (GnomeUIHandler *uih, const char *parent_path)
 }
 
 static GList *
-menu_remote_get_children (GnomeUIHandler *uih, const char *parent_path)
+menu_remote_get_children (BonoboUIHandler *uih, const char *parent_path)
 {
-	GNOME_UIHandler_StringSeq *childseq;
+	Bonobo_UIHandler_StringSeq *childseq;
 	CORBA_Environment ev;
 	GList *children;
 	int i;
+	gboolean fail = FALSE;
 	
 	CORBA_exception_init (&ev);
-	GNOME_UIHandler_menu_get_children (uih->top_level_uih,
-					   (CORBA_char *) parent_path,
-					   &childseq, &ev);
-
-	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (GNOME_OBJECT (uih),
-					uih->top_level_uih, &ev);
-		CORBA_exception_free (&ev);
+	if (! Bonobo_UIHandler_menu_get_children (uih->top_level_uih,
+						 (CORBA_char *) parent_path, &childseq,
+						 &ev))
 		return NULL;
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		bonobo_object_check_env (BONOBO_OBJECT (uih), uih->top_level_uih, &ev);
+		fail = TRUE;
 	}
 	
 	CORBA_exception_free (&ev);
+	if (fail)
+		return NULL;
 	
 	/* FIXME: Free the sequence */
 	
@@ -4058,51 +4038,44 @@ menu_remote_get_children (GnomeUIHandler *uih, const char *parent_path)
 	return children;
 }
 
-static void
+static CORBA_boolean
 impl_menu_get_children (PortableServer_Servant      servant,
 			const CORBA_char           *parent_path,
-			GNOME_UIHandler_StringSeq **child_paths,
+			Bonobo_UIHandler_StringSeq **child_paths,
 			CORBA_Environment          *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemInternal *internal;
 	int num_children, i;
 	GList *curr;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_val_if_fail (uih_toplevel_check_toplevel (uih), FALSE);
 
 	internal = menu_toplevel_get_item (uih, parent_path);
 
-	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
-		return;
-	}
+	if (internal == NULL)
+		return FALSE;
 
 	num_children = g_list_length (internal->children);
 
-	*child_paths = GNOME_UIHandler_StringSeq__alloc ();
+	*child_paths = Bonobo_UIHandler_StringSeq__alloc ();
 	(*child_paths)->_buffer = CORBA_sequence_CORBA_string_allocbuf (num_children);
 	(*child_paths)->_length = num_children;
 
 	for (curr = internal->children, i = 0; curr != NULL; curr = curr->next, i ++)
 		(*child_paths)->_buffer [i] = CORBA_string_dup ((char *) curr->data);
 
+	return TRUE;
 }
 
 /**
- * gnome_ui_handler_menu_get_child_paths:
+ * bonobo_ui_handler_menu_get_child_paths:
  */
 GList *
-gnome_ui_handler_menu_get_child_paths (GnomeUIHandler *uih, const char *parent_path)
+bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent_path)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (parent_path != NULL, NULL);
 
 	/*
@@ -4119,27 +4092,27 @@ gnome_ui_handler_menu_get_child_paths (GnomeUIHandler *uih, const char *parent_p
 	return menu_toplevel_get_children (uih, parent_path);
 }
 
-static GnomeUIHandlerMenuItemType
+static BonoboUIHandlerMenuItemType
 menu_uiinfo_type_to_uih (GnomeUIInfoType uii_type)
 {
 	switch (uii_type) {
 	case GNOME_APP_UI_ENDOFINFO:
-		return GNOME_UI_HANDLER_MENU_END;
+		return BONOBO_UI_HANDLER_MENU_END;
 
 	case GNOME_APP_UI_ITEM:
-		return GNOME_UI_HANDLER_MENU_ITEM;
+		return BONOBO_UI_HANDLER_MENU_ITEM;
 
 	case GNOME_APP_UI_TOGGLEITEM:
-		return GNOME_UI_HANDLER_MENU_TOGGLEITEM;
+		return BONOBO_UI_HANDLER_MENU_TOGGLEITEM;
 
 	case GNOME_APP_UI_RADIOITEMS:
-		return GNOME_UI_HANDLER_MENU_RADIOGROUP;
+		return BONOBO_UI_HANDLER_MENU_RADIOGROUP;
 
 	case GNOME_APP_UI_SUBTREE:
-		return GNOME_UI_HANDLER_MENU_SUBTREE;
+		return BONOBO_UI_HANDLER_MENU_SUBTREE;
 
 	case GNOME_APP_UI_SEPARATOR:
-		return GNOME_UI_HANDLER_MENU_SEPARATOR;
+		return BONOBO_UI_HANDLER_MENU_SEPARATOR;
 
 	case GNOME_APP_UI_HELP:
 		g_error ("Help unimplemented."); /* FIXME */
@@ -4149,19 +4122,19 @@ menu_uiinfo_type_to_uih (GnomeUIInfoType uii_type)
 
 	case GNOME_APP_UI_ITEM_CONFIGURABLE:
 		g_warning ("Configurable item!");
-		return GNOME_UI_HANDLER_MENU_ITEM;
+		return BONOBO_UI_HANDLER_MENU_ITEM;
 
 	case GNOME_APP_UI_SUBTREE_STOCK:
-		return GNOME_UI_HANDLER_MENU_SUBTREE;
+		return BONOBO_UI_HANDLER_MENU_SUBTREE;
 
 	default:
 		g_warning ("Unknown UIInfo Type: %d", uii_type);
-		return GNOME_UI_HANDLER_MENU_ITEM;
+		return BONOBO_UI_HANDLER_MENU_ITEM;
 	}
 }
 
 static void
-menu_parse_uiinfo_one (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii)
+menu_parse_uiinfo_one (BonoboUIHandlerMenuItem *item, GnomeUIInfo *uii)
 {
 	item->path = NULL;
 
@@ -4175,9 +4148,9 @@ menu_parse_uiinfo_one (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii)
 
 	item->pos = -1;
 
-	if (item->type == GNOME_UI_HANDLER_MENU_ITEM ||
-	    item->type == GNOME_UI_HANDLER_MENU_RADIOITEM ||
-	    item->type == GNOME_UI_HANDLER_MENU_TOGGLEITEM)
+	if (item->type == BONOBO_UI_HANDLER_MENU_ITEM ||
+	    item->type == BONOBO_UI_HANDLER_MENU_RADIOITEM ||
+	    item->type == BONOBO_UI_HANDLER_MENU_TOGGLEITEM)
 		item->callback = uii->moreinfo;
 	item->callback_data = uii->user_data;
 
@@ -4188,27 +4161,27 @@ menu_parse_uiinfo_one (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii)
 }
 
 static void
-menu_parse_uiinfo_tree (GnomeUIHandlerMenuItem *tree, GnomeUIInfo *uii)
+menu_parse_uiinfo_tree (BonoboUIHandlerMenuItem *tree, GnomeUIInfo *uii)
 {
 	menu_parse_uiinfo_one (tree, uii);
 
-	if (tree->type == GNOME_UI_HANDLER_MENU_SUBTREE ||
-	    tree->type == GNOME_UI_HANDLER_MENU_RADIOGROUP) {
-		tree->children = gnome_ui_handler_menu_parse_uiinfo_list (uii->moreinfo);
+	if (tree->type == BONOBO_UI_HANDLER_MENU_SUBTREE ||
+	    tree->type == BONOBO_UI_HANDLER_MENU_RADIOGROUP) {
+		tree->children = bonobo_ui_handler_menu_parse_uiinfo_list (uii->moreinfo);
 	}
 }
 
 /**
- * gnome_ui_handler_menu_parse_uiinfo_one:
+ * bonobo_ui_handler_menu_parse_uiinfo_one:
  */
-GnomeUIHandlerMenuItem *
-gnome_ui_handler_menu_parse_uiinfo_one (GnomeUIInfo *uii)
+BonoboUIHandlerMenuItem *
+bonobo_ui_handler_menu_parse_uiinfo_one (GnomeUIInfo *uii)
 {
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandlerMenuItem *item;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	item = g_new0 (GnomeUIHandlerMenuItem, 1);
+	item = g_new0 (BonoboUIHandlerMenuItem, 1);
 
 	menu_parse_uiinfo_one (item, uii);
 	
@@ -4216,26 +4189,26 @@ gnome_ui_handler_menu_parse_uiinfo_one (GnomeUIInfo *uii)
 }
 
 /**
- * gnome_ui_handler_menu_parse_uiinfo_list:
+ * bonobo_ui_handler_menu_parse_uiinfo_list:
  */
-GnomeUIHandlerMenuItem *
-gnome_ui_handler_menu_parse_uiinfo_list (GnomeUIInfo *uii)
+BonoboUIHandlerMenuItem *
+bonobo_ui_handler_menu_parse_uiinfo_list (GnomeUIInfo *uii)
 {
-	GnomeUIHandlerMenuItem *list;
-	GnomeUIHandlerMenuItem *curr_uih;
+	BonoboUIHandlerMenuItem *list;
+	BonoboUIHandlerMenuItem *curr_uih;
 	GnomeUIInfo *curr_uii;
 	int list_len;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
 	/*
-	 * Allocate the GnomeUIHandlerMenuItem array.
+	 * Allocate the BonoboUIHandlerMenuItem array.
 	 */
 	list_len = 0;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
 		list_len ++;
 
-	list = g_new0 (GnomeUIHandlerMenuItem, list_len + 1);
+	list = g_new0 (BonoboUIHandlerMenuItem, list_len + 1);
 
 	curr_uih = list;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++, curr_uih ++)
@@ -4248,16 +4221,16 @@ gnome_ui_handler_menu_parse_uiinfo_list (GnomeUIInfo *uii)
 }
 
 /**
- * gnome_ui_handler_menu_parse_uiinfo_tree:
+ * bonobo_ui_handler_menu_parse_uiinfo_tree:
  */
-GnomeUIHandlerMenuItem *
-gnome_ui_handler_menu_parse_uiinfo_tree (GnomeUIInfo *uii)
+BonoboUIHandlerMenuItem *
+bonobo_ui_handler_menu_parse_uiinfo_tree (GnomeUIInfo *uii)
 {
-	GnomeUIHandlerMenuItem *item_tree;
+	BonoboUIHandlerMenuItem *item_tree;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	item_tree = g_new0 (GnomeUIHandlerMenuItem, 1);
+	item_tree = g_new0 (BonoboUIHandlerMenuItem, 1);
 
 	menu_parse_uiinfo_tree (item_tree, uii);
 
@@ -4265,7 +4238,7 @@ gnome_ui_handler_menu_parse_uiinfo_tree (GnomeUIInfo *uii)
 }
 
 static void
-menu_parse_uiinfo_one_with_data (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii, void *data)
+menu_parse_uiinfo_one_with_data (BonoboUIHandlerMenuItem *item, GnomeUIInfo *uii, void *data)
 {
 	menu_parse_uiinfo_one (item, uii);
 
@@ -4273,27 +4246,27 @@ menu_parse_uiinfo_one_with_data (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii,
 }
 
 static void
-menu_parse_uiinfo_tree_with_data (GnomeUIHandlerMenuItem *tree, GnomeUIInfo *uii, void *data)
+menu_parse_uiinfo_tree_with_data (BonoboUIHandlerMenuItem *tree, GnomeUIInfo *uii, void *data)
 {
 	menu_parse_uiinfo_one_with_data (tree, uii, data);
 
-	if (tree->type == GNOME_UI_HANDLER_MENU_SUBTREE ||
-	    tree->type == GNOME_UI_HANDLER_MENU_RADIOGROUP) {
-		tree->children = gnome_ui_handler_menu_parse_uiinfo_list_with_data (uii->moreinfo, data);
+	if (tree->type == BONOBO_UI_HANDLER_MENU_SUBTREE ||
+	    tree->type == BONOBO_UI_HANDLER_MENU_RADIOGROUP) {
+		tree->children = bonobo_ui_handler_menu_parse_uiinfo_list_with_data (uii->moreinfo, data);
 	}
 }
 
 /**
- * gnome_ui_handler_menu_parse_uiinfo_one_with_data:
+ * bonobo_ui_handler_menu_parse_uiinfo_one_with_data:
  */
-GnomeUIHandlerMenuItem *
-gnome_ui_handler_menu_parse_uiinfo_one_with_data (GnomeUIInfo *uii, void *data)
+BonoboUIHandlerMenuItem *
+bonobo_ui_handler_menu_parse_uiinfo_one_with_data (GnomeUIInfo *uii, void *data)
 {
-	GnomeUIHandlerMenuItem *item;
+	BonoboUIHandlerMenuItem *item;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	item = g_new0 (GnomeUIHandlerMenuItem, 1);
+	item = g_new0 (BonoboUIHandlerMenuItem, 1);
 
 	menu_parse_uiinfo_one_with_data (item, uii, data);
 
@@ -4301,26 +4274,26 @@ gnome_ui_handler_menu_parse_uiinfo_one_with_data (GnomeUIInfo *uii, void *data)
 }
 
 /**
- * gnome_ui_handler_menu_parse_uiinfo_list_with_data:
+ * bonobo_ui_handler_menu_parse_uiinfo_list_with_data:
  */
-GnomeUIHandlerMenuItem *
-gnome_ui_handler_menu_parse_uiinfo_list_with_data (GnomeUIInfo *uii, void *data)
+BonoboUIHandlerMenuItem *
+bonobo_ui_handler_menu_parse_uiinfo_list_with_data (GnomeUIInfo *uii, void *data)
 {
-	GnomeUIHandlerMenuItem *list;
-	GnomeUIHandlerMenuItem *curr_uih;
+	BonoboUIHandlerMenuItem *list;
+	BonoboUIHandlerMenuItem *curr_uih;
 	GnomeUIInfo *curr_uii;
 	int list_len;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
 	/*
-	 * Allocate the GnomeUIHandlerMenuItem list.
+	 * Allocate the BonoboUIHandlerMenuItem list.
 	 */
 	list_len = 0;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
 		list_len ++;
 
-	list = g_new0 (GnomeUIHandlerMenuItem, list_len + 1);
+	list = g_new0 (BonoboUIHandlerMenuItem, list_len + 1);
 
 	curr_uih = list;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++, curr_uih ++)
@@ -4333,16 +4306,16 @@ gnome_ui_handler_menu_parse_uiinfo_list_with_data (GnomeUIInfo *uii, void *data)
 }
 
 /**
- * gnome_ui_handler_menu_parse_uiinfo_tree_with_data:
+ * bonobo_ui_handler_menu_parse_uiinfo_tree_with_data:
  */
-GnomeUIHandlerMenuItem *
-gnome_ui_handler_menu_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, void *data)
+BonoboUIHandlerMenuItem *
+bonobo_ui_handler_menu_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, void *data)
 {
-	GnomeUIHandlerMenuItem *item_tree;
+	BonoboUIHandlerMenuItem *item_tree;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	item_tree = g_new0 (GnomeUIHandlerMenuItem, 1);
+	item_tree = g_new0 (BonoboUIHandlerMenuItem, 1);
 
 	menu_parse_uiinfo_tree_with_data (item_tree, uii, data);
 
@@ -4350,7 +4323,7 @@ gnome_ui_handler_menu_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, void *data)
 }
 
 static gint
-menu_toplevel_get_pos (GnomeUIHandler *uih, const char *path)
+menu_toplevel_get_pos (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 
@@ -4362,7 +4335,7 @@ menu_toplevel_get_pos (GnomeUIHandler *uih, const char *path)
 }
 
 static gint
-menu_remote_get_pos (GnomeUIHandler *uih, const char *path)
+menu_remote_get_pos (BonoboUIHandler *uih, const char *path)
 {
 	UIRemoteAttributeData *attrs;
 	gint                     ans;
@@ -4377,13 +4350,13 @@ menu_remote_get_pos (GnomeUIHandler *uih, const char *path)
 }
 
 /**
- * gnome_ui_handler_menu_get_pos:
+ * bonobo_ui_handler_menu_get_pos:
  */
 int
-gnome_ui_handler_menu_get_pos (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_menu_get_pos (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, -1);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), -1);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), -1);
 	g_return_val_if_fail (path != NULL, -1);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
@@ -4393,7 +4366,7 @@ gnome_ui_handler_menu_get_pos (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *internal, gboolean sensitivity)
+menu_toplevel_set_sensitivity_internal (BonoboUIHandler *uih, MenuItemInternal *internal, gboolean sensitivity)
 {
 	GtkWidget *menu_widget;
 
@@ -4409,14 +4382,14 @@ menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *i
 }
 
 static void
-menu_toplevel_set_sensitivity (GnomeUIHandler *uih, const char *path,
+menu_toplevel_set_sensitivity (BonoboUIHandler *uih, const char *path,
 			       gboolean sensitive)
 {
 	MenuItemInternal *internal;
 
 	/* Update the internal state */
 	internal = menu_toplevel_get_item_for_containee (uih, path,
-							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+							 bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	g_return_if_fail (internal != NULL);
 
 
@@ -4424,7 +4397,7 @@ menu_toplevel_set_sensitivity (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-menu_remote_set_sensitivity (GnomeUIHandler *uih, const char *path,
+menu_remote_set_sensitivity (BonoboUIHandler *uih, const char *path,
 			     gboolean sensitive)
 {
 	UIRemoteAttributeData *attrs;
@@ -4437,14 +4410,14 @@ menu_remote_set_sensitivity (GnomeUIHandler *uih, const char *path,
 }
 
 /**
- * gnome_ui_handler_menu_set_sensitivity:
+ * bonobo_ui_handler_menu_set_sensitivity:
  */
 void
-gnome_ui_handler_menu_set_sensitivity (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_set_sensitivity (BonoboUIHandler *uih, const char *path,
 				       gboolean sensitive)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
@@ -4456,7 +4429,7 @@ gnome_ui_handler_menu_set_sensitivity (GnomeUIHandler *uih, const char *path,
 }
 
 static gboolean
-menu_toplevel_get_sensitivity (GnomeUIHandler *uih, const char *path)
+menu_toplevel_get_sensitivity (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 
@@ -4465,7 +4438,7 @@ menu_toplevel_get_sensitivity (GnomeUIHandler *uih, const char *path)
 }
 
 static gboolean
-menu_remote_get_sensitivity (GnomeUIHandler *uih, const char *path)
+menu_remote_get_sensitivity (BonoboUIHandler *uih, const char *path)
 {
 	UIRemoteAttributeData *attrs;
 	gboolean                 ans;
@@ -4480,13 +4453,13 @@ menu_remote_get_sensitivity (GnomeUIHandler *uih, const char *path)
 }
 
 /**
- * gnome_ui_handler_menu_get_sensitivity:
+ * bonobo_ui_handler_menu_get_sensitivity:
  */
 gboolean
-gnome_ui_handler_menu_get_sensitivity (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_menu_get_sensitivity (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, FALSE);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
@@ -4496,7 +4469,7 @@ gnome_ui_handler_menu_get_sensitivity (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_toplevel_set_label_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+menu_toplevel_set_label_internal (BonoboUIHandler *uih, MenuItemInternal *internal,
 				  const gchar *label_text)
 {
 	GtkWidget *parent_shell;
@@ -4555,20 +4528,20 @@ menu_toplevel_set_label_internal (GnomeUIHandler *uih, MenuItemInternal *interna
 }
 
 static void
-menu_toplevel_set_label (GnomeUIHandler *uih, const char *path,
+menu_toplevel_set_label (BonoboUIHandler *uih, const char *path,
 			 const gchar *label_text)
 {
 	MenuItemInternal *internal;
 
 	internal = menu_toplevel_get_item_for_containee (uih, path,
-							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+							 bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	g_return_if_fail (internal != NULL);
 
 	menu_toplevel_set_label_internal (uih, internal, label_text);
 }
 
 static void
-menu_remote_set_label (GnomeUIHandler *uih, const char *path,
+menu_remote_set_label (BonoboUIHandler *uih, const char *path,
 		       const gchar *label_text)
 {
 	UIRemoteAttributeData *attrs;
@@ -4582,7 +4555,7 @@ menu_remote_set_label (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-toolbar_item_remote_set_label (GnomeUIHandler *uih, const char *path,
+toolbar_item_remote_set_label (BonoboUIHandler *uih, const char *path,
 			       const gchar *label_text)
 {
 	UIRemoteAttributeData *attrs;
@@ -4596,14 +4569,14 @@ toolbar_item_remote_set_label (GnomeUIHandler *uih, const char *path,
 }
 
 /**
- * gnome_ui_handler_menu_set_label:
+ * bonobo_ui_handler_menu_set_label:
  */
 void
-gnome_ui_handler_menu_set_label (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_set_label (BonoboUIHandler *uih, const char *path,
 				 const gchar *label_text)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
@@ -4615,7 +4588,7 @@ gnome_ui_handler_menu_set_label (GnomeUIHandler *uih, const char *path,
 }
 
 static gchar *
-menu_toplevel_get_label (GnomeUIHandler *uih, const char *path)
+menu_toplevel_get_label (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 
@@ -4629,7 +4602,7 @@ menu_toplevel_get_label (GnomeUIHandler *uih, const char *path)
 }
 
 static gchar *
-menu_remote_get_label (GnomeUIHandler *uih, const char *path)
+menu_remote_get_label (BonoboUIHandler *uih, const char *path)
 {
 	UIRemoteAttributeData *attrs;
 	gchar                   *ans;
@@ -4644,13 +4617,13 @@ menu_remote_get_label (GnomeUIHandler *uih, const char *path)
 }
 
 /**
- * gnome_ui_handler_menu_get_label:
+ * bonobo_ui_handler_menu_get_label:
  */
 gchar *
-gnome_ui_handler_menu_get_label (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_menu_get_label (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
@@ -4660,7 +4633,7 @@ gnome_ui_handler_menu_get_label (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_toplevel_set_hint_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+menu_toplevel_set_hint_internal (BonoboUIHandler *uih, MenuItemInternal *internal,
 				 const char *hint)
 {
 	GtkWidget *menu_widget;
@@ -4684,20 +4657,20 @@ menu_toplevel_set_hint_internal (GnomeUIHandler *uih, MenuItemInternal *internal
 }
 
 static void
-menu_toplevel_set_hint (GnomeUIHandler *uih, const char *path,
+menu_toplevel_set_hint (BonoboUIHandler *uih, const char *path,
 			const char *hint)
 {
 	MenuItemInternal *internal;
 
 	internal = menu_toplevel_get_item_for_containee (uih, path,
-							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+							 bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	g_return_if_fail (internal != NULL);
 
 	menu_toplevel_set_hint_internal (uih, internal, hint);
 }
 
 static void
-menu_remote_set_hint (GnomeUIHandler *uih, const char *path,
+menu_remote_set_hint (BonoboUIHandler *uih, const char *path,
 		      const char *hint)
 {
 	UIRemoteAttributeData *attrs;
@@ -4711,7 +4684,7 @@ menu_remote_set_hint (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-toolbar_item_remote_set_hint (GnomeUIHandler *uih, const char *path,
+toolbar_item_remote_set_hint (BonoboUIHandler *uih, const char *path,
 			      const char *hint)
 {
 	UIRemoteAttributeData *attrs;
@@ -4725,14 +4698,14 @@ toolbar_item_remote_set_hint (GnomeUIHandler *uih, const char *path,
 }
 
 /**
- * gnome_ui_handler_menu_set_hint:
+ * bonobo_ui_handler_menu_set_hint:
  */
 void
-gnome_ui_handler_menu_set_hint (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_set_hint (BonoboUIHandler *uih, const char *path,
 				const char *hint)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
@@ -4744,7 +4717,7 @@ gnome_ui_handler_menu_set_hint (GnomeUIHandler *uih, const char *path,
 }
 
 static gchar *
-menu_toplevel_get_hint (GnomeUIHandler *uih, const char *path)
+menu_toplevel_get_hint (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 
@@ -4755,7 +4728,7 @@ menu_toplevel_get_hint (GnomeUIHandler *uih, const char *path)
 }
 
 static gchar *
-menu_remote_get_hint (GnomeUIHandler *uih, const char *path)
+menu_remote_get_hint (BonoboUIHandler *uih, const char *path)
 {
 	UIRemoteAttributeData *attrs;
 	gchar                   *ans;
@@ -4770,13 +4743,13 @@ menu_remote_get_hint (GnomeUIHandler *uih, const char *path)
 }
 
 /**
- * gnome_ui_handler_menu_get_hint:
+ * bonobo_ui_handler_menu_get_hint:
  */
 gchar *
-gnome_ui_handler_menu_get_hint (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_menu_get_hint (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
@@ -4786,8 +4759,8 @@ gnome_ui_handler_menu_get_hint (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_toplevel_set_pixmap_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
-				   GnomeUIHandlerPixmapType type, gpointer data)
+menu_toplevel_set_pixmap_internal (BonoboUIHandler *uih, MenuItemInternal *internal,
+				   BonoboUIHandlerPixmapType type, gpointer data)
 {
 	GtkWidget *menu_widget;
 	GtkWidget *pixmap_widget;
@@ -4819,38 +4792,38 @@ menu_toplevel_set_pixmap_internal (GnomeUIHandler *uih, MenuItemInternal *intern
 }
 
 inline static void
-menu_toplevel_set_pixmap (GnomeUIHandler *uih, const char *path,
-			  GnomeUIHandlerPixmapType type, gpointer data)
+menu_toplevel_set_pixmap (BonoboUIHandler *uih, const char *path,
+			  BonoboUIHandlerPixmapType type, gpointer data)
 {
 	MenuItemInternal *internal;
 
 	internal = menu_toplevel_get_item_for_containee (uih, path,
-							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+							 bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	g_return_if_fail (internal != NULL);
 
 	menu_toplevel_set_pixmap_internal (uih, internal, type, data);
 }
 
 static void
-menu_remote_set_pixmap (GnomeUIHandler *uih, const char *path,
-			GnomeUIHandlerPixmapType type, gpointer data)
+menu_remote_set_pixmap (BonoboUIHandler *uih, const char *path,
+			BonoboUIHandlerPixmapType type, gpointer data)
 {
-	GNOME_UIHandler_iobuf *pixmap_buff;
+	Bonobo_UIHandler_iobuf *pixmap_buff;
 	CORBA_Environment ev;
 
 	pixmap_buff = pixmap_data_to_corba (type, data);
 	
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_menu_set_data (uih->top_level_uih,
-				       gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_menu_set_data (uih->top_level_uih,
+				       bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 				       path,
 				       pixmap_type_to_corba (type),
 				       pixmap_buff,
 				       &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 	}
 
@@ -4861,27 +4834,21 @@ menu_remote_set_pixmap (GnomeUIHandler *uih, const char *path,
 
 static void
 impl_menu_set_data (PortableServer_Servant       servant,
-		    GNOME_UIHandler              containee_uih,
+		    Bonobo_UIHandler              containee_uih,
 		    const CORBA_char            *path,
-		    GNOME_UIHandler_PixmapType   corba_pixmap_type,
-		    const GNOME_UIHandler_iobuf *corba_pixmap_data,
+		    Bonobo_UIHandler_PixmapType   corba_pixmap_type,
+		    const Bonobo_UIHandler_iobuf *corba_pixmap_data,
 		    CORBA_Environment           *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemInternal *internal;
 	
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
 	
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 	
 	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
+		/* FIXME: Set exception. */
 		return;
 	}
 	
@@ -4893,10 +4860,10 @@ impl_menu_set_data (PortableServer_Servant       servant,
 
 static void
 impl_menu_get_data (PortableServer_Servant      servant,
-		    GNOME_UIHandler              containee_uih,
+		    Bonobo_UIHandler              containee_uih,
 		    const CORBA_char           *path,
-		    GNOME_UIHandler_PixmapType *corba_pixmap_type,
-		    GNOME_UIHandler_iobuf     **corba_pixmap_data,
+		    Bonobo_UIHandler_PixmapType *corba_pixmap_type,
+		    Bonobo_UIHandler_iobuf     **corba_pixmap_data,
 		    CORBA_Environment          *ev)
 {
 	/* FIXME: Implement me! */
@@ -4904,14 +4871,14 @@ impl_menu_get_data (PortableServer_Servant      servant,
 }
 
 /**
- * gnome_ui_handler_menu_set_pixmap:
+ * bonobo_ui_handler_menu_set_pixmap:
  */
 void
-gnome_ui_handler_menu_set_pixmap (GnomeUIHandler *uih, const char *path,
-				  GnomeUIHandlerPixmapType type, gpointer data)
+bonobo_ui_handler_menu_set_pixmap (BonoboUIHandler *uih, const char *path,
+				  BonoboUIHandlerPixmapType type, gpointer data)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (data != NULL);
 
@@ -4924,8 +4891,8 @@ gnome_ui_handler_menu_set_pixmap (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-menu_toplevel_get_pixmap (GnomeUIHandler *uih, const char *path,
-			  GnomeUIHandlerPixmapType *type, gpointer *data)
+menu_toplevel_get_pixmap (BonoboUIHandler *uih, const char *path,
+			  BonoboUIHandlerPixmapType *type, gpointer *data)
 {
 	MenuItemInternal *internal;
 
@@ -4937,22 +4904,22 @@ menu_toplevel_get_pixmap (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-menu_remote_get_pixmap (GnomeUIHandler *uih, const char *path,
-			GnomeUIHandlerPixmapType *type, gpointer *data)
+menu_remote_get_pixmap (BonoboUIHandler *uih, const char *path,
+			BonoboUIHandlerPixmapType *type, gpointer *data)
 {
 	/* FIXME: Implement me! */
 	g_warning ("Unimplemented: remote get pixmap");
 }
 
 /**
- * gnome_ui_handler_get_pixmap:
+ * bonobo_ui_handler_get_pixmap:
  */
 void
-gnome_ui_handler_menu_get_pixmap (GnomeUIHandler *uih, const char *path,
-				  GnomeUIHandlerPixmapType *type, gpointer *data)
+bonobo_ui_handler_menu_get_pixmap (BonoboUIHandler *uih, const char *path,
+				  BonoboUIHandlerPixmapType *type, gpointer *data)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (type != NULL);
 	g_return_if_fail (data != NULL);
@@ -4966,7 +4933,7 @@ gnome_ui_handler_menu_get_pixmap (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-menu_toplevel_set_accel_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+menu_toplevel_set_accel_internal (BonoboUIHandler *uih, MenuItemInternal *internal,
 				  guint accelerator_key, GdkModifierType ac_mods)
 {
 	GtkWidget *menu_widget;
@@ -4982,27 +4949,27 @@ menu_toplevel_set_accel_internal (GnomeUIHandler *uih, MenuItemInternal *interna
 }
 
 static void
-menu_toplevel_set_accel (GnomeUIHandler *uih, const char *path,
+menu_toplevel_set_accel (BonoboUIHandler *uih, const char *path,
 			 guint accelerator_key, GdkModifierType ac_mods)
 {
 	MenuItemInternal *internal;
 
 	internal = menu_toplevel_get_item_for_containee (uih, path,
-							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+							 bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	g_return_if_fail (internal != NULL);
 
 	menu_toplevel_set_accel_internal (uih, internal, accelerator_key, ac_mods);
 }
 
 static void
-menu_remote_set_accel (GnomeUIHandler *uih, const char *path,
+menu_remote_set_accel (BonoboUIHandler *uih, const char *path,
 		       guint accelerator_key, GdkModifierType ac_mods)
 {
 	UIRemoteAttributeData *attrs;
 	
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (path != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 
 	attrs = menu_remote_attribute_data_get (uih, path);
 	if (!attrs)
@@ -5013,7 +4980,7 @@ menu_remote_set_accel (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-toolbar_item_remote_set_accel (GnomeUIHandler *uih, const char *path,
+toolbar_item_remote_set_accel (BonoboUIHandler *uih, const char *path,
 			       guint accelerator_key, GdkModifierType ac_mods)
 {
 	UIRemoteAttributeData *attrs;
@@ -5027,14 +4994,14 @@ toolbar_item_remote_set_accel (GnomeUIHandler *uih, const char *path,
 }
 
 /**
- * gnome_ui_handler_menu_set_accel:
+ * bonobo_ui_handler_menu_set_accel:
  */
 void
-gnome_ui_handler_menu_set_accel (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_set_accel (BonoboUIHandler *uih, const char *path,
 				 guint accelerator_key, GdkModifierType ac_mods)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
@@ -5046,7 +5013,7 @@ gnome_ui_handler_menu_set_accel (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-menu_toplevel_get_accel (GnomeUIHandler *uih, const char *path,
+menu_toplevel_get_accel (BonoboUIHandler *uih, const char *path,
 			 guint *accelerator_key, GdkModifierType *ac_mods)
 {
 	MenuItemInternal *internal;
@@ -5059,7 +5026,7 @@ menu_toplevel_get_accel (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-menu_remote_get_accel (GnomeUIHandler *uih, const char *path,
+menu_remote_get_accel (BonoboUIHandler *uih, const char *path,
 		       guint *accelerator_key, GdkModifierType *ac_mods)
 {
 	UIRemoteAttributeData *attrs;
@@ -5077,7 +5044,7 @@ menu_remote_get_accel (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-toolbar_item_remote_get_accel (GnomeUIHandler *uih, const char *path,
+toolbar_item_remote_get_accel (BonoboUIHandler *uih, const char *path,
 			       guint *accelerator_key, GdkModifierType *ac_mods)
 {
 	UIRemoteAttributeData *attrs;
@@ -5095,14 +5062,14 @@ toolbar_item_remote_get_accel (GnomeUIHandler *uih, const char *path,
 }
 
 /**
- * gnome_ui_handler_menu_get_accel:
+ * bonobo_ui_handler_menu_get_accel:
  */
 void
-gnome_ui_handler_menu_get_accel (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_get_accel (BonoboUIHandler *uih, const char *path,
 				 guint *accelerator_key, GdkModifierType *ac_mods)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (accelerator_key != NULL);
 	g_return_if_fail (ac_mods != NULL);
@@ -5116,8 +5083,8 @@ gnome_ui_handler_menu_get_accel (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-menu_local_set_callback (GnomeUIHandler *uih, const char *path,
-			 GnomeUIHandlerCallbackFunc callback,
+menu_local_set_callback (BonoboUIHandler *uih, const char *path,
+			 BonoboUIHandlerCallbackFunc callback,
 			 gpointer callback_data)
 {
 	MenuItemLocalInternal *internal_cb;
@@ -5136,23 +5103,23 @@ menu_local_set_callback (GnomeUIHandler *uih, const char *path,
 
 
 /**
- * gnome_ui_handler_menu_set_callback:
+ * bonobo_ui_handler_menu_set_callback:
  */
 void
-gnome_ui_handler_menu_set_callback (GnomeUIHandler *uih, const char *path,
-				    GnomeUIHandlerCallbackFunc callback,
+bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
+				    BonoboUIHandlerCallbackFunc callback,
 				    gpointer callback_data)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	menu_local_set_callback (uih, path, callback, callback_data);
 }
 
 static void
-menu_local_get_callback (GnomeUIHandler *uih, const char *path,
-			 GnomeUIHandlerCallbackFunc *callback,
+menu_local_get_callback (BonoboUIHandler *uih, const char *path,
+			 BonoboUIHandlerCallbackFunc *callback,
 			 gpointer *callback_data)
 {
 	MenuItemLocalInternal *internal_cb;
@@ -5164,15 +5131,15 @@ menu_local_get_callback (GnomeUIHandler *uih, const char *path,
 }
 
 /**
- * gnome_ui_handler_menu_get_callback:
+ * bonobo_ui_handler_menu_get_callback:
  */
 void
-gnome_ui_handler_menu_get_callback (GnomeUIHandler *uih, const char *path,
-				    GnomeUIHandlerCallbackFunc *callback,
+bonobo_ui_handler_menu_get_callback (BonoboUIHandler *uih, const char *path,
+				    BonoboUIHandlerCallbackFunc *callback,
 				    gpointer *callback_data)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (callback != NULL);
 	g_return_if_fail (callback_data != NULL);
@@ -5181,7 +5148,7 @@ gnome_ui_handler_menu_get_callback (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-menu_toplevel_set_toggle_state_internal (GnomeUIHandler *uih, MenuItemInternal *internal, gboolean state)
+menu_toplevel_set_toggle_state_internal (BonoboUIHandler *uih, MenuItemInternal *internal, gboolean state)
 {
 	GtkWidget *menu_widget;
 
@@ -5204,20 +5171,20 @@ menu_toplevel_set_toggle_state_internal (GnomeUIHandler *uih, MenuItemInternal *
 }
 
 static void
-menu_toplevel_set_toggle_state (GnomeUIHandler *uih, const char *path,
+menu_toplevel_set_toggle_state (BonoboUIHandler *uih, const char *path,
 				gboolean state)
 {
 	MenuItemInternal *internal;
 
 	internal = menu_toplevel_get_item_for_containee (uih, path,
-							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+							 bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	g_return_if_fail (internal != NULL);
 
 	menu_toplevel_set_toggle_state_internal (uih, internal, state);
 }
 
 static void
-menu_remote_set_toggle_state (GnomeUIHandler *uih, const char *path,
+menu_remote_set_toggle_state (BonoboUIHandler *uih, const char *path,
 			      gboolean state)
 {
 	UIRemoteAttributeData *attrs;
@@ -5230,7 +5197,7 @@ menu_remote_set_toggle_state (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-toolbar_item_remote_set_toggle_state (GnomeUIHandler *uih, const char *path,
+toolbar_item_remote_set_toggle_state (BonoboUIHandler *uih, const char *path,
 				      gboolean state)
 {
 	UIRemoteAttributeData *attrs;
@@ -5243,14 +5210,14 @@ toolbar_item_remote_set_toggle_state (GnomeUIHandler *uih, const char *path,
 }
 
 /**
- * gnome_ui_handler_menu_set_toggle_state:
+ * bonobo_ui_handler_menu_set_toggle_state:
  */
 void
-gnome_ui_handler_menu_set_toggle_state (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_set_toggle_state (BonoboUIHandler *uih, const char *path,
 					gboolean state)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
@@ -5262,7 +5229,7 @@ gnome_ui_handler_menu_set_toggle_state (GnomeUIHandler *uih, const char *path,
 }
 
 static gboolean
-menu_toplevel_get_toggle_state (GnomeUIHandler *uih, const char *path)
+menu_toplevel_get_toggle_state (BonoboUIHandler *uih, const char *path)
 {
 	MenuItemInternal *internal;
 
@@ -5273,7 +5240,7 @@ menu_toplevel_get_toggle_state (GnomeUIHandler *uih, const char *path)
 }
 
 static gboolean
-menu_remote_get_toggle_state (GnomeUIHandler *uih, const char *path)
+menu_remote_get_toggle_state (BonoboUIHandler *uih, const char *path)
 {
 	UIRemoteAttributeData *attrs;
 	gboolean                 ans;
@@ -5290,13 +5257,13 @@ menu_remote_get_toggle_state (GnomeUIHandler *uih, const char *path)
 }
 
 /**
- * gnome_ui_handler_menu_get_toggle_state:
+ * bonobo_ui_handler_menu_get_toggle_state:
  */
 gboolean
-gnome_ui_handler_menu_get_toggle_state (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_menu_get_toggle_state (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, FALSE);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
@@ -5306,47 +5273,47 @@ gnome_ui_handler_menu_get_toggle_state (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-menu_toplevel_set_radio_state_internal (GnomeUIHandler *uih, MenuItemInternal *internal, gboolean state)
+menu_toplevel_set_radio_state_internal (BonoboUIHandler *uih, MenuItemInternal *internal, gboolean state)
 {
 	menu_toplevel_set_toggle_state_internal (uih, internal, state);
 }
 
 static void
-menu_toplevel_set_radio_state (GnomeUIHandler *uih, const char *path,
+menu_toplevel_set_radio_state (BonoboUIHandler *uih, const char *path,
 			       gboolean state)
 {
 	MenuItemInternal *internal;
 
 	internal = menu_toplevel_get_item_for_containee (uih, path,
-							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+							 bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	g_return_if_fail (internal != NULL);
 	
 	menu_toplevel_set_radio_state_internal (uih, internal, state);
 }
 
 static void
-menu_remote_set_radio_state (GnomeUIHandler *uih, const char *path,
+menu_remote_set_radio_state (BonoboUIHandler *uih, const char *path,
 			     gboolean state)
 {
 	menu_remote_set_toggle_state (uih, path, state);
 }
 
 static void
-toolbar_item_remote_set_radio_state (GnomeUIHandler *uih, const char *path,
+toolbar_item_remote_set_radio_state (BonoboUIHandler *uih, const char *path,
 				     gboolean state)
 {
 	toolbar_item_remote_set_toggle_state (uih, path, state);
 }
 
 /**
- * gnome_ui_handler_menu_set_radio_state:
+ * bonobo_ui_handler_menu_set_radio_state:
  */
 void
-gnome_ui_handler_menu_set_radio_state (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_menu_set_radio_state (BonoboUIHandler *uih, const char *path,
 				       gboolean state)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
@@ -5358,25 +5325,25 @@ gnome_ui_handler_menu_set_radio_state (GnomeUIHandler *uih, const char *path,
 }
 
 static gboolean
-menu_toplevel_get_radio_state (GnomeUIHandler *uih, const char *path)
+menu_toplevel_get_radio_state (BonoboUIHandler *uih, const char *path)
 {
 	return menu_toplevel_get_toggle_state (uih, path);
 }
 
 static gboolean
-menu_remote_get_radio_state (GnomeUIHandler *uih, const char *path)
+menu_remote_get_radio_state (BonoboUIHandler *uih, const char *path)
 {
 	return menu_remote_get_toggle_state (uih, path);
 }
 
 /**
- * gnome_ui_handler_menu_get_radio_state:
+ * bonobo_ui_handler_menu_get_radio_state:
  */
 gboolean
-gnome_ui_handler_menu_get_radio_state (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_menu_get_radio_state (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, FALSE);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
@@ -5387,7 +5354,7 @@ gnome_ui_handler_menu_get_radio_state (GnomeUIHandler *uih, const char *path)
 
 static void
 impl_menu_set_attributes (PortableServer_Servant servant,
-			  const GNOME_UIHandler  containee_uih,
+			  const Bonobo_UIHandler  containee_uih,
 			  const CORBA_char      *path,
 			  CORBA_boolean          sensitive,
 			  CORBA_long             pos,
@@ -5398,15 +5365,10 @@ impl_menu_set_attributes (PortableServer_Servant servant,
 			  CORBA_boolean          toggle_state,
 			  CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemInternal *internal;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
 
 	/*
 	 * Get the menu item matching this path belonging to this
@@ -5415,8 +5377,7 @@ impl_menu_set_attributes (PortableServer_Servant servant,
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 
 	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
+		/* FIXME: Set exception. */
 		return;
 	}
 
@@ -5431,7 +5392,7 @@ impl_menu_set_attributes (PortableServer_Servant servant,
 
 static void
 impl_menu_get_attributes (PortableServer_Servant servant,
-			  const GNOME_UIHandler  containee_uih,
+			  const Bonobo_UIHandler  containee_uih,
 			  const CORBA_char      *path,
 			  CORBA_boolean         *sensitive,
 			  CORBA_long            *pos,
@@ -5442,21 +5403,15 @@ impl_menu_get_attributes (PortableServer_Servant servant,
 			  CORBA_boolean         *toggle_state,
 			  CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemInternal *internal;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
 
 	internal = menu_toplevel_get_item (uih, path);
 
 	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
+		/* FIXME: Set exception. */
 		return;
 	}
 
@@ -5482,19 +5437,19 @@ impl_menu_get_attributes (PortableServer_Servant servant,
  * toolbars.
  */
 
-static GnomeUIHandlerToolbarItem *
-toolbar_make_item (const char *path, GnomeUIHandlerToolbarItemType type,
+static BonoboUIHandlerToolbarItem *
+toolbar_make_item (const char *path, BonoboUIHandlerToolbarItemType type,
 		   const char *label, const char *hint, int pos,
-		   const GNOME_Control control,
-		   GnomeUIHandlerPixmapType pixmap_type,
+		   const Bonobo_Control control,
+		   BonoboUIHandlerPixmapType pixmap_type,
 		   gconstpointer pixmap_data, guint accelerator_key,
 		   GdkModifierType ac_mods,
-		   GnomeUIHandlerCallbackFunc callback,
+		   BonoboUIHandlerCallbackFunc callback,
 		   gpointer callback_data)
 {
-	GnomeUIHandlerToolbarItem *item;
+	BonoboUIHandlerToolbarItem *item;
 
-	item = g_new0 (GnomeUIHandlerToolbarItem, 1);
+	item = g_new0 (BonoboUIHandlerToolbarItem, 1);
 
 	item->path = path;
 	item->type = type;
@@ -5512,13 +5467,13 @@ toolbar_make_item (const char *path, GnomeUIHandlerToolbarItemType type,
 	return item;
 }
 
-static GnomeUIHandlerToolbarItem *
-toolbar_copy_item (GnomeUIHandlerToolbarItem *item)
+static BonoboUIHandlerToolbarItem *
+toolbar_copy_item (BonoboUIHandlerToolbarItem *item)
 {
-	GnomeUIHandlerToolbarItem *copy;
+	BonoboUIHandlerToolbarItem *copy;
 	CORBA_Environment ev;
 
-	copy = g_new0 (GnomeUIHandlerToolbarItem, 1);
+	copy = g_new0 (BonoboUIHandlerToolbarItem, 1);
 
 	copy->path = COPY_STRING (item->path);
 	copy->type = item->type;
@@ -5544,7 +5499,7 @@ toolbar_copy_item (GnomeUIHandlerToolbarItem *item)
 }
 
 static void
-toolbar_free_data (GnomeUIHandlerToolbarItem *item)
+toolbar_free_data (BonoboUIHandlerToolbarItem *item)
 {
 	g_free (item->path);
 	item->path = NULL;
@@ -5559,82 +5514,82 @@ toolbar_free_data (GnomeUIHandlerToolbarItem *item)
 }
 
 static void
-toolbar_free (GnomeUIHandlerToolbarItem *item)
+toolbar_free (BonoboUIHandlerToolbarItem *item)
 {
 	toolbar_free_data (item);
 	g_free (item);
 }
 
-static GNOME_UIHandler_ToolbarType
-toolbar_type_to_corba (GnomeUIHandlerToolbarItemType type)
+static Bonobo_UIHandler_ToolbarType
+toolbar_type_to_corba (BonoboUIHandlerToolbarItemType type)
 {
 	switch (type) {
-	case GNOME_UI_HANDLER_TOOLBAR_END:
+	case BONOBO_UI_HANDLER_TOOLBAR_END:
 		g_warning ("Passing ToolbarTypeEnd through CORBA!\n");
-		return GNOME_UIHandler_ToolbarTypeEnd;
+		return Bonobo_UIHandler_ToolbarTypeEnd;
 
-	case GNOME_UI_HANDLER_TOOLBAR_ITEM:
-		return GNOME_UIHandler_ToolbarTypeItem;
+	case BONOBO_UI_HANDLER_TOOLBAR_ITEM:
+		return Bonobo_UIHandler_ToolbarTypeItem;
 
-	case GNOME_UI_HANDLER_TOOLBAR_RADIOITEM:
-		return GNOME_UIHandler_ToolbarTypeRadioItem;
+	case BONOBO_UI_HANDLER_TOOLBAR_RADIOITEM:
+		return Bonobo_UIHandler_ToolbarTypeRadioItem;
 
-	case GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP:
-		return GNOME_UIHandler_ToolbarTypeRadioGroup;
+	case BONOBO_UI_HANDLER_TOOLBAR_RADIOGROUP:
+		return Bonobo_UIHandler_ToolbarTypeRadioGroup;
 
-	case GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM:
-		return GNOME_UIHandler_ToolbarTypeToggleItem;
+	case BONOBO_UI_HANDLER_TOOLBAR_TOGGLEITEM:
+		return Bonobo_UIHandler_ToolbarTypeToggleItem;
 
-	case GNOME_UI_HANDLER_TOOLBAR_SEPARATOR:
-		return GNOME_UIHandler_ToolbarTypeSeparator;
+	case BONOBO_UI_HANDLER_TOOLBAR_SEPARATOR:
+		return Bonobo_UIHandler_ToolbarTypeSeparator;
 
-	case GNOME_UI_HANDLER_TOOLBAR_CONTROL:
-		return GNOME_UIHandler_ToolbarTypeControl;
+	case BONOBO_UI_HANDLER_TOOLBAR_CONTROL:
+		return Bonobo_UIHandler_ToolbarTypeControl;
 
 	default:
 		g_warning ("toolbar_type_to_corba: Unknown toolbar type [%d]!\n", (gint) type);
 	}
 
-	return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+	return BONOBO_UI_HANDLER_TOOLBAR_ITEM;
 }
 
-static GnomeUIHandlerToolbarItemType
-toolbar_corba_to_type (GNOME_UIHandler_ToolbarType type)
+static BonoboUIHandlerToolbarItemType
+toolbar_corba_to_type (Bonobo_UIHandler_ToolbarType type)
 {
 	switch (type) {
-	case GNOME_UIHandler_ToolbarTypeEnd:
+	case Bonobo_UIHandler_ToolbarTypeEnd:
 		g_warning ("Passing ToolbarTypeEnd through CORBA!\n");
-		return GNOME_UI_HANDLER_TOOLBAR_END;
+		return BONOBO_UI_HANDLER_TOOLBAR_END;
 
-	case GNOME_UIHandler_ToolbarTypeItem:
-		return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+	case Bonobo_UIHandler_ToolbarTypeItem:
+		return BONOBO_UI_HANDLER_TOOLBAR_ITEM;
 
-	case GNOME_UIHandler_ToolbarTypeRadioItem:
-		return GNOME_UI_HANDLER_TOOLBAR_RADIOITEM;
+	case Bonobo_UIHandler_ToolbarTypeRadioItem:
+		return BONOBO_UI_HANDLER_TOOLBAR_RADIOITEM;
 
-	case GNOME_UIHandler_ToolbarTypeRadioGroup:
-		return GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP;
+	case Bonobo_UIHandler_ToolbarTypeRadioGroup:
+		return BONOBO_UI_HANDLER_TOOLBAR_RADIOGROUP;
 
-	case GNOME_UIHandler_ToolbarTypeSeparator:
-		return GNOME_UI_HANDLER_TOOLBAR_SEPARATOR;
+	case Bonobo_UIHandler_ToolbarTypeSeparator:
+		return BONOBO_UI_HANDLER_TOOLBAR_SEPARATOR;
 
-	case GNOME_UIHandler_ToolbarTypeToggleItem:
-		return GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM;
+	case Bonobo_UIHandler_ToolbarTypeToggleItem:
+		return BONOBO_UI_HANDLER_TOOLBAR_TOGGLEITEM;
 
-	case GNOME_UIHandler_ToolbarTypeControl:
-		return GNOME_UI_HANDLER_TOOLBAR_CONTROL;
+	case Bonobo_UIHandler_ToolbarTypeControl:
+		return BONOBO_UI_HANDLER_TOOLBAR_CONTROL;
 
 	default:
 		g_warning ("toolbar_corba_to_type: Unknown toolbar type [%d]!\n", (gint) type);
 			
 	}
 
-	return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+	return BONOBO_UI_HANDLER_TOOLBAR_ITEM;
 }
 
 
 static ToolbarItemLocalInternal *
-toolbar_local_get_item (GnomeUIHandler *uih, const char *path)
+toolbar_local_get_item (BonoboUIHandler *uih, const char *path)
 {
 	GList *l;
 
@@ -5647,19 +5602,19 @@ toolbar_local_get_item (GnomeUIHandler *uih, const char *path)
 }
 
 inline static GtkWidget *
-toolbar_toplevel_item_get_widget (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_item_get_widget (BonoboUIHandler *uih, const char *path)
 {
 	return g_hash_table_lookup (uih->top->path_to_toolbar_item_widget, path);
 }
 
 inline static GtkWidget *
-toolbar_toplevel_get_widget (GnomeUIHandler *uih, const char *name)
+toolbar_toplevel_get_widget (BonoboUIHandler *uih, const char *name)
 {
 	return g_hash_table_lookup (uih->top->name_to_toolbar_widget, name);
 }
 
 static ToolbarToolbarLocalInternal *
-toolbar_local_get_toolbar (GnomeUIHandler *uih, const char *path)
+toolbar_local_get_toolbar (BonoboUIHandler *uih, const char *path)
 {
 	GList *l;
 
@@ -5672,7 +5627,7 @@ toolbar_local_get_toolbar (GnomeUIHandler *uih, const char *path)
 }
 
 static ToolbarToolbarInternal *
-toolbar_toplevel_get_toolbar (GnomeUIHandler *uih, const char *name)
+toolbar_toplevel_get_toolbar (BonoboUIHandler *uih, const char *name)
 {
 	GList *l;
 	
@@ -5685,7 +5640,7 @@ toolbar_toplevel_get_toolbar (GnomeUIHandler *uih, const char *name)
 }
 
 static ToolbarItemInternal *
-toolbar_toplevel_get_item (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_get_item (BonoboUIHandler *uih, const char *path)
 {
 	GList *l;
 
@@ -5698,8 +5653,8 @@ toolbar_toplevel_get_item (GnomeUIHandler *uih, const char *path)
 }
 
 static ToolbarItemInternal *
-toolbar_toplevel_get_item_for_containee (GnomeUIHandler *uih, const char *path,
-					 GNOME_UIHandler uih_corba)
+toolbar_toplevel_get_item_for_containee (BonoboUIHandler *uih, const char *path,
+					 Bonobo_UIHandler uih_corba)
 {
 	GList *l, *curr;
 
@@ -5726,7 +5681,7 @@ toolbar_toplevel_get_item_for_containee (GnomeUIHandler *uih, const char *path,
 }
 
 static gboolean
-toolbar_toplevel_item_is_head (GnomeUIHandler *uih, ToolbarItemInternal *internal)
+toolbar_toplevel_item_is_head (BonoboUIHandler *uih, ToolbarItemInternal *internal)
 {
 	GList *l;
 
@@ -5758,7 +5713,7 @@ toolbar_get_toolbar_name (const char *path)
 }
 
 static void
-toolbar_toplevel_toolbar_create_widget (GnomeUIHandler *uih, ToolbarToolbarInternal *internal)
+toolbar_toplevel_toolbar_create_widget (BonoboUIHandler *uih, ToolbarToolbarInternal *internal)
 {
 	GtkWidget *toolbar_widget;
 
@@ -5781,7 +5736,7 @@ toolbar_toplevel_toolbar_create_widget (GnomeUIHandler *uih, ToolbarToolbarInter
 }
 
 static void
-toolbar_toplevel_item_remove_widgets (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_item_remove_widgets (BonoboUIHandler *uih, const char *path)
 {
 	GtkWidget *toolbar_item_widget;
 	gboolean found;
@@ -5804,7 +5759,7 @@ toolbar_toplevel_item_remove_widgets (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-toolbar_toplevel_item_remove_widgets_recursive (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_item_remove_widgets_recursive (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarItemInternal *internal;
 
@@ -5822,7 +5777,7 @@ toolbar_toplevel_item_remove_widgets_recursive (GnomeUIHandler *uih, const char 
 }
 
 static void
-toolbar_local_toolbar_create (GnomeUIHandler *uih, const char *name)
+toolbar_local_toolbar_create (BonoboUIHandler *uih, const char *name)
 {
 	ToolbarToolbarLocalInternal *internal;
 	GList *l;
@@ -5841,7 +5796,7 @@ toolbar_local_toolbar_create (GnomeUIHandler *uih, const char *name)
 }
 
 static void
-toolbar_toplevel_toolbar_remove_widgets_recursive (GnomeUIHandler *uih, const char *name)
+toolbar_toplevel_toolbar_remove_widgets_recursive (BonoboUIHandler *uih, const char *name)
 {
 	ToolbarToolbarInternal *internal;
 	GtkWidget *toolbar_widget;
@@ -5880,7 +5835,7 @@ toolbar_toplevel_toolbar_remove_widgets_recursive (GnomeUIHandler *uih, const ch
 }
 
 static void
-toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_item_override_notify (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarItemInternal *internal;
 	CORBA_Environment ev;
@@ -5890,10 +5845,10 @@ toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, const char *path)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_overridden (internal->uih_corba, path, &ev);
+	Bonobo_UIHandler_toolbar_overridden (internal->uih_corba, path, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 	}
 
@@ -5901,7 +5856,7 @@ toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-toolbar_toplevel_item_override_notify_recursive (GnomeUIHandler *uih,
+toolbar_toplevel_item_override_notify_recursive (BonoboUIHandler *uih,
 						 const char *path)
 {
 	ToolbarItemInternal *internal;
@@ -5919,7 +5874,7 @@ toolbar_toplevel_item_override_notify_recursive (GnomeUIHandler *uih,
 }
 
 static void
-toolbar_toplevel_toolbar_override_notify_recursive (GnomeUIHandler *uih, const char *name)
+toolbar_toplevel_toolbar_override_notify_recursive (BonoboUIHandler *uih, const char *name)
 {
 	ToolbarToolbarInternal *internal;
 	CORBA_Environment ev;
@@ -5932,10 +5887,10 @@ toolbar_toplevel_toolbar_override_notify_recursive (GnomeUIHandler *uih, const c
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_overridden (internal->uih_corba, toolbar_path, &ev);
+	Bonobo_UIHandler_toolbar_overridden (internal->uih_corba, toolbar_path, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) internal->uih_corba, &ev);
 	}
 
@@ -5948,7 +5903,7 @@ toolbar_toplevel_toolbar_override_notify_recursive (GnomeUIHandler *uih, const c
 }
 
 static void
-toolbar_toplevel_toolbar_check_override (GnomeUIHandler *uih, const char *name)
+toolbar_toplevel_toolbar_check_override (BonoboUIHandler *uih, const char *name)
 {
 	ToolbarToolbarInternal *internal;
 
@@ -5977,7 +5932,7 @@ toolbar_toplevel_toolbar_check_override (GnomeUIHandler *uih, const char *name)
 }
 
 static ToolbarToolbarInternal *
-toolbar_toplevel_toolbar_store_data (GnomeUIHandler *uih, const char *name, GNOME_UIHandler uih_corba)
+toolbar_toplevel_toolbar_store_data (BonoboUIHandler *uih, const char *name, Bonobo_UIHandler uih_corba)
 {
 	ToolbarToolbarInternal *internal;
 	CORBA_Environment ev;
@@ -6028,8 +5983,8 @@ toolbar_toplevel_toolbar_store_data (GnomeUIHandler *uih, const char *name, GNOM
 }
 
 static void
-toolbar_toplevel_toolbar_create (GnomeUIHandler *uih, const char *name,
-				 GNOME_UIHandler uih_corba)
+toolbar_toplevel_toolbar_create (BonoboUIHandler *uih, const char *name,
+				 Bonobo_UIHandler uih_corba)
 {
 	ToolbarToolbarInternal *internal;
 
@@ -6051,18 +6006,18 @@ toolbar_toplevel_toolbar_create (GnomeUIHandler *uih, const char *name,
 }
 
 static void
-toolbar_remote_toolbar_create (GnomeUIHandler *uih, const char *name)
+toolbar_remote_toolbar_create (BonoboUIHandler *uih, const char *name)
 {
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_create (uih->top_level_uih,
-					gnome_object_corba_objref (GNOME_OBJECT (uih)), name,
+	Bonobo_UIHandler_toolbar_create (uih->top_level_uih,
+					bonobo_object_corba_objref (BONOBO_OBJECT (uih)), name,
 					&ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 	}
 
@@ -6071,23 +6026,17 @@ toolbar_remote_toolbar_create (GnomeUIHandler *uih, const char *name)
 
 static void
 impl_toolbar_create (PortableServer_Servant servant,
-		     const GNOME_UIHandler  containee,
+		     const Bonobo_UIHandler  containee,
 		     const CORBA_char      *name,
 		     CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
 	toolbar_toplevel_toolbar_create (uih, name, containee);
 }
 
 /**
- * gnome_ui_handler_create_toolbar:
+ * bonobo_ui_handler_create_toolbar:
  * @uih: UI handle
  * @name: Name of toolbar eg. 'pdf', must not
  * include leading or trailing '/'s
@@ -6098,10 +6047,10 @@ impl_toolbar_create (PortableServer_Servant servant,
  * 
  **/
 void
-gnome_ui_handler_create_toolbar (GnomeUIHandler *uih, const char *name)
+bonobo_ui_handler_create_toolbar (BonoboUIHandler *uih, const char *name)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (name != NULL);
 	g_return_if_fail (name[0] != '/');
 
@@ -6112,28 +6061,28 @@ gnome_ui_handler_create_toolbar (GnomeUIHandler *uih, const char *name)
 		return;
 	}
 
-	toolbar_toplevel_toolbar_create (uih, name, gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	toolbar_toplevel_toolbar_create (uih, name, bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 }
 
 static void
-toolbar_toplevel_toolbar_remove (GnomeUIHandler *uih, const char *name)
+toolbar_toplevel_toolbar_remove (BonoboUIHandler *uih, const char *name)
 {
 	g_warning ("toolbar remove unimplemented");
 }
 
 static void
-toolbar_remote_toolbar_remove (GnomeUIHandler *uih, const char *name)
+toolbar_remote_toolbar_remove (BonoboUIHandler *uih, const char *name)
 {
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_remove (uih->top_level_uih,
-					gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_toolbar_remove (uih->top_level_uih,
+					bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 					name, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 	}
 
@@ -6142,23 +6091,23 @@ toolbar_remote_toolbar_remove (GnomeUIHandler *uih, const char *name)
 
 static void
 impl_toolbar_remove (PortableServer_Servant servant,
-		     GNOME_UIHandler        containee,
+		     Bonobo_UIHandler        containee,
 		     const CORBA_char      *name,
 		     CORBA_Environment     *ev)
 {
-/*	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));*/
+/*	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));*/
 
 	g_warning ("toolbar remove unimplemented");
 }
 
 /**
- * gnome_ui_handler_remove_toolbar:
+ * bonobo_ui_handler_remove_toolbar:
  */
 void
-gnome_ui_handler_remove_toolbar (GnomeUIHandler *uih, const char *name)
+bonobo_ui_handler_remove_toolbar (BonoboUIHandler *uih, const char *name)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (name != NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
@@ -6168,36 +6117,36 @@ gnome_ui_handler_remove_toolbar (GnomeUIHandler *uih, const char *name)
 }
 
 void
-gnome_ui_handler_set_toolbar (GnomeUIHandler *uih, const char *name,
+bonobo_ui_handler_set_toolbar (BonoboUIHandler *uih, const char *name,
 			      GtkWidget *toolbar)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (name != NULL);
 	g_return_if_fail (toolbar != NULL);
 	g_return_if_fail (GTK_IS_TOOLBAR (toolbar));
 }
 
 /**
- * gnome_ui_handler_get_toolbar_list:
+ * bonobo_ui_handler_get_toolbar_list:
  */
 GList *
-gnome_ui_handler_get_toolbar_list (GnomeUIHandler *uih)
+bonobo_ui_handler_get_toolbar_list (BonoboUIHandler *uih)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 
 	return NULL;
 }
 
 static void
-toolbar_local_do_path (const char *parent_path, GnomeUIHandlerToolbarItem *item)
+toolbar_local_do_path (const char *parent_path, BonoboUIHandlerToolbarItem *item)
 {
 	uih_local_do_path (parent_path, item->label, & item->path);
 }
 
 static void
-toolbar_local_remove_parent_entry (GnomeUIHandler *uih, const char *path,
+toolbar_local_remove_parent_entry (BonoboUIHandler *uih, const char *path,
 				   gboolean warn)
 {
 	ToolbarToolbarLocalInternal *parent;
@@ -6225,7 +6174,7 @@ toolbar_local_remove_parent_entry (GnomeUIHandler *uih, const char *path,
 }
 
 static void
-toolbar_local_add_parent_entry (GnomeUIHandler *uih, const char *path)
+toolbar_local_add_parent_entry (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarToolbarLocalInternal *parent_internal_cb;
 	char *parent_name;
@@ -6248,8 +6197,8 @@ toolbar_local_add_parent_entry (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-toolbar_local_create_item (GnomeUIHandler *uih, const char *parent_path,
-			   GnomeUIHandlerToolbarItem *item)
+toolbar_local_create_item (BonoboUIHandler *uih, const char *parent_path,
+			   BonoboUIHandlerToolbarItem *item)
 {
 	ToolbarItemLocalInternal *internal_cb;
 	GList *l, *new_list;
@@ -6285,7 +6234,7 @@ impl_toolbar_overridden (PortableServer_Servant servant,
 			 const CORBA_char      *path,
 			 CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemLocalInternal *internal_cb;
 	char *parent_path;
 
@@ -6303,7 +6252,7 @@ impl_toolbar_overridden (PortableServer_Servant servant,
 }
 
 static void
-toolbar_toplevel_item_check_override (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_item_check_override (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarItemInternal *internal;
 
@@ -6324,10 +6273,10 @@ toolbar_toplevel_item_activated (GtkWidget *widget, ToolbarItemInternal *interna
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_activated (internal->uih_corba, internal->item->path, &ev);
+	Bonobo_UIHandler_toolbar_activated (internal->uih_corba, internal->item->path, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (internal->uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (internal->uih),
 			(CORBA_Object) internal->uih_corba, &ev);
 	}
 	
@@ -6341,7 +6290,7 @@ impl_toolbar_activated (PortableServer_Servant servant,
 			const CORBA_char      *path,
 			CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemLocalInternal *internal_cb;
 
 	internal_cb = toolbar_local_get_item (uih, path);
@@ -6358,22 +6307,22 @@ impl_toolbar_activated (PortableServer_Servant servant,
 }
 
 static GtkToolbarChildType
-toolbar_type_to_gtk_type (GnomeUIHandlerToolbarItemType type)
+toolbar_type_to_gtk_type (BonoboUIHandlerToolbarItemType type)
 {
 	switch (type) {
-	case GNOME_UI_HANDLER_TOOLBAR_ITEM:
+	case BONOBO_UI_HANDLER_TOOLBAR_ITEM:
 		return GTK_TOOLBAR_CHILD_BUTTON;
 
-	case GNOME_UI_HANDLER_TOOLBAR_RADIOITEM:
+	case BONOBO_UI_HANDLER_TOOLBAR_RADIOITEM:
 		return GTK_TOOLBAR_CHILD_RADIOBUTTON;
 
-	case GNOME_UI_HANDLER_TOOLBAR_SEPARATOR:
+	case BONOBO_UI_HANDLER_TOOLBAR_SEPARATOR:
 		return GTK_TOOLBAR_CHILD_SPACE;
 
-	case GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM:
+	case BONOBO_UI_HANDLER_TOOLBAR_TOGGLEITEM:
 		return GTK_TOOLBAR_CHILD_TOGGLEBUTTON;
 
-	case GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP:
+	case BONOBO_UI_HANDLER_TOOLBAR_RADIOGROUP:
 		g_warning ("toolbar_type_to_gtk_type: Trying to convert UIHandler radiogroup "
 			   "to Gtk toolbar type!\n");
 		return GTK_TOOLBAR_CHILD_SPACE;
@@ -6387,7 +6336,7 @@ toolbar_type_to_gtk_type (GnomeUIHandlerToolbarItemType type)
 }
 
 static void
-toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
+toolbar_toplevel_item_create_widgets (BonoboUIHandler *uih,
 				      ToolbarItemInternal *internal)
 {
 	GtkWidget *toolbar_item;
@@ -6407,8 +6356,8 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 	toolbar_item = NULL;
 	switch (internal->item->type) {
 
-	case GNOME_UI_HANDLER_TOOLBAR_CONTROL:
-		toolbar_item = gnome_bonobo_widget_new_control_from_objref (internal->item->control);
+	case BONOBO_UI_HANDLER_TOOLBAR_CONTROL:
+		toolbar_item = bonobo_widget_new_control_from_objref (internal->item->control);
 
 		gtk_widget_show (toolbar_item);
 
@@ -6424,13 +6373,13 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 
 		break;
 
-	case GNOME_UI_HANDLER_TOOLBAR_SEPARATOR:
+	case BONOBO_UI_HANDLER_TOOLBAR_SEPARATOR:
 		gtk_toolbar_insert_space (GTK_TOOLBAR (toolbar), internal->item->pos);
 		break;
 
-	case GNOME_UI_HANDLER_TOOLBAR_ITEM:
+	case BONOBO_UI_HANDLER_TOOLBAR_ITEM:
 		pixmap = NULL;
-		if (internal->item->pixmap_data != NULL && internal->item->pixmap_type != GNOME_UI_HANDLER_PIXMAP_NONE)
+		if (internal->item->pixmap_data != NULL && internal->item->pixmap_type != BONOBO_UI_HANDLER_PIXMAP_NONE)
 			pixmap = uih_toplevel_create_pixmap (toolbar, internal->item->pixmap_type,
 							     internal->item->pixmap_data);
 
@@ -6452,7 +6401,7 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 
 		break;
 
-	case GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM:
+	case BONOBO_UI_HANDLER_TOOLBAR_TOGGLEITEM:
 
 		if (internal->item->pos > 0)
 			toolbar_item = gtk_toolbar_insert_element (GTK_TOOLBAR (toolbar),
@@ -6471,7 +6420,7 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 
 		break;
 
-	case GNOME_UI_HANDLER_TOOLBAR_RADIOITEM:
+	case BONOBO_UI_HANDLER_TOOLBAR_RADIOITEM:
 		g_warning ("Toolbar radio items/groups not implemented\n");
 		return;
 		
@@ -6488,7 +6437,7 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 }
 
 static void
-toolbar_toplevel_item_remove_parent_entry (GnomeUIHandler *uih, const char *path,
+toolbar_toplevel_item_remove_parent_entry (BonoboUIHandler *uih, const char *path,
 					   gboolean warn)
 {
 	ToolbarToolbarInternal *parent;
@@ -6520,7 +6469,7 @@ toolbar_toplevel_item_remove_parent_entry (GnomeUIHandler *uih, const char *path
 }
 
 static void
-toolbar_toplevel_item_add_parent_entry (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_item_add_parent_entry (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarToolbarInternal *internal;
 	char *parent_name;
@@ -6538,8 +6487,8 @@ toolbar_toplevel_item_add_parent_entry (GnomeUIHandler *uih, const char *path)
 }
 
 static ToolbarItemInternal *
-toolbar_toplevel_item_store_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba,
-				  GnomeUIHandlerToolbarItem *item)
+toolbar_toplevel_item_store_data (BonoboUIHandler *uih, Bonobo_UIHandler uih_corba,
+				  BonoboUIHandlerToolbarItem *item)
 {
 	ToolbarItemInternal *internal;
 	CORBA_Environment ev;
@@ -6577,7 +6526,7 @@ toolbar_toplevel_item_store_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba
 }
 
 static void
-toolbar_toplevel_item_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+toolbar_toplevel_item_set_sensitivity_internal (BonoboUIHandler *uih, ToolbarItemInternal *internal,
 						gboolean sensitive)
 {
 	GtkWidget *toolbar_widget;
@@ -6594,7 +6543,7 @@ toolbar_toplevel_item_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarItem
 }
 
 static void
-toolbar_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
+toolbar_toplevel_set_sensitivity_internal (BonoboUIHandler *uih, ToolbarToolbarInternal *internal,
 					   gboolean sensitive)
 {
 	GtkWidget *toolbar_widget;
@@ -6606,7 +6555,7 @@ toolbar_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarToolbarIn
 }
 
 static void
-toolbar_toplevel_set_space_size_internal (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
+toolbar_toplevel_set_space_size_internal (BonoboUIHandler *uih, ToolbarToolbarInternal *internal,
 					  gint size)
 {
 	GtkWidget *toolbar_widget;
@@ -6618,7 +6567,7 @@ toolbar_toplevel_set_space_size_internal (GnomeUIHandler *uih, ToolbarToolbarInt
 }
 
 static void
-toolbar_toplevel_set_style_internal (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
+toolbar_toplevel_set_style_internal (BonoboUIHandler *uih, ToolbarToolbarInternal *internal,
 				     GtkToolbarStyle style)
 {
 	GtkWidget *toolbar_widget;
@@ -6630,7 +6579,7 @@ toolbar_toplevel_set_style_internal (GnomeUIHandler *uih, ToolbarToolbarInternal
 }
 
 static void
-toolbar_toplevel_set_orientation (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
+toolbar_toplevel_set_orientation (BonoboUIHandler *uih, ToolbarToolbarInternal *internal,
 				  GtkOrientation orientation)
 {
 	GtkWidget *toolbar_widget;
@@ -6642,7 +6591,7 @@ toolbar_toplevel_set_orientation (GnomeUIHandler *uih, ToolbarToolbarInternal *i
 }
 
 static void
-toolbar_toplevel_set_button_relief (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
+toolbar_toplevel_set_button_relief (BonoboUIHandler *uih, ToolbarToolbarInternal *internal,
 				    GtkReliefStyle relief_style)
 {
 	GtkWidget *toolbar_widget;
@@ -6654,21 +6603,21 @@ toolbar_toplevel_set_button_relief (GnomeUIHandler *uih, ToolbarToolbarInternal 
 }
 
 static void
-toolbar_toplevel_item_set_toggle_state_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+toolbar_toplevel_item_set_toggle_state_internal (BonoboUIHandler *uih, ToolbarItemInternal *internal,
 						 gboolean active)
 {
 }
 
 static void
-toolbar_toplevel_item_set_radio_state_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+toolbar_toplevel_item_set_radio_state_internal (BonoboUIHandler *uih, ToolbarItemInternal *internal,
 						gboolean active)
 {
 }
 
 static void
-toolbar_toplevel_create_item (GnomeUIHandler *uih, const char *parent_path,
-			      GnomeUIHandlerToolbarItem *item,
-			      GNOME_UIHandler uih_corba)
+toolbar_toplevel_create_item (BonoboUIHandler *uih, const char *parent_path,
+			      BonoboUIHandlerToolbarItem *item,
+			      Bonobo_UIHandler uih_corba)
 {
 	ToolbarItemInternal *internal;
 
@@ -6696,25 +6645,25 @@ toolbar_toplevel_create_item (GnomeUIHandler *uih, const char *parent_path,
 	/*
 	 * Set its active state.
 	 */
-	if (internal->item->type == GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM)
+	if (internal->item->type == BONOBO_UI_HANDLER_TOOLBAR_TOGGLEITEM)
 		toolbar_toplevel_item_set_toggle_state_internal (uih, internal, internal->active);
-	else if (internal->item->type == GNOME_UI_HANDLER_TOOLBAR_RADIOITEM)
+	else if (internal->item->type == BONOBO_UI_HANDLER_TOOLBAR_RADIOITEM)
 		toolbar_toplevel_item_set_radio_state_internal (uih, internal, internal->active);
 }
 
 static void
-toolbar_remote_create_item (GnomeUIHandler *uih, const char *parent_path,
-			    GnomeUIHandlerToolbarItem *item)
+toolbar_remote_create_item (BonoboUIHandler *uih, const char *parent_path,
+			    BonoboUIHandlerToolbarItem *item)
 {
-	GNOME_UIHandler_iobuf *pixmap_buf;
+	Bonobo_UIHandler_iobuf *pixmap_buf;
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
 	pixmap_buf = pixmap_data_to_corba (item->pixmap_type, item->pixmap_data);
 
-	GNOME_UIHandler_toolbar_create_item (uih->top_level_uih,
-					     gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_toolbar_create_item (uih->top_level_uih,
+					     bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 					     item->path,
 					     toolbar_type_to_corba (item->type),
 					     CORBIFY_STRING (item->label),
@@ -6727,7 +6676,7 @@ toolbar_remote_create_item (GnomeUIHandler *uih, const char *parent_path,
 					     (CORBA_long) item->ac_mods,
 					     &ev);
 
-	gnome_object_check_env (GNOME_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
+	bonobo_object_check_env (BONOBO_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
 
 	CORBA_exception_free (&ev);
 
@@ -6736,30 +6685,23 @@ toolbar_remote_create_item (GnomeUIHandler *uih, const char *parent_path,
 
 static void
 impl_toolbar_create_item (PortableServer_Servant servant,
-			  const GNOME_UIHandler  containee_uih,
+			  const Bonobo_UIHandler  containee_uih,
 			  const CORBA_char      *path,
-			  GNOME_UIHandler_ToolbarType toolbar_type,
+			  Bonobo_UIHandler_ToolbarType toolbar_type,
 			  const CORBA_char      *label,
 			  const CORBA_char      *hint,
 			  CORBA_long             pos,
-			  const GNOME_Control    control,
-			  GNOME_UIHandler_PixmapType   pixmap_type,
-			  const GNOME_UIHandler_iobuf *pixmap_data,
+			  const Bonobo_Control    control,
+			  Bonobo_UIHandler_PixmapType   pixmap_type,
+			  const Bonobo_UIHandler_iobuf *pixmap_data,
 			  CORBA_unsigned_long          accelerator_key,
 			  CORBA_long                   modifier,
 			  CORBA_Environment           *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
-	GnomeUIHandlerToolbarItem *item;
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
+	BonoboUIHandlerToolbarItem *item;
 	char *parent_path;
 
-
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
 
 	item = toolbar_make_item (path, toolbar_corba_to_type (toolbar_type),
 				  UNCORBIFY_STRING (label),
@@ -6772,12 +6714,9 @@ impl_toolbar_create_item (PortableServer_Servant servant,
 				  NULL, NULL);
 
 	parent_path = path_get_parent (item->path);
-	if (parent_path == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
-	} else {
-		toolbar_toplevel_create_item (uih, parent_path, item, containee_uih);
-	}
+	g_return_if_fail (parent_path != NULL);
+
+	toolbar_toplevel_create_item (uih, parent_path, item, containee_uih);
 
 	pixmap_free_data (item->pixmap_type, item->pixmap_data);
 
@@ -6786,14 +6725,14 @@ impl_toolbar_create_item (PortableServer_Servant servant,
 }
 
 /**
- * gnome_ui_handler_toolbar_add_one:
+ * bonobo_ui_handler_toolbar_add_one:
  */
 void
-gnome_ui_handler_toolbar_add_one (GnomeUIHandler *uih, const char *parent_path,
-				  GnomeUIHandlerToolbarItem *item)
+bonobo_ui_handler_toolbar_add_one (BonoboUIHandler *uih, const char *parent_path,
+				  BonoboUIHandlerToolbarItem *item)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (parent_path != NULL);
 	g_return_if_fail (item != NULL);
 
@@ -6809,61 +6748,61 @@ gnome_ui_handler_toolbar_add_one (GnomeUIHandler *uih, const char *parent_path,
 		toolbar_remote_create_item  (uih, parent_path, item);
 	else
 		toolbar_toplevel_create_item  (uih, parent_path, item,
-					       gnome_object_corba_objref (GNOME_OBJECT (uih)));
+					       bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 }
 
 void
-gnome_ui_handler_toolbar_add_list (GnomeUIHandler *uih, const char *parent_path,
-				   GnomeUIHandlerToolbarItem *item)
+bonobo_ui_handler_toolbar_add_list (BonoboUIHandler *uih, const char *parent_path,
+				   BonoboUIHandlerToolbarItem *item)
 {
-	GnomeUIHandlerToolbarItem *curr;
+	BonoboUIHandlerToolbarItem *curr;
 
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (parent_path != NULL);
 	g_return_if_fail (item != NULL);
 
-	for (curr = item; curr->type != GNOME_UI_HANDLER_TOOLBAR_END; curr ++)
-		gnome_ui_handler_toolbar_add_tree (uih, parent_path, curr);
+	for (curr = item; curr->type != BONOBO_UI_HANDLER_TOOLBAR_END; curr ++)
+		bonobo_ui_handler_toolbar_add_tree (uih, parent_path, curr);
 }
 
 void
-gnome_ui_handler_toolbar_add_tree (GnomeUIHandler *uih, const char *parent_path,
-				   GnomeUIHandlerToolbarItem *item)
+bonobo_ui_handler_toolbar_add_tree (BonoboUIHandler *uih, const char *parent_path,
+				   BonoboUIHandlerToolbarItem *item)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (parent_path != NULL);
 	g_return_if_fail (item != NULL);
 
 	/*
 	 * Add this toolbar item.
 	 */
-	gnome_ui_handler_toolbar_add_one (uih, parent_path, item);
+	bonobo_ui_handler_toolbar_add_one (uih, parent_path, item);
 
 	/*
 	 * Recursive add its children.
 	 */
 	if (item->children != NULL)
-		gnome_ui_handler_toolbar_add_list (uih, item->path, item->children);
+		bonobo_ui_handler_toolbar_add_list (uih, item->path, item->children);
 }
 
 void
-gnome_ui_handler_toolbar_new (GnomeUIHandler *uih, const char *path,
-			      GnomeUIHandlerToolbarItemType type,
+bonobo_ui_handler_toolbar_new (BonoboUIHandler *uih, const char *path,
+			      BonoboUIHandlerToolbarItemType type,
 			      const char *label, const char *hint,
-			      int pos, const GNOME_Control control,
-			      GnomeUIHandlerPixmapType pixmap_type,
+			      int pos, const Bonobo_Control control,
+			      BonoboUIHandlerPixmapType pixmap_type,
 			      gconstpointer pixmap_data, guint accelerator_key,
 			      GdkModifierType ac_mods,
-			      GnomeUIHandlerCallbackFunc callback,
+			      BonoboUIHandlerCallbackFunc callback,
 			      gpointer callback_data)
 {
-	GnomeUIHandlerToolbarItem *item;
+	BonoboUIHandlerToolbarItem *item;
 	char *parent_path;
 
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	item = toolbar_make_item (path, type, label, hint, pos, control, pixmap_type,
@@ -6872,106 +6811,106 @@ gnome_ui_handler_toolbar_new (GnomeUIHandler *uih, const char *path,
 	parent_path = path_get_parent (path);
 	g_return_if_fail (parent_path != NULL);
 
-	gnome_ui_handler_toolbar_add_one (uih, parent_path, item);
+	bonobo_ui_handler_toolbar_add_one (uih, parent_path, item);
 
 	g_free (item);
 	g_free (parent_path);
 }
 
 /**
- * gnome_ui_handler_toolbar_new_item
+ * bonobo_ui_handler_toolbar_new_item
  */
 void
-gnome_ui_handler_toolbar_new_item (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_new_item (BonoboUIHandler *uih, const char *path,
 				   const char *label, const char *hint, int pos,
-				   GnomeUIHandlerPixmapType pixmap_type,
+				   BonoboUIHandlerPixmapType pixmap_type,
 				   gconstpointer pixmap_data,
 				   guint accelerator_key, GdkModifierType ac_mods,
-				   GnomeUIHandlerCallbackFunc callback,
+				   BonoboUIHandlerCallbackFunc callback,
 				   gpointer callback_data)
 {
-	gnome_ui_handler_toolbar_new (uih, path,
-				      GNOME_UI_HANDLER_TOOLBAR_ITEM,
+	bonobo_ui_handler_toolbar_new (uih, path,
+				      BONOBO_UI_HANDLER_TOOLBAR_ITEM,
 				      label, hint, pos, CORBA_OBJECT_NIL, pixmap_type,
 				      pixmap_data, accelerator_key,
 				      ac_mods, callback, callback_data);
 }
 
 /**
- * gnome_ui_handler_toolbar_new_control:
+ * bonobo_ui_handler_toolbar_new_control:
  */
 void
-gnome_ui_handler_toolbar_new_control (GnomeUIHandler *uih, const char *path,
-				      int pos, GNOME_Control control)
+bonobo_ui_handler_toolbar_new_control (BonoboUIHandler *uih, const char *path,
+				      int pos, Bonobo_Control control)
 {
-	gnome_ui_handler_toolbar_new (uih, path,
-				      GNOME_UI_HANDLER_TOOLBAR_CONTROL,
-				      NULL, NULL, pos, control, GNOME_UI_HANDLER_PIXMAP_NONE,
+	bonobo_ui_handler_toolbar_new (uih, path,
+				      BONOBO_UI_HANDLER_TOOLBAR_CONTROL,
+				      NULL, NULL, pos, control, BONOBO_UI_HANDLER_PIXMAP_NONE,
 				      NULL, 0, 0, NULL, NULL);
 }
 
 
 /**
- * gnome_ui_handler_toolbar_new_separator:
+ * bonobo_ui_handler_toolbar_new_separator:
  */
 void
-gnome_ui_handler_toolbar_new_separator (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_new_separator (BonoboUIHandler *uih, const char *path,
 					int pos)
 {
-	gnome_ui_handler_toolbar_new (uih, path,
-				      GNOME_UI_HANDLER_TOOLBAR_SEPARATOR,
+	bonobo_ui_handler_toolbar_new (uih, path,
+				      BONOBO_UI_HANDLER_TOOLBAR_SEPARATOR,
 				      NULL, NULL, pos, CORBA_OBJECT_NIL,
-				      GNOME_UI_HANDLER_PIXMAP_NONE,
+				      BONOBO_UI_HANDLER_PIXMAP_NONE,
 				      NULL, 0, 0, NULL, NULL);
 }
 
 /**
- * gnome_ui_handler_toolbar_new_radiogroup:
+ * bonobo_ui_handler_toolbar_new_radiogroup:
  */
 void
-gnome_ui_handler_toolbar_new_radiogroup (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_toolbar_new_radiogroup (BonoboUIHandler *uih, const char *path)
 {
-	gnome_ui_handler_toolbar_new (uih, path, GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP,
+	bonobo_ui_handler_toolbar_new (uih, path, BONOBO_UI_HANDLER_TOOLBAR_RADIOGROUP,
 				      NULL, NULL, -1, CORBA_OBJECT_NIL,
-				      GNOME_UI_HANDLER_PIXMAP_NONE,
+				      BONOBO_UI_HANDLER_PIXMAP_NONE,
 				      NULL, 0, 0, NULL, NULL);
 }
 
 /**
- * gnome_ui_handler_toolbar_new_radioitem:
+ * bonobo_ui_handler_toolbar_new_radioitem:
  */
 void
-gnome_ui_handler_toolbar_new_radioitem (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_new_radioitem (BonoboUIHandler *uih, const char *path,
 					const char *label, const char *hint, int pos,
 					guint accelerator_key, GdkModifierType ac_mods,
-					GnomeUIHandlerCallbackFunc callback,
+					BonoboUIHandlerCallbackFunc callback,
 					gpointer callback_data)
 {
-	gnome_ui_handler_toolbar_new (uih, path, GNOME_UI_HANDLER_TOOLBAR_RADIOITEM,
+	bonobo_ui_handler_toolbar_new (uih, path, BONOBO_UI_HANDLER_TOOLBAR_RADIOITEM,
 				      label, hint, pos, CORBA_OBJECT_NIL,
-				      GNOME_UI_HANDLER_PIXMAP_NONE,
+				      BONOBO_UI_HANDLER_PIXMAP_NONE,
 				      NULL, accelerator_key, ac_mods, callback, callback_data);
 }
 
 /**
- * gnome_ui_handler_toolbar_new_toggleitem:
+ * bonobo_ui_handler_toolbar_new_toggleitem:
  */
 void
-gnome_ui_handler_toolbar_new_toggleitem (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_new_toggleitem (BonoboUIHandler *uih, const char *path,
 					 const char *label, const char *hint, int pos,
 					 guint accelerator_key, GdkModifierType ac_mods,
-					 GnomeUIHandlerCallbackFunc callback,
+					 BonoboUIHandlerCallbackFunc callback,
 					 gpointer callback_data)
 {
-	gnome_ui_handler_toolbar_new (uih, path, GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM,
+	bonobo_ui_handler_toolbar_new (uih, path, BONOBO_UI_HANDLER_TOOLBAR_TOGGLEITEM,
 				      label, hint, pos, CORBA_OBJECT_NIL,
-				      GNOME_UI_HANDLER_PIXMAP_NONE,
+				      BONOBO_UI_HANDLER_PIXMAP_NONE,
 				      NULL, accelerator_key, ac_mods, callback,
 				      callback_data);
 }
 
 static void
-toolbar_local_remove_item (GnomeUIHandler *uih, const char *path)
+toolbar_local_remove_item (BonoboUIHandler *uih, const char *path)
 {
 	GList *l, *new_list;
 
@@ -7008,7 +6947,7 @@ toolbar_local_remove_item (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-toolbar_toplevel_item_reinstate_notify (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_item_reinstate_notify (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarItemInternal *internal;
 	CORBA_Environment ev;
@@ -7017,10 +6956,10 @@ toolbar_toplevel_item_reinstate_notify (GnomeUIHandler *uih, const char *path)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_reinstated (internal->uih_corba, internal->item->path, &ev);
+	Bonobo_UIHandler_toolbar_reinstated (internal->uih_corba, internal->item->path, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) internal->uih_corba, &ev);
 	}
 
@@ -7032,7 +6971,7 @@ impl_toolbar_reinstated (PortableServer_Servant servant,
 			 const CORBA_char *path,
 			 CORBA_Environment *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemLocalInternal *internal_cb;
 
 	internal_cb = toolbar_local_get_item (uih, path);
@@ -7048,13 +6987,13 @@ impl_toolbar_reinstated (PortableServer_Servant servant,
 }
 
 static void
-toolbar_toplevel_item_remove_notify (GnomeUIHandler *uih, ToolbarItemInternal *internal)
+toolbar_toplevel_item_remove_notify (BonoboUIHandler *uih, ToolbarItemInternal *internal)
 {
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_removed (internal->uih_corba, internal->item->path, &ev);
+	Bonobo_UIHandler_toolbar_removed (internal->uih_corba, internal->item->path, &ev);
 
 	CORBA_exception_free (&ev);
 }
@@ -7064,7 +7003,7 @@ impl_toolbar_removed (PortableServer_Servant servant,
 		      const CORBA_char *path,
 		      CORBA_Environment *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemLocalInternal *internal_cb;
 
 	internal_cb = toolbar_local_get_item (uih, path);
@@ -7081,7 +7020,7 @@ impl_toolbar_removed (PortableServer_Servant servant,
 }
 
 static void
-toolbar_toplevel_item_remove_data (GnomeUIHandler *uih, ToolbarItemInternal *internal)
+toolbar_toplevel_item_remove_data (BonoboUIHandler *uih, ToolbarItemInternal *internal)
 {
 	CORBA_Environment ev;
 	char *orig_key;
@@ -7134,7 +7073,7 @@ toolbar_toplevel_item_remove_data (GnomeUIHandler *uih, ToolbarItemInternal *int
 }
 
 static void
-toolbar_toplevel_remove_item_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal)
+toolbar_toplevel_remove_item_internal (BonoboUIHandler *uih, ToolbarItemInternal *internal)
 {
 	gboolean is_head;
 	char *path;
@@ -7188,7 +7127,7 @@ toolbar_toplevel_remove_item_internal (GnomeUIHandler *uih, ToolbarItemInternal 
 }
 
 static void
-toolbar_toplevel_remove_item (GnomeUIHandler *uih, const char *path, GNOME_UIHandler uih_corba)
+toolbar_toplevel_remove_item (BonoboUIHandler *uih, const char *path, Bonobo_UIHandler uih_corba)
 {
 	ToolbarItemInternal *internal;
 
@@ -7199,14 +7138,14 @@ toolbar_toplevel_remove_item (GnomeUIHandler *uih, const char *path, GNOME_UIHan
 }
 
 static void
-toolbar_remote_remove_item (GnomeUIHandler *uih, const char *path)
+toolbar_remote_remove_item (BonoboUIHandler *uih, const char *path)
 {
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_remove_item (uih->top_level_uih,
-					     gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_toolbar_remove_item (uih->top_level_uih,
+					     bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 					     path,
 					     &ev);
 
@@ -7215,50 +7154,38 @@ toolbar_remote_remove_item (GnomeUIHandler *uih, const char *path)
 
 static void
 impl_toolbar_remove_item (PortableServer_Servant servant,
-			  GNOME_UIHandler containee_uih,
+			  Bonobo_UIHandler containee_uih,
 			  const CORBA_char *path,
 			  CORBA_Environment *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
-	ToolbarItemInternal *internal;
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
 
-        internal = toolbar_toplevel_get_item_for_containee (uih, path, containee_uih);
-	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
-		return;
-	}
-	toolbar_toplevel_remove_item_internal (uih, containee_uih);
+	toolbar_toplevel_remove_item (uih, path, containee_uih);
 }
 
 /**
- * gnome_ui_handler_toolbar_remove:
+ * bonobo_ui_handler_toolbar_remove:
  */
 void
-gnome_ui_handler_toolbar_remove (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_toolbar_remove (BonoboUIHandler *uih, const char *path)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
 		toolbar_remote_remove_item (uih, path);
 	else
-		toolbar_toplevel_remove_item (uih, path, gnome_object_corba_objref (GNOME_OBJECT (uih)));
+		toolbar_toplevel_remove_item (uih, path, bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 }
 
-GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_fetch_one (GnomeUIHandler *uih, const char *path)
+BonoboUIHandlerToolbarItem *
+bonobo_ui_handler_toolbar_fetch_one (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 
 	g_warning ("Unimplemented toolbar method");
@@ -7266,48 +7193,48 @@ gnome_ui_handler_toolbar_fetch_one (GnomeUIHandler *uih, const char *path)
 }
 
 GList *
-gnome_ui_handler_toolbar_fetch_by_callback (GnomeUIHandler *uih,
-					    GnomeUIHandlerCallbackFunc callback)
+bonobo_ui_handler_toolbar_fetch_by_callback (BonoboUIHandler *uih,
+					    BonoboUIHandlerCallbackFunc callback)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 
 	g_warning ("Unimplemented toolbar method");
 	return NULL;
 }
 
 GList *
-gnome_ui_handler_toolbar_fetch_by_callback_data (GnomeUIHandler *uih,
+bonobo_ui_handler_toolbar_fetch_by_callback_data (BonoboUIHandler *uih,
 						 gpointer callback_data)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 
 	g_warning ("Unimplemented toolbar method");
 	return NULL;
 }
 
-static GnomeUIHandlerMenuItemType
+static BonoboUIHandlerMenuItemType
 toolbar_uiinfo_type_to_uih (GnomeUIInfoType uii_type)
 {
 	switch (uii_type) {
 	case GNOME_APP_UI_ENDOFINFO:
-		return GNOME_UI_HANDLER_TOOLBAR_END;
+		return BONOBO_UI_HANDLER_TOOLBAR_END;
 
 	case GNOME_APP_UI_ITEM:
-		return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+		return BONOBO_UI_HANDLER_TOOLBAR_ITEM;
 
 	case GNOME_APP_UI_TOGGLEITEM:
-		return GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM;
+		return BONOBO_UI_HANDLER_TOOLBAR_TOGGLEITEM;
 
 	case GNOME_APP_UI_RADIOITEMS:
-		return GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP;
+		return BONOBO_UI_HANDLER_TOOLBAR_RADIOGROUP;
 
 	case GNOME_APP_UI_SUBTREE:
 		g_error ("Toolbar subtree doesn't make sense!\n");
 
 	case GNOME_APP_UI_SEPARATOR:
-		return GNOME_UI_HANDLER_TOOLBAR_SEPARATOR;
+		return BONOBO_UI_HANDLER_TOOLBAR_SEPARATOR;
 
 	case GNOME_APP_UI_HELP:
 		g_error ("Help unimplemented.\n"); /* FIXME */
@@ -7317,19 +7244,19 @@ toolbar_uiinfo_type_to_uih (GnomeUIInfoType uii_type)
 
 	case GNOME_APP_UI_ITEM_CONFIGURABLE:
 		g_warning ("Configurable item!");
-		return GNOME_UI_HANDLER_MENU_ITEM;
+		return BONOBO_UI_HANDLER_MENU_ITEM;
 
 	case GNOME_APP_UI_SUBTREE_STOCK:
 		g_error ("Toolbar subtree doesn't make sense!\n");
 
 	default:
 		g_warning ("Unknown UIInfo Type: %d", uii_type);
-		return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+		return BONOBO_UI_HANDLER_TOOLBAR_ITEM;
 	}
 }
 
 static void
-toolbar_parse_uiinfo_one (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii)
+toolbar_parse_uiinfo_one (BonoboUIHandlerToolbarItem *item, GnomeUIInfo *uii)
 {
 	item->path = NULL;
 
@@ -7343,9 +7270,9 @@ toolbar_parse_uiinfo_one (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii)
 
 	item->pos = -1;
 
-	if (item->type == GNOME_UI_HANDLER_TOOLBAR_ITEM ||
-	    item->type == GNOME_UI_HANDLER_TOOLBAR_RADIOITEM ||
-	    item->type == GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM)
+	if (item->type == BONOBO_UI_HANDLER_TOOLBAR_ITEM ||
+	    item->type == BONOBO_UI_HANDLER_TOOLBAR_RADIOITEM ||
+	    item->type == BONOBO_UI_HANDLER_TOOLBAR_TOGGLEITEM)
 		item->callback = uii->moreinfo;
 	item->callback_data = uii->user_data;
 
@@ -7356,43 +7283,43 @@ toolbar_parse_uiinfo_one (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii)
 }
 
 static void
-toolbar_parse_uiinfo_tree (GnomeUIHandlerToolbarItem *tree, GnomeUIInfo *uii)
+toolbar_parse_uiinfo_tree (BonoboUIHandlerToolbarItem *tree, GnomeUIInfo *uii)
 {
 	toolbar_parse_uiinfo_one (tree, uii);
 
-	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP) {
-		tree->children = gnome_ui_handler_toolbar_parse_uiinfo_list (uii->moreinfo);
+	if (tree->type == BONOBO_UI_HANDLER_TOOLBAR_RADIOGROUP) {
+		tree->children = bonobo_ui_handler_toolbar_parse_uiinfo_list (uii->moreinfo);
 	}
 }
 
 static void
-toolbar_parse_uiinfo_one_with_data (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii, void *data)
+toolbar_parse_uiinfo_one_with_data (BonoboUIHandlerToolbarItem *item, GnomeUIInfo *uii, void *data)
 {
 	toolbar_parse_uiinfo_one (item, uii);
 	item->callback_data = data;
 }
 
 static void
-toolbar_parse_uiinfo_tree_with_data (GnomeUIHandlerToolbarItem *tree, GnomeUIInfo *uii, void *data)
+toolbar_parse_uiinfo_tree_with_data (BonoboUIHandlerToolbarItem *tree, GnomeUIInfo *uii, void *data)
 {
 	toolbar_parse_uiinfo_one_with_data (tree, uii, data);
 
-	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP) {
-		tree->children = gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (uii->moreinfo, data);
+	if (tree->type == BONOBO_UI_HANDLER_TOOLBAR_RADIOGROUP) {
+		tree->children = bonobo_ui_handler_toolbar_parse_uiinfo_list_with_data (uii->moreinfo, data);
 	}
 }
 
 /**
- * gnome_ui_handler_toolbar_parse_uiinfo_one:
+ * bonobo_ui_handler_toolbar_parse_uiinfo_one:
  */
-GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_one (GnomeUIInfo *uii)
+BonoboUIHandlerToolbarItem *
+bonobo_ui_handler_toolbar_parse_uiinfo_one (GnomeUIInfo *uii)
 {
-	GnomeUIHandlerToolbarItem *item;
+	BonoboUIHandlerToolbarItem *item;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	item = g_new0 (GnomeUIHandlerToolbarItem, 1);
+	item = g_new0 (BonoboUIHandlerToolbarItem, 1);
 
 	toolbar_parse_uiinfo_one (item, uii);
 
@@ -7400,26 +7327,26 @@ gnome_ui_handler_toolbar_parse_uiinfo_one (GnomeUIInfo *uii)
 }
 
 /**
- * gnome_ui_handler_toolbar_parse_uiinfo_list:
+ * bonobo_ui_handler_toolbar_parse_uiinfo_list:
  */
-GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_list (GnomeUIInfo *uii)
+BonoboUIHandlerToolbarItem *
+bonobo_ui_handler_toolbar_parse_uiinfo_list (GnomeUIInfo *uii)
 {
-	GnomeUIHandlerToolbarItem *list;
-	GnomeUIHandlerToolbarItem *curr_uih;
+	BonoboUIHandlerToolbarItem *list;
+	BonoboUIHandlerToolbarItem *curr_uih;
 	GnomeUIInfo *curr_uii;
 	int list_len;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
 	/*
-	 * Allocate the GnomeUIHandlerToolbarItem array.
+	 * Allocate the BonoboUIHandlerToolbarItem array.
 	 */
 	list_len = 0;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
 		list_len ++;
 
-	list = g_new0 (GnomeUIHandlerToolbarItem, list_len + 1);
+	list = g_new0 (BonoboUIHandlerToolbarItem, list_len + 1);
 
 	curr_uih = list;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++, curr_uih ++)
@@ -7432,16 +7359,16 @@ gnome_ui_handler_toolbar_parse_uiinfo_list (GnomeUIInfo *uii)
 }
 
 /**
- * gnome_ui_handler_toolbar_parse_uiinfo_tree:
+ * bonobo_ui_handler_toolbar_parse_uiinfo_tree:
  */
-GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_tree (GnomeUIInfo *uii)
+BonoboUIHandlerToolbarItem *
+bonobo_ui_handler_toolbar_parse_uiinfo_tree (GnomeUIInfo *uii)
 {
-	GnomeUIHandlerToolbarItem *item_tree;
+	BonoboUIHandlerToolbarItem *item_tree;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	item_tree = g_new0 (GnomeUIHandlerToolbarItem, 1);
+	item_tree = g_new0 (BonoboUIHandlerToolbarItem, 1);
 
 	toolbar_parse_uiinfo_tree (item_tree, uii);
 
@@ -7449,16 +7376,16 @@ gnome_ui_handler_toolbar_parse_uiinfo_tree (GnomeUIInfo *uii)
 }
 
 /**
- * gnome_ui_handler_toolbar_parse_uiinfo_one_with_data:
+ * bonobo_ui_handler_toolbar_parse_uiinfo_one_with_data:
  */
-GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_one_with_data (GnomeUIInfo *uii, void *data)
+BonoboUIHandlerToolbarItem *
+bonobo_ui_handler_toolbar_parse_uiinfo_one_with_data (GnomeUIInfo *uii, void *data)
 {
-	GnomeUIHandlerToolbarItem *item;
+	BonoboUIHandlerToolbarItem *item;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	item = g_new0 (GnomeUIHandlerToolbarItem, 1);
+	item = g_new0 (BonoboUIHandlerToolbarItem, 1);
 
 	toolbar_parse_uiinfo_one_with_data (item, uii, data);
 
@@ -7466,26 +7393,26 @@ gnome_ui_handler_toolbar_parse_uiinfo_one_with_data (GnomeUIInfo *uii, void *dat
 }
 
 /**
- * gnome_ui_handler_toolbar_parse_uiinfo_list_with_data:
+ * bonobo_ui_handler_toolbar_parse_uiinfo_list_with_data:
  */
-GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, void *data)
+BonoboUIHandlerToolbarItem *
+bonobo_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, void *data)
 {
-	GnomeUIHandlerToolbarItem *list;
-	GnomeUIHandlerToolbarItem *curr_uih;
+	BonoboUIHandlerToolbarItem *list;
+	BonoboUIHandlerToolbarItem *curr_uih;
 	GnomeUIInfo *curr_uii;
 	int list_len;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
 	/*
-	 * Allocate the GnomeUIHandlerToolbarItem array.
+	 * Allocate the BonoboUIHandlerToolbarItem array.
 	 */
 	list_len = 0;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
 		list_len ++;
 
-	list = g_new0 (GnomeUIHandlerToolbarItem, list_len + 1);
+	list = g_new0 (BonoboUIHandlerToolbarItem, list_len + 1);
 
 	curr_uih = list;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++, curr_uih ++)
@@ -7498,16 +7425,16 @@ gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, void *da
 }
 
 /**
- * gnome_ui_handler_toolbar_parse_uiinfo_tree_with_data:
+ * bonobo_ui_handler_toolbar_parse_uiinfo_tree_with_data:
  */
-GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, void *data)
+BonoboUIHandlerToolbarItem *
+bonobo_ui_handler_toolbar_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, void *data)
 {
-	GnomeUIHandlerToolbarItem *item_tree;
+	BonoboUIHandlerToolbarItem *item_tree;
 
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	item_tree = g_new0 (GnomeUIHandlerToolbarItem, 1);
+	item_tree = g_new0 (BonoboUIHandlerToolbarItem, 1);
 
 	toolbar_parse_uiinfo_tree_with_data (item_tree, uii, data);
 
@@ -7515,7 +7442,7 @@ gnome_ui_handler_toolbar_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, void *da
 }
 
 void
-gnome_ui_handler_toolbar_free_one (GnomeUIHandlerToolbarItem *item)
+bonobo_ui_handler_toolbar_free_one (BonoboUIHandlerToolbarItem *item)
 {
 	g_return_if_fail (item != NULL);
 
@@ -7523,15 +7450,15 @@ gnome_ui_handler_toolbar_free_one (GnomeUIHandlerToolbarItem *item)
 }
 
 void
-gnome_ui_handler_toolbar_free_list (GnomeUIHandlerToolbarItem *array)
+bonobo_ui_handler_toolbar_free_list (BonoboUIHandlerToolbarItem *array)
 {
-	GnomeUIHandlerToolbarItem *curr;
+	BonoboUIHandlerToolbarItem *curr;
 
 	g_return_if_fail (array != NULL);
 
-	for (curr = array; curr->type != GNOME_UI_HANDLER_TOOLBAR_END; curr ++) {
+	for (curr = array; curr->type != BONOBO_UI_HANDLER_TOOLBAR_END; curr ++) {
 		if (curr->children != NULL)
-			gnome_ui_handler_toolbar_free_list (curr->children);
+			bonobo_ui_handler_toolbar_free_list (curr->children);
 
 		toolbar_free_data (curr);
 	}
@@ -7540,21 +7467,21 @@ gnome_ui_handler_toolbar_free_list (GnomeUIHandlerToolbarItem *array)
 }
 
 void
-gnome_ui_handler_toolbar_free_tree (GnomeUIHandlerToolbarItem *tree)
+bonobo_ui_handler_toolbar_free_tree (BonoboUIHandlerToolbarItem *tree)
 {
 	g_return_if_fail (tree != NULL);
 
-	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_END)
+	if (tree->type == BONOBO_UI_HANDLER_TOOLBAR_END)
 		return;
 
 	if (tree->children != NULL)
-		gnome_ui_handler_toolbar_free_list (tree->children);
+		bonobo_ui_handler_toolbar_free_list (tree->children);
 
 	toolbar_free (tree);
 }
 
 static gint
-toolbar_toplevel_item_get_pos (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_item_get_pos (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarItemInternal *internal;
 
@@ -7566,7 +7493,7 @@ toolbar_toplevel_item_get_pos (GnomeUIHandler *uih, const char *path)
 }
 
 static gint
-toolbar_item_remote_get_pos (GnomeUIHandler *uih, const char *path)
+toolbar_item_remote_get_pos (BonoboUIHandler *uih, const char *path)
 {
 	UIRemoteAttributeData *attrs;
 	gint ans;
@@ -7583,10 +7510,10 @@ toolbar_item_remote_get_pos (GnomeUIHandler *uih, const char *path)
 }
 
 int
-gnome_ui_handler_toolbar_item_get_pos (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_toolbar_item_get_pos (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, -1);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), -1);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), -1);
 	g_return_val_if_fail (path != NULL, -1);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
@@ -7596,7 +7523,7 @@ gnome_ui_handler_toolbar_item_get_pos (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-toolbar_toplevel_set_sensitivity (GnomeUIHandler *uih, const char *name,
+toolbar_toplevel_set_sensitivity (BonoboUIHandler *uih, const char *name,
 				  gboolean sensitive)
 {
 	ToolbarToolbarInternal *internal;
@@ -7608,7 +7535,7 @@ toolbar_toplevel_set_sensitivity (GnomeUIHandler *uih, const char *name,
 }
 
 static gboolean
-toolbar_item_remote_get_sensitivity (GnomeUIHandler *uih, const char *path)
+toolbar_item_remote_get_sensitivity (BonoboUIHandler *uih, const char *path)
 {
 	UIRemoteAttributeData *attrs;
 	gboolean                    ans;
@@ -7623,7 +7550,7 @@ toolbar_item_remote_get_sensitivity (GnomeUIHandler *uih, const char *path)
 }
 
 static void
-toolbar_item_remote_set_sensitivity (GnomeUIHandler *uih, const char *path,
+toolbar_item_remote_set_sensitivity (BonoboUIHandler *uih, const char *path,
 				     gboolean sensitive)
 {
 	UIRemoteAttributeData *attrs;
@@ -7636,12 +7563,12 @@ toolbar_item_remote_set_sensitivity (GnomeUIHandler *uih, const char *path,
 }
 
 void
-gnome_ui_handler_toolbar_item_set_sensitivity (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_item_set_sensitivity (BonoboUIHandler *uih, const char *path,
 					       gboolean sensitive)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (path != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
 		toolbar_item_remote_set_sensitivity (uih, path, sensitive);
@@ -7650,7 +7577,7 @@ gnome_ui_handler_toolbar_item_set_sensitivity (GnomeUIHandler *uih, const char *
 }
 
 static gboolean
-toolbar_toplevel_get_sensitivity (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_get_sensitivity (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarItemInternal *internal;
 
@@ -7662,7 +7589,7 @@ toolbar_toplevel_get_sensitivity (GnomeUIHandler *uih, const char *path)
 
 static void
 impl_toolbar_item_get_attributes (PortableServer_Servant servant,
-				  const GNOME_UIHandler  containee,
+				  const Bonobo_UIHandler  containee,
 				  const CORBA_char      *path,
 				  CORBA_boolean         *sensitive,
 				  CORBA_boolean         *active,
@@ -7674,20 +7601,13 @@ impl_toolbar_item_get_attributes (PortableServer_Servant servant,
 				  CORBA_boolean         *toggle_state,
 				  CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemInternal *internal;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
 	internal = toolbar_toplevel_get_item (uih, path);
 
 	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
+		/* FIXME: Set exception. */
 		return;
 	}
 
@@ -7699,7 +7619,7 @@ impl_toolbar_item_get_attributes (PortableServer_Servant servant,
 
 static void
 impl_toolbar_item_set_attributes (PortableServer_Servant servant,
-				  const GNOME_UIHandler  containee,
+				  const Bonobo_UIHandler  containee,
 				  const CORBA_char      *path,
 				  CORBA_boolean          sensitive,
 				  CORBA_boolean          active,
@@ -7711,22 +7631,11 @@ impl_toolbar_item_set_attributes (PortableServer_Servant servant,
 				  CORBA_boolean          toggle_state,
 				  CORBA_Environment     *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemInternal *internal;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
-
 	internal = toolbar_toplevel_get_item_for_containee (uih, path, containee);
-	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
-		return;
-	}
+	g_return_if_fail (internal != NULL);
 
 	toolbar_toplevel_item_set_sensitivity_internal (uih, internal, sensitive);
 
@@ -7739,8 +7648,8 @@ impl_toolbar_item_set_attributes (PortableServer_Servant servant,
  * In fact, this makes me want to puke.
  */
 static void
-toolbar_toplevel_item_set_pixmap_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
-					   GnomeUIHandlerPixmapType type, gpointer data)
+toolbar_toplevel_item_set_pixmap_internal (BonoboUIHandler *uih, ToolbarItemInternal *internal,
+					   BonoboUIHandlerPixmapType type, gpointer data)
 {
 	GtkToolbar *toolbar;
 	GList      *l;
@@ -7785,39 +7694,39 @@ toolbar_toplevel_item_set_pixmap_internal (GnomeUIHandler *uih, ToolbarItemInter
 }
 
 static void
-toolbar_toplevel_item_set_pixmap (GnomeUIHandler *uih, const char *path,
-				  GnomeUIHandlerPixmapType type, gpointer data)
+toolbar_toplevel_item_set_pixmap (BonoboUIHandler *uih, const char *path,
+				  BonoboUIHandlerPixmapType type, gpointer data)
 {
 	ToolbarItemInternal *internal;
 
 	internal = toolbar_toplevel_get_item_for_containee (uih, path,
-							    gnome_object_corba_objref (GNOME_OBJECT (uih)));
+							    bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	g_return_if_fail (internal != NULL);
 
 	toolbar_toplevel_item_set_pixmap_internal (uih, internal, type, data);
 }
 
 static void
-toolbar_item_remote_set_pixmap (GnomeUIHandler *uih, const char *path,
-				GnomeUIHandlerPixmapType type, gpointer data)
+toolbar_item_remote_set_pixmap (BonoboUIHandler *uih, const char *path,
+				BonoboUIHandlerPixmapType type, gpointer data)
 {
-	GNOME_UIHandler_iobuf *pixmap_buff;
+	Bonobo_UIHandler_iobuf *pixmap_buff;
 	CORBA_Environment ev;
 
 	pixmap_buff = pixmap_data_to_corba (type, data);
 	
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_item_set_data (uih->top_level_uih,
-					       gnome_object_corba_objref (GNOME_OBJECT (uih)),
+	Bonobo_UIHandler_toolbar_item_set_data (uih->top_level_uih,
+					       bonobo_object_corba_objref (BONOBO_OBJECT (uih)),
 					       path,
 				       pixmap_type_to_corba (type),
 				       pixmap_buff,
 				       &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
+		bonobo_object_check_env (
+			BONOBO_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
 	}
 
@@ -7827,11 +7736,11 @@ toolbar_item_remote_set_pixmap (GnomeUIHandler *uih, const char *path,
 }
 
 void
-gnome_ui_handler_toolbar_item_set_pixmap (GnomeUIHandler *uih, const char *path,
-					  GnomeUIHandlerPixmapType type, gpointer data)
+bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *path,
+					  BonoboUIHandlerPixmapType type, gpointer data)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (data != NULL);
 
@@ -7844,11 +7753,11 @@ gnome_ui_handler_toolbar_item_set_pixmap (GnomeUIHandler *uih, const char *path,
 }
 
 void
-gnome_ui_handler_toolbar_item_get_pixmap (GnomeUIHandler *uih, const char *path,
-					  GnomeUIHandlerPixmapType *type, gpointer *data)
+bonobo_ui_handler_toolbar_item_get_pixmap (BonoboUIHandler *uih, const char *path,
+					  BonoboUIHandlerPixmapType *type, gpointer *data)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	g_warning ("Unimplemented toolbar method");
@@ -7856,27 +7765,21 @@ gnome_ui_handler_toolbar_item_get_pixmap (GnomeUIHandler *uih, const char *path,
 
 static void
 impl_toolbar_item_set_data (PortableServer_Servant       servant,
-			    GNOME_UIHandler              containee_uih,
+			    Bonobo_UIHandler              containee_uih,
 			    const CORBA_char            *path,
-			    GNOME_UIHandler_PixmapType   corba_pixmap_type,
-			    const GNOME_UIHandler_iobuf *corba_pixmap_data,
+			    Bonobo_UIHandler_PixmapType   corba_pixmap_type,
+			    const Bonobo_UIHandler_iobuf *corba_pixmap_data,
 			    CORBA_Environment           *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemInternal *internal;
 	
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
 	
 	internal = toolbar_toplevel_get_item_for_containee (uih, path, containee_uih);
 	
 	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
+		/* FIXME: Set exception. */
 		return;
 	}
 	
@@ -7888,10 +7791,10 @@ impl_toolbar_item_set_data (PortableServer_Servant       servant,
 
 static void
 impl_toolbar_item_get_data (PortableServer_Servant      servant,
-			    GNOME_UIHandler              containee_uih,
+			    Bonobo_UIHandler              containee_uih,
 			    const CORBA_char           *path,
-			    GNOME_UIHandler_PixmapType *corba_pixmap_type,
-			    GNOME_UIHandler_iobuf     **corba_pixmap_data,
+			    Bonobo_UIHandler_PixmapType *corba_pixmap_type,
+			    Bonobo_UIHandler_iobuf     **corba_pixmap_data,
 			    CORBA_Environment          *ev)
 {
 	/* FIXME: Implement me! */
@@ -7900,113 +7803,103 @@ impl_toolbar_item_get_data (PortableServer_Servant      servant,
 
 
 inline static GtkOrientation
-toolbar_corba_to_orientation (GNOME_UIHandler_ToolbarOrientation o)
+toolbar_corba_to_orientation (Bonobo_UIHandler_ToolbarOrientation o)
 {
 	switch (o) {
-	case GNOME_UIHandler_ToolbarOrientationHorizontal:
+	case Bonobo_UIHandler_ToolbarOrientationHorizontal:
 		return GTK_ORIENTATION_HORIZONTAL;
-	case GNOME_UIHandler_ToolbarOrientationVertical:
+	case Bonobo_UIHandler_ToolbarOrientationVertical:
 	default:
 	        return GTK_ORIENTATION_VERTICAL;
 	}
 }
 
-inline static GNOME_UIHandler_ToolbarOrientation
+inline static Bonobo_UIHandler_ToolbarOrientation
 toolbar_orientation_to_corba (GtkOrientation orientation)
 {
 	switch (orientation) {
 	case GTK_ORIENTATION_VERTICAL:
-		return GNOME_UIHandler_ToolbarOrientationVertical;
+		return Bonobo_UIHandler_ToolbarOrientationVertical;
 	case GTK_ORIENTATION_HORIZONTAL:
 	default:
-		return GNOME_UIHandler_ToolbarOrientationHorizontal;
+		return Bonobo_UIHandler_ToolbarOrientationHorizontal;
 	}
 }
 
 inline static GtkToolbarStyle
-toolbar_corba_to_style (GNOME_UIHandler_ToolbarStyle s)
+toolbar_corba_to_style (Bonobo_UIHandler_ToolbarStyle s)
 {
 	switch (s) {
-	case GNOME_UIHandler_ToolbarStyleIcons:
+	case Bonobo_UIHandler_ToolbarStyleIcons:
 		return GTK_TOOLBAR_ICONS;
-	case GNOME_UIHandler_ToolbarStyleText:
+	case Bonobo_UIHandler_ToolbarStyleText:
 		return GTK_TOOLBAR_TEXT;
-	case GNOME_UIHandler_ToolbarStyleBoth:
+	case Bonobo_UIHandler_ToolbarStyleBoth:
 	default:
 		return GTK_TOOLBAR_BOTH;
 	}
 }
 
-inline static GNOME_UIHandler_ToolbarStyle
+inline static Bonobo_UIHandler_ToolbarStyle
 toolbar_style_to_corba (GtkToolbarStyle s)
 {
 	switch (s) {
 	case GTK_TOOLBAR_ICONS:
-		return GNOME_UIHandler_ToolbarStyleIcons;
+		return Bonobo_UIHandler_ToolbarStyleIcons;
 	case GTK_TOOLBAR_TEXT:
-		return GNOME_UIHandler_ToolbarStyleText;
+		return Bonobo_UIHandler_ToolbarStyleText;
 	case GTK_TOOLBAR_BOTH:
 	default:
-		return GNOME_UIHandler_ToolbarStyleBoth;
+		return Bonobo_UIHandler_ToolbarStyleBoth;
 	}
 }
 
 inline static GtkReliefStyle
-relief_corba_to_style (GNOME_UIHandler_ReliefStyle s)
+relief_corba_to_style (Bonobo_UIHandler_ReliefStyle s)
 {
 	switch (s) {
-	case GNOME_UIHandler_ReliefHalf:
+	case Bonobo_UIHandler_ReliefHalf:
 		return GTK_RELIEF_HALF;
-	case GNOME_UIHandler_ReliefNone:
+	case Bonobo_UIHandler_ReliefNone:
 		return GTK_RELIEF_NONE;
-	case GNOME_UIHandler_ReliefNormal:
+	case Bonobo_UIHandler_ReliefNormal:
 	default:
 		return GTK_RELIEF_NORMAL;
 	}
 }
 
-inline static GNOME_UIHandler_ReliefStyle
+inline static Bonobo_UIHandler_ReliefStyle
 relief_style_to_corba (GtkReliefStyle s)
 {
 	switch (s) {
 	case GTK_RELIEF_HALF:
-		return GNOME_UIHandler_ReliefHalf;
+		return Bonobo_UIHandler_ReliefHalf;
 	case GTK_RELIEF_NONE:
-		return GNOME_UIHandler_ReliefNone;
+		return Bonobo_UIHandler_ReliefNone;
 	case GTK_RELIEF_NORMAL:
 	default:
-		return GNOME_UIHandler_ReliefNormal;
+		return Bonobo_UIHandler_ReliefNormal;
 	}
 }
 
 
 static void
 impl_toolbar_set_attributes (PortableServer_Servant                   servant,
-			     const GNOME_UIHandler                    containee,
+			     const Bonobo_UIHandler                    containee,
 			     const CORBA_char                        *name,
-			     const GNOME_UIHandler_ToolbarOrientation orientation,
-			     const GNOME_UIHandler_ToolbarStyle       style,
-			     const GNOME_UIHandler_ToolbarSpaceStyle  space_style,
-			     const GNOME_UIHandler_ReliefStyle        relief_style,
+			     const Bonobo_UIHandler_ToolbarOrientation orientation,
+			     const Bonobo_UIHandler_ToolbarStyle       style,
+			     const Bonobo_UIHandler_ToolbarSpaceStyle  space_style,
+			     const Bonobo_UIHandler_ReliefStyle        relief_style,
 			     const CORBA_long                         space_size,
 			     const CORBA_boolean                      sensitive,
 			     CORBA_Environment                       *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarToolbarInternal *internal;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
 	internal = toolbar_toplevel_get_toolbar (uih, name);
-	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
-		return;
-	}
+	g_return_if_fail (internal != NULL);
 
 	toolbar_toplevel_set_orientation          (uih, internal, 
 						   toolbar_corba_to_orientation (orientation));
@@ -8020,37 +7913,27 @@ impl_toolbar_set_attributes (PortableServer_Servant                   servant,
 
 static void
 impl_toolbar_get_attributes (PortableServer_Servant              servant,
-			     const GNOME_UIHandler               containee,
-			     const CORBA_char                   *path,
-			     GNOME_UIHandler_ToolbarOrientation *orientation,
-			     GNOME_UIHandler_ToolbarStyle       *style,
-			     GNOME_UIHandler_ToolbarSpaceStyle  *space_style,
-			     GNOME_UIHandler_ReliefStyle        *relief_style,
+			     const Bonobo_UIHandler               containee,
+			     const CORBA_char                   *name,
+			     Bonobo_UIHandler_ToolbarOrientation *orientation,
+			     Bonobo_UIHandler_ToolbarStyle       *style,
+			     Bonobo_UIHandler_ToolbarSpaceStyle  *space_style,
+			     Bonobo_UIHandler_ReliefStyle        *relief_style,
 			     CORBA_long                         *space_size,
 			     CORBA_boolean                      *sensitive,
 			     CORBA_Environment                  *ev)
 {
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemInternal *internal;
 
-	if (!uih_toplevel_check_toplevel (uih)) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_NotToplevelHandler,
-				     NULL);
-		return;
-	}
-	internal = toolbar_toplevel_get_item_for_containee (uih, path, containee);
-	if (internal == NULL) {
-		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
-				     ex_GNOME_UIHandler_PathNotFound, NULL);
-		return;
-	}
+	internal = toolbar_toplevel_get_toolbar (uih, name);
+	g_return_if_fail (internal != NULL);
 
 	g_warning ("Unimplemented");
 }
 
 void
-gnome_ui_handler_toolbar_set_orientation (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_set_orientation (BonoboUIHandler *uih, const char *path,
 					  GtkOrientation orientation)
 {
 	ToolbarRemoteAttributeData *attrs;
@@ -8064,7 +7947,7 @@ gnome_ui_handler_toolbar_set_orientation (GnomeUIHandler *uih, const char *path,
 }
 
 GtkOrientation
-gnome_ui_handler_toolbar_get_orientation (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_toolbar_get_orientation (BonoboUIHandler *uih, const char *path)
 {
 	ToolbarRemoteAttributeData *attrs;
 	GtkOrientation              ans;
@@ -8081,10 +7964,10 @@ gnome_ui_handler_toolbar_get_orientation (GnomeUIHandler *uih, const char *path)
 }
 
 gboolean
-gnome_ui_handler_toolbar_item_get_sensitivity (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_toolbar_item_get_sensitivity (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, FALSE);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
@@ -8094,12 +7977,12 @@ gnome_ui_handler_toolbar_item_get_sensitivity (GnomeUIHandler *uih, const char *
 }
 
 void
-gnome_ui_handler_toolbar_item_set_label (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_item_set_label (BonoboUIHandler *uih, const char *path,
 					 gchar *label)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (path != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
 		toolbar_item_remote_set_label (uih, path, label);
@@ -8110,10 +7993,10 @@ gnome_ui_handler_toolbar_item_set_label (GnomeUIHandler *uih, const char *path,
 }
 
 gchar *
-gnome_ui_handler_toolbar_item_get_label (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_toolbar_item_get_label (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 
 	g_warning ("Unimplemented toolbar method");
@@ -8121,45 +8004,45 @@ gnome_ui_handler_toolbar_item_get_label (GnomeUIHandler *uih, const char *path)
 }
 
 void
-gnome_ui_handler_toolbar_item_get_accel (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_item_get_accel (BonoboUIHandler *uih, const char *path,
 					 guint *accelerator_key, GdkModifierType *ac_mods)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	g_warning ("Unimplemented toolbar method");
 }
 
 void
-gnome_ui_handler_toolbar_item_set_callback (GnomeUIHandler *uih, const char *path,
-					    GnomeUIHandlerCallbackFunc callback,
+bonobo_ui_handler_toolbar_item_set_callback (BonoboUIHandler *uih, const char *path,
+					    BonoboUIHandlerCallbackFunc callback,
 					    gpointer callback_data)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	g_warning ("Unimplemented toolbar method");
 }
 
 void
-gnome_ui_handler_toolbar_item_get_callback (GnomeUIHandler *uih, const char *path,
-					    GnomeUIHandlerCallbackFunc *callback,
+bonobo_ui_handler_toolbar_item_get_callback (BonoboUIHandler *uih, const char *path,
+					    BonoboUIHandlerCallbackFunc *callback,
 					    gpointer *callback_data)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	g_warning ("Unimplemented toolbar method");
 }
 
 gboolean
-gnome_ui_handler_toolbar_item_toggle_get_state (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_toolbar_item_toggle_get_state (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL,FALSE);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
 	g_warning ("Unimplemented toolbar method");
@@ -8167,21 +8050,21 @@ gnome_ui_handler_toolbar_item_toggle_get_state (GnomeUIHandler *uih, const char 
 }
 
 void
-gnome_ui_handler_toolbar_item_toggle_set_state (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_item_toggle_set_state (BonoboUIHandler *uih, const char *path,
 						gboolean state)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	g_warning ("Unimplemented toolbar method");
 }
 
 gboolean
-gnome_ui_handler_toolbar_item_radio_get_state (GnomeUIHandler *uih, const char *path)
+bonobo_ui_handler_toolbar_item_radio_get_state (BonoboUIHandler *uih, const char *path)
 {
 	g_return_val_if_fail (uih != NULL, FALSE);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
+	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
 	g_warning ("Unimplemented toolbar method");
@@ -8189,25 +8072,25 @@ gnome_ui_handler_toolbar_item_radio_get_state (GnomeUIHandler *uih, const char *
 }
 
 void
-gnome_ui_handler_toolbar_item_radio_set_state (GnomeUIHandler *uih, const char *path,
+bonobo_ui_handler_toolbar_item_radio_set_state (BonoboUIHandler *uih, const char *path,
 					       gboolean state)
 {
 	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
 	g_warning ("Unimplemented toolbar method");
 }
 
 /**
- * gnome_ui_handler_get_epv:
+ * bonobo_ui_handler_get_epv:
  */
-POA_GNOME_UIHandler__epv *
-gnome_ui_handler_get_epv (void)
+POA_Bonobo_UIHandler__epv *
+bonobo_ui_handler_get_epv (void)
 {
-	POA_GNOME_UIHandler__epv *epv;
+	POA_Bonobo_UIHandler__epv *epv;
 
-	epv = g_new0 (POA_GNOME_UIHandler__epv, 1);
+	epv = g_new0 (POA_Bonobo_UIHandler__epv, 1);
 
 	/* General server management. */
 	epv->register_containee = impl_register_containee;
@@ -8258,6 +8141,6 @@ static void
 init_ui_handler_corba_class (void)
 {
 	/* Setup the vector of epvs */
-	gnome_ui_handler_vepv.GNOME_Unknown_epv = gnome_object_get_epv ();
-	gnome_ui_handler_vepv.GNOME_UIHandler_epv = gnome_ui_handler_get_epv ();
+	bonobo_ui_handler_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
+	bonobo_ui_handler_vepv.Bonobo_UIHandler_epv = bonobo_ui_handler_get_epv ();
 }
