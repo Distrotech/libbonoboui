@@ -31,7 +31,7 @@ static void bonobo_selector_class_init (BonoboSelectorClass *klass);
 static void bonobo_selector_init (GtkWidget *widget);
 static void bonobo_selector_destroy (GtkObject *object);
 static void button_callback (GtkWidget *widget, gint button_number,
-	gpointer data);
+			     gpointer data);
 static void ok_callback (GtkWidget *widget, gpointer data);
 static void cancel_callback (GtkWidget *widget, gpointer data);
 static void add_gnorba_objects (BonoboSelector *widget); 
@@ -126,7 +126,6 @@ bonobo_selector_new (const gchar *title,
 	BonoboSelectorPrivate *priv;
 
 	if (title == NULL) title = "";
-
 	
 	sel = gtk_type_new (bonobo_selector_get_type ());
 	priv = sel->priv;
@@ -314,8 +313,7 @@ static void
 button_callback (GtkWidget *widget, gint button_number,
 		 gpointer data) 
 {
-	switch (button_number)
-	{
+	switch (button_number) {
 		case 0:
 			gtk_signal_emit (GTK_OBJECT (data), 
 				bonobo_selector_signals[OK]);
@@ -430,7 +428,7 @@ bonobo_selector_init (GtkWidget *widget)
 static void
 add_gnorba_objects (BonoboSelector *widget) 
 {
-	const gchar *text[4];
+	const gchar *text [4];
 	GList *list = NULL;
 	BonoboSelectorPrivate *priv;
 
@@ -447,14 +445,12 @@ add_gnorba_objects (BonoboSelector *widget)
 	priv->n_servers = 0;
 	list = get_filtered_objects (widget);
 	
-	if (priv->servers == NULL) 
-	{
+	if (priv->servers == NULL) {
 		gtk_clist_thaw (GTK_CLIST (priv->clist));
 		return;
 	}
 	
-	while (list != NULL)  
-	{
+	while (list != NULL) {
 		text[0] = od_server_info_get_name(list->data);
 		text[1] = od_server_info_get_id(list->data);
 		text[2] = od_server_info_get_description(list->data);

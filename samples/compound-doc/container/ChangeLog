@@ -1,3 +1,12 @@
+2000-05-05  Michael Meeks  <michael@helixcode.com>
+
+	* container.c (sample_app_exit): kill redundant forward definitions.
+
+2000-05-04  Michael Meeks  <michael@helixcode.com>
+
+	* container.c (sample_app_create): return the app.
+	(final_setup): load files. (main): use popt for args.
+
 2000-05-03  Michael Meeks  <michael@helixcode.com>
 
 	* container-menu.c: update shortcut to kill clash.
