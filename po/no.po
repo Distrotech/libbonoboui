@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
 "POT-Creation-Date: 2002-01-10 12:41+0000\n"
-"PO-Revision-Date: 2001-11-11 14:11+0100\n"
+"PO-Revision-Date: 2002-01-12 00:24+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,11 +43,11 @@ msgstr "Velg et fil som skal lagres"
 
 #: bonobo/bonobo-plug.c:343
 msgid "Event Forwarding"
-msgstr ""
+msgstr "Videresending av hendelser"
 
 #: bonobo/bonobo-plug.c:344
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "X-hendelser skal videresendes"
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -200,16 +200,15 @@ msgstr "Om denne applikasjonen"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr ""
+msgstr "Velg"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
 msgstr "_Om..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
-#, fuzzy
 msgid "_Edit"
-msgstr "A_vslutt"
+msgstr "R_ediger"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
@@ -217,7 +216,7 @@ msgstr "_Fil"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr ""
+msgstr "_Velg"
 
 #~ msgid "Can not bonobo_ui_init"
 #~ msgstr "Kan ikke kjøre bonobo_ui_init"
