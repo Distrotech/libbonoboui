@@ -46,6 +46,7 @@ GNOME_ControlFrame       gnome_control_get_control_frame      (GnomeControl *con
 void		         gnome_control_set_property_bag       (GnomeControl *control,
 		        				       GnomePropertyBag *pb);
 GnomePropertyBag        *gnome_control_get_property_bag       (GnomeControl *control);
+GNOME_UIHandler		 gnome_control_get_remote_ui_handler  (GnomeControl *control);
 GnomePropertyBagClient  *gnome_control_get_ambient_properties (GnomeControl *control);
 
 GNOME_Control_windowid   gnome_control_windowid_from_x11      (guint32 x11_id);

@@ -8,6 +8,7 @@
 #include <bonobo/gnome-object.h>
 #include <bonobo/gnome-wrapper.h>
 #include <bonobo/gnome-property-bag-client.h>
+#include <bonobo/gnome-ui-handler.h>
 
 BEGIN_GNOME_DECLS
  
@@ -36,21 +37,22 @@ typedef struct {
 } GnomeControlFrameClass;
 
 
-GtkType                	gnome_control_frame_get_type        (void);
-GnomeControlFrame      *gnome_control_frame_construct       (GnomeControlFrame *control_frame,
-		       					     GNOME_ControlFrame corba_control_frame);
-GnomeControlFrame      *gnome_control_frame_new             (void);
-		       
-void		       	gnome_control_frame_bind_to_control (GnomeControlFrame *control_frame,
-		       					     GNOME_Control control);
-GNOME_Control	       	gnome_control_frame_get_control     (GnomeControlFrame *control_frame);
-		       
-GtkWidget	       *gnome_control_frame_get_widget      (GnomeControlFrame *frame);
-
-GnomePropertyBagClient *gnome_control_frame_get_control_property_bag (GnomeControlFrame *control_frame);
-								       
-
-POA_GNOME_ControlFrame__epv *gnome_control_frame_get_epv (void);
+GtkType                      gnome_control_frame_get_type                  (void);
+GnomeControlFrame           *gnome_control_frame_construct                 (GnomeControlFrame  *control_frame,
+									    GNOME_ControlFrame  corba_control_frame);
+GnomeControlFrame           *gnome_control_frame_new                       (void);
+void                         gnome_control_frame_bind_to_control           (GnomeControlFrame  *control_frame,
+									    GNOME_Control       control);
+GNOME_Control                gnome_control_frame_get_control               (GnomeControlFrame  *control_frame);
+void			     gnome_control_frame_set_propbag		   (GnomeControlFrame  *control_frame,
+									    GnomePropertyBag   *propbag);
+GnomePropertyBag	    *gnome_control_frame_get_propbag		   (GnomeControlFrame  *control_frame);
+GtkWidget                   *gnome_control_frame_get_widget                (GnomeControlFrame  *frame);
+void                         gnome_control_frame_set_ui_handler            (GnomeControlFrame     *view_frame,
+									    GnomeUIHandler     *uih);
+GnomeUIHandler              *gnome_control_frame_get_ui_handler            (GnomeControlFrame  *view_frame);
+GnomePropertyBagClient      *gnome_control_frame_get_control_property_bag  (GnomeControlFrame  *control_frame);
+POA_GNOME_ControlFrame__epv *gnome_control_frame_get_epv                   (void);
 
 /*
  * A GnomeControlFrame acts as a proxy for the remote GnomeControl object to
