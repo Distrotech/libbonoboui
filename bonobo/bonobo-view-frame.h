@@ -4,7 +4,7 @@
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
-#include <bonobo/gnome-unknown.h>
+#include <bonobo/gnome-object.h>
 #include <bonobo/gnome-client-site.h>
 #include <bonobo/gnome-wrapper.h>
 
@@ -17,7 +17,7 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_VIEW_FRAME_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_FRAME_TYPE))
 
 typedef struct {
-	GnomeUnknown base;
+	GnomeObject base;
 
 	GnomeWrapper    *wrapper; 
 
@@ -25,7 +25,7 @@ typedef struct {
 } GnomeViewFrame;
 
 typedef struct {
-	GnomeUnknownClass parent_class;
+	GnomeObjectClass parent_class;
 
 	/*
 	 * signal

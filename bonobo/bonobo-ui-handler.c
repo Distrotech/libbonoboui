@@ -16,19 +16,19 @@
 #include <bonobo/gnome-ui-handler.h>
 
 /* Parent object class in GTK hierarchy */
-static GnomeUnknownClass *gnome_ui_handler_parent_class;
+static GnomeObjectClass *gnome_ui_handler_parent_class;
 
 /* The entry point vectors for the server we provide */
 static POA_GNOME_UIHandler__epv gnome_ui_handler_epv;
 static POA_GNOME_UIHandler__vepv gnome_ui_handler_vepv;
 
 static CORBA_Object
-create_gnome_ui_handler (GnomeUnknown *object)
+create_gnome_ui_handler (GnomeObject *object)
 {
 	POA_GNOME_UIHandler *servant;
 	CORBA_Object o;
 	
-	servant = (POA_GNOME_UIHandler *) g_new0 (GnomeUnknownServant, 1);
+	servant = (POA_GNOME_UIHandler *) g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_ui_handler_vepv;
 
 	POA_GNOME_UIHandler__init ((PortableServer_Servant) servant, &object->ev);
@@ -37,7 +37,7 @@ create_gnome_ui_handler (GnomeUnknown *object)
 		return CORBA_OBJECT_NIL;
 	}
 
-	return gnome_unknown_activate_servant (object, servant);
+	return gnome_object_activate_servant (object, servant);
 }
 
 GnomeUIHandler *
@@ -47,7 +47,7 @@ gnome_ui_handler_construct (GnomeUIHandler *ui_handler, GNOME_UIHandler corba_ui
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (view), NULL);
 	g_return_val_if_fail (corba_uihandler != CORBA_OBJECT_NIL, NULL);
 
-	gnome_unknown_construct (GNOME_UNKNOWN (ui_handler), corba_uihandler);
+	gnome_object_construct (GNOME_OBJECT (ui_handler), corba_uihandler);
 
 	ui_handler->top = g_new0 (GnomeUIHandlerTopLevelData, 1);
 
@@ -74,7 +74,7 @@ init_ui_handler_corba_class (void)
 	gnome_ui_handler_epv.do_verb = impl_GNOME_UIHandler_do_verb;
 
 	/* Setup the vector of epvs */
-	gnome_ui_handler_vepv.GNOME_Unknown_epv = &gnome_unknown_epv;
+	gnome_ui_handler_vepv.GNOME_Unknown_epv = &gnome_object_epv;
 	gnome_ui_handler_vepv.GNOME_UIHandler_epv = &gnome_ui_handler_epv;
 }
 
@@ -83,7 +83,7 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *class)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
-	gnome_ui_handler_parent_class = gtk_type_class (gnome_unknown_get_type ());
+	gnome_ui_handler_parent_class = gtk_type_class (gnome_object_get_type ());
 
 	object_class->destroy = gnome_ui_handler_destroy;
 
@@ -91,7 +91,7 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *class)
 }
 
 static void
-gnome_ui_handler_init (GnomeUnknown *object)
+gnome_ui_handler_init (GnomeObject *object)
 {
 }
 
@@ -119,7 +119,7 @@ gnome_ui_handler_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_unknown_get_type (), &info);
+		type = gtk_type_unique (gnome_object_get_type (), &info);
 	}
 
 	return type;
@@ -136,7 +136,7 @@ gnome_ui_handler_new (void)
 	
 	uih = gtk_type_new (gnome_ui_handler_get_type ());
 
-	corba_uihandler = create_gnome_ui_handler (GNOME_UNKNOWN (uih));
+	corba_uihandler = create_gnome_ui_handler (GNOME_OBJECT (uih));
 	if (corba_uihandler == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (uih));
 		return NULL;

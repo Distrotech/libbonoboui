@@ -22,7 +22,7 @@ enum {
 static guint view_frame_signals [LAST_SIGNAL];
 
 /* Parent object class in GTK hierarchy */
-static GnomeUnknownClass *gnome_view_frame_parent_class;
+static GnomeObjectClass *gnome_view_frame_parent_class;
 
 /* The entry point vectors for the server we provide */
 static POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
@@ -32,10 +32,10 @@ static GNOME_ClientSite
 impl_GNOME_ViewFrame_get_client_site (PortableServer_Servant servant,
 				      CORBA_Environment *ev)
 {
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_unknown_from_servant (servant));
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
 
 	return CORBA_Object_duplicate (
-		gnome_unknown_corba_objref (GNOME_UNKNOWN (view_frame->client_site)), ev);
+		gnome_object_corba_objref (GNOME_OBJECT (view_frame->client_site)), ev);
 }
 
 static void
@@ -43,19 +43,19 @@ impl_GNOME_ViewFrame_view_activated (PortableServer_Servant servant,
 				     const CORBA_boolean state,
 				     CORBA_Environment *ev)
 {
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_unknown_from_servant (servant));
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
 
 	gtk_signal_emit (GTK_OBJECT (view_frame),
 			 view_frame_signals [VIEW_ACTIVATED], state);
 }
 
 static CORBA_Object
-create_gnome_view_frame (GnomeUnknown *object)
+create_gnome_view_frame (GnomeObject *object)
 {
 	POA_GNOME_ViewFrame *servant;
 	CORBA_Object o;
 	
-	servant = (POA_GNOME_ViewFrame *) g_new0 (GnomeUnknownServant, 1);
+	servant = (POA_GNOME_ViewFrame *) g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_view_frame_vepv;
 
 	POA_GNOME_ViewFrame__init ((PortableServer_Servant) servant, &object->ev);
@@ -64,7 +64,7 @@ create_gnome_view_frame (GnomeUnknown *object)
 		return CORBA_OBJECT_NIL;
 	}
 
-	return gnome_unknown_activate_servant (object, servant);
+	return gnome_object_activate_servant (object, servant);
 	
 }
 
@@ -83,7 +83,7 @@ gnome_view_frame_construct (GnomeViewFrame *view_frame,
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
 
-	gnome_unknown_construct (GNOME_UNKNOWN (view_frame), corba_view_frame);
+	gnome_object_construct (GNOME_OBJECT (view_frame), corba_view_frame);
 	
 	view_frame->client_site = client_site;
 	view_frame->wrapper = wrapper;
@@ -116,7 +116,7 @@ gnome_view_frame_new (GnomeClientSite *client_site)
 	       return NULL;
 	}
 
-	corba_view_frame = create_gnome_view_frame (GNOME_UNKNOWN (view_frame));
+	corba_view_frame = create_gnome_view_frame (GNOME_OBJECT (view_frame));
 	if (corba_view_frame == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (view_frame));
 		return NULL;
@@ -143,7 +143,7 @@ init_view_frame_corba_class (void)
 	gnome_view_frame_epv.view_activated = impl_GNOME_ViewFrame_view_activated;
 
 	/* Setup the vector of epvs */
-	gnome_view_frame_vepv.GNOME_Unknown_epv = &gnome_unknown_epv;
+	gnome_view_frame_vepv.GNOME_Unknown_epv = &gnome_object_epv;
 	gnome_view_frame_vepv.GNOME_ViewFrame_epv = &gnome_view_frame_epv;
 }
 
@@ -158,7 +158,7 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
-	gnome_view_frame_parent_class = gtk_type_class (gnome_unknown_get_type ());
+	gnome_view_frame_parent_class = gtk_type_class (gnome_object_get_type ());
 
 	view_frame_signals [VIEW_ACTIVATED] =
 		gtk_signal_new ("view_activated",
@@ -180,7 +180,7 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 }
 
 static void
-gnome_view_frame_init (GnomeUnknown *object)
+gnome_view_frame_init (GnomeObject *object)
 {
 }
 
@@ -201,7 +201,7 @@ gnome_view_frame_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_unknown_get_type (), &info);
+		type = gtk_type_unique (gnome_object_get_type (), &info);
 	}
 
 	return type;

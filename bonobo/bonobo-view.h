@@ -4,7 +4,7 @@
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
-#include <bonobo/gnome-unknown.h>
+#include <bonobo/gnome-object.h>
 #include <bonobo/gnome-view-frame.h>
 
 BEGIN_GNOME_DECLS
@@ -16,7 +16,7 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_TYPE))
 
 typedef struct {
-	GnomeUnknown base;
+	GnomeObject base;
 
 	GtkWidget *widget;
 	GtkWidget *plug;
@@ -26,7 +26,7 @@ typedef struct {
 } GnomeView;
 
 typedef struct {
-	GnomeUnknownClass parent_class;
+	GnomeObjectClass parent_class;
 
 	/*
 	 * Signals

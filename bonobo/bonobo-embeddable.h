@@ -1,27 +1,27 @@
-#ifndef _GNOME_BONOBO_OBJECT_H_
-#define _GNOME_BONOBO_OBJECT_H_
+#ifndef _GNOME_EMBEDDABLE_H_
+#define _GNOME_EMBEDDABLE_H_
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <bonobo/bonobo.h>
-#include <bonobo/gnome-unknown.h>
+#include <bonobo/gnome-object.h>
 #include <bonobo/gnome-view.h>
 
 BEGIN_GNOME_DECLS
  
-#define GNOME_BONOBO_OBJECT_TYPE        (gnome_bonobo_object_get_type ())
-#define GNOME_BONOBO_OBJECT(o)          (GTK_CHECK_CAST ((o), GNOME_BONOBO_OBJECT_TYPE, GnomeBonoboObject))
-#define GNOME_BONOBO_OBJECT_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_BONOBO_OBJECT_TYPE, GnomeBonoboObjectClass))
-#define GNOME_IS_BONOBO_OBJECT(o)       (GTK_CHECK_TYPE ((o), GNOME_BONOBO_OBJECT_TYPE))
-#define GNOME_IS_BONOBO_OBJECT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_BONOBO_OBJECT_TYPE))
+#define GNOME_EMBEDDABLE_TYPE        (gnome_embeddable_get_type ())
+#define GNOME_EMBEDDABLE(o)          (GTK_CHECK_CAST ((o), GNOME_EMBEDDABLE_TYPE, GnomeEmbeddable))
+#define GNOME_EMBEDDABLE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_EMBEDDABLE_TYPE, GnomeEmbeddableClass))
+#define GNOME_IS_EMBEDDABLE(o)       (GTK_CHECK_TYPE ((o), GNOME_EMBEDDABLE_TYPE))
+#define GNOME_IS_EMBEDDABLE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_EMBEDDABLE_TYPE))
 
-struct _GnomeBonoboObject;
-typedef struct _GnomeBonoboObject GnomeBonoboObject;
+struct _GnomeEmbeddable;
+typedef struct _GnomeEmbeddable GnomeEmbeddable;
 
-typedef GnomeView * (*GnomeViewFactory)(GnomeBonoboObject *bonobo_object, const GNOME_ViewFrame view_frame, void *closure);
+typedef GnomeView * (*GnomeViewFactory)(GnomeEmbeddable *bonobo_object, const GNOME_ViewFrame view_frame, void *closure);
 					
-struct _GnomeBonoboObject {
-	GnomeUnknown base;
+struct _GnomeEmbeddable {
+	GnomeObject base;
 
 	char *host_name;
 	char *host_appname;
@@ -40,28 +40,28 @@ struct _GnomeBonoboObject {
 };
 
 typedef struct {
-	GnomeUnknownClass parent_class;
+	GnomeObjectClass parent_class;
 
 	/*
 	 * Signals
 	 */
-	void (*host_name_changed)  (GnomeBonoboObject *comp);
-} GnomeBonoboObjectClass;
+	void (*host_name_changed)  (GnomeEmbeddable *comp);
+} GnomeEmbeddableClass;
 
-GtkType            gnome_bonobo_object_get_type           (void);
-GnomeBonoboObject *gnome_bonobo_object_new                (GnomeViewFactory factory,
+GtkType            gnome_embeddable_get_type           (void);
+GnomeEmbeddable *gnome_embeddable_new                (GnomeViewFactory factory,
 							   void *data);
-GnomeBonoboObject *gnome_bonobo_object_construct          (GnomeBonoboObject *bonobo_object,
+GnomeEmbeddable *gnome_embeddable_construct          (GnomeEmbeddable *bonobo_object,
 							   GNOME_BonoboObject  corba_bonobo_object,
 							   GnomeViewFactory factory,
 							   void *data);
-void               gnome_bonobo_object_add_verb           (GnomeBonoboObject *bonobo_object,
+void               gnome_embeddable_add_verb           (GnomeEmbeddable *bonobo_object,
 							   const char *verb_name);
-void               gnome_bonobo_object_add_verbs          (GnomeBonoboObject *bonobo_object,
+void               gnome_embeddable_add_verbs          (GnomeEmbeddable *bonobo_object,
 							   const char **verb_list);
-void               gnome_bonobo_object_remove_verb        (GnomeBonoboObject *bonobo_object,
+void               gnome_embeddable_remove_verb        (GnomeEmbeddable *bonobo_object,
 							   const char *verb_name);
-void               gnome_bonobo_object_set_view_factory   (GnomeBonoboObject *bonobo_object,
+void               gnome_embeddable_set_view_factory   (GnomeEmbeddable *bonobo_object,
 							   GnomeViewFactory factory,
 							   void *data);
 

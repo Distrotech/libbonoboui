@@ -13,7 +13,7 @@
 #include <gdk/gdkprivate.h>
 
 /* Parent object class in GTK hierarchy */
-static GnomeUnknownClass *gnome_view_parent_class;
+static GnomeObjectClass *gnome_view_parent_class;
 
 /* The entry point vectors for the server we provide */
 static POA_GNOME_View__epv gnome_view_epv;
@@ -31,7 +31,7 @@ impl_GNOME_View_do_verb (PortableServer_Servant servant,
 				 const CORBA_char *verb_name,
 				 CORBA_Environment *ev)
 {
-	GnomeView *view = GNOME_VIEW (gnome_unknown_from_servant (servant));
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 
 	gtk_signal_emit (
 		GTK_OBJECT (view),
@@ -45,7 +45,7 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 			       const CORBA_short height,
 			       CORBA_Environment *ev)
 {
-	GnomeView *view = GNOME_VIEW (gnome_unknown_from_servant (servant));
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 	GtkAllocation allocation;
 
 	allocation.x = view->plug->allocation.x;
@@ -59,7 +59,7 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 static void
 impl_GNOME_View_set_window (PortableServer_Servant servant, GNOME_View_windowid id, CORBA_Environment *ev)
 {
-	GnomeView *view = GNOME_VIEW (gnome_unknown_from_servant (servant));
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 	GdkWindowPrivate *win;
 
 	view->plug = gtk_plug_new (id);
@@ -70,12 +70,12 @@ impl_GNOME_View_set_window (PortableServer_Servant servant, GNOME_View_windowid 
 }
 
 static CORBA_Object
-create_gnome_view (GnomeUnknown *object)
+create_gnome_view (GnomeObject *object)
 {
 	POA_GNOME_View *servant;
 	CORBA_Object o;
 	
-	servant = (POA_GNOME_View *) g_new0 (GnomeUnknownServant, 1);
+	servant = (POA_GNOME_View *) g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_view_vepv;
 
 	POA_GNOME_View__init ((PortableServer_Servant) servant, &object->ev);
@@ -84,7 +84,7 @@ create_gnome_view (GnomeUnknown *object)
 		return CORBA_OBJECT_NIL;
 	}
 
-	return gnome_unknown_activate_servant (object, servant);
+	return gnome_object_activate_servant (object, servant);
 	
 }
 
@@ -97,7 +97,7 @@ gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
-	gnome_unknown_construct (GNOME_UNKNOWN (view), corba_view);
+	gnome_object_construct (GNOME_OBJECT (view), corba_view);
 	
 	view->widget = widget;
 
@@ -124,7 +124,7 @@ gnome_view_new (GtkWidget *widget)
 
 	view = gtk_type_new (gnome_view_get_type ());
 
-	corba_view = create_gnome_view (GNOME_UNKNOWN (view));
+	corba_view = create_gnome_view (GNOME_OBJECT (view));
 	if (corba_view == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (view));
 		return NULL;
@@ -154,7 +154,7 @@ init_view_corba_class (void)
 	gnome_view_epv.do_verb = impl_GNOME_View_do_verb;
 
 	/* Setup the vector of epvs */
-	gnome_view_vepv.GNOME_Unknown_epv = &gnome_unknown_epv;
+	gnome_view_vepv.GNOME_Unknown_epv = &gnome_object_epv;
 	gnome_view_vepv.GNOME_View_epv = &gnome_view_epv;
 }
 
@@ -163,7 +163,7 @@ gnome_view_class_init (GnomeViewClass *class)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
-	gnome_view_parent_class = gtk_type_class (gnome_unknown_get_type ());
+	gnome_view_parent_class = gtk_type_class (gnome_object_get_type ());
 
 	view_signals [DO_VERB] =
                 gtk_signal_new ("do_verb",
@@ -183,7 +183,7 @@ gnome_view_class_init (GnomeViewClass *class)
 }
 
 static void
-gnome_view_init (GnomeUnknown *object)
+gnome_view_init (GnomeObject *object)
 {
 }
 
@@ -204,7 +204,7 @@ gnome_view_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_unknown_get_type (), &info);
+		type = gtk_type_unique (gnome_object_get_type (), &info);
 	}
 
 	return type;

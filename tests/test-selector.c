@@ -1,6 +1,6 @@
 
 #include <gtk/gtk.h>
-#include <bonobo/gnome-bonobo.h>
+#include <bonobo/gnome-object.h>
 #include <libgnorba/gnorba.h>
 
 CORBA_Environment ev;

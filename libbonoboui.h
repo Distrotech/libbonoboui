@@ -6,7 +6,7 @@
  */
 #include <bonobo/gtk-interfaces.h>
 
-#include <bonobo/gnome-unknown.h>
+#include <bonobo/gnome-object.h>
 
 #include <bonobo/gnome-bind-context.h>
 
@@ -16,15 +16,15 @@
 #include <bonobo/gnome-composite-moniker.h>
 
 #include <bonobo/gnome-container.h>
-#include <bonobo/gnome-unknown-client.h>
+#include <bonobo/gnome-object-client.h>
 #include <bonobo/gnome-client-site.h>
 
 #include <bonobo/gnome-view.h>
-#include <bonobo/gnome-component.h>
-#include <bonobo/gnome-component-factory.h>
-#include <bonobo/gnome-component-io.h>
+#include <bonobo/gnome-embeddable.h>
+#include <bonobo/gnome-embeddable-factory.h>
+#include <bonobo/gnome-embeddable-io.h>
 
-#include <bonobo/gnome-component-client.h>
+#include <bonobo/gnome-embeddable-client.h>
 
 #include <bonobo/gnome-inplace-component.h>
 #include <bonobo/gnome-inplace-site.h>
@@ -41,5 +41,5 @@
 
 #include <bonobo/gnome-storage.h>
 
-#include <bonobo/gnome-bonobo-selector.h>
+#include <bonobo/gnome-object-selector.h>
 

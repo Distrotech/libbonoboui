@@ -4,9 +4,9 @@
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <bonobo/bonobo.h>
-#include <bonobo/gnome-unknown.h>
+#include <bonobo/gnome-object.h>
 #include <bonobo/gnome-view.h>
-#include <bonobo/gnome-component.h>
+#include <bonobo/gnome-embeddable.h>
 
 BEGIN_GNOME_DECLS
  
@@ -19,10 +19,10 @@ BEGIN_GNOME_DECLS
 struct _GnomeComponentFactory;
 typedef struct _GnomeComponentFactory GnomeComponentFactory;
 
-typedef GnomeUnknown * (*GnomeComponentFactoryFn)(GnomeComponentFactory *Factory, void *closure);
+typedef GnomeObject * (*GnomeComponentFactoryFn)(GnomeComponentFactory *Factory, void *closure);
 					
 struct _GnomeComponentFactory {
-	GnomeUnknown base;
+	GnomeObject base;
 
 	/*
 	 * The function factory
@@ -32,12 +32,12 @@ struct _GnomeComponentFactory {
 };
 
 typedef struct {
-	GnomeUnknownClass parent_class;
+	GnomeObjectClass parent_class;
 
 	/*
 	 * Virtual methods
 	 */
-	GnomeUnknown * (*new_component)(GnomeComponentFactory *c_factory);
+	GnomeObject * (*new_component)(GnomeComponentFactory *c_factory);
 } GnomeComponentFactoryClass;
 
 GtkType gnome_component_factory_get_type  (void);
