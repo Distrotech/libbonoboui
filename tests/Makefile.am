@@ -20,7 +20,7 @@ test_properties_server_LDADD =				\
 
 
 test_properties_client_SOURCES =			\
-n	test-properties-client.c
+	test-properties-client.c
 
 test_properties_client_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la		\
