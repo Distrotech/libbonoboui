@@ -610,7 +610,7 @@ gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom)
 	g_return_if_fail (zoom > 0.0);
 
 	CORBA_exception_init (&ev);
-	GNOME_View_set_zoom_factory (view_frame->view, &ev);
+	GNOME_View_set_zoom_factor (view_frame->view, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (view_frame),
