@@ -15,8 +15,6 @@
 #include <libgnome/gnome-config.h>
 #include <bonobo/bonobo-i18n.h>
 
-#include <libgnomeui/gnome-stock.h>
-
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
 #include <bonobo/bonobo-ui-config-widget.h>
