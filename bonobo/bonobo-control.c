@@ -341,9 +341,9 @@ impl_Bonobo_Control_getWindowId (PortableServer_Servant servant,
 	screen_num = parse_cookie (cookie);
 	if (screen_num != -1)
 		gdkscreen = gdk_display_get_screen (
-				gdk_get_default_display (), screen_num);
+				gdk_display_get_default (), screen_num);
 	else
-		gdkscreen = gdk_get_default_screen ();
+		gdkscreen = gdk_screen_get_default ();
 
 	gtk_window_set_screen (GTK_WINDOW (control->priv->plug), gdkscreen);
 #endif
