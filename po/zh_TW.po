@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.0\n"
-"POT-Creation-Date: 2002-08-30 16:39+0100\n"
+"POT-Creation-Date: 2002-10-01 11:34+0100\n"
 "PO-Revision-Date: 2002-06-06 17:37+0800\n"
 "Last-Translator: Joe Man <trmetal@yahoo.com.hk>\n"
 "Language-Team: traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Whether X events should be forwarded"
 msgstr ""
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "名稱"
 
@@ -283,15 +283,15 @@ msgstr ""
 msgid "whether the toolbar is floating"
 msgstr "工具列是否浮動"
 
-#: bonobo/bonobo-ui-util.c:610
+#: bonobo/bonobo-ui-util.c:598
 msgid "_Contents"
 msgstr "內容(_C)"
 
-#: bonobo/bonobo-ui-util.c:611
+#: bonobo/bonobo-ui-util.c:599
 msgid "View help for this application"
 msgstr "瀏覽有關此應用程式的說明文件"
 
-#: bonobo/bonobo-window.c:446
+#: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
 

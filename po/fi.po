@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2002-08-30 16:39+0100\n"
+"POT-Creation-Date: 2002-10-01 11:34+0100\n"
 "PO-Revision-Date: 2002-05-31 18:10+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -79,7 +79,7 @@ msgstr "Tapahtumien edelleen välitys"
 msgid "Whether X events should be forwarded"
 msgstr "Välittyvätkö X-tapahtumat edelleen"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "Nimi"
 
@@ -286,15 +286,15 @@ msgstr "kelluu"
 msgid "whether the toolbar is floating"
 msgstr "kelluuko työkalupalkki"
 
-#: bonobo/bonobo-ui-util.c:610
+#: bonobo/bonobo-ui-util.c:598
 msgid "_Contents"
 msgstr "_Sisältö"
 
-#: bonobo/bonobo-ui-util.c:611
+#: bonobo/bonobo-ui-util.c:599
 msgid "View help for this application"
 msgstr "Näytä tämän ohjelman ohje"
 
-#: bonobo/bonobo-window.c:446
+#: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
 msgstr "Ikkunan nimi - käytetään asetusten serialisointiin."
 

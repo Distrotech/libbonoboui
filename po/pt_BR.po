@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-08-30 16:39+0100\n"
+"POT-Creation-Date: 2002-10-01 11:34+0100\n"
 "PO-Revision-Date: 2002-07-24 19:00-0300\n"
 "Last-Translator: Evandro Fernandes Giovanini <evandrofg@ig.com.br>\n"
 "Language-Team: Brazilian Portuguese <gnome-br@listas.cipsga.org.br>\n"
@@ -76,7 +76,7 @@ msgstr "Encaminhar Evento"
 msgid "Whether X events should be forwarded"
 msgstr "Indica se os eventos X devem ser encaminhados"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "Nome"
 
@@ -283,15 +283,15 @@ msgstr "é flutuante"
 msgid "whether the toolbar is floating"
 msgstr "indica se a barra de ferramentas é flutuante"
 
-#: bonobo/bonobo-ui-util.c:610
+#: bonobo/bonobo-ui-util.c:598
 msgid "_Contents"
 msgstr "_Conteúdo"
 
-#: bonobo/bonobo-ui-util.c:611
+#: bonobo/bonobo-ui-util.c:599
 msgid "View help for this application"
 msgstr "Ver a ajuda desta aplicação"
 
-#: bonobo/bonobo-window.c:446
+#: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
 msgstr "O nome da janela - usado para serialização da configuração."
 

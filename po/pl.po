@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-08-30 16:39+0100\n"
+"POT-Creation-Date: 2002-10-01 11:34+0100\n"
 "PO-Revision-Date: 2002-05-25 18:19+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -80,7 +80,7 @@ msgstr "Przesyłanie zdarzeń"
 msgid "Whether X events should be forwarded"
 msgstr "Określa, czy zdarzenia X powinny być przesyłane"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:445
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "Nazwa"
 
@@ -287,15 +287,15 @@ msgstr "Oderwany"
 msgid "whether the toolbar is floating"
 msgstr "Określa, czy pasek narzędziowy jest oderwany"
 
-#: bonobo/bonobo-ui-util.c:610
+#: bonobo/bonobo-ui-util.c:598
 msgid "_Contents"
 msgstr "_Zawartość"
 
-#: bonobo/bonobo-ui-util.c:611
+#: bonobo/bonobo-ui-util.c:599
 msgid "View help for this application"
 msgstr "Wyświetla pomoc na temat tej aplikacji"
 
-#: bonobo/bonobo-window.c:446
+#: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nazwa okna - używana przy serializacji konfiguracji."
 

@@ -1,3 +1,16 @@
+libbonoboui 2.0.3.1
+
+	* Bugs fixed
+		+ UI Node fixes (Michael)
+		+ UI widget ref fixes (Michael)
+		+ uninitialized popup ref fix (Michael)
+		+ FAQ improvement (Gustavo Carneiro)
+
+libbonoboui 2.0.3
+
+	* Bugs fixed
+		+ icon theme change fixes (Michael)
+
 libbonoboui 2.0.2
 
 	* Bugs fixed

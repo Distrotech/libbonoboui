@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
-"POT-Creation-Date: 2002-09-17 05:07+0200\n"
+"POT-Creation-Date: 2002-10-01 11:34+0100\n"
 "PO-Revision-Date: 2002-09-18 05:08+0300\n"
 "Last-Translator: Ömer Fadýl USTA <omer_fad@hotmail.com>\n"
 "Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"
@@ -396,4 +396,3 @@ msgstr ""
 
 #~ msgid "Select an object"
 #~ msgstr "Bir nesne seçin"
-
