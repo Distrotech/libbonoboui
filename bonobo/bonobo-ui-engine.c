@@ -3009,3 +3009,31 @@ bonobo_ui_engine_get_config (BonoboUIEngine *engine)
 	
 	return engine->priv->config;
 }
+
+void
+bonobo_ui_engine_exec_verb (BonoboUIEngine    *engine,
+			    const CORBA_char  *cname,
+			    CORBA_Environment *ev)
+{
+	g_return_if_fail (ev != NULL);
+	g_return_if_fail (cname != NULL);
+	bonobo_return_if_fail (BONOBO_IS_UI_ENGINE (engine), ev);
+
+	g_warning ("Emit Verb '%s'", cname);
+}
+
+void
+bonobo_ui_engine_ui_event (BonoboUIEngine                    *engine,
+			   const CORBA_char                  *id,
+			   const Bonobo_UIComponent_EventType type,
+			   const CORBA_char                  *state,
+			   CORBA_Environment                 *ev)
+{
+	g_return_if_fail (ev != NULL);
+	g_return_if_fail (id != NULL);
+	g_return_if_fail (state != NULL);
+	bonobo_return_if_fail (BONOBO_IS_UI_ENGINE (engine), ev);
+
+	g_warning ("Emit UI Event '%s' %s'", id, state);
+}
+

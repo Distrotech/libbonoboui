@@ -197,6 +197,15 @@ void               bonobo_ui_engine_set_ui_container (BonoboUIEngine    *engine,
 						      BonoboUIContainer *ui_container);
 BonoboUIContainer *bonobo_ui_engine_get_ui_container (BonoboUIEngine    *engine);
 
+void bonobo_ui_engine_exec_verb (BonoboUIEngine                    *engine,
+				 const CORBA_char                  *cname,
+				 CORBA_Environment                 *ev);
+void bonobo_ui_engine_ui_event  (BonoboUIEngine                    *engine,
+				 const CORBA_char                  *id,
+				 const Bonobo_UIComponent_EventType type,
+				 const CORBA_char                  *state,
+				 CORBA_Environment                 *ev);
+
 G_END_DECLS
 
 #endif /* _BONOBO_UI_ENGINE_H_ */

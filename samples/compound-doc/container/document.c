@@ -44,7 +44,7 @@ sample_doc_finalize (GObject *obj)
 static void
 sample_doc_class_init (GObjectClass *klass)
 {
-	SampleDocClass *doc_class = SAMPLE_DOC_CLASS (klass);
+/*	SampleDocClass *doc_class = SAMPLE_DOC_CLASS (klass); */
 
 	doc_parent_class = g_type_class_peek_parent (klass);
 
@@ -157,11 +157,6 @@ GList *
 sample_doc_get_components (SampleDoc *doc)
 {
 	return g_list_copy (doc->priv->components);
-}
-
-static void
-sample_doc_set_filename (SampleDoc *doc, const gchar *filename)
-{
 }
 
 void

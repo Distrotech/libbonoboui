@@ -1,8 +1,9 @@
 #include "config.h"
 #include <bonobo/Bonobo.h>
-#include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-object.h>
-#include <libgnomecanvas/gnome-canvas.h>
+#include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-canvas-item.h>
+#include <libgnomecanvas/gnome-canvas-rect-ellipse.h>
 
 #include "doc-view.h"
 
@@ -34,6 +35,8 @@ item_pressed_cb (GnomeCanvasItem *item, SampleDocView *view)
 
 	view->selection = item;
 	gnome_canvas_item_set (view->selection, "selected", TRUE, NULL);
+
+	return TRUE;
 }
 
 static void
@@ -98,7 +101,7 @@ GtkWidget *
 sample_doc_view_new (SampleDoc *doc, Bonobo_UIContainer uic)
 {
 	SampleDocView *view;
-	GtkWidget *canvas, *sw;
+	GtkWidget *canvas;
 	GnomeCanvasItem *bg;
 
 	view = g_new0 (SampleDocView, 1);

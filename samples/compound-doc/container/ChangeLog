@@ -1,3 +1,12 @@
+2001-08-13  Michael Meeks  <michael@ximian.com>
+
+	* doc-view.c: kill warnings.
+	(item_pressed_cb): return TRUE at random.
+
+	* document.c (sample_doc_class_init): ditto.
+
+	* document.c (sample_doc_set_filename): kill.
+
 2001-07-31  Michael Meeks  <michael@ximian.com>
 
 	* document.c,

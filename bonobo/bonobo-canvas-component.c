@@ -12,6 +12,7 @@
 #include <string.h>
 #include <gtk/gtksignal.h>
 #include <bonobo/Bonobo.h>
+#include <libart_lgpl/art_affine.h>
 #include <libgnomecanvas/gnome-canvas.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>

@@ -12,7 +12,9 @@
 #define _BONOBO_CANVAS_COMPONENT_H_
 
 #include <glib/gmacros.h>
+#include <gdk/gdk.h>
 #include <bonobo/bonobo-object.h>
+#include <libgnomecanvas/gnome-canvas.h>
 
 G_BEGIN_DECLS
  

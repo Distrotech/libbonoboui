@@ -191,6 +191,28 @@ impl_Bonobo_UIContainer_exists (PortableServer_Servant servant,
 }
 
 static void
+impl_Bonobo_UIContainer_execVerb (PortableServer_Servant servant,
+				  const CORBA_char      *cname,
+				  CORBA_Environment     *ev)
+{
+	BonoboUIEngine *engine = get_engine (servant);
+
+	bonobo_ui_engine_exec_verb (engine, cname, ev);
+}
+
+static void
+impl_Bonobo_UIContainer_uiEvent (PortableServer_Servant             servant,
+				 const CORBA_char                  *id,
+				 const Bonobo_UIComponent_EventType type,
+				 const CORBA_char                  *state,
+				 CORBA_Environment                 *ev)
+{
+	BonoboUIEngine *engine = get_engine (servant);
+
+	bonobo_ui_engine_ui_event (engine, id, type, state, ev);
+}
+
+static void
 impl_Bonobo_UIContainer_setObject (PortableServer_Servant servant,
 				   const CORBA_char      *path,
 				   const Bonobo_Unknown   control,
@@ -281,6 +303,9 @@ bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 	epv->getNode    = impl_Bonobo_UIContainer_getNode;
 	epv->removeNode = impl_Bonobo_UIContainer_removeNode;
 	epv->exists     = impl_Bonobo_UIContainer_exists;
+
+	epv->execVerb   = impl_Bonobo_UIContainer_execVerb;
+	epv->uiEvent    = impl_Bonobo_UIContainer_uiEvent;
 
 	epv->setObject  = impl_Bonobo_UIContainer_setObject;
 	epv->getObject  = impl_Bonobo_UIContainer_getObject;
