@@ -54,9 +54,11 @@ struct _BonoboUIXml {
 typedef struct {
 	GtkObjectClass         object_klass;
 
-	void                 (*override)  (xmlNode *node);
-	void                 (*reinstate) (xmlNode *node);
-	void                 (*remove)    (xmlNode *node);
+	void                 (*override)          (xmlNode *node);
+	void                 (*replace_override)  (xmlNode *new,
+						   xmlNode *old);
+	void                 (*reinstate)         (xmlNode *node);
+	void                 (*remove)            (xmlNode *node);
 
 	gpointer               dummy;
 } BonoboUIXmlClass;

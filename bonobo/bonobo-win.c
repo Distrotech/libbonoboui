@@ -588,6 +588,23 @@ custom_widget_unparent (NodeInfo *info)
 }
 
 static void
+replace_override_fn (xmlNode *new,
+		     xmlNode *old,
+		     BonoboWinPrivate *priv)
+{
+	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, new);
+	NodeInfo *old_info = bonobo_ui_xml_get_data (priv->tree, old);
+
+	g_return_if_fail (info != NULL);
+	g_return_if_fail (old_info != NULL);
+
+	/* Copy useful stuff across */
+	info->type = old_info->type;
+	info->widget = old_info->widget;
+	info->object = old_info->object;
+}
+
+static void
 override_fn (GtkObject *object, xmlNode *node, BonoboWinPrivate *priv)
 {
 	char     *id = node_get_id_or_path (node);
@@ -1035,7 +1052,7 @@ menu_item_create (BonoboWinPrivate *priv, GtkWidget *parent, xmlNode *node)
 					GTK_RADIO_MENU_ITEM (menu_widget),
 					group);
 
-			g_free (group);
+			xmlFree (group);
 		} else if (!strcmp (type, "toggle"))
 			menu_widget = gtk_check_menu_item_new ();
 
@@ -1186,8 +1203,13 @@ build_control (BonoboWinPrivate *priv,
 	GtkWidget *control = NULL;
 	NodeInfo  *info = bonobo_ui_xml_get_data (priv->tree, node);
 
-	if (info->widget) { /* Re-parent the widget */
+	fprintf (stderr, "Control '%p', type '%d' object '%p'\n",
+		 info->widget, info->type, info->object);
+
+	if (info->widget) {
+		fprintf (stderr, "Non null widget\n");
 		control = info->widget;
+		g_assert (info->widget->parent == NULL);
 	} else if (info->object != CORBA_OBJECT_NIL) {
 
 		control = bonobo_widget_new_control_from_objref
@@ -1197,7 +1219,12 @@ build_control (BonoboWinPrivate *priv,
 		
 		info->type |= CUSTOM_WIDGET;
 		info->widget = control;
+		fprintf (stderr, "Setup widget\n");
 	}
+
+	fprintf (stderr, "Type on '%s' '%s' is %d widget %p\n",
+		 node->name, xmlGetProp (node, "name"),
+		 info->type, info->widget);
 
 	return control;
 }
@@ -1515,7 +1542,7 @@ update_dockitem (BonoboWinPrivate *priv, xmlNode *node)
 
 	container_destroy_siblings (priv->tree, GTK_WIDGET (item), node->childs);
 
-
+/*
 	if ((txt = xmlGetProp (node, "hidden"))) {
 		if (atoi (txt)) {
 			gtk_widget_hide (GTK_WIDGET (item));
@@ -1525,6 +1552,7 @@ update_dockitem (BonoboWinPrivate *priv, xmlNode *node)
 	} else {
 		gtk_widget_show (GTK_WIDGET (item));
 	}
+*/
 
 	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
 
@@ -2192,6 +2220,9 @@ construct_priv (BonoboWin *app)
 
 	gtk_signal_connect (GTK_OBJECT (priv->tree), "override",
 			    (GtkSignalFunc) override_fn, priv);
+
+	gtk_signal_connect (GTK_OBJECT (priv->tree), "replace_override",
+			    (GtkSignalFunc) replace_override_fn, priv);
 
 	gtk_signal_connect (GTK_OBJECT (priv->tree), "reinstate",
 			    (GtkSignalFunc) reinstate_fn, priv);

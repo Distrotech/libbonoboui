@@ -26,6 +26,7 @@ static GtkObjectClass *bonobo_ui_xml_parent_class;
 
 enum {
 	OVERRIDE,
+	REPLACE_OVERRIDE,
 	REINSTATE,
 	REMOVE,
 	LAST_SIGNAL
@@ -307,17 +308,17 @@ override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 
 	same = identical (tree, data->id, old_data->id);
 
-	if (!data->id) {
+	if (!data->id)
 		same = TRUE;
-		data->id = old_data->id;
-	}
 
 	if (!same) {
 		gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
 
 		data->overridden = g_slist_prepend (old_data->overridden, old);
 	} else {
+		data->id = old_data->id;
 		data->overridden = old_data->overridden;
+		gtk_signal_emit (GTK_OBJECT (tree), signals [REPLACE_OVERRIDE], new, old);
 /*		g_warning ("Replace override of '%s' '%s'",
 		old->name, xmlGetProp (old, "name"));*/
 	}
@@ -333,7 +334,7 @@ override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 
 	g_assert (old->childs == NULL);
 
-	if (!new->properties) /* A path simplifying entry */
+	if (!new->properties) /* A path simplifying entry: FIXME ignore just a name too */
 		new->properties = xmlCopyPropList (new, old->properties);
 
 	data->dirty = TRUE;
@@ -664,8 +665,8 @@ reinstate_node (BonoboUIXml *tree, xmlNode *node, gpointer id)
 
 	if (identical (tree, data->id, id))
 		reinstate_old_node (tree, node);
-
-	prune_overrides_by_id (tree, data, id);
+	else
+		prune_overrides_by_id (tree, data, id);
 }
 
 /**
@@ -848,6 +849,13 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, override),
 		gtk_marshal_NONE__POINTER,
 		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+
+	signals [REPLACE_OVERRIDE] = gtk_signal_new (
+		"replace_override", GTK_RUN_FIRST,
+		object_class->type,
+		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, replace_override),
+		gtk_marshal_NONE__POINTER_POINTER,
+		GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 
 	signals [REINSTATE] = gtk_signal_new (
 		"reinstate", GTK_RUN_FIRST,
