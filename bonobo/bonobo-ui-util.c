@@ -205,29 +205,155 @@ bonobo_ui_util_xml_to_pixbuf (const char *xml)
 	return pixbuf;
 }
 
-#define ALPHA_THRESHOLD 128
-
-static GtkWidget *
-gnome_pixmap_new_from_pixbuf (GdkPixbuf *pixbuf)
+static GdkPixbuf *
+convert_from_chromakey (GdkPixbuf *pixbuf)
 {
-	GnomePixmap *gpixmap;
+	GdkPixbuf *new;
+	unsigned char *src_pixels, *dst_pixels;
+	unsigned char *src_row, *dst_row;
+	int src_rowstride;
+	int dst_rowstride;
+	int width, height;
+	int i, j;
 
-	g_return_val_if_fail (pixbuf != NULL, NULL);
-	
-	gpixmap = gtk_type_new (gnome_pixmap_get_type ());
+	g_assert (! gdk_pixbuf_get_has_alpha (pixbuf));
 
-	/* Get GdkPixmap and mask */
-	gdk_pixbuf_render_pixmap_and_mask (
-		pixbuf, &gpixmap->pixmap,
-		&gpixmap->mask, ALPHA_THRESHOLD);
+	width  = gdk_pixbuf_get_width (pixbuf);
+	height = gdk_pixbuf_get_width (pixbuf);
 
-	return GTK_WIDGET (gpixmap);
+	new = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, width, height);
+
+	src_pixels = gdk_pixbuf_get_pixels (pixbuf);
+	src_rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+
+	dst_pixels = gdk_pixbuf_get_pixels (new);
+	dst_rowstride = gdk_pixbuf_get_rowstride (new);
+
+	src_row = src_pixels;
+	dst_row = dst_pixels;
+	for (i = 0; i < height; i++) {
+		unsigned char *sp, *dp;
+
+		sp = src_row;
+		dp = dst_row;
+		for (j = 0; j < width; j++) {
+			dp[0] = sp[0];
+			dp[1] = sp[1];
+			dp[2] = sp[2];
+
+			if (sp[0] == 0xff && sp[1] == 0x00 && sp[2] == 0xff)
+				dp[3] = 0x00;
+			else
+				dp[3] = 0xff;
+
+			sp += 3;
+			dp += 4;
+		}
+
+		src_row += src_rowstride;
+		dst_row += dst_rowstride;
+	}
+
+	return new;
 }
 
-GtkWidget *
-bonobo_ui_util_xml_get_pixmap (GtkWidget *window, BonoboUINode *node)
+static GdkPixbuf *
+pixbuf_from_imlib (const GnomeStockPixmapEntry *entry)
 {
-	GtkWidget *pixmap = NULL;
+	const GnomeStockPixmapEntryImlib *imlib_entry;
+	const GnomeStockPixmapEntryImlibScaled *scaled_imlib_entry;
+	GdkPixbuf *pixbuf;
+	GdkPixbuf *alpha_pixbuf;
+	GdkPixbuf *scaled_pixbuf;
+
+	imlib_entry = (const GnomeStockPixmapEntryImlib *) entry;
+
+	pixbuf = gdk_pixbuf_new_from_data (imlib_entry->rgb_data,
+					   GDK_COLORSPACE_RGB,
+					   FALSE,
+					   8,
+					   imlib_entry->width, imlib_entry->height,
+					   imlib_entry->width * 3,
+					   NULL, NULL);
+
+	alpha_pixbuf = convert_from_chromakey (pixbuf);
+
+	if (imlib_entry->type == GNOME_STOCK_PIXMAP_TYPE_IMLIB) {
+		gdk_pixbuf_unref (pixbuf);
+		return alpha_pixbuf;
+	}
+
+	g_assert (imlib_entry->type == GNOME_STOCK_PIXMAP_TYPE_IMLIB_SCALED);
+
+	scaled_imlib_entry = (const GnomeStockPixmapEntryImlibScaled *) entry;
+
+	if (scaled_imlib_entry->scaled_width == imlib_entry->width
+	    && scaled_imlib_entry->scaled_height == imlib_entry->height) {
+		gdk_pixbuf_unref (pixbuf);
+		return alpha_pixbuf;
+	}
+	
+	scaled_pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
+					scaled_imlib_entry->scaled_width,
+					scaled_imlib_entry->scaled_height);
+
+	gdk_pixbuf_scale (alpha_pixbuf, scaled_pixbuf,
+			  0, 0,
+			  scaled_imlib_entry->scaled_width,
+			  scaled_imlib_entry->scaled_height,
+			  0.0, 0.0,
+			  (double) scaled_imlib_entry->scaled_width / (double) imlib_entry->width,
+			  (double) scaled_imlib_entry->scaled_height / (double) imlib_entry->height,
+			  GDK_INTERP_HYPER);
+
+	gdk_pixbuf_unref (alpha_pixbuf);
+	gdk_pixbuf_unref (pixbuf);
+
+	return scaled_pixbuf;
+}
+
+static GdkPixbuf *
+get_stock_pixbuf (const char *name)
+{
+	GnomeStockPixmapEntry *entry;
+	GdkPixbuf *pixbuf;
+	char *path;
+
+	entry = gnome_stock_pixmap_checkfor (name, GNOME_STOCK_PIXMAP_REGULAR);
+	if (entry == NULL)
+		return NULL;
+
+	switch (entry->type) {
+        case GNOME_STOCK_PIXMAP_TYPE_DATA:
+		pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) ((GnomeStockPixmapEntryData *) entry)->xpm_data);
+		break;
+        case GNOME_STOCK_PIXMAP_TYPE_FILE:
+		path = gnome_pixmap_file (((GnomeStockPixmapEntryFile *) entry)->filename);
+		pixbuf = gdk_pixbuf_new_from_file (path);
+		free (path);
+		break;
+        case GNOME_STOCK_PIXMAP_TYPE_PATH:
+		pixbuf = gdk_pixbuf_new_from_file (((const GnomeStockPixmapEntryPath *) entry)->pathname);
+		break;
+	case GNOME_STOCK_PIXMAP_TYPE_IMLIB:
+	case GNOME_STOCK_PIXMAP_TYPE_IMLIB_SCALED:
+		pixbuf = pixbuf_from_imlib (entry);
+		break;
+        case GNOME_STOCK_PIXMAP_TYPE_NONE:
+	/* (Don't know how to handle these.)  */
+        case GNOME_STOCK_PIXMAP_TYPE_WIDGET:
+	case GNOME_STOCK_PIXMAP_TYPE_GPIXMAP:
+	default:
+		pixbuf = NULL;
+	}
+
+	return pixbuf;
+}
+
+GdkPixbuf *
+bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node)
+{
+	GdkPixbuf *icon_pixbuf = NULL;
 	char      *type;
 
 	g_return_val_if_fail (node != NULL, NULL);
@@ -239,7 +365,7 @@ bonobo_ui_util_xml_get_pixmap (GtkWidget *window, BonoboUINode *node)
 		char      *text;
 
 		text = bonobo_ui_node_get_attr (node, "pixname");
-		pixmap = gnome_stock_pixmap_widget (window, text);
+		icon_pixbuf = get_stock_pixbuf (text);
 		bonobo_ui_node_free_string (text);
 	} else if (!strcmp (type, "filename")) {
 		char *name, *text;
@@ -251,33 +377,49 @@ bonobo_ui_util_xml_get_pixmap (GtkWidget *window, BonoboUINode *node)
 		if (name == NULL)
 			g_warning ("Could not find GNOME pixmap file %s", text);
 		else
-			pixmap = gnome_pixmap_new_from_file (name);
+			icon_pixbuf = gdk_pixbuf_new_from_file (name);
 
 		g_free (name);
-
 	} else if (!strcmp (type, "pixbuf")) {
 		char      *text;
-		GdkPixbuf *pixbuf;
 
 		text = bonobo_ui_node_get_attr (node, "pixname");
 
 		g_return_val_if_fail (text != NULL, NULL);
 		
 		/* Get pointer to GdkPixbuf */
-		pixbuf = bonobo_ui_util_xml_to_pixbuf (text);
+		icon_pixbuf = bonobo_ui_util_xml_to_pixbuf (text);
 		bonobo_ui_node_free_string (text);
 
-		g_return_val_if_fail (pixbuf != NULL, NULL);
-
-		pixmap = gnome_pixmap_new_from_pixbuf (pixbuf);
-
-		gdk_pixbuf_unref (pixbuf);
-	} else
-		g_warning ("Unknown pixmap type '%s'", type);
+		g_return_val_if_fail (icon_pixbuf != NULL, NULL);
+	} else {
+		g_warning ("Unknown icon_pixbuf type '%s'", type);
+	}
 
 	bonobo_ui_node_free_string (type);
 
-	return pixmap;
+	return icon_pixbuf;
+}
+
+GtkWidget *
+bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node)
+{
+	GnomePixmap *gpixmap;
+	GdkPixbuf *pixbuf;
+
+	g_return_val_if_fail (node != NULL, NULL);
+
+	pixbuf = bonobo_ui_util_xml_get_icon_pixbuf (node);
+	if (pixbuf == NULL)
+		return NULL;
+	
+	gpixmap = gtk_type_new (gnome_pixmap_get_type ());
+
+	/* Get GdkPixmap and mask */
+	gdk_pixbuf_render_pixmap_and_mask (pixbuf, &gpixmap->pixmap, &gpixmap->mask, 128);
+	gdk_pixbuf_unref (pixbuf);
+
+	return GTK_WIDGET (gpixmap);
 }
 
 void

@@ -33,6 +33,7 @@
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-handler.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+
 #include "bonobo-uih-private.h"
 
 static BonoboObjectClass   *bonobo_ui_handler_parent_class;

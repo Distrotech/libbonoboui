@@ -1,64 +1,90 @@
+/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
+/* bonobo-ui-toolbar.h
+ *
+ * Copyright (C) 2000  Helix Code, Inc.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * Author: Ettore Perazzoli
+ */
+
 #ifndef _BONOBO_UI_TOOLBAR_H_
 #define _BONOBO_UI_TOOLBAR_H_
 
-#include <gtk/gtkenums.h>
-#include <gtk/gtktooltips.h>
+#include <gtk/gtkcontainer.h>
 
-BEGIN_GNOME_DECLS
+#include "bonobo-ui-toolbar-item.h"
 
-/*
- * FIXME: This container should be cooler; gtkcoolbar perhaps.
- */
+#ifdef __cplusplus
+extern "C" {
+#pragma }
+#endif /* __cplusplus */
 
-#define BONOBO_UI_TOOLBAR_TYPE        (bonobo_ui_toolbar_get_type ())
-#define BONOBO_UI_TOOLBAR(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_TOOLBAR_TYPE, BonoboUIToolbar))
-#define BONOBO_UI_TOOLBAR_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_UI_TOOLBAR_TYPE, BonoboUIToolbarClass))
-#define BONOBO_IS_UI_TOOLBAR(o)       (GTK_CHECK_TYPE ((o), BONOBO_UI_TOOLBAR_TYPE))
-#define BONOBO_IS_UI_TOOLBAR_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_UI_TOOLBAR_TYPE))
+#define BONOBO_TYPE_UI_TOOLBAR            (bonobo_ui_toolbar_get_type ())
+#define BONOBO_UI_TOOLBAR(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR, BonoboUIToolbar))
+#define BONOBO_UI_TOOLBAR_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_TOOLBAR, BonoboUIToolbarClass))
+#define BONOBO_IS_UI_TOOLBAR(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR))
+#define BONOBO_IS_UI_TOOLBAR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR))
 
-typedef struct _BonoboUIToolbar BonoboUIToolbar;
+
+enum _BonoboUIToolbarStyle {
+	BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT,
+	BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT,
+	BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY
+};
+typedef enum _BonoboUIToolbarStyle BonoboUIToolbarStyle;
+
+typedef struct _BonoboUIToolbar        BonoboUIToolbar;
+typedef struct _BonoboUIToolbarPrivate BonoboUIToolbarPrivate;
+typedef struct _BonoboUIToolbarClass   BonoboUIToolbarClass;
 
 struct _BonoboUIToolbar {
-	GtkHBox           box;
+	GtkContainer parent;
 
-	GtkTooltips      *tooltips;
-	GtkReliefStyle    relief;
-	GtkToolbarStyle   look;
-
-	gpointer          dummy;
+	BonoboUIToolbarPrivate *priv;
 };
 
-typedef struct {
-	GtkHBoxClass      hbox_class;
+struct _BonoboUIToolbarClass {
+	GtkContainerClass parent_class;
 
-	void            (*geometry_changed) (BonoboUIToolbar *toolbar);
+	void (* set_orientation) (BonoboUIToolbar *toolbar,
+				  GtkOrientation orientation);
+	void (* set_style)       (BonoboUIToolbar *toolbar,
+				  BonoboUIToolbarStyle style);
+};
 
-	gpointer          dummy;
-} BonoboUIToolbarClass;
+
+GtkType               bonobo_ui_toolbar_get_type         (void);
+void                  bonobo_ui_toolbar_construct        (BonoboUIToolbar      *toolbar);
+GtkWidget            *bonobo_ui_toolbar_new              (void);
 
-GtkType    bonobo_ui_toolbar_get_type     (void);
-GtkWidget *bonobo_ui_toolbar_new          (void);
+void                  bonobo_ui_toolbar_set_orientation  (BonoboUIToolbar      *toolbar,
+							  GtkOrientation        orientation);
+GtkOrientation        bonobo_ui_toolbar_get_orientation  (BonoboUIToolbar      *toolbar);
 
-void       bonobo_ui_toolbar_add          (BonoboUIToolbar *toolbar,
-					    GtkWidget        *widget);
+void                  bonobo_ui_toolbar_set_style        (BonoboUIToolbar      *toolbar,
+							  BonoboUIToolbarStyle  style);
+BonoboUIToolbarStyle  bonobo_ui_toolbar_get_style        (BonoboUIToolbar      *toolbar);
 
-void       bonobo_ui_toolbar_set_relief   (BonoboUIToolbar *toolbar,
-					    GtkReliefStyle    relief);
+void                  bonobo_ui_toolbar_insert           (BonoboUIToolbar      *toolbar,
+							  BonoboUIToolbarItem  *item,
+							  int                   position);
 
-void       bonobo_ui_toolbar_set_style    (BonoboUIToolbar *toolbar,
-					    GtkToolbarStyle   look);
-
-void       bonobo_ui_toolbar_set_tooltips (BonoboUIToolbar *toolbar,
-					    gboolean          enable);
-
-GtkTooltips *bonobo_ui_toolbar_get_tooltips    (BonoboUIToolbar *toolbar);
-
-void         bonobo_ui_toolbar_set_homogeneous (BonoboUIToolbar *toolbar,
-						gboolean         homogeneous);
-
-END_GNOME_DECLS
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* _BONOBO_UI_TOOLBAR_H_ */
-
-
-

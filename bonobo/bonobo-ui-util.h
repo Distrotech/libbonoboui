@@ -6,25 +6,22 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <bonobo/bonobo-ui-component.h>
 
-void       bonobo_ui_util_build_skeleton    (BonoboUIXml *xml);
+void       bonobo_ui_util_build_skeleton       (BonoboUIXml  *xml);
+char      *bonobo_ui_util_pixbuf_to_xml        (GdkPixbuf    *pixbuf);
 
-char      *bonobo_ui_util_pixbuf_to_xml     (GdkPixbuf   *pixbuf);
-GdkPixbuf *bonobo_ui_util_xml_to_pixbuf     (const char  *xml);
+GdkPixbuf *bonobo_ui_util_xml_to_pixbuf  (const char *xml);
 
-GtkWidget *bonobo_ui_util_xml_get_pixmap    (GtkWidget   *window,
-					     BonoboUINode     *node);
+GdkPixbuf *bonobo_ui_util_xml_get_icon_pixbuf         (BonoboUINode *node);
+GtkWidget *bonobo_ui_util_xml_get_icon_pixmap_widget  (BonoboUINode *node);
 
-void       bonobo_ui_util_xml_set_pixbuf    (BonoboUINode     *node,
-					     GdkPixbuf   *pixbuf);
-
-void       bonobo_ui_util_xml_set_pix_xpm   (BonoboUINode     *node,
-					     const char **xpm);
-				     
-void       bonobo_ui_util_xml_set_pix_stock (BonoboUINode     *node,
-					     const char  *name);
-
-void       bonobo_ui_util_xml_set_pix_fname (BonoboUINode     *node,
-					     const char  *name);
+void  bonobo_ui_util_xml_set_pixbuf     (BonoboUINode  *node,
+					 GdkPixbuf     *pixbuf);
+void  bonobo_ui_util_xml_set_pix_xpm    (BonoboUINode  *node,
+					 const char   **xpm);
+void  bonobo_ui_util_xml_set_pix_stock  (BonoboUINode  *node,
+					 const char    *name);
+void  bonobo_ui_util_xml_set_pix_fname  (BonoboUINode  *node,
+					 const char    *name);
 
 void       bonobo_ui_util_build_help_menu   (BonoboUIComponent *listener,
 					     const char        *app_name,
