@@ -75,15 +75,27 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 		return;
 
 	if (!strcmp (name, "main")) {
-		const char *id_str;
-		const char *resize_grip;
-		gboolean    has_grip;
+		BonoboUINode *next;
+		const char   *id_str;
+		const char   *resize_grip;
+		gboolean      has_grip;
 
-		resize_grip = bonobo_ui_node_peek_attr (node, "resize_grip");
+		resize_grip = bonobo_ui_node_peek_attr (
+			bonobo_ui_node_parent (node), "resize_grip");
 
 		has_grip = TRUE;
 		if (resize_grip && atoi (resize_grip) == 0)
         		has_grip = FALSE;
+
+		next = node;
+		while ((next = bonobo_ui_node_next (next))) {
+			const char *hidden;
+
+			/* The grip is useless if we have items to the right */
+			if (!(hidden = bonobo_ui_node_peek_attr (next, "hidden")) ||
+			    !atoi (hidden))
+				has_grip = FALSE;
+		}
 
 		gtk_statusbar_set_has_resize_grip (msync->main_status, has_grip);
 		

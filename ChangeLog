@@ -1,3 +1,11 @@
+2002-03-04  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-status.c
+	(impl_bonobo_ui_sync_status_state): get
+	'resize_grip' from the parent 'status' node, and
+	don't show the grip if we have controls / items
+	shown to the right.
+
 2002-03-02  James Willcox  <jwilcox@cs.indiana.edu>
 
 	* bonobo/bonobo-file-selector-util.c
