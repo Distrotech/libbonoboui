@@ -57,6 +57,7 @@ idls =							\
 	$(top_srcdir)/idl/bonobo-embeddable.idl		\
 	$(top_srcdir)/idl/bonobo-container.idl		\
 	$(top_srcdir)/idl/bonobo-persist.idl		\
+	$(top_srcdir)/idl/bonobo-sizeable.idl		\
 	$(top_srcdir)/idl/bonobo-storage.idl		\
 	$(top_srcdir)/idl/bonobo-progressive.idl	\
 	$(top_srcdir)/idl/bonobo-ui-handler.idl		\
@@ -104,6 +105,7 @@ libbonobo_la_SOURCES =			\
 	bonobo-persist.c		\
 	bonobo-plug.c			\
 	bonobo-progressive.c		\
+	bonobo-sizeable.c		\
 	bonobo-socket.c			\
 	bonobo-storage.c		\
 	bonobo-stream.c			\
@@ -150,8 +152,9 @@ libbonoboinclude_HEADERS =		\
 	bonobo-persist.h		\
 	bonobo-plug.h			\
 	bonobo-progressive.h		\
-	bonobo-storage.h		\
+	bonobo-sizeable.h		\
 	bonobo-socket.h			\
+	bonobo-storage.h		\
 	bonobo-stream.h			\
 	bonobo-stream-client.h		\
 	bonobo-stream-fs.h		\
