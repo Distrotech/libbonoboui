@@ -26,7 +26,9 @@
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkstock.h>
+#ifndef G_OS_WIN32
 #include <libgnomevfs/gnome-vfs.h>
+#endif
 
 #include <bonobo/bonobo-i18n.h>
 
@@ -298,6 +300,7 @@ run_file_selector (GtkWindow  *parent,
 	data = g_object_get_qdata (G_OBJECT (dialog), user_data_id);
 
 	if (data) {
+#ifndef G_OS_WIN32
 		if (enable_vfs && !using_bonobo_filesel &&
 				(mode != FILESEL_OPEN_MULTI)) {
 	 		retval = gnome_vfs_get_uri_from_local_path (data);
@@ -317,6 +320,9 @@ run_file_selector (GtkWindow  *parent,
 			retval = files;
 	 	} else
  			retval = data;
+#else
+		retval = data;
+#endif
 	} else
 		retval = NULL;
 

@@ -22,7 +22,13 @@
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <gdk/gdkprivate.h>
+#if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
+#elif defined (GDK_WINDOWING_WIN32)
+#include <gdk/gdkwin32.h>
+#else
+#error Port to this GDK backend
+#endif
 #include <gdk/gdktypes.h>
 #include <gtk/gtkhbox.h>
 #include <bonobo/bonobo-socket.h>
@@ -120,8 +126,13 @@ impl_Bonobo_ControlFrame_getToplevelId (PortableServer_Servant  servant,
 
 		id = Bonobo_ControlFrame_getToplevelId (frame, ev);
 	} else
+#if defined (GDK_WINDOWING_X11)
 		id = bonobo_control_window_id_from_x11 (
 			GDK_WINDOW_XWINDOW (toplev->window));
+#elif defined (GDK_WINDOWING_WIN32)
+		id = bonobo_control_window_id_from_x11 (
+			(guint32) GDK_WINDOW_HWND (toplev->window));
+#endif
 
 	return id;
 }

@@ -1,3 +1,51 @@
+2005-03-24  Tor Lillqvist  <tml@novell.com>
+
+	Initial port to Windows:
+	
+	* configure.in: Bump version to 2.9.0. (gnome-2-10 branch is
+	2.8.x.) Call AC_CANONICAL_HOST before checking $host. Check for
+	Win32, and force shared library build on Win32. Check for extra X
+	libraries only if GTK+ target is x11.
+	
+	* libbonoboui-zip.in: New file, used to build zip format
+	distribution for Win32.
+
+	* configure.in
+	* Makefile.am: Expand and dist it.
+
+	* bonobo/Makefile.am: Explicitly link with INTLLIBS.
+
+	* bonobo/bonobo-canvas-component.c
+	* bonobo/bonobo-dock-item.c
+	* bonobo/bonobo-ui-main.c: Include gdkx.h only if GDK_WINDOWING_X11.
+	
+	* bonobo/bonobo-canvas-item.c
+	* bonobo/bonobo-control.c
+	* bonobo/bonobo-control-frame.c
+	* bonobo/bonobo-plug.c
+	* bonobo/bonobo-socket.c: Include gdkx.h or gdkwin32.h depending on
+	GDK backend. Correspondingly, use GDK_WINDOW_XWINDOW() or
+	GDK_WINDOW_HWND(). Ditto for gdk_xid_table_lookup_for_display() or
+	gdk_win32_handle_table_lookup(). Setup X error handler only on
+	X11.
+
+	* bonobo/bonobo-file-selector-util.c: Do without GnomeVFS on Win32.
+	
+	* bonobo/bonobo-plug.c (bonobo_plug_button_event): Stubbed
+	implementation on Win32. Unclear whether anything needs to be
+	done.
+
+	* bonobo/bonobo-selector-widget.c: Undefine
+	GNOME_DISABLE_DEPRECATED and include gnome-i18n.h to get prototype
+	for gnome_i18n_get_language_list().
+	
+	* bonobo/bonobo-ui-main.c: Do bonobo_setup_x_error_handler() only
+	on X11.
+	(do_low_level_init): Set CORBA context X11 display only on X11.
+
+	* tests/test-reparent.c: Add and remove widgets through timeouts,
+	makes it work more reliably on Win32.
+	
 2005-02-08  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "xh" to ALL_LINGUAS.

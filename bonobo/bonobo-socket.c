@@ -10,7 +10,6 @@
  *                 Martin Baulig.
  */
 #include "config.h"
-#include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkwindow.h>
 #include <gtk/gtksignal.h>
@@ -19,6 +18,9 @@
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-control-internal.h>
+#if defined (GDK_WINDOWING_X11)
+#include <gdk/gdkx.h>
+#endif
 #include <libgnome/gnome-macros.h>
 
 

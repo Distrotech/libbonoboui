@@ -11,7 +11,6 @@
  */
 #include <config.h>
 
-#include <gdk/gdkx.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-private.h>
@@ -23,6 +22,8 @@
 
 #include <gtk/gtkmain.h>
 
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
 #include <X11/Xlib.h>
 
 static int (*gdk_x_error_func) (Display *, XErrorEvent *);
@@ -82,6 +83,8 @@ bonobo_setup_x_error_handler (void)
 	gdk_x_error_func = XSetErrorHandler (bonobo_x_error_handler);
 }
 
+#endif
+
 static gboolean bonobo_ui_inited = FALSE;
 
 gboolean
@@ -93,10 +96,12 @@ bonobo_ui_is_initialized (void)
 static void
 do_low_level_init (void)
 {
+#ifdef GDK_WINDOWING_X11
 	CORBA_Context context;
 	CORBA_Environment ev;
 	GdkDisplay *display;
 	Display *xdisplay;
+#endif
 
 	if (bonobo_ui_inited)
 		return;
@@ -107,6 +112,8 @@ do_low_level_init (void)
 	bindtextdomain (GETTEXT_PACKAGE, BONOBO_LOCALEDIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
+
+#ifdef GDK_WINDOWING_X11
 	bonobo_setup_x_error_handler ();
 
 	display = gdk_display_get_default ();
@@ -122,6 +129,7 @@ do_low_level_init (void)
 		&ev);
 
 	CORBA_exception_free (&ev);
+#endif
 }
 
 /* compat */

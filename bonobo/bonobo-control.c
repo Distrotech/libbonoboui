@@ -15,8 +15,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <gdk/gdkx.h>
+#include <gdkconfig.h>
 #include <gtk/gtksignal.h>
+#if defined (GDK_WINDOWING_X11)
+#include <gdk/gdkx.h>
+#elif defined (GDK_WINDOWING_WIN32)
+#define interface _win32_interface
+#include <gdk/gdkwin32.h>
+#undef interface
+#else
+#error Port to this GDK backend
+#endif
 
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-plug.h>
@@ -111,12 +120,9 @@ bonobo_control_add_listener (CORBA_Object        object,
 
 /**
  * bonobo_control_window_id_from_x11:
- * @x11_id: the x11 window id.
+ * @x11_id: the x11 window id or Windows HWND.
  * 
- * This mangles the X11 name into the ':' delimited
- * string format "X-id: ..."
- * 
- * Return value: the string; free after use.
+ * Return value: the window id or handle as a string; free after use.
  **/
 Bonobo_Gdk_WindowId
 bonobo_control_window_id_from_x11 (guint32 x11_id)
@@ -139,7 +145,7 @@ bonobo_control_window_id_from_x11 (guint32 x11_id)
  * fields are separated by ':' character,
  * currently only the first field is used.
  * 
- * Return value: the X11 window id.
+ * Return value: the native window id.
  **/
 guint32
 bonobo_control_x11_from_window_id (const CORBA_char *id)
@@ -153,7 +159,11 @@ bonobo_control_x11_from_window_id (const CORBA_char *id)
 	if (elements && elements [0])
 		x11_id = strtol (elements [0], NULL, 10);
 	else {
+#if defined (GDK_WINDOWING_X11)
 		g_warning ("Serious X id mangling error");
+#elif defined (GDK_WINDOWING_WIN32)
+		g_warning ("Serious window handle mangling error");
+#endif
 		x11_id = 0;
 	}
 	g_strfreev (elements);
@@ -610,12 +620,14 @@ bonobo_control_construct (BonoboControl  *control,
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
+#ifdef GDK_WINDOWING_X11
 	/*
 	 * This sets up the X handler for Bonobo objects.  We basically will
 	 * ignore X errors if our container dies (because X will kill the
 	 * windows of the container and our container without telling us).
 	 */
 	bonobo_setup_x_error_handler ();
+#endif
 
 	/*
 	 *   Start the clock ticking until we emit 'disconnected'
@@ -1255,7 +1267,7 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 	CORBA_char         *id;
 	GdkDisplay         *display;
 	GdkWindow          *win;
-	guint32             x11_id;
+	GdkNativeWindow    window_id;
 	CORBA_Environment  *ev = NULL, tmp_ev;
 	Bonobo_ControlFrame frame;
 	gpointer            local_win;
@@ -1283,17 +1295,22 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 	id = Bonobo_ControlFrame_getToplevelId (frame, ev);
 	g_return_if_fail (!BONOBO_EX (ev) && id != NULL);
 
-	x11_id = bonobo_control_x11_from_window_id (id);
+	window_id = bonobo_control_x11_from_window_id (id);
 
 #ifdef TRANSIENT_DEBUG
-	g_warning ("Got id '%s' -> %d", id, x11_id);
+	g_warning ("Got id '%s' -> %d", id, window_id);
 #endif
 	CORBA_free (id);
 
 	display = gtk_widget_get_display (GTK_WIDGET (window));
-	local_win = gdk_xid_table_lookup_for_display (display, x11_id);
+
+#if defined (GDK_WINDOWING_X11)
+	local_win = gdk_xid_table_lookup_for_display (display, window_id);
+#elif defined (GDK_WINDOWING_WIN32)
+	local_win = gdk_win32_handle_table_lookup (window_id);
+#endif
 	if (local_win == NULL)
-		win = gdk_window_foreign_new_for_display (display, x11_id);
+		win = gdk_window_foreign_new_for_display (display, window_id);
 	else {
 		win = GDK_WINDOW (local_win);
 		g_object_ref (win);

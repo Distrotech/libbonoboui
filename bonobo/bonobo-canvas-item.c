@@ -23,7 +23,13 @@
 #include <glib/gi18n.h>
 #include <libgnome/gnome-macros.h>
 #include <gdk/gdkprivate.h>
+#if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
+#elif defined (GDK_WINDOWING_WIN32)
+#include <gdk/gdkwin32.h>
+#else
+#error Port to this GDK backend
+#endif
 #include <gtk/gtksignal.h>
 
 GNOME_CLASS_BOILERPLATE (BonoboCanvasItem,
@@ -267,8 +273,13 @@ gbi_realize (GnomeCanvasItem *item)
 	CORBA_exception_init (&ev);
 	gdk_flush ();
 
+#if defined (GDK_WINDOWING_X11)
 	id = bonobo_control_window_id_from_x11
 		(GDK_WINDOW_XWINDOW (item->canvas->layout.bin_window));
+#elif defined (GDK_WINDOWING_WIN32)
+	id = bonobo_control_window_id_from_x11
+		((guint32) GDK_WINDOW_HWND (item->canvas->layout.bin_window));
+#endif
 
 	Bonobo_Canvas_Component_realize (gbi->priv->object, id, &ev);
 
@@ -313,8 +324,13 @@ gbi_draw (GnomeCanvasItem *item, GdkDrawable *drawable, int x, int y, int width,
 	CORBA_exception_init (&ev);
 
 	prepare_state (item, &state);
+#if defined (GDK_WINDOWING_X11)
 	id = bonobo_control_window_id_from_x11
 		(GDK_WINDOW_XWINDOW (drawable));
+#elif defined (GDK_WINDOWING_WIN32)
+	id = bonobo_control_window_id_from_x11
+		((guint32) GDK_WINDOW_HWND (drawable));
+#endif
 	
 	Bonobo_Canvas_Component_draw (
 		gbi->priv->object,

@@ -18,8 +18,20 @@ GtkWidget *remote_widget = NULL, *inproc_widget = NULL;
 
 #define TEST_OAFIID "OAFIID:Bonobo_Sample_Entry"
 
-static void
-remove_and_add (GtkWidget *click, gpointer useless_user_data)
+static gboolean
+do_add (gpointer data)
+{
+	if (do_remote)
+		gtk_container_add (GTK_CONTAINER (placeholder1), remote_widget);
+	if (do_local)
+		gtk_container_add (GTK_CONTAINER (placeholder2), inproc_widget);
+	g_print ("Added..............\n");
+
+	return FALSE;
+}
+
+static gboolean
+do_remove (gpointer data)
 {
 	if (do_remote) {
 		g_object_ref (remote_widget);
@@ -30,11 +42,15 @@ remove_and_add (GtkWidget *click, gpointer useless_user_data)
 		gtk_container_remove (GTK_CONTAINER (placeholder2), inproc_widget);
 	}
 	g_print ("Removed............\n");
-	if (do_remote)
-		gtk_container_add (GTK_CONTAINER (placeholder1), remote_widget);
-	if (do_local)
-		gtk_container_add (GTK_CONTAINER (placeholder2), inproc_widget);
-	g_print ("Added..............\n");
+	g_timeout_add (100, do_add, NULL);
+
+	return FALSE;
+}
+
+static void
+remove_and_add (GtkWidget *click, gpointer useless_user_data)
+{
+	g_timeout_add (100, do_remove, NULL);
 }
 
 static void

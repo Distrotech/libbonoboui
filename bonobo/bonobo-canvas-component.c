@@ -14,7 +14,10 @@
 #include <bonobo/Bonobo.h>
 #include <libart_lgpl/art_affine.h>
 #include <libgnomecanvas/gnome-canvas.h>
+#include <gdkconfig.h>
+#ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
+#endif
 #include <gdk/gdkprivate.h>
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-control.h>

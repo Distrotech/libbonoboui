@@ -227,7 +227,7 @@ toolbar_build_control (BonoboUISync     *sync,
 
 	g_return_val_if_fail (sync != NULL, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
-
+	
 	if ((bonobo_item = bonobo_ui_engine_node_get_widget (
 		sync->engine, node))) {
 		

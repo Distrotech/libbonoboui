@@ -11,13 +11,19 @@
  */
 
 #include "config.h"
-#include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
 #include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-internal.h>
+#if defined (GDK_WINDOWING_X11)
+#include <gdk/gdkx.h>
+#elif defined (GDK_WINDOWING_WIN32)
+#include <gdk/gdkwin32.h>
+#else
+#error Port to this GDK backend
+#endif
 
 struct _BonoboPlugPrivate {
 	gboolean forward_events;
@@ -323,12 +329,16 @@ static gboolean
 bonobo_plug_button_event (GtkWidget      *widget,
 			  GdkEventButton *event)
 {
+#if defined (GDK_WINDOWING_X11)
 	XEvent xevent;
+#endif
 
 	g_return_val_if_fail (BONOBO_IS_PLUG (widget), FALSE);
 
 	if (!BONOBO_PLUG (widget)->priv->forward_events || !GTK_WIDGET_TOPLEVEL (widget))
 		return FALSE;
+
+#if defined (GDK_WINDOWING_X11)
 
 	if (event->type == GDK_BUTTON_PRESS) {
 		xevent.xbutton.type = ButtonPress;
@@ -369,6 +379,9 @@ bonobo_plug_button_event (GtkWidget      *widget,
 	gdk_flush ();
 	gdk_error_trap_pop ();
 
+#elif defined (GDK_WINDOWING_WIN32)
+	/* FIXME: Need to do something? */
+#endif
 	return TRUE;
 }
 

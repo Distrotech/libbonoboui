@@ -37,7 +37,9 @@
 #include "bonobo-dock-item-grip.h"
 #include "bonobo-ui-marshal.h"
 
+#ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
+#endif
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
