@@ -131,9 +131,8 @@ msgid "Toolbars"
 msgstr "Bårs ås usteyes"
 
 #: bonobo/bonobo-ui-config-widget.c:302
-#, fuzzy
 msgid "toolbars"
-msgstr "Bårs ås usteyes"
+msgstr "bårs ås usteyes"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
@@ -148,9 +147,8 @@ msgid "_Text and Icon"
 msgstr "_Tecse et imådjete"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "_Tecse et imådjete"
+msgstr "Tecse seulmint"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -167,7 +165,7 @@ msgstr ""
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
-msgstr ""
+msgstr "DRAPEAS"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
@@ -187,7 +185,7 @@ msgstr ""
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "WAITROÛLE"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -203,7 +201,7 @@ msgstr ""
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "NAME"
-msgstr ""
+msgstr "NO"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "Program class as used by the window manager"
@@ -211,19 +209,19 @@ msgstr ""
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "CLASS"
-msgstr ""
+msgstr "CLASSE"
 
 #: bonobo/bonobo-ui-init-gtk.c:146
 msgid "HOST"
-msgstr ""
+msgstr "LODJOE"
 
 #: bonobo/bonobo-ui-init-gtk.c:150
 msgid "PORT"
-msgstr ""
+msgstr "PÔRT"
 
 #: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
-msgstr ""
+msgstr "ESTÎLE"
 
 #: bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
@@ -243,11 +241,11 @@ msgstr ""
 
 #: bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
-msgstr ""
+msgstr "MÔDULE"
 
 #: bonobo/bonobo-ui-init-gtk.c:180
 msgid "GTK+"
-msgstr ""
+msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
@@ -366,13 +364,12 @@ msgid "_Edit"
 msgstr ""
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
-#, fuzzy
 msgid "_File"
-msgstr "_Catchî"
+msgstr "_Fitchî"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr ""
+msgstr "_Tchoezi"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
