@@ -51,7 +51,7 @@ typedef struct {
 } BonoboSocketClass;
 
 
-GtkType             bonobo_socket_get_type          (void);
+GType               bonobo_socket_get_type          (void);
 GtkWidget*          bonobo_socket_new               (void);
 
 G_END_DECLS

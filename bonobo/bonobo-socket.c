@@ -252,10 +252,10 @@ bonobo_socket_class_init (GObjectClass *klass)
 	socket_class->plug_removed    = bonobo_socket_plug_removed;
 }
 
-guint
+GType
 bonobo_socket_get_type ()
 {
-	static guint socket_type = 0;
+	static GType socket_type = 0;
 
 	if (!socket_type) {
 		static const GtkTypeInfo socket_info = {
