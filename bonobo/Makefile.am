@@ -42,7 +42,7 @@ idls =						\
 idl_flags = `gnome-config --cflags idl`
 
 $(CORBA_SOURCE): $(idls)
-	orbit-idl $(top_srcdir)/idl/bonobo.idl -I$(idl_flags)
+	orbit-idl $(top_srcdir)/idl/bonobo.idl $(idl_flags)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
