@@ -50,11 +50,10 @@ void			     gnome_control_frame_set_propbag		   (GnomeControlFrame  *control_fra
 									    GnomePropertyBag   *propbag);
 GnomePropertyBag	    *gnome_control_frame_get_propbag		   (GnomeControlFrame  *control_frame);
 GtkWidget                   *gnome_control_frame_get_widget                (GnomeControlFrame  *frame);
-void                         gnome_control_frame_set_ui_handler            (GnomeControlFrame     *view_frame,
-									    GnomeUIHandler     *uih);
 void                         gnome_control_frame_control_activate          (GnomeControlFrame *control_frame);
 void                         gnome_control_frame_control_deactivate        (GnomeControlFrame *control_frame);
-
+void                         gnome_control_frame_set_ui_handler            (GnomeControlFrame     *view_frame,
+									    GnomeUIHandler        *uih);
 GnomeUIHandler              *gnome_control_frame_get_ui_handler            (GnomeControlFrame  *view_frame);
 GnomePropertyBagClient      *gnome_control_frame_get_control_property_bag  (GnomeControlFrame  *control_frame);
 POA_GNOME_ControlFrame__epv *gnome_control_frame_get_epv                   (void);
