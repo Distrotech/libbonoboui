@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo\n"
-"POT-Creation-Date: 2002-02-11 11:45+0000\n"
-"PO-Revision-Date: 2001-11-01 21:41+0800\n"
+"POT-Creation-Date: 2002-02-17 18:41+0800\n"
+"PO-Revision-Date: 2002-02-17 18:46+0800\n"
 "Last-Translator: Wang Jian <lark@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -17,83 +17,87 @@ msgstr ""
 msgid "Shadow type"
 msgstr "阴影类型"
 
-#: bonobo/bonobo-dock-item.c:202 bonobo/bonobo-dock-item.c:203
+#: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
 msgid "Orientation"
 msgstr "方向"
 
-#: bonobo/bonobo-dock-item.c:212 bonobo/bonobo-dock-item.c:213
+#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
 msgid "Preferred width"
 msgstr "首选宽度"
 
-#: bonobo/bonobo-dock-item.c:221 bonobo/bonobo-dock-item.c:222
+#: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
 msgid "Preferred height"
 msgstr "首选高度"
 
-#: bonobo/bonobo-file-selector-util.c:394
+#: bonobo/bonobo-file-selector-util.c:402
 msgid "Select a file to open"
 msgstr "选择要打开的文件"
 
-#: bonobo/bonobo-file-selector-util.c:422
+#: bonobo/bonobo-file-selector-util.c:430
 msgid "Select files to open"
 msgstr "选择要打开的文件"
 
-#: bonobo/bonobo-file-selector-util.c:451
+#: bonobo/bonobo-file-selector-util.c:459
 msgid "Select a filename to save"
 msgstr "选择要保存的文件名"
 
 #: bonobo/bonobo-plug.c:351
 msgid "Event Forwarding"
-msgstr ""
+msgstr "事件转发"
 
 #: bonobo/bonobo-plug.c:352
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "是否应转发 X 事件"
 
-#: bonobo/bonobo-selector-widget.c:301
+#: bonobo/bonobo-selector-widget.c:300
 msgid "Name"
 msgstr "名字"
 
-#: bonobo/bonobo-selector-widget.c:325
+#: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
 msgstr "描述"
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:264
 msgid "Visible"
 msgstr "可见"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:271
 msgid "_Show"
 msgstr "显示(_S)"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:278
 msgid "_Hide"
 msgstr "隐藏(_H)"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "_View tooltips"
 msgstr "查看工具提示(_V)"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:289
 msgid "Toolbars"
 msgstr "工具栏"
 
-#: bonobo/bonobo-ui-config-widget.c:294 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:299
+msgid "toolbars"
+msgstr "工具栏"
+
+#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Look"
 msgstr "外观"
 
-#: bonobo/bonobo-ui-config-widget.c:303 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "_Icon"
 msgstr "图标(_I)"
 
-#: bonobo/bonobo-ui-config-widget.c:309
+#: bonobo/bonobo-ui-config-widget.c:325
 msgid "_Text and Icon"
 msgstr "文字和图标(_T)"
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Priority text only"
-msgstr ""
+msgstr "仅优先级文字(_P)"
 
-#: bonobo/bonobo-ui-engine-config.c:513
+#: bonobo/bonobo-ui-engine-config.c:516
 msgid "Configure UI"
 msgstr "配置 UI"
 
@@ -127,51 +131,51 @@ msgstr "定制工具栏"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr ""
+msgstr "缩放级别"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr ""
+msgstr "缩放程度"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "最小缩放级别"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr ""
+msgstr "最小缩放程度"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "最大缩放级别"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "最大缩放级别"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minumum Zoom level"
-msgstr ""
+msgstr "有最小缩放级别"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "是否有有效的最小缩放级别"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr ""
+msgstr "有最大缩放级别"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "是否有有效的最大缩放级别"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr ""
+msgstr "是否连续"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "是否可连续缩放(和跳跃式相反)"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -196,28 +200,27 @@ msgstr "无法初始化 libbonoboui 代码"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr ""
+msgstr "关于本程序"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr ""
+msgstr "选择"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr ""
+msgstr "关于(_A)..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr ""
+msgstr "编辑(_E)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
-#, fuzzy
 msgid "_File"
-msgstr "隐藏(_H)"
+msgstr "文件(_F)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr ""
+msgstr "选择(_S)"
 
 #~ msgid "Can not bonobo_ui_init"
 #~ msgstr "无法 bonobo_ui_init"
