@@ -454,6 +454,7 @@ bonobo_ui_engine_config_construct (BonoboUIEngineConfig *config,
 		bonobo_ui_engine_get_xml (engine),
 		bonobo_ui_engine_config_watch);
 
+	bonobo_ui_engine_config_hydrate (config);
 	return config;
 }
 

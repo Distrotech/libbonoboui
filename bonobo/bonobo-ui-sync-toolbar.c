@@ -459,9 +459,9 @@ parse_look (const char *look)
 		: BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
 }
 
-static BonoboUIToolbarStyle
-get_look (BonoboUIEngine *engine,
-	  BonoboUINode   *node)
+BonoboUIToolbarStyle
+bonobo_ui_sync_toolbar_get_look (BonoboUIEngine *engine,
+				 BonoboUINode   *node)
 {
 	char      *txt;
 	BonoboUIToolbarStyle look;
@@ -505,8 +505,8 @@ do_config_popup (BonoboUIEngineConfig *config,
 		bonobo_ui_node_free_string (txt);
 	}
 
-	style = get_look (bonobo_ui_engine_config_get_engine (config),
-			  config_node);
+	style = bonobo_ui_sync_toolbar_get_look (bonobo_ui_engine_config_get_engine (config),
+						 config_node);
 
 	txt = g_strdup_printf (
 		"<Root>"
