@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "POT-Creation-Date: 2003-05-20 13:06+0200\n"
-"PO-Revision-Date: 2003-05-21 04:31+0100\n"
+"PO-Revision-Date: 2003-05-30 22:27+0100\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
@@ -309,7 +309,7 @@ msgstr "_Cynnwys"
 
 #: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
-msgstr "Darllen cymorth ar gyfer y rhaglen hwn"
+msgstr "Dangos cymorth ar gyfer y rhaglen hwn"
 
 #: bonobo/bonobo-window.c:398
 # EFALLAI (cyfresoli?)
