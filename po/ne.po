@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonobui\n"
-"Report-Msgid-Bugs-To: info@mpp.org.np\n"
-"POT-Creation-Date: 2003-08-31 04:38+0200\n"
+"POT-Creation-Date: 2003-08-11 11:06+0100\n"
 "PO-Revision-Date: 2003-08-31 04:38\n"
 "Last-Translator: Pawan Chitrakar <pawan@nplinux.org>\n"
 "Language-Team: Nepali<info@mpp.org.np>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: info@mpp.org.np\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -288,7 +288,7 @@ msgstr "तैरिएको छ"
 
 #: bonobo/bonobo-ui-toolbar.c:1131
 msgid "whether the toolbar is floating"
-msgstr "के टुलबार तैरिएको छ" 
+msgstr "के टुलबार तैरिएको छ"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"

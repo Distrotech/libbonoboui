@@ -1,11 +1,11 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2003 Jitendra Shah
 # Swapnil Hajare <dramil1000a@yahoo.com>, 2003.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.x\n"
-"POT-Creation-Date: 2003-01-26 19:50+0100\n"
+"POT-Creation-Date: 2003-08-11 11:06+0100\n"
 "PO-Revision-Date: 2002-09-10 18:30+0530\n"
 "Last-Translator: Vikas Chavan <vh_chavan@rediffmail.com>\n"
 "Language-Team: Marathi <www.indictrans.org>\n"
@@ -13,46 +13,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:647
+#: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
 msgstr "कोरबा कारखाना "
 
-#: bonobo/bonobo-canvas-item.c:648
+#: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
 msgstr "कारखाना संकेतक"
 
-#: bonobo/bonobo-canvas-item.c:657
+#: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
 msgstr "कोरबा UI कन्टेनर (धारक)"
 
-#: bonobo/bonobo-canvas-item.c:658
+#: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
 msgstr "यूजर इंटरफेस धारक"
 
-#: bonobo/bonobo-dock-item-grip.c:236
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
 msgstr "Dock the toolbar"
 
-#: bonobo/bonobo-dock-item-grip.c:237
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
 msgstr "Un dock the toolbar"
 
-#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Shadow type"
 msgstr "छाया प्रकार"
 
-#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
 msgid "Orientation"
 msgstr "दिशा"
 
-#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
+#: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
+#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
 msgid "Preferred width"
 msgstr "मान्यता रुंदी "
 
-#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
+#: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
+#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
 msgid "Preferred height"
 msgstr "मान्यता ऊंची "
 
@@ -68,15 +69,15 @@ msgstr "उघडण्यासाठी  फाइल्स  निवडा"
 msgid "Select a filename to save"
 msgstr "संग्रहित करण्यासाठी  एक फाइल नाव  निवडा "
 
-#: bonobo/bonobo-plug.c:372
+#: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
 msgstr "घटना पुढे ढकला  "
 
-#: bonobo/bonobo-plug.c:373
+#: bonobo/bonobo-plug.c:412
 msgid "Whether X events should be forwarded"
 msgstr "x घटनाला पुढे ढकलायचे आहे का "
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "नाव "
 
@@ -89,9 +90,10 @@ msgid "Interfaces required"
 msgstr " इंटरफ़ेस हवा आहे "
 
 #: bonobo/bonobo-selector.c:346
+#, fuzzy
 msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
 "A NULL_terminated array of interfaces which a server must support in order "
@@ -150,6 +152,18 @@ msgstr "फ़क्त  पाठ्य"
 msgid "_Priority text only"
 msgstr " फ़क्त पाठ्यची  प्राथमिकता (_P)"
 
+#: bonobo/bonobo-ui-engine.c:90
+msgid "Debug"
+msgstr "डिबग"
+
+#: bonobo/bonobo-ui-engine.c:90
+msgid "_Dump XML"
+msgstr "XML काढा  "
+
+#: bonobo/bonobo-ui-engine.c:91
+msgid "Dump the entire UI's XML description to the console"
+msgstr "पुर्ण  UI चा XML विवरण कन्सोल वर काढा "
+
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "UI कानफिगर करा "
@@ -159,7 +173,7 @@ msgid "Gdk debugging flags to set"
 msgstr "Gdk डिबगिंग फ्लैगला समायोजित करा "
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:161 bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
 msgstr "संकेत चिन्ह"
 
@@ -175,75 +189,75 @@ msgstr "X डिस्प्ले चा  प्रयोग करा "
 msgid "DISPLAY"
 msgstr "डिस्प्ले"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
 msgstr "प्रयोग करिता  X सक्रीन्"
 
-#: bonobo/bonobo-ui-init-gtk.c:125
+#: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
 msgstr "सक्रीन्"
 
-#: bonobo/bonobo-ui-init-gtk.c:129
+#: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
 msgstr "X कोल एकाच वेळी घडवा "
 
-#: bonobo/bonobo-ui-init-gtk.c:135
+#: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
 msgstr "X भागीदारी  मेमोरी विस्तारकचा प्रयोग करू नका "
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
 msgstr "विन्डो प्रबंधक द्वारे प्रयुक्त प्रोग्राम नाव आहे "
 
-#: bonobo/bonobo-ui-init-gtk.c:139
+#: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
 msgstr "नाव "
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
 msgstr "विन्डो प्रबंधक द्वारे प्रयुक्त प्रोग्राम वर्ग आहे "
 
-#: bonobo/bonobo-ui-init-gtk.c:142
+#: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
 msgstr "वर्ग"
 
-#: bonobo/bonobo-ui-init-gtk.c:146
+#: bonobo/bonobo-ui-init-gtk.c:145
 msgid "HOST"
 msgstr "होस्ट"
 
-#: bonobo/bonobo-ui-init-gtk.c:150
+#: bonobo/bonobo-ui-init-gtk.c:149
 msgid "PORT"
 msgstr "पोर्ट"
 
-#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:154 bonobo/bonobo-ui-init-gtk.c:157
 msgid "STYLE"
 msgstr "शैली "
 
-#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ डिबगिंग फ्लैगला  समायोजित करा "
 
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gdk+ डिबगिंग  फ्लैगला असमायोजित करा"
 
-#: bonobo/bonobo-ui-init-gtk.c:168
+#: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
 msgstr "सर्व चेतावनिंना महत्वपूर्ण बनवा "
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "एक अतिरिक्त Gtk माड्यूल ला लोड करा "
 
-#: bonobo/bonobo-ui-init-gtk.c:171
+#: bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
 msgstr "माड्यूल"
 
-#: bonobo/bonobo-ui-init-gtk.c:180
+#: bonobo/bonobo-ui-init-gtk.c:179
 msgid "GTK+"
 msgstr "जिटिके +"
 
-#: bonobo/bonobo-ui-main.c:188
+#: bonobo/bonobo-ui-main.c:193
 msgid "Bonobo GUI support"
 msgstr "बोनबो GUI चा पाठिंबा  "
 
@@ -275,23 +289,27 @@ msgstr "आवशक्यतानुसार बनवा  (_z)"
 msgid "Customize the toolbar"
 msgstr "टूलबार ला  आवश्यकतानुसार बनवा"
 
-#: bonobo/bonobo-ui-toolbar.c:1096
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "is floating"
 msgstr "काय गतिशील आहे ?"
 
-#: bonobo/bonobo-ui-toolbar.c:1097
+#: bonobo/bonobo-ui-toolbar.c:1131
 msgid "whether the toolbar is floating"
 msgstr "काय  टूलबार गतिशील आहे ?"
 
-#: bonobo/bonobo-ui-util.c:599
+#: bonobo/bonobo-ui-toolbar.c:1177
+msgid "Style of bevel around the toolbar"
+msgstr ""
+
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "तत्व (_C)"
 
-#: bonobo/bonobo-ui-util.c:600
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "ह्या अर्जा बद्दल मदत "
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "विंडो चे  नाव  - संरचना serialization करीता "
 
@@ -391,12 +409,3 @@ msgstr "libbonoboui कोड चा प्रारंभ नाहीं क�
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Bonobo UI चा प्रारंभ नाहीं करू शकत"
-
-#~ msgid "Debug"
-#~ msgstr "डिबग"
-
-#~ msgid "_Dump XML"
-#~ msgstr "XML काढा  "
-
-#~ msgid "Dump the entire UI's XML description to the console"
-#~ msgstr "पुर्ण  UI चा XML विवरण कन्सोल वर काढा "
