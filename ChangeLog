@@ -1,3 +1,14 @@
+2002-03-28  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-file-selector-util.c
+	(create_control): do an explicit construct to avoid
+	the warning.
+
+	* bonobo/bonobo-widget.c
+	(bonobo_widget_launch_component): move activation
+	exception warning to
+	(bonobo_widget_new_control): here.
+
 2002-03-27  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-window.c

@@ -56,13 +56,8 @@ bonobo_widget_launch_component (const char        *moniker,
 
 	component = bonobo_get_object (moniker, if_name, ev);
 
-	if (BONOBO_EX (ev)) {
-		char *txt;
-		g_warning ("Activation exception '%s'",
-			   (txt = bonobo_exception_get_text (ev)));
-		g_free (txt);
+	if (BONOBO_EX (ev))
 		component = CORBA_OBJECT_NIL;
-	}
 
 	if (component == CORBA_OBJECT_NIL)
 		return NULL;
@@ -285,8 +280,13 @@ bonobo_widget_new_control (const char        *moniker,
 
 	bw = bonobo_widget_construct_control (bw, moniker, uic, &ev);
 
-	if (BONOBO_EX (&ev))
+	if (BONOBO_EX (&ev)) {
+		char *txt;
+		g_warning ("Activation exception '%s'",
+			   (txt = bonobo_exception_get_text (&ev)));
+		g_free (txt);
 		bw = NULL;
+	}
 
 	CORBA_exception_free (&ev);
 

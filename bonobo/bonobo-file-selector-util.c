@@ -97,7 +97,8 @@ listener_cb (BonoboListener *listener,
 static BonoboWidget *
 create_control (gboolean enable_vfs, FileselMode mode)
 {
-	GtkWidget *control;
+	CORBA_Environment ev;
+	BonoboWidget *bw;
 	char *moniker;
 
 	moniker = g_strdup_printf (
@@ -111,10 +112,16 @@ create_control (gboolean enable_vfs, FileselMode mode)
 		mode == FILESEL_OPEN_MULTI, 
 		mode == FILESEL_SAVE);
 
-	control = bonobo_widget_new_control (moniker, CORBA_OBJECT_NIL);
+	bw = g_object_new (BONOBO_TYPE_WIDGET, NULL);
+	CORBA_exception_init (&ev);
+
+	bw = bonobo_widget_construct_control (
+		bw, moniker, CORBA_OBJECT_NIL, &ev);
+
+	CORBA_exception_free (&ev);
 	g_free (moniker);
 
-	return control ? BONOBO_WIDGET (control) : NULL;
+	return bw;
 }
 
 static GtkWindow *
