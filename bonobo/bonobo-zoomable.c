@@ -2,28 +2,12 @@
  *
  *  Bonobo::Zoomable - zoomable interface for Controls.
  *
- *  Copyright (C) 2000 Eazel, Inc.
- *                2000 SuSE GmbH.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free
- *  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
  *  Authors: Maciej Stachowiak <mjs@eazel.com>
  *           Martin Baulig <baulig@suse.de>
  *
+ *  Copyright (C) 2000 Eazel, Inc.
+ *                2000 SuSE GmbH.
  */
-
 #include <config.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-exception.h>
@@ -338,13 +322,17 @@ bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 	
 	bonobo_zoomable_parent_class = g_type_class_peek_parent (klass);
 
+	object_class->get_property = bonobo_zoomable_get_property;
+	object_class->dispose  = bonobo_zoomable_dispose;
+	object_class->finalize = bonobo_zoomable_finalize;
+
 	g_object_class_install_property (
 		object_class,
 		PARAM_ZOOM_LEVEL,
 		g_param_spec_float ("zoom_level",
 				    _("Zoom level"),
 				    _("The degree of enlargment"),
-				    G_MINFLOAT, G_MAXFLOAT, 1.0,
+				    0, G_MAXFLOAT, 1.0,
 				    G_PARAM_READABLE));
 
 	g_object_class_install_property (
@@ -353,7 +341,7 @@ bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 		g_param_spec_float ("min_zoom_level",
 				    _("Minimum Zoom level"),
 				    _("The minimum degree of enlargment"),
-				    G_MINFLOAT, G_MAXFLOAT, 0.0,
+				    0, G_MAXFLOAT, 0.0,
 				    G_PARAM_READABLE));
 
 	g_object_class_install_property (
@@ -362,7 +350,7 @@ bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 		g_param_spec_float ("max_zoom_level",
 				    _("Maximum Zoom level"),
 				    _("The maximum degree of enlargment"),
-				    G_MINFLOAT, G_MAXFLOAT, 0.0,
+				    0, G_MAXFLOAT, 0.0,
 				    G_PARAM_READABLE));
 
 	g_object_class_install_property (
@@ -437,10 +425,6 @@ bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__VOID,
 			      G_TYPE_NONE, 0);
-
-	object_class->get_property = bonobo_zoomable_get_property;
-	object_class->dispose  = bonobo_zoomable_dispose;
-	object_class->finalize = bonobo_zoomable_finalize;
 
 	epv->_get_level = impl_Bonobo_Zoomable__get_level;
 	epv->_get_minLevel = impl_Bonobo_Zoomable__get_minLevel;

@@ -2,28 +2,12 @@
  *
  *  Bonobo::ZoomableFrame - container side part of Bonobo::Zoomable.
  *
- *  Copyright (C) 2000 Eazel, Inc.
- *                2000 SuSE GmbH.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free
- *  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
  *  Authors: Maciej Stachowiak <mjs@eazel.com>
  *           Martin Baulig <baulig@suse.de>
  *
+ *  Copyright (C) 2000 Eazel, Inc.
+ *                2000 SuSE GmbH.
  */
-
 #ifndef _BONOBO_ZOOMABLE_FRAME_H_
 #define _BONOBO_ZOOMABLE_FRAME_H_
 
@@ -31,11 +15,11 @@
 
 G_BEGIN_DECLS
 
-#define BONOBO_TYPE_ZOOMABLE_FRAME		(bonobo_zoomable_frame_get_type ())
-#define BONOBO_ZOOMABLE_FRAME(o)		(GTK_CHECK_CAST ((o), BONOBO_TYPE_ZOOMABLE_FRAME, BonoboZoomableFrame))
-#define BONOBO_ZOOMABLE_FRAME_CLASS(k)		(GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_ZOOMABLE_FRAME, BonoboZoomableFrameClass))
-#define BONOBO_IS_ZOOMABLE_FRAME(o)		(GTK_CHECK_TYPE ((o), BONOBO_TYPE_ZOOMABLE_FRAME))
-#define BONOBO_IS_ZOOMABLE_FRAME_CLASS(k)	(GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_ZOOMABLE_FRAME))
+#define BONOBO_TYPE_ZOOMABLE_FRAME        (bonobo_zoomable_frame_get_type ())
+#define BONOBO_ZOOMABLE_FRAME(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_TYPE_ZOOMABLE_FRAME, BonoboZoomableFrame))
+#define BONOBO_ZOOMABLE_FRAME_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), BONOBO_TYPE_ZOOMABLE_FRAME, BonoboZoomableFrameClass))
+#define BONOBO_IS_ZOOMABLE_FRAME(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_TYPE_ZOOMABLE_FRAME))
+#define BONOBO_IS_ZOOMABLE_FRAME_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_ZOOMABLE_FRAME))
 
 typedef struct _BonoboZoomableFramePrivate	BonoboZoomableFramePrivate;
 
@@ -58,6 +42,7 @@ typedef struct {
 GType			 bonobo_zoomable_frame_get_type			(void) G_GNUC_CONST;
 
 BonoboZoomableFrame	*bonobo_zoomable_frame_new			(void);
+Bonobo_Zoomable          bonobo_zoomable_frame_get_zoomable             (BonoboZoomableFrame    *zframe);
 
 float		 bonobo_zoomable_frame_get_zoom_level			(BonoboZoomableFrame	*zframe);
 
@@ -77,13 +62,9 @@ void		 bonobo_zoomable_frame_zoom_in				(BonoboZoomableFrame	*zframe);
 void		 bonobo_zoomable_frame_zoom_out				(BonoboZoomableFrame	*zframe);
 void		 bonobo_zoomable_frame_zoom_to_fit			(BonoboZoomableFrame	*zframe);
 void		 bonobo_zoomable_frame_zoom_to_default			(BonoboZoomableFrame	*zframe);
-
-/* Connecting to the remote object */
 void		 bonobo_zoomable_frame_bind_to_zoomable			(BonoboZoomableFrame	*zframe,
-									 Bonobo_Zoomable	 zoomable);
-
-Bonobo_Zoomable	 bonobo_zoomable_frame_get_zoomable			(BonoboZoomableFrame	*zframe);
-
+									 Bonobo_Zoomable	 zoomable,
+									 CORBA_Environment      *opt_ev);
 
 G_END_DECLS
 

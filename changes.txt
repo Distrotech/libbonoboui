@@ -141,4 +141,5 @@ bonobo-zoomable.[ch]:
 	bonobo_zoomable_report_zoom_parameters_changed:
 	added optional ev.
 
-
+bonobo-zoomable-frame.[ch]:
+	bonobo_zoomable_frame_bind_to_zoomable: add optional ev.

@@ -1,5 +1,13 @@
 2001-11-06  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-zoomable.c 
+	(bonobo_zoomable_class_init): fix bounds.
+
+	* bonobo/bonobo-zoomable-frame.c: substantialy re-write.
+	(bonobo_zoomable_frame_bind_to_zoomable): add opt_ev.
+
+2001-11-06  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-zoomable.c
 	(bonobo_zoomable_free_preferred_zoom_level_arrays):
 	handle double destroys.
