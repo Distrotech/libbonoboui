@@ -1,11 +1,11 @@
 [control-factory:calculator]
 type=exe
-repo_id=IDL:GNOME/GenericFactory:1.0
+repo_id=IDL:Bonobo/GenericFactory:1.0
 description=Factory for the sample BonoboCalculator control
 location_info=sample-control-factory
 
 [control:calculator]
 type=factory
-repo_id=IDL:BonoboControl/calculator-control:1.0 IDL:GNOME/Control:1.0
+repo_id=IDL:BonoboControl/calculator-control:1.0 IDL:Bonobo/Control:1.0
 description=A sample Bonobo control which displays a calculator.
 location_info=control-factory:calculator
