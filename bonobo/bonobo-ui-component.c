@@ -105,6 +105,8 @@ impl_exec_verb (PortableServer_Servant servant,
 	BonoboUIComponent *component;
 
 	component = bonobo_ui_from_servant (servant);
+
+	bonobo_object_ref (BONOBO_OBJECT (component));
 	
 /*	g_warning ("TESTME: Exec verb '%s'", cname);*/
 
@@ -122,8 +124,6 @@ impl_exec_verb (PortableServer_Servant servant,
 		g_warning ("FIXME: verb '%s' not found, emit exception",
 			   cname);
 	}
-
-	bonobo_object_ref (BONOBO_OBJECT (component));
 
 	gtk_signal_emit (GTK_OBJECT (component),
 			 signals [EXEC_VERB],
@@ -396,8 +396,16 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 		bonobo_object_corba_objref (BONOBO_OBJECT (component)),
 		real_ev);
 
+	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
+		g_warning ("Serious exception registering component '$%s'",
+			   bonobo_exception_get_text (real_ev));
+
 	Bonobo_UIContainer_node_set (container, path, xml,
 				     priv->name, real_ev);
+
+	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
+		g_warning ("Serious exception on node_set '$%s'",
+			   bonobo_exception_get_text (real_ev));
 
 	if (!ev)
 		CORBA_exception_free (&tmp_ev);
@@ -426,10 +434,70 @@ bonobo_ui_component_set_tree (BonoboUIComponent  *component,
 	doc->root = NULL;
 	xmlFreeDoc (doc);
 
+/*	fprintf (stderr, "Merging '%s'\n", mem);*/
+	
 	bonobo_ui_component_set (
 		component, container, path, mem, ev);
 
 	xmlFree (mem);
+}
+
+char *
+bonobo_ui_container_get (Bonobo_UIContainer  container,
+			 const char         *path,
+			 gboolean            recurse,
+			 CORBA_Environment  *ev)
+{
+	CORBA_Environment *real_ev, tmp_ev;
+	CORBA_char *xml;
+
+	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
+
+	if (ev)
+		real_ev = ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
+
+	xml = Bonobo_UIContainer_node_get (container, path, recurse, real_ev);
+
+	if (real_ev->_major != CORBA_NO_EXCEPTION) {
+		if (!ev)
+			g_warning ("Serious exception getting node '%s' '$%s'",
+				   path, bonobo_exception_get_text (real_ev));
+		return NULL;
+	}
+
+	return xml;
+}
+
+xmlNode *
+bonobo_ui_container_get_tree (Bonobo_UIContainer  container,
+			      const char         *path,
+			      gboolean            recurse,
+			      CORBA_Environment  *ev)
+{	
+	char *xml = bonobo_ui_container_get (container, path, recurse, ev);
+	xmlNode *node;
+	xmlDoc  *doc;
+
+	if (!xml)
+		return NULL;
+
+	doc = xmlParseDoc ((char *)xml);
+
+	if (!doc)
+		return NULL;
+
+	node = doc->root;
+	doc->root = NULL;
+	
+	xmlFreeDoc (doc);
+
+	bonobo_ui_xml_strip (node);
+
+	return node;
 }
 
 void

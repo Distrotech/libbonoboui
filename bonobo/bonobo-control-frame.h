@@ -8,7 +8,6 @@
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-wrapper.h>
 #include <bonobo/bonobo-property-bag-client.h>
-#include <bonobo/bonobo-ui-handler.h>
 
 BEGIN_GNOME_DECLS
  
@@ -39,7 +38,7 @@ typedef struct {
 } BonoboControlFrameClass;
 
 
-BonoboControlFrame           *bonobo_control_frame_new                       (Bonobo_UIHandler     uih);
+BonoboControlFrame           *bonobo_control_frame_new                       (Bonobo_Unknown       uih);
 
 GtkWidget                    *bonobo_control_frame_get_widget                (BonoboControlFrame  *frame);
 

@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-#ifndef _BONOBO_UI_HANDLER_H_
-#define _BONOBO_UI_HANDLER_H_
+#ifndef _BONOBO_UI_COMPAT_H_
+#define _BONOBO_UI_COMPAT_H_
 
 #include <bonobo/bonobo-object.h>
 #include <gtk/gtkwidget.h>
@@ -8,8 +8,8 @@
 #include <gtk/gtkmenushell.h>
 #include <gtk/gtkcheckmenuitem.h>
 #include <gtk/gtkaccelgroup.h>
-#include <libgnomeui/gnome-app.h>
-#include <libgnomeui/gnome-app-helper.h>
+#include <gnome-xml/tree.h>
+#include <bonobo/bonobo-app.h>
 
 #define BONOBO_UI_HANDLER_TYPE        (bonobo_ui_handler_get_type ())
 #define BONOBO_UI_HANDLER(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_HANDLER_TYPE, BonoboUIHandler))
@@ -17,11 +17,20 @@
 #define BONOBO_IS_UI_HANDLER(o)       (GTK_CHECK_TYPE ((o), BONOBO_UI_HANDLER_TYPE))
 #define BONOBO_IS_UI_HANDLER_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_UI_HANDLER_TYPE))
 
-typedef xmlNode * BonoboUIHandlerMenuItem;
-typedef xmlNode * BonoboUIHandlerToolbarItem;
+typedef enum {
+	BONOBO_UI_COMPAT_LIST,
+	BONOBO_UI_COMPAT_ONE,
+	BONOBO_UI_COMPAT_TREE
+} BonoboUICompatType;
 
-typedef gpointer BonoboUIHandler;
-typedef gpointer Bonobo_UIHandler;
+typedef struct {
+	BonoboUICompatType type;
+	GnomeUIInfo       *uii;
+	gpointer           data;
+} BonoboUIHandlerMenuItem;
+
+typedef BonoboUIHandlerMenuItem BonoboUIHandlerToolbarItem;
+typedef gpointer                BonoboUIHandler;
 
 /*
  * The order of the arguments to this function might seem a bit
@@ -72,14 +81,23 @@ typedef enum {
 } BonoboUIHandlerToolbarItemType;
 
 /*
- * The basic functions for managing the BonoboUIHandler object.
+ * New methods you need to add:
+ */
+/*
+ * _new_for_app to create the toplevel UI handler
+ * _new to create the normal old style handler.
+ */
+BonoboUIHandler         *bonobo_ui_handler_new_for_app			(BonoboApp       *app);
+BonoboUIHandler		*bonobo_ui_handler_new				(void);
+
+/*
+ * Compat functions; no special use needed
  */
 GtkType			 bonobo_ui_handler_get_type			(void);
-BonoboUIHandler		*bonobo_ui_handler_new				(void);
-BonoboUIHandler         *bonobo_ui_handler_new_app                      (void);
 void			 bonobo_ui_handler_set_container                (BonoboUIHandler *uih,
 									 Bonobo_Unknown   container);
 
+void			 bonobo_ui_handler_unset_container              (BonoboUIHandler *uih);
 char			*bonobo_ui_handler_build_path			(const char *base, ...);
 char			*bonobo_ui_handler_build_path_v			(const char *base, va_list path_components);
 
@@ -90,6 +108,7 @@ GnomeApp                *bonobo_ui_handler_get_app                      (BonoboU
 void			 bonobo_ui_handler_set_toolbar			(BonoboUIHandler *uih, const char *name,
 									 GtkWidget *toolbar);
 
+void                     bonobo_ui_handler_create_menubar               (BonoboUIHandler *uih);
 void			 bonobo_ui_handler_menu_new			(BonoboUIHandler *uih, const char *path,
 									 BonoboUIHandlerMenuItemType type,
 									 const char *label, const char *hint,
@@ -125,26 +144,28 @@ void			 bonobo_ui_handler_menu_new_toggleitem		(BonoboUIHandler *uih, const char
 									 gpointer callback_data);
 void			 bonobo_ui_handler_menu_add_one			(BonoboUIHandler *uih, const char *parent_path,
 									 BonoboUIHandlerMenuItem *item);
-void			 bonobo_ui_handler_menu_add_list			(BonoboUIHandler *uih, const char *parent_path,
-									 BonoboUIHandlerMenuItem *array);
-void			 bonobo_ui_handler_menu_add_tree			(BonoboUIHandler *uih, const char *parent_path,
-									 BonoboUIHandlerMenuItem *tree);
+void			 bonobo_ui_handler_menu_add_list       		(BonoboUIHandler *uih, const char *parent_path,
+									 BonoboUIHandlerMenuItem *item);
+void			 bonobo_ui_handler_menu_add_tree       		(BonoboUIHandler *uih, const char *parent_path,
+									 BonoboUIHandlerMenuItem *item);
 void			 bonobo_ui_handler_menu_remove			(BonoboUIHandler *uih, const char *path);
 BonoboUIHandlerMenuItem	*bonobo_ui_handler_menu_fetch_one		(BonoboUIHandler *uih, const char *path);
 
 gboolean                 bonobo_ui_handler_menu_path_exists             (BonoboUIHandler *uih, const char *path);
-void			 bonobo_ui_handler_menu_free_one			(BonoboUIHandlerMenuItem *item);
+void			 bonobo_ui_handler_menu_free_one		(BonoboUIHandlerMenuItem *item);
 void			 bonobo_ui_handler_menu_free_list		(BonoboUIHandlerMenuItem *item);
 void			 bonobo_ui_handler_menu_free_tree		(BonoboUIHandlerMenuItem *item);
 GList			*bonobo_ui_handler_menu_get_child_paths		(BonoboUIHandler *uih, const char *parent_path);
 
-BonoboUIHandlerMenuItem	*bonobo_ui_handler_menu_parse_uiinfo_one		(GnomeUIInfo *uii);
-BonoboUIHandlerMenuItem	*bonobo_ui_handler_menu_parse_uiinfo_list	(GnomeUIInfo *uii);
-BonoboUIHandlerMenuItem	*bonobo_ui_handler_menu_parse_uiinfo_tree	(GnomeUIInfo *uii);
+BonoboUIHandlerMenuItem *bonobo_ui_handler_menu_parse_uiinfo_one        (GnomeUIInfo *uii);
+BonoboUIHandlerMenuItem *bonobo_ui_handler_menu_parse_uiinfo_list       (GnomeUIInfo *uii);
+BonoboUIHandlerMenuItem *bonobo_ui_handler_menu_parse_uiinfo_tree       (GnomeUIInfo *uii);
 
-BonoboUIHandlerMenuItem	*bonobo_ui_handler_menu_parse_uiinfo_one_with_data	(GnomeUIInfo *uii, void *data);
-BonoboUIHandlerMenuItem	*bonobo_ui_handler_menu_parse_uiinfo_list_with_data	(GnomeUIInfo *uii, void *data);
-BonoboUIHandlerMenuItem	*bonobo_ui_handler_menu_parse_uiinfo_tree_with_data	(GnomeUIInfo *uii, void *data);
+BonoboUIHandlerMenuItem *bonobo_ui_handler_menu_parse_uiinfo_one_with_data  (GnomeUIInfo *uii, gpointer data);
+BonoboUIHandlerMenuItem *bonobo_ui_handler_menu_parse_uiinfo_list_with_data (GnomeUIInfo *uii, gpointer data);
+BonoboUIHandlerMenuItem *bonobo_ui_handler_menu_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, gpointer data);
+
+BonoboUIHandlerMenuItem *bonobo_ui_compat_menu_item_new                  (GnomeUIInfo *uii, gpointer data, BonoboUICompatType type);
 
 int			 bonobo_ui_handler_menu_get_pos			(BonoboUIHandler *uih, const char *path);
 
@@ -201,6 +222,8 @@ void				 bonobo_ui_handler_toolbar_new_item	(BonoboUIHandler *uih, const char *p
 									 guint accelerator_key, GdkModifierType ac_mods,
 									 BonoboUIHandlerCallback callback,
 									 gpointer callback_data);
+void				 bonobo_ui_handler_toolbar_item_set_pixmap	(BonoboUIHandler *uih, const char *path,
+										 BonoboUIHandlerPixmapType type, gpointer data);
 void				 bonobo_ui_handler_toolbar_new_separator	(BonoboUIHandler *uih, const char *path, int pos);
 void				 bonobo_ui_handler_toolbar_new_radiogroup(BonoboUIHandler *uih, const char *path);
 void				 bonobo_ui_handler_toolbar_new_radioitem	(BonoboUIHandler *uih, const char *path,
@@ -217,13 +240,13 @@ void				 bonobo_ui_handler_toolbar_new_toggleitem(BonoboUIHandler *uih, const ch
 									 guint accelerator_key, GdkModifierType ac_mods,
 									 BonoboUIHandlerCallback callback,
 									 gpointer callback_data);
-void				 bonobo_ui_handler_toolbar_add_list	(BonoboUIHandler *uih, const char *parent_path,
-									 BonoboUIHandlerToolbarItem *item);
 void				 bonobo_ui_handler_toolbar_remove	(BonoboUIHandler *uih, const char *path);
 
-BonoboUIHandlerToolbarItem	*bonobo_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, void *data);
-
-void			         bonobo_ui_handler_toolbar_free_list		(BonoboUIHandlerToolbarItem *item);
+BonoboUIHandlerMenuItem         *bonobo_ui_handler_toolbar_parse_uiinfo_list (GnomeUIInfo *uii);
+BonoboUIHandlerMenuItem         *bonobo_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, gpointer data);
+void                             bonobo_ui_handler_toolbar_free_list    (BonoboUIHandlerMenuItem *item);
+void				 bonobo_ui_handler_toolbar_add_list	(BonoboUIHandler *uih, const char *parent_path,
+									 BonoboUIHandlerToolbarItem *item);
 
 
 gboolean  bonobo_ui_handler_dock_add            (BonoboUIHandler       *uih,

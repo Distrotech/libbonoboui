@@ -303,7 +303,7 @@ bonobo_ui_util_xml_set_pix_stock (xmlNode     *node,
 	g_return_if_fail (name != NULL);
 
 	xmlSetProp (node, "pixtype", "stock");
-	xmlNodeSetContent (node, name);
+	xmlSetProp (node, "pixname", name);
 }
 
 void
@@ -314,7 +314,7 @@ bonobo_ui_util_xml_set_pix_fname (xmlNode     *node,
 	g_return_if_fail (name != NULL);
 	
 	xmlSetProp (node, "pixtype", "filename");
-	xmlNodeSetContent (node, name);
+	xmlSetProp (node, "pixname", name);
 }
 
 

@@ -36,6 +36,7 @@ sample_app_create (void)
 	GtkWidget *app_widget;
 
 #ifdef USE_UI_HANDLER	
+
 	/* Create widgets */
 	app_widget = app->app = gnome_app_new ("sample-container",
 					       _("Sample Bonobo container"));
@@ -58,17 +59,21 @@ sample_app_create (void)
 	gtk_widget_show_all (app_widget);
 #else
 	/* Create widgets */
-	app_widget = app->app = bonobo_app_new ("sample-container",
-						_("Sample Bonobo container"));
+	app->app = bonobo_app_new ("sample-container",
+				   _("Sample Bonobo container"));
+	app_widget = bonobo_app_get_window (app->app);
+
 	app->box = gtk_vbox_new (FALSE, 10);
 
-	gtk_signal_connect (GTK_OBJECT (app_widget), "destroy", delete_cb, app);
+	gtk_signal_connect (GTK_OBJECT (app_widget),
+			    "destroy", delete_cb, app);
 
 	/* Do the packing stuff */
-	bonobo_app_set_contents (BONOBO_APP (app_widget), app->box);
+	bonobo_app_set_contents (app->app, app->box);
 	gtk_widget_set_usize (app_widget, 400, 600);
 
 	app->container = bonobo_container_new ();
+	app->ui_handler = bonobo_ui_handler_new_for_app (app->app);
 
 	/* Create menu bar */
 	bonobo_ui_handler_create_menubar (app->ui_handler);
@@ -234,7 +239,9 @@ main (int argc, char **argv)
 	CORBA_Environment ev;
 	CORBA_ORB orb;
 
-	CORBA_exception_init (&ev);
+	free (malloc (8));
+
+ 	CORBA_exception_init (&ev);
 	gnome_init_with_popt_table ("container", VERSION,
 				    argc, argv, oaf_popt_options, 0, &ctx);
 

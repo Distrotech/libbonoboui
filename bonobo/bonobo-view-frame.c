@@ -73,10 +73,12 @@ create_bonobo_view_frame (BonoboObject *object)
 
 static gboolean
 bonobo_view_frame_wrapper_button_press_cb (GtkWidget *wrapper,
-					  GdkEventButton *event,
-					  gpointer data)
+					   GdkEventButton *event,
+					   gpointer data)
 {
 	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (data);
+
+	bonobo_object_ref (BONOBO_OBJECT (view_frame));
 
 	/* Check for double click. */
 	if (event->type == GDK_2BUTTON_PRESS)
@@ -87,6 +89,8 @@ bonobo_view_frame_wrapper_button_press_cb (GtkWidget *wrapper,
 		 event->button == 3)
 		gtk_signal_emit (GTK_OBJECT (view_frame), view_frame_signals [USER_CONTEXT]);
 		
+	bonobo_object_unref (BONOBO_OBJECT (view_frame));
+
 	return FALSE;
 } 
 
@@ -97,9 +101,13 @@ bonobo_view_frame_key_press_cb (GtkWidget *wrapper,
 {
 	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (data);
 
+	bonobo_object_ref (BONOBO_OBJECT (view_frame));
+
 	/* Hitting enter will activate the embedded component too. */
 	if (event->keyval == GDK_Return)
 		gtk_signal_emit (GTK_OBJECT (view_frame), view_frame_signals [USER_ACTIVATE]);
+
+	bonobo_object_unref (BONOBO_OBJECT (view_frame));
 
 	return FALSE;
 }
@@ -498,6 +506,7 @@ bonobo_view_frame_set_zoom_factor (BonoboViewFrame *view_frame, double zoom)
 	CORBA_exception_free (&ev);
 }
 
+#ifdef STALE_NOT_USED
 static void
 bonobo_view_frame_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
 				   const char *path)
@@ -524,6 +533,7 @@ bonobo_view_frame_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
 	gtk_object_set_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name",
 			     g_strdup (verb_name));
 }
+#endif
 
 /**
  * bonobo_view_frame_popup_verbs:

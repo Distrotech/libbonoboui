@@ -33,6 +33,9 @@ bonobo_ui_xml_strip (xmlNode *node)
 {
 	xmlNode *l;
 
+	if (!node)
+		return;
+
 	node->ns = NULL;
 	node->doc = NULL;
 	node->nsDef = NULL;
@@ -45,7 +48,7 @@ gpointer
 bonobo_ui_xml_get_data (BonoboUIXml *tree, xmlNode *node)
 {
 	if (!node->_private) {
-		if (tree->data_new)
+		if (tree && tree->data_new)
 			node->_private = tree->data_new ();
 		else
 			node->_private = g_new0 (BonoboUIXmlData, 1);
@@ -333,71 +336,89 @@ find_child (xmlNode *node, const char *name)
 static xmlNode *
 find_sibling (xmlNode *node, const char *name)
 {
-	xmlNode *l;
+	xmlNode *l, *ret;
 
 	g_return_val_if_fail (name != NULL, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
-	for (l = node; l; l = l->next)
-		if (xmlGetProp (l, "name") &&
-		    !strcmp (xmlGetProp (l, "name"), name))
-			break;
-	
-	return l;
+	ret = NULL;
+	for (l = node; l && !ret; l = l->next) {
+		char *prop;
+
+		if ((prop = xmlGetProp (l, "name")) &&
+		    !strcmp (prop, name))
+			ret = l;
+		if (prop)
+			xmlFree (prop);
+	}
+
+	return ret;
 }
 
 static xmlNode *
 xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 {
 	xmlNode *ret;
-
+	char   **names;
+	int      i;
+	xmlNode *next;
+	
 	g_return_val_if_fail (tree != NULL, NULL);
 
-/*	fprintf (stderr, "Find path '%s'\n", path);*/
+	fprintf (stderr, "Find path '%s'\n", path);
+/*	bonobo_ui_xml_dump (tree, tree->root, "Before find path");*/
 
 	if (!path || path [0] == '\0')
-		ret = tree->root;
-	else {
-		char   **names;
-		int      i;
-		xmlNode *next;
+		return tree->root;
 
-		if (path [0] != '/')
-			g_warning ("non-absolute path brokenness '%s'", path);
+	if (path [0] != '/')
+		g_warning ("non-absolute path brokenness '%s'", path);
 
-		names = g_strsplit (path, "/", -1);
+	names = g_strsplit (path, "/", -1);
 
-		ret = tree->root;
-		for (i = 0; names && names [i]; i++) {
-			if (names [i] [0] == '\0')
-				continue;
-			
-			if (names [i] [0] == '#') {
-				if ((next = find_sibling (ret, &names [i] [1])))
-					ret = next;
-				else {
-					if (!create)
-						return NULL;
- 
-					if (ret->properties) {
-						ret = xmlNewChild (ret->parent, NULL, ret->name, NULL);
-					} /*else Use the node we created last time */
+	ret = tree->root;
+	for (i = 0; names && names [i]; i++) {
+		if (names [i] [0] == '\0')
+			continue;
 
-					xmlSetProp (ret, "name", &names [i] [1]);
-				}
+/*		g_warning ("Path element '%s'", names [i]);*/
+
+		if (names [i] [0] == '#') {
+			if ((next = find_sibling (ret, &names [i] [1]))) {
+				ret = next;
+/*				g_warning ("TESTME: Found sibling with name: '%s' '%s'",
+				ret->name, xmlGetProp (ret, "name"));*/
 			} else {
-				if ((next = find_child (ret, names [i])))
-					ret = next;
-				else {
-					if (!create)
-						return NULL;
-					ret = xmlNewChild (ret, NULL, names [i], NULL);
-				}
+				if (!create)
+					return NULL;
+ 
+				if (ret->properties) {
+					ret = xmlNewChild (ret->parent, NULL, ret->name, NULL);
+/*					g_warning ("TESTME: Created new sibling with name: '%s' '%s'",
+					ret->name, xmlGetProp (ret, "name"));*/
+				} /*else Use the node we created last time */
+
+				xmlSetProp (ret, "name", &names [i] [1]);
+			}
+		} else {
+			if ((next = find_child (ret, names [i]))) {
+				ret = next;
+/*				g_warning ("TESTME: Found child with name: '%s' '%s'",
+				ret->name, xmlGetProp (ret, "name"));*/
+			} else {
+				if (!create)
+					return NULL;
+				ret = xmlNewChild (ret, NULL, names [i], NULL);
+
+/*				g_warning ("TESTME: Created child with name: '%s' '%s'",
+				ret->name, xmlGetProp (ret, "name"));*/
 			}
 		}
-		
-		g_strfreev (names);
 	}
+		
+	g_strfreev (names);
+
+/*	bonobo_ui_xml_dump (tree, tree->root, "After clean find path");*/
 
 	return ret;
 }
@@ -428,6 +449,7 @@ bonobo_ui_xml_make_path  (xmlNode *node)
 		if ((tmp = xmlGetProp (node, "name"))) {
 			g_string_prepend (path, tmp);
 			g_string_prepend (path, "/#");
+			xmlFree (tmp);
 		}
 
 		if (node->parent) {
@@ -490,7 +512,7 @@ reinstate_node (BonoboUIXml *tree, xmlNode *node, gpointer id)
  * @current: the parent node
  * @new: an xml fragment
  * 
- * Merges two xml trees overriding where treeropriate.
+ * Merges two xml trees overriding where appropriate.
  * new and its siblings get merged into current's children
  **/
 static void

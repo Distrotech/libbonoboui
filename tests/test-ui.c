@@ -130,6 +130,7 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
 
+	gtk_widget_show (bonobo_app_get_window (app));
 	gtk_main ();
 
 	help = bonobo_ui_util_build_help_menu (componenta, "gnomecal");

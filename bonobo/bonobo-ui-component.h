@@ -80,6 +80,16 @@ void               bonobo_ui_component_rm           (BonoboUIComponent  *compone
 						     const char         *path,
 						     CORBA_Environment  *ev);
 
+char              *bonobo_ui_container_get          (Bonobo_UIContainer  container,
+						     const char         *path,
+						     gboolean            recurse,
+						     CORBA_Environment  *ev);
+
+xmlNode           *bonobo_ui_container_get_tree     (Bonobo_UIContainer  container,
+						     const char         *path,
+						     gboolean            recurse,
+						     CORBA_Environment  *ev);
+
 POA_Bonobo_UIComponent__epv *bonobo_ui_component_get_epv (void);
 Bonobo_UIComponent bonobo_ui_component_corba_object_create (BonoboObject *object);
 

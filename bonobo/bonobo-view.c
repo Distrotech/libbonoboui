@@ -40,8 +40,6 @@ struct _BonoboViewPrivate {
 	GHashTable *verb_callback_closures;
 };
 
-static void bonobo_view_execute_verb (BonoboView *view, const char *verb_name);
-
 static void
 impl_Bonobo_View_do_verb (PortableServer_Servant servant,
 			 const CORBA_char      *verb_name,
@@ -500,10 +498,6 @@ bonobo_view_unregister_verb (BonoboView *view, const char *verb_name)
  */
 void
 bonobo_view_execute_verb (BonoboView *view, const char *verb_name)
-#endif
-
-static void
-bonobo_view_execute_verb (BonoboView *view, const char *verb_name)
 {
 	BonoboViewVerbFunc callback;
 
@@ -529,7 +523,6 @@ bonobo_view_execute_verb (BonoboView *view, const char *verb_name)
 	}
 }
 
-#ifdef STALE_NOT_USED
 static void
 bonobo_view_verb_selected_cb (BonoboUIHandler *uih, void *user_data,
 			     const char *path)

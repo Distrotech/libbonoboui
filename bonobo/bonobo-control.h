@@ -9,6 +9,7 @@
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-property-bag.h>
 #include <bonobo/bonobo-property-bag-client.h>
+#include <bonobo/bonobo-ui-handler.h>
 
 BEGIN_GNOME_DECLS
  

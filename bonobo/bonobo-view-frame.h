@@ -4,7 +4,6 @@
 
 #include <libgnome/gnome-defs.h>
 #include <bonobo/bonobo-control-frame.h>
-#include <bonobo/bonobo-ui-handler.h>
 
 BEGIN_GNOME_DECLS
  
@@ -38,9 +37,9 @@ GtkType                    bonobo_view_frame_get_type         (void);
 BonoboViewFrame           *bonobo_view_frame_construct        (BonoboViewFrame  *view_frame,
 							       Bonobo_ViewFrame  corba_view_frame,
 							       BonoboClientSite *client_site,
-							       Bonobo_UIHandler  uih);
+							       Bonobo_Unknown    uih);
 BonoboViewFrame           *bonobo_view_frame_new              (BonoboClientSite *client_site,
-							       Bonobo_UIHandler  uih);
+							       Bonobo_Unknown    uih);
 void                       bonobo_view_frame_bind_to_view     (BonoboViewFrame  *view_frame,
 							       Bonobo_View       view);
 Bonobo_View                bonobo_view_frame_get_view         (BonoboViewFrame  *view_frame);
@@ -50,7 +49,7 @@ char                      *bonobo_view_frame_popup_verbs      (BonoboViewFrame  
 void                       bonobo_view_frame_set_covered      (BonoboViewFrame  *view_frame,
 							       gboolean          covered);
 
-Bonobo_UIHandler           bonobo_view_frame_get_ui_handler   (BonoboViewFrame *view_frame);
+Bonobo_Unknown             bonobo_view_frame_get_ui_handler   (BonoboViewFrame *view_frame);
 
 /*
  * A BonoboViewFrame acts as a proxy for the remote BonoboView object to

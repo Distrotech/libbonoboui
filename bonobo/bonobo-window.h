@@ -41,12 +41,13 @@ BonoboApp                   *bonobo_app_construct           (BonoboApp         *
 							     const char        *app_name,
 							     const char        *title);
 
-GtkWidget           *bonobo_app_new                 (const char *app_name,
+BonoboApp           *bonobo_app_new                 (const char *app_name,
 						     const char *title);
 
 void                 bonobo_app_set_contents        (BonoboApp  *app,
 						     GtkWidget  *contents);
 GtkWidget           *bonobo_app_get_contents        (BonoboApp  *app);
+GtkWidget           *bonobo_app_get_window          (BonoboApp  *app);
 
 void                 bonobo_app_xml_merge           (BonoboApp  *app,
 						     const char *path,

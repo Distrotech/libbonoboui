@@ -100,31 +100,39 @@ node_get_parent_widget (BonoboUIXml *tree, xmlNode *node)
 	return NULL;
 }
 
-static const char *
+static char *
 node_get_id (xmlNode *node)
 {
-	const char *txt;
+	xmlChar *txt;
+	char    *ret;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if ((txt = xmlGetProp (node, "id")))
-		return txt;
+	if (!(txt = xmlGetProp (node, "id")))
+		txt = xmlGetProp (node, "verb");
 
-	if ((txt = xmlGetProp (node, "verb")))
-		return txt;
+	if (txt) {
+		ret = g_strdup (txt);
+		xmlFree (txt);
+	} else
+		ret = NULL;
 
-	return NULL;
+	return ret;
 }
 
 static char *
 node_get_id_or_path (xmlNode *node)
 {
-	const char *txt;
+	xmlChar *txt;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	if ((txt = node_get_id (node)))
-		return g_strdup (txt);
+	if ((txt = node_get_id (node))) {
+		char *ret;
+		ret = g_strdup (txt);
+		xmlFree (txt);
+		return ret;
+	}
 
 	return bonobo_ui_xml_make_path (node);
 }
@@ -283,7 +291,7 @@ update_cmd_state (BonoboAppPrivate *priv, xmlNode *search,
 		  xmlNode *state, const char *search_id)
 {
 	xmlNode    *l;
-	const char *id = node_get_id (search);
+	char *id = node_get_id (search);
 
 	g_return_if_fail (search_id != NULL);
 
@@ -296,6 +304,8 @@ update_cmd_state (BonoboAppPrivate *priv, xmlNode *search,
 
 	for (l = search->childs; l; l = l->next)
 		update_cmd_state (priv, l, state, search_id);
+
+	g_free (id);
 }
 
 static void
@@ -337,8 +347,8 @@ static void
 set_cmd_state (BonoboAppPrivate *priv, xmlNode *cmd_node, const char *prop,
 	       const char *value, gboolean immediate_update)
 {
-	xmlNode    *node;
-	const char *cmd_name;
+	xmlNode *node;
+	char    *cmd_name;
 
 	g_return_if_fail (priv != NULL);
 	g_return_if_fail (prop != NULL);
@@ -365,6 +375,8 @@ set_cmd_state (BonoboAppPrivate *priv, xmlNode *cmd_node, const char *prop,
 
 		data->dirty = TRUE;
 	}
+
+	g_free (cmd_name);
 }
 
 static void
@@ -607,7 +619,6 @@ static gint
 menu_toggle_emit_ui_event (GtkCheckMenuItem *item, xmlNode *node)
 {
 	char             *id, *state;
-	const char       *cmd;
 	BonoboUIXmlData  *data;
 	BonoboAppPrivate *priv;
 
@@ -624,8 +635,7 @@ menu_toggle_emit_ui_event (GtkCheckMenuItem *item, xmlNode *node)
 	else
 		state = "0";
 	
-	if ((cmd = node_get_id (node))) {
-		id = g_strdup (cmd);
+	if ((id = node_get_id (node))) {
 		set_cmd_state (priv, node, "state", state, TRUE);
 	} else {
 		id = bonobo_ui_xml_make_path (node);
@@ -645,7 +655,6 @@ static gint
 app_item_emit_ui_event (BonoboAppItem *item, const char *state, xmlNode *node)
 {
 	char             *id;
-	const char       *cmd;
 	BonoboUIXmlData  *data;
 	BonoboAppPrivate *priv;
 
@@ -657,8 +666,7 @@ app_item_emit_ui_event (BonoboAppItem *item, const char *state, xmlNode *node)
 	data = bonobo_ui_xml_get_data (NULL, node);
 	g_return_val_if_fail (data != NULL, FALSE);
 
-	if ((cmd = node_get_id (node))) {
-		id = g_strdup (cmd);
+	if ((id = node_get_id (node))) {
 		set_cmd_state (priv, node, "state", state, TRUE);
 	} else {
 		id = bonobo_ui_xml_make_path (node);
@@ -725,10 +733,13 @@ menu_item_create (BonoboAppPrivate *priv, xmlNode *node)
 			menu_widget = gtk_pixmap_menu_item_new ();
 
 			pixmap = bonobo_ui_util_xml_get_pixmap (menu_widget, node);
-
-			gtk_widget_show (GTK_WIDGET (pixmap));
-			gtk_pixmap_menu_item_set_pixmap (GTK_PIXMAP_MENU_ITEM (menu_widget),
-							 GTK_WIDGET (pixmap));
+			
+			if (pixmap) {
+				gtk_widget_show (GTK_WIDGET (pixmap));
+				gtk_pixmap_menu_item_set_pixmap (
+					GTK_PIXMAP_MENU_ITEM (menu_widget),
+					GTK_WIDGET (pixmap));
+			}
 		} else
 			menu_widget = gtk_menu_item_new ();
 
@@ -965,10 +976,10 @@ update_menus (BonoboAppPrivate *priv, xmlNode *node)
 	xmlNode  *l;
 	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
-	if (info->widget)
-		container_destroy_siblings (priv->tree, info->widget, node->childs);
-	else
+	if (!info->widget)
 		info->widget = GTK_WIDGET (priv->menu);
+
+	container_destroy_siblings (priv->tree, info->widget, node->childs);
 
 	for (l = node->childs; l; l = l->next)
 		build_menu_widget (priv, l);
@@ -996,8 +1007,8 @@ build_toolbar_widget (BonoboAppPrivate *priv, xmlNode *node)
 	/* Create toolbar item */
 	if (xmlGetProp (node, "pixtype")) {
 		pixmap = bonobo_ui_util_xml_get_pixmap (parent, node);
-
-		gtk_widget_show (GTK_WIDGET (pixmap));
+		if (pixmap) 
+			gtk_widget_show (GTK_WIDGET (pixmap));
 	} else
 		pixmap = NULL;
 
@@ -1195,8 +1206,6 @@ update_widgets (BonoboAppPrivate *priv)
 {
 	xmlNode *node;
 
-	bonobo_ui_xml_dump (priv->tree, priv->tree->root, "Before update");
-
 	for (node = priv->tree->root->childs; node; node = node->next) {
 		if (!node->name)
 			continue;
@@ -1217,8 +1226,6 @@ update_widgets (BonoboAppPrivate *priv)
 	}
 
 	update_commands_state (priv);
-
-	bonobo_ui_xml_dump (priv->tree, priv->tree->root, "Updated widgets");
 }
 
 void
@@ -1240,6 +1247,16 @@ bonobo_app_get_contents (BonoboApp *app)
 	g_return_val_if_fail (app->priv->dock != NULL, NULL);
 
 	return gnome_dock_get_client_area (app->priv->dock);
+}
+
+GtkWidget *
+bonobo_app_get_window (BonoboApp *app)
+{
+	g_return_val_if_fail (app != NULL, NULL);
+	g_return_val_if_fail (app->priv != NULL, NULL);
+	g_return_val_if_fail (app->priv->dock != NULL, NULL);
+
+	return app->priv->window;
 }
 
 static gboolean
@@ -1542,8 +1559,6 @@ construct_priv (const char *app_name,
 	gnome_dock_add_item (priv->dock, priv->status_item,
 			     GNOME_DOCK_BOTTOM, 0, 0, 0, TRUE);
 
-	gtk_widget_show_all (GTK_WIDGET (priv->window));
-
 	priv->tree = bonobo_ui_xml_new (NULL,
 					info_new_fn,
 					info_free_fn,
@@ -1649,7 +1664,7 @@ bonobo_app_construct (BonoboApp  *app,
 	return app;
 }
 
-GtkWidget *
+BonoboApp *
 bonobo_app_new (const char   *app_name,
 		const char   *title)
 {
@@ -1664,8 +1679,7 @@ bonobo_app_new (const char   *app_name,
 		return NULL;
 	}
 	
-	return GTK_WIDGET (
-		bonobo_app_construct (app, corba_app, app_name, title));
+	return bonobo_app_construct (app, corba_app, app_name, title);
 }
 
 void
@@ -1678,7 +1692,23 @@ bonobo_app_xml_merge_tree (BonoboApp  *app,
 	g_return_if_fail (app->priv != NULL);
 	g_return_if_fail (app->priv->tree != NULL);
 
-	bonobo_ui_xml_merge (app->priv->tree, path, tree, listener);
+	if (!tree || !tree->name)
+		return;
+
+	/*
+	 *  Because peer to peer merging makes the code hard, and
+	 * paths non-inituitive and since we want to merge root
+	 * elements as peers to save lots of redundant CORBA calls
+	 * we special case root.
+	 */
+	if (!strcmp (tree->name, "Root")) {
+		xmlNode *l;
+
+		for (l = tree->childs; l; l = l->next)
+			bonobo_ui_xml_merge (app->priv->tree, path, l, listener);
+	} else
+		bonobo_ui_xml_merge (app->priv->tree, path, tree, listener);
+
 	update_widgets (app->priv);
 }
 

@@ -26,6 +26,8 @@ extern "C" {
 #include <bonobo/bonobo-property-bag.h>
 #include <bonobo/bonobo-property-bag-client.h>
 
+#include <bonobo/bonobo-ui-handler.h>
+
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
 
@@ -50,10 +52,6 @@ extern "C" {
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-app.h>
-
-/* FIXME: deprecated */
-#include <bonobo/bonobo-ui-handler.h>
-/* #include <bonobo/bonobo-ui-compat.h> */
 
 #include <bonobo/bonobo-object-io.h>
 
