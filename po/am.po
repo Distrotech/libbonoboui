@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "POT-Creation-Date: 2002-10-31 05:05+0100\n"
-"PO-Revision-Date: 2002-12-29 19:37+EDT\n"
+"PO-Revision-Date: 2003-01-14 11:02+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"
 "Language-Team: Amharic <locales@geez.org>\n"
 "MIME-Version: 1.0\n"
@@ -208,11 +208,11 @@ msgstr ""
 
 #: bonobo/bonobo-ui-init-gtk.c:146
 msgid "HOST"
-msgstr ""
+msgstr "እንግዳ ተቀባይ"
 
 #: bonobo/bonobo-ui-init-gtk.c:150
 msgid "PORT"
-msgstr ""
+msgstr "ፖርት"
 
 #: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
@@ -256,7 +256,7 @@ msgstr "ጽሑፍ (_e)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr "ደብቅ አሳይ (_i)"
+msgstr "ፍንጮችን ደብቅ (_i)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
