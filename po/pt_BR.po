@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-11-26 10:17+0000\n"
-"PO-Revision-Date: 2002-07-24 19:00-0300\n"
+"POT-Creation-Date: 2002-11-29 13:30-0200\n"
+"PO-Revision-Date: 2002-11-29 13:30-0300\n"
 "Last-Translator: Evandro Fernandes Giovanini <evandrofg@ig.com.br>\n"
 "Language-Team: Brazilian Portuguese <gnome-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -152,15 +152,15 @@ msgstr "Somente texto _prioritário"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "Depurar"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "_Despejar XML"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "Mandar toda a descrição da UI XML para o console"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
