@@ -227,7 +227,7 @@ gnome_client_site_construct (GnomeClientSite *client_site, GnomeContainer *conta
 		return NULL;
 	}
 
-	GNOME_OBJECT (client_site)->object = GNOME_OBJECT (client_site);
+	GNOME_OBJECT (client_site)->object = corba_client_site;
 	GNOME_CLIENT_SITE (client_site)->container = container;
 	gnome_container_add (container, GNOME_OBJECT (client_site));
 
