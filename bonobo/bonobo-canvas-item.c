@@ -192,6 +192,7 @@ gbi_update (GnomeCanvasItem *item, double *item_affine,
 
 	CORBA_exception_init (&ev);
 	prepare_state (item, &state);
+
 	cuta = Bonobo_Canvas_Component_update (
 		gbi->priv->object,
 		&state, affine, clip_path, item_flags,
@@ -200,6 +201,7 @@ gbi_update (GnomeCanvasItem *item, double *item_affine,
 
 	if (!BONOBO_EX (&ev)){
 		if (cuta->width > 0 && cuta->height > 0){
+
 			ArtUta *uta;
 
 			uta = uta_from_cuta (cuta);
@@ -250,6 +252,11 @@ gbi_realize (GnomeCanvasItem *item)
 		gbi->priv->realize_pending = 1;
 		return;
 	}
+
+        proxy_size_allocate (
+                item->canvas,
+                &(GTK_WIDGET (item->canvas)->allocation),
+                BONOBO_CANVAS_ITEM(item));
 		
 	g_signal_connect (item->canvas, "size_allocate",
 			  G_CALLBACK (proxy_size_allocate), item);
@@ -447,7 +454,7 @@ gdk_event_to_bonobo_event (GdkEvent *event)
 		e->_d = Bonobo_Gdk_MOTION;
 		e->_u.motion.time = event->motion.time;
 		e->_u.motion.x = event->motion.x;
-		e->_u.motion.y = event->motion.x;
+		e->_u.motion.y = event->motion.y;
 		e->_u.motion.x_root = event->motion.x_root;
 		e->_u.motion.y_root = event->motion.y_root;
 #ifdef FIXME
@@ -491,6 +498,7 @@ gdk_event_to_bonobo_event (GdkEvent *event)
 		e->_u.crossing.y = event->crossing.y;
 		e->_u.crossing.x_root = event->crossing.x_root;
 		e->_u.crossing.y_root = event->crossing.y_root;
+		e->_u.crossing.state = event->crossing.state;
 
 		switch (event->crossing.mode){
 		case GDK_CROSSING_NORMAL:
@@ -556,7 +564,11 @@ gbi_set_property (GObject      *object,
 
 		gbi->priv->object = bonobo_object_release_unref (gbi->priv->object, &ev);
 
-		factory = bonobo_value_get_corba_object (value);
+                /* FIXME: I can't make it work as corba_object. 
+                   Using bonobo_unknown for now. */
+		/* factory = bonobo_value_get_corba_object (value); */
+               
+		factory = bonobo_value_get_unknown (value);
 
 		g_return_if_fail (factory != CORBA_OBJECT_NIL);
 
@@ -580,12 +592,6 @@ gbi_set_property (GObject      *object,
 			return;
 		}
 
-		/* Initial size notification */
-		proxy_size_allocate (
-			GNOME_CANVAS_ITEM (gbi)->canvas,
-			&(GTK_WIDGET (GNOME_CANVAS_ITEM (gbi)->canvas)->allocation),
-			gbi);
-	
 		if (gbi->priv->realize_pending){
 			gbi->priv->realize_pending = 0;
 			gbi_realize (GNOME_CANVAS_ITEM (gbi));
@@ -639,6 +645,8 @@ bonobo_canvas_item_class_init (BonoboCanvasItemClass *object_class)
 	GnomeCanvasItemClass *item_class =
 		(GnomeCanvasItemClass *) object_class;
 
+	gobject_class->set_property = gbi_set_property;
+
 	g_object_class_install_property (
 		gobject_class,
 		PROP_CORBA_FACTORY,
@@ -660,7 +668,6 @@ bonobo_canvas_item_class_init (BonoboCanvasItemClass *object_class)
 			G_PARAM_WRITABLE));
 	
 	gobject_class->finalize     = gbi_finalize;
-	gobject_class->set_property = gbi_set_property;
 
 	item_class->update     = gbi_update;
 	item_class->realize    = gbi_realize;
@@ -672,13 +679,42 @@ bonobo_canvas_item_class_init (BonoboCanvasItemClass *object_class)
 	item_class->event      = gbi_event;
 }
 
+static gboolean
+gbi_idle_handler (GnomeCanvasItem *item)
+{
+	gnome_canvas_item_request_update (item);
+        return FALSE;
+}
+
 static void
 impl_Bonobo_Canvas_ComponentProxy_requestUpdate (PortableServer_Servant servant,
 					         CORBA_Environment     *ev)
 {
 	ComponentProxyServant *item_proxy = (ComponentProxyServant *) servant;
 
-	gnome_canvas_item_request_update (item_proxy->item_bound);
+        if (item_proxy->item_bound->canvas->idle_id == 0)
+        {
+        	gnome_canvas_item_request_update (item_proxy->item_bound);
+        }
+        else
+        {
+                /* Problem: It is possible to get here at a time when the canvas
+                 * is in the middle of a do_update.  This happens because
+                 * this proxy call might be waiting in the queue when
+                 * the this object calls Bonobo_Canvas_Component_update.
+                 *
+                 * Solution:
+                 * The canvas is either in its do_update routine or it is
+                 * waiting to do an update.  If it is waiting this idle_handler
+                 * will get called just before the canvas's handler.  If it is
+                 * in the middle of a do_update, then this will queue for the
+                 * next one.
+                 */
+
+                 g_idle_add_full(GDK_PRIORITY_REDRAW-6,
+                                 (GSourceFunc)gbi_idle_handler, 
+                                 item_proxy->item_bound, NULL);
+        }
 
 }
 					    
@@ -719,10 +755,12 @@ impl_Bonobo_Canvas_ComponentProxy_getUIContainer (PortableServer_Servant servant
 	return bonobo_object_dup_ref (item_proxy->ui_container, NULL);
 }
 
+static PortableServer_ServantBase__epv item_proxy_base_epv;
+
 static POA_Bonobo_Canvas_ComponentProxy__epv item_proxy_epv;
 
 static POA_Bonobo_Canvas_ComponentProxy__vepv item_proxy_vepv = {
-	NULL,
+	&item_proxy_base_epv,
 	&item_proxy_epv
 };
 
@@ -736,6 +774,8 @@ create_proxy (GnomeCanvasItem *item)
 	ComponentProxyServant *item_proxy = g_new0 (ComponentProxyServant, 1);
 	CORBA_Environment ev;
 	
+        item_proxy->proxy_servant.vepv = &item_proxy_vepv;
+
 	CORBA_exception_init (&ev);
 	POA_Bonobo_Canvas_ComponentProxy__init ((PortableServer_Servant) item_proxy, &ev);
 
@@ -744,7 +784,6 @@ create_proxy (GnomeCanvasItem *item)
 	item_proxy_epv.ungrabFocus    = impl_Bonobo_Canvas_ComponentProxy_ungrabFocus;
 	item_proxy_epv.getUIContainer = impl_Bonobo_Canvas_ComponentProxy_getUIContainer;
 
-	item_proxy->proxy_servant.vepv = &item_proxy_vepv;
 	item_proxy->item_bound = item;
 
 	item_proxy->oid = PortableServer_POA_activate_object (

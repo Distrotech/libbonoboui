@@ -27,12 +27,11 @@ G_BEGIN_DECLS
 #define BONOBO_IS_CANVAS_COMPONENT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_CANVAS_COMPONENT))
 
 typedef struct _BonoboCanvasComponentPrivate BonoboCanvasComponentPrivate;
-typedef struct _BonoboCanvasComponent        BonoboCanvasComponent;
 
-struct _BonoboCanvasComponent {
+typedef struct {
 	BonoboObject base;
 	BonoboCanvasComponentPrivate *priv;
-};
+} BonoboCanvasComponent;
 
 typedef struct {
 	BonoboObjectClass parent_class;
@@ -69,6 +68,16 @@ Bonobo_UIContainer      bonobo_canvas_component_get_ui_container (BonoboCanvasCo
  */
 GnomeCanvas *bonobo_canvas_new (gboolean                     is_aa,
 				Bonobo_Canvas_ComponentProxy proxy);
+
+
+/* Sets up a callback to be invoked when the container activates the object.
+ * Creating the component factory will do nothing until the container connects.
+ */
+typedef BonoboCanvasComponent *(*GnomeItemCreator) 
+   (GnomeCanvas *canvas, void *user_data);
+
+BonoboObject *bonobo_canvas_component_factory_new(GnomeItemCreator item_factory,
+      void *data);
 
 G_END_DECLS
 
