@@ -5,8 +5,11 @@
  *   Miguel de Icaza (miguel@kernel.org)
  */
 #include <config.h>
+#include <gdk/gdkprivate.h>
+#include <gdk/gdkx.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
+#include <gtk/gtksocket.h>
 #include <bonobo/bonobo.h>
 #include <bonobo/gnome-main.h>
 #include <bonobo/gnome-component.h>
@@ -38,7 +41,6 @@ impl_GNOME_Component_set_client_site (PortableServer_Servant servant,
 {
 	GnomeComponent *component = GNOME_COMPONENT (gnome_object_from_servant (servant));
 
-	g_message ("set_client_site");
 	component->client_site = client_site;
 }
 
@@ -144,7 +146,7 @@ impl_GNOME_Component_new_view (PortableServer_Servant servant, CORBA_Environment
 	return GNOME_OBJECT (view)->object;
 }
 
-static POA_GNOME_Component__epv gnome_component_epv = {
+POA_GNOME_Component__epv gnome_component_epv = {
 	NULL,
 	&impl_GNOME_Component_do_verb,
 	&impl_GNOME_Component_set_client_site,
@@ -184,24 +186,17 @@ create_gnome_component (GnomeObject *object)
 }
 
 GnomeComponent *
-gnome_component_construct (GnomeComponent *component,
+gnome_component_construct (GnomeComponent  *component,
+			   GNOME_Component  corba_component,
 			   GnomeViewFactory factory,
 			   void *data)
 {
-	GNOME_Component corba_component;
-
 	g_return_val_if_fail (component != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_COMPONENT (component), NULL);
 	g_return_val_if_fail (factory != NULL, NULL);
-	
-	corba_component = create_gnome_component (GNOME_OBJECT (component));
+	g_return_val_if_fail (corba_component != CORBA_OBJECT_NIL, NULL);
 
-	if (corba_component == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (component));
-		return NULL;
-	}
-	
-	GNOME_OBJECT (component)->object = corba_component;
+	gnome_object_construct (GNOME_OBJECT (component), corba_component);
 
 	component->view_factory = factory;
 	component->view_factory_closure = data;
@@ -212,13 +207,19 @@ gnome_component_construct (GnomeComponent *component,
 GnomeComponent *
 gnome_component_new (GnomeViewFactory factory, void *data)
 {
+	GNOME_Component corba_component;
 	GnomeComponent *component;
 
 	g_return_val_if_fail (factory != NULL, NULL);
-	
-	component = gtk_type_new (gnome_component_get_type ());
 
-	return gnome_component_construct (component, factory, data);
+	component = gtk_type_new (gnome_component_get_type ());
+	corba_component = create_gnome_component (GNOME_OBJECT (component));
+	if (corba_component == CORBA_OBJECT_NIL){
+		gtk_object_destroy (GTK_OBJECT (component));
+		return NULL;
+	}
+	
+	return gnome_component_construct (component, corba_component, factory, data);
 }
 
 static void
@@ -279,4 +280,46 @@ gnome_component_set_view_factory (GnomeComponent *component,
 	component->view_factory = factory;
 }
 
+static void
+set_remote_window (GtkWidget *socket, GNOME_View view)
+{
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+	GNOME_View_set_window (view, GDK_WINDOW_XWINDOW (socket->window), &ev);
+	CORBA_exception_free (&ev);
+}
+
+GtkWidget *
+gnome_component_new_view (GnomeObject *server_object)
+{
+	GtkWidget *socket;
+	GNOME_View view;
+	CORBA_Environment ev;
+
+	g_return_val_if_fail (server_object != NULL, NULL);
+	g_return_val_if_fail (GNOME_OBJECT (server_object), NULL);
+
+	socket = gtk_socket_new ();
+	if (!socket)
+		return NULL;
+	gtk_widget_show (socket);
+
+	CORBA_exception_init (&ev);
+	view = GNOME_Component_new_view (GNOME_OBJECT (server_object)->object, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION){
+		gtk_object_unref (GTK_OBJECT (socket));
+		CORBA_exception_free (&ev);
+		return NULL;
+	}
+
+	/*
+	 * Now wait until the socket->window is realized
+	 */
+	gtk_signal_connect (GTK_OBJECT (socket), "realize",
+			    GTK_SIGNAL_FUNC (set_remote_window), view);
+	
+	CORBA_exception_free (&ev);		
+	return socket;
+}
 

@@ -7,6 +7,7 @@
 #include <config.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
+#include <gtk/gtkplug.h>
 #include <bonobo/gnome-main.h>
 #include <bonobo/gnome-view.h>
 #include <gdk/gdkprivate.h>
@@ -22,23 +23,23 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 	g_warning ("GNOME::View::size_allocate invoked\n");
 }
 
-GNOME_View_windowid
-impl_GNOME_View_get_window (PortableServer_Servant servant, CORBA_Environment *ev)
+static void
+impl_GNOME_View_set_window (PortableServer_Servant servant, GNOME_View_windowid id, CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-	GdkWindowPrivate *win = (GdkWindowPrivate *) view->widget->window;
+	GdkWindowPrivate *win;
 
-	if (win == NULL){
-		g_warning ("Widget is not realized\n");
-		return 0;
-	}
-	return win->xwindow;
+	printf ("Creating a plug with: %d\n", id);
+	view->plug = gtk_plug_new (id);
+	gtk_container_add (GTK_CONTAINER (view->plug), view->widget);
+	
+	gtk_widget_show_all (view->plug);
 }
 
 POA_GNOME_View__epv gnome_view_epv = {
 	NULL,
 	&impl_GNOME_View_size_allocate,
-	&impl_GNOME_View_get_window
+	&impl_GNOME_View_set_window
 };
 	
 POA_GNOME_View__vepv gnome_view_vepv = {
@@ -67,23 +68,15 @@ create_gnome_view (GnomeObject *object)
 }
 
 GnomeView *
-gnome_view_construct (GnomeView *view, GtkWidget *widget)
+gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 {
-	GNOME_View corba_view;
-
 	g_return_val_if_fail (view != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_VIEW (view), NULL);
 	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
-	
-	corba_view = create_gnome_view (GNOME_OBJECT (view));
 
-	if (corba_view == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (view));
-		return NULL;
-	}
+	gnome_object_construct (GNOME_OBJECT (view), corba_view);
 	
-	GNOME_OBJECT (view)->object = corba_view;
 	view->widget = widget;
 
 	gtk_object_ref (GTK_OBJECT (view->widget));
@@ -94,6 +87,7 @@ gnome_view_construct (GnomeView *view, GtkWidget *widget)
 GnomeView *
 gnome_view_new (GtkWidget *widget)
 {
+	GNOME_View corba_view;
 	GnomeView *view;
 	
 	g_return_val_if_fail (widget != NULL, NULL);
@@ -101,7 +95,14 @@ gnome_view_new (GtkWidget *widget)
 
 	view = gtk_type_new (gnome_view_get_type ());
 
-	return gnome_view_construct (view, widget);
+	corba_view = create_gnome_view (GNOME_OBJECT (view));
+	if (corba_view == CORBA_OBJECT_NIL){
+		gtk_object_destroy (GTK_OBJECT (view));
+		return NULL;
+	}
+	
+
+	return gnome_view_construct (view, corba_view, widget);
 }
 
 static void

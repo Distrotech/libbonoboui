@@ -41,9 +41,12 @@ typedef struct {
 } GnomeComponentFactoryClass;
 
 GtkType                gnome_component_factory_get_type  (void);
-GnomeComponentFactory *gnome_component_factory_new       (GnomeComponentFactoryFn factory,
+GnomeComponentFactory *gnome_component_factory_new       (const char *goad_id,
+							  GnomeComponentFactoryFn factory,
 							  void *data);
-GnomeComponentFactory *gnome_component_factory_construct (GnomeComponentFactory *c_factory,
+GnomeComponentFactory *gnome_component_factory_construct (const char *goad_id,
+							  GnomeComponentFactory *c_factory,
+							  GNOME_Component       corba_factory,
 							  GnomeComponentFactoryFn factory,
 							  void *data);
 

@@ -31,10 +31,17 @@ typedef struct {
 
 GtkType          gnome_client_site_get_type       (void);
 GnomeClientSite *gnome_client_site_new            (GnomeContainer *container);
+GnomeClientSite *gnome_client_site_construct      (GnomeClientSite  *client_site,
+						   GNOME_ClientSite corba_client_site,
+						   GnomeContainer   *container);
+
 void             gnome_client_site_set_moniker    (GnomeClientSite *client_site,
 						   GnomeMoniker   *moniker);
 
 gboolean         gnome_client_site_bind_component (GnomeClientSite *client_site,
 						   GnomeObject *object);
+
+extern POA_GNOME_ClientSite__epv gnome_client_site_epv;
+
 #endif
 

@@ -42,11 +42,17 @@ GtkType         gnome_component_get_type  (void);
 GnomeComponent *gnome_component_new       (GnomeViewFactory factory,
 					   void *data);
 GnomeComponent *gnome_component_construct (GnomeComponent *component,
+					   GNOME_Component  corba_component,
 					   GnomeViewFactory factory,
 					   void *data);
 
 void     gnome_component_set_view_factory (GnomeComponent *component,
 					   GnomeViewFactory factory,
 					   void *data);
+
+/*
+ * These ones are used on the client side
+ */
+GtkWidget *gnome_component_new_view       (GnomeObject *server_object);
 
 #endif

@@ -5,7 +5,6 @@
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
 #include <bonobo/gnome-object.h>
-#include <bonobo/gnome-view.h>
 
 BEGIN_GNOME_DECLS
  
@@ -17,16 +16,19 @@ BEGIN_GNOME_DECLS
 
 typedef struct {
 	GnomeObject base;
-	GtkWidget   *widget;
+
+	GtkWidget *widget;
+	GtkWidget *plug;
 } GnomeView;
 
 typedef struct {
 	GnomeObjectClass parent_class;
 } GnomeViewClass;
 
-GtkType      gnome_view_get_type  (void);
-GnomeView   *gnome_view_new       (GtkWidget *widget);
-GnomeView   *gnome_view_construct (GnomeView *view, GtkWidget *widget);
+GtkType      gnome_view_get_type           (void);
+GnomeView   *gnome_view_construct          (GnomeView *view,
+					    GNOME_View corba_view,
+					    GtkWidget *widget);
+GnomeView   *gnome_view_new                (GtkWidget *widget);
 
-#endif
-
+#endif /* _GNOME_VIEW_H_ */

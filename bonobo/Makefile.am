@@ -55,7 +55,10 @@ libbonobo_la_SOURCES =			\
 	gnome-object.c			\
 	gnome-view.c
 
-bonobo_headers =			\
+
+libbonoboincludedir = $(includedir)/bonobo
+
+libbonoboinclude_HEADERS =		\
 	gtk-interfaces.h		\
 	gnome-client-site.h		\
 	gnome-component.h		\
@@ -65,7 +68,7 @@ bonobo_headers =			\
 	gnome-object.h			\
 	gnome-view.h
 
-test_container_SOURCES =	\
+test_container_SOURCES =		\
 	test-container.c
 
 test_container_LDADD = $(bonobo_libs)
@@ -76,8 +79,6 @@ object_test_SOURCES =		\
 object_test_LDADD = $(bonobo_libs)
 
 sample_server_SOURCES =		\
-	sample-server.c		\
-	sample-skels.c		\
-	sample-common.c
+	sample-server.c
 
 sample_server_LDADD = $(bonobo_libs)

@@ -107,7 +107,7 @@ static PortableServer_ServantBase__epv gnome_client_site_base_epv =
 	NULL,
 };
 
-static POA_GNOME_ClientSite__epv gnome_client_site_epv =
+POA_GNOME_ClientSite__epv gnome_client_site_epv =
 {
 	NULL,
 	&impl_GNOME_client_site_get_container,
@@ -217,17 +217,18 @@ create_client_site (GnomeObject *object)
 }
 
 GnomeClientSite *
-gnome_client_site_construct (GnomeClientSite *client_site, GnomeContainer *container)
+gnome_client_site_construct (GnomeClientSite  *client_site,
+			     GNOME_ClientSite  corba_client_site,
+			     GnomeContainer   *container)
 {
-	GNOME_ClientSite corba_client_site;
+	g_return_val_if_fail (client_site != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (container != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (corba_client_site != CORBA_OBJECT_NIL, NULL);
 	
-	corba_client_site = create_client_site (GNOME_OBJECT (client_site));
-	if (corba_client_site == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (client_site));
-		return NULL;
-	}
-
-	GNOME_OBJECT (client_site)->object = corba_client_site;
+	gnome_object_construct (GNOME_OBJECT (client_site), corba_client_site);
+	
 	GNOME_CLIENT_SITE (client_site)->container = container;
 	gnome_container_add (container, GNOME_OBJECT (client_site));
 
@@ -237,13 +238,20 @@ gnome_client_site_construct (GnomeClientSite *client_site, GnomeContainer *conta
 GnomeClientSite *
 gnome_client_site_new (GnomeContainer *container)
 {
+	GNOME_ClientSite corba_client_site;
 	GnomeClientSite *client_site;
 
 	g_return_val_if_fail (container != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CONTAINER (container), NULL);
 	
 	client_site = gtk_type_new (gnome_client_site_get_type ());
-	client_site = gnome_client_site_construct (client_site, container);
+	corba_client_site = create_client_site (GNOME_OBJECT (client_site));
+	if (corba_client_site == CORBA_OBJECT_NIL){
+		gtk_object_destroy (GTK_OBJECT (client_site));
+		return NULL;
+	}
+
+	client_site = gnome_client_site_construct (client_site, corba_client_site, container);
 	
 	return client_site;
 }
