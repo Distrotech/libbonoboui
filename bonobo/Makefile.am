@@ -103,6 +103,7 @@ libbonoboinclude_HEADERS =			\
 	bonobo-exception.h			\
 	bonobo-generic-factory.h		\
 	bonobo-item-container.h			\
+	bonobo-item-handler.h			\
 	bonobo-listener.h			\
 	bonobo-main.h				\
 	bonobo-moniker-util.h			\
