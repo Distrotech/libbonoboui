@@ -736,9 +736,15 @@ impl_xml_get (BonoboUIComponent *component,
 		if (!ev)
 			g_warning ("Serious exception getting node '%s' '$%s'",
 				   path, bonobo_exception_get_text (real_ev));
+		if (!ev)
+			CORBA_exception_free (&tmp_ev);
+		
 		return NULL;
 	}
 
+	if (!ev)
+		CORBA_exception_free (&tmp_ev);
+	
 	return xml;
 }
 
