@@ -1283,6 +1283,7 @@ bonobo_ui_handler_menu_set_toggle_state	(BonoboUIHandler *uih, const char *path,
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
 	const char *txt;
+	char *xml_path;
 
 	g_return_if_fail (priv != NULL);
 
@@ -1291,7 +1292,9 @@ bonobo_ui_handler_menu_set_toggle_state	(BonoboUIHandler *uih, const char *path,
 	else
 		txt = "0";
 
-	bonobo_ui_container_set_prop (priv->container, path, "state", txt, NULL);
+	xml_path = make_path ("/menu", path, FALSE);
+	bonobo_ui_container_set_prop (priv->container, xml_path, "state", txt, NULL);
+	g_free (xml_path);
 }
 
 gboolean
@@ -1299,13 +1302,15 @@ bonobo_ui_handler_menu_get_toggle_state	(BonoboUIHandler *uih, const char *path)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
 	gboolean ret;
-	char *txt;
+	char *txt, *xml_path;
 
 	g_return_val_if_fail (priv != NULL, FALSE);
 
-	txt = bonobo_ui_container_get_prop (priv->container, path, "state", NULL);
+	xml_path = make_path ("/menu", path, FALSE);
+	txt = bonobo_ui_container_get_prop (priv->container, xml_path, "state", NULL);
 	ret = atoi (txt);
 	g_free (txt);
+	g_free (xml_path);
 
 	return ret;
 }
@@ -1334,15 +1339,18 @@ bonobo_ui_handler_menu_set_sensitivity (BonoboUIHandler *uih, const char *path,
 					gboolean sensitive)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
+	char *xml_path;
 
 	g_return_if_fail (priv != NULL);
 
+	xml_path = make_path ("/menu", path, FALSE);
 	if (sensitive)
 		bonobo_ui_container_set_prop (
-			priv->container, path, "sensitive", "1", NULL);
+			priv->container, xml_path, "sensitive", "1", NULL);
 	else
 		bonobo_ui_container_set_prop (
-			priv->container, path, "sensitive", "0", NULL);
+			priv->container, xml_path, "sensitive", "0", NULL);
+	g_free (xml_path);
 }
 
 void
@@ -1350,20 +1358,28 @@ bonobo_ui_handler_menu_set_label (BonoboUIHandler *uih, const char *path,
 				  const gchar *label)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
+	char *xml_path;
 
 	g_return_if_fail (priv != NULL);
 
-	bonobo_ui_container_set_prop (priv->container, path, "label", label, NULL);
+	xml_path = make_path ("/menu", path, FALSE);
+	bonobo_ui_container_set_prop (priv->container, xml_path, "label", label, NULL);
+	g_free (xml_path);
 }
 
 gchar *
 bonobo_ui_handler_menu_get_label (BonoboUIHandler *uih, const char *path)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
+	char *label, *xml_path;
 
 	g_return_val_if_fail (priv != NULL, FALSE);
 
-	return bonobo_ui_container_get_prop (priv->container, path, "label", NULL);
+	xml_path = make_path ("/menu", path, FALSE);
+	label = bonobo_ui_container_get_prop (priv->container, xml_path, "label", NULL);
+	g_free (xml_path);
+
+	return label;
 }
 
 void
@@ -1371,10 +1387,13 @@ bonobo_ui_handler_menu_set_hint (BonoboUIHandler *uih, const char *path,
 				 const gchar *hint)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
+	char *xml_path;
 
 	g_return_if_fail (priv != NULL);
 
-	bonobo_ui_container_set_prop (priv->container, path, "hint", hint, NULL);
+	xml_path = make_path ("/menu", path, FALSE);
+	bonobo_ui_container_set_prop (priv->container, xml_path, "hint", hint, NULL);
+	g_free (xml_path);
 }
 
 void
@@ -1594,24 +1613,39 @@ bonobo_ui_handler_build_path (const char *base, ...)
 GList *
 bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent_path)
 {
-/*	xmlNode *node;
-	xmlChar *ans;
-	gchar   *ret;
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+	xmlNode *node, *l;
+	GList *ret = NULL, *i;
+	char *xml_path;
 
-	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
+	g_return_val_if_fail (priv != NULL, NULL);
 	g_return_val_if_fail (parent_path != NULL, NULL);
-	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
+	g_return_val_if_fail (priv->container != CORBA_OBJECT_NIL, NULL);
 
+	xml_path = make_path ("/menu", parent_path, FALSE);
+
+	g_message ("Get child paths from '%s' '%s'", parent_path, xml_path);
 	node = bonobo_ui_container_get_tree (
-		container, path, TRUE, NULL);
+		priv->container, xml_path, TRUE, NULL);
+
+	g_free (xml_path);
 
 	g_return_val_if_fail (node != NULL, NULL);
 
-	 FIXME here; grab all the 'name's from the nodes ...
+	for (l = node->childs; l; l = l->next) {
+		xmlChar *txt;
+		if ((txt = xmlGetProp (l, "name"))) {
+			ret = g_list_prepend (ret, g_strdup (txt));
+			xmlFree (txt);
+		} else
+			ret = g_list_prepend (ret, g_strdup (l->name));
+	}
 
 	xmlFreeNode (node);
 
-	return ret;*/
+	for (i = ret; i; i = i->next) {
+		g_message ("> '%s'\n", (char *)i->data);
+	}
 
-	return NULL;
+	return g_list_reverse (ret);
 }
