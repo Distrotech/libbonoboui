@@ -5,11 +5,10 @@
  *   Miguel de Icaza (miguel@kernel.org)
  */
 #include <config.h>
+#include <stdio.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
-#include "bonobo.h"
-#include "gnome-container.h"
-#include "gnome-clientsite.h"
+#include <bonobo/gnome-client-site.h>
 
 enum {
 	SHOW_WINDOW,
@@ -19,6 +18,7 @@ enum {
 };
 
 static GnomeObjectClass *gnome_client_site_parent_class;
+static guint gnome_client_site_signals [LAST_SIGNAL];
 
 static GNOME_Container
 impl_GNOME_client_site_get_container (PortableServer_Servant servant, CORBA_Environment *ev)
@@ -26,7 +26,7 @@ impl_GNOME_client_site_get_container (PortableServer_Servant servant, CORBA_Envi
 	GnomeObject *object = gnome_object_from_servant (servant);
 	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
 
-	return client_site->container;
+	return GNOME_OBJECT (client_site->container)->object;
 }
 
 static void
@@ -58,7 +58,7 @@ impl_GNOME_client_site_get_moniker (PortableServer_Servant servant,
 		if (container_moniker == NULL)
 			return CORBA_OBJECT_NIL;
 		
-		return GNOME_OBJECT (moniker)->object;
+		return GNOME_OBJECT (container_moniker)->object;
 			
 	case GNOME_Moniker_OBJ_RELATIVE:
 	case GNOME_Moniker_OBJ_FULL:
@@ -89,6 +89,15 @@ impl_GNOME_client_site_save_object (PortableServer_Servant servant, CORBA_Enviro
 	gtk_signal_emit (GTK_OBJECT (object),
 			 gnome_client_site_signals [SAVE_OBJECT],
 			 &status);
+	return status;
+}
+
+static void
+impl_GNOME_client_site__destroy (PortableServer_Servant servant, CORBA_Environment *ev)
+{
+	POA_GNOME_ClientSite__fini ((POA_GNOME_ClientSite *) servant, ev);
+	gnome_object_drop_binding_by_servant (servant);
+	g_free (servant);
 }
 
 PortableServer_ServantBase__epv gnome_client_site_base_epv =
@@ -118,7 +127,14 @@ POA_GNOME_ClientSite__vepv gnome_client_site_vepv =
 static void
 gnome_client_site_destroy (GtkObject *object)
 {
-	gnome_object_parent_class->destroy (object);
+	GtkObjectClass *object_class;
+
+	object_class = (GtkObjectClass *)gnome_client_site_parent_class;
+
+	gnome_container_remove (
+		GNOME_CLIENT_SITE (object)->container,
+		GNOME_OBJECT (object));
+	object_class->destroy (object);
 }
 
 static void
@@ -128,7 +144,7 @@ default_show_window (GnomeClientSite *cs, CORBA_boolean shown)
 }
 
 static void
-default_queue_resize (void)
+default_queue_resize (GnomeClientSite *cs)
 {
 }
 
@@ -183,6 +199,55 @@ gnome_client_site_init (GnomeClientSite *client_site)
 {
 }
 
+static CORBA_Object
+create_client_site (GnomeObject *object)
+{
+	POA_GNOME_ClientSite *servant;
+
+	servant = g_new0 (POA_GNOME_ClientSite, 1);
+	servant->vepv = &gnome_client_site_vepv;
+
+	POA_GNOME_ClientSite__init ((PortableServer_Servant) servant, &object->ev);
+	if (object->ev._major != CORBA_NO_EXCEPTION){
+		g_free (servant);
+		return CORBA_OBJECT_NIL;
+	}
+
+	return gnome_object_activate_servant (object, servant);
+}
+
+GnomeClientSite *
+gnome_client_site_construct (GnomeClientSite *client_site, GnomeContainer *container)
+{
+	GNOME_ClientSite corba_client_site;
+	
+	corba_client_site = create_client_site (GNOME_OBJECT (client_site));
+	if (corba_client_site == CORBA_OBJECT_NIL){
+		gtk_object_destroy (GTK_OBJECT (client_site));
+		return NULL;
+	}
+
+	GNOME_OBJECT (client_site)->object = GNOME_OBJECT (client_site);
+	GNOME_CLIENT_SITE (client_site)->container = container;
+	gnome_container_add (container, GNOME_OBJECT (client_site));
+
+	return client_site;
+}
+
+GnomeClientSite *
+gnome_client_site_new (GnomeContainer *container)
+{
+	GnomeClientSite *client_site;
+
+	g_return_val_if_fail (container != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CONTAINER (container), NULL);
+	
+	client_site = gtk_type_new (gnome_client_site_get_type ());
+	client_site = gnome_client_site_construct (client_site, container);
+	
+	return client_site;
+}
+
 GtkType
 gnome_client_site_get_type (void)
 {
@@ -205,3 +270,34 @@ gnome_client_site_get_type (void)
 
 	return type;
 }
+
+gboolean
+gnome_client_site_bind_component (GnomeClientSite *client_site, GnomeObject *object)
+{
+	CORBA_Object corba_object;
+	
+	g_return_val_if_fail (client_site != NULL, FALSE);
+	g_return_val_if_fail (object != NULL, FALSE);
+	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), FALSE);
+	g_return_val_if_fail (GNOME_IS_OBJECT (object), FALSE);
+
+	corba_object = GNOME_object_query_interface (
+		object->object, "IDL:GNOME/Component:1.0",
+		&object->ev);
+
+	if (object->ev._major != CORBA_NO_EXCEPTION)
+		return FALSE;
+	
+	if (corba_object == CORBA_OBJECT_NIL)
+		return FALSE;
+
+	GNOME_Component_set_client_site (
+		corba_object, 
+		GNOME_OBJECT (client_site)->object,
+		&GNOME_OBJECT (client_site)->ev);
+	if (object->ev._major != CORBA_NO_EXCEPTION)
+		return FALSE;
+	
+	return TRUE;
+}
+

@@ -1,4 +1,4 @@
-`/**
+/**
  * GNOME view object
  *
  * Author:
@@ -8,16 +8,17 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkwidget.h>
-#include "gnome-object.h"
-#include "gnome-view.h"
+#include <bonobo/gnome-main.h>
+#include <bonobo/gnome-object.h>
+#include <bonobo/gnome-view.h>
 #include <gdk/gdkprivate.h>
 
-static GnomeObjectClass gnome_view_parent_class;
+static GnomeObjectClass *gnome_view_parent_class;
 
 static void
 impl_GNOME_View_size_allocate (PortableServer_Servant servant,
-			       const CORBA_Short width,
-			       const CORBA_Short height,
+			       const CORBA_short width,
+			       const CORBA_short height,
 			       CORBA_Environment *ev)
 {
 	g_warning ("GNOME::View::size_allocate invoked\n");
@@ -36,7 +37,7 @@ impl_GNOME_View_get_window (PortableServer_Servant servant, CORBA_Environment *e
 	return win->xwindow;
 }
 
-POA_GNOME_View__epv = {
+POA_GNOME_View__epv gnome_view_epv = {
 	NULL,
 	&impl_GNOME_View_size_allocate,
 	&impl_GNOME_View_get_window
@@ -52,7 +53,8 @@ static CORBA_Object
 create_gnome_view (GnomeObject *object)
 {
 	POA_GNOME_View *servant;
-
+	CORBA_Object o;
+	
 	servant = g_new0 (POA_GNOME_View, 1);
 	servant->vepv = &gnome_view_vepv;
 
@@ -62,33 +64,24 @@ create_gnome_view (GnomeObject *object)
 		return CORBA_OBJECT_NIL;
 	}
 
-	CORBA_free (PortableServer_POA_activate_object (
-		bonobo_poa (), servant, &object->ev));
-
-	o = PortableServer_POA_servant_to_reference (
-		bonobo_poa, servant, &object->ev);
-
-	if (o){
-		gnome_object_bind_to_servant (object, servant);
-		return o;
-	} else
-		return CORBA_OBJECT_NIL;
+	return gnome_object_activate_servant (object, servant);
+	
 }
 
 GnomeObject *
-gnome_view_new (GtkWidget *widget)
+gnome_view_construct (GnomeView *view, GtkWidget *widget)
 {
-	GnomeObject *view;
-	
+	GNOME_View corba_view;
+
+	g_return_val_if_fail (view != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_VIEW (view), NULL);
 	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
-
-	view = gtk_type_new (gnome_view_get_type ());
 	
-	corba_view = create_gnome_view (view);
+	corba_view = create_gnome_view (GNOME_OBJECT (view));
 
 	if (corba_view == CORBA_OBJECT_NIL){
-		gtk_object_destroy (view);
+		gtk_object_destroy (GTK_OBJECT (view));
 		return NULL;
 	}
 	
@@ -97,7 +90,20 @@ gnome_view_new (GtkWidget *widget)
 
 	gtk_object_ref (GTK_OBJECT (view->widget));
 	
-	return object;
+	return GNOME_OBJECT (view);
+}
+
+GnomeObject *
+gnome_view_new (GtkWidget *widget)
+{
+	GnomeView *view;
+	
+	g_return_val_if_fail (widget != NULL, NULL);
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+
+	view = gtk_type_new (gnome_view_get_type ());
+
+	return gnome_view_construct (view, widget);
 }
 
 static void
@@ -105,11 +111,11 @@ gnome_view_destroy (GtkObject *object)
 {
 	GnomeView *view = GNOME_VIEW (object);
 
-	gnome_object_drop_binding (object);
+	gnome_object_drop_binding (GNOME_OBJECT (object));
 	if (view->widget)
-		gtk_object_unref (GNOME_OBJECT (view->widget));
-	
-	gnome_view_parent_class->destroy (object);
+		gtk_object_unref (GTK_OBJECT (view->widget));
+
+	GTK_OBJECT_CLASS (gnome_view_parent_class)->destroy (object);
 }
 
 static void
@@ -135,8 +141,8 @@ gnome_view_get_type (void)
 	if (!type){
 		GtkTypeInfo info = {
 			"IDL:GNOME/View:1.0",
-			sizeof (GnomeObject),
-			sizeof (GnomeObjectClass),
+			sizeof (GnomeView),
+			sizeof (GnomeViewClass),
 			(GtkClassInitFunc) gnome_view_class_init,
 			(GtkObjectInitFunc) gnome_view_init,
 			NULL, /* reserved 1 */

@@ -7,7 +7,7 @@
 BEGIN_GNOME_DECLS
  
 #define GNOME_VIEW_TYPE        (gnome_view_get_type ())
-#define GNOME_VIEW_ITEM(o)     (GTK_CHECK_CAST ((o), GNOME_VIEW_TYPE, GnomeView))
+#define GNOME_VIEW(o)          (GTK_CHECK_CAST ((o), GNOME_VIEW_TYPE, GnomeView))
 #define GNOME_VIEW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_VIEW_TYPE, GnomeViewClass))
 #define GNOME_IS_VIEW(o)       (GTK_CHECK_TYPE ((o), GNOME_VIEW_TYPE))
 #define GNOME_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_TYPE))
@@ -22,7 +22,7 @@ typedef struct {
 } GnomeViewClass;
 
 GtkType      gnome_view_get_type  (void);
-
 GnomeObject *gnome_view_new       (GtkWidget *widget);
+GnomeObject *gnome_view_construct (GnomeView *view, GtkWidget *widget);
 
 #endif

@@ -3,11 +3,13 @@
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
+#include <bonobo/gnome-object.h>
+#include <bonobo/gnome-container.h>
 
 BEGIN_GNOME_DECLS
  
 #define GNOME_CLIENT_SITE_TYPE        (gnome_client_site_get_type ())
-#define GNOME_CLIENT_SITE_ITEM(o)     (GTK_CHECK_CAST ((o), GNOME_CLIENT_SITE_TYPE, GnomeClientSite))
+#define GNOME_CLIENT_SITE(o)          (GTK_CHECK_CAST ((o), GNOME_CLIENT_SITE_TYPE, GnomeClientSite))
 #define GNOME_CLIENT_SITE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), GNOME_CLIENT_SITE_TYPE, GnomeClientSiteClass))
 #define GNOME_IS_CLIENT_SITE(o)       (GTK_CHECK_TYPE ((o), GNOME_CLIENT_SITE_TYPE))
 #define GNOME_IS_CLIENT_SITE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_CLIENT_SITE_TYPE))
@@ -16,7 +18,7 @@ typedef struct {
 	GnomeObject base;
 
 	GnomeContainer *container;
-	int            child_shown:1
+	int            child_shown:1;
 } GnomeClientSite;
 
 typedef struct {
@@ -27,8 +29,12 @@ typedef struct {
 	void (*save_object)  (GnomeClientSite *, GNOME_Persist_Status *status);
 } GnomeClientSiteClass;
 
-GtkType       gnome_client_site_get_type    (void);
-GnomeObject  *gnome_client_site_new         (GnomeContainer *container);
-void          gnome_client_site_set_moniker (GnomeClientSite *client_site,
-					     GnomeMoniker   *moniker);
+GtkType          gnome_client_site_get_type       (void);
+GnomeClientSite *gnome_client_site_new            (GnomeContainer *container);
+void             gnome_client_site_set_moniker    (GnomeClientSite *client_site,
+						   GnomeMoniker   *moniker);
+
+gboolean         gnome_client_site_bind_component (GnomeClientSite *client_site,
+						   GnomeObject *object);
 #endif
+
