@@ -20,10 +20,10 @@ INCLUDES =                                              \
         -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)
 
-gnome_libs =			\
-	$(GNOME_LIBDIR)		\
-        $(GNOMEUI_LIBS)		\
-	$(OBJECT_DIRECTORY_LIBS) \
+gnome_libs =				\
+	$(GNOME_LIBDIR)			\
+        $(GNOMEUI_LIBS)			\
+	$(OBJECT_DIRECTORY_LIBS)	\
 	$(INTLLIBS)
 
 bonobo_libs = 			\
@@ -31,8 +31,11 @@ bonobo_libs = 			\
 	$(gnome_libs)
 
 
-#lib_LTLIBRARIES = libbonobo.la libbonobo-xml.la
+if GPRINT
+lib_LTLIBRARIES = libbonobo.la libbonobo-print.la
+else
 lib_LTLIBRARIES = libbonobo.la
+endif
 
 if OAF
 test_programs =
@@ -122,8 +125,6 @@ libbonobo_la_SOURCES =			\
 	bonobo-property-bag.c		\
 	bonobo-property-bag-client.c
 
-#	bonobo-property-types.c		\
-
 libbonoboincludedir = $(includedir)/bonobo
 
 libbonobodir = $(includedir)
@@ -168,15 +169,16 @@ libbonoboinclude_HEADERS =		\
 	bonobo-property-bag.h		\
 	bonobo-property-bag-client.h
 
-#libbonobo_xml_la_SOURCES =		\
-#	bonobo-property-bag-xml.c
+libbonobo_print_la_SOURCES =		\
+	bonobo-print.c			\
+	bonobo-print-client.c
 
-#libbonobo_xmlincludedir = $(includedir)/bonobo
+libbonobo_printincludedir = $(includedir)/bonobo
 
-#libbonobo_xmlinclude_HEADERS =		\
-#	Bonobo.h			\
-#	bonobo-property-bag.h		\
-#	bonobo-property-bag-xml.h
+libbonobo_printinclude_HEADERS =		\
+	Bonobo.h			\
+	bonobo-print.h		\
+	bonobo-print-client.h
 
 test_bw_SOURCES =			\
 	test-bw.c

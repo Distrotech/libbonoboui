@@ -17,7 +17,10 @@
 
 #include "bonobo-clock-control.h"
 
-#define PROP_RUNNING  1
+enum {
+	PROP_RUNNING
+} MyArgs;
+
 #define RUNNING_KEY  "Clock::Running"
 
 static void

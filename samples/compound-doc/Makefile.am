@@ -5,6 +5,12 @@ else
 bin_PROGRAMS = paint-component-simple sample-container
 endif
 
+if GPRINT
+GPRINT_LIBS = $(top_builddir)/bonobo/libbonobo-print.la
+else
+GPRINT_LIBS =
+endif
+
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(srcdir) -I$(top_srcdir) 			\
@@ -18,9 +24,8 @@ paint_component_simple_SOURCES =	\
 
 paint_component_simple_LDADD = 			\
 	$(top_builddir)/bonobo/libbonobo.la	\
-	$(GTK_LIBS)				\
-	$(GNOME_LIBDIR)				\
-	$(GNOMEGNORBA_LIBS)			\
+	$(BONOBO_LIBS)				\
+	$(GPRINT_LIBS)				\
 	$(INTLLIBS)
 
 sample_container_SOURCES =		\
@@ -28,9 +33,8 @@ sample_container_SOURCES =		\
 
 sample_container_LDADD = 			\
 	$(top_builddir)/bonobo/libbonobo.la	\
-	$(GTK_LIBS)				\
-	$(GNOME_LIBDIR)				\
-	$(GNOMEGNORBA_LIBS)			\
+	$(BONOBO_LIBS)				\
+	$(GPRINT_LIBS)				\
 	$(INTLLIBS)
 
 gnorbadir = $(sysconfdir)/CORBA/servers

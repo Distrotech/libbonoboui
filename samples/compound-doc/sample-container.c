@@ -15,6 +15,18 @@
 #include <bonobo.h>
 #include <libgnorba/gnorba.h>
 
+#ifdef ENABLE_GPRINT
+#	include <libgnomeprint/gnome-printer.h>
+#	include <libgnomeprint/gnome-print.h>
+#	include <libgnomeprint/gnome-printer-dialog.h>
+
+#	include <libgnomeprint/gnome-print-master.h>
+#	include <libgnomeprint/gnome-print-master-preview.h>
+#	include <libgnomeprint/gnome-print-dialog.h>
+
+#	include <bonobo/bonobo-print-client.h>
+#endif
+
 typedef struct {
 	BonoboContainer  *container;
 	BonoboUIHandler  *uih;
@@ -40,6 +52,7 @@ typedef struct {
  * Static prototypes.
  */
 static void container_add_embeddable_cmd (GtkWidget *widget, Container *container);
+static void container_print_preview_cmd  (GtkWidget *widget, Container *container);
 static void container_exit_cmd (GtkWidget *widget, Container *container); 
 
 /*
@@ -49,6 +62,11 @@ static GnomeUIInfo container_file_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
 		N_("_Add a new Embeddable component"), NULL,
 		container_add_embeddable_cmd),
+#if ENABLE_GPRINT
+	GNOMEUIINFO_ITEM_NONE (
+		N_("Print Pre_view"), NULL,
+		container_print_preview_cmd),
+#endif
 	GNOMEUIINFO_MENU_EXIT_ITEM (container_exit_cmd, NULL),
 	GNOMEUIINFO_END
 };
@@ -726,6 +744,45 @@ container_add_embeddable_cmd (GtkWidget *widget, Container *container)
 	container_activate_component (container, goad_id);
 
 	g_free (goad_id);
+}
+
+static void
+container_print_preview_cmd (GtkWidget *widget, Container *container)
+{
+	GList *l;
+	GnomePrintMaster *pm;
+	GnomePrintContext *ctx;
+	GnomePrintMasterPreview *pv;
+
+	g_return_if_fail (container != NULL);
+	g_return_if_fail (container->container != NULL);
+
+	pm = gnome_print_master_new ();
+	ctx = gnome_print_master_get_context (pm);
+
+	for (l = container->container->client_sites; l; l = l->next) {
+		BonoboClientSite *cs = l->data;
+		BonoboObjectClient *boc = bonobo_client_site_get_embeddable (cs);
+
+		BonoboPrintClient *pc = bonobo_print_client_get (boc);
+		if (!pc) {
+			g_warning ("component isn't printable");
+			continue;
+		} else
+			g_warning ("component is printable!");
+
+		bonobo_print_client_init     (pc, 0.0, 0.0, 100.0, 150.0);
+		bonobo_print_client_print_to (pc, ctx);
+		
+		break;
+	}
+
+	gnome_print_context_close (ctx);
+	pv = gnome_print_master_preview_new (pm, "Component demo");
+	gtk_widget_show (GTK_WIDGET (pv));
+	gtk_main ();
+	gtk_object_unref (GTK_OBJECT (pv));
+	gtk_object_unref (GTK_OBJECT (pm));
 }
 
 static void

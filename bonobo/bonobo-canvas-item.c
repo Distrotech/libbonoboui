@@ -1,8 +1,8 @@
 /*
- * gnome-bonobo-item.c: Canvas item implementation for embedding remote canvas-items
+ * bonobo-bonobo-item.c: Canvas item implementation for embedding remote canvas-items
  *
  * Author:
- *   Miguel de Icaza (miguel@kernel.org)
+ *     Miguel de Icaza (miguel@kernel.org)
  *
  * (C) 1999, 2000 Helix Code, Inc.
  */

@@ -1,5 +1,5 @@
 /*
- * gnome-canvas-component.c: implements the CORBA interface for
+ * bonobo-canvas-component.c: implements the CORBA interface for
  * the GNOME::Canvas:Item interface used in Bonobo::Views.
  *
  * Author:

@@ -12,6 +12,10 @@
 #include <gnome.h>
 #include <bonobo.h>
 #include <libgnorba/gnorba.h>
+#ifdef ENABLE_GPRINT
+#	include <bonobo/bonobo-print.h>
+#	include <libgnomeprint/gnome-print.h>
+#endif
 
 /*
  * Number of running objects
@@ -541,6 +545,63 @@ view_factory (BonoboEmbeddable       *embeddable,
 	return view;
 }
 
+typedef struct {
+	char *name;
+	gdouble x;
+	gdouble y;
+	gdouble w;
+	gdouble h;
+} SimplePrintContext;
+
+static gpointer
+init_fn (gdouble x, gdouble y,
+	 gdouble w, gdouble h)
+{
+	SimplePrintContext *ctx = g_new (SimplePrintContext, 1);
+
+	ctx->name = g_strdup ("My name");
+
+	ctx->x = x;
+	ctx->y = y;
+	ctx->w = w;
+	ctx->h = h;
+
+	return ctx;
+}
+
+static void
+render_fn (GnomePrintContext *ctx,
+	   gpointer           user_data)
+{
+	SimplePrintContext *c = user_data;
+	GnomeFont *font;
+
+	gnome_print_gsave (ctx);
+	gnome_print_setlinewidth (ctx, 2);
+	font = gnome_font_new ("Helvetica", 12.0);
+	g_return_if_fail (font != NULL);
+	gnome_print_setrgbcolor (ctx, 0.0, 0.0, 0.0);
+	gnome_print_setfont (ctx, font);
+	gtk_object_unref (GTK_OBJECT (font));
+
+	gnome_print_moveto (ctx, c->x, c->y);
+	gnome_print_show (ctx, "Hello World");
+
+	gnome_print_moveto (ctx, c->x, c->y);
+	gnome_print_lineto (ctx, c->x + c->w, c->y + c->h);
+	gnome_print_grestore (ctx);
+
+/* We need a sensible internal representation in order to find the rowstride etc. */
+/*	gnome_print_rgbimage (ctx, embeddable_data->
+						  embeddable_data->width,
+						  embeddable_data->height,
+						  gdk_visual_get_best_depth ());*/
+
+	g_free (c->name);
+	g_free (c);
+}
+
+
 /*
  * When a container asks our EmbeddableFactory for a new paint
  * component, this function is called.  It creates the new
@@ -551,6 +612,7 @@ embeddable_factory (BonoboEmbeddableFactory *this,
 		    void *data)
 {
 	BonoboEmbeddable *embeddable;
+	BonoboObject     *print;
 	embeddable_data_t *embeddable_data;
 
 	/*
@@ -589,6 +651,13 @@ embeddable_factory (BonoboEmbeddableFactory *this,
 	 */
 	embeddable = bonobo_embeddable_new (BONOBO_VIEW_FACTORY (view_factory),
 					    embeddable_data);
+
+	print = BONOBO_OBJECT (bonobo_print_new (init_fn, render_fn));
+	if (!print)
+		g_warning ("Serious error creating print interface");
+	else
+		bonobo_object_add_interface (BONOBO_OBJECT (embeddable),
+					     BONOBO_OBJECT (print));
 
 	if (embeddable == NULL) {
 		g_free (embeddable_data);

@@ -54,4 +54,7 @@
 
 #include <bonobo/bonobo-widget.h>
 
+#include <bonobo/bonobo-print.h>
+#include <bonobo/bonobo-print-client.h>
+
 #endif
