@@ -1,3 +1,19 @@
+libbonoboui 2.2.0
+
+	* Bugs fixed
+		+ toolbar size allocation (Michael)
+		+ toolbar popup positioning (Kang Jeong-Hee)
+		+ help display fixes (Michael, Marcus FreeBSD)
+		+ build fixes (Michael, Kjartan Maraas)
+		+ file sel brokenness (NotZed)
+		+ 64bit cleaning (HHetter)
+		+ custom icon sizing (Mark McLouglin)
+
+	* Featurelets
+		+ new component_set_widget API (Michael)
+		+ improved lifecycle helpers (Michael)
+		+ built in BONOBO_DEBUG menu (Gustavo Carneiro)
+
 libbonoboui 2.0.1
 
 	* Featurelets
