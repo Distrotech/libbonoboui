@@ -18,6 +18,7 @@ extern "C" {
 
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-moniker.h>
+#include <bonobo/bonobo-context.h>
 #include <bonobo/bonobo-exception.h>
 
 #include <bonobo/bonobo-item-container.h>
