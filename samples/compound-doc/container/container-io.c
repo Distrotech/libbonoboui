@@ -3,7 +3,7 @@
 #include "container-io.h"
 #include "embeddable-io.h"
 
-#define STORAGE_TYPE "vfs"
+#define STORAGE_TYPE "efs"
 
 static Bonobo_Stream
 create_stream (Bonobo_Storage     storage,
