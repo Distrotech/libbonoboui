@@ -24,25 +24,25 @@ CORBA_SOURCE =			\
 
 idls =							\
 	$(top_srcdir)/idl/Bonobo.idl			\
-	$(top_srcdir)/idl/bonobo-advise.idl		\
-	$(top_srcdir)/idl/bonobo-desktop.idl		\
-	$(top_srcdir)/idl/bonobo-canvas.idl 		\
-	$(top_srcdir)/idl/bonobo-client-site.idl	\
-	$(top_srcdir)/idl/bonobo-context.idl		\
-	$(top_srcdir)/idl/bonobo-control.idl		\
-	$(top_srcdir)/idl/bonobo-embeddable.idl		\
-	$(top_srcdir)/idl/bonobo-item-container.idl	\
-	$(top_srcdir)/idl/bonobo-listener.idl		\
-	$(top_srcdir)/idl/bonobo-moniker.idl		\
-	$(top_srcdir)/idl/bonobo-persist.idl		\
-	$(top_srcdir)/idl/bonobo-print.idl		\
-	$(top_srcdir)/idl/bonobo-progressive.idl	\
-	$(top_srcdir)/idl/bonobo-property.idl		\
-	$(top_srcdir)/idl/bonobo-storage.idl		\
-	$(top_srcdir)/idl/bonobo-ui.idl			\
-	$(top_srcdir)/idl/bonobo-unknown.idl		\
-	$(top_srcdir)/idl/bonobo-zoomable.idl		\
-	$(top_srcdir)/idl/bonobo-exception.idl	
+	$(top_srcdir)/idl/Bonobo_Advise.idl		\
+	$(top_srcdir)/idl/Bonobo_Desktop.idl		\
+	$(top_srcdir)/idl/Bonobo_Canvas.idl		\
+	$(top_srcdir)/idl/Bonobo_ClientSite.idl		\
+	$(top_srcdir)/idl/Bonobo_Context.idl		\
+	$(top_srcdir)/idl/Bonobo_Control.idl		\
+	$(top_srcdir)/idl/Bonobo_Embeddable.idl		\
+	$(top_srcdir)/idl/Bonobo_ItemContainer.idl	\
+	$(top_srcdir)/idl/Bonobo_Listener.idl		\
+	$(top_srcdir)/idl/Bonobo_Moniker.idl		\
+	$(top_srcdir)/idl/Bonobo_Persist.idl		\
+	$(top_srcdir)/idl/Bonobo_Print.idl		\
+	$(top_srcdir)/idl/Bonobo_Progressive.idl	\
+	$(top_srcdir)/idl/Bonobo_Property.idl		\
+	$(top_srcdir)/idl/Bonobo_Storage.idl		\
+	$(top_srcdir)/idl/Bonobo_UI.idl			\
+	$(top_srcdir)/idl/Bonobo_Unknown.idl		\
+	$(top_srcdir)/idl/Bonobo_Zoomable.idl		\
+	$(top_srcdir)/idl/Bonobo_Exception.idl
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 
