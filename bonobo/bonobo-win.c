@@ -540,19 +540,71 @@ placeholder_sync (BonoboWindowPrivate *priv,
 		bonobo_ui_node_free_string (txt);
 	}
 
-	if (!bonobo_ui_node_children (node))
-		show = FALSE;
-
-	if ((txt = bonobo_ui_node_get_attr (node, "hidden"))) {
-		if (atoi (txt))
-			show = FALSE;
-		bonobo_ui_node_free_string (txt);
-	}
-
 	if (show)
 		gtk_widget_show (widget);	
 	else
 		gtk_widget_hide (widget);
+}
+
+static void
+hide_all_widgets (BonoboWindowPrivate *priv,
+		  BonoboUINode *node)
+{
+	NodeInfo *info;
+	BonoboUINode *child;
+	
+	info = bonobo_ui_xml_get_data (priv->tree, node);
+	if (info->widget)
+		gtk_widget_hide (info->widget);
+	
+	for (child = bonobo_ui_node_children (node);
+	     child != NULL;
+	     child = bonobo_ui_node_next (child))
+		hide_all_widgets (priv, child);
+}
+
+static gboolean
+contains_visible_widget (BonoboWindowPrivate *priv,
+			 BonoboUINode *node)
+{
+	BonoboUINode *child;
+	NodeInfo *info;
+	
+	for (child = bonobo_ui_node_children (node);
+	     child != NULL;
+	     child = bonobo_ui_node_next (child)) {
+		info = bonobo_ui_xml_get_data (priv->tree, child);
+		if (info->widget && GTK_WIDGET_VISIBLE (info->widget))
+			return TRUE;
+		if (contains_visible_widget (priv, child))
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
+static void
+hide_placeholder_if_empty_or_hidden (BonoboWindowPrivate *priv,
+				     BonoboUINode *node)
+{
+	NodeInfo *info;
+	char *txt;
+	gboolean hide_placeholder_and_contents;
+	gboolean has_visible_separator;
+
+	txt = bonobo_ui_node_get_attr (node, "hidden");
+	hide_placeholder_and_contents = txt && atoi (txt);
+	bonobo_ui_node_free_string (txt);
+
+	info = bonobo_ui_xml_get_data (priv->tree, node);
+	has_visible_separator = info && info->widget
+		&& GTK_WIDGET_VISIBLE (info->widget);
+
+	if (hide_placeholder_and_contents)
+		hide_all_widgets (priv, node);
+	else if (has_visible_separator
+		 && !contains_visible_widget (priv, node))
+		gtk_widget_hide (info->widget);
 }
 
 typedef void       (*SyncStateFn)   (BonoboWindowPrivate *priv,
@@ -694,10 +746,12 @@ sync_generic_widgets (BonoboWindowPrivate *priv,
 			(*pos)++;
 		}
 
-		if (bonobo_ui_node_has_name (a, "placeholder"))
+		if (bonobo_ui_node_has_name (a, "placeholder")) {
 			sync_generic_widgets (priv, bonobo_ui_node_children (a),
 					      parent, &nextb, pos, sync_state,
 					      build_widget, make_placeholder);
+			hide_placeholder_if_empty_or_hidden (priv, a);
+		}
 
 		a = bonobo_ui_node_next (a);
 	}
@@ -766,28 +820,38 @@ do_show_hide (GtkWidget *widget, BonoboUINode *node)
 
 struct _StateUpdate {
 	GtkWidget *widget;
-
-	char      *hidden;
-	char      *sensitive;
 	char      *state;
 };
 
+/* Update the state later, but other aspects of the widget right now.
+ * It's dangerous to update the state now because we can reenter if we
+ * do that.
+ */
 static StateUpdate *
 state_update_new (GtkWidget *widget, BonoboUINode *node)
 {
+	char *hidden, *sensitive;
 	StateUpdate *su;
 
 	g_return_val_if_fail (node != NULL, NULL);
-	g_return_val_if_fail (widget != NULL, NULL);
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+
+	hidden = bonobo_ui_node_get_attr (node, "hidden");
+	if (hidden && atoi (hidden))
+		gtk_widget_hide (widget);
+	else
+		gtk_widget_show (widget);
+	bonobo_ui_node_free_string (hidden);
+
+	sensitive = bonobo_ui_node_get_attr (node, "sensitive");
+	if (sensitive)
+		gtk_widget_set_sensitive (widget, atoi (sensitive));
+	bonobo_ui_node_free_string (sensitive);
 
 	su = g_new0 (StateUpdate, 1);
-
 	su->widget = widget;
 	gtk_widget_ref (su->widget);
-
-	su->hidden    = bonobo_ui_node_get_attr (node, "hidden");
-	su->sensitive = bonobo_ui_node_get_attr (node, "sensitive");
-	su->state     = bonobo_ui_node_get_attr (node, "state");
+	su->state = bonobo_ui_node_get_attr (node, "state");
 
 	return su;
 }
@@ -797,8 +861,6 @@ state_update_destroy (StateUpdate *su)
 {
 	if (su) {
 		gtk_widget_unref (su->widget);
-		bonobo_ui_node_free_string (su->hidden);
-		bonobo_ui_node_free_string (su->sensitive);
 		bonobo_ui_node_free_string (su->state);
 
 		g_free (su);
@@ -810,17 +872,6 @@ state_update_exec (StateUpdate *su)
 {
 	g_return_if_fail (su != NULL);
 	g_return_if_fail (su->widget != NULL);
-
-	if (su->hidden) {
-		if (atoi (su->hidden))
-			gtk_widget_hide (su->widget);
-		else
-			gtk_widget_show (su->widget);
-	} else
-		gtk_widget_show (su->widget);
-
-	if (su->sensitive)
-		gtk_widget_set_sensitive (su->widget, atoi (su->sensitive));
 
 	if (su->state) {
 		if (BONOBO_IS_UI_TOOLBAR_ITEM (su->widget))
