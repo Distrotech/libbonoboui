@@ -297,12 +297,15 @@ run_file_selector (GtkWindow  *parent,
 		user_data_id = g_quark_from_static_string ("UserData");
 
 	if (!g_getenv ("GNOME_FILESEL_DISABLE_BONOBO")) {
+		using_bonobo_filesel = TRUE;
 		dialog = create_bonobo_selector (enable_vfs, mode, mime_types, 
 						 default_path, default_filename);
-		using_bonobo_filesel=TRUE;
 	}
-	if (!dialog)
+
+	if (!dialog) {
 		dialog = create_gtk_selector (mode, default_path, default_filename);
+		using_bonobo_filesel = FALSE;
+	}
 
 	SET_MODE (dialog, mode);
 

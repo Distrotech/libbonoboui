@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2002-03-29 19:39-0500\n"
+"POT-Creation-Date: 2002-05-20 12:06+0100\n"
 "PO-Revision-Date: 2002-05-03 17:38-0400\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
@@ -13,24 +13,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
-msgid "Shadow type"
-msgstr "Kiểu bóng"
+#: bonobo/bonobo-canvas-item.c:647
+msgid "corba factory"
+msgstr "corba factory"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
-#: bonobo/bonobo-ui-toolbar.c:1091 bonobo/bonobo-ui-toolbar.c:1092
-msgid "Orientation"
-msgstr "Hướng"
+#: bonobo/bonobo-canvas-item.c:648
+msgid "The factory pointer"
+msgstr "Con trỏ factory"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
-#: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
-msgid "Preferred width"
-msgstr "Độ rộng ưa thích"
+#: bonobo/bonobo-canvas-item.c:657
+msgid "corba UI container"
+msgstr "corba UI container"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
-#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
-msgid "Preferred height"
-msgstr "Độ cao ưa thích"
+#: bonobo/bonobo-canvas-item.c:658
+msgid "The User interface container"
+msgstr "Container UI"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
@@ -40,33 +37,71 @@ msgstr ""
 msgid "Un dock the toolbar"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:373
+#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+msgid "Shadow type"
+msgstr "Kiểu bóng"
+
+#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
+msgid "Orientation"
+msgstr "Hướng"
+
+#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+msgid "Preferred width"
+msgstr "Độ rộng ưa thích"
+
+#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+msgid "Preferred height"
+msgstr "Độ cao ưa thích"
+
+#: bonobo/bonobo-file-selector-util.c:376
 msgid "Select a file to open"
 msgstr "Chọn tập tin cần mở"
 
-#: bonobo/bonobo-file-selector-util.c:401
+#: bonobo/bonobo-file-selector-util.c:404
 msgid "Select files to open"
 msgstr "Chọn các tập tin cần mở"
 
-#: bonobo/bonobo-file-selector-util.c:430
+#: bonobo/bonobo-file-selector-util.c:433
 msgid "Select a filename to save"
 msgstr "Chọn tên tập tin để lưu"
 
-#: bonobo/bonobo-plug.c:351
+#: bonobo/bonobo-plug.c:363
 msgid "Event Forwarding"
 msgstr "Chuyển sự kiện"
 
-#: bonobo/bonobo-plug.c:352
+#: bonobo/bonobo-plug.c:364
 msgid "Whether X events should be forwarded"
 msgstr "Các sự kiện X có nên được chuyển đi hay không"
 
-#: bonobo/bonobo-selector-widget.c:300
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
 msgid "Name"
 msgstr "Tên"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
 msgstr "Mô tả"
+
+#: bonobo/bonobo-selector.c:345
+msgid "Interfaces required"
+msgstr ""
+
+#: bonobo/bonobo-selector.c:346
+msgid ""
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+
+#: bonobo/bonobo-selector.c:348
+msgid "Interface required entry"
+msgstr ""
+
+#: bonobo/bonobo-selector.c:349
+msgid "One of the interfaces that's required"
+msgstr ""
 
 #: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
@@ -92,11 +127,11 @@ msgstr "Thanh công cụ"
 msgid "toolbars"
 msgstr "thanh công cụ"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Nhìn"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Biểu tượng"
 
@@ -112,33 +147,148 @@ msgstr "Chỉ ưu tiên _text"
 msgid "Configure UI"
 msgstr "Cấu hình UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-init-gtk.c:113
+msgid "Gdk debugging flags to set"
+msgstr "Cờ debug Gdk được bật"
+
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+msgid "FLAGS"
+msgstr "CỜ HIỆU"
+
+#: bonobo/bonobo-ui-init-gtk.c:116
+msgid "Gdk debugging flags to unset"
+msgstr "Cờ debug Gdk được tắt"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "X display to use"
+msgstr "X display được dùng"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "DISPLAY"
+msgstr "DISPLAY"
+
+#: bonobo/bonobo-ui-init-gtk.c:125
+#, fuzzy
+msgid "X screen to use"
+msgstr "X display được dùng"
+
+#: bonobo/bonobo-ui-init-gtk.c:125
+msgid "SCREEN"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:129
+msgid "Make X calls synchronous"
+msgstr "Dùng lệnh gọi X đồng bộ"
+
+#: bonobo/bonobo-ui-init-gtk.c:135
+msgid "Don't use X shared memory extension"
+msgstr "Không dùng phần mở rộng \"bộ nhớ chia sẻ\" của X"
+
+#: bonobo/bonobo-ui-init-gtk.c:139
+msgid "Program name as used by the window manager"
+msgstr "Tên chương trình được dùng bởi trình quản lý cửa sổ"
+
+#: bonobo/bonobo-ui-init-gtk.c:139
+msgid "NAME"
+msgstr "TÊN"
+
+#: bonobo/bonobo-ui-init-gtk.c:142
+msgid "Program class as used by the window manager"
+msgstr "Lớp chương trình được dùng bởi trình quản lý cửa sổ"
+
+#: bonobo/bonobo-ui-init-gtk.c:142
+msgid "CLASS"
+msgstr "LỚP"
+
+#: bonobo/bonobo-ui-init-gtk.c:146
+msgid "HOST"
+msgstr "MÁY"
+
+#: bonobo/bonobo-ui-init-gtk.c:150
+msgid "PORT"
+msgstr "CỔNG"
+
+#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+msgid "STYLE"
+msgstr "KIỂU"
+
+#: bonobo/bonobo-ui-init-gtk.c:162
+msgid "Gtk+ debugging flags to set"
+msgstr "Cờ debug Gtk+ được bật"
+
+#: bonobo/bonobo-ui-init-gtk.c:165
+msgid "Gtk+ debugging flags to unset"
+msgstr "Cờ debug Gtk+ được tắt"
+
+#: bonobo/bonobo-ui-init-gtk.c:168
+msgid "Make all warnings fatal"
+msgstr "Coi mọi cảnh báo là nghiêm trọng"
+
+#: bonobo/bonobo-ui-init-gtk.c:171
+msgid "Load an additional Gtk module"
+msgstr "Nạp module bổ sung của Gtk"
+
+#: bonobo/bonobo-ui-init-gtk.c:171
+msgid "MODULE"
+msgstr "MODULE"
+
+#: bonobo/bonobo-ui-init-gtk.c:180
+msgid "GTK+"
+msgstr "GTK+"
+
+#: bonobo/bonobo-ui-main.c:188
+msgid "Bonobo GUI support"
+msgstr "Hỗ trợ Bonobo GUI"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "B_oth"
 msgstr "Cả _hai"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "T_ext"
 msgstr "T_ext"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:557
 msgid "Hide t_ips"
 msgstr "Ẩn t_ip"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:557
 msgid "Show t_ips"
 msgstr "Hiện t_ip"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:558
 msgid "_Hide toolbar"
 msgstr "Ẩ_n thanh công cụ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:558
 msgid "Customi_ze"
 msgstr "Tùy _biến"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:559
 msgid "Customize the toolbar"
 msgstr "Tùy biến thanh công cụ"
+
+#: bonobo/bonobo-ui-toolbar.c:1104
+msgid "is floating"
+msgstr "đang trôi nổi"
+
+#: bonobo/bonobo-ui-toolbar.c:1105
+msgid "whether the toolbar is floating"
+msgstr "thanh công cụ có trôi nổi hay không"
+
+#: bonobo/bonobo-ui-util.c:583
+msgid "_Contents"
+msgstr ""
+
+#: bonobo/bonobo-ui-util.c:584
+#, fuzzy
+msgid "View help for this application"
+msgstr "Giới thiệu ứng dụng này"
+
+#: bonobo/bonobo-window.c:448
+msgid "Name of the window - used for configuration serialization."
+msgstr ""
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -188,136 +338,6 @@ msgstr "Liên tục"
 msgid "Whether we zoom continuously (as opposed to jumps)"
 msgstr "Có phóng to một cách liên tục (thay vì rời rạc)"
 
-#: bonobo/bonobo-canvas-item.c:647
-msgid "corba factory"
-msgstr "corba factory"
-
-#: bonobo/bonobo-canvas-item.c:648
-msgid "The factory pointer"
-msgstr "Con trỏ factory"
-
-#: bonobo/bonobo-canvas-item.c:657
-msgid "corba UI container"
-msgstr "corba UI container"
-
-#: bonobo/bonobo-canvas-item.c:658
-msgid "The User interface container"
-msgstr "Container UI"
-
-#: bonobo/bonobo-ui-toolbar.c:1101
-msgid "is floating"
-msgstr "đang trôi nổi"
-
-#: bonobo/bonobo-ui-toolbar.c:1102
-msgid "whether the toolbar is floating"
-msgstr "thanh công cụ có trôi nổi hay không"
-
-#: bonobo/bonobo-ui-init-gtk.c:113
-msgid "Gdk debugging flags to set"
-msgstr "Cờ debug Gdk được bật"
-
-#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
-msgid "FLAGS"
-msgstr "CỜ HIỆU"
-
-#: bonobo/bonobo-ui-init-gtk.c:116
-msgid "Gdk debugging flags to unset"
-msgstr "Cờ debug Gdk được tắt"
-
-#: bonobo/bonobo-ui-init-gtk.c:120
-msgid "X display to use"
-msgstr "X display được dùng"
-
-#: bonobo/bonobo-ui-init-gtk.c:120
-msgid "DISPLAY"
-msgstr "DISPLAY"
-
-#: bonobo/bonobo-ui-init-gtk.c:124
-msgid "Make X calls synchronous"
-msgstr "Dùng lệnh gọi X đồng bộ"
-
-#: bonobo/bonobo-ui-init-gtk.c:130
-msgid "Don't use X shared memory extension"
-msgstr "Không dùng phần mở rộng \"bộ nhớ chia sẻ\" của X"
-
-#: bonobo/bonobo-ui-init-gtk.c:134
-msgid "Program name as used by the window manager"
-msgstr "Tên chương trình được dùng bởi trình quản lý cửa sổ"
-
-#: bonobo/bonobo-ui-init-gtk.c:134
-msgid "NAME"
-msgstr "TÊN"
-
-#: bonobo/bonobo-ui-init-gtk.c:137
-msgid "Program class as used by the window manager"
-msgstr "Lớp chương trình được dùng bởi trình quản lý cửa sổ"
-
-#: bonobo/bonobo-ui-init-gtk.c:137
-msgid "CLASS"
-msgstr "LỚP"
-
-#: bonobo/bonobo-ui-init-gtk.c:141
-msgid "HOST"
-msgstr "MÁY"
-
-#: bonobo/bonobo-ui-init-gtk.c:145
-msgid "PORT"
-msgstr "CỔNG"
-
-#: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
-msgid "STYLE"
-msgstr "KIỂU"
-
-#: bonobo/bonobo-ui-init-gtk.c:157
-msgid "Gtk+ debugging flags to set"
-msgstr "Cờ debug Gtk+ được bật"
-
-#: bonobo/bonobo-ui-init-gtk.c:160
-msgid "Gtk+ debugging flags to unset"
-msgstr "Cờ debug Gtk+ được tắt"
-
-#: bonobo/bonobo-ui-init-gtk.c:163
-msgid "Make all warnings fatal"
-msgstr "Coi mọi cảnh báo là nghiêm trọng"
-
-#: bonobo/bonobo-ui-init-gtk.c:166
-msgid "Load an additional Gtk module"
-msgstr "Nạp module bổ sung của Gtk"
-
-#: bonobo/bonobo-ui-init-gtk.c:166
-msgid "MODULE"
-msgstr "MODULE"
-
-#: bonobo/bonobo-ui-init-gtk.c:175
-msgid "GTK+"
-msgstr "GTK+"
-
-#: bonobo/bonobo-ui-main.c:188
-msgid "Bonobo GUI support"
-msgstr "Hỗ trợ Bonobo GUI"
-
-#: samples/bonoboui/hello.c:63
-msgid "This does nothing; it is only a demonstration."
-msgstr "Không làm gì cả; chỉ là một minh hoạ."
-
-#: samples/bonoboui/hello.c:145
-msgid "BonoboUI-Hello."
-msgstr "BonoboUI-Hello."
-
-#: samples/bonoboui/hello.c:217
-msgid "Gnome Hello"
-msgstr "Gnome Hello"
-
-#. Create Label and put it in the Button:
-#: samples/bonoboui/hello.c:272
-msgid "Hello, World!"
-msgstr "Chào thế giới!"
-
-#: samples/bonoboui/hello.c:312
-msgid "Cannot init libbonoboui code"
-msgstr "Không thể khởi động mã libbonoboui"
-
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
 msgstr "Giới thiệu ứng dụng này"
@@ -341,6 +361,27 @@ msgstr "_Tập tin"
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
 msgstr "_Chọn"
+
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "Không làm gì cả; chỉ là một minh hoạ."
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Hello."
+
+#: samples/bonoboui/hello.c:217
+msgid "Gnome Hello"
+msgstr "Gnome Hello"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:272
+msgid "Hello, World!"
+msgstr "Chào thế giới!"
+
+#: samples/bonoboui/hello.c:312
+msgid "Cannot init libbonoboui code"
+msgstr "Không thể khởi động mã libbonoboui"
 
 #: samples/controls/bonobo-sample-controls.c:121
 msgid "Could not initialize Bonobo UI"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2002-04-29 15:45+0200\n"
+"POT-Creation-Date: 2002-05-20 12:06+0100\n"
 "PO-Revision-Date: 2002-03-28 14:13+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
@@ -13,24 +13,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
-msgid "Shadow type"
-msgstr "Jenis bayang"
+#: bonobo/bonobo-canvas-item.c:647
+msgid "corba factory"
+msgstr "Kilang corba"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
-#: bonobo/bonobo-ui-toolbar.c:1091 bonobo/bonobo-ui-toolbar.c:1092
-msgid "Orientation"
-msgstr "Orientasi"
+#: bonobo/bonobo-canvas-item.c:648
+msgid "The factory pointer"
+msgstr "Pentuding kilang"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
-#: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
-msgid "Preferred width"
-msgstr "Lebar yang dikehendaki"
+#: bonobo/bonobo-canvas-item.c:657
+msgid "corba UI container"
+msgstr "bekas UI corba"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
-#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
-msgid "Preferred height"
-msgstr "Tinggi yang dikehendaki"
+#: bonobo/bonobo-canvas-item.c:658
+msgid "The User interface container"
+msgstr "Bekas antaramuka pengguna"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
@@ -40,33 +37,71 @@ msgstr "Labuhkan toolbar"
 msgid "Un dock the toolbar"
 msgstr "Leraikan  toolbar"
 
-#: bonobo/bonobo-file-selector-util.c:373
+#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+msgid "Shadow type"
+msgstr "Jenis bayang"
+
+#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
+msgid "Orientation"
+msgstr "Orientasi"
+
+#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+msgid "Preferred width"
+msgstr "Lebar yang dikehendaki"
+
+#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+msgid "Preferred height"
+msgstr "Tinggi yang dikehendaki"
+
+#: bonobo/bonobo-file-selector-util.c:376
 msgid "Select a file to open"
 msgstr "Pilih satu fail untuk dibuka"
 
-#: bonobo/bonobo-file-selector-util.c:401
+#: bonobo/bonobo-file-selector-util.c:404
 msgid "Select files to open"
 msgstr "Pilih beberapa fail untuk dibuka"
 
-#: bonobo/bonobo-file-selector-util.c:430
+#: bonobo/bonobo-file-selector-util.c:433
 msgid "Select a filename to save"
 msgstr "Pilih satu nama fail untuk disimpan"
 
-#: bonobo/bonobo-plug.c:358
+#: bonobo/bonobo-plug.c:363
 msgid "Event Forwarding"
 msgstr "Forward Acara"
 
-#: bonobo/bonobo-plug.c:359
+#: bonobo/bonobo-plug.c:364
 msgid "Whether X events should be forwarded"
 msgstr "Samada acara X patut diforwardkan"
 
-#: bonobo/bonobo-selector-widget.c:300
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
 msgid "Name"
 msgstr "Nama"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
 msgstr "Keterangan"
+
+#: bonobo/bonobo-selector.c:345
+msgid "Interfaces required"
+msgstr ""
+
+#: bonobo/bonobo-selector.c:346
+msgid ""
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+
+#: bonobo/bonobo-selector.c:348
+msgid "Interface required entry"
+msgstr ""
+
+#: bonobo/bonobo-selector.c:349
+msgid "One of the interfaces that's required"
+msgstr ""
 
 #: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
@@ -92,11 +127,11 @@ msgstr "Toolbar"
 msgid "toolbars"
 msgstr "Toolbar"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Lihat"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Ikon"
 
@@ -112,33 +147,148 @@ msgstr "Teks yang _penting sahaja"
 msgid "Configure UI"
 msgstr "Konfigurasikan UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-init-gtk.c:113
+msgid "Gdk debugging flags to set"
+msgstr "Flag nyahpepijat Gdk untuk ditetapkan"
+
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+msgid "FLAGS"
+msgstr "FLAG"
+
+#: bonobo/bonobo-ui-init-gtk.c:116
+msgid "Gdk debugging flags to unset"
+msgstr "Flag nyahpepijat Gdk untuk dinyahtetapkan"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "X display to use"
+msgstr "Paparan X untuk digunakan"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "DISPLAY"
+msgstr "PAPARAN"
+
+#: bonobo/bonobo-ui-init-gtk.c:125
+#, fuzzy
+msgid "X screen to use"
+msgstr "Paparan X untuk digunakan"
+
+#: bonobo/bonobo-ui-init-gtk.c:125
+msgid "SCREEN"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:129
+msgid "Make X calls synchronous"
+msgstr "Jadikan panggilan X synchronous"
+
+#: bonobo/bonobo-ui-init-gtk.c:135
+msgid "Don't use X shared memory extension"
+msgstr "Jangan guna sambungan memori terkongsi X"
+
+#: bonobo/bonobo-ui-init-gtk.c:139
+msgid "Program name as used by the window manager"
+msgstr "Nama program digunakan sebagai pengurus tetingkap"
+
+#: bonobo/bonobo-ui-init-gtk.c:139
+msgid "NAME"
+msgstr "NAMA"
+
+#: bonobo/bonobo-ui-init-gtk.c:142
+msgid "Program class as used by the window manager"
+msgstr "Kelas program digunakan sebagai pengurus tetingkap"
+
+#: bonobo/bonobo-ui-init-gtk.c:142
+msgid "CLASS"
+msgstr "KELAS"
+
+#: bonobo/bonobo-ui-init-gtk.c:146
+msgid "HOST"
+msgstr "HOS"
+
+#: bonobo/bonobo-ui-init-gtk.c:150
+msgid "PORT"
+msgstr "LIANG"
+
+#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+msgid "STYLE"
+msgstr "GAYA"
+
+#: bonobo/bonobo-ui-init-gtk.c:162
+msgid "Gtk+ debugging flags to set"
+msgstr "Flag nyahpepijat Gtk+ untuk ditetapkan"
+
+#: bonobo/bonobo-ui-init-gtk.c:165
+msgid "Gtk+ debugging flags to unset"
+msgstr "Flag nyahpepijat Gtk+ untuk dinyahtetapkan"
+
+#: bonobo/bonobo-ui-init-gtk.c:168
+msgid "Make all warnings fatal"
+msgstr "Jadikan semua amaran fatal"
+
+#: bonobo/bonobo-ui-init-gtk.c:171
+msgid "Load an additional Gtk module"
+msgstr "Muatkan modul Gtk tambahan"
+
+#: bonobo/bonobo-ui-init-gtk.c:171
+msgid "MODULE"
+msgstr "MODUL"
+
+#: bonobo/bonobo-ui-init-gtk.c:180
+msgid "GTK+"
+msgstr "GTK+"
+
+#: bonobo/bonobo-ui-main.c:188
+msgid "Bonobo GUI support"
+msgstr "Sokongan GUI Bonobo"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "B_oth"
 msgstr "Ke_dua-dua"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "T_ext"
 msgstr "T_eks"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:557
 msgid "Hide t_ips"
 msgstr "Sembunyikan t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:557
 msgid "Show t_ips"
 msgstr "Paparkan t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:558
 msgid "_Hide toolbar"
 msgstr "Sembunyikan toolba_r"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:558
 msgid "Customi_ze"
 msgstr "Personali_sasi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:559
 msgid "Customize the toolbar"
 msgstr "Personalisasikan toolbar"
+
+#: bonobo/bonobo-ui-toolbar.c:1104
+msgid "is floating"
+msgstr "adalah terapung"
+
+#: bonobo/bonobo-ui-toolbar.c:1105
+msgid "whether the toolbar is floating"
+msgstr "Samada toolbar adalah terapung"
+
+#: bonobo/bonobo-ui-util.c:583
+msgid "_Contents"
+msgstr ""
+
+#: bonobo/bonobo-ui-util.c:584
+#, fuzzy
+msgid "View help for this application"
+msgstr "Perihal aplikasi ini"
+
+#: bonobo/bonobo-window.c:448
+msgid "Name of the window - used for configuration serialization."
+msgstr ""
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -188,136 +338,6 @@ msgstr "adalah berterusan"
 msgid "Whether we zoom continuously (as opposed to jumps)"
 msgstr "Apakah kita boleh zoom berterusan (berbanding dengan lompatan)"
 
-#: bonobo/bonobo-canvas-item.c:647
-msgid "corba factory"
-msgstr "Kilang corba"
-
-#: bonobo/bonobo-canvas-item.c:648
-msgid "The factory pointer"
-msgstr "Pentuding kilang"
-
-#: bonobo/bonobo-canvas-item.c:657
-msgid "corba UI container"
-msgstr "bekas UI corba"
-
-#: bonobo/bonobo-canvas-item.c:658
-msgid "The User interface container"
-msgstr "Bekas antaramuka pengguna"
-
-#: bonobo/bonobo-ui-toolbar.c:1101
-msgid "is floating"
-msgstr "adalah terapung"
-
-#: bonobo/bonobo-ui-toolbar.c:1102
-msgid "whether the toolbar is floating"
-msgstr "Samada toolbar adalah terapung"
-
-#: bonobo/bonobo-ui-init-gtk.c:113
-msgid "Gdk debugging flags to set"
-msgstr "Flag nyahpepijat Gdk untuk ditetapkan"
-
-#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
-msgid "FLAGS"
-msgstr "FLAG"
-
-#: bonobo/bonobo-ui-init-gtk.c:116
-msgid "Gdk debugging flags to unset"
-msgstr "Flag nyahpepijat Gdk untuk dinyahtetapkan"
-
-#: bonobo/bonobo-ui-init-gtk.c:120
-msgid "X display to use"
-msgstr "Paparan X untuk digunakan"
-
-#: bonobo/bonobo-ui-init-gtk.c:120
-msgid "DISPLAY"
-msgstr "PAPARAN"
-
-#: bonobo/bonobo-ui-init-gtk.c:124
-msgid "Make X calls synchronous"
-msgstr "Jadikan panggilan X synchronous"
-
-#: bonobo/bonobo-ui-init-gtk.c:130
-msgid "Don't use X shared memory extension"
-msgstr "Jangan guna sambungan memori terkongsi X"
-
-#: bonobo/bonobo-ui-init-gtk.c:134
-msgid "Program name as used by the window manager"
-msgstr "Nama program digunakan sebagai pengurus tetingkap"
-
-#: bonobo/bonobo-ui-init-gtk.c:134
-msgid "NAME"
-msgstr "NAMA"
-
-#: bonobo/bonobo-ui-init-gtk.c:137
-msgid "Program class as used by the window manager"
-msgstr "Kelas program digunakan sebagai pengurus tetingkap"
-
-#: bonobo/bonobo-ui-init-gtk.c:137
-msgid "CLASS"
-msgstr "KELAS"
-
-#: bonobo/bonobo-ui-init-gtk.c:141
-msgid "HOST"
-msgstr "HOS"
-
-#: bonobo/bonobo-ui-init-gtk.c:145
-msgid "PORT"
-msgstr "LIANG"
-
-#: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
-msgid "STYLE"
-msgstr "GAYA"
-
-#: bonobo/bonobo-ui-init-gtk.c:157
-msgid "Gtk+ debugging flags to set"
-msgstr "Flag nyahpepijat Gtk+ untuk ditetapkan"
-
-#: bonobo/bonobo-ui-init-gtk.c:160
-msgid "Gtk+ debugging flags to unset"
-msgstr "Flag nyahpepijat Gtk+ untuk dinyahtetapkan"
-
-#: bonobo/bonobo-ui-init-gtk.c:163
-msgid "Make all warnings fatal"
-msgstr "Jadikan semua amaran fatal"
-
-#: bonobo/bonobo-ui-init-gtk.c:166
-msgid "Load an additional Gtk module"
-msgstr "Muatkan modul Gtk tambahan"
-
-#: bonobo/bonobo-ui-init-gtk.c:166
-msgid "MODULE"
-msgstr "MODUL"
-
-#: bonobo/bonobo-ui-init-gtk.c:175
-msgid "GTK+"
-msgstr "GTK+"
-
-#: bonobo/bonobo-ui-main.c:188
-msgid "Bonobo GUI support"
-msgstr "Sokongan GUI Bonobo"
-
-#: samples/bonoboui/hello.c:63
-msgid "This does nothing; it is only a demonstration."
-msgstr "Tiada apa-apa; Ini hanya demonstrasi"
-
-#: samples/bonoboui/hello.c:145
-msgid "BonoboUI-Hello."
-msgstr "BonoboUI-Hello."
-
-#: samples/bonoboui/hello.c:217
-msgid "Gnome Hello"
-msgstr "Gnome Hello"
-
-#. Create Label and put it in the Button:
-#: samples/bonoboui/hello.c:272
-msgid "Hello, World!"
-msgstr "Hello, Dunia!"
-
-#: samples/bonoboui/hello.c:312
-msgid "Cannot init libbonoboui code"
-msgstr "Gagal menginitialisasikan kod libbonoboui"
-
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
 msgstr "Perihal aplikasi ini"
@@ -341,6 +361,27 @@ msgstr "_Fail"
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
 msgstr "_Pilih"
+
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "Tiada apa-apa; Ini hanya demonstrasi"
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Hello."
+
+#: samples/bonoboui/hello.c:217
+msgid "Gnome Hello"
+msgstr "Gnome Hello"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:272
+msgid "Hello, World!"
+msgstr "Hello, Dunia!"
+
+#: samples/bonoboui/hello.c:312
+msgid "Cannot init libbonoboui code"
+msgstr "Gagal menginitialisasikan kod libbonoboui"
 
 #: samples/controls/bonobo-sample-controls.c:121
 msgid "Could not initialize Bonobo UI"

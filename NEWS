@@ -1,3 +1,15 @@
+libbonoboui 1.117.0
+
+	* Bugs fixed
+		+ file-sel control activation cleanup (Paolo Maggi)
+		+ control / plug lifecycle fixup (Michael)
+		+ auto-built help menu sync with libgnome (Michael)
+		+ toolbar style updates to sync with control center (Michael)
+		+ pass "--screen" onto multi-screen gtk+ (Balamurali Viswanathan)
+		+ object ownership transferal fixes (Michael)
+		+ more regression tests (Michael)
+		+ transient dialog fixage (Michael, Jon-Kare Hellan)
+
 libbonoboui 1.115.0
 
 	* Bugs fixed

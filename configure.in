@@ -1,7 +1,7 @@
-AC_INIT(message-of-doom)
+AC_INIT(bonobo/bonobo-ui-engine.h)
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(libbonoboui, 1.116.1)
+AM_INIT_AUTOMAKE(libbonoboui, 1.117.0)
 
 AM_MAINTAINER_MODE
 
@@ -72,5 +72,3 @@ tests/Makefile
 tests/control/Makefile
 doc/Makefile
 ])
-
-cat $srcdir/message-of-doom
