@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-10-18 12:25+0100\n"
-"PO-Revision-Date: 2002-08-03 03:06+0200\n"
+"POT-Creation-Date: 2002-11-02 15:40+0100\n"
+"PO-Revision-Date: 2002-11-02 15:41+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -152,6 +152,18 @@ msgstr "Endast text"
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "_Endast prioritetstext"
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "Debug"
+msgstr "Felsök"
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "_Dump XML"
+msgstr "_Dumpa XML"
+
+#: bonobo/bonobo-ui-engine.c:89
+msgid "Dump the entire UI's XML description to the console"
+msgstr "Dumpa hela användargränssnittets XML-beskrivning till konsollen"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
