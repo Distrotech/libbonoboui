@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
-"PO-Revision-Date: 2003-01-10 17:50+0300\n"
+"POT-Creation-Date: 2003-06-18 20:04+0400\n"
+"PO-Revision-Date: 2003-06-18 20:07+0400\n"
 "Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -90,7 +90,6 @@ msgid "Interfaces required"
 msgstr "Требуемые интерфейсы"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
@@ -299,11 +298,11 @@ msgstr "является ли панель плавающей"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Стиль обрамления вокруг панели"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
-msgstr "_Содержание Справки"
+msgstr "_Содержание справки"
 
 #: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
@@ -371,7 +370,7 @@ msgstr "Выбрать"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "_О программе"
+msgstr "_О программе..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
