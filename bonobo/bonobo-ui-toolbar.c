@@ -856,8 +856,6 @@ impl_remove (GtkContainer *container,
 
 	if (child == GTK_WIDGET (priv->popup_item))
 		priv->popup_item = NULL;
-	else if (child->parent == GTK_WIDGET (container))
-		priv->items = g_list_remove (priv->items, child);
 
 	gtk_widget_unparent (child);
 
