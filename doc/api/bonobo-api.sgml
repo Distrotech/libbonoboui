@@ -119,14 +119,12 @@
   </chapter>
 
   <chapter id="bonobo-controls">
-      <sect1>
-        <title>Controls</title>
-          &bonobo-control;
-          &bonobo-control-frame;
-          &bonobo-property-control;
-	  &bonobo-zoomable;
-	  &bonobo-zoomable-frame;
-      </sect1>
+    <title>Controls</title>
+      &bonobo-control;
+      &bonobo-control-frame;
+      &bonobo-property-control;
+      &bonobo-zoomable;
+      &bonobo-zoomable-frame;
   </chapter>
 
   <chapter id="bonobo-documents">

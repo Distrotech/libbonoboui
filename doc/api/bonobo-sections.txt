@@ -364,13 +364,13 @@ BonoboMonikerSimplePrivate
 
 <SECTION>
 <FILE>bonobo-moniker-extender</FILE>
+BonoboMonikerExtender
+BonoboMonikerExtenderClass
 BonoboMonikerExtenderFn
 bonobo_moniker_extender_new
 bonobo_moniker_find_extender
 bonobo_moniker_use_extender
 <SUBSECTION Standard>
-BonoboMonikerExtender
-BonoboMonikerExtenderClass
 bonobo_moniker_extender_get_type
 BONOBO_MONIKER_EXTENDER_TYPE
 BONOBO_MONIKER_EXTENDER
