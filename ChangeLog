@@ -1,3 +1,8 @@
+2002-01-07  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-widget.c (bonobo_widget_construct_control):
+	nail daft leak.
+
 2002-01-04  Darin Adler  <darin@bentspoon.com>
 
 	* bonobo/bonobo-ui-sync-status.c:

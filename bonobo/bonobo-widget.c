@@ -137,6 +137,7 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 				 Bonobo_UIContainer uic,
 				 CORBA_Environment *ev)
 {
+	BonoboWidget  *widget;
 	Bonobo_Control control;
 
 	/* Create the remote Control object. */
@@ -147,8 +148,12 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 		return NULL;
 	}
 
-	return bonobo_widget_construct_control_from_objref (
+	widget = bonobo_widget_construct_control_from_objref (
 		bw, control, uic, ev);
+
+	bonobo_object_release_unref (control, ev);
+
+	return widget;
 }
 
 typedef struct {
