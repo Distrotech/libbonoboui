@@ -45,7 +45,7 @@ launch_server (GnomeContainer *container, char *goadid)
 static GnomeObjectClient *
 add_cmd (GtkWidget *widget, Application *app, char *server_goadid)
 {
-	GtkWidget *frame, *socket, *w;
+	GtkWidget *frame, *w;
 	GnomeObjectClient *server;
 	GNOME_View view;
 	GNOME_View_windowid id;
@@ -62,6 +62,8 @@ add_cmd (GtkWidget *widget, Application *app, char *server_goadid)
 	gtk_container_add (GTK_CONTAINER (frame), w);
 
 	gtk_widget_show_all (frame);
+
+	gnome_component_client_activate (server);
 
 	return server;
 }
@@ -80,6 +82,11 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	GNOME_PersistStream persist;
 
 	object = add_cmd (widget, app, "component:image-x-png");
+	if (object == NULL)
+	  {
+	    gnome_warning_dialog (_("Could not launch component."));
+	    return;
+	  }
 	persist = GNOME_obj_query_interface (
 		GNOME_OBJECT (object)->object,
 		"IDL:GNOME/PersistStream:1.0", &ev);
@@ -95,7 +102,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	stream = gnome_stream_fs_open (NULL, "/tmp/a.png", GNOME_Storage_READ);
 
 	if (stream == NULL){
-		printf ("I could not open /tmp/a.png!");
+		printf ("I could not open /tmp/a.png!\n");
 		return;
 	}
 	
@@ -111,7 +118,8 @@ exit_cmd (void)
 static GnomeUIInfo container_file_menu [] = {
 	GNOMEUIINFO_ITEM_NONE(N_("_Add a new object"), NULL, add_demo_cmd),
 	GNOMEUIINFO_ITEM_NONE(N_("_Add a new image/x-png handler"), NULL, add_image_cmd),
-	GNOMEUIINFO_ITEM_STOCK (N_("Exit"), NULL, exit_cmd, GNOME_STOCK_PIXMAP_QUIT),
+	GNOMEUIINFO_SEPARATOR,
+	GNOMEUIINFO_MENU_EXIT_ITEM (exit_cmd, NULL),
 	GNOMEUIINFO_END
 };
 

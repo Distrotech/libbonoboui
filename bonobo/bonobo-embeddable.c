@@ -9,6 +9,7 @@
 #include <gtk/gtkmarshal.h>
 #include <bonobo/bonobo.h>
 #include <bonobo/gnome-main.h>
+#include <bonobo/gnome-object.h>
 #include <bonobo/gnome-component.h>
 
 static GnomeObjectClass *gnome_component_parent_class;
@@ -251,7 +252,8 @@ gnome_component_class_init (GnomeComponentClass *class)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
-	gnome_component_parent_class = gtk_type_class (gtk_object_get_type ());
+	gnome_component_parent_class =
+		gtk_type_class (gnome_object_get_type ());
 
 	component_signals [DO_VERB] =
                 gtk_signal_new ("do_verb",
@@ -261,7 +263,7 @@ gnome_component_class_init (GnomeComponentClass *class)
                                 gtk_marshal_NONE__INT_POINTER,
                                 GTK_TYPE_NONE, 2,
                                 GTK_TYPE_INT,
-				GTK_TYPE_STRING); 
+				GTK_TYPE_STRING);
 
 	component_signals [HOST_NAME_CHANGED] =
                 gtk_signal_new ("host_name_changed",
@@ -271,6 +273,9 @@ gnome_component_class_init (GnomeComponentClass *class)
                                 gtk_marshal_NONE__NONE,
                                 GTK_TYPE_NONE, 0);
 	
+	gtk_object_class_add_signals (object_class, component_signals,
+				      LAST_SIGNAL);
+
 	object_class->destroy = gnome_component_destroy;
 }
 
