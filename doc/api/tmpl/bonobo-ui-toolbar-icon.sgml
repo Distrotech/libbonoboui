@@ -19,6 +19,8 @@ BonoboUIToolbarIcon
 
 </para>
 
+@BONOBO_UI_TOOLBAR_ICON_SIMPLE: 
+@BONOBO_UI_TOOLBAR_ICON_COLOR: 
 
 <!-- ##### MACRO BONOBO_TYPE_UI_TOOLBAR_ICON ##### -->
 <para>
@@ -67,24 +69,16 @@ BonoboUIToolbarIcon
 @obj: 
 
 
-<!-- ##### STRUCT BonoboUIToolbarIcon ##### -->
+<!-- ##### TYPEDEF BonoboUIToolbarIcon ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboUIToolbarIconClass ##### -->
+<!-- ##### TYPEDEF BonoboUIToolbarIconClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### FUNCTION bonobo_ui_toolbar_icon_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_ui_toolbar_icon_new ##### -->
@@ -279,6 +273,41 @@ BonoboUIToolbarIcon
 @gpixmap: 
 @Returns: 
 
+
+<!-- ##### ARG BonoboUIToolbarIcon:pixbuf ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG BonoboUIToolbarIcon:pixbuf_width ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG BonoboUIToolbarIcon:pixbuf_height ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG BonoboUIToolbarIcon:file ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG BonoboUIToolbarIcon:xpm_d ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG BonoboUIToolbarIcon:draw_mode ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG BonoboUIToolbarIcon:alpha_threshold ##### -->
+<para>
+
+</para>
 
 <!-- ##### ARG BonoboUIToolbarIcon:pixbuf ##### -->
 <para>

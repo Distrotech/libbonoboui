@@ -15,7 +15,7 @@
 
 BEGIN_GNOME_DECLS
 
-typedef struct _BonoboPropertyControl BonoboPropertyControl;
+typedef struct _BonoboPropertyControl        BonoboPropertyControl;
 typedef struct _BonoboPropertyControlPrivate BonoboPropertyControlPrivate;
 
 #define BONOBO_PROPERTY_CONTROL_TYPE        (bonobo_property_control_get_type ())

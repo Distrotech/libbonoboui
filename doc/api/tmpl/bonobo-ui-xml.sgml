@@ -58,6 +58,10 @@ BonoboUIXml
 
 </para>
 
+@BONOBO_UI_XML_OK: 
+@BONOBO_UI_XML_BAD_PARAM: 
+@BONOBO_UI_XML_INVALID_PATH: 
+@BONOBO_UI_XML_INVALID_XML: 
 
 <!-- ##### STRUCT BonoboUIXml ##### -->
 <para>
@@ -65,7 +69,7 @@ BonoboUIXml
 </para>
 
 
-<!-- ##### STRUCT BonoboUIXmlData ##### -->
+<!-- ##### TYPEDEF BonoboUIXmlData ##### -->
 <para>
 
 </para>
@@ -115,7 +119,7 @@ BonoboUIXml
 @child: 
 
 
-<!-- ##### STRUCT BonoboUIXmlClass ##### -->
+<!-- ##### TYPEDEF BonoboUIXmlClass ##### -->
 <para>
 
 </para>

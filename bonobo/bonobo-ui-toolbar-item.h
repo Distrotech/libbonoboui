@@ -30,17 +30,15 @@ typedef enum {
 } BonoboUIToolbarItemStyle;
 
 
-typedef struct _BonoboUIToolbarItem        BonoboUIToolbarItem;
 typedef struct _BonoboUIToolbarItemPrivate BonoboUIToolbarItemPrivate;
-typedef struct _BonoboUIToolbarItemClass   BonoboUIToolbarItemClass;
 
-struct _BonoboUIToolbarItem {
+typedef struct {
 	GtkBin parent;
 
 	BonoboUIToolbarItemPrivate *priv;
-};
+} BonoboUIToolbarItem;
 
-struct _BonoboUIToolbarItemClass {
+typedef struct {
 	GtkBinClass parent_class;
 
 	/* Virtual method */
@@ -61,7 +59,7 @@ struct _BonoboUIToolbarItemClass {
 	void (* state_altered)   (BonoboUIToolbarItem     *item,
 				  const char              *new_state);
 	void (* activate)        (BonoboUIToolbarItem     *item);
-};
+} BonoboUIToolbarItemClass;
 
 
 GtkType                   bonobo_ui_toolbar_item_get_type         (void);

@@ -25,7 +25,6 @@ BEGIN_GNOME_DECLS
 
 typedef struct _BonoboView BonoboView;
 typedef struct _BonoboViewPrivate BonoboViewPrivate;
-typedef struct _BonoboViewClass BonoboViewClass;
 
 #include <bonobo/bonobo-embeddable.h>
 
@@ -40,7 +39,7 @@ struct _BonoboView {
 	BonoboViewPrivate *priv;
 };
 
-struct _BonoboViewClass {
+typedef struct {
 	BonoboControlClass parent_class;
 
 	/*
@@ -49,7 +48,7 @@ struct _BonoboViewClass {
 	void (*do_verb)                  (BonoboView *view,
 					  const CORBA_char *verb_name);
 	void (*set_zoom_factor)          (BonoboView *view, double zoom);
-};
+} BonoboViewClass;
 
 GtkType               bonobo_view_get_type               (void);
 BonoboView           *bonobo_view_construct              (BonoboView         *view,

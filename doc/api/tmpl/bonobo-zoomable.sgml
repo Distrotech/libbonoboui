@@ -53,33 +53,19 @@ BonoboZoomable
 @k: 
 
 
-<!-- ##### STRUCT BonoboZoomable ##### -->
+<!-- ##### TYPEDEF BonoboZoomable ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboZoomablePrivate ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT BonoboZoomableClass ##### -->
+<!-- ##### TYPEDEF BonoboZoomableClass ##### -->
 <para>
 
 </para>
 
 
 <!-- ##### FUNCTION bonobo_zoomable_get_epv ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_zoomable_get_type ##### -->
 <para>
 
 </para>

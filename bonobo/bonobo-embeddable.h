@@ -28,7 +28,8 @@ BEGIN_GNOME_DECLS
 
 struct _BonoboEmbeddable;
 struct _BonoboEmbeddablePrivate;
-typedef struct _BonoboEmbeddable BonoboEmbeddable;
+typedef struct _BonoboEmbeddable        BonoboEmbeddable;
+typedef struct _BonoboEmbeddableClass   BonoboEmbeddableClass;
 typedef struct _BonoboEmbeddablePrivate BonoboEmbeddablePrivate;
 
 #include <bonobo/bonobo-view.h>
@@ -55,7 +56,7 @@ struct _BonoboEmbeddable {
 	BonoboEmbeddablePrivate *priv;
 };
 
-typedef struct {
+struct _BonoboEmbeddableClass {
 	BonoboObjectClass parent_class;
 
 	/*
@@ -63,7 +64,7 @@ typedef struct {
 	 */
 	void (*host_name_changed)  (BonoboEmbeddable *comp, const char *hostname);
 	void (*uri_changed)        (BonoboEmbeddable *comp, const char *uri);
-} BonoboEmbeddableClass;
+};
 
 GtkType           bonobo_embeddable_get_type         (void);
 BonoboEmbeddable *bonobo_embeddable_new              (BonoboViewFactory  factory,

@@ -57,6 +57,7 @@ libbonobo_la_SOURCES =			\
 	bonobo-exception.c		\
 	bonobo-object-directory.c	\
 	bonobo-generic-factory.c	\
+	bonobo-item-handler.c		\
 	bonobo-listener.c		\
 	bonobo-main.c			\
 	bonobo-moniker.c		\
@@ -97,7 +98,6 @@ libbonoboinclude_HEADERS =			\
 	bonobo-control.h			\
 	bonobo-context.h			\
 	bonobo-desktop-window.h			\
-	bonobo-embeddable-factory.h		\
 	bonobo-embeddable.h			\
 	bonobo-event-source.h			\
 	bonobo-exception.h			\

@@ -53,30 +53,16 @@ BonoboZoomableFrame
 @k: 
 
 
-<!-- ##### STRUCT BonoboZoomableFrame ##### -->
+<!-- ##### TYPEDEF BonoboZoomableFrame ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboZoomableFramePrivate ##### -->
+<!-- ##### TYPEDEF BonoboZoomableFrameClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### STRUCT BonoboZoomableFrameClass ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION bonobo_zoomable_frame_get_epv ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_zoomable_frame_get_type ##### -->
@@ -244,6 +230,36 @@ BonoboZoomableFrame
 @zframe: 
 @Returns: 
 
+
+<!-- ##### SIGNAL BonoboZoomableFrame::zoom-level-changed ##### -->
+<para>
+
+</para>
+
+@bonobozoomableframe: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL BonoboZoomableFrame::zoom-parameters-changed ##### -->
+<para>
+
+</para>
+
+@bonobozoomableframe: the object which received the signal.
+
+<!-- ##### SIGNAL BonoboZoomableFrame::zoom-level-changed ##### -->
+<para>
+
+</para>
+
+@bonobozoomableframe: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL BonoboZoomableFrame::zoom-parameters-changed ##### -->
+<para>
+
+</para>
+
+@bonobozoomableframe: the object which received the signal.
 
 <!-- ##### SIGNAL BonoboZoomableFrame::zoom-level-changed ##### -->
 <para>

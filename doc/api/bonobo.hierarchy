@@ -24,6 +24,11 @@ GtkObject
     BonoboUIContainer
     BonoboZoomableFrame
     BonoboZoomable
+    BonoboListener
+    BonoboEventSource
+    BonoboItemHandler
+    BonoboPrint
+    BonoboPropertyControl
   GnomeCanvasItem
     BonoboCanvasItem
   GtkWidget
@@ -37,10 +42,15 @@ GtkObject
         BonoboUIToolbarItem
           BonoboUIToolbarButtonItem
             BonoboUIToolbarToggleButtonItem
+              BonoboUIToolbarPopupItem
+            BonoboUIToolbarControlItem
+          BonoboUIToolbarSeparatorItem
         BonoboWidget
         BonoboWrapper
       BonoboSocket
+      BonoboUIToolbar
     GtkMisc
       BonoboUIToolbarIcon
   BonoboTransient
   BonoboUIXml
+  BonoboPrintClient

@@ -19,6 +19,9 @@ bonobo-object-io
 
 </para>
 
+@GNOME_IO_OK: 
+@GNOME_IOERR_GENERAL: 
+@GNOME_IOERR_PERSIST_NOT_SUPPORTED: 
 
 <!-- ##### FUNCTION bonobo_persist_stream_save_object_iid ##### -->
 <para>

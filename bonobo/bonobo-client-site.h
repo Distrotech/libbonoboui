@@ -25,7 +25,7 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_CLIENT_SITE(o)       (GTK_CHECK_TYPE ((o), BONOBO_CLIENT_SITE_TYPE))
 #define BONOBO_IS_CLIENT_SITE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CLIENT_SITE_TYPE))
 
-typedef struct _BonoboClientSite BonoboClientSite;
+typedef struct _BonoboClientSite        BonoboClientSite;
 typedef struct _BonoboClientSitePrivate BonoboClientSitePrivate;
 
 #include <bonobo/bonobo-view-frame.h>

@@ -22,30 +22,30 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_CANVAS_COMPONENT(o)       (GTK_CHECK_TYPE ((o), BONOBO_CANVAS_COMPONENT_TYPE))
 #define BONOBO_IS_CANVAS_COMPONENT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CANVAS_COMPONENT_TYPE))
 
-typedef struct _BonoboCanvasComponent        BonoboCanvasComponent;
 typedef struct _BonoboCanvasComponentPrivate BonoboCanvasComponentPrivate;
-typedef struct _BonoboCanvasComponentClass   BonoboCanvasComponentClass;
 
-struct _BonoboCanvasComponent {
+typedef struct {
 	BonoboObject base;
 	BonoboCanvasComponentPrivate *priv;
-};
+} BonoboCanvasComponent;
 
-struct _BonoboCanvasComponentClass {
+typedef struct {
 	BonoboObjectClass parent_class;
 
 	/*
 	 * Signals
 	 */
-	 void (*set_bounds) (BonoboCanvasComponent *component, Bonobo_Canvas_DRect *bbox, CORBA_Environment *ev);
-};
+	 void (*set_bounds) (BonoboCanvasComponent *component,
+			     Bonobo_Canvas_DRect *bbox,
+			     CORBA_Environment *ev);
+} BonoboCanvasComponentClass;
 
 GtkType           bonobo_canvas_component_get_type      (void);
 Bonobo_Canvas_Component bonobo_canvas_component_object_create (BonoboObject *object);
 void              bonobo_canvas_component_set_proxy     (BonoboCanvasComponent *comp,
 							Bonobo_Canvas_ComponentProxy proxy);
 BonoboCanvasComponent *bonobo_canvas_component_construct (BonoboCanvasComponent *comp,
-							Bonobo_Canvas_Component    ccomp,
+							Bonobo_Canvas_Component  corba_canvas_comp,
 							GnomeCanvasItem     *item);
 BonoboCanvasComponent *bonobo_canvas_component_new (GnomeCanvasItem *item);
 GnomeCanvasItem      *bonobo_canvas_component_get_item  (BonoboCanvasComponent *comp);

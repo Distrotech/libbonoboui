@@ -37,23 +37,21 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_ZOOMABLE_FRAME(o)		(GTK_CHECK_TYPE ((o), BONOBO_ZOOMABLE_FRAME_TYPE))
 #define BONOBO_IS_ZOOMABLE_FRAME_CLASS(k)	(GTK_CHECK_CLASS_TYPE ((k), BONOBO_ZOOMABLE_FRAME_TYPE))
 
-typedef struct _BonoboZoomableFrame		BonoboZoomableFrame;
 typedef struct _BonoboZoomableFramePrivate	BonoboZoomableFramePrivate;
-typedef struct _BonoboZoomableFrameClass	BonoboZoomableFrameClass;
 
-struct _BonoboZoomableFrame {
+typedef struct {
         BonoboObject			object;
 
 	BonoboZoomableFramePrivate	*priv;
-};
+} BonoboZoomableFrame;
 
-struct _BonoboZoomableFrameClass {
+typedef struct {
 	BonoboObjectClass		parent;
 
 	void (*zoom_level_changed)	(BonoboZoomableFrame *zframe,
 					 float zoom_level);
 	void (*zoom_parameters_changed)	(BonoboZoomableFrame *zframe);
-};
+} BonoboZoomableFrameClass;
 
 POA_Bonobo_ZoomableFrame__epv *bonobo_zoomable_frame_get_epv  (void);
 

@@ -163,6 +163,7 @@ bonobo_property_control_init (BonoboPropertyControl *property_control)
 /**
  * bonobo_property_control_get_epv:
  *
+ * Returns: The EPV for the default BonoboPropertyControl implementation.  
  */
 POA_Bonobo_PropertyControl__epv *
 bonobo_property_control_get_epv (void)

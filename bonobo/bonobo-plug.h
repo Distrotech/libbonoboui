@@ -40,22 +40,16 @@ extern "C" {
 #define BONOBO_PLUG_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_plug_get_type (), BonoboPlugClass)
 #define BONOBO_IS_PLUG(obj)       GTK_CHECK_TYPE (obj, bonobo_plug_get_type ())
 
-
-typedef struct _BonoboPlug        BonoboPlug;
-typedef struct _BonoboPlugClass   BonoboPlugClass;
-
-
-struct _BonoboPlug {
+typedef struct {
 	GtkWindow window;
 
 	GdkWindow *socket_window;
 	gint same_app;
-};
+} BonoboPlug;
 
-struct _BonoboPlugClass {
+typedef struct {
 	GtkWindowClass parent_class;
-};
-
+} BonoboPlugClass;
 
 guint      bonobo_plug_get_type  (void);
 void       bonobo_plug_construct (BonoboPlug *plug, guint32 socket_id);

@@ -225,6 +225,8 @@ bonobo_view_frame_finalize (GtkObject *object)
 
 /**
  * bonobo_view_frame_get_epv:
+ *
+ * Returns: The EPV for the default BonoboViewFrame implementation.  
  */
 POA_Bonobo_ViewFrame__epv *
 bonobo_view_frame_get_epv (void)

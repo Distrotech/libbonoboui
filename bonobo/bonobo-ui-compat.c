@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/**
+/*
  * bonobo-ui-compat.c: Compatibility functions for the old GnomeUI stuff,
  *                    and the old Bonobo UI handler API.
  *

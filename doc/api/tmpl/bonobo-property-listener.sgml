@@ -14,7 +14,7 @@ BonoboPropertyListener
 
 </para>
 
-<!-- ##### STRUCT BonoboPropertyListener ##### -->
+<!-- ##### TYPEDEF BonoboPropertyListener ##### -->
 <para>
 
 </para>
@@ -59,18 +59,10 @@ BonoboPropertyListener
 @k: 
 
 
-<!-- ##### STRUCT BonoboPropertyListenerClass ##### -->
+<!-- ##### TYPEDEF BonoboPropertyListenerClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### FUNCTION bonobo_property_listener_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_property_listener_get_epv ##### -->

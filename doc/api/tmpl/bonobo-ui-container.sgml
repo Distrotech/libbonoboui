@@ -53,24 +53,16 @@ BonoboUIContainer
 @k: 
 
 
-<!-- ##### STRUCT BonoboUIContainer ##### -->
+<!-- ##### TYPEDEF BonoboUIContainer ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboUIContainerClass ##### -->
+<!-- ##### TYPEDEF BonoboUIContainerClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### FUNCTION bonobo_ui_container_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_ui_container_get_epv ##### -->
@@ -115,5 +107,14 @@ BonoboUIContainer
 
 @container: 
 @win: 
+
+
+<!-- ##### FUNCTION bonobo_ui_container_get_win ##### -->
+<para>
+
+</para>
+
+@container: 
+@Returns: 
 
 

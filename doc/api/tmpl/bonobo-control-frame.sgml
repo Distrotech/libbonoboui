@@ -11,7 +11,7 @@ BonoboControlFrame
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+  #BonoboWidget, bonobo_widget_new()
 </para>
 
 <!-- ##### MACRO BONOBO_CONTROL_FRAME_TYPE ##### -->
@@ -53,19 +53,13 @@ BonoboControlFrame
 @k: 
 
 
-<!-- ##### STRUCT BonoboControlFramePrivate ##### -->
+<!-- ##### TYPEDEF BonoboControlFrame ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboControlFrame ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT BonoboControlFrameClass ##### -->
+<!-- ##### TYPEDEF BonoboControlFrameClass ##### -->
 <para>
 
 </para>
@@ -222,14 +216,6 @@ BonoboControlFrame
 @control_frame: 
 @corba_control_frame: 
 @uih: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_control_frame_get_type ##### -->
-<para>
-
-</para>
-
 @Returns: 
 
 

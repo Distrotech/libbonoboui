@@ -4,7 +4,6 @@ BonoboPlug
 <!-- ##### SECTION Short_Description ##### -->
 Toplevel for embedding into other processes.
 
-
 <!-- ##### SECTION Long_Description ##### -->
 <para>
    This is an internal support routine of the X code in Bonobo.
@@ -56,24 +55,16 @@ inside the first applications window.
 @obj: 
 
 
-<!-- ##### STRUCT BonoboPlug ##### -->
+<!-- ##### TYPEDEF BonoboPlug ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboPlugClass ##### -->
+<!-- ##### TYPEDEF BonoboPlugClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### FUNCTION bonobo_plug_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_plug_construct ##### -->

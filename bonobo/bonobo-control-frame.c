@@ -404,6 +404,8 @@ bonobo_control_frame_activated (BonoboControlFrame *control_frame, gboolean stat
 
 /**
  * bonobo_control_frame_get_epv:
+ *
+ * Returns: The EPV for the default BonoboControlFrame implementation. 
  */
 POA_Bonobo_ControlFrame__epv *
 bonobo_control_frame_get_epv (void)

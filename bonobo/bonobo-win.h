@@ -21,19 +21,17 @@
 #define BONOBO_IS_WINDOW(o)       (GTK_CHECK_TYPE ((o), BONOBO_TYPE_WINDOW))
 #define BONOBO_IS_WINDOW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_WINDOW))
 
-typedef struct _BonoboWindow        BonoboWindow;
 typedef struct _BonoboWindowPrivate BonoboWindowPrivate;
-typedef struct _BonoboWindowClass   BonoboWindowClass;
 
-struct _BonoboWindow {
+typedef struct {
 	GtkWindow          parent;
 	
 	BonoboWindowPrivate  *priv;
-};
+} BonoboWindow;
 
-struct _BonoboWindowClass {
+typedef struct {
 	GtkWindowClass    parent_class;
-};
+} BonoboWindowClass;
 
 GtkType              bonobo_window_get_type                       (void);
 

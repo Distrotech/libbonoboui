@@ -28,19 +28,17 @@ typedef enum {
 	BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_NONE
 } BonoboUIToolbarControlDisplay;
 
-typedef struct _BonoboUIToolbarControlItem        BonoboUIToolbarControlItem;
 typedef struct _BonoboUIToolbarControlItemPrivate BonoboUIToolbarControlItemPrivate;
-typedef struct _BonoboUIToolbarControlItemClass   BonoboUIToolbarControlItemClass;
 
-struct _BonoboUIToolbarControlItem {
+typedef struct {
 	BonoboUIToolbarButtonItem parent;
 
 	BonoboUIToolbarControlItemPrivate *priv;
-};
+} BonoboUIToolbarControlItem;
 
-struct _BonoboUIToolbarControlItemClass {
+typedef struct {
 	BonoboUIToolbarButtonItemClass parent_class;
-};
+} BonoboUIToolbarControlItemClass;
 
 GtkType       bonobo_ui_toolbar_control_item_get_type    (void);
 GtkWidget    *bonobo_ui_toolbar_control_item_new         (Bonobo_Control control_ref);

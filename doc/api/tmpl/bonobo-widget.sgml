@@ -127,24 +127,10 @@ Simplified embedding of widgets in Bonobo.
 </para>
 
 
-<!-- ##### STRUCT BonoboWidgetPrivate ##### -->
+<!-- ##### TYPEDEF BonoboWidgetClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### STRUCT BonoboWidgetClass ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION bonobo_widget_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_widget_get_server ##### -->

@@ -88,6 +88,8 @@ impl_Bonobo_ZoomableFrame_onParametersChanged (PortableServer_Servant  servant,
 
 /**
  * bonobo_zoomable_frame_get_epv:
+ *
+ * Returns: The EPV for the default BonoboZoomableFrame implementation.  
  */
 POA_Bonobo_ZoomableFrame__epv *
 bonobo_zoomable_frame_get_epv (void)

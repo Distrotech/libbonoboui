@@ -174,6 +174,8 @@ bonobo_view_destroy (GtkObject *object)
 
 /**
  * bonobo_view_get_epv:
+ *
+ * Returns: The EPV for the default BonoboView implementation.  
  */
 POA_Bonobo_View__epv *
 bonobo_view_get_epv (void)

@@ -31,23 +31,21 @@ enum _BonoboUIToolbarStyle {
 };
 typedef enum _BonoboUIToolbarStyle BonoboUIToolbarStyle;
 
-typedef struct _BonoboUIToolbar        BonoboUIToolbar;
 typedef struct _BonoboUIToolbarPrivate BonoboUIToolbarPrivate;
-typedef struct _BonoboUIToolbarClass   BonoboUIToolbarClass;
 
-struct _BonoboUIToolbar {
+typedef struct {
 	GtkContainer parent;
 
 	BonoboUIToolbarPrivate *priv;
-};
+} BonoboUIToolbar;
 
-struct _BonoboUIToolbarClass {
+typedef struct {
 	GtkContainerClass parent_class;
 
 	void (* set_orientation) (BonoboUIToolbar *toolbar,
 				  GtkOrientation orientation);
 	void (* style_changed)   (BonoboUIToolbar *toolbar);
-};
+} BonoboUIToolbarClass;
 
 
 GtkType               bonobo_ui_toolbar_get_type         (void);

@@ -53,30 +53,16 @@ BonoboUIToolbarToggleButtonItem
 @klass: 
 
 
-<!-- ##### STRUCT BonoboUIToolbarToggleButtonItem ##### -->
+<!-- ##### TYPEDEF BonoboUIToolbarToggleButtonItem ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboUIToolbarToggleButtonItemPrivate ##### -->
+<!-- ##### TYPEDEF BonoboUIToolbarToggleButtonItemClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### STRUCT BonoboUIToolbarToggleButtonItemClass ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION bonobo_ui_toolbar_toggle_button_item_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_ui_toolbar_toggle_button_item_construct ##### -->

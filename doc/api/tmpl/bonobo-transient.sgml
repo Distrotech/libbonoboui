@@ -207,29 +207,27 @@ init_transient ()
 @k: 
 
 
-<!-- ##### STRUCT BonoboTransientPriv ##### -->
+<!-- ##### TYPEDEF BonoboTransient ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboTransient ##### -->
+<!-- ##### TYPEDEF BonoboTransientClass ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboTransientClass ##### -->
+<!-- ##### USER_FUNCTION BonoboTransientServantNew ##### -->
 <para>
 
 </para>
 
-
-<!-- ##### FUNCTION PortableServer_Servant ##### -->
-<para>
-
-</para>
-
+@Param1: 
+@Param2: 
+@name: 
+@data: 
 @Returns: 
 
 
@@ -247,25 +245,21 @@ init_transient ()
 
 </para>
 
+@poa: 
 @new_servant: 
 @destroy_servant: 
 @data: 
 @Returns: 
 
+
 <!-- ##### FUNCTION bonobo_transient_create_objref ##### -->
 <para>
 </para>
+
 @transient: 
 @iface_name: 
 @name: 
 @ev: 
-@Returns:
-
-<!-- ##### FUNCTION bonobo_transient_get_type ##### -->
-<para>
-
-</para>
-
 @Returns: 
 
 

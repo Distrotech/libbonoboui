@@ -39,19 +39,17 @@ extern "C" {
 #define BONOBO_SOCKET_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_socket_get_type (), BonoboSocketClass)
 #define BONOBO_IS_SOCKET(obj)       GTK_CHECK_TYPE (obj, bonobo_socket_get_type ())
 
-typedef struct _BonoboSocket        BonoboSocket;
-typedef struct _BonoboSocketClass   BonoboSocketClass;
 typedef struct _BonoboSocketPrivate BonoboSocketPrivate;
 
-struct _BonoboSocket {
+typedef struct {
 	GtkContainer container;
 
 	BonoboSocketPrivate *priv;
-};
+} BonoboSocket;
 
-struct _BonoboSocketClass {
+typedef struct {
 	GtkContainerClass parent_class;
-};
+} BonoboSocketClass;
 
 
 GtkWidget*     bonobo_socket_new         (void);

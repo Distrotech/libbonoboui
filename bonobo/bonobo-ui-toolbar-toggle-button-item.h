@@ -23,19 +23,17 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_CLASS(klass)  (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR_TOGGLE_BUTTON_ITEM))
 
 
-typedef struct _BonoboUIToolbarToggleButtonItem        BonoboUIToolbarToggleButtonItem;
 typedef struct _BonoboUIToolbarToggleButtonItemPrivate BonoboUIToolbarToggleButtonItemPrivate;
-typedef struct _BonoboUIToolbarToggleButtonItemClass   BonoboUIToolbarToggleButtonItemClass;
 
-struct _BonoboUIToolbarToggleButtonItem {
+typedef struct {
 	BonoboUIToolbarButtonItem parent;
-};
+} BonoboUIToolbarToggleButtonItem;
 
-struct _BonoboUIToolbarToggleButtonItemClass {
+typedef struct {
 	BonoboUIToolbarButtonItemClass parent_class;
 
 	void (* toggled) (BonoboUIToolbarToggleButtonItem *toggle_button_item);
-};
+} BonoboUIToolbarToggleButtonItemClass;
 
 
 GtkType    bonobo_ui_toolbar_toggle_button_item_get_type   (void);

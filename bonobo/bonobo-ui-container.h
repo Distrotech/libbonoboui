@@ -18,19 +18,16 @@
 #define BONOBO_IS_UI_CONTAINER(o)       (GTK_CHECK_TYPE ((o), BONOBO_UI_CONTAINER_TYPE))
 #define BONOBO_IS_UI_CONTAINER_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_UI_CONTAINER_TYPE))
 
-typedef struct _BonoboUIContainer        BonoboUIContainer;
-typedef struct _BonoboUIContainerClass   BonoboUIContainerClass;
-
-struct _BonoboUIContainer {
+typedef struct {
 	BonoboObject base;
 
 	int          flags;
 	BonoboWindow   *win;
-};
+} BonoboUIContainer;
 
-struct _BonoboUIContainerClass {
+typedef struct {
 	BonoboObjectClass parent;
-};
+} BonoboUIContainerClass;
 
 GtkType                      bonobo_ui_container_get_type            (void);
 POA_Bonobo_UIContainer__epv *bonobo_ui_container_get_epv             (void);

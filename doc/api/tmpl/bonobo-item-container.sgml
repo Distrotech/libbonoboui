@@ -11,7 +11,7 @@ BonoboItemContainer
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+   #BonoboItemHandler
 </para>
 
 <!-- ##### MACRO BONOBO_ITEM_CONTAINER_TYPE ##### -->
@@ -59,30 +59,16 @@ BonoboItemContainer
 </para>
 
 
-<!-- ##### STRUCT BonoboItemContainerPrivate ##### -->
+<!-- ##### TYPEDEF BonoboItemContainer ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboItemContainer ##### -->
+<!-- ##### TYPEDEF BonoboItemContainerClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### STRUCT BonoboItemContainerClass ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION bonobo_item_container_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_item_container_new ##### -->

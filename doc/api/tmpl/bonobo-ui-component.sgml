@@ -59,12 +59,6 @@ BonoboUIComponent
 </para>
 
 
-<!-- ##### STRUCT BonoboUIComponentPrivate ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### USER_FUNCTION BonoboUIListenerFn ##### -->
 <para>
 
@@ -87,18 +81,10 @@ BonoboUIComponent
 @cname: 
 
 
-<!-- ##### STRUCT BonoboUIComponentClass ##### -->
+<!-- ##### TYPEDEF BonoboUIComponentClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### FUNCTION bonobo_ui_component_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_construct ##### -->
@@ -442,7 +428,7 @@ BonoboUIComponent
 @Returns: 
 
 
-<!-- ##### STRUCT BonoboUIVerb ##### -->
+<!-- ##### TYPEDEF BonoboUIVerb ##### -->
 <para>
 
 </para>

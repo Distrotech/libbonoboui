@@ -1,4 +1,4 @@
-/**
+/*
  * bonobo-canvas-component.c: implements the CORBA interface for
  * the Bonobo::Canvas:Item interface used in Bonobo::Views.
  *
@@ -550,6 +550,7 @@ gcc_set_bounds (PortableServer_Servant    servant,
 /**
  * bonobo_canvas_component_get_epv:
  *
+ * Returns: The EPV for the BonoboCanvasComponent.
  */
 POA_Bonobo_Canvas_Component__epv *
 bonobo_canvas_component_get_epv (void)
@@ -678,9 +679,9 @@ bonobo_canvas_component_object_create (BonoboObject *object)
  * Returns: The BonoboCanvasComponent.
  */
 BonoboCanvasComponent *
-bonobo_canvas_component_construct (BonoboCanvasComponent *comp,
-				  Bonobo_Canvas_Component     corba_canvas_comp,
-				  GnomeCanvasItem      *item)
+bonobo_canvas_component_construct (BonoboCanvasComponent  *comp,
+				  Bonobo_Canvas_Component  corba_canvas_comp,
+				  GnomeCanvasItem         *item)
 {
 	g_return_val_if_fail (comp != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CANVAS_COMPONENT (comp), NULL);

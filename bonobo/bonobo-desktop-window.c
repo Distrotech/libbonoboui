@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/**
+/*
  * Bonobo Desktop Window Control implementation.
  * Enables applications to export their geometry control through CORBA.
  *
@@ -149,6 +149,8 @@ impl_Desktop_Window_getWindowId (PortableServer_Servant servant, CORBA_Environme
 
 /**
  * bonobo_desktop_window_get_epv:
+ *
+ * Returns: The EPV for the default DekstopWindow implementation. 
  */
 POA_Bonobo_Desktop_Window__epv *
 bonobo_desktop_window_get_epv (void)

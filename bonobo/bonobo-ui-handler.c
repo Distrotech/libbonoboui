@@ -992,6 +992,8 @@ bonobo_ui_handler_path_get_parent (const char *path)
 
 /**
  * bonobo_ui_handler_get_epv:
+ *
+ * Returns: The EPV for the default BonoboUIHandler implementation.  
  */
 POA_Bonobo_UIHandler__epv *
 bonobo_ui_handler_get_epv (void)

@@ -84,6 +84,7 @@ gpointer  arg2
 <RETURNS>void</RETURNS>
 BonoboObject *bonoboobject
 gpointer  arg1
+gpointer  arg2
 </SIGNAL>
 
 <SIGNAL>
@@ -278,5 +279,61 @@ BonoboZoomable *bonobozoomable
 <NAME>BonoboZoomable::zoom-to-default</NAME>
 <RETURNS>void</RETURNS>
 BonoboZoomable *bonobozoomable
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboListener::event-notify</NAME>
+<RETURNS>void</RETURNS>
+BonoboListener *bonobolistener
+gpointer  arg1
+gpointer  arg2
+gpointer  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboPropertyControl::action</NAME>
+<RETURNS>void</RETURNS>
+BonoboPropertyControl *bonobopropertycontrol
+gint  arg1
+GtkEnum  arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIToolbar::set-orientation</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIToolbar *bonobouitoolbar
+gint  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIToolbar::set-style</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIToolbar *bonobouitoolbar
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboZoomableFrame::zoom-level-changed</NAME>
+<RETURNS>void</RETURNS>
+BonoboZoomableFrame *bonobozoomableframe
+gfloat  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboZoomableFrame::zoom-parameters-changed</NAME>
+<RETURNS>void</RETURNS>
+BonoboZoomableFrame *bonobozoomableframe
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboZoomableFrame::zoom-level-changed</NAME>
+<RETURNS>void</RETURNS>
+BonoboZoomableFrame *bonobozoomableframe
+gfloat  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboZoomableFrame::zoom-parameters-changed</NAME>
+<RETURNS>void</RETURNS>
+BonoboZoomableFrame *bonobozoomableframe
 </SIGNAL>
 

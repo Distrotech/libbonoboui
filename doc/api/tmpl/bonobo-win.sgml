@@ -29,6 +29,14 @@ BonoboWin
 @o: 
 
 
+<!-- ##### MACRO BONOBO_IS_WINDOW ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
 <!-- ##### MACRO BONOBO_WINDOW_CLASS ##### -->
 <para>
 
@@ -37,15 +45,7 @@ BonoboWin
 @k: 
 
 
-<!-- ##### MACRO BONOBO_IS_WIN ##### -->
-<para>
-
-</para>
-
-@o: 
-
-
-<!-- ##### MACRO BONOBO_IS_WIN_CLASS ##### -->
+<!-- ##### MACRO BONOBO_IS_WINDOW_CLASS ##### -->
 <para>
 
 </para>
@@ -53,30 +53,16 @@ BonoboWin
 @k: 
 
 
-<!-- ##### STRUCT BonoboWindow ##### -->
+<!-- ##### TYPEDEF BonoboWindow ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboWindowPrivate ##### -->
+<!-- ##### TYPEDEF BonoboWindowClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### STRUCT BonoboWindowClass ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION bonobo_window_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_window_construct ##### -->
@@ -241,6 +227,15 @@ BonoboWin
 @Returns: 
 
 
+<!-- ##### FUNCTION bonobo_window_set_ui_container ##### -->
+<para>
+
+</para>
+
+@win: 
+@container: 
+
+
 <!-- ##### FUNCTION bonobo_window_dump ##### -->
 <para>
 
@@ -296,5 +291,31 @@ BonoboWin
 
 @win: 
 @path: 
+
+
+<!-- ##### FUNCTION bonobo_window_deregister_component_by_ref ##### -->
+<para>
+
+</para>
+
+@win: 
+@component: 
+
+
+<!-- ##### FUNCTION bonobo_window_deregister_dead_components ##### -->
+<para>
+
+</para>
+
+@win: 
+
+
+<!-- ##### FUNCTION bonobo_window_deregister_get_component_names ##### -->
+<para>
+
+</para>
+
+@win: 
+@Returns: 
 
 

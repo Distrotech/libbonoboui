@@ -393,6 +393,11 @@ bonobo_ui_component_destroy (GtkObject *object)
 	comp->priv = NULL;
 }
 
+/**
+ * bonobo_ui_component_get_epv:
+ *
+ * Returns: The EPV for the default BonoboUIComponent implementation.  
+ */
 POA_Bonobo_UIComponent__epv *
 bonobo_ui_component_get_epv (void)
 {

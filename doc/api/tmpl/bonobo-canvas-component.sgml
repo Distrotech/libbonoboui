@@ -112,30 +112,16 @@ BonoboEmbeddable *make_embeddable (void)
 @k: 
 
 
-<!-- ##### STRUCT BonoboCanvasComponent ##### -->
+<!-- ##### TYPEDEF BonoboCanvasComponent ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboCanvasComponentPrivate ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT BonoboCanvasComponentClass ##### -->
+<!-- ##### TYPEDEF BonoboCanvasComponentClass ##### -->
 <para>
   
 </para>
-
-
-<!-- ##### FUNCTION bonobo_canvas_component_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_canvas_component_object_create ##### -->
@@ -162,9 +148,11 @@ BonoboEmbeddable *make_embeddable (void)
 </para>
 
 @comp: 
-@ccomp: 
+@corba_canvas_comp: 
 @item: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@ccomp: 
 
 
 <!-- ##### FUNCTION bonobo_canvas_component_new ##### -->
@@ -199,6 +187,9 @@ BonoboEmbeddable *make_embeddable (void)
 </para>
 
 @bonobocanvascomponent: the object which received the signal.
+@arg1: 
+@arg2: 
+<!-- # Unused Parameters # -->
 @bbox: The bounding box.
 @ev: CORBA Environment to return errors on.
 

@@ -11,7 +11,7 @@ bonobo-property
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+   #BonoboPropertyBag, #BonoboPropertyControl
 </para>
 
 <!-- ##### FUNCTION bonobo_property_servant_new ##### -->
@@ -33,7 +33,7 @@ bonobo-property
 @servant: 
 
 
-<!-- ##### STRUCT BonoboProperty ##### -->
+<!-- ##### TYPEDEF BonoboProperty ##### -->
 <para>
 
 </para>

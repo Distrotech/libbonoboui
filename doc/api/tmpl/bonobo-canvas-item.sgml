@@ -3,7 +3,7 @@ BonoboCanvasItem
 
 <!-- ##### SECTION Short_Description ##### -->
 A GNOME Canvas Item that can be used to embbed remote Bonobo GNOME
-Canvas Items. 
+Canvas Items.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
@@ -17,7 +17,6 @@ Canvas Items.
    This allows arbitrarly shaped components to be inserted into an
    application.  Both Xlib and AA canvas items are supported.
 </para>
-
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
@@ -48,30 +47,16 @@ Canvas Items.
 @o: 
 
 
-<!-- ##### STRUCT BonoboCanvasItemPrivate ##### -->
+<!-- ##### TYPEDEF BonoboCanvasItem ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboCanvasItem ##### -->
+<!-- ##### TYPEDEF BonoboCanvasItemClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### STRUCT BonoboCanvasItemClass ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION bonobo_canvas_item_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_canvas_item_new ##### -->

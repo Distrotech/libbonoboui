@@ -201,6 +201,8 @@ bonobo_ui_container_destroy (GtkObject *object)
 
 /**
  * bonobo_ui_container_get_epv:
+ *
+ * Returns: The EPV for the default BonoboUIContainer implementation.  
  */
 POA_Bonobo_UIContainer__epv *
 bonobo_ui_container_get_epv (void)

@@ -14,6 +14,14 @@ BonoboSelector
 
 </para>
 
+<!-- ##### MACRO GNOME_IS_BONOBO_SELECTOR ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
 <!-- ##### MACRO BONOBO_SELECTOR ##### -->
 <para>
 
@@ -29,30 +37,16 @@ BonoboSelector
 
 
 
-<!-- ##### STRUCT BonoboSelector ##### -->
+<!-- ##### TYPEDEF BonoboSelector ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboSelectorClass ##### -->
+<!-- ##### TYPEDEF BonoboSelectorClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### STRUCT BonoboSelectorPrivate ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION bonobo_selector_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_selector_new ##### -->

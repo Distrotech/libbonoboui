@@ -29,10 +29,7 @@ typedef enum {
 #define BONOBO_UI_TOOLBAR_ICON_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), BONOBO_TYPE_UI_TOOLBAR_ICON, BonoboUIToolbarIconClass))
 
 
-typedef struct _BonoboUIToolbarIcon BonoboUIToolbarIcon;
-typedef struct _BonoboUIToolbarIconClass BonoboUIToolbarIconClass;
-
-struct _BonoboUIToolbarIcon {
+typedef struct {
 	GtkMisc misc;
 
         /* NOTE. In the old BonoboUIToolbarIcon, _lots_ of people were using BonoboUIToolbarIcon to
@@ -65,12 +62,12 @@ struct _BonoboUIToolbarIcon {
 	gint alpha_threshold;
 
 	BonoboUIToolbarIconDrawMode mode : 2;
-};
+} BonoboUIToolbarIcon;
 
 
-struct _BonoboUIToolbarIconClass {
+typedef struct {
 	GtkMiscClass parent_class;
-};
+} BonoboUIToolbarIconClass;
 
 guint  bonobo_ui_toolbar_icon_get_type  (void) G_GNUC_CONST;
 

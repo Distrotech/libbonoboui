@@ -27,12 +27,11 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_CONTROL_FRAME_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CONTROL_FRAME_TYPE))
 
 typedef struct _BonoboControlFramePrivate BonoboControlFramePrivate;
-typedef struct _BonoboControlFrame BonoboControlFrame;
 
-struct _BonoboControlFrame {
+typedef struct {
 	BonoboObject base;
 	BonoboControlFramePrivate *priv;
-};
+} BonoboControlFrame;
 
 typedef struct {
 	BonoboObjectClass parent_class;

@@ -23,17 +23,15 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_UI_TOOLBAR_POPUP_ITEM_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR_POPUP_ITEM))
 
 
-typedef struct _BonoboUIToolbarPopupItem        BonoboUIToolbarPopupItem;
 typedef struct _BonoboUIToolbarPopupItemPrivate BonoboUIToolbarPopupItemPrivate;
-typedef struct _BonoboUIToolbarPopupItemClass   BonoboUIToolbarPopupItemClass;
 
-struct _BonoboUIToolbarPopupItem {
+typedef struct {
 	BonoboUIToolbarToggleButtonItem parent;
-};
+} BonoboUIToolbarPopupItem;
 
-struct _BonoboUIToolbarPopupItemClass {
+typedef struct {
 	BonoboUIToolbarToggleButtonItemClass parent_class;
-};
+} BonoboUIToolbarPopupItemClass;
 
 
 GtkType    bonobo_ui_toolbar_popup_item_get_type  (void);

@@ -722,6 +722,7 @@ bonobo_control_finalize (GtkObject *object)
 /**
  * bonobo_control_get_epv:
  *
+ * Returns: The EPV for the default BonoboControl implementation.  
  */
 POA_Bonobo_Control__epv *
 bonobo_control_get_epv (void)

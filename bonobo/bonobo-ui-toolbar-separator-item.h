@@ -23,19 +23,17 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_UI_TOOLBAR_SEPARATOR_ITEM_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR_SEPARATOR_ITEM))
 
 
-typedef struct _BonoboUIToolbarSeparatorItem        BonoboUIToolbarSeparatorItem;
 typedef struct _BonoboUIToolbarSeparatorItemPrivate BonoboUIToolbarSeparatorItemPrivate;
-typedef struct _BonoboUIToolbarSeparatorItemClass   BonoboUIToolbarSeparatorItemClass;
 
-struct _BonoboUIToolbarSeparatorItem {
+typedef struct {
 	BonoboUIToolbarItem parent;
 
 	BonoboUIToolbarSeparatorItemPrivate *priv;
-};
+} BonoboUIToolbarSeparatorItem;
 
-struct _BonoboUIToolbarSeparatorItemClass {
+typedef struct {
 	BonoboUIToolbarItemClass parent_class;
-};
+} BonoboUIToolbarSeparatorItemClass;
 
 
 GtkType    bonobo_ui_toolbar_separator_item_get_type (void);

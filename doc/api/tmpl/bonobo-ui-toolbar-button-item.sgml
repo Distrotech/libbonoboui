@@ -53,30 +53,16 @@ BonoboUIToolbarButtonItem
 @klass: 
 
 
-<!-- ##### STRUCT BonoboUIToolbarButtonItem ##### -->
+<!-- ##### TYPEDEF BonoboUIToolbarButtonItem ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboUIToolbarButtonItemPrivate ##### -->
+<!-- ##### TYPEDEF BonoboUIToolbarButtonItemClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### STRUCT BonoboUIToolbarButtonItemClass ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION bonobo_ui_toolbar_button_item_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_ui_toolbar_button_item_construct ##### -->

@@ -23,19 +23,17 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_DESKTOP_WINDOW(o)       (GTK_CHECK_TYPE ((o), BONOBO_DESKTOP_WINDOW_TYPE))
 #define BONOBO_IS_DESKTOP_WINDOW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_DESKTOP_WINDOW_TYPE))
 
-typedef struct _BonoboDesktopWindow BonoboDesktopWindow;
 typedef struct _BonoboDesktopWindowPrivate BonoboDesktopWindowPrivate;
-typedef struct _BonoboDesktopWindowClass BonoboDesktopWindowClass;
 
-struct _BonoboDesktopWindow {
+typedef struct {
 	BonoboObject base;
 	GtkWindow   *window;
 	BonoboDesktopWindowPrivate *priv;
-};
+} BonoboDesktopWindow;
 
-struct _BonoboDesktopWindowClass {
+typedef struct {
 	BonoboObjectClass parent_class;
-};
+} BonoboDesktopWindowClass;
 
 GtkType             bonobo_desktop_window_get_type  (void);
 BonoboDesktopWindow *bonobo_desktop_window_construct (BonoboDesktopWindow *desktop_window,

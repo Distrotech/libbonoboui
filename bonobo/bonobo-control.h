@@ -28,17 +28,15 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_CONTROL(o)       (GTK_CHECK_TYPE ((o), BONOBO_CONTROL_TYPE))
 #define BONOBO_IS_CONTROL_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CONTROL_TYPE))
 
-typedef struct _BonoboControl BonoboControl;
 typedef struct _BonoboControlPrivate BonoboControlPrivate;
-typedef struct _BonoboControlClass BonoboControlClass;
 
-struct _BonoboControl {
+typedef struct {
 	BonoboObject base;
 
 	BonoboControlPrivate *priv;
-};
+} BonoboControl;
 
-struct _BonoboControlClass {
+typedef struct {
 	BonoboObjectClass parent_class;
 
 	/*
@@ -46,7 +44,7 @@ struct _BonoboControlClass {
 	 */
 	void (*set_frame)           (BonoboControl *control);
 	void (*activate)            (BonoboControl *control, gboolean state);
-};
+} BonoboControlClass;
 
 /* The main API */
 BonoboControl              *bonobo_control_new                     (GtkWidget     *widget);

@@ -296,6 +296,8 @@ impl_Bonobo_Embeddable_createCanvasItem (PortableServer_Servant servant,
 
 /**
  * bonobo_embeddable_get_epv:
+ *
+ * Returns: The EPV for the default BonoboEmbeddable implementation. 
  */
 POA_Bonobo_Embeddable__epv *
 bonobo_embeddable_get_epv (void)

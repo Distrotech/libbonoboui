@@ -23,20 +23,18 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_WRAPPER_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_WRAPPER))
 
 
-typedef struct _BonoboWrapper BonoboWrapper;
-typedef struct _BonoboWrapperClass BonoboWrapperClass;
 typedef struct _BonoboWrapperPrivate BonoboWrapperPrivate;
 
-struct _BonoboWrapper {
+typedef struct {
 	GtkBin bin;
 
 	/* Private data. */
 	BonoboWrapperPrivate *priv;
-};
+} BonoboWrapper;
 
-struct _BonoboWrapperClass {
+typedef struct {
 	GtkBinClass parent_class;
-};
+} BonoboWrapperClass;
 
 
 GtkType		 bonobo_wrapper_get_type		(void);

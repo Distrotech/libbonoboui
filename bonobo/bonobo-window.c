@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-/**
+/*
  * bonobo-win.c: The Bonobo Window implementation.
  *
  * Author:
@@ -1107,7 +1107,7 @@ cmd_get_menu_pixmap (BonoboUINode     *node,
 	return NULL;
 }
 
-/**
+/*
  * set_cmd_attr:
  *   Syncs cmd / widgets on events [ event flag set ]
  *   or helps evil people who set state on menu /

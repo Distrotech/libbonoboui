@@ -100,6 +100,7 @@ create_widget_from_component (BonoboContainer *container, const char *id)
 </para>
 
 
+
 <!-- ##### MACRO BONOBO_CLIENT_SITE ##### -->
 <para>
 
@@ -138,24 +139,10 @@ create_widget_from_component (BonoboContainer *container, const char *id)
 </para>
 
 
-<!-- ##### STRUCT BonoboClientSitePrivate ##### -->
+<!-- ##### TYPEDEF BonoboClientSiteClass ##### -->
 <para>
 
 </para>
-
-
-<!-- ##### STRUCT BonoboClientSiteClass ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION bonobo_client_site_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_client_site_corba_object_create ##### -->

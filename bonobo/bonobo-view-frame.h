@@ -23,8 +23,9 @@ BEGIN_GNOME_DECLS
 #define BONOBO_IS_VIEW_FRAME(o)       (GTK_CHECK_TYPE ((o), BONOBO_VIEW_FRAME_TYPE))
 #define BONOBO_IS_VIEW_FRAME_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_VIEW_FRAME_TYPE))
 
+typedef struct _BonoboViewFrame        BonoboViewFrame;
+typedef struct _BonoboViewFrameClass   BonoboViewFrameClass;
 typedef struct _BonoboViewFramePrivate BonoboViewFramePrivate;
-typedef struct _BonoboViewFrame BonoboViewFrame;
 
 #include <bonobo/bonobo-client-site.h>
 
@@ -33,7 +34,7 @@ struct _BonoboViewFrame {
 	BonoboViewFramePrivate	*priv;
 };
 
-typedef struct {
+struct _BonoboViewFrameClass {
 	BonoboControlFrameClass parent_class;
 
 	/*
@@ -41,7 +42,7 @@ typedef struct {
 	 */
 	void (*user_activate)       (BonoboViewFrame *view_frame);
 	void (*user_context)        (BonoboViewFrame *view_frame);
-} BonoboViewFrameClass;
+};
 
 GtkType                    bonobo_view_frame_get_type         (void);
 BonoboViewFrame           *bonobo_view_frame_construct        (BonoboViewFrame   *view_frame,

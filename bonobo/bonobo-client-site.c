@@ -125,6 +125,7 @@ default_save_object (BonoboClientSite *cs, Bonobo_Persist_Status *status)
 /**
  * bonobo_client_site_get_epv:
  *
+ * Returns: The EPV for the default BonoboClientSite implementation.
  */
 POA_Bonobo_ClientSite__epv *
 bonobo_client_site_get_epv (void)
@@ -490,6 +491,7 @@ bonobo_client_site_new_view_full (BonoboClientSite  *client_site,
  * bonobo_client_site_new_view:
  * @client_site: the client site that contains a remote Embeddable
  * object.
+ * @uih: The UIContainer object.
  *
  * The same as bonobo_client_site_new_view_full() with an inactive,
  * visible cover.
@@ -516,6 +518,7 @@ canvas_item_destroyed (GnomeCanvasItem *item, BonoboClientSite *client_site)
  * @client_site: The client site that contains a remote Embeddable object
  * @group: The Canvas group that will be the parent for the new item.
  *
+ * Returns: A GnomeCanvasItem that wraps the remote Canvas Item.
  */
 GnomeCanvasItem *
 bonobo_client_site_new_item (BonoboClientSite *client_site, GnomeCanvasGroup *group)

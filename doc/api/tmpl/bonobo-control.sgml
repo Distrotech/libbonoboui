@@ -11,7 +11,7 @@ BonoboControl
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+  #BonoboWidget, bonobo_widget_new()
 </para>
 
 <!-- ##### MACRO BONOBO_CONTROL_TYPE ##### -->
@@ -53,19 +53,13 @@ BonoboControl
 @k: 
 
 
-<!-- ##### STRUCT BonoboControl ##### -->
+<!-- ##### TYPEDEF BonoboControl ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### STRUCT BonoboControlPrivate ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT BonoboControlClass ##### -->
+<!-- ##### TYPEDEF BonoboControlClass ##### -->
 <para>
 
 </para>
@@ -125,14 +119,6 @@ BonoboControl
 @control: 
 @first_prop: 
 @Varargs: 
-
-
-<!-- ##### FUNCTION bonobo_control_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_control_construct ##### -->
