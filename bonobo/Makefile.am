@@ -131,3 +131,5 @@ sample_server_LDADD = $(bonobo_libs)
 
 BUILT_SOURCES=$(CORBA_SOURCE)
 
+EXTRA_DIST = $(corba_DATA)
+
