@@ -25,9 +25,13 @@ BONOBO_IS_CANVAS_COMPONENT
 BONOBO_IS_CANVAS_COMPONENT_CLASS
 BonoboCanvasComponent
 BonoboCanvasComponentClass
+bonobo_canvas_new
 bonobo_canvas_component_construct
 bonobo_canvas_component_new
 bonobo_canvas_component_get_item
+bonobo_canvas_component_get_ui_container
+bonobo_canvas_component_grab
+bonobo_canvas_component_ungrab
 <SUBSECTION Standard>
 BonoboCanvasComponentPrivate
 bonobo_canvas_component_get_type
@@ -197,9 +201,13 @@ BONOBO_USER_EX
 BONOBO_RET_EX
 BONOBO_RET_VAL_EX
 BonoboExceptionFn
+bonobo_return_if_fail
+bonobo_return_val_if_fail
+bonobo_exception_set
 bonobo_exception_get_text
 bonobo_exception_add_handler_str
 bonobo_exception_add_handler_fn
+bonobo_exception_repoid_to_text
 <SUBSECTION Standard>
 </SECTION>
 
@@ -218,6 +226,10 @@ bonobo_generic_factory_new
 bonobo_generic_factory_new_multi
 bonobo_generic_factory_construct
 bonobo_generic_factory_set
+bonobo_generic_factory_get_epv
+bonobo_generic_factory_corba_object_create
+BONOBO_OAF_FACTORY
+BONOBO_OAF_FACTORY_MULTI
 <SUBSECTION Standard>
 bonobo_generic_factory_get_type
 BonoboGenericFactoryPrivate
@@ -276,6 +288,7 @@ bonobo_poa_manager
 
 <SECTION>
 <FILE>bonobo-moniker-util</FILE>
+BonoboMonikerAsyncFn
 bonobo_get_object
 bonobo_moniker_client_new_from_name
 bonobo_moniker_client_get_name
@@ -285,6 +298,7 @@ bonobo_moniker_util_new_from_name_full
 bonobo_moniker_util_get_parent_name
 bonobo_moniker_util_qi_return
 bonobo_moniker_util_seek_std_separator
+bonobo_get_object_async
 bonobo_moniker_client_new_from_name_async
 bonobo_moniker_util_escape
 bonobo_moniker_util_unescape
@@ -400,6 +414,7 @@ bonobo_object_bind_to_servant
 bonobo_object_get_servant
 bonobo_object_get_epv
 bonobo_object_activate_servant
+bonobo_object_activate_servant_full
 bonobo_object_add_interface
 bonobo_object_query_local_interface
 bonobo_object_query_interface
@@ -413,6 +428,8 @@ bonobo_object_init
 bonobo_object_trace_refs
 bonobo_object_dump_interfaces
 bonobo_object_check_env
+bonobo_object_list_unref_all
+bonobo_object_slist_unref_all
 BONOBO_OBJREF
 BONOBO_OBJECT_CHECK
 bonobo_unknown_ping
@@ -596,9 +613,11 @@ BONOBO_IS_PROPERTY_BAG
 BONOBO_IS_PROPERTY_BAG_CLASS
 bonobo_property_bag_get_type
 bonobo_property_bag_new
+bonobo_property_bag_new_full
 bonobo_property_bag_add
 bonobo_property_bag_add_full
 bonobo_property_bag_add_gtk_args
+bonobo_property_bag_construct
 bonobo_property_bag_set_value
 bonobo_property_bag_get_value
 bonobo_property_bag_get_default
@@ -630,6 +649,7 @@ BonoboSocketPrivate
 
 <SECTION>
 <FILE>bonobo-storage-plugin</FILE>
+BONOBO_STORAGE_VERSION
 StoragePlugin
 StoragePluginInitFn
 BonoboStorageOpenFn
@@ -662,6 +682,7 @@ BonoboStoragePrivate
 
 <SECTION>
 <FILE>bonobo-stream-client</FILE>
+bonobo_stream_client_read
 bonobo_stream_client_write
 bonobo_stream_client_write_string
 bonobo_stream_client_printf
@@ -795,6 +816,8 @@ BonoboUIContainer
 BonoboUIContainerClass
 bonobo_ui_container_construct
 bonobo_ui_container_new
+bonobo_ui_container_get_engine
+bonobo_ui_container_set_engine
 bonobo_ui_container_set_win
 bonobo_ui_container_get_win
 <SUBSECTION Standard>
@@ -810,6 +833,7 @@ BONOBO_IS_UI_ENGINE
 BONOBO_IS_UI_ENGINE_CLASS
 BonoboUIEngine
 BonoboUIEngineClass
+BonoboUIError
 bonobo_ui_engine_construct
 bonobo_ui_engine_new
 bonobo_ui_engine_config_set_path
@@ -1047,6 +1071,7 @@ BonoboUIXmlDataFreeFn
 BonoboUIXmlDumpFn
 BonoboUIXmlAddNode
 BonoboUIXmlClass
+BonoboUIXmlWatchFn
 bonobo_ui_xml_get_type
 bonobo_ui_xml_new
 bonobo_ui_xml_get_data
@@ -1126,6 +1151,8 @@ BONOBO_IS_WIDGET_CLASS
 BonoboWidget
 BonoboWidgetClass
 bonobo_widget_get_server
+bonobo_widget_construct_control
+bonobo_widget_construct_control_from_objref
 bonobo_widget_new_control
 bonobo_widget_new_control_from_objref
 bonobo_widget_get_control_frame
@@ -1177,6 +1204,7 @@ bonobo_window_remove_popup
 bonobo_window_deregister_component_by_ref
 bonobo_window_deregister_dead_components
 bonobo_window_deregister_get_component_names
+bonobo_window_get_ui_engine
 <SUBSECTION Standard>
 bonobo_window_get_type
 BonoboWindowPrivate
@@ -1251,6 +1279,7 @@ bonobo_zoomable_set_parameters
 bonobo_zoomable_set_parameters_full
 bonobo_zoomable_report_zoom_level_changed
 bonobo_zoomable_report_zoom_parameters_changed
+bonobo_zoomable_add_preferred_zoom_level
 <SUBSECTION Standard>
 bonobo_zoomable_get_type
 BonoboZoomablePrivate
@@ -1289,13 +1318,14 @@ BONOBO_ARG_SET_STRING
 BONOBO_ARG_SET_FLOAT
 BONOBO_ARG_SET_DOUBLE
 bonobo_arg_new
+bonobo_arg_release
+bonobo_arg_copy
+bonobo_arg_is_equal
 bonobo_arg_type_to_gtk
 bonobo_arg_type_from_gtk
 bonobo_arg_to_gtk
 bonobo_arg_from_gtk
 bonobo_arg_type_is_equal
-bonobo_arg_copy
-bonobo_arg_release
 <SUBSECTION Standard>
 </SECTION>
 
@@ -1310,6 +1340,11 @@ BonoboListener
 BonoboListenerClass
 BonoboListenerCallbackFn
 bonobo_listener_new
+bonobo_event_kind
+bonobo_event_type
+bonobo_event_subtype
+bonobo_event_idl_path
+bonobo_event_make_name
 <SUBSECTION Standard>
 bonobo_listener_get_type
 BonoboListenerPrivate
@@ -1326,8 +1361,10 @@ BonoboPropertyControl
 BonoboPropertyControlClass
 BonoboPropertyControlGetControlFn
 bonobo_property_control_new
+bonobo_property_control_new_full
 bonobo_property_control_construct
 bonobo_property_control_changed
+bonobo_property_control_get_event_source
 <SUBSECTION Standard>
 BonoboPropertyControlPrivate
 bonobo_property_control_get_type
@@ -1344,8 +1381,10 @@ BonoboEventSource
 BonoboEventSourceClass
 bonobo_event_source_new
 bonobo_event_source_notify_listeners
+bonobo_event_source_notify_listeners_full
 bonobo_event_source_client_add_listener
 bonobo_event_source_client_remove_listener
+bonobo_event_source_ignore_listeners
 <SUBSECTION Standard>
 BonoboEventSourcePrivate
 bonobo_event_source_get_type
@@ -1357,5 +1396,7 @@ bonobo_context_init
 bonobo_context_shutdown
 bonobo_context_add
 bonobo_context_get
+bonobo_context_running_get
+bonobo_running_context_auto_exit_unref
 <SUBSECTION Standard>
 </SECTION>

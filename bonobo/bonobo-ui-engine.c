@@ -1169,7 +1169,7 @@ bonobo_ui_engine_xml_merge_tree (BonoboUIEngine    *engine,
 	if (!tree || !bonobo_ui_node_get_name (tree))
 		return BONOBO_UI_ERROR_OK;
 
-	bonobo_ui_xml_strip (&tree);
+	bonobo_ui_node_strip (&tree);
 
 	if (!tree) {
 		g_warning ("Stripped tree to nothing");

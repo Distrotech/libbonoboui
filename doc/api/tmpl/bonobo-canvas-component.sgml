@@ -124,6 +124,16 @@ BonoboEmbeddable *make_embeddable (void)
 </para>
 
 
+<!-- ##### FUNCTION bonobo_canvas_new ##### -->
+<para>
+
+</para>
+
+@is_aa: 
+@proxy: 
+@Returns: 
+
+
 <!-- ##### FUNCTION bonobo_canvas_component_construct ##### -->
 <para>
 
@@ -153,6 +163,35 @@ BonoboEmbeddable *make_embeddable (void)
 
 @comp: 
 @Returns: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_get_ui_container ##### -->
+<para>
+
+</para>
+
+@comp: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_grab ##### -->
+<para>
+
+</para>
+
+@comp: 
+@mask: 
+@cursor: 
+@time: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_ungrab ##### -->
+<para>
+
+</para>
+
+@comp: 
+@time: 
 
 
 <!-- ##### SIGNAL BonoboCanvasComponent::set-bounds ##### -->

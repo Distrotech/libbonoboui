@@ -116,6 +116,17 @@ A XML tree wrapper that implements tree merging logic
 </para>
 
 
+<!-- ##### USER_FUNCTION BonoboUIXmlWatchFn ##### -->
+<para>
+
+</para>
+
+@xml: 
+@path: 
+@opt_node: 
+@user_data: 
+
+
 <!-- ##### FUNCTION bonobo_ui_xml_get_type ##### -->
 <para>
 

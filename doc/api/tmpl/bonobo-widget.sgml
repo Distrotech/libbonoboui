@@ -142,6 +142,28 @@ Simplified embedding of widgets in Bonobo.
 @Returns: 
 
 
+<!-- ##### FUNCTION bonobo_widget_construct_control ##### -->
+<para>
+
+</para>
+
+@bw: 
+@moniker: 
+@uic: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_construct_control_from_objref ##### -->
+<para>
+
+</para>
+
+@bw: 
+@control: 
+@uic: 
+@Returns: 
+
+
 <!-- ##### FUNCTION bonobo_widget_new_control ##### -->
 <para>
 

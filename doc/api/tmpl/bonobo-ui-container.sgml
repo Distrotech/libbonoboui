@@ -83,6 +83,24 @@ The container interface as implemented for BonoboWindow
 @Returns: 
 
 
+<!-- ##### FUNCTION bonobo_ui_container_get_engine ##### -->
+<para>
+
+</para>
+
+@container: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_container_set_engine ##### -->
+<para>
+
+</para>
+
+@container: 
+@engine: 
+
+
 <!-- ##### FUNCTION bonobo_ui_container_set_win ##### -->
 <para>
 

@@ -147,6 +147,16 @@ An interface for Controls that can zoom their contents
 @zoomable: 
 
 
+<!-- ##### FUNCTION bonobo_zoomable_add_preferred_zoom_level ##### -->
+<para>
+
+</para>
+
+@zoomable: 
+@zoom_level: 
+@zoom_level_name: 
+
+
 <!-- ##### SIGNAL BonoboZoomable::set-frame ##### -->
 <para>
 

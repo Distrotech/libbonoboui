@@ -319,3 +319,12 @@ the toplevel application window implementation
 @Returns: 
 
 
+<!-- ##### FUNCTION bonobo_window_get_ui_engine ##### -->
+<para>
+
+</para>
+
+@win: 
+@Returns: 
+
+
