@@ -71,6 +71,12 @@ print_preview_cb (GtkWidget *caller, SampleApp *app)
 }
 
 static void
+xml_dump_cb (GtkWidget *caller, SampleApp *app)
+{
+	bonobo_win_dump (app->app, "On request");
+}
+
+static void
 about_cb (GtkWidget *caller, SampleApp *app)
 {
 	static const gchar *authors[] = {
@@ -103,6 +109,10 @@ static GnomeUIInfo sample_app_file_menu[] = {
 	GNOMEUIINFO_MENU_OPEN_ITEM (load_cb, NULL),
 	GNOMEUIINFO_MENU_SAVE_AS_ITEM (save_cb, NULL),
 	BONOBOUIINFO_PLACEHOLDER ("Placeholder"),
+
+	GNOMEUIINFO_SEPARATOR,
+	GNOMEUIINFO_ITEM_NONE (N_("Xml dump"), NULL,
+			       xml_dump_cb),
 
 	GNOMEUIINFO_SEPARATOR,
 	GNOMEUIINFO_ITEM_NONE (N_("Print Pre_view"), NULL,

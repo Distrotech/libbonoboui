@@ -30,9 +30,9 @@ typedef struct {
  * FIXME: should all be hashed for speed.
  */
 struct _BonoboUIComponentPrivate {
-	GSList *verbs;
-	GSList *listeners;
-	char   *name;
+	GHashTable *verbs;
+	GHashTable *listeners;
+	char       *name;
 };
 
 static inline BonoboUIComponent *
@@ -41,22 +41,24 @@ bonobo_ui_from_servant (PortableServer_Servant servant)
 	return BONOBO_UI_COMPONENT (bonobo_object_from_servant (servant));
 }
 
-static void
-verb_destroy (BonoboUIVerb *verb)
+static gboolean
+verb_destroy (gpointer key, BonoboUIVerb *verb, gpointer user_data)
 {
 	if (verb) {
 		g_free (verb->cname);
 		g_free (verb);
 	}
+	return TRUE;
 }
 
-static void
-listener_destroy (Listener *l)
+static gboolean
+listener_destroy (gpointer key, Listener *l, gpointer user_data)
 {
 	if (l) {
 		g_free (l->id);
 		g_free (l);
 	}
+	return TRUE;
 }
 
 static void
@@ -65,16 +67,12 @@ ui_event (BonoboUIComponent           *component,
 	  Bonobo_UIComponent_EventType type,
 	  const char                  *state)
 {
-	GSList *l;
+	Listener *list;
 
-	for (l = component->priv->listeners; l; l = l->next) {
-		Listener *list = l->data;
-
-		if (!strcmp (list->id, id)) {
-			list->cb (component, id, type,
-				  state, list->user_data);
-		}
-	}
+	list = g_hash_table_lookup (component->priv->listeners, id);
+	if (list && list->cb)
+		list->cb (component, id, type,
+			  state, list->user_data);
 }
 
 static CORBA_char *
@@ -90,9 +88,8 @@ impl_exec_verb (PortableServer_Servant servant,
 		const CORBA_char      *cname,
 		CORBA_Environment     *ev)
 {
-	GSList *l;
-	gboolean found = FALSE;
 	BonoboUIComponent *component;
+	BonoboUIVerb *verb;
 
 	component = bonobo_ui_from_servant (servant);
 
@@ -100,19 +97,11 @@ impl_exec_verb (PortableServer_Servant servant,
 	
 /*	g_warning ("TESTME: Exec verb '%s'", cname);*/
 
-	for (l = component->priv->verbs; l; l = l->next) {
-		BonoboUIVerb *verb = l->data;
-
-		if (!strcmp (verb->cname, cname)) {
-			if (verb->cb)
-				verb->cb (component, verb->user_data, cname);
-			found = TRUE;
-		}
-	}
-	if (!found) {
-		g_warning ("FIXME: verb '%s' not found, emit exception",
-			   cname);
-	}
+	verb = g_hash_table_lookup (component->priv->listeners, cname);
+	if (verb && verb->cb)
+		verb->cb (component, verb->user_data, cname);
+	else
+		g_warning ("FIXME: verb '%s' not found, emit exception", cname);
 
 	gtk_signal_emit (GTK_OBJECT (component),
 			 signals [EXEC_VERB],
@@ -162,7 +151,7 @@ bonobo_ui_component_add_verb (BonoboUIComponent  *component,
 
 	priv = component->priv;
 
-	priv->verbs = g_slist_prepend (priv->verbs, verb);
+	g_hash_table_insert (priv->verbs, verb->cname, verb);
 }
 
 void
@@ -184,7 +173,7 @@ bonobo_ui_component_add_listener (BonoboUIComponent  *component,
 	list->user_data = user_data;
 
 	priv = component->priv;
-	priv->listeners = g_slist_prepend (priv->listeners, list);	
+	g_hash_table_insert (priv->listeners, list->id, list);
 }
 
 static void
@@ -194,15 +183,16 @@ bonobo_ui_component_destroy (GtkObject *object)
 	BonoboUIComponentPrivate *priv = comp->priv;
 
 	if (priv) {
-		GSList *l;
+		g_hash_table_foreach_remove (
+			priv->verbs, (GHRFunc) verb_destroy, NULL);
+		g_hash_table_destroy (priv->verbs);
+		priv->verbs = NULL;
 
-		for (l = priv->verbs; l; l = l->next)
-			verb_destroy (l->data);
-		g_slist_free (priv->verbs);
-
-		for (l = priv->listeners; l; l = l->next)
-			listener_destroy (l->data);
-		g_slist_free (priv->listeners);
+		g_hash_table_foreach_remove (
+			priv->listeners,
+			(GHRFunc) listener_destroy, NULL);
+		g_hash_table_destroy (priv->listeners);
+		priv->listeners = NULL;
 
 		g_free (priv->name);
 
@@ -263,7 +253,13 @@ bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
 static void
 bonobo_ui_component_init (BonoboUIComponent *component)
 {
-	component->priv = g_new0 (BonoboUIComponentPrivate, 1);
+	BonoboUIComponentPrivate *priv;
+
+	priv = g_new0 (BonoboUIComponentPrivate, 1);
+	priv->verbs = g_hash_table_new (g_str_hash, g_str_equal);
+	priv->listeners = g_hash_table_new (g_str_hash, g_str_equal);
+
+	component->priv = priv;
 }
 
 /**
@@ -367,8 +363,6 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
-/*	fprintf (stderr, "Set '%s'\n", xml);*/
-
 	if (ev)
 		real_ev = ev;
 	else {
@@ -391,8 +385,8 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 				     priv->name, real_ev);
 
 	if (real_ev->_major != CORBA_NO_EXCEPTION && !ev)
-		g_warning ("Serious exception on node_set '$%s'",
-			   bonobo_exception_get_text (real_ev));
+		g_warning ("Serious exception on node_set '$%s' of '%s'",
+			   bonobo_exception_get_text (real_ev), xml);
 
 	if (!ev)
 		CORBA_exception_free (&tmp_ev);

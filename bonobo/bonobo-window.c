@@ -2180,16 +2180,26 @@ bonobo_win_class_init (BonoboWinClass *klass)
 }
 
 GtkWidget *
-bonobo_win_new (const char   *app_name,
+bonobo_win_construct (BonoboWin  *win,
+		      const char *win_name,
+		      const char *title)
+{
+	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
+
+	win->priv = construct_priv (win, win_name, title);
+
+	return GTK_WIDGET (win);
+}
+
+GtkWidget *
+bonobo_win_new (const char   *win_name,
 		const char   *title)
 {
-	BonoboWin *app;
+	BonoboWin *win;
 
-	app = gtk_type_new (BONOBO_WIN_TYPE);
+	win = gtk_type_new (BONOBO_WIN_TYPE);
 
-	app->priv = construct_priv (app, app_name, title);
-
-	return GTK_WIDGET (app);
+	return bonobo_win_construct (win, win_name, title);
 }
 
 /**

@@ -248,6 +248,16 @@ bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 
 	bonobo_object_construct (BONOBO_OBJECT (control_frame), corba_control_frame);
 
+	/*
+	 * See ui-faq.txt if this dies on you.
+	 */
+	if (uih != CORBA_OBJECT_NIL) {
+		CORBA_Environment ev;
+		CORBA_exception_init (&ev);
+		g_assert (CORBA_Object_is_a (uih, "IDL:Bonobo/UIContainer:1.0", &ev));
+		CORBA_exception_free (&ev);
+	}
+
 	control_frame->priv->uih = uih;
 
 	/*

@@ -1,3 +1,7 @@
+2000-09-12  Michael Meeks  <michael@helixcode.com>
+
+	* container-menu.c (xml_dump_cb): add for debugging.
+
 2000-08-14  Michael Meeks  <michael@helixcode.com>
 
 	* container.c (resolve_and_add): unref the moniker.

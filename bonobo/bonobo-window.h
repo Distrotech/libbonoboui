@@ -28,6 +28,10 @@ struct _BonoboWinClass {
 
 GtkType              bonobo_win_get_type            (void);
 
+GtkWidget           *bonobo_win_construct           (BonoboWin  *win,
+						     const char *win_name,
+						     const char *title);
+
 GtkWidget           *bonobo_win_new                 (const char *win_name,
 						     const char *title);
 

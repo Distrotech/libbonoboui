@@ -153,10 +153,6 @@ bonobo_ui_handler_create_menubar (BonoboUIHandler *uih)
 
 	node = xmlNewNode (NULL, "menu");
 	
-	bonobo_ui_component_set_tree (
-		priv->component, priv->container,
-		"/", node, NULL);
-
 	bonobo_ui_xml_merge (priv->ui, "/", node, NULL);
 }
 
@@ -164,15 +160,15 @@ void
 bonobo_ui_handler_create_toolbar (BonoboUIHandler *uih, const char *name)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
-	char *xml;
+	xmlNode *node;
 
 	g_return_if_fail (priv != NULL);
 
-	xml = g_strdup_printf ("<dockitem name=\"%s\"/>", name);
-	bonobo_ui_component_set (priv->component,
-				 priv->container,
-				 "/", xml, NULL);
-	g_free (xml);
+	node = xmlNewNode (NULL, "dockitem");
+	xmlSetProp (node, "name", name);
+
+	bonobo_ui_xml_merge (priv->ui, "/", node, NULL);
+
 	compat_sync (priv, "/", NULL);
 }
 
@@ -192,12 +188,15 @@ static void
 setup_priv (BonoboObject *object)
 {
 	BonoboUIHandlerPrivate *priv;
+	xmlNode *node;
 
 	priv = g_new0 (BonoboUIHandlerPrivate, 1);
 
 	priv->ui = bonobo_ui_xml_new (NULL, NULL, NULL, NULL, NULL);
 
 	bonobo_ui_util_build_skeleton (priv->ui);
+	node = xmlNewNode (NULL, "menu");
+	xmlAddChild (priv->ui->root, node);
 
 	gtk_object_set_data (GTK_OBJECT (object), MAGIC_UI_HANDLER_KEY, priv);
 	gtk_signal_connect  (GTK_OBJECT (object), "destroy",
@@ -526,8 +525,9 @@ compat_menu_parse_uiinfo_tree_with_data (BonoboUIHandlerPrivate *priv,
  * is bad.
  */
 static char *
-make_path (const char *root_at, const char *subtype,
-	   const char *duff_path, gboolean strip_parent)
+make_path (const char *root_at, 
+	   const char *duff_path,
+	   gboolean    strip_parent)
 {
 	char    *ret;
 	GString *str = g_string_new (root_at);
@@ -544,8 +544,6 @@ make_path (const char *root_at, const char *subtype,
 			continue;
 
 		g_string_append (str, "/");
-/*		g_string_append (str, subtype);
-		g_string_append (str, "/#");*/
 		g_string_append (str, strv [i]);
 	}
 	
@@ -571,7 +569,7 @@ bonobo_ui_handler_menu_path_exists (BonoboUIHandler *uih, const char *path)
 
 	g_return_val_if_fail (priv != NULL, FALSE);
 
-	xml_path = make_path ("/menu", "submenu", path, FALSE);
+	xml_path = make_path ("/menu", path, FALSE);
 
 	CORBA_exception_init (&ev);
 	ans = Bonobo_UIContainer_node_exists (priv->container, xml_path, &ev);
@@ -592,7 +590,7 @@ bonobo_ui_handler_menu_add_one (BonoboUIHandler *uih, const char *parent_path,
 
 	g_return_if_fail (priv != NULL);
 
-	xml_path = make_path ("/menu", "submenu", parent_path, FALSE);
+	xml_path = make_path ("/menu", parent_path, FALSE);
 	parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
 
 	if (!parent) {
@@ -805,10 +803,10 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 			*p = '\0';
 			xmlSetProp (node, "group", p + 1);
 
-			xml_path = make_path ("/menu", "submenu", real_path, FALSE);
+			xml_path = make_path ("/menu", real_path, FALSE);
 			g_free (real_path);
 		} else
-			xml_path = make_path ("/menu", "submenu", path, TRUE);
+			xml_path = make_path ("/menu", path, TRUE);
 
 		parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
 
@@ -1013,7 +1011,7 @@ bonobo_ui_handler_toolbar_add_list (BonoboUIHandler *uih, const char *parent_pat
 
 	g_return_if_fail (priv != NULL);
 
-	xml_path = make_path ("", "dockitem", parent_path, TRUE);
+	xml_path = make_path ("", parent_path, TRUE);
 	parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
 
 	if (!parent) {
@@ -1085,7 +1083,7 @@ bonobo_ui_handler_toolbar_new (BonoboUIHandler *uih, const char *path,
 	deal_with_pixmap (pixmap_type, pixmap_data, node);
 
 	{
-		char *xml_path = make_path ("", "dockitem", path, TRUE);
+		char *xml_path = make_path ("", path, TRUE);
 		parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
 
 		if (!parent) {
@@ -1209,7 +1207,7 @@ bonobo_ui_handler_toolbar_item_set_pixmap (BonoboUIHandler *uih, const char *pat
 
 	g_return_if_fail (priv != NULL);
 
-	xml_path = make_path ("", "dockitem", path, FALSE);
+	xml_path = make_path ("", path, FALSE);
 
 	node = bonobo_ui_container_get_tree (priv->container,
 					     xml_path, FALSE, NULL);
@@ -1291,7 +1289,7 @@ bonobo_ui_handler_menu_get_toggle_state	(BonoboUIHandler *uih, const char *path)
 
 	g_return_val_if_fail (priv != NULL, FALSE);
 
-	xml_path = make_path ("/menu", "submenu", path, FALSE);
+	xml_path = make_path ("/menu", path, FALSE);
 
 	node = bonobo_ui_container_get_tree (priv->container,
 					     xml_path, FALSE, NULL);
@@ -1372,7 +1370,7 @@ bonobo_ui_handler_menu_set_callback (BonoboUIHandler *uih, const char *path,
 
 	g_return_if_fail (priv != NULL);
 
-	xml_path = make_path ("/menu", "submenu", path, FALSE);
+	xml_path = make_path ("/menu", path, FALSE);
 
 	node = bonobo_ui_container_get_tree (priv->container,
 					     xml_path, FALSE, NULL);
