@@ -58,11 +58,29 @@ static void
 control_connection_died_cb (gpointer connection,
 			    gpointer user_data)
 {
+	CORBA_Object cntl;
+	CORBA_Environment ev;
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (user_data);
 
 	g_return_if_fail (frame != NULL);
 
 	dprintf ("The remote control end died unexpectedly");
+
+	CORBA_exception_init (&ev);
+
+	cntl = CORBA_Object_duplicate (frame->priv->control, &ev);
+
+	bonobo_control_frame_bind_to_control (
+		frame, CORBA_OBJECT_NIL, NULL);
+
+	CORBA_exception_set_system (
+		&ev, ex_CORBA_COMM_FAILURE, CORBA_COMPLETED_YES);
+
+	bonobo_object_check_env (BONOBO_OBJECT (frame), cntl, &ev);
+
+	CORBA_Object_release (cntl, &ev);
+
+	CORBA_exception_free (&ev);
 }
 
 static Bonobo_Gdk_WindowId

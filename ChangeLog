@@ -1,5 +1,15 @@
 2002-02-20  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control-frame.c
+	(control_connection_died_cb): upd. to disconnect us
+	safely & fire a "system_exception" signal.
+
+	* tests/Makefile.am (-DBONOBO_TOPBUILDDIR): define.
+
+	* tests/test-ui-auto.c (test_ui_performance): use it.
+
+2002-02-20  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-engine.c (class_init): add
 	cmd_id & commands_id.
 	(find_sync_for_node): we have no sync. for commands.
