@@ -1,3 +1,7 @@
+2000-05-03  Michael Meeks  <michael@helixcode.com>
+
+	* container-menu.c: update shortcut to kill clash.
+
 2000-04-24  ERDI Gergo  <cactus@cactus.rulez.org>
 
 	* hello-container-print.[ch]: Printing 

@@ -1,7 +1,7 @@
 
 SUBDIRS = container bonobo-hello
 
-bin_PROGRAMS = paint-component-simple
+bin_PROGRAMS = paint-component-simple sample-canvas-item
 
 GPRINT_LIBS = $(top_builddir)/bonobo/libbonobo-print.la
 
@@ -29,11 +29,21 @@ paint_component_simple_LDADD = 			\
 	$(INTLLIBS)                             \
 	$(OBJECT_DIRECTORY_LIBS)
 
+sample_canvas_item_SOURCES =	\
+	sample-canvas-item.c
+
+sample_canvas_item_LDADD = 			\
+	$(top_builddir)/bonobo/libbonobo.la	\
+	$(GPRINT_LIBS)				\
+	$(GNOME_PRINT_LIBS)			\
+	$(INTLLIBS)                             \
+	$(OBJECT_DIRECTORY_LIBS)
+
 goaddir = $(sysconfdir)/CORBA/servers
 oafdir = $(datadir)/oaf
 
-GOAD_FILES =    paint-component-simple.gnorba
-OAF_FILES =	paint-component-simple.oafinfo
+GOAD_FILES =    paint-component-simple.gnorba  item.gnorba
+OAF_FILES =	paint-component-simple.oafinfo item.oafinfo
 
 #if OAF
 goad_DATA = $(GOAD_FILES)

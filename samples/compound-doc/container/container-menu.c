@@ -35,7 +35,7 @@ static void print_preview_cb (GtkWidget *caller, SampleApp *inst);
  */
 static GnomeUIInfo sample_app_file_menu [] = {
     GNOMEUIINFO_ITEM_NONE (
-	N_("_Add a new Embeddable component"), NULL,
+	N_("A_dd a new Embeddable component"), NULL,
 	add_cb),
     
     GNOMEUIINFO_SEPARATOR,

@@ -3,6 +3,6 @@
 Makefile
 Makefile.in
 paint-component-simple
-sample-container
+sample-canvas-item
 bonobo-hello
 container

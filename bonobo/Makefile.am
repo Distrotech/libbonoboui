@@ -15,8 +15,8 @@ INCLUDES =                                              \
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I$(top_builddir)				\
         -I$(includedir)                                 \
-       	$(GNOME_INCLUDEDIR)				\
-       	$(GDK_PIXBUF_CFLAGS)
+	$(GNOME_INCLUDEDIR)				\
+	$(GDK_PIXBUF_CFLAGS)
 
 gnome_libs =			\
 	$(GNOME_LIBDIR)		\
@@ -34,12 +34,9 @@ lib_LTLIBRARIES = libbonobo.la libbonobo-print.la
 
 test_programs = \
 	test-container 		\
-	sample-server 		\
-	sample-item 		\
 	test-container-autoload	\
 	selector_test		\
-	test-storage		\
-	test-bw
+	test-storage
 
 noinst_PROGRAMS = 		\
 	$(test_programs)
@@ -171,11 +168,6 @@ libbonobo_printinclude_HEADERS =		\
 	bonobo-print.h		\
 	bonobo-print-client.h
 
-test_bw_SOURCES =			\
-	test-bw.c
-
-test_bw_LDADD =	$(bonobo_libs)
-
 test_container_SOURCES =		\
 	test-container.c
 
@@ -185,16 +177,6 @@ test_container_autoload_SOURCES =	\
 	test-container-autoload.c
 
 test_container_autoload_LDADD = $(bonobo_libs)
-
-sample_server_SOURCES =			\
-	sample-server.c
-
-sample_server_LDADD = $(bonobo_libs)
-
-sample_item_SOURCES = 			\
-	sample-item.c
-
-sample_item_LDADD = $(bonobo_libs)
 
 test_storage_SOURCES = test-storage.c
 
@@ -209,19 +191,4 @@ BUILT_SOURCES=$(CORBA_SOURCE)
 
 CLEANFILES += $(BUILT_SOURCES)
 
-
-goaddir = $(sysconfdir)/CORBA/servers
-oafdir = $(datadir)/oaf
-
-GOAD_FILES = sample.gnorba item.gnorba
-OAF_FILES =  sample.oafinfo item.oafinfo
-
-#if OAF
-goad_DATA = $(GOAD_FILES)
-#else
-oaf_DATA = $(OAF_FILES)
-#endif
-
-
-EXTRA_DIST = $(GOAD_FILES) $(OAF_FILES) \
-	bonobo-insert-component.xpm
+EXTRA_DIST = bonobo-insert-component.xpm
