@@ -898,7 +898,7 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 		g_free (fname);
 	}
 
-	name = g_strconcat (BONOBO_UIDIR, file_name);
+	name = g_strconcat (BONOBO_UIDIR, file_name, NULL);
 	if (g_file_exists (name))
 		return name;
 	g_free (name);
