@@ -1,5 +1,12 @@
 2001-04-24  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/bonobo-insert-component.xpm: constify this.
+
+	* bonobo/bonobo-selector-widget.c (bonobo_selector_widget_init):
+	use GdkPixbuf/GtkImage instead of GnomePixmap.
+
+2001-04-24  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/bonobo-selector.[ch]: Use GtkDialog, not GnomeDialog.
 
 	* bonobo/bonobo-ui-engine-config.c (dialog_new): Use GtkDialog,

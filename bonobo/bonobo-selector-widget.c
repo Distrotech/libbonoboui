@@ -19,10 +19,10 @@
 #include <string.h> /* strcmp */
 #include <glib.h>
 #include <bonobo/bonobo-i18n.h>
-#include <libgnomeui/gnome-pixmap.h>
 #include <libgnomeui/gnome-uidefs.h>
 #include <bonobo/bonobo-selector-widget.h>
 #include <bonobo/bonobo-object-directory.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "bonobo-insert-component.xpm"
 
@@ -209,6 +209,7 @@ bonobo_selector_widget_init (GtkWidget *widget)
 	GtkWidget *frame;
 	BonoboSelectorWidgetPrivate *priv;
 	gchar *titles [] = { N_("Name"), "Description", "ID", NULL };
+	GdkPixbuf *pixbuf;
 	
 	g_return_if_fail (sel != NULL);
 
@@ -242,7 +243,10 @@ bonobo_selector_widget_init (GtkWidget *widget)
 
 	hbox = gtk_hbox_new (FALSE, 0);
 
-	pixmap = gnome_pixmap_new_from_xpm_d ((const gchar **) bonobo_insert_component_xpm);
+	pixbuf = gdk_pixbuf_new_from_xpm_data (bonobo_insert_component_xpm);
+	pixmap = gtk_image_new_from_pixbuf (pixbuf);
+	gdk_pixbuf_unref (pixbuf);
+
 	gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, TRUE, GNOME_PAD_SMALL);
 	
 	gtk_box_pack_start (GTK_BOX (hbox), priv->desc_label, TRUE, TRUE, GNOME_PAD_SMALL);
