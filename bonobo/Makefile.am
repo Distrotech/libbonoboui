@@ -62,7 +62,6 @@ libbonobo_la_SOURCES =			\
 	gnome-object.c			\
 	gnome-persist-stream.c		\
 	gnome-persist.c			\
-	gnome-storage.c			\
 	gnome-view.c
 
 
