@@ -245,7 +245,7 @@ bonobo_control_frame_dispose (GObject *object)
 {
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (object);
 
-	dprintf ("bonobo_control_frame_dispose\n");
+	dprintf ("bonobo_control_frame_dispose %p\n", object);
 
 	if (frame->priv->socket)
 		bonobo_control_frame_set_socket (frame, NULL);
@@ -266,7 +266,7 @@ bonobo_control_frame_finalize (GObject *object)
 {
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (object);
 
-	dprintf ("bonobo_control_frame_finalize\n");
+	dprintf ("bonobo_control_frame_finalize %p\n", object);
 
 	g_free (frame->priv);
 	
@@ -651,7 +651,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 		/* Unset ourselves as the frame */
 		id = Bonobo_Control_setFrame (frame->priv->control,
 					      CORBA_OBJECT_NIL, ev);
-		if (!BONOBO_EX (ev))
+		if (!BONOBO_EX (ev) && id)
 			CORBA_free (id);
 
 		if (frame->priv->control != CORBA_OBJECT_NIL)

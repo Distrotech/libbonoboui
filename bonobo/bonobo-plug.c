@@ -94,7 +94,7 @@ static gboolean
 bonobo_plug_delete_event (GtkWidget   *widget,
 			  GdkEventAny *event)
 {
-	dprintf ("bonobo_plug_delete_event\n");
+	dprintf ("bonobo_plug_delete_event %p\n", widget);
 
 	return FALSE;
 }
@@ -102,7 +102,7 @@ bonobo_plug_delete_event (GtkWidget   *widget,
 static void
 bonobo_plug_realize (GtkWidget *widget)
 {
-	dprintf ("bonobo_plug_realize\n");
+	dprintf ("bonobo_plug_realize %p\n", widget);
 
 	GTK_WIDGET_CLASS (parent_class)->realize (widget);
 }
@@ -113,7 +113,7 @@ bonobo_plug_dispose (GObject *object)
 	BonoboPlug *plug = (BonoboPlug *) object;
 	GtkBin *bin_plug = (GtkBin *) object;
 
-	dprintf ("bonobo_plug_dispose\n");
+	dprintf ("bonobo_plug_dispose %p\n", object);
 
 	if (bin_plug->child)
 		gtk_container_remove (

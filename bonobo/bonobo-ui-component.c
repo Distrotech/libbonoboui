@@ -1285,11 +1285,16 @@ void
 bonobo_ui_component_unset_container (BonoboUIComponent *component,
 				     CORBA_Environment *opt_ev)
 {
+	Bonobo_UIContainer container;
+
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
 	bonobo_object_ref (BONOBO_OBJECT (component));
 
-	if (component->priv->container != CORBA_OBJECT_NIL) {
+	container = component->priv->container;
+	component->priv->container = CORBA_OBJECT_NIL;
+
+	if (container != CORBA_OBJECT_NIL) {
 		CORBA_Environment *ev, temp_ev;
 		char              *name;
 		
@@ -1303,8 +1308,7 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component,
 
 		name = component->priv->name ? component->priv->name : "";
 
-		Bonobo_UIContainer_deregisterComponent (
-			component->priv->container, name, ev);
+		Bonobo_UIContainer_deregisterComponent (container, name, ev);
 		
 		if (!opt_ev && BONOBO_EX (ev)) {
 			char *err;
@@ -1313,13 +1317,11 @@ bonobo_ui_component_unset_container (BonoboUIComponent *component,
 			g_free (err);
 		}
 
-		bonobo_object_release_unref (component->priv->container, ev);
+		bonobo_object_release_unref (container, ev);
 
 		if (!opt_ev)
 			CORBA_exception_free (&temp_ev);
 	}
-
-	component->priv->container = CORBA_OBJECT_NIL;
 
 	bonobo_object_unref (BONOBO_OBJECT (component));
 }

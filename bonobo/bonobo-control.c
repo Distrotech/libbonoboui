@@ -131,7 +131,7 @@ bonobo_control_notify_plug_died (BonoboControl *control)
 Bonobo_Gdk_WindowId
 bonobo_control_window_id_from_x11 (guint32 x11_id)
 {
-	guchar                  str[32];
+	guchar str[32];
 
 	snprintf (str, 31, "%d", x11_id);
 	str[31] = '\0';
@@ -548,7 +548,7 @@ bonobo_control_dispose (GObject *object)
 {
 	BonoboControl *control = (BonoboControl *) object;
 
-	dprintf ("bonobo_control_dispose\n");
+	dprintf ("bonobo_control_dispose %p\n", object);
 
 	if (control->priv->plug)
 		bonobo_control_set_plug (control, NULL);
@@ -568,7 +568,7 @@ bonobo_control_finalize (GObject *object)
 {
 	BonoboControl *control = BONOBO_CONTROL (object);
 
-	dprintf ("bonobo_control_finalize\n");
+	dprintf ("bonobo_control_finalize %p\n", object);
 
 	g_free (control->priv);
 

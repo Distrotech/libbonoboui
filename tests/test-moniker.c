@@ -234,7 +234,7 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 			    GTK_SIGNAL_FUNC (bonobo_main_quit), NULL);
 
 	gtk_widget_show_all (window);
-	gtk_main ();
+	bonobo_main ();
 }
 
 MonikerTestDisplayers displayers[] = {
@@ -351,5 +351,5 @@ main (int argc, char **argv)
 	while (global_mto.async && !async_done)
 		g_main_iteration (TRUE);
 
-	return 0;
+	return bonobo_debug_shutdown ();
 }

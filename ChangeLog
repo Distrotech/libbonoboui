@@ -1,3 +1,26 @@
+2001-11-09  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_bind_to_control): add paranoid check.
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_unset_container): fix possible
+	re-enterancy issue.
+
+	* bonobo/bonobo-socket.c
+	(bonobo_socket_plug_removed): impl.
+	(bonobo_socket_class_init): hook.
+
+	* tests/test-moniker.c (display_as_control): use
+	bonobo_main.
+	(main): debug_shutdown.
+
+2001-11-08  Michael Meeks  <michael@ximian.com>
+
+	* glade/glade-bonobo.c
+	(bonobo_window_find_internal_child): impl.
+	(glade_module_register_widgets): upd.
+
 2001-11-08  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-control.c (bonobo_control_construct):

@@ -24,7 +24,7 @@ static GtkSocketClass *parent_class = NULL;
 static void
 bonobo_socket_finalize (GObject *object)
 {
-	dprintf ("bonobo_socket_finalize\n");
+	dprintf ("bonobo_socket_finalize %p\n", object);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -34,7 +34,7 @@ bonobo_socket_dispose (GObject *object)
 {
 	BonoboSocket *socket = (BonoboSocket *) object;
 
-	dprintf ("bonobo_socket_dispose \n");
+	dprintf ("bonobo_socket_dispose %p\n", object);
 
 	if (socket->frame) {
 		BonoboObject *object = BONOBO_OBJECT (socket->frame);
@@ -171,12 +171,22 @@ bonobo_socket_size_request (GtkWidget      *widget,
 	}
 }
 
+static gboolean
+bonobo_socket_plug_removed (GtkSocket *socket)
+{
+	dprintf ("bonobo_socket_plug_removed %p", socket);
+
+	return TRUE;
+}
+
 static void
 bonobo_socket_class_init (GObjectClass *klass)
 {
 	GtkWidgetClass *widget_class;
+	GtkSocketClass *socket_class;
 
 	widget_class = (GtkWidgetClass*) klass;
+	socket_class = (GtkSocketClass*) klass;
 
 	parent_class = g_type_class_peek_parent (klass);
 
@@ -189,6 +199,8 @@ bonobo_socket_class_init (GObjectClass *klass)
 	widget_class->focus_in_event  = bonobo_socket_focus_in;
 	widget_class->focus_out_event = bonobo_socket_focus_out;
 	widget_class->size_request    = bonobo_socket_size_request;
+
+	socket_class->plug_removed    = bonobo_socket_plug_removed;
 }
 
 guint

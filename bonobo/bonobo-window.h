@@ -25,7 +25,7 @@
 typedef struct _BonoboWindowPrivate BonoboWindowPrivate;
 
 typedef struct {
-	GtkWindow          parent;
+	GtkWindow             parent;
 	
 	BonoboWindowPrivate  *priv;
 } BonoboWindow;

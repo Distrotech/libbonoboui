@@ -14,7 +14,8 @@
 #include <glade/glade-build.h>
 
 static GtkWidget *
-glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
+glade_bonobo_widget_new (GladeXML        *xml,
+			 GType            widget_type,
 			 GladeWidgetInfo *info)
 {
 	const gchar *control_moniker = NULL;
@@ -111,6 +112,33 @@ glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
 	return widget;
 }
 
+static GtkWidget *
+bonobo_window_find_internal_child (GladeXML    *xml,
+				   GtkWidget   *parent,
+				   const gchar *childname)
+{
+	if (!strcmp (childname, "vbox")) {
+		GtkWidget *ret;
+
+		if ((ret = bonobo_window_get_contents (
+			BONOBO_WINDOW (parent))))
+			return ret;
+
+		else {
+			GtkWidget *box;
+
+			box = gtk_vbox_new (FALSE, 0);
+			
+			bonobo_window_set_contents (
+				BONOBO_WINDOW (parent), box);
+
+			return box;
+		}
+	}
+
+    return NULL;
+}
+
 /* this macro puts a version check function into the module */
 GLADE_MODULE_CHECK_INIT
 
@@ -123,5 +151,5 @@ glade_module_register_widgets (void)
 			       NULL, NULL);
 	glade_register_widget (BONOBO_TYPE_WINDOW,
 			       NULL, glade_standard_build_children,
-			       NULL);
+			       bonobo_window_find_internal_child);
 }
