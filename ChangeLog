@@ -1,3 +1,9 @@
+Sun Jun 10 01:27:57 2001  Malcolm Tredinnick <malcolm@commsecure.com.au>
+
+	* bonobo-control.c (impl_Bonobo_Control_focus): altered a
+	  gtk_container_focus() call to be a gtk_widget_child_focus() call
+	  (matching a recent gtk+ change).
+
 2001-06-07  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: Added "az", "wa" and Norwegian to $ALL_LINGUAS
