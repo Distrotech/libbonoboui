@@ -1,3 +1,8 @@
+2004-04-27  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-dock-band.c (check_guint_arg):
+	add pre-condition.
+
 2004-04-16  Iñaki Larrañaga  <dooteo@euskalgnu.org>
 
 	* configure.in: Added "eu" (Basque) to ALL_LINGUAS.
