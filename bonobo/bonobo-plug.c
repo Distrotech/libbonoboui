@@ -170,6 +170,10 @@ static gboolean
 bonobo_plug_expose_event (GtkWidget      *widget,
 			  GdkEventExpose *event)
 {
+	gboolean retval;
+
+	retval = GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
+
 	dprintf ("bonobo_plug_expose_event %p (%d, %d), (%d, %d)\n",
 		 widget,
 		 event->area.x, event->area.y,
@@ -184,7 +188,7 @@ bonobo_plug_expose_event (GtkWidget      *widget,
 		       event->area.y + event->area.height);
 #endif
 
-	return FALSE;
+	return retval;
 }
 
 static void
