@@ -36,7 +36,7 @@ typedef struct {
 
 	/* Virtual methods */
 	void (* set_icon)       (BonoboUIToolbarButtonItem *button_item,
-				 GdkPixbuf                 *icon);
+				 GtkWidget                 *image);
 	void (* set_label)      (BonoboUIToolbarButtonItem *button_item,
 				 const char                *label);
 
@@ -53,8 +53,8 @@ void       bonobo_ui_toolbar_button_item_construct          (BonoboUIToolbarButt
 GtkWidget *bonobo_ui_toolbar_button_item_new                (GdkPixbuf                 *icon,
 							     const char                *label);
 
-void       bonobo_ui_toolbar_button_item_set_icon           (BonoboUIToolbarButtonItem *button_item,
-							     GdkPixbuf                 *icon);
+void       bonobo_ui_toolbar_button_item_set_image          (BonoboUIToolbarButtonItem *button_item,
+							     GtkWidget                 *image);
 void       bonobo_ui_toolbar_button_item_set_label          (BonoboUIToolbarButtonItem *button_item,
 							     const char                *label);
 

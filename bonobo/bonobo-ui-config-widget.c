@@ -14,6 +14,7 @@
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-engine-private.h>
 #include <bonobo/bonobo-ui-config-widget.h>
+#include <bonobo/bonobo-ui-sync-toolbar.h>
 #include <bonobo/bonobo-ui-toolbar.h>
 
 #define PARENT_TYPE gtk_vbox_get_type ()

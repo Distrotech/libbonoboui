@@ -19,6 +19,7 @@
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-exception.h>
 #include <gdk/gdkprivate.h>
+#include <gdk/gdkx.h>
 #include <gtk/gtkbox.h>
 #include <gtk/gtkmain.h>
 
@@ -342,7 +343,7 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 
 		gtk_signal_connect_while_alive (GTK_OBJECT (local_socket),
 						"destroy",
-						remove_destroy_idle,
+						GTK_SIGNAL_FUNC (remove_destroy_idle),
 						control, GTK_OBJECT (control));
 
 

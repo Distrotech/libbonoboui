@@ -1,5 +1,32 @@
 2001-04-24  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/bonobo-ui-sync-menu.c (impl_bonobo_ui_sync_menu_state):
+	Use GtkImageMenuItem instead of GtkPixmapMenuItem.
+	(impl_bonobo_ui_sync_menu_state): Comment out accelerator stuff.
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(cmd_get_toolbar_pixbuf): Renamed to cmd_get_toolbar_image() and let
+	it return a GtkWidget.
+
+	* bonobo/bonobo-ui-toolbar-button-item.c
+	(create_pixmap_widget_from_pixbuf): Removed.
+	(set_icon): Renamed to set_image() and let it return a GtkWidget.
+
+	* bonobo/bonobo-ui-toolbar-button-item.h
+	(bonobo_ui_toolbar_button_item_set_icon): Renamed to
+	bonobo_ui_toolbar_button_set_image() and changed argument from
+	GdkPixbuf to GtkWidget.
+	(BonoboUIToolbarButtonItemClass): Changed argument of `set_icon'
+	from GdkPixbuf to GtkWidget.
+
+	* bonobo/bonobo-ui-util.c (get_stock_pixbuf): Removed.
+	(bonobo_ui_util_xml_get_icon_pixbuf): Removed.
+	(bonobo_ui_util_xml_get_icon_pixmap_widget): Move functionality
+	from bonobo_ui_util_xml_get_icon_pixbuf() and use the GtkStock
+	system.
+
+2001-04-24  Martin Baulig  <baulig@suse.de>
+
 	* configure.in: Depend on libgnome.
 
 	* bonobo/Makefile.am (INCLUDES): Added BONOBO_UIDIR.

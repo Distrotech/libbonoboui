@@ -74,7 +74,7 @@ MAKE_SET_CONTROL_PROPERTY_BAG_VALUE (string,   const char *, STRING)
 /* BonoboUIToolbarButtonItem virtual methods.  */
 static void
 impl_set_icon  (BonoboUIToolbarButtonItem *button_item,
-		GdkPixbuf                 *icon)
+		GtkWidget                 *icon)
 {
 	BonoboUIToolbarControlItemPrivate *priv;
 	BonoboUIToolbarControlItem *control_item;
@@ -82,7 +82,7 @@ impl_set_icon  (BonoboUIToolbarButtonItem *button_item,
 	control_item = BONOBO_UI_TOOLBAR_CONTROL_ITEM (button_item);
 	priv = control_item->priv;
 
-	bonobo_ui_toolbar_button_item_set_icon (
+	bonobo_ui_toolbar_button_item_set_image (
 		BONOBO_UI_TOOLBAR_BUTTON_ITEM (priv->button), icon);
 }
 

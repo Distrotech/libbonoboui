@@ -83,6 +83,7 @@ impl_set_orientation (BonoboUIToolbarItem *item,
 		      GtkOrientation orientation)
 {
 	BonoboUIToolbarPopupItem *popup_item;
+	GtkWidget *image;
 	GdkPixbuf *icon;
 
 	if (BONOBO_UI_TOOLBAR_ITEM_CLASS (parent_class)->set_orientation != NULL)
@@ -91,7 +92,10 @@ impl_set_orientation (BonoboUIToolbarItem *item,
 	popup_item = BONOBO_UI_TOOLBAR_POPUP_ITEM (item);
 
 	icon = get_icon_for_orientation (popup_item);
-	bonobo_ui_toolbar_button_item_set_icon (BONOBO_UI_TOOLBAR_BUTTON_ITEM (item), icon);
+	image = gtk_image_new_from_pixbuf (icon);
+	gdk_pixbuf_unref (icon);
+
+	bonobo_ui_toolbar_button_item_set_image (BONOBO_UI_TOOLBAR_BUTTON_ITEM (item), image);
 }
 
 

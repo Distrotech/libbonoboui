@@ -17,6 +17,8 @@
 #include <bonobo/bonobo-win.h>
 #include <bonobo/bonobo-ui-container.h>
 
+#include <gtk/gtksignal.h>
+
 #define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 static GtkObjectClass *bonobo_ui_container_parent_class;
@@ -305,7 +307,7 @@ bonobo_ui_container_set_engine (BonoboUIContainer *container,
 
 	gtk_signal_connect_while_alive (
 		GTK_OBJECT (engine), "destroy",
-		(GtkSignalFunc) blank_engine,
+		GTK_SIGNAL_FUNC (blank_engine),
 		container, GTK_OBJECT (container));
 }
 

@@ -49,20 +49,9 @@ static guint signals [LAST_SIGNAL] = { 0 };
 
 /* Utility functions.  */
 
-static GtkWidget *
-create_pixmap_widget_from_pixbuf (GdkPixbuf *pixbuf)
-{
-	GtkWidget *pixmap_widget;
-
-	pixmap_widget = bonobo_ui_toolbar_icon_new_from_pixbuf (pixbuf);
-	bonobo_ui_toolbar_icon_set_draw_mode (BONOBO_UI_TOOLBAR_ICON (pixmap_widget),
-					      BONOBO_UI_TOOLBAR_ICON_COLOR);
-	return pixmap_widget;
-}
-
 static void
-set_icon (BonoboUIToolbarButtonItem *button_item,
-	  GdkPixbuf *pixbuf)
+set_image (BonoboUIToolbarButtonItem *button_item,
+	   GtkWidget *image)
 {
 	BonoboUIToolbarButtonItemPrivate *priv;
 
@@ -71,14 +60,7 @@ set_icon (BonoboUIToolbarButtonItem *button_item,
 	if (priv->icon != NULL)
 		gtk_widget_destroy (priv->icon);
 
-	gtk_widget_push_style (gtk_widget_get_style (GTK_WIDGET (priv->button_widget)));
-
-	if (pixbuf != NULL)
-		priv->icon = create_pixmap_widget_from_pixbuf (pixbuf);
-	else
-		priv->icon = NULL;
-
-	gtk_widget_pop_style ();
+	priv->icon = image;
 }
 
 static void
@@ -264,9 +246,9 @@ impl_set_tooltip (BonoboUIToolbarItem *item,
 /* BonoboUIToolbarButtonItem virtual methods.  */
 static void
 impl_set_icon  (BonoboUIToolbarButtonItem *button_item,
-		GdkPixbuf                 *icon)
+		GtkWidget                 *image)
 {
-	set_icon (button_item, icon);
+	set_image (button_item, image);
 
 	layout_pixmap_and_label (
 		button_item,
@@ -360,6 +342,7 @@ bonobo_ui_toolbar_button_item_construct (BonoboUIToolbarButtonItem *button_item,
 					 const char *label)
 {
 	BonoboUIToolbarButtonItemPrivate *priv;
+	GtkWidget *image;
 
 	g_return_if_fail (button_item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item));
@@ -384,7 +367,9 @@ bonobo_ui_toolbar_button_item_construct (BonoboUIToolbarButtonItem *button_item,
 
 	gtk_container_add (GTK_CONTAINER (button_item), GTK_WIDGET (button_widget));
 
-	set_icon  (button_item, pixbuf);
+	image = gtk_image_new_from_pixbuf (pixbuf);
+
+	set_image  (button_item, image);
 	set_label (button_item, label);
 
 	layout_pixmap_and_label (
@@ -418,8 +403,8 @@ bonobo_ui_toolbar_button_item_new (GdkPixbuf *icon,
 
 
 void
-bonobo_ui_toolbar_button_item_set_icon (BonoboUIToolbarButtonItem *button_item,
-					GdkPixbuf *icon)
+bonobo_ui_toolbar_button_item_set_image (BonoboUIToolbarButtonItem *button_item,
+					 GtkWidget *image)
 {
 	BonoboUIToolbarButtonItemClass *klass;
 
@@ -430,7 +415,7 @@ bonobo_ui_toolbar_button_item_set_icon (BonoboUIToolbarButtonItem *button_item,
 		(GTK_OBJECT_GET_CLASS (button_item)));
 
 	if (klass->set_icon)
-		klass->set_icon (button_item, icon);
+		klass->set_icon (button_item, image);
 }
 
 void

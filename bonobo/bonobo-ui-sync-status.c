@@ -153,12 +153,12 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 
 		gtk_signal_connect (GTK_OBJECT (widget),
 				    "size_request",
-				    clobber_request_cb, NULL);
+				    GTK_SIGNAL_FUNC (clobber_request_cb), NULL);
 
 		msync->main_status = GTK_STATUSBAR (widget);
 
 		gtk_signal_connect (GTK_OBJECT (widget), "destroy",
-				    (GtkSignalFunc) main_status_null, msync);
+				    GTK_SIGNAL_FUNC (main_status_null), msync);
 
 		/* insert a little padding so text isn't jammed against frame */
 		gtk_misc_set_padding (

@@ -13,7 +13,6 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
-#include <libgnomeui/gtkpixmapmenuitem.h>
 #include <libgnomeui/gnome-preferences.h>
 
 #include <bonobo/bonobo-ui-xml.h>
@@ -361,22 +360,14 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 	if ((type = bonobo_ui_engine_get_attr (node, cmd_node, "type")))
 		bonobo_ui_node_free_string (type);
 	else {
-		if (GTK_IS_PIXMAP_MENU_ITEM (menu_widget)) {
+		if (GTK_IS_IMAGE_MENU_ITEM (menu_widget)) {
 			GtkWidget *pixmap;
-			GtkPixmapMenuItem *gack = GTK_PIXMAP_MENU_ITEM (menu_widget);
 
 			pixmap = cmd_get_menu_pixmap (node, cmd_node);
 
 			if (pixmap) {
-				/* Since this widget sucks we must claw inside its guts */
-				if (gack->pixmap) {
-					gtk_widget_destroy (gack->pixmap);
-					gack->pixmap = NULL;
-				}
 				gtk_widget_show (GTK_WIDGET (pixmap));
-				gtk_pixmap_menu_item_set_pixmap (
-					GTK_PIXMAP_MENU_ITEM (menu_widget),
-					GTK_WIDGET (pixmap));
+				g_object_set (G_OBJECT (menu_widget), "image", pixmap, NULL);
 			}
 		}
 	}
@@ -414,6 +405,7 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 			
 			keyval = gtk_label_parse_uline (GTK_LABEL (label), txt);
 			
+#ifdef FIXME
 			if (keyval != GDK_VoidSymbol) {
 				if (GTK_IS_MENU (parent))
 					gtk_widget_add_accelerator (
@@ -431,6 +423,7 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 				else
 					g_warning ("Adding accelerator went bananas");
 			}
+#endif
 		} /* else
 			g_warning ("No change in label '%s'", txt); */
 
@@ -625,9 +618,10 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 		} else {
 			char *txt;
 			
-			/* FIXME: why not always create pixmap menu items ? */
+			/* FIXME: why not always create image menu items ? */
 			if ((txt = bonobo_ui_engine_get_attr (node, cmd_node, "pixtype")))
-				menu_widget = gtk_pixmap_menu_item_new ();
+				/* FIXME: We should use gtk_image_menu_item_new() here. */
+				menu_widget = g_object_new (GTK_TYPE_IMAGE_MENU_ITEM, NULL);
 			else
 				menu_widget = gtk_menu_item_new ();
 

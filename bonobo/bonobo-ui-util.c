@@ -11,9 +11,9 @@
 #include <ctype.h>
 
 #include <gtk/gtkimage.h>
+#include <gtk/gtkiconfactory.h>
 
 #include <libgnome/gnome-program.h>
-#include <libgnomeui/gnome-stock.h>
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
@@ -223,43 +223,6 @@ bonobo_ui_util_xml_to_pixbuf (const char *xml)
 	return pixbuf;
 }
 
-static GdkPixbuf *
-get_stock_pixbuf (const char *name)
-{
-	GnomeStockPixmapEntry *entry;
-	GdkPixbuf *pixbuf;
-	char *path;
-
-	if (!name)
-		return NULL;
-
-	entry = gnome_stock_pixmap_checkfor (name, GTK_STATE_NORMAL);
-	if (entry == NULL)
-		return NULL;
-
-	switch (entry->type) {
-        case GNOME_STOCK_PIXMAP_TYPE_DATA:
-		pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) ((GnomeStockPixmapEntryData *) entry)->xpm_data);
-		break;
-        case GNOME_STOCK_PIXMAP_TYPE_FILE:
-		path = find_pixmap_in_path (((GnomeStockPixmapEntryFile *) entry)->filename);
-		pixbuf = gdk_pixbuf_new_from_file (path, NULL);
-		g_free (path);
-		break;
-        case GNOME_STOCK_PIXMAP_TYPE_PATH:
-		pixbuf = gdk_pixbuf_new_from_file (((const GnomeStockPixmapEntryPath *) entry)->pathname, NULL);
-		break;
-	case GNOME_STOCK_PIXMAP_TYPE_PIXBUF:
-	case GNOME_STOCK_PIXMAP_TYPE_PIXBUF_SCALED:
-		pixbuf = ((GnomeStockPixmapEntryPixbuf *) entry)->pixbuf;
-		break;
-	default:
-		pixbuf = NULL;
-	}
-
-	return pixbuf;
-}
-
 static gchar *
 find_pixmap_in_path (const gchar *filename)
 {
@@ -275,22 +238,20 @@ find_pixmap_in_path (const gchar *filename)
 }
 
 /**
- * bonobo_ui_util_xml_get_icon_pixbuf:
+ * bonobo_ui_util_xml_get_icon_pixmap_widget:
  * @node: the node
  * @prepend_menu: whether the pixbuf is for a menu item
  * 
- * This routine returns a GdkPixbuf for a @node, if @prepend_menu is
- * TRUE then if it is a stock pixbuf 'Menu_' will be prepended to
- * the stock name. Otherwise the pixbuf is extracted either from the
- * node, a filename, or the stock system.
+ * This function extracts a pixbuf from the node and returns a GtkWidget
+ * containing a display of the pixbuf.
  * 
- * Return value: A handed reference to the extracted pixbuf.
+ * Return value: the widget.
  **/
-GdkPixbuf *
-bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
+GtkWidget *
+bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_menu)
 {
-	GdkPixbuf *icon_pixbuf = NULL;
 	char      *type, *text;
+	GtkWidget *image;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
@@ -309,10 +270,10 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 
 		if (prepend_menu) {
 			char *fullname = g_strconcat ("Menu_", text, NULL);
-			icon_pixbuf = get_stock_pixbuf (fullname);
+			image = gtk_image_new_from_stock (fullname, GTK_ICON_SIZE_MENU);
 			g_free (fullname);
 		} else
-			icon_pixbuf = get_stock_pixbuf (text);
+			image = gtk_image_new_from_stock (text, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 	} else if (!strcmp (type, "filename")) {
 		char *name = find_pixmap_in_path (text);
@@ -320,48 +281,23 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 		if ((name == NULL) || !g_file_test (name, G_FILE_TEST_EXISTS))
 			g_warning ("Could not find GNOME pixmap file %s", text);
 		else
-			icon_pixbuf = gdk_pixbuf_new_from_file (name, NULL);
+			image = gtk_image_new_from_file (name);
 
 		g_free (name);
 	} else if (!strcmp (type, "pixbuf")) {
+		GdkPixbuf *icon_pixbuf;
 		
 		/* Get pointer to GdkPixbuf */
 		icon_pixbuf = bonobo_ui_util_xml_to_pixbuf (text);
-
-		g_return_val_if_fail (icon_pixbuf != NULL, NULL);
+		if (icon_pixbuf) {
+			image = gtk_image_new_from_pixbuf (icon_pixbuf);
+			gdk_pixbuf_unref (icon_pixbuf);
+		}
 	} else
 		g_warning ("Unknown icon_pixbuf type '%s'", type);
 
 	bonobo_ui_node_free_string (text);
 	bonobo_ui_node_free_string (type);
-
-	return icon_pixbuf;
-}
-
-/**
- * bonobo_ui_util_xml_get_icon_pixmap_widget:
- * @node: the node
- * @prepend_menu: whether the pixbuf is for a menu item
- * 
- * This function extracts a pixbuf from the node and returns a GtkWidget
- * containing a display of the pixbuf.
- * 
- * Return value: the widget.
- **/
-GtkWidget *
-bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_menu)
-{
-	GtkWidget *image;
-	GdkPixbuf *pixbuf;
-
-	g_return_val_if_fail (node != NULL, NULL);
-
-	pixbuf = bonobo_ui_util_xml_get_icon_pixbuf (node, prepend_menu);
-	if (pixbuf == NULL)
-		return NULL;
-	
-	image = gtk_image_new_from_pixbuf (pixbuf);
-	gdk_pixbuf_unref (pixbuf);
 
 	return image;
 }
