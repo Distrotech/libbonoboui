@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"POT-Creation-Date: 2002-02-04 17:02+0000\n"
+"POT-Creation-Date: 2002-02-11 11:45+0000\n"
 "PO-Revision-Date: 2001-07-07 12:50+02:00\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@cgabriel.org>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -13,19 +13,19 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
 msgid "Shadow type"
 msgstr "Tipo di ombra"
 
-#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+#: bonobo/bonobo-dock-item.c:202 bonobo/bonobo-dock-item.c:203
 msgid "Orientation"
 msgstr "Orientamento"
 
-#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+#: bonobo/bonobo-dock-item.c:212 bonobo/bonobo-dock-item.c:213
 msgid "Preferred width"
 msgstr "Larghezza preferita"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:221 bonobo/bonobo-dock-item.c:222
 msgid "Preferred height"
 msgstr "Altezza preferita"
 
@@ -41,55 +41,55 @@ msgstr ""
 msgid "Select a filename to save"
 msgstr ""
 
-#: bonobo/bonobo-plug.c:350
+#: bonobo/bonobo-plug.c:351
 msgid "Event Forwarding"
 msgstr ""
 
-#: bonobo/bonobo-plug.c:351
+#: bonobo/bonobo-plug.c:352
 msgid "Whether X events should be forwarded"
 msgstr ""
 
-#: bonobo/bonobo-selector-widget.c:302
+#: bonobo/bonobo-selector-widget.c:301
 msgid "Name"
 msgstr "Nome"
 
-#: bonobo/bonobo-selector-widget.c:326
+#: bonobo/bonobo-selector-widget.c:325
 msgid "Description"
 msgstr "Descrizione"
 
-#: bonobo/bonobo-ui-config-widget.c:260
+#: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
 msgstr "Visibile"
 
-#: bonobo/bonobo-ui-config-widget.c:267
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
 msgstr "_Mostra"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
 msgstr "_Nascondi"
 
-#: bonobo/bonobo-ui-config-widget.c:280
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
 msgstr "_Suggerimenti"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
 msgstr "Barre strumenti"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:294 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Look"
 msgstr "Aspetto"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:303 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "_Icon"
 msgstr "_Icona"
 
-#: bonobo/bonobo-ui-config-widget.c:310
+#: bonobo/bonobo-ui-config-widget.c:309
 msgid "_Text and Icon"
 msgstr "_Testo e icona"
 
-#: bonobo/bonobo-ui-config-widget.c:316
+#: bonobo/bonobo-ui-config-widget.c:315
 msgid "_Priority text only"
 msgstr "_Priorità al solo testo"
 
@@ -97,31 +97,31 @@ msgstr "_Priorità al solo testo"
 msgid "Configure UI"
 msgstr "Configurazione UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "B_oth"
 msgstr "_Entrambi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "T_ext"
 msgstr "_Testo"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Hide t_ips"
 msgstr "N_ascondi suggerimenti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Show t_ips"
 msgstr "_Mostra suggerimenti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Hide toolbar"
 msgstr "_Nascondi barra strumenti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customi_ze"
 msgstr "_Personalizza"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Customize the toolbar"
 msgstr "Personalizza la barra degli strumenti"
 

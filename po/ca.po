@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2002-02-04 17:02+0000\n"
+"POT-Creation-Date: 2002-02-11 11:45+0000\n"
 "PO-Revision-Date: 2001-09-21 20:57+0200\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <info@softcatala.org>\n"
@@ -14,19 +14,19 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
 msgid "Shadow type"
 msgstr "Tipus d'ombra"
 
-#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+#: bonobo/bonobo-dock-item.c:202 bonobo/bonobo-dock-item.c:203
 msgid "Orientation"
 msgstr "Orientació"
 
-#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+#: bonobo/bonobo-dock-item.c:212 bonobo/bonobo-dock-item.c:213
 msgid "Preferred width"
 msgstr "Amplada preferida"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:221 bonobo/bonobo-dock-item.c:222
 msgid "Preferred height"
 msgstr "Alçada preferida"
 
@@ -42,55 +42,55 @@ msgstr "Seleccioneu els fitxers a obrir"
 msgid "Select a filename to save"
 msgstr "Seleccioneu un nom de fitxer per desar"
 
-#: bonobo/bonobo-plug.c:350
+#: bonobo/bonobo-plug.c:351
 msgid "Event Forwarding"
 msgstr ""
 
-#: bonobo/bonobo-plug.c:351
+#: bonobo/bonobo-plug.c:352
 msgid "Whether X events should be forwarded"
 msgstr ""
 
-#: bonobo/bonobo-selector-widget.c:302
+#: bonobo/bonobo-selector-widget.c:301
 msgid "Name"
 msgstr "Nom"
 
-#: bonobo/bonobo-selector-widget.c:326
+#: bonobo/bonobo-selector-widget.c:325
 msgid "Description"
 msgstr "Descripció"
 
-#: bonobo/bonobo-ui-config-widget.c:260
+#: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
 msgstr "Visible"
 
-#: bonobo/bonobo-ui-config-widget.c:267
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
 msgstr "_Mostra"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
 msgstr "_Amaga"
 
-#: bonobo/bonobo-ui-config-widget.c:280
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
 msgstr "_Mostra els rètols indicadors de funció"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
 msgstr "Barres d'eines"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:294 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Look"
 msgstr "Aspecte"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:303 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "_Icon"
 msgstr "_Icona"
 
-#: bonobo/bonobo-ui-config-widget.c:310
+#: bonobo/bonobo-ui-config-widget.c:309
 msgid "_Text and Icon"
 msgstr "_Texte i icona"
 
-#: bonobo/bonobo-ui-config-widget.c:316
+#: bonobo/bonobo-ui-config-widget.c:315
 msgid "_Priority text only"
 msgstr "Només el text de _prioritat"
 
@@ -98,31 +98,31 @@ msgstr "Només el text de _prioritat"
 msgid "Configure UI"
 msgstr "Configura la UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "B_oth"
 msgstr "A_mbdues"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "T_ext"
 msgstr "T_ext"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Hide t_ips"
 msgstr "Amaga els c_onsells"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Show t_ips"
 msgstr "Mostra els c_onsells"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Hide toolbar"
 msgstr "_Amaga la barra d'eines"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customi_ze"
 msgstr "Personalit_za"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Customize the toolbar"
 msgstr "Personalitza la barra d'eines"
 

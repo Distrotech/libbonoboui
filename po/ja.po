@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.108.1\n"
-"POT-Creation-Date: 2002-02-04 17:02+0000\n"
+"POT-Creation-Date: 2002-02-11 11:45+0000\n"
 "PO-Revision-Date: 2002-01-17 23:39+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -14,19 +14,19 @@ msgstr ""
 "Content-Type: text/plain; charset=euc-jp\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
 msgid "Shadow type"
 msgstr "シャドウの種類"
 
-#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+#: bonobo/bonobo-dock-item.c:202 bonobo/bonobo-dock-item.c:203
 msgid "Orientation"
 msgstr "向き"
 
-#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+#: bonobo/bonobo-dock-item.c:212 bonobo/bonobo-dock-item.c:213
 msgid "Preferred width"
 msgstr "希望する幅"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:221 bonobo/bonobo-dock-item.c:222
 msgid "Preferred height"
 msgstr "希望する高さ"
 
@@ -42,55 +42,55 @@ msgstr "開きたいファイルを選択"
 msgid "Select a filename to save"
 msgstr "保存するファイル名を選択"
 
-#: bonobo/bonobo-plug.c:350
+#: bonobo/bonobo-plug.c:351
 msgid "Event Forwarding"
 msgstr "イベント転送"
 
-#: bonobo/bonobo-plug.c:351
+#: bonobo/bonobo-plug.c:352
 msgid "Whether X events should be forwarded"
 msgstr "X イベントを転送するかどうか"
 
-#: bonobo/bonobo-selector-widget.c:302
+#: bonobo/bonobo-selector-widget.c:301
 msgid "Name"
 msgstr "名称"
 
-#: bonobo/bonobo-selector-widget.c:326
+#: bonobo/bonobo-selector-widget.c:325
 msgid "Description"
 msgstr "説明"
 
-#: bonobo/bonobo-ui-config-widget.c:260
+#: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
 msgstr "可視"
 
-#: bonobo/bonobo-ui-config-widget.c:267
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
 msgstr "表示(_S)"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
 msgstr "隠す(_H)"
 
-#: bonobo/bonobo-ui-config-widget.c:280
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
 msgstr "ツールチップを表示(_V)"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
 msgstr "ツールバー"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:294 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Look"
 msgstr "外観"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:303 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "_Icon"
 msgstr "アイコン(_I)"
 
-#: bonobo/bonobo-ui-config-widget.c:310
+#: bonobo/bonobo-ui-config-widget.c:309
 msgid "_Text and Icon"
 msgstr "テキストとアイコン(_T)"
 
-#: bonobo/bonobo-ui-config-widget.c:316
+#: bonobo/bonobo-ui-config-widget.c:315
 msgid "_Priority text only"
 msgstr "テキストのみ(_P)"
 
@@ -98,31 +98,31 @@ msgstr "テキストのみ(_P)"
 msgid "Configure UI"
 msgstr "UI の設定"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "B_oth"
 msgstr "両方(_O)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "T_ext"
 msgstr "テキスト(_E)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Hide t_ips"
 msgstr "ツールチップを隠す(_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Show t_ips"
 msgstr "ツールチップを表示(_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Hide toolbar"
 msgstr "ツールバーを隠す(_H)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customi_ze"
 msgstr "設定変更(_Z)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Customize the toolbar"
 msgstr "ツールバーのカスタマイズ"
 

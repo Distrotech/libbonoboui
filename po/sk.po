@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-02-04 17:02+0000\n"
+"POT-Creation-Date: 2002-02-11 11:45+0000\n"
 "PO-Revision-Date: 2002-01-10 09:55+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
@@ -13,19 +13,19 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
 msgid "Shadow type"
 msgstr "Typ tieòa"
 
-#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+#: bonobo/bonobo-dock-item.c:202 bonobo/bonobo-dock-item.c:203
 msgid "Orientation"
 msgstr "Orientácia"
 
-#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+#: bonobo/bonobo-dock-item.c:212 bonobo/bonobo-dock-item.c:213
 msgid "Preferred width"
 msgstr "Preferovaná ¹írka"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:221 bonobo/bonobo-dock-item.c:222
 msgid "Preferred height"
 msgstr "Preferovaná vý¹ka"
 
@@ -41,55 +41,55 @@ msgstr "Vybra» súbory na otvorenie"
 msgid "Select a filename to save"
 msgstr "Vybra» meno súboru na ulo¾enie"
 
-#: bonobo/bonobo-plug.c:350
+#: bonobo/bonobo-plug.c:351
 msgid "Event Forwarding"
 msgstr "Preposielanie udalostí"
 
-#: bonobo/bonobo-plug.c:351
+#: bonobo/bonobo-plug.c:352
 msgid "Whether X events should be forwarded"
 msgstr "Èi majú by» udalosti X preposielané"
 
-#: bonobo/bonobo-selector-widget.c:302
+#: bonobo/bonobo-selector-widget.c:301
 msgid "Name"
 msgstr "Meno"
 
-#: bonobo/bonobo-selector-widget.c:326
+#: bonobo/bonobo-selector-widget.c:325
 msgid "Description"
 msgstr "Popis"
 
-#: bonobo/bonobo-ui-config-widget.c:260
+#: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
 msgstr "Viditeµný"
 
-#: bonobo/bonobo-ui-config-widget.c:267
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
 msgstr "_Ukáza»"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
 msgstr "S_kry»"
 
-#: bonobo/bonobo-ui-config-widget.c:280
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
 msgstr "Ukáza» _nástrojové tipy"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
 msgstr "Li¹ty nástrojov"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:294 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Look"
 msgstr "Vzhµad"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:303 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "_Icon"
 msgstr "_Ikona"
 
-#: bonobo/bonobo-ui-config-widget.c:310
+#: bonobo/bonobo-ui-config-widget.c:309
 msgid "_Text and Icon"
 msgstr "_Text a ikona"
 
-#: bonobo/bonobo-ui-config-widget.c:316
+#: bonobo/bonobo-ui-config-widget.c:315
 msgid "_Priority text only"
 msgstr "Len _prioritný text"
 
@@ -97,31 +97,31 @@ msgstr "Len _prioritný text"
 msgid "Configure UI"
 msgstr "Konfigurova» pou¾ívateµské rozhranie"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "B_oth"
 msgstr "_Obidvoje"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "T_ext"
 msgstr "T_ext"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Hide t_ips"
 msgstr "Skry» t_ipy"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Show t_ips"
 msgstr "Ukáza» t_ipy"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Hide toolbar"
 msgstr "S_kry» li¹tu nástrojov"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customi_ze"
 msgstr "Prispôso_bi»"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Customize the toolbar"
 msgstr "Prispôsobi» li¹tu nástrojov"
 

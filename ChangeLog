@@ -1,5 +1,9 @@
 2002-02-11  Michael Meeks  <michael@ximian.com>
 
+	* Version 1.111.0
+
+2002-02-11  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-engine.h: fix G_BEGIN_DECLS
 
 2002-02-10  Pauli Virtanen  <ptvirtan@cc.hut.fi>
