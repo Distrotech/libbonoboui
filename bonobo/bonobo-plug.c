@@ -78,16 +78,16 @@ bonobo_plug_set_control (BonoboPlug    *plug,
 	old_control = plug->control;
 
 	if (control) {
-		plug->control = g_object_ref (G_OBJECT (control));
+		plug->control = BONOBO_CONTROL (
+			bonobo_object_ref (BONOBO_OBJECT (control)));
 		bonobo_control_set_plug (control, plug);
 	} else
 		plug->control = NULL;
 
 	if (old_control) {
 		bonobo_control_set_plug (old_control, NULL);
-		g_object_unref (G_OBJECT (old_control));
+		bonobo_object_unref (BONOBO_OBJECT (old_control));
 	}
-
 }
 
 static gboolean
@@ -119,24 +119,11 @@ bonobo_plug_dispose (GObject *object)
 		g_object_ref (G_OBJECT (bin_plug->child));
 		gtk_container_remove (
 			&bin_plug->container, bin_plug->child);
-		g_warning ("Removing child ...");
+		dprintf ("Removing child ...");
 	}
 
-	if (plug->control) {
-		BonoboControl *control = plug->control;
-		gboolean       inproc_parent_died = FALSE;
-
-		if (BONOBO_IS_SOCKET (GTK_WIDGET (plug)->parent))
-			inproc_parent_died = bonobo_socket_disposed (
-				BONOBO_SOCKET (GTK_WIDGET (plug)->parent));
-		else
-			inproc_parent_died = FALSE;
-
+	if (plug->control)
 		bonobo_plug_set_control (plug, NULL);
-
-		bonobo_control_notify_plug_died (
-			control, inproc_parent_died);
-	}
 
 	parent_class->dispose (object);
 }

@@ -107,6 +107,7 @@ create_frame (Test *test, gboolean fake_remote)
 
 	test->bonobo_widget = bonobo_widget_new_control_from_objref (
 		control, CORBA_OBJECT_NIL);
+	bonobo_object_unref (BONOBO_OBJECT (test->control));
 	gtk_widget_show (test->bonobo_widget);
 	test->frame = bonobo_widget_get_control_frame (
 		BONOBO_WIDGET (test->bonobo_widget));

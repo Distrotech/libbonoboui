@@ -418,6 +418,8 @@ bonobo_window_construct (BonoboWindow      *win,
 
 	bonobo_ui_container_set_engine (ui_container, win->priv->engine);
 
+	bonobo_object_unref (BONOBO_OBJECT (ui_container));
+
 	if (title)
 		gtk_window_set_title (GTK_WINDOW (win), title);
 

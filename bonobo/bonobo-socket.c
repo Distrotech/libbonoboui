@@ -43,10 +43,7 @@ bonobo_socket_dispose (GObject *object)
 	dprintf ("bonobo_socket_dispose %p\n", object);
 
 	if (socket->frame) {
-		BonoboObject *object = BONOBO_OBJECT (socket->frame);
-
 		bonobo_socket_set_control_frame (socket, NULL);
-		bonobo_object_unref (object);
 		g_assert (socket->frame == NULL);
 	}
 
@@ -313,13 +310,14 @@ bonobo_socket_set_control_frame (BonoboSocket       *socket,
 	old_frame = socket->frame;
 
 	if (frame) {
-		socket->frame = g_object_ref (G_OBJECT (frame));
+		socket->frame = BONOBO_CONTROL_FRAME (
+			bonobo_object_ref (BONOBO_OBJECT (frame)));
 		bonobo_control_frame_set_socket (frame, socket);
 	} else
 		socket->frame = NULL;
 
 	if (old_frame) {
 		bonobo_control_frame_set_socket (old_frame, NULL);
-		g_object_unref (G_OBJECT (old_frame));
+		bonobo_object_unref (BONOBO_OBJECT (old_frame));
 	}
 }

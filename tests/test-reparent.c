@@ -10,7 +10,7 @@
 
 #include <bonobo.h>
 
-gboolean do_remote = FALSE;
+gboolean do_remote = TRUE;
 gboolean do_local  = TRUE;
 
 GtkWidget *window, *vbox, *button, *placeholder1, *placeholder2;
@@ -65,6 +65,7 @@ make_inproc_widget (void)
 	control = bonobo_control_new (entry);
 	inproc_widget = bonobo_widget_new_control_from_objref (
 		BONOBO_OBJREF (control), CORBA_OBJECT_NIL);
+	bonobo_object_unref (BONOBO_OBJECT (control));
 
 	gtk_widget_show (inproc_widget);
 	gtk_container_add (GTK_CONTAINER (placeholder2), inproc_widget);

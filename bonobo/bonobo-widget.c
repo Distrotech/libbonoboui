@@ -336,7 +336,10 @@ bonobo_widget_dispose (GObject *object)
 	BonoboWidget *bw = BONOBO_WIDGET (object);
 	BonoboWidgetPrivate *priv = bw->priv;
 	
-	priv->frame = NULL;
+	if (priv->frame) {
+		bonobo_object_unref (BONOBO_OBJECT (priv->frame));
+		priv->frame = NULL;
+	}
 
 	parent_class->dispose (object);
 }

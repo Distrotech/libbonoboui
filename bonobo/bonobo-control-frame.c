@@ -735,7 +735,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 					 CORBA_OBJECT_NIL, ev);
 
 		if (frame->priv->control != CORBA_OBJECT_NIL)
-			CORBA_Object_release (frame->priv->control, ev);
+			bonobo_object_release_unref (frame->priv->control, ev);
 
 		CORBA_exception_free (ev);
 	}
@@ -744,7 +744,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 		frame->priv->control = CORBA_OBJECT_NIL;
 		frame->priv->inproc_control = NULL;
 	} else {
-		frame->priv->control = CORBA_Object_duplicate (control, ev);
+		frame->priv->control = bonobo_object_dup_ref (control, ev);
 
 		frame->priv->inproc_control = (BonoboControl *)
 			bonobo_object (ORBit_small_get_servant (control));

@@ -51,7 +51,7 @@ interactions:
         ControlFrame: GObject ref -> Socket
 	Socket: Bonobo ref -> ControlFrame
 
-	ControlFrame: CORBA ref -> Control
+	ControlFrame: Bonobo ref -> Control
 	----------------------------------
 	Control: CORBA ref -> ControlFrame
 
@@ -64,9 +64,6 @@ modules to give more lucid encapsulation.
 
 * Destruction interaction (B1)
 
-*** FIXME *** connection sharing is going to screw up the out of proc
-lifecycle case ! ( we need to add an explicit notify ).
-
 
 ** Out of proc
 
@@ -74,24 +71,18 @@ lifecycle case ! ( we need to add an explicit notify ).
 
 	1.                       Socket dispose
 	2.			 unset control (B. unref)
-	3.			 C. unref Control
+	3.			 Bonobo unref Control 
 
-	4. connection broken    <--.
-and:			           | interchangeable: Note 1.
+	4. got unref            <--.
+and:			           | interchangeable
 	5. X connection broken  <--'
-	6. Instantiate glib mainloop idle handler: Note 2.
+	6. Instantiate glib mainloop idle handler: Note 1.
 ...
 	7. unref plug -> dispose
 	8. plug unset control frame
 	9. plug C. unref ControlFrame
 
 ** Note 1.
-	  X connection broken invokes 'destroy' on plug.
-	  CORBA connection broken invokes 'broken' on
-	control_frame->connection
-	  When we have both - track in the Control; unref plug.
-
-** Note 2.
 	  As Darin points out, the connection broken signal
 	can occur 'inside' or during a CORBA method leading
 	to some confusion. Thus it is best to delay the actual
@@ -103,7 +94,7 @@ and:			           | interchangeable: Note 1.
 
 	1.                       Socket dispose
 	2.			 unset control (B. unref)
-	3.			 C. unref Control
+	3.			 Bonobo. unref Control
 if we have a plug:
 	4.                       gtk_widget_destroy plug
 	5. plug unset control frame
@@ -183,8 +174,6 @@ Gtk+ signals instead. We can reliably detect this by a lack of
 connection on the Bonobo_Unknown references though. [ unless we have
 invoked an async method on them ]. But also possibly from
 plug->socket_window and socket->plug_window [ these may race ].
-
-	Investigate where the "destroy_event" comes into it all.
 
 	Consider the 'activation' side of it all; what does activation
 entail, and what happens in failure modes.

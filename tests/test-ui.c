@@ -406,6 +406,7 @@ main (int argc, char **argv)
 						"/menu/File/MyControl",
 						BONOBO_OBJREF (control),
 						ev);
+		bonobo_object_unref (BONOBO_OBJECT (control));
 		g_assert (!BONOBO_EX (ev));
 	}
 
@@ -419,6 +420,7 @@ main (int argc, char **argv)
 						"/Toolbar/AControl",
 						BONOBO_OBJREF (control),
 						ev);
+		bonobo_object_unref (BONOBO_OBJECT (control));
 		g_assert (!BONOBO_EX (ev));
 	}
 
@@ -519,6 +521,7 @@ main (int argc, char **argv)
 		id = gtk_timeout_add (100, (GSourceFunc) update_progress, widget);
 		gtk_signal_connect (GTK_OBJECT (widget), "destroy",
 				    GTK_SIGNAL_FUNC (disconnect_progress), GUINT_TO_POINTER (id));
+		bonobo_object_unref (BONOBO_OBJECT (control));
 	}
 
 	bonobo_ui_component_set_status (componenta, "This is a very long status message "

@@ -45,6 +45,8 @@ make_inprocess_control (BonoboUIContainer *uic)
 
 	controlw = bonobo_widget_new_control_from_objref
 		(BONOBO_OBJREF (control), BONOBO_OBJREF (uic));
+
+	bonobo_object_unref (BONOBO_OBJECT (control));
 	
 	return controlw;
 }

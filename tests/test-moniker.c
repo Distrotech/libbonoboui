@@ -215,7 +215,8 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 	} else {
 		the_control = bonobo_get_object (moniker, "IDL:Bonobo/Control:1.0", ev);
 		if (BONOBO_EX (ev) || !the_control)
-			g_error ("Couldn't get Bonobo/Control interface");
+			g_error ("Couldn't get Bonobo/Control interface: '%s'",
+				 bonobo_exception_get_text (ev));
 
 		widget = bonobo_widget_new_control_from_objref (
 			the_control, BONOBO_OBJREF (ui_container));

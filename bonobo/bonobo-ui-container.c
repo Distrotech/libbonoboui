@@ -25,8 +25,6 @@ struct _BonoboUIContainerPrivate {
 	int             flags;
 };
 
-#define ENGINE_DESTROYED 0x1
-
 static BonoboUIEngine *
 get_engine (PortableServer_Servant servant)
 {
@@ -35,13 +33,11 @@ get_engine (PortableServer_Servant servant)
 	container = BONOBO_UI_CONTAINER (bonobo_object_from_servant (servant));
 	g_return_val_if_fail (container != NULL, NULL);
 
-	if (container->priv->engine == NULL) {
-		if (!container->priv->flags & ENGINE_DESTROYED)
-			g_warning ("Trying to invoke CORBA method "
-				   "on unbound UIContainer");
-		return NULL;
-	} else
-		return container->priv->engine;
+	if (!container->priv->engine)
+		g_warning ("Trying to invoke CORBA method "
+			   "on unbound UIContainer");
+
+	return container->priv->engine;
 }
 
 static void
@@ -276,6 +272,16 @@ impl_Bonobo_UIContainer_thaw (PortableServer_Servant   servant,
 }
 
 static void
+bonobo_ui_container_dispose (GObject *object)
+{
+	BonoboUIContainer *container = (BonoboUIContainer *) object;
+
+	bonobo_ui_container_set_engine (container, NULL);
+
+	G_OBJECT_CLASS (bonobo_ui_container_parent_class)->dispose (object);
+}
+
+static void
 bonobo_ui_container_finalize (GObject *object)
 {
 	BonoboUIContainer *container = (BonoboUIContainer *) object;
@@ -302,6 +308,7 @@ bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 
 	bonobo_ui_container_parent_class = g_type_class_peek_parent (klass);
 
+	g_class->dispose  = bonobo_ui_container_dispose;
 	g_class->finalize = bonobo_ui_container_finalize;
 
 	epv->registerComponent   = impl_Bonobo_UIContainer_registerComponent;
@@ -342,13 +349,6 @@ bonobo_ui_container_new (void)
 	return g_object_new (BONOBO_TYPE_UI_CONTAINER, NULL);
 }
 
-static void
-blank_engine (GtkObject *win, BonoboUIContainer *container)
-{
-	container->priv->engine = NULL;
-	container->priv->flags |= ENGINE_DESTROYED;
-}
-
 /**
  * bonobo_ui_container_set_engine:
  * @container: the container
@@ -361,18 +361,21 @@ void
 bonobo_ui_container_set_engine (BonoboUIContainer *container,
 				BonoboUIEngine    *engine)
 {
-	GClosure *closure;
+	BonoboUIEngine *old_engine;
 
 	g_return_if_fail (BONOBO_IS_UI_CONTAINER (container));
 
-	container->priv->engine = engine;
-	bonobo_ui_engine_set_ui_container (engine, container);
+	if (container->priv->engine == engine)
+		return;
 
-	closure = g_cclosure_new (
-		G_CALLBACK (blank_engine), container, NULL);
-	g_object_watch_closure (G_OBJECT (container), closure);
-	g_signal_connect_closure (G_OBJECT (engine), "destroy",
-				  closure, FALSE);
+	old_engine = container->priv->engine;
+	container->priv->engine = engine;
+
+	if (engine)
+		bonobo_ui_engine_set_ui_container (engine, container);
+
+	if (old_engine)
+		bonobo_ui_engine_set_ui_container (old_engine, NULL);
 }
 
 /**

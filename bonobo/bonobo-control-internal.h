@@ -33,10 +33,6 @@ void     bonobo_control_frame_set_inproc_widget (BonoboControlFrame *frame,
 						 BonoboPlug         *bonobo_plug,
 						 GtkWidget          *control_widget);
 
-
-void                bonobo_control_notify_plug_died (BonoboControl      *control,
-						     gboolean            inproc_parent_died);
-
 BonoboSocket       *bonobo_control_frame_get_socket (BonoboControlFrame *frame);
 BonoboControlFrame *bonobo_socket_get_control_frame (BonoboSocket       *socket);
 void                bonobo_control_frame_set_socket (BonoboControlFrame *frame,

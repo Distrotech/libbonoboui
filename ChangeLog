@@ -1,3 +1,54 @@
+2001-12-12  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-reparent.c: do the out of proc re-parent,
+	it works ! :-)
+
+	* tests/test-control.c: upd. referencing.
+
+	* tests/test-ui.c: upd. referencing.
+
+	* doc/control.txt: upd.
+
+	* bonobo/bonobo-widget.c (bonobo_widget_dispose): 
+	release the frame's ref.
+
+	* bonobo/bonobo-socket.c (bonobo_socket_dispose): upd.
+	(bonobo_socket_set_control_frame): take B. ref.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_set_control): take
+	a B. ref, remove crack smoking mess.
+
+	* bonobo/bonobo-control.c
+	(control_frame_connection_died_cb): loose a single B. ref.
+	(bonobo_control_notify_plug_died): kill.
+	(bonobo_control_dispose): NULL widget on dispose.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_bind_to_control): upd. referencing.
+
+	* bonobo/bonobo-window.c
+	(bonobo_window_construct): deal with UI contianer
+	referencing.
+
+	* bonobo/bonobo-ui-container.c
+	(bonobo_ui_container_class_init): upd.
+	(bonobo_ui_container_dispose): impl, unhook
+	from the engine.
+	(bonobo_ui_container_set_engine): upd.
+	(blank_engine): kill heap of dung.
+
+	* bonobo/bonobo-ui-engine.c (class_init): upd.
+	(impl_dispose): impl, unhook from the ui container.
+	(bonobo_ui_engine_set_ui_container): upd.
+	(blank_container): kill evil smelling mess.
+	(sub_component_destroy): upd, kill signal mess,
+	don't blank our UI container - why was that there ?a
+
+2001-12-08  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-moniker.c (display_as_control): dump
+	the exception string.
+
 Wed Dec 12 10:36:55 2001  George Lebl <jirka@5z.com>
 
 	* bonobo/bonobo-dock-item.c, bonobo/bonobo-plug.c,

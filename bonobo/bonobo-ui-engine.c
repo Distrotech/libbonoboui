@@ -65,8 +65,6 @@ struct _BonoboUIEnginePrivate {
 	BonoboUIEngineConfig *config;
 
 	GHashTable   *cmd_to_node;
-
-	guint         destroy_id;
 };
 
 /*
@@ -732,13 +730,6 @@ sub_component_cmp_name (BonoboUIEngine *engine, const char *name)
 static void
 sub_component_destroy (BonoboUIEngine *engine, SubComponent *component)
 {
-	if (engine->priv->destroy_id)
-		g_signal_handler_disconnect (G_OBJECT (engine->priv->container),
-					     engine->priv->destroy_id);
-	engine->priv->destroy_id = 0;
-
-	engine->priv->container = NULL;
-
 	engine->priv->components = g_slist_remove (
 		engine->priv->components, component);
 
@@ -1314,14 +1305,6 @@ bonobo_ui_engine_xml_rm (BonoboUIEngine *engine,
 	return err;
 }
 
-static void
-blank_container (BonoboUIContainer *container,
-		 BonoboUIEngine    *engine)
-{
-	if (engine->priv)
-		engine->priv->container = NULL;
-}
-
 /**
  * bonobo_ui_engine_set_ui_container:
  * @engine: the engine
@@ -1333,17 +1316,28 @@ void
 bonobo_ui_engine_set_ui_container (BonoboUIEngine    *engine,
 				   BonoboUIContainer *ui_container)
 {
-	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
-	g_return_if_fail (engine->priv->container == NULL);
-	g_return_if_fail (BONOBO_IS_UI_CONTAINER (ui_container));
+	BonoboUIContainer *old_container;
 
-	engine->priv->container = ui_container;
+	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
+
+	if (engine->priv->container == ui_container)
+		return;
+
+	g_return_if_fail (!ui_container ||
+			  BONOBO_IS_UI_CONTAINER (ui_container));
+
+	old_container = engine->priv->container;
+
+	engine->priv->container = BONOBO_UI_CONTAINER (
+		bonobo_object_ref (BONOBO_OBJECT (ui_container)));
 
 	if (ui_container)
-		engine->priv->destroy_id = g_signal_connect_data (
-			G_OBJECT (ui_container), "destroy",
-			G_CALLBACK (blank_container), engine,
-			NULL, 0);
+		bonobo_ui_container_set_engine (ui_container, engine);
+
+	if (old_container) {
+		bonobo_ui_container_set_engine (old_container, NULL);
+		bonobo_object_unref (BONOBO_OBJECT (old_container));
+	}
 }
 
 /**
@@ -1670,6 +1664,18 @@ impl_emit_event_on (BonoboUIEngine *engine,
 }
 
 static void
+impl_dispose (GObject *object)
+{
+	BonoboUIEngine *engine;
+
+	engine = BONOBO_UI_ENGINE (object);
+
+	bonobo_ui_engine_set_ui_container (engine, NULL);
+	
+	G_OBJECT_CLASS (parent_class)->dispose (object);
+}
+
+static void
 impl_finalize (GObject *object)
 {
 	BonoboUIEngine *engine;
@@ -1719,6 +1725,7 @@ class_init (BonoboUIEngineClass *engine_class)
  	sensitive_id = g_quark_from_static_string ("sensitive");
 
 	object_class = G_OBJECT_CLASS (engine_class);
+	object_class->dispose  = impl_dispose;
 	object_class->finalize = impl_finalize;
 
 	engine_class->emit_verb_on  = impl_emit_verb_on;

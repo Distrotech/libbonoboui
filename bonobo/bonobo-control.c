@@ -61,6 +61,7 @@ control_frame_connection_died_cb (gpointer connection,
 	g_return_if_fail (control != NULL);
 
 	dprintf ("The remote control frame died unexpectedly");
+	bonobo_object_unref (BONOBO_OBJECT (control));
 }
 
 void
@@ -87,45 +88,6 @@ bonobo_control_add_listener (CORBA_Object        object,
 		break;
 	}
 }
-
-/* Control lifecycle grind ... */
-void
-bonobo_control_notify_plug_died (BonoboControl *control,
-				 gboolean       inproc_parent_died)
-{
-	Bonobo_ControlFrame frame;
-	gboolean            end_of_life;
-
-	frame = control->priv->frame;
-
-	dprintf ("bonobo_control_notify_plug_died (%d): ",
-		 inproc_parent_died);
-
-	if (frame != CORBA_OBJECT_NIL) {
-		end_of_life = TRUE; /* Hack for now */
-		switch (ORBit_small_get_connection_status (frame)) {
-		case ORBIT_CONNECTION_CONNECTED:
-		case ORBIT_CONNECTION_CONNECTING:
-			dprintf ("valid connection\n");
-			g_warning ("FIXME: We need to wait for 'broken' on the "
-				   "connection - to allow re-parenting");
-			break;
-		case ORBIT_CONNECTION_DISCONNECTED:
-			dprintf ("connection broken\n");
-			break;
-		case ORBIT_CONNECTION_IN_PROC:
-			end_of_life = inproc_parent_died;
-			break;
-		}
-	} else {
-		dprintf ("no frame\n");
-		end_of_life = TRUE;
-	}
-
-	if (end_of_life)
-		bonobo_object_unref (BONOBO_OBJECT (control));
-}
-
 
 /**
  * bonobo_control_window_id_from_x11:
@@ -599,14 +561,16 @@ bonobo_control_dispose (GObject *object)
 
 	if (control->priv->widget)
 		g_object_unref (G_OBJECT (control->priv->widget));
+	control->priv->widget = NULL;
 
 	control->priv->popup_ui_container = bonobo_object_unref (
-		BONOBO_OBJECT (control->priv->popup_ui_container));
+		(BonoboObject *) control->priv->popup_ui_container);
 
 	control->priv->popup_ui_component = bonobo_object_unref (
-		BONOBO_OBJECT (control->priv->popup_ui_component));
+		(BonoboObject *) control->priv->popup_ui_component);
 
 	control->priv->popup_ui_sync = NULL;
+	control->priv->inproc_frame  = NULL;
 
 	bonobo_control_parent_class->dispose (object);
 }
