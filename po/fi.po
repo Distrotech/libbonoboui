@@ -5,11 +5,15 @@
 # Sami Gerdt <sgerdt@cs.joensuu.fi>, 2000.
 # Pauli Virtanen <pauli.virtanen@hut.fi>, 2000-2002.
 #
+#
+# embeddable = upote
+# control = säädin
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2002-11-26 10:17+0000\n"
-"PO-Revision-Date: 2002-05-31 18:10+0200\n"
+"POT-Creation-Date: 2002-11-30 22:07+0200\n"
+"PO-Revision-Date: 2002-11-02 22:42+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -155,15 +159,15 @@ msgstr "_Vain tärkeä teksti"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "Vianetsintä"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "_XML-vedos"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "Tulosta koko käyttöliittymän XML-kuvaus päätteeseen"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
