@@ -153,8 +153,6 @@ prepare_state (GnomeCanvasItem *item, Bonobo_Canvas_State *target)
 	target->canvas_scroll_y1 = canvas->scroll_y1;
 	target->zoom_xofs = canvas->zoom_xofs;
 	target->zoom_yofs = canvas->zoom_yofs;
-	target->xoffset   = GTK_LAYOUT (canvas)->xoffset;
-	target->yoffset   = GTK_LAYOUT (canvas)->yoffset;
 }
 
 static void

@@ -132,8 +132,6 @@ restore_state (GnomeCanvasItem *item, const Bonobo_Canvas_State *state)
 	item->canvas->scroll_y1 = state->canvas_scroll_y1;
 	item->canvas->zoom_xofs = state->zoom_xofs;
 	item->canvas->zoom_yofs = state->zoom_yofs;
-	GTK_LAYOUT (item->canvas)->xoffset = state->xoffset;
-	GTK_LAYOUT (item->canvas)->yoffset = state->yoffset;
 }
 
 /* This is copied from gnome-canvas.c since it is declared static */

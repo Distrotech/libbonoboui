@@ -9,7 +9,7 @@
  */
 #include "config.h"
 #include <string.h>
-#include <gobject/gsignal.h>
+#include <glib-object.h>
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-marshal.h>
 #include <bonobo/bonobo-ui-node-private.h>

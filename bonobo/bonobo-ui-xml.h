@@ -10,7 +10,7 @@
 #ifndef _BONOBO_UI_XML_H_
 #define _BONOBO_UI_XML_H_
 
-#include <gobject/gobject.h>
+#include <glib-object.h>
 #include <bonobo/bonobo-ui-node.h>
 #include <bonobo/bonobo-ui-engine.h>
 

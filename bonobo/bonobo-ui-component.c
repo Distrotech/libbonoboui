@@ -16,7 +16,6 @@
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-marshal.h>
-#include <bonobo/bonobo-types.h>
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 

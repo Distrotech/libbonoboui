@@ -1,3 +1,21 @@
+2001-11-18  Peter Williams  <peterw@ximian.com>
+
+	* bonobo/bonobo-ui-marshal-main.c: Same.
+
+	* bonobo/bonobo-ui-xml.c: See below.
+
+	* bonobo/bonobo-ui-engine.c: Include glib-object.h instead of gobject/gsignal.h
+
+	* bonobo/bonobo-ui-component.c: Remove a double-include of bonobo-types.h
+
+	* bonobo/bonobo-ui-xml.h: Include glib-object.h instead of gobject/gobject.h
+
+	* bonobo/bonobo-canvas-item.c (prepare_state): See below.
+
+	* bonobo/bonobo-canvas-component.c (restore_state): Don't
+	try to set the xoffset / yoffset members of GtkLayout;
+	they've been removed.
+
 2001-11-15  Michael Meeks  <michael@ximian.com>
 
 	* tests/control/test-control.c (run_tests): beef up

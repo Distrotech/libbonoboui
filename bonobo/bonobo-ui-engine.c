@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <gobject/gsignal.h>
+#include <glib-object.h>
 
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-xml.h>

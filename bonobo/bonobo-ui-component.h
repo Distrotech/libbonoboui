@@ -10,7 +10,7 @@
 #ifndef _BONOBO_UI_COMPONENT_H_
 #define _BONOBO_UI_COMPONENT_H_
 
-#include <gobject/gclosure.h>
+#include <glib-object.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-ui-node.h>
 
