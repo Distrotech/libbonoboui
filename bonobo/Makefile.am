@@ -77,6 +77,7 @@ libbonobo_la_SOURCES =			\
 	bonobo-persist.c		\
 	bonobo-progressive.c		\
 	bonobo-property-listener.c	\
+	bonobo-shlib-factory.c		\
 	bonobo-storage-plugin.c		\
 	bonobo-storage.c		\
 	bonobo-stream.c			\
@@ -136,6 +137,7 @@ libbonoboinclude_HEADERS =			\
 	bonobo-property.h			\
 	bonobo-selector.h			\
 	bonobo-selector-widget.h		\
+	bonobo-shlib-factory.h			\
 	bonobo-socket.h				\
 	bonobo-storage-plugin.h			\
 	bonobo-storage.h			\
