@@ -241,7 +241,7 @@ static char *
 lookup_stock_compat (const char *id)
 {
 	GtkStockItem item;
-	char *lower = g_ascii_strdown ((char *)id);
+	char *lower = g_ascii_strdown (id, -1);
 	char *new_id = g_strconcat ("gtk-", lower, NULL);
 
 	if (gtk_stock_lookup (new_id, &item)) {
