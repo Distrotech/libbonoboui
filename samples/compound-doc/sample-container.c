@@ -373,12 +373,12 @@ component_load_pf_ok_cb (GtkWidget *button, Component *component)
 		gnome_warning_dialog (_("An exception occured while trying "
 					"to load data into the component with "
 					"PersistFile"));
-	}
-	if (ev._major != CORBA_SYSTEM_EXCEPTION)
-		CORBA_Object_release (persist, &ev);
-
-	GNOME_Unknown_unref (persist, &ev);
+	} else {
+	  GNOME_Unknown_unref (persist, &ev);
 	
+	  CORBA_Object_release (persist, &ev);
+	}
+
 	CORBA_exception_free (&ev);
 	g_free (filename);
 }
