@@ -64,6 +64,7 @@ libbonobo_la_SOURCES =			\
 	gnome-moniker.c			\
 	gnome-object.c			\
 	gnome-object-client.c		\
+	gnome-persist-file.c		\
 	gnome-persist-stream.c		\
 	gnome-persist.c			\
 	gnome-progressive.c		\
@@ -101,6 +102,7 @@ libbonoboinclude_HEADERS =		\
 	gnome-moniker.h			\
 	gnome-object.h			\
 	gnome-object-client.h		\
+	gnome-persist-file.h		\
 	gnome-persist-stream.h		\
 	gnome-persist.h			\
 	gnome-progressive.h		\
