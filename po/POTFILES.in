@@ -8,9 +8,7 @@ bonobo/bonobo-ui-config-widget.c
 bonobo/bonobo-ui-engine-config.c
 bonobo/bonobo-ui-sync-toolbar.c
 bonobo/bonobo-zoomable.c
-monikers/Bonobo_Moniker_extra.server.in.in
-monikers/bonobo-config-bag.c
-monikers/bonobo-moniker-conf-indirect.c
+samples/bonoboui/hello.c
 samples/bonoboui/Bonobo_Sample_Hello.xml
 samples/bonoboui/hello.c
 samples/compound-doc/container/embeddable-io.c

@@ -59,7 +59,6 @@ po/Makefile.in
 bonobo/Makefile
 bonobo/libbonoboui-2.0.pc
 glade/Makefile
-monikers/Makefile
 samples/Makefile
 samples/controls/Makefile
 samples/bonoboui/Makefile
