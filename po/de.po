@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-05-05 17:40+0200\n"
+"POT-Creation-Date: 2003-05-05 17:43+0200\n"
 "PO-Revision-Date: 2003-05-05 17:50+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -91,7 +91,6 @@ msgid "Interfaces required"
 msgstr "Schnittstellen erforderlich"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
@@ -302,7 +301,7 @@ msgstr "Ob die Werkzeugleiste schweben soll"
 
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Stil des Rands um die Werkzeugleiste"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
