@@ -514,45 +514,49 @@ installed help files can be deduced.
 
 <!-- ##### MACRO BONOBO_UI_VERB ##### -->
 <para>
-
+This declares and fills a BonoboUIVerb structure suitable for
+use in constructing a lost of verbs to add with
+bonobo_ui_component_add_verb_list_with_data.
 </para>
 
-@name: 
-@cb: 
+@name: the verb name
+@cb: the callback function.
 
 
 <!-- ##### MACRO BONOBO_UI_VERB_DATA ##### -->
 <para>
-
+This declares and fills a BonoboUIVerb structure suitable for
+use in constructing a lost of verbs to add with
+bonobo_ui_component_add_verb_list.
 </para>
 
-@name: 
-@cb: 
-@data: 
+@name: the verb name
+@cb: the callback function
+@data: some associated user_data
 
 
 <!-- ##### MACRO BONOBO_UI_UNSAFE_VERB ##### -->
 <para>
-
+As BONOBO_UI_VERB, but unsafely casts @cb to the correct type
 </para>
 
-@name: 
-@cb: 
+@name: the verb name
+@cb: the callback function.
 
 
 <!-- ##### MACRO BONOBO_UI_UNSAFE_VERB_DATA ##### -->
 <para>
-
+As BONOBO_UI_VERB_DATA, but unsafely casts @cb to the correct type
 </para>
 
-@name: 
-@cb: 
-@data: 
+@name: the verb name
+@cb: the callback function
+@data: some associated user_data
 
 
 <!-- ##### MACRO BONOBO_UI_VERB_END ##### -->
 <para>
-
+The terminator BonoboUIVerb structure for a list of BonoboUIVerbs.
 </para>
 
 
