@@ -66,9 +66,6 @@ void                       bonobo_view_frame_set_zoom_factor  (BonoboViewFrame  
 							       double            zoom);
 POA_Bonobo_ViewFrame__epv *bonobo_view_frame_get_epv          (void);
 
-/* The entry point vectors for the server we provide */
-extern POA_Bonobo_ViewFrame__vepv bonobo_view_frame_vepv;
-
 END_GNOME_DECLS
 
 #endif /* _BONOBO_VIEW_FRAME_H_ */

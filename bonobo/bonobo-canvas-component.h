@@ -43,9 +43,6 @@ GnomeCanvasItem      *bonobo_canvas_component_get_item  (BonoboCanvasComponent *
 
 POA_Bonobo_Canvas_Component__epv *bonobo_canvas_component_get_epv  (void);
 
-/* CORBA default vector methods we provide */
-extern POA_Bonobo_Canvas_Component__vepv bonobo_canvas_component_vepv;
-
 END_GNOME_DECLS
 
 #endif /* */

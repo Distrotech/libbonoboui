@@ -93,10 +93,6 @@ void  bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
 					int *desired_width,
 					int *desired_height);
     
-/* The entry point vectors for the server we provide */
-extern POA_Bonobo_ControlFrame__epv  bonobo_control_frame_epv;
-extern POA_Bonobo_ControlFrame__vepv bonobo_control_frame_vepv;
-
 END_GNOME_DECLS
 
 #endif /* _BONOBO_CONTROL_FRAME_H_ */

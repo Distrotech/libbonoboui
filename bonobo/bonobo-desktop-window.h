@@ -40,9 +40,6 @@ Bonobo_Desktop_Window bonobo_desktop_window_corba_object_create (BonoboObject *o
 
 POA_Bonobo_Desktop_Window__epv *bonobo_desktop_window_get_epv   (void);
 
-/* CORBA default vector methods we provide */
-extern POA_Bonobo_Desktop_Window__vepv bonobo_desktop_window_vepv;
-
 END_GNOME_DECLS
 
 #endif /* _BONOBO_DESKTOP_WINDOW_H_ */

@@ -74,8 +74,6 @@ GList                      *bonobo_client_site_get_verbs        (BonoboClientSit
 void                        bonobo_client_site_free_verbs       (GList              *verb_list);
 POA_Bonobo_ClientSite__epv *bonobo_client_site_get_epv          (void);
 
-extern POA_Bonobo_ClientSite__vepv bonobo_client_site_vepv;
-
 END_GNOME_DECLS
 
 #endif

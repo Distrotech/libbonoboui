@@ -86,10 +86,6 @@ void                        bonobo_control_activate_notify         (BonoboContro
 Bonobo_Control_windowid     bonobo_control_windowid_from_x11       (guint32              x11_id);
 POA_Bonobo_Control__epv    *bonobo_control_get_epv                 (void);
 
-/* CORBA default vector methods we provide */
-extern POA_Bonobo_Control__epv bonobo_control_epv;
-extern POA_Bonobo_Control__vepv bonobo_control_vepv;
-
 END_GNOME_DECLS
 
 #endif /* _BONOBO_CONTROL_H_ */

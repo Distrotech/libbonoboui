@@ -72,9 +72,6 @@ void                  bonobo_view_execute_verb           (BonoboView         *vi
 char                 *bonobo_view_popup_verbs            (BonoboView         *view);
 POA_Bonobo_View__epv *bonobo_view_get_epv                (void);
 
-/* CORBA default vector methods we provide */
-extern POA_Bonobo_View__vepv bonobo_view_vepv;
-
 END_GNOME_DECLS
 
 #endif /* _BONOBO_VIEW_H_ */
