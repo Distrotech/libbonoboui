@@ -1,3 +1,7 @@
+2001-06-13  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
+
+	* configure.in: Added "sk" for Slovak to $ALL_LINGUAS
+
 2001-06-10  Martin Baulig  <baulig@suse.de>
 
 	* bonobo/bonobo-ui-engine-config.c: #ifdef FIXME all gnome-config calls.
