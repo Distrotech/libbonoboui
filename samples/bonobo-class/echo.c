@@ -157,7 +157,7 @@ create_echo (BonoboObject *echo)
 	servant->vepv = &echo_vepv;
 
 	CORBA_exception_init (&ev);
-	POA_Bonobo_View__init ((PortableServer_Servant) servant, &ev);
+	POA_Demo_Echo__init ((PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
 		g_free (servant);
 		CORBA_exception_free (&ev);

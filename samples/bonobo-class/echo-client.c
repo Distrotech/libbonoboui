@@ -55,8 +55,12 @@ main (int argc, char *argv [])
 	Demo_Echo_echo (echo_server, "This is the message from the client", &ev);
 
 	/*
-	 * Notify we are no longer interested in their services
+	 * Notify we are no longer interested in their services:
+	 *
+	 * We unref once because of the result from QI
+	 * We unref once to get rid of the object altogether.
 	 */
+	Demo_Echo_unref (echo_server, &ev);
 	Demo_Echo_unref (echo_server, &ev);
 	
 	CORBA_exception_free (&ev);
