@@ -53,15 +53,35 @@ typedef struct {
 
 POA_Bonobo_ZoomableFrame__vepv bonobo_zoomable_frame_vepv;
 
-#define CLASS(o) BONOBO_ZOOMABLE_FRAME_CLASS(GTK_OBJECT(o)->klass)
-
 static inline BonoboZoomableFrame *
-bonobo_zoomable_frame_from_servant (PortableServer_Servant _servant)
+bonobo_zoomable_frame_from_servant (PortableServer_Servant servant)
 {
-	if (!BONOBO_IS_ZOOMABLE_FRAME (bonobo_object_from_servant (_servant)))
+	if (!BONOBO_IS_ZOOMABLE_FRAME (bonobo_object_from_servant (servant)))
 		return NULL;
 	else
-		return BONOBO_ZOOMABLE_FRAME (bonobo_object_from_servant (_servant));
+		return BONOBO_ZOOMABLE_FRAME (bonobo_object_from_servant (servant));
+}
+
+static void 
+impl_Bonobo_ZoomableFrame_report_zoom_level_changed (PortableServer_Servant  servant,
+						     const CORBA_float      zoom_level,
+						     CORBA_Environment      *ev)
+{
+	BonoboZoomableFrame *zoomable_frame;
+
+	zoomable_frame = bonobo_zoomable_frame_from_servant (servant);
+	gtk_signal_emit (GTK_OBJECT (zoomable_frame), signals[ZOOM_LEVEL_CHANGED],
+			 zoom_level);
+}
+
+static void 
+impl_Bonobo_ZoomableFrame_report_zoom_parameters_changed (PortableServer_Servant  servant,
+							  CORBA_Environment      *ev)
+{
+	BonoboZoomableFrame *zoomable_frame;
+
+	zoomable_frame = bonobo_zoomable_frame_from_servant (servant);
+	gtk_signal_emit (GTK_OBJECT (zoomable_frame), signals[ZOOM_PARAMETERS_CHANGED]);
 }
 
 
@@ -74,6 +94,9 @@ bonobo_zoomable_frame_get_epv (void)
 	POA_Bonobo_ZoomableFrame__epv *epv;
 
 	epv = g_new0 (POA_Bonobo_ZoomableFrame__epv, 1);
+
+	epv->report_zoom_level_changed = impl_Bonobo_ZoomableFrame_report_zoom_level_changed;
+	epv->report_zoom_parameters_changed = impl_Bonobo_ZoomableFrame_report_zoom_parameters_changed;
 
 	return epv;
 }

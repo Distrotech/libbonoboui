@@ -81,82 +81,82 @@ POA_Bonobo_Zoomable__vepv bonobo_zoomable_vepv;
 #define CLASS(o) BONOBO_ZOOMABLE_CLASS(GTK_OBJECT(o)->klass)
 
 static inline BonoboZoomable *
-bonobo_zoomable_from_servant (PortableServer_Servant _servant)
+bonobo_zoomable_from_servant (PortableServer_Servant servant)
 {
-	if (!BONOBO_IS_ZOOMABLE (bonobo_object_from_servant (_servant)))
+	if (!BONOBO_IS_ZOOMABLE (bonobo_object_from_servant (servant)))
 		return NULL;
 	else
-		return BONOBO_ZOOMABLE (bonobo_object_from_servant (_servant));
+		return BONOBO_ZOOMABLE (bonobo_object_from_servant (servant));
 }
 
 static CORBA_float
-impl_Bonobo_Zoomable__get_zoom_level (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable__get_zoom_level (PortableServer_Servant  servant,
 				      CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	return zoomable->priv->zoom_level;
 }
 
 static CORBA_float
-impl_Bonobo_Zoomable__get_min_zoom_level (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable__get_min_zoom_level (PortableServer_Servant  servant,
 					  CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	return zoomable->priv->min_zoom_level;
 }
 
 static CORBA_float
-impl_Bonobo_Zoomable__get_max_zoom_level (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable__get_max_zoom_level (PortableServer_Servant  servant,
 					  CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	return zoomable->priv->max_zoom_level;
 }
 
 static CORBA_boolean
-impl_Bonobo_Zoomable__get_has_min_zoom_level (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable__get_has_min_zoom_level (PortableServer_Servant  servant,
 					      CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	return zoomable->priv->has_min_zoom_level;
 }
 
 static CORBA_boolean
-impl_Bonobo_Zoomable__get_has_max_zoom_level (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable__get_has_max_zoom_level (PortableServer_Servant  servant,
 					      CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	return zoomable->priv->has_max_zoom_level;
 }
 
 static CORBA_boolean
-impl_Bonobo_Zoomable__get_is_continuous (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable__get_is_continuous (PortableServer_Servant  servant,
 					 CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	return zoomable->priv->is_continuous;
 }
 
 static Bonobo_ZoomLevelList *
-impl_Bonobo_Zoomable__get_preferred_zoom_levels (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable__get_preferred_zoom_levels (PortableServer_Servant  servant,
 						 CORBA_Environment      *ev)
 {
 	Bonobo_ZoomLevelList *list;
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 
 	list = Bonobo_ZoomLevelList__alloc ();
 	list->_maximum = zoomable->priv->num_preferred_zoom_levels;
@@ -169,64 +169,64 @@ impl_Bonobo_Zoomable__get_preferred_zoom_levels (PortableServer_Servant  _servan
 }
 
 static void 
-impl_Bonobo_Zoomable_set_zoom_level (PortableServer_Servant  _servant,
-				      const CORBA_float      zoom_level,
-				      CORBA_Environment      *ev)
+impl_Bonobo_Zoomable_set_zoom_level (PortableServer_Servant  servant,
+				     const CORBA_float       zoom_level,
+				     CORBA_Environment      *ev)
 {
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	gtk_signal_emit (GTK_OBJECT (zoomable), signals[SET_ZOOM_LEVEL], zoom_level);
 }
 
 static void
-impl_Bonobo_Zoomable_zoom_in (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable_zoom_in (PortableServer_Servant  servant,
 			      CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	gtk_signal_emit (GTK_OBJECT (zoomable), signals[ZOOM_IN]);
 }
 
 static void
-impl_Bonobo_Zoomable_zoom_out (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable_zoom_out (PortableServer_Servant  servant,
 			       CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	gtk_signal_emit (GTK_OBJECT (zoomable), signals[ZOOM_OUT]);
 }
 
 static void
-impl_Bonobo_Zoomable_zoom_to_fit (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable_zoom_to_fit (PortableServer_Servant  servant,
 				  CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	gtk_signal_emit (GTK_OBJECT (zoomable), signals[ZOOM_TO_FIT]);
 }
 
 static void
-impl_Bonobo_Zoomable_zoom_to_default (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable_zoom_to_default (PortableServer_Servant  servant,
 				      CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 	gtk_signal_emit (GTK_OBJECT (zoomable), signals[ZOOM_TO_DEFAULT]);
 }
 
 static void
-impl_Bonobo_Zoomable_set_frame (PortableServer_Servant  _servant,
+impl_Bonobo_Zoomable_set_frame (PortableServer_Servant  servant,
 				Bonobo_ZoomableFrame	zoomable_frame,
 				CORBA_Environment      *ev)
 {	
 	BonoboZoomable *zoomable;
 
-	zoomable = bonobo_zoomable_from_servant (_servant);
+	zoomable = bonobo_zoomable_from_servant (servant);
 
 	g_assert (zoomable->priv->zoomable_frame == CORBA_OBJECT_NIL);
 	zoomable->priv->zoomable_frame = CORBA_Object_duplicate (zoomable_frame, ev);
@@ -283,7 +283,7 @@ marshal_NONE__FLOAT (GtkObject *object,
 }
 
 static void
-impl_get_arg (GtkObject* obj, GtkArg* arg, guint arg_id)
+bonobo_zoomable_get_arg (GtkObject* obj, GtkArg* arg, guint arg_id)
 {
 	BonoboZoomable *zoomable = BONOBO_ZOOMABLE (obj);
 	BonoboZoomablePrivate *priv = zoomable->priv;
@@ -374,7 +374,7 @@ bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
-	object_class->get_arg = impl_get_arg;
+	object_class->get_arg = bonobo_zoomable_get_arg;
 
 	init_zoomable_corba_class ();
 }
