@@ -1,3 +1,9 @@
+2003-02-28  Michael Meeks  <michael@localhost.localdomain>
+
+	* bonobo/bonobo-ui-util.c (bonobo_ui_util_xml_set_image):
+	NULL check on text, to guard against broken client XML,
+	add warning too.
+
 2003-02-25  Rodney Dawes  <dobey@free.fr>
 
 	* *: create gnome-2-2 branch and commit following patch to HEAD
