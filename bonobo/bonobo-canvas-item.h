@@ -1,5 +1,6 @@
 /**
- * bonobo-bonobo-item.h: Canvas item implementation for embedding remote canvas-items
+ * bonobo-canvas-item.h: Canvas item implementation for embedding remote 
+ * 			 canvas-items
  *
  * Author:
  *     Miguel de Icaza (miguel@kernel.org)
@@ -11,7 +12,6 @@
 
 #include <glib/gmacros.h>
 #include <libgnomecanvas/gnome-canvas.h>
-#include <bonobo/bonobo-embeddable.h>
 
 #define BONOBO_CANVAS_ITEM(obj)          (GTK_CHECK_CAST((obj), bonobo_canvas_item_get_type (), BonoboCanvasItem))
 #define BONOBO_CANVAS_ITEM_CLASS(k)      (GTK_CHECK_CLASS_CAST ((k), bonobo_canvas_item_get_type (), BonoboCanvasItemClass))
@@ -21,7 +21,6 @@ typedef struct _BonoboCanvasItemPrivate BonoboCanvasItemPrivate;
 
 typedef struct {
 	GnomeCanvasItem         canvas_item;
-	BonoboEmbeddable        *embeddable;
 	BonoboCanvasItemPrivate *priv;
 } BonoboCanvasItem;
 

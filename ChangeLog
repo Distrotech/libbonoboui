@@ -1,3 +1,20 @@
+2001-07-22  Mike Kestner  <mkestner@speakeasy.net>
+
+	* configure.in : produce the samples Makefiles.
+	* libbonoboui.h : kill the removed header files.
+	* bonobo/Makefile.am : remove the cs, view, vframe, and embed files.
+	* bonobo/bonobo-embeddable.[ch]:
+	* bonobo/bonobo-client-site.[ch]:
+	* bonobo/bonobo-view.[ch]:
+	* bonobo/bonobo-view-frame.[ch]:
+		killed.
+
+	* bonobo/bonobo-canvas-item.c : switch from embeddable prop to a
+	CanvasComponentFactory property.
+	* bonobo/bonobo-widget.c : removed the subdoc functions.
+	* samples/Makefile.am : activate the compound-doc build
+	* samples/compound-doc/Makefile.am : activate container build
+
 2001-07-22  Joe Shaw  <joe@ximian.com>
 
 	* bonobo/bonobo-ui-sync-status.c (bonobo_ui_sync_status_new): Use

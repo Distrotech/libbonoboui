@@ -1,4 +1,4 @@
-SUBDIRS = bonobo tests po intl
+SUBDIRS = bonobo samples tests po intl
 
 libincludedir = $(includedir)/gnome/2
 libinclude_HEADERS =    \

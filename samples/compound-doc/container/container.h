@@ -1,28 +1,24 @@
 #ifndef SAMPLE_CONTAINER_H
 #define SAMPLE_CONTAINER_H
 
-#include <bonobo.h>
-#include <gnome.h>
+#include <bonobo/bonobo-ui-container.h>
+#include "document.h"
+#include "doc-view.h"
 
 typedef struct _SampleApp        SampleApp;
 typedef struct _SampleClientSite SampleClientSite;
 
 struct _SampleApp {
-	BonoboItemContainer *container;
-	BonoboUIContainer   *ui_container;
+	SampleDoc		*doc;
 
-	BonoboViewFrame     *curr_view;
-	GList               *components;
+	GList			*doc_views;
 
-	GtkWidget           *app;
-	GtkWidget           *box;
-	GtkWidget           *fileselection;
+	GtkWidget		*curr_view;
+	GtkWidget		*win;
+	GtkWidget		*box;
+	GtkWidget		*fileselection;
 };
 
-SampleClientSite *sample_app_add_component    (SampleApp        *app,
-					       gchar            *goad_id);
-void              sample_app_remove_component (SampleApp        *app,
-					       SampleClientSite *site);
 void              sample_app_exit             (SampleApp        *app);
 
 #endif /* SAMPLE_CONTAINER_H */

@@ -36,7 +36,7 @@ struct _BonoboCanvasItemPrivate {
 
 enum {
 	ARG_0,
-	ARG_CORBA_EMBEDDABLE,
+	ARG_CORBA_FACTORY,
 	ARG_CORBA_UI_CONTAINER,
 };
 
@@ -538,11 +538,11 @@ gbi_set_arg (GtkObject *o, GtkArg *arg, guint arg_id)
 {
 	Gbi *gbi = GBI (o);
 	Bonobo_Canvas_ComponentProxy proxy_ref;
-	Bonobo_Embeddable corba_emb;
+	Bonobo_CanvasComponentFactory factory;
 	CORBA_Environment ev;
 
 	switch (arg_id){
-	case ARG_CORBA_EMBEDDABLE:
+	case ARG_CORBA_FACTORY:
 
 		CORBA_exception_init (&ev);
 
@@ -550,17 +550,17 @@ gbi_set_arg (GtkObject *o, GtkArg *arg, guint arg_id)
 			Bonobo_Canvas_Component_unref (gbi->priv->object, &ev);
 		
 		gbi->priv->object = CORBA_OBJECT_NIL;
-		corba_emb = GTK_VALUE_POINTER (*arg);
+		factory = GTK_VALUE_POINTER (*arg);
 
-		g_return_if_fail (corba_emb != CORBA_OBJECT_NIL);
+		g_return_if_fail (factory != CORBA_OBJECT_NIL);
 
 		proxy_ref = PortableServer_POA_servant_to_reference (
 				bonobo_poa (), (void *) gbi->priv->proxy, &ev);
 
-		gbi->priv->object = Bonobo_Embeddable_createCanvasItem (
-					corba_emb,
-					GNOME_CANVAS_ITEM (gbi)->canvas->aa, 
-					proxy_ref, &ev);
+		gbi->priv->object = 
+			Bonobo_CanvasComponentFactory_createCanvasComponent (
+				factory, GNOME_CANVAS_ITEM (gbi)->canvas->aa, 
+				proxy_ref, &ev);
 
 		CORBA_exception_free (&ev);
 
@@ -633,9 +633,9 @@ gbi_class_init (GtkObjectClass *object_class)
 	gbi_parent_class = gtk_type_class (gnome_canvas_item_get_type ());
 
 	gtk_object_add_arg_type (
-		"BonoboCanvasItem::corba_embeddable",
+		"BonoboCanvasItem::corba_factory",
 		GTK_TYPE_POINTER,
-		GTK_ARG_WRITABLE, ARG_CORBA_EMBEDDABLE);
+		GTK_ARG_WRITABLE, ARG_CORBA_FACTORY);
 	
 	gtk_object_add_arg_type (
 		"BonoboCanvasItem::corba_ui_container",

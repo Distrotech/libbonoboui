@@ -37,39 +37,36 @@ BonoboObjectClient *paint_obj;
 BonoboClientSite   *paint_client_site;
 
 /*
- * The currently active view.  We keep track of this
- * so we can deactivate it when a new view is activated.
+ * The currently active control.  We keep track of this
+ * so we can deactivate it when a new control is activated.
  */
-BonoboViewFrame *active_view_frame;
+BonoboControlFrame *active_control_frame;
 
 char *server_id = "OAFIID:test_bonobo_object:b1ff15bb-d54f-4814-ba53-d67d3afd70fe";
 
 typedef struct {
 	GtkWidget *app;
-	BonoboItemContainer *container;
 	GtkWidget *box;
-	Bonobo_View view;
-	Bonobo_UIContainer corba_container;
-	BonoboUIComponent *uic;
+	Bonobo_Control control;
+	BonoboUIContainer *ui_cont;
+	BonoboUIComponent *ui_comp;
 } Application;
 
-static BonoboObjectClient *
-launch_server (BonoboClientSite *client_site, BonoboItemContainer *container, char *id)
+static Bonobo_Unknown
+launch_server (char *id)
 {
-	BonoboObjectClient *object_server;
+	Bonobo_Unknown object_server;
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
 	
-	printf ("Launching...\n");
-	object_server = bonobo_object_activate (id, 0);
-	printf ("Return: %p\n", object_server);
-	if (!object_server){
+	object_server = oaf_activate_from_id (id, 0, NULL, &ev);
+
+	if (object_server == CORBA_OBJECT_NIL) {
 		g_warning (_("Can not activate object_server"));
-		return NULL;
 	}
 
-	if (!bonobo_client_site_bind_embeddable (client_site, object_server)){
-		g_warning (_("Can not bind object server to client_site"));
-		return NULL;
-	}
+	CORBA_exception_free (&ev);
 
 	return object_server;
 }
@@ -109,12 +106,12 @@ launch_server_moniker (BonoboClientSite    *client_site,
  * order to activate it.
  */
 static gint
-user_activation_request_cb (BonoboViewFrame *view_frame)
+user_activation_request_cb (BonoboControlFrame *control_frame)
 {
 	/*
 	 * If there is already an active View, deactivate it.
 	 */
-        if (active_view_frame != NULL) {
+        if (active_control_frame != NULL) {
 		/*
 		 * This just sends a notice to the embedded View that
 		 * it is being deactivated.  We will also forcibly
@@ -796,27 +793,24 @@ static Application *
 application_new (void)
 {
 	Application *app;
-	BonoboUIContainer *ui_container;
-	Bonobo_UIContainer corba_container;
+	BonoboUIContainer *ui_cont;
 
 	app = g_new0 (Application, 1);
-	app->container = BONOBO_ITEM_CONTAINER (bonobo_item_container_new ());
 	app->box = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (app->box);
 
 	app->app = bonobo_window_new ("test-container",
-				      "Sample Container Application");
+				      "Test Container Application");
 	gtk_widget_set_usize (GTK_WIDGET (app->app), 600, 600);
 
 	bonobo_window_set_contents (BONOBO_WINDOW (app->app), app->box);
 
-	ui_container = bonobo_window_get_ui_container (BONOBO_WINDOW (app->app));
+	ui_cont = bonobo_window_get_ui_container (BONOBO_WINDOW (app->app));
 
-	corba_container = BONOBO_OBJREF (ui_container);
-	app->corba_container = bonobo_object_dup_ref (corba_container, NULL);
+	app->ui_cont = ui_cont;
 
 	app->uic = bonobo_ui_component_new ("test-container");
-	bonobo_ui_component_set_container (app->uic, app->corba_container);
+	bonobo_ui_component_set_container (app->uic, BONOBO_OBJREF (ui_cont));
 
 	/*
 	 * Create the menus.
@@ -841,15 +835,6 @@ main (int argc, char *argv [])
 	
 	CORBA_exception_init (&ev);
 
-#warning DO NOT BASE New code on this test
-#warning See instead samples/compound-doc/sample-container
-#warning And samples/controls/sample-control-container
-
-	gnome_message_box ("Do not base any new application code on this\n"
-			   "instead see samples/controls/sample-control-container\n"
-			   "or bonobo/samples/compound-doc/sample-container\n"
-			   "this is a horribly hacked, leaky and badly architected test\n");
-	
         gnome_init_with_popt_table ("MyShell", "1.0",
 				    argc, argv,
 				    oaf_popt_options, 0, NULL); 

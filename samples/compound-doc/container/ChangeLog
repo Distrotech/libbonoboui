@@ -1,3 +1,16 @@
+2001-07-22  Mike Kestner <mkestner@speakeasy.net>
+
+	* samples/compound-doc/container/Makefile.am : add new document and
+	doc-view files.  Prune some unnecessary at least temporarily until
+	further 2.0 porting can be done (eg the print API).
+
+	* samples/compound-doc/container/container.c : port to 2.0.
+	* samples/compound-doc/container/container-filesel.c : port to 2.0.
+	* samples/compound-doc/container/container-menu.c : port to 2.0.
+	* samples/compound-doc/container/component.c : now a model object.
+	* samples/compound-doc/container/document.c : new parent model object.
+	* samples/compound-doc/container/doc-view.c : new document view.
+
 2001-02-06  Michael Meeks  <michael@ximian.com>
 
 	* component.c (object_print): gtk_object_unref the

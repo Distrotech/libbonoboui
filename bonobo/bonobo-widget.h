@@ -27,10 +27,10 @@ G_BEGIN_DECLS
 struct _BonoboWidget;
 typedef struct _BonoboWidget BonoboWidget;
 
+#include <bonobo/bonobo-control-frame.h>
+
 struct _BonoboWidgetPrivate;
 typedef struct _BonoboWidgetPrivate BonoboWidgetPrivate;
-
-#include <bonobo/bonobo-view.h>
 
 struct _BonoboWidget {
 	GtkBin		          bin;
@@ -71,9 +71,6 @@ BonoboWidget       *bonobo_widget_construct_control         (BonoboWidget      *
  */
 GtkWidget           *bonobo_widget_new_subdoc               (const char        *moniker,
 							     Bonobo_UIContainer uic);
-BonoboItemContainer *bonobo_widget_get_container            (BonoboWidget      *bw);
-BonoboClientSite    *bonobo_widget_get_client_site          (BonoboWidget      *bw);
-BonoboViewFrame     *bonobo_widget_get_view_frame           (BonoboWidget      *bw);
 Bonobo_UIContainer   bonobo_widget_get_uih                  (BonoboWidget      *bw);
 
 void                 bonobo_widget_set_property            (BonoboWidget       *control,

@@ -16,13 +16,10 @@
 G_BEGIN_DECLS
 
 #include <bonobo/bonobo-ui-main.h>
-#include <bonobo/bonobo-client-site.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-zoomable.h>
 #include <bonobo/bonobo-zoomable-frame.h>
-#include <bonobo/bonobo-view.h>
-#include <bonobo/bonobo-embeddable.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-ui-container.h>

@@ -1,18 +1,15 @@
 #include <bonobo.h>
 
 #include "container-io.h"
-#include "embeddable-io.h"
 
 #define STORAGE_TYPE "efs"
 
 
-#define GOAD_FILE "goad.id"
+#define IID_FILE "impl.id"
 #define DATA_FILE "data"
 
 static void
-save_component (BonoboStorage    *storage,
-		SampleClientSite *site,
-		int index)
+save_component (BonoboStorage *storage,	SampleComponent *comp, int index)
 {
 	char *curr_dir = g_strdup_printf ("%08d", index);
 

@@ -1,1 +1,2 @@
-SUBDIRS = controls compound-doc bonobo-class
+SUBDIRS = compound-doc
+OLDSUBDIRS = controls compound-doc bonobo-class

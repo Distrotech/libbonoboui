@@ -9,4 +9,5 @@ test-focus
 test-sensitivity
 test-reparent
 test-moniker
+test-selector
 

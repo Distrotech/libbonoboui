@@ -14,22 +14,28 @@ bonobo-ui-util.[ch]:
 	bonobo_ui_util_xml_get_icon_widget.
 
 bonobo-client-site.[ch]:
-	Signatures of
-		  bonobo_client_site_bind_embeddable,
-		  bonobo_client_site_get_embeddable
-	changed to remove BonoboObjectClient ( now Bonobo_Embeddable here )
-	removed QI in bind_embeddable, implicit in signature.
+bonobo-embeddable.[ch]:
+bonobo-view.[ch]:
+bonobo-view-frame.[ch]:
+	The document interfaces have been revamped ruthlessly.  
+	The View and ViewFrame interfaces in 1.4 were a very thin wrapper 
+	around Control/Frame.  Their additional utility consisted of
+	a cheezy zooming mechanism.  ClientSite was a helper object on the
+	client side which provided almost zero utility.  The ClientSite,
+	View, and ViewFrame, and Embeddable implementations have been 
+	completely eliminated in 2.0.  Compound-doc components should instead
+	expose the new ControlFactory and CanvasComponentFactory interfaces.
 
 bonobo-widget.[ch]:
 	Removed bonobo_widget_get_server, redundany BonoboObjectClient variant,
-	use bonobo_widget_get_objref instead.
+	use bonobo_widget_get_objref instead.  Removed the subdoc variant.
 
 bonobo-desktop-window.[ch]:
 	Removed - stale, deprecated.		  
 
 bonobo-control.[ch]
 	bonobo_control_[get|set]_properties () are now working with
-	Bonobo_PropertyBag (a CORAB object reference) instead of
+	Bonobo_PropertyBag (a CORBA object reference) instead of
 	BonoboPropertyBag. 
 
 
@@ -77,3 +83,11 @@ bonobo-ui-container.c:
 	Instead use:
 	    BONOBO_WINDOW (bonobo_ui_engine_get_view (
 		bonobo_ui_container_get_engine (uic)));
+
+	There are 2 new Factory interfaces for Controls and CanvasComponents
+	which replace the previous createView and createCanvasItem methods
+	of the Embeddable interface.  It is better to have these as separate
+	queryable interfaces so that a container can activate objects based
+	on the type of "view" mechanisms it supports. Since any implementation
+	of these two interfaces would be complete fluff they are now IDL-only.
+	

@@ -12,30 +12,9 @@
  * Pure cane sugar.
  *
  * This purpose of BonoboWidget is to make container-side use of
- * Bonobo as easy as pie.  This widget has two functions:
+ * Bonobo as easy as pie.  This widget has one function:
  *
- *   1. Provide a simple wrapper for embedding a single-view
- *      subdocument.  In this case, BonoboWidget handles creating
- *      the embeddable, binding it to a local BonoboClientSite,
- *      creating a view for it, and displaying the view.  You can use
- *      the accessor functions (bonobo_widget_get_view_frame,
- *      etc) to get at the actual Bonobo objects which underlie the
- *      whole process.
- *
- *      In order to do this, just call:
- * 
- *        bw = bonobo_widget_new_subdoc ("moniker of subdoc embddable",
- *                                        top_level_uicontainer);
- * 
- *      And then insert the 'bw' widget into the widget tree of your
- *      application like so:
- *
- *        gtk_container_add (some_container, bw);
- *
- *      You are free to make the UIContainer argument to
- *      bonobo_widget_new_subdoc() be CORBA_OBJECT_NIL.
- *
- *   2. Provide a simple wrapper for embedding Controls.  Embedding
+ *      Provide a simple wrapper for embedding Controls.  Embedding
  *      controls is already really easy, but BonoboWidget reduces
  *      the work from about 5 lines to 1.  To embed a given control,
  *      just do:
@@ -68,12 +47,6 @@ struct _BonoboWidgetPrivate {
 	 */
 	BonoboControlFrame *control_frame;
 	
-	/*
-	 * Subdocument (Embeddable/View) things.
-	 */
-	BonoboItemContainer *container;
-	BonoboClientSite    *client_site;
-	BonoboViewFrame     *view_frame;
 	Bonobo_UIContainer   uic;
 };
 
@@ -279,151 +252,6 @@ bonobo_widget_get_control_frame (BonoboWidget *bonobo_widget)
 	return bonobo_widget->priv->control_frame;
 }
 
-
-/*
- *
- * Subdocument support for BonoboWidget.
- *
- */
-static BonoboWidget *
-bonobo_widget_create_subdoc_object (BonoboWidget      *bw,
-				    const char        *moniker,
-				    Bonobo_UIContainer uic)
-{
-	GtkWidget *view_widget;
-	
-	/*
-	 * Create the BonoboContainer.  This will contain
-	 * just one BonoboClientSite.
-	 */
-	bw->priv->container = bonobo_item_container_new ();
-
-	bw->priv->server = bonobo_widget_launch_component (
-		moniker, "IDL:Bonobo/Embeddable:1.0");
-	if (bw->priv->server == NULL)
-		return NULL;
-	
-	/*
-	 * Create the client site.  This is the container-side point
-	 * of contact for the remote component.
-	 */
-	bw->priv->client_site = bonobo_client_site_new (bw->priv->container);
-
-	/*
-	 * Bind the local ClientSite object to the remote Embeddable
-	 * component.
-	 */
-	if (!bonobo_client_site_bind_embeddable (bw->priv->client_site, bw->priv->server))
-		return NULL;
-
-	/*
-	 * Now create a new view for the remote object.
-	 */
-	bw->priv->view_frame = bonobo_client_site_new_view (bw->priv->client_site, uic);
-
-	/*
-	 * Add the view frame.
-	 */
-	view_widget = bonobo_view_frame_get_wrapper (bw->priv->view_frame);
-	gtk_container_add (GTK_CONTAINER (bw), view_widget);
-	gtk_widget_show (view_widget);
-
-	if (uic != CORBA_OBJECT_NIL)
-		bw->priv->uic = bonobo_object_dup_ref (uic, NULL);
-	
-	return bw;
-}
-
-/**
- * bonobo_widget_new_subdoc:
- * @moniker: A moniker description of the Object to be activated.
- * @uic: Bonobo_UIContainer for the launched object.
- *
- * This function is a simple wrapper for easily embedding documents
- * into applications.  It will launch the component identified by @id
- * and will return it as a GtkWidget.
- *
- * This will launch a single view of the embeddable activated by @moniker.
- *
- * Returns: A #GtkWidget that is bound to the Bonobo Control. 
- */
-GtkWidget *
-bonobo_widget_new_subdoc (const char        *moniker,
-			  Bonobo_UIContainer uic)
-{
-	BonoboWidget *bw;
-
-	g_return_val_if_fail (moniker != NULL, NULL);
-
-	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
-
-	if (bw == NULL)
-		return NULL;
-
-	if (!bonobo_widget_create_subdoc_object (bw, moniker, uic)) {
-		gtk_object_destroy (GTK_OBJECT (bw));
-		return NULL;
-	}
- 
-	bonobo_view_frame_set_covered (bw->priv->view_frame, FALSE);
-
-	return GTK_WIDGET (bw);
-}
-
-/**
- * bonobo_widget_get_container
- * @bonobo_widget: the #BonoboWidget to query.
- *
- * This operation is only valid for BonoboWidgets that were created
- * by the bonobo_widget_new_subdoc(). 
- *
- * Returns: the BonoboItemContainer associated with this @bonobo_widget
- */
-BonoboItemContainer *
-bonobo_widget_get_container (BonoboWidget *bonobo_widget)
-{
-	g_return_val_if_fail (bonobo_widget != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
-
-	return bonobo_widget->priv->container;
-}
-
-/**
- * bonobo_widget_get_client_site:
- * @bonobo_widget: the #BonoboWidget to query.
- *
- * This operation is only valid for BonoboWidgets that were created
- * by the bonobo_widget_new_subdoc(). 
- *
- * Returns: the #BonoboClientSite associated with this @bonobo_widget
- */
-BonoboClientSite *
-bonobo_widget_get_client_site (BonoboWidget *bonobo_widget)
-{
-	g_return_val_if_fail (bonobo_widget != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
-
-	return bonobo_widget->priv->client_site;
-}
-
-/**
- * bonobo_widget_get_view_frame:
- * @bonobo_widget: the #BonoboWidget to query.
- *
- * This operation is only valid for BonoboWidgets that were created
- * by the bonobo_widget_new_subdoc(). 
- *
- * Returns: The #BonoboViewFrame associated with this @bonobo_widget.
- */
-BonoboViewFrame *
-bonobo_widget_get_view_frame (BonoboWidget *bonobo_widget)
-{
-	g_return_val_if_fail (bonobo_widget != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
-
-	return bonobo_widget->priv->view_frame;
-}
-
 /**
  * bonobo_widget_get_uih:
  * @bonobo_widget: the #BonoboWidget to query.
@@ -463,14 +291,6 @@ bonobo_widget_finalize (GObject *object)
 	BonoboWidget *bw = BONOBO_WIDGET (object);
 	BonoboWidgetPrivate *priv = bw->priv;
 	
-	if (priv->control_frame)
-		bonobo_object_unref (BONOBO_OBJECT (priv->control_frame));
-	if (priv->container)
-		bonobo_object_unref (BONOBO_OBJECT (priv->container));
-	if (priv->client_site)
-		bonobo_object_unref (BONOBO_OBJECT (priv->client_site));
-	if (priv->view_frame)
-		bonobo_object_unref (BONOBO_OBJECT (priv->view_frame));
 	if (priv->uic != CORBA_OBJECT_NIL)
 		bonobo_object_release_unref (priv->uic, NULL);
 

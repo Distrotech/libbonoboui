@@ -17,6 +17,7 @@
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
+#include <bonobo/bonobo-ui-container.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-engine-config.h>
 #include <bonobo/bonobo-ui-engine-private.h>

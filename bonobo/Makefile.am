@@ -39,15 +39,12 @@ libbonoboincludedir = $(includedir)/gnome/2/bonobo
 libbonoboinclude_HEADERS = \
 	bonobo-canvas-component.h		\
 	bonobo-canvas-item.h			\
-	bonobo-client-site.h			\
 	bonobo-control-frame.h			\
 	bonobo-control.h			\
 	bonobo-dock-band.h			\
 	bonobo-dock-item.h			\
 	bonobo-dock-layout.h			\
 	bonobo-dock.h				\
-	bonobo-embeddable-factory.h		\
-	bonobo-embeddable.h			\
 	bonobo-plug.h				\
 	bonobo-property-control.h		\
 	bonobo-selector-widget.h		\
@@ -65,8 +62,6 @@ libbonoboinclude_HEADERS = \
 	bonobo-ui-toolbar-toggle-button-item.h	\
 	bonobo-ui-toolbar.h			\
 	bonobo-ui-util.h			\
-	bonobo-view-frame.h			\
-	bonobo-view.h				\
 	bonobo-widget.h				\
 	bonobo-window.h				\
 	bonobo-wrapper.h			\
@@ -90,10 +85,8 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-ui-main.c			\
 	bonobo-canvas-component.c		\
 	bonobo-canvas-item.c			\
-	bonobo-client-site.c			\
 	bonobo-control-frame.c			\
 	bonobo-control.c			\
-	bonobo-embeddable.c			\
 	bonobo-plug.c				\
 	bonobo-selector.c			\
 	bonobo-selector-widget.c		\
@@ -118,8 +111,6 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-ui-toolbar.c			\
 	bonobo-ui-util.c			\
 	bonobo-ui-xml.c				\
-	bonobo-view-frame.c			\
-	bonobo-view.c				\
 	bonobo-widget.c				\
 	bonobo-window.c				\
 	bonobo-wrapper.c			\

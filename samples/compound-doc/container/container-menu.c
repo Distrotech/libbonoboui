@@ -1,28 +1,31 @@
 #include "config.h"
-#include "container-menu.h"
+#include <bonobo/bonobo-ui-component.h>
+#include <bonobo/bonobo-selector.h>
+#include <bonobo/bonobo-window.h>
+#include <gtk/gtkfilesel.h>
 
-#include "container-io.h"
-#include "container-print.h"
+#include "container-menu.h"
+#include "container.h"
 #include "container-filesel.h"
+#include "document.h"
 
 static void
-verb_AddEmbeddable_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
+verb_AddComponent_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
 	SampleApp *inst = user_data;
 	char *required_interfaces [2] =
-	    { "IDL:Bonobo/Embeddable:1.0", NULL };
+	    { "IDL:Bonobo/CanvasComponentFactory:1.0", NULL };
 	char *obj_id;
 
 	/* Ask the user to select a component. */
 	obj_id = bonobo_selector_select_id (
-		_("Select an embeddable Bonobo component to add"),
+		"Select an embeddable Bonobo component to add",
 		(const gchar **) required_interfaces);
 
 	if (!obj_id)
 		return;
 
-	/* Activate it. */
-	sample_app_add_component (inst, obj_id);
+	sample_doc_add_component (inst->doc, obj_id);
 
 	g_free (obj_id);
 }
@@ -31,11 +34,11 @@ static void
 load_ok_cb (GtkWidget *caller, SampleApp *app)
 {
 	GtkWidget *fs = app->fileselection;
-	gchar *filename = gtk_file_selection_get_filename
+	const gchar *filename = gtk_file_selection_get_filename
 		(GTK_FILE_SELECTION (fs));
 
 	if (filename)
-		sample_container_load (app, filename);
+		sample_doc_load (app->doc, filename);
 
 	gtk_widget_destroy (fs);
 }
@@ -44,11 +47,11 @@ static void
 save_ok_cb (GtkWidget *caller, SampleApp *app)
 {
 	GtkWidget *fs = app->fileselection;
-	gchar *filename = gtk_file_selection_get_filename
+	const gchar *filename = gtk_file_selection_get_filename
 	    (GTK_FILE_SELECTION (fs));
 
 	if (filename)
-		sample_container_save (app, filename);
+		sample_doc_save (app->doc, filename);
 
 	gtk_widget_destroy (fs);
 }
@@ -58,7 +61,7 @@ verb_FileSaveAs_cb (BonoboUIComponent *uic, gpointer user_data, const char *cnam
 {
 	SampleApp *app = user_data;
 
-	container_request_file (app, TRUE, save_ok_cb, app);
+	container_request_file (app, TRUE, (GtkSignalFunc) save_ok_cb, app);
 }
 
 static void
@@ -66,39 +69,40 @@ verb_FileLoad_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
 	SampleApp *app = user_data;
 
-	container_request_file (app, FALSE, load_ok_cb, app);
+	container_request_file (app, FALSE, (GtkSignalFunc) load_ok_cb, app);
 }
 
 static void
 verb_PrintPreview_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+#if 0
 	SampleApp *app = user_data;
 
 	sample_app_print_preview (app);
-}
-
-static void
-verb_XmlDump_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
-{
-	SampleApp *app = user_data;
-
-	bonobo_window_dump (BONOBO_WINDOW (app->app), "On request");
+#else
+	g_warning ("Print Preview not implemented yet.");
+#endif
 }
 
 static void
 verb_HelpAbout_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 {
+#if 0
+	/* gnome_about would require a libgnomeui dependency */
+
 	static const gchar *authors[] = {
 		"ÉRDI Gergõ <cactus@cactus.rulez.org>",
-		"Michael Meeks <michael@helixcode.com>",
+		"Mike Kestner <mkestner@speakeasy.net",
+		"Michael Meeks <michael@ximian.com>",
 		NULL
 	};
 
 	GtkWidget *about = gnome_about_new ("sample-container", VERSION,
-					    "(C) 2000 ÉRDI Gergõ, Helix Code, Inc",
+					    "(C) 2000-2001 ÉRDI Gergõ, Mike Kestner, and Ximian, Inc",
 					    authors,
-					    _("Bonobo sample container"), NULL);
+					    "Bonobo sample container", NULL);
 	gtk_widget_show (about);
+#endif
 }
 
 static void
@@ -120,7 +124,6 @@ static char ui_commands [] =
 "	<cmd name=\"FileSaveAs\" _label=\"Save _As...\"\n"
 "		pixtype=\"stock\" pixname=\"Save\"\n"
 "		_tip=\"Save the current file with a different name\"/>\n"
-"	<cmd name=\"XmlDump\" _label=\"Xml dump\"/>\n"
 "	<cmd name=\"PrintPreview\" _label=\"Print Pre_view\"/>\n"
 "	<cmd name=\"FileExit\" _label=\"E_xit\" _tip=\"Exit the program\"\n"
 "		pixtype=\"stock\" pixname=\"Quit\" accel=\"*Control*q\"/>\n"
@@ -139,7 +142,6 @@ static char ui_data [] =
 "\n"
 "		<placeholder name=\"Placeholder\"/>\n"
 "\n"
-"		<menuitem name=\"XmlDump\" verb=\"\"/>\n"
 "		<separator/>\n"
 "		<menuitem name=\"PrintPreview\" verb=\"\"/>\n"
 "		<separator/>\n"
@@ -152,11 +154,10 @@ static char ui_data [] =
 "</menu>";
 
 static BonoboUIVerb sample_app_verbs[] = {
-	BONOBO_UI_VERB ("AddEmbeddable", verb_AddEmbeddable_cb),
+	BONOBO_UI_VERB ("AddEmbeddable", verb_AddComponent_cb),
 	BONOBO_UI_VERB ("FileOpen", verb_FileLoad_cb),
 	BONOBO_UI_VERB ("FileSaveAs", verb_FileSaveAs_cb),
 	BONOBO_UI_VERB ("PrintPreview", verb_PrintPreview_cb),
-	BONOBO_UI_VERB ("XmlDump", verb_XmlDump_cb),
 	BONOBO_UI_VERB ("FileExit", verb_FileExit_cb),
 	BONOBO_UI_VERB ("HelpAbout", verb_HelpAbout_cb),
 	BONOBO_UI_VERB_END
@@ -165,26 +166,16 @@ static BonoboUIVerb sample_app_verbs[] = {
 void
 sample_app_fill_menu (SampleApp *app)
 {
-	Bonobo_UIContainer corba_container;
+	Bonobo_UIContainer corba_uic;
 	BonoboUIComponent *uic;
 
 	uic = bonobo_ui_component_new ("sample");
-	corba_container = BONOBO_OBJREF (app->ui_container);
-	bonobo_ui_component_set_container (uic, corba_container);
+	corba_uic = BONOBO_OBJREF (bonobo_window_get_ui_container (
+						BONOBO_WINDOW (app->win)));
+	bonobo_ui_component_set_container (uic, corba_uic);
 
 	bonobo_ui_component_set_translate (uic, "/", ui_commands, NULL);
 	bonobo_ui_component_set_translate (uic, "/", ui_data, NULL);
 
 	bonobo_ui_component_add_verb_list_with_data (uic, sample_app_verbs, app);
-
-#if 0
-	BonoboUIHandlerMenuItem *menu_list;
-
-	/* Load the menu bar with the container-specific base menus */
-	menu_list = bonobo_ui_handler_menu_parse_uiinfo_list_with_data
-		(sample_app_menu, app);
-
-	bonobo_ui_handler_menu_add_list  (app->ui_handler, "/", menu_list);
-	bonobo_ui_handler_menu_free_list (menu_list);
-#endif
 }

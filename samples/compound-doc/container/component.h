@@ -1,45 +1,47 @@
 #ifndef SAMPLE_COMPONENT_H
 #define SAMPLE_COMPONENT_H
 
-#include <gnome.h>
-#include <bonobo.h>
+#include <bonobo/Bonobo.h>
+#include <gobject/gobject.h>
 
-#include "container.h"
+#define SAMPLE_COMPONENT_TYPE        (sample_component_get_type ())
+#define SAMPLE_COMPONENT(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), SAMPLE_COMPONENT_TYPE, SampleComponent))
+#define SAMPLE_COMPONENT_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), SAMPLE_COMPONENT_TYPE, SampleComponentClass))
+#define SAMPLE_IS_COMPONENT(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), SAMPLE_COMPONENT_TYPE))
+#define SAMPLE_IS_COMPONENT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), SAMPLE_COMPONENT_TYPE))
 
-#define SAMPLE_CLIENT_SITE_TYPE        (sample_client_site_get_type ())
-#define SAMPLE_CLIENT_SITE(o)          (GTK_CHECK_CAST ((o), SAMPLE_CLIENT_SITE_TYPE, SampleClientSite))
-#define SAMPLE_CLIENT_SITE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), SAMPLE_CLIENT_SITE_TYPE, SampleClientSiteClass))
-#define SAMPLE_IS_CLIENT_SITE(o)       (GTK_CHECK_TYPE ((o), SAMPLE_CLIENT_SITE_TYPE))
-#define SAMPLE_IS_CLIENT_SITE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), SAMPLE_CLIENT_SITE_TYPE))
+typedef struct _SampleComponent 	SampleComponent;
+typedef struct _SampleComponentClass 	SampleComponentClass;
+typedef struct _SampleComponentPrivate 	SampleComponentPrivate;
 
-struct _SampleClientSite {
-	BonoboClientSite parent;
+struct _SampleComponent {
+	GObject parent;
 
-	SampleApp *app;
-	gchar     *obj_id;
-
-	GtkWidget *widget;
-	GtkWidget *views_hbox;
-	GtkWidget *frame;
+	SampleComponentPrivate	*priv;
 };
 
-typedef struct {
-	BonoboClientSiteClass parent_class;
-} SampleClientSiteClass;
+struct _SampleComponentClass {
+	GObjectClass parent_class;
 
-GtkType           sample_client_site_get_type   (void);
-SampleClientSite *sample_client_site_new        (BonoboItemContainer *container,
-						 SampleApp           *app,
-						 BonoboObjectClient  *embeddable,
-						 const char          *embeddable_id);
+	void (*changed) (GObject *obj);
+};
 
-GtkWidget        *sample_client_site_get_widget (SampleClientSite   *site);
+GType		 sample_component_get_type (void);
 
-void              sample_client_site_add_frame  (SampleClientSite *site);
+SampleComponent *sample_component_new (gchar *iid);
 
-void              object_print                  (BonoboObjectClient *object,
-						 GnomePrintContext  *ctx,
-						 gdouble x, gdouble y,
-						 gdouble width, gdouble height);
+SampleComponent *sample_component_new_from_storage (Bonobo_Storage storage);
+
+void		 sample_component_move (SampleComponent *, 
+					gdouble x, gdouble y);
+
+void		 sample_component_resize (SampleComponent *, 
+					  gdouble width, gdouble height);
+
+gboolean	 sample_component_is_dirty (SampleComponent *);
+
+void		 sample_component_get_affine (SampleComponent *, gdouble *);
+
+Bonobo_Unknown	 sample_component_get_server (SampleComponent *);
 
 #endif
