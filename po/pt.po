@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-04-01 01:22+0100\n"
+"POT-Creation-Date: 2002-04-15 18:38+0100\n"
 "PO-Revision-Date: 2002-04-01 01:25+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -52,11 +52,11 @@ msgstr "Seleccione ficheiros a abrir"
 msgid "Select a filename to save"
 msgstr "Seleccione um nome de ficheiro a gravar"
 
-#: bonobo/bonobo-plug.c:351
+#: bonobo/bonobo-plug.c:358
 msgid "Event Forwarding"
 msgstr "Reencaminhamento Eventos"
 
-#: bonobo/bonobo-plug.c:352
+#: bonobo/bonobo-plug.c:359
 msgid "Whether X events should be forwarded"
 msgstr "Se eventos X deveriam ser reencaminhados"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.112.1\n"
-"POT-Creation-Date: 2002-03-18 13:47+0000\n"
+"POT-Creation-Date: 2002-04-15 18:38+0100\n"
 "PO-Revision-Date: 2002-03-11 23:03+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -14,42 +14,52 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
+#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
 msgid "Shadow type"
 msgstr "シャドウの種類"
 
-#: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
-#: bonobo/bonobo-ui-toolbar.c:1089 bonobo/bonobo-ui-toolbar.c:1090
+#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-ui-toolbar.c:1091 bonobo/bonobo-ui-toolbar.c:1092
 msgid "Orientation"
 msgstr "向き"
 
-#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
-#: bonobo/bonobo-ui-toolbar.c:1108 bonobo/bonobo-ui-toolbar.c:1109
+#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
 msgid "Preferred width"
 msgstr "希望する幅"
 
-#: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
-#: bonobo/bonobo-ui-toolbar.c:1117 bonobo/bonobo-ui-toolbar.c:1118
+#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Preferred height"
 msgstr "希望する高さ"
 
-#: bonobo/bonobo-file-selector-util.c:366
+#: bonobo/bonobo-dock-item-grip.c:236
+#, fuzzy
+msgid "Dock the toolbar"
+msgstr "ツールバーのカスタマイズ"
+
+#: bonobo/bonobo-dock-item-grip.c:237
+#, fuzzy
+msgid "Un dock the toolbar"
+msgstr "ツールバーのカスタマイズ"
+
+#: bonobo/bonobo-file-selector-util.c:373
 msgid "Select a file to open"
 msgstr "開きたいファイルを選択"
 
-#: bonobo/bonobo-file-selector-util.c:394
+#: bonobo/bonobo-file-selector-util.c:401
 msgid "Select files to open"
 msgstr "開きたいファイルを選択"
 
-#: bonobo/bonobo-file-selector-util.c:423
+#: bonobo/bonobo-file-selector-util.c:430
 msgid "Select a filename to save"
 msgstr "保存するファイル名を選択"
 
-#: bonobo/bonobo-plug.c:351
+#: bonobo/bonobo-plug.c:358
 msgid "Event Forwarding"
 msgstr "イベント転送"
 
-#: bonobo/bonobo-plug.c:352
+#: bonobo/bonobo-plug.c:359
 msgid "Whether X events should be forwarded"
 msgstr "X イベントを転送するかどうか"
 
@@ -197,11 +207,11 @@ msgstr "CORBA UI コンテナ"
 msgid "The User interface container"
 msgstr "ユーザインターフェイス コンテナ"
 
-#: bonobo/bonobo-ui-toolbar.c:1099
+#: bonobo/bonobo-ui-toolbar.c:1101
 msgid "is floating"
 msgstr "取り外し中"
 
-#: bonobo/bonobo-ui-toolbar.c:1100
+#: bonobo/bonobo-ui-toolbar.c:1102
 msgid "whether the toolbar is floating"
 msgstr "ツールバーが取り外されている状態かどうか"
 
@@ -286,7 +296,7 @@ msgstr ""
 msgid "GTK+"
 msgstr ""
 
-#: bonobo/bonobo-ui-main.c:187
+#: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
 msgstr ""
 

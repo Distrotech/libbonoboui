@@ -1,3 +1,30 @@
+libbonoboui 1.115.0
+
+	* Bugs fixed
+		+ entity mis-management (Michael, DV, Frederic Crozat)
+		+ dock band bindability (Murray Cumming)
+		+ remote UI container segv (Michael)
+		+ focus direction fixage (Anders)
+		+ signal paramter fixage (Murray)
+		+ grip sizing (Jeroen Zwartepoorte)
+		+ build fixage (Jacob Berkman)
+		+ C++ includeability (Murray Cumming)
+		+ plug/socket grab leak (Mark McLouglin)
+		+ dock lockability instant update (Michael)
+		+ staticification of signals (Jacob)
+		+ warning free control widgeting (Michael)
+		+ mutiple key press chain error (Michael)
+		+ libgnome pkgconfig dependency (Murray)
+
+	* Featurelets
+		+ dock layout (Michael)
+			+ accessibility
+			+ key-navigability
+		+ UI translation speedup (Michael)
+		+ large label handling speedup (Michael)
+		+ more regression tests (Michael)
+		+ error handler rename (Jody Goldberg)
+
 libbonoboui 1.113.0
 
 	* Bugs fixed

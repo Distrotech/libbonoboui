@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.112.0\n"
-"POT-Creation-Date: 2002-03-28 23:16+0900\n"
+"POT-Creation-Date: 2002-04-15 18:38+0100\n"
 "PO-Revision-Date: 2002-03-20 15:23+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -51,11 +51,11 @@ msgstr "열 파일을 선택하십시오"
 msgid "Select a filename to save"
 msgstr "저장할 파일이름을 선택하십시오"
 
-#: bonobo/bonobo-plug.c:351
+#: bonobo/bonobo-plug.c:358
 msgid "Event Forwarding"
 msgstr "이벤트 전달하기"
 
-#: bonobo/bonobo-plug.c:352
+#: bonobo/bonobo-plug.c:359
 msgid "Whether X events should be forwarded"
 msgstr "X 이벤트를 전달할 지 여부"
 
