@@ -1,3 +1,15 @@
+2002-08-15  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-window.c (construct_priv): put
+	the dock inside an hbox, inside the window, with
+	the status outside the dock, so re-arrangement works
+	better. #82546, #89261
+	(bonobo_window_get_contents): just use the dock.
+	(bonobo_window_set_contents): ditto.
+	(bonobo_window_show_all): upd.
+	(bonobo_window_focus): upd.
+	Thanks to herzi@abi02.de for the initial patch.
+
 2002-08-06  Federico Mena Quintero  <federico@ximian.com>
 
 	* bonobo/bonobo-socket.c (bonobo_socket_expose_event): Call the

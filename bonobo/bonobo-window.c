@@ -50,11 +50,7 @@ struct _BonoboWindowPrivate {
 	char           *name;		/* Win name */
 	char           *prefix;		/* Win prefix */
 
-	GtkWidget      *main_vbox;
-
 	GtkBox         *status;
-
-	GtkWidget      *client_area;
 
 	gboolean        allow_all_focus;
 };
@@ -115,9 +111,8 @@ bonobo_window_set_contents (BonoboWindow *win,
 {
 	g_return_if_fail (win != NULL);
 	g_return_if_fail (win->priv != NULL);
-	g_return_if_fail (win->priv->client_area != NULL);
 
-	gtk_container_add (GTK_CONTAINER (win->priv->client_area), contents);
+	bonobo_dock_set_client_area (win->priv->dock, contents);
 }
 
 /**
@@ -129,21 +124,11 @@ bonobo_window_set_contents (BonoboWindow *win,
 GtkWidget *
 bonobo_window_get_contents (BonoboWindow *win)
 {
-	GList     *children;
-	GtkWidget *widget;
-
 	g_return_val_if_fail (win != NULL, NULL);
 	g_return_val_if_fail (win->priv != NULL, NULL);
 	g_return_val_if_fail (win->priv->dock != NULL, NULL);
 
-	children = gtk_container_get_children (
-		GTK_CONTAINER (win->priv->client_area));
-
-	widget = children ? children->data : NULL;
-
-	g_list_free (children);
-
-	return widget;
+	return bonobo_dock_get_client_area (win->priv->dock);
 }
 
 static void
@@ -191,6 +176,7 @@ bonobo_window_get_accel_group (BonoboWindow *win)
 static BonoboWindowPrivate *
 construct_priv (BonoboWindow *win)
 {
+	GtkWidget *main_vbox;
 	BonoboWindowPrivate *priv;
 	BonoboDockItemBehavior behavior;
 
@@ -198,9 +184,13 @@ construct_priv (BonoboWindow *win)
 
 	priv->engine = bonobo_ui_engine_new (G_OBJECT (win));
 
+	main_vbox = gtk_vbox_new (FALSE, 0);
+	gtk_container_add (GTK_CONTAINER (win), main_vbox);
+
 	priv->dock = BONOBO_DOCK (bonobo_dock_new ());
-	gtk_container_add (GTK_CONTAINER (win),
-			   GTK_WIDGET    (priv->dock));
+	gtk_box_pack_start (GTK_BOX (main_vbox),
+			    GTK_WIDGET (priv->dock),
+			    TRUE, TRUE, 0);
 
 	behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
 		    | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
@@ -215,40 +205,16 @@ construct_priv (BonoboWindow *win)
 	bonobo_dock_add_item (priv->dock, priv->menu_item,
 			     BONOBO_DOCK_TOP, 0, 0, 0, TRUE);
 
-	/* 
-	 * To have menubar relief agree with the toolbar (and have the relief outside of
-	 * smaller handles), substitute the dock item's relief for the menubar's relief,
-	 * but don't change the size of the menubar in the process. 
-	 */
-#ifdef FIXME
-	gtk_menu_bar_set_shadow_type (GTK_MENU_BAR (priv->menu), GTK_SHADOW_NONE);
-#endif
-#if 0
-	if (bonobo_ui_preferences_get_menubar_relief ()) {
-		guint border_width;
-
-		gtk_container_set_border_width (GTK_CONTAINER (priv->menu_item), 2);
-		border_width = GTK_CONTAINER (priv->menu)->border_width;
-		if (border_width >= 2)
-			border_width -= 2;
-		gtk_container_set_border_width (GTK_CONTAINER (priv->menu), border_width);
-	} else
-#endif
-
-	priv->main_vbox = gtk_vbox_new (FALSE, 0);
-	bonobo_dock_set_client_area (priv->dock, priv->main_vbox);
-
-	priv->client_area = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (priv->main_vbox), priv->client_area, TRUE, TRUE, 0);
-
 	priv->status = GTK_BOX (gtk_hbox_new (FALSE, 0));
-	gtk_box_pack_start (GTK_BOX (priv->main_vbox), GTK_WIDGET (priv->status), FALSE, FALSE, 0);
+	gtk_box_pack_end (GTK_BOX (main_vbox),
+			  GTK_WIDGET (priv->status),
+			  FALSE, FALSE, 0);
 
 	priv->accel_group = gtk_accel_group_new ();
 	gtk_window_add_accel_group (GTK_WINDOW (win),
 				    priv->accel_group);
 
-	gtk_widget_show_all (GTK_WIDGET (priv->dock));
+	gtk_widget_show_all (GTK_WIDGET (main_vbox));
 	gtk_widget_hide (GTK_WIDGET (priv->status));
 
 	priv->sync_menu = bonobo_ui_sync_menu_new (
@@ -282,10 +248,12 @@ construct_priv (BonoboWindow *win)
 static void
 bonobo_window_show_all (GtkWidget *widget)
 {
+	GtkWidget *client;
 	BonoboWindow *win = BONOBO_WINDOW (widget);
 
-	if (win->priv->client_area)
-		gtk_widget_show_all (win->priv->client_area);
+	if (win->priv->dock &&
+	    (client = bonobo_dock_get_client_area (win->priv->dock)))
+		gtk_widget_show_all (client);
 
 	gtk_widget_show (widget);
 }
@@ -347,7 +315,7 @@ bonobo_window_focus (GtkWidget        *widget,
   window = GTK_WINDOW (widget);
 
   old_focus_child = container->focus_child;
-  child = win->priv->client_area;
+  child = win->priv->dock ? bonobo_dock_get_client_area (win->priv->dock) : NULL;
   
   /* We need a special implementation here to deal properly with wrapping
    * around in the tab chain without the danger of going into an
