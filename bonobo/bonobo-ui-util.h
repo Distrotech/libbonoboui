@@ -61,7 +61,8 @@ xmlNode   *bonobo_ui_util_new_toggle_toolbar(const char        *name,
 					     const char        *descr,
 					     const char        *id);
 
-char      *bonobo_ui_util_get_ui_fname      (const char        *component_name);
+char      *bonobo_ui_util_get_ui_fname      (const char        *component_prefix,
+					     const char        *component_name);
 
 void       bonobo_ui_util_translate_ui      (xmlNode           *node);
 

@@ -586,10 +586,14 @@ bonobo_ui_util_new_toggle_toolbar (const char *name,
  * UI or NULL if it is not found.
  **/
 char *
-bonobo_ui_util_get_ui_fname (const char *component_name)
+bonobo_ui_util_get_ui_fname (const char *component_prefix,
+			     const char *component_name)
 {
 	char *fname, *name;
 
+	/*
+	 * The user copy ?
+	 */
 	fname = g_strdup_printf ("%s/.gnome/ui/%s",
 				 g_get_home_dir (), component_name);
 
@@ -598,9 +602,16 @@ bonobo_ui_util_get_ui_fname (const char *component_name)
 	 */
 	if (g_file_exists (fname))
 		return fname;
-/*	else
-	g_warning ("Can't find '%s'", fname);*/
+	g_free (fname);
 
+	/*
+	 * The master copy
+	 */
+
+	fname = g_strdup_printf ("%s/.gnome/ui/%s",
+				 component_prefix, component_name);
+	if (g_file_exists (fname))
+		return fname;
 	g_free (fname);
 
 	name  = g_strdup_printf ("gnome/ui/%s", component_name);
