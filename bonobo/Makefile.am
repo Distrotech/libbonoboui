@@ -192,4 +192,4 @@ BUILT_SOURCES=$(CORBA_SOURCE)
 
 CLEANFILES += $(BUILT_SOURCES)
 
-EXTRA_DIST = bonobo-insert-component.xpm
+EXTRA_DIST = bonobo-insert-component.xpm bonobo-object-directory-oaf.c bonobo-object-directory-goad.c
