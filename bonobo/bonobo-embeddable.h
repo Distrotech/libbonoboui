@@ -18,9 +18,10 @@ BEGIN_GNOME_DECLS
 
 struct _GnomeEmbeddable;
 typedef struct _GnomeEmbeddable GnomeEmbeddable;
+typedef struct _GnomeVerb GnomeVerb;
 
-typedef GnomeView * (*GnomeViewFactory)(GnomeEmbeddable *bonobo_object, const GNOME_ViewFrame view_frame, void *closure);
-					
+typedef GnomeView * (*GnomeViewFactory)(GnomeEmbeddable *embeddable, const GNOME_ViewFrame view_frame, void *closure);
+
 struct _GnomeEmbeddable {
 	GnomeObject base;
 
@@ -35,7 +36,8 @@ struct _GnomeEmbeddable {
 	void *view_factory_closure;
 
 	/*
-	 * The verbs
+	 * A list of GnomeVerb structures for the verbs supported by
+	 * this component.
 	 */
 	GList *verbs;
 };
@@ -49,6 +51,34 @@ typedef struct {
 	void (*host_name_changed)  (GnomeEmbeddable *comp);
 } GnomeEmbeddableClass;
 
+struct _GnomeVerb {
+	/*
+	 * A unique string which identifies this verb.  This is the
+	 * string which is used to activate the verb.
+	 *
+	 * Example: "next_page"
+	 */
+	char *name;
+
+	/*
+	 * A string which specifies the action the verb performs.
+	 * This verb may be translated to the locale of the user
+	 * and used as an entry in a popup menu.
+	 *
+	 * Example: "_Next Page"
+	 */
+	char *label;
+
+	/*
+	 * A string which gives a slightly more verbose description of
+	 * the verb, for use in tooltips or status bars.  This string
+	 * may be translated to the user's locale.
+	 *
+	 * Example: "Turn to the next page"
+	 */
+	char *hint;
+};
+
 GtkType          gnome_embeddable_get_type         (void);
 GnomeEmbeddable *gnome_embeddable_new              (GnomeViewFactory factory,
 						    void *data);
@@ -57,9 +87,11 @@ GnomeEmbeddable *gnome_embeddable_construct        (GnomeEmbeddable *bonobo_obje
 						    GnomeViewFactory factory,
 						    void *data);
 void             gnome_embeddable_add_verb         (GnomeEmbeddable *bonobo_object,
-						    const char *verb_name);
+						    const char *verb_name,
+						    const char *verb_label,
+						    const char *verb_hint);
 void             gnome_embeddable_add_verbs        (GnomeEmbeddable *bonobo_object,
-						    const char **verb_list);
+						    const GnomeVerb *verbs);
 void             gnome_embeddable_remove_verb      (GnomeEmbeddable *bonobo_object,
 						    const char *verb_name);
 void             gnome_embeddable_set_view_factory (GnomeEmbeddable *bonobo_object,

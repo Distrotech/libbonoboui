@@ -16,13 +16,17 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_CLIENT_SITE(o)       (GTK_CHECK_TYPE ((o), GNOME_CLIENT_SITE_TYPE))
 #define GNOME_IS_CLIENT_SITE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_CLIENT_SITE_TYPE))
 
-typedef struct {
+typedef struct _GnomeClientSite GnomeClientSite;
+
+#include <bonobo/gnome-view-frame.h>
+
+struct _GnomeClientSite {
 	GnomeObject base;
 
 	GnomeContainer    *container;
 	GnomeObjectClient *bound_object;
 	int               child_shown:1;
-} GnomeClientSite;
+};
 
 typedef struct {
 	GnomeObjectClass parent_class;
@@ -32,17 +36,21 @@ typedef struct {
 	void (*save_object)  (GnomeClientSite *, GNOME_Persist_Status *status);
 } GnomeClientSiteClass;
 
-GtkType          gnome_client_site_get_type       (void);
-GnomeClientSite *gnome_client_site_new            (GnomeContainer *container);
-GnomeClientSite *gnome_client_site_construct      (GnomeClientSite  *client_site,
-						   GNOME_ClientSite corba_client_site,
-						   GnomeContainer   *container);
+GtkType          gnome_client_site_get_type		(void);
+GnomeClientSite *gnome_client_site_new			(GnomeContainer *container);
+GnomeClientSite *gnome_client_site_construct		(GnomeClientSite  *client_site,
+							 GNOME_ClientSite corba_client_site,
+							 GnomeContainer   *container);
 
-void             gnome_client_site_set_moniker    (GnomeClientSite *client_site,
-						   GnomeMoniker   *moniker);
+void             gnome_client_site_set_moniker		(GnomeClientSite *client_site,
+							 GnomeMoniker   *moniker);
 
-gboolean         gnome_client_site_bind_embeddable (GnomeClientSite *client_site,
-						    GnomeObjectClient *object);
+gboolean         gnome_client_site_bind_embeddable	(GnomeClientSite *client_site,
+							 GnomeObjectClient *object);
+
+GnomeViewFrame  *gnome_client_site_embeddable_new_view	(GnomeClientSite *client_site);
+GList		*gnome_client_site_embeddable_get_verbs (GnomeClientSite *client_site);
+void		 gnome_client_site_free_verbs		(GList *string_list);
 
 extern POA_GNOME_ClientSite__epv gnome_client_site_epv;
 

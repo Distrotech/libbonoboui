@@ -1,3 +1,5 @@
+CFLAGS+=-Wstrict-prototypes
+
 corbadir = $(sysconfdir)/CORBA/servers
 
 corba_DATA = sample.gnorba
@@ -57,7 +59,6 @@ libbonobo_la_SOURCES =			\
 	gnome-bonobo-selector.c		\
 	gnome-client-site.c		\
 	gnome-container.c		\
-	gnome-embeddable-client.c	\
 	gnome-embeddable-factory.c 	\
 	gnome-embeddable.c		\
 	gnome-file-moniker.c		\
@@ -97,7 +98,6 @@ libbonoboinclude_HEADERS =		\
 	gnome-composite-moniker.h	\
 	gnome-container.h		\
 	gnome-embeddable.h		\
-	gnome-embeddable-client.h	\
 	gnome-embeddable-factory.h	\
 	gnome-file-moniker.h		\
 	gnome-moniker-client.h		\

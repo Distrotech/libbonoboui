@@ -26,12 +26,17 @@ CORBA_ORB orb;
  * A handle to some Embeddables and their ClientSites so we can add
  * views to existing components.
  */
-
 GnomeObjectClient *text_obj;
 GnomeClientSite *text_client_site;
 
 GnomeObjectClient *image_png_obj;
 GnomeClientSite   *image_client_site;
+
+/*
+ * The currently active view.  We keep track of this
+ * so we can deactivate it when a new view is activated.
+ */
+GnomeViewFrame *active_view_frame;
 
 char *server_goadid = "Test_server_bonobo_object";
 
@@ -66,31 +71,98 @@ launch_server (GnomeClientSite *client_site, GnomeContainer *container, char *go
 	return object_server;
 }
 
-static gboolean
-view_frame_activated_cb (GnomeViewFrame *view_frame, gboolean state,
-			 GnomeObjectClient *server_object)
+/*
+ * This function is called when the user double clicks on a View in
+ * order to activate it.
+ */
+static gint
+user_activation_request_cb (GnomeViewFrame *view_frame)
 {
+	/*
+	 * If there is already an active View, deactivate it.
+	 */
+        if (active_view_frame != NULL) {
+		/*
+		 * This just sends a notice to the embedded View that
+		 * it is being deactivated.  We will also forcibly
+		 * cover it so that it does not receive any Gtk
+		 * events.
+		 */
+                gnome_view_frame_view_deactivate (active_view_frame);
 
-	if (state) {
-		GNOME_Embeddable_verb_list *verbs;
-		int i;
-
-		CORBA_exception_init (&ev);
-		verbs = GNOME_Embeddable_get_verb_list (
-			gnome_object_corba_objref (GNOME_OBJECT (server_object)),
-			&ev);
-		if (ev._major != CORBA_NO_EXCEPTION) {
-			g_warning ("Could not get verb list!\n");
-		}
-
-		for (i = 0; i < verbs->_length; i ++) {
-			printf ("Got Verb: %s\n", verbs->_buffer[i]);
-		}			
-
+		/*
+		 * Here we manually cover it if it hasn't acquiesced.
+		 * If it has consented to be deactivated, then it will
+		 * already have notified us that it is inactive, and
+		 * we will have covered it and set active_view_frame
+		 * to NULL.  Which is why this check is here.
+		 */
+		if (active_view_frame != NULL)
+			gnome_view_frame_set_covered (active_view_frame, TRUE);
+									     
+		active_view_frame = NULL;
 	}
 
-	return FALSE;
-} /* view_frame_activated_cb */
+        /*
+	 * Activate the View which the user clicked on.  This just
+	 * sends a request to the embedded View to activate itself.
+	 * When it agrees to be activated, it will notify its
+	 * ViewFrame, and our view_activated_cb callback will be
+	 * called.
+	 *
+	 * We do not uncover the View here, because it may not wish to
+	 * be activated, and so we wait until it notifies us that it
+	 * has been activated to uncover it.
+	 */
+        gnome_view_frame_view_activate (view_frame);
+
+        return FALSE;
+}                                                                               
+
+/*
+ * Gets called when the View notifies the ViewFrame that it would like
+ * to be activated or deactivated.
+ */
+static gint
+view_activated_cb (GnomeViewFrame *view_frame, gboolean activated)
+{
+
+        if (activated) {
+		/*
+		 * If the View is requesting to be activated, then we
+		 * check whether or not there is already an active
+		 * View.
+		 */
+		if (active_view_frame != NULL) {
+			g_warning ("View requested to be activated but there is already "
+				   "an active View!\n");
+			return FALSE;
+		}
+
+		/*
+		 * Otherwise, uncover it so that it can receive
+		 * events, and set it as the active View.
+		 */
+		gnome_view_frame_set_covered (view_frame, FALSE);
+                active_view_frame = view_frame;
+        } else {
+		/*
+		 * If the View is asking to be deactivated, always
+		 * oblige.  We may have already deactivated it (see
+		 * user_activation_request_cb), but there's no harm in
+		 * doing it again.  There is always the possibility
+		 * that a View will ask to be deactivated when we have
+		 * not told it to deactivate itself, and that is
+		 * why we cover the view here.
+		 */
+		gnome_view_frame_set_covered (view_frame, TRUE);
+
+		if (view_frame == active_view_frame)
+			active_view_frame = NULL;
+        }                                                                       
+
+        return FALSE;
+}                                                                               
 
 static GnomeViewFrame *
 add_view (GtkWidget *widget, Application *app,
@@ -100,10 +172,12 @@ add_view (GtkWidget *widget, Application *app,
 	GtkWidget *view_widget;
 	GtkWidget *frame;
 	
-	view_frame = gnome_embeddable_client_new_view_simple (server, client_site);
+	view_frame = gnome_client_site_embeddable_new_view (client_site);
+
+	gtk_signal_connect (GTK_OBJECT (view_frame), "user_activate",
+			    GTK_SIGNAL_FUNC (user_activation_request_cb), NULL);
 	gtk_signal_connect (GTK_OBJECT (view_frame), "view_activated",
-			    GTK_SIGNAL_FUNC (view_frame_activated_cb),
-			    server);
+			    GTK_SIGNAL_FUNC (view_activated_cb), NULL);
 
 	gnome_view_frame_set_ui_handler (view_frame, app->uih);
 
@@ -118,7 +192,6 @@ add_view (GtkWidget *widget, Application *app,
 
 	return view_frame;
 } /* add_view */
-
 
 static GnomeObjectClient *
 add_cmd (GtkWidget *widget, Application *app, char *server_goadid,

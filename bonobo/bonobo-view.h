@@ -16,7 +16,12 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_VIEW(o)       (GTK_CHECK_TYPE ((o), GNOME_VIEW_TYPE))
 #define GNOME_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_TYPE))
 
-typedef struct {
+typedef struct _GnomeView GnomeView;
+typedef struct _GnomeViewClass GnomeViewClass;
+
+typedef void (*GnomeViewVerbFunc)(GnomeView *view, const char *verb_name, void *user_data);
+
+struct _GnomeView {
 	GnomeObject base;
 
 	GtkWidget *widget;
@@ -24,25 +29,38 @@ typedef struct {
 
 	GNOME_ViewFrame view_frame;
 
-} GnomeView;
+	GHashTable *verb_callbacks;
+	GHashTable *verb_callback_closures;
+};
 
-typedef struct {
+struct _GnomeViewClass {
 	GnomeObjectClass parent_class;
 
 	/*
 	 * Signals
 	 */
+	void (*view_activate)      (GnomeView *comp,
+				    gboolean activate);
 	void (*do_verb)            (GnomeView *comp,
 				    const CORBA_char *verb_name);
+};
 
-} GnomeViewClass;
-
-GtkType       gnome_view_get_type            (void);
-GnomeView    *gnome_view_construct           (GnomeView *view,
-			 		      GNOME_View corba_view,
-					      GtkWidget *widget);
-GnomeView    *gnome_view_new                 (GtkWidget *widget);
-GNOME_View    gnome_view_corba_object_create (GnomeObject *object);
+GtkType		 gnome_view_get_type		(void);
+GnomeView	*gnome_view_construct		(GnomeView *view,
+						 GNOME_View corba_view,
+						 GtkWidget *widget);
+GnomeView	*gnome_view_new                 (GtkWidget *widget);
+void		 gnome_view_set_view_frame	(GnomeView *view,
+						 GNOME_ViewFrame view_frame);
+GNOME_ViewFrame  gnome_view_get_view_frame	(GnomeView *view);
+GNOME_UIHandler  gnome_view_get_ui_handler	(GnomeView *view);
+GNOME_View	 gnome_view_corba_object_create	(GnomeObject *object);
+void		 gnome_view_register_verb	(GnomeView *view,
+						 const char *verb_name,
+						 GnomeViewVerbFunc callback,
+						 gpointer user_data);
+void		 gnome_view_unregister_verb	(GnomeView *view,
+						 const char *verb_name);
 
 END_GNOME_DECLS
 

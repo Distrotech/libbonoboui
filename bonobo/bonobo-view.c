@@ -4,6 +4,7 @@
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
+ *   Nat Friedman    (nat@gnome-support.com)
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -21,6 +22,7 @@ static POA_GNOME_View__epv gnome_view_epv;
 static POA_GNOME_View__vepv gnome_view_vepv;
 
 enum {
+	VIEW_ACTIVATE,
 	DO_VERB,
 	LAST_SIGNAL
 };
@@ -28,16 +30,43 @@ enum {
 static guint view_signals [LAST_SIGNAL];
 
 static void
-impl_GNOME_View_do_verb (PortableServer_Servant servant,
-			 const CORBA_char *verb_name,
-			 CORBA_Environment *ev)
+impl_GNOME_View_activate (PortableServer_Servant servant,
+			  CORBA_boolean activated,
+			  CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 
+	gtk_signal_emit (GTK_OBJECT (view), view_signals [VIEW_ACTIVATE], (gboolean) activated);
+}
+
+static void
+impl_GNOME_View_do_verb (PortableServer_Servant servant,
+			 CORBA_char *verb_name,
+			 CORBA_Environment *ev)
+{
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
+	GnomeViewVerbFunc callback;
+
+	/*
+	 * Always emit a signal when a verb is executed.
+	 */
 	gtk_signal_emit (
 		GTK_OBJECT (view),
 		view_signals [DO_VERB],
 		(gchar *) verb_name);
+
+	/*
+	 * The user may have registered a callback for this particular
+	 * verb.  If so, dispatch to that callback.
+	 */
+	callback = g_hash_table_lookup (view->verb_callbacks, verb_name);
+	if (callback != NULL) {
+		void *user_data;
+
+		user_data = g_hash_table_lookup (view->verb_callback_closures, verb_name);
+
+		(*callback) (view, (const char *) verb_name, user_data);
+	}
 }
 
 static void
@@ -49,8 +78,14 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
 	GtkAllocation allocation;
 
-	allocation.x = view->plug->allocation.x;
-	allocation.y = view->plug->allocation.y;
+	if (view->plug != NULL) {
+		allocation.x = view->plug->allocation.x;
+		allocation.y = view->plug->allocation.y;
+	} else {
+		allocation.x = -1;
+		allocation.y = -1;
+	}
+
 	allocation.width = width;
 	allocation.height = height;
 	
@@ -118,9 +153,11 @@ gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 	gnome_object_construct (GNOME_OBJECT (view), corba_view);
 	
 	view->widget = widget;
-
 	gtk_object_ref (GTK_OBJECT (view->widget));
-	
+
+	view->verb_callbacks = g_hash_table_new (g_str_hash, g_str_equal);
+	view->verb_callback_closures = g_hash_table_new (g_str_hash, g_str_equal);
+
 	return view;
 }
 
@@ -173,6 +210,7 @@ init_view_corba_class (void)
 	gnome_view_epv.size_allocate = impl_GNOME_View_size_allocate;
 	gnome_view_epv.set_window = impl_GNOME_View_set_window;
 	gnome_view_epv.do_verb = impl_GNOME_View_do_verb;
+	gnome_view_epv.activate = impl_GNOME_View_activate;
 
 	/* Setup the vector of epvs */
 	gnome_view_vepv.GNOME_Unknown_epv = &gnome_object_epv;
@@ -185,6 +223,15 @@ gnome_view_class_init (GnomeViewClass *class)
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
 	gnome_view_parent_class = gtk_type_class (gnome_object_get_type ());
+
+	view_signals [VIEW_ACTIVATE] =
+                gtk_signal_new ("view_activate",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET (GnomeViewClass, view_activate), 
+                                gtk_marshal_NONE__BOOL,
+                                GTK_TYPE_NONE, 1,
+				GTK_TYPE_BOOL);
 
 	view_signals [DO_VERB] =
                 gtk_signal_new ("do_verb",
@@ -204,7 +251,7 @@ gnome_view_class_init (GnomeViewClass *class)
 }
 
 static void
-gnome_view_init (GnomeObject *object)
+gnome_view_init (GnomeView *view)
 {
 }
 
@@ -236,9 +283,117 @@ gnome_view_get_type (void)
 	return type;
 }
 
+/**
+ * gnome_view_set_view_frame:
+ * @view: A GnomeView object.
+ * @view_frame: A CORBA interface for the ViewFrame which contains this View.
+ *
+ * Sets the ViewFrame for @view to @view_frame.
+ */
+void
+gnome_view_set_view_frame (GnomeView *view, GNOME_ViewFrame view_frame)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (view != NULL);
+	g_return_if_fail (GNOME_IS_VIEW (view));
+
+	CORBA_exception_init (&ev);
+
+	view->view_frame = CORBA_Object_duplicate (view_frame, &ev);
+
+	CORBA_exception_free (&ev);
+}
+
+/**
+ * gnome_view_get_view_frame:
+ * @view: A GnomeView object whose GNOME_ViewFrame CORBA interface is
+ * being retrieved.
+ *
+ * Returns: The GNOME_ViewFrame CORBA object associated with @view.a
+ */
+GNOME_ViewFrame
+gnome_view_get_view_frame (GnomeView *view)
+
+{
+	g_return_val_if_fail (view != NULL, CORBA_OBJECT_NIL);
+	g_return_val_if_fail (GNOME_IS_VIEW (view), CORBA_OBJECT_NIL);
+
+	return view->view_frame;
+}
+
+/**
+ * gnome_view_get_ui_handler:
+ * @view: A GnomeView object which is bound to a remote GnomeViewFrame.
+ *
+ * Returns: The GNOME_UIHandler CORBA server for the remote GnomeViewFrame.
+ */
+GNOME_UIHandler
+gnome_view_get_ui_handler (GnomeView *view)
+{
+	CORBA_Environment ev;
+	GNOME_UIHandler uih;
+
+	g_return_val_if_fail (view != NULL, CORBA_OBJECT_NIL);
+	g_return_val_if_fail (GNOME_IS_VIEW (view), CORBA_OBJECT_NIL);
+
+	CORBA_exception_init (&ev);
+
+	uih = GNOME_ViewFrame_get_ui_handler (view->view_frame, &ev);
+
+	CORBA_exception_free (&ev);
+
+	return uih;
+}
 
 
+/**
+ * gnome_view_register_verb:
+ * @view: A GnomeView object.
+ * @verb_name: The name of the verb to register.
+ * @callback: A function to call when @verb_name is executed on @view.
+ * @user_data: A closure to pass to @callback when it is invoked.
+ *
+ * Registers a verb called @verb_name against @view.  When @verb_name
+ * is executed, the View will dispatch to @callback.
+ */
+void
+gnome_view_register_verb (GnomeView *view, const char *verb_name,
+			  GnomeViewVerbFunc callback, gpointer user_data)
+{
+	char *key;
 
+	g_return_if_fail (view != NULL);
+	g_return_if_fail (GNOME_IS_VIEW (view));
+	g_return_if_fail (verb_name != NULL);
 
+	key = g_strdup (verb_name);
 
+	g_hash_table_insert (view->verb_callbacks, key, callback);
+	g_hash_table_insert (view->verb_callback_closures, key, user_data);
+}
+
+/**
+ * gnome_view_unregister_verb:
+ * @view: A GnomeView object.
+ * @verb_name: The name of a verb to be unregistered.
+ *
+ * Unregisters the verb called @verb_name from @view.
+ */
+void
+gnome_view_unregister_verb (GnomeView *view, const char *verb_name)
+{
+	gchar *original_key;
+
+	g_return_if_fail (view != NULL);
+	g_return_if_fail (GNOME_IS_VIEW (view));
+	g_return_if_fail (verb_name != NULL);
+
+	if (! g_hash_table_lookup_extended (view->verb_callbacks, verb_name,
+					    (gpointer *) &original_key, NULL))
+		return;
+	g_hash_table_remove (view->verb_callbacks, verb_name);
+	g_hash_table_remove (view->verb_callback_closures, verb_name);
+	g_free (original_key);
+}
 

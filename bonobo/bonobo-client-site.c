@@ -16,6 +16,11 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <bonobo/gnome-client-site.h>
+#include <bonobo/gnome-embeddable.h>
+#include <gdk/gdkprivate.h>
+#include <gdk/gdkx.h>
+#include <gdk/gdktypes.h>
+#include <gtk/gtksocket.h>
 
 enum {
 	SHOW_WINDOW,
@@ -41,8 +46,8 @@ static void
 impl_GNOME_client_site_show_window (PortableServer_Servant servant, CORBA_boolean shown,
 				    CORBA_Environment *ev)
 {
-	GnomeObject *object = gnome_object_from_servant (servant);
-	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
+	GnomeClientSite *client_site = GNOME_CLIENT_SITE (gnome_object_from_servant (servant));
+	GnomeObject *object = GNOME_OBJECT (client_site);
 
 	gtk_signal_emit (
 		GTK_OBJECT (object),
@@ -55,11 +60,10 @@ impl_GNOME_client_site_get_moniker (PortableServer_Servant servant,
 				    GNOME_Moniker_type which,
 				    CORBA_Environment *ev)
 {
-	GnomeObject *object = gnome_object_from_servant (servant);
-	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
+	GnomeClientSite *client_site = GNOME_CLIENT_SITE (gnome_object_from_servant (servant));
 	GnomeMoniker *container_moniker;
 
-/*	container_moniker = gnome_container_get_moniker (client_site->container); */
+	container_moniker = gnome_container_get_moniker (client_site->container);
 
 	switch (which){
 	case GNOME_Moniker_CONTAINER:
@@ -148,7 +152,7 @@ gnome_client_site_destroy (GtkObject *object)
 	/* Destroy the object on the other end */
 	g_warning ("FIXME: Should we unref twice?");
 
-	gtk_object_unref (GTK_OBJECT (client_site->bound_object));
+	gtk_object_unref (GTK_OBJECT (gnome_object));
 	object_class->destroy (object);
 }
 
@@ -171,8 +175,8 @@ default_save_object (GnomeClientSite *cs, GNOME_Persist_Status *status)
 static void
 gnome_client_site_class_init (GnomeClientSiteClass *class)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) class;
 	GnomeObjectClass *gobject_class = (GnomeObjectClass *) class;
+	GtkObjectClass *object_class = (GtkObjectClass *) gobject_class;
 	
 	gnome_client_site_parent_class = gtk_type_class (gnome_object_get_type ());
 
@@ -373,3 +377,189 @@ gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClie
 	return TRUE;
 }
 
+static void
+set_remote_window (GtkWidget *socket, GNOME_View view)
+{
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+	GNOME_View_set_window (view, GDK_WINDOW_XWINDOW (socket->window), &ev);
+	CORBA_exception_free (&ev);
+}
+
+static void
+destroy_view_frame (GnomeViewFrame *view_frame, GnomeObjectClient *server_object)
+{
+	server_object->view_frames = g_list_remove (server_object->view_frames, view_frame);
+}
+
+static void
+size_allocate (GtkWidget *widget, GtkAllocation *allocation, GNOME_View view)
+{
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+	GNOME_View_size_allocate (view, allocation->width, allocation->height, &ev);
+	CORBA_exception_free (&ev);
+}
+
+/**
+ * gnome_client_site_embeddable_new_view:
+ * @client_site: the client site that contains a remote Embeddable
+ * object.
+ *
+ * Creates a ViewFrame and asks the remote @server_object (which must
+ * support the GNOME::Embeddable interface) to provide a new view of
+ * its data.  The remote @server_object will construct a GnomeView
+ * object which corresponds to the new GnomeViewFrame returned by this
+ * function.
+ * 
+ * Returns: A GnomeViewFrame object that contains the view frame for
+ * the new view of @server_object.  */
+GnomeViewFrame *
+gnome_client_site_embeddable_new_view (GnomeClientSite *client_site)
+{
+	GnomeObjectClient *server_object;
+	GnomeViewFrame *view_frame;
+	GnomeWrapper *wrapper;
+	GtkWidget *socket;
+	GNOME_View view;
+
+	CORBA_Environment ev;
+
+	g_return_val_if_fail (client_site != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
+
+	server_object = client_site->bound_object;
+
+	/*
+	 * 1. Get the end points where the containee is embedded.
+	 */
+	socket = gtk_socket_new ();
+	gtk_widget_show (socket);
+
+	/*
+	 * 2. Create the view frame.
+	 */
+	view_frame = gnome_view_frame_new (client_site);
+	wrapper = GNOME_WRAPPER (gnome_view_frame_get_wrapper (view_frame));
+
+	gtk_container_add (GTK_CONTAINER (wrapper), socket);
+	gtk_widget_show (GTK_WIDGET (wrapper));
+
+	/*
+	 * 3. Now, create the view.
+	 */
+	CORBA_exception_init (&ev);
+ 	view = GNOME_Embeddable_new_view (
+		gnome_object_corba_objref (GNOME_OBJECT (server_object)),
+		gnome_object_corba_objref (GNOME_OBJECT (view_frame)),
+		&ev);
+	if (ev._major != CORBA_NO_EXCEPTION){
+		gtk_object_unref (GTK_OBJECT (socket));
+		gtk_object_unref (GTK_OBJECT (view_frame));
+		CORBA_exception_free (&ev);
+		return NULL;
+	}
+
+	gnome_view_frame_bind_to_view (view_frame, view);
+
+	/*
+	 * 4. Add this new view frame to the list of ViewFrames for
+	 * this embedded component.
+	 */
+	server_object->view_frames = g_list_prepend (server_object->view_frames, view_frame);
+	
+	/*
+	 * 5. Now wait until the socket->window is realized.
+	 */
+	gtk_signal_connect (GTK_OBJECT (socket), "realize",
+			    GTK_SIGNAL_FUNC (set_remote_window), view);
+
+	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
+			    GTK_SIGNAL_FUNC (destroy_view_frame), server_object);
+
+	gtk_signal_connect (GTK_OBJECT (wrapper), "size_allocate",
+			    GTK_SIGNAL_FUNC (size_allocate), view);
+	
+	CORBA_exception_free (&ev);		
+	return view_frame;
+}
+
+/**
+ * gnome_client_site_embeddable_get_verbs:
+ * @server_object: The pointer to the embedeed server object
+ *
+ * Returns: A GList containing the GnomeVerb structures for the verbs
+ * supported by the Embeddable @server_object.
+ *
+ * The GnomeVerbs can be deallocated with a call to
+ * gnome_embeddable_free_verbs().
+ */
+GList *
+gnome_client_site_embeddable_get_verbs (GnomeClientSite *client_site)
+{
+	GNOME_Embeddable_verb_list *list;
+	GNOME_Embeddable object;
+	GnomeObjectClient *server_object;
+	GnomeObject *gobject;
+	GList *l;
+	int i;
+	
+	g_return_val_if_fail (client_site != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
+
+	server_object = client_site->bound_object;
+
+	gobject = GNOME_OBJECT (server_object);
+	object = (GNOME_Embeddable) gnome_object_corba_objref (gobject);
+
+	list = GNOME_Embeddable_get_verb_list (object, &gobject->ev);
+
+	if (gobject->ev._major != CORBA_NO_EXCEPTION){
+		if (list != CORBA_OBJECT_NIL)
+			CORBA_free (list);
+		
+		return NULL;
+	}
+
+	for (l = NULL, i = 0; i < list->_length; i++) {
+		GnomeVerb *verb;
+
+		verb = g_new0 (GnomeVerb, 1);
+		verb->name = g_strdup (list->_buffer [i].name);
+		verb->label = g_strdup (list->_buffer [i].label);
+		verb->hint = g_strdup (list->_buffer [i].hint);
+
+		l = g_list_prepend (l, verb);
+	}
+	
+	CORBA_free (list);
+
+	return l;
+}
+
+/**
+ * gnome_client_site_free_verbs:
+ */
+void
+gnome_client_site_free_verbs (GList *verbs)
+{
+	GList *curr;
+
+	if (verbs == NULL)
+		return;
+
+	for (curr = verbs; curr != NULL; curr = curr->next) {
+		GnomeVerb *verb = (GnomeVerb *) curr->data;
+
+		g_free (verb->name);
+		g_free (verb->label);
+		g_free (verb->hint);
+		g_free (verb);
+	}
+	
+	g_list_free (verbs);
+}

@@ -11,6 +11,7 @@
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
+ *   Nat Friedman    (nat@gnome-support.com)
  */
 #include <config.h>
 #include <gtk/gtksignal.h>
@@ -64,8 +65,8 @@ impl_GNOME_Embeddable_get_client_site (PortableServer_Servant servant,
 
 static void
 impl_GNOME_Embeddable_set_host_name (PortableServer_Servant servant,
-				     const CORBA_char *name,
-				     const CORBA_char *appname,
+				     CORBA_char *name,
+				     CORBA_char *appname,
 				     CORBA_Environment *ev)
 {
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
@@ -106,30 +107,34 @@ impl_GNOME_Embeddable_get_verb_list (PortableServer_Servant servant,
 				     CORBA_Environment *ev)
 {
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
-	GNOME_Embeddable_verb_list *list;
+	GNOME_Embeddable_verb_list *verb_list;
+
 	GList *l;
-	int len, i;
+	int len;
+	int i;
 
 	len = g_list_length (embeddable->verbs);
 
-	if (len == 0)
-		return NULL;
-	
-	list = GNOME_Embeddable_verb_list__alloc ();
-	
-	list->_length = len;
-	list->_maximum = len;
-	list->_buffer = CORBA_sequence_CORBA_string_allocbuf (len);
+	verb_list = GNOME_Embeddable_verb_list__alloc ();
+	verb_list->_length = len;
 
-	if (list->_buffer == NULL){
-		CORBA_free (list);
-		return NULL;
+	if (len == 0)
+		return verb_list;
+
+	verb_list->_buffer = CORBA_sequence_GNOME_Embeddable_GnomeVerb_allocbuf (len);
+
+	for (i = 0, l = embeddable->verbs; l != NULL; l = l->next, i ++) {
+		GNOME_Embeddable_GnomeVerb *corba_verb;
+		GnomeVerb *verb = (GnomeVerb *) l->data;
+
+		corba_verb = GNOME_Embeddable_GnomeVerb__alloc ();
+#define CORBIFY_STRING(s) ((s) == NULL ? "" : (s))
+		corba_verb->name = CORBA_string_dup (CORBIFY_STRING (verb->name));
+		corba_verb->label = CORBA_string_dup (CORBIFY_STRING (verb->label));
+		corba_verb->hint = CORBA_string_dup (CORBIFY_STRING (verb->hint));
 	}
 
-	for (i = 0, l = embeddable->verbs; l; l = l->next, i++)
-		list->_buffer [i] = CORBA_string_dup (l->data);
-	
-	return list;
+	return verb_list;
 }
 
 static void
@@ -171,7 +176,7 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 	if (view == NULL)
 		return CORBA_OBJECT_NIL;
 
-	view->view_frame = view_frame;
+	gnome_view_set_view_frame (view, view_frame);
 
 	CORBA_exception_init (&evx);
 	ret = CORBA_Object_duplicate (gnome_object_corba_objref (GNOME_OBJECT (view)), &evx);
@@ -392,41 +397,51 @@ gnome_embeddable_set_view_factory (GnomeEmbeddable *embeddable,
 /**
  * gnome_embeddable_add_verb:
  * @embeddable: The embeddable object to operate on.
- * @verb_name: A verb string
+ * @verb_name: The key which is used to uniquely identify the verb.
+ * @verb_label: A localizable string which identifies the verb.
+ * @verb_hint: A localizable string which gives a verbose description
+ * of the verb's function.
  *
  * This routine adds @verb_name to the list of verbs supported
- * by this component.
+ * by this @embeddable.
  */
 void
-gnome_embeddable_add_verb (GnomeEmbeddable *embeddable, const char *verb_name)
+gnome_embeddable_add_verb (GnomeEmbeddable *embeddable,
+			   const char *verb_name, const char *verb_label, const char *verb_hint)
 {
+	GnomeVerb *verb;
+
 	g_return_if_fail (embeddable != NULL);
 	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (verb_name != NULL);
 
-	embeddable->verbs = g_list_prepend (embeddable->verbs, g_strdup (verb_name));
+	verb = g_new0 (GnomeVerb, 1);
+	verb->name = g_strdup (verb_name);
+	verb->label = g_strdup (verb_label);
+	verb->hint = g_strdup (verb_hint);
+
+	embeddable->verbs = g_list_prepend (embeddable->verbs, verb);
 }
 
 /**
  * gnome_embeddable_add_verbs:
  * @embeddable: The embeddable object to operate on.
- * @verbs: An array of strings containing a verb list
+ * @verbs: An array of GnomeVerbs to be added.
  *
  * This routine adds the list of verbs in the NULL terminated array
  * in @verbs to the exported verbs for the component.
  */
 void
-gnome_embeddable_add_verbs (GnomeEmbeddable *embeddable, const char **verbs)
+gnome_embeddable_add_verbs (GnomeEmbeddable *embeddable, const GnomeVerb *verbs)
 {
 	int i;
-	
+
 	g_return_if_fail (embeddable != NULL);
 	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (verbs != NULL);
 
-	for (i = 0; verbs [i] != NULL; i++){
-		embeddable->verbs = g_list_prepend (embeddable->verbs, g_strdup (verbs [i]));
-	}
+	for (i = 0; verbs [i].name != NULL; i++)
+		gnome_embeddable_add_verb (embeddable, verbs[i].name, verbs[i].label, verbs[i].hint);
 }
 
 /**
@@ -446,13 +461,20 @@ gnome_embeddable_remove_verb (GnomeEmbeddable *embeddable, const char *verb_name
 	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (verb_name != NULL);
 
-	for (l = embeddable->verbs; l; l = l->data){
-		if (strcmp (verb_name, (char *) l->data))
-			continue;
+	for (l = embeddable->verbs; l != NULL; l = l->next) {
+		GnomeVerb *verb = (GnomeVerb *) l->data;
 
-		embeddable->verbs = g_list_remove (embeddable->verbs, l->data);
-		g_free (l->data);
-		return;
+		if (! strcmp (verb_name, verb->name)) {
+			embeddable->verbs = g_list_remove_link (embeddable->verbs, l);
+
+			g_free (verb->name);
+			g_free (verb->label);
+			g_free (verb->hint);
+			g_free (verb);
+
+			return;
+		}
 	}
-}
 
+	g_warning ("Verb [%s] not found!\n", verb_name);
+}

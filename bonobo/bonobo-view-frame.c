@@ -17,6 +17,7 @@
 
 enum {
 	VIEW_ACTIVATED,
+	USER_ACTIVATE,
 	LAST_SIGNAL
 };
 
@@ -113,6 +114,18 @@ gnome_view_frame_construct (GnomeViewFrame *view_frame,
 	return view_frame;
 }
 
+static gboolean
+wrapper_button_press_cb (GtkWidget *wrapper, GdkEventButton *event, gpointer data)
+{
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (data);
+
+	/* Check for double click. */
+	if (event->type == GDK_2BUTTON_PRESS)
+		gtk_signal_emit (GTK_OBJECT (view_frame), view_frame_signals [USER_ACTIVATE]);
+
+	return FALSE;
+} 
+
 /**
  * gnome_view_frame_new:
  * @client_site: the client site to which the newly-created ViewFrame will belong.
@@ -137,6 +150,14 @@ gnome_view_frame_new (GnomeClientSite *client_site)
 	       gtk_object_unref (GTK_OBJECT (view_frame));
 	       return NULL;
 	}
+
+	/*
+	 * Connect a signal handler so that we can catch double clicks
+	 * on the wrapper.
+	 */
+	gtk_signal_connect (GTK_OBJECT (wrapper), "button_press_event",
+			    GTK_SIGNAL_FUNC (wrapper_button_press_cb),
+			    view_frame);
 
 	corba_view_frame = create_gnome_view_frame (GNOME_OBJECT (view_frame));
 	if (corba_view_frame == CORBA_OBJECT_NIL){
@@ -191,6 +212,15 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 				gtk_marshal_NONE__BOOL,
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_BOOL);
+
+	view_frame_signals [USER_ACTIVATE] =
+		gtk_signal_new ("user_activate",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, user_activate),
+				gtk_marshal_NONE__NONE,
+				GTK_TYPE_NONE, 0);
+
 	gtk_object_class_add_signals (
 		object_class,
 		view_frame_signals,
@@ -235,6 +265,163 @@ gnome_view_frame_get_type (void)
 	return type;
 }
 
+/**
+ * gnome_view_frame_bind_to_view:
+ * @view_frame: A GnomeViewFrame object.
+ * @view: The CORBA object for the GnomeView embedded
+ * in this ViewFrame.
+ *
+ * Associates @view with this @view_frame.
+ */
+void
+gnome_view_frame_bind_to_view (GnomeViewFrame *view_frame, GNOME_View view)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+
+	CORBA_exception_init (&ev);
+
+	/* FIXME: Is it right to duplicate this? */
+	view_frame->view = CORBA_Object_duplicate (view, &ev);
+
+	CORBA_exception_free (&ev);
+}
+
+/**
+ * gnome_view_frame_get_view:
+ * @view_frame: A GnomeViewFrame object.
+ * @view: The CORBA object for the GnomeView embedded
+ * in this ViewFrame.
+ *
+ * Associates @view with this @view_frame.
+ */
+GNOME_View
+gnome_view_frame_get_view (GnomeViewFrame *view_frame)
+{
+	g_return_val_if_fail (view_frame != NULL, CORBA_OBJECT_NIL);
+	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), CORBA_OBJECT_NIL);
+
+	return view_frame->view;
+}
+
+/**
+ * gnome_view_frame_set_covered:
+ * @view_frame: A GnomeViewFrame object whose embedded View should be
+ * either covered or uncovered.
+ * @covered: %TRUE if the View should be covered.  %FALSE if it should
+ * be uncovered.
+ *
+ * This function either covers or uncovers the View embedded in a
+ * GnomeViewFrame.  If the View is covered, then the embedded widgets
+ * will receive no Gtk events, such as mouse movements, keypresses,
+ * and exposures.  When the View is uncovered, all events pass through
+ * to the GnomeView's widgets normally.
+ */
+void
+gnome_view_frame_set_covered (GnomeViewFrame *view_frame, gboolean covered)
+{
+	GtkWidget *wrapper;
+
+	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+
+	wrapper = gnome_view_frame_get_wrapper (view_frame);
+	gnome_wrapper_set_covered (GNOME_WRAPPER (wrapper), covered);
+}
+
+/**
+ * gnome_view_frame_view_activate:
+ * @view_frame: The GnomeViewFrame object whose view should be
+ * activated.
+ *
+ * Activates the GnomeView embedded in @view_frame by calling the
+ * activate() #GNOME_View interface method on it.
+ */
+void
+gnome_view_frame_view_activate (GnomeViewFrame *view_frame)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+
+	/*
+	 * Check that this ViewFrame actually has a View associated
+	 * with it.
+	 */
+	g_return_if_fail (view_frame->view != CORBA_OBJECT_NIL);
+
+	CORBA_exception_init (&ev);
+
+	GNOME_View_activate (view_frame->view, TRUE, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		/* FIXME: What do I do here? */
+	}
+
+	CORBA_exception_free (&ev);
+}
+
+
+/**
+ * gnome_view_frame_view_deactivate:
+ * @view_frame: The GnomeViewFrame object whose view should be
+ * deactivated.
+ *
+ * Deactivates the GnomeView embedded in @view_frame by calling a the
+ * activate() CORBA method on it with the parameter %FALSE.
+ */
+void
+gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+
+	/*
+	 * Check that this ViewFrame actually has a View associated
+	 * with it.
+	 */
+	g_return_if_fail (view_frame->view != CORBA_OBJECT_NIL);
+
+	CORBA_exception_init (&ev);
+
+	GNOME_View_activate (view_frame->view, FALSE, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		/* FIXME: What do I do here? */
+	}
+
+	CORBA_exception_free (&ev);
+}
+
+/**
+ * gnome_view_frame_view_do_verb:
+ * @view_frame: A GnomeViewFrame object which has an associated GnomeView.
+ * @verb_name: The name of the verb to perform on @view_frame's GnomeView.
+ *
+ * Performs the verb specified by @verb_name on the remote GnomeView
+ * object associated with @view_frame.
+ */
+void
+gnome_view_frame_view_do_verb (GnomeViewFrame *view_frame,
+			       char *verb_name)
+{
+	CORBA_Environment ev;
+
+	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
+	g_return_if_fail (verb_name != NULL);
+	g_return_if_fail (view_frame->view != CORBA_OBJECT_NIL);
+
+	CORBA_exception_init (&ev);
+	GNOME_View_do_verb (view_frame->view, verb_name, &ev);
+	/* FIXME: Check exception */
+	CORBA_exception_free (&ev);
+}
 
 /**
  * gnome_view_frame_get_wrapper:
