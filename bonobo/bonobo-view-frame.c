@@ -23,6 +23,7 @@ enum {
 	REQUEST_RESIZE,
 	USER_ACTIVATE,
 	USER_CONTEXT,
+	ACTIVATE_URI,
 	LAST_SIGNAL
 };
 
@@ -95,6 +96,19 @@ impl_GNOME_ViewFrame_request_resize (PortableServer_Servant servant,
 			 (gint) new_width,
 			 (gint) new_height);
 
+}
+
+static void
+impl_GNOME_ViewFrame_activate_uri (PortableServer_Servant servant,
+				   const CORBA_char *uri,
+				   CORBA_boolean relative,
+				   CORBA_Environment *ev)
+{
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (GTK_OBJECT (view_frame),
+			 view_frame_signals [ACTIVATE_URI],
+			 (const char *) uri, (gboolean) relative);
 }
 
 static CORBA_Object
@@ -234,6 +248,7 @@ init_view_frame_corba_class (void)
 	gnome_view_frame_epv.view_activated = impl_GNOME_ViewFrame_view_activated;
 	gnome_view_frame_epv.deactivate_and_undo = impl_GNOME_ViewFrame_view_deactivate_and_undo;
 	gnome_view_frame_epv.request_resize = impl_GNOME_ViewFrame_request_resize;
+	gnome_view_frame_epv.activate_uri = impl_GNOME_ViewFrame_activate_uri;
 	
 	/* Setup the vector of epvs */
 	gnome_view_frame_vepv.GNOME_Unknown_epv = &gnome_object_epv;
@@ -244,6 +259,20 @@ static void
 gnome_view_frame_activated (GnomeViewFrame *view_frame, gboolean state)
 {
 	
+}
+
+typedef void (*GnomeSignal_NONE__STRING_BOOL) (GtkObject *, const char *, gboolean, gpointer);
+
+static void
+gnome_marshal_NONE__STRING_BOOL (GtkObject     *object,
+				 GtkSignalFunc  func,
+				 gpointer       func_data,
+				 GtkArg        *args)
+{
+	GnomeSignal_NONE__STRING_BOOL rfunc;
+
+	rfunc = (GnomeSignal_NONE__STRING_BOOL) func;
+	(*rfunc)(object, GTK_VALUE_STRING (args [0]), GTK_VALUE_BOOL (args [1]), func_data);
 }
 
 static void
@@ -295,6 +324,15 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 				GTK_TYPE_NONE, 2,
 				GTK_TYPE_INT, GTK_TYPE_INT);
 
+	view_frame_signals [ACTIVATE_URI] =
+		gtk_signal_new ("activate_uri",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, activate_uri),
+				gnome_marshal_NONE__STRING_BOOL,
+				GTK_TYPE_NONE, 2,
+				GTK_TYPE_STRING, GTK_TYPE_BOOL);
+	
 	gtk_object_class_add_signals (
 		object_class,
 		view_frame_signals,

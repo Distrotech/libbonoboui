@@ -46,6 +46,7 @@ typedef struct {
 	void (*undo_last_operation) (GnomeViewFrame *view_frame);
 	void (*user_activate)       (GnomeViewFrame *view_frame);
 	void (*user_context)        (GnomeViewFrame *view_frame);
+	void (*activate_uri)        (GnomeViewFrame *view_frame, const char *uri, gboolean relative);
 	void (*request_resize)      (GnomeViewFrame *view_frame, gint requested_width, gint requested_height);
 } GnomeViewFrameClass;
 

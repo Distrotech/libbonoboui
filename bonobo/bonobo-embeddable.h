@@ -58,6 +58,11 @@ struct _GnomeEmbeddable {
 	 */
 	GList *verbs;
 
+	/*
+	 * The URI this component represents
+	 */
+	char *uri;
+	
 	GnomeEmbeddablePrivate *priv;
 };
 
@@ -67,7 +72,8 @@ typedef struct {
 	/*
 	 * Signals
 	 */
-	void (*host_name_changed)  (GnomeEmbeddable *comp);
+	void (*host_name_changed)  (GnomeEmbeddable *comp, const char *hostname);
+	void (*uri_changed)        (GnomeEmbeddable *comp, const char *uri);
 } GnomeEmbeddableClass;
 
 struct _GnomeVerb {
@@ -118,6 +124,10 @@ void             gnome_embeddable_remove_verb      (GnomeEmbeddable *embeddable,
 void             gnome_embeddable_set_view_factory (GnomeEmbeddable *embeddable,
 						    GnomeViewFactory factory,
 						    void *data);
+
+const char      *gnome_embeddable_get_uri          (GnomeEmbeddable *embeddable);
+void             gnome_embeddable_set_uri          (GnomeEmbeddable *embeddable,
+						    const char *uri);
 
 extern POA_GNOME_Embeddable__epv gnome_embeddable_epv;
 

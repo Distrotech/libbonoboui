@@ -27,6 +27,7 @@ static GnomeObjectClass *gnome_embeddable_parent_class;
 
 enum {
 	HOST_NAME_CHANGED,
+	URI_CHANGED,
 	LAST_SIGNAL
 };
 
@@ -210,17 +211,18 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 	return ret;
 }
 
+static void
+impl_GNOME_Embeddable_set_uri (PortableServer_Servant servant,
+			       const CORBA_char *uri,
+			       CORBA_Environment *ev)
+{
+	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
+
+	gnome_embeddable_set_uri (embeddable, uri);
+}
+
 POA_GNOME_Embeddable__epv gnome_embeddable_epv = {
 	NULL,
-	&impl_GNOME_Embeddable_set_client_site,
-	&impl_GNOME_Embeddable_get_client_site,
-	&impl_GNOME_Embeddable_set_host_name,
-	&impl_GNOME_Embeddable_close,
-	&impl_GNOME_Embeddable_get_verb_list,
-	&impl_GNOME_Embeddable_advise,
-	&impl_GNOME_Embeddable_unadvise,
-	&impl_GNOME_Embeddable_get_misc_status,
-	&impl_GNOME_Embeddable_new_view
 };
 
 static POA_GNOME_Embeddable__vepv gnome_embeddable_vepv = {
@@ -228,6 +230,22 @@ static POA_GNOME_Embeddable__vepv gnome_embeddable_vepv = {
 	&gnome_object_epv,
 	&gnome_embeddable_epv
 };
+
+static void
+gnome_embeddable_corba_class_init ()
+{
+	/* the epv */
+	gnome_embeddable_epv.set_client_site = &impl_GNOME_Embeddable_set_client_site;
+	gnome_embeddable_epv.get_client_site = &impl_GNOME_Embeddable_get_client_site;
+	gnome_embeddable_epv.set_host_name   = &impl_GNOME_Embeddable_set_host_name;
+	gnome_embeddable_epv.close           = &impl_GNOME_Embeddable_close;
+	gnome_embeddable_epv.get_verb_list   = &impl_GNOME_Embeddable_get_verb_list;
+	gnome_embeddable_epv.advise          = &impl_GNOME_Embeddable_advise;
+	gnome_embeddable_epv.unadvise        = &impl_GNOME_Embeddable_unadvise;
+	gnome_embeddable_epv.get_misc_status = &impl_GNOME_Embeddable_get_misc_status;
+	gnome_embeddable_epv.new_view        = &impl_GNOME_Embeddable_new_view;
+	gnome_embeddable_epv.set_uri         = &impl_GNOME_Embeddable_set_uri;
+}
 
 /**
  * gnome_embeddable_corba_object_create:
@@ -358,6 +376,9 @@ gnome_embeddable_destroy (GtkObject *object)
 	}
 	g_list_free (embeddable->verbs);
 
+	if (embeddable->uri)
+		g_free (embeddable->uri);
+	
 	/*
 	 * Release any references we might keep
 	 */
@@ -385,13 +406,22 @@ gnome_embeddable_class_init (GnomeEmbeddableClass *class)
                                 GTK_RUN_LAST,
                                 object_class->type,
                                 GTK_SIGNAL_OFFSET(GnomeEmbeddableClass,host_name_changed), 
-                                gtk_marshal_NONE__NONE,
-                                GTK_TYPE_NONE, 0);
-	
+                                gtk_marshal_NONE__STRING,
+                                GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
+	embeddable_signals [URI_CHANGED] =
+                gtk_signal_new ("uri_changed",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET(GnomeEmbeddableClass,uri_changed), 
+                                gtk_marshal_NONE__STRING,
+                                GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
+
 	gtk_object_class_add_signals (object_class, embeddable_signals,
 				      LAST_SIGNAL);
 
 	object_class->destroy = gnome_embeddable_destroy;
+
+	gnome_embeddable_corba_class_init ();
 }
 
 static void
@@ -534,3 +564,45 @@ gnome_embeddable_remove_verb (GnomeEmbeddable *embeddable, const char *verb_name
 
 	g_warning ("Verb [%s] not found!\n", verb_name);
 }
+
+/**
+ * gnome_embeddable_get_uri:
+ * @embeddable: The embeddable object to operate on.
+ *
+ * Returns the URI that this object represents
+ */
+const char *
+gnome_embeddable_get_uri (GnomeEmbeddable *embeddable)
+{
+	g_return_if_fail (embeddable != NULL);
+	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+
+	return embeddable->uri;
+}
+
+/**
+ * gnome_embeddable_set_uri:
+ * @embeddable: The embeddable object to operate on.
+ * @uri: the URI this embeddable represents.
+ *
+ * Sets the URI that this object represents.
+ */
+void
+gnome_embeddable_set_uri (GnomeEmbeddable *embeddable, const char *uri)
+{
+	g_return_if_fail (embeddable != NULL);
+	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+
+	if (embeddable->uri){
+		g_free (embeddable->uri);
+		embeddable->uri = NULL;
+	}
+	
+	if (uri)
+		embeddable->uri = g_strdup (uri);
+
+	gtk_signal_emit (GTK_OBJECT (embeddable),
+			 embeddable_signals [URI_CHANGED],
+			 embeddable->uri);
+}
+
