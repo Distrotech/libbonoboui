@@ -217,7 +217,8 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 	 * remote Control.
 	 */
 	CORBA_exception_init (&ev);
-	id = bonobo_control_windowid_from_x11 (GDK_WINDOW_XWINDOW (socket->window));
+	id = bonobo_control_windowid_from_x11 (
+		GDK_WINDOW_XWINDOW (socket->window));
 
 	Bonobo_Control_setWindowId (control, id, &ev);
 	g_free (id);
@@ -227,7 +228,7 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 }
 
 static void
-bonobo_control_frame_create_socket (BonoboControlFrame  *control_frame)
+bonobo_control_frame_create_socket (BonoboControlFrame *control_frame)
 {
 	/*
 	 * Now create the GtkSocket which will be used to embed
@@ -368,15 +369,16 @@ bonobo_control_frame_destroy (GtkObject *object)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (object);
 
+	gtk_widget_destroy (control_frame->priv->container);
+
 	if (control_frame->priv->control != CORBA_OBJECT_NIL)
 		bonobo_object_release_unref (control_frame->priv->control, NULL);
 	control_frame->priv->control = CORBA_OBJECT_NIL;
 
-	gtk_widget_unref (control_frame->priv->container);
-
 	if (control_frame->priv->socket) {
-		gtk_signal_disconnect_by_data (GTK_OBJECT (control_frame->priv->socket),
-					       control_frame);
+		gtk_signal_disconnect_by_data (
+			GTK_OBJECT (control_frame->priv->socket),
+			control_frame);
 		gtk_widget_unref (control_frame->priv->socket);
 		control_frame->priv->socket = NULL;
 	}
@@ -386,6 +388,7 @@ bonobo_control_frame_destroy (GtkObject *object)
 	control_frame->priv->ui_container = CORBA_OBJECT_NIL;
 
 	g_free (control_frame->priv);
+	control_frame->priv = NULL;
 	
 	GTK_OBJECT_CLASS (bonobo_control_frame_parent_class)->destroy (object);
 }
@@ -811,13 +814,19 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 		bonobo_control_frame_create_socket (control_frame);
 
 	/*
+	 * Attach the control to the socket
+	 */
+	bonobo_socket_set_control (BONOBO_SOCKET (control_frame->priv->socket),
+				   control_frame->priv->control);
+
+	/*
 	 * If the socket is realized, then we transfer the
 	 * window ID to the remote control.
 	 */
 
 	if (GTK_WIDGET_REALIZED (control_frame->priv->socket))
-		bonobo_control_frame_set_remote_window (control_frame->priv->socket,
-							control_frame);
+		bonobo_control_frame_set_remote_window (
+			control_frame->priv->socket, control_frame);
 }
 
 /**

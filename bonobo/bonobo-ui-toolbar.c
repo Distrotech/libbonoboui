@@ -1026,12 +1026,14 @@ impl_get_arg (GtkObject *obj,
 		GTK_VALUE_BOOL (*arg) = priv->is_floating;
 		break;
 	case ARG_PREFERRED_WIDTH:
+		update_sizes (toolbar);
 		if (bonobo_ui_toolbar_get_orientation (toolbar) == GTK_ORIENTATION_HORIZONTAL)
 			GTK_VALUE_UINT (*arg) = priv->total_width;
 		else
 			GTK_VALUE_UINT (*arg) = priv->max_width;
 		break;
 	case ARG_PREFERRED_HEIGHT:
+		update_sizes (toolbar);
 		if (bonobo_ui_toolbar_get_orientation (toolbar) == GTK_ORIENTATION_HORIZONTAL)
 			GTK_VALUE_UINT (*arg) = priv->max_height;
 		else

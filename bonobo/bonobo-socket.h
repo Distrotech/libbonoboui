@@ -1,5 +1,6 @@
-/* GTK - The GIMP Toolkit
+/* 
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
+ * Copytight (C) 2000 Helix Code, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -27,6 +28,7 @@
 #define __BONOBO_SOCKET_H__
 
 #include <gtk/gtkcontainer.h>
+#include <bonobo/bonobo-control.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,20 +41,12 @@ extern "C" {
 
 typedef struct _BonoboSocket        BonoboSocket;
 typedef struct _BonoboSocketClass   BonoboSocketClass;
+typedef struct _BonoboSocketPrivate BonoboSocketPrivate;
 
 struct _BonoboSocket {
 	GtkContainer container;
-	
-	guint16 request_width;
-	guint16 request_height;
-	guint16 current_width;
-	guint16 current_height;
-	
-	GdkWindow *plug_window;
-	guint same_app : 1;
-	guint focus_in : 1;
-	guint have_size : 1;
-	guint need_map : 1;
+
+	BonoboSocketPrivate *priv;
 };
 
 struct _BonoboSocketClass {
@@ -60,10 +54,14 @@ struct _BonoboSocketClass {
 };
 
 
-GtkWidget*     bonobo_socket_new      (void);
-guint          bonobo_socket_get_type (void);
-void           bonobo_socket_steal    (BonoboSocket *socket,
-				       guint32 wid);
+GtkWidget*     bonobo_socket_new         (void);
+guint          bonobo_socket_get_type    (void);
+void           bonobo_socket_set_control (BonoboSocket  *socket,
+					  Bonobo_Control control);
+
+/* Unused */
+void           bonobo_socket_steal       (BonoboSocket    *socket,
+					  guint32          wid);
 
 #ifdef __cplusplus
 }
