@@ -286,38 +286,6 @@ cmd_get_menu_pixbuf (GtkWidget    *widget,
 	return NULL;
 }
 
-/*
- * The second parameter uses underscores to escape keyboard
- * shortcuts. We ignore the first underscore, but if there
- * are two in a row, they are treated as if there was one.
- */
-static gboolean
-str_uscore_equal (const char *plain, const char *scored)
-{
-	while (*plain || *scored) {
-		if (*scored == '_') {
-			scored++;
-
-			/*
-			 * Must check for badly formed string
-			 * (ending with single underscore)
-			 * or risk reading off end.
-			 */
-			if (!*scored)
-				return FALSE;
-		}
-
-		if (*scored != *plain)
-			return FALSE;
-		else {
-			scored++;
-			plain++;
-		}
-	}
-
-	return TRUE;
-}
-
 static gboolean
 label_same (GtkBin *menu_widget, const char *txt)
 {
@@ -325,9 +293,9 @@ label_same (GtkBin *menu_widget, const char *txt)
 
 	return menu_widget &&
 		(label = menu_widget->child) &&
-		GTK_IS_ACCEL_LABEL (label) &&
+		GTK_IS_LABEL (label) &&
 		((GtkLabel *)label)->label &&
-		str_uscore_equal (((GtkLabel *)label)->label, txt);
+		!strcmp (((GtkLabel *)label)->label, txt);
 }
 
 static void
