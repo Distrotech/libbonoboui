@@ -1352,10 +1352,16 @@ update_menus (BonoboWinPrivate *priv, xmlNode *node)
 	xmlNode  *l;
 	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
+	if (info->widget)
+		gtk_widget_hide (GTK_WIDGET (info->widget));
+
 	container_destroy_siblings (priv->tree, info->widget, node->childs);
 
 	for (l = node->childs; l; l = l->next)
 		build_menu_widget (priv, l);
+
+	if (info->widget)
+		gtk_widget_show (GTK_WIDGET (info->widget));
 }
 
 static void build_toolbar_widget (BonoboWinPrivate *priv, xmlNode *node);
@@ -1542,22 +1548,12 @@ update_dockitem (BonoboWinPrivate *priv, xmlNode *node)
 		gnome_dock_add_item (priv->dock, item,
 				     GNOME_DOCK_TOP,
 				     1, 0, 0, TRUE);
-		gtk_widget_show (GTK_WIDGET (item));
 	}
+
+	/* Re-generation is far faster if unmapped */
+	gtk_widget_hide (GTK_WIDGET (item));
 
 	container_destroy_siblings (priv->tree, GTK_WIDGET (item), node->childs);
-
-/*
-	if ((txt = xmlGetProp (node, "hidden"))) {
-		if (atoi (txt)) {
-			gtk_widget_hide (GTK_WIDGET (item));
-			return;
-		} else
-			gtk_widget_show (GTK_WIDGET (item));
-	} else {
-		gtk_widget_show (GTK_WIDGET (item));
-	}
-*/
 
 	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
 
@@ -1613,6 +1609,16 @@ update_dockitem (BonoboWinPrivate *priv, xmlNode *node)
 	}
 	
 	bonobo_ui_toolbar_set_tooltips (toolbar, tooltips);
+
+	if ((txt = xmlGetProp (node, "hidden"))) {
+		if (atoi (txt)) {
+			gtk_widget_hide (GTK_WIDGET (item));
+			return;
+		} else
+			gtk_widget_show (GTK_WIDGET (item));
+	} else {
+		gtk_widget_show (GTK_WIDGET (item));
+	}
 
 	xmlFree (dockname);
 }
@@ -1691,6 +1697,8 @@ static void
 update_status (BonoboWinPrivate *priv, xmlNode *node)
 {
 	xmlNode *l;
+
+	gtk_widget_hide (GTK_WIDGET (priv->status));
 
 	container_destroy_siblings (priv->tree, GTK_WIDGET (priv->status), node->childs);
 
