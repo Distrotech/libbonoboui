@@ -588,8 +588,9 @@ custom_widget_unparent (NodeInfo *info)
 }
 
 static void
-replace_override_fn (xmlNode *new,
-		     xmlNode *old,
+replace_override_fn (GtkObject        *object,
+		     xmlNode          *new,
+		     xmlNode          *old,
 		     BonoboWinPrivate *priv)
 {
 	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, new);
@@ -598,10 +599,18 @@ replace_override_fn (xmlNode *new,
 	g_return_if_fail (info != NULL);
 	g_return_if_fail (old_info != NULL);
 
+/*	g_warning ("Replace override on '%s' '%s' widget '%p'",
+		   old->name, xmlGetProp (old, "name"), old_info->widget);
+	info_dump_fn (old_info);
+	info_dump_fn (info);*/
+
 	/* Copy useful stuff across */
 	info->type = old_info->type;
 	info->widget = old_info->widget;
+
+	/* Steal object reference */
 	info->object = old_info->object;
+	old_info->object = CORBA_OBJECT_NIL;
 }
 
 static void
@@ -828,7 +837,7 @@ exec_verb_cb (GtkWidget *item, xmlNode *node)
 
 	real_exec_verb (priv, data->id, verb);
 
-	xmlFree (verb);
+	g_free (verb);
 
 	return FALSE;
 }

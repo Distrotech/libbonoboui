@@ -480,9 +480,7 @@ compat_menu_parse_uiinfo_one_with_data (BonoboUIHandlerPrivate *priv,
 	if (uii->accelerator_key) {
 		char *name = bonobo_ui_util_accel_name (uii->accelerator_key,
 							uii->ac_mods);
-/*		fprintf (stderr, "Accel name is '%s'\n", name);*/
 		xmlSetProp (node, "accel", name);
-/*		fprintf (stderr, "Accel name is now '%s'\n", xmlGetProp (node, "accel"));*/
 		g_free (name);
 	}
 	
@@ -821,9 +819,7 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 	if (accelerator_key) {
 		char *name = bonobo_ui_util_accel_name (accelerator_key,
 							ac_mods);
-		fprintf (stderr, "Accel name is '%s'\n", name);
 		xmlSetProp (node, "accel", name);
-		fprintf (stderr, "Accel name is now '%s'\n", xmlGetProp (node, "accel"));
 		g_free (name);
 	}
 

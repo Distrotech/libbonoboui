@@ -334,7 +334,11 @@ override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 
 	g_assert (old->childs == NULL);
 
-	if (!new->properties) /* A path simplifying entry: FIXME ignore just a name too */
+ /*
+  *   A path simplifying entry: FIXME ignore just a name too
+  * and hook into 'Same' code.
+  */
+	if (!new->properties)
 		new->properties = xmlCopyPropList (new, old->properties);
 
 	data->dirty = TRUE;
