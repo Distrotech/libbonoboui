@@ -48,9 +48,15 @@ void             gnome_client_site_set_moniker		(GnomeClientSite *client_site,
 gboolean         gnome_client_site_bind_embeddable	(GnomeClientSite *client_site,
 							 GnomeObjectClient *object);
 
-GnomeViewFrame  *gnome_client_site_embeddable_new_view	(GnomeClientSite *client_site);
-GList		*gnome_client_site_embeddable_get_verbs (GnomeClientSite *client_site);
+GnomeViewFrame  *gnome_client_site_new_view		(GnomeClientSite *client_site);
+GList		*gnome_client_site_get_verbs		(GnomeClientSite *client_site);
 void		 gnome_client_site_free_verbs		(GList *string_list);
+
+/*
+ * Compatibility macros for Miguel.
+ */
+#define gnome_client_site_embeddable_new_view gnome_client_site_new_view
+#define gnome_client_site_embeddable_get_verbs gnome_client_site_get_verbs
 
 extern POA_GNOME_ClientSite__epv gnome_client_site_epv;
 

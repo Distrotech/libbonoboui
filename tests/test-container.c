@@ -487,7 +487,10 @@ application_new (void)
 	 * Create the menus.
 	 */
 	app->uih = gnome_ui_handler_new ();
-	gnome_ui_handler_create_menubar (app->uih, GNOME_APP (app->app));
+
+	gnome_ui_handler_set_app (app->uih, GNOME_APP (app->app));
+	gnome_ui_handler_create_menubar (app->uih);
+
 	menu_list = gnome_ui_handler_menu_parse_uiinfo_list_with_data (container_main_menu, app);
 	gnome_ui_handler_menu_add_list (app->uih, "/", menu_list);
 	gnome_ui_handler_menu_free_list (menu_list);

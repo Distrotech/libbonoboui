@@ -10,16 +10,13 @@
 
 /*
  * Notes to self:
- *  - Pixmap marshaling.
+ *  - use gnome_preferences_[get/set]_[menus/toolbars] !
+ *  - radio items / radio groups.
+ *  - routines to override the toolbar characteristics
+ *  - popup menus
+ *  - implement set_pos.
  *  - docs.
- *  - don't remove "/"
- *  - insert toplevel checks
- *  - Implement set_pos.
- *  - tree/list/one:
- *		One is always just one.
- *		List is always a null-terminated list, which is parsed recursively.  It's a list of structures, NOT
- *		 a list of pointers to structures.
- *		Tree is a single item which is parsed recursively.
+ *  - Make toplevel checks raise an exception of some sort.
  */
 
 #include <config.h>
@@ -41,6 +38,7 @@
 #include <libgnomeui/gnome-preferences.h>
 #include <libgnomeui/gnome-stock.h>
 #include <libgnomeui/gnome-pixmap.h>
+#include <libgnomeui/gnome-uidefs.h>
 
 /*
  * Global variables.
@@ -55,6 +53,15 @@ static GnomeObjectClass *gnome_ui_handler_parent_class;
  */
 static POA_GNOME_UIHandler__epv gnome_ui_handler_epv;
 static POA_GNOME_UIHandler__vepv gnome_ui_handler_vepv;
+
+/*
+ * Forward declarations.
+ */
+
+typedef struct _ToolbarItemInternal ToolbarItemInternal;
+typedef struct _ToolbarToolbarInternal ToolbarToolbarInternal;
+typedef struct _ToolbarItemLocalInternal ToolbarItemLocalInternal;
+typedef struct _ToolbarToolbarLocalInternal ToolbarToolbarLocalInternal;
 
 /*
  * Signals.
@@ -165,11 +172,13 @@ static void			  pixmap_free_data			(GnomeUIHandlerPixmapType pixmap_type,
 									 gpointer pixmap_info);
 static gpointer			  pixmap_copy_data			(GnomeUIHandlerPixmapType pixmap_type,
 									 gpointer pixmap_info);
+static gpointer			  pixmap_xpm_copy_data			(gpointer data);
 static GNOME_UIHandler_iobuf	 *pixmap_data_to_corba			(GnomeUIHandlerPixmapType type, gpointer data);
 static gpointer	                  pixmap_corba_to_data			(GNOME_UIHandler_PixmapType corba_pixmap_type,
 									 GNOME_UIHandler_iobuf *corba_pixmap_data);
 static GNOME_UIHandler_PixmapType pixmap_corba_to_type			(GNOME_UIHandler_PixmapType type);
 static GNOME_UIHandler_PixmapType pixmap_type_to_corba			(GnomeUIHandlerPixmapType type);
+static gint			  pixmap_xpm_get_length			(gpointer data, int *num_lines);
 static GnomeUIHandlerPixmapType	  uiinfo_pixmap_type_to_uih		(GnomeUIPixmapType ui_type);
 static void			  uih_toplevel_add_containee		(GnomeUIHandler *uih, GNOME_UIHandler containee);
 
@@ -193,120 +202,133 @@ static void			  menu_local_do_path			(char *parent_path, GnomeUIHandlerMenuItem 
 static MenuItemLocalInternal	 *menu_local_get_item			(GnomeUIHandler *uih, char *path);
 static void			  menu_local_create_item		(GnomeUIHandler *uih, char *parent_path,
 									 GnomeUIHandlerMenuItem *item);
-static void			 menu_local_remove_item			(GnomeUIHandler *uih, char *path);
-static void			 menu_local_remove_item_recursive	(GnomeUIHandler *uih, char *path);
-static MenuItemInternal		*menu_toplevel_get_item			(GnomeUIHandler *uih, char *path);
-static MenuItemInternal		*menu_toplevel_get_item_for_containee	(GnomeUIHandler *uih, char *path,
+static void			  menu_local_add_parent_entry		(GnomeUIHandler *uih, char *path);
+static void			  menu_local_remove_parent_entry	(GnomeUIHandler *uih, char *path, gboolean warn);
+static void			  menu_local_remove_item		(GnomeUIHandler *uih, char *path);
+static void			  menu_local_remove_item_recursive	(GnomeUIHandler *uih, char *path);
+static MenuItemInternal		 *menu_toplevel_get_item		(GnomeUIHandler *uih, char *path);
+static MenuItemInternal		 *menu_toplevel_get_item_for_containee	(GnomeUIHandler *uih, char *path,
 									 GNOME_UIHandler containee_uih);
-static gboolean			 menu_toplevel_item_is_head		(GnomeUIHandler *uih, MenuItemInternal *internal);
-static gboolean			 menu_toplevel_check_toplevel		(GnomeUIHandler *uih);
-static GtkWidget		*menu_toplevel_get_shell		(GnomeUIHandler *uih, char *path);
-static GtkWidget		*menu_toplevel_create_label		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
+static gboolean			  menu_toplevel_item_is_head		(GnomeUIHandler *uih, MenuItemInternal *internal);
+static gboolean			  menu_toplevel_check_toplevel		(GnomeUIHandler *uih);
+static GtkWidget		 *menu_toplevel_get_shell		(GnomeUIHandler *uih, char *path);
+static GtkWidget		 *menu_toplevel_create_label		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
 									 GtkWidget *parent_menu_shell_widget, GtkWidget *menu_widget);
-static GtkWidget		*menu_toplevel_create_item_widget	(GnomeUIHandler *uih, char *parent_path,
+static GtkWidget		 *menu_toplevel_create_item_widget	(GnomeUIHandler *uih, char *parent_path,
 									 GnomeUIHandlerMenuItem *item);
-static GtkWidget		*menu_toplevel_create_item_widget	(GnomeUIHandler *uih, char *parent_path,
+static GtkWidget		 *menu_toplevel_create_item_widget	(GnomeUIHandler *uih, char *parent_path,
 									 GnomeUIHandlerMenuItem *item);
-static void			 menu_toplevel_install_global_accelerators (GnomeUIHandler *uih,
+static void			  menu_toplevel_install_global_accelerators (GnomeUIHandler *uih,
 									    GnomeUIHandlerMenuItem *item,
 									    GtkWidget *menu_widget);
-static GtkWidget		*menu_toplevel_create_widgets		(GnomeUIHandler *uih, char *parent_path,
+static GtkWidget		 *menu_toplevel_create_widgets		(GnomeUIHandler *uih, char *parent_path,
 									 MenuItemInternal *internal);
-static void			 menu_toplevel_connect_signal		(GtkWidget *menu_widget, MenuItemInternal *internal);
-static void			 menu_toplevel_create_widgets_recursive (GnomeUIHandler *uih, MenuItemInternal *internal);
-static void			 menu_toplevel_put_hint_in_appbar	(GtkWidget *menu_item, gpointer data);
-static void			 menu_toplevel_remove_hint_from_appbar	(GtkWidget *menu_item, gpointer data);
-static void			 menu_toplevel_put_hint_in_statusbar	(GtkWidget *menu_item, gpointer data);
-static void			 menu_toplevel_remove_hint_from_statusbar (GtkWidget *menu_item, gpointer data);
-static void			 menu_toplevel_create_hint		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
+static void			  menu_toplevel_connect_signal		(GtkWidget *menu_widget, MenuItemInternal *internal);
+static void			  menu_toplevel_create_widgets_recursive (GnomeUIHandler *uih, MenuItemInternal *internal);
+static void			  menu_toplevel_put_hint_in_appbar	(GtkWidget *menu_item, gpointer data);
+static void			  menu_toplevel_remove_hint_from_appbar	(GtkWidget *menu_item, gpointer data);
+static void			  menu_toplevel_put_hint_in_statusbar	(GtkWidget *menu_item, gpointer data);
+static void			  menu_toplevel_remove_hint_from_statusbar (GtkWidget *menu_item, gpointer data);
+static void			  menu_toplevel_create_hint		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item,
 									 GtkWidget *menu_item);
-static gint			 menu_toplevel_item_activated		(GtkWidget *menu_item, gpointer data);
-static MenuItemInternal		*menu_toplevel_store_data		(GnomeUIHandler *uih, GNOME_UIHandler uih_corba,
+static gint			  menu_toplevel_item_activated		(GtkWidget *menu_item, gpointer data);
+static MenuItemInternal		 *menu_toplevel_store_data		(GnomeUIHandler *uih, GNOME_UIHandler uih_corba,
 									 GnomeUIHandlerMenuItem *item);
-static void			 menu_toplevel_override_notify_recursive(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_override_notify		(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_check_override		(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_reinstate_notify		(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_reinstate_notify_recursive(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_create_item		(GnomeUIHandler *uih, char *parent_path,
+static void			  menu_toplevel_override_notify_recursive(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_override_notify		(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_check_override		(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_reinstate_notify	(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_reinstate_notify_recursive(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_create_item		(GnomeUIHandler *uih, char *parent_path,
 									 GnomeUIHandlerMenuItem *item,
 									 GNOME_UIHandler uih_corba);
-static void			 menu_remote_create_item		(GnomeUIHandler *uih, char *parent_path,
+static void			  menu_remote_create_item		(GnomeUIHandler *uih, char *parent_path,
 									 GnomeUIHandlerMenuItem *item);
-static void			 menu_toplevel_remove_widgets		(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_remove_widgets_recursive (GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_add_parent_entry		(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item);
-static void			 menu_toplevel_remove_parent_entry	(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_remove_data		(GnomeUIHandler *uih, MenuItemInternal *internal);
-static void			 menu_toplevel_remove_notify		(GnomeUIHandler *uih, MenuItemInternal *internal);
-static void			 menu_toplevel_remove_item_internal	(GnomeUIHandler *uih, MenuItemInternal *internal,
+static void			  menu_toplevel_remove_widgets		(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_remove_widgets_recursive (GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_add_parent_entry	(GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item);
+static void			  menu_toplevel_remove_parent_entry	(GnomeUIHandler *uih, char *path, gboolean warn);
+static void			  menu_toplevel_remove_data		(GnomeUIHandler *uih, MenuItemInternal *internal);
+static void			  menu_toplevel_remove_notify		(GnomeUIHandler *uih, MenuItemInternal *internal);
+static void			  menu_toplevel_remove_item_internal	(GnomeUIHandler *uih, MenuItemInternal *internal,
 									 gboolean replace);
-static void			 menu_toplevel_remove_item		(GnomeUIHandler *uih, char *path);
-static void			 menu_remote_remove_item		(GnomeUIHandler *uih, char *path);
-static GnomeUIHandlerMenuItem	*menu_toplevel_fetch			(GnomeUIHandler *uih, char *path);
-static GnomeUIHandlerMenuItem	*menu_remote_fetch			(GnomeUIHandler *uih, char *path);
-static GList			*menu_toplevel_get_children		(GnomeUIHandler *uih, char *parent_path);
-static GList			*menu_remote_get_children		(GnomeUIHandler *uih, char *parent_path);
-static void			 menu_parse_uiinfo_one			(GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii);
-static void			 menu_parse_uiinfo_tree			(GnomeUIHandlerMenuItem *tree, GnomeUIInfo *uii);
-static void			 menu_parse_uiinfo_one_with_data	(GnomeUIHandlerMenuItem *item,
+static void			  menu_toplevel_remove_item		(GnomeUIHandler *uih, char *path);
+static void			  menu_remote_remove_item		(GnomeUIHandler *uih, char *path);
+static GnomeUIHandlerMenuItem	 *menu_toplevel_fetch			(GnomeUIHandler *uih, char *path);
+static GnomeUIHandlerMenuItem	 *menu_remote_fetch			(GnomeUIHandler *uih, char *path);
+static GList			 *menu_toplevel_get_children		(GnomeUIHandler *uih, char *parent_path);
+static GList			 *menu_remote_get_children		(GnomeUIHandler *uih, char *parent_path);
+static void			  menu_parse_uiinfo_one			(GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii);
+static void			  menu_parse_uiinfo_tree		(GnomeUIHandlerMenuItem *tree, GnomeUIInfo *uii);
+static void			  menu_parse_uiinfo_one_with_data	(GnomeUIHandlerMenuItem *item,
 									 GnomeUIInfo *uii, void *data);
-static void			 menu_parse_uiinfo_tree_with_data	(GnomeUIHandlerMenuItem *tree,
+static void			  menu_parse_uiinfo_tree_with_data	(GnomeUIHandlerMenuItem *tree,
 									 GnomeUIInfo *uii, void *data);
-static void			 menu_parse_uiinfo_tree_with_data	(GnomeUIHandlerMenuItem *tree,
+static void			  menu_parse_uiinfo_tree_with_data	(GnomeUIHandlerMenuItem *tree,
 									 GnomeUIInfo *uii, void *data);
-static gint			 menu_remote_get_pos			(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_set_sensitivity		(GnomeUIHandler *uih, char *path, gboolean sensitive);
-static void			 menu_remote_set_sensitivity		(GnomeUIHandler *uih, char *path, gboolean sensitive);
-static gboolean			 menu_remote_get_sensitivity		(GnomeUIHandler *uih, char *path);
-static void			 menu_remote_set_label			(GnomeUIHandler *uih, char *path, gchar *label_text);
-static gchar			*menu_toplevel_get_label		(GnomeUIHandler *uih, char *path);
-static gchar			*menu_remote_get_label			(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_set_hint			(GnomeUIHandler *uih, char *path, char *hint);
-static void			 menu_remote_set_hint			(GnomeUIHandler *uih, char *path, char *hint);
-static gchar			*menu_toplevel_get_hint			(GnomeUIHandler *uih, char *path);
-static gchar			*menu_remote_get_hint			(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_set_pixmap		(GnomeUIHandler *uih, char *path,
-									 GnomeUIHandlerPixmapType type, gpointer data);
-static void			 menu_remote_set_pixmap			(GnomeUIHandler *uih, char *path,
-									 GnomeUIHandlerPixmapType type, gpointer data);
-static void			 menu_toplevel_get_pixmap		(GnomeUIHandler *uih, char *path,
-									 GnomeUIHandlerPixmapType *type, gpointer *data);
-static void			 menu_remote_get_pixmap			(GnomeUIHandler *uih, char *path,
-									 GnomeUIHandlerPixmapType *type, gpointer *data);
-static void			 menu_toplevel_set_accel		(GnomeUIHandler *uih, char *path,
-									 guint accelerator_key, GdkModifierType ac_mods);
-static void			 menu_remote_set_accel			(GnomeUIHandler *uih, char *path,
-									 guint accelerator_key, GdkModifierType ac_mods);
-static void			 menu_toplevel_get_accel		(GnomeUIHandler *uih, char *path,
-									 guint *accelerator_key, GdkModifierType *ac_mods);
-static void			 menu_remote_get_accel			(GnomeUIHandler *uih, char *path,
-									 guint *accelerator_key, GdkModifierType *ac_mods);
-static void			 menu_local_set_callback		(GnomeUIHandler *uih, char *path,
-									 GnomeUIHandlerCallbackFunc callback,
-									 gpointer callback_data);
-static void			 menu_local_get_callback		(GnomeUIHandler *uih, char *path,
+static gint			  menu_remote_get_pos			(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+									 gboolean sensitivity);
+static void			  menu_toplevel_set_sensitivity		(GnomeUIHandler *uih, char *path, gboolean sensitive);
+
+static void			  menu_remote_set_sensitivity		(GnomeUIHandler *uih, char *path, gboolean sensitive);
+static gboolean			  menu_remote_get_sensitivity		(GnomeUIHandler *uih, char *path);
+static void			  menu_remote_set_label			(GnomeUIHandler *uih, char *path, gchar *label_text);
+static gchar			 *menu_toplevel_get_label		(GnomeUIHandler *uih, char *path);
+static gchar			 *menu_remote_get_label			(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_set_hint		(GnomeUIHandler *uih, char *path, char *hint);
+static void			  menu_remote_set_hint			(GnomeUIHandler *uih, char *path, char *hint);
+static gchar			 *menu_toplevel_get_hint		(GnomeUIHandler *uih, char *path);
+static gchar			 *menu_remote_get_hint			(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_set_pixmap		(GnomeUIHandler *uih, char *path,
+				 					 GnomeUIHandlerPixmapType type, gpointer data);
+static void			  menu_remote_set_pixmap		(GnomeUIHandler *uih, char *path,
+				 					 GnomeUIHandlerPixmapType type, gpointer data);
+static void			  menu_toplevel_get_pixmap		(GnomeUIHandler *uih, char *path,
+				 					 GnomeUIHandlerPixmapType *type, gpointer *data);
+static void			  menu_remote_get_pixmap		(GnomeUIHandler *uih, char *path,
+				 					 GnomeUIHandlerPixmapType *type, gpointer *data);
+static void			  menu_toplevel_set_accel		(GnomeUIHandler *uih, char *path,
+				 					 guint accelerator_key, GdkModifierType ac_mods);
+static void			  menu_remote_set_accel			(GnomeUIHandler *uih, char *path,
+				 					 guint accelerator_key, GdkModifierType ac_mods);
+static void			  menu_toplevel_get_accel		(GnomeUIHandler *uih, char *path,
+				 					 guint *accelerator_key, GdkModifierType *ac_mods);
+static void			  menu_remote_get_accel			(GnomeUIHandler *uih, char *path,
+				 					 guint *accelerator_key, GdkModifierType *ac_mods);
+static void			  menu_local_set_callback		(GnomeUIHandler *uih, char *path,
+				 					 GnomeUIHandlerCallbackFunc callback,
+				 					 gpointer callback_data);
+static void			  menu_local_get_callback		(GnomeUIHandler *uih, char *path,
 									 GnomeUIHandlerCallbackFunc *callback,
 									 gpointer *callback_data);
-static gboolean			 menu_toplevel_get_sensitivity		(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_set_toggle_state		(GnomeUIHandler *uih, char *path, gboolean state);
-static gboolean			 menu_toplevel_get_toggle_state		(GnomeUIHandler *uih, char *path);
-static void			 menu_toplevel_set_radio_state		(GnomeUIHandler *uih, char *path, gboolean state);
-static void			 menu_remote_set_radio_state		(GnomeUIHandler *uih, char *path, gboolean state);
+static gboolean			  menu_toplevel_get_sensitivity		(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_set_toggle_state_internal(GnomeUIHandler *uih, MenuItemInternal *internal,
+				 					 gboolean state);
+static void			  menu_toplevel_set_toggle_state	(GnomeUIHandler *uih, char *path, gboolean state);
+static gboolean			  menu_toplevel_get_toggle_state	(GnomeUIHandler *uih, char *path);
+static void			  menu_toplevel_set_radio_state_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+				 					 gboolean state);
+static void			  menu_toplevel_set_radio_state		(GnomeUIHandler *uih, char *path, gboolean state);
+static void			  menu_remote_set_radio_state		(GnomeUIHandler *uih, char *path, gboolean state); 
+
+static void			  toolbar_toplevel_item_create_widgets	(GnomeUIHandler *uih, GNOME_UIHandler uih_corba,
+									 ToolbarItemInternal *internal);
+static void			  toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, char *path);
 
 /*
  * Menu CORBA prototypes.
  */
-static void			 impl_register_containee		(PortableServer_Servant servant,
+static void			  impl_register_containee		(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
 									 CORBA_Environment *ev);
-static void			 impl_unregister_containee		(PortableServer_Servant servant,
+static void			  impl_unregister_containee		(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
 									 CORBA_Environment *ev);
-static GNOME_UIHandler		 impl_get_toplevel			(PortableServer_Servant servant,
+static GNOME_UIHandler		  impl_get_toplevel			(PortableServer_Servant servant,
 									 CORBA_Environment *ev);
 
-static void			 impl_menu_create			(PortableServer_Servant servant,
+static void			  impl_menu_create			(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
 									 CORBA_char *path, GNOME_UIHandler_MenuType menu_type,
 									 CORBA_char *label, CORBA_char *hint, CORBA_long pos,
@@ -315,10 +337,10 @@ static void			 impl_menu_create			(PortableServer_Servant servant,
 									 CORBA_unsigned_long accelerator_key,
 									 CORBA_long modifier,
 									 CORBA_Environment *ev);
-static void			 impl_menu_remove			(PortableServer_Servant servant,
+static void			  impl_menu_remove			(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
 									 CORBA_char *path, CORBA_Environment *ev);
-static CORBA_boolean		 impl_menu_fetch			(PortableServer_Servant servant, CORBA_char *path,
+static CORBA_boolean		  impl_menu_fetch			(PortableServer_Servant servant, CORBA_char *path,
 									 GNOME_UIHandler_MenuType *type, CORBA_char **label,
 									 CORBA_char **hint, CORBA_long *pos,
 									 GNOME_UIHandler_PixmapType *pixmap_type,
@@ -326,62 +348,62 @@ static CORBA_boolean		 impl_menu_fetch			(PortableServer_Servant servant, CORBA_
 									 CORBA_unsigned_long *accelerator_key,
 									 CORBA_long *modifier,
 									 CORBA_Environment *ev);
-static CORBA_boolean		 impl_menu_get_children			(PortableServer_Servant servant,
+static CORBA_boolean		  impl_menu_get_children		(PortableServer_Servant servant,
 									 CORBA_char *parent_path,
 									 GNOME_UIHandler_StringSeq **child_paths,
 									 CORBA_Environment *ev);
-static CORBA_long		 impl_menu_get_pos			(PortableServer_Servant servant, CORBA_char *path,
+static CORBA_long		  impl_menu_get_pos			(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
-static void			 impl_menu_set_sensitivity		(PortableServer_Servant servant,
+static void			  impl_menu_set_sensitivity		(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
 									 CORBA_char *path, CORBA_boolean sensitive,
 									 CORBA_Environment *ev);
-static CORBA_boolean		 impl_menu_get_sensitivity		(PortableServer_Servant servant, CORBA_char *path,
+static CORBA_boolean		  impl_menu_get_sensitivity		(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
-static CORBA_char		*impl_menu_get_label			(PortableServer_Servant servant, CORBA_char *path,
+static CORBA_char		 *impl_menu_get_label			(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
-static void			 impl_menu_set_label			(PortableServer_Servant servant,
+static void			  impl_menu_set_label			(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
 									 CORBA_char *path, CORBA_char *label,
 									 CORBA_Environment *ev);
-static void			 impl_menu_set_hint			(PortableServer_Servant servant,
+static void			  impl_menu_set_hint			(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
 									 CORBA_char *path, CORBA_char *hint,
 									 CORBA_Environment *ev);
-static CORBA_char		*impl_menu_get_hint			(PortableServer_Servant servant,
+static CORBA_char		 *impl_menu_get_hint			(PortableServer_Servant servant,
 									 CORBA_char *path,
 									 CORBA_Environment *ev);
-static void			 impl_menu_set_pixmap			(PortableServer_Servant servant,
+static void			  impl_menu_set_pixmap			(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
 									 CORBA_char *path,
 									 GNOME_UIHandler_PixmapType corba_pixmap_type,
 									 GNOME_UIHandler_iobuf *corba_pixmap_data,
 									 CORBA_Environment *ev);
-static void			 impl_menu_get_pixmap			(PortableServer_Servant servant,
+static void			  impl_menu_get_pixmap			(PortableServer_Servant servant,
 									 CORBA_char *path,
 									 GNOME_UIHandler_PixmapType *corba_pixmap_type,
 									 GNOME_UIHandler_iobuf **corba_pixmap_data,
 									 CORBA_Environment *ev);
-static void			 impl_menu_set_accel			(PortableServer_Servant servant,
+static void			  impl_menu_set_accel			(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
 									 CORBA_char *path, CORBA_long accelerator_key,
 									 CORBA_long ac_mods, CORBA_Environment *ev);
-static void			 impl_menu_get_accel			(PortableServer_Servant servant, CORBA_char *path,
+static void			  impl_menu_get_accel			(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_long *accelerator_key, CORBA_long *ac_mods,
 									 CORBA_Environment *ev);
-static void			 impl_menu_set_toggle_state		(PortableServer_Servant servant,
+static void			  impl_menu_set_toggle_state		(PortableServer_Servant servant,
 									 GNOME_UIHandler containee,
 									 CORBA_char *path, CORBA_boolean state,
 									 CORBA_Environment *ev);
-static CORBA_boolean		 impl_menu_get_toggle_state		(PortableServer_Servant servant, CORBA_char *path,
+static CORBA_boolean		  impl_menu_get_toggle_state		(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
-static void			 impl_menu_activated			(PortableServer_Servant servant, CORBA_char *path,
+static void			  impl_menu_activated			(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
-static void			 impl_menu_removed			(PortableServer_Servant servant, CORBA_char *path,
+static void			  impl_menu_removed			(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
-static void			 impl_menu_overriden			(PortableServer_Servant servant, CORBA_char *path,
+static void			  impl_menu_overriden			(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
-static void			 impl_menu_reinstated			(PortableServer_Servant servant, CORBA_char *path,
+static void			  impl_menu_reinstated			(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
 
 /*
@@ -598,6 +620,10 @@ gnome_ui_handler_construct (GnomeUIHandler *ui_handler, GNOME_UIHandler corba_ui
 
 	ui_handler->top->path_to_menu_item = g_hash_table_new (g_str_hash, g_str_equal);
 	ui_handler->top->path_to_toolbar_item = g_hash_table_new (g_str_hash, g_str_equal);
+	ui_handler->top->name_to_toolbar = g_hash_table_new (g_str_hash, g_str_equal);
+	ui_handler->top->path_to_toolbar_item_widget = g_hash_table_new (g_str_hash, g_str_equal);
+	ui_handler->top->name_to_toolbar_widget = g_hash_table_new (g_str_hash, g_str_equal);
+
 	ui_handler->top->path_to_menu_widget = g_hash_table_new (g_str_hash, g_str_equal);
 	ui_handler->top->path_to_menu_shell = g_hash_table_new (g_str_hash, g_str_equal);
 
@@ -644,12 +670,29 @@ gnome_ui_handler_new (void)
 	return gnome_ui_handler_construct (uih, corba_uihandler);
 }
 
+/**
+ * gnome_ui_handler_set_app:
+ *
+ */
+void
+gnome_ui_handler_set_app (GnomeUIHandler *uih, GnomeApp *app)
+{
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (app != NULL);
+	g_return_if_fail (GNOME_IS_APP (app));
+
+	uih->top->app = app;
+}
+
 static void
 impl_register_containee (PortableServer_Servant servant,
 			 GNOME_UIHandler containee_uih,
 			 CORBA_Environment *ev)
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
 
 	uih_toplevel_add_containee (uih, containee_uih);
 }
@@ -660,6 +703,8 @@ impl_get_toplevel (PortableServer_Servant servant,
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	GNOME_UIHandler ret;
+
+	g_return_val_if_fail (menu_toplevel_check_toplevel (uih), CORBA_OBJECT_NIL);
 
 	if (uih->top_level_uih == CORBA_OBJECT_NIL)
 		return gnome_object_corba_objref (GNOME_OBJECT (uih));
@@ -863,6 +908,8 @@ impl_unregister_containee (PortableServer_Servant servant,
 			   CORBA_Environment *ev)
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
 
 	uih_toplevel_unregister_containee (uih, containee_uih);
 }
@@ -1129,7 +1176,6 @@ path_get_parent (char *path)
 	 * Free the token array.
 	 */
 	for (i = 0; toks [i] != NULL; i ++) {
-		printf ("i: %d\n", i); /* FIXME: Remove this */
 		g_free (toks [i]);
 	}
 	g_free (toks);
@@ -1162,9 +1208,9 @@ uih_toplevel_create_pixmap (GtkWidget *window, GnomeUIHandlerPixmapType pixmap_t
 				   (char *) pixmap_info);
 		else {
 			pixmap = gnome_pixmap_new_from_file (name);
-			g_free (name);
 		}
 
+		g_free (name);
 		break;
 
 	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
@@ -1172,6 +1218,10 @@ uih_toplevel_create_pixmap (GtkWidget *window, GnomeUIHandlerPixmapType pixmap_t
 			pixmap = gnome_pixmap_new_from_xpm_d (pixmap_info);
 		break;
 
+	case GNOME_UI_HANDLER_PIXMAP_RGB_DATA:
+	case GNOME_UI_HANDLER_PIXMAP_RGBA_DATA:
+		g_warning ("Unsupported pixmap type (RGB[A]_DATA)\n");
+		break;
 
 	default:
 		g_warning ("Unknown pixmap type: %d\n", pixmap_type);
@@ -1184,7 +1234,35 @@ uih_toplevel_create_pixmap (GtkWidget *window, GnomeUIHandlerPixmapType pixmap_t
 static void
 pixmap_free_data (GnomeUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
 {
-	g_free (pixmap_info);
+	int num_lines, i;
+
+	switch (pixmap_type) {
+	case GNOME_UI_HANDLER_PIXMAP_NONE:
+		break;
+
+	case GNOME_UI_HANDLER_PIXMAP_STOCK:
+	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
+		g_free (pixmap_info);
+		break;
+
+	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
+		pixmap_xpm_get_length (pixmap_info, &num_lines);
+
+		for (i = 0; i < num_lines; i ++)
+			g_free (((char **) pixmap_info) [i]);
+
+		g_free (pixmap_info);
+		break;
+
+	case GNOME_UI_HANDLER_PIXMAP_RGB_DATA:
+	case GNOME_UI_HANDLER_PIXMAP_RGBA_DATA:
+		g_warning ("Unsupported pixmap type (RGB[A]_DATA)\n");
+		break;
+
+	default:
+		g_warning ("Unknown pixmap type: %d\n", pixmap_type);
+		
+	}
 }
 
 static gpointer 
@@ -1201,9 +1279,7 @@ pixmap_copy_data (GnomeUIHandlerPixmapType pixmap_type, gpointer pixmap_info)
 		return g_strdup ((char *) pixmap_info);
 
 	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
-		g_warning ("I cannot copy XPM pixmap data!  Fix me!\n");
-		return NULL;
-		break;
+		return pixmap_xpm_copy_data (pixmap_info);
 
 	default:
 		g_warning ("Unknown pixmap type: %d\n", pixmap_type);
@@ -1256,16 +1332,170 @@ pixmap_corba_to_type (GNOME_UIHandler_PixmapType type)
 	}
 }
 
+static gint
+pixmap_xpm_get_length (gpointer data, int *num_lines)
+{
+	int width, height, num_colors, chars_per_pixel;
+	char **lines;
+	int length;
+	int i;
+
+	lines = (char **) data;
+
+	sscanf (lines[0], "%i %i %i %i", &width, &height, &num_colors, &chars_per_pixel);
+
+	*num_lines = height + num_colors + 1;
+
+	length = 0;
+	for (i = 0; i < *num_lines; i ++)
+		length += strlen (lines [i]) + 1;
+
+	return length;
+}
+
+static gpointer
+pixmap_xpm_copy_data (gpointer src)
+{
+	int num_lines;
+	char **dest;
+	int i;
+
+	pixmap_xpm_get_length (src, &num_lines);
+	dest = g_new0 (char *, num_lines);
+
+	/*
+	 * Copy the XPM data into the destination buffer.
+	 */
+	for (i = 0; i < num_lines; i ++)
+		dest [i] = g_strdup (((char **) src) [i]);
+
+	return (gpointer) dest;
+}
+
+/*
+ * XPM data in its normal, "unflattened" form is usually an array of
+ * strings.  This converts normal XPM data to a completely flat
+ * sequence of characters which can be transmitted over CORBA.
+ */
+static gpointer
+pixmap_xpm_flatten (char **src, int *length)
+{
+	int num_lines;
+	int dest_offset;
+	char *flat;
+	int i;
+
+	*length = pixmap_xpm_get_length (src, &num_lines);
+
+	flat = g_malloc0 (*length + 1);
+
+	dest_offset = 0;
+	for (i = 0; i < num_lines; i ++) {
+		int line_len;
+		char *line;
+
+		line = ((char **) src) [i];
+		line_len = strlen (line);
+
+		memcpy (flat + dest_offset, line, line_len + 1);
+		dest_offset += line_len + 1;
+	}
+
+	/*
+	 * Put an extra null at the end of the flattened version.
+	 */
+	flat [*length] = '\0';
+
+	return flat;
+}
+
+/*
+ * After a flattened XPM file has been received via CORBA, it can be
+ * converted to the normal, unflattened form with this function.
+ */
+static gpointer
+pixmap_xpm_unflatten (char *src, int length)
+{
+	gboolean just_hit_end;
+	GList *line_copies, *curr;
+	char **unflattened;
+	int num_lines, i;
+	char *p;
+
+	/*
+	 * Count the number of lines in the flattened buffer.  Store
+	 * copies of each line.
+	 */
+	num_lines = 0;
+	line_copies = NULL;
+	just_hit_end = TRUE;
+	for (p = src; ((p[0] != '\0') || (p[1] != '\0')) && ((p - src) < length); p ++) {
+		if (just_hit_end) {
+			line_copies = g_list_append (line_copies, g_strdup (p));
+			just_hit_end = FALSE;
+		}
+		
+		if (*p == '\0') {
+			num_lines ++;
+			just_hit_end = TRUE;
+		}
+	}
+
+	num_lines ++;
+
+	unflattened = g_new (char *, num_lines);
+	for (curr = line_copies, i = 0; curr != NULL; curr = curr->next, i ++) {
+		unflattened [i] = curr->data;
+	}
+
+	g_list_free (line_copies);
+
+	return unflattened;
+}
+
 static GNOME_UIHandler_iobuf *
 pixmap_data_to_corba (GnomeUIHandlerPixmapType type, gpointer data)
 {
 	GNOME_UIHandler_iobuf *buffer;
+	gpointer temp_xpm_buffer;
 
-	/* FIXME: Free me */
 	buffer = GNOME_UIHandler_iobuf__alloc ();
 	CORBA_sequence_set_release (buffer, TRUE);
-	buffer->_length = 1; /* FIXME: Uh. */
-	buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (1);
+
+	switch (type) {
+	case GNOME_UI_HANDLER_PIXMAP_NONE:
+		buffer->_length = 1;
+		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (1);
+		return buffer;
+
+	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
+	case GNOME_UI_HANDLER_PIXMAP_STOCK:
+		g_warning ("Marshalling pixmap filename across CORBA!\n");
+		buffer->_length = strlen ((char *) data) + 1;
+		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (strlen ((char *) data));
+		strcpy (buffer->_buffer, (char *) data);
+		return buffer;
+
+	case GNOME_UI_HANDLER_PIXMAP_RGB_DATA:
+	case GNOME_UI_HANDLER_PIXMAP_RGBA_DATA:
+		g_warning ("pixmap_data_to_corba: Pixmap type (RGB[A]) not yet supported!\n");
+		buffer->_length = 1;
+		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (1);
+		return buffer;
+
+	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
+		temp_xpm_buffer = pixmap_xpm_flatten (data, &(buffer->_length));
+		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (buffer->_length);
+		memcpy (buffer->_buffer, temp_xpm_buffer, buffer->_length);
+		g_free (temp_xpm_buffer);
+		return buffer;
+
+	default:
+		g_warning ("pixmap_data_to_corba: Unknown pixmap type [%d]\n", type);
+		buffer->_length = 1;
+		buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (1);
+		return buffer;
+	}
 
 	return buffer;
 }
@@ -1274,8 +1504,33 @@ static gpointer
 pixmap_corba_to_data (GNOME_UIHandler_PixmapType corba_pixmap_type,
 		      GNOME_UIHandler_iobuf *corba_pixmap_data)
 {
-	/* FIXME: Implement me. */
-	return NULL;
+	GnomeUIHandlerPixmapType type;
+	gpointer pixmap_data;
+
+	type = pixmap_corba_to_type (corba_pixmap_type);
+
+	switch (type) {
+	case GNOME_UI_HANDLER_PIXMAP_NONE:
+		return NULL;
+
+	case GNOME_UI_HANDLER_PIXMAP_FILENAME:
+	case GNOME_UI_HANDLER_PIXMAP_STOCK:
+		return g_strdup (corba_pixmap_data->_buffer);
+
+	case GNOME_UI_HANDLER_PIXMAP_RGB_DATA:
+	case GNOME_UI_HANDLER_PIXMAP_RGBA_DATA:
+		g_warning ("pixmap_corba_to_data: Pixmap type (RGB[A]) not yet supported!\n");
+		return NULL;
+
+	case GNOME_UI_HANDLER_PIXMAP_XPM_DATA:
+		pixmap_data = pixmap_xpm_unflatten (corba_pixmap_data->_buffer,
+						    corba_pixmap_data->_length);
+		return pixmap_data;
+
+	default:
+		g_warning ("pixmap_corba_to_data: Unknown pixmap type [%d]\n", type);
+		return NULL;
+	}
 }
 
 static GnomeUIHandlerPixmapType
@@ -1386,21 +1641,29 @@ static GNOME_UIHandler_MenuType
 menu_type_to_corba (GnomeUIHandlerMenuItemType type)
 {
 	switch (type) {
+
 	case GNOME_UI_HANDLER_MENU_END:
 		g_warning ("Warning: Passing MenuTypeEnd through CORBA!");
 		return GNOME_UIHandler_MenuTypeEnd;
+
 	case GNOME_UI_HANDLER_MENU_ITEM:
 		return GNOME_UIHandler_MenuTypeItem;
+
 	case GNOME_UI_HANDLER_MENU_SUBTREE:
 		return GNOME_UIHandler_MenuTypeSubtree;
+
 	case GNOME_UI_HANDLER_MENU_RADIOITEM:
 		return GNOME_UIHandler_MenuTypeRadioItem;
+
 	case GNOME_UI_HANDLER_MENU_RADIOGROUP:
 		return GNOME_UIHandler_MenuTypeRadioGroup;
+
 	case GNOME_UI_HANDLER_MENU_TOGGLEITEM:
 		return GNOME_UIHandler_MenuTypeToggleItem;
+
 	case GNOME_UI_HANDLER_MENU_SEPARATOR:
 		return GNOME_UIHandler_MenuTypeSeparator;
+
 	default:
 		g_warning ("Unknown GnomeUIHandlerMenuItemType %d!\n", (int) type);
 		return GNOME_UIHandler_MenuTypeItem;
@@ -1415,16 +1678,22 @@ menu_corba_to_type (GNOME_UIHandler_MenuType type)
 	case GNOME_UIHandler_MenuTypeEnd:
 		g_warning ("Warning: Getting MenuTypeEnd from CORBA!");
 		return GNOME_UI_HANDLER_MENU_END;
+
 	case GNOME_UIHandler_MenuTypeItem:
 		return GNOME_UI_HANDLER_MENU_ITEM;
+
 	case GNOME_UIHandler_MenuTypeSubtree:
 		return GNOME_UI_HANDLER_MENU_SUBTREE;
+
 	case GNOME_UIHandler_MenuTypeRadioItem:
 		return GNOME_UI_HANDLER_MENU_RADIOITEM;
+
 	case GNOME_UIHandler_MenuTypeRadioGroup:
 		return GNOME_UI_HANDLER_MENU_RADIOGROUP;
+
 	case GNOME_UIHandler_MenuTypeToggleItem:
 		return GNOME_UI_HANDLER_MENU_TOGGLEITEM;
+
 	case GNOME_UIHandler_MenuTypeSeparator:
 		return GNOME_UI_HANDLER_MENU_SEPARATOR;
 	default:
@@ -1437,16 +1706,16 @@ menu_corba_to_type (GNOME_UIHandler_MenuType type)
  * gnome_ui_handler_create_menubar:
  */
 void
-gnome_ui_handler_create_menubar (GnomeUIHandler *uih, GnomeApp *app)
+gnome_ui_handler_create_menubar (GnomeUIHandler *uih)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (app != NULL);
-	g_return_if_fail (GNOME_IS_APP (app));
+	g_return_if_fail (uih->top->app != NULL);
+	g_return_if_fail (GNOME_IS_APP (uih->top->app));
 
 	uih->top->menubar = gtk_menu_bar_new ();
 
-	gnome_app_set_menus (app, GTK_MENU_BAR (uih->top->menubar));
+	gnome_app_set_menus (uih->top->app, GTK_MENU_BAR (uih->top->menubar));
 }
 
 /**
@@ -1501,14 +1770,8 @@ gnome_ui_handler_get_statusbar (GnomeUIHandler *uih)
 	return uih->top->statusbar;
 }
 
-/*
- * This function checks to make sure that the path of a given
- * GnomeUIHandlerMenuItem is consistent with the path of its parent.
- * If the item does not have a path, one is created for it.  If the
- * path is not consistent with the parent's path, an error is printed
- */
 static void
-menu_local_do_path (char *parent_path, GnomeUIHandlerMenuItem *item)
+uih_local_do_path (char *parent_path, char *item_label, char **item_path)
 {
 	gchar **parent_toks;
 	gchar **item_toks;
@@ -1521,11 +1784,11 @@ menu_local_do_path (char *parent_path, GnomeUIHandlerMenuItem *item)
 	 * If there is a path set on the item already, make sure it
 	 * matches the parent path.
 	 */
-	if (item->path != NULL) {
+	if (*item_path != NULL) {
 		int i;
 		int paths_match = TRUE;
 	
-		item_toks = path_tokenize (item->path);
+		item_toks = path_tokenize (*item_path);
 
 		for (i = 0; parent_toks [i] != NULL; i ++) {
 			if (item_toks [i] == NULL || strcmp (item_toks [i], parent_toks [i])) {
@@ -1544,24 +1807,24 @@ menu_local_do_path (char *parent_path, GnomeUIHandlerMenuItem *item)
 		}
 
 		if (! paths_match)
-			g_warning ("do_menu_item_path: Item path [%s] does not jibe with parent path [%s]!\n",
-				   item->path, parent_path);
+			g_warning ("uih_local_do_path: Item path [%s] does not jibe with parent path [%s]!\n",
+				   *item_path, parent_path);
 	}
 
 	/*
 	 * Build a path for the item.
 	 */
-	if (item->path == NULL) {
+	if (*item_path == NULL) {
 		char *path_component;
 
 		/*
 		 * If the item has a label, then use the label
 		 * as the path component.
 		 */
-		if (item->label != NULL) {
+		if (item_label != NULL) {
 			char *tmp;
 
-			tmp = remove_ulines (item->label);
+			tmp = remove_ulines (item_label);
 			path_component = path_escape_forward_slashes (tmp);
 			g_free (tmp);
 		} else {
@@ -1571,13 +1834,13 @@ menu_local_do_path (char *parent_path, GnomeUIHandlerMenuItem *item)
 			 * a unique path for an item with no label.
 			 */
 			path_component = g_new0 (char, 32);
-			snprintf (path_component, 32, "%lx", (unsigned long) ((char *) item + rand () % 10000));
+			snprintf (path_component, 32, "%lx", (unsigned long) ((char *) path_component + rand () % 10000));
 		}
 
 		if (parent_path [strlen (parent_path) - 1] == '/')
-			item->path = g_strconcat (parent_path, path_component, NULL);
+			*item_path = g_strconcat (parent_path, path_component, NULL);
 		else
-			item->path = g_strconcat (parent_path, "/", path_component, NULL);
+			*item_path = g_strconcat (parent_path, "/", path_component, NULL);
 
 		g_free (path_component);
 	}
@@ -1594,6 +1857,18 @@ menu_local_do_path (char *parent_path, GnomeUIHandlerMenuItem *item)
 	for (i = 0; parent_toks [i] != NULL; i ++)
 		g_free (parent_toks [i]);
 	g_free (parent_toks);
+}
+
+/*
+ * This function checks to make sure that the path of a given
+ * GnomeUIHandlerMenuItem is consistent with the path of its parent.
+ * If the item does not have a path, one is created for it.  If the
+ * path is not consistent with the parent's path, an error is printed
+ */
+static void
+menu_local_do_path (char *parent_path, GnomeUIHandlerMenuItem *item)
+{
+	uih_local_do_path (parent_path, item->label, & item->path);
 }
 
 
@@ -1618,7 +1893,6 @@ static void
 menu_local_create_item (GnomeUIHandler *uih, char *parent_path,
 			GnomeUIHandlerMenuItem *item)
 {
-	MenuItemLocalInternal *parent_internal_cb;
 	MenuItemLocalInternal *internal_cb;
 	GList *l, *new_list;
 
@@ -1648,23 +1922,12 @@ menu_local_create_item (GnomeUIHandler *uih, char *parent_path,
 	else
 		g_hash_table_insert (uih->path_to_menu_callback, item->path, new_list);
 
-	/*
-	 * Update this item's parent's child list.
-	 */
-	parent_internal_cb = menu_local_get_item (uih, parent_path);
-	if (parent_internal_cb == NULL) {
-		/*
-		 * If we don't have any information on the parent,
-		 * that's ok.  We don't care.
-		 */
-		return;
-	}
 
-	parent_internal_cb->children = g_list_prepend (parent_internal_cb->children, g_strdup (item->path));
+	menu_local_add_parent_entry (uih, item->path);
 }
 
 static void
-menu_local_remove_parent_entry (GnomeUIHandler *uih, char *path)
+menu_local_remove_parent_entry (GnomeUIHandler *uih, char *path, gboolean warn)
 {
 	MenuItemLocalInternal *parent;
 	char *parent_path;
@@ -1687,7 +1950,31 @@ menu_local_remove_parent_entry (GnomeUIHandler *uih, char *path)
 			 
 	}
 
-	g_warning ("menu_local_remove_parent_entry: No entry in parent for child path [%s]!\n", path);
+	if (warn)
+		g_warning ("menu_local_remove_parent_entry: No entry in parent for child path [%s]!\n", path);
+}
+
+static void
+menu_local_add_parent_entry (GnomeUIHandler *uih, char *path)
+{
+	MenuItemLocalInternal *parent_internal_cb;
+	char *parent_path;
+
+	menu_local_remove_parent_entry (uih, path, FALSE);
+
+	parent_path = path_get_parent (path);
+	parent_internal_cb = menu_local_get_item (uih, parent_path);
+	g_free (parent_path);
+
+	if (parent_internal_cb == NULL) {
+		/*
+		 * If we don't have an entry for the parent,
+		 * it doesn't matter.
+		 */
+		return;
+	}
+
+	parent_internal_cb->children = g_list_prepend (parent_internal_cb->children, g_strdup (path));
 }
 
 static void
@@ -1696,6 +1983,12 @@ menu_local_remove_item (GnomeUIHandler *uih, char *path)
 	MenuItemLocalInternal *internal_cb;
 	GList *l, *new_list, *curr;
 
+	/*
+	 * Don't remove "/" or the user will have to recreate it.
+	 */
+	if (! strcmp (path, "/"))
+		return;
+	
 	l = g_hash_table_lookup (uih->path_to_menu_callback, path);
 
 	if (l == NULL)
@@ -1728,7 +2021,7 @@ menu_local_remove_item (GnomeUIHandler *uih, char *path)
 		g_hash_table_remove (uih->path_to_menu_callback, path);
 		g_free (orig_key);
 
-		menu_local_remove_parent_entry (uih, path);
+		menu_local_remove_parent_entry (uih, path, TRUE);
 	}
 }
 
@@ -1992,8 +2285,12 @@ menu_toplevel_create_item_widget (GnomeUIHandler *uih, char *parent_path, GnomeU
 		gtk_widget_set_sensitive (menu_widget, FALSE);
 		break;
 
+	case GNOME_UI_HANDLER_MENU_RADIOGROUP:
+		g_warning ("FIXME: Fix radiogroups.\n");
+		return NULL;
+
 	default:
-		g_warning ("menu_toplevel_create_widget: Invalid GnomeUIHandlerMenuItemType %d\n",
+		g_warning ("menu_toplevel_create_item_widget: Invalid GnomeUIHandlerMenuItemType %d\n",
 			   (int) item->type);
 		return NULL;
 			
@@ -2135,15 +2432,15 @@ menu_toplevel_create_widgets (GnomeUIHandler *uih, char *parent_path, MenuItemIn
 	/*
 	 * Set the sensitivity of the menu item.
 	 */
-	menu_toplevel_set_sensitivity (uih, internal->item->path, internal->sensitive);
+	menu_toplevel_set_sensitivity_internal (uih, internal, internal->sensitive);
 
 	/*
 	 * Set the item's active state.
 	 */
 	if (internal->item->type == GNOME_UI_HANDLER_MENU_TOGGLEITEM)
-		menu_toplevel_set_toggle_state (uih, internal->item->path, internal->active);
+		menu_toplevel_set_toggle_state_internal (uih, internal, internal->active);
 	else if (internal->item->type == GNOME_UI_HANDLER_MENU_RADIOITEM)
-		menu_toplevel_set_radio_state (uih, internal->item->path, internal->active);
+		menu_toplevel_set_radio_state_internal (uih, internal, internal->active);
 
 	return menu_widget;
 }
@@ -2418,6 +2715,7 @@ menu_toplevel_override_notify (GnomeUIHandler *uih, char *path)
 	CORBA_Environment ev;
 
 	internal = menu_toplevel_get_item (uih, path);
+	g_return_if_fail (internal != NULL);
 
 	CORBA_exception_init (&ev);
 
@@ -2433,6 +2731,8 @@ impl_menu_overriden (PortableServer_Servant servant,
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemLocalInternal *internal_cb;
+
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
 
 	internal_cb = menu_local_get_item (uih, path);
 
@@ -2507,9 +2807,12 @@ menu_toplevel_create_item (GnomeUIHandler *uih, char *parent_path,
 static void
 menu_remote_create_item (GnomeUIHandler *uih, char *parent_path, GnomeUIHandlerMenuItem *item)
 {
+	GNOME_UIHandler_iobuf *pixmap_buf;
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
+
+	pixmap_buf = pixmap_data_to_corba (item->pixmap_type, item->pixmap_data);
 
 	GNOME_UIHandler_menu_create (uih->top_level_uih,
 				     gnome_object_corba_objref (GNOME_OBJECT (uih)),
@@ -2519,12 +2822,14 @@ menu_remote_create_item (GnomeUIHandler *uih, char *parent_path, GnomeUIHandlerM
 				     CORBIFY_STRING (item->hint),
 				     item->pos,
 				     pixmap_type_to_corba (item->pixmap_type),
-				     pixmap_data_to_corba (item->pixmap_type, item->pixmap_data),
+				     pixmap_buf,
 				     (CORBA_unsigned_long) item->accelerator_key,
 				     (CORBA_long) item->ac_mods,
 				     &ev);
 
 	CORBA_exception_free (&ev);
+
+	CORBA_free (pixmap_buf);
 }
 
 static void
@@ -2545,10 +2850,14 @@ impl_menu_create (PortableServer_Servant servant,
 	GnomeUIHandlerMenuItem *item;
 	char *parent_path;
 
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
+
 	item = menu_make_item (path, menu_corba_to_type (menu_type),
 			       UNCORBIFY_STRING (label),
 			       UNCORBIFY_STRING (hint),
-			       pos, GNOME_UI_HANDLER_PIXMAP_NONE, NULL,
+			       pos,
+			       pixmap_corba_to_type (pixmap_type),
+			       pixmap_corba_to_data (pixmap_type, pixmap_data),
 			       (guint) accelerator_key, (GdkModifierType) modifier,
 			       NULL, NULL);
 
@@ -2556,6 +2865,8 @@ impl_menu_create (PortableServer_Servant servant,
 	g_return_if_fail (parent_path != NULL);
 
 	menu_toplevel_create_item (uih, parent_path, item, containee_uih);
+
+	pixmap_free_data (item->pixmap_type, item->pixmap_data);
 
 	g_free (item);
 	g_free (parent_path);
@@ -2687,6 +2998,21 @@ gnome_ui_handler_menu_new_item (GnomeUIHandler *uih, char *path,
 }
 
 /**
+ * gnome_ui_handler_menu_new_subtree:
+ */
+void
+gnome_ui_handler_menu_new_subtree (GnomeUIHandler *uih, char *path,
+				   char *label, char *hint, int pos,
+				   GnomeUIHandlerPixmapType pixmap_type,
+				   gpointer pixmap_data, guint accelerator_key,
+				   GdkModifierType ac_mods)
+{
+	gnome_ui_handler_menu_new (uih, path, GNOME_UI_HANDLER_MENU_SUBTREE,
+				   label, hint, pos, pixmap_type, pixmap_data,
+				   accelerator_key, ac_mods, NULL, NULL);
+}
+
+/**
  * gnome_ui_handler_menu_new_separator:
  */
 void
@@ -2760,11 +3086,13 @@ menu_toplevel_remove_widgets (GnomeUIHandler *uih, char *path)
 	g_free (orig_key);
 
 	/*
-	 * If this item is a subtree, remove its menu shell.
+	 * If this item is a subtree, then its menu shell was already
+	 * destroyed (the GtkMenuItem destroy function handles that).
+	 * We just need to remove the menu shell widget from our hash
+	 * table.
 	 */
 	menu_shell_widget = menu_toplevel_get_shell (uih, path);
 	if (menu_shell_widget != NULL) {
-		gtk_widget_destroy (menu_shell_widget);
 		g_hash_table_lookup_extended (uih->top->path_to_menu_shell, path,
 					      (gpointer *) &orig_key, NULL);
 		g_hash_table_remove (uih->top->path_to_menu_shell, path);
@@ -2820,7 +3148,7 @@ menu_toplevel_add_parent_entry (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *ite
 	 * If there is already an entry for this child in the parent's
 	 * list of children, we remove it.
 	 */
-	menu_toplevel_remove_parent_entry (uih, item->path);
+	menu_toplevel_remove_parent_entry (uih, item->path, FALSE);
 
 	/*
 	 * Now insert an entry into the parent in the proper place,
@@ -2839,12 +3167,12 @@ menu_toplevel_add_parent_entry (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *ite
  * parent's list of children.
  */
 static void
-menu_toplevel_remove_parent_entry (GnomeUIHandler *uih, char *path)
+menu_toplevel_remove_parent_entry (GnomeUIHandler *uih, char *path, gboolean warn)
 {
 	MenuItemInternal *parent;
 	char *parent_path;
 	gboolean child_found;
-	GList *curr;
+	GList *curr, *next;
 	int pos;
 
 	parent_path = path_get_parent (path);
@@ -2856,7 +3184,10 @@ menu_toplevel_remove_parent_entry (GnomeUIHandler *uih, char *path)
 	 */
 	pos = 0;
 	child_found = FALSE;
-	for (curr = parent->children; curr != NULL; curr = curr->next) {
+	for (curr = parent->children; curr != NULL; curr = next) {
+
+		next = curr->next;
+
 		if (! strcmp (path, (char *) curr->data)) {
 			parent->children = g_list_remove_link (parent->children, curr);
 			g_free (curr->data);
@@ -2876,7 +3207,7 @@ menu_toplevel_remove_parent_entry (GnomeUIHandler *uih, char *path)
 			 
 	}
 
-	if (! child_found)
+	if ((! child_found) && warn)
 		g_warning ("menu_toplevel_remove_parent_entry: No entry in parent for child path [%s]!\n", path);
 }
 
@@ -2916,7 +3247,7 @@ menu_toplevel_remove_data (GnomeUIHandler *uih, MenuItemInternal *internal)
 		 * Remove this path entry from the parent's child
 		 * list.
 		 */
-		menu_toplevel_remove_parent_entry (uih, path);
+		menu_toplevel_remove_parent_entry (uih, path, TRUE);
 	}
 
 	/*
@@ -2937,6 +3268,7 @@ menu_toplevel_remove_data (GnomeUIHandler *uih, MenuItemInternal *internal)
 
 	g_slist_free (internal->radio_items);
 	g_free (internal);
+	g_free (path);
 }
 
 static void
@@ -3034,6 +3366,18 @@ menu_toplevel_remove_item_internal (GnomeUIHandler *uih, MenuItemInternal *inter
 	char *path;
 
 	/*
+	 * Don't remove "/" or the user will have to recreate it.  And
+	 * we don't want the poor user to go to so much work.  Because
+	 * the user is our boss.  We love the user.  Everything for
+	 * the user.  Here I am, sacrificing my youth, my hands, and
+	 * my very SOUL on the high-altar of this fucking USER I've
+	 * never even fucking met!  FUCK THE USER!  FUCK HIM!  What
+	 * did he ever do for me?
+	 */
+	if (! strcmp (internal->item->path, "/"))
+		return;
+
+	/*
 	 * Check to see if this is the current active menu item.
 	 */
 	is_head = menu_toplevel_item_is_head (uih, internal);
@@ -3089,8 +3433,10 @@ menu_toplevel_remove_item_internal (GnomeUIHandler *uih, MenuItemInternal *inter
 		
 		replacement = menu_toplevel_get_item (uih, path);
 
-		if (replacement == NULL)
+		if (replacement == NULL) {
+			g_free (path);
 			return;
+		}
 
 		/*
 		 * Notify this item's owner that the item is being
@@ -3100,6 +3446,8 @@ menu_toplevel_remove_item_internal (GnomeUIHandler *uih, MenuItemInternal *inter
 
 		menu_toplevel_create_widgets_recursive (uih, replacement);
 	}
+
+	g_free (path);
 }
 
 static void
@@ -3135,6 +3483,8 @@ impl_menu_remove (PortableServer_Servant servant,
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
+
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
 
 	/*
 	 * Find the menu item belonging to this containee.
@@ -3257,6 +3607,8 @@ impl_menu_fetch (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	GnomeUIHandlerMenuItem *item;
 	MenuItemInternal *internal;
+
+	g_return_val_if_fail (menu_toplevel_check_toplevel (uih), FALSE);
 
 	internal = menu_toplevel_get_item (uih, path);
 
@@ -3478,25 +3830,35 @@ menu_uiinfo_type_to_uih (GnomeUIInfoType uii_type)
 	switch (uii_type) {
 	case GNOME_APP_UI_ENDOFINFO:
 		return GNOME_UI_HANDLER_MENU_END;
+
 	case GNOME_APP_UI_ITEM:
 		return GNOME_UI_HANDLER_MENU_ITEM;
+
 	case GNOME_APP_UI_TOGGLEITEM:
 		return GNOME_UI_HANDLER_MENU_TOGGLEITEM;
+
 	case GNOME_APP_UI_RADIOITEMS:
 		return GNOME_UI_HANDLER_MENU_RADIOGROUP;
+
 	case GNOME_APP_UI_SUBTREE:
 		return GNOME_UI_HANDLER_MENU_SUBTREE;
+
 	case GNOME_APP_UI_SEPARATOR:
 		return GNOME_UI_HANDLER_MENU_SEPARATOR;
+
 	case GNOME_APP_UI_HELP:
 		g_error ("Help unimplemented."); /* FIXME */
+
 	case GNOME_APP_UI_BUILDER_DATA:
 		g_error ("Builder data - what to do?"); /* FIXME */
+
 	case GNOME_APP_UI_ITEM_CONFIGURABLE:
 		g_warning ("Configurable item!");
 		return GNOME_UI_HANDLER_MENU_ITEM;
+
 	case GNOME_APP_UI_SUBTREE_STOCK:
 		return GNOME_UI_HANDLER_MENU_SUBTREE;
+
 	default:
 		g_warning ("Unknown UIInfo Type: %d", uii_type);
 		return GNOME_UI_HANDLER_MENU_ITEM;
@@ -3507,10 +3869,11 @@ static void
 menu_parse_uiinfo_one (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii)
 {
 	item->path = NULL;
-	item->type = menu_uiinfo_type_to_uih (uii->type);
 
 	if (uii->type == GNOME_APP_UI_ITEM_CONFIGURABLE)
 		gnome_app_ui_configure_configurable (uii);
+
+	item->type = menu_uiinfo_type_to_uih (uii->type);
 
 	item->label = g_strdup (uii->label);
 	item->hint = g_strdup (uii->hint);
@@ -3524,7 +3887,7 @@ menu_parse_uiinfo_one (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii)
 	item->callback_data = uii->user_data;
 
 	item->pixmap_type = uiinfo_pixmap_type_to_uih (uii->pixmap_type);
-	item->pixmap_data = uii->pixmap_info;
+	item->pixmap_data = pixmap_copy_data (item->pixmap_type, uii->pixmap_info);
 	item->accelerator_key = uii->accelerator_key;
 	item->ac_mods = uii->ac_mods;
 }
@@ -3729,6 +4092,8 @@ impl_menu_get_pos (PortableServer_Servant servant,
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 
+	g_return_val_if_fail (menu_toplevel_check_toplevel (uih), -1);
+
 	return (CORBA_long) menu_toplevel_get_pos (uih, (char *) path);
 }
 
@@ -3736,7 +4101,7 @@ impl_menu_get_pos (PortableServer_Servant servant,
 /**
  * gnome_ui_handler_menu_get_pos:
  */
-gint
+int
 gnome_ui_handler_menu_get_pos (GnomeUIHandler *uih, char *path)
 {
 	g_return_val_if_fail (uih != NULL, -1);
@@ -3750,20 +4115,33 @@ gnome_ui_handler_menu_get_pos (GnomeUIHandler *uih, char *path)
 }
 
 static void
+menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *internal, gboolean sensitivity)
+{
+	GtkWidget *menu_widget;
+
+	internal->sensitive = sensitivity;
+
+	if (! menu_toplevel_item_is_head (uih, internal))
+		return;
+
+	menu_widget = menu_toplevel_get_widget (uih, internal->item->path);
+	g_return_if_fail (menu_widget != NULL);
+
+	gtk_widget_set_sensitive (menu_widget, sensitivity);
+}
+
+static void
 menu_toplevel_set_sensitivity (GnomeUIHandler *uih, char *path, gboolean sensitive)
 {
 	MenuItemInternal *internal;
-	GtkWidget *menu_item;
 
 	/* Update the internal state */
-	internal = menu_toplevel_get_item (uih, path);
-	internal->sensitive = sensitive;
+	internal = menu_toplevel_get_item_for_containee (uih, path,
+							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	g_return_if_fail (internal != NULL);
 
-	/* Update the widget */
-	menu_item = menu_toplevel_get_widget (uih, path);
-	g_return_if_fail (menu_item != NULL);
 
-	gtk_widget_set_sensitive (menu_item, sensitive);
+	menu_toplevel_set_sensitivity_internal (uih, internal, sensitive);
 }
 
 static void
@@ -3791,6 +4169,8 @@ impl_menu_set_sensitivity (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
+
 	/*
 	 * Get the menu item matching this path belonging to this
 	 * containee.
@@ -3802,13 +4182,7 @@ impl_menu_set_sensitivity (PortableServer_Servant servant,
 		return;
 	}
 
-	internal->sensitive = sensitive;
-
-	/*
-	 * If this item is active, set the widget's sensitivity.
-	 */
-	if (menu_toplevel_item_is_head (uih, internal))
-		menu_toplevel_set_sensitivity (uih, path, sensitive);
+	menu_toplevel_set_sensitivity_internal (uih, internal, sensitive);
 }
 
 /**
@@ -3861,6 +4235,8 @@ impl_menu_get_sensitivity (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_val_if_fail (menu_toplevel_check_toplevel (uih), FALSE);
+
 	internal = menu_toplevel_get_item (uih, path);
 
 	if (internal == NULL) {
@@ -3888,9 +4264,8 @@ gnome_ui_handler_menu_get_sensitivity (GnomeUIHandler *uih, char *path)
 }
 
 static void
-menu_toplevel_set_label (GnomeUIHandler *uih, char *path, gchar *label_text)
+menu_toplevel_set_label_internal (GnomeUIHandler *uih, MenuItemInternal *internal, gchar *label_text)
 {
-	MenuItemInternal *internal;
 	GtkWidget *parent_shell;
 	GtkWidget *menu_widget;
 	GtkWidget *child;
@@ -3900,16 +4275,16 @@ menu_toplevel_set_label (GnomeUIHandler *uih, char *path, gchar *label_text)
 	/*
 	 * Modify the internal data.
 	 */
-	internal = menu_toplevel_get_item (uih, path);
-	g_return_if_fail (internal != NULL);
-
 	g_free (internal->item->label);
-	internal->item->label = g_strdup (path);
+	internal->item->label = g_strdup (label_text);
 
 	/*
 	 * Now modify the widget.
 	 */
-	menu_widget = menu_toplevel_get_widget (uih, path);
+	if (! menu_toplevel_item_is_head (uih, internal))
+		return;
+
+	menu_widget = menu_toplevel_get_widget (uih, internal->item->path);
 
 	parent_path = path_get_parent (internal->item->path);
 	parent_shell = menu_toplevel_get_shell (uih, parent_path);
@@ -3947,6 +4322,18 @@ menu_toplevel_set_label (GnomeUIHandler *uih, char *path, gchar *label_text)
 }
 
 static void
+menu_toplevel_set_label (GnomeUIHandler *uih, char *path, gchar *label_text)
+{
+	MenuItemInternal *internal;
+
+	internal = menu_toplevel_get_item_for_containee (uih, path,
+							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	g_return_if_fail (internal != NULL);
+
+	menu_toplevel_set_label_internal (uih, internal, label_text);
+}
+
+static void
 menu_remote_set_label (GnomeUIHandler *uih, char *path, gchar *label_text)
 {
 	CORBA_Environment ev;
@@ -3971,6 +4358,8 @@ impl_menu_set_label (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
+
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 
 	if (internal == NULL) {
@@ -3978,17 +4367,7 @@ impl_menu_set_label (PortableServer_Servant servant,
 		return;
 	}
 
-	/*
-	 * Modify the item's internal data.
-	 */
-	g_free (internal->item->label);
-	internal->item->label = g_strdup (path);
-
-	/*
-	 * Update the widget itself, if this item is active.
-	 */
-	if (menu_toplevel_item_is_head (uih, internal))
-		menu_toplevel_set_label (uih, path, label);
+	menu_toplevel_set_label_internal (uih, internal, label);
 }
 
 /**
@@ -4052,6 +4431,8 @@ impl_menu_get_label (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_val_if_fail (menu_toplevel_check_toplevel (uih), CORBA_string_dup (""));
+
 	internal = menu_toplevel_get_item (uih, path);
 
 	if (internal == NULL) {
@@ -4080,27 +4461,38 @@ gnome_ui_handler_menu_get_label (GnomeUIHandler *uih, char *path)
 }
 
 static void
-menu_toplevel_set_hint (GnomeUIHandler *uih, char *path, char *hint)
+menu_toplevel_set_hint_internal (GnomeUIHandler *uih, MenuItemInternal *internal, char *hint)
 {
-	MenuItemInternal *internal;
 	GtkWidget *menu_widget;
 
 	/*
 	 * Update the internal data.
 	 */
-	internal = menu_toplevel_get_item (uih, path);
-	g_return_if_fail (internal != NULL);
-
 	g_free (internal->item->hint);
 	internal->item->hint = g_strdup (hint);
 
 	/*
 	 * Update the hint on the widget.
 	 */
-	menu_widget = menu_toplevel_get_widget (uih, path);
+	if (! menu_toplevel_item_is_head (uih, internal))
+		return;
+
+	menu_widget = menu_toplevel_get_widget (uih, internal->item->path);
 	g_return_if_fail (menu_widget != NULL);
 
 	menu_toplevel_create_hint (uih, internal->item, menu_widget);
+}
+
+static void
+menu_toplevel_set_hint (GnomeUIHandler *uih, char *path, char *hint)
+{
+	MenuItemInternal *internal;
+
+	internal = menu_toplevel_get_item_for_containee (uih, path,
+							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	g_return_if_fail (internal != NULL);
+
+	menu_toplevel_set_hint_internal (uih, internal, hint);
 }
 
 static void
@@ -4128,6 +4520,8 @@ impl_menu_set_hint (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
+
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 
 	if (internal == NULL) {
@@ -4135,17 +4529,7 @@ impl_menu_set_hint (PortableServer_Servant servant,
 		return;
 	}
 
-	/*
-	 * Update the item's stored hint.
-	 */
-	g_free (internal->item->hint);
-	internal->item->hint = g_strdup (hint);
-
-	/*
-	 * If the item is active, update the widgets appropriately.
-	 */
-	if (menu_toplevel_item_is_head (uih, internal))
-		menu_toplevel_set_hint (uih, path, hint);
+	menu_toplevel_set_hint_internal (uih, internal, hint);
 }
 
 /**
@@ -4205,6 +4589,8 @@ impl_menu_get_hint (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_val_if_fail (menu_toplevel_check_toplevel (uih), CORBA_string_dup (""));
+
 	internal = menu_toplevel_get_item (uih, path);
 
 	if (internal == NULL) {
@@ -4232,19 +4618,15 @@ gnome_ui_handler_menu_get_hint (GnomeUIHandler *uih, char *path)
 }
 
 static void
-menu_toplevel_set_pixmap (GnomeUIHandler *uih, char *path,
-			  GnomeUIHandlerPixmapType type, gpointer data)
+menu_toplevel_set_pixmap_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+				   GnomeUIHandlerPixmapType type, gpointer data)
 {
-	MenuItemInternal *internal;
 	GtkWidget *menu_widget;
 	GtkWidget *pixmap_widget;
 
 	/*
 	 * Update the internal data for this menu item.
 	 */
-	internal = menu_toplevel_get_item (uih, path);
-	g_return_if_fail (internal != NULL);
-
 	pixmap_free_data (internal->item->pixmap_type, internal->item->pixmap_data);
 
 	internal->item->pixmap_type = type;
@@ -4253,7 +4635,10 @@ menu_toplevel_set_pixmap (GnomeUIHandler *uih, char *path,
 	/*
 	 * Update the widgets.
 	 */
-	menu_widget = menu_toplevel_get_widget (uih, path);
+	if (! menu_toplevel_item_is_head (uih, internal))
+		return;
+
+	menu_widget = menu_toplevel_get_widget (uih, internal->item->path);
 
 	/* Destroy the old pixmap */
 	if (GTK_PIXMAP_MENU_ITEM (menu_widget)->pixmap != NULL)
@@ -4266,21 +4651,39 @@ menu_toplevel_set_pixmap (GnomeUIHandler *uih, char *path,
 }
 
 static void
+menu_toplevel_set_pixmap (GnomeUIHandler *uih, char *path,
+			  GnomeUIHandlerPixmapType type, gpointer data)
+{
+	MenuItemInternal *internal;
+
+	internal = menu_toplevel_get_item_for_containee (uih, path,
+							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	g_return_if_fail (internal != NULL);
+
+	menu_toplevel_set_pixmap_internal (uih, internal, type, data);
+}
+
+static void
 menu_remote_set_pixmap (GnomeUIHandler *uih, char *path,
 			GnomeUIHandlerPixmapType type, gpointer data)
 {
+	GNOME_UIHandler_iobuf *pixmap_buff;
 	CORBA_Environment ev;
 
+	pixmap_buff = pixmap_data_to_corba (type, data);
+	
 	CORBA_exception_init (&ev);
 
 	GNOME_UIHandler_menu_set_pixmap (uih->top_level_uih,
 					 gnome_object_corba_objref (GNOME_OBJECT (uih)),
 					 path,
 					 pixmap_type_to_corba (type),
-					 pixmap_data_to_corba (type, data),
+					 pixmap_buff,
 					 &ev);
 
 	CORBA_exception_free (&ev);
+
+	CORBA_free (pixmap_buff);
 }
 
 static void
@@ -4294,6 +4697,8 @@ impl_menu_set_pixmap (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
+
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 
 	if (internal == NULL) {
@@ -4301,21 +4706,10 @@ impl_menu_set_pixmap (PortableServer_Servant servant,
 		return;
 	}
 
-	/*
-	 * Modify the internal data.
-	 */
-	pixmap_free_data (internal->item->pixmap_type, internal->item->pixmap_data);
-
-	internal->item->pixmap_type = pixmap_corba_to_type (corba_pixmap_type);
-	internal->item->pixmap_data = pixmap_corba_to_data (corba_pixmap_type, corba_pixmap_data);
-
-	/*
-	 * If this item is active, update the widgets.
-	 */
-	if (menu_toplevel_item_is_head (uih, internal))
-		menu_toplevel_set_pixmap (uih, internal->item->path,
-					  pixmap_corba_to_type (corba_pixmap_type),
-					  pixmap_corba_to_data (corba_pixmap_type, corba_pixmap_data));
+	menu_toplevel_set_pixmap_internal (uih, internal,
+					   pixmap_corba_to_type (corba_pixmap_type),
+					   pixmap_corba_to_data (corba_pixmap_type,
+								 corba_pixmap_data));
 }
 
 /**
@@ -4390,19 +4784,32 @@ gnome_ui_handler_menu_get_pixmap (GnomeUIHandler *uih, char *path,
 }
 
 static void
-menu_toplevel_set_accel (GnomeUIHandler *uih, char *path,
-			 guint accelerator_key, GdkModifierType ac_mods)
+menu_toplevel_set_accel_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
+				  guint accelerator_key, GdkModifierType ac_mods)
 {
-	MenuItemInternal *internal;
 	GtkWidget *menu_widget;
-
-	internal = menu_toplevel_get_item (uih, path);
 
 	internal->item->accelerator_key = accelerator_key;
 	internal->item->ac_mods = ac_mods;
 
-	menu_widget = menu_toplevel_get_widget (uih, path);
+	if (! menu_toplevel_item_is_head (uih, internal))
+		return;
+
+	menu_widget = menu_toplevel_get_widget (uih, internal->item->path);
 	menu_toplevel_install_global_accelerators (uih, internal->item, menu_widget);
+}
+
+static void
+menu_toplevel_set_accel (GnomeUIHandler *uih, char *path,
+			 guint accelerator_key, GdkModifierType ac_mods)
+{
+	MenuItemInternal *internal;
+
+	internal = menu_toplevel_get_item_for_containee (uih, path,
+							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	g_return_if_fail (internal != NULL);
+
+	menu_toplevel_set_accel_internal (uih, internal, accelerator_key, ac_mods);
 }
 
 static void
@@ -4434,6 +4841,8 @@ impl_menu_set_accel (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
+
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 
 	if (internal == NULL) {
@@ -4441,17 +4850,7 @@ impl_menu_set_accel (PortableServer_Servant servant,
 		return;
 	}
 
-	/*
-	 * Update this item's internal data.
-	 */
-	internal->item->accelerator_key = (guint) accelerator_key;
-	internal->item->ac_mods = (GdkModifierType) ac_mods;
-
-	/*
-	 * If this item is active, update the widgets.
-	 */
-	if (menu_toplevel_item_is_head (uih, internal))
-		menu_toplevel_set_accel (uih, path, (guint) accelerator_key, (GdkModifierType) ac_mods);
+	menu_toplevel_set_accel_internal (uih, internal, (guint) accelerator_key, (GdkModifierType) ac_mods);
 }
 
 /**
@@ -4513,6 +4912,8 @@ impl_menu_get_accel (PortableServer_Servant servant,
 {
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
+
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
 
 	internal = menu_toplevel_get_item (uih, path);
 
@@ -4610,27 +5011,38 @@ gnome_ui_handler_menu_get_callback (GnomeUIHandler *uih, char *path,
 }
 
 static void
-menu_toplevel_set_toggle_state (GnomeUIHandler *uih, char *path, gboolean state)
+menu_toplevel_set_toggle_state_internal (GnomeUIHandler *uih, MenuItemInternal *internal, gboolean state)
 {
-	MenuItemInternal *internal;
 	GtkWidget *menu_widget;
 
 	/*
 	 * Update the internal data.
 	 */
-	internal = menu_toplevel_get_item (uih, path);
-	g_return_if_fail (internal != NULL);
-
 	internal->active = state;
 
 	/*
 	 * Update the widget.
 	 */
-	menu_widget = menu_toplevel_get_widget (uih, path);
+	if (! menu_toplevel_item_is_head (uih, internal))
+		return;
+
+	menu_widget = menu_toplevel_get_widget (uih, internal->item->path);
 	g_return_if_fail (menu_widget != NULL);
 
 	if (GTK_IS_CHECK_MENU_ITEM (menu_widget))
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu_widget), state);
+}
+
+static void
+menu_toplevel_set_toggle_state (GnomeUIHandler *uih, char *path, gboolean state)
+{
+	MenuItemInternal *internal;
+
+	internal = menu_toplevel_get_item_for_containee (uih, path,
+							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	g_return_if_fail (internal != NULL);
+
+	menu_toplevel_set_toggle_state_internal (uih, internal, state);
 }
 
 static void
@@ -4658,6 +5070,8 @@ impl_menu_set_toggle_state (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_if_fail (menu_toplevel_check_toplevel (uih));
+
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee);
 
 	if (internal == NULL) {
@@ -4665,16 +5079,7 @@ impl_menu_set_toggle_state (PortableServer_Servant servant,
 		return;
 	}
 
-	/*
-	 * Update the internal state.
-	 */
-	internal->active = state;
-
-	/*
-	 * If the menu item is active, set the widget state.
-	 */
-	if (menu_toplevel_item_is_head (uih, internal))
-		menu_toplevel_set_toggle_state (uih, path, state);
+	menu_toplevel_set_toggle_state_internal (uih, internal, state);
 }
 
 /**
@@ -4729,6 +5134,8 @@ impl_menu_get_toggle_state (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 	MenuItemInternal *internal;
 
+	g_return_val_if_fail (menu_toplevel_check_toplevel (uih), FALSE);
+
 	internal = menu_toplevel_get_item (uih, path);
 
 	if (internal == NULL) {
@@ -4756,9 +5163,21 @@ gnome_ui_handler_menu_get_toggle_state (GnomeUIHandler *uih, char *path)
 }
 
 static void
+menu_toplevel_set_radio_state_internal (GnomeUIHandler *uih, MenuItemInternal *internal, gboolean state)
+{
+	menu_toplevel_set_toggle_state_internal (uih, internal, state);
+}
+
+static void
 menu_toplevel_set_radio_state (GnomeUIHandler *uih, char *path, gboolean state)
 {
-	menu_toplevel_set_toggle_state (uih, path, state);
+	MenuItemInternal *internal;
+
+	internal = menu_toplevel_get_item_for_containee (uih, path,
+							 gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	g_return_if_fail (internal != NULL);
+	
+	menu_toplevel_set_radio_state_internal (uih, internal, state);
 }
 
 static void
@@ -4814,7 +5233,8 @@ gnome_ui_handler_menu_get_radio_state (GnomeUIHandler *uih, char *path)
 }
 
 /*
- * The Toolbar manipulation routines.
+ *
+ * Toolbars.
  *
  * The name of the toolbar is the first element in the toolbar path.
  * For example:
@@ -4823,7 +5243,6 @@ gnome_ui_handler_menu_get_radio_state (GnomeUIHandler *uih, char *path)
  * 
  * Where both "Common" and "Graphics Tools" are the names of 
  * toolbars.
- * 
  */
 
 /*
@@ -4843,13 +5262,6 @@ struct _ToolbarItemInternal {
 	GnomeUIHandlerToolbarItem *item;
 
 	/*
-	 * If this item is a subtree or a radio group, this list
-	 * contains the item's children.  It is a list of path
-	 * strings.
-	 */
-	GList *children;
-
-	/*
 	 * The UIHandler CORBA interface for the containee which owns
 	 * this particular menu item.
 	 */
@@ -4860,11 +5272,456 @@ struct _ToolbarItemInternal {
 	 * ToolbarItemInternal structures for the members of the group.
 	 */
 	GSList *radio_items;
+
+	gboolean sensitive;
+	gboolean active;
 };
 
+/*
+ * The internal data for a toolbar.
+ */
+struct _ToolbarToolbarInternal {
+
+	/*
+	 * This toolbar's name. e.g. "Common"
+	 * The path for a toolbar item will be something like "/Common/Help"
+	 */
+	char			 *name;
+
+	/*
+	 * A list of paths for the items in this toolbar.
+	 */
+	GList			 *children;
+
+	/*
+	 * The owner for this toolbar.
+	 */
+	GNOME_UIHandler		 uih_corba;
+
+	GtkOrientation		 orientation;
+	GtkToolbarStyle		 style;
+	GtkToolbarSpaceStyle	 space_style;
+	int			 space_size;
+	GtkReliefStyle		 relief;
+};
+
+struct _ToolbarItemLocalInternal {
+	gpointer	 callback;
+	gpointer	 callback_data;
+};
+
+struct _ToolbarToolbarLocalInternal {
+	GList		*children;
+};
+
+static GnomeUIHandlerToolbarItem *
+toolbar_make_item (char *path, GnomeUIHandlerToolbarItemType type,
+		   char *label, char *hint, int pos,
+		   GnomeUIHandlerPixmapType pixmap_type,
+		   gpointer pixmap_data, guint accelerator_key,
+		   GdkModifierType ac_mods,
+		   GnomeUIHandlerCallbackFunc callback,
+		   gpointer callback_data)
+{
+	GnomeUIHandlerToolbarItem *item;
+
+	item = g_new0 (GnomeUIHandlerToolbarItem, 1);
+
+	item->path = path;
+	item->type = type;
+	item->label = label;
+	item->hint = hint;
+	item->pos = pos;
+	item->pixmap_type = pixmap_type;
+	item->pixmap_data = pixmap_data;
+	item->accelerator_key = accelerator_key;
+	item->ac_mods = ac_mods;
+	item->callback = callback;
+	item->callback_data = callback_data;
+
+	return item;
+}
+
+static GnomeUIHandlerToolbarItem *
+toolbar_copy_item (GnomeUIHandlerToolbarItem *item)
+{
+	GnomeUIHandlerToolbarItem *copy;
+
+	copy = g_new0 (GnomeUIHandlerToolbarItem, 1);
+
+#define COPY_STRING(x) ((x) == NULL ? NULL : g_strdup (x))
+	copy->path = COPY_STRING (item->path);
+	copy->type = item->type;
+	copy->hint = COPY_STRING (item->hint);
+	copy->pos = item->pos;
+	copy->label = COPY_STRING (item->label);
+	copy->children = NULL;
+
+	copy->pixmap_data = pixmap_copy_data (item->pixmap_type, item->pixmap_data);
+	copy->pixmap_type = item->pixmap_type;
+
+	copy->accelerator_key = item->accelerator_key;
+	copy->ac_mods = item->ac_mods;
+
+	copy->callback = item->callback;
+	copy->callback_data = item->callback_data;
+
+	return copy;
+}
+
+static ToolbarItemLocalInternal *
+toolbar_local_get_item (GnomeUIHandler *uih, char *path)
+{
+	GList *l;
+
+	l = g_hash_table_lookup (uih->path_to_toolbar_callback, path);
+
+	if (l == NULL)
+		return NULL;
+
+	return (ToolbarItemLocalInternal *) l->data;
+}
+
+static ToolbarToolbarLocalInternal *
+toolbar_local_get_toolbar (GnomeUIHandler *uih, char *path)
+{
+	GList *l;
+
+	l = g_hash_table_lookup (uih->path_to_toolbar_toolbar, path);
+
+	if (l == NULL)
+		return NULL;
+
+	return (ToolbarToolbarLocalInternal *) l->data;
+}
+
+static ToolbarToolbarInternal *
+toolbar_toplevel_get_toolbar (GnomeUIHandler *uih, char *name)
+{
+	GList *l;
+	
+	l = g_hash_table_lookup (uih->top->name_to_toolbar, name);
+
+	if (l == NULL)
+		return NULL;
+
+	return (ToolbarToolbarInternal *) l->data;
+}
+
+static ToolbarItemInternal *
+toolbar_toplevel_get_item (GnomeUIHandler *uih, char *path)
+{
+	GList *l;
+
+	l = g_hash_table_lookup (uih->top->path_to_toolbar_item, path);
+
+	if (l == NULL)
+		return NULL;
+
+	return (ToolbarItemInternal *) l->data;
+}
+
+static char *
+toolbar_get_toolbar_name (char *path)
+{
+	char *parent_name;
+	char **toks;
+	int i;
+
+	toks = path_tokenize (path);
+
+	parent_name = g_strdup (toks [1]);
+
+	for (i = 0; toks [i] != NULL; i ++) {
+		g_free (toks [i]);
+	}
+	g_free (toks);
+
+	return parent_name;
+}
+
+static void
+toolbar_toplevel_toolbar_create_widget (GnomeUIHandler *uih, ToolbarToolbarInternal *internal)
+{
+	GtkWidget *toolbar_widget;
+
+	/*
+	 * Create the toolbar widget.
+	 */
+	toolbar_widget = gtk_toolbar_new (internal->orientation, internal->style);
+
+	/*
+	 * Store it in the widget hash table.
+	 */
+	g_hash_table_insert (uih->top->name_to_toolbar_widget, g_strdup (internal->name), toolbar_widget);
+
+	/*
+	 * Stuff it into the application.
+	 */
+	gnome_app_set_toolbar (uih->top->app, GTK_TOOLBAR (toolbar_widget));
+
+	gtk_widget_show (toolbar_widget);
+}
+
+static void
+toolbar_toplevel_item_remove_widgets (GnomeUIHandler *uih, char *path)
+{
+	GtkWidget *toolbar_item_widget;
+	char *orig_key;
+
+	/*
+	 * Get the toolbar item widget and remove its entry from the
+	 * hash table.
+	 */
+	g_hash_table_lookup_extended (uih->top->path_to_toolbar_item_widget, path,
+				      (gpointer *) &orig_key, (gpointer *) &toolbar_item_widget);
+	g_hash_table_remove (uih->top->path_to_toolbar_item_widget, path);
+	g_free (orig_key);
+
+	/*
+	 * Destroy the widget.
+	 */
+	gtk_widget_destroy (toolbar_item_widget);
+}
+
+static void
+toolbar_toplevel_remove_toolbar_widgets_recursive (GnomeUIHandler *uih, char *name)
+{
+	ToolbarToolbarInternal *internal;
+	GtkWidget *toolbar_widget;
+	char *orig_key;
+	GList *curr;
+
+	internal = toolbar_toplevel_get_toolbar (uih, name);
+	g_return_if_fail (internal != NULL);
+
+	/*
+	 * First destroy each of the toolbar's children.
+	 */
+	for (curr = internal->children; curr != NULL; curr = curr->next)
+		toolbar_toplevel_item_remove_widgets (uih, (char *) curr->data);
+
+	/*
+	 * Get the toolbar widget and remove its entry from the hash table.
+	 */
+	g_hash_table_lookup_extended (uih->top->name_to_toolbar_widget, name,
+				      (gpointer *) &orig_key, (gpointer *) &toolbar_widget);
+	g_hash_table_remove (uih->top->name_to_toolbar_widget, name);
+	g_free (orig_key);
+
+	/*
+	 * Now destroy the toolbar widget.
+	 */
+	gtk_widget_destroy (toolbar_widget);
+}
+
+static void
+toolbar_toplevel_toolbar_override_notify_recursive (GnomeUIHandler *uih, char *name)
+{
+	ToolbarToolbarInternal *internal;
+	CORBA_Environment ev;
+	char *toolbar_path;
+	GList *curr;
+
+	internal = toolbar_toplevel_get_toolbar (uih, name);
+
+	toolbar_path = g_strconcat ("/", name, NULL);
+
+	CORBA_exception_init (&ev);
+
+	GNOME_UIHandler_toolbar_overriden (internal->uih_corba, toolbar_path, &ev);
+
+	CORBA_exception_free (&ev);
+
+	g_free (toolbar_path);
+
+	for (curr = internal->children; curr != NULL; curr = curr->next)
+		toolbar_toplevel_item_override_notify (uih, (char *) curr->data);
+}
+
+static void
+toolbar_toplevel_toolbar_check_override (GnomeUIHandler *uih, char *name)
+{
+	ToolbarToolbarInternal *internal;
+
+	/*
+	 * Check for an existing toolbar by this name.
+	 */
+        internal = toolbar_toplevel_get_toolbar (uih, name);
+
+	if (internal == NULL)
+		return;
+
+	/*
+	 * There is a toolbar by this name, and so it must
+	 * be overriden.
+	 *
+	 * We remove its widgets, its children's widgets, and notify
+	 * the owner of each overriden item that it has been
+	 * overriden.
+	 */
+	toolbar_toplevel_remove_toolbar_widgets_recursive (uih, name);
+
+	/*
+	 * Notification.
+	 */
+	toolbar_toplevel_toolbar_override_notify_recursive (uih, name);
+}
+
+static ToolbarToolbarInternal *
+toolbar_toplevel_toolbar_store_data (GnomeUIHandler *uih, char *name, GNOME_UIHandler uih_corba)
+{
+	ToolbarToolbarInternal *internal;
+	CORBA_Environment ev;
+	GList *l;
+
+	internal = g_new0 (ToolbarToolbarInternal, 1);
+	internal->name = g_strdup (name);
+
+	internal->orientation = GTK_ORIENTATION_HORIZONTAL;
+	internal->style = GTK_TOOLBAR_BOTH;
+
+	if (gnome_preferences_get_toolbar_lines ()) {
+		internal->space_style = GTK_TOOLBAR_SPACE_LINE;
+		internal->space_size = GNOME_PAD * 2;
+	} else {
+		internal->space_style = GTK_TOOLBAR_SPACE_EMPTY;
+		internal->space_size = GNOME_PAD;
+	}
+
+	if (gnome_preferences_get_toolbar_relief_btn ())
+		internal->relief = GTK_RELIEF_NORMAL;
+	else
+		internal->relief = GTK_RELIEF_NONE;
+
+	if (gnome_preferences_get_toolbar_labels ())
+		internal->style = GTK_TOOLBAR_BOTH;
+	else
+		internal->style = GTK_TOOLBAR_ICONS;
+
+	CORBA_exception_init (&ev);
+	internal->uih_corba = CORBA_Object_duplicate (uih_corba, &ev);
+	CORBA_exception_free (&ev);
+
+	/*
+	 * Put this new toolbar at the front of the list of toolbars.
+	 */
+	l = g_hash_table_lookup (uih->top->name_to_toolbar, name);
+
+	if (l != NULL) {
+		l = g_list_prepend (l, internal);
+		g_hash_table_insert (uih->top->name_to_toolbar, name, l);
+	} else {
+		l = g_list_prepend (NULL, internal);
+		g_hash_table_insert (uih->top->name_to_toolbar, g_strdup (name), l);
+	}
+
+	return internal;
+}
+
+static void
+toolbar_toplevel_toolbar_create (GnomeUIHandler *uih, char *name, GNOME_UIHandler uih_corba)
+{
+	ToolbarToolbarInternal *internal;
+
+	/*
+	 * If there is already a toolbar by this name, notify its
+	 * owner that it is being overriden.
+	 */
+	toolbar_toplevel_toolbar_check_override (uih, name);
+
+	/*
+	 * Store the internal data for this toolbar.
+	 */
+	internal = toolbar_toplevel_toolbar_store_data (uih, name, uih_corba);
+
+	/*
+	 * Create the toolbar widget.
+	 */
+	toolbar_toplevel_toolbar_create_widget (uih, internal);
+}
+
+static void
+toolbar_remote_toolbar_create (GnomeUIHandler *uih, char *name)
+{
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+
+	GNOME_UIHandler_toolbar_create (uih->top_level_uih,
+					gnome_object_corba_objref (GNOME_OBJECT (uih)), name,
+					&ev);
+
+	CORBA_exception_free (&ev);
+}
+
+static void
+impl_toolbar_create (PortableServer_Servant servant,
+		     GNOME_UIHandler containee,
+		     CORBA_char *name,
+		     CORBA_Environment *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+
+	toolbar_toplevel_toolbar_create (uih, name, containee);
+}
+
+/**
+ * gnome_ui_handler_toolbar_create:
+ */
 void
-gnome_ui_handler_set_toolbar (GnomeUIHandler *uih, char *name,
-			      GtkWidget *toolbar)
+gnome_ui_handler_create_toolbar (GnomeUIHandler *uih, char *name)
+{
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (name != NULL);
+
+	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
+		toolbar_remote_toolbar_create (uih, name);
+		return;
+	}
+
+	toolbar_toplevel_toolbar_create (uih, name, gnome_object_corba_objref (GNOME_OBJECT (uih)));
+}
+
+static void
+toolbar_toplevel_toolbar_remove (GnomeUIHandler *uih, char *name)
+{
+}
+
+static void
+toolbar_remote_toolbar_remove (GnomeUIHandler *uih, char *name)
+{
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+
+	GNOME_UIHandler_toolbar_remove (uih->top_level_uih,
+					gnome_object_corba_objref (GNOME_OBJECT (uih)),
+					name,
+					&ev);
+
+	CORBA_exception_free (&ev);
+}
+
+/**
+ * gnome_ui_handler_remove_toolbar:
+ */
+void
+gnome_ui_handler_remove_toolbar (GnomeUIHandler *uih, char *name)
+{
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (name != NULL);
+
+	if (uih->top_level_uih != CORBA_OBJECT_NIL)
+		toolbar_remote_toolbar_remove (uih, name);
+	else
+		toolbar_toplevel_toolbar_remove (uih, name);
+}
+
+void
+gnome_ui_handler_set_toolbar (GnomeUIHandler *uih, char *name, GtkWidget *toolbar)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
@@ -4873,6 +5730,9 @@ gnome_ui_handler_set_toolbar (GnomeUIHandler *uih, char *name,
 	g_return_if_fail (GTK_IS_TOOLBAR (toolbar));
 }
 
+/**
+ * gnome_ui_handler_get_toolbar_list:
+ */
 GList *
 gnome_ui_handler_get_toolbar_list (GnomeUIHandler *uih)
 {
@@ -4881,58 +5741,368 @@ gnome_ui_handler_get_toolbar_list (GnomeUIHandler *uih)
 }
 
 static void
-toolbar_toplevel_create (GnomeUIHandler *uih, char *name)
+toolbar_local_do_path (char *parent_path, GnomeUIHandlerToolbarItem *item)
 {
+	uih_local_do_path (parent_path, item->label, & item->path);
 }
 
 static void
-toolbar_remove_create (GnomeUIHandler *uih, char *name)
+toolbar_local_remove_parent_entry (GnomeUIHandler *uih, char *path, gboolean warn)
 {
+	ToolbarToolbarLocalInternal *parent;
+	char *parent_path;
+	GList *curr;
+
+	parent_path = toolbar_get_toolbar_name (path);
+	parent = toolbar_local_get_toolbar (uih, parent_path);
+	g_free (parent_path);
+
+	for (curr = parent->children; curr != NULL; curr = curr->next) {
+		if (! strcmp (path, (char *) curr->data)) {
+			parent->children = g_list_remove_link (parent->children, curr);
+			g_free (curr->data);
+			g_list_free_1 (curr);
+			return;
+		}
+	}
+
+	if (warn)
+		g_warning ("toolbar_local_remove_parent_entry: No entry in toolbar for item path [%s]!\n", path);
 }
 
-void
-gnome_ui_handler_toolbar_create (GnomeUIHandler *uih, char *name)
+static void
+toolbar_local_add_parent_entry (GnomeUIHandler *uih, char *path)
 {
-	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (name != NULL);
+	ToolbarToolbarLocalInternal *internal;
+	char *parent_path;
 
+	toolbar_local_remove_parent_entry (uih, path, FALSE);
+
+	parent_path = path_get_parent (path);
+	internal = toolbar_local_get_toolbar (uih, path);
+	g_free (parent_path);
+
+	internal->children = g_list_prepend (internal->children, g_strdup (path));
+}
+
+static void
+toolbar_local_create_item (GnomeUIHandler *uih, char *parent_path, GnomeUIHandlerToolbarItem *item)
+{
+	ToolbarItemLocalInternal *internal_cb;
+	GList *l, *new_list;
+
+	/*
+	 * Setup this item's path.
+	 */
+	toolbar_local_do_path (parent_path, item);
+
+	/*
+	 * Store it.
+	 */
+	internal_cb = g_new0 (ToolbarItemLocalInternal, 1);
+	internal_cb->callback = item->callback;
+	internal_cb->callback_data = item->callback_data;
+
+	l = g_hash_table_lookup (uih->path_to_toolbar_callback, item->path);
+	new_list = g_list_prepend (l, internal_cb);
+
+	if (l == NULL)
+		g_hash_table_insert (uih->path_to_toolbar_callback, g_strdup (item->path), new_list);
+	else
+		g_hash_table_insert (uih->path_to_toolbar_callback, item->path, new_list);
+
+	/*
+	 * Update the toolbar's child list.
+	 */
+	toolbar_local_add_parent_entry (uih, item->path);
+}
+
+static void
+toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, char *path)
+{
+	ToolbarItemInternal *internal;
+	CORBA_Environment ev;
+
+	internal = toolbar_toplevel_get_item (uih, path);
+	g_return_if_fail (internal != NULL);
+
+	CORBA_exception_init (&ev);
+
+	GNOME_UIHandler_toolbar_overriden (internal->uih_corba, path, &ev);
+
+	CORBA_exception_free (&ev);
+}
+
+static void
+toolbar_toplevel_item_check_override (GnomeUIHandler *uih, char *path)
+{
+	ToolbarItemInternal *internal;
+
+	internal = toolbar_toplevel_get_item (uih, path);
+
+	if (internal == NULL)
+		return;
+
+	toolbar_toplevel_item_remove_widgets (uih, path);
+
+	toolbar_toplevel_item_override_notify (uih, path);
+}
+
+static gint
+toolbar_toplevel_item_activated (GtkWidget *widget, gpointer user_data)
+{
+	/* FIXME: implement me */
+	return FALSE;
+}
+
+static GtkToolbarChildType
+toolbar_type_to_gtk_type (GnomeUIHandlerToolbarItemType type)
+{
+	switch (type) {
+	case GNOME_UI_HANDLER_TOOLBAR_ITEM:
+		return GTK_TOOLBAR_CHILD_BUTTON;
+
+	case GNOME_UI_HANDLER_TOOLBAR_RADIOITEM:
+		return GTK_TOOLBAR_CHILD_RADIOBUTTON;
+
+	case GNOME_UI_HANDLER_TOOLBAR_SEPARATOR:
+		return GTK_TOOLBAR_CHILD_SPACE;
+
+	case GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM:
+		return GTK_TOOLBAR_CHILD_TOGGLEBUTTON;
+
+	case GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP:
+		g_warning ("toolbar_type_to_gtk_type: Trying to convert UIHandler radiogroup "
+			   "to Gtk toolbar type!\n");
+		return GTK_TOOLBAR_CHILD_SPACE;
+		
+	default:
+		g_warning ("toolbar_type_to_gtk_type: Unkonwn UIHandler toolbar "
+			   "item type [%d]!\n", type);
+	}
+
+	return GTK_TOOLBAR_CHILD_BUTTON;
+}
+
+static void
+toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
+				      GNOME_UIHandler uih_corba,
+				      ToolbarItemInternal *internal)
+{
+	GtkWidget *toolbar;
+	GtkWidget *pixmap;
+	char *parent_name;
+
+	parent_name = toolbar_get_toolbar_name (internal->item->path);
+	toolbar = g_hash_table_lookup (uih->top->name_to_toolbar_widget, parent_name);
+	g_free (parent_name);
+
+	switch (internal->item->type) {
+
+	case GNOME_UI_HANDLER_TOOLBAR_SEPARATOR:
+		gtk_toolbar_insert_space (GTK_TOOLBAR (toolbar), internal->item->pos);
+		break;
+
+	case GNOME_UI_HANDLER_TOOLBAR_ITEM:
+		pixmap = NULL;
+		if (internal->item->pixmap_data != NULL && internal->item->pixmap_type != GNOME_UI_HANDLER_PIXMAP_NONE)
+			pixmap = uih_toplevel_create_pixmap (toolbar, internal->item->pixmap_type,
+							     internal->item->pixmap_data);
+
+
+		if (internal->item->pos > 0)
+			gtk_toolbar_insert_element (GTK_TOOLBAR (toolbar),
+						    toolbar_type_to_gtk_type (internal->item->type),
+						    NULL, internal->item->label, internal->item->hint,
+						    NULL, pixmap,
+						    GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated),
+						    internal, internal->item->pos);
+		else
+			gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
+						    toolbar_type_to_gtk_type (internal->item->type),
+						    NULL, internal->item->label, internal->item->hint,
+						    NULL, pixmap,
+						    GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated), internal);
+
+		break;
+
+	case GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM:
+
+		if (internal->item->pos > 0)
+			gtk_toolbar_insert_element (GTK_TOOLBAR (toolbar),
+						    toolbar_type_to_gtk_type (internal->item->type),
+						    NULL, internal->item->label, internal->item->hint,
+						    NULL, NULL,
+						    GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated),
+						    internal, internal->item->pos);
+		else
+			gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
+						    toolbar_type_to_gtk_type (internal->item->type),
+						    NULL, internal->item->label, internal->item->hint,
+						    NULL, NULL,
+						    GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated), internal);
+
+		break;
+
+	case GNOME_UI_HANDLER_TOOLBAR_RADIOITEM:
+		g_warning ("Toolbar radio items/groups not implemented\n");
+		return;
+		
+	default:
+
+		g_warning ("toolbar_toplevel_item_create_widgets: Unkonwn toolbar item type [%d]!\n",
+			   (gint) internal->item->type);
+		return;
+	}
+
+	/* FIXME: Connect to signals and gtk_widget_add_accelerator */
+}
+
+static void
+toolbar_toplevel_remove_parent_entry (GnomeUIHandler *uih, char *path, gboolean warn)
+{
+	ToolbarToolbarInternal *parent;
+	char *parent_name;
+	GList *curr;
+
+	parent_name = toolbar_get_toolbar_name (path);
+	parent = toolbar_toplevel_get_toolbar (uih, parent_name);
+
+	if (parent == NULL) {
+		g_warning ("toolbar_toplevel_remove_parent_entry: Cannot find toolbar [%s] for path [%s]!\n",
+			   path, parent_name);
+		g_free (parent_name);
+	}
+	g_free (parent_name);
+
+	for (curr = parent->children; curr != NULL; curr = curr->next) {
+		if (! strcmp (path, (char *) curr->data)) {
+			parent->children = g_list_remove_link (parent->children, curr);
+			g_free (curr->data);
+			g_list_free_1 (curr);
+			return;
+		}
+	}
+
+	if (warn)
+		g_warning ("toolbar_toplevel_remove_parent_entry: No entry in parent for child path [%s]!\n", path);
+}
+
+static void
+toolbar_toplevel_add_parent_entry (GnomeUIHandler *uih, char *path)
+{
+	ToolbarToolbarInternal *internal;
+	char *parent_name;
+
+	toolbar_toplevel_remove_parent_entry (uih, path, FALSE);
 	
+	parent_name = toolbar_get_toolbar_name (path);
+	internal = toolbar_toplevel_get_toolbar (uih, parent_name);
+	g_free (parent_name);
+
+	internal->children = g_list_prepend (internal->children, g_strdup (path));
 }
 
-void
-gnome_ui_handler_toolbar_add_one (GnomeUIHandler *uih, char *path,
-			      GnomeUIHandlerToolbarItem *item)
+static ToolbarItemInternal *
+toolbar_toplevel_item_store_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba,
+				  GnomeUIHandlerToolbarItem *item)
 {
-	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (path != NULL);
-	g_return_if_fail (item != NULL);
+	ToolbarItemInternal *internal;
+	CORBA_Environment ev;
+	GList *l;
+
+	/*
+	 * Create the internal representation of the toolbar item.
+	 */
+	internal = g_new0 (ToolbarItemInternal, 1);
+	internal->item = toolbar_copy_item (item);
+	internal->uih = uih;
+	internal->sensitive = TRUE;
+	internal->active = FALSE;
+
+	CORBA_exception_init (&ev);
+	internal->uih_corba = CORBA_Object_duplicate (uih_corba, &ev);
+	CORBA_exception_free (&ev);
+
+	/*
+	 * Store it.
+	 */
+	l = g_hash_table_lookup (uih->top->path_to_toolbar_item, internal->item->path);
+
+	if (l != NULL) {
+		l = g_list_prepend (l, internal);
+		g_hash_table_insert (uih->top->path_to_toolbar_item, internal->item->path, l);
+	} else {
+		l = g_list_prepend (NULL, internal);
+		g_hash_table_insert (uih->top->path_to_toolbar_item, g_strdup (internal->item->path), l);
+	}
+
+	toolbar_toplevel_add_parent_entry (uih, item->path);
+
+	return internal;
 }
 
+static void
+toolbar_toplevel_create_item (GnomeUIHandler *uih, char *parent_path,
+			      GnomeUIHandlerToolbarItem *item, GNOME_UIHandler uih_corba)
+{
+	ToolbarItemInternal *internal;
+
+	/*
+	 * Check to see if this item is overriding an existing toolbar
+	 * item.
+	 */
+	toolbar_toplevel_item_check_override (uih, item->path);
+
+	/*
+	 * Store an internal representation of the item.
+	 */
+	internal = toolbar_toplevel_item_store_data (uih, uih_corba, item);
+
+	/*
+	 * Create the toolbar item widgets.
+	 */
+	toolbar_toplevel_item_create_widgets (uih, uih_corba, internal);
+}
+
+static void
+toolbar_remote_create_item (GnomeUIHandler *uih, char *parent_path,
+			    GnomeUIHandlerToolbarItem *item,
+			    GNOME_UIHandler uih_corba)
+{
+}
+
+/**
+ * gnome_ui_handler_toolbar_add_one:
+ */
 void
-gnome_ui_handler_toolbar_add_one_pos (GnomeUIHandler *uih, char *path, int pos,
+gnome_ui_handler_toolbar_add_one (GnomeUIHandler *uih, char *parent_path,
 				  GnomeUIHandlerToolbarItem *item)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (path != NULL);
+	g_return_if_fail (parent_path != NULL);
 	g_return_if_fail (item != NULL);
+
+	/*
+	 * Store the toolbar item's local callback data.
+	 */
+	toolbar_local_create_item (uih, parent_path, item);
+
+	/*
+	 * Create the item.
+	 */
+	if (uih->top_level_uih != CORBA_OBJECT_NIL)
+		toolbar_remote_create_item  (uih, parent_path, item,
+					     gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	else
+		toolbar_toplevel_create_item  (uih, parent_path, item,
+					       gnome_object_corba_objref (GNOME_OBJECT (uih)));
 }
 
 void
 gnome_ui_handler_toolbar_add_list (GnomeUIHandler *uih, char *path,
 			      GnomeUIHandlerToolbarItem *item)
-{
-	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (path != NULL);
-	g_return_if_fail (item != NULL);
-}
-
-void
-gnome_ui_handler_toolbar_add_list_pos (GnomeUIHandler *uih, char *path, int pos,
-				  GnomeUIHandlerToolbarItem *item)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
@@ -4951,13 +6121,51 @@ gnome_ui_handler_toolbar_add_tree (GnomeUIHandler *uih, char *path,
 }
 
 void
-gnome_ui_handler_toolbar_add_tree_pos (GnomeUIHandler *uih, char *path, int pos,
-				  GnomeUIHandlerToolbarItem *item)
+gnome_ui_handler_toolbar_new (GnomeUIHandler *uih, char *path,
+			      GnomeUIHandlerMenuItemType type,
+			      char *label, char *hint,
+			      int pos, GnomeUIHandlerPixmapType pixmap_type,
+			      gpointer pixmap_data, guint accelerator_key,
+			      GdkModifierType ac_mods,
+			      GnomeUIHandlerCallbackFunc callback,
+			      gpointer callback_data)
 {
+	GnomeUIHandlerToolbarItem *item;
+	char *parent_path;
+
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
-	g_return_if_fail (item != NULL);
+
+	item = toolbar_make_item (path, type, label, hint, pos, pixmap_type, pixmap_data,
+				  accelerator_key, ac_mods, callback, callback_data);
+
+	parent_path = path_get_parent (path);
+	g_return_if_fail (parent_path != NULL);
+
+	gnome_ui_handler_toolbar_add_one (uih, parent_path, item);
+
+	g_free (item);
+	g_free (parent_path);
+}
+
+/**
+ * gnome_ui_handler_toolbar_new_item
+ */
+void
+gnome_ui_handler_toolbar_new_item (GnomeUIHandler *uih, char *path,
+				   char *label, char *hint, int pos,
+				   GnomeUIHandlerPixmapType pixmap_type,
+				   gpointer pixmap_data,
+				   guint accelerator_key, GdkModifierType ac_mods,
+				   GnomeUIHandlerCallbackFunc callback,
+				   gpointer callback_data)
+{
+	gnome_ui_handler_toolbar_new (uih, path,
+				      GNOME_UI_HANDLER_TOOLBAR_ITEM,
+				      label, hint, pos, pixmap_type,
+				      pixmap_data, accelerator_key,
+				      ac_mods, callback, callback_data);
 }
 
 void

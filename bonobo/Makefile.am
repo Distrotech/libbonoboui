@@ -24,7 +24,7 @@ bonobo_libs = 			\
 
 lib_LTLIBRARIES = libbonobo.la
 noinst_PROGRAMS = object_test test-container sample-server \
-			test-container-autoload selector_test test-storage
+			test-container-autoload selector_test test-storage test-ui-handler
 
 CORBA_SOURCE =			\
 	bonobo.h		\
@@ -118,6 +118,11 @@ libbonoboinclude_HEADERS =		\
 	gnome-view-frame.h		\
 	gnome-wrapper.h			\
 	gnome-ui-handler.h
+
+test_ui_handler_SOURCES =		\
+	test-ui-handler.c
+
+test_ui_handler_LDADD = $(bonobo_libs)
 
 test_container_SOURCES =		\
 	test-container.c

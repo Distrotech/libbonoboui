@@ -404,7 +404,7 @@ size_allocate (GtkWidget *widget, GtkAllocation *allocation, GNOME_View view)
 }
 
 /**
- * gnome_client_site_embeddable_new_view:
+ * gnome_client_site_new_view:
  * @client_site: the client site that contains a remote Embeddable
  * object.
  *
@@ -417,7 +417,7 @@ size_allocate (GtkWidget *widget, GtkAllocation *allocation, GNOME_View view)
  * Returns: A GnomeViewFrame object that contains the view frame for
  * the new view of @server_object.  */
 GnomeViewFrame *
-gnome_client_site_embeddable_new_view (GnomeClientSite *client_site)
+gnome_client_site_new_view (GnomeClientSite *client_site)
 {
 	GnomeObjectClient *server_object;
 	GnomeViewFrame *view_frame;
@@ -488,7 +488,7 @@ gnome_client_site_embeddable_new_view (GnomeClientSite *client_site)
 }
 
 /**
- * gnome_client_site_embeddable_get_verbs:
+ * gnome_client_site_get_verbs:
  * @server_object: The pointer to the embedeed server object
  *
  * Returns: A GList containing the GnomeVerb structures for the verbs
@@ -498,7 +498,7 @@ gnome_client_site_embeddable_new_view (GnomeClientSite *client_site)
  * gnome_embeddable_free_verbs().
  */
 GList *
-gnome_client_site_embeddable_get_verbs (GnomeClientSite *client_site)
+gnome_client_site_get_verbs (GnomeClientSite *client_site)
 {
 	GNOME_Embeddable_verb_list *list;
 	GNOME_Embeddable object;
