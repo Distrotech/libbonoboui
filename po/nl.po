@@ -7,7 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0\n"
-"POT-Creation-Date: 2003-06-13 04:43+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-06-21 12:57+0200\n"
 "PO-Revision-Date: 2003-06-14 12:08+0100\n"
 "Last-Translator: Huib Kleinhout <huib@stack.nl>\n"
 "Language-Team: Dutch <NL@li.org>\n"
@@ -85,7 +86,7 @@ msgstr "Naam"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
-msgstr "Omschrijving"
+msgstr "Beschrijving"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
@@ -369,7 +370,7 @@ msgstr "Over dit programma"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr "Selecteer"
+msgstr "Selecteren"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
@@ -377,7 +378,7 @@ msgstr "_Info..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "B_ewerken"
+msgstr "Be_werken"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
