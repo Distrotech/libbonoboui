@@ -10,6 +10,7 @@
 
 /*
  * Notes to self:
+ *  - Toolbar radiogroups!
  *  - Check exceptions in all *_remote_* functions.
  *  - use gnome_preferences_[get/set]_[menus/toolbars] !
  *  - routines to override the toolbar characteristics
@@ -90,6 +91,8 @@ static guint uih_signals [LAST_SIGNAL];
  */
 #define CORBIFY_STRING(s) ((s) == NULL ? "" : (s))
 #define UNCORBIFY_STRING(s) ((strlen (s) == 0) ? NULL : (s))
+
+#define COPY_STRING(s) (s == NULL ? NULL : g_strdup (s))
 
 /*
  * Internal data structure definitions.
@@ -254,12 +257,6 @@ static GnomeUIHandlerMenuItem	 *menu_toplevel_fetch			(GnomeUIHandler *uih, char
 static GnomeUIHandlerMenuItem	 *menu_remote_fetch			(GnomeUIHandler *uih, char *path);
 static GList			 *menu_toplevel_get_children		(GnomeUIHandler *uih, char *parent_path);
 static GList			 *menu_remote_get_children		(GnomeUIHandler *uih, char *parent_path);
-static void			  menu_parse_uiinfo_one			(GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii);
-static void			  menu_parse_uiinfo_tree		(GnomeUIHandlerMenuItem *tree, GnomeUIInfo *uii);
-static void			  menu_parse_uiinfo_one_with_data	(GnomeUIHandlerMenuItem *item,
-									 GnomeUIInfo *uii, void *data);
-static void			  menu_parse_uiinfo_tree_with_data	(GnomeUIHandlerMenuItem *tree,
-									 GnomeUIInfo *uii, void *data);
 static gint			  menu_remote_get_pos			(GnomeUIHandler *uih, char *path);
 static void			  menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
 									 gboolean sensitivity);
@@ -1692,7 +1689,6 @@ menu_copy_item (GnomeUIHandlerMenuItem *item)
 
 	copy = g_new0 (GnomeUIHandlerMenuItem, 1);
 
-#define COPY_STRING(x) ((x) == NULL ? NULL : g_strdup (x))
 	copy->path = COPY_STRING (item->path);
 	copy->type = item->type;
 	copy->hint = COPY_STRING (item->hint);
@@ -4064,14 +4060,14 @@ menu_parse_uiinfo_one (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii)
 
 	item->type = menu_uiinfo_type_to_uih (uii->type);
 
-	item->label = g_strdup (uii->label);
-	item->hint = g_strdup (uii->hint);
+	item->label = COPY_STRING (uii->label);
+	item->hint = COPY_STRING (uii->hint);
 
 	item->pos = -1;
 
-	if (item->type == GNOME_UI_HANDLER_MENU_ITEM
-	    || item->type == GNOME_UI_HANDLER_MENU_RADIOITEM
-	    || item->type == GNOME_UI_HANDLER_MENU_TOGGLEITEM)
+	if (item->type == GNOME_UI_HANDLER_MENU_ITEM ||
+	    item->type == GNOME_UI_HANDLER_MENU_RADIOITEM ||
+	    item->type == GNOME_UI_HANDLER_MENU_TOGGLEITEM)
 		item->callback = uii->moreinfo;
 	item->callback_data = uii->user_data;
 
@@ -4086,8 +4082,8 @@ menu_parse_uiinfo_tree (GnomeUIHandlerMenuItem *tree, GnomeUIInfo *uii)
 {
 	menu_parse_uiinfo_one (tree, uii);
 
-	if (tree->type == GNOME_UI_HANDLER_MENU_SUBTREE
-	    || tree->type == GNOME_UI_HANDLER_MENU_RADIOGROUP) {
+	if (tree->type == GNOME_UI_HANDLER_MENU_SUBTREE ||
+	    tree->type == GNOME_UI_HANDLER_MENU_RADIOGROUP) {
 		tree->children = gnome_ui_handler_menu_parse_uiinfo_list (uii->moreinfo);
 	}
 }
@@ -4123,7 +4119,7 @@ gnome_ui_handler_menu_parse_uiinfo_list (GnomeUIInfo *uii)
 	g_return_val_if_fail (uii != NULL, NULL);
 
 	/*
-	 * Allocate the GnomeUIHandlerMenuItem list.
+	 * Allocate the GnomeUIHandlerMenuItem array.
 	 */
 	list_len = 0;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
@@ -4171,8 +4167,8 @@ menu_parse_uiinfo_tree_with_data (GnomeUIHandlerMenuItem *tree, GnomeUIInfo *uii
 {
 	menu_parse_uiinfo_one_with_data (tree, uii, data);
 
-	if (tree->type == GNOME_UI_HANDLER_MENU_SUBTREE
-	    || tree->type == GNOME_UI_HANDLER_MENU_RADIOGROUP) {
+	if (tree->type == GNOME_UI_HANDLER_MENU_SUBTREE ||
+	    tree->type == GNOME_UI_HANDLER_MENU_RADIOGROUP) {
 		tree->children = gnome_ui_handler_menu_parse_uiinfo_list_with_data (uii->moreinfo, data);
 	}
 }
@@ -5606,7 +5602,6 @@ toolbar_copy_item (GnomeUIHandlerToolbarItem *item)
 
 	copy = g_new0 (GnomeUIHandlerToolbarItem, 1);
 
-#define COPY_STRING(x) ((x) == NULL ? NULL : g_strdup (x))
 	copy->path = COPY_STRING (item->path);
 	copy->type = item->type;
 	copy->hint = COPY_STRING (item->hint);
@@ -6990,6 +6985,8 @@ toolbar_toplevel_remove_item (GnomeUIHandler *uih, char *path, GNOME_UIHandler u
 
 	internal = toolbar_toplevel_get_item_for_containee (uih, path, uih_corba);
 
+	g_return_if_fail (internal != NULL);
+
 	toolbar_toplevel_remove_item_internal (uih, internal);
 }
 
@@ -7081,7 +7078,7 @@ gnome_ui_handler_toolbar_get_pos (GnomeUIHandler *uih, char *path)
 	return -1;
 }
 
-static GnomeUIHandlerToolbarItemType
+static GnomeUIHandlerMenuItemType
 toolbar_uiinfo_type_to_uih (GnomeUIInfoType uii_type)
 {
 	switch (uii_type) {
@@ -7097,18 +7094,24 @@ toolbar_uiinfo_type_to_uih (GnomeUIInfoType uii_type)
 	case GNOME_APP_UI_RADIOITEMS:
 		return GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP;
 
+	case GNOME_APP_UI_SUBTREE:
+		g_error ("Toolbar subtree doesn't make sense!\n");
+
 	case GNOME_APP_UI_SEPARATOR:
 		return GNOME_UI_HANDLER_TOOLBAR_SEPARATOR;
 
 	case GNOME_APP_UI_HELP:
-		g_error ("Help unimplemented."); /* FIXME */
+		g_error ("Help unimplemented.\n"); /* FIXME */
 
 	case GNOME_APP_UI_BUILDER_DATA:
-		g_error ("Builder data - what to do?"); /* FIXME */
+		g_error ("Builder data - what to do?\n"); /* FIXME */
 
 	case GNOME_APP_UI_ITEM_CONFIGURABLE:
 		g_warning ("Configurable item!");
-		return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+		return GNOME_UI_HANDLER_MENU_ITEM;
+
+	case GNOME_APP_UI_SUBTREE_STOCK:
+		g_error ("Toolbar subtree doesn't make sense!\n");
 
 	default:
 		g_warning ("Unknown UIInfo Type: %d", uii_type);
@@ -7131,9 +7134,9 @@ toolbar_parse_uiinfo_one (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii)
 
 	item->pos = -1;
 
-	if (item->type == GNOME_UI_HANDLER_TOOLBAR_ITEM
-	    || item->type == GNOME_UI_HANDLER_TOOLBAR_RADIOITEM
-	    || item->type == GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM)
+	if (item->type == GNOME_UI_HANDLER_TOOLBAR_ITEM ||
+	    item->type == GNOME_UI_HANDLER_TOOLBAR_RADIOITEM ||
+	    item->type == GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM)
 		item->callback = uii->moreinfo;
 	item->callback_data = uii->user_data;
 
@@ -7148,10 +7151,31 @@ toolbar_parse_uiinfo_tree (GnomeUIHandlerToolbarItem *tree, GnomeUIInfo *uii)
 {
 	toolbar_parse_uiinfo_one (tree, uii);
 
-	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP)
+	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP) {
 		tree->children = gnome_ui_handler_toolbar_parse_uiinfo_list (uii->moreinfo);
+	}
 }
 
+static void
+toolbar_parse_uiinfo_one_with_data (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii, void *data)
+{
+	toolbar_parse_uiinfo_one (item, uii);
+	item->callback_data = data;
+}
+
+static void
+toolbar_parse_uiinfo_tree_with_data (GnomeUIHandlerToolbarItem *tree, GnomeUIInfo *uii, void *data)
+{
+	toolbar_parse_uiinfo_one_with_data (tree, uii, data);
+
+	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP) {
+		tree->children = gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (uii->moreinfo, data);
+	}
+}
+
+/**
+ * gnome_ui_handler_toolbar_parse_uiinfo_one:
+ */
 GnomeUIHandlerToolbarItem *
 gnome_ui_handler_toolbar_parse_uiinfo_one (GnomeUIInfo *uii)
 {
@@ -7162,10 +7186,13 @@ gnome_ui_handler_toolbar_parse_uiinfo_one (GnomeUIInfo *uii)
 	item = g_new0 (GnomeUIHandlerToolbarItem, 1);
 
 	toolbar_parse_uiinfo_one (item, uii);
-	
+
 	return item;
 }
 
+/**
+ * gnome_ui_handler_toolbar_parse_uiinfo_list:
+ */
 GnomeUIHandlerToolbarItem *
 gnome_ui_handler_toolbar_parse_uiinfo_list (GnomeUIInfo *uii)
 {
@@ -7177,7 +7204,7 @@ gnome_ui_handler_toolbar_parse_uiinfo_list (GnomeUIInfo *uii)
 	g_return_val_if_fail (uii != NULL, NULL);
 
 	/*
-	 * Allocate the GnomeUIHandlerToolbarItem list.
+	 * Allocate the GnomeUIHandlerToolbarItem array.
 	 */
 	list_len = 0;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
@@ -7195,6 +7222,9 @@ gnome_ui_handler_toolbar_parse_uiinfo_list (GnomeUIInfo *uii)
 	return list;
 }
 
+/**
+ * gnome_ui_handler_toolbar_parse_uiinfo_tree:
+ */
 GnomeUIHandlerToolbarItem *
 gnome_ui_handler_toolbar_parse_uiinfo_tree (GnomeUIInfo *uii)
 {
@@ -7209,25 +7239,11 @@ gnome_ui_handler_toolbar_parse_uiinfo_tree (GnomeUIInfo *uii)
 	return item_tree;
 }
 
-static void
-toolbar_parse_uiinfo_one_with_data (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii, void *data)
-{
-	toolbar_parse_uiinfo_one (item, uii);
-
-	item->callback_data = data;
-}
-
-static void
-toolbar_parse_uiinfo_tree_with_data (GnomeUIHandlerToolbarItem *tree, GnomeUIInfo *uii, void *data)
-{
-	toolbar_parse_uiinfo_one_with_data (tree, uii, data);
-
-	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP)
-		tree->children = gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (uii->moreinfo, data);
-}
-
+/**
+ * gnome_ui_handler_toolbar_parse_uiinfo_one_with_data:
+ */
 GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_one_with_data (GnomeUIInfo *uii, gpointer data)
+gnome_ui_handler_toolbar_parse_uiinfo_one_with_data (GnomeUIInfo *uii, void *data)
 {
 	GnomeUIHandlerToolbarItem *item;
 
@@ -7240,8 +7256,11 @@ gnome_ui_handler_toolbar_parse_uiinfo_one_with_data (GnomeUIInfo *uii, gpointer 
 	return item;
 }
 
+/**
+ * gnome_ui_handler_toolbar_parse_uiinfo_list_with_data:
+ */
 GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, gpointer data)
+gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, void *data)
 {
 	GnomeUIHandlerToolbarItem *list;
 	GnomeUIHandlerToolbarItem *curr_uih;
@@ -7251,7 +7270,7 @@ gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, gpointer
 	g_return_val_if_fail (uii != NULL, NULL);
 
 	/*
-	 * Allocate the GnomeUIHandlerToolbarItem list.
+	 * Allocate the GnomeUIHandlerToolbarItem array.
 	 */
 	list_len = 0;
 	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
@@ -7269,8 +7288,11 @@ gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, gpointer
 	return list;
 }
 
+/**
+ * gnome_ui_handler_toolbar_parse_uiinfo_tree_with_data:
+ */
 GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, gpointer data)
+gnome_ui_handler_toolbar_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, void *data)
 {
 	GnomeUIHandlerToolbarItem *item_tree;
 

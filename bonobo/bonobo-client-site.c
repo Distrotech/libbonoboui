@@ -438,17 +438,6 @@ size_allocate (GtkWidget *widget, GtkAllocation *allocation, GnomeViewFrame *vie
 	CORBA_exception_free (&ev);
 }
 
-static void
-size_request (GtkWidget *widget, GtkRequisition *requisition, GnomeViewFrame *view_frame)
-{
-	int width, height;
-
-	gnome_view_frame_size_request (view_frame, &width, &height);
-
-	requisition->width = (gint16) width;
-	requisition->height = (gint16) height;
-}
-
 /**
  * gnome_client_site_new_view:
  * @client_site: the client site that contains a remote Embeddable
@@ -534,9 +523,6 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 	gtk_signal_connect (GTK_OBJECT (wrapper), "size_allocate",
 			    GTK_SIGNAL_FUNC (size_allocate), view_frame);
 
-	gtk_signal_connect (GTK_OBJECT (wrapper), "size_request",
-			    GTK_SIGNAL_FUNC (size_request), view_frame);
-	
 	CORBA_exception_free (&ev);		
 	return view_frame;
 }

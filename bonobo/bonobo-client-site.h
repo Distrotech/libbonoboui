@@ -55,6 +55,9 @@ gboolean           gnome_client_site_bind_embeddable	(GnomeClientSite *client_si
 							 GnomeObjectClient *object);
 GnomeObjectClient *gnome_client_site_get_embeddable	(GnomeClientSite *client_site);
 
+/*
+ * Proxy functions.
+ */
 GnomeViewFrame    *gnome_client_site_new_view		(GnomeClientSite *client_site);
 GList		  *gnome_client_site_get_verbs		(GnomeClientSite *client_site);
 void		   gnome_client_site_free_verbs		(GList *verb_list);

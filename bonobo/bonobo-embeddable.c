@@ -170,14 +170,7 @@ gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
 	 */
 	if (embeddable->views != NULL)
 		return;
-	/*
-	 * FIXME:
-	 *
-	 * This code is temporary disabled because pinging
-	 * tends to kill the component for some reason.
-	 * This needs to be investigated.
-	 */
-#if 0
+
 	if (! gnome_unknown_ping (embeddable->client_site)) {
 		/*
 		 * The remote end is dead; it's time for
@@ -185,7 +178,6 @@ gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
 		 */
 		gnome_object_destroy (GNOME_OBJECT (embeddable));
 	}
-#endif
 }
 
 static GNOME_View
@@ -257,6 +249,7 @@ gnome_embeddable_corba_object_create (GnomeObject *object)
 	servant->vepv = &gnome_embeddable_vepv;
 
 	CORBA_exception_init (&ev);
+
 	POA_GNOME_Embeddable__init ((PortableServer_Servant) servant, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION){
 		g_free (servant);
@@ -326,7 +319,7 @@ gnome_embeddable_new (GnomeViewFactory factory, void *data)
 
 	g_return_val_if_fail (factory != NULL, NULL);
 
-	embeddable = gtk_type_new (gnome_embeddable_get_type ());
+	embeddable = gtk_type_new (GNOME_EMBEDDABLE_TYPE);
 
 	corba_embeddable = gnome_embeddable_corba_object_create (GNOME_OBJECT (embeddable));
 	if (corba_embeddable == CORBA_OBJECT_NIL){

@@ -187,6 +187,8 @@ component_add_view (Component *component)
 {
 	GnomeViewFrame *view_frame;
 	GtkWidget *view_widget;
+	int component_width;
+	int component_height;
 
 	/*
 	 * Create the remote view and the local ViewFrame.
@@ -246,7 +248,29 @@ component_add_view (Component *component)
 	 * Show the component.
 	 */
 	gtk_widget_show_all (view_widget);
+
+	/*
+	 * Ask the embedded component what size it wants to be.
+	 */
+	gnome_view_frame_size_request (view_frame, &component_width, &component_height);
+
+	/*
+	 * Clamp this to our (arbitrarily chosen) constraints.
+	 */
+	component_width = CLAMP (component_width, 10, 500);
+	component_height = CLAMP (component_height, 10, 500);
+
+	/*
+	 * Now set the size.
+	 */
+	/*
+	 * FIXME: All this size negotiation needs to be put into a
+	 * single function and then connected to the queue_resize
+	 * signal (or whatever the component function is.)
+	 */
+	gtk_widget_set_usize (view_widget, component_width, component_height);
 }
+
 
 static void
 component_new_view_cb (GtkWidget *button, gpointer data)
@@ -544,6 +568,7 @@ gnome_object_has_interface (GnomeObject *obj, char *interface)
 
 	if (!CORBA_Object_is_nil(requested_interface, &ev) && ev._major == CORBA_NO_EXCEPTION)
 	{
+		/* Get rid of the interface we've been passed */
 		GNOME_Unknown_unref (requested_interface, &ev);
 		CORBA_Object_release (requested_interface, &ev);
 		retval = TRUE;

@@ -102,6 +102,7 @@ GnomeEmbeddable *gnome_embeddable_construct        (GnomeEmbeddable *embeddable,
 						    GnomeViewFactory factory,
 						    void *data);
 GNOME_Embeddable gnome_embeddable_corba_object_create (GnomeObject *object);
+
 void             gnome_embeddable_add_verb         (GnomeEmbeddable *embeddable,
 						    const char *verb_name,
 						    const char *verb_label,
