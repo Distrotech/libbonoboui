@@ -110,7 +110,23 @@ control_factory (BonoboGenericFactory *this,
 	return object;
 }
 
-BONOBO_ACTIVATION_FACTORY ("OAFIID:Bonobo_Sample_ControlFactory",
-			   "bonobo-sample-controls-2", VERSION,
-			   control_factory,
-			   NULL)
+int
+main (int argc, char *argv [])
+{
+	int retval;
+	char *iid;
+
+	if (!bonobo_ui_init ("bonobo-sample-controls-2",
+			     VERSION, &argc, argv))
+		g_error (_("Could not initialize Bonobo UI"));
+
+	iid = bonobo_activation_make_registration_id (
+		"OAFIID:Bonobo_Sample_ControlFactory",
+		gdk_get_display ());
+
+	retval = bonobo_generic_factory_main (iid, control_factory, NULL);
+
+	g_free (iid);
+
+	return retval;
+}                                                                             

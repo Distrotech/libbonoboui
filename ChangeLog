@@ -1,3 +1,8 @@
+2002-03-06  Michael Meeks  <michael@ximian.com>
+
+	* samples/controls/bonobo-sample-controls.c
+	(main): do per display init.
+
 2002-03-05  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-config-widget.c
