@@ -1,3 +1,7 @@
+2002-02-13  Michael Meeks  <michael@ximian.com>
+
+	* container.c (sample_app_new): upd. sizing.
+
 2001-10-08  Abel Cheung  <maddog@linux.org.hk>
 
 	* Makefile.am, container-menu.c(verb_HelpAbout_cb): Rename

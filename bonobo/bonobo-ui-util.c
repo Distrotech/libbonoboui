@@ -429,7 +429,7 @@ bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 		icon_pixbuf = bonobo_ui_util_xml_to_pixbuf (text);
 		if (icon_pixbuf) {
 			image = gtk_image_new_from_pixbuf (icon_pixbuf);
-			gdk_pixbuf_unref (icon_pixbuf);
+			g_object_unref (icon_pixbuf);
 		}
 	} else
 		g_warning ("Unknown icon_pixbuf type '%s'", type);

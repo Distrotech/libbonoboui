@@ -331,7 +331,7 @@ bonobo_selector_widget_instance_init (BonoboSelectorWidget *widget)
 
 	pixbuf = gdk_pixbuf_new_from_xpm_data (bonobo_insert_component_xpm);
 	pixmap = gtk_image_new_from_pixbuf (pixbuf);
-	gdk_pixbuf_unref (pixbuf);
+	g_object_unref (pixbuf);
 
 	gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, TRUE, BONOBO_UI_PAD_SMALL);
 	

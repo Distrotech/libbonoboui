@@ -1234,14 +1234,14 @@ bonobo_dock_item_grab_pointer (BonoboDockItem *item)
                            fleur,
                            GDK_CURRENT_TIME) != 0);
 
-  gdk_cursor_destroy (fleur);
+  gdk_cursor_unref (fleur);
 }
 
 gboolean
 bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
 {
-  GtkRequisition requisition;
   GtkAllocation allocation;
+  GtkRequisition requisition;
 
   if (item->behavior & BONOBO_DOCK_ITEM_BEH_NEVER_FLOATING)
     return FALSE;
@@ -1260,7 +1260,8 @@ bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
                           x, y, requisition.width, requisition.height);
 
   gdk_window_reparent (item->bin_window, item->float_window, 0, 0);
-  gdk_window_set_hints (item->float_window, x, y, 0, 0, 0, 0, GDK_HINT_POS);
+	  
+/*  gdk_window_set_hints (item->float_window, x, y, 0, 0, 0, 0, GDK_HINT_POS); */
 
   gdk_window_show (item->float_window);
   item->float_window_mapped = TRUE;

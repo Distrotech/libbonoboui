@@ -329,7 +329,7 @@ show_popup_window (BonoboUIToolbar *toolbar)
 	else
 		y += toolbar_allocation->y + toolbar_allocation->height;
 
-	gtk_widget_set_uposition (GTK_WIDGET (priv->popup_window), x, y);
+	gtk_window_move (GTK_WINDOW (priv->popup_window), x, y);
 
 	g_signal_connect (priv->popup_window, "map",
 			  G_CALLBACK (popup_window_map_cb), toolbar);
@@ -1277,12 +1277,10 @@ bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
 {
 	BonoboUIToolbarPrivate *priv;
 
-	g_return_if_fail (toolbar != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
-	gtk_object_ref (GTK_OBJECT (item));
+	g_object_ref (item);
 	gtk_object_sink (GTK_OBJECT (item));
 
 	priv = toolbar->priv;

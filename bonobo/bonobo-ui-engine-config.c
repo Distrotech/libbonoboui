@@ -493,9 +493,9 @@ bonobo_ui_engine_config_get_path (BonoboUIEngine *engine)
 }
 
 static void
-button_clicked_fn (GtkDialog   *dialog,
-		   gint         button_number,
-		   BonoboUIEngineConfig *config)
+response_fn (GtkDialog            *dialog,
+	     gint                  response_id,
+	     BonoboUIEngineConfig *config)
 {
 	bonobo_ui_engine_config_serialize (config);
 
@@ -511,14 +511,13 @@ dialog_new (BonoboUIEngineConfig *config)
 	accel_group = gtk_accel_group_new ();
 
 	window = gtk_dialog_new_with_buttons (_("Configure UI"), 
-					      NULL,
-					      0,
-					      GTK_STOCK_OK,
+					      NULL, 0,
+					      GTK_STOCK_OK, GTK_RESPONSE_OK,
 					      NULL);
 	gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_OK);
 
-	g_signal_connect (GTK_OBJECT (window), "clicked",
-			    (GtkSignalFunc) button_clicked_fn, config);
+	g_signal_connect (window, "response",
+			  G_CALLBACK (response_fn), config);
 
 	cwidget = bonobo_ui_config_widget_new (config->priv->engine, accel_group);
 	gtk_widget_show (cwidget);

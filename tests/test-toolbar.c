@@ -26,7 +26,7 @@ prepend_item (BonoboUIToolbar *toolbar,
 	item = bonobo_ui_toolbar_button_item_new (pixbuf, label);
 
 	if (pixbuf)
-		gdk_pixbuf_unref (pixbuf);
+		g_object_unref (pixbuf);
 
 	bonobo_ui_toolbar_insert (toolbar, BONOBO_UI_TOOLBAR_ITEM (item), 0);
 	bonobo_ui_toolbar_item_set_expandable (BONOBO_UI_TOOLBAR_ITEM (item), expandable);

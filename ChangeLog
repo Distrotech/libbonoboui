@@ -1,5 +1,41 @@
 2002-02-13  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-engine-config.c
+	(response_fn, dialog_new): upd.
+
+	* bonobo/bonobo-ui-config-widget.c
+	(populate_list): port away from GtkList.
+
+	* bonobo/bonobo-ui-component.c
+	(bonobo_ui_component_new_default): upd. pid
+	printf.
+
+	* samples/controls/bonobo-sample-controls.c
+	(bonobo_entry_control_new): remove visual push/pop.
+
+	* samples/bonoboui/hello.c (hello_new): upd window
+	handling.
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_util_xml_get_icon_widget): upd.
+	pixbuf ref counting.
+
+	* bonobo/bonobo-ui-toolbar.c (show_popup_window): 
+	use gtk_window_move not widget_set_uposition
+	(bonobo_ui_toolbar_insert): upd.
+
+	* bonobo/bonobo-canvas-component.c
+	(impl_Bonobo_Canvas_Component_unrealize): 
+	update pixbuf ref/unref
+	(bonobo_canvas_new): prune gdk_rgb_init
+	
+	* bonobo/bonobo-dock-item.c
+	(bonobo_dock_item_grab_pointer): unref don't
+	destroy cursor.
+	(bonobo_dock_item_detach): remove hints.
+
+2002-02-13  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-selector.c
 	(bonobo_selector_class_init): fix signal_new
 	arg. ordering.

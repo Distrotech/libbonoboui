@@ -1029,7 +1029,7 @@ window_transient_destroy_gdk_cb (GtkWidget *widget)
 	GdkWindow *win;
 	
 	if ((win = g_object_get_data (G_OBJECT (widget), "transient")))
-		gdk_window_unref (win);
+		g_object_unref (win);
 }
 
 static void       
@@ -1040,7 +1040,7 @@ window_set_transient_for_gdk (GtkWindow *window,
 	g_return_if_fail (g_object_get_data (
 		G_OBJECT (window), "transient") == NULL);
 
-	gdk_window_ref (parent);
+	g_object_ref (parent);
 
 	g_object_set_data (G_OBJECT (window), "transient", parent);
 

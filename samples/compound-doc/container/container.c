@@ -49,7 +49,7 @@ sample_app_new (SampleDoc *doc)
 	app->win = bonobo_window_new ("sample-doc-container",
 				      "Sample Document container");
 
-	gtk_widget_set_usize (app->win, 400, 600);
+	gtk_window_set_default_size (GTK_WINDOW (app->win), 400, 600);
 	g_signal_connect_data (G_OBJECT (app->win), "delete_event",
 			       G_CALLBACK (delete_cb), app, NULL, 0);
 

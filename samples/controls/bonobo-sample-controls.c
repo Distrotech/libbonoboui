@@ -50,9 +50,6 @@ bonobo_entry_control_new (void)
 		GtkWidget *canvas, *scrolled;
 		GnomeCanvasItem *item;
 		
-		gtk_widget_push_visual (gdk_rgb_get_visual ());
-		gtk_widget_push_colormap (gdk_rgb_get_cmap ());
-
 		canvas = gnome_canvas_new ();
 		gtk_widget_show (canvas);
 		
@@ -62,9 +59,6 @@ bonobo_entry_control_new (void)
 			"x", 0.0, "y", 0.0, "width", 100.0,
 			"height", 100.0, "widget", entry, NULL);
 		gnome_canvas_item_show (item);
-
-		gtk_widget_pop_visual ();
-		gtk_widget_pop_colormap ();
 
 		scrolled = gtk_scrolled_window_new (NULL, NULL);
 		gtk_scrolled_window_set_policy (

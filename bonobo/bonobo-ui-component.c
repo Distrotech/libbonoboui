@@ -546,8 +546,12 @@ bonobo_ui_component_new_default (void)
 	char              *name;
 	BonoboUIComponent *component;
 	static int idx = 0;
+	static int pid = 0;
 
-	name = g_strdup_printf ("%d-%d", getpid (), idx++);
+	if (!pid)
+		pid = getpid ();
+
+	name = g_strdup_printf ("%d-%d", pid, idx++);
 
 	component = bonobo_ui_component_new (name);
 	

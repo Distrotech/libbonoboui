@@ -287,7 +287,7 @@ impl_Bonobo_Canvas_Component_unrealize (PortableServer_Servant servant,
 	ICLASS (item)->unrealize (item);
 
 	if (item->canvas->layout.bin_window) {
-		gdk_pixmap_unref (item->canvas->layout.bin_window);
+		g_object_unref (item->canvas->layout.bin_window);
 		item->canvas->layout.bin_window = NULL;
 	}
 }
@@ -889,10 +889,9 @@ bonobo_canvas_new (gboolean is_aa, Bonobo_Canvas_ComponentProxy proxy)
 	GnomeCanvas *canvas;
 	GnomeCanvasItem *orig_root;
 
-	if (is_aa) {
-		gdk_rgb_init ();
+	if (is_aa)
 		canvas = GNOME_CANVAS (gnome_canvas_new_aa ());
-	} else
+	else
 		canvas = GNOME_CANVAS (gnome_canvas_new ());
 
 	orig_root = canvas->root;

@@ -278,7 +278,7 @@ hello_new (void)
 		GTK_OBJECT (button), "clicked",
 		G_CALLBACK(hello_on_button_click), label);
 
-	gtk_window_set_policy (GTK_WINDOW (win), FALSE, TRUE, FALSE);
+	gtk_window_set_resizable (GTK_WINDOW (win), TRUE);
 	gtk_window_set_default_size (GTK_WINDOW (win), 250, 350);
 
 	/* Create Frame and add it to the main BonoboWindow: */

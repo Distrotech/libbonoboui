@@ -17,45 +17,49 @@
 #include <bonobo/bonobo-ui-config-widget.h>
 #include <bonobo/bonobo-ui-sync-toolbar.h>
 #include <bonobo/bonobo-ui-toolbar.h>
+#include <libgnome/gnome-macros.h>
 
-#define PARENT_TYPE gtk_vbox_get_type ()
-
-static GtkObjectClass *parent_class;
+GNOME_CLASS_BOILERPLATE (BonoboUIConfigWidget,
+			 bonobo_ui_config_widget,
+			 GtkVBox, GTK_TYPE_VBOX);
 
 struct _BonoboUIConfigWidgetPrivate {
-	GtkWidget  *list;
+	GtkTreeView  *list_view;
+	GtkListStore *list_store;
 
-	GtkWidget  *left_attrs;
-	GtkWidget  *right_attrs;
+	GtkWidget    *left_attrs;
+	GtkWidget    *right_attrs;
 
-	GtkWidget  *show;
-	GtkWidget  *hide;
+	GtkWidget    *show;
+	GtkWidget    *hide;
 
-	GtkWidget  *tooltips;
+	GtkWidget    *tooltips;
 
-	GtkWidget  *icon;
-	GtkWidget  *icon_and_text;
-	GtkWidget  *priority_text;
+	GtkWidget    *icon;
+	GtkWidget    *icon_and_text;
+	GtkWidget    *priority_text;
 
-	const char *cur_path;
+	char         *cur_path;
 };
 
-#define WIDGET_ATTR_KEY "BonoboUIConfigWidget_Attr"
-
-static const char *
-widget_get_attr (GtkWidget *widget)
-{
-	return g_object_get_data (G_OBJECT (widget), WIDGET_ATTR_KEY);
-}
-
 static void
-select_child_cb (GtkList	      *list,
-		 GtkWidget            *child,
-		 BonoboUIConfigWidget *config)
+row_activated_cb (GtkTreeView          *tree_view,
+		  GtkTreePath          *path,
+		  GtkTreeViewColumn    *column,
+		  BonoboUIConfigWidget *config)
 {
+	GtkTreeIter iter;
 	BonoboUINode *node;
+	GtkTreeModel *model;
 
-	config->priv->cur_path = widget_get_attr (child);
+	model = GTK_TREE_MODEL (config->priv->list_store);
+
+	if (!gtk_tree_selection_get_selected (
+		gtk_tree_view_get_selection (tree_view), NULL, &iter))
+		return;
+
+	g_free (config->priv->cur_path);
+	gtk_tree_model_get (model, &iter, 1, &config->priv->cur_path, -1);
 
 	node = bonobo_ui_engine_get_path (
 		config->engine, config->priv->cur_path);
@@ -91,12 +95,14 @@ select_child_cb (GtkList	      *list,
 }
 
 static void
-populate_list (GtkWidget            *list,
+populate_list (GtkTreeView          *list_view,
 	       BonoboUIConfigWidget *config)
 {
+	int idx = 0;
 	BonoboUINode *l, *start;
+	GtkListStore *list_store;
 
-	GList *items = NULL;
+	list_store = GTK_LIST_STORE (gtk_tree_view_get_model (list_view));
 
 	start = bonobo_ui_node_children (
 		bonobo_ui_engine_get_xml (config->engine)->root);
@@ -104,34 +110,33 @@ populate_list (GtkWidget            *list,
 	if (!start)
 		g_warning ("No tree");
 
-	for (l = start; l;
-	     l = bonobo_ui_node_next (l)) {
+	for (l = start; l; l = bonobo_ui_node_next (l)) {
 
 		if (bonobo_ui_node_has_name (l, "dockitem")) {
 			const char *name;
 
 			if ((name = bonobo_ui_node_peek_attr (l, "tip")) ||
 			    (name = bonobo_ui_node_peek_attr (l, "name"))) {
+				char       *path;
+				GtkTreeIter iter;
 
-				GtkWidget *w = gtk_list_item_new_with_label (name);
-				char      *path = bonobo_ui_xml_make_path (l);
+				path = bonobo_ui_xml_make_path (l);
 
-				g_object_set_data_full (G_OBJECT (w),
-							WIDGET_ATTR_KEY,
-							path,
-							(GDestroyNotify) g_free);
+				gtk_list_store_append (list_store, &iter);
+				gtk_list_store_set (list_store, &iter,
+						    0, name,
+						    1, path, -1);
 
-				gtk_widget_show (w);
-				items = g_list_prepend (items, w);
+				if (!idx++) {
+					gtk_tree_selection_select_iter (
+						gtk_tree_view_get_selection (list_view),
+						&iter);
+					config->priv->cur_path = path;
+				} else
+					g_free (path);
 			}
 		}
 	}
-
-	gtk_list_append_items (GTK_LIST (list), items);
-	g_signal_connect (GTK_OBJECT (list), "select_child",
-			    (GtkSignalFunc) select_child_cb, config);
-
-	gtk_list_select_item (GTK_LIST (list), 0);
 }
 
 static void
@@ -264,29 +269,40 @@ widgets_init (BonoboUIConfigWidget *config,
 
 	priv->show = gtk_radio_button_new_with_mnemonic (visible_group,
 							 _("_Show"));
-	g_signal_connect (GTK_OBJECT (priv->show), "clicked",
-			    (GtkSignalFunc) show_hide_cb, config);
-	visible_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->show));
+	g_signal_connect (priv->show, "clicked",
+			  G_CALLBACK (show_hide_cb), config);
+	visible_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (priv->show));
 	gtk_box_pack_start (GTK_BOX (vbox7), priv->show, FALSE, FALSE, 0);
 
 	priv->hide = gtk_radio_button_new_with_mnemonic (visible_group,
 							 _("_Hide"));
-	g_signal_connect (GTK_OBJECT (priv->hide), "clicked",
-			    (GtkSignalFunc) show_hide_cb, config);
-	visible_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->hide));
+	g_signal_connect (priv->hide, "clicked",
+			  G_CALLBACK (show_hide_cb), config);
+	visible_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (priv->hide));
 	gtk_box_pack_start (GTK_BOX (vbox7), priv->hide, FALSE, FALSE, 0);
 
 	priv->tooltips = gtk_check_button_new_with_mnemonic (_("_View tooltips"));
 	gtk_box_pack_start (GTK_BOX (vbox6), priv->tooltips, FALSE, FALSE, 0);
-	g_signal_connect (GTK_OBJECT (priv->tooltips), "clicked",
-			    (GtkSignalFunc) tooltips_cb, config);
+	g_signal_connect (priv->tooltips, "clicked",
+			  G_CALLBACK (tooltips_cb), config);
 
 	frame7 = gtk_frame_new (_("Toolbars"));
 	gtk_table_attach (GTK_TABLE (table2), frame7, 0, 2, 0, 1,
 			  (GtkAttachOptions) (GTK_FILL),
 			  (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-	priv->list = toolbar_list = gtk_list_new ();
+	priv->list_store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+	toolbar_list = gtk_tree_view_new_with_model (
+		GTK_TREE_MODEL (priv->list_store));
+	priv->list_view = GTK_TREE_VIEW (toolbar_list);
+	gtk_tree_view_insert_column_with_attributes (
+		priv->list_view, 0, _("toolbars"),
+		gtk_cell_renderer_text_new (),
+		"text", 0, NULL);
+	gtk_tree_view_set_headers_visible (priv->list_view, FALSE);
+	gtk_tree_selection_set_mode (
+		gtk_tree_view_get_selection (priv->list_view),
+		GTK_SELECTION_BROWSE);
 
 	gtk_container_add (GTK_CONTAINER (frame7), toolbar_list);
 	GTK_WIDGET_SET_FLAGS (toolbar_list, GTK_CAN_DEFAULT);
@@ -301,24 +317,28 @@ widgets_init (BonoboUIConfigWidget *config,
 
 	priv->icon = gtk_radio_button_new_with_mnemonic (look_group,
 							 _("_Icon"));
-	g_signal_connect (GTK_OBJECT (priv->icon), "clicked",
-			    (GtkSignalFunc) look_cb, config);
-	look_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->icon));
+	g_signal_connect (priv->icon, "clicked",
+			  G_CALLBACK (look_cb), config);
+	look_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (priv->icon));
 	gtk_box_pack_start (GTK_BOX (vbox5), priv->icon, FALSE, FALSE, 0);
 
 	priv->icon_and_text = gtk_radio_button_new_with_mnemonic (look_group, _("_Text and Icon"));
-	g_signal_connect (GTK_OBJECT (priv->icon_and_text), "clicked",
-			    (GtkSignalFunc) look_cb, config);
-	look_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->icon_and_text));
+	g_signal_connect (priv->icon_and_text, "clicked",
+			  G_CALLBACK (look_cb), config);
+	look_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (priv->icon_and_text));
 	gtk_box_pack_start (GTK_BOX (vbox5), priv->icon_and_text, FALSE, FALSE, 0);
 
 	priv->priority_text = gtk_radio_button_new_with_mnemonic (look_group, _("_Priority text only"));
-	g_signal_connect (GTK_OBJECT (priv->priority_text), "clicked",
-			    (GtkSignalFunc) look_cb, config);
-	look_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->priority_text));
+	g_signal_connect (priv->priority_text, "clicked",
+			  G_CALLBACK (look_cb), config);
+	look_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (priv->priority_text));
 	gtk_box_pack_start (GTK_BOX (vbox5), priv->priority_text, FALSE, FALSE, 0);
 
-	populate_list (toolbar_list, config);
+	populate_list (priv->list_view, config);
+
+	g_signal_connect (priv->list_view, "row_activated",
+			  G_CALLBACK (row_activated_cb), config);
+
 	set_values (config);
 
 	gtk_widget_show_all (GTK_WIDGET (config));
@@ -326,10 +346,8 @@ widgets_init (BonoboUIConfigWidget *config,
 }
 
 static void
-bonobo_ui_config_widget_init (GtkWidget *widget)
+bonobo_ui_config_widget_instance_init (BonoboUIConfigWidget *config)
 {
-	BonoboUIConfigWidget *config = BONOBO_UI_CONFIG_WIDGET (widget);
-
 	config->priv = g_new0 (BonoboUIConfigWidgetPrivate, 1);
 }
 
@@ -340,7 +358,7 @@ bonobo_ui_config_widget_finalize (GObject *object)
 
 	g_free (config->priv);
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
 GtkWidget *
@@ -379,38 +397,8 @@ bonobo_ui_config_widget_class_init (BonoboUIConfigWidgetClass *klass)
 	GObjectClass *gobject_class;
 	
 	g_return_if_fail (klass != NULL);
-	parent_class = gtk_type_class (PARENT_TYPE);
 	
 	gobject_class = (GObjectClass *) klass;
 	
 	gobject_class->finalize = bonobo_ui_config_widget_finalize;
-}
-
-/**
- * bonobo_ui_config_widget_get_type:
- *
- * Returns: The GtkType for the BonoboUIConfigWidget object class.
- */
-GtkType
-bonobo_ui_config_widget_get_type (void)
-{
-	static GtkType bonobo_ui_config_widget_type = 0;
-
-	if (!bonobo_ui_config_widget_type) {
-		GtkTypeInfo bonobo_ui_config_widget_info = {
-			"BonoboUIConfigWidget",
-			sizeof (BonoboUIConfigWidget),
-			sizeof (BonoboUIConfigWidgetClass),
-			(GtkClassInitFunc)  bonobo_ui_config_widget_class_init,
-			(GtkObjectInitFunc) bonobo_ui_config_widget_init,
-			NULL,
-			NULL
-		};
-
-		bonobo_ui_config_widget_type = gtk_type_unique (
-			PARENT_TYPE,
-			&bonobo_ui_config_widget_info);
-	}
-
-	return bonobo_ui_config_widget_type;
 }
