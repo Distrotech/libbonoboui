@@ -13,8 +13,6 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include "bonobo-ui-toolbar-icon.h"
-
 #include "bonobo-ui-toolbar-button-item.h"
 
 

@@ -61,7 +61,6 @@ libbonoboinclude_HEADERS = \
 	bonobo-ui-node.h			\
 	bonobo-ui-sync.h			\
 	bonobo-ui-toolbar-button-item.h		\
-	bonobo-ui-toolbar-icon.h		\
 	bonobo-ui-toolbar-item.h		\
 	bonobo-ui-toolbar-toggle-button-item.h	\
 	bonobo-ui-toolbar.h			\
@@ -112,7 +111,6 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-ui-sync-toolbar.c		\
 	bonobo-ui-toolbar-button-item.c  	\
 	bonobo-ui-toolbar-control-item.c  	\
-	bonobo-ui-toolbar-icon.c         	\
 	bonobo-ui-toolbar-item.c		\
 	bonobo-ui-toolbar-popup-item.c		\
 	bonobo-ui-toolbar-separator-item.c	\

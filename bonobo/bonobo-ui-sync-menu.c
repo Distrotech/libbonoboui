@@ -629,8 +629,7 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 			
 			/* FIXME: why not always create image menu items ? */
 			if ((txt = bonobo_ui_engine_get_attr (node, cmd_node, "pixtype")))
-				/* FIXME: We should use gtk_image_menu_item_new() here. */
-				menu_widget = g_object_new (GTK_TYPE_IMAGE_MENU_ITEM, NULL);
+				menu_widget = gtk_image_menu_item_new ();
 			else
 				menu_widget = gtk_menu_item_new ();
 

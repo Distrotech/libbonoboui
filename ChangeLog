@@ -1,5 +1,15 @@
 2001-07-19  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-toolbar-button-item.c: upd.
+
+	* bonobo/Makefile.am: remove bonobo-ui-toolbar-icon.[ch]
+
+	* bonobo/bonobo-ui-toolbar-icon.[ch]: remove.
+
+	* bonobo/bonobo-ui-sync-menu.c (impl_bonobo_ui_sync_menu_build): upd.
+
+2001-07-19  Michael Meeks  <michael@ximian.com>
+
 	* tests/test-ui.c (main): hack out test encode / decode.
 
 	* bonobo/bonobo-ui-sync-toolbar.c (do_config_popup): simplify.
