@@ -31,7 +31,7 @@ enum {
 	LAST_SIGNAL
 };
 
-#define PARENT_TYPE BONOBO_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_TYPE_OBJECT
 
 static GtkObjectClass *parent_class;
 

@@ -31,11 +31,11 @@
 
 G_BEGIN_DECLS
 
-#define BONOBO_ZOOMABLE_TYPE		(bonobo_zoomable_get_type ())
-#define BONOBO_ZOOMABLE(o)		(GTK_CHECK_CAST ((o), BONOBO_ZOOMABLE_TYPE, BonoboZoomable))
-#define BONOBO_ZOOMABLE_CLASS(k)	(GTK_CHECK_CLASS_CAST((k), BONOBO_ZOOMABLE_TYPE, BonoboZoomableClass))
-#define BONOBO_IS_ZOOMABLE(o)		(GTK_CHECK_TYPE ((o), BONOBO_ZOOMABLE_TYPE))
-#define BONOBO_IS_ZOOMABLE_CLASS(k)	(GTK_CHECK_CLASS_TYPE ((k), BONOBO_ZOOMABLE_TYPE))
+#define BONOBO_TYPE_ZOOMABLE		(bonobo_zoomable_get_type ())
+#define BONOBO_ZOOMABLE(o)		(GTK_CHECK_CAST ((o), BONOBO_TYPE_ZOOMABLE, BonoboZoomable))
+#define BONOBO_ZOOMABLE_CLASS(k)	(GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_ZOOMABLE, BonoboZoomableClass))
+#define BONOBO_IS_ZOOMABLE(o)		(GTK_CHECK_TYPE ((o), BONOBO_TYPE_ZOOMABLE))
+#define BONOBO_IS_ZOOMABLE_CLASS(k)	(GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_ZOOMABLE))
 
 typedef struct _BonoboZoomablePrivate	BonoboZoomablePrivate;
 

@@ -26,11 +26,11 @@ typedef struct _BonoboControl BonoboControl;
 
 G_BEGIN_DECLS
  
-#define BONOBO_CONTROL_TYPE        (bonobo_control_get_type ())
-#define BONOBO_CONTROL(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_CONTROL_TYPE, BonoboControl))
-#define BONOBO_CONTROL_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_CONTROL_TYPE, BonoboControlClass))
-#define BONOBO_IS_CONTROL(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_CONTROL_TYPE))
-#define BONOBO_IS_CONTROL_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_CONTROL_TYPE))
+#define BONOBO_TYPE_CONTROL        (bonobo_control_get_type ())
+#define BONOBO_CONTROL(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_TYPE_CONTROL, BonoboControl))
+#define BONOBO_CONTROL_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_TYPE_CONTROL, BonoboControlClass))
+#define BONOBO_IS_CONTROL(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_TYPE_CONTROL))
+#define BONOBO_IS_CONTROL_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_CONTROL))
 
 typedef struct _BonoboControlPrivate BonoboControlPrivate;
 

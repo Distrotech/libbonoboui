@@ -1,3 +1,42 @@
+2001-10-28  Seth Nickell  <snickell@stanford.edu>
+
+	* bonobo/bonobo-canvas-component.c: (bonobo_canvas_component_new):
+	* bonobo/bonobo-canvas-component.h:
+	* bonobo/bonobo-control-frame.c: (bonobo_control_frame_new):
+	* bonobo/bonobo-control-frame.h:
+	* bonobo/bonobo-control.c:
+	* bonobo/bonobo-control.h:
+	* bonobo/bonobo-embeddable-factory.h:
+	* bonobo/bonobo-property-control.c:
+	* bonobo/bonobo-property-control.h:
+	* bonobo/bonobo-ui-component.c: (ui_event),
+	(impl_Bonobo_UIComponent_execVerb), (bonobo_ui_component_new):
+	* bonobo/bonobo-ui-component.h:
+	* bonobo/bonobo-ui-container.c: (bonobo_ui_container_new):
+	* bonobo/bonobo-ui-container.h:
+	* bonobo/bonobo-ui-xml.c: (bonobo_ui_xml_new):
+	* bonobo/bonobo-ui-xml.h:
+	* bonobo/bonobo-widget.c: (bonobo_widget_new_control_async),
+	(bonobo_widget_new_control_from_objref),
+	(bonobo_widget_new_control):
+	* bonobo/bonobo-widget.h:
+	* bonobo/bonobo-zoomable-frame.c:
+	* bonobo/bonobo-zoomable-frame.h:
+	* bonobo/bonobo-zoomable.c:
+	* bonobo/bonobo-zoomable.h:
+
+	Convert Bonobo TYPE macros from:
+
+	BONOBO_..._TYPE to BONOBO_TYPE_... 
+
+	Add #defines to the old style for compatibility, but
+	add a magic comment so its easy to remove them in the 
+	future.
+
+	See also: http://www.stanford.edu/~snickell/bonobo_type_convert.pl
+
+	(converts source code to use the new macros)
+	
 2001-10-26  Michael Meeks  <michael@ximian.com>
 
 	* tests/test-ui.c (dump_prefs): impl. (main): invoke.

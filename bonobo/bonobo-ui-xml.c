@@ -1111,7 +1111,7 @@ bonobo_ui_xml_new (BonoboUIXmlCompareFn   compare,
 {
 	BonoboUIXml *tree;
 
-	tree = g_object_new (BONOBO_UI_XML_TYPE, NULL);
+	tree = g_object_new (BONOBO_TYPE_UI_XML, NULL);
 
 	tree->compare = compare;
 	tree->data_new = data_new;

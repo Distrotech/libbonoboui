@@ -155,7 +155,7 @@ bonobo_zoomable_frame_init (BonoboZoomableFrame *zoomable)
 }
 
 BONOBO_TYPE_FUNC_FULL (BonoboZoomableFrame, Bonobo_ZoomableFrame,
-		       BONOBO_OBJECT_TYPE, bonobo_zoomable_frame);
+		       BONOBO_TYPE_OBJECT, bonobo_zoomable_frame);
 
 
 /**

@@ -14,11 +14,11 @@
 #include <bonobo/bonobo-ui-node.h>
 #include <bonobo/bonobo-ui-engine.h>
 
-#define BONOBO_UI_XML_TYPE        (bonobo_ui_xml_get_type ())
-#define BONOBO_UI_XML(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_UI_XML_TYPE, BonoboUIXml))
-#define BONOBO_UI_XML_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_UI_XML_TYPE, BonoboUIXmlClass))
-#define BONOBO_IS_UI_XML(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_UI_XML_TYPE))
-#define BONOBO_IS_UI_XML_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_UI_XML_TYPE))
+#define BONOBO_TYPE_UI_XML        (bonobo_ui_xml_get_type ())
+#define BONOBO_UI_XML(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_TYPE_UI_XML, BonoboUIXml))
+#define BONOBO_UI_XML_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_TYPE_UI_XML, BonoboUIXmlClass))
+#define BONOBO_IS_UI_XML(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_TYPE_UI_XML))
+#define BONOBO_IS_UI_XML_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_UI_XML))
 
 typedef struct _BonoboUIXml BonoboUIXml;
 

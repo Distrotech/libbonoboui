@@ -206,7 +206,7 @@ bonobo_widget_new_control_async (const char         *moniker,
 	g_return_val_if_fail (fn != NULL, NULL);
 	g_return_val_if_fail (moniker != NULL, NULL);
 
-	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
+	bw = gtk_type_new (BONOBO_TYPE_WIDGET);
 
 	CORBA_exception_init (&ev);
 
@@ -253,7 +253,7 @@ bonobo_widget_new_control_from_objref (Bonobo_Control     control,
 
 	CORBA_exception_init (&ev);
 
-	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
+	bw = gtk_type_new (BONOBO_TYPE_WIDGET);
 
 	bw = bonobo_widget_construct_control_from_objref (bw, control, uic, &ev);
 
@@ -285,7 +285,7 @@ bonobo_widget_new_control (const char        *moniker,
 
 	g_return_val_if_fail (moniker != NULL, NULL);
 
-	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
+	bw = gtk_type_new (BONOBO_TYPE_WIDGET);
 
 	CORBA_exception_init (&ev);
 

@@ -20,7 +20,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 
-#define PARENT_TYPE BONOBO_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_TYPE_OBJECT
 
 static GObjectClass *bonobo_ui_component_parent_class;
 
@@ -94,7 +94,7 @@ ui_event (BonoboUIComponent           *component,
 	if (list && list->closure)
 		bonobo_closure_invoke (
 			list->closure, G_TYPE_NONE,
-			BONOBO_UI_COMPONENT_TYPE, component,
+			BONOBO_TYPE_UI_COMPONENT, component,
 			G_TYPE_STRING, id,
 			G_TYPE_INT, type,
 			G_TYPE_STRING, state, 0);
@@ -128,7 +128,7 @@ impl_Bonobo_UIComponent_execVerb (PortableServer_Servant servant,
 		   our C closure we do odd things ! */
 		bonobo_closure_invoke (
 			verb->closure, G_TYPE_NONE,
-			BONOBO_UI_COMPONENT_TYPE, component,
+			BONOBO_TYPE_UI_COMPONENT, component,
 			G_TYPE_STRING, cname, 0);
 	else
 		g_warning ("FIXME: verb '%s' not found, emit exception", cname);
@@ -499,7 +499,7 @@ bonobo_ui_component_new (const char *name)
 {
 	BonoboUIComponent *component;
 
-	component = g_object_new (BONOBO_UI_COMPONENT_TYPE, NULL);
+	component = g_object_new (BONOBO_TYPE_UI_COMPONENT, NULL);
 	if (!component)
 		return NULL;
 

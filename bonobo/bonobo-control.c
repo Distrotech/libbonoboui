@@ -23,7 +23,7 @@
 #include <gtk/gtkbox.h>
 #include <gtk/gtkmain.h>
 
-#define PARENT_TYPE BONOBO_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_TYPE_OBJECT
 
 enum {
 	SET_FRAME,

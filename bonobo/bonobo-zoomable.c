@@ -453,7 +453,7 @@ bonobo_zoomable_init (BonoboZoomable *zoomable)
 	zoomable->priv->preferred_zoom_level_names = g_array_new (FALSE, TRUE, sizeof (gchar *));
 }
 
-BONOBO_TYPE_FUNC_FULL (BonoboZoomable, Bonobo_Zoomable, BONOBO_OBJECT_TYPE, bonobo_zoomable);
+BONOBO_TYPE_FUNC_FULL (BonoboZoomable, Bonobo_Zoomable, BONOBO_TYPE_OBJECT, bonobo_zoomable);
 
 /**
  * bonobo_zoomable_set_parameters_full:

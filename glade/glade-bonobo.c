@@ -118,7 +118,7 @@ void
 glade_module_register_widgets (void)
 {
 	glade_provide ("bonobo");
-	glade_register_widget (BONOBO_WIDGET_TYPE,
+	glade_register_widget (BONOBO_TYPE_WIDGET,
 			       glade_bonobo_widget_new,
 			       NULL, NULL);
 	glade_register_widget (BONOBO_TYPE_WINDOW,

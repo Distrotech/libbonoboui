@@ -20,11 +20,11 @@ typedef struct _BonoboPropertyControlPrivate BonoboPropertyControlPrivate;
 
 #define BONOBO_PROPERTY_CONTROL_CHANGED "Bonobo::PropertyControl_changed"
 
-#define BONOBO_PROPERTY_CONTROL_TYPE        (bonobo_property_control_get_type ())
-#define BONOBO_PROPERTY_CONTROL(o)          (GTK_CHECK_CAST ((o), BONOBO_PROPERTY_CONTROL_TYPE, BonoboPropertyControl))
-#define BONOBO_PROPERTY_CONTROL_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_PROPERTY_CONTROL_TYPE, BonoboPropertyControlClass))
-#define BONOBO_IS_PROPERTY_CONTROL(o)       (GTK_CHECK_TYPE ((o), BONOBO_PROPERTY_CONTROL_TYPE))
-#define BONOBO_IS_PROPERTY_CONTROL_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_PROPERTY_CONTROL_TYPE))
+#define BONOBO_TYPE_PROPERTY_CONTROL        (bonobo_property_control_get_type ())
+#define BONOBO_PROPERTY_CONTROL(o)          (GTK_CHECK_CAST ((o), BONOBO_TYPE_PROPERTY_CONTROL, BonoboPropertyControl))
+#define BONOBO_PROPERTY_CONTROL_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_PROPERTY_CONTROL, BonoboPropertyControlClass))
+#define BONOBO_IS_PROPERTY_CONTROL(o)       (GTK_CHECK_TYPE ((o), BONOBO_TYPE_PROPERTY_CONTROL))
+#define BONOBO_IS_PROPERTY_CONTROL_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_PROPERTY_CONTROL))
 
 typedef BonoboControl *(* BonoboPropertyControlGetControlFn) (BonoboPropertyControl *control,
 							      int page_number,

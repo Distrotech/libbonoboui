@@ -16,7 +16,7 @@
 
 #include <gtk/gtksignal.h>
 
-#define PARENT_TYPE BONOBO_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_TYPE_OBJECT
 
 static BonoboObjectClass *bonobo_ui_container_parent_class;
 
@@ -331,7 +331,7 @@ BONOBO_TYPE_FUNC_FULL (BonoboUIContainer,
 BonoboUIContainer *
 bonobo_ui_container_new (void)
 {
-	return g_object_new (BONOBO_UI_CONTAINER_TYPE, NULL);
+	return g_object_new (BONOBO_TYPE_UI_CONTAINER, NULL);
 }
 
 static void

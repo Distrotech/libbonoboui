@@ -32,7 +32,7 @@ enum {
 	LAST_SIGNAL
 };
 
-#define PARENT_TYPE BONOBO_OBJECT_TYPE
+#define PARENT_TYPE BONOBO_TYPE_OBJECT
 
 static guint control_frame_signals [LAST_SIGNAL];
 
@@ -407,7 +407,7 @@ bonobo_control_frame_new (Bonobo_UIContainer ui_container)
 {
 	BonoboControlFrame *control_frame;
 
-	control_frame = g_object_new (BONOBO_CONTROL_FRAME_TYPE, NULL);
+	control_frame = g_object_new (BONOBO_TYPE_CONTROL_FRAME, NULL);
 
 	return bonobo_control_frame_construct (control_frame, ui_container);
 }

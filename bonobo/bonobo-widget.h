@@ -19,11 +19,11 @@
 
 G_BEGIN_DECLS
  
-#define BONOBO_WIDGET_TYPE        (bonobo_widget_get_type ())
-#define BONOBO_WIDGET(o)          (GTK_CHECK_CAST ((o), BONOBO_WIDGET_TYPE, BonoboWidget))
-#define BONOBO_WIDGET_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_WIDGET_TYPE, BonoboWidgetClass))
-#define BONOBO_IS_WIDGET(o)       (GTK_CHECK_TYPE ((o), BONOBO_WIDGET_TYPE))
-#define BONOBO_IS_WIDGET_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_WIDGET_TYPE))
+#define BONOBO_TYPE_WIDGET        (bonobo_widget_get_type ())
+#define BONOBO_WIDGET(o)          (GTK_CHECK_CAST ((o), BONOBO_TYPE_WIDGET, BonoboWidget))
+#define BONOBO_WIDGET_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_WIDGET, BonoboWidgetClass))
+#define BONOBO_IS_WIDGET(o)       (GTK_CHECK_TYPE ((o), BONOBO_TYPE_WIDGET))
+#define BONOBO_IS_WIDGET_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_WIDGET))
 
 struct _BonoboWidget;
 typedef struct _BonoboWidget BonoboWidget;

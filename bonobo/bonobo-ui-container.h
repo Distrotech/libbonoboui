@@ -14,11 +14,11 @@ typedef struct _BonoboUIContainer BonoboUIContainer;
 
 #include <bonobo/bonobo-ui-engine.h>
 
-#define BONOBO_UI_CONTAINER_TYPE        (bonobo_ui_container_get_type ())
-#define BONOBO_UI_CONTAINER(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_UI_CONTAINER_TYPE, BonoboUIContainer))
-#define BONOBO_UI_CONTAINER_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_UI_CONTAINER_TYPE, BonoboUIContainerClass))
-#define BONOBO_IS_UI_CONTAINER(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_UI_CONTAINER_TYPE))
-#define BONOBO_IS_UI_CONTAINER_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_UI_CONTAINER_TYPE))
+#define BONOBO_TYPE_UI_CONTAINER        (bonobo_ui_container_get_type ())
+#define BONOBO_UI_CONTAINER(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_TYPE_UI_CONTAINER, BonoboUIContainer))
+#define BONOBO_UI_CONTAINER_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_TYPE_UI_CONTAINER, BonoboUIContainerClass))
+#define BONOBO_IS_UI_CONTAINER(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_TYPE_UI_CONTAINER))
+#define BONOBO_IS_UI_CONTAINER_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_UI_CONTAINER))
 
 typedef struct _BonoboUIContainerPrivate BonoboUIContainerPrivate;
 
