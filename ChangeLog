@@ -1,3 +1,11 @@
+2004-09-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_unfloat): Call
+	bonobo_dock_item_add() to re-add the item, otherwise we're loosing
+	one reference to priv->child per detach-attach cycle, and soon
+	there are no references left...
+	* bonobo/bonobo-dock-item.c: Remove debug spew.
+
 2004-05-17  Federico Mena Quintero  <federico@ximian.com>
 
 	* bonobo/bonobo-dock-item.c (bonobo_dock_item_unfloat): Don't set
