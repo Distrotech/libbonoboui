@@ -93,22 +93,13 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 static void
 parentize_widget (BonoboUIToolbar *toolbar,
-		  GtkWidget *widget)
+		  GtkWidget       *widget)
 {
 	g_assert (widget->parent == NULL);
 
 	/* The following is done according to the Bible, widget_system.txt, IV, 1.  */
 
 	gtk_widget_set_parent (widget, GTK_WIDGET (toolbar));
-
-	if (GTK_WIDGET_REALIZED (toolbar) && ! GTK_WIDGET_REALIZED (widget))
-		gtk_widget_realize (widget);
-
-	if (GTK_WIDGET_MAPPED (toolbar) && ! GTK_WIDGET_MAPPED (widget) &&  GTK_WIDGET_VISIBLE (widget))
-		gtk_widget_map (widget);
-
-	if (GTK_WIDGET_MAPPED (widget))
-		gtk_widget_queue_resize (GTK_WIDGET (toolbar));
 }
 
 static void
@@ -1310,12 +1301,16 @@ bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
 		G_CALLBACK (item_set_want_label_cb),
 		toolbar, 0);
 
+	g_object_ref (toolbar);
+	g_object_ref (item);
+
 	set_attributes_on_child (item, priv->orientation, priv->style);
 	parentize_widget (toolbar, GTK_WIDGET (item));
 
-	g_assert (GTK_WIDGET (item)->parent == GTK_WIDGET (toolbar));
-
 	gtk_widget_queue_resize (GTK_WIDGET (toolbar));
+
+	g_object_unref (item);
+	g_object_unref (toolbar);
 }
 
 GList *

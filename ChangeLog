@@ -1,3 +1,14 @@
+2002-07-11  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar.c
+	(bonobo_ui_toolbar_insert): guard against
+	re-enterancy during the realize.
+	(parentize_widget): prune cruft that is in
+	gtk_widget_set_parent anyway.
+	(bonobo_ui_toolbar_insert): remove bogus
+	assertion, we could have been destroyed in the
+	meantime, by an incoming remote unref.
+
 2002-07-01  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-sync-menu.c
