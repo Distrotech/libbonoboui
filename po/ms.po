@@ -5,124 +5,130 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2002-01-23 06:18+0800\n"
-"PO-Revision-Date: 2002-01-10 01:42+0800\n"
-"Last-Translator: Mohamad Afifi Omar <mr_mohd_afifi@yahoo.com>\n"
+"POT-Creation-Date: 2002-02-25 14:15+0800\n"
+"PO-Revision-Date: 2002-02-25 14:13+0800\n"
+"Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.8\n"
 
-#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
 msgid "Shadow type"
 msgstr "Jenis bayang"
 
-#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+#: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
+#: bonobo/bonobo-ui-toolbar.c:1089 bonobo/bonobo-ui-toolbar.c:1090
 msgid "Orientation"
 msgstr "Orientasi"
 
-#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-ui-toolbar.c:1108 bonobo/bonobo-ui-toolbar.c:1109
 msgid "Preferred width"
 msgstr "Lebar yang dikehendaki"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
+#: bonobo/bonobo-ui-toolbar.c:1117 bonobo/bonobo-ui-toolbar.c:1118
 msgid "Preferred height"
 msgstr "Tinggi yang dikehendaki"
 
-#: bonobo/bonobo-file-selector-util.c:375
+#: bonobo/bonobo-file-selector-util.c:412
 msgid "Select a file to open"
 msgstr "Pilih satu fail untuk dibuka"
 
-#: bonobo/bonobo-file-selector-util.c:403
+#: bonobo/bonobo-file-selector-util.c:440
 msgid "Select files to open"
 msgstr "Pilih beberapa fail untuk dibuka"
 
-#: bonobo/bonobo-file-selector-util.c:432
+#: bonobo/bonobo-file-selector-util.c:469
 msgid "Select a filename to save"
 msgstr "Pilih satu nama fail untuk disimpan"
 
-#: bonobo/bonobo-plug.c:343
+#: bonobo/bonobo-plug.c:351
 msgid "Event Forwarding"
 msgstr "Forward Acara"
 
-#: bonobo/bonobo-plug.c:344
+#: bonobo/bonobo-plug.c:352
 msgid "Whether X events should be forwarded"
 msgstr "Samada acara X patut diforwardkan"
 
-#: bonobo/bonobo-selector-widget.c:302
+#: bonobo/bonobo-selector-widget.c:300
 msgid "Name"
 msgstr "Nama"
 
-#: bonobo/bonobo-selector-widget.c:326
+#: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
 msgstr "Keterangan"
 
-#: bonobo/bonobo-ui-config-widget.c:260
+#: bonobo/bonobo-ui-config-widget.c:264
 msgid "Visible"
 msgstr "Kelihatan"
 
-#: bonobo/bonobo-ui-config-widget.c:267
+#: bonobo/bonobo-ui-config-widget.c:271
 msgid "_Show"
 msgstr "_Papar"
 
-#: bonobo/bonobo-ui-config-widget.c:274
+#: bonobo/bonobo-ui-config-widget.c:278
 msgid "_Hide"
 msgstr "_Sembunyi"
 
-#: bonobo/bonobo-ui-config-widget.c:280
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "_View tooltips"
 msgstr "_Paparkan tooltips"
 
-#: bonobo/bonobo-ui-config-widget.c:285
+#: bonobo/bonobo-ui-config-widget.c:289
 msgid "Toolbars"
 msgstr "Toolbar"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:299
+msgid "toolbars"
+msgstr "Toolbar"
+
+#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "Lihat"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "_Ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:310
+#: bonobo/bonobo-ui-config-widget.c:325
 msgid "_Text and Icon"
 msgstr "_Teks dan Ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:316
+#: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Priority text only"
 msgstr "Teks yang _penting sahaja"
 
-#: bonobo/bonobo-ui-engine-config.c:513
+#: bonobo/bonobo-ui-engine-config.c:516
 msgid "Configure UI"
 msgstr "Konfigurasikan UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
 msgstr "Ke_dua-dua"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
 msgstr "T_eks"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
 msgstr "Sembunyikan t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
 msgstr "Paparkan t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
 msgstr "Sembunyikan toolba_r"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
 msgstr "Personali_sasi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
 msgstr "Personalisasikan toolbar"
 
@@ -151,8 +157,8 @@ msgid "The maximum degree of enlargment"
 msgstr "Aras maksima pembesaran"
 
 #: bonobo/bonobo-zoomable.c:353
-msgid "Has a minumum Zoom level"
-msgstr "Mempunyai zoom minima"
+msgid "Has a minimum Zoom level"
+msgstr "Mempunyai aras zoom minima"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
@@ -174,6 +180,30 @@ msgstr "adalah berterusan"
 msgid "Whether we zoom continuously (as opposed to jumps)"
 msgstr "Apakah kita boleh zoom berterusan (berbanding dengan lompatan)"
 
+#: bonobo/bonobo-canvas-item.c:647
+msgid "corba factory"
+msgstr "Kilang corba"
+
+#: bonobo/bonobo-canvas-item.c:648
+msgid "The factory pointer"
+msgstr "Pentuding kilang"
+
+#: bonobo/bonobo-canvas-item.c:657
+msgid "corba UI container"
+msgstr "bekas UI corba"
+
+#: bonobo/bonobo-canvas-item.c:658
+msgid "The User interface container"
+msgstr "Bekas antaramuka pengguna"
+
+#: bonobo/bonobo-ui-toolbar.c:1099
+msgid "is floating"
+msgstr "adalah terapung"
+
+#: bonobo/bonobo-ui-toolbar.c:1100
+msgid "whether the toolbar is floating"
+msgstr "Samada toolbar adalah terapung"
+
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
 msgstr "Tiada apa-apa; Ini hanya demonstrasi"
@@ -182,16 +212,16 @@ msgstr "Tiada apa-apa; Ini hanya demonstrasi"
 msgid "BonoboUI-Hello."
 msgstr "BonoboUI-Hello."
 
-#: samples/bonoboui/hello.c:195
+#: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
 msgstr "Gnome Hello"
 
 #. Create Label and put it in the Button:
-#: samples/bonoboui/hello.c:250
+#: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
 msgstr "Hello, Dunia!"
 
-#: samples/bonoboui/hello.c:290
+#: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
 msgstr "Gagal menginitialisasikan kod libbonoboui"
 
@@ -218,9 +248,3 @@ msgstr "_Fail"
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
 msgstr "_Pilih"
-
-#~ msgid "Can not bonobo_ui_init"
-#~ msgstr "Tak dapat bonobo_ui_init"
-
-#~ msgid "Select an object"
-#~ msgstr "Sila pilih satu objek"
