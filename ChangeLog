@@ -1,3 +1,9 @@
+2002-11-06  Stanislav Brabec  <sbrabec@suse.cz>
+
+	* samples/controls/Makefile.am,
+	samples/compound-doc/bonobo-hello/Makefile.am:
+	Fix $(prefix)/lib -> $(libdir).
+
 2002-11-05  Balamurali Viswanathan  <balamurali.viswanathan@wipro.com>
 
 	* bonobo/bonobo-ui-init-gtk.c: Change POPT_ARG_STRING to
