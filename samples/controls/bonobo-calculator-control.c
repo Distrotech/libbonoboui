@@ -2,9 +2,10 @@
  * bonobo-calculator-control.c
  *
  * Author:
- *   Michael Meeks (mmeeks@gnu.org)
+ *    Michael Meeks (mmeeks@gnu.org)
+ *    Nat Friedman  (nat@nat.org)
  *
- * Copyright 1999, Helix Code, Inc.
+ * Copyright 1999, 2000 Helix Code, Inc.
  */
 
 #include <config.h>
@@ -21,61 +22,58 @@ bonobo_calculator_clear (BonoboUIHandler *uih,
 			 gpointer         data,
 			 const char      *path)
 {
-	GnomeCalculator *calc = data;
-
-	gnome_calculator_clear (calc, TRUE);
+	gnome_calculator_clear (data, TRUE);
 }
 
-static GnomeUIInfo calc_menu[] = {
+static GnomeUIInfo calc_menu [] = {
 	GNOMEUIINFO_MENU_NEW_ITEM (N_("_Clear"),
 				   N_("Clear the calculator and reset it"),
 				   bonobo_calculator_clear, NULL),
 	GNOMEUIINFO_END
 };
 
- static GnomeUIInfo control_menus[] = {
+static GnomeUIInfo control_menus [] = {
 	GNOMEUIINFO_SUBTREE (N_("Calculator"), calc_menu),
 	GNOMEUIINFO_END
 };
 
 static void
-bonobo_calc_control_prop_value_changed_cb (BonoboPropertyBag *pb, char *name, char *type,
-					   gpointer old_value, gpointer new_value,
-					   gpointer user_data)
+set_prop (BonoboPropertyBag *bag,
+	  const BonoboArg   *arg,
+	  guint              arg_id,
+	  gpointer           user_data)
 {
-	if (! strcmp (name, "value")) {
-		double *v = new_value;
+	gnome_calculator_set (user_data, BONOBO_ARG_GET_DOUBLE (arg));
+}
 
-/*		gnome_calculator_set (user_data, *v);*/
-		printf ("Set calc. result to %g\n", *v);
-	}
+static void
+get_prop (BonoboPropertyBag *bag,
+	  BonoboArg         *arg,
+	  guint              arg_id,
+	  gpointer           user_data)
+{
+	GnomeCalculator *calc = user_data;
+
+	BONOBO_ARG_SET_DOUBLE (arg, calc->result);
 }
 
 static BonoboObject *
 bonobo_calculator_factory (BonoboGenericFactory *Factory, void *closure)
 {
-	BonoboControl   *control;
-	GtkWidget	*calc;
-	BonoboPropertyBag  *pb;
-	CORBA_double       *result;
+	BonoboControl     *control;
+	GtkWidget	  *calc;
+	BonoboPropertyBag *pb;
 
 	calc = gnome_calculator_new ();
 	gtk_widget_show (calc);
 
- 	/* Create the control. */
 	control = bonobo_control_new (calc);
 
-	pb = bonobo_property_bag_new ();
+	pb = bonobo_property_bag_new (get_prop, set_prop, calc);
 	bonobo_control_set_property_bag (control, pb);
-	gtk_signal_connect (GTK_OBJECT (pb), "value_changed",
-			    bonobo_calc_control_prop_value_changed_cb,
-			    clock);
 
-	result = g_new0 (CORBA_double, 1);
-	*result = 0.5;
-	bonobo_property_bag_add (pb, "value", "double",
-				(gpointer) result,
-				NULL, "Caluculation result", 0);
+	bonobo_property_bag_add (pb, "value", 1, BONOBO_ARG_DOUBLE, NULL,
+				 "Caluculation result", 0);
 
 	bonobo_control_set_automerge (control, TRUE);
 	bonobo_control_set_menus_with_data (control, control_menus, calc);

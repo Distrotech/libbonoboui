@@ -1,9 +1,11 @@
 /*
  * sample-control-container.c
- *
  * 
- * Author:
- *   Nat Friedman (nat@nat.org)
+ * Authors:
+ *   Nat Friedman  (nat@helixcode.com)
+ *   Michael Meeks (michael@helixcode.com)
+ *
+ * Copyright 1999, 2000 Helix Code, Inc.
  */
 #include <config.h>
 #include <gnome.h>
@@ -11,49 +13,6 @@
 #include <bonobo.h>
 
 BonoboPropertyBagClient *pbc;
-
-#define CORBA_boolean__alloc() (CORBA_boolean *) CORBA_octet_allocbuf (sizeof (CORBA_boolean))
-
-static void populate_property_list (GtkWidget *bw, GtkCList *clist);
-
-static void
-edit_property (GtkCList *clist, GdkEventButton *event, BonoboWidget *bw)
-{
-	gchar *prop;
-	gint row, col;
-	GList *l;
-	CORBA_TypeCode tc;
-
-	if (event->button == 3) {
-		gtk_clist_get_selection_info (clist, event->x, event->y,
-		                              &row, &col);
-		if (row < 0) return;
-		l = bonobo_property_bag_client_get_property_names (pbc);
-		if (row > g_list_length (l) - 1) return;
-
-		/* Get the value of the property they clicked on. */
-		prop = g_list_nth_data (l, row);
-		/* Change it appropriately. */
-		tc = bonobo_property_bag_client_get_property_type (pbc, prop);
-		switch (tc->kind) {
-		case CORBA_tk_boolean:
-			bonobo_property_bag_client_set_value_boolean (pbc, prop,
-				!bonobo_property_bag_client_get_value_boolean (pbc, prop));
-			break;
-		default:
-			g_warning ("Cannot set_value this type of property yet, sorry.");
-			break;
-			
-		}
-
-		g_list_free (l);
-		/* Redraw the property list. */
-		gtk_clist_clear (clist);
-		populate_property_list (GTK_WIDGET(bw), clist);
-	}
-
-}
-
 
 static void
 populate_property_list (GtkWidget *bw, GtkCList *clist)
@@ -77,37 +36,78 @@ populate_property_list (GtkWidget *bw, GtkCList *clist)
 
 		tc = bonobo_property_bag_client_get_property_type (pbc, name);
 		switch (tc->kind) {
+
 		case CORBA_tk_boolean:
-			row_array [1] = g_strdup (bonobo_property_bag_client_get_value_boolean (pbc, name) ? "TRUE" : "FALSE");
+			row_array [1] = g_strdup (
+				bonobo_property_bag_client_get_value_gboolean (pbc, name) ? "TRUE" : "FALSE");
 			break;
+
 		case CORBA_tk_string:
 			row_array [1] = g_strdup (bonobo_property_bag_client_get_value_string (pbc, name));
 			break;
-		case CORBA_tk_short:
-			row_array [1] = g_strdup_printf ("%d", bonobo_property_bag_client_get_value_short (pbc, name));
-			break;
-		case CORBA_tk_ushort:
-			row_array [1] = g_strdup_printf ("%d", bonobo_property_bag_client_get_value_ushort (pbc, name));
-			break;
+
 		case CORBA_tk_long:
-			row_array [1] = g_strdup_printf ("%ld", bonobo_property_bag_client_get_value_long (pbc, name));
+			row_array [1] = g_strdup_printf ("%ld", bonobo_property_bag_client_get_value_glong (pbc, name));
 			break;
-		case CORBA_tk_ulong:
-			row_array [1] = g_strdup_printf ("%ld", bonobo_property_bag_client_get_value_ulong (pbc, name));
-			break;
+
 		case CORBA_tk_float:
-			row_array [1] = g_strdup_printf ("%f", bonobo_property_bag_client_get_value_float (pbc, name));
+			row_array [1] = g_strdup_printf ("%f", bonobo_property_bag_client_get_value_gfloat (pbc, name));
 			break;
+
 		case CORBA_tk_double:
-			row_array [1] = g_strdup_printf ("%g", bonobo_property_bag_client_get_value_double (pbc, name));
+			row_array [1] = g_strdup_printf ("%g", bonobo_property_bag_client_get_value_gdouble (pbc, name));
 			break;
+
 		default:
 			row_array [1] = g_strdup ("Unhandled Property Type");
+			break;
 		}
 
 		gtk_clist_append (clist, row_array);
 	}
 	g_list_free (property_list);
+}
+
+static void
+edit_property (GtkCList *clist, GdkEventButton *event, BonoboWidget *bw)
+{
+	gchar *prop;
+	gint row, col;
+	GList *l;
+	CORBA_TypeCode tc;
+
+	if (event->button == 3) {
+		gtk_clist_get_selection_info (clist, event->x, event->y,
+		                              &row, &col);
+		if (row < 0) return;
+		l = bonobo_property_bag_client_get_property_names (pbc);
+		if (row > g_list_length (l) - 1) return;
+
+		/* Get the value of the property they clicked on. */
+		prop = g_list_nth_data (l, row);
+		/* Change it appropriately. */
+		tc = bonobo_property_bag_client_get_property_type (pbc, prop);
+
+		switch (tc->kind) {
+
+		case CORBA_tk_boolean:
+			bonobo_property_bag_client_set_value_gboolean (
+				pbc, prop, !bonobo_property_bag_client_get_value_gboolean (pbc, prop));
+			break;
+
+		default:
+			g_warning ("Cannot set_value this type of property yet, sorry.");
+			break;
+			
+		}
+
+		g_list_free (l);
+
+		/* Redraw the property list. */
+		gtk_clist_clear (clist);
+		populate_property_list (GTK_WIDGET (bw), clist);
+	}
+
 }
 
 static GtkWidget *
@@ -156,20 +156,26 @@ container_create (void)
 	bonobo_ui_handler_set_app (uih, GNOME_APP (app));
 	bonobo_ui_handler_create_menubar (uih);
 
+	box = gtk_vbox_new (FALSE, 0);
+	gnome_app_set_contents (GNOME_APP (app), box);
+
 	control = bonobo_widget_new_control (
 		"control:calculator",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
-
-	proplist = create_proplist (control);
-
-	box = gtk_vbox_new (FALSE, 0);
-	gnome_app_set_contents (GNOME_APP (app), box);
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (box), proplist, TRUE, TRUE, 0);
 
-	button = gtk_button_new_with_label ("Increment Calc");
+	button = gtk_button_new_with_label ("Increment result");
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    (GtkSignalFunc)incr_calc, control);
+
+	control = bonobo_widget_new_control (
+		"control:clock",
+		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
+	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
+
+	proplist = create_proplist (control);
+	gtk_box_pack_start (GTK_BOX (box), proplist, TRUE, TRUE, 0);
+
 	gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 0);
 
 	gtk_widget_show_all (app);

@@ -31,7 +31,8 @@ bonobo_libs = 			\
 	$(gnome_libs)
 
 
-lib_LTLIBRARIES = libbonobo.la libbonobo-xml.la
+#lib_LTLIBRARIES = libbonobo.la libbonobo-xml.la
+lib_LTLIBRARIES = libbonobo.la
 
 if OAF
 test_programs =
@@ -77,6 +78,8 @@ $(CORBA_SOURCE): $(idls)
 libbonobo_la_LDFLAGS = -version-info 2:0:1 #-rpath $(libdir)
 
 libbonobo_la_SOURCES =			\
+	bonobo-arg.h			\
+	bonobo-arg.c			\
 	$(CORBA_SOURCE)			\
 	bonobo-object-directory.h	\
 	bonobo-object-directory.c	\
@@ -116,9 +119,10 @@ libbonobo_la_SOURCES =			\
 	bonobo-view-frame.c		\
 	bonobo-wrapper.c		\
 	bonobo-property.c		\
-	bonobo-property-types.c		\
 	bonobo-property-bag.c		\
 	bonobo-property-bag-client.c
+
+#	bonobo-property-types.c		\
 
 libbonoboincludedir = $(includedir)/bonobo
 
@@ -164,15 +168,15 @@ libbonoboinclude_HEADERS =		\
 	bonobo-property-bag.h		\
 	bonobo-property-bag-client.h
 
-libbonobo_xml_la_SOURCES =		\
-	bonobo-property-bag-xml.c
+#libbonobo_xml_la_SOURCES =		\
+#	bonobo-property-bag-xml.c
 
-libbonobo_xmlincludedir = $(includedir)/bonobo
+#libbonobo_xmlincludedir = $(includedir)/bonobo
 
-libbonobo_xmlinclude_HEADERS =		\
-	Bonobo.h			\
-	bonobo-property-bag.h		\
-	bonobo-property-bag-xml.h
+#libbonobo_xmlinclude_HEADERS =		\
+#	Bonobo.h			\
+#	bonobo-property-bag.h		\
+#	bonobo-property-bag-xml.h
 
 test_bw_SOURCES =			\
 	test-bw.c
