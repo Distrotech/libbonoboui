@@ -1,17 +1,17 @@
 # French translation of libbonoboui.
-# Copyright (C) 2001-2004 Free Software Foundation, Inc.
+# Copyright (C) 2001-2005 Free Software Foundation, Inc.
 # This file is distributed uder the same license as the libbonoboui package.
 #
-# maintainer: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2001-2004.
+# maintainer: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2001-2005.
 # Christophe Fergeau <teuf@users.sourceforge.net>, 2002.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 2.5.3\n"
+"Project-Id-Version: libbonoboui 2.8.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-05 15:33+0000\n"
-"PO-Revision-Date: 2004-02-29 00:41+0100\n"
+"POT-Creation-Date: 2005-02-20 12:28+0100\n"
+"PO-Revision-Date: 2005-02-20 12:24+0100\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,6 @@ msgid "Dock the toolbar"
 msgstr "Attacher la barre d'outils"
 
 #: bonobo/bonobo-dock-item-grip.c:258
-#, fuzzy
 msgid "Undock the toolbar"
 msgstr "Détacher la barre d'outils"
 
@@ -410,77 +409,75 @@ msgstr "Impossible d'initialiser l'interface utilisateur Bonobo"
 
 #: tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr ""
+msgstr "Navigateur de composants Bonobo"
 
 #: tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr ""
+msgstr "Affiche les composants Bonobo disponible"
 
 #: tools/browser/bonobo-browser.xml.h:1
-#, fuzzy
 msgid "About this program..."
-msgstr "À propos de cette application"
+msgstr "À propos de ce programme..."
 
 #: tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr ""
+msgstr "Ferme la fenêtre courante"
 
 #: tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
-msgstr ""
+msgstr "Ouvre une nouvelle fenêtre"
 
 #: tools/browser/bonobo-browser.xml.h:5
-#, fuzzy
 msgid "_Help"
-msgstr "_Cacher"
+msgstr "_Aide"
 
 #. Build the general tab
 #: tools/browser/component-details.c:109
 msgid "General"
-msgstr ""
+msgstr "Général"
 
 #: tools/browser/component-details.c:116 tools/browser/component-list.c:401
 msgid "IID"
-msgstr ""
+msgstr "IID"
 
 #: tools/browser/component-details.c:117
 msgid "Location"
-msgstr ""
+msgstr "Emplacement"
 
 #. Build the details tab
 #: tools/browser/component-details.c:167
 msgid "Details"
-msgstr ""
+msgstr "Détails"
 
 #: tools/browser/component-details.c:168
 msgid "Detailed Information"
-msgstr ""
+msgstr "Information détaillée"
 
 #: tools/browser/component-list.c:370
 msgid "Active"
-msgstr ""
+msgstr "Actif"
 
 #: tools/browser/component-list.c:391
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: tools/browser/window.c:169
 msgid "Component Details"
-msgstr ""
+msgstr "Détails du composant"
 
 #: tools/browser/window.c:214
 msgid "Bonobo Browser"
-msgstr ""
+msgstr "Navigateur Bonobo"
 
 #: tools/browser/window.c:215
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr ""
+msgstr "Copyright 2001, La fondation GNOME"
 
 #: tools/browser/window.c:216
 msgid "Bonobo component browser"
-msgstr ""
+msgstr "Navigateur de composants Bonobo"
 
 #. create the window
 #: tools/browser/window.c:246
 msgid "Component Browser"
-msgstr ""
+msgstr "Navigateur de composants"
