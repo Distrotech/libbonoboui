@@ -1,5 +1,9 @@
+2000-04-01  Timur Bakeyev <timur@gnu.org>
+
+	* Makefile.am: Add missed -I$(top_srcdir)/bonobo to the INCLUDES.
+	
 2000-03-26  Miguel de Icaza  <miguel@helixcode.com>
 
-	* New directory.  Contains a sample skeleton for creating Bonobo
+	* New directory. Contains a sample skeleton for creating Bonobo
 	components.
 

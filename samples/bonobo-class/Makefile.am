@@ -49,7 +49,7 @@ EXTRA_DIST = $(gnorba_DATA) $(idl_DATA)
 INCLUDES = 						\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-DG_LOG_DOMAIN=\"Echo\"				\
-	-I. 						\
+	-I. -I$(top_srcdir)/bonobo			\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I$(top_builddir)				\
         -I$(includedir)                                 \
