@@ -1,3 +1,10 @@
+2005-01-04  JP Rosevear  <jpr@novell.com>
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(impl_bonobo_ui_sync_toolbar_update_root): use
+	bonobo_ui_sync_toolbar_get_look instead of parse_look so that
+	hlook and vlook are also handled
+
 2005-01-11  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* bonobo/bonobo-dock-item-grip.c:

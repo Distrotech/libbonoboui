@@ -770,10 +770,8 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 
 	bonobo_ui_engine_stamp_root (sync->engine, node, GTK_WIDGET (toolbar));
 
-	if ((txt = bonobo_ui_node_peek_attr (node, "look"))) {
-		look = parse_look (txt);
-		gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), look);
-	}		
+	look = bonobo_ui_sync_toolbar_get_look (sync->engine, node);
+	gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), look);
 
 	if ((txt = bonobo_ui_node_peek_attr (node, "tips")))
 		tooltips = atoi (txt);
