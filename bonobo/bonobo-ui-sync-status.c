@@ -80,7 +80,7 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 
 		resize_grip = bonobo_ui_node_peek_attr (node, "resize_grip");
 
-		if (atoi (resize_grip) == 0)
+		if (resize_grip && atoi (resize_grip) == 0)
 			gtk_statusbar_set_has_resize_grip (msync->main_status,
 							   FALSE);
 
