@@ -101,12 +101,24 @@ impl_Bonobo_ControlFrame_getToplevelId (PortableServer_Servant  servant,
 	bonobo_return_val_if_fail (toplev != NULL, NULL, ev);
 
 	if (BONOBO_IS_PLUG (toplev)) { 
-		BonoboControl *control;
+		BonoboControl      *control;
+		Bonobo_ControlFrame frame;
 
 		control = bonobo_plug_get_control (BONOBO_PLUG (toplev));
+		if (!control) {
+			g_warning ("No control bound to plug from which to "
+				   "get transient parent");
+			return CORBA_string_dup ("");
+		}
 
-		id = Bonobo_ControlFrame_getToplevelId (
-			BONOBO_OBJREF (control), ev);
+		frame = bonobo_control_get_control_frame (control, ev);
+		if (frame == CORBA_OBJECT_NIL) {
+			g_warning ("No control frame associated with control from "
+				   "which to get transient parent");
+			return CORBA_string_dup ("");
+		}
+
+		id = Bonobo_ControlFrame_getToplevelId (frame, ev);
 	} else
 		id = bonobo_control_window_id_from_x11 (
 			GDK_WINDOW_XWINDOW (toplev->window));

@@ -1,3 +1,10 @@
+2002-05-11  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control-frame.c
+	(impl_Bonobo_ControlFrame_getToplevelId):
+	actually invoke the getToplevelId on the ControlFrame
+	not the Control - doh, thanks Jon-Kare, #80782
+
 2002-05-10  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: Added Vietnamese (vi) to ALL_LINGUAS
