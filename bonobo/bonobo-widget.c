@@ -241,9 +241,6 @@ bonobo_widget_new_control_from_objref (Bonobo_Control     control,
  * into applications.  It will launch the component identified by @id
  * and will return it as a GtkWidget.
  *
- * FIXME: this function should really be using bonobo_get_object() instead
- * of bonobo_activate_object() to launch the object.
- *
  * Returns: A #GtkWidget that is bound to the Bonobo Control. 
  */
 GtkWidget *
