@@ -260,8 +260,6 @@ static void			  menu_parse_uiinfo_one_with_data	(GnomeUIHandlerMenuItem *item,
 									 GnomeUIInfo *uii, void *data);
 static void			  menu_parse_uiinfo_tree_with_data	(GnomeUIHandlerMenuItem *tree,
 									 GnomeUIInfo *uii, void *data);
-static void			  menu_parse_uiinfo_tree_with_data	(GnomeUIHandlerMenuItem *tree,
-									 GnomeUIInfo *uii, void *data);
 static gint			  menu_remote_get_pos			(GnomeUIHandler *uih, char *path);
 static void			  menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
 									 gboolean sensitivity);
@@ -308,8 +306,25 @@ static void			  menu_toplevel_set_radio_state_internal (GnomeUIHandler *uih, Men
 static void			  menu_toplevel_set_radio_state		(GnomeUIHandler *uih, char *path, gboolean state);
 static void			  menu_remote_set_radio_state		(GnomeUIHandler *uih, char *path, gboolean state); 
 
+/*
+ * Prototypes for some internal Toolbar functions.
+ */
 static void			  toolbar_toplevel_item_create_widgets	(GnomeUIHandler *uih, ToolbarItemInternal *internal);
 static void			  toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, char *path);
+
+static void			  toolbar_local_create_item		(GnomeUIHandler *uih, char *parent_path,
+									 GnomeUIHandlerToolbarItem *item);
+static void			  toolbar_remote_create_item		(GnomeUIHandler *uih, char *parent_path,
+									 GnomeUIHandlerToolbarItem *item);
+static void			  toolbar_toplevel_create_item		(GnomeUIHandler *uih, char *parent_path,
+									 GnomeUIHandlerToolbarItem *item,
+									 GNOME_UIHandler uih_corba);
+static void			  toolbar_parse_uiinfo_one		(GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii);
+static void			  toolbar_parse_uiinfo_tree		(GnomeUIHandlerToolbarItem *tree, GnomeUIInfo *uii);
+static void			  toolbar_parse_uiinfo_one_with_data	(GnomeUIHandlerToolbarItem *item,
+									 GnomeUIInfo *uii, void *data);
+static void			  toolbar_parse_uiinfo_tree_with_data	(GnomeUIHandlerToolbarItem *tree,
+									 GnomeUIInfo *uii, void *data);
 
 /*
  * Menu CORBA prototypes.
@@ -6174,6 +6189,9 @@ toolbar_local_remove_parent_entry (GnomeUIHandler *uih, char *path, gboolean war
 	parent = toolbar_local_get_toolbar (uih, parent_path);
 	g_free (parent_path);
 
+	if (parent == NULL)
+		return;
+
 	for (curr = parent->children; curr != NULL; curr = curr->next) {
 		if (! strcmp (path, (char *) curr->data)) {
 			parent->children = g_list_remove_link (parent->children, curr);
@@ -6190,16 +6208,24 @@ toolbar_local_remove_parent_entry (GnomeUIHandler *uih, char *path, gboolean war
 static void
 toolbar_local_add_parent_entry (GnomeUIHandler *uih, char *path)
 {
-	ToolbarToolbarLocalInternal *internal;
+	ToolbarToolbarLocalInternal *parent_internal_cb;
 	char *parent_name;
 
 	toolbar_local_remove_parent_entry (uih, path, FALSE);
 
 	parent_name = toolbar_get_toolbar_name (path);
-	internal = toolbar_local_get_toolbar (uih, parent_name);
+	parent_internal_cb = toolbar_local_get_toolbar (uih, parent_name);
 	g_free (parent_name);
 
-	internal->children = g_list_prepend (internal->children, g_strdup (path));
+	if (parent_internal_cb == NULL) {
+		/*
+		 * If we don't have an entry for the parent,
+		 * it doesn't matter.
+		 */
+		return;
+	}
+
+	parent_internal_cb->children = g_list_prepend (parent_internal_cb->children, g_strdup (path));
 }
 
 static void
@@ -6322,9 +6348,14 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 	GtkWidget *pixmap;
 	char *parent_name;
 
+	g_return_if_fail (internal != NULL);
+	g_return_if_fail (internal->item != NULL);
+
 	parent_name = toolbar_get_toolbar_name (internal->item->path);
 	toolbar = g_hash_table_lookup (uih->top->name_to_toolbar_widget, parent_name);
 	g_free (parent_name);
+
+	g_return_if_fail (toolbar != NULL);
 
 	toolbar_item = NULL;
 	switch (internal->item->type) {
@@ -6406,6 +6437,7 @@ toolbar_toplevel_item_remove_parent_entry (GnomeUIHandler *uih, char *path, gboo
 		g_warning ("toolbar_toplevel_remove_parent_entry: Cannot find toolbar [%s] for path [%s]!\n",
 			   path, parent_name);
 		g_free (parent_name);
+		return;
 	}
 	g_free (parent_name);
 
@@ -6433,6 +6465,9 @@ toolbar_toplevel_item_add_parent_entry (GnomeUIHandler *uih, char *path)
 	parent_name = toolbar_get_toolbar_name (path);
 	internal = toolbar_toplevel_get_toolbar (uih, parent_name);
 	g_free (parent_name);
+
+	if (!internal)
+		return;
 
 	internal->children = g_list_prepend (internal->children, g_strdup (path));
 }
@@ -6501,8 +6536,7 @@ toolbar_toplevel_create_item (GnomeUIHandler *uih, char *parent_path,
 
 static void
 toolbar_remote_create_item (GnomeUIHandler *uih, char *parent_path,
-			    GnomeUIHandlerToolbarItem *item,
-			    GNOME_UIHandler uih_corba)
+			    GnomeUIHandlerToolbarItem *item)
 {
 	GNOME_UIHandler_iobuf *pixmap_buf;
 	CORBA_Environment ev;
@@ -6594,36 +6628,51 @@ gnome_ui_handler_toolbar_add_one (GnomeUIHandler *uih, char *parent_path,
 	 * Create the item.
 	 */
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
-		toolbar_remote_create_item  (uih, parent_path, item,
-					     gnome_object_corba_objref (GNOME_OBJECT (uih)));
+		toolbar_remote_create_item  (uih, parent_path, item);
 	else
 		toolbar_toplevel_create_item  (uih, parent_path, item,
 					       gnome_object_corba_objref (GNOME_OBJECT (uih)));
 }
 
 void
-gnome_ui_handler_toolbar_add_list (GnomeUIHandler *uih, char *path,
+gnome_ui_handler_toolbar_add_list (GnomeUIHandler *uih, char *parent_path,
 				   GnomeUIHandlerToolbarItem *item)
 {
+	GnomeUIHandlerToolbarItem *curr;
+
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (path != NULL);
+	g_return_if_fail (parent_path != NULL);
 	g_return_if_fail (item != NULL);
+
+	for (curr = item; curr->type != GNOME_UI_HANDLER_TOOLBAR_END; curr ++)
+		gnome_ui_handler_toolbar_add_tree (uih, parent_path, curr);
 }
 
 void
-gnome_ui_handler_toolbar_add_tree (GnomeUIHandler *uih, char *path,
+gnome_ui_handler_toolbar_add_tree (GnomeUIHandler *uih, char *parent_path,
 				   GnomeUIHandlerToolbarItem *item)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (path != NULL);
+	g_return_if_fail (parent_path != NULL);
 	g_return_if_fail (item != NULL);
+
+	/*
+	 * Add this toolbar item.
+	 */
+	gnome_ui_handler_toolbar_add_one (uih, parent_path, item);
+
+	/*
+	 * Recursive add its children.
+	 */
+	if (item->children != NULL)
+		gnome_ui_handler_toolbar_add_list (uih, item->path, item->children);
 }
 
 void
 gnome_ui_handler_toolbar_new (GnomeUIHandler *uih, char *path,
-			      GnomeUIHandlerMenuItemType type,
+			      GnomeUIHandlerToolbarItemType type,
 			      char *label, char *hint,
 			      int pos, GnomeUIHandlerPixmapType pixmap_type,
 			      gpointer pixmap_data, guint accelerator_key,
@@ -6846,12 +6895,12 @@ toolbar_toplevel_item_remove_data (GnomeUIHandler *uih, ToolbarItemInternal *int
 	path = g_strdup (internal->item->path);
 
 	/*
-	 * Get the list of menu items which match this path and remove
-	 * the specified menu item.
+	 * Get the list of toolbar items which match this path and remove
+	 * the specified toolbar item.
 	 */
 	g_hash_table_lookup_extended (uih->top->path_to_toolbar_item, path,
 				      (gpointer *) &orig_key, (gpointer *) &l);
-	g_hash_table_remove (uih->top->path_to_menu_item, path);
+	g_hash_table_remove (uih->top->path_to_toolbar_item, path);
 	g_free (orig_key);
 
 	l = g_list_remove (l, internal);
@@ -7032,70 +7081,206 @@ gnome_ui_handler_toolbar_get_pos (GnomeUIHandler *uih, char *path)
 	return -1;
 }
 
-GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_one (GnomeUIHandler *uih, GnomeUIInfo *uii)
+static GnomeUIHandlerToolbarItemType
+toolbar_uiinfo_type_to_uih (GnomeUIInfoType uii_type)
 {
-	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
-	g_return_val_if_fail (uii != NULL, NULL);
+	switch (uii_type) {
+	case GNOME_APP_UI_ENDOFINFO:
+		return GNOME_UI_HANDLER_TOOLBAR_END;
 
-	g_warning ("Unimplemented toolbar method");
-	return NULL;
+	case GNOME_APP_UI_ITEM:
+		return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+
+	case GNOME_APP_UI_TOGGLEITEM:
+		return GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM;
+
+	case GNOME_APP_UI_RADIOITEMS:
+		return GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP;
+
+	case GNOME_APP_UI_SEPARATOR:
+		return GNOME_UI_HANDLER_TOOLBAR_SEPARATOR;
+
+	case GNOME_APP_UI_HELP:
+		g_error ("Help unimplemented."); /* FIXME */
+
+	case GNOME_APP_UI_BUILDER_DATA:
+		g_error ("Builder data - what to do?"); /* FIXME */
+
+	case GNOME_APP_UI_ITEM_CONFIGURABLE:
+		g_warning ("Configurable item!");
+		return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+
+	default:
+		g_warning ("Unknown UIInfo Type: %d", uii_type);
+		return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+	}
+}
+
+static void
+toolbar_parse_uiinfo_one (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii)
+{
+	item->path = NULL;
+
+	if (uii->type == GNOME_APP_UI_ITEM_CONFIGURABLE)
+		gnome_app_ui_configure_configurable (uii);
+
+	item->type = toolbar_uiinfo_type_to_uih (uii->type);
+
+	item->label = g_strdup (uii->label);
+	item->hint = g_strdup (uii->hint);
+
+	item->pos = -1;
+
+	if (item->type == GNOME_UI_HANDLER_TOOLBAR_ITEM
+	    || item->type == GNOME_UI_HANDLER_TOOLBAR_RADIOITEM
+	    || item->type == GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM)
+		item->callback = uii->moreinfo;
+	item->callback_data = uii->user_data;
+
+	item->pixmap_type = uiinfo_pixmap_type_to_uih (uii->pixmap_type);
+	item->pixmap_data = pixmap_copy_data (item->pixmap_type, uii->pixmap_info);
+	item->accelerator_key = uii->accelerator_key;
+	item->ac_mods = uii->ac_mods;
+}
+
+static void
+toolbar_parse_uiinfo_tree (GnomeUIHandlerToolbarItem *tree, GnomeUIInfo *uii)
+{
+	toolbar_parse_uiinfo_one (tree, uii);
+
+	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP)
+		tree->children = gnome_ui_handler_toolbar_parse_uiinfo_list (uii->moreinfo);
 }
 
 GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_list (GnomeUIHandler *uih, GnomeUIInfo *uii)
+gnome_ui_handler_toolbar_parse_uiinfo_one (GnomeUIInfo *uii)
 {
-	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	GnomeUIHandlerToolbarItem *item;
+
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	g_warning ("Unimplemented toolbar method");
-	return NULL;
+	item = g_new0 (GnomeUIHandlerToolbarItem, 1);
+
+	toolbar_parse_uiinfo_one (item, uii);
+	
+	return item;
 }
 
 GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_tree (GnomeUIHandler *uih, GnomeUIInfo *uii)
+gnome_ui_handler_toolbar_parse_uiinfo_list (GnomeUIInfo *uii)
 {
-	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	GnomeUIHandlerToolbarItem *list;
+	GnomeUIHandlerToolbarItem *curr_uih;
+	GnomeUIInfo *curr_uii;
+	int list_len;
+
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	g_warning ("Unimplemented toolbar method");
-	return NULL;
+	/*
+	 * Allocate the GnomeUIHandlerToolbarItem list.
+	 */
+	list_len = 0;
+	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
+		list_len ++;
+
+	list = g_new0 (GnomeUIHandlerToolbarItem, list_len + 1);
+
+	curr_uih = list;
+	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++, curr_uih ++)
+		toolbar_parse_uiinfo_tree (curr_uih, curr_uii);
+
+	/* Parse the terminal entry. */
+	toolbar_parse_uiinfo_one (curr_uih, curr_uii);
+
+	return list;
 }
 
 GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_one_with_data (GnomeUIHandler *uih, GnomeUIInfo *uii, gpointer data)
+gnome_ui_handler_toolbar_parse_uiinfo_tree (GnomeUIInfo *uii)
 {
-	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	GnomeUIHandlerToolbarItem *item_tree;
+
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	g_warning ("Unimplemented toolbar method");
-	return NULL;
+	item_tree = g_new0 (GnomeUIHandlerToolbarItem, 1);
+
+	toolbar_parse_uiinfo_tree (item_tree, uii);
+
+	return item_tree;
+}
+
+static void
+toolbar_parse_uiinfo_one_with_data (GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii, void *data)
+{
+	toolbar_parse_uiinfo_one (item, uii);
+
+	item->callback_data = data;
+}
+
+static void
+toolbar_parse_uiinfo_tree_with_data (GnomeUIHandlerToolbarItem *tree, GnomeUIInfo *uii, void *data)
+{
+	toolbar_parse_uiinfo_one_with_data (tree, uii, data);
+
+	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP)
+		tree->children = gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (uii->moreinfo, data);
 }
 
 GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIHandler *uih, GnomeUIInfo *uii, gpointer data)
+gnome_ui_handler_toolbar_parse_uiinfo_one_with_data (GnomeUIInfo *uii, gpointer data)
 {
-	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	GnomeUIHandlerToolbarItem *item;
+
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	g_warning ("Unimplemented toolbar method");
-	return NULL;
+	item = g_new0 (GnomeUIHandlerToolbarItem, 1);
+
+	toolbar_parse_uiinfo_one_with_data (item, uii, data);
+
+	return item;
 }
 
 GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_parse_uiinfo_tree_with_data (GnomeUIHandler *uih, GnomeUIInfo *uii, gpointer data)
+gnome_ui_handler_toolbar_parse_uiinfo_list_with_data (GnomeUIInfo *uii, gpointer data)
 {
-	g_return_val_if_fail (uih != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
+	GnomeUIHandlerToolbarItem *list;
+	GnomeUIHandlerToolbarItem *curr_uih;
+	GnomeUIInfo *curr_uii;
+	int list_len;
+
 	g_return_val_if_fail (uii != NULL, NULL);
 
-	g_warning ("Unimplemented toolbar method");
-	return NULL;
+	/*
+	 * Allocate the GnomeUIHandlerToolbarItem list.
+	 */
+	list_len = 0;
+	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
+		list_len ++;
+
+	list = g_new0 (GnomeUIHandlerToolbarItem, list_len + 1);
+
+	curr_uih = list;
+	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++, curr_uih ++)
+		toolbar_parse_uiinfo_tree_with_data (curr_uih, curr_uii, data);
+
+	/* Parse the terminal entry. */
+	toolbar_parse_uiinfo_one (curr_uih, curr_uii);
+
+	return list;
+}
+
+GnomeUIHandlerToolbarItem *
+gnome_ui_handler_toolbar_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, gpointer data)
+{
+	GnomeUIHandlerToolbarItem *item_tree;
+
+	g_return_val_if_fail (uii != NULL, NULL);
+
+	item_tree = g_new0 (GnomeUIHandlerToolbarItem, 1);
+
+	toolbar_parse_uiinfo_tree_with_data (item_tree, uii, data);
+
+	return item_tree;
 }
 
 void
