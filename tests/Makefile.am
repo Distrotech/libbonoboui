@@ -2,6 +2,7 @@ noinst_PROGRAMS =		\
 	test-ui			\
 	test-toolbar		\
 	test-selector		\
+	test-filesel		\
 	test-focus		\
 	test-sensitivity	\
 	test-reparent
@@ -33,3 +34,5 @@ test_sensitivity_SOURCES = test-sensitivity.c
 test_reparent_SOURCES = test-reparent.c
 
 test_moniker_SOURCES = test-moniker.c
+
+test_filesel_SOURCE = test-filesel.c

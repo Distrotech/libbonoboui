@@ -41,6 +41,7 @@ libbonoboinclude_HEADERS = \
 	bonobo-dock-item.h			\
 	bonobo-dock-layout.h			\
 	bonobo-dock.h				\
+	bonobo-file-selector-util.h		\
 	bonobo-plug.h				\
 	bonobo-property-control.h		\
 	bonobo-selector-widget.h		\
@@ -82,6 +83,7 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-canvas-item.c			\
 	bonobo-control-frame.c			\
 	bonobo-control.c			\
+	bonobo-file-selector-util.c		\
 	bonobo-plug.c				\
 	bonobo-selector.c			\
 	bonobo-selector-widget.c		\
