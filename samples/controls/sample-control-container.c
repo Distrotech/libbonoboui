@@ -18,19 +18,12 @@
 
 #include <bonobo.h>
 
-BonoboPropertyBagClient *pbc;
+BonoboPropertyBagClient *pbc = NULL;
 
 static void
 populate_property_list (GtkWidget *bw, GtkCList *clist)
 {
-	BonoboControlFrame *cf;
 	GList *property_list, *l;
-
-	/* Get the list of properties. */
-	if (pbc == NULL) {
-		cf = bonobo_widget_get_control_frame (BONOBO_WIDGET (bw));
-		pbc = bonobo_control_frame_get_control_property_bag (cf);
-	}
 
 	property_list = bonobo_property_bag_client_get_property_names (pbc);
 	for (l = property_list; l != NULL; l = l->next) {
@@ -142,6 +135,25 @@ incr_calc (GtkButton *button, BonoboWidget *control)
 	bonobo_widget_set_property (control, "value", i, NULL);
 }
 
+static void
+app_destroy_cb (GtkWidget *app, BonoboUIHandler *uih)
+{
+	bonobo_object_unref (BONOBO_OBJECT (uih));
+	if (pbc)
+		bonobo_object_unref (BONOBO_OBJECT (pbc));
+	pbc = NULL;
+
+	gtk_main_quit ();
+	g_warning ("Main level %d\n", gtk_main_level ());
+}
+
+static int
+app_delete_cb (GtkWidget *widget, GdkEvent *event, gpointer dummy)
+{
+	gtk_widget_destroy (GTK_WIDGET (widget));
+	return FALSE;
+}
+
 static guint
 container_create (void)
 {
@@ -151,6 +163,7 @@ container_create (void)
 	GtkWidget       *box;
 	GtkWidget       *button;
 	BonoboUIHandler *uih;
+	BonoboControlFrame *cf;
 
 	app = gnome_app_new ("sample-control-container",
 			     "Sample Bonobo Control Container");
@@ -158,6 +171,12 @@ container_create (void)
 	gtk_window_set_policy (GTK_WINDOW (app), TRUE, TRUE, FALSE);
 
 	uih = bonobo_ui_handler_new ();
+
+	gtk_signal_connect (GTK_OBJECT (app), "delete_event",
+			    GTK_SIGNAL_FUNC (app_delete_cb), NULL);
+
+	gtk_signal_connect (GTK_OBJECT (app), "destroy",
+			    GTK_SIGNAL_FUNC (app_destroy_cb), uih);
 
 	bonobo_ui_handler_set_app (uih, GNOME_APP (app));
 	bonobo_ui_handler_create_menubar (uih);
@@ -193,6 +212,9 @@ container_create (void)
 
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
+	cf = bonobo_widget_get_control_frame (BONOBO_WIDGET (control));
+	pbc = bonobo_control_frame_get_control_property_bag (cf);
+
 	proplist = create_proplist (control);
 
 #if USING_OAF
@@ -221,8 +243,10 @@ main (int argc, char **argv)
 {
 	CORBA_Environment ev;
 	CORBA_ORB orb;
-
 	CORBA_exception_init (&ev);
+
+	/* Encorage -lefence to play ball */
+	{ char *tmp = malloc (4); if (tmp) free (tmp); }
 
 #if USING_OAF
         gnome_init_with_popt_table("sample-control-container", "0.0",

@@ -33,15 +33,6 @@ bonobo_libs = 			\
 
 lib_LTLIBRARIES = libbonobo.la libbonobox.la libbonobo-print.la
 
-test_programs = \
-	test-container 		\
-	test-container-autoload	\
-	selector_test		\
-	test-storage
-
-noinst_PROGRAMS = 		\
-	$(test_programs)
-
 CORBA_SOURCE =			\
 	Bonobo.h		\
 	Bonobo-common.c		\
@@ -181,25 +172,6 @@ libbonobo_printinclude_HEADERS =		\
 	Bonobo.h			\
 	bonobo-print.h		\
 	bonobo-print-client.h
-
-test_container_SOURCES =		\
-	test-container.c
-
-test_container_LDADD = $(bonobo_libs) libbonobox.la
-
-test_container_autoload_SOURCES =	\
-	test-container-autoload.c
-
-test_container_autoload_LDADD = $(bonobo_libs) libbonobox.la
-
-test_storage_SOURCES = test-storage.c
-
-test_storage_LDADD = $(bonobo_libs)
-
-selector_test_SOURCES =			\
-	selector_test.c
-
-selector_test_LDADD = $(bonobo_libs) libbonobox.la
 
 BUILT_SOURCES=$(CORBA_SOURCE)
 

@@ -1,4 +1,20 @@
-bin_PROGRAMS=test-properties-server test-properties-client
+noinst_PROGRAMS =		\
+	test-properties-server	\
+	test-properties-client	\
+	test-storage		\
+	test-container 		\
+	test-container-autoload	\
+	selector_test
+
+gnome_libs =				\
+	$(GNOME_LIBDIR)			\
+	$(GDK_PIXBUF_LIBS) 		\
+        $(GNOMEUI_LIBS)			\
+	$(INTLLIBS)
+
+bonobo_libs =						\
+	$(top_builddir)/bonobo/libbonobo.la		\
+	$(gnome_libs)
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -12,19 +28,36 @@ test_properties_server_SOURCES =			\
 	test-properties-server.c
 
 test_properties_server_LDADD =				\
-	$(top_builddir)/bonobo/libbonobo.la		\
-	$(GTK_LIBS)					\
-	$(GNOME_LIBDIR)					\
-	$(GNOMEGNORBA_LIBS)				\
-	$(INTLLIBS)
-
+	$(bonobo_libs)
 
 test_properties_client_SOURCES =			\
 	test-properties-client.c
 
 test_properties_client_LDADD =				\
-	$(top_builddir)/bonobo/libbonobo.la		\
-	$(GTK_LIBS)					\
-	$(GNOME_LIBDIR)					\
-	$(GNOMEGNORBA_LIBS)				\
-	$(INTLLIBS)
+	$(bonobo_libs)
+
+test_storage_SOURCES = test-storage.c
+
+test_storage_LDADD = $(bonobo_libs)
+
+test_container_SOURCES =				\
+	test-container.c
+
+test_container_LDADD =					\
+	$(bonobo_libs)					\
+	$(top_builddir)/bonobo/libbonobox.la
+
+test_container_autoload_SOURCES =			\
+	test-container-autoload.c
+
+test_container_autoload_LDADD =				\
+	$(bonobo_libs)					\
+	$(top_builddir)/bonobo/libbonobox.la
+
+selector_test_SOURCES =					\
+	selector_test.c
+
+selector_test_LDADD =					\
+	$(bonobo_libs)					\
+	$(top_builddir)/bonobo/libbonobox.la
+

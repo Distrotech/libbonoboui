@@ -120,16 +120,8 @@ bonobo_widget_construct_control_from_objref (BonoboWidget     *bw,
 			   control_frame_widget);
 	gtk_widget_show (control_frame_widget);
 
-	if (uih != CORBA_OBJECT_NIL){
-		CORBA_Environment ev;
-		
-		CORBA_exception_init (&ev);
-
-		Bonobo_UIHandler_ref (uih, &ev);
-		if (ev._major == CORBA_NO_EXCEPTION)
-			bw->priv->uih = CORBA_Object_duplicate (uih, &ev);
-		CORBA_exception_free (&ev);
-	}
+	if (uih != CORBA_OBJECT_NIL)
+		bw->priv->uih = bonobo_object_dup_ref (uih, NULL);
 
 	return bw;
 }

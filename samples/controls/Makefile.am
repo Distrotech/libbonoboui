@@ -29,7 +29,7 @@ sample_control_factory_LDADD =				\
 	$(GTK_LIBS)					\
 	$(GNOME_LIBDIR)					\
 	$(OBJECT_DIRECTORY_LIBS)			\
-	$(INTLLIBS)
+	$(INTLLIBS) 
 
 sample_control_container_SOURCES =			\
 	sample-control-container.c

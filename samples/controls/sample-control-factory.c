@@ -48,6 +48,9 @@ int
 main (int argc, char **argv)
 {
 	CORBA_exception_init (&ev);
+	
+	/* Encorage -lefence to play ball */
+	{ char *tmp = malloc (4); if (tmp) free (tmp); }
 
 	init_bonobo (argc, argv);
 
