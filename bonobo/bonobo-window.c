@@ -320,7 +320,7 @@ bonobo_window_key_release_event (GtkWidget *widget,
 	    event->keyval == GDK_Control_R)
 		window->priv->allow_all_focus = FALSE;
 
-	return GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
+	return GTK_WIDGET_CLASS (parent_class)->key_release_event (widget, event);
 }
 
 static gboolean
