@@ -221,6 +221,8 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 
 		widget = bonobo_widget_new_control_from_objref (
 			the_control, BONOBO_OBJREF (ui_container));
+
+		bonobo_object_release_unref (the_control, ev);
 	}
 
 	if (BONOBO_EX (ev) || !widget)
@@ -232,8 +234,8 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 
 	bonobo_window_set_contents (BONOBO_WINDOW (window), widget);
 
-	g_signal_connect (GTK_OBJECT (window), "destroy",
-			    G_CALLBACK (bonobo_main_quit), NULL);
+	g_signal_connect (window, "destroy",
+			  G_CALLBACK (bonobo_main_quit), NULL);
 
 	gtk_widget_show_all (window);
 	bonobo_main ();
