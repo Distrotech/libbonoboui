@@ -1,5 +1,21 @@
 2001-11-14  Michael Meeks  <michael@ximian.com>
 
+	* tests/test-ui.c (do_sane_popup, main): test it.
+
+	* bonobo/bonobo-control.c
+	(impl_Bonobo_Control_getPopupContainer): impl.
+	(bonobo_control_get_popup_ui_container): impl.
+	(bonobo_control_set_popup_ui_container): impl.
+	(bonobo_control_get_popup_ui_component): impl.
+	(bonobo_control_dispose): upd.
+	(bonobo_control_do_popup): impl.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_control_activate),
+	(bonobo_control_frame_control_deactivate): kill debug.
+
+2001-11-14  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-control-frame.c
 	(bonobo_control_frame_class_init): fill out the
 	unimplemented methods & upd handler.

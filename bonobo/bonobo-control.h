@@ -20,6 +20,7 @@ typedef struct _BonoboControl BonoboControl;
 
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-ui-container.h>
 #include <bonobo/bonobo-ui-component.h>
 
 
@@ -99,6 +100,15 @@ Bonobo_Gdk_WindowId         bonobo_control_window_id_from_x11      (guint32     
 guint32                     bonobo_control_x11_from_window_id      (const CORBA_char    *id);
 #define                     bonobo_control_windowid_from_x11(a) \
 			    bonobo_control_window_id_from_x11(a)
+
+/* Popup API */
+BonoboUIContainer          *bonobo_control_get_popup_ui_container  (BonoboControl       *control);
+BonoboUIComponent          *bonobo_control_get_popup_ui_component  (BonoboControl       *control);
+void                        bonobo_control_set_popup_ui_container  (BonoboControl       *control,
+								    BonoboUIContainer   *ui_container);
+gboolean                    bonobo_control_do_popup                (BonoboControl       *control,
+								    guint                button,
+								    guint32              activate_time);
 
 G_END_DECLS
 

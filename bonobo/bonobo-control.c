@@ -15,12 +15,14 @@
 #include <stdlib.h>
 
 #include <gdk/gdkx.h>
+#include <gtk/gtkmenu.h>
 #include <gtk/gtksignal.h>
 
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-ui-sync-menu.h>
 #include <bonobo/bonobo-control-internal.h>
 #include <bonobo/bonobo-property-bag-client.h>
 
@@ -39,12 +41,15 @@ struct _BonoboControlPrivate {
 	BonoboControlFrame  *inproc_frame;
 	BonoboUIComponent   *ui_component;
 	Bonobo_PropertyBag   propbag;
+	BonoboUIContainer   *popup_ui_container;
+	BonoboUIComponent   *popup_ui_component;
+	BonoboUISync        *popup_ui_sync;
 
 	GtkWidget           *plug;
 	GtkWidget           *widget;
 
-	gboolean             active;
-	gboolean             automerge;
+	guint                active : 1;
+	guint                automerge : 1;
 };
 
 static void
@@ -282,9 +287,12 @@ static Bonobo_UIContainer
 impl_Bonobo_Control_getPopupContainer (PortableServer_Servant servant,
 				       CORBA_Environment     *ev)
 {
-	g_warning ("getPopupContainer stubbed");
+	BonoboUIContainer *container;
+	
+	container = bonobo_control_get_popup_ui_container (
+		BONOBO_CONTROL (bonobo_object_from_servant (servant)));
 
-	return CORBA_OBJECT_NIL;
+	return bonobo_object_dup_ref (BONOBO_OBJREF (container), ev);
 }
 	
 static void
@@ -578,6 +586,14 @@ bonobo_control_dispose (GObject *object)
 
 	if (control->priv->widget)
 		g_object_unref (G_OBJECT (control->priv->widget));
+
+	control->priv->popup_ui_container = bonobo_object_unref (
+		BONOBO_OBJECT (control->priv->popup_ui_container));
+
+	control->priv->popup_ui_component = bonobo_object_unref (
+		BONOBO_OBJECT (control->priv->popup_ui_component));
+
+	control->priv->popup_ui_sync = NULL;
 
 	bonobo_control_parent_class->dispose (object);
 }
@@ -1170,4 +1186,99 @@ bonobo_control_get_plug (BonoboControl *control)
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
 	return (BonoboPlug *) control->priv->plug;
+}
+
+void
+bonobo_control_set_popup_ui_container (BonoboControl     *control,
+				       BonoboUIContainer *ui_container)
+{
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+	g_return_if_fail (BONOBO_IS_UI_CONTAINER (ui_container));
+
+	g_assert (control->priv->popup_ui_container == NULL);
+
+	control->priv->popup_ui_container = bonobo_object_ref (
+		BONOBO_OBJECT (ui_container));
+}
+
+BonoboUIContainer *
+bonobo_control_get_popup_ui_container (BonoboControl *control)
+{
+	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
+
+	if (!control->priv->popup_ui_container) {
+		BonoboUIEngine *engine;
+
+		engine = bonobo_ui_engine_new (G_OBJECT (control));
+
+		control->priv->popup_ui_sync = bonobo_ui_sync_menu_new (
+			engine, NULL, NULL, NULL);
+
+		bonobo_ui_engine_add_sync (
+			engine, control->priv->popup_ui_sync);
+
+		control->priv->popup_ui_container = bonobo_ui_container_new ();
+		bonobo_ui_container_set_engine (
+			control->priv->popup_ui_container, engine);
+
+		g_signal_connect_closure (
+			G_OBJECT (control->priv->popup_ui_container),
+			"destroy",
+			g_cclosure_new_swap (
+				G_CALLBACK (g_object_unref), engine, NULL), 0);
+	}
+
+	return control->priv->popup_ui_container;
+}
+
+BonoboUIComponent *
+bonobo_control_get_popup_ui_component (BonoboControl *control)
+{
+	BonoboUIContainer *ui_container;
+
+	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
+
+	if (!control->priv->popup_ui_component) {
+		ui_container = bonobo_control_get_popup_ui_container (control);
+
+		control->priv->popup_ui_component = 
+			bonobo_ui_component_new_default ();
+
+		bonobo_ui_component_set_container (
+			control->priv->popup_ui_component,
+			BONOBO_OBJREF (ui_container), NULL);
+	}
+
+	return control->priv->popup_ui_component;
+}
+
+gboolean
+bonobo_control_do_popup (BonoboControl *control,
+			 guint          button,
+			 guint32        activate_time)
+{
+	char      *path;
+	GtkWidget *menu;
+
+	g_return_val_if_fail (BONOBO_IS_CONTROL (control), FALSE);
+
+	if (!control->priv->popup_ui_container)
+		return FALSE;
+
+	path = g_strdup_printf ("/popups/button%d", button);
+
+	menu = gtk_menu_new ();
+
+	bonobo_ui_sync_menu_add_popup (
+		BONOBO_UI_SYNC_MENU (control->priv->popup_ui_sync),
+		GTK_MENU (menu), path);
+
+	g_free (path);
+
+	gtk_widget_show (menu);
+
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
+			NULL, NULL, button, activate_time);
+
+	return TRUE;
 }

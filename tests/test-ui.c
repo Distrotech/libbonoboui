@@ -171,6 +171,19 @@ file_open_cmd (BonoboUIComponent *uic,
 	g_warning ("File Open");
 }
 
+
+static gboolean
+do_sane_popup (GtkWidget      *widget,
+	       GdkEventButton *event,
+	       BonoboControl  *control)
+{
+	if (event->button == 3)
+		return bonobo_control_do_popup (
+			control, event->button, event->time);
+
+	return FALSE;
+}
+
 BonoboUIVerb verbs [] = {
 	BONOBO_UI_VERB ("FileExit", file_exit_cmd),
 	BONOBO_UI_VERB ("FileOpen", file_open_cmd),
@@ -376,6 +389,17 @@ main (int argc, char **argv)
 	{
 		GtkWidget *widget = gtk_button_new_with_label ("My Label");
 		BonoboControl *control = bonobo_control_new (widget);
+		BonoboUIComponent *componentp;
+
+		gtk_signal_connect (GTK_OBJECT (widget), "button_press_event",
+				    G_CALLBACK (do_sane_popup), control);
+		componentp = bonobo_control_get_popup_ui_component (control);
+		bonobo_ui_component_set (componentp, "/", "<popups>"
+					 "<popup name=\"button3\"/></popups>", ev);
+		g_assert (!BONOBO_EX (ev));
+		bonobo_ui_component_set_translate (
+			componentp, "/popups/button3", simpleb, ev);
+		g_assert (!BONOBO_EX (ev));
 		
 		gtk_widget_show (widget);
 		bonobo_ui_component_object_set (componenta,

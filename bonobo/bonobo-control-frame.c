@@ -400,8 +400,6 @@ bonobo_control_frame_control_activate (BonoboControlFrame *frame)
 	 */
 	g_return_if_fail (frame->priv->control != CORBA_OBJECT_NIL);
 
-	g_warning ("Control activate!");
-	
 	CORBA_exception_init (&ev);
 
 	Bonobo_Control_activate (frame->priv->control, TRUE, &ev);
@@ -437,8 +435,6 @@ bonobo_control_frame_control_deactivate (BonoboControlFrame *frame)
 	 * with it.
 	 */
 	g_return_if_fail (frame->priv->control != CORBA_OBJECT_NIL);
-
-	g_warning ("Control de-activate!");
 
 	CORBA_exception_init (&ev);
 
