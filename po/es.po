@@ -1,16 +1,16 @@
 # Translation into spanish of libbonoboui.
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# HÈctor GarcÌa ¡lvarez <hector@scouts-es.org>, 2001.
+# H√©ctor Garc√≠a √Ålvarez <hector@scouts-es.org>, 2001.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2002-05-27 12:51+0100\n"
+"POT-Creation-Date: 2002-06-01 17:04+0200\n"
 "PO-Revision-Date: 2001-06-19 12:54+0200\n"
-"Last-Translator: HÈctor GarcÌa ¡lvarez <hector@scouts-es.org>\n"
-"Language-Team: Spanish <es@li.org>\n"
+"Last-Translator: H√©ctor Garc√≠a √Ålvarez <hector@scouts-es.org>\n"
+"Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bonobo/bonobo-canvas-item.c:647
@@ -39,21 +39,21 @@ msgstr "Personalizar la barra de herramientas"
 msgid "Un dock the toolbar"
 msgstr "Personalizar la barra de herramientas"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
 msgid "Shadow type"
 msgstr "Tipo oculto"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
 #: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
 msgid "Orientation"
-msgstr "OrientaciÛn"
+msgstr "Orientaci√≥n"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
 #: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred width"
 msgstr "Archo preferido"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
 #: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred height"
 msgstr "Altura preferida"
@@ -70,11 +70,11 @@ msgstr "Seleccione los archivos a abrir"
 msgid "Select a filename to save"
 msgstr "Seleccione un nombre de archivo para guardar"
 
-#: bonobo/bonobo-plug.c:363
+#: bonobo/bonobo-plug.c:364
 msgid "Event Forwarding"
 msgstr "Reenviando eventos"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:365
 msgid "Whether X events should be forwarded"
 msgstr "Si se deben reenviar los eventos de las X"
 
@@ -84,7 +84,7 @@ msgstr "Nombre"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
-msgstr "DescripciÛn"
+msgstr "Descripci√≥n"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
@@ -290,7 +290,7 @@ msgstr ""
 #: bonobo/bonobo-ui-util.c:584
 #, fuzzy
 msgid "View help for this application"
-msgstr "Acerca de esta aplicaciÛn"
+msgstr "Acerca de esta aplicaci√≥n"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
@@ -306,35 +306,35 @@ msgstr "Grado de estiramiento"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "Nivel de zoom mÌnimo"
+msgstr "Nivel de zoom m√≠nimo"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "El mÌnimo grado de alargamiento"
+msgstr "El m√≠nimo grado de alargamiento"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "M·ximo nivel de zoom"
+msgstr "M√°ximo nivel de zoom"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "El m·ximo grado de alargamiento"
+msgstr "El m√°ximo grado de alargamiento"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "Tiene un nivel mÌnimo de zoom"
+msgstr "Tiene un nivel m√≠nimo de zoom"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Si tenemos un nivel mÌnimo de zoom v·lido"
+msgstr "Si tenemos un nivel m√≠nimo de zoom v√°lido"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Tiene un nivel de zoom m·ximo"
+msgstr "Tiene un nivel de zoom m√°ximo"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Si tenemos un nivel m·ximo de zoom"
+msgstr "Si tenemos un nivel m√°ximo de zoom"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -346,7 +346,7 @@ msgstr "Si hacemos zoom de forma continua (opuesto a hacerlo a saltos)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "Acerca de esta aplicaciÛn"
+msgstr "Acerca de esta aplicaci√≥n"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
@@ -370,7 +370,7 @@ msgstr "_Seleccionar"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Esto no hace nada; es solo una demostraciÛn."
+msgstr "Esto no hace nada; es solo una demostraci√≥n."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -383,12 +383,12 @@ msgstr "Hola Gnome"
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "°Hola, mundo!"
+msgstr "¬°Hola, mundo!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
 msgstr "No puedo inicializar el codigo de libbonoboui"
 
-#: samples/controls/bonobo-sample-controls.c:121
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr ""
