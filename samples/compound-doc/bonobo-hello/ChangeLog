@@ -1,5 +1,9 @@
 2000-12-04  Joe Shaw  <joe@helixcode.com>
 
+	* bonobo-hello.c: Use BonoboGenericFactory instead.
+
+2000-12-04  Joe Shaw  <joe@helixcode.com>
+
 	* bonobo-hello.c: Fix the build by including
 	bonobo/bonobo-embeddable-factory.h since it was removed from bonobo.h.
 	This should be fixed to use the generic factory.

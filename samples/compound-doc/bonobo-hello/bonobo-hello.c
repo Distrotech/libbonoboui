@@ -21,7 +21,6 @@
 #include "config.h"
 #include <liboaf/liboaf.h>
 #include <bonobo.h>
-#include <bonobo/bonobo-embeddable-factory.h>
 
 #include "hello-embeddable.h"
 
@@ -46,7 +45,7 @@ hello_bonobo_destroy (BonoboEmbeddable *embeddable,
 }
 
 static BonoboObject*
-hello_embeddable_factory (BonoboEmbeddableFactory *f, gpointer data)
+hello_embeddable_factory (BonoboGenericFactory *f, gpointer data)
 {
 	HelloBonoboEmbeddable *embeddable;
 
@@ -70,7 +69,7 @@ static void
 hello_bonobo_init (void)
 {
 	factory =
-		bonobo_embeddable_factory_new (
+		bonobo_generic_factory_new (
 			"OAFIID:bonobo-hello-factory:413433d0-c643-4618-9c3e-2c99f4d1b2a0",
 			hello_embeddable_factory, NULL);
 	if (!factory)
