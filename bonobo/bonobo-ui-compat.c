@@ -791,20 +791,24 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 		 * This will never work for evil like /wibble/radio\/ group/etc.
 		 */
 		if (type == BONOBO_UI_HANDLER_MENU_RADIOITEM) {
-			char *real_path = g_strdup (path);
+			char *group = g_strdup (path);
 			char *p;
-			p = strrchr (real_path, '/');
-			g_return_if_fail (p != NULL);
+
+			p = strrchr (group, '/');
+			g_return_if_fail (p != NULL && p != group);
 			*p = '\0';
-			p = strrchr (real_path, '/');
+
+			p = strrchr (group, '/');
 			g_return_if_fail (p != NULL);
 			*p = '\0';
 			bonobo_ui_node_set_attr (node, "group", p + 1);
 
-			xml_path = make_path ("/menu", real_path, FALSE);
-			g_free (real_path);
-		} else
-			xml_path = make_path ("/menu", path, TRUE);
+			g_warning ("Radio item group '%s' from '%s'\n", p + 1, path);
+
+			g_free (group);
+		}
+
+		xml_path = make_path ("/menu", path, TRUE);
 
 		compat_set_tree (priv, xml_path, node);
                 bonobo_ui_node_free (node);
