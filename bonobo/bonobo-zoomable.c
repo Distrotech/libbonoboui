@@ -567,14 +567,14 @@ bonobo_zoomable_set_parameters_full (BonoboZoomable  *p,
 	if (preferred_zoom_levels) {
 		p->priv->preferred_zoom_levels = g_array_new (FALSE, TRUE, sizeof (gfloat));
 		g_array_append_vals (p->priv->preferred_zoom_levels,
-                                     &preferred_zoom_levels,
+                                     preferred_zoom_levels,
                                      num_preferred_zoom_levels);
 	}
 
 	if (preferred_zoom_level_names) {
 		p->priv->preferred_zoom_level_names = g_array_new (FALSE, TRUE, sizeof (gchar));
 		g_array_append_vals (p->priv->preferred_zoom_level_names,
-                                     &preferred_zoom_level_names,
+                                     preferred_zoom_level_names,
                                      num_preferred_zoom_levels);
 	}
 }
