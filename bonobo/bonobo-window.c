@@ -2016,7 +2016,7 @@ menu_sync_state (BonoboWindowPrivate *priv, BonoboUINode *node,
 					    GTK_ACCEL_VISIBLE);
 	}
 
-	widget_queue_state (priv, widget, cmd_node != NULL ? cmd_node : node);
+	widget_queue_state (priv, menu_widget, cmd_node != NULL ? cmd_node : node);
 }
 
 static GtkWidget *
