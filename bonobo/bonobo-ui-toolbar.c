@@ -692,14 +692,15 @@ impl_destroy (GtkObject *object)
 {
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
-	GList *p;
+	GList *p, *next;
 
 	toolbar = BONOBO_UI_TOOLBAR (object);
 	priv = toolbar->priv;
 
-	for (p = priv->items; p != NULL; p = p->next) {
+	for (p = priv->items; p != NULL; p = next) {
 		GtkWidget *item_widget;
 
+		next = p->next;
 		item_widget = GTK_WIDGET (p->data);
 		if (item_widget->parent == NULL)
 			gtk_widget_destroy (item_widget);
