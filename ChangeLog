@@ -1,3 +1,11 @@
+Tue Nov 20 21:17:03 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* bonobo/bonobo-control-frame.c (bonobo_control_frame_get_control_property):
+	Finish renaming opt_ev argument in function body as well.
+
+	* samples/compound-doc/container/{component.h, document.h}: Include glib-object.h
+	instead of specific gobject/* header files. 
+
 2001-11-20  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-control-frame.[ch]:

@@ -889,8 +889,8 @@ bonobo_control_frame_get_control_property_bag (BonoboControlFrame *frame,
 	g_return_val_if_fail (frame != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (frame), NULL);
 
-	if (ev)
-		real_ev = ev;
+	if (opt_ev)
+		real_ev = opt_ev;
 	else {
 		CORBA_exception_init (&tmp_ev);
 		real_ev = &tmp_ev;
@@ -901,7 +901,7 @@ bonobo_control_frame_get_control_property_bag (BonoboControlFrame *frame,
 	pbag = Bonobo_Control_getProperties (control, real_ev);
 
 	if (BONOBO_EX (real_ev)) {
-		if (!ev)
+		if (!opt_ev)
 			CORBA_exception_free (&tmp_ev);
 		pbag = CORBA_OBJECT_NIL;
 	}

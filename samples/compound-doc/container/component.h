@@ -2,7 +2,7 @@
 #define SAMPLE_COMPONENT_H
 
 #include <bonobo/Bonobo.h>
-#include <gobject/gobject.h>
+#include <glib-object.h>
 
 #define SAMPLE_COMPONENT_TYPE        (sample_component_get_type ())
 #define SAMPLE_COMPONENT(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), SAMPLE_COMPONENT_TYPE, SampleComponent))

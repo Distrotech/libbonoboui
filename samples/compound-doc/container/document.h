@@ -1,7 +1,7 @@
 #ifndef SAMPLE_DOC_H
 #define SAMPLE_DOC_H
 
-#include <gobject/gobject.h>
+#include <glib-object.h>
 #include "component.h"
 
 #define SAMPLE_DOC_TYPE        (sample_doc_get_type ())
