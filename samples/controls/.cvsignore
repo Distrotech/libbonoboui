@@ -2,5 +2,5 @@
 .libs
 Makefile
 Makefile.in
+bonobo-sample-controls
 sample-control-container
-sample-control-factory

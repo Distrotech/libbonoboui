@@ -2,8 +2,8 @@
 .libs
 Makefile
 Makefile.in
-paint-component-simple
-sample-canvas-item
+bonobo-sample-paint
+bonobo-sample-canvas-item
 bonobo-hello
 container
 sample-container
