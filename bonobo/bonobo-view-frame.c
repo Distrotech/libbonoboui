@@ -53,7 +53,6 @@ static CORBA_Object
 create_gnome_view_frame (GnomeObject *object)
 {
 	POA_GNOME_ViewFrame *servant;
-	CORBA_Object o;
 	
 	servant = (POA_GNOME_ViewFrame *) g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_view_frame_vepv;

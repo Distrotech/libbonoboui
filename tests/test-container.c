@@ -1,7 +1,7 @@
 /*
  * test-container.c
  *
- * A simple program to act as a test container for BonoboObjects.
+ * A simple program to act as a test container for Embeddables.
  *
  * Authors:
  *    Nat Friedman (nat@gnome-support.com)
@@ -13,8 +13,7 @@
 #include <libgnorba/gnorba.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
-#include <bonobo/gnome-object.h>
-#include <bonobo/gnome-stream-fs.h>
+#include <bonobo/gnome-bonobo.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -22,14 +21,14 @@ CORBA_Environment ev;
 CORBA_ORB orb;
 
 /*
- * A handle to some BonoboObjects and their ClientSites so we can add
+ * A handle to some Embeddables and their ClientSites so we can add
  * views to existing components.
  */
 
-GnomeEmbeddableClient *text_obj;
-GnomeClientSite   *text_client_site;
+GnomeObjectClient *text_obj;
+GnomeClientSite *text_client_site;
 
-GnomeEmbeddableClient *image_png_obj;
+GnomeObjectClient *image_png_obj;
 GnomeClientSite   *image_client_site;
 
 char *server_goadid = "Test_server_bonobo_object";
@@ -70,11 +69,11 @@ view_frame_activated_cb (GnomeViewFrame *view_frame, gboolean state,
 {
 
 	if (state) {
-		GNOME_BonoboObject_verb_list *verbs;
+		GNOME_Embeddable_verb_list *verbs;
 		int i;
 
 		CORBA_exception_init (&ev);
-		verbs = GNOME_BonoboObject_get_verb_list (
+		verbs = GNOME_Embeddable_get_verb_list (
 			gnome_object_corba_objref (GNOME_OBJECT (server_object)),
 			&ev);
 		if (ev._major != CORBA_NO_EXCEPTION) {
@@ -106,7 +105,7 @@ add_view (GtkWidget *widget, Application *app,
 
 	view_widget = gnome_view_frame_get_wrapper (view_frame);
 
-	frame = gtk_frame_new ("BonoboObject");
+	frame = gtk_frame_new ("Embeddable");
 	gtk_widget_show (frame);
 	gtk_box_pack_start (GTK_BOX (app->box), frame, TRUE, TRUE, 0);
 	gtk_container_add (GTK_CONTAINER (frame), view_widget);
@@ -121,7 +120,6 @@ static GnomeObjectClient *
 add_cmd (GtkWidget *widget, Application *app, char *server_goadid,
 	 GnomeClientSite **client_site)
 {
-	GtkWidget *w;
 	GnomeObjectClient *server;
 	
 	*client_site = gnome_client_site_new (app->container);
@@ -167,7 +165,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
         if (persist == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: BonoboObject supports PersistStream\n");
+	printf ("Good: Embeddable supports PersistStream\n");
 	
 	stream = gnome_stream_fs_open (NULL, "/tmp/a.png", GNOME_Storage_READ);
 
@@ -185,7 +183,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 }
 
 /*
- * Add a new view for the existing image/x-png BonoboObject.
+ * Add a new view for the existing image/x-png Embeddable.
  */
 static void
 add_image_view (GtkWidget *widget, Application *app)
@@ -198,7 +196,7 @@ add_image_view (GtkWidget *widget, Application *app)
 
 /*
  * This function uses GNOME::PersistStream to load a set of data into
- * the text/plain BonoboObject.
+ * the text/plain Embeddable.
  */
 static void
 add_text_cmd (GtkWidget *widget, Application *app)
@@ -210,7 +208,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	object = add_cmd (widget, app, "bonobo-object:text-plain", &text_client_site);
 	if (object == NULL)
 	  {
-	    gnome_warning_dialog (_("Could not launch BonoboObject."));
+	    gnome_warning_dialog (_("Could not launch Embeddable."));
 	    return;
 	  }
 
@@ -226,7 +224,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
         if (persist == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: BonoboObject supports PersistStream\n");
+	printf ("Good: Embeddable supports PersistStream\n");
 	
 	stream = gnome_stream_fs_open (NULL, "/usr/dict/words",
 				       GNOME_Storage_READ);
@@ -245,7 +243,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 /*
  * These functions handle the progressive transmission of data
- * to the text/plain BonoboObject.
+ * to the text/plain Embeddable.
  */
 struct progressive_timeout {
 	GNOME_ProgressiveDataSink psink;
@@ -253,7 +251,7 @@ struct progressive_timeout {
 };
 
 /*
- * Send a new line to the text/plain BonoboObject.
+ * Send a new line to the text/plain Embeddable.
  */
 static gboolean
 timeout_next_line (gpointer data)
@@ -292,7 +290,7 @@ timeout_next_line (gpointer data)
 } /* timeout_add_more_data */
 
 /*
- * Add a new view for the existing text BonoboObject.
+ * Add a new view for the existing text Embeddable.
  */
 static void
 add_text_view (GtkWidget *widget, Application *app)
@@ -304,7 +302,7 @@ add_text_view (GtkWidget *widget, Application *app)
 } /* add_text_view */
 
 /*
- * Setup a timer to send a new line to the text/plain BonoboObject using
+ * Setup a timer to send a new line to the text/plain Embeddable using
  * ProgressiveDataSink.
  */
 static void
@@ -328,7 +326,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
         if (psink == CORBA_OBJECT_NIL)
                 return;
 
-	printf ("Good: BonoboObject supports ProgressiveDataSink\n");
+	printf ("Good: Embeddable supports ProgressiveDataSink\n");
 
 	tmt = g_new0 (struct progressive_timeout, 1);
 

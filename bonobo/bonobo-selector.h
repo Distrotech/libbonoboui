@@ -36,7 +36,7 @@ GtkType gnome_bonobo_selector_get_type	(void);
 /* title: Dialog title 
  * interfaces_required: must implement these interfaces. NULL-terminated
  * If interfaces_required is NULL, by default we assume 
- * IDL:GNOME/BonoboObject:1.0
+ * IDL:GNOME/Embeddable:1.0
  */
 GtkWidget  *gnome_bonobo_selector_new	(const gchar *title, 
 	const gchar **interfaces_required);

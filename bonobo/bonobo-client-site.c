@@ -260,7 +260,7 @@ gnome_client_site_construct (GnomeClientSite  *client_site,
  *
  * Programs should provide a GnomeClientSite GTK object (ie, a
  * GNOME::ClientSite CORBA server) for each bonobo object they embed.  This
- * is the contact end point for the remote GNOME::BonoboObject object.
+ * is the contact end point for the remote GNOME::Embeddable object.
  *
  * This routine creates a new GnomeClientSite.
  *
@@ -314,7 +314,7 @@ gnome_client_site_get_type (void)
 /** 
  * gnome_client_site_bind_bonobo_object:
  * @client_site: the client site where we hook the object
- * @object: remote GNOME::BonoboObject object
+ * @object: remote GNOME::Embeddable object
  *
  * Returns %TRUE if the code successfully bound the remote object to this
  * @client_site.
@@ -333,7 +333,7 @@ gnome_client_site_bind_bonobo_object (GnomeClientSite *client_site, GnomeObjectC
 	gnome_object = GNOME_OBJECT (object);
 	
 	corba_object = GNOME_Unknown_query_interface (
-		gnome_object_corba_objref (gnome_object), "IDL:GNOME/BonoboObject:1.0",
+		gnome_object_corba_objref (gnome_object), "IDL:GNOME/Embeddable:1.0",
 		&gnome_object->ev);
 
 	if (gnome_object->ev._major != CORBA_NO_EXCEPTION)
@@ -342,7 +342,7 @@ gnome_client_site_bind_bonobo_object (GnomeClientSite *client_site, GnomeObjectC
 	if (corba_object == CORBA_OBJECT_NIL)
 		return FALSE;
 
-	GNOME_BonoboObject_set_client_site (
+	GNOME_Embeddable_set_client_site (
 		corba_object, 
 		gnome_object_corba_objref (GNOME_OBJECT (client_site)),
 		&GNOME_OBJECT (client_site)->ev);

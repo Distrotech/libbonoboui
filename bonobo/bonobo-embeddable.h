@@ -52,7 +52,7 @@ GtkType            gnome_embeddable_get_type           (void);
 GnomeEmbeddable *gnome_embeddable_new                (GnomeViewFactory factory,
 							   void *data);
 GnomeEmbeddable *gnome_embeddable_construct          (GnomeEmbeddable *bonobo_object,
-							   GNOME_BonoboObject  corba_bonobo_object,
+							   GNOME_Embeddable  corba_bonobo_object,
 							   GnomeViewFactory factory,
 							   void *data);
 void               gnome_embeddable_add_verb           (GnomeEmbeddable *bonobo_object,

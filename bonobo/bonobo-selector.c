@@ -2,7 +2,7 @@
 #include "gnome-bonobo-selector.h"
 #include <string.h> /* strcmp */
 
-#define DEFAULT_INTERFACE	"IDL:GNOME/BonoboObject:1.0"
+#define DEFAULT_INTERFACE	"IDL:GNOME/Embeddable:1.0"
 
 static GtkDialogClass *parent_class;
 

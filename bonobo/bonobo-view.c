@@ -60,7 +60,6 @@ static void
 impl_GNOME_View_set_window (PortableServer_Servant servant, GNOME_View_windowid id, CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-	GdkWindowPrivate *win;
 
 	view->plug = gtk_plug_new (id);
 
@@ -73,7 +72,6 @@ static CORBA_Object
 create_gnome_view (GnomeObject *object)
 {
 	POA_GNOME_View *servant;
-	CORBA_Object o;
 	
 	servant = (POA_GNOME_View *) g_new0 (GnomeObjectServant, 1);
 	servant->vepv = &gnome_view_vepv;

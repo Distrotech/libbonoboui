@@ -22,7 +22,6 @@
 #include <bonobo/gnome-view.h>
 #include <bonobo/gnome-embeddable.h>
 #include <bonobo/gnome-embeddable-factory.h>
-#include <bonobo/gnome-embeddable-io.h>
 
 #include <bonobo/gnome-embeddable-client.h>
 
@@ -41,5 +40,5 @@
 
 #include <bonobo/gnome-storage.h>
 
-#include <bonobo/gnome-object-selector.h>
+#include <bonobo/gnome-bonobo-selector.h>
 

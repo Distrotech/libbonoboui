@@ -62,7 +62,7 @@ void panel_callback (GtkWidget *widget, gpointer data)
 void act_callback (GtkWidget *widget, gpointer data)
 {
 /* it executes! */ 
-	const gchar *ints[] = { "IDL:GNOME/BonoboObject:1.0", NULL };
+	const gchar *ints[] = { "IDL:GNOME/Embeddable:1.0", NULL };
 	gchar *text = gnome_bonobo_select_activate("Select an object",
 		ints, GOAD_ACTIVATE_ASYNC);
 	g_print("%s\n", text);
