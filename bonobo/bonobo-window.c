@@ -37,7 +37,7 @@
 GtkWindowClass *bonobo_win_parent_class = NULL;
 
 struct _BonoboWinPrivate {
-	BonoboWin     *app;
+	BonoboWin     *win;
 
 	int            frozen;
 
@@ -298,7 +298,7 @@ popup_destroy (GtkObject *menu, WinPopup *popup)
 		GTK_OBJECT (menu), BONOBO_WIN_PRIV_KEY);
 
 	g_return_if_fail (priv != NULL);
-	bonobo_win_remove_popup (priv->app, popup->path);
+	bonobo_win_remove_popup (priv->win, popup->path);
 }
 
 void
@@ -329,36 +329,36 @@ bonobo_win_add_popup (BonoboWin     *win,
 }
 
 void
-bonobo_win_register_component (BonoboWin     *app,
+bonobo_win_register_component (BonoboWin     *win,
 			       const char    *name,
 			       Bonobo_Unknown component)
 {
-	WinComponent *appcomp;
+	WinComponent *wincomp;
 
-	g_return_if_fail (BONOBO_IS_WIN (app));
+	g_return_if_fail (BONOBO_IS_WIN (win));
 
-	if ((appcomp = win_component_get (app->priv, name))) {
-		if (appcomp->object != CORBA_OBJECT_NIL)
-			bonobo_object_release_unref (appcomp->object, NULL);
+	if ((wincomp = win_component_get (win->priv, name))) {
+		if (wincomp->object != CORBA_OBJECT_NIL)
+			bonobo_object_release_unref (wincomp->object, NULL);
 	}
 
 	if (component != CORBA_OBJECT_NIL)
-		appcomp->object = bonobo_object_dup_ref (component, NULL);
+		wincomp->object = bonobo_object_dup_ref (component, NULL);
 	else
-		appcomp->object = CORBA_OBJECT_NIL;
+		wincomp->object = CORBA_OBJECT_NIL;
 }
 
 void
-bonobo_win_deregister_component (BonoboWin     *app,
+bonobo_win_deregister_component (BonoboWin     *win,
 				 const char    *name)
 {
 	WinComponent *component;
 
-	g_return_if_fail (BONOBO_IS_WIN (app));
+	g_return_if_fail (BONOBO_IS_WIN (win));
 
-	if ((component = win_component_get (app->priv, name))) {
-		bonobo_win_xml_rm (app, "/", component->name);
-		win_component_destroy (app->priv, component);
+	if ((component = win_component_get (win->priv, name))) {
+		bonobo_win_xml_rm (win, "/", component->name);
+		win_component_destroy (win->priv, component);
 	} else
 		g_warning ("Attempting to deregister non-registered "
 			   "component '%s'", name);
@@ -577,7 +577,7 @@ real_emit_ui_event (BonoboWinPrivate *priv, const char *component_name,
 	if (!component_name) /* Auto-created entry, no-one can listen to it */
 		return;
 
-	gtk_object_ref (GTK_OBJECT (priv->app));
+	gtk_object_ref (GTK_OBJECT (priv->win));
 
 	component = win_component_objref (priv, component_name);
 
@@ -599,7 +599,7 @@ real_emit_ui_event (BonoboWinPrivate *priv, const char *component_name,
 	} else
 		g_warning ("NULL Corba handle of name '%s'", component_name);
 
-	gtk_object_unref (GTK_OBJECT (priv->app));
+	gtk_object_unref (GTK_OBJECT (priv->win));
 }
 
 static void
@@ -847,7 +847,7 @@ real_exec_verb (BonoboWinPrivate *priv,
 	g_return_if_fail (verb != NULL);
 	g_return_if_fail (component_name != NULL);
 
-	gtk_object_ref (GTK_OBJECT (priv->app));
+	gtk_object_ref (GTK_OBJECT (priv->win));
 
 	component = win_component_objref (priv, component_name);
 
@@ -869,7 +869,7 @@ real_exec_verb (BonoboWinPrivate *priv,
 	} else
 		g_warning ("NULL Corba handle of name '%s'", component_name);
 
-	gtk_object_unref (GTK_OBJECT (priv->app));
+	gtk_object_unref (GTK_OBJECT (priv->win));
 }
 
 static gint
@@ -945,7 +945,7 @@ menu_toggle_emit_ui_event (GtkCheckMenuItem *item, BonoboUINode *node)
 }
 
 static gint
-app_item_emit_ui_event (BonoboUIToolbarItem *item, const char *state, BonoboUINode *node)
+win_item_emit_ui_event (BonoboUIToolbarItem *item, const char *state, BonoboUINode *node)
 {
 	char             *id;
 	BonoboUIXmlData  *data;
@@ -1576,7 +1576,7 @@ build_toolbar_widget (BonoboWinPrivate *priv, BonoboUINode *node)
 	gtk_object_set_data (GTK_OBJECT (item), BONOBO_WIN_PRIV_KEY, priv);
 
 	gtk_signal_connect (GTK_OBJECT (item), "state_altered",
-			    (GtkSignalFunc) app_item_emit_ui_event, node);
+			    (GtkSignalFunc) win_item_emit_ui_event, node);
 
 	if ((sensitive = bonobo_ui_node_get_attr (node, "sensitive"))) {
 		set_cmd_state (priv, node, "sensitive", sensitive, FALSE);
@@ -2043,24 +2043,24 @@ update_widgets (BonoboWinPrivate *priv)
 }
 
 void
-bonobo_win_set_contents (BonoboWin *app,
+bonobo_win_set_contents (BonoboWin *win,
 			 GtkWidget *contents)
 {
-	g_return_if_fail (app != NULL);
-	g_return_if_fail (app->priv != NULL);
-	g_return_if_fail (app->priv->client_area != NULL);
+	g_return_if_fail (win != NULL);
+	g_return_if_fail (win->priv != NULL);
+	g_return_if_fail (win->priv->client_area != NULL);
 
-	gtk_container_add (GTK_CONTAINER (app->priv->client_area), contents);
+	gtk_container_add (GTK_CONTAINER (win->priv->client_area), contents);
 }
 
 GtkWidget *
-bonobo_win_get_contents (BonoboWin *app)
+bonobo_win_get_contents (BonoboWin *win)
 {
-	g_return_val_if_fail (app != NULL, NULL);
-	g_return_val_if_fail (app->priv != NULL, NULL);
-	g_return_val_if_fail (app->priv->dock != NULL, NULL);
+	g_return_val_if_fail (win != NULL, NULL);
+	g_return_val_if_fail (win->priv != NULL, NULL);
+	g_return_val_if_fail (win->priv->dock != NULL, NULL);
 
-	return GTK_BIN (app->priv->client_area)->child;
+	return GTK_BIN (win->priv->client_area)->child;
 }
 
 static gboolean
@@ -2077,7 +2077,7 @@ radio_group_destroy (gpointer	key,
 static void
 destroy_priv (BonoboWinPrivate *priv)
 {
-	priv->app = NULL;
+	priv->win = NULL;
 
 	gtk_object_unref (GTK_OBJECT (priv->tree));
 	priv->tree = NULL;
@@ -2110,18 +2110,18 @@ destroy_priv (BonoboWinPrivate *priv)
 static void
 bonobo_win_finalize (GtkObject *object)
 {
-	BonoboWin *app = (BonoboWin *)object;
+	BonoboWin *win = (BonoboWin *)object;
 	
-	if (app) {
-		if (app->priv)
-			destroy_priv (app->priv);
-		app->priv = NULL;
+	if (win) {
+		if (win->priv)
+			destroy_priv (win->priv);
+		win->priv = NULL;
 	}
 	GTK_OBJECT_CLASS (bonobo_win_parent_class)->finalize (object);
 }
 
 char *
-bonobo_win_xml_get (BonoboWin  *app,
+bonobo_win_xml_get (BonoboWin  *win,
 		    const char *path,
 		    gboolean    node_only)
 {
@@ -2129,9 +2129,9 @@ bonobo_win_xml_get (BonoboWin  *app,
  	BonoboUINode    *node;
   	CORBA_char *ret;
   
-  	g_return_val_if_fail (BONOBO_IS_WIN (app), NULL);
+  	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
   
-  	node = bonobo_ui_xml_get_path (app->priv->tree, path);
+  	node = bonobo_ui_xml_get_path (win->priv->tree, path);
   	if (!node)
   		return NULL;
  	else {		
@@ -2143,16 +2143,16 @@ bonobo_win_xml_get (BonoboWin  *app,
 }
 
 gboolean
-bonobo_win_xml_node_exists (BonoboWin  *app,
+bonobo_win_xml_node_exists (BonoboWin  *win,
 			    const char *path)
 {
 	BonoboUINode *node;
 	gboolean      wildcard;
 
-	g_return_val_if_fail (BONOBO_IS_WIN (app), FALSE);
+	g_return_val_if_fail (BONOBO_IS_WIN (win), FALSE);
 
 	node = bonobo_ui_xml_get_path_wildcard (
-		app->priv->tree, path, &wildcard);
+		win->priv->tree, path, &wildcard);
 
 	if (!wildcard)
 		return (node != NULL);
@@ -2162,7 +2162,7 @@ bonobo_win_xml_node_exists (BonoboWin  *app,
 }
 
 BonoboUIXmlError
-bonobo_win_object_set (BonoboWin  *app,
+bonobo_win_object_set (BonoboWin  *win,
 		       const char *path,
 		       Bonobo_Unknown object,
 		       CORBA_Environment *ev)
@@ -2170,13 +2170,13 @@ bonobo_win_object_set (BonoboWin  *app,
 	BonoboUINode   *node;
 	NodeInfo  *info;
 
-	g_return_val_if_fail (BONOBO_IS_WIN (app), BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (BONOBO_IS_WIN (win), BONOBO_UI_XML_BAD_PARAM);
 
-	node = bonobo_ui_xml_get_path (app->priv->tree, path);
+	node = bonobo_ui_xml_get_path (win->priv->tree, path);
 	if (!node)
 		return BONOBO_UI_XML_INVALID_PATH;
 
-	info = bonobo_ui_xml_get_data (app->priv->tree, node);
+	info = bonobo_ui_xml_get_data (win->priv->tree, node);
 
 	if (info->object != CORBA_OBJECT_NIL) {
 		bonobo_object_release_unref (info->object, ev);
@@ -2190,15 +2190,15 @@ bonobo_win_object_set (BonoboWin  *app,
 	else
 		info->object = CORBA_OBJECT_NIL;
 
-	bonobo_ui_xml_set_dirty (app->priv->tree, node);
+	bonobo_ui_xml_set_dirty (win->priv->tree, node);
 
-	update_widgets (app->priv);
+	update_widgets (win->priv);
 
 	return BONOBO_UI_XML_OK;
 }
 
 BonoboUIXmlError
-bonobo_win_object_get (BonoboWin  *app,
+bonobo_win_object_get (BonoboWin  *win,
 		       const char *path,
 		       Bonobo_Unknown *object,
 		       CORBA_Environment *ev)
@@ -2207,15 +2207,15 @@ bonobo_win_object_get (BonoboWin  *app,
 	NodeInfo *info;
 
 	g_return_val_if_fail (object != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (BONOBO_IS_WIN (app), BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (BONOBO_IS_WIN (win), BONOBO_UI_XML_BAD_PARAM);
 
 	*object = CORBA_OBJECT_NIL;
 
-	node = bonobo_ui_xml_get_path (app->priv->tree, path);
+	node = bonobo_ui_xml_get_path (win->priv->tree, path);
 	if (!node)
 		return BONOBO_UI_XML_INVALID_PATH;
 
-	info = bonobo_ui_xml_get_data (app->priv->tree, node);
+	info = bonobo_ui_xml_get_data (win->priv->tree, node);
 
 	if (info->object != CORBA_OBJECT_NIL)
 		*object = bonobo_object_dup_ref (info->object, ev);
@@ -2224,16 +2224,16 @@ bonobo_win_object_get (BonoboWin  *app,
 }
 
 BonoboUIXmlError
-bonobo_win_xml_merge_tree (BonoboWin  *app,
+bonobo_win_xml_merge_tree (BonoboWin  *win,
 			   const char *path,
 			   BonoboUINode    *tree,
 			   const char *component)
 {
 	BonoboUIXmlError err;
 	
-	g_return_val_if_fail (app != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (app->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (app->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
 
 	if (!tree || !bonobo_ui_node_get_name(tree))
 		return BONOBO_UI_XML_OK;
@@ -2247,20 +2247,20 @@ bonobo_win_xml_merge_tree (BonoboWin  *app,
 	if (bonobo_ui_node_has_name (tree, "Root")) {
 		bonobo_ui_xml_strip (tree);
 		err = bonobo_ui_xml_merge (
-			app->priv->tree, path, bonobo_ui_node_children (tree),
-			win_component_cmp_name (app->priv, component));
+			win->priv->tree, path, bonobo_ui_node_children (tree),
+			win_component_cmp_name (win->priv, component));
 	} else
 		err = bonobo_ui_xml_merge (
-			app->priv->tree, path, tree,
-			win_component_cmp_name (app->priv, component));
+			win->priv->tree, path, tree,
+			win_component_cmp_name (win->priv, component));
 
-	update_widgets (app->priv);
+	update_widgets (win->priv);
 
 	return err;
 }
 
 BonoboUIXmlError
-bonobo_win_xml_merge (BonoboWin  *app,
+bonobo_win_xml_merge (BonoboWin  *win,
 		      const char *path,
 		      const char *xml,
 		      const char *component)
@@ -2268,37 +2268,37 @@ bonobo_win_xml_merge (BonoboWin  *app,
 	BonoboUIXmlError err;
 	BonoboUINode *node;
 	
-	g_return_val_if_fail (app != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win != NULL, BONOBO_UI_XML_BAD_PARAM);
 	g_return_val_if_fail (xml != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (app->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (app->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
 
 	node = bonobo_ui_node_from_string (xml);
 	
 	if (!node)
 		return BONOBO_UI_XML_INVALID_XML;
 
-	err = bonobo_win_xml_merge_tree (app, path, node, component);
+	err = bonobo_win_xml_merge_tree (win, path, node, component);
 
 	return err;
 }
 
 BonoboUIXmlError
-bonobo_win_xml_rm (BonoboWin  *app,
+bonobo_win_xml_rm (BonoboWin  *win,
 		   const char *path,
 		   const char *by_component)
 {
 	BonoboUIXmlError err;
 
-	g_return_val_if_fail (app != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (app->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
-	g_return_val_if_fail (app->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (win->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
 
 	err = bonobo_ui_xml_rm (
-		app->priv->tree, path,
-		win_component_cmp_name (app->priv, by_component));
+		win->priv->tree, path,
+		win_component_cmp_name (win->priv, by_component));
 
-	update_widgets (app->priv);
+	update_widgets (win->priv);
 
 	return err;
 }
@@ -2323,23 +2323,23 @@ bonobo_win_thaw (BonoboWin *win)
 }
 
 void
-bonobo_win_dump (BonoboWin  *app,
+bonobo_win_dump (BonoboWin  *win,
 		 const char *msg)
 {
-	g_return_if_fail (BONOBO_IS_WIN (app));
+	g_return_if_fail (BONOBO_IS_WIN (win));
 
 	fprintf (stderr, "Bonobo Win '%s': frozen '%d'\n",
-		 app->priv->name, app->priv->frozen);
+		 win->priv->name, win->priv->frozen);
 
-	bonobo_ui_xml_dump (app->priv->tree, app->priv->tree->root, msg);
+	bonobo_ui_xml_dump (win->priv->tree, win->priv->tree->root, msg);
 }
 
 GtkAccelGroup *
-bonobo_win_get_accel_group (BonoboWin *app)
+bonobo_win_get_accel_group (BonoboWin *win)
 {
-	g_return_val_if_fail (BONOBO_IS_WIN (app), NULL);
+	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
 
-	return app->priv->accel_group;
+	return win->priv->accel_group;
 }
 
 
@@ -2373,21 +2373,21 @@ bonobo_win_binding_handle (GtkWidget        *widget,
 }
 
 static BonoboWinPrivate *
-construct_priv (BonoboWin *app)
+construct_priv (BonoboWin *win)
 {
 	BonoboWinPrivate *priv;
 	GnomeDockItemBehavior behavior;
 
 	priv = g_new0 (BonoboWinPrivate, 1);
 
-	priv->app    = app;	
+	priv->win    = win;	
 
 	/* Keybindings; the gtk_binding stuff is just too evil */
-	gtk_signal_connect (GTK_OBJECT (app), "key_press_event",
+	gtk_signal_connect (GTK_OBJECT (win), "key_press_event",
 			    (GtkSignalFunc) bonobo_win_binding_handle, priv);
 
 	priv->dock   = GNOME_DOCK (gnome_dock_new ());
-	gtk_container_add (GTK_CONTAINER (app),
+	gtk_container_add (GTK_CONTAINER (win),
 			   GTK_WIDGET    (priv->dock));
 
 	behavior = (GNOME_DOCK_ITEM_BEH_EXCLUSIVE
@@ -2433,7 +2433,7 @@ construct_priv (BonoboWin *app)
 			    (GtkSignalFunc) remove_fn, priv);
 
 	priv->accel_group = gtk_accel_group_new ();
-	gtk_window_add_accel_group (GTK_WINDOW (app),
+	gtk_window_add_accel_group (GTK_WINDOW (win),
 				    priv->accel_group);
 
 	gtk_widget_show_all (GTK_WIDGET (priv->dock));

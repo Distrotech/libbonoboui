@@ -52,8 +52,8 @@ typedef struct {
 	GtkObjectClass         object_klass;
 
 	void                 (*override)          (BonoboUINode *node);
-	void                 (*replace_override)  (BonoboUINode *new,
-						   BonoboUINode *old);
+	void                 (*replace_override)  (BonoboUINode *new_node,
+						   BonoboUINode *old_node);
 	void                 (*reinstate)         (BonoboUINode *node);
 	void                 (*remove)            (BonoboUINode *node);
 
