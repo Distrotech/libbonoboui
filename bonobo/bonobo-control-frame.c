@@ -55,6 +55,17 @@ struct _BonoboControlFramePrivate {
 	gboolean           activated;
 };
 
+static void
+control_connection_died_cb (gpointer connection,
+			    gpointer user_data)
+{
+	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (user_data);
+
+	g_return_if_fail (frame != NULL);
+
+	dprintf ("The remote control end died unexpectedly");
+}
+
 static Bonobo_Gdk_WindowId
 impl_Bonobo_ControlFrame_getToplevelId (PortableServer_Servant  servant,
 					CORBA_Environment      *ev)
@@ -583,7 +594,6 @@ bonobo_control_frame_set_ui_container (BonoboControlFrame *frame,
 		CORBA_exception_free (&tmp_ev);
 }
 
-
 /**
  * bonobo_control_frame_bind_to_control:
  * @frame: A BonoboControlFrame object.
@@ -611,13 +621,26 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 	} else
 		ev = opt_ev;
 
+	g_object_ref (G_OBJECT (frame));
+
 	if (frame->priv->control != CORBA_OBJECT_NIL) {
-		/* FIXME: we need to unset our frame / disassociate
-		   ourselves from the control in some standard way
-		   here */
-/*		Bonobo_Control_setFrame (frame->priv->control,
-					 CORBA_OBJECT_NIL, ev); */
-		CORBA_Object_release (frame->priv->control, ev);
+		CORBA_char *id;
+
+		ORBit_small_unlisten_for_broken (
+			frame->priv->control,
+			G_CALLBACK (control_connection_died_cb));
+
+		/* Unset ourselves as the frame */
+		id = Bonobo_Control_setFrame (frame->priv->control,
+					      CORBA_OBJECT_NIL, ev);
+		if (!BONOBO_EX (ev))
+			CORBA_free (id);
+
+		if (frame->priv->control != CORBA_OBJECT_NIL)
+
+			CORBA_Object_release (frame->priv->control, ev);
+
+		CORBA_exception_free (ev);
 	}
 
 	if (control == CORBA_OBJECT_NIL) {
@@ -631,6 +654,12 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 		frame->priv->inproc_control = (BonoboControl *)
 			bonobo_object (ORBit_small_get_servant (control));
 
+		if (!frame->priv->inproc_control)
+			bonobo_control_add_listener (
+				frame->priv->control,
+				G_CALLBACK (control_connection_died_cb),
+				frame, ev);
+
 		/* Introduce ourselves to the Control. */
 		id = Bonobo_Control_setFrame (control, BONOBO_OBJREF (frame), ev);
 		if (BONOBO_EX (ev))
@@ -640,10 +669,13 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 			dprintf ("setFrame id '%s' (=%d)\n", id, frame->priv->plug_xid);
 			CORBA_free (id);
 
-			if (GTK_WIDGET_REALIZED (frame->priv->socket))
+			if (frame->priv->socket &&
+			    GTK_WIDGET_REALIZED (frame->priv->socket))
 				bonobo_control_frame_set_remote_window (frame);
 		}
 	}
+
+	g_object_unref (G_OBJECT (frame));
 
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);

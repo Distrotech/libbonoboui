@@ -104,7 +104,7 @@ bonobo_plug_dispose (GObject *object)
 {
 	BonoboPlug *plug = (BonoboPlug *) object;
 
-	dprintf ("bonobo_plug_dispose %p\n", plug);
+	dprintf ("bonobo_plug_dispose\n");
 
 	if (plug->control) {
 		BonoboControl *control = plug->control;

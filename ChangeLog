@@ -1,3 +1,25 @@
+2001-11-02  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_init): use set_plug to associate it
+	correctly with the control.
+
+	* bonobo/bonobo-socket.c
+	(bonobo_socket_size_request): upd to accelerate.
+
+	* bonobo/bonobo-control.c
+	(control_frame_connection_died_cb): stub.
+	(add_connection_listener): impl.
+	(bonobo_control_add_listener): impl.
+	(bonobo_control_unset_control_frame): unlisten on
+	frame, re-order to re-enterancy guard.
+	(impl_Bonobo_Control_setFrame): add listener, hold refs.
+
+	* bonobo/bonobo-control-frame.c
+	(add_connection_listener): remove.
+	(bonobo_control_frame_bind_to_control): upd.
+	(control_connection_died_cb): stub.
+
 2001-11-01  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-control.c (bonobo_control_construct): put

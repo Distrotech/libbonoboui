@@ -17,6 +17,11 @@
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
 
+void     bonobo_control_add_listener            (CORBA_Object        object,
+						 GCallback           fn,
+						 gpointer            user_data,
+						 CORBA_Environment  *ev);
+
 void     bonobo_control_frame_set_remote_window (BonoboControlFrame *frame);
 gboolean bonobo_control_frame_focus             (BonoboControlFrame *frame,
 						 GtkDirectionType    direction);

@@ -15,6 +15,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkdnd.h>
 #include <bonobo/bonobo-socket.h>
+#include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-control-internal.h>
 
@@ -137,13 +138,37 @@ bonobo_socket_size_request (GtkWidget      *widget,
 			    GtkRequisition *requisition)
 {
 	BonoboSocket *socket = (BonoboSocket *) widget;
-	
-	if (GTK_WIDGET_REALIZED (widget) || !socket->frame)
+	GtkSocket    *gtk_socket = (GtkSocket *) widget;
+
+	if (GTK_WIDGET_REALIZED (widget) ||
+	    !socket->frame ||
+	    (gtk_socket->is_mapped && gtk_socket->have_size))
+
 		GTK_WIDGET_CLASS (parent_class)->size_request (
 			widget, requisition);
-	else
+
+	else if (gtk_socket->have_size &&
+		 GTK_WIDGET_VISIBLE (gtk_socket)) {
+
+		requisition->width = gtk_socket->request_width;
+		requisition->width = gtk_socket->request_height;
+
+	} else {
+		CORBA_Environment tmp_ev, *ev;
+
+		CORBA_exception_init ((ev = &tmp_ev));
+
 		bonobo_control_frame_size_request (
-			socket->frame, requisition, NULL);
+			socket->frame, requisition, ev);
+
+		if (!BONOBO_EX (ev)) {
+			gtk_socket->have_size = TRUE;
+			gtk_socket->request_width = requisition->width;
+			gtk_socket->request_height = requisition->width;
+		}
+
+		CORBA_exception_free (ev);
+	}
 }
 
 static void

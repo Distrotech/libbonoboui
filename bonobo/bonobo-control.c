@@ -47,6 +47,42 @@ struct _BonoboControlPrivate {
 	gboolean             automerge;
 };
 
+static void
+control_frame_connection_died_cb (gpointer connection,
+				  gpointer user_data)
+{
+	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (user_data);
+
+	g_return_if_fail (frame != NULL);
+
+	dprintf ("The remote control frame died unexpectedly");
+}
+
+void
+bonobo_control_add_listener (CORBA_Object        object,
+			     GCallback           fn,
+			     gpointer            user_data,
+			     CORBA_Environment  *ev)
+{
+	ORBitConnectionStatus status;
+
+	if (object == CORBA_OBJECT_NIL)
+		return;
+	
+	status = ORBit_small_listen_for_broken (
+		object, fn, user_data);
+	
+	switch (status) {
+	case ORBIT_CONNECTION_CONNECTED:
+		break;
+	default:
+		dprintf ("premature CORBA_Object death");
+		bonobo_exception_general_error_set (
+			ev, NULL, "Control died prematurely");
+		break;
+	}
+}
+
 /* Control lifecycle grind ... */
 void
 bonobo_control_notify_plug_died (BonoboControl *control)
@@ -198,15 +234,19 @@ bonobo_control_unset_control_frame (BonoboControl     *control,
 		ev = opt_ev;
 
 	if (control->priv->frame != CORBA_OBJECT_NIL) {
+		Bonobo_ControlFrame frame = control->priv->frame;
+
+		control->priv->frame = CORBA_OBJECT_NIL;
+
+		ORBit_small_unlisten_for_broken (
+			frame, G_CALLBACK (control_frame_connection_died_cb));
+
 		if (control->priv->active)
 			Bonobo_ControlFrame_notifyActivated (
-				control->priv->frame,
-				FALSE, ev);
+				frame, FALSE, ev);
 
-		CORBA_Object_release (control->priv->frame, ev);
+		CORBA_Object_release (frame, ev);
 	}
-
-	control->priv->frame = CORBA_OBJECT_NIL;
 
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
@@ -217,8 +257,11 @@ impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 			      Bonobo_ControlFrame    frame,
 			      CORBA_Environment     *ev)
 {
+	CORBA_char    *ret;
 	BonoboControl *control = BONOBO_CONTROL (
 		bonobo_object_from_servant (servant));
+
+	g_object_ref (G_OBJECT (control));
 
 	if (control->priv->frame != frame) {
 		bonobo_control_unset_control_frame (control, ev);
@@ -232,6 +275,12 @@ impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 	
 		control->priv->inproc_frame = (BonoboControlFrame *)
 			bonobo_object (ORBit_small_get_servant (frame));
+
+		if (!control->priv->inproc_frame)
+			bonobo_control_add_listener (
+				frame,
+				G_CALLBACK (control_frame_connection_died_cb),
+				control, ev);
 	
 		g_signal_emit (G_OBJECT (control), control_signals [SET_FRAME], 0);
 	}
@@ -243,11 +292,15 @@ impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 		
 		dprintf ("plug id %d\n", x11_id);
 
-		return bonobo_control_window_id_from_x11 (x11_id);
+		ret = bonobo_control_window_id_from_x11 (x11_id);
 	} else {
 		bonobo_exception_set (ev, ex_Bonobo_Control_NoContents);
-		return NULL;
+		ret = NULL;
 	}
+
+	g_object_unref (G_OBJECT (control));
+
+	return ret;
 }
 
 static void
@@ -509,11 +562,6 @@ bonobo_control_dispose (GObject *object)
 
 	if (control->priv->widget)
 		gtk_object_destroy (GTK_OBJECT (control->priv->widget));
-
-	if (control->priv->plug) {
-		gtk_object_destroy (GTK_OBJECT (control->priv->plug));
-		bonobo_control_set_plug (control, NULL);
-	}
 
 	bonobo_control_parent_class->dispose (object);
 }
@@ -798,11 +846,16 @@ bonobo_control_class_init (BonoboControlClass *klass)
 static void
 bonobo_control_init (BonoboControl *control)
 {
+	GtkWidget *plug;
+
 	control->priv = g_new0 (BonoboControlPrivate, 1);
 
 	control->priv->frame = CORBA_OBJECT_NIL;
-	control->priv->plug  = bonobo_plug_new (0);
-	gtk_widget_show (control->priv->plug);
+
+	plug = bonobo_plug_new (0);
+	gtk_widget_show (plug);
+
+	bonobo_control_set_plug (control, BONOBO_PLUG (plug));
 }
 
 BONOBO_TYPE_FUNC_FULL (BonoboControl, 
