@@ -350,16 +350,17 @@ bonobo_ui_engine_config_connect (GtkWidget      *widget,
 				 BonoboUIEngineConfigVerbFn verb_fn)
 {
 	BonoboUIEngineConfig *config;
-	closure_t *c = g_new0 (closure_t, 1);
-
-	c->engine    = engine;
-	c->path      = g_strdup (path);
-	c->config_fn = config_fn;
-	c->verb_fn   = verb_fn;
+	closure_t *c;
 
 	config = bonobo_ui_engine_get_config (engine);
 	if (!config || !config->priv->path)
 		return;
+
+	c = g_new0 (closure_t, 1);
+	c->engine    = engine;
+	c->path      = g_strdup (path);
+	c->config_fn = config_fn;
+	c->verb_fn   = verb_fn;
 
 	gtk_signal_connect_full (
 		GTK_OBJECT (widget), "button_press_event",

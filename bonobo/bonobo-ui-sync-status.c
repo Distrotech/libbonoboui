@@ -29,6 +29,8 @@ static GtkObjectClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
+#define HINT_KEY "BonoboWindow:hint"
+
 static void
 set_hint_cb (BonoboUIEngine   *engine,
 	     const char       *str,
@@ -38,8 +40,7 @@ set_hint_cb (BonoboUIEngine   *engine,
 
 	if (msync->main_status) {
 		id = gtk_statusbar_get_context_id (
-			msync->main_status,
-			"BonoboWindow:hint");
+			msync->main_status, HINT_KEY);
 
 		gtk_statusbar_push (msync->main_status, id, str);
 	}
@@ -52,8 +53,9 @@ remove_hint_cb (BonoboUIEngine   *engine,
 	if (msync->main_status) {
 		guint id;
 
-		id = gtk_statusbar_get_context_id (msync->main_status,
-						  "BonoboWindow:menu-hint");
+		id = gtk_statusbar_get_context_id (
+			msync->main_status, HINT_KEY);
+
 		gtk_statusbar_pop (msync->main_status, id);
 	}
 }

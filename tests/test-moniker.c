@@ -228,6 +228,8 @@ main (int argc, char **argv)
 	bindtextdomain (PACKAGE, GNOMELOCALEDIR);
 	textdomain (PACKAGE);
 
+	free (malloc (8)); /* -lefence */
+
 	gnomelib_register_popt_table (oaf_popt_options, _("Oaf options"));
 
 	gnome_init_with_popt_table ("moniker-test", "0.0", argc, argv,

@@ -35,8 +35,6 @@ static GtkObjectClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
-#define CONFIG_TOOLBARS
-
 static GdkPixbuf *
 cmd_get_toolbar_pixbuf (BonoboUINode     *node,
 			BonoboUINode     *cmd_node)
@@ -452,7 +450,6 @@ parse_look (const char *look)
 		: BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
 }
 
-#ifdef CONFIG_TOOLBARS
 static char *
 do_config_popup (BonoboUIEngineConfig *config,
 		 BonoboUINode         *config_node,
@@ -556,7 +553,6 @@ config_verb_fn (BonoboUIEngineConfig *config,
 	if (changed)
 		bonobo_ui_engine_config_serialize (config);
 }
-#endif
 
 static GnomeDockItem *
 create_dockitem (BonoboUISyncToolbar *sync,
@@ -573,6 +569,8 @@ create_dockitem (BonoboUISyncToolbar *sync,
 	gint position = 0;
 	guint offset = 0;
 	gboolean in_new_band = TRUE;
+	gboolean can_config = TRUE;
+	BonoboUIToolbar *toolbar;
 
 	if ((prop = bonobo_ui_node_get_attr (node, "behavior"))) {
 		if (!strcmp (prop, "detachable"))
@@ -648,16 +646,33 @@ create_dockitem (BonoboUISyncToolbar *sync,
 			     placement, band_num,
 			     position, offset, in_new_band);
 
-#ifdef CONFIG_TOOLBARS
-	{
+		
+	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
+	
+	gtk_container_add (GTK_CONTAINER (item),
+			   GTK_WIDGET (toolbar));
+	gtk_widget_show (GTK_WIDGET (toolbar));
+
+	if ((prop = bonobo_ui_node_get_attr (node, "config"))) {
+		can_config = atoi (prop);
+		bonobo_ui_node_free_string (prop);
+	} else
+		can_config = TRUE;
+
+	if (can_config) {
 		char *path;
+		path = bonobo_ui_xml_make_path (node);
+
 		bonobo_ui_engine_config_connect (
 			GTK_WIDGET (item), sync->parent.engine,
-			(path = bonobo_ui_xml_make_path (node)),
-			do_config_popup, config_verb_fn);
+			path, do_config_popup, config_verb_fn);
+
+		bonobo_ui_engine_config_connect (
+			GTK_WIDGET (toolbar), sync->parent.engine,
+			path, do_config_popup, config_verb_fn);
+
 		g_free (path);
 	}
-#endif
 
 	return item;
 }
@@ -695,17 +710,11 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 
 	item = get_dock_item (BONOBO_UI_SYNC_TOOLBAR (sync), dockname);
 	
-	if (!item) {
+	if (!item)
 		item = create_dockitem (BONOBO_UI_SYNC_TOOLBAR (sync),
 					node, dockname);
-		
-		toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
-
-		gtk_container_add (GTK_CONTAINER (item),
-				   GTK_WIDGET (toolbar));
-		gtk_widget_show (GTK_WIDGET (toolbar));
-	} else
-		toolbar = BONOBO_UI_TOOLBAR (GTK_BIN (item)->child);
+	
+	toolbar = BONOBO_UI_TOOLBAR (GTK_BIN (item)->child);
 
 	bonobo_ui_engine_stamp_root (sync->engine, node, GTK_WIDGET (toolbar));
 
