@@ -1,3 +1,12 @@
+2001-07-19  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/bonobo-ui-sync-menu.c, bonobo/bonobo-ui-sync-toolbar.c:
+	Added "stockid=`stockid'" attribute to the XML node which you can
+	use to get GtkStock items.
+
+	* bonobo/bonobo-ui-util.c (bonobo_ui_util_xml_get_icon_pixmap_widget):
+	Made second argument of this function a GtkIconSize.
+
 2001-07-18  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-selector-widget.c (server_list_compare): kill.

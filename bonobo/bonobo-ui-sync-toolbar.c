@@ -43,13 +43,13 @@ cmd_get_toolbar_image (BonoboUINode     *node,
 	char      *type;
 
 	if ((type = bonobo_ui_node_get_attr (node, "pixtype"))) {
-		image = bonobo_ui_util_xml_get_icon_pixmap_widget (node, FALSE);
+		image = bonobo_ui_util_xml_get_icon_pixmap_widget (node, GTK_ICON_SIZE_SMALL_TOOLBAR);
 		bonobo_ui_node_free_string (type);
 		return image;
 	}
 
 	if ((type = bonobo_ui_node_get_attr (cmd_node, "pixtype"))) {
-		image = bonobo_ui_util_xml_get_icon_pixmap_widget (cmd_node, FALSE);
+		image = bonobo_ui_util_xml_get_icon_pixmap_widget (cmd_node, GTK_ICON_SIZE_SMALL_TOOLBAR);
 		bonobo_ui_node_free_string (type);
 		return image;
 	}
@@ -281,13 +281,50 @@ toolbar_build_widget (BonoboUISync *sync,
 		      int          *pos,
 		      GtkWidget    *parent)
 {
-	char         *type;
+	char         *type, *stock_id;
 	GtkWidget    *item;
 
 	g_return_val_if_fail (sync != NULL, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	type = bonobo_ui_engine_get_attr (node, cmd_node, "type");
+
+	if ((stock_id = bonobo_ui_engine_get_attr (node, cmd_node, "stockid"))) {
+		GtkStockItem  stock_item;
+		GtkIconSet   *icon_set;
+
+		if (!gtk_stock_lookup (stock_id, &stock_item))
+			g_warning ("Unknown stock id '%s' on %s", stock_id,
+				   bonobo_ui_xml_make_path (node));
+		else {
+			gchar *label, *label2;
+			int i, len;
+
+			label = g_strdup (dgettext (stock_item.translation_domain, stock_item.label));
+
+			len = strlen (label);
+			for (i = 0; i < len; i++) {
+				if (label [i] == '_') {
+					strcpy (label+i, label+i+1);
+					len--;
+				}
+			}
+
+			label2 = bonobo_ui_util_encode_str (label);
+
+			bonobo_ui_node_set_attr (node, "label", label2);
+
+			g_free (label2);
+			g_free (label);
+		}
+
+		icon_set = gtk_icon_factory_lookup_default (stock_id);
+
+		if (icon_set) {
+			bonobo_ui_node_set_attr (node, "pixtype", "stock");
+			bonobo_ui_node_set_attr (node, "pixname", stock_id);
+		}
+	}
 
 	if (bonobo_ui_node_has_name (node, "separator")) {
 		item = bonobo_ui_toolbar_separator_item_new ();

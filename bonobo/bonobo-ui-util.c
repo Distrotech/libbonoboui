@@ -241,7 +241,7 @@ find_pixmap_in_path (const gchar *filename)
 /**
  * bonobo_ui_util_xml_get_icon_pixmap_widget:
  * @node: the node
- * @prepend_menu: whether the pixbuf is for a menu item
+ * @icon_size: the desired size of the icon
  * 
  * This function extracts a pixbuf from the node and returns a GtkWidget
  * containing a display of the pixbuf.
@@ -249,7 +249,7 @@ find_pixmap_in_path (const gchar *filename)
  * Return value: the widget.
  **/
 GtkWidget *
-bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_menu)
+bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, GtkIconSize icon_size)
 {
 	char      *type, *text;
 	GtkWidget *image = NULL;
@@ -269,12 +269,9 @@ bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_
 
 	if (!strcmp (type, "stock")) {
 
-		if (prepend_menu) {
-			char *fullname = g_strconcat ("Menu_", text, NULL);
-			image = gtk_image_new_from_stock (fullname, GTK_ICON_SIZE_MENU);
-			g_free (fullname);
-		} else
-			image = gtk_image_new_from_stock (text, GTK_ICON_SIZE_SMALL_TOOLBAR);
+		g_message (G_STRLOC ": |%s|", text);
+
+		image = gtk_image_new_from_stock (text, icon_size);
 
 	} else if (!strcmp (type, "filename")) {
 		char *name = find_pixmap_in_path (text);
