@@ -60,8 +60,7 @@ bonobo_zoomable_frame_dispose (GObject *object)
 {
 	BonoboZoomableFrame *frame = (BonoboZoomableFrame *) object;
 
-	frame->priv->zoomable = bonobo_object_release_unref (
-		frame->priv->zoomable, NULL);
+	CORBA_Object_release (frame->priv->zoomable, NULL);
 
 	parent_class->dispose (object);
 }
@@ -154,9 +153,9 @@ bonobo_zoomable_frame_bind_to_zoomable (BonoboZoomableFrame *zoomable_frame,
 	g_return_if_fail (BONOBO_IS_ZOOMABLE_FRAME (zoomable_frame));
 
 	if (zoomable_frame->priv->zoomable != CORBA_OBJECT_NIL)
-		g_warning ("FIXME: leaking zoomable reference");
+		CORBA_Object_release (zoomable_frame->priv->zoomable, NULL);
 
-	zoomable_frame->priv->zoomable = bonobo_object_dup_ref (zoomable, NULL);
+	zoomable_frame->priv->zoomable = CORBA_Object_duplicate (zoomable, NULL);
 
 	if (!opt_ev) {
 		CORBA_exception_init (&temp_ev);

@@ -1,3 +1,11 @@
+2002-02-27  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-zoomable-frame.c
+	(bonobo_zoomable_frame_bind_to_zoomable),
+	(bonobo_zoomable_frame_dispose): only hold a CORBA
+	ref on the remote zoomable, to ease ref counting
+	issues with BonoboControl.
+
 2002-02-27  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-control.c:
