@@ -63,14 +63,21 @@ libbonoboincludedir = $(includedir)/bonobo
 
 libbonoboinclude_HEADERS =		\
 	gtk-interfaces.h		\
+	gnome-bind-context.h		\
+	gnome-bonobo.h			\
 	gnome-client-site.h		\
-	gnome-inplace-site.h		\
-	gnome-inplace-component.h	\
 	gnome-component.h		\
 	gnome-component-factory.h	\
+	gnome-component-io.h		\
+	gnome-composite-moniker.h	\
 	gnome-container.h		\
+	gnome-file-moniker.h		\
+	gnome-inplace-site.h		\
+	gnome-inplace-component.h	\
+	gnome-item-moniker.h		\
 	gnome-main.h			\
 	gnome-object.h			\
+	gnome-persist-stream.h		\
 	gnome-view.h
 
 test_container_SOURCES =		\
