@@ -1,3 +1,7 @@
+2004-08-11  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Added nb to ALL_LINGUAS.
+
 2004-06-25  Muktha  <muktha.narayan@wipro.com>
 
 	* bonobo/bonobo-ui-engine.c
