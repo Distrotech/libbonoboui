@@ -4,9 +4,9 @@ corba_DATA = sample.gnorba
 
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
-        -I$(includedir)                                 \
 	-I$(srcdir) -I$(top_srcdir) 			\
-	-I. \
+	-I. 						\
+        -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)
 
 gnome_libs =			\
