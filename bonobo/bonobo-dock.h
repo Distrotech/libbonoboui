@@ -106,22 +106,26 @@ void           bonobo_dock_add_floating_item (BonoboDock *dock,
                                              gint x, gint y,
                                              GtkOrientation orientation);
           
-void           bonobo_dock_set_client_area   (BonoboDock             *dock,
-                                             GtkWidget             *widget);
+void             bonobo_dock_set_client_area   (BonoboDock             *dock,
+						GtkWidget             *widget);
 
-GtkWidget     *bonobo_dock_get_client_area   (BonoboDock             *dock);
+GtkWidget       *bonobo_dock_get_client_area   (BonoboDock             *dock);
   
-BonoboDockItem *bonobo_dock_get_item_by_name  (BonoboDock *dock,
-                                             const gchar *name,
-                                             BonoboDockPlacement *placement_return,
-                                             guint *num_band_return,
-                                             guint *band_position_return,
-                                             guint *offset_return);
- 
+BonoboDockItem  *bonobo_dock_get_item_by_name  (BonoboDock *dock,
+						const gchar *name,
+						BonoboDockPlacement *placement_return,
+						guint *num_band_return,
+						guint *band_position_return,
+						guint *offset_return);
+
 BonoboDockLayout *bonobo_dock_get_layout      (BonoboDock *dock);
 
-gboolean       bonobo_dock_add_from_layout   (BonoboDock *dock,
-                                             BonoboDockLayout *layout);
+gboolean          bonobo_dock_add_from_layout (BonoboDock *dock,
+					       BonoboDockLayout *layout);
+
+#ifdef BONOBO_UI_INTERNAL
+void              bonobo_dock_focus_roll      (BonoboDock *dock);
+#endif /* BONOBO_UI_INTERNAL */
 
 G_END_DECLS
 

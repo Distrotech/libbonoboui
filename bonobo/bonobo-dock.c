@@ -23,8 +23,9 @@
   @NOTATION@
 */
 
-#include <gtk/gtk.h>
 #include <string.h>
+#include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include <bonobo/bonobo-dock.h>
 #include <bonobo/bonobo-dock-band.h>
 #include <bonobo/bonobo-dock-item.h>
@@ -53,12 +54,8 @@ GNOME_CLASS_BOILERPLATE (BonoboDock, bonobo_dock,
 
 struct _BonoboDockPrivate
 {
-	int dummy;
-	/* Nothing right now, needs to get filled with the private things */
-	/* XXX: When stuff is added, uncomment the allocation in the
-	 * bonobo_dock_init function! */
+	GdkDragContext *current_drag;
 };
-
 
 enum {
   LAYOUT_CHANGED,
@@ -685,6 +682,19 @@ bonobo_dock_finalize (GObject *object)
 
 
 
+static void
+new_band_setup (BonoboDock    *dock,
+		GtkWidget     *new_band,
+		GtkOrientation orientation)
+{
+      bonobo_dock_band_set_orientation (
+	      BONOBO_DOCK_BAND (new_band), orientation);
+      gtk_widget_set_parent (GTK_WIDGET (new_band), GTK_WIDGET (dock));
+      gtk_widget_queue_resize (GTK_WIDGET (new_band));
+      gtk_widget_show (GTK_WIDGET (new_band));
+}
+
+
 /* When an item is being dragged, there can be 3 situations:
 
    (I)   A new band is created and the item is docked to it.
@@ -741,10 +751,6 @@ drag_new (BonoboDock *dock,
   if (new_band == NULL)
     {
       new_band = BONOBO_DOCK_BAND (bonobo_dock_band_new ());
-      bonobo_dock_band_set_orientation (new_band,
-                                       (is_vertical
-                                        ? GTK_ORIENTATION_VERTICAL
-                                        : GTK_ORIENTATION_HORIZONTAL));
 
       /* This is mostly to remember that `drag_allocation' for this
          child is bogus, as it was not previously allocated.  */
@@ -757,9 +763,9 @@ drag_new (BonoboDock *dock,
       else
         g_list_prepend (where->next, new_band);
 
-      gtk_widget_set_parent (GTK_WIDGET (new_band), GTK_WIDGET (dock));
-      gtk_widget_queue_resize (GTK_WIDGET (new_band));
-      gtk_widget_show (GTK_WIDGET (new_band));
+      new_band_setup (dock, GTK_WIDGET (new_band),
+		      is_vertical ? GTK_ORIENTATION_VERTICAL
+		                  : GTK_ORIENTATION_HORIZONTAL);
     }
 
   /* Move the item to the new band.  (This is a no-op if we are using
@@ -1225,6 +1231,31 @@ bonobo_dock_allow_floating_items (BonoboDock *dock,
   dock->floating_items_allowed = enable;
 }
 
+static GList **
+get_band_list (BonoboDock *dock, BonoboDockPlacement placement)
+{
+  GList **band_ptr = NULL;
+
+  switch (placement)
+    {
+    case BONOBO_DOCK_TOP:
+      band_ptr = &dock->top_bands;
+      break;
+    case BONOBO_DOCK_BOTTOM:
+      band_ptr = &dock->bottom_bands;
+      break;
+    case BONOBO_DOCK_LEFT:
+      band_ptr = &dock->left_bands;
+      break;
+    case BONOBO_DOCK_RIGHT:
+      band_ptr = &dock->right_bands;
+      break;
+    default:
+      break;
+    }
+  return band_ptr;
+}
+
 /**
  * bonobo_dock_add_item:
  * @dock: A pointer to a #BonoboDock widget
@@ -1244,12 +1275,12 @@ bonobo_dock_allow_floating_items (BonoboDock *dock,
  **/
 void
 bonobo_dock_add_item (BonoboDock *dock,
-                     BonoboDockItem *item,
-                     BonoboDockPlacement placement,
-                     guint band_num,
-                     gint position,
-                     guint offset,
-                     gboolean in_new_band)
+		      BonoboDockItem *item,
+		      BonoboDockPlacement placement,
+		      guint band_num,
+		      gint position,
+		      guint offset,
+		      gboolean in_new_band)
 {
   BonoboDockBand *band;
   GList **band_ptr;
@@ -1258,27 +1289,13 @@ bonobo_dock_add_item (BonoboDock *dock,
   DEBUG (("band_num %d offset %d position %d in_new_band %d",
           band_num, offset, position, in_new_band));
 
-  switch (placement)
+  if (placement == BONOBO_DOCK_FLOATING)
     {
-    case BONOBO_DOCK_TOP:
-      band_ptr = &dock->top_bands;
-      break;
-    case BONOBO_DOCK_BOTTOM:
-      band_ptr = &dock->bottom_bands;
-      break;
-    case BONOBO_DOCK_LEFT:
-      band_ptr = &dock->left_bands;
-      break;
-    case BONOBO_DOCK_RIGHT:
-      band_ptr = &dock->right_bands;
-      break;
-    case BONOBO_DOCK_FLOATING:
       g_warning ("Floating dock items not supported by `bonobo_dock_add_item'.");
       return;
-    default:
-      g_error ("Unknown dock placement.");
-      return;
     }
+  band_ptr = get_band_list (dock, placement);
+  g_return_if_fail (band_ptr != NULL);
 
   p = g_list_nth (*band_ptr, band_num);
   if (in_new_band || p == NULL)
@@ -1568,8 +1585,294 @@ bonobo_dock_get_layout (BonoboDock *dock)
  * Returns: %TRUE if the operation succeeds, %FALSE if it fails.
  **/
 gboolean
-bonobo_dock_add_from_layout (BonoboDock *dock,
-                            BonoboDockLayout *layout)
+bonobo_dock_add_from_layout (BonoboDock       *dock,
+			     BonoboDockLayout *layout)
 {
   return bonobo_dock_layout_add_to_dock (layout, dock);
+}
+
+static GList **
+find_band_list (BonoboDock          *dock,
+		BonoboDockBand      *band,
+		BonoboDockPlacement *placement)
+{
+  GList **band_list = NULL;
+
+  if (g_list_find (dock->top_bands, band))
+    {
+      *placement = BONOBO_DOCK_TOP;
+      band_list = &dock->top_bands;
+    }
+
+  if (g_list_find (dock->bottom_bands, band))
+    {
+      *placement = BONOBO_DOCK_BOTTOM;
+      band_list = &dock->bottom_bands;
+    }
+
+  if (g_list_find (dock->left_bands, band))
+    {
+      *placement = BONOBO_DOCK_LEFT;
+      band_list = &dock->left_bands;
+    }
+
+  if (g_list_find (dock->right_bands, band))
+    {
+      *placement = BONOBO_DOCK_RIGHT;
+      band_list = &dock->right_bands;
+    }
+
+  return band_list;
+}
+
+static gboolean
+insert_into_band_list (BonoboDock     *dock,
+		       GList         **band_list,
+		       GtkOrientation  orientation,
+		       BonoboDockItem *item,
+		       gboolean        prepend)
+{
+  GtkWidget *new_band;
+
+  new_band = bonobo_dock_band_new ();
+
+  if (item->behavior & BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL)
+    orientation = GTK_ORIENTATION_HORIZONTAL;
+
+  if (item->behavior & BONOBO_DOCK_ITEM_BEH_NEVER_HORIZONTAL)
+    orientation = GTK_ORIENTATION_VERTICAL;
+
+  if (!bonobo_dock_band_append (
+	  BONOBO_DOCK_BAND (new_band), GTK_WIDGET (item), 0))
+    return FALSE;
+
+  if (prepend)
+    *band_list = g_list_prepend (*band_list, new_band);
+  else
+    *band_list = g_list_append (*band_list, new_band);
+
+  new_band_setup (dock, new_band, orientation);
+
+  return TRUE;
+}
+
+gint
+bonobo_dock_handle_key_nav (BonoboDock     *dock,
+			    BonoboDockBand *band,
+			    BonoboDockItem *item,
+			    GdkEventKey    *event)
+{
+  GList   *entry;
+  GList  **band_list;
+  int      cross_band_dir = 0;
+  int      switch_side_dir = 0;
+  gboolean end_stop = FALSE;
+  gboolean was_inserted = FALSE;
+  GtkOrientation orientation;
+  BonoboDockPlacement placement;
+
+  if (!(event->state & GDK_CONTROL_MASK))
+    return FALSE;
+
+  switch (event->keyval)
+    {
+      case GDK_Up:
+        cross_band_dir = -1;
+	break;
+      case GDK_Down:
+        cross_band_dir = +1;
+	break;
+      case GDK_Left:
+        switch_side_dir = -1;
+	break;
+      case GDK_Right:
+        switch_side_dir = +1;
+	break;
+      default:
+        return FALSE;
+    }
+
+  band_list = find_band_list (dock, band, &placement);
+  g_return_val_if_fail (band_list != NULL, FALSE);
+
+  if (placement == BONOBO_DOCK_LEFT ||
+      placement == BONOBO_DOCK_RIGHT)
+    {
+      int tmp = switch_side_dir;
+      switch_side_dir = cross_band_dir;
+      cross_band_dir = tmp;
+      orientation = GTK_ORIENTATION_VERTICAL;
+    }
+  else
+    { 
+      orientation = GTK_ORIENTATION_HORIZONTAL;
+    }
+
+  g_object_ref (G_OBJECT (item));
+
+  gtk_container_remove (GTK_CONTAINER (band), GTK_WIDGET (item));
+
+  /*
+   * Find somewhere new for it ...
+   */
+  entry = g_list_find (*band_list, band);
+  g_return_val_if_fail (entry != NULL, FALSE);
+  
+  if (cross_band_dir == -1)
+    {
+      for (entry = entry->prev; !was_inserted && entry;
+	   entry = entry->prev)
+        was_inserted = bonobo_dock_band_append (
+		entry->data, GTK_WIDGET (item), 0);
+
+      if (!was_inserted &&
+	  ((*band_list)->data != band ||
+	   bonobo_dock_band_get_num_children (band) > 0))
+        {
+	  was_inserted = insert_into_band_list (
+		  dock, band_list, orientation, item, TRUE);
+	}
+
+      if (!was_inserted)
+        {
+	  if (placement == BONOBO_DOCK_BOTTOM)
+	    {
+	      was_inserted = insert_into_band_list (
+		      dock, &dock->top_bands, orientation, item, FALSE);
+	    }
+	  else if (placement == BONOBO_DOCK_RIGHT)
+	    {
+	      was_inserted = insert_into_band_list (
+		      dock, &dock->left_bands, orientation, item, FALSE);
+	    }
+	  else
+	    end_stop = TRUE;
+	}
+    }
+
+  if (cross_band_dir == +1)
+    {
+      for (entry = entry->next; !was_inserted && entry;
+	   entry = entry->next)
+        was_inserted = bonobo_dock_band_append (
+		entry->data, GTK_WIDGET (item), 0);
+
+      if (!was_inserted &&
+	  (g_list_last (*band_list)->data != band ||
+	   bonobo_dock_band_get_num_children (band) > 0))
+        {
+	  was_inserted = insert_into_band_list (
+		  dock, band_list, orientation, item, FALSE);
+	}
+
+      if (!was_inserted)
+        {
+	  if (placement == BONOBO_DOCK_TOP)
+	    {
+	      was_inserted = insert_into_band_list (
+		      dock, &dock->bottom_bands, orientation, item, TRUE);
+	    }
+	  else if (placement == BONOBO_DOCK_LEFT)
+	    {
+	      was_inserted = insert_into_band_list (
+		      dock, &dock->right_bands, orientation, item, TRUE);
+	    }
+	  else
+	    end_stop = TRUE;
+	}
+    }
+
+  if (!end_stop && !was_inserted)
+    {
+      orientation = (orientation == GTK_ORIENTATION_HORIZONTAL) ?
+	      GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL;
+      if (placement == BONOBO_DOCK_TOP ||
+	  placement == BONOBO_DOCK_BOTTOM)
+        {
+          if (switch_side_dir == -1)
+	    was_inserted = insert_into_band_list (
+		    dock, &dock->left_bands, orientation, item, FALSE);
+	  else
+            was_inserted = insert_into_band_list (
+		    dock, &dock->right_bands, orientation, item, TRUE);
+	}
+      else
+        {
+          if (switch_side_dir == -1)
+	    was_inserted = insert_into_band_list (
+		    dock, &dock->top_bands, orientation, item, FALSE);
+	  else
+            was_inserted = insert_into_band_list (
+		    dock, &dock->bottom_bands, orientation, item, TRUE);
+	}
+    }
+
+  if (!was_inserted)
+    { /* geometry issue */
+      if (!bonobo_dock_band_append (band, GTK_WIDGET (item), 0))
+	g_error ("no space in fallback original band");
+    }
+
+  if (bonobo_dock_band_get_num_children (band) == 0)
+    gtk_widget_destroy (GTK_WIDGET (band));
+
+  g_object_unref (G_OBJECT (item));
+
+  return TRUE;
+}
+
+void
+bonobo_dock_focus_roll (BonoboDock *dock)
+{
+	GList *focusable = NULL;
+	GList *children, *l, *bands = NULL, *grips = NULL;
+
+	children = gtk_container_get_children (GTK_CONTAINER (dock));
+
+	for (l = children; l; l = l->next) {
+		if (BONOBO_IS_DOCK_BAND (l->data) &&
+		    bonobo_dock_band_get_num_children (l->data) > 0)
+			bands = g_list_prepend (bands, l->data);
+	}
+
+	g_list_free (children);
+
+	for (l = bands; l; l = l->next) {
+		GList *l2;
+
+		children = gtk_container_get_children (l->data);
+		
+		for (l2 = children; l2; l2 = l2->next) {
+			GtkWidget *grip;
+
+			if (BONOBO_IS_DOCK_ITEM (l2->data) &&
+			    (grip = bonobo_dock_item_get_grip (BONOBO_DOCK_ITEM (l2->data))))
+				grips = g_list_prepend (grips, grip);
+		}
+	}
+
+	g_list_free (bands);
+
+	for (l = grips; l; l = l->next) {
+		if (GTK_WIDGET_DRAWABLE (l->data) &&
+		    GTK_WIDGET_CAN_FOCUS (l->data))
+			focusable = g_list_prepend (focusable, l->data);
+	}
+
+	g_list_free (grips);
+
+	for (l = focusable; l; l = l->next) {
+		if (GTK_WIDGET_HAS_FOCUS (l->data))
+			break;
+	}
+
+	if (!l || l->next == NULL)
+		l = focusable;
+	else
+		l = l->next;
+	
+	if (l)
+		gtk_widget_grab_focus (l->data);
+
+	g_list_free (focusable);
 }

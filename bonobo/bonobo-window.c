@@ -7,7 +7,10 @@
  *
  * Copyright 2000 Ximian, Inc.
  */
-#include "config.h"
+#include <config.h>
+
+#include <gdk/gdkkeysyms.h>
+
 #include <bonobo/bonobo-dock-item.h>
 #include <bonobo/bonobo-dock.h>
 #include <bonobo/bonobo-window.h>
@@ -51,6 +54,8 @@ struct _BonoboWindowPrivate {
 	GtkBox         *status;
 
 	GtkWidget      *client_area;
+
+	gboolean        allow_all_focus;
 };
 
 /**
@@ -285,17 +290,90 @@ bonobo_window_key_press_event (GtkWidget *widget,
 {
 	gboolean handled;
 	BonoboUISyncKeys *sync;
+	BonoboWindow *window = (BonoboWindow *) widget;
+
+	if (event->state & GDK_CONTROL_MASK) {
+		window->priv->allow_all_focus = TRUE;
+
+		if (event->keyval == GDK_F10)
+			bonobo_dock_focus_roll (window->priv->dock);
+	}
 
 	handled = GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
 	if (handled)
 		return TRUE;
 
-	sync = BONOBO_UI_SYNC_KEYS (
-		BONOBO_WINDOW (widget)->priv->sync_keys);
+	sync = BONOBO_UI_SYNC_KEYS (window->priv->sync_keys);
 	if (sync)
 		return bonobo_ui_sync_keys_binding_handle (widget, event, sync);
 
 	return FALSE;
+}
+
+static gboolean
+bonobo_window_key_release_event (GtkWidget *widget,
+				 GdkEventKey *event)
+{
+	BonoboWindow *window = (BonoboWindow *) widget;
+
+	if (event->keyval == GDK_Control_L ||
+	    event->keyval == GDK_Control_R)
+		window->priv->allow_all_focus = FALSE;
+
+	return GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
+}
+
+static gboolean
+bonobo_window_focus (GtkWidget        *widget,
+		     GtkDirectionType  direction)
+{
+  GtkWindow *window;
+  GtkContainer *container;
+  GtkWidget *old_focus_child;
+  GtkWidget *parent;
+  GtkWidget *child;
+  BonoboWindow *win = (BonoboWindow *) widget;
+
+  if (win->priv->allow_all_focus)
+	  return GTK_WIDGET_CLASS (parent_class)->focus (widget, direction);
+
+  container = GTK_CONTAINER (widget);
+  window = GTK_WINDOW (widget);
+
+  old_focus_child = container->focus_child;
+  child = win->priv->client_area;
+  
+  /* We need a special implementation here to deal properly with wrapping
+   * around in the tab chain without the danger of going into an
+   * infinite loop.
+   */
+  if (old_focus_child)
+    {
+      if (gtk_widget_child_focus (old_focus_child, direction))
+	return TRUE;
+    }
+
+  if (window->focus_widget)
+    {
+      /* Wrapped off the end, clear the focus setting for the toplpevel */
+      parent = window->focus_widget->parent;
+      while (parent)
+	{
+	  gtk_container_set_focus_child (GTK_CONTAINER (parent), NULL);
+	  parent = GTK_WIDGET (parent)->parent;
+	}
+      
+      gtk_window_set_focus (GTK_WINDOW (container), NULL);
+    }
+
+  /* Now try to focus the first widget in the window */
+  if (child)
+    {
+      if (gtk_widget_child_focus (child, direction))
+        return TRUE;
+    }
+
+  return FALSE;
 }
 
 static void
@@ -307,8 +385,10 @@ bonobo_window_class_init (BonoboWindowClass *klass)
 	gobject_class->dispose  = bonobo_window_dispose;
 	gobject_class->finalize = bonobo_window_finalize;
 
+	widget_class->focus = bonobo_window_focus;
 	widget_class->show_all = bonobo_window_show_all;
 	widget_class->key_press_event = bonobo_window_key_press_event;
+	widget_class->key_release_event = bonobo_window_key_release_event;
 }
 
 static void

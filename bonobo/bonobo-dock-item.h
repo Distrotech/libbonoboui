@@ -132,16 +132,17 @@ BonoboDockItemBehavior
 /* Private methods.  */
 #ifdef BONOBO_UI_INTERNAL
 gboolean       bonobo_dock_item_detach          (BonoboDockItem *item,
-                                                gint x, gint y);
+						 gint x, gint y);
                                                
 void           bonobo_dock_item_attach          (BonoboDockItem *item,
-                                                GtkWidget *parent,
-                                                gint x, gint y);
-                                               
+						 GtkWidget *parent,
+						 gint x, gint y);
+void           bonobo_dock_item_unfloat         (BonoboDockItem *item);
+
 void           bonobo_dock_item_grab_pointer    (BonoboDockItem *item);
                                                
 void           bonobo_dock_item_drag_floating   (BonoboDockItem *item,
-                                                gint x, gint y);
+						 gint x, gint y);
 
 void           bonobo_dock_item_handle_size_request
                                                (BonoboDockItem *item,
@@ -150,6 +151,8 @@ void           bonobo_dock_item_handle_size_request
 void           bonobo_dock_item_get_floating_position
                                                (BonoboDockItem *item,
                                                 gint *x, gint *y);
+GtkWidget     *bonobo_dock_item_get_grip       (BonoboDockItem *item);
+
 #endif /* BONOBO_UI_INTERNAL */
 
 G_END_DECLS

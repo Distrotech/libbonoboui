@@ -85,6 +85,8 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-dock.h				\
 	bonobo-dock-item.c			\
 	bonobo-dock-item.h			\
+	bonobo-dock-item-grip.c			\
+	bonobo-dock-item-grip.h			\
 	bonobo-dock-band.c			\
 	bonobo-dock-band.h			\
 	bonobo-dock-layout.c			\

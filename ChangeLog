@@ -1,3 +1,64 @@
+2002-03-25  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-window.c
+	(bonobo_window_focus): impl.
+	(bonobo_window_key_press_event): Make Alt-F10 roll
+	through the dock items.
+	(bonobo_window_class_init): upd.
+	(bonobo_window_key_press_event): upd.
+	(bonobo_window_key_release_event): impl.
+
+	* bonobo/bonobo-dock-item.c
+	(bonobo_dock_item_focus): impl.
+	(bonobo_gtk_container_focus_move): cut & paste.
+	(bonobo_dock_item_get_grip): impl.
+	
+2002-03-23  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-dock-item.c
+	(bonobo_dock_item_unfloat): impl.
+	(bonobo_dock_item_attach): use it.
+
+2002-03-22  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-dock.c (get_band_list): split out of
+	(bonobo_dock_add_item): here.
+	(bonobo_dock_handle_key_nav): impl.
+	(find_band_list): impl.
+	(new_band_setup): split from
+	(drag_new): here.
+	(insert_into_band_list): impl.
+	(bonobo_dock_focus_roll): impl.
+
+	* bonobo/bonobo-dock-band.c
+	(bonobo_dock_band_handle_key_nav): impl.
+	(bonobo_dock_band_insert): fix theoretical parental
+	confusion.
+
+	* bonobo/bonobo-dock-item.c 
+	(bonobo_dock_item_instance_init): create the grip
+	(bonobo_dock_item_size_allocate): size the grip.
+	(draw_textured_frame): kill.
+	(bonobo_dock_item_paint): just propagate the expose
+	to the grip.
+	(bonobo_dock_item_remove): special case the grip.
+	(bonobo_dock_item_forall): impl.
+	(bonobo_dock_item_realize),
+	(bonobo_dock_item_unmap),
+	(bonobo_dock_item_map): handle grip.
+	(bonobo_dock_item_construct): hide grip if
+	neccessary.
+	(bonobo_dock_item_grab_pointer): also grab keyboard.
+	(bonobo_dock_item_drag_end): impl & release k/b
+	(bonobo_dock_item_button_changed): upd.
+	(bonobo_dock_item_remove): upd.
+
+	* bonobo/bonobo-dock-item-grip.[ch]: impl.
+
+	* bonobo/bonobo-ui-toolbar-button-item.c
+	(bonobo_ui_toolbar_button_item_construct): allow
+	these items to take focus.
+
 2002-03-21  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-a11y.c

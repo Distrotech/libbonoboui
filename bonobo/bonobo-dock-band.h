@@ -27,8 +27,6 @@
 #ifndef _BONOBO_DOCK_BAND_H
 #define _BONOBO_DOCK_BAND_H
 
-
-
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_DOCK_BAND            (bonobo_dock_band_get_type ())
@@ -145,6 +143,17 @@ void           bonobo_dock_band_layout_add       (BonoboDockBand *band,
                                                  BonoboDockLayout *layout,
                                                  BonoboDockPlacement placement,
                                                  guint band_num);
+
+#ifdef BONOBO_UI_INTERNAL
+gint bonobo_dock_band_handle_key_nav (BonoboDockBand *band,
+				      BonoboDockItem *item,
+				      GdkEventKey    *event);
+gint bonobo_dock_handle_key_nav      (BonoboDock     *dock,
+				      BonoboDockBand *band,
+				      BonoboDockItem *item,
+				      GdkEventKey    *event);
+#endif /* BONOBO_UI_INTERNAL */
+
 G_END_DECLS
 
 #endif

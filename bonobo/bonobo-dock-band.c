@@ -22,6 +22,7 @@
 
 #include <config.h>
 #include <string.h>
+#include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-dock.h>
@@ -1506,6 +1507,11 @@ bonobo_dock_band_insert (BonoboDockBand *band,
       && !docking_allowed (band, BONOBO_DOCK_ITEM (child)))
     return FALSE;
 
+  if (BONOBO_IS_DOCK_ITEM (child) &&
+      !bonobo_dock_item_set_orientation (BONOBO_DOCK_ITEM (child),
+					 band->orientation))
+      return FALSE;
+
   if (position < 0 || position > (gint) band->num_children)
     position = band->num_children;
 
@@ -1525,11 +1531,6 @@ bonobo_dock_band_insert (BonoboDockBand *band,
       p = g_list_nth (band->children, position);
       g_list_prepend (p, band_child);
     }
-
-  if (BONOBO_IS_DOCK_ITEM (child)
-      && ! bonobo_dock_item_set_orientation (BONOBO_DOCK_ITEM (child),
-                                            band->orientation))
-      return FALSE;
 
   gtk_widget_set_parent (child, GTK_WIDGET (band));
 
@@ -1906,4 +1907,76 @@ bonobo_dock_band_layout_add (BonoboDockBand *band,
                                     placement, band_num,
                                     child_num, child->offset);
     }
+}
+
+static BonoboDock *
+get_dock (GtkWidget *widget)
+{
+	while (widget && !BONOBO_IS_DOCK (widget))
+		widget = widget->parent;
+
+	return (BonoboDock *) widget;
+}
+
+gint
+bonobo_dock_band_handle_key_nav (BonoboDockBand *band,
+				 BonoboDockItem *item,
+				 GdkEventKey    *event)
+{
+  gboolean handled = FALSE;
+
+  g_return_val_if_fail (BONOBO_IS_DOCK_BAND (band), FALSE);
+  g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (item), FALSE);
+
+  if (event->state & GDK_CONTROL_MASK)
+    {
+      GList *l;
+      int cur_idx = 0;
+      int dest_idx;
+
+      for (l = band->children; l; l = l->next)
+        {
+          BonoboDockBandChild *child = l->data;
+          if (child->widget == (GtkWidget *)item)
+            break;
+          cur_idx++;
+	}
+
+      g_return_val_if_fail (l != NULL, FALSE);
+      
+      dest_idx = cur_idx;
+      if (band->orientation == GTK_ORIENTATION_HORIZONTAL)
+        {
+	  if (event->keyval == GDK_Left)
+
+	      dest_idx--;
+	  if (event->keyval == GDK_Right)
+	      dest_idx++;
+	}
+      else
+        {
+	  if (event->keyval == GDK_Up)
+	      dest_idx--;
+	  if (event->keyval == GDK_Down)
+	      dest_idx++;
+	}
+
+      dest_idx = MAX (0, dest_idx);
+      dest_idx = MIN (g_list_length (band->children) - 1, dest_idx);
+      if (dest_idx != cur_idx)
+        {
+          handled = TRUE;
+	  bonobo_dock_band_move_child (band, l, dest_idx);
+	}
+  }
+
+  if (!handled)
+    {
+      BonoboDock *dock = get_dock (GTK_WIDGET (band));
+
+      if (dock)
+        handled = bonobo_dock_handle_key_nav (dock, band, item, event);
+    }
+
+  return handled;
 }
