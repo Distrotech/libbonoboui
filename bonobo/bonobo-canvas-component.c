@@ -41,7 +41,7 @@ struct _BonoboCanvasComponentPrivate {
 
 
 
-static GtkObjectClass *gcc_parent_class;
+static GObjectClass *gcc_parent_class;
 
 static gboolean
 CORBA_SVP_Segment_to_SVPSeg (Bonobo_Canvas_SVPSegment *seg, ArtSVPSeg *art_seg)
@@ -172,8 +172,8 @@ invoke_update (GnomeCanvasItem *item, double *affine, ArtSVP *clip_path, int fla
 			    | GNOME_CANVAS_UPDATE_AFFINE
 			    | GNOME_CANVAS_UPDATE_CLIP
 			    | GNOME_CANVAS_UPDATE_VISIBILITY))
-	    && GNOME_CANVAS_ITEM_CLASS (item)->update)
-		(* GNOME_CANVAS_ITEM_CLASS (item)->update) (
+	    && GNOME_CANVAS_ITEM_GET_CLASS (item)->update)
+		(* GNOME_CANVAS_ITEM_GET_CLASS (item)->update) (
 			item, child_affine, clip_path, child_flags);
 }
 
@@ -561,7 +561,7 @@ impl_Bonobo_Canvas_Component_event (PortableServer_Servant     servant,
 
 	restore_state (item, state);
 
-	gtk_signal_emit_by_name (GTK_OBJECT (gcc), "event", &gdk_event);
+	g_signal_emit_by_name (G_OBJECT (gcc), "event", &gdk_event);
 
 	if (ICLASS (item)->event)
 		retval = ICLASS (item)->event (item, &gdk_event);
@@ -600,55 +600,50 @@ impl_Bonobo_Canvas_Component_setBounds (PortableServer_Servant     servant,
 {
 	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 
-	gtk_signal_emit (GTK_OBJECT (gcc), gcc_signals [SET_BOUNDS], bbox, &ev);
-}
-
-static void
-gcc_destroy (GtkObject *object)
-{
-	GnomeCanvasItem *item = BONOBO_CANVAS_COMPONENT (object)->priv->item;
-
-	gtk_object_destroy (GTK_OBJECT (item->canvas));
-
-	gcc_parent_class->destroy (object);
+	g_signal_emit (G_OBJECT (gcc), gcc_signals [SET_BOUNDS], 0, bbox, &ev);
 }
 
 static void
 gcc_finalize (GObject *object)
 {
 	Gcc *gcc = GCC (object);
+	GnomeCanvasItem *item = BONOBO_CANVAS_COMPONENT (object)->priv->item;
 
+	gtk_object_destroy (GTK_OBJECT (item->canvas));
 	g_free (gcc->priv);
 
-	G_OBJECT_CLASS (gcc_parent_class)->finalize (object);
+	gcc_parent_class->finalize (object);
 }
 
 static void
 bonobo_canvas_component_class_init (BonoboCanvasComponentClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) klass;
-	GObjectClass *gobject_class = (GObjectClass *) klass;
+	GObjectClass *object_class = (GObjectClass *) klass;
 	POA_Bonobo_Canvas_Component__epv *epv = &klass->epv;
 
-	gcc_parent_class = gtk_type_class (PARENT_TYPE);
+	gcc_parent_class = g_type_class_peek_parent(klass);
 
-	object_class->destroy  = gcc_destroy;
-	gobject_class->finalize = gcc_finalize;
+	object_class->finalize = gcc_finalize;
 
 	gcc_signals [SET_BOUNDS] = 
-                gtk_signal_new ("set_bounds",
-                                GTK_RUN_LAST,
-                                GTK_CLASS_TYPE (object_class),
-                                GTK_SIGNAL_OFFSET (BonoboCanvasComponentClass, set_bounds), 
-                                bonobo_marshal_VOID__POINTER_POINTER,
-                                GTK_TYPE_NONE, 2,
-				GTK_TYPE_POINTER, GTK_TYPE_POINTER);
+                g_signal_newc ("set_bounds",
+			       G_OBJECT_CLASS_TYPE(object_class),
+			       G_SIGNAL_RUN_LAST,
+			       G_STRUCT_OFFSET(BonoboCanvasComponentClass, set_bounds),
+			       NULL, NULL,
+			       bonobo_marshal_VOID__POINTER_POINTER,
+			       G_TYPE_NONE, 2,
+			       G_TYPE_POINTER, G_TYPE_POINTER);
 
-	gcc_signals [EVENT] = gtk_signal_new ("event", 
-			GTK_RUN_LAST, GTK_CLASS_TYPE (object_class),
-                        GTK_SIGNAL_OFFSET (BonoboCanvasComponentClass, event), 
-                        bonobo_marshal_BOOLEAN__POINTER,
-                        GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+	gcc_signals [EVENT] = 
+		g_signal_newc ("event", 
+			       G_OBJECT_CLASS_TYPE(object_class),
+			       G_SIGNAL_RUN_LAST,
+			       G_STRUCT_OFFSET(BonoboCanvasComponentClass, event),
+			       NULL, NULL,
+			       bonobo_marshal_BOOLEAN__POINTER,
+			       G_TYPE_BOOLEAN, 1,
+			       G_TYPE_POINTER);
 
 	epv->update         = impl_Bonobo_Canvas_Component_update;
 	epv->realize        = impl_Bonobo_Canvas_Component_realize;
@@ -665,7 +660,7 @@ bonobo_canvas_component_class_init (BonoboCanvasComponentClass *klass)
 }
 
 static void
-bonobo_canvas_component_init (GtkObject *object)
+bonobo_canvas_component_init (GObject *object)
 {
 	Gcc *gcc = GCC (object);
 
@@ -717,7 +712,7 @@ bonobo_canvas_component_new (GnomeCanvasItem *item)
 	
 	g_return_val_if_fail (GNOME_IS_CANVAS_ITEM (item), NULL);
 	
-	comp = gtk_type_new (bonobo_canvas_component_get_type ());
+	comp = g_object_new (BONOBO_CANVAS_COMPONENT_TYPE, NULL);
 
 	return bonobo_canvas_component_construct (comp, item);
 }

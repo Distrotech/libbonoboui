@@ -19,7 +19,7 @@
 
 #define PARENT_TYPE bonobo_control_get_type ()
 
-/* Parent object class in GTK hierarchy */
+/* Parent object class in GObject hierarchy */
 static BonoboControlClass *bonobo_view_parent_class;
 
 enum {
@@ -29,8 +29,6 @@ enum {
 };
 
 static guint view_signals [LAST_SIGNAL];
-
-typedef void (*GnomeSignal_NONE__DOUBLE) (GtkObject *object, double arg1, gpointer user_data);
 
 struct _BonoboViewPrivate {
 };
@@ -42,8 +40,8 @@ impl_Bonobo_View_setZoomFactor (PortableServer_Servant servant,
 {
 	BonoboView *view = BONOBO_VIEW (bonobo_object_from_servant (servant));
 
-	gtk_signal_emit (GTK_OBJECT (view),
-			 view_signals [SET_ZOOM_FACTOR], zoom);
+	g_signal_emit (G_OBJECT (view),
+		       view_signals [SET_ZOOM_FACTOR], 0, zoom);
 }
 
 #if 0
@@ -106,13 +104,13 @@ bonobo_view_new (GtkWidget *widget)
 	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
-	view = gtk_type_new (bonobo_view_get_type ());
+	view = g_object_new (BONOBO_VIEW_TYPE, NULL);
 	
 	return bonobo_view_construct (view, widget);
 }
 
 static void
-bonobo_view_destroy (GtkObject *object)
+bonobo_view_finalize (GObject *object)
 {
 	BonoboView *view;
 
@@ -125,40 +123,28 @@ bonobo_view_destroy (GtkObject *object)
 	
 	bonobo_object_unref (BONOBO_OBJECT (view->embeddable));
 
-	GTK_OBJECT_CLASS (bonobo_view_parent_class)->destroy (object);
-}
-
-static void 
-gnome_marshal_NONE__DOUBLE (GtkObject * object,
-			    GtkSignalFunc func,
-			    gpointer func_data,
-			    GtkArg * args)
-{
-	GnomeSignal_NONE__DOUBLE rfunc;
-	rfunc = (GnomeSignal_NONE__DOUBLE) func;
-	(*rfunc) (object,
-		  GTK_VALUE_DOUBLE (args[0]),
-		  func_data);
+	G_OBJECT_CLASS (bonobo_view_parent_class)->finalize (object);
 }
 
 static void
 bonobo_view_class_init (BonoboViewClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GObjectClass *object_class = (GObjectClass *) klass;
 	POA_Bonobo_View__epv *epv = &klass->epv;
 
-	bonobo_view_parent_class = gtk_type_class (PARENT_TYPE);
+	bonobo_view_parent_class = g_type_class_peek_parent (klass);
 
 	view_signals [SET_ZOOM_FACTOR] =
-                gtk_signal_new ("set_zoom_factor",
-                                GTK_RUN_LAST,
-                                GTK_CLASS_TYPE (object_class),
-                                GTK_SIGNAL_OFFSET (BonoboViewClass, set_zoom_factor), 
-                                (GtkSignalMarshaller) gnome_marshal_NONE__DOUBLE,
-                                GTK_TYPE_NONE, 1,
-				GTK_TYPE_DOUBLE);
+		g_signal_newc ("set_zoom_factor",
+			       G_OBJECT_CLASS_TYPE (object_class),
+			       G_SIGNAL_RUN_LAST,
+			       G_STRUCT_OFFSET (BonoboViewClass, set_zoom_factor),
+			       NULL, NULL,
+			       g_cclosure_marshal_VOID__DOUBLE,
+			       G_TYPE_NONE, 1,
+			       G_TYPE_DOUBLE);
 
-	object_class->destroy = bonobo_view_destroy;
+	object_class->finalize = bonobo_view_finalize;
 
 	epv->setZoomFactor = impl_Bonobo_View_setZoomFactor;
 }

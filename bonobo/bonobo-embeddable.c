@@ -26,7 +26,7 @@
 
 #define PARENT_TYPE BONOBO_OBJECT_TYPE
 
-static GtkObjectClass *bonobo_embeddable_parent_class;
+static GObjectClass *bonobo_embeddable_parent_class;
 
 enum {
 	HOST_NAME_CHANGED,
@@ -96,8 +96,8 @@ impl_Bonobo_Embeddable_setHostName (PortableServer_Servant servant,
 	embeddable->host_name    = g_strdup (name);
 	embeddable->host_appname = g_strdup (appname);
 
-	gtk_signal_emit (GTK_OBJECT (embeddable),
-			 embeddable_signals [HOST_NAME_CHANGED]);
+	g_signal_emit (G_OBJECT (embeddable),
+		       embeddable_signals [HOST_NAME_CHANGED], 0);
 }
 
 
@@ -191,8 +191,9 @@ impl_Bonobo_Embeddable_createView (PortableServer_Servant servant,
 
 	embeddable->priv->views = g_list_prepend (embeddable->priv->views, view);
 
-	gtk_signal_connect (GTK_OBJECT (view), "destroy",
-			    GTK_SIGNAL_FUNC (bonobo_embeddable_view_destroy_cb), embeddable);
+	g_signal_connect_data (G_OBJECT (view), "destroy",
+			       G_CALLBACK (bonobo_embeddable_view_destroy_cb), 
+			       embeddable, NULL, FALSE, FALSE);
 
 	return CORBA_Object_duplicate (BONOBO_OBJREF (view), ev);
 }
@@ -240,8 +241,9 @@ make_canvas_component (BonoboEmbeddable *embeddable, gboolean aa, Bonobo_Canvas_
 
 	/* Now keep track of it */
 	embeddable->priv->canvas_items = g_list_prepend (embeddable->priv->canvas_items, component);
-	gtk_signal_connect (GTK_OBJECT (component), "destroy",
-			    GTK_SIGNAL_FUNC (canvas_item_destroyed), embeddable);
+	g_signal_connect_data (G_OBJECT (component), "destroy",
+			       G_CALLBACK (canvas_item_destroyed), embeddable,
+			       NULL, FALSE, FALSE);
 	
 	return component;
 }
@@ -352,7 +354,7 @@ bonobo_embeddable_new (BonoboViewFactory factory, void *data)
 
 	g_return_val_if_fail (factory != NULL, NULL);
 
-	embeddable = gtk_type_new (BONOBO_EMBEDDABLE_TYPE);
+	embeddable = g_object_new (BONOBO_EMBEDDABLE_TYPE, NULL);
 	
 	return bonobo_embeddable_construct (embeddable, factory, data);
 }
@@ -379,14 +381,14 @@ bonobo_embeddable_new_canvas_item (GnomeItemCreator item_factory, void *data)
 
 	g_return_val_if_fail (item_factory != NULL, NULL);
 
-	embeddable = gtk_type_new (BONOBO_EMBEDDABLE_TYPE);
+	embeddable = g_object_new (BONOBO_EMBEDDABLE_TYPE, NULL);
 	
 	return bonobo_embeddable_construct_full (
 		embeddable, NULL, NULL, item_factory, data);
 }
 
 static void
-bonobo_embeddable_destroy (GtkObject *object)
+bonobo_embeddable_finalize (GObject *object)
 {
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (object);
 
@@ -410,33 +412,39 @@ bonobo_embeddable_destroy (GtkObject *object)
 
 	g_free (embeddable->priv);
 	
-	bonobo_embeddable_parent_class->destroy (object);
+	bonobo_embeddable_parent_class->finalize (object);
 }
 
 static void
 bonobo_embeddable_class_init (BonoboEmbeddableClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GObjectClass *object_class = (GObjectClass *) klass;
 	POA_Bonobo_Embeddable__epv *epv = &klass->epv;
 
-	bonobo_embeddable_parent_class = gtk_type_class (PARENT_TYPE);
+	bonobo_embeddable_parent_class = g_type_class_peek_parent (klass);
 
 	embeddable_signals [HOST_NAME_CHANGED] =
-                gtk_signal_new ("host_name_changed",
-                                GTK_RUN_LAST,
-                                GTK_CLASS_TYPE (object_class),
-                                GTK_SIGNAL_OFFSET(BonoboEmbeddableClass,host_name_changed), 
-                                gtk_marshal_VOID__STRING,
-                                GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
-	embeddable_signals [URI_CHANGED] =
-                gtk_signal_new ("uri_changed",
-                                GTK_RUN_LAST,
-                                GTK_CLASS_TYPE (object_class),
-                                GTK_SIGNAL_OFFSET(BonoboEmbeddableClass,uri_changed), 
-                                gtk_marshal_VOID__STRING,
-                                GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
+                g_signal_newc ("host_name_changed",
+			       G_OBJECT_CLASS_TYPE (object_class),
+			       G_SIGNAL_RUN_LAST,
+			       G_STRUCT_OFFSET (BonoboEmbeddableClass, host_name_changed),
+			       NULL, NULL,
+			       gtk_marshal_VOID__STRING,
+			       G_TYPE_NONE, 1,
+			       G_TYPE_STRING);
 
-	object_class->destroy = bonobo_embeddable_destroy;
+
+	embeddable_signals [URI_CHANGED] =
+                g_signal_newc ("uri_changed",
+			       G_OBJECT_CLASS_TYPE (object_class),
+			       G_SIGNAL_RUN_LAST,
+			       G_STRUCT_OFFSET (BonoboEmbeddableClass, uri_changed),
+			       NULL, NULL,
+			       gtk_marshal_VOID__STRING,
+			       G_TYPE_NONE, 1, 
+			       G_TYPE_STRING);
+
+	object_class->finalize = bonobo_embeddable_finalize;
 
 	epv->setClientSite    = impl_Bonobo_Embeddable_setClientSite;
 	epv->getClientSite    = impl_Bonobo_Embeddable_getClientSite;
@@ -520,9 +528,9 @@ bonobo_embeddable_set_uri (BonoboEmbeddable *embeddable, const char *uri)
 	if (uri)
 		embeddable->uri = g_strdup (uri);
 
-	gtk_signal_emit (GTK_OBJECT (embeddable),
-			 embeddable_signals [URI_CHANGED],
-			 embeddable->uri);
+	g_signal_emit (G_OBJECT (embeddable),
+		       embeddable_signals [URI_CHANGED], 0,
+		       embeddable->uri);
 }
 
 /**

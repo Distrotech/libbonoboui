@@ -18,10 +18,10 @@
 G_BEGIN_DECLS
  
 #define BONOBO_VIEW_TYPE        (bonobo_view_get_type ())
-#define BONOBO_VIEW(o)          (GTK_CHECK_CAST ((o), BONOBO_VIEW_TYPE, BonoboView))
-#define BONOBO_VIEW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_VIEW_TYPE, BonoboViewClass))
-#define BONOBO_IS_VIEW(o)       (GTK_CHECK_TYPE ((o), BONOBO_VIEW_TYPE))
-#define BONOBO_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_VIEW_TYPE))
+#define BONOBO_VIEW(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_VIEW_TYPE, BonoboView))
+#define BONOBO_VIEW_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), BONOBO_VIEW_TYPE, BonoboViewClass))
+#define BONOBO_IS_VIEW(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_VIEW_TYPE))
+#define BONOBO_IS_VIEW_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_VIEW_TYPE))
 
 typedef struct _BonoboView BonoboView;
 typedef struct _BonoboViewPrivate BonoboViewPrivate;
@@ -51,7 +51,7 @@ typedef struct {
 
 } BonoboViewClass;
 
-GtkType               bonobo_view_get_type               (void);
+GType                 bonobo_view_get_type               (void);
 BonoboView           *bonobo_view_construct              (BonoboView         *view,
 							  GtkWidget          *widget);
 BonoboView           *bonobo_view_new                    (GtkWidget          *widget);

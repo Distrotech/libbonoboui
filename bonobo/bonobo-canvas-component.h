@@ -17,10 +17,10 @@
 G_BEGIN_DECLS
  
 #define BONOBO_CANVAS_COMPONENT_TYPE        (bonobo_canvas_component_get_type ())
-#define BONOBO_CANVAS_COMPONENT(o)          (GTK_CHECK_CAST ((o), BONOBO_CANVAS_COMPONENT_TYPE, BonoboCanvasComponent))
-#define BONOBO_CANVAS_COMPONENT_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_CANVAS_COMPONENT__TYPE, BonoboCanvasComponentClass))
-#define BONOBO_IS_CANVAS_COMPONENT(o)       (GTK_CHECK_TYPE ((o), BONOBO_CANVAS_COMPONENT_TYPE))
-#define BONOBO_IS_CANVAS_COMPONENT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_CANVAS_COMPONENT_TYPE))
+#define BONOBO_CANVAS_COMPONENT(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_CANVAS_COMPONENT_TYPE, BonoboCanvasComponent))
+#define BONOBO_CANVAS_COMPONENT_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), BONOBO_CANVAS_COMPONENT__TYPE, BonoboCanvasComponentClass))
+#define BONOBO_IS_CANVAS_COMPONENT(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_CANVAS_COMPONENT_TYPE))
+#define BONOBO_IS_CANVAS_COMPONENT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_CANVAS_COMPONENT_TYPE))
 
 typedef struct _BonoboCanvasComponentPrivate BonoboCanvasComponentPrivate;
 
@@ -43,7 +43,7 @@ typedef struct {
 			    GdkEvent              *event);
 } BonoboCanvasComponentClass;
 
-GtkType                 bonobo_canvas_component_get_type         (void);
+GType                   bonobo_canvas_component_get_type         (void);
 BonoboCanvasComponent  *bonobo_canvas_component_construct        (BonoboCanvasComponent       *comp,
 								  GnomeCanvasItem             *item);
 BonoboCanvasComponent  *bonobo_canvas_component_new              (GnomeCanvasItem             *item);

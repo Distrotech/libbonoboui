@@ -1,3 +1,15 @@
+2001-05-31  Joe Shaw  <joe@ximian.com>
+
+	* bonobo/bonobo-canvas-component.c: GObjectify. Change calls to
+	GNOME_CANVAS_ITEM_CLASS() to GNOME_CANVAS_ITEM_GET_CLASS(). Make
+	gcc_destroy() gcc_finalize().
+
+	* bonobo/bonobo-embeddable.c: GObjectify. Change
+	bonobo_embeddable_destroy() to bonobo_embeddable_finalize()
+
+	* bonobo/bonobo-view.c: GObjectify. Delete
+	gnome_marshal_NONE__DOUBLE.
+
 2001-05-30  Dietmar Maurer  <dietmar@ximian.com>
 
 	* bonobo/bonobo-control.c (bonobo_control_set_properties): pass a

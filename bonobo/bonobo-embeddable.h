@@ -12,7 +12,6 @@
 #define _BONOBO_EMBEDDABLE_H_
 
 #include <gmacros.h>
-#include <gtk/gtkobject.h>
 #include <libgnomecanvas/gnome-canvas.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-object.h>
@@ -21,10 +20,10 @@
 G_BEGIN_DECLS
  
 #define BONOBO_EMBEDDABLE_TYPE        (bonobo_embeddable_get_type ())
-#define BONOBO_EMBEDDABLE(o)          (GTK_CHECK_CAST ((o), BONOBO_EMBEDDABLE_TYPE, BonoboEmbeddable))
-#define BONOBO_EMBEDDABLE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_EMBEDDABLE_TYPE, BonoboEmbeddableClass))
-#define BONOBO_IS_EMBEDDABLE(o)       (GTK_CHECK_TYPE ((o), BONOBO_EMBEDDABLE_TYPE))
-#define BONOBO_IS_EMBEDDABLE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_EMBEDDABLE_TYPE))
+#define BONOBO_EMBEDDABLE(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_EMBEDDABLE_TYPE, BonoboEmbeddable))
+#define BONOBO_EMBEDDABLE_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), BONOBO_EMBEDDABLE_TYPE, BonoboEmbeddableClass))
+#define BONOBO_IS_EMBEDDABLE(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_EMBEDDABLE_TYPE))
+#define BONOBO_IS_EMBEDDABLE_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_EMBEDDABLE_TYPE))
 
 struct _BonoboEmbeddable;
 struct _BonoboEmbeddablePrivate;
@@ -67,7 +66,7 @@ struct _BonoboEmbeddableClass {
 	void (*uri_changed)        (BonoboEmbeddable *comp, const char *uri);
 };
 
-GtkType           bonobo_embeddable_get_type         (void);
+GType             bonobo_embeddable_get_type         (void);
 BonoboEmbeddable *bonobo_embeddable_new              (BonoboViewFactory factory,
 						      void             *data);
 BonoboEmbeddable *bonobo_embeddable_new_canvas_item  (GnomeItemCreator  item_factory,
