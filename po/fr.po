@@ -1,13 +1,13 @@
 # libbonoboui fr.po
 # Copyright (C) 2001-2002 Free Software Foundation, Inc.
-# maintainer : Christophe Merlet (RedFox) <christophe@merlet.net>, 2001-2002.
+# maintainer: Christophe Merlet (RedFox) <christophe@merlet.net>, 2001-2002.
 # Christophe Fergeau <teuf@users.sourceforge.net>, 2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 1.115.0\n"
-"POT-Creation-Date: 2002-05-20 12:06+0100\n"
-"PO-Revision-Date: 2002-04-20 21:47+0200\n"
+"Project-Id-Version: libbonoboui 1.117.0\n"
+"POT-Creation-Date: 2002-05-23 22:42+0200\n"
+"PO-Revision-Date: 2002-05-23 22:34+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -87,7 +87,7 @@ msgstr "Description"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "Interfaces requises"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -95,56 +95,63 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"Un tableau d'interfaces terminé par NULL qu'un serveur doit supporter pour "
+"être listé dans le sélecteur.  « IDL:Bonobo/Embeddable:1.0 » par défaut si "
+"aucune interface n'est listée"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "Entrée d'interface requise"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Une des interface requise"
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "Visible"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Afficher"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "_Cacher"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "_Afficher les bulles d'aides"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "Barre d'outils"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "barre d'outils"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Look"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Icône"
 
-#: bonobo/bonobo-ui-config-widget.c:320
+#: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "_Texte et icône"
 
-#: bonobo/bonobo-ui-config-widget.c:326
+#: bonobo/bonobo-ui-config-widget.c:334
+msgid "Text only"
+msgstr "Texte seulement"
+
+#: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "_Priorité au texte seulement"
 
-#: bonobo/bonobo-ui-engine-config.c:516
+#: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Configurer l'IU"
 
@@ -170,13 +177,12 @@ msgid "DISPLAY"
 msgstr "VISUEL"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
-#, fuzzy
 msgid "X screen to use"
-msgstr "Visuel X à utiliser"
+msgstr "Écran X à utiliser"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "ÉCRAN"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -280,16 +286,15 @@ msgstr "indique si la b arre d'outils est flottante"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr ""
+msgstr "_Contenus"
 
 #: bonobo/bonobo-ui-util.c:584
-#, fuzzy
 msgid "View help for this application"
-msgstr "À propos de cette application"
+msgstr "Affiche l'aide de cette application"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "Nom de la fenêtre - utilisé pour la sérialisation de la configuration."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -380,7 +385,7 @@ msgstr "GNOME Hello"
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "Hello, World !"
+msgstr "Hello, World !"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
