@@ -7,6 +7,9 @@
 #include <bonobo/gnome-main.h>
 #include <bonobo/gnome-container.h>
 #include <bonobo/gnome-client-site.h>
+#include <bonobo/gnome-stream.h>
+#include <bonobo/gnome-stream-fs.h>
+#include <bonobo/gnome-component.h>
 
 CORBA_Environment ev;
 CORBA_ORB orb;
@@ -45,8 +48,8 @@ launch_server (GnomeContainer *container, char *goadid)
 	return object_server;
 }
 
-static void
-add_cmd (GtkWidget *widget, Application *app)
+static GnomeObject *
+add_cmd (GtkWidget *widget, Application *app, char *server_goadid)
 {
 	GtkWidget *frame, *socket, *w;
 	GnomeObject *server;
@@ -55,7 +58,7 @@ add_cmd (GtkWidget *widget, Application *app)
 	
 	server = launch_server (app->container, server_goadid);
 	if (server == NULL)
-		return;
+		return NULL;
 
 	w = gnome_component_new_view (server);
 
@@ -65,6 +68,37 @@ add_cmd (GtkWidget *widget, Application *app)
 	gtk_container_add (GTK_CONTAINER (frame), w);
 
 	gtk_widget_show_all (frame);
+
+	return server;
+}
+
+static void
+add_demo_cmd (GtkWidget *widget, Application *app)
+{
+	add_cmd (widget, app, server_goadid);
+}
+
+static void
+add_image_cmd (GtkWidget *widget, Application *app)
+{
+	GnomeObject *object;
+	GnomeStream *stream;
+	GNOME_PersistStream persist;
+	
+	object = add_cmd (widget, app, "component:image-x-png");
+	persist = GNOME_object_query_interface (object->object, "IDL:GNOME/PersistStream:1.0", &object->ev);
+
+        if (object->ev._major != CORBA_NO_EXCEPTION)
+                return;
+
+        if (persist == CORBA_OBJECT_NIL)
+                return;
+
+	printf ("Good: Component supports PersistStream");
+	
+	stream = gnome_stream_fs_open (NULL, "/tmp/a.png", GNOME_Storage_READ);
+	
+	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &object->ev);
 }
 
 static void
@@ -74,7 +108,8 @@ exit_cmd (void)
 }
 
 static GnomeUIInfo container_file_menu [] = {
-	GNOMEUIINFO_ITEM_NONE(N_("_Add a new object"), NULL, add_cmd),
+	GNOMEUIINFO_ITEM_NONE(N_("_Add a new object"), NULL, add_demo_cmd),
+	GNOMEUIINFO_ITEM_NONE(N_("_Add a new image/x-png handler"), NULL, add_image_cmd),
 	GNOMEUIINFO_ITEM_STOCK (N_("Exit"), NULL, exit_cmd, GNOME_STOCK_PIXMAP_QUIT),
 	GNOMEUIINFO_END
 };
