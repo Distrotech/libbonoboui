@@ -128,6 +128,7 @@ samples/bonoboui/Makefile
 samples/container/Makefile
 samples/compound-doc/Makefile
 samples/compound-doc/container/Makefile
+samples/canvdemo/Makefile
 tests/Makefile
 tests/control/Makefile
 doc/Makefile

@@ -1,1 +1,1 @@
-SUBDIRS = bonoboui controls container compound-doc 
+SUBDIRS = bonoboui controls container compound-doc canvdemo
