@@ -1,5 +1,21 @@
 2001-04-24  Martin Baulig  <baulig@suse.de>
 
+	* configure.in: Depend on libgnome.
+
+	* bonobo/Makefile.am (INCLUDES): Added BONOBO_UIDIR.
+
+	* bonobo/bonobo-ui-util.c
+	(convert_from_chromakey, pixbuf_from_imlib): Removed.
+	(get_stock_pixbuf): Use find_pixmap_in_path() instead of
+	gnome_pixmap_file().
+	(find_pixmap_in_path): Use gnome_program_locate_file() to
+	locate the pixmap file instead of our own parser.
+	(bonobo_ui_util_xml_get_icon_pixmap_widget): Create and
+	return a GtkImage instead of a GnomePixmap.
+	(bonobo_ui_util_build_help_menu): `#ifdef FIXME' this.
+	
+2001-04-24  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/bonobo-insert-component.xpm: constify this.
 
 	* bonobo/bonobo-selector-widget.c (bonobo_selector_widget_init):

@@ -8,14 +8,21 @@
  */
 
 #include "config.h"
-#include <gnome.h>
 #include <ctype.h>
+
+#include <gtk/gtkimage.h>
+
+#include <libgnome/gnome-program.h>
+#include <libgnomeui/gnome-stock.h>
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
+#include <bonobo/bonobo-i18n.h>
 
-#include <gnome-xml/tree.h>
-#include <gnome-xml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
+
+static gchar *find_pixmap_in_path (const gchar *filename);
 
 static const char write_lut[16] = {
 	'0', '1', '2', '3', '4', '5', '6', '7',
@@ -217,113 +224,6 @@ bonobo_ui_util_xml_to_pixbuf (const char *xml)
 }
 
 static GdkPixbuf *
-convert_from_chromakey (GdkPixbuf *pixbuf)
-{
-	GdkPixbuf *new;
-	unsigned char *src_pixels, *dst_pixels;
-	unsigned char *src_row, *dst_row;
-	int src_rowstride;
-	int dst_rowstride;
-	int width, height;
-	int i, j;
-
-	g_assert (! gdk_pixbuf_get_has_alpha (pixbuf));
-
-	width  = gdk_pixbuf_get_width (pixbuf);
-	height = gdk_pixbuf_get_width (pixbuf);
-
-	new = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, width, height);
-
-	src_pixels = gdk_pixbuf_get_pixels (pixbuf);
-	src_rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-
-	dst_pixels = gdk_pixbuf_get_pixels (new);
-	dst_rowstride = gdk_pixbuf_get_rowstride (new);
-
-	src_row = src_pixels;
-	dst_row = dst_pixels;
-	for (i = 0; i < height; i++) {
-		unsigned char *sp, *dp;
-
-		sp = src_row;
-		dp = dst_row;
-		for (j = 0; j < width; j++) {
-			dp[0] = sp[0];
-			dp[1] = sp[1];
-			dp[2] = sp[2];
-
-			if (sp[0] == 0xff && sp[1] == 0x00 && sp[2] == 0xff)
-				dp[3] = 0x00;
-			else
-				dp[3] = 0xff;
-
-			sp += 3;
-			dp += 4;
-		}
-
-		src_row += src_rowstride;
-		dst_row += dst_rowstride;
-	}
-
-	return new;
-}
-
-static GdkPixbuf *
-pixbuf_from_imlib (const GnomeStockPixmapEntry *entry)
-{
-	const GnomeStockPixmapEntryImlib *imlib_entry;
-	const GnomeStockPixmapEntryImlibScaled *scaled_imlib_entry;
-	GdkPixbuf *pixbuf;
-	GdkPixbuf *alpha_pixbuf;
-	GdkPixbuf *scaled_pixbuf;
-
-	imlib_entry = (const GnomeStockPixmapEntryImlib *) entry;
-
-	pixbuf = gdk_pixbuf_new_from_data (imlib_entry->rgb_data,
-					   GDK_COLORSPACE_RGB,
-					   FALSE,
-					   8,
-					   imlib_entry->width, imlib_entry->height,
-					   imlib_entry->width * 3,
-					   NULL, NULL);
-
-	alpha_pixbuf = convert_from_chromakey (pixbuf);
-
-	if (imlib_entry->type == GNOME_STOCK_PIXMAP_TYPE_IMLIB) {
-		gdk_pixbuf_unref (pixbuf);
-		return alpha_pixbuf;
-	}
-
-	g_assert (imlib_entry->type == GNOME_STOCK_PIXMAP_TYPE_IMLIB_SCALED);
-
-	scaled_imlib_entry = (const GnomeStockPixmapEntryImlibScaled *) entry;
-
-	if (scaled_imlib_entry->scaled_width == imlib_entry->width
-	    && scaled_imlib_entry->scaled_height == imlib_entry->height) {
-		gdk_pixbuf_unref (pixbuf);
-		return alpha_pixbuf;
-	}
-	
-	scaled_pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
-					scaled_imlib_entry->scaled_width,
-					scaled_imlib_entry->scaled_height);
-
-	gdk_pixbuf_scale (alpha_pixbuf, scaled_pixbuf,
-			  0, 0,
-			  scaled_imlib_entry->scaled_width,
-			  scaled_imlib_entry->scaled_height,
-			  0.0, 0.0,
-			  (double) scaled_imlib_entry->scaled_width / (double) imlib_entry->width,
-			  (double) scaled_imlib_entry->scaled_height / (double) imlib_entry->height,
-			  GDK_INTERP_HYPER);
-
-	gdk_pixbuf_unref (alpha_pixbuf);
-	gdk_pixbuf_unref (pixbuf);
-
-	return scaled_pixbuf;
-}
-
-static GdkPixbuf *
 get_stock_pixbuf (const char *name)
 {
 	GnomeStockPixmapEntry *entry;
@@ -342,9 +242,9 @@ get_stock_pixbuf (const char *name)
 		pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) ((GnomeStockPixmapEntryData *) entry)->xpm_data);
 		break;
         case GNOME_STOCK_PIXMAP_TYPE_FILE:
-		path = gnome_pixmap_file (((GnomeStockPixmapEntryFile *) entry)->filename);
+		path = find_pixmap_in_path (((GnomeStockPixmapEntryFile *) entry)->filename);
 		pixbuf = gdk_pixbuf_new_from_file (path, NULL);
-		free (path);
+		g_free (path);
 		break;
         case GNOME_STOCK_PIXMAP_TYPE_PATH:
 		pixbuf = gdk_pixbuf_new_from_file (((const GnomeStockPixmapEntryPath *) entry)->pathname, NULL);
@@ -363,53 +263,15 @@ get_stock_pixbuf (const char *name)
 static gchar *
 find_pixmap_in_path (const gchar *filename)
 {
-	gchar *path, *file;
+	gchar *file;
 
 	if (filename [0] == '/')
 		return g_strdup (filename);
 
-	file = gnome_pixmap_file (filename);
-	if (file)
-		return file;
-
-	path = g_strconcat (g_get_prgname (), "/", filename, NULL);
-	file = gnome_pixmap_file (path);
-	if (file) {
-		g_free (path);
-		return file;
-	}
-	g_free (path);
-
-	path = g_getenv ("GNOME_PATH");
-	if (path != NULL) {
-		gchar **pathv;
-		gint i;
-
-		pathv = g_strsplit (path, ":", 0);
-		for (i = 0; pathv[i] != NULL; i++) {
-			gchar *s;
-
-			s = g_strconcat (pathv[i], "/share/pixmaps/",
-					 filename, NULL);
-			if (g_file_exists (s)) {
-				g_strfreev (pathv);
-				return s;
-			}
-			g_free (s);
-
-			s = g_strconcat (pathv[i], "/share/pixmaps/",
-					 g_get_prgname (), "/",
-					 filename, NULL);
-			if (g_file_exists (s)) {
-				g_strfreev (pathv);
-				return s;
-			}
-			g_free (s);
-		}
-		g_strfreev (pathv);
-	}
-
-	return NULL;
+	file = gnome_program_locate_file (gnome_program_get (),
+					  GNOME_FILE_DOMAIN_PIXMAP,
+					  filename, TRUE, NULL);
+	return file;
 }
 
 /**
@@ -455,7 +317,7 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 	} else if (!strcmp (type, "filename")) {
 		char *name = find_pixmap_in_path (text);
 
-		if ((name == NULL) || !g_file_exists (name))
+		if ((name == NULL) || !g_file_test (name, G_FILE_TEST_EXISTS))
 			g_warning ("Could not find GNOME pixmap file %s", text);
 		else
 			icon_pixbuf = gdk_pixbuf_new_from_file (name, NULL);
@@ -489,7 +351,7 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 GtkWidget *
 bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_menu)
 {
-	GnomePixmap *gpixmap;
+	GtkWidget *image;
 	GdkPixbuf *pixbuf;
 
 	g_return_val_if_fail (node != NULL, NULL);
@@ -498,13 +360,10 @@ bonobo_ui_util_xml_get_icon_pixmap_widget (BonoboUINode *node, gboolean prepend_
 	if (pixbuf == NULL)
 		return NULL;
 	
-	gpixmap = gtk_type_new (gnome_pixmap_get_type ());
-
-	/* Get GdkPixmap and mask */
-	gdk_pixbuf_render_pixmap_and_mask (pixbuf, &gpixmap->pixmap, &gpixmap->mask, 128);
+	image = gtk_image_new_from_pixbuf (pixbuf);
 	gdk_pixbuf_unref (pixbuf);
 
-	return GTK_WIDGET (gpixmap);
+	return image;
 }
 
 /**
@@ -590,12 +449,13 @@ bonobo_ui_util_xml_set_pix_fname (BonoboUINode *node,
 }
 
 
+#ifdef FIXME
 static void
 free_help_menu_entry (GtkWidget *widget, GnomeHelpMenuEntry *entry)
 {
-	g_free (entry->name);
-	g_free (entry->path);
-	g_free (entry);
+       g_free (entry->name);
+       g_free (entry->path);
+       g_free (entry);
 }
 
 static void
@@ -613,7 +473,7 @@ static char *
 bonobo_help_file_find_file (const char *prefix, const char *app,
 			    const char *path)
 {
-	GList *language_list;
+	const GList *language_list;
 	GString *buf;
 	
 	gchar *res= NULL;
@@ -652,6 +512,7 @@ bonobo_help_file_find_file (const char *prefix, const char *app,
 	
 	return res;
 }
+#endif
 
 /**
  * bonobo_ui_util_build_help_menu:
@@ -669,6 +530,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 				const char        *app_name,
 				BonoboUINode      *parent)
 {
+#ifdef FIXME
 	char buf [1024];
 	char *topic_file;
 	FILE *file;
@@ -741,6 +603,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 	}
 
 	fclose (file);
+#endif
 }
 
 /**
@@ -1017,13 +880,13 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 	if (component_prefix) {
 		fname = g_strdup_printf ("%s/gnome/ui/%s",
 					 component_prefix, file_name);
-		if (g_file_exists (fname))
+		if (g_file_test (fname, G_FILE_TEST_EXISTS))
 			return fname;
 		g_free (fname);
 	}
 
 	name = g_strconcat (BONOBO_UIDIR, file_name, NULL);
-	if (g_file_exists (name))
+	if (g_file_test (name, G_FILE_TEST_EXISTS))
 		return name;
 	g_free (name);
 	
@@ -1068,7 +931,7 @@ bonobo_ui_util_translate_ui (BonoboUINode *bnode)
 	for (prop = old_props; prop; prop = prop->next) {
 		xmlChar *value;
 
-		value = xmlNodeListGetString (NULL, prop->val, 1);
+		value = xmlNodeListGetString (NULL, prop->children, 1);
 
 		/* Find translatable properties */
 		if (prop->name && prop->name [0] == '_') {
