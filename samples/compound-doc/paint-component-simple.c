@@ -194,6 +194,7 @@ view_create_menus (view_data_t *view_data)
 	Bonobo_UIHandler  remote_uih;
 	BonoboView       *view = view_data->view;
 	BonoboUIHandler  *uih;
+	int               i;
 
 	/*
 	 * Grab our BonoboUIHandler object.
@@ -251,6 +252,10 @@ view_create_menus (view_data_t *view_data)
 					     0, (GdkModifierType) 0,
 					     GTK_SIGNAL_FUNC (view_color_select_cb), (gpointer) view_data);
 
+	g_warning ("Breakpoint");
+	i = bonobo_ui_handler_menu_get_pos (uih, "/Colors/color radiogroup/Green");
+
+	i = bonobo_ui_handler_menu_get_pos (uih, "/Colors");
 }
 
 /*
