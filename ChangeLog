@@ -1,3 +1,7 @@
+Mon Jun 03 15:30:08 2002  George Lebl <jirka@5z.com>
+
+	* configure.in, po/cs.po: add a basic Czech translation
+
 2002-06-01  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.118.0
