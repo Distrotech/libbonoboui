@@ -1242,8 +1242,6 @@ bonobo_window_get_contents
 bonobo_window_set_name
 bonobo_window_get_name
 bonobo_window_get_accel_group
-bonobo_window_set_ui_container
-bonobo_window_component_get
 bonobo_window_add_popup
 bonobo_window_remove_popup
 bonobo_window_get_ui_engine
@@ -1270,8 +1268,10 @@ bonobo_window_deregister_component_by_ref
 bonobo_window_deregister_dead_components
 bonobo_window_deregister_get_component_names
 bonobo_window_dump
+bonobo_window_component_get
 bonobo_window_register_component
 bonobo_window_deregister_component
+bonobo_window_set_ui_container
 </SECTION>
 
 <SECTION>

@@ -50,6 +50,12 @@ struct _BonoboWindowPrivate {
 	GtkWidget      *client_area;
 };
 
+/**
+ * bonobo_window_deregister_dead_components:
+ * @win: 
+ * 
+ * Deprecated
+ **/
 void
 bonobo_window_deregister_dead_components (BonoboWindow *win)
 {
@@ -59,6 +65,14 @@ bonobo_window_deregister_dead_components (BonoboWindow *win)
 		win->priv->engine);
 }
 
+/**
+ * bonobo_window_register_component:
+ * @win: 
+ * @name: 
+ * @component: 
+ * 
+ * Deprecated
+ **/
 void
 bonobo_window_register_component (BonoboWindow  *win,
 				  const char    *name,
@@ -70,6 +84,13 @@ bonobo_window_register_component (BonoboWindow  *win,
 		win->priv->engine, name, component);
 }
 
+/**
+ * bonobo_window_deregister_component:
+ * @win: 
+ * @name: 
+ * 
+ * Deprecated
+ **/
 void
 bonobo_window_deregister_component (BonoboWindow *win,
 				    const char   *name)
@@ -80,6 +101,13 @@ bonobo_window_deregister_component (BonoboWindow *win,
 		win->priv->engine, name);
 }
 
+/**
+ * bonobo_window_deregister_component_by_ref:
+ * @win: 
+ * @ref: 
+ * 
+ * Deprecated
+ **/
 void
 bonobo_window_deregister_component_by_ref (BonoboWindow  *win,
 					   Bonobo_Unknown ref)
@@ -90,6 +118,13 @@ bonobo_window_deregister_component_by_ref (BonoboWindow  *win,
 		win->priv->engine, ref);
 }
 
+/**
+ * bonobo_window_remove_popup:
+ * @win: the window
+ * @path: the path
+ * 
+ * Remove the popup at @path
+ **/
 void
 bonobo_window_remove_popup (BonoboWindow     *win,
 			    const char    *path)
@@ -101,6 +136,14 @@ bonobo_window_remove_popup (BonoboWindow     *win,
 		BONOBO_UI_SYNC_MENU (win->priv->sync_menu), path);
 }
 
+/**
+ * bonobo_window_add_popup:
+ * @win: the window
+ * @menu: the menu widget
+ * @path: the path
+ * 
+ * Add a popup @menu at @path
+ **/
 void
 bonobo_window_add_popup (BonoboWindow *win,
 			 GtkMenu      *menu,
@@ -113,6 +156,14 @@ bonobo_window_add_popup (BonoboWindow *win,
 		BONOBO_UI_SYNC_MENU (win->priv->sync_menu), menu, path);
 }
 
+/**
+ * bonobo_window_deregister_get_component_names:
+ * @win: 
+ * 
+ * Deprecated
+ * 
+ * Return value: 
+ **/
 GList *
 bonobo_window_deregister_get_component_names (BonoboWindow *win)
 {
@@ -122,6 +173,15 @@ bonobo_window_deregister_get_component_names (BonoboWindow *win)
 }
 
 
+/**
+ * bonobo_window_component_get:
+ * @win: 
+ * @name: 
+ * 
+ * Deprecated
+ * 
+ * Return value: 
+ **/
 Bonobo_Unknown
 bonobo_window_component_get (BonoboWindow *win,
 			     const char  *name)
@@ -131,6 +191,13 @@ bonobo_window_component_get (BonoboWindow *win,
 	return bonobo_ui_engine_get_component (win->priv->engine, name);
 }
 
+/**
+ * bonobo_window_set_contents:
+ * @win: the bonobo window
+ * @contents: the new widget for it to contain.
+ * 
+ * Insert a widget into the main window contents.
+ **/
 void
 bonobo_window_set_contents (BonoboWindow *win,
 			    GtkWidget    *contents)
@@ -142,6 +209,12 @@ bonobo_window_set_contents (BonoboWindow *win,
 	gtk_container_add (GTK_CONTAINER (win->priv->client_area), contents);
 }
 
+/**
+ * bonobo_window_get_contents:
+ * @win: the bonobo window
+ * 
+ * Return value: the contained widget
+ **/
 GtkWidget *
 bonobo_window_get_contents (BonoboWindow *win)
 {
@@ -201,6 +274,15 @@ bonobo_window_xml_get (BonoboWindow *win,
 	return bonobo_ui_engine_xml_get (win->priv->engine, path, node_only);
 }
 
+/**
+ * bonobo_window_xml_node_exists:
+ * @win: 
+ * @path: 
+ * 
+ * Deprecated
+ * 
+ * Return value: 
+ **/
 gboolean
 bonobo_window_xml_node_exists (BonoboWindow *win,
 			       const char   *path)
@@ -211,6 +293,17 @@ bonobo_window_xml_node_exists (BonoboWindow *win,
 		win->priv->engine, path);
 }
 
+/**
+ * bonobo_window_object_set:
+ * @win: 
+ * @path: 
+ * @object: 
+ * @ev: 
+ * 
+ * Deprecated
+ * 
+ * Return value: 
+ **/
 BonoboUIError   
 bonobo_window_object_set (BonoboWindow  *win,
 			  const char    *path,
@@ -224,6 +317,17 @@ bonobo_window_object_set (BonoboWindow  *win,
 		win->priv->engine, path, object, ev);
 }
 
+/**
+ * bonobo_window_object_get:
+ * @win: 
+ * @path: 
+ * @object: 
+ * @ev: 
+ * 
+ * Deprecated
+ * 
+ * Return value: 
+ **/
 BonoboUIError   
 bonobo_window_object_get (BonoboWindow   *win,
 			  const char     *path,
@@ -237,6 +341,17 @@ bonobo_window_object_get (BonoboWindow   *win,
 		win->priv->engine, path, object, ev);
 }
 
+/**
+ * bonobo_window_xml_merge_tree:
+ * @win: 
+ * @path: 
+ * @tree: 
+ * @component: 
+ * 
+ * Deprecated
+ * 
+ * Return value: 
+ **/
 BonoboUIError   
 bonobo_window_xml_merge_tree (BonoboWindow *win,
 			      const char   *path,
@@ -250,6 +365,17 @@ bonobo_window_xml_merge_tree (BonoboWindow *win,
 		win->priv->engine, path, tree, component);
 }
 
+/**
+ * bonobo_window_xml_merge:
+ * @win: 
+ * @path: 
+ * @xml: 
+ * @component: 
+ * 
+ * Deprecated
+ * 
+ * Return value: 
+ **/
 BonoboUIError   
 bonobo_window_xml_merge (BonoboWindow *win,
 			 const char   *path,
@@ -275,6 +401,16 @@ bonobo_window_xml_merge (BonoboWindow *win,
 	return err;
 }
 
+/**
+ * bonobo_window_xml_rm:
+ * @win: 
+ * @path: 
+ * @by_component: 
+ * 
+ * Deprecated
+ * 
+ * Return value: 
+ **/
 BonoboUIError   
 bonobo_window_xml_rm (BonoboWindow *win,
 		      const char   *path,
@@ -286,6 +422,12 @@ bonobo_window_xml_rm (BonoboWindow *win,
 		win->priv->engine, path, by_component);
 }
 
+/**
+ * bonobo_window_freeze:
+ * @win: 
+ * 
+ * Deprecated
+ **/
 void
 bonobo_window_freeze (BonoboWindow *win)
 {
@@ -294,6 +436,12 @@ bonobo_window_freeze (BonoboWindow *win)
 	bonobo_ui_engine_freeze (win->priv->engine);
 }
 
+/**
+ * bonobo_window_thaw:
+ * @win: 
+ * 
+ * Deprecated
+ **/
 void
 bonobo_window_thaw (BonoboWindow *win)
 {
@@ -302,6 +450,13 @@ bonobo_window_thaw (BonoboWindow *win)
 	bonobo_ui_engine_thaw (win->priv->engine);
 }
 
+/**
+ * bonobo_window_dump:
+ * @win: 
+ * @msg: 
+ * 
+ * Deprecated
+ **/
 void
 bonobo_window_dump (BonoboWindow *win,
 		    const char   *msg)
@@ -313,6 +468,12 @@ bonobo_window_dump (BonoboWindow *win,
 	bonobo_ui_engine_dump (win->priv->engine, stderr, msg);
 }
 
+/**
+ * bonobo_window_get_accel_group:
+ * @win: the bonobo window
+ * 
+ * Return value: the associated accelerator group for this window
+ **/
 GtkAccelGroup *
 bonobo_window_get_accel_group (BonoboWindow *win)
 {
@@ -444,6 +605,13 @@ bonobo_window_init (BonoboWindow *win)
 	win->priv = construct_priv (win);
 }
 
+/**
+ * bonobo_window_set_ui_container:
+ * @win: 
+ * @container: 
+ * 
+ * Deprecated
+ **/
 void
 bonobo_window_set_ui_container (BonoboWindow *win,
 				BonoboObject *container)
@@ -456,6 +624,14 @@ bonobo_window_set_ui_container (BonoboWindow *win,
 		win->priv->engine, container);
 }
 
+/**
+ * bonobo_window_set_name:
+ * @win: the bonobo window
+ * @win_name: the window name
+ * 
+ * Set the name of the window - used for configuration
+ * serialization.
+ **/
 void
 bonobo_window_set_name (BonoboWindow  *win,
 			const char *win_name)
@@ -478,6 +654,12 @@ bonobo_window_set_name (BonoboWindow  *win,
 	}
 }
 
+/**
+ * bonobo_window_get_name:
+ * @win: the bonobo window
+ * 
+ * Return value: the name of the window
+ **/
 char *
 bonobo_window_get_name (BonoboWindow *win)
 {

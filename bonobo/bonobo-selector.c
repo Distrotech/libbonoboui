@@ -126,7 +126,7 @@ cancel_callback (GtkWidget *widget, gpointer data)
 }
 
 /**
- * gnome_bonobo_select_id:
+ * bonobo_selector_select_id:
  * @title: The title to be used for the dialog.
  * @interfaces_required: A list of required interfaces.  See
  * bonobo_selector_new().

@@ -188,7 +188,7 @@ BonoboAsyncReply        *reply,gpointer                 retval,gpointer         
 <FUNCTION>
 <NAME>bonobo_async_invoke</NAME>
 <RETURNS>void  </RETURNS>
-const BonoboAsyncMethod *method,BonoboAsyncCallback      cb,gpointer                 user_data,guint                    timeout_usec,CORBA_Object             object,gpointer                *args,CORBA_Environment       *ev
+const BonoboAsyncMethod *method,BonoboAsyncCallback      cb,gpointer                 user_data,guint                    timeout_msec,CORBA_Object             object,gpointer                *args,CORBA_Environment       *ev
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_async_handle_get_recv</NAME>

@@ -178,6 +178,7 @@
       &bonobo-async;
   </chapter>
 
+<!-- These are not really important
   <chapter id="bonobo-useful-widgets">
     <title>Useful UI widgets</title>      
       &bonobo-ui-toolbar-item;
@@ -195,4 +196,5 @@
       &bonobo-object-io;
       &bonobo-component-io;
   </chapter>
+  -->
 </book>
