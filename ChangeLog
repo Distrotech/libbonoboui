@@ -1,5 +1,10 @@
 2001-04-24  Martin Baulig  <baulig@suse.de>
 
+	* bonobo/*.c: Did the basic GTK+ 2.0 porting work, but without
+	any real code changes.
+
+2001-04-24  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/Makefile.am (INCLUDES, libbonoboui_la_LIBADD):
 	Use the correct CFLAGS and LIBS to make this actually work.
 	(libbonoboui_la_SOURCES): Removed bonobo-item-container.c and

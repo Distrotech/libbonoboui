@@ -14,7 +14,7 @@
 #include <bonobo/bonobo-ui-sync.h>
 
 #define PARENT_TYPE gtk_object_get_type ()
-#define CLASS(o) BONOBO_UI_SYNC_CLASS (GTK_OBJECT (o)->klass)
+#define CLASS(o) BONOBO_UI_SYNC_CLASS (GTK_OBJECT_GET_CLASS (o))
 
 static void
 impl_sync_state_placeholder (BonoboUISync     *sync,

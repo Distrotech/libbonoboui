@@ -28,6 +28,7 @@
 #define _BONOBO_ZOOMABLE_H_
 
 #include <bonobo/bonobo-object.h>
+#include <gtk/gtktypeutils.h>
 
 G_BEGIN_DECLS
 

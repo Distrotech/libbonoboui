@@ -95,8 +95,8 @@ bonobo_socket_get_type ()
 			sizeof (BonoboSocketClass),
 			(GtkClassInitFunc) bonobo_socket_class_init,
 			(GtkObjectInitFunc) bonobo_socket_init,
-			(GtkArgSetFunc) NULL,
-			(GtkArgGetFunc) NULL
+			NULL,
+			NULL
 		};
 
 		socket_type = gtk_type_unique (gtk_container_get_type (), &socket_info);
@@ -214,6 +214,7 @@ bonobo_socket_steal (BonoboSocket *socket, guint32 id)
 
 	gdk_error_trap_push ();
   
+#ifdef FIXME
 	if (priv->plug_window && priv->plug_window->user_data) {
 		/*
 		  GtkWidget *child_widget;
@@ -224,7 +225,9 @@ bonobo_socket_steal (BonoboSocket *socket, guint32 id)
 		g_warning("Stealing from same app not yet implemented");
       
 		priv->same_app = TRUE;
-	} else {
+	} else
+#endif
+	    {
 		priv->plug_window = gdk_window_foreign_new (id);
 		if (!priv->plug_window) {
 			/* was deleted before we could get it */

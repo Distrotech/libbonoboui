@@ -184,20 +184,21 @@ bonobo_view_frame_destroy (GtkObject *object)
 }
 
 static void
-bonobo_view_frame_finalize (GtkObject *object)
+bonobo_view_frame_finalize (GObject *object)
 {
 	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (object);
 
 	gtk_object_unref (GTK_OBJECT (view_frame->priv->wrapper));
 	g_free (view_frame->priv);
 	
-	bonobo_view_frame_parent_class->finalize (object);
+	G_OBJECT_CLASS (bonobo_view_frame_parent_class)->finalize (object);
 }
 
 static void
 bonobo_view_frame_class_init (BonoboViewFrameClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GObjectClass *gobject_class = (GObjectClass *) klass;
 	POA_Bonobo_ViewFrame__epv *epv = &klass->epv;
 
 	bonobo_view_frame_parent_class = gtk_type_class (PARENT_TYPE);
@@ -205,7 +206,7 @@ bonobo_view_frame_class_init (BonoboViewFrameClass *klass)
 	view_frame_signals [USER_ACTIVATE] =
 		gtk_signal_new ("user_activate",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboViewFrameClass, user_activate),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
@@ -213,18 +214,13 @@ bonobo_view_frame_class_init (BonoboViewFrameClass *klass)
 	view_frame_signals [USER_CONTEXT] =
 		gtk_signal_new ("user_context",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboViewFrameClass, user_context),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
-	gtk_object_class_add_signals (
-		object_class,
-		view_frame_signals,
-		LAST_SIGNAL);
-
 	object_class->destroy  = bonobo_view_frame_destroy;
-	object_class->finalize = bonobo_view_frame_finalize;
+	gobject_class->finalize = bonobo_view_frame_finalize;
 
 	epv->getClientSite = impl_Bonobo_ViewFrame_getClientSite;
 }

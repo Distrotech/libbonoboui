@@ -20,6 +20,7 @@
 #include <bonobo/bonobo-ui-engine-config.h>
 #include <bonobo/bonobo-ui-engine-private.h>
 #include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-marshal.h>
 
 /* Various debugging output defines */
 #undef STATE_SYNC_DEBUG
@@ -79,7 +80,7 @@ find_sync_for_node (BonoboUIEngine *engine,
 
 	if (ret) {
 /*		fprintf (stderr, "Found sync '%s' for path '%s'\n",
-			 gtk_type_name (GTK_OBJECT (ret)->klass->type),
+			 gtk_type_name (GTK_CLASS_TYPE (GTK_OBJECT_GET_CLASS (ret))),
 			 bonobo_ui_xml_make_path (node));*/
 		return ret;
 	}
@@ -1294,7 +1295,8 @@ real_exec_verb (BonoboUIEngine *engine,
 		if (BONOBO_EX (&ev))
 			g_warning ("Exception executing verb '%s' '%s'"
 				   "major %d, %s",
-				   verb, component_name, ev._major, ev._repo_id);
+				   verb, component_name, ev._major,
+				   BONOBO_EX_REPOID (&ev));
 		
 		CORBA_exception_free (&ev);
 	}
@@ -1533,7 +1535,8 @@ real_emit_ui_event (BonoboUIEngine *engine,
 		if (BONOBO_EX (&ev))
 			g_warning ("Exception emitting state change to %d '%s' '%s'"
 				   "major %d, %s",
-				   type, id, new_state, ev._major, ev._repo_id);
+				   type, id, new_state, ev._major,
+				   BONOBO_EX_REPOID (&ev));
 		
 		CORBA_exception_free (&ev);
 	}
@@ -1606,7 +1609,7 @@ impl_destroy (GtkObject *object)
 }
 
 static void
-impl_finalize (GtkObject *object)
+impl_finalize (GObject *object)
 {
 	BonoboUIEngine *engine;
 	BonoboUIEnginePrivate *priv;
@@ -1616,19 +1619,21 @@ impl_finalize (GtkObject *object)
 	
 	g_free (priv);
 
-	parent_class->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 class_init (BonoboUIEngineClass *engine_class)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
 	parent_class = gtk_type_class (PARENT_TYPE);
 
 	object_class = GTK_OBJECT_CLASS (engine_class);
+	gobject_class = G_OBJECT_CLASS (engine_class);
 	object_class->destroy  = impl_destroy;
-	object_class->finalize = impl_finalize;
+	gobject_class->finalize = impl_finalize;
 
 	engine_class->emit_verb_on  = impl_emit_verb_on;
 	engine_class->emit_event_on = impl_emit_event_on;
@@ -1636,36 +1641,34 @@ class_init (BonoboUIEngineClass *engine_class)
 	signals [ADD_HINT]
 		= gtk_signal_new ("add_hint",
 				  GTK_RUN_LAST,
-				  object_class->type,
+				  GTK_CLASS_TYPE (object_class),
 				  GTK_SIGNAL_OFFSET (BonoboUIEngineClass, add_hint),
-				  gtk_marshal_NONE__STRING,
+				  gtk_marshal_VOID__STRING,
 				  GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
 
 	signals [REMOVE_HINT]
 		= gtk_signal_new ("remove_hint",
 				  GTK_RUN_LAST,
-				  object_class->type,
+				  GTK_CLASS_TYPE (object_class),
 				  GTK_SIGNAL_OFFSET (BonoboUIEngineClass, remove_hint),
-				  gtk_marshal_NONE__NONE,
+				  gtk_marshal_VOID__VOID,
 				  GTK_TYPE_NONE, 0);
 
 	signals [EMIT_VERB_ON]
 		= gtk_signal_new ("emit_verb_on",
 				  GTK_RUN_LAST,
-				  object_class->type,
+				  GTK_CLASS_TYPE (object_class),
 				  GTK_SIGNAL_OFFSET (BonoboUIEngineClass, emit_verb_on),
-				  gtk_marshal_NONE__POINTER,
+				  gtk_marshal_VOID__POINTER,
 				  GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 
 	signals [EMIT_EVENT_ON]
 		= gtk_signal_new ("emit_event_on",
 				  GTK_RUN_LAST,
-				  object_class->type,
+				  GTK_CLASS_TYPE (object_class),
 				  GTK_SIGNAL_OFFSET (BonoboUIEngineClass, emit_event_on),
-				  gtk_marshal_NONE__POINTER_POINTER,
+				  bonobo_marshal_VOID__POINTER_POINTER,
 				  GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_STRING);
-
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 }
 
 static void
@@ -2028,7 +2031,7 @@ check_excess_widgets (BonoboUISync *sync, GList *wptr)
 
 			node = bonobo_ui_engine_widget_get_node (b->data);
 			g_message ("Widget type '%s' with node: '%s'",
-				   gtk_type_name (GTK_OBJECT (b->data)->klass->type),
+				   GTK_CLASS_NAME (GTK_OBJECT_GET_CLASS (b->data)),
 				   node ? bonobo_ui_xml_make_path (node) : "NULL");
 		}
 	}

@@ -16,7 +16,7 @@
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-property-control.h>
 #include <bonobo/bonobo-event-source.h>
-#include "Bonobo.h"
+#include <bonobo/Bonobo.h>
 
 struct _BonoboPropertyControlPrivate {
 	BonoboPropertyControlGetControlFn get_fn;
@@ -131,12 +131,10 @@ bonobo_property_control_class_init (BonoboPropertyControlClass *klass)
 	object_class->destroy = bonobo_property_control_destroy;
 
 	signals [ACTION] = gtk_signal_new ("action",
-					 GTK_RUN_FIRST, object_class->type,
+					 GTK_RUN_FIRST, GTK_CLASS_TYPE (object_class),
 					 GTK_SIGNAL_OFFSET (BonoboPropertyControlClass, action),
 					 gtk_marshal_NONE__INT_INT, GTK_TYPE_NONE,
-					 2, GTK_TYPE_INT, GTK_TYPE_ENUM);
-
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+					 2, GTK_TYPE_INT, GTK_TYPE_INT);
 				     
 	parent_class = gtk_type_class (PARENT_TYPE);
 

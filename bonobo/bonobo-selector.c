@@ -39,23 +39,15 @@ enum {
 
 guint bonobo_selector_signals [LAST_SIGNAL] = { 0, 0 };
 
-/* FIXME: remove this as soon it is included in gnome-dialog */
 static void       
-gnome_dialog_clicked (GnomeDialog *dialog, gint button_num)
-{
-	gtk_signal_emit_by_name (GTK_OBJECT (dialog), "clicked",
-				 button_num);
-}              
-
-static void
-bonobo_selector_finalize (GtkObject *object)
+bonobo_selector_finalize (GObject *object)
 {
 	g_return_if_fail (BONOBO_IS_SELECTOR (object));
 
 	g_free (BONOBO_SELECTOR (object)->priv);
 
-	if (GTK_OBJECT_CLASS (parent_class)->finalize)
-		 GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	if (G_OBJECT_CLASS (parent_class)->finalize)
+		 G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /**
@@ -208,27 +200,24 @@ bonobo_selector_init (GtkWidget *widget)
 static void
 bonobo_selector_class_init (BonoboSelectorClass *klass)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 	
 	g_return_if_fail (klass != NULL);
 	
-	object_class = (GtkObjectClass *) klass;
+	object_class = (GObjectClass *) klass;
 	object_class->finalize = bonobo_selector_finalize;
 
 	parent_class = gtk_type_class (gnome_dialog_get_type ());
 
 	bonobo_selector_signals [OK] =
-		gtk_signal_new ("ok", GTK_RUN_LAST, object_class->type,
+		gtk_signal_new ("ok", GTK_RUN_LAST, GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboSelectorClass, ok),
 		gtk_signal_default_marshaller, GTK_TYPE_NONE, 0);
 	
 	bonobo_selector_signals [CANCEL] =
-		gtk_signal_new ("cancel", GTK_RUN_LAST, object_class->type,
+		gtk_signal_new ("cancel", GTK_RUN_LAST, GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboSelectorClass, cancel),
 		gtk_signal_default_marshaller, GTK_TYPE_NONE, 0);
-	
-	gtk_object_class_add_signals (object_class, bonobo_selector_signals,
-				      LAST_SIGNAL);
 }
 
 /**
@@ -248,8 +237,8 @@ bonobo_selector_get_type (void)
 			sizeof (BonoboSelectorClass),
 			(GtkClassInitFunc)  bonobo_selector_class_init,
 			(GtkObjectInitFunc) bonobo_selector_init,
-			(GtkArgSetFunc) NULL,
-			(GtkArgGetFunc) NULL
+			NULL,
+			NULL
 		};
 
 		bonobo_selector_type = gtk_type_unique (
@@ -281,7 +270,7 @@ bonobo_selector_construct (BonoboSelector       *sel,
 	sel->priv->selector = selector;
 
 	gtk_signal_connect (GTK_OBJECT (selector), "final_select",
-			    final_select_cb, sel);
+			    GTK_SIGNAL_FUNC (final_select_cb), sel);
 	
 	gtk_window_set_title (GTK_WINDOW (sel), title ? title : "");
 

@@ -80,7 +80,7 @@ typedef struct {
 
 POA_Bonobo_Zoomable__vepv bonobo_zoomable_vepv;
 
-#define CLASS(o) BONOBO_ZOOMABLE_CLASS(GTK_OBJECT(o)->klass)
+#define CLASS(o) BONOBO_ZOOMABLE_CLASS(GTK_OBJECT_GET_CLASS(o))
 
 static inline BonoboZoomable *
 bonobo_zoomable_from_servant (PortableServer_Servant servant)
@@ -393,7 +393,7 @@ bonobo_zoomable_destroy (GtkObject *object)
 }
 
 static void
-bonobo_zoomable_finalize (GtkObject *object)
+bonobo_zoomable_finalize (GObject *object)
 {
 	BonoboZoomable *zoomable;
 
@@ -404,15 +404,17 @@ bonobo_zoomable_finalize (GtkObject *object)
 	g_free (zoomable->priv);
 	zoomable->priv = NULL;
 
-	GTK_OBJECT_CLASS (bonobo_zoomable_parent_class)->finalize (object);
+	G_OBJECT_CLASS (bonobo_zoomable_parent_class)->finalize (object);
 }
 
 static void
 bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 	
 	object_class = (GtkObjectClass*) klass;
+	gobject_class = (GObjectClass*) klass;
 	
 	bonobo_zoomable_parent_class = gtk_type_class (bonobo_object_get_type ());
 	bonobo_zoomable_class = klass;
@@ -433,52 +435,50 @@ bonobo_zoomable_class_init (BonoboZoomableClass *klass)
 	signals[SET_FRAME] =
 		gtk_signal_new ("set_frame",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboZoomableClass, set_frame),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 	signals[SET_ZOOM_LEVEL] =
 		gtk_signal_new ("set_zoom_level",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboZoomableClass, set_zoom_level),
-				marshal_NONE__FLOAT,
+				(GtkSignalMarshaller) marshal_NONE__FLOAT,
 				GTK_TYPE_NONE, 1, GTK_TYPE_FLOAT);
 	signals[ZOOM_IN] = 
 		gtk_signal_new ("zoom_in",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboZoomableClass, zoom_in),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 	signals[ZOOM_OUT] = 
 		gtk_signal_new ("zoom_out",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboZoomableClass, zoom_out),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 	signals[ZOOM_TO_FIT] = 
 		gtk_signal_new ("zoom_to_fit",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboZoomableClass, zoom_to_fit),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 	signals[ZOOM_TO_DEFAULT] = 
 		gtk_signal_new ("zoom_to_default",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboZoomableClass, zoom_to_default),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
-
 	object_class->get_arg = bonobo_zoomable_get_arg;
 
 	object_class->destroy = bonobo_zoomable_destroy;
-	object_class->finalize = bonobo_zoomable_finalize;
+	gobject_class->finalize = bonobo_zoomable_finalize;
 
 	init_zoomable_corba_class ();
 }

@@ -17,6 +17,7 @@
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-canvas-component.h>
+#include <bonobo/bonobo-marshal.h>
 
 enum {
 	SET_BOUNDS,
@@ -36,7 +37,9 @@ struct _BonoboCanvasComponentPrivate {
 #define PARENT_TYPE BONOBO_OBJECT_TYPE
 
 /* Returns the GnomeCanvasItemClass of an object */
-#define ICLASS(x) GNOME_CANVAS_ITEM_CLASS ((GTK_OBJECT (x)->klass))
+#define ICLASS(x) GNOME_CANVAS_ITEM_CLASS ((GTK_OBJECT_GET_CLASS (x)))
+
+
 
 static GtkObjectClass *gcc_parent_class;
 
@@ -169,8 +172,8 @@ invoke_update (GnomeCanvasItem *item, double *affine, ArtSVP *clip_path, int fla
 			    | GNOME_CANVAS_UPDATE_AFFINE
 			    | GNOME_CANVAS_UPDATE_CLIP
 			    | GNOME_CANVAS_UPDATE_VISIBILITY))
-	    && GNOME_CANVAS_ITEM_CLASS (item->object.klass)->update)
-		(* GNOME_CANVAS_ITEM_CLASS (item->object.klass)->update) (
+	    && GNOME_CANVAS_ITEM_CLASS (item)->update)
+		(* GNOME_CANVAS_ITEM_CLASS (item)->update) (
 			item, child_affine, clip_path, child_flags);
 }
 
@@ -314,16 +317,18 @@ impl_Bonobo_Canvas_Component_unmap (PortableServer_Servant servant,
 static void
 my_gdk_pixmap_foreign_release (GdkPixmap *pixmap)
 {
-	GdkWindowPrivate *priv = (GdkWindowPrivate *) pixmap;
+	GdkWindowObject *priv = (GdkWindowObject *) pixmap;
 
-	if (priv->ref_count != 1){
+	if (G_OBJECT (priv)->ref_count != 1){
 		g_warning ("This item is keeping a refcount to a foreign pixmap");
 		return;
 	}
 
+#ifdef FIXME
 	gdk_xid_table_remove (priv->xwindow);
 	g_dataset_destroy (priv);
 	g_free (priv);
+#endif
 }
 
 static void
@@ -471,8 +476,10 @@ Bonobo_Gdk_Event_to_GdkEvent (const Bonobo_Gdk_Event *gnome_event, GdkEvent *gdk
 		gdk_event->motion.y = gnome_event->_u.motion.y;
 		gdk_event->motion.x_root = gnome_event->_u.motion.x_root;
 		gdk_event->motion.y_root = gnome_event->_u.motion.y_root;
+#ifdef FIXME
 		gdk_event->motion.xtilt = gnome_event->_u.motion.xtilt;
 		gdk_event->motion.ytilt = gnome_event->_u.motion.ytilt;
+#endif
 		gdk_event->motion.state = gnome_event->_u.motion.state;
 		gdk_event->motion.is_hint = gnome_event->_u.motion.is_hint;
 		return;
@@ -607,42 +614,41 @@ gcc_destroy (GtkObject *object)
 }
 
 static void
-gcc_finalize (GtkObject *object)
+gcc_finalize (GObject *object)
 {
 	Gcc *gcc = GCC (object);
 
 	g_free (gcc->priv);
 
-	gcc_parent_class->finalize (object);
+	G_OBJECT_CLASS (gcc_parent_class)->finalize (object);
 }
 
 static void
 bonobo_canvas_component_class_init (BonoboCanvasComponentClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GObjectClass *gobject_class = (GObjectClass *) klass;
 	POA_Bonobo_Canvas_Component__epv *epv = &klass->epv;
 
 	gcc_parent_class = gtk_type_class (PARENT_TYPE);
 
 	object_class->destroy  = gcc_destroy;
-	object_class->finalize = gcc_finalize;
+	gobject_class->finalize = gcc_finalize;
 
 	gcc_signals [SET_BOUNDS] = 
                 gtk_signal_new ("set_bounds",
                                 GTK_RUN_LAST,
-                                object_class->type,
+                                GTK_CLASS_TYPE (object_class),
                                 GTK_SIGNAL_OFFSET (BonoboCanvasComponentClass, set_bounds), 
-                                gtk_marshal_NONE__POINTER_POINTER,
+                                bonobo_marshal_VOID__POINTER_POINTER,
                                 GTK_TYPE_NONE, 2,
 				GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 
 	gcc_signals [EVENT] = gtk_signal_new ("event", 
-			GTK_RUN_LAST, object_class->type,
+			GTK_RUN_LAST, GTK_CLASS_TYPE (object_class),
                         GTK_SIGNAL_OFFSET (BonoboCanvasComponentClass, event), 
-                        gtk_marshal_BOOL__POINTER,
+                        bonobo_marshal_BOOLEAN__POINTER,
                         GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
-
-	gtk_object_class_add_signals (object_class, gcc_signals, LAST_SIGNAL);
 
 	epv->update         = impl_Bonobo_Canvas_Component_update;
 	epv->realize        = impl_Bonobo_Canvas_Component_realize;

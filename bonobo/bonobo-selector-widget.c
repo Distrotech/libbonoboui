@@ -18,9 +18,7 @@
 #include <config.h>
 #include <string.h> /* strcmp */
 #include <glib.h>
-#include <gmacros.h>
-#define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE
-#include <libgnomebase/gnome-i18n.h>
+#include <bonobo/bonobo-i18n.h>
 #include <libgnomeui/gnome-pixmap.h>
 #include <libgnomeui/gnome-uidefs.h>
 #include <bonobo/bonobo-selector-widget.h>
@@ -28,7 +26,7 @@
 
 #include "bonobo-insert-component.xpm"
 
-#define GET_CLASS(o) BONOBO_SELECTOR_WIDGET_CLASS (GTK_OBJECT (o)->klass)
+#define GET_CLASS(o) BONOBO_SELECTOR_WIDGET_CLASS (GTK_OBJECT_GET_CLASS (o))
 
 static GtkHBoxClass *parent_class;
 
@@ -62,13 +60,13 @@ get_filtered_objects (const gchar **interfaces_required)
 }
 
 static void
-bonobo_selector_widget_finalize (GtkObject *object)
+bonobo_selector_widget_finalize (GObject *object)
 {
 	g_return_if_fail (BONOBO_IS_SELECTOR_WIDGET (object));
 
 	g_free (BONOBO_SELECTOR_WIDGET (object)->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static gchar *
@@ -244,7 +242,7 @@ bonobo_selector_widget_init (GtkWidget *widget)
 
 	hbox = gtk_hbox_new (FALSE, 0);
 
-	pixmap = gnome_pixmap_new_from_xpm_d (bonobo_insert_component_xpm);
+	pixmap = gnome_pixmap_new_from_xpm_d ((const gchar **) bonobo_insert_component_xpm);
 	gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, TRUE, GNOME_PAD_SMALL);
 	
 	gtk_box_pack_start (GTK_BOX (hbox), priv->desc_label, TRUE, TRUE, GNOME_PAD_SMALL);
@@ -316,11 +314,11 @@ bonobo_selector_widget_new (void)
 static void
 bonobo_selector_widget_class_init (BonoboSelectorWidgetClass *klass)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 	
 	g_return_if_fail (klass != NULL);
 	
-	object_class = (GtkObjectClass *) klass;
+	object_class = (GObjectClass *) klass;
 	parent_class = gtk_type_class (gtk_vbox_get_type ());
 
 	klass->get_id          = impl_get_id;
@@ -329,12 +327,10 @@ bonobo_selector_widget_class_init (BonoboSelectorWidgetClass *klass)
 	klass->set_interfaces  = impl_set_interfaces;
 
 	signals [FINAL_SELECT] = gtk_signal_new (
-		"final_select", GTK_RUN_FIRST, object_class->type,
+		"final_select", GTK_RUN_FIRST, GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboSelectorWidgetClass, final_select),
 		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
 
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
-	
 	object_class->finalize = bonobo_selector_widget_finalize;
 }
 
@@ -355,8 +351,8 @@ bonobo_selector_widget_get_type (void)
 			sizeof (BonoboSelectorWidgetClass),
 			(GtkClassInitFunc)  bonobo_selector_widget_class_init,
 			(GtkObjectInitFunc) bonobo_selector_widget_init,
-			(GtkArgSetFunc) NULL,
-			(GtkArgGetFunc) NULL
+			NULL,
+			NULL
 		};
 
 		bonobo_selector_widget_type = gtk_type_unique (

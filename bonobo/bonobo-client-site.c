@@ -120,7 +120,7 @@ bonobo_client_site_class_init (BonoboClientSiteClass *klass)
 	bonobo_client_site_signals [SHOW_WINDOW] =
 		gtk_signal_new ("show_window",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboClientSiteClass, show_window), 
 				gtk_marshal_NONE__INT,
 				GTK_TYPE_NONE, 1,
@@ -128,16 +128,12 @@ bonobo_client_site_class_init (BonoboClientSiteClass *klass)
 	bonobo_client_site_signals [SAVE_OBJECT] =
 		gtk_signal_new ("save_object",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboClientSiteClass, save_object), 
 				gtk_marshal_NONE__POINTER,
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_POINTER); 
 
-	gtk_object_class_add_signals (object_class,
-				      bonobo_client_site_signals,
-				      LAST_SIGNAL);
-	
 	object_class->destroy = bonobo_client_site_destroy;
 	klass->show_window = default_show_window;
 	klass->save_object = default_save_object;

@@ -664,7 +664,7 @@ bonobo_control_destroy (GtkObject *object)
 }
 
 static void
-bonobo_control_finalize (GtkObject *object)
+bonobo_control_finalize (GObject *object)
 {
 	BonoboControl *control = BONOBO_CONTROL (object);
 
@@ -691,7 +691,7 @@ bonobo_control_finalize (GtkObject *object)
 
 	g_free (control->priv);
 
-	GTK_OBJECT_CLASS (bonobo_control_parent_class)->finalize (object);
+	G_OBJECT_CLASS (bonobo_control_parent_class)->finalize (object);
 }
 
 /**
@@ -920,6 +920,7 @@ static void
 bonobo_control_class_init (BonoboControlClass *klass)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *)klass;
+	GObjectClass *gobject_class = (GObjectClass *)klass;
 	POA_Bonobo_Control__epv *epv;
 
 	bonobo_control_parent_class = gtk_type_class (PARENT_TYPE);
@@ -927,7 +928,7 @@ bonobo_control_class_init (BonoboControlClass *klass)
 	control_signals [SET_FRAME] =
                 gtk_signal_new ("set_frame",
                                 GTK_RUN_LAST,
-                                object_class->type,
+                                GTK_CLASS_TYPE (object_class),
                                 GTK_SIGNAL_OFFSET (BonoboControlClass, set_frame),
                                 gtk_marshal_NONE__NONE,
                                 GTK_TYPE_NONE, 0);
@@ -935,16 +936,14 @@ bonobo_control_class_init (BonoboControlClass *klass)
 	control_signals [ACTIVATE] =
                 gtk_signal_new ("activate",
                                 GTK_RUN_LAST,
-                                object_class->type,
+                                GTK_CLASS_TYPE (object_class),
                                 GTK_SIGNAL_OFFSET (BonoboControlClass, activate),
                                 gtk_marshal_NONE__BOOL,
                                 GTK_TYPE_NONE, 1,
 				GTK_TYPE_BOOL);
 
-	gtk_object_class_add_signals (object_class, control_signals, LAST_SIGNAL);
-
 	object_class->destroy  = bonobo_control_destroy;
-	object_class->finalize = bonobo_control_finalize;
+	gobject_class->finalize = bonobo_control_finalize;
 
 	epv = &klass->epv;
 

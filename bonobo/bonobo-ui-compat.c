@@ -12,10 +12,6 @@
  * Copyright 2000 Helix Code, Inc.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <glib.h>
 #include <unistd.h>
 #include <bonobo/Bonobo.h>

@@ -10,10 +10,9 @@
  */
 
 #include "config.h"
-#include <gnome.h>
 #include "bonobo-ui-toolbar-control-item.h"
 
-#include "bonobo-exception.h"
+#include <bonobo/bonobo-exception.h>
 
 static BonoboUIToolbarButtonItemClass *parent_class = NULL;
 

@@ -135,7 +135,7 @@ add_tearoff (BonoboUINode *node, GtkMenu *menu, gboolean popup_init)
 	if (has_tearoff) {
 		tearoff = gtk_tearoff_menu_item_new ();
 		gtk_widget_show (tearoff);
-		gtk_menu_prepend (GTK_MENU (menu), tearoff);
+		gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), tearoff);
 	}
 }
 
@@ -751,8 +751,8 @@ impl_bonobo_ui_sync_menu_state_update (BonoboUISync *sync,
 	} else
 		g_warning ("TESTME: strange, setting "
 			   "state '%s' on weird object '%s'",
-			   new_state, gtk_type_name (GTK_OBJECT (
-				   widget)->klass->type));
+			   new_state,
+			   GTK_CLASS_NAME (GTK_OBJECT_GET_CLASS (widget)));
 }
 
 static gboolean

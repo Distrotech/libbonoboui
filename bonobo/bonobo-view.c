@@ -152,13 +152,11 @@ bonobo_view_class_init (BonoboViewClass *klass)
 	view_signals [SET_ZOOM_FACTOR] =
                 gtk_signal_new ("set_zoom_factor",
                                 GTK_RUN_LAST,
-                                object_class->type,
+                                GTK_CLASS_TYPE (object_class),
                                 GTK_SIGNAL_OFFSET (BonoboViewClass, set_zoom_factor), 
-                                gnome_marshal_NONE__DOUBLE,
+                                (GtkSignalMarshaller) gnome_marshal_NONE__DOUBLE,
                                 GTK_TYPE_NONE, 1,
 				GTK_TYPE_DOUBLE);
-
-	gtk_object_class_add_signals (object_class, view_signals, LAST_SIGNAL);
 
 	object_class->destroy = bonobo_view_destroy;
 

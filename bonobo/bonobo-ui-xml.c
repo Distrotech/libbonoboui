@@ -11,9 +11,10 @@
 #include <string.h>
 #include <gtk/gtksignal.h>
 #include <bonobo/bonobo-ui-xml.h>
+#include <bonobo/bonobo-marshal.h>
 
-#include <gnome-xml/tree.h>
-#include <gnome-xml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
 
 
 #undef UI_XML_DEBUG
@@ -987,7 +988,7 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 	if (nodes == NULL)
 		return BONOBO_UI_ERROR_OK;
 
-	bonobo_ui_node_strip (&nodes);
+	bonobo_ui_xml_strip (&nodes);
 	set_id (tree, nodes, id);
 
 	current = bonobo_ui_xml_get_path (tree, path);
@@ -1080,40 +1081,38 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 
 	signals [OVERRIDE] = gtk_signal_new (
 		"override", GTK_RUN_FIRST,
-		object_class->type,
+		GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, override),
-		gtk_marshal_NONE__POINTER_POINTER,
+		bonobo_marshal_VOID__POINTER_POINTER,
 		GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 
 	signals [REPLACE_OVERRIDE] = gtk_signal_new (
 		"replace_override", GTK_RUN_FIRST,
-		object_class->type,
+		GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, replace_override),
-		gtk_marshal_NONE__POINTER_POINTER,
+		bonobo_marshal_VOID__POINTER_POINTER,
 		GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 
 	signals [REINSTATE] = gtk_signal_new (
 		"reinstate", GTK_RUN_FIRST,
-		object_class->type,
+		GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, reinstate),
-		gtk_marshal_NONE__POINTER,
+		gtk_marshal_VOID__POINTER,
 		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 
 	signals [RENAME] = gtk_signal_new (
 		"rename", GTK_RUN_FIRST,
-		object_class->type,
+		GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, rename),
-		gtk_marshal_NONE__POINTER,
+		gtk_marshal_VOID__POINTER,
 		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 
 	signals [REMOVE] = gtk_signal_new (
 		"remove", GTK_RUN_FIRST,
-		object_class->type,
+		GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, remove),
-		gtk_marshal_NONE__POINTER,
+		gtk_marshal_VOID__POINTER,
 		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 }
 
 /**

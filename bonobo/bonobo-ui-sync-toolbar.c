@@ -13,9 +13,7 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
-#include <gmacros.h>
-#define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE
-#include <libgnomebase/gnome-i18n.h>
+#include <bonobo/bonobo-i18n.h>
 #include <libgnomeui/gnome-preferences.h>
 
 #include <bonobo/bonobo-ui-xml.h>
@@ -419,8 +417,8 @@ impl_bonobo_ui_sync_toolbar_state_update (BonoboUISync *sync,
 		else
 			g_warning ("TESTME: strange, setting "
 				   "state '%s' on weird object '%s'",
-				   new_state, gtk_type_name (GTK_OBJECT (
-					   widget)->klass->type));
+				   new_state,
+				   GTK_CLASS_NAME (GTK_OBJECT_GET_CLASS (widget)));
 	}
 }
 

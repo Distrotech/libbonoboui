@@ -11,8 +11,6 @@
 #include <gtk/gtkmisc.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include "libgnomebase/gnome-defs.h"
-
 G_BEGIN_DECLS
 
 typedef enum {

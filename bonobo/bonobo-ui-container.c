@@ -8,8 +8,7 @@
  */
 
 #include "config.h"
-#include <gnome.h>
-#include <bonobo.h>
+#include <libbonobo.h>
 #include <liboaf/liboaf.h>
 
 #include <bonobo/Bonobo.h>
@@ -216,14 +215,14 @@ bonobo_ui_container_destroy (GtkObject *object)
 }
 
 static void
-bonobo_ui_container_finalize (GtkObject *object)
+bonobo_ui_container_finalize (GObject *object)
 {
 	BonoboUIContainer *container = (BonoboUIContainer *) object;
 
 	g_free (container->priv);
 	container->priv = NULL;
 
-	bonobo_ui_container_parent_class->finalize (object);
+	G_OBJECT_CLASS (bonobo_ui_container_parent_class)->finalize (object);
 }
 
 static void
@@ -238,12 +237,13 @@ static void
 bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 {
 	GtkObjectClass              *gtk_class = (GtkObjectClass *) klass;
+	GObjectClass                *g_class = (GObjectClass *) klass;
 	POA_Bonobo_UIContainer__epv *epv = &klass->epv;
 
 	bonobo_ui_container_parent_class = gtk_type_class (PARENT_TYPE);
 	
 	gtk_class->destroy  = bonobo_ui_container_destroy;
-	gtk_class->finalize = bonobo_ui_container_finalize;
+	g_class->finalize = bonobo_ui_container_finalize;
 
 	epv->registerComponent   = impl_Bonobo_UIContainer_registerComponent;
 	epv->deregisterComponent = impl_Bonobo_UIContainer_deregisterComponent;

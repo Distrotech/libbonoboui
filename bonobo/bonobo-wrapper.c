@@ -28,7 +28,6 @@ static void bonobo_wrapper_unrealize (GtkWidget *widget);
 static void bonobo_wrapper_size_request (GtkWidget *widget, GtkRequisition *requisition);
 static void bonobo_wrapper_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
 static gint bonobo_wrapper_expose (GtkWidget *widget, GdkEventExpose *event);
-static void bonobo_wrapper_draw (GtkWidget *widget, GdkRectangle *area);
 static void bonobo_wrapper_paint (GtkWidget *widget);
 
 static GtkBinClass *parent_class;
@@ -120,7 +119,7 @@ bonobo_wrapper_class_init (BonoboWrapperClass *klass)
 	widget_class->size_request = bonobo_wrapper_size_request;
 	widget_class->size_allocate = bonobo_wrapper_size_allocate;
 	widget_class->expose_event = bonobo_wrapper_expose;
-	widget_class->draw = bonobo_wrapper_draw;
+	/* widget_class->draw = bonobo_wrapper_draw; [FIXME] */
 
 	object_class->destroy = bonobo_wrapper_destroy;
 }
@@ -384,11 +383,13 @@ bonobo_wrapper_paint (GtkWidget *widget)
  	}
 }
 
+#ifdef FIXME
 static void
 bonobo_wrapper_draw (GtkWidget *widget, GdkRectangle *area)
 {
 	bonobo_wrapper_paint (widget);
 }
+#endif
 
 static gint
 bonobo_wrapper_expose (GtkWidget *widget, GdkEventExpose *event)

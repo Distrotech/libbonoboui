@@ -333,7 +333,7 @@ get_stock_pixbuf (const char *name)
 	if (!name)
 		return NULL;
 
-	entry = gnome_stock_pixmap_checkfor (name, GNOME_STOCK_PIXMAP_REGULAR);
+	entry = gnome_stock_pixmap_checkfor (name, GTK_STATE_NORMAL);
 	if (entry == NULL)
 		return NULL;
 
@@ -343,20 +343,16 @@ get_stock_pixbuf (const char *name)
 		break;
         case GNOME_STOCK_PIXMAP_TYPE_FILE:
 		path = gnome_pixmap_file (((GnomeStockPixmapEntryFile *) entry)->filename);
-		pixbuf = gdk_pixbuf_new_from_file (path);
+		pixbuf = gdk_pixbuf_new_from_file (path, NULL);
 		free (path);
 		break;
         case GNOME_STOCK_PIXMAP_TYPE_PATH:
-		pixbuf = gdk_pixbuf_new_from_file (((const GnomeStockPixmapEntryPath *) entry)->pathname);
+		pixbuf = gdk_pixbuf_new_from_file (((const GnomeStockPixmapEntryPath *) entry)->pathname, NULL);
 		break;
-	case GNOME_STOCK_PIXMAP_TYPE_IMLIB:
-	case GNOME_STOCK_PIXMAP_TYPE_IMLIB_SCALED:
-		pixbuf = pixbuf_from_imlib (entry);
+	case GNOME_STOCK_PIXMAP_TYPE_PIXBUF:
+	case GNOME_STOCK_PIXMAP_TYPE_PIXBUF_SCALED:
+		pixbuf = ((GnomeStockPixmapEntryPixbuf *) entry)->pixbuf;
 		break;
-        case GNOME_STOCK_PIXMAP_TYPE_NONE:
-	/* (Don't know how to handle these.)  */
-        case GNOME_STOCK_PIXMAP_TYPE_WIDGET:
-	case GNOME_STOCK_PIXMAP_TYPE_GPIXMAP:
 	default:
 		pixbuf = NULL;
 	}
@@ -462,7 +458,7 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node, gboolean prepend_menu)
 		if ((name == NULL) || !g_file_exists (name))
 			g_warning ("Could not find GNOME pixmap file %s", text);
 		else
-			icon_pixbuf = gdk_pixbuf_new_from_file (name);
+			icon_pixbuf = gdk_pixbuf_new_from_file (name, NULL);
 
 		g_free (name);
 	} else if (!strcmp (type, "pixbuf")) {
@@ -1161,12 +1157,12 @@ bonobo_ui_util_fixup_icons (BonoboUINode *node)
 		GdkPixbuf *pixbuf = NULL;
 
 		if (g_path_is_absolute (txt))
-			pixbuf = gdk_pixbuf_new_from_file (txt);
+			pixbuf = gdk_pixbuf_new_from_file (txt, NULL);
 		else {
 			gchar *name = find_pixmap_in_path (txt);
 
 			if (name) {
-				pixbuf = gdk_pixbuf_new_from_file (name);
+				pixbuf = gdk_pixbuf_new_from_file (name, NULL);
 				g_free (name);
 			}
 		}

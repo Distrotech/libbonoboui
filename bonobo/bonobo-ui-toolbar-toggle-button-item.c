@@ -12,8 +12,6 @@
 #include <config.h>
 #endif
 
-#include <gnome.h>
-
 #include "bonobo-ui-toolbar-toggle-button-item.h"
 
 
@@ -73,12 +71,10 @@ class_init (BonoboUIToolbarToggleButtonItemClass *klass)
 
 	signals[TOGGLED] = gtk_signal_new ("toggled",
 					   GTK_RUN_FIRST,
-					   object_class->type,
+					   GTK_CLASS_TYPE (object_class),
 					   GTK_SIGNAL_OFFSET (BonoboUIToolbarToggleButtonItemClass, toggled),
 					   gtk_marshal_NONE__NONE,
 					   GTK_TYPE_NONE, 0);
-
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 }
 
 

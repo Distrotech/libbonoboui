@@ -12,7 +12,6 @@
 #include <config.h>
 #endif
 
-#include <gnome.h>
 #include "bonobo-ui-toolbar-separator-item.h"
 
 
@@ -37,10 +36,11 @@ impl_size_request (GtkWidget *widget,
 
 	border_width = GTK_CONTAINER (widget)->border_width;
 
-	requisition->width  = 2 * border_width + widget->style->klass->xthickness;
-	requisition->height = 2 * border_width + widget->style->klass->ythickness;
+	requisition->width  = 2 * border_width + widget->style->xthickness;
+	requisition->height = 2 * border_width + widget->style->ythickness;
 }
 
+#ifdef FIXME
 static void
 impl_draw (GtkWidget *widget,
 	   GdkRectangle *area)
@@ -72,6 +72,7 @@ impl_draw (GtkWidget *widget,
 				 allocation->x + allocation->width * SPACE_LINE_END / SPACE_LINE_DIVISION,
 				 allocation->y + border_width);
 }
+#endif
 
 static int
 impl_expose_event (GtkWidget *widget,
@@ -90,7 +91,7 @@ class_init (BonoboUIToolbarSeparatorItemClass *separator_item_class)
 
 	widget_class = GTK_WIDGET_CLASS (separator_item_class);
 	widget_class->size_request = impl_size_request;
-	widget_class->draw         = impl_draw;
+	/* widget_class->draw         = impl_draw; */
 	widget_class->expose_event = impl_expose_event;
 
 	parent_class = gtk_type_class (bonobo_ui_toolbar_item_get_type ());

@@ -11,7 +11,8 @@
 #include <libgnomeui/gnome-dock-item.h>
 #include <libgnomeui/gnome-dock.h>
 #include <libgnomeui/gnome-preferences.h>
-#include <bonobo.h>
+#include <bonobo/bonobo-win.h>
+#include <libbonobo.h>
 #include <liboaf/liboaf.h>
 
 #include <bonobo/bonobo-ui-engine.h>
@@ -20,8 +21,8 @@
 #include <bonobo/bonobo-ui-sync-status.h>
 #include <bonobo/bonobo-ui-sync-toolbar.h>
 
-#include <gnome-xml/tree.h>
-#include <gnome-xml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
 
 GtkWindowClass *bonobo_window_parent_class = NULL;
 
@@ -251,7 +252,7 @@ destroy_priv (BonoboWindowPrivate *priv)
 }
 
 static void
-bonobo_window_finalize (GtkObject *object)
+bonobo_window_finalize (GObject *object)
 {
 	BonoboWindow *win = (BonoboWindow *)object;
 	
@@ -261,7 +262,7 @@ bonobo_window_finalize (GtkObject *object)
 		win->priv = NULL;
 	}
 
-	GTK_OBJECT_CLASS (bonobo_window_parent_class)->finalize (object);
+	G_OBJECT_CLASS (bonobo_window_parent_class)->finalize (object);
 }
 
 char *
@@ -588,13 +589,13 @@ bonobo_window_show_all (GtkWidget *widget)
 static void
 bonobo_window_class_init (BonoboWindowClass *klass)
 {
-	GtkObjectClass *object_class = (GtkObjectClass *) klass;
+	GObjectClass *gobject_class = (GObjectClass *) klass;
 	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 
 	bonobo_window_parent_class =
 		gtk_type_class (gtk_window_get_type ());
 
-	object_class->finalize = bonobo_window_finalize;
+	gobject_class->finalize = bonobo_window_finalize;
 
 	widget_class->show_all = bonobo_window_show_all;
 }

@@ -245,7 +245,7 @@ gbi_realize (GnomeCanvasItem *item)
 		
 	gtk_signal_connect (
 		GTK_OBJECT (item->canvas), "size_allocate",
-		proxy_size_allocate, item);
+		GTK_SIGNAL_FUNC (proxy_size_allocate), item);
 
 	CORBA_exception_init (&ev);
 	gdk_flush ();
@@ -444,8 +444,10 @@ gdk_event_to_bonobo_event (GdkEvent *event)
 		e->_u.motion.y = event->motion.x;
 		e->_u.motion.x_root = event->motion.x_root;
 		e->_u.motion.y_root = event->motion.y_root;
+#ifdef FIXME
 		e->_u.motion.xtilt = event->motion.xtilt;
 		e->_u.motion.ytilt = event->motion.ytilt;
+#endif
 		e->_u.motion.state = event->motion.state;
 		e->_u.motion.is_hint = event->motion.is_hint != 0;
 		return e;
@@ -593,7 +595,7 @@ gbi_set_arg (GtkObject *o, GtkArg *arg, guint arg_id)
 }
 
 static void
-gbi_finalize (GtkObject *object)
+gbi_finalize (GObject *object)
 {
 	Gbi *gbi = GBI (object);
 	CORBA_Environment ev;
@@ -618,13 +620,14 @@ gbi_finalize (GtkObject *object)
 	g_free (gbi->priv);
 	CORBA_exception_free (&ev);
 	
-	(*GTK_OBJECT_CLASS (gbi_parent_class)->finalize)(object);
+	(*G_OBJECT_CLASS (gbi_parent_class)->finalize)(object);
 }
 
 static void
 gbi_class_init (GtkObjectClass *object_class)
 {
 	GnomeCanvasItemClass *item_class = (GnomeCanvasItemClass *) object_class;
+	GObjectClass *gobject_class = (GObjectClass *) object_class;
 
 	gbi_parent_class = gtk_type_class (gnome_canvas_item_get_type ());
 
@@ -639,7 +642,7 @@ gbi_class_init (GtkObjectClass *object_class)
 		GTK_ARG_WRITABLE, ARG_CORBA_UI_CONTAINER);
 	
 	object_class->set_arg  = gbi_set_arg;
-	object_class->finalize = gbi_finalize;
+	gobject_class->finalize = gbi_finalize;
 	item_class->update     = gbi_update;
 	item_class->realize    = gbi_realize;
 	item_class->unrealize  = gbi_unrealize;

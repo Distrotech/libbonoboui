@@ -226,7 +226,7 @@ bonobo_ui_toolbar_icon_set_arg (GtkObject *object,
 		break;
 	case ARG_FILE: {
 		GdkPixbuf *pixbuf;
-		pixbuf = gdk_pixbuf_new_from_file (GTK_VALUE_STRING (*arg));
+		pixbuf = gdk_pixbuf_new_from_file (GTK_VALUE_STRING (*arg), NULL);
 		if (pixbuf != NULL) {
 			bonobo_ui_toolbar_icon_set_pixbuf (self, pixbuf);
 			gdk_pixbuf_unref (pixbuf);
@@ -613,7 +613,7 @@ bonobo_ui_toolbar_icon_new_from_file          (const char *filename)
 	GdkPixbuf *pixbuf;
 	g_return_val_if_fail (filename != NULL, NULL);
 
-	pixbuf = gdk_pixbuf_new_from_file (filename);
+	pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
 	if (pixbuf != NULL) {
 		retval = bonobo_ui_toolbar_icon_new_from_pixbuf (pixbuf);
 		gdk_pixbuf_unref (pixbuf);

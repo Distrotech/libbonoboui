@@ -436,20 +436,17 @@ bonobo_embeddable_class_init (BonoboEmbeddableClass *klass)
 	embeddable_signals [HOST_NAME_CHANGED] =
                 gtk_signal_new ("host_name_changed",
                                 GTK_RUN_LAST,
-                                object_class->type,
+                                GTK_CLASS_TYPE (object_class),
                                 GTK_SIGNAL_OFFSET(BonoboEmbeddableClass,host_name_changed), 
-                                gtk_marshal_NONE__STRING,
+                                gtk_marshal_VOID__STRING,
                                 GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
 	embeddable_signals [URI_CHANGED] =
                 gtk_signal_new ("uri_changed",
                                 GTK_RUN_LAST,
-                                object_class->type,
+                                GTK_CLASS_TYPE (object_class),
                                 GTK_SIGNAL_OFFSET(BonoboEmbeddableClass,uri_changed), 
-                                gtk_marshal_NONE__STRING,
+                                gtk_marshal_VOID__STRING,
                                 GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
-
-	gtk_object_class_add_signals (object_class, embeddable_signals,
-				      LAST_SIGNAL);
 
 	object_class->destroy = bonobo_embeddable_destroy;
 

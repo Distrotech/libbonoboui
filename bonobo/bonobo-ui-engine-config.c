@@ -8,18 +8,12 @@
  * Copyright 2001 Helix Code, Inc.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
 #include <gmacros.h>
 #include <libgnome/gnome-config.h>
-
-#define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE
-#include <libgnomebase/gnome-i18n.h>
+#include <bonobo/bonobo-i18n.h>
 
 #include <libgnomeui/gnome-stock.h>
 #include <libgnomeui/gnome-dialog.h>
@@ -386,7 +380,7 @@ impl_destroy (GtkObject *object)
 }
 
 static void
-impl_finalize (GtkObject *object)
+impl_finalize (GObject *object)
 {
 	BonoboUIEngineConfig *config;
 	BonoboUIEngineConfigPrivate *priv;
@@ -400,20 +394,22 @@ impl_finalize (GtkObject *object)
 
 	g_free (priv);
 
-	parent_class->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 class_init (BonoboUIEngineClass *engine_class)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
 	parent_class = gtk_type_class (PARENT_TYPE);
 
 	object_class = GTK_OBJECT_CLASS (engine_class);
+	gobject_class = G_OBJECT_CLASS (engine_class);
 
 	object_class->destroy  = impl_destroy;
-	object_class->finalize = impl_finalize;
+	gobject_class->finalize = impl_finalize;
 }
 
 static void

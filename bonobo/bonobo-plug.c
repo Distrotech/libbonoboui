@@ -146,7 +146,7 @@ bonobo_plug_realize (GtkWidget *widget)
 		widget->window = gdk_window_new (NULL, &attributes, attributes_mask);
 	}
   
-	((GdkWindowPrivate *)widget->window)->window_type = GDK_WINDOW_TOPLEVEL;
+	GDK_WINDOW_TYPE (widget->window) = GDK_WINDOW_TOPLEVEL;
 	gdk_window_set_user_data (widget->window, window);
 
 	widget->style = gtk_style_attach (widget->style, widget->window);
@@ -464,8 +464,8 @@ bonobo_plug_get_type ()
 			sizeof (BonoboPlugClass),
 			(GtkClassInitFunc) bonobo_plug_class_init,
 			(GtkObjectInitFunc) bonobo_plug_init,
-			(GtkArgSetFunc) NULL,
-			(GtkArgGetFunc) NULL
+			NULL,
+			NULL
 		};
 
 		plug_type = gtk_type_unique (gtk_window_get_type (), &plug_info);

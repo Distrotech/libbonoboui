@@ -24,6 +24,7 @@
 #include <gtk/gtkhbox.h>
 #include <bonobo/bonobo-socket.h>
 #include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-marshal.h>
 
 enum {
 	ACTIVATED,
@@ -238,7 +239,7 @@ bonobo_control_frame_create_socket (BonoboControlFrame *control_frame)
 	 */
 	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
 			    "destroy",
-			    bonobo_control_frame_socket_destroy,
+			    GTK_SIGNAL_FUNC (bonobo_control_frame_socket_destroy),
 			    control_frame);
 
 	/*
@@ -301,7 +302,7 @@ bonobo_control_frame_construct (BonoboControlFrame *control_frame,
 	 */
 	gtk_signal_connect (GTK_OBJECT (control_frame->priv->container),
 			    "state_changed",
-			    bonobo_control_frame_socket_state_changed,
+			    GTK_SIGNAL_FUNC (bonobo_control_frame_socket_state_changed),
 			    control_frame);
 
 
@@ -374,20 +375,6 @@ bonobo_control_frame_activated (BonoboControlFrame *control_frame, gboolean stat
 	control_frame->priv->activated = state;
 }
 
-typedef void (*GnomeSignal_NONE__STRING_BOOL) (GtkObject *, const char *, gboolean, gpointer);
-
-static void
-gnome_marshal_NONE__STRING_BOOL (GtkObject     *object,
-				 GtkSignalFunc  func,
-				 gpointer       func_data,
-				 GtkArg        *args)
-{
-	GnomeSignal_NONE__STRING_BOOL rfunc;
-
-	rfunc = (GnomeSignal_NONE__STRING_BOOL) func;
-	(*rfunc)(object, GTK_VALUE_STRING (args [0]), GTK_VALUE_BOOL (args [1]), func_data);
-}
-
 static void
 bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 {
@@ -399,9 +386,9 @@ bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 	control_frame_signals [ACTIVATED] =
 		gtk_signal_new ("activated",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboControlFrameClass, activated),
-				gtk_marshal_NONE__BOOL,
+				gtk_marshal_VOID__BOOLEAN,
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_BOOL);
 
@@ -409,17 +396,12 @@ bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 	control_frame_signals [ACTIVATE_URI] =
 		gtk_signal_new ("activate_uri",
 				GTK_RUN_LAST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboControlFrameClass, activate_uri),
-				gnome_marshal_NONE__STRING_BOOL,
+				bonobo_marshal_VOID__STRING_BOOLEAN,
 				GTK_TYPE_NONE, 2,
 				GTK_TYPE_STRING, GTK_TYPE_BOOL);
 	
-	gtk_object_class_add_signals (
-		object_class,
-		control_frame_signals,
-		LAST_SIGNAL);
-
 	klass->activated = bonobo_control_frame_activated;
 
 	object_class->destroy = bonobo_control_frame_destroy;

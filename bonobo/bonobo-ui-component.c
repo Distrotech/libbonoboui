@@ -8,12 +8,14 @@
  * Copyright 1999, 2000 Helix Code, Inc.
  */
 #include <config.h>
-#include <gnome.h>
-#include <bonobo.h>
+#include <gtk/gtksignal.h>
 #include <bonobo/bonobo-ui-xml.h>
+#include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
-#include <gnome-xml/tree.h>
-#include <gnome-xml/parser.h>
+#include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-marshal.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
 
 #define PARENT_TYPE BONOBO_OBJECT_TYPE
 
@@ -26,7 +28,7 @@ enum {
 };
 static guint signals[LAST_SIGNAL] = { 0 };
 
-#define GET_CLASS(c) (BONOBO_UI_COMPONENT_CLASS (GTK_OBJECT (c)->klass))
+#define GET_CLASS(c) (BONOBO_UI_COMPONENT_CLASS (GTK_OBJECT_GET_CLASS (c)))
 
 typedef struct {
 	char              *id;
@@ -535,6 +537,10 @@ bonobo_ui_component_new_default (void)
 {
 	char              *name;
 	BonoboUIComponent *component;
+#ifndef FIXME
+	const gchar       *gnome_app_id = NULL;
+	const gchar       *gnome_app_version = NULL;
+#endif
 
 	static int idx = 0;
 
@@ -1394,20 +1400,18 @@ bonobo_ui_component_class_init (BonoboUIComponentClass *klass)
 
 	signals [EXEC_VERB] = gtk_signal_new (
 		"exec_verb", GTK_RUN_FIRST,
-		object_class->type,
+		GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboUIComponentClass, exec_verb),
-		gtk_marshal_NONE__STRING,
+		gtk_marshal_VOID__STRING,
 		GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
 
 	signals [UI_EVENT] = gtk_signal_new (
 		"ui_event", GTK_RUN_FIRST,
-		object_class->type,
+		GTK_CLASS_TYPE (object_class),
 		GTK_SIGNAL_OFFSET (BonoboUIComponentClass, ui_event),
-		gtk_marshal_NONE__POINTER_INT_POINTER,
+		bonobo_marshal_VOID__POINTER_INT_POINTER,
 		GTK_TYPE_NONE, 3, GTK_TYPE_STRING, GTK_TYPE_INT,
 		GTK_TYPE_STRING);
-
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	uclass->freeze   = impl_freeze;
 	uclass->thaw     = impl_thaw;

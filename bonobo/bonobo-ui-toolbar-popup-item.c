@@ -12,8 +12,6 @@
 #include <config.h>
 #endif
 
-#include <gnome.h>
-
 #include "bonobo-ui-toolbar-popup-item.h"
 
 

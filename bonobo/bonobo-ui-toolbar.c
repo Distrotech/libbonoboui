@@ -12,8 +12,6 @@
 #include <config.h>
 #endif
 
-#include <gnome.h>
-
 #include "bonobo-ui-toolbar-item.h"
 #include "bonobo-ui-toolbar-popup-item.h"
 
@@ -728,7 +726,7 @@ impl_destroy (GtkObject *object)
 }
 
 static void
-impl_finalize (GtkObject *object)
+impl_finalize (GObject *object)
 {
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
@@ -741,8 +739,8 @@ impl_finalize (GtkObject *object)
 	
 	g_free (priv);
 
-	if (GTK_OBJECT_CLASS (parent_class)->finalize != NULL)
-		GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	if (G_OBJECT_CLASS (parent_class)->finalize != NULL)
+		G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 
@@ -856,6 +854,7 @@ impl_unmap (GtkWidget *widget)
 		gtk_widget_unmap (GTK_WIDGET (priv->popup_item));
 }
 
+#ifdef FIXME
 static void
 impl_draw (GtkWidget *widget,
 	   GdkRectangle *area)
@@ -885,6 +884,7 @@ impl_draw (GtkWidget *widget,
 	if (gtk_widget_intersect (GTK_WIDGET (priv->popup_item), area, &item_area))
 		gtk_widget_draw (GTK_WIDGET (priv->popup_item), &item_area);
 }
+#endif
 
 static int
 impl_expose_event (GtkWidget *widget,
@@ -1090,12 +1090,15 @@ static void
 class_init (BonoboUIToolbarClass *toolbar_class)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 	GtkWidgetClass *widget_class;
 	GtkContainerClass *container_class;
 
+	gobject_class = G_OBJECT_CLASS (toolbar_class);
+	gobject_class->finalize = impl_finalize;
+
 	object_class = GTK_OBJECT_CLASS (toolbar_class);
 	object_class->destroy  = impl_destroy;
-	object_class->finalize = impl_finalize;
 	object_class->get_arg  = impl_get_arg;
 	object_class->set_arg  = impl_set_arg;
 
@@ -1104,7 +1107,7 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 	widget_class->size_allocate = impl_size_allocate;
 	widget_class->map           = impl_map;
 	widget_class->unmap         = impl_unmap;
-	widget_class->draw          = impl_draw;
+	/* widget_class->draw          = impl_draw; [FIXME] */
 	widget_class->expose_event  = impl_expose_event;
 
 	container_class = GTK_CONTAINER_CLASS (toolbar_class);
@@ -1129,7 +1132,7 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 	signals[SET_ORIENTATION]
 		= gtk_signal_new ("set_orientation",
 				  GTK_RUN_LAST,
-				  object_class->type,
+				  GTK_CLASS_TYPE (object_class),
 				  GTK_SIGNAL_OFFSET (BonoboUIToolbarClass, set_orientation),
 				  gtk_marshal_NONE__INT,
 				  GTK_TYPE_NONE, 1,
@@ -1138,12 +1141,10 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 	signals[STYLE_CHANGED]
 		= gtk_signal_new ("set_style",
 				  GTK_RUN_LAST,
-				  object_class->type,
+				  GTK_CLASS_TYPE (object_class),
 				  GTK_SIGNAL_OFFSET (BonoboUIToolbarClass, style_changed),
 				  gtk_marshal_NONE__NONE,
 				  GTK_TYPE_NONE, 0);
-
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 }
 
 static void
@@ -1157,9 +1158,7 @@ init (BonoboUIToolbar *toolbar)
 
 	priv = g_new (BonoboUIToolbarPrivate, 1);
 
-	style = gnome_preferences_get_toolbar_labels ()
-		? BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT
-		: BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
+	style = BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
 
 	priv->orientation                 = GTK_ORIENTATION_HORIZONTAL;
 	priv->is_floating		  = FALSE;

@@ -11,8 +11,6 @@
 #include <config.h>
 #endif
 
-#include <gnome.h>
-
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "bonobo-ui-toolbar-icon.h"
@@ -144,7 +142,7 @@ layout_pixmap_and_label (BonoboUIToolbarButtonItem *button_item,
 	rebuild = FALSE;
 	if (style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL) {
 		if (!priv->box || !gtk_type_is_a (
-			GTK_OBJECT (priv->box)->klass->type,
+			GTK_CLASS_TYPE (GTK_OBJECT_GET_CLASS (priv->box)),
 			GTK_TYPE_VBOX)) {
 			
 			unparent_items (button_item);
@@ -156,7 +154,7 @@ layout_pixmap_and_label (BonoboUIToolbarButtonItem *button_item,
 		}
 	} else {
 		if (!priv->box || !gtk_type_is_a (
-			GTK_OBJECT (priv->box)->klass->type,
+			GTK_CLASS_TYPE (GTK_OBJECT_GET_CLASS (priv->box)),
 			GTK_TYPE_HBOX)) {
 			
 			unparent_items (button_item);
@@ -312,12 +310,10 @@ class_init (BonoboUIToolbarButtonItemClass *button_item_class)
 	signals[CLICKED] = 
 		gtk_signal_new ("clicked",
 				GTK_RUN_FIRST,
-				object_class->type,
+				GTK_CLASS_TYPE (object_class),
 				GTK_SIGNAL_OFFSET (BonoboUIToolbarButtonItemClass, clicked),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
-
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 }
 
 static void
@@ -431,7 +427,7 @@ bonobo_ui_toolbar_button_item_set_icon (BonoboUIToolbarButtonItem *button_item,
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item));
 
 	klass = BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS (
-		((GtkObject *)button_item)->klass);
+		(GTK_OBJECT_GET_CLASS (button_item)));
 
 	if (klass->set_icon)
 		klass->set_icon (button_item, icon);
@@ -447,7 +443,7 @@ bonobo_ui_toolbar_button_item_set_label (BonoboUIToolbarButtonItem *button_item,
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item));
 
 	klass = BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS (
-		((GtkObject *)button_item)->klass);
+		(GTK_OBJECT_GET_CLASS (button_item)));
 
 	if (klass->set_label)
 		klass->set_label (button_item, label);

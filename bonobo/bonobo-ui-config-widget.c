@@ -8,22 +8,13 @@
  * Copyright 2001 Helix Code, Inc.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <stdlib.h>
 #include <gtk/gtk.h>
-
-#include <gmacros.h>
-
-#define GNOME_EXPLICIT_TRANSLATION_DOMAIN PACKAGE
-#include <libgnomebase/gnome-i18n.h>
-
+#include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-engine-private.h>
 #include <bonobo/bonobo-ui-config-widget.h>
-#include <bonobo/bonobo-ui-sync-toolbar.h>
+#include <bonobo/bonobo-ui-toolbar.h>
 
 #define PARENT_TYPE gtk_vbox_get_type ()
 
@@ -376,13 +367,13 @@ bonobo_ui_config_widget_init (GtkWidget *widget)
 }
 
 static void
-bonobo_ui_config_widget_finalize (GtkObject *object)
+bonobo_ui_config_widget_finalize (GObject *object)
 {
 	BonoboUIConfigWidget *config = BONOBO_UI_CONFIG_WIDGET (object);
 
 	g_free (config->priv);
 
-	parent_class->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 GtkWidget *
@@ -418,14 +409,14 @@ bonobo_ui_config_widget_new (BonoboUIEngine *engine,
 static void
 bonobo_ui_config_widget_class_init (BonoboUIConfigWidgetClass *klass)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 	
 	g_return_if_fail (klass != NULL);
 	parent_class = gtk_type_class (PARENT_TYPE);
 	
-	object_class = (GtkObjectClass *) klass;
+	gobject_class = (GObjectClass *) klass;
 	
-	object_class->finalize = bonobo_ui_config_widget_finalize;
+	gobject_class->finalize = bonobo_ui_config_widget_finalize;
 }
 
 /**
@@ -445,8 +436,8 @@ bonobo_ui_config_widget_get_type (void)
 			sizeof (BonoboUIConfigWidgetClass),
 			(GtkClassInitFunc)  bonobo_ui_config_widget_class_init,
 			(GtkObjectInitFunc) bonobo_ui_config_widget_init,
-			(GtkArgSetFunc) NULL,
-			(GtkArgGetFunc) NULL
+			NULL,
+			NULL
 		};
 
 		bonobo_ui_config_widget_type = gtk_type_unique (
