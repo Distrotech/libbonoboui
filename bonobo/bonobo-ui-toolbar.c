@@ -131,6 +131,7 @@ set_attributes_on_child (BonoboUIToolbarItem *item,
 		else
 			bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL);
 		break;
+
 	case BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT:
 		if (orientation == GTK_ORIENTATION_VERTICAL)
 			bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_HORIZONTAL);

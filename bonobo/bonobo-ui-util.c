@@ -868,6 +868,11 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 {
 	char *fname, *name;
 
+#if 0
+	/*
+	 * This is fundamentally broken.  The user has no business defining
+	 * his own user interfaces.
+	 */
 	/*
 	 * The user copy ?
 	 */
@@ -880,7 +885,8 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 	if (g_file_exists (fname))
 		return fname;
 	g_free (fname);
-
+#endif
+	
 	/*
 	 * The master copy
 	 */
@@ -892,12 +898,10 @@ bonobo_ui_util_get_ui_fname (const char *component_prefix,
 		g_free (fname);
 	}
 
-	name  = g_strdup_printf ("gnome/ui/%s", file_name);
-	fname = gnome_unconditional_datadir_file (name);
+	name = g_strconcat (BONOBO_UIDIR, file_name);
+	if (g_file_exists (name))
+		return name;
 	g_free (name);
-	if (g_file_exists (fname))
-		return fname;
-	g_free (fname);
 	
 	return NULL;
 }

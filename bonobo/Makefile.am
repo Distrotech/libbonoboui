@@ -2,6 +2,7 @@ PLUGIN_DIR=$(libdir)/bonobo/plugin
 
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
+	-DBONOBO_UIDIR=\""$(datadir)/gnome/ui"\"	\
 	-DPLUGIN_DIR=\""$(PLUGIN_DIR)"\"		\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-I. 						\
