@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-05-19 08:38+0400\n"
-"PO-Revision-Date: 2002-05-19 08:41+0400\n"
+"POT-Creation-Date: 2002-05-19 10:02+0400\n"
+"PO-Revision-Date: 2002-05-19 10:02+0400\n"
 "Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -94,6 +94,9 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"Завершаемы нулём массив интерфейсов, который сервер дрлжен поддерживать, "
+"чтобы быть перечисленным.  По умолчанию - \"IDL:Bonobo/Embeddable:1.0\", "
+"если интерфейсы не перечислены"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -101,7 +104,7 @@ msgstr "Элемент требуемого интерфейса"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Один из требуемых интерфейсов"
 
 #: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
@@ -278,7 +281,7 @@ msgstr "является ли панель плавающей"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr "_Содержание"
+msgstr "_Содержание Справки"
 
 #: bonobo/bonobo-ui-util.c:584
 msgid "View help for this application"
@@ -286,7 +289,7 @@ msgstr "Вызвать справку для этого приложения"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "Наименование окна - используется для сериализации конфигурации."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
