@@ -67,18 +67,6 @@ info_compare_fn (gpointer id_a, gpointer id_b)
 }
 
 static void
-info_override_fn (BonoboUIXmlData *a)
-{
-	((NodeInfo *)a)->widget = NULL;
-}
-
-static void
-info_reinstate_fn (BonoboUIXmlData *a)
-{
-	g_assert (((NodeInfo *)a)->widget == NULL);
-}
-
-static void
 info_dump_fn (BonoboUIXmlData *a)
 {
 	fprintf (stderr, " widget %p\n", ((NodeInfo *)a)->widget);
@@ -108,41 +96,123 @@ info_free_fn (BonoboUIXmlData *data)
 	g_free (data);
 }
 
+/*
+ *   Placeholders have no widget, so we have to go above them
+ * to fetch the real parent.
+ */
 static GtkWidget *
-node_get_widget (BonoboUIXml *tree, xmlNode *node)
+node_get_parent_widget (BonoboUIXml *tree, xmlNode *node)
 {
 	NodeInfo *info;
 
 	if (!node)
 		return NULL;
 
-	info = bonobo_ui_xml_get_data (tree, node);
+	do {
+		info = bonobo_ui_xml_get_data (tree, node->parent);
+		if (info->widget)
+			return info->widget;
+	} while ((node = node->parent));
 
-	return info->widget;
+	return NULL;
+}
+
+static char *
+node_get_id (xmlNode *node)
+{
+	const char *txt;
+
+	g_return_val_if_fail (node != NULL, NULL);
+
+	if ((txt = xmlGetProp (node, "id")))
+		return g_strdup (txt);
+
+	if ((txt = xmlGetProp (node, "verb")))
+		return g_strdup (txt);
+
+	return bonobo_ui_xml_make_path (node);
 }
 
 static void
-override_fn (GtkObject *object, xmlNode *node, gpointer dummy)
+real_emit_ui_event (Bonobo_UIComponent component, const char *id,
+		    int type, const char *new_state)
 {
-	char *str = bonobo_ui_xml_make_path (node);
+	g_return_if_fail (id != NULL);
+	g_return_if_fail (new_state != NULL);
 
-	fprintf (stderr, "Override '%s'\n", str);
-	g_free (str);
+	if (component != CORBA_OBJECT_NIL) {
+		CORBA_Environment ev;
+
+		CORBA_exception_init (&ev);
+
+		Bonobo_UIComponent_ui_event (
+			component, id, type, new_state, &ev);
+
+		if (ev._major != CORBA_NO_EXCEPTION) {
+			/* FIXME: so if it is a sys exception do we de-merge ? */
+			g_warning ("Exception emitting state change to %d '%s' '%s'",
+				   type, id, new_state);
+		}
+		
+		CORBA_exception_free (&ev);
+	} else
+		g_warning ("NULL Corba handle at '%s'", id);
 }
 
 static void
-reinstate_fn (GtkObject *object, xmlNode *node, gpointer dummy)
+override_fn (GtkObject *object, xmlNode *node, BonoboAppPrivate *priv)
 {
-	char *str = bonobo_ui_xml_make_path (node);
+	char     *id = node_get_id (node);
+	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
-	fprintf (stderr, "Reinstate '%s'\n", str);
-	g_free (str);
+	/* To stop stale pointers floating in the overrides */
+	info->widget = NULL;
+
+	if (info->parent.id != CORBA_OBJECT_NIL)
+		real_emit_ui_event (info->parent.id, id,
+				    Bonobo_UIComponent_OVERRIDDEN, "");
+
+/*	fprintf (stderr, "XOverride '%s'\n", id);*/
+
+	g_free (id);
+}
+
+static void
+reinstate_fn (GtkObject *object, xmlNode *node, BonoboAppPrivate *priv)
+{
+	char     *id = node_get_id (node);
+	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
+
+	g_assert (info->widget == NULL);
+
+	if (info->parent.id != CORBA_OBJECT_NIL)
+		real_emit_ui_event (info->parent.id, id,
+				    Bonobo_UIComponent_REINSTATED, "");
+
+/*	fprintf (stderr, "XReinstate '%s'\n", id);*/
+
+	g_free (id);
+}
+
+static void
+remove_fn (GtkObject *object, xmlNode *node, BonoboAppPrivate *priv)
+{
+	char     *id = node_get_id (node);
+	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
+
+	if (info->parent.id != CORBA_OBJECT_NIL)
+		real_emit_ui_event (info->parent.id, id,
+				    Bonobo_UIComponent_REMOVED, "");
+
+/*	fprintf (stderr, "XRemove '%s'\n", id);*/
+
+	g_free (id);
 }
 
 /*
  * Doesn't the GtkRadioMenuItem API suck badly !
  */
-#define MAGIC_RADIO_KEY "Bonobo::RadioGroupName"
+#define MAGIC_RADIO_GROUP_KEY "Bonobo::RadioGroupName"
 
 static void
 radio_group_remove (GtkRadioMenuItem *menuitem,
@@ -152,7 +222,8 @@ radio_group_remove (GtkRadioMenuItem *menuitem,
 	char             *orig_key;
 	GSList           *l;
 	BonoboAppPrivate *priv =
-		gtk_object_get_data (GTK_OBJECT (menuitem), MAGIC_RADIO_KEY);
+		gtk_object_get_data (GTK_OBJECT (menuitem),
+				     MAGIC_RADIO_GROUP_KEY);
 
 	if (!g_hash_table_lookup_extended
 	    (priv->radio_groups, group_name, (gpointer *)&orig_key,
@@ -193,7 +264,8 @@ radio_group_add (BonoboAppPrivate *priv,
 		gtk_radio_menu_item_set_group (
 			menuitem, gtk_radio_menu_item_group (master));
 
-	gtk_object_set_data (GTK_OBJECT (menuitem), MAGIC_RADIO_KEY, priv);
+	gtk_object_set_data (GTK_OBJECT (menuitem),
+			     MAGIC_RADIO_GROUP_KEY, priv);
 
 	gtk_signal_connect (GTK_OBJECT (menuitem), "destroy",
 			    (GtkSignalFunc) radio_group_remove,
@@ -267,53 +339,32 @@ emit_verb (GtkWidget *item, xmlNode *node)
 	return FALSE;
 }
 
-static void
-real_emit_ui_event (Bonobo_UIComponent component, const char *path,
-		    int type, const char *new_state)
-{
-	if (component != CORBA_OBJECT_NIL) {
-		CORBA_Environment ev;
-
-		CORBA_exception_init (&ev);
-
-		Bonobo_UIComponent_ui_event (
-			component, path, type, new_state, &ev);
-
-		if (ev._major != CORBA_NO_EXCEPTION) {
-			/* FIXME: so if it is a sys exception do we de-merge ? */
-			g_warning ("Exception emitting state change '%s' '%s'",
-				   path, new_state);
-		}
-		
-		CORBA_exception_free (&ev);
-	} else
-		g_warning ("NULL Corba handle at '%s'", path);
-}
-
 static gint
 menu_toggle_emit_ui_event (GtkCheckMenuItem *item, xmlNode *node)
 {
 	BonoboUIXmlData *data;
-	char            *path, *state;
+	char            *id, *state;
 
 	g_return_val_if_fail (node != NULL, FALSE);
 
 	data = bonobo_ui_xml_get_data (NULL, node);
 	g_return_val_if_fail (data != NULL, FALSE);
 
-	path = bonobo_ui_xml_make_path (node);
-	g_return_val_if_fail (path != NULL, FALSE);
+	id = node_get_id (node);
+	g_return_val_if_fail (id != NULL, FALSE);
 
 	if (item->active)
 		state = "1";
 	else
 		state = "0";
 
-	real_emit_ui_event (data->id, path,
+	xmlSetProp (node, "state", state);
+
+	real_emit_ui_event (data->id, id,
 			    Bonobo_UIComponent_STATE_CHANGED,
 			    state);
 
-	g_free (path);
+	g_free (id);
 
 	return FALSE;
 }
@@ -322,41 +373,30 @@ static gint
 app_item_emit_ui_event (BonoboAppItem *item, const char *new_state, xmlNode *node)
 {
 	BonoboUIXmlData *data;
-	char            *path;
+	char            *id;
 
 	g_return_val_if_fail (node != NULL, FALSE);
+
+	xmlSetProp (node, "state", new_state);
 
 	data = bonobo_ui_xml_get_data (NULL, node);
 	g_return_val_if_fail (data != NULL, FALSE);
 
-	path = bonobo_ui_xml_make_path (node);
-	g_return_val_if_fail (path != NULL, FALSE);
-	g_return_val_if_fail (new_state != NULL, FALSE);
+	id = node_get_id (node);
 
-	real_emit_ui_event (data->id, path,
+	real_emit_ui_event (data->id, id,
 			    Bonobo_UIComponent_STATE_CHANGED,
 			    new_state);
-	g_free (path);
+	g_free (id);
 
 	return FALSE;
 }
 
-/*
- * see menu_toplevel_item_create_widget.
- */
-static void
-build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
+static GtkWidget *
+menu_item_create (BonoboAppPrivate *priv, xmlNode *node)
 {
-	NodeInfo  *info;
-	GtkWidget *parent, *menu_widget;
-	char      *label_text, *verb, *sensitive, *type;
-
-	g_return_if_fail (priv != NULL);
-	g_return_if_fail (node != NULL);
-
-	info = bonobo_ui_xml_get_data (priv->tree, node);
-
-	parent = node_get_widget (priv->tree, node->parent);
+	GtkWidget *menu_widget;
+	char      *type;
 
 	/* Create menu item */
 	if ((type = xmlGetProp (node, "type"))) {
@@ -378,7 +418,7 @@ build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
 
 		else {
 			g_warning ("Unhandled type of menu '%s'", type);
-			return;
+			return NULL;
 		}
 			
 		gtk_check_menu_item_set_show_toggle (
@@ -406,10 +446,14 @@ build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
 			menu_widget = gtk_menu_item_new ();
 	}
 
-	/*
-	 * FIXME: (toplevel_create_item_widget)
-	 *   Placeholder
-	 */ 
+	return menu_widget;
+}
+
+static void
+menu_item_set_label (BonoboAppPrivate *priv, xmlNode *node,
+		     GtkWidget *parent, GtkWidget *menu_widget)
+{
+	char *label_text;
 
 	if ((label_text = xmlGetProp (node, "label"))) {
 		GtkWidget *label;
@@ -451,6 +495,106 @@ build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
 				g_warning ("Adding accelerator went bananas");
 		}
 	}
+}
+
+/*
+ * Insert slightly cleverly.
+ *  NB. it is no use inserting into the default placeholder here
+ *  since this will screw up path addressing and subsequent merging.
+ */
+static void
+add_node_fn (xmlNode *parent, xmlNode *child)
+{
+	xmlNode *insert = parent;
+	char    *pos;
+/*	xmlNode *l;
+	if (!xmlGetProp (child, "noplace"))
+		for (l = parent->childs; l; l = l->next) {
+			if (!strcmp (l->name, "placeholder") &&
+			    !xmlGetProp (l, "name")) {
+			    insert = l;
+				g_warning ("Found default placeholder");
+			}
+		}*/
+
+	if (insert->childs &&
+	    (pos = xmlGetProp (child, "pos"))) {
+		if (!strcmp (pos, "top")) {
+			g_warning ("TESTME: unused code branch");
+			xmlAddPrevSibling (insert->childs, child);
+		} else /* FIXME: we could have 'middle'; is it useful ? */
+			xmlAddChild (insert, child);
+
+	} else /* just add to bottom */
+		xmlAddChild (insert, child);
+}
+
+static void build_menu_widget (BonoboAppPrivate *priv, xmlNode *node);
+
+static void
+build_placeholder (BonoboAppPrivate *priv, xmlNode *node, GtkWidget *parent)
+{
+	xmlNode   *l;
+	char      *delimit;
+	gboolean   top = FALSE, bottom = FALSE;
+	GtkWidget *sep;
+
+	if ((delimit = xmlGetProp (node, "delimit"))) {
+		if (!strcmp (delimit, "top") ||
+		    !strcmp (delimit, "both"))
+			top = (node->childs != NULL) && (node->prev != NULL);
+
+		if (!strcmp (delimit, "bottom") ||
+		    !strcmp (delimit, "both"))
+			bottom = (node->childs != NULL) && (node->next != NULL);
+	}
+
+	if (top) {
+		sep = gtk_menu_item_new ();
+		gtk_widget_set_sensitive (sep, FALSE);
+		gtk_widget_show (sep);
+		gtk_menu_shell_append (GTK_MENU_SHELL (parent), sep);
+	}
+
+/*	g_warning ("Building placeholder %d %d %p %p %p", top, bottom,
+	node->childs, node->prev, node->next);*/
+		
+	for (l = node->childs; l; l = l->next)
+		build_menu_widget (priv, l);
+
+	if (bottom) {
+		sep = gtk_menu_item_new ();
+		gtk_widget_set_sensitive (sep, FALSE);
+		gtk_widget_show (sep);
+		gtk_menu_shell_append (GTK_MENU_SHELL (parent), sep);
+	}
+}
+
+static void
+build_menu_widget (BonoboAppPrivate *priv, xmlNode *node)
+{
+	NodeInfo  *info;
+	GtkWidget *parent, *menu_widget;
+	char      *verb, *sensitive;
+
+	g_return_if_fail (priv != NULL);
+	g_return_if_fail (node != NULL);
+	g_return_if_fail (node->name != NULL);
+
+	info = bonobo_ui_xml_get_data (priv->tree, node);
+
+	parent = node_get_parent_widget (priv->tree, node);
+
+	if (!strcmp (node->name, "placeholder")) {
+		build_placeholder (priv, node, parent);
+		return;
+	}
+
+	menu_widget = menu_item_create (priv, node);
+	if (!menu_widget)
+		return;
+
+	menu_item_set_label (priv, node, parent, menu_widget);
 
 	if (!strcmp (node->name, "submenu")) {
 		xmlNode      *l;
@@ -548,7 +692,7 @@ build_toolbar_widget (BonoboAppPrivate *priv, xmlNode *node)
 {
 	NodeInfo   *info;
 	GtkWidget  *parent;
-	const char *type, *verb, *sensitive;
+	const char *type, *verb, *sensitive, *state;
 	GtkWidget  *pixmap;
 	GtkWidget  *item;
 
@@ -557,7 +701,7 @@ build_toolbar_widget (BonoboAppPrivate *priv, xmlNode *node)
 
 	info = bonobo_ui_xml_get_data (priv->tree, node);
 
-	parent = node_get_widget (priv->tree, node->parent);
+	parent = node_get_parent_widget (priv->tree, node);
 
 	/* Create toolbar item */
 	if (xmlGetProp (node, "pixtype")) {
@@ -610,6 +754,9 @@ build_toolbar_widget (BonoboAppPrivate *priv, xmlNode *node)
 
 	if ((sensitive = xmlGetProp (node, "sensitive")))
 		gtk_widget_set_sensitive (item, atoi (sensitive));
+
+	if ((state = xmlGetProp (node, "state")))
+		bonobo_app_item_set_state (BONOBO_APP_ITEM (item), state);
 }
 
 static void
@@ -1025,15 +1172,17 @@ construct_priv (const char *app_name,
 	priv->tree = bonobo_ui_xml_new (info_compare_fn,
 					info_new_fn,
 					info_free_fn,
-					info_override_fn,
-					info_reinstate_fn,
-					info_dump_fn);
+					info_dump_fn,
+					add_node_fn);
 
 	gtk_signal_connect (GTK_OBJECT (priv->tree), "override",
-			    (GtkSignalFunc) override_fn, NULL);
+			    (GtkSignalFunc) override_fn, priv);
 
 	gtk_signal_connect (GTK_OBJECT (priv->tree), "reinstate",
-			    (GtkSignalFunc) reinstate_fn, NULL);
+			    (GtkSignalFunc) reinstate_fn, priv);
+
+	gtk_signal_connect (GTK_OBJECT (priv->tree), "remove",
+			    (GtkSignalFunc) remove_fn, priv);
 
 	priv->accel_group = gtk_accel_group_new ();
 	gtk_window_add_accel_group (GTK_WINDOW (priv->window),

@@ -43,22 +43,23 @@ main (int argc, char **argv)
 	char simpleb [] =
 		"<submenu name=\"file\" label=\"_FileB\">\n"
 		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\"/>\n"
-		"	<menuitem name=\"sep1\" sensitive=\"0\"/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" label=\"_ToggleMe\"/>\n"
-		"	<menuitem name=\"close\" label=\"_CloseB\" pixtype=\"stock\" pixname=\"Menu_Close\"/>\n"
+		"       <placeholder delimit=\"both\"/>\n"
+		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" label=\"_CloseB\" pixtype=\"stock\" pixname=\"Menu_Close\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
 		"<submenu name=\"file\" label=\"_FileC\">\n"
+		"    <placeholder>\n"
 		"	<menuitem name=\"fooa\" label=\"_FooA\" type=\"radio\" group=\"foogroup\"/>\n"
 		"	<menuitem name=\"foob\" label=\"_FooB\" type=\"radio\" group=\"foogroup\"/>\n"
-		"	<menuitem name=\"open\" label=\"_OpenC\" pixtype=\"stock\" pixname=\"Menu_Open\" sensitive=\"0\"/>\n"
-		"	<menuitem name=\"save\" label=\"_SaveC\" pixtype=\"stock\" pixname=\"Menu_Save As\"/>\n"
+		"	<menuitem name=\"wibble\" label=\"_Baa\" pixtype=\"stock\" pixname=\"Menu_Open\" sensitive=\"0\"/>\n"
+		"    </placeholder>\n"
 		"</submenu>\n";
 	char simpled [] =
 		"<menuitem name=\"save\" label=\"_SaveD\" pixtype=\"stock\" pixname=\"Menu_Save\"/>\n";
 	char toola [] =
 		"<dockitem name=\"toolbar\">\n"
-		"	<toolitem type=\"toggle\" name=\"foo2\" pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"
+		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"
 		"	<toolitem type=\"separator\" name=\"foo3\" pixtype=\"stock\" pixname=\"Save\" label=\"Separator\"/>\n"
 		"	<toolitem type=\"std\" name=\"baa\" pixtype=\"stock\" pixname=\"Open\" label=\"baa\" descr=\"My 2nd tooltip\"/>\n"
 		"</dockitem>";
@@ -105,8 +106,7 @@ main (int argc, char **argv)
 	bonobo_app_xml_merge (app, "/",     toola,  
 			      bonobo_object_corba_objref (BONOBO_OBJECT (componentb)));
 
-	bonobo_ui_component_add_listener (componentb, "/dockitem/#toolbar/toolitem/#foo2",
-					  toggled_cb, NULL);
+	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
 	gtk_main ();
 
 	help = bonobo_ui_build_help_menu (componenta, "gnomecal");

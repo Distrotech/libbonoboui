@@ -29,7 +29,7 @@ typedef struct {
 } Verb;
 
 typedef struct {
-	char               *path;
+	char              *id;
 	BonoboUIListenerFn cb;
 	gpointer           user_data;
 } Listener;
@@ -63,14 +63,14 @@ static void
 listener_destroy (Listener *l)
 {
 	if (l) {
-		g_free (l->path);
+		g_free (l->id);
 		g_free (l);
 	}
 }
 
 static void
 ui_event (BonoboUIComponent           *component,
-	  const char                  *path,
+	  const char                  *id,
 	  Bonobo_UIComponent_EventType type,
 	  const char                  *state)
 {
@@ -79,11 +79,19 @@ ui_event (BonoboUIComponent           *component,
 	for (l = component->priv->listeners; l; l = l->next) {
 		Listener *list = l->data;
 
-		if (!strcmp (list->path, path)) {
-			list->cb (component, path, type,
+		if (!strcmp (list->id, id)) {
+			list->cb (component, id, type,
 				  state, list->user_data);
 		}
 	}
+}
+
+static CORBA_char *
+impl_describe_verbs (PortableServer_Servant servant,
+		     CORBA_Environment     *ev)
+{
+	g_warning ("FIXME: Describe verbs unimplemented");
+	return CORBA_string_dup ("<NoVerbDescriptionCodeYet/>");
 }
 
 static void
@@ -114,14 +122,18 @@ impl_exec_verb (PortableServer_Servant servant,
 			   cname);
 	}
 
+	bonobo_object_ref (BONOBO_OBJECT (component));
+
 	gtk_signal_emit (GTK_OBJECT (component),
 			 signals [EXEC_VERB],
 			 cname);
+
+	bonobo_object_unref (BONOBO_OBJECT (component));
 }
 
 static void
 impl_ui_event (PortableServer_Servant             servant,
-	       const CORBA_char                  *path,
+	       const CORBA_char                  *id,
 	       const Bonobo_UIComponent_EventType type,
 	       const CORBA_char                  *state,
 	       CORBA_Environment                 *ev)
@@ -132,8 +144,12 @@ impl_ui_event (PortableServer_Servant             servant,
 
 /*	g_warning ("TESTME: Event '%s' '%d' '%s'\n", path, type, state);*/
 
+	bonobo_object_ref (BONOBO_OBJECT (component));
+
 	gtk_signal_emit (GTK_OBJECT (component),
-			 signals [UI_EVENT], path, type, state);
+			 signals [UI_EVENT], id, type, state);
+
+	bonobo_object_unref (BONOBO_OBJECT (component));
 }
 
 
@@ -165,7 +181,7 @@ bonobo_ui_component_add_verb (BonoboUIComponent  *component,
 
 void
 bonobo_ui_component_add_listener (BonoboUIComponent  *component,
-				  const char         *path,
+				  const char         *id,
 				  BonoboUIListenerFn  fn,
 				  gpointer            user_data)
 {
@@ -173,13 +189,12 @@ bonobo_ui_component_add_listener (BonoboUIComponent  *component,
 	BonoboUIComponentPrivate *priv;
 
 	g_return_if_fail (fn != NULL);
-	g_return_if_fail (path != NULL);
-	g_return_if_fail (path [0] == '/');
+	g_return_if_fail (id != NULL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
 	list = g_new (Listener, 1);
 	list->cb = fn;
-	list->path = g_strdup (path);
+	list->id = g_strdup (id);
 	list->user_data = user_data;
 
 	priv = component->priv;
@@ -215,6 +230,7 @@ bonobo_ui_component_get_epv (void)
 
 	epv = g_new0 (POA_Bonobo_UIComponent__epv, 1);
 
+	epv->describe_verbs = impl_describe_verbs;
 	epv->exec_verb = impl_exec_verb;
 	epv->ui_event  = impl_ui_event;
 

@@ -26,9 +26,9 @@ typedef gboolean         (*BonoboUIXmlCompareFn)   (gpointer         id_a,
 						    gpointer         id_b);
 typedef BonoboUIXmlData *(*BonoboUIXmlDataNewFn)   (void);
 typedef void             (*BonoboUIXmlDataFreeFn)  (BonoboUIXmlData *data);
-typedef void             (*BonoboUIXmlOverrideFn)  (BonoboUIXmlData *data);
-typedef void             (*BonoboUIXmlReinstateFn) (BonoboUIXmlData *data);
 typedef void             (*BonoboUIXmlDumpFn)      (BonoboUIXmlData *data);
+typedef void             (*BonoboUIXmlAddNode)     (xmlNode         *parent,
+						    xmlNode         *child);
 
 struct _BonoboUIXml {
 	GtkObject              object;
@@ -36,9 +36,8 @@ struct _BonoboUIXml {
 	BonoboUIXmlCompareFn   compare;
 	BonoboUIXmlDataNewFn   data_new;
 	BonoboUIXmlDataFreeFn  data_free;
-	BonoboUIXmlOverrideFn  override;
-	BonoboUIXmlReinstateFn reinstate;
-	BonoboUIXmlDumpFn      dump;;
+	BonoboUIXmlDumpFn      dump;
+	BonoboUIXmlAddNode     add_node;
 
 	xmlNode               *root;
 	
@@ -50,6 +49,7 @@ typedef struct {
 
 	void                 (*override)  (xmlNode *node);
 	void                 (*reinstate) (xmlNode *node);
+	void                 (*remove)    (xmlNode *node);
 
 	gpointer               dummy;
 } BonoboUIXmlClass;
@@ -59,9 +59,8 @@ GtkType      bonobo_ui_xml_get_type  (void);
 BonoboUIXml *bonobo_ui_xml_new       (BonoboUIXmlCompareFn  compare,
 				      BonoboUIXmlDataNewFn  data_new,
 				      BonoboUIXmlDataFreeFn data_free,
-				      BonoboUIXmlOverrideFn override,
-				      BonoboUIXmlReinstateFn reinstate,
-				      BonoboUIXmlDumpFn      dump);
+				      BonoboUIXmlDumpFn     dump,
+				      BonoboUIXmlAddNode    add_node);
 
 /* Nominaly BonoboUIXmlData * */
 gpointer         bonobo_ui_xml_get_data  (BonoboUIXml *tree,

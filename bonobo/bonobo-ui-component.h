@@ -56,7 +56,7 @@ void               bonobo_ui_component_add_verb     (BonoboUIComponent  *compone
 						     gpointer            user_data);
 
 void               bonobo_ui_component_add_listener (BonoboUIComponent  *component,
-						     const char         *path,
+						     const char         *id,
 						     BonoboUIListenerFn  fn,
 						     gpointer            user_data);
 

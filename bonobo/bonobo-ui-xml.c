@@ -8,6 +8,7 @@ static GtkObjectClass *bonobo_ui_xml_parent_class;
 enum {
 	OVERRIDE,
 	REINSTATE,
+	REMOVE,
 	LAST_SIGNAL
 };
 static guint signals[LAST_SIGNAL] = { 0 };
@@ -231,13 +232,11 @@ override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 	if (!same) {
 		gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
 
-		if (tree->override)
-			tree->override (old_data);
-
 		data->overridden = g_slist_prepend (old_data->overridden, old);
 	} else {
 		data->overridden = old_data->overridden;
-		g_warning ("Replace override of '%s' by '%s'", old->name, new->name);
+/*		g_warning ("Replace override of '%s' '%s'",
+		old->name, xmlGetProp (old, "name"));*/
 	}
 
 	old_data->overridden = NULL;
@@ -250,6 +249,9 @@ override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 	xmlReplaceNode (old, new);
 
 	g_assert (old->childs == NULL);
+
+	if (!new->properties) /* A path simplifying entry */
+		new->properties = xmlCopyPropList (new, old->properties);
 
 	data->dirty = TRUE;
 	if (new->parent) {
@@ -296,9 +298,6 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 			data->dirty = TRUE;
 		}
 
-		if (tree->reinstate)
-			tree->reinstate (old_data);
-
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REINSTATE], old);
 	} else {
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",
@@ -309,6 +308,8 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 			data = bonobo_ui_xml_get_data (tree, node->parent);
 			data->dirty = TRUE;
 		}
+
+		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
 		xmlUnlinkNode (node);
 	}
 
@@ -539,7 +540,11 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 			 current->name, xmlGetProp (current, "name"));*/
 
 		xmlUnlinkNode (b);
-		xmlAddChild (current, b);
+
+		if (tree->add_node)
+			tree->add_node (current, b);
+		else
+			xmlAddChild (current, b);
 
 		data = bonobo_ui_xml_get_data (tree, b);
 		data->dirty = TRUE;
@@ -575,7 +580,7 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 /*	fprintf (stderr, "PATH: '%s' '%s\n", current->name,
 	xmlGetProp (current, "name"));*/
 
-	bonobo_ui_xml_dump (tree, tree->root, "Merging in");
+/*	bonobo_ui_xml_dump (tree, tree->root, "Merging in");*/
 
 	merge (tree, current, &nodes);
 
@@ -634,6 +639,13 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 		gtk_marshal_NONE__POINTER,
 		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 
+	signals [REMOVE] = gtk_signal_new (
+		"remove", GTK_RUN_FIRST,
+		object_class->type,
+		GTK_SIGNAL_OFFSET (BonoboUIXmlClass, remove),
+		gtk_marshal_NONE__POINTER,
+		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 }
 
@@ -669,20 +681,18 @@ BonoboUIXml *
 bonobo_ui_xml_new (BonoboUIXmlCompareFn   compare,
 		   BonoboUIXmlDataNewFn   data_new,
 		   BonoboUIXmlDataFreeFn  data_free,
-		   BonoboUIXmlOverrideFn  override,
-		   BonoboUIXmlReinstateFn reinstate,
-		   BonoboUIXmlDumpFn      dump)
+		   BonoboUIXmlDumpFn      dump,
+		   BonoboUIXmlAddNode     add_node)
 {
 	BonoboUIXml *tree;
 
-	tree= gtk_type_new (BONOBO_UI_XML_TYPE);
+	tree = gtk_type_new (BONOBO_UI_XML_TYPE);
 
 	tree->compare = compare;
 	tree->data_new = data_new;
 	tree->data_free = data_free;
-	tree->override = override;
-	tree->reinstate = reinstate;
 	tree->dump = dump;
+	tree->add_node = add_node;
 
 	tree->root = xmlNewNode (NULL, "Root");
 
