@@ -1,3 +1,14 @@
+2002-02-19  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_bonobo_ui_sync_menu_can_handle): optimize.
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(impl_bonobo_ui_sync_toolbar_can_handle): ditto.
+
+	* bonobo/bonobo-ui-util.c
+	(lookup_stock_compat): improve the mapping
+
 2002-02-19  James Willcox  <jwillcox@cs.indiana.edu>
 
 	* bonobo/bonobo-file-selector-util.c (run_file_selector):

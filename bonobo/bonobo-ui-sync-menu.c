@@ -33,6 +33,9 @@ static GObjectClass *parent_class = NULL;
 #define MAGIC_RADIO_GROUP_KEY "Bonobo::RadioGroupName"
 #define UI_SYNC_MENU_KEY "Bonobo::UISyncMenu"
 
+static GQuark menu_id = 0;
+static GQuark popups_id = 0;
+
 typedef struct {
 	GtkMenu          *menu;
 	char             *path;
@@ -849,8 +852,13 @@ static gboolean
 impl_bonobo_ui_sync_menu_can_handle (BonoboUISync *sync,
 				     BonoboUINode *node)
 {
-	return bonobo_ui_node_has_name (node, "menu") ||
-	       bonobo_ui_node_has_name (node, "popups");
+	if (!menu_id) {
+		menu_id = g_quark_from_static_string ("menu");
+		popups_id = g_quark_from_static_string ("popups");
+	}
+	
+	return (node->name_id == menu_id ||
+		node->name_id == popups_id);
 }
 
 /* We need to map the shell to the item */

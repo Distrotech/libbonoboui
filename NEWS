@@ -1,3 +1,27 @@
+libbonoboui 1.112.0
+
+	* Bugs fixed
+		+ test-moniker ref leak fix (Michael)
+		+ build fixes (Gediminas Paulauskas, Jacob)
+
+	* Featurelets (Michael)
+		+ frame_get_popup_component
+		+ port UI config serialization to GConf
+		+ remove all deprecated API usage
+		+ shutdown gconf so we don't report bogus ref leaks.
+		+ do more string munging on stack to save locking
+		+ more performance tests
+
+libbonoboui 1.111.0
+
+	* Bugs fixed
+		+ remove access syscalls (Michael)
+		+ leak fix & menu sync upd. (Mark McLouglin)
+
+	* Featurelets (Michael)
+		+ UI set_prop much faster
+		+ remove some deprecated API
+
 libbonoboui 1.110.2
 
 	* fix a default placeholder issue (Michael)

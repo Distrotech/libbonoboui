@@ -245,6 +245,10 @@ lookup_stock_compat (const char *id)
 
 	if (!compat_hash) {
 		static const char *mapping[][2] = {
+			{ "Up",             "gtk-go-up" },
+			{ "Down",           "gtk-go-down" },
+			{ "Back",           "gtk-go-back" },
+			{ "Forward",        "gtk-go-forward" },
 			{ "Save As",        "gtk-save-as" },
 			{ "Trash",          "gtk-delete" },
 			{ "Revert",         "gtk-revert-to-saved" },
