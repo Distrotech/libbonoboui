@@ -75,7 +75,7 @@ get_parent_toolbar (BonoboUIToolbarControlItem *control_item)
 		return NULL;
 	}
 
-	return toolbar;
+	return GTK_TOOLBAR (toolbar);
 }
 
 static BonoboUIToolbarControlDisplay
@@ -169,9 +169,38 @@ impl_finalize (GObject *object)
 	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
+static void
+menu_item_map (GtkWidget *menu_item, BonoboUIToolbarControlItem *control_item)
+{
+	if (GTK_BIN (menu_item)->child)
+		return;
+
+	g_object_ref (control_item->widget);
+	gtk_container_remove (GTK_CONTAINER (control_item->box), 
+			      control_item->widget);
+	gtk_container_add (GTK_CONTAINER (menu_item), control_item->widget);
+	g_object_unref (control_item->widget);
+}
+
+static void
+menu_item_return_control (GtkWidget *menu_item, BonoboUIToolbarControlItem *control_item)
+{
+	if (!GTK_BIN (menu_item)->child)
+		return;
+
+	if (GTK_BIN (menu_item)->child == control_item->widget) {
+		g_object_ref (control_item->widget);
+		gtk_container_remove (GTK_CONTAINER (menu_item), 
+				      control_item->widget);
+		gtk_container_add (GTK_CONTAINER (control_item->box), control_item->widget);
+		g_object_unref (control_item->widget);
+	}
+}
+
 static gboolean
 impl_create_menu_proxy (GtkToolItem *tool_item)
 {
+	GtkWidget *menu_item;
 	BonoboUIToolbarControlItem *control_item = BONOBO_UI_TOOLBAR_CONTROL_ITEM (tool_item);
 
 	if (get_display_mode (control_item) == BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_NONE)
@@ -182,9 +211,16 @@ impl_create_menu_proxy (GtkToolItem *tool_item)
 		/* Can cope with just a button */
 		return GTK_TOOL_ITEM_CLASS (parent_class)->create_menu_proxy (tool_item);
 
-	g_warning ("Create control menu proxy");
+	menu_item = gtk_menu_item_new ();
 
-	return FALSE;
+	/* This sucks, but the best we can do */
+	g_signal_connect (menu_item, "map", G_CALLBACK (menu_item_map), tool_item);
+	g_signal_connect (menu_item, "destroy", G_CALLBACK (menu_item_return_control), tool_item);
+	gtk_tool_item_set_proxy_menu_item (tool_item,
+					   "bonobo-control-button-menu-id",
+					   menu_item);
+
+	return TRUE;
 }
 
 static void
@@ -201,15 +237,30 @@ impl_notify (GObject    *object,
 	GNOME_CALL_PARENT (G_OBJECT_CLASS, notify, (object, pspec));
 }
 
+static gboolean
+impl_map_event (GtkWidget   *widget,
+		GdkEventAny *event)
+{
+	BonoboUIToolbarControlItem *control_item = BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget);
+
+	if (control_item->widget && control_item->widget->parent != control_item->box)
+		menu_item_return_control (control_item->widget->parent, control_item);
+
+	return GTK_WIDGET_CLASS (parent_class)->map_event (widget, event);
+}
+
 static void
 bonobo_ui_toolbar_control_item_class_init (BonoboUIToolbarControlItemClass *klass)
 {
 	GObjectClass *object_class = (GObjectClass *) klass;
+	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 	GtkToolItemClass *tool_item_class = (GtkToolItemClass *) klass;
 	
 	object_class->dispose  = impl_dispose;
 	object_class->finalize = impl_finalize;
 	object_class->notify = impl_notify;
+
+	widget_class->map_event = impl_map_event;
 
 	tool_item_class->create_menu_proxy = impl_create_menu_proxy;
 	tool_item_class->toolbar_reconfigured = impl_toolbar_reconfigured;

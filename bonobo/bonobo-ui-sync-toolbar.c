@@ -213,51 +213,6 @@ win_item_emit_ui_event (GtkToggleToolButton *toggle,
 	return FALSE;
 }
 
-#warning Must implement proxy for controls ...
-#if 0
-static gboolean
-toolbar_button_create_proxy (GtkToolItem *item,
-			     gpointer data)
-{
-	GtkWidget *menu_item, *menu_image = NULL;
-	GtkWidget *button_image = NULL; 
-	BonoboUIToolbarButtonItem *button_item;
-	BonoboUINode *node,*cmd_node; 
-	BonoboUISync *sync;
-	char *button_label= "";
-
-	sync = (BonoboUISync *) data;
-
-	button_item = (BonoboUIToolbarButtonItem *) GTK_BIN (item)->child;
-	node = bonobo_ui_engine_widget_get_node (GTK_WIDGET (button_item));
-	cmd_node = bonobo_ui_engine_get_cmd_node (sync->engine, node);
-
-	button_label =  bonobo_ui_engine_get_attr (node, cmd_node, "label");
-
-	menu_item = gtk_image_menu_item_new_with_label (button_label);
-
-	g_signal_connect_swapped (menu_item, "activate",
-				  G_CALLBACK (toolbar_menuitem_activate),
-				  button_item);
-
-	gtk_tool_item_set_proxy_menu_item (GTK_TOOL_ITEM (item), "bonobo-tool-button-menu-id" , menu_item);
-
-	return TRUE;
-}
-#endif
-
-static GtkWidget *
-toolbar_build_item (GtkWidget *widget)
-{
-	GtkWidget *item = GTK_WIDGET (gtk_tool_item_new());
-
-	g_signal_connect_swapped (widget, "destroy",
-				  G_CALLBACK (gtk_widget_destroy), item);
-	gtk_container_add (GTK_CONTAINER (item), widget);
-
-	return item;
-}
-
 static GtkWidget *
 toolbar_build_control (BonoboUISync     *sync,
 		       BonoboUINode     *node,
