@@ -1,3 +1,8 @@
+2001-12-04  Darin Adler  <darin@bentspoon.com>
+
+	* bonobo/bonobo-ui-toolbar.c: (impl_destroy): Sink the tooltips
+	rather than unrefing them.
+
 2001-12-04  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-plug.c (bonobo_plug_expose_event):

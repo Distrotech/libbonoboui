@@ -730,7 +730,7 @@ impl_destroy (GtkObject *object)
 	priv->popup_window = NULL;
 
 	if (priv->tooltips)
-		gtk_object_unref (GTK_OBJECT (priv->tooltips));
+		gtk_object_sink (GTK_OBJECT (priv->tooltips));
 	priv->tooltips = NULL;
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy != NULL)
