@@ -35,9 +35,6 @@ typedef struct {
 } BonoboUIContainerClass;
 
 GType                        bonobo_ui_container_get_type            (void) G_GNUC_CONST;
-BonoboUIContainer           *bonobo_ui_container_construct           (BonoboUIContainer  *container,
-								      Bonobo_UIContainer  corba_container);
-
 BonoboUIContainer           *bonobo_ui_container_new                 (void);
 
 void                         bonobo_ui_container_set_engine          (BonoboUIContainer  *container,

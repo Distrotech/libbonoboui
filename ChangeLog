@@ -1,3 +1,15 @@
+2001-11-08  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-ui-container.h: kill non-existent
+	bonobo_ui_container_construct
+
+	* bonobo/libbonoboui-2.0.pc.in: add libgnomecanvas-2.0.
+
+	* doc/object-hierarchy.txt: add.
+
+	* doc/Makefile.am: add object-hierarchy.txt, 
+	ui-across-boundaries.txt, control.txt and compdoc.html.
+
 2001-11-09  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-control-frame.c
