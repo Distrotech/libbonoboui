@@ -120,8 +120,8 @@ add_tearoff (BonoboUINode *node, GtkMenu *menu, gboolean popup_init)
 
 		if (txt)
 			has_tearoff = atoi (txt);
-		else
-			has_tearoff = !node_is_popup (node);
+		else if (node_is_popup (node))
+			has_tearoff = FALSE;
 
 		bonobo_ui_node_free_string (txt);
 
