@@ -371,6 +371,13 @@ bonobo_control_frame_destroy (GtkObject *object)
 
 	gtk_widget_unref (control_frame->priv->container);
 
+	if (control_frame->priv->socket) {
+		gtk_signal_disconnect_by_data (GTK_OBJECT (control_frame->priv->socket),
+					       control_frame);
+		gtk_widget_unref (control_frame->priv->socket);
+		control_frame->priv->socket = NULL;
+	}
+
 	g_free (control_frame->priv);
 	
 	GTK_OBJECT_CLASS (bonobo_control_frame_parent_class)->destroy (object);
