@@ -42,7 +42,6 @@ AC_SUBST(BONOBOUI_LIBS)
 AC_OUTPUT([
 Makefile
 po/Makefile.in
-intl/Makefile
 bonobo/Makefile
 bonobo/libbonoboui-2.0.pc
 samples/Makefile

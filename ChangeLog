@@ -1,3 +1,9 @@
+2001-08-07  Darin Adler  <darin@bentspoon.com>
+
+	* Makefile.am:
+	* configure.in:
+	No need to build intl directory given how we use gettext.
+
 2001-08-07  Martin Baulig  <baulig@suse.de>
 
 	* configure.in: Fix the PKG_CHECK_MODULES checks.
