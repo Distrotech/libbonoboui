@@ -17,12 +17,6 @@
 #include <libgnomeprint/gnome-print.h>
 
 /*
- * Number of running objects
- */ 
-static int running_objects = 0;
-static BonoboGenericFactory *factory = NULL;
-
-/*
  * The Embeddable data.
  *
  * This is where we store the document's abstract data.  Each
@@ -80,15 +74,6 @@ embeddable_destroy_cb (BonoboEmbeddable *embeddable, embeddable_data_t *embeddab
 {
 	gdk_pixmap_unref (embeddable_data->pixmap);
 	g_free (embeddable_data); 
-
-	running_objects--;
-	if (running_objects > 0)
-		return;
-	/*
-	 * When last object has gone unref the factory & quit.
-	 */
-	bonobo_object_unref (BONOBO_OBJECT (factory));
-	gtk_main_quit ();
 }
 
 /*
@@ -650,7 +635,6 @@ embeddable_factory (BonoboGenericFactory *this,
 		return NULL;
 	}
 	
-	running_objects++;
 	embeddable_data->embeddable = embeddable;
 
 	/*
@@ -676,18 +660,21 @@ embeddable_factory (BonoboGenericFactory *this,
 	return BONOBO_OBJECT (embeddable);
 }
 
-static BonoboGenericFactory *
+static void
 init_simple_paint_factory (void)
 {
+	BonoboGenericFactory *factory;
 	/*
 	 * This will create a factory server for our simple paint
 	 * component.  When a container wants to create a paint
 	 * component, it will ask the factory to create one, and the
 	 * factory will invoke our embeddable_factory() function.
 	 */
-         return bonobo_generic_factory_new (
+         factory = bonobo_generic_factory_new (
 			    "OAFIID:Bonobo_Sample_Paint_EmbeddableFactory",
 			     embeddable_factory, NULL);
+
+	 bonobo_running_context_auto_exit_unref (BONOBO_OBJECT (factory));
 }
 
 static void
@@ -714,7 +701,7 @@ main (int argc, char **argv)
 	 * Setup the factory.
 	 */
 	init_server_factory (argc, argv);
-	factory = init_simple_paint_factory ();
+	init_simple_paint_factory ();
 
 	/*
 	 * Start processing.

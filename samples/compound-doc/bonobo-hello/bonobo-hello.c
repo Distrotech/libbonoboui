@@ -24,26 +24,6 @@
 
 #include "hello-embeddable.h"
 
-static BonoboGenericFactory *factory = NULL;
-static gint running_objects = 0;
-
-static void
-hello_bonobo_destroy (BonoboEmbeddable *embeddable,
-		      gpointer user_data)
-{
-	running_objects--;
-	if (running_objects > 0)
-		return;
-
-	if (factory)
-		bonobo_object_unref (BONOBO_OBJECT (factory));
-	else
-		g_warning ("Serious ref counting error");
-	factory = NULL;
-
-	gtk_main_quit ();
-}
-
 static BonoboObject*
 hello_embeddable_factory (BonoboGenericFactory *f, gpointer data)
 {
@@ -53,13 +33,6 @@ hello_embeddable_factory (BonoboGenericFactory *f, gpointer data)
 
 	g_return_val_if_fail(embeddable != NULL, NULL);
 
-	running_objects++;
-
-	/* Install destructor */
-	gtk_signal_connect (GTK_OBJECT(embeddable), "destroy",
-			    GTK_SIGNAL_FUNC(hello_bonobo_destroy),
-			    NULL);
-
 	embeddable = hello_bonobo_embeddable_construct (embeddable);
 
 	return BONOBO_OBJECT (embeddable);
@@ -68,12 +41,15 @@ hello_embeddable_factory (BonoboGenericFactory *f, gpointer data)
 static void
 hello_bonobo_init (void)
 {
-	factory =
-		bonobo_generic_factory_new (
+	BonoboGenericFactory *factory;
+	
+	factory = bonobo_generic_factory_new (
 			"OAFIID:Bonobo_Sample_Hello_EmbeddableFactory",
 			hello_embeddable_factory, NULL);
 	if (!factory)
 		g_warning ("Couldn't register hello object factory");
+	else 
+		bonobo_running_context_auto_exit_unref (BONOBO_OBJECT (factory));
 }
 
 static void

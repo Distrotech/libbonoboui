@@ -26,6 +26,7 @@ static void
 get_prop (BonoboPropertyBag *bag,
 	  BonoboArg         *arg,
 	  guint              arg_id,
+	  CORBA_Environment *ev,
 	  gpointer           user_data)
 {
 	GtkObject *clock = user_data;
@@ -40,7 +41,7 @@ get_prop (BonoboPropertyBag *bag,
 	}
 
 	default:
-		g_warning ("Unhandled arg %d", arg_id);
+		bonobo_exception_set (ev, ex_Bonobo_PropertyBag_NotFound);
 		break;
 	}
 }
@@ -49,6 +50,7 @@ static void
 set_prop (BonoboPropertyBag *bag,
 	  const BonoboArg   *arg,
 	  guint              arg_id,
+	  CORBA_Environment *ev,
 	  gpointer           user_data)
 {
 	GtkClock *clock = user_data;
@@ -72,7 +74,7 @@ set_prop (BonoboPropertyBag *bag,
 	}
 
 	default:
-		g_warning ("Unhandled arg %d", arg_id);
+		bonobo_exception_set (ev, ex_Bonobo_PropertyBag_NotFound);
 		break;
 	}
 }

@@ -201,9 +201,11 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 
 	gtk_window_set_default_size (GTK_WINDOW (window), 400, 350);
 
-	widget = bonobo_widget_new_control_from_objref (
-		the_control,
+	widget = bonobo_widget_new_control_from_objref (the_control,
 		bonobo_object_corba_objref (BONOBO_OBJECT (ui_container)));
+	
+	bonobo_object_unref (BONOBO_OBJECT (ui_container));
+
 	if (ev->_major != CORBA_NO_EXCEPTION || !widget)
 		g_error ("Couldn't get a widget from the_control");
 
