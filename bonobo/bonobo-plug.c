@@ -136,6 +136,15 @@ bonobo_plug_unrealize (GtkWidget *widget)
 }
 
 static void
+bonobo_plug_map (GtkWidget *widget)
+{
+	dprintf ("bonobo_plug_map %p at size %d, %d\n",
+		 widget, widget->allocation.width,
+		 widget->allocation.height);
+	GTK_WIDGET_CLASS (parent_class)->map (widget);
+}
+
+static void
 bonobo_plug_dispose (GObject *object)
 {
 	BonoboPlug *plug = (BonoboPlug *) object;
@@ -194,7 +203,6 @@ bonobo_plug_get_property (GObject    *object,
 			  GValue     *value,
 			  GParamSpec *pspec)
 {
-
 	BonoboPlug *plug;
 
 	g_return_if_fail (BONOBO_IS_PLUG (object));
@@ -231,10 +239,10 @@ static void
 bonobo_plug_size_request (GtkWidget      *widget,
 			  GtkRequisition *requisition)
 {
+	GTK_WIDGET_CLASS (parent_class)->size_request (widget, requisition);
+
 	dprintf ("bonobo_plug_size_request %p: %d, %d\n",
 		 widget, requisition->width, requisition->height);
-
-	GTK_WIDGET_CLASS (parent_class)->size_request (widget, requisition);
 }
 
 static gboolean
@@ -245,10 +253,15 @@ bonobo_plug_expose_event (GtkWidget      *widget,
 
 	retval = GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
 
-	dprintf ("bonobo_plug_expose_event %p (%d, %d), (%d, %d)\n",
+	dprintf ("bonobo_plug_expose_event %p (%d, %d), (%d, %d)"
+		 "%s (%d && %d == %d)\n",
 		 widget,
 		 event->area.x, event->area.y,
-		 event->area.width, event->area.height);
+		 event->area.width, event->area.height,
+		 GTK_WIDGET_TOPLEVEL (widget) ? "toplevel" : "bin class",
+		 GTK_WIDGET_VISIBLE (widget),
+		 GTK_WIDGET_MAPPED (widget),
+		 GTK_WIDGET_DRAWABLE (widget));
 
 #ifdef DEBUG_CONTROL
 	gdk_draw_line (widget->window,
@@ -350,6 +363,7 @@ bonobo_plug_class_init (BonoboPlugClass *klass)
 	widget_class->expose_event         = bonobo_plug_expose_event;
 	widget_class->button_press_event   = bonobo_plug_button_event;
 	widget_class->button_release_event = bonobo_plug_button_event;
+	widget_class->map                  = bonobo_plug_map;
 
 	g_object_class_install_property (
 		gobject_class,

@@ -20,6 +20,11 @@
 #include <bonobo/bonobo-control-internal.h>
 #include <libgnome/gnome-macros.h>
 
+
+/* Used to turn on any socket sizing
+ * bits layered over gtk we have */
+#undef DEBUG_RAW_GTK
+
 GNOME_CLASS_BOILERPLATE (BonoboSocket, bonobo_socket,
 			 GObject, GTK_TYPE_SOCKET);
 
@@ -165,28 +170,12 @@ bonobo_socket_size_allocate (GtkWidget     *widget,
 {
 	GtkSocket *socket = (GtkSocket *) widget;
 
-	dprintf ("bonobo_socket_size_allocate %p: (%d, %d), (%d, %d)\n",
+	dprintf ("bonobo_socket_size_allocate %p: (%d, %d), (%d, %d), %p, %p\n",
 		 widget, allocation->x, allocation->y,
-		 allocation->width, allocation->height);
+		 allocation->width, allocation->height,
+		 socket->plug_widget, socket->plug_window);
 
-	/* Work around curious local case handling in gtk_socket_size_allocate */
-	widget->allocation = *allocation;
-	if (socket->plug_widget) { /* do our own thing */
-		GtkAllocation child_allocation;
-
-		if (GTK_WIDGET_REALIZED (widget))
-			gdk_window_move_resize (widget->window,
-						allocation->x, allocation->y,
-						allocation->width, allocation->height);
-		
-		child_allocation.x = 0;
-		child_allocation.y = 0;
-		child_allocation.width = allocation->width;
-		child_allocation.height = allocation->height;
-		
-		gtk_widget_size_allocate (socket->plug_widget, &child_allocation);
-	} else
-		GNOME_CALL_PARENT (GTK_WIDGET_CLASS, size_allocate, (widget, allocation));
+	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, size_allocate, (widget, allocation));
 }
 
 static void
@@ -196,13 +185,20 @@ bonobo_socket_size_request (GtkWidget      *widget,
 	BonoboSocket *socket = (BonoboSocket *) widget;
 	GtkSocket    *gtk_socket = (GtkSocket *) widget;
 
+	dprintf ("pre bonobo_socket_size_request %p: realized %d, %s frame, %d %d\n",
+		 widget, GTK_WIDGET_REALIZED (widget) ? 1:0,
+		 socket->frame ? "has" : "no",
+		 gtk_socket->is_mapped, gtk_socket->have_size);
+
+#ifndef DEBUG_RAW_GTK
 	if (GTK_WIDGET_REALIZED (widget) ||
 	    !socket->frame ||
 	    (gtk_socket->is_mapped && gtk_socket->have_size))
-
+#endif
 		GNOME_CALL_PARENT (GTK_WIDGET_CLASS, size_request,
 				   (widget, requisition));
 
+#ifndef DEBUG_RAW_GTK
 	else if (gtk_socket->have_size &&
 		 GTK_WIDGET_VISIBLE (gtk_socket)) {
 
@@ -225,6 +221,7 @@ bonobo_socket_size_request (GtkWidget      *widget,
 
 		CORBA_exception_free (ev);
 	}
+#endif
 
 	dprintf ("bonobo_socket_size_request %p: %d, %d\n",
 		 widget, requisition->width, requisition->height);
@@ -340,4 +337,13 @@ bonobo_socket_set_control_frame (BonoboSocket       *socket,
 
 	if (frame)
 		bonobo_control_frame_set_socket (frame, socket);
+}
+
+void
+bonobo_socket_add_id (BonoboSocket   *socket,
+		      GdkNativeWindow xid)
+{
+	GtkSocket *gtk_socket = (GtkSocket *) socket;
+
+	gtk_socket_add_id (gtk_socket, xid);
 }

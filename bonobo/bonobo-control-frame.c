@@ -303,7 +303,7 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 					 frame->priv->control, ev);
 
 	} else {
-		guint32 xid;
+		GdkNativeWindow xid;
 		BonoboPlug *plug = NULL;
 
 		xid = bonobo_control_x11_from_window_id (id);
@@ -328,7 +328,7 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 		} else if (!plug && frame->priv->inproc_control) 
 			g_warning ("ARGH - different serious ORB screwup");
 
-		gtk_socket_add_id (GTK_SOCKET (frame->priv->socket), xid);
+		bonobo_socket_add_id (BONOBO_SOCKET (frame->priv->socket), xid);
 	}		
 
 	if (!opt_ev)
@@ -964,7 +964,7 @@ bonobo_control_frame_size_request (BonoboControlFrame *frame,
 		/* We haven't been bound to a control yet, so return "I don't
 		 * care about what I get assigned".
 		 */
-		requisition->width = requisition->height = 0;
+		requisition->width = requisition->height = 1;
 		return;
 	}
 
@@ -981,7 +981,7 @@ bonobo_control_frame_size_request (BonoboControlFrame *frame,
 			BONOBO_OBJECT (frame),
 			(CORBA_Object) frame->priv->control, ev);
 
-		req.width = req.height = 0;
+		req.width = req.height = 1;
 	}
 
 	requisition->width  = req.width;

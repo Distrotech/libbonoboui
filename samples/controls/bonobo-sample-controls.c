@@ -12,7 +12,7 @@
 #include <gdk/gdkx.h>
 #include <libbonoboui.h>
 #include <libgnomecanvas/gnome-canvas-widget.h>
-/*  #define USE_SCROLLED */
+#undef USE_SCROLLED
 
 static void
 activate_cb (GtkEditable *editable, BonoboControl *control)
@@ -67,7 +67,7 @@ bonobo_entry_control_new (void)
 			gnome_canvas_root (GNOME_CANVAS (canvas)),
 			GNOME_TYPE_CANVAS_WIDGET,
 			"x", 0.0, "y", 0.0, "width", 100.0,
-			"height", 100.0, "widget", entry, NULL);
+			"height", 100.0, "widget", box, NULL);
 		gnome_canvas_item_show (item);
 
 		scrolled = gtk_scrolled_window_new (NULL, NULL);
