@@ -1,0 +1,10 @@
+Makefile.in
+Makefile
+*.lo
+*.la
+.deps
+_libs
+*-helper
+.libs
+so_locations
+libbonoboui-2.0.pc
