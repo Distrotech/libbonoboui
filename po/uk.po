@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-05 15:33+0000\n"
-"PO-Revision-Date: 2004-08-03 19:00+0200\n"
+"POT-Creation-Date: 2005-02-09 21:19+0200\n"
+"PO-Revision-Date: 2005-02-09 19:00+0200\n"
 "Last-Translator: Maxim Dziumanenko <mvd@mylinux.com.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,9 +36,8 @@ msgid "Dock the toolbar"
 msgstr "Пристикувати панель інструментів"
 
 #: bonobo/bonobo-dock-item-grip.c:258
-#, fuzzy
 msgid "Undock the toolbar"
-msgstr "Відстикувати панель інструментів"
+msgstr "Відчепити панель інструментів"
 
 #: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1175
@@ -404,77 +403,75 @@ msgstr "Не вдається ініціалізувати графічний і
 
 #: tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr ""
+msgstr "Оглядач компонентів Bonobo"
 
 #: tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr ""
+msgstr "Відображає доступні компоненти Bonobo"
 
 #: tools/browser/bonobo-browser.xml.h:1
-#, fuzzy
 msgid "About this program..."
-msgstr "Про програму"
+msgstr "Про програму..."
 
 #: tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr ""
+msgstr "Закрити поточне вікно"
 
 #: tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
-msgstr ""
+msgstr "Відкрити нове вікно"
 
 #: tools/browser/bonobo-browser.xml.h:5
-#, fuzzy
 msgid "_Help"
-msgstr "Пр_ибрати"
+msgstr "_Довідка"
 
 #. Build the general tab
 #: tools/browser/component-details.c:109
 msgid "General"
-msgstr ""
+msgstr "Загальне"
 
 #: tools/browser/component-details.c:116 tools/browser/component-list.c:401
 msgid "IID"
-msgstr ""
+msgstr "IID"
 
 #: tools/browser/component-details.c:117
 msgid "Location"
-msgstr ""
+msgstr "Адреса"
 
 #. Build the details tab
 #: tools/browser/component-details.c:167
 msgid "Details"
-msgstr ""
+msgstr "подробиці"
 
 #: tools/browser/component-details.c:168
 msgid "Detailed Information"
-msgstr ""
+msgstr "Докладна інформація"
 
 #: tools/browser/component-list.c:370
 msgid "Active"
-msgstr ""
+msgstr "Активний"
 
 #: tools/browser/component-list.c:391
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: tools/browser/window.c:169
 msgid "Component Details"
-msgstr ""
+msgstr "Опис компонента"
 
 #: tools/browser/window.c:214
 msgid "Bonobo Browser"
-msgstr ""
+msgstr "Оглядач Bonobo"
 
 #: tools/browser/window.c:215
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr ""
+msgstr "Авторські права 2001, The GNOME Foundation"
 
 #: tools/browser/window.c:216
 msgid "Bonobo component browser"
-msgstr ""
+msgstr "Оглядач компонентів Bonobo"
 
 #. create the window
 #: tools/browser/window.c:246
 msgid "Component Browser"
-msgstr ""
+msgstr "Оглядач компонентів"
