@@ -1,3 +1,7 @@
+2002-05-09  Michael Meeks  <michael@ximian.com>
+
+	* po/POTFILES.in: update.
+
 2002-05-07  Jon Kåre Hellan  <Jon.Kare.hellan@uninett.no>
 
 	* bonobo/bonobo-control.c (bonobo_control_set_transient_for):

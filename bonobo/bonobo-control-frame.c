@@ -101,7 +101,7 @@ impl_Bonobo_ControlFrame_getToplevelId (PortableServer_Servant  servant,
 	bonobo_return_val_if_fail (toplev != NULL, NULL, ev);
 
 	if (BONOBO_IS_PLUG (toplev)) { 
-		BonoboControl     *control;
+		BonoboControl *control;
 
 		control = bonobo_plug_get_control (BONOBO_PLUG (toplev));
 

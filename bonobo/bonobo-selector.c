@@ -16,10 +16,10 @@
  *                      Havoc Pennigton, Dietmar Maurer
  */
 #include <config.h>
-#include <string.h> /* strcmp */
+#include <string.h>
+#include <libgnome/gnome-i18n.h>
 #include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-selector.h>
-#include <libgnome/gnome-i18n.h> /* For _() */
 
 GNOME_CLASS_BOILERPLATE (BonoboSelector, bonobo_selector,
 			 GtkDialog, GTK_TYPE_DIALOG);
