@@ -146,6 +146,7 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	if (bonobo_ui_node_has_name (node, "control")) {
 		const char *txt;
 		BonoboUIToolbarControlDisplay hdisp, vdisp;
+		gboolean sensitive;
 		
 		txt = bonobo_ui_node_peek_attr (node, "hdisplay");
 		hdisp = decode_control_disp (txt);
@@ -155,6 +156,15 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 
 		bonobo_ui_toolbar_control_item_set_display (
 			BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget), hdisp, vdisp);
+
+		txt = bonobo_ui_node_peek_attr (node, "sensitive");
+		if (txt && atoi (txt))
+			sensitive = TRUE;
+		else
+			sensitive = FALSE;
+
+		bonobo_ui_toolbar_control_item_set_sensitive (
+			BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget), sensitive);
 	}
 
 	if ((min_width = bonobo_ui_engine_get_attr (node, cmd_node, "min_width"))) {

@@ -1,3 +1,15 @@
+2002-01-24  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar-control-item.c
+	(bonobo_ui_toolbar_control_item_set_sensitive): impl.
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(impl_bonobo_ui_sync_toolbar_state): add sensitivity
+	set for controls.
+
+	* bonobo/bonobo-ui-toolbar.c
+	(hide_not_fitting_items): remove cruft.
+
 2002-01-22  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-engine.c (state_update_new):

@@ -492,13 +492,10 @@ static void
 hide_not_fitting_items (BonoboUIToolbar *toolbar)
 {
 	BonoboUIToolbarPrivate *priv;
-	const GtkAllocation *allocation;
 	GtkAllocation child_allocation;
 	GList *p;
 
 	priv = toolbar->priv;
-
-	allocation = & GTK_WIDGET (toolbar)->allocation;
 
 	child_allocation.x      = 40000;
 	child_allocation.y      = 40000;

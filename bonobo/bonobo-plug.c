@@ -255,6 +255,13 @@ bonobo_plug_expose_event (GtkWidget      *widget,
 		       event->area.y,
 		       event->area.x, 
 		       event->area.y + event->area.height);
+
+	gdk_draw_line (widget->window,
+		       widget->style->black_gc,
+		       widget->allocation.x,
+		       widget->allocation.y,
+		       widget->allocation.x + widget->allocation.width,
+		       widget->allocation.y + widget->allocation.height);
 #endif
 
 	return retval;

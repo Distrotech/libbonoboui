@@ -16,6 +16,7 @@
 #include <bonobo/bonobo-ui-node.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-node-private.h>
+#include <bonobo/bonobo-ui-toolbar-control-item.h>
 
 /* To debug plug/socket/control render issues */
 #undef DEBUG_CONTROL
@@ -31,6 +32,9 @@ GdkPixbuf *bonobo_ui_util_xml_get_pixbuf  (GtkWidget      *widget,
 					   BonoboUINode   *node,
 					   GtkIconSize     icon_size);
 void       bonobo_ui_engine_dispose       (BonoboUIEngine *engine);
+void       bonobo_ui_toolbar_control_item_set_sensitive
+                                          (BonoboUIToolbarControlItem *item,
+					   gboolean                    sensitive);
 
 #ifndef   DEBUG_UI
 

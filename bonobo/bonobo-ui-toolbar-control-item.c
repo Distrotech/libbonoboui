@@ -9,8 +9,9 @@
  * Copyright (C) 2001 Eazel, Inc.
  */
 
-#include "config.h"
-#include "bonobo-ui-toolbar-control-item.h"
+#include <config.h>
+#include <bonobo/bonobo-ui-private.h>
+#include <bonobo/bonobo-ui-toolbar-control-item.h>
 
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-property-bag-client.h>
@@ -348,4 +349,23 @@ bonobo_ui_toolbar_control_item_set_display (BonoboUIToolbarControlItem    *item,
 
 	item->priv->hdisplay = hdisplay;
 	item->priv->vdisplay = vdisplay;
+}
+
+void
+bonobo_ui_toolbar_control_item_set_sensitive (BonoboUIToolbarControlItem *item,
+					      gboolean                    sensitive)
+{
+	gboolean changed;
+
+	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_CONTROL_ITEM (item));
+
+	changed = (( GTK_WIDGET_IS_SENSITIVE (item) && !sensitive) ||
+		   (!GTK_WIDGET_IS_SENSITIVE (item) &&  sensitive));
+
+	if (!changed || !item->priv->control)
+		return;
+
+	bonobo_control_frame_control_set_state (
+		bonobo_widget_get_control_frame (item->priv->control),
+		sensitive ? Bonobo_Gtk_StateNormal : Bonobo_Gtk_StateInsensitive);
 }
