@@ -134,8 +134,8 @@ impl_Bonobo_ControlFrame_notifyActivated (PortableServer_Servant  servant,
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (
 		bonobo_object_from_servant (servant));
 
-	gtk_signal_emit (GTK_OBJECT (frame),
-			 control_frame_signals [ACTIVATED], state);
+	g_signal_emit (G_OBJECT (frame),
+		       control_frame_signals [ACTIVATED], 0, state);
 }
 
 static void
@@ -158,9 +158,9 @@ impl_Bonobo_ControlFrame_activateURI (PortableServer_Servant  servant,
 {
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
-	gtk_signal_emit (GTK_OBJECT (frame),
-			 control_frame_signals [ACTIVATE_URI],
-			 (const char *) uri, (gboolean) relative);
+	g_signal_emit (G_OBJECT (frame),
+		       control_frame_signals [ACTIVATE_URI], 0,
+		       (const char *) uri, (gboolean) relative);
 }
 
 #ifdef DEBUG_CONTROL

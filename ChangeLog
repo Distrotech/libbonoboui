@@ -1,3 +1,10 @@
+2002-01-02  Dave Camp  <dave@ximian.com>
+
+	* bonobo/bonobo-control-frame.c (impl_Bonobo_ControlFrame_notifyActivated): 
+	(impl_Bonobo_ControlFrame_activateURI): Use g_signal_emit instead of 
+	gtk_signal_emit, and cast the control frame to GObject rather than
+	GtkObject.
+
 2002-01-02  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-component.c
