@@ -100,6 +100,8 @@ libbonoboinclude_HEADERS =		\
 	gnome-inplace-component.h	\
 	gnome-main.h			\
 	gnome-moniker.h			\
+	gnome-item-moniker.h		\
+	gnome-file-moniker.h		\
 	gnome-moniker-client.h		\
 	gnome-object.h			\
 	gnome-object-client.h		\
