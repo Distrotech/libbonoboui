@@ -23,7 +23,7 @@ paint_component_simple_SOURCES =	\
 paint_component_simple_LDADD = 			\
 	$(top_builddir)/bonobo/libbonobo.la	\
 	$(GPRINT_LIBS)				\
-	$(BONOBO_LIBS)				\
+	$(GNOME_PRINT_LIBS)			\
 	$(INTLLIBS)                             \
 	$(OBJECT_DIRECTORY_LIBS)
 
@@ -33,9 +33,9 @@ sample_container_SOURCES =		\
 sample_container_LDADD = 			\
 	$(top_builddir)/bonobo/libbonobo.la	\
 	$(GPRINT_LIBS)				        \
-	$(BONOBO_LIBS)				\
 	$(GTK_LIBS)					\
 	$(GNOME_LIBDIR)					\
+	$(GNOME_PRINT_LIBS)				\
 	$(OBJECT_DIRECTORY_LIBS)			\
 	$(INTLLIBS)
 
