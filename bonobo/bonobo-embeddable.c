@@ -172,7 +172,20 @@ gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
 	if (embeddable->views != NULL)
 		return;
 
-	if (! gnome_unknown_ping (embeddable->client_site)) {
+	/*
+	 * ORBit has some issues.
+	 *
+	 * Calling gnome_unknown_ping on a dead object causes either:
+	 * 
+	 *     . SIGPIPE (handled; please see gnome-main.c)
+	 *     . A blocking call to connect().
+	 *
+	 * So we just assume the remote end is dead here.  This ORBit
+	 * problem needs to be fixed, though, so that this code can be
+	 * re-enabled.
+	 */
+	if (0) {
+/*	if (! gnome_unknown_ping (embeddable->client_site)) {*/
 		/*
 		 * The remote end is dead; it's time for
 		 * us to die too.
@@ -564,6 +577,23 @@ gnome_embeddable_remove_verb (GnomeEmbeddable *embeddable, const char *verb_name
 
 	g_warning ("Verb [%s] not found!\n", verb_name);
 }
+
+/**
+ * gnome_embeddable_get_verbs:
+ * @embeddable: A GnomeEmbeddable object.
+ *
+ * Returns the internal copy of the list of verbs supported by this
+ * Embeddable object.
+ */
+const GList *
+gnome_embeddable_get_verbs (GnomeEmbeddable *embeddable)
+{
+	g_return_val_if_fail (embeddable != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_EMBEDDABLE (embeddable), NULL);
+
+	return (const GList *) embeddable->verbs;
+}
+
 
 /**
  * gnome_embeddable_get_uri:

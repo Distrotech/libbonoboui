@@ -125,6 +125,8 @@ void             gnome_embeddable_remove_verb      (GnomeEmbeddable *embeddable,
 void             gnome_embeddable_set_view_factory (GnomeEmbeddable *embeddable,
 						    GnomeViewFactory factory,
 						    void *data);
+const GList	*gnome_embeddable_get_verbs	   (GnomeEmbeddable *embeddable);
+
 
 const char      *gnome_embeddable_get_uri          (GnomeEmbeddable *embeddable);
 void             gnome_embeddable_set_uri          (GnomeEmbeddable *embeddable,

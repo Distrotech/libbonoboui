@@ -62,28 +62,8 @@ impl_GNOME_View_do_verb (PortableServer_Servant servant,
 			 CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-	GnomeViewVerbFunc callback;
 
-	/*
-	 * Always emit a signal when a verb is executed.
-	 */
-	gtk_signal_emit (
-		GTK_OBJECT (view),
-		view_signals [DO_VERB],
-		(gchar *) verb_name);
-
-	/*
-	 * The user may have registered a callback for this particular
-	 * verb.  If so, dispatch to that callback.
-	 */
-	callback = g_hash_table_lookup (view->verb_callbacks, verb_name);
-	if (callback != NULL) {
-		void *user_data;
-
-		user_data = g_hash_table_lookup (view->verb_callback_closures, verb_name);
-
-		(*callback) (view, (const char *) verb_name, user_data);
-	}
+	gnome_view_execute_verb (view, verb_name);
 }
 
 static void
@@ -119,6 +99,7 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 
 	if (view->plug != plug)
 		g_warning ("Destroying incorrect plug");
+
 	/*
 	 * Set the plug to NULL here so that we don't try to
 	 * destroy it later.  It will get destroyed on its
@@ -232,6 +213,11 @@ gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
+	/*
+	 * FIXME: This should probably be explained.
+	 */
+	bonobo_setup_x_error_handler ();
+
 	gnome_object_construct (GNOME_OBJECT (view), corba_view);
 	
 	view->widget = widget;
@@ -261,11 +247,6 @@ gnome_view_new (GtkWidget *widget)
 	
 	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
-
-	/*
-	 * FIXME: This should probably be explained.
-	 */
-	bonobo_setup_x_error_handler ();
 
 	view = gtk_type_new (gnome_view_get_type ());
 
@@ -692,4 +673,132 @@ gnome_view_request_resize (GnomeView *view, int width, int height)
 					&ev);
 
 	CORBA_exception_free (&ev);
+}
+
+/**
+ * gnome_view_execute_verb:
+ * @view: A GnomeView object.
+ * @verb_name: The name of the verb to execute on @view.
+ *
+ * Executes the verb specified by @verb_name on @view, emitting a
+ * "do_verb" signal and calling the registered verb callback, if one
+ * exists for @verb_name on @view.
+ */
+void
+gnome_view_execute_verb (GnomeView *view, const char *verb_name)
+{
+	GnomeViewVerbFunc callback;
+
+	/*
+	 * Always emit a signal when a verb is executed.
+	 */
+	gtk_signal_emit (
+		GTK_OBJECT (view),
+		view_signals [DO_VERB],
+		(gchar *) verb_name);
+
+	/*
+	 * The user may have registered a callback for this particular
+	 * verb.  If so, dispatch to that callback.
+	 */
+	callback = g_hash_table_lookup (view->verb_callbacks, verb_name);
+	if (callback != NULL) {
+		void *user_data;
+
+		user_data = g_hash_table_lookup (view->verb_callback_closures, verb_name);
+
+		(*callback) (view, (const char *) verb_name, user_data);
+	}
+}
+
+static void
+gnome_view_verb_selected_cb (GnomeUIHandler *uih, void *user_data, char *path)
+{
+	GnomeView *view = GNOME_VIEW (user_data);
+	char *verb_name;
+
+	g_assert (path != NULL);
+
+	/*
+	 * Extract the verb name from the selected verb.
+	 */
+	verb_name = path + 1;
+
+	/*
+	 * Execute it.
+	 */
+	gnome_view_execute_verb (view, verb_name);
+
+	/*
+	 * Store the verb name.
+	 */
+	gtk_object_set_data (GTK_OBJECT (view), "view_executed_verb_name", g_strdup (verb_name));
+	
+}
+
+/**
+ * gnome_view_popup_verbs:
+ * @view: A GnomeView object.
+ *
+ * Creates a popup menu, filling it with the list of verbs supported
+ * by @view.  If a verb is selected, it is executed on @view.  Returns
+ * a newly-allocated string containing the name of the selected verb,
+ * or %NULL if no verb is selected.
+ */
+char *
+gnome_view_popup_verbs (GnomeView *view)
+{
+	GnomeUIHandler *popup;
+	GList *verbs;
+	GList *l;
+	char *verb;
+
+	g_return_val_if_fail (view != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_VIEW (view), NULL);
+	g_return_val_if_fail (view->embeddable != NULL, NULL);
+
+	/*
+	 * Get a list of the available verbs from our embeddable.
+	 */
+	verbs = gnome_embeddable_get_verbs (view->embeddable);
+
+	/*
+	 * Build the menu.
+	 */
+	popup = gnome_ui_handler_new ();
+	gnome_ui_handler_create_popup_menu (popup);
+
+	for (l = verbs; l != NULL; l = l->next) {
+		GnomeVerb *verb = (GnomeVerb *) l->data;
+		char *path;
+
+		path = g_strconcat ("/", verb->name, NULL);
+		gnome_ui_handler_menu_new_item (popup, path,
+						verb->label, verb->hint,
+						-1,
+						GNOME_UI_HANDLER_PIXMAP_NONE, NULL,
+						0, (GdkModifierType) 0,
+						gnome_view_verb_selected_cb,
+						view);
+
+		g_free (path);
+	}
+
+	/*
+	 * Pop up the menu.
+	 */
+	gnome_ui_handler_do_popup_menu (popup);
+
+	/*
+	 * Destroy it.
+	 */
+	gnome_object_unref (GNOME_OBJECT (popup));
+
+	/*
+	 * Grab the name of the executed verb.
+	 */
+	verb = gtk_object_get_data (GTK_OBJECT (view), "view_executed_verb_name");
+	gtk_object_remove_data (GTK_OBJECT (view), "view_executed_verb_name");
+
+	return verb;
 }

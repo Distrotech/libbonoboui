@@ -238,7 +238,6 @@ static MenuItemInternal		 *menu_toplevel_store_data		(GnomeUIHandler *uih, GNOME
 									 GnomeUIHandlerMenuItem *item);
 static void			  menu_toplevel_override_notify_recursive(GnomeUIHandler *uih, char *path);
 static void			  menu_toplevel_override_notify		(GnomeUIHandler *uih, char *path);
-static void			  menu_toplevel_check_override		(GnomeUIHandler *uih, char *path);
 static void			  menu_toplevel_create_item		(GnomeUIHandler *uih, char *parent_path,
 									 GnomeUIHandlerMenuItem *item,
 									 GNOME_UIHandler uih_corba);
@@ -257,7 +256,6 @@ static GnomeUIHandlerMenuItem	 *menu_toplevel_fetch			(GnomeUIHandler *uih, char
 static GnomeUIHandlerMenuItem	 *menu_remote_fetch			(GnomeUIHandler *uih, char *path);
 static GList			 *menu_toplevel_get_children		(GnomeUIHandler *uih, char *parent_path);
 static GList			 *menu_remote_get_children		(GnomeUIHandler *uih, char *parent_path);
-static gint			  menu_remote_get_pos			(GnomeUIHandler *uih, char *path);
 static void			  menu_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, MenuItemInternal *internal,
 									 gboolean sensitivity);
 static void			  menu_toplevel_set_sensitivity		(GnomeUIHandler *uih, char *path, gboolean sensitive);
@@ -306,22 +304,16 @@ static void			  menu_remote_set_radio_state		(GnomeUIHandler *uih, char *path, g
 /*
  * Prototypes for some internal Toolbar functions.
  */
-static void			  toolbar_toplevel_item_create_widgets	(GnomeUIHandler *uih, ToolbarItemInternal *internal);
-static void			  toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, char *path);
-
-static void			  toolbar_local_create_item		(GnomeUIHandler *uih, char *parent_path,
-									 GnomeUIHandlerToolbarItem *item);
-static void			  toolbar_remote_create_item		(GnomeUIHandler *uih, char *parent_path,
-									 GnomeUIHandlerToolbarItem *item);
-static void			  toolbar_toplevel_create_item		(GnomeUIHandler *uih, char *parent_path,
-									 GnomeUIHandlerToolbarItem *item,
-									 GNOME_UIHandler uih_corba);
-static void			  toolbar_parse_uiinfo_one		(GnomeUIHandlerToolbarItem *item, GnomeUIInfo *uii);
-static void			  toolbar_parse_uiinfo_tree		(GnomeUIHandlerToolbarItem *tree, GnomeUIInfo *uii);
-static void			  toolbar_parse_uiinfo_one_with_data	(GnomeUIHandlerToolbarItem *item,
-									 GnomeUIInfo *uii, void *data);
-static void			  toolbar_parse_uiinfo_tree_with_data	(GnomeUIHandlerToolbarItem *tree,
-									 GnomeUIInfo *uii, void *data);
+static void			  toolbar_toplevel_set_toggle_state_internal (GnomeUIHandler *uih,
+									      ToolbarItemInternal *internal,
+									      gboolean active);
+static void		          toolbar_toplevel_set_radio_state_internal (GnomeUIHandler *uih,
+									     ToolbarItemInternal *internal,
+									     gboolean active);
+static void			  toolbar_toplevel_item_override_notify_recursive (GnomeUIHandler *uih, char *path);
+static void			  toolbar_toplevel_set_sensitivity_internal (GnomeUIHandler *uih,
+									     ToolbarItemInternal *internal,
+									     gboolean sensitive);
 
 /*
  * Menu CORBA prototypes.
@@ -616,7 +608,7 @@ gnome_ui_handler_get_type (void)
 {
 	static GtkType type = 0;
 
-	if (!type){
+	if (!type) {
 		GtkTypeInfo info = {
 			"IDL:GNOME/UIHandler:1.0",
 			sizeof (GnomeUIHandler),
@@ -702,7 +694,7 @@ gnome_ui_handler_new (void)
 	uih = gtk_type_new (gnome_ui_handler_get_type ());
 
 	corba_uihandler = create_gnome_ui_handler (GNOME_OBJECT (uih));
-	if (corba_uihandler == CORBA_OBJECT_NIL){
+	if (corba_uihandler == CORBA_OBJECT_NIL) {
 		gtk_object_destroy (GTK_OBJECT (uih));
 		return NULL;
 	}
@@ -796,7 +788,7 @@ gnome_ui_handler_set_container (GnomeUIHandler *uih, GNOME_UIHandler container)
 			uih->top_level_uih,
 			gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION){
+		if (ev._major != CORBA_NO_EXCEPTION) {
 			gnome_object_check_env (
 				GNOME_OBJECT (uih),
 				(CORBA_Object) uih->top_level_uih, &ev);
@@ -828,7 +820,7 @@ gnome_ui_handler_unset_container (GnomeUIHandler *uih)
 			uih->top_level_uih,
 			gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION){
+		if (ev._major != CORBA_NO_EXCEPTION) {
 			gnome_object_check_env (
 				GNOME_OBJECT (uih),
 				(CORBA_Object) uih->top_level_uih, &ev);
@@ -989,11 +981,8 @@ uih_remote_unregister_containee (GnomeUIHandler *uih, GNOME_UIHandler containee)
 	CORBA_exception_init (&ev);
 
 	GNOME_UIHandler_unregister_containee (uih->top_level_uih, containee, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
-			(CORBA_Object) uih->top_level_uih, &ev);
-	}
+
+	gnome_object_check_env (GNOME_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
 	
 	CORBA_exception_free (&ev);
 }
@@ -2744,7 +2733,7 @@ menu_toplevel_item_activated (GtkWidget *menu_item, gpointer data)
 	CORBA_exception_init (&ev);
 
 	GNOME_UIHandler_menu_activated (internal->uih_corba, internal->item->path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (internal->uih),
 			(CORBA_Object) internal->uih_corba, &ev);
@@ -2872,7 +2861,7 @@ menu_toplevel_override_notify (GnomeUIHandler *uih, char *path)
 	CORBA_exception_init (&ev);
 
 	GNOME_UIHandler_menu_overridden (internal->uih_corba, path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (internal->uih),
 			(CORBA_Object) internal->uih_corba, &ev);
@@ -2896,7 +2885,8 @@ impl_menu_overridden (PortableServer_Servant servant,
 		return;
 	}
 	
-	gtk_signal_emit (GTK_OBJECT (uih), uih_signals [MENU_ITEM_OVERRIDDEN], path, internal_cb->callback_data);
+	gtk_signal_emit (GTK_OBJECT (uih), uih_signals [MENU_ITEM_OVERRIDDEN],
+			 path, internal_cb->callback_data);
 }
 
 /*
@@ -2984,11 +2974,8 @@ menu_remote_create_item (GnomeUIHandler *uih, char *parent_path, GnomeUIHandlerM
 				     (CORBA_unsigned_long) item->accelerator_key,
 				     (CORBA_long) item->ac_mods,
 				     &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
-			(CORBA_Object) uih->top_level_uih, &ev);
-	}
+
+	gnome_object_check_env (GNOME_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
 
 	CORBA_exception_free (&ev);
 
@@ -3477,7 +3464,7 @@ menu_toplevel_reinstate_notify (GnomeUIHandler *uih, char *path)
 	CORBA_exception_init (&ev);
 
 	GNOME_UIHandler_menu_reinstated (internal->uih_corba, internal->item->path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) internal->uih_corba, &ev);
@@ -3639,11 +3626,8 @@ menu_remote_remove_item (GnomeUIHandler *uih, char *path)
 	GNOME_UIHandler_menu_remove (uih->top_level_uih,
 				     gnome_object_corba_objref (GNOME_OBJECT (uih)), path,
 				     &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
-			(CORBA_Object) uih->top_level_uih, &ev);
-	}
+
+	gnome_object_check_env (GNOME_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
 
 	CORBA_exception_free (&ev);
 }
@@ -3739,7 +3723,7 @@ menu_remote_fetch (GnomeUIHandler *uih, char *path)
 					     &corba_pixmap_type, &corba_pixmap_iobuf,
 					     &corba_accelerator_key, &corba_modifier_type,
 					     &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -3939,7 +3923,7 @@ menu_remote_get_children (GnomeUIHandler *uih, char *parent_path)
 						 (CORBA_char *) parent_path, &childseq,
 						 &ev))
 		return NULL;
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (GNOME_OBJECT (uih), uih->top_level_uih, &ev);
 		fail = TRUE;
 	}
@@ -4248,10 +4232,8 @@ menu_toplevel_get_pos (GnomeUIHandler *uih, char *path)
 	MenuItemInternal *internal;
 
 	internal = menu_toplevel_get_item (uih, path);
-	if (internal == NULL) {
-		g_warning ("menu_toplevel_get_item: No such item for path [%s]!\n", path);
-		return -1;
-	}
+
+	g_return_val_if_fail (internal != NULL, -1);
 
 	return internal->item->pos;
 }
@@ -4261,25 +4243,21 @@ menu_remote_get_pos (GnomeUIHandler *uih, char *path)
 {
 	CORBA_Environment ev;
 	CORBA_long retval;
-	gboolean fail = FALSE;
 	
 	CORBA_exception_init (&ev);
 
 	retval = GNOME_UIHandler_menu_get_pos (uih->top_level_uih,
 					       path,
 					       &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
-		fail = TRUE;
+		retval = -1;
 	}
 
 	CORBA_exception_free (&ev);
 
-	if (fail)
-		return -1;
-	
 	return (gint) retval;
 }
 
@@ -4353,7 +4331,7 @@ menu_remote_set_sensitivity (GnomeUIHandler *uih, char *path, gboolean sensitive
 					      gnome_object_corba_objref (GNOME_OBJECT (uih)),
 					      path, sensitive,
 					      &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -4424,7 +4402,7 @@ menu_remote_get_sensitivity (GnomeUIHandler *uih, char *path)
 	CORBA_exception_init (&ev);
 
 	retval = (gboolean) GNOME_UIHandler_menu_get_sensitivity (uih->top_level_uih, path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -4552,7 +4530,7 @@ menu_remote_set_label (GnomeUIHandler *uih, char *path, gchar *label_text)
 					gnome_object_corba_objref (GNOME_OBJECT (uih)),
 					path, label_text,
 					&ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -4625,7 +4603,7 @@ menu_remote_get_label (GnomeUIHandler *uih, char *path)
 	CORBA_exception_init (&ev);
 
 	label_text = GNOME_UIHandler_menu_get_label (uih->top_level_uih, path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -4725,7 +4703,7 @@ menu_remote_set_hint (GnomeUIHandler *uih, char *path, char *hint)
 				       gnome_object_corba_objref (GNOME_OBJECT (uih)),
 				       path, hint,
 				       &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -4795,7 +4773,7 @@ menu_remote_get_hint (GnomeUIHandler *uih, char *path)
 	CORBA_exception_init (&ev);
 
 	hint = GNOME_UIHandler_menu_get_hint (uih->top_level_uih, path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -4911,7 +4889,7 @@ menu_remote_set_pixmap (GnomeUIHandler *uih, char *path,
 					 pixmap_type_to_corba (type),
 					 pixmap_buff,
 					 &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -5062,7 +5040,7 @@ menu_remote_set_accel (GnomeUIHandler *uih, char *path,
 					(CORBA_long) accelerator_key,
 					(CORBA_long) ac_mods,
 					&ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -5137,7 +5115,7 @@ menu_remote_get_accel (GnomeUIHandler *uih, char *path,
 	CORBA_exception_init (&ev);
 
 	GNOME_UIHandler_menu_get_accel (uih->top_level_uih, path, &corba_accelerator_key, &corba_ac_mods, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -5302,7 +5280,7 @@ menu_remote_set_toggle_state (GnomeUIHandler *uih, char *path, gboolean state)
 					       gnome_object_corba_objref (GNOME_OBJECT (uih)),
 					       path, state,
 					       &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -5371,7 +5349,7 @@ menu_remote_get_toggle_state (GnomeUIHandler *uih, char *path)
 	CORBA_exception_init (&ev);
 
 	retval = GNOME_UIHandler_menu_get_toggle_state (uih->top_level_uih, path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -5528,6 +5506,12 @@ struct _ToolbarItemInternal {
 	 * ToolbarItemInternal structures for the members of the group.
 	 */
 	GSList *radio_items;
+
+	/*
+	 * In the world of toolbars, only radio groups can have
+	 * children.
+	 */
+	GList *children;
 
 	gboolean sensitive;
 	gboolean active;
@@ -5867,6 +5851,24 @@ toolbar_toplevel_item_remove_widgets (GnomeUIHandler *uih, char *path)
 }
 
 static void
+toolbar_toplevel_item_remove_widgets_recursive (GnomeUIHandler *uih, char *path)
+{
+	ToolbarItemInternal *internal;
+
+	internal = toolbar_toplevel_get_item (uih, path);
+
+	if (internal->children != NULL) {
+		GList *curr;
+
+		for (curr = internal->children; curr != NULL; curr = curr->next)
+			toolbar_toplevel_item_remove_widgets_recursive (
+				uih, (char *) curr->data);
+	}
+
+	toolbar_toplevel_item_remove_widgets (uih, path);
+}
+
+static void
 toolbar_local_toolbar_create (GnomeUIHandler *uih, char *name)
 {
 	ToolbarToolbarLocalInternal *internal;
@@ -5931,7 +5933,7 @@ toolbar_toplevel_toolbar_override_notify_recursive (GnomeUIHandler *uih, char *n
 	CORBA_exception_init (&ev);
 
 	GNOME_UIHandler_toolbar_overridden (internal->uih_corba, toolbar_path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) internal->uih_corba, &ev);
@@ -5942,7 +5944,7 @@ toolbar_toplevel_toolbar_override_notify_recursive (GnomeUIHandler *uih, char *n
 	g_free (toolbar_path);
 
 	for (curr = internal->children; curr != NULL; curr = curr->next)
-		toolbar_toplevel_item_override_notify (uih, (char *) curr->data);
+		toolbar_toplevel_item_override_notify_recursive (uih, (char *) curr->data);
 }
 
 static void
@@ -6057,7 +6059,7 @@ toolbar_remote_toolbar_create (GnomeUIHandler *uih, char *name)
 	GNOME_UIHandler_toolbar_create (uih->top_level_uih,
 					gnome_object_corba_objref (GNOME_OBJECT (uih)), name,
 					&ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -6113,7 +6115,7 @@ toolbar_remote_toolbar_remove (GnomeUIHandler *uih, char *name)
 					gnome_object_corba_objref (GNOME_OBJECT (uih)),
 					name,
 					&ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -6270,7 +6272,7 @@ toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, char *path)
 	CORBA_exception_init (&ev);
 
 	GNOME_UIHandler_toolbar_overridden (internal->uih_corba, path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) uih->top_level_uih, &ev);
@@ -6280,10 +6282,39 @@ toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, char *path)
 }
 
 static void
+toolbar_toplevel_item_override_notify_recursive (GnomeUIHandler *uih, char *path)
+{
+	ToolbarItemInternal *internal;
+
+	toolbar_toplevel_item_override_notify (uih, path);
+
+	internal = toolbar_toplevel_get_item (uih, path);
+	if (internal->children != NULL) {
+		GList *curr;
+
+		for (curr = internal->children; curr != NULL; curr = curr->next)
+			toolbar_toplevel_item_override_notify_recursive
+				(uih, (char *) curr->data);
+	}
+}
+
+static void
 impl_toolbar_overridden (PortableServer_Servant servant,
 			 CORBA_char *path,
 			 CORBA_Environment *ev)
 {
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	ToolbarItemLocalInternal *internal_cb;
+
+	internal_cb = toolbar_local_get_item (uih, path);
+
+	if (internal_cb == NULL) {
+		g_warning ("Received override notification for a toolbar item I don't own [%s]!\n", path);
+		return;
+	}
+
+	gtk_signal_emit (GTK_OBJECT (uih), uih_signals [TOOLBAR_ITEM_OVERRIDDEN],
+			 path, internal_cb->callback_data);
 }
 
 static void
@@ -6296,9 +6327,9 @@ toolbar_toplevel_item_check_override (GnomeUIHandler *uih, char *path)
 	if (internal == NULL)
 		return;
 
-	toolbar_toplevel_item_remove_widgets (uih, path);
+	toolbar_toplevel_item_remove_widgets_recursive (uih, path);
 
-	toolbar_toplevel_item_override_notify (uih, path);
+	toolbar_toplevel_item_override_notify_recursive (uih, path);
 }
 
 static gint
@@ -6530,6 +6561,19 @@ toolbar_toplevel_create_item (GnomeUIHandler *uih, char *parent_path,
 	 * Create the toolbar item widgets.
 	 */
 	toolbar_toplevel_item_create_widgets (uih, internal);
+
+	/*
+	 * Set its sensitivity.
+	 */
+	toolbar_toplevel_set_sensitivity_internal (uih, internal, internal->sensitive);
+
+	/*
+	 * Set its active state.
+	 */
+	if (internal->item->type == GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM)
+		toolbar_toplevel_set_toggle_state_internal (uih, internal, internal->active);
+	else if (internal->item->type == GNOME_UI_HANDLER_TOOLBAR_RADIOITEM)
+		toolbar_toplevel_set_radio_state_internal (uih, internal, internal->active);
 }
 
 static void
@@ -6555,11 +6599,8 @@ toolbar_remote_create_item (GnomeUIHandler *uih, char *parent_path,
 					     (CORBA_unsigned_long) item->accelerator_key,
 					     (CORBA_long) item->ac_mods,
 					     &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
-		gnome_object_check_env (
-			GNOME_OBJECT (uih),
-			(CORBA_Object) uih->top_level_uih, &ev);
-	}
+
+	gnome_object_check_env (GNOME_OBJECT (uih), (CORBA_Object) uih->top_level_uih, &ev);
 
 	CORBA_exception_free (&ev);
 
@@ -6818,7 +6859,7 @@ toolbar_toplevel_item_reinstate_notify (GnomeUIHandler *uih, char *path)
 	CORBA_exception_init (&ev);
 
 	GNOME_UIHandler_toolbar_reinstated (internal->uih_corba, internal->item->path, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (uih),
 			(CORBA_Object) internal->uih_corba, &ev);
@@ -6987,7 +7028,6 @@ toolbar_toplevel_remove_item (GnomeUIHandler *uih, char *path, GNOME_UIHandler u
 	ToolbarItemInternal *internal;
 
 	internal = toolbar_toplevel_get_item_for_containee (uih, path, uih_corba);
-
 	g_return_if_fail (internal != NULL);
 
 	toolbar_toplevel_remove_item_internal (uih, internal);
@@ -7038,7 +7078,7 @@ gnome_ui_handler_toolbar_remove (GnomeUIHandler *uih, char *path)
 }
 
 GnomeUIHandlerToolbarItem *
-gnome_ui_handler_toolbar_fetch (GnomeUIHandler *uih, char *path)
+gnome_ui_handler_toolbar_fetch_one (GnomeUIHandler *uih, char *path)
 {
 	g_return_val_if_fail (uih != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), NULL);
@@ -7068,17 +7108,6 @@ gnome_ui_handler_toolbar_fetch_by_callback_data (GnomeUIHandler *uih,
 
 	g_warning ("Unimplemented toolbar method");
 	return NULL;
-}
-
-gint
-gnome_ui_handler_toolbar_get_pos (GnomeUIHandler *uih, char *path)
-{
-	g_return_val_if_fail (uih != NULL, -1);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), -1);
-	g_return_val_if_fail (path != NULL, -1);
-
-	g_warning ("Unimplemented toolbar method");
-	return -1;
 }
 
 static GnomeUIHandlerMenuItemType
@@ -7313,21 +7342,163 @@ gnome_ui_handler_toolbar_free_one (GnomeUIHandlerToolbarItem *item)
 {
 	g_return_if_fail (item != NULL);
 
-	g_warning ("Unimplemented toolbar method");
+	toolbar_free (item);
 }
 
-void gnome_ui_handler_toolbar_free_list (GnomeUIHandlerToolbarItem *item)
+void
+gnome_ui_handler_toolbar_free_list (GnomeUIHandlerToolbarItem *array)
 {
-	g_return_if_fail (item != NULL);
+	GnomeUIHandlerToolbarItem *curr;
 
-	g_warning ("Unimplemented toolbar method");
+	g_return_if_fail (array != NULL);
+
+	for (curr = array; curr->type != GNOME_UI_HANDLER_TOOLBAR_END; curr ++) {
+		if (curr->children != NULL)
+			gnome_ui_handler_toolbar_free_list (curr->children);
+
+		toolbar_free_data (curr);
+	}
+
+	g_free (array);
 }
 
-void gnome_ui_handler_toolbar_free_tree (GnomeUIHandlerToolbarItem *item)
+void
+gnome_ui_handler_toolbar_free_tree (GnomeUIHandlerToolbarItem *tree)
 {
-	g_return_if_fail (item != NULL);
+	g_return_if_fail (tree != NULL);
 
-	g_warning ("Unimplemented toolbar method");
+	if (tree->type == GNOME_UI_HANDLER_TOOLBAR_END)
+		return;
+
+	if (tree->children != NULL)
+		gnome_ui_handler_toolbar_free_list (tree->children);
+
+	toolbar_free (tree);
+}
+
+static gint
+toolbar_toplevel_get_pos (GnomeUIHandler *uih, char *path)
+{
+	ToolbarItemInternal *internal;
+
+	internal = toolbar_toplevel_get_item (uih, path);
+
+	g_return_val_if_fail (internal != NULL, -1);
+
+	return internal->item->pos;
+}
+
+static gint
+toolbar_remote_get_pos (GnomeUIHandler *uih, char *path)
+{
+	CORBA_Environment ev;
+	CORBA_long retval;
+
+	CORBA_exception_init (&ev);
+
+	retval = GNOME_UIHandler_toolbar_get_pos (uih->top_level_uih,
+						  path,
+						  &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (
+			GNOME_OBJECT (uih),
+			(CORBA_Object) uih->top_level_uih, &ev);
+		retval = -1;
+	}
+
+	CORBA_exception_free (&ev);
+
+	return (gint) retval;
+}
+
+static CORBA_long
+impl_toolbar_get_pos (PortableServer_Servant servant,
+		      CORBA_char *path,
+		      CORBA_Environment *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+
+	g_return_val_if_fail (uih_toplevel_check_toplevel (uih), -1);
+
+	return (CORBA_long) toolbar_toplevel_get_pos (uih, (char *) path);
+}
+
+int
+gnome_ui_handler_toolbar_get_pos (GnomeUIHandler *uih, char *path)
+{
+	g_return_val_if_fail (uih != NULL, -1);
+	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), -1);
+	g_return_val_if_fail (path != NULL, -1);
+
+	if (uih->top_level_uih != CORBA_OBJECT_NIL)
+		return toolbar_remote_get_pos (uih, path);
+
+	return toolbar_toplevel_get_pos (uih, path);
+}
+
+static void
+toolbar_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+					   gboolean sensitive)
+{
+	GtkWidget *toolbar_widget;
+
+	internal->sensitive = sensitive;
+
+	if (! toolbar_toplevel_item_is_head (uih, internal))
+		return;
+
+	toolbar_widget = g_hash_table_lookup (uih->top->name_to_toolbar_widget, internal->item->path);
+	g_return_if_fail (toolbar_widget != NULL);
+
+	gtk_widget_set_sensitive (toolbar_widget, sensitive);
+}
+
+static void
+toolbar_toplevel_set_sensitivity (GnomeUIHandler *uih, char *path, gboolean sensitive)
+{
+	ToolbarItemInternal *internal;
+
+	internal = toolbar_toplevel_get_item (uih, path);
+
+	toolbar_toplevel_set_sensitivity_internal (uih, internal, sensitive);
+}
+
+static void
+toolbar_remote_set_sensitivity (GnomeUIHandler *uih, char *path, gboolean sensitive)
+{
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+
+	GNOME_UIHandler_toolbar_set_sensitivity (uih->top_level_uih,
+						 gnome_object_corba_objref (GNOME_OBJECT (uih)),
+						 path, sensitive,
+						 &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (
+			GNOME_OBJECT (uih),
+			(CORBA_Object) uih->top_level_uih, &ev);
+	}
+
+	CORBA_exception_free (&ev);
+}
+
+static void
+impl_toolbar_set_sensitivity (PortableServer_Servant servant,
+			      GNOME_UIHandler containee,
+			      CORBA_char *path,
+			      CORBA_boolean sensitive,
+			      CORBA_Environment *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	ToolbarItemInternal *internal;
+
+	internal = toolbar_toplevel_get_item_for_containee (uih, path, containee);
+	g_return_if_fail (internal != NULL);
+
+	toolbar_toplevel_set_sensitivity_internal (uih, internal, sensitive);
 }
 
 void
@@ -7338,7 +7509,54 @@ gnome_ui_handler_toolbar_set_sensitivity (GnomeUIHandler *uih, char *path,
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (path != NULL);
 
-	g_warning ("Unimplemented toolbar method");
+	if (uih->top_level_uih != CORBA_OBJECT_NIL)
+		toolbar_remote_set_sensitivity (uih, path, sensitive);
+	else
+		toolbar_toplevel_set_sensitivity (uih, path, sensitive);
+}
+
+static gboolean
+toolbar_toplevel_get_sensitivity (GnomeUIHandler *uih, char *path)
+{
+	ToolbarItemInternal *internal;
+
+	internal = toolbar_toplevel_get_item (uih, path);
+	g_return_val_if_fail (internal != NULL, FALSE);
+
+	return internal->sensitive;
+}
+
+static gboolean
+toolbar_remote_get_sensitivity (GnomeUIHandler *uih, char *path)
+{
+	CORBA_Environment ev;
+	CORBA_boolean retval;
+
+	CORBA_exception_init (&ev);
+
+	retval = GNOME_UIHandler_toolbar_get_sensitivity (uih->top_level_uih,
+							  path,
+							  &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (
+			GNOME_OBJECT (uih),
+			(CORBA_Object) uih->top_level_uih, &ev);
+	}
+
+	CORBA_exception_free (&ev);
+
+	return (gboolean) retval;
+}
+
+static CORBA_boolean
+impl_toolbar_get_sensitivity (PortableServer_Servant servant,
+			      CORBA_char *path,
+			      CORBA_Environment *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+
+	return toolbar_toplevel_get_sensitivity (uih, path);
 }
 
 gboolean
@@ -7348,8 +7566,10 @@ gnome_ui_handler_toolbar_get_sensitivity (GnomeUIHandler *uih, char *path)
 	g_return_val_if_fail (GNOME_IS_UI_HANDLER (uih), FALSE);
 	g_return_val_if_fail (path != NULL, FALSE);
 
-	g_warning ("Unimplemented toolbar method");
-	return FALSE;
+	if (uih->top_level_uih != CORBA_OBJECT_NIL)
+		return toolbar_remote_get_sensitivity (uih, path);
+
+	return toolbar_toplevel_get_sensitivity (uih, path);
 }
 
 void
@@ -7453,6 +7673,12 @@ gnome_ui_handler_toolbar_toggle_get_state (GnomeUIHandler *uih, char *path)
 	return FALSE;
 }
 
+static void
+toolbar_toplevel_set_toggle_state_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+					    gboolean active)
+{
+}
+
 
 void
 gnome_ui_handler_toolbar_toggle_set_state (GnomeUIHandler *uih, char *path,
@@ -7474,6 +7700,12 @@ gnome_ui_handler_toolbar_radio_get_state (GnomeUIHandler *uih, char *path)
 
 	g_warning ("Unimplemented toolbar method");
 	return FALSE;
+}
+
+static void
+toolbar_toplevel_set_radio_state_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+					    gboolean active)
+{
 }
 
 void

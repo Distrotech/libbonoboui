@@ -41,3 +41,4 @@
 
 #include <bonobo/gnome-bonobo-selector.h>
 
+#include <bonobo/gnome-bonobo-widget.h>

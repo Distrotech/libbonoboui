@@ -30,13 +30,14 @@ typedef struct _GnomeBonoboWidget GnomeBonoboWidget;
 #include <bonobo/gnome-view.h>
 
 struct _GnomeBonoboWidget {
-	GtkBin		 bin;
+	GtkBin		   bin;
 
-	GnomeContainer	*container;
-	GnomeClientSite *client_site;
-	GnomeViewFrame  *view_frame;
+	GnomeObjectClient *server;
+	GnomeContainer	  *container;
+	GnomeClientSite   *client_site;
+	GnomeViewFrame    *view_frame;
 
-	GnomeUIHandler	*uih;
+	GnomeUIHandler	  *uih;
 };
 
 typedef struct {
@@ -44,7 +45,8 @@ typedef struct {
 } GnomeBonoboWidgetClass;
 
 GtkType            gnome_bonobo_widget_get_type       (void);
-GnomeBonoboWidget *gnome_bonobo_widget_new            (char *object_desc);
+GnomeBonoboWidget *gnome_bonobo_widget_new            (char *object_desc,
+						       GnomeUIHandler *uih);
 
 END_GNOME_DECLS
 
