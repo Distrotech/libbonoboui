@@ -143,6 +143,7 @@ bonobo_view_frame_construct (BonoboViewFrame  *view_frame,
 		gtk_object_unref (GTK_OBJECT (view_frame));
 		return NULL;
 	}
+	gtk_object_ref (GTK_OBJECT (wrapper));
 	view_frame->priv->wrapper = wrapper;
 	gtk_container_add (GTK_CONTAINER (wrapper),
 			   bonobo_control_frame_get_widget (BONOBO_CONTROL_FRAME (view_frame)));
