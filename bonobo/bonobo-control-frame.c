@@ -283,7 +283,7 @@ bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 	 * container is needed solely for the sake of bypassing
 	 * plug/socket in the local case.
 	 */
-	control_frame->priv->container = gtk_hbox_new (1, 0);
+	control_frame->priv->container = gtk_hbox_new (FALSE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (control_frame->priv->container), 0);
 	gtk_box_pack_end (GTK_BOX (control_frame->priv->container),
 			  control_frame->priv->socket,

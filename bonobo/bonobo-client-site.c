@@ -353,7 +353,7 @@ bonobo_client_site_bind_embeddable (BonoboClientSite   *client_site,
 	CORBA_exception_free (&ev);
 
 	if (client_site->bound_embeddable)
-		bonobo_object_unref (client_site->bound_embeddable);
+		bonobo_object_unref (BONOBO_OBJECT (client_site->bound_embeddable));
 
 	client_site->bound_embeddable = bonobo_object_client_from_corba (embeddable_object);
 	bonobo_object_client_ref (client_site->bound_embeddable, NULL);
