@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-25 12:28+0900\n"
-"PO-Revision-Date: 2003-08-25 12:26+0900\n"
+"POT-Creation-Date: 2003-08-25 15:18+0900\n"
+"PO-Revision-Date: 2003-08-25 15:18+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -246,11 +246,11 @@ msgstr "無効にする GTK+ のデバッグ・フラグ"
 
 #: bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
-msgstr "警告を致命的なものとする"
+msgstr "全ての警告を致命的なものとする"
 
 #: bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
-msgstr "追加で GTK+ モジュールを読み込む"
+msgstr "追加で読み込む GTK+ モジュール"
 
 #: bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
