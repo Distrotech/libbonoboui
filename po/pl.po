@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-03-04 16:25+0000\n"
+"POT-Creation-Date: 2003-05-19 14:20+0100\n"
 "PO-Revision-Date: 2003-01-02 01:59+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -46,17 +46,17 @@ msgid "Shadow type"
 msgstr "Typ cienia"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1106 bonobo/bonobo-ui-toolbar.c:1107
 msgid "Orientation"
 msgstr "Ułożenie"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-ui-toolbar.c:1125 bonobo/bonobo-ui-toolbar.c:1126
 msgid "Preferred width"
 msgstr "Preferowana szerokość"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-ui-toolbar.c:1134 bonobo/bonobo-ui-toolbar.c:1135
 msgid "Preferred height"
 msgstr "Preferowana szerokość"
 
@@ -291,11 +291,11 @@ msgstr "_Dopasuj"
 msgid "Customize the toolbar"
 msgstr "Dopasuj pasek narzędziowy"
 
-#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1116
 msgid "is floating"
 msgstr "Oderwany"
 
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1117
 msgid "whether the toolbar is floating"
 msgstr "Określa, czy pasek narzędziowy jest oderwany"
 

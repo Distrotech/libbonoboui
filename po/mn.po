@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD\n"
-"POT-Creation-Date: 2003-03-04 16:25+0000\n"
+"POT-Creation-Date: 2003-05-19 14:20+0100\n"
 "PO-Revision-Date: 2003-01-16 21:18+0100\n"
 "Last-Translator: Sanlig Badral <badral@chinggis.com>\n"
 "Language-Team: mongolian <mn@li.org>\n"
@@ -44,17 +44,17 @@ msgid "Shadow type"
 msgstr "Сүүдрийн төрөл"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1106 bonobo/bonobo-ui-toolbar.c:1107
 msgid "Orientation"
 msgstr "Хандлага"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-ui-toolbar.c:1125 bonobo/bonobo-ui-toolbar.c:1126
 msgid "Preferred width"
 msgstr "Эрхэмлэсэн өргөн"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-ui-toolbar.c:1134 bonobo/bonobo-ui-toolbar.c:1135
 msgid "Preferred height"
 msgstr "Эрхэмлэсэн өндөр"
 
@@ -289,11 +289,11 @@ msgstr "_Тааруулах"
 msgid "Customize the toolbar"
 msgstr "Багаж самбар тааруулах"
 
-#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1116
 msgid "is floating"
 msgstr "Хөвүүлж байна"
 
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1117
 msgid "whether the toolbar is floating"
 msgstr "Багаж самбарыг хөвүүлэх эсэх"
 
