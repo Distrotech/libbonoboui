@@ -281,7 +281,7 @@ bonobo_property_control_changed (BonoboPropertyControl *property_control,
 		ev = *opt_ev;
 
 	s = 0;
-	any._type = (CORBA_TypeCode) TC_short;
+	any._type = (CORBA_TypeCode) TC_CORBA_short;
 	any._value = &s;
 
 	bonobo_event_source_notify_listeners (priv->event_source,

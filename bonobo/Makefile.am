@@ -86,6 +86,7 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-control.c			\
 	bonobo-file-selector-util.c		\
 	bonobo-plug.c				\
+	bonobo-property-control.c		\
 	bonobo-selector.c			\
 	bonobo-selector-widget.c		\
 	bonobo-socket.c				\

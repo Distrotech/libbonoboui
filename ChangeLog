@@ -1,3 +1,12 @@
+2001-12-02  Seth Nickell  <snickell@stanford.edu>
+
+	* bonobo/Makefile.am:
+	* bonobo/bonobo-property-control.c:
+	(bonobo_property_control_changed):
+
+	Add bonobo-property-control back into the build,
+	and fix one minor type error.
+	
 2001-11-26  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.107.0
