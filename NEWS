@@ -1,3 +1,31 @@
+libbonoboui 1.107.0
+
+	* UI handler (Me)
+		+ UI preferences ported to GConf
+		+ new exception on getAttr for no attr.
+		+ UI handler pre-condition fixage
+		+ new popup API for the panel
+		+ opt_ev'ism (Mark McLouglin)
+		+ size allocation fixes (Mark McLouglin)
+
+	* Plug / Socket (Me)
+		+ BonoboWidget fixes and updates
+		+ continuing lifecycle fixage
+		+ don't let show_all propagate in proc.
+		+ regression tests
+		+ re-parenting work
+
+	* Misc.
+		+ get_type fixage (Jacob)
+		+ glib fixes (Owen, Peter Williams)
+		+ build fixage (Mark McLouglin, Jacob)
+		+ zoomable cleans & re-writes + port to GObject
+
+	* New docs (Mark McLouglin)
+		+ UI handler
+		+ object hierarchy
+		+ controls / components
+
 libbonoboui 1.106.0
 
 	* Add exception environments where missing (Me, Federico)

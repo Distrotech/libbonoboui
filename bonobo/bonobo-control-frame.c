@@ -261,7 +261,8 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 			}
 		}
 
-		/* FIXME: how is in_proc between CORBA and X not tying up !? */
+		/* FIXME: What happens if we have an in-proc CORBA proxy eg.
+		 * for a remote X window ? - we need to treat these differently. */
 
 		if (plug && !frame->priv->inproc_control) {
 			g_warning ("ARGH - serious ORB screwup");
@@ -269,24 +270,7 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 		} else if (!plug && frame->priv->inproc_control) 
 			g_warning ("ARGH - different serious ORB screwup");
 
-		if (plug) {
-			/* FIXME: brutal hack to get round bugs in gtkplug */
-/*			BonoboPlug *plug = bonobo_control_get_plug ( 
-			frame->priv->inproc_control); */
-			
-			dprintf ("Ugly in-proc hacks %p\n", plug);
-
-			g_assert (GTK_WIDGET_REALIZED (frame->priv->socket));
-			g_assert (GTK_WIDGET (frame->priv->socket)->window != NULL);
-			GTK_PLUG (plug)->socket_window = 
-				GTK_WIDGET (frame->priv->socket)->window;
-
-			gtk_socket_add_id (GTK_SOCKET (frame->priv->socket), xid);
-		
-			gdk_window_show (GTK_WIDGET (plug)->window);
-
-		} else /* Ok out of proc */
-			gtk_socket_add_id (GTK_SOCKET (frame->priv->socket), xid);
+		gtk_socket_add_id (GTK_SOCKET (frame->priv->socket), xid);
 	}		
 
 	if (!opt_ev)

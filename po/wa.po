@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2001-11-05 10:03+1100\n"
+"POT-Creation-Date: 2001-11-30 13:49+1100\n"
 "PO-Revision-Date: 1999-02-07 17:37+0100\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: walon <linux-wa@chanae.alphanet.ch>\n"
@@ -122,6 +122,54 @@ msgstr "A _vosse môde"
 msgid "Customize the toolbar"
 msgstr "Apontyî l' bår ås usteyes a vosse môde"
 
+#: bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:353
+msgid "Has a minumum Zoom level"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr ""
+
+#: bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr ""
+
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
 msgstr "Çouchal ni fwait rén; c' est djusse on egzimpe."
@@ -139,7 +187,7 @@ msgstr "GnomeBondjoû"
 msgid "Hello, World!"
 msgstr "Bondjoû, Daegn!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:267
 msgid "Cannot init libbonoboui code"
 msgstr "Dji n' pout nén enonder li côde libbonoboui"
 
