@@ -1,3 +1,7 @@
+2001-08-01  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-selector-widget.c: update for bonobo-activation.
+
 2001-08-01  ERDI Gergo  <cactus@cactus.rulez.org>
 
 	* changes.txt: Added note about new opt_ev's

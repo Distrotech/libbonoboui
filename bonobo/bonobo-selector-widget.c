@@ -151,11 +151,11 @@ static void
 get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
 		      const gchar **required_ids)
 {
-        guint               i;
-        gchar              *query;
-        CORBA_Environment   ev;
-        OAF_ServerInfoList *servers;
-	GSList             *lang_list;
+        guint                  i;
+        gchar                 *query;
+        CORBA_Environment      ev;
+        Bonobo_ServerInfoList *servers;
+	GSList                *lang_list;
         
         g_return_if_fail (required_ids != NULL);
         g_return_if_fail (*required_ids != NULL);
@@ -165,7 +165,7 @@ get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
 	/* FIXME: sorting ? can we get oaf to do it ? - would be nice. */
 
         CORBA_exception_init (&ev);
-        servers = oaf_query (query, NULL, &ev);
+        servers = bonobo_activation_query (query, NULL, &ev);
         g_free (query);
         CORBA_exception_free (&ev);
 
@@ -175,12 +175,12 @@ get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
 	lang_list = get_lang_list ();
 
 	for (i = 0; i < servers->_length; i++) {
-                OAF_ServerInfo *oafinfo = &servers->_buffer[i];
+                Bonobo_ServerInfo *oafinfo = &servers->_buffer[i];
 		const gchar *name = NULL, *desc = NULL;
 		char *text [4];
 
-		name = oaf_server_info_prop_lookup (oafinfo, "name", lang_list);
-		desc = oaf_server_info_prop_lookup (oafinfo, "description", lang_list);
+		name = bonobo_server_info_prop_lookup (oafinfo, "name", lang_list);
+		desc = bonobo_server_info_prop_lookup (oafinfo, "description", lang_list);
 
 		if (!name && !desc)
 			name = desc = oafinfo->iid;

@@ -33,8 +33,6 @@ sample_component_finalize (GObject *obj)
 static void
 sample_component_class_init (GObjectClass *klass)
 {
-	SampleComponentClass *comp_class = SAMPLE_COMPONENT_CLASS (klass);
-
 	component_parent_class = g_type_class_peek_parent (klass);
 
 	signals [CHANGED] = g_signal_new (
@@ -97,7 +95,7 @@ sample_component_new (gchar *object_id)
 	comp = g_object_new (SAMPLE_COMPONENT_TYPE, NULL);
 
 	CORBA_exception_init (&ev);
-	server = oaf_activate_from_id (object_id, 0, NULL, &ev);
+	server = bonobo_activation_activate_from_id (object_id, 0, NULL, &ev);
 	if ((server == CORBA_OBJECT_NIL) || BONOBO_EX (&ev)) {
 		CORBA_exception_free (&ev);
 		g_object_unref (G_OBJECT (comp));
@@ -114,12 +112,12 @@ sample_component_new (gchar *object_id)
 SampleComponent *
 sample_component_new_from_storage (Bonobo_Storage storage)
 {
+	g_warning ("Nope, not yet.  Storage loading be broke still.");
+#if 0
 	Bonobo_Unknown persist;
 	Bonobo_Unknown prop_stream;
 	CORBA_Environment ev;
 
-	g_warning ("Nope, not yet.  Storage loading be broke still.");
-#if 0
 	CORBA_exception_init (&ev);
 
 	switch (comp->priv->persist_type) {
@@ -155,6 +153,7 @@ sample_component_new_from_storage (Bonobo_Storage storage)
 		g_free (msg);
 	}
 #endif
+	return NULL;
 }
 
 gboolean
@@ -164,7 +163,7 @@ sample_component_is_dirty (SampleComponent *comp)
 	Bonobo_Persist persist;
 	gboolean dirty = FALSE;
 
-	g_return_if_fail (SAMPLE_IS_COMPONENT (comp));
+	g_return_val_if_fail (SAMPLE_IS_COMPONENT (comp), FALSE);
 
 	CORBA_exception_init (&ev);
 
