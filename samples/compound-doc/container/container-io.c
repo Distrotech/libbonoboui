@@ -34,8 +34,14 @@ save_component (BonoboStorage    *storage,
 		BonoboObjectClient *embeddable;
 
 		corba_stream = Bonobo_Storage_openStream 
-			(corba_subdir, GOAD_FILE, Bonobo_Storage_CREATE, &ev);
+			(corba_subdir, GOAD_FILE,
+			 Bonobo_Storage_CREATE | Bonobo_Storage_WRITE, &ev);
 
+		if (BONOBO_EX (&ev)) {
+			g_warning ("Exception opening stream '%s'",
+				   bonobo_exception_get_text (&ev));
+			return;
+		}
 		bonobo_stream_client_write_string (corba_stream,
 						   site->obj_id,
 						   TRUE, &ev);

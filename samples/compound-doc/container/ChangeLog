@@ -1,3 +1,8 @@
+2000-11-20  Michael Meeks  <michael@helixcode.com>
+
+	* container-io.c (save_component): add write flag and check
+	for exception.
+
 2000-10-24  Michael Meeks  <michael@helixcode.com>
 
 	* container.c (final_setup): disable the 'query:' moniker until
