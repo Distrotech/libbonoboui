@@ -493,81 +493,6 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 }
 
 static BonoboUINode *
-find_child (BonoboUINode *node, const char *name)
-{
-	BonoboUINode *l, *ret = NULL;
-
-	g_return_val_if_fail (name != NULL, NULL);
-	g_return_val_if_fail (node != NULL, NULL);
-
-	for (l = node->children; l && !ret; l = l->next) {
-		const char *txt;
-
-		if ((txt = bonobo_ui_node_get_attr_by_id (l, name_id))) {
-			if (!strcmp (txt, name))
-				ret = l;
-		}
-
-		if (!ret && bonobo_ui_node_has_name (l, name))
-			ret = l;
-	}
-
-	return ret;
-}
-
-/*
- *  This monumental waste of time chewed 2 hours of my life
- * and was to try and help Eazel not have to change their
- * code at all; These routines worked fine, the compat ones
- * were duff.
- */
-/*
-char *
-bonobo_ui_xml_path_escape (const char *path)
-{
-	char *ret, *dest;
-	int   len = 0;
-	const char *p;
-
-	for (p = path; p && *p; p++) {
-		if (*p == '/')
-			len++;
-		len++;
-	}
-	
-	dest = ret = g_malloc (len + 1);
-
-	for (p = path; p && *p; p++) {
-		if (*p == '/' ||
-		    *p == '\\')
-			*dest++ = '\\';
-		*dest++ = *p;
-	}
-	dest [len] = '\0';
-
-	return ret;
-}
-
-char *
-bonobo_ui_xml_path_unescape (const char *path)
-{
-	char *ret, *dest;
-	const char *p;
-	
-	dest = ret = g_malloc (strlen (path) + 1);
-
-	for (p = path; p && *p; p++) {
-		if (*p == '\\')
-			p++;
-		*dest++ = *p;
-	}
-	*dest = '\0';
-	
-	return ret;
-}
-*/
-
-static BonoboUINode *
 xml_get_path (BonoboUIXml *tree, const char *path,
 	      gboolean allow_wild, gboolean *wildcard)
 {
@@ -622,7 +547,7 @@ xml_get_path (BonoboUIXml *tree, const char *path,
 		    names [i] [1] == '\0')
 			*wildcard = TRUE;
 
-		else if (!(ret = find_child (ret, names [i]))) {
+		else if (!(ret = bonobo_ui_node_get_path_child (ret, names [i]))) {
 /*			bonobo_ui_xml_path_freev (names); */
 			return NULL;
 		}

@@ -1,5 +1,17 @@
 2002-07-11  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-node.c
+	(bonobo_ui_node_get_path_child): impl. & optimize.
+
+	* bonobo/bonobo-ui-xml.c (find_child): kill.
+	(xml_get_path): upd.
+
+	* bonobo/bonobo-ui-toolbar.c
+	(bonobo_ui_toolbar_instance_init): set the a11y
+	role on the toolbar to ROLE_TOOL_BAR.
+
+2002-07-11  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-toolbar.c
 	(bonobo_ui_toolbar_insert): guard against
 	re-enterancy during the realize.

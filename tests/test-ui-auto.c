@@ -318,7 +318,7 @@ test_ui_performance (CORBA_Environment *ev)
 		g_free (str);
 	}
 	fprintf (stderr, "  merge command: %g(ns)\n",
-		 g_timer_elapsed (timer, NULL) * 100);
+		 g_timer_elapsed (timer, NULL) * 1000);
 
 
 	g_timer_reset (timer);
@@ -332,6 +332,16 @@ test_ui_performance (CORBA_Environment *ev)
 		g_free (str);
 	}
 	fprintf (stderr, "  merge pixbuf: %g(ns)\n",
+		 g_timer_elapsed (timer, NULL) * 1000);
+
+	g_timer_reset (timer);
+	for (i = 0; i < 10000; i++) {
+		BonoboUINode *node;
+		char *path = g_strdup_printf ("/menu/%d", i % 14);
+		node = bonobo_ui_engine_get_path (engine, path);
+		g_free (path);
+	}
+	fprintf (stderr, "  path lookup: %g(ns)\n",
 		 g_timer_elapsed (timer, NULL) * 100);
 	
 	g_object_unref (engine);

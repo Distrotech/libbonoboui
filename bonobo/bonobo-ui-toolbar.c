@@ -1139,8 +1139,9 @@ bonobo_ui_toolbar_class_init (BonoboUIToolbarClass *toolbar_class)
 static void
 bonobo_ui_toolbar_instance_init (BonoboUIToolbar *toolbar)
 {
-	BonoboUIToolbarPrivate *priv;
+	AtkObject *ao;
 	BonoboUIToolbarStyle style;
+	BonoboUIToolbarPrivate *priv;
 
 	GTK_WIDGET_SET_FLAGS (toolbar, GTK_NO_WINDOW);
 
@@ -1166,6 +1167,10 @@ bonobo_ui_toolbar_instance_init (BonoboUIToolbar *toolbar)
 	priv->tooltips                    = gtk_tooltips_new ();
 
 	toolbar->priv = priv;
+
+	ao = gtk_widget_get_accessible (GTK_WIDGET (toolbar));
+	if (ao)
+		atk_object_set_role (ao, ATK_ROLE_TOOL_BAR);
 }
 
 void

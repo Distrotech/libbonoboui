@@ -29,24 +29,26 @@ typedef struct {
 	xmlChar      *value;
 } BonoboUIAttr;
 
-gboolean    bonobo_ui_node_try_set_attr   (BonoboUINode *node,
-					   GQuark        prop,
-					   const char   *value);
-void        bonobo_ui_node_set_attr_by_id (BonoboUINode *node,
-					   GQuark        id,
-					   const char   *value);
-const char *bonobo_ui_node_get_attr_by_id (BonoboUINode *node,
-					   GQuark        id);
-const char *bonobo_ui_node_peek_attr      (BonoboUINode *node,
-					   const char   *name);
-const char *bonobo_ui_node_peek_content   (BonoboUINode *node);
-gboolean    bonobo_ui_node_has_name_by_id (BonoboUINode *node,
-					   GQuark        id);
-void        bonobo_ui_node_add_after      (BonoboUINode *before,
-					   BonoboUINode *new_after);
-void        bonobo_ui_node_move_children  (BonoboUINode *from,
-					   BonoboUINode *to);
-#define     bonobo_ui_node_same_name(a,b) ((a)->name_id == (b)->name_id)
+gboolean      bonobo_ui_node_try_set_attr   (BonoboUINode *node,
+					     GQuark        prop,
+					     const char   *value);
+void          bonobo_ui_node_set_attr_by_id (BonoboUINode *node,
+					     GQuark        id,
+					     const char   *value);
+const char   *bonobo_ui_node_get_attr_by_id (BonoboUINode *node,
+					     GQuark        id);
+const char   *bonobo_ui_node_peek_attr      (BonoboUINode *node,
+					     const char   *name);
+const char   *bonobo_ui_node_peek_content   (BonoboUINode *node);
+gboolean      bonobo_ui_node_has_name_by_id (BonoboUINode *node,
+					     GQuark        id);
+void          bonobo_ui_node_add_after      (BonoboUINode *before,
+					     BonoboUINode *new_after);
+void          bonobo_ui_node_move_children  (BonoboUINode *from,
+					     BonoboUINode *to);
+#define       bonobo_ui_node_same_name(a,b) ((a)->name_id == (b)->name_id)
+BonoboUINode *bonobo_ui_node_get_path_child (BonoboUINode *node,
+					     const char   *name);
 
 G_END_DECLS
 

@@ -1101,3 +1101,40 @@ bonobo_ui_node_peek_attr (BonoboUINode *node,
 
 	return bonobo_ui_node_get_attr_by_id (node, id);
 }
+
+/**
+ * bonobo_ui_node_get_path_child:
+ * @node: parent node
+ * @name: 'name' of child node.
+ * 
+ *    Finds the child with the right name, based on
+ * the normal path traversal naming rules.
+ * 
+ * Return value: the child node or NULL.
+ **/
+BonoboUINode *
+bonobo_ui_node_get_path_child (BonoboUINode *node,
+			       const char   *name)
+{
+	BonoboUINode *l;
+	GQuark name_as_quark;
+	static GQuark name_string_id = 0;
+
+	name_as_quark = g_quark_try_string (name);
+
+	if (!name_string_id)
+		name_string_id = g_quark_from_static_string ("name");
+
+	for (l = node->children; l; l = l->next) {
+		BonoboUIAttr *a;
+
+		if ((a = get_attr (l, name_string_id, NULL)) && a->value &&
+		    !strcmp (a->value, name))
+			return l;
+
+		if (l->name_id && l->name_id == name_as_quark)
+			return l;
+	}
+
+	return NULL;
+}
