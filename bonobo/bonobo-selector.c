@@ -253,7 +253,7 @@ select_row (GtkCList *clist, gint row, gint col,
 	    GdkEvent *event, GnomeBonoboSelector *sel)
 {
 	if (event && event->type == GDK_2BUTTON_PRESS)
-		gtk_signal_emit_by_name (GTK_OBJECT (sel), "ok");
+		gtk_signal_emit_by_name(GTK_OBJECT(sel), "clicked", 0);
 	else {
 		GtkCListClass *cl;
 
