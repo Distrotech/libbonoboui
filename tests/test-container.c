@@ -561,7 +561,14 @@ application_new (void)
 	menu_list = gnome_ui_handler_menu_parse_uiinfo_list_with_data (container_main_menu, app);
 	gnome_ui_handler_menu_add_list (app->uih, "/", menu_list);
 	gnome_ui_handler_menu_free_list (menu_list);
-	
+
+	gnome_ui_handler_create_toolbar (app->uih, "Common");
+	gnome_ui_handler_toolbar_new_item (app->uih,
+					   "/Common/item 1",
+					   "Container-added Item 1", "I am the container.  Hear me roar.",
+					   0, GNOME_UI_HANDLER_PIXMAP_NONE, NULL, 0, 0,
+					   NULL, NULL);
+
 	gtk_widget_show (app->app);
 
 	return app;

@@ -69,12 +69,12 @@ typedef struct _ToolbarToolbarLocalInternal ToolbarToolbarLocalInternal;
 enum {
 	MENU_ITEM_ACTIVATED,
 	MENU_ITEM_REMOVED,
-	MENU_ITEM_OVERRIDEN,
+	MENU_ITEM_OVERRIDDEN,
 	MENU_ITEM_REINSTATED,
 
 	TOOLBAR_ITEM_ACTIVATED,
 	TOOLBAR_ITEM_REMOVED,
-	TOOLBAR_ITEM_OVERRIDEN,
+	TOOLBAR_ITEM_OVERRIDDEN,
 	TOOLBAR_ITEM_REINSTATED,
 
 	LAST_SIGNAL
@@ -330,8 +330,10 @@ static GNOME_UIHandler		  impl_get_toplevel			(PortableServer_Servant servant,
 
 static void			  impl_menu_create			(PortableServer_Servant servant,
 									 GNOME_UIHandler containee_uih,
-									 CORBA_char *path, GNOME_UIHandler_MenuType menu_type,
-									 CORBA_char *label, CORBA_char *hint, CORBA_long pos,
+									 CORBA_char *path,
+									 GNOME_UIHandler_MenuType menu_type,
+									 CORBA_char *label, CORBA_char *hint,
+									 CORBA_long pos,
 									 GNOME_UIHandler_PixmapType pixmap_type,
 									 GNOME_UIHandler_iobuf *pixmap_data,
 									 CORBA_unsigned_long accelerator_key,
@@ -401,9 +403,30 @@ static void			  impl_menu_activated			(PortableServer_Servant servant, CORBA_cha
 									 CORBA_Environment *ev);
 static void			  impl_menu_removed			(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
-static void			  impl_menu_overriden			(PortableServer_Servant servant, CORBA_char *path,
+static void			  impl_menu_overridden			(PortableServer_Servant servant, CORBA_char *path,
 									 CORBA_Environment *ev);
 static void			  impl_menu_reinstated			(PortableServer_Servant servant, CORBA_char *path,
+									 CORBA_Environment *ev);
+
+static void			  impl_toolbar_create			(PortableServer_Servant servant,
+									 GNOME_UIHandler containee,
+									 CORBA_char *name, CORBA_Environment *ev);
+
+static void			  impl_toolbar_create_item		(PortableServer_Servant servant,
+									 GNOME_UIHandler containee_uih,
+									 CORBA_char *path,
+									 GNOME_UIHandler_ToolbarType menu_type,
+									 CORBA_char *label,
+									 CORBA_char *hint,
+									 CORBA_long pos,
+									 GNOME_UIHandler_PixmapType pixmap_type,
+									 GNOME_UIHandler_iobuf *pixmap_data,
+									 CORBA_unsigned_long accelerator_key,
+									 CORBA_long modifier,
+									 CORBA_Environment *ev);
+
+static void			  impl_toolbar_overridden		(PortableServer_Servant servant,
+									 CORBA_char *path,
 									 CORBA_Environment *ev);
 
 /*
@@ -472,8 +495,13 @@ init_ui_handler_corba_class (void)
 	/* Menu notification. */
 	gnome_ui_handler_epv.menu_activated = impl_menu_activated;
 	gnome_ui_handler_epv.menu_removed = impl_menu_removed;
-	gnome_ui_handler_epv.menu_overriden = impl_menu_overriden;
+	gnome_ui_handler_epv.menu_overridden = impl_menu_overridden;
 	gnome_ui_handler_epv.menu_reinstated = impl_menu_reinstated;
+
+	/* Toolbar functions. */
+	gnome_ui_handler_epv.toolbar_create = impl_toolbar_create;
+	gnome_ui_handler_epv.toolbar_create_item = impl_toolbar_create_item;
+	gnome_ui_handler_epv.toolbar_overridden = impl_toolbar_overridden;
 
 	/* Setup the vector of epvs */
 	gnome_ui_handler_vepv.GNOME_Unknown_epv = &gnome_object_epv;
@@ -511,7 +539,7 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *class)
 				GTK_TYPE_POINTER,
 				GTK_TYPE_POINTER);
 
-	uih_signals [MENU_ITEM_OVERRIDEN] =
+	uih_signals [MENU_ITEM_OVERRIDDEN] =
 		gtk_signal_new ("menu_item_reinstated",
 				GTK_RUN_LAST,
 				object_class->type,
@@ -544,7 +572,7 @@ gnome_ui_handler_class_init (GnomeUIHandlerClass *class)
 				GTK_TYPE_POINTER,
 				GTK_TYPE_POINTER);
 
-	uih_signals [TOOLBAR_ITEM_OVERRIDEN] =
+	uih_signals [TOOLBAR_ITEM_OVERRIDDEN] =
 		gtk_signal_new ("toolbar_item_reinstated",
 				GTK_RUN_LAST,
 				object_class->type,
@@ -617,6 +645,7 @@ gnome_ui_handler_construct (GnomeUIHandler *ui_handler, GNOME_UIHandler corba_ui
 	 */
 	ui_handler->path_to_menu_callback = g_hash_table_new (g_str_hash, g_str_equal);
 	ui_handler->path_to_toolbar_callback = g_hash_table_new (g_str_hash, g_str_equal);
+	ui_handler->path_to_toolbar_toolbar = g_hash_table_new (g_str_hash, g_str_equal);
 
 	ui_handler->top->path_to_menu_item = g_hash_table_new (g_str_hash, g_str_equal);
 	ui_handler->top->path_to_toolbar_item = g_hash_table_new (g_str_hash, g_str_equal);
@@ -1643,7 +1672,7 @@ menu_type_to_corba (GnomeUIHandlerMenuItemType type)
 	switch (type) {
 
 	case GNOME_UI_HANDLER_MENU_END:
-		g_warning ("Warning: Passing MenuTypeEnd through CORBA!");
+		g_warning ("Passing MenuTypeEnd through CORBA!\n");
 		return GNOME_UIHandler_MenuTypeEnd;
 
 	case GNOME_UI_HANDLER_MENU_ITEM:
@@ -2719,13 +2748,13 @@ menu_toplevel_override_notify (GnomeUIHandler *uih, char *path)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_menu_overriden (internal->uih_corba, path, &ev);
+	GNOME_UIHandler_menu_overridden (internal->uih_corba, path, &ev);
 
 	CORBA_exception_free (&ev);
 }
 
 static void
-impl_menu_overriden (PortableServer_Servant servant,
+impl_menu_overridden (PortableServer_Servant servant,
 		     CORBA_char *path,
 		     CORBA_Environment *ev)
 {
@@ -2741,14 +2770,14 @@ impl_menu_overriden (PortableServer_Servant servant,
 		return;
 	}
 	
-	gtk_signal_emit (GTK_OBJECT (uih), uih_signals [MENU_ITEM_OVERRIDEN], path, internal_cb->callback_data);
+	gtk_signal_emit (GTK_OBJECT (uih), uih_signals [MENU_ITEM_OVERRIDDEN], path, internal_cb->callback_data);
 }
 
 /*
  * This function is called to check if a new menu item is going to
- * override an existing one.  If it does, then the old (overriden)
+ * override an existing one.  If it does, then the old (overridden)
  * menu item's widgets must be destroyed to make room for the new
- * item. The "menu_item_overriden" signal is propagated down from the
+ * item. The "menu_item_overridden" signal is propagated down from the
  * top-level UIHandler to the appropriate containee.
  */
 static void
@@ -2769,13 +2798,13 @@ menu_toplevel_check_override (GnomeUIHandler *uih, char *path)
 	 * override it.
 	 *
 	 * Remove the item's widgets, the item's childrens' widgets,
-	 * and notify the owner of each overriden item that it has
-	 * been overriden.
+	 * and notify the owner of each overridden item that it has
+	 * been overridden.
 	 */
 	menu_toplevel_remove_widgets_recursive (uih, path);
 
 	/*
-	 * Notify the owner of each item that it was overriden.
+	 * Notify the owner of each item that it was overridden.
 	 */
 	menu_toplevel_override_notify_recursive (uih, path);
 }
@@ -5369,6 +5398,68 @@ toolbar_copy_item (GnomeUIHandlerToolbarItem *item)
 	return copy;
 }
 
+static GNOME_UIHandler_ToolbarType
+toolbar_type_to_corba (GnomeUIHandlerToolbarItemType type)
+{
+	switch (type) {
+	case GNOME_UI_HANDLER_TOOLBAR_END:
+		g_warning ("Passing ToolbarTypeEnd through CORBA!\n");
+		return GNOME_UIHandler_ToolbarTypeEnd;
+
+	case GNOME_UI_HANDLER_TOOLBAR_ITEM:
+		return GNOME_UIHandler_ToolbarTypeItem;
+
+	case GNOME_UI_HANDLER_TOOLBAR_RADIOITEM:
+		return GNOME_UIHandler_ToolbarTypeRadioItem;
+
+	case GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP:
+		return GNOME_UIHandler_ToolbarTypeRadioGroup;
+
+	case GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM:
+		return GNOME_UIHandler_ToolbarTypeToggleItem;
+
+	case GNOME_UI_HANDLER_TOOLBAR_SEPARATOR:
+		return GNOME_UIHandler_ToolbarTypeSeparator;
+
+	default:
+		g_warning ("toolbar_type_to_corba: Unknown toolbar type [%d]!\n", (gint) type);
+	}
+
+	return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+}
+
+static GnomeUIHandlerToolbarItemType
+toolbar_corba_to_type (GNOME_UIHandler_ToolbarType type)
+{
+	switch (type) {
+	case GNOME_UIHandler_ToolbarTypeEnd:
+		g_warning ("Passing ToolbarTypeEnd through CORBA!\n");
+		return GNOME_UI_HANDLER_TOOLBAR_END;
+
+	case GNOME_UIHandler_ToolbarTypeItem:
+		return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+
+	case GNOME_UIHandler_ToolbarTypeRadioItem:
+		return GNOME_UI_HANDLER_TOOLBAR_RADIOITEM;
+
+	case GNOME_UIHandler_ToolbarTypeRadioGroup:
+		return GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP;
+
+	case GNOME_UIHandler_ToolbarTypeSeparator:
+		return GNOME_UI_HANDLER_TOOLBAR_SEPARATOR;
+
+	case GNOME_UIHandler_ToolbarTypeToggleItem:
+		return GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM;
+
+	default:
+		g_warning ("toolbar_corba_to_type: Unknown toolbar type [%d]!\n", (gint) type);
+			
+	}
+
+	return GNOME_UI_HANDLER_TOOLBAR_ITEM;
+}
+
+
 static ToolbarItemLocalInternal *
 toolbar_local_get_item (GnomeUIHandler *uih, char *path)
 {
@@ -5467,25 +5558,46 @@ static void
 toolbar_toplevel_item_remove_widgets (GnomeUIHandler *uih, char *path)
 {
 	GtkWidget *toolbar_item_widget;
+	gboolean found;
 	char *orig_key;
 
 	/*
 	 * Get the toolbar item widget and remove its entry from the
 	 * hash table.
 	 */
-	g_hash_table_lookup_extended (uih->top->path_to_toolbar_item_widget, path,
-				      (gpointer *) &orig_key, (gpointer *) &toolbar_item_widget);
+	found = g_hash_table_lookup_extended (uih->top->path_to_toolbar_item_widget, path,
+					      (gpointer *) &orig_key, (gpointer *) &toolbar_item_widget);
 	g_hash_table_remove (uih->top->path_to_toolbar_item_widget, path);
 	g_free (orig_key);
 
 	/*
 	 * Destroy the widget.
 	 */
-	gtk_widget_destroy (toolbar_item_widget);
+	if (found && toolbar_item_widget != NULL)
+		gtk_widget_destroy (toolbar_item_widget);
 }
 
 static void
-toolbar_toplevel_remove_toolbar_widgets_recursive (GnomeUIHandler *uih, char *name)
+toolbar_local_toolbar_create (GnomeUIHandler *uih, char *name)
+{
+	ToolbarToolbarLocalInternal *internal;
+	GList *l;
+
+	internal = g_new0 (ToolbarToolbarLocalInternal, 1);
+
+	l = g_hash_table_lookup (uih->path_to_toolbar_toolbar, name);
+
+	if (l == NULL) {
+		l = g_list_prepend (l, internal);
+		g_hash_table_insert (uih->path_to_toolbar_toolbar, g_strdup (name), l);
+	} else {
+		l = g_list_prepend (l, internal);
+		g_hash_table_insert (uih->path_to_toolbar_toolbar, name, l);
+	}
+}
+
+static void
+toolbar_toplevel_toolbar_remove_widgets_recursive (GnomeUIHandler *uih, char *name)
 {
 	ToolbarToolbarInternal *internal;
 	GtkWidget *toolbar_widget;
@@ -5529,7 +5641,7 @@ toolbar_toplevel_toolbar_override_notify_recursive (GnomeUIHandler *uih, char *n
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_overriden (internal->uih_corba, toolbar_path, &ev);
+	GNOME_UIHandler_toolbar_overridden (internal->uih_corba, toolbar_path, &ev);
 
 	CORBA_exception_free (&ev);
 
@@ -5554,13 +5666,13 @@ toolbar_toplevel_toolbar_check_override (GnomeUIHandler *uih, char *name)
 
 	/*
 	 * There is a toolbar by this name, and so it must
-	 * be overriden.
+	 * be overridden.
 	 *
 	 * We remove its widgets, its children's widgets, and notify
-	 * the owner of each overriden item that it has been
-	 * overriden.
+	 * the owner of each overridden item that it has been
+	 * overridden.
 	 */
-	toolbar_toplevel_remove_toolbar_widgets_recursive (uih, name);
+	toolbar_toplevel_toolbar_remove_widgets_recursive (uih, name);
 
 	/*
 	 * Notification.
@@ -5626,7 +5738,7 @@ toolbar_toplevel_toolbar_create (GnomeUIHandler *uih, char *name, GNOME_UIHandle
 
 	/*
 	 * If there is already a toolbar by this name, notify its
-	 * owner that it is being overriden.
+	 * owner that it is being overridden.
 	 */
 	toolbar_toplevel_toolbar_check_override (uih, name);
 
@@ -5675,6 +5787,8 @@ gnome_ui_handler_create_toolbar (GnomeUIHandler *uih, char *name)
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (name != NULL);
+
+	toolbar_local_toolbar_create (uih, name);
 
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
 		toolbar_remote_toolbar_create (uih, name);
@@ -5774,13 +5888,13 @@ static void
 toolbar_local_add_parent_entry (GnomeUIHandler *uih, char *path)
 {
 	ToolbarToolbarLocalInternal *internal;
-	char *parent_path;
+	char *parent_name;
 
 	toolbar_local_remove_parent_entry (uih, path, FALSE);
 
-	parent_path = path_get_parent (path);
-	internal = toolbar_local_get_toolbar (uih, path);
-	g_free (parent_path);
+	parent_name = toolbar_get_toolbar_name (path);
+	internal = toolbar_local_get_toolbar (uih, parent_name);
+	g_free (parent_name);
 
 	internal->children = g_list_prepend (internal->children, g_strdup (path));
 }
@@ -5828,9 +5942,16 @@ toolbar_toplevel_item_override_notify (GnomeUIHandler *uih, char *path)
 
 	CORBA_exception_init (&ev);
 
-	GNOME_UIHandler_toolbar_overriden (internal->uih_corba, path, &ev);
+	GNOME_UIHandler_toolbar_overridden (internal->uih_corba, path, &ev);
 
 	CORBA_exception_free (&ev);
+}
+
+static void
+impl_toolbar_overridden (PortableServer_Servant servant,
+			 CORBA_char *path,
+			 CORBA_Environment *ev)
+{
 }
 
 static void
@@ -5889,6 +6010,7 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 				      GNOME_UIHandler uih_corba,
 				      ToolbarItemInternal *internal)
 {
+	GtkWidget *toolbar_item;
 	GtkWidget *toolbar;
 	GtkWidget *pixmap;
 	char *parent_name;
@@ -5897,6 +6019,7 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 	toolbar = g_hash_table_lookup (uih->top->name_to_toolbar_widget, parent_name);
 	g_free (parent_name);
 
+	toolbar_item = NULL;
 	switch (internal->item->type) {
 
 	case GNOME_UI_HANDLER_TOOLBAR_SEPARATOR:
@@ -5911,36 +6034,38 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 
 
 		if (internal->item->pos > 0)
-			gtk_toolbar_insert_element (GTK_TOOLBAR (toolbar),
-						    toolbar_type_to_gtk_type (internal->item->type),
-						    NULL, internal->item->label, internal->item->hint,
-						    NULL, pixmap,
-						    GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated),
-						    internal, internal->item->pos);
+			toolbar_item = gtk_toolbar_insert_element (GTK_TOOLBAR (toolbar),
+								   toolbar_type_to_gtk_type (internal->item->type),
+								   NULL, internal->item->label, internal->item->hint,
+								   NULL, pixmap,
+								   GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated),
+								   internal, internal->item->pos);
 		else
-			gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
-						    toolbar_type_to_gtk_type (internal->item->type),
-						    NULL, internal->item->label, internal->item->hint,
-						    NULL, pixmap,
-						    GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated), internal);
+			toolbar_item = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
+								   toolbar_type_to_gtk_type (internal->item->type),
+								   NULL, internal->item->label, internal->item->hint,
+								   NULL, pixmap,
+								   GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated),
+								   internal);
 
 		break;
 
 	case GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM:
 
 		if (internal->item->pos > 0)
-			gtk_toolbar_insert_element (GTK_TOOLBAR (toolbar),
-						    toolbar_type_to_gtk_type (internal->item->type),
-						    NULL, internal->item->label, internal->item->hint,
-						    NULL, NULL,
-						    GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated),
-						    internal, internal->item->pos);
+			toolbar_item = gtk_toolbar_insert_element (GTK_TOOLBAR (toolbar),
+								   toolbar_type_to_gtk_type (internal->item->type),
+								   NULL, internal->item->label, internal->item->hint,
+								   NULL, NULL,
+								   GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated),
+								   internal, internal->item->pos);
 		else
-			gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
-						    toolbar_type_to_gtk_type (internal->item->type),
-						    NULL, internal->item->label, internal->item->hint,
-						    NULL, NULL,
-						    GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated), internal);
+			toolbar_item = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
+								   toolbar_type_to_gtk_type (internal->item->type),
+								   NULL, internal->item->label, internal->item->hint,
+								   NULL, NULL,
+								   GTK_SIGNAL_FUNC (toolbar_toplevel_item_activated),
+								   internal);
 
 		break;
 
@@ -5956,6 +6081,8 @@ toolbar_toplevel_item_create_widgets (GnomeUIHandler *uih,
 	}
 
 	/* FIXME: Connect to signals and gtk_widget_add_accelerator */
+
+	g_hash_table_insert (uih->top->path_to_toolbar_item_widget, g_strdup (internal->item->path), toolbar_item);
 }
 
 static void
@@ -6070,6 +6197,68 @@ toolbar_remote_create_item (GnomeUIHandler *uih, char *parent_path,
 			    GnomeUIHandlerToolbarItem *item,
 			    GNOME_UIHandler uih_corba)
 {
+	GNOME_UIHandler_iobuf *pixmap_buf;
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+
+	pixmap_buf = pixmap_data_to_corba (item->pixmap_type, item->pixmap_data);
+
+	GNOME_UIHandler_toolbar_create_item (uih->top_level_uih,
+					     gnome_object_corba_objref (GNOME_OBJECT (uih)),
+					     item->path,
+					     toolbar_type_to_corba (item->type),
+					     CORBIFY_STRING (item->label),
+					     CORBIFY_STRING (item->hint),
+					     item->pos,
+					     pixmap_type_to_corba (item->pixmap_type),
+					     pixmap_buf,
+					     (CORBA_unsigned_long) item->accelerator_key,
+					     (CORBA_long) item->ac_mods,
+					     &ev);
+
+	CORBA_exception_free (&ev);
+
+	CORBA_free (pixmap_buf);
+}
+
+static void
+impl_toolbar_create_item (PortableServer_Servant servant,
+			  GNOME_UIHandler containee_uih,
+			  CORBA_char *path,
+			  GNOME_UIHandler_ToolbarType toolbar_type,
+			  CORBA_char *label,
+			  CORBA_char *hint,
+			  CORBA_long pos,
+			  GNOME_UIHandler_PixmapType pixmap_type,
+			  GNOME_UIHandler_iobuf *pixmap_data,
+			  CORBA_unsigned_long accelerator_key,
+			  CORBA_long modifier,
+			  CORBA_Environment *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	GnomeUIHandlerToolbarItem *item;
+	char *parent_path;
+
+
+	item = toolbar_make_item (path, toolbar_corba_to_type (toolbar_type),
+				  UNCORBIFY_STRING (label),
+				  UNCORBIFY_STRING (hint),
+				  pos,
+				  pixmap_corba_to_type (pixmap_type),
+				  pixmap_corba_to_data (pixmap_type, pixmap_data),
+				  (guint) accelerator_key, (GdkModifierType) modifier,
+				  NULL, NULL);
+
+	parent_path = path_get_parent (item->path);
+	g_return_if_fail (parent_path != NULL);
+
+	toolbar_toplevel_create_item (uih, parent_path, item, containee_uih);
+
+	pixmap_free_data (item->pixmap_type, item->pixmap_data);
+
+	g_free (item);
+	g_free (parent_path);
 }
 
 /**
@@ -6102,7 +6291,7 @@ gnome_ui_handler_toolbar_add_one (GnomeUIHandler *uih, char *parent_path,
 
 void
 gnome_ui_handler_toolbar_add_list (GnomeUIHandler *uih, char *path,
-			      GnomeUIHandlerToolbarItem *item)
+				   GnomeUIHandlerToolbarItem *item)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
@@ -6112,7 +6301,7 @@ gnome_ui_handler_toolbar_add_list (GnomeUIHandler *uih, char *path,
 
 void
 gnome_ui_handler_toolbar_add_tree (GnomeUIHandler *uih, char *path,
-			      GnomeUIHandlerToolbarItem *item)
+				   GnomeUIHandlerToolbarItem *item)
 {
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
