@@ -962,6 +962,8 @@ state_update_new (BonoboUISync *sync,
 	sensitive = bonobo_ui_node_get_attr_by_id (node, sensitive_id);
 	if (sensitive)
 		gtk_widget_set_sensitive (widget, atoi (sensitive));
+	else
+		gtk_widget_set_sensitive (widget, TRUE);
 
 	if ((state = bonobo_ui_node_get_attr (node, "state"))) {
 		su = g_new0 (StateUpdate, 1);
@@ -1240,11 +1242,11 @@ get_parent_path (const char *path)
  * Return value: flag on error
  **/
 BonoboUIError
-bonobo_ui_engine_xml_set_prop (BonoboUIEngine    *engine,
-			       const char        *path,
-			       const char        *property,
-			       const char        *value,
-			       const char        *component)
+bonobo_ui_engine_xml_set_prop (BonoboUIEngine *engine,
+			       const char     *path,
+			       const char     *property,
+			       const char     *value,
+			       const char     *component)
 {
 	char *parent_path;
 	BonoboUINode *copy;
