@@ -5,9 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 2.2.0\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
-"PO-Revision-Date: 2003-05-30 07:10+0800\n"
+"Project-Id-Version: libbonoboui 2.3.5\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=l10n\n"
+"POT-Creation-Date: 2003-08-19 18:12+0800\n"
+"PO-Revision-Date: 2003-08-19 18:13+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -310,7 +311,6 @@ msgid "View help for this application"
 msgstr "瀏覽有關本程式的說明文件"
 
 #: bonobo/bonobo-window.c:398
-#, fuzzy
 msgid "Name of the window - used for configuration serialization."
 msgstr "視窗名稱"
 
