@@ -1,3 +1,9 @@
+2004-09-27 Matthias Clasen <mclasen@redhat.com>
+
+	* bonobo/bonobo-ui-perferences.c 
+	(bonobo_ui_preferences_get_toolbar_style): 
+	Match prototype.
+
 2004-09-25  Federico Mena Quintero  <federico@ximian.com>
 
 	* Merged the fixes from the toolbar-rework branch.

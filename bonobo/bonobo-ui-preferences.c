@@ -152,7 +152,7 @@ bonobo_ui_preferences_get_ ## c_name (void)                      \
 }
 
 
-GtkToolbarStyle
+BonoboUIToolbarStyle
 bonobo_ui_preferences_get_toolbar_style (void)
 {
 	BonoboUIToolbarStyle style;
