@@ -254,7 +254,7 @@ bonobo_dock_item_grip_get_accessible (GtkWidget *widget)
 		bonobo_a11y_add_actions_interface (
 			a11y_type, &action_if,
 			ACTION_DOCK,   "dock",   _("Dock the toolbar"),    "<Enter>",
-			ACTION_UNDOCK, "undock", _("Un dock the toolbar"), "<Enter>",
+			ACTION_UNDOCK, "undock", _("Undock the toolbar"), "<Enter>",
 			-1);
 	}
 

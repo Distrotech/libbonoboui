@@ -1,3 +1,9 @@
+2005-01-11  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* bonobo/bonobo-dock-item-grip.c:
+	(bonobo_dock_item_grip_get_accessible): Fix string.
+	s/Un dock/Undock/. Closes bug #132211.
+
 2004-12-11  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
 
 	* samples/canvdemo/Makefile.am (EXTRA_DIST): Remove
