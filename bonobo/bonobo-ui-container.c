@@ -104,7 +104,7 @@ impl_Bonobo_UIContainer_setNode (PortableServer_Servant   servant,
 		else
 			CORBA_exception_set (
 				ev, CORBA_USER_EXCEPTION,
-				ex_Bonobo_UIContainer_MalFormedXML, NULL);
+				ex_Bonobo_UIContainer_MalformedXML, NULL);
 	}
 }
 
@@ -162,7 +162,7 @@ impl_Bonobo_UIContainer_getAttr (PortableServer_Servant servant,
 		else
 			CORBA_exception_set (
 				ev, CORBA_USER_EXCEPTION,
-				ex_Bonobo_UIContainer_NonExistantAttr, NULL);
+				ex_Bonobo_UIContainer_NonExistentAttr, NULL);
 
 		return NULL;
 	}

@@ -91,12 +91,13 @@ bonobo_plug_set_control (BonoboPlug    *plug,
 }
 
 static gboolean
-bonobo_plug_destroy_event (GtkWidget   *widget,
-			   GdkEventAny *event)
+bonobo_plug_delete_event (GtkWidget   *widget,
+			  GdkEventAny *event)
 {
-	dprintf ("bonobo_plug_destroy_event\n");
+	dprintf ("bonobo_plug_delete_event\n");
 
-	return FALSE;
+	return GTK_WIDGET_CLASS (parent_class)->delete_event (
+		widget, event);
 }
 
 
@@ -146,7 +147,7 @@ bonobo_plug_class_init (GObjectClass *klass)
 	klass->dispose = bonobo_plug_dispose;
 
 	widget_class->realize = bonobo_plug_realize;
-	widget_class->destroy_event = bonobo_plug_destroy_event;
+	widget_class->delete_event = bonobo_plug_delete_event;
 }
 
 GtkType
