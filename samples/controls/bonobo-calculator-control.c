@@ -1,10 +1,10 @@
 /*
  * bonobo-calculator-control.c
  *
- * Copyright 1999, Helix Code, Inc.
- *
  * Author:
  *   Michael Meeks (mmeeks@gnu.org)
+ *
+ * Copyright 1999, Helix Code, Inc.
  */
 
 #include <config.h>
@@ -38,17 +38,44 @@ static GnomeUIInfo calc_menu[] = {
 	GNOMEUIINFO_END
 };
 
+static void
+bonobo_calc_control_prop_value_changed_cb (BonoboPropertyBag *pb, char *name, char *type,
+					   gpointer old_value, gpointer new_value,
+					   gpointer user_data)
+{
+	if (! strcmp (name, "value")) {
+		double *v = new_value;
+
+/*		gnome_calculator_set (user_data, *v);*/
+		printf ("Set calc. result to %g\n", *v);
+	}
+}
+
 static BonoboObject *
 bonobo_calculator_factory (BonoboGenericFactory *Factory, void *closure)
 {
 	BonoboControl   *control;
 	GtkWidget	*calc;
+	BonoboPropertyBag  *pb;
+	CORBA_double       *result;
 
- 	/* Create the control. */
 	calc = gnome_calculator_new ();
 	gtk_widget_show (calc);
 
+ 	/* Create the control. */
 	control = bonobo_control_new (calc);
+
+	pb = bonobo_property_bag_new ();
+	bonobo_control_set_property_bag (control, pb);
+	gtk_signal_connect (GTK_OBJECT (pb), "value_changed",
+			    bonobo_calc_control_prop_value_changed_cb,
+			    clock);
+
+	result = g_new0 (CORBA_double, 1);
+	*result = 0.5;
+	bonobo_property_bag_add (pb, "value", "double",
+				(gpointer) result,
+				NULL, "Caluculation result", 0);
 
 	bonobo_control_set_automerge (control, TRUE);
 	bonobo_control_set_menus_with_data (control, control_menus, calc);

@@ -64,6 +64,13 @@ BonoboClientSite   *bonobo_widget_get_client_site          (BonoboWidget     *bw
 BonoboViewFrame    *bonobo_widget_get_view_frame           (BonoboWidget     *bw);
 BonoboUIHandler    *bonobo_widget_get_uih                  (BonoboWidget     *bw);
 
+void                bonobo_widget_set_property            (BonoboWidget      *control,
+							   const char        *first_prop,
+							   ...);
+void                bonobo_widget_get_property            (BonoboWidget      *control,
+							   const char        *first_prop,
+							   ...);
+
 END_GNOME_DECLS
 
 #endif

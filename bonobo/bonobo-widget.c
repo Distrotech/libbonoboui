@@ -414,3 +414,51 @@ bonobo_widget_get_type (void)
 
 	return type;
 }
+
+void
+bonobo_widget_set_property (BonoboWidget      *control,
+			    const char        *first_prop, ...)
+{
+	BonoboPropertyBagClient *cl;
+	char                    *err;
+
+	va_list args;
+	va_start (args, first_prop);
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (control->priv != NULL);
+	g_return_if_fail (BONOBO_IS_WIDGET (control));
+	g_return_if_fail (first_prop != NULL);
+
+	cl = bonobo_control_frame_get_control_property_bag (control->priv->control_frame);
+
+	err = bonobo_property_bag_client_setv (cl, first_prop, args);
+
+	if (err)
+		g_warning ("Error '%s'", err);
+
+	va_end (args);
+}
+
+void
+bonobo_widget_get_property (BonoboWidget      *control,
+			    const char        *first_prop, ...)
+{
+	BonoboPropertyBagClient *cl;
+	char                    *err;
+
+	va_list args;
+	va_start (args, first_prop);
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (control->priv != NULL);
+	g_return_if_fail (BONOBO_IS_WIDGET (control));
+	g_return_if_fail (first_prop != NULL);
+
+	cl = bonobo_control_frame_get_control_property_bag (control->priv->control_frame);
+
+	if ((err = bonobo_property_bag_client_getv (cl, first_prop, args)))
+		g_warning ("Error '%s'", err);
+
+	va_end (args);
+}

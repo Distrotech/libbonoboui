@@ -126,6 +126,16 @@ create_proplist (GtkWidget *bw)
 	return clist;
 }
 
+static void
+incr_calc (GtkButton *button, BonoboWidget *control)
+{
+	CORBA_double i;
+
+	bonobo_widget_get_property (control, "value", &i, NULL);
+	i+= 0.37;
+	bonobo_widget_set_property (control, "value", i, NULL);
+}
+
 static guint
 container_create (void)
 {
@@ -133,6 +143,7 @@ container_create (void)
 	GtkWidget       *control;
 	GtkWidget       *proplist;
 	GtkWidget       *box;
+	GtkWidget       *button;
 	BonoboUIHandler *uih;
 
 	app = gnome_app_new ("sample-control-container",
@@ -155,6 +166,11 @@ container_create (void)
 	gnome_app_set_contents (GNOME_APP (app), box);
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX (box), proplist, TRUE, TRUE, 0);
+
+	button = gtk_button_new_with_label ("Increment Calc");
+	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			    (GtkSignalFunc)incr_calc, control);
+	gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 0);
 
 	gtk_widget_show_all (app);
 

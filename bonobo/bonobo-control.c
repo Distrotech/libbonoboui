@@ -1052,3 +1052,54 @@ bonobo_control_get_type (void)
 	return type;
 }
 
+void
+bonobo_control_set_property (BonoboControl       *control,
+			     const char          *first_prop,
+			     ...)
+{
+	BonoboPropertyBagClient *cl;
+	Bonobo_PropertyBag       bag;
+	char                    *err;
+
+	va_list args;
+	va_start (args, first_prop);
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+	g_return_if_fail (first_prop != NULL);
+
+	bag = (Bonobo_PropertyBag)
+		bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
+	cl = bonobo_property_bag_client_new (bag);
+
+	if ((err = bonobo_property_bag_client_setv (cl, first_prop, args)))
+		g_warning ("Error '%s'", err);
+
+	va_end (args);
+}
+
+void
+bonobo_control_get_property (BonoboControl       *control,
+			     const char          *first_prop,
+			     ...)
+{
+	BonoboPropertyBagClient *cl;
+	Bonobo_PropertyBag       bag;
+	char                    *err;
+
+	va_list args;
+	va_start (args, first_prop);
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+	g_return_if_fail (first_prop != NULL);
+
+	bag = (Bonobo_PropertyBag)
+		bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
+	cl = bonobo_property_bag_client_new (bag);
+
+	if ((err = bonobo_property_bag_client_getv (cl, first_prop, args)))
+		g_warning ("Error '%s'", err);
+
+	va_end (args);
+}

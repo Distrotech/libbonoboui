@@ -58,6 +58,13 @@ void                        bonobo_control_set_toolbars_with_data  (BonoboContro
 BonoboUIHandlerToolbarItem *bonobo_control_get_toolbars            (BonoboControl *control);
 
 
+void                     bonobo_control_set_property            (BonoboControl       *control,
+								 const char          *first_prop,
+								 ...);
+void                     bonobo_control_get_property            (BonoboControl       *control,
+								 const char          *first_prop,
+								 ...);
+
 /* "Internal" stuff */
 GtkType                     bonobo_control_get_type                (void);
 BonoboControl              *bonobo_control_construct               (BonoboControl       *control,
