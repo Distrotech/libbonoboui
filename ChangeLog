@@ -1,3 +1,22 @@
+2002-08-30  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_image_set_pixbuf): fix
+	pixbuf leak on theme change.
+	(bonobo_ui_util_xml_get_pixbuf): kill.
+	(bonobo_ui_image_set_stock): impl. for speed.
+	(bonobo_ui_util_xml_set_image): impl from
+	its' guts, handle stock icons more
+	efficiently, and far more sanely.
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(impl_bonobo_ui_sync_toolbar_state): upd.
+	(cmd_get_toolbar_image): kill.
+
+	* bonobo/bonobo-ui-sync-menu.c
+	(impl_bonobo_ui_sync_menu_state): upd.
+	(cmd_get_menu_pixbuf): kill.
+
 2002-08-28  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.0.2

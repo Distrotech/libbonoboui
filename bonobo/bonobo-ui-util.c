@@ -306,40 +306,67 @@ bonobo_ui_image_cache_trash (void)
 	pixbuf_cache = NULL;
 }
 
-GdkPixbuf *
-bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
-			       BonoboUINode *node,
-			       GtkIconSize   icon_size)
+void
+bonobo_ui_image_set_pixbuf (GtkImage *image, GdkPixbuf *pixbuf)
 {
-	GdkPixbuf  *pixbuf = NULL;
+	if (gtk_image_get_pixbuf (image) != pixbuf)
+		gtk_image_set_from_pixbuf (image, pixbuf);
+
+	else if (pixbuf)
+		g_object_unref (pixbuf);
+}
+
+static void
+bonobo_ui_image_set_stock (GtkImage   *image,
+			   const char *name,
+			   GtkIconSize icon_size)
+{
+	g_return_if_fail (name != NULL);
+
+	if (image->storage_type != GTK_IMAGE_STOCK ||
+	    image->icon_size != icon_size ||
+	    !image->data.stock.stock_id ||
+	    strcmp (image->data.stock.stock_id, name))
+		gtk_image_set_from_stock (image, name, icon_size);
+}
+
+void
+bonobo_ui_util_xml_set_image (GtkImage     *image,
+			      BonoboUINode *node,
+			      BonoboUINode *cmd_node,
+			      GtkIconSize   icon_size)
+{
 	char       *key;
 	const char *type, *text;
+	GdkPixbuf  *pixbuf = NULL;
 
-	g_return_val_if_fail (node != NULL, NULL);
+	g_return_if_fail (node != NULL);
 
-	if (!(type = bonobo_ui_node_peek_attr (node, "pixtype")))
-		return NULL;
+	if (!(type = bonobo_ui_node_peek_attr (node, "pixtype")) && cmd_node &&
+	    !(type = bonobo_ui_node_peek_attr (cmd_node, "pixtype")))
+		return;
 
-	if (!(text = bonobo_ui_node_peek_attr (node, "pixname")))
-		return NULL;
+	if (!(text = bonobo_ui_node_peek_attr (node, "pixname")) && cmd_node &&
+	    !(text = bonobo_ui_node_peek_attr (cmd_node, "pixname")))
+		return;
 
-	/* FIXME: is this cache worthwhile anymore ? quite probably
-	 * it'd be more efficient to test per attr whether it had
-	 * changed at merge time */
+	if (!strcmp (type, "stock")) {
+		if (gtk_icon_factory_lookup_default (text))
+			bonobo_ui_image_set_stock (image, text, icon_size);
+		else {
+			char *mapped;
+			if ((mapped = lookup_stock_compat (text))) {
+				bonobo_ui_image_set_stock (image, mapped, icon_size);
+				g_free (mapped);
+			}
+		}
+		return;
+	}
+
+	/* FIXME: how worthwhile is this cache */
 	key = g_strdup_printf (
-			       "%s:%s:%d:%d"
-#ifdef HAVE_GTK_MULTIHEAD
-			       ":%p"
-#endif
-			       ,
-			       type, text,
-			       icon_size,
-			       gtk_widget_get_direction (widget)
-#ifdef HAVE_GTK_MULTIHEAD
-			       ,
-			       gtk_widget_get_screen (widget)
-#endif
-			       );
+		"%s:%d:%d", text, icon_size,
+		gtk_widget_get_direction (GTK_WIDGET (image)));
 
 	if (!pixbuf_cache)
 		pixbuf_cache = g_hash_table_new_full (
@@ -350,27 +377,11 @@ bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
 	else if ((pixbuf = g_hash_table_lookup (pixbuf_cache, key))) {
 		g_free (key);
 		g_object_ref (pixbuf);
-		return pixbuf;
+		bonobo_ui_image_set_pixbuf (image, pixbuf);
+		return;
 	}
 
-	if (!strcmp (type, "stock")) {
-		if (gtk_icon_factory_lookup_default (text))
-			pixbuf = gtk_widget_render_icon (
-				widget, text, icon_size, "bonobo-ui");
-		else {
-			char *mapped;
-
-			if ((mapped = lookup_stock_compat (text))) {
-				
-				pixbuf = gtk_widget_render_icon (
-					widget, mapped, icon_size, "bonobo-ui");
-
-				g_free (mapped);
-			} else
-				g_warning ("Unknown stock icon '%s', stock names all changed in Gtk+ 2.0", text);
-		}
-
-	} else if (!strcmp (type, "filename")) {
+	if (!strcmp (type, "filename")) {
 		char *name = find_pixmap_in_path (text);
 
 		if ((name == NULL) || !g_file_test (name, G_FILE_TEST_EXISTS))
@@ -392,8 +403,7 @@ bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
 	} else
 		g_free (key);
 
-
-	return pixbuf;
+	bonobo_ui_image_set_pixbuf (image, pixbuf);
 }
 
 /**
@@ -464,13 +474,6 @@ bonobo_ui_util_xml_get_icon_widget (BonoboUINode *node, GtkIconSize icon_size)
 		gtk_widget_show (image);
 
 	return image;
-}
-
-void
-bonobo_ui_image_set_pixbuf (GtkImage *image, GdkPixbuf *pixbuf)
-{
-	if (gtk_image_get_pixbuf (image) != pixbuf)
-		gtk_image_set_from_pixbuf (image, pixbuf);
 }
 
 /**

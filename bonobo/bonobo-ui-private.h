@@ -30,11 +30,12 @@ void       bonobo_socket_add_id           (BonoboSocket   *socket,
 					   GdkNativeWindow xid);
 void       bonobo_ui_image_cache_trash    (void);
 int        bonobo_ui_preferences_shutdown (void);
-void       bonobo_ui_image_set_pixbuf     (GtkImage       *image,
-					   GdkPixbuf      *pixbuf);
-GdkPixbuf *bonobo_ui_util_xml_get_pixbuf  (GtkWidget      *widget,
-					   BonoboUINode   *node,
-					   GtkIconSize     icon_size);
+void       bonobo_ui_image_set_pixbuf     (GtkImage     *image,
+					   GdkPixbuf    *pixbuf);
+void       bonobo_ui_util_xml_set_image   (GtkImage     *image,
+					   BonoboUINode *node,
+					   BonoboUINode *cmd_node,
+					   GtkIconSize   icon_size);
 void       bonobo_ui_engine_dispose       (BonoboUIEngine *engine);
 void       bonobo_ui_toolbar_control_item_set_sensitive
                                           (BonoboUIToolbarControlItem *item,
@@ -43,6 +44,8 @@ void       bonobo_ui_toolbar_control_item_set_sensitive
 
 gboolean   bonobo_widget_clobber_focus    (GtkWidget        *widget,
 					   GtkDirectionType  direction);
+
+GtkWidget *bonobo_ui_toolbar_button_item_get_image (BonoboUIToolbarButtonItem *item);
 
 #ifndef   DEBUG_UI
 

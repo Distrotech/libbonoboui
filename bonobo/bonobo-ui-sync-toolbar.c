@@ -39,22 +39,6 @@ static GQuark toolitem_id = 0;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
-static GdkPixbuf *
-cmd_get_toolbar_image (GtkWidget    *widget,
-		       BonoboUINode *node,
-		       BonoboUINode *cmd_node)
-{
-	if (bonobo_ui_node_peek_attr (node, "pixtype"))
-		return bonobo_ui_util_xml_get_pixbuf (
-			widget, node, GTK_ICON_SIZE_LARGE_TOOLBAR);
-
-	if (bonobo_ui_node_peek_attr (cmd_node, "pixtype"))
-		return bonobo_ui_util_xml_get_pixbuf (
-			widget, cmd_node, GTK_ICON_SIZE_LARGE_TOOLBAR);
-
-	return NULL;
-}
-
 static BonoboUIToolbarControlDisplay
 decode_control_disp (const char *txt)
 {
@@ -95,7 +79,6 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	char *min_width;
 	char *behavior;
 	char **behavior_array;
-	GdkPixbuf *image;
 	gboolean priority;
 
 	/* FIXME: to debug control problem */
@@ -131,11 +114,24 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	
 	if (!type || !strcmp (type, "toggle")) {
 
-		image = cmd_get_toolbar_image (widget, node, cmd_node);
+		if (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (widget) &&
+		    (bonobo_ui_node_peek_attr (node, "pixtype") ||
+		     bonobo_ui_node_peek_attr (cmd_node, "pixtype"))) {
+			GtkWidget *image;
+			BonoboUIToolbarButtonItem *button_item;
 
-		if (image) {
-			bonobo_ui_toolbar_button_item_set_image (
-				BONOBO_UI_TOOLBAR_BUTTON_ITEM (widget), image);
+			button_item = (BonoboUIToolbarButtonItem *) widget;
+
+			image = bonobo_ui_toolbar_button_item_get_image (button_item);
+			if (!image) {
+				image = gtk_image_new ();
+				bonobo_ui_toolbar_button_item_set_image (button_item, image);
+			}
+
+			bonobo_ui_util_xml_set_image (
+				GTK_IMAGE (image), node, cmd_node,
+				GTK_ICON_SIZE_LARGE_TOOLBAR);
+			gtk_widget_show (image);
 		}
 
 		if (label)

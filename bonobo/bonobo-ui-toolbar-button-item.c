@@ -424,3 +424,11 @@ bonobo_ui_toolbar_button_item_get_button_widget (BonoboUIToolbarButtonItem *butt
 
 	return GTK_BUTTON (GTK_BIN (button_item)->child);
 }
+
+GtkWidget *
+bonobo_ui_toolbar_button_item_get_image (BonoboUIToolbarButtonItem *button_item)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM (button_item), NULL);
+
+	return button_item->priv->icon;
+}
