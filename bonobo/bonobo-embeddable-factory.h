@@ -38,6 +38,11 @@ struct _GnomeEmbeddableFactory {
 	 */
 	GnomeEmbeddableFactoryFn factory;
 	void *factory_closure;
+
+	/*
+	 * The goad_id for this embeddable factory
+	 */
+	char *goad_id;
 };
 
 typedef struct {
