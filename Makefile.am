@@ -9,5 +9,5 @@ EXTRA_DIST = message-of-doom \
 	changes.txt          \
 	xml-i18n-extract.in  \
 	xml-i18n-merge.in    \
-	xml-i18n-update.in   \
+	xml-i18n-update.in
 
