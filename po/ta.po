@@ -1,13 +1,13 @@
 # Tamil translation of libbonoboui2.
-# Copyright (C) 2001 Free Software Foundation, Inc.
-# Balaji Narayanan <balaji.narayanan@wipro.com>, 2001..
+# Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
+# Balaji Narayanan <balaji.narayanan@wipro.com>, 2001, 2002, 2003.
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Tamil libbonoboui2 1.7\n"
-"POT-Creation-Date: 2003-03-04 16:25+0000\n"
-"PO-Revision-Date: 2001-09-28 18:53-0500\n"
-"Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
+"POT-Creation-Date: 2003-03-31 20:51+0200\n"
+"PO-Revision-Date: 2003-03-31 20:32+0600\n"
+"Last-Translator: Dinesh Nadarajah <n_dinesh@yahoo.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,95 +15,98 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr ""
+msgstr "§¸¡÷À¡ (corba) ¦¾¡Æ¢üº¡¨Ä"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr ""
+msgstr "¦¾¡Æ¢üº¡¨Ä ÍðÊ"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
-msgstr ""
+msgstr "§¸¡÷À¡ UI ¾¡í¸¢"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr ""
+msgstr "ÀÂÉ÷ þ¨¼Ó¸ô ¾¡í¸¢"
 
 #: bonobo/bonobo-dock-item-grip.c:236
-#, fuzzy
 msgid "Dock the toolbar"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
+msgstr "¸ÕÅ¢ôÀð¨¼¨Â ´ðÎ"
 
 #: bonobo/bonobo-dock-item-grip.c:237
-#, fuzzy
 msgid "Un dock the toolbar"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
+msgstr "¸ÕÅ¢ôÀð¨¼¨Âì ¸ÆðÎ"
 
-#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-dock-item.c:291
+#: bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
 msgstr "¿¢Æø Å¨¸"
 
-#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-dock-item.c:302
+#: bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1103
+#: bonobo/bonobo-ui-toolbar.c:1104
 msgid "Orientation"
 msgstr "¾¢¨º «¨Á×"
 
-#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-dock-item.c:313
+#: bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1122
+#: bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred width"
 msgstr "Å¢ÕôÀÁ¡É «¸Äõ"
 
-#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-dock-item.c:322
+#: bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1131
+#: bonobo/bonobo-ui-toolbar.c:1132
 msgid "Preferred height"
 msgstr "Å¢ÕôÀÁ¡É ¯ÂÃõ"
 
 #: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
-msgstr ""
+msgstr "¾¢ÈôÀ¾üÌ ´÷ §¸¡ô¨À ¦¾Ã¢× ¦ºöÂ×õ"
 
 #: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
-msgstr ""
+msgstr "¾¢ÈôÀ¾üÌ §¸¡ôÒ¸¨Ç ¦¾Ã¢× ¦ºöÂ×õ"
 
 #: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
-msgstr ""
+msgstr "§ºÁ¢üÀ¾üÌ µ÷ §¸¡ôÒ ¦ÀÂ¨Ã ¦¾Ã¢× ¦ºöÂ×õ"
 
 #: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
-msgstr ""
+msgstr "¿¢¸ú× ¦ºÖòÐ¾ø"
 
 #: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "X ¿¢¸ú×¸¨Ç ¦ºÖò¾ §ÅñÎÁ¡"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300
+#: bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "¦ÀÂ÷"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
-msgstr "Å¢ÅÃ¢ôÒ"
+msgstr "Å¢ÀÃ¢ôÒ"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "þ¨¼Ó¸í¸û §ÅñÎõ"
 
 #: bonobo/bonobo-selector.c:346
-msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
-"no interfaces are listed"
-msgstr ""
+msgid "A NULL_terminated array of interfaces which a server must support in order to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
+msgstr "¦¾Ã¢Å¡Ç÷ ÀðÊÂ¢ø ¸¡ñÀ¢ì¸, µ÷ §º¨ÅÂ¸õ NULL_terminated ­¨¼Ó¸í¸ÙìÌ ¬¾Ã¢ÅÇ¢ì¸ §ÅñÎõ. ­¨¼Ó¸ô ÀðÊ /þø¨Ä¦ÂÉ¢ø ¦¸¡¼¡ ¿¢¨Ä \"IDL:BonoboEmbeddable:1.0\" ¬Ìõ"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "þ¨¼Ó¸ò¾¢üÌ §¾¨ÅÂ¡É Ñ¨Ç×"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "§¾¨ÅÂ¡É µ÷ þ¨¼Ó¸õ"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -111,7 +114,7 @@ msgstr "À¡÷ì¸ììÜÊÂÐ"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr "_¸¡ñÀ¢"
+msgstr "_¸¡ñÀ¢ì¸×õ"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
@@ -119,22 +122,23 @@ msgstr "_Á¨È"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr "_¸ÕÅ¢ ¯¾Å¢¸¨Ç ¸¡ñÀ¢"
+msgstr "_¸ÕÅ¢ ¯¾Å¢¸¨Ç ¸¡ñÀ¢ì¸×õ"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "¸ÕÅ¢ô ÀÄ¨¸¸û"
 
 #: bonobo/bonobo-ui-config-widget.c:302
-#, fuzzy
 msgid "toolbars"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¸û"
+msgstr "¸ÕÅ¢ô Àð¨¼¸û"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:313
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "À¡÷"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:322
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_ÌÕõÀ¼õ"
 
@@ -143,9 +147,8 @@ msgid "_Text and Icon"
 msgstr "_¯¨ÃÔõ ÌÕõÀ¼Óõ"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "_¯¨ÃÔõ ÌÕõÀ¼Óõ"
+msgstr "¯¨Ã ÁðÎõ"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -153,112 +156,115 @@ msgstr "_ÓýÛÃ¢¨Á ¯¨Ã ÁðÎõ"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
-msgstr ""
+msgstr "À¢¨Æ ¿£ìÌ"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr ""
+msgstr "XML ¦¸¡ðÎ"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "UIþý ÓØ XML Å¢ÅÃ½ò¨¾ Ó¨ÉÂò¾¢ø ¸¡ñÀ¢ì¸×õ"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr "UI³ ¯ÕÅ¡ìÌ"
+msgstr "UI³ «¨Á ÅÊÅôÀÎ"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "«¨Áì¸§ÅñÊÂ Gdk À¢¨Æ ¿£ì¸ø ¦¸¡Ê¸û"
 
-#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:113
+#: bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
-msgstr ""
+msgstr "¦¸¡Ê¸û"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "¿£ì¸ Gdk À¢¨Æ-¿£ì¸ø ¦¸¡Ê¸û"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "ÀÂýÀÎò¾ §ÅñÊÂ X ¾¢¨Ã"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "¸¡ðº¢"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "X screen to use"
-msgstr ""
+msgstr "ÒÆí¸ §ÅñÊÂ X ¾¢¨Ã"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "¾¢¨Ã"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "X «¨ÆôÒ¸¨Ç ´ò¾¢Âì¸Á¡¸ ¬ì¸×õ"
 
 #: bonobo/bonobo-ui-init-gtk.c:135
 msgid "Don't use X shared memory extension"
-msgstr ""
+msgstr "Xþý À¸¢÷ ¿¢¨ÉÅ¸ ¿£ðÊôÒ¸¨Ç ÒÆí¸§Åñ¼¡õ"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "º¡ÇÃ§ÁÄ¡Ç÷ ÀÂýÀÎòÐõ ¿¢ÃÄ¢ý ¦ÀÂ÷"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "NAME"
-msgstr ""
+msgstr "¦ÀÂ÷"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "º¡ÇÃ§ÁÄ¡Ç÷ ÀÂýÀÎòÐõ ¿¢Ãø ÅÌôÒ"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "CLASS"
-msgstr ""
+msgstr "ÅÌôÒ"
 
 #: bonobo/bonobo-ui-init-gtk.c:146
 msgid "HOST"
-msgstr ""
+msgstr "Å¢Õó§¾¡õÒ"
 
 #: bonobo/bonobo-ui-init-gtk.c:150
 msgid "PORT"
-msgstr ""
+msgstr "Ð¨Ã"
 
-#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:155
+#: bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
-msgstr ""
+msgstr "À¡½¢"
 
 #: bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "«¨Áì¸ §ÅñÊö Gtk+ À¢¨Æ-¿£ì¸ø ¦¸¡Ê¸û"
 
 #: bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "¿£ì¸ §ÅñÊö Gtk+ À¢¨Æ-¿£ì¸ø ¦¸¡Ê¸û"
 
 #: bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "«¨ÉòÐ ±îºÃ¢ì¨¸¸¨ÇÔõ ¦¸¡ø À¢¨Æ¸Ç¡ìÌ¸"
 
 #: bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "þýÛ§Á¡÷ Gtk ÜÚ ²üÈ×õ"
 
 #: bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
-msgstr ""
+msgstr "ÜÚ"
 
 #: bonobo/bonobo-ui-init-gtk.c:180
 msgid "GTK+"
-msgstr ""
+msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
-msgstr ""
+msgstr "§À¡É§À¡ GUI ¬¾Ã×"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
@@ -290,113 +296,112 @@ msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
 
 #: bonobo/bonobo-ui-toolbar.c:1113
 msgid "is floating"
-msgstr ""
+msgstr "Á¢¾ì¸¢ýÈÐ"
 
 #: bonobo/bonobo-ui-toolbar.c:1114
 msgid "whether the toolbar is floating"
-msgstr ""
+msgstr "¸ÕÅ¢ô Àð¨¼ Á¢¾ì¸¢ýÈ¾¡"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
-msgstr ""
+msgstr "_¯ûÇ¼ì¸í¸û"
 
 #: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
-msgstr ""
+msgstr "þý¿¢ÃÖì¸¡É ¯¾Å¢¨Âô À¡÷ì¸×õ"
 
 #: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "þîº¡ÇÃò¾¢ý ¦ÀÂ÷ - ¦¾¡¼÷¿¢¨Ä «¨Á×ì¸¡¸ ÀÂýÀÎò¾ôÀÎõ"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr ""
+msgstr "«Ç×Á¡üÈõ «Ç×"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr ""
+msgstr "¦ÀÃ¢¾¡ìÌ¾ø «Ç×"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "¬¸ìÌ¨Èó¾ ¦ÀÃ¢¾¡ìÌ¾ø «Ç×"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr ""
+msgstr "¬¸ìÌ¨Èó¾ ¦ÀÃ¢¾¡ìÌ¾ø «Ç×"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "¬¸ìÜÊÂ ¦ÀÃ¢¾¡ì¸ø «Ç×"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "¬¸ìÜÊÂ ¦ÀÃ¢¾¡ìÌ¾ø «Ç×"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr ""
+msgstr "¬¸ìÌ¨Èó¾ ¦ÀÃ¢¾¡ìÌ¾ø «Ç× ¯ñÎ"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "¦ºøÖÀÊÂ¡É ¬¸ìÌ¨Èó¾ ¦ÀÃ¢¾¡ìÌ¾ø «Ç× ¯ñ¼¡"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr ""
+msgstr "¬¸ìÜÊÂ ¦ÀÃ¢¾¡ìÌ¾ø «Ç× ¯ñÎ"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "¦ºøÖÀÊÂ¡É ¬¸ìÜÊÂ ¦ÀÃ¢¾¡ìÌ¾ø «Ç× ¯ñ¼¡"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr ""
+msgstr "¦¾¡¼÷ó¾Ð"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "(À¢Ã¢¿¢¨Ä þøÄ¡Áø) ¦¾¡¼÷ó¾ Ó¨ÈÂ¢ø «Ç× Á¡üÈõ"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr ""
+msgstr "­ó¾ ¿¢Ã¨Äô ÀüÈ¢"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr ""
+msgstr "¦¾Ã¢×¦ºö"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr ""
+msgstr "_ÀüÈ¢..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr ""
+msgstr "_¦¾¡Ì"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
-#, fuzzy
 msgid "_File"
-msgstr "_Á¨È"
+msgstr "_§¸¡ôÒ"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr ""
+msgstr "_¦¾Ã¢×¦ºö"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr ""
+msgstr "þÐ µ÷ ±ÎòÐì¸¡ð¼ø ÁðÎ§Á; §Å§ÃÐõ ¦ºöÂ¡Ð.."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr ""
+msgstr "BonoboUI-Å½ì¸õ."
 
 #: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr ""
+msgstr "¸§É¡õ Å½ì¸õ"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr ""
+msgstr "«¨ÉÅÕìÌõ, Å½ì¸õ!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
@@ -404,10 +409,5 @@ msgstr "libbonoboui ÌÈ¢Ó¨È¨Â ¦¾¡¼ì¸ ­ÂÄÅ¢ø¨Ä"
 
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
-msgstr ""
+msgstr "§À¡É§À¡ UI³ ¦¾¡¼ì¸-Á¾¢ôÀÇ¢ì¸ ÓÊÂÅ¢ø¨Ä"
 
-#~ msgid "Can not bonobo_ui_init"
-#~ msgstr "bonobo_ui_init ­ÂÄÅ¢ø¨Ä"
-
-#~ msgid "Select an object"
-#~ msgstr "´Õ ­Äì¨¸ §¾÷× ¦ºö"
