@@ -6,7 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui-2.2.x\n"
-"POT-Creation-Date: 2003-07-29 15:27-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-12-09 01:54+0000\n"
 "PO-Revision-Date: 2003-03-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
@@ -48,18 +49,18 @@ msgid "Shadow type"
 msgstr "പ്രതിബിംബതരം"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1106 bonobo/bonobo-ui-toolbar.c:1107
+#: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
 msgid "Orientation"
 msgstr "സ്ഥാന നിര്ണ്ണയം"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1125 bonobo/bonobo-ui-toolbar.c:1126
+#: bonobo/bonobo-ui-toolbar.c:1129 bonobo/bonobo-ui-toolbar.c:1130
 #, fuzzy
 msgid "Preferred width"
 msgstr "സ്ഥിര വീതി"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1134 bonobo/bonobo-ui-toolbar.c:1135
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 #, fuzzy
 msgid "Preferred height"
 msgstr "തിരനോട്ട ഉയരം"
@@ -313,12 +314,12 @@ msgstr "യഥേഷ്ടം"
 msgid "Customize the toolbar"
 msgstr "ഉപകരണപ്പട്ട സജ്ജീകരിക്കുക"
 
-#: bonobo/bonobo-ui-toolbar.c:1116
+#: bonobo/bonobo-ui-toolbar.c:1120
 #, fuzzy
 msgid "is floating"
 msgstr "വരയ്‌ക്കുന്ന"
 
-#: bonobo/bonobo-ui-toolbar.c:1117
+#: bonobo/bonobo-ui-toolbar.c:1121
 #, fuzzy
 msgid "whether the toolbar is floating"
 msgstr "സ്ഥാനസൂചി മിന്നുന്ന സമയത്ത്"

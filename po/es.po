@@ -5,7 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2003-07-29 15:27-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-12-09 01:54+0000\n"
 "PO-Revision-Date: 2002-12-17 22:01GMT\n"
 "Last-Translator: Germán Poo-Caamaño <gpoo@ubiobio.cl>\n"
 "Language-Team:  <traductores@es.gnome.org>\n"
@@ -43,17 +44,17 @@ msgid "Shadow type"
 msgstr "Tipo oculto"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1106 bonobo/bonobo-ui-toolbar.c:1107
+#: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
 msgid "Orientation"
 msgstr "Orientación"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1125 bonobo/bonobo-ui-toolbar.c:1126
+#: bonobo/bonobo-ui-toolbar.c:1129 bonobo/bonobo-ui-toolbar.c:1130
 msgid "Preferred width"
 msgstr "Ancho preferido"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1134 bonobo/bonobo-ui-toolbar.c:1135
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred height"
 msgstr "Altura preferida"
 
@@ -288,11 +289,11 @@ msgstr "Personali_zar"
 msgid "Customize the toolbar"
 msgstr "Personalizar la barra de herramientas"
 
-#: bonobo/bonobo-ui-toolbar.c:1116
+#: bonobo/bonobo-ui-toolbar.c:1120
 msgid "is floating"
 msgstr "flotante"
 
-#: bonobo/bonobo-ui-toolbar.c:1117
+#: bonobo/bonobo-ui-toolbar.c:1121
 msgid "whether the toolbar is floating"
 msgstr "si la barra de herramientas es flotante"
 

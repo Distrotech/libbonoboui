@@ -1,3 +1,9 @@
+2003-12-09  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.2.5
+
+	* bonobo/Makefile.am: fixup paths for new autotools.
+
 2003-12-06  Rodney Dawes  <dobey@ximian.com>
 
 	Fixes #122137.

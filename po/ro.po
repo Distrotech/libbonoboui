@@ -7,7 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui-2.1.2\n"
-"POT-Creation-Date: 2003-07-29 15:27-0500\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-12-09 01:54+0000\n"
 "PO-Revision-Date: 2003-01-20 20:59+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
@@ -44,17 +45,17 @@ msgid "Shadow type"
 msgstr "Tip umbră"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1106 bonobo/bonobo-ui-toolbar.c:1107
+#: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
 msgid "Orientation"
 msgstr "Orientare"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1125 bonobo/bonobo-ui-toolbar.c:1126
+#: bonobo/bonobo-ui-toolbar.c:1129 bonobo/bonobo-ui-toolbar.c:1130
 msgid "Preferred width"
 msgstr "Lăţime preferată"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1134 bonobo/bonobo-ui-toolbar.c:1135
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred height"
 msgstr "Înălţime preferată"
 
@@ -289,11 +290,11 @@ msgstr "Personali_zare"
 msgid "Customize the toolbar"
 msgstr "Personalizarea barei de unelte"
 
-#: bonobo/bonobo-ui-toolbar.c:1116
+#: bonobo/bonobo-ui-toolbar.c:1120
 msgid "is floating"
 msgstr "este flotantă"
 
-#: bonobo/bonobo-ui-toolbar.c:1117
+#: bonobo/bonobo-ui-toolbar.c:1121
 msgid "whether the toolbar is floating"
 msgstr "dacă bara de unelte este flotantă"
 
