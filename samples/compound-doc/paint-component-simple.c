@@ -12,10 +12,8 @@
 #include <gnome.h>
 #include <bonobo.h>
 #include <libgnorba/gnorba.h>
-#ifdef ENABLE_GPRINT
-#	include <bonobo/bonobo-print.h>
-#	include <libgnomeprint/gnome-print.h>
-#endif
+#include <bonobo/bonobo-print.h>
+#include <libgnomeprint/gnome-print.h>
 
 /*
  * Number of running objects

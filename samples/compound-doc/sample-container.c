@@ -15,17 +15,15 @@
 #include <bonobo.h>
 #include <libgnorba/gnorba.h>
 
-#ifdef ENABLE_GPRINT
-#	include <libgnomeprint/gnome-printer.h>
-#	include <libgnomeprint/gnome-print.h>
-#	include <libgnomeprint/gnome-printer-dialog.h>
+#include <libgnomeprint/gnome-printer.h>
+#include <libgnomeprint/gnome-print.h>
+#include <libgnomeprint/gnome-printer-dialog.h>
 
-#	include <libgnomeprint/gnome-print-master.h>
-#	include <libgnomeprint/gnome-print-master-preview.h>
-#	include <libgnomeprint/gnome-print-dialog.h>
+#include <libgnomeprint/gnome-print-master.h>
+#include <libgnomeprint/gnome-print-master-preview.h>
+#include <libgnomeprint/gnome-print-dialog.h>
 
-#	include <bonobo/bonobo-print-client.h>
-#endif
+#include <bonobo/bonobo-print-client.h>
 
 typedef struct {
 	BonoboContainer  *container;
@@ -62,11 +60,9 @@ static GnomeUIInfo container_file_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
 		N_("_Add a new Embeddable component"), NULL,
 		container_add_embeddable_cmd),
-#if ENABLE_GPRINT
 	GNOMEUIINFO_ITEM_NONE (
 		N_("Print Pre_view"), NULL,
 		container_print_preview_cmd),
-#endif
 	GNOMEUIINFO_MENU_EXIT_ITEM (container_exit_cmd, NULL),
 	GNOMEUIINFO_END
 };
@@ -777,8 +773,6 @@ container_print_preview_cmd (GtkWidget *widget, Container *container)
 		bonobo_print_client_print_to (pc, c, ctx);
 		bonobo_print_context_free (c);
 		ypos += 150.0;
-
-		break;
 	}
 
 	gnome_print_context_close (ctx);

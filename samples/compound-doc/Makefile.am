@@ -5,11 +5,7 @@ else
 bin_PROGRAMS = paint-component-simple sample-container
 endif
 
-if GPRINT
 GPRINT_LIBS = $(top_builddir)/bonobo/libbonobo-print.la
-else
-GPRINT_LIBS =
-endif
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \

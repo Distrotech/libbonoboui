@@ -31,11 +31,7 @@ bonobo_libs = 			\
 	$(gnome_libs)
 
 
-if GPRINT
 lib_LTLIBRARIES = libbonobo.la libbonobo-print.la
-else
-lib_LTLIBRARIES = libbonobo.la
-endif
 
 if OAF
 test_programs =
