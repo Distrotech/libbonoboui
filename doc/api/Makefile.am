@@ -33,8 +33,9 @@ tmpl_sources = 					\
         tmpl/bonobo-item-handler.sgml		\
         tmpl/bonobo-listener.sgml		\
         tmpl/bonobo-main.sgml			\
-        tmpl/bonobo-moniker-util.sgml		\
         tmpl/bonobo-moniker.sgml		\
+        tmpl/bonobo-moniker-simple.sgml		\
+        tmpl/bonobo-moniker-util.sgml		\
         tmpl/bonobo-object-client.sgml		\
         tmpl/bonobo-object-directory.sgml	\
         tmpl/bonobo-object-io.sgml		\
@@ -126,8 +127,9 @@ scan:
 		../../bonobo/bonobo-item-container.h		\
 		../../bonobo/bonobo-listener.h			\
 		../../bonobo/bonobo-main.h			\
-		../../bonobo/bonobo-moniker-util.h		\
 		../../bonobo/bonobo-moniker.h			\
+		../../bonobo/bonobo-moniker-simple.h		\
+		../../bonobo/bonobo-moniker-util.h		\
 		../../bonobo/bonobo-object-client.h		\
 		../../bonobo/bonobo-object-directory.h		\
 		../../bonobo/bonobo-object-io.h			\

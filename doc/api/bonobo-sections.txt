@@ -116,6 +116,7 @@ bonobo_control_frame_sync_unrealize
 <SUBSECTION Standard>
 bonobo_control_frame_get_type
 BonoboControlFramePrivate
+bonobo_control_frame_focus
 </SECTION>
 
 <SECTION>
@@ -345,6 +346,23 @@ bonobo_moniker_get_type
 </SECTION>
 
 <SECTION>
+<FILE>bonobo-moniker-simple</FILE>
+BonoboMonikerSimple
+BonoboMonikerSimpleResolveFn
+bonobo_moniker_simple_new
+bonobo_moniker_simple_construct
+<SUBSECTION Standard>
+bonobo_moniker_simple_get_type
+BONOBO_MONIKER_SIMPLE_TYPE
+BONOBO_MONIKER_SIMPLE
+BONOBO_MONIKER_SIMPLE_CLASS
+BONOBO_IS_MONIKER_SIMPLE
+BONOBO_IS_MONIKER_SIMPLE_CLASS
+BonoboMonikerSimpleClass
+BonoboMonikerSimplePrivate
+</SECTION>
+
+<SECTION>
 <FILE>bonobo-object-client</FILE>
 BONOBO_OBJECT_CLIENT_TYPE
 BONOBO_OBJECT_CLIENT
@@ -416,7 +434,11 @@ BONOBO_X_TYPE_FUNC_FULL
 BONOBO_X_TYPE_FUNC
 <SUBSECTION Standard>
 bonobo_x_object_get_type
-BonoboXObjectPrivate
+BONOBO_X_OBJECT_HEADER_SIZE
+BONOBO_X_CORBA_GET_SERVANT
+BONOBO_X_CORBA_GET_OBJECT
+BONOBO_X_SERVANT_GET_CORBA
+BONOBO_X_OBJECT_GET_CORBA
 </SECTION>
 
 <SECTION>

@@ -18,6 +18,7 @@
 <!entity bonobo-listener SYSTEM "sgml/bonobo-listener.sgml">
 <!entity bonobo-main SYSTEM "sgml/bonobo-main.sgml">
 <!entity bonobo-moniker SYSTEM "sgml/bonobo-moniker.sgml">
+<!entity bonobo-moniker-simple SYSTEM "sgml/bonobo-moniker-simple.sgml">
 <!entity bonobo-moniker-util SYSTEM "sgml/bonobo-moniker-util.sgml">
 <!entity bonobo-object-client SYSTEM "sgml/bonobo-object-client.sgml">
 <!entity bonobo-object-directory SYSTEM "sgml/bonobo-object-directory.sgml">
@@ -113,9 +114,7 @@
       &bonobo-persist-stream;
       &bonobo-progressive;
       &bonobo-stream-client;
-      &bonobo-object-io;
       &bonobo-storage-plugin;
-      &bonobo-component-io;
   </chapter>
 
   <chapter id="bonobo-documents-widgets">
@@ -167,6 +166,7 @@
   <chapter id="bonobo-moniker-handlers">
     <title>Writing Monikers</title>
       &bonobo-moniker;
+      &bonobo-moniker-simple;
       &bonobo-item-handler;
   </chapter>
 
@@ -178,5 +178,7 @@
       &bonobo-object-directory;
       &bonobo-selector;
       &bonobo-async;
+      &bonobo-object-io;
+      &bonobo-component-io;
   </chapter>
 </book>

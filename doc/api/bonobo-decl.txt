@@ -1561,93 +1561,6 @@ void
 <RETURNS>PortableServer_POAManager  </RETURNS>
 void
 </FUNCTION>
-<FUNCTION>
-<NAME>bonobo_get_object</NAME>
-<RETURNS>Bonobo_Unknown  </RETURNS>
-const CORBA_char        *name,const char              *interface_name,CORBA_Environment       *ev
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_client_new_from_name</NAME>
-<RETURNS>Bonobo_Moniker  </RETURNS>
-const CORBA_char        *name,CORBA_Environment       *ev
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_client_get_name</NAME>
-<RETURNS>CORBA_char          *</RETURNS>
-Bonobo_Moniker     moniker,CORBA_Environment *ev
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_client_resolve_default</NAME>
-<RETURNS>Bonobo_Unknown  </RETURNS>
-Bonobo_Moniker     moniker,const char        *interface_name,CORBA_Environment *ev
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_client_resolve_client_default</NAME>
-<RETURNS>BonoboObjectClient  *</RETURNS>
-Bonobo_Moniker     moniker,const char        *interface_name,CORBA_Environment *ev
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_client_equal</NAME>
-<RETURNS>gboolean  </RETURNS>
-Bonobo_Moniker     moniker,const CORBA_char  *name,CORBA_Environment *opt_ev
-</FUNCTION>
-<USER_FUNCTION>
-<NAME>BonoboMonikerAsyncFn</NAME>
-<RETURNS>void </RETURNS>
-Bonobo_Unknown     object,
-				      CORBA_Environment *ev,
-				      gpointer           user_data
-</USER_FUNCTION>
-<FUNCTION>
-<NAME>bonobo_get_object_async</NAME>
-<RETURNS>void  </RETURNS>
-const CORBA_char        *name,const char              *interface_name,CORBA_Environment       *ev,guint                    timeout_msec,BonoboMonikerAsyncFn     cb,gpointer                 user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_client_new_from_name_async</NAME>
-<RETURNS>void  </RETURNS>
-const CORBA_char        *name,CORBA_Environment       *ev,guint                    timeout_msec,BonoboMonikerAsyncFn     cb,gpointer                 user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_resolve_async</NAME>
-<RETURNS>void  </RETURNS>
-Bonobo_Moniker           moniker,Bonobo_ResolveOptions   *options,const char              *interface_name,CORBA_Environment       *ev,guint                    timeout_msec,BonoboMonikerAsyncFn     cb,gpointer                 user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_resolve_async_default</NAME>
-<RETURNS>void  </RETURNS>
-Bonobo_Moniker           moniker,const char              *interface_name,CORBA_Environment       *ev,guint                    timeout_msec,BonoboMonikerAsyncFn     cb,gpointer                 user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_util_new_from_name_full</NAME>
-<RETURNS>Bonobo_Moniker  </RETURNS>
-Bonobo_Moniker     parent,const CORBA_char  *name,CORBA_Environment *ev
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_util_get_parent_name</NAME>
-<RETURNS>CORBA_char     *</RETURNS>
-Bonobo_Moniker     moniker,CORBA_Environment *ev
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_util_qi_return</NAME>
-<RETURNS>Bonobo_Unknown  </RETURNS>
-Bonobo_Unknown     object,const CORBA_char  *requested_interface,CORBA_Environment *ev
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_util_seek_std_separator</NAME>
-<RETURNS>int  </RETURNS>
-const CORBA_char  *str,int                min_idx
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_util_escape</NAME>
-<RETURNS>char           *</RETURNS>
-const char        *string,int                offset
-</FUNCTION>
-<FUNCTION>
-<NAME>bonobo_moniker_util_unescape</NAME>
-<RETURNS>char           *</RETURNS>
-const char        *string,int                num_chars
-</FUNCTION>
 <STRUCT>
 <NAME>BonoboMonikerPrivate</NAME>
 </STRUCT>
@@ -1769,6 +1682,156 @@ BonoboMoniker     *moniker,gboolean           sensitive
 <NAME>bonobo_moniker_get_case_sensitive</NAME>
 <RETURNS>gboolean  </RETURNS>
 BonoboMoniker     *moniker
+</FUNCTION>
+<MACRO>
+<NAME>BONOBO_MONIKER_SIMPLE_TYPE</NAME>
+#define BONOBO_MONIKER_SIMPLE_TYPE        (bonobo_moniker_simple_get_type ())
+</MACRO>
+<MACRO>
+<NAME>BONOBO_MONIKER_SIMPLE</NAME>
+#define BONOBO_MONIKER_SIMPLE(o)          (GTK_CHECK_CAST ((o), BONOBO_MONIKER_SIMPLE_TYPE, BonoboMonikerSimple))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_MONIKER_SIMPLE_CLASS</NAME>
+#define BONOBO_MONIKER_SIMPLE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_MONIKER_SIMPLE_TYPE, BonoboMonikerSimpleClass))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_IS_MONIKER_SIMPLE</NAME>
+#define BONOBO_IS_MONIKER_SIMPLE(o)       (GTK_CHECK_TYPE ((o), BONOBO_MONIKER_SIMPLE_TYPE))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_IS_MONIKER_SIMPLE_CLASS</NAME>
+#define BONOBO_IS_MONIKER_SIMPLE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_MONIKER_SIMPLE_TYPE))
+</MACRO>
+<STRUCT>
+<NAME>BonoboMonikerSimple</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboMonikerSimplePrivate</NAME>
+</STRUCT>
+<USER_FUNCTION>
+<NAME>BonoboMonikerSimpleResolveFn</NAME>
+<RETURNS>Bonobo_Unknown </RETURNS>
+BonoboMoniker               *moniker,
+							const Bonobo_ResolveOptions *options,
+							const CORBA_char            *requested_interface,
+							CORBA_Environment           *ev
+</USER_FUNCTION>
+<STRUCT>
+<NAME>BonoboMonikerSimple</NAME>
+struct BonoboMonikerSimple {
+        BonoboMoniker                moniker;
+	BonoboMonikerSimpleResolveFn resolve_fn;
+	BonoboMonikerSimplePrivate  *priv;
+};
+</STRUCT>
+<TYPEDEF>
+<NAME>BonoboMonikerSimpleClass</NAME>
+typedef struct {
+	BonoboMonikerClass parent_class;
+} BonoboMonikerSimpleClass;
+</TYPEDEF>
+<FUNCTION>
+<NAME>bonobo_moniker_simple_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_simple_construct</NAME>
+<RETURNS>BonoboMoniker  *</RETURNS>
+BonoboMonikerSimple         *moniker,const char                  *name,BonoboMonikerSimpleResolveFn resolve_fn
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_simple_new</NAME>
+<RETURNS>BonoboMoniker  *</RETURNS>
+const char                  *name,BonoboMonikerSimpleResolveFn resolve_fn
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_get_object</NAME>
+<RETURNS>Bonobo_Unknown  </RETURNS>
+const CORBA_char        *name,const char              *interface_name,CORBA_Environment       *ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_client_new_from_name</NAME>
+<RETURNS>Bonobo_Moniker  </RETURNS>
+const CORBA_char        *name,CORBA_Environment       *ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_client_get_name</NAME>
+<RETURNS>CORBA_char          *</RETURNS>
+Bonobo_Moniker     moniker,CORBA_Environment *ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_client_resolve_default</NAME>
+<RETURNS>Bonobo_Unknown  </RETURNS>
+Bonobo_Moniker     moniker,const char        *interface_name,CORBA_Environment *ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_client_resolve_client_default</NAME>
+<RETURNS>BonoboObjectClient  *</RETURNS>
+Bonobo_Moniker     moniker,const char        *interface_name,CORBA_Environment *ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_client_equal</NAME>
+<RETURNS>gboolean  </RETURNS>
+Bonobo_Moniker     moniker,const CORBA_char  *name,CORBA_Environment *opt_ev
+</FUNCTION>
+<USER_FUNCTION>
+<NAME>BonoboMonikerAsyncFn</NAME>
+<RETURNS>void </RETURNS>
+Bonobo_Unknown     object,
+				      CORBA_Environment *ev,
+				      gpointer           user_data
+</USER_FUNCTION>
+<FUNCTION>
+<NAME>bonobo_get_object_async</NAME>
+<RETURNS>void  </RETURNS>
+const CORBA_char        *name,const char              *interface_name,CORBA_Environment       *ev,guint                    timeout_msec,BonoboMonikerAsyncFn     cb,gpointer                 user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_client_new_from_name_async</NAME>
+<RETURNS>void  </RETURNS>
+const CORBA_char        *name,CORBA_Environment       *ev,guint                    timeout_msec,BonoboMonikerAsyncFn     cb,gpointer                 user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_resolve_async</NAME>
+<RETURNS>void  </RETURNS>
+Bonobo_Moniker           moniker,Bonobo_ResolveOptions   *options,const char              *interface_name,CORBA_Environment       *ev,guint                    timeout_msec,BonoboMonikerAsyncFn     cb,gpointer                 user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_resolve_async_default</NAME>
+<RETURNS>void  </RETURNS>
+Bonobo_Moniker           moniker,const char              *interface_name,CORBA_Environment       *ev,guint                    timeout_msec,BonoboMonikerAsyncFn     cb,gpointer                 user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_util_new_from_name_full</NAME>
+<RETURNS>Bonobo_Moniker  </RETURNS>
+Bonobo_Moniker     parent,const CORBA_char  *name,CORBA_Environment *ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_util_get_parent_name</NAME>
+<RETURNS>CORBA_char     *</RETURNS>
+Bonobo_Moniker     moniker,CORBA_Environment *ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_util_qi_return</NAME>
+<RETURNS>Bonobo_Unknown  </RETURNS>
+Bonobo_Unknown     object,const CORBA_char  *requested_interface,CORBA_Environment *ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_util_seek_std_separator</NAME>
+<RETURNS>int  </RETURNS>
+const CORBA_char  *str,int                min_idx
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_util_escape</NAME>
+<RETURNS>char           *</RETURNS>
+const char        *string,int                offset
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_util_unescape</NAME>
+<RETURNS>char           *</RETURNS>
+const char        *string,int                num_chars
 </FUNCTION>
 <MACRO>
 <NAME>BONOBO_OBJECT_CLIENT_TYPE</NAME>
