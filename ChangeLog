@@ -1,3 +1,10 @@
+2002-04-26  Alex Graveley <alex@ximian.com>
+
+	* bonobo/bonobo-ui-main.c (do_low_level_init): Use
+	gdk_get_display(), instead of the gdk internal variable
+	gdk_display, which can sometimes be NULL.  This fixes a startup
+	crash on Solaris.
+
 2002-04-18  Murray Cumming  <murrayc@usa.net>
 
 	* glade/glade-bonobo.c: Changed GladeWidgetInfo::class to
