@@ -32,42 +32,42 @@ static void
 init_bonobo_hello_factory (void)
 {
 #if USING_OAF
-    factory = bonobo_embeddable_factory_new (
-	"OAFIID:" PACKAGE "-factory:" VERSION,
-	hello_object_factory, NULL);
+	factory = bonobo_embeddable_factory_new (
+		"OAFIID:" PACKAGE "-factory:" VERSION,
+		hello_object_factory, NULL);
 #else
-    factory = bonobo_embeddable_factory_new (
-	"bonobo-object-factory:hello",
-	hello_object_factory, NULL);
+	factory = bonobo_embeddable_factory_new (
+		"bonobo-object-factory:hello",
+		hello_object_factory, NULL);
 #endif
 }
 
 static void
 init_server_factory (int argc, char **argv)
 {
-    CORBA_Environment ev;    
-    CORBA_exception_init (&ev);
+	CORBA_Environment ev;    
+	CORBA_exception_init (&ev);
 
 #if USING_OAF
-    gnome_init_with_popt_table(PACKAGE, VERSION,
-			       argc, argv,
-			       oaf_popt_options, 0, NULL); 
-    oaf_init (argc, argv);
+	gnome_init_with_popt_table (PACKAGE, VERSION,
+				    argc, argv,
+				    oaf_popt_options, 0, NULL); 
+	oaf_init (argc, argv);
 #else
-    gnome_CORBA_init_with_popt_table (
-	PACKAGE, VERSION,             /* Name of the component */
-	&argc, argv,                  /* Command-line arguments */
-	NULL, 0, NULL,                /* popt table to parse arguments */
-	GNORBA_INIT_SERVER_FUNC, &ev  /* GNORBA options */
-	);
+	gnome_CORBA_init_with_popt_table (
+		PACKAGE, VERSION,             /* Name of the component */
+		&argc, argv,                  /* Command-line arguments */
+		NULL, 0, NULL,                /* popt table to parse arguments */
+		GNORBA_INIT_SERVER_FUNC, &ev  /* GNORBA options */
+		);
 #endif
 
-    if (!bonobo_init (CORBA_OBJECT_NIL,
-		      CORBA_OBJECT_NIL,
-		      CORBA_OBJECT_NIL))
-	g_error (_("I could not initialize Bonobo"));
+	if (!bonobo_init (CORBA_OBJECT_NIL,
+			  CORBA_OBJECT_NIL,
+			  CORBA_OBJECT_NIL))
+		g_error (_("I could not initialize Bonobo"));
 
-    CORBA_exception_free (&ev);
+	CORBA_exception_free (&ev);
 }
 
 int main (int argc, char **argv)
