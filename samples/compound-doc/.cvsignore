@@ -4,3 +4,5 @@ Makefile
 Makefile.in
 paint-component-simple
 sample-container
+bonobo-hello
+container
