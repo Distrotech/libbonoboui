@@ -1,3 +1,22 @@
+2001-07-30  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c (bonobo_ui_component_add_verb): upd.
+	(bonobo_ui_component_add_verb_full): gclosureize.
+	(bonobo_ui_component_add_listener): upd.
+	(bonobo_ui_component_add_listener_full): gclosureize.
+	(listener_destroy, verb_destroy): ditto.
+	(ui_event): upd invoke.
+	(marshal_VOID__USER_DATA_STRING): impl manualy to do some leve of
+	nasty backwards compat with the Gnome::UIInfo stuff.
+	(remove_verb): update.
+	(bonobo_ui_component_remove_verb_by_closure): impl.
+	(bonobo_ui_component_remove_verb_by_func): remove
+	(bonobo_ui_component_remove_verb_by_data): remove.
+	(remove_listener): upd.
+	(bonobo_ui_component_remove_listener_by_closure): impl.
+	(bonobo_ui_component_remove_listener_by_data): kill.
+	(bonobo_ui_component_remove_listener_by_func): kill.
+
 2001-07-29  Maciej Stachowiak  <mjs@noisehavoc.org>
 
 	* samples/bonoboui-hello/helloapp.h: Include

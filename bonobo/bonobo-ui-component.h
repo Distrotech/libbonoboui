@@ -10,6 +10,7 @@
 #ifndef _BONOBO_UI_COMPONENT_H_
 #define _BONOBO_UI_COMPONENT_H_
 
+#include <gobject/gclosure.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-ui-node.h>
 
@@ -109,45 +110,35 @@ void               bonobo_ui_component_set_container   (BonoboUIComponent  *comp
 void               bonobo_ui_component_unset_container (BonoboUIComponent  *component);
 Bonobo_UIContainer bonobo_ui_component_get_container   (BonoboUIComponent  *component);
 
-void               bonobo_ui_component_add_verb     (BonoboUIComponent  *component,
-						     const char         *cname,
-						     BonoboUIVerbFn      fn,
-						     gpointer            user_data);
+void               bonobo_ui_component_add_verb        (BonoboUIComponent  *component,
+							const char         *cname,
+							BonoboUIVerbFn      fn,
+							gpointer            user_data);
 
-void               bonobo_ui_component_add_verb_full(BonoboUIComponent  *component,
-						     const char         *cname,
-						     BonoboUIVerbFn      fn,
-						     gpointer            user_data,
-						     GDestroyNotify      destroy_fn);
+void               bonobo_ui_component_add_verb_full   (BonoboUIComponent  *component,
+							const char         *cname,
+							GClosure           *closure);
 
-void               bonobo_ui_component_remove_verb         (BonoboUIComponent  *component,
-							    const char         *cname);
+void               bonobo_ui_component_remove_verb            (BonoboUIComponent  *component,
+							       const char         *cname);
 
-void               bonobo_ui_component_remove_verb_by_func (BonoboUIComponent  *component,
-							    BonoboUIVerbFn      fn);
+void               bonobo_ui_component_remove_verb_by_closure (BonoboUIComponent  *component,
+							       GClosure           *closure);
 
-void               bonobo_ui_component_remove_verb_by_data (BonoboUIComponent  *component,
+void               bonobo_ui_component_add_listener        (BonoboUIComponent  *component,
+							    const char         *id,
+							    BonoboUIListenerFn  fn,
 							    gpointer            user_data);
 
-void               bonobo_ui_component_add_listener (BonoboUIComponent  *component,
-						     const char         *id,
-						     BonoboUIListenerFn  fn,
-						     gpointer            user_data);
+void               bonobo_ui_component_add_listener_full   (BonoboUIComponent  *component,
+							    const char         *id,
+							    GClosure           *closure);
 
-void               bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
-							  const char         *id,
-							  BonoboUIListenerFn  fn,
-							  gpointer            user_data,
-							  GDestroyNotify      destroy_fn);
+void               bonobo_ui_component_remove_listener            (BonoboUIComponent  *component,
+								   const char         *cname);
 
-void               bonobo_ui_component_remove_listener         (BonoboUIComponent  *component,
-								const char         *cname);
-
-void               bonobo_ui_component_remove_listener_by_func (BonoboUIComponent  *component,
-								BonoboUIListenerFn  fn);
-
-void               bonobo_ui_component_remove_listener_by_data (BonoboUIComponent  *component,
-								gpointer            user_data);
+void               bonobo_ui_component_remove_listener_by_closure (BonoboUIComponent  *component,
+								   GClosure           *closure);
 
 void               bonobo_ui_component_set          (BonoboUIComponent  *component,
 						     const char         *path,

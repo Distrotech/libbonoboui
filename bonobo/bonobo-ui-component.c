@@ -10,6 +10,7 @@
 #include <config.h>
 #include <string.h>
 #include <unistd.h>
+#include <bonobo/bonobo-types.h>
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
@@ -32,17 +33,13 @@ static guint signals[LAST_SIGNAL] = { 0 };
 #define GET_CLASS(c) (BONOBO_UI_COMPONENT_CLASS (G_OBJECT_GET_CLASS (c)))
 
 typedef struct {
-	char              *id;
-	BonoboUIListenerFn cb;
-	gpointer           user_data;
-	GDestroyNotify     destroy_fn;
+	char     *id;
+	GClosure *closure;
 } UIListener;
 
 typedef struct {
-	char          *cname;
-	BonoboUIVerbFn cb;
-	gpointer       user_data;
-	GDestroyNotify destroy_fn;
+	char     *cname;
+	GClosure *closure;
 } UIVerb;
 
 struct _BonoboUIComponentPrivate {
@@ -62,9 +59,9 @@ static gboolean
 verb_destroy (gpointer dummy, UIVerb *verb, gpointer dummy2)
 {
 	if (verb) {
-		if (verb->destroy_fn)
-			verb->destroy_fn (verb->user_data);
-		verb->destroy_fn = NULL;
+		if (verb->closure)
+			g_closure_unref (verb->closure);
+		verb->closure = NULL;
 		g_free (verb->cname);
 		g_free (verb);
 	}
@@ -75,9 +72,9 @@ static gboolean
 listener_destroy (gpointer dummy, UIListener *l, gpointer dummy2)
 {
 	if (l) {
-		if (l->destroy_fn)
-			l->destroy_fn (l->user_data);
-		l->destroy_fn = NULL;
+		if (l->closure)
+			g_closure_unref (l->closure);
+		l->closure = NULL;
 		g_free (l->id);
 		g_free (l);
 	}
@@ -93,9 +90,13 @@ ui_event (BonoboUIComponent           *component,
 	UIListener *list;
 
 	list = g_hash_table_lookup (component->priv->listeners, id);
-	if (list && list->cb)
-		list->cb (component, id, type,
-			  state, list->user_data);
+	if (list && list->closure)
+		bonobo_closure_invoke (
+			list->closure, NULL,
+			BONOBO_UI_COMPONENT_TYPE, component,
+			G_TYPE_STRING, id,
+			G_TYPE_ENUM, type,
+			G_TYPE_STRING, state, 0);
 }
 
 static CORBA_char *
@@ -121,8 +122,13 @@ impl_Bonobo_UIComponent_execVerb (PortableServer_Servant servant,
 /*	g_warning ("TESTME: Exec verb '%s'", cname);*/
 
 	verb = g_hash_table_lookup (component->priv->verbs, cname);
-	if (verb && verb->cb)
-		verb->cb (component, verb->user_data, cname);
+	if (verb && verb->closure)
+		/* We need a funny arg order here - so for
+		   our C closure we do odd things ! */
+		bonobo_closure_invoke (
+			verb->closure, NULL,
+			BONOBO_UI_COMPONENT_TYPE, component,
+			G_TYPE_STRING, cname, 0);
 	else
 		g_warning ("FIXME: verb '%s' not found, emit exception", cname);
 
@@ -154,6 +160,39 @@ impl_Bonobo_UIComponent_uiEvent (PortableServer_Servant             servant,
 	bonobo_object_unref (BONOBO_OBJECT (component));
 }
 
+static void
+marshal_VOID__USER_DATA_STRING (GClosure     *closure,
+				GValue       *return_value,
+				guint         n_param_values,
+				const GValue *param_values,
+				gpointer      invocation_hint,
+				gpointer      marshal_data)
+{
+  typedef void (*marshal_func_VOID__USER_DATA_STRING_t) (gpointer     data1,
+							 gpointer     data2,
+							 gpointer     arg_1);
+  register marshal_func_VOID__USER_DATA_STRING_t callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 2);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (marshal_func_VOID__USER_DATA_STRING_t) (
+	  marshal_data ? marshal_data : cc->callback);
+
+  callback (data1, data2, (char*) g_value_get_string (param_values + 1));
+}
+
 
 /**
  * bonobo_ui_component_add_verb_full:
@@ -169,9 +208,7 @@ impl_Bonobo_UIComponent_uiEvent (PortableServer_Servant             servant,
 void
 bonobo_ui_component_add_verb_full (BonoboUIComponent  *component,
 				   const char         *cname,
-				   BonoboUIVerbFn      fn,
-				   gpointer            user_data,
-				   GDestroyNotify      destroy_fn)
+				   GClosure           *closure)
 {
 	UIVerb *verb;
 	BonoboUIComponentPrivate *priv;
@@ -188,9 +225,14 @@ bonobo_ui_component_add_verb_full (BonoboUIComponent  *component,
 
 	verb = g_new (UIVerb, 1);
 	verb->cname      = g_strdup (cname);
-	verb->cb         = fn;
-	verb->user_data  = user_data;
-	verb->destroy_fn = destroy_fn;
+	verb->closure    = closure;
+
+	if (G_CLOSURE_NEEDS_MARSHAL (closure))
+		g_closure_set_marshal (
+			closure,
+			marshal_VOID__USER_DATA_STRING);
+	
+	/*	verb->cb (component, verb->user_data, cname); */
 
 	g_hash_table_insert (priv->verbs, verb->cname, verb);
 }
@@ -212,16 +254,15 @@ bonobo_ui_component_add_verb (BonoboUIComponent  *component,
 			      gpointer            user_data)
 {
 	bonobo_ui_component_add_verb_full (
-		component, cname, fn, user_data, NULL);
+		component, cname, g_cclosure_new (
+			G_CALLBACK (fn), user_data, NULL));
 }
 
 typedef struct {
 	gboolean    by_name;
 	const char *name;
-	gboolean    by_func;
-	gpointer    func;
-	gboolean    by_data;
-	gpointer    user_data;
+	gboolean    by_closure;
+	GClosure   *closure;
 } RemoveInfo;
 
 static gboolean
@@ -236,12 +277,8 @@ remove_verb (gpointer	key,
 	    !strcmp (verb->cname, info->name))
 		return verb_destroy (NULL, verb, NULL);
 
-	else if (info->by_func &&
-		 (BonoboUIVerbFn) info->func == verb->cb)
-		return verb_destroy (NULL, verb, NULL);
-
-	else if (info->by_data &&
-		 (BonoboUIVerbFn) info->user_data == verb->user_data)
+	else if (info->by_closure &&
+		 info->closure == verb->closure)
 		return verb_destroy (NULL, verb, NULL);
 
 	return FALSE;
@@ -269,43 +306,22 @@ bonobo_ui_component_remove_verb (BonoboUIComponent  *component,
 }
 
 /**
- * bonobo_ui_component_remove_verb_by_func:
+ * bonobo_ui_component_remove_verb_by_closure:
  * @component: the component to add it to
  * @fn: the function pointer
  * 
  * remove any verb handled by @fn.
  **/
 void
-bonobo_ui_component_remove_verb_by_func (BonoboUIComponent  *component,
-					 BonoboUIVerbFn      fn)
+bonobo_ui_component_remove_verb_by_closure (BonoboUIComponent  *component,
+					    GClosure           *closure)
 {
 	RemoveInfo info;
 
 	memset (&info, 0, sizeof (info));
 
-	info.by_func = TRUE;
-	info.func = (gpointer) fn;
-
-	g_hash_table_foreach_remove (component->priv->verbs, remove_verb, &info);
-}
-
-/**
- * bonobo_ui_component_remove_verb_by_func:
- * @component: the component to add it to
- * @user_data: the function pointer
- * 
- * remove any verb with associated @user_data pointer
- **/
-void
-bonobo_ui_component_remove_verb_by_data (BonoboUIComponent  *component,
-					 gpointer            user_data)
-{
-	RemoveInfo info;
-
-	memset (&info, 0, sizeof (info));
-
-	info.by_data = TRUE;
-	info.user_data = user_data;
+	info.by_closure = TRUE;
+	info.closure = closure;
 
 	g_hash_table_foreach_remove (component->priv->verbs, remove_verb, &info);
 }
@@ -323,15 +339,12 @@ bonobo_ui_component_remove_verb_by_data (BonoboUIComponent  *component,
 void
 bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
 				       const char         *id,
-				       BonoboUIListenerFn  fn,
-				       gpointer            user_data,
-				       GDestroyNotify      destroy_fn)
+				       GClosure           *closure)
 {
 	UIListener *list;
 	BonoboUIComponentPrivate *priv;
 
-	g_return_if_fail (fn != NULL);
-	g_return_if_fail (id != NULL);
+	g_return_if_fail (closure != NULL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
 	priv = component->priv;
@@ -342,10 +355,12 @@ bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
 	}
 
 	list = g_new (UIListener, 1);
-	list->cb = fn;
 	list->id = g_strdup (id);
-	list->user_data = user_data;
-	list->destroy_fn = destroy_fn;
+	list->closure = closure;
+
+	if (G_CLOSURE_NEEDS_MARSHAL (closure))
+		g_closure_set_marshal (
+			closure, bonobo_marshal_VOID__STRING_ENUM_STRING);
 
 	g_hash_table_insert (priv->listeners, list->id, list);	
 }
@@ -366,7 +381,7 @@ bonobo_ui_component_add_listener (BonoboUIComponent  *component,
 				  gpointer            user_data)
 {
 	bonobo_ui_component_add_listener_full (
-		component, id, fn, user_data, NULL);
+		component, id, g_cclosure_new (G_CALLBACK (fn), user_data, NULL));
 }
 
 static gboolean
@@ -381,12 +396,8 @@ remove_listener (gpointer	key,
 	    !strcmp (listener->id, info->name))
 		return listener_destroy (NULL, listener, NULL);
 
-	else if (info->by_func &&
-		 (BonoboUIListenerFn) info->func == listener->cb)
-		return listener_destroy (NULL, listener, NULL);
-
-	else if (info->by_data &&
-		 (BonoboUIListenerFn) info->user_data == listener->user_data)
+	else if (info->by_closure &&
+		 info->closure == listener->closure)
 		return listener_destroy (NULL, listener, NULL);
 
 	return FALSE;
@@ -414,43 +425,22 @@ bonobo_ui_component_remove_listener (BonoboUIComponent  *component,
 }
 
 /**
- * bonobo_ui_component_remove_by_func:
+ * bonobo_ui_component_remove_by_closure:
  * @component: the component to add it to
  * @fn: the function pointer
  * 
  * Remove any listener with associated function @fn
  **/
 void
-bonobo_ui_component_remove_listener_by_func (BonoboUIComponent  *component,
-					     BonoboUIListenerFn      fn)
+bonobo_ui_component_remove_listener_by_closure (BonoboUIComponent *component,
+						GClosure          *closure)
 {
 	RemoveInfo info;
 
 	memset (&info, 0, sizeof (info));
 
-	info.by_func = TRUE;
-	info.func = (gpointer) fn;
-
-	g_hash_table_foreach_remove (component->priv->listeners, remove_listener, &info);
-}
-
-/**
- * bonobo_ui_component_remove_by_data:
- * @component: the component to add it to
- * @user_data: the user_data pointer
- * 
- * Remove any listener with associated user_data @user_data
- **/
-void
-bonobo_ui_component_remove_listener_by_data (BonoboUIComponent  *component,
-					     gpointer            user_data)
-{
-	RemoveInfo info;
-
-	memset (&info, 0, sizeof (info));
-
-	info.by_data = TRUE;
-	info.user_data = user_data;
+	info.by_closure = TRUE;
+	info.closure = closure;
 
 	g_hash_table_foreach_remove (component->priv->listeners, remove_listener, &info);
 }

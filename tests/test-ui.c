@@ -296,12 +296,6 @@ main (int argc, char **argv)
 	componentb = bonobo_ui_component_new ("B");
 	componentc = bonobo_ui_component_new ("C");
 
-	bonobo_ui_component_add_verb_list_with_data (
-		componenta, verbs, GUINT_TO_POINTER (12));
-
-	bonobo_ui_component_remove_verb (componenta, "FileExit");
-	bonobo_ui_component_remove_verb_by_data (componenta, GUINT_TO_POINTER (12));
-
 	bonobo_ui_component_set_container (componenta, corba_container);
 	bonobo_ui_component_set_container (componentb, corba_container);
 	bonobo_ui_component_set_container (componentc, corba_container);

@@ -91,3 +91,17 @@ bonobo-ui-container.c:
 	on the type of "view" mechanisms it supports. Since any implementation
 	of these two interfaces would be complete fluff they are now IDL-only.
 	
+bonobo-ui-component.[ch]:
+
+	bonobo_ui_component_add_listener_full,
+	bonobo_ui_component_add_verb_full: replace with GClosure methods.
+	bonobo_ui_component_remove_verb_by_func,
+	bonobo_ui_component_remove_verb_by_data,
+	bonobo_ui_component_remove_listener_by_func,
+	bonobo_ui_component_remove_listener_by_data,
+	replaced by:
+	bonobo_ui_component_remove_verb_by_closure,
+	bonobo_ui_component_remove_listener_by_closure.
+
+
+
