@@ -15,7 +15,7 @@
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-property-bag-client.h>
 
-static BonoboUIToolbarButtonItemClass *parent_class = NULL;
+static GObjectClass *parent_class = NULL;
 
 struct _BonoboUIToolbarControlItemPrivate {
         BonoboWidget *control;	/* The wrapped control */
@@ -37,7 +37,10 @@ set_control_property_bag_value (BonoboUIToolbarControlItem *item,
 {
 	BonoboControlFrame *frame;
 	Bonobo_PropertyBag bag;
-	
+
+	if (!item->priv->control)
+		return;
+
 	frame = bonobo_widget_get_control_frame (item->priv->control);
 	if (!frame)
 		return;
@@ -190,15 +193,33 @@ impl_set_tooltip (BonoboUIToolbarItem     *item,
 		gtk_tooltips_set_tip (tooltips, eventbox, tooltip, NULL);
 }
 
-/* GtkObject methods.  */
+/* GObject methods.  */
 
 static void
-impl_destroy (GtkObject *object)
+impl_dispose (GObject *object)
 {
-	g_free (BONOBO_UI_TOOLBAR_CONTROL_ITEM (object)->priv);
+	BonoboUIToolbarControlItem *control_item;
 
-	if (GTK_OBJECT_CLASS (parent_class)->destroy)
-		 (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);	
+	control_item = (BonoboUIToolbarControlItem *) object;
+	
+	if (control_item->priv->control) {
+		gtk_widget_destroy (GTK_WIDGET (control_item->priv->control));
+		control_item->priv->control = NULL;
+	}
+
+	parent_class->dispose (object);
+}
+
+static void
+impl_finalize (GObject *object)
+{
+	BonoboUIToolbarControlItem *control_item;
+
+	control_item = (BonoboUIToolbarControlItem *) object;
+
+	g_free (control_item->priv);
+
+	parent_class->finalize (object);
 }
 
 /* Gtk+ object initialization.  */
@@ -208,11 +229,11 @@ class_init (BonoboUIToolbarControlItemClass *klass)
 {
         BonoboUIToolbarButtonItemClass *button_item_class;
         BonoboUIToolbarItemClass *item_class;
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 	
 	button_item_class = BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS (klass);
 	item_class = BONOBO_UI_TOOLBAR_ITEM_CLASS (klass);
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = G_OBJECT_CLASS (klass);
 
         button_item_class->set_icon = impl_set_icon;
         button_item_class->set_label = impl_set_label;
@@ -220,7 +241,9 @@ class_init (BonoboUIToolbarControlItemClass *klass)
         item_class->set_orientation = impl_set_orientation;
 	item_class->set_style       = impl_set_style;
 	item_class->set_want_label  = impl_set_want_label;
-	object_class->destroy = impl_destroy;
+
+	object_class->dispose  = impl_dispose;
+	object_class->finalize = impl_finalize;
 
         parent_class = gtk_type_class (
 		bonobo_ui_toolbar_button_item_get_type ());
@@ -311,7 +334,7 @@ bonobo_ui_toolbar_control_item_new (Bonobo_Control control_ref)
 		control_item, control_ref);
 
 	if (!ret)
-		impl_destroy (GTK_OBJECT (control_item));
+		g_object_unref (G_OBJECT (control_item));
 
 	return ret;
 }

@@ -1,5 +1,26 @@
 2001-10-31  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-plug.c (bonobo_plug_destroy_event): hack the
+	mjmess out - this is never called it seems.
+	
+	* bonobo/bonobo-socket.c
+	(bonobo_socket_focus_in),
+	(bonobo_socket_focus_out): fix broken focus chaining.
+
+	* bonobo/bonobo-widget.c
+	(bonobo_widget_finalize): re-impl.
+	(bonobo_widget_dispose): impl.
+	(bonobo_widget_class_init): hook.
+
+	* bonobo/bonobo-ui-toolbar-control-item.c
+	(impl_finalize, impl_dispose): re-impl.
+	(class_init): hook.
+	(bonobo_ui_toolbar_control_item_new): upd.
+
+	* tests/test-ui.c (main): give a relative path for std-ui.xml
+
+2001-10-31  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-toolbar-control-item.c
 	(set_control_property_bag_value): don't set things on a NULL bag.
 

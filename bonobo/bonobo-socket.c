@@ -40,6 +40,7 @@ bonobo_socket_dispose (GObject *object)
 
 		bonobo_socket_set_control_frame (socket, NULL);
 		bonobo_object_unref (object);
+		g_assert (socket->frame == NULL);
 	}
 
 	G_OBJECT_CLASS (parent_class)->dispose (object);
@@ -98,7 +99,7 @@ bonobo_socket_focus_in (GtkWidget     *widget,
 
 	bonobo_control_frame_control_activate (socket->frame);
 
-	return FALSE;
+	return GTK_WIDGET_CLASS (parent_class)->focus_in_event (widget, focus);
 }
 
 static gint
@@ -115,7 +116,7 @@ bonobo_socket_focus_out (GtkWidget     *widget,
 
 	bonobo_control_frame_control_deactivate (socket->frame);
 
-	return FALSE;
+	return GTK_WIDGET_CLASS (parent_class)->focus_out_event (widget, focus);
 }
 
 static void

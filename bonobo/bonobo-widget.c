@@ -5,7 +5,7 @@
  * Authors:
  *   Nat Friedman    (nat@helixcode.com)
  *
- * Copyright 1999 Helix Code, Inc.
+ * Copyright 1999, 2001 Ximian, Inc.
  * 
  * Bonobo component embedding for hydrocephalic imbeciles.
  *
@@ -347,16 +347,30 @@ bonobo_widget_get_objref (BonoboWidget *bonobo_widget)
 	return bonobo_widget->priv->server;
 }
 
+
+
 static void
-bonobo_widget_finalize (GObject *object)
+bonobo_widget_dispose (GObject *object)
 {
 	BonoboWidget *bw = BONOBO_WIDGET (object);
 	BonoboWidgetPrivate *priv = bw->priv;
 	
-	if (priv->uic != CORBA_OBJECT_NIL)
+	if (priv->uic != CORBA_OBJECT_NIL) {
 		bonobo_object_release_unref (priv->uic, NULL);
+		priv->uic = CORBA_OBJECT_NIL;
+	}
 
-	g_free (priv);
+	priv->control_frame = NULL;
+
+	G_OBJECT_CLASS (bonobo_widget_parent_class)->dispose (object);
+}
+
+static void
+bonobo_widget_finalize (GObject *object)
+{
+	BonoboWidget *bw = BONOBO_WIDGET (object);
+	
+	g_free (bw->priv);
 
 	G_OBJECT_CLASS (bonobo_widget_parent_class)->finalize (object);
 }
@@ -418,6 +432,7 @@ bonobo_widget_class_init (BonoboWidgetClass *klass)
 	widget_class->size_allocate = bonobo_widget_size_allocate;
 
 	object_class->finalize = bonobo_widget_finalize;
+	object_class->dispose  = bonobo_widget_dispose;
 }
 
 static void

@@ -1,17 +1,11 @@
 /*
  * test-ui.c: A test application to hammer the Bonobo UI api.
  *
- * NB. To run this program and test the xml IO code you
- * need to do something like:
- * ln -s /{downloadpath}/libbonoboui/doc/std-ui.xml {prefix}/share/gnome/ui/std-ui.xml
- * A real application should install this file as part of 'make install'.
- *
  * Author:
  *	Michael Meeks (michael@helixcode.com)
  *
- * Copyright 2000 Ximian, Inc.
+ * Copyright 2000, 2001 Ximian, Inc.
  */
-
 #include <config.h>
 #include <string.h>
 #include <stdlib.h>
@@ -336,7 +330,7 @@ main (int argc, char **argv)
 
 	CORBA_exception_init (&ev);
 
-	fname = bonobo_ui_util_get_ui_fname (NULL, "std-ui.xml");
+	fname = bonobo_ui_util_get_ui_fname (NULL, "../doc/std-ui.xml");
 	if (fname && g_file_test (fname, G_FILE_TEST_EXISTS)) {
 		fprintf (stderr, "\n\n--- Add std-ui.xml ---\n\n\n");
 		bonobo_ui_util_set_ui (componenta, NULL, "std-ui.xml",
@@ -347,14 +341,11 @@ main (int argc, char **argv)
 			componenta, "/menu/Preferences",
 			"pixname", "/demo/a.xpm", NULL);*/
 
-		/* NB. bad, bad practice */
-		gtk_widget_show_all (GTK_WIDGET (win));
+		gtk_widget_show (GTK_WIDGET (win));
 
 		bonobo_main ();
 	} else {
-		g_warning ("Can't find <prefix>/share/gnome/ui/std-ui.xml. You should symlink like so:\n "
-			   "ln -s <downloadpath>/libbonoboui/doc/std-ui.xml <prefix>/share/gnome/ui/std-ui.xml\n"
-         "Usually this file would be installed, but examples are not installed.");
+		g_warning ("Can't find ../doc/std-ui.xml");
 		gtk_widget_show (GTK_WIDGET (win));
 	}
 	g_free (fname);

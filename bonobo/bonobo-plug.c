@@ -90,32 +90,11 @@ bonobo_plug_set_control (BonoboPlug    *plug,
 
 }
 
-/*
- * This method is called when the plug's associated X window dies.
- * This indicates either that the container application has died, or
- * that the widget is being re-parented.
- */
 static gboolean
 bonobo_plug_destroy_event (GtkWidget   *widget,
 			   GdkEventAny *event)
 {
-	BonoboPlug    *plug = BONOBO_PLUG (widget);
-	BonoboControl *control;
-
 	dprintf ("bonobo_plug_destroy_event");
-
-	if (!(control = plug->control))
-		return FALSE;
-
-	/*
-	 * Set the plug to NULL here so that we don't try to
-	 * destroy it later.  It will get destroyed on its
-	 * own.
-	 */
-	bonobo_control_set_plug (control, NULL);
-
-	/* Destroy this plug's BonoboControl. */
-	bonobo_object_unref (BONOBO_OBJECT (control));
 
 	return FALSE;
 }
@@ -160,10 +139,8 @@ bonobo_plug_get_type ()
 {
 	static guint plug_type = 0;
 
-	if (!plug_type)
-	{
-		static const GtkTypeInfo plug_info =
-		{
+	if (!plug_type) {
+		static const GtkTypeInfo plug_info = {
 			"BonoboPlug",
 			sizeof (BonoboPlug),
 			sizeof (BonoboPlugClass),
@@ -173,7 +150,8 @@ bonobo_plug_get_type ()
 			NULL
 		};
 
-		plug_type = gtk_type_unique (gtk_plug_get_type (), &plug_info);
+		plug_type = gtk_type_unique (
+			gtk_plug_get_type (), &plug_info);
 	}
 
 	return plug_type;

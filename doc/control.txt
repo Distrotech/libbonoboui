@@ -149,3 +149,11 @@ plug->socket_window and socket->plug_window [ these may race ].
 
 	Consider the 'activation' side of it all; what does activation
 entail, and what happens in failure modes.
+
+	Consider how a BonoboWidget might correctly hold onto a child
+widget, and possibly it's control frame ?
+
+
+* Status
+
+	* Steady state referencing ...
