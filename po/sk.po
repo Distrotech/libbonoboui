@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-05-27 12:51+0100\n"
-"PO-Revision-Date: 2002-05-21 23:00+0200\n"
+"POT-Creation-Date: 2002-05-28 09:45+0200\n"
+"PO-Revision-Date: 2002-05-28 09:45+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -143,9 +143,8 @@ msgid "_Text and Icon"
 msgstr "_Text a ikona"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "_Text a ikona"
+msgstr "Len text"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
