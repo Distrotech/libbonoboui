@@ -1,3 +1,7 @@
+2001-08-31  Abel Cheung  <maddog@linux.org.hk>
+
+	* configure.in (ALL_LINGUAS): zh_TW.Big5 -> zh_TW
+
 2001-08-24  jacob berkman  <jacob@ximian.com>
 
 	* tests/test-filesel.c: test for bonobo-file-selector
