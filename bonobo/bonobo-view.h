@@ -59,16 +59,6 @@ BonoboUIComponent    *bonobo_view_get_ui_component       (BonoboView         *vi
 void                  bonobo_view_activate_notify        (BonoboView         *view,
 							  gboolean            activated);
 						  
-/* Verbs. */					  
-void                  bonobo_view_register_verb          (BonoboView         *view,
-							  const char         *verb_name,
-							  BonoboViewVerbFunc  callback,
-							  gpointer            user_data);
-void                  bonobo_view_unregister_verb        (BonoboView         *view,
-							  const char         *verb_name);
-void                  bonobo_view_execute_verb           (BonoboView         *view,
-							  const char         *verb_name);
-char                 *bonobo_view_popup_verbs            (BonoboView         *view);
 POA_Bonobo_View__epv *bonobo_view_get_epv                (void);
 
 END_GNOME_DECLS

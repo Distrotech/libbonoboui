@@ -1126,6 +1126,12 @@ radio_group_add (BonoboWinPrivate *priv,
 	} else {
 		gtk_radio_menu_item_set_group (
 			menuitem, gtk_radio_menu_item_group (master));
+		
+		/* Since we created this item without a group, it's
+		 * active, but now we are adding it to a group so it
+		 * should not be active.
+		 */
+		GTK_CHECK_MENU_ITEM (menuitem)->active = FALSE;
 	}
 
 	gtk_object_set_data (GTK_OBJECT (menuitem),
