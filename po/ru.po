@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "POT-Creation-Date: 2002-04-29 15:45+0200\n"
-"PO-Revision-Date: 2002-04-16 00:34+0400\n"
+"PO-Revision-Date: 2002-05-04 19:22+0400\n"
 "Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,14 +33,12 @@ msgid "Preferred height"
 msgstr "Предпочтительная высота"
 
 #: bonobo/bonobo-dock-item-grip.c:236
-#, fuzzy
 msgid "Dock the toolbar"
-msgstr "Разнообразить панель"
+msgstr "Прицепить панель инструментов"
 
 #: bonobo/bonobo-dock-item-grip.c:237
-#, fuzzy
 msgid "Un dock the toolbar"
-msgstr "Разнообразить панель"
+msgstr "Отцепить панель инструментов"
 
 #: bonobo/bonobo-file-selector-util.c:373
 msgid "Select a file to open"
@@ -124,7 +122,7 @@ msgstr "_Текст"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
-msgstr "Скрыть подсказки"
+msgstr "Скрыть под_сказки"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
