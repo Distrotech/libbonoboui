@@ -1232,8 +1232,11 @@ bonobo_ui_handler_toplevel_create_pixmap (GtkWidget *window,
 		/* Create GtkPixmap to return */
 		pixmap = gtk_pixmap_new (gdk_pixmap, gdk_bitmap);
 
+		/* Unref source pimxap and mask data */
 		gdk_pixmap_unref (gdk_pixmap);
-		gdk_bitmap_unref (gdk_bitmap);
+
+		if (gdk_bitmap != NULL)
+			gdk_bitmap_unref (gdk_bitmap);
 		break;
 
 	default:
