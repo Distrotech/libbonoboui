@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-12-02 09:37+0000\n"
-"PO-Revision-Date: 2002-11-06 09:27+EDT\n"
+"POT-Creation-Date: 2002-10-31 05:05+0100\n"
+"PO-Revision-Date: 2002-12-10 19:37+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"
 "Language-Team: Amharic <locales@geez.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr ""
+msgstr "የcorba ፋብሪካ"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
@@ -151,7 +151,7 @@ msgstr ""
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr ""
+msgstr "UIን ለወጡ"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
@@ -216,7 +216,7 @@ msgstr ""
 
 #: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
-msgstr "ዘዴ"
+msgstr "ዘይቤ"
 
 #: bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
@@ -348,7 +348,7 @@ msgstr "ስለዚህ ፕሮግራም"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr "ምርጫ"
+msgstr "ምረጥ"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
@@ -364,7 +364,7 @@ msgstr "_ፋይል (_F)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "ምርጫ (_S)"
+msgstr "ምረጥ (_S)"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
