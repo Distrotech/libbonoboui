@@ -35,6 +35,7 @@ typedef struct _BonoboSocket BonoboSocket;
 
 G_BEGIN_DECLS
 
+#define BONOBO_TYPE_SOCKET          (bonobo_socket_get_type ())
 #define BONOBO_SOCKET(obj)          GTK_CHECK_CAST (obj, bonobo_socket_get_type (), BonoboSocket)
 #define BONOBO_SOCKET_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_socket_get_type (), BonoboSocketClass)
 #define BONOBO_IS_SOCKET(obj)       GTK_CHECK_TYPE (obj, bonobo_socket_get_type ())
