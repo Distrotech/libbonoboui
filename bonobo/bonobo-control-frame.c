@@ -46,6 +46,7 @@ struct _BonoboControlFramePrivate {
 	BonoboPropertyBag *propbag;
 	gboolean           autoactivate;
 	gboolean           autostate;
+	gboolean           activated;
 };
 
 static void
@@ -313,12 +314,13 @@ bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
 	 */
 	if (ui_container != CORBA_OBJECT_NIL) {
 		CORBA_Environment ev;
+
 		CORBA_exception_init (&ev);
 		g_assert (CORBA_Object_is_a (ui_container, "IDL:Bonobo/UIContainer:1.0", &ev));
+		control_frame->priv->ui_container = bonobo_object_dup_ref (ui_container, &ev);
 		CORBA_exception_free (&ev);
-	}
-
-	control_frame->priv->ui_container = ui_container;
+	} else
+		control_frame->priv->ui_container = ui_container;
 
 	/*
 	 * Finally, create a box to hold the socket; this no-window
@@ -378,9 +380,22 @@ bonobo_control_frame_destroy (GtkObject *object)
 		control_frame->priv->socket = NULL;
 	}
 
+	if (control_frame->priv->ui_container != CORBA_OBJECT_NIL)
+		bonobo_object_release_unref (control_frame->priv->ui_container, NULL);
+	control_frame->priv->ui_container = CORBA_OBJECT_NIL;
+
 	g_free (control_frame->priv);
 	
 	GTK_OBJECT_CLASS (bonobo_control_frame_parent_class)->destroy (object);
+}
+
+static void
+bonobo_control_frame_activated (BonoboControlFrame *control_frame, gboolean state)
+{
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
+
+	control_frame->priv->activated = state;
 }
 
 /**
@@ -454,6 +469,8 @@ bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 		object_class,
 		control_frame_signals,
 		LAST_SIGNAL);
+
+	klass->activated = bonobo_control_frame_activated;
 
 	object_class->destroy = bonobo_control_frame_destroy;
 
@@ -715,6 +732,40 @@ bonobo_control_frame_get_ui_container (BonoboControlFrame *control_frame)
 
 	return control_frame->priv->ui_container;
 }
+
+/**
+ * bonobo_control_frame_set_ui_container:
+ * @control_frame: A BonoboControlFrame object.
+ * @uic: A Bonobo_UIContainer object reference.
+ *
+ * Associates a new %Bonobo_UIContainer object with this ControlFrame. This
+ * is only allowed while the Control is deactivated.
+ */
+void
+bonobo_control_frame_set_ui_container (BonoboControlFrame *control_frame, Bonobo_UIContainer ui_container)
+{
+	Bonobo_UIContainer old_ui_container;
+
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (control_frame->priv->activated == FALSE);
+
+	old_ui_container = control_frame->priv->ui_container;
+
+	if (ui_container != CORBA_OBJECT_NIL) {
+		CORBA_Environment ev;
+
+		CORBA_exception_init (&ev);
+		g_assert (CORBA_Object_is_a (ui_container, "IDL:Bonobo/UIContainer:1.0", &ev));
+		control_frame->priv->ui_container = bonobo_object_dup_ref (ui_container, &ev);
+		CORBA_exception_free (&ev);
+	} else
+		control_frame->priv->ui_container = CORBA_OBJECT_NIL;
+
+	if (old_ui_container)
+		bonobo_object_release_unref (old_ui_container, NULL);
+}
+
 
 /**
  * bonobo_control_frame_bind_to_control:

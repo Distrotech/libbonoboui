@@ -50,6 +50,10 @@ BonoboControlFrame           *bonobo_control_frame_new                       (Bo
 
 GtkWidget                    *bonobo_control_frame_get_widget                (BonoboControlFrame  *frame);
 
+/* This is only allowed when the Control is deactivated */
+void                          bonobo_control_frame_set_ui_container          (BonoboControlFrame  *control_frame,
+									      Bonobo_UIContainer   uic);
+
 /* Activating remote controls */
 void                          bonobo_control_frame_control_activate          (BonoboControlFrame  *control_frame);
 void                          bonobo_control_frame_control_deactivate        (BonoboControlFrame  *control_frame);
