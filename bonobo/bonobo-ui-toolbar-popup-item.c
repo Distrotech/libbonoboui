@@ -49,7 +49,7 @@ static const char *right_arrow_xpm_data[] = {
 	" ....   ",
 	" ...    ",
 	" ..     ",
-	" .      "
+	" .      ",
 	"        "
 };
 

@@ -443,9 +443,11 @@ bonobo_ui_component_set_translate (BonoboUIComponent  *component,
 	bonobo_ui_util_translate_ui (node);
 
 	bonobo_ui_component_set_tree (component, path, node, ev);
+
+	bonobo_ui_node_free (node);
 }
 
-char *
+CORBA_char *
 bonobo_ui_component_get (BonoboUIComponent *component,
 			 const char        *path,
 			 gboolean           recurse,
@@ -454,7 +456,7 @@ bonobo_ui_component_get (BonoboUIComponent *component,
 	return GET_CLASS (component)->xml_get (component, path, recurse, ev);
 }
 
-static char *
+static CORBA_char *
 impl_xml_get (BonoboUIComponent *component,
 	      const char        *path,
 	      gboolean           recurse,
@@ -502,6 +504,8 @@ bonobo_ui_component_get_tree (BonoboUIComponent  *component,
 		return NULL;
 
 	node = bonobo_ui_node_from_string (xml);
+
+	CORBA_free (xml);
 
 	if (!node)
 		return NULL;

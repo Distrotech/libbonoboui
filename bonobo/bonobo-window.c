@@ -595,13 +595,10 @@ sync_generic_widgets (BonoboWinPrivate *priv,
 			(*pos)++;
 		}
 
-		if (bonobo_ui_node_has_name (a, "placeholder")) {
-			(*pos)++;
+		if (bonobo_ui_node_has_name (a, "placeholder"))
 			sync_generic_widgets (priv, bonobo_ui_node_children (a),
 					      parent, &nextb, pos, sync_state,
 					      build_widget, make_placeholder);
-			(*pos)--;
-		}
 
 		a = bonobo_ui_node_next (a);
 	}

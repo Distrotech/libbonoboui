@@ -58,10 +58,10 @@ typedef struct {
 			   const char        *xml,
 			   CORBA_Environment *ev);
 
-	char *(*xml_get)  (BonoboUIComponent *component,
-			   const char        *path,
-			   gboolean           recurse,
-			   CORBA_Environment *ev);
+	CORBA_char *(*xml_get) (BonoboUIComponent *component,
+				const char        *path,
+				gboolean           recurse,
+				CORBA_Environment *ev);
 
 	void (*xml_rm)    (BonoboUIComponent *component,
 			   const char        *path,
@@ -149,7 +149,7 @@ gboolean           bonobo_ui_component_path_exists  (BonoboUIComponent  *compone
 						     const char         *path,
 						     CORBA_Environment  *ev);
 
-char              *bonobo_ui_component_get          (BonoboUIComponent  *component,
+CORBA_char        *bonobo_ui_component_get          (BonoboUIComponent  *component,
 						     const char         *path,
 						     gboolean            recurse,
 						     CORBA_Environment  *ev);
