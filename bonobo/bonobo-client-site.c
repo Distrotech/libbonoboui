@@ -26,7 +26,8 @@ impl_GNOME_client_site_get_container (PortableServer_Servant servant, CORBA_Envi
 	GnomeUnknown *object = gnome_unknown_from_servant (servant);
 	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
 
-	return GNOME_UNKNOWN (client_site->container)->object;
+	return CORBA_Object_duplicate (gnome_unknown_corba_objref (
+		GNOME_UNKNOWN (client_site->container)), ev);
 }
 
 static void
@@ -57,8 +58,9 @@ impl_GNOME_client_site_get_moniker (PortableServer_Servant servant,
 	case GNOME_Moniker_CONTAINER:
 		if (container_moniker == NULL)
 			return CORBA_OBJECT_NIL;
-		
-		return GNOME_UNKNOWN (container_moniker)->object;
+
+		return CORBA_Object_duplicate (
+			gnome_unknown_corba_objref (container_moniker), &ev);
 			
 	case GNOME_Moniker_OBJ_RELATIVE:
 	case GNOME_Moniker_OBJ_FULL:
@@ -331,7 +333,7 @@ gnome_client_site_bind_bonobo_object (GnomeClientSite *client_site, GnomeUnknown
 	gnome_unknown = GNOME_UNKNOWN (object);
 	
 	corba_object = GNOME_Unknown_query_interface (
-		gnome_unknown->object, "IDL:GNOME/BonoboObject:1.0",
+		gnome_unknown_corba_objref (gnome_unknown), "IDL:GNOME/BonoboObject:1.0",
 		&gnome_unknown->ev);
 
 	if (gnome_unknown->ev._major != CORBA_NO_EXCEPTION)
@@ -342,7 +344,7 @@ gnome_client_site_bind_bonobo_object (GnomeClientSite *client_site, GnomeUnknown
 
 	GNOME_BonoboObject_set_client_site (
 		corba_object, 
-		GNOME_UNKNOWN (client_site)->object,
+		gnome_unknown_corba_objref (GNOME_UNKNOWN (client_site)),
 		&GNOME_UNKNOWN (client_site)->ev);
 	client_site->bound_object = object;
 		

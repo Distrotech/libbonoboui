@@ -75,7 +75,7 @@ view_frame_activated_cb (GnomeViewFrame *view_frame, gboolean state,
 
 		CORBA_exception_init (&ev);
 		verbs = GNOME_BonoboObject_get_verb_list (
-			GNOME_UNKNOWN (server_object)->object,
+			gnome_unknown_corba_objref (GNOME_UNKNOWN (server_object)),
 			&ev);
 		if (ev._major != CORBA_NO_EXCEPTION) {
 			g_warning ("Could not get verb list!\n");
@@ -158,7 +158,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	image_png_obj = object;
 
 	persist = GNOME_Unknown_query_interface (
-		GNOME_UNKNOWN (object)->object,
+		gnome_unknown_corba_objref (GNOME_UNKNOWN (object)),
 		"IDL:GNOME/PersistStream:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)
@@ -176,7 +176,9 @@ add_image_cmd (GtkWidget *widget, Application *app)
 		return;
 	}
 	
-	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_UNKNOWN (stream)->object, &ev);
+	GNOME_PersistStream_load (
+		persist,
+		(GNOME_Stream) gnome_unknown_corba_objref (GNOME_UNKNOWN (stream)), &ev);
 
 	GNOME_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
@@ -215,7 +217,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	text_obj = object;
 
 	persist = GNOME_Unknown_query_interface (
-		GNOME_UNKNOWN (object)->object,
+		gnome_unknown_corba_objref (GNOME_UNKNOWN (object)),
 		"IDL:GNOME/PersistStream:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)
@@ -235,7 +237,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	}
 	
 	GNOME_PersistStream_load (
-	     persist, (GNOME_Stream) GNOME_UNKNOWN (stream)->object, &ev);
+	     persist, (GNOME_Stream) gnome_unknown_corba_objref (GNOME_UNKNOWN (stream)), &ev);
 
 	GNOME_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
@@ -317,7 +319,7 @@ send_text_cmd (GtkWidget *widget, Application *app)
 		return;
 
 	psink = GNOME_Unknown_query_interface (
-		GNOME_UNKNOWN (text_obj)->object,
+		gnome_unknown_corba_objref (GNOME_UNKNOWN (text_obj)),
 		"IDL:GNOME/ProgressiveDataSink:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)

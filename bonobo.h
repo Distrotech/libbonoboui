@@ -16,7 +16,7 @@
 #include <bonobo/gnome-composite-moniker.h>
 
 #include <bonobo/gnome-container.h>
-#include <bonobo/gnome-object-client.h>
+#include <bonobo/gnome-unknown-client.h>
 #include <bonobo/gnome-client-site.h>
 
 #include <bonobo/gnome-view.h>

@@ -166,7 +166,7 @@ impl_GNOME_BonoboObject_new_view (PortableServer_Servant servant,
 	view->view_frame = view_frame;
 
 	CORBA_exception_init (&evx);
-	ret = CORBA_Object_duplicate (GNOME_UNKNOWN (view)->object, &evx);
+	ret = CORBA_Object_duplicate (gnome_unknown_corba_objref (GNOME_UNKNOWN (view)), &evx);
 	CORBA_exception_free (&evx);
 
 	return ret;

@@ -55,7 +55,6 @@ libbonobo_la_SOURCES =			\
 	gnome-bonobo-object.c		\
 	gnome-bonobo-selector.c		\
 	gnome-client-site.c		\
-	gnome-component.c		\
 	gnome-component-client.c	\
 	gnome-component-factory.c 	\
 	gnome-container.c		\
@@ -91,7 +90,6 @@ libbonoboinclude_HEADERS =		\
 	gnome-bonobo-object.h		\
 	gnome-bonobo-selector.h		\
 	gnome-client-site.h		\
-	gnome-component.h		\
 	gnome-component-client.h	\
 	gnome-component-factory.h	\
 	gnome-component-io.h		\

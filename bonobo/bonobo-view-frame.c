@@ -34,7 +34,8 @@ impl_GNOME_ViewFrame_get_client_site (PortableServer_Servant servant,
 {
 	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_unknown_from_servant (servant));
 
-	return GNOME_UNKNOWN (view_frame->client_site)->object;
+	return CORBA_Object_duplicate (
+		gnome_unknown_corba_objref (GNOME_UNKNOWN (view_frame->client_site)), ev);
 }
 
 static void
