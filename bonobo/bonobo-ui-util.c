@@ -535,9 +535,9 @@ bonobo_ui_util_get_ui_fname (const char *component_datadir,
 	    g_file_test (file_name, G_FILE_TEST_EXISTS))
 		return g_strdup (file_name);
 
-	if (component_prefix) {
+	if (component_datadir) {
 		fname = g_strdup_printf ("%s/gnome-2.0/ui/%s",
-					 component_prefix, file_name);
+					 component_datadir, file_name);
 
 		if (g_file_test (fname, G_FILE_TEST_EXISTS))
 			return fname;
@@ -549,7 +549,7 @@ bonobo_ui_util_get_ui_fname (const char *component_datadir,
 		return name;
 	g_free (name);
 
-	name = g_strconcat (component_prefix, "/", file_name, NULL);
+	name = g_strconcat (component_datadir, "/", file_name, NULL);
 	if (g_file_test (name, G_FILE_TEST_EXISTS))
 		return name;
 	g_free (name);
