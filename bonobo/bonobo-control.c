@@ -304,7 +304,6 @@ impl_Bonobo_Control_set_window (PortableServer_Servant   servant,
 		}
 
 		gtk_widget_show (control->priv->plug);
-		gdk_window_set_cursor (control->priv->plug->window, NULL);
 		
 	} else {
 		GtkWidget *socket_parent;
