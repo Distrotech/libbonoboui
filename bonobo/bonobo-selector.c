@@ -17,12 +17,14 @@
  */
 #include <config.h>
 #include <string.h> /* strcmp */
+#include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-selector.h>
+
+GNOME_CLASS_BOILERPLATE (BonoboSelector, bonobo_selector,
+			 GtkDialog, GTK_TYPE_DIALOG);
 
 #define DEFAULT_INTERFACE "IDL:Bonobo/Control:1.0"
 #define BONOBO_PAD_SMALL 4
-
-static GtkDialogClass *parent_class;
 
 struct _BonoboSelectorPrivate {
 	BonoboSelectorWidget *selector;
@@ -43,8 +45,7 @@ bonobo_selector_finalize (GObject *object)
 
 	g_free (BONOBO_SELECTOR (object)->priv);
 
-	if (G_OBJECT_CLASS (parent_class)->finalize)
-		 G_OBJECT_CLASS (parent_class)->finalize (object);
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
 /**
@@ -131,8 +132,8 @@ bonobo_selector_select_id (const gchar  *title,
 
 	g_return_val_if_fail (sel != NULL, NULL);
 
-	gtk_signal_connect (GTK_OBJECT (sel), "ok",
-			    GTK_SIGNAL_FUNC (ok_callback), NULL);
+	g_signal_connect (GTK_OBJECT (sel), "ok",
+			    G_CALLBACK (ok_callback), NULL);
 	
 	gtk_object_set_user_data (GTK_OBJECT (sel), NULL);
 	
@@ -164,12 +165,10 @@ response_callback (GtkWidget *widget,
 {
 	switch (response_id) {
 		case GTK_RESPONSE_OK:
-			gtk_signal_emit (GTK_OBJECT (data), 
-					 bonobo_selector_signals [OK]);
+			g_signal_emit (data, bonobo_selector_signals [OK], 0);
 			break;
 		case GTK_RESPONSE_CANCEL:
-			gtk_signal_emit (GTK_OBJECT (data),
-					 bonobo_selector_signals [CANCEL]);
+			g_signal_emit (data, bonobo_selector_signals [CANCEL], 0);
 		default:
 			break;
 	}
@@ -182,12 +181,8 @@ final_select_cb (GtkWidget *widget, BonoboSelector *sel)
 }
 
 static void
-bonobo_selector_init (GtkWidget *widget)
+bonobo_selector_instance_init (BonoboSelector *sel)
 {
-	BonoboSelector        *sel = BONOBO_SELECTOR (widget);
-	
-	g_return_if_fail (widget != NULL);
-
 	sel->priv = g_new0 (BonoboSelectorPrivate, 1);
 }
 
@@ -196,51 +191,24 @@ bonobo_selector_class_init (BonoboSelectorClass *klass)
 {
 	GObjectClass *object_class;
 	
-	g_return_if_fail (klass != NULL);
-	
 	object_class = (GObjectClass *) klass;
 	object_class->finalize = bonobo_selector_finalize;
 
-	parent_class = gtk_type_class (gtk_dialog_get_type ());
-
 	bonobo_selector_signals [OK] =
-		gtk_signal_new ("ok", GTK_RUN_LAST, GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboSelectorClass, ok),
-		gtk_signal_default_marshaller, GTK_TYPE_NONE, 0);
+		g_signal_new ("ok", G_SIGNAL_RUN_LAST,
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_STRUCT_OFFSET (BonoboSelectorClass, ok),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
 	
 	bonobo_selector_signals [CANCEL] =
-		gtk_signal_new ("cancel", GTK_RUN_LAST, GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboSelectorClass, cancel),
-		gtk_signal_default_marshaller, GTK_TYPE_NONE, 0);
-}
-
-/**
- * bonobo_selector_get_type:
- *
- * Returns: The GtkType for the BonoboSelector object class.
- */
-GtkType
-bonobo_selector_get_type (void)
-{
-	static GtkType bonobo_selector_type = 0;
-
-	if (!bonobo_selector_type) {
-		GtkTypeInfo bonobo_selector_info = {
-			"BonoboSelector",
-			sizeof (BonoboSelector),
-			sizeof (BonoboSelectorClass),
-			(GtkClassInitFunc)  bonobo_selector_class_init,
-			(GtkObjectInitFunc) bonobo_selector_init,
-			NULL,
-			NULL
-		};
-
-		bonobo_selector_type = gtk_type_unique (
-			gtk_dialog_get_type (),
-			&bonobo_selector_info);
-	}
-
-	return bonobo_selector_type;
+		g_signal_new ("cancel", G_SIGNAL_RUN_LAST,
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_STRUCT_OFFSET (BonoboSelectorClass, cancel),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
 }
 
 /**
@@ -263,8 +231,8 @@ bonobo_selector_construct (BonoboSelector       *sel,
 
 	sel->priv->selector = selector;
 
-	gtk_signal_connect (GTK_OBJECT (selector), "final_select",
-			    GTK_SIGNAL_FUNC (final_select_cb), sel);
+	g_signal_connect (GTK_OBJECT (selector), "final_select",
+			    G_CALLBACK (final_select_cb), sel);
 	
 	gtk_window_set_title (GTK_WINDOW (sel), title ? title : "");
 
@@ -278,10 +246,10 @@ bonobo_selector_construct (BonoboSelector       *sel,
 			       GTK_RESPONSE_CANCEL);
 	gtk_dialog_set_default_response (GTK_DIALOG (sel), GTK_RESPONSE_OK);
 	
-	gtk_signal_connect (GTK_OBJECT (sel), "response",
-			    GTK_SIGNAL_FUNC (response_callback), sel);
+	g_signal_connect (GTK_OBJECT (sel), "response",
+			    G_CALLBACK (response_callback), sel);
 	
-	gtk_widget_set_usize (GTK_WIDGET (sel), 400, 300); 
+	gtk_window_set_default_size (GTK_WINDOW (sel), 400, 300);
 	gtk_widget_show_all  (GTK_DIALOG (sel)->vbox);
 
 	return GTK_WIDGET (sel);
@@ -317,7 +285,7 @@ bonobo_selector_new (const gchar *title,
 
 	bonobo_selector_widget_set_interfaces (selector, interfaces_required);
 
-	sel = gtk_type_new (bonobo_selector_get_type ());
+	sel = g_object_new (bonobo_selector_get_type (), 0);
 
 	return bonobo_selector_construct (sel, title, selector);
 }

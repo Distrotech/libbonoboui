@@ -1,3 +1,49 @@
+2002-02-08  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_xml_set_prop): optimize some
+	more.
+
+2002-02-07  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-plug.c: port &
+	(bonobo_plug_get_type): kill.
+
+	* bonobo/bonobo-canvas-component.c: port &
+	(root_item_hack_get_type): kill.
+
+	* bonobo/bonobo-dock-item.h: make
+	the bits marked 'private' private.
+
+	* bonobo/bonobo-dock-item.c: port &
+	(bonobo_dock_item_get_type): remove
+	(bonobo_dock_item_destroy): remove.
+
+	* bonobo/bonobo-dock-band.c: port &
+	(bonobo_dock_band_get_type),
+	(bonobo_dock_band_destroy): remove
+	remove bogus empty private structs.
+
+	* bonobo/bonobo-ui-sync.h: ditto.
+
+	* bonobo/Makefile.am (INCLUDES): define
+	BONOBO_UI_INTERNAL.
+
+	* bonobo/bonobo-ui-engine.h: re-arrange into public
+	and guard internal bits so they don't get used
+	erroneously.
+
+	* bonobo/bonobo-ui-xml.h: guard entirely with
+	internal API guards.
+
+	* bonobo/bonobo-dock.c (bonobo_dock_class_init),
+	(drag_end, connect_drag_signals),
+	(bonobo_dock_new, bonobo_dock_add_item),
+	(bonobo_dock_unmap, bonobo_dock_map): port.
+	(bonobo_dock_get_type): kill.
+
+	* bonobo/*.c: remove deprecated bits - lots of work.
+	
 2002-02-06  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-engine.c

@@ -23,11 +23,13 @@
 #include <config.h>
 #include <string.h>
 #include <gtk/gtk.h>
+#include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-dock.h>
 #include <bonobo/bonobo-dock-band.h>
 #include <bonobo/bonobo-dock-item.h>
 
-
+GNOME_CLASS_BOILERPLATE (BonoboDockBand, bonobo_dock_band,
+			 GtkContainer, GTK_TYPE_CONTAINER);
 
 #define noBONOBO_DOCK_BAND_DEBUG
 
@@ -44,22 +46,6 @@
 #else
 #define DEBUG(x)
 #endif
-
-
-
-struct _BonoboDockBandPrivate
-{
-	int dummy;
-	/* Nothing right now, needs to get filled with the private things */
-	/* XXX: When stuff is added, uncomment the allocation in the
-	 * bonobo_dock_band_init function! */
-};
-
-
-
-static void     bonobo_dock_band_class_init    (BonoboDockBandClass *class);
-
-static void     bonobo_dock_band_init          (BonoboDockBand *app);
 
 static void     bonobo_dock_band_size_request  (GtkWidget *widget,
                                                GtkRequisition *requisition);
@@ -81,7 +67,6 @@ static void     bonobo_dock_band_forall        (GtkContainer *container,
                                                GtkCallback callback,
                                                gpointer callback_data);
 
-static void     bonobo_dock_band_destroy       (GtkObject *object);
 static void     bonobo_dock_band_finalize      (GObject *object);
 
 static void     size_allocate_child           (BonoboDockBand *band,
@@ -140,11 +125,6 @@ static gboolean dock_empty_right              (BonoboDockBand *band,
 static gboolean check_guint_arg               (GObject *object,
 					       const gchar *name,
 					       guint *value_return);
-
-
-static GtkContainerClass *parent_class = NULL;
-
-
 
 static void
 bonobo_dock_band_class_init (BonoboDockBandClass *class)
@@ -159,9 +139,6 @@ bonobo_dock_band_class_init (BonoboDockBandClass *class)
   widget_class = (GtkWidgetClass *) class;
   container_class = (GtkContainerClass *) class;
 
-  parent_class = gtk_type_class (gtk_container_get_type ());
-
-  object_class->destroy = bonobo_dock_band_destroy;
   gobject_class->finalize = bonobo_dock_band_finalize;
 
   widget_class->map = bonobo_dock_band_map;
@@ -175,15 +152,11 @@ bonobo_dock_band_class_init (BonoboDockBandClass *class)
 }
 
 static void
-bonobo_dock_band_init (BonoboDockBand *band)
+bonobo_dock_band_instance_init (BonoboDockBand *band)
 {
   GTK_WIDGET_SET_FLAGS (band, GTK_NO_WINDOW);
 
   band->_priv = NULL;
-  /* XXX: when there is some private stuff enable this
-  band->_priv = g_new0(BonoboDockBandPrivate, 1);
-  */
-
   band->orientation = GTK_ORIENTATION_HORIZONTAL;
 
   band->children = NULL;
@@ -563,8 +536,7 @@ bonobo_dock_band_map (GtkWidget *widget)
   g_return_if_fail(widget != NULL);
   g_return_if_fail(BONOBO_IS_DOCK_BAND(widget));
 
-  if (GTK_WIDGET_CLASS (parent_class)->map != NULL)
-    (* GTK_WIDGET_CLASS (parent_class)->map) (widget);
+  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, map, (widget));
 
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
@@ -585,8 +557,7 @@ bonobo_dock_band_unmap (GtkWidget *widget)
   g_return_if_fail(widget != NULL);
   g_return_if_fail(BONOBO_IS_DOCK_BAND(widget));
 
-  if (GTK_WIDGET_CLASS (parent_class)->unmap != NULL)
-    (* GTK_WIDGET_CLASS (parent_class)->unmap) (widget);
+  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, unmap, (widget));
 
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
@@ -676,14 +647,6 @@ bonobo_dock_band_forall (GtkContainer *container,
 }
 
 static void
-bonobo_dock_band_destroy (GtkObject *object)
-{
-  /* remember, destroy can be run multiple times! */
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
-}
-
-static void
 bonobo_dock_band_finalize (GObject *object)
 {
   BonoboDockBand *self = BONOBO_DOCK_BAND (object);
@@ -691,8 +654,7 @@ bonobo_dock_band_finalize (GObject *object)
   g_free (self->_priv);
   self->_priv = NULL;
 
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    (* G_OBJECT_CLASS (parent_class)->finalize) (object);
+  GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
 
@@ -1477,38 +1439,13 @@ bonobo_dock_band_new (void)
   BonoboDockBand *band;
   GtkWidget *widget;
 
-  band = gtk_type_new (bonobo_dock_band_get_type ());
+  band = g_object_new (bonobo_dock_band_get_type (), NULL);
   widget = GTK_WIDGET (band);
 
   if (GTK_WIDGET_VISIBLE (widget))
     gtk_widget_queue_resize (widget);
 
   return widget;
-}
-
-GtkType
-bonobo_dock_band_get_type (void)
-{
-  static GtkType band_type = 0;
-
-  if (band_type == 0)
-    {
-      GtkTypeInfo band_info =
-      {
-	"BonoboDockBand",
-	sizeof (BonoboDockBand),
-	sizeof (BonoboDockBandClass),
-	(GtkClassInitFunc) bonobo_dock_band_class_init,
-	(GtkObjectInitFunc) bonobo_dock_band_init,
-        /* reserved_1 */ NULL,
-	/* reserved_2 */ NULL,
-	(GtkClassInitFunc) NULL,
-      };
-
-      band_type = gtk_type_unique (gtk_container_get_type (), &band_info);
-    }
-
-  return band_type;
 }
 
 /**

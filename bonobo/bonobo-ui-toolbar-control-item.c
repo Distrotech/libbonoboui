@@ -285,7 +285,7 @@ bonobo_ui_toolbar_control_item_get_type (void)
 static void
 proxy_activate_cb (GtkWidget *button, GtkObject *item)
 {
-	gtk_signal_emit_by_name (item, "activate");
+	g_signal_emit_by_name (item, "activate");
 }
 
 GtkWidget *
@@ -305,7 +305,7 @@ bonobo_ui_toolbar_control_item_construct (
         priv->eventbox = gtk_event_box_new ();
         priv->box      = gtk_vbox_new (FALSE, 0);
 	
-	gtk_signal_connect (GTK_OBJECT (priv->button), "activate",
+	g_signal_connect (GTK_OBJECT (priv->button), "activate",
 			    (GtkSignalFunc) proxy_activate_cb, control_item);
 	
 	gtk_container_add (GTK_CONTAINER (priv->box),
@@ -328,14 +328,14 @@ bonobo_ui_toolbar_control_item_new (Bonobo_Control control_ref)
         BonoboUIToolbarControlItem *control_item;
 	GtkWidget *ret;
 
-        control_item = gtk_type_new (
-                bonobo_ui_toolbar_control_item_get_type ());
+        control_item = g_object_new (
+                bonobo_ui_toolbar_control_item_get_type (), NULL);
 
         ret = bonobo_ui_toolbar_control_item_construct (
 		control_item, control_ref);
 
 	if (!ret)
-		g_object_unref (G_OBJECT (control_item));
+		g_object_unref (control_item);
 
 	return ret;
 }

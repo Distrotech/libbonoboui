@@ -12,6 +12,7 @@
 #include <bonobo/bonobo-dock.h>
 #include <bonobo/bonobo-window.h>
 #include <libbonobo.h>
+#include <libgnome/gnome-macros.h>
 
 #include <bonobo/bonobo-ui-preferences.h>
 #include <bonobo/bonobo-ui-engine.h>
@@ -24,7 +25,8 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 
-GtkWindowClass *bonobo_window_parent_class = NULL;
+GNOME_CLASS_BOILERPLATE (BonoboWindow, bonobo_window,
+			 GtkWindow, GTK_TYPE_WINDOW);
 
 struct _BonoboWindowPrivate {
 	BonoboUIEngine *engine;
@@ -123,7 +125,7 @@ bonobo_window_get_contents (BonoboWindow *win)
 	g_return_val_if_fail (win->priv != NULL, NULL);
 	g_return_val_if_fail (win->priv->dock != NULL, NULL);
 
-	children = gtk_container_children (
+	children = gtk_container_get_children (
 		GTK_CONTAINER (win->priv->client_area));
 
 	widget = children ? children->data : NULL;
@@ -140,11 +142,11 @@ bonobo_window_dispose (GObject *object)
 	
 	if (win->priv->engine) {
 		bonobo_ui_engine_dispose (win->priv->engine);
-		g_object_unref (G_OBJECT (win->priv->engine));
+		g_object_unref (win->priv->engine);
 		win->priv->engine = NULL;
 	}
 
-	G_OBJECT_CLASS (bonobo_window_parent_class)->dispose (object);
+	G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
@@ -158,7 +160,7 @@ bonobo_window_finalize (GObject *object)
 
 	win->priv = NULL;
 
-	G_OBJECT_CLASS (bonobo_window_parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /**
@@ -284,7 +286,7 @@ bonobo_window_key_press_event (GtkWidget *widget,
 	gboolean handled;
 	BonoboUISyncKeys *sync;
 
-	handled = GTK_WIDGET_CLASS (bonobo_window_parent_class)->key_press_event (widget, event);
+	handled = GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
 	if (handled)
 		return TRUE;
 
@@ -302,9 +304,6 @@ bonobo_window_class_init (BonoboWindowClass *klass)
 	GObjectClass *gobject_class = (GObjectClass *) klass;
 	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 
-	bonobo_window_parent_class =
-		gtk_type_class (gtk_window_get_type ());
-
 	gobject_class->dispose  = bonobo_window_dispose;
 	gobject_class->finalize = bonobo_window_finalize;
 
@@ -313,7 +312,7 @@ bonobo_window_class_init (BonoboWindowClass *klass)
 }
 
 static void
-bonobo_window_init (BonoboWindow *win)
+bonobo_window_instance_init (BonoboWindow *win)
 {
 	win->priv = construct_priv (win);
 }
@@ -442,38 +441,10 @@ bonobo_window_new (const char   *win_name,
 	BonoboWindow      *win;
 	BonoboUIContainer *ui_container;
 
-	win = gtk_type_new (BONOBO_TYPE_WINDOW);
+	win = g_object_new (BONOBO_TYPE_WINDOW, NULL);
 
 	ui_container = bonobo_ui_container_new ();
 
 	return bonobo_window_construct (
 		win, ui_container, win_name, title);
-}
-
-/**
- * bonobo_window_get_type:
- *
- * Returns: The GtkType for the BonoboWindow class.
- */
-GtkType
-bonobo_window_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboWindow",
-			sizeof (BonoboWindow),
-			sizeof (BonoboWindowClass),
-			(GtkClassInitFunc) bonobo_window_class_init,
-			(GtkObjectInitFunc) bonobo_window_init,
-			NULL, /* reserved 1 */
-			NULL, /* reserved 2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = gtk_type_unique (gtk_window_get_type (), &info);
-	}
-
-	return type;
 }

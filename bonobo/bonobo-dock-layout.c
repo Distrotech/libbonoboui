@@ -256,7 +256,7 @@ bonobo_dock_layout_add_item (BonoboDockLayout *layout,
 
   layout->items = g_list_prepend (layout->items, new);
 
-  gtk_object_ref (GTK_OBJECT (item));
+  g_object_ref (item);
 
   return TRUE;
 }
@@ -292,7 +292,7 @@ bonobo_dock_layout_add_floating_item (BonoboDockLayout *layout,
 
   layout->items = g_list_prepend (layout->items, new);
 
-  gtk_object_ref (GTK_OBJECT (item));
+  g_object_ref (item);
 
   return TRUE;
 }

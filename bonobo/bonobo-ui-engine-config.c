@@ -347,11 +347,11 @@ bonobo_ui_engine_config_connect (GtkWidget      *widget,
 	c->config_fn = config_fn;
 	c->verb_fn   = verb_fn;
 
-	gtk_signal_connect_full (
-		GTK_OBJECT (widget), "button_press_event",
-		(GtkSignalFunc) config_button_pressed, NULL, c,
-		(GtkDestroyNotify) closure_destroy,
-		FALSE, FALSE);
+	g_signal_connect_data (
+		widget, "button_press_event",
+		G_CALLBACK (config_button_pressed),
+		c,
+		(GClosureNotify) closure_destroy, 0);
 }
 
 static void
@@ -517,7 +517,7 @@ dialog_new (BonoboUIEngineConfig *config)
 					      NULL);
 	gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_OK);
 
-	gtk_signal_connect (GTK_OBJECT (window), "clicked",
+	g_signal_connect (GTK_OBJECT (window), "clicked",
 			    (GtkSignalFunc) button_clicked_fn, config);
 
 	cwidget = bonobo_ui_config_widget_new (config->priv->engine, accel_group);
@@ -552,7 +552,7 @@ bonobo_ui_engine_config_configure (BonoboUIEngineConfig *config)
 	config->priv->dialog = dialog_new (config);
 	gtk_widget_set_usize (config->priv->dialog, 300, 300); 
 	gtk_widget_show (config->priv->dialog);
-	gtk_signal_connect (GTK_OBJECT (config->priv->dialog),
+	g_signal_connect (GTK_OBJECT (config->priv->dialog),
 			    "destroy", (GtkSignalFunc) null_dialog, config);
 }
 

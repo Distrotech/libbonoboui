@@ -287,25 +287,25 @@ main (int argc, char **argv)
 		GtkWidget *path_entry, *state_entry;
 
 		button = gtk_button_new_with_label ("Press me to test!");
-		gtk_signal_connect (GTK_OBJECT (button), "clicked",
+		g_signal_connect (GTK_OBJECT (button), "clicked",
 				    (GtkSignalFunc) cb_do_quit, NULL);
 		gtk_widget_show (GTK_WIDGET (button));
 		gtk_box_pack_start_defaults (GTK_BOX (box), button);
 
 		button = gtk_button_new_with_label ("Dump Xml tree");
-		gtk_signal_connect (GTK_OBJECT (button), "clicked",
+		g_signal_connect (GTK_OBJECT (button), "clicked",
 				    (GtkSignalFunc) cb_do_dump, win);
 		gtk_widget_show (GTK_WIDGET (button));
 		gtk_box_pack_start_defaults (GTK_BOX (box), button);
 
 		button = gtk_button_new_with_label ("Popup");
-		gtk_signal_connect (GTK_OBJECT (button), "clicked",
+		g_signal_connect (GTK_OBJECT (button), "clicked",
 				    (GtkSignalFunc) cb_do_popup, win);
 		gtk_widget_show (GTK_WIDGET (button));
 		gtk_box_pack_start_defaults (GTK_BOX (box), button);
 
 		button = gtk_button_new_with_label ("Hide toolbar");
-		gtk_signal_connect (GTK_OBJECT (button), "clicked",
+		g_signal_connect (GTK_OBJECT (button), "clicked",
 				    (GtkSignalFunc) cb_do_hide_toolbar, win);
 		gtk_widget_show (GTK_WIDGET (button));
 		gtk_box_pack_start_defaults (GTK_BOX (box), button);
@@ -317,7 +317,7 @@ main (int argc, char **argv)
 
 		state_entry = gtk_entry_new ();
 		gtk_entry_set_text (GTK_ENTRY (state_entry), "1");
-		gtk_signal_connect (GTK_OBJECT (state_entry), "changed",
+		g_signal_connect (GTK_OBJECT (state_entry), "changed",
 				    (GtkSignalFunc) cb_set_state, path_entry);
 		gtk_widget_show (GTK_WIDGET (state_entry));
 		gtk_box_pack_start_defaults (GTK_BOX (box), state_entry);
@@ -326,8 +326,8 @@ main (int argc, char **argv)
 		bonobo_window_set_contents (win, box);
 	}
 
-	gtk_signal_connect (GTK_OBJECT (win), "size_request", 
-			    GTK_SIGNAL_FUNC (slow_size_request), NULL);
+	g_signal_connect (GTK_OBJECT (win), "size_request", 
+			    G_CALLBACK (slow_size_request), NULL);
 
 	componenta = bonobo_ui_component_new ("A");
 	bonobo_object_unref (BONOBO_OBJECT (componenta));
@@ -390,7 +390,7 @@ main (int argc, char **argv)
 		BonoboControl *control = bonobo_control_new (widget);
 		BonoboUIComponent *componentp;
 
-		gtk_signal_connect (GTK_OBJECT (widget), "button_press_event",
+		g_signal_connect (GTK_OBJECT (widget), "button_press_event",
 				    G_CALLBACK (do_sane_popup), control);
 		componentp = bonobo_control_get_popup_ui_component (control);
 #if 1
@@ -520,8 +520,8 @@ main (int argc, char **argv)
 						NULL);
 
 		id = gtk_timeout_add (100, (GSourceFunc) update_progress, widget);
-		gtk_signal_connect (GTK_OBJECT (widget), "destroy",
-				    GTK_SIGNAL_FUNC (disconnect_progress), GUINT_TO_POINTER (id));
+		g_signal_connect (GTK_OBJECT (widget), "destroy",
+				    G_CALLBACK (disconnect_progress), GUINT_TO_POINTER (id));
 		bonobo_object_unref (BONOBO_OBJECT (control));
 	}
 

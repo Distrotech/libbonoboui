@@ -35,7 +35,7 @@ button_widget_toggled_cb (GtkToggleButton *toggle_button,
 
 	button_item = BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (data);
 
-	gtk_signal_emit (GTK_OBJECT (button_item), signals[TOGGLED]);
+	g_signal_emit (button_item, signals[TOGGLED], 0);
 }
 
 static void
@@ -68,12 +68,13 @@ class_init (BonoboUIToolbarToggleButtonItemClass *klass)
 
 	item_class->set_state = impl_set_state;
 
-	signals[TOGGLED] = gtk_signal_new ("toggled",
-					   GTK_RUN_FIRST,
-					   GTK_CLASS_TYPE (object_class),
-					   GTK_SIGNAL_OFFSET (BonoboUIToolbarToggleButtonItemClass, toggled),
-					   gtk_marshal_NONE__NONE,
-					   GTK_TYPE_NONE, 0);
+	signals[TOGGLED] = g_signal_new ("toggled",
+					 G_TYPE_FROM_CLASS (object_class),
+					 GTK_RUN_FIRST,
+					 G_STRUCT_OFFSET (BonoboUIToolbarToggleButtonItemClass, toggled),
+					 NULL, NULL,
+					 g_cclosure_marshal_VOID__VOID,
+					 G_TYPE_NONE, 0);
 }
 
 
@@ -118,8 +119,7 @@ proxy_toggle_click_cb (GtkWidget *button, GtkObject *item)
 
 	new_state = g_strdup_printf ("%d", active);
 
-	gtk_signal_emit_by_name (
-		item, "state_altered", new_state);
+	g_signal_emit_by_name (item, "state_altered", new_state);
 
 	g_free (new_state);
 }
@@ -133,15 +133,15 @@ bonobo_ui_toolbar_toggle_button_item_construct (BonoboUIToolbarToggleButtonItem 
 
 	button_widget = gtk_toggle_button_new ();
 
-	gtk_signal_connect_while_alive (
-		GTK_OBJECT (button_widget), "toggled",
-		GTK_SIGNAL_FUNC (button_widget_toggled_cb), toggle_button_item,
-		GTK_OBJECT (toggle_button_item));
+	g_signal_connect_object (
+		button_widget, "toggled",
+		G_CALLBACK (button_widget_toggled_cb),
+		toggle_button_item, 0);
 
-	gtk_signal_connect_while_alive (
-		GTK_OBJECT (button_widget), "clicked",
-		GTK_SIGNAL_FUNC (proxy_toggle_click_cb), toggle_button_item,
-		GTK_OBJECT (toggle_button_item));
+	g_signal_connect_object (
+		button_widget, "clicked",
+		G_CALLBACK (proxy_toggle_click_cb),
+		toggle_button_item, 0);
 
 	bonobo_ui_toolbar_button_item_construct (
 		BONOBO_UI_TOOLBAR_BUTTON_ITEM (toggle_button_item),
@@ -154,7 +154,8 @@ bonobo_ui_toolbar_toggle_button_item_new (GdkPixbuf *icon,
 {
 	BonoboUIToolbarToggleButtonItem *toggle_button_item;
 
-	toggle_button_item = gtk_type_new (bonobo_ui_toolbar_toggle_button_item_get_type ());
+	toggle_button_item = g_object_new (
+		bonobo_ui_toolbar_toggle_button_item_get_type (), NULL);
 
 	bonobo_ui_toolbar_toggle_button_item_construct (toggle_button_item, icon, label);
 

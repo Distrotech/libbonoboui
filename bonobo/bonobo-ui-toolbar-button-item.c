@@ -7,12 +7,9 @@
  * Copyright (C) 2000 Ximian, Inc.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
 #include <gdk-pixbuf/gdk-pixbuf.h>
-
+#include "bonobo-ui-private.h"
 #include "bonobo-ui-toolbar-button-item.h"
 
 
@@ -136,8 +133,8 @@ layout_pixmap_and_label (BonoboUIToolbarButtonItem *button_item,
 	/* Ensure we have the right type of box */
 	rebuild = FALSE;
 	if (style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL) {
-		if (!priv->box || !gtk_type_is_a (
-			GTK_CLASS_TYPE (GTK_OBJECT_GET_CLASS (priv->box)),
+		if (!priv->box || !g_type_is_a (
+			G_TYPE_FROM_CLASS (GTK_OBJECT_GET_CLASS (priv->box)),
 			GTK_TYPE_VBOX)) {
 			
 			unparent_items (button_item);
@@ -149,7 +146,7 @@ layout_pixmap_and_label (BonoboUIToolbarButtonItem *button_item,
 		}
 	} else {
 		if (!priv->box || !gtk_type_is_a (
-			GTK_CLASS_TYPE (GTK_OBJECT_GET_CLASS (priv->box)),
+			G_TYPE_FROM_CLASS (GTK_OBJECT_GET_CLASS (priv->box)),
 			GTK_TYPE_HBOX)) {
 			
 			unparent_items (button_item);
@@ -200,7 +197,7 @@ button_widget_clicked_cb (GtkButton *button,
 
 	button_item = BONOBO_UI_TOOLBAR_BUTTON_ITEM (data);
 
-	gtk_signal_emit (GTK_OBJECT (button_item), signals[CLICKED]);
+	g_signal_emit (button_item, signals[CLICKED], 0);
 
 	bonobo_ui_toolbar_item_activate (BONOBO_UI_TOOLBAR_ITEM (button_item));
 }
@@ -303,12 +300,14 @@ class_init (BonoboUIToolbarButtonItemClass *button_item_class)
 	parent_class = gtk_type_class (bonobo_ui_toolbar_item_get_type ());
 
 	signals[CLICKED] = 
-		gtk_signal_new ("clicked",
-				GTK_RUN_FIRST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (BonoboUIToolbarButtonItemClass, clicked),
-				gtk_marshal_NONE__NONE,
-				GTK_TYPE_NONE, 0);
+		g_signal_new ("clicked",
+			      G_TYPE_FROM_CLASS (object_class),
+			      G_SIGNAL_RUN_FIRST,
+			      G_STRUCT_OFFSET (BonoboUIToolbarButtonItemClass,
+					       clicked),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE, 0);
 }
 
 static void
@@ -369,9 +368,9 @@ bonobo_ui_toolbar_button_item_construct (BonoboUIToolbarButtonItem *button_item,
 	priv->button_widget = button_widget;
 	gtk_widget_show (GTK_WIDGET (button_widget));
 
-	gtk_signal_connect_while_alive (GTK_OBJECT (button_widget), "clicked",
-					GTK_SIGNAL_FUNC (button_widget_clicked_cb), button_item,
-					GTK_OBJECT (button_item));
+	g_signal_connect_object (button_widget, "clicked",
+				 G_CALLBACK (button_widget_clicked_cb),
+				 button_item, 0);
 
 	gtk_button_set_relief (button_widget, GTK_RELIEF_NONE);
 
@@ -403,7 +402,8 @@ bonobo_ui_toolbar_button_item_new (GdkPixbuf  *icon,
 	BonoboUIToolbarButtonItem *button_item;
 	GtkWidget *button_widget;
 
-	button_item = gtk_type_new (bonobo_ui_toolbar_button_item_get_type ());
+	button_item = g_object_new (
+		bonobo_ui_toolbar_button_item_get_type (), NULL);
 
 	button_widget = gtk_button_new ();
 	bonobo_ui_toolbar_button_item_construct (

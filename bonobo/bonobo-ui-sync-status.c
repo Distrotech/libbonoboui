@@ -145,14 +145,14 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 	if (!strcmp (name, "main")) {
 		widget = gtk_statusbar_new ();
 		
-		gtk_signal_connect (GTK_OBJECT (widget),
+		g_signal_connect (GTK_OBJECT (widget),
 				    "size_request",
-				    GTK_SIGNAL_FUNC (clobber_request_cb), NULL);
+				    G_CALLBACK (clobber_request_cb), NULL);
 
 		msync->main_status = GTK_STATUSBAR (widget);
 
-		gtk_signal_connect (GTK_OBJECT (widget), "destroy",
-				    GTK_SIGNAL_FUNC (main_status_null), msync);
+		g_signal_connect (GTK_OBJECT (widget), "destroy",
+				    G_CALLBACK (main_status_null), msync);
 
 		/* insert a little padding so text isn't jammed against frame */
 		gtk_misc_set_padding (
@@ -253,7 +253,7 @@ impl_dispose (GObject *object)
 	BonoboUISyncStatus *sync = (BonoboUISyncStatus *) object;
 
 	if (sync->status) {
-		g_object_unref (G_OBJECT (sync->status));
+		g_object_unref (sync->status);
 		sync->status = NULL;
 	}
 
@@ -336,12 +336,12 @@ bonobo_ui_sync_status_new (BonoboUIEngine *engine,
 
 	sync = g_object_new (BONOBO_TYPE_UI_SYNC_STATUS, NULL);
 
-	sync->status = g_object_ref (G_OBJECT (status));
+	sync->status = g_object_ref (status);
 
-	g_signal_connect (G_OBJECT (engine), "add_hint",
-			  (GCallback) set_hint_cb, sync);
+	g_signal_connect (engine, "add_hint",
+			  G_CALLBACK (set_hint_cb), sync);
 
-	g_signal_connect (G_OBJECT (engine), "remove_hint",
+	g_signal_connect (engine, "remove_hint",
 			  G_CALLBACK (remove_hint_cb), sync);
 
 	return bonobo_ui_sync_construct (

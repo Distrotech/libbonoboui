@@ -368,8 +368,7 @@ bonobo_wrapper_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	   you substract BORDER_WIDTH*2, you may end with a size of
 	   65xxx or so).
 	 */
-
-	gtk_signal_emit_by_name (GTK_OBJECT (widget), "draw");
+	g_signal_emit_by_name (widget, "draw");
 }
 
 static void
@@ -404,7 +403,7 @@ bonobo_wrapper_expose (GtkWidget *widget, GdkEventExpose *event)
 GtkWidget *
 bonobo_wrapper_new (void)
 {
-	return GTK_WIDGET (gtk_type_new (bonobo_wrapper_get_type ()));
+	return g_object_new (bonobo_wrapper_get_type (), NULL);
 }
 
 /**

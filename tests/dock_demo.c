@@ -171,14 +171,14 @@ main (int argc, char **argv)
   gtk_frame_set_shadow_type(GTK_FRAME (client_frame), GTK_SHADOW_IN);
   drawing_area = gtk_drawing_area_new();
 
-  gtk_signal_connect (GTK_OBJECT (app),
+  g_signal_connect (GTK_OBJECT (app),
                       "delete_event",
-                      GTK_SIGNAL_FUNC (delete_callback),
+                      G_CALLBACK (delete_callback),
                       NULL);
 
-  gtk_signal_connect (GTK_OBJECT (dock),
+  g_signal_connect (GTK_OBJECT (dock),
                       "layout_changed",
-                      GTK_SIGNAL_FUNC (layout_changed_callback),
+                      G_CALLBACK (layout_changed_callback),
                       NULL);
 
   gnome_dock_set_client_area (GNOME_DOCK (dock), client_frame);

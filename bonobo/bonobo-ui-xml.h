@@ -14,6 +14,10 @@
 #include <bonobo/bonobo-ui-node.h>
 #include <bonobo/bonobo-ui-engine.h>
 
+/* Internal API only */
+
+#ifdef BONOBO_UI_INTERNAL
+
 #define BONOBO_TYPE_UI_XML        (bonobo_ui_xml_get_type ())
 #define BONOBO_UI_XML(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_TYPE_UI_XML, BonoboUIXml))
 #define BONOBO_UI_XML_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), BONOBO_TYPE_UI_XML, BonoboUIXmlClass))
@@ -122,5 +126,7 @@ void             bonobo_ui_xml_add_watch         (BonoboUIXml  *tree,
 
 void             bonobo_ui_xml_remove_watch_by_data (BonoboUIXml  *tree,
 						     gpointer      user_data);
+
+#endif /* BONOBO_UI_INTERNAL */
 
 #endif /* _BONOBO_UI_XML_H_ */

@@ -46,8 +46,8 @@ view_new (HelloBonoboView *view)
 	view->label = gtk_label_new ("");
 
 	view->button = gtk_button_new_with_label ("Change text");
-	gtk_signal_connect (GTK_OBJECT (view->button), "clicked",
-			    GTK_SIGNAL_FUNC (button_clicked_cb),
+	g_signal_connect (GTK_OBJECT (view->button), "clicked",
+			    G_CALLBACK (button_clicked_cb),
 			    view);
 
 	view->vbox = gtk_vbox_new (FALSE, 10);

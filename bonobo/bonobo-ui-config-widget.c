@@ -45,8 +45,7 @@ struct _BonoboUIConfigWidgetPrivate {
 static const char *
 widget_get_attr (GtkWidget *widget)
 {
-	return gtk_object_get_data (GTK_OBJECT (widget),
-				    WIDGET_ATTR_KEY);
+	return g_object_get_data (G_OBJECT (widget), WIDGET_ATTR_KEY);
 }
 
 static void
@@ -117,10 +116,10 @@ populate_list (GtkWidget            *list,
 				GtkWidget *w = gtk_list_item_new_with_label (name);
 				char      *path = bonobo_ui_xml_make_path (l);
 
-				gtk_object_set_data_full (GTK_OBJECT (w),
-							  WIDGET_ATTR_KEY,
-							  path,
-							  (GtkDestroyNotify) g_free);
+				g_object_set_data_full (G_OBJECT (w),
+							WIDGET_ATTR_KEY,
+							path,
+							(GDestroyNotify) g_free);
 
 				gtk_widget_show (w);
 				items = g_list_prepend (items, w);
@@ -129,7 +128,7 @@ populate_list (GtkWidget            *list,
 	}
 
 	gtk_list_append_items (GTK_LIST (list), items);
-	gtk_signal_connect (GTK_OBJECT (list), "select_child",
+	g_signal_connect (GTK_OBJECT (list), "select_child",
 			    (GtkSignalFunc) select_child_cb, config);
 
 	gtk_list_select_item (GTK_LIST (list), 0);
@@ -265,21 +264,21 @@ widgets_init (BonoboUIConfigWidget *config,
 
 	priv->show = gtk_radio_button_new_with_mnemonic (visible_group,
 							 _("_Show"));
-	gtk_signal_connect (GTK_OBJECT (priv->show), "clicked",
+	g_signal_connect (GTK_OBJECT (priv->show), "clicked",
 			    (GtkSignalFunc) show_hide_cb, config);
 	visible_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->show));
 	gtk_box_pack_start (GTK_BOX (vbox7), priv->show, FALSE, FALSE, 0);
 
 	priv->hide = gtk_radio_button_new_with_mnemonic (visible_group,
 							 _("_Hide"));
-	gtk_signal_connect (GTK_OBJECT (priv->hide), "clicked",
+	g_signal_connect (GTK_OBJECT (priv->hide), "clicked",
 			    (GtkSignalFunc) show_hide_cb, config);
 	visible_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->hide));
 	gtk_box_pack_start (GTK_BOX (vbox7), priv->hide, FALSE, FALSE, 0);
 
 	priv->tooltips = gtk_check_button_new_with_mnemonic (_("_View tooltips"));
 	gtk_box_pack_start (GTK_BOX (vbox6), priv->tooltips, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (priv->tooltips), "clicked",
+	g_signal_connect (GTK_OBJECT (priv->tooltips), "clicked",
 			    (GtkSignalFunc) tooltips_cb, config);
 
 	frame7 = gtk_frame_new (_("Toolbars"));
@@ -302,19 +301,19 @@ widgets_init (BonoboUIConfigWidget *config,
 
 	priv->icon = gtk_radio_button_new_with_mnemonic (look_group,
 							 _("_Icon"));
-	gtk_signal_connect (GTK_OBJECT (priv->icon), "clicked",
+	g_signal_connect (GTK_OBJECT (priv->icon), "clicked",
 			    (GtkSignalFunc) look_cb, config);
 	look_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->icon));
 	gtk_box_pack_start (GTK_BOX (vbox5), priv->icon, FALSE, FALSE, 0);
 
 	priv->icon_and_text = gtk_radio_button_new_with_mnemonic (look_group, _("_Text and Icon"));
-	gtk_signal_connect (GTK_OBJECT (priv->icon_and_text), "clicked",
+	g_signal_connect (GTK_OBJECT (priv->icon_and_text), "clicked",
 			    (GtkSignalFunc) look_cb, config);
 	look_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->icon_and_text));
 	gtk_box_pack_start (GTK_BOX (vbox5), priv->icon_and_text, FALSE, FALSE, 0);
 
 	priv->priority_text = gtk_radio_button_new_with_mnemonic (look_group, _("_Priority text only"));
-	gtk_signal_connect (GTK_OBJECT (priv->priority_text), "clicked",
+	g_signal_connect (GTK_OBJECT (priv->priority_text), "clicked",
 			    (GtkSignalFunc) look_cb, config);
 	look_group = gtk_radio_button_group (GTK_RADIO_BUTTON (priv->priority_text));
 	gtk_box_pack_start (GTK_BOX (vbox5), priv->priority_text, FALSE, FALSE, 0);
@@ -367,8 +366,8 @@ GtkWidget *
 bonobo_ui_config_widget_new (BonoboUIEngine *engine,
 			     GtkAccelGroup  *accel_group)
 {
-	BonoboUIConfigWidget *config = gtk_type_new (
-		bonobo_ui_config_widget_get_type ());
+	BonoboUIConfigWidget *config = g_object_new (
+		bonobo_ui_config_widget_get_type (), NULL);
 
 	return bonobo_ui_config_widget_construct (
 		config, engine, accel_group);

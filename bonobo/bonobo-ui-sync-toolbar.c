@@ -349,13 +349,13 @@ impl_bonobo_ui_sync_toolbar_build (BonoboUISync     *sync,
 	if (widget) {
 		/* FIXME: What about "id"s ! ? */
 		if ((verb = bonobo_ui_engine_get_attr (node, NULL, "verb"))) {
-			gtk_signal_connect (GTK_OBJECT (widget), "activate",
+			g_signal_connect (GTK_OBJECT (widget), "activate",
 					    (GtkSignalFunc) exec_verb_cb,
 					    sync->engine);
 			bonobo_ui_node_free_string (verb);
 		}
 		
-		gtk_signal_connect (GTK_OBJECT (widget), "state_altered",
+		g_signal_connect (GTK_OBJECT (widget), "state_altered",
 				    (GtkSignalFunc) win_item_emit_ui_event,
 				    sync->engine);
 	}
@@ -431,7 +431,8 @@ impl_bonobo_ui_sync_toolbar_state_update (BonoboUISync *sync,
 			g_warning ("TESTME: strange, setting "
 				   "state '%s' on weird object '%s'",
 				   new_state,
-				   GTK_CLASS_NAME (GTK_OBJECT_GET_CLASS (widget)));
+				   g_type_name_from_instance (
+					   (GTypeInstance *) widget));
 	}
 }
 
@@ -441,7 +442,7 @@ impl_dispose (GObject *object)
 	BonoboUISyncToolbar *sync = (BonoboUISyncToolbar *) object;
 
 	if (sync->dock) {
-		g_object_unref (G_OBJECT (sync->dock));
+		g_object_unref (sync->dock);
 		sync->dock = NULL;
 	}
 
@@ -869,7 +870,7 @@ bonobo_ui_sync_toolbar_new (BonoboUIEngine  *engine,
 
 	sync = g_object_new (BONOBO_TYPE_UI_SYNC_TOOLBAR, NULL);
 
-	sync->dock = g_object_ref (G_OBJECT (dock));
+	sync->dock = g_object_ref (dock);
 
 	return bonobo_ui_sync_construct (
 		BONOBO_UI_SYNC (sync), engine, FALSE, TRUE);

@@ -71,8 +71,8 @@ container_create (void)
 	gtk_window_set_default_size (window, 500, 440);
 	gtk_window_set_policy (window, TRUE, TRUE, FALSE);
 
-	gtk_signal_connect (GTK_OBJECT (window), "destroy",
-			    GTK_SIGNAL_FUNC (app_destroy_cb), uic);
+	g_signal_connect (GTK_OBJECT (window), "destroy",
+			    G_CALLBACK (app_destroy_cb), uic);
 
 	box = gtk_vbox_new (FALSE, 5);
 	bonobo_window_set_contents (BONOBO_WINDOW (app), box);
@@ -91,8 +91,8 @@ container_create (void)
 		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 		w = gtk_button_new_with_label ("toggle_sensitivity");
 		gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
-		gtk_signal_connect (GTK_OBJECT (w), "clicked",
-				    GTK_SIGNAL_FUNC (toggle_sensitive),
+		g_signal_connect (GTK_OBJECT (w), "clicked",
+				    G_CALLBACK (toggle_sensitive),
 				    control);
 	}
 
@@ -118,8 +118,8 @@ container_create (void)
 		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 		w = gtk_button_new_with_label ("toggle_sensitivity");
 		gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
-		gtk_signal_connect (GTK_OBJECT (w), "clicked",
-				    GTK_SIGNAL_FUNC (toggle_sensitive),
+		g_signal_connect (GTK_OBJECT (w), "clicked",
+				    G_CALLBACK (toggle_sensitive),
 				    control);
 	}
 
@@ -147,8 +147,8 @@ container_create (void)
 		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 		w = gtk_button_new_with_label ("toggle_sensitivity");
 		gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
-		gtk_signal_connect (GTK_OBJECT (w), "clicked",
-				    GTK_SIGNAL_FUNC (toggle_sensitive),
+		g_signal_connect (GTK_OBJECT (w), "clicked",
+				    G_CALLBACK (toggle_sensitive),
 				    control);
 	}
 
@@ -173,8 +173,8 @@ container_create (void)
 		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 		w = gtk_button_new_with_label ("toggle_sensitivity");
 		gtk_box_pack_start (GTK_BOX (box), w, FALSE, FALSE, 0);
-		gtk_signal_connect (GTK_OBJECT (w), "clicked",
-				    GTK_SIGNAL_FUNC (toggle_sensitive),
+		g_signal_connect (GTK_OBJECT (w), "clicked",
+				    G_CALLBACK (toggle_sensitive),
 				    control);
 	}
 

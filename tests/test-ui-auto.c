@@ -165,8 +165,7 @@ test_engine_default_placeholder (CORBA_Environment *ev)
 	g_assert (node->name_id == g_quark_from_string ("nodec"));
 	g_assert (node->next == NULL);
 	
-	g_object_unref (G_OBJECT (engine));
-
+	g_object_unref (engine);
 }
 
 static void
@@ -176,6 +175,49 @@ test_ui_engine (CORBA_Environment *ev)
 
 	test_engine_misc (ev);
 	test_engine_default_placeholder (ev);
+}
+
+static void
+test_ui_performance (CORBA_Environment *ev)
+{
+	int i;
+	GTimer *timer;
+	BonoboUINode *node;
+	BonoboUIEngine *engine;
+
+	fprintf (stderr, "performance tests ...\n");
+
+	timer = g_timer_new ();
+	g_timer_start (timer);
+
+	engine = bonobo_ui_engine_new (NULL);
+
+        node = bonobo_ui_node_from_file ("../doc/std-ui.xml");
+	if (!node)
+		g_error ("Can't find std-ui.xml");
+
+	bonobo_ui_engine_xml_merge_tree (engine, "/", node, "A");
+
+	g_timer_reset (timer);
+	for (i = 0; i < 10000; i++)
+		bonobo_ui_engine_xml_set_prop (
+			engine, "/menu/File/FileOpen",
+			"hidden", (i / 3) % 2 ? "1" : "0", "A");
+
+	fprintf (stderr, "  set prop item: %g(ns)\n",
+		 g_timer_elapsed (timer, NULL) * 100);
+
+
+	g_timer_reset (timer);
+	for (i = 0; i < 10000; i++)
+		bonobo_ui_engine_xml_set_prop (
+			engine, "/menu/File/FileOpen",
+			"hidden", (i / 3) % 2 ? "1" : "0", (i/6) % 2 ? "A" : "B");
+	fprintf (stderr, "  set prop cmd override: %g(ns)\n",
+		 g_timer_elapsed (timer, NULL) * 100);
+
+
+	g_object_unref (engine);
 }
 
 int
@@ -200,6 +242,7 @@ main (int argc, char **argv)
 
 	test_ui_node ();
 	test_ui_engine (ev);
+	test_ui_performance (ev);
 
 	CORBA_exception_free (ev);
 

@@ -159,9 +159,7 @@ impl_Bonobo_UIComponent_execVerb (PortableServer_Servant servant,
 	else
 		g_warning ("FIXME: verb '%s' not found, emit exception", cname);
 
-	g_signal_emit (G_OBJECT (component),
-		       signals [EXEC_VERB], 0,
-		       cname);
+	g_signal_emit (component, signals [EXEC_VERB], 0, cname);
 
 	bonobo_object_unref (BONOBO_OBJECT (component));
 }
@@ -181,8 +179,7 @@ impl_Bonobo_UIComponent_uiEvent (PortableServer_Servant             servant,
 
 	bonobo_object_ref (BONOBO_OBJECT (component));
 
-	g_signal_emit (G_OBJECT (component),
-		       signals [UI_EVENT], 0, id, type, state);
+	g_signal_emit (component, signals [UI_EVENT], 0, id, type, state);
 
 	bonobo_object_unref (BONOBO_OBJECT (component));
 }

@@ -28,8 +28,8 @@
 
 #include <bonobo/bonobo-i18n.h>
 
-#define GET_MODE(w) (GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (w), "GnomeFileSelectorMode")))
-#define SET_MODE(w, m) (gtk_object_set_data (GTK_OBJECT (w), "GnomeFileSelectorMode", GINT_TO_POINTER (m)))
+#define GET_MODE(w) (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "GnomeFileSelectorMode")))
+#define SET_MODE(w, m) (g_object_set_data (G_OBJECT (w), "GnomeFileSelectorMode", GINT_TO_POINTER (m)))
 
 typedef enum {
 	FILESEL_OPEN,
@@ -134,7 +134,7 @@ create_bonobo_selector (gboolean    enable_vfs,
 
 	dialog = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_add (GTK_CONTAINER (dialog), GTK_WIDGET (control));
-	gtk_widget_set_usize (dialog, 560, 450);
+	gtk_window_set_default_size (GTK_WINDOW (dialog), 560, 450);
 
 	bonobo_event_source_client_add_listener (
 		bonobo_widget_get_objref (control), 
@@ -221,7 +221,7 @@ ok_clicked_cb (GtkWidget *widget, gpointer data)
 		if (!gtk_tree_model_get_iter_root (model, &iter))
 			return;
 
-		filedirname = g_dirname (file_name);
+		filedirname = g_path_get_dirname (file_name);
 		
 		i = 0;
 		
@@ -283,12 +283,12 @@ create_gtk_selector (FileselMode mode,
 
 	filesel = gtk_file_selection_new (NULL);
 
-	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
-			    "clicked", GTK_SIGNAL_FUNC (ok_clicked_cb),
+	g_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (filesel)->ok_button),
+			    "clicked", G_CALLBACK (ok_clicked_cb),
 			    filesel);
 
-	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (filesel)->cancel_button),
-			    "clicked", GTK_SIGNAL_FUNC (cancel_clicked_cb),
+	g_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (filesel)->cancel_button),
+			    "clicked", G_CALLBACK (cancel_clicked_cb),
 			    filesel);
 
 	if (default_path)
@@ -353,8 +353,8 @@ run_file_selector (GtkWindow  *parent,
 	if (parent)
 		gtk_window_set_transient_for (dialog, parent);
 	
-	gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
-			    GTK_SIGNAL_FUNC (delete_file_selector),
+	g_signal_connect (GTK_OBJECT (dialog), "delete_event",
+			    G_CALLBACK (delete_file_selector),
 			    dialog);
 
 	gtk_widget_show_all (GTK_WIDGET (dialog));

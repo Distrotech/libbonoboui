@@ -8,10 +8,7 @@
  * Copyright (C) 2000 Ximian, Inc.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
 #include "bonobo-ui-toolbar-separator-item.h"
 
 
@@ -123,9 +120,6 @@ bonobo_ui_toolbar_separator_item_get_type (void)
 GtkWidget *
 bonobo_ui_toolbar_separator_item_new (void)
 {
-	BonoboUIToolbarSeparatorItem *new;
-
-	new = gtk_type_new (bonobo_ui_toolbar_separator_item_get_type ());
-
-	return GTK_WIDGET (new);
+	return g_object_new (
+		bonobo_ui_toolbar_separator_item_get_type (), NULL);
 }

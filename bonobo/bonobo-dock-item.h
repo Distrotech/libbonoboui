@@ -130,6 +130,7 @@ BonoboDockItemBehavior
                bonobo_dock_item_get_behavior    (BonoboDockItem *dock_item);
 
 /* Private methods.  */
+#ifdef BONOBO_UI_INTERNAL
 gboolean       bonobo_dock_item_detach          (BonoboDockItem *item,
                                                 gint x, gint y);
                                                
@@ -149,6 +150,7 @@ void           bonobo_dock_item_handle_size_request
 void           bonobo_dock_item_get_floating_position
                                                (BonoboDockItem *item,
                                                 gint *x, gint *y);
+#endif /* BONOBO_UI_INTERNAL */
 
 G_END_DECLS
 

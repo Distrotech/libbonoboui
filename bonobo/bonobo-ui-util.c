@@ -320,7 +320,7 @@ bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
 
 	else if ((pixbuf = g_hash_table_lookup (pixbuf_cache, key))) {
 		g_free (key);
-		g_object_ref (G_OBJECT (pixbuf));
+		g_object_ref (pixbuf);
 		return pixbuf;
 	}
 
@@ -360,7 +360,7 @@ bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
 		g_warning ("Unknown icon_pixbuf type '%s'", type);
 
 	if (pixbuf) {
-		g_object_ref (G_OBJECT (pixbuf));
+		g_object_ref (pixbuf);
 		g_hash_table_insert (pixbuf_cache, key, pixbuf);
 	} else
 		g_free (key);
@@ -612,7 +612,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 		bonobo_ui_component_add_verb (listener, id,
 					      bonobo_help_display_cb, entry);
 
-		gtk_signal_connect (GTK_OBJECT (listener), "destroy",
+		g_signal_connect (GTK_OBJECT (listener), "destroy",
 				    (GtkSignalFunc) free_help_menu_entry, 
 				    entry);
 		g_free (id);

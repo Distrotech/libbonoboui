@@ -52,9 +52,9 @@ main (int argc, char **argv)
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW (window), "Focus test");
-	gtk_signal_connect (GTK_OBJECT (window),
+	g_signal_connect (GTK_OBJECT (window),
 			    "delete_event",
-			    GTK_SIGNAL_FUNC (exit_cb), NULL);
+			    G_CALLBACK (exit_cb), NULL);
 
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox);
@@ -69,8 +69,8 @@ main (int argc, char **argv)
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), control);
 
 	tmp = gtk_button_new_with_label ("Destroy remote control");
-	gtk_signal_connect (GTK_OBJECT (tmp), "clicked",
-			    GTK_SIGNAL_FUNC (clicked_fn), control);
+	g_signal_connect (GTK_OBJECT (tmp), "clicked",
+			    G_CALLBACK (clicked_fn), control);
 	gtk_box_pack_start_defaults (GTK_BOX (vbox), tmp);
 
 	gtk_widget_show_all (window);

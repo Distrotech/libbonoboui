@@ -11,6 +11,8 @@
 #ifndef _BONOBO_UI_SYNC_H_
 #define _BONOBO_UI_SYNC_H_
 
+#ifdef BONOBO_UI_INTERNAL
+
 #include <stdio.h>
 #include <glib/gmacros.h>
 #include <gtk/gtkcontainer.h>
@@ -157,5 +159,7 @@ GType bonobo_ui_sync_status_get_type  (void);
 GType bonobo_ui_sync_toolbar_get_type (void);
 
 G_END_DECLS
+
+#endif /* BONOBO_UI_INTERNAL */
 
 #endif /* _BONOBO_UI_SYNC_H_ */

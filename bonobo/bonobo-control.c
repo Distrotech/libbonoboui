@@ -211,7 +211,7 @@ impl_Bonobo_Control_activate (PortableServer_Servant servant,
 	if (control->priv->active != activated)
 		return;
 
-	g_signal_emit (G_OBJECT (control), control_signals [ACTIVATE], 0, (gboolean) activated);
+	g_signal_emit (control, control_signals [ACTIVATE], 0, (gboolean) activated);
 }
 
 static void
@@ -301,7 +301,7 @@ impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 	BonoboControl *control = BONOBO_CONTROL (
 		bonobo_object_from_servant (servant));
 
-	g_object_ref (G_OBJECT (control));
+	g_object_ref (control);
 
 	if (control->priv->frame != frame) {
 		bonobo_control_unset_control_frame (control, ev);
@@ -322,10 +322,10 @@ impl_Bonobo_Control_setFrame (PortableServer_Servant servant,
 				G_CALLBACK (control_frame_connection_died_cb),
 				control, ev);
 	
-		g_signal_emit (G_OBJECT (control), control_signals [SET_FRAME], 0);
+		g_signal_emit (control, control_signals [SET_FRAME], 0);
 	}
 
-	g_object_unref (G_OBJECT (control));
+	g_object_unref (control);
 }
 
 static void
@@ -482,7 +482,7 @@ bonobo_control_construct (BonoboControl  *control,
 	 */
 	bonobo_setup_x_error_handler ();
 
-	control->priv->widget = g_object_ref (G_OBJECT (widget));
+	control->priv->widget = g_object_ref (widget);
 	gtk_object_sink (GTK_OBJECT (widget));
 
 	gtk_container_add (GTK_CONTAINER (control->priv->plug),
@@ -585,14 +585,14 @@ bonobo_control_destroy (BonoboObject *object)
 	bonobo_control_set_ui_component    (control, NULL);
 
 	if (control->priv->widget)
-		g_object_unref (G_OBJECT (control->priv->widget));
+		g_object_unref (control->priv->widget);
 	control->priv->widget = NULL;
 
 	control->priv->popup_ui_container = bonobo_object_unref (
 		(BonoboObject *) control->priv->popup_ui_container);
 
 	if (control->priv->popup_ui_engine)
-		g_object_unref (G_OBJECT (control->priv->popup_ui_engine));
+		g_object_unref (control->priv->popup_ui_engine);
 	control->priv->popup_ui_engine = NULL;
 
 	control->priv->popup_ui_component = bonobo_object_unref (
@@ -1000,7 +1000,7 @@ window_transient_realize_gdk_cb (GtkWidget *widget)
 {
 	GdkWindow *win;
 
-	win = gtk_object_get_data (GTK_OBJECT (widget), "transient");
+	win = g_object_get_data (G_OBJECT (widget), "transient");
 	g_return_if_fail (win != NULL);
 
 #ifdef TRANSIENT_DEBUG
@@ -1015,7 +1015,7 @@ window_transient_unrealize_gdk_cb (GtkWidget *widget)
 {
 	GdkWindow *win;
 
-	win = gtk_object_get_data (GTK_OBJECT (widget), "transient");
+	win = g_object_get_data (G_OBJECT (widget), "transient");
 	g_return_if_fail (win != NULL);
 
 	gdk_property_delete (
@@ -1028,8 +1028,7 @@ window_transient_destroy_gdk_cb (GtkWidget *widget)
 {
 	GdkWindow *win;
 	
-	if ((win = gtk_object_get_data (GTK_OBJECT (widget),
-					"transient")))
+	if ((win = g_object_get_data (G_OBJECT (widget), "transient")))
 		gdk_window_unref (win);
 }
 
@@ -1038,12 +1037,12 @@ window_set_transient_for_gdk (GtkWindow *window,
 			      GdkWindow *parent)
 {
 	g_return_if_fail (window != NULL);
-	g_return_if_fail (gtk_object_get_data (
-		GTK_OBJECT (window), "transient") == NULL);
+	g_return_if_fail (g_object_get_data (
+		G_OBJECT (window), "transient") == NULL);
 
 	gdk_window_ref (parent);
 
-	gtk_object_set_data (GTK_OBJECT (window), "transient", parent);
+	g_object_set_data (G_OBJECT (window), "transient", parent);
 
 	if (GTK_WIDGET_REALIZED (window)) {
 #ifdef TRANSIENT_DEBUG
@@ -1053,17 +1052,17 @@ window_set_transient_for_gdk (GtkWindow *window,
 			GTK_WIDGET (window)->window, parent);
 	}
 
-	gtk_signal_connect (
-		GTK_OBJECT (window), "realize",
-		GTK_SIGNAL_FUNC (window_transient_realize_gdk_cb), NULL);
+	g_signal_connect (
+		window, "realize",
+		G_CALLBACK (window_transient_realize_gdk_cb), NULL);
 
-	gtk_signal_connect (
-		GTK_OBJECT (window), "unrealize",
-		GTK_SIGNAL_FUNC (window_transient_unrealize_gdk_cb), NULL);
+	g_signal_connect (
+		window, "unrealize",
+		G_CALLBACK (window_transient_unrealize_gdk_cb), NULL);
 	
-	gtk_signal_connect (
-		GTK_OBJECT (window), "destroy",
-		GTK_SIGNAL_FUNC (window_transient_destroy_gdk_cb), NULL);
+	g_signal_connect (
+		window, "destroy",
+		G_CALLBACK (window_transient_destroy_gdk_cb), NULL);
 }
 
 /**
@@ -1138,17 +1137,14 @@ bonobo_control_unset_transient_for (BonoboControl     *control,
 {
 	g_return_if_fail (GTK_IS_WINDOW (window));
 
-	gtk_signal_disconnect_by_func (
-		GTK_OBJECT (window),
-		GTK_SIGNAL_FUNC (window_transient_realize_gdk_cb), NULL);
+	g_signal_handlers_disconnect_by_func (
+		window, G_CALLBACK (window_transient_realize_gdk_cb), NULL);
 
-	gtk_signal_disconnect_by_func (
-		GTK_OBJECT (window),
-		GTK_SIGNAL_FUNC (window_transient_unrealize_gdk_cb), NULL);
+	g_signal_handlers_disconnect_by_func (
+		window, G_CALLBACK (window_transient_unrealize_gdk_cb), NULL);
 	
-	gtk_signal_disconnect_by_func (
-		GTK_OBJECT (window),
-		GTK_SIGNAL_FUNC (window_transient_destroy_gdk_cb), NULL);
+	g_signal_handlers_disconnect_by_func (
+		window, G_CALLBACK (window_transient_destroy_gdk_cb), NULL);
 
 	window_transient_unrealize_gdk_cb (GTK_WIDGET (window));
 }
@@ -1167,14 +1163,14 @@ bonobo_control_set_plug (BonoboControl *control,
 	old_plug = (BonoboPlug *) control->priv->plug;
 
 	if (plug) {
-		control->priv->plug = g_object_ref (G_OBJECT (plug));
+		control->priv->plug = g_object_ref (plug);
 		bonobo_plug_set_control (plug, control);
 	} else
 		control->priv->plug = NULL;
 
 	if (old_plug) {
 		bonobo_plug_set_control (old_plug, NULL);
-		g_object_unref (G_OBJECT (old_plug));
+		g_object_unref (old_plug);
 	}
 }
 

@@ -17,6 +17,7 @@ bin_PROGRAMS = \
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(top_srcdir) 				\
+	-DBONOBO_UI_INTERNAL				\
 	-DBONOBO_UIDIR=\""$(datadir)/gnome/ui/"\"	\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-DVERSION=\"$(VERSION)\"			\

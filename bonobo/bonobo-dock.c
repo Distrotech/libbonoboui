@@ -28,8 +28,10 @@
 #include <bonobo/bonobo-dock.h>
 #include <bonobo/bonobo-dock-band.h>
 #include <bonobo/bonobo-dock-item.h>
+#include <libgnome/gnome-macros.h>
 
-
+GNOME_CLASS_BOILERPLATE (BonoboDock, bonobo_dock,
+			 GtkContainer, GTK_TYPE_CONTAINER);
 
 #define noBONOBO_DOCK_DEBUG
 
@@ -65,8 +67,6 @@ enum {
 
 
 
-static void     bonobo_dock_class_init          (BonoboDockClass *class);
-static void     bonobo_dock_init                (BonoboDock *app);
 static void     bonobo_dock_size_request        (GtkWidget *widget,
                                                 GtkRequisition *requisition);
 static void     bonobo_dock_size_allocate       (GtkWidget *widget,
@@ -154,8 +154,6 @@ static void           connect_drag_signals      (BonoboDock *dock,
                                                  GtkWidget *item);
 
 
-static GtkWidgetClass *parent_class = NULL;
-
 static guint dock_signals[LAST_SIGNAL] = { 0 };
 
 
@@ -173,8 +171,6 @@ bonobo_dock_class_init (BonoboDockClass *class)
   widget_class = (GtkWidgetClass *) class;
   container_class = (GtkContainerClass *) class;
 
-  parent_class = gtk_type_class (gtk_container_get_type ());
-
   object_class->destroy = bonobo_dock_destroy;
   gobject_class->finalize = bonobo_dock_finalize;
 
@@ -188,17 +184,19 @@ bonobo_dock_class_init (BonoboDockClass *class)
   container_class->forall = bonobo_dock_forall;
 
   dock_signals[LAYOUT_CHANGED] =
-    gtk_signal_new ("layout_changed",
-                    GTK_RUN_LAST,
-                    GTK_CLASS_TYPE (object_class),
-                    GTK_SIGNAL_OFFSET (BonoboDockClass, layout_changed),
-                    gtk_marshal_NONE__NONE,
-                    GTK_TYPE_NONE, 0);
-
+	  g_signal_new ("layout_changed",
+			G_TYPE_FROM_CLASS (object_class),
+			G_SIGNAL_RUN_LAST,
+			G_STRUCT_OFFSET (BonoboDockClass,
+					 layout_changed),
+			NULL, NULL,
+			g_cclosure_marshal_VOID__VOID,
+			G_TYPE_NONE,
+			0);
 }
 
 static void
-bonobo_dock_init (BonoboDock *dock)
+bonobo_dock_instance_init (BonoboDock *dock)
 {
   GTK_WIDGET_SET_FLAGS (GTK_WIDGET (dock), GTK_NO_WINDOW);
 
@@ -490,8 +488,7 @@ bonobo_dock_map (GtkWidget *widget)
   g_return_if_fail (widget != NULL);
   g_return_if_fail (BONOBO_IS_DOCK(widget));
 
-  if (GTK_WIDGET_CLASS (parent_class)->map != NULL)
-    (* GTK_WIDGET_CLASS (parent_class)->map) (widget);
+  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, map, (widget));
 
   dock = BONOBO_DOCK (widget);
 
@@ -524,8 +521,7 @@ bonobo_dock_unmap (GtkWidget *widget)
 
   g_list_foreach (dock->floating_children, unmap_widget_foreach, NULL);
 
-  if (GTK_WIDGET_CLASS (parent_class)->unmap != NULL)
-    (* GTK_WIDGET_CLASS (parent_class)->unmap) (widget);
+  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, unmap, (widget));
 }
 
 
@@ -1074,7 +1070,7 @@ drag_end (GtkWidget *widget, gpointer data)
   drag_end_bands (&dock->left_bands, item);
   drag_end_bands (&dock->right_bands, item);
 
-  gtk_signal_emit (GTK_OBJECT (data), dock_signals[LAYOUT_CHANGED]);
+  g_signal_emit (data, dock_signals[LAYOUT_CHANGED], 0);
 }
 
 
@@ -1181,40 +1177,13 @@ connect_drag_signals (BonoboDock *dock,
   if (BONOBO_IS_DOCK_ITEM (item))
     {
       DEBUG (("here"));
-      gtk_signal_connect (GTK_OBJECT (item), "dock_drag_begin",
-                          GTK_SIGNAL_FUNC (drag_begin), (gpointer) dock);
-      gtk_signal_connect (GTK_OBJECT (item), "dock_drag_motion",
-                          GTK_SIGNAL_FUNC (drag_motion), (gpointer) dock);
-      gtk_signal_connect (GTK_OBJECT (item), "dock_drag_end",
-                          GTK_SIGNAL_FUNC (drag_end), (gpointer) dock);
+      g_signal_connect (item, "dock_drag_begin",
+			G_CALLBACK (drag_begin), dock);
+      g_signal_connect (item, "dock_drag_motion",
+			G_CALLBACK (drag_motion), dock);
+      g_signal_connect (item, "dock_drag_end",
+			G_CALLBACK (drag_end), dock);
     }
-}
-
-
-
-GtkType
-bonobo_dock_get_type (void)
-{
-  static GtkType dock_type = 0;
-
-  if (dock_type == 0)
-    {
-      GtkTypeInfo dock_info =
-      {
-	"BonoboDock",
-	sizeof (BonoboDock),
-	sizeof (BonoboDockClass),
-	(GtkClassInitFunc) bonobo_dock_class_init,
-	(GtkObjectInitFunc) bonobo_dock_init,
-        /* reserved_1 */ NULL,
-	/* reserved_2 */ NULL,
-	(GtkClassInitFunc) NULL,
-      };
-
-      dock_type = gtk_type_unique (gtk_container_get_type (), &dock_info);
-    }
-
-  return dock_type;
 }
 
 /**
@@ -1230,7 +1199,7 @@ bonobo_dock_new (void)
   BonoboDock *dock;
   GtkWidget *widget;
 
-  dock = gtk_type_new (bonobo_dock_get_type ());
+  dock = g_object_new (bonobo_dock_get_type (), NULL);
   widget = GTK_WIDGET (dock);
 
 #if 0                           /* FIXME: should I? */
@@ -1349,7 +1318,7 @@ bonobo_dock_add_item (BonoboDock *dock,
 
   connect_drag_signals (dock, GTK_WIDGET(item));
 
-  gtk_signal_emit (GTK_OBJECT (dock), dock_signals[LAYOUT_CHANGED]);
+  g_signal_emit (dock, dock_signals[LAYOUT_CHANGED], 0);
 }
 
 /**
@@ -1404,7 +1373,7 @@ bonobo_dock_add_floating_item (BonoboDock *dock,
 
   gtk_widget_unref (widget);
 
-  gtk_signal_emit (GTK_OBJECT (dock), dock_signals[LAYOUT_CHANGED]);
+  g_signal_emit (dock, dock_signals[LAYOUT_CHANGED], 0);
 }
 
 /**

@@ -123,7 +123,7 @@ bonobo_ui_preferences_shutdown (void)
 
 	if (client) {
 /* Re-enable this when GConf >= 1.1.8 comes out */
-/*		g_object_unref (G_OBJECT (client)); */
+/*		g_object_unref (client); */
 		client = NULL;
 		ret = gconf_debug_shutdown ();
 		if (ret)

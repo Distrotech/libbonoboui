@@ -8,13 +8,9 @@
  * Copyright (C) 2000 Ximian, Inc.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
 #include "bonobo-ui-toolbar-item.h"
 #include "bonobo-ui-toolbar-popup-item.h"
-
 #include "bonobo-ui-toolbar.h"
 
 
@@ -336,8 +332,8 @@ show_popup_window (BonoboUIToolbar *toolbar)
 
 	gtk_widget_set_uposition (GTK_WIDGET (priv->popup_window), x, y);
 
-	gtk_signal_connect (GTK_OBJECT (priv->popup_window), "map",
-			    GTK_SIGNAL_FUNC (popup_window_map_cb), toolbar);
+	g_signal_connect (GTK_OBJECT (priv->popup_window), "map",
+			    G_CALLBACK (popup_window_map_cb), toolbar);
 
 	gtk_widget_show (priv->popup_window);
 }
@@ -1103,21 +1099,24 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 				GTK_TYPE_UINT, GTK_ARG_READABLE, ARG_PREFERRED_HEIGHT);
 
 	signals[SET_ORIENTATION]
-		= gtk_signal_new ("set_orientation",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIToolbarClass, set_orientation),
-				  gtk_marshal_NONE__INT,
-				  GTK_TYPE_NONE, 1,
-				  GTK_TYPE_INT);
+		= g_signal_new ("set_orientation",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIToolbarClass,
+						 set_orientation),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__INT,
+				G_TYPE_NONE, 1, G_TYPE_INT);
 
 	signals[STYLE_CHANGED]
-		= gtk_signal_new ("set_style",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIToolbarClass, style_changed),
-				  gtk_marshal_NONE__NONE,
-				  GTK_TYPE_NONE, 0);
+		= g_signal_new ("set_style",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIToolbarClass,
+						 style_changed),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__VOID,
+				G_TYPE_NONE, 0);
 }
 
 static void
@@ -1192,12 +1191,12 @@ bonobo_ui_toolbar_construct (BonoboUIToolbar *toolbar)
 	bonobo_ui_toolbar_item_set_orientation (priv->popup_item, priv->orientation);
 	parentize_widget (toolbar, GTK_WIDGET (priv->popup_item));
 
-	gtk_signal_connect (GTK_OBJECT (priv->popup_item), "toggled",
-			    GTK_SIGNAL_FUNC (popup_item_toggled_cb), toolbar);
+	g_signal_connect (GTK_OBJECT (priv->popup_item), "toggled",
+			    G_CALLBACK (popup_item_toggled_cb), toolbar);
 
 	priv->popup_window = gtk_window_new (GTK_WINDOW_POPUP);
-	gtk_signal_connect (GTK_OBJECT (priv->popup_window), "button_release_event",
-			    GTK_SIGNAL_FUNC (popup_window_button_release_cb), toolbar);
+	g_signal_connect (GTK_OBJECT (priv->popup_window), "button_release_event",
+			    G_CALLBACK (popup_window_button_release_cb), toolbar);
 
 	frame = gtk_frame_new (NULL);
 	gtk_widget_show (frame);
@@ -1213,7 +1212,7 @@ bonobo_ui_toolbar_new (void)
 {
 	BonoboUIToolbar *toolbar;
 
-	toolbar = gtk_type_new (bonobo_ui_toolbar_get_type ());
+	toolbar = g_object_new (bonobo_ui_toolbar_get_type (), NULL);
 
 	bonobo_ui_toolbar_construct (toolbar);
 
@@ -1227,12 +1226,11 @@ bonobo_ui_toolbar_set_orientation (BonoboUIToolbar *toolbar,
 {
 	g_return_if_fail (toolbar != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
-	g_return_if_fail (orientation == GTK_ORIENTATION_HORIZONTAL
-			  || orientation == GTK_ORIENTATION_VERTICAL);
+	g_return_if_fail (orientation == GTK_ORIENTATION_HORIZONTAL ||
+			  orientation == GTK_ORIENTATION_VERTICAL);
 
-	gtk_signal_emit (GTK_OBJECT (toolbar), signals[SET_ORIENTATION], orientation);
-
-	gtk_signal_emit (GTK_OBJECT (toolbar), signals[STYLE_CHANGED]);
+	g_signal_emit (toolbar, signals[SET_ORIENTATION], 0, orientation);
+	g_signal_emit (toolbar, signals[STYLE_CHANGED], 0);
 }
 
 GtkOrientation
@@ -1301,15 +1299,18 @@ bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
 	if (!g_list_find (priv->items, item))
 		priv->items = g_list_insert (priv->items, item, position);
 
-	gtk_signal_connect_while_alive (GTK_OBJECT (item), "destroy",
-					GTK_SIGNAL_FUNC (item_destroy_cb), toolbar,
-					GTK_OBJECT (toolbar));
-	gtk_signal_connect_while_alive (GTK_OBJECT (item), "activate",
-					GTK_SIGNAL_FUNC (item_activate_cb), toolbar,
-					GTK_OBJECT (toolbar));
-	gtk_signal_connect_while_alive (GTK_OBJECT (item), "set_want_label",
-					GTK_SIGNAL_FUNC (item_set_want_label_cb), toolbar,
-					GTK_OBJECT (toolbar));
+	g_signal_connect_object (
+		item, "destroy",
+		G_CALLBACK (item_destroy_cb),
+		toolbar, 0);
+	g_signal_connect_object (
+		item, "activate",
+		G_CALLBACK (item_activate_cb),
+		toolbar, 0);
+	g_signal_connect_object (
+		item, "set_want_label",
+		G_CALLBACK (item_set_want_label_cb),
+		toolbar, 0);
 
 	set_attributes_on_child (item, priv->orientation, priv->style);
 	parentize_widget (toolbar, GTK_WIDGET (item));
@@ -1347,7 +1348,7 @@ bonobo_ui_toolbar_set_hv_styles (BonoboUIToolbar      *toolbar,
 	toolbar->priv->hstyle = hstyle;
 	toolbar->priv->vstyle = vstyle;
 
-	gtk_signal_emit (GTK_OBJECT (toolbar), signals [STYLE_CHANGED]);
+	g_signal_emit (toolbar, signals [STYLE_CHANGED], 0);
 }
 
 void

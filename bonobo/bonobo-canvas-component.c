@@ -41,8 +41,6 @@ struct _BonoboCanvasComponentPrivate {
 /* Returns the GnomeCanvasItemClass of an object */
 #define ICLASS(x) GNOME_CANVAS_ITEM_CLASS ((GTK_OBJECT_GET_CLASS (x)))
 
-
-
 static GObjectClass *gcc_parent_class;
 
 static gboolean
@@ -561,7 +559,7 @@ impl_Bonobo_Canvas_Component_event (PortableServer_Servant     servant,
 
 	restore_state (item, state);
 
-	g_signal_emit_by_name (G_OBJECT (gcc), "event", &gdk_event);
+	g_signal_emit_by_name (gcc, "event", &gdk_event);
 
 	if (ICLASS (item)->event)
 		retval = ICLASS (item)->event (item, &gdk_event);
@@ -600,7 +598,7 @@ impl_Bonobo_Canvas_Component_setBounds (PortableServer_Servant     servant,
 {
 	Gcc *gcc = GCC (bonobo_object_from_servant (servant));
 
-	g_signal_emit (G_OBJECT (gcc), gcc_signals [SET_BOUNDS], 0, bbox, &ev);
+	g_signal_emit (gcc, gcc_signals [SET_BOUNDS], 0, bbox, &ev);
 }
 
 static void
@@ -784,23 +782,22 @@ typedef struct {
 	GnomeCanvasGroupClass parent_class;
 } RootItemHackClass;
 
-static GtkType root_item_hack_get_type (void);
+static GType root_item_hack_get_type (void);
 #define ROOT_ITEM_HACK_TYPE (root_item_hack_get_type ())
 #define ROOT_ITEM_HACK(obj) (GTK_CHECK_CAST((obj), ROOT_ITEM_HACK_TYPE, RootItemHack))
 
 static void
-rih_destroy (GtkObject *obj)
+rih_dispose (GObject *obj)
 {
 	RootItemHack *rih = ROOT_ITEM_HACK (obj);
 
-	bonobo_object_release_unref (rih->proxy, NULL);
-	rih->proxy = CORBA_OBJECT_NIL;
+	rih->proxy = bonobo_object_release_unref (rih->proxy, NULL);
 
 	if (rih->orig_root)
 		gtk_object_destroy (GTK_OBJECT (rih->orig_root));
 	rih->orig_root = NULL;
 
-	GTK_OBJECT_CLASS (rih_parent_class)->destroy (obj);
+	G_OBJECT_CLASS (rih_parent_class)->dispose (obj);
 }
 
 /*
@@ -832,32 +829,35 @@ rih_update (GnomeCanvasItem *item, double affine [6], ArtSVP *svp, int flags)
 }
 
 static void
-rih_class_init (GnomeCanvasItemClass *item_class)
+rih_class_init (GObjectClass *klass)
 {
-	rih_parent_class = gtk_type_class (gnome_canvas_group_get_type ());
+	GnomeCanvasItemClass *item_class = (GnomeCanvasItemClass *) klass;
+	rih_parent_class = g_type_class_peek_parent (klass);
 
-	GTK_OBJECT_CLASS (item_class)->destroy = rih_destroy;
+	klass->dispose = rih_dispose;
+
 	item_class->update = rih_update;
 }
       
-static GtkType
+static GType
 root_item_hack_get_type (void)
 {
 	static GtkType type = 0;
 
 	if (!type) {
-		GtkTypeInfo info = {
-			"RootItemHack",
-			sizeof (RootItemHack),
+		GTypeInfo info = {
 			sizeof (RootItemHackClass),
-			(GtkClassInitFunc) rih_class_init,
-			(GtkObjectInitFunc) NULL,
-			NULL, /* reserved_1 */
-			NULL, /* reserved_2 */
-			(GtkClassInitFunc) NULL
+			NULL, NULL,
+			(GClassInitFunc) rih_class_init,
+			NULL, NULL,
+			sizeof (RootItemHack),
+			0,
+			NULL, NULL
 		};
 
-		type = gtk_type_unique (gnome_canvas_group_get_type (), &info);
+		type = g_type_register_static (
+			gnome_canvas_group_get_type (),
+			"RootItemHack", &info, 0);
 	}
 
 	return type;
@@ -868,7 +868,7 @@ root_item_hack_new (GnomeCanvas *canvas, Bonobo_Canvas_ComponentProxy proxy)
 {
 	RootItemHack *item_hack;
 
-	item_hack = gtk_type_new (root_item_hack_get_type ());
+	item_hack = g_object_new (root_item_hack_get_type (), NULL);
 	item_hack->proxy = proxy;
 	item_hack->orig_root = canvas->root;
 	GNOME_CANVAS_ITEM (item_hack)->canvas = canvas;

@@ -85,9 +85,9 @@ bonobo_entry_control_new (void)
 	bonobo_control_set_properties (control, BONOBO_OBJREF (pb), NULL);
 	bonobo_object_unref (BONOBO_OBJECT (pb));
 
-	gtk_signal_connect (
+	g_signal_connect (
 		GTK_OBJECT (entry), "activate",
-		GTK_SIGNAL_FUNC (activate_cb), control);
+		G_CALLBACK (activate_cb), control);
 
 	pspecs = g_object_class_list_properties (
 		G_OBJECT_GET_CLASS (entry), &n_pspecs);

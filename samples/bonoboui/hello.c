@@ -274,9 +274,9 @@ hello_new (void)
 
 	/* Connect the Button's 'clicked' signal to the signal handler:
 	 * pass label as the data, so that the signal handler can use it. */
-	gtk_signal_connect (
+	g_signal_connect (
 		GTK_OBJECT (button), "clicked",
-		GTK_SIGNAL_FUNC(hello_on_button_click), label);
+		G_CALLBACK(hello_on_button_click), label);
 
 	gtk_window_set_policy (GTK_WINDOW (win), FALSE, TRUE, FALSE);
 	gtk_window_set_default_size (GTK_WINDOW (win), 250, 350);
@@ -288,9 +288,9 @@ hello_new (void)
 	bonobo_window_set_contents (win, frame);
 
 	/* Connect to the delete_event: a close from the window manager */
-	gtk_signal_connect (GTK_OBJECT (win),
+	g_signal_connect (GTK_OBJECT (win),
 			    "delete_event",
-			    GTK_SIGNAL_FUNC (delete_event_cb),
+			    G_CALLBACK (delete_event_cb),
 			    NULL);
 
 	/* Append ourself to the list of windows */

@@ -8,13 +8,9 @@
  * Copyright (C) 2000 Ximian, Inc.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
 #include "bonobo-ui-toolbar-popup-item.h"
 
-
 #define PARENT_TYPE bonobo_ui_toolbar_toggle_button_item_get_type ()
 static BonoboUIToolbarToggleButtonItemClass *parent_class = NULL;
 
@@ -159,7 +155,8 @@ bonobo_ui_toolbar_popup_item_new (void)
 {
 	BonoboUIToolbarPopupItem *popup_item;
 
-	popup_item = gtk_type_new (bonobo_ui_toolbar_popup_item_get_type ());
+	popup_item = g_object_new (
+		bonobo_ui_toolbar_popup_item_get_type (), NULL);
 
 	bonobo_ui_toolbar_popup_item_construct (popup_item);
 

@@ -16,6 +16,42 @@
 
 typedef struct _BonoboUIEngine BonoboUIEngine;
 
+#include <bonobo/bonobo-ui-container.h>
+
+/* Various useful bits */
+void bonobo_ui_engine_deregister_dead_components     (BonoboUIEngine *engine);
+void bonobo_ui_engine_deregister_component_by_ref    (BonoboUIEngine *engine,
+						      Bonobo_Unknown  ref);
+void bonobo_ui_engine_deregister_component           (BonoboUIEngine *engine,
+						      const char     *name);
+void bonobo_ui_engine_register_component             (BonoboUIEngine *engine,
+						      const char     *name,
+						      Bonobo_Unknown  component);
+GList         *bonobo_ui_engine_get_component_names  (BonoboUIEngine *engine);
+Bonobo_Unknown bonobo_ui_engine_get_component        (BonoboUIEngine *engine,
+						      const char     *name);
+
+/* Configuration stuff */
+void               bonobo_ui_engine_config_set_path  (BonoboUIEngine *engine,
+						      const char     *path);
+const char        *bonobo_ui_engine_config_get_path  (BonoboUIEngine *engine);
+
+/* Misc. */
+void               bonobo_ui_engine_set_ui_container (BonoboUIEngine    *engine,
+						      BonoboUIContainer *ui_container);
+BonoboUIContainer *bonobo_ui_engine_get_ui_container (BonoboUIEngine    *engine);
+
+
+/* Used in Nautilus */
+#ifndef BONOBO_UI_DEPRECATED
+void bonobo_ui_engine_freeze (BonoboUIEngine *engine);
+void bonobo_ui_engine_thaw   (BonoboUIEngine *engine);
+void bonobo_ui_engine_update (BonoboUIEngine *engine);
+#endif
+
+/* Private - implementation details */
+#ifdef BONOBO_UI_INTERNAL
+
 typedef enum {
 	BONOBO_UI_ERROR_OK = 0,
 	BONOBO_UI_ERROR_BAD_PARAM,
@@ -23,7 +59,6 @@ typedef enum {
 	BONOBO_UI_ERROR_INVALID_XML
 } BonoboUIError;
 
-#include <bonobo/bonobo-ui-container.h>
 #include <bonobo/bonobo-ui-sync.h>
 
 G_BEGIN_DECLS
@@ -67,17 +102,12 @@ BonoboUIEngine *bonobo_ui_engine_construct     (BonoboUIEngine   *engine,
 BonoboUIEngine *bonobo_ui_engine_new           (GObject          *view);
 GObject        *bonobo_ui_engine_get_view      (BonoboUIEngine   *engine);
 
-void          bonobo_ui_engine_config_set_path (BonoboUIEngine *engine,
-						const char     *path);
-const char   *bonobo_ui_engine_config_get_path (BonoboUIEngine *engine);
-
 void          bonobo_ui_engine_add_sync        (BonoboUIEngine   *engine,
 						BonoboUISync     *sync);
 void          bonobo_ui_engine_remove_sync     (BonoboUIEngine   *engine,
 						BonoboUISync     *sync);
 GSList       *bonobo_ui_engine_get_syncs       (BonoboUIEngine   *engine);
 
-void          bonobo_ui_engine_update          (BonoboUIEngine   *engine);
 void          bonobo_ui_engine_update_node     (BonoboUIEngine   *engine,
 						BonoboUISync     *sync,
 						BonoboUINode     *node);
@@ -158,19 +188,6 @@ char         *bonobo_ui_engine_get_attr           (BonoboUINode     *node,
 void          bonobo_ui_engine_widget_attach_node (GtkWidget        *widget,
 						   BonoboUINode     *node);
 
-/* Various useful bits */
-void bonobo_ui_engine_deregister_dead_components     (BonoboUIEngine *engine);
-void bonobo_ui_engine_deregister_component_by_ref    (BonoboUIEngine *engine,
-						      Bonobo_Unknown  ref);
-void bonobo_ui_engine_deregister_component           (BonoboUIEngine *engine,
-						      const char     *name);
-void bonobo_ui_engine_register_component             (BonoboUIEngine *engine,
-						      const char     *name,
-						      Bonobo_Unknown  component);
-
-GList         *bonobo_ui_engine_get_component_names  (BonoboUIEngine *engine);
-Bonobo_Unknown bonobo_ui_engine_get_component        (BonoboUIEngine *engine,
-						      const char     *name);
 
 /* Interface used by UIContainer maps to BonoboUIXml */
 CORBA_char      *bonobo_ui_engine_xml_get         (BonoboUIEngine   *engine,
@@ -193,12 +210,6 @@ BonoboUIError    bonobo_ui_engine_object_get      (BonoboUIEngine    *engine,
 						   const char        *path,
 						   Bonobo_Unknown    *object,
 						   CORBA_Environment *ev);
-void             bonobo_ui_engine_freeze          (BonoboUIEngine    *engine);
-void             bonobo_ui_engine_thaw            (BonoboUIEngine    *engine);
-
-void               bonobo_ui_engine_set_ui_container (BonoboUIEngine    *engine,
-						      BonoboUIContainer *ui_container);
-BonoboUIContainer *bonobo_ui_engine_get_ui_container (BonoboUIEngine    *engine);
 
 void bonobo_ui_engine_exec_verb (BonoboUIEngine                    *engine,
 				 const CORBA_char                  *cname,
@@ -208,6 +219,8 @@ void bonobo_ui_engine_ui_event  (BonoboUIEngine                    *engine,
 				 const Bonobo_UIComponent_EventType type,
 				 const CORBA_char                  *state,
 				 CORBA_Environment                 *ev);
+
+#endif /* BONOBO_UI_INTERNAL */
 
 G_END_DECLS
 

@@ -422,21 +422,21 @@ view_factory (BonoboEmbeddable       *embeddable,
 			       GDK_BUTTON_MOTION_MASK |
 			       GDK_BUTTON_PRESS_MASK);
 
-	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "motion_notify_event",
-			    GTK_SIGNAL_FUNC (view_motion_notify_cb), view_data);
+	g_signal_connect (GTK_OBJECT (view_data->drawing_area), "motion_notify_event",
+			    G_CALLBACK (view_motion_notify_cb), view_data);
 
 	/*
 	 * When the widget is realized, we will draw the current image
 	 * data into it.
 	 */
-	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "realize",
-			    GTK_SIGNAL_FUNC (view_realize_cb), view_data);
+	g_signal_connect (GTK_OBJECT (view_data->drawing_area), "realize",
+			    G_CALLBACK (view_realize_cb), view_data);
 
 	/*
 	 * We have to redraw the view when we get expose events.
 	 */
-	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "expose_event",
-			    GTK_SIGNAL_FUNC (view_expose_cb), view_data);
+	g_signal_connect (GTK_OBJECT (view_data->drawing_area), "expose_event",
+			    G_CALLBACK (view_expose_cb), view_data);
 	 
 
 	/*
@@ -466,22 +466,22 @@ view_factory (BonoboEmbeddable       *embeddable,
 	 * When our container wants to activate a given view of this
 	 * component, we will get the "activate" signal.
 	 */
-	gtk_signal_connect (GTK_OBJECT (view), "activate",
-			    GTK_SIGNAL_FUNC (view_activate_cb), view_data);
+	g_signal_connect (GTK_OBJECT (view), "activate",
+			    G_CALLBACK (view_activate_cb), view_data);
 
 	/*
 	 * The "system_exception" signal is raised when the BonoboView
 	 * encounters a fatal CORBA exception.
 	 */
-	gtk_signal_connect (GTK_OBJECT (view), "system_exception",
-			    GTK_SIGNAL_FUNC (view_system_exception_cb), view_data);
+	g_signal_connect (GTK_OBJECT (view), "system_exception",
+			    G_CALLBACK (view_system_exception_cb), view_data);
 
 	/*
 	 * We'll need to be able to cleanup when this view gets
 	 * destroyed.
 	 */
-	gtk_signal_connect (GTK_OBJECT (view), "destroy",
-			    GTK_SIGNAL_FUNC (view_destroy_cb), view_data);
+	g_signal_connect (GTK_OBJECT (view), "destroy",
+			    G_CALLBACK (view_destroy_cb), view_data);
 
 	return view;
 }
@@ -592,8 +592,8 @@ embeddable_factory (BonoboGenericFactory *this,
 	 * embeddable_system_exception_cb() -- destroys the defunct
 	 * BonoboEmbeddable object.
 	 */
-	gtk_signal_connect (GTK_OBJECT (embeddable), "system_exception",
-			    GTK_SIGNAL_FUNC (embeddable_system_exception_cb),
+	g_signal_connect (GTK_OBJECT (embeddable), "system_exception",
+			    G_CALLBACK (embeddable_system_exception_cb),
 			    embeddable_data);
 
 	/*
@@ -601,8 +601,8 @@ embeddable_factory (BonoboGenericFactory *this,
 	 * When an Embeddable is destroyed, its views will
 	 * automatically be destroyed.
 	 */
-	gtk_signal_connect (GTK_OBJECT (embeddable), "destroy",
-			    GTK_SIGNAL_FUNC (embeddable_destroy_cb),
+	g_signal_connect (GTK_OBJECT (embeddable), "destroy",
+			    G_CALLBACK (embeddable_destroy_cb),
 			    embeddable_data);
 
 	return BONOBO_OBJECT (embeddable);

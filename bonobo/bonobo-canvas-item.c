@@ -242,9 +242,8 @@ gbi_realize (GnomeCanvasItem *item)
 		return;
 	}
 		
-	gtk_signal_connect (
-		GTK_OBJECT (item->canvas), "size_allocate",
-		GTK_SIGNAL_FUNC (proxy_size_allocate), item);
+	g_signal_connect (item->canvas, "size_allocate",
+			  G_CALLBACK (proxy_size_allocate), item);
 
 	CORBA_exception_init (&ev);
 	gdk_flush ();

@@ -273,8 +273,7 @@ select_row (GtkCList *clist, gint row, gint col,
 	    GdkEvent *event, BonoboSelectorWidget *sel)
 {
 	if (event && event->type == GDK_2BUTTON_PRESS) {
-		gtk_signal_emit (GTK_OBJECT (sel), signals [FINAL_SELECT],
-				 NULL);
+		g_signal_emit (sel, signals [FINAL_SELECT], 0, NULL);
 
 	} else {
 		GtkCListClass *cl;
@@ -314,8 +313,8 @@ bonobo_selector_widget_init (GtkWidget *widget)
 	priv->clist = gtk_clist_new_with_titles (3, titles);
 	gtk_clist_set_selection_mode (GTK_CLIST (priv->clist),
 		GTK_SELECTION_BROWSE);
-	gtk_signal_connect (GTK_OBJECT (priv->clist), "select-row",
-			    GTK_SIGNAL_FUNC (select_row), sel);
+	g_signal_connect (GTK_OBJECT (priv->clist), "select-row",
+			    G_CALLBACK (select_row), sel);
 	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 1, FALSE);
 	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 2, FALSE);
 	gtk_clist_column_titles_passive (GTK_CLIST (priv->clist));
@@ -386,7 +385,7 @@ bonobo_selector_widget_set_interfaces (BonoboSelectorWidget *widget,
 GtkWidget *
 bonobo_selector_widget_new (void)
 {
-	return gtk_type_new (bonobo_selector_widget_get_type ());
+	return g_object_new (bonobo_selector_widget_get_type (), NULL);
 }
 
 static void
@@ -404,10 +403,15 @@ bonobo_selector_widget_class_init (BonoboSelectorWidgetClass *klass)
 	klass->get_description = impl_get_description;
 	klass->set_interfaces  = impl_set_interfaces;
 
-	signals [FINAL_SELECT] = gtk_signal_new (
-		"final_select", GTK_RUN_FIRST, GTK_CLASS_TYPE (object_class),
-		GTK_SIGNAL_OFFSET (BonoboSelectorWidgetClass, final_select),
-		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
+	signals [FINAL_SELECT] = g_signal_new (
+		"final_select",
+		G_TYPE_FROM_CLASS (object_class),
+		GTK_RUN_FIRST,
+		G_STRUCT_OFFSET (BonoboSelectorWidgetClass,
+				 final_select),
+		NULL, NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE, 0);
 
 	object_class->finalize = bonobo_selector_widget_finalize;
 }

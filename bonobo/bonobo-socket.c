@@ -66,9 +66,9 @@ bonobo_socket_realize (GtkWidget *widget)
 		(* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
 
 	if (socket->frame) {
-		g_object_ref (G_OBJECT (socket->frame));
+		g_object_ref (socket->frame);
 		bonobo_control_frame_get_remote_window (socket->frame, NULL);
-		g_object_unref (G_OBJECT (socket->frame));
+		g_object_unref (socket->frame);
 	}
 
 	g_assert (GTK_WIDGET_REALIZED (widget));
@@ -281,11 +281,7 @@ bonobo_socket_get_type ()
 GtkWidget*
 bonobo_socket_new (void)
 {
-	BonoboSocket *socket;
-
-	socket = gtk_type_new (bonobo_socket_get_type ());
-
-	return GTK_WIDGET (socket);
+	return g_object_new (bonobo_socket_get_type (), NULL);
 }
 
 BonoboControlFrame *

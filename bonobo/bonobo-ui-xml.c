@@ -389,8 +389,7 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 
 	if (override) {
 
-		g_signal_emit (G_OBJECT (tree),
-			       signals [OVERRIDE], 0, new, old);
+		g_signal_emit (tree, signals [OVERRIDE], 0, new, old);
 
 		data->overridden = g_slist_prepend (old_data->overridden, old);
 		prune_overrides_by_id (tree, data, data->id);
@@ -399,8 +398,7 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 			data->id = old_data->id;
 
 		data->overridden = old_data->overridden;
-		g_signal_emit (G_OBJECT (tree),
-			       signals [REPLACE_OVERRIDE], 0, new, old);
+		g_signal_emit (tree, signals [REPLACE_OVERRIDE], 0, new, old);
 
 /*		fprintf (stderr, "Replace override of '%s' '%s' with '%s' '%s'",
 			 old->name, bonobo_ui_node_peek_attr (old, "name"),
@@ -456,7 +454,7 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		data->overridden = NULL;
 
 		/* Fire remove while still in tree */
-		g_signal_emit (G_OBJECT (tree), signals [REMOVE], 0, node);
+		g_signal_emit (tree, signals [REMOVE], 0, node);
 		
 		/* Move children across */
 		bonobo_ui_node_move_children (node, old);
@@ -467,7 +465,7 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		/* Mark dirty */
 		bonobo_ui_xml_set_dirty (tree, old);
 
-		g_signal_emit (G_OBJECT (tree), signals [REINSTATE], 0, old);
+		g_signal_emit (tree, signals [REINSTATE], 0, old);
 
 		watch_update (tree, old);
 
@@ -480,13 +478,13 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		/* Mark dirty */
 		bonobo_ui_xml_set_dirty (tree, node);
 		
-		g_signal_emit (G_OBJECT (tree), signals [RENAME], 0, node);
+		g_signal_emit (tree, signals [RENAME], 0, node);
 		return;
 	} else {
 		/* Mark parent & up dirty */
 		bonobo_ui_xml_set_dirty (tree, node);
 
-		g_signal_emit (G_OBJECT (tree), signals [REMOVE], 0, node);
+		g_signal_emit (tree, signals [REMOVE], 0, node);
 	}
 
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",

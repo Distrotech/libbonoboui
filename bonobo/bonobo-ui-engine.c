@@ -8,6 +8,11 @@
  * Copyright 2000,2001 Ximian, Inc.
  */
 
+/* FIXME: bonobo_ui_engine_update should take
+ * a BonoboUINode *, which we can walk up from
+ * looking for cleanliness & then re-building
+ * from there on down */
+
 #include <config.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -103,7 +108,7 @@ find_sync_for_node (BonoboUIEngine *engine,
 
 	if (ret) {
 /*		fprintf (stderr, "Found sync '%s' for path '%s'\n",
-			 gtk_type_name (GTK_CLASS_TYPE (GTK_OBJECT_GET_CLASS (ret))),
+			 gtk_type_name (G_TYPE_FROM_CLASS (GTK_OBJECT_GET_CLASS (ret))),
 			 bonobo_ui_xml_make_path (node));*/
 		return ret;
 	}
@@ -1255,10 +1260,10 @@ bonobo_ui_engine_xml_set_prop (BonoboUIEngine *engine,
 			       const char     *value,
 			       const char     *component)
 {
-	char *parent_path;
+	char *cmp_name;
 	const char *old_value;
-	BonoboUINode *copy;
 	BonoboUINode *original;
+	NodeInfo     *info;
 	
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), 
 			      BONOBO_UI_ERROR_BAD_PARAM);
@@ -1268,22 +1273,44 @@ bonobo_ui_engine_xml_set_prop (BonoboUIEngine *engine,
 	if (!original) 
 		return BONOBO_UI_ERROR_INVALID_PATH;
 
-	old_value = bonobo_ui_node_peek_attr (original, property);
-	if (!old_value && !value)
-		return BONOBO_UI_ERROR_OK;
+	info = bonobo_ui_xml_get_data (engine->priv->tree, original);
+	cmp_name = sub_component_cmp_name (engine, component);
 
-	if (old_value && value && !strcmp (old_value, value))
-		return BONOBO_UI_ERROR_OK;
+	if (info->parent.id == cmp_name) {
+		old_value = bonobo_ui_node_peek_attr (original, property);
+		if (!old_value && !value)
+			return BONOBO_UI_ERROR_OK;
+		
+		else if (old_value && value && !strcmp (old_value, value))
+			return BONOBO_UI_ERROR_OK;
 
-	copy = bonobo_ui_node_new (bonobo_ui_node_get_name (original));
-	bonobo_ui_node_copy_attrs (original, copy);
-	bonobo_ui_node_set_attr (copy, property, value);
+		else {
+			bonobo_ui_node_set_attr (original, property, value);
+			bonobo_ui_xml_set_dirty (engine->priv->tree, original);
 
-	parent_path = get_parent_path (path);
-	bonobo_ui_engine_xml_merge_tree (
-		engine, parent_path, copy, component);
-	g_free (parent_path);
-	
+			bonobo_ui_engine_update (engine);
+		}
+	} else {
+		char *parent_path;
+		BonoboUINode *copy;
+
+		copy = bonobo_ui_node_new (
+			bonobo_ui_node_get_name (original));
+
+		bonobo_ui_node_copy_attrs (original, copy);
+		bonobo_ui_node_set_attr (copy, property, value);
+
+		parent_path = get_parent_path (path);
+
+		bonobo_ui_xml_merge (
+			engine->priv->tree, parent_path,
+			copy, cmp_name);
+
+		g_free (parent_path);
+
+		bonobo_ui_engine_update (engine);
+	}
+
 	return BONOBO_UI_ERROR_OK;
 }
 
@@ -1441,7 +1468,7 @@ real_exec_verb (BonoboUIEngine *engine,
 	g_return_if_fail (component_name != NULL);
 	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
 
-	g_object_ref (G_OBJECT (engine));
+	g_object_ref (engine);
 
 	component = sub_component_objref (engine, component_name);
 
@@ -1467,7 +1494,7 @@ real_exec_verb (BonoboUIEngine *engine,
 		CORBA_exception_free (&ev);
 	}
 
-	g_object_unref (G_OBJECT (engine));
+	g_object_unref (engine);
 }
 
 static void
@@ -1676,7 +1703,7 @@ real_emit_ui_event (BonoboUIEngine *engine,
 	if (!component_name) /* Auto-created entry, no-one can listen to it */
 		return;
 
-	g_object_ref (G_OBJECT (engine));
+	g_object_ref (engine);
 
 	component = sub_component_objref (engine, component_name);
 
@@ -1702,7 +1729,7 @@ real_emit_ui_event (BonoboUIEngine *engine,
 		CORBA_exception_free (&ev);
 	}
 
-	g_object_unref (G_OBJECT (engine));
+	g_object_unref (engine);
 }
 
 static void
@@ -1722,7 +1749,7 @@ impl_emit_event_on (BonoboUIEngine *engine,
 	data = bonobo_ui_xml_get_data (NULL, node);
 	g_return_if_fail (data != NULL);
 
-	g_object_ref (G_OBJECT (engine));
+	g_object_ref (engine);
 
 	component_id = g_strdup (data->id);
 	real_id      = g_strdup (id);
@@ -1734,7 +1761,7 @@ impl_emit_event_on (BonoboUIEngine *engine,
 			    Bonobo_UIComponent_STATE_CHANGED,
 			    state);
 
-	g_object_unref (G_OBJECT (engine));
+	g_object_unref (engine);
 
 	g_free (component_id);
 	g_free (real_id);
@@ -1760,12 +1787,12 @@ bonobo_ui_engine_dispose (BonoboUIEngine *engine)
 	bonobo_ui_preferences_remove_engine (engine);
 
 	if (priv->config) {
-		g_object_unref (G_OBJECT (priv->config));
+		g_object_unref (priv->config);
 		priv->config = NULL;
 	}
 
 	if (priv->tree) {
-		g_object_unref (G_OBJECT (priv->tree));
+		g_object_unref (priv->tree);
 		priv->tree = NULL;
 	}
 
@@ -1775,7 +1802,7 @@ bonobo_ui_engine_dispose (BonoboUIEngine *engine)
 		NULL);
 
 	for (l = priv->syncs; l; l = l->next)
-		g_object_unref (G_OBJECT (l->data));
+		g_object_unref (l->data);
 	g_slist_free (priv->syncs);
 	priv->syncs = NULL;
 

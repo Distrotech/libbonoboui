@@ -134,8 +134,7 @@ impl_Bonobo_ControlFrame_notifyActivated (PortableServer_Servant  servant,
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (
 		bonobo_object_from_servant (servant));
 
-	g_signal_emit (G_OBJECT (frame),
-		       control_frame_signals [ACTIVATED], 0, state);
+	g_signal_emit (frame, control_frame_signals [ACTIVATED], 0, state);
 }
 
 static void
@@ -162,7 +161,7 @@ impl_Bonobo_ControlFrame_activateURI (PortableServer_Servant  servant,
 {
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
-	g_signal_emit (G_OBJECT (frame),
+	g_signal_emit (frame,
 		       control_frame_signals [ACTIVATE_URI], 0,
 		       (const char *) uri, (gboolean) relative);
 }
@@ -723,7 +722,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 	} else
 		ev = opt_ev;
 
-	g_object_ref (G_OBJECT (frame));
+	g_object_ref (frame);
 
 	if (frame->priv->control != CORBA_OBJECT_NIL) {
 		if (!frame->priv->inproc_control)
@@ -763,7 +762,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 		bonobo_control_frame_get_remote_window (frame, ev);
 	}
 
-	g_object_unref (G_OBJECT (frame));
+	g_object_unref (frame);
 
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
@@ -1018,7 +1017,7 @@ bonobo_control_frame_set_socket (BonoboControlFrame *frame,
 	old_socket = (BonoboSocket *) frame->priv->socket;
 
 	if (socket) {
-		frame->priv->socket = g_object_ref (G_OBJECT (socket));
+		frame->priv->socket = g_object_ref (socket);
 		bonobo_socket_set_control_frame (socket, frame);
 	} else
 		frame->priv->socket = NULL;
@@ -1026,7 +1025,7 @@ bonobo_control_frame_set_socket (BonoboControlFrame *frame,
 	if (old_socket) {
 		bonobo_socket_set_control_frame (
 			BONOBO_SOCKET (old_socket), NULL);
-		g_object_unref (G_OBJECT (old_socket));
+		g_object_unref (old_socket);
 	}
 }
 

@@ -101,7 +101,7 @@ impl_Bonobo_PropertyControl_notifyAction (PortableServer_Servant servant,
 		return;
 	}
 	
-	g_signal_emit (G_OBJECT (bonobo_object), signals [ACTION], 0, pagenumber, action);
+	g_signal_emit (bonobo_object, signals [ACTION], 0, pagenumber, action);
 }
 
 static void

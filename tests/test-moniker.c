@@ -232,8 +232,8 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 
 	bonobo_window_set_contents (BONOBO_WINDOW (window), widget);
 
-	gtk_signal_connect (GTK_OBJECT (window), "destroy",
-			    GTK_SIGNAL_FUNC (bonobo_main_quit), NULL);
+	g_signal_connect (GTK_OBJECT (window), "destroy",
+			    G_CALLBACK (bonobo_main_quit), NULL);
 
 	gtk_widget_show_all (window);
 	bonobo_main ();

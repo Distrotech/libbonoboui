@@ -47,10 +47,12 @@ popup_remove (BonoboUISyncMenu *smenu,
 	g_return_if_fail (smenu != NULL);
 	g_return_if_fail (popup != NULL);
 
-	gtk_signal_disconnect_by_data (GTK_OBJECT (popup->menu), popup);
+	g_signal_handlers_disconnect_matched (
+		popup->menu, G_SIGNAL_MATCH_DATA,
+		0, 0, NULL, NULL, popup);
 
-	node = bonobo_ui_engine_get_path (smenu->parent.engine,
-					  popup->path);
+	node = bonobo_ui_engine_get_path (
+		smenu->parent.engine, popup->path);
 
 	if (node)
 		bonobo_ui_engine_prune_widget_info (
@@ -84,8 +86,8 @@ bonobo_ui_sync_menu_remove_popup (BonoboUISyncMenu *sync,
 static void
 popup_destroy (GtkObject *menu, Popup *popup)
 {
-	BonoboUISyncMenu *smenu = gtk_object_get_data (
-		GTK_OBJECT (menu), UI_SYNC_MENU_KEY);
+	BonoboUISyncMenu *smenu = g_object_get_data (
+		G_OBJECT (menu), UI_SYNC_MENU_KEY);
 
 	g_return_if_fail (smenu != NULL);
 	popup_remove (smenu, popup);
@@ -159,7 +161,7 @@ bonobo_ui_sync_menu_add_popup (BonoboUISyncMenu *smenu,
 	popup->menu = menu;
 	popup->path = g_strdup (path);
 
-	if ((children = gtk_container_children (GTK_CONTAINER (menu)))) {
+	if ((children = gtk_container_get_children (GTK_CONTAINER (menu)))) {
 		g_warning ("Extraneous items in blank popup");
 		g_list_free (children);
 	}
@@ -169,9 +171,9 @@ bonobo_ui_sync_menu_add_popup (BonoboUISyncMenu *smenu,
 
 	smenu->popups = g_slist_prepend (smenu->popups, popup);
 
-	gtk_object_set_data (GTK_OBJECT (menu), UI_SYNC_MENU_KEY, smenu);
+	g_object_set_data (G_OBJECT (menu), UI_SYNC_MENU_KEY, smenu);
 
-	gtk_signal_connect (GTK_OBJECT (menu), "destroy",
+	g_signal_connect (GTK_OBJECT (menu), "destroy",
 			    (GtkSignalFunc) popup_destroy, popup);
 
 	node = bonobo_ui_engine_get_path (smenu->parent.engine, path);
@@ -198,7 +200,7 @@ radio_group_remove (GtkRadioMenuItem *menuitem,
 		l = l->next;
 
 	if (l)
-		insert = g_object_ref (G_OBJECT (l->data));
+		insert = g_object_ref (l->data);
 	else
 		insert = NULL;
 	
@@ -209,7 +211,7 @@ radio_group_remove (GtkRadioMenuItem *menuitem,
 			menu_sync->radio_groups,
 			g_strdup (group_name), insert);
 
-	g_object_unref (G_OBJECT (menu_sync));
+	g_object_unref (menu_sync);
 }
 
 static void
@@ -226,11 +228,11 @@ radio_group_add (BonoboUISyncMenu *menu_sync,
 	if (!(master = g_hash_table_lookup (menu_sync->radio_groups, group_name)))
 		g_hash_table_insert (menu_sync->radio_groups,
 				     g_strdup (group_name),
-				     g_object_ref (G_OBJECT (menuitem)));
+				     g_object_ref (menuitem));
 
 	else {
 		gtk_radio_menu_item_set_group (
-			menuitem, gtk_radio_menu_item_group (master));
+			menuitem, gtk_radio_menu_item_get_group (master));
 		/* 
 		 * Since we created this item without a group, it's
 		 * active, but now we are adding it to a group so it
@@ -239,9 +241,9 @@ radio_group_add (BonoboUISyncMenu *menu_sync,
 		GTK_CHECK_MENU_ITEM (menuitem)->active = FALSE;
 	}
 
-	gtk_object_set_data (GTK_OBJECT (menuitem),
-			     MAGIC_RADIO_GROUP_KEY,
-			     g_object_ref (G_OBJECT (menu_sync)));
+	g_object_set_data (G_OBJECT (menuitem),
+			   MAGIC_RADIO_GROUP_KEY,
+			   g_object_ref (menu_sync));
 
 	g_signal_connect_data (G_OBJECT (menuitem),
 			       "destroy", 
@@ -514,15 +516,14 @@ sucking_gtk_keybindings_cb (GtkWidget   *widget,
 	if (!klass)
 		klass = gtk_type_class (GTK_TYPE_MENU_SHELL);
 	if (!id)
-		id = gtk_signal_lookup ("key_press_event",
-					GTK_TYPE_WIDGET);
+		id = g_signal_lookup ("key_press_event", GTK_TYPE_WIDGET);
 
 	if (klass->key_press_event (widget, event))
 		ret = TRUE;
 	else
 		ret = FALSE;
 
-	gtk_signal_emit_stop (GTK_OBJECT (widget), id);
+	g_signal_stop_emission (widget, id, 0);
 	
 	return ret;
 }
@@ -626,7 +627,7 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 			gtk_check_menu_item_set_show_toggle (
 				GTK_CHECK_MENU_ITEM (menu_widget), TRUE);
 
-			gtk_signal_connect (GTK_OBJECT (menu_widget), "toggled",
+			g_signal_connect (GTK_OBJECT (menu_widget), "toggled",
 					    (GtkSignalFunc) menu_toggle_emit_ui_event,
 					    engine);
 
@@ -639,14 +640,14 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 		if (!menu_widget)
 			return NULL;
 			
-		gtk_signal_connect (GTK_OBJECT (menu_widget),
+		g_signal_connect (GTK_OBJECT (menu_widget),
 				    "select",
-				    GTK_SIGNAL_FUNC (put_hint_in_statusbar),
+				    G_CALLBACK (put_hint_in_statusbar),
 				    engine);
 
-		gtk_signal_connect (GTK_OBJECT (menu_widget),
+		g_signal_connect (GTK_OBJECT (menu_widget),
 				    "deselect",
-				    GTK_SIGNAL_FUNC (remove_hint_from_statusbar),
+				    G_CALLBACK (remove_hint_from_statusbar),
 				    engine);
 	}
 
@@ -658,13 +659,13 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 		GtkMenu      *menu;
 		
 		shell = GTK_MENU_SHELL (parent);
-		gtk_signal_connect (GTK_OBJECT (shell), "key_press_event",
+		g_signal_connect (GTK_OBJECT (shell), "key_press_event",
 				    (GtkSignalFunc) sucking_gtk_keybindings_cb, NULL);
 
 
 		/* Create the menu shell. */
 		menu = GTK_MENU (gtk_menu_new ());
-		gtk_signal_connect (GTK_OBJECT (menu), "key_press_event",
+		g_signal_connect (GTK_OBJECT (menu), "key_press_event",
 				    (GtkSignalFunc) sucking_gtk_keybindings_cb, NULL);
 
 		gtk_menu_set_accel_group (menu, menu_sync->accel_group);
@@ -688,10 +689,10 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 		ret_widget = menu_widget;
 
 	if (!GTK_IS_CHECK_MENU_ITEM (menu_widget))
-		gtk_signal_connect (GTK_OBJECT (menu_widget), "activate",
+		g_signal_connect (GTK_OBJECT (menu_widget), "activate",
 				    (GtkSignalFunc) exec_verb_cb, engine);
 
-	gtk_signal_connect (GTK_OBJECT (menu_widget), "key_press_event",
+	g_signal_connect (GTK_OBJECT (menu_widget), "key_press_event",
 			    (GtkSignalFunc) sucking_gtk_keybindings_cb, NULL);
 
 	gtk_widget_show (menu_widget);
@@ -732,7 +733,7 @@ impl_bonobo_ui_sync_menu_get_widgets (BonoboUISync *sync,
 	widget = bonobo_ui_engine_node_get_widget (sync->engine, node);
 
 	if (widget)
-		return gtk_container_children (GTK_CONTAINER (widget));
+		return gtk_container_get_children (GTK_CONTAINER (widget));
 	else
 		return NULL; /* A popup child with no GtkMenu yet */
 }
@@ -754,7 +755,8 @@ impl_bonobo_ui_sync_menu_state_update (BonoboUISync *sync,
 		g_warning ("TESTME: strange, setting "
 			   "state '%s' on weird object '%s'",
 			   new_state,
-			   GTK_CLASS_NAME (GTK_OBJECT_GET_CLASS (widget)));
+			   g_type_name_from_instance (
+				   (GTypeInstance *) widget));
 }
 
 static void
@@ -763,17 +765,17 @@ impl_dispose (GObject *object)
 	BonoboUISyncMenu *sync = (BonoboUISyncMenu *) object;
 
 	if (sync->menu) {
-		g_object_unref (G_OBJECT (sync->menu));
+		g_object_unref (sync->menu);
 		sync->menu = NULL;
 	}
 
 	if (sync->menu_dock_item) {
-		g_object_unref (G_OBJECT (sync->menu_dock_item));
+		g_object_unref (sync->menu_dock_item);
 		sync->menu_dock_item = NULL;
 	}
 
 	if (sync->accel_group) {
-		g_object_unref (G_OBJECT (sync->accel_group));
+		g_object_unref (sync->accel_group);
 		sync->accel_group = NULL;
 	}
 
@@ -935,13 +937,13 @@ bonobo_ui_sync_menu_new (BonoboUIEngine *engine,
 
 	sync = g_object_new (BONOBO_TYPE_UI_SYNC_MENU, NULL);
 
-	sync->menu = menu ? g_object_ref (G_OBJECT (menu)) : NULL;
+	sync->menu = menu ? g_object_ref (menu) : NULL;
 
 	sync->menu_dock_item = menu_dock_item ?
-		g_object_ref (G_OBJECT (menu_dock_item)) :
+		g_object_ref (menu_dock_item) :
 		menu_dock_item;
 
-	sync->accel_group = group ? g_object_ref (G_OBJECT (group)) : NULL;
+	sync->accel_group = group ? g_object_ref (group) : NULL;
 
 	return bonobo_ui_sync_construct (
 		BONOBO_UI_SYNC (sync), engine, TRUE, TRUE);

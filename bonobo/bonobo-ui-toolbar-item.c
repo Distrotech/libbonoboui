@@ -7,10 +7,7 @@
  * Copyright (C) 2000 Ximian, Inc.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
-
 #include "bonobo-ui-toolbar-item.h"
 
 
@@ -194,49 +191,59 @@ class_init (GtkObjectClass *object_class)
 	toolbar_item_class->set_want_label  = impl_set_want_label;
 
 	signals[SET_ORIENTATION]
-		= gtk_signal_new ("set_orientation",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIToolbarItemClass, set_orientation),
-				  gtk_marshal_VOID__INT,
-				  GTK_TYPE_NONE, 1,
-				  GTK_TYPE_INT);
+		= g_signal_new ("set_orientation",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIToolbarItemClass,
+						 set_orientation),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__INT,
+				G_TYPE_NONE, 1,
+				G_TYPE_INT);
 
 	signals[SET_STYLE]
-		= gtk_signal_new ("set_style",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIToolbarItemClass, set_style),
-				  gtk_marshal_VOID__INT,
-				  GTK_TYPE_NONE, 1,
-				  GTK_TYPE_INT);
+		= g_signal_new ("set_style",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIToolbarItemClass,
+						 set_style),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__INT,
+				G_TYPE_NONE, 1,
+				G_TYPE_INT);
 
 	signals[SET_WANT_LABEL] =
-		gtk_signal_new ("set_want_label",
-				GTK_RUN_FIRST,
-				GTK_CLASS_TYPE (object_class),
-				GTK_SIGNAL_OFFSET (BonoboUIToolbarItemClass, set_want_label),
-				gtk_marshal_VOID__BOOLEAN,
-				GTK_TYPE_NONE, 1,
-				GTK_TYPE_BOOL);
-
+		g_signal_new ("set_want_label",
+			      G_TYPE_FROM_CLASS (object_class),
+			      GTK_RUN_FIRST,
+			      G_STRUCT_OFFSET (BonoboUIToolbarItemClass,
+					       set_want_label),
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__BOOLEAN,
+			      G_TYPE_NONE, 1,
+			      G_TYPE_BOOLEAN);
+	
 	signals[STATE_ALTERED]
-		= gtk_signal_new ("state_altered",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIToolbarItemClass, activate),
-				  gtk_marshal_VOID__STRING,
-				  GTK_TYPE_NONE, 1, GTK_TYPE_STRING);
-
+		= g_signal_new ("state_altered",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIToolbarItemClass,
+						 activate),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__STRING,
+				G_TYPE_NONE, 1, G_TYPE_STRING);
+	
 	signals[ACTIVATE]
-		= gtk_signal_new ("activate",
-				  GTK_RUN_LAST,
-				  GTK_CLASS_TYPE (object_class),
-				  GTK_SIGNAL_OFFSET (BonoboUIToolbarItemClass, activate),
-				  gtk_marshal_VOID__VOID,
-				  GTK_TYPE_NONE, 0);
+		= g_signal_new ("activate",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIToolbarItemClass,
+						 activate),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__VOID,
+				G_TYPE_NONE, 0);
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	parent_class = g_type_class_peek_parent (object_class);
 }
 
 static void
@@ -288,7 +295,7 @@ bonobo_ui_toolbar_item_new (void)
 {
 	BonoboUIToolbarItem *new;
 
-	new = gtk_type_new (bonobo_ui_toolbar_item_get_type ());
+	new = g_object_new (bonobo_ui_toolbar_item_get_type (), NULL);
 
 	return GTK_WIDGET (new);
 }
@@ -301,7 +308,6 @@ bonobo_ui_toolbar_item_set_tooltip (BonoboUIToolbarItem *item,
 {
 	BonoboUIToolbarItemClass *klass;
 
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
 	klass = BONOBO_UI_TOOLBAR_ITEM_CLASS (GTK_OBJECT_GET_CLASS (item));
@@ -318,7 +324,6 @@ bonobo_ui_toolbar_item_set_state (BonoboUIToolbarItem *item,
 {
 	BonoboUIToolbarItemClass *klass;
 
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
 	klass = BONOBO_UI_TOOLBAR_ITEM_CLASS (GTK_OBJECT_GET_CLASS (item));
@@ -331,12 +336,11 @@ void
 bonobo_ui_toolbar_item_set_orientation (BonoboUIToolbarItem *item,
 					GtkOrientation orientation)
 {
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
-	g_return_if_fail (orientation == GTK_ORIENTATION_HORIZONTAL
-			  || orientation == GTK_ORIENTATION_VERTICAL);
+	g_return_if_fail (orientation == GTK_ORIENTATION_HORIZONTAL ||
+			  orientation == GTK_ORIENTATION_VERTICAL);
 
-	gtk_signal_emit (GTK_OBJECT (item), signals[SET_ORIENTATION], orientation);
+	g_signal_emit (item, signals[SET_ORIENTATION], 0, orientation);
 }
 
 GtkOrientation
@@ -344,7 +348,6 @@ bonobo_ui_toolbar_item_get_orientation (BonoboUIToolbarItem *item)
 {
 	BonoboUIToolbarItemPrivate *priv;
 
-	g_return_val_if_fail (item != NULL, GTK_ORIENTATION_HORIZONTAL);
 	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item), GTK_ORIENTATION_HORIZONTAL);
 
 	priv = item->priv;
@@ -359,7 +362,6 @@ bonobo_ui_toolbar_item_set_style (BonoboUIToolbarItem *item,
 {
 	BonoboUIToolbarItemPrivate *priv;
 
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 	g_return_if_fail (style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_ONLY ||
 			  style == BONOBO_UI_TOOLBAR_ITEM_STYLE_TEXT_ONLY ||
@@ -373,7 +375,7 @@ bonobo_ui_toolbar_item_set_style (BonoboUIToolbarItem *item,
 
 	priv->style = style;
 
-	gtk_signal_emit (GTK_OBJECT (item), signals[SET_STYLE], style);
+	g_signal_emit (item, signals[SET_STYLE], 0, style);
 }
 
 BonoboUIToolbarItemStyle
@@ -395,10 +397,9 @@ void
 bonobo_ui_toolbar_item_set_want_label (BonoboUIToolbarItem *item,
 				    gboolean want_label)
 {
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
-	gtk_signal_emit (GTK_OBJECT (item), signals[SET_WANT_LABEL], want_label);
+	g_signal_emit (item, signals[SET_WANT_LABEL], 0, want_label);
 }
 
 gboolean
@@ -406,7 +407,6 @@ bonobo_ui_toolbar_item_get_want_label (BonoboUIToolbarItem *item)
 {
 	BonoboUIToolbarItemPrivate *priv;
 
-	g_return_val_if_fail (item != NULL, FALSE);
 	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item), FALSE);
 
 	priv = item->priv;
@@ -420,7 +420,6 @@ bonobo_ui_toolbar_item_set_expandable (BonoboUIToolbarItem *item,
 {
 	BonoboUIToolbarItemPrivate *priv;
 
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
 	priv = item->priv;
@@ -437,7 +436,6 @@ bonobo_ui_toolbar_item_get_expandable (BonoboUIToolbarItem *item)
 {
 	BonoboUIToolbarItemPrivate *priv;
 
-	g_return_val_if_fail (item != NULL, FALSE);
 	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item), FALSE);
 
 	priv = item->priv;
@@ -450,7 +448,6 @@ bonobo_ui_toolbar_item_set_pack_end (BonoboUIToolbarItem *item,
 {
 	BonoboUIToolbarItemPrivate *priv;
 
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
 	priv = item->priv;
@@ -467,7 +464,6 @@ bonobo_ui_toolbar_item_get_pack_end (BonoboUIToolbarItem *item)
 {
 	BonoboUIToolbarItemPrivate *priv;
 
-	g_return_val_if_fail (item != NULL, FALSE);
 	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item), FALSE);
 
 	priv = item->priv;
@@ -477,16 +473,14 @@ bonobo_ui_toolbar_item_get_pack_end (BonoboUIToolbarItem *item)
 void
 bonobo_ui_toolbar_item_activate (BonoboUIToolbarItem *item)
 {
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
-	gtk_signal_emit (GTK_OBJECT (item), signals[ACTIVATE]);
+	g_signal_emit (item, signals[ACTIVATE], 0);
 }
 
 void
 bonobo_ui_toolbar_item_set_minimum_width (BonoboUIToolbarItem *item, int minimum_width)
 {
-	g_return_if_fail (item != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
 
 	item->priv->minimum_width = minimum_width;

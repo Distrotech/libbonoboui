@@ -12,6 +12,7 @@
 
 #include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
+#include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
@@ -26,7 +27,8 @@ enum {
 	PROP_FORWARD_EVENTS
 };
 
-static GObjectClass *parent_class = NULL;
+GNOME_CLASS_BOILERPLATE (BonoboPlug, bonobo_plug,
+			 GObject, GTK_TYPE_PLUG);
 
 /**
  * bonobo_plug_construct:
@@ -88,14 +90,14 @@ bonobo_plug_set_control (BonoboPlug    *plug,
 	old_control = plug->control;
 
 	if (control) {
-		plug->control = g_object_ref (G_OBJECT (control));
+		plug->control = g_object_ref (control);
 		bonobo_control_set_plug (control, plug);
 	} else
 		plug->control = NULL;
 
 	if (old_control) {
 		bonobo_control_set_plug (old_control, NULL);
-		g_object_unref (G_OBJECT (old_control));
+		g_object_unref (old_control);
 	}
 }
 
@@ -311,7 +313,7 @@ bonobo_plug_button_event (GtkWidget      *widget,
 }
 
 static void
-bonobo_plug_init (BonoboPlug *plug)
+bonobo_plug_instance_init (BonoboPlug *plug)
 {
 	BonoboPlugPrivate *priv;
 
@@ -323,16 +325,15 @@ bonobo_plug_init (BonoboPlug *plug)
 }
 
 static void
-bonobo_plug_class_init (GObjectClass *klass)
+bonobo_plug_class_init (BonoboPlugClass *klass)
 {
+	GObjectClass *gobject_class = (GObjectClass *) klass;
 	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 
-	parent_class = g_type_class_peek_parent (klass);
-
-	klass->dispose      = bonobo_plug_dispose;
-	klass->finalize     = bonobo_plug_finalize;
-	klass->set_property = bonobo_plug_set_property;
-	klass->get_property = bonobo_plug_get_property;
+	gobject_class->dispose      = bonobo_plug_dispose;
+	gobject_class->finalize     = bonobo_plug_finalize;
+	gobject_class->set_property = bonobo_plug_set_property;
+	gobject_class->get_property = bonobo_plug_get_property;
 
 	widget_class->realize              = bonobo_plug_realize;
 	widget_class->unrealize            = bonobo_plug_unrealize;
@@ -344,34 +345,11 @@ bonobo_plug_class_init (GObjectClass *klass)
 	widget_class->button_release_event = bonobo_plug_button_event;
 
 	g_object_class_install_property (
-		klass,
+		gobject_class,
 		PROP_FORWARD_EVENTS,
 		g_param_spec_boolean ("event_forwarding",
 				    _("Event Forwarding"),
 				    _("Whether X events should be forwarded"),
 				      TRUE,
 				      G_PARAM_READABLE | G_PARAM_WRITABLE));
-}
-
-GtkType
-bonobo_plug_get_type ()
-{
-	static GtkType plug_type = 0;
-
-	if (!plug_type) {
-		static const GtkTypeInfo plug_info = {
-			"BonoboPlug",
-			sizeof (BonoboPlug),
-			sizeof (BonoboPlugClass),
-			(GtkClassInitFunc) bonobo_plug_class_init,
-			(GtkObjectInitFunc) bonobo_plug_init,
-			NULL,
-			NULL
-		};
-
-		plug_type = gtk_type_unique (
-			gtk_plug_get_type (), &plug_info);
-	}
-
-	return plug_type;
 }

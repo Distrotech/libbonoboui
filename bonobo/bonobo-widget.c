@@ -37,13 +37,15 @@
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-moniker-util.h>
+#include <libgnome/gnome-macros.h>
+
+GNOME_CLASS_BOILERPLATE (BonoboWidget, bonobo_widget,
+			 GObject, GTK_TYPE_BIN);
 
 struct _BonoboWidgetPrivate {
 	/* Control stuff. */
 	BonoboControlFrame *frame;
 };
-
-static GObjectClass *parent_class;
 
 static Bonobo_Unknown
 bonobo_widget_launch_component (const char        *moniker,
@@ -144,7 +146,7 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 	control = bonobo_widget_launch_component (
 		moniker, "IDL:Bonobo/Control:1.0", ev);
 	if (BONOBO_EX (ev) || control == CORBA_OBJECT_NIL) {
-		gtk_object_unref (GTK_OBJECT (bw));
+		g_object_unref (bw);
 		return NULL;
 	}
 
@@ -178,7 +180,7 @@ control_new_async_cb (Bonobo_Unknown     object,
 		c->fn (c->bw, ev, c->user_data);
 	}
 
-	g_object_unref (G_OBJECT (c->bw));
+	g_object_unref (c->bw);
 	bonobo_object_release_unref (c->uic, ev);
 	g_free (c);
 }
@@ -196,11 +198,11 @@ bonobo_widget_new_control_async (const char         *moniker,
 	g_return_val_if_fail (fn != NULL, NULL);
 	g_return_val_if_fail (moniker != NULL, NULL);
 
-	bw = gtk_type_new (BONOBO_TYPE_WIDGET);
+	bw = g_object_new (BONOBO_TYPE_WIDGET, NULL);
 
 	CORBA_exception_init (&ev);
 
-	c->bw = g_object_ref (G_OBJECT (bw));
+	c->bw = g_object_ref (bw);
 	c->fn = fn;
 	c->user_data = user_data;
 	c->uic = bonobo_object_dup_ref (uic, &ev);
@@ -243,7 +245,7 @@ bonobo_widget_new_control_from_objref (Bonobo_Control     control,
 
 	CORBA_exception_init (&ev);
 
-	bw = gtk_type_new (BONOBO_TYPE_WIDGET);
+	bw = g_object_new (BONOBO_TYPE_WIDGET, NULL);
 
 	bw = bonobo_widget_construct_control_from_objref (bw, control, uic, &ev);
 
@@ -275,7 +277,7 @@ bonobo_widget_new_control (const char        *moniker,
 
 	g_return_val_if_fail (moniker != NULL, NULL);
 
-	bw = gtk_type_new (BONOBO_TYPE_WIDGET);
+	bw = g_object_new (BONOBO_TYPE_WIDGET, NULL);
 
 	CORBA_exception_init (&ev);
 
@@ -422,8 +424,6 @@ bonobo_widget_class_init (BonoboWidgetClass *klass)
 	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 	GtkContainerClass *container_class = (GtkContainerClass *) klass;
 
-	parent_class = g_type_class_peek_parent (klass);
-
 	container_class->remove = bonobo_widget_remove;
 
 	widget_class->size_request = bonobo_widget_size_request;
@@ -434,32 +434,9 @@ bonobo_widget_class_init (BonoboWidgetClass *klass)
 }
 
 static void
-bonobo_widget_init (BonoboWidget *bw)
+bonobo_widget_instance_init (BonoboWidget *bw)
 {
 	bw->priv = g_new0 (BonoboWidgetPrivate, 1);
-}
-
-GtkType
-bonobo_widget_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type) {
-		static const GtkTypeInfo info = {
-			"BonoboWidget",
-			sizeof (BonoboWidget),
-			sizeof (BonoboWidgetClass),
-			(GtkClassInitFunc) bonobo_widget_class_init,
-			(GtkObjectInitFunc) bonobo_widget_init,
-			NULL, /* reserved_1 */
-			NULL, /* reserved_2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = gtk_type_unique (gtk_bin_get_type (), &info);
-	}
-
-	return type;
 }
 
 /**
