@@ -1,3 +1,11 @@
+2002-03-05  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-config-widget.c
+	(row_activated_cb): rename to
+	(list_selection_changed): this.
+	(set_values): move up & expand.
+	(list_selection_changed): use set_values.
+
 2002-03-05  Christian Meyer  <chrisime@gnome.org>
 
 	* configure.in: Added 'de' to ALL_LINGUAS.

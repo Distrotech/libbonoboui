@@ -42,20 +42,74 @@ struct _BonoboUIConfigWidgetPrivate {
 	char         *cur_path;
 };
 
+
 static void
-row_activated_cb (GtkTreeView          *tree_view,
-		  GtkTreePath          *path,
-		  GtkTreeViewColumn    *column,
-		  BonoboUIConfigWidget *config)
+set_values (BonoboUIConfigWidget *config)
+{
+	const char *txt;
+	BonoboUINode *node;
+	gboolean hidden = FALSE;
+	gboolean tooltips = TRUE;
+	BonoboUIToolbarStyle style;
+
+	g_return_if_fail (config->priv->cur_path != NULL);
+
+	node = bonobo_ui_engine_get_path (config->engine, config->priv->cur_path);
+
+	/* Set hidden flag */
+	if ((txt = bonobo_ui_node_peek_attr (node, "hidden")))
+		hidden = atoi (txt);
+
+	if (hidden)
+		gtk_toggle_button_set_active (
+			GTK_TOGGLE_BUTTON (config->priv->hide),
+			TRUE);
+	else
+		gtk_toggle_button_set_active (
+			GTK_TOGGLE_BUTTON (config->priv->show),
+			TRUE);
+
+	/* Set the look */
+	style = bonobo_ui_sync_toolbar_get_look (config->engine, node);
+
+	switch (style) {
+	case BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY:
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->icon), TRUE);
+		break;
+
+	case BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT:
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->icon_and_text), TRUE);
+		break;
+
+	case BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT:
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->priority_text), TRUE);
+		break;
+		
+	default:
+		g_warning ("Bogus style %d", style);
+		break;
+	}
+	
+	/* Set the tooltips */
+	if ((txt = bonobo_ui_node_peek_attr (node, "tips")))
+		tooltips = atoi (txt);
+		
+	gtk_toggle_button_set_active (
+		GTK_TOGGLE_BUTTON (config->priv->tooltips),
+		tooltips);
+}
+
+static void
+list_selection_changed (GtkTreeSelection     *selection,
+			BonoboUIConfigWidget *config)
 {
 	GtkTreeIter iter;
 	BonoboUINode *node;
 	GtkTreeModel *model;
 
-	model = GTK_TREE_MODEL (config->priv->list_store);
-
 	if (!gtk_tree_selection_get_selected (
-		gtk_tree_view_get_selection (tree_view), NULL, &iter))
+		gtk_tree_view_get_selection (config->priv->list_view), 
+		&model, &iter))
 		return;
 
 	g_free (config->priv->cur_path);
@@ -67,30 +121,9 @@ row_activated_cb (GtkTreeView          *tree_view,
 	gtk_widget_set_sensitive (config->priv->left_attrs, node != NULL);
 	gtk_widget_set_sensitive (config->priv->right_attrs, node != NULL);
 
-	if (node) {
-		const char *txt;
-		gboolean    hidden = FALSE;
-		gboolean    tooltips = TRUE;
-
-		if ((txt = bonobo_ui_node_peek_attr (node, "hidden")))
-			hidden = atoi (txt);
-
-		if (hidden)
-			gtk_toggle_button_set_active (
-				GTK_TOGGLE_BUTTON (config->priv->hide),
-				TRUE);
-		else
-			gtk_toggle_button_set_active (
-				GTK_TOGGLE_BUTTON (config->priv->show),
-				TRUE);
-
-		if ((txt = bonobo_ui_node_peek_attr (node, "tips")))
-			tooltips = atoi (txt);
-		
-		gtk_toggle_button_set_active (
-			GTK_TOGGLE_BUTTON (config->priv->tooltips),
-			tooltips);
-	} else
+	if (node)
+		set_values (config);
+	else
 		g_warning ("Toolbar has been removed");
 }
 
@@ -198,44 +231,6 @@ look_cb (GtkWidget            *button,
 }
 
 static void
-set_values (BonoboUIConfigWidget *config)
-{
-	BonoboUIToolbarStyle style;
-	BonoboUINode *node;
-	const char *value;
-
-	g_return_if_fail (config->priv->cur_path != NULL);
-
-	node = bonobo_ui_engine_get_path (config->engine, config->priv->cur_path);
-
-	/* Set the look */
-	style = bonobo_ui_sync_toolbar_get_look (config->engine, node);
-	switch (style) {
-	case BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY:
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->icon), TRUE);
-		break;
-
-	case BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT:
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->icon_and_text), TRUE);
-		break;
-
-	case BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT:
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (config->priv->priority_text), TRUE);
-		break;
-		
-	default:
-		break;
-	}
-	
-	/* Set the tooltips */
-	value = bonobo_ui_node_peek_attr (node, "tips");
-	if (value)
-		gtk_toggle_button_set_active (
-			GTK_TOGGLE_BUTTON (config->priv->tooltips),
-			atoi (value));
-}
-
-static void
 widgets_init (BonoboUIConfigWidget *config,
 	      GtkAccelGroup        *accel_group)
 {
@@ -336,8 +331,11 @@ widgets_init (BonoboUIConfigWidget *config,
 
 	populate_list (priv->list_view, config);
 
-	g_signal_connect (priv->list_view, "row_activated",
-			  G_CALLBACK (row_activated_cb), config);
+	g_signal_connect (
+		gtk_tree_view_get_selection (priv->list_view),
+		"changed",
+		G_CALLBACK (list_selection_changed),
+		config);
 
 	set_values (config);
 
