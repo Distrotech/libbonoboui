@@ -1,3 +1,9 @@
+2003-05-09  Masahiro Sakai  <sakai@tom.sfc.keio.ac.jp>
+
+	* bonobo/Makefile.am (libbonoboui_2_la_LIBADD):
+	* tests/Makefile.am (LDADD):
+	remove -lpopt. Now -lpopt is supplied by libgnome-2.0.pc.
+
 2003-05-08  Anders Carlsson  <andersca@codefactory.se>
 
 	* bonobo/bonobo-ui-preferences.c: Add a NULL entry last
