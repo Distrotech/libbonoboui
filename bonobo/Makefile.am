@@ -53,8 +53,7 @@ $(CORBA_SOURCE): $(idls)
 
 libbonobo_la_LDFLAGS = \
 	-version-info $(BONOBO_CURRENT):$(BONOBO_REVISION):$(BONOBO_AGE) \
-	$(PROF_LDFLAGS) \
-	$(GNOME_LIBS)
+	$(PROF_LDFLAGS) 
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
