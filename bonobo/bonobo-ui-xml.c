@@ -338,6 +338,29 @@ move_children (BonoboUINode *from, BonoboUINode *to)
 	g_assert (bonobo_ui_node_children (from) == NULL);
 }
 
+static void
+prune_overrides_by_id (BonoboUIXml *tree, BonoboUIXmlData *data, gpointer id)
+{
+	GSList *l, *next;
+
+	g_return_if_fail (id != NULL);
+	
+	for (l = data->overridden; l; l = next) {
+		BonoboUIXmlData *o_data;
+				
+		next = l->next;
+		o_data = bonobo_ui_xml_get_data (tree, l->data);
+
+		if (identical (tree, o_data->id, id)) {
+			node_free (tree, l->data);
+
+			data->overridden =
+				g_slist_remove_link (data->overridden, l);
+			g_slist_free_1 (l);
+		}
+	}
+}
+
 static void merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new);
 
 static void
@@ -355,7 +378,9 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 	if (!same) {
 		gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
 
+		prune_overrides_by_id (tree, data, data->id);
 		data->overridden = g_slist_prepend (old_data->overridden, old);
+		
 	} else {
 		data->id = old_data->id;
 		data->overridden = old_data->overridden;
@@ -688,29 +713,6 @@ bonobo_ui_xml_make_path  (BonoboUINode *node)
 
 /*	fprintf (stderr, "Make path: '%s'\n", tmp);*/
 	return tmp;
-}
-
-static void
-prune_overrides_by_id (BonoboUIXml *tree, BonoboUIXmlData *data, gpointer id)
-{
-	GSList *l, *next;
-
-	g_return_if_fail (id != NULL);
-	
-	for (l = data->overridden; l; l = next) {
-		BonoboUIXmlData *o_data;
-				
-		next = l->next;
-		o_data = bonobo_ui_xml_get_data (tree, l->data);
-
-		if (identical (tree, o_data->id, id)) {
-			node_free (tree, l->data);
-
-			data->overridden =
-				g_slist_remove_link (data->overridden, l);
-			g_slist_free_1 (l);
-		}
-	}
 }
 
 static void

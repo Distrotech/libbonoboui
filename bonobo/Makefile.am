@@ -27,7 +27,6 @@ idls =							\
 	$(top_srcdir)/idl/bonobo-control.idl		\
 	$(top_srcdir)/idl/bonobo-client-site.idl	\
 	$(top_srcdir)/idl/bonobo-embeddable.idl		\
-	$(top_srcdir)/idl/bonobo-listener.idl		\
 	$(top_srcdir)/idl/bonobo-moniker.idl		\
 	$(top_srcdir)/idl/bonobo-persist.idl		\
 	$(top_srcdir)/idl/bonobo-progressive.idl	\
