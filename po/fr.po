@@ -1,15 +1,15 @@
-# libbonoboui fr.po
+# French translation of libbonoboui.
 # Copyright (C) 2001-2002 Free Software Foundation, Inc.
-# maintainer: Christophe Merlet (RedFox) <christophe@merlet.net>, 2001-2002.
+# maintainer: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2001-2002.
 # Christophe Fergeau <teuf@users.sourceforge.net>, 2002.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 2.0.0\n"
-"POT-Creation-Date: 2002-11-26 10:17+0000\n"
-"PO-Revision-Date: 2002-07-28 11:06+0200\n"
-"Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
+"Project-Id-Version: libbonoboui 2.1.1\n"
+"POT-Creation-Date: 2002-12-15 16:45+0100\n"
+"PO-Revision-Date: 2002-12-15 16:42+0100\n"
+"Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -154,15 +154,16 @@ msgstr "_Priorité au texte seulement"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "Débug"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "_Sortie XML"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
 msgstr ""
+"Affiche la description XML complète de l'interface utilisateur sur la console"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -297,11 +298,11 @@ msgstr "est flottant"
 msgid "whether the toolbar is floating"
 msgstr "indique si la barre d'outils est flottante"
 
-#: bonobo/bonobo-ui-util.c:615
+#: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
 msgstr "_Contenu"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
 msgstr "Affiche l'aide de cette application"
 
