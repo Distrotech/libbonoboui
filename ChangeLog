@@ -1,3 +1,24 @@
+2001-11-01  Michael Meeks  <michael@ximian.com>
+
+	* tests/control/test-control.c (main): use
+	bonobo_debug_shutdown.
+
+	* tests/test-sensitivity.c (main): ditto
+
+	* tests/test-reparent.c (main): ditto
+
+	* tests/test-focus.c (main): ditto.
+
+2001-10-31  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-socket.c (bonobo_socket_dispose):
+	give Gtk+ a helping hand with propagating destroys to
+	in-proc plugs.
+
+	* tests/control/test-control.c (main): upd.
+	(run_tests, create_test, create_frame),
+	(create_control, destroy_test, mainloop_for): impl.
+
 2001-10-30  jacob berkman  <jacob@ximian.com>
 
 	* bonobo/bonobo-control.c (ORBIT2_INTERNAL_API): define this so

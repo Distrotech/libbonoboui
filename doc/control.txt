@@ -153,7 +153,9 @@ entail, and what happens in failure modes.
 	Consider how a BonoboWidget might correctly hold onto a child
 widget, and possibly it's control frame ?
 
-
-* Status
-
-	* Steady state referencing ...
+	* Work out what to do if we die without having had our
+	  X11 ID set, we need to kill ourselves if the connection
+	  dies; _but_ what if we're local anyway ? how can we
+	  tell ? - we need to have local hacks - and have a
+	  reference to the BonoboControlFrame inside our
+	  BonoboControl etc.

@@ -214,9 +214,9 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 
 	g_return_if_fail (control->priv->widget != NULL);
 
-	dprintf ("setWindowId '%s'\n", id);
-
 	x11_id = bonobo_control_x11_from_window_id (id);
+
+	dprintf ("setWindowId '%s' (=%d)\n", id, x11_id);
 
 	old_plug = control->priv->plug;
 	if (old_plug) {

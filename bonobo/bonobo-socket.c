@@ -32,8 +32,9 @@ static void
 bonobo_socket_dispose (GObject *object)
 {
 	BonoboSocket *socket = (BonoboSocket *) object;
+	GtkSocket    *gtk_socket = (GtkSocket *) object;
 
-	dprintf ("bonobo_socket_dispose\n");
+	dprintf ("bonobo_socket_dispose \n");
 
 	if (socket->frame) {
 		BonoboObject *object = BONOBO_OBJECT (socket->frame);
@@ -42,6 +43,12 @@ bonobo_socket_dispose (GObject *object)
 		bonobo_object_unref (object);
 		g_assert (socket->frame == NULL);
 	}
+
+	if (gtk_socket->plug_widget) {
+		dprintf ("destroy plug widget\n");
+		gtk_widget_destroy (gtk_socket->plug_widget);
+	} else
+		dprintf ("no plug widget - out of proc\n");
 
 	G_OBJECT_CLASS (parent_class)->dispose (object);
 }

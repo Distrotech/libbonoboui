@@ -121,6 +121,6 @@ main (int argc, char **argv)
 	g_timeout_add (0, idle_init, NULL);
 	bonobo_main ();
   
-	return 0;
+	return bonobo_debug_shutdown ();
 }
 
