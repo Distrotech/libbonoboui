@@ -5,12 +5,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-04-29 15:45+0200\n"
+"POT-Creation-Date: 2002-05-06 00:21+0100\n"
 "PO-Revision-Date: 2002-04-01 01:25+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
@@ -20,7 +20,7 @@ msgstr "Tipo sombra"
 #: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
 #: bonobo/bonobo-ui-toolbar.c:1091 bonobo/bonobo-ui-toolbar.c:1092
 msgid "Orientation"
-msgstr "OrientaÁ„o"
+msgstr "Orienta√ß√£o"
 
 #: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
 #: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
@@ -66,11 +66,11 @@ msgstr "Nome"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
-msgstr "DescriÁ„o"
+msgstr "Descri√ß√£o"
 
 #: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
-msgstr "VisÌvel"
+msgstr "Vis√≠vel"
 
 #: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
@@ -98,15 +98,15 @@ msgstr "Aspecto"
 
 #: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
-msgstr "_Õcone"
+msgstr "_√çcone"
 
 #: bonobo/bonobo-ui-config-widget.c:320
 msgid "_Text and Icon"
-msgstr "_Texto e Õcones"
+msgstr "_Texto e √çcones"
 
 #: bonobo/bonobo-ui-config-widget.c:326
 msgid "_Priority text only"
-msgstr "Apenas texto _priorit·rio"
+msgstr "Apenas texto _priorit√°rio"
 
 #: bonobo/bonobo-ui-engine-config.c:516
 msgid "Configure UI"
@@ -142,59 +142,59 @@ msgstr "Customizar a barra de ferramentas"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "NÌvel Zoom"
+msgstr "N√≠vel Zoom"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "O grau de ampliaÁ„o"
+msgstr "O grau de amplia√ß√£o"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "NÌvel mÌnimo Zoom"
+msgstr "N√≠vel m√≠nimo Zoom"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "O grau mÌnimo de apliaÁ„o"
+msgstr "O grau m√≠nimo de aplia√ß√£o"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "NÌvel m·ximo de Zoom"
+msgstr "N√≠vel m√°ximo de Zoom"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "O grau m·ximo de ampliaÁ„o"
+msgstr "O grau m√°ximo de amplia√ß√£o"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "Tem um nÌvel mÌnimo de Zoom"
+msgstr "Tem um n√≠vel m√≠nimo de Zoom"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Se existe ou n„o um nÌvel mÌnimo de zoom v·lido"
+msgstr "Se existe ou n√£o um n√≠vel m√≠nimo de zoom v√°lido"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Tem um nÌvel m·ximo de Zoom"
+msgstr "Tem um n√≠vel m√°ximo de Zoom"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Se existe ou n„o um nÌvel m·ximo de zoom v·lido"
+msgstr "Se existe ou n√£o um n√≠vel m√°ximo de zoom v√°lido"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr "… contÌnuo"
+msgstr "√â cont√≠nuo"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Se o zoom È ou n„o contÌnuo (oposto a saltos)"
+msgstr "Se o zoom √© ou n√£o cont√≠nuo (oposto a saltos)"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr "f·brica corba"
+msgstr "f√°brica corba"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr "O apontador de f·brica"
+msgstr "O apontador de f√°brica"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
@@ -206,15 +206,15 @@ msgstr "O contentor do interface de utilizador"
 
 #: bonobo/bonobo-ui-toolbar.c:1101
 msgid "is floating"
-msgstr "est· a flutuar"
+msgstr "est√° a flutuar"
 
 #: bonobo/bonobo-ui-toolbar.c:1102
 msgid "whether the toolbar is floating"
-msgstr "se a barra de ferramentas est· ou n„o a flutuar"
+msgstr "se a barra de ferramentas est√° ou n√£o a flutuar"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr "Flags de depuraÁ„o Gdk a colocar"
+msgstr "Flags de depura√ß√£o Gdk a colocar"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
@@ -223,11 +223,11 @@ msgstr "FLAGS"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr "Flags de depuraÁ„o Gdk a remover"
+msgstr "Flags de depura√ß√£o Gdk a remover"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr "Ecr„ X a utilizar"
+msgstr "Ecr√£ X a utilizar"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
@@ -239,11 +239,11 @@ msgstr "Fazer chamadas X sincronamente"
 
 #: bonobo/bonobo-ui-init-gtk.c:130
 msgid "Don't use X shared memory extension"
-msgstr "N„o utilizar extensıes de memÛria X"
+msgstr "N√£o utilizar extens√µes de mem√≥ria X"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Program name as used by the window manager"
-msgstr "Nome de aplicaÁ„o tal como utilizado pelo gestor de janelas"
+msgstr "Nome de aplica√ß√£o tal como utilizado pelo gestor de janelas"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "NAME"
@@ -251,7 +251,7 @@ msgstr "NOME"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "Program class as used by the window manager"
-msgstr "Classe de aplicaÁ„o tal como utilizado pelo gestor de janelas"
+msgstr "Classe de aplica√ß√£o tal como utilizado pelo gestor de janelas"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "CLASS"
@@ -271,11 +271,11 @@ msgstr "ESTILO"
 
 #: bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
-msgstr "Flags de depuraÁ„o Gtk+ a colocar"
+msgstr "Flags de depura√ß√£o Gtk+ a colocar"
 
 #: bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
-msgstr "Flags de depuraÁ„o Gtk+ a remover"
+msgstr "Flags de depura√ß√£o Gtk+ a remover"
 
 #: bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
@@ -283,7 +283,7 @@ msgstr "Tornar todos os avisos fatais"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
-msgstr "Carregar um mÛdulo Gtk adicional"
+msgstr "Carregar um m√≥dulo Gtk adicional"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
@@ -299,28 +299,28 @@ msgstr "Suporte Bonobo GUI"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Isto n„o faz nada; È apenas uma demonstraÁ„o."
+msgstr "Isto n√£o faz nada; √© apenas uma demonstra√ß√£o."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr "Ol·-BonoboUI."
+msgstr "Ol√°-BonoboUI."
 
 #: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr "Ol· Gnome"
+msgstr "Ol√° Gnome"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "Ol·, Mundo!"
+msgstr "Ol√°, Mundo!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "Incapaz de inicializar cÛdigo libbonoboui"
+msgstr "Incapaz de inicializar c√≥digo libbonoboui"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "Sobre esta aplicaÁ„o"
+msgstr "Sobre esta aplica√ß√£o"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
@@ -347,7 +347,7 @@ msgid "Could not initialize Bonobo UI"
 msgstr "Incapaz de inicializar UI Bonobo"
 
 #~ msgid "Extra Moniker factory"
-#~ msgstr "F·brica Moniker Extra"
+#~ msgstr "F√°brica Moniker Extra"
 
 #~ msgid "GConf moniker"
 #~ msgstr "Moniker GConf"
@@ -356,20 +356,20 @@ msgstr "Incapaz de inicializar UI Bonobo"
 #~ msgstr "configurar moniker indirecta"
 
 #~ msgid "Key %s not found in configuration"
-#~ msgstr "Chave %s n„o encontrada na configuraÁ„o"
+#~ msgstr "Chave %s n√£o encontrada na configura√ß√£o"
 
 #~ msgid ""
 #~ "An exception occured while trying to load data into the component with "
 #~ "PersistStorage"
 #~ msgstr ""
-#~ "Ocorreu uma excepÁ„o ao tentar carregar dados para o componente com "
+#~ "Ocorreu uma excep√ß√£o ao tentar carregar dados para o componente com "
 #~ "PersistStorage"
 
 #~ msgid ""
 #~ "An exception occured while trying to save data from the component with "
 #~ "PersistStorage"
 #~ msgstr ""
-#~ "Ocorreu uma excepÁ„o ao tentar gravar dados do componente com "
+#~ "Ocorreu uma excep√ß√£o ao tentar gravar dados do componente com "
 #~ "PersistStorage"
 
 #~ msgid "Can not bonobo_ui_init"
