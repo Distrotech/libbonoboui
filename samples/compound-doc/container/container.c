@@ -148,31 +148,40 @@ do_add_cb (Bonobo_Unknown     embeddable,
 		g_warning ("Failed to add embeddable to app");
 }
 
+#ifdef ASYNC_MONIKERS
+static void
+add_moniker_async (SampleApp  *app,
+		   const char *name,
+		   const char *interface)
+{
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+
+	bonobo_get_object_async (name, interface, &ev, 5000, do_add_cb, app);
+
+	if (BONOBO_EX (&ev)) {
+		g_warning ("bonobo_get_object_async exception '%s'\n",
+			 bonobo_exception_get_text (&ev));
+		return;
+	}
+
+	CORBA_exception_free (&ev);
+}
+#else
 static void
 resolve_and_add (SampleApp *app, Bonobo_Moniker moniker, const char *interface)
 {
 	CORBA_Environment ev;
 	char             *name;
+	Bonobo_Unknown    object;
 
 	CORBA_exception_init (&ev);
 
-#ifdef ASYNC_MONIKERS
-	bonobo_moniker_resolve_async_default (
-		moniker, interface, &ev, 5000, do_add_cb, app);
-	
-	if (BONOBO_EX (&ev)) {
-		g_warning ("Moniker resolve async exception '%s'\n",
-			 bonobo_exception_get_text (&ev));
-		return;
-	}
-#else
-	{
-		Bonobo_Unknown object;
-		object = bonobo_moniker_client_resolve_default (
-			moniker, interface, &ev);
-		do_add_cb (object, &ev, app);
-	}
-#endif
+	object = bonobo_moniker_client_resolve_default (
+		moniker, interface, &ev);
+
+	do_add_cb (object, &ev, app);
 
 	name = bonobo_moniker_client_get_name (moniker, &ev);
 	g_print ("My moniker looks like '%s'\n", name);
@@ -181,47 +190,20 @@ resolve_and_add (SampleApp *app, Bonobo_Moniker moniker, const char *interface)
 	bonobo_object_release_unref (moniker, &ev);
 }
 
-
-static void
-made_moniker_cb (Bonobo_Unknown     moniker,
-		 CORBA_Environment *ev,
-		 gpointer           user_data)
-{
-	if (BONOBO_EX (ev)) {
-		g_warning ("Moniker create demarshal exception '%s'\n",
-			   bonobo_exception_get_text (ev));
-		return;
-	}
-
-	if (moniker == CORBA_OBJECT_NIL) {
-		g_warning ("Failed to create moniker");
-		return;
-	}
-
-	resolve_and_add (user_data, moniker, "IDL:Bonobo/Embeddable:1.0");
-}
-
 static Bonobo_Moniker
 make_moniker (const char *name, SampleApp *app)
 {
 	Bonobo_Moniker    moniker = CORBA_OBJECT_NIL;
 	CORBA_Environment ev;
+	Bonobo_ActivationContext context;
 
 	CORBA_exception_init (&ev);
 
-#ifdef ASYNC_MONIKERS
-	bonobo_moniker_client_new_from_name_async (
-		name, &ev, 5000, made_moniker_cb, app);
-#else
-	{
-		Bonobo_ActivationContext context;
-
-		context = bonobo_context_get ("Activation", &ev);
-		g_return_val_if_fail (context != CORBA_OBJECT_NIL, CORBA_OBJECT_NIL);
+	context = bonobo_context_get ("Activation", &ev);
+	g_return_val_if_fail (context != CORBA_OBJECT_NIL, CORBA_OBJECT_NIL);
 		
-		moniker = Bonobo_ActivationContext_createFromName (context, name, &ev);
-	}
-#endif
+	moniker = Bonobo_ActivationContext_createFromName (context, name, &ev);
+
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		g_warning ("Moniker new exception '%s'\n",
 			   bonobo_exception_get_text (&ev));
@@ -230,6 +212,7 @@ make_moniker (const char *name, SampleApp *app)
 	
 	return moniker;
 }
+#endif
 
 typedef struct {
 	SampleApp *app;
@@ -251,13 +234,17 @@ final_setup (setup_data_t *sd)
 	}
 
 	if (g_getenv ("BONOBO_MONIKER_TEST")) {
-		Bonobo_Moniker moniker;
-
-		moniker = make_moniker ("file:/demo/a.jpeg", sd->app);
-#ifndef ASYNC_MONIKERS
-		resolve_and_add (sd->app, moniker, "IDL:Bonobo/Embeddable:1.0");
+#ifdef ASYNC_MONIKERS
+		add_moniker_async (sd->app, "file:/demo/a.jpeg", "IDL:Bonobo/Embeddable:1.0");
+#else
+		{
+			Bonobo_Moniker moniker;
+		
+			moniker = make_moniker ("file:/demo/a.jpeg", sd->app);
+			resolve_and_add (sd->app, moniker, "IDL:Bonobo/Embeddable:1.0");
+			bonobo_object_release_unref (moniker, NULL);
+		}
 #endif
-		bonobo_object_release_unref (moniker, NULL);
 
 /*		moniker = make_moniker ("OAFIID:bonobo_application-x-mines:804d34a8-57dd-428b-9c94-7aa3a8365230");
 		resolve_and_add (sd->app, moniker, "IDL:Bonobo/Embeddable:1.0");

@@ -1,3 +1,10 @@
+2000-12-11  Michael Meeks  <michael@helixcode.com>
+
+	* container.c (add_moniker_async): impl.
+	(made_moniker_cb): remove.
+	(make_moniker): prune async bits.
+	(final_setup): clean.
+
 2000-12-08  Michael Meeks  <michael@helixcode.com>
 
 	* container.c (do_add_cb): upd.

@@ -103,7 +103,7 @@ static void
 component_user_context_cb (BonoboViewFrame  *view_frame,
 			   SampleClientSite *site)
 {
-	g_warning ("We need some standardized verb stuff here...");
+	g_warning ("We need something exciting here ...");
 }
 
 void

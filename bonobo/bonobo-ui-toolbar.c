@@ -920,7 +920,7 @@ impl_expose_event (GtkWidget *widget,
 
 static void
 impl_remove (GtkContainer *container,
-	     GtkWidget *child)
+	     GtkWidget    *child)
 {
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
