@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2002-05-20 12:06+0100\n"
-"PO-Revision-Date: 2002-05-20 01:16+0200\n"
+"POT-Creation-Date: 2002-05-23 15:44+0200\n"
+"PO-Revision-Date: 2002-05-23 15:46+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,57 +93,61 @@ msgid ""
 "A NULL_terminated array of interfaces which a server must support in order "
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr ""
+msgstr "En NULL-terminert tabell med grensesnitt som en tjener må støtte for å kunne listes i utvalget. Forvalgt verdi er \"IDL:Bonobo/Embeddable:1.0\" hvis ingen grensesnitt er listet"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "Oppføring som kreves av grensesnittet"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Ett av grensesnittene som kreves"
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "Synlig"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Vis"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "_Skjul"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "_Vis verktøytips"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "Verktøylinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "verktøylinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Utseende"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:320
+#: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "_Tekst og ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:326
+#: bonobo/bonobo-ui-config-widget.c:334
+msgid "Text only"
+msgstr "Kun tekst"
+
+#: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "Kun _prioritetstekst"
 
-#: bonobo/bonobo-ui-engine-config.c:516
+#: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Konfigurer UI"
 
