@@ -82,7 +82,7 @@ void                  bonobo_ui_toolbar_insert           (BonoboUIToolbar      *
 
 GtkTooltips          *bonobo_ui_toolbar_get_tooltips     (BonoboUIToolbar *toolbar);
 
-void                  bonobo_ui_toolbar_clean            (BonoboUIToolbar *toolbar);
+GList                *bonobo_ui_toolbar_get_children     (BonoboUIToolbar *toolbar);
 
 END_GNOME_DECLS
 

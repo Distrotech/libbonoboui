@@ -41,9 +41,6 @@ struct _BonoboUIToolbarItemPrivate {
            width/height.  */
 	gboolean expandable;
 
-	/* if set, pack this item on the right side of the toolbar */
-	gboolean pack_end;
-	
 	/* Orientation for this item.  */
 	GtkOrientation orientation;
 
@@ -271,7 +268,6 @@ init (GtkObject *object)
 	priv->orientation   = GTK_ORIENTATION_HORIZONTAL;
 	priv->style         = BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL;
 	priv->expandable    = FALSE;
-	priv->pack_end      = FALSE;
 	priv->minimum_width = 0;
 	
 	toolbar_item->priv = priv;
@@ -452,35 +448,6 @@ bonobo_ui_toolbar_item_get_expandable (BonoboUIToolbarItem *item)
 	return priv->expandable;
 }
 
-void
-bonobo_ui_toolbar_item_set_pack_end (BonoboUIToolbarItem *item,
-				       gboolean pack_end)
-{
-	BonoboUIToolbarItemPrivate *priv;
-
-	g_return_if_fail (item != NULL);
-	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item));
-
-	priv = item->priv;
-
-	if ((priv->pack_end && pack_end) || (! priv->pack_end && ! pack_end))
-		return;
-
-	priv->pack_end = pack_end;
-	gtk_widget_queue_resize (GTK_WIDGET (item));
-}
-
-gboolean
-bonobo_ui_toolbar_item_get_pack_end (BonoboUIToolbarItem *item)
-{
-	BonoboUIToolbarItemPrivate *priv;
-
-	g_return_val_if_fail (item != NULL, FALSE);
-	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR_ITEM (item), FALSE);
-
-	priv = item->priv;
-	return priv->pack_end;
-}
 
 void
 bonobo_ui_toolbar_item_activate (BonoboUIToolbarItem *item)

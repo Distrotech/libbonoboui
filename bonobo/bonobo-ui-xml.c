@@ -280,8 +280,12 @@ free_nodedata_tree (BonoboUIXml *tree, BonoboUINode *node, gboolean do_overrides
 static void
 do_set_id (BonoboUIXml *tree, BonoboUINode *node, gpointer id)
 {
-	BonoboUIXmlData *data =
-		bonobo_ui_xml_get_data (tree, node);
+	BonoboUIXmlData *data;
+
+	if (!node)
+		return;
+
+	data = bonobo_ui_xml_get_data (tree, node);
 
 	data->id = id;
 
@@ -905,7 +909,13 @@ bonobo_ui_xml_merge (BonoboUIXml  *tree,
 
 	current = bonobo_ui_xml_get_path (tree, path);
 	if (!current) {
-		/* FIXME: we leak nodes here */
+		xmlNode *l, *next;
+
+		for (l = XML_NODE (nodes); l; l = next) {
+			next = l->next;
+			node_free (tree, BNODE (l));
+		}
+
 		return BONOBO_UI_XML_INVALID_PATH;
 	}
 

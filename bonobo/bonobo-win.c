@@ -438,7 +438,6 @@ placeholder_sync (BonoboWinPrivate *priv,
 		bonobo_ui_node_free_string (txt);
 	}
 
-	/* FIXME: should we customize this ? */
 	if (!bonobo_ui_node_children (node))
 		show = FALSE;
 
@@ -1358,7 +1357,7 @@ add_node_fn (BonoboUINode *parent, BonoboUINode *child)
 			g_warning ("TESTME: unused code branch");
                         bonobo_ui_node_insert_before (bonobo_ui_node_children (insert),
                                                       child);
-		} else /* FIXME: we could have 'middle'; is it useful ? */
+		} else
 			bonobo_ui_node_add_child (insert, child);
 		bonobo_ui_node_free_string (pos);
 	} else /* just add to bottom */
@@ -1485,11 +1484,7 @@ menu_build_item (BonoboWinPrivate *priv,
 		GtkMenu      *menu;
 		GtkWidget    *tearoff;
 		
-		if (parent == NULL) {
-			shell = GTK_MENU_SHELL (priv->menu);
-			g_warning ("FIXME: It would be equitable if this never happened");
-		} else
-			shell = GTK_MENU_SHELL (parent);
+		shell = GTK_MENU_SHELL (parent);
 
 		/* Create the menu shell. */
 		menu = GTK_MENU (gtk_menu_new ());
@@ -2009,10 +2004,6 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 			BONOBO_UI_TOOLBAR_ITEM (widget),
 			string_array_contains (behavior_array, "expandable"));
 
-		bonobo_ui_toolbar_item_set_pack_end (
-			BONOBO_UI_TOOLBAR_ITEM (widget),
-			string_array_contains (behavior_array, "pack-end"));
-
 		g_strfreev (behavior_array);
 	}
 
@@ -2099,7 +2090,7 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 
 	/* Update the widgets */
 /*	bonobo_win_dump (priv->win, "before build widgets");*/
-	wptr = widgets = gtk_container_children (GTK_CONTAINER (toolbar));
+	wptr = widgets = bonobo_ui_toolbar_get_children (toolbar);
 	pos = 0;
 	sync_generic_widgets (priv, bonobo_ui_node_children (node),
 			      GTK_WIDGET (toolbar), &wptr, &pos,

@@ -909,10 +909,10 @@ bonobo_ui_util_translate_ui (BonoboUINode *bnode)
 			bonobo_ui_node_free_string (value);
 	}
 
-	/* FIXME: we seem to leak property lists like a sieve here */
-
 	for (l = bonobo_ui_node_children (bnode); l; l = bonobo_ui_node_next (l))
 		bonobo_ui_util_translate_ui (l);
+
+	xmlFreePropList (old_props);
 }
 
 void
