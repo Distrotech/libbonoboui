@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo\n"
-"POT-Creation-Date: 2002-02-19 09:43+0000\n"
-"PO-Revision-Date: 2002-02-17 18:46+0800\n"
+"POT-Creation-Date: 2002-02-19 20:29+0800\n"
+"PO-Revision-Date: 2002-02-19 20:32+0800\n"
 "Last-Translator: Wang Jian <lark@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -157,7 +157,6 @@ msgid "The maximum degree of enlargment"
 msgstr "最大缩放级别"
 
 #: bonobo/bonobo-zoomable.c:353
-#, fuzzy
 msgid "Has a minimum Zoom level"
 msgstr "有最小缩放级别"
 
@@ -183,27 +182,27 @@ msgstr "是否可连续缩放(和跳跃式相反)"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr ""
+msgstr "Corba 工厂"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr ""
+msgstr "工厂指针"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
-msgstr ""
+msgstr "Corba UI 容器"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr ""
+msgstr "用户界面容器"
 
 #: bonobo/bonobo-ui-toolbar.c:1099
 msgid "is floating"
-msgstr ""
+msgstr "是浮动的"
 
 #: bonobo/bonobo-ui-toolbar.c:1100
 msgid "whether the toolbar is floating"
-msgstr ""
+msgstr "工具栏是否浮动"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
