@@ -1328,11 +1328,13 @@ bonobo_ui_engine_set_ui_container (BonoboUIEngine    *engine,
 
 	old_container = engine->priv->container;
 
-	engine->priv->container = BONOBO_UI_CONTAINER (
-		bonobo_object_ref (BONOBO_OBJECT (ui_container)));
+	if (ui_container) {
+		engine->priv->container = BONOBO_UI_CONTAINER (
+			bonobo_object_ref (BONOBO_OBJECT (ui_container)));
 
-	if (ui_container)
 		bonobo_ui_container_set_engine (ui_container, engine);
+	} else
+		engine->priv->container = NULL;
 
 	if (old_container) {
 		bonobo_ui_container_set_engine (old_container, NULL);
