@@ -21,6 +21,7 @@
 #include "config.h"
 #include <liboaf/liboaf.h>
 #include <bonobo.h>
+#include <bonobo/bonobo-embeddable-factory.h>
 
 #include "hello-embeddable.h"
 
