@@ -50,8 +50,9 @@ libbonobo_la_LDFLAGS = \
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
-	bonobo-arg.h			\
+	bonobo-activation-context.c	\
 	bonobo-arg.c			\
+	bonobo-context.c		\
 	bonobo-event-source.c		\
 	bonobo-exception.c		\
 	bonobo-object-directory.c	\
@@ -85,6 +86,7 @@ libbonobo_HEADERS = bonobo.h
 
 libbonoboinclude_HEADERS =			\
 	Bonobo.h				\
+	bonobo-activation-context.h		\
 	bonobo-arg.h				\
 	bonobo-canvas-component.h		\
 	bonobo-canvas-item.h			\
@@ -92,6 +94,7 @@ libbonoboinclude_HEADERS =			\
 	bonobo-component-io.h			\
 	bonobo-control-frame.h			\
 	bonobo-control.h			\
+	bonobo-context.h			\
 	bonobo-desktop-window.h			\
 	bonobo-embeddable-factory.h		\
 	bonobo-embeddable.h			\

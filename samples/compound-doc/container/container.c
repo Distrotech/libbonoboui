@@ -40,7 +40,7 @@ sample_app_create (void)
 
 	/* Create widgets */
 	app_widget = app->app = bonobo_window_new ("sample-container",
-						_("Sample Bonobo container"));
+						   _("Sample Bonobo container"));
 
 	app->box = gtk_vbox_new (FALSE, 10);
 
@@ -127,12 +127,16 @@ typedef struct {
 static Bonobo_Moniker
 make_moniker (const char *name)
 {
+	Bonobo_ActivationContext context;
 	Bonobo_Moniker      moniker;
 	CORBA_Environment   ev;
 
 	CORBA_exception_init (&ev);
 
-	moniker = bonobo_moniker_client_new_from_name (name, &ev);
+	context = bonobo_context_get ("Activation", &ev);
+	g_return_val_if_fail (context != CORBA_OBJECT_NIL, CORBA_OBJECT_NIL);
+
+	moniker = Bonobo_ActivationContext_createFromName (context, name, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		g_warning ("Moniker new exception '%s'\n",
 			   bonobo_exception_get_text (&ev));

@@ -1,3 +1,7 @@
+2000-11-28  Michael Meeks  <michael@helixcode.com>
+
+	* container.c (make_moniker): upd.
+
 2000-11-20  Michael Meeks  <michael@helixcode.com>
 
 	* container-io.c (save_component): add write flag and check
