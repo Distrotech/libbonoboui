@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "POT-Creation-Date: 2002-10-31 05:05+0100\n"
-"PO-Revision-Date: 2002-12-10 19:37+EDT\n"
+"PO-Revision-Date: 2002-12-29 19:37+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"
 "Language-Team: Amharic <locales@geez.org>\n"
 "MIME-Version: 1.0\n"
@@ -296,7 +296,7 @@ msgstr ""
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr ""
+msgstr "የቅርበትና ርቀት ደረጃ"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
@@ -304,7 +304,7 @@ msgstr ""
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "በተቻለ መጠን የቅርበትና ርቀት ደረጃ"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
@@ -312,7 +312,7 @@ msgstr ""
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "ከፍተኛ መጠን የቅርበትና ርቀት ደረጃ"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
