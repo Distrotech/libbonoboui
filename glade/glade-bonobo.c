@@ -49,7 +49,7 @@ static GtkWidget *gnome_control_new (GladeXML *xml, GladeWidgetInfo *info, char 
 {
 	GtkWidget               *widget;
 	BonoboControlFrame      *cf;
-	BonoboPropertyBagClient *pbc;
+	Bonobo_PropertyBag       pb;
 	GList                   *tmp;
 
 	g_return_val_if_fail (info->class != NULL, NULL);
@@ -69,37 +69,37 @@ static GtkWidget *gnome_control_new (GladeXML *xml, GladeWidgetInfo *info, char 
 		return NULL;
 	}
 
-	pbc = bonobo_control_frame_get_control_property_bag (cf);
-	if (!pbc)
+	pb = bonobo_control_frame_get_control_property_bag (cf, NULL);
+	if (pb == CORBA_OBJECT_NIL)
 		return widget;
 
 	for (tmp = info->attributes; tmp; tmp = tmp->next) {
 		GladeAttribute *attr = tmp->data;
 		CORBA_TypeCode tc;
 
-		tc  = bonobo_property_bag_client_get_property_type (pbc, attr->name);
+		tc  = bonobo_property_bag_client_get_property_type (pb, attr->name, NULL);
 
 		switch (tc->kind) {
 
 		case CORBA_tk_boolean:
-			bonobo_property_bag_client_set_value_gboolean (pbc, attr->name,
-								       attr->value[0] == 'T');
+			bonobo_property_bag_client_set_value_gboolean (pb, attr->name,
+								       attr->value[0] == 'T', NULL);
 			break;
 
 		case CORBA_tk_string:
-			bonobo_property_bag_client_set_value_string (pbc, attr->name, attr->value);
+			bonobo_property_bag_client_set_value_string (pb, attr->name, attr->value, NULL);
 			break;
 
 		case CORBA_tk_long:
-			bonobo_property_bag_client_set_value_glong (pbc, attr->name, strtol (attr->value, NULL, 0));
+			bonobo_property_bag_client_set_value_glong (pb, attr->name, strtol (attr->value, NULL, 0), NULL);
 			break;
 
 		case CORBA_tk_float:
-			bonobo_property_bag_client_set_value_gfloat (pbc, attr->name, strtod (attr->value, NULL));
+			bonobo_property_bag_client_set_value_gfloat (pb, attr->name, strtod (attr->value, NULL), NULL);
 			break;
 
 		case CORBA_tk_double:
-			bonobo_property_bag_client_set_value_gdouble (pbc, attr->name, strtod (attr->value, NULL));
+			bonobo_property_bag_client_set_value_gdouble (pb, attr->name, strtod (attr->value, NULL), NULL);
 			break;
 
 		default:
