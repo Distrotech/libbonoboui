@@ -11,9 +11,6 @@
 #include <gnome.h>
 #include <bonobo/gnome-bonobo.h>
 
-CORBA_Environment ev;
-CORBA_ORB orb;
-
 /*
  * The Embeddable data.
  *
@@ -667,9 +664,16 @@ init_simple_paint_factory (void)
 static void
 init_server_factory (int argc, char **argv)
 {
+	CORBA_Environment;
+	CORBA_ORB orb;
+
+	CORBA_exception_init (&ev);
+
 	gnome_CORBA_init_with_popt_table (
 		"bonobo-simple-paint", VERSION,
 		&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
+
+	CORBA_exception_free (&ev);
 
 	orb = gnome_CORBA_ORB ();
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
@@ -679,14 +683,10 @@ init_server_factory (int argc, char **argv)
 int
 main (int argc, char **argv)
 {
-	CORBA_exception_init (&ev);
-
 	init_server_factory (argc, argv);
 	init_simple_paint_factory ();
 
 	gtk_main ();
-
-	CORBA_exception_free (&ev);
 
 	return 0;
 }

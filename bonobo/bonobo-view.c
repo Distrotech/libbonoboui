@@ -259,14 +259,45 @@ gnome_view_new (GtkWidget *widget)
 	return gnome_view_construct (view, corba_view, widget);
 }
 
+static gboolean
+gnome_view_destroy_remove_verb (gpointer key, gpointer value,
+				gpointer user_data)
+{
+	g_free (key);
+
+	return TRUE;
+}
+
 static void
 gnome_view_destroy (GtkObject *object)
 {
 	GnomeView *view = GNOME_VIEW (object);
 
+	/*
+	 * Free up all the verbs associated with this View.
+	 */
+	g_hash_table_foreach_remove (view->verb_callbacks,
+				     gnome_view_destroy_remove_verb, NULL);
+	g_hash_table_destroy (view->verb_callbacks);
+
+	g_hash_table_foreach_remove (view->verb_callback_closures,
+				     gnome_view_destroy_remove_verb, NULL);
+	g_hash_table_destroy (view->verb_callback_closures);
+
+	/*
+	 * Destroy the view's top-level widget.
+	 */
 	if (view->widget)
 		gtk_object_unref (GTK_OBJECT (view->widget));
 
+	/*
+	 * If the plug still exists, destroy it.  The plug might not
+	 * exist in the case where the container application died,
+	 * taking the plug out with it.  In that case,
+	 * plug_destroy_cb() would have been invoked, and it would
+	 * have triggered the destruction of the View.  Which is why
+	 * we're here now.
+	 */
 	if (view->plug != NULL) {
 		gtk_signal_disconnect (GTK_OBJECT (view->plug), view->plug_destroy_id);
 		gtk_object_unref (GTK_OBJECT (view->plug));
@@ -284,7 +315,7 @@ init_view_corba_class (void)
 	gnome_view_epv.do_verb = impl_GNOME_View_do_verb;
 	gnome_view_epv.activate = impl_GNOME_View_activate;
 	gnome_view_epv.reactivate_and_undo = impl_GNOME_View_reactivate_and_undo;
-	gnome_view_epv.size_request = impl_GNOME_View_size_request;
+	gnome_view_epv.size_query = impl_GNOME_View_size_query;
 	
 	/* Setup the vector of epvs */
 	gnome_view_vepv.GNOME_Unknown_epv = &gnome_object_epv;

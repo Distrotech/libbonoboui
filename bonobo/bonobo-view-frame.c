@@ -561,7 +561,7 @@ gnome_view_frame_size_request (GnomeViewFrame *view_frame, int *desired_width, i
 	dh = 0;
 	
 	CORBA_exception_init (&ev);
-	GNOME_View_size_request (view_frame->view, &dw, &dh, &ev);
+	GNOME_View_size_query (view_frame->view, &dw, &dh, &ev);
 	if (ev._major == CORBA_NO_EXCEPTION){
 		*desired_width = dw;
 		*desired_height = dh;
