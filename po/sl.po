@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-06-01 18:31+0100\n"
+"POT-Creation-Date: 2002-06-10 12:22+0200\n"
 "PO-Revision-Date: 2002-02-26 00:23+0100\n"
 "Last-Translator: Andraž Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: slovenian <sl@li.org>\n"
@@ -85,7 +85,7 @@ msgstr "Opis"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "Potrebni so vmesniki"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -93,14 +93,17 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"Seznam vmesnikov zaključenih z NULL, ki jih mora strežnik podpirati, če želi "
+"biti naveden v izbirniku.  Če ni naveden noben vmesnik je privzeto \"IDL:"
+"Bonobo/Embeddable:1.0\"."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "Vnos potrebnih vmesnikov"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Eden od vmesnikov, ki je potreben"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -139,9 +142,8 @@ msgid "_Text and Icon"
 msgstr "_Besedilo in ikone"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "_Besedilo in ikone"
+msgstr "Le besedilo"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -173,13 +175,12 @@ msgid "DISPLAY"
 msgstr "ZASLON"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
-#, fuzzy
 msgid "X screen to use"
 msgstr "Zaslon X, ki naj se uporabi"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "ZASLON"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -283,16 +284,15 @@ msgstr "ali je orodjarna lebdeča"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr ""
+msgstr "_Vsebina"
 
 #: bonobo/bonobo-ui-util.c:584
-#, fuzzy
 msgid "View help for this application"
-msgstr "O tem programu"
+msgstr "Glej pomoč za ta program"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "Ime okna - uporabljeno za nastavitve."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
