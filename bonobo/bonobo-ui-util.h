@@ -77,6 +77,9 @@ void       bonobo_ui_util_fixup_help        (BonoboUIComponent *component,
 					     const char        *app_prefix,
 					     const char        *app_name);
 
+void       bonobo_ui_util_fixup_icons       (BonoboUINode      *node);
+
+
 /*
  * Does all the translation & other grunt.
  */

@@ -991,7 +991,7 @@ bonobo_ui_util_fixup_help (BonoboUIComponent *component,
 		bonobo_ui_util_fixup_help (component, l, app_prefix, app_name);
 }
 
-static void
+void
 bonobo_ui_util_fixup_icons (BonoboUINode *node)
 {
 	BonoboUINode *l;
