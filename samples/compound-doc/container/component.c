@@ -219,7 +219,8 @@ load_stream_cb (GtkWidget *caller, SampleClientSite *site)
 		Bonobo_PersistStream persist;
 		BonoboStream *stream;
 
-		stream = bonobo_stream_fs_open (filename, Bonobo_Storage_READ);
+		stream = bonobo_stream_open ("fs", filename, 
+					     Bonobo_Storage_READ, 0644);
 
 		if (!stream) {
 			gchar *error_msg;

@@ -1,6 +1,8 @@
+PLUGIN_DIR=$(libdir)/bonobo/plugin
+
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
-	-DSTORAGE_LIB=\""$(libdir)"\"			\
+	-DPLUGIN_DIR=\""$(PLUGIN_DIR)"\"		\
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-I. 						\
 	-I$(srcdir) -I$(top_srcdir) 			\
@@ -62,10 +64,10 @@ libbonobo_la_SOURCES =			\
 	bonobo-persist.c		\
 	bonobo-progressive.c		\
 	bonobo-property-listener.c	\
+	bonobo-storage-plugin.c		\
 	bonobo-storage.c		\
 	bonobo-stream.c			\
 	bonobo-stream-client.c		\
-	bonobo-stream-fs.c		\
 	bonobo-stream-memory.c		\
 	bonobo-transient.c		\
 	bonobo-property.c		\
@@ -111,9 +113,9 @@ libbonoboinclude_HEADERS =			\
 	bonobo-property.h			\
 	bonobo-selector.h			\
 	bonobo-socket.h				\
+	bonobo-storage-plugin.h			\
 	bonobo-storage.h			\
 	bonobo-stream-client.h			\
-	bonobo-stream-fs.h			\
 	bonobo-stream-memory.h			\
 	bonobo-stream.h				\
 	bonobo-transient.h			\

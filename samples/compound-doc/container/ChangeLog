@@ -1,3 +1,10 @@
+Thu Oct 19 10:30:28 2000  Dietmar Maurer  <dietmar@maurer-it.com>
+
+	* component.c (load_stream_cb): use bonobo_stream_open instead of
+	bonobo_stream_fs_open
+
+	* container-io.c (sample_container_save): use CORBA OpenMode flags
+
 2000-10-11  Michael Meeks  <michael@helixcode.com>
 
 	* container-menu.c (sample_app_fill_menu): use

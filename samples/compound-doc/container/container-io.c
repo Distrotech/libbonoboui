@@ -195,7 +195,9 @@ sample_container_load (SampleApp *app, const char *filename)
 	int i;
 
 	storage = bonobo_storage_open (STORAGE_TYPE, filename,
-				       BONOBO_SS_RDWR | BONOBO_SS_CREATE,
+				       Bonobo_Storage_READ |
+				       Bonobo_Storage_WRITE |
+				       Bonobo_Storage_CREATE,
 				       0664);
 	g_return_if_fail (storage);
 
@@ -229,7 +231,9 @@ sample_container_save (SampleApp *app, const char *filename)
 
 	unlink (filename);
 	storage = bonobo_storage_open (STORAGE_TYPE, filename,
-				       BONOBO_SS_RDWR | BONOBO_SS_CREATE,
+				       Bonobo_Storage_READ |
+				       Bonobo_Storage_WRITE |
+				       Bonobo_Storage_CREATE,
 				       0664);
 	g_return_if_fail (storage);
 

@@ -337,7 +337,8 @@ verb_AddImage_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 
 	printf ("Good: Embeddable supports PersistStream\n");
 	
-	stream = bonobo_stream_fs_open ("/tmp/a.png", Bonobo_Storage_READ);
+	stream = bonobo_stream_open ("fs", "/tmp/a.png", 
+				     Bonobo_Storage_READ, 0664);
 
 	if (stream == NULL) {
 		printf ("I could not open /tmp/a.png!\n");
@@ -379,7 +380,8 @@ verb_AddPdf_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 
 	printf ("Good: Embeddable supports PersistStream\n");
 	
-	stream = bonobo_stream_fs_open ("/tmp/a.pdf", Bonobo_Storage_READ);
+	stream = bonobo_stream_open ("fs", "/tmp/a.pdf", 
+				     Bonobo_Storage_READ, 0644);
 
 	if (stream == NULL){
 		printf ("I could not open /tmp/a.pdf!\n");
@@ -615,7 +617,8 @@ verb_AddText_cb (BonoboUIComponent *uic, gpointer user_data, const char *cname)
 
 	printf ("Good: Control supports PersistStream\n");
 	
-	stream = bonobo_stream_fs_open ("/etc/passwd", Bonobo_Storage_READ);
+	stream = bonobo_stream_open ("fs", "/etc/passwd", 
+				     Bonobo_Storage_READ, 0644);
 
 	if (stream == NULL){
 		printf ("I could not open /etc/passwd!\n");
