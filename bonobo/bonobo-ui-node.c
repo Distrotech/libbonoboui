@@ -343,11 +343,12 @@ get_attr (BonoboUINode *node, GQuark  id, BonoboUIAttr **opt_space)
 	return NULL;
 }
 
-void
-bonobo_ui_node_set_attr_by_id (BonoboUINode *node,
-			       GQuark        id,
-			       const char   *value)
+static inline gboolean
+do_set_attr (BonoboUINode *node,
+	     GQuark        id,
+	     const char   *value)
 {
+	gboolean different = TRUE;
 	BonoboUIAttr *a, *space;
 
 	g_return_if_fail (node != NULL);
@@ -355,16 +356,21 @@ bonobo_ui_node_set_attr_by_id (BonoboUINode *node,
 	a = get_attr (node, id, &space);
 
 	if (a) {
-		xmlFree (a->value);
-		a->value = NULL;
+		different = value && strcmp (a->value, value);
 
-		if (!value) /* Unset the attribute */
-			a->id = 0;
-		else
-			a->value = xmlStrdup (value);
+		if (!different) {
+			xmlFree (a->value);
+			a->value = NULL;
+			
+			if (!value) /* Unset the attribute */
+				a->id = 0;
+			else {
+				a->value = xmlStrdup (value);
+			}
+		}
 	} else {
 		if (!value)
-			return;
+			return FALSE;
 
 		if (space) {
 			space->id = id;
@@ -378,6 +384,25 @@ bonobo_ui_node_set_attr_by_id (BonoboUINode *node,
 			g_array_append_val (node->attrs, na);
 		}
 	}
+
+	return different;
+}
+
+void
+bonobo_ui_node_set_attr_by_id (BonoboUINode *node,
+			       GQuark        id,
+			       const char   *value)
+{
+	do_set_attr (node, id, value);
+}
+
+
+gboolean
+bonobo_ui_node_try_set_attr (BonoboUINode *node,
+			     GQuark        prop,
+			     const char   *value)
+{
+	return do_set_attr (node, prop, value);
 }
 
 /**

@@ -27,6 +27,9 @@ typedef struct {
 	xmlChar      *value;
 } BonoboUIAttr;
 
+gboolean    bonobo_ui_node_try_set_attr   (BonoboUINode *node,
+					   GQuark        prop,
+					   const char   *value);
 void        bonobo_ui_node_set_attr_by_id (BonoboUINode *node,
 					   GQuark        id,
 					   const char   *value);

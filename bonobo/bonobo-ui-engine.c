@@ -1598,7 +1598,7 @@ execute_state_updates (GSList *updates)
 static void
 set_cmd_attr (BonoboUIEngine *engine,
 	      BonoboUINode   *node,
-	      const char     *prop,
+	      GQuark          prop,
 	      const char     *value,
 	      gboolean        event)
 {
@@ -1613,8 +1613,8 @@ set_cmd_attr (BonoboUIEngine *engine,
 		NodeInfo *info = bonobo_ui_xml_get_data (
 			engine->priv->tree, node);
 
-		bonobo_ui_node_set_attr (node, prop, value);
-		state_update_now (engine, node, info->widget);
+		if (bonobo_ui_node_try_set_attr (node, prop, value))
+			state_update_now (engine, node, info->widget);
 		return;
 	}
 
@@ -1624,7 +1624,8 @@ set_cmd_attr (BonoboUIEngine *engine,
 		 prop, value);
 #endif
 
-	bonobo_ui_node_set_attr (cmd_node, prop, value);
+	if (!bonobo_ui_node_try_set_attr (cmd_node, prop, value))
+		return;
 
 	if (event) {
 		GSList     *updates;
