@@ -45,7 +45,7 @@ impl_Bonobo_View_do_verb (PortableServer_Servant servant,
 			 const CORBA_char      *verb_name,
 			 CORBA_Environment     *ev)
 {
-#ifdef USE_UI_HANDLER
+#ifdef STALE_NOT_USED
 	BonoboView *view = BONOBO_VIEW (bonobo_object_from_servant (servant));
 
 	bonobo_view_execute_verb (view, verb_name);
