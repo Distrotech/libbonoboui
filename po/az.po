@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 1.96.0\n"
-"POT-Creation-Date: 2001-05-30 11:42+0200\n"
-"PO-Revision-Date: 2001-06-02 00:23GMT +0200\n"
+"Project-Id-Version: libbonoboui 1.97.0\n"
+"POT-Creation-Date: 2001-09-21 20:29+0200\n"
+"PO-Revision-Date: 2001-09-23 00:23GMT +0200\n"
 "Last-Translator: Vasif İsmayıloğlu MD <azerb_linux@hotmail.com>\n"
 "Language-Team: Azerbaijani Turkish <linuxaz@azerimal.net>\n"
 "MIME-Version: 1.0\n"
@@ -30,116 +30,123 @@ msgstr "Tərcih edilən en"
 msgid "Preferred height"
 msgstr "Tərcih edilən hündürlük"
 
-#: bonobo/bonobo-selector-widget.c:211
+#: bonobo/bonobo-file-selector-util.c:371
+msgid "Select a file to open"
+msgstr "Açılacaq faylı seçin"
+
+#: bonobo/bonobo-file-selector-util.c:399
+msgid "Select files to open"
+msgstr "Açılacaq faylları seçin"
+
+#: bonobo/bonobo-file-selector-util.c:428
+msgid "Select a filename to save"
+msgstr "Qeyd ediləcək fayl adlarını seçin"
+
+#: bonobo/bonobo-selector-widget.c:356
 msgid "Name"
 msgstr "Ad"
 
-#: bonobo/bonobo-selector-widget.c:235
+#: bonobo/bonobo-selector-widget.c:380
 msgid "Description"
 msgstr "İzah"
 
-#: bonobo/bonobo-ui-config-widget.c:272
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "Visible"
 msgstr "Görünən"
 
-#: bonobo/bonobo-ui-config-widget.c:280
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Göstər"
 
-#: bonobo/bonobo-ui-config-widget.c:290
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "_Hide"
 msgstr "_Gizlət"
 
-#: bonobo/bonobo-ui-config-widget.c:300
+#: bonobo/bonobo-ui-config-widget.c:294
 msgid "_View tooltips"
 msgstr "_İpuclarını göstər"
 
-#: bonobo/bonobo-ui-config-widget.c:307
+#: bonobo/bonobo-ui-config-widget.c:301
 msgid "Toolbars"
 msgstr "Ləvazimat çubuqları"
 
-#: bonobo/bonobo-ui-config-widget.c:317 bonobo/bonobo-ui-sync-toolbar.c:509
+#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "Bax"
 
-#: bonobo/bonobo-ui-config-widget.c:327 bonobo/bonobo-ui-sync-toolbar.c:511
+#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "_Timsal"
 
-#: bonobo/bonobo-ui-config-widget.c:337
+#: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Text and Icon"
 msgstr "_Mətn və Timsal"
 
-#: bonobo/bonobo-ui-config-widget.c:347
+#: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
 msgstr "Təkcə _üstünlük mətni"
 
-#: bonobo/bonobo-ui-engine-config.c:517
+#: bonobo/bonobo-ui-engine-config.c:513
 msgid "Configure UI"
 msgstr "UIni Quraşdır"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:510
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
 msgstr "_Hər İkisi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:512
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
 msgstr "M_ətn"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:513
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
 msgstr "İ_puclarını gizlət"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:514
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
 msgstr "İ_puclarını göstər"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:515
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
 msgstr "Ləvazimat çubuğunu _Gizlət"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:516
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
 msgstr "Xü_susiləşdir"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:517
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
 msgstr "Ləvazimat çubuğunu xüsusiləşdir"
 
-#: tests/selector_test.c:20
-msgid "Select an object"
-msgstr "Bir cism seç"
-
-#: tests/test-container.c:65 tests/test-container.c:95
-msgid "Can not activate object_server"
-msgstr "Cism_vericisini fəallaşdıra bilmədim"
-
-#: tests/test-container.c:70 tests/test-container.c:100
-msgid "Can not bind object server to client_site"
-msgstr "Cism vericisini alıcı_vericisi tərəfinə bağlaya bilmədim"
-
-#: tests/test-container.c:269
-msgid "Can not activate server"
-msgstr "Vericisini işə sala bilmədim"
-
-#: tests/test-container.c:319 tests/test-container.c:364
-msgid "Could not launch bonobo object."
-msgstr "bonobo cismini başlada bilmədim."
-
-#: tests/test-container.c:562
-msgid "Could not launch Embeddable."
-msgstr "Daxili üzvü başlada bilmədim."
-
-#: tests/test-container.c:596
-msgid "Could not launch Control."
-msgstr "İdarəcini başlada bilmədim."
-
-#: tests/test-container.c:861
-msgid "Can not bonobo_init"
-msgstr "Bonobo_initi başlada bilmədim"
-
-#: tests/test-focus.c:31 tests/test-sensitivity.c:197 tests/test-toolbar.c:50
-#: tests/test-ui.c:224
+#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Bonobo_ui_init edə bilmirəm"
 
+#: tests/test-selector.c:12
+msgid "Select an object"
+msgstr "Bir cism seç"
+
+#: tests/test-ui.c:230
+msgid "Cannot init libbonoboui code"
+msgstr "libbononoui kodu init edilə bilmir"
+
+#~ msgid "Can not activate object_server"
+#~ msgstr "Cism_vericisini fəallaşdıra bilmədim"
+
+#~ msgid "Can not bind object server to client_site"
+#~ msgstr "Cism vericisini alıcı_vericisi tərəfinə bağlaya bilmədim"
+
+#~ msgid "Can not activate server"
+#~ msgstr "Vericisini işə sala bilmədim"
+
+#~ msgid "Could not launch bonobo object."
+#~ msgstr "bonobo cismini başlada bilmədim."
+
+#~ msgid "Could not launch Embeddable."
+#~ msgstr "Daxili üzvü başlada bilmədim."
+
+#~ msgid "Could not launch Control."
+#~ msgstr "İdarəcini başlada bilmədim."
+
+#~ msgid "Can not bonobo_init"
+#~ msgstr "Bonobo_initi başlada bilmədim"
