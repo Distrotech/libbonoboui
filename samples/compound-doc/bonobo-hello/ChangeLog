@@ -1,3 +1,11 @@
+2000-05-26  Dan Winship  <danw@helixcode.com>
+
+	* hello-object.c, hello-object-io.[ch] (hello_object_stream_read,
+	hello_object_pstream_load, hello_object_pstream_save,
+	hello_object_pstream_get_max_size,
+	hello_object_pstream_get_content_types): Update PersistStream
+	implementation.
+
 2000-04-24  ERDI Gergo  <cactus@cactus.rulez.org>
 
 	* hello-object-print.c (hello_object_print): Bonobo::Print implementation

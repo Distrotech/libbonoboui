@@ -410,7 +410,8 @@ load_stream_cb (GtkWidget * caller, Component * component)
 		Bonobo_PersistStream_load (persist,
 					   (Bonobo_Stream)
 					   bonobo_object_corba_objref
-					   (BONOBO_OBJECT (stream)), &ev);
+					   (BONOBO_OBJECT (stream)),
+					   "", &ev);
 
 		if (ev._major != CORBA_NO_EXCEPTION) {
 			gnome_warning_dialog (_

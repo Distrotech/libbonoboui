@@ -761,9 +761,9 @@ bonobo_ui_handler_get_accelgroup (BonoboUIHandler *uih)
  * replaces "\" with "\\".
  */
 static char *
-path_escape_forward_slashes (char *str)
+path_escape_forward_slashes (const char *str)
 {
-	char *p = str;
+	const char *p = str;
 	char *new, *newp;
 	char *final;
 

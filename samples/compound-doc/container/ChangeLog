@@ -1,3 +1,9 @@
+2000-05-26  Dan Winship  <danw@helixcode.com>
+
+	* component.c (load_stream_cb): 
+	* component-io.c (component_load, component_save):
+	Update for Bonobo_PersistStream_{load,save} changes.
+
 2000-05-22  ERDI Gergo  <cactus@cactus.rulez.org>
 
 	* Makefile.am (sample_container_SOURCES): Add the new sources

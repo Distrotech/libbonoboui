@@ -38,7 +38,7 @@ component_load (Component * component, Bonobo_Stream stream)
 
 	CORBA_exception_init (&ev);
 
-	Bonobo_PersistStream_load (persist, corba_stream, &ev);
+	Bonobo_PersistStream_load (persist, corba_stream, "", &ev);
 
 	/* See if we had any problems */
 	if (ev._major != CORBA_NO_EXCEPTION)
@@ -72,7 +72,7 @@ component_save (Component * component, Bonobo_Stream stream)
 
 	CORBA_exception_init (&ev);
 
-	Bonobo_PersistStream_save (persist, corba_stream, &ev);
+	Bonobo_PersistStream_save (persist, corba_stream, "", &ev);
 
 	/* See if we had any problems */
 	if (ev._major != CORBA_NO_EXCEPTION) {

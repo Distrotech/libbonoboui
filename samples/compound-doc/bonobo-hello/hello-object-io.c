@@ -19,26 +19,23 @@
 
 #include "hello-object-io.h"
 
-static int hello_object_stream_read (Bonobo_Stream stream, Hello * obj);
-
 /* Load data from a BonoboStream -- implementation */
-static int
-hello_object_stream_read (Bonobo_Stream stream, Hello * obj)
+static void
+hello_object_stream_read (Bonobo_Stream stream, Hello * obj,
+			  CORBA_Environment *ev)
 {
 	Bonobo_Stream_iobuf *buffer;
 	CORBA_long bytes_read;
-	CORBA_Environment ev;
 	gchar *charbuf = g_new0 (gchar, 0);
 	size_t last_len = 0;
-
-	CORBA_exception_init (&ev);
 
 	/* We will read the data in chunks of the specified size */
 #define READ_CHUNK_SIZE 65536
 	do {
 		bytes_read =
-		    Bonobo_Stream_read (stream, READ_CHUNK_SIZE, &buffer,
-					&ev);
+		    Bonobo_Stream_read (stream, READ_CHUNK_SIZE, &buffer, ev);
+		if (ev->_major != CORBA_NO_EXCEPTION)
+			return;
 
 		charbuf = g_realloc (charbuf, last_len + buffer->_length);
 		memcpy (charbuf + last_len, buffer->_buffer,
@@ -49,48 +46,41 @@ hello_object_stream_read (Bonobo_Stream stream, Hello * obj)
 	} while (bytes_read > 0);
 #undef READ_CHUNK_SIZE
 
-	CORBA_exception_free (&ev);
-
-	if (bytes_read < 0) {
-		g_free (charbuf);
-		return -1;
-	}
-
 	charbuf[last_len] = '\0';
 	hello_model_set_text (obj, charbuf);
 	g_free (charbuf);
-
-	return 0;
 }
 
 /* This function implements the Bonobo::PersistStream:load method. */
-int
+void
 hello_object_pstream_load (BonoboPersistStream * ps,
-			   Bonobo_Stream stream, void *data)
+			   const Bonobo_Stream stream,
+			   Bonobo_Persist_ContentType type,
+			   void *data, CORBA_Environment *ev)
 {
 	Hello *obj = (Hello *) data;
+
+	/* 0. Check the Content Type? FIXME */
 
 	/* 1. Free the old data */
 	hello_model_clear (obj);
 
 	/* 2. Read the new text data. */
-	if (hello_object_stream_read (stream, obj) < 0)
-		return -1;	/* This will raise an exception. */
-
-	return 0;
+	hello_object_stream_read (stream, obj, ev);
 }
 
 /* This function implements the Bonobo::PersistStream:save method. */
-int
+void
 hello_object_pstream_save (BonoboPersistStream * ps,
-			   Bonobo_Stream stream, void *data)
+			   const Bonobo_Stream stream,
+			   Bonobo_Persist_ContentType type,
+			   void *data, CORBA_Environment *ev)
 {
 	Hello *obj = data;
 	Bonobo_Stream_iobuf *buffer;
 	size_t pos = 0, length = strlen (obj->text);
-	CORBA_Environment ev;
 
-	CORBA_exception_init (&ev);
+	/* FIXME: Should check content type */
 
 	/* Write the text data into the stream. */
 	buffer = Bonobo_Stream_iobuf__alloc ();
@@ -101,19 +91,32 @@ hello_object_pstream_save (BonoboPersistStream * ps,
 	while (pos < length) {
 		CORBA_long bytes_written;
 
-		bytes_written = Bonobo_Stream_write (stream, buffer, &ev);
+		bytes_written = Bonobo_Stream_write (stream, buffer, ev);
 
-		if (ev._major != CORBA_NO_EXCEPTION) {
+		if (ev->_major != CORBA_NO_EXCEPTION) {
 			CORBA_free (buffer);
-			CORBA_exception_free (&ev);
-			return -1;	/* Raise exception */
+			return;
 		}
 
 		pos += bytes_written;
 	}
 
 	CORBA_free (buffer);
-	CORBA_exception_free (&ev);
+}
 
-	return 0;
+CORBA_long
+hello_object_pstream_get_max_size (BonoboPersistStream *ps, void *data,
+				   CORBA_Environment *ev)
+{
+	Hello *obj = data;
+
+	return strlen (obj->text);
+}
+
+Bonobo_Persist_ContentTypeList *
+hello_object_pstream_get_types (BonoboPersistStream *ps, void *closure,
+				CORBA_Environment *ev)
+{
+	/* FIXME */
+	return bonobo_persist_generate_content_types (1, "");
 }

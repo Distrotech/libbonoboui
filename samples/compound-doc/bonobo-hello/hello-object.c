@@ -57,6 +57,8 @@ register_interfaces (Hello * obj)
 	/* Register the Bonobo::PersistStream interface. */
 	stream = bonobo_persist_stream_new (hello_object_pstream_load,
 					    hello_object_pstream_save,
+					    hello_object_pstream_get_max_size,
+					    hello_object_pstream_get_types,
 					    obj);
 	g_return_val_if_fail (stream, -1);
 

@@ -307,7 +307,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	
 	Bonobo_PersistStream_load (
 		persist,
-		(Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)), &ev);
+		(Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)), "", &ev);
 
 	Bonobo_Unknown_unref  (persist, &ev);
 	CORBA_Object_release (persist, &ev);
@@ -351,7 +351,7 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 	
 	Bonobo_PersistStream_load (
 		persist,
-		(Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)), &ev);
+		(Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)), "", &ev);
 
 	Bonobo_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
@@ -591,7 +591,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	}
 	
 	Bonobo_PersistStream_load (
-	     persist, (Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)), &ev);
+	     persist, (Bonobo_Stream) bonobo_object_corba_objref (BONOBO_OBJECT (stream)), "", &ev);
 
 	Bonobo_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
