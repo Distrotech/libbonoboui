@@ -21,6 +21,7 @@
 
 static void display_as_interface         STD_SIG;
 static void display_as_stream            STD_SIG;
+static void display_as_stream_async      STD_SIG;
 static void display_as_storage_file_list STD_SIG;
 static void display_as_html              STD_SIG;
 static void display_as_control           STD_SIG;
@@ -29,6 +30,7 @@ typedef enum {
 	AS_NONE = 0,
 	AS_INTERFACE,
 	AS_STREAM,
+	AS_STREAM_ASYNC,
 	AS_STORAGE_FILE_LIST,
 	AS_HTML,
 	AS_CONTROL
@@ -44,6 +46,7 @@ typedef struct {
 MonikerTestDisplayers displayers[] = {
 	{ AS_INTERFACE, display_as_interface },
 	{ AS_STREAM, display_as_stream },
+	{ AS_STREAM_ASYNC, display_as_stream_async },
 	{ AS_STORAGE_FILE_LIST, display_as_storage_file_list },
 	{ AS_HTML, display_as_html },
 	{ AS_CONTROL, display_as_control },
@@ -56,7 +59,7 @@ typedef struct {
 	MonikerTestDisplayAs display_as;
 	gchar *moniker;
 
-	int ps, pr, pc, ph;
+	int ps, pa, pr, pc, ph;
 } MonikerTestOptions;
 
 MonikerTestOptions global_mto = { NULL };
@@ -64,6 +67,7 @@ MonikerTestOptions global_mto = { NULL };
 struct poptOption moniker_test_options [] = {
 	{ "interface", 'i', POPT_ARG_STRING, &global_mto.requested_interface, 'i', "request specific interface", "interface" },
 	{ "stream",    's', POPT_ARG_NONE, &global_mto.ps, 's', "request Bonobo/Stream", NULL },
+	{ "async",     'a', POPT_ARG_NONE, &global_mto.pa, 'a', "request Bonobo/Stream asynchronously", NULL },
 	{ "storage",   'r', POPT_ARG_NONE, &global_mto.pr, 'r', "request Bonobo/Storage", NULL },
 	{ "control",   'c', POPT_ARG_NONE, &global_mto.pc, 'c', "request Bonobo/Control", NULL },
 	{ "html",      'h', POPT_ARG_NONE, &global_mto.ph, 'h', "request Bonobo/Stream and display as HTML", NULL },
@@ -109,21 +113,13 @@ display_as_interface (const char *moniker, CORBA_Environment *ev)
 }
 
 static void
-display_as_stream (const char *moniker, CORBA_Environment *ev)
+dump_stream (Bonobo_Stream the_stream, CORBA_Environment *ev)
 {
-	Bonobo_Stream the_stream;
-
-	the_stream = bonobo_get_object (moniker, "IDL:Bonobo/Stream:1.0", ev);
-	if (ev->_major != CORBA_NO_EXCEPTION || !the_stream) {
-		g_error ("Couldn't get Bonobo/Stream interface '%s'",
-			 bonobo_exception_get_text (ev));
-	}
-
 	fprintf (stderr, "Writing stream to stdout...\n");
 	do {
 		Bonobo_Stream_iobuf *stream_iobuf;
 		Bonobo_Stream_read (the_stream, 512, &stream_iobuf, ev);
-		if (ev->_major != CORBA_NO_EXCEPTION) {
+		if (BONOBO_EX (ev)) {
 			bonobo_object_release_unref (the_stream, ev);
 			g_error ("got exception %s while reading from stream!",
 				 BONOBO_EX_REPOID (ev));
@@ -143,6 +139,51 @@ display_as_stream (const char *moniker, CORBA_Environment *ev)
 }
 
 static void
+display_as_stream (const char *moniker, CORBA_Environment *ev)
+{
+	Bonobo_Stream the_stream;
+
+	the_stream = bonobo_get_object (moniker, "IDL:Bonobo/Stream:1.0", ev);
+	if (BONOBO_EX (ev) || !the_stream) {
+		g_error ("Couldn't get Bonobo/Stream interface '%s'",
+			 bonobo_exception_get_text (ev));
+	}
+
+	dump_stream (the_stream, ev);
+}
+
+static int async_done;
+
+static void
+disp_stream_async_cb (Bonobo_Unknown     object,
+		      CORBA_Environment *ev,
+		      gpointer           user_data)
+{
+	if (BONOBO_EX (ev) || !object) {
+		g_error ("Couldn't get Bonobo/Stream interface '%s'",
+			 bonobo_exception_get_text (ev));
+	} else
+		dump_stream (object, ev);
+
+	async_done = 1;
+}
+
+static void
+display_as_stream_async (const char *moniker, CORBA_Environment *ev)
+{
+	bonobo_get_object_async (moniker, "IDL:Bonobo/Stream:1.0", ev,
+				 disp_stream_async_cb, NULL);
+	
+	if (BONOBO_EX (ev))
+		g_error ("Couldn't get Bonobo/Stream '%s'",
+			 bonobo_exception_get_text (ev));
+
+	async_done = 0;
+	while (!async_done)
+		g_main_iteration (TRUE);
+}
+
+static void
 display_as_storage_file_list (const char *moniker, CORBA_Environment *ev)
 {
     Bonobo_Storage the_storage;
@@ -151,7 +192,7 @@ display_as_storage_file_list (const char *moniker, CORBA_Environment *ev)
     int i;
 
     the_storage = bonobo_get_object (moniker, "IDL:Bonobo/Storage:1.0", ev);
-    if (ev->_major != CORBA_NO_EXCEPTION || !the_storage) {
+    if (BONOBO_EX (ev) || !the_storage) {
         g_error ("Couldn't get Bonobo/Storage interface");
     }
 
@@ -184,7 +225,7 @@ display_as_storage_file_list (const char *moniker, CORBA_Environment *ev)
 static void
 display_as_html (const char *moniker, CORBA_Environment *ev)
 {
-    g_error ("Not implemented");
+	g_error ("Not implemented");
 }
 
 static void
@@ -197,7 +238,7 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 	GtkWidget *window;
 
 	the_control = bonobo_get_object (moniker, "IDL:Bonobo/Control:1.0", ev);
-	if (ev->_major != CORBA_NO_EXCEPTION || !the_control)
+	if (BONOBO_EX (ev) || !the_control)
 		g_error ("Couldn't get Bonobo/Control interface");
 
 	window = bonobo_window_new ("moniker-test", moniker);
@@ -210,7 +251,7 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 	
 	bonobo_object_unref (BONOBO_OBJECT (ui_container));
 
-	if (ev->_major != CORBA_NO_EXCEPTION || !widget)
+	if (BONOBO_EX (ev) || !widget)
 		g_error ("Couldn't get a widget from the_control");
 
 	bonobo_control_frame_control_activate (
@@ -260,6 +301,8 @@ main (int argc, char **argv)
 		global_mto.display_as = AS_INTERFACE;
 	else if (global_mto.ps)
 		global_mto.display_as = AS_STREAM;
+	else if (global_mto.pa)
+		global_mto.display_as = AS_STREAM_ASYNC;
 	else if (global_mto.pr)
 		global_mto.display_as = AS_STORAGE_FILE_LIST;
 	else if (global_mto.ph)
@@ -290,6 +333,7 @@ main (int argc, char **argv)
 		fprintf (stderr, global_mto.requested_interface);
 		break;
         case AS_STREAM:
+        case AS_STREAM_ASYNC:
 		fprintf (stderr, "IDL:Bonobo/Stream:1.0");
 		break;
         case AS_STORAGE_FILE_LIST:
