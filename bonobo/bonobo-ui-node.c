@@ -549,7 +549,6 @@ do_strip (xmlNode *node)
 	switch (node->type) {
         case XML_DOCUMENT_FRAG_NODE:
         case XML_ELEMENT_NODE:
-	case XML_TEXT_NODE:
         case XML_ENTITY_NODE:
         case XML_ENTITY_REF_NODE: {
 /*		xmlAttr *a, *nexta; */
@@ -585,6 +584,7 @@ do_strip (xmlNode *node)
         case XML_DOCUMENT_TYPE_NODE:
         case XML_NOTATION_NODE:
         case XML_CDATA_SECTION_NODE:
+	case XML_TEXT_NODE:
 	default: /* FIXME: needs scrutiny of
 		    XML_DTD_NODE
 		    XML_ELEMENT_DECL
