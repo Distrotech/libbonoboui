@@ -1,3 +1,7 @@
+2004-01-07  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.4.3
+
 2003-12-30  Federico Mena Quintero  <federico@ximian.com>
 
 	* bonobo/bonobo-control.c (impl_Bonobo_Control_activate): Ahem,

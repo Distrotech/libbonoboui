@@ -1,3 +1,8 @@
+libbonoboui 2.4.3
+
+	* bugs fixed
+		+ control activation signal emission (Federico)
+
 libbonoboui 2.3.6
 
 	* bugs fixed
