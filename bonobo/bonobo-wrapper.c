@@ -41,6 +41,9 @@ struct _GnomeWrapperPrivate {
 
 	/* The GCs used for painting on the cover. */
 	GdkGC *gc[2];
+
+	/* The InputOnly window that covers the child */
+	GdkWindow *cover;
 };
 
 
@@ -105,7 +108,7 @@ gnome_wrapper_init (GnomeWrapper *wrapper)
 }
 
 /* Map handler for the wrapper widget.  We map the child, then the normal
- * widget->window, and then the wrapper->cover only if it is active.
+ * widget->window, and then the wrapper->priv->cover only if it is active.
  */
 static void
 gnome_wrapper_map (GtkWidget *widget)
@@ -126,7 +129,7 @@ gnome_wrapper_map (GtkWidget *widget)
 	gdk_window_show (widget->window);
 
 	if (wrapper->priv->covered)
-		gdk_window_show (wrapper->cover);
+		gdk_window_show (wrapper->priv->cover);
 }
 
 /* Unmap handler for the wrapper widget */
@@ -144,14 +147,14 @@ gnome_wrapper_unmap (GtkWidget *widget)
 	gdk_window_hide (widget->window);
 
 	if (wrapper->priv->covered)
-		gdk_window_hide (wrapper->cover);
+		gdk_window_hide (wrapper->priv->cover);
 
 	if (wrapper->bin.child && GTK_WIDGET_MAPPED (wrapper->bin.child))
 		gtk_widget_unmap (wrapper->bin.child);
 }
 
 /* Realize handler for the wrapper widget.  We create the widget->window, which
- * is the child's container, and the wrapper->cover, which is the cover window.
+ * is the child's container, and the wrapper->priv->cover, which is the cover window.
  * This is a bit special in that both windows are direct children of the parent
  * widget's window.
  */
@@ -214,9 +217,9 @@ gnome_wrapper_realize (GtkWidget *widget)
 	 */
 	attributes.wclass = GDK_INPUT_ONLY;
 
-	wrapper->cover = gdk_window_new (parent_window, &attributes, attributes_mask);
-	gdk_window_set_events (wrapper->cover, GDK_BUTTON_PRESS_MASK);
-	gdk_window_set_user_data (wrapper->cover, wrapper);
+	wrapper->priv->cover = gdk_window_new (parent_window, &attributes, attributes_mask);
+	gdk_window_set_events (wrapper->priv->cover, GDK_BUTTON_PRESS_MASK);
+	gdk_window_set_user_data (wrapper->priv->cover, wrapper);
 
 	/*
 	 * Style (pinache!).
@@ -242,9 +245,9 @@ gnome_wrapper_unrealize (GtkWidget *widget)
 	gdk_gc_destroy (wrapper->priv->gc[0]);
 	gdk_gc_destroy (wrapper->priv->gc[1]);
 
-	gdk_window_set_user_data (wrapper->cover, NULL);
-	gdk_window_destroy (wrapper->cover);
-	wrapper->cover= NULL;
+	gdk_window_set_user_data (wrapper->priv->cover, NULL);
+	gdk_window_destroy (wrapper->priv->cover);
+	wrapper->priv->cover= NULL;
 
 	gdk_window_set_user_data (widget->window, NULL);
 	gdk_window_destroy (widget->window);
@@ -307,7 +310,7 @@ gnome_wrapper_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 					widget->allocation.width,
 					widget->allocation.height);
 
-		gdk_window_move_resize (wrapper->cover,
+		gdk_window_move_resize (wrapper->priv->cover,
 					widget->allocation.x,
 					widget->allocation.y,
 					widget->allocation.width,
@@ -394,7 +397,7 @@ gnome_wrapper_set_covered (GnomeWrapper *wrapper, gboolean covered)
 		wrapper->priv->covered = FALSE;
 
 		if (GTK_WIDGET_MAPPED (wrapper)) {
-			gdk_window_hide (wrapper->cover);
+			gdk_window_hide (wrapper->priv->cover);
 			gtk_widget_queue_resize (GTK_WIDGET (wrapper));
 			gnome_wrapper_paint (GTK_WIDGET (wrapper));
 		}
@@ -402,7 +405,7 @@ gnome_wrapper_set_covered (GnomeWrapper *wrapper, gboolean covered)
 		wrapper->priv->covered = TRUE;
 
 		if (GTK_WIDGET_MAPPED (wrapper)) {
-			gdk_window_show (wrapper->cover);
+			gdk_window_show (wrapper->priv->cover);
 			gtk_widget_queue_resize (GTK_WIDGET (wrapper));
 			gnome_wrapper_paint (GTK_WIDGET (wrapper));
 		}

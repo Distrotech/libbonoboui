@@ -29,9 +29,6 @@ typedef struct _GnomeWrapperPrivate GnomeWrapperPrivate;
 struct _GnomeWrapper {
 	GtkBin bin;
 
-	/* The InputOnly window that covers the child */
-	GdkWindow *cover;
-
 	/* Private data. */
 	GnomeWrapperPrivate *priv;
 };

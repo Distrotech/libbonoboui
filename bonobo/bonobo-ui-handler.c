@@ -599,7 +599,7 @@ gnome_ui_handler_set_container (GnomeUIHandler *uih, GNOME_UIHandler container)
 	else {
 		uih->top_level_uih = CORBA_Object_duplicate (top_level, &ev);
 
-		/* Regiter with the top-level UIHandler. */
+		/* Register with the top-level UIHandler. */
 		GNOME_UIHandler_register_containee (
 			uih->top_level_uih,
 			gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);

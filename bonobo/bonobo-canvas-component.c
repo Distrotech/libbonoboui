@@ -756,7 +756,7 @@ gnome_canvas_component_get_item (GnomeCanvasComponent *comp)
  *
  * To catch this we do:
  *
- *    3. replace the regular Canva's root field (of type GnomeCanvasGroup)
+ *    3. replace the regular Canvas' root field (of type GnomeCanvasGroup)
  *       with a RootItemHack item.  This item has an overriden ->update method
  *       that will notify the container canvas on the container process about
  *       our update requirement. 
