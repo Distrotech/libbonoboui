@@ -1,3 +1,7 @@
+2001-05-30  Johan Dahlin  <zilch.am@home.se>
+
+	* bonobo/bonobo-ui-toolbar-item.h: Removed duplicate prototypes.
+	
 2001-05-30  Christophe Merlet  <redfox@eikonex.org>
 
 	* configure.in: Added fr to $ALL_LINGUAS
