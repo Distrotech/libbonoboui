@@ -40,7 +40,13 @@ void                 bonobo_win_set_contents        (BonoboWin  *win,
 GtkWidget           *bonobo_win_get_contents        (BonoboWin  *win);
 
 void                 bonobo_win_freeze              (BonoboWin *win);
+
 void                 bonobo_win_thaw                (BonoboWin *win);
+
+void                 bonobo_win_set_name            (BonoboWin  *win,
+						     const char *win_name);
+
+char                *bonobo_win_get_name            (BonoboWin *win);
 
 BonoboUIXmlError     bonobo_win_xml_merge           (BonoboWin  *win,
 						     const char *path,

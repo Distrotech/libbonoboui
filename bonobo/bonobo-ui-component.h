@@ -103,14 +103,13 @@ void               bonobo_ui_container_freeze       (Bonobo_UIContainer  contain
 void               bonobo_ui_container_thaw         (Bonobo_UIContainer  container,
 						     CORBA_Environment  *opt_ev);
 
-void               bonobo_ui_component_set_prop     (BonoboUIComponent  *componetn,
-						     Bonobo_UIContainer  container,
+void               bonobo_ui_container_set_prop     (Bonobo_UIContainer  container,
 						     const char         *path,
 						     const char         *prop,
 						     const char         *value,
 						     CORBA_Environment  *opt_ev);
 
-gchar             *bonobo_ui_component_get_prop     (Bonobo_UIContainer  container,
+gchar             *bonobo_ui_container_get_prop     (Bonobo_UIContainer  container,
 						     const char         *path,
 						     const char         *prop,
 						     CORBA_Environment  *opt_ev);

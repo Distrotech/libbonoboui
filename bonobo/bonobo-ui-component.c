@@ -649,8 +649,7 @@ bonobo_ui_container_thaw (Bonobo_UIContainer  container,
 }
 
 void
-bonobo_ui_component_set_prop (BonoboUIComponent  *component,
-			      Bonobo_UIContainer  container,
+bonobo_ui_container_set_prop (Bonobo_UIContainer  container,
 			      const char         *path,
 			      const char         *prop,
 			      const char         *value,
@@ -660,7 +659,6 @@ bonobo_ui_component_set_prop (BonoboUIComponent  *component,
 	char *parent_path, *p;
 
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
-	g_return_if_fail (!component || BONOBO_IS_UI_COMPONENT (component));
 
 	node = bonobo_ui_container_get_tree (
 		container, path, FALSE, opt_ev);
@@ -675,14 +673,14 @@ bonobo_ui_component_set_prop (BonoboUIComponent  *component,
 		*p = '\0';
 
 	bonobo_ui_component_set_tree (
-		component, container,
+		NULL, container,
 		parent_path, node, opt_ev);
 
 	xmlFreeNode (node);
 }
 
 gchar *
-bonobo_ui_component_get_prop (Bonobo_UIContainer  container,
+bonobo_ui_container_get_prop (Bonobo_UIContainer  container,
 			      const char         *path,
 			      const char         *prop,
 			      CORBA_Environment  *opt_ev)

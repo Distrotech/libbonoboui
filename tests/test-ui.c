@@ -37,16 +37,25 @@ cb_do_dump (GtkWindow *window, BonoboWin *app)
 static void
 cb_set_state (GtkEntry *state_entry, GtkEntry *path_entry)
 {
-	char *path, *state;
+	char *path, *state, *txt;
 
 	path = gtk_entry_get_text (path_entry);
 	state = gtk_entry_get_text (state_entry);
 
 	g_warning ("Set state on '%s' to '%s'", path, state);
 
-	bonobo_ui_component_set_prop (
-		NULL, corba_container, path, "state", state, NULL);
+	bonobo_ui_container_set_prop (
+		corba_container, path, "state", state, NULL);
+
+	txt = bonobo_ui_container_get_prop (
+		corba_container, path, "state", NULL);
+
+	g_warning ("Re-fetched state was '%s'", txt);
+
+	g_free (txt);
 }
+
+
 
 static void
 toggled_cb (BonoboUIComponent           *component,
@@ -57,6 +66,25 @@ toggled_cb (BonoboUIComponent           *component,
 {
 	fprintf (stderr, "toggled to '%s' type '%d' path '%s'\n",
 		 state, type, path);
+}
+
+static void
+disconnect_progress (GtkObject *progress, gpointer dummy)
+{
+	gtk_timeout_remove (GPOINTER_TO_UINT (dummy));
+}
+
+static gboolean
+update_progress (GtkProgress *progress)
+{
+	float pos = gtk_progress_get_current_percentage (progress);
+
+	if (pos < 0.95)
+		gtk_progress_set_percentage (progress, pos + 0.05);
+	else
+		gtk_progress_set_percentage (progress, 0);
+
+	return TRUE;
 }
 
 int
@@ -231,6 +259,7 @@ main (int argc, char **argv)
 	{
 		GtkWidget *widget = gtk_progress_bar_new ();
 		BonoboControl *control = bonobo_control_new (widget);
+		guint id;
 
 		gtk_progress_bar_update (GTK_PROGRESS_BAR (widget), 0.5);
 		gtk_widget_show (widget);
@@ -239,6 +268,10 @@ main (int argc, char **argv)
 			"/status/Progress",
 			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
 			NULL);
+
+		id = gtk_timeout_add (100, (GSourceFunc) update_progress, widget);
+		gtk_signal_connect (GTK_OBJECT (widget), "destroy",
+				    disconnect_progress, GUINT_TO_POINTER (id));
 	}
 
 	bonobo_ui_container_thaw (corba_container, NULL);

@@ -744,7 +744,10 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 
 	switch (type) {
 	case BONOBO_UI_HANDLER_MENU_PLACEHOLDER:
-		g_warning ("CONVERTME: Placeholders not handled");
+		node = xmlNewNode (NULL, "placeholder");
+		xmlSetProp (node, "name", cname);
+		goto add_menu_item;
+
 	case BONOBO_UI_HANDLER_MENU_RADIOGROUP:
 	case BONOBO_UI_HANDLER_MENU_END:
 		return;
@@ -789,6 +792,7 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 	{
 		char *xml_path;
 
+	add_menu_item:
 		/*
 		 * This will never work for evil like /wibble/radio\/ group/etc.
 		 */
@@ -1277,52 +1281,46 @@ void
 bonobo_ui_handler_menu_set_toggle_state	(BonoboUIHandler *uih, const char *path,
 					 gboolean state)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_set_toggle_state unimplemented\n");
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+	const char *txt;
+
+	g_return_if_fail (priv != NULL);
+
+	if (state)
+		txt = "1";
+	else
+		txt = "0";
+
+	bonobo_ui_container_set_prop (priv->container, path, "state", txt, NULL);
 }
 
 gboolean
 bonobo_ui_handler_menu_get_toggle_state	(BonoboUIHandler *uih, const char *path)
 {
-	xmlNode *node;
-	char *xml_path;
-	char *state;
-	gboolean ans;
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
+	gboolean ret;
+	char *txt;
 
 	g_return_val_if_fail (priv != NULL, FALSE);
 
-	xml_path = make_path ("/menu", path, FALSE);
+	txt = bonobo_ui_container_get_prop (priv->container, path, "state", NULL);
+	ret = atoi (txt);
+	g_free (txt);
 
-	node = bonobo_ui_container_get_tree (priv->container,
-					     xml_path, FALSE, NULL);
-
-	g_return_val_if_fail (node != NULL, FALSE);
-
-	bonobo_ui_xml_dump (priv->ui, node, "Gotten toggle state");
-	if ((state = xmlGetProp (node, "state"))) {
-		ans = atoi (state);
-		xmlFree (state);
-	} else
-		ans = FALSE;
-
-	g_free (xml_path);
-	xmlFreeNode (node);
-	
-	return ans;
+	return ret;
 }
 
 void
 bonobo_ui_handler_menu_set_radio_state (BonoboUIHandler *uih, const char *path,
 					gboolean state)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_set_radio_state unimplemented\n");
+	bonobo_ui_handler_menu_set_toggle_state (uih, path, state);
 }
 
 gboolean
 bonobo_ui_handler_menu_get_radio_state (BonoboUIHandler *uih, const char *path)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_get_radio_state unimplemented\n");
-	return FALSE;
+	return bonobo_ui_handler_menu_get_toggle_state (uih, path);
 }
 
 void
@@ -1342,21 +1340,32 @@ void
 bonobo_ui_handler_menu_set_label (BonoboUIHandler *uih, const char *path,
 				  const gchar *label)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_set_label unimplemented\n");
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_if_fail (priv != NULL);
+
+	bonobo_ui_container_set_prop (priv->container, path, "label", label, NULL);
 }
 
 gchar *
 bonobo_ui_handler_menu_get_label (BonoboUIHandler *uih, const char *path)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_get_label unimplemented\n");
-	return g_strdup ("Kippers");
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_val_if_fail (priv != NULL, FALSE);
+
+	return bonobo_ui_container_get_prop (priv->container, path, "label", NULL);
 }
 
 void
 bonobo_ui_handler_menu_set_hint (BonoboUIHandler *uih, const char *path,
 				 const gchar *hint)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_set_hint unimplemented\n");
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_if_fail (priv != NULL);
+
+	bonobo_ui_container_set_prop (priv->container, path, "hint", hint, NULL);
 }
 
 void
@@ -1480,7 +1489,6 @@ path_escape_forward_slashes (const char *str)
 {
 	const char *p = str;
 	char *new, *newp;
-	char *final;
 
 	new = g_malloc (strlen (str) * 2 + 1);
 	newp = new;
@@ -1577,11 +1585,24 @@ bonobo_ui_handler_build_path (const char *base, ...)
 GList *
 bonobo_ui_handler_menu_get_child_paths (BonoboUIHandler *uih, const char *parent_path)
 {
+/*	xmlNode *node;
+	xmlChar *ans;
+	gchar   *ret;
+
 	g_return_val_if_fail (BONOBO_IS_UI_HANDLER (uih), NULL);
 	g_return_val_if_fail (parent_path != NULL, NULL);
+	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
 
-	g_warning ("FIXME: unimplemented bonobo_ui_handler_menu_"
-		   "get_child_paths; a wierd function");
+	node = bonobo_ui_container_get_tree (
+		container, path, TRUE, NULL);
+
+	g_return_val_if_fail (node != NULL, NULL);
+
+	 FIXME here; grab all the 'name's from the nodes ...
+
+	xmlFreeNode (node);
+
+	return ret;*/
 
 	return NULL;
 }

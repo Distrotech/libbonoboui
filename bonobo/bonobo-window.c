@@ -2125,22 +2125,14 @@ bonobo_win_binding_handle (GtkWidget        *widget,
 }
 
 static BonoboWinPrivate *
-construct_priv (BonoboWin  *app,
-		const char *app_name,
-		const char *title)
+construct_priv (BonoboWin *app)
 {
 	BonoboWinPrivate *priv;
 	GnomeDockItemBehavior behavior;
 
 	priv = g_new0 (BonoboWinPrivate, 1);
 
-	priv->app    = app;
-
-	priv->name   = g_strdup (app_name);
-	priv->prefix = g_strconcat ("/", app_name, "/", NULL);
-
-	if (title)
-		gtk_window_set_title (GTK_WINDOW (app), title);
+	priv->app    = app;	
 
 	/* Keybindings; the gtk_binding stuff is just too evil */
 	gtk_signal_connect (GTK_OBJECT (app), "key_press_event",
@@ -2216,14 +2208,50 @@ bonobo_win_class_init (BonoboWinClass *klass)
 	object_class->finalize = bonobo_win_finalize;
 }
 
+static void
+bonobo_win_init (BonoboWin *win)
+{
+	win->priv = construct_priv (win);
+}
+
+void
+bonobo_win_set_name (BonoboWin  *win,
+		     const char *win_name)
+{
+	BonoboWinPrivate *priv;
+
+	g_return_if_fail (BONOBO_IS_WIN (win));
+
+	priv = win->priv;
+
+	g_free (priv->name);
+	priv->name   = g_strdup (win_name);
+
+	g_free (priv->prefix);
+	priv->prefix = g_strconcat ("/", win_name, "/", NULL);
+}
+
+char *
+bonobo_win_get_name (BonoboWin *win)
+{
+	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
+
+	return g_strdup (win->priv->name);
+}
+
 GtkWidget *
 bonobo_win_construct (BonoboWin  *win,
 		      const char *win_name,
 		      const char *title)
 {
+	BonoboWinPrivate *priv;
+
 	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
 
-	win->priv = construct_priv (win, win_name, title);
+	bonobo_win_set_name (win, win_name);
+
+	if (title)
+		gtk_window_set_title (GTK_WINDOW (win), title);
 
 	return GTK_WIDGET (win);
 }
@@ -2255,7 +2283,7 @@ bonobo_win_get_type (void)
 			sizeof (BonoboWin),
 			sizeof (BonoboWinClass),
 			(GtkClassInitFunc) bonobo_win_class_init,
-			(GtkObjectInitFunc) NULL,
+			(GtkObjectInitFunc) bonobo_win_init,
 			NULL, /* reserved 1 */
 			NULL, /* reserved 2 */
 			(GtkClassInitFunc) NULL

@@ -179,6 +179,8 @@ do_set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
 			 */
 			for (p = name; *p; p++)
 				g_assert (*p != '/' && *p != '#');
+
+			xmlFree (name);
 		}
 	}
 
@@ -565,8 +567,10 @@ xml_get_path (BonoboUIXml *tree, const char *path)
 
 /*		g_warning ("Path element '%s'", names [i]);*/
 
-		if (!(ret = find_child (ret, names [i])))
+		if (!(ret = find_child (ret, names [i]))) {
+			bonobo_ui_xml_path_freev (names);
 			return NULL;
+		}
 	}
 		
 	bonobo_ui_xml_path_freev (names);
