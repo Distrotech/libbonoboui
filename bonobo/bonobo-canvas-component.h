@@ -24,6 +24,11 @@ struct _GnomeCanvasComponent {
 
 struct _GnomeCanvasComponentClass {
 	GnomeObjectClass parent_class;
+
+	/*
+	 * Signals
+	 */
+	 void (*set_bounds) (GnomeCanvasComponent *component, GNOME_Canvas_DRect *bbox, CORBA_Environment *ev);
 };
 
 GtkType           gnome_canvas_component_get_type      (void);

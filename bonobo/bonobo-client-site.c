@@ -28,7 +28,6 @@
 
 enum {
 	SHOW_WINDOW,
-	QUEUE_RESIZE,
 	SAVE_OBJECT,
 	LAST_SIGNAL
 };
@@ -59,15 +58,6 @@ impl_GNOME_client_site_show_window (PortableServer_Servant servant, CORBA_boolea
 		shown);
 }
 
-static void
-impl_GNOME_client_site_queue_resize (PortableServer_Servant servant, CORBA_Environment *ev)
-{
-	GnomeObject *object = gnome_object_from_servant (servant);
-
-	gtk_signal_emit (GTK_OBJECT (object),
-			 gnome_client_site_signals [QUEUE_RESIZE]);
-}
-
 static GNOME_Persist_Status
 impl_GNOME_client_site_save_object (PortableServer_Servant servant, CORBA_Environment *ev)
 {
@@ -89,28 +79,8 @@ impl_GNOME_client_site__destroy (PortableServer_Servant servant, CORBA_Environme
 	g_free (servant);
 }
 
-static PortableServer_ServantBase__epv gnome_client_site_base_epv =
-{
-	NULL,
-	&impl_GNOME_client_site__destroy,
-	NULL,
-};
-
-POA_GNOME_ClientSite__epv gnome_client_site_epv =
-{
-	NULL,
-	&impl_GNOME_client_site_get_container,
-	&impl_GNOME_client_site_show_window,
-	&impl_GNOME_client_site_queue_resize,
-	&impl_GNOME_client_site_save_object,
-};
-
-static POA_GNOME_ClientSite__vepv gnome_client_site_vepv =
-{
-	&gnome_client_site_base_epv,
-	&gnome_object_epv,
-	&gnome_client_site_epv,
-};
+POA_GNOME_ClientSite__epv gnome_client_site_epv;
+static POA_GNOME_ClientSite__vepv gnome_client_site_vepv;
 
 static void
 gnome_client_site_destroy (GtkObject *object)
@@ -132,6 +102,15 @@ gnome_client_site_destroy (GtkObject *object)
 		gnome_object_destroy (GNOME_OBJECT (view_frame));
 	}
 
+	/*
+	 * Destroy all canvas items
+	 */
+	while (client_site->canvas_items) {
+		GnomeBonoboItem *item = GNOME_BONOBO_ITEM (client_site->canvas_items->data);
+
+		gnome_object_destroy (GNOME_OBJECT (item));
+	}
+
 	/* Destroy the object on the other end */
 	g_warning ("FIXME: Should we unref twice?");
 
@@ -146,13 +125,20 @@ default_show_window (GnomeClientSite *cs, CORBA_boolean shown)
 }
 
 static void
-default_queue_resize (GnomeClientSite *cs)
+default_save_object (GnomeClientSite *cs, GNOME_Persist_Status *status)
 {
 }
 
 static void
-default_save_object (GnomeClientSite *cs, GNOME_Persist_Status *status)
+init_client_site_corba_class ()
 {
+	gnome_client_site_epv.get_container = &impl_GNOME_client_site_get_container;
+	gnome_client_site_epv.show_window = &impl_GNOME_client_site_show_window;
+	gnome_client_site_epv.save_object = &impl_GNOME_client_site_save_object;
+	
+	gnome_client_site_vepv._base_epv = NULL;
+	gnome_client_site_vepv.GNOME_Unknown_epv = &gnome_object_epv;
+	gnome_client_site_vepv.GNOME_ClientSite_epv = &gnome_client_site_epv;
 }
 
 static void
@@ -171,13 +157,6 @@ gnome_client_site_class_init (GnomeClientSiteClass *class)
 				gtk_marshal_NONE__INT,
 				GTK_TYPE_NONE, 1,
 				GTK_TYPE_INT); 
-	gnome_client_site_signals [QUEUE_RESIZE] =
-		gtk_signal_new ("queue_resize",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET(GnomeClientSiteClass,queue_resize), 
-				gtk_marshal_NONE__NONE,
-				GTK_TYPE_NONE, 0);
 	gnome_client_site_signals [SHOW_WINDOW] =
 		gtk_signal_new ("save_object",
 				GTK_RUN_LAST,
@@ -192,8 +171,9 @@ gnome_client_site_class_init (GnomeClientSiteClass *class)
 	
 	object_class->destroy = gnome_client_site_destroy;
 	class->show_window = default_show_window;
-	class->queue_resize = default_queue_resize;
 	class->save_object = default_save_object;
+
+	init_client_site_corba_class ();
 }
 
 static void
@@ -405,7 +385,7 @@ gnome_client_site_get_embeddable (GnomeClientSite *client_site)
 static void
 set_remote_window (GtkWidget *socket, GnomeViewFrame *view_frame)
 {
-	GNOME_View view = view_frame->view;
+	GNOME_View view = gnome_view_frame_get_view (view_frame);
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
@@ -428,7 +408,7 @@ destroy_view_frame (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
 static void
 size_allocate (GtkWidget *widget, GtkAllocation *allocation, GnomeViewFrame *view_frame)
 {
-	GNOME_View view = view_frame->view;
+	GNOME_View view = gnome_view_frame_get_view (view_frame);
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
@@ -529,9 +509,9 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 }
 
 static void
-view_frame_destroyed (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
+canvas_item_destroyed (GnomeCanvasItem *item, GnomeClientSite *client_site)
 {
-	client_site->view_frames = g_list_remove (client_site->view_frames, view_frame);
+	client_site->canvas_items = g_list_remove (client_site->canvas_items, item);
 }
 		      
 /**
@@ -540,15 +520,10 @@ view_frame_destroyed (GnomeViewFrame *view_frame, GnomeClientSite *client_site)
  * @group: The Canvas group that will be the parent for the new item.
  *
  */
-GnomeViewFrame *
-gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *group,
-			    GnomeCanvasItem **return_item)
+GnomeCanvasItem *
+gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *group)
 {
 	GnomeObjectClient *server_object;
-	GnomeViewFrame *view_frame;
-	GNOME_View view;
-	CORBA_Environment ev;
-	GnomeCanvas *canvas;
 	GnomeCanvasItem *item;
 		
 	g_return_val_if_fail (client_site != NULL, NULL);
@@ -557,61 +532,20 @@ gnome_client_site_new_item (GnomeClientSite *client_site, GnomeCanvasGroup *grou
 	g_return_val_if_fail (group != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_GROUP (group), NULL);
 
-	if (return_item)
-		*return_item = NULL;
-	
 	server_object = client_site->bound_object;
 
-	/*
-	 * 1. Create the view frame.
-	 */
-	view_frame = gnome_view_frame_new (client_site);
-
-	/*
-	 * 2. Create the view.
-	 */
-	CORBA_exception_init (&ev);
- 	view = GNOME_Embeddable_new_view (
-		gnome_object_corba_objref (GNOME_OBJECT (server_object)),
-		gnome_object_corba_objref (GNOME_OBJECT (view_frame)),
-		&ev);
-	if (ev._major != CORBA_NO_EXCEPTION) {
-		gnome_object_check_env (
-			GNOME_OBJECT (client_site),
-			gnome_object_corba_objref (GNOME_OBJECT (server_object)),
-			&ev);
-		gnome_object_unref (GNOME_OBJECT (view_frame));
-		CORBA_exception_free (&ev);
-		return NULL;
-	}
-
-	/*
-	 * 3. Bind the view frame and the view
-	 */
-	gnome_view_frame_bind_to_view (view_frame, view);
-	CORBA_Object_release (view, &ev);
-	
-	item = gnome_bonobo_item_new (group, view_frame);
-
-	if (!item) {
-		gnome_object_unref (GNOME_OBJECT (view_frame));
-		CORBA_exception_free (&ev);		
-		return NULL;
-	}
+	item = gnome_bonobo_item_new (group, server_object);
 
 	/*
 	 * 5. Add this new view frame to the list of ViewFrames for
 	 * this embedded component.
 	 */
-	client_site->view_frames = g_list_prepend (client_site->view_frames, view_frame);
+	client_site->canvas_items = g_list_prepend (client_site->canvas_items, item);
 
-	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
-			    GTK_SIGNAL_FUNC (view_frame_destroyed), client_site);
+	gtk_signal_connect (GTK_OBJECT (item), "destroy",
+			    GTK_SIGNAL_FUNC (canvas_item_destroyed), client_site);
 	
-	*return_item = item;
-	
-	CORBA_exception_free (&ev);
-	return view_frame;
+	return item;
 }
 
 /**

@@ -23,7 +23,7 @@ POA_GNOME_Desktop_Window__epv gnome_desktop_window_epv;
 POA_GNOME_Desktop_Window__vepv gnome_desktop_window_vepv;
 
 GNOME_Desktop_Window
-gnome_desktop_window_object_create (GnomeObject *object)
+gnome_desktop_window_corba_object_create (GnomeObject *object)
 {
 	POA_GNOME_Desktop_Window *servant;
 	CORBA_Environment ev;
@@ -85,7 +85,7 @@ gnome_desktop_window_new (GtkWindow *toplevel)
 
 	desktop_window = gtk_type_new (gnome_desktop_window_get_type ());
 
-	corba_desktop_window = gnome_desktop_window_object_create (GNOME_OBJECT (desktop_window));
+	corba_desktop_window = gnome_desktop_window_corba_object_create (GNOME_OBJECT (desktop_window));
 	if (corba_desktop_window == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (desktop_window));
 		return NULL;

@@ -13,8 +13,10 @@
 
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
+#include <libgnomeui/gnome-canvas.h>
 #include <bonobo/bonobo.h>
 #include <bonobo/gnome-object.h>
+#include <bonobo/gnome-canvas-component.h>
 
 BEGIN_GNOME_DECLS
  
@@ -33,7 +35,11 @@ typedef struct _GnomeVerb GnomeVerb;
 #include <bonobo/gnome-view.h>
 
 #define GNOME_VIEW_FACTORY(fn) ((GnomeViewFactory)(fn))
+
 typedef GnomeView * (*GnomeViewFactory)(GnomeEmbeddable *embeddable, const GNOME_ViewFrame view_frame, void *closure);
+typedef GnomeCanvasComponent *(*GnomeItemCreator)(GnomeEmbeddable *embeddable, GnomeCanvas *canvas, void *user_data);
+typedef void (*GnomeEmbeddableForeachViewFn) (GnomeView *view, void *data);
+typedef void (*GnomeEmbeddableForeachItemFn) (GnomeCanvasComponent *comp, void *data);
 
 struct _GnomeEmbeddable {
 	GnomeObject base;
@@ -41,17 +47,6 @@ struct _GnomeEmbeddable {
 	char *host_name;
 	char *host_appname;
 	GNOME_ClientSite client_site;
-
-	/*
-	 * The View factory
-	 */
-	GnomeViewFactory view_factory;
-	void *view_factory_closure;
-
-	/*
-	 * The instantiated views for this Embeddable.
-	 */
-	GList *views;
 
 	/*
 	 * A list of GnomeVerb structures for the verbs supported by
@@ -108,10 +103,18 @@ struct _GnomeVerb {
 GtkType          gnome_embeddable_get_type         (void);
 GnomeEmbeddable *gnome_embeddable_new              (GnomeViewFactory factory,
 						    void *data);
+GnomeEmbeddable *gnome_embeddable_new_canvas_item  (GnomeItemCreator item_factory,
+						    void *closure);
 GnomeEmbeddable *gnome_embeddable_construct        (GnomeEmbeddable *embeddable,
 						    GNOME_Embeddable corba_embeddable,
 						    GnomeViewFactory factory,
 						    void *data);
+GnomeEmbeddable *gnome_embeddable_construct_full   (GnomeEmbeddable *embeddable,
+						    GNOME_Embeddable corba_embeddable,
+						    GnomeViewFactory factory,
+						    void *factory_data,
+						    GnomeItemCreator item_factory,
+						    void *item_factory_data);
 GNOME_Embeddable gnome_embeddable_corba_object_create (GnomeObject *object);
 
 void             gnome_embeddable_add_verb         (GnomeEmbeddable *embeddable,
@@ -131,6 +134,13 @@ const GList	*gnome_embeddable_get_verbs	   (GnomeEmbeddable *embeddable);
 const char      *gnome_embeddable_get_uri          (GnomeEmbeddable *embeddable);
 void             gnome_embeddable_set_uri          (GnomeEmbeddable *embeddable,
 						    const char *uri);
+
+void             gnome_embeddable_foreach_view     (GnomeEmbeddable *embeddable,
+						    GnomeEmbeddableForeachViewFn fn,
+						    void *data);
+void             gnome_embeddable_foreach_item     (GnomeEmbeddable *embeddable,
+						    GnomeEmbeddableForeachItemFn fn,
+						    void *data);
 
 extern POA_GNOME_Embeddable__epv gnome_embeddable_epv;
 

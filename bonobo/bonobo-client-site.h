@@ -36,6 +36,7 @@ struct _GnomeClientSite {
 	GnomeContainer    *container;
 	GnomeObjectClient *bound_object;
 	GList		  *view_frames;
+	GList             *canvas_items;
 	int               child_shown:1;
 
 	GnomeClientSitePrivate *priv;
@@ -63,9 +64,8 @@ GnomeObjectClient *gnome_client_site_get_embeddable	(GnomeClientSite *client_sit
  * Proxy/Utility functions.
  */
 GnomeViewFrame    *gnome_client_site_new_view		(GnomeClientSite *client_site);
-GnomeViewFrame    *gnome_client_site_new_item           (GnomeClientSite *client_site,
-							 GnomeCanvasGroup *group,
-							 GnomeCanvasItem **return_value);
+GnomeCanvasItem   *gnome_client_site_new_item           (GnomeClientSite *client_site,
+							 GnomeCanvasGroup *group);
 GList		  *gnome_client_site_get_verbs		(GnomeClientSite *client_site);
 void		   gnome_client_site_free_verbs		(GList *verb_list);
 

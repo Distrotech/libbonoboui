@@ -17,7 +17,7 @@
 #include <gdk/gdkprivate.h>
 
 /* Parent object class in GTK hierarchy */
-static GnomeObjectClass *gnome_view_parent_class;
+static GnomeControlClass *gnome_view_parent_class;
 
 /* The entry point vectors for the server we provide */
 POA_GNOME_View__epv gnome_view_epv;
@@ -26,7 +26,6 @@ POA_GNOME_View__vepv gnome_view_vepv;
 enum {
 	VIEW_ACTIVATE,
 	VIEW_UNDO_LAST_OPERATION,
-	SIZE_QUERY,
 	DO_VERB,
 	SET_ZOOM_FACTOR,
 	LAST_SIGNAL
@@ -37,28 +36,9 @@ static guint view_signals [LAST_SIGNAL];
 typedef void (*GnomeSignal_NONE__DOUBLE) (GtkObject *object, double arg1, gpointer user_data);
 
 struct _GnomeViewPrivate {
-	GtkWidget *plug;
-
-	int plug_destroy_id;
-
 	GHashTable *verb_callbacks;
 	GHashTable *verb_callback_closures;
 
-	GtkWidget  *widget;
-	
-	/*
-	 * For the Canvas Item
-	 */
-	
-	/*If we are exporting a CanvasItem, this is our pseudo-canvas we use */
-	GtkWidget *pseudo_canvas;
-
-	/* If we export a CanvasItem */
-	GnomeCanvasComponent *canvas_comp;
-
-	/* The routine that will create the item */
-	GnomeViewItemCreator item_creator;
-	void *item_creator_data;
 };
 
 static void
@@ -92,119 +72,6 @@ impl_GNOME_View_do_verb (PortableServer_Servant servant,
 }
 
 static void
-impl_GNOME_View_size_allocate (PortableServer_Servant servant,
-			       const CORBA_short width,
-			       const CORBA_short height,
-			       CORBA_Environment *ev)
-{
-	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-	GtkAllocation allocation;
-
-	if (view->priv->plug == NULL)
-		return;
-
-	allocation.x = view->priv->plug->allocation.x;
-	allocation.y = view->priv->plug->allocation.y;
-
-	allocation.width = width;
-	allocation.height = height;
-	gtk_widget_size_allocate (view->priv->plug, &allocation);
-}
-
-/*
- * This callback is invoked when the plug is unexpectedly destroyed.
- * This may happen if, for example, the container application goes
- * away.  This callback is _not_ invoked if the GnomeView is destroyed
- * normally, i.e. the user unrefs the GnomeView away.
- */
-static gint
-plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
-{
-	GnomeView *view = GNOME_VIEW (closure);
-
-	if (view->priv->plug != plug)
-		g_warning ("Destroying incorrect plug");
-
-	/*
-	 * Set the plug to NULL here so that we don't try to
-	 * destroy it later.  It will get destroyed on its
-	 * own.
-	 */
-	view->priv->plug = NULL;
-	gtk_signal_disconnect (GTK_OBJECT (plug), view->priv->plug_destroy_id);
-
-	/*
-	 * Destroy this plug's GnomeView.
-	 */
-	gnome_object_destroy (GNOME_OBJECT (view));
-
-	return FALSE;
-}
-
-static void
-make_component (GnomeView *view, gboolean aa, GNOME_Canvas_ItemProxy item_proxy)
-{
-	if (aa){
-		gdk_rgb_init ();
-		view->priv->pseudo_canvas = gnome_canvas_new_aa ();
-	} else
-		view->priv->pseudo_canvas = gnome_canvas_new ();
-	
-	view->priv->canvas_comp = (*view->priv->item_creator)(
-		view, GNOME_CANVAS (view->priv->pseudo_canvas),
-		view->priv->item_creator_data);
-
-	if (view->priv->canvas_comp)
-		gnome_canvas_component_set_proxy (view->priv->canvas_comp, item_proxy);
-}
-
-static void
-impl_GNOME_View_set_window (PortableServer_Servant servant,
-			    GNOME_View_windowid id,
-			    CORBA_Environment *ev)
-{
-	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-
-	view->priv->plug = gtk_plug_new (id);
-	view->priv->plug_destroy_id = gtk_signal_connect (
-		GTK_OBJECT (view->priv->plug), "destroy_event",
-		GTK_SIGNAL_FUNC (plug_destroy_cb), view);
-
-	gtk_widget_show_all (view->priv->plug);
-
-	if (view->priv->widget != NULL)
-		gtk_container_add (GTK_CONTAINER (view->priv->plug), view->priv->widget);
-	else {
-		GnomeCanvasItem *item;
-		
-		if (view->priv->canvas_comp == NULL)
-			make_component (view, FALSE, CORBA_OBJECT_NIL);
-
-		item = gnome_canvas_component_get_item (view->priv->canvas_comp);
-		gtk_container_add (GTK_CONTAINER (view->priv->plug),
-				   GTK_WIDGET (item->canvas));
-	}
-}
-
-static void
-impl_GNOME_View_size_query (PortableServer_Servant servant,
-			    CORBA_short *desired_width,
-			    CORBA_short *desired_height,
-			    CORBA_Environment *ev)
-{
-	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-	int dh = -1;
-	int dw = -1;
-	
-	gtk_signal_emit (
-		GTK_OBJECT (view),
-		view_signals [SIZE_QUERY], &dw, &dh);
-
-	*desired_height = dh;
-	*desired_width = dw;
-}
-
-static void
 impl_GNOME_View_set_zoom_factor (PortableServer_Servant servant,
 				 const CORBA_double zoom,
 				 CORBA_Environment *ev)
@@ -214,33 +81,6 @@ impl_GNOME_View_set_zoom_factor (PortableServer_Servant servant,
 	gtk_signal_emit (
 		GTK_OBJECT (view),
 		view_signals [SET_ZOOM_FACTOR], zoom);
-}
-
-static GNOME_Canvas_Item
-impl_GNOME_View_get_canvas_item (PortableServer_Servant servant,
-				 CORBA_boolean aa,
-				 GNOME_Canvas_ItemProxy _item_proxy,
-				 CORBA_Environment *ev)
-{
-	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
-	GNOME_Canvas_ItemProxy item_proxy;
-	
-	if (view->priv->item_creator == NULL)
-		return CORBA_OBJECT_NIL;
-
-	if (view->priv->canvas_comp != CORBA_OBJECT_NIL)
-		return CORBA_Object_duplicate (
-			gnome_object_corba_objref (
-				GNOME_OBJECT (view->priv->canvas_comp)),
-			ev);
-
-	item_proxy = CORBA_Object_duplicate (_item_proxy, ev);
-	
-	make_component (view, aa, item_proxy);
-
-	return CORBA_Object_duplicate (
-		gnome_object_corba_objref (
-			GNOME_OBJECT (view->priv->canvas_comp)), ev);
 }
 
 /**
@@ -280,38 +120,21 @@ gnome_view_corba_object_create (GnomeObject *object)
  * @corba_view: The CORBA GNOME_View interface for the new GnomeView object.
  * @widget: A GtkWidget contains the view and * will be passed to the container
  * process's ViewFrame object.
- * @item_creator: The item creation function to be invoked on demand.
  * 
  * @item_creator might be NULL for widget-based views.
  *
  * Returns: the intialized GnomeView object.
  */
 GnomeView *
-gnome_view_construct (GnomeView *view, GNOME_View corba_view,
-		      GtkWidget *widget, GnomeViewItemCreator item_creator)
+gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 {
 	g_return_val_if_fail (view != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_VIEW (view), NULL);
 	g_return_val_if_fail (corba_view != CORBA_OBJECT_NIL, NULL);
-
-	if (!item_creator){
-		g_return_val_if_fail (widget != NULL, NULL);
-		g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
-	}
-
-	/*
-	 * FIXME: This should probably be explained.
-	 */
-	bonobo_setup_x_error_handler ();
-
-	gnome_object_construct (GNOME_OBJECT (view), corba_view);
-
-	view->priv->item_creator = item_creator;
-
-	if (widget){
-		view->priv->widget = GTK_WIDGET (widget);
-		gtk_object_ref (GTK_OBJECT (widget));
-	}
+	g_return_val_if_fail (widget != NULL, NULL);
+	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+	
+	gnome_control_construct (GNOME_CONTROL (view), corba_view, widget);
 
 	view->priv->verb_callbacks = g_hash_table_new (g_str_hash, g_str_equal);
 	view->priv->verb_callback_closures = g_hash_table_new (g_str_hash, g_str_equal);
@@ -346,38 +169,7 @@ gnome_view_new (GtkWidget *widget)
 		return NULL;
 	}
 	
-	return gnome_view_construct (view, corba_view, widget, NULL);
-}
-
-/**
- * gnome_view_new:
- * @item_creator: A callback function that will create a #GnomeCanvasItem
- * @user_data: data passed to the item_creator function.
- *
- * This function creates a new GnomeView object.  The View will be able
- * to respond to the get_canvas_item request.
- *
- * Returns: a GnomeView object that implements the GNOME::View CORBA
- * service that will provide a a GnomeCanvasItem.
- */
-GnomeView *
-gnome_view_new_canvas (GnomeViewItemCreator item_creator, void *user_data)
-{
-	GnomeView *view;
-	GNOME_View corba_view;
-	
-	g_return_val_if_fail (item_creator != NULL, NULL);
-
-	view = gtk_type_new (gnome_view_get_type ());
-
-	corba_view = gnome_view_corba_object_create (GNOME_OBJECT (view));
-	if (corba_view == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (view));
-		return NULL;
-	}
-
-	view->priv->item_creator_data = user_data;
-	return gnome_view_construct (view, corba_view, NULL, item_creator);
+	return gnome_view_construct (view, corba_view, widget);
 }
 
 static gboolean
@@ -408,31 +200,6 @@ gnome_view_destroy (GtkObject *object)
 
 	g_hash_table_destroy (view->priv->verb_callback_closures);
 
-	/*
-	 * Destroy the view's top-level widget.
-	 */
-	if (view->priv->widget)
-		gtk_object_unref (GTK_OBJECT (view->priv->widget));
-
-	if (view->priv->canvas_comp){
-		gnome_object_unref (GNOME_OBJECT (view->priv->canvas_comp));
-		gtk_object_unref (GTK_OBJECT (view->priv->pseudo_canvas));
-	}
-	
-	/*
-	 * If the plug still exists, destroy it.  The plug might not
-	 * exist in the case where the container application died,
-	 * taking the plug out with it.  In that case,
-	 * plug_destroy_cb() would have been invoked, and it would
-	 * have triggered the destruction of the View.  Which is why
-	 * we're here now.
-	 */
-	if (view->priv->plug) {
-		gtk_signal_disconnect (GTK_OBJECT (view->priv->plug), view->priv->plug_destroy_id);
-		gtk_object_unref (GTK_OBJECT (view->priv->plug));
-		view->priv->plug = NULL;
-	}
-
 	g_free (view->priv);
 	
 	GTK_OBJECT_CLASS (gnome_view_parent_class)->destroy (object);
@@ -442,17 +209,14 @@ static void
 init_view_corba_class (void)
 {
 	/* The entry point vectors for this GNOME::View class */
-	gnome_view_epv.size_allocate = impl_GNOME_View_size_allocate;
-	gnome_view_epv.set_window = impl_GNOME_View_set_window;
 	gnome_view_epv.do_verb = impl_GNOME_View_do_verb;
 	gnome_view_epv.activate = impl_GNOME_View_activate;
 	gnome_view_epv.reactivate_and_undo = impl_GNOME_View_reactivate_and_undo;
-	gnome_view_epv.size_query = impl_GNOME_View_size_query;
 	gnome_view_epv.set_zoom_factor = impl_GNOME_View_set_zoom_factor;
-	gnome_view_epv.get_canvas_item = impl_GNOME_View_get_canvas_item;
 	
 	/* Setup the vector of epvs */
 	gnome_view_vepv.GNOME_Unknown_epv = &gnome_object_epv;
+	gnome_view_vepv.GNOME_Control_epv = &gnome_control_epv;
 	gnome_view_vepv.GNOME_View_epv = &gnome_view_epv;
 }
 
@@ -474,8 +238,7 @@ gnome_view_class_init (GnomeViewClass *class)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
-	gnome_view_parent_class = gtk_type_class (gnome_object_get_type ());
-
+	gnome_view_parent_class = gtk_type_class (gnome_control_get_type ());
 
 	view_signals [VIEW_ACTIVATE] =
                 gtk_signal_new ("view_activate",
@@ -485,15 +248,6 @@ gnome_view_class_init (GnomeViewClass *class)
                                 gtk_marshal_NONE__BOOL,
                                 GTK_TYPE_NONE, 1,
 				GTK_TYPE_BOOL);
-
-	view_signals [SIZE_QUERY] =
-                gtk_signal_new ("size_query",
-                                GTK_RUN_LAST,
-                                object_class->type,
-                                GTK_SIGNAL_OFFSET (GnomeViewClass, size_query), 
-                                gtk_marshal_NONE__POINTER_POINTER,
-                                GTK_TYPE_NONE, 2,
-				GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 
 	view_signals [VIEW_UNDO_LAST_OPERATION] =
                 gtk_signal_new ("view_undo_last_operation",
@@ -520,8 +274,8 @@ gnome_view_class_init (GnomeViewClass *class)
                                 gnome_marshal_NONE__DOUBLE,
                                 GTK_TYPE_NONE, 1,
 				GTK_TYPE_DOUBLE);
-	gtk_object_class_add_signals (object_class, view_signals,
-				      LAST_SIGNAL);
+
+	gtk_object_class_add_signals (object_class, view_signals, LAST_SIGNAL);
 
 	object_class->destroy = gnome_view_destroy;
 
@@ -556,7 +310,7 @@ gnome_view_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_object_get_type (), &info);
+		type = gtk_type_unique (gnome_control_get_type (), &info);
 	}
 
 	return type;
@@ -610,18 +364,12 @@ gnome_view_get_embeddable (GnomeView *view)
 void
 gnome_view_set_view_frame (GnomeView *view, GNOME_ViewFrame view_frame)
 {
-	CORBA_Environment ev;
-
 	g_return_if_fail (view != NULL);
 	g_return_if_fail (GNOME_IS_VIEW (view));
+	
+	gnome_control_set_control_frame (GNOME_CONTROL (view), (GNOME_ControlFrame) view_frame);
 
-	CORBA_exception_init (&ev);
-
-	GNOME_Unknown_ref (view_frame, &ev);
-
-	view->view_frame = CORBA_Object_duplicate (view_frame, &ev);
-
-	CORBA_exception_free (&ev);
+	view->view_frame = view_frame;
 }
 
 /**
@@ -629,7 +377,9 @@ gnome_view_set_view_frame (GnomeView *view, GNOME_ViewFrame view_frame)
  * @view: A GnomeView object whose GNOME_ViewFrame CORBA interface is
  * being retrieved.
  *
- * Returns: The GNOME_ViewFrame CORBA object associated with @view.a
+ * Returns: The GNOME_ViewFrame CORBA object associated with @view, this is
+ * a CORBA_object_duplicated object.  You need to CORBA_free it when you are
+ * done with it.
  */
 GNOME_ViewFrame
 gnome_view_get_view_frame (GnomeView *view)
@@ -637,8 +387,14 @@ gnome_view_get_view_frame (GnomeView *view)
 {
 	g_return_val_if_fail (view != NULL, CORBA_OBJECT_NIL);
 	g_return_val_if_fail (GNOME_IS_VIEW (view), CORBA_OBJECT_NIL);
-
+	
 	return view->view_frame;
+}
+
+void
+gnome_view_request_resize (GnomeView *view, int width, int height)
+{
+	return gnome_control_request_resize (GNOME_CONTROL (view), width, height);
 }
 
 /**
@@ -774,34 +530,6 @@ gnome_view_unregister_verb (GnomeView *view, const char *verb_name)
 	g_hash_table_remove (view->priv->verb_callbacks, verb_name);
 	g_hash_table_remove (view->priv->verb_callback_closures, verb_name);
 	g_free (original_key);
-}
-
-/**
- * gnome_view_request_resize:
- * @view: A GnomeView object which we are requesting to resize.
- * @width: The requested width.
- * @height: The requested height.
- *
- * Asks the ViewFrame associated with @view to resize the view.  If
- * the ViewFrame acquiesces, the toplevel widget associated with @view
- * will get a "size_allocate" signal.
- */
-void
-gnome_view_request_resize (GnomeView *view, int width, int height)
-{
-	CORBA_Environment ev;
-
-	g_return_if_fail (view != NULL);
-	g_return_if_fail (GNOME_IS_VIEW (view));
-	g_return_if_fail (view->view_frame != CORBA_OBJECT_NIL); 
-
-	CORBA_exception_init (&ev);
-
-	GNOME_ViewFrame_request_resize (view->view_frame,
-					width, height,
-					&ev);
-
-	CORBA_exception_free (&ev);
 }
 
 /**

@@ -3,13 +3,9 @@
 #define _GNOME_VIEW_H_
 
 #include <libgnome/gnome-defs.h>
-#include <gtk/gtkobject.h>
-#include <gtk/gtkwidget.h>
-#include <libgnomeui/gnome-canvas.h>
-#include <bonobo/gnome-object.h>
+#include <bonobo/gnome-control.h>
 #include <bonobo/gnome-view-frame.h>
 #include <bonobo/gnome-ui-handler.h>
-#include <bonobo/gnome-canvas-component.h>
 
 BEGIN_GNOME_DECLS
  
@@ -28,19 +24,12 @@ typedef struct _GnomeViewClass GnomeViewClass;
 #define GNOME_VIEW_VERB_FUNC(fn) ((GnomeViewVerbFunc)(fn))
 typedef void (*GnomeViewVerbFunc)(GnomeView *view, const char *verb_name, void *user_data);
 
-typedef GnomeCanvasComponent *(*GnomeViewItemCreator)(GnomeView *view,
-						      GnomeCanvas *canvas,
-						      void *user_data);
-
 struct _GnomeView {
-	GnomeObject base;
+	GnomeControl base;
 
-	GNOME_ViewFrame view_frame;
-
-	GnomeUIHandler *uih;
-
-	GnomeEmbeddable *embeddable;
-
+	GnomeUIHandler   *uih;
+	GnomeEmbeddable  *embeddable;
+	GNOME_ViewFrame   view_frame;
 	GnomeViewPrivate *priv;
 };
 
@@ -53,7 +42,6 @@ struct _GnomeViewClass {
 	void (*view_activate)            (GnomeView *view,
 					  gboolean activate);
 	void (*view_undo_last_operation) (GnomeView *view);
-	void (*size_query)               (GnomeView *view, int *desired_width, int *desired_height);
 	void (*do_verb)                  (GnomeView *view,
 					  const CORBA_char *verb_name);
 	void (*set_zoom_factor)          (GnomeView *view, double zoom);
@@ -62,11 +50,8 @@ struct _GnomeViewClass {
 GtkType		 gnome_view_get_type		(void);
 GnomeView	*gnome_view_construct		(GnomeView *view,
 						 GNOME_View corba_view,
-						 GtkWidget *widget,
-						 GnomeViewItemCreator item_creator);
+						 GtkWidget *widget);
 GnomeView	*gnome_view_new                 (GtkWidget *widget);
-GnomeView	*gnome_view_new_canvas          (GnomeViewItemCreator item_creator,
-						 void *closure);
 GNOME_View	 gnome_view_corba_object_create	(GnomeObject *object);
 void		 gnome_view_set_embeddable	(GnomeView *view,
 						 GnomeEmbeddable *embeddable);

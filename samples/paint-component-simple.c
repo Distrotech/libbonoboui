@@ -109,6 +109,15 @@ view_update (view_data_t *view_data)
 			 MIN (view_data->height, view_data->embeddable_data->height));
 }
 
+void 
+update_view (GnomeView *view)
+{
+	view_data_t *view_data;
+
+	view_data = gtk_object_get_data (GTK_OBJECT (view), "view_data");
+	view_update (view_data);
+}
+
 /*
  * This function updates all of an embeddable's views to reflect the
  * image data stored in the embeddable.
@@ -117,18 +126,10 @@ static void
 embeddable_update_all_views (embeddable_data_t *embeddable_data)
 {
 	GnomeEmbeddable *embeddable;
-	GList *l;
 
 	embeddable = embeddable_data->embeddable;
 
-	for (l = embeddable->views; l != NULL; l = l->next) {
-		view_data_t *view_data;
-		GnomeView *view;
-
-		view = GNOME_VIEW (l->data);
-		view_data = gtk_object_get_data (GTK_OBJECT (view), "view_data");
-		view_update (view_data);
-	}
+	gnome_embeddable_foreach_view (embeddable, update_view, NULL);
 }
 
 /*

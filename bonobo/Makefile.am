@@ -44,6 +44,7 @@ idls =						\
 	$(top_srcdir)/idl/gnome-advise.idl	\
 	$(top_srcdir)/idl/gnome-canvas.idl 	\
 	$(top_srcdir)/idl/gnome-client-site.idl	\
+	$(top_srcdir)/idl/gnome-control.idl	\
 	$(top_srcdir)/idl/gnome-embeddable.idl	\
 	$(top_srcdir)/idl/gnome-container.idl	\
 	$(top_srcdir)/idl/gnome-persist.idl	\
@@ -64,6 +65,8 @@ libbonobo_la_SOURCES =			\
 	gnome-canvas-component.c	\
 	gnome-client-site.c		\
 	gnome-container.c		\
+	gnome-control.c			\
+	gnome-control-frame.c		\
 	gnome-desktop-window.c		\
 	gnome-embeddable-factory.c 	\
 	gnome-embeddable.c		\
@@ -100,6 +103,8 @@ libbonoboinclude_HEADERS =		\
 	gnome-client-site.h		\
 	gnome-component-io.h		\
 	gnome-container.h		\
+	gnome-control.h			\
+	gnome-control-frame.h		\
 	gnome-desktop-window.h		\
 	gnome-embeddable.h		\
 	gnome-embeddable-factory.h	\

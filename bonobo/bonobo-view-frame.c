@@ -21,24 +21,24 @@
 enum {
 	VIEW_ACTIVATED,
 	UNDO_LAST_OPERATION,
-	REQUEST_RESIZE,
 	USER_ACTIVATE,
 	USER_CONTEXT,
-	ACTIVATE_URI,
 	LAST_SIGNAL
 };
 
 static guint view_frame_signals [LAST_SIGNAL];
 
 /* Parent object class in GTK hierarchy */
-static GnomeObjectClass *gnome_view_frame_parent_class;
+static GnomeControlFrameClass *gnome_view_frame_parent_class;
 
 /* The entry point vectors for the server we provide */
 POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
 POA_GNOME_ViewFrame__vepv gnome_view_frame_vepv;
 
 struct _GnomeViewFramePrivate {
-	GnomeCanvasItem *gnome_canvas_item;
+	GnomeWrapper    *wrapper; 
+	GnomeClientSite *client_site;
+	GNOME_View       view;
 };
 
 static GNOME_ClientSite
@@ -61,7 +61,7 @@ impl_GNOME_ViewFrame_get_client_site (PortableServer_Servant servant,
 	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
 
 	return CORBA_Object_duplicate (
-		gnome_object_corba_objref (GNOME_OBJECT (view_frame->client_site)), ev);
+		gnome_object_corba_objref (GNOME_OBJECT (view_frame->priv->client_site)), ev);
 }
 
 static void
@@ -86,34 +86,6 @@ impl_GNOME_ViewFrame_view_deactivate_and_undo (PortableServer_Servant servant,
 
 	gtk_signal_emit (GTK_OBJECT (view_frame),
 			 view_frame_signals [UNDO_LAST_OPERATION]);
-}
-
-static void
-impl_GNOME_ViewFrame_request_resize (PortableServer_Servant servant,
-				     const CORBA_short new_width,
-				     const CORBA_short new_height,
-				     CORBA_Environment *ev)
-{
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
-
-	gtk_signal_emit (GTK_OBJECT (view_frame),
-			 view_frame_signals [REQUEST_RESIZE],
-			 (gint) new_width,
-			 (gint) new_height);
-
-}
-
-static void
-impl_GNOME_ViewFrame_activate_uri (PortableServer_Servant servant,
-				   const CORBA_char *uri,
-				   CORBA_boolean relative,
-				   CORBA_Environment *ev)
-{
-	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
-
-	gtk_signal_emit (GTK_OBJECT (view_frame),
-			 view_frame_signals [ACTIVATE_URI],
-			 (const char *) uri, (gboolean) relative);
 }
 
 static CORBA_Object
@@ -159,15 +131,13 @@ gnome_view_frame_construct (GnomeViewFrame *view_frame,
 	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
 	g_return_val_if_fail (wrapper != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_WRAPPER (wrapper), NULL);
-	g_return_val_if_fail (wrapper != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_WRAPPER (wrapper), NULL);
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
 
-	gnome_object_construct (GNOME_OBJECT (view_frame), corba_view_frame);
+	gnome_control_frame_construct (GNOME_CONTROL_FRAME (view_frame), corba_view_frame);
 	
-	view_frame->client_site = client_site;
-	view_frame->wrapper = wrapper;
+	view_frame->priv->client_site = client_site;
+	view_frame->priv->wrapper = wrapper;
 
 	return view_frame;
 }
@@ -188,7 +158,6 @@ gnome_view_frame_wrapper_button_press_cb (GtkWidget *wrapper,
 		 event->button == 3)
 		gtk_signal_emit (GTK_OBJECT (view_frame), view_frame_signals [USER_CONTEXT]);
 		
-
 	return FALSE;
 } 
 
@@ -240,18 +209,17 @@ gnome_view_frame_destroy (GtkObject *object)
 {
 	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (object);
 
-	if (view_frame->view != CORBA_OBJECT_NIL){
+	if (view_frame->priv->view != CORBA_OBJECT_NIL){
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);
-		GNOME_View_unref (view_frame->view, &ev);
-		CORBA_Object_release (view_frame->view, &ev);
+		CORBA_Object_release (view_frame->priv->view, &ev);
 		CORBA_exception_free (&ev);
 	}
 	
+	gtk_object_destroy (GTK_OBJECT (view_frame->priv->wrapper));
 	g_free (view_frame->priv);
 	
-	gtk_object_unref (GTK_OBJECT (view_frame->wrapper));
 	GTK_OBJECT_CLASS (gnome_view_frame_parent_class)->destroy (object);
 }
 
@@ -263,11 +231,10 @@ init_view_frame_corba_class (void)
 	gnome_view_frame_epv.get_ui_handler = impl_GNOME_ViewFrame_get_ui_handler;
 	gnome_view_frame_epv.view_activated = impl_GNOME_ViewFrame_view_activated;
 	gnome_view_frame_epv.deactivate_and_undo = impl_GNOME_ViewFrame_view_deactivate_and_undo;
-	gnome_view_frame_epv.request_resize = impl_GNOME_ViewFrame_request_resize;
-	gnome_view_frame_epv.activate_uri = impl_GNOME_ViewFrame_activate_uri;
 	
 	/* Setup the vector of epvs */
 	gnome_view_frame_vepv.GNOME_Unknown_epv = &gnome_object_epv;
+	gnome_view_frame_vepv.GNOME_ControlFrame_epv = &gnome_control_frame_epv;
 	gnome_view_frame_vepv.GNOME_ViewFrame_epv = &gnome_view_frame_epv;
 }
 
@@ -277,26 +244,12 @@ gnome_view_frame_activated (GnomeViewFrame *view_frame, gboolean state)
 	
 }
 
-typedef void (*GnomeSignal_NONE__STRING_BOOL) (GtkObject *, const char *, gboolean, gpointer);
-
-static void
-gnome_marshal_NONE__STRING_BOOL (GtkObject     *object,
-				 GtkSignalFunc  func,
-				 gpointer       func_data,
-				 GtkArg        *args)
-{
-	GnomeSignal_NONE__STRING_BOOL rfunc;
-
-	rfunc = (GnomeSignal_NONE__STRING_BOOL) func;
-	(*rfunc)(object, GTK_VALUE_STRING (args [0]), GTK_VALUE_BOOL (args [1]), func_data);
-}
-
 static void
 gnome_view_frame_class_init (GnomeViewFrameClass *class)
 {
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
-	gnome_view_frame_parent_class = gtk_type_class (GNOME_OBJECT_TYPE);
+	gnome_view_frame_parent_class = gtk_type_class (GNOME_CONTROL_FRAME_TYPE);
 
 	view_frame_signals [VIEW_ACTIVATED] =
 		gtk_signal_new ("view_activated",
@@ -331,24 +284,6 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
-	view_frame_signals [REQUEST_RESIZE] =
-		gtk_signal_new ("request_resize",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, request_resize),
-				gtk_marshal_NONE__INT_INT,
-				GTK_TYPE_NONE, 2,
-				GTK_TYPE_INT, GTK_TYPE_INT);
-
-	view_frame_signals [ACTIVATE_URI] =
-		gtk_signal_new ("activate_uri",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, activate_uri),
-				gnome_marshal_NONE__STRING_BOOL,
-				GTK_TYPE_NONE, 2,
-				GTK_TYPE_STRING, GTK_TYPE_BOOL);
-	
 	gtk_object_class_add_signals (
 		object_class,
 		view_frame_signals,
@@ -381,7 +316,7 @@ gnome_view_frame_get_type (void)
 
 	if (!type){
 		GtkTypeInfo info = {
-			"IDL:GNOME/ViewFrame:1.0",
+			"GnomeViewFrame",
 			sizeof (GnomeViewFrame),
 			sizeof (GnomeViewFrameClass),
 			(GtkClassInitFunc) gnome_view_frame_class_init,
@@ -391,7 +326,7 @@ gnome_view_frame_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_object_get_type (), &info);
+		type = gtk_type_unique (gnome_control_frame_get_type (), &info);
 	}
 
 	return type;
@@ -414,8 +349,10 @@ gnome_view_frame_bind_to_view (GnomeViewFrame *view_frame, GNOME_View view)
 	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
 
 	CORBA_exception_init (&ev);
-
-	view_frame->view = CORBA_Object_duplicate (view, &ev);
+	gnome_control_frame_bind_to_control (
+		GNOME_CONTROL_FRAME (view_frame),
+		(GNOME_Control) view);
+	view_frame->priv->view = CORBA_Object_duplicate (view, &ev);
 
 	CORBA_exception_free (&ev);
 }
@@ -434,7 +371,7 @@ gnome_view_frame_get_view (GnomeViewFrame *view_frame)
 	g_return_val_if_fail (view_frame != NULL, CORBA_OBJECT_NIL);
 	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), CORBA_OBJECT_NIL);
 
-	return view_frame->view;
+	return view_frame->priv->view;
 }
 
 /**
@@ -482,16 +419,16 @@ gnome_view_frame_view_activate (GnomeViewFrame *view_frame)
 	 * Check that this ViewFrame actually has a View associated
 	 * with it.
 	 */
-	g_return_if_fail (view_frame->view != CORBA_OBJECT_NIL);
+	g_return_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL);
 
 	CORBA_exception_init (&ev);
 
-	GNOME_View_activate (view_frame->view, TRUE, &ev);
+	GNOME_View_activate (view_frame->priv->view, TRUE, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (view_frame),
-			(CORBA_Object) view_frame->view, &ev);
+			(CORBA_Object) view_frame->priv->view, &ev);
 	}
 
 	CORBA_exception_free (&ev);
@@ -518,16 +455,16 @@ gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame)
 	 * Check that this ViewFrame actually has a View associated
 	 * with it.
 	 */
-	g_return_if_fail (view_frame->view != CORBA_OBJECT_NIL);
+	g_return_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL);
 
 	CORBA_exception_init (&ev);
 
-	GNOME_View_activate (view_frame->view, FALSE, &ev);
+	GNOME_View_activate (view_frame->priv->view, FALSE, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (view_frame),
-			(CORBA_Object) view_frame->view, &ev);
+			(CORBA_Object) view_frame->priv->view, &ev);
 	}
 
 	CORBA_exception_free (&ev);
@@ -550,14 +487,14 @@ gnome_view_frame_view_do_verb (GnomeViewFrame *view_frame,
 	g_return_if_fail (view_frame != NULL);
 	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
 	g_return_if_fail (verb_name != NULL);
-	g_return_if_fail (view_frame->view != CORBA_OBJECT_NIL);
+	g_return_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL);
 
 	CORBA_exception_init (&ev);
-	GNOME_View_do_verb (view_frame->view, verb_name, &ev);
+	GNOME_View_do_verb (view_frame->priv->view, verb_name, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (view_frame),
-			(CORBA_Object) view_frame->view, &ev);
+			(CORBA_Object) view_frame->priv->view, &ev);
 	}
 	CORBA_exception_free (&ev);
 }
@@ -574,7 +511,7 @@ gnome_view_frame_get_wrapper (GnomeViewFrame *view_frame)
 	g_return_val_if_fail (view_frame != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
 
-	return GTK_WIDGET (view_frame->wrapper);
+	return GTK_WIDGET (view_frame->priv->wrapper);
 }
 
 /**
@@ -638,7 +575,7 @@ gnome_view_frame_size_request (GnomeViewFrame *view_frame, int *desired_width, i
 	dh = 0;
 	
 	CORBA_exception_init (&ev);
-	GNOME_View_size_query (view_frame->view, &dw, &dh, &ev);
+	GNOME_View_size_query (view_frame->priv->view, &dw, &dh, &ev);
 	if (ev._major == CORBA_NO_EXCEPTION){
 		*desired_width = dw;
 		*desired_height = dh;
@@ -646,7 +583,7 @@ gnome_view_frame_size_request (GnomeViewFrame *view_frame, int *desired_width, i
 		if (ev._major != CORBA_NO_EXCEPTION) {
 			gnome_object_check_env (
 				GNOME_OBJECT (view_frame),
-				(CORBA_Object) view_frame->view, &ev);
+				(CORBA_Object) view_frame->priv->view, &ev);
 		}
 	}
 	CORBA_exception_free (&ev);
@@ -669,11 +606,11 @@ gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom)
 	g_return_if_fail (zoom > 0.0);
 
 	CORBA_exception_init (&ev);
-	GNOME_View_set_zoom_factor (view_frame->view, zoom, &ev);
+	GNOME_View_set_zoom_factor (view_frame->priv->view, zoom, &ev);
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		gnome_object_check_env (
 			GNOME_OBJECT (view_frame),
-			(CORBA_Object) view_frame->view, &ev);
+			(CORBA_Object) view_frame->priv->view, &ev);
 	}
 	CORBA_exception_free (&ev);
 }
@@ -727,13 +664,13 @@ gnome_view_frame_popup_verbs (GnomeViewFrame *view_frame)
 
 	g_return_val_if_fail (view_frame != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
-	g_return_val_if_fail (view_frame->view != CORBA_OBJECT_NIL, NULL);
+	g_return_val_if_fail (view_frame->priv->view != CORBA_OBJECT_NIL, NULL);
 
 	/*
 	 * First get the list of available verbs from the remote
 	 * GnomeEmbeddable.
 	 */
-	verbs = gnome_client_site_get_verbs (view_frame->client_site);
+	verbs = gnome_client_site_get_verbs (view_frame->priv->client_site);
 
 	/*
 	 * Now build a menu.
@@ -776,22 +713,3 @@ gnome_view_frame_popup_verbs (GnomeViewFrame *view_frame)
 	return verb;
 }
 
-void
-gnome_view_frame_set_canvas_item (GnomeViewFrame *view_frame, void *gnome_canvas_item)
-{
-	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (GNOME_IS_VIEW_FRAME (view_frame));
-	g_return_if_fail (gnome_canvas_item != NULL);
-	g_return_if_fail (GNOME_IS_CANVAS_ITEM (gnome_canvas_item));
-
-	view_frame->priv->gnome_canvas_item = gnome_canvas_item;
-}
-
-void *
-gnome_view_frame_get_canvas_item (GnomeViewFrame *view_frame)
-{
-	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
-
-	return view_frame->priv->gnome_canvas_item;
-}

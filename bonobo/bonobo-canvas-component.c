@@ -10,11 +10,19 @@
  */
 #include <stdio.h>
 #include <config.h>
+#include <gtk/gtksignal.h>
 #include <bonobo/bonobo.h>
 #include <libgnomeui/gnome-canvas.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>
 #include <bonobo/gnome-canvas-component.h>
+
+enum {
+	SET_BOUNDS,
+	LAST_SIGNAL
+};
+
+static gint gcc_signals [LAST_SIGNAL] = { 0, };
 
 typedef GnomeCanvasComponent Gcc;
 #define GCC(x) GNOME_CANVAS_COMPONENT(x)
@@ -532,6 +540,14 @@ gcc_size_set (PortableServer_Servant servant,
 }
 
 static void
+gcc_set_bounds (PortableServer_Servant servant, GNOME_Canvas_DRect *bbox, CORBA_Environment *ev)
+{
+	Gcc *gcc = GCC (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (GTK_OBJECT (gcc), gcc_signals [SET_BOUNDS], bbox, &ev);
+}
+
+static void
 gcc_corba_class_init (void)
 {
 	/*
@@ -548,7 +564,8 @@ gcc_corba_class_init (void)
 	gnome_canvas_item_epv.event     = gcc_event;
 	gnome_canvas_item_epv.contains  = gcc_contains;
 	gnome_canvas_item_epv.canvas_size_set = gcc_size_set;
-	
+	gnome_canvas_item_epv.set_bounds = gcc_set_bounds;
+
 	/*
 	 * Initialize the VEPV
 	 */
@@ -573,8 +590,18 @@ gcc_class_init (GtkObjectClass *object_class)
 	gcc_parent_class = gtk_type_class (gnome_object_get_type ());
 
 	gcc_corba_class_init ();
-
 	object_class->finalize = gcc_finalize;
+
+	gcc_signals [SET_BOUNDS] = 
+                gtk_signal_new ("set_bounds",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET (GnomeCanvasComponentClass, set_bounds), 
+                                gtk_marshal_NONE__POINTER_POINTER,
+                                GTK_TYPE_NONE, 2,
+				GTK_TYPE_POINTER, GTK_TYPE_POINTER);
+
+	gtk_object_class_add_signals (object_class, gcc_signals, LAST_SIGNAL);
 }
 
 static void

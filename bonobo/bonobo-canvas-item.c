@@ -690,23 +690,31 @@ proxy_size_allocate (GnomeCanvas *canvas, GtkAllocation *allocation, GnomeBonobo
 	CORBA_exception_free (&ev);
 }
 
+/**
+ * gnome_bonobo_item_new:
+ * @parent: The parent GnomeCanvasItem for this object.
+ * @embeddable: A GnomeObjectClient object that points to a remote GnomeEmbeddable
+ * interface
+ *
+ * Returns: A GnomeCanvasItem that acts as a container-side proxy for the embedded canvas item.
+ */
 GnomeCanvasItem *
-gnome_bonobo_item_new (GnomeCanvasGroup *parent, GnomeViewFrame *view_frame)
+gnome_bonobo_item_new (GnomeCanvasGroup *parent, GnomeObjectClient *embeddable)
 {
 	CORBA_Environment ev;
 	GnomeCanvasItem *bonobo_item;
 	GNOME_Canvas_Item remote_item;
 	gboolean is_aa;
-	GNOME_View remote_view;
+	GNOME_Embeddable corba_embeddable;
 	ItemProxyServant *proxy;
 	GNOME_Canvas_ItemProxy proxy_ref;
 	
 	g_return_val_if_fail (parent != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_GROUP (parent), NULL);
-	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+	g_return_val_if_fail (embeddable != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_OBJECT_CLIENT (embeddable), NULL);
 
-	remote_view = view_frame->view;
+	corba_embeddable = gnome_object_corba_objref (GNOME_OBJECT (embeddable));
 	
 	/*
 	 * Create our proxy item
@@ -719,7 +727,7 @@ gnome_bonobo_item_new (GnomeCanvasGroup *parent, GnomeViewFrame *view_frame)
 	CORBA_exception_init (&ev);
 	is_aa = GNOME_CANVAS_ITEM (parent)->canvas->aa;
 	proxy = create_proxy (&proxy_ref, bonobo_item);
-	remote_item = GNOME_View_get_canvas_item (remote_view, is_aa, proxy_ref, &ev);
+	remote_item = GNOME_Embeddable_new_canvas_item (corba_embeddable, is_aa, proxy_ref, &ev);
 	CORBA_Object_release (proxy_ref, &ev);
 
 	if (ev._major != CORBA_NO_EXCEPTION)
@@ -742,17 +750,14 @@ gnome_bonobo_item_new (GnomeCanvasGroup *parent, GnomeViewFrame *view_frame)
 	CORBA_Object_release (remote_item, &ev);
 	remote_item = CORBA_OBJECT_NIL;
 	
-	GNOME_BONOBO_ITEM (bonobo_item)->view_frame = view_frame;
 	GNOME_BONOBO_ITEM (bonobo_item)->priv->proxy = proxy;
 
-	gnome_view_frame_set_canvas_item (view_frame, bonobo_item);
-	
 	/*
 	 * Initial size notification
 	 */
 	proxy_size_allocate (bonobo_item->canvas,
 			     &(GTK_WIDGET (bonobo_item->canvas)->allocation),
-			     bonobo_item);
+			     GNOME_BONOBO_ITEM (bonobo_item));
 	
 	return bonobo_item;
 fail:

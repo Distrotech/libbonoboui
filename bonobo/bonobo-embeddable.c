@@ -33,6 +33,29 @@ enum {
 
 static guint embeddable_signals [LAST_SIGNAL];
 
+struct _GnomeEmbeddablePrivate {
+	/*
+	 * The instantiated views for this Embeddable.
+	 */
+	GList *views;
+
+	/*
+	 * The instantiated Canvas Items for this Embeddable.
+	 */
+	GList *canvas_items;
+	
+	/*
+	 * The View factory
+	 */
+	GnomeViewFactory view_factory;
+	void *view_factory_closure;
+
+	/*
+	 * For the Canvas Item
+	 */
+	GnomeItemCreator item_creator;
+	void *item_creator_data;
+};
 
 static void
 impl_GNOME_Embeddable_set_client_site (PortableServer_Servant servant,
@@ -92,7 +115,6 @@ impl_GNOME_Embeddable_close (PortableServer_Servant servant,
 			     const GNOME_Embeddable_CloseMode mode,
 			     CORBA_Environment *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
 }
 
 static GNOME_Embeddable_verb_list *
@@ -135,13 +157,11 @@ impl_GNOME_Embeddable_advise (PortableServer_Servant servant,
 			      const GNOME_AdviseSink advise,
 			      CORBA_Environment *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
 }
 
 static void
 impl_GNOME_Embeddable_unadvise (PortableServer_Servant servant, CORBA_Environment *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
 }
 
 static CORBA_long
@@ -149,27 +169,19 @@ impl_GNOME_Embeddable_get_misc_status (PortableServer_Servant servant,
 				       const CORBA_long type,
 				       CORBA_Environment *ev)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
 
 	return 0;
 }
 
 static void
-gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
+ping_container (GnomeEmbeddable *embeddable)
 {
-	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (data);
-
-	/*
-	 * Remove this view from our list of views.
-	 */
-	embeddable->views = g_list_remove (embeddable->views, view);
-
 	/*
 	 * If all of the views are gone, that *might* mean that
 	 * our container application died.  So ping it to find
 	 * out if it's still alive.
 	 */
-	if (embeddable->views != NULL)
+	if ((embeddable->priv->views != NULL) || (embeddable->priv->canvas_items != NULL))
 		return;
 
 	/*
@@ -194,6 +206,19 @@ gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
 	}
 }
 
+static void
+gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
+{
+	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (data);
+
+	/*
+	 * Remove this view from our list of views.
+	 */
+	embeddable->priv->views = g_list_remove (embeddable->priv->views, view);
+
+	ping_container (embeddable);
+}
+
 static GNOME_View
 impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 				GNOME_ViewFrame view_frame,
@@ -204,7 +229,9 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 	CORBA_Environment evx;
 	GNOME_View ret;
 	
-	view = embeddable->view_factory (embeddable, view_frame, embeddable->view_factory_closure);
+	view = embeddable->priv->view_factory (
+		embeddable, view_frame,
+		embeddable->priv->view_factory_closure);
 
 	if (view == NULL)
 		return CORBA_OBJECT_NIL;
@@ -212,7 +239,7 @@ impl_GNOME_Embeddable_new_view (PortableServer_Servant servant,
 	gnome_view_set_view_frame (view, view_frame);
 	gnome_view_set_embeddable (view, embeddable);
 
-	embeddable->views = g_list_prepend (embeddable->views, view);
+	embeddable->priv->views = g_list_prepend (embeddable->priv->views, view);
 
 	gtk_signal_connect (GTK_OBJECT (view), "destroy",
 			    GTK_SIGNAL_FUNC (gnome_embeddable_view_destroy_cb), embeddable);
@@ -232,6 +259,74 @@ impl_GNOME_Embeddable_set_uri (PortableServer_Servant servant,
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
 
 	gnome_embeddable_set_uri (embeddable, uri);
+}
+
+static void
+canvas_item_destroyed (GnomeCanvasComponent *comp, GnomeEmbeddable *embeddable)
+{
+	GnomeCanvasItem *item;
+
+	item = gnome_canvas_component_get_item (comp);
+	gtk_object_destroy (GTK_OBJECT (item->canvas));
+	
+	/*
+	 * Remove the canvas item from the list of items we keep
+	 */
+	embeddable->priv->canvas_items = g_list_remove (embeddable->priv->canvas_items, comp);
+
+	ping_container (embeddable);
+}
+
+static GnomeCanvasComponent *
+make_canvas_component (GnomeEmbeddable *embeddable, gboolean aa, GNOME_Canvas_ItemProxy item_proxy)
+{
+	GnomeCanvasComponent *component;
+	GnomeCanvas *pseudo_canvas;
+	
+	if (aa){
+		gdk_rgb_init ();
+		pseudo_canvas = GNOME_CANVAS (gnome_canvas_new_aa ());
+	} else
+		pseudo_canvas = GNOME_CANVAS (gnome_canvas_new ());
+	
+	component = (*embeddable->priv->item_creator)(
+		embeddable, pseudo_canvas,
+		embeddable->priv->item_creator_data);
+
+	if (component == NULL){
+		gtk_object_destroy (GTK_OBJECT (pseudo_canvas));
+		return NULL;
+	}
+	gnome_canvas_component_set_proxy (component, item_proxy);
+
+	/*
+	 * Now keep track of it
+	 */
+	embeddable->priv->canvas_items = g_list_prepend (embeddable->priv->canvas_items, component);
+	gtk_signal_connect (GTK_OBJECT (component), "destroy",
+			    GTK_SIGNAL_FUNC (canvas_item_destroyed), embeddable);
+	
+	return component;
+}
+
+static GNOME_Canvas_Item
+impl_GNOME_Embeddable_new_canvas_item (PortableServer_Servant servant,
+				       CORBA_boolean aa,
+				       GNOME_Canvas_ItemProxy _item_proxy,
+				       CORBA_Environment *ev)
+{
+	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
+	GNOME_Canvas_ItemProxy item_proxy;
+	GnomeCanvasComponent *component;
+	
+	if (embeddable->priv->item_creator == NULL)
+		return CORBA_OBJECT_NIL;
+
+	item_proxy = CORBA_Object_duplicate (_item_proxy, ev);
+	
+	component = make_canvas_component (embeddable, aa, item_proxy);
+
+	return CORBA_Object_duplicate (gnome_object_corba_objref (GNOME_OBJECT (component)), ev);
 }
 
 POA_GNOME_Embeddable__epv gnome_embeddable_epv = {
@@ -258,6 +353,7 @@ gnome_embeddable_corba_class_init ()
 	gnome_embeddable_epv.get_misc_status = &impl_GNOME_Embeddable_get_misc_status;
 	gnome_embeddable_epv.new_view        = &impl_GNOME_Embeddable_new_view;
 	gnome_embeddable_epv.set_uri         = &impl_GNOME_Embeddable_set_uri;
+	gnome_embeddable_epv.new_canvas_item = &impl_GNOME_Embeddable_new_canvas_item;
 }
 
 /**
@@ -296,6 +392,52 @@ gnome_embeddable_corba_object_create (GnomeObject *object)
  * gnome_embeddable_construct:
  * @embeddable: GnomeEmbeddable object to construct.
  * @corba_embeddable: The CORBA reference that implements this object.
+ * @view_factory: Factory routine that provides new views of the embeddable on demand
+ * @view_factory_data: pointer passed to the @view_factory routine to provide context.
+ * @item_factory: A factory routine that creates GnomeCanvasComponents.
+ * @item_factory_data: pointer passed to the @item_factory routine.
+ *
+ * This routine constructs a GNOME::Embeddable CORBA server and activates it.
+ *
+ * The @view_factory routine will be invoked by this CORBA server when
+ * a request arrives to get a new view of the embeddable (embeddable
+ * should be able to provide multiple views of themselves upon demand).
+ * The @view_factory_data pointer is passed to this factory routine untouched to
+ * allow the factory to get some context on what it should create.
+ *
+ * The @item_factory will be invoked if the container application requests a
+ * canvas item version of this embeddable.  The routine @item_factory will
+ * be invoked with the @item_factory_data argument
+ *
+ * Returns: The constructed object.
+ */
+GnomeEmbeddable *
+gnome_embeddable_construct_full (GnomeEmbeddable *embeddable,
+				 GNOME_Embeddable corba_embeddable,
+				 GnomeViewFactory view_factory,
+				 void             *factory_data,
+				 GnomeItemCreator item_factory,
+				 void             *item_factory_data)
+{
+	
+	g_return_val_if_fail (embeddable != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_EMBEDDABLE (embeddable), NULL);
+	g_return_val_if_fail (corba_embeddable != CORBA_OBJECT_NIL, NULL);
+
+	gnome_object_construct (GNOME_OBJECT (embeddable), corba_embeddable);
+
+	embeddable->priv->view_factory = view_factory;
+	embeddable->priv->view_factory_closure = factory_data;
+	embeddable->priv->item_creator = item_factory;
+	embeddable->priv->item_creator_data = item_factory_data;
+		
+	return embeddable;
+}
+
+/**
+ * gnome_embeddable_construct:
+ * @embeddable: GnomeEmbeddable object to construct.
+ * @corba_embeddable: The CORBA reference that implements this object.
  * @factory: Factory routine that provides new views of the embeddable on demand
  * @data: pointer passed to the @factory routine to provide context.
  * 
@@ -314,17 +456,7 @@ gnome_embeddable_construct (GnomeEmbeddable  *embeddable,
 			    GnomeViewFactory factory,
 			    void *data)
 {
-	g_return_val_if_fail (embeddable != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_EMBEDDABLE (embeddable), NULL);
-	g_return_val_if_fail (factory != NULL, NULL);
-	g_return_val_if_fail (corba_embeddable != CORBA_OBJECT_NIL, NULL);
-
-	gnome_object_construct (GNOME_OBJECT (embeddable), corba_embeddable);
-
-	embeddable->view_factory = factory;
-	embeddable->view_factory_closure = data;
-	
-	return embeddable;
+	return gnome_embeddable_construct_full (embeddable, corba_embeddable, factory, data, NULL, NULL);
 }
 
 /**
@@ -361,6 +493,40 @@ gnome_embeddable_new (GnomeViewFactory factory, void *data)
 	return gnome_embeddable_construct (embeddable, corba_embeddable, factory, data);
 }
 
+/**
+ * gnome_embeddable_new_canvas_item:
+ * @item_factory: Factory routine that provides new canvas items of the embeddable on demand
+ * @data: pointer passed to the @factory routine to provide context.
+ *
+ * This routine creates a GNOME::Embeddable CORBA server and activates it.  The
+ * @factory routine will be invoked by this CORBA server when a request arrives
+ * to get a new view of the embeddable (embeddable should be able to provide
+ * multiple views of themselves upon demand).  The @data pointer is passed
+ * to this factory routine untouched to allow the factory to get some context
+ * on what it should create.
+ *
+ * Returns a GnomeEmbeddable that contains an activated GNOME::Embeddable
+ * CORBA server.
+ */
+GnomeEmbeddable *
+gnome_embeddable_new_canvas_item (GnomeItemCreator item_factory, void *data)
+{
+	GNOME_Embeddable corba_embeddable;
+	GnomeEmbeddable *embeddable;
+
+	g_return_val_if_fail (item_factory != NULL, NULL);
+
+	embeddable = gtk_type_new (GNOME_EMBEDDABLE_TYPE);
+
+	corba_embeddable = gnome_embeddable_corba_object_create (GNOME_OBJECT (embeddable));
+	if (corba_embeddable == CORBA_OBJECT_NIL){
+		gtk_object_destroy (GTK_OBJECT (embeddable));
+		return NULL;
+	}
+	
+	return gnome_embeddable_construct_full (embeddable, corba_embeddable, NULL, NULL, item_factory, data);
+}
+
 static void
 gnome_embeddable_destroy (GtkObject *object)
 {
@@ -370,12 +536,19 @@ gnome_embeddable_destroy (GtkObject *object)
 	/*
 	 * Destroy all our views.
 	 */
-	while (embeddable->views) {
-		GnomeView *view = GNOME_VIEW (embeddable->views->data);
+	while (embeddable->priv->views) {
+		GnomeView *view = GNOME_VIEW (embeddable->priv->views->data);
 
 		gnome_object_destroy (GNOME_OBJECT (view));
 	}
 
+	while (embeddable->priv->canvas_items){
+		void *data = embeddable->priv->canvas_items->data;
+		GnomeCanvasComponent *comp = GNOME_CANVAS_COMPONENT (data);
+
+		gnome_object_destroy (GNOME_OBJECT (comp));
+	}
+	
 	/*
 	 * Release the verbs
 	 */
@@ -402,6 +575,8 @@ gnome_embeddable_destroy (GtkObject *object)
 		CORBA_Object_release (embeddable->client_site, &ev);
 		CORBA_exception_free (&ev);
 	}
+
+	g_free (embeddable->priv);
 	
 	GTK_OBJECT_CLASS (gnome_embeddable_parent_class)->destroy (object);
 }
@@ -440,6 +615,9 @@ gnome_embeddable_class_init (GnomeEmbeddableClass *class)
 static void
 gnome_embeddable_init (GnomeObject *object)
 {
+	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (object);
+
+	embeddable->priv = g_new0 (GnomeEmbeddablePrivate, 1);
 }
 
 /**
@@ -489,7 +667,8 @@ gnome_embeddable_set_view_factory (GnomeEmbeddable *embeddable,
 	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
 	g_return_if_fail (factory != NULL);
 
-	embeddable->view_factory = factory;
+	embeddable->priv->view_factory = factory;
+	embeddable->priv->view_factory_closure = data;
 }
 
 /**
@@ -636,3 +815,54 @@ gnome_embeddable_set_uri (GnomeEmbeddable *embeddable, const char *uri)
 			 embeddable->uri);
 }
 
+/**
+ * gnome_embeddable_foreach_view:
+ * @embeddable: Embeddable on which we operate
+ * @fn: function to be invoked for each existing GnomeView
+ * @data: data to pass to function
+ *
+ * Invokes the @fn function for each view existing
+ */
+void
+gnome_embeddable_foreach_view (GnomeEmbeddable *embeddable,
+			       GnomeEmbeddableForeachViewFn fn,
+			       void *data)
+{
+	GList *copy, *l;
+	
+	g_return_if_fail (embeddable != NULL);
+	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_if_fail (fn != NULL);
+
+	copy = g_list_copy (embeddable->priv->views);
+	for (l = copy; l; l = l->next)
+		(*fn)(GNOME_VIEW (l->data), data);
+
+	g_list_free (copy);
+}
+
+/**
+ * gnome_embeddable_foreach_item:
+ * @embeddable: Embeddable on which we operate
+ * @fn: function to be invoked for each existing GnomeItem
+ * @data: data to pass to function
+ *
+ * Invokes the @fn function for each item existing
+ */
+void
+gnome_embeddable_foreach_item (GnomeEmbeddable *embeddable,
+			       GnomeEmbeddableForeachItemFn fn,
+			       void *data)
+{
+	GList *copy, *l;
+	
+	g_return_if_fail (embeddable != NULL);
+	g_return_if_fail (GNOME_IS_EMBEDDABLE (embeddable));
+	g_return_if_fail (fn != NULL);
+
+	copy = g_list_copy (embeddable->priv->canvas_items);
+	for (l = copy; l; l = l->next)
+		(*fn)(GNOME_CANVAS_COMPONENT (l->data), data);
+
+	g_list_free (copy);
+}

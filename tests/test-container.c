@@ -422,7 +422,6 @@ do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 	CORBA_Environment ev;
 	GnomeObjectClient *server;
 	GnomeCanvasItem *item;
-	GnomeViewFrame *view_frame;
 	
 	client_site = gnome_client_site_new (app->container);
 
@@ -453,7 +452,7 @@ do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 	 * Add a background
 	 */
 	gnome_canvas_item_new (
-		GNOME_CANVAS_GROUP (gnome_canvas_root (canvas)),
+		GNOME_CANVAS_GROUP (gnome_canvas_root (GNOME_CANVAS (canvas))),
 		gnome_canvas_rect_get_type (),
 		"x1", 0.0,
 		"y1", 0.0,
@@ -467,10 +466,9 @@ do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 	/*
 	 * The remote item
 	 */
-	view_frame = gnome_client_site_new_item (
+	item = gnome_client_site_new_item (
 		GNOME_CLIENT_SITE (client_site),
-		GNOME_CANVAS_GROUP (gnome_canvas_root (GNOME_CANVAS (canvas))),
-		&item);
+		GNOME_CANVAS_GROUP (gnome_canvas_root (GNOME_CANVAS (canvas))));
 
 	gtk_signal_connect (
 		GTK_OBJECT (item), "event",

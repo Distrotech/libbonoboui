@@ -3,10 +3,7 @@
 #define _GNOME_VIEW_FRAME_H_
 
 #include <libgnome/gnome-defs.h>
-#include <gtk/gtkobject.h>
-#include <gtk/gtkwidget.h>
-#include <bonobo/gnome-object.h>
-#include <bonobo/gnome-wrapper.h>
+#include <bonobo/gnome-control-frame.h>
 #include <bonobo/gnome-ui-handler.h>
 
 BEGIN_GNOME_DECLS
@@ -24,10 +21,6 @@ typedef struct _GnomeViewFrame GnomeViewFrame;
 
 struct _GnomeViewFrame {
 	GnomeObject base;
-
-	GnomeWrapper    *wrapper; 
-	GnomeClientSite *client_site;
-	GNOME_View	 view;
 	GnomeUIHandler  *uih;
 	GnomeViewFramePrivate *priv;
 };
@@ -42,8 +35,6 @@ typedef struct {
 	void (*undo_last_operation) (GnomeViewFrame *view_frame);
 	void (*user_activate)       (GnomeViewFrame *view_frame);
 	void (*user_context)        (GnomeViewFrame *view_frame);
-	void (*activate_uri)        (GnomeViewFrame *view_frame, const char *uri, gboolean relative);
-	void (*request_resize)      (GnomeViewFrame *view_frame, gint requested_width, gint requested_height);
 } GnomeViewFrameClass;
 
 GtkType           gnome_view_frame_get_type        (void);
@@ -82,10 +73,6 @@ void		  gnome_view_frame_size_request	   (GnomeViewFrame *view_frame,
 void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
 						    char *verb_name);
 void              gnome_view_frame_set_zoom_factor (GnomeViewFrame *view_frame, double zoom);
-
-void             *gnome_view_frame_get_canvas_item (GnomeViewFrame *view_frame);
-void              gnome_view_frame_set_canvas_item (GnomeViewFrame *view_frame,
-						    void *gnome_canvas_item);
 
 /* The entry point vectors for the server we provide */
 extern POA_GNOME_ViewFrame__epv gnome_view_frame_epv;
