@@ -52,8 +52,8 @@ extern "C" {
 #include <bonobo/bonobo-app.h>
 
 /* FIXME: deprecated */
-/* #include <bonobo/bonobo-ui-handler.h> */
-#include <bonobo/bonobo-ui-compat.h>
+#include <bonobo/bonobo-ui-handler.h>
+/* #include <bonobo/bonobo-ui-compat.h> */
 
 #include <bonobo/bonobo-object-io.h>
 
