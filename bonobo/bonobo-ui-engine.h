@@ -14,6 +14,8 @@
 #include <glib/gmacros.h>
 #include <bonobo/bonobo-object.h>
 
+G_BEGIN_DECLS
+
 typedef struct _BonoboUIEngine BonoboUIEngine;
 
 #include <bonobo/bonobo-ui-container.h>
@@ -60,8 +62,6 @@ typedef enum {
 } BonoboUIError;
 
 #include <bonobo/bonobo-ui-sync.h>
-
-G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_ENGINE            (bonobo_ui_engine_get_type ())
 #define BONOBO_UI_ENGINE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_ENGINE, BonoboUIEngine))
