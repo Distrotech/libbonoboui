@@ -18,6 +18,7 @@ typedef struct {
 	GnomeObject base;
 
 	GnomeContainer *container;
+	GnomeObject    *bound_object;
 	int            child_shown:1;
 } GnomeClientSite;
 

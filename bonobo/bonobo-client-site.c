@@ -128,12 +128,18 @@ static void
 gnome_client_site_destroy (GtkObject *object)
 {
 	GtkObjectClass *object_class;
-
+	GnomeClientSite *client_site = GNOME_CLIENT_SITE (object);
+	
 	object_class = (GtkObjectClass *)gnome_client_site_parent_class;
 
 	gnome_container_remove (
-		GNOME_CLIENT_SITE (object)->container,
+		client_site->container,
 		GNOME_OBJECT (object));
+
+	/* Destroy the object on the other end */
+	g_warning ("FIXME: Should we unref twice?");
+	
+	GNOME_object_unref (client_site->bound_object->corba_object);
 	object_class->destroy (object);
 }
 
@@ -303,6 +309,8 @@ gnome_client_site_bind_component (GnomeClientSite *client_site, GnomeObject *obj
 		corba_object, 
 		GNOME_OBJECT (client_site)->object,
 		&GNOME_OBJECT (client_site)->ev);
+	client_site->bound_object = object;
+		
 	if (object->ev._major != CORBA_NO_EXCEPTION)
 		return FALSE;
 	
