@@ -1,5 +1,42 @@
 2001-07-19  Michael Meeks  <michael@ximian.com>
 
+	* tests/test-ui.c (main): hack out test encode / decode.
+
+	* bonobo/bonobo-ui-sync-toolbar.c (do_config_popup): simplify.
+
+	* bonobo/bonobo-ui-sync-menu.c (impl_bonobo_ui_sync_menu_build): ditto.
+
+	* bonobo/bonobo-ui-component.c (bonobo_ui_component_get_prop): 
+	simplify removing decode.
+	(bonobo_ui_component_set_prop): simplify removing encode.
+	(bonobo_ui_component_set_status): ditto.
+
+	* bonobo/bonobo-ui-sync-toolbar.c (impl_bonobo_ui_sync_toolbar_state): ditto.
+
+	* bonobo/bonobo-ui-sync-toolbar.c (impl_bonobo_ui_sync_toolbar_state): ditto.
+
+	* bonobo/bonobo-ui-sync-status.c (impl_bonobo_ui_sync_status_state): ditto.
+
+	* bonobo/bonobo-ui-sync-menu.c (put_hint_in_statusbar): ditto.
+
+	* bonobo/bonobo-ui-sync-menu.c (impl_bonobo_ui_sync_menu_state): ditto.
+
+	* bonobo/bonobo-ui-config-widget.c (populate_list): ditto.
+
+	* bonobo/bonobo-selector-widget.c (get_lang_list): 
+	cut and paste from Nautilus - ug.
+	(free_lang_list): impl.
+	(get_filtered_objects): internationalize properly & simplify.
+
+	* bonobo/bonobo-ui-util.c (bonobo_ui_util_decode_str),
+	(bonobo_ui_util_encode_str): kill.
+
+	* bonobo/bonobo-ui-util.h (bonobo_ui_util_encode_str),
+	(bonobo_ui_util_encode_str): turn into g_strdup aliases - now
+	libxml2 can cope with utf-8 fine.
+
+2001-07-19  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-selector.c (bonobo_selector_construct):
 	connect the "response" not "clicked" signal on GtkDialog.
 	s/button_callback/response/callback/, don't listen on "close"

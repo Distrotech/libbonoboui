@@ -1093,12 +1093,7 @@ bonobo_ui_component_set_prop (BonoboUIComponent  *component,
 			      const char         *value,
 			      CORBA_Environment  *opt_ev)
 {
-	if (prop && (!strcmp (prop, "label") || !strcmp (prop, "tip"))) {
-		char *encoded = bonobo_ui_util_encode_str (value);
-		GET_CLASS (component)->set_prop (component, path, prop, encoded, opt_ev);
-		g_free (encoded);
-	} else
-		GET_CLASS (component)->set_prop (component, path, prop, value, opt_ev);
+	GET_CLASS (component)->set_prop (component, path, prop, value, opt_ev);
 }
 
 static void
@@ -1157,23 +1152,7 @@ bonobo_ui_component_get_prop (BonoboUIComponent *component,
 			      const char        *prop,
 			      CORBA_Environment *opt_ev)
 {
-	char *txt;
-
-	txt = GET_CLASS (component)->get_prop (component, path, prop, opt_ev);
-	
-	if (prop && (!strcmp (prop, "label") || !strcmp (prop, "tip"))) {
-		char *decoded;
-		gboolean err;
-
-		decoded = bonobo_ui_util_decode_str (txt, &err);
-		if (err)
-			g_warning ("Encoding error getting prop '%s' at path '%s'",
-				   prop, path);
-		g_free (txt);
-
-		return decoded;
-	} else
-		return txt;
+	return GET_CLASS (component)->get_prop (component, path, prop, opt_ev);
 }
 
 static gchar *
@@ -1276,11 +1255,9 @@ bonobo_ui_component_set_status (BonoboUIComponent *component,
 	    text [0] == '\0') { /* Remove what was there to reveal other msgs */
 		bonobo_ui_component_rm (component, "/status/main/*", opt_ev);
 	} else {
-		char *str, *encoded;
+		char *str;
 
-		encoded = bonobo_ui_util_encode_str (text);
-		str = g_strdup_printf ("<item name=\"main\">%s</item>", encoded);
-		g_free (encoded);
+		str = g_strdup_printf ("<item name=\"main\">%s</item>", text);
 		
 		bonobo_ui_component_set (component, "/status", str, opt_ev);
 		

@@ -377,18 +377,9 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 	if ((label_attr = bonobo_ui_engine_get_attr (node, cmd_node, "label"))) {
 		GtkWidget *label;
 		guint      keyval;
-		gboolean   err;
 
-		txt = bonobo_ui_util_decode_str (label_attr, &err);
-		if (err) {
-			g_warning ("Encoding error in label on '%s', you probably forgot to "
-				   "put an '_' before label in your xml file",
-				   bonobo_ui_xml_make_path (node));
-			return;
-		}
-
-		if (!label_same (GTK_BIN (menu_widget), txt)) {
-			label = gtk_accel_label_new (txt);
+		if (!label_same (GTK_BIN (menu_widget), label_attr)) {
+			label = gtk_accel_label_new (label_attr);
 
 			/* Setup the widget. */
 			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -405,7 +396,7 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 			gtk_accel_label_set_accel_widget (
 				GTK_ACCEL_LABEL (label), menu_widget);
 			
-			keyval = gtk_label_parse_uline (GTK_LABEL (label), txt);
+			keyval = gtk_label_parse_uline (GTK_LABEL (label), label_attr);
 			
 #ifdef FIXME
 			if (keyval != GDK_VoidSymbol) {
@@ -427,10 +418,9 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 			}
 #endif
 		} /* else
-			g_warning ("No change in label '%s'", txt); */
+			g_warning ("No change in label '%s'", label_attr); */
 
 		bonobo_ui_node_free_string (label_attr);
-		g_free (txt);
 	}
 	
 	if ((txt = bonobo_ui_engine_get_attr (node, cmd_node, "accel"))) {
@@ -461,8 +451,7 @@ put_hint_in_statusbar (GtkWidget      *menuitem,
 {
 	BonoboUINode *node;
 	BonoboUINode *cmd_node;
-	char *hint, *txt;
-	gboolean err;
+	char *hint;
 
 	g_return_if_fail (engine != NULL);
 
@@ -480,16 +469,7 @@ put_hint_in_statusbar (GtkWidget      *menuitem,
 	if (!hint)
 		return;
 
-	txt = bonobo_ui_util_decode_str (hint, &err);
-	if (err) {
-		g_warning ("Encoding error in tip on '%s', you probably forgot to "
-			   "put an '_' before tip in your xml file",
-			   bonobo_ui_xml_make_path (node));
-
-	} else
-		bonobo_ui_engine_add_hint (engine, txt);
-
-	g_free (txt);
+	bonobo_ui_engine_add_hint (engine, hint);
 
 	bonobo_ui_node_free_string (hint);
 }
@@ -600,14 +580,12 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 			else {
 				gchar *label, *accel;
 
-				label = bonobo_ui_util_encode_str (
-					dgettext (stock_item.translation_domain, stock_item.label));
+				label = dgettext (stock_item.translation_domain, stock_item.label);
 				accel = bonobo_ui_util_accel_name (stock_item.keyval, stock_item.modifier);
 
 				bonobo_ui_node_set_attr (node, "label", label);
 				bonobo_ui_node_set_attr (node, "accel", accel);
 
-				g_free (label);
 				g_free (accel);
 			}
 

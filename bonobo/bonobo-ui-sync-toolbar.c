@@ -140,21 +140,9 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 				BONOBO_UI_TOOLBAR_BUTTON_ITEM (widget), image);
 		}
 
-		if (label) {
-			gboolean err;
-			char *txt = bonobo_ui_util_decode_str (label, &err);
-			if (err) {
-				g_warning ("Encoding error in label on '%s', you probably forgot to "
-					   "put an '_' before label in your xml file",
-					   bonobo_ui_xml_make_path (node));
-				return;
-			}
-
+		if (label)
 			bonobo_ui_toolbar_button_item_set_label (
-				BONOBO_UI_TOOLBAR_BUTTON_ITEM (widget), txt);
-
-			g_free (txt);
-		}
+				BONOBO_UI_TOOLBAR_BUTTON_ITEM (widget), label);
 	}
 
 	bonobo_ui_node_free_string (type);
@@ -183,22 +171,11 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	}
 	
 	if ((txt = bonobo_ui_engine_get_attr (node, cmd_node, "tip"))) {
-		gboolean err;
-		char *decoded_txt;
+		bonobo_ui_toolbar_item_set_tooltip (
+			BONOBO_UI_TOOLBAR_ITEM (widget),
+			bonobo_ui_toolbar_get_tooltips (
+				BONOBO_UI_TOOLBAR (parent)), txt);
 
-		decoded_txt = bonobo_ui_util_decode_str (txt, &err);
-		if (err) {
-			g_warning ("Encoding error in tip on '%s', you probably forgot to "
-				   "put an '_' before tip in your xml file",
-				   bonobo_ui_xml_make_path (node));
-		} else {
-			bonobo_ui_toolbar_item_set_tooltip (
-				BONOBO_UI_TOOLBAR_ITEM (widget),
-				bonobo_ui_toolbar_get_tooltips (
-					BONOBO_UI_TOOLBAR (parent)), decoded_txt);
-		}
-
-		g_free (decoded_txt);
 		bonobo_ui_node_free_string (txt);
 	}
 
@@ -297,7 +274,7 @@ toolbar_build_widget (BonoboUISync *sync,
 			g_warning ("Unknown stock id '%s' on %s", stock_id,
 				   bonobo_ui_xml_make_path (node));
 		else {
-			gchar *label, *label2;
+			gchar *label;
 			int i, len;
 
 			label = g_strdup (dgettext (stock_item.translation_domain, stock_item.label));
@@ -310,11 +287,8 @@ toolbar_build_widget (BonoboUISync *sync,
 				}
 			}
 
-			label2 = bonobo_ui_util_encode_str (label);
+			bonobo_ui_node_set_attr (node, "label", label);
 
-			bonobo_ui_node_set_attr (node, "label", label2);
-
-			g_free (label2);
 			g_free (label);
 		}
 
@@ -531,7 +505,7 @@ do_config_popup (BonoboUIEngineConfig *config,
 		 BonoboUINode         *config_node,
 		 BonoboUIEngine       *popup_engine)
 {
-	char *txt, *look, *a, *b, *c, *d, *e, *f, *g;
+	char *txt;
 	gboolean tip;
 	BonoboUIToolbarStyle style;
 	
@@ -543,16 +517,6 @@ do_config_popup (BonoboUIEngineConfig *config,
 
 	style = bonobo_ui_sync_toolbar_get_look (bonobo_ui_engine_config_get_engine (config),
 						 config_node);
-
-	look = bonobo_ui_util_encode_str (_("Look"));
-	a = bonobo_ui_util_encode_str (_("B_oth"));
-	b = bonobo_ui_util_encode_str (_("_Icon"));
-	c = bonobo_ui_util_encode_str (_("T_ext"));
-	d = tip ? bonobo_ui_util_encode_str (_("Hide t_ips")) : 
-		bonobo_ui_util_encode_str (_("Show t_ips"));
-	e = bonobo_ui_util_encode_str (_("_Hide toolbar"));
-	f = bonobo_ui_util_encode_str (_("Customi_ze"));
-	g = bonobo_ui_util_encode_str (_("Customize the toolbar"));
 
 	txt = g_strdup_printf (
 		"<Root>"
@@ -582,10 +546,10 @@ do_config_popup (BonoboUIEngineConfig *config,
 		style == BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT,
 		style == BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY,
 		style == BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT,
-		look, a, b, c, d, !tip, e, f, g);
-
-	g_free (look); g_free (a); g_free (b); g_free (c);
-	g_free (d); g_free (e); g_free (f); g_free (g);
+		_("Look"), _("B_oth"), _("_Icon"), _("T_ext"),
+		tip ? _("Hide t_ips") :  _("Show t_ips"), !tip,
+		_("_Hide toolbar"), _("Customi_ze"),
+		_("Customize the toolbar"));
 
 	return txt;
 }

@@ -235,51 +235,6 @@ main (int argc, char **argv)
 
 	bonobo_activate ();
 
-	{ /* Test encode / decode str */
-		char *a, *b, *c;
-		int   i;
-		gboolean err;
-
-		a = g_malloc (256);
-		for (i = 0; i < 256; i++) {
-			if (i == 255)
-				*(a + i) = '\0';
-			else
-				*(a + i) = i + 1;
-		}
-
-		b = bonobo_ui_util_encode_str (a);
-		c = bonobo_ui_util_decode_str (a, &err); /* sanity check */
-		g_free (c);
-
-		c = bonobo_ui_util_decode_str (b, &err);
-		g_assert (err == FALSE);
-		if (strcmp (a, c)) {
-			g_warning ("Strings differ lengths %d should be %d",
-				   strlen (c), strlen (a));
-
-			for (i = 0; i < 256; i++) {
-				if (a [i] != b [i])
-					printf ("a [%d] (=%d) != b [%d] (=%d)\n",
-						i, a [i], i, b [i]);
-			}
-		} else
-			printf ("String encode / decode worked\n");
-
-		g_free (c);
-		g_free (b);
-		g_free (a);
-
-		b = bonobo_ui_util_encode_str ("Hello World");
-		c = bonobo_ui_util_decode_str (b, &err);
-		g_assert (err == FALSE);
-
-		printf ("Encode to '%s' and back to '%s'\n", b, c);
-
-		g_free (c);
-		g_free (b);
-	}
-
 	win = BONOBO_WINDOW (bonobo_window_new ("Win", "My Test Application"));
 	container = bonobo_window_get_ui_container (win);
 	

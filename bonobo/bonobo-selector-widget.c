@@ -80,14 +80,82 @@ build_id_query_fragment (const char **required_ids)
 	return query;
 }
 
+
+#warning FIXME: copied from nautilus, should be in oaf.
+
+/* Returns a list of languages, containing
+ * the LANG or LANGUAGE environment setting (with and without
+ * region code). The elements in the returned list must be freed
+ */
+static GSList *
+get_lang_list (void)
+{
+        GSList *retval;
+        char *lang, *lang_with_locale, *org_pointer;
+        char *equal_char;
+	const char *tmp;
+
+        retval = NULL;
+
+        tmp = g_getenv ("LANGUAGE");
+
+        if (tmp == NULL) {
+                tmp = g_getenv ("LANG");
+        }
+
+	lang = g_strdup (tmp);
+	org_pointer = lang;
+
+	if (lang != NULL) {
+		/* envs can be in NAME=VALUE form */
+		equal_char = strchr (lang, '=');
+		if (equal_char != NULL)
+			lang = equal_char + 1;
+		
+		/* lang may be in form LANG_LOCALE */
+		equal_char = strchr (lang, '_');
+		if (equal_char != NULL) {
+			lang_with_locale = g_strdup (lang);
+			*equal_char = 0;
+		} else {
+			lang_with_locale = NULL;
+		}
+
+		/* Make sure we don't give oaf an empty
+		   lang string */
+		if (!lang_with_locale || !lang_with_locale [0])
+			retval = g_slist_prepend (retval, 
+						  g_strdup (lang_with_locale));
+		g_free (lang_with_locale);
+
+		if (!lang || !lang [0])
+			retval = g_slist_prepend (retval, g_strdup (lang));
+        }
+	g_free (org_pointer);
+        
+        return retval;
+}
+
+static void
+free_lang_list (GSList *list)
+{
+	GSList *l;
+
+	for (l = list; l; l = l->next)
+		g_free (l->data);
+
+	g_slist_free (list);
+}
+
 static void
 get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
 		      const gchar **required_ids)
 {
-        guint               i, j;
+        guint               i;
         gchar              *query;
         CORBA_Environment   ev;
         OAF_ServerInfoList *servers;
+	GSList             *lang_list;
         
         g_return_if_fail (required_ids != NULL);
         g_return_if_fail (*required_ids != NULL);
@@ -104,29 +172,16 @@ get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
         if (!servers)
                 return;
 
+	lang_list = get_lang_list ();
+
 	for (i = 0; i < servers->_length; i++) {
                 OAF_ServerInfo *oafinfo = &servers->_buffer[i];
-		gchar *name = NULL, *desc = NULL;
+		const gchar *name = NULL, *desc = NULL;
 		char *text [4];
 
-		for (j = 0; j < oafinfo->props._length; j++) {
-			if (oafinfo->props._buffer[j].v._d != OAF_P_STRING)
-				continue;
+		name = oaf_server_info_prop_lookup (oafinfo, "name", lang_list);
+		desc = oaf_server_info_prop_lookup (oafinfo, "description", lang_list);
 
-			if (strcmp (oafinfo->props._buffer[j].name, "name") == 0)
-				name = oafinfo->props._buffer[j].v._u.value_string;
-
-			else if (strcmp (oafinfo->props._buffer[j].name, "description") == 0)
-				desc = oafinfo->props._buffer[j].v._u.value_string;
-
-			/* FIXME: internationalize here */
-		}
-
-		/*
-		 * If no name attribute exists, use the description attribute.
-		 *  If no description attribute exists, use the name attribute.
-		 *  If neither a description attribute nor a name attribute exists, use the oafiid
-		 */
 		if (!name && !desc)
 			name = desc = oafinfo->iid;
 
@@ -136,13 +191,15 @@ get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
 		if (!desc)
 			desc = name;
 
-		text [0] = name;
-		text [1] = oafinfo->iid;
-		text [2] = desc;
+		text [0] = (char *)name;
+		text [1] = (char *)oafinfo->iid;
+		text [2] = (char *)desc;
 		text [3] = NULL;
 			
 		gtk_clist_append (GTK_CLIST (priv->clist), (gchar **) text);
         }
+
+	free_lang_list (lang_list);
 
         CORBA_free (servers);
 }

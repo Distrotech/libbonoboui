@@ -112,19 +112,11 @@ populate_list (GtkWidget            *list,
 	     l = bonobo_ui_node_next (l)) {
 
 		if (bonobo_ui_node_has_name (l, "dockitem")) {
-			char    *txt, *name;
+			char *name;
 
-			if ((txt = bonobo_ui_node_get_attr (l, "tip"))) {
-				gboolean err;
+			if ((name = bonobo_ui_node_get_attr (l, "tip")) ||
+			    (name = bonobo_ui_node_get_attr (l, "name"))) {
 
-				name = bonobo_ui_util_decode_str (txt, &err);
-				g_return_if_fail (!err);
-
-				bonobo_ui_node_free_string (txt);
-			} else if (!(name = bonobo_ui_node_get_attr (l, "name")))
-				name = NULL;
-
-			if (name) {
 				GtkWidget *w = gtk_list_item_new_with_label (name);
 				char      *path = bonobo_ui_xml_make_path (l);
 
@@ -135,6 +127,8 @@ populate_list (GtkWidget            *list,
 
 				gtk_widget_show (w);
 				items = g_list_prepend (items, w);
+
+				bonobo_ui_node_free_string (name);
 			}
 		}
 	}

@@ -88,21 +88,10 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 			id = gtk_statusbar_get_context_id (
 				msync->main_status, id_str);
 
-			if ((txt = bonobo_ui_node_get_content (node))) {
-				gboolean err;
-				char    *status;
+			if ((txt = bonobo_ui_node_get_content (node)))
+				gtk_statusbar_push (msync->main_status, id, txt);
 
-				status = bonobo_ui_util_decode_str (txt, &err);
-
-				if (err)
-					g_warning ("It looks like the status '%s' is not correctly "
-						   "encoded, use bonobo_ui_component_set_status", txt);
-				else
-					gtk_statusbar_push (msync->main_status,
-							    id, status);
-
-				g_free (status);
-			} else
+			else
 				gtk_statusbar_pop (msync->main_status, id);
 
 			bonobo_ui_node_free_string (txt);

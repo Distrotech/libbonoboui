@@ -101,8 +101,7 @@ void            bonobo_ui_util_accel_parse  (char              *name,
 					     guint             *accelerator_key,
 					     GdkModifierType   *accelerator_mods);
 
-char           *bonobo_ui_util_decode_str   (const char *str, gboolean *err);
-
-char           *bonobo_ui_util_encode_str   (const char *str);
+#define         bonobo_ui_util_decode_str(s,e) g_strdup (s)
+#define         bonobo_ui_util_encode_str(s)   g_strdup (s)
 
 #endif /* _BONOBO_UI_XML_UTIL_H_ */
