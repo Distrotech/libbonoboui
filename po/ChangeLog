@@ -1,3 +1,7 @@
+2001-10-22  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
+
+	* sk.po: Updated Slovak translation from Marcel Telka <marcel@telka.sk>.
+
 2001-10-20  Michael Meeks  <michael@ximian.com>
 
 	* POTFILES.in: add bonoboui/hello.c

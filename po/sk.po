@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-09-27 08:01+1000\n"
-"PO-Revision-Date: 2001-09-23 12:18+0200\n"
+"POT-Creation-Date: 2001-10-21 19:51+0200\n"
+"PO-Revision-Date: 2001-10-21 20:06+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -29,23 +29,23 @@ msgstr "Preferovaná ¹írka"
 msgid "Preferred height"
 msgstr "Preferovaná vý¹ka"
 
-#: bonobo/bonobo-file-selector-util.c:371
+#: bonobo/bonobo-file-selector-util.c:367
 msgid "Select a file to open"
 msgstr "Vybra» súbor na otvorenie"
 
-#: bonobo/bonobo-file-selector-util.c:399
+#: bonobo/bonobo-file-selector-util.c:395
 msgid "Select files to open"
 msgstr "Vybra» súbory na otvorenie"
 
-#: bonobo/bonobo-file-selector-util.c:428
+#: bonobo/bonobo-file-selector-util.c:424
 msgid "Select a filename to save"
 msgstr "Vybra» meno súboru na ulo¾enie"
 
-#: bonobo/bonobo-selector-widget.c:356
+#: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
 msgstr "Meno"
 
-#: bonobo/bonobo-selector-widget.c:380
+#: bonobo/bonobo-selector-widget.c:326
 msgid "Description"
 msgstr "Popis"
 
@@ -117,14 +117,31 @@ msgstr "Prispôso_bi»"
 msgid "Customize the toolbar"
 msgstr "Prispôsobi» li¹tu nástrojov"
 
-#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "Toto nerobí niè, je to len uká¾ka."
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Ahoj."
+
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr "Gnome Ahoj"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr "Ahoj, svet!"
+
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:231
+msgid "Cannot init libbonoboui code"
+msgstr "Nemô¾em inicializova» kód libbonoboui"
+
+#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Nemô¾em bonobo_ui_init"
 
 #: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Vybra» objekt"
-
-#: tests/test-ui.c:230
-msgid "Cannot init libbonoboui code"
-msgstr "Nemô¾em inicializova» kód libbonoboui"
