@@ -1,5 +1,14 @@
 2002-05-13  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-socket.c (bonobo_socket_set_control_frame),
+	* bonobo/bonobo-control-frame.c (bonobo_control_frame_set_socket),
+	* bonobo/bonobo-control.c (bonobo_control_set_plug),
+	* bonobo/bonobo-plug.c (bonobo_plug_set_control): fix the same
+	problem, so that we can transfer ownership of the object
+	without problems - it seems we never did this before.
+
+2002-05-13  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-engine.c
 	(bonobo_ui_engine_set_ui_container): unset the old
 	engine before setting the new.

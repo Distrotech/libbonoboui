@@ -1046,10 +1046,9 @@ bonobo_control_frame_set_socket (BonoboControlFrame *frame,
 
 	old_socket = (BonoboSocket *) frame->priv->socket;
 
-	if (socket) {
+	if (socket)
 		frame->priv->socket = g_object_ref (socket);
-		bonobo_socket_set_control_frame (socket, frame);
-	} else
+	else
 		frame->priv->socket = NULL;
 
 	if (old_socket) {
@@ -1057,6 +1056,9 @@ bonobo_control_frame_set_socket (BonoboControlFrame *frame,
 			BONOBO_SOCKET (old_socket), NULL);
 		g_object_unref (old_socket);
 	}
+
+	if (socket)
+		bonobo_socket_set_control_frame (socket, frame);
 }
 
 BonoboSocket *

@@ -288,15 +288,17 @@ bonobo_socket_set_control_frame (BonoboSocket       *socket,
 
 	old_frame = socket->frame;
 
-	if (frame) {
+	if (frame)
 		socket->frame = BONOBO_CONTROL_FRAME (
 			bonobo_object_ref (BONOBO_OBJECT (frame)));
-		bonobo_control_frame_set_socket (frame, socket);
-	} else
+	else
 		socket->frame = NULL;
 
 	if (old_frame) {
 		bonobo_control_frame_set_socket (old_frame, NULL);
 		bonobo_object_unref (BONOBO_OBJECT (old_frame));
 	}
+
+	if (frame)
+		bonobo_control_frame_set_socket (frame, socket);
 }

@@ -89,16 +89,18 @@ bonobo_plug_set_control (BonoboPlug    *plug,
 
 	old_control = plug->control;
 
-	if (control) {
+	if (control)
 		plug->control = g_object_ref (control);
-		bonobo_control_set_plug (control, plug);
-	} else
+	else
 		plug->control = NULL;
 
 	if (old_control) {
 		bonobo_control_set_plug (old_control, NULL);
 		g_object_unref (old_control);
 	}
+
+	if (control)
+		bonobo_control_set_plug (control, plug);
 }
 
 static gboolean

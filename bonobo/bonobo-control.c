@@ -1165,16 +1165,18 @@ bonobo_control_set_plug (BonoboControl *control,
 
 	old_plug = (BonoboPlug *) control->priv->plug;
 
-	if (plug) {
+	if (plug)
 		control->priv->plug = g_object_ref (plug);
-		bonobo_plug_set_control (plug, control);
-	} else
+	else
 		control->priv->plug = NULL;
 
 	if (old_plug) {
 		bonobo_plug_set_control (old_plug, NULL);
 		g_object_unref (old_plug);
 	}
+
+	if (plug)
+		bonobo_plug_set_control (plug, control);
 }
 
 BonoboPlug *
