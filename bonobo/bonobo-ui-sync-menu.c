@@ -266,13 +266,13 @@ cmd_get_menu_pixmap (BonoboUINode     *node,
 	char      *type;
 
 	if ((type = bonobo_ui_node_get_attr (node, "pixtype"))) {
-		pixmap = bonobo_ui_util_xml_get_icon_pixmap_widget (node, GTK_ICON_SIZE_MENU);
+		pixmap = bonobo_ui_util_xml_get_icon_widget (node, GTK_ICON_SIZE_MENU);
 		bonobo_ui_node_free_string (type);
 		return pixmap;
 	}
 
 	if ((type = bonobo_ui_node_get_attr (cmd_node, "pixtype"))) {
-		pixmap = bonobo_ui_util_xml_get_icon_pixmap_widget (cmd_node, GTK_ICON_SIZE_MENU);
+		pixmap = bonobo_ui_util_xml_get_icon_widget (cmd_node, GTK_ICON_SIZE_MENU);
 		bonobo_ui_node_free_string (type);
 		return pixmap;
 	}

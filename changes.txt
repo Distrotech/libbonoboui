@@ -1,3 +1,15 @@
+bonobo-ui-util.[ch]:
+	Remove all anachronistic _build methods, everyone just a file.
+	       bonobo_ui_util_new_menu,
+	       bonobo_ui_util_new_placeholder
+	       bonobo_ui_util_set_radiogroup
+	       bonobo_ui_util_set_toggle
+	       bonobo_ui_util_new_std_toolbar
+	       bonobo_ui_util_new_toggle_toolbar
+	       bonobo_ui_util_build_accel
+	rename bonobo_ui_util_xml_get_icon_pixmap_widget to
+	bonobo_ui_util_xml_get_icon_widget.
+
 bonobo-client-site.[ch]:
 	Signatures of
 		  bonobo_client_site_bind_embeddable,

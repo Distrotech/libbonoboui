@@ -43,13 +43,13 @@ cmd_get_toolbar_image (BonoboUINode     *node,
 	char      *type;
 
 	if ((type = bonobo_ui_node_get_attr (node, "pixtype"))) {
-		image = bonobo_ui_util_xml_get_icon_pixmap_widget (node, GTK_ICON_SIZE_SMALL_TOOLBAR);
+		image = bonobo_ui_util_xml_get_icon_widget (node, GTK_ICON_SIZE_SMALL_TOOLBAR);
 		bonobo_ui_node_free_string (type);
 		return image;
 	}
 
 	if ((type = bonobo_ui_node_get_attr (cmd_node, "pixtype"))) {
-		image = bonobo_ui_util_xml_get_icon_pixmap_widget (cmd_node, GTK_ICON_SIZE_SMALL_TOOLBAR);
+		image = bonobo_ui_util_xml_get_icon_widget (cmd_node, GTK_ICON_SIZE_SMALL_TOOLBAR);
 		bonobo_ui_node_free_string (type);
 		return image;
 	}

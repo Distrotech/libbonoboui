@@ -1,5 +1,19 @@
 2001-07-19  Michael Meeks  <michael@ximian.com>
 
+	* tests/test-ui.c (main): upd.
+
+	* bonobo/bonobo-ui-util.c (bonobo_ui_util_new_menu),
+	(bonobo_ui_util_new_placeholder),
+	(bonobo_ui_util_set_radiogroup),
+	(bonobo_ui_util_set_toggle),
+	(bonobo_ui_util_new_std_toolbar): 
+	(bonobo_ui_util_new_toggle_toolbar),
+	(bonobo_ui_util_build_accel): kill.
+
+	* changes.txt: upd.
+
+2001-07-19  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-toolbar-button-item.c: upd.
 
 	* bonobo/Makefile.am: remove bonobo-ui-toolbar-icon.[ch]

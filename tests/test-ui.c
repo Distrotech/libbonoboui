@@ -404,10 +404,6 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_freeze (componenta, NULL);
 
-	accel = bonobo_ui_util_build_accel (GDK_A, GDK_CONTROL_MASK, "KeyWibbleVerb");
-	bonobo_ui_component_set_tree (componenta, "/keybindings", accel, &ev);
-	bonobo_ui_node_free (accel);
-
 	bonobo_ui_component_set_translate (componentb, "/menu", simpleb, &ev);
 	bonobo_ui_component_set_translate (componenta, "/",     toolb, &ev);
 

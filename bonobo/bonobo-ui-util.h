@@ -13,69 +13,37 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <bonobo/bonobo-ui-component.h>
 
-char      *bonobo_ui_util_pixbuf_to_xml        (GdkPixbuf    *pixbuf);
+char      *bonobo_ui_util_pixbuf_to_xml       (GdkPixbuf         *pixbuf);
+GdkPixbuf *bonobo_ui_util_xml_to_pixbuf       (const char        *xml);
 
-GdkPixbuf *bonobo_ui_util_xml_to_pixbuf  (const char *xml);
+GtkWidget *bonobo_ui_util_xml_get_icon_widget (BonoboUINode      *node,
+					       GtkIconSize        icon_size);
 
-GtkWidget *bonobo_ui_util_xml_get_icon_pixmap_widget  (BonoboUINode *node, GtkIconSize icon_size);
+void       bonobo_ui_util_xml_set_pixbuf      (BonoboUINode      *node,
+					       GdkPixbuf         *pixbuf);
+void       bonobo_ui_util_xml_set_pix_xpm     (BonoboUINode      *node,
+					       const char       **xpm);
+void       bonobo_ui_util_xml_set_pix_stock   (BonoboUINode      *node,
+					       const char        *name);
+void       bonobo_ui_util_xml_set_pix_fname   (BonoboUINode      *node,
+					       const char        *name);
 
-void  bonobo_ui_util_xml_set_pixbuf     (BonoboUINode  *node,
-					 GdkPixbuf     *pixbuf);
-void  bonobo_ui_util_xml_set_pix_xpm    (BonoboUINode  *node,
-					 const char   **xpm);
-void  bonobo_ui_util_xml_set_pix_stock  (BonoboUINode  *node,
-					 const char    *name);
-void  bonobo_ui_util_xml_set_pix_fname  (BonoboUINode  *node,
-					 const char    *name);
+void       bonobo_ui_util_build_help_menu     (BonoboUIComponent *listener,
+					       const char        *app_prefix,
+					       const char        *app_name,
+					       BonoboUINode      *parent);
 
-void       bonobo_ui_util_build_help_menu   (BonoboUIComponent *listener,
-					     const char        *app_prefix,
-					     const char        *app_name,
-					     BonoboUINode      *parent);
+char      *bonobo_ui_util_get_ui_fname        (const char        *component_prefix,
+					       const char        *file_name);
 
-BonoboUINode   *bonobo_ui_util_build_accel  (guint              accelerator_key,
-					     GdkModifierType    accelerator_mods,
-					     const char        *verb);
+void       bonobo_ui_util_translate_ui        (BonoboUINode      *node);
 
-BonoboUINode   *bonobo_ui_util_new_menu     (gboolean           submenu,
-					     const char        *name,
-					     const char        *label,
-					     const char        *tip,
-					     const char        *verb);
+void       bonobo_ui_util_fixup_help          (BonoboUIComponent *component,
+					       BonoboUINode      *node,
+					       const char        *app_prefix,
+					       const char        *app_name);
 
-BonoboUINode   *bonobo_ui_util_new_placeholder   (const char        *name,
-					     gboolean           top,
-					     gboolean           bottom);
-
-void       bonobo_ui_util_set_radiogroup    (BonoboUINode           *node,
-					     const char        *group_name);
-
-void       bonobo_ui_util_set_toggle        (BonoboUINode           *node,
-					     const char        *id,
-					     const char        *init_state);
-
-BonoboUINode   *bonobo_ui_util_new_std_toolbar   (const char        *name,
-					     const char        *label,
-					     const char        *tip,
-					     const char        *verb);
-					     
-BonoboUINode   *bonobo_ui_util_new_toggle_toolbar(const char        *name,
-					     const char        *label,
-					     const char        *tip,
-					     const char        *id);
-
-char      *bonobo_ui_util_get_ui_fname      (const char        *component_prefix,
-					     const char        *file_name);
-
-void       bonobo_ui_util_translate_ui      (BonoboUINode      *node);
-
-void       bonobo_ui_util_fixup_help        (BonoboUIComponent *component,
-					     BonoboUINode      *node,
-					     const char        *app_prefix,
-					     const char        *app_name);
-
-void       bonobo_ui_util_fixup_icons       (BonoboUINode      *node);
-
+void       bonobo_ui_util_fixup_icons         (BonoboUINode      *node);
 
 /*
  * Does all the translation & other grunt.
