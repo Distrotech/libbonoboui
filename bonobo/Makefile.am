@@ -8,7 +8,6 @@ INCLUDES =                                              \
 	-I. 						\
 	-I$(top_builddir)				\
         -I$(includedir)                                 \
-	-I$(top_srcdir)/libefs/src			\
         $(GNOME_INCLUDEDIR)
 
 gnome_libs =			\
@@ -19,8 +18,7 @@ gnome_libs =			\
 
 bonobo_libs = 			\
 	libbonobo.la 		\
-	$(gnome_libs)		\
-	$(top_builddir)/libefs/src/libefs.la
+	$(gnome_libs)
 
 
 lib_LTLIBRARIES = libbonobo.la
@@ -75,12 +73,9 @@ libbonobo_la_SOURCES =			\
 	gnome-persist.c			\
 	gnome-progressive.c		\
 	gnome-storage.c			\
-	gnome-storage-fs.c		\
-	gnome-storage-efs.c		\
 	gnome-stream.c			\
 	gnome-stream-client.c		\
 	gnome-stream-fs.c		\
-	gnome-stream-efs.c		\
 	gnome-stream-memory.c		\
 	gnome-ui-handler.c		\
 	gnome-view.c			\
@@ -118,12 +113,8 @@ libbonoboinclude_HEADERS =		\
 	gnome-persist.h			\
 	gnome-progressive.h		\
 	gnome-storage.h			\
-	gnome-storage-fs.h		\
-	gnome-storage-efs.h		\
 	gnome-stream.h			\
 	gnome-stream-client.h		\
-	gnome-stream-fs.h		\
-	gnome-stream-efs.h		\
 	gnome-stream-memory.h		\
 	gnome-ui-handler.h		\
 	gnome-view.h			\
