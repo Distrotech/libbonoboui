@@ -1,3 +1,12 @@
+2002-01-08  Paolo Maggi  <maggi@athena.polito.it>
+
+	* bonobo/bonobo-file-selector-util.c: gtkeditable.h #included
+	(ok_clicked_cb): fixed a bug with mode == FILESEL_OPEN_MULTI
+	(create_gtk_selector): almost rewritten
+	
+	* tests/test-filesel.c (get_files): set the default file name
+	when calling bonobo_file_selector_save
+
 2002-01-08  Darin Adler  <darin@bentspoon.com>
 
 	* bonobo/Makefile.am: Remove unnecessary "cd srcdir" from

@@ -1,5 +1,5 @@
 /*
- * bonobo-file-selector-util.h - functions for getting files from a
+ * bonobo-file-selector-util.c - functions for getting files from a
  * selector
  *
  * Authors:
@@ -23,12 +23,9 @@
 #include <gtk/gtkclist.h>
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtksignal.h>
+#include <gtk/gtkeditable.h>
 
 #include <bonobo/bonobo-i18n.h>
-
-#if 0
-#include <libgnomeui/gnome-window.h>
-#endif
 
 #define GET_MODE(w) (GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (w), "GnomeFileSelectorMode")))
 #define SET_MODE(w, m) (gtk_object_set_data (GTK_OBJECT (w), "GnomeFileSelectorMode", GINT_TO_POINTER (m)))
@@ -81,10 +78,9 @@ listener_cb (BonoboListener *listener,
 			strv[i] = g_strdup (seq->_buffer[i]);
 		strv[i] = NULL;
 		gtk_object_set_user_data (GTK_OBJECT (dialog), strv);
-	} else {
+	} else 
 		gtk_object_set_user_data (GTK_OBJECT (dialog),
 					  g_strdup (seq->_buffer[0]));
-	}
 
  cancel_clicked:
 	g_free (subtype);
@@ -198,51 +194,50 @@ ok_clicked_cb (GtkWidget *widget, gpointer data)
 	} else if (GET_MODE (fsel) == FILESEL_OPEN_MULTI) {
 		GtkCList *clist;
 		GList  *row;
-		char **strv, *temp;
-		const char *filedirname;
-		int i, j, rows, rownum;
+		char **strv;
+		char *filedirname;
+		int i, rows, rownum;
 
 		gtk_widget_hide (GTK_WIDGET (fsel));
 		
 		clist = GTK_CLIST (fsel->file_list);
 		rows = g_list_length (clist->selection);
+		
 		strv = g_new (char *, rows + 2);
-		strv[0] = g_strdup (file_name);
+		strv[rows] = g_strdup (file_name);
 
-		/* i *heart* gtkfilesel's api. 
-		 *
-		 * we iterate twice since setting "" as the file name
-		 * (to get the directory) clears the selection. this
-		 * is based on some stuff from the gimp.
-		 *
-		 */
+		filedirname = g_dirname (file_name);
 
-		for (rownum = 0, i = 1, row = clist->row_list; row; row = g_list_next (row), rownum++) {
-			if (GTK_CLIST_ROW (row)->state != GTK_STATE_SELECTED)
-				continue;
+		rownum = 0;
+		i = 0;
+		row = clist->row_list;
+		
+		for ( ; row; row = g_list_next (row)) {
+			
+			if ((GTK_CLIST_ROW (row)->state == GTK_STATE_SELECTED) &&
+			    (gtk_clist_get_cell_type (clist, rownum, 0) == GTK_CELL_TEXT)) {		
+				gchar* f;
 
-			if (gtk_clist_get_cell_type (clist, rownum, 0) != GTK_CELL_TEXT)
-				continue;
+				gtk_clist_get_text (clist, rownum, 0, &f);
+				strv[i] = concat_dir_and_file (filedirname, f);
 
-			gtk_clist_get_text (clist, rownum, 0, &strv[i++]);
+				/* avoid duplicates */
+				if (strv[rows] && (strcmp (strv[i], strv[rows]) == 0)) {
+					g_free (strv[rows]);
+					strv[rows] = NULL;
+				}
+
+				++i;
+			}
+
+			++rownum;
 		}
+		
+		/* g_assert (i == rows); */
+		
+		strv[rows + 1] = NULL;
 
-		strv[i] = NULL;
-
-		gtk_file_selection_set_filename (fsel, "");
-		filedirname = gtk_file_selection_get_filename (fsel);
-
-		for (i = j = 1; strv[i]; i++) {
-			temp = concat_dir_and_file (filedirname, strv[i]);
-
-			/* avoid duplicates */
-			if (strcmp (temp, strv[0]))
-				strv[j++] = temp;
-			else
-				g_free (temp);
-		}
-
-		strv[j] = NULL;
+		g_free (filedirname);
 
 		gtk_object_set_user_data (GTK_OBJECT (fsel), strv);
 		gtk_main_quit ();
@@ -269,6 +264,8 @@ create_gtk_selector (FileselMode mode,
 		     const char *default_filename)
 {
 	GtkWidget *filesel;
+	
+	gchar* path;
 
 	filesel = gtk_file_selection_new (NULL);
 
@@ -280,20 +277,31 @@ create_gtk_selector (FileselMode mode,
 			    "clicked", GTK_SIGNAL_FUNC (cancel_clicked_cb),
 			    filesel);
 
-	if (default_path) {
-		char *tmp;
+	if (default_path)
+		path = g_strconcat (default_path, 
+				    default_path[strlen (default_path) - 1] == '/' ? NULL : 
+				    "/", NULL);
+	else
+		path = g_strdup ("./");
 
-		tmp = g_strconcat (default_path, 
-				   default_path[strlen (default_path) - 1] == '/'
-				   ? NULL : "/", NULL);
+	if (default_filename) {
+		gchar* file_name = concat_dir_and_file (path, default_filename);
+		gtk_file_selection_set_filename (GTK_FILE_SELECTION (filesel), file_name);
+		g_free (file_name);
 
-		gtk_file_selection_set_filename (GTK_FILE_SELECTION (filesel), tmp);
-		g_free (tmp);
+		/* Select file name */
+		gtk_editable_select_region (GTK_EDITABLE (
+					    GTK_FILE_SELECTION (filesel)->selection_entry), 
+					    0, -1);
 	}
+	else
+		gtk_file_selection_set_filename (GTK_FILE_SELECTION (filesel), path);
+
+	g_free (path);
 
 	if (mode == FILESEL_OPEN_MULTI) {
 		gtk_clist_set_selection_mode (GTK_CLIST (GTK_FILE_SELECTION (filesel)->file_list),
-					      GTK_SELECTION_MULTIPLE);
+					      GTK_SELECTION_EXTENDED);
 	}
 
 	return GTK_WINDOW (filesel);

@@ -27,7 +27,7 @@ get_files (gpointer data)
 	g_print ("open test:\n\t%s\n", s);
 	g_free (s);
 
-	s = bonobo_file_selector_save (NULL, FALSE, NULL, NULL, "/tmp", NULL);
+	s = bonobo_file_selector_save (NULL, FALSE, NULL, NULL, "/tmp", "test.txt");
 	g_print ("save test:\n\t%s\n", s);
 	g_free (s);
 
