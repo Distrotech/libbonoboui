@@ -23,7 +23,7 @@ init_bonobo (int argc, char **argv)
 {
 
 	gnome_CORBA_init_with_popt_table (
-		"gill", "0.0",
+		"sample-control-factory", "0.0",
 		&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
 
 	orb = gnome_CORBA_ORB ();
