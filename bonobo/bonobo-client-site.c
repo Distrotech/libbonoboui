@@ -233,7 +233,7 @@ create_client_site (GnomeObject *object)
  * This initializes an object of type GnomeClientSite.  See the description
  * for gnome_client_site_new() for more details.
  *
- * Returns the constructed GnomeClientSite @client_site.
+ * Returns: the constructed GnomeClientSite @client_site.
  */
 GnomeClientSite *
 gnome_client_site_construct (GnomeClientSite  *client_site,
@@ -291,7 +291,7 @@ gnome_client_site_new (GnomeContainer *container)
 /**
  * gnome_client_site_get_type:
  *
- * Returns: The GtkType for the GnomeClient object
+ * Returns: The GtkType for the GnomeClient class.
  */
 GtkType
 gnome_client_site_get_type (void)
@@ -321,7 +321,7 @@ gnome_client_site_get_type (void)
  * @client_site: the client site where we hook the object
  * @object: remote GNOME::Embeddable object
  *
- * Returns %TRUE if the code successfully bound the remote object to this
+ * Returns: %TRUE if the code successfully bound the remote object to this
  * @client_site.
  */
 gboolean

@@ -334,7 +334,7 @@ gnome_embeddable_init (GnomeObject *object)
 /**
  * gnome_embeddable_get_type:
  *
- * Returns: The GtkType for the GnomeEmbeddableClass
+ * Returns: The GtkType for the GnomeEmbeddable class.
  */
 GtkType
 gnome_embeddable_get_type (void)

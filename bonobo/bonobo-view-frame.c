@@ -67,6 +67,18 @@ create_gnome_view_frame (GnomeObject *object)
 	
 }
 
+/**
+ * gnome_view_frame_construct:
+ * @view_frame: The GnomeViewFrame object to be initialized.
+ * @corba_view_frame: A CORBA object for the GNOME_ViewFrame interface.
+ * @wrapper: A GnomeWrapper widget which the new ViewFrame will use to cover its enclosed View.
+ * @client_site: the client site to which the newly-created ViewFrame will belong.
+ *
+ * Initializes @view_frame with the parameters.
+ *
+ * Returns: the initialized GnomeViewFrame object @view_frame that implements the
+ * GNOME::ViewFrame CORBA service.
+ */
 GnomeViewFrame *
 gnome_view_frame_construct (GnomeViewFrame *view_frame,
 			    GNOME_ViewFrame corba_view_frame,
@@ -92,9 +104,9 @@ gnome_view_frame_construct (GnomeViewFrame *view_frame,
 
 /**
  * gnome_view_frame_new:
- * @client_site: the client site to which this ViewFrame belongs.
+ * @client_site: the client site to which the newly-created ViewFrame will belong.
  *
- * Returns a GnomeViewFrame object that implements the
+ * Returns: GnomeViewFrame object that implements the
  * GNOME::ViewFrame CORBA service.
  */
 GnomeViewFrame *
@@ -183,6 +195,11 @@ gnome_view_frame_init (GnomeObject *object)
 {
 }
 
+/**
+ * gnome_view_frame_get_type:
+ *
+ * Returns: The GtkType for the GnomeViewFrame class.
+ */
 GtkType
 gnome_view_frame_get_type (void)
 {
@@ -206,6 +223,12 @@ gnome_view_frame_get_type (void)
 	return type;
 }
 
+/**
+ * gnome_view_frame_get_wrapper:
+ * @view_frame: A GnomeViewFrame object.
+ *
+ * Returns: The GnomeWrapper widget associated with this ViewFrame.
+ */
 GtkWidget *
 gnome_view_frame_get_wrapper (GnomeViewFrame *view_frame)
 {

@@ -25,12 +25,11 @@ static GtkBinClass *parent_class;
 
 /**
  * gnome_wrapper_get_type:
- * @void: 
  * 
  * Generates a unique type ID for GnomeWrapperClass.
  * 
- * Return value: the type ID for GnomeWrapperClass.
- **/
+ * Returns: the type ID for GnomeWrapperClass.
+ */
 GtkType
 gnome_wrapper_get_type (void)
 {
@@ -262,12 +261,11 @@ gnome_wrapper_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 
 /**
  * gnome_wrapper_new:
- * @void: 
  * 
  * Creates a new wrapper widget.  It starts covered by default.
  * 
- * Return value: The newly-created wrapper widget.
- **/
+ * Returns: The newly-created wrapper widget.
+ */
 GtkWidget *
 gnome_wrapper_new (void)
 {
@@ -281,7 +279,7 @@ gnome_wrapper_new (void)
  * 
  * Sets the covered status of a wrapper widget by showing or hiding the cover
  * window as appropriate.
- **/
+ */
 void
 gnome_wrapper_set_covered (GnomeWrapper *wrapper, gboolean covered)
 {
@@ -307,8 +305,8 @@ gnome_wrapper_set_covered (GnomeWrapper *wrapper, gboolean covered)
  * 
  * Queries the covered status of a wrapper widget.
  * 
- * Return value: Whether the wrapper widget is covering its child or not.
- **/
+ * Returns: Whether the wrapper widget is covering its child or not.
+ */
 gboolean
 gnome_wrapper_is_covered (GnomeWrapper *wrapper)
 {

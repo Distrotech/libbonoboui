@@ -41,7 +41,8 @@ idls =						\
 	$(top_srcdir)/idl/gnome-moniker.idl	\
 	$(top_srcdir)/idl/gnome-persist.idl	\
 	$(top_srcdir)/idl/gnome-storage.idl	\
-	$(top_srcdir)/idl/gnome-progressive.idl
+	$(top_srcdir)/idl/gnome-progressive.idl \
+	$(top_srcdir)/idl/gnome-ui-handler.idl
 
 idl_flags = `$(GNOME_CONFIG) --cflags idl`
 
@@ -76,7 +77,8 @@ libbonobo_la_SOURCES =			\
 	gnome-stream-memory.c		\
 	gnome-view.c			\
 	gnome-view-frame.c		\
-	gnome-wrapper.c
+	gnome-wrapper.c			\
+	gnome-ui-handler.c
 
 
 
@@ -114,7 +116,8 @@ libbonoboinclude_HEADERS =		\
 	gnome-stream-memory.h		\
 	gnome-view.h			\
 	gnome-view-frame.h		\
-	gnome-wrapper.h
+	gnome-wrapper.h			\
+	gnome-ui-handler.h
 
 test_container_SOURCES =		\
 	test-container.c

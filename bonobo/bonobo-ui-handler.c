@@ -15,6 +15,7 @@
  *  - make sure it's easy to walk the tree.  Note that if you don't take a snapshot, it may
  *    change while you walk it.
  *  - change *item == NULL to *item==END_ENTRY
+ *  - popup menus!  fuck.
  */
 
 #include <config.h>
@@ -45,21 +46,6 @@ create_gnome_ui_handler (GnomeObject *object)
 
 	return gnome_object_activate_servant (object, servant);
 }
-
-GnomeUIHandler *
-gnome_ui_handler_construct (GnomeUIHandler *ui_handler, GNOME_UIHandler corba_uihandler)
-{
-	g_return_val_if_fail (ui_handler != NULL, NULL);
-	g_return_val_if_fail (GNOME_IS_UI_HANDLER (view), NULL);
-	g_return_val_if_fail (corba_uihandler != CORBA_OBJECT_NIL, NULL);
-
-	gnome_object_construct (GNOME_OBJECT (ui_handler), corba_uihandler);
-
-	ui_handler->top = g_new0 (GnomeUIHandlerTopLevelData, 1);
-
-	return ui_handler;
-}
-
 
 static void
 gnome_ui_handler_destroy (GtkObject *object)
@@ -107,6 +93,8 @@ gnome_ui_handler_init (GnomeObject *object)
 
 /**
  * gnome_ui_handler_get_type:
+ *
+ * Returns: the GtkType corresponding to the GnomeUIHandler class.
  */
 GtkType
 gnome_ui_handler_get_type (void)
@@ -130,6 +118,24 @@ gnome_ui_handler_get_type (void)
 
 	return type;
 }
+
+/**
+ * gnome_ui_handler_construct:
+ */
+GnomeUIHandler *
+gnome_ui_handler_construct (GnomeUIHandler *ui_handler, GNOME_UIHandler corba_uihandler)
+{
+	g_return_val_if_fail (ui_handler != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_UI_HANDLER (view), NULL);
+	g_return_val_if_fail (corba_uihandler != CORBA_OBJECT_NIL, NULL);
+
+	gnome_object_construct (GNOME_OBJECT (ui_handler), corba_uihandler);
+
+	ui_handler->top = g_new0 (GnomeUIHandlerTopLevelData, 1);
+
+	return ui_handler;
+}
+
 
 /**
  * gnome_ui_handler_new:
@@ -189,7 +195,7 @@ typedef struct {
 
 /*
  * This is a helper function used by gnome_ui_handler_rmeove_containee
- * to remove all of the menu items associated with a given containee.a
+ * to remove all of the menu items associated with a given containee.
  */
 gboolean
 remove_containee_menu_item (gpointer key, gpointer value, gpointer user_data)
@@ -212,7 +218,9 @@ remove_containee_menu_item (gpointer key, gpointer value, gpointer user_data)
 			}
 		}
 
-		l = g_list_remove (l, remove_me);
+
+		g_list_remove ( .. FIXME .. );
+
 	} while (remove_me != NULL);
 
 	/*
@@ -222,6 +230,7 @@ remove_containee_menu_item (gpointer key, gpointer value, gpointer user_data)
 	if (l == NULL)
 		return TRUE;
 
+	
 	/*
 	 * Otherwise, just insert the new shortened list into the hash
 	 * table.
@@ -297,12 +306,12 @@ gnome_ui_handler_remove_containee (GnomeUIHandler *uih, GNOME_UIHandler containe
 	closure->containee = containee;
 
 	/*
-	 * Remove the menu items associated with this containee.
+	 * Remove all of the menu items owned by this containee.
 	 */
 	g_hash_table_foreach_remove (uih->path_to_menu_item, remove_containee_menu_item, closure);
 
 	/*
-	 * Remove the toolbar items associated with this containee.
+	 * Remove the toolbar items owned by this containee.
 	 */
 	g_hash_table_foreach_remove (uih->path_to_menu_item, remove_containee_toolbar_item, closure);
 }
@@ -1337,11 +1346,16 @@ free_menu_item (GnomeUIHandlerMenuItem *item)
 }
 
 static gboolean
-remove_menu_item_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, char *path)
+remove_menu_item_data (GnomeUIHandler *uih, MenuItemInternal *internal_item)
 {
 	MenuItemInternal *remove_me;
 	gboolean head_removed;
 	GList *l, *curr;
+	char *path;
+
+	g_return_if_fail (internal_item != NULL);
+
+	path = g_strdup (internal_item->item->path);
 
 	/*
 	 * Get the list of menu items which match this path.  There
@@ -1351,30 +1365,10 @@ remove_menu_item_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, char *pat
 	 */
 	l = g_hash_table_lookup (uih->path_to_menu_item, path);
 
-	remove_me = NULL;
-	for (curr = l; curr != NULL; curr = curr->next) {
-		MenuItemInternal *internal = (MenuItemInternal *) l->data;
-
-		if (internal->uih_corba == uih_corba) {
-			/*
-			 * This is a match.  Remove it.
-			 */
-			remove_me = internal;
-			break;
-		}
-	}
-
-	if (remove_me == l->data)
+	if (internal_item == l->data)
 		head_removed = TRUE;
 	else
 		head_removed = FALSE;
-
-	if (remove_me == NULL) {
-		g_warning ("remove_menu_item_data: Menu item [%s] matching "
-			   "UIHandler CORBA interface [%d] not found!\n",
-			   path, GPOINTER_TO_INT (uih_corba));
-		return head_removed;
-	}
 
 	/*
 	 * Free the internal data structures associated with this
@@ -1382,7 +1376,7 @@ remove_menu_item_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, char *pat
 	 */
 	free_menu_item (internal->item);
 	g_free (internal);
-	l = g_list_remove (l, internal);
+	l = g_list_remove (l, internal_item);
 
 	if (l != NULL) {
 		g_hash_table_insert (uih->path_to_menu_item, path);
@@ -1396,26 +1390,23 @@ remove_menu_item_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba, char *pat
 		remove_parent_menu_entry (uih, path);
 	}
 
+	g_free (path);
+
 	return head_removed;
 }
 
-/**
- * gnome_ui_handler_menu_remove:
- */
-void
-gnome_ui_handler_menu_remove (GnomeUIHandler *uih, char *path)
+static void
+remove_menu_item (GnomeUIHandler *uih, MenuItemInternal *internal_remove_me)
 {
-	gboolean head_removed;
+	char *path;
 
-	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (path != NULL);
+	path = g_strdup (internal_remove_me->item->path);
 
 	/*
 	 * Remove the internal data structures associated with this
 	 * menu item.
 	 */
-	head_removed = remove_menu_item_data (uih, gnome_object_getref (uih), path);
+	head_removed = remove_menu_item_data (uih, gnome_object_getref (uih), internal_remove_me);
 
 	/*
 	 * If we are the top-level UIHandler (which is the same as
@@ -1479,16 +1470,40 @@ gnome_ui_handler_menu_remove (GnomeUIHandler *uih, char *path)
 			 * then we are done.
 			 */
 			l = g_hash_table_lookup (uih->path_to_menu_item, path);
-			if (l->data == NULL)
+			if (l->data == NULL) {
+				g_free (path);
 				return;
+			}
 
 			menu_item_container_create (uih, (GnomeUIHandlerMenuItem *) l->data);
 		}
 	}
+
+	g_free (path);
 }
 
 /**
- * gnome_ui_Handler_menu_set_info:
+ * gnome_ui_handler_menu_remove:
+ */
+void
+gnome_ui_handler_menu_remove (GnomeUIHandler *uih, char *path)
+{
+	gboolean head_removed;
+	MenuItemInternal *internal;
+
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (path != NULL);
+
+	internal = get_menu_item (uih, path);
+	if (internal == NULL)
+		return;
+
+	remove_menu_item (uih, internal);
+}
+
+/**
+ * gnome_ui_handler_menu_set_info:
  */
 void
 gnome_ui_handler_menu_set_info (GnomeUIHandler *uih, char *path,
@@ -1539,7 +1554,7 @@ get_container_menu_item (GnomeUIHandler *uih, char *path)
  * gnome_ui_handler_menu_fetch_one:
  */
 GnomeUIHandlerMenuItem *
-gnome_ui_handler_menu_fetch_one (GnomeUIHandler *uih, char *path)
+ggnome_ui_handler_menu_fetch_one (GnomeUIHandler *uih, char *path)
 {
 	GnomeUIHandlerMenuItem *item;
 
@@ -1571,6 +1586,15 @@ gnome_ui_handler_menu_free_one (GnomeUIHandlerMenuItem *item)
 	free_menu_item (item);
 }
 
+/**
+ * gnome_ui_handler_menu_free_list:
+ * @array: A NULL-terminated array of GnomeUIHandlerMenuItem structures to be freed.
+ *
+ * Frees the list of menu items in @array and frees the array itself.
+ * Items are only freed to a depth of one; use
+ * gnome_ui_handler_menu_free_tree() if you want to free a tree of menu
+ * items.
+ */
 void
 gnome_ui_handler_menu_free_list (GnomeUIHandlerMenuItem *array);
 {
@@ -1580,8 +1604,14 @@ gnome_ui_handler_menu_free_list (GnomeUIHandlerMenuItem *array);
 
 	for (curr = array; *curr != NULL; curr ++)
 		free_menu_item (curr);
+
+	g_free (array);
 }
 
+/**
+ * gnome_ui_handler_menu_free_tree:
+ * @tree: A NULL-terminated array of GnomeUIHandlerMenuItem structures to be freed.
+ */
 void
 gnome_ui_handler_menu_free_tree (GnomeUIHandlerMenuItem *tree)
 {

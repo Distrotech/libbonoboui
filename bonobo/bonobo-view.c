@@ -86,6 +86,15 @@ create_gnome_view (GnomeObject *object)
 	
 }
 
+/**
+ * gnome_view_construct:
+ * @view: The GnomeView object to be initialized.
+ * @corba_view: The CORBA GNOME_View interface for the new GnomeView object.
+ * @widget: A widget which contains the view and which will be passed
+ * to the container process's ViewFrame object.
+ *
+ * Returns: the intialized GnomeView object.
+ */
 GnomeView *
 gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 {
@@ -106,9 +115,12 @@ gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 
 /**
  * gnome_view_new:
- * @widget: a GTK widget that represents the view to pass to the container process
+ * @widget: a GTK widget which contains the view and which will be
+ * passed to the container process.
  *
- * Returns a GnomeView object that implements the GNOME::View CORBA service that
+ * This function creates a new GnomeView object for @widget.
+ *
+ * Returns: a GnomeView object that implements the GNOME::View CORBA service that
  * will transfer the @widget to the container process.
  */
 GnomeView *
@@ -185,6 +197,11 @@ gnome_view_init (GnomeObject *object)
 {
 }
 
+/**
+ * gnome_view_get_type:
+ *
+ * Returns: The GtkType corresponding to the GnomeView class.
+ */
 GtkType
 gnome_view_get_type (void)
 {
