@@ -23,6 +23,13 @@ typedef struct {
 
 typedef struct {
 	GnomeObjectClass parent_class;
+
+	/*
+	 * Signals
+	 */
+	void (*do_verb)            (GnomeView *comp,
+				    const CORBA_char *verb_name);
+
 } GnomeViewClass;
 
 GtkType      gnome_view_get_type           (void);

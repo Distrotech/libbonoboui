@@ -7,7 +7,6 @@
  *    Nat Friedman (nat@gnome-support.com)
  *    Miguel de Icaza (miguel@gnu.org)
  */
-
  
 #include <config.h>
 #include <gnome.h>
@@ -65,6 +64,32 @@ launch_server (GnomeClientSite *client_site, GnomeContainer *container, char *go
 	return object_server;
 }
 
+static gboolean
+view_frame_activated_cb (GnomeViewFrame *view_frame, gboolean state,
+			 GnomeObjectClient *server_object)
+{
+
+	if (state) {
+		GNOME_BonoboObject_verb_list *verbs;
+		int i;
+
+		CORBA_exception_init (&ev);
+		verbs = GNOME_BonoboObject_get_verb_list (
+			GNOME_OBJECT (server_object)->object,
+			&ev);
+		if (ev._major != CORBA_NO_EXCEPTION) {
+			g_warning ("Could not get verb list!\n");
+		}
+
+		for (i = 0; i < verbs->_length; i ++) {
+			printf ("Got Verb: %s\n", verbs->_buffer[i]);
+		}			
+
+	}
+
+	return FALSE;
+} /* view_frame_activated_cb */
+
 static GnomeViewFrame *
 add_view (GtkWidget *widget, Application *app,
 	  GnomeClientSite *client_site, GnomeObjectClient *server) 
@@ -73,7 +98,12 @@ add_view (GtkWidget *widget, Application *app,
 	GtkWidget *view_widget;
 	GtkWidget *frame;
 	
-	view_frame = gnome_bonobo_object_new_view (server, client_site);
+	view_frame = gnome_bonobo_object_client_new_view_simple (server,
+								 client_site);
+	gtk_signal_connect (GTK_OBJECT (view_frame), "view_activated",
+			    GTK_SIGNAL_FUNC (view_frame_activated_cb),
+			    server);
+
 	view_widget = gnome_view_frame_get_wrapper (view_frame);
 
 	frame = gtk_frame_new ("BonoboObject");
@@ -83,14 +113,13 @@ add_view (GtkWidget *widget, Application *app,
 
 	gtk_widget_show_all (frame);
 
-	gnome_bonobo_object_client_activate (server);
-
 	return view_frame;
-}
+} /* add_view */
 
 
 static GnomeObjectClient *
-add_cmd (GtkWidget *widget, Application *app, char *server_goadid, GnomeClientSite **client_site)
+add_cmd (GtkWidget *widget, Application *app, char *server_goadid,
+	 GnomeClientSite **client_site)
 {
 	GtkWidget *w;
 	GnomeObjectClient *server;

@@ -19,6 +19,26 @@ static GnomeObjectClass *gnome_view_parent_class;
 static POA_GNOME_View__epv gnome_view_epv;
 static POA_GNOME_View__vepv gnome_view_vepv;
 
+enum {
+	DO_VERB,
+	LAST_SIGNAL
+};
+
+static guint view_signals [LAST_SIGNAL];
+
+static void
+impl_GNOME_View_do_verb (PortableServer_Servant servant,
+				 const CORBA_char *verb_name,
+				 CORBA_Environment *ev)
+{
+	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
+
+	gtk_signal_emit (
+		GTK_OBJECT (view),
+		view_signals [DO_VERB],
+		(gchar *) verb_name);
+}
+
 static void
 impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 			       const CORBA_short width,
@@ -73,6 +93,7 @@ gnome_view_construct (GnomeView *view, GNOME_View corba_view, GtkWidget *widget)
 {
 	g_return_val_if_fail (view != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_VIEW (view), NULL);
+	g_return_val_if_fail (corba_view != CORBA_OBJECT_NIL, NULL);
 	g_return_val_if_fail (widget != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
 
@@ -130,6 +151,7 @@ init_view_corba_class (void)
 	/* The entry point vectors for this GNOME::View class */
 	gnome_view_epv.size_allocate = impl_GNOME_View_size_allocate;
 	gnome_view_epv.set_window = impl_GNOME_View_set_window;
+	gnome_view_epv.do_verb = impl_GNOME_View_do_verb;
 
 	/* Setup the vector of epvs */
 	gnome_view_vepv.GNOME_obj_epv = &gnome_obj_epv;
@@ -142,6 +164,18 @@ gnome_view_class_init (GnomeViewClass *class)
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
 	gnome_view_parent_class = gtk_type_class (gnome_object_get_type ());
+
+	view_signals [DO_VERB] =
+                gtk_signal_new ("do_verb",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET(GnomeViewClass, do_verb), 
+                                gtk_marshal_NONE__POINTER,
+                                GTK_TYPE_NONE, 1,
+				GTK_TYPE_STRING);
+
+	gtk_object_class_add_signals (object_class, view_signals,
+				      LAST_SIGNAL);
 
 	object_class->destroy = gnome_view_destroy;
 

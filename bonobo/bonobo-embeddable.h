@@ -18,7 +18,7 @@ BEGIN_GNOME_DECLS
 struct _GnomeBonoboObject;
 typedef struct _GnomeBonoboObject GnomeBonoboObject;
 
-typedef GnomeView * (*GnomeViewFactory)(GnomeBonoboObject *bonobo_object, void *closure);
+typedef GnomeView * (*GnomeViewFactory)(GnomeBonoboObject *bonobo_object, const GNOME_ViewFrame view_frame, void *closure);
 					
 struct _GnomeBonoboObject {
 	GnomeObject base;
@@ -45,9 +45,6 @@ typedef struct {
 	/*
 	 * Signals
 	 */
-	void (*do_verb)            (GnomeBonoboObject *comp,
-				    CORBA_short verb,
-				    const CORBA_char *verb_name);
 	void (*host_name_changed)  (GnomeBonoboObject *comp);
 } GnomeBonoboObjectClass;
 

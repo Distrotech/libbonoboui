@@ -16,24 +16,11 @@ static GnomeObjectClass *gnome_bonobo_object_parent_class;
 
 enum {
 	HOST_NAME_CHANGED,
-	DO_VERB,
 	LAST_SIGNAL
 };
 
 static guint bonobo_object_signals [LAST_SIGNAL];
 
-static void
-impl_GNOME_BonoboObject_do_verb (PortableServer_Servant servant,
-				 const CORBA_char *verb_name,
-				 CORBA_Environment *ev)
-{
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
-
-	gtk_signal_emit (
-		GTK_OBJECT (bonobo_object),
-		bonobo_object_signals [DO_VERB],
-		(gchar *) verb_name);
-}
 
 static void
 impl_GNOME_BonoboObject_set_client_site (PortableServer_Servant servant,
@@ -162,14 +149,16 @@ impl_GNOME_BonoboObject_get_misc_status (PortableServer_Servant servant,
 }
 
 static GNOME_View
-impl_GNOME_BonoboObject_new_view (PortableServer_Servant servant, CORBA_Environment *ev)
+impl_GNOME_BonoboObject_new_view (PortableServer_Servant servant,
+				  const GNOME_ViewFrame view_frame,
+				  CORBA_Environment *ev)
 {
 	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
 	GnomeView *view;
 	CORBA_Environment evx;
 	GNOME_View ret;
 	
-	view = bonobo_object->view_factory (bonobo_object, bonobo_object->view_factory_closure);
+	view = bonobo_object->view_factory (bonobo_object, view_frame, bonobo_object->view_factory_closure);
 
 	if (view == NULL)
 		return CORBA_OBJECT_NIL;
@@ -183,7 +172,6 @@ impl_GNOME_BonoboObject_new_view (PortableServer_Servant servant, CORBA_Environm
 
 POA_GNOME_BonoboObject__epv gnome_bonobo_object_epv = {
 	NULL,
-	&impl_GNOME_BonoboObject_do_verb,
 	&impl_GNOME_BonoboObject_set_client_site,
 	&impl_GNOME_BonoboObject_get_client_site,
 	&impl_GNOME_BonoboObject_set_host_name,
@@ -306,16 +294,6 @@ gnome_bonobo_object_class_init (GnomeBonoboObjectClass *class)
 
 	gnome_bonobo_object_parent_class =
 		gtk_type_class (gnome_object_get_type ());
-
-	bonobo_object_signals [DO_VERB] =
-                gtk_signal_new ("do_verb",
-                                GTK_RUN_LAST,
-                                object_class->type,
-                                GTK_SIGNAL_OFFSET(GnomeBonoboObjectClass, do_verb), 
-                                gtk_marshal_NONE__INT_POINTER,
-                                GTK_TYPE_NONE, 2,
-                                GTK_TYPE_INT,
-				GTK_TYPE_STRING);
 
 	bonobo_object_signals [HOST_NAME_CHANGED] =
                 gtk_signal_new ("host_name_changed",

@@ -2,7 +2,8 @@
  *
  * Copyright (C) 1999 the Free Software Foundation
  *
- * Author: Federico Mena <federico@nuclecu.unam.mx>
+ * Author:
+ *    Federico Mena <federico@nuclecu.unam.mx>
  */
 
 #include <config.h>
@@ -166,11 +167,13 @@ gnome_wrapper_realize (GtkWidget *widget)
 	attributes.wclass = GDK_INPUT_ONLY;
 
 	wrapper->cover = gdk_window_new (parent_window, &attributes, attributes_mask);
+	gdk_window_set_events (wrapper->cover, GDK_BUTTON_PRESS_MASK);
 	gdk_window_set_user_data (wrapper->cover, wrapper);
 
 	/* Style */
 
 	widget->style = gtk_style_attach (widget->style, widget->window);
+	
 	gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 }
 

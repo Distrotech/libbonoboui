@@ -1,5 +1,5 @@
 /**
- * GNOME view fram object
+ * GNOME view frame object.
  *
  * Author:
  *   Nat Friedman (nat@nat.org)
