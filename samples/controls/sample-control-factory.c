@@ -40,7 +40,6 @@ main (int argc, char **argv)
 	init_bonobo (argc, argv);
 
 	bonobo_clock_factory_init ();
-
 	bonobo_calculator_factory_init ();
 
 	bonobo_main ();

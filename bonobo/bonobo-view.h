@@ -27,7 +27,6 @@ typedef void (*GnomeViewVerbFunc)(GnomeView *view, const char *verb_name, void *
 struct _GnomeView {
 	GnomeControl base;
 
-	GnomeUIHandler   *uih;
 	GnomeEmbeddable  *embeddable;
 	GNOME_ViewFrame   view_frame;
 	GnomeViewPrivate *priv;

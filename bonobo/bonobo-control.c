@@ -32,15 +32,16 @@ static GnomeObjectClass *gnome_control_parent_class;
 POA_GNOME_Control__vepv gnome_control_vepv;
 
 struct _GnomeControlPrivate {
-	GtkWidget *plug;
+	GtkWidget          *plug;
 
-	int plug_destroy_id;
+	int                 plug_destroy_id;
 
-	GtkWidget  *widget;
+	GtkWidget          *widget;
 
-	GNOME_ControlFrame control_frame;
+	GNOME_ControlFrame  control_frame;
 
-	GnomePropertyBag *propbag;
+	GnomeUIHandler     *uih;
+	GnomePropertyBag   *propbag;
 };
 
 /**
@@ -415,8 +416,48 @@ gnome_control_get_control_frame (GnomeControl *control)
 }
 
 /**
- * gnome_control_set_property_bag:
+ * gnome_view_set_ui_handler:
+ * @view: A GnomeView object.
+ * @uih: A GnomeUIHandler object.
  *
+ * Sets the GnomeUIHandler for @view to @uih.  This provides a
+ * convenient way for a component to store the GnomeUIHandler which it
+ * will use to merge menus and toolbars.
+ */
+void
+gnome_control_set_ui_handler (GnomeControl *control, GnomeUIHandler *uih)
+{
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (GNOME_IS_CONTROL (control));
+
+	control->priv->uih = uih;
+}
+
+/**
+ * gnome_control_get_ui_handler:
+ * @control: A GnomeControl object for which a GnomeUIHandler has been
+ * created and set.
+ *
+ * Returns: The GnomeUIHandler which was associated with @control using
+ * gnome_control_set_ui_handler().
+ */
+GnomeUIHandler *
+gnome_control_get_ui_handler (GnomeControl *control)
+{
+	g_return_val_if_fail (control != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CONTROL (control), NULL);
+
+
+	return control->priv->uih;
+}
+
+/**
+ * gnome_control_set_property_bag:
+ * @control: A #GnomeControl object.
+ * @pb: A #GnomePropertyBag.
+ *
+ * Binds @pb to @control.  When a remote object queries @control
+ * for its property bag, @pb will be used in the responses.
  */
 void
 gnome_control_set_property_bag (GnomeControl *control, GnomePropertyBag *pb)

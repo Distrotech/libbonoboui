@@ -403,7 +403,7 @@ gnome_view_set_ui_handler (GnomeView *view, GnomeUIHandler *uih)
 	g_return_if_fail (view != NULL);
 	g_return_if_fail (GNOME_IS_VIEW (view));
 
-	view->uih = uih;
+	gnome_control_set_ui_handler (GNOME_CONTROL (view), uih);
 }
 
 /**
@@ -419,7 +419,8 @@ gnome_view_get_ui_handler (GnomeView *view)
 	g_return_val_if_fail (view != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_VIEW (view), NULL);
 
-	return view->uih;
+
+	return gnome_control_get_ui_handler (GNOME_CONTROL (view));
 }
 
 /**

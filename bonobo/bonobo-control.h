@@ -48,6 +48,9 @@ GnomeControl            *gnome_control_new                      (GtkWidget *widg
 void		         gnome_control_set_control_frame        (GnomeControl *control,
 		        				         GNOME_ControlFrame control_frame);
 GNOME_ControlFrame       gnome_control_get_control_frame        (GnomeControl *control);
+void                     gnome_control_set_ui_handler           (GnomeControl *control,
+								 GnomeUIHandler *uih);
+GnomeUIHandler          *gnome_control_get_ui_handler           (GnomeControl *control);
 		        				             
 void		         gnome_control_set_property_bag         (GnomeControl *control,
 		        				         GnomePropertyBag *pb);
