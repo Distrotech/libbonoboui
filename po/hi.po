@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.x\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2002-09-10 18:30+0530\n"
 "Last-Translator: Anurag Seetha <anuragseetha@yahoo.com>\n"
 "Language-Team: Hindi <indlinux-hindi-gnome@lists.sourceforge.net>\n"
@@ -150,15 +150,15 @@ msgstr "केवल पाठ्य"
 msgid "_Priority text only"
 msgstr "केवल पाठ्य की प्राथमिकता (_P)"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "डिबग"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "XML फेकें (_D)"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "पूरे UI का XML विवरण कन्सोल पर फेकें"
 
@@ -295,11 +295,11 @@ msgstr "क्या गतिशील है?"
 msgid "whether the toolbar is floating"
 msgstr "क्या टूलबार गतिशील है?"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "तत्व (_C)"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "इस अनुप्रयोग के बारे में सहायता"
 

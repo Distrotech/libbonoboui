@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Libbonoboui.Gnome.Core-2.1\n"
-"POT-Creation-Date: 2002-12-12 06:10+0100\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2002-12-22 17:22+0530\n"
 "Last-Translator: Pramod <rpramod@postmaster.co.uk>\n"
 "Language-Team: Kannada <LL@li.org>\n"
@@ -38,29 +38,22 @@ msgstr ""
 msgid "Un dock the toolbar"
 msgstr ""
 
-#: bonobo/bonobo-dock-item.c:291
-#: bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
 msgstr ""
 
-#: bonobo/bonobo-dock-item.c:302
-#: bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1086
-#: bonobo/bonobo-ui-toolbar.c:1087
+#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
 msgid "Orientation"
 msgstr "ಸ್ಥಾನ"
 
-#: bonobo/bonobo-dock-item.c:313
-#: bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1105
-#: bonobo/bonobo-ui-toolbar.c:1106
+#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred width"
 msgstr ""
 
-#: bonobo/bonobo-dock-item.c:322
-#: bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1114
-#: bonobo/bonobo-ui-toolbar.c:1115
+#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
 msgid "Preferred height"
 msgstr ""
 
@@ -84,8 +77,7 @@ msgstr ""
 msgid "Whether X events should be forwarded"
 msgstr ""
 
-#: bonobo/bonobo-selector-widget.c:300
-#: bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "ಹೆಸರು"
 
@@ -98,7 +90,10 @@ msgid "Interfaces required"
 msgstr ""
 
 #: bonobo/bonobo-selector.c:346
-msgid "A NULL_terminated array of interfaces which a server must support in order to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
+msgid ""
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
 msgstr ""
 
 #: bonobo/bonobo-selector.c:348
@@ -133,13 +128,11 @@ msgstr "ಉಪಕರಣ ಪಟ್ಟಿಗಳು"
 msgid "toolbars"
 msgstr "ಉಪಕರಣ ಪಟ್ಟಿಗಳು"
 
-#: bonobo/bonobo-ui-config-widget.c:313
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "ನೋಡು"
 
-#: bonobo/bonobo-ui-config-widget.c:322
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "ಪ್ರತಿಮೆ"
 
@@ -155,15 +148,15 @@ msgstr "ಪಠ್ಯ ಮಾತ್ರ"
 msgid "_Priority text only"
 msgstr "ಆಧ್ಯತೆಯಿರುವ ಪಠ್ಯ ಮಾತ್ರ ತೋರಿಸು"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "ದೋಷದ ಹುಡುಕಾಟ"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr ""
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr ""
 
@@ -175,10 +168,8 @@ msgstr ""
 msgid "Gdk debugging flags to set"
 msgstr ""
 
-#: bonobo/bonobo-ui-init-gtk.c:113
-#: bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr ""
 
@@ -234,8 +225,7 @@ msgstr "ಅತಿಧೇಯ ಗಣಕ"
 msgid "PORT"
 msgstr "ಸಂಪರ್ಕ ಸ್ಥಾನ"
 
-#: bonobo/bonobo-ui-init-gtk.c:155
-#: bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
 msgstr "ಶೈಲಿ"
 
@@ -295,19 +285,19 @@ msgstr "ಗ್ರಾಹಕೀಯಗೊಳಿಸು"
 msgid "Customize the toolbar"
 msgstr "ಉಪಕರಣ ಪಟ್ಟಿಯನ್ನು ಗ್ರಾಹಕೀಯಗೊಳಿಸು"
 
-#: bonobo/bonobo-ui-toolbar.c:1096
+#: bonobo/bonobo-ui-toolbar.c:1113
 msgid "is floating"
 msgstr "ತೆಳುತ್ತಿದೆ"
 
-#: bonobo/bonobo-ui-toolbar.c:1097
+#: bonobo/bonobo-ui-toolbar.c:1114
 msgid "whether the toolbar is floating"
 msgstr ""
 
-#: bonobo/bonobo-ui-util.c:615
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr ""
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr ""
 
@@ -411,4 +401,3 @@ msgstr ""
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr ""
-

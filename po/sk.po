@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-01-12 23:47+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
@@ -150,15 +150,15 @@ msgstr "Len text"
 msgid "_Priority text only"
 msgstr "Len _prioritný text"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Ladenie"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Vypísať XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Vypísať kompletný XML popis používateľského rozhrania na konzolu"
 
@@ -295,11 +295,11 @@ msgstr "je plávajúca"
 msgid "whether the toolbar is floating"
 msgstr "či je lišta nástrojov plávajúca"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Obsah"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Pozrieť pomocníka pre túto aplikáciu"
 

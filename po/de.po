@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2002-11-02 13:38+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -150,15 +150,15 @@ msgstr "Nur Text"
 msgid "_Priority text only"
 msgstr "_Priorität nur Text"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Fehlerdiagnose"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "XML _ausgeben"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr ""
 "Die XML-Beschreibung der gesamten Benutzeroberfläche im Terminal ausgeben"
@@ -296,11 +296,11 @@ msgstr "ist schwebend"
 msgid "whether the toolbar is floating"
 msgstr "Ob die Werkzeugleiste schwebend ist"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "I_nhalt"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Die für diese Anwendung verfügbare Hilfe betrachten"
 

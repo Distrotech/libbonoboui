@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-01-02 01:59+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -154,15 +154,15 @@ msgstr "Tylko napisy"
 msgid "_Priority text only"
 msgstr "_Tylko ważne napisy"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Debugowanie"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Wypisz XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Wypisuje opis całego UI w XML-u na wyjście programu"
 
@@ -299,11 +299,11 @@ msgstr "Oderwany"
 msgid "whether the toolbar is floating"
 msgstr "Określa, czy pasek narzędziowy jest oderwany"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Zawartość"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Wyświetla pomoc na temat tej aplikacji"
 

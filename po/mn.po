@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD\n"
-"POT-Creation-Date: 2003-01-08 06:04+0100\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-01-16 21:18+0100\n"
 "Last-Translator: Sanlig Badral <badral@chinggis.com>\n"
 "Language-Team: mongolian <mn@li.org>\n"
@@ -44,17 +44,17 @@ msgid "Shadow type"
 msgstr "Сүүдрийн төрөл"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
+#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
 msgid "Orientation"
 msgstr "Хандлага"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
+#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred width"
 msgstr "Эрхэмлэсэн өргөн"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
+#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
 msgid "Preferred height"
 msgstr "Эрхэмлэсэн өндөр"
 
@@ -152,15 +152,15 @@ msgstr "Зөвхөн текст"
 msgid "_Priority text only"
 msgstr "_Давуу эрх зөвхөн текстэд"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Алдаа оношлох"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "XML _гаргах"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Бүхийл хэрэглэгчийн гадаргууг XML тодорхойлолт терминал руу гарах"
 
@@ -289,19 +289,19 @@ msgstr "_Тааруулах"
 msgid "Customize the toolbar"
 msgstr "Багаж самбар тааруулах"
 
-#: bonobo/bonobo-ui-toolbar.c:1096
+#: bonobo/bonobo-ui-toolbar.c:1113
 msgid "is floating"
 msgstr "Хөвүүлж байна"
 
-#: bonobo/bonobo-ui-toolbar.c:1097
+#: bonobo/bonobo-ui-toolbar.c:1114
 msgid "whether the toolbar is floating"
 msgstr "Багаж самбарыг хөвүүлэх эсэх"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "А_гуулга"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Энэ х.программд хүрэх тусламжийг харуулах"
 
@@ -406,4 +406,3 @@ msgstr "libbonoboui-код инициацилагдахгүй байна"
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Bonobo-Хэрэглэгчийн гадарагуу инициацилагдсангүй"
-

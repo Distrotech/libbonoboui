@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-02-07 12:06+0100\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-02-07 16:57+0000\n"
 "Last-Translator: erkaN <erkaN@linux-sevenler.de>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org\n"
@@ -96,9 +96,9 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Bir sunucuyu desteklemesi gereken  NULL_terminated sürücü dizgisi seçim listesinde "
-"listelenmelidir. Eğer gösterilmez ise öntamımlı olarak  \"IDL:Bonobo/Embeddable:1.0\" "
-"alınır."
+"Bir sunucuyu desteklemesi gereken  NULL_terminated sürücü dizgisi seçim "
+"listesinde listelenmelidir. Eğer gösterilmez ise öntamımlı olarak  \"IDL:"
+"Bonobo/Embeddable:1.0\" alınır."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -152,15 +152,15 @@ msgstr "Sadece metin"
 msgid "_Priority text only"
 msgstr "_Öncelikli yalnız metin"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Hata ayıklama"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "XML _göster"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "UI XML açıklamalarının verilerini konsolda göster"
 
@@ -297,11 +297,11 @@ msgstr "kayandır"
 msgid "whether the toolbar is floating"
 msgstr "Acaba araç çubugu kayanmıdır"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_İçerik-"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Bu uygulama için yardım göster"
 
@@ -411,4 +411,3 @@ msgstr "Bonobo UI ilklendirilemiyor"
 
 #~ msgid "Select an object"
 #~ msgstr "Bir nesne seçin"
-

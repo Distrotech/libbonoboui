@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2003-02-05 19:53+0100\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-02-06 10:27+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesia <id@li.org>\n"
@@ -95,9 +95,9 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"array berisi interfaces yang NULL_terminated yang hendak digunakan oleh server "
-"agar bisa didaftar pada selector. Jika belum ada isinya, maka defaultnya bernilai "
-"\"IDL:Bonobo/Embeddable:1.0\""
+"array berisi interfaces yang NULL_terminated yang hendak digunakan oleh "
+"server agar bisa didaftar pada selector. Jika belum ada isinya, maka "
+"defaultnya bernilai \"IDL:Bonobo/Embeddable:1.0\""
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -151,15 +151,15 @@ msgstr "Teks saja"
 msgid "_Priority text only"
 msgstr "Teks yang menjadi _prioritas saja"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Debug"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Dump XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Perlihatkan semua deskripsi UI ke konsol"
 
@@ -296,11 +296,11 @@ msgstr "mengambang"
 msgid "whether the toolbar is floating"
 msgstr "pilih apakah toolbar harus mengambang atau tidak"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Isi"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Lihat layar bantu aplikasi ini"
 

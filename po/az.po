@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.107.0\n"
-"POT-Creation-Date: 2003-02-04 05:02+0100\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-02-21 12:52+0200\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
 "Language-Team: Azerbaijani Turkic <C@li.org>\n"
@@ -37,29 +37,22 @@ msgstr "Ləvazimat çubuğunu yapışdır"
 msgid "Un dock the toolbar"
 msgstr "Ləvazimat çubuğunu qopart"
 
-#: bonobo/bonobo-dock-item.c:291
-#: bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
 msgstr "Kölgələmə növü"
 
-#: bonobo/bonobo-dock-item.c:302
-#: bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103
-#: bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
 msgid "Orientation"
 msgstr "İstiqamət"
 
-#: bonobo/bonobo-dock-item.c:313
-#: bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122
-#: bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred width"
 msgstr "Tərcih edilən en"
 
-#: bonobo/bonobo-dock-item.c:322
-#: bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131
-#: bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
 msgid "Preferred height"
 msgstr "Tərcih edilən hündürlük"
 
@@ -83,8 +76,7 @@ msgstr "Hadisə Ötürmə"
 msgid "Whether X events should be forwarded"
 msgstr "X hadisələri ötürülsün ya yox"
 
-#: bonobo/bonobo-selector-widget.c:300
-#: bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "Ad"
 
@@ -97,8 +89,14 @@ msgid "Interfaces required"
 msgstr "Ara üz məcburidir"
 
 #: bonobo/bonobo-selector.c:346
-msgid "A NULL_terminated array of interfaces which a server must support in order to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
-msgstr "Vericinin seçicidəki siyahıda olması üçün dəstəkləməsi gərəkən ara üzlər qatarını NULL_ sonlandırıb. Əgər heç bir ara üz siyahıda yoxdursa əsas \"IDL:Bonobo/Embeddable:1.0\" -a dəyiş"
+msgid ""
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+"Vericinin seçicidəki siyahıda olması üçün dəstəkləməsi gərəkən ara üzlər "
+"qatarını NULL_ sonlandırıb. Əgər heç bir ara üz siyahıda yoxdursa əsas \"IDL:"
+"Bonobo/Embeddable:1.0\" -a dəyiş"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -132,13 +130,11 @@ msgstr "Ləvazimat çubuqları"
 msgid "toolbars"
 msgstr "Ləvazimat çubuqları"
 
-#: bonobo/bonobo-ui-config-widget.c:313
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Bax"
 
-#: bonobo/bonobo-ui-config-widget.c:322
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Timsal"
 
@@ -154,15 +150,15 @@ msgstr "Ancaq mətn"
 msgid "_Priority text only"
 msgstr "Təkcə _üstünlük mətni"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Xəta Ayıqlama"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "XML _Nüsxəsi"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Bütün Qrafiki Ara Üzün XML nüsxəsini konsola yaz"
 
@@ -174,10 +170,8 @@ msgstr "UIni Quraşdır"
 msgid "Gdk debugging flags to set"
 msgstr "Seçiləcək Gtk xəta alqılama bayraqları"
 
-#: bonobo/bonobo-ui-init-gtk.c:113
-#: bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162
-#: bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "BAYRAQLAR"
 
@@ -233,8 +227,7 @@ msgstr "QOVŞAQ"
 msgid "PORT"
 msgstr "QAPI"
 
-#: bonobo/bonobo-ui-init-gtk.c:155
-#: bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
 msgstr "TƏRZ"
 
@@ -302,11 +295,11 @@ msgstr "üzür"
 msgid "whether the toolbar is floating"
 msgstr "Ləvazimat çubuğu üzsün ya yox"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Məzmun"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Bu proqram üçün yardımı göstər"
 

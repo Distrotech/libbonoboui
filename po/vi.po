@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-01-10 22:10+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
@@ -150,15 +150,15 @@ msgstr "Chữ và hình"
 msgid "_Priority text only"
 msgstr "Chỉ ưu tiên _text"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Debug"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Dump XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Xuất (dump) toàn bộ mô tả UI bằng XML ra console"
 
@@ -295,11 +295,11 @@ msgstr "đang trôi nổi"
 msgid "whether the toolbar is floating"
 msgstr "thanh công cụ có trôi nổi hay không"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Nội dung"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Xem trợ giúp về ứng dụng này"
 

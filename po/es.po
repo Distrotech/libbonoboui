@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2002-12-17 22:01GMT\n"
 "Last-Translator: Germán Poo-Caamaño <gpoo@ubiobio.cl>\n"
 "Language-Team:  <traductores@es.gnome.org>\n"
@@ -151,15 +151,15 @@ msgstr "Sólo texto"
 msgid "_Priority text only"
 msgstr "Solo texto _prioritario"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Depurar"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Vaciar XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Vaciar la descripción completa del XML de la UI a la consola"
 
@@ -296,11 +296,11 @@ msgstr "flotante"
 msgid "whether the toolbar is floating"
 msgstr "si la barra de herramientas es flotante"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Contenidos"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Ver la ayuda para esta aplicación"
 

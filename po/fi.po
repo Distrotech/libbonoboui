@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2002-11-02 22:42+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -157,15 +157,15 @@ msgstr "Pelkkä teksti"
 msgid "_Priority text only"
 msgstr "_Vain tärkeä teksti"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Vianetsintä"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_XML-vedos"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Tulosta koko käyttöliittymän XML-kuvaus päätteeseen"
 
@@ -302,11 +302,11 @@ msgstr "kelluu"
 msgid "whether the toolbar is floating"
 msgstr "kelluuko työkalupalkki"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Sisältö"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Näytä tämän ohjelman ohje"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2002-12-10 19:39+0200\n"
 "Last-Translator: Alexander Shopov <al_shopov@web.bg>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -152,15 +152,15 @@ msgstr "Те_кст"
 msgid "_Priority text only"
 msgstr "Само важ_ния текст"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Чисти грешки"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Покажи XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Показва цялото описание на потребителския интерфейс в XML на конзолата"
 
@@ -297,11 +297,11 @@ msgstr "е свободна"
 msgid "whether the toolbar is floating"
 msgstr "дали лентата с инструменти е свободна"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Съдържание"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Виж помощ за това приложение"
 

@@ -4,11 +4,10 @@
 #
 # OBS. Nu sunt programator, m-am inspirat din celelalte localizări 
 # libbonobo, orice sugestie sau corectură este binevenită.
-
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui-2.1.2\n"
-"POT-Creation-Date: 2003-01-18 20:09+0100\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-01-20 20:59+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
@@ -45,17 +44,17 @@ msgid "Shadow type"
 msgstr "Tip umbră"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
+#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
 msgid "Orientation"
 msgstr "Orientare"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
+#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred width"
 msgstr "Lăţime preferată"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
+#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
 msgid "Preferred height"
 msgstr "Înălţime preferată"
 
@@ -153,15 +152,15 @@ msgstr "Doar text"
 msgid "_Priority text only"
 msgstr "_Doar textele importante"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Depanare"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Ieşire XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Listează întreaga descriere XML a interfeţei în consolă"
 
@@ -290,19 +289,19 @@ msgstr "Personali_zare"
 msgid "Customize the toolbar"
 msgstr "Personalizarea barei de unelte"
 
-#: bonobo/bonobo-ui-toolbar.c:1096
+#: bonobo/bonobo-ui-toolbar.c:1113
 msgid "is floating"
 msgstr "este flotantă"
 
-#: bonobo/bonobo-ui-toolbar.c:1097
+#: bonobo/bonobo-ui-toolbar.c:1114
 msgid "whether the toolbar is floating"
 msgstr "dacă bara de unelte este flotantă"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Conţinut"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Consultaţi manualul acestei aplicaţii"
 

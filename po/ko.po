@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2002-08-06 08:07+0900\n"
 "Last-Translator: Nam SungHyun <namsh@kldp.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -148,15 +148,15 @@ msgstr "글자만"
 msgid "_Priority text only"
 msgstr "우선 순위 글자만(_P)"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr ""
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr ""
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr ""
 
@@ -293,11 +293,11 @@ msgstr "움직이기"
 msgid "whether the toolbar is floating"
 msgstr "도구 모음을 움직일 수 있는지"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "목차"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "이 프로그램에 대한 도움말을 봅니다"
 

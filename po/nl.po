@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-01-13 14:45+0100\n"
 "Last-Translator: Huib Kleinhout <huib@stack.nl>\n"
 "Language-Team: Dutch <NL@li.org>\n"
@@ -152,15 +152,15 @@ msgstr "Alleen tekst"
 msgid "_Priority text only"
 msgstr "Alleen _belangrijke tekst"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Debuggen"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "XML _dumpen"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "De gehele XML-beschrijving van de UI in de console dumpen"
 
@@ -297,11 +297,11 @@ msgstr "is zwevend"
 msgid "whether the toolbar is floating"
 msgstr "of de gereedschapsbalk zwevend is"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Inhoud"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Toon de hulp voor dit programma"
 

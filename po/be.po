@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.be\n"
-"POT-Creation-Date: 2003-02-07 20:03+0100\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-02-12 17:25+0200\n"
 "Last-Translator: Vital Khilko <dojlid@mova.org>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -153,15 +153,15 @@ msgstr "Толькі тэкст"
 msgid "_Priority text only"
 msgstr "_Прыярытэт толькі тэксту"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Наладка"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Дамп XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Дамп поўнага апісаньня ГI XML у кансоль"
 
@@ -298,11 +298,11 @@ msgstr "плавае"
 msgid "whether the toolbar is floating"
 msgstr "ці мусіць плаваць панэль інструмэнту"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Зьмест"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Адлюстраваць дапамогу для гэтага дастасаваньня"
 
@@ -406,4 +406,3 @@ msgstr "Немагчыма праініцыялізаваць код libbonoboui
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Немагчыма ініцыялізаваць Bonobo UI"
-

@@ -1,3 +1,7 @@
+2003-03-04  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.2.0.1
+
 2003-03-04  Radek Doulik  <rodo@ximian.com>
 
 	* bonobo/bonobo-ui-engine.c (execute_state_updates):

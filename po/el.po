@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0.1\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2003-01-05 12:34+0200\n"
 "Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -173,15 +173,15 @@ msgstr "Μόνο κείμενο"
 msgid "_Priority text only"
 msgstr "Μόνο κείμενο _προτεραιότητας"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Αποσφαλμάτωση"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Απόρριψη XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Απόρριψη ολόκληρης της περιγραφής UI's XML στην κονσόλα"
 
@@ -337,13 +337,13 @@ msgstr "αιωρείται"
 msgid "whether the toolbar is floating"
 msgstr "αν η εργαλειοθήκη αιωρήται"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "Περιε_χόμενα"
 
 # #-#-#-#-#  gnome-libs.gnome-libs-1-0.el.po (gnome-libs 1.2.12)  #-#-#-#-#
 #
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Εμφάνιση βοήθειας για την εφαρμογή"
 

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
+"POT-Creation-Date: 2003-03-04 16:25+0000\n"
 "PO-Revision-Date: 2002-11-27 00:41+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -152,15 +152,15 @@ msgstr "Kun tekst"
 msgid "_Priority text only"
 msgstr "Kun _prioritetstekst"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Fejlretning"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Udskriv XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Udskriv hele grænsefladens XML-beskrivelse på konsollen"
 
@@ -298,11 +298,11 @@ msgstr "er flydende"
 msgid "whether the toolbar is floating"
 msgstr "Om værktøjslinjen flyder"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Indhold"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Vis hjælp til dette program"
 

@@ -1,3 +1,16 @@
+libbonoboui 2.2.0.1
+
+	* Bugs fixed
+		+ invisible event box replacement (Dave Camp)
+		+ async / gtk+ state sync loop (Radek Doulik)
+		+ UI image related segv (Michael, Ettore)
+		+ build fixes (Alex Duggan)
+	* Featurelets
+		+ very major docs improvements (Gustavo Carneiro)
+	* Translations
+		+ updated (mn, ro, id, kn, fa): (Christian Rose,
+		  Marius Andreiana, Roozbeh Purnader)
+
 libbonoboui 2.2.0
 
 	* Bugs fixed
