@@ -5,7 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.107.0\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-08-11 12:36+0200\n"
 "PO-Revision-Date: 2003-06-22 17:52+0200\n"
 "Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
 "Language-Team: Azerbaijani Turkic <gnome@azitt.com>\n"
@@ -15,11 +16,11 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
-msgstr "cobra emalatxanası"
+msgstr "cobra e'malatxanası"
 
 #: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
-msgstr "Emalatxana oxu"
+msgstr "e'malatxana oxu"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
@@ -50,12 +51,12 @@ msgstr "İstiqamət"
 #: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
 #: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
 msgid "Preferred width"
-msgstr "Tərcih edilən en"
+msgstr "Seçilən en"
 
 #: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
 #: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
 msgid "Preferred height"
-msgstr "Tərcih edilən hündürlük"
+msgstr "Seçilən hündürlük"
 
 #: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
