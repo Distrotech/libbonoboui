@@ -4,6 +4,7 @@
 <oaf_attribute name="repo_ids" type="stringv">
 <item value="IDL:GNOME/GenericFactory:1.0"/>
 </oaf_attribute>
+<oaf_attribute name="name" type="string" value="Clock control factory"/>
 <oaf_attribute name="description" type="string" value="Factory for the sample BonoboClock control"/>
 </oaf_server>
 
@@ -12,6 +13,7 @@
 <item value="IDL:Bonobo/Unknown:1.0"/>
 <item value="IDL:Bonobo/Control:1.0"/>
 </oaf_attribute>
+<oaf_attribute name="name" type="string" value="Clock control"/>
 <oaf_attribute name="description" type="string" value="A sample Bonobo control which displays a clock."/>
 </oaf_server>
 
@@ -19,6 +21,7 @@
 <oaf_attribute name="repo_ids" type="stringv">
 <item value="IDL:GNOME/GenericFactory:1.0"/>
 </oaf_attribute>
+<oaf_attribute name="name" type="string" value="Entry control factory"/>
 <oaf_attribute name="description" type="string" value="Factory for the sample GtkEntry control"/>
 </oaf_server>
 
@@ -27,7 +30,9 @@
 <item value="IDL:Bonobo/Unknown:1.0"/>
 <item value="IDL:Bonobo/Control:1.0"/>
 </oaf_attribute>
+<oaf_attribute name="name" type="string" value="Entry control"/>
 <oaf_attribute name="description" type="string" value="A sample Bonbobo control wrapping a Gtk Entry widget."/>
 </oaf_server>
 
 </oaf_info>
+

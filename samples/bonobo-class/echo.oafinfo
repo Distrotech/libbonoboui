@@ -4,6 +4,7 @@
 <oaf_attribute name="repo_ids" type="stringv">
 <item value="IDL:GNOME/GenericFactory:1.0"/>
 </oaf_attribute>
+<oaf_attribute name="name" type="string" value="Echo component factory"/>
 <oaf_attribute name="description" type="string" value="Bonobo Echo server factory"/>
 </oaf_server>
 
@@ -11,6 +12,7 @@
 <oaf_attribute name="repo_ids" type="stringv">
 <item value="IDL:Empty:1.0"/>
 </oaf_attribute>
+<oaf_attribute name="name" type="string" value="Echo component"/>
 <oaf_attribute name="description" type="string" value="Bonobo Echo server sample program"/>
 </oaf_server>
 

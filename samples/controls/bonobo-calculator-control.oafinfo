@@ -4,6 +4,7 @@
 <oaf_attribute name="repo_ids" type="stringv">
 <item value="IDL:GNOME/GenericFactory:1.0"/>
 </oaf_attribute>
+<oaf_attribute name="name" type="string" value="Calculator control factory"/>
 <oaf_attribute name="description" type="string" value="Factory for the sample BonoboCalculator control"/>
 </oaf_server>
 
@@ -12,6 +13,7 @@
 <item value="IDL:Bonobo/Unknown:1.0"/>
 <item value="IDL:Bonobo/Control:1.0"/>
 </oaf_attribute>
+<oaf_attribute name="name" type="string" value="Calculator control"/>
 <oaf_attribute name="description" type="string" value="A sample Bonobo control which displays a calculator."/>
 </oaf_server>
 
