@@ -206,10 +206,7 @@ test_toolbar_LDADD =				\
 
 bonobo_ui_extract_SOURCES = extract.c
 bonobo_ui_extract_LDADD =				\
-	$(top_builddir)/bonobo/libbonobo.la		\
-	$(top_builddir)/bonobo/libbonobox.la		\
-	$(top_builddir)/bonobo/libbonobo-print.la	\
-	$(BONOBOX_TEST_LIBS)
+	$(XML_LIBS)
 
 BUILT_SOURCES=$(CORBA_SOURCE)
 
