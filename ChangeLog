@@ -1,3 +1,12 @@
+2001-05-19  Martin Baulig  <baulig@suse.de>
+
+	* bonobo/bonobo-plug.[ch]: Derive from GtkPlug.
+	* bonobo/bonobo-socket.[ch]: Derive from GtkSocket.
+
+	* bonobo/bonobo-control.c (process_events): Use g_main_context_pending()
+	and g_main_context_iteration() instead of gtk_events_pending() and
+	gtk_main_iteration().
+
 2001-05-06  Martin Baulig  <baulig@suse.de>
 
 	* bonobo/bonobo-ui-toolbar-control-item.c

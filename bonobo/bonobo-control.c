@@ -456,8 +456,8 @@ process_events (PortableServer_Servant servant)
 	g_return_if_fail (control->priv != NULL);
 
 	if (!control->priv->is_local) {
-		while (gtk_events_pending ())
-			gtk_main_iteration ();
+		while (g_main_context_pending (NULL))
+			g_main_context_iteration (NULL, FALSE);
 		gdk_flush ();
 	}
 }

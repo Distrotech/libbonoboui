@@ -27,13 +27,11 @@
 #ifndef __BONOBO_SOCKET_H__
 #define __BONOBO_SOCKET_H__
 
-#include <gtk/gtkcontainer.h>
+#include <gmacros.h>
+#include <gtk/gtksocket.h>
 #include <bonobo/bonobo-control.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 #define BONOBO_SOCKET(obj)          GTK_CHECK_CAST (obj, bonobo_socket_get_type (), BonoboSocket)
 #define BONOBO_SOCKET_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_socket_get_type (), BonoboSocketClass)
@@ -42,13 +40,13 @@ extern "C" {
 typedef struct _BonoboSocketPrivate BonoboSocketPrivate;
 
 typedef struct {
-	GtkContainer container;
+	GtkSocket socket;
 
 	BonoboSocketPrivate *priv;
 } BonoboSocket;
 
 typedef struct {
-	GtkContainerClass parent_class;
+	GtkSocketClass parent_class;
 } BonoboSocketClass;
 
 
@@ -57,13 +55,6 @@ guint          bonobo_socket_get_type          (void);
 void           bonobo_socket_set_control_frame (BonoboSocket       *socket,
 						BonoboControlFrame *frame);
 
-/* Unused */
-void           bonobo_socket_steal       (BonoboSocket    *socket,
-					  guint32          wid);
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
+G_END_DECLS
 
 #endif /* __BONOBO_SOCKET_H__ */

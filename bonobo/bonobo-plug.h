@@ -26,39 +26,28 @@
 #ifndef __BONOBO_PLUG_H__
 #define __BONOBO_PLUG_H__
 
-
+#include <gmacros.h>
 #include <gdk/gdk.h>
-#include <gtk/gtkwindow.h>
+#include <gtk/gtkplug.h>
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+G_BEGIN_DECLS
 
 #define BONOBO_PLUG(obj)          GTK_CHECK_CAST (obj, bonobo_plug_get_type (), BonoboPlug)
 #define BONOBO_PLUG_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_plug_get_type (), BonoboPlugClass)
 #define BONOBO_IS_PLUG(obj)       GTK_CHECK_TYPE (obj, bonobo_plug_get_type ())
 
 typedef struct {
-	GtkWindow window;
-
-	GdkWindow *socket_window;
-	gint same_app;
+	GtkPlug plug;
 } BonoboPlug;
 
 typedef struct {
-	GtkWindowClass parent_class;
+	GtkPlugClass parent_class;
 } BonoboPlugClass;
 
 guint      bonobo_plug_get_type  (void);
 void       bonobo_plug_construct (BonoboPlug *plug, guint32 socket_id);
 GtkWidget* bonobo_plug_new       (guint32 socket_id);
 
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
+G_END_DECLS
 
 #endif /* __BONOBO_PLUG_H__ */
