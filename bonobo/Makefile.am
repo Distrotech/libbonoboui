@@ -44,7 +44,9 @@ $(CORBA_SOURCE): $(idls)
 
 Bonobo.h: $(idls)
 
-libbonobo_la_LDFLAGS = -version-info 2:0:1 $(gnome_libs)
+libbonobo_la_LDFLAGS = \
+	-version-info $(BONOBO_CURRENT):$(BONOBO_REVISION):$(BONOBO_AGE) \
+	$(gnome_libs)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
@@ -142,6 +144,9 @@ noinst_HEADERS =				\
 	bonobo-ui-toolbar-popup-item.h		\
 	bonobo-ui-toolbar-separator-item.h
 
+libbonobox_la_LDFLAGS = \
+	-version-info $(BONOBO_CURRENT):$(BONOBO_REVISION):$(BONOBO_AGE)
+
 libbonobox_la_SOURCES =				\
 	bonobo-canvas-component.c		\
 	bonobo-canvas-item.c			\
@@ -175,6 +180,9 @@ libbonobox_la_SOURCES =				\
 	bonobo-wrapper.c			\
 	bonobo-zoomable.c			\
 	bonobo-zoomable-frame.c
+
+libbonobo_print_la_LDFLAGS = \
+	-version-info $(BONOBO_CURRENT):$(BONOBO_REVISION):$(BONOBO_AGE)
 
 libbonobo_print_la_SOURCES =		\
 	bonobo-print.c			\
