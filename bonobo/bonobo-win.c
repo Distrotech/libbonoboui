@@ -362,9 +362,33 @@ win_component_destroy (BonoboWindowPrivate *priv, WinComponent *component)
 }
 
 void
+bonobo_window_deregister_dead_components (BonoboWindow *win)
+{
+	WinComponent      *component;
+	GSList            *l, *next;
+	CORBA_Environment  ev;
+
+	g_return_if_fail (BONOBO_IS_WINDOW (win));
+
+	for (l = win->priv->components; l; l = next) {
+		next = l->next;
+
+		component = l->data;
+		CORBA_exception_init (&ev);
+
+		if (CORBA_Object_non_existent (component->object, &ev))
+			bonobo_window_deregister_component (win, component->name);
+
+		CORBA_exception_free (&ev);
+	}
+
+	return TRUE;
+}
+
+void
 bonobo_window_register_component (BonoboWindow     *win,
-			       const char    *name,
-			       Bonobo_Unknown component)
+				  const char    *name,
+				  Bonobo_Unknown component)
 {
 	WinComponent *wincomp;
 
@@ -2872,6 +2896,48 @@ bonobo_window_add_popup (BonoboWindow *win,
 
 	update_widgets (win->priv);
 }
+
+GList *
+bonobo_window_deregister_get_component_names (BonoboWindow *win)
+{
+	WinComponent *component;
+	GSList *l;
+	GList *retval;
+
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win), NULL);
+
+	retval = NULL;
+
+	for (l = win->priv->components; l; l = l->next) {
+		component = l->data;
+	
+		retval = g_list_prepend (retval, component->name);
+	}
+
+	return retval;
+}
+
+
+Bonobo_Unknown
+bonobo_window_component_get (BonoboWindow *win,
+			      const char  *name)
+{
+	WinComponent *component;
+	GSList *l;
+
+	g_return_val_if_fail (BONOBO_IS_WINDOW (win), CORBA_OBJECT_NIL);
+	g_return_val_if_fail (name != NULL, CORBA_OBJECT_NIL);
+		
+	for (l = win->priv->components; l; l = l->next) {
+		component = l->data;
+		
+		if (!strcmp (component->name, name))
+			return component->object;
+	}
+
+	return CORBA_OBJECT_NIL;
+}
+
 
 void
 bonobo_window_set_contents (BonoboWindow *win,
