@@ -1,21 +1,22 @@
+# translation of libbonoboui.HEAD.po to Spanish
 # translation of libbonoboui.HEAD.es.po to Spanish
 # Translation into spanish of libbonoboui.
 # Copyright (C) 2001,2003 Free Software Foundation, Inc.
 # Héctor García Álvarez <hector@scouts-es.org>, 2001.
 # Juan Manuel García Molina <juanma_gm@wanadoo.es>, 2002.
-# Francisco Javier F. Serrador <serrador@arrakis.es>, 2003
+# Francisco Javier F. Serrador <serrador@arrakis.es>, 2003.
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui.HEAD.es\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
-"PO-Revision-Date: 2003-07-15 06:27+0200\n"
+"Project-Id-Version: libbonoboui.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-08-28 12:45+0200\n"
+"PO-Revision-Date: 2003-08-28 14:04+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@arrakis.es>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
-"X-Generator: KBabel 1.0.1\n"
+"X-Generator: KBabel 1.0.2\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -27,7 +28,7 @@ msgstr "El puntero de la fábrica"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
-msgstr "corba UI container"
+msgstr "contenedor corba UI"
 
 #: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
@@ -35,11 +36,11 @@ msgstr "El contenedor de la interfaz de usuario"
 
 #: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
-msgstr "Fijar la barra de herramientas"
+msgstr "Empotrar la barra de herramientas"
 
 #: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
-msgstr "Liberar la barra de herramientas"
+msgstr "Desempotrar la barra de herramientas"
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
 #: bonobo/bonobo-ui-toolbar.c:1176
@@ -75,7 +76,7 @@ msgstr "Seleccione un nombre de archivo para guardar"
 
 #: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
-msgstr "Redirigiendo eventos"
+msgstr "Redirección de eventos"
 
 #: bonobo/bonobo-plug.c:412
 msgid "Whether X events should be forwarded"
@@ -105,11 +106,11 @@ msgstr ""
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "El interfaz requiere un registro"
+msgstr "Entrada requerida por el interfaz"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr "Una de los interfaces que se necesitan"
+msgstr "Uno de los interfaces que se necesitan"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -358,12 +359,11 @@ msgstr "Si tiene un nivel máximo de ampliación válido"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr "Continuo"
+msgstr "Es continuo"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
-"Si se realiza ampliación de forma continua (opuesto a hacerlo a saltos)"
+msgstr "Si se realiza ampliación de forma continua (opuesto a hacerlo a saltos)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -375,7 +375,7 @@ msgstr "Seleccionar"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "_Acerca de..."
+msgstr "A_cerca de..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
@@ -413,3 +413,4 @@ msgstr "No se puede inicializar el código de libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "No se pudo iniciar la interfaz de Bonobo"
+
