@@ -1,3 +1,23 @@
+2001-10-23  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-moniker.c (display_as_stream): upd.
+	(main): make async a global option.
+	re-order to kill redundant prototypes. do a ui_init so
+	we can use Gtk+.
+	(display_control_async_cb): impl.
+	(display_as_control): upd.
+
+	* bonobo/bonobo-widget.c
+	(bonobo_widget_construct_control_from_objref),
+	(bonobo_widget_construct_control),
+	(bonobo_widget_launch_component): add CORBA_Environments.
+	(bonobo_widget_new_control_from_objref),
+	(bonobo_widget_new_control): setup the CORBA_Environments.
+
+	* bonobo/bonobo-widget.c
+	(bonobo_widget_new_control_async): impl.
+	(control_new_async_cb): impl.
+
 2001-10-20  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-file-selector-util.c (run_file_slector): 

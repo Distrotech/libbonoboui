@@ -42,35 +42,29 @@ struct _BonoboWidgetPrivate {
 	/* Either a Control or an Embeddable ref */
 	Bonobo_Unknown      server;
 
-	/*
-	 * Control stuff.
-	 */
+	/* Control stuff. */
 	BonoboControlFrame *control_frame;
-	
-	Bonobo_UIContainer   uic;
+	Bonobo_UIContainer  uic;
 };
 
 static BonoboWrapperClass *bonobo_widget_parent_class;
 
 static Bonobo_Unknown
-bonobo_widget_launch_component (const char *moniker,
-				const char *if_name)
+bonobo_widget_launch_component (const char        *moniker,
+				const char        *if_name,
+				CORBA_Environment *ev)
 {
 	Bonobo_Unknown component;
-	CORBA_Environment ev;
 
-	CORBA_exception_init (&ev);
-	component = bonobo_get_object (moniker, if_name, &ev);
+	component = bonobo_get_object (moniker, if_name, ev);
 
-	if (BONOBO_EX (&ev)) {
+	if (BONOBO_EX (ev)) {
 		char *txt;
 		g_warning ("Activation exception '%s'",
-			   (txt = bonobo_exception_get_text (&ev)));
+			   (txt = bonobo_exception_get_text (ev)));
 		g_free (txt);
 		component = CORBA_OBJECT_NIL;
 	}
-
-	CORBA_exception_free (&ev);
 
 	if (component == CORBA_OBJECT_NIL)
 		return NULL;
@@ -89,6 +83,7 @@ bonobo_widget_launch_component (const char *moniker,
  * @bw: A BonoboWidget to construct
  * @control: A CORBA Object reference to an IDL:Bonobo/Control:1.0
  * @uic: Bonobo_UIContainer for the launched object.
+ * @ev: a CORBA exception environment
  *
  * This is a constructor function.  Only usable for wrapping and
  * derivation of new objects.  For normal use, please refer to
@@ -99,22 +94,19 @@ bonobo_widget_launch_component (const char *moniker,
 BonoboWidget *
 bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 					     Bonobo_Control     control,
-					     Bonobo_UIContainer uic)
+					     Bonobo_UIContainer uic,
+					     CORBA_Environment *ev)
 {
-	GtkWidget    *control_frame_widget;
+	GtkWidget *control_frame_widget;
 
-	/*
-	 * Create a local ControlFrame for it.
-	 */
+	/* Create a local ControlFrame for it. */
 	bw->priv->control_frame = bonobo_control_frame_new (uic);
 
 	bonobo_control_frame_bind_to_control
-		(bw->priv->control_frame, control, NULL);
+		(bw->priv->control_frame, control, ev);
 
-	/*
-	 * People that pass us controls get them sunk.
-	 */
-	bonobo_object_release_unref (control, NULL);
+	/* People that pass us controls get them sunk. */
+	bonobo_object_release_unref (control, ev);
 
 	bonobo_control_frame_set_autoactivate (bw->priv->control_frame, TRUE);
 
@@ -124,15 +116,13 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 	 */
 	control_frame_widget = bonobo_control_frame_get_widget (bw->priv->control_frame);
 
-	/*
-	 * Now stick it into this BonoboWidget.
-	 */
+	/* Now stick it into this BonoboWidget. */
 	gtk_container_add (GTK_CONTAINER (bw),
 			   control_frame_widget);
 	gtk_widget_show (control_frame_widget);
 
 	if (uic != CORBA_OBJECT_NIL)
-		bw->priv->uic = bonobo_object_dup_ref (uic, NULL);
+		bw->priv->uic = bonobo_object_dup_ref (uic, ev);
 
 	return bw;
 }
@@ -142,6 +132,7 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
  * @bw: A BonoboWidget to construct
  * @moniker: A Moniker describing the object to be activated 
  * @uic: Bonobo_UIContainer for the launched object.
+ * @ev: a CORBA exception environment
  *
  * This is a constructor function.  Only usable for wrapping and
  * derivation of new objects.  For normal use, please refer to
@@ -156,15 +147,14 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 BonoboWidget *
 bonobo_widget_construct_control (BonoboWidget      *bw,
 				 const char        *moniker,
-				 Bonobo_UIContainer uic)
+				 Bonobo_UIContainer uic,
+				 CORBA_Environment *ev)
 {
 	Bonobo_Control control;
 
-	/*
-	 * Create the remote Control object.
-	 */
+	/* Create the remote Control object. */
 	bw->priv->server = bonobo_widget_launch_component (
-		moniker, "IDL:Bonobo/Control:1.0");
+		moniker, "IDL:Bonobo/Control:1.0", ev);
 	if (bw->priv->server == NULL) {
 		gtk_object_unref (GTK_OBJECT (bw));
 		return NULL;
@@ -172,7 +162,72 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 
 	control = bw->priv->server;
 
-	return bonobo_widget_construct_control_from_objref (bw, control, uic);
+	return bonobo_widget_construct_control_from_objref (
+		bw, control, uic, ev);
+}
+
+typedef struct {
+	BonoboWidget       *bw;
+	BonoboWidgetAsyncFn fn;
+	gpointer            user_data;
+	Bonobo_UIContainer  uic;
+} async_closure_t;
+
+static void
+control_new_async_cb (Bonobo_Unknown     object,
+		      CORBA_Environment *ev,
+		      gpointer           user_data)
+{
+	async_closure_t *c = user_data;
+
+	if (BONOBO_EX (ev) || object == CORBA_OBJECT_NIL)
+		c->fn (NULL, ev, c->user_data);
+	else {
+		bonobo_widget_construct_control_from_objref (
+			c->bw, object, c->uic, ev);
+		c->fn (c->bw, ev, c->user_data);
+	}
+
+	g_object_unref (G_OBJECT (c->bw));
+	bonobo_object_release_unref (c->uic, ev);
+	g_free (c);
+}
+
+GtkWidget *
+bonobo_widget_new_control_async (const char         *moniker,
+				 Bonobo_UIContainer  uic,
+				 BonoboWidgetAsyncFn fn,
+				 gpointer            user_data)
+{
+	BonoboWidget     *bw;
+	async_closure_t  *c = g_new0 (async_closure_t, 1);
+	CORBA_Environment ev;
+
+	g_return_val_if_fail (fn != NULL, NULL);
+	g_return_val_if_fail (moniker != NULL, NULL);
+
+	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
+
+	CORBA_exception_init (&ev);
+
+	c->bw = g_object_ref (G_OBJECT (bw));
+	c->fn = fn;
+	c->user_data = user_data;
+	c->uic = bonobo_object_dup_ref (uic, &ev);
+
+	bonobo_get_object_async (
+		moniker, "IDL:Bonobo/Control:1.0", &ev,
+		control_new_async_cb, c);
+
+	if (BONOBO_EX (&ev)) {
+		control_new_async_cb (CORBA_OBJECT_NIL, &ev, c);
+		gtk_widget_destroy (GTK_WIDGET (bw));
+		bw = NULL;
+	}
+
+	CORBA_exception_free (&ev);
+
+	return (GtkWidget *) bw;
 }
 
 /**
@@ -191,18 +246,23 @@ GtkWidget *
 bonobo_widget_new_control_from_objref (Bonobo_Control     control,
 				       Bonobo_UIContainer uic)
 {
-	BonoboWidget *bw;
+	BonoboWidget     *bw;
+	CORBA_Environment ev;
 
 	g_return_val_if_fail (control != CORBA_OBJECT_NIL, NULL);
 
+	CORBA_exception_init (&ev);
+
 	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
 
-	bw = bonobo_widget_construct_control_from_objref (bw, control, uic);
+	bw = bonobo_widget_construct_control_from_objref (bw, control, uic, &ev);
 
-	if (bw == NULL)
-		return NULL;
+	if (BONOBO_EX (&ev))
+		bw = NULL;
 
-	return GTK_WIDGET (bw);
+	CORBA_exception_init (&ev);
+
+	return (GtkWidget *) bw;
 }
 
 /**
@@ -221,17 +281,20 @@ bonobo_widget_new_control (const char        *moniker,
 			   Bonobo_UIContainer uic)
 {
 	BonoboWidget *bw;
+	CORBA_Environment ev;
 
 	g_return_val_if_fail (moniker != NULL, NULL);
 
 	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
 
-	bw = bonobo_widget_construct_control (bw, moniker, uic);
+	CORBA_exception_init (&ev);
 
-	if (bw == NULL)
-		return NULL;
-	else
-		return GTK_WIDGET (bw);
+	bw = bonobo_widget_construct_control (bw, moniker, uic, &ev);
+
+	if (BONOBO_EX (&ev))
+		bw = NULL;
+
+	return (GtkWidget *) bw;
 }
 
 /**
@@ -272,9 +335,7 @@ bonobo_widget_get_uih (BonoboWidget *bonobo_widget)
 
 
 /*
- *
  * Generic (non-control/subdoc specific) BonoboWidget stuff.
- *
  */
 
 Bonobo_Unknown
@@ -296,6 +357,7 @@ bonobo_widget_finalize (GObject *object)
 		bonobo_object_release_unref (priv->uic, NULL);
 
 	g_free (priv);
+
 	G_OBJECT_CLASS (bonobo_widget_parent_class)->finalize (object);
 }
 
@@ -340,9 +402,8 @@ bonobo_widget_size_allocate (GtkWidget *widget,
 	child_allocation.width = allocation->width;
 	child_allocation.height = allocation->height;
 
-	if (bin->child) {
+	if (bin->child)
 		gtk_widget_size_allocate (bin->child, &child_allocation);
-	}
 }
 
 static void
@@ -370,7 +431,7 @@ bonobo_widget_get_type (void)
 {
 	static GtkType type = 0;
 
-	if (! type) {
+	if (!type) {
 		static const GtkTypeInfo info = {
 			"BonoboWidget",
 			sizeof (BonoboWidget),

@@ -1,8 +1,9 @@
 /*
  * moniker-test.c: Test program for monikers resolving to various interfaces.
  *
- * Author:
+ * Authors:
  *   Vladimir Vukicevic (vladimir@ximian.com)
+ *   Michael Meeks      (michael@ximian.com)
  *
  * Based on moniker-control-test.c, by Joe Shaw (joe@ximian.com)
  *
@@ -18,22 +19,13 @@
 #include <glib.h>
 #include <libbonoboui.h>
 
-#define STD_SIG (const char *moniker, CORBA_Environment *ev)
-
-static void display_as_interface         STD_SIG;
-static void display_as_stream            STD_SIG;
-static void display_as_stream_async      STD_SIG;
-static void display_as_storage_file_list STD_SIG;
-static void display_as_html              STD_SIG;
-static void display_as_control           STD_SIG;
+static int async_done;
 
 typedef enum {
 	AS_NONE = 0,
 	AS_INTERFACE,
 	AS_STREAM,
-	AS_STREAM_ASYNC,
 	AS_STORAGE_FILE_LIST,
-	AS_HTML,
 	AS_CONTROL
 } MonikerTestDisplayAs;
 
@@ -44,57 +36,26 @@ typedef struct {
 	MonikerDisplayFunction func;
 } MonikerTestDisplayers;
 
-MonikerTestDisplayers displayers[] = {
-	{ AS_INTERFACE, display_as_interface },
-	{ AS_STREAM, display_as_stream },
-	{ AS_STREAM_ASYNC, display_as_stream_async },
-	{ AS_STORAGE_FILE_LIST, display_as_storage_file_list },
-	{ AS_HTML, display_as_html },
-	{ AS_CONTROL, display_as_control },
-	{0 }
-};
-
 typedef struct {
 	gchar *requested_interface;
 	gchar *requested_moniker;
 	MonikerTestDisplayAs display_as;
 	gchar *moniker;
 
-	int ps, pa, pr, pc, ph;
+	int async, ps, pr, pc;
 } MonikerTestOptions;
 
 MonikerTestOptions global_mto = { NULL };
 
 struct poptOption moniker_test_options [] = {
 	{ "interface", 'i', POPT_ARG_STRING, &global_mto.requested_interface, 'i', "request specific interface", "interface" },
+	{ "async",     'a', POPT_ARG_NONE, &global_mto.async, 'a', "request asynchronous operation where possible", NULL },
 	{ "stream",    's', POPT_ARG_NONE, &global_mto.ps, 's', "request Bonobo/Stream", NULL },
-	{ "async",     'a', POPT_ARG_NONE, &global_mto.pa, 'a', "request Bonobo/Stream asynchronously", NULL },
 	{ "storage",   'r', POPT_ARG_NONE, &global_mto.pr, 'r', "request Bonobo/Storage", NULL },
 	{ "control",   'c', POPT_ARG_NONE, &global_mto.pc, 'c', "request Bonobo/Control", NULL },
-	{ "html",      'h', POPT_ARG_NONE, &global_mto.ph, 'h', "request Bonobo/Stream and display as HTML", NULL },
 	POPT_AUTOHELP
 	{ NULL, 0, 0, NULL, 0, 0 }
 };
-
-
-static void
-do_moniker_magic (void)
-{
-	CORBA_Environment ev;
-	MonikerTestDisplayers *iter = displayers;
-	CORBA_exception_init (&ev);
-
-	while (iter->disp_as) {
-		if (iter->disp_as == global_mto.display_as) {
-			(*iter->func) (global_mto.requested_moniker, &ev);
-			CORBA_exception_free (&ev);
-			return;
-		}
-		iter++;
-	}
-
-	g_error ("Didn't find handler!");
-}
 
 static void
 display_as_interface (const char *moniker, CORBA_Environment *ev)
@@ -139,21 +100,6 @@ dump_stream (Bonobo_Stream the_stream, CORBA_Environment *ev)
 	} while (1);
 }
 
-static void
-display_as_stream (const char *moniker, CORBA_Environment *ev)
-{
-	Bonobo_Stream the_stream;
-
-	the_stream = bonobo_get_object (moniker, "IDL:Bonobo/Stream:1.0", ev);
-	if (BONOBO_EX (ev) || !the_stream) {
-		g_error ("Couldn't get Bonobo/Stream interface '%s'",
-			 bonobo_exception_get_text (ev));
-	}
-
-	dump_stream (the_stream, ev);
-}
-
-static int async_done;
 
 static void
 disp_stream_async_cb (Bonobo_Unknown     object,
@@ -170,18 +116,26 @@ disp_stream_async_cb (Bonobo_Unknown     object,
 }
 
 static void
-display_as_stream_async (const char *moniker, CORBA_Environment *ev)
+display_as_stream (const char *moniker, CORBA_Environment *ev)
 {
-	bonobo_get_object_async (moniker, "IDL:Bonobo/Stream:1.0", ev,
-				 disp_stream_async_cb, NULL);
-	
-	if (BONOBO_EX (ev))
-		g_error ("Couldn't get Bonobo/Stream '%s'",
-			 bonobo_exception_get_text (ev));
+	Bonobo_Stream the_stream;
 
-	async_done = 0;
-	while (!async_done)
-		g_main_iteration (TRUE);
+	if (global_mto.async) {
+		bonobo_get_object_async (moniker, "IDL:Bonobo/Stream:1.0", ev,
+					 disp_stream_async_cb, NULL);
+
+		if (BONOBO_EX (ev))
+			g_error ("Couldn't get Bonobo/Stream '%s'",
+				 bonobo_exception_get_text (ev));
+	} else {
+		the_stream = bonobo_get_object (moniker, "IDL:Bonobo/Stream:1.0", ev);
+		if (BONOBO_EX (ev) || !the_stream) {
+			g_error ("Couldn't get Bonobo/Stream interface '%s'",
+				 bonobo_exception_get_text (ev));
+		}
+
+		dump_stream (the_stream, ev);
+	}
 }
 
 static void
@@ -224,39 +178,55 @@ display_as_storage_file_list (const char *moniker, CORBA_Environment *ev)
 }
 
 static void
-display_as_html (const char *moniker, CORBA_Environment *ev)
+display_control_async_cb (BonoboWidget       *widget,
+			  CORBA_Environment  *ev,
+			  gpointer            user_data)
 {
-	g_error ("Not implemented");
+	if (BONOBO_EX (ev)) {
+		GtkWidget *label = gtk_label_new ("Failed to activate");
+		char      *err;
+		g_warning ("Exception '%s'", (err = bonobo_exception_get_text (ev)));
+		g_free (err);
+		gtk_widget_destroy (GTK_WIDGET (widget));
+		bonobo_window_set_contents (BONOBO_WINDOW (user_data), label); 
+	} else
+		bonobo_control_frame_control_activate (
+			bonobo_widget_get_control_frame (BONOBO_WIDGET (widget)));
+	async_done = 1;
 }
 
 static void
 display_as_control (const char *moniker, CORBA_Environment *ev)
 {
-	Bonobo_Control  the_control;
-	GtkWidget      *widget;
+	Bonobo_Control     the_control;
+	GtkWidget         *widget;
 	BonoboUIContainer *ui_container;
 
 	GtkWidget *window;
 
-	the_control = bonobo_get_object (moniker, "IDL:Bonobo/Control:1.0", ev);
-	if (BONOBO_EX (ev) || !the_control)
-		g_error ("Couldn't get Bonobo/Control interface");
-
 	window = bonobo_window_new ("moniker-test", moniker);
 	ui_container = bonobo_window_get_ui_container (BONOBO_WINDOW (window));
-
 	gtk_window_set_default_size (GTK_WINDOW (window), 400, 350);
 
-	widget = bonobo_widget_new_control_from_objref (the_control,
-		BONOBO_OBJREF (ui_container));
-	
-	bonobo_object_unref (BONOBO_OBJECT (ui_container));
+	if (global_mto.async) {
+		widget = bonobo_widget_new_control_async (
+			moniker, BONOBO_OBJREF (ui_container),
+			display_control_async_cb, window);
+	} else {
+		the_control = bonobo_get_object (moniker, "IDL:Bonobo/Control:1.0", ev);
+		if (BONOBO_EX (ev) || !the_control)
+			g_error ("Couldn't get Bonobo/Control interface");
+
+		widget = bonobo_widget_new_control_from_objref (
+			the_control, BONOBO_OBJREF (ui_container));
+	}
 
 	if (BONOBO_EX (ev) || !widget)
 		g_error ("Couldn't get a widget from the_control");
 
-	bonobo_control_frame_control_activate (
-		bonobo_widget_get_control_frame (BONOBO_WIDGET (widget)));
+	if (!global_mto.async)
+		bonobo_control_frame_control_activate (
+			bonobo_widget_get_control_frame (BONOBO_WIDGET (widget)));
 
 	bonobo_window_set_contents (BONOBO_WINDOW (window), widget);
 
@@ -265,6 +235,33 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 
 	gtk_widget_show_all (window);
 	gtk_main ();
+}
+
+MonikerTestDisplayers displayers[] = {
+	{ AS_INTERFACE, display_as_interface },
+	{ AS_STREAM, display_as_stream },
+	{ AS_STORAGE_FILE_LIST, display_as_storage_file_list },
+	{ AS_CONTROL, display_as_control },
+	{0 }
+};
+
+static void
+do_moniker_magic (void)
+{
+	CORBA_Environment ev;
+	MonikerTestDisplayers *iter = displayers;
+	CORBA_exception_init (&ev);
+
+	while (iter->disp_as) {
+		if (iter->disp_as == global_mto.display_as) {
+			(*iter->func) (global_mto.requested_moniker, &ev);
+			CORBA_exception_free (&ev);
+			return;
+		}
+		iter++;
+	}
+
+	g_error ("Didn't find handler!");
 }
 
 int
@@ -289,11 +286,10 @@ main (int argc, char **argv)
 		exit (1);
 	}
 
-	if (bonobo_init (&argc, argv) == FALSE)
+	if (bonobo_ui_init ("test-moniker", "1.0", &argc, argv) == FALSE)
 		g_error ("Cannot init bonobo");
 
-	if (global_mto.ps + global_mto.pr + global_mto.ph +
-	    global_mto.pc > 1) {
+	if (global_mto.ps + global_mto.pr + global_mto.pc > 1) {
 		poptPrintUsage (ctx, stderr, 0);
 		return 1;
 	}
@@ -302,12 +298,8 @@ main (int argc, char **argv)
 		global_mto.display_as = AS_INTERFACE;
 	else if (global_mto.ps)
 		global_mto.display_as = AS_STREAM;
-	else if (global_mto.pa)
-		global_mto.display_as = AS_STREAM_ASYNC;
 	else if (global_mto.pr)
 		global_mto.display_as = AS_STORAGE_FILE_LIST;
-	else if (global_mto.ph)
-		global_mto.display_as = AS_HTML;
 	else if (global_mto.pc)
 		global_mto.display_as = AS_CONTROL;
 	else {
@@ -334,14 +326,10 @@ main (int argc, char **argv)
 		fprintf (stderr, global_mto.requested_interface);
 		break;
         case AS_STREAM:
-        case AS_STREAM_ASYNC:
 		fprintf (stderr, "IDL:Bonobo/Stream:1.0");
 		break;
         case AS_STORAGE_FILE_LIST:
 		fprintf (stderr, "IDL:Bonobo/Storage:1.0");
-		break;
-        case AS_HTML:
-		fprintf (stderr, "IDL:Bonobo/Control:1.0 (html)");
 		break;
         case AS_CONTROL:
 		fprintf (stderr, "IDL:Bonobo/Control:1.0");
@@ -350,10 +338,18 @@ main (int argc, char **argv)
 		fprintf (stderr, "???");
 		break;
 	}
+	if (global_mto.async)
+		fprintf (stderr, " asynchronously");
 	fprintf (stderr, "\n");
 
 	bonobo_activate ();
 
+	async_done = 0;
+
 	do_moniker_magic ();
+
+	while (global_mto.async && !async_done)
+		g_main_iteration (TRUE);
+
 	return 0;
 }
