@@ -737,8 +737,12 @@ impl_register_containee (PortableServer_Servant servant,
 {
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 
-	g_return_if_fail (uih_toplevel_check_toplevel (uih));
-
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 	uih_toplevel_add_containee (uih, containee_uih);
 }
 
@@ -747,8 +751,6 @@ impl_get_toplevel (PortableServer_Servant servant,
 		   CORBA_Environment     *ev)
 {
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
-
-	g_return_val_if_fail (uih_toplevel_check_toplevel (uih), CORBA_OBJECT_NIL);
 
 	if (uih->top_level_uih == CORBA_OBJECT_NIL)
 		return CORBA_Object_duplicate (bonobo_object_corba_objref (BONOBO_OBJECT (uih)), ev);
@@ -1057,8 +1059,12 @@ impl_unregister_containee (PortableServer_Servant servant,
 {
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 
-	g_return_if_fail (uih_toplevel_check_toplevel (uih));
-
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 	uih_toplevel_unregister_containee (uih, containee_uih);
 }
 
@@ -3237,7 +3243,12 @@ impl_menu_create (PortableServer_Servant   servant,
 	BonoboUIHandlerMenuItem *item;
 	char *parent_path;
 
-	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 
 	item = menu_make_item (path, menu_corba_to_type (menu_type),
 			       UNCORBIFY_STRING (label),
@@ -3249,9 +3260,12 @@ impl_menu_create (PortableServer_Servant   servant,
 			       NULL, NULL);
 
 	parent_path = path_get_parent (path);
-	g_return_if_fail (parent_path != NULL);
-
-	menu_toplevel_create_item (uih, parent_path, item, containee_uih);
+	if (parent_path == NULL) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
+	} else {
+		menu_toplevel_create_item (uih, parent_path, item, containee_uih);
+	}
 
 	pixmap_free_data (item->pixmap_type, item->pixmap_data);
 
@@ -3737,14 +3751,20 @@ impl_menu_remove (PortableServer_Servant servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemInternal *internal;
 
-	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 
 	/*
 	 * Find the menu item belonging to this containee.
 	 */
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 	if (internal == NULL) {
-		/* FIXME: Set exception. */
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
 		return;
 	}
 
@@ -3798,7 +3818,6 @@ menu_remote_fetch (BonoboUIHandler *uih, const char *path)
 {
 	BonoboUIHandlerMenuItem *item;
 	CORBA_Environment ev;
-	CORBA_boolean exists;
 
 	Bonobo_UIHandler_MenuType corba_menu_type;
 	CORBA_char *corba_label;
@@ -3813,12 +3832,13 @@ menu_remote_fetch (BonoboUIHandler *uih, const char *path)
 
 	CORBA_exception_init (&ev);
 
-	exists = Bonobo_UIHandler_menu_fetch (uih->top_level_uih,
-					     path, &corba_menu_type, &corba_label,
-					     &corba_hint, &corba_pos,
-					     &corba_pixmap_type, &corba_pixmap_iobuf,
-					     &corba_accelerator_key, &corba_modifier_type,
-					     &ev);
+	Bonobo_UIHandler_menu_fetch (uih->top_level_uih,
+				    path, &corba_menu_type, &corba_label,
+				    &corba_hint, &corba_pos,
+				    &corba_pixmap_type, &corba_pixmap_iobuf,
+				    &corba_accelerator_key,
+				    &corba_modifier_type, &ev);
+
 	if (ev._major != CORBA_NO_EXCEPTION) {
 		bonobo_object_check_env (
 			BONOBO_OBJECT (uih),
@@ -3828,11 +3848,6 @@ menu_remote_fetch (BonoboUIHandler *uih, const char *path)
 	}
 
 	CORBA_exception_free (&ev);
-
-	if (exists == FALSE) {
-		g_free (item);
-		return NULL;
-	}
 
 	item->path = g_strdup (path);
 	item->label = g_strdup (corba_label);
@@ -3851,7 +3866,7 @@ menu_remote_fetch (BonoboUIHandler *uih, const char *path)
 	return item;
 }
 
-static CORBA_boolean
+static void
 impl_menu_fetch (PortableServer_Servant      servant,
 		 const CORBA_char           *path,
 		 Bonobo_UIHandler_MenuType   *type,
@@ -3868,12 +3883,20 @@ impl_menu_fetch (PortableServer_Servant      servant,
 	BonoboUIHandlerMenuItem *item;
 	MenuItemInternal *internal;
 
-	g_return_val_if_fail (uih_toplevel_check_toplevel (uih), FALSE);
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 
 	internal = menu_toplevel_get_item (uih, path);
 
-	if (internal == NULL)
-		return FALSE;
+	if (internal == NULL) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
+		return;
+	}
 
 	item = internal->item;
 
@@ -3883,8 +3906,6 @@ impl_menu_fetch (PortableServer_Servant      servant,
 	*pos = item->pos;
 	*accelerator_key = (CORBA_unsigned_long) item->accelerator_key;
 	*modifier = (CORBA_long) item->ac_mods;
-
-	return TRUE;
 }
 
 /**
@@ -4012,21 +4033,20 @@ menu_remote_get_children (BonoboUIHandler *uih, const char *parent_path)
 	CORBA_Environment ev;
 	GList *children;
 	int i;
-	gboolean fail = FALSE;
 	
 	CORBA_exception_init (&ev);
-	if (! Bonobo_UIHandler_menu_get_children (uih->top_level_uih,
-						 (CORBA_char *) parent_path, &childseq,
-						 &ev))
-		return NULL;
+	Bonobo_UIHandler_menu_get_children (uih->top_level_uih,
+					   (CORBA_char *) parent_path,
+					   &childseq, &ev);
+
 	if (ev._major != CORBA_NO_EXCEPTION) {
-		bonobo_object_check_env (BONOBO_OBJECT (uih), uih->top_level_uih, &ev);
-		fail = TRUE;
+		bonobo_object_check_env (BONOBO_OBJECT (uih),
+					uih->top_level_uih, &ev);
+		CORBA_exception_free (&ev);
+		return NULL;
 	}
 	
 	CORBA_exception_free (&ev);
-	if (fail)
-		return NULL;
 	
 	/* FIXME: Free the sequence */
 	
@@ -4038,7 +4058,7 @@ menu_remote_get_children (BonoboUIHandler *uih, const char *parent_path)
 	return children;
 }
 
-static CORBA_boolean
+static void
 impl_menu_get_children (PortableServer_Servant      servant,
 			const CORBA_char           *parent_path,
 			Bonobo_UIHandler_StringSeq **child_paths,
@@ -4049,12 +4069,20 @@ impl_menu_get_children (PortableServer_Servant      servant,
 	int num_children, i;
 	GList *curr;
 
-	g_return_val_if_fail (uih_toplevel_check_toplevel (uih), FALSE);
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 
 	internal = menu_toplevel_get_item (uih, parent_path);
 
-	if (internal == NULL)
-		return FALSE;
+	if (internal == NULL) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
+		return;
+	}
 
 	num_children = g_list_length (internal->children);
 
@@ -4065,7 +4093,6 @@ impl_menu_get_children (PortableServer_Servant      servant,
 	for (curr = internal->children, i = 0; curr != NULL; curr = curr->next, i ++)
 		(*child_paths)->_buffer [i] = CORBA_string_dup ((char *) curr->data);
 
-	return TRUE;
 }
 
 /**
@@ -4843,12 +4870,18 @@ impl_menu_set_data (PortableServer_Servant       servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemInternal *internal;
 	
-	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 	
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 	
 	if (internal == NULL) {
-		/* FIXME: Set exception. */
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
 		return;
 	}
 	
@@ -5368,7 +5401,12 @@ impl_menu_set_attributes (PortableServer_Servant servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemInternal *internal;
 
-	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 
 	/*
 	 * Get the menu item matching this path belonging to this
@@ -5377,7 +5415,8 @@ impl_menu_set_attributes (PortableServer_Servant servant,
 	internal = menu_toplevel_get_item_for_containee (uih, path, containee_uih);
 
 	if (internal == NULL) {
-		/* FIXME: Set exception. */
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
 		return;
 	}
 
@@ -5406,12 +5445,18 @@ impl_menu_get_attributes (PortableServer_Servant servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	MenuItemInternal *internal;
 
-	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 
 	internal = menu_toplevel_get_item (uih, path);
 
 	if (internal == NULL) {
-		/* FIXME: Set exception. */
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
 		return;
 	}
 
@@ -6032,6 +6077,12 @@ impl_toolbar_create (PortableServer_Servant servant,
 {
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 	toolbar_toplevel_toolbar_create (uih, name, containee);
 }
 
@@ -6703,6 +6754,13 @@ impl_toolbar_create_item (PortableServer_Servant servant,
 	char *parent_path;
 
 
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
+
 	item = toolbar_make_item (path, toolbar_corba_to_type (toolbar_type),
 				  UNCORBIFY_STRING (label),
 				  UNCORBIFY_STRING (hint),
@@ -6714,9 +6772,12 @@ impl_toolbar_create_item (PortableServer_Servant servant,
 				  NULL, NULL);
 
 	parent_path = path_get_parent (item->path);
-	g_return_if_fail (parent_path != NULL);
-
-	toolbar_toplevel_create_item (uih, parent_path, item, containee_uih);
+	if (parent_path == NULL) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
+	} else {
+		toolbar_toplevel_create_item (uih, parent_path, item, containee_uih);
+	}
 
 	pixmap_free_data (item->pixmap_type, item->pixmap_data);
 
@@ -7159,10 +7220,22 @@ impl_toolbar_remove_item (PortableServer_Servant servant,
 			  CORBA_Environment *ev)
 {
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
+	ToolbarItemInternal *internal;
 	
-	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 
-	toolbar_toplevel_remove_item (uih, path, containee_uih);
+        internal = toolbar_toplevel_get_item_for_containee (uih, path, containee_uih);
+	if (internal == NULL) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
+		return;
+	}
+	toolbar_toplevel_remove_item_internal (uih, containee_uih);
 }
 
 /**
@@ -7604,10 +7677,17 @@ impl_toolbar_item_get_attributes (PortableServer_Servant servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemInternal *internal;
 
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 	internal = toolbar_toplevel_get_item (uih, path);
 
 	if (internal == NULL) {
-		/* FIXME: Set exception. */
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
 		return;
 	}
 
@@ -7634,8 +7714,19 @@ impl_toolbar_item_set_attributes (PortableServer_Servant servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemInternal *internal;
 
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
+
 	internal = toolbar_toplevel_get_item_for_containee (uih, path, containee);
-	g_return_if_fail (internal != NULL);
+	if (internal == NULL) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
+		return;
+	}
 
 	toolbar_toplevel_item_set_sensitivity_internal (uih, internal, sensitive);
 
@@ -7774,12 +7865,18 @@ impl_toolbar_item_set_data (PortableServer_Servant       servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemInternal *internal;
 	
-	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 	
 	internal = toolbar_toplevel_get_item_for_containee (uih, path, containee_uih);
 	
 	if (internal == NULL) {
-		/* FIXME: Set exception. */
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
 		return;
 	}
 	
@@ -7898,8 +7995,18 @@ impl_toolbar_set_attributes (PortableServer_Servant                   servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarToolbarInternal *internal;
 
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
 	internal = toolbar_toplevel_get_toolbar (uih, name);
-	g_return_if_fail (internal != NULL);
+	if (internal == NULL) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
+		return;
+	}
 
 	toolbar_toplevel_set_orientation          (uih, internal, 
 						   toolbar_corba_to_orientation (orientation));
@@ -7914,7 +8021,7 @@ impl_toolbar_set_attributes (PortableServer_Servant                   servant,
 static void
 impl_toolbar_get_attributes (PortableServer_Servant              servant,
 			     const Bonobo_UIHandler               containee,
-			     const CORBA_char                   *name,
+			     const CORBA_char                   *path,
 			     Bonobo_UIHandler_ToolbarOrientation *orientation,
 			     Bonobo_UIHandler_ToolbarStyle       *style,
 			     Bonobo_UIHandler_ToolbarSpaceStyle  *space_style,
@@ -7926,8 +8033,18 @@ impl_toolbar_get_attributes (PortableServer_Servant              servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 	ToolbarItemInternal *internal;
 
-	internal = toolbar_toplevel_get_toolbar (uih, name);
-	g_return_if_fail (internal != NULL);
+	if (!uih_toplevel_check_toplevel (uih)) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_NotToplevelHandler,
+				     NULL);
+		return;
+	}
+	internal = toolbar_toplevel_get_item_for_containee (uih, path, containee);
+	if (internal == NULL) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIHandler_PathNotFound, NULL);
+		return;
+	}
 
 	g_warning ("Unimplemented");
 }
