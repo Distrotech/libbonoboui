@@ -23,7 +23,7 @@ bonobo_libs = 			\
 
 
 lib_LTLIBRARIES = libbonobo.la
-noinst_PROGRAMS = object_test test-container sample-server \
+noinst_PROGRAMS = test-container sample-server \
 			test-container-autoload selector_test test-storage 
 
 CORBA_SOURCE =			\
