@@ -1,3 +1,18 @@
+2001-08-14  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: depend on bonobo-activation >= 0.9.1
+
+	* samples/controls/Makefile.am (serverdir): s/oaf/server/
+	update directory to install to.
+
+2001-08-14  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control-frame.c (get_toplevel_fn):
+	fixup allocator mixup.
+
+	* tests/test-focus.c (main): upd.
+	(clicked_fn): add to kill transient thing.
+
 2001-08-13  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-canvas-component.h: add missing includes.

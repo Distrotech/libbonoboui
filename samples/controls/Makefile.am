@@ -15,10 +15,10 @@ bonobo_sample_controls_LDADD =				\
 	$(BONOBOUI_LIBS)				\
 	$(INTLLIBS)
 
-oafdir = $(datadir)/oaf
-oaf_in_files = Bonobo_Sample_Controls.oaf.in
-oaf_DATA = $(oaf_in_files:.oaf.in=.oaf)
+serverdir = $(libdir)/bonobo/servers
+server_in_files = Bonobo_Sample_Controls.server.in
+server_DATA = $(server_in_files:.server.in=.server)
 
-@XML_I18N_MERGE_OAF_RULE@
+@XML_I18N_MERGE_SERVER_RULE@
 
-EXTRA_DIST = $(oaf_in_files) $(oaf_DATA)
+EXTRA_DIST = $(server_in_files) $(server_DATA)

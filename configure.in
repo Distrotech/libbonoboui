@@ -41,7 +41,9 @@ AC_SUBST(LDFLAGS)
 dnl
 dnl Start of pkg-config checks
 dnl
-PKG_CHECK_MODULES(BONOBOUI, libgnomecanvas-2.0 >= 1.96.0 libbonobo-2.0 >= 1.101.2 libgnome-2.0 >= 1.96.0)
+PKG_CHECK_MODULES(BONOBOUI, libgnomecanvas-2.0 >= 1.96.0 \
+		  libbonobo-2.0 >= 1.101.2 libgnome-2.0 >= 1.96.0 \
+		  bonobo-activation-2.0 >= 0.9.1)
 AC_SUBST(BONOBOUI_CFLAGS)
 AC_SUBST(BONOBOUI_LIBS)
 

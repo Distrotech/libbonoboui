@@ -1,11 +1,9 @@
-GPRINT_LIBS = $(top_builddir)/bonobo/libbonobo-print.la
-
 INCLUDES =						\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. -I$(top_srcdir)/bonobo			\
         -I$(includedir)                                 \
-	$(BONOBOX_TEST_CFLAGS)
+	$(LIBBONOBOUI_CFLAGS)
 
 bin_PROGRAMS = bonobo-sample-hello
 
@@ -21,13 +19,14 @@ bonobo_sample_hello_SOURCES =	\
 	hello-object-print.c
 
 bonobo_sample_hello_LDADD =				\
-	$(top_builddir)/bonobo/libbonobo.la		\
-	$(top_builddir)/bonobo/libbonobox.la		\
-	$(top_builddir)/bonobo/libbonobo-print.la	\
-	$(BONOBOX_TEST_LIBS)				\
+	$(top_builddir)/bonobo/libbonoboui-2.la		\
+	$(LIBBONOBOUI_LIBS)				\
 	$(INTLLIBS)
 
-oafdir = $(datadir)/oaf
-oaf_DATA = Bonobo_Sample_Hello.oafinfo
+serverdir = $(libdir)/bonobo/servers
+server_in_files = Bonobo_Sample_Hello.server.in
+server_DATA = $(server_in_files:.server.in=.server)
 
-EXTRA_DIST = $(oaf_DATA)
+@XML_I18N_MERGE_SERVER_RULE@
+
+EXTRA_DIST = $(server_in_files) $(server_DATA)

@@ -82,7 +82,7 @@ get_toplevel_fn (BonoboPropertyBag *bag,
 {
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (user_data);
 	GtkWidget          *toplev;
-	char               *id;
+	CORBA_char         *id;
 
 	g_return_if_fail (frame != NULL);
 
@@ -101,9 +101,7 @@ get_toplevel_fn (BonoboPropertyBag *bag,
 
 /*	g_warning ("return toplevel '%s'", id); */
 
-	*(char **)arg->_value = CORBA_string_dup (id);
-
-	g_free (id);
+	*(char **)arg->_value = id;
 }
 
 static void

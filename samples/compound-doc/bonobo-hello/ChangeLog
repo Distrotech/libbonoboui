@@ -1,3 +1,8 @@
+2001-08-14  Michael Meeks  <michael@ximian.com>
+
+	* Makefile.am: s/oaf/server/ fixup generation & translation
+	issues & several other issues.
+
 2001-02-07  Michael Meeks  <michael@ximian.com>
 
 	* hello-embeddable.c (hello_bonobo_embeddable_construct): upd.
