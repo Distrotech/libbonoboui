@@ -83,18 +83,10 @@ bonobo_client_site_destroy (GtkObject *object)
 	
 	object_class = (GtkObjectClass *)bonobo_client_site_parent_class;
 
-	/*
-	 * Destroy all the view frames.
-	 */
-	while (client_site->view_frames) {
-		BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (client_site->view_frames->data);
+	bonobo_object_list_unref_all (&client_site->view_frames);
 
-		bonobo_object_unref (BONOBO_OBJECT (view_frame));
-	}
-
-	/*
-	 * Destroy all canvas items
-	 */
+	/* Destroy all canvas items */
+	/* FIXME: this looks dodgy to me */
 	while (client_site->canvas_items) {
 		BonoboCanvasItem *item = BONOBO_CANVAS_ITEM (client_site->canvas_items->data);
 		gtk_object_unref (GTK_OBJECT (item));

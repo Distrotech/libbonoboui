@@ -460,6 +460,37 @@ parse_look (const char *look)
 		: BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
 }
 
+static BonoboUIToolbarStyle
+get_look (BonoboUIEngine *engine,
+	  BonoboUINode   *node)
+{
+	char      *txt;
+	BonoboUIToolbarStyle look;
+
+	if ((txt = bonobo_ui_node_get_attr (node, "look")))
+		look = parse_look (txt);
+
+	else {
+		GtkWidget           *widget;
+
+		widget = bonobo_ui_engine_node_get_widget (engine, node);
+
+		if (!widget || !BONOBO_IS_UI_TOOLBAR (widget) ||
+		    bonobo_ui_toolbar_get_orientation (BONOBO_UI_TOOLBAR (widget)) ==
+		    GTK_ORIENTATION_HORIZONTAL) {
+			txt = bonobo_ui_node_get_attr (node, "hlook");
+			look = parse_look (txt);
+			bonobo_ui_node_free_string (txt);
+		} else {
+			txt = bonobo_ui_node_get_attr (node, "vlook");
+			look = parse_look (txt);
+			bonobo_ui_node_free_string (txt);
+		}
+	}		
+	
+	return look;
+}
+
 static char *
 do_config_popup (BonoboUIEngineConfig *config,
 		 BonoboUINode         *config_node,
@@ -475,9 +506,8 @@ do_config_popup (BonoboUIEngineConfig *config,
 		bonobo_ui_node_free_string (txt);
 	}
 
-	style = parse_look (
-		(txt = bonobo_ui_node_get_attr (config_node, "look")));
-	bonobo_ui_node_free_string (txt);
+	style = get_look (bonobo_ui_engine_config_get_engine (config),
+			  config_node);
 
 	txt = g_strdup_printf (
 		"<Root>"

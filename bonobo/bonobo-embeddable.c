@@ -497,21 +497,9 @@ bonobo_embeddable_destroy (GtkObject *object)
 {
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (object);
 
-	/*
-	 * Destroy all our views.
-	 */
-	while (embeddable->priv->views) {
-		BonoboView *view = BONOBO_VIEW (embeddable->priv->views->data);
-
-		bonobo_object_unref (BONOBO_OBJECT (view));
-	}
-
-	while (embeddable->priv->canvas_items){
-		void *data = embeddable->priv->canvas_items->data;
-		BonoboCanvasComponent *comp = BONOBO_CANVAS_COMPONENT (data);
-
-		bonobo_object_unref (BONOBO_OBJECT (comp));
-	}
+	/* Destroy all our views. */
+	bonobo_object_list_unref_all (&embeddable->priv->views);
+	bonobo_object_list_unref_all (&embeddable->priv->canvas_items);
 	
 	if (embeddable->uri)
 		g_free (embeddable->uri);

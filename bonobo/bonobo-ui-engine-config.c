@@ -562,3 +562,11 @@ bonobo_ui_engine_config_configure (BonoboUIEngineConfig *config)
 	gtk_signal_connect (GTK_OBJECT (config->priv->dialog),
 			    "destroy", (GtkSignalFunc) null_dialog, config);
 }
+
+BonoboUIEngine *
+bonobo_ui_engine_config_get_engine (BonoboUIEngineConfig *config)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE_CONFIG (config), NULL);
+
+	return config->priv->engine;
+}

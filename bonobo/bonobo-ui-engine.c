@@ -2190,6 +2190,8 @@ bonobo_ui_engine_node_get_widget (BonoboUIEngine   *engine,
 				  BonoboUINode     *node)
 {
 	NodeInfo *info;
+
+	g_return_val_if_fail (engine != NULL, NULL);
 	
 	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
 
