@@ -1,0 +1,118 @@
+# Turkish translation of libbonoboui.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Ömer Fadýl USTA <omer_fad@hotmail.com> , 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui 1.97.0\n"
+"POT-Creation-Date: 2001-08-13 11:24+0200\n"
+"PO-Revision-Date: 2001-08-15 14:15+0200\n"
+"Last-Translator: Ömer Fadýl USTA <omer_fad@hotmail.com>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-9\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+msgid "Shadow type"
+msgstr "Gölge tipi"
+
+#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+msgid "Orientation"
+msgstr "Doðrulamak"
+
+#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+msgid "Preferred width"
+msgstr "Tercih edilen geniþlik"
+
+#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+msgid "Preferred height"
+msgstr "Tercih edilen yükseklik"
+
+#: bonobo/bonobo-selector-widget.c:356
+msgid "Name"
+msgstr "Ýsim"
+
+#: bonobo/bonobo-selector-widget.c:380
+msgid "Description"
+msgstr "Tanýmlama"
+
+#: bonobo/bonobo-ui-config-widget.c:266
+msgid "Visible"
+msgstr "Görünürlük"
+
+#: bonobo/bonobo-ui-config-widget.c:274
+msgid "_Show"
+msgstr "_Göster"
+
+#: bonobo/bonobo-ui-config-widget.c:284
+msgid "_Hide"
+msgstr "Gi_zle"
+
+#: bonobo/bonobo-ui-config-widget.c:294
+msgid "_View tooltips"
+msgstr "_Araç ipucunu göster"
+
+#: bonobo/bonobo-ui-config-widget.c:301
+msgid "Toolbars"
+msgstr "Araç çubuðu"
+
+#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "Look"
+msgstr "Bak"
+
+#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "_Icon"
+msgstr "_Simge"
+
+#: bonobo/bonobo-ui-config-widget.c:331
+msgid "_Text and Icon"
+msgstr "_Metin ve simge"
+
+#: bonobo/bonobo-ui-config-widget.c:341
+msgid "_Priority text only"
+msgstr "_Öncelikli yalnýz metin"
+
+#: bonobo/bonobo-ui-engine-config.c:513
+msgid "Configure UI"
+msgstr "UI Yapýlandýrmasý"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "B_oth"
+msgstr "Ýkisi_de"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "T_ext"
+msgstr "Me_tin"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:550
+msgid "Hide t_ips"
+msgstr "Ýpucunu giz_le"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:550
+msgid "Show t_ips"
+msgstr "Ýpucunu göste_r"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:551
+msgid "_Hide toolbar"
+msgstr "Ara_ç çubuðunu gizle"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:551
+msgid "Customi_ze"
+msgstr "Özelle_þtir"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:552
+msgid "Customize the toolbar"
+msgstr "Araç ç_ubuðunu özelleþtir"
+
+#: tests/test-focus.c:31 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+msgid "Can not bonobo_ui_init"
+msgstr "Bonoboui çalýþtýrýlamý_yor"
+
+#: tests/test-selector.c:13
+msgid "Select an object"
+msgstr "Bir nesne seçin"
+
+#: tests/test-ui.c:229
+msgid "Cannot init libbonoboui code"
+msgstr "Libbonoboui kodu çalýþtýrýlamýyor"
