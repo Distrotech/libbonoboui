@@ -309,11 +309,11 @@ label_same (GtkBin *menu_widget, const char *txt)
 }
 
 static void
-impl_bonobo_ui_sync_menu_state (BonoboUISync     *sync,
-				BonoboUINode     *node,
-				BonoboUINode     *cmd_node,
-				GtkWidget        *widget,
-				GtkWidget        *parent)
+impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
+				BonoboUINode *node,
+				BonoboUINode *cmd_node,
+				GtkWidget    *widget,
+				GtkWidget    *parent)
 {
 	GtkWidget        *menu_widget;
 	BonoboUISyncMenu *sync_menu = BONOBO_UI_SYNC_MENU (sync);

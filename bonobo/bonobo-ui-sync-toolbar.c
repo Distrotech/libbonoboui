@@ -97,7 +97,8 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 	char *min_width;
 	char *behavior;
 	char **behavior_array;
-	GdkPixbuf    *icon_pixbuf;
+	GdkPixbuf *icon_pixbuf;
+	gboolean priority;
 
 	/* FIXME: to debug control problem */
 	gtk_widget_show (widget);
@@ -117,6 +118,15 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 
 		g_strfreev (behavior_array);
 	}
+
+	if ((txt = bonobo_ui_engine_get_attr (node, cmd_node, "priority"))) {
+		priority = atoi (txt);
+		bonobo_ui_node_free_string (txt);
+	} else
+		priority = FALSE;
+
+	bonobo_ui_toolbar_item_set_want_label (
+		BONOBO_UI_TOOLBAR_ITEM (widget), priority);
 
 	icon_pixbuf = cmd_get_toolbar_pixbuf (node, cmd_node);
 
@@ -489,6 +499,8 @@ do_config_popup (BonoboUIEngineConfig *config,
 		"<separator/>"
 		"<menuitem verb=\"Tip\" _label=\"%s\" set=\"%d\"/>"
 		"<menuitem verb=\"Hide\" _label=\"%s\"/>"
+		"<menuitem verb=\"Customize\" _label=\"%s\" _tip=\"%s\""
+		" pixtype=\"stock\" pixname=\"Preferences\"/>"
 		"</popup>"
 		"</popups>"
 		"</Root>",
@@ -499,7 +511,8 @@ do_config_popup (BonoboUIEngineConfig *config,
 		N_("_Icon"),
 		N_("T_ext"),
 		tip ? N_("Hide t_ips") : N_("Show t_ips"),
-		!tip, N_("_Hide toolbar"));
+		!tip, N_("_Hide toolbar"),
+		N_("Customi_ze"), N_("Customize the toolbar"));
 
 	return txt;
 }
@@ -538,8 +551,8 @@ config_verb_fn (BonoboUIEngineConfig *config,
 			else
 				changed = FALSE;
 			
-		} else if (!strcmp (verb, "Configure")) {
-			g_warning ("Do configure");
+		} else if (!strcmp (verb, "Customize")) {
+			bonobo_ui_engine_config_configure (config);
 			changed = FALSE;
 
 		} else
