@@ -53,7 +53,7 @@
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-object.h>
-#include <bonobo/gnome-bonobo-widget.h>
+#include <bonobo/bonobo-widget.h>
 
 struct _BonoboWidgetPrivate {
 

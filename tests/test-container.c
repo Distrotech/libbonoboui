@@ -15,7 +15,7 @@
 #include <libgnorba/gnorba.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
-#include <bonobo/bonobo.h>
+#include <bonobo.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
