@@ -2,13 +2,13 @@
 # Nederlandse vertaling van libbonboUI.
 # Copyright (C) 2002 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libbonoboUI package.
-# Huib Kleinhout <huib@stack.nl>, 2002.
+# Huib Kleinhout <huib@stack.nl>, 2002, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0\n"
-"POT-Creation-Date: 2002-11-25 05:33+0100\n"
-"PO-Revision-Date: 2002-05-28 05:13+02:00\n"
+"POT-Creation-Date: 2003-01-13 04:05+0100\n"
+"PO-Revision-Date: 2003-01-13 14:45+0100\n"
 "Last-Translator: Huib Kleinhout <huib@stack.nl>\n"
 "Language-Team: Dutch <NL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -152,6 +152,18 @@ msgstr "Alleen tekst"
 msgid "_Priority text only"
 msgstr "Alleen _belangrijke tekst"
 
+#: bonobo/bonobo-ui-engine.c:88
+msgid "Debug"
+msgstr "Debuggen"
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "_Dump XML"
+msgstr "XML _dumpen"
+
+#: bonobo/bonobo-ui-engine.c:89
+msgid "Dump the entire UI's XML description to the console"
+msgstr "De gehele XML-beschrijving van de UI in de console dumpen"
+
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "Gebruikersinterface instellen"
@@ -285,11 +297,11 @@ msgstr "is zwevend"
 msgid "whether the toolbar is floating"
 msgstr "of de gereedschapsbalk zwevend is"
 
-#: bonobo/bonobo-ui-util.c:598
+#: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
 msgstr "_Inhoud"
 
-#: bonobo/bonobo-ui-util.c:599
+#: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
 msgstr "Toon de hulp voor dit programma"
 
@@ -390,6 +402,6 @@ msgstr "Hallo, Wereld!"
 msgid "Cannot init libbonoboui code"
 msgstr "De libbonoboui code kan niet geïnitialiseerd worden"
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Kon Bonobo UI niet initialiseren"
