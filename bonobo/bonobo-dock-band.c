@@ -155,6 +155,8 @@ bonobo_dock_band_class_init (BonoboDockBandClass *class)
 static void
 bonobo_dock_band_instance_init (BonoboDockBand *band)
 {
+  GtkWidget *widget = GTK_WIDGET (band);
+
   GTK_WIDGET_SET_FLAGS (band, GTK_NO_WINDOW);
 
   band->_priv = NULL;
@@ -174,6 +176,9 @@ bonobo_dock_band_instance_init (BonoboDockBand *band)
   band->drag_allocation.width = band->drag_allocation.height = 0;
 
   band->new_for_drag = FALSE;
+
+  if (GTK_WIDGET_VISIBLE (widget))
+    gtk_widget_queue_resize (widget);
 }
 
 
@@ -1438,15 +1443,9 @@ GtkWidget *
 bonobo_dock_band_new (void)
 {
   BonoboDockBand *band;
-  GtkWidget *widget;
 
   band = g_object_new (bonobo_dock_band_get_type (), NULL);
-  widget = GTK_WIDGET (band);
-
-  if (GTK_WIDGET_VISIBLE (widget))
-    gtk_widget_queue_resize (widget);
-
-  return widget;
+  return GTK_WIDGET (band);
 }
 
 /**
