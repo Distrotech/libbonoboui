@@ -484,6 +484,8 @@ bonobo_widget_set_property (BonoboWidget      *control,
 		g_warning ("Error '%s'", err);
 
 	va_end (args);
+
+	gtk_object_unref (GTK_OBJECT (cl));
 }
 
 void
