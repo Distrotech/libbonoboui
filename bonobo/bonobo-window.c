@@ -58,6 +58,11 @@ struct _BonoboWindowPrivate {
 	gboolean        allow_all_focus;
 };
 
+enum {
+	PROP_0,
+	PROP_WIN_NAME
+};
+
 /**
  * bonobo_window_remove_popup:
  * @win: the window
@@ -377,6 +382,48 @@ bonobo_window_focus (GtkWidget        *widget,
 }
 
 static void
+bonobo_window_set_property (GObject         *object,
+			guint            prop_id,
+			 const GValue    *value,
+			GParamSpec      *pspec)
+{
+	BonoboWindow *window;
+
+	window = BONOBO_WINDOW (object);
+
+	switch (prop_id)
+	{
+	case PROP_WIN_NAME:
+		bonobo_window_set_name (window, g_value_get_string (value));
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		break;
+	}
+}
+
+static void
+bonobo_window_get_property (GObject         *object,
+			guint            prop_id,
+			GValue          *value,
+			GParamSpec      *pspec)
+{
+	BonoboWindow *window;
+
+	window = BONOBO_WINDOW (object);
+
+	switch (prop_id)
+	{
+	case PROP_WIN_NAME:
+		g_value_set_string (value, window->priv->name);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		break;
+	}
+}
+
+static void
 bonobo_window_class_init (BonoboWindowClass *klass)
 {
 	GObjectClass *gobject_class = (GObjectClass *) klass;
@@ -384,17 +431,35 @@ bonobo_window_class_init (BonoboWindowClass *klass)
 
 	gobject_class->dispose  = bonobo_window_dispose;
 	gobject_class->finalize = bonobo_window_finalize;
+	gobject_class->set_property = bonobo_window_set_property;
+	gobject_class->get_property = bonobo_window_get_property;
 
 	widget_class->focus = bonobo_window_focus;
 	widget_class->show_all = bonobo_window_show_all;
 	widget_class->key_press_event = bonobo_window_key_press_event;
 	widget_class->key_release_event = bonobo_window_key_release_event;
+
+	/* Properties: */
+	g_object_class_install_property (gobject_class,
+		PROP_WIN_NAME,
+		g_param_spec_string ("win_name",
+		_("Name"),
+		_("Name of the window - used for configuration serialization."),
+		NULL,
+		G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 }
 
 static void
 bonobo_window_instance_init (BonoboWindow *win)
 {
+	BonoboUIContainer *ui_container = 0;
+	
 	win->priv = construct_priv (win);
+	
+	/* Create UIContainer: */
+	ui_container = bonobo_ui_container_new ();
+	bonobo_ui_container_set_engine (ui_container, win->priv->engine);
+	bonobo_object_unref (BONOBO_OBJECT (ui_container));
 }
 
 /**
@@ -481,9 +546,10 @@ bonobo_window_get_ui_container (BonoboWindow *win)
  * @iu_container: the UI container
  * @win_name: the window name
  * @title: the window's title for the title bar
- * 
- * Construct a new BonbooWindow
- * 
+ *
+ * Don't use this ever - use construct time properties instead.
+ * TODO: Remove this when we are allowed API changes.
+ *
  * Return value: a constructed window
  **/
 GtkWidget *
@@ -518,13 +584,9 @@ GtkWidget *
 bonobo_window_new (const char *win_name,
 		   const char *title)
 {
-	BonoboWindow      *win;
-	BonoboUIContainer *ui_container;
+	BonoboWindow *win = g_object_new (BONOBO_TYPE_WINDOW, "win_name", win_name, "title", title, NULL);
 
-	win = g_object_new (BONOBO_TYPE_WINDOW, NULL);
-
-	ui_container = bonobo_ui_container_new ();
-
-	return bonobo_window_construct (
-		win, ui_container, win_name, title);
+	return GTK_WIDGET (win);
 }
+
+

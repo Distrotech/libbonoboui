@@ -1,3 +1,9 @@
+2002-04-22  Murray Cumming  <murrayc@usa.net>
+
+	* bonobo/bonobo-window.c: (bonbo_window_construct) Recommitted,
+	with bonobo_window_construct() implementation which was ommitted
+	somehow before.
+
 2002-04-22  jacob berkman  <jacob@ximian.com>
 
 	* bonobo/bonobo-window.c (bonobo_window_construct): revert
