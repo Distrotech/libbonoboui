@@ -1,3 +1,10 @@
+2002-05-24  Paolo Maggi  <maggi@athena.polito.it>
+
+	* bonobo/bonobo-file-selector-util.c
+	(cancel_clicked_cb): NULL the user_data.
+	(run_file_selector): handle NULL user_data without
+	crashing, so 'Cancel' works - sigh.
+
 2002-05-23  Michael Meeks  <michael@ximian.com>
 
 
