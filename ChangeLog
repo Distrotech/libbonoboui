@@ -1,3 +1,7 @@
+2001-12-12  jacob berkman  <jacob@ximian.com>
+
+	* bonobo/Makefile.am: build built sources in $(srcdir)
+
 2001-12-10  jacob berkman  <jacob@ximian.com>
 
 	* glade/glade-gnome.c (add_dock_item): fix dock item placement

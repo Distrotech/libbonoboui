@@ -139,12 +139,17 @@ libbonoboinclude_HEADERS = \
 	$(libbonoboui_h_sources) \
 	$(libbonoboui_built_public_sources)
 
-bonobo-ui-marshal.h: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
-	$(GLIB_GENMARSHAL) $< --header --prefix=bonobo_ui_marshal > $@
-bonobo-ui-marshal.c: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
-	$(GLIB_GENMARSHAL) $< --body --prefix=bonobo_ui_marshal > $@
-bonobo-ui-type-builtins.c: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
-	$(GLIB_MKENUMS) \
+$(srcdir)/bonobo-ui-marshal.h: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
+	cd $(srcdir) \
+	&& $(GLIB_GENMARSHAL) $< --header --prefix=bonobo_ui_marshal > $@
+
+$(srcdir)/bonobo-ui-marshal.c: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
+	cd $(srcdir) \
+	&& $(GLIB_GENMARSHAL) $< --body --prefix=bonobo_ui_marshal > $@
+
+$(srcdir)/bonobo-ui-type-builtins.c: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
+	cd $(srcdir) \
+	&& $(GLIB_MKENUMS) \
 			--fhead "#include \"libbonoboui.h\"\n\n" \
 			--fhead "#include \"bonobo-ui-type-builtins.h\"\n\n" \
 			--fprod "\n/* enumerations from \"@filename@\" */" \
@@ -159,8 +164,10 @@ bonobo-ui-type-builtins.c: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
 		$(libbonoboui_h_sources) > xgen-gtbec \
 	&& cp xgen-gtbec $(@F) \
 	&& rm -f xgen-gtbec
-bonobo-ui-type-builtins.h: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
-	$(GLIB_MKENUMS) \
+
+$(srcdir)/bonobo-ui-type-builtins.h: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
+	cd $(srcdir) \
+	&& $(GLIB_MKENUMS) \
 			--fhead "#ifndef __BONOBO_UI_TYPE_BUILTINS_H__\n" \
 			--fhead "#define __BONOBO_UI_TYPE_BUILTINS_H__ 1\n\n" \
 			--fhead "#include <glib-object.h>\n\n" \
@@ -173,8 +180,10 @@ bonobo-ui-type-builtins.h: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
 		$(libbonoboui_h_sources) > xgen-gth \
 	&& cp xgen-gth $(@F) \
 	&& rm -f xgen-gth
-libbonoboui.defs: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
-	$(GLIB_MKENUMS) --comments ";; @comment@" \
+
+$(srcdir)/libbonoboui.defs: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
+	cd $(srcdir) \
+	&& $(GLIB_MKENUMS) --comments ";; @comment@" \
 			--fprod "; enumerations from \"@filename@\"\n " \
 	                --vhead "(define-@type@ @EnumName@" \
 	                --vprod "   (@valuenick@ @VALUENAME@)" \
