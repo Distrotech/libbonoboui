@@ -1,0 +1,169 @@
+<SIGNAL>
+<NAME>BonoboSelector::ok</NAME>
+<RETURNS>void</RETURNS>
+BonoboSelector *bonoboselector
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboSelector::cancel</NAME>
+<RETURNS>void</RETURNS>
+BonoboSelector *bonoboselector
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboClientSite::show-window</NAME>
+<RETURNS>void</RETURNS>
+BonoboClientSite *bonoboclientsite
+gint  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboClientSite::save-object</NAME>
+<RETURNS>void</RETURNS>
+BonoboClientSite *bonoboclientsite
+gpointer  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboContainer::get-object</NAME>
+<RETURNS>gpointer</RETURNS>
+BonoboContainer *bonobocontainer
+gpointer  arg1
+gboolean  arg2
+gpointer  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboEmbeddable::host-name-changed</NAME>
+<RETURNS>void</RETURNS>
+BonoboEmbeddable *bonoboembeddable
+GtkString  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboEmbeddable::uri-changed</NAME>
+<RETURNS>void</RETURNS>
+BonoboEmbeddable *bonoboembeddable
+GtkString  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboObject::query-interface</NAME>
+<RETURNS>void</RETURNS>
+BonoboObject *bonoboobject
+gpointer  arg1
+gpointer  arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboObject::system-exception</NAME>
+<RETURNS>void</RETURNS>
+BonoboObject *bonoboobject
+gpointer  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboObject::object-gone</NAME>
+<RETURNS>void</RETURNS>
+BonoboObject *bonoboobject
+gpointer  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboViewFrame::user-activate</NAME>
+<RETURNS>void</RETURNS>
+BonoboViewFrame *bonoboviewframe
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboViewFrame::user-context</NAME>
+<RETURNS>void</RETURNS>
+BonoboViewFrame *bonoboviewframe
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboView::do-verb</NAME>
+<RETURNS>void</RETURNS>
+BonoboView *bonoboview
+GtkString  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboView::set-zoom-factor</NAME>
+<RETURNS>void</RETURNS>
+BonoboView *bonoboview
+gdouble  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIHandler::menu-item-activated</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIHandler *bonobouihandler
+gpointer  arg1
+gpointer  arg2
+gpointer  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIHandler::menu-item-removed</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIHandler *bonobouihandler
+gpointer  arg1
+gpointer  arg2
+gpointer  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIHandler::menu-item-overridden</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIHandler *bonobouihandler
+gpointer  arg1
+gpointer  arg2
+gpointer  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIHandler::menu-item-reinstated</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIHandler *bonobouihandler
+gpointer  arg1
+gpointer  arg2
+gpointer  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIHandler::toolbar-item-activated</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIHandler *bonobouihandler
+gpointer  arg1
+gpointer  arg2
+gpointer  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIHandler::toolbar-item-removed</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIHandler *bonobouihandler
+gpointer  arg1
+gpointer  arg2
+gpointer  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIHandler::toolbar-item-overridden</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIHandler *bonobouihandler
+gpointer  arg1
+gpointer  arg2
+gpointer  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>BonoboUIHandler::toolbar-item-reinstated</NAME>
+<RETURNS>void</RETURNS>
+BonoboUIHandler *bonobouihandler
+gpointer  arg1
+gpointer  arg2
+gpointer  arg3
+</SIGNAL>
+
