@@ -97,7 +97,8 @@ ui_event (BonoboUIComponent           *component,
 			BONOBO_TYPE_UI_COMPONENT, component,
 			G_TYPE_STRING, id,
 			G_TYPE_INT, type,
-			G_TYPE_STRING, state, 0);
+			G_TYPE_STRING, state,
+			G_TYPE_INVALID);
 }
 
 static void
@@ -155,7 +156,8 @@ impl_Bonobo_UIComponent_execVerb (PortableServer_Servant servant,
 		bonobo_closure_invoke (
 			verb->closure, G_TYPE_NONE,
 			BONOBO_TYPE_UI_COMPONENT, component,
-			G_TYPE_STRING, cname, 0);
+			G_TYPE_STRING, cname,
+			G_TYPE_INVALID);
 	else
 		g_warning ("FIXME: verb '%s' not found, emit exception", cname);
 

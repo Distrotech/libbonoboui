@@ -151,15 +151,15 @@ create_bonobo_selector (gboolean    enable_vfs,
 
 	if (mime_types)
 		bonobo_widget_set_property (
-			control, "MimeTypes", mime_types, NULL);
+			control, "MimeTypes", TC_CORBA_string, mime_types, NULL);
 
 	if (default_path)
 		bonobo_widget_set_property (
-			control, "DefaultLocation", default_path, NULL);
+			control, "DefaultLocation", TC_CORBA_string, default_path, NULL);
 
 	if (default_filename)
 		bonobo_widget_set_property (
-			control, "DefaultFileName", default_filename, NULL);
+			control, "DefaultFileName", TC_CORBA_string, default_filename, NULL);
 	
 	return GTK_WINDOW (dialog);
 }
