@@ -188,13 +188,16 @@ gnome_bonobo_widget_size_allocate (GtkWidget *widget,
 	child_allocation.width = MAX (allocation->width - GTK_CONTAINER (widget)->border_width * 2, 0);
 	child_allocation.height = MAX (allocation->height - GTK_CONTAINER (widget)->border_width * 2, 0);
 
+/*
+ * If left in this creates an event loop in this function.
+ *
 	if (GTK_WIDGET_REALIZED (widget)) {
 		gdk_window_move_resize (widget->window,
 					allocation->x + GTK_CONTAINER (widget)->border_width,
 					allocation->y + GTK_CONTAINER (widget)->border_width,
 					child_allocation.width,
 					child_allocation.height);
-	}
+					}*/
   
 	if (bin->child) {
 		gtk_widget_size_allocate (bin->child, &child_allocation);
