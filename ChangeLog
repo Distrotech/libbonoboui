@@ -1,3 +1,14 @@
+2002-04-01  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-toolbar.c
+	(create_dockitem): remove bogus double
+	detachable check.
+	(impl_bonobo_ui_sync_toolbar_update_root):
+	set detachable (or not) on sync.
+
+	* bonobo/bonobo-dock-item.c
+	(bonobo_dock_item_set_locked): impl.
+
 2002-03-28  jacob berkman  <jacob@ximian.com>
 
 	* bonobo/bonobo-selector.c (signals): 

@@ -1271,7 +1271,7 @@ bonobo_dock_item_get_shadow_type (BonoboDockItem  *dock_item)
  **/
 gboolean
 bonobo_dock_item_set_orientation (BonoboDockItem *dock_item,
-                                 GtkOrientation orientation)
+				  GtkOrientation  orientation)
 {
   g_return_val_if_fail (dock_item != NULL, FALSE);
   g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (dock_item), FALSE);
@@ -1316,8 +1316,6 @@ bonobo_dock_item_set_orientation (BonoboDockItem *dock_item,
 GtkOrientation
 bonobo_dock_item_get_orientation (BonoboDockItem *dock_item)
 {
-  g_return_val_if_fail (dock_item != NULL,
-                        GTK_ORIENTATION_HORIZONTAL);
   g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (dock_item),
                         GTK_ORIENTATION_HORIZONTAL);
 
@@ -1335,8 +1333,6 @@ bonobo_dock_item_get_orientation (BonoboDockItem *dock_item)
 BonoboDockItemBehavior
 bonobo_dock_item_get_behavior (BonoboDockItem *dock_item)
 {
-  g_return_val_if_fail (dock_item != NULL,
-                        BONOBO_DOCK_ITEM_BEH_NORMAL);
   g_return_val_if_fail (BONOBO_IS_DOCK_ITEM (dock_item),
                         BONOBO_DOCK_ITEM_BEH_NORMAL);
 
@@ -1344,6 +1340,30 @@ bonobo_dock_item_get_behavior (BonoboDockItem *dock_item)
 }
 
 /* Private interface.  */
+
+void
+bonobo_dock_item_set_locked (BonoboDockItem *dock_item,
+			     gboolean        locked)
+{
+  g_return_if_fail (BONOBO_IS_DOCK_ITEM (dock_item));
+
+  if (locked)
+    {
+      if (!BONOBO_DOCK_ITEM_NOT_LOCKED (dock_item))
+        return;
+
+      dock_item->behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
+      gtk_widget_hide (dock_item->_priv->grip);
+    }
+  else
+    {
+      if (BONOBO_DOCK_ITEM_NOT_LOCKED (dock_item))
+        return;
+
+      dock_item->behavior &= ~BONOBO_DOCK_ITEM_BEH_LOCKED;
+      gtk_widget_show (dock_item->_priv->grip);
+    }
+}
 
 void
 bonobo_dock_item_grab_pointer (BonoboDockItem *item)

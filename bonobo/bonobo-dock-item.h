@@ -130,6 +130,8 @@ BonoboDockItemBehavior
 
 /* Private methods.  */
 #ifdef BONOBO_UI_INTERNAL
+void           bonobo_dock_item_set_locked      (BonoboDockItem *dock_item,
+						 gboolean        locked);
 gboolean       bonobo_dock_item_detach          (BonoboDockItem *item,
 						 gint x, gint y);
                                                

@@ -624,11 +624,6 @@ create_dockitem (BonoboUISyncToolbar *sync,
 	BonoboUIToolbar *toolbar;
 
 	if ((prop = bonobo_ui_node_peek_attr (node, "behavior"))) {
-		if (!strcmp (prop, "detachable"))
-			force_detachable = TRUE;
-	}
-
-	if ((prop = bonobo_ui_node_peek_attr (node, "behavior"))) {
 		behavior_array = g_strsplit (prop, ",", -1);
 	
 		if (string_array_contains (behavior_array, "detachable"))
@@ -740,6 +735,7 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 	const char *txt;
 	const char *dockname;
 	gboolean    tooltips;
+	gboolean    detachable;
 	BonoboDockItem *item;
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarStyle look;
@@ -753,7 +749,14 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 	if (!item)
 		item = create_dockitem (BONOBO_UI_SYNC_TOOLBAR (sync),
 					node, dockname);
-	
+
+	if ((txt = bonobo_ui_node_peek_attr (node, "behavior")) &&
+	    strstr (txt, "detachable"))
+		detachable = TRUE;
+	else
+		detachable = bonobo_ui_preferences_get_toolbar_detachable ();
+	bonobo_dock_item_set_locked (item, !detachable);
+
 	toolbar = BONOBO_UI_TOOLBAR (GTK_BIN (item)->child);
 
 	bonobo_ui_engine_stamp_root (sync->engine, node, GTK_WIDGET (toolbar));
