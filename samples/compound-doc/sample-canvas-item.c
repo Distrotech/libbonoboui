@@ -5,6 +5,7 @@
 
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo.h>
+#include <bonobo/bonobo-embeddable-factory.h>
 
 CORBA_Environment ev;
 CORBA_ORB orb;
