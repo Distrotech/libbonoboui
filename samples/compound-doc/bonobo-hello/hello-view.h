@@ -35,7 +35,7 @@ typedef struct {
 BonoboView *hello_view_factory (BonoboEmbeddable * bonobo_object,
 				const Bonobo_ViewFrame view_frame,
 				void *data);
-void hello_view_refresh (HelloView * view);
+void        hello_view_refresh (HelloView * view);
 
 
 #endif

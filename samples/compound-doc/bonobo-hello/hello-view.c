@@ -20,13 +20,62 @@
 #include "hello-view.h"
 #include <libgnomeui/libgnomeui.h>
 
-static GtkWidget *view_new (HelloView * view_data);
-static void view_delete (BonoboView * view, HelloView * view_data);
-static void view_activate_cb (BonoboView * view, gboolean activate,
-			      gpointer data);
-static void view_clicked_cb (GtkWidget * caller, gpointer data);
-static void view_change_string_cb (gchar * string, gpointer data);
+/*
+ * Refresh a view. Call this whenever the object changes (see
+ * hello_model_refresh_views for an example)
+ */
+void
+hello_view_refresh (HelloView *view_data)
+{
+	Hello *obj = view_data->obj;
 
+	gtk_label_set (GTK_LABEL (view_data->label), obj->text);
+}
+
+/*
+ * View destructor
+ */
+static void
+view_delete (BonoboView * view, HelloView * view_data)
+{
+	g_free (view_data);
+}
+
+/*
+ * Signal handler for the `activate' signal
+ */
+static void
+view_activate_cb (BonoboView * view, gboolean activate, gpointer data)
+{
+	bonobo_view_activate_notify (view, activate);
+}
+
+static void
+view_change_string_cb (gchar * string, gpointer data)
+{
+	HelloView *view_data = (HelloView *) data;
+
+	if (string)
+		hello_model_set_text (view_data->obj, string);
+}
+
+static void
+view_clicked_cb (GtkWidget *caller, gpointer data)
+{
+	HelloView *view_data = (HelloView *) data;
+	gchar *curr_text;
+
+	gtk_label_get (GTK_LABEL (view_data->label), &curr_text);
+
+	gnome_request_dialog (FALSE,            /* Password entry */
+			      "Enter new text",	/* Prompt         */
+			      curr_text,	/* Default value  */
+			      0,                /* Maximum length */
+			      view_change_string_cb, /* Callback  */
+			      data,             /* Callback data  */
+			      NULL	        /* Parent window  */
+	    );
+}
 
 /*
  * Creates the GTK part of a new View for the data passed in its
@@ -58,24 +107,11 @@ view_new (HelloView * view_data)
 }
 
 /*
- * Refresh a view. Call this whenever the object changes (see
- * hello_model_refresh_views for an example)
- */
-void
-hello_view_refresh (HelloView * view_data)
-{
-	Hello *obj = view_data->obj;
-
-	gtk_label_set (GTK_LABEL (view_data->label), obj->text);
-}
-
-
-/*
  * Create the Bonobo part of a new view. The actualy widget creation
  * is done in hello_view_new.
  */
 BonoboView *
-hello_view_factory (BonoboEmbeddable * bonobo_object,
+hello_view_factory (BonoboEmbeddable *bonobo_object,
 		    const Bonobo_ViewFrame view_frame, void *data)
 {
 	BonoboView *view;
@@ -97,49 +133,4 @@ hello_view_factory (BonoboEmbeddable * bonobo_object,
 			    GTK_SIGNAL_FUNC (view_activate_cb), view_data);
 
 	return view;
-}
-
-/*
- * View destructor
- */
-static void
-view_delete (BonoboView * view, HelloView * view_data)
-{
-	g_free (view_data);
-}
-
-/*
- * Signal handler for the `activate' signal
- */
-static void
-view_activate_cb (BonoboView * view, gboolean activate, gpointer data)
-{
-	bonobo_view_activate_notify (view, activate);
-}
-
-static void
-view_clicked_cb (GtkWidget * caller, gpointer data)
-{
-	HelloView *view_data = (HelloView *) data;
-	gchar *curr_text;
-
-	gtk_label_get (GTK_LABEL (view_data->label), &curr_text);
-
-	gnome_request_dialog (FALSE,	/* Password entry */
-			      "Enter new text",	/* Prompt */
-			      curr_text,	/* Default value */
-			      0,	/* Maximum length */
-			      view_change_string_cb,	/* Callback */
-			      data,	/* Callback data */
-			      NULL	/* Parent window */
-	    );
-}
-
-static void
-view_change_string_cb (gchar * string, gpointer data)
-{
-	HelloView *view_data = (HelloView *) data;
-
-	if (string)
-		hello_model_set_text (view_data->obj, string);
 }
