@@ -1,3 +1,9 @@
+2003-05-13  Hidetoshi Tajima <hidetoshi.tajima@sun.com>
+
+	* configure.in (LDFLAGS):
+	* bonobo/Makefile.am (libbonoboui_2_la_LIBADD): 
+	add -lX11 to LDFLAGS, fixing #112531.
+	
 2003-05-13  Anders Carlsson  <andersca@codefactory.se>
 
 	* bonobo/bonobo-ui-preferences.c: Accept both-horiz as well.
