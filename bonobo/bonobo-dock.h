@@ -125,10 +125,6 @@ BonoboDockLayout *bonobo_dock_get_layout      (BonoboDock *dock);
 gboolean          bonobo_dock_add_from_layout (BonoboDock *dock,
 					       BonoboDockLayout *layout);
 
-#ifdef BONOBO_UI_INTERNAL
-void              bonobo_dock_focus_roll      (BonoboDock *dock);
-#endif /* BONOBO_UI_INTERNAL */
-
 G_END_DECLS
 
 #endif

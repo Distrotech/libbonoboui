@@ -1,3 +1,30 @@
+2003-07-24  Federico Mena Quintero  <federico@ximian.com>
+
+	Backports from HEAD; lose focusability in toolbars.
+
+	* bonobo/bonobo-dock-item-grip.c
+	(bonobo_dock_item_grip_instance_init): Don't set GTK_CAN_FOCUS.
+
+	* bonobo/bonobo-ui-toolbar-button-item.c
+	(bonobo_ui_toolbar_button_item_construct): Unset GTK_CAN_FOCUS.
+
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_class_init): Removed
+	the hackish focusing stuff.  Leave the handlers there, though,
+	because they are used in the ui-toolbar compatibility code.
+
+	* bonobo/bonobo-ui-toolbar-item.c
+	(bonobo_ui_toolbar_item_class_init): Likewise.
+
+	* bonobo/bonobo-dock.c (bonobo_dock_focus_roll): Removed.
+
+	* bonobo/bonobo-dock.h: Likewise.
+
+	* bonobo/bonobo-window.c (BonoboWindowPrivate): Removed the
+	allow_all_focus field.
+	(bonobo_window_key_press_event): Don't do evil focus_roll stuff.
+	(bonobo_window_key_release_event): Likewise.
+	(bonobo_window_focus): Likewise.
+
 2003-07-23  Federico Mena Quintero  <federico@ximian.com>
 
 	* bonobo/bonobo-socket.c (bonobo_socket_instance_init): Create a

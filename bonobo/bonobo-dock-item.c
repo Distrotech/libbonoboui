@@ -374,7 +374,6 @@ bonobo_dock_item_class_init (BonoboDockItemClass *class)
 
   widget_class->map = bonobo_dock_item_map;
   widget_class->unmap = bonobo_dock_item_unmap;
-  widget_class->focus = bonobo_widget_clobber_focus;
   widget_class->realize = bonobo_dock_item_realize;
   widget_class->unrealize = bonobo_dock_item_unrealize;
   widget_class->style_set = bonobo_dock_item_style_set;
