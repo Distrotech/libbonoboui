@@ -157,7 +157,7 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	
 	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
 
-}
+} /* add_text_cmd */
 
 /*
  * These functions handle the progressive transmission of data
@@ -183,6 +183,13 @@ timeout_next_line (gpointer data)
 	if (fgets (line, sizeof (line), tmt->f) == NULL)
 	{
 		GNOME_ProgressiveDataSink_end (tmt->psink, &ev);
+
+		fclose (tmt->f);
+
+		GNOME_obj_unref (tmt->psink, &ev);
+		CORBA_Object_release (tmt->psink, &ev);
+
+		g_free (tmt);
 		return FALSE;
 	}
 

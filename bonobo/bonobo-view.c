@@ -44,10 +44,9 @@ impl_GNOME_View_set_window (PortableServer_Servant servant, GNOME_View_windowid 
 
 	view->plug = gtk_plug_new (id);
 
-	gtk_container_add (GTK_CONTAINER (view->plug), view->widget);
-
 	gtk_widget_show_all (view->plug);
 
+	gtk_container_add (GTK_CONTAINER (view->plug), view->widget);
 }
 
 static CORBA_Object
