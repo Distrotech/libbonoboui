@@ -11,7 +11,7 @@
 CORBA_Environment ev;
 CORBA_ORB orb;
 
-char *server_repoid = "IDL:Sample/server:1.0";
+char *server_goadid = "Test_server_component";
 
 typedef struct {
 	GtkWidget *app;
@@ -21,7 +21,7 @@ typedef struct {
 } Application;
 
 static GnomeObject *
-launch_server (GnomeContainer *container, char *repoid)
+launch_server (GnomeContainer *container, char *goadid)
 {
 	GnomeClientSite *client_site;
 	GnomeObject     *object_server;
@@ -29,7 +29,9 @@ launch_server (GnomeContainer *container, char *repoid)
 	client_site = gnome_client_site_new (container);
 	gnome_container_add (container, GNOME_OBJECT (client_site));
 
-	object_server = gnome_object_activate_with_repo_id (NULL, repoid, 0, NULL);
+	printf ("Launching...\n");
+	object_server = gnome_object_activate_with_goad_id (NULL, goadid, 0, NULL);
+	printf ("Return: %p\n", object_server);
 	if (!object_server){
 		g_warning (_("Can not activate object_server\n"));
 		return NULL;
@@ -51,7 +53,7 @@ add_cmd (GtkWidget *widget, Application *app)
 	GNOME_View view;
 	GNOME_View_windowid id;
 	
-	server = launch_server (app->container, server_repoid);
+	server = launch_server (app->container, server_goadid);
 	if (server == NULL)
 		return;
 
@@ -72,7 +74,7 @@ exit_cmd (void)
 }
 
 static GnomeUIInfo container_file_menu [] = {
-	GNOMEUIINFO_ITEM_NONE(N_("_Add a new Sample::server:1.0..."), NULL, add_cmd),
+	GNOMEUIINFO_ITEM_NONE(N_("_Add a new object"), NULL, add_cmd),
 	GNOMEUIINFO_ITEM_STOCK (N_("Exit"), NULL, exit_cmd, GNOME_STOCK_PIXMAP_QUIT),
 	GNOMEUIINFO_END
 };
@@ -105,7 +107,10 @@ main (int argc, char *argv [])
 {
 	Application *app;
 
-
+	if (argc != 1){
+		server_goadid = argv [1];
+	}
+	
 	CORBA_exception_init (&ev);
 	
 	gnome_CORBA_init ("MyShell", "1.0", &argc, argv, 0, &ev);
