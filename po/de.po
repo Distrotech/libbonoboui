@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui (cvs)\n"
-"POT-Creation-Date: 2002-06-01 18:31+0100\n"
+"POT-Creation-Date: 2002-08-05 15:52+0100\n"
 "PO-Revision-Date: 2002-03-01 01:44+0100\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -40,22 +40,22 @@ msgstr "Die Werkzeugleiste anpassen"
 msgid "Un dock the toolbar"
 msgstr "Die Werkzeugleiste anpassen"
 
-#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
+#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
 msgstr "Schattenart"
 
-#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
-#: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1085 bonobo/bonobo-ui-toolbar.c:1086
 msgid "Orientation"
 msgstr "Orientierung"
 
-#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
-#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1104 bonobo/bonobo-ui-toolbar.c:1105
 msgid "Preferred width"
 msgstr "Bevorzugte Breite"
 
-#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred height"
 msgstr "Bevorzugte Höhe"
 
@@ -71,11 +71,11 @@ msgstr "Dateien zum Öffnen auswählen"
 msgid "Select a filename to save"
 msgstr "Einen Dateinamen zum Speichern auswählen"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:358
 msgid "Event Forwarding"
 msgstr "Ereignis-Weiterleitung"
 
-#: bonobo/bonobo-plug.c:365
+#: bonobo/bonobo-plug.c:359
 msgid "Whether X events should be forwarded"
 msgstr "Ob X-Ereignis weitergeleitet werden sollen"
 
@@ -276,11 +276,11 @@ msgstr "_Anpassen"
 msgid "Customize the toolbar"
 msgstr "Die Werkzeugleiste anpassen"
 
-#: bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1095
 msgid "is floating"
 msgstr "ist schwebend"
 
-#: bonobo/bonobo-ui-toolbar.c:1105
+#: bonobo/bonobo-ui-toolbar.c:1096
 msgid "whether the toolbar is floating"
 msgstr "Ob die Werkzeugleiste schwebend ist"
 

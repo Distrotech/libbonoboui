@@ -186,6 +186,7 @@ keys_changed_fn (GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer
 	const char *key_name;
 
 	key_name = gconf_entry_get_key (entry);
+	g_return_if_fail (key_name != NULL);
 
 	/* FIXME: update the values instead */
 	if (!strcmp (key_name, GLOBAL_INTERFACE_KEY "/toolbar_detachable"))

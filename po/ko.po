@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.112.0\n"
-"POT-Creation-Date: 2002-06-01 18:31+0100\n"
+"POT-Creation-Date: 2002-08-05 15:52+0100\n"
 "PO-Revision-Date: 2002-05-30 14:12+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <gnome-kr-translation@lists.sourceforge.net>\n"
@@ -36,22 +36,22 @@ msgstr "도구 모음 고정"
 msgid "Un dock the toolbar"
 msgstr "도구 모음 고정 해제"
 
-#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
+#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
 msgstr "그림자 유형"
 
-#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
-#: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1085 bonobo/bonobo-ui-toolbar.c:1086
 msgid "Orientation"
 msgstr "방향"
 
-#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
-#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1104 bonobo/bonobo-ui-toolbar.c:1105
 msgid "Preferred width"
 msgstr "너비 선택"
 
-#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred height"
 msgstr "높이 선택"
 
@@ -67,11 +67,11 @@ msgstr "열 파일을 선택하십시오"
 msgid "Select a filename to save"
 msgstr "저장할 파일이름을 선택하십시오"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:358
 msgid "Event Forwarding"
 msgstr "이벤트 전달하기"
 
-#: bonobo/bonobo-plug.c:365
+#: bonobo/bonobo-plug.c:359
 msgid "Whether X events should be forwarded"
 msgstr "X 이벤트를 전달할 지 여부"
 
@@ -273,11 +273,11 @@ msgstr "사용자 설정(_Z)"
 msgid "Customize the toolbar"
 msgstr "도구 모음 사용자 설정"
 
-#: bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1095
 msgid "is floating"
 msgstr "움직이기"
 
-#: bonobo/bonobo-ui-toolbar.c:1105
+#: bonobo/bonobo-ui-toolbar.c:1096
 msgid "whether the toolbar is floating"
 msgstr "도구 모음을 움직일 수 있는지"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-05-05 15:03+0200\n"
+"POT-Creation-Date: 2002-08-05 15:52+0100\n"
 "PO-Revision-Date: 2002-06-08 14:30+0530\n"
 "Last-Translator: Anurag Seetha <anuragseetha@yahoo.com>\n"
 "Language-Team: Hindi <indlinux-hindi-gnome@lists.sourceforge.net>\n"
@@ -13,24 +13,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
-msgid "Shadow type"
-msgstr "छाया प्रकार"
+#: bonobo/bonobo-canvas-item.c:647
+msgid "corba factory"
+msgstr "कोरबा फैक्ट्री"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
-#: bonobo/bonobo-ui-toolbar.c:1091 bonobo/bonobo-ui-toolbar.c:1092
-msgid "Orientation"
-msgstr "दिशा"
+#: bonobo/bonobo-canvas-item.c:648
+msgid "The factory pointer"
+msgstr "फैक्ट्री संकेतक"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
-#: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
-msgid "Preferred width"
-msgstr "मान्य चौड़ाई"
+#: bonobo/bonobo-canvas-item.c:657
+msgid "corba UI container"
+msgstr "कोरबा UI कन्टेनर (धारक)"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
-#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
-msgid "Preferred height"
-msgstr "मान्य ऊंचाई"
+#: bonobo/bonobo-canvas-item.c:658
+msgid "The User interface container"
+msgstr "यूजर इंटरफेस धारक"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
@@ -40,15 +37,34 @@ msgstr ""
 msgid "Un dock the toolbar"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:373
+#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+msgid "Shadow type"
+msgstr "छाया प्रकार"
+
+#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1085 bonobo/bonobo-ui-toolbar.c:1086
+msgid "Orientation"
+msgstr "दिशा"
+
+#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1104 bonobo/bonobo-ui-toolbar.c:1105
+msgid "Preferred width"
+msgstr "मान्य चौड़ाई"
+
+#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+msgid "Preferred height"
+msgstr "मान्य ऊंचाई"
+
+#: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
 msgstr "खोलने के लिए एक फाइल का चयन करें"
 
-#: bonobo/bonobo-file-selector-util.c:401
+#: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
 msgstr "खोलने के लिए फाइलों का चयन करें"
 
-#: bonobo/bonobo-file-selector-util.c:430
+#: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
 msgstr "संग्रहित करने के लिए एक फाइल नाम दें"
 
@@ -60,7 +76,7 @@ msgstr ""
 msgid "Whether X events should be forwarded"
 msgstr "क्या x घटना को अग्रेषित किया जाना है"
 
-#: bonobo/bonobo-selector-widget.c:300
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
 msgid "Name"
 msgstr "नाम"
 
@@ -68,77 +84,216 @@ msgstr "नाम"
 msgid "Description"
 msgstr "वर्णन"
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-selector.c:345
+msgid "Interfaces required"
+msgstr ""
+
+#: bonobo/bonobo-selector.c:346
+msgid ""
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+
+#: bonobo/bonobo-selector.c:348
+msgid "Interface required entry"
+msgstr ""
+
+#: bonobo/bonobo-selector.c:349
+msgid "One of the interfaces that's required"
+msgstr ""
+
+#: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "दश्य"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "दिखाएं"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "छुपाएं"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "टूलटिप्स दिखाएं"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "टूलबार"
 
-#: bonobo/bonobo-ui-config-widget.c:294
+#: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "टूलबार"
 
-#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "लुक"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "आइकान"
 
-#: bonobo/bonobo-ui-config-widget.c:320
+#: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "पाठ्य तथा आइकान"
 
-#: bonobo/bonobo-ui-config-widget.c:326
+#: bonobo/bonobo-ui-config-widget.c:334
+#, fuzzy
+msgid "Text only"
+msgstr "पाठ्य तथा आइकान"
+
+#: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "केवल पाठ्य की प्राथमिकता"
 
-#: bonobo/bonobo-ui-engine-config.c:516
+#: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
 msgstr "UI कानफिगर करें"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-init-gtk.c:113
+msgid "Gdk debugging flags to set"
+msgstr "Gdk डिबगिंग फ्लैगों (संकेत चिन्हों) को समायोजित करें"
+
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+msgid "FLAGS"
+msgstr "संकेत चिन्ह"
+
+#: bonobo/bonobo-ui-init-gtk.c:116
+msgid "Gdk debugging flags to unset"
+msgstr "Gdk त्रुटि (दोष) संकेत चिन्ह असमायोजित करें"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "X display to use"
+msgstr "X डिस्प्ले का प्रयोग करें"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "DISPLAY"
+msgstr "डिस्प्ले"
+
+#: bonobo/bonobo-ui-init-gtk.c:125
+#, fuzzy
+msgid "X screen to use"
+msgstr "X डिस्प्ले का प्रयोग करें"
+
+#: bonobo/bonobo-ui-init-gtk.c:125
+msgid "SCREEN"
+msgstr ""
+
+#: bonobo/bonobo-ui-init-gtk.c:129
+msgid "Make X calls synchronous"
+msgstr "X बुलावे में संहग्नता करें"
+
+#: bonobo/bonobo-ui-init-gtk.c:135
+msgid "Don't use X shared memory extension"
+msgstr "X भागीदार मेमोरी विस्तारक का प्रयोग न करें"
+
+#: bonobo/bonobo-ui-init-gtk.c:139
+msgid "Program name as used by the window manager"
+msgstr "विन्डो प्रबंधक द्वारा प्रयुक्त प्रोग्राम नाम है"
+
+#: bonobo/bonobo-ui-init-gtk.c:139
+msgid "NAME"
+msgstr "नाम"
+
+#: bonobo/bonobo-ui-init-gtk.c:142
+msgid "Program class as used by the window manager"
+msgstr "विन्डो प्रबंधक द्वारा प्रयुक्त प्रोग्राम क्लास है"
+
+#: bonobo/bonobo-ui-init-gtk.c:142
+msgid "CLASS"
+msgstr "क्लास"
+
+#: bonobo/bonobo-ui-init-gtk.c:146
+msgid "HOST"
+msgstr "होस्ट"
+
+#: bonobo/bonobo-ui-init-gtk.c:150
+msgid "PORT"
+msgstr "पोर्ट"
+
+#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+msgid "STYLE"
+msgstr "स्टाइल"
+
+#: bonobo/bonobo-ui-init-gtk.c:162
+msgid "Gtk+ debugging flags to set"
+msgstr "Gdk+ डिबगिंग फ्लैगों (संकेत चिन्हों) को समायोजित करें"
+
+#: bonobo/bonobo-ui-init-gtk.c:165
+msgid "Gtk+ debugging flags to unset"
+msgstr "Gdk+ डिबगिंग फ्लैगों (संकेत चिन्हों) को असमायोजित करें"
+
+#: bonobo/bonobo-ui-init-gtk.c:168
+msgid "Make all warnings fatal"
+msgstr "सभी चेतावनियों को महत्वपूर्ण बनाएं"
+
+#: bonobo/bonobo-ui-init-gtk.c:171
+msgid "Load an additional Gtk module"
+msgstr "एक अतिरिक्त Gtk माड्यूल को लोड करें"
+
+#: bonobo/bonobo-ui-init-gtk.c:171
+msgid "MODULE"
+msgstr "माड्यूल"
+
+#: bonobo/bonobo-ui-init-gtk.c:180
+msgid "GTK+"
+msgstr "GTK+"
+
+#: bonobo/bonobo-ui-main.c:188
+msgid "Bonobo GUI support"
+msgstr "बोनबो GUI का प्रयोग "
+
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "B_oth"
 msgstr "दोनों"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "T_ext"
 msgstr "पाठ्य"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:557
 msgid "Hide t_ips"
 msgstr "टिप्स (संकेतों) को छुपाएं"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:557
 msgid "Show t_ips"
 msgstr "टिप्स (संकेतों) को दिखाएं"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:558
 msgid "_Hide toolbar"
 msgstr "टूलबार छुपाएं"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:558
 msgid "Customi_ze"
 msgstr "आवश्यकतानुसार बनाइये"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:559
 msgid "Customize the toolbar"
 msgstr "टूलबार को आवश्यकतानुसार बनाइये"
+
+#: bonobo/bonobo-ui-toolbar.c:1095
+msgid "is floating"
+msgstr "क्या गतिशील है?"
+
+#: bonobo/bonobo-ui-toolbar.c:1096
+msgid "whether the toolbar is floating"
+msgstr "क्या टूलबार गतिशील है?"
+
+#: bonobo/bonobo-ui-util.c:583
+msgid "_Contents"
+msgstr ""
+
+#: bonobo/bonobo-ui-util.c:584
+#, fuzzy
+msgid "View help for this application"
+msgstr "इस अनुप्रयोग के बारे में"
+
+#: bonobo/bonobo-window.c:448
+msgid "Name of the window - used for configuration serialization."
+msgstr ""
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -188,136 +343,6 @@ msgstr "क्या लगातार है?"
 msgid "Whether we zoom continuously (as opposed to jumps)"
 msgstr "क्या लगातार जूम करना है (कुछ छोड़ने के स्थान पर)"
 
-#: bonobo/bonobo-canvas-item.c:647
-msgid "corba factory"
-msgstr "कोरबा फैक्ट्री"
-
-#: bonobo/bonobo-canvas-item.c:648
-msgid "The factory pointer"
-msgstr "फैक्ट्री संकेतक"
-
-#: bonobo/bonobo-canvas-item.c:657
-msgid "corba UI container"
-msgstr "कोरबा UI कन्टेनर (धारक)"
-
-#: bonobo/bonobo-canvas-item.c:658
-msgid "The User interface container"
-msgstr "यूजर इंटरफेस धारक"
-
-#: bonobo/bonobo-ui-toolbar.c:1101
-msgid "is floating"
-msgstr "क्या गतिशील है?"
-
-#: bonobo/bonobo-ui-toolbar.c:1102
-msgid "whether the toolbar is floating"
-msgstr "क्या टूलबार गतिशील है?"
-
-#: bonobo/bonobo-ui-init-gtk.c:113
-msgid "Gdk debugging flags to set"
-msgstr "Gdk डिबगिंग फ्लैगों (संकेत चिन्हों) को समायोजित करें"
-
-#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
-msgid "FLAGS"
-msgstr "संकेत चिन्ह"
-
-#: bonobo/bonobo-ui-init-gtk.c:116
-msgid "Gdk debugging flags to unset"
-msgstr "Gdk त्रुटि (दोष) संकेत चिन्ह असमायोजित करें"
-
-#: bonobo/bonobo-ui-init-gtk.c:120
-msgid "X display to use"
-msgstr "X डिस्प्ले का प्रयोग करें"
-
-#: bonobo/bonobo-ui-init-gtk.c:120
-msgid "DISPLAY"
-msgstr "डिस्प्ले"
-
-#: bonobo/bonobo-ui-init-gtk.c:124
-msgid "Make X calls synchronous"
-msgstr "X बुलावे में संहग्नता करें"
-
-#: bonobo/bonobo-ui-init-gtk.c:130
-msgid "Don't use X shared memory extension"
-msgstr "X भागीदार मेमोरी विस्तारक का प्रयोग न करें"
-
-#: bonobo/bonobo-ui-init-gtk.c:134
-msgid "Program name as used by the window manager"
-msgstr "विन्डो प्रबंधक द्वारा प्रयुक्त प्रोग्राम नाम है"
-
-#: bonobo/bonobo-ui-init-gtk.c:134
-msgid "NAME"
-msgstr "नाम"
-
-#: bonobo/bonobo-ui-init-gtk.c:137
-msgid "Program class as used by the window manager"
-msgstr "विन्डो प्रबंधक द्वारा प्रयुक्त प्रोग्राम क्लास है"
-
-#: bonobo/bonobo-ui-init-gtk.c:137
-msgid "CLASS"
-msgstr "क्लास"
-
-#: bonobo/bonobo-ui-init-gtk.c:141
-msgid "HOST"
-msgstr "होस्ट"
-
-#: bonobo/bonobo-ui-init-gtk.c:145
-msgid "PORT"
-msgstr "पोर्ट"
-
-#: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
-msgid "STYLE"
-msgstr "स्टाइल"
-
-#: bonobo/bonobo-ui-init-gtk.c:157
-msgid "Gtk+ debugging flags to set"
-msgstr "Gdk+ डिबगिंग फ्लैगों (संकेत चिन्हों) को समायोजित करें"
-
-#: bonobo/bonobo-ui-init-gtk.c:160
-msgid "Gtk+ debugging flags to unset"
-msgstr "Gdk+ डिबगिंग फ्लैगों (संकेत चिन्हों) को असमायोजित करें"
-
-#: bonobo/bonobo-ui-init-gtk.c:163
-msgid "Make all warnings fatal"
-msgstr "सभी चेतावनियों को महत्वपूर्ण बनाएं"
-
-#: bonobo/bonobo-ui-init-gtk.c:166
-msgid "Load an additional Gtk module"
-msgstr "एक अतिरिक्त Gtk माड्यूल को लोड करें"
-
-#: bonobo/bonobo-ui-init-gtk.c:166
-msgid "MODULE"
-msgstr "माड्यूल"
-
-#: bonobo/bonobo-ui-init-gtk.c:175
-msgid "GTK+"
-msgstr "GTK+"
-
-#: bonobo/bonobo-ui-main.c:188
-msgid "Bonobo GUI support"
-msgstr "बोनबो GUI का प्रयोग "
-
-#: samples/bonoboui/hello.c:63
-msgid "This does nothing; it is only a demonstration."
-msgstr "यह कुछ नहीं करता है, यह सिर्फ नमूना है"
-
-#: samples/bonoboui/hello.c:145
-msgid "BonoboUI-Hello."
-msgstr "BonoboUI-हैलो"
-
-#: samples/bonoboui/hello.c:217
-msgid "Gnome Hello"
-msgstr "Gnome हैलो"
-
-#. Create Label and put it in the Button:
-#: samples/bonoboui/hello.c:272
-msgid "Hello, World!"
-msgstr "हैलो दुनिया"
-
-#: samples/bonoboui/hello.c:312
-msgid "Cannot init libbonoboui code"
-msgstr "libbonoboui कोड को प्रारंभ नहीं किया जा सका"
-
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
 msgstr "इस अनुप्रयोग के बारे में"
@@ -342,6 +367,27 @@ msgstr "फाइल"
 msgid "_Select"
 msgstr "चयन करें"
 
-#: samples/controls/bonobo-sample-controls.c:121
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "यह कुछ नहीं करता है, यह सिर्फ नमूना है"
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-हैलो"
+
+#: samples/bonoboui/hello.c:217
+msgid "Gnome Hello"
+msgstr "Gnome हैलो"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:272
+msgid "Hello, World!"
+msgstr "हैलो दुनिया"
+
+#: samples/bonoboui/hello.c:312
+msgid "Cannot init libbonoboui code"
+msgstr "libbonoboui कोड को प्रारंभ नहीं किया जा सका"
+
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Bonobo UI को प्रारंभ नहीं किया जा सका"
