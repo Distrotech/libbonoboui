@@ -50,7 +50,6 @@ tmpl_sources = 					\
         tmpl/bonobo-property-bag-xml.sgml	\
         tmpl/bonobo-property-bag.sgml		\
         tmpl/bonobo-property-control.sgml	\
-        tmpl/bonobo-property-listener.sgml	\
         tmpl/bonobo-property-types.sgml		\
         tmpl/bonobo-property.sgml		\
         tmpl/bonobo-selector.sgml		\
@@ -141,7 +140,6 @@ scan:
 		../../bonobo/bonobo-property-bag-client.h	\
 		../../bonobo/bonobo-property-bag-xml.h		\
 		../../bonobo/bonobo-property-control.h		\
-		../../bonobo/bonobo-property-listener.h	\
 		../../bonobo/bonobo-property-types.h		\
 		../../bonobo/bonobo-property.h			\
 		../../bonobo/bonobo-selector.h			\

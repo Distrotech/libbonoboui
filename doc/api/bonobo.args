@@ -1,5 +1,11 @@
 <ARG>
-<NAME>BonoboCanvasItem::corba_canvas_item</NAME>
+<NAME>BonoboCanvasItem::corba_embeddable</NAME>
+<TYPE>gpointer</TYPE>
+<FLAGS>w</FLAGS>
+</ARG>
+
+<ARG>
+<NAME>BonoboCanvasItem::corba_ui_container</NAME>
 <TYPE>gpointer</TYPE>
 <FLAGS>w</FLAGS>
 </ARG>
