@@ -1,3 +1,4 @@
+# translation of nn.po to Norwegian Nynorsk
 # translation of nn.po to Norwegian (nynorsk)
 # Norwegian (Nynorsk) GNOME translation
 # Copyright 2000-2002, The Free Software Foundation
@@ -8,23 +9,23 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
-"POT-Creation-Date: 2003-12-09 00:17+0000\n"
-"PO-Revision-Date: 2003-10-06 14:17+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-12-25 01:51+0100\n"
+"PO-Revision-Date: 2003-12-26 17:22+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
-"Language-Team: Norwegian (nynorsk) <i18n-nn@lister.ping.uio.no>\n"
+"Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.0.2\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
-msgstr "corba-factory"
+msgstr "corba-fabrikk"
 
 #: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
-msgstr "Factory-peikar"
+msgstr "Fabrikkpeikar"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
@@ -43,36 +44,36 @@ msgid "Un dock the toolbar"
 msgstr "Løys verktøylinja"
 
 #: bonobo/bonobo-dock-item.c:217 bonobo/bonobo-dock-item.c:218
-#: bonobo/bonobo-ui-toolbar.c:1176
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Skuggetype"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
-#: bonobo/bonobo-ui-toolbar.c:1120 bonobo/bonobo-ui-toolbar.c:1121
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Retning"
 
 #: bonobo/bonobo-dock-item.c:239 bonobo/bonobo-dock-item.c:240
-#: bonobo/bonobo-ui-toolbar.c:1139 bonobo/bonobo-ui-toolbar.c:1140
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Ønska breidde"
 
 #: bonobo/bonobo-dock-item.c:248 bonobo/bonobo-dock-item.c:249
-#: bonobo/bonobo-ui-toolbar.c:1148 bonobo/bonobo-ui-toolbar.c:1149
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Ønska høgde"
 
 #: bonobo/bonobo-file-selector-util.c:361
 msgid "Select a file to open"
-msgstr "Vel ei fil som skal opnast"
+msgstr "Vel ei fil å opna"
 
 #: bonobo/bonobo-file-selector-util.c:389
 msgid "Select files to open"
-msgstr "Velj filer som skal opnast"
+msgstr "Vel filer som skal opnast"
 
 #: bonobo/bonobo-file-selector-util.c:418
 msgid "Select a filename to save"
-msgstr "Velj eit filnamn som skal lagrast"
+msgstr "Vel eit filnamn å lagra"
 
 #: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
@@ -126,15 +127,15 @@ msgstr "_Gøym"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr "_Vis verktytips"
+msgstr "_Vis verktøytips"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
-msgstr "Verktylinjer"
+msgstr "Verktøylinjer"
 
 #: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
-msgstr "Verktylinjer"
+msgstr "Verktøylinjer"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
@@ -283,7 +284,7 @@ msgstr "Vis t_ips"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "_Gøym verktylinje"
+msgstr "_Gøym verktøylinje"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
@@ -291,17 +292,17 @@ msgstr "_Skreddarsy"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "Skreddarsy verktylinja"
+msgstr "Skreddarsy verktøylinja"
 
-#: bonobo/bonobo-ui-toolbar.c:1130
+#: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
 msgstr "er flytande"
 
-#: bonobo/bonobo-ui-toolbar.c:1131
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
 msgstr "om verktøylinja er flytande"
 
-#: bonobo/bonobo-ui-toolbar.c:1177
+#: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
 msgstr "Stil på kanten rundt verktøylinja"
 
@@ -796,3 +797,4 @@ msgstr "Kunne ikkje starta Bonobo-UI"
 #, fuzzy
 #~ msgid "no listening to this property"
 #~ msgstr "Legg ei fil til prosjektet"
+
