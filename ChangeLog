@@ -1,3 +1,10 @@
+2004-04-05  Arvind Samptur  <arvind.samptur@wipro.com>
+
+	* bonobo/bonobo-dock-item.c: (bonobo_dock_item_unfloat):
+	Get the grip's parent right when doing an unfloat. Fixes
+	the problem of grip not being exposed when docked through
+	the pointer
+
 2004-04-01  Arvind Samptur  <arvind.samptur@wipro.com>
 
 	* bonobo/bonobo-dock-item-grip.c: (bonobo_dock_item_grip_dock):

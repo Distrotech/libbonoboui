@@ -1703,6 +1703,8 @@ bonobo_dock_item_unfloat (BonoboDockItem *item)
            if (BONOBO_IS_DOCK_ITEM_GRIP (float_item)) 
              {
                 item->_priv->grip = float_item;
+                gtk_widget_set_parent_window (item->_priv->grip, item->bin_window);
+
                 gtk_widget_set_parent (item->_priv->grip, GTK_WIDGET (item));
              } else {
                 bonobo_dock_item_add (GTK_CONTAINER (item), float_item);
