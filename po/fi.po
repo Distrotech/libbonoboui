@@ -5,15 +5,11 @@
 # Sami Gerdt <sgerdt@cs.joensuu.fi>, 2000.
 # Pauli Virtanen <pauli.virtanen@hut.fi>, 2000-2002.
 #
-#
-# embeddable = upote
-# control = säädin
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2002-06-01 18:31+0100\n"
-"PO-Revision-Date: 2002-05-21 16:20+0300\n"
+"POT-Creation-Date: 2002-05-28 09:27+0200\n"
+"PO-Revision-Date: 2002-05-31 18:10+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -44,22 +40,29 @@ msgstr "Telakoi työkalupalkki"
 msgid "Un dock the toolbar"
 msgstr "Irrota työkalupalkki"
 
-#: bonobo/bonobo-dock-item.c:289 bonobo/bonobo-dock-item.c:290
+#: bonobo/bonobo-dock-item.c:285
+#: bonobo/bonobo-dock-item.c:286
 msgid "Shadow type"
 msgstr "Varjotyyppi"
 
-#: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
-#: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-dock-item.c:296
+#: bonobo/bonobo-dock-item.c:297
+#: bonobo/bonobo-ui-toolbar.c:1094
+#: bonobo/bonobo-ui-toolbar.c:1095
 msgid "Orientation"
 msgstr "Suunta"
 
-#: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
-#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-dock-item.c:307
+#: bonobo/bonobo-dock-item.c:308
+#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1114
 msgid "Preferred width"
 msgstr "Haluttu leveys"
 
-#: bonobo/bonobo-dock-item.c:320 bonobo/bonobo-dock-item.c:321
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-dock-item.c:316
+#: bonobo/bonobo-dock-item.c:317
+#: bonobo/bonobo-ui-toolbar.c:1122
+#: bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred height"
 msgstr "Haluttu korkeus"
 
@@ -75,15 +78,16 @@ msgstr "Valitse avattavat tiedostot"
 msgid "Select a filename to save"
 msgstr "Valitse tallennettava tiedostonimi"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:363
 msgid "Event Forwarding"
 msgstr "Tapahtumien edelleen välitys"
 
-#: bonobo/bonobo-plug.c:365
+#: bonobo/bonobo-plug.c:364
 msgid "Whether X events should be forwarded"
 msgstr "Välittyvätkö X-tapahtumat edelleen"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
+#: bonobo/bonobo-selector-widget.c:300
+#: bonobo/bonobo-window.c:447
 msgid "Name"
 msgstr "Nimi"
 
@@ -96,14 +100,8 @@ msgid "Interfaces required"
 msgstr "Vaaditut rajapinnat"
 
 #: bonobo/bonobo-selector.c:346
-msgid ""
-"A NULL_terminated array of interfaces which a server must support in order "
-"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
-"no interfaces are listed"
-msgstr ""
-"NULL-päätteinen taulukko rajapinnoista, joita palvelimen täytyy tukea, jotta "
-"se näkyisi valitsimessa. Oletus on \"IDL:Bonobo/Embeddable:1.0\" jos "
-"rajapintoja ei ole annettu."
+msgid "A NULL_terminated array of interfaces which a server must support in order to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
+msgstr "NULL-päätteinen taulukko rajapinnoista, joita palvelimen täytyy tukea, jotta se näkyisi valitsimessa. Oletus on \"IDL:Bonobo/Embeddable:1.0\" jos rajapintoja ei ole annettu."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -137,11 +135,13 @@ msgstr "Työkalupalkit"
 msgid "toolbars"
 msgstr "työkalupalkit"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
 msgstr "Katso"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "_Icon"
 msgstr "_Kuvake"
 
@@ -150,9 +150,8 @@ msgid "_Text and Icon"
 msgstr "_Teksti ja kuvake"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "Teksti"
+msgstr "Pelkkä teksti"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -166,8 +165,10 @@ msgstr "Muokkaa käyttöliittymäasetuksia"
 msgid "Gdk debugging flags to set"
 msgstr "Asetettavat Gdk-vianetsintäliput"
 
-#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+#: bonobo/bonobo-ui-init-gtk.c:113
+#: bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162
+#: bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "LIPUT"
 
@@ -189,7 +190,7 @@ msgstr "Käytettävä X-näyttö"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr "NÄYTTÖ"
+msgstr "RUUTU"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -223,7 +224,8 @@ msgstr "ISÄNTÄ"
 msgid "PORT"
 msgstr "PORTTI"
 
-#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+#: bonobo/bonobo-ui-init-gtk.c:155
+#: bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
 msgstr "TYYLI"
 
@@ -396,436 +398,7 @@ msgstr "Tervehdys!"
 msgid "Cannot init libbonoboui code"
 msgstr "Ei voi alustaa libbonoboui'n koodia"
 
-#: samples/controls/bonobo-sample-controls.c:131
+#: samples/controls/bonobo-sample-controls.c:121
 msgid "Could not initialize Bonobo UI"
 msgstr "Ei voinut alustaa Bonobo-UI:ta"
 
-#~ msgid "Key %s not found in configuration"
-#~ msgstr "Avainta %s ei ollut asetuksissa"
-
-#~ msgid ""
-#~ "An exception occured while trying to load data into the component with "
-#~ "PersistStorage"
-#~ msgstr ""
-#~ "Poikkeus tapahtui yrittäessä ladata dataa PersistStoragella komponenttiin."
-
-#~ msgid ""
-#~ "An exception occured while trying to save data from the component with "
-#~ "PersistStorage"
-#~ msgstr ""
-#~ "Poikkeus tapahtui yrittäessä tallentaa dataa PersistStoragella "
-#~ "komponentista."
-
-#~ msgid "Select an object"
-#~ msgstr "Valitse olio"
-
-#~ msgid "Customize Toolbars"
-#~ msgstr "Mukauta työkalupalkkeja"
-
-#~ msgid "Oaf options"
-#~ msgstr "Oaf-asetukset"
-
-#~ msgid "Could not initialize Bonobo!\n"
-#~ msgstr "Bonoboa ei voitu alustaa!\n"
-
-#~ msgid "An unsupported action was attempted"
-#~ msgstr "Yritetty toimintoa, joka ei ole tuettu"
-
-#~ msgid "IO Error"
-#~ msgstr "IO-virhe"
-
-#~ msgid "Invalid argument value"
-#~ msgstr "Virheellinen parametrin arvo"
-
-#~ msgid "Object not found"
-#~ msgstr "Oliota ei löytynyt"
-
-#~ msgid "Syntax error in object description"
-#~ msgstr "Muotovirhe olion kuvauksessa"
-
-#~ msgid "The User canceled the save"
-#~ msgstr "Käyttäjä peruutti tallentamisen"
-
-#~ msgid "Cannot activate object from factory"
-#~ msgstr "Oliota ei voi aktivoida tehtaasta"
-
-#~ msgid "No permission to access stream"
-#~ msgstr "Ei oikeuksia virran käyttöön"
-
-#~ msgid "An unsupported stream action was attempted"
-#~ msgstr "Yritettiin virtatoimintoa, joka ei ole tuettu"
-
-#~ msgid "IO Error on stream"
-#~ msgstr "IO-virhe virrassa"
-
-#~ msgid "IO Error on storage"
-#~ msgstr "IO-virhe varastossa"
-
-#~ msgid "Name already exists in storage"
-#~ msgstr "Nimi on jo varastossa"
-
-#~ msgid "No permission to do operation on storage"
-#~ msgstr "Ei lupaa varaston käsittelyyn"
-
-#~ msgid "An unsupported storage action was attempted"
-#~ msgstr "Yritettiin varastotoimintoa, joka ei ole tuettu"
-
-#~ msgid "Object is not a stream"
-#~ msgstr "Olio ei ole virta"
-
-#~ msgid "Object is not a storage"
-#~ msgstr "Olio ei ole varasto"
-
-#~ msgid "Storage is not empty"
-#~ msgstr "Varasto ei ole tyhjä"
-
-#~ msgid "malformed user interface XML description"
-#~ msgstr "viallinen käyttöliittymän XML-kuvaus"
-
-#~ msgid "invalid path to XML user interface element"
-#~ msgstr "virheellinen polku XML-käyttöliittymäosaan"
-
-#~ msgid "incorrect data type"
-#~ msgstr "väärä tietotyyppi"
-
-#~ msgid "stream not found"
-#~ msgstr "virtaa ei löydy"
-
-#~ msgid "property not found"
-#~ msgstr "ominaisuutta ei löydy"
-
-#~ msgid "Moniker interface cannot be found"
-#~ msgstr "Moniker-rajapintaa ei löydy"
-
-#~ msgid "Moniker activation timed out"
-#~ msgstr "Monikerin aktivointi aikakatkaistu"
-
-#~ msgid "Syntax error within moniker"
-#~ msgstr "Monikerissa muotovirhe"
-
-#~ msgid "Moniker has an unknown moniker prefix"
-#~ msgstr "Monikerilla on tuntematon moniker-etuliite"
-
-#~ msgid "Error checking error; no exception"
-#~ msgstr "Virhe virhettä tarkistaessa; ei poikkeusta"
-
-#~ msgid "No filename"
-#~ msgstr "Ei tiedostonnimeä"
-
-#~ msgid "unknown mime type for '%s'"
-#~ msgstr "tiedoston '%s' mime-tyyppiä ei tunneta"
-
-#~ msgid "no handlers for mime type '%s'"
-#~ msgstr "mime-tyypille '%s' ei ole käsittelijöitä"
-
-#~ msgid "GnoMines control"
-#~ msgstr "GnoMines-säädin"
-
-#~ msgid "GnoMines control factory"
-#~ msgstr "GnoMines-säädintehdas"
-
-#~ msgid "bonobo GnoMines object"
-#~ msgstr "bonobo GnoMines -olio"
-
-#~ msgid "bonobo GnoMines object factory"
-#~ msgstr "bonobo Gnomines -oliotehdas"
-
-#~ msgid "Load a saved game"
-#~ msgstr "Lataa tallennettu peli"
-
-#~ msgid "New game"
-#~ msgstr "Uusi peli"
-
-#~ msgid "Open game"
-#~ msgstr "Avaa peli"
-
-#~ msgid "Start a new game"
-#~ msgstr "Aloita uusi peli"
-
-#~ msgid "_Game"
-#~ msgstr "_Peli"
-
-#~ msgid "Waveform"
-#~ msgstr "Aaltoääni"
-
-#~ msgid "Waveform component"
-#~ msgstr "Aaltoäänikomponentti"
-
-#~ msgid "Waveform component factory"
-#~ msgstr "Aaltoäänikomponenttitehdas"
-
-#~ msgid "audio/ulaw bonobo object"
-#~ msgstr "audio/ulaw bonobo-olio"
-
-#~ msgid "audio/ulaw bonobo object factory"
-#~ msgstr "audio/ulaw bonobo-oliotehdas"
-
-#~ msgid "Component Selector"
-#~ msgstr "Komponenttivalitsin"
-
-#~ msgid "Component Selector factory"
-#~ msgstr "Komponenttivalitsintehdas"
-
-#~ msgid "Component selector control"
-#~ msgstr "Komponenttivalitsinsäädin"
-
-#~ msgid "component selector control factory"
-#~ msgstr "komponenttivalitsinsäädintehdas"
-
-#~ msgid "Text component"
-#~ msgstr "Tekstikomponentti"
-
-#~ msgid "Text component factory"
-#~ msgstr "Tekstikomponenttitehdas"
-
-#~ msgid "text/plain component"
-#~ msgstr "text/plain-komponentti"
-
-#~ msgid "text/plain embeddable factory"
-#~ msgstr "text/plain-upotetehdas"
-
-#~ msgid "_Clear Text"
-#~ msgstr "_Tyhjennä teksti"
-
-#~ msgid "Clears the text in the component"
-#~ msgstr "Tyhjentää komponentin tekstin"
-
-#~ msgid ""
-#~ "An exception occured while trying to load data into the component with "
-#~ "PersistFile"
-#~ msgstr ""
-#~ "Poikkeus tapahtui yrittäessä ladata dataa PersistFilellä komponenttiin."
-
-#~ msgid "Could not open file %s"
-#~ msgstr "Tiedostoa %s ei voitu avata"
-
-#~ msgid ""
-#~ "An exception occured while trying to load data into the component with "
-#~ "PersistStream"
-#~ msgstr ""
-#~ "Poikkeus tapahtui yrittäessä ladata dataa PersistStreamilla komponenttiin."
-
-#~ msgid "Close the current window"
-#~ msgstr "Sulje nykyinen ikkuna"
-
-#~ msgid "Configure the application"
-#~ msgstr "Muuta ohjelman asetuksia"
-
-#~ msgid "Create New _Window"
-#~ msgstr "Luo uusi _ikkuna"
-
-#~ msgid "Create a new window"
-#~ msgstr "Luo uusi ikkuna"
-
-#~ msgid "Displays only one window"
-#~ msgstr "Näyttää vain yhden ikkunan"
-
-#~ msgid "Exit the program"
-#~ msgstr "Lopeta ohjelma"
-
-#~ msgid "Help on GNOME"
-#~ msgstr "Gnomen ohje"
-
-#~ msgid "Kill the current buffer"
-#~ msgstr "Sulje nykyinen puskuri"
-
-#~ msgid "Launch Control..."
-#~ msgstr "Käynnistä säädin..."
-
-#~ msgid "Launch Embeddable..."
-#~ msgstr "Käynnistä upote..."
-
-#~ msgid "Launches a new Control component"
-#~ msgstr "Käynnistää uuden säädinkomponentin"
-
-#~ msgid "Launches a new Embeddable component"
-#~ msgstr "Käynnistä uusi upotekomponentti"
-
-#~ msgid "Loads a file into the current component"
-#~ msgstr "Lataa tiedoston nykyiseen komponenttiin"
-
-#~ msgid "Open a file"
-#~ msgstr "Avaa tiedosto"
-
-#~ msgid "Print S_etup..."
-#~ msgstr "Tul_ostimen asetukset..."
-
-#~ msgid "Print the current file"
-#~ msgstr "Tulosta nykyinen tiedosto"
-
-#~ msgid "Save _As..."
-#~ msgstr "Tallenna _nimellä..."
-
-#~ msgid "Save the current file"
-#~ msgstr "Tallenna nykyinen tiedosto"
-
-#~ msgid "Save the current file with a different name"
-#~ msgstr "Tallenna nykyinen tiedosto eri nimellä"
-
-#~ msgid "Setup the page settings for your current printer"
-#~ msgstr "Aseta tulostimen sivun asetukset"
-
-#~ msgid "Splits the current window"
-#~ msgstr "Jaa ikkuna kahtia"
-
-#~ msgid "Zoom ..."
-#~ msgstr "Suurenna..."
-
-#~ msgid "Zoom _in"
-#~ msgstr "_Suurenna"
-
-#~ msgid "Zoom _out"
-#~ msgstr "_Pienennä"
-
-#~ msgid "Zoom to _default"
-#~ msgstr "_Oletussuurennos"
-
-#~ msgid "Zoom to _fit"
-#~ msgstr "So_vita"
-
-#~ msgid "_Buffers"
-#~ msgstr "_Puskurit"
-
-#~ msgid "_Close This Window"
-#~ msgstr "_Sulje tämä ikkuna"
-
-#~ msgid "_Help"
-#~ msgstr "_Ohje"
-
-#~ msgid "_Help on GNOME"
-#~ msgstr "_Gnomen ohje"
-
-#~ msgid "_Kill"
-#~ msgstr "_Sulje"
-
-#~ msgid "_Load..."
-#~ msgstr "_Lataa..."
-
-#~ msgid "_One Window"
-#~ msgstr "_Yksi ikkuna"
-
-#~ msgid "_Open..."
-#~ msgstr "_Avaa..."
-
-#~ msgid "_Preferences..."
-#~ msgstr "_Asetukset..."
-
-#~ msgid "_Print"
-#~ msgstr "_Tulosta"
-
-#~ msgid "_Save"
-#~ msgstr "_Tallenna"
-
-#~ msgid "_Settings"
-#~ msgstr "_Asetukset"
-
-#~ msgid "_Split Window"
-#~ msgstr "_Jaa ikkuna"
-
-#~ msgid "_Window"
-#~ msgstr "_Ikkuna"
-
-#~ msgid "_Zoom"
-#~ msgstr "_Suurenna"
-
-#~ msgid ""
-#~ "This program is part of the GNOME project. Gnome Shell comes with "
-#~ "ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to "
-#~ "redistribute it under the conditions of the GNU General Public License. "
-#~ "Please report bugs to dietmar@maurer-it.com"
-#~ msgstr ""
-#~ "Tämä ohjelma on osa GNOME-projektia. Gnome Shellillä ei ole MINKÄÄNLAISTA "
-#~ "TAKUUTA. Tämä on vapaata ohjelmistoa, ja voit levittää sitä vapaasti GNU "
-#~ "General Public Licensen ehtojen mukaan. Raportoi virheistä (englanniksi) "
-#~ "sähköpostiosoitteeseen dietmar@maurer-it.com"
-
-#~ msgid "fatal CORBA exception!  Shutting down..."
-#~ msgstr "vakava CORBA-poikkeus!  Sammutaan..."
-
-#~ msgid "New zoom level is %.3g."
-#~ msgstr "Uusi suurennostaso on %.3g"
-
-#~ msgid "Could not initialize Bonobo!"
-#~ msgstr "Bonoboa ei voitu alustaa!"
-
-#~ msgid ""
-#~ "An exception occured while trying to save data from the component with "
-#~ "PersistFile"
-#~ msgstr ""
-#~ "Poikkeus tapahtui yrittäessä tallentaa dataa PersistFilellä komponentista."
-
-#~ msgid "Could not save file %s"
-#~ msgstr "Tiedostoa %s ei voitu tallentaa"
-
-#~ msgid ""
-#~ "An exception occured while trying to save data from the component with "
-#~ "PersistStream"
-#~ msgstr ""
-#~ "Poikkeus tapahtui yrittäessä tallentaa dataa PersistStreamilla "
-#~ "komponentista."
-
-#~ msgid "Open"
-#~ msgstr "Avaa"
-
-#~ msgid "Launch component"
-#~ msgstr "Käynnistää komponentti"
-
-#~ msgid "Load"
-#~ msgstr "Lataa"
-
-#~ msgid "Save As"
-#~ msgstr "Tallenna nimellä"
-
-#~ msgid "Component has no editable properties"
-#~ msgstr "Komponentilla ei ole muokattavia ominaisuuksia"
-
-#~ msgid "Gunzip Moniker factory"
-#~ msgstr "Gunzip-monikertehdas"
-
-#~ msgid "gunzip Moniker"
-#~ msgstr "gunzip-moniker"
-
-#~ msgid "HTTP Moniker"
-#~ msgstr "HTTP-moniker"
-
-#~ msgid "file MonikerExtender"
-#~ msgstr "tiedosto-MonikerExtender"
-
-#~ msgid "generic Oaf activation moniker"
-#~ msgstr "yleinen Oaf-aktivointimoniker"
-
-#~ msgid "generic Oaf query moniker"
-#~ msgstr "yleinen Oaf-kyselymoniker"
-
-#~ msgid "generic factory 'new' moniker"
-#~ msgstr "yleinen tehdas 'new'-moniker"
-
-#~ msgid "stream MonikerExtender"
-#~ msgstr "virta-MonikerExtender"
-
-#~ msgid "Bonobo Echo server factory"
-#~ msgstr "Bonobo-kaikupalvelintehdas"
-
-#~ msgid "Bonobo Echo server sample program"
-#~ msgstr "Bonobo-kaikupalvelinesimerkkiohjelma"
-
-#~ msgid "Echo component"
-#~ msgstr "Kaikukomponentti"
-
-#~ msgid "Echo component factory"
-#~ msgstr "Kaikukomponenttitehdas"
-
-#~ msgid "I could not initialize Bonobo"
-#~ msgstr "Bonoboa ei voitu alustaa"
-
-#~ msgid "The component now claims that it doesn't support PersistStream!"
-#~ msgstr "Komponentti väittää, ettei se tue PersistStreamia!"
-
-#~ msgid "Select an embeddable Bonobo component to add"
-#~ msgstr "Valitse lisättävä upotekomponentti"
-
-#~ msgid "Sample Bonobo container"
-#~ msgstr "Bonobon esimerkkisäilö"
-
-#~ msgid "Could not launch Embeddable %s!"
-#~ msgstr "Upotetta %s ei voitu käynnistää!"
