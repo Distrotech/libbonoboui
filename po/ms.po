@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2003-06-10 15:45+0100\n"
+"POT-Creation-Date: 2003-06-10 16:37+0100\n"
 "PO-Revision-Date: 2003-01-01 21:23+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
@@ -13,19 +13,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:655
+#: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
 msgstr "Kilang corba"
 
-#: bonobo/bonobo-canvas-item.c:656
+#: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
 msgstr "Pentuding kilang"
 
-#: bonobo/bonobo-canvas-item.c:665
+#: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
 msgstr "bekas UI corba"
 
-#: bonobo/bonobo-canvas-item.c:666
+#: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
 msgstr "Bekas antaramuka pengguna"
 
@@ -69,11 +69,11 @@ msgstr "Pilih beberapa fail untuk dibuka"
 msgid "Select a filename to save"
 msgstr "Pilih satu nama fail untuk disimpan"
 
-#: bonobo/bonobo-plug.c:372
+#: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
 msgstr "Forward Acara"
 
-#: bonobo/bonobo-plug.c:373
+#: bonobo/bonobo-plug.c:412
 msgid "Whether X events should be forwarded"
 msgstr "Samada acara X patut diforwardkan"
 

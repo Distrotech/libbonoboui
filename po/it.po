@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"POT-Creation-Date: 2003-06-10 15:45+0100\n"
+"POT-Creation-Date: 2003-06-10 16:37+0100\n"
 "PO-Revision-Date: 2002-03-03 16:29+0100\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@cgabriel.org>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -13,19 +13,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:655
+#: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
 msgstr "fabbrica corba"
 
-#: bonobo/bonobo-canvas-item.c:656
+#: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
 msgstr "Il puntatore alla fabbrica"
 
-#: bonobo/bonobo-canvas-item.c:665
+#: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
 msgstr "contenitore UI corba"
 
-#: bonobo/bonobo-canvas-item.c:666
+#: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
 msgstr "Il contenitore dell'interfaccia utente"
 
@@ -71,11 +71,11 @@ msgstr "Selezionare i file da aprire"
 msgid "Select a filename to save"
 msgstr "Selezione il nome del file da salvare"
 
-#: bonobo/bonobo-plug.c:372
+#: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
 msgstr "Inoltro degli eventi"
 
-#: bonobo/bonobo-plug.c:373
+#: bonobo/bonobo-plug.c:412
 msgid "Whether X events should be forwarded"
 msgstr "Se gli eventi X devono essere inoltrati"
 

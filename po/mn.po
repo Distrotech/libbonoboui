@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD\n"
-"POT-Creation-Date: 2003-06-10 15:45+0100\n"
+"POT-Creation-Date: 2003-06-10 16:37+0100\n"
 "PO-Revision-Date: 2003-01-16 21:18+0100\n"
 "Last-Translator: Sanlig Badral <badral@chinggis.com>\n"
 "Language-Team: mongolian <mn@li.org>\n"
@@ -15,19 +15,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.1\n"
 
-#: bonobo/bonobo-canvas-item.c:655
+#: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
 msgstr "CORBA-Үйлдвэр"
 
-#: bonobo/bonobo-canvas-item.c:656
+#: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
 msgstr "Үйлдвэр заагч"
 
-#: bonobo/bonobo-canvas-item.c:665
+#: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
 msgstr "CORBA-UI-Container"
 
-#: bonobo/bonobo-canvas-item.c:666
+#: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
 msgstr "Хэрэглэгчийн гадаргуун агуулах"
 
@@ -71,11 +71,11 @@ msgstr "Нээх файлуудаа сонгоно уу"
 msgid "Select a filename to save"
 msgstr "Хадгалах файлын нэрээ сонгоно уу"
 
-#: bonobo/bonobo-plug.c:372
+#: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
 msgstr "Үйл явц цааш дамжуулах"
 
-#: bonobo/bonobo-plug.c:373
+#: bonobo/bonobo-plug.c:412
 msgid "Whether X events should be forwarded"
 msgstr "X үйл явцийг цааш дамжуулах эсэх"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.4\n"
-"POT-Creation-Date: 2003-06-10 15:45+0100\n"
+"POT-Creation-Date: 2003-06-10 16:37+0100\n"
 "PO-Revision-Date: 2003-05-26 21:36+0100\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -14,19 +14,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:655
+#: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
 msgstr "fábrica corba"
 
-#: bonobo/bonobo-canvas-item.c:656
+#: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
 msgstr "O apontador de fábrica"
 
-#: bonobo/bonobo-canvas-item.c:665
+#: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
 msgstr "contentor UI corba"
 
-#: bonobo/bonobo-canvas-item.c:666
+#: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
 msgstr "O contentor do interface de utilizador"
 
@@ -70,11 +70,11 @@ msgstr "Seleccione ficheiros a abrir"
 msgid "Select a filename to save"
 msgstr "Seleccione um nome de ficheiro a gravar"
 
-#: bonobo/bonobo-plug.c:372
+#: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
 msgstr "Reencaminhamento Eventos"
 
-#: bonobo/bonobo-plug.c:373
+#: bonobo/bonobo-plug.c:412
 msgid "Whether X events should be forwarded"
 msgstr "Se eventos X deveriam ser reencaminhados"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD\n"
-"POT-Creation-Date: 2003-06-10 15:45+0100\n"
+"POT-Creation-Date: 2003-06-10 16:37+0100\n"
 "PO-Revision-Date: 2002-10-14 21:12+0200\n"
 "Last-Translator: Gil 'Dolfin' Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -15,19 +15,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.0beta2\n"
 
-#: bonobo/bonobo-canvas-item.c:655
+#: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
 msgstr ""
 
-#: bonobo/bonobo-canvas-item.c:656
+#: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
 msgstr ""
 
-#: bonobo/bonobo-canvas-item.c:665
+#: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
 msgstr ""
 
-#: bonobo/bonobo-canvas-item.c:666
+#: bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
 msgstr "מיכל ממשק המשתמש"
 
@@ -71,11 +71,11 @@ msgstr "בחר קבצים לפתיחה"
 msgid "Select a filename to save"
 msgstr "בחר שם קובץ לשמירה"
 
-#: bonobo/bonobo-plug.c:372
+#: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
 msgstr "העברת אירוע"
 
-#: bonobo/bonobo-plug.c:373
+#: bonobo/bonobo-plug.c:412
 msgid "Whether X events should be forwarded"
 msgstr "האם אירוע X צריך להיות מועבר הלאה"
 

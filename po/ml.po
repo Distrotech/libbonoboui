@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui-2.2.x\n"
-"POT-Creation-Date: 2003-06-10 15:45+0100\n"
+"POT-Creation-Date: 2003-06-10 16:37+0100\n"
 "PO-Revision-Date: 2003-03-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
@@ -14,21 +14,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-canvas-item.c:655
+#: bonobo/bonobo-canvas-item.c:667
 #, fuzzy
 msgid "corba factory"
 msgstr "സ്പന്ദന നിറ്മ്മാണശാല"
 
-#: bonobo/bonobo-canvas-item.c:656
+#: bonobo/bonobo-canvas-item.c:668
 #, fuzzy
 msgid "The factory pointer"
 msgstr "പ്രയോഗം"
 
-#: bonobo/bonobo-canvas-item.c:665
+#: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
 msgstr ""
 
-#: bonobo/bonobo-canvas-item.c:666
+#: bonobo/bonobo-canvas-item.c:678
 #, fuzzy
 msgid "The User interface container"
 msgstr "ഉപയോക്തൃ നാമം"
@@ -79,12 +79,12 @@ msgstr "താരതമ്യം ചെയ്യ‍ുന്നതിന് ആ�
 msgid "Select a filename to save"
 msgstr "സംരക്ഷിക്കാന്‌ ഒരു രചനാ നാമം തെരഞ്ഞെടുക്കുക"
 
-#: bonobo/bonobo-plug.c:372
+#: bonobo/bonobo-plug.c:411
 #, fuzzy
 msgid "Event Forwarding"
 msgstr "മാറ്റി അയയ‍്ക്കല് വാചകം:"
 
-#: bonobo/bonobo-plug.c:373
+#: bonobo/bonobo-plug.c:412
 #, fuzzy
 msgid "Whether X events should be forwarded"
 msgstr "താലം ഉപയോഗിക്കേണ്ടതുണ്ടോ"

@@ -1,5 +1,14 @@
 2003-06-10  Michael Meeks  <michael@ximian.com>
 
+	* Version 2.3.3
+
+2003-06-10  Michael Meeks  <michael@ximian.com>
+
+	* tests/control/test-control.c (test_gtk_weakrefs):
+	instantiate a button to test, not a base GTK_OBJECT
+
+2003-06-10  Michael Meeks  <michael@ximian.com>
+
 	* doc/api/Makefile.am (INCLUDES): setup right.
 
 	* bonobo/Makefile.am: fix write-protected srcdir horrors.
