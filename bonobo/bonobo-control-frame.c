@@ -38,7 +38,7 @@ POA_Bonobo_ControlFrame__vepv bonobo_control_frame_vepv;
 
 struct _BonoboControlFramePrivate {
 	Bonobo_Control	  control;
-	GtkWidget        *control;
+	GtkWidget        *container;
 	GtkWidget	 *socket;
 	BonoboUIHandler   *uih;
 	BonoboPropertyBag *propbag;
