@@ -176,6 +176,8 @@ bonobo_control_auto_merge (BonoboControl *control)
 
 	bonobo_ui_handler_set_container (control->priv->uih, remote_uih);
 
+	bonobo_object_release_unref (remote_uih, NULL);
+
 #ifdef STALE_NOT_USED
 	if (control->priv->menus != NULL) {
 		bonobo_ui_handler_menu_add_list (
@@ -739,7 +741,6 @@ bonobo_control_destroy (GtkObject *object)
 
 	CORBA_exception_free (&ev);
 
-#ifdef STALE_NOT_USED
 	/*
 	 * If we have a UIHandler, destroy it.
 	 */
@@ -747,7 +748,6 @@ bonobo_control_destroy (GtkObject *object)
 		bonobo_ui_handler_unset_container (control->priv->uih);
 		bonobo_object_unref (BONOBO_OBJECT (control->priv->uih));
 	}
-#endif
 }
 
 static void
