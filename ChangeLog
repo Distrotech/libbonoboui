@@ -1,3 +1,7 @@
+2001-09-27  Michael Meeks  <michael@ximian.com>
+
+	* Version 1.102.2
+
 2001-09-25  Darin Adler  <darin@bentspoon.com>
 
 	* bonobo/bonobo-ui-util.c: (lookup_stock_compat):
@@ -31,7 +35,7 @@
 	* bonobo/bonobo-file-selector-util.c: Add missing include of
 	<string.h>.
 
-2001-09-15 Murray Cumming <murrayc@usa.net>
+2001-09-15  Murray Cumming <murrayc@usa.net>
 
 	* samples/bonboui-hello: Now uses gtk stock items for menus and
 	toolbars. Corrected symlink suggestion to include gnome/ui in

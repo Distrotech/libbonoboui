@@ -1,0 +1,22 @@
+Bonobo 1.103
+
+	* Bug fixes
+		* build fixage (Glynn Foster, Anders, PeterW)
+		* libgnome tracking (George Lebl)
+		* leak fixage (Anders)
+		* genmarshal standardiztion (Darin)
+		* zoomable fixage (Cody Russell)
+		* relocate server files (Me)
+
+	* Features
+
+		* code to do toplevel transients from controls (Me)
+		* BonoboUINode/UI bits re-write (Me)
+			+ much faster code
+			+ uses less memory
+		* update regression tests (Me)
+		* IDL for container verb/id automation (Me)
+ 		* use gtk-stock for samples (Murray Cumming)
+		* pruning libgnome usage (Martin)
+		* closure API updates (Martin)
+		* file selector client API (Jacob)

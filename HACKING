@@ -1,0 +1,58 @@
+How to Hack Bonobo
+
+Nat Friedman (nat@nat.org)
+
+    All changes to Bonobo must be approved before they can be
+committed.  Mail your patch (created using diff -u) along with a
+*detailed* ChangeLog and a description of the changes (if they are
+non-trivial) to gnome-components-list@gnome.org, and do not apply it
+until it is approved by either Michael or Miguel.
+
+    Bonobo will serve as the foundation for component-based
+application development in GNOME.  Modern GNOME applications will
+therefore be built out of Bonobo components.  One of the goals of the
+component model is to allow developers to produce robust and
+maintainable applications.  So it is of central importance that the
+code for the Bonobo component model be clean and well-documented.
+Component developers will base their code on the infrastructure Bonobo
+hackers are creating, and so it is critical that Bonobo set a
+precedent for high-quality software.
+
+    Please following the following guidelines when you contribute code
+to Bonobo:
+
+. Follow the GNOME Programming Guidelines.
+
+	All of the Bonobo source code must follow the GNOME
+	Programming Guidelines in terms of formatting style
+	and programming technique.  In particular, Bonobo code
+	should be indented with 8-space tabs.  Emacs users can
+	execute the following elisp to use this indentation
+	style:
+
+		(set-c-style "K&R")
+		(setq c-basic-offset 8)
+
+	Indentation is just one part of the GNOME Programming
+	Guidelines, so please read them.  The programming
+	guidelines can be found in the white-papers CVS
+	module.
+
+. All Bonobo interface methods and API routines must be
+  documented.  The documentation should be placed in-line
+  in the C file or the IDL file using the GtkDoc system.
+  Please see the doc/authors.txt file in the gtk-doc CVS
+  module.
+
+. All C and IDL source files must have a comment at the
+  beginning which briefly describes the purpose and function
+  of the code in the file.
+
+. Bonobo is quite complex in some parts, and it is important
+  that developers be able to track the changes that occur.
+  For this reason, please provide ChangeLog entries for any
+  modifications you make to Bonobo.
+
+* Be honest with your code.  If something's broken, write FIXME in a
+  comment near it.  We use "FIXME" in Bonobo, not XXX or !!! or any of
+  that rubbish.
