@@ -1148,7 +1148,7 @@ bonobo_ui_handler_pixmap_xpm_get_length (const gconstpointer data, int *num_line
 
 	lines = (char **) data;
 
-	sscanf (lines[0], "%i %i %i %i", &width, &height, &num_colors, &chars_per_pixel);
+	sscanf (lines [0], "%i %i %i %i", &width, &height, &num_colors, &chars_per_pixel);
 
 	*num_lines = height + num_colors + 1;
 
@@ -1221,7 +1221,7 @@ bonobo_ui_handler_toplevel_create_pixmap (GtkWidget *window,
 		break;
 
 	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA:
-		g_return_val_if_fail(pixmap_info != NULL, NULL);
+		g_return_val_if_fail (pixmap_info != NULL, NULL);
 		
 		/* Get pointer to GdkPixbuf */
 		pixbuf = (GdkPixbuf *) pixmap_info;
@@ -1271,8 +1271,8 @@ bonobo_ui_handler_pixmap_free_data (BonoboUIHandlerPixmapType pixmap_type, gpoin
 		break;
 
 	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA:
-		g_return_if_fail(pixmap_info != NULL);
-		gdk_pixbuf_unref((GdkPixbuf *)pixmap_info);
+		g_return_if_fail (pixmap_info != NULL);
+		gdk_pixbuf_unref ((GdkPixbuf *)pixmap_info);
 		break;
 
 	default:
@@ -1384,7 +1384,6 @@ bonobo_ui_handler_pixmap_xpm_flatten (char **src, int *length)
 	return flat;
 }
 
-
 /*
  * After a flattened XPM file has been received via CORBA, it can be
  * converted to the normal, unflattened form with this function.
@@ -1405,7 +1404,7 @@ bonobo_ui_handler_pixmap_xpm_unflatten (char *src, int length)
 	num_lines = 0;
 	line_copies = NULL;
 	just_hit_end = TRUE;
-	for (p = src; ((p[0] != '\0') || (p[1] != '\0')) && ((p - src) < length); p ++) {
+	for (p = src; ((p [0] != '\0') || (p [1] != '\0')) && ((p - src) < length); p++) {
 		if (just_hit_end) {
 			line_copies = g_list_append (line_copies, g_strdup (p));
 			just_hit_end = FALSE;
@@ -1420,105 +1419,98 @@ bonobo_ui_handler_pixmap_xpm_unflatten (char *src, int length)
 	num_lines ++;
 
 	unflattened = g_new (char *, num_lines);
-	for (curr = line_copies, i = 0; curr != NULL; curr = curr->next, i ++) {
+	for (curr = line_copies, i = 0; curr != NULL; curr = curr->next, i++)
 		unflattened [i] = curr->data;
-	}
 
 	g_list_free (line_copies);
 
 	return unflattened;
 }
 
-
-/* Big-endian data streaming functions for converting pixbuf data to and from CORBA */
-static char *write_four_bytes(char *start, int value) 
+static char *
+write_four_bytes (char *start, int value) 
 {
-	start[0] = value >> 24;
-	start[1] = value >> 16;
-	start[2] = value >> 8;
-	start[3] = value;
+	start [0] = value >> 24;
+	start [1] = value >> 16;
+	start [2] = value >> 8;
+	start [3] = value;
+
 	return start + 4;
 }
 
-
-static const char *read_four_bytes(const char *start, int *value)
+static const char *
+read_four_bytes (const char *start, int *value)
 {
 	guchar *as_uchar = (guchar *)start;
-	*value = (as_uchar[0] << 24) | (as_uchar[1] << 16)
-			| (as_uchar[2] << 8) | as_uchar[3];
+
+	*value = (as_uchar [0] << 24) | (as_uchar [1] << 16) |
+		 (as_uchar [2] << 8) | as_uchar [3];
 
 	return start + 4;
 }
 
 /*
- * 	Write data out into buffer a character at a time.  The data will be
- * 	reconstituted in a similar fashion
+ * A Pixbuf in its normal, "unflattened" form is usually an array of
+ * strings.  This converts normal XPM data to a completely flat
+ * sequence of characters which can be transmitted over CORBA.
+ *
+ * 	Data is stored in the buffer in this format:
+ * 		width		<4 bytes>
+ * 		height		<4 bytes>
+ * 		has_alpha	<1 byte>
+ * 		
+ * 	This is followed by the pixbuf data which has been written
+ *      into the buffer as a sequences of chars, row by row.
  */
- 
 static Bonobo_UIHandler_iobuf *
 bonobo_ui_handler_pixmap_pixbuf_flatten (Bonobo_UIHandler_iobuf *buffer, 
-										 GdkPixbuf *pixbuf)
+					 GdkPixbuf              *pixbuf)
 {
 	int 	size, width, height, row;
 	char 	*dst;
 	guchar	*src;
-	int 	row_stride, flattened_row_stride;
+	int      row_stride, flattened_row_stride;
 	gboolean has_alpha;
 			
-	g_return_val_if_fail(pixbuf != NULL, NULL);
+	g_return_val_if_fail (pixbuf != NULL, NULL);
 
-	/*	Get pixbuf data geometry */	
-	width = gdk_pixbuf_get_width(pixbuf);
-	height = gdk_pixbuf_get_height(pixbuf);
-	has_alpha = gdk_pixbuf_get_has_alpha(pixbuf);
+	width  = gdk_pixbuf_get_width  (pixbuf);
+	height = gdk_pixbuf_get_height (pixbuf);
+	has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
 	flattened_row_stride = width * (3 + (has_alpha ? 1 : 0));
 	
-	/* Calculate data size of pixmap data */
 	size = height * flattened_row_stride;
 
-	/* Allocate CORBA buffer to receive bits */
-	buffer->_length  = (4 * 2 + 1) + size;
+	buffer->_length  = 2 * 4 + 1 + size;
 	buffer->_buffer  = CORBA_sequence_CORBA_octet_allocbuf(buffer->_length);
 
-	/*	Copy over header information
-	 * 	Data is stored in the buffer in this format:
-	 * 		width		<4 bytes>
-	 * 		height		<4 bytes>
-	 * 		has_alpha	<1 byte>
-	 * 		
-	 * 		This is followed by the pixbuf data which has been written
-	 * 		into the buffer as a sequences of chars, row by row.
-	 * 
-	 */
-
 	dst = (char *)buffer->_buffer;
-	dst = write_four_bytes(dst, gdk_pixbuf_get_width(pixbuf));
-	dst = write_four_bytes(dst, gdk_pixbuf_get_height(pixbuf));
+
+	dst = write_four_bytes (dst, gdk_pixbuf_get_width  (pixbuf));
+	dst = write_four_bytes (dst, gdk_pixbuf_get_height (pixbuf));
 	*dst = has_alpha;
 	dst++;
 
 	/* Copy over bitmap information */	
-	row_stride = gdk_pixbuf_get_rowstride(pixbuf);
-	
-	src = gdk_pixbuf_get_pixels(pixbuf);
+	src        = gdk_pixbuf_get_pixels    (pixbuf);
+	row_stride = gdk_pixbuf_get_rowstride (pixbuf);
 			
 	for (row = 0; row < height; row++) {
-		memcpy(dst, src, flattened_row_stride);
+		memcpy (dst, src, flattened_row_stride);
 		dst += flattened_row_stride;
 		src += row_stride;
 	}
 
 	/* Check that we copied the correct amount of data */
-	g_assert(dst - (char *)buffer->_buffer == buffer->_length);
+	g_assert (dst - (char *)buffer->_buffer == buffer->_length);
 	
 	return buffer;
 }
 
-
 /*
- *	Reconstitute pixbuf data in a way that is byte order indepenent
+ * After a flattened Pixbuf has been received via CORBA, it can be
+ * converted to the normal, unflattened form with this function.
  */
- 
 static gpointer
 bonobo_ui_handler_pixmap_pixbuf_unflatten (char *flat_data, int length)
 {
@@ -1527,57 +1519,43 @@ bonobo_ui_handler_pixmap_pixbuf_unflatten (char *flat_data, int length)
 	int 		width, height;
 	gboolean 	has_alpha;
 	int 		pix_length, row;
-	int			flattened_row_stride, row_stride;
+	int             flattened_row_stride, row_stride;
 	const char 	*src;
 	guchar		*dst;
 
 	g_return_val_if_fail (flat_data != NULL, NULL);
-
-	/* 	Data is stored in the buffer in this format:
-	* 		width		<4 bytes>
-	* 		height		<4 bytes>
-	* 		has_alpha	<1 byte>
-	* 		
-	* 		This is followed by the pixbuf data which has been written
-	* 		into the buffer as a sequences of chars, roq by row.
-	*/
 	
-	/* Verify that length is large enough to contain basic geometry info */
-	if (length < ((4 * 2 ) + 1)) {
+	if (length < 2 * 4 + 1) {
 		g_warning ("bonobo_ui_handler_pixmap_pixbuf_unflatten(): Length not large enough to contain geometry info.");
 		return NULL;
 	}
 	 
-	/* Copy over header information */	
 	src = (char *)flat_data;
-	src = read_four_bytes(src, &width);
-	src = read_four_bytes(src, &height);
+	src = read_four_bytes (src, &width);
+	src = read_four_bytes (src, &height);
 	has_alpha = *src++;
 	
 	flattened_row_stride = width * (3 + (has_alpha ? 1 : 0));
 	pix_length = height * flattened_row_stride;
 
-	/* Make sure we have the proper buffer size before continuing */
-	if (length != pix_length + ((4 * 2) + 1) ) {
+	if (length != pix_length + 2 * 4 + 1) {
 		g_warning ("bonobo_ui_handler_pixmap_pixbuf_unflatten(): flat_data buffer has an improper size.");
 		return NULL;
 	}
 	
-	/* Create GdkPixbuf */
-	pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, has_alpha, 8, width, height);
-	row_stride = gdk_pixbuf_get_rowstride(pixbuf);
+	pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, has_alpha, 8, width, height);
 
-	/* Copy over bitmap data */				
-	dst = gdk_pixbuf_get_pixels(pixbuf);
+	dst        = gdk_pixbuf_get_pixels    (pixbuf);
+	row_stride = gdk_pixbuf_get_rowstride (pixbuf);
 	
 	for (row = 0; row < height; row++) {
-		memcpy(dst, src, flattened_row_stride);
+		memcpy (dst, src, flattened_row_stride);
 		dst += row_stride;
 		src += flattened_row_stride;
 	}
 
 	/* Verify that we copied the proper amount of data */							  		
-	g_assert( src - (char *)flat_data == length);
+	g_assert (src - (char *)flat_data == length);
 	
 	return pixbuf;
 }
@@ -1649,7 +1627,7 @@ bonobo_ui_handler_pixmap_corba_to_data (Bonobo_UIHandler_PixmapType corba_pixmap
 		return pixmap_data;
 
 	case BONOBO_UI_HANDLER_PIXMAP_PIXBUF_DATA: 
-		pixmap_data = bonobo_ui_handler_pixmap_pixbuf_unflatten(
+		pixmap_data = bonobo_ui_handler_pixmap_pixbuf_unflatten (
 			corba_pixmap_data->_buffer, corba_pixmap_data->_length);
 		return pixmap_data;
 		

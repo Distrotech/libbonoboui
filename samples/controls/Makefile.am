@@ -48,12 +48,8 @@ GOAD_FILES =	bonobo-clock-control.gnorba		\
 OAF_FILES =	bonobo-clock-control.oafinfo		\
 		bonobo-calculator-control.oafinfo
 
-#if OAF
 goad_DATA = $(GOAD_FILES)
-#else
 oaf_DATA = $(OAF_FILES)
-#endif
-
 
 EXTRA_DIST = $(GOAD_FILES) $(OAF_FILES)
 
