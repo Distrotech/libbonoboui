@@ -1447,6 +1447,7 @@ real_exec_verb (BonoboUIEngine *engine,
 		const char     *component_name,
 		const char     *verb)
 {
+	char *verb_cpy;
 	Bonobo_UIComponent component;
 
 	g_return_if_fail (verb != NULL);
@@ -1457,13 +1458,17 @@ real_exec_verb (BonoboUIEngine *engine,
 
 	component = sub_component_objref (engine, component_name);
 
+	verb_cpy = g_strdup (verb);
+
 	if (component != CORBA_OBJECT_NIL) {
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);
 
+		CORBA_Object_duplicate (component, &ev);
+
 		Bonobo_UIComponent_execVerb (
-			component, verb, &ev);
+			component, verb_cpy, &ev);
 
 		if (engine->priv->container)
 			bonobo_object_check_env (
@@ -1471,14 +1476,16 @@ real_exec_verb (BonoboUIEngine *engine,
 				component, &ev);
 
 		if (BONOBO_EX (&ev))
-			g_warning ("Exception executing verb '%s' '%s'"
-				   "major %d, %s",
-				   verb, component_name, ev._major,
+			g_warning ("Exception executing verb '%s'"
+				   "major %d, %s", verb_cpy, ev._major,
 				   BONOBO_EX_REPOID (&ev));
+
+		CORBA_Object_release (component, &ev);
 		
 		CORBA_exception_free (&ev);
 	}
 
+	g_free (verb_cpy);
 	g_object_unref (engine);
 }
 
@@ -1724,7 +1731,7 @@ impl_emit_event_on (BonoboUIEngine *engine,
 {
 	const char      *id;
 	BonoboUIXmlData *data;
-	char            *component_id, *real_id;
+	char            *component_id, *real_id, *real_state;
 
 	g_return_if_fail (node != NULL);
 
@@ -1738,18 +1745,20 @@ impl_emit_event_on (BonoboUIEngine *engine,
 
 	component_id = g_strdup (data->id);
 	real_id      = g_strdup (id);
+	real_state   = g_strdup (state);
 
 	/* This could invoke a CORBA method that might de-register the component */
 	set_cmd_attr (engine, node, state_id, state, TRUE);
 
 	real_emit_ui_event (engine, component_id, real_id,
 			    Bonobo_UIComponent_STATE_CHANGED,
-			    state);
+			    real_state);
 
 	g_object_unref (engine);
 
-	g_free (component_id);
+	g_free (real_state);
 	g_free (real_id);
+	g_free (component_id);
 }
 
 void

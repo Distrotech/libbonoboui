@@ -1,3 +1,9 @@
+2002-07-17  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c (real_exec_verb):
+	copy the verb over the emission, dup the component.
+	(impl_emit_event_on): same fix.
+
 2002-07-17  Morten Welinder  <terra@diku.dk>
 
 	* bonobo/bonobo-ui-util.c (bonobo_ui_util_build_help_menu): No
