@@ -445,8 +445,6 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 	same = identical (tree, data->id, old_data->id);
 
 	g_assert (data->id);
-/*	if (!data->id)
-	same = TRUE;*/
 
 	override = !same;
 
@@ -497,7 +495,6 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 
 	g_return_if_fail (data != NULL);
 
- 	/* Mark tree as dirty */
 	if (data->overridden) { /* Something to re-instate */
 		BonoboUIXmlData *old_data;
 
