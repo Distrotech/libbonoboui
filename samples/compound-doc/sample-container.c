@@ -278,7 +278,7 @@ component_add_view (Component *component)
 	/*
 	 * In-place activation of a component is a two-step process.
 	 * After the user double clicks on the component, our signal
-	 * callback (compoennt_user_activate_request_cb()) asks the
+	 * callback (component_user_activate_request_cb()) asks the
 	 * component to activate itself (see
 	 * gnome_view_frame_view_activate()).  The component can then
 	 * choose to either accept or refuse activation.  When an
