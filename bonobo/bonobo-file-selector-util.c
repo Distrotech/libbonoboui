@@ -299,7 +299,6 @@ create_gtk_selector (FileselMode mode,
 	return GTK_WINDOW (filesel);
 }
 
-/* FIXME: break up into smaller functions */
 static gpointer
 run_file_slector (GtkWindow  *parent,
 		  gboolean    enable_vfs,
@@ -321,9 +320,6 @@ run_file_slector (GtkWindow  *parent,
 
 	SET_MODE (dialog, mode);
 
-#if 0
-	gnome_window_set_icon_from_default (dialog);
-#endif
 	gtk_window_set_title (dialog, title);
 	gtk_window_set_modal (dialog, TRUE);
 

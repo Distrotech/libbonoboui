@@ -1,5 +1,11 @@
 2001-10-20  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-file-selector-util.c (run_file_slector): 
+	remove window_set_icon - we just need the transient and we
+	get the icon just fine.
+
+2001-10-20  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-control.c (bonobo_control_plug_destroy_event_cb): 
 	call new method.
 	(bonobo_control_plug_destroy_cb): ditto.
