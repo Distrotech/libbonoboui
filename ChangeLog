@@ -1,3 +1,14 @@
+2002-12-02  Marcus  <marcus@freebsd.org>
+
+	* bonobo/bonobo-ui-util.c (bonobo_help_display_cb):
+	fix search datadir to use existing GnomeProgram if
+	available.
+
+2002-12-02  Gustavo Carneiro <gjc@inescporto.pt>
+
+	* bonobo/bonobo-ui-engine.c
+	(add_debug_menu): fix leak.
+
 2002-11-25  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.1.1

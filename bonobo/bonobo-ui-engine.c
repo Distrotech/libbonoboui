@@ -90,6 +90,7 @@ add_debug_menu (BonoboUIEngine *engine)
 
 	node = bonobo_ui_node_from_string (xml);
 	bonobo_ui_engine_xml_merge_tree (engine, "/", node, "BuiltIn");
+	g_free (xml);
 }
 
 /*

@@ -556,11 +556,16 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 					      GNOME_PARAM_GNOME_PREFIX, &prefix, NULL);
 		}
 
-		/* sub-optimal, but what can you do */
-		if (prefix)
-			datadir = g_strdup_printf ("%s/share", prefix);
-		else
-			datadir = g_strdup (BONOBO_DATADIR);
+		datadir = NULL;
+		g_object_get (G_OBJECT (gnome_program_get ()),
+		              GNOME_PARAM_APP_DATADIR, &datadir, NULL);
+		if (!datadir) {
+			/* sub-optimal, but what can you do */
+			if (prefix)
+				datadir = g_strdup_printf ("%s/share", prefix);
+			else
+				datadir = g_strdup (BONOBO_DATADIR);
+		}
 
 		cl->program = gnome_program_init (
 			doc_id, "2.1",
