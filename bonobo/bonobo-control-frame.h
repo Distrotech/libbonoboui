@@ -33,7 +33,6 @@ typedef struct {
 	 */
 	void (*activated)           (BonoboControlFrame *control_frame, gboolean state);
 	void (*activate_uri)        (BonoboControlFrame *control_frame, const char *uri, gboolean relative);
-	void (*undo_last_operation) (BonoboControlFrame *view_frame);
 
 } BonoboControlFrameClass;
 

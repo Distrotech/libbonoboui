@@ -21,7 +21,6 @@
 enum {
 	SET_FRAME,
 	ACTIVATE,
-	UNDO_LAST_OPERATION,
 	LAST_SIGNAL
 };
 
@@ -849,14 +848,6 @@ bonobo_control_class_init (BonoboControlClass *klass)
                                 gtk_marshal_NONE__BOOL,
                                 GTK_TYPE_NONE, 1,
 				GTK_TYPE_BOOL);
-
-	control_signals [UNDO_LAST_OPERATION] =
-                gtk_signal_new ("undo_last_operation",
-                                GTK_RUN_LAST,
-                                object_class->type,
-                                GTK_SIGNAL_OFFSET (BonoboControlClass, undo_last_operation),
-                                gtk_marshal_NONE__NONE,
-                                GTK_TYPE_NONE, 0);
 
 	gtk_object_class_add_signals (object_class, control_signals, LAST_SIGNAL);
 

@@ -24,7 +24,6 @@
 
 enum {
 	ACTIVATED,
-	UNDO_LAST_OPERATION,
 	ACTIVATE_URI,
 	LAST_SIGNAL
 };
@@ -399,14 +398,6 @@ bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 				GTK_TYPE_BOOL);
 
 	
-	control_frame_signals [UNDO_LAST_OPERATION] =
-		gtk_signal_new ("undo_last_operation",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET (BonoboControlFrameClass, undo_last_operation),
-				gtk_marshal_NONE__NONE,
-				GTK_TYPE_NONE, 0);
-
 	control_frame_signals [ACTIVATE_URI] =
 		gtk_signal_new ("activate_uri",
 				GTK_RUN_LAST,

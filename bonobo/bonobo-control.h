@@ -37,7 +37,6 @@ struct _BonoboControlClass {
 	 */
 	void (*set_frame)           (BonoboControl *control);
 	void (*activate)            (BonoboControl *control, gboolean state);
-	void (*undo_last_operation) (BonoboControl *control);
 };
 
 /* The main API */
