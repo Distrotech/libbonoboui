@@ -1,3 +1,7 @@
+2002-05-14  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-widget.c: update docs.
+
 2002-05-13  Balamurali Viswanathan <balamurali.viswanathan@wipro.com>
 
 	* bonobo/bonobo-ui-init-gtk.c: pass the "screen"

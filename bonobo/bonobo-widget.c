@@ -75,7 +75,8 @@ bonobo_widget_launch_component (const char        *moniker,
  * bonobo_widget_construct_control_from_objref:
  * @bw: A BonoboWidget to construct
  * @control: A CORBA Object reference to an IDL:Bonobo/Control:1.0
- * @uic: Bonobo_UIContainer for the launched object.
+ * @uic: Bonobo_UIContainer for the launched object or CORBA_OBJECT_NIL
+ * if there is no need of menu / toolbar merging.
  * @ev: a CORBA exception environment
  *
  * This is a constructor function.  Only usable for wrapping and
@@ -113,7 +114,8 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
  * bonobo_widget_construct_control:
  * @bw: A BonoboWidget to construct
  * @moniker: A Moniker describing the object to be activated 
- * @uic: Bonobo_UIContainer for the launched object.
+ * @uic: Bonobo_UIContainer for the launched object or CORBA_OBJECT_NIL
+ * if there is no need of menu / toolbar merging.
  * @ev: a CORBA exception environment
  *
  * This is a constructor function.  Only usable for wrapping and
@@ -180,6 +182,20 @@ control_new_async_cb (Bonobo_Unknown     object,
 	g_free (c);
 }
 
+/**
+ * bonobo_widget_new_control_async:
+ * @moniker: A Moniker describing the object to be activated 
+ * @uic: Bonobo_UIContainer for the launched object or CORBA_OBJECT_NIL
+ * if there is no need of menu / toolbar merging.
+ * @fn: a callback function called when the activation has happend
+ * @user_data: user data to be passed back to the callback.
+ * 
+ * This method creates a widget, returns it to the user, and
+ * asynchronously activates a control to insert into the widget.
+ * 
+ * Return value: a (temporarily) empty Widget to be filled with the
+ * control later
+ **/
 GtkWidget *
 bonobo_widget_new_control_async (const char         *moniker,
 				 Bonobo_UIContainer  uic,
@@ -220,7 +236,8 @@ bonobo_widget_new_control_async (const char         *moniker,
 /**
  * bonobo_widget_new_control_from_objref:
  * @control: A CORBA Object reference to an IDL:Bonobo/Control:1.0
- * @uic: Bonobo_UIContainer for the launched object.
+ * @uic: Bonobo_UIContainer for the launched object or CORBA_OBJECT_NIL
+ * if there is no need of menu / toolbar merging.
  *
  * This function is a simple wrapper for easily embedding controls
  * into applications.  This function is used when you have already
@@ -255,7 +272,8 @@ bonobo_widget_new_control_from_objref (Bonobo_Control     control,
 /**
  * bonobo_widget_new_control:
  * @moniker: A Moniker describing the object to be activated 
- * @uic: Bonobo_UIContainer for the launched object.
+ * @uic: Bonobo_UIContainer for the launched object or CORBA_OBJECT_NIL
+ * if there is no need of menu / toolbar merging.
  *
  * This function is a simple wrapper for easily embedding controls
  * into applications.  It will launch the component identified by @id
