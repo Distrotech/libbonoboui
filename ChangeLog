@@ -1,5 +1,26 @@
 2001-11-01  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_set_inproc_widget): impl. to do aweful
+	GtkPlug / Socket skullduggery - we know we're in-proc well
+	before the plug / socket is realized.
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_set_control_frame): setup inproc_frame.
+
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_bind_to_control): upd, unset the
+	frame on the control if we are releasing it, setup
+	inproc_control if we're in-proc.
+	(bonobo_control_frame_set_ui_container): short circuit re-set.
+	(bonobo_control_frame_dispose): use the generic routines.
+	(bonobo_control_frame_set_propbag): upd. for sloppier bonobo
+	ref methods.
+
+	* bonobo/bonobo-control.c: s/control_frame/frame/
+
+2001-11-01  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-control.c
 	(bonobo_control_set_control_frame): de-activate exiting frame.
 	(bonobo_control_dispose): use the std. methods, destroy not
@@ -22,10 +43,6 @@
 	* tests/test-focus.c (main): ditto.
 
 2001-10-31  Michael Meeks  <michael@ximian.com>
-
-	* bonobo/bonobo-socket.c (bonobo_socket_dispose):
-	give Gtk+ a helping hand with propagating destroys to
-	in-proc plugs.
 
 	* tests/control/test-control.c (main): upd.
 	(run_tests, create_test, create_frame),

@@ -36,7 +36,8 @@ static GObjectClass *bonobo_control_parent_class = NULL;
 
 struct _BonoboControlPrivate {
 	GtkWidget                  *widget;
-	Bonobo_ControlFrame         control_frame;
+	Bonobo_ControlFrame         frame;
+	BonoboControlFrame         *inproc_frame;
 	gboolean                    active;
 
 	GtkWidget                  *plug;
@@ -56,7 +57,7 @@ bonobo_control_notify_plug_died (BonoboControl *control)
 	Bonobo_ControlFrame frame;
 	gboolean            end_of_life;
 
-	frame = control->priv->control_frame;
+	frame = control->priv->frame;
 
 	dprintf ("bonobo_control_notify_plug_died: ");
 
@@ -504,20 +505,9 @@ bonobo_control_dispose (GObject *object)
 	bonobo_control_set_properties    (control, CORBA_OBJECT_NIL, NULL);
 	bonobo_control_set_ui_component  (control, NULL);
 
-	/* Destroy the control's top-level widget. */
 	if (control->priv->widget)
 		gtk_object_destroy (GTK_OBJECT (control->priv->widget));
 
-	/*
-	 * If the plug still exists, destroy it.  The plug might not
-	 * exist in the case where the container application died,
-	 * taking the plug out with it, or the optimized local case
-	 * where the plug/socket mechanism was bypassed.  In the
-	 * former case, plug_destroy_cb() would have been invoked,
-	 * and it would have triggered the destruction of the Control,
-	 * which is why we're here now. In the latter case, it's not
-	 * needed because there is no plug.  
-	 */
 	if (control->priv->plug) {
 		gtk_object_destroy (GTK_OBJECT (control->priv->plug));
 		bonobo_control_set_plug (control, NULL);
@@ -548,14 +538,14 @@ bonobo_control_finalize (GObject *object)
  */
 void
 bonobo_control_set_control_frame (BonoboControl       *control,
-				  Bonobo_ControlFrame  control_frame,
+				  Bonobo_ControlFrame  frame,
 				  CORBA_Environment   *opt_ev)
 {
 	CORBA_Environment *ev, tmp_ev;
 
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 
-	if (control->priv->control_frame == control_frame)
+	if (control->priv->frame == frame)
 		return;
 		
 	if (!opt_ev) {
@@ -564,22 +554,37 @@ bonobo_control_set_control_frame (BonoboControl       *control,
 	} else
 		ev = opt_ev;
 
-	if (control->priv->control_frame != CORBA_OBJECT_NIL) {
+	if (control->priv->frame != CORBA_OBJECT_NIL) {
 		if (control->priv->active)
 			Bonobo_ControlFrame_notifyActivated (
-				control->priv->control_frame,
+				control->priv->frame,
 				FALSE, ev);
 		
-		CORBA_Object_release (control->priv->control_frame, ev);
+		CORBA_Object_release (control->priv->frame, ev);
 	}
 	
-	if (control_frame == CORBA_OBJECT_NIL)
-		control->priv->control_frame = CORBA_OBJECT_NIL;
-	else {
-		control->priv->control_frame = CORBA_Object_duplicate (
-			control_frame, ev);
-	}
+	if (frame == CORBA_OBJECT_NIL)
+		control->priv->frame = CORBA_OBJECT_NIL;
+	else
+		control->priv->frame = CORBA_Object_duplicate (
+			frame, ev);
 	
+	control->priv->inproc_frame = (BonoboControlFrame *)
+		bonobo_object (ORBit_small_get_servant (frame));
+
+	if (control->priv->inproc_frame) {
+		g_assert (control->priv->plug == NULL);
+
+		/* FIXME: ugly hackage */
+		control->priv->plug = GTK_WIDGET (
+			gtk_type_new (BONOBO_TYPE_PLUG));
+
+		bonobo_control_frame_set_inproc_widget (
+			control->priv->inproc_frame,
+			BONOBO_PLUG (control->priv->plug),
+			control->priv->widget);
+	}
+
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
 	
@@ -600,7 +605,7 @@ Bonobo_ControlFrame
 bonobo_control_get_control_frame (BonoboControl     *control,
 				  CORBA_Environment *opt_ev)
 {
-	Bonobo_ControlFrame control_frame;
+	Bonobo_ControlFrame frame;
 	CORBA_Environment *ev, tmp_ev;
 	
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
@@ -611,12 +616,12 @@ bonobo_control_get_control_frame (BonoboControl     *control,
 	} else
 		ev = opt_ev;
 	
-	control_frame = CORBA_Object_duplicate (control->priv->control_frame, ev);
+	frame = CORBA_Object_duplicate (control->priv->frame, ev);
 	
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
 
-	return control_frame;
+	return frame;
 }
 
 /**
@@ -709,15 +714,15 @@ Bonobo_PropertyBag
 bonobo_control_get_ambient_properties (BonoboControl     *control,
 				       CORBA_Environment *opt_ev)
 {
-	Bonobo_ControlFrame control_frame;
+	Bonobo_ControlFrame frame;
 	Bonobo_PropertyBag pbag;
 	CORBA_Environment *ev = 0, tmp_ev;
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
 
-	control_frame = control->priv->control_frame;
+	frame = control->priv->frame;
 
-	if (control_frame == CORBA_OBJECT_NIL)
+	if (frame == CORBA_OBJECT_NIL)
 		return NULL;
 
 	if (opt_ev)
@@ -728,7 +733,7 @@ bonobo_control_get_ambient_properties (BonoboControl     *control,
 	}
 
 	pbag = Bonobo_ControlFrame_getAmbientProperties (
-		control_frame, ev);
+		frame, ev);
 
 	if (BONOBO_EX (ev)) {
 		if (!opt_ev)
@@ -756,7 +761,7 @@ bonobo_control_get_remote_ui_container (BonoboControl     *control,
 
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), CORBA_OBJECT_NIL);
 
-	g_return_val_if_fail (control->priv->control_frame != CORBA_OBJECT_NIL,
+	g_return_val_if_fail (control->priv->frame != CORBA_OBJECT_NIL,
 			      CORBA_OBJECT_NIL);
 
 	if (!opt_ev) {
@@ -765,9 +770,9 @@ bonobo_control_get_remote_ui_container (BonoboControl     *control,
 	} else
 		ev = opt_ev;
 
-	ui_container = Bonobo_ControlFrame_getUIHandler (control->priv->control_frame, ev);
+	ui_container = Bonobo_ControlFrame_getUIHandler (control->priv->frame, ev);
 
-	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, ev);
+	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->frame, ev);
 
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
@@ -793,7 +798,7 @@ bonobo_control_activate_notify (BonoboControl     *control,
 	CORBA_Environment *ev, tmp_ev;
 
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
-	g_return_if_fail (control->priv->control_frame != CORBA_OBJECT_NIL);
+	g_return_if_fail (control->priv->frame != CORBA_OBJECT_NIL);
 
 	if (!opt_ev) {
 		CORBA_exception_init (&tmp_ev);
@@ -801,9 +806,9 @@ bonobo_control_activate_notify (BonoboControl     *control,
 	} else
 		ev = opt_ev;
 
-	Bonobo_ControlFrame_notifyActivated (control->priv->control_frame, activated, ev);
+	Bonobo_ControlFrame_notifyActivated (control->priv->frame, activated, ev);
 
-	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->control_frame, ev);
+	bonobo_object_check_env (BONOBO_OBJECT (control), control->priv->frame, ev);
 
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
@@ -857,7 +862,7 @@ bonobo_control_init (BonoboControl *control)
 {
 	control->priv = g_new0 (BonoboControlPrivate, 1);
 
-	control->priv->control_frame = CORBA_OBJECT_NIL;
+	control->priv->frame = CORBA_OBJECT_NIL;
 }
 
 BONOBO_TYPE_FUNC_FULL (BonoboControl, 
@@ -1049,7 +1054,7 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 	GdkWindow          *win;
 	guint32             x11_id;
 	CORBA_Environment  *ev = 0, tmp_ev;
-	Bonobo_ControlFrame control_frame;
+	Bonobo_ControlFrame frame;
 
 	g_return_if_fail (GTK_IS_WINDOW (window));
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
@@ -1059,9 +1064,9 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 	 * and thus we can catch it in BonoboSocket and chain up
 	 * again if we are embedded inside an embedded thing. */
 
-	control_frame = control->priv->control_frame;
+	frame = control->priv->frame;
 
-	if (control_frame == CORBA_OBJECT_NIL)
+	if (frame == CORBA_OBJECT_NIL)
 		return;
 
 	if (opt_ev)
@@ -1071,7 +1076,7 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 		ev = &tmp_ev;
 	}
 
-	id = Bonobo_ControlFrame_getToplevelId (control_frame, ev);
+	id = Bonobo_ControlFrame_getToplevelId (frame, ev);
 	g_return_if_fail (id != NULL);
 
 	x11_id = bonobo_control_x11_from_window_id (id);

@@ -44,6 +44,7 @@ static guint control_frame_signals [LAST_SIGNAL];
 static GObjectClass *bonobo_control_frame_parent_class;
 
 struct _BonoboControlFramePrivate {
+	BonoboControl     *inproc_control;
 	Bonobo_Control	   control;
 	GtkWidget	  *socket;
 	Bonobo_UIContainer ui_container;
@@ -243,29 +244,13 @@ bonobo_control_frame_dispose (GObject *object)
 	if (frame->priv->socket)
 		bonobo_control_frame_set_socket (frame, NULL);
 
-	if (frame->priv->propbag) {
-		bonobo_object_unref (BONOBO_OBJECT (frame->priv->propbag));
-		frame->priv->propbag = NULL;
-	}
+	bonobo_control_frame_set_propbag (frame, NULL);
 
-	if (frame->priv->control != CORBA_OBJECT_NIL) {
-		CORBA_Environment ev;
+	bonobo_control_frame_bind_to_control (
+		frame, CORBA_OBJECT_NIL, NULL);
 
-		CORBA_exception_init (&ev);
-
-		Bonobo_Control_setFrame (frame->priv->control,
-					 CORBA_OBJECT_NIL, &ev);
-		CORBA_Object_release (frame->priv->control, &ev);
-
-		CORBA_exception_free (&ev);
-
-		frame->priv->control = CORBA_OBJECT_NIL;
-	}
-
-	if (frame->priv->ui_container != CORBA_OBJECT_NIL) {
-		bonobo_object_release_unref (frame->priv->ui_container, NULL);
-		frame->priv->ui_container = CORBA_OBJECT_NIL;
-	}
+	bonobo_control_frame_set_ui_container (
+		frame, CORBA_OBJECT_NIL, NULL);
 
 	bonobo_control_frame_parent_class->dispose (object);
 }
@@ -593,6 +578,9 @@ bonobo_control_frame_set_ui_container (BonoboControlFrame *frame,
 
 	old_ui_container = frame->priv->ui_container;
 
+	if (old_ui_container == ui_container)
+		return;
+
 	if (!opt_ev) {
 		CORBA_exception_init (&tmp_ev);
 		ev = &tmp_ev;
@@ -633,7 +621,6 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 {
 	CORBA_Environment *ev, tmp_ev;
 
-	g_return_if_fail (control != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
 
 	if (control == frame->priv->control)
@@ -645,26 +632,35 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 	} else
 		ev = opt_ev;
 
-	if (frame->priv->control != CORBA_OBJECT_NIL)
+	if (frame->priv->control != CORBA_OBJECT_NIL) {
+		Bonobo_Control_setFrame (frame->priv->control,
+					 CORBA_OBJECT_NIL, ev);
 		CORBA_Object_release (frame->priv->control, ev);
+	}
 
-	if (control == CORBA_OBJECT_NIL)
+	if (control == CORBA_OBJECT_NIL) {
 		frame->priv->control = CORBA_OBJECT_NIL;
-	else
+		frame->priv->inproc_control = NULL;
+	} else {
 		frame->priv->control = CORBA_Object_duplicate (control, ev);
 
-	/* Introduce ourselves to the Control. */
-	Bonobo_Control_setFrame (control, BONOBO_OBJREF (frame), ev);
+		frame->priv->inproc_control = (BonoboControl *)
+			bonobo_object (ORBit_small_get_servant (control));
 
-	if (BONOBO_EX (ev))
-		bonobo_object_check_env (BONOBO_OBJECT (frame), control, ev);
+		/* Introduce ourselves to the Control. */
+		Bonobo_Control_setFrame (control, BONOBO_OBJREF (frame), ev);
 
-	/*
-	 * If the socket is realized, then we transfer the
-	 * window ID to the remote control.
-	 */
-	if (GTK_WIDGET_REALIZED (frame->priv->socket))
-		bonobo_control_frame_set_remote_window (frame, ev);
+		if (BONOBO_EX (ev))
+			bonobo_object_check_env (BONOBO_OBJECT (frame), control, ev);
+
+		/*
+		 * If the socket is realized, then we transfer the
+		 * window ID to the remote control.
+		 */
+		if (GTK_WIDGET_REALIZED (frame->priv->socket))
+			bonobo_control_frame_set_remote_window (frame, ev);
+
+	}
 
 	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
@@ -726,18 +722,16 @@ bonobo_control_frame_set_propbag (BonoboControlFrame  *frame,
 	BonoboPropertyBag *old_pb;
 
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
-	g_return_if_fail (BONOBO_IS_PROPERTY_BAG (propbag));
+	g_return_if_fail (propbag == NULL ||
+			  BONOBO_IS_PROPERTY_BAG (propbag));
 
 	old_pb = frame->priv->propbag;
 
 	if (old_pb == propbag)
 		return;
 
-	frame->priv->propbag = propbag;
-	bonobo_object_ref (BONOBO_OBJECT (propbag));
-
-	if (old_pb)
-		bonobo_object_unref (BONOBO_OBJECT (old_pb));
+	frame->priv->propbag = bonobo_object_ref (BONOBO_OBJECT (propbag));
+	bonobo_object_unref (BONOBO_OBJECT (old_pb));
 }
 
 /**
@@ -938,4 +932,58 @@ bonobo_control_frame_get_socket (BonoboControlFrame *frame)
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (frame), NULL);
 
 	return (BonoboSocket *) frame->priv->socket;
+}
+
+/*
+ *   Essentialy a copy of _gtk_plug_add_to_socket, with
+ * part of gtk_plug_construct.
+ * FIXME: we could kill this, and proxy GtkWidget to the remote object
+ * inside BonoboSocket - cleanly; not having a remote plug etc.
+ */
+void
+bonobo_control_frame_set_inproc_widget (BonoboControlFrame *frame,
+					BonoboPlug         *bonobo_plug,
+					GtkWidget          *control_widget)
+{
+	GtkSocket *socket;
+	GtkPlug   *plug;
+
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
+
+	plug = GTK_PLUG (bonobo_plug);
+	socket = GTK_SOCKET (frame->priv->socket);
+  
+	g_return_if_fail (plug != NULL);
+	g_return_if_fail (socket != NULL);
+/*	g_return_if_fail (GTK_WIDGET_REALIZED (socket)); - dodgy ! */
+
+	/* start gtk_plug_set_is_child */
+	g_assert (plug->modality_window == NULL);
+	g_assert (plug->modality_group == NULL);
+	GTK_WIDGET_UNSET_FLAGS (plug, GTK_TOPLEVEL);
+	gtk_container_set_resize_mode (GTK_CONTAINER (plug), GTK_RESIZE_PARENT);
+
+/* FIXME: do we need this to work !?
+	g_object_ref (G_OBJECT (plug));
+
+	gtk_widget_propagate_hierarchy_changed_recurse (
+		GTK_WIDGET (plug), GTK_WIDGET (plug));
+  
+		g_object_unref (G_OBJECT (plug));
+*/
+	/* end gtk_plug_set_is_child */
+
+	plug->same_app = TRUE;
+	socket->plug_widget = GTK_WIDGET (plug);
+
+	if (GTK_WIDGET_REALIZED (plug))
+		gdk_window_reparent (
+			GTK_WIDGET (plug)->window,
+			plug->socket_window, 0, 0);
+
+	gtk_widget_set_parent (GTK_WIDGET (plug),
+			       GTK_WIDGET (socket));
+
+	g_signal_emit_by_name (G_OBJECT (socket), "plug_added", 0);
+	g_signal_emit_by_name (G_OBJECT (plug), "embedded", 0);
 }

@@ -21,9 +21,12 @@ void     bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
 						 CORBA_Environment  *ev);
 gboolean bonobo_control_frame_focus             (BonoboControlFrame *frame,
 						 GtkDirectionType    direction);
-void     bonobo_control_frame_size_request      (BonoboControlFrame *control_frame,
+void     bonobo_control_frame_size_request      (BonoboControlFrame *frame,
 						 GtkRequisition     *requisition,
 						 CORBA_Environment  *opt_ev);
+void     bonobo_control_frame_set_inproc_widget (BonoboControlFrame *frame,
+						 BonoboPlug         *bonobo_plug,
+						 GtkWidget          *control_widget);
 
 
 void                bonobo_control_notify_plug_died (BonoboControl      *control);

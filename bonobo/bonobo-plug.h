@@ -36,6 +36,7 @@ typedef struct _BonoboPlug BonoboPlug;
 
 G_BEGIN_DECLS
 
+#define BONOBO_TYPE_PLUG          (bonobo_plug_get_type ())
 #define BONOBO_PLUG(obj)          GTK_CHECK_CAST (obj, bonobo_plug_get_type (), BonoboPlug)
 #define BONOBO_PLUG_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_plug_get_type (), BonoboPlugClass)
 #define BONOBO_IS_PLUG(obj)       GTK_CHECK_TYPE (obj, bonobo_plug_get_type ())

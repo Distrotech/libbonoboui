@@ -69,8 +69,8 @@ modules to give more lucid encapsulation.
 	Toplevel gtk_widget_destroy.
 
 	1.                       Socket dispose
-	2.			 unset control
-	3.			 B. unref Control
+	2.			 unset control (B. unref)
+	3.			 C. unref Control
 
 	4. connection broken    <--.
 and:			           | interchangeable: Note 1.
@@ -79,11 +79,7 @@ and:			           | interchangeable: Note 1.
 ...
 	7. unref plug -> dispose
 	8. plug unset control frame
-	9. plug B. unref ControlFrame
-
-Leaves:
-	finalized plug, unref Control
-	finalized socket, unref ControlFrame
+	9. plug C. unref ControlFrame
 
 ** Note 1.
 	  X connection broken invokes 'destroy' on plug.
@@ -102,11 +98,19 @@ Leaves:
 	Toplevel gtk_widget_destroy.
 
 	1.                       Socket dispose
-	2.			 unset control
-	3.			 B. unref Control
+	2.			 unset control (B. unref)
+	3.			 C. unref Control
+if we have a plug:
 	4.                       gtk_widget_destroy plug
 	5. plug unset control frame
 	6. plug B. unref ControlFrame
+else:
+	4.			 B. unref Control
+
+Leaves:
+	unref Control, [ finalized plug ]
+	finalized socket, unref ControlFrame
+
 
 * Destruction interaction (B2)
 
