@@ -333,13 +333,10 @@ bonobo_control_frame_destroy (GtkObject *object)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (object);
 
-	puts ("control frame destroy");
-
 	if (control_frame->priv->control != CORBA_OBJECT_NIL){
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);
-		puts ("@@@ Unreffing control.");
 		Bonobo_Control_unref (control_frame->priv->control, &ev);
 		CORBA_Object_release (control_frame->priv->control, &ev);
 		CORBA_exception_free (&ev);
@@ -713,7 +710,6 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	 * Keep a local handle to the Control.
 	 */
 	CORBA_exception_init (&ev);
-	puts ("@@@ Reffing control.");
 	Bonobo_Control_ref (control, &ev);
 	control_frame->priv->control = CORBA_Object_duplicate (control, &ev);
 	CORBA_exception_free (&ev);
