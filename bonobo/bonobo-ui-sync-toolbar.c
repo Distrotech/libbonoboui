@@ -284,8 +284,6 @@ toolbar_style_changed (GtkWidget       *toolbar,
 	GList *l, *items;
 	GtkOrientation orientation;
 
-	g_warning ("toolbar style changed '%d'\n", style);
-      
         items = toolbar_get_children (toolbar);
 	orientation = gtk_toolbar_get_orientation (GTK_TOOLBAR (toolbar));
 

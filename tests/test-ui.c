@@ -318,7 +318,7 @@ main (int argc, char **argv)
 		gtk_box_pack_start_defaults (GTK_BOX (box), button);
 
 		path_entry = gtk_entry_new ();
-		gtk_entry_set_text (GTK_ENTRY (path_entry), "/menu/File/toggle");
+		gtk_entry_set_text (GTK_ENTRY (path_entry), "/commands/MyFoo");
 		gtk_widget_show (GTK_WIDGET (path_entry));
 		gtk_box_pack_start_defaults (GTK_BOX (box), path_entry);
 
