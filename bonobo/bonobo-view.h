@@ -43,35 +43,33 @@ struct _BonoboViewClass {
 	void (*set_zoom_factor)          (BonoboView *view, double zoom);
 };
 
-GtkType              bonobo_view_get_type               (void);
+GtkType               bonobo_view_get_type               (void);
 BonoboView           *bonobo_view_construct              (BonoboView         *view,
-							Bonobo_View         corba_view,
-							GtkWidget         *widget);
-BonoboView           *bonobo_view_new                    (GtkWidget         *widget);
+							  Bonobo_View         corba_view,
+							  GtkWidget          *widget);
+BonoboView           *bonobo_view_new                    (GtkWidget          *widget);
 Bonobo_View           bonobo_view_corba_object_create    (BonoboObject       *object);
-void                 bonobo_view_set_embeddable         (BonoboView         *view,
-							BonoboEmbeddable   *embeddable);
+void                  bonobo_view_set_embeddable         (BonoboView         *view,
+							  BonoboEmbeddable   *embeddable);
 BonoboEmbeddable     *bonobo_view_get_embeddable         (BonoboView         *view);
-void                 bonobo_view_set_view_frame         (BonoboView         *view,
-							Bonobo_ViewFrame    view_frame);
+void                  bonobo_view_set_view_frame         (BonoboView         *view,
+							  Bonobo_ViewFrame    view_frame);
 Bonobo_ViewFrame      bonobo_view_get_view_frame         (BonoboView         *view);
 Bonobo_UIHandler      bonobo_view_get_remote_ui_handler  (BonoboView         *view);
-void                 bonobo_view_set_ui_handler         (BonoboView         *view,
-							BonoboUIHandler    *uih);
-BonoboUIHandler      *bonobo_view_get_ui_handler         (BonoboView         *view);
-void                 bonobo_view_activate_notify        (BonoboView         *view,
-							gboolean           activated);
+Bonobo_UIHandler      bonobo_view_get_ui_handler         (BonoboView         *view);
+void                  bonobo_view_activate_notify        (BonoboView         *view,
+							  gboolean            activated);
 						  
 /* Verbs. */					  
-void                 bonobo_view_register_verb          (BonoboView         *view,
-							const char        *verb_name,
-							BonoboViewVerbFunc  callback,
-							gpointer           user_data);
-void                 bonobo_view_unregister_verb        (BonoboView         *view,
-							const char        *verb_name);
-void                 bonobo_view_execute_verb           (BonoboView         *view,
-							const char        *verb_name);
-char                *bonobo_view_popup_verbs            (BonoboView         *view);
+void                  bonobo_view_register_verb          (BonoboView         *view,
+							  const char         *verb_name,
+							  BonoboViewVerbFunc  callback,
+							  gpointer            user_data);
+void                  bonobo_view_unregister_verb        (BonoboView         *view,
+							  const char         *verb_name);
+void                  bonobo_view_execute_verb           (BonoboView         *view,
+							  const char         *verb_name);
+char                 *bonobo_view_popup_verbs            (BonoboView         *view);
 POA_Bonobo_View__epv *bonobo_view_get_epv                (void);
 
 /* CORBA default vector methods we provide */

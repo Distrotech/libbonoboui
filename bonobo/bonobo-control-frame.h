@@ -39,23 +39,45 @@ typedef struct {
 } BonoboControlFrameClass;
 
 
-GtkType                      bonobo_control_frame_get_type                  (void);
-BonoboControlFrame           *bonobo_control_frame_construct                 (BonoboControlFrame  *control_frame,
-									    Bonobo_ControlFrame  corba_control_frame);
-BonoboControlFrame           *bonobo_control_frame_new                       (void);
-void                         bonobo_control_frame_bind_to_control           (BonoboControlFrame  *control_frame,
-									    Bonobo_Control       control);
-Bonobo_Control                bonobo_control_frame_get_control               (BonoboControlFrame  *control_frame);
-void			     bonobo_control_frame_set_propbag		   (BonoboControlFrame  *control_frame,
-									    BonoboPropertyBag   *propbag);
-BonoboPropertyBag	    *bonobo_control_frame_get_propbag		   (BonoboControlFrame  *control_frame);
-GtkWidget                   *bonobo_control_frame_get_widget                (BonoboControlFrame  *frame);
-void                         bonobo_control_frame_control_activate          (BonoboControlFrame *control_frame);
-void                         bonobo_control_frame_control_deactivate        (BonoboControlFrame *control_frame);
-void                         bonobo_control_frame_set_ui_handler            (BonoboControlFrame     *view_frame,
-									    BonoboUIHandler        *uih);
-BonoboUIHandler              *bonobo_control_frame_get_ui_handler            (BonoboControlFrame  *view_frame);
+BonoboControlFrame           *bonobo_control_frame_new                       (Bonobo_UIHandler     uih);
+
+GtkWidget                    *bonobo_control_frame_get_widget                (BonoboControlFrame  *frame);
+
+/* Activating remote controls */
+void                          bonobo_control_frame_control_activate          (BonoboControlFrame  *control_frame);
+void                          bonobo_control_frame_control_deactivate        (BonoboControlFrame  *control_frame);
+void                          bonobo_control_frame_set_autoactivate          (BonoboControlFrame  *control_frame,
+									      gboolean             autoactivate);
+gboolean                      bonobo_control_frame_get_autoactivate          (BonoboControlFrame  *control_frame);
+
+/* Remote properties */
 BonoboPropertyBagClient      *bonobo_control_frame_get_control_property_bag  (BonoboControlFrame  *control_frame);
+
+/* Ambient properties */
+void                          bonobo_control_frame_set_propbag               (BonoboControlFrame  *control_frame,
+									      BonoboPropertyBag   *propbag);
+BonoboPropertyBag            *bonobo_control_frame_get_propbag               (BonoboControlFrame  *control_frame);
+
+/* Widget state proxying */
+void                          bonobo_control_frame_control_set_state         (BonoboControlFrame  *control_frame,
+									      GtkStateType         state);
+void                          bonobo_control_frame_set_autostate             (BonoboControlFrame  *control_frame,
+									      gboolean             autostate);
+gboolean                      bonobo_control_frame_get_autostate             (BonoboControlFrame  *control_frame);
+
+
+/* Connecting to the remote control */
+void                          bonobo_control_frame_bind_to_control           (BonoboControlFrame  *control_frame,
+									      Bonobo_Control       control);
+
+Bonobo_Control                bonobo_control_frame_get_control               (BonoboControlFrame  *control_frame);
+
+
+/* Object construction stuff */
+BonoboControlFrame           *bonobo_control_frame_construct                 (BonoboControlFrame  *control_frame,
+									      Bonobo_ControlFrame  corba_control_frame,
+									      Bonobo_UIHandler     uih);
+GtkType                       bonobo_control_frame_get_type                  (void);
 POA_Bonobo_ControlFrame__epv *bonobo_control_frame_get_epv                   (void);
 
 /*

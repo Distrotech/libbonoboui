@@ -42,25 +42,27 @@ typedef struct {
 	GtkBinClass	 bin_class;
 } BonoboWidgetClass;
 
-GtkType            bonobo_widget_get_type                (void);
-BonoboObjectClient *bonobo_widget_get_server              (BonoboWidget *bw);
+GtkType             bonobo_widget_get_type                 (void);
+BonoboObjectClient *bonobo_widget_get_server               (BonoboWidget     *bw);
 
 /*
  * BonoboWidget for Controls.
  */
-GtkWidget	  *bonobo_widget_new_control	       (char *goad_id);
-GtkWidget	  *bonobo_widget_new_control_from_objref (Bonobo_Control control);
-BonoboControlFrame *bonobo_widget_get_control_frame       (BonoboWidget *bw);
+GtkWidget          *bonobo_widget_new_control              (const char       *goad_id,
+							    Bonobo_UIHandler  uih);
+GtkWidget          *bonobo_widget_new_control_from_objref  (Bonobo_Control    control,
+							    Bonobo_UIHandler  uih);
+BonoboControlFrame *bonobo_widget_get_control_frame        (BonoboWidget     *bw);
 
 /*
  * Gnome Bonobo Widget for subdocuments (Embeddables with a single View).
  */
-GtkWidget	  *bonobo_widget_new_subdoc              (char *object_desc,
-							       	BonoboUIHandler *uih);
-BonoboContainer	  *bonobo_widget_get_container           (BonoboWidget *bw);
-BonoboClientSite	  *bonobo_widget_get_client_site         (BonoboWidget *bw);
-BonoboViewFrame	  *bonobo_widget_get_view_frame          (BonoboWidget *bw);
-BonoboUIHandler	  *bonobo_widget_get_uih	               (BonoboWidget *bw);
+GtkWidget          *bonobo_widget_new_subdoc               (const char       *object_desc,
+							    Bonobo_UIHandler  uih);
+BonoboContainer    *bonobo_widget_get_container            (BonoboWidget     *bw);
+BonoboClientSite   *bonobo_widget_get_client_site          (BonoboWidget     *bw);
+BonoboViewFrame    *bonobo_widget_get_view_frame           (BonoboWidget     *bw);
+BonoboUIHandler    *bonobo_widget_get_uih                  (BonoboWidget     *bw);
 
 END_GNOME_DECLS
 

@@ -198,14 +198,12 @@ add_view (GtkWidget *widget, Application *app,
 	GtkWidget *view_widget;
 	GtkWidget *frame;
 	
-	view_frame = bonobo_client_site_new_view (client_site);
+	view_frame = bonobo_client_site_new_view (client_site, CORBA_OBJECT_NIL);
 
 	gtk_signal_connect (GTK_OBJECT (view_frame), "user_activate",
 			    GTK_SIGNAL_FUNC (user_activation_request_cb), NULL);
 	gtk_signal_connect (GTK_OBJECT (view_frame), "view_activated",
 			    GTK_SIGNAL_FUNC (view_activated_cb), NULL);
-
-	bonobo_view_frame_set_ui_handler (view_frame, app->uih);
 
 	view_widget = bonobo_view_frame_get_wrapper (view_frame);
 

@@ -33,17 +33,20 @@ static BonoboObjectClass *bonobo_control_parent_class;
 POA_Bonobo_Control__vepv bonobo_control_vepv;
 
 struct _BonoboControlPrivate {
-	GtkWidget          *plug;
+	GtkWidget                  *widget;
+	Bonobo_ControlFrame         control_frame;
+	gboolean                    active;
 
-	int                 plug_destroy_id;
-	gboolean            is_local;
-
-	GtkWidget          *widget;
-
-	Bonobo_ControlFrame  control_frame;
-
-	BonoboUIHandler     *uih;
-	BonoboPropertyBag   *propbag;
+	GtkWidget                  *plug;
+	gboolean                    is_local;
+	gboolean                    xid_received;
+				   
+	BonoboUIHandler            *uih;
+	gboolean                    automerge;
+	BonoboUIHandlerMenuItem    *menus;
+	BonoboUIHandlerToolbarItem *toolbars;
+				   
+	BonoboPropertyBag          *propbag;
 };
 
 /**
@@ -99,32 +102,92 @@ bonobo_control_windowid_from_x11 (guint32 x11_id)
 }
 
 /*
- * This callback is invoked when the plug is unexpectedly destroyed.
- * This may happen if, for example, the container application goes
- * away.  This callback is _not_ invoked if the BonoboControl is destroyed
- * normally, i.e. the user unrefs the BonoboControl away.
+ * This callback is invoked when the plug is unexpectedly destroyed by
+ * way of its associated X window dying.  This usually indicates that
+ * the contaier application has died.  This callback is _not_ invoked
+ * if the BonoboControl is destroyed normally, i.e. the user unrefs
+ * the BonoboControl away.
  */
-static gint
-bonobo_control_plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
+static void
+bonobo_control_plug_destroy_event_cb (GtkWidget   *plug,
+				      GdkEventAny *event,
+				      gpointer     closure)
 {
 	BonoboControl *control = BONOBO_CONTROL (closure);
 
+	if (control->priv->plug == NULL)
+		return;
+
 	if (control->priv->plug != plug)
-		g_warning ("Destroying incorrect plug");
+		g_warning ("Destroying incorrect plug!");
 
 	/*
 	 * Set the plug to NULL here so that we don't try to
 	 * destroy it later.  It will get destroyed on its
 	 * own.
 	 */
-	control->priv->plug = NULL;
+	control->priv->plug            = NULL;
 
 	/*
 	 * Destroy this plug's BonoboControl.
 	 */
 	bonobo_object_destroy (BONOBO_OBJECT (control));
+}
 
-	return FALSE;
+/*
+ * This callback is invoked when the plug is unexpectedly destroyed
+ * through normal Gtk channels. FIXME FIXME FIXME 
+ *
+ */
+static void
+bonobo_control_plug_destroy_cb (GtkWidget *plug,
+				gpointer   closure)
+{
+	BonoboControl *control = BONOBO_CONTROL (closure);
+
+	if (control->priv->plug == NULL)
+		return;
+
+	if (control->priv->plug != plug)
+		g_warning ("Destroying incorrect plug!");
+
+	/*
+	 * Set the plug to NULL here so that we don't try to
+	 * destroy it later.  It will get destroyed on its
+	 * own.
+	 */
+	control->priv->plug            = NULL;
+}
+
+
+static void
+bonobo_control_auto_merge (BonoboControl *control)
+{
+	Bonobo_UIHandler remote_uih;
+
+	if (control->priv->uih == NULL)
+		return;
+
+	remote_uih = bonobo_control_get_remote_ui_handler (control);
+	if (remote_uih == CORBA_OBJECT_NIL)
+		return;
+
+	bonobo_ui_handler_set_container (control->priv->uih, remote_uih);
+
+	if (control->priv->menus != NULL) {
+		bonobo_ui_handler_menu_add_list (
+			control->priv->uih, "/", control->priv->menus);
+	}
+}
+
+
+static void
+bonobo_control_auto_unmerge (BonoboControl *control)
+{
+	if (control->priv->uih == NULL)
+		return;
+	
+	bonobo_ui_handler_unset_container (control->priv->uih);
 }
 
 static void
@@ -134,7 +197,16 @@ impl_Bonobo_Control_activate (PortableServer_Servant servant,
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 
+	if (control->priv->automerge && control->priv->active != activated) {
+		if (activated)
+			bonobo_control_auto_merge (control);
+		else
+			bonobo_control_auto_unmerge (control);
+	}
+
 	gtk_signal_emit (GTK_OBJECT (control), control_signals [ACTIVATE], (gboolean) activated);
+
+	control->priv->active = activated;
 }
 
 
@@ -159,7 +231,6 @@ impl_Bonobo_Control_set_frame (PortableServer_Servant servant,
 }
 
 
-
 static GtkWidget *
 bonobo_gtk_widget_from_x11_id (guint32 xid)
 {
@@ -182,42 +253,80 @@ bonobo_gtk_widget_from_x11_id (guint32 xid)
 }
 
 static void
-impl_Bonobo_Control_set_window (PortableServer_Servant servant,
-				Bonobo_Control_windowid id,
-				CORBA_Environment *ev)
+impl_Bonobo_Control_set_window (PortableServer_Servant   servant,
+				Bonobo_Control_windowid  id,
+				CORBA_Environment       *ev)
 {
-	guint32 x11_id;
-	GtkWidget *local_socket;
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
+	GtkWidget     *local_socket;
+	guint32        x11_id;
+
+	g_return_if_fail (control->priv->widget != NULL);
 
 	x11_id = window_id_demangle (id);
 
-	local_socket = bonobo_gtk_widget_from_x11_id(x11_id);
+	/*
+	 * Check to see if this XID is local to the application.  In
+	 * that case, we bypass the GtkPlug/GtkSocket mechanism and
+	 * embed the control directly into the widget hierarchy.  This
+	 * avoids a lot of the problems that Plug/Socket give us.
+	 */
+	local_socket = bonobo_gtk_widget_from_x11_id (x11_id);
 
-	if (local_socket) {
+	if (! local_socket) {
+		GtkWidget *old_plug;
+
+
+		old_plug            = control->priv->plug;
+
+		/* Create the new plug */
+		control->priv->plug = gtk_plug_new (x11_id);
+		gtk_signal_connect (GTK_OBJECT (control->priv->plug), "destroy_event",
+				    GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_event_cb), control);
+		gtk_signal_connect (GTK_OBJECT (control->priv->plug), "destroy",
+				    GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_cb), control);
+
+		/*
+		 * Put the control widget inside the plug.  If we
+		 * already have a plug, then reparent the control into
+		 * the new plug.
+		 */
+		if (control->priv->xid_received) {
+
+			if (old_plug != NULL) {
+				gtk_object_unref (GTK_OBJECT (old_plug));
+			}
+
+			gtk_widget_reparent (control->priv->widget, control->priv->plug);
+		} else {
+ 			gtk_container_add (GTK_CONTAINER (control->priv->plug), control->priv->widget);
+		}
+
+		gtk_widget_show (control->priv->plug);
+	} else {
 		GtkWidget *socket_parent;
+
+		if (control->priv->xid_received)
+			return;
+
 		control->priv->is_local = TRUE;
+
 		socket_parent = local_socket->parent;
-		gtk_widget_hide(local_socket);
+		gtk_widget_hide (local_socket);
 
 		gtk_box_pack_end (GTK_BOX (socket_parent),
 				  control->priv->widget,
 				  TRUE, TRUE, 0);
-	} else {
-		control->priv->plug = gtk_plug_new (x11_id);
-		control->priv->plug_destroy_id = gtk_signal_connect (
-		        GTK_OBJECT (control->priv->plug), "destroy_event",
-		        GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_cb), control);
-		gtk_container_add (GTK_CONTAINER (control->priv->plug), control->priv->widget);
-		gtk_widget_show_all (control->priv->plug);
 	}
+
+	control->priv->xid_received = TRUE;
 }
 
 static void
-impl_Bonobo_Control_size_allocate (PortableServer_Servant servant,
-				   const CORBA_short width,
-				   const CORBA_short height,
-				   CORBA_Environment *ev)
+impl_Bonobo_Control_size_allocate (PortableServer_Servant  servant,
+				   const CORBA_short       width,
+				   const CORBA_short       height,
+				   CORBA_Environment      *ev)
 {
 	/*
 	 * Nothing.
@@ -229,19 +338,58 @@ impl_Bonobo_Control_size_allocate (PortableServer_Servant servant,
 }
 
 static void
-impl_Bonobo_Control_size_request (PortableServer_Servant servant,
-				  CORBA_short *desired_width,
-				  CORBA_short *desired_height,
-				  CORBA_Environment *ev)
+impl_Bonobo_Control_size_request (PortableServer_Servant  servant,
+				  CORBA_short            *desired_width,
+				  CORBA_short            *desired_height,
+				  CORBA_Environment      *ev)
 {
 	/*
 	 * Nothing.
 	 */
 }
 
+static GtkStateType
+bonobo_control_gtk_state_from_corba (const Bonobo_Control_State state)
+{
+	switch (state) {
+	case Bonobo_Control_StateNormal:
+		return GTK_STATE_NORMAL;
+
+	case Bonobo_Control_StateActive:
+		return GTK_STATE_ACTIVE;
+
+	case Bonobo_Control_StatePrelight:
+		return GTK_STATE_PRELIGHT;
+
+	case Bonobo_Control_StateSelected:
+		return GTK_STATE_SELECTED;
+
+	case Bonobo_Control_StateInsensitive:
+		return GTK_STATE_INSENSITIVE;
+
+	default:
+		g_warning ("bonobo_control_gtk_state_from_corba: Unknown state: %d\n", (gint) state);
+		return GTK_STATE_NORMAL;
+	}
+}
+
+static void
+impl_Bonobo_Control_set_state (PortableServer_Servant      servant,
+			       const Bonobo_Control_State  state,
+			       CORBA_Environment          *ev)
+{
+	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
+
+	g_return_if_fail (control->priv->widget != NULL);
+
+	gtk_widget_set_state (
+		control->priv->widget,
+		bonobo_control_gtk_state_from_corba (state));
+}
+
 static Bonobo_PropertyBag
-impl_Bonobo_Control_get_property_bag (PortableServer_Servant servant,
-				      CORBA_Environment *ev)
+impl_Bonobo_Control_get_property_bag (PortableServer_Servant  servant,
+				      CORBA_Environment      *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
 	Bonobo_PropertyBag corba_propbag;
@@ -311,6 +459,8 @@ bonobo_control_construct (BonoboControl  *control,
 	control->priv->widget = GTK_WIDGET (widget);
 	gtk_object_ref (GTK_OBJECT (widget));
 
+	control->priv->uih = bonobo_ui_handler_new ();
+
 	return control;
 }
 
@@ -344,6 +494,222 @@ bonobo_control_new (GtkWidget *widget)
 	return bonobo_control_construct (control, corba_control, widget);
 }
 
+/**
+ * bonobo_control_set_automerge:
+ * @control: A #BonoboControl.
+ * @automerge: Whether or not menus and toolbars should be
+ * automatically merged when the control is activated.
+ *
+ * Sets whether or not the control handles menu/toolbar merging
+ * automatically.  If automerge is on, the control will automatically
+ * create its menus and toolbars when it is activated and destroy them
+ * when it is deactivated.  The menus and toolbars which it merges are
+ * specified with bonobo_control_set_menus() and
+ * bonobo_control_set_toolbars().
+ */
+void
+bonobo_control_set_automerge (BonoboControl *control,
+			      gboolean       automerge)
+{
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+
+	control->priv->automerge = automerge;
+}
+
+/**
+ * bonobo_control_get_automerge:
+ * @control: A #BonoboControl.
+ *
+ * Returns: Whether or not the control is set to automerge its
+ * menus/toolbars.  See bonobo_control_set_automerge().
+ */
+gboolean
+bonobo_control_get_automerge (BonoboControl *control)
+{
+	g_return_val_if_fail (control != NULL,             FALSE);
+	g_return_val_if_fail (BONOBO_IS_CONTROL (control), FALSE);
+
+	return control->priv->automerge;
+}
+
+/**
+ * bonobo_control_set_menus_with_data:
+ * @control: A #BonoboControl.
+ * @menus: A list of #GnomeUIInfo structures.
+ * @closure: The closure which should be used for all the callbacks.
+ *
+ * Sets the menus which should automatically merged into @control's
+ * container when @control is activated.  See
+ * bonobo_control_set_menus(), bonobo_control_get_menus() and
+ * bonobo_control_set_toolbars().
+ */
+void
+bonobo_control_set_menus_with_data (BonoboControl  *control,
+				    GnomeUIInfo    *menus,
+				    gpointer        closure)
+{
+	BonoboUIHandlerMenuItem *list;
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+
+	if (control->priv->menus != NULL) {
+		bonobo_ui_handler_menu_free_list (control->priv->menus);
+	}
+
+	list = bonobo_ui_handler_menu_parse_uiinfo_list_with_data (menus, closure);
+	control->priv->menus = list;
+
+	/*
+	 * This is going to look sloppy, but it's necessary for
+	 * correctness.
+	 */
+	if (control->priv->automerge && control->priv->active) {
+		bonobo_control_auto_unmerge (control);
+		bonobo_control_auto_merge (control);
+	}
+}
+
+/**
+ * bonobo_control_set_menus:
+ * @control: A #BonoboControl.
+ * @menus: A list of #GnomeUIInfo structures.
+ *
+ * Sets the menus which should automatically merged into @control's
+ * container when @control is activated.  See
+ * bonobo_control_set_menus_with_data(), bonobo_control_get_menus()
+ * and bonobo_control_set_toolbars().
+ */
+void
+bonobo_control_set_menus (BonoboControl  *control,
+			  GnomeUIInfo    *menus)
+{
+	BonoboUIHandlerMenuItem *list;
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+
+	if (control->priv->menus != NULL) {
+		bonobo_ui_handler_menu_free_list (control->priv->menus);
+	}
+
+	list = bonobo_ui_handler_menu_parse_uiinfo_list (menus);
+	control->priv->menus = list;
+
+	/*
+	 * This is going to look sloppy, but it's necessary for
+	 * correctness.
+	 */
+	if (control->priv->automerge && control->priv->active) {
+		bonobo_control_auto_unmerge (control);
+		bonobo_control_auto_merge (control);
+	}
+}
+
+/**
+ * bonobo_control_get_menus:
+ * @control: A #BonoboControl.
+ *
+ * Returns: The menu tree which has been associated to the control
+ * using bonobo_control_set_menus().
+ */
+BonoboUIHandlerMenuItem *
+bonobo_control_get_menus (BonoboControl *control)
+{
+	g_return_val_if_fail (control != NULL,             NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
+
+	return control->priv->menus;
+}
+
+/**
+ * bonobo_control_set_toolbars_with_data:
+ * @control: A #BonoboControl.
+ * @toolbars: A list of #GnomeUIInfo structures.
+ * @closure: The closure which should be used for all the callbacks.
+ *
+ * Sets the toolbars which should automatically merged into @control's
+ * container when @control is activated.  See
+ * bonobo_control_set_toolbars(), bonobo_control_get_toolbars() and
+ * bonobo_control_set_menus().
+ */
+void
+bonobo_control_set_toolbars_with_data (BonoboControl  *control,
+				       GnomeUIInfo    *toolbars,
+				       gpointer        closure)
+{
+	BonoboUIHandlerToolbarItem *list;
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+
+	if (control->priv->toolbars != NULL) {
+		bonobo_ui_handler_toolbar_free_list (control->priv->toolbars);
+	}
+
+	list = bonobo_ui_handler_toolbar_parse_uiinfo_list_with_data (toolbars, closure);
+	control->priv->toolbars = list;
+
+	/*
+	 * This is a real fucking mess.
+	 */
+	if (control->priv->automerge && control->priv->active) {
+		bonobo_control_auto_unmerge (control);
+		bonobo_control_auto_merge (control);
+	}
+}
+
+/**
+ * bonobo_control_set_toolbars:
+ * @control: A #BonoboControl.
+ * @toolbars: A list of #GnomeUIInfo structures.
+ *
+ * Sets the toolbars which should automatically merged into @control's
+ * container when @control is activated.  See
+ * bonobo_control_set_toolbars_with_data() and bonobo_control_set_menus().
+ */
+void
+bonobo_control_set_toolbars (BonoboControl *control,
+			     GnomeUIInfo   *toolbars)
+{
+	BonoboUIHandlerToolbarItem *list;
+
+	g_return_if_fail (control != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+
+	if (control->priv->toolbars != NULL) {
+		bonobo_ui_handler_toolbar_free_list (control->priv->toolbars);
+	}
+
+	list = bonobo_ui_handler_toolbar_parse_uiinfo_list (toolbars);
+	control->priv->toolbars = list;
+
+	/*
+	 * Sigh.
+	 */
+	if (control->priv->automerge && control->priv->active) {
+		bonobo_control_auto_unmerge (control);
+		bonobo_control_auto_merge (control);
+	}
+}
+
+/**
+ * bonobo_control_get_toolbars:
+ * @control: A #BonoboControl.
+ *
+ * Returns: The toolbar tree which has been associated to the control
+ * using bonobo_control_set_toolbars().
+ */
+BonoboUIHandlerToolbarItem *
+bonobo_control_get_toolbars (BonoboControl *control)
+{
+	g_return_val_if_fail (control != NULL,             NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
+
+	return control->priv->toolbars;
+}
+
 static void
 bonobo_control_destroy (GtkObject *object)
 {
@@ -375,7 +741,6 @@ bonobo_control_destroy (GtkObject *object)
 	 */
 
 	if (control->priv->plug) {
-		gtk_signal_disconnect (GTK_OBJECT (control->priv->plug), control->priv->plug_destroy_id);
 		gtk_object_destroy (GTK_OBJECT (control->priv->plug));
 		control->priv->plug = NULL;
 	}
@@ -401,6 +766,7 @@ bonobo_control_get_epv (void)
 	epv->activate            = impl_Bonobo_Control_activate;
 	epv->size_allocate       = impl_Bonobo_Control_size_allocate;
 	epv->set_window          = impl_Bonobo_Control_set_window;
+	epv->set_state           = impl_Bonobo_Control_set_state;
 	epv->set_frame           = impl_Bonobo_Control_set_frame;
 	epv->size_request        = impl_Bonobo_Control_size_request;
 	epv->get_property_bag    = impl_Bonobo_Control_get_property_bag;
@@ -468,30 +834,11 @@ bonobo_control_get_control_frame (BonoboControl *control)
 }
 
 /**
- * bonobo_view_set_ui_handler:
- * @view: A BonoboView object.
- * @uih: A BonoboUIHandler object.
- *
- * Sets the BonoboUIHandler for @view to @uih.  This provides a
- * convenient way for a component to store the BonoboUIHandler which it
- * will use to merge menus and toolbars.
- */
-void
-bonobo_control_set_ui_handler (BonoboControl *control, BonoboUIHandler *uih)
-{
-	g_return_if_fail (control != NULL);
-	g_return_if_fail (BONOBO_IS_CONTROL (control));
-
-	control->priv->uih = uih;
-}
-
-/**
  * bonobo_control_get_ui_handler:
  * @control: A BonoboControl object for which a BonoboUIHandler has been
  * created and set.
  *
- * Returns: The BonoboUIHandler which was associated with @control using
- * bonobo_control_set_ui_handler().
+ * Returns: The #BonoboUIHandler which @control is using.
  */
 BonoboUIHandler *
 bonobo_control_get_ui_handler (BonoboControl *control)

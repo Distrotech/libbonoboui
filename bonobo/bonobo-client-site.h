@@ -50,29 +50,29 @@ typedef struct {
 	void (*save_object)  (BonoboClientSite *, Bonobo_Persist_Status *status);
 } BonoboClientSiteClass;
 
-GtkType            bonobo_client_site_get_type		(void);
-BonoboClientSite   *bonobo_client_site_new		(BonoboContainer *container);
-BonoboClientSite   *bonobo_client_site_construct		(BonoboClientSite  *client_site,
-							 Bonobo_ClientSite corba_client_site,
-							 BonoboContainer   *container);
-
-gboolean           bonobo_client_site_bind_embeddable	(BonoboClientSite *client_site,
-							 BonoboObjectClient *object);
-BonoboObjectClient *bonobo_client_site_get_embeddable	(BonoboClientSite *client_site);
+GtkType                     bonobo_client_site_get_type         (void);
+BonoboClientSite           *bonobo_client_site_new              (BonoboContainer    *container);
+BonoboClientSite           *bonobo_client_site_construct        (BonoboClientSite   *client_site,
+								 Bonobo_ClientSite   corba_client_site,
+								 BonoboContainer    *container);
+gboolean                    bonobo_client_site_bind_embeddable  (BonoboClientSite   *client_site,
+								 BonoboObjectClient *object);
+BonoboObjectClient         *bonobo_client_site_get_embeddable   (BonoboClientSite   *client_site);
 
 /*
  * Proxy/Utility functions.
  */
-BonoboViewFrame	  *bonobo_client_site_new_view_full	(BonoboClientSite *client_site,
-							 gboolean visible_cover,
-							 gboolean active_view);
-BonoboViewFrame    *bonobo_client_site_new_view		(BonoboClientSite *client_site);
-GnomeCanvasItem   *bonobo_client_site_new_item           (BonoboClientSite *client_site,
-							 GnomeCanvasGroup *group);
-GList		  *bonobo_client_site_get_verbs		(BonoboClientSite *client_site);
-void		   bonobo_client_site_free_verbs		(GList *verb_list);
-
-POA_Bonobo_ClientSite__epv *bonobo_client_site_get_epv	(void);
+BonoboViewFrame            *bonobo_client_site_new_view_full    (BonoboClientSite   *client_site,
+								 Bonobo_UIHandler    uih,
+								 gboolean            visible_cover,
+								 gboolean            active_view);
+BonoboViewFrame            *bonobo_client_site_new_view         (BonoboClientSite   *client_site,
+								 Bonobo_UIHandler    uih);
+GnomeCanvasItem            *bonobo_client_site_new_item         (BonoboClientSite   *client_site,
+								 GnomeCanvasGroup   *group);
+GList                      *bonobo_client_site_get_verbs        (BonoboClientSite   *client_site);
+void                        bonobo_client_site_free_verbs       (GList              *verb_list);
+POA_Bonobo_ClientSite__epv *bonobo_client_site_get_epv          (void);
 
 extern POA_Bonobo_ClientSite__vepv bonobo_client_site_vepv;
 

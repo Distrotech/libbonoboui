@@ -110,6 +110,7 @@ bonobo_view_frame_key_press_cb (GtkWidget *wrapper,
  * @corba_view_frame: A CORBA object for the Bonobo_ViewFrame interface.
  * @wrapper: A BonoboWrapper widget which the new ViewFrame will use to cover its enclosed View.
  * @client_site: the client site to which the newly-created ViewFrame will belong.
+ * @uih: 
  *
  * Initializes @view_frame with the parameters.
  *
@@ -117,9 +118,10 @@ bonobo_view_frame_key_press_cb (GtkWidget *wrapper,
  * Bonobo::ViewFrame CORBA service.
  */
 BonoboViewFrame *
-bonobo_view_frame_construct (BonoboViewFrame *view_frame,
-			    Bonobo_ViewFrame corba_view_frame,
-			    BonoboClientSite *client_site)
+bonobo_view_frame_construct (BonoboViewFrame  *view_frame,
+			     Bonobo_ViewFrame  corba_view_frame,
+			     BonoboClientSite *client_site,
+			     Bonobo_UIHandler  uih)
 {
 	GtkWidget *wrapper;
 
@@ -128,7 +130,7 @@ bonobo_view_frame_construct (BonoboViewFrame *view_frame,
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 
-	bonobo_control_frame_construct (BONOBO_CONTROL_FRAME (view_frame), corba_view_frame);
+	bonobo_control_frame_construct (BONOBO_CONTROL_FRAME (view_frame), corba_view_frame, uih);
 
 	view_frame->priv->client_site = client_site;
 	
@@ -163,12 +165,14 @@ bonobo_view_frame_construct (BonoboViewFrame *view_frame,
 /**
  * bonobo_view_frame_new:
  * @client_site: the client site to which the newly-created ViewFrame will belong.
+ * @uih: A CORBA object for the container's UIHandler server. 
  *
  * Returns: BonoboViewFrame object that implements the
  * Bonobo::ViewFrame CORBA service.
  */
 BonoboViewFrame *
-bonobo_view_frame_new (BonoboClientSite *client_site)
+bonobo_view_frame_new (BonoboClientSite *client_site,
+		       Bonobo_UIHandler  uih)
 {
 	Bonobo_ViewFrame corba_view_frame;
 	BonoboViewFrame *view_frame;
@@ -184,7 +188,7 @@ bonobo_view_frame_new (BonoboClientSite *client_site)
 		return NULL;
 	}
 
-	return bonobo_view_frame_construct (view_frame, corba_view_frame, client_site);
+	return bonobo_view_frame_construct (view_frame, corba_view_frame, client_site, uih);
 }
 
 static void
@@ -369,6 +373,22 @@ bonobo_view_frame_set_covered (BonoboViewFrame *view_frame, gboolean covered)
 
 
 /**
+ * bonobo_view_frame_get_ui_handler:
+ * @view_frame: A BonoboViewFrame object.
+ *
+ * Returns: The BonoboUIHandler associated with this ViewFrame.  See
+ * also bonobo_view_frame_set_ui_handler().
+ */
+Bonobo_UIHandler
+bonobo_view_frame_get_ui_handler (BonoboViewFrame *view_frame)
+{
+	g_return_val_if_fail (view_frame != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
+
+	return bonobo_control_frame_get_ui_handler (BONOBO_CONTROL_FRAME (view_frame));
+}
+
+/**
  * bonobo_view_frame_view_activate:
  * @view_frame: The BonoboViewFrame object whose view should be
  * activated.
@@ -448,43 +468,6 @@ bonobo_view_frame_get_wrapper (BonoboViewFrame *view_frame)
 	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
 
 	return GTK_WIDGET (view_frame->priv->wrapper);
-}
-
-/**
- * bonobo_view_frame_set_ui_handler:
- * @view_frame: A BonoboViewFrame object.
- * @uih: A BonoboUIHandler object to be associated with this ViewFrame.
- *
- * Sets the BonoboUIHandler object for this ViewFrame.  When the
- * ViewFrame's View requests its container's UIHandler interface, the
- * ViewFrame will pass it the UIHandler specified here.  See also
- * bonobo_view_frame_get_ui_handler().
- */
-void
-bonobo_view_frame_set_ui_handler (BonoboViewFrame *view_frame, BonoboUIHandler *uih)
-{
-	g_return_if_fail (view_frame != NULL);
-	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
-	g_return_if_fail (uih != NULL);
-	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
-
-	bonobo_control_frame_set_ui_handler (BONOBO_CONTROL_FRAME (view_frame), uih);
-}
-
-/**
- * bonobo_view_frame_get_ui_handler:
- * @view_frame: A BonoboViewFrame object.
- *
- * Returns: The BonoboUIHandler associated with this ViewFrame.  See
- * also bonobo_view_frame_set_ui_handler().
- */
-BonoboUIHandler *
-bonobo_view_frame_get_ui_handler (BonoboViewFrame *view_frame)
-{
-	g_return_val_if_fail (view_frame != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_VIEW_FRAME (view_frame), NULL);
-
-	return bonobo_control_frame_get_ui_handler (BONOBO_CONTROL_FRAME (view_frame));
 }
 
 /**

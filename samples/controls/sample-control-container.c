@@ -111,75 +111,50 @@ populate_property_list (GtkWidget *bw, GtkCList *clist)
 }
 
 static GtkWidget *
-table_create (GtkWidget *control)
+create_proplist (GtkWidget *bw)
 {
 	gchar *clist_titles[] = {"Property Name", "Value"};
-	GtkWidget *table;
-	GtkWidget *label;
 	GtkWidget *clist;
-	int i, j;
-
-	table = gtk_table_new (3, 3, FALSE);
-
-	/* Put some dead space around the sides. */
-	for (i = 0; i < 3; i ++)
-		for (j = 0; j < 2; j ++) {
-
-			if (i == 1 && j == 1)
-				continue;
-
-			label = gtk_label_new ("Dead space");
-			gtk_widget_set_usize (label, 100, 100);
-			gtk_table_attach (GTK_TABLE (table), label,
-					  i, i + 1,
-					  j, j + 1,
-					  0, 0,
-					  0, 0);
-		}
-
-	/* Put the control in the center. */
-	gtk_widget_show (control);
-	gtk_table_attach (GTK_TABLE (table), control,
-			  1, 2, 1, 2,
-			  0, 0,
-			  0, 0);
 
 	/* Put the property CList on the bottom. */
 	clist = gtk_clist_new_with_titles (2, clist_titles);
 	gtk_signal_connect (GTK_OBJECT (clist), "button_press_event",
-		GTK_SIGNAL_FUNC (edit_property), control);
+		GTK_SIGNAL_FUNC (edit_property), bw);
  
-	gtk_table_attach (GTK_TABLE (table), clist,
-			  0, 3, 2, 3,
-			  GTK_EXPAND | GTK_FILL, 
-			  GTK_EXPAND | GTK_FILL, 
-			  0, 0);
+	populate_property_list (bw, GTK_CLIST (clist));
 
-	populate_property_list (control, GTK_CLIST (clist));
-
-	control = bonobo_widget_new_control ("control:calculator");
-	gtk_widget_show (control);
-	gtk_table_attach (GTK_TABLE (table), control,
-			  0, 1, 0, 1,
-			  0, 0,
-			  0, 0);
-
-	return table;
+	return clist;
 }
 
 static guint
 container_create (void)
 {
-	GtkWidget *app;
-	GtkWidget *control;
+	GtkWidget       *app;
+	GtkWidget       *control;
+	GtkWidget       *proplist;
+	GtkWidget       *box;
+	BonoboUIHandler *uih;
 
 	app = gnome_app_new ("sample-control-container",
 			     "Sample Bonobo Control Container");
 	gtk_window_set_default_size (GTK_WINDOW (app), 500, 440);
 	gtk_window_set_policy (GTK_WINDOW (app), TRUE, TRUE, FALSE);
 
-	control = bonobo_widget_new_control ("control:clock");
-	gnome_app_set_contents (GNOME_APP (app), table_create (control));
+	uih = bonobo_ui_handler_new ();
+
+	bonobo_ui_handler_set_app (uih, GNOME_APP (app));
+	bonobo_ui_handler_create_menubar (uih);
+
+	control = bonobo_widget_new_control (
+		"control:calculator",
+		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
+
+	proplist = create_proplist (control);
+
+	box = gtk_vbox_new (FALSE, 0);
+	gnome_app_set_contents (GNOME_APP (app), box);
+	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (box), proplist, TRUE, TRUE, 0);
 
 	gtk_widget_show_all (app);
 

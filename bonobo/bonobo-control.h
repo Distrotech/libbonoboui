@@ -39,27 +39,44 @@ struct _BonoboControlClass {
 	void (*undo_last_operation) (BonoboControl *control);
 };
 
-GtkType                  bonobo_control_get_type                (void);
-BonoboControl           *bonobo_control_construct               (BonoboControl       *control,
-								 Bonobo_Control       corba_control,
-								 GtkWidget           *widget);
-Bonobo_Control           bonobo_control_corba_object_create     (BonoboObject        *object);
-BonoboControl           *bonobo_control_new                     (GtkWidget           *widget);
-void                     bonobo_control_set_control_frame       (BonoboControl       *control,
-								 Bonobo_ControlFrame  control_frame);
-Bonobo_ControlFrame      bonobo_control_get_control_frame       (BonoboControl       *control);
-void                     bonobo_control_set_ui_handler          (BonoboControl       *control,
-								 BonoboUIHandler     *uih);
-BonoboUIHandler         *bonobo_control_get_ui_handler          (BonoboControl       *control);
-void                     bonobo_control_set_property_bag        (BonoboControl       *control,
-								 BonoboPropertyBag   *pb);
-BonoboPropertyBag       *bonobo_control_get_property_bag        (BonoboControl       *control);
-Bonobo_UIHandler         bonobo_control_get_remote_ui_handler   (BonoboControl       *control);
-BonoboPropertyBagClient *bonobo_control_get_ambient_properties  (BonoboControl       *control);
-void                     bonobo_control_activate_notify         (BonoboControl       *control,
-								 gboolean             activated);
-Bonobo_Control_windowid  bonobo_control_windowid_from_x11       (guint32              x11_id);
-POA_Bonobo_Control__epv *bonobo_control_get_epv                 (void);
+/* The main API */
+BonoboControl              *bonobo_control_new                     (GtkWidget     *widget);
+void                        bonobo_control_set_automerge           (BonoboControl *control,
+								    gboolean       automerge);
+gboolean                    bonobo_control_get_automerge           (BonoboControl *control);
+void                        bonobo_control_set_menus               (BonoboControl *control,
+								    GnomeUIInfo   *menus);
+void                        bonobo_control_set_menus_with_data     (BonoboControl *control,
+								    GnomeUIInfo   *menus,
+								    gpointer       closure);
+BonoboUIHandlerMenuItem    *bonobo_control_get_menus               (BonoboControl *control);
+void                        bonobo_control_set_toolbars            (BonoboControl *control,
+								    GnomeUIInfo   *toolbars);
+void                        bonobo_control_set_toolbars_with_data  (BonoboControl *control,
+								    GnomeUIInfo   *toolbars,
+								    gpointer       closure);
+BonoboUIHandlerToolbarItem *bonobo_control_get_toolbars            (BonoboControl *control);
+
+
+/* "Internal" stuff */
+GtkType                     bonobo_control_get_type                (void);
+BonoboControl              *bonobo_control_construct               (BonoboControl       *control,
+								    Bonobo_Control       corba_control,
+								    GtkWidget           *widget);
+Bonobo_Control              bonobo_control_corba_object_create     (BonoboObject        *object);
+void                        bonobo_control_set_control_frame       (BonoboControl       *control,
+								    Bonobo_ControlFrame  control_frame);
+Bonobo_ControlFrame         bonobo_control_get_control_frame       (BonoboControl       *control);
+BonoboUIHandler            *bonobo_control_get_ui_handler          (BonoboControl       *control);
+void                        bonobo_control_set_property_bag        (BonoboControl       *control,
+								    BonoboPropertyBag   *pb);
+BonoboPropertyBag          *bonobo_control_get_property_bag        (BonoboControl       *control);
+Bonobo_UIHandler            bonobo_control_get_remote_ui_handler   (BonoboControl       *control);
+BonoboPropertyBagClient    *bonobo_control_get_ambient_properties  (BonoboControl       *control);
+void                        bonobo_control_activate_notify         (BonoboControl       *control,
+								    gboolean             activated);
+Bonobo_Control_windowid     bonobo_control_windowid_from_x11       (guint32              x11_id);
+POA_Bonobo_Control__epv    *bonobo_control_get_epv                 (void);
 
 /* CORBA default vector methods we provide */
 extern POA_Bonobo_Control__epv bonobo_control_epv;

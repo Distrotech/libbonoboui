@@ -225,7 +225,7 @@ init_view_corba_class (void)
 {
 	bonobo_view_vepv.Bonobo_Unknown_epv = bonobo_object_get_epv ();
 	bonobo_view_vepv.Bonobo_Control_epv = bonobo_control_get_epv ();
-	bonobo_view_vepv.Bonobo_View_epv	  = bonobo_view_get_epv ();
+	bonobo_view_vepv.Bonobo_View_epv    = bonobo_view_get_epv ();
 }
 
 static void 
@@ -383,36 +383,16 @@ bonobo_view_get_view_frame (BonoboView *view)
 }
 
 /**
- * bonobo_view_set_ui_handler:
- * @view: A BonoboView object.
- * @uih: A BonoboUIHandler object.
- *
- * Sets the BonoboUIHandler for @view to @uih.  This provides a
- * convenient way for a component to store the BonoboUIHandler which it
- * will use to merge menus and toolbars.
- */
-void
-bonobo_view_set_ui_handler (BonoboView *view, BonoboUIHandler *uih)
-{
-	g_return_if_fail (view != NULL);
-	g_return_if_fail (BONOBO_IS_VIEW (view));
-
-	bonobo_control_set_ui_handler (BONOBO_CONTROL (view), uih);
-}
-
-/**
  * bonobo_view_get_ui_handler:
  * @view: A BonoboView object for which a BonoboUIHandler has been created and set.
  *
- * Returns: The BonoboUIHandler which was associated with @view using
- * bonobo_view_set_ui_handler().
+ * Returns: The BonoboUIHandler which was associated with @view when it was created.
  */
-BonoboUIHandler *
+Bonobo_UIHandler
 bonobo_view_get_ui_handler (BonoboView *view)
 {
 	g_return_val_if_fail (view != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_VIEW (view), NULL);
-
 
 	return bonobo_control_get_ui_handler (BONOBO_CONTROL (view));
 }

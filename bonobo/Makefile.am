@@ -82,6 +82,9 @@ libbonobo_la_SOURCES =			\
 	bonobo-object-directory.c	\
 	$(OBJECT_DIRECTORY_IMPL)	\
 	bonobo-ui-handler.c		\
+	bonobo-uih-menu.c		\
+	bonobo-uih-toolbar.c		\
+	bonobo-uih-dock.c		\
 	bonobo-canvas-item.c		\
 	bonobo-selector.c		\
 	bonobo-widget.c			\

@@ -77,7 +77,7 @@ struct _BonoboWidgetPrivate {
 static BonoboWrapperClass *bonobo_widget_parent_class;
 
 static BonoboObjectClient *
-bonobo_widget_launch_component (char *object_desc)
+bonobo_widget_launch_component (const char *object_desc)
 {
 	BonoboObjectClient *server;
 
@@ -93,17 +93,20 @@ bonobo_widget_launch_component (char *object_desc)
  *
  */
 static BonoboWidget *
-bonobo_widget_construct_control_from_objref (BonoboWidget *bw,
-						   Bonobo_Control control)
+bonobo_widget_construct_control_from_objref (BonoboWidget     *bw,
+					     Bonobo_Control    control,
+					     Bonobo_UIHandler  uih)
 {
 	GtkWidget    *control_frame_widget;
 
 	/*
 	 * Create a local ControlFrame for it.
 	 */
-	bw->priv->control_frame = bonobo_control_frame_new ();
-	bonobo_control_frame_bind_to_control (bw->priv->control_frame,
-					     control);
+	bw->priv->control_frame = bonobo_control_frame_new (uih);
+
+	bonobo_control_frame_bind_to_control (bw->priv->control_frame, control);
+
+	bonobo_control_frame_set_autoactivate (bw->priv->control_frame, TRUE);
 
 	/*
 	 * Grab the actual widget which visually contains the remote
@@ -122,8 +125,9 @@ bonobo_widget_construct_control_from_objref (BonoboWidget *bw,
 }
 
 static BonoboWidget *
-bonobo_widget_construct_control (BonoboWidget *bw,
-				       char *goad_id)
+bonobo_widget_construct_control (BonoboWidget     *bw,
+				 const char       *goad_id,
+				 Bonobo_UIHandler  uih)
 {
 	Bonobo_Control control;
 
@@ -138,11 +142,12 @@ bonobo_widget_construct_control (BonoboWidget *bw,
 
 	control = bonobo_object_corba_objref (BONOBO_OBJECT (bw->priv->server));
 
-	return bonobo_widget_construct_control_from_objref (bw, control);
+	return bonobo_widget_construct_control_from_objref (bw, control, uih);
 }
 
 GtkWidget *
-bonobo_widget_new_control_from_objref (Bonobo_Control control)
+bonobo_widget_new_control_from_objref (Bonobo_Control   control,
+				       Bonobo_UIHandler uih)
 {
 	BonoboWidget *bw;
 
@@ -150,7 +155,7 @@ bonobo_widget_new_control_from_objref (Bonobo_Control control)
 
 	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
 
-	bw = bonobo_widget_construct_control_from_objref (bw, control);
+	bw = bonobo_widget_construct_control_from_objref (bw, control, uih);
 
 	if (bw == NULL)
 		return NULL;
@@ -159,7 +164,8 @@ bonobo_widget_new_control_from_objref (Bonobo_Control control)
 }
 
 GtkWidget *
-bonobo_widget_new_control (char *goad_id)
+bonobo_widget_new_control (const char       *goad_id,
+			   Bonobo_UIHandler  uih)
 {
 	BonoboWidget *bw;
 
@@ -167,7 +173,7 @@ bonobo_widget_new_control (char *goad_id)
 
 	bw = gtk_type_new (BONOBO_WIDGET_TYPE);
 
-	bw = bonobo_widget_construct_control (bw, goad_id);
+	bw = bonobo_widget_construct_control (bw, goad_id, uih);
 
 	if (bw == NULL)
 		return NULL;
@@ -193,7 +199,9 @@ bonobo_widget_get_control_frame (BonoboWidget *bw)
  *
  */
 static void
-bonobo_widget_create_subdoc_object (BonoboWidget *bw, char *object_desc)
+bonobo_widget_create_subdoc_object (BonoboWidget     *bw,
+				    const char       *object_desc,
+				    Bonobo_UIHandler  uih)
 {
 	GtkWidget *view_widget;
 
@@ -227,7 +235,7 @@ bonobo_widget_create_subdoc_object (BonoboWidget *bw, char *object_desc)
 	/*
 	 * Now create a new view for the remote object.
 	 */
-	bw->priv->view_frame = bonobo_client_site_new_view (bw->priv->client_site);
+	bw->priv->view_frame = bonobo_client_site_new_view (bw->priv->client_site, uih);
 
 	/*
 	 * Add the view frame.
@@ -238,8 +246,8 @@ bonobo_widget_create_subdoc_object (BonoboWidget *bw, char *object_desc)
 }
 
 GtkWidget *
-bonobo_widget_new_subdoc (char *object_desc,
-				BonoboUIHandler *uih)
+bonobo_widget_new_subdoc (const char       *object_desc,
+			  Bonobo_UIHandler  uih)
 {
 	BonoboWidget *bw;
 
@@ -250,7 +258,7 @@ bonobo_widget_new_subdoc (char *object_desc,
 	if (bw == NULL)
 		return NULL;
 
-	bonobo_widget_create_subdoc_object (bw, object_desc);
+	bonobo_widget_create_subdoc_object (bw, object_desc, uih);
 
 	if (bw == NULL)
 		return NULL;
@@ -320,7 +328,7 @@ bonobo_widget_destroy (GtkObject *object)
 
 static void
 bonobo_widget_size_request (GtkWidget *widget,
-				  GtkRequisition *requisition)
+			    GtkRequisition *requisition)
 {
 	GtkBin *bin;
 
@@ -342,7 +350,7 @@ bonobo_widget_size_request (GtkWidget *widget,
 
 static void
 bonobo_widget_size_allocate (GtkWidget *widget,
-				   GtkAllocation *allocation)
+			     GtkAllocation *allocation)
 {
 	GtkBin *bin;
 	GtkAllocation child_allocation;

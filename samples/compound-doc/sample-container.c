@@ -1,7 +1,7 @@
 /*
  * sample-container.c
  *
- *  This program is a sample Bonobo container. It allows the user to select
+ * This program is a sample Bonobo container. It allows the user to select
  * an arbitrary component for inclusion, and to render an arbritary number of
  * views of that component. It also affords easy testing of PersistStream and
  * PersistFile interfaces.
@@ -208,9 +208,15 @@ component_add_view (Component *component)
 	GtkWidget *view_widget;
 
 	/*
-	 * Create the remote view and the local ViewFrame.
+	 * Create the remote view and the local ViewFrame.  This also
+	 * sets the BonoboUIHandler for this ViewFrame.  That way, the
+	 * embedded component can get access to our UIHandler server
+	 * so that it can merge menu and toolbar items when it gets
+	 * activated.
 	 */
-	view_frame = bonobo_client_site_new_view (component->client_site);
+	view_frame = bonobo_client_site_new_view (
+		component->client_site,
+		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 
 	/*
 	 * Connect to the "system_exception" signal on the
@@ -220,14 +226,6 @@ component_add_view (Component *component)
 	 */
 	gtk_signal_connect (GTK_OBJECT (view_frame), "system_exception",
 			    component_view_frame_system_exception_cb, component);
-
-	/*
-	 * Set the BonoboUIHandler for this ViewFrame.  That way, the
-	 * embedded component can get access to our UIHandler server
-	 * so that it can merge menu and toolbar items when it gets
-	 * activated.
-	 */
-	bonobo_view_frame_set_ui_handler (view_frame, component->container->uih);
 
 	/*
 	 * Embed the view frame into the application.

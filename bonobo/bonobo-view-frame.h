@@ -34,40 +34,37 @@ typedef struct {
 	void (*user_context)        (BonoboViewFrame *view_frame);
 } BonoboViewFrameClass;
 
-GtkType           bonobo_view_frame_get_type        (void);
-BonoboViewFrame   *bonobo_view_frame_construct       (BonoboViewFrame *view_frame,
-						    Bonobo_ViewFrame corba_view_frame,
-						    BonoboClientSite *client_site);
-BonoboViewFrame   *bonobo_view_frame_new             (BonoboClientSite *client_site);
-void		  bonobo_view_frame_bind_to_view	   (BonoboViewFrame *view_frame,
-						    Bonobo_View view);
-Bonobo_View	  bonobo_view_frame_get_view	   (BonoboViewFrame *view_frame);
+GtkType                    bonobo_view_frame_get_type         (void);
+BonoboViewFrame           *bonobo_view_frame_construct        (BonoboViewFrame  *view_frame,
+							       Bonobo_ViewFrame  corba_view_frame,
+							       BonoboClientSite *client_site,
+							       Bonobo_UIHandler  uih);
+BonoboViewFrame           *bonobo_view_frame_new              (BonoboClientSite *client_site,
+							       Bonobo_UIHandler  uih);
+void                       bonobo_view_frame_bind_to_view     (BonoboViewFrame  *view_frame,
+							       Bonobo_View       view);
+Bonobo_View                bonobo_view_frame_get_view         (BonoboViewFrame  *view_frame);
+BonoboClientSite          *bonobo_view_frame_get_client_site  (BonoboViewFrame  *view_frame);
+GtkWidget                 *bonobo_view_frame_get_wrapper      (BonoboViewFrame  *view_frame);
+char                      *bonobo_view_frame_popup_verbs      (BonoboViewFrame  *view_frame);
+void                       bonobo_view_frame_set_covered      (BonoboViewFrame  *view_frame,
+							       gboolean          covered);
 
-BonoboClientSite  *bonobo_view_frame_get_client_site (BonoboViewFrame *view_frame);
+Bonobo_UIHandler           bonobo_view_frame_get_ui_handler   (BonoboViewFrame *view_frame);
 
-GtkWidget        *bonobo_view_frame_get_wrapper     (BonoboViewFrame *view_frame);
-
-char		 *bonobo_view_frame_popup_verbs	   (BonoboViewFrame *view_frame);
-
-void		  bonobo_view_frame_set_covered     (BonoboViewFrame *view_frame,
-						    gboolean covered);
-
-void              bonobo_view_frame_set_ui_handler  (BonoboViewFrame *view_frame, BonoboUIHandler *uih);
-BonoboUIHandler   *bonobo_view_frame_get_ui_handler  (BonoboViewFrame *view_frame);
 /*
  * A BonoboViewFrame acts as a proxy for the remote BonoboView object to
  * which it is bound.  These functions act as wrappers which a
  * container can use to communicate with the BonoboView associated with
  * a given BonoboViewFrame.
  */
-void		  bonobo_view_frame_view_activate   (BonoboViewFrame *view_frame);
-void		  bonobo_view_frame_view_deactivate (BonoboViewFrame *view_frame);
-
-void		  bonobo_view_frame_view_do_verb	   (BonoboViewFrame *view_frame,
-						    const char *verb_name);
-void              bonobo_view_frame_set_zoom_factor (BonoboViewFrame *view_frame, double zoom);
-
-POA_Bonobo_ViewFrame__epv *bonobo_view_frame_get_epv (void);
+void                       bonobo_view_frame_view_activate    (BonoboViewFrame  *view_frame);
+void                       bonobo_view_frame_view_deactivate  (BonoboViewFrame  *view_frame);
+void                       bonobo_view_frame_view_do_verb     (BonoboViewFrame  *view_frame,
+							       const char       *verb_name);
+void                       bonobo_view_frame_set_zoom_factor  (BonoboViewFrame  *view_frame,
+							       double            zoom);
+POA_Bonobo_ViewFrame__epv *bonobo_view_frame_get_epv          (void);
 
 /* The entry point vectors for the server we provide */
 extern POA_Bonobo_ViewFrame__vepv bonobo_view_frame_vepv;

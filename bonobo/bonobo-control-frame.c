@@ -37,17 +37,19 @@ static BonoboObjectClass *bonobo_control_frame_parent_class;
 POA_Bonobo_ControlFrame__vepv bonobo_control_frame_vepv;
 
 struct _BonoboControlFramePrivate {
-	Bonobo_Control	  control;
-	GtkWidget        *container;
-	GtkWidget	 *socket;
-	BonoboUIHandler   *uih;
+	Bonobo_Control	   control;
+	GtkWidget         *container;
+	GtkWidget	  *socket;
+	Bonobo_UIHandler   uih;
 	BonoboPropertyBag *propbag;
+	gboolean           autoactivate;
+	gboolean           autostate;
 };
 
 static void
-impl_Bonobo_ControlFrame_activated (PortableServer_Servant servant,
-				   const CORBA_boolean state,
-				   CORBA_Environment *ev)
+impl_Bonobo_ControlFrame_activated (PortableServer_Servant  servant,
+				    const CORBA_boolean     state,
+				    CORBA_Environment      *ev)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
@@ -56,8 +58,8 @@ impl_Bonobo_ControlFrame_activated (PortableServer_Servant servant,
 }
 
 static void
-impl_Bonobo_ControlFrame_deactivate_and_undo (PortableServer_Servant servant,
-					     CORBA_Environment *ev)
+impl_Bonobo_ControlFrame_deactivate_and_undo (PortableServer_Servant  servant,
+					     CORBA_Environment       *ev)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
@@ -70,21 +72,20 @@ impl_Bonobo_ControlFrame_deactivate_and_undo (PortableServer_Servant servant,
 
 
 static Bonobo_UIHandler
-impl_Bonobo_ControlFrame_get_ui_handler (PortableServer_Servant servant,
-					CORBA_Environment *ev)
+impl_Bonobo_ControlFrame_get_ui_handler (PortableServer_Servant  servant,
+					 CORBA_Environment      *ev)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
 	if (control_frame->priv->uih == NULL)
 		return CORBA_OBJECT_NIL;
-	
-	return CORBA_Object_duplicate (
-		bonobo_object_corba_objref (BONOBO_OBJECT (control_frame->priv->uih)), ev);
+
+	return CORBA_Object_duplicate (control_frame->priv->uih, ev);
 }
 
 static Bonobo_PropertyBag
-impl_Bonobo_ControlFrame_get_ambient_properties (PortableServer_Servant servant,
-						CORBA_Environment *ev)
+impl_Bonobo_ControlFrame_get_ambient_properties (PortableServer_Servant  servant,
+						 CORBA_Environment      *ev)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 	Bonobo_PropertyBag corba_propbag;
@@ -101,8 +102,8 @@ impl_Bonobo_ControlFrame_get_ambient_properties (PortableServer_Servant servant,
 }
 
 static void
-impl_Bonobo_ControlFrame_queue_resize (PortableServer_Servant servant,
-				      CORBA_Environment *ev)
+impl_Bonobo_ControlFrame_queue_resize (PortableServer_Servant  servant,
+				       CORBA_Environment      *ev)
 {
 	/*
 	 * Nothing.
@@ -113,10 +114,10 @@ impl_Bonobo_ControlFrame_queue_resize (PortableServer_Servant servant,
 }
 
 static void
-impl_Bonobo_ControlFrame_activate_uri (PortableServer_Servant servant,
-				      const CORBA_char *uri,
-				      CORBA_boolean relative,
-				      CORBA_Environment *ev)
+impl_Bonobo_ControlFrame_activate_uri (PortableServer_Servant  servant,
+				       const CORBA_char       *uri,
+				       CORBA_boolean           relative,
+				       CORBA_Environment      *ev)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (bonobo_object_from_servant (servant));
 
@@ -146,8 +147,55 @@ create_bonobo_control_frame (BonoboObject *object)
 	return bonobo_object_activate_servant (object, servant);
 }
 
+
+static gint
+bonobo_control_frame_autoactivate_focus_in (GtkWidget     *widget,
+					    GdkEventFocus *focus,
+					    gpointer       user_data)
+{
+	BonoboControlFrame *control_frame = user_data;
+	
+	if (! control_frame->priv->autoactivate)
+		return FALSE;
+
+	bonobo_control_frame_control_activate (control_frame);
+
+	return FALSE;
+}
+
+static gint
+bonobo_control_frame_autoactivate_focus_out (GtkWidget     *widget,
+					     GdkEventFocus *focus,
+					     gpointer       user_data)
+{
+	BonoboControlFrame *control_frame = user_data;
+
+	if (! control_frame->priv->autoactivate)
+		return FALSE;
+	
+	bonobo_control_frame_control_deactivate (control_frame);
+
+	return FALSE;
+}
+
 static void
-bonobo_control_frame_set_remote_window (GtkWidget *socket, BonoboControlFrame *control_frame)
+bonobo_control_frame_socket_state_changed (GtkWidget    *socket,
+					   GtkStateType  previous_state,
+					   gpointer      user_data)
+{
+	BonoboControlFrame *control_frame = user_data;
+
+	if (! control_frame->priv->autostate)
+		return;
+
+	bonobo_control_frame_control_set_state (
+		control_frame,
+		GTK_WIDGET_STATE (control_frame->priv->socket));
+}
+
+static void
+bonobo_control_frame_set_remote_window (GtkWidget          *socket,
+					BonoboControlFrame *control_frame)
 {
 	Bonobo_Control control = bonobo_control_frame_get_control (control_frame);
 	CORBA_Environment ev;
@@ -159,6 +207,12 @@ bonobo_control_frame_set_remote_window (GtkWidget *socket, BonoboControlFrame *c
 	 */
 	if (control == CORBA_OBJECT_NIL)
 		return;
+
+	/*
+	 * Sync the server, since the XID may have been created on the
+	 * client side without communication with the X server.
+	 */
+	gdk_flush ();
 
 	/*
 	 * Otherwise, pass the window ID of our GtkSocket to the
@@ -175,8 +229,9 @@ bonobo_control_frame_set_remote_window (GtkWidget *socket, BonoboControlFrame *c
 
 /**
  * bonobo_control_frame_construct:
- * @control_frame: The BonoboControlFrame object to be initialized.
+ * @control_frame: The #BonoboControlFrame object to be initialized.
  * @corba_control_frame: A CORBA object for the Bonobo_ControlFrame interface.
+ * @uih: A CORBA object for the UIHandler for the container application.
  *
  * Initializes @control_frame with the parameters.
  *
@@ -184,13 +239,16 @@ bonobo_control_frame_set_remote_window (GtkWidget *socket, BonoboControlFrame *c
  * Bonobo::ControlFrame CORBA service.
  */
 BonoboControlFrame *
-bonobo_control_frame_construct (BonoboControlFrame *control_frame,
-			       Bonobo_ControlFrame corba_control_frame)
+bonobo_control_frame_construct (BonoboControlFrame  *control_frame,
+				Bonobo_ControlFrame  corba_control_frame,
+				Bonobo_UIHandler     uih)
 {
 	g_return_val_if_fail (control_frame != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
 	bonobo_object_construct (BONOBO_OBJECT (control_frame), corba_control_frame);
+
+	control_frame->priv->uih = uih;
 
 	/*
 	 * Now create the GtkSocket which will be used to embed
@@ -198,6 +256,28 @@ bonobo_control_frame_construct (BonoboControlFrame *control_frame,
 	 */
 	control_frame->priv->socket = gtk_socket_new ();
 	gtk_widget_show (control_frame->priv->socket);
+
+	/*
+	 * Connect to the focus events on the socket so
+	 * that we can provide the autoactivation feature.
+	 */
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
+			    "focus_in_event",
+			    GTK_SIGNAL_FUNC (bonobo_control_frame_autoactivate_focus_in),
+			    control_frame);
+
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
+			    "focus_out_event",
+			    GTK_SIGNAL_FUNC (bonobo_control_frame_autoactivate_focus_out),
+			    control_frame);
+
+	/*
+	 * Setup a handler to proxy state changes.
+	 */
+	gtk_signal_connect (GTK_OBJECT (control_frame->priv->socket),
+			    "state_changed",
+			    bonobo_control_frame_socket_state_changed,
+			    control_frame);
 
 	/*
 	 * Finally, create a box to hold the socket; this no-window
@@ -210,7 +290,7 @@ bonobo_control_frame_construct (BonoboControlFrame *control_frame,
 			  control_frame->priv->socket,
 			  TRUE, TRUE, 0);
 	gtk_widget_ref (control_frame->priv->container);
-	gtk_object_sink (GTK_OBJECT(control_frame->priv->container));
+	gtk_object_sink (GTK_OBJECT (control_frame->priv->container));
 	gtk_widget_show (control_frame->priv->container);
 
 	/*
@@ -227,12 +307,13 @@ bonobo_control_frame_construct (BonoboControlFrame *control_frame,
 
 /**
  * bonobo_control_frame_new:
+ * @uih: The #Bonobo_UIHandler for the container application.
  *
  * Returns: BonoboControlFrame object that implements the
  * Bonobo::ControlFrame CORBA service. 
  */
 BonoboControlFrame *
-bonobo_control_frame_new (void)
+bonobo_control_frame_new (Bonobo_UIHandler uih)
 {
 	Bonobo_ControlFrame corba_control_frame;
 	BonoboControlFrame *control_frame;
@@ -245,7 +326,7 @@ bonobo_control_frame_new (void)
 		return NULL;
 	}
 
-	return bonobo_control_frame_construct (control_frame, corba_control_frame);
+	return bonobo_control_frame_construct (control_frame, corba_control_frame, uih);
 }
 
 static void
@@ -360,7 +441,9 @@ bonobo_control_frame_init (BonoboObject *object)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (object);
 
-	control_frame->priv = g_new0 (BonoboControlFramePrivate, 1);
+	control_frame->priv               = g_new0 (BonoboControlFramePrivate, 1);
+	control_frame->priv->autoactivate = FALSE;
+	control_frame->priv->autostate    = TRUE;
 }
 
 /**
@@ -420,6 +503,7 @@ bonobo_control_frame_control_activate (BonoboControlFrame *control_frame)
 		bonobo_object_check_env (
 			BONOBO_OBJECT (control_frame),
 			(CORBA_Object) control_frame->priv->control, &ev);
+
 	}
 
 	CORBA_exception_free (&ev);
@@ -459,6 +543,161 @@ bonobo_control_frame_control_deactivate (BonoboControlFrame *control_frame)
 	}
 
 	CORBA_exception_free (&ev);
+}
+
+/**
+ * bonobo_control_frame_set_autoactivate:
+ * @control_frame: A BonoboControlFrame object.
+ * @autoactivate: A flag which indicates whether or not the
+ * ControlFrame should automatically perform activation on the Control
+ * to which it is bound.
+ *
+ * Modifies the autoactivate behavior of @control_frame.  If
+ * @control_frame is set to autoactivate, then it will automatically
+ * send an "activate" message to the Control to which it is bound when
+ * it gets a focus-in event, and a "deactivate" message when it gets a
+ * focus-out event.  Autoactivation is off by default.
+ */
+void
+bonobo_control_frame_set_autoactivate (BonoboControlFrame  *control_frame,
+				       gboolean             autoactivate)
+{
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
+
+	control_frame->priv->autoactivate = autoactivate;
+}
+
+
+/**
+ * bonobo_control_frame_get_autoactivate:
+ * @control_frame: A #BonoboControlFrame object.
+ *
+ * Returns: A boolean which indicates whether or not @control_frame is
+ * set to automatically activate its Control.  See
+ * bonobo_control_frame_set_autoactivate().
+ */
+gboolean
+bonobo_control_frame_get_autoactivate (BonoboControlFrame *control_frame)
+{
+	g_return_val_if_fail (control_frame != NULL, FALSE);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), FALSE);
+
+	return control_frame->priv->autoactivate;
+}
+
+static Bonobo_Control_State
+bonobo_control_frame_state_to_corba (const GtkStateType state)
+{
+	switch (state) {
+	case GTK_STATE_NORMAL:
+		return Bonobo_Control_StateNormal;
+
+	case GTK_STATE_ACTIVE:
+		return Bonobo_Control_StateActive;
+
+	case GTK_STATE_PRELIGHT:
+		return Bonobo_Control_StatePrelight;
+
+	case GTK_STATE_SELECTED:
+		return Bonobo_Control_StateSelected;
+
+	case GTK_STATE_INSENSITIVE:
+		return Bonobo_Control_StateInsensitive;
+
+	default:
+		g_warning ("bonobo_control_frame_state_to_corba: Unknown state: %d\n", (gint) state);
+		return Bonobo_Control_StateNormal;
+	}
+}
+
+/**
+ * bonobo_control_frame_control_set_state:
+ * @control_frame: A #BonoboControlFrame object which is bound to a
+ * remote #BonoboControl.
+ * @state: A #GtkStateType value, specifying the widget state to apply
+ * to the remote control.
+ *
+ * Proxies @state to the control bound to @control_frame.
+ */
+void
+bonobo_control_frame_control_set_state (BonoboControlFrame  *control_frame,
+					GtkStateType         state)
+{
+	Bonobo_Control_State  corba_state;
+	CORBA_Environment     ev;
+
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (control_frame->priv->control != CORBA_OBJECT_NIL);
+
+	corba_state = bonobo_control_frame_state_to_corba (state);
+
+	CORBA_exception_init (&ev);
+
+	Bonobo_Control_set_state (control_frame->priv->control, corba_state, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		bonobo_object_check_env (
+			BONOBO_OBJECT (control_frame),
+			control_frame->priv->control, &ev);
+	}
+
+	CORBA_exception_free (&ev);
+}
+
+/**
+ * bonobo_control_frame_set_autostate:
+ * @control_frame: A #BonoboControlFrame object.
+ * @autostate: Whether or not GtkWidget state changes should be
+ * automatically propagated down to the Control.
+ *
+ * Changes whether or not @control_frame automatically proxies
+ * state changes to its associated control.  The default mode
+ * is for the control frame to autopropagate.
+ */
+void
+bonobo_control_frame_set_autostate (BonoboControlFrame  *control_frame,
+				    gboolean             autostate)
+{
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
+
+	control_frame->priv->autostate = autostate;
+}
+
+/**
+ * bonobo_control_frame_get_autostate:
+ * @control_frame: A #BonoboControlFrame object.
+ *
+ * Returns: Whether or not this control frame will automatically
+ * proxy GtkState changes to its associated Control.
+ */
+gboolean
+bonobo_control_frame_get_autostate (BonoboControlFrame *control_frame)
+{
+	g_return_val_if_fail (control_frame != NULL,                   FALSE);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), FALSE);
+
+	return control_frame->priv->autostate;
+}
+
+
+/**
+ * bonobo_control_frame_get_ui_handler:
+ * @control_frame: A BonoboControlFrame object.
+
+ * Returns: The Bonobo_UIHandler object reference associated with this
+ * ControlFrame.  This uih is specified when the ControlFrame is
+ * created.  See bonobo_control_frame_new().
+ */
+Bonobo_UIHandler
+bonobo_control_frame_get_ui_handler (BonoboControlFrame *control_frame)
+{
+	g_return_val_if_fail (control_frame != NULL,                   CORBA_OBJECT_NIL);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), CORBA_OBJECT_NIL);
+
+	return control_frame->priv->uih;
 }
 
 /**
@@ -584,43 +823,6 @@ bonobo_control_frame_get_propbag (BonoboControlFrame  *control_frame)
 	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
 
 	return control_frame->priv->propbag;
-}
-
-/**
- * bonobo_control_frame_set_ui_handler:
- * @control_frame: A BonoboControlFrame object.
- * @uih: A BonoboUIHandler object to be associated with this ControlFrame.
- *
- * Sets the BonoboUIHandler object for this ControlFrame.  When the
- * ControlFrame's Control requests its container's UIHandler
- * interface, the ControlFrame will pass it the UIHandler specified
- * here.  See also bonobo_control_frame_get_ui_handler().
- */
-void
-bonobo_control_frame_set_ui_handler (BonoboControlFrame *control_frame, BonoboUIHandler *uih)
-{
-	g_return_if_fail (control_frame != NULL);
-	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
-	g_return_if_fail (uih != NULL);
-	g_return_if_fail (BONOBO_IS_UI_HANDLER (uih));
-
-	control_frame->priv->uih = uih;
-}
-
-/**
- * bonobo_control_frame_get_ui_handler:
- * @control_frame: A BonoboControlFrame object.
- *
- * Returns: The BonoboUIHandler associated with this COntrolFrame.  See
- * also bonobo_control_frame_set_ui_handler().
- */
-BonoboUIHandler *
-bonobo_control_frame_get_ui_handler (BonoboControlFrame *control_frame)
-{
-	g_return_val_if_fail (control_frame != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame), NULL);
-
-	return control_frame->priv->uih;
 }
 
 /**
