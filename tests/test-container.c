@@ -377,6 +377,43 @@ add_gnumeric_cmd (GtkWidget *widget, Application *app)
 	g_free (moniker_string_rep);
 }
 
+static int
+item_event_handler (GnomeCanvasItem *item, GdkEvent *event)
+{
+	static double last_x, last_y;
+	static int pressed;
+	double delta_x, delta_y;
+	
+	switch (event->type){
+	case GDK_BUTTON_PRESS:
+		pressed = 1;
+		last_x = event->button.x;
+		last_y = event->button.y;
+		printf ("Evento: %g %g\n", last_x, last_y);
+		break;
+
+	case GDK_MOTION_NOTIFY:
+		if (!pressed)
+			return FALSE;
+		
+		delta_x = last_x - event->motion.x;
+		delta_y = last_y - event->motion.y;
+		gnome_canvas_item_move (item, delta_x, delta_y);
+		printf ("Motion: %g %g\n", delta_x, delta_y);
+		last_x = event->motion.x;
+		last_y = event->motion.y;
+		break;
+
+	case GDK_BUTTON_RELEASE:
+		pressed = 0;
+		break;
+		
+	default:
+		return FALSE;
+	}
+	return TRUE;
+}
+
 static void
 add_canvas_cmd (GtkWidget *widget, Application *app)
 {
@@ -395,8 +432,10 @@ add_canvas_cmd (GtkWidget *widget, Application *app)
 	}
 	CORBA_exception_init (&ev);
 
+	/*
+	 * Setup our demostration canvas
+	 */
 	sw = gtk_scrolled_window_new (NULL, NULL);
-	
 	gtk_widget_push_visual (gdk_rgb_get_visual());
 	gtk_widget_push_colormap (gdk_rgb_get_cmap());
 	canvas = gnome_canvas_new_aa ();
@@ -405,19 +444,32 @@ add_canvas_cmd (GtkWidget *widget, Application *app)
 	gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas), 0, 0, 100, 100);
 	gtk_widget_set_usize (canvas, 100, 100);
 
+	/*
+	 * Add a background
+	 */
 	gnome_canvas_item_new (
 		GNOME_CANVAS_GROUP (gnome_canvas_root (canvas)),
 		gnome_canvas_rect_get_type (),
-		"x1", 40.0,
-		"y1", 40.0,
-		"x2", 60.0,
-		"y2", 60.0,
+		"x1", 0.0,
+		"y1", 0.0,
+		"x2", 100.0,
+		"y2", 100.0,
 		"fill_color", "red",
+		"outline_color", "blue",
+		"width_pixels", 8,
 		NULL);
+
+	/*
+	 * The remote item
+	 */
 	item = gnome_client_site_new_item (
 		GNOME_CLIENT_SITE (client_site),
 		GNOME_CANVAS_GROUP (gnome_canvas_root (GNOME_CANVAS (canvas))));
 
+	gtk_signal_connect (
+		GTK_OBJECT (item), "event",
+		GTK_SIGNAL_FUNC (item_event_handler), NULL);
+	
 	frame = gtk_frame_new ("Canvas with a remote item");
 	gtk_box_pack_start (GTK_BOX (app->box), frame, TRUE, TRUE, 0);
 	gtk_container_add (GTK_CONTAINER (frame), sw);

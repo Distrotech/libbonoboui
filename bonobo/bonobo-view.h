@@ -28,7 +28,9 @@ typedef struct _GnomeViewClass GnomeViewClass;
 #define GNOME_VIEW_VERB_FUNC(fn) ((GnomeViewVerbFunc)(fn))
 typedef void (*GnomeViewVerbFunc)(GnomeView *view, const char *verb_name, void *user_data);
 
-typedef GnomeCanvasComponent *(*GnomeViewItemCreator)(GnomeView *view, GnomeCanvas *canvas, void *user_data);
+typedef GnomeCanvasComponent *(*GnomeViewItemCreator)(GnomeView *view,
+						      GnomeCanvas *canvas,
+						      void *user_data);
 
 struct _GnomeView {
 	GnomeObject base;

@@ -142,16 +142,20 @@ plug_destroy_cb (GtkWidget *plug, GdkEventAny *event, gpointer closure)
 }
 
 static void
-make_component (GnomeView *view, gboolean aa)
+make_component (GnomeView *view, gboolean aa, GNOME_Canvas_ItemProxy item_proxy)
 {
-	if (aa)
+	if (aa){
+		gdk_rgb_init ();
 		view->priv->pseudo_canvas = gnome_canvas_new_aa ();
-	else
+	} else
 		view->priv->pseudo_canvas = gnome_canvas_new ();
 	
 	view->priv->canvas_comp = (*view->priv->item_creator)(
 		view, GNOME_CANVAS (view->priv->pseudo_canvas),
 		view->priv->item_creator_data);
+
+	if (view->priv->canvas_comp)
+		gnome_canvas_component_set_proxy (view->priv->canvas_comp, item_proxy);
 }
 
 static void
@@ -174,7 +178,7 @@ impl_GNOME_View_set_window (PortableServer_Servant servant,
 		GnomeCanvasItem *item;
 		
 		if (view->priv->canvas_comp == NULL)
-			make_component (view, FALSE);
+			make_component (view, FALSE, CORBA_OBJECT_NIL);
 
 		item = gnome_canvas_component_get_item (view->priv->canvas_comp);
 		gtk_container_add (GTK_CONTAINER (view->priv->plug),
@@ -215,9 +219,11 @@ impl_GNOME_View_set_zoom_factor (PortableServer_Servant servant,
 static GNOME_Canvas_Item
 impl_GNOME_View_get_canvas_item (PortableServer_Servant servant,
 				 CORBA_boolean aa,
+				 GNOME_Canvas_ItemProxy _item_proxy,
 				 CORBA_Environment *ev)
 {
 	GnomeView *view = GNOME_VIEW (gnome_object_from_servant (servant));
+	GNOME_Canvas_ItemProxy item_proxy;
 	
 	if (view->priv->item_creator == NULL)
 		return CORBA_OBJECT_NIL;
@@ -228,7 +234,9 @@ impl_GNOME_View_get_canvas_item (PortableServer_Servant servant,
 				GNOME_OBJECT (view->priv->canvas_comp)),
 			ev);
 
-	make_component (view, aa);
+	item_proxy = CORBA_Object_duplicate (_item_proxy, ev);
+	
+	make_component (view, aa, item_proxy);
 
 	return CORBA_Object_duplicate (
 		gnome_object_corba_objref (

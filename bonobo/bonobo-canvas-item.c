@@ -10,13 +10,21 @@
 #include <bonobo/bonobo.h>
 #include <bonobo/gnome-bonobo-item.h>
 #include <bonobo/gnome-object.h>
+#include <bonobo/gnome-main.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 
 static GnomeCanvasItemClass *gbi_parent_class;
 
+typedef struct {
+	POA_GNOME_Canvas_ItemProxy proxy_servant;
+	GnomeCanvasItem           *item_bound;
+	PortableServer_ObjectId   *oid;
+} ItemProxyServant;
+
 struct _GnomeBonoboItemPrivate {
 	GNOME_Canvas_Item object;
+	ItemProxyServant  *proxy;
 };
 
 enum {
@@ -109,7 +117,18 @@ art_svp_to_CORBA_SVP (ArtSVP *art_svp)
 
 	return svp;
 }
-	      
+
+static ArtUta *
+uta_from_cuta (GNOME_Canvas_ArtUTA *cuta)
+{
+	ArtUta *uta;
+
+	uta = art_uta_new (cuta->x0, cuta->y0, cuta->x0 + cuta->width, cuta->height);
+	memcpy (uta->utiles, cuta->utiles._buffer, cuta->width * cuta->height * sizeof (ArtUtaBbox));
+
+	return uta;
+}
+
 static void
 gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, int item_flags)
 {
@@ -117,8 +136,8 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 	GNOME_Canvas_affine affine;
 	GNOME_Canvas_SVP *clip_path = NULL;
 	CORBA_Environment ev;
-	CORBA_boolean queue_update;
 	CORBA_double x1, y1, x2, y2;
+	GNOME_Canvas_ArtUTA *cuta;
 	int i;
 
 	if (getenv ("DEBUG_BI"))
@@ -127,7 +146,7 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 	if (gbi_parent_class)
 		(*gbi_parent_class->update)(item, item_affine, item_clip_path, item_flags);
 	
-	for (i = 0; i < 5; i++)
+	for (i = 0; i < 6; i++)
 		affine [i] = item_affine [i];
 
 	clip_path = art_svp_to_CORBA_SVP (item_clip_path);
@@ -135,21 +154,30 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 		return;
 
 	CORBA_exception_init (&ev);
-	queue_update = GNOME_Canvas_Item_update (
+	cuta = GNOME_Canvas_Item_update (
 		gbi->priv->object, affine, clip_path, item_flags,
 		&x1, &y1, &x2, &y2,
 		&ev);
 
-	if (queue_update)
-		gnome_canvas_item_request_update (item);
+	if (ev._major != CORBA_NO_EXCEPTION){
+		if (cuta->width > 0){
+			ArtUta *uta;
 
-	item->x1 = x1;
-	item->y1 = y1;
-	item->x2 = x2;
-	item->y2 = y2;
+			uta = uta_from_cuta (cuta);
+			gnome_canvas_request_redraw_uta (item->canvas, uta);
+			gnome_canvas_item_request_update (item);
+		}
 
-	if (getenv ("DEBUG_BI"))
-		printf ("Bbox: %g %g %g %g\n", x1, y1, x2, y2);
+		item->x1 = x1;
+		item->y1 = y1;
+		item->x2 = x2;
+		item->y2 = y2;
+
+		if (getenv ("DEBUG_BI"))
+			printf ("Bbox: %g %g %g %g\n", x1, y1, x2, y2);
+
+		CORBA_free (cuta);
+	}
 	
 	CORBA_exception_free (&ev);
 
@@ -217,10 +245,14 @@ gbi_point (GnomeCanvasItem *item, double x, double y, int cx, int cy, GnomeCanva
 	if (GNOME_Canvas_Item_contains (gbi->priv->object, x, y, &ev)){
 		CORBA_exception_free (&ev);
 		*actual = item;
+		if (getenv ("DEBUG_BI"))
+			printf ("event inside\n");
 		return 0.0;
 	}
 	CORBA_exception_free (&ev);
 
+	if (getenv ("DEBUG_BI"))
+		printf ("event outside\n");
 	*actual = NULL;
 	return 1000.0;
 }
@@ -436,16 +468,23 @@ static void
 gbi_finalize (GtkObject *object)
 {
 	Gbi *gbi = GBI (object);
+	CORBA_Environment ev;
 
-	if (gbi->priv->object != CORBA_OBJECT_NIL){
-		CORBA_Environment ev;
-		
-		CORBA_exception_init (&ev);
+	CORBA_exception_init (&ev);
+
+	if (gbi->priv->object != CORBA_OBJECT_NIL)
 		CORBA_Object_release (gbi->priv->object, &ev);
-		CORBA_exception_free (&ev);
-	}
 
+	if (gbi->priv->proxy){
+		ItemProxyServant *proxy = gbi->priv->proxy;
+		
+		PortableServer_POA_deactivate_object (bonobo_poa (), proxy->oid, &ev);
+		CORBA_free (proxy->oid);
+		g_free (proxy);
+	}
+	
 	g_free (gbi->priv);
+	CORBA_exception_free (&ev);
 	
 	(*GTK_OBJECT_CLASS (gbi_parent_class)->finalize)(object);
 }
@@ -502,14 +541,82 @@ gnome_bonobo_item_get_type (void)
 	return type;
 }
 
+static void
+impl_GNOME_Canvas_ItemProxy_request_update (PortableServer_Servant servant,
+					    GNOME_Canvas_ArtUTA *uta,
+					    CORBA_Environment *ev)
+{
+	ItemProxyServant *item_proxy = (ItemProxyServant *) servant;
+	GnomeCanvas *canvas = item_proxy->item_bound->canvas;
+	GtkLayout *layout = GTK_LAYOUT (canvas);
+
+	g_warning ("BonoboItem: Fixme, just a quick hack to queue redraws");
+	gnome_canvas_request_redraw (
+		canvas,
+		layout->xoffset, layout->yoffset,
+		layout->xoffset + layout->width,
+		layout->yoffset + layout->height);
+
+}
+					    
+static POA_GNOME_Canvas_ItemProxy__epv item_proxy_epv = {
+	NULL,
+	&impl_GNOME_Canvas_ItemProxy_request_update
+};
+
+static POA_GNOME_Canvas_ItemProxy__vepv item_proxy_vepv = {
+	NULL,
+	&item_proxy_epv
+};
+
+/*
+ * Creates a CORBA server to handle the ItemProxy requests, it is not
+ * activated by default
+ */
+static ItemProxyServant *
+create_proxy (GNOME_Canvas_ItemProxy *ref, GnomeCanvasItem *item)
+{
+	ItemProxyServant *item_proxy = g_new0 (ItemProxyServant, 1);
+	CORBA_Environment ev;
+	
+	CORBA_exception_init (&ev);
+	POA_GNOME_Canvas_ItemProxy__init ((PortableServer_Servant) item_proxy, &ev);
+	item_proxy->proxy_servant.vepv = &item_proxy_vepv;
+	item_proxy->item_bound = item;
+
+	item_proxy->oid = PortableServer_POA_activate_object (
+		bonobo_poa (), (void *) item_proxy, &ev);
+	*ref = PortableServer_POA_servant_to_reference (
+		bonobo_poa (), (void *) item_proxy, &ev);
+
+	CORBA_exception_free (&ev);
+
+	return item_proxy;
+}
+
+static void
+proxy_size_allocate (GnomeCanvas *canvas, GtkAllocation *allocation, GnomeBonoboItem *bonobo_item)
+{
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+	GNOME_Canvas_Item_canvas_size_set (
+		bonobo_item->priv->object,
+		allocation->x, allocation->y,
+		allocation->width, allocation->height, &ev);
+	CORBA_exception_free (&ev);
+}
+
 GnomeCanvasItem *
 gnome_bonobo_item_new (GnomeCanvasGroup *parent, GnomeViewFrame *view_frame)
 {
 	CORBA_Environment ev;
-	GnomeCanvasItem *i;
+	GnomeCanvasItem *bonobo_item;
 	GNOME_Canvas_Item remote_item;
 	gboolean is_aa;
 	GNOME_View remote_view;
+	ItemProxyServant *proxy;
+	GNOME_Canvas_ItemProxy proxy_ref;
 	
 	g_return_val_if_fail (parent != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_GROUP (parent), NULL);
@@ -518,25 +625,55 @@ gnome_bonobo_item_new (GnomeCanvasGroup *parent, GnomeViewFrame *view_frame)
 
 	remote_view = view_frame->view;
 	
-	CORBA_exception_init (&ev);
-	is_aa = GNOME_CANVAS_ITEM (parent)->canvas->aa;
-	
-	remote_item = GNOME_View_get_canvas_item (remote_view, is_aa, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION){
-		CORBA_exception_free (&ev);
-		return NULL;
-	}
-
-	if (remote_item == CORBA_OBJECT_NIL){
-		CORBA_exception_free (&ev);
-		return NULL;
-	}
-	
-	i = gnome_canvas_item_new (
+	/*
+	 * Create our proxy item
+	 */
+	bonobo_item = gnome_canvas_item_new (
 		parent,
 		gnome_bonobo_item_get_type (),
-		"corba_canvas_item", remote_item,
 		NULL);
-	GNOME_BONOBO_ITEM (i)->view_frame = view_frame;
-	return i;
+	
+	CORBA_exception_init (&ev);
+	is_aa = GNOME_CANVAS_ITEM (parent)->canvas->aa;
+	proxy = create_proxy (&proxy_ref, bonobo_item);
+	remote_item = GNOME_View_get_canvas_item (remote_view, is_aa, proxy_ref, &ev);
+	CORBA_Object_release (proxy_ref, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION)
+		goto fail;
+
+	if (remote_item == CORBA_OBJECT_NIL)
+		goto fail;
+
+	/*
+	 * Size notifications
+	 */
+	gtk_signal_connect (
+		GTK_OBJECT (bonobo_item->canvas), "size_allocate",
+		proxy_size_allocate, bonobo_item);
+
+	/*
+	 * Configure the BonoboItem
+	 */
+	gnome_canvas_item_set (bonobo_item, "corba_canvas_item", remote_item, NULL);
+	GNOME_BONOBO_ITEM (bonobo_item)->view_frame = view_frame;
+	GNOME_BONOBO_ITEM (bonobo_item)->priv->proxy = proxy;
+
+	/*
+	 * Initial size notification
+	 */
+	proxy_size_allocate (bonobo_item->canvas,
+			     &(GTK_WIDGET (bonobo_item->canvas)->allocation),
+			     bonobo_item);
+	
+	return bonobo_item;
+fail:
+	gtk_object_unref (GTK_OBJECT (bonobo_item));
+	PortableServer_POA_deactivate_object (bonobo_poa (), proxy->oid, &ev);
+	CORBA_free (proxy->oid);
+	g_free (proxy);
+	CORBA_exception_free (&ev);
+	
+	return NULL;
 }
+

@@ -5,6 +5,7 @@ corba_DATA = sample.gnorba item.gnorba
 INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-DSTORAGE_LIB=\""$(libdir)"\"			\
+	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. 						\
 	-I$(top_builddir)				\
@@ -41,6 +42,7 @@ CORBA_SOURCE =			\
 idls =						\
 	$(top_srcdir)/idl/bonobo.idl		\
 	$(top_srcdir)/idl/gnome-advise.idl	\
+	$(top_srcdir)/idl/gnome-canvas.idl 	\
 	$(top_srcdir)/idl/gnome-client-site.idl	\
 	$(top_srcdir)/idl/gnome-embeddable.idl	\
 	$(top_srcdir)/idl/gnome-container.idl	\
