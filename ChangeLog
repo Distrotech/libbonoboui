@@ -1,5 +1,13 @@
 2002-05-31  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-socket.c (bonobo_socket_show):
+	force a check_resize before we show, since the queued
+	idle resize is just way too ugly. Fixes Nautilus new
+	window creation / flicker.
+	(bonobo_socket_class_init): upd.
+
+2002-05-31  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-socket.c
 	(bonobo_socket_size_request): fix some truly stupid things
 	happening with mixed up widths / heights.

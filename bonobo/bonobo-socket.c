@@ -227,6 +227,21 @@ bonobo_socket_size_request (GtkWidget      *widget,
 }
 
 static void
+bonobo_socket_show (GtkWidget *widget)
+{
+	dprintf ("bonobo_socket_show %p\n", widget);
+
+	/* We do a check_resize here, since if we're in-proc we
+	 * want to force a size_allocate on the contained GtkPlug,
+	 * before we go and map it (waiting for the idle resize),
+	 * since idle can be held off for a good while, and cause
+	 * extreme ugliness and flicker */
+	gtk_container_check_resize (GTK_CONTAINER (widget));
+
+	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, show, (widget));
+}
+
+static void
 bonobo_socket_show_all (GtkWidget *widget)
 {
 	/* Do nothing - we don't want this to
@@ -263,6 +278,7 @@ bonobo_socket_class_init (BonoboSocketClass *klass)
 	widget_class->size_request    = bonobo_socket_size_request;
 	widget_class->size_allocate   = bonobo_socket_size_allocate;
 	widget_class->expose_event    = bonobo_socket_expose_event;
+	widget_class->show            = bonobo_socket_show;
 	widget_class->show_all        = bonobo_socket_show_all;
 
 	socket_class->plug_removed    = bonobo_socket_plug_removed;
