@@ -14,6 +14,7 @@
 #include <stdio.h>
 
 #include <bonobo/bonobo-widget.h>
+#include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-exception.h>
@@ -1437,6 +1438,23 @@ bonobo_ui_engine_get_type (void)
 	return type;
 }
 
+static void
+add_node (BonoboUINode *parent, const char *name)
+{
+        BonoboUINode *node = bonobo_ui_node_new (name);
+
+	bonobo_ui_node_add_child (parent, node);
+}
+
+static void
+build_skeleton (BonoboUIXml *xml)
+{
+	g_return_if_fail (BONOBO_IS_UI_XML (xml));
+
+	add_node (xml->root, "keybindings");
+	add_node (xml->root, "commands");
+}
+
 BonoboUIEngine *
 bonobo_ui_engine_construct (BonoboUIEngine *engine)
 {
@@ -1452,7 +1470,7 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine)
 					info_dump_fn,
 					add_node_fn);
 
-	bonobo_ui_util_build_skeleton (priv->tree);
+	build_skeleton (priv->tree);
 
 	gtk_signal_connect (GTK_OBJECT (priv->tree), "override",
 			    (GtkSignalFunc) override_fn, engine);

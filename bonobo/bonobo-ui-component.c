@@ -10,6 +10,7 @@
 #include <config.h>
 #include <gnome.h>
 #include <bonobo.h>
+#include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <gnome-xml/tree.h>
 #include <gnome-xml/parser.h>

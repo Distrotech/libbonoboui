@@ -11,6 +11,7 @@
 #include <config.h>
 #include <stdlib.h>
 
+#include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-sync.h>

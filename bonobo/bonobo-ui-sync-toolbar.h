@@ -11,7 +11,6 @@
 #ifndef _BONOBO_UI_SYNC_TOOLBAR_H_
 #define _BONOBO_UI_SYNC_TOOLBAR_H_
 
-#include <bonobo/bonobo-ui-xml.h>
 #include <libgnomeui/gnome-dock.h>
 #include <bonobo/bonobo-ui-toolbar.h>
 #include <bonobo/bonobo-ui-sync.h>

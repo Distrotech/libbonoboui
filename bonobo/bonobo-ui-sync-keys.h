@@ -13,7 +13,6 @@
 
 #include <gtk/gtkstatusbar.h>
 
-#include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-sync.h>
 
 BEGIN_GNOME_DECLS

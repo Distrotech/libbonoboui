@@ -13,7 +13,6 @@
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkwindow.h>
 #include <bonobo/bonobo-object.h>
-#include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-engine.h>
 
 #define BONOBO_TYPE_WINDOW        (bonobo_window_get_type ())
