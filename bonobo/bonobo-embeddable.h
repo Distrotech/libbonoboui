@@ -32,6 +32,11 @@ struct _GnomeComponent {
 	 */
 	GnomeViewFactory view_factory;
 	void *view_factory_closure;
+
+	/*
+	 * The verbs
+	 */
+	GList *verbs;
 };
 
 typedef struct {
@@ -46,18 +51,32 @@ typedef struct {
 	void (*host_name_changed)  (GnomeComponent *comp);
 } GnomeComponentClass;
 
-GtkType         gnome_component_get_type  (void);
-GnomeComponent *gnome_component_new       (GnomeViewFactory factory,
-					   void *data);
-GnomeComponent *gnome_component_construct (GnomeComponent *component,
-					   GNOME_Component  corba_component,
-					   GnomeViewFactory factory,
-					   void *data);
+typedef struct {
+	int   verb_code;
+	char *verb_string;
+} GnomeComponentVerb;
 
-void     gnome_component_set_view_factory (GnomeComponent *component,
-					   GnomeViewFactory factory,
-					   void *data);
+GtkType         gnome_component_get_type    (void);
+GnomeComponent *gnome_component_new         (GnomeViewFactory factory,
+					     void *data);
+GnomeComponent *gnome_component_construct   (GnomeComponent *component,
+					     GNOME_Component  corba_component,
+					     GnomeViewFactory factory,
+					     void *data);
+
+void            gnome_component_add_verb    (GnomeComponent *component,
+					     const char *verb_name, int verb_code);
+void            gnome_component_add_verbs   (GnomeComponent *component,
+					     GnomeComponentVerb *verbs);
+void            gnome_component_remove_verb (GnomeComponent *component,
+					     const char *verb_name);
+
+void     gnome_component_set_view_factory   (GnomeComponent *component,
+					     GnomeViewFactory factory,
+					     void *data);
 
 END_GNOME_DECLS
 
 #endif
+
+

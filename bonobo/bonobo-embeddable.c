@@ -100,12 +100,31 @@ impl_GNOME_Component_get_verb_list (PortableServer_Servant servant,
 {
 	GnomeComponent *component = GNOME_COMPONENT (gnome_object_from_servant (servant));
 	GNOME_Component_verb_list *list;
+	GList *l;
+	int len, i;
 
-	list = g_new (GNOME_Component_verb_list, 1);
+	len = g_list_length (component->verbs);
 
-	list->_length = 0;
-	list->_maximum = 0;
-	list->_buffer = 0;
+	if (len == 0)
+		return NULL;
+	
+	list = GNOME_Component_verb_list__alloc ();
+	
+	list->_length = len;
+	list->_maximum = len;
+	list->_buffer = CORBA_sequence_GNOME_Component_VerbInfo_allocbuf (len);
+
+	if (list->_buffer == NULL){
+		CORBA_free (list);
+		return NULL;
+	}
+
+	for (i = 0, l = component->verbs; l; l = l->next, i++){
+		GnomeComponentVerb *vi = l->data;
+
+		list->_buffer [i].verb = vi->verb_code;
+		list->_buffer [i].verb_desc = CORBA_string_dup (vi->verb_string);
+	}
 	
 	return list;
 }
@@ -243,7 +262,19 @@ static void
 gnome_component_destroy (GtkObject *object)
 {
 	GnomeComponent *component = GNOME_COMPONENT (object);
+	GList *l;
 
+	/*
+	 * Release the verbs
+	 */
+	for (l = component->verbs; l; l = l->next){
+		GnomeComponentVerb *verb = l->data;
+
+		g_free (verb->verb_string);
+		g_free (verb);
+	}
+	g_list_free (component->verbs);
+	
 	GTK_OBJECT_CLASS (gnome_component_parent_class)->destroy (object);
 }
 
@@ -319,4 +350,61 @@ gnome_component_set_view_factory (GnomeComponent *component,
 	component->view_factory = factory;
 }
 
+void
+gnome_component_add_verb (GnomeComponent *component, const char *verb_name, int verb_code)
+{
+	GnomeComponentVerb *vi;
+
+	g_return_if_fail (component != NULL);
+	g_return_if_fail (GNOME_IS_COMPONENT (component));
+	g_return_if_fail (verb_name != NULL);
+
+	vi = g_new (GnomeComponentVerb, 1);
+	vi->verb_string = g_strdup (verb_name);
+	vi->verb_code = verb_code;
+		
+	component->verbs = g_list_prepend (component->verbs, vi);
+}
+
+void
+gnome_component_add_verbs (GnomeComponent *component, GnomeComponentVerb *verbs)
+{
+	GnomeComponentVerb *vi;
+	int i;
+	
+	g_return_if_fail (component != NULL);
+	g_return_if_fail (GNOME_IS_COMPONENT (component));
+	g_return_if_fail (verbs != NULL);
+
+	for (i = 0; verbs [i].verb_string != NULL; i++){
+		vi = g_new (GnomeComponentVerb, 1);
+
+		vi->verb_string = g_strdup (verbs [i].verb_string);
+		vi->verb_code = verbs [i].verb_code;
+
+		component->verbs = g_list_prepend (component->verbs, vi);
+	}
+}
+
+void
+gnome_component_remove_verb (GnomeComponent *component, const char *verb_name)
+{
+	GList *l;
+	
+	g_return_if_fail (component != NULL);
+	g_return_if_fail (GNOME_IS_COMPONENT (component));
+	g_return_if_fail (verb_name != NULL);
+
+	for (l = component->verbs; l; l = l->data){
+		GnomeComponentVerb *vi = l->data;
+
+		if (strcmp (verb_name, vi->verb_string))
+			continue;
+
+		component->verbs = g_list_remove (component->verbs, vi);
+		g_free (vi->verb_string);
+		g_free (vi);
+		return;
+	}
+}
 
