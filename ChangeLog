@@ -1,3 +1,7 @@
+2003-08-31  Laurent Dhima  <laurenti@alblinux.net>
+
+	* configure.in: Added "sq" to ALL_LINGUAS.
+	
 2003-08-27  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.4.0
