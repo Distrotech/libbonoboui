@@ -1,5 +1,5 @@
 #include <config.h>
-#include "gnome-object-selector.h"
+#include "gnome-bonobo-selector.h"
 #include <string.h> /* strcmp */
 
 #define DEFAULT_INTERFACE	"IDL:GNOME/BonoboObject:1.0"

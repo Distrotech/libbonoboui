@@ -35,7 +35,7 @@ idls =						\
 	$(top_srcdir)/idl/bonobo.idl		\
 	$(top_srcdir)/idl/gnome-advise.idl	\
 	$(top_srcdir)/idl/gnome-client-site.idl	\
-	$(top_srcdir)/idl/gnome-component.idl	\
+	$(top_srcdir)/idl/gnome-embeddable.idl	\
 	$(top_srcdir)/idl/gnome-container.idl	\
 	$(top_srcdir)/idl/gnome-inplace.idl	\
 	$(top_srcdir)/idl/gnome-moniker.idl	\
@@ -52,12 +52,12 @@ libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
 	gtk-interfaces.c		\
 	gnome-bind-context.c		\
-	gnome-bonobo-object.c		\
 	gnome-bonobo-selector.c		\
 	gnome-client-site.c		\
-	gnome-component-client.c	\
-	gnome-component-factory.c 	\
 	gnome-container.c		\
+	gnome-embeddable-client.c	\
+	gnome-embeddable-factory.c 	\
+	gnome-embeddable.c		\
 	gnome-file-moniker.c		\
 	gnome-inplace-component.c	\
 	gnome-inplace-site.c		\
@@ -87,14 +87,14 @@ libbonoboinclude_HEADERS =		\
 	gtk-interfaces.h		\
 	gnome-bind-context.h		\
 	gnome-bonobo.h			\
-	gnome-bonobo-object.h		\
 	gnome-bonobo-selector.h		\
 	gnome-client-site.h		\
-	gnome-component-client.h	\
-	gnome-component-factory.h	\
 	gnome-component-io.h		\
 	gnome-composite-moniker.h	\
 	gnome-container.h		\
+	gnome-embeddable.h		\
+	gnome-embeddable-client.h	\
+	gnome-embeddable-factory.h	\
 	gnome-file-moniker.h		\
 	gnome-inplace-site.h		\
 	gnome-inplace-component.h	\

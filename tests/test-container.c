@@ -26,10 +26,10 @@ CORBA_ORB orb;
  * views to existing components.
  */
 
-GnomeObjectClient *text_obj;
+GnomeEmbeddableClient *text_obj;
 GnomeClientSite   *text_client_site;
 
-GnomeObjectClient *image_png_obj;
+GnomeEmbeddableClient *image_png_obj;
 GnomeClientSite   *image_client_site;
 
 char *server_goadid = "Test_server_bonobo_object";
