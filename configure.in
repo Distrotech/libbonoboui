@@ -1,7 +1,7 @@
 AC_INIT(message-of-doom)
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(libbonoboui2, 1.103.0)
+AM_INIT_AUTOMAKE(libbonoboui, 1.103.0)
 
 AM_MAINTAINER_MODE
 
@@ -9,7 +9,7 @@ dnl
 dnl Due to the sed scripts being split on 90 line
 dnl blocks, this macro needs to be right at the beggining.
 dnl
-AM_PROG_XML_I18N_TOOLS
+AC_PROG_INTLTOOL
 
 GNOME_COMMON_INIT
 GNOME_PLATFORM_GNOME_2(yes, force)
@@ -23,8 +23,12 @@ AC_PATH_PROGS(PATH_TO_XRDB, "xrdb")
 
 GNOME_COMPILE_WARNINGS
 
+GETTEXT_PACKAGE=libbonoboui-2.0
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
+
 ALL_LINGUAS="az ca es fr it nn no ru sk sv ta tr wa zh_CN zh_TW"
-AM_GNOME2_GETTEXT
+AM_GLIB_GNU_GETTEXT
 
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)

@@ -1,3 +1,14 @@
+2001-10-29  jacob berkman  <jacob@ximian.com>
+
+	* samples/controls/Makefile.am: use INTLTOOL rules
+
+	* configure.in: drop the 2 from the package name, use intltool,
+	set GETTEXT_PACKAGE, and use AM_GLIB_GNU_GETTEXT
+
+	* acconfig.h: add GETTEXT_PACKAGE
+
+	* Makefile.am (SUBDIRS): dist intltool-* rather than xml-i18n-*
+
 2001-10-28  Seth Nickell  <snickell@stanford.edu>
 
 	* bonobo/bonobo-canvas-component.c: (bonobo_canvas_component_new):

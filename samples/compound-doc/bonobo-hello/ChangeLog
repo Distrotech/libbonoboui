@@ -1,3 +1,7 @@
+2001-10-29  jacob berkman  <jacob@ximian.com>
+
+	* Makefile.am: use INTLTOOL rules
+
 2001-10-29  Seth Nickell  <snickell@stanford.edu>
 
 	* bonobo-hello.c: (hello_embeddable_factory):
