@@ -303,7 +303,7 @@ bonobo_wrapper_size_request (GtkWidget *widget, GtkRequisition *requisition)
 		gtk_widget_size_request (wrapper->bin.child, 
 					 requisition);
 
-		if (! wrapper->priv->covered || ! wrapper->priv->visible) {
+		if (!wrapper->priv->covered && wrapper->priv->visible) {
 			requisition->width += BORDER_WIDTH * 2;
 			requisition->height += BORDER_WIDTH * 2;
 		}	
@@ -350,7 +350,7 @@ bonobo_wrapper_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 		child_allocation.y = 0;
 		child_allocation.width = widget->allocation.width;
 		child_allocation.height = widget->allocation.height;
-		if (!wrapper->priv->covered || !wrapper->priv->visible) {
+		if (!wrapper->priv->covered && wrapper->priv->visible) {
 			child_allocation.x += BORDER_WIDTH;
 			child_allocation.y += BORDER_WIDTH;
 			child_allocation.width -= BORDER_WIDTH * 2;
