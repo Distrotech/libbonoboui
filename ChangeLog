@@ -1,5 +1,14 @@
 2001-12-21  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control-frame.c
+	(bonobo_control_frame_class_init): kill setting the
+	'unimplemented' bits - that sucks.
+
+	* bonobo/bonobo-control.c
+	(bonobo_control_class_init): ditto.
+
+2001-12-21  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-sync-menu.c
 	(impl_bonobo_ui_sync_menu_state): accelerate pixbuf sets.
 	(cmd_get_menu_pixbuf): upd.

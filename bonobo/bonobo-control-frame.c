@@ -404,9 +404,6 @@ bonobo_control_frame_class_init (BonoboControlFrameClass *klass)
 	epv->notifyActivated      = impl_Bonobo_ControlFrame_notifyActivated;
 	epv->queueResize          = impl_Bonobo_ControlFrame_queueResize;
 	epv->activateURI          = impl_Bonobo_ControlFrame_activateURI;
-	epv->unImplemented        = NULL;
-	epv->unImplemented2       = NULL;
-	epv->unImplemented3       = NULL;
 }
 
 static void

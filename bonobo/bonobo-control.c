@@ -857,9 +857,6 @@ bonobo_control_class_init (BonoboControlClass *klass)
 	epv->setState          = impl_Bonobo_Control_setState;
 	epv->activate          = impl_Bonobo_Control_activate;
 	epv->focus             = impl_Bonobo_Control_focus;
-	epv->unImplemented     = NULL;
-	epv->unImplemented2    = NULL;
-	epv->unImplemented3    = NULL;
 }
 
 static void
