@@ -1,3 +1,9 @@
+2001-05-30  Dietmar Maurer  <dietmar@ximian.com>
+
+	* bonobo/bonobo-control.c (bonobo_control_set_properties): pass a
+	Bonobo_PropertyBag instead of a BonoboPropertyBag
+	(bonobo_control_get_properties): return a Bonobo_PropertyBag
+
 2001-05-30  Johan Dahlin  <zilch.am@home.se>
 
 	* bonobo/bonobo-ui-toolbar-item.h: Removed duplicate prototypes.

@@ -7,3 +7,6 @@ test-toolbar
 selector_test
 test-focus
 test-sensitivity
+test-reparent
+test-moniker
+

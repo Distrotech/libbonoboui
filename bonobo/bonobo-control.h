@@ -16,8 +16,6 @@
 #include <gtk/gtkwidget.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-control-frame.h>
-#include <bonobo/bonobo-property-bag.h>
-#include <bonobo/bonobo-property-bag-client.h>
 #include <bonobo/bonobo-ui-component.h>
 
 G_BEGIN_DECLS
@@ -72,8 +70,8 @@ void                        bonobo_control_set_control_frame       (BonoboContro
 								    Bonobo_ControlFrame  control_frame);
 Bonobo_ControlFrame         bonobo_control_get_control_frame       (BonoboControl       *control);
 void                        bonobo_control_set_properties          (BonoboControl       *control,
-								    BonoboPropertyBag   *pb);
-BonoboPropertyBag          *bonobo_control_get_properties          (BonoboControl       *control);
+								    Bonobo_PropertyBag   pb);
+Bonobo_PropertyBag          bonobo_control_get_properties          (BonoboControl       *control);
 Bonobo_PropertyBag          bonobo_control_get_ambient_properties  (BonoboControl       *control,
 								    CORBA_Environment   *ev);
 void                        bonobo_control_activate_notify         (BonoboControl       *control,

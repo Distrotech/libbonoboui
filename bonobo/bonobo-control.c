@@ -50,7 +50,7 @@ struct _BonoboControlPrivate {
 	BonoboUIComponent          *ui_component;
 	gboolean                    automerge;
 				   
-	BonoboPropertyBag          *propbag;
+	Bonobo_PropertyBag          propbag;
 };
 
 /**
@@ -436,14 +436,10 @@ impl_Bonobo_Control_getProperties (PortableServer_Servant  servant,
 				      CORBA_Environment      *ev)
 {
 	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
-	Bonobo_PropertyBag corba_propbag;
-
-	if (control->priv->propbag == NULL)
+	if (control->priv->propbag == CORBA_OBJECT_NIL)
 		return CORBA_OBJECT_NIL;
 
-	corba_propbag = BONOBO_OBJREF (control->priv->propbag);
-
-	return bonobo_object_dup_ref (corba_propbag, ev);
+	return bonobo_object_dup_ref (control->priv->propbag, ev);
 }
 
 static void
@@ -545,7 +541,7 @@ bonobo_control_construct (BonoboControl  *control,
 	gtk_object_sink (GTK_OBJECT (widget));
 
 	control->priv->ui_component = NULL;
-	control->priv->propbag = NULL;
+	control->priv->propbag = CORBA_OBJECT_NIL;
 
 	return control;
 }
@@ -639,9 +635,9 @@ bonobo_control_finalize (GObject *object)
 	}
 	control->priv->destroy_idle_id = 0;
 
-	if (control->priv->propbag)
-		bonobo_object_unref (BONOBO_OBJECT (control->priv->propbag));
-	control->priv->propbag = NULL;
+	if (control->priv->propbag != CORBA_OBJECT_NIL)
+		bonobo_object_release_unref (control->priv->propbag, NULL);
+	control->priv->propbag = CORBA_OBJECT_NIL;
 
 	if (control->priv->control_frame != CORBA_OBJECT_NIL) {
 		if (control->priv->active)
@@ -773,36 +769,36 @@ bonobo_control_set_ui_component (BonoboControl     *control,
 /**
  * bonobo_control_set_properties:
  * @control: A #BonoboControl object.
- * @pb: A #BonoboPropertyBag.
+ * @pb: A #Bonobo_PropertyBag.
  *
  * Binds @pb to @control.  When a remote object queries @control
  * for its property bag, @pb will be used in the responses.
  */
 void
-bonobo_control_set_properties (BonoboControl *control, BonoboPropertyBag *pb)
+bonobo_control_set_properties (BonoboControl *control, Bonobo_PropertyBag pb)
 {
-	BonoboPropertyBag *old_bag;
+	Bonobo_PropertyBag old_bag;
 
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
-	g_return_if_fail (BONOBO_IS_PROPERTY_BAG (pb));
+	g_return_if_fail (pb != CORBA_OBJECT_NIL);
 
 	old_bag = control->priv->propbag;
 	control->priv->propbag = pb;
 
 	if (pb)
-		bonobo_object_ref (BONOBO_OBJECT (pb));
+		bonobo_object_dup_ref (pb, NULL);
 
 	if (old_bag)
-		bonobo_object_unref (BONOBO_OBJECT (old_bag));
+		bonobo_object_release_unref (old_bag, NULL);
 }
 
 /**
  * bonobo_control_get_properties:
  * @control: A #BonoboControl whose PropertyBag has already been set.
  *
- * Returns: The #BonoboPropertyBag bound to @control.
+ * Returns: The #Bonobo_PropertyBag bound to @control.
  */
-BonoboPropertyBag *
+Bonobo_PropertyBag 
 bonobo_control_get_properties (BonoboControl *control)
 {
 	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
@@ -982,7 +978,7 @@ bonobo_control_set_property (BonoboControl       *control,
 
 	CORBA_exception_init (&ev);
 
-	bag = BONOBO_OBJREF (control->priv->propbag);
+	bag = control->priv->propbag;
 
 	if ((err = bonobo_property_bag_client_setv (bag, &ev, first_prop, args)))
 		g_warning ("Error '%s'", err);
@@ -1009,7 +1005,7 @@ bonobo_control_get_property (BonoboControl       *control,
 
 	CORBA_exception_init (&ev);
 
-	bag = BONOBO_OBJREF (control->priv->propbag);
+	bag = control->priv->propbag;
 
 	if ((err = bonobo_property_bag_client_getv (bag, &ev, first_prop, args)))
 		g_warning ("Error '%s'", err);

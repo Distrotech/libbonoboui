@@ -11,3 +11,8 @@ bonobo-widget.[ch]:
 
 bonobo-desktop-window.[ch]:
 	Removed - stale, deprecated.		  
+
+bonobo-control.[ch]
+	bonobo_control_[get|set]_properties () are now working with
+	Bonobo_PropertyBag (a CORAB object reference) instead of
+	BonoboPropertyBag. 
