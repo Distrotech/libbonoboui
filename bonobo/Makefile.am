@@ -60,6 +60,7 @@ $(CORBA_SOURCE): $(idls)
 
 libbonobo_la_SOURCES =			\
 	$(CORBA_SOURCE)			\
+	gnome-ui-handler.c		\
 	gnome-bonobo-item.c		\
 	gnome-bonobo-selector.c		\
 	gnome-bonobo-widget.c		\
@@ -86,7 +87,6 @@ libbonobo_la_SOURCES =			\
 	gnome-stream-client.c		\
 	gnome-stream-fs.c		\
 	gnome-stream-memory.c		\
-	gnome-ui-handler.c		\
 	gnome-view.c			\
 	gnome-view-frame.c		\
 	gnome-wrapper.c			\

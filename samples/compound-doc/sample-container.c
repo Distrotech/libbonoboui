@@ -197,8 +197,6 @@ static void
 component_view_frame_system_exception_cb (GnomeViewFrame *view_frame, CORBA_Object cobject,
 					  CORBA_Environment *ev, gpointer data)
 {
-	Component *component = (Component *) data;
-
 	gnome_object_destroy (GNOME_OBJECT (view_frame));
 }
 
