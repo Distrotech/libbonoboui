@@ -36,9 +36,17 @@
 #define PARENT_TYPE gtk_container_get_type ()
 static GtkContainerClass *parent_class = NULL;
 
+enum {
+  ARG_0,
+  ARG_ORIENTATION,
+  ARG_IS_FLOATING,
+};
 struct _BonoboUIToolbarPrivate {
 	/* The orientation of this toolbar.  */
 	GtkOrientation orientation;
+
+	/* Is the toolbar currently floating */
+	gboolean is_floating;
 
 	/* The style of this toolbar.  */
 	BonoboUIToolbarStyle style;
@@ -906,6 +914,7 @@ impl_set_style (BonoboUIToolbar *toolbar,
 		BonoboUIToolbarStyle style)
 {
 	BonoboUIToolbarPrivate *priv;
+	GList *p;
 
 	priv = toolbar->priv;
 
@@ -914,9 +923,56 @@ impl_set_style (BonoboUIToolbar *toolbar,
 
 	priv->style = style;
 
+	for (p = priv->items; p != NULL; p = p->next) {
+		BonoboUIToolbarItem *item;
+
+		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
+		set_attributes_on_child (item, priv->orientation, style);
+	}
+
 	gtk_widget_queue_resize (GTK_WIDGET (toolbar));
 }
 
+static void
+impl_get_arg(GtkObject* obj, GtkArg* arg, guint arg_id)
+{
+  BonoboUIToolbar *toolbar = BONOBO_UI_TOOLBAR (obj);
+  BonoboUIToolbarPrivate *priv = toolbar->priv;
+
+  switch (arg_id) {
+  case ARG_ORIENTATION:
+    GTK_VALUE_UINT(*arg) = bonobo_ui_toolbar_get_orientation (toolbar);
+    break;
+
+  case ARG_IS_FLOATING :
+    GTK_VALUE_BOOL(*arg) = priv->is_floating;
+    break;
+
+  default:
+    break;
+  };
+}
+
+static void
+impl_set_arg(GtkObject* obj, GtkArg* arg, guint arg_id)
+{
+  BonoboUIToolbar *toolbar = BONOBO_UI_TOOLBAR (obj);
+  BonoboUIToolbarPrivate *priv = toolbar->priv;
+
+  switch (arg_id) {
+
+  case ARG_ORIENTATION:
+    bonobo_ui_toolbar_set_orientation (toolbar, GTK_VALUE_UINT(*arg));
+    break;
+
+  case ARG_IS_FLOATING :
+    priv->is_floating = GTK_VALUE_BOOL(*arg);
+    break;
+
+  default:
+    break;
+  };
+}
 
 static void
 class_init (BonoboUIToolbarClass *toolbar_class)
@@ -927,6 +983,8 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 
 	object_class = GTK_OBJECT_CLASS (toolbar_class);
 	object_class->destroy = impl_destroy;
+	object_class->get_arg = impl_get_arg;
+	object_class->set_arg = impl_set_arg;
 
 	widget_class = GTK_WIDGET_CLASS (toolbar_class);
 	widget_class->size_request  = impl_size_request;
@@ -944,6 +1002,11 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 	toolbar_class->set_style       = impl_set_style;
 
 	parent_class = gtk_type_class (gtk_container_get_type ());
+
+	gtk_object_add_arg_type("BonoboUIToolbar::orientation",
+				GTK_TYPE_UINT, GTK_ARG_READWRITE, ARG_ORIENTATION);
+	gtk_object_add_arg_type("BonoboUIToolbar::is_floating",
+				GTK_TYPE_BOOL, GTK_ARG_READWRITE, ARG_IS_FLOATING);
 
 	signals[SET_ORIENTATION]
 		= gtk_signal_new ("set_orientation",
@@ -977,6 +1040,7 @@ init (BonoboUIToolbar *toolbar)
 	priv = g_new (BonoboUIToolbarPrivate, 1);
 
 	priv->orientation                 = GTK_ORIENTATION_HORIZONTAL;
+	priv->is_floating		  = FALSE;
 	priv->style                       = BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
 	priv->thickness                   = 0;
 	priv->popup_item                  = NULL;
@@ -1060,7 +1124,7 @@ bonobo_ui_toolbar_new (void)
 
 void
 bonobo_ui_toolbar_set_orientation (BonoboUIToolbar *toolbar,
-				GtkOrientation orientation)
+				   GtkOrientation orientation)
 {
 	g_return_if_fail (toolbar != NULL);
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
