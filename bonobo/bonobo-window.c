@@ -561,10 +561,6 @@ construct_priv (BonoboWindow *win)
 	/* Keybindings; the gtk_binding stuff is just too evil */
 	priv->sync_keys = bonobo_ui_sync_keys_new (priv->engine);
 	bonobo_ui_engine_add_sync (priv->engine, priv->sync_keys);
-	gtk_signal_connect (
-		GTK_OBJECT (win), "key_press_event",
-		(GtkSignalFunc) bonobo_ui_sync_keys_binding_handle,
-		priv->sync_keys);
 
 	priv->sync_status = bonobo_ui_sync_status_new (
 		priv->engine, priv->status);
@@ -588,6 +584,24 @@ bonobo_window_show_all (GtkWidget *widget)
 	gtk_widget_show (widget);
 }
 
+static gboolean
+bonobo_window_key_press_event (GtkWidget *widget,
+			       GdkEventKey *event)
+{
+	gboolean handled;
+	BonoboUISyncKeys *sync;
+
+	handled = GTK_WIDGET_CLASS (bonobo_window_parent_class)->key_press_event (widget, event);
+	if (handled)
+		return TRUE;
+
+	sync = BONOBO_WINDOW (widget)->priv->sync_keys;
+	if (sync)
+		return bonobo_ui_sync_keys_binding_handle (widget, event, sync);
+
+	return FALSE;
+}
+
 static void
 bonobo_window_class_init (BonoboWindowClass *klass)
 {
@@ -600,6 +614,7 @@ bonobo_window_class_init (BonoboWindowClass *klass)
 	gobject_class->finalize = bonobo_window_finalize;
 
 	widget_class->show_all = bonobo_window_show_all;
+	widget_class->key_press_event = bonobo_window_key_press_event;
 }
 
 static void
