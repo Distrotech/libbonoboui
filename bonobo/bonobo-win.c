@@ -1089,7 +1089,6 @@ static void
 override_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 {
 	char     *id = node_get_id_or_path (node);
-	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
 #ifdef XML_MERGE_DEBUG
 	fprintf (stderr, "Override '%s'\n", 
@@ -1098,9 +1097,6 @@ override_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 
 	prune_widget_info (priv, node, TRUE);
 
-	real_emit_ui_event (priv, info->parent.id, id,
-			    Bonobo_UIComponent_OVERRIDDEN, "");
-
 	g_free (id);
 }
 
@@ -1108,7 +1104,6 @@ static void
 reinstate_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 {
 	char     *id = node_get_id_or_path (node);
-	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
 
 #ifdef XML_MERGE_DEBUG
 	fprintf (stderr, "Reinstate '%s'\n", 
@@ -1116,9 +1111,6 @@ reinstate_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 #endif
 
 	prune_widget_info (priv, node, TRUE);
-
-	real_emit_ui_event (priv, info->parent.id, id,
-			    Bonobo_UIComponent_REINSTATED, "");
 
 	g_free (id);
 }
@@ -1136,10 +1128,6 @@ static void
 remove_fn (GtkObject *object, BonoboUINode *node, BonoboWinPrivate *priv)
 {
 	char     *id = node_get_id_or_path (node);
-	NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, node);
-
-	real_emit_ui_event (priv, info->parent.id, id,
-			    Bonobo_UIComponent_REMOVED, "");
 
 #ifdef XML_MERGE_DEBUG
 	fprintf (stderr, "Remove on '%s'\n",
@@ -2838,11 +2826,21 @@ bonobo_win_set_contents (BonoboWin *win,
 GtkWidget *
 bonobo_win_get_contents (BonoboWin *win)
 {
+	GList     *children;
+	GtkWidget *widget;
+
 	g_return_val_if_fail (win != NULL, NULL);
 	g_return_val_if_fail (win->priv != NULL, NULL);
 	g_return_val_if_fail (win->priv->dock != NULL, NULL);
 
-	return GTK_BIN (win->priv->client_area)->child;
+	children = gtk_container_children (
+		GTK_CONTAINER (win->priv->client_area));
+
+	widget = children ? children->data : NULL;
+
+	g_list_free (children);
+
+	return widget;
 }
 
 static gboolean

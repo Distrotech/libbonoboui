@@ -171,7 +171,7 @@ view_set_color (view_data_t *view_data, char *color)
 }
 
 static void
-view_color_select_cb (BonoboUIHandler *uih, view_data_t *view_data, char *path)
+view_color_select_cb (BonoboUIComponent *uic, view_data_t *view_data, char *path)
 {
 	if (strstr (path, "Red") != NULL)
 		view_set_color (view_data, "red");

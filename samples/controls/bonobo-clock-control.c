@@ -96,6 +96,7 @@ bonobo_clock_factory (BonoboGenericFactory *Factory, void *closure)
 	/* Create the properties. */
 	pb = bonobo_property_bag_new (get_prop, set_prop, clock);
 	bonobo_control_set_property_bag (control, pb);
+	bonobo_object_unref (BONOBO_OBJECT (pb));
 
 	bonobo_property_bag_add (pb, "running", PROP_RUNNING,
 				 BONOBO_ARG_BOOLEAN, NULL,
@@ -121,6 +122,8 @@ bonobo_entry_factory (BonoboGenericFactory *Factory, void *closure)
 	control = bonobo_control_new (entry);
 	pb = bonobo_property_bag_new (NULL, NULL, NULL);
 	bonobo_control_set_property_bag (control, pb);
+	bonobo_object_unref (BONOBO_OBJECT (pb));
+
 	bonobo_property_bag_add_gtk_args (pb, GTK_OBJECT (entry));
 
 	return BONOBO_OBJECT (control);

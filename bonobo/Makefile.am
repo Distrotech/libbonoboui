@@ -119,7 +119,6 @@ libbonoboinclude_HEADERS =			\
 	bonobo-stream-memory.h			\
 	bonobo-stream.h				\
 	bonobo-transient.h			\
-	bonobo-ui-compat.h               	\
 	bonobo-ui-component.h            	\
 	bonobo-ui-container.h            	\
 	bonobo-ui-node.h                 	\
@@ -155,7 +154,6 @@ libbonobox_la_SOURCES =				\
 	bonobo-plug.c				\
 	bonobo-selector.c			\
 	bonobo-socket.c				\
-	bonobo-ui-compat.c               	\
 	bonobo-ui-component.c            	\
 	bonobo-ui-container.c            	\
 	bonobo-ui-node.c                 	\

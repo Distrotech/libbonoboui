@@ -586,6 +586,10 @@ bonobo_control_destroy (GtkObject *object)
 	}
 	control->priv->destroy_idle_id = 0;
 
+	if (control->priv->propbag)
+		bonobo_object_unref (BONOBO_OBJECT (control->priv->propbag));
+	control->priv->propbag = NULL;
+
 	if (control->priv->active)
 		Bonobo_ControlFrame_activated (control->priv->control_frame,
 					       FALSE, &ev);
@@ -752,10 +756,19 @@ bonobo_control_set_ui_component (BonoboControl     *control,
 void
 bonobo_control_set_property_bag (BonoboControl *control, BonoboPropertyBag *pb)
 {
+	BonoboPropertyBag *old_bag;
+
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 	g_return_if_fail (BONOBO_IS_PROPERTY_BAG (pb));
 
+	old_bag = control->priv->propbag;
 	control->priv->propbag = pb;
+
+	if (pb)
+		bonobo_object_ref (BONOBO_OBJECT (pb));
+
+	if (old_bag)
+		bonobo_object_unref (BONOBO_OBJECT (old_bag));
 }
 
 /**

@@ -84,10 +84,7 @@ impl_Bonobo_ControlFrame_get_ambient_properties (PortableServer_Servant  servant
 	corba_propbag = (Bonobo_PropertyBag)
 		bonobo_object_corba_objref (BONOBO_OBJECT (control_frame->priv->propbag));
 
-	corba_propbag = CORBA_Object_duplicate (corba_propbag, ev);
-	Bonobo_Unknown_ref (corba_propbag, ev);
-
-	return corba_propbag;
+	return bonobo_object_dup_ref (corba_propbag, ev);
 }
 
 static void
@@ -369,7 +366,8 @@ bonobo_control_frame_destroy (GtkObject *object)
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (object);
 
 	if (control_frame->priv->control != CORBA_OBJECT_NIL)
-		bonobo_object_release_unref( control_frame->priv->control, NULL);
+		bonobo_object_release_unref (control_frame->priv->control, NULL);
+	control_frame->priv->control = CORBA_OBJECT_NIL;
 
 	gtk_widget_unref (control_frame->priv->container);
 
@@ -740,12 +738,13 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	if (control_frame->priv->control != CORBA_OBJECT_NIL)
 		g_warning ("FIXME: leaking control reference");
 
-	control_frame->priv->control = bonobo_object_dup_ref (control, NULL);
+	CORBA_exception_init (&ev);
+
+	control_frame->priv->control = bonobo_object_dup_ref (control, &ev);
 
 	/*
 	 * Introduce ourselves to the Control.
 	 */
-	CORBA_exception_init (&ev);
 	Bonobo_Control_set_frame (control,
 				  bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
 				  &ev);

@@ -105,6 +105,11 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 
 	bonobo_control_frame_bind_to_control (bw->priv->control_frame, control);
 
+	/*
+	 * People that pass us controls get them sunk.
+	 */
+	bonobo_object_release_unref (control, NULL);
+
 	bonobo_control_frame_set_autoactivate (bw->priv->control_frame, TRUE);
 
 	/*
