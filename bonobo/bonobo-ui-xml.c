@@ -435,7 +435,7 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 {
 	BonoboUIXmlData *data = bonobo_ui_xml_get_data (tree, new);
 	BonoboUIXmlData *old_data = bonobo_ui_xml_get_data (tree, old);
-	gboolean         same, transparent;
+	gboolean         same, transparent, override;
 
 	/* Is it just a path / grouping simplifying entry with no content ? */
 	transparent = bonobo_ui_node_transparent (new);
@@ -446,7 +446,9 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 /*	if (!data->id)
 	same = TRUE;*/
 
-	if (!same && !transparent) {
+	override = !same && !transparent;
+
+	if (override) {
 
 		gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
 
@@ -481,7 +483,7 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 
 	bonobo_ui_xml_set_dirty (tree, new);
 
-	if (same)
+	if (!override)
 		node_free (tree, old);
 }
 

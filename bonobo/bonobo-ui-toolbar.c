@@ -704,6 +704,8 @@ impl_destroy (GtkObject *object)
 		if (item_widget->parent == NULL)
 			gtk_widget_destroy (item_widget);
 	}
+	g_list_free (priv->items);
+	priv->items = NULL;
 
 	if (GTK_WIDGET (priv->popup_item)->parent == NULL)
 		gtk_widget_destroy (GTK_WIDGET (priv->popup_item));
