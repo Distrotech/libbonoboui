@@ -779,8 +779,9 @@ container_print_preview_cmd (GtkWidget *widget, Container *container)
 		} else
 			g_warning ("component is printable!");
 
-		pd = bonobo_print_client_render (pc, 100.0, 150.0);
-		bonobo_print_data_render (pd, ctx, 0.0, ypos, 0.0, 0.0);
+		pd = bonobo_print_data_new (100.0, 150.0);
+		bonobo_print_client_render (pc, pd);
+		bonobo_print_data_render (ctx, 0.0, ypos, pd, 0.0, 0.0);
 		bonobo_print_data_free (pd);
 
 		ypos += 150.0;
@@ -788,6 +789,7 @@ container_print_preview_cmd (GtkWidget *widget, Container *container)
 
 	gnome_print_showpage (ctx);
 	gnome_print_context_close (ctx);
+
 	pv = gnome_print_master_preview_new (pm, "Component demo");
 	gtk_widget_show (GTK_WIDGET (pv));
 	gtk_main ();
