@@ -1,12 +1,13 @@
 # libbonoboui-2.0's Portuguese Translation
-# Copyright (C) 2001 Free Software Foundation, Inc.
+# Copyright (C) 2001 libbonoboui
+# Distributed under the same licence as the libbonoboui package
 # Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2003-02-01 23:45+0000\n"
-"PO-Revision-Date: 2003-02-01 23:45+0000\n"
+"Project-Id-Version: 2.4\n"
+"POT-Creation-Date: 2003-05-06 00:22+0100\n"
+"PO-Revision-Date: 2003-05-06 00:22+0100\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -38,21 +39,22 @@ msgid "Un dock the toolbar"
 msgstr "Desancorar barra de ferramentas"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+#: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Tipo sombra"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
-#: bonobo/bonobo-ui-toolbar.c:1103 bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientação"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Largura preferida"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
-#: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Altura preferida"
 
@@ -76,7 +78,7 @@ msgstr "Reencaminhamento Eventos"
 msgid "Whether X events should be forwarded"
 msgstr "Se eventos X deveriam ser reencaminhados"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:397
 msgid "Name"
 msgstr "Nome"
 
@@ -150,15 +152,15 @@ msgstr "Apenas texto"
 msgid "_Priority text only"
 msgstr "Apenas texto _prioritário"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
 msgstr "Depurar"
 
-#: bonobo/bonobo-ui-engine.c:88
+#: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
 msgstr "_Despejar XML"
 
-#: bonobo/bonobo-ui-engine.c:89
+#: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Despejar a descrição XML do IU completa na consola"
 
@@ -287,23 +289,27 @@ msgstr "Customi_zar"
 msgid "Customize the toolbar"
 msgstr "Customizar a barra de ferramentas"
 
-#: bonobo/bonobo-ui-toolbar.c:1113
+#: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
 msgstr "está a flutuar"
 
-#: bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
 msgstr "se a barra de ferramentas está ou não a flutuar"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-toolbar.c:1176
+msgid "Style of bevel around the toolbar"
+msgstr "Estilo de relevo em torno da barra de ferramentas"
+
+#: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
 msgstr "_Conteudos"
 
-#: bonobo/bonobo-ui-util.c:617
+#: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
 msgstr "Ver a ajuda desta aplicação"
 
-#: bonobo/bonobo-window.c:416
+#: bonobo/bonobo-window.c:398
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nome da janela - utilizada para serialização da configuração."
 
