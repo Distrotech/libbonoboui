@@ -17,7 +17,6 @@
  */
 #include <config.h>
 #include <string.h> /* strcmp */
-#include <libbonoboui.h>
 #include <bonobo/bonobo-selector.h>
 
 #define DEFAULT_INTERFACE "IDL:Bonobo/Control:1.0"

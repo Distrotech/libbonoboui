@@ -18,12 +18,12 @@
 #include <config.h>
 #include <string.h> /* strcmp */
 #include <glib.h>
-#include <bonobo/bonobo-i18n.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <libgnome/gnome-i18n.h>
-#include <libbonoboui.h>
+#include <bonobo/bonobo-i18n.h>
+#include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-selector-widget.h>
 #include <bonobo/bonobo-ui-preferences.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "bonobo-insert-component.xpm"
 

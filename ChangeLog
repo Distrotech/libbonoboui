@@ -1,6 +1,14 @@
 2001-11-06  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-zoomable.c 
+	(impl_Bonobo_Zoomable__get_preferredLevels): use a memcpy
+	to be slightly efficient.
+	(impl_Bonobo_Zoomable__get_preferredLevelNames): 
+	make legivle.
+
+2001-11-06  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-zoomable.c 
 	(bonobo_zoomable_class_init): fix bounds.
 
 	* bonobo/bonobo-zoomable-frame.c: substantialy re-write.

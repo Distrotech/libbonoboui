@@ -9,6 +9,7 @@
  *                2000 SuSE GmbH.
  */
 #include <config.h>
+#include <string.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-zoomable.h>
@@ -27,8 +28,8 @@ struct _BonoboZoomablePrivate {
 	CORBA_boolean		 has_max_zoom_level;
 	CORBA_boolean		 is_continuous;
 
-	GArray                  *preferred_zoom_levels;
-	GPtrArray               *preferred_zoom_level_names;
+	GArray                  *pref_levels;
+	GPtrArray               *pref_names;
 
 	Bonobo_ZoomableFrame	 zoomable_frame;
 };
@@ -121,25 +122,19 @@ static Bonobo_ZoomLevelList *
 impl_Bonobo_Zoomable__get_preferredLevels (PortableServer_Servant  servant,
 					   CORBA_Environment      *ev)
 {
+	int                   levels;
+	BonoboZoomable       *zoomable;
 	Bonobo_ZoomLevelList *list;
-	BonoboZoomable *zoomable;
-	float *zoom_levels;
-	int num_zoom_levels;
-	int i;
 
 	zoomable = bonobo_zoomable_from_servant (servant);
-
-	num_zoom_levels = zoomable->priv->preferred_zoom_levels->len;
-	zoom_levels = (float *) zoomable->priv->preferred_zoom_levels->data;
+	levels = zoomable->priv->pref_levels->len;
 
 	list = Bonobo_ZoomLevelList__alloc ();
-	list->_maximum = zoomable->priv->preferred_zoom_levels->len;
-	list->_length  = zoomable->priv->preferred_zoom_levels->len;
-	list->_buffer  = CORBA_sequence_Bonobo_ZoomLevel_allocbuf (num_zoom_levels);
+	list->_length  = levels;
+	list->_buffer  = CORBA_sequence_Bonobo_ZoomLevel_allocbuf (levels);
 
-	/* FIXME: wasteful, use CORBA_float internaly */
-	for (i = 0; i < num_zoom_levels; ++i)
-		list->_buffer [i] = zoom_levels [i];
+	memcpy (list->_buffer, zoomable->priv->pref_levels->data,
+		sizeof (CORBA_float) * levels);
 	
 	CORBA_sequence_set_release (list, CORBA_TRUE);
 
@@ -147,27 +142,25 @@ impl_Bonobo_Zoomable__get_preferredLevels (PortableServer_Servant  servant,
 }
 
 static Bonobo_ZoomLevelNameList *
-impl_Bonobo_Zoomable__get_preferredLevelNames (PortableServer_Servant  servant,
-					       CORBA_Environment      *ev)
+impl_Bonobo_Zoomable__get_preferredLevelNames (PortableServer_Servant servant,
+					       CORBA_Environment     *ev)
 {
-	Bonobo_ZoomLevelNameList *list;
+	int levels,i;
+	gchar **names;
 	BonoboZoomable *zoomable;
-	gchar **zoom_level_names;
-	int num_zoom_level_names;
-	int i;
+	Bonobo_ZoomLevelNameList *list;
 
 	zoomable = bonobo_zoomable_from_servant (servant);
 
-	num_zoom_level_names = zoomable->priv->preferred_zoom_level_names->len;
-	zoom_level_names = (gchar **) zoomable->priv->preferred_zoom_level_names->pdata;
+	levels = zoomable->priv->pref_names->len;
+	names = (gchar **) zoomable->priv->pref_names->pdata;
 
 	list = Bonobo_ZoomLevelNameList__alloc ();
-	list->_maximum = zoomable->priv->preferred_zoom_level_names->len;
-	list->_length  = zoomable->priv->preferred_zoom_level_names->len;
-	list->_buffer  = CORBA_sequence_Bonobo_ZoomLevelName_allocbuf (num_zoom_level_names);
+	list->_length  = levels;
+	list->_buffer  = CORBA_sequence_Bonobo_ZoomLevelName_allocbuf (levels);
 
-	for (i = 0; i < num_zoom_level_names; ++i)
-		list->_buffer [i] = CORBA_string_dup (zoom_level_names [i]);
+	for (i = 0; i < levels; ++i)
+		list->_buffer [i] = CORBA_string_dup (names [i]);
 
 	CORBA_sequence_set_release (list, CORBA_TRUE);
 
@@ -273,22 +266,22 @@ bonobo_zoomable_get_property (GObject    *object,
 static void
 bonobo_zoomable_free_preferred_zoom_level_arrays (BonoboZoomable *zoomable)
 {
-	if (zoomable->priv->preferred_zoom_level_names) {
+	if (zoomable->priv->pref_names) {
 		int        i;
 		GPtrArray *array;
 
-		array = zoomable->priv->preferred_zoom_level_names;
+		array = zoomable->priv->pref_names;
 
 		for (i = 0; i < array->len; i++)
 			g_free (g_ptr_array_index (array, i));
 	
 		g_ptr_array_free (array, TRUE);
-		zoomable->priv->preferred_zoom_level_names = NULL;
+		zoomable->priv->pref_names = NULL;
 	}
 
-	if (zoomable->priv->preferred_zoom_levels) {
-		g_array_free (zoomable->priv->preferred_zoom_levels, TRUE);
-		zoomable->priv->preferred_zoom_levels = NULL;
+	if (zoomable->priv->pref_levels) {
+		g_array_free (zoomable->priv->pref_levels, TRUE);
+		zoomable->priv->pref_levels = NULL;
 	}
 }
 
@@ -455,8 +448,8 @@ bonobo_zoomable_init (BonoboZoomable *zoomable)
 	zoomable->priv->has_min_zoom_level = FALSE;
 	zoomable->priv->has_max_zoom_level = FALSE;
 	zoomable->priv->is_continuous = TRUE;
-	zoomable->priv->preferred_zoom_levels = g_array_new (FALSE, TRUE, sizeof (float));
-	zoomable->priv->preferred_zoom_level_names = g_ptr_array_new ();
+	zoomable->priv->pref_levels = g_array_new (FALSE, TRUE, sizeof (CORBA_float));
+	zoomable->priv->pref_names = g_ptr_array_new ();
 }
 
 BONOBO_TYPE_FUNC_FULL (BonoboZoomable, Bonobo_Zoomable, BONOBO_TYPE_OBJECT, bonobo_zoomable);
@@ -482,55 +475,54 @@ bonobo_zoomable_set_parameters_full (BonoboZoomable  *zoomable,
 				     gboolean         has_min_zoom_level,
 				     gboolean         has_max_zoom_level,
 				     gboolean         is_continuous,
-				     float           *preferred_zoom_levels,
-				     const gchar    **preferred_zoom_level_names,
-				     gint             num_preferred_zoom_levels)
+				     float           *pref_levels,
+				     const gchar    **pref_names,
+				     gint             num_pref_levels)
 {
-	gchar **zoom_level_names;
-	BonoboZoomable *p = zoomable; 
+	BonoboZoomablePrivate *priv;
 
-	g_return_if_fail (BONOBO_IS_ZOOMABLE (p));
+	g_return_if_fail (BONOBO_IS_ZOOMABLE (zoomable));
 
-	p->priv->zoom_level = zoom_level;
-	p->priv->min_zoom_level = min_zoom_level;
-	p->priv->max_zoom_level = max_zoom_level;
-	p->priv->has_min_zoom_level = has_min_zoom_level;
-	p->priv->has_max_zoom_level = has_max_zoom_level;
-	p->priv->is_continuous = is_continuous;
+	priv = zoomable->priv;
 
-	/* FIXME: looks horribly leaky to me ! */
-	bonobo_zoomable_free_preferred_zoom_level_arrays (p);
+	priv->zoom_level = zoom_level;
+	priv->min_zoom_level = min_zoom_level;
+	priv->max_zoom_level = max_zoom_level;
+	priv->has_min_zoom_level = has_min_zoom_level;
+	priv->has_max_zoom_level = has_max_zoom_level;
+	priv->is_continuous = is_continuous;
+
+	bonobo_zoomable_free_preferred_zoom_level_arrays (zoomable);
 	
-	p->priv->preferred_zoom_levels = g_array_new (FALSE, TRUE, sizeof (float));
+	priv->pref_levels = g_array_new (FALSE, TRUE, sizeof (CORBA_float));
 	
-	if (preferred_zoom_levels)
-		g_array_append_vals (p->priv->preferred_zoom_levels,
-				     preferred_zoom_levels,
-				     num_preferred_zoom_levels);
+	if (pref_levels)
+		g_array_append_vals (priv->pref_levels,
+				     pref_levels,
+				     num_pref_levels);
 	
-	p->priv->preferred_zoom_level_names = g_ptr_array_new ();
+	priv->pref_names = g_ptr_array_new ();
 	
-	if (preferred_zoom_level_names) {
-		int i;
+	if (pref_names) {
+		int     i;
+		gchar **p;
 
-		g_ptr_array_set_size (p->priv->preferred_zoom_level_names,
-				      num_preferred_zoom_levels);
+		g_ptr_array_set_size (priv->pref_names, num_pref_levels);
+		
+		p = (gchar **) priv->pref_names->pdata;
 
-		zoom_level_names = (gchar **) p->priv->preferred_zoom_level_names->pdata;
-
-		for (i = 0; i < p->priv->preferred_zoom_level_names->len; ++i)
-			zoom_level_names [i] = g_strdup (preferred_zoom_level_names [i]);
+		for (i = 0; i < num_pref_levels; i++)
+			p [i] = g_strdup (pref_names [i]);
 	}
 }
 
 /**
  * bonobo_zoomable_set_parameters:
  * 
- * This is a simple version of @bonobo_zoomable_set_parameters_full() for components
- * which support continuous zooming. It does not override any of the parameters
- * which can only be set by the _full version.
- * 
- * Return value: 
+ * This is a simple version of @bonobo_zoomable_set_parameters_full()
+ * for components which support continuous zooming. It does not
+ * override any of the parameters which can only be set by the _full
+ * version.
  **/
 void
 bonobo_zoomable_set_parameters (BonoboZoomable  *zoomable,
@@ -540,15 +532,17 @@ bonobo_zoomable_set_parameters (BonoboZoomable  *zoomable,
                                 gboolean         has_min_zoom_level,
                                 gboolean         has_max_zoom_level)
 {
-	BonoboZoomable *p = zoomable;
+	BonoboZoomablePrivate *priv;
 
-	g_return_if_fail (BONOBO_IS_ZOOMABLE (p));
+	g_return_if_fail (BONOBO_IS_ZOOMABLE (zoomable));
 
-	p->priv->zoom_level = zoom_level;
-	p->priv->min_zoom_level = min_zoom_level;
-	p->priv->max_zoom_level = max_zoom_level;
-	p->priv->has_min_zoom_level = has_min_zoom_level;
-	p->priv->has_max_zoom_level = has_max_zoom_level;
+	priv = zoomable->priv;
+
+	priv->zoom_level = zoom_level;
+	priv->min_zoom_level = min_zoom_level;
+	priv->max_zoom_level = max_zoom_level;
+	priv->has_min_zoom_level = has_min_zoom_level;
+	priv->has_max_zoom_level = has_max_zoom_level;
 }
 
 /**
@@ -562,18 +556,15 @@ bonobo_zoomable_set_parameters (BonoboZoomable  *zoomable,
  **/
 void
 bonobo_zoomable_add_preferred_zoom_level (BonoboZoomable *zoomable,
-                                          float           zoom_level,
+                                          CORBA_float     zoom_level,
                                           const gchar    *zoom_level_name)
 {
 	gchar *name;
-	CORBA_float level;
 	
-	/* convert zoom_level to a CORBA_float */
-	level = zoom_level;
-	g_array_append_val (zoomable->priv->preferred_zoom_levels, level);
+	g_array_append_val (zoomable->priv->pref_levels, zoom_level);
 
 	name = g_strdup (zoom_level_name);
-	g_ptr_array_add (zoomable->priv->preferred_zoom_level_names, name);
+	g_ptr_array_add (zoomable->priv->pref_names, name);
 }
 
 
