@@ -548,7 +548,7 @@ bonobo_embeddable_set_uri (BonoboEmbeddable *embeddable, const char *uri)
  * @fn: function to be invoked for each existing BonoboView
  * @data: data to pass to function
  *
- * Invokes the @fn function for each view existing
+ * Invokes the @fn function for each existing view.
  */
 void
 bonobo_embeddable_foreach_view (BonoboEmbeddable *embeddable,
@@ -574,7 +574,7 @@ bonobo_embeddable_foreach_view (BonoboEmbeddable *embeddable,
  * @fn: function to be invoked for each existing GnomeItem
  * @data: data to pass to function
  *
- * Invokes the @fn function for each item existing
+ * Invokes the @fn function for each existing item.
  */
 void
 bonobo_embeddable_foreach_item (BonoboEmbeddable *embeddable,

@@ -149,11 +149,11 @@ init_transient ()
  
 <para>
    The previous example shows: how the
-   <variable>my_transient</variable> object is first created, and how
+   <parameter>my_transient</parameter> object is first created, and what
    the implementations for the create_servant and destroy_servant look
    like.  It does not make use of the user pointer, so it passes
-   NULL.  But applications will most likely want to pass data here to
-   the new_servant and destroy_servant methods.  
+   NULL.  However, in practice, applications will most likely want to
+   pass data here to the new_servant and destroy_servant methods.  
 </para>
 
 <para>
