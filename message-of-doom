@@ -1,22 +1,13 @@
  *** IMPORTANT *** 
 
-This is a development version of libbonoboui.  You should be using a stable
-version, which is available at ftp://ftp.gnome.org/pub/GNOME/stable/sources/libbonoboui/
-The version you just configured is meant for developers of libbonoboui only:
+	This is a development version of libbonoboui.  You should be
+using a stable version, which is available at:
 
-  * You should not base ANY software on this version of libbonoboui.
+	ftp://ftp.gnome.org/pub/GNOME/stable/sources/bonobo/
 
-  * This software _will_ be breaking binary and source compatibility frequently
+	The version you are trying to build is intended only for
+experienced Gnome 2.0 developers.
 
-  * Furthermore it will not compile for long periods of the week, and this is a
-  feature.
+	This package is now tentatively API frozen.
 
-  * Also, you might want to look behind you for the axe wielding fiend about to
-  batter your brain out if you complain about this. 
-
-Distributions should *NOT* ship a development package of libbonoboui, 
-
-			....
-     Do not bother the mailing lists, IRC channels, or other forums if you cannot
-     figure out how to build libbonoboui. It is not in working condition.
-			....
+Distributions should *NOT* ship a development package of bonobo, 
