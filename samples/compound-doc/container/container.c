@@ -169,6 +169,8 @@ resolve_and_add (SampleApp *app, Bonobo_Moniker moniker, const char *interface)
 
 	if (!site)
 		g_warning ("Failed to add embeddable to app");
+
+	bonobo_object_release_unref (moniker, &ev);
 }
 
 /*
