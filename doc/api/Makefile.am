@@ -20,11 +20,9 @@ tmpl_sources = 					\
         tmpl/bonobo-canvas-component.sgml	\
         tmpl/bonobo-canvas-item.sgml		\
         tmpl/bonobo-client-site.sgml		\
-        tmpl/bonobo-component-io.sgml		\
         tmpl/bonobo-context.sgml		\
         tmpl/bonobo-control-frame.sgml		\
         tmpl/bonobo-control.sgml		\
-        tmpl/bonobo-desktop-window.sgml		\
         tmpl/bonobo-embeddable.sgml		\
         tmpl/bonobo-event-source.sgml		\
         tmpl/bonobo-exception.sgml		\
@@ -38,8 +36,6 @@ tmpl_sources = 					\
         tmpl/bonobo-moniker-simple.sgml		\
         tmpl/bonobo-moniker-util.sgml		\
         tmpl/bonobo-object-client.sgml		\
-        tmpl/bonobo-object-directory.sgml	\
-        tmpl/bonobo-object-io.sgml		\
         tmpl/bonobo-object.sgml			\
         tmpl/bonobo-xobject.sgml		\
         tmpl/bonobo-persist-file.sgml		\
@@ -48,7 +44,6 @@ tmpl_sources = 					\
         tmpl/bonobo-plug.sgml			\
         tmpl/bonobo-print-client.sgml		\
         tmpl/bonobo-print.sgml			\
-        tmpl/bonobo-progressive.sgml		\
         tmpl/bonobo-property-bag-client.sgml	\
         tmpl/bonobo-property-bag-xml.sgml	\
         tmpl/bonobo-property-bag.sgml		\
@@ -66,19 +61,13 @@ tmpl_sources = 					\
         tmpl/bonobo-ui-engine.sgml		\
         tmpl/bonobo-ui-node.sgml		\
         tmpl/bonobo-ui-sync.sgml		\
-        tmpl/bonobo-ui-toolbar-button-item.sgml	\
-        tmpl/bonobo-ui-toolbar-icon.sgml	\
-        tmpl/bonobo-ui-toolbar-item.sgml	\
-        tmpl/bonobo-ui-toolbar-toggle-button-item.sgml \
         tmpl/bonobo-ui-util.sgml		\
         tmpl/bonobo-unused.sgml			\
         tmpl/bonobo-view-frame.sgml		\
         tmpl/bonobo-view.sgml			\
         tmpl/bonobo-widget.sgml			\
         tmpl/bonobo-win.sgml			\
-        tmpl/bonobo-wrapper.sgml		\
-        tmpl/bonobo-zoomable-frame.sgml		\
-        tmpl/bonobo-zoomable.sgml
+        tmpl/bonobo-wrapper.sgml
 
 bonobo_docdir = $(HTML_DIR)
 bonobo_doc_DATA = \
@@ -115,11 +104,9 @@ scan:
 		../../bonobo/bonobo-canvas-component.h		\
 		../../bonobo/bonobo-canvas-item.h		\
 		../../bonobo/bonobo-client-site.h		\
-		../../bonobo/bonobo-component-io.h		\
 		../../bonobo/bonobo-control-frame.h		\
 		../../bonobo/bonobo-control.h			\
 		../../bonobo/bonobo-context.h			\
-		../../bonobo/bonobo-desktop-window.h		\
 		../../bonobo/bonobo-embeddable.h		\
 		../../bonobo/bonobo-event-source.h		\
 		../../bonobo/bonobo-exception.h			\
@@ -133,15 +120,12 @@ scan:
 		../../bonobo/bonobo-moniker-simple.h		\
 		../../bonobo/bonobo-moniker-util.h		\
 		../../bonobo/bonobo-object-client.h		\
-		../../bonobo/bonobo-object-directory.h		\
-		../../bonobo/bonobo-object-io.h			\
 		../../bonobo/bonobo-object.h			\
 		../../bonobo/bonobo-xobject.h			\
 		../../bonobo/bonobo-persist-file.h		\
 		../../bonobo/bonobo-persist-stream.h		\
 		../../bonobo/bonobo-persist.h			\
 		../../bonobo/bonobo-plug.h			\
-		../../bonobo/bonobo-progressive.h		\
 		../../bonobo/bonobo-property-bag.h		\
 		../../bonobo/bonobo-property-bag-client.h	\
 		../../bonobo/bonobo-property-bag-xml.h		\
@@ -159,18 +143,12 @@ scan:
 		../../bonobo/bonobo-ui-engine.h            	\
 		../../bonobo/bonobo-ui-node.h                 	\
 		../../bonobo/bonobo-ui-sync.h                 	\
-		../../bonobo/bonobo-ui-toolbar-button-item.h  	\
-		../../bonobo/bonobo-ui-toolbar-icon.h         	\
-		../../bonobo/bonobo-ui-toolbar-item.h		\
-		../../bonobo/bonobo-ui-toolbar-toggle-button-item.h	\
 		../../bonobo/bonobo-ui-util.h			\
 		../../bonobo/bonobo-view-frame.h		\
 		../../bonobo/bonobo-view.h			\
 		../../bonobo/bonobo-widget.h 			\
 		../../bonobo/bonobo-win.h			\
 		../../bonobo/bonobo-wrapper.h			\
-		../../bonobo/bonobo-zoomable.h			\
-		../../bonobo/bonobo-zoomable-frame.h 		\
 		../../bonobo/bonobo-print.h			\
 		../../bonobo/bonobo-print-client.h )
 
