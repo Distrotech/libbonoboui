@@ -1,0 +1,219 @@
+# Hungarian translation for libbonoboui
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Emese Kovacs <emese@gnome.hu>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui VERSION\n"
+"POT-Creation-Date: 2002-01-27 07:35+0100\n"
+"PO-Revision-Date: 2002-01-28 20:43-0100\n"
+"Last-Translator: Emese Kovacs <emese@ganome.hu>\n"
+"Language-Team: Hungarian <hu@gnome.hu>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
+msgid "Shadow type"
+msgstr "Árnyéktípus"
+
+#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
+msgid "Orientation"
+msgstr "Irány"
+
+#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
+msgid "Preferred width"
+msgstr "Előnyben részesített szélesség"
+
+#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+msgid "Preferred height"
+msgstr "Előnyben részesített magasság"
+
+#: bonobo/bonobo-file-selector-util.c:375
+msgid "Select a file to open"
+msgstr "Válaszd ki a megnyitandó fájlt"
+
+#: bonobo/bonobo-file-selector-util.c:403
+msgid "Select files to open"
+msgstr "Válaszd ki a megnyitandó fájlokat"
+
+#: bonobo/bonobo-file-selector-util.c:432
+msgid "Select a filename to save"
+msgstr "Válaszd ki az elmentendő fájl nevét"
+
+#: bonobo/bonobo-plug.c:350
+msgid "Event Forwarding"
+msgstr "Eseménytovábbítás"
+
+#: bonobo/bonobo-plug.c:351
+msgid "Whether X events should be forwarded"
+msgstr "Továbbítsa-e az X eseményeket, vagy ne"
+
+#: bonobo/bonobo-selector-widget.c:302
+msgid "Name"
+msgstr "Név"
+
+#: bonobo/bonobo-selector-widget.c:326
+msgid "Description"
+msgstr "Leírás"
+
+#: bonobo/bonobo-ui-config-widget.c:260
+msgid "Visible"
+msgstr "Látható"
+
+#: bonobo/bonobo-ui-config-widget.c:267
+msgid "_Show"
+msgstr "_Mutatás"
+
+#: bonobo/bonobo-ui-config-widget.c:274
+msgid "_Hide"
+msgstr "_Elrejtés"
+
+#: bonobo/bonobo-ui-config-widget.c:280
+msgid "_View tooltips"
+msgstr "_Tippek mutatása"
+
+#: bonobo/bonobo-ui-config-widget.c:285
+msgid "Toolbars"
+msgstr "Eszköztárak"
+
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "Look"
+msgstr "Kinézet"
+
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "_Icon"
+msgstr "_Ikon"
+
+#: bonobo/bonobo-ui-config-widget.c:310
+msgid "_Text and Icon"
+msgstr "_Szöveg és ikon"
+
+#: bonobo/bonobo-ui-config-widget.c:316
+msgid "_Priority text only"
+msgstr "Csak _prioritás szöveg"
+
+#: bonobo/bonobo-ui-engine-config.c:513
+msgid "Configure UI"
+msgstr "UI beállítása"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "B_oth"
+msgstr "Minde_kettő"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:549
+msgid "T_ext"
+msgstr "_Szöveg"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:550
+msgid "Hide t_ips"
+msgstr "T_ippek mutatása"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:550
+msgid "Show t_ips"
+msgstr "T_ippek elrejtése"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:551
+msgid "_Hide toolbar"
+msgstr "Eszköztár _elrejtése"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:551
+msgid "Customi_ze"
+msgstr "Testres_zabás"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:552
+msgid "Customize the toolbar"
+msgstr "Az eszköztár testreszabása"
+
+#: bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "Nagyítás mértéke"
+
+#: bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "A nagyítás mértéke"
+
+#: bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "Legkisebb nagyítás"
+
+#: bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "A legkisebb nagyítás mértéke"
+
+#: bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "Legnagyobb nagyítás mértéke"
+
+#: bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "A legnagyobb nagyítás mértéke"
+
+#: bonobo/bonobo-zoomable.c:353
+msgid "Has a minumum Zoom level"
+msgstr "Van legkisebb nagyítás beállítva"
+
+#: bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "Van-e érvényes legkisebb nagyítás mérték"
+
+#: bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "Van legnagyobb nagyítás mértéke"
+
+#: bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "Van-e érvényes legnagyobb nagyítás mérték"
+
+#: bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "Folyamatos"
+
+#: bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "Folyamatosan nagyítható-e, vagy lépésenként"
+
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "Ez semmit nem csinál, csak demo"
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Hello."
+
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr "Gnome Hello"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr "Szia világ!"
+
+#: samples/bonoboui/hello.c:290
+msgid "Cannot init libbonoboui code"
+msgstr "A libbonobo kód initje sikertlen"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "Az alkalmazás névjegye"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr "Kijelölés"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr "_Névjegy"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr "_Szerkesztés"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+msgid "_File"
+msgstr "_Fájl"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr "_Kijelölés"
