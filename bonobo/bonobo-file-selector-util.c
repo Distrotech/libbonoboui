@@ -314,11 +314,26 @@ run_file_selector (GtkWindow  *parent,
 	gtk_main ();
 
 	data = g_object_get_qdata (G_OBJECT (dialog), user_data_id);
-	if (enable_vfs && !using_bonobo_filesel) {
-		retval = gnome_vfs_get_uri_from_local_path (data);
-		g_free (data);
-	} else
-		retval = data;
+
+	if (enable_vfs && !using_bonobo_filesel &&
+			(mode != FILESEL_OPEN_MULTI)) {
+ 		retval = gnome_vfs_get_uri_from_local_path (data);
+ 		g_free (data);
+
+	} else if (enable_vfs && !using_bonobo_filesel &&
+			(mode == FILESEL_OPEN_MULTI)) {
+		gint i;
+		gchar **files = data;
+
+		for (i = 0; files[i]; ++i) {
+			gchar *tmp = files[i];
+			files[i] = gnome_vfs_get_uri_from_local_path (tmp);
+			g_free (tmp);
+		}
+
+		retval = files;
+ 	} else
+ 		retval = data;
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 

@@ -19,7 +19,7 @@
 #include <bonobo/bonobo-ui-toolbar-control-item.h>
 
 /* To debug plug/socket/control render issues */
-#undef DEBUG_CONTROL
+#define noDEBUG_CONTROL
 
 /* To dump lots of sequence information */
 #define noDEBUG_UI

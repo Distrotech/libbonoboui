@@ -1,3 +1,8 @@
+2002-03-02  James Willcox  <jwilcox@cs.indiana.edu>
+
+	* bonobo/bonobo-file-selector-util.c
+	(run_file_selector): fix for FILESEL_OPEN_MULTI
+
 2002-03-02  Paolo Maggi  <maggi@athena.polito.it>
 
 	* bonobo/bonobo-widget.c (bonobo_widget_construct_control):
