@@ -12,3 +12,7 @@ bonobo_sample_container_LDADD =			\
 	$(top_builddir)/bonobo/libbonoboui-2.la \
 	$(BONOBOUI_LIBS)			\
 	$(INTLLIBS)
+
+uidir = $(datadir)/gnome-2.0/ui
+ui_DATA = Bonobo_Sample_Container-ui.xml
+
