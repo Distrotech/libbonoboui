@@ -20,14 +20,6 @@ deprecated by the various tools to do this from dynamic files.
 
 </para>
 
-<!-- ##### FUNCTION bonobo_ui_util_build_skeleton ##### -->
-<para>
-
-</para>
-
-@xml: 
-
-
 <!-- ##### FUNCTION bonobo_ui_util_pixbuf_to_xml ##### -->
 <para>
 

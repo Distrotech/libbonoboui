@@ -1,0 +1,540 @@
+<!-- ##### SECTION Title ##### -->
+bonobo-ui-engine
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO BONOBO_TYPE_UI_ENGINE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO BONOBO_UI_ENGINE ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO BONOBO_UI_ENGINE_CLASS ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### MACRO BONOBO_IS_UI_ENGINE ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO BONOBO_IS_UI_ENGINE_CLASS ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### STRUCT BonoboUIEngine ##### -->
+<para>
+
+</para>
+
+@parent: 
+@priv: 
+
+<!-- ##### TYPEDEF BonoboUIEngineClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_construct ##### -->
+<para>
+
+</para>
+
+@engine: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_config_set_path ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_config_get_path ##### -->
+<para>
+
+</para>
+
+@engine: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_add_sync ##### -->
+<para>
+
+</para>
+
+@engine: 
+@sync: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_remove_sync ##### -->
+<para>
+
+</para>
+
+@engine: 
+@sync: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_get_syncs ##### -->
+<para>
+
+</para>
+
+@engine: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_update ##### -->
+<para>
+
+</para>
+
+@engine: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_update_node ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_queue_update ##### -->
+<para>
+
+</para>
+
+@engine: 
+@widget: 
+@node: 
+@cmd_node: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_build_control ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_widget_get_node ##### -->
+<para>
+
+</para>
+
+@widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_widget_set_node ##### -->
+<para>
+
+</para>
+
+@engine: 
+@widget: 
+@node: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_prune_widget_info ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+@save_custom: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_get_path ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_dirty_tree ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_clean_tree ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_dump ##### -->
+<para>
+
+</para>
+
+@engine: 
+@out: 
+@msg: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_node_get_object ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_node_is_dirty ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_node_get_widget ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_node_get_id ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_get_cmd_node ##### -->
+<para>
+
+</para>
+
+@engine: 
+@from_node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_node_set_dirty ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+@dirty: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_stamp_custom ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_stamp_root ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+@widget: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_add_hint ##### -->
+<para>
+
+</para>
+
+@engine: 
+@str: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_remove_hint ##### -->
+<para>
+
+</para>
+
+@engine: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_emit_verb_on ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_emit_event_on ##### -->
+<para>
+
+</para>
+
+@engine: 
+@node: 
+@state: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_emit_verb_on_w ##### -->
+<para>
+
+</para>
+
+@engine: 
+@widget: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_emit_event_on_w ##### -->
+<para>
+
+</para>
+
+@engine: 
+@widget: 
+@state: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_get_attr ##### -->
+<para>
+
+</para>
+
+@node: 
+@cmd_node: 
+@attr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_widget_attach_node ##### -->
+<para>
+
+</para>
+
+@widget: 
+@node: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_deregister_dead_components ##### -->
+<para>
+
+</para>
+
+@engine: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_deregister_component_by_ref ##### -->
+<para>
+
+</para>
+
+@engine: 
+@ref: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_deregister_component ##### -->
+<para>
+
+</para>
+
+@engine: 
+@name: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_register_component ##### -->
+<para>
+
+</para>
+
+@engine: 
+@name: 
+@component: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_get_component_names ##### -->
+<para>
+
+</para>
+
+@engine: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_get_component ##### -->
+<para>
+
+</para>
+
+@engine: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_xml_get ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@node_only: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_xml_node_exists ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_xml_merge_tree ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@tree: 
+@component: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_xml_rm ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@by_component: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_object_set ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@object: 
+@ev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_object_get ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@object: 
+@ev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_set_ui_container ##### -->
+<para>
+
+</para>
+
+@engine: 
+@ui_container: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_freeze ##### -->
+<para>
+
+</para>
+
+@engine: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_thaw ##### -->
+<para>
+
+</para>
+
+@engine: 
+
+

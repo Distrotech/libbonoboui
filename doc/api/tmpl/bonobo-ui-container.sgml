@@ -65,23 +65,6 @@ BonoboUIContainer
 </para>
 
 
-<!-- ##### FUNCTION bonobo_ui_container_get_epv ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_container_corba_object_create ##### -->
-<para>
-
-</para>
-
-@object: 
-@Returns: 
-
-
 <!-- ##### FUNCTION bonobo_ui_container_construct ##### -->
 <para>
 

@@ -14,7 +14,7 @@ BonoboSelector
 
 </para>
 
-<!-- ##### MACRO GNOME_IS_BONOBO_SELECTOR ##### -->
+<!-- ##### MACRO BONOBO_IS_SELECTOR ##### -->
 <para>
 
 </para>
@@ -35,6 +35,7 @@ BonoboSelector
 
 </para>
 
+@klass: 
 
 
 <!-- ##### TYPEDEF BonoboSelector ##### -->
@@ -56,6 +57,17 @@ BonoboSelector
 
 @title: 
 @interfaces_required: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_selector_construct ##### -->
+<para>
+
+</para>
+
+@sel: 
+@title: 
+@selector: 
 @Returns: 
 
 

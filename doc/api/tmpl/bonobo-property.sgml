@@ -19,10 +19,15 @@ bonobo-property
 
 </para>
 
+@poa: 
+@bt: 
+@name: 
+@callback_data: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @adapter: 
 @pb: 
 @property_name: 
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_property_servant_destroy ##### -->
@@ -31,6 +36,7 @@ bonobo-property
 </para>
 
 @servant: 
+@callback_data: 
 
 
 <!-- ##### TYPEDEF BonoboProperty ##### -->

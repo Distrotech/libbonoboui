@@ -93,9 +93,10 @@ BonoboUIComponent
 </para>
 
 @component: 
-@corba_ui: 
 @name: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@corba_ui: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_new ##### -->
@@ -409,23 +410,6 @@ BonoboUIComponent
 @component: 
 @text: 
 @opt_ev: 
-
-
-<!-- ##### FUNCTION bonobo_ui_component_get_epv ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_component_corba_object_create ##### -->
-<para>
-
-</para>
-
-@object: 
-@Returns: 
 
 
 <!-- ##### TYPEDEF BonoboUIVerb ##### -->

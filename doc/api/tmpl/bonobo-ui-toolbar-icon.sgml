@@ -279,12 +279,12 @@ BonoboUIToolbarIcon
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:pixbuf_width ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:pixbuf-width ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:pixbuf_height ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:pixbuf-height ##### -->
 <para>
 
 </para>
@@ -294,17 +294,17 @@ BonoboUIToolbarIcon
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:xpm_d ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:xpm-d ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:draw_mode ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:draw-mode ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:alpha_threshold ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:alpha-threshold ##### -->
 <para>
 
 </para>
@@ -314,12 +314,12 @@ BonoboUIToolbarIcon
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:pixbuf_width ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:pixbuf-width ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:pixbuf_height ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:pixbuf-height ##### -->
 <para>
 
 </para>
@@ -329,17 +329,17 @@ BonoboUIToolbarIcon
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:xpm_d ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:xpm-d ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:draw_mode ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:draw-mode ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboUIToolbarIcon:alpha_threshold ##### -->
+<!-- ##### ARG BonoboUIToolbarIcon:alpha-threshold ##### -->
 <para>
 
 </para>

@@ -53,16 +53,6 @@ BonoboUIXml
 @k: 
 
 
-<!-- ##### ENUM BonoboUIXmlError ##### -->
-<para>
-
-</para>
-
-@BONOBO_UI_XML_OK: 
-@BONOBO_UI_XML_BAD_PARAM: 
-@BONOBO_UI_XML_INVALID_PATH: 
-@BONOBO_UI_XML_INVALID_XML: 
-
 <!-- ##### STRUCT BonoboUIXml ##### -->
 <para>
 
@@ -117,6 +107,7 @@ BonoboUIXml
 
 @parent: 
 @child: 
+@user_data: 
 
 
 <!-- ##### TYPEDEF BonoboUIXmlClass ##### -->
@@ -143,6 +134,7 @@ BonoboUIXml
 @data_free: 
 @dump: 
 @add_node: 
+@user_data: 
 @Returns: 
 
 
@@ -246,12 +238,32 @@ BonoboUIXml
 @msg: 
 
 
-<!-- ##### FUNCTION bonobo_ui_xml_strip ##### -->
+<!-- ##### FUNCTION bonobo_ui_xml_remove_watch_by_data ##### -->
 <para>
 
 </para>
 
-@node: 
+@tree: 
+@user_data: 
+
+
+<!-- ##### FUNCTION bonobo_ui_xml_add_watch ##### -->
+<para>
+
+</para>
+
+@tree: 
+@path: 
+@user_data: 
+
+
+<!-- ##### FUNCTION bonobo_ui_xml_set_watch_fn ##### -->
+<para>
+
+</para>
+
+@tree: 
+@watch: 
 
 
 <!-- ##### SIGNAL BonoboUIXml::override ##### -->
@@ -261,6 +273,7 @@ BonoboUIXml
 
 @bonobouixml: the object which received the signal.
 @arg1: 
+@arg2: 
 
 <!-- ##### SIGNAL BonoboUIXml::replace-override ##### -->
 <para>

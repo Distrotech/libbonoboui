@@ -190,32 +190,32 @@ BonoboZoomable
 
 @bonobozoomable: the object which received the signal.
 
-<!-- ##### ARG BonoboZoomable:zoom_level ##### -->
+<!-- ##### ARG BonoboZoomable:zoom-level ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboZoomable:min_zoom_level ##### -->
+<!-- ##### ARG BonoboZoomable:min-zoom-level ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboZoomable:max_zoom_level ##### -->
+<!-- ##### ARG BonoboZoomable:max-zoom-level ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboZoomable:has_min_zoom_level ##### -->
+<!-- ##### ARG BonoboZoomable:has-min-zoom-level ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboZoomable:has_max_zoom_level ##### -->
+<!-- ##### ARG BonoboZoomable:has-max-zoom-level ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG BonoboZoomable:is_continuous ##### -->
+<!-- ##### ARG BonoboZoomable:is-continuous ##### -->
 <para>
 
 </para>

@@ -147,9 +147,12 @@ Simplified embedding of widgets in Bonobo.
 
 </para>
 
+@moniker: 
+@uic: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @goad_id: 
 @uih: 
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_widget_new_control_from_objref ##### -->
@@ -158,8 +161,10 @@ Simplified embedding of widgets in Bonobo.
 </para>
 
 @control: 
-@uih: 
+@uic: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@uih: 
 
 
 <!-- ##### FUNCTION bonobo_widget_get_control_frame ##### -->
@@ -176,9 +181,12 @@ Simplified embedding of widgets in Bonobo.
 
 </para>
 
+@moniker: 
+@uic: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @object_desc: 
 @uih: 
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_widget_get_container ##### -->
@@ -209,6 +217,15 @@ Simplified embedding of widgets in Bonobo.
 
 
 <!-- ##### FUNCTION bonobo_widget_get_uih ##### -->
+<para>
+
+</para>
+
+@bw: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_get_objref ##### -->
 <para>
 
 </para>

@@ -252,6 +252,19 @@ init_transient ()
 @Returns: 
 
 
+<!-- ##### FUNCTION bonobo_transient_construct ##### -->
+<para>
+
+</para>
+
+@transient: 
+@poa: 
+@new_servant: 
+@destroy_servant: 
+@data: 
+@Returns: 
+
+
 <!-- ##### FUNCTION bonobo_transient_create_objref ##### -->
 <para>
 </para>

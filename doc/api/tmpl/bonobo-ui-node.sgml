@@ -282,3 +282,11 @@ depending on libxml inadvertantly.
 @Returns: 
 
 
+<!-- ##### FUNCTION bonobo_ui_node_strip ##### -->
+<para>
+
+</para>
+
+@node: 
+
+

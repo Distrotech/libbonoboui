@@ -214,17 +214,10 @@ BonoboControlFrame
 </para>
 
 @control_frame: 
-@corba_control_frame: 
 @uih: 
 @Returns: 
-
-
-<!-- ##### FUNCTION bonobo_control_frame_get_epv ##### -->
-<para>
-
-</para>
-
-@Returns: 
+<!-- # Unused Parameters # -->
+@corba_control_frame: 
 
 
 <!-- ##### FUNCTION bonobo_control_frame_size_request ##### -->
@@ -235,6 +228,22 @@ BonoboControlFrame
 @control_frame: 
 @desired_width: 
 @desired_height: 
+
+
+<!-- ##### FUNCTION bonobo_control_frame_sync_realize ##### -->
+<para>
+
+</para>
+
+@frame: 
+
+
+<!-- ##### FUNCTION bonobo_control_frame_sync_unrealize ##### -->
+<para>
+
+</para>
+
+@frame: 
 
 
 <!-- ##### SIGNAL BonoboControlFrame::activated ##### -->

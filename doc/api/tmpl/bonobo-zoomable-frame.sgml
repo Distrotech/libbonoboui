@@ -73,6 +73,14 @@ BonoboZoomableFrame
 @Returns: 
 
 
+<!-- ##### FUNCTION bonobo_zoomable_frame_get_epv ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION bonobo_zoomable_frame_corba_object_create ##### -->
 <para>
 

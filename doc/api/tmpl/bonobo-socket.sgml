@@ -145,13 +145,13 @@ never be set by an application.)
 @Returns: 
 
 
-<!-- ##### FUNCTION bonobo_socket_set_control ##### -->
+<!-- ##### FUNCTION bonobo_socket_set_control_frame ##### -->
 <para>
 
 </para>
 
 @socket: 
-@control: 
+@frame: 
 
 
 <!-- ##### FUNCTION bonobo_socket_steal ##### -->

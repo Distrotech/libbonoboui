@@ -79,49 +79,23 @@ BonoboItemContainer
 @Returns: 
 
 
-<!-- ##### FUNCTION bonobo_item_container_construct ##### -->
-<para>
-
-</para>
-
-@container: 
-@container_corba: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_item_container_get_moniker ##### -->
-<para>
-
-</para>
-
-@container: 
-@Returns: 
-
-
 <!-- ##### FUNCTION bonobo_item_container_add ##### -->
 <para>
 
 </para>
 
 @container: 
+@name: 
 @object: 
 
 
-<!-- ##### FUNCTION bonobo_item_container_remove ##### -->
+<!-- ##### FUNCTION bonobo_item_container_remove_by_name ##### -->
 <para>
 
 </para>
 
 @container: 
-@object: 
-
-
-<!-- ##### FUNCTION bonobo_item_container_get_epv ##### -->
-<para>
-
-</para>
-
-@Returns: 
+@name: 
 
 
 <!-- ##### SIGNAL BonoboItemContainer::get-object ##### -->

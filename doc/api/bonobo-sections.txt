@@ -6,6 +6,7 @@ BONOBO_SELECTOR_CLASS
 BonoboSelector
 BonoboSelectorClass
 bonobo_selector_new
+bonobo_selector_construct
 bonobo_selector_get_selected_id
 bonobo_selector_get_selected_name
 bonobo_selector_get_selected_description
@@ -251,6 +252,9 @@ BonoboItemHandler
 BonoboItemHandlerClass
 BonoboItemHandlerEnumObjectsFn
 BonoboItemHandlerGetObjectFn
+BonoboItemOption
+bonobo_item_option_parse
+bonobo_item_options_free
 bonobo_item_handler_new
 bonobo_item_handler_construct
 <SUBSECTION Standard>
@@ -282,6 +286,11 @@ bonobo_moniker_util_get_parent_name
 bonobo_moniker_util_qi_return
 bonobo_moniker_util_seek_std_separator
 bonobo_moniker_client_new_from_name_async
+bonobo_moniker_util_escape
+bonobo_moniker_util_unescape
+bonobo_moniker_client_equal
+bonobo_moniker_resolve_async
+bonobo_moniker_resolve_async_default
 <SUBSECTION Standard>
 </SECTION>
 
@@ -307,10 +316,16 @@ BONOBO_IS_MONIKER
 BONOBO_IS_MONIKER_CLASS
 BonoboMoniker
 BonoboMonikerClass
+bonobo_moniker_construct
 bonobo_moniker_get_parent
 bonobo_moniker_set_parent
 bonobo_moniker_get_name
 bonobo_moniker_set_name
+bonobo_moniker_get_name_escaped
+bonobo_moniker_get_name_full
+bonobo_moniker_get_case_sensitive
+bonobo_moniker_set_case_sensitive
+bonobo_moniker_get_prefix
 <SUBSECTION Standard>
 bonobo_moniker_get_type
 </SECTION>
@@ -383,6 +398,7 @@ bonobo_object_new_from_servant
 bonobo_object_from_servant
 bonobo_object_bind_to_servant
 bonobo_object_get_servant
+bonobo_object_get_epv
 bonobo_object_activate_servant
 bonobo_object_add_interface
 bonobo_object_query_local_interface
@@ -392,10 +408,12 @@ bonobo_object_dup_ref
 bonobo_object_release_unref
 bonobo_object_ref
 bonobo_object_unref
+bonobo_object_idle_unref
 bonobo_object_init
 bonobo_object_trace_refs
 bonobo_object_dump_interfaces
 bonobo_object_check_env
+BONOBO_OBJREF
 BONOBO_OBJECT_CHECK
 bonobo_unknown_ping
 <SUBSECTION Standard>
@@ -656,6 +674,7 @@ bonobo_stream_client_write
 bonobo_stream_client_write_string
 bonobo_stream_client_printf
 bonobo_stream_client_read_string
+bonobo_stream_client_get_length
 <SUBSECTION Standard>
 </SECTION>
 
@@ -710,6 +729,7 @@ BonoboTransientClass
 BonoboTransientServantNew
 BonoboTransientServantDestroy
 bonobo_transient_new
+bonobo_transient_construct
 bonobo_transient_create_objref
 <SUBSECTION Standard>
 bonobo_transient_get_type
@@ -1047,6 +1067,9 @@ bonobo_ui_xml_get_parent_path
 bonobo_ui_xml_merge
 bonobo_ui_xml_rm
 bonobo_ui_xml_dump
+bonobo_ui_xml_remove_watch_by_data
+bonobo_ui_xml_add_watch
+bonobo_ui_xml_set_watch_fn
 <SUBSECTION Standard>
 bonobo_ui_xml_get_type
 </SECTION>
@@ -1119,6 +1142,7 @@ bonobo_widget_get_container
 bonobo_widget_get_client_site
 bonobo_widget_get_view_frame
 bonobo_widget_get_uih
+bonobo_widget_get_objref
 bonobo_widget_set_property
 bonobo_widget_get_property
 <SUBSECTION Standard>
@@ -1328,6 +1352,8 @@ BonoboEventSource
 BonoboEventSourceClass
 bonobo_event_source_new
 bonobo_event_source_notify_listeners
+bonobo_event_source_client_add_listener
+bonobo_event_source_client_remove_listener
 <SUBSECTION Standard>
 BonoboEventSourcePrivate
 bonobo_event_source_get_type

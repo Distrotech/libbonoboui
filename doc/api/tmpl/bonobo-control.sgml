@@ -127,18 +127,10 @@ BonoboControl
 </para>
 
 @control: 
-@corba_control: 
 @widget: 
 @Returns: 
-
-
-<!-- ##### FUNCTION bonobo_control_corba_object_create ##### -->
-<para>
-
-</para>
-
-@object: 
-@Returns: 
+<!-- # Unused Parameters # -->
+@corba_control: 
 
 
 <!-- ##### FUNCTION bonobo_control_get_ui_component ##### -->
@@ -230,30 +222,6 @@ BonoboControl
 
 @x11_id: 
 @Returns: 
-
-
-<!-- ##### FUNCTION bonobo_control_get_epv ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_control_sync_realize ##### -->
-<para>
-
-</para>
-
-@control: 
-
-
-<!-- ##### FUNCTION bonobo_control_sync_unrealize ##### -->
-<para>
-
-</para>
-
-@control: 
 
 
 <!-- ##### SIGNAL BonoboControl::set-frame ##### -->
