@@ -468,6 +468,15 @@ bonobo_widget_get_server (BonoboWidget *bonobo_widget)
 	return bonobo_widget->priv->server;
 }
 
+Bonobo_Unknown
+bonobo_widget_get_objref (BonoboWidget *bonobo_widget)
+{
+	g_return_val_if_fail (bonobo_widget != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_WIDGET (bonobo_widget), NULL);
+
+	return BONOBO_OBJREF (bonobo_widget->priv->server);
+}
+
 static void
 bonobo_widget_destroy (GtkObject *object)
 {
