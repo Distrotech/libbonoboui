@@ -33,7 +33,11 @@
 static BonoboUIToolbarItemClass *parent_class = NULL;
 
 
-#define BORDER_WIDTH 2
+#define BORDER_WIDTH        2
+
+#define SPACE_LINE_DIVISION 10
+#define SPACE_LINE_START    3
+#define SPACE_LINE_END      7
 
 
 /* GtkWidget methods.  */
@@ -70,15 +74,15 @@ impl_draw (GtkWidget *widget,
 		gtk_paint_vline (widget->style, widget->window,
 				 GTK_WIDGET_STATE (widget), area, widget,
 				 "toolbar",
-				 allocation->y + border_width,
-				 allocation->y + allocation->height - border_width - 1,
+				 allocation->y + allocation->height * SPACE_LINE_START / SPACE_LINE_DIVISION,
+				 allocation->y + allocation->height * SPACE_LINE_END / SPACE_LINE_DIVISION,
 				 allocation->x + border_width);
 	else
 		gtk_paint_hline (widget->style, widget->window,
 				 GTK_WIDGET_STATE (widget), area, widget,
 				 "toolbar",
-				 allocation->x + border_width,
-				 allocation->x + allocation->width - border_width - 1,
+				 allocation->x + allocation->width * SPACE_LINE_START / SPACE_LINE_DIVISION,
+				 allocation->x + allocation->width * SPACE_LINE_END / SPACE_LINE_DIVISION,
 				 allocation->y + border_width);
 }
 
