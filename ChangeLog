@@ -1,3 +1,9 @@
+2001-05-25  Joe Shaw  <joe@ximian.com>
+
+	* bonobo/bonobo-ui-engine-config.c (dialog_new),
+	bonobo/bonobo-selector.c (bonobo_selector_construct):
+	GTK_STOCK_BUTTON_OK -> GTK_STOCK_OK
+
 2001-05-19  Martin Baulig  <baulig@suse.de>
 
 	* bonobo/bonobo-plug.[ch]: Derive from GtkPlug.

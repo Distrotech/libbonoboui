@@ -517,7 +517,7 @@ dialog_new (BonoboUIEngineConfig *config)
 	window = gtk_dialog_new_with_buttons (_("Configure UI"), 
 					      NULL,
 					      0,
-					      GTK_STOCK_BUTTON_OK,
+					      GTK_STOCK_OK,
 					      NULL);
 	gtk_dialog_set_default_response (GTK_DIALOG (window), GTK_RESPONSE_OK);
 

@@ -276,9 +276,9 @@ bonobo_selector_construct (BonoboSelector       *sel,
 			    GTK_WIDGET (selector),
 			    TRUE, TRUE, BONOBO_PAD_SMALL);
 	
-	gtk_dialog_add_button (GTK_DIALOG (sel), GTK_STOCK_BUTTON_OK,
+	gtk_dialog_add_button (GTK_DIALOG (sel), GTK_STOCK_OK,
 			       GTK_RESPONSE_OK);
-	gtk_dialog_add_button (GTK_DIALOG (sel), GTK_STOCK_BUTTON_CANCEL,
+	gtk_dialog_add_button (GTK_DIALOG (sel), GTK_STOCK_CANCEL,
 			       GTK_RESPONSE_CANCEL);
 	gtk_dialog_set_default_response (GTK_DIALOG (sel), GTK_RESPONSE_OK);
 	
