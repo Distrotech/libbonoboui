@@ -2064,6 +2064,10 @@ toolbar_sync_state (BonoboWinPrivate *priv, BonoboUINode *node,
 			BONOBO_UI_TOOLBAR_ITEM (widget),
 			string_array_contains (behavior_array, "expandable"));
 
+		bonobo_ui_toolbar_item_set_pack_end (
+			BONOBO_UI_TOOLBAR_ITEM (widget),
+			string_array_contains (behavior_array, "pack-end"));
+
 		g_strfreev (behavior_array);
 	}
 
