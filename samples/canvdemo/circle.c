@@ -3,7 +3,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <string.h>
 #include <glib/gmacros.h>
-#include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include <libgnomecanvas/gnome-canvas.h>
 #include <bonobo/Bonobo.h>
@@ -324,7 +323,6 @@ bonobo_item_factory (BonoboGenericFactory *factory, const char *component,
 int
 main (int argc, char *argv [])
 {
-        char *iid, *iid2;
         int retval;
         BonoboObject *factory;
         CommonData data;
@@ -339,24 +337,16 @@ main (int argc, char *argv [])
         if (!bonobo_ui_init (argv[0], VERSION, &argc, argv))
                 g_error (_("Could not initialize Bonobo UI"));
 
-        iid = bonobo_activation_make_registration_id (
-                "OAFIID:CircleItem_Factory",
-                DisplayString (gdk_display));
-
-        iid2 = bonobo_activation_make_registration_id (
-                "OAFIID:Circle_ControllerFactory",
-                DisplayString (gdk_display));
-
-        factory = BONOBO_OBJECT(bonobo_generic_factory_new (iid,
-                                bonobo_item_factory, &data));
+        factory = BONOBO_OBJECT
+		(bonobo_generic_factory_new
+			("OAFIID:CircleItem_Factory",
+			 bonobo_item_factory, &data));
         if (factory)
-        {
-                bonobo_running_context_auto_exit_unref(factory);
-        }
-        retval = bonobo_generic_factory_main (iid2, control_factory, &data);
+                bonobo_running_context_auto_exit_unref (factory);
 
-        g_free (iid);
-        g_free (iid2);
+        retval = bonobo_generic_factory_main
+		("OAFIID:Circle_ControllerFactory",
+		 control_factory, &data);
 
         return retval;
 }

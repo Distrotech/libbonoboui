@@ -832,7 +832,9 @@ bonobo_dock_item_expose (GtkWidget      *widget,
 static void
 bonobo_dock_item_drag_end (BonoboDockItem *di)
 {
-  gdk_pointer_ungrab (GDK_CURRENT_TIME);
+  gdk_display_pointer_ungrab
+	  (gtk_widget_get_display (GTK_WIDGET (di)),
+	   GDK_CURRENT_TIME);
 
   di->in_drag = FALSE;
 
@@ -1337,7 +1339,9 @@ bonobo_dock_item_grab_pointer (BonoboDockItem *item)
 
   item->in_drag = TRUE;
 
-  fleur = gdk_cursor_new (GDK_FLEUR);
+  fleur = gdk_cursor_new_for_display
+	  (gtk_widget_get_display (GTK_WIDGET (item)),
+	   GDK_FLEUR);
 
   /* Hm, not sure this is the right thing to do, but it seems to work.  */
   while (gdk_pointer_grab (item->bin_window,

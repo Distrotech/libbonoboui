@@ -242,7 +242,9 @@ hide_popup_window (BonoboUIToolbar *toolbar)
 
 	priv = toolbar->priv;
 
-	gdk_pointer_ungrab (GDK_CURRENT_TIME);
+	gdk_display_pointer_ungrab
+		(gtk_widget_get_display (priv->popup_window),
+		 GDK_CURRENT_TIME);
 
 	gtk_grab_remove (priv->popup_window);
 	gtk_widget_hide (priv->popup_window);

@@ -1,3 +1,19 @@
+2003-06-10  Morten Welinder  <mortenw@gnome.org>
+
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_drag_end) 
+	(bonobo_dock_item_grab_pointer): multi head fixes.
+
+	* bonobo/bonobo-ui-main.c (do_low_level_init): ditto.
+
+	* bonobo/bonobo-ui-toolbar.c (hide_popup_window): ditto.
+
+2003-06-10  Michael Meeks  <michael@ximian.com>
+
+	* samples/controls/bonobo-sample-controls.c
+	(main): bin registration iid generation.
+
+	* samples/canvdemo/circle.c (main): ditto.
+
 2003-05-12  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-toolbar.c

@@ -95,6 +95,8 @@ do_low_level_init (void)
 {
 	CORBA_Context context;
 	CORBA_Environment ev;
+	GdkDisplay *display;
+	Display *xdisplay;
 
 	if (bonobo_ui_inited)
 		return;
@@ -103,15 +105,18 @@ do_low_level_init (void)
 
 	bonobo_setup_x_error_handler ();
 
-	/* FIXME: nasty contractual bonobo-activation issues here */
-		
-	context = bonobo_activation_context_get ();
+	display = gdk_display_get_default ();
+	xdisplay = gdk_x11_display_get_xdisplay (display);
 		
 	CORBA_exception_init (&ev);
+
+	/* FIXME: nasty contractual bonobo-activation issues here */
+	context = bonobo_activation_context_get ();
 	CORBA_Context_set_one_value (
 		context, "display",
-		DisplayString (gdk_display),
+		DisplayString (xdisplay),
 		&ev);
+
 	CORBA_exception_free (&ev);
 }
 
