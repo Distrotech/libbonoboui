@@ -16,15 +16,15 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_CLIENT_SITE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_CLIENT_SITE_TYPE))
 
 typedef struct {
-	GnomeObject base;
+	GnomeUnknown base;
 
 	GnomeContainer    *container;
-	GnomeObjectClient *bound_object;
+	GnomeUnknownClient *bound_object;
 	int               child_shown:1;
 } GnomeClientSite;
 
 typedef struct {
-	GnomeObjectClass parent_class;
+	GnomeUnknownClass parent_class;
 
 	void (*show_window)  (GnomeClientSite *, CORBA_boolean shown);
 	void (*queue_resize) (GnomeClientSite *);
@@ -41,7 +41,7 @@ void             gnome_client_site_set_moniker    (GnomeClientSite *client_site,
 						   GnomeMoniker   *moniker);
 
 gboolean         gnome_client_site_bind_bonobo_object (GnomeClientSite *client_site,
-						   GnomeObjectClient *object);
+						   GnomeUnknownClient *object);
 
 extern POA_GNOME_ClientSite__epv gnome_client_site_epv;
 

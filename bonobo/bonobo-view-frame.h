@@ -17,7 +17,7 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_VIEW_FRAME_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_FRAME_TYPE))
 
 typedef struct {
-	GnomeObject base;
+	GnomeUnknown base;
 
 	GnomeWrapper    *wrapper; 
 
@@ -25,7 +25,7 @@ typedef struct {
 } GnomeViewFrame;
 
 typedef struct {
-	GnomeObjectClass parent_class;
+	GnomeUnknownClass parent_class;
 
 	/*
 	 * signal

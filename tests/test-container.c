@@ -26,10 +26,10 @@ CORBA_ORB orb;
  * views to existing components.
  */
 
-GnomeObjectClient *text_obj;
+GnomeUnknownClient *text_obj;
 GnomeClientSite   *text_client_site;
 
-GnomeObjectClient *image_png_obj;
+GnomeUnknownClient *image_png_obj;
 GnomeClientSite   *image_client_site;
 
 char *server_goadid = "Test_server_bonobo_object";
@@ -41,15 +41,15 @@ typedef struct {
 	GNOME_View view;
 } Application;
 
-static GnomeObjectClient *
+static GnomeUnknownClient *
 launch_server (GnomeClientSite *client_site, GnomeContainer *container, char *goadid)
 {
-	GnomeObjectClient *object_server;
+	GnomeUnknownClient *object_server;
 	
-	gnome_container_add (container, GNOME_OBJECT (client_site));
+	gnome_container_add (container, GNOME_UNKNOWN (client_site));
 
 	printf ("Launching...\n");
-	object_server = gnome_object_activate_with_goad_id (NULL, goadid, 0, NULL);
+	object_server = gnome_unknown_activate_with_goad_id (NULL, goadid, 0, NULL);
 	printf ("Return: %p\n", object_server);
 	if (!object_server){
 		g_warning (_("Can not activate object_server\n"));
@@ -66,7 +66,7 @@ launch_server (GnomeClientSite *client_site, GnomeContainer *container, char *go
 
 static gboolean
 view_frame_activated_cb (GnomeViewFrame *view_frame, gboolean state,
-			 GnomeObjectClient *server_object)
+			 GnomeUnknownClient *server_object)
 {
 
 	if (state) {
@@ -75,7 +75,7 @@ view_frame_activated_cb (GnomeViewFrame *view_frame, gboolean state,
 
 		CORBA_exception_init (&ev);
 		verbs = GNOME_BonoboObject_get_verb_list (
-			GNOME_OBJECT (server_object)->object,
+			GNOME_UNKNOWN (server_object)->object,
 			&ev);
 		if (ev._major != CORBA_NO_EXCEPTION) {
 			g_warning ("Could not get verb list!\n");
@@ -92,7 +92,7 @@ view_frame_activated_cb (GnomeViewFrame *view_frame, gboolean state,
 
 static GnomeViewFrame *
 add_view (GtkWidget *widget, Application *app,
-	  GnomeClientSite *client_site, GnomeObjectClient *server) 
+	  GnomeClientSite *client_site, GnomeUnknownClient *server) 
 {
 	GnomeViewFrame *view_frame;
 	GtkWidget *view_widget;
@@ -117,12 +117,12 @@ add_view (GtkWidget *widget, Application *app,
 } /* add_view */
 
 
-static GnomeObjectClient *
+static GnomeUnknownClient *
 add_cmd (GtkWidget *widget, Application *app, char *server_goadid,
 	 GnomeClientSite **client_site)
 {
 	GtkWidget *w;
-	GnomeObjectClient *server;
+	GnomeUnknownClient *server;
 	
 	*client_site = gnome_client_site_new (app->container);
 
@@ -144,7 +144,7 @@ add_demo_cmd (GtkWidget *widget, Application *app)
 static void
 add_image_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeObjectClient *object;
+	GnomeUnknownClient *object;
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
@@ -157,8 +157,8 @@ add_image_cmd (GtkWidget *widget, Application *app)
 
 	image_png_obj = object;
 
-	persist = GNOME_obj_query_interface (
-		GNOME_OBJECT (object)->object,
+	persist = GNOME_Unknown_query_interface (
+		GNOME_UNKNOWN (object)->object,
 		"IDL:GNOME/PersistStream:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)
@@ -176,9 +176,9 @@ add_image_cmd (GtkWidget *widget, Application *app)
 		return;
 	}
 	
-	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
+	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_UNKNOWN (stream)->object, &ev);
 
-	GNOME_obj_unref (persist, &ev);
+	GNOME_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
 }
 
@@ -201,7 +201,7 @@ add_image_view (GtkWidget *widget, Application *app)
 static void
 add_text_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeObjectClient *object;
+	GnomeUnknownClient *object;
 	GnomeStream *stream;
 	GNOME_PersistStream persist;
 
@@ -214,8 +214,8 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 	text_obj = object;
 
-	persist = GNOME_obj_query_interface (
-		GNOME_OBJECT (object)->object,
+	persist = GNOME_Unknown_query_interface (
+		GNOME_UNKNOWN (object)->object,
 		"IDL:GNOME/PersistStream:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)
@@ -235,9 +235,9 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	}
 	
 	GNOME_PersistStream_load (
-	     persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
+	     persist, (GNOME_Stream) GNOME_UNKNOWN (stream)->object, &ev);
 
-	GNOME_obj_unref (persist, &ev);
+	GNOME_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
 } /* add_text_cmd */
 
@@ -268,7 +268,7 @@ timeout_next_line (gpointer data)
 
 		fclose (tmt->f);
 
-		GNOME_obj_unref (tmt->psink, &ev);
+		GNOME_Unknown_unref (tmt->psink, &ev);
 		CORBA_Object_release (tmt->psink, &ev);
 
 		g_free (tmt);
@@ -316,8 +316,8 @@ send_text_cmd (GtkWidget *widget, Application *app)
 	if (text_obj == NULL)
 		return;
 
-	psink = GNOME_obj_query_interface (
-		GNOME_OBJECT (text_obj)->object,
+	psink = GNOME_Unknown_query_interface (
+		GNOME_UNKNOWN (text_obj)->object,
 		"IDL:GNOME/ProgressiveDataSink:1.0", &ev);
 
         if (ev._major != CORBA_NO_EXCEPTION)

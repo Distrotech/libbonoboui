@@ -12,7 +12,7 @@
 #include <bonobo/gnome-object.h>
 #include <bonobo/gnome-component.h>
 
-static GnomeObjectClass *gnome_bonobo_object_parent_class;
+static GnomeUnknownClass *gnome_bonobo_object_parent_class;
 
 enum {
 	HOST_NAME_CHANGED,
@@ -27,7 +27,7 @@ impl_GNOME_BonoboObject_set_client_site (PortableServer_Servant servant,
 					 const GNOME_ClientSite client_site,
 					 CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 	CORBA_Environment evx;
 
 	CORBA_exception_init (&evx);
@@ -43,7 +43,7 @@ static GNOME_ClientSite
 impl_GNOME_BonoboObject_get_client_site (PortableServer_Servant servant,
 					 CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 	GNOME_ClientSite ret;
 	CORBA_Environment evx;
 	
@@ -60,7 +60,7 @@ impl_GNOME_BonoboObject_set_host_name (PortableServer_Servant servant,
 				       const CORBA_char *appname,
 				       CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 
 	if (bonobo_object->host_name)
 		g_free (bonobo_object->host_name);
@@ -80,7 +80,7 @@ impl_GNOME_BonoboObject_close (PortableServer_Servant servant,
 			       const GNOME_BonoboObject_CloseMode mode,
 			       CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 }
 
 static void
@@ -89,7 +89,7 @@ impl_GNOME_BonoboObject_set_moniker (PortableServer_Servant servant,
 				     const GNOME_Moniker_type which,
 				     CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 
 }
 
@@ -97,7 +97,7 @@ static GNOME_BonoboObject_verb_list *
 impl_GNOME_BonoboObject_get_verb_list (PortableServer_Servant servant,
 				       CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 	GNOME_BonoboObject_verb_list *list;
 	GList *l;
 	int len, i;
@@ -129,13 +129,13 @@ impl_GNOME_BonoboObject_advise (PortableServer_Servant servant,
 				const GNOME_AdviseSink advise,
 				CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 }
 
 static void
 impl_GNOME_BonoboObject_unadvise (PortableServer_Servant servant, CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 }
 
 static CORBA_long
@@ -143,7 +143,7 @@ impl_GNOME_BonoboObject_get_misc_status (PortableServer_Servant servant,
 					 const CORBA_long type,
 					 CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 
 	return 0;
 }
@@ -153,7 +153,7 @@ impl_GNOME_BonoboObject_new_view (PortableServer_Servant servant,
 				  const GNOME_ViewFrame view_frame,
 				  CORBA_Environment *ev)
 {
-	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_object_from_servant (servant));
+	GnomeBonoboObject *bonobo_object = GNOME_BONOBO_OBJECT (gnome_unknown_from_servant (servant));
 	GnomeView *view;
 	CORBA_Environment evx;
 	GNOME_View ret;
@@ -166,7 +166,7 @@ impl_GNOME_BonoboObject_new_view (PortableServer_Servant servant,
 	view->view_frame = view_frame;
 
 	CORBA_exception_init (&evx);
-	ret = CORBA_Object_duplicate (GNOME_OBJECT (view)->object, &evx);
+	ret = CORBA_Object_duplicate (GNOME_UNKNOWN (view)->object, &evx);
 	CORBA_exception_free (&evx);
 
 	return ret;
@@ -187,18 +187,18 @@ POA_GNOME_BonoboObject__epv gnome_bonobo_object_epv = {
 };
 
 static POA_GNOME_BonoboObject__vepv gnome_bonobo_object_vepv = {
-	&gnome_obj_base_epv,
-	&gnome_obj_epv,
+	&gnome_unknown_base_epv,
+	&gnome_unknown_epv,
 	&gnome_bonobo_object_epv
 };
 
 static CORBA_Object
-create_gnome_bonobo_object (GnomeObject *object)
+create_gnome_bonobo_object (GnomeUnknown *object)
 {
 	POA_GNOME_BonoboObject *servant;
 	CORBA_Object o;
 	
-	servant = (POA_GNOME_BonoboObject *)g_new0 (GnomeObjectServant, 1);
+	servant = (POA_GNOME_BonoboObject *)g_new0 (GnomeUnknownServant, 1);
 	servant->vepv = &gnome_bonobo_object_vepv;
 
 	POA_GNOME_BonoboObject__init ((PortableServer_Servant) servant, &object->ev);
@@ -207,7 +207,7 @@ create_gnome_bonobo_object (GnomeObject *object)
 		return CORBA_OBJECT_NIL;
 	}
 
-	return gnome_object_activate_servant (object, servant);
+	return gnome_unknown_activate_servant (object, servant);
 }
 
 GnomeBonoboObject *
@@ -221,7 +221,7 @@ gnome_bonobo_object_construct (GnomeBonoboObject  *bonobo_object,
 	g_return_val_if_fail (factory != NULL, NULL);
 	g_return_val_if_fail (corba_bonobo_object != CORBA_OBJECT_NIL, NULL);
 
-	gnome_object_construct (GNOME_OBJECT (bonobo_object), corba_bonobo_object);
+	gnome_unknown_construct (GNOME_UNKNOWN (bonobo_object), corba_bonobo_object);
 
 	bonobo_object->view_factory = factory;
 	bonobo_object->view_factory_closure = data;
@@ -253,7 +253,7 @@ gnome_bonobo_object_new (GnomeViewFactory factory, void *data)
 	g_return_val_if_fail (factory != NULL, NULL);
 
 	bonobo_object = gtk_type_new (gnome_bonobo_object_get_type ());
-	corba_bonobo_object = create_gnome_bonobo_object (GNOME_OBJECT (bonobo_object));
+	corba_bonobo_object = create_gnome_bonobo_object (GNOME_UNKNOWN (bonobo_object));
 	if (corba_bonobo_object == CORBA_OBJECT_NIL){
 		gtk_object_destroy (GTK_OBJECT (bonobo_object));
 		return NULL;
@@ -295,7 +295,7 @@ gnome_bonobo_object_class_init (GnomeBonoboObjectClass *class)
 	GtkObjectClass *object_class = (GtkObjectClass *) class;
 
 	gnome_bonobo_object_parent_class =
-		gtk_type_class (gnome_object_get_type ());
+		gtk_type_class (gnome_unknown_get_type ());
 
 	bonobo_object_signals [HOST_NAME_CHANGED] =
                 gtk_signal_new ("host_name_changed",
@@ -312,7 +312,7 @@ gnome_bonobo_object_class_init (GnomeBonoboObjectClass *class)
 }
 
 static void
-gnome_bonobo_object_init (GnomeObject *object)
+gnome_bonobo_object_init (GnomeUnknown *object)
 {
 }
 
@@ -333,7 +333,7 @@ gnome_bonobo_object_get_type (void)
 			(GtkClassInitFunc) NULL
 		};
 
-		type = gtk_type_unique (gnome_object_get_type (), &info);
+		type = gtk_type_unique (gnome_unknown_get_type (), &info);
 	}
 
 	return type;

@@ -19,10 +19,10 @@ BEGIN_GNOME_DECLS
 struct _GnomeComponentFactory;
 typedef struct _GnomeComponentFactory GnomeComponentFactory;
 
-typedef GnomeObject * (*GnomeComponentFactoryFn)(GnomeComponentFactory *Factory, void *closure);
+typedef GnomeUnknown * (*GnomeComponentFactoryFn)(GnomeComponentFactory *Factory, void *closure);
 					
 struct _GnomeComponentFactory {
-	GnomeObject base;
+	GnomeUnknown base;
 
 	/*
 	 * The function factory
@@ -32,12 +32,12 @@ struct _GnomeComponentFactory {
 };
 
 typedef struct {
-	GnomeObjectClass parent_class;
+	GnomeUnknownClass parent_class;
 
 	/*
 	 * Virtual methods
 	 */
-	GnomeObject * (*new_component)(GnomeComponentFactory *c_factory);
+	GnomeUnknown * (*new_component)(GnomeComponentFactory *c_factory);
 } GnomeComponentFactoryClass;
 
 GtkType gnome_component_factory_get_type  (void);

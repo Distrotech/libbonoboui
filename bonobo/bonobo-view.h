@@ -16,7 +16,7 @@ BEGIN_GNOME_DECLS
 #define GNOME_IS_VIEW_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), GNOME_VIEW_TYPE))
 
 typedef struct {
-	GnomeObject base;
+	GnomeUnknown base;
 
 	GtkWidget *widget;
 	GtkWidget *plug;
@@ -26,7 +26,7 @@ typedef struct {
 } GnomeView;
 
 typedef struct {
-	GnomeObjectClass parent_class;
+	GnomeUnknownClass parent_class;
 
 	/*
 	 * Signals

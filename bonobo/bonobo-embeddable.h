@@ -21,7 +21,7 @@ typedef struct _GnomeBonoboObject GnomeBonoboObject;
 typedef GnomeView * (*GnomeViewFactory)(GnomeBonoboObject *bonobo_object, const GNOME_ViewFrame view_frame, void *closure);
 					
 struct _GnomeBonoboObject {
-	GnomeObject base;
+	GnomeUnknown base;
 
 	char *host_name;
 	char *host_appname;
@@ -40,7 +40,7 @@ struct _GnomeBonoboObject {
 };
 
 typedef struct {
-	GnomeObjectClass parent_class;
+	GnomeUnknownClass parent_class;
 
 	/*
 	 * Signals
