@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2002-01-15 12:03+0000\n"
+"POT-Creation-Date: 2002-01-28 11:03+0000\n"
 "PO-Revision-Date: 1999-02-07 17:37+0100\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: walon <linux-wa@chanae.alphanet.ch>\n"
@@ -46,11 +46,11 @@ msgstr "Tchwezixhoz les fitchîs a drovî"
 msgid "Select a filename to save"
 msgstr "Tchwezixhoz on no d' fitchî po schaper"
 
-#: bonobo/bonobo-plug.c:343
+#: bonobo/bonobo-plug.c:350
 msgid "Event Forwarding"
 msgstr ""
 
-#: bonobo/bonobo-plug.c:344
+#: bonobo/bonobo-plug.c:351
 msgid "Whether X events should be forwarded"
 msgstr ""
 
@@ -82,11 +82,11 @@ msgstr "_Vey racsegnes"
 msgid "Toolbars"
 msgstr "Bårs ås usteyes"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "Rivnance"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "_Imådjete"
 
@@ -102,31 +102,31 @@ msgstr "Seulmint les tecses di _prumîristé"
 msgid "Configure UI"
 msgstr "Apontyî l' eterface ûzeu"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
 msgstr "Les _deus"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
 msgstr "_Tecse"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
 msgstr "Catchî les _racsegnes"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
 msgstr "Mostrer les _racsegnes"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
 msgstr "_Catchî l' bår ås usteyes"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
 msgstr "A _vosse môde"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
 msgstr "Apontyî l' bår ås usteyes a vosse môde"
 

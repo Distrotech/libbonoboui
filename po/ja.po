@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.108.1\n"
-"POT-Creation-Date: 2002-01-17 23:37+0900\n"
+"POT-Creation-Date: 2002-01-28 11:03+0000\n"
 "PO-Revision-Date: 2002-01-17 23:39+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -42,11 +42,11 @@ msgstr "開きたいファイルを選択"
 msgid "Select a filename to save"
 msgstr "保存するファイル名を選択"
 
-#: bonobo/bonobo-plug.c:343
+#: bonobo/bonobo-plug.c:350
 msgid "Event Forwarding"
 msgstr "イベント転送"
 
-#: bonobo/bonobo-plug.c:344
+#: bonobo/bonobo-plug.c:351
 msgid "Whether X events should be forwarded"
 msgstr "X イベントを転送するかどうか"
 
@@ -78,11 +78,11 @@ msgstr "ツールチップを表示(_V)"
 msgid "Toolbars"
 msgstr "ツールバー"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "外観"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "アイコン(_I)"
 
@@ -98,31 +98,31 @@ msgstr "テキストのみ(_P)"
 msgid "Configure UI"
 msgstr "UI の設定"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
 msgstr "両方(_O)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
 msgstr "テキスト(_E)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
 msgstr "ツールチップを隠す(_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
 msgstr "ツールチップを表示(_I)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
 msgstr "ツールバーを隠す(_H)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
 msgstr "設定変更(_Z)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
 msgstr "ツールバーのカスタマイズ"
 

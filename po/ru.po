@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-01-15 12:03+0000\n"
+"POT-Creation-Date: 2002-01-28 11:03+0000\n"
 "PO-Revision-Date: 2001-10-13 20:15+0400\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -40,11 +40,11 @@ msgstr "Выбрать файлы для открытия"
 msgid "Select a filename to save"
 msgstr "Выбрать имя файла для сохранения"
 
-#: bonobo/bonobo-plug.c:343
+#: bonobo/bonobo-plug.c:350
 msgid "Event Forwarding"
 msgstr ""
 
-#: bonobo/bonobo-plug.c:344
+#: bonobo/bonobo-plug.c:351
 msgid "Whether X events should be forwarded"
 msgstr ""
 
@@ -76,11 +76,11 @@ msgstr "Просмотр подсказок"
 msgid "Toolbars"
 msgstr "Панели"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr ""
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "Пиктограмма"
 
@@ -96,31 +96,31 @@ msgstr ""
 msgid "Configure UI"
 msgstr "Настроить интерфейс"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
 msgstr "Оба"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
 msgstr "Текст"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
 msgstr "Скрыть подсказки"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
 msgstr "Показать подсказки"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
 msgstr "Скрыть панель"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
 msgstr "Настроить"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
 msgstr "Настроить панель"
 

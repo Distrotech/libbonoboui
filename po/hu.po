@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2002-01-27 07:35+0100\n"
+"POT-Creation-Date: 2002-01-28 11:03+0000\n"
 "PO-Revision-Date: 2002-01-28 20:43-0100\n"
 "Last-Translator: Emese Kovacs <emese@ganome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"

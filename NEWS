@@ -1,3 +1,20 @@
+libbonoboui 1.110.0
+
+	* UI & controls (Michael)
+		+ sensitivity bug fix
+		+ merge order fixes in setAttr
+		+ queueResize stub impl
+		+ automated UI handler test
+		+ coalesce redundant style property sets
+		+ coalesce freeze/thaws on the UIComponent
+		+ set style on sub-controls
+		+ more compatible stock name mapping
+
+	* Misc.
+		+ glade property bag leak fix (Michael)
+		+ type macro updates (Johan Dahlin)
+		+ ctype cleaning (Darin)
+
 libbonoboui 1.109.2
 
 	* dynamicaly update UI to match GConf (Anders)
