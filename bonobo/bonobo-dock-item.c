@@ -42,6 +42,7 @@
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-dock-band.h>
 #include <bonobo/bonobo-dock-item.h>
+#include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-marshal.h>
 #include <bonobo/bonobo-dock-item-grip.h>
 
