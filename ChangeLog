@@ -1,5 +1,11 @@
 2001-07-28  Murray Cumming  <murrayc@usa.net>
 
+	* samples/bonoboui-hello: Added this example, which is
+	  meant to be a more sane and understandable bonoboui
+	  example than tests/test-ui.
+	
+2001-07-28  Murray Cumming  <murrayc@usa.net>
+
 	* tests/test-ui.c: Corrected the 'can't find std-ui.xml'
 	  warning - ~/.gnome/ui is no longer used.
 

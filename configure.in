@@ -54,6 +54,7 @@ intl/Makefile
 bonobo/Makefile
 bonobo/libbonoboui-2.0.pc
 samples/Makefile
+samples/bonoboui-hello/Makefile
 samples/compound-doc/Makefile
 samples/compound-doc/container/Makefile
 tests/Makefile
