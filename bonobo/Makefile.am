@@ -1,9 +1,6 @@
-corbadir = $(sysconfdir)/CORBA/servers
-
-corba_DATA = sample.gnorba item.gnorba
 
 if OAF
-OBJECT_DIRECTORY_LIBS=$(OAF_LIBS)
+OBJECT_DIRECTORY_LIBS=$(OAF_LIBS) $(GNOME_LIBS)
 OBJECT_DIRECTORY_IMPL=bonobo-object-directory-oaf.c
 else
 OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
@@ -35,9 +32,6 @@ bonobo_libs = 			\
 
 lib_LTLIBRARIES = libbonobo.la libbonobo-print.la
 
-if OAF
-test_programs =
-else
 test_programs = \
 	test-container 		\
 	sample-server 		\
@@ -46,7 +40,6 @@ test_programs = \
 	selector_test		\
 	test-storage		\
 	test-bw
-endif
 
 noinst_PROGRAMS = 		\
 	$(test_programs)
@@ -82,7 +75,6 @@ libbonobo_la_SOURCES =			\
 	bonobo-arg.h			\
 	bonobo-arg.c			\
 	$(CORBA_SOURCE)			\
-	bonobo-object-directory.h	\
 	bonobo-object-directory.c	\
 	$(OBJECT_DIRECTORY_IMPL)	\
 	bonobo-ui-handler.c		\
@@ -149,6 +141,7 @@ libbonoboinclude_HEADERS =		\
 	bonobo-moniker-client.h		\
 	bonobo-object.h			\
 	bonobo-object-client.h		\
+	bonobo-object-directory.h	\
 	bonobo-object-io.h		\
 	bonobo-persist-file.h		\
 	bonobo-persist-stream.h		\
@@ -216,4 +209,18 @@ BUILT_SOURCES=$(CORBA_SOURCE)
 
 CLEANFILES += $(BUILT_SOURCES)
 
-EXTRA_DIST = $(corba_DATA)
+
+goaddir = $(sysconfdir)/CORBA/servers
+oafdir = $(datadir)/oaf
+
+GOAD_FILES = sample.gnorba item.gnorba
+OAF_FILES =  sample.oafinfo item.oafinfo
+
+#if OAF
+goad_DATA = $(GOAD_FILES)
+#else
+oaf_DATA = $(OAF_FILES)
+#endif
+
+
+EXTRA_DIST = $(GOAD_FILES) $(OAF_FILES)

@@ -12,7 +12,13 @@
  
 #include <config.h>
 #include <gnome.h>
+
+#if USING_OAF
+#include <liboaf/liboaf.h>
+#else
 #include <libgnorba/gnorba.h>
+#endif
+
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <bonobo.h>
@@ -41,7 +47,11 @@ BonoboClientSite *paint_client_site;
  */
 BonoboViewFrame *active_view_frame;
 
-char *server_goadid = "Test_server_bonobo_object";
+#if USING_OAF
+char *server_id = "OAFIID:test_bonobo_object:b1ff15bb-d54f-4814-ba53-d67d3afd70fe";
+#else
+char *server_id = "Test_server_bonobo_object";
+#endif
 
 typedef struct {
 	GtkWidget *app;
@@ -52,14 +62,14 @@ typedef struct {
 } Application;
 
 static BonoboObjectClient *
-launch_server (BonoboClientSite *client_site, BonoboContainer *container, char *goadid)
+launch_server (BonoboClientSite *client_site, BonoboContainer *container, char *id)
 {
 	BonoboObjectClient *object_server;
 	
 	bonobo_container_add (container, BONOBO_OBJECT (client_site));
 
 	printf ("Launching...\n");
-	object_server = bonobo_object_activate_with_goad_id (NULL, goadid, 0, NULL);
+	object_server = bonobo_object_activate (id, 0);
 	printf ("Return: %p\n", object_server);
 	if (!object_server){
 		g_warning (_("Can not activate object_server\n"));
@@ -218,14 +228,14 @@ add_view (GtkWidget *widget, Application *app,
 } /* add_view */
 
 static BonoboObjectClient *
-add_cmd (GtkWidget *widget, Application *app, char *server_goadid,
+add_cmd (GtkWidget *widget, Application *app, char *server_id,
 	 BonoboClientSite **client_site)
 {
 	BonoboObjectClient *server;
 	
 	*client_site = bonobo_client_site_new (app->container);
 
-	server = launch_server (*client_site, app->container, server_goadid);
+	server = launch_server (*client_site, app->container, server_id);
 	if (server == NULL)
 		return NULL;
 
@@ -252,7 +262,7 @@ static void
 add_demo_cmd (GtkWidget *widget, Application *app)
 {
 	BonoboClientSite *client_site;
-	add_cmd (widget, app, server_goadid, &client_site);
+	add_cmd (widget, app, server_id, &client_site);
 }
 
 static void
@@ -262,8 +272,15 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
+#if USING_OAF
+	object = add_cmd (widget, app, "OAFIID:bonobo_image-x-png:716e8910-656b-4b3b-b5cd-5eda48b71a79",
+			  &image_client_site);
+#else
 	object = add_cmd (widget, app, "embeddable:image-x-png",
 			  &image_client_site);
+#endif
+
+
 	if (object == NULL) {
 		gnome_warning_dialog (_("Could not launch bonobo object."));
 		return;
@@ -303,7 +320,12 @@ add_pdf_cmd (GtkWidget *widget, Application *app)
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
+#if USING_OAF
+	/* FIXME: use the OAFIID of the pdf component once ported. */
 	object = add_cmd (widget, app, "bonobo-object:application-x-pdf", &image_client_site);
+#else
+	object = add_cmd (widget, app, "bonobo-object:application-x-pdf", &image_client_site);
+#endif
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch bonobo object."));
@@ -353,7 +375,9 @@ add_gnumeric_cmd (GtkWidget *widget, Application *app)
 	BonoboClientSite *client_site;
 	BonoboMoniker *moniker;
 	char *moniker_string_rep;
-	
+
+	/* FIXME: the GOADID thing there is almost certainly wrong for OAF,
+	   but I have no clue what it is supposed to do. */
 	moniker = bonobo_moniker_new ();
 	bonobo_moniker_set_server (
 		moniker,
@@ -417,9 +441,18 @@ do_add_canvas_cmd (GtkWidget *widget, Application *app, gboolean aa)
 	
 	client_site = bonobo_client_site_new (app->container);
 
+#if USING_OAF
+	server = launch_server (client_site, app->container, "OAFIID:test_canvas_item:82a8a7cc-8b08-401b-9501-4debf6c96619");
+#else
 	server = launch_server (client_site, app->container, "Test_item_server_bonobo_object");
+#endif
+
 	if (server == NULL){
+#if USING_OAF
+		g_warning ("Can not activate OAFIID:test_canvas_item:82a8a7cc-8b08-401b-9501-4debf6c96619");
+#else
 		g_warning ("Can not activate Test_item_server_bonobo_object");
+#endif
 		return;
 	}
 	CORBA_exception_init (&ev);
@@ -490,7 +523,12 @@ add_paint_cmd (GtkWidget *widget, Application *app)
 {
 	BonoboObjectClient *object;
 
+#if USING_OAF
+	object = add_cmd (widget, app, "OAFIID:paint_component_simple:9c04da1c-d44c-4041-9991-fed1ed1ed079", &paint_client_site);
+#else
 	object = add_cmd (widget, app, "embeddable:paint-component-simple", &paint_client_site);
+#endif
+
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch Embeddable."));
@@ -520,7 +558,12 @@ add_text_cmd (GtkWidget *widget, Application *app)
 	BonoboStream *stream;
 	Bonobo_PersistStream persist;
 
-	object = add_cmd (widget, app, "embeddable:text-plain", &text_client_site);
+#if USING_OAF
+	object = add_cmd (widget, app, "OAFIID:bonobo_text-plain:26e1f6ba-90dd-4783-b304-6122c4b6c821", &text_client_site);
+#else
+	object = add_cmd (widget, app, "bonobo-object:hello", &text_client_site);
+#endif
+
 	if (object == NULL)
 	  {
 	    gnome_warning_dialog (_("Could not launch Embeddable."));
@@ -783,13 +826,20 @@ main (int argc, char *argv [])
 	Application *app;
 
 	if (argc != 1){
-		server_goadid = argv [1];
+		server_id = argv [1];
 	}
 	
 	CORBA_exception_init (&ev);
 	
+#if USING_OAF
+        gnome_init_with_popt_table("MyShell", "1.0",
+				   argc, argv,
+				   oaf_popt_options, 0, NULL); 
+	orb = oaf_init (argc, argv);
+#else
 	gnome_CORBA_init ("MyShell", "1.0", &argc, argv, 0, &ev);
 	orb = gnome_CORBA_ORB ();
+#endif
 	
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error (_("Can not bonobo_init\n"));

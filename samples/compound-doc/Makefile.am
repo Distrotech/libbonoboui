@@ -1,11 +1,13 @@
 
-if OAF
-bin_PROGRAMS =
-else
 bin_PROGRAMS = paint-component-simple sample-container
-endif
 
 GPRINT_LIBS = $(top_builddir)/bonobo/libbonobo-print.la
+
+if OAF
+OBJECT_DIRECTORY_LIBS=$(OAF_LIBS) $(GNOMEUI_LIBS)
+else
+OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
+endif
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -20,21 +22,40 @@ paint_component_simple_SOURCES =	\
 
 paint_component_simple_LDADD = 			\
 	$(top_builddir)/bonobo/libbonobo.la	\
-	$(BONOBO_LIBS)				\
 	$(GPRINT_LIBS)				\
-	$(INTLLIBS)
+	$(BONOBO_LIBS)				\
+	$(INTLLIBS)                             \
+	$(OBJECT_DIRECTORY_LIBS)
 
 sample_container_SOURCES =		\
 	sample-container.c
 
 sample_container_LDADD = 			\
 	$(top_builddir)/bonobo/libbonobo.la	\
+	$(GPRINT_LIBS)				        \
 	$(BONOBO_LIBS)				\
-	$(GPRINT_LIBS)				\
+	$(GTK_LIBS)					\
+	$(GNOME_LIBDIR)					\
+	$(OBJECT_DIRECTORY_LIBS)			\
 	$(INTLLIBS)
 
-gnorbadir = $(sysconfdir)/CORBA/servers
-gnorba_DATA = paint-component-simple.gnorba
 
-EXTRA_DIST = $(gnorba_DATA)
+goaddir = $(sysconfdir)/CORBA/servers
+oafdir = $(datadir)/oaf
+
+GOAD_FILES =    paint-component-simple.gnorba
+OAF_FILES =	paint-component-simple.oafinfo
+
+#if OAF
+goad_DATA = $(GOAD_FILES)
+#else
+oaf_DATA = $(OAF_FILES)
+#endif
+
+oafdir = $(datadir)/oaf
+oaf_DATA = paint-component-simple.oafinfo
+
+extra_DIST = $(GOAD_FILES) $(OAF_FILES)
+
+
 

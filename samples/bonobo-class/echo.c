@@ -37,7 +37,6 @@ echo_object_destroy (GtkObject *object)
 {
 	Echo *echo = ECHO (object);
 
-	printf ("Echo server being destroyed\n");
 	g_free (echo->instance_data);
 	
 	GTK_OBJECT_CLASS (echo_parent_class)->destroy (object);
@@ -153,11 +152,13 @@ create_echo (BonoboObject *echo)
 	POA_Demo_Echo *servant;
 	CORBA_Environment ev;
 
-	servant = (POA_Demo_Echo *) g_new (BonoboObjectServant, 1);
+	servant = (POA_Demo_Echo *) g_new0 (BonoboObjectServant, 1);
 	servant->vepv = &echo_vepv;
 
 	CORBA_exception_init (&ev);
 	POA_Demo_Echo__init ((PortableServer_Servant) servant, &ev);
+	ORBIT_OBJECT_KEY(servant->_private)->object = NULL;
+
 	if (ev._major != CORBA_NO_EXCEPTION){
 		g_free (servant);
 		CORBA_exception_free (&ev);
@@ -179,6 +180,7 @@ echo_new (void)
 	Demo_Echo corba_echo;
 
 	echo = gtk_type_new (echo_get_type ());
+
 	corba_echo = create_echo (BONOBO_OBJECT (echo));
 
 	if (corba_echo == CORBA_OBJECT_NIL){

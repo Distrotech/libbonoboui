@@ -1,8 +1,10 @@
 
-if OAF
-bin_PROGRAMS =
-else
 bin_PROGRAMS = sample-control-factory sample-control-container
+
+if OAF
+OBJECT_DIRECTORY_LIBS=$(OAF_LIBS) $(GNOMEUI_LIBS)
+else
+OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
 endif
 
 INCLUDES =	\
@@ -24,7 +26,7 @@ sample_control_factory_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(GTK_LIBS)					\
 	$(GNOME_LIBDIR)					\
-	$(GNOMEGNORBA_LIBS)					\
+	$(OBJECT_DIRECTORY_LIBS)			\
 	$(INTLLIBS)
 
 sample_control_container_SOURCES =			\
@@ -34,14 +36,26 @@ sample_control_container_LDADD =			\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(GTK_LIBS)					\
 	$(GNOME_LIBDIR)					\
-	$(GNOMEGNORBA_LIBS)					\
+	$(OBJECT_DIRECTORY_LIBS)			\
 	$(INTLLIBS)
 
-gnorbadir = $(sysconfdir)/CORBA/servers
-gnorba_DATA =	bonobo-clock-control.gnorba		\
+goaddir = $(sysconfdir)/CORBA/servers
+oafdir = $(datadir)/oaf
+
+GOAD_FILES =	bonobo-clock-control.gnorba		\
 		bonobo-calculator-control.gnorba
 
-EXTRA_DIST = $(gnorba_DATA)
+OAF_FILES =	bonobo-clock-control.oafinfo		\
+		bonobo-calculator-control.oafinfo
+
+#if OAF
+goad_DATA = $(GOAD_FILES)
+#else
+oaf_DATA = $(OAF_FILES)
+#endif
+
+
+EXTRA_DIST = $(GOAD_FILES) $(OAF_FILES)
 
 
 

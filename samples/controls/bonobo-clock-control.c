@@ -10,7 +10,6 @@
 
 #include <config.h>
 #include <gnome.h>
-#include <libgnorba/gnorba.h>
 #include <bonobo.h>
 
 #include <libgnomeui/gtk-clock.h>
@@ -113,16 +112,16 @@ bonobo_entry_factory (BonoboGenericFactory *Factory, void *closure)
 {
 	BonoboPropertyBag  *pb;
 	BonoboControl      *control;
-	GtkWidget	   *button;
+	GtkWidget	   *entry;
 
 	/* Create the control. */
-	button = gtk_button_new_with_label ("Bonobo");
-	gtk_widget_show (button);
+	entry = gtk_entry_new ();
+	gtk_widget_show (entry);
 
-	control = bonobo_control_new (button);
+	control = bonobo_control_new (entry);
 	pb = bonobo_property_bag_new (NULL, NULL, NULL);
 	bonobo_control_set_property_bag (control, pb);
-	bonobo_property_bag_add_gtk_args (pb, GTK_OBJECT (button));
+	bonobo_property_bag_add_gtk_args (pb, GTK_OBJECT (entry));
 
 	return BONOBO_OBJECT (control);
 }
@@ -138,7 +137,7 @@ bonobo_clock_factory_init (void)
 
 	bonobo_clock_control_factory =
 		bonobo_generic_factory_new (
-			"control-factory:clock",
+			"OAFIID:bonobo_clock_factory:ec4961f3-7a16-4ace-9463-b112e4bc4186",
 			bonobo_clock_factory, NULL);
 
 	if (bonobo_clock_control_factory == NULL)
@@ -146,7 +145,7 @@ bonobo_clock_factory_init (void)
 
 	bonobo_entry_control_factory =
 		bonobo_generic_factory_new (
-			"control-factory:entry",
+			"OAFIID:bonobo_entry_factory:ef3e3c33-43e2-4f7c-9ca9-9479104608d6",
 			bonobo_entry_factory, NULL);
 
 	if (bonobo_entry_control_factory == NULL)

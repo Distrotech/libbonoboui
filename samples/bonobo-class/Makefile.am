@@ -5,6 +5,12 @@
 bin_PROGRAMS     = bonobo-echo echo-client
 noinst_LIBRARIES = libEcho.a
 
+if OAF
+OBJECT_DIRECTORY_LIBS=$(OAF_LIBS) $(GNOMEUI_LIBS)
+else
+OBJECT_DIRECTORY_LIBS=$(GNOMEGNORBA_LIBS)
+endif
+
 bonobo_echo_SOURCES =		\
 	main.c			\
 	echo.c			\
@@ -14,7 +20,7 @@ bonobo_echo_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la	\
 	$(GTK_LIBS)				\
 	$(GNOME_LIBDIR)				\
-	$(GNOMEGNORBA_LIBS)			\
+	$(OBJECT_DIRECTORY_LIBS)                \
 	libEcho.a				\
 	$(INTLLIBS)
 
@@ -22,7 +28,7 @@ echo_client_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la	\
 	$(GTK_LIBS)				\
 	$(GNOME_LIBDIR)				\
-	$(GNOMEGNORBA_LIBS)			\
+	$(OBJECT_DIRECTORY_LIBS)                \
 	libEcho.a				\
 	$(INTLLIBS)
 
@@ -38,13 +44,24 @@ $(ECHO_CORBA_GENERATED): Echo.idl
 	orbit-idl -I`$(GNOME_CONFIG) --datadir`/idl -I$(top_srcdir)/idl $(srcdir)/Echo.idl
 	touch my_echo_idl
 
-gnorbadir = $(sysconfdir)/CORBA/servers
-gnorba_DATA = echo.gnorba
+
+goaddir = $(sysconfdir)/CORBA/servers
+oafdir = $(datadir)/oaf
+
+GOAD_FILES = echo.gnorba
+OAF_FILES = echo.oafinfo
+
+#if OAF
+goad_DATA = $(GOAD_FILES)
+#else
+oaf_DATA = $(OAF_FILES)
+#endif
+
 
 idldir    = $(datadir)/idl
 idl_DATA  = Echo.idl
 
-EXTRA_DIST = $(gnorba_DATA) $(idl_DATA)
+EXTRA_DIST = $(GOAD_FILES) $(OAF_FILES) $(idl_DATA)
 
 INCLUDES = 						\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \

@@ -10,8 +10,14 @@
 
 #include <config.h>
 #include <gnome.h>
-#include <bonobo.h>
+
+#if USING_OAF
+#include <liboaf/liboaf.h>
+#else
 #include <libgnorba/gnorba.h>
+#endif
+
+#include <bonobo.h>
 #include <bonobo/bonobo-print.h>
 #include <libgnomeprint/gnome-print.h>
 
@@ -19,7 +25,7 @@
  * Number of running objects
  */ 
 static int running_objects = 0;
-static BonoboEmbeddableFactory *factory = NULL;
+static BonoboGenericFactory *factory = NULL;
 
 /*
  * The Embeddable data.
@@ -579,12 +585,12 @@ render_fn (GnomePrintContext         *ctx,
 
 
 /*
- * When a container asks our EmbeddableFactory for a new paint
+ * When a container asks our GenericFactory for a new paint
  * component, this function is called.  It creates the new
  * BonoboEmbeddable object and returns it.
  */
 static BonoboObject *
-embeddable_factory (BonoboEmbeddableFactory *this,
+embeddable_factory (BonoboGenericFactory *this,
 		    void *data)
 {
 	BonoboEmbeddable *embeddable;
@@ -689,7 +695,7 @@ embeddable_factory (BonoboEmbeddableFactory *this,
 	return BONOBO_OBJECT (embeddable);
 }
 
-static BonoboEmbeddableFactory *
+static BonoboGenericFactory *
 init_simple_paint_factory (void)
 {
 	/*
@@ -698,9 +704,15 @@ init_simple_paint_factory (void)
 	 * component, it will ask the factory to create one, and the
 	 * factory will invoke our embeddable_factory() function.
 	 */
-	return bonobo_embeddable_factory_new (
-		"embeddable-factory:paint-component-simple",
-		embeddable_factory, NULL);
+#if USING_OAF
+         return bonobo_generic_factory_new (
+			    "OAFIID:paint_component_simple_factory:301d4c2f-3f2b-404d-99e5-3fde72a1e601",
+			     embeddable_factory, NULL);
+#else
+         return bonobo_generic_factory_new (
+			     "embeddable-factory:paint-component-simple",
+			     embeddable_factory, NULL);  
+#endif
 }
 
 static void
@@ -711,13 +723,21 @@ init_server_factory (int argc, char **argv)
 
 	CORBA_exception_init (&ev);
 
+#if USING_OAF
+        gnome_init_with_popt_table("bonobo-simple-paint", VERSION,
+				   argc, argv,
+				   oaf_popt_options, 0, NULL); 
+	orb = oaf_init (argc, argv);
+#else
 	gnome_CORBA_init_with_popt_table (
 		"bonobo-simple-paint", VERSION,
 		&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
 
 	CORBA_exception_free (&ev);
-
 	orb = gnome_CORBA_ORB ();
+#endif
+
+
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error (_("Could not initialize Bonobo!"));
 }

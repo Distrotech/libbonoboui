@@ -13,7 +13,12 @@
 #include <config.h>
 #include <gnome.h>
 #include <bonobo.h>
+
+#if USING_OAF
+#include <liboaf/liboaf.h>
+#else
 #include <libgnorba/gnorba.h>
+#endif
 
 #include <libgnomeprint/gnome-printer.h>
 #include <libgnomeprint/gnome-print.h>
@@ -534,8 +539,7 @@ container_launch_component (BonoboClientSite *client_site,
 	/*
 	 * Launch the component.
 	 */
-	object_server = bonobo_object_activate_with_goad_id (
-		NULL, component_goad_id, 0, NULL);
+	object_server = bonobo_object_activate (component_goad_id, 0);
 
 	if (object_server == NULL)
 		return NULL;
@@ -732,24 +736,33 @@ static void
 container_add_embeddable_cmd (GtkWidget *widget, Container *container)
 {
 	char *required_interfaces[2] = { "IDL:Bonobo/Embeddable:1.0", NULL };
-	char *goad_id;
+	char *id;
 
 	/*
 	 * Ask the user to select a component.
 	 */
-	goad_id = gnome_bonobo_select_goad_id (
+#if USING_OAF
+	puts ("oaf");
+	id = gnome_bonobo_select_oaf_id (
 		_("Select an embeddable Bonobo component to add"),
 		(const gchar **) required_interfaces);
 
-	if (goad_id == NULL)
+#else
+	id = gnome_bonobo_select_goad_id (
+		_("Select an embeddable Bonobo component to add"),
+		(const gchar **) required_interfaces);
+
+#endif
+
+	if (id == NULL)
 		return;
 
 	/*
 	 * Activate it.
 	 */
-	container_activate_component (container, goad_id);
+	container_activate_component (container, id);
 
-	g_free (goad_id);
+	g_free (id);
 }
 
 static void
@@ -885,11 +898,17 @@ main (int argc, char **argv)
 
 	CORBA_exception_init (&ev);
 
+#if USING_OAF
+        gnome_init_with_popt_table("sample-container", "1.0",
+				   argc, argv,
+				   oaf_popt_options, 0, NULL); 
+	orb = oaf_init (argc, argv);
+#else
 	gnome_CORBA_init ("sample-container", "1.0", &argc, argv, 0, &ev);
 
 	CORBA_exception_free (&ev);
-
 	orb = gnome_CORBA_ORB ();
+#endif
 
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error (_("Could not initialize Bonobo!\n"));

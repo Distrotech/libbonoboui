@@ -9,7 +9,13 @@
  */
 #include <config.h>
 #include <gnome.h>
+
+#if USING_OAF
+#include <liboaf/liboaf.h>
+#else
 #include <libgnorba/gnorba.h>
+#endif
+
 #include <bonobo.h>
 
 BonoboPropertyBagClient *pbc;
@@ -160,7 +166,7 @@ container_create (void)
 	gnome_app_set_contents (GNOME_APP (app), box);
 
 	control = bonobo_widget_new_control (
-		"control:calculator",
+		"OAFIID:bonobo_calculator:fab8c2a7-9576-437c-aa3a-a8617408970f",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
@@ -169,11 +175,17 @@ container_create (void)
 			    (GtkSignalFunc)incr_calc, control);
 
 	control = bonobo_widget_new_control (
-		"control:clock",
+		"OAFIID:bonobo_clock:d42cc651-44ae-4f69-a10d-a0b6b2cc6ecc",
 		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
 	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
 
 	proplist = create_proplist (control);
+
+	control = bonobo_widget_new_control (
+		"OAFIID:bonobo_entry_factory:ef3e3c33-43e2-4f7c-9ca9-9479104608d6",
+		bonobo_object_corba_objref (BONOBO_OBJECT (uih)));
+	gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
+
 	gtk_box_pack_start (GTK_BOX (box), proplist, TRUE, TRUE, 0);
 
 	gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 0);
@@ -191,11 +203,17 @@ main (int argc, char **argv)
 
 	CORBA_exception_init (&ev);
 
-	gnome_CORBA_init ("sample-control-container", "1.0", &argc, argv, 0, &ev);
-
-	CORBA_exception_free (&ev);
-
+#if USING_OAF
+        gnome_init_with_popt_table("sample-control-container", "0.0",
+				   argc, argv,
+				   oaf_popt_options, 0, NULL); 
+	orb = oaf_init (argc, argv);
+#else
+	gnome_CORBA_init_with_popt_table (
+      	"sample-control-container", "0.0",
+	&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
 	orb = gnome_CORBA_ORB ();
+#endif
 
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error ("Could not initialize Bonobo\n");

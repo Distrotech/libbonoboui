@@ -154,6 +154,17 @@ bonobo_selector_destroy (GtkObject *object)
 	
 }
 
+/**
+ * bonobo_selector_get_selected_id:
+ * @sel: A BonoboSelector widget.
+ *
+ * Returns: A newly-allocated string containing the ID of the
+ * currently-selected CORBA server (i.e., the corba server whose name
+ * is highlighted in the list).  The user of this function is
+ * responsible for freeing this. It will give a GOAD or OAF id
+ * depending on the activation framework you are using.
+ */
+
 static gchar *
 bonobo_selector_get_selected_id (BonoboSelector *sel)
 {
@@ -161,8 +172,6 @@ bonobo_selector_get_selected_id (BonoboSelector *sel)
 	gchar *text;
 	BonoboSelectorPrivate *priv; 
 
-	od_assert_using_goad();
-	
 	g_return_val_if_fail (sel != NULL, NULL);
 	priv = sel->priv;	
 	selection = GTK_CLIST (priv->clist)->selection;
@@ -173,7 +182,26 @@ bonobo_selector_get_selected_id (BonoboSelector *sel)
 	return g_strdup (text);
 }
 
-static gchar *
+
+
+/**
+ * gnome_bonobo_select_id:
+ * @title: The title to be used for the dialog.
+ * @interfaces_required: A list of required interfaces.  See
+ * bonobo_selector_new().
+ *
+ * Calls bonobo_selector_new() to create a new
+ * BonoboSelector widget with the specified paramters, @title and
+ * @interfaces_required.  Then runs the dialog modally and allows
+ * the user to make a selection.
+ *
+ * Returns: The ID of the selected server, or NULL if no server is
+ * selected.  The ID string has been allocated with g_strdup. The ID
+ * returned is GOAD or OAF as appropriate to the activation framework
+ * being used.
+ */
+
+gchar *
 gnome_bonobo_select_id (const gchar *title,
 			const gchar **interfaces_required)
 {

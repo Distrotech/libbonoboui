@@ -10,10 +10,8 @@
 
 #include <config.h>
 #include <gnome.h>
-#include <libgnorba/gnorba.h>
-#include <bonobo.h>
-
 #include <libgnomeui/gnome-calculator.h>
+#include <bonobo.h>
 
 #include "bonobo-calculator-control.h"
 
@@ -91,9 +89,10 @@ bonobo_calculator_factory_init (void)
 
 	bonobo_calc_control_factory =
 		bonobo_generic_factory_new (
-			"control-factory:calculator",
+  		        "OAFIID:bonobo_calculator_factory:0f55cdac-47fc-4d5b-9111-26c84a244fe2",
 			bonobo_calculator_factory, NULL);
 
 	if (bonobo_calc_control_factory == NULL)
 		g_error ("I could not register a BonoboCalculator factory.");
 }
+

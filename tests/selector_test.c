@@ -1,9 +1,16 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 
+#include <config.h>
+#include <gnome.h>
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-selector.h>
+
+#if USING_OAF
+#include <liboaf/liboaf.h>
+#else
 #include <libgnorba/gnorba.h>
+#endif
 
 CORBA_Environment ev;
 CORBA_ORB orb;
@@ -19,8 +26,16 @@ int main(int argc, char *argv[])
 	GtkWidget *button;
 
 	CORBA_exception_init (&ev);
+
+#if USING_OAF
+        gnome_init_with_popt_table("BonoboSel Test", "1.0",
+				   argc, argv,
+				   oaf_popt_options, 0, NULL); 
+	orb = oaf_init (argc, argv);
+#else
 	gnome_CORBA_init ("BonoboSel Test", "1.0", &argc, argv, 0, &ev);
 	orb = gnome_CORBA_ORB ();
+#endif
 
 	window = gnome_app_new ("selector_test", "Bonobo Selection Test");
 	gtk_signal_connect (GTK_OBJECT (window), "delete_event", 
@@ -29,12 +44,12 @@ int main(int argc, char *argv[])
 	vbox = gtk_vbox_new (TRUE, 0);
 	gnome_app_set_contents (GNOME_APP (window), vbox);
 	
-	button = gtk_button_new_with_label ("Get goad id");
+	button = gtk_button_new_with_label ("Get id");
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 		GTK_SIGNAL_FUNC (noact_callback), NULL);
 	gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 5);
 
-	button = gtk_button_new_with_label ("Get goad id of panel applet");
+	button = gtk_button_new_with_label ("Get id of panel applet");
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 		GTK_SIGNAL_FUNC (panel_callback), NULL);
 	gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 5);
@@ -52,7 +67,11 @@ void panel_callback (GtkWidget *widget, gpointer data)
 	const gchar *ints [] = { "IDL:Bonobo/Applet:1.0", NULL };
 	gchar *text;
 
+#if USING_OAF
+
+#else
 	text = gnome_bonobo_select_goad_id (_("Select an object"), ints);
+#endif
 
 	g_print("%s\n", text);
 	if (text != NULL)
@@ -64,7 +83,7 @@ void noact_callback (GtkWidget *widget, gpointer data)
 	/* This is also a demonstration of default being what we just did above */ 
 	gchar *text;
 
-	text = gnome_bonobo_select_goad_id (_("Select an object"), NULL);
+	text = gnome_bonobo_select_id (_("Select an object"), NULL);
 	g_print("%s\n", text);
 	if (text != NULL)
 		g_free(text);

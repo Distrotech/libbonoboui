@@ -7,7 +7,14 @@
  * (C) 1999, 2000 Helix Code, Inc.  http://www.helixcode.com
  */
 #include <config.h>
+#include <gnome.h>
+
+#if USING_OAF
+#include <liboaf/liboaf.h>
+#else
 #include <libgnorba/gnorba.h>
+#endif
+
 #include <bonobo.h>
 #include "Echo.h"
 #include "echo.h"
@@ -30,11 +37,17 @@ static int active_echo_servers;
 static void
 init_server_factory (int argc, char **argv)
 {
+#if USING_OAF
+        gnome_init_with_popt_table("echo", "1.0",
+				   argc, argv,
+				   oaf_popt_options, 0, NULL); 
+	orb = oaf_init (argc, argv);
+#else
 	gnome_CORBA_init_with_popt_table (
-		"echo", "1.0",
-		&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
-
+      	"echo", "1.0",
+	&argc, argv, NULL, 0, NULL, GNORBA_INIT_SERVER_FUNC, &ev);
 	orb = gnome_CORBA_ORB ();
+#endif
 
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error (_("I could not initialize Bonobo"));
@@ -58,8 +71,10 @@ echo_factory (BonoboGenericFactory *this_factory, void *data)
 	Echo *echo;
 
 	echo = echo_new ();
-	if (echo == NULL)
+	
+	if (echo == NULL) {
 		return NULL;
+	}
 
 	active_echo_servers++;
 
@@ -76,8 +91,11 @@ echo_factory_init (void)
 	/*
 	 * Creates and registers our Factory for Echo servers
 	 */
-	factory = bonobo_generic_factory_new (
-		"GOADID:echo-factory:demo:echo", echo_factory, NULL);
+#if USING_OAF
+	factory = bonobo_generic_factory_new ("OAFIID:demo_echo_factory:a7080731-d06c-42d2-852e-179c538f6ee5", echo_factory, NULL);
+#else
+	factory = bonobo_generic_factory_new ("GOADID:echo-factory:demo:echo", echo_factory, NULL);
+#endif
 
 	if (factory == NULL)
 		g_error ("It was not possible to register a new echo factory");
@@ -103,7 +121,7 @@ main (int argc, char *argv [])
 	/*
 	 * Main loop
 	 */
-	printf ("Echo component is active\n");
+	puts ("Echo component is active");
 	gtk_main ();
 
 	CORBA_exception_free (&ev);
