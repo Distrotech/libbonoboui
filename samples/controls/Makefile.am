@@ -1,4 +1,4 @@
-bin_PROGRAMS = sample-control-factory sample-control-container
+bin_PROGRAMS = bonobo-sample-controls sample-control-container
 
 INCLUDES =	\
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
@@ -7,14 +7,14 @@ INCLUDES =	\
         -I$(includedir)                                 \
 	$(BONOBOX_TEST_CFLAGS)
 
-sample_control_factory_SOURCES =			\
+bonobo_sample_controls_SOURCES =			\
 	bonobo-clock-control.c				\
 	bonobo-clock-control.h				\
 	bonobo-calculator-control.c			\
 	bonobo-calculator-control.h			\
 	sample-control-factory.c
 
-sample_control_factory_LDADD =				\
+bonobo_sample_controls_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(top_builddir)/bonobo/libbonobox.la		\
 	$(BONOBOX_TEST_LIBS)				\
@@ -31,8 +31,7 @@ sample_control_container_LDADD =			\
 
 oafdir = $(datadir)/oaf
 
-oaf_DATA = 	Bonobo_Sample_Clock.oafinfo		\
-		Bonobo_Sample_Calculator.oafinfo
+oaf_DATA = Bonobo_Sample_Controls.oafinfo
 
 EXTRA_DIST = $(oaf_DATA)
 

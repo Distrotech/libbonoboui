@@ -686,7 +686,7 @@ init_simple_paint_factory (void)
 	 * factory will invoke our embeddable_factory() function.
 	 */
          return bonobo_generic_factory_new (
-			    "OAFIID:paint_component_simple_factory:301d4c2f-3f2b-404d-99e5-3fde72a1e601",
+			    "OAFIID:Bonobo_Sample_Paint_EmbeddableFactory",
 			     embeddable_factory, NULL);
 }
 

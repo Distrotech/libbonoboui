@@ -291,6 +291,7 @@ bonobo_selector_construct (BonoboSelector       *sel,
 	gnome_dialog_append_button (GNOME_DIALOG (sel), GNOME_STOCK_BUTTON_OK);
 	gnome_dialog_append_button (GNOME_DIALOG (sel), 
 		GNOME_STOCK_BUTTON_CANCEL);
+	gnome_dialog_set_default (GNOME_DIALOG (sel), 0);
 	
 	gtk_signal_connect (GTK_OBJECT (sel),
 		"clicked", GTK_SIGNAL_FUNC (button_callback), sel);

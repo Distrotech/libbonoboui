@@ -77,8 +77,8 @@ set_prop (BonoboPropertyBag *bag,
 	}
 }
 
-static BonoboObject *
-bonobo_clock_factory (BonoboGenericFactory *Factory, void *closure)
+BonoboObject *
+bonobo_clock_control_new (void)
 {
 	BonoboPropertyBag  *pb;
 	BonoboControl      *control;
@@ -105,11 +105,8 @@ bonobo_clock_factory (BonoboGenericFactory *Factory, void *closure)
 	return BONOBO_OBJECT (control);
 }
 
-/*
- * A test widget.
- */
-static BonoboObject *
-bonobo_entry_factory (BonoboGenericFactory *Factory, void *closure)
+BonoboObject *
+bonobo_entry_control_new (void)
 {
 	BonoboPropertyBag  *pb;
 	BonoboControl      *control;
@@ -127,30 +124,4 @@ bonobo_entry_factory (BonoboGenericFactory *Factory, void *closure)
 	bonobo_property_bag_add_gtk_args (pb, GTK_OBJECT (entry));
 
 	return BONOBO_OBJECT (control);
-}
-
-void
-bonobo_clock_factory_init (void)
-{
-	static BonoboGenericFactory *bonobo_clock_control_factory = NULL;
-	static BonoboGenericFactory *bonobo_entry_control_factory = NULL;
-
-	if (bonobo_clock_control_factory != NULL)
-		return;
-
-	bonobo_clock_control_factory =
-		bonobo_generic_factory_new (
-			"OAFIID:bonobo_clock_factory:ec4961f3-7a16-4ace-9463-b112e4bc4186",
-			bonobo_clock_factory, NULL);
-
-	if (bonobo_clock_control_factory == NULL)
-		g_error ("I could not register a BonoboClock factory.");
-
-	bonobo_entry_control_factory =
-		bonobo_generic_factory_new (
-			"OAFIID:bonobo_entry_factory:ef3e3c33-43e2-4f7c-9ca9-9479104608d6",
-			bonobo_entry_factory, NULL);
-
-	if (bonobo_entry_control_factory == NULL)
-		g_error ("I could not register an Entry factory.");
 }

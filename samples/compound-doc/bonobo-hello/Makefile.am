@@ -7,9 +7,9 @@ INCLUDES =						\
         -I$(includedir)                                 \
 	$(BONOBOX_TEST_CFLAGS)
 
-bin_PROGRAMS = bonobo-hello
+bin_PROGRAMS = bonobo-sample-hello
 
-bonobo_hello_SOURCES =		\
+bonobo_sample_hello_SOURCES =	\
 	bonobo-hello.c		\
 	hello-embeddable.c	\
 	hello-embeddable.h	\
@@ -20,7 +20,7 @@ bonobo_hello_SOURCES =		\
 	hello-object-print.h	\
 	hello-object-print.c
 
-bonobo_hello_LDADD =					\
+bonobo_sample_hello_LDADD =				\
 	$(top_builddir)/bonobo/libbonobo.la		\
 	$(top_builddir)/bonobo/libbonobox.la		\
 	$(top_builddir)/bonobo/libbonobo-print.la	\

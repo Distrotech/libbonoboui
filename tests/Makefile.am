@@ -1,10 +1,11 @@
 noinst_PROGRAMS =		\
 	test-any		\
+	test-container 		\
+	test-container-autoload	\
+	test-moniker		\
 	test-properties-server	\
 	test-properties-client	\
 	test-storage		\
-	test-container 		\
-	test-container-autoload	\
 	selector_test
 
 bonobo_libs =						\
@@ -41,6 +42,12 @@ test_any_LDADD =					\
 	$(bonobo_libs)					\
 	$(top_builddir)/bonobo/libbonobox.la
 
+test_moniker_SOURCES = test-moniker.c
+
+test_moniker_LDADD =					\
+	$(bonobo_libs)					\
+	$(top_builddir)/bonobo/libbonobox.la
+
 test_container_SOURCES =				\
 	test-container.c
 
@@ -67,4 +74,4 @@ TESTS_ENVIRONMENT =					\
 	LD_LIBRARY_PATH=$(top_builddir)/bonobo/.libs/	\
 	BONOBO_PLUGIN_PATH=$(top_builddir)/storage-modules/.libs
 
-TESTS = test-storage test-any
+TESTS = test-storage test-any test-moniker

@@ -35,7 +35,7 @@ bonobo_item_factory (BonoboGenericFactory *factory, void *closure)
 
 	printf ("I am in item factory\n");
 	server =  bonobo_embeddable_new_canvas_item (item_factory, NULL);
-	if (server == NULL)
+	if (!server)
 		g_error ("Can not create bonobo_embeddable");
 
 	return (BonoboObject*) server;
@@ -45,7 +45,8 @@ static void
 init_server_factory (void)
 {
 	bonobo_generic_factory_new (
-		"OAFIID:test_canvas_item_factory:db20642e-25a0-46d0-bbe0-84b79ab64e05", bonobo_item_factory, NULL);
+		"OAFIID:Bonobo_Sample_CanvasItemFactory",
+		bonobo_item_factory, NULL);
 }
 
 int
@@ -53,9 +54,9 @@ main (int argc, char *argv [])
 {
 	CORBA_exception_init (&ev);
 
-        gnome_init_with_popt_table("MyServer", "1.0",
-				   argc, argv,
-				   oaf_popt_options, 0, NULL); 
+        gnome_init_with_popt_table ("MyServer", "1.0",
+				    argc, argv,
+				    oaf_popt_options, 0, NULL); 
 	orb = oaf_init (argc, argv);
 	
 	if (bonobo_init (orb, NULL, NULL) == FALSE)

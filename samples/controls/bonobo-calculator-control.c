@@ -35,8 +35,8 @@ get_prop (BonoboPropertyBag *bag,
 	BONOBO_ARG_SET_DOUBLE (arg, calc->result);
 }
 
-static BonoboObject *
-bonobo_calculator_factory (BonoboGenericFactory *Factory, void *closure)
+BonoboObject *
+bonobo_calculator_control_new (void)
 {
 	BonoboControl     *control;
 	GtkWidget	  *calc;
@@ -58,21 +58,3 @@ bonobo_calculator_factory (BonoboGenericFactory *Factory, void *closure)
 
 	return BONOBO_OBJECT (control);
 }
-
-void
-bonobo_calculator_factory_init (void)
-{
-	static BonoboGenericFactory *bonobo_calc_control_factory = NULL;
-
-	if (bonobo_calc_control_factory != NULL)
-		return;
-
-	bonobo_calc_control_factory =
-		bonobo_generic_factory_new (
-  		        "OAFIID:bonobo_calculator_factory:0f55cdac-47fc-4d5b-9111-26c84a244fe2",
-			bonobo_calculator_factory, NULL);
-
-	if (bonobo_calc_control_factory == NULL)
-		g_error ("I could not register a BonoboCalculator factory.");
-}
-

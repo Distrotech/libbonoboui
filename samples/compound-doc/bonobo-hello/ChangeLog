@@ -1,3 +1,7 @@
+2000-12-14  Michael Meeks  <michael@helixcode.com>
+
+	* Makefile.am (bin_PROGRAMS): upd.
+
 2000-12-04  Joe Shaw  <joe@helixcode.com>
 
 	* bonobo-hello.c: Use BonoboGenericFactory instead.
