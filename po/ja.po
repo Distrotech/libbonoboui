@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 1.112.0\n"
-"POT-Creation-Date: 2002-03-04 16:23+0000\n"
-"PO-Revision-Date: 2002-03-01 22:40+0900\n"
+"Project-Id-Version: libbonoboui 1.112.1\n"
+"POT-Creation-Date: 2002-03-11 22:14+0900\n"
+"PO-Revision-Date: 2002-03-11 23:03+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -61,43 +61,43 @@ msgstr "名称"
 msgid "Description"
 msgstr "説明"
 
-#: bonobo/bonobo-ui-config-widget.c:264
+#: bonobo/bonobo-ui-config-widget.c:259
 msgid "Visible"
 msgstr "可視"
 
-#: bonobo/bonobo-ui-config-widget.c:271
+#: bonobo/bonobo-ui-config-widget.c:266
 msgid "_Show"
 msgstr "表示(_S)"
 
-#: bonobo/bonobo-ui-config-widget.c:278
+#: bonobo/bonobo-ui-config-widget.c:273
 msgid "_Hide"
 msgstr "隠す(_H)"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:279
 msgid "_View tooltips"
 msgstr "ツールチップを表示(_V)"
 
-#: bonobo/bonobo-ui-config-widget.c:289
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "Toolbars"
 msgstr "ツールバー"
 
-#: bonobo/bonobo-ui-config-widget.c:299
+#: bonobo/bonobo-ui-config-widget.c:294
 msgid "toolbars"
 msgstr "ツールバー"
 
-#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "外観"
 
-#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "アイコン(_I)"
 
-#: bonobo/bonobo-ui-config-widget.c:325
+#: bonobo/bonobo-ui-config-widget.c:320
 msgid "_Text and Icon"
 msgstr "テキストとアイコン(_T)"
 
-#: bonobo/bonobo-ui-config-widget.c:331
+#: bonobo/bonobo-ui-config-widget.c:326
 msgid "_Priority text only"
 msgstr "テキストのみ(_P)"
 
@@ -249,6 +249,10 @@ msgstr "ファイル(_F)"
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
 msgstr "選択(_S)"
+
+#: samples/controls/bonobo-sample-controls.c:121
+msgid "Could not initialize Bonobo UI"
+msgstr "Bonobo UI を初期化できませんでした"
 
 #~ msgid "Can not bonobo_ui_init"
 #~ msgstr "bonobo_ui_init 失敗"
@@ -500,9 +504,6 @@ msgstr "選択(_S)"
 
 #~ msgid "Calculator"
 #~ msgstr "計算機"
-
-#~ msgid "Could not initialize Bonobo"
-#~ msgstr "Bonoboを初期化できません"
 
 #~ msgid "Registration browser"
 #~ msgstr "登録ブラウザ"
