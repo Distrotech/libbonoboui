@@ -1,3 +1,65 @@
+2004-03-18  Arvind Samptur  <arvind.samptur@wipro.com>
+
+	Patch from Arvind and Michael Meeks <michael@ximian.com>
+
+	Moving the float_window from a GdkWindow to a GtkWindow.
+
+	* bonobo/bonobo-dock-item.h: mark the structs private.
+
+	* bonobo/bonobo-dock-item.c: Add BonoboDockItem child
+	and the float window to the BonoboDockItemPriv struct.
+	(bonobo_dock_item_instance_init): use the GtkWindow calls
+	for the float_window;
+	(bonobo_dock_item_realize): ditto
+	(bonobo_dock_item_unrealize): ditto
+	(bonobo_dock_item_drag_floating): ditto
+	(bonobo_dock_item_get_floating_position): ditto
+	(get_preferred_height): use the Priv child
+	(get_preferred_width): ditto
+	toolbar code
+	(size_request): move code common for both the float_window
+	and docked item requisitions
+	(bonobo_dock_item_size_request): use size_request()
+	(bonobo_dock_item_float_window_size_request): use size_request()
+	(grip_size_allocate): move code common for both float_window
+	and docked item allocations
+	(bonobo_dock_item_size_allocate): bin the floating toolbar
+	allocations.
+	(bonobo_dock_item_float_window_size_allocate): do the
+	allocations for grip and the InternalToolbar. Need to
+	fix in a better way.
+	(window_paint): move code common for float_window and
+	docked item
+	(bonobo_dock_item_paint):use window_paint()
+	(bonobo_dock_item_float_window_paint): use window_paint()
+	(bonobo_dock_item_float_window_expose):  paint the grip
+	and propogate the expose to our parent class
+	(button_changed): move code common for both float_window
+	and docked item
+	(bonobo_dock_item_button_changed): use button_changed()
+	(bonobo_dock_item_float_window_button_changed): use button_changed()
+	(widget_motion): move code common for both float_window 
+	and docked item
+	(bonobo_dock_item_motion): use widget_motion()
+	(bonobo_dock_item_float_window_motion): use widget_motion()
+	(bonobo_dock_item_remove): bin the floating item code
+	(bonobo_dock_item_get_child): get the child right when floating
+	and docked
+	(bonobo_dock_item_grab_pointer): Unsuccesful attempt to grab
+	the right window when toolbar is floating. ugh!
+	(bonobo_dock_item_detach): on floating, create a hbox or vbox based 
+	on the alignment and move  the grip and toolbar from the docked item
+	(bonobo_dock_item_unfloat): on re-docking, move the children of the
+	float_window back to BonoboDockItem
+
+	* bonobo/bonobo-ui-sync-toolbar.c : (impl_bonobo_ui_sync_toolbar_get_widgets),
+	(impl_bonobo_ui_sync_toolbar_update_root):  use bonobo_dock_item_get_child()
+	to get hold of the toolbar
+
+2004-03-17  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-toolbar.c (main): bin separator item foo.
+
 2004-02-24  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-toolbar-control-item.c: substantial

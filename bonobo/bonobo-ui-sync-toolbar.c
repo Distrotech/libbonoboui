@@ -411,7 +411,7 @@ impl_bonobo_ui_sync_toolbar_get_widgets (BonoboUISync *sync,
 		return NULL;
 	}
 
-	return bonobo_ui_internal_toolbar_get_children (GTK_WIDGET (GTK_BIN (item)->child));
+	return bonobo_ui_internal_toolbar_get_children (bonobo_dock_item_get_child (item));
 }
 
 static void
@@ -756,7 +756,7 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 		detachable = bonobo_ui_preferences_get_toolbar_detachable ();
 	bonobo_dock_item_set_locked (item, !detachable);
 
-	toolbar = GTK_TOOLBAR (GTK_BIN (item)->child);
+	toolbar = GTK_TOOLBAR (bonobo_dock_item_get_child (item));
 
 	bonobo_ui_engine_stamp_root (sync->engine, node, GTK_WIDGET (toolbar));
 
