@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2002-12-10 23:47+0200\n"
+"POT-Creation-Date: 2003-01-06 12:16+0000\n"
 "PO-Revision-Date: 2002-12-10 19:39+0200\n"
 "Last-Translator: Alexander Shopov <al_shopov@web.bg>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -297,11 +297,11 @@ msgstr "е свободна"
 msgid "whether the toolbar is floating"
 msgstr "дали лентата с инструменти е свободна"
 
-#: bonobo/bonobo-ui-util.c:615
+#: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
 msgstr "_Съдържание"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
 msgstr "Виж помощ за това приложение"
 

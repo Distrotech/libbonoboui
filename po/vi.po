@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2002-11-26 10:17+0000\n"
+"POT-Creation-Date: 2003-01-06 12:16+0000\n"
 "PO-Revision-Date: 2002-06-05 03:03+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
@@ -292,11 +292,11 @@ msgstr "đang trôi nổi"
 msgid "whether the toolbar is floating"
 msgstr "thanh công cụ có trôi nổi hay không"
 
-#: bonobo/bonobo-ui-util.c:615
+#: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
 msgstr "_Nội dung"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
 msgstr "Xem trợ giúp về ứng dụng này"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2002-12-04 16:36+0100\n"
+"POT-Creation-Date: 2003-01-06 12:16+0000\n"
 "PO-Revision-Date: 2002-12-04 16:37+0100\n"
 "Last-Translator: Emese Kovacs <emese@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
@@ -295,11 +295,11 @@ msgstr "lebegő"
 msgid "whether the toolbar is floating"
 msgstr "legyen-e lebegő az eszköztár"
 
-#: bonobo/bonobo-ui-util.c:615
+#: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
 msgstr "_Tartalom"
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
 msgstr "Az alkalmazás súgójának megtekintése"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tamil libbonoboui2 1.7\n"
-"POT-Creation-Date: 2002-11-26 10:17+0000\n"
+"POT-Creation-Date: 2003-01-06 12:16+0000\n"
 "PO-Revision-Date: 2001-09-28 18:53-0500\n"
 "Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -296,11 +296,11 @@ msgstr ""
 msgid "whether the toolbar is floating"
 msgstr ""
 
-#: bonobo/bonobo-ui-util.c:615
+#: bonobo/bonobo-ui-util.c:616
 msgid "_Contents"
 msgstr ""
 
-#: bonobo/bonobo-ui-util.c:616
+#: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
 msgstr ""
 
