@@ -1,3 +1,14 @@
+2002-08-16  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_image_cache_trash): impl.
+	(bonobo_ui_util_xml_get_pixbuf): split hash and
+	hash on screen ptr too if doing multi-head.
+
+	* bonobo/bonobo-window.c (setting_changed_cb),
+	(bonobo_window_realize): impl. to catch theme changes.
+	(bonobo_window_class_init): upd.
+
 2002-08-15  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-window.c (construct_priv): put

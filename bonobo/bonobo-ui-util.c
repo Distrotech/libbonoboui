@@ -296,6 +296,16 @@ lookup_stock_compat (const char *id)
 	return NULL;
 }
 
+static GHashTable *pixbuf_cache = NULL;
+
+void
+bonobo_ui_image_cache_trash (void)
+{
+	if (pixbuf_cache)
+		g_hash_table_destroy (pixbuf_cache);
+	pixbuf_cache = NULL;
+}
+
 GdkPixbuf *
 bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
 			       BonoboUINode *node,
@@ -304,9 +314,6 @@ bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
 	GdkPixbuf  *pixbuf = NULL;
 	char       *key;
 	const char *type, *text;
-	/* FIXME: this cache needs to be invalidated on theme
-	 * changes */
-	static GHashTable *pixbuf_cache = NULL;
 
 	g_return_val_if_fail (node != NULL, NULL);
 
@@ -316,12 +323,29 @@ bonobo_ui_util_xml_get_pixbuf (GtkWidget    *widget,
 	if (!(text = bonobo_ui_node_peek_attr (node, "pixname")))
 		return NULL;
 
-	key = g_strdup_printf ("%s:%s:%d:%d", type, text,
+	/* FIXME: is this cache worthwhile anymore ? quite probably
+	 * it'd be more efficient to test per attr whether it had
+	 * changed at merge time */
+	key = g_strdup_printf (
+			       "%s:%s:%d:%d"
+#ifdef HAVE_GTK_MULTIHEAD
+			       ":%p"
+#endif
+			       ,
+			       type, text,
 			       icon_size,
-			       gtk_widget_get_direction (widget));
+			       gtk_widget_get_direction (widget)
+#ifdef HAVE_GTK_MULTIHEAD
+			       ,
+			       gtk_widget_get_screen (widget)
+#endif
+			       );
 
 	if (!pixbuf_cache)
-		pixbuf_cache = g_hash_table_new (g_str_hash, g_str_equal);
+		pixbuf_cache = g_hash_table_new_full (
+			g_str_hash, g_str_equal,
+			(GDestroyNotify) g_free,
+			(GDestroyNotify) g_object_unref);
 
 	else if ((pixbuf = g_hash_table_lookup (pixbuf_cache, key))) {
 		g_free (key);
@@ -569,7 +593,7 @@ bonobo_ui_util_build_help_menu (BonoboUIComponent *listener,
 				BonoboUINode      *parent)
 {
 	static int unique = 0;
-	char *id, *help_path;
+	char *id;
 	BonoboUINode *node;
 	HelpDisplayClosure *cl;
  
