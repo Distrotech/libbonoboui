@@ -13,19 +13,49 @@
 
 BEGIN_GNOME_DECLS
 
+#include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-engine.h>
 
-void bonobo_ui_engine_config_connect     (GtkWidget      *widget,
-					  BonoboUIEngine *engine,
-					  const char     *path,
-					  const char     *popup_xml);
+#define BONOBO_TYPE_UI_ENGINE_CONFIG            (bonobo_ui_engine_config_get_type ())
+#define BONOBO_UI_ENGINE_CONFIG(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_ENGINE_CONFIG, BonoboUIEngineConfig))
+#define BONOBO_UI_ENGINE_CONFIG_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_ENGINE_CONFIG, BonoboUIEngineConfigClass))
+#define BONOBO_IS_UI_ENGINE_CONFIG(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_ENGINE_CONFIG))
+#define BONOBO_IS_UI_ENGINE_CONFIG_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((obj), BONOBO_TYPE_UI_ENGINE_CONFIG))
 
-void bonobo_ui_engine_config_add_node    (BonoboUIEngine *engine,
-					  BonoboUINode   *node);
+typedef struct _BonoboUIEngineConfigPrivate BonoboUIEngineConfigPrivate;
 
-void bonobo_ui_engine_config_remove_node (BonoboUIEngine *engine,
-					  BonoboUINode   *node);
-				       
+typedef struct {
+	GtkObject parent;
+
+	BonoboUIEngineConfigPrivate *priv;
+} BonoboUIEngineConfig;
+
+typedef struct {
+	GtkObjectClass parent_class;
+
+	gpointer       dummy;
+} BonoboUIEngineConfigClass;
+
+GtkType bonobo_ui_engine_config_get_type  (void);
+
+BonoboUIEngineConfig *
+        bonobo_ui_engine_config_construct (BonoboUIEngineConfig *config,
+					   BonoboUIEngine       *engine);
+
+BonoboUIEngineConfig *
+        bonobo_ui_engine_config_new       (BonoboUIEngine       *engine);
+
+void    bonobo_ui_engine_config_set_path  (BonoboUIEngineConfig *config,
+					   const char           *path);
+
+const char *
+        bonobo_ui_engine_config_get_path  (BonoboUIEngineConfig *config);
+
+void    bonobo_ui_engine_config_connect   (GtkWidget            *widget,
+					   BonoboUIEngine       *engine,
+					   const char           *path,
+					   const char           *popup_xml);
+
 END_GNOME_DECLS
 
-#endif /* _BONOBO_UI_ENGINE_H_ */
+#endif /* _BONOBO_UI_ENGINE_CONFIG_H_ */

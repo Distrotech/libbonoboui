@@ -35,7 +35,12 @@ typedef void             (*BonoboUIXmlDataFreeFn)  (BonoboUIXmlData *data);
 typedef void             (*BonoboUIXmlDumpFn)      (BonoboUIXml      *tree,
 						    BonoboUINode     *node);
 typedef void             (*BonoboUIXmlAddNode)     (BonoboUINode     *parent,
-						    BonoboUINode     *child);
+						    BonoboUINode     *child,
+						    gpointer          user_data);
+typedef void             (*BonoboUIXmlWatchFn)     (BonoboUIXml      *xml,
+						    const char       *path,
+						    BonoboUINode     *opt_node,
+						    gpointer          user_data);
 
 struct _BonoboUIXml {
 	GtkObject              object;
@@ -45,10 +50,12 @@ struct _BonoboUIXml {
 	BonoboUIXmlDataFreeFn  data_free;
 	BonoboUIXmlDumpFn      dump;
 	BonoboUIXmlAddNode     add_node;
+	BonoboUIXmlWatchFn     watch;
+	gpointer               user_data;
 
 	BonoboUINode          *root;
-	
-	gpointer               dummy;
+
+	GSList                *watches;
 };
 
 typedef struct {
@@ -71,7 +78,8 @@ BonoboUIXml     *bonobo_ui_xml_new               (BonoboUIXmlCompareFn  compare,
 						  BonoboUIXmlDataNewFn  data_new,
 						  BonoboUIXmlDataFreeFn data_free,
 						  BonoboUIXmlDumpFn     dump,
-						  BonoboUIXmlAddNode    add_node);
+						  BonoboUIXmlAddNode    add_node,
+						  gpointer              user_data);
 
 /* Nominaly BonoboUIXmlData * */
 gpointer         bonobo_ui_xml_get_data          (BonoboUIXml  *tree,
@@ -106,5 +114,12 @@ void             bonobo_ui_xml_dump              (BonoboUIXml  *tree,
 						  const char   *msg);
 
 void             bonobo_ui_xml_strip             (BonoboUINode **node);
+
+
+void             bonobo_ui_xml_set_watch_fn      (BonoboUIXml  *tree,
+						  BonoboUIXmlWatchFn watch);
+
+void             bonobo_ui_xml_add_watch         (BonoboUIXml  *tree,
+						  const char   *path);
 
 #endif /* _BONOBO_UI_XML_H_ */

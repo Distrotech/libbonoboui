@@ -14,6 +14,16 @@
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
 #include <bonobo/bonobo-ui-engine-config.h>
+#include <bonobo/bonobo-ui-engine-private.h>
+
+#define PARENT_TYPE gtk_object_get_type ()
+
+static GtkObjectClass *parent_class = NULL;
+
+struct _BonoboUIEngineConfigPrivate {
+	char           *path; 
+	BonoboUIEngine *engine;
+};
 
 typedef struct {
 	BonoboUIEngine *engine;
@@ -194,3 +204,119 @@ bonobo_ui_engine_config_connect (GtkWidget      *widget,
 		(GtkDestroyNotify) closure_destroy,
 		FALSE, FALSE);
 }
+
+static void
+bonobo_ui_engine_config_watch (BonoboUIXml    *xml,
+			       const char     *path,
+			       BonoboUINode   *opt_node,
+			       gpointer        user_data)
+{
+	/* Doh; we need some object to store the config info in. */
+	g_warning ("Stamp new config data onto '%s'", path);
+}
+
+static void
+impl_finalize (GtkObject *object)
+{
+	BonoboUIEngineConfig *config;
+	BonoboUIEngineConfigPrivate *priv;
+
+	config = BONOBO_UI_ENGINE_CONFIG (object);
+	priv = config->priv;
+
+	g_free (priv->path);
+	
+	g_free (priv);
+
+	parent_class->finalize (object);
+}
+
+static void
+class_init (BonoboUIEngineClass *engine_class)
+{
+	GtkObjectClass *object_class;
+
+	parent_class = gtk_type_class (PARENT_TYPE);
+
+	object_class = GTK_OBJECT_CLASS (engine_class);
+
+	object_class->finalize = impl_finalize;
+}
+
+static void
+init (BonoboUIEngineConfig *config)
+{
+	BonoboUIEngineConfigPrivate *priv;
+
+	priv = g_new0 (BonoboUIEngineConfigPrivate, 1);
+
+	config->priv = priv;
+}
+
+GtkType
+bonobo_ui_engine_config_get_type (void)
+{
+	static GtkType type = 0;
+
+	if (!type) {
+		static const GtkTypeInfo info = {
+			"BonoboUIEngineConfig",
+			sizeof (BonoboUIEngineConfig),
+			sizeof (BonoboUIEngineConfigClass),
+			(GtkClassInitFunc)  class_init,
+			(GtkObjectInitFunc) init,
+			/* reserved_1 */ NULL,
+			/* reserved_2 */ NULL,
+			(GtkClassInitFunc) NULL,
+		};
+
+		type = gtk_type_unique (PARENT_TYPE, &info);
+	}
+
+	return type;
+}
+
+BonoboUIEngineConfig *
+bonobo_ui_engine_config_construct (BonoboUIEngineConfig *config,
+				   BonoboUIEngine       *engine)
+{
+	config->priv->engine = engine;
+
+	bonobo_ui_xml_set_watch_fn (
+		bonobo_ui_engine_get_xml (engine),
+		bonobo_ui_engine_config_watch);
+
+	return config;
+}
+
+BonoboUIEngineConfig *
+bonobo_ui_engine_config_new (BonoboUIEngine *engine)
+{
+	BonoboUIEngineConfig *config;
+
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
+
+	config = gtk_type_new (bonobo_ui_engine_config_get_type ());
+
+	return bonobo_ui_engine_config_construct (config, engine);
+}
+
+void
+bonobo_ui_engine_config_set_path (BonoboUIEngineConfig *config,
+				  const char           *path)
+{
+	g_return_if_fail (BONOBO_IS_UI_ENGINE_CONFIG (config));
+
+	g_free (config->priv->path);
+	config->priv->path = g_strdup (path);
+}
+
+const char *
+bonobo_ui_engine_config_get_path (BonoboUIEngineConfig *config)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE_CONFIG (config), NULL);
+	
+	return config->priv->path;
+}
+
+

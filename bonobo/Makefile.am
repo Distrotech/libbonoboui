@@ -164,6 +164,7 @@ libbonoboinclude_HEADERS =			\
 noinst_HEADERS =				\
 	bonobo-activation-context.h		\
 	bonobo-ui-engine-config.h		\
+	bonobo-ui-engine-private.h		\
 	bonobo-ui-sync-menu.h			\
 	bonobo-ui-sync-keys.h			\
 	bonobo-ui-sync-status.h			\

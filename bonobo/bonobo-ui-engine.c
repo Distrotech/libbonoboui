@@ -17,6 +17,8 @@
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-engine.h>
+#include <bonobo/bonobo-ui-engine-config.h>
+#include <bonobo/bonobo-ui-engine-private.h>
 #include <bonobo/bonobo-exception.h>
 
 /* Various debugging output defines */
@@ -46,7 +48,7 @@ struct _BonoboUIEnginePrivate {
 	GSList       *components;
 	BonoboObject *container;
 
-	char         *config_path;
+	BonoboUIEngineConfig *config;
 };
 
 
@@ -200,7 +202,9 @@ info_dump_fn (BonoboUIXml *tree, BonoboUINode *node)
  *  since this will screw up path addressing and subsequent merging.
  */
 static void
-add_node_fn (BonoboUINode *parent, BonoboUINode *child)
+add_node_fn (BonoboUINode *parent,
+	     BonoboUINode *child,
+	     gpointer      user_data)
 {
 	BonoboUINode *insert = parent;
 	char    *pos;
@@ -389,7 +393,6 @@ override_fn (GtkObject      *object,
 	fprintf (stderr, "Override '%s'\n", 
 		 bonobo_ui_xml_make_path (old));
 #endif
-
 	bonobo_ui_engine_prune_widget_info (engine, old, TRUE);
 }
 
@@ -429,7 +432,6 @@ remove_fn (GtkObject      *object,
 
 /*	bonobo_ui_engine_dump (engine, stderr, "before remove_fn");*/
 #endif
-
 	bonobo_ui_engine_prune_widget_info (engine, node, FALSE);
 
 	if (bonobo_ui_node_parent (node) == engine->priv->tree->root) {
@@ -1319,6 +1321,8 @@ impl_destroy (GtkObject *object)
 	engine = BONOBO_UI_ENGINE (object);
 	priv = engine->priv;
 
+	gtk_object_unref (GTK_OBJECT (priv->config));
+
 	while (priv->components)
 		sub_component_destroy (
 			engine, priv->components->data);
@@ -1456,11 +1460,11 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine)
 
 	priv = engine->priv;
 
-	priv->tree = bonobo_ui_xml_new (NULL,
-					info_new_fn,
-					info_free_fn,
-					info_dump_fn,
-					add_node_fn);
+	priv->tree = bonobo_ui_xml_new (
+		NULL, info_new_fn, info_free_fn,
+		info_dump_fn, add_node_fn, engine);
+	
+	priv->config = bonobo_ui_engine_config_new (engine);
 
 	build_skeleton (priv->tree);
 
@@ -2334,14 +2338,29 @@ bonobo_ui_engine_set_config_path (BonoboUIEngine *engine,
 {
 	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
 
-	g_free (engine->priv->config_path);
-	engine->priv->config_path = g_strdup (path);
+	bonobo_ui_engine_config_set_path (engine->priv->config, path);
 }
 
 const char *
 bonobo_ui_engine_get_config_path (BonoboUIEngine *engine)
 {
 	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
+
+	return bonobo_ui_engine_config_get_path (engine->priv->config);
+}
+
+BonoboUIXml *
+bonobo_ui_engine_get_xml (BonoboUIEngine *engine)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
 	
-	return engine->priv->config_path;
+	return engine->priv->tree;
+}
+
+BonoboUIEngineConfig *
+bonobo_ui_engine_get_config (BonoboUIEngine *engine)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
+	
+	return engine->priv->config;
 }
