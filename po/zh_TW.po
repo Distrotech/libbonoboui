@@ -1,22 +1,22 @@
 # traditional Chinese translation of libbonoboui.
-# Copyright (C) 2001-2002 Free Software Foundation, Inc.
+# Copyright (C) 2001-2003 Free Software Foundation, Inc.
 # Joe Man <trmetal@yahoo.com.hk>, 2001.
-# Abel Cheung <maddog@linux.org.hk>, 2002.
+# Abel Cheung <maddog@linux.org.hk>, 2002-2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 2.0.0\n"
-"POT-Creation-Date: 2003-01-21 14:27+0000\n"
-"PO-Revision-Date: 2002-06-06 17:37+0800\n"
+"Project-Id-Version: libbonoboui 2.2.0\n"
+"POT-Creation-Date: 2003-01-23 13:21+0800\n"
+"PO-Revision-Date: 2003-01-23 14:03+0800\n"
 "Last-Translator: Joe Man <trmetal@yahoo.com.hk>\n"
-"Language-Team: traditional Chinese <zh-l10n@linux.org.tw>\n"
+"Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr ""
+msgstr "corba 工廠"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
@@ -49,15 +49,13 @@ msgstr "方向"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
 #: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
-#, fuzzy
 msgid "Preferred width"
-msgstr "寬度"
+msgstr "首選的寬度"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
 #: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
-#, fuzzy
 msgid "Preferred height"
-msgstr "高度"
+msgstr "首選的高度"
 
 #: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
@@ -89,7 +87,7 @@ msgstr "描述"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "需要的界面"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -104,7 +102,7 @@ msgstr ""
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "其中一個需要的界面"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -144,27 +142,27 @@ msgstr "圖示及文字(_T)"
 
 #: bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
-msgstr "僅顯示文字"
+msgstr "只顯示文字"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr "圖示及橫向文字(_P)"
+msgstr "部份圖示旁邊顯示文字(_P)"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "Debug"
-msgstr ""
+msgstr "偵錯"
 
 #: bonobo/bonobo-ui-engine.c:88
 msgid "_Dump XML"
-msgstr ""
+msgstr "傾印 XML(_D)"
 
 #: bonobo/bonobo-ui-engine.c:89
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "傾印整個使用者界面的 XML 描述資料"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr "設定使用者介面"
+msgstr "設定使用者界面"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
@@ -181,19 +179,19 @@ msgstr "準備去除的 Gdk 偵錯旗標"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "使用的 X 畫面"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "畫面"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "X screen to use"
-msgstr ""
+msgstr "使用的 X 螢幕"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "螢幕"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -205,7 +203,7 @@ msgstr "不使用 X 分享記憶體延伸功能"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "視窗管理員中使用的程式名稱"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "NAME"
@@ -257,7 +255,7 @@ msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
-msgstr "Bonobo 圖形介面支援"
+msgstr "Bonobo 圖形界面支援"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
@@ -281,15 +279,15 @@ msgstr "隱藏工具列(_H)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
-msgstr "自訂(_Z)"
+msgstr "自選(_Z)"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "自訂工具列"
+msgstr "自選工具列"
 
 #: bonobo/bonobo-ui-toolbar.c:1113
 msgid "is floating"
-msgstr ""
+msgstr "是浮動"
 
 #: bonobo/bonobo-ui-toolbar.c:1114
 msgid "whether the toolbar is floating"
@@ -301,7 +299,7 @@ msgstr "內容(_C)"
 
 #: bonobo/bonobo-ui-util.c:617
 msgid "View help for this application"
-msgstr "瀏覽有關此應用程式的說明文件"
+msgstr "瀏覽有關本程式的說明文件"
 
 #: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
@@ -309,7 +307,7 @@ msgstr ""
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "縮放程度"
+msgstr "縮放倍率"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
@@ -317,47 +315,47 @@ msgstr "放大縮小的程度"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "縮放倍率下限"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr ""
+msgstr "最低的縮放倍率"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "縮放倍率上限"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "最高的縮放倍率"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr ""
+msgstr "有縮放倍率下限"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "是否有有效的縮放倍率下限"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr ""
+msgstr "有縮放倍率上限"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "是否有有效的縮放倍率上限"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr ""
+msgstr "是連續"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "可否連續放大或縮小 (不同於只有個別的縮放倍率)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "關於此程式"
+msgstr "關於本程式"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
@@ -389,7 +387,7 @@ msgstr "BonoboUI-Hello."
 
 #: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr "Gnome 示範"
+msgstr "GNOME 示範"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
@@ -402,4 +400,4 @@ msgstr "無法初始化 libbonoboui 的原碼"
 
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
-msgstr "無法初始化 Bonobo 圖形介面"
+msgstr "無法初始化 Bonobo 圖形界面"
