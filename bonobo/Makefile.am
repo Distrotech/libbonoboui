@@ -53,7 +53,6 @@ libbonoboinclude_HEADERS = \
 	bonobo-selector-widget.h		\
 	bonobo-selector.h			\
 	bonobo-socket.h				\
-	bonobo-ui-compat.h			\
 	bonobo-ui-component.h			\
 	bonobo-ui-config-widget.h		\
 	bonobo-ui-container.h			\

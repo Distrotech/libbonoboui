@@ -1,5 +1,10 @@
 2001-07-17  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/Makefile.am (libbonoboinclude_HEADERS): remove
+	bonobo-ui-compat.h: extremely stale.
+
+2001-07-17  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-ui-sync-status.c
 	(impl_bonobo_ui_sync_status_build): don't have a 'resize
 	grip' on the statusbar.
