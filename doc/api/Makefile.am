@@ -9,36 +9,86 @@ DOC_MAIN_SGML_FILE=bonobo-api.sgml
 # The directory containing the source code (if it contains documentation).
 DOC_SOURCE_DIR=$(top_srcdir)/bonobo
 
-CFLAGS=`gnome-config --cflags bonobo` 
+CFLAGS="-I../.. `gnome-config --cflags bonobo`"
 LDFLAGS=`gnome-config --libs bonobo`
 
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
-all:
+tmpl_sources =
+
+bonobo_docdir = $(HTML_DIR)
+bonobo_doc_DATA = \
+	bonobo-api.sgml		\
+	bonobo-api.html		\
+	bonobo.hierarchy	\
+	bonobo.signals		\
+	bonobo.types		\
+	bonobo-decl.txt		\
+	bonobo-sections.txt
+
+EXTRA_DIST = $(bonobo_doc_DATA)
+
+if ENABLE_GTK_DOC
+bonobo-api.html: html/book1.html
+	-cp $(srcdir)/html/book1.html $(srcdir)/bonobo-api.html
+else
+bonobo-api.html:
+endif
+
+html/book1.html: sgml/bonobo-api-doc.bottom
+	$(MAKE) html
+
+sgml/bonobo-api-doc.bottom: $(tmpl_sources)
+	$(MAKE) sgml
 
 scan:
-	-CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS)  gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) 
+	-(cd $(srcdir) \
+	&& env CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) \
+		 gtkdoc-scanobj --module=$(DOC_MODULE) \
+	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=../.. \
+		--ignore-headers="Bonobo.h" )
 
 templates: scan
-	gtkdoc-mktmpl --module=$(DOC_MODULE)
+	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
 
 sgml:
-	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR)
+	cd $(srcdir) \
+	&& gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=..
 
 html:
-	if ! test -d html ; then mkdir html ; fi
-	-cd html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+	test -d $(srcdir)/html || mkdir $(srcdir)/html
+	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 
 clean-local:
-	rm -f *~ *.bak *.hierarchy *.signals *.args *-unused.txt
+	rm -f *~ *.bak *-unused.txt
 
 maintainer-clean-local: clean
-	rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt 
+	cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
 
 install-data-local:
-	install -d -m 0755 $(TARGET_DIR)
-	install -m 0644 html/*.html $(TARGET_DIR)
-	install -m 0644 html/index.sgml $(TARGET_DIR)
-	gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR)
+	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
+	(installfiles=`echo $(srcdir)/html/*.html`; \
+	if test "$$installfiles" = '$(srcdir)/html/*.html'; \
+	then echo '-- Nothing to install' ; \
+	else \
+	  for i in $$installfiles; do \
+	    echo '-- Installing '$$i ; \
+	    $(INSTALL_DATA) $$i $(DESTDIR)$(TARGET_DIR); \
+	  done; \
+	  echo '-- Installing $(srcdir)/html/index.sgml' ; \
+	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR); \
+	  echo '-- Fixing Crossreferences' ; \
+	  gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR)|| true; \
+	fi)
+
+dist-hook:
+	mkdir $(distdir)/html
+	mkdir $(distdir)/sgml
+	mkdir $(distdir)/tmpl
+	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
+	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
+	-cp $(srcdir)/sgml/*.sgml $(distdir)/sgml
+	-cp $(srcdir)/sgml/*.bottom $(srcdir)/sgml/*.top $(distdir)/sgml
 
 .PHONY : html sgml templates scan
+
