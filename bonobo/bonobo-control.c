@@ -1108,7 +1108,7 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 	}
 
 	id = Bonobo_ControlFrame_getToplevelId (frame, ev);
-	g_return_if_fail (id != NULL);
+	g_return_if_fail (!BONOBO_EX (ev) && id != NULL);
 
 	x11_id = bonobo_control_x11_from_window_id (id);
 
