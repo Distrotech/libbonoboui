@@ -1,6 +1,13 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
 /**
- * GNOME BoboboObject object.
+ * GNOME Embeddable object.
+ *
+ * A GnomeEmbeddable object represents the actual object being
+ * embedded.  A GnomeEmbeddable may have one or more GnomeViews, each
+ * of which is an identical embedded window which displays the
+ * GnomeEmbeddable's contents.  The GnomeEmbeddable is associated with
+ * a GnomeClientSite, which is a container-side object with which the
+ * GnomeEmbeddable communicates.
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)

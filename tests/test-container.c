@@ -2,7 +2,8 @@
 /*
  * test-container.c
  *
- * A simple program to act as a test container for Embeddables.
+ * A simple program to act as a test container for embeddable
+ * components.
  *
  * Authors:
  *    Nat Friedman (nat@gnome-support.com)
@@ -39,6 +40,7 @@ typedef struct {
 	GnomeContainer *container;
 	GtkWidget *box;
 	GNOME_View view;
+	GnomeUIHandler *uih;
 } Application;
 
 static GnomeObjectClient *
@@ -98,11 +100,12 @@ add_view (GtkWidget *widget, Application *app,
 	GtkWidget *view_widget;
 	GtkWidget *frame;
 	
-	view_frame = gnome_embeddable_client_new_view_simple (server,
-								 client_site);
+	view_frame = gnome_embeddable_client_new_view_simple (server, client_site);
 	gtk_signal_connect (GTK_OBJECT (view_frame), "view_activated",
 			    GTK_SIGNAL_FUNC (view_frame_activated_cb),
 			    server);
+
+	gnome_view_frame_set_ui_handler (view_frame, app->uih);
 
 	view_widget = gnome_view_frame_get_wrapper (view_frame);
 
@@ -397,6 +400,7 @@ static Application *
 application_new (void)
 {
 	Application *app;
+	GnomeUIHandlerMenuItem *menu_list;
 
 	app = g_new0 (Application, 1);
 	app->app = gnome_app_new ("test-container",
@@ -406,8 +410,16 @@ application_new (void)
 	app->box = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (app->box);
 	gnome_app_set_contents (GNOME_APP (app->app), app->box);
-	gnome_app_create_menus_with_data (GNOME_APP (app->app),
-					  container_main_menu, app);
+
+	/*
+	 * Create the menus.
+	 */
+	app->uih = gnome_ui_handler_new ();
+	gnome_ui_handler_create_menubar (app->uih, GNOME_APP (app->app));
+	menu_list = gnome_ui_handler_menu_parse_uiinfo_list_with_data (container_main_menu, app);
+	gnome_ui_handler_menu_add_list (app->uih, "/", menu_list);
+	gnome_ui_handler_menu_free_list (menu_list);
+	
 	gtk_widget_show (app->app);
 
 	return app;

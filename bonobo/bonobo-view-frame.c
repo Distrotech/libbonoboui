@@ -162,6 +162,7 @@ init_view_frame_corba_class (void)
 {
 	/* The entry point vectors for this GNOME::View class */
 	gnome_view_frame_epv.get_client_site = impl_GNOME_ViewFrame_get_client_site;
+	gnome_view_frame_epv.get_ui_handler = impl_GNOME_ViewFrame_get_ui_handler;
 	gnome_view_frame_epv.view_activated = impl_GNOME_ViewFrame_view_activated;
 
 	/* Setup the vector of epvs */

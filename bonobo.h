@@ -39,6 +39,8 @@
 #include <bonobo/gnome-persist.h>
 #include <bonobo/gnome-persist-stream.h>
 
+#include <bonobo/gnome-ui-handler.h>
+
 #include <bonobo/gnome-object-io.h>
 
 #include <bonobo/gnome-progressive.h>

@@ -8,10 +8,8 @@
 
 /*
  * Notes to self:
- *  - fix tokenize_path.
  *  - in mutation functions, modify internal data _and_ propagate to container.
  *    internal data setting always has to be done.
- *  - do not pass paths to individual callback funcs (to provide GnomeUIInfo compatibility)
  *  - emit signals in the appropriate places.
  *  - dynamic lists
  *     . removal especially
@@ -109,7 +107,6 @@ typedef struct {
  */
 
 typedef struct {
-
 	/*
 	 * The GnomeUIHandler.  FIXME: This is gross.  We need it for
 	 * toolbar_item_activated, though.
@@ -142,6 +139,22 @@ typedef struct {
 } ToolbarItemInternal;
 
 static void remove_menu_item (GnomeUIHandler *uih, MenuItemInternal *internal_remove_me, gboolean replace);
+static void impl_GNOME_UIHandler_register_containee (PortableServer_Servant servant, GNOME_UIHandler uih,
+						     CORBA_Environment *ev);
+static void impl_GNOME_UIHandler_menu_item_activated (PortableServer_Servant servant, const CORBA_char *path,
+						      CORBA_Environment *ev);
+static void
+impl_GNOME_UIHandler_menu_item_create (PortableServer_Servant servant,
+				       const CORBA_char *path,
+				       const GNOME_UIHandler_MenuType menu_type,
+				       const CORBA_char *label,
+				       const CORBA_char *hint,
+				       const GNOME_UIHandler_iobuf *pixmap_data,
+				       const CORBA_unsigned_long accelerator_key,
+				       const CORBA_long modifier,
+				       const CORBA_long pos,
+				       const GNOME_UIHandler containee_uih,
+				       CORBA_Environment *ev);
 
 static CORBA_Object
 create_gnome_ui_handler (GnomeObject *object)
@@ -175,10 +188,11 @@ static void
 init_ui_handler_corba_class (void)
 {
 	/* The entry point vectors for this GNOME::UIHandler class */
-#if 0
 	gnome_ui_handler_epv.register_containee = impl_GNOME_UIHandler_register_containee;
-	gnome_ui_handler_epv.unregister_containee = impl_GNOME_UIHandler_unregister_containee;
+	gnome_ui_handler_epv.menu_item_activated = impl_GNOME_UIHandler_menu_item_activated;
 	gnome_ui_handler_epv.menu_item_create = impl_GNOME_UIHandler_menu_item_create;
+#if 0
+	gnome_ui_handler_epv.unregister_containee = impl_GNOME_UIHandler_unregister_containee;
 	gnome_ui_handler_epv.menu_item_remove = impl_GNOME_UIHandler_menu_item_remove;
 	gnome_ui_handler_epv.menu_item_fetch = impl_GNOME_UIHandler_menu_item_fetch;
 	gnome_ui_handler_epv.menu_item_get_pos = impl_GNOME_UIHandler_menu_item_get_pos;
@@ -524,7 +538,7 @@ gnome_ui_handler_get_accelgroup (GnomeUIHandler *uih)
 }
 
 /*
- * This helper function replaces all instances of "/" with "\/" and
+ * This helper function replaces all instances of "/" with "\!" and
  * replaces "\" with "\\".
  */
 static char *
@@ -540,7 +554,7 @@ escape_forward_slashes (char *str)
 	while (*p != '\0') {
 		if (*p == '/') {
 			*newp++ = '\\';
-			*newp++ = '/';
+			*newp++ = '!';
 		} else if (*p == '\\') {
 			*newp++ = '\\';
 			*newp++ = '\\';
@@ -559,7 +573,7 @@ escape_forward_slashes (char *str)
 }
 
 /*
- * This helper function replaces all instances of "\/" with "/"
+ * This helper function replaces all instances of "\!" with "/"
  * and all instances of "\\" with "\".
  */
 static char *
@@ -573,7 +587,7 @@ unescape_forward_slashes (char *str)
 	newp = new;
 
 	while (*p != '\0') {
-		if (*p == '\\' && *(p + 1) == '/') {
+		if (*p == '\\' && *(p + 1) == '!') {
 			*newp++ = '/';
 			p++;
 		} else if (*p == '\\' && *(p + 1) == '\\') {
@@ -732,15 +746,21 @@ gnome_ui_handler_get_statusbar (GnomeUIHandler *uih)
 static gchar **
 tokenize_path (const char *path)
 {
-	/* FIXME: This MUST be fixed to deal with the escaping. */
 	return g_strsplit (path, "/", 0);
 }
 
+/*
+ * Given a string, this small helper function returns a
+ * newly-allocated copy of the string with all of the underscore
+ * characters removed.  It is used to generate a menu item path out of
+ * the item's label.
+ */
 static gchar *
 remove_ulines (const char *str)
 {
 	char *retval;
-	char *p, *q;
+	const char *p;
+	char *q;
 
 	retval = g_new0 (char, strlen (str) + 1);
 
@@ -850,7 +870,11 @@ do_menu_item_path (GnomeUIHandler *uih, char *parent_path, GnomeUIHandlerMenuIte
 		 * as the path component.
 		 */
 		if (item->label != NULL) {
-			path_component = remove_ulines (item->label);
+			char *tmp;
+
+			tmp = remove_ulines (item->label);
+			path_component = escape_forward_slashes (tmp);
+			g_free (tmp);
 		} else {
 
 			/*
@@ -858,7 +882,7 @@ do_menu_item_path (GnomeUIHandler *uih, char *parent_path, GnomeUIHandlerMenuIte
 			 * a unique path for an item with no label.
 			 */
 			path_component = g_new0 (char, 32);
-			snprintf (path_component, "%x", (unsigned long) ((char *) item + rand () % 10000));
+			snprintf (path_component, 32, "%x", (unsigned long) ((char *) item + rand () % 10000));
 		}
 
 		if (parent_path [strlen (parent_path) - 1] == '/')
@@ -970,6 +994,36 @@ remove_menu_label (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item, GtkWidget 
 	}
 		
 }
+
+
+static GnomeUIHandlerMenuItem *
+make_menu_item (char *path, GnomeUIHandlerMenuItemType type,
+		char *label, char *hint, gint dynlist_maxsize,
+		GnomeUIHandlerPixmapType pixmap_type,
+		gpointer pixmap_data,
+		guint accelerator_key, GdkModifierType ac_mods,
+		GnomeUIHandlerCallbackFunc callback,
+		gpointer callback_data, int pos)
+
+{
+	GnomeUIHandlerMenuItem *item;
+
+	item = g_new0 (GnomeUIHandlerMenuItem, 1);
+	item->path = path;
+	item->type = type;
+	item->label = label;
+	item->hint = hint;
+	item->dynlist_maxsize = dynlist_maxsize;
+	item->pixmap_type = pixmap_type;
+	item->pixmap_data = pixmap_data;
+	item->accelerator_key = accelerator_key;
+	item->ac_mods = ac_mods;
+	item->callback = callback;
+	item->callback_data = callback_data;
+
+	return item;
+}
+
 
 static GtkPixmap *
 create_pixmap (GnomeUIHandlerPixmapType type, gpointer data)
@@ -1264,7 +1318,7 @@ menu_item_activated (GtkWidget *menu_item, gpointer data)
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);
-		GNOME_UIHandler_item_activated (internal->uih_corba, internal->item->path, &ev);
+		GNOME_UIHandler_menu_item_activated (internal->uih_corba, internal->item->path, &ev);
 		/* FIXME: Check exception. */
 		CORBA_exception_free (&ev);
 
@@ -1278,38 +1332,11 @@ menu_item_activated (GtkWidget *menu_item, gpointer data)
 	if (internal->item->callback == NULL)
 		return FALSE;
 
-	(internal->item->callback) (internal->uih, internal->item->path, internal->item->callback_data);
+	(internal->item->callback) (internal->uih, internal->item->callback_data, internal->item->path);
 
 	return FALSE;
 }
 
-
-static void
-impl_GNOME_UIHandler_item_activated (PortableServer_Servant servant,
-		     CORBA_char *path,
-		     CORBA_Environment *ev)
-{
-	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
-	MenuItemInternal *item;
-
-	/*
-	 * Grab the internal data structure which represents the
-	 * activated menu item.
-	 */
-	item = get_menu_item (uih, path);
-
-	if (item == NULL) {
-		g_warning ("impl_item_activated: Cannot find menu item with path [%s]\n",
-			   path);
-		return;
-	}
-
-	/*
-	 * Now call the activation signal handler which will handle
-	 * dispatching to the appropriate callback or containee.
-	 */
-	menu_item_activated (NULL, item);
-}
 
 static GnomeUIHandlerMenuItem *
 copy_menu_item (GnomeUIHandlerMenuItem *item)
@@ -1519,46 +1546,71 @@ create_menu_item (GnomeUIHandler *uih, char *parent_path, MenuItemInternal *inte
 	menu_item_connect_signal (menu_item, internal);
 }
 
-static GNOME_UIHandler_PixmapType
-pixmap_type_to_corba (GnomeUIHandlerPixmapType type)
-{
-	/* FIXME */
-}
-
-static GnomeUIHandlerPixmapType
-corba_to_pixmap_type (GNOME_UIHandler_PixmapType type)
-{
-	/* FIXME */
-}
-
-
-static GNOME_UIHandler_ModifierType
-modifier_type_to_corba (GdkModifierType type)
-{
-	/* FIXME */
-}
-
-static GdkModifierType
-corba_to_modifier_type (GNOME_UIHandler_ModifierType type)
-{
-	/* FIXME */
-}
-
 static GNOME_UIHandler_MenuType
 menu_type_to_corba (GnomeUIHandlerMenuItemType type)
 {
-	/* FIXME */
+	switch (type) {
+	case GNOME_UI_HANDLER_MENU_END:
+		g_warning ("Warning: Passing MenuTypeEnd through CORBA!");
+		return GNOME_UIHandler_MenuTypeEnd;
+	case GNOME_UI_HANDLER_MENU_ITEM:
+		return GNOME_UIHandler_MenuTypeItem;
+	case GNOME_UI_HANDLER_MENU_SUBTREE:
+		return GNOME_UIHandler_MenuTypeSubtree;
+	case GNOME_UI_HANDLER_MENU_RADIOITEM:
+		return GNOME_UIHandler_MenuTypeRadioItem;
+	case GNOME_UI_HANDLER_MENU_RADIOGROUP:
+		return GNOME_UIHandler_MenuTypeRadioGroup;
+	case GNOME_UI_HANDLER_MENU_TOGGLEITEM:
+		return GNOME_UIHandler_MenuTypeToggleItem;
+	case GNOME_UI_HANDLER_MENU_DYNLIST:
+		return GNOME_UIHandler_MenuTypeDynlist;
+	case GNOME_UI_HANDLER_MENU_SEPARATOR:
+		return GNOME_UIHandler_MenuTypeSeparator;
+	default:
+		g_warning ("Unknown GnomeUIHandlerMenuItemType %d!\n", (int) type);
+		return GNOME_UIHandler_MenuTypeItem;
+		
+	}
 }
 
 static GnomeUIHandlerMenuItemType
 corba_to_menu_type (GNOME_UIHandler_MenuType type)
 {
-	/* FIXME */
+	switch (type) {
+	case GNOME_UIHandler_MenuTypeEnd:
+		g_warning ("Warning: Getting MenuTypeEnd from CORBA!");
+		return GNOME_UI_HANDLER_MENU_END;
+	case GNOME_UIHandler_MenuTypeItem:
+		return GNOME_UI_HANDLER_MENU_ITEM;
+	case GNOME_UIHandler_MenuTypeSubtree:
+		return GNOME_UI_HANDLER_MENU_SUBTREE;
+	case GNOME_UIHandler_MenuTypeRadioItem:
+		return GNOME_UI_HANDLER_MENU_RADIOITEM;
+	case GNOME_UIHandler_MenuTypeRadioGroup:
+		return GNOME_UI_HANDLER_MENU_RADIOGROUP;
+	case GNOME_UIHandler_MenuTypeToggleItem:
+		return GNOME_UI_HANDLER_MENU_TOGGLEITEM;
+	case GNOME_UIHandler_MenuTypeDynlist:
+		return GNOME_UI_HANDLER_MENU_DYNLIST;
+	case GNOME_UIHandler_MenuTypeSeparator:
+		return GNOME_UI_HANDLER_MENU_SEPARATOR;
+	default:
+		g_warning ("Unknown GNOME_UIHandler menu type %d!\n", (int) type);
+		return GNOME_UI_HANDLER_MENU_ITEM;
+		
+	}
 }
 
 static GNOME_UIHandler_iobuf *
 pixmap_data_to_corba (GnomeUIHandlerPixmapType type, gpointer data)
 {
+	GNOME_UIHandler_iobuf *buffer;
+
+	/* FIXME: Free me */
+	buffer = GNOME_UIHandler_iobuf__alloc ();
+
+	return buffer;
 }
 
 static void
@@ -1572,16 +1624,93 @@ menu_item_container_create (GnomeUIHandler *uih, GnomeUIHandlerMenuItem *item, i
 					  item->path,
 					  menu_type_to_corba (item->type),
 					  item->label,
-					  pixmap_type_to_corba (item->pixmap_type),
+					  item->hint,
 					  pixmap_data_to_corba (item->pixmap_type,
 								item->pixmap_data),
 					  (CORBA_unsigned_long) item->accelerator_key,
-					  modifier_type_to_corba (item->ac_mods),
-					  pos, &ev);
+					  (CORBA_long) item->ac_mods,
+					  pos,
+					  gnome_object_corba_objref (uih),
+					  &ev);
 
 	/* FIXME: Check exception here */
 
 	CORBA_exception_free (&ev);
+}
+
+static void
+impl_GNOME_UIHandler_register_containee (PortableServer_Servant servant,
+					 GNOME_UIHandler uih_containee,
+					 CORBA_Environment *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+
+	g_message ("Registering containee!\n");
+	gnome_ui_handler_add_containee (uih, uih_containee);
+}
+
+static void
+impl_GNOME_UIHandler_menu_item_activated (PortableServer_Servant servant,
+					  CORBA_char *path,
+					  CORBA_Environment *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	MenuItemInternal *item;
+
+	/*
+	 * Grab the internal data structure which represents the
+	 * activated menu item.
+	 */
+	item = get_menu_item (uih, path);
+
+	if (item == NULL) {
+		g_warning ("impl_item_activated: Cannot find menu item with path [%s]\n",
+			   path);
+		return;
+	}
+
+	/*
+	 * Now call the activation signal handler which will handle
+	 * dispatching to the appropriate callback or containee.
+	 */
+	menu_item_activated (NULL, item);
+}
+
+static void
+impl_GNOME_UIHandler_menu_item_create (PortableServer_Servant servant,
+				       CORBA_char *path,
+				       GNOME_UIHandler_MenuType menu_type,
+				       CORBA_char *label,
+				       CORBA_char *hint,
+				       GNOME_UIHandler_iobuf pixmap_data,
+				       CORBA_unsigned_long accelerator_key,
+				       CORBA_long modifier,
+				       CORBA_long pos,
+				       GNOME_UIHandler containee_uih,
+				       CORBA_Environment *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	GnomeUIHandlerMenuItem *item;
+	MenuItemInternal *internal_data;
+
+	g_message ("impl_GNOME_UIHandler_menu_item_create!\n");
+
+	item = make_menu_item (path, corba_to_menu_type (menu_type), label, hint, 0, /* FIXME: Dynlist */
+			       GNOME_UI_HANDLER_PIXMAP_NONE, NULL,
+			       (guint) accelerator_key, (GdkModifierType) modifier,
+			       NULL, NULL, -1);
+
+	internal_data = store_menu_item_data (uih, containee_uih, item);
+
+	if (uih->container_uih) {
+		menu_item_container_create (uih, item, pos);
+	} else {
+		char *parent_path;
+
+		parent_path = get_parent_path (path);
+		create_menu_item (uih, parent_path, internal_data, pos);
+		g_free (parent_path);
+	}
 }
 
 /**
@@ -1739,18 +1868,9 @@ gnome_ui_handler_menu_new_item (GnomeUIHandler *uih, char *path,
 	parent_path = get_parent_path (path);
 	g_return_if_fail (parent_path != NULL);
 
-	item = g_new0 (GnomeUIHandlerMenuItem, 1);
-	item->path = path;
-	item->type = type;
-	item->label = label;
-	item->hint = hint;
-	item->dynlist_maxsize = dynlist_maxsize;
-	item->pixmap_type = pixmap_type;
-	item->pixmap_data = pixmap_data;
-	item->accelerator_key = accelerator_key;
-	item->ac_mods = ac_mods;
-	item->callback = callback;
-	item->callback_data = callback_data;
+	item = make_menu_item (path, type, label, hint, dynlist_maxsize,
+			       pixmap_type, pixmap_data, accelerator_key, ac_mods,
+			       callback, callback_data, pos);
 
 	gnome_ui_handler_menu_add_one_pos (uih, parent_path, pos, item);
 
@@ -1812,15 +1932,24 @@ remove_parent_menu_entry (GnomeUIHandler *uih, char *path)
 }
 
 static void
-free_menu_item (GnomeUIHandlerMenuItem *item)
+free_menu_item_data (GnomeUIHandlerMenuItem *item)
 {
 	g_free (item->path);
+	item->path = NULL;
+
 	g_free (item->label);
+	item->label = NULL;
+	
 	g_free (item->hint);
-	g_free (item->children);
-
+	item->hint = NULL;
+	
 	free_pixmap_data (item->pixmap_type, item->pixmap_data);
+}
 
+static void
+free_menu_item (GnomeUIHandlerMenuItem *item)
+{
+	free_menu_item_data (item);
 	g_free (item);
 }
 
@@ -2051,8 +2180,7 @@ get_container_menu_item (GnomeUIHandler *uih, char *path)
 	GnomeUIHandlerMenuItem *item;
 	CORBA_Environment ev;
 
-	GNOME_UIHandler_PixmapType corba_pixmap_type;
-	GNOME_UIHandler_ModifierType corba_modifier_type;
+	CORBA_long corba_modifier_type;
 	GNOME_UIHandler_MenuType corba_menu_type;
 	GNOME_UIHandler_iobuf corba_pixmap_iobuf;
 	CORBA_unsigned_long corba_accelerator_key;
@@ -2072,10 +2200,10 @@ get_container_menu_item (GnomeUIHandler *uih, char *path)
 
 	item->path = g_strdup (path);
 	item->type = corba_to_menu_type (corba_menu_type);
-	item->pixmap_type = corba_to_pixmap_type (corba_pixmap_type);
+	item->pixmap_type = GNOME_UI_HANDLER_PIXMAP_DATA;
 	item->pixmap_data = g_memdup (corba_pixmap_iobuf._buffer, corba_pixmap_iobuf._length);
 	item->accelerator_key = corba_accelerator_key;
-	item->ac_mods = corba_to_modifier_type (corba_modifier_type);
+	item->ac_mods = (GdkModifierType) (corba_modifier_type);
 	/* FIXME: pos? */
 
 	return item;
@@ -2172,9 +2300,6 @@ gnome_ui_handler_menu_free_one (GnomeUIHandlerMenuItem *item)
  * @array: A NULL-terminated array of GnomeUIHandlerMenuItem structures to be freed.
  *
  * Frees the list of menu items in @array and frees the array itself.
- * Items are only freed to a depth of one; use
- * gnome_ui_handler_menu_free_tree() if you want to free a tree of menu
- * items.
  */
 void
 gnome_ui_handler_menu_free_list (GnomeUIHandlerMenuItem *array)
@@ -2183,15 +2308,20 @@ gnome_ui_handler_menu_free_list (GnomeUIHandlerMenuItem *array)
 
 	g_return_if_fail (array != NULL);
 
-	for (curr = array; curr->type != GNOME_UI_HANDLER_MENU_END; curr ++)
-		free_menu_item (curr);
+	for (curr = array; curr->type != GNOME_UI_HANDLER_MENU_END; curr ++) {
+		if ((curr->type == GNOME_UI_HANDLER_MENU_SUBTREE
+		     || curr->type == GNOME_UI_HANDLER_MENU_RADIOGROUP)
+		    && curr->children != NULL)
+			gnome_ui_handler_menu_free_list (curr->children);
+
+		free_menu_item_data (curr);
+	}
 
 	g_free (array);
 }
 
 /**
  * gnome_ui_handler_menu_free_tree:
- * @tree: A NULL-terminated array of GnomeUIHandlerMenuItem structures to be freed.
  */
 void
 gnome_ui_handler_menu_free_tree (GnomeUIHandlerMenuItem *tree)
@@ -2205,10 +2335,7 @@ gnome_ui_handler_menu_free_tree (GnomeUIHandlerMenuItem *tree)
 	    || tree->type == GNOME_UI_HANDLER_MENU_RADIOGROUP) {
 		GnomeUIHandlerMenuItem *curr_child;
 
-		for (curr_child = tree->children; curr_child != NULL; curr_child ++)
-			gnome_ui_handler_menu_free_tree (curr_child);
-
-		g_free (tree->children);
+		gnome_ui_handler_menu_free_list (tree->children);
 	}
 
 	free_menu_item (tree);
@@ -2459,6 +2586,96 @@ gnome_ui_handler_menu_parse_uiinfo_tree (GnomeUIInfo *uii)
 	item_tree = g_new0 (GnomeUIHandlerMenuItem, 1);
 
 	parse_menu_uiinfo_tree (item_tree, uii);
+
+	return item_tree;
+}
+
+
+static void
+parse_menu_uiinfo_one_with_data (GnomeUIHandlerMenuItem *item, GnomeUIInfo *uii, void *data)
+{
+	parse_menu_uiinfo_one (item, uii);
+
+	item->callback_data = data;
+}
+
+static void
+parse_menu_uiinfo_tree_with_data (GnomeUIHandlerMenuItem *tree, GnomeUIInfo *uii, void *data)
+{
+	parse_menu_uiinfo_one_with_data (tree, uii, data);
+
+	if (tree->type == GNOME_UI_HANDLER_MENU_SUBTREE
+	    || tree->type == GNOME_UI_HANDLER_MENU_RADIOGROUP) {
+		tree->children = gnome_ui_handler_menu_parse_uiinfo_list_with_data (uii->moreinfo, data);
+	}
+}
+
+
+/**
+ * gnome_ui_handler_menu_parse_uiinfo_one_with_data:
+ */
+GnomeUIHandlerMenuItem *
+gnome_ui_handler_menu_parse_uiinfo_one_with_data (GnomeUIInfo *uii, void *data)
+{
+	GnomeUIHandlerMenuItem *item;
+
+	g_return_val_if_fail (uii != NULL, NULL);
+
+	item = g_new0 (GnomeUIHandlerMenuItem, 1);
+
+	parse_menu_uiinfo_one_with_data (item, uii, data);
+
+	return item;
+}
+
+/**
+ * gnome_ui_handler_menu_parse_uiinfo_list_with_data:
+ */
+GnomeUIHandlerMenuItem *
+gnome_ui_handler_menu_parse_uiinfo_list_with_data (GnomeUIInfo *uii, void *data)
+{
+	GnomeUIHandlerMenuItem *list;
+	GnomeUIHandlerMenuItem *curr_uih;
+	GnomeUIInfo *curr_uii;
+	int list_len;
+
+	g_return_val_if_fail (uii != NULL, NULL);
+
+	/*
+	 * Allocate the GnomeUIHandlerMenuItem list.
+	 */
+	list_len = 0;
+	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++)
+		list_len ++;
+
+	list = g_new0 (GnomeUIHandlerMenuItem, list_len + 1);
+
+	curr_uih = list;
+	for (curr_uii = uii; curr_uii->type != GNOME_APP_UI_ENDOFINFO; curr_uii ++, curr_uih ++) {
+		GnomeUIHandlerMenuItem *tree_item;
+
+		parse_menu_uiinfo_tree_with_data (curr_uih, curr_uii, data);
+	}
+
+	/* Parse the terminal entry. */
+	parse_menu_uiinfo_one (curr_uih, curr_uii);
+
+	return list;
+}
+
+/**
+ * gnome_ui_handler_menu_parse_uiinfo_tree_with_data:
+ */
+GnomeUIHandlerMenuItem *
+gnome_ui_handler_menu_parse_uiinfo_tree_with_data (GnomeUIInfo *uii, void *data)
+{
+	GnomeUIHandlerMenuItem *item_tree;
+
+	g_return_val_if_fail (uii != NULL, NULL);
+
+	item_tree = g_new0 (GnomeUIHandlerMenuItem, 1);
+
+	parse_menu_uiinfo_tree_with_data (item_tree, uii, data);
 
 	return item_tree;
 }

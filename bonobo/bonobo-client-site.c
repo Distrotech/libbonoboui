@@ -2,6 +2,12 @@
 /**
  * GNOME ClientSite object.
  *
+ * A GnomeClientSite object acts as the point-of-contact for an
+ * embedded component: the contained GNOME::Embeddable object
+ * communicates with the GnomeClientSite when it wants to talk to its
+ * container.  There must be a one-to-one mapping between
+ * GnomeClientSite objects and embedding GnomeEmbeddable components.
+ *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
  */
@@ -61,7 +67,7 @@ impl_GNOME_client_site_get_moniker (PortableServer_Servant servant,
 			return CORBA_OBJECT_NIL;
 
 		return CORBA_Object_duplicate (
-			gnome_object_corba_objref (container_moniker), &ev);
+			gnome_object_corba_objref (GNOME_OBJECT (container_moniker)), ev);
 			
 	case GNOME_Moniker_OBJ_RELATIVE:
 	case GNOME_Moniker_OBJ_FULL:
