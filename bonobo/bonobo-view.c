@@ -15,6 +15,7 @@
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-view.h>
 #include <gdk/gdkprivate.h>
+#include <bonobo/bonobo-ui-compat.h>
 
 /* Parent object class in GTK hierarchy */
 static BonoboControlClass *bonobo_view_parent_class;

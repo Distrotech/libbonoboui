@@ -9,7 +9,9 @@
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-property-bag.h>
 #include <bonobo/bonobo-property-bag-client.h>
+#ifdef UIH
 #include <bonobo/bonobo-ui-compat.h>
+#endif
 
 BEGIN_GNOME_DECLS
  
@@ -63,7 +65,9 @@ Bonobo_Control              bonobo_control_corba_object_create     (BonoboObject
 void                        bonobo_control_set_control_frame       (BonoboControl       *control,
 								    Bonobo_ControlFrame  control_frame);
 Bonobo_ControlFrame         bonobo_control_get_control_frame       (BonoboControl       *control);
+#ifdef UIH
 BonoboUIHandler            *bonobo_control_get_ui_handler          (BonoboControl       *control);
+#endif
 void                        bonobo_control_set_property_bag        (BonoboControl       *control,
 								    BonoboPropertyBag   *pb);
 BonoboPropertyBag          *bonobo_control_get_property_bag        (BonoboControl       *control);

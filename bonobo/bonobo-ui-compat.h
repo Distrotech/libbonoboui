@@ -11,6 +11,7 @@
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-win.h>
 #include <bonobo/bonobo-ui-component.h>
+#include <gnome.h>
 
 #define BONOBO_UI_HANDLER_TYPE        (bonobo_ui_handler_get_type ())
 #define BONOBO_UI_HANDLER(o)          (GTK_CHECK_CAST ((o), BONOBO_UI_HANDLER_TYPE, BonoboUIHandler))
