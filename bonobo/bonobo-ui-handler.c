@@ -2497,7 +2497,7 @@ impl_menu_activated (PortableServer_Servant servant,
 	}
 
 	if (internal_cb->callback != NULL)
-		(*internal_cb->callback) (uih, internal_cb->callback_data, path);
+		internal_cb->callback (uih, internal_cb->callback_data, path);
 	
 	gtk_signal_emit (GTK_OBJECT (uih), uih_signals [MENU_ITEM_ACTIVATED], path, internal_cb->callback_data);
 }
@@ -7556,7 +7556,3 @@ init_ui_handler_corba_class (void)
 	gnome_ui_handler_vepv.GNOME_Unknown_epv = &gnome_object_epv;
 	gnome_ui_handler_vepv.GNOME_UIHandler_epv = &gnome_ui_handler_epv;
 }
-
-
-
-
