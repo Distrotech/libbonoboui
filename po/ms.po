@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2002-05-27 12:51+0100\n"
+"POT-Creation-Date: 2002-05-28 04:19+0800\n"
 "PO-Revision-Date: 2002-03-28 14:13+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Bahasa Melayu <gabai-penyumbang@lists.sourceforge.net>\n"
@@ -86,7 +86,7 @@ msgstr "Keterangan"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "Antaramuka diperkukan"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -94,18 +94,21 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"Array NULL_terminated bagi antaramuka dimana mesti disokongi pelayan supaya "
+"ia tersenarai pada pemilih. Default ke \"IDL:Bonobo/Embeddable:1.0\" jika "
+"tiada antaramuka disenaraikan"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "Kemauskan antaramuka diperlukan"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Satu dari antaramuka yang diperlukan"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
-msgstr "Kelihatan"
+msgstr "Tampak"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
@@ -117,7 +120,7 @@ msgstr "_Sembunyi"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr "_Paparkan tooltips"
+msgstr "_Paparkan tooltip"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
@@ -125,7 +128,7 @@ msgstr "Toolbar"
 
 #: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
-msgstr "Toolbar"
+msgstr "toolbar"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
@@ -140,9 +143,8 @@ msgid "_Text and Icon"
 msgstr "_Teks dan Ikon"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "_Teks dan Ikon"
+msgstr "Teks sahaja"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -174,13 +176,12 @@ msgid "DISPLAY"
 msgstr "PAPARAN"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
-#, fuzzy
 msgid "X screen to use"
-msgstr "Paparan X untuk digunakan"
+msgstr "Skrin X untuk digunakan"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "SKRIN"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -284,16 +285,15 @@ msgstr "Samada toolbar adalah terapung"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr ""
+msgstr "_Kandungan"
 
 #: bonobo/bonobo-ui-util.c:584
-#, fuzzy
 msgid "View help for this application"
-msgstr "Perihal aplikasi ini"
+msgstr "Lihat bantuan bagi aplikasi ini"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "Nama bagi tetingkap - digunakan untuk menyelaraskan konfigurasi"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
