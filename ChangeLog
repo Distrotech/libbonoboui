@@ -1,3 +1,12 @@
+2001-11-05  Mark McLoughlin  <mark@skynet.ie>
+
+	* bonobo/bonobo-ui-toolbar.c: (size_allocate_helper):
+	don't assume we have to be the last widget on the list to
+	be the last visible widget.
+
+	* bonobo/bonobo-ui-toolbar-popup-item.c: (impl_set_orientation):
+	don't unref pixbuf.
+
 2001-11-06  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-zoomable.c 
@@ -67,6 +76,7 @@
 
 	* tests/test-ui.c (main): regression test it.
 
+>>>>>>> 1.166
 2001-11-05  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.106.0

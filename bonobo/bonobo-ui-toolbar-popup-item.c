@@ -93,7 +93,6 @@ impl_set_orientation (BonoboUIToolbarItem *item,
 
 	icon = get_icon_for_orientation (popup_item);
 	image = gtk_image_new_from_pixbuf (icon);
-	gdk_pixbuf_unref (icon);
 
 	bonobo_ui_toolbar_button_item_set_image (BONOBO_UI_TOOLBAR_BUTTON_ITEM (item), image);
 }
