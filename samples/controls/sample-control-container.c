@@ -258,19 +258,9 @@ container_create (void)
 int
 main (int argc, char **argv)
 {
-	CORBA_Environment ev;
-	CORBA_ORB orb;
-	CORBA_exception_init (&ev);
+	free (malloc (8)); /* -lefence */
 
-	/* Encorage -lefence to play ball */
-	{ char *tmp = malloc (4); if (tmp) free (tmp); }
-
-        gnome_init_with_popt_table ("sample-control-container", "0.0",
-				    argc, argv,
-				    oaf_popt_options, 0, NULL); 
-	orb = oaf_init (argc, argv);
-
-	if (bonobo_init (orb, NULL, NULL) == FALSE)
+	if (!bonobo_init (&argc, argv))
 		g_error ("Could not initialize Bonobo");
 
 	/*

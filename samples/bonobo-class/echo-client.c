@@ -6,24 +6,13 @@
  */
 
 #include <config.h>
-#include <gnome.h>
 #include <libbonobo.h>
 #include "Bonobo_Sample_Echo.h"
 
 static void
 init_bonobo (int argc, char *argv [])
 {
-	CORBA_ORB orb;
-
-        gnome_init_with_popt_table (
-		"echo-client", "1.0",
-		argc, argv,
-		oaf_popt_options, 0, NULL); 
-
-	orb = oaf_init (argc, argv);
-
-	if (!bonobo_init (orb, CORBA_OBJECT_NIL,
-			  CORBA_OBJECT_NIL))
+	if (!bonobo_init (&argc, argv))
 		g_error (_("I could not initialize Bonobo"));
 
 	/*
