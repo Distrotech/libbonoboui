@@ -1,0 +1,408 @@
+# Romanian translation for libbonoboui
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# Mişu Moldovan <dumol@go.ro>, 2003.
+#
+# OBS. Nu sunt programator, m-am inspirat din celelalte localizări 
+# libbonobo, orice sugestie sau corectură este binevenită.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui-2.1.2\n"
+"POT-Creation-Date: 2003-01-18 20:09+0100\n"
+"PO-Revision-Date: 2003-01-20 20:59+0200\n"
+"Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
+"Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bonobo/bonobo-canvas-item.c:647
+msgid "corba factory"
+msgstr "fabrică corba"
+
+#: bonobo/bonobo-canvas-item.c:648
+msgid "The factory pointer"
+msgstr "Pointerul fabricii"
+
+#: bonobo/bonobo-canvas-item.c:657
+msgid "corba UI container"
+msgstr "container de interfaţă corba"
+
+#: bonobo/bonobo-canvas-item.c:658
+msgid "The User interface container"
+msgstr "Containerul interfeţei utilizator"
+
+#: bonobo/bonobo-dock-item-grip.c:236
+msgid "Dock the toolbar"
+msgstr "Ataşează bara de unelte"
+
+#: bonobo/bonobo-dock-item-grip.c:237
+msgid "Un dock the toolbar"
+msgstr "Detaşează bara de unelte"
+
+#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
+msgid "Shadow type"
+msgstr "Tip umbră"
+
+#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
+msgid "Orientation"
+msgstr "Orientare"
+
+#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
+msgid "Preferred width"
+msgstr "Lăţime preferată"
+
+#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
+msgid "Preferred height"
+msgstr "Înălţime preferată"
+
+#: bonobo/bonobo-file-selector-util.c:383
+msgid "Select a file to open"
+msgstr "Alegeţi un fişier de deschis"
+
+#: bonobo/bonobo-file-selector-util.c:411
+msgid "Select files to open"
+msgstr "Alegeţi fişierele de deschis"
+
+#: bonobo/bonobo-file-selector-util.c:440
+msgid "Select a filename to save"
+msgstr "Alegeţi un nume de fişier pentru salvare"
+
+#: bonobo/bonobo-plug.c:372
+msgid "Event Forwarding"
+msgstr "Transmitere evenimente"
+
+#: bonobo/bonobo-plug.c:373
+msgid "Whether X events should be forwarded"
+msgstr "Dacă evenimentele X trebuie înaintate"
+
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
+msgid "Name"
+msgstr "Nume"
+
+#: bonobo/bonobo-selector-widget.c:322
+msgid "Description"
+msgstr "Descriere"
+
+#: bonobo/bonobo-selector.c:345
+msgid "Interfaces required"
+msgstr "Interfeţe cerute"
+
+#: bonobo/bonobo-selector.c:346
+msgid ""
+"A NULL_terminated array of interfaces which a server must support in order "
+"to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+"O matrice de interfeţe terminate în NULL suportate de server pentru a fi "
+"incluse în lista selectorului. Implicit \"IDL:Bonobo/Embeddable:1.0\", dacă "
+"nici o altă interfaţă nu este listată"
+
+#: bonobo/bonobo-selector.c:348
+msgid "Interface required entry"
+msgstr "Intrare necesară de interfaţă"
+
+#: bonobo/bonobo-selector.c:349
+msgid "One of the interfaces that's required"
+msgstr "Una dintre interfeţele necesare"
+
+#: bonobo/bonobo-ui-config-widget.c:267
+msgid "Visible"
+msgstr "Vizibil"
+
+#: bonobo/bonobo-ui-config-widget.c:274
+msgid "_Show"
+msgstr "_Arată"
+
+#: bonobo/bonobo-ui-config-widget.c:281
+msgid "_Hide"
+msgstr "A_scunde"
+
+#: bonobo/bonobo-ui-config-widget.c:287
+msgid "_View tooltips"
+msgstr "Arată _ponturi"
+
+#: bonobo/bonobo-ui-config-widget.c:292
+msgid "Toolbars"
+msgstr "Bare de unelte"
+
+#: bonobo/bonobo-ui-config-widget.c:302
+msgid "toolbars"
+msgstr "bare de unelte"
+
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
+msgid "Look"
+msgstr "Aspect"
+
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
+msgid "_Icon"
+msgstr "_Iconiţă"
+
+#: bonobo/bonobo-ui-config-widget.c:328
+msgid "_Text and Icon"
+msgstr "_Text şi Iconiţă"
+
+#: bonobo/bonobo-ui-config-widget.c:334
+msgid "Text only"
+msgstr "Doar text"
+
+#: bonobo/bonobo-ui-config-widget.c:340
+msgid "_Priority text only"
+msgstr "_Doar textele importante"
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "Debug"
+msgstr "Depanare"
+
+#: bonobo/bonobo-ui-engine.c:88
+msgid "_Dump XML"
+msgstr "_Ieşire XML"
+
+#: bonobo/bonobo-ui-engine.c:89
+msgid "Dump the entire UI's XML description to the console"
+msgstr "Listează întreaga descriere XML a interfeţei în consolă"
+
+#: bonobo/bonobo-ui-engine-config.c:521
+msgid "Configure UI"
+msgstr "Configurare UI"
+
+#: bonobo/bonobo-ui-init-gtk.c:113
+msgid "Gdk debugging flags to set"
+msgstr "Indicatoare de depanare Gdk de setat"
+
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
+msgid "FLAGS"
+msgstr "INDICATOARE"
+
+#: bonobo/bonobo-ui-init-gtk.c:116
+msgid "Gdk debugging flags to unset"
+msgstr "Indicatoare de depanare Gdk de resetat"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "X display to use"
+msgstr "Display X de folosit"
+
+#: bonobo/bonobo-ui-init-gtk.c:120
+msgid "DISPLAY"
+msgstr "DISPLAY"
+
+#: bonobo/bonobo-ui-init-gtk.c:125
+msgid "X screen to use"
+msgstr "Ecran X de folosit"
+
+#: bonobo/bonobo-ui-init-gtk.c:125
+msgid "SCREEN"
+msgstr "ECRAN"
+
+#: bonobo/bonobo-ui-init-gtk.c:129
+msgid "Make X calls synchronous"
+msgstr "Sincronizează apelurile X"
+
+#: bonobo/bonobo-ui-init-gtk.c:135
+msgid "Don't use X shared memory extension"
+msgstr "Nu folosi extensia X de memorie partajată"
+
+#: bonobo/bonobo-ui-init-gtk.c:139
+msgid "Program name as used by the window manager"
+msgstr "Numele programului pentru managerul de ferestre"
+
+#: bonobo/bonobo-ui-init-gtk.c:139
+msgid "NAME"
+msgstr "NUME"
+
+#: bonobo/bonobo-ui-init-gtk.c:142
+msgid "Program class as used by the window manager"
+msgstr "Clasa programului pentru managerul de ferestre"
+
+#: bonobo/bonobo-ui-init-gtk.c:142
+msgid "CLASS"
+msgstr "CLASĂ"
+
+#: bonobo/bonobo-ui-init-gtk.c:146
+msgid "HOST"
+msgstr "GAZDĂ"
+
+#: bonobo/bonobo-ui-init-gtk.c:150
+msgid "PORT"
+msgstr "PORT"
+
+#: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
+msgid "STYLE"
+msgstr "STIL"
+
+#: bonobo/bonobo-ui-init-gtk.c:162
+msgid "Gtk+ debugging flags to set"
+msgstr "Indicatoare de depanare Gtk+ de setat"
+
+#: bonobo/bonobo-ui-init-gtk.c:165
+msgid "Gtk+ debugging flags to unset"
+msgstr "Indicatoare de depanare Gtk+ de resetat"
+
+#: bonobo/bonobo-ui-init-gtk.c:168
+msgid "Make all warnings fatal"
+msgstr "Fă toate avertizările fatale"
+
+#: bonobo/bonobo-ui-init-gtk.c:171
+msgid "Load an additional Gtk module"
+msgstr "Încarcă un modul adiţional Gtk"
+
+#: bonobo/bonobo-ui-init-gtk.c:171
+msgid "MODULE"
+msgstr "MODULE"
+
+#: bonobo/bonobo-ui-init-gtk.c:180
+msgid "GTK+"
+msgstr "GTK+"
+
+#: bonobo/bonobo-ui-main.c:188
+msgid "Bonobo GUI support"
+msgstr "Suportul GUI Bonobo"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:552
+msgid "B_oth"
+msgstr "_Ambele"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:552
+msgid "T_ext"
+msgstr "_Text"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:553
+msgid "Hide t_ips"
+msgstr "Ascunde _ponturile"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:553
+msgid "Show t_ips"
+msgstr "Arată p_onturile"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:554
+msgid "_Hide toolbar"
+msgstr "Ascunde _bara de unelte"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:554
+msgid "Customi_ze"
+msgstr "Personali_zare"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:555
+msgid "Customize the toolbar"
+msgstr "Personalizarea barei de unelte"
+
+#: bonobo/bonobo-ui-toolbar.c:1096
+msgid "is floating"
+msgstr "este flotantă"
+
+#: bonobo/bonobo-ui-toolbar.c:1097
+msgid "whether the toolbar is floating"
+msgstr "dacă bara de unelte este flotantă"
+
+#: bonobo/bonobo-ui-util.c:616
+msgid "_Contents"
+msgstr "_Conţinut"
+
+#: bonobo/bonobo-ui-util.c:617
+msgid "View help for this application"
+msgstr "Consultaţi manualul acestei aplicaţii"
+
+#: bonobo/bonobo-window.c:416
+msgid "Name of the window - used for configuration serialization."
+msgstr "Numele ferestrei - folosit la serializarea configuraţiei."
+
+#: bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "Nivel zoom"
+
+#: bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "Gradul de mărire"
+
+#: bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "Nivelul minim de zoom"
+
+#: bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "Gradul minim de mărire"
+
+#: bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "Nivelul maxim de zoom"
+
+#: bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "Gradul maxim de mărire"
+
+#: bonobo/bonobo-zoomable.c:353
+msgid "Has a minimum Zoom level"
+msgstr "Are un grad minim de zoom"
+
+#: bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "Dacă avem un nivel minim de zoom"
+
+#: bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "Are un nivel maxim de zoom"
+
+#: bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "Dacă avem un nivel maxim valid de zoom"
+
+#: bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "Este continuu"
+
+#: bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "Dacă modificăm zoom-ul continuu (şi nu prin salturi)"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "Despre această aplicaţie"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr "Selectaţi"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr "_Despre"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr "_Editare"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+msgid "_File"
+msgstr "_Fişier"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr "_Selectare"
+
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "Nu face nimic, este doar o demonstraţie."
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "Interfaţă Bonobo - Salut"
+
+#: samples/bonoboui/hello.c:217
+msgid "Gnome Hello"
+msgstr "Salut Gnome"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:272
+msgid "Hello, World!"
+msgstr "Salut prieteni!"
+
+#: samples/bonoboui/hello.c:312
+msgid "Cannot init libbonoboui code"
+msgstr "Nu am putut iniţializa codul libbonoboui"
+
+#: samples/controls/bonobo-sample-controls.c:133
+msgid "Could not initialize Bonobo UI"
+msgstr "Nu am putut iniţializa interfaţa Bonobo"

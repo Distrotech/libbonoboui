@@ -1,3 +1,7 @@
+2003-01-22  Marius Andreiana <marius galuna.ro>
+
+	* configure.in: added 'ro' to ALL_LINGUAS
+
 2003-01-22  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "mn" to ALL_LINGUAS.
@@ -595,7 +599,7 @@ Mon Jun 03 15:30:08 2002  George Lebl <jirka@5z.com>
 	* bonobo/bonobo-dock-item.c (bonobo_dock_item_set_behavior): added
 	this (non-public, but exported) function.
 
-2002-05-28  Gustavo Gir·ldez  <gustavo.giraldez@gmx.net>
+2002-05-28  Gustavo Gir√°ldez  <gustavo.giraldez@gmx.net>
 
 	* bonobo/bonobo-ui-util.c (bonobo_ui_util_fixup_icons): Don't leak
 	the pixbuf.
@@ -622,12 +626,12 @@ Mon Jun 03 15:30:08 2002  George Lebl <jirka@5z.com>
 	pass the view as the transient parent if it's a
 	GtkWindow.
 
-2002-05-22  Gustavo Gir·ldez  <gustavo.giraldez@gmx.net>
+2002-05-22  Gustavo Gir√°ldez  <gustavo.giraldez@gmx.net>
 
 	* bonobo/bonobo-ui-config-widget.c (look_cb, set_values,
 	widgets_init): Add "Text only" option.
 	
-2002-05-22  Gustavo Gir·ldez  <gustavo.giraldez@gmx.net>
+2002-05-22  Gustavo Gir√°ldez  <gustavo.giraldez@gmx.net>
 
 	* bonobo/bonobo-ui-config-widget.c (look_cb): Changed "text" by
 	"both_horiz" for priority text setting.
@@ -726,7 +730,7 @@ Mon Jun 03 15:30:08 2002  George Lebl <jirka@5z.com>
 
 	* po/POTFILES.in: update.
 
-2002-05-07  Jon KÂre Hellan  <Jon.Kare.hellan@uninett.no>
+2002-05-07  Jon K√•re Hellan  <Jon.Kare.hellan@uninett.no>
 
 	* bonobo/bonobo-control.c (bonobo_control_set_transient_for):
 	Catch exception.
@@ -4110,7 +4114,7 @@ Sun Sep 02 00:50:00 2001  George Lebl <jirka@5z.com>
 
 	* configure.in: Added sv to ALL_LINGUAS.
 
-2001-07-02  Carlos PerellÛ MarÌn <carlos@gnome-db.org>
+2001-07-02  Carlos Perell√≥ Mar√≠n <carlos@gnome-db.org>
 
 	* bonobo/bonobo-canvas-component.c, bonobo/bonobo-control.c,
 	bonobo/bonobo-control-frame.c, bonobo/bonobo-embeddable.c,
@@ -4154,7 +4158,7 @@ Sat Jun 30 16:11:37 2001  Jonathan Blandford  <jrb@redhat.com>
 	* bonobo/bonobo-ui-node.c (do_strip): Move XML_TEXT_NODE to the
 	"suspicious" branch so whitespace nodes are stripped from the tree.
 
-2001-06-19  HÈctor GarcÌa ¡lvarez <hector@scouts-es.org>
+2001-06-19  H√©ctor Garc√≠a √Ålvarez <hector@scouts-es.org>
 
 	* configure.in: added "es" for Spanish to $ALL_LINGUAS
 
