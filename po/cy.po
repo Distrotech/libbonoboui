@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
+"POT-Creation-Date: 2003-08-11 11:06+0100\n"
 "PO-Revision-Date: 2003-05-30 22:27+0100\n"
 "Last-Translator: Dafydd Harries <daf@parnassus.ath.cx>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
@@ -30,11 +30,11 @@ msgstr "cynhwysydd rhyngwyneb defnyddiwr corba"
 msgid "The User interface container"
 msgstr "Yn cynhwysydd rhyngwyneb defnyddiwr"
 
-#: bonobo/bonobo-dock-item-grip.c:236
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
 msgstr "Docio'r bar offer"
 
-#: bonobo/bonobo-dock-item-grip.c:237
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
 msgstr "Dad-docio'r bar offer"
 

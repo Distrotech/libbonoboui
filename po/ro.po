@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui-2.1.2\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
+"POT-Creation-Date: 2003-08-11 11:06+0100\n"
 "PO-Revision-Date: 2003-01-20 20:59+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
@@ -31,11 +31,11 @@ msgstr "container de interfaţă corba"
 msgid "The User interface container"
 msgstr "Containerul interfeţei utilizator"
 
-#: bonobo/bonobo-dock-item-grip.c:236
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
 msgstr "Ataşează bara de unelte"
 
-#: bonobo/bonobo-dock-item-grip.c:237
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
 msgstr "Detaşează bara de unelte"
 

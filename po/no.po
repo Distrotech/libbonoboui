@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2003-06-10 16:37+0100\n"
+"POT-Creation-Date: 2003-08-11 11:06+0100\n"
 "PO-Revision-Date: 2002-11-25 21:14+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -29,11 +29,11 @@ msgstr "corba UI-kontainer"
 msgid "The User interface container"
 msgstr "Kontainer for brukergrensesnitt"
 
-#: bonobo/bonobo-dock-item-grip.c:236
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
 msgstr "Fest verktøylinjen"
 
-#: bonobo/bonobo-dock-item-grip.c:237
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
 msgstr "Løsne verktøylinjen"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
-"POT-Creation-Date: 2003-06-12 15:05+0700\n"
+"POT-Creation-Date: 2003-08-11 11:06+0100\n"
 "PO-Revision-Date: 2003-06-12 15:05+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesia <id@li.org>\n"
@@ -30,11 +30,11 @@ msgstr "Kontainer UI corba"
 msgid "The User interface container"
 msgstr "Kontainer interface user"
 
-#: bonobo/bonobo-dock-item-grip.c:236
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
 msgstr "Tempelkan toolbar"
 
-#: bonobo/bonobo-dock-item-grip.c:237
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
 msgstr "Cabut toolbar"
 
@@ -96,9 +96,9 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Array (NULL-terminated) berisi interface yang hendak digunakan oleh "
-"server agar bisa didaftar pada selektor. Jika belum ada isinya, maka "
-"defaultnya bernilai \"IDL:Bonobo/Embeddable:1.0\""
+"Array (NULL-terminated) berisi interface yang hendak digunakan oleh server "
+"agar bisa didaftar pada selektor. Jika belum ada isinya, maka defaultnya "
+"bernilai \"IDL:Bonobo/Embeddable:1.0\""
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"

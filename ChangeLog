@@ -1,3 +1,7 @@
+2003-08-11  Michael Meeks  <michael@ximian.com>
+
+	* Version 2.3.6
+
 2003-08-06  Yuedong Du  <yuedong.du@sun.com>
 
 	* bonobo/bonobo-ui-util.c: (bonobo_ui_util_build_help_menu): add

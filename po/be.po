@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.be\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-07-12 05:10+0200\n"
+"POT-Creation-Date: 2003-08-11 11:06+0100\n"
 "PO-Revision-Date: 2003-07-23 13:44+0300\n"
 "Last-Translator: Ales Nyakhaychyk <nab@mail.by>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 0.9.6\n"
 
 #: bonobo/bonobo-canvas-item.c:667
@@ -33,11 +33,11 @@ msgstr "утрымальнік UI corba"
 msgid "The User interface container"
 msgstr "Утрымальнік спалучэньня карыстальніка"
 
-#: bonobo/bonobo-dock-item-grip.c:236
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
 msgstr "Прычапіць панэль сродкаў"
 
-#: bonobo/bonobo-dock-item-grip.c:237
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
 msgstr "Адчапіць панэль сродкаў"
 
@@ -99,9 +99,9 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Масыў спалучэньняў які сканчаецца на NULL, якія павінен падтрымліваць паслужнік у "
-"чарзе пералічэньня ў вылучальніке. Дапомна \"IDL:Bonobo/Embeddable:1.0\" калі "
-"спалучэньні не пералічаны"
+"Масыў спалучэньняў які сканчаецца на NULL, якія павінен падтрымліваць "
+"паслужнік у чарзе пералічэньня ў вылучальніке. Дапомна \"IDL:Bonobo/"
+"Embeddable:1.0\" калі спалучэньні не пералічаны"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -412,4 +412,3 @@ msgstr "Немагчыма распачаць код libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Немагчыма распачаць Bonobo UI"
-

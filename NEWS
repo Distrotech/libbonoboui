@@ -1,3 +1,11 @@
+libbonoboui 2.3.6
+
+	* bugs fixed
+		+ F1 help menu shortcut (Yuedong Du)
+		+ vicious K/B focus fixage (Federico)
+		+ dock grip fix (Padraig O'Briain)
+		+ doc. fix (Michael)
+
 libbonoboui 2.3.3
 
 	* bugs fixed

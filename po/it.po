@@ -6,14 +6,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-07-25 10:50+0200\n"
+"POT-Creation-Date: 2003-08-11 11:06+0100\n"
 "PO-Revision-Date: 2003-07-25 11:06+0200\n"
 "Last-Translator: Alessio Frusciante <algol@firenze.linux.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -31,11 +31,11 @@ msgstr "contenitore UI corba"
 msgid "The User interface container"
 msgstr "Il contenitore dell'interfaccia utente"
 
-#: bonobo/bonobo-dock-item-grip.c:236
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
 msgstr "Ancora la barra degli strumenti"
 
-#: bonobo/bonobo-dock-item-grip.c:237
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
 msgstr "Rimuovi ancoraggio della barra degli strumenti"
 
@@ -98,8 +98,8 @@ msgid ""
 "no interfaces are listed"
 msgstr ""
 "Un array di interfacce terminato da NULL che il server deve supportare per "
-"essere elencato nel selettore. Il valore predefinito è \"IDL:Bonobo/Embeddable:1.0\" "
-"se non è elencata nessuna interfaccia."
+"essere elencato nel selettore. Il valore predefinito è \"IDL:Bonobo/"
+"Embeddable:1.0\" se non è elencata nessuna interfaccia."
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"

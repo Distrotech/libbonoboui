@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.he\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-06-21 04:55+0200\n"
+"POT-Creation-Date: 2003-08-11 11:06+0100\n"
 "PO-Revision-Date: 2003-06-21 10:58+0300\n"
 "Last-Translator: Gil 'Dolfin' Osher <dolfin@rpg.org.il>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.0.1\n"
 
 #: bonobo/bonobo-canvas-item.c:667
@@ -33,11 +33,11 @@ msgstr "מכיל ממשק משתמש של קוברה"
 msgid "The User interface container"
 msgstr "מיכל ממשק המשתמש"
 
-#: bonobo/bonobo-dock-item-grip.c:236
+#: bonobo/bonobo-dock-item-grip.c:248
 msgid "Dock the toolbar"
 msgstr "הצמד את סרגל הכלים"
 
-#: bonobo/bonobo-dock-item-grip.c:237
+#: bonobo/bonobo-dock-item-grip.c:249
 msgid "Un dock the toolbar"
 msgstr "הפרד את סרגל הכלים"
 
@@ -99,8 +99,8 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"מערך המסתיים ב NULL של ממשקים שבו השרת חייב לתמוך כדי להיות רשום בבוחר. "
-"חוזר לברירת המחדל \"IDL:Bonobo/Embeddable:1.0\" אם אין ממשקים רשומים"
+"מערך המסתיים ב NULL של ממשקים שבו השרת חייב לתמוך כדי להיות רשום בבוחר. חוזר "
+"לברירת המחדל \"IDL:Bonobo/Embeddable:1.0\" אם אין ממשקים רשומים"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -411,4 +411,3 @@ msgstr "לא ניתן לאתחל קוד libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "לא ניתן לאתחל את ממשק המשתמש Bonobo"
-
