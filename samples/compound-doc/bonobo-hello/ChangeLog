@@ -1,3 +1,7 @@
+2000-09-17  ERDI Gergo  <cactus@cactus.rulez.org>
+
+	* hello.oafinfo: Added entry about Bonobo::Print implementation
+
 2000-07-14  Michael Meeks  <michael@helixcode.com>
 
 	* hello.oafinfo: make uuids match.
