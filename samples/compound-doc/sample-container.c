@@ -33,6 +33,7 @@ typedef struct {
 
 	GtkWidget	*app;
 	GtkWidget	*vbox;
+	GList           *components;
 } Container;
 
 typedef struct {
@@ -200,6 +201,12 @@ component_user_context_cb (BonoboViewFrame *view_frame, Component *component)
 static void
 component_shutdown (Component *component)
 {
+	g_return_if_fail (component != NULL);
+	g_return_if_fail (component->container != NULL);
+
+	component->container->components = g_list_remove (component->container->components,
+							  component);
+
 	gtk_widget_destroy (component->frame);
 	gtk_widget_destroy (component->fs);
 
@@ -700,6 +707,9 @@ container_activate_component (Container *container, char *component_goad_id)
 	component->container = container;
 	component->client_site = client_site;
 	component->server = server;
+	
+	container->components = g_list_prepend (container->components,
+						component);
 
 	/*
 	 * Now we have a BonoboEmbeddable bound to our local
@@ -757,9 +767,9 @@ container_print_preview_cmd (GtkWidget *widget, Container *container)
 	pm = gnome_print_master_new ();
 	ctx = gnome_print_master_get_context (pm);
 
-	for (l = container->container->client_sites; l; l = l->next) {
-		BonoboClientSite   *cs = l->data;
-		BonoboObjectClient *boc = bonobo_client_site_get_embeddable (cs);
+	for (l = container->components; l; l = l->next) {
+		Component          *component = l->data;
+		BonoboObjectClient *boc = component->server;
 		BonoboPrintClient  *pc = bonobo_print_client_get (boc);
 		BonoboPrintContext *c;
 
@@ -775,6 +785,7 @@ container_print_preview_cmd (GtkWidget *widget, Container *container)
 		ypos += 150.0;
 	}
 
+	gnome_print_showpage (ctx);
 	gnome_print_context_close (ctx);
 	pv = gnome_print_master_preview_new (pm, "Component demo");
 	gtk_widget_show (GTK_WIDGET (pv));
@@ -831,6 +842,7 @@ container_create (void)
 	gtk_window_set_policy (GTK_WINDOW (container->app), TRUE, TRUE, FALSE);
 
 	container->container = bonobo_container_new ();
+	container->components = NULL;
 
 	/*
 	 * The "system_exception" signal will notify us if a fatal CORBA
