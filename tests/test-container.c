@@ -3,13 +3,7 @@
 #include <libgnorba/gnorba.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
-#include <bonobo/bonobo.h>
-#include <bonobo/gnome-main.h>
-#include <bonobo/gnome-container.h>
-#include <bonobo/gnome-client-site.h>
-#include <bonobo/gnome-stream.h>
-#include <bonobo/gnome-stream-fs.h>
-#include <bonobo/gnome-component.h>
+#include <bonobo/gnome-bonobo.h>
 
 CORBA_Environment ev;
 CORBA_ORB orb;
