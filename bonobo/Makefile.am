@@ -43,7 +43,7 @@ idls =						\
 	$(top_srcdir)/idl/gnome-storage.idl	\
 	$(top_srcdir)/idl/gnome-progressive.idl
 
-idl_flags = `$(GNOME_CONFIG) --cflags idl`
+idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 
 $(CORBA_SOURCE): $(idls)
 	$(ORBIT_IDL) $(top_srcdir)/idl/bonobo.idl $(idl_flags)
