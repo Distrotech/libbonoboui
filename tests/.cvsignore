@@ -1,0 +1,9 @@
+.deps
+.libs
+Makefile
+Makefile.in
+test-ui
+test-toolbar
+selector_test
+test-focus
+test-sensitivity
