@@ -1,4 +1,4 @@
-/* $Id */
+/* $Id$ */
 /*
   Bonobo-Hello Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
   
@@ -33,7 +33,7 @@ init_bonobo_hello_factory (void)
 {
 #if USING_OAF
 	factory =
-	    bonobo_embeddable_factory_new ("OAFIID:bonobo-hello-factory:0.4",
+	    bonobo_embeddable_factory_new ("OAFIID:bonobo-hello-factory:cactus",
 					   hello_object_factory,
 					   NULL);
 #else

@@ -1,4 +1,4 @@
-/* $Id */
+/* $Id$ */
 /*
   Bonobo-Hello Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
   
