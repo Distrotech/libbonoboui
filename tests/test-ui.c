@@ -2,7 +2,9 @@
  * test-ui.c: A test application to hammer the Bonobo UI api.
  *
  * NB. To run this program and test the xml IO code you
- * need to do something like ln -s /{prefix}/bonobo/doc/std-ui.xml ~/.gnome/ui
+ * need to do something like:
+ * ln -s /{downloadpath}/libbonoboui/doc/std-ui.xml {prefix}/share/gnome/ui/std-ui.xml
+ * A real application should install this file as part of 'make install'.
  *
  * Author:
  *	Michael Meeks (michael@helixcode.com)
@@ -324,8 +326,9 @@ main (int argc, char **argv)
 
 		bonobo_main ();
 	} else {
-		g_warning ("Can't find ~/.gnome/ui/std-ui.xml, perhaps "
-			   " you need to symlink bonobo/doc/std-ui.xml there");
+		g_warning ("Can't find <prefix>/share/gnome/ui/std-ui.xml. You should symlink like so:\n "
+			   "ln -s <downloadpath>/libbonoboui/doc/std-ui.xml <prefix>/share/gnome/ui/std-ui.xml\n"
+         "Usually this file would be installed, but examples are not installed.");
 		gtk_widget_show (GTK_WIDGET (win));
 	}
 	g_free (fname);
