@@ -1,5 +1,13 @@
 2001-10-31  Michael Meeks  <michael@ximian.com>
 
+	* configure.in: add test-control.c
+
+	* tests/control/test-control.c: add.
+
+	* tests/control/Makefile.am: add.
+
+2001-10-31  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-plug.c (bonobo_plug_destroy_event): hack the
 	mjmess out - this is never called it seems.
 	

@@ -64,6 +64,7 @@ samples/bonoboui/Makefile
 samples/compound-doc/Makefile
 samples/compound-doc/container/Makefile
 tests/Makefile
+tests/control/Makefile
 doc/Makefile
 ])
 

@@ -1,3 +1,5 @@
+SUBDIRS = control
+
 noinst_PROGRAMS =		\
 	test-ui			\
 	test-toolbar		\
