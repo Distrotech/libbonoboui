@@ -472,7 +472,6 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 	wrapper = GNOME_WRAPPER (gnome_view_frame_get_wrapper (view_frame));
 
 	gtk_container_add (GTK_CONTAINER (wrapper), socket);
-	gtk_widget_show (GTK_WIDGET (wrapper));
 
 	/*
 	 * 3. Now, create the view.

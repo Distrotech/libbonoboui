@@ -20,13 +20,13 @@ typedef struct _GnomeViewFrame GnomeViewFrame;
 #include <bonobo/gnome-client-site.h>
 
 struct _GnomeViewFrame {
-	GnomeObject base;
+	GnomeControlFrame base;
 	GnomeUIHandler  *uih;
 	GnomeViewFramePrivate *priv;
 };
 
 typedef struct {
-	GnomeObjectClass parent_class;
+	GnomeControlFrameClass parent_class;
 
 	/*
 	 * Signals.

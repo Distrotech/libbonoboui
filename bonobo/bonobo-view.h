@@ -34,7 +34,7 @@ struct _GnomeView {
 };
 
 struct _GnomeViewClass {
-	GnomeObjectClass parent_class;
+	GnomeControlClass parent_class;
 
 	/*
 	 * Signals
