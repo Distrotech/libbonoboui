@@ -1,3 +1,8 @@
+2003-01-29  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
+
+	* bonobo/bonobo-zoomable.h: Removed declaration of the
+	non-implememented function bonobo_zoomable_corba_object_create().
+
 2003-01-27  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
 
 	* doc/api/Makefile.am (content_files): Added ui-faq.xml.
