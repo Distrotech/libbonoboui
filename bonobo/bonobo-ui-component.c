@@ -189,6 +189,80 @@ bonobo_ui_component_add_verb (BonoboUIComponent  *component,
 		component, cname, fn, user_data, NULL);
 }
 
+typedef struct {
+	gboolean    by_name;
+	const char *name;
+	gboolean    by_func;
+	gpointer    func;
+	gboolean    by_data;
+	gpointer    user_data;
+} RemoveInfo;
+
+static gboolean
+remove_verb (gpointer	key,
+	     gpointer	value,
+	     gpointer	user_data)
+{
+	RemoveInfo *info = user_data;
+	UIVerb     *verb = value;
+
+	if (info->by_name && info->name &&
+	    !strcmp (verb->cname, info->name))
+		return verb_destroy (NULL, verb, NULL);
+
+	else if (info->by_func &&
+		 (BonoboUIVerbFn) info->func == verb->cb)
+		return verb_destroy (NULL, verb, NULL);
+
+	else if (info->by_data &&
+		 (BonoboUIVerbFn) info->user_data == verb->user_data)
+		return verb_destroy (NULL, verb, NULL);
+
+	return FALSE;
+}
+
+void
+bonobo_ui_component_remove_verb (BonoboUIComponent  *component,
+				 const char         *cname)
+{
+	RemoveInfo info;
+
+	memset (&info, sizeof (info), 0);
+
+	info.by_name = TRUE;
+	info.name = cname;
+
+	g_hash_table_foreach_remove (component->priv->verbs, remove_verb, &info);
+}
+
+void
+bonobo_ui_component_remove_verb_by_func (BonoboUIComponent  *component,
+					 BonoboUIVerbFn      fn)
+{
+	RemoveInfo info;
+
+	memset (&info, sizeof (info), 0);
+
+	info.by_func = TRUE;
+	info.func = (gpointer) fn;
+
+	g_hash_table_foreach_remove (component->priv->verbs, remove_verb, &info);
+}
+
+void
+bonobo_ui_component_remove_verb_by_data (BonoboUIComponent  *component,
+					 gpointer            user_data)
+{
+	RemoveInfo info;
+
+	memset (&info, sizeof (info), 0);
+
+	info.by_data = TRUE;
+	info.user_data = user_data;
+
+	g_hash_table_foreach_remove (component->priv->verbs, remove_verb, &info);
+}
+
 void
 bonobo_ui_component_add_listener_full (BonoboUIComponent  *component,
 				       const char         *id,
@@ -227,6 +301,71 @@ bonobo_ui_component_add_listener (BonoboUIComponent  *component,
 {
 	bonobo_ui_component_add_listener_full (
 		component, id, fn, user_data, NULL);
+}
+
+static gboolean
+remove_listener (gpointer	key,
+		 gpointer	value,
+		 gpointer	user_data)
+{
+	RemoveInfo *info = user_data;
+	UIListener     *listener = value;
+
+	if (info->by_name && info->name &&
+	    !strcmp (listener->id, info->name))
+		return listener_destroy (NULL, listener, NULL);
+
+	else if (info->by_func &&
+		 (BonoboUIListenerFn) info->func == listener->cb)
+		return listener_destroy (NULL, listener, NULL);
+
+	else if (info->by_data &&
+		 (BonoboUIListenerFn) info->user_data == listener->user_data)
+		return listener_destroy (NULL, listener, NULL);
+
+	return FALSE;
+}
+
+void
+bonobo_ui_component_remove_listener (BonoboUIComponent  *component,
+				     const char         *cname)
+{
+	RemoveInfo info;
+
+	memset (&info, sizeof (info), 0);
+
+	info.by_name = TRUE;
+	info.name = cname;
+
+	g_hash_table_foreach_remove (component->priv->listeners, remove_listener, &info);
+}
+
+void
+bonobo_ui_component_remove_listener_by_func (BonoboUIComponent  *component,
+					     BonoboUIListenerFn      fn)
+{
+	RemoveInfo info;
+
+	memset (&info, sizeof (info), 0);
+
+	info.by_func = TRUE;
+	info.func = (gpointer) fn;
+
+	g_hash_table_foreach_remove (component->priv->listeners, remove_listener, &info);
+}
+
+void
+bonobo_ui_component_remove_listener_by_data (BonoboUIComponent  *component,
+					     gpointer            user_data)
+{
+	RemoveInfo info;
+
+	memset (&info, sizeof (info), 0);
+
+	info.by_data = TRUE;
+	info.user_data = user_data;
+
+	g_hash_table_foreach_remove (component->priv->listeners, remove_listener, &info);
 }
 
 static void

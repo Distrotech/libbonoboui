@@ -128,6 +128,29 @@ slow_size_request (GtkWidget      *widget,
 /*	sleep (2);*/
 }
 
+static void
+file_exit_cmd (BonoboUIComponent *uic,
+	       gpointer           user_data,
+	       const char        *verbname)
+{
+	exit (0);
+}
+
+static void
+file_open_cmd (BonoboUIComponent *uic,
+	       gpointer           user_data,
+	       const char        *verbname)
+{
+	g_warning ("File Open");
+}
+
+BonoboUIVerb verbs [] = {
+	BONOBO_UI_VERB ("FileExit", file_exit_cmd),
+	BONOBO_UI_VERB ("FileOpen", file_open_cmd),
+
+	BONOBO_UI_VERB_END
+};
+
 int
 main (int argc, char **argv)
 {
@@ -144,9 +167,11 @@ main (int argc, char **argv)
 	char simplea [] =
 		"<menu>\n"
 		"	<submenu name=\"File\" _label=\"_Gå\">\n"
-		"		<menuitem name=\"open\" _label=\"_Open\" pixtype=\"stock\" pixname=\"Open\" _tip=\"Wibble\"/>\n"
+		"		<menuitem name=\"open\" _label=\"_Open\" verb=\"FileOpen\"pixtype=\"stock\" pixname=\"Open\" _tip=\"Wibble\"/>\n"
 		"		<control name=\"MyControl\"/>\n"
 		"		<control name=\"ThisIsEmpty\"/>\n"
+		"		<menuitem name=\"close\" noplace=\"1\" verb=\"FileExit\" _label=\"_CloseA\" _tip=\"hi\""
+		"		pixtype=\"stock\" pixname=\"Close\" accel=\"*Control*q\"/>\n"
 		"	</submenu>\n"
 		"</menu>";
 	char simpleb [] =
@@ -155,7 +180,7 @@ main (int argc, char **argv)
 		"       <separator/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" _label=\"_ToggleMe\" _tip=\"a\" accel=\"*Control*t\"/>\n"
 		"       <placeholder name=\"Nice\" delimit=\"top\"/>\n"
-		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" _label=\"_CloseB\" _tip=\"hi\""
+		"	<menuitem name=\"close\" noplace=\"1\" verb=\"FileExit\" _label=\"_CloseB\" _tip=\"hi\""
 		"        pixtype=\"stock\" pixname=\"Close\" accel=\"*Control*q\"/>\n"
 		"</submenu>\n";
 	char simplec [] =
@@ -310,6 +335,12 @@ main (int argc, char **argv)
 	componentb = bonobo_ui_component_new ("B");
 	componentc = bonobo_ui_component_new ("C");
 
+	bonobo_ui_component_add_verb_list_with_data (
+		componenta, verbs, GUINT_TO_POINTER (12));
+
+	bonobo_ui_component_remove_verb (componenta, "FileExit");
+	bonobo_ui_component_remove_verb_by_data (componenta, GUINT_TO_POINTER (12));
+
 	bonobo_ui_component_set_container (componenta, corba_container);
 	bonobo_ui_component_set_container (componentb, corba_container);
 	bonobo_ui_component_set_container (componentc, corba_container);
@@ -386,6 +417,9 @@ main (int argc, char **argv)
 
 	/* Duplicate set */
 	bonobo_ui_component_set_translate (componenta, "/", simplea, &ev);
+
+	bonobo_ui_component_add_verb_list_with_data (
+		componenta, verbs, GUINT_TO_POINTER (15));
 
 	bonobo_ui_component_thaw (componenta, NULL);
 

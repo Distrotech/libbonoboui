@@ -123,6 +123,15 @@ void               bonobo_ui_component_add_verb_full(BonoboUIComponent  *compone
 						     gpointer            user_data,
 						     GDestroyNotify      destroy_fn);
 
+void               bonobo_ui_component_remove_verb         (BonoboUIComponent  *component,
+							    const char         *cname);
+
+void               bonobo_ui_component_remove_verb_by_func (BonoboUIComponent  *component,
+							    BonoboUIVerbFn      fn);
+
+void               bonobo_ui_component_remove_verb_by_data (BonoboUIComponent  *component,
+							    gpointer            user_data);
+
 void               bonobo_ui_component_add_listener (BonoboUIComponent  *component,
 						     const char         *id,
 						     BonoboUIListenerFn  fn,
@@ -133,6 +142,15 @@ void               bonobo_ui_component_add_listener_full (BonoboUIComponent  *co
 							  BonoboUIListenerFn  fn,
 							  gpointer            user_data,
 							  GDestroyNotify      destroy_fn);
+
+void               bonobo_ui_component_remove_listener         (BonoboUIComponent  *component,
+								const char         *cname);
+
+void               bonobo_ui_component_remove_listener_by_func (BonoboUIComponent  *component,
+								BonoboUIListenerFn  fn);
+
+void               bonobo_ui_component_remove_listener_by_data (BonoboUIComponent  *component,
+								gpointer            user_data);
 
 void               bonobo_ui_component_set          (BonoboUIComponent  *component,
 						     const char         *path,
