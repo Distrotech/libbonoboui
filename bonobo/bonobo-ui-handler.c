@@ -5,7 +5,7 @@
  * Copyright 1999 Helix Code, Inc.
  *
  * Authors:
- *    Nat Friedman (nat@helixcode.com)
+ *    Nat Friedman  (nat@helixcode.com)
  *    Michael Meeks (michael@helixcode.com)
  */
 
@@ -482,8 +482,6 @@ toolbar_remote_attribute_data_set (GnomeUIHandler *uih, const char *path,
 
 	return success;
 }
-
-
 
 /*
 
@@ -4798,7 +4796,7 @@ menu_toplevel_set_pixmap_internal (GnomeUIHandler *uih, MenuItemInternal *intern
 					 GTK_WIDGET (pixmap_widget));
 }
 
-static void
+inline static void
 menu_toplevel_set_pixmap (GnomeUIHandler *uih, const char *path,
 			  GnomeUIHandlerPixmapType type, gpointer data)
 {
@@ -5608,10 +5606,16 @@ toolbar_local_get_item (GnomeUIHandler *uih, const char *path)
 	return (ToolbarItemLocalInternal *) l->data;
 }
 
-static GtkWidget *
-toolbar_toplevel_get_widget (GnomeUIHandler *uih, const char *path)
+inline static GtkWidget *
+toolbar_toplevel_item_get_widget (GnomeUIHandler *uih, const char *path)
 {
 	return g_hash_table_lookup (uih->top->path_to_toolbar_item_widget, path);
+}
+
+inline static GtkWidget *
+toolbar_toplevel_get_widget (GnomeUIHandler *uih, const char *name)
+{
+	return g_hash_table_lookup (uih->top->name_to_toolbar_widget, name);
 }
 
 static ToolbarToolbarLocalInternal *
@@ -6527,8 +6531,8 @@ toolbar_toplevel_item_store_data (GnomeUIHandler *uih, GNOME_UIHandler uih_corba
 }
 
 static void
-toolbar_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
-					   gboolean sensitive)
+toolbar_toplevel_item_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+						gboolean sensitive)
 {
 	GtkWidget *toolbar_widget;
 
@@ -6537,80 +6541,80 @@ toolbar_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarItemInter
 	if (! toolbar_toplevel_item_is_head (uih, internal))
 		return;
 
-	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->item->path);
+	toolbar_widget = toolbar_toplevel_item_get_widget (uih, internal->item->path);
 	g_return_if_fail (toolbar_widget != NULL);
 
 	gtk_widget_set_sensitive (toolbar_widget, sensitive);
 }
 
 static void
-toolbar_toplevel_set_space_size_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+toolbar_toplevel_set_sensitivity_internal (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
+					   gboolean sensitive)
+{
+	GtkWidget *toolbar_widget;
+
+	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->name);
+	g_return_if_fail (toolbar_widget != NULL);
+
+	gtk_widget_set_sensitive (toolbar_widget, sensitive);
+}
+
+static void
+toolbar_toplevel_set_space_size_internal (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
 					  gint size)
 {
 	GtkWidget *toolbar_widget;
 
-	if (! toolbar_toplevel_item_is_head (uih, internal))
-		return;
-
-	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->item->path);
+	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->name);
 	g_return_if_fail (toolbar_widget != NULL);
 
 	gtk_toolbar_set_space_size (GTK_TOOLBAR (toolbar_widget), size);
 }
 
 static void
-toolbar_toplevel_set_style_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+toolbar_toplevel_set_style_internal (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
 				     GtkToolbarStyle style)
 {
 	GtkWidget *toolbar_widget;
 
-	if (! toolbar_toplevel_item_is_head (uih, internal))
-		return;
-
-	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->item->path);
+	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->name);
 	g_return_if_fail (toolbar_widget != NULL);
 
 	gtk_toolbar_set_style (GTK_TOOLBAR (toolbar_widget), style);
 }
 
 static void
-toolbar_toplevel_set_orientation (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+toolbar_toplevel_set_orientation (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
 				  GtkOrientation orientation)
 {
 	GtkWidget *toolbar_widget;
 
-	if (! toolbar_toplevel_item_is_head (uih, internal))
-		return;
-
-	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->item->path);
+	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->name);
 	g_return_if_fail (toolbar_widget != NULL);
 
 	gtk_toolbar_set_orientation (GTK_TOOLBAR (toolbar_widget), orientation);
 }
 
 static void
-toolbar_toplevel_set_button_relief (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+toolbar_toplevel_set_button_relief (GnomeUIHandler *uih, ToolbarToolbarInternal *internal,
 				    GtkReliefStyle relief_style)
 {
 	GtkWidget *toolbar_widget;
 
-	if (! toolbar_toplevel_item_is_head (uih, internal))
-		return;
-
-	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->item->path);
+	toolbar_widget = toolbar_toplevel_get_widget (uih, internal->name);
 	g_return_if_fail (toolbar_widget != NULL);
 
 	gtk_toolbar_set_button_relief (GTK_TOOLBAR (toolbar_widget), relief_style);
 }
 
 static void
-toolbar_item_toplevel_set_toggle_state_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+toolbar_toplevel_item_set_toggle_state_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
 						 gboolean active)
 {
 }
 
 static void
-toolbar_item_toplevel_set_radio_state_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+toolbar_toplevel_item_set_radio_state_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
 						gboolean active)
 {
 }
@@ -6641,15 +6645,15 @@ toolbar_toplevel_create_item (GnomeUIHandler *uih, const char *parent_path,
 	/*
 	 * Set its sensitivity.
 	 */
-	toolbar_toplevel_set_sensitivity_internal (uih, internal, internal->sensitive);
+	toolbar_toplevel_item_set_sensitivity_internal (uih, internal, internal->sensitive);
 
 	/*
 	 * Set its active state.
 	 */
 	if (internal->item->type == GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM)
-		toolbar_item_toplevel_set_toggle_state_internal (uih, internal, internal->active);
+		toolbar_toplevel_item_set_toggle_state_internal (uih, internal, internal->active);
 	else if (internal->item->type == GNOME_UI_HANDLER_TOOLBAR_RADIOITEM)
-		toolbar_item_toplevel_set_radio_state_internal (uih, internal, internal->active);
+		toolbar_toplevel_item_set_radio_state_internal (uih, internal, internal->active);
 }
 
 static void
@@ -7482,7 +7486,7 @@ gnome_ui_handler_toolbar_free_tree (GnomeUIHandlerToolbarItem *tree)
 }
 
 static gint
-toolbar_item_toplevel_get_pos (GnomeUIHandler *uih, const char *path)
+toolbar_toplevel_item_get_pos (GnomeUIHandler *uih, const char *path)
 {
 	ToolbarItemInternal *internal;
 
@@ -7520,15 +7524,17 @@ gnome_ui_handler_toolbar_item_get_pos (GnomeUIHandler *uih, const char *path)
 	if (uih->top_level_uih != CORBA_OBJECT_NIL)
 		return toolbar_item_remote_get_pos (uih, path);
 
-	return toolbar_item_toplevel_get_pos (uih, path);
+	return toolbar_toplevel_item_get_pos (uih, path);
 }
 
 static void
-toolbar_toplevel_set_sensitivity (GnomeUIHandler *uih, const char *path, gboolean sensitive)
+toolbar_toplevel_set_sensitivity (GnomeUIHandler *uih, const char *name,
+				  gboolean sensitive)
 {
-	ToolbarItemInternal *internal;
+	ToolbarToolbarInternal *internal;
 
-	internal = toolbar_toplevel_get_item (uih, path);
+	internal = toolbar_toplevel_get_toolbar (uih, name);
+	g_return_if_fail (internal != NULL);
 
 	toolbar_toplevel_set_sensitivity_internal (uih, internal, sensitive);
 }
@@ -7612,7 +7618,7 @@ impl_toolbar_item_get_attributes (PortableServer_Servant servant,
 
 	g_warning ("toolbar_get_attributes substantially unimplemented");
 
-	*pos       = toolbar_item_toplevel_get_pos (uih, (char *) path);
+	*pos       = toolbar_toplevel_item_get_pos (uih, (char *) path);
 	*sensitive = toolbar_toplevel_get_sensitivity (uih, path);
 }
 
@@ -7636,9 +7642,170 @@ impl_toolbar_item_set_attributes (PortableServer_Servant servant,
 	internal = toolbar_toplevel_get_item_for_containee (uih, path, containee);
 	g_return_if_fail (internal != NULL);
 
-	toolbar_toplevel_set_sensitivity_internal (uih, internal, sensitive);
+	toolbar_toplevel_item_set_sensitivity_internal (uih, internal, sensitive);
+
 	g_warning ("toolbar_set_attributes substantially unimplemented");
 }
+
+
+/*
+ * Ugly hack !, gtk_toolbar is insufficiently flexible for this by a long way !
+ * In fact, this makes me want to puke.
+ */
+static void
+toolbar_toplevel_item_set_pixmap_internal (GnomeUIHandler *uih, ToolbarItemInternal *internal,
+					   GnomeUIHandlerPixmapType type, gpointer data)
+{
+	GtkToolbar *toolbar;
+	GList      *l;
+	int         i;
+
+	/*
+	 * Update the widgets.
+	 */
+	if (! toolbar_toplevel_item_is_head (uih, internal))
+		return;
+
+	toolbar = GTK_TOOLBAR (toolbar_toplevel_item_get_widget (uih, internal->item->path));
+
+	i = 0;
+	for (l = toolbar->children; l; l = l->next) {
+		GtkToolbarChild *kid = l->data;
+
+		if (kid->label && !strcmp (GTK_LABEL (kid->label)->label, internal->item->label))
+			break;
+		i++;
+	}
+	if (l) {
+		GtkToolbarChild *kid = l->data;
+
+		/* Ugly remove code */
+		gtk_widget_destroy (kid->widget);
+		toolbar->children = g_list_remove (toolbar->children, kid);
+
+		/*
+		 * Update the internal data for this toolbar item.
+		 */
+		pixmap_free_data (internal->item->pixmap_type, internal->item->pixmap_data);
+		
+		internal->item->pixmap_type = type;
+		internal->item->pixmap_data = pixmap_copy_data (type, data);
+
+		/* Now re-create it ... */
+		internal->item->pos = i;
+		toolbar_toplevel_item_create_widgets (uih, internal);
+	} else
+		g_warning ("Can't find toolbar to update pixmap");
+}
+
+static void
+toolbar_toplevel_item_set_pixmap (GnomeUIHandler *uih, const char *path,
+				  GnomeUIHandlerPixmapType type, gpointer data)
+{
+	ToolbarItemInternal *internal;
+
+	internal = toolbar_toplevel_get_item_for_containee (uih, path,
+							    gnome_object_corba_objref (GNOME_OBJECT (uih)));
+	g_return_if_fail (internal != NULL);
+
+	toolbar_toplevel_item_set_pixmap_internal (uih, internal, type, data);
+}
+
+static void
+toolbar_item_remote_set_pixmap (GnomeUIHandler *uih, const char *path,
+				GnomeUIHandlerPixmapType type, gpointer data)
+{
+	GNOME_UIHandler_iobuf *pixmap_buff;
+	CORBA_Environment ev;
+
+	pixmap_buff = pixmap_data_to_corba (type, data);
+	
+	CORBA_exception_init (&ev);
+
+	GNOME_UIHandler_toolbar_item_set_data (uih->top_level_uih,
+					       gnome_object_corba_objref (GNOME_OBJECT (uih)),
+					       path,
+				       pixmap_type_to_corba (type),
+				       pixmap_buff,
+				       &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		gnome_object_check_env (
+			GNOME_OBJECT (uih),
+			(CORBA_Object) uih->top_level_uih, &ev);
+	}
+
+	CORBA_exception_free (&ev);
+
+	CORBA_free (pixmap_buff);
+}
+
+void
+gnome_ui_handler_toolbar_item_set_pixmap (GnomeUIHandler *uih, const char *path,
+					  GnomeUIHandlerPixmapType type, gpointer data)
+{
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (path != NULL);
+	g_return_if_fail (data != NULL);
+
+	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
+		toolbar_item_remote_set_pixmap (uih, path, type, data);
+		return;
+	}
+
+	toolbar_toplevel_item_set_pixmap (uih, path, type, data);
+}
+
+void
+gnome_ui_handler_toolbar_item_get_pixmap (GnomeUIHandler *uih, const char *path,
+					  GnomeUIHandlerPixmapType *type, gpointer *data)
+{
+	g_return_if_fail (uih != NULL);
+	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
+	g_return_if_fail (path != NULL);
+
+	g_warning ("Unimplemented toolbar method");
+}
+
+static void
+impl_toolbar_item_set_data (PortableServer_Servant       servant,
+			    GNOME_UIHandler              containee_uih,
+			    const CORBA_char            *path,
+			    GNOME_UIHandler_PixmapType   corba_pixmap_type,
+			    const GNOME_UIHandler_iobuf *corba_pixmap_data,
+			    CORBA_Environment           *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	ToolbarItemInternal *internal;
+	
+	g_return_if_fail (uih_toplevel_check_toplevel (uih));
+	
+	internal = toolbar_toplevel_get_item_for_containee (uih, path, containee_uih);
+	
+	if (internal == NULL) {
+		/* FIXME: Set exception. */
+		return;
+	}
+	
+	toolbar_toplevel_item_set_pixmap_internal (uih, internal,
+						   pixmap_corba_to_type (corba_pixmap_type),
+						   pixmap_corba_to_data (corba_pixmap_type,
+									 corba_pixmap_data));
+}
+
+static void
+impl_toolbar_item_get_data (PortableServer_Servant      servant,
+			    GNOME_UIHandler              containee_uih,
+			    const CORBA_char           *path,
+			    GNOME_UIHandler_PixmapType *corba_pixmap_type,
+			    GNOME_UIHandler_iobuf     **corba_pixmap_data,
+			    CORBA_Environment          *ev)
+{
+	/* FIXME: Implement me! */
+	g_warning ("Unimplemented: remote get pixmap");
+}
+
 
 inline static GtkOrientation
 toolbar_corba_to_orientation (GNOME_UIHandler_ToolbarOrientation o)
@@ -7720,6 +7887,56 @@ relief_style_to_corba (GtkReliefStyle s)
 	}
 }
 
+
+static void
+impl_toolbar_set_attributes (PortableServer_Servant                   servant,
+			     const GNOME_UIHandler                    containee,
+			     const CORBA_char                        *name,
+			     const GNOME_UIHandler_ToolbarOrientation orientation,
+			     const GNOME_UIHandler_ToolbarStyle       style,
+			     const GNOME_UIHandler_ToolbarSpaceStyle  space_style,
+			     const GNOME_UIHandler_ReliefStyle        relief_style,
+			     const CORBA_long                         space_size,
+			     const CORBA_boolean                      sensitive,
+			     CORBA_Environment                       *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	ToolbarToolbarInternal *internal;
+
+	internal = toolbar_toplevel_get_toolbar (uih, name);
+	g_return_if_fail (internal != NULL);
+
+	toolbar_toplevel_set_orientation          (uih, internal, 
+						   toolbar_corba_to_orientation (orientation));
+	toolbar_toplevel_set_style_internal       (uih, internal,
+						   toolbar_corba_to_style (style));
+	toolbar_toplevel_set_space_size_internal  (uih, internal, space_size);
+	toolbar_toplevel_set_sensitivity_internal (uih, internal, sensitive);
+	toolbar_toplevel_set_button_relief        (uih, internal,
+						   relief_corba_to_style (relief_style));
+}
+
+static void
+impl_toolbar_get_attributes (PortableServer_Servant              servant,
+			     const GNOME_UIHandler               containee,
+			     const CORBA_char                   *name,
+			     GNOME_UIHandler_ToolbarOrientation *orientation,
+			     GNOME_UIHandler_ToolbarStyle       *style,
+			     GNOME_UIHandler_ToolbarSpaceStyle  *space_style,
+			     GNOME_UIHandler_ReliefStyle        *relief_style,
+			     CORBA_long                         *space_size,
+			     CORBA_boolean                      *sensitive,
+			     CORBA_Environment                  *ev)
+{
+	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
+	ToolbarItemInternal *internal;
+
+	internal = toolbar_toplevel_get_toolbar (uih, name);
+	g_return_if_fail (internal != NULL);
+
+	g_warning ("Unimplemented");
+}
+
 void
 gnome_ui_handler_toolbar_set_orientation (GnomeUIHandler *uih, const char *path,
 					  GtkOrientation orientation)
@@ -7777,7 +7994,7 @@ gnome_ui_handler_toolbar_item_set_label (GnomeUIHandler *uih, const char *path,
 		return;
 	}
 
-/*	toolbar_item_toplevel_set_label (uih, path, label_text);*/
+/*	toolbar_toplevel_item_set_label (uih, path, label_text);*/
 }
 
 gchar *
@@ -7789,28 +8006,6 @@ gnome_ui_handler_toolbar_item_get_label (GnomeUIHandler *uih, const char *path)
 
 	g_warning ("Unimplemented toolbar method");
 	return NULL;
-}
-
-void
-gnome_ui_handler_toolbar_item_set_pixmap (GnomeUIHandler *uih, const char *path,
-					  GnomeUIHandlerPixmapType type, gpointer data)
-{
-	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (path != NULL);
-
-	g_warning ("Unimplemented toolbar method");
-}
-
-void
-gnome_ui_handler_toolbar_get_pixmap (GnomeUIHandler *uih, const char *path,
-				     GnomeUIHandlerPixmapType *type, gpointer *data)
-{
-	g_return_if_fail (uih != NULL);
-	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
-	g_return_if_fail (path != NULL);
-
-	g_warning ("Unimplemented toolbar method");
 }
 
 void
@@ -7921,11 +8116,16 @@ gnome_ui_handler_get_epv (void)
 	epv->toolbar_create = impl_toolbar_create;
 	epv->toolbar_remove = impl_toolbar_remove;
 
-	epv->toolbar_create_item = impl_toolbar_create_item;
-	epv->toolbar_remove_item = impl_toolbar_remove_item;
+	epv->toolbar_create_item    = impl_toolbar_create_item;
+	epv->toolbar_remove_item    = impl_toolbar_remove_item;
 	/* FIXME: toolbar_fetch_item */
+	epv->toolbar_set_attributes = impl_toolbar_set_attributes;
+	epv->toolbar_get_attributes = impl_toolbar_get_attributes;
+
 	epv->toolbar_item_set_attributes = impl_toolbar_item_set_attributes;
 	epv->toolbar_item_get_attributes = impl_toolbar_item_get_attributes;
+	epv->toolbar_item_set_data       = impl_toolbar_item_set_data;
+	epv->toolbar_item_get_data       = impl_toolbar_item_get_data;
 
 	/* Menu notification. */
 	epv->menu_activated  = impl_menu_activated;
