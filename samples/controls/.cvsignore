@@ -2,6 +2,5 @@
 .libs
 Makefile
 Makefile.in
-bonobo-sample-controls
-sample-control-container
+bonobo-sample-controls-2
 Bonobo_Sample_Controls.server
