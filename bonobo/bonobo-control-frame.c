@@ -1125,6 +1125,9 @@ bonobo_control_frame_get_popup_component (BonoboControlFrame *control_frame,
 	popup_container = Bonobo_Control_getPopupContainer (
 		control_frame->priv->control, ev);
 
+	if (BONOBO_EX (ev))
+		return NULL;
+
 	bonobo_ui_component_set_container (ui_component, popup_container, ev);
 
 	Bonobo_Unknown_unref (popup_container, ev);
