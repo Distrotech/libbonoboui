@@ -22,9 +22,7 @@
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtksignal.h>
 
-#include <libgnome/gnome-i18n.h>
-#include <libgnome/gnome-program.h>
-#include <libgnome/gnome-util.h>
+#include <bonobo/bonobo-i18n.h>
 
 #if 0
 #include <libgnomeui/gnome-window.h>
@@ -49,8 +47,8 @@ delete_file_selector (GtkWidget *d, GdkEventAny *e, gpointer data)
 
 static void
 listener_cb (BonoboListener *listener, 
-	     gchar *event_name,
-	     CORBA_any *any,
+	     const gchar *event_name,
+	     const CORBA_any *any,
 	     CORBA_Environment *ev,
 	     gpointer data)
 {
@@ -103,7 +101,7 @@ create_control (gboolean enable_vfs, FileselMode mode)
 		"EnableVFS=%d;"
 		"MultipleSelection=%d;"
 		"SaveMode=%d",
-		gnome_program_get_app_id (gnome_program_get ()),
+		g_get_prgname (),
 		enable_vfs,
 		mode == FILESEL_OPEN_MULTI, 
 		mode == FILESEL_SAVE);
@@ -152,6 +150,20 @@ create_bonobo_selector (gboolean    enable_vfs,
 			control, "DefaultFileName", default_filename, NULL);
 	
 	return GTK_WINDOW (dialog);
+}
+
+static char *
+concat_dir_and_file (const char *dir, const char *file)
+{
+	g_return_val_if_fail (dir != NULL, NULL);
+	g_return_val_if_fail (file != NULL, NULL);
+
+        /* If the directory name doesn't have a / on the end, we need
+	   to add one so we get a proper path to the file */
+	if (dir[0] != '\0' && dir [strlen(dir) - 1] != G_DIR_SEPARATOR)
+		return g_strconcat (dir, G_DIR_SEPARATOR_S, file, NULL);
+	else
+		return g_strconcat (dir, file, NULL);
 }
 
 static void
@@ -219,7 +231,7 @@ ok_clicked_cb (GtkWidget *widget, gpointer data)
 		filedirname = gtk_file_selection_get_filename (fsel);
 
 		for (i = j = 1; strv[i]; i++) {
-			temp = g_concat_dir_and_file (filedirname, strv[i]);
+			temp = concat_dir_and_file (filedirname, strv[i]);
 
 			/* avoid duplicates */
 			if (strcmp (temp, strv[0]))

@@ -1,5 +1,24 @@
 2001-09-07  Martin Baulig  <baulig@suse.de>
 
+	Removing the libgnome dependency - part I.
+
+	* bonobo/bonobo-ui-main.c (bonobo_ui_init_full): Call
+	g_set_prgname().
+
+	* bonobo/bonobo-file-selector-util.c (listener_cb): Make the
+	`event_name' and `any' arguments const to make it compile
+	without warnings.
+	(create_control): Usfe g_get_prgname() instead of
+	gnome_program_get_app_id().
+	(concat_dir_and_file): New static function, copied from libgnome.
+	(ok_clicked_cb): Use the local concat_dir_and_file() instead of
+	g_concat_dir_and_file() from libgnome.
+
+	* bonobo/bonobo-dock-item.c: #include <bonobo/bonobo-i18n.h>
+	instead of <libgnome/gnome-i18n.h>.
+
+2001-09-07  Martin Baulig  <baulig@suse.de>
+
 	* samples/bonoboui-hello/helloapp.c: Don't #include <libgnome.h>.
 	* samples/bonoboui-hello/main.c: ditto.
 	* tests/test-selector.c: ditto.

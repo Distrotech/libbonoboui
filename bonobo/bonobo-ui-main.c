@@ -17,6 +17,7 @@
 #include <bonobo/bonobo-main.h>
 
 #include <libgnome/gnome-init.h>
+
 #include <gtk/gtkmain.h>
 
 #include <X11/Xlib.h>
@@ -107,6 +108,8 @@ bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 
 	if (!bonobo_init (argc, argv))
 		return FALSE;
+
+	g_set_prgname (app_name);
 
 	if (full_init) {
 		/*

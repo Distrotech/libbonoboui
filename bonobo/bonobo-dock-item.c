@@ -31,7 +31,7 @@
 #include <gtk/gtkwindow.h>
 
 #include <bonobo/bonobo-dock-item.h>
-#include <libgnome/gnome-i18n.h>
+#include <bonobo/bonobo-i18n.h>
 
 struct _BonoboDockItemPrivate
 {
