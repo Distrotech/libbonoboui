@@ -399,8 +399,6 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 			
 			keyval = gtk_label_parse_uline (GTK_LABEL (label), txt);
 			
-			bonobo_ui_node_free_string (label_attr);
-			
 			if (keyval != GDK_VoidSymbol) {
 				if (GTK_IS_MENU (parent))
 					gtk_widget_add_accelerator (
@@ -420,6 +418,8 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 			}
 		} /* else
 			g_warning ("No change in label '%s'", txt); */
+
+		bonobo_ui_node_free_string (label_attr);
 		g_free (txt);
 	}
 	
