@@ -302,10 +302,8 @@ bonobo_ui_container_set_engine (BonoboUIContainer *container,
 	closure = g_cclosure_new (
 		G_CALLBACK (blank_engine), container, NULL);
 	g_object_watch_closure (G_OBJECT (container), closure);
-	g_signal_connect_closure_by_id (
-		G_OBJECT (engine),
-		g_signal_lookup ("destroy", G_OBJECT_TYPE (engine)), 0,
-		closure, FALSE);
+	g_signal_connect_closure (G_OBJECT (engine), "destroy",
+				  closure, FALSE);
 }
 
 /**

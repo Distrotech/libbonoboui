@@ -56,6 +56,9 @@ typedef struct {
 	void (*emit_event_on) (BonoboUIEngine *engine,
 			       BonoboUINode   *node,
 			       const char     *state);
+
+	void (*destroy)       (BonoboUIEngine *engine);
+
 } BonoboUIEngineClass;
 
 GtkType         bonobo_ui_engine_get_type      (void);

@@ -38,6 +38,7 @@ enum {
 	REMOVE_HINT,
 	EMIT_VERB_ON,
 	EMIT_EVENT_ON,
+	DESTROY,
 	LAST_SIGNAL
 };
 
@@ -1681,6 +1682,15 @@ class_init (BonoboUIEngineClass *engine_class)
 				NULL, NULL,
 				bonobo_marshal_VOID__POINTER_STRING,
 				G_TYPE_NONE, 2, G_TYPE_POINTER, G_TYPE_STRING);
+
+	signals [DESTROY]
+		= g_signal_new ("destroy",
+				G_TYPE_FROM_CLASS (object_class),
+				G_SIGNAL_RUN_LAST,
+				G_STRUCT_OFFSET (BonoboUIEngineClass, destroy),
+				NULL, NULL,
+				g_cclosure_marshal_VOID__VOID,
+				G_TYPE_NONE, 0);
 }
 
 static void
