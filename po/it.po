@@ -10,7 +10,7 @@ msgstr ""
 "Last-Translator: Christopher R. Gabriel <cgabriel@cgabriel.org>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bonobo/bonobo-canvas-item.c:647
@@ -148,7 +148,7 @@ msgstr "_Testo e icona"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr "_Priorit‡ al solo testo"
+msgstr "_Priorit√† al solo testo"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -277,11 +277,11 @@ msgstr "Personalizza la barra degli strumenti"
 
 #: bonobo/bonobo-ui-toolbar.c:1096
 msgid "is floating"
-msgstr "Ë fluttuante"
+msgstr "√® fluttuante"
 
 #: bonobo/bonobo-ui-toolbar.c:1097
 msgid "whether the toolbar is floating"
-msgstr "se la barra degli strumenti Ë fluttuante o meno"
+msgstr "se la barra degli strumenti √® fluttuante o meno"
 
 #: bonobo/bonobo-ui-util.c:598
 msgid "_Contents"
@@ -338,11 +338,11 @@ msgstr "Se avere o meno un livello di zoom massimo valido"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr "» continuo"
+msgstr "√à continuo"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Se lo zoom Ë continuo"
+msgstr "Se lo zoom √® continuo"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -370,7 +370,7 @@ msgstr "_Selezione"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Questo non fa niente: Ë solo una dimostrazione."
+msgstr "Questo non fa niente: √® solo una dimostrazione."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."

@@ -10,7 +10,7 @@ msgstr ""
 "Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bonobo/bonobo-canvas-item.c:647
@@ -32,31 +32,31 @@ msgstr ""
 #: bonobo/bonobo-dock-item-grip.c:236
 #, fuzzy
 msgid "Dock the toolbar"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
+msgstr "Â¸Ã•Ã…Â¢Ã´ Ã€Ã„Â¨Â¸Â¨Ã‚ Â¾Ã‰Â¢Ã´Ã€Ã‚Ã‰Â¡Ã¬ÃŒ"
 
 #: bonobo/bonobo-dock-item-grip.c:237
 #, fuzzy
 msgid "Un dock the toolbar"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
+msgstr "Â¸Ã•Ã…Â¢Ã´ Ã€Ã„Â¨Â¸Â¨Ã‚ Â¾Ã‰Â¢Ã´Ã€Ã‚Ã‰Â¡Ã¬ÃŒ"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
-msgstr "¿¢Æø Å¨¸"
+msgstr "Â¿Â¢Ã†Ã¸ Ã…Â¨Â¸"
 
 #: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
 #: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
 msgid "Orientation"
-msgstr "¾¢¨º «¨Á×"
+msgstr "Â¾Â¢Â¨Âº Â«Â¨ÃÃ—"
 
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
 #: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
 msgid "Preferred width"
-msgstr "Å¢ÕôÀÁ¡É «¸Äõ"
+msgstr "Ã…Â¢Ã•Ã´Ã€ÃÂ¡Ã‰ Â«Â¸Ã„Ãµ"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
 #: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
 msgid "Preferred height"
-msgstr "Å¢ÕôÀÁ¡É ¯ÂÃõ"
+msgstr "Ã…Â¢Ã•Ã´Ã€ÃÂ¡Ã‰ Â¯Ã‚ÃƒÃµ"
 
 #: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
@@ -80,11 +80,11 @@ msgstr ""
 
 #: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
-msgstr "¦ÀÂ÷"
+msgstr "Â¦Ã€Ã‚Ã·"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
-msgstr "Å¢ÅÃ¢ôÒ"
+msgstr "Ã…Â¢Ã…ÃƒÂ¢Ã´Ã’"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
@@ -107,53 +107,53 @@ msgstr ""
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
-msgstr "À¡÷ì¸ììÜÊÂĞ"
+msgstr "Ã€Â¡Ã·Ã¬Â¸Ã¬Ã¬ÃœÃŠÃ‚Ã"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr "_¸¡ñÀ¢"
+msgstr "_Â¸Â¡Ã±Ã€Â¢"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
-msgstr "_Á¨È"
+msgstr "_ÃÂ¨Ãˆ"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr "_¸ÕÅ¢ ¯¾Å¢¸¨Ç ¸¡ñÀ¢"
+msgstr "_Â¸Ã•Ã…Â¢ Â¯Â¾Ã…Â¢Â¸Â¨Ã‡ Â¸Â¡Ã±Ã€Â¢"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¸û"
+msgstr "Â¸Ã•Ã…Â¢Ã´ Ã€Ã„Â¨Â¸Â¸Ã»"
 
 #: bonobo/bonobo-ui-config-widget.c:302
 #, fuzzy
 msgid "toolbars"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¸û"
+msgstr "Â¸Ã•Ã…Â¢Ã´ Ã€Ã„Â¨Â¸Â¸Ã»"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
-msgstr "À¡÷"
+msgstr "Ã€Â¡Ã·"
 
 #: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
-msgstr "_ÌÕõÀ¼õ"
+msgstr "_ÃŒÃ•ÃµÃ€Â¼Ãµ"
 
 #: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
-msgstr "_¯¨ÃÔõ ÌÕõÀ¼Óõ"
+msgstr "_Â¯Â¨ÃƒÃ”Ãµ ÃŒÃ•ÃµÃ€Â¼Ã“Ãµ"
 
 #: bonobo/bonobo-ui-config-widget.c:334
 #, fuzzy
 msgid "Text only"
-msgstr "_¯¨ÃÔõ ÌÕõÀ¼Óõ"
+msgstr "_Â¯Â¨ÃƒÃ”Ãµ ÃŒÃ•ÃµÃ€Â¼Ã“Ãµ"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr "_ÓıÛÃ¢¨Á ¯¨Ã ÁğÎõ"
+msgstr "_Ã“Ã½Ã›ÃƒÂ¢Â¨Ã Â¯Â¨Ãƒ ÃÃ°ÃÃµ"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr "UI³ ¯ÕÅ¡ìÌ"
+msgstr "UIÂ³ Â¯Ã•Ã…Â¡Ã¬ÃŒ"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
@@ -250,31 +250,31 @@ msgstr ""
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
-msgstr "_­ÃñÎõ"
+msgstr "_Â­ÃƒÃ±ÃÃµ"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
-msgstr "¯_¨Ã"
+msgstr "Â¯_Â¨Ãƒ"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr "¯¾_Å¢¸¨Ç Á¨È"
+msgstr "Â¯Â¾_Ã…Â¢Â¸Â¨Ã‡ ÃÂ¨Ãˆ"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
-msgstr "¯_¾Å¢¸¨Ç ¸¡ñÀ¢"
+msgstr "Â¯_Â¾Ã…Â¢Â¸Â¨Ã‡ Â¸Â¡Ã±Ã€Â¢"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "¸ÕÅ¢ô _ÀÄ¨¸¨Â Á¨È"
+msgstr "Â¸Ã•Ã…Â¢Ã´ _Ã€Ã„Â¨Â¸Â¨Ã‚ ÃÂ¨Ãˆ"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
-msgstr "_¾É¢ôÀÂÉ¡ìÌ"
+msgstr "_Â¾Ã‰Â¢Ã´Ã€Ã‚Ã‰Â¡Ã¬ÃŒ"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
+msgstr "Â¸Ã•Ã…Â¢Ã´ Ã€Ã„Â¨Â¸Â¨Ã‚ Â¾Ã‰Â¢Ã´Ã€Ã‚Ã‰Â¡Ã¬ÃŒ"
 
 #: bonobo/bonobo-ui-toolbar.c:1096
 msgid "is floating"
@@ -363,7 +363,7 @@ msgstr ""
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 #, fuzzy
 msgid "_File"
-msgstr "_Á¨È"
+msgstr "_ÃÂ¨Ãˆ"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
@@ -388,14 +388,14 @@ msgstr ""
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "libbonoboui ÌÈ¢Ó¨È¨Â ¦¾¡¼ì¸ ­ÂÄÅ¢ø¨Ä"
+msgstr "libbonoboui ÃŒÃˆÂ¢Ã“Â¨ÃˆÂ¨Ã‚ Â¦Â¾Â¡Â¼Ã¬Â¸ Â­Ã‚Ã„Ã…Â¢Ã¸Â¨Ã„"
 
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr ""
 
 #~ msgid "Can not bonobo_ui_init"
-#~ msgstr "bonobo_ui_init ­ÂÄÅ¢ø¨Ä"
+#~ msgstr "bonobo_ui_init Â­Ã‚Ã„Ã…Â¢Ã¸Â¨Ã„"
 
 #~ msgid "Select an object"
-#~ msgstr "´Õ ­Äì¨¸ §¾÷× ¦ºö"
+#~ msgstr "Â´Ã• Â­Ã„Ã¬Â¨Â¸ Â§Â¾Ã·Ã— Â¦ÂºÃ¶"
