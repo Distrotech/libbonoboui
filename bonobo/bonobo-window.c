@@ -3,9 +3,9 @@
  * bonobo-win.c: The Bonobo Window implementation.
  *
  * Author:
- *	Michael Meeks (michael@helixcode.com)
+ *	Michael Meeks (michael@ximian.com)
  *
- * Copyright 2000 Helix Code, Inc.
+ * Copyright 2000 Ximian, Inc.
  */
 #include "config.h"
 #include <bonobo/bonobo-dock-item.h>

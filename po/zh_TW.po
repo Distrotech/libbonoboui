@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.103.0\n"
-"POT-Creation-Date: 2001-10-01 21:37-0400\n"
+"POT-Creation-Date: 2001-11-05 10:03+1100\n"
 "PO-Revision-Date: 2001-10-03 09:54+0800\n"
 "Last-Translator: Joe Man <trmetal@yahoo.com.hk>\n"
 "Language-Team: traditional chinese <zh-l10n@linux.org.tw>\n"
@@ -13,43 +13,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:228
-#: bonobo/bonobo-dock-item.c:229
+#: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
 msgid "Shadow type"
 msgstr "立體效果類別"
 
-#: bonobo/bonobo-dock-item.c:237
-#: bonobo/bonobo-dock-item.c:238
+#: bonobo/bonobo-dock-item.c:237 bonobo/bonobo-dock-item.c:238
 msgid "Orientation"
 msgstr "方向"
 
-#: bonobo/bonobo-dock-item.c:246
-#: bonobo/bonobo-dock-item.c:247
+#: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
 msgid "Preferred width"
 msgstr "寬度"
 
-#: bonobo/bonobo-dock-item.c:254
-#: bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 msgid "Preferred height"
 msgstr "高度"
 
-#: bonobo/bonobo-file-selector-util.c:371
+#: bonobo/bonobo-file-selector-util.c:367
 msgid "Select a file to open"
 msgstr "選取一個要開啟的檔案"
 
-#: bonobo/bonobo-file-selector-util.c:399
+#: bonobo/bonobo-file-selector-util.c:395
 msgid "Select files to open"
 msgstr "選取多個要開啟的檔案"
 
-#: bonobo/bonobo-file-selector-util.c:428
+#: bonobo/bonobo-file-selector-util.c:424
 msgid "Select a filename to save"
 msgstr "選取一個要儲存的檔案"
 
-#: bonobo/bonobo-selector-widget.c:356
+#: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
 msgstr "名稱"
 
-#: bonobo/bonobo-selector-widget.c:380
+#: bonobo/bonobo-selector-widget.c:326
 msgid "Description"
 msgstr "描述"
 
@@ -73,13 +69,11 @@ msgstr "顯示工具列提示 (_V)"
 msgid "Toolbars"
 msgstr "工具列"
 
-#: bonobo/bonobo-ui-config-widget.c:311
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:311 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "檢視"
 
-#: bonobo/bonobo-ui-config-widget.c:321
-#: bonobo/bonobo-ui-sync-toolbar.c:549
+#: bonobo/bonobo-ui-config-widget.c:321 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "圖示 (_I)"
 
@@ -123,17 +117,31 @@ msgstr "自訂 (_Z)"
 msgid "Customize the toolbar"
 msgstr "自訂工具列"
 
-#: tests/test-focus.c:39
-#: tests/test-sensitivity.c:193
-#: tests/test-toolbar.c:50
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr ""
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr ""
+
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr ""
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr ""
+
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
+msgid "Cannot init libbonoboui code"
+msgstr "無法初始化 libbonoboui 的原碼"
+
+#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "無法初始化 bonobo 使用者介面 "
 
 #: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "選擇一個物件"
-
-#: tests/test-ui.c:230
-msgid "Cannot init libbonoboui code"
-msgstr "無法初始化 libbonoboui 的原碼"
-

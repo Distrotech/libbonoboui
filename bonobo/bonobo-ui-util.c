@@ -2,11 +2,10 @@
  * bonobo-ui-util.c: Bonobo UI utility functions
  *
  * Author:
- *	Michael Meeks (michael@helixcode.com)
+ *	Michael Meeks (michael@ximian.com)
  *
- * Copyright 2000 Helix Code, Inc.
+ * Copyright 2000, 2001 Ximian, Inc.
  */
-
 #include <config.h>
 #include <ctype.h>
 #include <string.h>
@@ -792,7 +791,8 @@ void
 bonobo_ui_util_set_ui (BonoboUIComponent *component,
 		       const char        *app_datadir,
 		       const char        *file_name,
-		       const char        *app_name)
+		       const char        *app_name,
+		       CORBA_Environment *opt_ev)
 {
 	char                  *fname, *ui;
 	BonoboUINodeCacheEntry entry, *cached;
@@ -842,7 +842,7 @@ bonobo_ui_util_set_ui (BonoboUIComponent *component,
 	}
 	
 	if (ui)
-		bonobo_ui_component_set (component, "/", ui, NULL);
+		bonobo_ui_component_set (component, "/", ui, opt_ev);
 	
 	g_free (fname);
 }
@@ -1124,33 +1124,28 @@ bonobo_ui_util_accel_name (guint              accelerator_key,
 
 	l = 0;
 	accelerator[l] = 0;
-	if (accelerator_mods & GDK_RELEASE_MASK)
-	{
+	if (accelerator_mods & GDK_RELEASE_MASK) {
 		strcpy (accelerator + l, text_release);
 		l += sizeof (text_release) - 1;
 	}
-	if (accelerator_mods & GDK_SHIFT_MASK)
-	{
+
+	if (accelerator_mods & GDK_SHIFT_MASK) {
 		strcpy (accelerator + l, text_shift);
 		l += sizeof (text_shift) - 1;
 	}
-	if (accelerator_mods & GDK_CONTROL_MASK)
-	{
+	if (accelerator_mods & GDK_CONTROL_MASK) {
 		strcpy (accelerator + l, text_control);
 		l += sizeof (text_control) - 1;
 	}
-	if (accelerator_mods & GDK_MOD1_MASK)
-	{
+	if (accelerator_mods & GDK_MOD1_MASK) {
 		strcpy (accelerator + l, text_mod1);
 		l += sizeof (text_mod1) - 1;
 	}
-	if (accelerator_mods & GDK_MOD2_MASK)
-	{
+	if (accelerator_mods & GDK_MOD2_MASK) {
 		strcpy (accelerator + l, text_mod2);
 		l += sizeof (text_mod2) - 1;
 	}
-	if (accelerator_mods & GDK_MOD3_MASK)
-	{
+	if (accelerator_mods & GDK_MOD3_MASK) {
 		strcpy (accelerator + l, text_mod3);
 		l += sizeof (text_mod3) - 1;
 	}
@@ -1159,8 +1154,7 @@ bonobo_ui_util_accel_name (guint              accelerator_key,
 		strcpy (accelerator + l, text_mod4);
 		l += sizeof (text_mod4) - 1;
 	}
-	if (accelerator_mods & GDK_MOD5_MASK)
-	{
+	if (accelerator_mods & GDK_MOD5_MASK) {
 		strcpy (accelerator + l, text_mod5);
 		l += sizeof (text_mod5) - 1;
 	}
@@ -1181,19 +1175,20 @@ bonobo_ui_util_accel_name (guint              accelerator_key,
 void
 bonobo_ui_util_set_pixbuf (BonoboUIComponent *component,
 			   const char        *path,
-			   GdkPixbuf         *pixbuf)
+			   GdkPixbuf         *pixbuf,
+			   CORBA_Environment *opt_ev)
 {
 	char *parent_path;
 	BonoboUINode *node;
 
-	node = bonobo_ui_component_get_tree (component, path, FALSE, NULL);
+	node = bonobo_ui_component_get_tree (component, path, FALSE, opt_ev);
 
 	g_return_if_fail (node != NULL);
 
 	bonobo_ui_util_xml_set_pixbuf (node, pixbuf);
 
 	parent_path = bonobo_ui_xml_get_parent_path (path);
-	bonobo_ui_component_set_tree (component, parent_path, node, NULL);
+	bonobo_ui_component_set_tree (component, parent_path, node, opt_ev);
 
 	bonobo_ui_node_free (node);
 

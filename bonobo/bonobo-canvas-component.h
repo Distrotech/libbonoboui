@@ -46,13 +46,20 @@ typedef struct {
 } BonoboCanvasComponentClass;
 
 GType                   bonobo_canvas_component_get_type         (void) G_GNUC_CONST;
-BonoboCanvasComponent  *bonobo_canvas_component_construct        (BonoboCanvasComponent       *comp,
-								  GnomeCanvasItem             *item);
-BonoboCanvasComponent  *bonobo_canvas_component_new              (GnomeCanvasItem             *item);
-GnomeCanvasItem        *bonobo_canvas_component_get_item         (BonoboCanvasComponent       *comp);
-void		        bonobo_canvas_component_grab		 (BonoboCanvasComponent       *comp, guint mask, GdkCursor *cursor, guint32 time);
-void		        bonobo_canvas_component_ungrab		 (BonoboCanvasComponent       *comp, guint32 time);
-Bonobo_UIContainer      bonobo_canvas_component_get_ui_container (BonoboCanvasComponent       *comp);
+BonoboCanvasComponent  *bonobo_canvas_component_construct        (BonoboCanvasComponent *comp,
+								  GnomeCanvasItem       *item);
+BonoboCanvasComponent  *bonobo_canvas_component_new              (GnomeCanvasItem       *item);
+GnomeCanvasItem        *bonobo_canvas_component_get_item         (BonoboCanvasComponent *comp);
+void		        bonobo_canvas_component_grab		 (BonoboCanvasComponent *comp,
+								  guint                  mask,
+								  GdkCursor             *cursor,
+								  guint32                time,
+								  CORBA_Environment     *opt_ev);
+void		        bonobo_canvas_component_ungrab		 (BonoboCanvasComponent *comp,
+								  guint32                time,
+								  CORBA_Environment     *opt_ev);
+Bonobo_UIContainer      bonobo_canvas_component_get_ui_container (BonoboCanvasComponent *comp,
+								  CORBA_Environment     *opt_ev);
 					  
 /* This is a helper function for creating a canvas with the root item replaced
  * by a proxy to the client side proxy.

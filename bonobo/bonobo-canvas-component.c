@@ -5,7 +5,7 @@
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
  *
- * (C) 1999-2001 Helix Code, Inc.
+ * (C) 1999-2001 Ximian, Inc.
  */
 #include <config.h>
 #include <stdio.h>
@@ -920,15 +920,23 @@ bonobo_canvas_new (gboolean is_aa, Bonobo_Canvas_ComponentProxy proxy)
  */
 void
 bonobo_canvas_component_grab (BonoboCanvasComponent *comp, guint mask,
-			      GdkCursor *cursor, guint32 time)
+			      GdkCursor *cursor, guint32 time,
+			      CORBA_Environment     *opt_ev)
 {
-	CORBA_Environment ev;
+	CORBA_Environment *ev, temp_ev;
 
-	CORBA_exception_init (&ev);
+	if (!opt_ev) {
+		CORBA_exception_init (&temp_ev);
+		ev = &temp_ev;
+	} else
+		ev = opt_ev;
+
 	Bonobo_Canvas_ComponentProxy_grabFocus (
 		ROOT_ITEM_HACK (comp->priv->item->canvas->root)->proxy, 
-		mask, cursor->type, time, &ev);
-	CORBA_exception_free (&ev);
+		mask, cursor->type, time, ev);
+
+	if (!opt_ev)
+		CORBA_exception_free (&temp_ev);
 }
 
 /**
@@ -939,14 +947,22 @@ bonobo_canvas_component_grab (BonoboCanvasComponent *comp, guint mask,
  * Grabs the mouse focus via a call to the remote proxy.
  */
 void
-bonobo_canvas_component_ungrab (BonoboCanvasComponent *comp, guint32 time)
+bonobo_canvas_component_ungrab (BonoboCanvasComponent *comp, guint32 time,
+				CORBA_Environment     *opt_ev)
 {
-	CORBA_Environment ev;
+	CORBA_Environment *ev, temp_ev;
 
-	CORBA_exception_init (&ev);
+	if (!opt_ev) {
+		CORBA_exception_init (&temp_ev);
+		ev = &temp_ev;
+	} else
+		ev = opt_ev;
+
 	Bonobo_Canvas_ComponentProxy_ungrabFocus (
-		ROOT_ITEM_HACK (comp->priv->item->canvas->root)->proxy, time, &ev);
-	CORBA_exception_free (&ev);
+		ROOT_ITEM_HACK (comp->priv->item->canvas->root)->proxy, time, ev);
+
+	if (!opt_ev)
+		CORBA_exception_free (&temp_ev);
 }
 
 /**
@@ -956,15 +972,23 @@ bonobo_canvas_component_ungrab (BonoboCanvasComponent *comp, guint32 time)
  * Returns: The UI container for the component's remote proxy.
  */
 Bonobo_UIContainer
-bonobo_canvas_component_get_ui_container (BonoboCanvasComponent *comp)
+bonobo_canvas_component_get_ui_container (BonoboCanvasComponent *comp,
+					  CORBA_Environment     *opt_ev)
 {
 	Bonobo_UIContainer corba_uic;
-	CORBA_Environment ev;
+	CORBA_Environment *ev, temp_ev;
 
-	CORBA_exception_init (&ev);
+	if (!opt_ev) {
+		CORBA_exception_init (&temp_ev);
+		ev = &temp_ev;
+	} else
+		ev = opt_ev;
+
 	corba_uic = Bonobo_Canvas_ComponentProxy_getUIContainer (
-			ROOT_ITEM_HACK (comp->priv->item->canvas->root)->proxy, &ev);
-	CORBA_exception_free (&ev);
+		ROOT_ITEM_HACK (comp->priv->item->canvas->root)->proxy, ev);
+
+	if (!opt_ev)
+		CORBA_exception_free (&temp_ev);
 
 	return corba_uic;
 }

@@ -626,9 +626,10 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 	if (frame->priv->control != CORBA_OBJECT_NIL) {
 		CORBA_char *id;
 
-		ORBit_small_unlisten_for_broken (
-			frame->priv->control,
-			G_CALLBACK (control_connection_died_cb));
+		if (!frame->priv->inproc_control)
+			ORBit_small_unlisten_for_broken (
+				frame->priv->control,
+				G_CALLBACK (control_connection_died_cb));
 
 		/* Unset ourselves as the frame */
 		id = Bonobo_Control_setFrame (frame->priv->control,
@@ -637,7 +638,6 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 			CORBA_free (id);
 
 		if (frame->priv->control != CORBA_OBJECT_NIL)
-
 			CORBA_Object_release (frame->priv->control, ev);
 
 		CORBA_exception_free (ev);

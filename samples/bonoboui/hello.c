@@ -213,7 +213,7 @@ hello_create_main_window (void)
 	 * see Makefile.am to see how HELLO_SRCDIR gets set. */
 	bonobo_ui_util_set_ui (ui_component, "", /* data dir */
 			       HELLO_SRCDIR HELLO_UI_XML,
-			       "bonobo-hello");
+			       "bonobo-hello", NULL);
 
 	/* Associate our verb -> callback mapping with the BonoboWindow */
 	/* All the callback's user_data pointers will be set to 'win' */

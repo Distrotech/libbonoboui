@@ -1,3 +1,24 @@
+2001-11-05  Michael Meeks  <michael@ximian.com>
+
+	* Version 1.106.0
+
+2001-11-05  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: update all dep versions, & ver.
+	
+	* bonobo/*.[ch]: s/Helix Code/Ximian/
+
+	* bonobo/bonobo-ui-util.c
+	(bonobo_ui_util_set_pixbuf, bonobo_ui_util_set_ui): add
+	optional CORBA_Environments.
+
+	* libbonoboui.h: update.
+
+	* bonobo/bonobo-canvas-component.c
+	(bonobo_canvas_component_get_ui_container): add opt_ev.
+	(bonobo_canvas_component_ungrab): ditto.
+	(bonobo_canvas_component_grab): 
+
 2001-11-02  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-control.c

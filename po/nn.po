@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bonobo 0.32\n"
-"POT-Creation-Date: 2001-09-27 08:01+1000\n"
+"POT-Creation-Date: 2001-11-05 10:03+1100\n"
 "PO-Revision-Date: 2000-09-07 20:17+02:00\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (Nynorsk)\n"
@@ -29,26 +29,26 @@ msgstr ""
 msgid "Preferred height"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:371
+#: bonobo/bonobo-file-selector-util.c:367
 #, fuzzy
 msgid "Select a file to open"
 msgstr "Vel fil"
 
-#: bonobo/bonobo-file-selector-util.c:399
+#: bonobo/bonobo-file-selector-util.c:395
 #, fuzzy
 msgid "Select files to open"
 msgstr "Vel fil"
 
-#: bonobo/bonobo-file-selector-util.c:428
+#: bonobo/bonobo-file-selector-util.c:424
 #, fuzzy
 msgid "Select a filename to save"
 msgstr "Vel fil"
 
-#: bonobo/bonobo-selector-widget.c:356
+#: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
 msgstr "Namn"
 
-#: bonobo/bonobo-selector-widget.c:380
+#: bonobo/bonobo-selector-widget.c:326
 msgid "Description"
 msgstr "Skildring"
 
@@ -122,7 +122,28 @@ msgstr ""
 msgid "Customize the toolbar"
 msgstr ""
 
-#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr ""
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr ""
+
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr ""
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr ""
+
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
+msgid "Cannot init libbonoboui code"
+msgstr ""
+
+#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr ""
 
@@ -130,10 +151,6 @@ msgstr ""
 #, fuzzy
 msgid "Select an object"
 msgstr "Vel ein film"
-
-#: tests/test-ui.c:230
-msgid "Cannot init libbonoboui code"
-msgstr ""
 
 #, fuzzy
 #~ msgid "Can not activate object_server"

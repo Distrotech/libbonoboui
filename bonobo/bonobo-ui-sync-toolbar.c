@@ -3,9 +3,9 @@
  * bonobo-ui-sync-toolbar.h: The Bonobo UI/XML sync engine for toolbars
  *
  * Author:
- *	Michael Meeks (michael@helixcode.com)
+ *	Michael Meeks (michael@ximian.com)
  *
- * Copyright 2000 Helix Code, Inc.
+ * Copyright 2000 Ximian, Inc.
  */
 
 #include <config.h>

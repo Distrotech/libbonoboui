@@ -3,9 +3,9 @@
  * bonobo-property-control.c: Bonobo PropertyControl implementation
  *
  * Author:
- *      Iain Holmes  <iain@helixcode.com>
+ *      Iain Holmes  <iain@ximian.com>
  *
- * Copyright 2000 Helix Code, Inc.
+ * Copyright 2000, 2001 Ximian, Inc.
  */
 #include <config.h>
 #include <stdio.h>

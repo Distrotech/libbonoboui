@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tamil libbonoboui2 1.7\n"
-"POT-Creation-Date: 2001-08-14 23:13-0500\n"
+"POT-Creation-Date: 2001-11-05 10:03+1100\n"
 "PO-Revision-Date: 2001-09-28 18:53-0500\n"
 "Last-Translator: Balaji Narayanan <balaji.narayanan@wipro.com>\n"
 "Language-Team: Tamil <tamilinix@yahoogroups.com>\n"
@@ -29,11 +29,23 @@ msgstr "Å¢ÕôÀÁ¡É «¸Äõ"
 msgid "Preferred height"
 msgstr "Å¢ÕôÀÁ¡É ¯ÂÃõ"
 
-#: bonobo/bonobo-selector-widget.c:356
+#: bonobo/bonobo-file-selector-util.c:367
+msgid "Select a file to open"
+msgstr ""
+
+#: bonobo/bonobo-file-selector-util.c:395
+msgid "Select files to open"
+msgstr ""
+
+#: bonobo/bonobo-file-selector-util.c:424
+msgid "Select a filename to save"
+msgstr ""
+
+#: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
 msgstr "¦ÀÂ÷"
 
-#: bonobo/bonobo-selector-widget.c:380
+#: bonobo/bonobo-selector-widget.c:326
 msgid "Description"
 msgstr "Å¢ÅÃ¢ôÒ"
 
@@ -105,15 +117,31 @@ msgstr "_¾É¢ôÀÂÉ¡ìÌ"
 msgid "Customize the toolbar"
 msgstr "¸ÕÅ¢ô ÀÄ¨¸¨Â ¾É¢ôÀÂÉ¡ìÌ"
 
-#: tests/test-focus.c:31 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
-msgid "Can not bonobo_ui_init"
-msgstr "bonobo_ui_init ­ÂÄÅ¢ø¨Ä"
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr ""
 
-#: tests/test-selector.c:13
-msgid "Select an object"
-msgstr "´Õ ­Äì¨¸ §¾÷× ¦ºö"
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr ""
 
-#: tests/test-ui.c:229
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr ""
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr ""
+
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
 msgid "Cannot init libbonoboui code"
 msgstr "libbonoboui ÌÈ¢Ó¨È¨Â ¦¾¡¼ì¸ ­ÂÄÅ¢ø¨Ä"
 
+#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
+msgid "Can not bonobo_ui_init"
+msgstr "bonobo_ui_init ­ÂÄÅ¢ø¨Ä"
+
+#: tests/test-selector.c:12
+msgid "Select an object"
+msgstr "´Õ ­Äì¨¸ §¾÷× ¦ºö"

@@ -7,7 +7,7 @@
  *    Nat Friedman     (nat@nat.org)
  *    Peter Wainwright (prw@wainpr.demo.co.uk)
  *
- * Copyright 1999 Helix Code, Inc.
+ * Copyright 1999, 2001 Ximian, Inc.
  */
 #include <config.h>
 
@@ -112,11 +112,10 @@ bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 	g_set_prgname (app_name);
 
 	if (full_init) {
-		/*
-		 * Initialize all our dependencies.
-		 */
+		/* Initialize all our dependencies. */
 		gnome_program_init (
-			app_name, app_version, libgnome_module_info_get (),
+			app_name, app_version,
+			libgnome_module_info_get (),
 			*argc, argv, NULL);
 	}
 

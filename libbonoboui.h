@@ -15,17 +15,25 @@
 
 G_BEGIN_DECLS
 
-#include <bonobo/bonobo-ui-main.h>
+#include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
-#include <bonobo/bonobo-zoomable.h>
-#include <bonobo/bonobo-zoomable-frame.h>
+#include <bonobo/bonobo-property-control.h>
+
+#include <bonobo/bonobo-window.h>
+#include <bonobo/bonobo-ui-main.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-ui-container.h>
-#include <bonobo/bonobo-window.h>
+
 #include <bonobo/bonobo-selector.h>
-#include <bonobo/bonobo-widget.h>
+#include <bonobo/bonobo-file-selector-util.h>
+
+#include <bonobo/bonobo-canvas-item.h>
+#include <bonobo/bonobo-canvas-component.h>
+
+#include <bonobo/bonobo-zoomable.h>
+#include <bonobo/bonobo-zoomable-frame.h>
 
 G_END_DECLS
 

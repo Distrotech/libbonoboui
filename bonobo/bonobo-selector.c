@@ -5,13 +5,13 @@
  * Authors:
  *   Richard Hestilow (hestgray@ionet.net)
  *   Miguel de Icaza  (miguel@kernel.org)
- *   Martin Baulig    (martin@
+ *   Martin Baulig    (martin@home-of-linux.org)
  *   Anders Carlsson  (andersca@gnu.org)
  *   Havoc Pennington (hp@redhat.com)
- *   Dietmar Maurer   (dietmar@maurer-it.com)
- *   Michael Meeks    (michael@helixcode.com)
+ *   Dietmar Maurer   (dietmar@ximian.com)
+ *   Michael Meeks    (michael@ximian.com)
  *
- * Copyright 1999, 2000 Richard Hestilow, Helix Code, Inc,
+ * Copyright 1999, 2000 Richard Hestilow, Ximian, Inc,
  *                      Martin Baulig, Anders Carlsson,
  *                      Havoc Pennigton, Dietmar Maurer
  */

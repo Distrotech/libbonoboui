@@ -145,12 +145,12 @@ void               bonobo_ui_component_remove_listener_by_closure (BonoboUICompo
 void               bonobo_ui_component_set          (BonoboUIComponent  *component,
 						     const char         *path,
 						     const char         *xml,
-						     CORBA_Environment  *ev);
+						     CORBA_Environment  *opt_ev);
 
 void               bonobo_ui_component_set_translate(BonoboUIComponent  *component,
 						     const char         *path,
 						     const char         *xml,
-						     CORBA_Environment  *ev);
+						     CORBA_Environment  *opt_ev);
 
 void               bonobo_ui_component_set_tree     (BonoboUIComponent  *component,
 						     const char         *path,
@@ -168,12 +168,12 @@ gboolean           bonobo_ui_component_path_exists  (BonoboUIComponent  *compone
 CORBA_char        *bonobo_ui_component_get          (BonoboUIComponent  *component,
 						     const char         *path,
 						     gboolean            recurse,
-						     CORBA_Environment  *ev);
+						     CORBA_Environment  *opt_ev);
 
 BonoboUINode      *bonobo_ui_component_get_tree     (BonoboUIComponent  *component,
 						     const char         *path,
 						     gboolean            recurse,
-						     CORBA_Environment  *ev);
+						     CORBA_Environment  *opt_ev);
 
 void               bonobo_ui_component_object_set   (BonoboUIComponent  *component,
 						     const char         *path,

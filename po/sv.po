@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-09-27 08:01+1000\n"
+"POT-Creation-Date: 2001-11-05 10:03+1100\n"
 "PO-Revision-Date: 2001-07-09 00:19+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -31,23 +31,23 @@ msgstr "Föredragen bredd"
 msgid "Preferred height"
 msgstr "Föredragen höjd"
 
-#: bonobo/bonobo-file-selector-util.c:371
+#: bonobo/bonobo-file-selector-util.c:367
 msgid "Select a file to open"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:399
+#: bonobo/bonobo-file-selector-util.c:395
 msgid "Select files to open"
 msgstr ""
 
-#: bonobo/bonobo-file-selector-util.c:428
+#: bonobo/bonobo-file-selector-util.c:424
 msgid "Select a filename to save"
 msgstr ""
 
-#: bonobo/bonobo-selector-widget.c:356
+#: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
 msgstr "Namn"
 
-#: bonobo/bonobo-selector-widget.c:380
+#: bonobo/bonobo-selector-widget.c:326
 msgid "Description"
 msgstr "Beskrivning"
 
@@ -119,18 +119,35 @@ msgstr "Anpa_ssa"
 msgid "Customize the toolbar"
 msgstr "Anpassa verktygsraden"
 
-#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr ""
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr ""
+
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr ""
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr ""
+
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
+#, fuzzy
+msgid "Cannot init libbonoboui code"
+msgstr "Kan inte initiera bonobo"
+
+#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Kan inte utföra bonobo_ui_init"
 
 #: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Välj ett objekt"
-
-#: tests/test-ui.c:230
-#, fuzzy
-msgid "Cannot init libbonoboui code"
-msgstr "Kan inte initiera bonobo"
 
 #~ msgid "Can not activate object_server"
 #~ msgstr "Kan inte aktivera objekt_server"

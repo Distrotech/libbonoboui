@@ -3,9 +3,9 @@
  * bonobo-ui-engine-config.c: The Bonobo UI/XML Sync engine user config code
  *
  * Author:
- *	Michael Meeks (michael@helixcode.com)
+ *	Michael Meeks (michael@ximian.com)
  *
- * Copyright 2001 Helix Code, Inc.
+ * Copyright 2001 Ximian, Inc.
  */
 
 #include <stdlib.h>

@@ -2,9 +2,9 @@
 /**
  * bonobo-ui-toolbar-button-item.h: a toolbar button
  *
- * Author: Ettore Perazzoli
+ * Author: Ettore Perazzoli (ettore@ximian.com)
  *
- * Copyright (C) 2000 Helix Code, Inc.
+ * Copyright (C) 2000 Ximian, Inc.
  */
 
 #ifdef HAVE_CONFIG_H

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2001-10-21 19:51+0200\n"
+"POT-Creation-Date: 2001-11-05 10:03+1100\n"
 "PO-Revision-Date: 2001-10-21 20:06+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
@@ -134,7 +134,7 @@ msgstr "Gnome Ahoj"
 msgid "Hello, World!"
 msgstr "Ahoj, svet!"
 
-#: samples/bonoboui/hello.c:290 tests/test-ui.c:231
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
 msgid "Cannot init libbonoboui code"
 msgstr "Nemô¾em inicializova» kód libbonoboui"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.97.0\n"
-"POT-Creation-Date: 2001-09-27 08:01+1000\n"
+"POT-Creation-Date: 2001-11-05 10:03+1100\n"
 "PO-Revision-Date: 2001-09-21 20:57+0200\n"
 "Last-Translator: Softcatalà <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <info@softcatala.org>\n"
@@ -30,23 +30,23 @@ msgstr "Amplada preferida"
 msgid "Preferred height"
 msgstr "Alçada preferida"
 
-#: bonobo/bonobo-file-selector-util.c:371
+#: bonobo/bonobo-file-selector-util.c:367
 msgid "Select a file to open"
 msgstr "Seleccioneu un fitxer per obrir"
 
-#: bonobo/bonobo-file-selector-util.c:399
+#: bonobo/bonobo-file-selector-util.c:395
 msgid "Select files to open"
 msgstr "Seleccioneu els fitxers a obrir"
 
-#: bonobo/bonobo-file-selector-util.c:428
+#: bonobo/bonobo-file-selector-util.c:424
 msgid "Select a filename to save"
 msgstr "Seleccioneu un nom de fitxer per desar"
 
-#: bonobo/bonobo-selector-widget.c:356
+#: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
 msgstr "Nom"
 
-#: bonobo/bonobo-selector-widget.c:380
+#: bonobo/bonobo-selector-widget.c:326
 msgid "Description"
 msgstr "Descripció"
 
@@ -118,17 +118,34 @@ msgstr "Personalit_za"
 msgid "Customize the toolbar"
 msgstr "Personalitza la barra d'eines"
 
-#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr ""
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr ""
+
+#: samples/bonoboui/hello.c:195
+msgid "Gnome Hello"
+msgstr ""
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr ""
+
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
+msgid "Cannot init libbonoboui code"
+msgstr "No es pot inicialitzar el codi del libbonoboui"
+
+#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "No es pot bonobo_ui_init"
 
 #: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Seleccioneu un objecte"
-
-#: tests/test-ui.c:230
-msgid "Cannot init libbonoboui code"
-msgstr "No es pot inicialitzar el codi del libbonoboui"
 
 #~ msgid "Can not activate object_server"
 #~ msgstr "No es pot activar object_server"

@@ -20,6 +20,8 @@ bonobo-ui-util.[ch]:
 	       bonobo_ui_util_xml_set_pix_fname
 	rename bonobo_ui_util_xml_get_icon_pixmap_widget to
 	bonobo_ui_util_xml_get_icon_widget.
+	bonobo_ui_util_set_pixbuf,
+	bonobo_ui_util_set_ui: +optional ev, +NULL for old behavior.
 
 bonobo-client-site.[ch]:
 bonobo-embeddable.[ch]:

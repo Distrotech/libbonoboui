@@ -3,9 +3,9 @@
  * bonobo-ui-config-widget.c: Bonobo Component UIConfig widget
  *
  * Authors:
- *   Michael Meeks (michael@helixcode.com)
+ *   Michael Meeks (michael@ximian.com)
  *
- * Copyright 2001 Helix Code, Inc.
+ * Copyright 2001 Ximian, Inc.
  */
 
 #include <stdlib.h>

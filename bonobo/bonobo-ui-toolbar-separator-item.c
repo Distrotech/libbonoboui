@@ -3,9 +3,9 @@
  * bonobo-ui-toolbar-separator-item.h
  *
  * Author:
- *    Ettore Perazzoli
+ *    Ettore Perazzoli (ettore@ximian.com)
  *
- * Copyright (C) 2000 Helix Code, Inc.
+ * Copyright (C) 2000 Ximian, Inc.
  */
 
 #ifdef HAVE_CONFIG_H

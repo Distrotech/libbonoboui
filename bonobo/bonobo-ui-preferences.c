@@ -3,7 +3,7 @@
  * bonobo-ui-preferences.c: private wrappers for global UI preferences.
  *
  * Authors:
- *     Michael Meeks (michael@helixcode.com)
+ *     Michael Meeks (michael@ximian.com)
  *     Martin Baulig (martin@home-of-linux.org)
  *
  * Copyright 2001 Ximian, Inc.

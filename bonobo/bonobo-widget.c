@@ -3,7 +3,7 @@
  * bonobo-widget.c: BonoboWidget object.
  *
  * Authors:
- *   Nat Friedman    (nat@helixcode.com)
+ *   Nat Friedman    (nat@ximian.com)
  *
  * Copyright 1999, 2001 Ximian, Inc.
  * 

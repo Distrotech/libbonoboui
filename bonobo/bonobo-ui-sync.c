@@ -3,9 +3,9 @@
  * bonobo-ui-sync.h: An abstract base for Bonobo XML / widget sync sync'ing.
  *
  * Author:
- *	Michael Meeks (michael@helixcode.com)
+ *	Michael Meeks (michael@ximian.com)
  *
- * Copyright 2000 Helix Code, Inc.
+ * Copyright 2000 Ximian, Inc.
  */
 
 #include <config.h>

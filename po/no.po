@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo 0.37\n"
-"POT-Creation-Date: 2001-09-26 08:36+0200\n"
+"POT-Creation-Date: 2001-11-05 10:03+1100\n"
 "PO-Revision-Date: 2001-09-19 17:57+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -29,23 +29,23 @@ msgstr "Foretrukket bredde"
 msgid "Preferred height"
 msgstr "Foretrukket høyde"
 
-#: bonobo/bonobo-file-selector-util.c:371
+#: bonobo/bonobo-file-selector-util.c:367
 msgid "Select a file to open"
 msgstr "Velg en fil som skal åpnes"
 
-#: bonobo/bonobo-file-selector-util.c:399
+#: bonobo/bonobo-file-selector-util.c:395
 msgid "Select files to open"
 msgstr "Velg filer som skal åpnes"
 
-#: bonobo/bonobo-file-selector-util.c:428
+#: bonobo/bonobo-file-selector-util.c:424
 msgid "Select a filename to save"
 msgstr "Velg et fil som skal lagres"
 
-#: bonobo/bonobo-selector-widget.c:356
+#: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
 msgstr "Navn"
 
-#: bonobo/bonobo-selector-widget.c:380
+#: bonobo/bonobo-selector-widget.c:326
 msgid "Description"
 msgstr "Beskrivelse"
 
@@ -117,17 +117,35 @@ msgstr "Tilpas_s"
 msgid "Customize the toolbar"
 msgstr "Tilpass verktøylinjen"
 
-#: tests/test-focus.c:39 tests/test-sensitivity.c:193 tests/test-toolbar.c:50
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr ""
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr ""
+
+#: samples/bonoboui/hello.c:195
+#, fuzzy
+msgid "Gnome Hello"
+msgstr "GNOME miner"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:250
+msgid "Hello, World!"
+msgstr ""
+
+#: samples/bonoboui/hello.c:290 tests/test-ui.c:254
+msgid "Cannot init libbonoboui code"
+msgstr "Kan ikke initiere libbonoboui"
+
+#: tests/test-focus.c:47 tests/test-sensitivity.c:195 tests/test-toolbar.c:50
 msgid "Can not bonobo_ui_init"
 msgstr "Kan ikke kjøre bonobo_ui_init"
 
 #: tests/test-selector.c:12
 msgid "Select an object"
 msgstr "Velg et objekt"
-
-#: tests/test-ui.c:230
-msgid "Cannot init libbonoboui code"
-msgstr "Kan ikke initiere libbonoboui"
 
 #~ msgid "Can not activate object_server"
 #~ msgstr "Kan ikke aktivere object_server"
@@ -658,9 +676,6 @@ msgstr "Kan ikke initiere libbonoboui"
 
 #~ msgid "Custom"
 #~ msgstr "Egendefinert"
-
-#~ msgid "Gnome Mines"
-#~ msgstr "GNOME miner"
 
 #~ msgid "Code: Pista"
 #~ msgstr "Kode: Pista"

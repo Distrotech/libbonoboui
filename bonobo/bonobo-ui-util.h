@@ -4,7 +4,7 @@
  * Author:
  *	Michael Meeks (michael@helixcode.com)
  *
- * Copyright 2000 Helix Code, Inc.
+ * Copyright 2000, 2001 Ximian, Inc.
  */
 #ifndef _BONOBO_UI_XML_UTIL_H_
 #define _BONOBO_UI_XML_UTIL_H_
@@ -50,11 +50,13 @@ BonoboUINode   *bonobo_ui_util_new_ui       (BonoboUIComponent *component,
 void            bonobo_ui_util_set_ui       (BonoboUIComponent *component,
 					     const char        *app_prefix,
 					     const char        *file_name,
-					     const char        *app_name);
+					     const char        *app_name,
+					     CORBA_Environment *opt_ev);
 
 void            bonobo_ui_util_set_pixbuf   (BonoboUIComponent *component,
 					     const char        *path,
-					     GdkPixbuf         *pixbuf);
+					     GdkPixbuf         *pixbuf,
+					     CORBA_Environment *opt_ev);
 
 gchar          *bonobo_ui_util_accel_name   (guint              accelerator_key,
 					     GdkModifierType    accelerator_mods);

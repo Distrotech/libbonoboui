@@ -3,9 +3,9 @@
  * gnome-component-ui.c: Client UI signal multiplexer and verb repository.
  *
  * Author:
- *     Michael Meeks (michael@helixcode.com)
+ *     Michael Meeks (michael@ximian.com)
  *
- * Copyright 1999, 2000 Helix Code, Inc.
+ * Copyright 1999, 2001 Ximian, Inc.
  */
 #include <config.h>
 #include <string.h>
@@ -570,7 +570,7 @@ bonobo_ui_component_get_name (BonoboUIComponent  *component)
  * @component: the component
  * @path: the path to set
  * @xml: the xml to set
- * @ev: the (optional) CORBA exception environment
+ * @opt_ev: the (optional) CORBA exception environment
  * 
  * Set the @xml fragment into the remote #BonoboUIContainer's tree
  * attached to @component at the specified @path
@@ -583,9 +583,9 @@ void
 bonobo_ui_component_set (BonoboUIComponent  *component,
 			 const char         *path,
 			 const char         *xml,
-			 CORBA_Environment  *ev)
+			 CORBA_Environment  *opt_ev)
 {
-	GET_CLASS (component)->xml_set (component, path, xml, ev);
+	GET_CLASS (component)->xml_set (component, path, xml, opt_ev);
 }
 
 static void
@@ -659,7 +659,7 @@ bonobo_ui_component_set_tree (BonoboUIComponent *component,
  * @component: the component
  * @path: the path to set
  * @xml: the non translated xml to set
- * @ev: the (optional) CORBA exception environment
+ * @opt_ev: the (optional) CORBA exception environment
  * 
  * This routine parses the XML strings, and converts any:
  * _label="Hello World" type strings into the translated,
@@ -669,7 +669,7 @@ void
 bonobo_ui_component_set_translate (BonoboUIComponent  *component,
 				   const char         *path,
 				   const char         *xml,
-				   CORBA_Environment  *ev)
+				   CORBA_Environment  *opt_ev)
 {
 	BonoboUINode *node;
 
@@ -680,7 +680,7 @@ bonobo_ui_component_set_translate (BonoboUIComponent  *component,
 
 	bonobo_ui_util_translate_ui (node);
 
-	bonobo_ui_component_set_tree (component, path, node, ev);
+	bonobo_ui_component_set_tree (component, path, node, opt_ev);
 
 	bonobo_ui_node_free (node);
 }
@@ -690,7 +690,7 @@ bonobo_ui_component_set_translate (BonoboUIComponent  *component,
  * @component: the component
  * @path: the path to get
  * @recurse: whether to get child nodes of @path
- * @ev: the (optional) CORBA exception environment
+ * @opt_ev: the (optional) CORBA exception environment
  * 
  * This routine fetches a chunk of the XML tree in the
  * #BonoboUIContainer associated with @component pointed
@@ -703,9 +703,9 @@ CORBA_char *
 bonobo_ui_component_get (BonoboUIComponent *component,
 			 const char        *path,
 			 gboolean           recurse,
-			 CORBA_Environment *ev)
+			 CORBA_Environment *opt_ev)
 {
-	return GET_CLASS (component)->xml_get (component, path, recurse, ev);
+	return GET_CLASS (component)->xml_get (component, path, recurse, opt_ev);
 }
 
 static CORBA_char *
@@ -752,7 +752,7 @@ impl_xml_get (BonoboUIComponent *component,
  * @component: the component
  * @path: the path to get
  * @recurse: whether to get child nodes of @path
- * @ev: the (optional) CORBA exception environment
+ * @opt_ev: the (optional) CORBA exception environment
  * 
  * This routine fetches a chunk of the XML tree in the
  * #BonoboUIContainer associated with @component pointed
@@ -765,12 +765,12 @@ BonoboUINode *
 bonobo_ui_component_get_tree (BonoboUIComponent  *component,
 			      const char         *path,
 			      gboolean            recurse,
-			      CORBA_Environment  *ev)
+			      CORBA_Environment  *opt_ev)
 {	
 	char *xml;
 	BonoboUINode *node;
 
-	xml = bonobo_ui_component_get (component, path, recurse, ev);
+	xml = bonobo_ui_component_get (component, path, recurse, opt_ev);
 
 	if (!xml)
 		return NULL;
