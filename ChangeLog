@@ -1,5 +1,7 @@
 2003-08-04  Federico Mena Quintero  <federico@ximian.com>
 
+	Fixes #118705.
+
 	* bonobo/bonobo-socket.c (BonoboSocketPrivate): Removed the
 	toplevel field, as GtkSocket already has such a field.
 	(bonobo_socket_hierarchy_changed): Oops, chain to the parent
