@@ -14,6 +14,7 @@ BEGIN_GNOME_DECLS
 
 typedef struct _GnomeBonoboSelector GnomeBonoboSelector;
 typedef struct _GnomeBonoboSelectorClass GnomeBonoboSelectorClass;
+typedef struct _GnomeBonoboSelectorPrivate GnomeBonoboSelectorPrivate;
 
 struct _GnomeBonoboSelectorClass
 {
@@ -27,7 +28,7 @@ struct _GnomeBonoboSelector
 {
 	GnomeDialog dialog;
 		
-	gpointer priv;
+	GnomeBonoboSelectorPrivate *priv;
 };
 
 GtkType gnome_bonobo_selector_get_type	(void);

@@ -14,8 +14,6 @@ struct _GnomeBonoboSelectorPrivate
 	const gchar **interfaces_required;
 };
 
-typedef struct _GnomeBonoboSelectorPrivate GnomeBonoboSelectorPrivate;
-
 enum {
 	OK,
 	CANCEL,
