@@ -7,7 +7,6 @@
  *
  * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
-#include <bonobo/gtk-interfaces.h>
 
 #include <bonobo/gnome-object.h>
 
