@@ -5,8 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-08-11 11:06+0100\n"
-"PO-Revision-Date: 2003-01-10 22:10+0700\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-28 12:29+0200\n"
+"PO-Revision-Date: 2003-10-02 10:07+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -90,15 +91,11 @@ msgid "Interfaces required"
 msgstr "Giao diện yêu cầu"
 
 #: bonobo/bonobo-selector.c:346
-#, fuzzy
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr ""
-"Mảng kết thúc bằng NULL các giao diện, mà một server phải hỗ trợ để được "
-"liệt kê trong bộ chọn. Mặc định là \"IDL:Bonobo/Embeddable:1.0\" nếu không "
-"có giao diện nào được liệt kê"
+msgstr "Mảng giao diện kết thúc bằng NULL, mà một server phải hỗ trợ để được liệt kê trong bộ chọn. Mặc định là \"IDL:Bonobo/Embeddable:1.0\" nếu không có giao diện nào được liệt kê"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -299,7 +296,7 @@ msgstr "thanh công cụ có trôi nổi hay không"
 
 #: bonobo/bonobo-ui-toolbar.c:1177
 msgid "Style of bevel around the toolbar"
-msgstr ""
+msgstr "Kiểu trang trí quanh thanh công cụ"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
