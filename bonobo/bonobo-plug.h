@@ -36,15 +36,18 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define BONOBO_PLUG(obj)          GTK_CHECK_CAST (obj, bonobo_plug_get_type (), BonoboPlug)
-#define BONOBO_PLUG_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_plug_get_type (), BonoboPlugClass)
-#define BONOBO_IS_PLUG(obj)       GTK_CHECK_TYPE (obj, bonobo_plug_get_type ())
+#define BONOBO_PLUG_TYPE          (bonobo_plug_get_type ())
+#define BONOBO_PLUG(obj)          (GTK_CHECK_CAST (obj, BONOBO_PLUG_TYPE, BonoboPlug))
+#define BONOBO_PLUG_CLASS(klass)  (GTK_CHECK_CLASS_CAST (klass, bonobo_plug_get_type (), BonoboPlugClass))
+#define BONOBO_IS_PLUG(obj)       (GTK_CHECK_TYPE (obj, bonobo_plug_get_type ()))
+
+typedef struct _BonoboPlugPrivate BonoboPlugPrivate;
 
 typedef struct {
 	GtkWindow window;
 
-	GdkWindow *socket_window;
-	gint same_app;
+	/* Private data */
+	BonoboPlugPrivate *priv;
 } BonoboPlug;
 
 typedef struct {

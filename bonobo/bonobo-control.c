@@ -467,6 +467,56 @@ impl_Bonobo_Control_unrealize (PortableServer_Servant servant,
 	process_events (servant);
 }
 
+static CORBA_boolean
+impl_Bonobo_Control_focus (PortableServer_Servant servant,
+			   Bonobo_Control_FocusDirection corba_direction,
+			   CORBA_Environment *ev)
+{
+	BonoboControl *control;
+	BonoboControlPrivate *priv;
+	GtkDirectionType direction;
+
+	control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
+	priv = control->priv;
+
+	/* FIXME: this will not work for local controls. */
+
+	if (!priv->plug)
+		return FALSE;
+
+	switch (corba_direction) {
+	case Bonobo_Control_TAB_FORWARD:
+		direction = GTK_DIR_TAB_FORWARD;
+		break;
+
+	case Bonobo_Control_TAB_BACKWARD:
+		corba_direction = GTK_DIR_TAB_BACKWARD;
+		break;
+
+	case Bonobo_Control_UP:
+		corba_direction = GTK_DIR_UP;
+		break;
+
+	case Bonobo_Control_DOWN:
+		corba_direction = GTK_DIR_DOWN;
+		break;
+
+	case Bonobo_Control_LEFT:
+		corba_direction = GTK_DIR_LEFT;
+		break;
+
+	case Bonobo_Control_RIGHT:
+		corba_direction = GTK_DIR_RIGHT;
+		break;
+
+	default:
+		/* Hmmm, we should throw an exception. */
+		return FALSE;
+	}
+
+	return gtk_container_focus (GTK_CONTAINER (priv->plug), direction);
+}
+
 /**
  * bonobo_control_corba_object_create:
  * @object: the GtkObject that will wrap the CORBA object
@@ -694,6 +744,7 @@ bonobo_control_get_epv (void)
 	epv->getProperties  = impl_Bonobo_Control_getProperties;
 	epv->realize        = impl_Bonobo_Control_realize;
 	epv->unrealize      = impl_Bonobo_Control_unrealize;
+	epv->focus          = impl_Bonobo_Control_focus;
 
 	return epv;
 }

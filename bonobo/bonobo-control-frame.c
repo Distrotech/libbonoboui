@@ -1031,3 +1031,74 @@ bonobo_control_frame_sync_unrealize (BonoboControlFrame *frame)
 
 	gdk_flush ();
 }
+
+/**
+ * bonobo_control_frame_focus:
+ * @frame: A control frame.
+ * @direction: Direction in which to change focus.
+ * 
+ * Proxies a #GtkContainer::focus() request to the embedded control.  This is an
+ * internal function and it should only really be ever used by the #BonoboSocket
+ * implementation.
+ * 
+ * Return value: TRUE if the child kept the focus, FALSE if focus should be
+ * passed on to the next widget.
+ **/
+gboolean
+bonobo_control_frame_focus (BonoboControlFrame *frame, GtkDirectionType direction)
+{
+	BonoboControlFramePrivate *priv;
+	CORBA_Environment ev;
+	gboolean result;
+	Bonobo_Control_FocusDirection corba_direction;
+
+	g_return_val_if_fail (frame != NULL, FALSE);
+	g_return_val_if_fail (BONOBO_IS_CONTROL_FRAME (frame), FALSE);
+
+	priv = frame->priv;
+
+	if (priv->control == CORBA_OBJECT_NIL)
+		return FALSE;
+
+	switch (direction) {
+	case GTK_DIR_TAB_FORWARD:
+		corba_direction = Bonobo_Control_TAB_FORWARD;
+		break;
+
+	case GTK_DIR_TAB_BACKWARD:
+		corba_direction = Bonobo_Control_TAB_BACKWARD;
+		break;
+
+	case GTK_DIR_UP:
+		corba_direction = Bonobo_Control_UP;
+		break;
+
+	case GTK_DIR_DOWN:
+		corba_direction = Bonobo_Control_DOWN;
+		break;
+
+	case GTK_DIR_LEFT:
+		corba_direction = Bonobo_Control_LEFT;
+		break;
+
+	case GTK_DIR_RIGHT:
+		corba_direction = Bonobo_Control_RIGHT;
+		break;
+
+	default:
+		g_assert_not_reached ();
+		return FALSE;
+	}
+
+	CORBA_exception_init (&ev);
+
+	result = Bonobo_Control_focus (priv->control, corba_direction, &ev);
+	if (BONOBO_EX (&ev)) {
+		g_message ("bonobo_control_frame_focus(): Exception while issuing focus "
+			   "request: `%s'", bonobo_exception_get_text (&ev));
+		result = FALSE;
+	}
+
+	CORBA_exception_free (&ev);
+	return result;
+}

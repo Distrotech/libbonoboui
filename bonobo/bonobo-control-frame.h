@@ -106,6 +106,9 @@ void  bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
 /* You almost certainly don't want these methods */
 void  bonobo_control_frame_sync_realize   (BonoboControlFrame *frame);
 void  bonobo_control_frame_sync_unrealize (BonoboControlFrame *frame);
+
+/* Or this.  It exists just so that BonoboSocket can use it. */
+gboolean bonobo_control_frame_focus (BonoboControlFrame *frame, GtkDirectionType direction);
     
 END_GNOME_DECLS
 
