@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-14 11:09+0100\n"
+"POT-Creation-Date: 2004-09-13 15:55+0100\n"
 "PO-Revision-Date: 2004-07-22 14:09+0530\n"
 "Last-Translator: Amanpreet Singh Alam <aalam@redhat.com>\n"
 "Language-Team: Punjabi <pa@li.org>\n"
@@ -134,11 +134,11 @@ msgstr "ਸੰਦਖਾਨਾ"
 msgid "toolbars"
 msgstr "ਸੰਦਖਾਨਾ"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "ਵੇਖੋ"
 
-#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "ਆਈਕਾਨ"
 
@@ -251,31 +251,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "ਬੋਨਬੋ GUI ਸਹਾਇਤਾ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
 msgstr "ਦੋਵੇਂ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
 msgstr "ਪਾਠ(_e)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
 msgstr "ਇਸ਼ਾਰਾ ਅੱਖੋ ਉਹਲੇ ਕਰੋ(_i)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
 msgstr "ਇਸ਼ਾਰਾ ਵੇਖਾਉ(_i)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
 msgstr "ਸੰਦਖਾਨਾ ਅੱਖੋ ਉਹਲੇ ਕਰੋ(_H)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
 msgstr "ਸੋਧ(_z)"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
 msgstr "ਸੰਦਖਾਨਾ ਸੋਧੋ"
 
@@ -400,12 +400,11 @@ msgstr "libbonoboui ਕੋਡ ਸ਼ੁਰੂ ਨਾ ਹੋ ਸਕਿਆ "
 msgid "Could not initialize Bonobo UI"
 msgstr "Bonobo UI ਕੋਡ ਸ਼ੁਰੂ ਨਾ ਹੋ ਸਕਿਆ"
 
-msgid "HOST"
-msgstr "ਮੇਜ਼ਬਾਨ"
+#~ msgid "HOST"
+#~ msgstr "ਮੇਜ਼ਬਾਨ"
 
-msgid "PORT"
-msgstr "ਪੋਰਟ"
+#~ msgid "PORT"
+#~ msgstr "ਪੋਰਟ"
 
-msgid "STYLE"
-msgstr "ਸ਼ੈਲੀ"
-
+#~ msgid "STYLE"
+#~ msgstr "ਸ਼ੈਲੀ"

@@ -1,7 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonobui\n"
-"POT-Creation-Date: 2004-07-13 04:51+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-09-13 15:55+0100\n"
 "PO-Revision-Date: 2004-08-29 19:07+0545\n"
 "Last-Translator: Pawan Chitrakar <pawan@nplinux.org>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -33,30 +34,23 @@ msgstr "औजारबार डक गर"
 msgid "Un dock the toolbar"
 msgstr "औजारबार डक नगर"
 
-#: bonobo/bonobo-dock-item.c:222
-#: bonobo/bonobo-dock-item.c:223
+#: bonobo/bonobo-dock-item.c:222 bonobo/bonobo-dock-item.c:223
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "छायाँ प्रकार"
 
-#: bonobo/bonobo-dock-item.c:233
-#: bonobo/bonobo-dock-item.c:234
-#: bonobo/bonobo-ui-toolbar.c:1119
-#: bonobo/bonobo-ui-toolbar.c:1120
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "दिशानिर्देश"
 
-#: bonobo/bonobo-dock-item.c:244
-#: bonobo/bonobo-dock-item.c:245
-#: bonobo/bonobo-ui-toolbar.c:1138
-#: bonobo/bonobo-ui-toolbar.c:1139
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
+#: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "रोजिएको चौडाइ"
 
-#: bonobo/bonobo-dock-item.c:253
-#: bonobo/bonobo-dock-item.c:254
-#: bonobo/bonobo-ui-toolbar.c:1147
-#: bonobo/bonobo-ui-toolbar.c:1148
+#: bonobo/bonobo-dock-item.c:253 bonobo/bonobo-dock-item.c:254
+#: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "रोजिएको उचाइ"
 
@@ -80,8 +74,7 @@ msgstr "कार्य अघि ल्याउनु"
 msgid "Whether X events should be forwarded"
 msgstr "X कार्य अघि ल्याउनु पर्छ"
 
-#: bonobo/bonobo-selector-widget.c:300
-#: bonobo/bonobo-window.c:346
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
 msgid "Name"
 msgstr "नाम"
 
@@ -94,8 +87,13 @@ msgid "Interfaces required"
 msgstr "आवश्यक इन्टरफेस "
 
 #: bonobo/bonobo-selector.c:346
-msgid "A NULL-terminated array of interfaces which a server must support in order to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
-msgstr "इन्टरफेसको तीरजस्तो खाली जोडन जहाँ चयकमा सेवादायकले टेवा दिनुपर्छ। \"आईडीएल:बोनोबो/खप्टिनसक्ने:१.0\" सँग पूर्वाधारित छन् यदि छैनन्भने इण्टरफेस यहाँ सूचीकृत छन्"
+msgid ""
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+"इन्टरफेसको तीरजस्तो खाली जोडन जहाँ चयकमा सेवादायकले टेवा दिनुपर्छ। \"आईडीएल:बोनोबो/"
+"खप्टिनसक्ने:१.0\" सँग पूर्वाधारित छन् यदि छैनन्भने इण्टरफेस यहाँ सूचीकृत छन्"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -129,13 +127,11 @@ msgstr "औजारबार"
 msgid "toolbars"
 msgstr "औजारबार"
 
-#: bonobo/bonobo-ui-config-widget.c:314
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "हेर"
 
-#: bonobo/bonobo-ui-config-widget.c:323
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "आइकन"
 
@@ -171,10 +167,8 @@ msgstr "UI समायोजन गर"
 msgid "Gdk debugging flags to set"
 msgstr "GDK डिवग ध्वजा सेट गर"
 
-#: bonobo/bonobo-ui-init-gtk.c:113
-#: bonobo/bonobo-ui-init-gtk.c:116
-#: bonobo/bonobo-ui-init-gtk.c:144
-#: bonobo/bonobo-ui-init-gtk.c:147
+#: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
+#: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
 msgid "FLAGS"
 msgstr "ध्वजा"
 
@@ -250,31 +244,31 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI सपोर्ट"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
 msgstr "दुबै"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
 msgstr "पाठ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
 msgstr "सङ्केत नदेखाउ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
 msgstr "सङ्केत देखाउ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
 msgstr "औजारबार लुकाउ"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
 msgstr "कस्टमाइज"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
 msgstr "औजारबार कस्टमाइज गर"
 
@@ -387,6 +381,7 @@ msgid "Gnome Hello"
 msgstr "हेलो Gnome "
 
 #  Create Label and put it in the Button:
+#. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
 msgstr "हेलो, संसार"
@@ -398,4 +393,3 @@ msgstr "libbonoboui कोड सुरु गर्न सकिएन"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Bonobo UI सुरु गर्न सकिएन"
-

@@ -6,7 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version:libbonoboui.HEAD\n"
-"POT-Creation-Date: 2004-05-14 11:09+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-09-13 15:55+0100\n"
 "PO-Revision-Date: 2003-07-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
@@ -143,12 +144,12 @@ msgstr "പണി ആയുധപ്പട്ട"
 msgid "toolbars"
 msgstr "പണി ആയുധപ്പട്ട"
 
-#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
 #, fuzzy
 msgid "Look"
 msgstr "പൂട്ട്"
 
-#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-config-widget.c:323 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "ചിഹ്നം"
 
@@ -266,36 +267,36 @@ msgstr ""
 msgid "Bonobo GUI support"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
 msgstr ""
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 #, fuzzy
 msgid "T_ext"
 msgstr "വാചകം"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 #, fuzzy
 msgid "Hide t_ips"
 msgstr "ഈ പാളിയെ ഒളിപ്പിക്കുക"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 #, fuzzy
 msgid "Show t_ips"
 msgstr "%s കാണിക്കുക"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 #, fuzzy
 msgid "_Hide toolbar"
 msgstr "പ്രധാന ആയുധപ്പട്ട"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:554
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 #, fuzzy
 msgid "Customi_ze"
 msgstr "യഥേഷ്ടം"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:555
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 #, fuzzy
 msgid "Customize the toolbar"
 msgstr "ഉപകരണപ്പട്ട സജ്ജീകരിക്കുക"
