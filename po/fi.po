@@ -12,8 +12,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2002-05-20 12:06+0100\n"
-"PO-Revision-Date: 2002-05-14 21:05+0300\n"
+"POT-Creation-Date: 2002-05-21 17:22+0300\n"
+"PO-Revision-Date: 2002-05-21 16:20+0300\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -288,12 +288,11 @@ msgstr "kelluuko työkalupalkki"
 
 #: bonobo/bonobo-ui-util.c:583
 msgid "_Contents"
-msgstr ""
+msgstr "_Sisältö"
 
 #: bonobo/bonobo-ui-util.c:584
-#, fuzzy
 msgid "View help for this application"
-msgstr "Tietoja tästä ohjelmasta"
+msgstr "Näytä tämän ohjelman ohje"
 
 #: bonobo/bonobo-window.c:448
 msgid "Name of the window - used for configuration serialization."
