@@ -12,8 +12,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.109.2\n"
-"POT-Creation-Date: 2002-03-18 13:47+0000\n"
-"PO-Revision-Date: 2002-02-20 23:59+0200\n"
+"POT-Creation-Date: 2002-03-20 14:58+0200\n"
+"PO-Revision-Date: 2002-03-20 23:10+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -213,88 +213,88 @@ msgstr "kelluuko työkalupalkki"
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "Asetettavat Gdk-vianetsintäliput"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:157 bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
-msgstr ""
+msgstr "LIPUT"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "Poistettavat Gdk-vianetsintälaput"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "Käytettävä X-näyttö"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "NÄYTTÖ"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "Tee X-kutsut synkronisesti"
 
 #: bonobo/bonobo-ui-init-gtk.c:130
 msgid "Don't use X shared memory extension"
-msgstr ""
+msgstr "Älä käytä X:n jaetun muistin laajennosta"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "Ohjelman nimi ikkunointiohjelmaa varten"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "NAME"
-msgstr ""
+msgstr "NIMI"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "Ohjelman luokka ikkunointiohjelmaa varten"
 
 #: bonobo/bonobo-ui-init-gtk.c:137
 msgid "CLASS"
-msgstr ""
+msgstr "LUOKKA"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "HOST"
-msgstr ""
+msgstr "ISÄNTÄ"
 
 #: bonobo/bonobo-ui-init-gtk.c:145
 msgid "PORT"
-msgstr ""
+msgstr "PORTTI"
 
 #: bonobo/bonobo-ui-init-gtk.c:150 bonobo/bonobo-ui-init-gtk.c:153
 msgid "STYLE"
-msgstr ""
+msgstr "TYYLI"
 
 #: bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "Asetettavat Gtk+-vianetsintäliput"
 
 #: bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "Poistettavat Gtk+-vianetsintäliput"
 
 #: bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "Tee kaikista varoituksista vakavia"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "Lataa ylimääräinen Gtk-moduuli"
 
 #: bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
-msgstr ""
+msgstr "MODUULI"
 
 #: bonobo/bonobo-ui-init-gtk.c:175
 msgid "GTK+"
-msgstr ""
+msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:187
 msgid "Bonobo GUI support"
-msgstr ""
+msgstr "Bonobo GUI -tuki"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -342,20 +342,8 @@ msgid "_Select"
 msgstr "_Valitse"
 
 #: samples/controls/bonobo-sample-controls.c:121
-#, fuzzy
 msgid "Could not initialize Bonobo UI"
-msgstr "Ei voinut alustaa Bonoboa"
-
-#, fuzzy
-#~ msgid "Extra Moniker factory"
-#~ msgstr "Tavallisten Monikereiden tehdas"
-
-#~ msgid "GConf moniker"
-#~ msgstr "GConf-moniker"
-
-#, fuzzy
-#~ msgid "config indirect moniker"
-#~ msgstr "yleinen kohdemoniker"
+msgstr "Ei voinut alustaa Bonobo-UI:ta"
 
 #~ msgid "Key %s not found in configuration"
 #~ msgstr "Avainta %s ei ollut asetuksissa"
