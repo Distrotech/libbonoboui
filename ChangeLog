@@ -1,3 +1,7 @@
+2003-08-22  Samúel Jón Gunnarsson  <sammi@techattack.nu>
+
+	* configure.in: Added "is" to ALL_LINGUAS.
+	
 2003-08-21  Martin Kretzschmar  <m_kretzschmar@gmx.net>
 
        * samples/container/bonobo-sample-container.c: define
