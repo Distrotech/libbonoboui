@@ -1,6 +1,9 @@
 #ifndef _BONOBO_APP_TOOLBAR_H_
 #define _BONOBO_APP_TOOLBAR_H_
 
+#include <gtk/gtkenums.h>
+#include <gtk/gtktooltips.h>
+
 BEGIN_GNOME_DECLS
 
 /*
@@ -19,28 +22,33 @@ struct _BonoboAppToolbar {
 	GtkHBox           box;
 
 	GtkTooltips      *tooltips;
+	GtkReliefStyle    relief;
+	GtkToolbarStyle   look;
 
 	gpointer          dummy;
 };
 
 typedef struct {
-	GtkHBoxClass      bin_class;
+	GtkHBoxClass      hbox_class;
 
-	void            (*style_changed) (BonoboAppToolbar *toolbar,
-					  GtkToolbarStyle   style);
+	void            (*geometry_changed) (BonoboAppToolbar *toolbar);
 
 	gpointer          dummy;
 } BonoboAppToolbarClass;
 
 GtkType    bonobo_app_toolbar_get_type (void);
-GtkWidget *bonobo_app_toolbar_new      (void);
+GtkWidget *bonobo_app_toolbar_new        (void);
 
-void       bonobo_app_toolbar_update   (BonoboAppToolbar *toolbar,
-					GtkToolbarStyle   style);
+void       bonobo_app_toolbar_add        (BonoboAppToolbar *toolbar,
+					  GtkWidget        *widget,
+					  const char       *descr);
 
-void       bonobo_app_toolbar_add      (BonoboAppToolbar *toolbar,
-					GtkWidget        *widget,
-					const char       *descr);
+void       bonobo_app_toolbar_set_relief (BonoboAppToolbar *toolbar,
+					  GtkReliefStyle    relief);
+
+void       bonobo_app_toolbar_set_style  (BonoboAppToolbar *toolbar,
+					  GtkToolbarStyle   look);
+
 
 END_GNOME_DECLS
 

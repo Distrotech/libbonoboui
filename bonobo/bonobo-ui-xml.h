@@ -22,37 +22,46 @@ typedef struct {
 	GSList  *overridden;
 } BonoboUIXmlData;
 
-typedef gboolean         (*BonoboUIXmlCompareFn)  (BonoboUIXmlData *a,
-						   BonoboUIXmlData *b);
-typedef BonoboUIXmlData *(*BonoboUIXmlDataNewFn)  (void);
-typedef void             (*BonoboUIXmlDataFreeFn) (BonoboUIXmlData *data);
+typedef gboolean         (*BonoboUIXmlCompareFn)   (BonoboUIXmlData *a,
+						    BonoboUIXmlData *b);
+typedef BonoboUIXmlData *(*BonoboUIXmlDataNewFn)   (void);
+typedef void             (*BonoboUIXmlDataFreeFn)  (BonoboUIXmlData *data);
+typedef void             (*BonoboUIXmlOverrideFn)  (BonoboUIXmlData *data);
+typedef void             (*BonoboUIXmlReinstateFn) (BonoboUIXmlData *data);
+typedef void             (*BonoboUIXmlDumpFn)      (BonoboUIXmlData *data);
 
 struct _BonoboUIXml {
-	GtkObject             object;
+	GtkObject              object;
 
-	BonoboUIXmlCompareFn  compare;
-	BonoboUIXmlDataNewFn  data_new;
-	BonoboUIXmlDataFreeFn data_free;
+	BonoboUIXmlCompareFn   compare;
+	BonoboUIXmlDataNewFn   data_new;
+	BonoboUIXmlDataFreeFn  data_free;
+	BonoboUIXmlOverrideFn  override;
+	BonoboUIXmlReinstateFn reinstate;
+	BonoboUIXmlDumpFn      dump;;
 
-	xmlNode              *root;
+	xmlNode               *root;
 	
-	gpointer              dummy;
+	gpointer               dummy;
 };
 
 typedef struct {
-	GtkObjectClass       object_klass;
+	GtkObjectClass         object_klass;
 
-	void                (*override)  (xmlNode *node);
-	void                (*reinstate) (xmlNode *node);
+	void                 (*override)  (xmlNode *node);
+	void                 (*reinstate) (xmlNode *node);
 
-	gpointer              dummy;
+	gpointer               dummy;
 } BonoboUIXmlClass;
 
 GtkType      bonobo_ui_xml_get_type  (void);
 
 BonoboUIXml *bonobo_ui_xml_new       (BonoboUIXmlCompareFn  compare,
 				      BonoboUIXmlDataNewFn  data_new,
-				      BonoboUIXmlDataFreeFn data_free);
+				      BonoboUIXmlDataFreeFn data_free,
+				      BonoboUIXmlOverrideFn override,
+				      BonoboUIXmlReinstateFn reinstate,
+				      BonoboUIXmlDumpFn      dump);
 
 /* Nominaly BonoboUIXmlData * */
 gpointer         bonobo_ui_xml_get_data  (BonoboUIXml *tree,
@@ -66,14 +75,15 @@ char            *bonobo_ui_xml_get_path  (xmlNode     *node);
 
 void             bonobo_ui_xml_merge     (BonoboUIXml *tree,
 					  const char  *path,
-					  const char  *xml,
+					  xmlNode     *nodes,
 					  gpointer     id);
 
 void             bonobo_ui_xml_rm        (BonoboUIXml *tree,
 					  const char  *path,
 					  gpointer     id);
 
-void             bonobo_ui_xml_dump      (xmlNode     *node,
+void             bonobo_ui_xml_dump      (BonoboUIXml *tree,
+					  xmlNode     *node,
 					  const char  *msg);
 
 #endif /* _BONOBO_UI_XML_H_ */

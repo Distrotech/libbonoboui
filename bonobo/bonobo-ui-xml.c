@@ -12,6 +12,28 @@ enum {
 };
 static guint signals[LAST_SIGNAL] = { 0 };
 
+inline static gboolean
+identical (BonoboUIXml *tree, gpointer a, gpointer b)
+{
+	if (tree->compare)
+		return tree->compare (a, b);
+	else
+		return a == b;
+}
+
+static void
+remove_floating_pointers (xmlNode *node)
+{
+	xmlNode *l;
+
+	node->ns = NULL;
+	node->doc = NULL;
+	node->nsDef = NULL;
+
+	for (l = node->childs; l; l = l->next)
+		remove_floating_pointers (l);
+}
+
 gpointer
 bonobo_ui_xml_get_data (BonoboUIXml *tree, xmlNode *node)
 {
@@ -40,16 +62,27 @@ bonobo_ui_xml_set_dirty (BonoboUIXml *tree,
 		bonobo_ui_xml_set_dirty (tree, l, dirty);
 }
 
+static void node_free (BonoboUIXml *tree, xmlNode *node);
+
 static void
-free_nodedata (BonoboUIXml *tree, BonoboUIXmlData *data)
+free_nodedata (BonoboUIXml *tree, BonoboUIXmlData *data,
+	       gboolean do_overrides)
 {
 	if (data) {
-		if (data->overridden)
-			/*
-			 *  This indicates a serious error in the
-			 * overriding logic.
-			 */
-			g_warning ("Leaking overridden nodes");
+		if (data->overridden) {
+			if (do_overrides) {
+				GSList *l;
+
+				for (l = data->overridden; l; l = l->next)
+					node_free (tree, l->data);
+				g_slist_free (data->overridden);
+			} else 
+				/*
+				 *  This indicates a serious error in the
+				 * overriding logic.
+				 */
+				g_warning ("Leaking overridden nodes");
+		}
 
 		if (tree->data_free)
 			tree->data_free (data);
@@ -61,23 +94,23 @@ free_nodedata (BonoboUIXml *tree, BonoboUIXmlData *data)
 static void
 node_free (BonoboUIXml *tree, xmlNode *node)
 {
-	free_nodedata (tree, node->_private);
+	free_nodedata (tree, node->_private, FALSE);
 	xmlUnlinkNode (node);
 	xmlFreeNode   (node);
 }
 
 static void
-free_nodedata_tree (BonoboUIXml *tree, xmlNode *node)
+free_nodedata_tree (BonoboUIXml *tree, xmlNode *node, gboolean do_overrides)
 {
 	xmlNode *l;
 
 	if (node == NULL)
 		return;
 
-	free_nodedata (tree, node->_private);
+	free_nodedata (tree, node->_private, do_overrides);
 
 	for (l = node->childs; l; l = l->next)
-		free_nodedata_tree (tree, l);
+		free_nodedata_tree (tree, l, do_overrides);
 }
 
 static void
@@ -92,8 +125,41 @@ set_id (BonoboUIXml *tree, xmlNode *node, gpointer id)
 		set_id (tree, node, id);
 }
 
+static void
+dump_internals (BonoboUIXml *tree, xmlNode *node)
+{
+	xmlNode *l;
+	BonoboUIXmlData *data = bonobo_ui_xml_get_data (tree, node);
+
+	fprintf (stderr, "%s name=\"%s\" ", node->name,
+		 xmlGetProp (node, "name"));
+	fprintf (stderr, "%p %d len %d", data->id, data->dirty,
+		 g_slist_length (data->overridden));
+	if (tree->dump)
+		tree->dump (data);
+	else
+		fprintf (stderr, "\n");
+
+	if (data->overridden) {
+		int indent = 4;
+		GSList *l;
+		fprintf (stderr, "overrides:\n");
+		
+		for (l = data->overridden; l; indent += 4, l = l->next) {
+			int i;
+
+			for (i = 0; i < indent; i++)
+				fprintf (stderr, " ");
+			dump_internals (tree, l->data);
+		}
+	}
+
+	for (l = node->childs; l; l = l->next)
+		dump_internals (tree, l);
+}
+
 void
-bonobo_ui_xml_dump (xmlNode *node, const char *descr)
+bonobo_ui_xml_dump (BonoboUIXml *tree, xmlNode *node, const char *descr)
 {
 #ifdef BONOBO_UI_XML_DUMP	
 	xmlDoc *doc;
@@ -107,6 +173,8 @@ bonobo_ui_xml_dump (xmlNode *node, const char *descr)
 
 	doc->root = NULL;
 	xmlFreeDoc (doc);
+	fprintf (stderr, "--- Internals ---\n");
+	dump_internals (tree, node);
 	fprintf (stderr, "---\n");
 #endif
 }
@@ -130,36 +198,48 @@ move_children (xmlNode *from, xmlNode *to)
 		/* FIXME: are we reversing node order here ? */
 		xmlAddChild (to, l);
 	}
+
+	g_assert (from->childs == NULL);
 }
 
-static void merge (BonoboUIXml *tree, xmlNode *current, xmlNode *new);
+static void merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new);
 
 static void
 override_node_with (BonoboUIXml *tree, xmlNode *old, xmlNode *new)
 {
 	BonoboUIXmlData *data = bonobo_ui_xml_get_data (tree, new);
 	BonoboUIXmlData *old_data = bonobo_ui_xml_get_data (tree, old);
+	gboolean         same;
 
-	gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
+	same = identical (tree, data->id, old_data->id);
+	if (!same) {
+		gtk_signal_emit (GTK_OBJECT (tree), signals [OVERRIDE], old);
 
-	data->overridden = g_slist_prepend (
-		old_data->overridden, old);
+		if (tree->override)
+			tree->override (old_data);
+		
+	} else
+		data->overridden = old_data->overridden;
+
 	old_data->overridden = NULL;
 
-	if (new->childs) {
-		merge (tree, old, new->childs);
-		move_children (old, new);
-	}
+	if (new->childs)
+		merge (tree, old, &new->childs);
+
+	move_children (old, new);
 
 	xmlReplaceNode (old, new);
 
 	g_assert (old->childs == NULL);
 
+	data->dirty = TRUE;
 	if (new->parent) {
 		data = bonobo_ui_xml_get_data (tree, new->parent);
 		data->dirty = TRUE;
-	} else
-		data->dirty = TRUE;
+	}
+
+	if (same)
+		node_free (tree, old);
 }
 
 static void
@@ -172,14 +252,6 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 	g_return_if_fail (data != NULL);
 
  	/* Mark tree as dirty */
-	if (node->parent) {
-		BonoboUIXmlData *parent_data;
-
-		parent_data = bonobo_ui_xml_get_data (tree, node->parent);
-		parent_data->dirty = TRUE;
-	} else
-		data->dirty = TRUE;
-
 	if (data->overridden) { /* Something to re-instate */
 		g_return_if_fail (data->overridden->data != NULL);
 		
@@ -197,18 +269,24 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 		
 		/* Switch node back into tree */
 		xmlReplaceNode (node, old);
+		old_data->dirty = TRUE;
+
+		if (tree->reinstate)
+			tree->reinstate (old_data);
 
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REINSTATE], old);
 	} else {
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",
 		node->name, xmlGetProp (node, "name"));*/
-
-		/* Do we want to do this ? */
+		if (node->parent) {
+			data = bonobo_ui_xml_get_data (tree, node->parent);
+			data->dirty = TRUE;
+		}
 		xmlUnlinkNode (node);
 	}
 
 	/* Destroy the old node */
-	free_nodedata_tree (tree, node);
+	free_nodedata_tree (tree, node, TRUE);
 	xmlFreeNode (node);
 }
 
@@ -326,17 +404,11 @@ prune_overrides_by_id (BonoboUIXml *tree, BonoboUIXmlData *data, gpointer id)
 	
 	for (l = data->overridden; l; l = next) {
 		BonoboUIXmlData *o_data;
-		gboolean         same;
 				
 		next = l->next;
 		o_data = bonobo_ui_xml_get_data (tree, l->data);
 
-		if (tree->compare)
-			same = tree->compare (o_data->id, id);
-		else
-			same = (o_data->id == id);
-
-		if (same) {
+		if (identical (tree, o_data->id, id)) {
 			node_free (tree, l->data);
 
 			data->overridden =
@@ -359,7 +431,7 @@ reinstate_node (BonoboUIXml *tree, xmlNode *node, gpointer id)
 
 	data = bonobo_ui_xml_get_data (tree, node);
 
-	if (data->id == id)
+	if (identical (tree, data->id, id))
 		reinstate_old_node (tree, node);
 	else
 		prune_overrides_by_id (tree, data, id);
@@ -374,7 +446,7 @@ reinstate_node (BonoboUIXml *tree, xmlNode *node, gpointer id)
  * new and its siblings get merged into current's children
  **/
 static void
-merge (BonoboUIXml *tree, xmlNode *current, xmlNode *new)
+merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 {
 	xmlNode *a, *b, *nexta, *nextb;
 
@@ -382,7 +454,7 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode *new)
 		nexta = a->next;
 		nextb = NULL;
 
-		for (b = new; b; b = nextb) {
+		for (b = *new; b; b = nextb) {
 			xmlChar *a_name, *b_name;
 
 			nextb = b->next;
@@ -406,60 +478,64 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode *new)
 				break;
 		}
 
-		if (b == new)
-			new = nextb;
+		if (b == *new)
+			*new = nextb;
 
 		if (b) /* Merger candidate */
 			override_node_with (tree, a, b);
 	}
 
-	for (b = new; b; b = nextb) {
+	for (b = *new; b; b = nextb) {
 		BonoboUIXmlData *data;
 
 		nextb = b->next;
 		
-		fprintf (stderr, "Transfering '%s' '%s' into '%s' '%s'\n",
+/*		fprintf (stderr, "Transfering '%s' '%s' into '%s' '%s'\n",
 			 b->name, xmlGetProp (b, "name"),
-			 current->name, xmlGetProp (current, "name"));
+			 current->name, xmlGetProp (current, "name"));*/
 
 		xmlUnlinkNode (b);
 		xmlAddChild (current, b);
 
-		bonobo_ui_xml_dump (current, "After transfer");
+		data = bonobo_ui_xml_get_data (tree, b);
+		data->dirty = TRUE;
 
 		data = bonobo_ui_xml_get_data (tree, current);
 		data->dirty = TRUE;
+
+/*		bonobo_ui_xml_dump (tree, current, "After transfer");*/
 	}
 
-	bonobo_ui_xml_dump (current, "After all");
+	*new = NULL;
+	bonobo_ui_xml_dump (tree, current, "After all");
 }
 
 void
 bonobo_ui_xml_merge (BonoboUIXml *tree,
-		     const char      *path,
-		     const char      *xml,
-		     gpointer         id)
+		     const char  *path,
+		     xmlNode     *nodes,
+		     gpointer     id)
 {
 	xmlNode *current;
-	xmlDoc  *doc;
 
-	g_return_if_fail (xml != NULL);
+	g_return_if_fail (BONOBO_IS_UI_XML (tree));
 
-	doc = xmlParseDoc ((char *)xml);
+	if (nodes == NULL)
+		return;
 
-	set_id (tree, doc->root, id);
+	set_id (tree, nodes, id);
+	remove_floating_pointers (nodes);
 
 	current = xml_get_path (tree, path);
 
 /*	fprintf (stderr, "PATH: '%s' '%s\n", current->name,
 	xmlGetProp (current, "name"));*/
 
-	merge (tree, current, doc->root);
+	bonobo_ui_xml_dump (tree, tree->root, "Merging in");
 
-	doc->root = NULL;
-	xmlFreeDoc (doc);
-	
-/*	bonobo_ui_xml_dump (tree->root, "Merged to");*/
+	merge (tree, current, &nodes);
+
+	bonobo_ui_xml_dump (tree, tree->root, "Merged to");
 }
 
 void
@@ -481,11 +557,10 @@ bonobo_ui_xml_destroy (GtkObject *object)
 	BonoboUIXml *tree = BONOBO_UI_XML (object);
 
 	if (tree) {
-		tree->compare = NULL;
-
-		if (tree->root)
+		if (tree->root) {
+			free_nodedata_tree (tree, tree->root, TRUE);
 			xmlFreeNode (tree->root);
-		g_warning ("Leaking the Data elements in the tree");
+		}
 	}
 }
 
@@ -545,9 +620,12 @@ bonobo_ui_xml_get_type (void)
 }
 
 BonoboUIXml *
-bonobo_ui_xml_new (BonoboUIXmlCompareFn  compare,
-		   BonoboUIXmlDataNewFn  data_new,
-		   BonoboUIXmlDataFreeFn data_free)
+bonobo_ui_xml_new (BonoboUIXmlCompareFn   compare,
+		   BonoboUIXmlDataNewFn   data_new,
+		   BonoboUIXmlDataFreeFn  data_free,
+		   BonoboUIXmlOverrideFn  override,
+		   BonoboUIXmlReinstateFn reinstate,
+		   BonoboUIXmlDumpFn      dump)
 {
 	BonoboUIXml *tree;
 
@@ -556,6 +634,9 @@ bonobo_ui_xml_new (BonoboUIXmlCompareFn  compare,
 	tree->compare = compare;
 	tree->data_new = data_new;
 	tree->data_free = data_free;
+	tree->override = override;
+	tree->reinstate = reinstate;
+	tree->dump = dump;
 
 	tree->root = xmlNewNode (NULL, "Root");
 
