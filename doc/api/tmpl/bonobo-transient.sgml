@@ -1,0 +1,109 @@
+<!-- ##### SECTION Title ##### -->
+BonoboTransient
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO BONOBO_TRANSIENT_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO BONOBO_TRANSIENT ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
+<!-- ##### MACRO BONOBO_TRANSIENT_CLASS ##### -->
+<para>
+
+</para>
+
+@k: 
+
+
+<!-- ##### MACRO BONOBO_IS_TRANSIENT ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
+<!-- ##### MACRO BONOBO_IS_TRANSIENT_CLASS ##### -->
+<para>
+
+</para>
+
+@k: 
+
+
+<!-- ##### STRUCT BonoboTransientPriv ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboTransient ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboTransientClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION PortableServer_Servant ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION BonoboTransientServantDestroy ##### -->
+<para>
+
+</para>
+
+@servant: 
+@data: 
+
+
+<!-- ##### FUNCTION bonobo_transient_new ##### -->
+<para>
+
+</para>
+
+@new_servant: 
+@destroy_servant: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_transient_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+

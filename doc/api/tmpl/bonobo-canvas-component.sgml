@@ -1,0 +1,145 @@
+<!-- ##### SECTION Title ##### -->
+BonoboCanvasComponent
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO BONOBO_CANVAS_COMPONENT_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO BONOBO_CANVAS_COMPONENT ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
+<!-- ##### MACRO BONOBO_CANVAS_COMPONENT_CLASS ##### -->
+<para>
+
+</para>
+
+@k: 
+
+
+<!-- ##### MACRO BONOBO_IS_CANVAS_COMPONENT ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
+<!-- ##### MACRO BONOBO_IS_CANVAS_COMPONENT_CLASS ##### -->
+<para>
+
+</para>
+
+@k: 
+
+
+<!-- ##### STRUCT BonoboCanvasComponent ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboCanvasComponentPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboCanvasComponentClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_object_create ##### -->
+<para>
+
+</para>
+
+@object: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_set_proxy ##### -->
+<para>
+
+</para>
+
+@comp: 
+@proxy: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_construct ##### -->
+<para>
+
+</para>
+
+@comp: 
+@ccomp: 
+@item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_new ##### -->
+<para>
+
+</para>
+
+@item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_get_item ##### -->
+<para>
+
+</para>
+
+@comp: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_component_get_epv ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### SIGNAL BonoboCanvasComponent::set-bounds ##### -->
+<para>
+
+</para>
+
+@bonobocanvascomponent: the object which received the signal.
+@arg1: 
+@arg2: 
+

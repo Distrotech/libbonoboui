@@ -1,0 +1,92 @@
+<!-- ##### SECTION Title ##### -->
+BonoboSocket
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO BONOBO_SOCKET ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO BONOBO_SOCKET_CLASS ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### MACRO BONOBO_IS_SOCKET ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### STRUCT BonoboSocket ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboSocketClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboSocketPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION bonobo_socket_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_socket_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_socket_set_control ##### -->
+<para>
+
+</para>
+
+@socket: 
+@control: 
+
+
+<!-- ##### FUNCTION bonobo_socket_steal ##### -->
+<para>
+
+</para>
+
+@socket: 
+@wid: 
+
+

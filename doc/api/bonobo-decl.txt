@@ -34,6 +34,17 @@ struct BonoboCanvasComponent {
 	BonoboCanvasComponentPrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboCanvasComponentClass</NAME>
+struct BonoboCanvasComponentClass {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * Signals
+	 */
+	 void (*set_bounds) (BonoboCanvasComponent *component, Bonobo_Canvas_DRect *bbox, CORBA_Environment *ev);
+};
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_canvas_component_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -84,14 +95,20 @@ void
 <STRUCT>
 <NAME>BonoboCanvasItemPrivate</NAME>
 </STRUCT>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboCanvasItem</NAME>
 typedef struct {
 	GnomeCanvasItem         canvas_item;
 	BonoboEmbeddable        *embeddable;
 	BonoboCanvasItemPrivate *priv;
 } BonoboCanvasItem;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboCanvasItemClass</NAME>
+typedef struct {
+	GnomeCanvasItemClass parent_class;
+} BonoboCanvasItemClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_canvas_item_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -146,6 +163,16 @@ struct BonoboClientSite {
 
 	BonoboClientSitePrivate *priv;
 };
+</STRUCT>
+<STRUCT>
+<NAME>BonoboClientSiteClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	void (*show_window)  (BonoboClientSite *, CORBA_boolean shown);
+	void (*queue_resize) (BonoboClientSite *);
+	void (*save_object)  (BonoboClientSite *, Bonobo_Persist_Status *status);
+} BonoboClientSiteClass;
 </STRUCT>
 <FUNCTION>
 <NAME>bonobo_client_site_get_type</NAME>
@@ -269,6 +296,19 @@ struct BonoboControlFrame {
 	BonoboObject base;
 	BonoboControlFramePrivate *priv;
 };
+</STRUCT>
+<STRUCT>
+<NAME>BonoboControlFrameClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * Signals.
+	 */
+	void (*activated)           (BonoboControlFrame *control_frame, gboolean state);
+	void (*activate_uri)        (BonoboControlFrame *control_frame, const char *uri, gboolean relative);
+
+} BonoboControlFrameClass;
 </STRUCT>
 <FUNCTION>
 <NAME>bonobo_control_frame_new</NAME>
@@ -407,6 +447,18 @@ struct BonoboControl {
 	BonoboControlPrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboControlClass</NAME>
+struct BonoboControlClass {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * Signals.
+	 */
+	void (*set_frame)           (BonoboControl *control);
+	void (*activate)            (BonoboControl *control, gboolean state);
+};
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_control_new</NAME>
 <RETURNS>BonoboControl               *</RETURNS>
@@ -478,12 +530,12 @@ BonoboControl       *control,Bonobo_ControlFrame  control_frame
 BonoboControl       *control
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_control_set_property_bag</NAME>
+<NAME>bonobo_control_set_properties</NAME>
 <RETURNS>void  </RETURNS>
 BonoboControl       *control,BonoboPropertyBag   *pb
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_control_get_property_bag</NAME>
+<NAME>bonobo_control_get_properties</NAME>
 <RETURNS>BonoboPropertyBag           *</RETURNS>
 BonoboControl       *control
 </FUNCTION>
@@ -499,13 +551,23 @@ BonoboControl       *control,gboolean             activated
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_control_windowid_from_x11</NAME>
-<RETURNS>Bonobo_Control_windowid  </RETURNS>
+<RETURNS>Bonobo_Control_windowId  </RETURNS>
 guint32              x11_id
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_control_get_epv</NAME>
 <RETURNS>POA_Bonobo_Control__epv     *</RETURNS>
 void
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_control_sync_realize</NAME>
+<RETURNS>void  </RETURNS>
+Bonobo_Control       control
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_control_sync_unrealize</NAME>
+<RETURNS>void  </RETURNS>
+Bonobo_Control       control
 </FUNCTION>
 <MACRO>
 <NAME>BONOBO_DESKTOP_WINDOW_TYPE</NAME>
@@ -542,6 +604,12 @@ struct BonoboDesktopWindow {
 	BonoboObject base;
 	GtkWindow   *window;
 	BonoboDesktopWindowPrivate *priv;
+};
+</STRUCT>
+<STRUCT>
+<NAME>BonoboDesktopWindowClass</NAME>
+struct BonoboDesktopWindowClass {
+	BonoboObjectClass parent_class;
 };
 </STRUCT>
 <FUNCTION>
@@ -689,6 +757,18 @@ struct BonoboEmbeddable {
 	BonoboEmbeddablePrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboEmbeddableClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * Signals
+	 */
+	void (*host_name_changed)  (BonoboEmbeddable *comp, const char *hostname);
+	void (*uri_changed)        (BonoboEmbeddable *comp, const char *uri);
+} BonoboEmbeddableClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_embeddable_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -751,7 +831,12 @@ void
 </FUNCTION>
 <MACRO>
 <NAME>BONOBO_EX</NAME>
-#define BONOBO_EX(ev) ((ev) && (ev)->_major != CORBA_NO_EXCEPTION)
+#define BONOBO_EX(ev)         ((ev) && (ev)->_major != CORBA_NO_EXCEPTION)
+</MACRO>
+<MACRO>
+<NAME>BONOBO_USER_EX</NAME>
+#define BONOBO_USER_EX(ev,id) ((ev) && (ev)->major == CORBA_USER_EXCEPTION &&	\
+			       (ev)->_repo_id != NULL && !strcmp ((ev)->_repo_id, id))
 </MACRO>
 <MACRO>
 <NAME>BONOBO_RET_EX</NAME>
@@ -843,6 +928,17 @@ struct BonoboGenericFactory {
 	char *goad_id;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboGenericFactoryClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * Virtual methods
+	 */
+	BonoboObject * (*new_generic)(BonoboGenericFactory *c_factory, const char *goad_id);
+} BonoboGenericFactoryClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_generic_factory_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -900,7 +996,7 @@ typedef GList BonoboClientSiteList;
 <STRUCT>
 <NAME>BonoboItemContainerPrivate</NAME>
 </STRUCT>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboItemContainer</NAME>
 typedef struct {
 	BonoboObject base;
@@ -911,7 +1007,18 @@ typedef struct {
 
 	BonoboItemContainerPrivate *priv;
 } BonoboItemContainer;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboItemContainerClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	Bonobo_Unknown (*get_object) (BonoboItemContainer *item_container,
+				      CORBA_char          *item_name,
+				      CORBA_boolean        only_if_exists,
+				      CORBA_Environment   *ev);
+} BonoboItemContainerClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_item_container_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -1050,14 +1157,39 @@ const CORBA_char  *str,int                min_idx
 <NAME>BONOBO_IS_MONIKER_CLASS</NAME>
 #define BONOBO_IS_MONIKER_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_MONIKER_TYPE))
 </MACRO>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboMoniker</NAME>
 typedef struct {
         BonoboObject          object;
 	
 	BonoboMonikerPrivate *priv;
 } BonoboMoniker;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboMonikerClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * virtual methods
+	 */
+	Bonobo_Moniker (*get_parent)         (BonoboMoniker               *moniker,
+					      CORBA_Environment           *ev);
+	void           (*set_parent)         (BonoboMoniker               *moniker,
+					      const Bonobo_Moniker         parent,
+					      CORBA_Environment           *ev);
+	CORBA_char    *(*get_display_name)   (BonoboMoniker               *moniker,
+					      CORBA_Environment           *ev);
+	Bonobo_Moniker (*parse_display_name) (BonoboMoniker               *moniker,
+					      Bonobo_Moniker               parent,
+					      const CORBA_char            *name,
+					      CORBA_Environment           *ev);
+	Bonobo_Unknown (*resolve)            (BonoboMoniker               *moniker,
+					      const Bonobo_ResolveOptions *options,
+					      const CORBA_char            *requested_interface,
+					      CORBA_Environment           *ev);
+} BonoboMonikerClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_moniker_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -1113,12 +1245,18 @@ BonoboMoniker     *moniker,const char        *name,int                num_chars
 <NAME>BONOBO_IS_OBJECT_CLIENT_CLASS</NAME>
 #define BONOBO_IS_OBJECT_CLIENT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_OBJECT_CLIENT_TYPE))
 </MACRO>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboObjectClient</NAME>
 typedef struct {
 	BonoboObject parent;
 } BonoboObjectClient;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboObjectClientClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+} BonoboObjectClientClass;
+</STRUCT>
 <USER_FUNCTION>
 <NAME>BonoboObjectClientAsyncCallback</NAME>
 <RETURNS>void </RETURNS>
@@ -1184,47 +1322,47 @@ typedef enum {
 } ODRegistrationResult;
 </ENUM>
 <FUNCTION>
-<NAME>od_get_orb</NAME>
+<NAME>bonobo_directory_get_orb</NAME>
 <RETURNS>CORBA_ORB  </RETURNS>
 void
 </FUNCTION>
 <FUNCTION>
-<NAME>od_server_info_new</NAME>
+<NAME>bonobo_directory_new_server_info</NAME>
 <RETURNS>ODServerInfo         *</RETURNS>
 const gchar       *iid,const gchar       *name,const gchar       *desc
 </FUNCTION>
 <FUNCTION>
-<NAME>od_server_info_get_id</NAME>
+<NAME>bonobo_directory_get_server_info_id</NAME>
 <RETURNS>const gchar          *</RETURNS>
 ODServerInfo      *info
 </FUNCTION>
 <FUNCTION>
-<NAME>od_server_info_get_name</NAME>
+<NAME>bonobo_directory_get_server_info_name</NAME>
 <RETURNS>const gchar          *</RETURNS>
 ODServerInfo      *info
 </FUNCTION>
 <FUNCTION>
-<NAME>od_server_info_get_description</NAME>
+<NAME>bonobo_directory_get_server_info_description</NAME>
 <RETURNS>const gchar          *</RETURNS>
 ODServerInfo      *info
 </FUNCTION>
 <FUNCTION>
-<NAME>od_server_info_ref</NAME>
+<NAME>bonobo_directory_server_info_ref</NAME>
 <RETURNS>void  </RETURNS>
 ODServerInfo      *info
 </FUNCTION>
 <FUNCTION>
-<NAME>od_server_info_unref</NAME>
+<NAME>bonobo_directory_server_info_unref</NAME>
 <RETURNS>void  </RETURNS>
 ODServerInfo      *info
 </FUNCTION>
 <FUNCTION>
-<NAME>od_get_server_list</NAME>
+<NAME>bonobo_directory_get_server_list</NAME>
 <RETURNS>GList                *</RETURNS>
 const gchar      **required_ids
 </FUNCTION>
 <FUNCTION>
-<NAME>od_server_list_free</NAME>
+<NAME>bonobo_directory_free_server_list</NAME>
 <RETURNS>void  </RETURNS>
 GList             *list
 </FUNCTION>
@@ -1234,17 +1372,17 @@ GList             *list
 const gchar       *iid,gint               flags,CORBA_Environment *ev
 </FUNCTION>
 <FUNCTION>
-<NAME>od_server_register</NAME>
+<NAME>bonobo_directory_register_server</NAME>
 <RETURNS>ODRegistrationResult  </RETURNS>
 CORBA_Object       objref,const gchar       *iid
 </FUNCTION>
 <FUNCTION>
-<NAME>od_server_unregister</NAME>
+<NAME>bonobo_directory_unregister_server</NAME>
 <RETURNS>ODRegistrationResult  </RETURNS>
 CORBA_Object       objref,const gchar       *iid
 </FUNCTION>
 <FUNCTION>
-<NAME>od_name_service_get</NAME>
+<NAME>bonobo_directory_get_name_service</NAME>
 <RETURNS>CORBA_Object  </RETURNS>
 CORBA_Environment *ev
 </FUNCTION>
@@ -1306,17 +1444,17 @@ BonoboObject *object,Bonobo_Stream stream,const char *object_iid
 <NAME>BONOBO_IS_OBJECT_CLASS</NAME>
 #define BONOBO_IS_OBJECT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_OBJECT_TYPE))
 </MACRO>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboObjectServant</NAME>
 typedef struct {
 	POA_Bonobo_Unknown servant_placeholder;
 	gpointer           bonobo_object;
 } BonoboObjectServant;
-</TYPEDEF>
+</STRUCT>
 <STRUCT>
 <NAME>BonoboObjectPrivate</NAME>
 </STRUCT>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboObject</NAME>
 typedef struct {
 	GtkObject            base;
@@ -1325,7 +1463,20 @@ typedef struct {
 	gpointer             servant;
 	BonoboObjectPrivate *priv;
 } BonoboObject;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboObjectClass</NAME>
+typedef struct {
+	GtkObjectClass parent_class;
+
+	/*
+	 * signals.  
+	 */
+	void  (*query_interface) (BonoboObject *object, const char *repo_id,  CORBA_Object      *retval);
+	void  (*system_exception)(BonoboObject *object, CORBA_Object cobject, CORBA_Environment *ev);
+	void  (*object_gone)     (BonoboObject *object, CORBA_Object cobject, CORBA_Environment *ev);
+} BonoboObjectClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_object_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -1500,6 +1651,27 @@ struct BonoboPersistFile {
 	BonoboPersistFilePrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboPersistFileClass</NAME>
+typedef struct {
+	BonoboPersistClass parent_class;
+
+	/*
+	 * methods
+	 */
+	int   (*load)             (BonoboPersistFile *ps,
+				   const CORBA_char  *filename,
+				   CORBA_Environment *ev);
+
+	int   (*save)             (BonoboPersistFile *ps,
+				   const CORBA_char  *filename,
+				   CORBA_Environment *ev);
+
+	char *(*get_current_file) (BonoboPersistFile *ps,
+				   CORBA_Environment *ev);
+
+} BonoboPersistFileClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_persist_file_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -1595,6 +1767,29 @@ struct BonoboPersistStream {
 	BonoboPersistStreamPrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboPersistStreamClass</NAME>
+typedef struct {
+	BonoboPersistClass parent_class;
+
+	/*
+	 * methods
+	 */
+	void       (*load)         (BonoboPersistStream        *ps,
+				    Bonobo_Stream              stream,
+				    Bonobo_Persist_ContentType type,
+				    CORBA_Environment          *ev);
+	void       (*save)         (BonoboPersistStream        *ps,
+				    Bonobo_Stream              stream,
+				    Bonobo_Persist_ContentType type,
+				    CORBA_Environment          *ev);
+	CORBA_long (*get_size_max) (BonoboPersistStream *ps,
+				    CORBA_Environment   *ev);
+	Bonobo_Persist_ContentTypeList * (*get_content_types) (BonoboPersistStream *ps,
+							       CORBA_Environment   *ev);
+
+} BonoboPersistStreamClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_persist_stream_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -1640,14 +1835,23 @@ void
 <NAME>BONOBO_IS_PERSIST_CLASS</NAME>
 #define BONOBO_IS_PERSIST_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_PERSIST_TYPE))
 </MACRO>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboPersist</NAME>
 typedef struct {
 	BonoboObject object;
 
 	BonoboPersistPrivate *priv;
 } BonoboPersist;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboPersistClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	Bonobo_Persist_ContentTypeList * (*get_content_types) (BonoboPersist *persist,
+							       CORBA_Environment *ev);
+} BonoboPersistClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_persist_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -1695,6 +1899,12 @@ struct BonoboPlug {
 	gint same_app;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboPlugClass</NAME>
+struct BonoboPlugClass {
+	GtkWindowClass parent_class;
+};
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_plug_get_type</NAME>
 <RETURNS>guint  </RETURNS>
@@ -1730,14 +1940,20 @@ guint32 socket_id
 <NAME>BONOBO_IS_PRINT_CLIENT_CLASS</NAME>
 #define BONOBO_IS_PRINT_CLIENT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_PRINT_CLIENT_TYPE))
 </MACRO>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboPrintClient</NAME>
 typedef struct {
 	GtkObject    parent;
 	Bonobo_Print corba_print;
 } BonoboPrintClient;
-</TYPEDEF>
-<TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboPrintClientClass</NAME>
+typedef struct {
+	GtkObjectClass			parent;
+} BonoboPrintClientClass;
+</STRUCT>
+<STRUCT>
 <NAME>BonoboPrintData</NAME>
 typedef struct {
 	double width;
@@ -1750,7 +1966,7 @@ typedef struct {
 
 	GnomePrintMeta *meta_data;
 } BonoboPrintData;
-</TYPEDEF>
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_print_client_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -1816,7 +2032,7 @@ GnomePrintContext   *pc,double               x,double               y,BonoboPrin
 <NAME>BONOBO_IS_PRINT_CLASS</NAME>
 #define BONOBO_IS_PRINT_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_PRINT_TYPE))
 </MACRO>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboPrint</NAME>
 typedef struct {
         BonoboObject         object;
@@ -1824,7 +2040,14 @@ typedef struct {
 	BonoboPrintRenderFn *render;
 	gpointer             user_data;
 } BonoboPrint;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboPrintClass</NAME>
+typedef struct {
+	BonoboObjectClass    parent;
+	BonoboPrintRenderFn *render;
+} BonoboPrintClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_print_get_epv</NAME>
 <RETURNS>POA_Bonobo_Print__epv  *</RETURNS>
@@ -1918,6 +2141,23 @@ struct BonoboProgressiveDataSink {
 
 	BonoboProgressiveDataSinkPrivate *priv;
 };
+</STRUCT>
+<STRUCT>
+<NAME>BonoboProgressiveDataSinkClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * Methods.
+	 */
+	int (*start_fn)    (BonoboProgressiveDataSink *psink);
+	int (*end_fn)      (BonoboProgressiveDataSink *psink);
+	int (*add_data_fn) (BonoboProgressiveDataSink *psink,
+			    const Bonobo_ProgressiveDataSink_iobuf *buffer);
+	int (*set_size_fn) (BonoboProgressiveDataSink *psink,
+			    const CORBA_long count);
+			 
+} BonoboProgressiveDataSinkClass;
 </STRUCT>
 <FUNCTION>
 <NAME>bonobo_progressive_data_sink_get_type</NAME>
@@ -2143,6 +2383,12 @@ struct BonoboPropertyBag {
 	BonoboPropertyBagPrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboPropertyBagClass</NAME>
+typedef struct {
+	BonoboObjectClass   parent;
+} BonoboPropertyBagClass;
+</STRUCT>
 <MACRO>
 <NAME>BONOBO_PROPERTY_BAG_TYPE</NAME>
 #define BONOBO_PROPERTY_BAG_TYPE                (bonobo_property_bag_get_gtk_type ())
@@ -2236,7 +2482,7 @@ BonoboPropertyBag      *pb,const gchar            *name,Bonobo_PropertyListener 
 <FUNCTION>
 <NAME>bonobo_property_bag_notify_listeners</NAME>
 <RETURNS>void  </RETURNS>
-BonoboPropertyBag      *pb,const char             *name,const BonoboArg        *new_value,CORBA_Environment      *ev
+BonoboPropertyBag      *pb,const char             *name,const BonoboArg        *new_value,CORBA_Environment      *opt_ev
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_property_bag_get_prop_list</NAME>
@@ -2276,6 +2522,15 @@ void
 struct BonoboPropertyListener {
         BonoboObject		object;
 };
+</STRUCT>
+<STRUCT>
+<NAME>BonoboPropertyListenerClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	/* Signal definition */
+	void (* prop_changed) (BonoboPropertyListener *listener, gchar *name, BonoboArg *event_data);
+} BonoboPropertyListenerClass;
 </STRUCT>
 <FUNCTION>
 <NAME>bonobo_property_listener_get_type</NAME>
@@ -2427,7 +2682,7 @@ PortableServer_POA adapter, BonoboPropertyBag *pb,char *property_name
 <RETURNS>void 	</RETURNS>
 PortableServer_Servant servant
 </FUNCTION>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboProperty</NAME>
 typedef struct {
 	char			*name;
@@ -2442,7 +2697,7 @@ typedef struct {
 	gpointer                 user_data;
 	GSList                  *listeners;
 } BonoboProperty;
-</TYPEDEF>
+</STRUCT>
 <MACRO>
 <NAME>BONOBO_SELECTOR</NAME>
 #define BONOBO_SELECTOR(obj)	GTK_CHECK_CAST(obj, bonobo_selector_get_type (), BonoboSelector)
@@ -2463,6 +2718,16 @@ typedef struct {
 </STRUCT>
 <STRUCT>
 <NAME>BonoboSelectorPrivate</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboSelectorClass</NAME>
+struct BonoboSelectorClass
+{
+	GnomeDialogClass parent_class;
+	
+	void (* ok)	(BonoboSelector *sel);
+	void (* cancel)	(BonoboSelector *sel);
+};
 </STRUCT>
 <STRUCT>
 <NAME>BonoboSelector</NAME>
@@ -2522,20 +2787,20 @@ const gchar *title,const gchar **interfaces_required
 <NAME>BonoboSocketClass</NAME>
 </STRUCT>
 <STRUCT>
+<NAME>BonoboSocketPrivate</NAME>
+</STRUCT>
+<STRUCT>
 <NAME>BonoboSocket</NAME>
 struct BonoboSocket {
 	GtkContainer container;
-	
-	guint16 request_width;
-	guint16 request_height;
-	guint16 current_width;
-	guint16 current_height;
-	
-	GdkWindow *plug_window;
-	guint same_app : 1;
-	guint focus_in : 1;
-	guint have_size : 1;
-	guint need_map : 1;
+
+	BonoboSocketPrivate *priv;
+};
+</STRUCT>
+<STRUCT>
+<NAME>BonoboSocketClass</NAME>
+struct BonoboSocketClass {
+	GtkContainerClass parent_class;
 };
 </STRUCT>
 <FUNCTION>
@@ -2549,9 +2814,14 @@ void
 void
 </FUNCTION>
 <FUNCTION>
+<NAME>bonobo_socket_set_control</NAME>
+<RETURNS>void  </RETURNS>
+BonoboSocket  *socket,Bonobo_Control control
+</FUNCTION>
+<FUNCTION>
 <NAME>bonobo_socket_steal</NAME>
 <RETURNS>void  </RETURNS>
-BonoboSocket *socket,guint32 wid
+BonoboSocket    *socket,guint32          wid
 </FUNCTION>
 <STRUCT>
 <NAME>StoragePlugin</NAME>
@@ -2564,14 +2834,18 @@ StoragePlugin *plugin
 <USER_FUNCTION>
 <NAME>BonoboStorageOpenFn</NAME>
 <RETURNS>BonoboStorage *</RETURNS>
-const char *path, gint flags, 
-					       gint mode
+const char *path, 
+					       gint flags, 
+					       gint mode, 
+					       CORBA_Environment *ev
 </USER_FUNCTION>
 <USER_FUNCTION>
 <NAME>BonoboStreamOpenFn</NAME>
 <RETURNS>BonoboStream *</RETURNS>
-const char *path, gint flags, 
-					       gint mode
+const char *path, 
+					       gint flags, 
+					       gint mode,
+					       CORBA_Environment *ev
 </USER_FUNCTION>
 <STRUCT>
 <NAME>StoragePlugin</NAME>
@@ -2629,14 +2903,60 @@ const gchar *name
 <STRUCT>
 <NAME>BonoboStoragePrivate</NAME>
 </STRUCT>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboStorage</NAME>
 typedef struct {
         BonoboObject object;
 
 	BonoboStoragePrivate *priv;
 } BonoboStorage;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboStorageClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * virtual methods
+	 */
+	Bonobo_StorageInfo *(*get_info) (BonoboStorage *storage,
+					 const CORBA_char *path,
+					 const Bonobo_StorageInfoFields mask,
+					 CORBA_Environment *ev);
+	void          (*set_info)       (BonoboStorage *storage,
+					 const CORBA_char *path,
+					 const Bonobo_StorageInfo * info,
+					 const Bonobo_StorageInfoFields mask,
+					 CORBA_Environment *ev);
+	BonoboStream  *(*open_stream)   (BonoboStorage *storage,
+					 const CORBA_char *path,
+					 Bonobo_Storage_OpenMode, 
+					 CORBA_Environment *ev);
+	BonoboStorage *(*open_storage)  (BonoboStorage *storage,
+					 const CORBA_char *path,
+					 Bonobo_Storage_OpenMode, 
+					 CORBA_Environment *ev);
+	void         (*copy_to)         (BonoboStorage *storage, 
+					 Bonobo_Storage target,
+					 CORBA_Environment *ev);
+	void         (*rename)          (BonoboStorage *storage,
+					 const CORBA_char *path_name,
+					 const CORBA_char *new_path_name,
+					 CORBA_Environment *ev);
+	void         (*commit)          (BonoboStorage *storage,
+					 CORBA_Environment *ev);
+	void         (*revert)          (BonoboStorage *storage,
+					 CORBA_Environment *ev);
+	Bonobo_Storage_DirectoryList *
+	             (*list_contents)   (BonoboStorage *storage,
+					 const CORBA_char *path,
+					 Bonobo_StorageInfoFields mask,
+					 CORBA_Environment *ev);
+	void         (*erase)           (BonoboStorage *storage,
+                                         const CORBA_char *path,
+                                         CORBA_Environment *ev);
+} BonoboStorageClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_storage_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -2651,6 +2971,16 @@ BonoboStorage *storage,Bonobo_Storage corba_storage
 <NAME>bonobo_storage_open</NAME>
 <RETURNS>BonoboStorage    *</RETURNS>
 const char *driver,const char *path,gint flags,gint mode
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_storage_open_full</NAME>
+<RETURNS>BonoboStorage    *</RETURNS>
+const char *driver,const char *path,gint flags,gint mode,CORBA_Environment *opt_ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_storage_copy_to</NAME>
+<RETURNS>void  </RETURNS>
+Bonobo_Storage src,Bonobo_Storage dest,CORBA_Environment *ev
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_storage_corba_object_create</NAME>
@@ -2735,6 +3065,14 @@ struct BonoboStreamMem {
 	BonoboStreamMemPrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboStreamMemClass</NAME>
+typedef struct {
+	BonoboStreamClass parent_class;
+	char           *(*get_buffer) (BonoboStreamMem *stream_mem);
+	size_t          (*get_size)   (BonoboStreamMem *stream_mem);
+} BonoboStreamMemClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_stream_mem_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -2792,12 +3130,54 @@ BonoboStreamMem *stream_mem
 <NAME>BONOBO_IS_STREAM_CLASS</NAME>
 #define BONOBO_IS_STREAM_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_STREAM_TYPE))
 </MACRO>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboStream</NAME>
 typedef struct {
         BonoboObject object;
 } BonoboStream;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboStreamClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * virtual methods
+	 */
+
+	Bonobo_StorageInfo *(*get_info) (BonoboStream *stream,
+					 const Bonobo_StorageInfoFields mask,
+					 CORBA_Environment *ev);
+	void          (*set_info)       (BonoboStream *stream,
+					 const Bonobo_StorageInfo *info,
+					 const Bonobo_StorageInfoFields mask,
+					 CORBA_Environment *ev);
+	void          (*write)          (BonoboStream *stream,
+					 const Bonobo_Stream_iobuf *buffer,
+					 CORBA_Environment *ev);
+	void          (*read)           (BonoboStream *stream, 
+					 CORBA_long count,
+					 Bonobo_Stream_iobuf **buffer,
+					 CORBA_Environment *ev);
+        CORBA_long    (*seek)           (BonoboStream *stream,
+					 CORBA_long offset, 
+					 Bonobo_Stream_SeekType whence,
+					 CORBA_Environment *ev);
+        void          (*truncate)       (BonoboStream *stream,
+					 const CORBA_long new_size, 
+					 CORBA_Environment *ev);
+	void          (*copy_to)        (BonoboStream *stream,
+					 const CORBA_char * dest,
+					 const CORBA_long bytes,
+					 CORBA_long *read,
+					 CORBA_long *written,
+					 CORBA_Environment *ev);
+        void          (*commit)         (BonoboStream *stream,
+					 CORBA_Environment *ev);
+        void          (*revert)         (BonoboStream *stream,
+					 CORBA_Environment *ev);
+} BonoboStreamClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_stream_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -2815,8 +3195,13 @@ BonoboObject *object
 </FUNCTION>
 <FUNCTION>
 <NAME>bonobo_stream_open</NAME>
-<RETURNS>BonoboStream  *</RETURNS>
+<RETURNS>BonoboStream            *</RETURNS>
 const char *driver,const char *path,gint flags,gint mode
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_stream_open_full</NAME>
+<RETURNS>BonoboStream            *</RETURNS>
+const char *driver,const char *path,gint flags,gint mode,CORBA_Environment *opt_ev
 </FUNCTION>
 <MACRO>
 <NAME>BONOBO_TRANSIENT_TYPE</NAME>
@@ -2841,7 +3226,7 @@ const char *driver,const char *path,gint flags,gint mode
 <STRUCT>
 <NAME>BonoboTransientPriv</NAME>
 </STRUCT>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboTransient</NAME>
 typedef struct {
 	GtkObject parent;
@@ -2849,7 +3234,13 @@ typedef struct {
 	PortableServer_POA  poa;
 	BonoboTransientPriv *priv;
 } BonoboTransient;
-</TYPEDEF>
+</STRUCT>
+<STRUCT>
+<NAME>BonoboTransientClass</NAME>
+typedef struct {
+	GtkObjectClass parent_class;
+} BonoboTransientClass;
+</STRUCT>
 <FUNCTION>
 <NAME>PortableServer_Servant</NAME>
 <RETURNS>typedef  </RETURNS>
@@ -2918,6 +3309,63 @@ struct BonoboUIComponent {
 	BonoboObject              object;
 	BonoboUIComponentPrivate *priv;
 };
+</STRUCT>
+<STRUCT>
+<NAME>BonoboUIComponentClass</NAME>
+typedef struct {
+	BonoboObjectClass parent_class;
+
+	/*
+	 * Signals
+	 */
+	void (*exec_verb) (BonoboUIComponent *comp,
+			   const char        *cname);
+
+	void (*ui_event)  (BonoboUIComponent *comp,
+			   const char        *path,
+			   Bonobo_UIComponent_EventType type,
+			   const char        *state);
+	/*
+	 * Virtual XML Methods
+	 */
+	void (*freeze)    (BonoboUIComponent *component,
+			   CORBA_Environment *opt_ev);
+
+	void (*thaw)      (BonoboUIComponent *component,
+			   CORBA_Environment *opt_ev);
+
+	void (*xml_set)   (BonoboUIComponent *component,
+			   const char        *path,
+			   const char        *xml,
+			   CORBA_Environment *ev);
+
+	CORBA_char *(*xml_get) (BonoboUIComponent *component,
+				const char        *path,
+				gboolean           recurse,
+				CORBA_Environment *ev);
+
+	void (*xml_rm)    (BonoboUIComponent *component,
+			   const char        *path,
+			   CORBA_Environment *ev);
+
+	void (*set_prop)  (BonoboUIComponent *component,
+			   const char        *path,
+			   const char        *prop,
+			   const char        *value,
+			   CORBA_Environment *opt_ev);
+	
+	gchar *(*get_prop) (BonoboUIComponent *component,
+			    const char        *path,
+			    const char        *prop,
+			    CORBA_Environment *opt_ev);
+
+	gboolean (*exists) (BonoboUIComponent *component,
+			    const char        *path,
+			    CORBA_Environment *ev);
+	
+
+	gpointer            dummy;
+} BonoboUIComponentClass;
 </STRUCT>
 <FUNCTION>
 <NAME>bonobo_ui_component_get_type</NAME>
@@ -3094,7 +3542,7 @@ void
 <RETURNS>Bonobo_UIComponent  </RETURNS>
 BonoboObject *object
 </FUNCTION>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboUIVerb</NAME>
 typedef struct {
 	char          *cname;
@@ -3102,7 +3550,7 @@ typedef struct {
 	gpointer       user_data;
 	gpointer       dummy;
 } BonoboUIVerb;
-</TYPEDEF>
+</STRUCT>
 <MACRO>
 <NAME>BONOBO_UI_VERB</NAME>
 #define BONOBO_UI_VERB(name,cb)                  { (name), (cb), NULL   }
@@ -3165,7 +3613,13 @@ struct BonoboUIContainer {
 	BonoboObject base;
 
 	int          flags;
-	BonoboWin   *win;
+	BonoboWindow   *win;
+};
+</STRUCT>
+<STRUCT>
+<NAME>BonoboUIContainerClass</NAME>
+struct BonoboUIContainerClass {
+	BonoboObjectClass parent;
 };
 </STRUCT>
 <FUNCTION>
@@ -3196,7 +3650,7 @@ void
 <FUNCTION>
 <NAME>bonobo_ui_container_set_win</NAME>
 <RETURNS>void  </RETURNS>
-BonoboUIContainer  *container,BonoboWin          *win
+BonoboUIContainer  *container,BonoboWindow          *win
 </FUNCTION>
 <STRUCT>
 <NAME>BonoboUINode</NAME>
@@ -3378,6 +3832,22 @@ struct BonoboUIToolbarButtonItem {
 	BonoboUIToolbarButtonItemPrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboUIToolbarButtonItemClass</NAME>
+struct BonoboUIToolbarButtonItemClass {
+	BonoboUIToolbarItemClass parent_class;
+
+	/* Virtual methods */
+	void (* set_icon)       (BonoboUIToolbarButtonItem *button_item,
+				 GdkPixbuf                 *icon);
+	void (* set_label)      (BonoboUIToolbarButtonItem *button_item,
+				 const char                *label);
+
+	/* Signals.  */
+	void (* clicked)	(BonoboUIToolbarButtonItem *toolbar_button_item);
+	void (* set_want_label) (BonoboUIToolbarButtonItem *toolbar_button_item);
+};
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_ui_toolbar_button_item_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -3481,6 +3951,12 @@ struct BonoboUIToolbarIcon {
 	gint alpha_threshold;
 
 	BonoboUIToolbarIconDrawMode mode : 2;
+};
+</STRUCT>
+<STRUCT>
+<NAME>BonoboUIToolbarIconClass</NAME>
+struct BonoboUIToolbarIconClass {
+	GtkMiscClass parent_class;
 };
 </STRUCT>
 <FUNCTION>
@@ -3634,6 +4110,31 @@ struct BonoboUIToolbarItem {
 	BonoboUIToolbarItemPrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboUIToolbarItemClass</NAME>
+struct BonoboUIToolbarItemClass {
+	GtkBinClass parent_class;
+
+	/* Virtual method */
+	void (* set_state)       (BonoboUIToolbarItem     *item,
+				  const char              *new_state);
+	void (* set_tooltip)     (BonoboUIToolbarItem     *item,
+				  GtkTooltips             *tooltips,
+				  const char              *tooltip);
+
+	/* Signals */
+	void (* set_orientation) (BonoboUIToolbarItem     *item,
+				  GtkOrientation           orientation);
+	void (* set_style)       (BonoboUIToolbarItem     *item,
+				  BonoboUIToolbarItemStyle style);
+	void (* set_want_label)  (BonoboUIToolbarItem     *item,
+				  gboolean                 want_label);
+	/* Notifies that the state changed, and what it changed to */
+	void (* state_altered)   (BonoboUIToolbarItem     *item,
+				  const char              *new_state);
+	void (* activate)        (BonoboUIToolbarItem     *item);
+};
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_ui_toolbar_item_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -3777,6 +4278,14 @@ BonoboUIToolbarItem     *item
 <NAME>BonoboUIToolbarToggleButtonItem</NAME>
 struct BonoboUIToolbarToggleButtonItem {
 	BonoboUIToolbarButtonItem parent;
+};
+</STRUCT>
+<STRUCT>
+<NAME>BonoboUIToolbarToggleButtonItemClass</NAME>
+struct BonoboUIToolbarToggleButtonItemClass {
+	BonoboUIToolbarButtonItemClass parent_class;
+
+	void (* toggled) (BonoboUIToolbarToggleButtonItem *toggle_button_item);
 };
 </STRUCT>
 <FUNCTION>
@@ -3971,14 +4480,14 @@ typedef enum {
 <STRUCT>
 <NAME>BonoboUIXml</NAME>
 </STRUCT>
-<TYPEDEF>
+<STRUCT>
 <NAME>BonoboUIXmlData</NAME>
 typedef struct {
 	gpointer id;
 	gboolean dirty;
 	GSList  *overridden;
 } BonoboUIXmlData;
-</TYPEDEF>
+</STRUCT>
 <USER_FUNCTION>
 <NAME>BonoboUIXmlCompareFn</NAME>
 <RETURNS>gboolean </RETURNS>
@@ -4022,6 +4531,21 @@ struct BonoboUIXml {
 	
 	gpointer               dummy;
 };
+</STRUCT>
+<STRUCT>
+<NAME>BonoboUIXmlClass</NAME>
+typedef struct {
+	GtkObjectClass         object_klass;
+
+	void                 (*override)          (BonoboUINode *node);
+	void                 (*replace_override)  (BonoboUINode *new_node,
+						   BonoboUINode *old_node);
+	void                 (*reinstate)         (BonoboUINode *node);
+	void                 (*rename)            (BonoboUINode *node);
+	void                 (*remove)            (BonoboUINode *node);
+
+	gpointer               dummy;
+} BonoboUIXmlClass;
 </STRUCT>
 <FUNCTION>
 <NAME>bonobo_ui_xml_get_type</NAME>
@@ -4120,6 +4644,18 @@ struct BonoboViewFrame {
 	BonoboControlFrame	 base;
 	BonoboViewFramePrivate	*priv;
 };
+</STRUCT>
+<STRUCT>
+<NAME>BonoboViewFrameClass</NAME>
+typedef struct {
+	BonoboControlFrameClass parent_class;
+
+	/*
+	 * Signals.
+	 */
+	void (*user_activate)       (BonoboViewFrame *view_frame);
+	void (*user_context)        (BonoboViewFrame *view_frame);
+} BonoboViewFrameClass;
 </STRUCT>
 <FUNCTION>
 <NAME>bonobo_view_frame_get_type</NAME>
@@ -4234,6 +4770,19 @@ struct BonoboView {
 	BonoboViewPrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboViewClass</NAME>
+struct BonoboViewClass {
+	BonoboControlClass parent_class;
+
+	/*
+	 * Signals
+	 */
+	void (*do_verb)                  (BonoboView *view,
+					  const CORBA_char *verb_name);
+	void (*set_zoom_factor)          (BonoboView *view, double zoom);
+};
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_view_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -4328,6 +4877,12 @@ struct BonoboWidget {
 	BonoboWidgetPrivate *priv;
 };
 </STRUCT>
+<STRUCT>
+<NAME>BonoboWidgetClass</NAME>
+typedef struct {
+	GtkBinClass	 bin_class;
+} BonoboWidgetClass;
+</STRUCT>
 <FUNCTION>
 <NAME>bonobo_widget_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
@@ -4389,156 +4944,162 @@ BonoboWidget       *control,const char         *first_prop,...
 BonoboWidget       *control,const char         *first_prop,...
 </FUNCTION>
 <MACRO>
-<NAME>BONOBO_TYPE_WIN</NAME>
-#define BONOBO_TYPE_WIN        (bonobo_win_get_type ())
+<NAME>BONOBO_TYPE_WINDOW</NAME>
+#define BONOBO_TYPE_WINDOW        (bonobo_window_get_type ())
 </MACRO>
 <MACRO>
-<NAME>BONOBO_WIN</NAME>
-#define BONOBO_WIN(o)          (GTK_CHECK_CAST ((o), BONOBO_TYPE_WIN, BonoboWin))
+<NAME>BONOBO_WINDOW</NAME>
+#define BONOBO_WINDOW(o)          (GTK_CHECK_CAST ((o), BONOBO_TYPE_WINDOW, BonoboWindow))
 </MACRO>
 <MACRO>
-<NAME>BONOBO_WIN_CLASS</NAME>
-#define BONOBO_WIN_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_WIN, BonoboWinClass))
+<NAME>BONOBO_WINDOW_CLASS</NAME>
+#define BONOBO_WINDOW_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_WINDOW, BonoboWindowClass))
 </MACRO>
 <MACRO>
 <NAME>BONOBO_IS_WIN</NAME>
-#define BONOBO_IS_WIN(o)       (GTK_CHECK_TYPE ((o), BONOBO_TYPE_WIN))
+#define BONOBO_IS_WIN(o)       (GTK_CHECK_TYPE ((o), BONOBO_TYPE_WINDOW))
 </MACRO>
 <MACRO>
 <NAME>BONOBO_IS_WIN_CLASS</NAME>
-#define BONOBO_IS_WIN_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_WIN))
+#define BONOBO_IS_WIN_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_WINDOW))
 </MACRO>
 <STRUCT>
-<NAME>BonoboWin</NAME>
+<NAME>BonoboWindow</NAME>
 </STRUCT>
 <STRUCT>
-<NAME>BonoboWinPrivate</NAME>
+<NAME>BonoboWindowPrivate</NAME>
 </STRUCT>
 <STRUCT>
-<NAME>BonoboWinClass</NAME>
+<NAME>BonoboWindowClass</NAME>
 </STRUCT>
 <STRUCT>
-<NAME>BonoboWin</NAME>
-struct BonoboWin {
+<NAME>BonoboWindow</NAME>
+struct BonoboWindow {
 	GtkWindow          parent;
 	
-	BonoboWinPrivate  *priv;
+	BonoboWindowPrivate  *priv;
+};
+</STRUCT>
+<STRUCT>
+<NAME>BonoboWindowClass</NAME>
+struct BonoboWindowClass {
+	GtkWindowClass    parent_class;
 };
 </STRUCT>
 <FUNCTION>
-<NAME>bonobo_win_get_type</NAME>
+<NAME>bonobo_window_get_type</NAME>
 <RETURNS>GtkType  </RETURNS>
 void
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_construct</NAME>
+<NAME>bonobo_window_construct</NAME>
 <RETURNS>GtkWidget            *</RETURNS>
-BonoboWin  *win,const char *win_name,const char *title
+BonoboWindow  *win,const char *win_name,const char *title
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_new</NAME>
+<NAME>bonobo_window_new</NAME>
 <RETURNS>GtkWidget            *</RETURNS>
 const char *win_name,const char *title
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_set_contents</NAME>
+<NAME>bonobo_window_set_contents</NAME>
 <RETURNS>void  </RETURNS>
-BonoboWin  *win,GtkWidget  *contents
+BonoboWindow  *win,GtkWidget  *contents
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_get_contents</NAME>
+<NAME>bonobo_window_get_contents</NAME>
 <RETURNS>GtkWidget            *</RETURNS>
-BonoboWin  *win
+BonoboWindow  *win
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_freeze</NAME>
+<NAME>bonobo_window_freeze</NAME>
 <RETURNS>void  </RETURNS>
-BonoboWin *win
+BonoboWindow *win
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_thaw</NAME>
+<NAME>bonobo_window_thaw</NAME>
 <RETURNS>void  </RETURNS>
-BonoboWin *win
+BonoboWindow *win
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_set_name</NAME>
+<NAME>bonobo_window_set_name</NAME>
 <RETURNS>void  </RETURNS>
-BonoboWin  *win,const char *win_name
+BonoboWindow  *win,const char *win_name
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_get_name</NAME>
+<NAME>bonobo_window_get_name</NAME>
 <RETURNS>char                 *</RETURNS>
-BonoboWin *win
+BonoboWindow *win
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_xml_merge</NAME>
+<NAME>bonobo_window_xml_merge</NAME>
 <RETURNS>BonoboUIXmlError  </RETURNS>
-BonoboWin  *win,const char *path,const char *xml,const char *component
+BonoboWindow  *win,const char *path,const char *xml,const char *component
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_xml_merge_tree</NAME>
+<NAME>bonobo_window_xml_merge_tree</NAME>
 <RETURNS>BonoboUIXmlError  </RETURNS>
-BonoboWin  *win,const char *path,BonoboUINode    *tree,const char *component
+BonoboWindow  *win,const char *path,BonoboUINode    *tree,const char *component
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_xml_get</NAME>
+<NAME>bonobo_window_xml_get</NAME>
 <RETURNS>char                 *</RETURNS>
-BonoboWin  *win,const char *path,gboolean    node_only
+BonoboWindow  *win,const char *path,gboolean    node_only
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_xml_node_exists</NAME>
+<NAME>bonobo_window_xml_node_exists</NAME>
 <RETURNS>gboolean  </RETURNS>
-BonoboWin  *win,const char *path
+BonoboWindow  *win,const char *path
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_xml_rm</NAME>
+<NAME>bonobo_window_xml_rm</NAME>
 <RETURNS>BonoboUIXmlError  </RETURNS>
-BonoboWin  *win,const char *path,const char *by_component
+BonoboWindow  *win,const char *path,const char *by_component
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_object_set</NAME>
+<NAME>bonobo_window_object_set</NAME>
 <RETURNS>BonoboUIXmlError  </RETURNS>
-BonoboWin  *win,const char *path,Bonobo_Unknown object,CORBA_Environment *ev
+BonoboWindow  *win,const char *path,Bonobo_Unknown object,CORBA_Environment *ev
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_object_get</NAME>
+<NAME>bonobo_window_object_get</NAME>
 <RETURNS>BonoboUIXmlError  </RETURNS>
-BonoboWin  *win,const char *path,Bonobo_Unknown *object,CORBA_Environment *ev
+BonoboWindow  *win,const char *path,Bonobo_Unknown *object,CORBA_Environment *ev
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_get_accel_group</NAME>
+<NAME>bonobo_window_get_accel_group</NAME>
 <RETURNS>GtkAccelGroup        *</RETURNS>
-BonoboWin  *win
+BonoboWindow  *win
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_dump</NAME>
+<NAME>bonobo_window_dump</NAME>
 <RETURNS>void  </RETURNS>
-BonoboWin  *win,const char *msg
+BonoboWindow  *win,const char *msg
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_register_component</NAME>
+<NAME>bonobo_window_register_component</NAME>
 <RETURNS>void  </RETURNS>
-BonoboWin     *win,const char    *name,Bonobo_Unknown component
+BonoboWindow     *win,const char    *name,Bonobo_Unknown component
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_deregister_component</NAME>
+<NAME>bonobo_window_deregister_component</NAME>
 <RETURNS>void  </RETURNS>
-BonoboWin     *win,const char    *name
+BonoboWindow     *win,const char    *name
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_component_get</NAME>
+<NAME>bonobo_window_component_get</NAME>
 <RETURNS>Bonobo_Unknown  </RETURNS>
-BonoboWin     *win,const char    *name
+BonoboWindow     *win,const char    *name
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_add_popup</NAME>
+<NAME>bonobo_window_add_popup</NAME>
 <RETURNS>void  </RETURNS>
-BonoboWin     *win,GtkMenu       *popup,const char    *path
+BonoboWindow     *win,GtkMenu       *popup,const char    *path
 </FUNCTION>
 <FUNCTION>
-<NAME>bonobo_win_remove_popup</NAME>
+<NAME>bonobo_window_remove_popup</NAME>
 <RETURNS>void  </RETURNS>
-BonoboWin     *win,const char    *path
+BonoboWindow     *win,const char    *path
 </FUNCTION>
 <MACRO>
 <NAME>GNOME_TYPE_WRAPPER</NAME>
@@ -4576,6 +5137,12 @@ struct BonoboWrapper {
 
 	/* Private data. */
 	BonoboWrapperPrivate *priv;
+};
+</STRUCT>
+<STRUCT>
+<NAME>BonoboWrapperClass</NAME>
+struct BonoboWrapperClass {
+	GtkBinClass parent_class;
 };
 </STRUCT>
 <FUNCTION>
@@ -4643,6 +5210,16 @@ struct BonoboZoomableFrame {
         BonoboObject			object;
 
 	BonoboZoomableFramePrivate	*priv;
+};
+</STRUCT>
+<STRUCT>
+<NAME>BonoboZoomableFrameClass</NAME>
+struct BonoboZoomableFrameClass {
+	BonoboObjectClass		parent;
+
+	void (*zoom_level_changed)	(BonoboZoomableFrame *zframe,
+					 float zoom_level);
+	void (*zoom_parameters_changed)	(BonoboZoomableFrame *zframe);
 };
 </STRUCT>
 <FUNCTION>
@@ -4780,6 +5357,21 @@ struct BonoboZoomable {
         BonoboObject		object;
 
 	BonoboZoomablePrivate	*priv;
+};
+</STRUCT>
+<STRUCT>
+<NAME>BonoboZoomableClass</NAME>
+struct BonoboZoomableClass {
+	BonoboObjectClass	parent;
+
+	void (*set_frame)	(BonoboZoomable *zoomable);
+	void (*set_zoom_level)	(BonoboZoomable *zoomable,
+				 float zoom_level);
+
+	void (*zoom_in)		(BonoboZoomable *zoomable);
+	void (*zoom_out)	(BonoboZoomable *zoomable);
+	void (*zoom_to_fit)	(BonoboZoomable *zoomable);
+	void (*zoom_to_default)	(BonoboZoomable *zoomable);
 };
 </STRUCT>
 <FUNCTION>

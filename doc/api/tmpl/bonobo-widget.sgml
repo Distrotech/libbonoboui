@@ -1,0 +1,185 @@
+<!-- ##### SECTION Title ##### -->
+BonoboWidget
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO BONOBO_WIDGET_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO BONOBO_WIDGET ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
+<!-- ##### MACRO BONOBO_WIDGET_CLASS ##### -->
+<para>
+
+</para>
+
+@k: 
+
+
+<!-- ##### MACRO BONOBO_IS_WIDGET ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
+<!-- ##### MACRO BONOBO_IS_WIDGET_CLASS ##### -->
+<para>
+
+</para>
+
+@k: 
+
+
+<!-- ##### STRUCT BonoboWidget ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboWidgetPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboWidgetClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION bonobo_widget_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_get_server ##### -->
+<para>
+
+</para>
+
+@bw: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_new_control ##### -->
+<para>
+
+</para>
+
+@goad_id: 
+@uih: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_new_control_from_objref ##### -->
+<para>
+
+</para>
+
+@control: 
+@uih: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_get_control_frame ##### -->
+<para>
+
+</para>
+
+@bw: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_new_subdoc ##### -->
+<para>
+
+</para>
+
+@object_desc: 
+@uih: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_get_container ##### -->
+<para>
+
+</para>
+
+@bw: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_get_client_site ##### -->
+<para>
+
+</para>
+
+@bw: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_get_view_frame ##### -->
+<para>
+
+</para>
+
+@bw: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_get_uih ##### -->
+<para>
+
+</para>
+
+@bw: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_widget_set_property ##### -->
+<para>
+
+</para>
+
+@control: 
+@first_prop: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION bonobo_widget_get_property ##### -->
+<para>
+
+</para>
+
+@control: 
+@first_prop: 
+@Varargs: 
+
+

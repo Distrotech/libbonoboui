@@ -33,7 +33,7 @@ GtkObject
           BonoboPlug
           GnomeDialog
             BonoboSelector
-          BonoboWin
+          BonoboWindow
         BonoboUIToolbarItem
           BonoboUIToolbarButtonItem
             BonoboUIToolbarToggleButtonItem

@@ -1,0 +1,78 @@
+<!-- ##### SECTION Title ##### -->
+BonoboPlug
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO BONOBO_PLUG ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO BONOBO_PLUG_CLASS ##### -->
+<para>
+
+</para>
+
+@klass: 
+
+
+<!-- ##### MACRO BONOBO_IS_PLUG ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### STRUCT BonoboPlug ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboPlugClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION bonobo_plug_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_plug_construct ##### -->
+<para>
+
+</para>
+
+@plug: 
+@socket_id: 
+
+
+<!-- ##### FUNCTION bonobo_plug_new ##### -->
+<para>
+
+</para>
+
+@socket_id: 
+@Returns: 
+
+

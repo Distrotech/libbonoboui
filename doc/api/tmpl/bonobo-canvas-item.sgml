@@ -1,0 +1,93 @@
+<!-- ##### SECTION Title ##### -->
+BonoboCanvasItem
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### MACRO BONOBO_CANVAS_ITEM ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### MACRO BONOBO_CANVAS_ITEM_CLASS ##### -->
+<para>
+
+</para>
+
+@k: 
+
+
+<!-- ##### MACRO BONOBO_IS_CANVAS_ITEM ##### -->
+<para>
+
+</para>
+
+@o: 
+
+
+<!-- ##### STRUCT BonoboCanvasItemPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboCanvasItem ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboCanvasItemClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION bonobo_canvas_item_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_item_new ##### -->
+<para>
+
+</para>
+
+@parent: 
+@embeddable: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_canvas_item_set_bounds ##### -->
+<para>
+
+</para>
+
+@item: 
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+
+
+<!-- ##### ARG BonoboCanvasItem:corba_canvas_item ##### -->
+<para>
+
+</para>
+
