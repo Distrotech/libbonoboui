@@ -36,7 +36,7 @@ Base object for wrapping GNOME::Unknown derived objects.
 </para>
 
 <para>
-  The <function>ref()</function>. and <function>unref()</function>
+  The <function>ref()</function> and <function>unref()</function>
   methods are used to control the lifetime of an object.  The
   <function>query_interface</function> method is used to discover
   optional functionality provided by the object implementation.
@@ -47,23 +47,23 @@ Base object for wrapping GNOME::Unknown derived objects.
   component is initially launched, it starts life with a reference
   count of one.  This reference is held by the component invoker.
   Each time a reference is kept to this object (say, you store a
-  copy of the object in an array), the reference count in
+  copy of the object in an array), the reference count is
   incremented.  Every time a reference goes out of scope, the
   reference count needs to be decremented.  When the reference
   count reaches zero, the component knows that there are no
   outstanding references to it, and it is safe to shutdown.  At
-  this point, the component shuts-down.
+  this point, the component shuts down.
 </para>
 
 <para>
-  It is possible to query an object which implements the
+  It is possible to ask an object which implements the
   <classname>GNOME::Unknown</classname> interface if it supports
   other CORBA interfaces.  For example, it would be possible to
-  query an object whether it supports the
+  ask an object whether it supports the
   "IDL:GNOME/EmbeddablePrint:1.0" interface to find out if it is
   possible to print its contents.  If the return value from
   invoking the <function>query_interface</function> method on the
-  interface is CORBA_OBJECT_NIL, then we know that the interface
+  interface is CORBA_OBJECT_NIL, then we know that the requested interface
   is not supported.  Otherwise, we can invoke
   IDL:GNOME/EmbeddablePrint:1.0 methods on the returned CORBA
   Object.
@@ -116,7 +116,7 @@ _animations (BrowserHTML html)
 
 <para>
   Other implementations reuse this implementation by listing on their
-  VEPV tables the gnome_object_epv vector entry point.
+  VEPV tables the gnome_object_epv entry point vector.
 </para>
 
 <para>
@@ -149,7 +149,7 @@ Returns the #GtkType for the GnomeObject object.
   servant.  With the GnomeObject setup per-servant information is
   typically attached to the GnomeObject (by using the regular
   inheritance mechanism of Gtk+).  Going from a
-  #PortableServer_Servant to the actual #GnomeObject is acomplished by
+  #PortableServer_Servant to the actual #GnomeObject is accomplished 
   using the gnome_object_from_servant() routine.  
 </para>
 

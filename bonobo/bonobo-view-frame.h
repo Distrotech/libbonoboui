@@ -37,11 +37,12 @@ typedef struct {
 	GnomeObjectClass parent_class;
 
 	/*
-	 * signal
+	 * Signals.
 	 */
 	void (*view_activated)      (GnomeViewFrame *view_frame, gboolean state);
 	void (*undo_last_operation) (GnomeViewFrame *view_frame);
 	void (*user_activate)       (GnomeViewFrame *view_frame);
+	void (*user_context)        (GnomeViewFrame *view_frame);
 	void (*request_resize)      (GnomeViewFrame *view_frame, gint requested_width, gint requested_height);
 } GnomeViewFrameClass;
 
@@ -55,6 +56,14 @@ void		  gnome_view_frame_bind_to_view	   (GnomeViewFrame *view_frame,
 						    GNOME_View view);
 GNOME_View	  gnome_view_frame_get_view	   (GnomeViewFrame *view_frame);
 
+void		  gnome_view_frame_set_ui_handler  (GnomeViewFrame *view_frame,
+						    GnomeUIHandler *uih);
+GnomeUIHandler   *gnome_view_frame_get_ui_handler  (GnomeViewFrame *view_frame);
+
+GtkWidget        *gnome_view_frame_get_wrapper     (GnomeViewFrame *view_frame);
+
+char		 *gnome_view_frame_popup_verbs	   (GnomeViewFrame *view_frame);
+
 /*
  * A GnomeViewFrame acts as a proxy for the remote GnomeView object to
  * which it is bound.  These functions act as wrappers which a
@@ -64,21 +73,15 @@ GNOME_View	  gnome_view_frame_get_view	   (GnomeViewFrame *view_frame);
 void		  gnome_view_frame_view_activate   (GnomeViewFrame *view_frame);
 void		  gnome_view_frame_view_deactivate (GnomeViewFrame *view_frame);
 
+void		  gnome_view_frame_size_request	   (GnomeViewFrame *view_frame,
+						    int *desired_width,
+						    int *desired_height);
+
 void		  gnome_view_frame_view_do_verb	   (GnomeViewFrame *view_frame,
 						    char *verb_name);
 
-
 void		  gnome_view_frame_set_covered     (GnomeViewFrame *view_frame,
 						    gboolean covered);
-
-void		  gnome_view_frame_set_ui_handler  (GnomeViewFrame *view_frame,
-						    GnomeUIHandler *uih);
-GnomeUIHandler   *gnome_view_frame_get_ui_handler  (GnomeViewFrame *view_frame);
-
-GtkWidget        *gnome_view_frame_get_wrapper     (GnomeViewFrame *view_frame);
-void              gnome_view_frame_size_request    (GnomeViewFrame *view_frame,
-						    int *desired_width,
-						    int *desired_height);
 
 END_GNOME_DECLS
 

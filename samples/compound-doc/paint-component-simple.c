@@ -69,8 +69,10 @@ embeddable_destroy_cb (GnomeEmbeddable *embeddable, gpointer data)
 {
 	embeddable_data_t *embeddable_data = (embeddable_data_t *) data;
 
+#if 0
 	gdk_pixmap_unref (embeddable_data->pixmap);
 	g_free (embeddable_data); 
+#endif
 }
 
 /*
@@ -81,7 +83,9 @@ static void
 embeddable_system_exception_cb (GnomeEmbeddable *embeddable, CORBA_Object corba_object,
 				CORBA_Environment *ev, gpointer data)
 {
+#if 0
 	gnome_object_destroy (GNOME_OBJECT (embeddable));
+#endif
 }
 
 /*
@@ -91,7 +95,9 @@ static void
 view_system_exception_cb (GnomeView *view, CORBA_Object corba_object,
 			  CORBA_Environment *ev, gpointer data)
 {
+#if 0
 	gnome_object_destroy (GNOME_OBJECT (view));
+#endif
 }
 
 /*
@@ -106,8 +112,8 @@ view_update (view_data_t *view_data)
 			 view_data->embeddable_data->pixmap,
 			 0, 0,
 			 0, 0,
-			 view_data->width,
-			 view_data->height);
+			 MIN (view_data->width, view_data->embeddable_data->width),
+			 MIN (view_data->height, view_data->embeddable_data->height));
 }
 
 /*
@@ -277,8 +283,10 @@ view_destroy_cb (GnomeView *view, gpointer data)
 {
 	view_data_t *view_data = (view_data_t *) data;
 
+#if 0
 	gdk_gc_destroy (view_data->gc);
 	g_free (view_data);
+#endif
 }
 
 /*
@@ -316,7 +324,7 @@ view_size_query_cb (GnomeView *view, int *desired_width, int *desired_height,
 	view_data_t *view_data = (view_data_t *) data;
 
 	*desired_width = view_data->embeddable_data->width;
-	*desired_width = view_data->embeddable_data->height;
+	*desired_height = view_data->embeddable_data->height;
 }
 
 /*
@@ -330,6 +338,8 @@ view_size_allocate_cb (GtkWidget *drawing_area, GtkAllocation *allocation,
 
 	view_data->width = allocation->width;
 	view_data->height = allocation->height;
+
+	view_update (view_data);
 }
 
 /*
@@ -401,7 +411,7 @@ embeddable_clear_image (embeddable_data_t *embeddable_data)
  * the component.
  */
 static void
-view_clear_image_cb (GnomeView *view, char *verb_name, void *user_data)
+view_clear_image_cb (GnomeView *view, const char *verb_name, void *user_data)
 {
 	view_data_t *view_data = (view_data_t *) user_data;
 	embeddable_data_t *embeddable_data;
@@ -447,14 +457,14 @@ view_factory (GnomeEmbeddable *embeddable,
 
 	view_data->last_x = -1;
 	view_data->last_y = -1;
+	view_data->width = 0;
+	view_data->height = 0;
 
 	/*
 	 * Now create the drawing area which will be used to display
 	 * the current image in this view.
 	 */
 	view_data->drawing_area = gtk_drawing_area_new ();
-	/* FIXME: REMOVE THIS! */
-	gtk_widget_set_usize (view_data->drawing_area, 100, 100);
 
 	/*
 	 * We will use this event to actually draw into the
@@ -488,7 +498,7 @@ view_factory (GnomeEmbeddable *embeddable,
 
 	gtk_box_pack_start (GTK_BOX (vbox),
 			    view_data->drawing_area,
-			    FALSE, FALSE, 0);
+			    TRUE, TRUE, 0);
 
 	gtk_widget_show_all (vbox);
 
@@ -502,7 +512,7 @@ view_factory (GnomeEmbeddable *embeddable,
 	 */
 	view = gnome_view_new (vbox);
 	view_data->view = view;
-	gtk_object_set_data (view, "view_data", view_data);
+	gtk_object_set_data (GTK_OBJECT (view), "view_data", view_data);
 
 	/*
 	 * Create the GnomeUIHandler for this view.  It will be used
@@ -632,6 +642,16 @@ embeddable_factory (GnomeEmbeddableFactory *this,
 				   _("_Clear Image"),
 				   _("Clear the image to black"));
 
+	/*
+	 * If the Embeddable encounters a fatal CORBA exception, it
+	 * will emit a "system_exception" signal, notifying us that
+	 * the object is defunct.  Our callback --
+	 * embeddable_system_exception_cb() -- destroys the defunct
+	 * GnomeEmbeddable object.
+	 */
+	gtk_signal_connect (GTK_OBJECT (embeddable), "system_exception",
+			    GTK_SIGNAL_FUNC (embeddable_system_exception_cb),
+			    embeddable_data);
 
 	/*
 	 * Catch the destroy signal so that we can free up resources.

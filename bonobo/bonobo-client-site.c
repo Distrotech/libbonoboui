@@ -10,6 +10,7 @@
  *
  * Author:
  *   Miguel de Icaza (miguel@kernel.org)
+ *   Nat Friedman (nat@nat.org)
  *
  * Copyright 1999 International GNOME Support (http://www.gnome-support.com)
  */
@@ -313,7 +314,7 @@ gnome_client_site_get_type (void)
  * The Embeddable uses its GnomeClientSite to communicate with the
  * container in which it is embedded.
  *
- * Returns: %TRUE if @objecdt was successfully bound to @client_site
+ * Returns: %TRUE if @object was successfully bound to @client_site
  * @client_site.
  */
 gboolean
@@ -358,6 +359,23 @@ gnome_client_site_bind_embeddable (GnomeClientSite *client_site, GnomeObjectClie
 	return TRUE;
 }
 
+/**
+ * gnome_client_site_get_embeddable:
+ * @client_site: A GnomeClientSite object which is bound to a remote
+ * GnomeObject server.
+ *
+ * Returns: The GnomeObjectClient object which corresponds to the
+ * remote GnomeObject to which @client_site is bound.
+ */
+GnomeObjectClient *
+gnome_client_site_get_embeddable (GnomeClientSite *client_site)
+{
+	g_return_val_if_fail (client_site != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_CLIENT_SITE (client_site), NULL);
+
+	return client_site->bound_object;
+}
+
 static void
 set_remote_window (GtkWidget *socket, GnomeViewFrame *view_frame)
 {
@@ -391,6 +409,17 @@ size_allocate (GtkWidget *widget, GtkAllocation *allocation, GnomeViewFrame *vie
 	CORBA_exception_free (&ev);
 }
 
+static void
+size_request (GtkWidget *widget, GtkRequisition *requisition, GnomeViewFrame *view_frame)
+{
+	int width, height;
+
+	gnome_view_frame_size_request (view_frame, &width, &height);
+
+	requisition->width = (gint16) width;
+	requisition->height = (gint16) height;
+}
+
 /**
  * gnome_client_site_new_view:
  * @client_site: the client site that contains a remote Embeddable
@@ -403,7 +432,8 @@ size_allocate (GtkWidget *widget, GtkAllocation *allocation, GnomeViewFrame *vie
  * function.
  * 
  * Returns: A GnomeViewFrame object that contains the view frame for
- * the new view of @server_object.  */
+ * the new view of @server_object.
+ */
 GnomeViewFrame *
 gnome_client_site_new_view (GnomeClientSite *client_site)
 {
@@ -474,6 +504,9 @@ gnome_client_site_new_view (GnomeClientSite *client_site)
 
 	gtk_signal_connect (GTK_OBJECT (wrapper), "size_allocate",
 			    GTK_SIGNAL_FUNC (size_allocate), view_frame);
+
+	gtk_signal_connect (GTK_OBJECT (wrapper), "size_request",
+			    GTK_SIGNAL_FUNC (size_request), view_frame);
 	
 	CORBA_exception_free (&ev);		
 	return view_frame;

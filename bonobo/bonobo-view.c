@@ -100,7 +100,6 @@ impl_GNOME_View_size_allocate (PortableServer_Servant servant,
 
 	allocation.width = width;
 	allocation.height = height;
-	
 	gtk_widget_size_allocate (view->plug, &allocation);
 }
 
@@ -344,9 +343,9 @@ gnome_view_class_init (GnomeViewClass *class)
                                 GTK_RUN_LAST,
                                 object_class->type,
                                 GTK_SIGNAL_OFFSET (GnomeViewClass, size_query), 
-                                gtk_marshal_NONE__BOOL,
-                                GTK_TYPE_NONE, 1,
-				GTK_TYPE_BOOL);
+                                gtk_marshal_NONE__POINTER_POINTER,
+                                GTK_TYPE_NONE, 2,
+				GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 
 	view_signals [VIEW_UNDO_LAST_OPERATION] =
                 gtk_signal_new ("view_undo_last_operation",

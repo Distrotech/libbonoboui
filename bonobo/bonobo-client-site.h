@@ -44,18 +44,19 @@ typedef struct {
 	void (*save_object)  (GnomeClientSite *, GNOME_Persist_Status *status);
 } GnomeClientSiteClass;
 
-GtkType          gnome_client_site_get_type		(void);
-GnomeClientSite *gnome_client_site_new			(GnomeContainer *container);
-GnomeClientSite *gnome_client_site_construct		(GnomeClientSite  *client_site,
+GtkType            gnome_client_site_get_type		(void);
+GnomeClientSite   *gnome_client_site_new		(GnomeContainer *container);
+GnomeClientSite   *gnome_client_site_construct		(GnomeClientSite  *client_site,
 							 GNOME_ClientSite corba_client_site,
 							 GnomeContainer   *container);
 
-gboolean         gnome_client_site_bind_embeddable	(GnomeClientSite *client_site,
+gboolean           gnome_client_site_bind_embeddable	(GnomeClientSite *client_site,
 							 GnomeObjectClient *object);
+GnomeObjectClient *gnome_client_site_get_embeddable	(GnomeClientSite *client_site);
 
-GnomeViewFrame  *gnome_client_site_new_view		(GnomeClientSite *client_site);
-GList		*gnome_client_site_get_verbs		(GnomeClientSite *client_site);
-void		 gnome_client_site_free_verbs		(GList *string_list);
+GnomeViewFrame    *gnome_client_site_new_view		(GnomeClientSite *client_site);
+GList		  *gnome_client_site_get_verbs		(GnomeClientSite *client_site);
+void		   gnome_client_site_free_verbs		(GList *verb_list);
 
 /*
  * Compatibility macros for Miguel.

@@ -22,6 +22,7 @@ enum {
 	UNDO_LAST_OPERATION,
 	REQUEST_RESIZE,
 	USER_ACTIVATE,
+	USER_CONTEXT,
 	LAST_SIGNAL
 };
 
@@ -150,13 +151,21 @@ gnome_view_frame_construct (GnomeViewFrame *view_frame,
 }
 
 static gboolean
-wrapper_button_press_cb (GtkWidget *wrapper, GdkEventButton *event, gpointer data)
+gnome_view_frame_wrapper_button_press_cb (GtkWidget *wrapper,
+					  GdkEventButton *event,
+					  gpointer data)
 {
 	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (data);
 
 	/* Check for double click. */
 	if (event->type == GDK_2BUTTON_PRESS)
 		gtk_signal_emit (GTK_OBJECT (view_frame), view_frame_signals [USER_ACTIVATE]);
+
+	/* Check for right click. */
+	else if (event->type == GDK_BUTTON_PRESS &&
+		 event->button == 3)
+		gtk_signal_emit (GTK_OBJECT (view_frame), view_frame_signals [USER_CONTEXT]);
+		
 
 	return FALSE;
 } 
@@ -191,7 +200,7 @@ gnome_view_frame_new (GnomeClientSite *client_site)
 	 * on the wrapper.
 	 */
 	gtk_signal_connect (GTK_OBJECT (wrapper), "button_press_event",
-			    GTK_SIGNAL_FUNC (wrapper_button_press_cb),
+			    GTK_SIGNAL_FUNC (gnome_view_frame_wrapper_button_press_cb),
 			    view_frame);
 
 	corba_view_frame = create_gnome_view_frame (GNOME_OBJECT (view_frame));
@@ -263,6 +272,14 @@ gnome_view_frame_class_init (GnomeViewFrameClass *class)
 				GTK_RUN_LAST,
 				object_class->type,
 				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, user_activate),
+				gtk_marshal_NONE__NONE,
+				GTK_TYPE_NONE, 0);
+
+	view_frame_signals [USER_CONTEXT] =
+		gtk_signal_new ("user_context",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GnomeViewFrameClass, user_context),
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
@@ -544,7 +561,8 @@ gnome_view_frame_get_ui_handler (GnomeViewFrame *view_frame)
  * @desired_width: pointer to an integer, where the desired width of the View is stored
  * @desired_height: pointer to an integer, where the desired height of the View is stored
  *
- * Returns: The default desired_width and desired_height the component wants to use.
+ * Returns: The default desired_width and desired_height the component
+ * wants to use.
  */
 void
 gnome_view_frame_size_request (GnomeViewFrame *view_frame, int *desired_width, int *desired_height)
@@ -573,4 +591,102 @@ gnome_view_frame_size_request (GnomeViewFrame *view_frame, int *desired_width, i
 		}
 	}
 	CORBA_exception_free (&ev);
+}
+
+static void
+gnome_view_frame_verb_selected_cb (GnomeUIHandler *uih, void *user_data, char *path)
+{
+	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (user_data);
+	char *verb_name;
+
+	g_assert (path != NULL);
+
+	/*
+	 * A verb was selected.  Extract the verb name from the menu
+	 * item path.
+	 */
+	verb_name = path + 1;
+
+	/*
+	 * Now execute the verb on the remote View.
+	 */
+	gnome_view_frame_view_do_verb (view_frame, verb_name);
+
+	/*
+	 * Store the verb name.
+	 */
+	gtk_object_set_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name", g_strdup (verb_name));
+}
+
+/**
+ * gnome_view_frame_popup_verbs:
+ * @view_frame: A GnomeViewFrame object which is bound to a remote
+ * GnomeView.
+ *
+ * This function creates a popup menu containing the available verbs
+ * for the remote GnomeEmbeddable.  When the user selects a verb in
+ * the menu, the menu is destroyed, and the verb is executed on the
+ * view to which @view_frame is bound.  This function is meant to act
+ * as a convenience, to save people the trouble of having to
+ * reimplement this functionality over and over again.
+ *
+ * Returns: The name of the verb which the user selected, or %NULL if
+ * no verb was selected.
+ */
+char *
+gnome_view_frame_popup_verbs (GnomeViewFrame *view_frame)
+{
+	GnomeUIHandler *popup;
+	GList *verbs, *l;
+	char *verb;
+
+	g_return_val_if_fail (view_frame != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_VIEW_FRAME (view_frame), NULL);
+	g_return_val_if_fail (view_frame->view != CORBA_OBJECT_NIL, NULL);
+
+	/*
+	 * First get the list of available verbs from the remote
+	 * GnomeEmbeddable.
+	 */
+	verbs = gnome_client_site_get_verbs (view_frame->client_site);
+
+	/*
+	 * Now build a menu.
+	 */
+	popup = gnome_ui_handler_new ();
+	gnome_ui_handler_create_popup_menu (popup);
+
+	for (l = verbs; l != NULL; l = l->next) {
+		GnomeVerb *verb = (GnomeVerb *) l->data;
+		char *path;
+
+		path = g_strconcat ("/", verb->name, NULL);
+		gnome_ui_handler_menu_new_item (popup, path,
+						verb->label, verb->hint,
+						-1,
+						GNOME_UI_HANDLER_PIXMAP_NONE, NULL,
+						0, (GdkModifierType) 0,
+						gnome_view_frame_verb_selected_cb,
+						view_frame);
+
+		g_free (path);
+	}
+
+	/*
+	 * Pop up the menu.
+	 */
+	gnome_ui_handler_do_popup_menu (popup);
+
+	/*
+	 * Destroy it.
+	 */
+	gtk_object_unref (GTK_OBJECT (popup));
+
+	/*
+	 * Grab the name of the executed verb.
+	 */
+	verb = gtk_object_get_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name");
+	gtk_object_remove_data (GTK_OBJECT (view_frame), "view_frame_executed_verb_name");
+
+	return verb;
 }

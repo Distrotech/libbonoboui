@@ -67,8 +67,8 @@ impl_GNOME_Embeddable_get_client_site (PortableServer_Servant servant,
 
 static void
 impl_GNOME_Embeddable_set_host_name (PortableServer_Servant servant,
-				     const CORBA_char *name,
-				     const CORBA_char *appname,
+				     CORBA_char *name,
+				     CORBA_char *appname,
 				     CORBA_Environment *ev)
 {
 	GnomeEmbeddable *embeddable = GNOME_EMBEDDABLE (gnome_object_from_servant (servant));
@@ -119,7 +119,7 @@ impl_GNOME_Embeddable_get_verb_list (PortableServer_Servant servant,
 		GNOME_Embeddable_GnomeVerb *corba_verb;
 		GnomeVerb *verb = (GnomeVerb *) l->data;
 
-		corba_verb = GNOME_Embeddable_GnomeVerb__alloc ();
+		corba_verb = & verb_list->_buffer [i];
 #define CORBIFY_STRING(s) ((s) == NULL ? "" : (s))
 		corba_verb->name = CORBA_string_dup (CORBIFY_STRING (verb->name));
 		corba_verb->label = CORBA_string_dup (CORBIFY_STRING (verb->label));
@@ -170,7 +170,14 @@ gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
 	 */
 	if (embeddable->views != NULL)
 		return;
-
+	/*
+	 * FIXME:
+	 *
+	 * This code is temporary disabled because pinging
+	 * tends to kill the component for some reason.
+	 * This needs to be investigated.
+	 */
+#if 0
 	if (! gnome_unknown_ping (embeddable->client_site)) {
 		/*
 		 * The remote end is dead; it's time for
@@ -178,6 +185,7 @@ gnome_embeddable_view_destroy_cb (GnomeView *view, gpointer data)
 		 */
 		gnome_object_destroy (GNOME_OBJECT (embeddable));
 	}
+#endif
 }
 
 static GNOME_View
