@@ -9,18 +9,16 @@ msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-14 04:32+0100\n"
-"PO-Revision-Date: 2005-01-30 21:10+0200\n"
+"PO-Revision-Date: 2005-02-17 09:55+0200\n"
 "Last-Translator: Canonical Ltd <translations@canonical.com>\n"
 "Language-Team: Xhosa <xh-translate@ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Capitalisation
 #: bonobo/bonobo-canvas-item.c:667
-#, fuzzy
 msgid "corba factory"
-msgstr "Ifektri ye-corba"
+msgstr "ifektri ye-corba"
 
 #: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
@@ -30,11 +28,9 @@ msgstr "Isikhombisi sefektri"
 msgid "corba UI container"
 msgstr "isiqulathi se-corba UI"
 
-# woMsebenzisi
 #: bonobo/bonobo-canvas-item.c:678
-#, fuzzy
 msgid "The User interface container"
-msgstr "isiqulathi somdibaniso wemida womsebenzisi"
+msgstr "Isiqulathi somdibaniso wemida woMsebenzisi"
 
 #: bonobo/bonobo-dock-item-grip.c:256
 msgid "Dock the toolbar"
@@ -50,14 +46,12 @@ msgstr "Yeka ukunciphisa isixhobo samaqhosha emiyalezo"
 msgid "Shadow type"
 msgstr "Uhlobo lwesithunzi"
 
-# Ukuziqhelanisa
 #: bonobo/bonobo-dock-item.c:243
 #: bonobo/bonobo-dock-item.c:244
 #: bonobo/bonobo-ui-toolbar.c:1119
 #: bonobo/bonobo-ui-toolbar.c:1120
-#, fuzzy
 msgid "Orientation"
-msgstr "ukuziqhelanisa"
+msgstr "Ukuziqhelanisa"
 
 #: bonobo/bonobo-dock-item.c:254
 #: bonobo/bonobo-dock-item.c:255
@@ -81,16 +75,13 @@ msgstr "Khetha ifayili emayivulwe"
 msgid "Select files to open"
 msgstr "Khetha iifayili emazivulwe"
 
-# Khetha
 #: bonobo/bonobo-file-selector-util.c:408
-#, fuzzy
 msgid "Select a filename to save"
-msgstr "khetha igama lefayili emayigcinwe"
+msgstr "Khetha igama lefayili emayigcinwe"
 
 #: bonobo/bonobo-plug.c:412
-#, fuzzy
 msgid "Event Forwarding"
-msgstr "ukuthumela isiphumo"
+msgstr "Ukuthumela isiPhumo"
 
 #: bonobo/bonobo-plug.c:413
 msgid "Whether X events should be forwarded"
@@ -186,42 +177,32 @@ msgstr "Faka yonke inkcazelo i-UI's XML kwisakhelo"
 msgid "Configure UI"
 msgstr "Misela inkqubo i-UI"
 
-# Ii-flegi
 #: bonobo/bonobo-ui-init-gtk.c:113
-#, fuzzy
 msgid "Gdk debugging flags to set"
-msgstr "iiflegi i-Gdk zokusombulula ingxaki ziza kumiselwa"
+msgstr "Iiflegi i-Gdk zokusombulula ingxaki ziza kumiselwa"
 
-# II-FLEGI
 #: bonobo/bonobo-ui-init-gtk.c:113
 #: bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:144
 #: bonobo/bonobo-ui-init-gtk.c:147
-#, fuzzy
 msgid "FLAGS"
-msgstr "i-FLAGS"
+msgstr "II-FLEGI"
 
-# Iiflegi
 #: bonobo/bonobo-ui-init-gtk.c:116
-#, fuzzy
 msgid "Gdk debugging flags to unset"
-msgstr "iiflegi zokusombulula ingxaki ziza kuyekwa ukumiselwa"
+msgstr "Iiflegi zokusombulula ingxaki ziza kuyekwa ukumiselwa"
 
-# Umboniso
 #: bonobo/bonobo-ui-init-gtk.c:120
-#, fuzzy
 msgid "X display to use"
-msgstr "umboniso u-X emawusetyenziswe"
+msgstr "Umboniso u-X emawusetyenziswe"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
 msgstr "UMBONISO"
 
-# Isikrini
 #: bonobo/bonobo-ui-init-gtk.c:124
-#, fuzzy
 msgid "X screen to use"
-msgstr "iskrini u-X emasisetyenziswe"
+msgstr "Iskrini u-X emasisetyenziswe"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
@@ -251,23 +232,17 @@ msgstr "Lungisa ihlelo njengoko lisetyenzisiwe ngumlawuli wefestile"
 msgid "CLASS"
 msgstr "IHLELO"
 
-# Iiflegi 
 #: bonobo/bonobo-ui-init-gtk.c:144
-#, fuzzy
 msgid "Gtk+ debugging flags to set"
-msgstr "iiflegi zokusombulula ingxaki i-Gtk+ ziza kumiselwa"
+msgstr "Iiflegi zokusombulula ingxaki i-Gtk+ ziza kumiselwa"
 
-# Iiflegi 
 #: bonobo/bonobo-ui-init-gtk.c:147
-#, fuzzy
 msgid "Gtk+ debugging flags to unset"
-msgstr "iiflegi zokusombulula ingxaki i-Gtk+ ziza kuyekwa ukumiselwa"
+msgstr "Iiflegi zokusombulula ingxaki i-Gtk+ ziza kuyekwa ukumiselwa"
 
-# Yenza
 #: bonobo/bonobo-ui-init-gtk.c:150
-#, fuzzy
 msgid "Make all warnings fatal"
-msgstr "yenza zonke izilumkiso zimiselwe"
+msgstr "Yenza zonke izilumkiso zimiselwe"
 
 #: bonobo/bonobo-ui-init-gtk.c:153
 msgid "Load an additional Gtk module"
@@ -277,17 +252,13 @@ msgstr "Yongeza enye imodyuli i-Gtk"
 msgid "MODULE"
 msgstr "IMODYULI"
 
-# I-GTK+
 #: bonobo/bonobo-ui-init-gtk.c:162
-#, fuzzy
 msgid "GTK+"
-msgstr "i-GTK+"
+msgstr "I-GTK+"
 
-# Inkxaso
 #: bonobo/bonobo-ui-main.c:202
-#, fuzzy
 msgid "Bonobo GUI support"
-msgstr "inkxaso i-Bonobo GUI"
+msgstr "Inkxaso i-Bonobo GUI"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "B_oth"
@@ -313,21 +284,17 @@ msgstr "_Fihla i-toolbar"
 msgid "Customi_ze"
 msgstr "Zilungise_lele ngendlela oyithandayo"
 
-# itoolbar instead of itoobar
 #: bonobo/bonobo-ui-sync-toolbar.c:569
-#, fuzzy
 msgid "Customize the toolbar"
-msgstr "Zilungiselele i-toobar ngendlela oyithandayo"
+msgstr "Zilungiselele i-toolbar ngendlela oyithandayo"
 
 #: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
 msgstr "iyazula"
 
-# ukuba ngaba 
 #: bonobo/bonobo-ui-toolbar.c:1130
-#, fuzzy
 msgid "whether the toolbar is floating"
-msgstr "ukuba i-toolbar iyazula"
+msgstr "ukuba ngaba i-toolbar iyazula"
 
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
@@ -345,33 +312,25 @@ msgstr "Jonga uncedo ngale nkqubo"
 msgid "Name of the window - used for configuration serialization."
 msgstr "Igama lefestile - lisetyenziselwa ukumiselwa kwenkqubo ngokulandelelanayo."
 
-# Inqanaba loKwandisa
 #: bonobo/bonobo-zoomable.c:326
-#, fuzzy
 msgid "Zoom level"
-msgstr "inqanaba lokwandisa"
+msgstr "Inqanaba loKwandisa"
 
-# Iqondo
 #: bonobo/bonobo-zoomable.c:327
-#, fuzzy
 msgid "The degree of enlargment"
-msgstr "iqondo lokwandisa"
+msgstr "Iqondo lokwandisa"
 
-# loKwandisa
 #: bonobo/bonobo-zoomable.c:335
-#, fuzzy
 msgid "Minimum Zoom level"
-msgstr "Elona nqanaba lokwandisa lincinci"
+msgstr "Elona nqanaba loKwandisa lincinci"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
 msgstr "Elona qondo lokwandisa lincinci"
 
-# loKwandisa
 #: bonobo/bonobo-zoomable.c:344
-#, fuzzy
 msgid "Maximum Zoom level"
-msgstr "Elona nqanaba lokwandisa liphezulu"
+msgstr "Elona nqanaba loKwandisa liphezulu"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
@@ -381,11 +340,9 @@ msgstr "Elona qondo lokwandisa liphezulu"
 msgid "Has a minimum Zoom level"
 msgstr "Inenqanaba loKwandisa elilelona lincinci"
 
-# Ukuba ngaba
 #: bonobo/bonobo-zoomable.c:354
-#, fuzzy
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Ukuba sinenqanaba lokwandisa elilelona lincinci elilungileyo"
+msgstr "Ukuba ngaba sinenqanaba lokwandisa elilelona lincinci elilungileyo"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
@@ -399,11 +356,9 @@ msgstr "Nokuba sinenqanaba lokwandisa elilelona liphezulu"
 msgid "Is continuous"
 msgstr "Iyaqhubeka"
 
-# Consistent punctuation, i.e. brackets
 #: bonobo/bonobo-zoomable.c:370
-#, fuzzy
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Ukuba sandisa ngokuqhubekayo [ngokuchaseneyo neejampu]"
+msgstr "Ukuba ngaba sandisa ngokuqhubekayo (ngokuchaseneyo neejampu)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -444,7 +399,6 @@ msgstr "UMbuliso we-Gnome"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
-#, fuzzy
 msgid "Hello, World!"
 msgstr "Molo, mHlobo wam!"
 
