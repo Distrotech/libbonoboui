@@ -1,3 +1,10 @@
+2001-08-08  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: build samples/controls.
+	add xml-i18n-tools.
+
+	* samples/controls/Makefile.am: fixup.
+
 2001-08-07  Michael Meeks  <michael@ximian.com>
 
 	* configure.in: use PKG_CHECK_MODULES, depend on

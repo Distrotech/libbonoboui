@@ -38,6 +38,10 @@ bonobo-control.[ch]
 	Bonobo_PropertyBag (a CORBA object reference) instead of
 	BonoboPropertyBag.
 
+	bonobo_control_set_properties,
+	bonobo_control_get_properties: pass the CORBA reference around not
+	a local one, since we could have a remote bag here.
+
 	Added an optional CORBA exception environment to the following
 	methods:
 	 bonobo_control_set_property
