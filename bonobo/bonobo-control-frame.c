@@ -209,6 +209,11 @@ bonobo_control_frame_set_remote_window (GtkWidget          *socket,
 		return;
 
 	/*
+	 * Our cursor should not be used.
+	 */
+	gdk_window_set_cursor (socket->window, NULL);
+	
+	/*
 	 * Sync the server, since the XID may have been created on the
 	 * client side without communication with the X server.
 	 */
