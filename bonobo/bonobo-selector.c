@@ -243,13 +243,27 @@ cancel_callback (GtkWidget *widget, gpointer data)
 }
 
 static void
+select_row (GtkCList *clist, gint row, gint col, 
+	    GdkEvent *event, GnomeBonoboSelector *sel)
+{
+	if (event && event->type == GDK_2BUTTON_PRESS)
+		gtk_signal_emit_by_name (GTK_OBJECT (sel), "ok");
+	else {
+		GtkCListClass *cl;
+
+		cl = gtk_type_class (GTK_TYPE_CLIST);
+		if (cl->select_row)
+			cl->select_row (clist, row, col, event);
+	}
+}
+
+static void
 gnome_bonobo_selector_init (GtkWidget *widget)
 {
 	GnomeBonoboSelector *sel = GNOME_BONOBO_SELECTOR (widget);
 	GtkWidget *scrolled;
 	GnomeBonoboSelectorPrivate *priv;
 	gchar *titles[] = { N_("Bonobo object description"), "goadid", NULL };
-	int i;
 	
 	g_return_if_fail (widget != NULL);
 	
@@ -265,6 +279,8 @@ gnome_bonobo_selector_init (GtkWidget *widget)
 	priv->clist = gtk_clist_new_with_titles (2, titles);
 	gtk_clist_set_selection_mode (GTK_CLIST (priv->clist),
 		GTK_SELECTION_BROWSE);
+	gtk_signal_connect (GTK_OBJECT (priv->clist), "select-row",
+			    GTK_SIGNAL_FUNC (select_row), sel);
 	gtk_clist_set_column_visibility (GTK_CLIST (priv->clist), 1, FALSE);
 	gtk_container_add (GTK_CONTAINER (scrolled), priv->clist);
 	
