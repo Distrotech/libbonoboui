@@ -1,21 +1,24 @@
+# translation of tr.po to Turkish
 # Turkish translation of libbonoboui.
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Ömer Fadýl USTA <omer_fad@hotmail.com> , 2001.
+# Görkem Çetin <gorkem@gelecek.com.tr>, 2002
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 1.97.0\n"
+"Project-Id-Version: tr\n"
 "POT-Creation-Date: 2002-06-01 18:31+0100\n"
-"PO-Revision-Date: 2001-10-23 17:15+0200\n"
-"Last-Translator: Ömer Fadýl USTA <omer_fad@hotmail.com>\n"
+"PO-Revision-Date: 2002-07-28 20:21+0000\n"
+"Last-Translator: Görkem Çetin <gorkem@gelecek.com.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-9\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0beta2\n"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr ""
+msgstr "corba mimarisi"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
@@ -46,7 +49,7 @@ msgstr "Gölge tipi"
 #: bonobo/bonobo-dock-item.c:300 bonobo/bonobo-dock-item.c:301
 #: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
 msgid "Orientation"
-msgstr "Doðrulamak"
+msgstr ""
 
 #: bonobo/bonobo-dock-item.c:311 bonobo/bonobo-dock-item.c:312
 #: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
@@ -88,7 +91,7 @@ msgstr "Tanýmlama"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "Arayüzler gerekiyor"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -126,9 +129,8 @@ msgid "Toolbars"
 msgstr "Araç çubuðu"
 
 #: bonobo/bonobo-ui-config-widget.c:302
-#, fuzzy
 msgid "toolbars"
-msgstr "Araç çubuðu"
+msgstr "Araç çubuklarý"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Look"
@@ -143,9 +145,8 @@ msgid "_Text and Icon"
 msgstr "_Metin ve simge"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "_Metin ve simge"
+msgstr "Sadece metin"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -162,7 +163,7 @@ msgstr ""
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
-msgstr ""
+msgstr "BAYRAKLAR"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
@@ -399,3 +400,4 @@ msgstr ""
 
 #~ msgid "Select an object"
 #~ msgstr "Bir nesne seçin"
+
