@@ -36,6 +36,15 @@ poptContext ctx;
 void
 sample_app_exit (SampleApp *app)
 {
+	GList *l;
+
+	for (l = app->components; l;) {
+		GList *tmp = l->next; /* Store the next pointer 
+					 as component_del invalidates l */
+		component_del (l->data);
+		l = tmp;
+	}
+	
 	bonobo_object_destroy (BONOBO_OBJECT (app->container));
 	gtk_main_quit ();
 }
