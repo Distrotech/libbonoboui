@@ -13,6 +13,7 @@
 #include <glib/gmacros.h>
 #include <libgnomecanvas/gnome-canvas.h>
 
+#define BONOBO_TYPE_CANVAS_ITEM          (bonobo_canvas_item_get_type ())
 #define BONOBO_CANVAS_ITEM(obj)          (GTK_CHECK_CAST((obj), bonobo_canvas_item_get_type (), BonoboCanvasItem))
 #define BONOBO_CANVAS_ITEM_CLASS(k)      (GTK_CHECK_CLASS_CAST ((k), bonobo_canvas_item_get_type (), BonoboCanvasItemClass))
 #define BONOBO_IS_CANVAS_ITEM(o)         (GTK_CHECK_TYPE((o), bonobo_canvas_item_get_type ()))

@@ -1,7 +1,12 @@
 2002-01-15  Johan Dahlin  <jdahlin@telia.com>
 
-	* bonobo/bonobo-selector.h (BONOBO_TYPE_SELECTOR): 
-	Add macro.
+	* bonobo/bonobo-canvas-component.h (BONOBO_TYPE_CANVAS_COMPONENT): Add
+
+	* bonobo/bonobo-ui-config-widget.h (BONOBO_TYPE_UI_CONFIG_WIDGET): Add
+
+	* bonobo/bonobo-selector-widget.h (BONOBO_TYPE_SELECTOR_WIDGET): Add
+
+	* bonobo/bonobo-selector.h (BONOBO_TYPE_SELECTOR): Add
 
 2002-01-15  Michael Meeks  <michael@ximian.com>
 

@@ -15,6 +15,7 @@
 
 G_BEGIN_DECLS
 
+#define BONOBO_TYPE_UI_CONFIG_WIDGET            (bonobo_ui_config_widget_get_type ())
 #define BONOBO_UI_CONFIG_WIDGET(obj)		GTK_CHECK_CAST(obj,  bonobo_ui_config_widget_get_type (), BonoboUIConfigWidget)
 #define BONOBO_UI_CONFIG_WIDGET_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, bonobo_ui_config_widget_get_type (), BonoboUIConfigWidgetClass)
 #define BONOBO_IS_UI_CONFIG_WIDGET(obj)		GTK_CHECK_TYPE (obj, bonobo_ui_config_widget_get_type ())
