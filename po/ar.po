@@ -1,20 +1,23 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# translation of libbonoboui.gnome-2-2.ar.po to Arabic
+# Arafat Medini <lumina@silverpen.de>, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2003-05-19 14:20+0100\n"
-"PO-Revision-Date: 2002-05-31 19:15-0300\n"
-"Last-Translator: Isam Bayazidi <bayazidi@arabeyes.org>\n"
-"Language-Team: Arabic <support@arabeyes.org>\n"
-"MIME-Version: 1.0\n"
+"Project-Id-Version: libbonoboui.gnome-2-2.ar\n"
+"POT-Creation-Date: 2003-06-16 12:34+0200"
+"PO-Revision-Date: 2003-06-16 16:56+0200\n"
+"Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
+"Language-Team: Arabic <doc@arabeyes.org>\n"
+"MIME-Version: 1.0"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 1.0.1\n"
 
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Arafat Medini  <lumina@silverpen.de>, 2003.
+#
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
 msgstr "معمل كوربا"
@@ -88,7 +91,7 @@ msgstr "الشرح"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "الواجهات·المطلوبة"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
@@ -96,14 +99,16 @@ msgid ""
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
+"صف واجهات ذي نهاية م_صفرة يجب ان يدعمه النادل لكي يساق في المختار. "
+" الإفتراضات إلى \"IDL:Bonobo/Embeddable:1.0\" إذا لم تعلن اي واجهة"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "خانة·الواجهة·المطلوبة"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "واحدة·من·الواجهات·المطلوبة"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -142,9 +147,8 @@ msgid "_Text and Icon"
 msgstr "نص ورمز رسومي"
 
 #: bonobo/bonobo-ui-config-widget.c:334
-#, fuzzy
 msgid "Text only"
-msgstr "نص ورمز رسومي"
+msgstr "نص فقط"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
@@ -152,15 +156,15 @@ msgstr "الأولوية فقط نصاً"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
-msgstr ""
+msgstr "تنقيح"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr ""
+msgstr "_"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "اسقاط كامل وصف XML لواجهة المشتخدم الى الشاشة الطرفية"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
@@ -188,13 +192,12 @@ msgid "DISPLAY"
 msgstr "شاشة"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
-#, fuzzy
 msgid "X screen to use"
-msgstr "شاشة إظهار X المراد استعمالها"
+msgstr "شاشة X للاستعمال"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "شاشة"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
@@ -298,16 +301,15 @@ msgstr "فيما إذا كان شريط الأدوات يطفو"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
-msgstr ""
+msgstr "_محتويات"
 
 #: bonobo/bonobo-ui-util.c:624
-#, fuzzy
 msgid "View help for this application"
-msgstr "حول هذا البرنامج"
+msgstr "عرض المساعدة حول هذا البرنامج"
 
 #: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "اسم النافذة المستعملة لتجزأة الإعدادات."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -405,3 +407,4 @@ msgstr "لم يتم التمكن من ابتداء شيفرة libbonoboui "
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "لم يتم التمكن من ابتداء واجهة مستخدم Bonobo "
+
