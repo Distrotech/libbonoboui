@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-06-21 12:57+0200\n"
+"POT-Creation-Date: 2003-07-07 13:10+0200\n"
 "PO-Revision-Date: 2003-06-14 12:08+0100\n"
 "Last-Translator: Huib Kleinhout <huib@stack.nl>\n"
 "Language-Team: Dutch <NL@li.org>\n"
@@ -366,7 +366,7 @@ msgstr "Of er vloeiend gezoomd wordt (in plaats van met stappen)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "Over dit programma"
+msgstr "Info over deze toepassing"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
