@@ -764,18 +764,16 @@ bonobo_dock_item_size_allocate (GtkWidget     *widget,
         {
           GtkAllocation grip_alloc = *allocation;
 
-	  grip_alloc.x = grip_alloc.y = border_width;
+	  grip_alloc.x = grip_alloc.y = 0;
 
           if (di->orientation == GTK_ORIENTATION_HORIZONTAL) {
             child_allocation.x += DRAG_HANDLE_SIZE;
 
             grip_alloc.width = DRAG_HANDLE_SIZE;
-            grip_alloc.height -= border_width * 2;
           } else {
             child_allocation.y += DRAG_HANDLE_SIZE;
 
             grip_alloc.height = DRAG_HANDLE_SIZE;
-            grip_alloc.width -= border_width * 2;
 	  }
 
 	  gtk_widget_size_allocate (di->_priv->grip, &grip_alloc);

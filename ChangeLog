@@ -1,3 +1,9 @@
+2002-04-09  Jeroen Zwartepoorte  <jeroen@xs4all.nl>
+
+	* bonobo/bonobo-dock-item.c: (bonobo_dock_item_size_allocate):
+	Remove space around toolbar handle widget so it looks like the
+	gnome 1.4 handle.
+
 2002-04-03  jacob berkman  <jacob@ximian.com>
 
 	* bonobo/bonobo-ui-container.h: include gmacros.h before using a
