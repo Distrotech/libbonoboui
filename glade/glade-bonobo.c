@@ -51,6 +51,7 @@ glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
 {
     const gchar *control_moniker = NULL;
     GtkWidget *widget;
+    GObjectClass *oclass;
     BonoboControlFrame *cf;
     Bonobo_PropertyBag pb;
     GList *tmp;
@@ -73,6 +74,8 @@ glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
 	return NULL;
     }
 
+    oclass = G_OBJECT_GET_CLASS (widget);
+
     cf = bonobo_widget_get_control_frame (BONOBO_WIDGET (widget));
 
     if (!cf) {
@@ -88,43 +91,54 @@ glade_bonobo_widget_new (GladeXML *xml, GType widget_type,
     for (i = 0; i < info->n_properties; i++) {
 	const gchar *name = info->properties[i].name;
 	const gchar *value = info->properties[i].value;
-	CORBA_TypeCode tc;
+	GParamSpec *pspec;
 
 	if (!strcmp (name, "moniker"))
 	    continue;
 
-	tc  = bonobo_property_bag_client_get_property_type (pb, name, NULL);
+	pspec = g_object_class_find_property (oclass, name);
+	if (pspec) {
+	    GValue gvalue = { 0 };
 
-	switch (tc->kind) {
-	case CORBA_tk_boolean:
-	    bonobo_property_bag_client_set_value_gboolean (pb, name,
+	    if (glade_xml_set_value_from_string(pspec, value, &gvalue)) {
+		g_object_set_property(widget, name, &gvalue);
+		g_value_unset(&gvalue);
+	    }
+	} else if (pb != CORBA_OBJECT_NIL) {
+	    CORBA_TypeCode tc =
+		bonobo_property_bag_client_get_property_type (pb, name, NULL);
+
+	    switch (tc->kind) {
+	    case CORBA_tk_boolean:
+		bonobo_property_bag_client_set_value_gboolean (pb, name,
 				value[0] == 'T' || value[0] == 'y', NULL);
 	    break;
-	case CORBA_tk_string:
-	    bonobo_property_bag_client_set_value_string (pb, name, value,NULL);
-	    break;
-	case CORBA_tk_long:
-	    bonobo_property_bag_client_set_value_glong (pb, name,
-							strtol (value, NULL,0),
-							NULL);
-	    break;
-	case CORBA_tk_float:
-	    bonobo_property_bag_client_set_value_gfloat (pb, name,
-							 strtod (value, NULL),
-							 NULL);
-	    break;
-	case CORBA_tk_double:
-	    bonobo_property_bag_client_set_value_gdouble (pb, name,
+	    case CORBA_tk_string:
+		bonobo_property_bag_client_set_value_string (pb, name, value,
+							     NULL);
+		break;
+	    case CORBA_tk_long:
+		bonobo_property_bag_client_set_value_glong (pb, name,
+					strtol (value, NULL,0), NULL);
+		break;
+	    case CORBA_tk_float:
+		bonobo_property_bag_client_set_value_gfloat (pb, name,
+					strtod (value, NULL), NULL);
+		break;
+	    case CORBA_tk_double:
+		bonobo_property_bag_client_set_value_gdouble (pb, name,
 							  strtod (value, NULL),
 							  NULL);
-	    break;
-	default:
-	    g_warning ("Unhandled type %d", tc->kind);
-	    break;
+		break;
+	    default:
+		g_warning ("Unhandled type %d for `%s'", tc->kind, name);
+		break;
+	    }
+	} else {
+	    g_warning ("could not handle property `%s'", name);
 	}
     }
 
-    gtk_widget_show (widget);
     return widget;
 }
 
