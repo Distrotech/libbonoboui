@@ -103,6 +103,9 @@ impl_toolbar_reconfigured (GtkToolItem *item)
 	BonoboUIToolbarControlDisplay display;
 	BonoboUIToolbarControlItem *control_item = (BonoboUIToolbarControlItem *) item;
 
+	if (GTK_WIDGET (item)->parent == NULL)
+		return;
+
 	toolbar = get_parent_toolbar (control_item);
 	g_return_if_fail (toolbar != NULL);
 
@@ -155,18 +158,6 @@ impl_dispose (GObject *object)
 	}
 
 	GNOME_CALL_PARENT (G_OBJECT_CLASS, dispose, (object));
-}
-
-static void
-impl_finalize (GObject *object)
-{
-	BonoboUIToolbarControlItem *control_item;
-
-	control_item = (BonoboUIToolbarControlItem *) object;
-
-	g_free (control_item);
-
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
 static void
@@ -257,7 +248,6 @@ bonobo_ui_toolbar_control_item_class_init (BonoboUIToolbarControlItemClass *klas
 	GtkToolItemClass *tool_item_class = (GtkToolItemClass *) klass;
 	
 	object_class->dispose  = impl_dispose;
-	object_class->finalize = impl_finalize;
 	object_class->notify = impl_notify;
 
 	widget_class->map_event = impl_map_event;
@@ -269,6 +259,8 @@ bonobo_ui_toolbar_control_item_class_init (BonoboUIToolbarControlItemClass *klas
 static void
 bonobo_ui_toolbar_control_item_instance_init (BonoboUIToolbarControlItem *control_item)
 {
+	gtk_tool_item_set_homogeneous (GTK_TOOL_ITEM (control_item), FALSE);
+
 	control_item->box = gtk_vbox_new (FALSE, 0);
 
 	control_item->button = GTK_BIN (control_item)->child;
