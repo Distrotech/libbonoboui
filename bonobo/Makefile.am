@@ -113,6 +113,10 @@ libbonoboinclude_HEADERS =		\
 	bonobo-stream-fs.h		\
 	bonobo-stream-memory.h		\
 	bonobo-ui-handler.h		\
+	bonobo-ui-component.h		\
+	bonobo-ui-helper.h		\
+	bonobo-app-item.h		\
+	bonobo-app-toolbar.h		\
 	bonobo-app.h			\
 	bonobo-ui-xml.h			\
 	bonobo-ui-util.h		\
@@ -128,15 +132,11 @@ libbonobox_la_SOURCES =			\
 	bonobo-app.c			\
 	bonobo-app.h			\
 	bonobo-ui-component.c		\
-	bonobo-ui-component.h		\
 	bonobo-ui-helper.c		\
-	bonobo-ui-helper.h		\
 	bonobo-ui-util.c		\
 	bonobo-ui-xml.c			\
 	bonobo-app-item.c		\
-	bonobo-app-item.h		\
 	bonobo-app-toolbar.c		\
-	bonobo-app-toolbar.h		\
 					\
 	bonobo-ui-handler.c		\
 	bonobo-uih-menu.c		\
