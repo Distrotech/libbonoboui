@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-19 15:45+0100\n"
+"POT-Creation-Date: 2005-02-05 15:33+0000\n"
 "PO-Revision-Date: 2005-01-19 15:46+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
@@ -30,30 +30,30 @@ msgstr "corba UI-kontainer"
 msgid "The User interface container"
 msgstr "Kontainer for brukergrensesnitt"
 
-#: bonobo/bonobo-dock-item-grip.c:256
+#: bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
 msgstr "Fest verktøylinjen"
 
-#: bonobo/bonobo-dock-item-grip.c:257
+#: bonobo/bonobo-dock-item-grip.c:258
 msgid "Undock the toolbar"
 msgstr "Løsne verktøylinjen"
 
-#: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Type skygge"
 
-#: bonobo/bonobo-dock-item.c:243 bonobo/bonobo-dock-item.c:244
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientering"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Foretrukket bredde"
 
-#: bonobo/bonobo-dock-item.c:263 bonobo/bonobo-dock-item.c:264
+#: bonobo/bonobo-dock-item.c:264 bonobo/bonobo-dock-item.c:265
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Foretrukket høyde"

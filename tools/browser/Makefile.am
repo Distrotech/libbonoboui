@@ -28,12 +28,15 @@ uidir = $(datadir)/gnome-2.0/ui
 ui_DATA = bonobo-browser.xml
 
 Utilitiesdir = $(datadir)/applications
-                                                                                  
+
 Utilities_in_files = bonobo-browser.desktop.in
 Utilities_DATA = $(Utilities_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
-                                                                                  
+
 EXTRA_DIST = \
         $(Utilities_in_files) 	\
         $(Utilities_DATA)	\
 	bonobo-browser.xml
+
+CLEANFILES = bonobo-browser.desktop
+

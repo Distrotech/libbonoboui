@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.8-branch\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-03 10:34+0200\n"
+"POT-Creation-Date: 2005-02-05 15:33+0000\n"
 "PO-Revision-Date: 2004-12-02 14:06+0200\n"
 "Last-Translator: Zuza Software Foundation <info@translate.org.za>\n"
 "Language-Team: Zulu <translate-discuss-zu@lists.sourceforge.net>\n"
@@ -32,30 +32,31 @@ msgstr "Isitsha esiphatha corba UI"
 msgid "The User interface container"
 msgstr "Isitsha esiphatha umsebenzisi wohlanganisa imiboniso"
 
-#: bonobo/bonobo-dock-item-grip.c:256
+#: bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
 msgstr "Ngenisa isiqobolo"
 
-#: bonobo/bonobo-dock-item-grip.c:257
-msgid "Un dock the toolbar"
+#: bonobo/bonobo-dock-item-grip.c:258
+#, fuzzy
+msgid "Undock the toolbar"
 msgstr "Ungsingenisi isiqobolo"
 
-#: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Inhlobo enomthunzi"
 
-#: bonobo/bonobo-dock-item.c:243 bonobo/bonobo-dock-item.c:244
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Ukuma"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Unbubanzi obuthandekayo"
 
-#: bonobo/bonobo-dock-item.c:263 bonobo/bonobo-dock-item.c:264
+#: bonobo/bonobo-dock-item.c:264 bonobo/bonobo-dock-item.c:265
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Ubude obuthandekayo"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.8-branch\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-15 20:12+0200\n"
+"POT-Creation-Date: 2005-02-05 15:33+0000\n"
 "PO-Revision-Date: 2004-11-15 22:06+0200\n"
 "Last-Translator: Zuza Software Foundation <info@translate.org.za>\n"
 "Language-Team: Northern Sotho <translate-discuss-nso@lists.sourceforge.net>\n"
@@ -32,30 +32,31 @@ msgstr "seswaro sa UI sa corba"
 msgid "The User interface container"
 msgstr "Seswaro sa Poledisašo ya Modiriši"
 
-#: bonobo/bonobo-dock-item-grip.c:256
+#: bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
 msgstr "Khutsofatša bara ya sedirišwa"
 
-#: bonobo/bonobo-dock-item-grip.c:257
-msgid "Un dock the toolbar"
+#: bonobo/bonobo-dock-item-grip.c:258
+#, fuzzy
+msgid "Undock the toolbar"
 msgstr "O seke wa khutsofatša bara ya sedirišwa"
 
-#: bonobo/bonobo-dock-item.c:232 bonobo/bonobo-dock-item.c:233
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Mohuta wa go fifatša"
 
-#: bonobo/bonobo-dock-item.c:243 bonobo/bonobo-dock-item.c:244
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Thulaganyo"
 
-#: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
+#: bonobo/bonobo-dock-item.c:255 bonobo/bonobo-dock-item.c:256
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Bophara bjo bo ratwago"
 
-#: bonobo/bonobo-dock-item.c:263 bonobo/bonobo-dock-item.c:264
+#: bonobo/bonobo-dock-item.c:264 bonobo/bonobo-dock-item.c:265
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Bophagamo bjo bo ratwago"
@@ -98,7 +99,10 @@ msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr "NULL-e fedišitše peakanyo ya dipoledišano tšeo seabi se swanetšego go di thekga gore di lokeletšwe sekgething. Ditlhaelelo go \"IDL:Bonobo/Embeddable:1.0\" ge eba go se na dipoledišano tšeo di lokeleditšwego"
+msgstr ""
+"NULL-e fedišitše peakanyo ya dipoledišano tšeo seabi se swanetšego go di "
+"thekga gore di lokeletšwe sekgething. Ditlhaelelo go \"IDL:Bonobo/"
+"Embeddable:1.0\" ge eba go se na dipoledišano tšeo di lokeleditšwego"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -162,7 +166,9 @@ msgstr "_Lahla XML"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Lahla tlhaloso ka moka ya XML ya UI go ya go sedirišwa se tswakago tšeo di bontšhwago"
+msgstr ""
+"Lahla tlhaloso ka moka ya XML ya UI go ya go sedirišwa se tswakago tšeo di "
+"bontšhwago"
 
 #: bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
@@ -299,7 +305,8 @@ msgstr "Lebelela thušo bakeng sa tirišo ye"
 
 #: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
-msgstr "Leina la lefesetere - leo le dirišitšwego go tatelano ya go fetola sebopego."
+msgstr ""
+"Leina la lefesetere - leo le dirišitšwego go tatelano ya go fetola sebopego."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -473,4 +480,3 @@ msgstr ""
 #: tools/browser/window.c:246
 msgid "Component Browser"
 msgstr ""
-

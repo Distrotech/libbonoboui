@@ -1,3 +1,11 @@
+2005-02-05  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
+
+	* tools/browser/Makefile.am (CLEANFILES): Add bonobo-browser.desktop.
+
+	* configure.in: Version 2.8.1.
+
+	* NEWS: Update.
+
 2005-02-02  Markus Meissner  <meissner@suse.de>
 
 	* bonobo/bonobo-selector.c (bonobo_selector_new): 
