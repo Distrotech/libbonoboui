@@ -1,3 +1,22 @@
+2001-11-12  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-control-frame.c: kill plug_xid, it's
+	transient and stale ...
+	(bonobo_control_frame_bind_to_control): prune get id
+	out of here.
+	(bonobo_control_frame_set_remote_window): re-write to
+	always fetch the plug x11 id.
+
+	* bonobo/bonobo-socket.c (bonobo_socket_realize):
+	hold a ref around the set_remote_window.
+
+	* tests/test-ui.c (main): disable statusa set.
+
+2001-11-09  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-ui.c (main): check every possible
+	CORBA_Environment.
+
 2001-11-08  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-ui-container.h: kill non-existent

@@ -22,7 +22,8 @@ void     bonobo_control_add_listener            (CORBA_Object        object,
 						 gpointer            user_data,
 						 CORBA_Environment  *ev);
 
-void     bonobo_control_frame_set_remote_window (BonoboControlFrame *frame);
+void     bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
+						 CORBA_Environment  *opt_ev);
 gboolean bonobo_control_frame_focus             (BonoboControlFrame *frame,
 						 GtkDirectionType    direction);
 void     bonobo_control_frame_size_request      (BonoboControlFrame *frame,

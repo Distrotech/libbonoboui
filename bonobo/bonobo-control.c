@@ -107,6 +107,7 @@ bonobo_control_notify_plug_died (BonoboControl *control)
 			dprintf ("connection broken\n");
 			break;
 		case ORBIT_CONNECTION_IN_PROC:
+			dprintf ("in proc\n");
 			break;
 		}
 	} else {

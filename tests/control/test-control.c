@@ -211,7 +211,7 @@ run_tests (GtkContainer *parent,
 	}
 
 	if (wait_for_realize)
-		mainloop_for (10000);
+		mainloop_for (100);
 
 	for (t = 0; t < DESTROY_TYPE_LAST; t++) {
 		destroy_test (tests [t], t);

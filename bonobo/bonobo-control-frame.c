@@ -46,7 +46,6 @@ static GObjectClass *bonobo_control_frame_parent_class;
 struct _BonoboControlFramePrivate {
 	BonoboControl     *inproc_control;
 	Bonobo_Control	   control;
-	guint32            plug_xid;
 	GtkWidget	  *socket;
 	Bonobo_UIContainer ui_container;
 	BonoboPropertyBag *propbag;
@@ -163,36 +162,67 @@ impl_Bonobo_ControlFrame_activateURI (PortableServer_Servant  servant,
 }
 
 void
-bonobo_control_frame_set_remote_window (BonoboControlFrame *frame)
+bonobo_control_frame_set_remote_window (BonoboControlFrame *frame,
+					CORBA_Environment  *opt_ev)
 					
 {
+	CORBA_char *id;
+	CORBA_Environment *ev, tmp_ev;
+
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
 
+	dprintf ("bonobo_control_frame_set_remote_window %p\n", frame);
+
 	if (!frame->priv || !frame->priv->socket ||
-	    frame->priv->plug_xid == 0)
+	    !GTK_WIDGET_REALIZED (frame->priv->socket) ||
+	    frame->priv->control == CORBA_OBJECT_NIL)
 		return;
 
-	dprintf ("gtk_socket_add_id %d\n", frame->priv->plug_xid);
+	if (!opt_ev) {
+		CORBA_exception_init (&tmp_ev);
+		ev = &tmp_ev;
+	} else
+		ev = opt_ev;
 
-	if (frame->priv->inproc_control) {
-		/* FIXME: brutal hack to get round bugs in gtkplug */
-		BonoboPlug *plug = bonobo_control_get_plug (
-			frame->priv->inproc_control);
+	/* Introduce ourselves to the Control. */
+	id = Bonobo_Control_setFrame (frame->priv->control,
+				      BONOBO_OBJREF (frame), ev);
+	if (BONOBO_EX (ev))
+		bonobo_object_check_env (BONOBO_OBJECT (frame),
+					 frame->priv->control, ev);
 
-		dprintf ("Ugly in-proc hacks %p\n", plug);
-		if (plug) {
-			g_assert (GTK_WIDGET (frame->priv->socket)->window != NULL);
-			GTK_PLUG (plug)->socket_window = 
-				GTK_WIDGET (frame->priv->socket)->window;
-		}
+	else {
+		guint32 xid;
 
-		gtk_socket_add_id (GTK_SOCKET (frame->priv->socket),
-				   frame->priv->plug_xid);
-		
-		gdk_window_show (GTK_WIDGET (plug)->window);
-	} else /* Ok out of proc */
-		gtk_socket_add_id (GTK_SOCKET (frame->priv->socket),
-				   frame->priv->plug_xid);
+		xid = bonobo_control_x11_from_window_id (id);
+		dprintf ("setFrame id '%s' (=%d)\n", id, xid);
+		CORBA_free (id);
+
+		if (frame->priv->inproc_control) {
+			/* FIXME: brutal hack to get round bugs in gtkplug */
+			BonoboPlug *plug = bonobo_control_get_plug (
+				frame->priv->inproc_control);
+			
+			if (!plug)
+				g_warning ("Extreme oddness !");
+			
+			dprintf ("Ugly in-proc hacks %p\n", plug);
+			if (plug) {
+				g_assert (GTK_WIDGET (frame->priv->socket)->window != NULL);
+				GTK_PLUG (plug)->socket_window = 
+					GTK_WIDGET (frame->priv->socket)->window;
+			}
+			
+			gtk_socket_add_id (GTK_SOCKET (frame->priv->socket), xid);
+			
+			if (plug)
+				gdk_window_show (GTK_WIDGET (plug)->window);
+		} else /* Ok out of proc */
+			gtk_socket_add_id (GTK_SOCKET (frame->priv->socket), xid);
+	}		
+
+	if (!opt_ev)
+		CORBA_exception_free (ev);
 }
 
 /**
@@ -651,7 +681,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 		/* Unset ourselves as the frame */
 		id = Bonobo_Control_setFrame (frame->priv->control,
 					      CORBA_OBJECT_NIL, ev);
-		if (!BONOBO_EX (ev) && id)
+		if (!BONOBO_EX (ev))
 			CORBA_free (id);
 
 		if (frame->priv->control != CORBA_OBJECT_NIL)
@@ -664,8 +694,6 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 		frame->priv->control = CORBA_OBJECT_NIL;
 		frame->priv->inproc_control = NULL;
 	} else {
-		CORBA_char *id;
-
 		frame->priv->control = CORBA_Object_duplicate (control, ev);
 
 		frame->priv->inproc_control = (BonoboControl *)
@@ -677,19 +705,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *frame,
 				G_CALLBACK (control_connection_died_cb),
 				frame, ev);
 
-		/* Introduce ourselves to the Control. */
-		id = Bonobo_Control_setFrame (control, BONOBO_OBJREF (frame), ev);
-		if (BONOBO_EX (ev))
-			bonobo_object_check_env (BONOBO_OBJECT (frame), control, ev);
-		else {
-			frame->priv->plug_xid = bonobo_control_x11_from_window_id (id);
-			dprintf ("setFrame id '%s' (=%d)\n", id, frame->priv->plug_xid);
-			CORBA_free (id);
-
-			if (frame->priv->socket &&
-			    GTK_WIDGET_REALIZED (frame->priv->socket))
-				bonobo_control_frame_set_remote_window (frame);
-		}
+		bonobo_control_frame_set_remote_window (frame, ev);
 	}
 
 	g_object_unref (G_OBJECT (frame));

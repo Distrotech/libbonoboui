@@ -115,9 +115,12 @@ bonobo_plug_dispose (GObject *object)
 
 	dprintf ("bonobo_plug_dispose %p\n", object);
 
-	if (bin_plug->child)
+	if (bin_plug->child) {
+		g_object_ref (G_OBJECT (bin_plug->child));
 		gtk_container_remove (
 			&bin_plug->container, bin_plug->child);
+		g_warning ("Removing child ...");
+	}
 
 	if (plug->control) {
 		BonoboControl *control = plug->control;

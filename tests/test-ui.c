@@ -187,7 +187,7 @@ main (int argc, char **argv)
 	BonoboUIComponent *componentc;
 	BonoboUIContainer *container;
 	Bonobo_UIContainer corba_container;
-	CORBA_Environment  ev;
+	CORBA_Environment  real_ev, *ev;
 	char *txt, *fname;
 	int i;
 
@@ -239,8 +239,8 @@ main (int argc, char **argv)
 		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\""
 		"	 _label=\"TogSame\" _tip=\"My tooltip\"/>\n"
 		"</dockitem>";
-	char statusa [] =
-		"<item name=\"main\">Kippers</item>\n";
+/*	char statusa [] =
+		"<item name=\"main\">Kippers</item>\n";*/
 	char statusb [] =
 		"<status>\n"
 		"	<item name=\"main\"/>\n"
@@ -328,7 +328,8 @@ main (int argc, char **argv)
 
 	global_component = componenta;
 
-	CORBA_exception_init (&ev);
+	ev = &real_ev;
+	CORBA_exception_init (ev);
 
 	fname = bonobo_ui_util_get_ui_fname (NULL, "../doc/std-ui.xml");
 	if (fname && g_file_test (fname, G_FILE_TEST_EXISTS)) {
@@ -353,17 +354,24 @@ main (int argc, char **argv)
 	bonobo_ui_component_freeze (componenta, NULL);
 
 	fprintf (stderr, "\n\n--- Remove A ---\n\n\n");
-	bonobo_ui_component_rm (componenta, "/", &ev);
+	bonobo_ui_component_rm (componenta, "/", ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_set_translate (componentb, "/status", statusa, &ev);
+/*	bonobo_ui_component_set_translate (componentb, "/status", statusa, ev);
+	g_assert (!BONOBO_EX (ev));*/
 
-	bonobo_ui_component_set_translate (componenta, "/", simplea, &ev);
+	bonobo_ui_component_set_translate (componenta, "/", simplea, ev);
+	g_assert (!BONOBO_EX (ev));
 
 	bonobo_ui_component_set_translate (componentb, "/",
-				 "<popups> <popup name=\"MyStuff\"/> </popups>", &ev);
-	bonobo_ui_component_set_translate (componenta, "/popups/MyStuff", simpleb, &ev);
+				 "<popups> <popup name=\"MyStuff\"/> </popups>", ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_set_translate (componentb, "/",   toola, &ev);
+	bonobo_ui_component_set_translate (componenta, "/popups/MyStuff", simpleb, ev);
+	g_assert (!BONOBO_EX (ev));
+
+	bonobo_ui_component_set_translate (componentb, "/",   toola, ev);
+	g_assert (!BONOBO_EX (ev));
 
 	{
 		GtkWidget *widget = gtk_button_new_with_label ("My Label");
@@ -373,7 +381,8 @@ main (int argc, char **argv)
 		bonobo_ui_component_object_set (componenta,
 						"/menu/File/MyControl",
 						BONOBO_OBJREF (control),
-						NULL);
+						ev);
+		g_assert (!BONOBO_EX (ev));
 	}
 
 	{
@@ -385,34 +394,51 @@ main (int argc, char **argv)
 		bonobo_ui_component_object_set (componenta,
 						"/Toolbar/AControl",
 						BONOBO_OBJREF (control),
-						NULL);
+						ev);
+		g_assert (!BONOBO_EX (ev));
 	}
 
-	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
+	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_set_translate (componentb, "/",     statusb, &ev);
+	bonobo_ui_component_set_translate (componentb, "/",     statusb, ev);
+	g_assert (!BONOBO_EX (ev));
 
 	/* Duplicate set */
-	bonobo_ui_component_set_translate (componenta, "/", simplea, &ev);
+	bonobo_ui_component_set_translate (componenta, "/", simplea, ev);
+	g_assert (!BONOBO_EX (ev));
 
 	bonobo_ui_component_add_verb_list_with_data (
 		componenta, verbs, GUINT_TO_POINTER (15));
 
-	bonobo_ui_component_thaw (componenta, NULL);
+	bonobo_ui_component_thaw (componenta, ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_set_status (componenta, "WhatA1", &ev);
-	bonobo_ui_component_set_status (componenta, "WhatA1", &ev);
-	bonobo_ui_component_set_status (componentb, "WhatB2", &ev);
-	bonobo_ui_component_set_status (componenta, "WhatA3", &ev);
-	bonobo_ui_component_rm (componenta, "/status", &ev);
-	bonobo_ui_component_set_status (componentb, "WhatB4", &ev);
-	bonobo_ui_component_set_status (componenta, "WhatA5", &ev);
-	bonobo_ui_component_set_status (componenta, "WhatA6>", &ev);
-	bonobo_ui_component_set_status (componentb, "WhatB7", &ev);
-	bonobo_ui_component_set_status (componentb, "", &ev);
+	bonobo_ui_component_set_status (componenta, "WhatA1", ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_set_status (componenta, "WhatA1", ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_set_status (componentb, "WhatB2", ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_set_status (componenta, "WhatA3", ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_rm (componenta, "/status", ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_set_status (componentb, "WhatB4", ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_set_status (componenta, "WhatA5", ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_set_status (componenta, "WhatA6>", ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_set_status (componentb, "WhatB7", ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_set_status (componentb, "", ev);
+	g_assert (!BONOBO_EX (ev));
 
 	g_assert (bonobo_ui_component_get_prop (
-		componentb, "/status/main", "non-existant", NULL) == NULL);
+		componentb, "/status/main", "non-existant", ev) == NULL);
+	g_assert (!strcmp (BONOBO_EX_REPOID (ev), ex_Bonobo_UIContainer_NonExistentAttr));
+	CORBA_exception_free (ev);
 
   	{
   		char *txt = bonobo_ui_component_get (componenta, "/status/main", TRUE, NULL);
@@ -427,25 +453,33 @@ main (int argc, char **argv)
 
 	bonobo_main ();
 
-	bonobo_ui_component_freeze (componenta, NULL);
+	bonobo_ui_component_freeze (componenta, ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_set_translate (componentb, "/menu", simpleb, &ev);
-	bonobo_ui_component_set_translate (componenta, "/",     toolb, &ev);
+	bonobo_ui_component_set_translate (componentb, "/menu", simpleb, ev);
+	g_assert (!BONOBO_EX (ev));
+	bonobo_ui_component_set_translate (componenta, "/",     toolb, ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_set_prop (componenta, "/menu/File", "label", "_Goo-wan>", NULL);
+	bonobo_ui_component_set_prop (componenta, "/menu/File", "label", "_Goo-wan>", ev);
+	g_assert (!BONOBO_EX (ev));
 
 	/* A 'transparent' node merge */
-	txt = bonobo_ui_component_get_prop (componenta, "/Toolbar", "look", NULL);
+	txt = bonobo_ui_component_get_prop (componenta, "/Toolbar", "look", ev);
+	g_assert (!BONOBO_EX (ev));
 	printf ("Before merge look '%s'\n", txt);
-	bonobo_ui_component_set_translate (componenta, "/", "<dockitem name=\"Toolbar\"/>", &ev);
+	bonobo_ui_component_set_translate (componenta, "/", "<dockitem name=\"Toolbar\"/>", ev);
+	g_assert (!BONOBO_EX (ev));
 	g_free (txt);
-	txt = bonobo_ui_component_get_prop (componenta, "/Toolbar", "look", NULL);
+	txt = bonobo_ui_component_get_prop (componenta, "/Toolbar", "look", ev);
+	g_assert (!BONOBO_EX (ev));
 	printf ("After merge look '%s'\n", txt);
 	if (txt == NULL || strcmp (txt, "icon"))
 		g_warning ("Serious transparency regression");
 	g_free (txt);
 
-	bonobo_ui_component_set_translate (componenta, "/menu/File/Nice", simplee, &ev);
+	bonobo_ui_component_set_translate (componenta, "/menu/File/Nice", simplee, ev);
+	g_assert (!BONOBO_EX (ev));
 
 	{
 		GtkWidget *widget = gtk_progress_bar_new ();
@@ -465,47 +499,71 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_set_status (componenta, "This is a very long status message "
 					"that should cause the window to be resized if "
-					"there is in fact a bug in it", NULL);
+					"there is in fact a bug in it", ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_thaw (componenta, NULL);
+	bonobo_ui_component_thaw (componenta, ev);
+	g_assert (!BONOBO_EX (ev));
+
 	bonobo_main ();
 
 	g_warning ("Begginning stress test, this may take some time ...");
 	for (i = 0; i < 100; i++) {
-		bonobo_ui_component_freeze (componenta, NULL);
+		bonobo_ui_component_freeze (componenta, ev);
+		g_assert (!BONOBO_EX (ev));
 		
 		bonobo_ui_component_set_translate (componentc, "/commands",
-						   "<cmd name=\"MyFoo\" sensitive=\"0\"/>", &ev);
-		bonobo_ui_component_set_translate (componentc, "/menu", simplec, &ev);
-		
-		bonobo_ui_component_set_translate (componentc, "/menu/File", simpled, &ev);
-		
-		bonobo_ui_component_thaw (componenta, NULL);
+						   "<cmd name=\"MyFoo\" sensitive=\"0\"/>", ev);
+		g_assert (!BONOBO_EX (ev));
+
+		bonobo_ui_component_set_translate (componentc, "/menu", simplec, ev);
+		g_assert (!BONOBO_EX (ev));
+	
+		bonobo_ui_component_set_translate (componentc, "/menu/File", simpled, ev);
+		g_assert (!BONOBO_EX (ev));
+
+		bonobo_ui_component_thaw (componenta, ev);
+		g_assert (!BONOBO_EX (ev));
 	}
 	g_warning ("Done stress test");
 	bonobo_main ();
-	bonobo_ui_component_freeze (componenta, NULL);
+	bonobo_ui_component_freeze (componenta, ev);
+	g_assert (!BONOBO_EX (ev));
 
 	fprintf (stderr, "\n\n--- Remove 2 ---\n\n\n");
-	bonobo_ui_component_rm (componentb, "/", &ev);
+	bonobo_ui_component_rm (componentb, "/", ev);
+	g_assert (!BONOBO_EX (ev));
 	bonobo_ui_component_set_prop (componentc, "/menu/File/save",
-				      "label", "SaveC", NULL);
+				      "label", "SaveC", ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_thaw (componenta, NULL);
+	bonobo_ui_component_thaw (componenta, ev);
+	g_assert (!BONOBO_EX (ev));
+
 	bonobo_main ();
-	bonobo_ui_component_freeze (componenta, NULL);
+
+	bonobo_ui_component_freeze (componenta, ev);
+	g_assert (!BONOBO_EX (ev));
 
 	fprintf (stderr, "\n\n--- Remove 3 ---\n\n\n");
-	bonobo_ui_component_rm (componentc, "/", &ev);
+	bonobo_ui_component_rm (componentc, "/", ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_thaw (componenta, NULL);
+	bonobo_ui_component_thaw (componenta, ev);
+	g_assert (!BONOBO_EX (ev));
+
 	bonobo_main ();
-	bonobo_ui_component_freeze (componenta, NULL);
+
+	bonobo_ui_component_freeze (componenta, ev);
+	g_assert (!BONOBO_EX (ev));
 
 	fprintf (stderr, "\n\n--- Remove 1 ---\n\n\n");
-	bonobo_ui_component_rm (componenta, "/", &ev);
+	bonobo_ui_component_rm (componenta, "/", ev);
+	g_assert (!BONOBO_EX (ev));
 
-	bonobo_ui_component_thaw (componenta, NULL);
+	bonobo_ui_component_thaw (componenta, ev);
+	g_assert (!BONOBO_EX (ev));
+
 	bonobo_main ();
 
 	bonobo_object_unref (BONOBO_OBJECT (componenta));
@@ -515,7 +573,7 @@ main (int argc, char **argv)
 	bonobo_object_unref (BONOBO_OBJECT (container));
 	gtk_widget_destroy (GTK_WIDGET (win));
 
-	CORBA_exception_free (&ev);
+	CORBA_exception_free (ev);
 
 	return 0;
 }

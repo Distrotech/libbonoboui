@@ -62,8 +62,11 @@ bonobo_socket_realize (GtkWidget *widget)
 	if (GTK_WIDGET_CLASS (parent_class)->realize)
 		(* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
 
-	if (socket->frame)
-		bonobo_control_frame_set_remote_window (socket->frame);
+	if (socket->frame) {
+		g_object_ref (G_OBJECT (socket->frame));
+		bonobo_control_frame_set_remote_window (socket->frame, NULL);
+		g_object_unref (G_OBJECT (socket->frame));
+	}
 
 	g_assert (GTK_WIDGET_REALIZED (widget));
 }
@@ -174,7 +177,7 @@ bonobo_socket_size_request (GtkWidget      *widget,
 static gboolean
 bonobo_socket_plug_removed (GtkSocket *socket)
 {
-	dprintf ("bonobo_socket_plug_removed %p", socket);
+	dprintf ("bonobo_socket_plug_removed %p\n", socket);
 
 	return TRUE;
 }
