@@ -1,0 +1,5 @@
+This directory contains a sample on how to create Bonobo component.  
+
+The Echo Bonobo Component is a full blown component, with an Echo
+Server factory that will create Echo servers on demand.
+

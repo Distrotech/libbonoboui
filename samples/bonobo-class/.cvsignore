@@ -7,3 +7,5 @@ Echo.h
 .libs
 bonobo-echo
 echo-client
+.deps
+my_echo_idl
