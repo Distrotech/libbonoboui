@@ -98,8 +98,8 @@ bonobo_ui_preferences_remove_engine (BonoboUIEngine *engine)
 static gboolean
 get (const char *key, gboolean def)
 {
-	gboolean           ret;
-	GError             *err = NULL;
+	gboolean ret;
+	GError  *err = NULL;
 
 	if (!client)					
 		client = gconf_client_get_default ();	
@@ -193,6 +193,7 @@ keys_changed_fn (GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer
 
 	key_name = gconf_entry_get_key (entry);
 
+	/* FIXME: update the values instead */
 	if (!strcmp (key_name, GLOBAL_INTERFACE_KEY "/toolbar_detachable"))
 		cached_toolbar_detachable = FALSE;
 	else if (!strcmp (key_name, GLOBAL_INTERFACE_KEY "/menus_have_icons"))

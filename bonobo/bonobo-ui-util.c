@@ -236,12 +236,40 @@ find_pixmap_in_path (const gchar *filename)
 	return file;
 }
 
+/* FIXME: could cut down allocation here a bit */
 static char *
 lookup_stock_compat (const char *id)
 {
 	GtkStockItem item;
-	char *lower = g_ascii_strdown (id, -1);
-	char *new_id = g_strconcat ("gtk-", lower, NULL);
+	char *lower, *new_id;
+	static GHashTable *compat_hash = NULL;
+
+	if (!compat_hash) {
+		static const char *mapping[][2] = {
+			{ "Save As",        "gtk-save-as" },
+			{ "Trash",          "gtk-delete" },
+			{ "Revert",         "gtk-revert-to-saved" },
+			{ "Exit",           "gtk-quit" },
+			{ "Search",         "gtk-find" },
+			{ "Search/Replace", "gtk-find-and-replace" },
+			{ "Timer Stopped",  "gnome-stock-timer-stop" },
+			{ "Scores",         "gnome-stock-scores" },
+			{ "About",          "gnome-stock-about" },
+			{ NULL, NULL }
+		};
+		int i;
+		compat_hash = g_hash_table_new (g_str_hash, g_str_equal);
+		for (i = 0; mapping [i][0]; i++)
+			g_hash_table_insert (compat_hash,
+					     (gpointer) mapping [i] [0],
+					     (gpointer) mapping [i] [1]);
+	}
+
+	if ((new_id = g_hash_table_lookup (compat_hash, id)))
+		return g_strdup (new_id);
+
+	lower = g_ascii_strdown (id, -1);
+	new_id = g_strconcat ("gtk-", lower, NULL);
 
 	if (gtk_stock_lookup (new_id, &item)) {
 		g_free (lower);
@@ -1269,4 +1297,3 @@ bonobo_ui_util_set_pixbuf (BonoboUIComponent *component,
 
 	g_free (parent_path);
 }
-
