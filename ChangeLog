@@ -1,5 +1,34 @@
 2001-10-20  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-control.c (bonobo_control_plug_destroy_event_cb): 
+	call new method.
+	(bonobo_control_plug_destroy_cb): ditto.
+	(impl_Bonobo_Control_setWindowId): unset.
+	(bonobo_control_finalize): upd.
+	(bonobo_control_set_plug): impl.
+	(bonobo_control_get_plug): impl.
+	(bonobo_control_dispose): impl.
+	(bonobo_control_class_init): hook it up.
+
+	* bonobo/bonobo-plug.c (bonobo_plug_dispose): impl.
+	(bonobo_plug_set_control): impl.
+	(bonobo_plug_get_control): impl.
+	(bonobo_plug_class_init): hook dispose.
+
+	* bonobo/bonobo-control-frame.c (get_toplevel_fn): if we
+	are not the real toplevel, ie. our toplevel == a BonoboPlug
+	then recurse up the tree via. CORBA.
+
+	* bonobo/bonobo-selector.c (DEFAULT_INTERFACE): make it
+	Bonobo/Control so we can test effectively.
+
+	* bonobo/bonobo-selector-widget.c (free_lang_list): kill.
+	(get_lang_list): re-write, converts a glist into a gslist
+	for oaf - sigh.
+	(get_filtered_objects): don't free the list.
+
+2001-10-20  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-control-frame.c (check_ambient_propbag):
 	don't do redundant set of toplevel property.
 

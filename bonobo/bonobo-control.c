@@ -132,7 +132,7 @@ bonobo_control_plug_destroy_event_cb (GtkWidget   *plug,
 	 * destroy it later.  It will get destroyed on its
 	 * own.
 	 */
-	control->priv->plug            = NULL;
+	bonobo_control_set_plug (control, NULL);
 
 	/*
 	 * Destroy this plug's BonoboControl.
@@ -163,7 +163,7 @@ bonobo_control_plug_destroy_cb (GtkWidget *plug,
 	 * destroy it later.  It will get destroyed on its
 	 * own.
 	 */
-	control->priv->plug = NULL;
+	bonobo_control_set_plug (control, NULL);
 }
 
 
@@ -295,10 +295,13 @@ impl_Bonobo_Control_setWindowId (PortableServer_Servant  servant,
 	if (! local_socket) {
 		GtkWidget *old_plug;
 
-		old_plug            = control->priv->plug;
+		old_plug = control->priv->plug;
+		if (old_plug)
+			bonobo_plug_set_control (BONOBO_PLUG (old_plug), NULL);
 
 		/* Create the new plug */
-		control->priv->plug = bonobo_plug_new (x11_id);
+		bonobo_control_set_plug (control, BONOBO_PLUG (
+			bonobo_plug_new (x11_id)));
 
 		gtk_signal_connect_while_alive (GTK_OBJECT (control->priv->plug), "destroy_event",
 						GTK_SIGNAL_FUNC (bonobo_control_plug_destroy_event_cb),
@@ -622,6 +625,15 @@ bonobo_control_get_automerge (BonoboControl *control)
 }
 
 static void
+bonobo_control_dispose (GObject *object)
+{
+	BonoboControl *control = (BonoboControl *) object;
+
+	if (control->priv->plug)
+		bonobo_control_set_plug (control, NULL);
+}
+
+static void
 bonobo_control_finalize (GObject *object)
 {
 	BonoboControl *control = BONOBO_CONTROL (object);
@@ -629,9 +641,8 @@ bonobo_control_finalize (GObject *object)
 
 	CORBA_exception_init (&ev);
 
-	if (control->priv->destroy_idle_id != 0) {
+	if (control->priv->destroy_idle_id != 0)
 		gtk_idle_remove (control->priv->destroy_idle_id);
-	}
 	control->priv->destroy_idle_id = 0;
 
 	if (control->priv->propbag != CORBA_OBJECT_NIL)
@@ -674,7 +685,7 @@ bonobo_control_finalize (GObject *object)
 	 */
 	if (control->priv->plug) {
 		gtk_object_destroy (GTK_OBJECT (control->priv->plug));
-		control->priv->plug = NULL;
+		bonobo_control_set_plug (control, NULL);
 	}
 
 	g_free (control->priv);
@@ -965,6 +976,7 @@ bonobo_control_class_init (BonoboControlClass *klass)
 			      G_TYPE_NONE, 1,
 			      G_TYPE_BOOLEAN);
 
+	object_class->dispose  = bonobo_control_dispose;
 	object_class->finalize = bonobo_control_finalize;
 
 	epv = &klass->epv;
@@ -1189,7 +1201,7 @@ bonobo_control_set_transient_for (BonoboControl     *control,
 	id = bonobo_property_bag_client_get_value_string (
 		pb, "bonobo:toplevel", opt_ev);
 
-	g_return_if_fail (id != CORBA_OBJECT_NIL);
+	g_return_if_fail (id != NULL);
 
 	x11_id = strtol (id, NULL, 10);
 
@@ -1234,3 +1246,28 @@ bonobo_control_unset_transient_for (BonoboControl     *control,
 	window_transient_unrealize_gdk_cb (GTK_WIDGET (window));
 }
 
+void
+bonobo_control_set_plug (BonoboControl *control,
+			 BonoboPlug    *plug)
+{
+	g_return_if_fail (BONOBO_IS_CONTROL (control));
+
+	if ((BonoboPlug *) control->priv->plug == plug)
+		return;
+
+	if (control->priv->plug) {
+		bonobo_plug_set_control (BONOBO_PLUG (control->priv->plug), NULL);
+		g_object_unref (G_OBJECT (control->priv->plug));
+	}
+
+	if (plug)
+		control->priv->plug = g_object_ref (G_OBJECT (plug));
+}
+
+BonoboPlug *
+bonobo_control_get_plug (BonoboControl *control)
+{
+	g_return_val_if_fail (BONOBO_IS_CONTROL (control), NULL);
+
+	return BONOBO_PLUG (control->priv->plug);
+}

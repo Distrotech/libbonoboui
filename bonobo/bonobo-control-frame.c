@@ -93,11 +93,23 @@ get_toplevel_fn (BonoboPropertyBag *bag,
 
 	g_return_if_fail (toplev != NULL);
 
-	/* FIXME: check if toplev is a socket - if so,
-	   find it's ControlFrame and ask on up the chain ? */
+	/* Go up via. CORBA to the real toplevel */
+	if (BONOBO_IS_PLUG (toplev)) { 
+		BonoboControl     *control;
+		Bonobo_PropertyBag pb;
+		gchar             *str;
 
-	id = bonobo_control_window_id_from_x11 (
-		GDK_WINDOW_XWINDOW (toplev->window));
+		control = bonobo_plug_get_control (BONOBO_PLUG (toplev));
+		pb = bonobo_control_get_ambient_properties (control, NULL);
+		
+		str = bonobo_property_bag_client_get_value_string (
+			pb, "bonobo:toplevel", NULL);
+		id = CORBA_string_dup (str);
+		g_free (str);
+
+	} else
+		id = bonobo_control_window_id_from_x11 (
+			GDK_WINDOW_XWINDOW (toplev->window));
 
 /*	g_warning ("return toplevel '%s'", id); */
 

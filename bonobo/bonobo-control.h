@@ -15,9 +15,14 @@
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkwindow.h>
+
+typedef struct _BonoboControl BonoboControl;
+
+#include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-ui-component.h>
+
 
 G_BEGIN_DECLS
  
@@ -29,11 +34,11 @@ G_BEGIN_DECLS
 
 typedef struct _BonoboControlPrivate BonoboControlPrivate;
 
-typedef struct {
+struct _BonoboControl {
 	BonoboObject base;
 
 	BonoboControlPrivate *priv;
-} BonoboControl;
+};
 
 typedef struct {
 	BonoboObjectClass      parent_class;
@@ -95,6 +100,10 @@ Bonobo_Control_windowId     bonobo_control_window_id_from_x11      (guint32     
 guint32                     bonobo_control_x11_from_window_id      (const CORBA_char    *id);
 #define                     bonobo_control_windowid_from_x11(a) \
 			    bonobo_control_window_id_from_x11(a)
+
+void                        bonobo_control_set_plug                (BonoboControl       *control,
+								    BonoboPlug          *plug);
+BonoboPlug                 *bonobo_control_get_plug                (BonoboControl       *control);
 
 G_END_DECLS
 

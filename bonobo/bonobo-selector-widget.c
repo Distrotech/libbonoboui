@@ -19,6 +19,7 @@
 #include <string.h> /* strcmp */
 #include <glib.h>
 #include <bonobo/bonobo-i18n.h>
+#include <libgnome/gnome-i18n.h>
 #include <libgnome/gnome-preferences.h>
 #include <libbonoboui.h>
 #include <bonobo/bonobo-selector-widget.h>
@@ -80,71 +81,18 @@ build_id_query_fragment (const char **required_ids)
 	return query;
 }
 
-
-#warning FIXME: copied from nautilus, should be in oaf.
-
-/* Returns a list of languages, containing
- * the LANG or LANGUAGE environment setting (with and without
- * region code). The elements in the returned list must be freed
- */
 static GSList *
 get_lang_list (void)
 {
-        GSList *retval;
-        char *lang, *lang_with_locale, *org_pointer;
-        char *equal_char;
-	const char *tmp;
+	const GList   *l;
+	static GSList *ret = NULL;
 
-        retval = NULL;
+	if (!ret) {
+		for (l = gnome_i18n_get_language_list (NULL); l; l = l->next)
+			ret = g_slist_prepend (ret, l->data);
+	}
 
-        tmp = g_getenv ("LANGUAGE");
-
-        if (tmp == NULL) {
-                tmp = g_getenv ("LANG");
-        }
-
-	lang = g_strdup (tmp);
-	org_pointer = lang;
-
-	if (lang != NULL) {
-		/* envs can be in NAME=VALUE form */
-		equal_char = strchr (lang, '=');
-		if (equal_char != NULL)
-			lang = equal_char + 1;
-		
-		/* lang may be in form LANG_LOCALE */
-		equal_char = strchr (lang, '_');
-		if (equal_char != NULL) {
-			lang_with_locale = g_strdup (lang);
-			*equal_char = 0;
-		} else {
-			lang_with_locale = NULL;
-		}
-
-		/* Make sure we don't give oaf an empty
-		   lang string */
-		if (!lang_with_locale || !lang_with_locale [0])
-			retval = g_slist_prepend (retval, 
-						  g_strdup (lang_with_locale));
-		g_free (lang_with_locale);
-
-		if (!lang || !lang [0])
-			retval = g_slist_prepend (retval, g_strdup (lang));
-        }
-	g_free (org_pointer);
-        
-        return retval;
-}
-
-static void
-free_lang_list (GSList *list)
-{
-	GSList *l;
-
-	for (l = list; l; l = l->next)
-		g_free (l->data);
-
-	g_slist_free (list);
+	return ret;
 }
 
 static void
@@ -198,8 +146,6 @@ get_filtered_objects (BonoboSelectorWidgetPrivate *priv,
 			
 		gtk_clist_append (GTK_CLIST (priv->clist), (gchar **) text);
         }
-
-	free_lang_list (lang_list);
 
         CORBA_free (servers);
 }

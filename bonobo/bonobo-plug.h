@@ -30,23 +30,33 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkplug.h>
 
+typedef struct _BonoboPlug BonoboPlug;
+
+#include <bonobo/bonobo-control.h>
+
 G_BEGIN_DECLS
 
 #define BONOBO_PLUG(obj)          GTK_CHECK_CAST (obj, bonobo_plug_get_type (), BonoboPlug)
 #define BONOBO_PLUG_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, bonobo_plug_get_type (), BonoboPlugClass)
 #define BONOBO_IS_PLUG(obj)       GTK_CHECK_TYPE (obj, bonobo_plug_get_type ())
 
-typedef struct {
-	GtkPlug plug;
-} BonoboPlug;
+struct _BonoboPlug {
+	GtkPlug        plug;
+
+	BonoboControl *control;
+};
 
 typedef struct {
 	GtkPlugClass parent_class;
 } BonoboPlugClass;
 
-GtkType    bonobo_plug_get_type  (void) G_GNUC_CONST;
-void       bonobo_plug_construct (BonoboPlug *plug, guint32 socket_id);
-GtkWidget* bonobo_plug_new       (guint32 socket_id);
+GtkType        bonobo_plug_get_type    (void) G_GNUC_CONST;
+void           bonobo_plug_construct   (BonoboPlug    *plug,
+					guint32        socket_id);
+GtkWidget*     bonobo_plug_new         (guint32        socket_id);
+BonoboControl *bonobo_plug_get_control (BonoboPlug    *plug);
+void           bonobo_plug_set_control (BonoboPlug    *plug,
+					BonoboControl *control);
 
 G_END_DECLS
 

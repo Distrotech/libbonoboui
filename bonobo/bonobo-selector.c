@@ -20,7 +20,7 @@
 #include <libbonoboui.h>
 #include <bonobo/bonobo-selector.h>
 
-#define DEFAULT_INTERFACE "IDL:Bonobo/Embeddable:1.0"
+#define DEFAULT_INTERFACE "IDL:Bonobo/Control:1.0"
 #define BONOBO_PAD_SMALL 4
 
 static GtkDialogClass *parent_class;
