@@ -15,27 +15,27 @@ msgstr ""
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr ""
+msgstr "קאָרבאַ־פֿאַבריק"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr ""
+msgstr "די פֿאַבריק־יד"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
-msgstr ""
+msgstr "קאָרבאַ UI פּעקל"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr ""
+msgstr "דאָס ניצער־צובינד פּעקל"
 
 #: bonobo/bonobo-dock-item-grip.c:236
 msgid "Dock the toolbar"
-msgstr ""
+msgstr "דאָקיר דעם מכשיר־װײַזער"
 
 #: bonobo/bonobo-dock-item-grip.c:237
 msgid "Un dock the toolbar"
-msgstr ""
+msgstr "אױסדאָקיר דעם מכשיר־װײַזער"
 
 #: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
@@ -49,32 +49,32 @@ msgstr "אָריִענטירונג"
 #: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
 #: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
 msgid "Preferred width"
-msgstr ""
+msgstr "געװוּנטשענע ברײט"
 
 #: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
 #: bonobo/bonobo-ui-toolbar.c:1131 bonobo/bonobo-ui-toolbar.c:1132
 msgid "Preferred height"
-msgstr ""
+msgstr "געװוּנטשענע הײך"
 
 #: bonobo/bonobo-file-selector-util.c:383
 msgid "Select a file to open"
-msgstr ""
+msgstr "סעלעקטיר אַ טעקע צו עפֿענען"
 
 #: bonobo/bonobo-file-selector-util.c:411
 msgid "Select files to open"
-msgstr ""
+msgstr "סעלעקטיר טעקעס צו עפֿענען"
 
 #: bonobo/bonobo-file-selector-util.c:440
 msgid "Select a filename to save"
-msgstr ""
+msgstr "סעלעקטיר אַ טעקע־נאָמען אױפֿצוהיטן"
 
 #: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
-msgstr ""
+msgstr "טרעפֿעניש־װײַטערשיקן"
 
 #: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "צי X־טרעפֿענישן זאָלן זיך װײַטער שיקן"
 
 #: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
@@ -86,22 +86,24 @@ msgstr "באַשרײַבונג"
 
 #: bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr ""
+msgstr "צובינדן זײַנען נױטיק"
 
 #: bonobo/bonobo-selector.c:346
 msgid ""
 "A NULL_terminated array of interfaces which a server must support in order "
 "to be listed in the selector.  Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr ""
+msgstr "אַ נול־געענדיקטע רײע פֿון צובינדן װאָס אַ סערװירער מוז זײ שטיצן כּדי "
+"דער סעלעקטירער זאָל זײ װײַזן.  װערט, לכּל־הפּחות, \"IDL:Bonobo/Embeddable:1.0\" "
+"אױב קײן צובינדן זײַנען ניט אין דער רשימה"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr ""
+msgstr "צובינד נײטיקט זיך אין אַן אײנס"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "אײנער פֿון די נױטיקע צובינדן"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
@@ -109,15 +111,15 @@ msgstr "זעעװדיק"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
-msgstr ""
+msgstr "װײַז"
 
 #: bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
-msgstr ""
+msgstr "באַהאַלט"
 
 #: bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
-msgstr ""
+msgstr "זע מכשיר־פּינטלעך"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
@@ -125,236 +127,236 @@ msgstr "מכשיר־װירעס"
 
 #: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
-msgstr ""
+msgstr "מכשיר־װירעס"
 
 #: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
-msgstr ""
+msgstr "זע"
 
 #: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
-msgstr ""
+msgstr "בילדל"
 
 #: bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
-msgstr ""
+msgstr "טעקסט און בילדל"
 
 #: bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
-msgstr ""
+msgstr "בלױז טעקסט"
 
 #: bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
-msgstr ""
+msgstr "בלױז פּריִאָריטעט־טעקסט"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
-msgstr ""
+msgstr "באַזײַטיק פֿעלערן"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr ""
+msgstr "װײַז XML באַריכות"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr ""
+msgstr "װײַז באַריכות דעם גאַנצן UIס XML באַשרײַבונג צום עקראַן"
 
 #: bonobo/bonobo-ui-engine-config.c:521
 msgid "Configure UI"
-msgstr ""
+msgstr "פּאַס UI צו" 
 
 #: bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "Gdk פֿעלער־באַזײַטיקונג אָפּציעס צו באַשטעטיקן"
 
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:162 bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
-msgstr ""
+msgstr "FLAGS"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "Gdk פֿעלער־באַשטעטיקן אָפּציעס מבֿטל צו זײַן"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr ""
+msgstr "X עקראַן צו ניצן"
 
 #: bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr ""
+msgstr "DISPLAY"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "X screen to use"
-msgstr ""
+msgstr "X אונטער־עקראַן צו ניצן"
 
 #: bonobo/bonobo-ui-init-gtk.c:125
 msgid "SCREEN"
-msgstr ""
+msgstr "SCREEN"
 
 #: bonobo/bonobo-ui-init-gtk.c:129
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "סינכראָניזיר X־אַרױסרופֿן"
 
 #: bonobo/bonobo-ui-init-gtk.c:135
 msgid "Don't use X shared memory extension"
-msgstr ""
+msgstr "ניץ ניט די X זכּרון־מיטטײל פֿעיִקײט"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "פּראָגראַם־נאָמען, װי דער פֿענצטער־אַדמיניסטראַטאָר ניצט אים"
 
 #: bonobo/bonobo-ui-init-gtk.c:139
 msgid "NAME"
-msgstr ""
+msgstr "NAME"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "פּראָגראַם־קלאַס, װי דער פֿענצטער־אַדמיניסטראַטאָר ניצט אים"
 
 #: bonobo/bonobo-ui-init-gtk.c:142
 msgid "CLASS"
-msgstr ""
+msgstr "CLASS"
 
 #: bonobo/bonobo-ui-init-gtk.c:146
 msgid "HOST"
-msgstr ""
+msgstr "HOST"
 
 #: bonobo/bonobo-ui-init-gtk.c:150
 msgid "PORT"
-msgstr ""
+msgstr "PORT"
 
 #: bonobo/bonobo-ui-init-gtk.c:155 bonobo/bonobo-ui-init-gtk.c:158
 msgid "STYLE"
-msgstr ""
+msgstr "STYLE"
 
 #: bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "Gtk פֿעלער־באַזײַטיקונג אָפּציעס צו באַשטעטיקן"
 
 #: bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "Gtk פֿעלער־באַזײַטיקונג אָפּציעס מבֿטל צו זײַן"
 
 #: bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "אַלע װאָרענונגען װערן טױטפֿאַלן"
 
 #: bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "שטעל אַרײַן אַ צוגעבלעכן Gtk מאָדול"
 
 #: bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
-msgstr ""
+msgstr "MODULE"
 
 #: bonobo/bonobo-ui-init-gtk.c:180
 msgid "GTK+"
-msgstr ""
+msgstr "GTK+"
 
 #: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
-msgstr ""
+msgstr "באָנאָבאָ גראַפֿישע ניצער־צובינד שטיץ"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
-msgstr ""
+msgstr "בײדע"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
-msgstr ""
+msgstr "טעקסט"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr ""
+msgstr "װײַז מכשיר־פּינטלעך"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
-msgstr ""
+msgstr "באַהאַלט מכשיר־פּינטלעך"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr ""
+msgstr "באַהאַלט מכשיר־װירע"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
-msgstr ""
+msgstr "פֿאַראײגן"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr ""
+msgstr "פֿאַראײגן די מכשיר־װירע"
 
 #: bonobo/bonobo-ui-toolbar.c:1113
 msgid "is floating"
-msgstr ""
+msgstr "שװימט"
 
 #: bonobo/bonobo-ui-toolbar.c:1114
 msgid "whether the toolbar is floating"
-msgstr ""
+msgstr "צי די מכשיר־װירע שװימט"
 
 #: bonobo/bonobo-ui-util.c:623
 msgid "_Contents"
-msgstr ""
+msgstr "אינהאַלט"
 
 #: bonobo/bonobo-ui-util.c:624
 msgid "View help for this application"
-msgstr ""
+msgstr "זע געהילף פֿאַר דער אַפּליקאַציע"
 
 #: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
-msgstr ""
+msgstr "פֿענצטער־נאָמען, גענוצט צוליב צופּאַס־סעריאַליזאַציע"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr ""
+msgstr "פֿאַרגרעסער־מדרגה"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr ""
+msgstr "װיפֿל פֿאַרגרעסערונג"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "קלענסטע פֿאַרגרעסער־מדרגה"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr ""
+msgstr "װיפֿל פֿאַרגרעסערונג, אַם קלענסטן"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "גרעסטע פֿאַרגרעסערונג־מדרגה"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "װיפֿל פֿאַרגרעסערונג, אַם גרעסטן"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr ""
+msgstr "האָט אַ קלענסטע פֿאַרגרעסערונג־מדרגה"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "צי די קלענסטע פֿאַרגרעסערונג־מדרגה איז לעקסיק"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr ""
+msgstr "האָט אַ גרעסטע פֿאַרגרעסערונג־מדרגה"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "צי די גרעסטע פֿאַרגרעסערונג־מדרגה איז לעקסיק"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr ""
+msgstr "איז כּסדרדיק"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "צי מיר פֿאַרגרעסערן כּסדרדיק (ניט שפּרינגענדיק)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr ""
+msgstr "װעגן דער אַפּליקאַציע"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
@@ -362,41 +364,41 @@ msgstr "קלײַב אױס"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr ""
+msgstr "װעגן..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr ""
+msgstr "רעדאַגיר"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 msgid "_File"
-msgstr ""
+msgstr "טעקע"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr ""
+msgstr "סעלעקטיר"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr ""
+msgstr "טוט גאָרניט; ס'איז בלױז אַ דעמאָנסטראַציע"
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr ""
+msgstr "באָנאָבאָ ניצער־צובינד „שלום־עליכם“"
 
 #: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr ""
+msgstr "Gnome „שלום־עליכם“"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr ""
+msgstr "שלום עליכם!"
 
 #: samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr ""
+msgstr "ניט געקענט איניציאַליזירן libbonoboui פּראָגראַמװאַרג"
 
 #: samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
-msgstr ""
+msgstr "ניט געקענט איניציאַליזירן באָנאָבאָ ניצער־צובינד"
