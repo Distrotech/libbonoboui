@@ -691,3 +691,28 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 
 	return node;
 }
+
+static void
+add_node (xmlNode *parent, const char *name)
+{
+	xmlNode *node = xmlNewNode (NULL, name);
+
+	xmlAddChild (parent, node);
+}
+
+/**
+ * bonobo_ui_util_build_skeleton:
+ * 
+ *  Create a skeleton structure so paths work nicely.
+ * should be merged into any new ui_xml objects.
+ * 
+ * Return value: a tree, free it with xmlFreeNode.
+ **/
+void
+bonobo_ui_util_build_skeleton (BonoboUIXml *xml)
+{
+	g_return_if_fail (BONOBO_IS_UI_XML (xml));
+
+	add_node (xml->root, "keybindings");
+	add_node (xml->root, "commands");
+}

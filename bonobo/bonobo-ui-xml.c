@@ -327,13 +327,14 @@ static void
 reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 {
 	BonoboUIXmlData *data = bonobo_ui_xml_get_data (tree, node);
-	BonoboUIXmlData *old_data;
 	xmlNode  *old;
 
 	g_return_if_fail (data != NULL);
 
  	/* Mark tree as dirty */
 	if (data->overridden) { /* Something to re-instate */
+		BonoboUIXmlData *old_data;
+
 		g_return_if_fail (data->overridden->data != NULL);
 		
 		/* Get Old node from overridden list */
@@ -359,6 +360,13 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 		}
 
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REINSTATE], old);
+	} else if (node->childs) { /* We need to leave the node here */
+		/* Re-tag the node */
+		BonoboUIXmlData *child_data = 
+			bonobo_ui_xml_get_data (tree, node->childs);
+		
+		data->id = child_data->id;
+		return;
 	} else {
 /*		fprintf (stderr, "destroying node '%s' '%s'\n",
 		node->name, xmlGetProp (node, "name"));*/
@@ -383,35 +391,23 @@ reinstate_old_node (BonoboUIXml *tree, xmlNode *node)
 static xmlNode *
 find_child (xmlNode *node, const char *name)
 {
-	xmlNode *l;
+	xmlNode *l, *ret = NULL;
 
 	g_return_val_if_fail (name != NULL, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
-	for (l = node->childs; l; l = l->next)
-		if (!strcmp (l->name, name))
-			break;
+	for (l = node->childs; l && !ret; l = l->next) {
+		char *txt;
 
-	return l;
-}
+		if ((txt = xmlGetProp (l, "name"))) {
+			if (!strcmp (txt, name))
+				ret = l;
 
-static xmlNode *
-find_sibling (xmlNode *node, const char *name)
-{
-	xmlNode *l, *ret;
+			xmlFree (txt);
+		}
 
-	g_return_val_if_fail (name != NULL, NULL);
-	g_return_val_if_fail (node != NULL, NULL);
-
-	ret = NULL;
-	for (l = node; l && !ret; l = l->next) {
-		char *prop;
-
-		if ((prop = xmlGetProp (l, "name")) &&
-		    !strcmp (prop, name))
+		if (!ret && !strcmp (l->name, name))
 			ret = l;
-		if (prop)
-			xmlFree (prop);
 	}
 
 	return ret;
@@ -535,19 +531,18 @@ bonobo_ui_xml_path_freev (char **split)
 }
 
 static xmlNode *
-xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
+xml_get_path (BonoboUIXml *tree, const char *path)
 {
 	xmlNode *ret;
 	char   **names;
 	int      i;
-	xmlNode *next;
 	
 	g_return_val_if_fail (tree != NULL, NULL);
 
 #ifdef UI_XML_DEBUG
 	fprintf (stderr, "Find path '%s'\n", path);
 #endif
-/*	DUMP_XML (tree, tree->root, "Before find path");*/
+	DUMP_XML (tree, tree->root, "Before find path");
 
 	if (!path || path [0] == '\0')
 		return tree->root;
@@ -564,44 +559,13 @@ xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 
 /*		g_warning ("Path element '%s'", names [i]);*/
 
-		if (names [i] [0] == '#') {
-			if ((next = find_sibling (ret, &names [i] [1]))) {
-				ret = next;
-/*				g_warning ("TESTME: Found sibling with name: '%s' '%s'",
-				ret->name, xmlGetProp (ret, "name"));*/
-			} else {
-				if (!create)
-					return NULL;
- 
-				if (ret->properties) {
-					ret = xmlNewChild (ret->parent, NULL, ret->name, NULL);
-					bonobo_ui_xml_set_dirty (tree, ret->parent, TRUE);
-/*					g_warning ("TESTME: Created new sibling with name: '%s' '%s'",
-					ret->name, xmlGetProp (ret, "name"));*/
-				} /*else Use the node we created last time */
-
-				xmlSetProp (ret, "name", &names [i] [1]);
-			}
-		} else {
-			if ((next = find_child (ret, names [i]))) {
-				ret = next;
-/*				g_warning ("TESTME: Found child with name: '%s' '%s'",
-				ret->name, xmlGetProp (ret, "name"));*/
-			} else {
-				if (!create)
-					return NULL;
-				ret = xmlNewChild (ret, NULL, names [i], NULL);
-				bonobo_ui_xml_set_dirty (tree, ret->parent, TRUE);
-
-/*				g_warning ("TESTME: Created child with name: '%s' '%s'",
-				ret->name, xmlGetProp (ret, "name"));*/
-			}
-		}
+		if (!(ret = find_child (ret, names [i])))
+			return NULL;
 	}
 		
 	bonobo_ui_xml_path_freev (names);
 
-/*	DUMP_XML (tree, tree->root, "After clean find path");*/
+	DUMP_XML (tree, tree->root, "After clean find path");
 
 	return ret;
 }
@@ -609,13 +573,7 @@ xml_get_path (BonoboUIXml *tree, const char *path, gboolean create)
 xmlNode *
 bonobo_ui_xml_get_path (BonoboUIXml *tree, const char *path)
 {
-	return xml_get_path (tree, path, TRUE);
-}
-
-gboolean
-bonobo_ui_xml_exists (BonoboUIXml *tree, const char *path)
-{
-	return xml_get_path (tree, path, FALSE) != NULL;
+	return xml_get_path (tree, path);
 }
 
 char *
@@ -631,13 +589,8 @@ bonobo_ui_xml_make_path  (xmlNode *node)
 
 		if ((tmp = xmlGetProp (node, "name"))) {
 			g_string_prepend (path, tmp);
-			g_string_prepend (path, "/#");
+			g_string_prepend (path, "/");
 			xmlFree (tmp);
-		}
-
-		if (node->parent) {
-			g_string_prepend   (path, node->name);
-			g_string_prepend_c (path, '/');
 		}
 
 		node = node->parent;
@@ -722,12 +675,11 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 				a->name, xmlGetProp (a, "name"),
 				b->name, xmlGetProp (b, "name"));*/
 			
-			if (strcmp (a->name, b->name))
-				continue;
-
 			a_name = xmlGetProp (a, "name");
 			b_name = xmlGetProp (b, "name");
-			if (!a_name && !b_name)
+
+			if (!a_name && !b_name &&
+			    !strcmp (a->name, b->name))
 				break;
 
 			if (!a_name || !b_name)
@@ -775,7 +727,7 @@ merge (BonoboUIXml *tree, xmlNode *current, xmlNode **new)
 /*	DUMP_XML (tree, current, "After all"); */
 }
 
-void
+BonoboUIXmlError
 bonobo_ui_xml_merge (BonoboUIXml *tree,
 		     const char  *path,
 		     xmlNode     *nodes,
@@ -783,15 +735,19 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 {
 	xmlNode *current;
 
-	g_return_if_fail (BONOBO_IS_UI_XML (tree));
+	g_return_val_if_fail (BONOBO_IS_UI_XML (tree), BONOBO_UI_XML_BAD_PARAM);
 
 	if (nodes == NULL)
-		return;
+		return BONOBO_UI_XML_OK;
 
 	bonobo_ui_xml_strip (nodes);
 	set_id (tree, nodes, id);
 
 	current = bonobo_ui_xml_get_path (tree, path);
+	if (!current) {
+		/* FIXME: we leak nodes here */
+		return BONOBO_UI_XML_INVALID_PATH;
+	}
 
 #ifdef UI_XML_DEBUG
 	{
@@ -805,28 +761,36 @@ bonobo_ui_xml_merge (BonoboUIXml *tree,
 	DUMP_XML (tree, tree->root, "Merging in");
 	DUMP_XML (tree, nodes, "this load");
 
+	/*
+	 * FIXME: ok; so we need to create a peer to merge against here.
+	 */
+
 	merge (tree, current, &nodes);
 
 #ifdef UI_XML_DEBUG
 	bonobo_ui_xml_dump (tree, tree->root, "Merged to");
 #endif
+
+	return BONOBO_UI_XML_OK;
 }
 
-void
+BonoboUIXmlError
 bonobo_ui_xml_rm (BonoboUIXml *tree,
 		  const char      *path,
 		  gpointer         id)
 {
 	xmlNode *current;
 
-	current = xml_get_path (tree, path, FALSE);
+	current = xml_get_path (tree, path);
 
 	if (current)
 		reinstate_node (tree, current, id);
 	else
-		g_warning ("Removing unknown path '%s'", path);
+		return BONOBO_UI_XML_INVALID_PATH;
 
 	DUMP_XML (tree, tree->root, "After remove");
+
+	return BONOBO_UI_XML_OK;
 }
 
 static void

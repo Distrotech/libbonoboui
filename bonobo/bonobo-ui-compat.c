@@ -20,7 +20,7 @@
 #include <bonobo/bonobo-ui-container.h>
 #include <bonobo/bonobo-ui-compat.h>
 
-#undef COMPAT_DEBUG
+#define COMPAT_DEBUG
 
 typedef struct {
 	BonoboUIComponent *component;
@@ -147,24 +147,32 @@ void
 bonobo_ui_handler_create_menubar (BonoboUIHandler *uih)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
+	xmlNode *node;
 
 	g_return_if_fail (priv != NULL);
 
-#warning FIXME; we currently always have a menu bar; hmmm...
-	bonobo_ui_xml_get_path (priv->ui, "/menu");
+	node = xmlNewNode (NULL, "menu");
+	
+	bonobo_ui_component_set_tree (
+		priv->component, priv->container,
+		"/", node, NULL);
+
+	bonobo_ui_xml_merge (priv->ui, "/", node, NULL);
 }
 
 void
 bonobo_ui_handler_create_toolbar (BonoboUIHandler *uih, const char *name)
 {
 	BonoboUIHandlerPrivate *priv = get_priv (uih);
-	char *path;
+	char *xml;
 
 	g_return_if_fail (priv != NULL);
 
-	path = g_strdup_printf ("/dockitem/#%s", name);
-	bonobo_ui_xml_get_path (priv->ui, path);
-	g_free (path);
+	xml = g_strdup_printf ("<dockitem name=\"%s\"/>", name);
+	bonobo_ui_component_set (priv->component,
+				 priv->container,
+				 "/", xml, NULL);
+	g_free (xml);
 	compat_sync (priv, "/", NULL);
 }
 
@@ -188,6 +196,8 @@ setup_priv (BonoboObject *object)
 	priv = g_new0 (BonoboUIHandlerPrivate, 1);
 
 	priv->ui = bonobo_ui_xml_new (NULL, NULL, NULL, NULL, NULL);
+
+	bonobo_ui_util_build_skeleton (priv->ui);
 
 	gtk_object_set_data (GTK_OBJECT (object), MAGIC_UI_HANDLER_KEY, priv);
 	gtk_signal_connect  (GTK_OBJECT (object), "destroy",
@@ -534,8 +544,8 @@ make_path (const char *root_at, const char *subtype,
 			continue;
 
 		g_string_append (str, "/");
-		g_string_append (str, subtype);
-		g_string_append (str, "/#");
+/*		g_string_append (str, subtype);
+		g_string_append (str, "/#");*/
 		g_string_append (str, strv [i]);
 	}
 	
@@ -584,6 +594,12 @@ bonobo_ui_handler_menu_add_one (BonoboUIHandler *uih, const char *parent_path,
 
 	xml_path = make_path ("/menu", "submenu", parent_path, FALSE);
 	parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
+
+	if (!parent) {
+		g_warning ("Path '%s' does not exist", xml_path);
+		g_free (xml_path);
+		return;
+	}
 
 	switch (item->type) {
 	case BONOBO_UI_COMPAT_LIST:
@@ -796,6 +812,12 @@ bonobo_ui_handler_menu_new (BonoboUIHandler *uih, const char *path,
 
 		parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
 
+		if (!parent) {
+			g_warning ("Path '%s' does not exist", xml_path);
+			g_free (xml_path);
+			return;
+		}
+
 		xmlAddChild (parent, node);
 		compat_sync (priv, xml_path, node);
 
@@ -994,6 +1016,12 @@ bonobo_ui_handler_toolbar_add_list (BonoboUIHandler *uih, const char *parent_pat
 	xml_path = make_path ("", "dockitem", parent_path, TRUE);
 	parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
 
+	if (!parent) {
+		g_warning ("Path '%s' does not exist", xml_path);
+		g_free (xml_path);
+		return;
+	}
+
 	compat_toolbar_parse_uiinfo_list_with_data (
 		priv, item->uii, item->data, parent);
 
@@ -1059,6 +1087,12 @@ bonobo_ui_handler_toolbar_new (BonoboUIHandler *uih, const char *path,
 	{
 		char *xml_path = make_path ("", "dockitem", path, TRUE);
 		parent = bonobo_ui_xml_get_path (priv->ui, xml_path);
+
+		if (!parent) {
+			g_warning ("Path '%s' does not exist", xml_path);
+			g_free (xml_path);
+			return;
+		}
 
 		xmlAddChild (parent, node);
 		compat_sync (priv, xml_path, node);
@@ -1205,9 +1239,9 @@ bonobo_ui_handler_set_app (BonoboUIHandler *uih, BonoboWin *app)
 	priv->application = app;
 
 	container = bonobo_ui_container_new ();
+	bonobo_ui_container_set_app (container, app);
 	bonobo_ui_handler_set_container (
 		uih, bonobo_object_corba_objref (BONOBO_OBJECT (container)));
-	bonobo_ui_container_set_app (container, app);
 }
 
 BonoboWin *

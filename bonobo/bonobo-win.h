@@ -4,6 +4,7 @@
 
 #include <gnome.h>
 #include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-ui-xml.h>
 
 #define BONOBO_WIN_TYPE        (bonobo_win_get_type ())
 #define BONOBO_WIN(o)          (GTK_CHECK_CAST ((o), BONOBO_WIN_TYPE, BonoboWin))
@@ -34,12 +35,12 @@ void                 bonobo_win_set_contents        (BonoboWin  *win,
 						     GtkWidget  *contents);
 GtkWidget           *bonobo_win_get_contents        (BonoboWin  *win);
 
-gboolean             bonobo_win_xml_merge           (BonoboWin  *win,
+BonoboUIXmlError     bonobo_win_xml_merge           (BonoboWin  *win,
 						     const char *path,
 						     const char *xml,
 						     const char *component);
 
-void                 bonobo_win_xml_merge_tree      (BonoboWin  *win,
+BonoboUIXmlError     bonobo_win_xml_merge_tree      (BonoboWin  *win,
 						     const char *path,
 						     xmlNode    *tree,
 						     const char *component);
@@ -51,17 +52,18 @@ char                *bonobo_win_xml_get             (BonoboWin  *win,
 gboolean             bonobo_win_xml_node_exists     (BonoboWin  *win,
 						     const char *path);
 
-void                 bonobo_win_xml_rm              (BonoboWin  *win,
+BonoboUIXmlError     bonobo_win_xml_rm              (BonoboWin  *win,
 						     const char *path,
 						     const char *by_component);
 
-void                 bonobo_win_object_set          (BonoboWin  *win,
+BonoboUIXmlError     bonobo_win_object_set          (BonoboWin  *win,
 						     const char *path,
 						     Bonobo_Unknown object,
 						     CORBA_Environment *ev);
 
-Bonobo_Unknown       bonobo_win_object_get          (BonoboWin  *win,
+BonoboUIXmlError     bonobo_win_object_get          (BonoboWin  *win,
 						     const char *path,
+						     Bonobo_Unknown *object,
 						     CORBA_Environment *ev);
 
 GtkAccelGroup       *bonobo_win_get_accel_group     (BonoboWin  *win);

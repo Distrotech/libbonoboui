@@ -14,6 +14,13 @@
 #define BONOBO_IS_UI_XML(o)       (GTK_CHECK_TYPE ((o), BONOBO_UI_XML_TYPE))
 #define BONOBO_IS_UI_XML_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_UI_XML_TYPE))
 
+typedef enum {
+	BONOBO_UI_XML_OK,
+	BONOBO_UI_XML_BAD_PARAM,
+	BONOBO_UI_XML_INVALID_PATH,
+	BONOBO_UI_XML_INVALID_XML
+} BonoboUIXmlError;
+
 typedef struct _BonoboUIXml BonoboUIXml;
 
 typedef struct {
@@ -72,14 +79,13 @@ void             bonobo_ui_xml_set_dirty (BonoboUIXml *tree,
 
 xmlNode         *bonobo_ui_xml_get_path  (BonoboUIXml *tree, const char *path);
 char            *bonobo_ui_xml_make_path (xmlNode     *node);
-gboolean         bonobo_ui_xml_exists    (BonoboUIXml *tree, const char *path);
 
-void             bonobo_ui_xml_merge     (BonoboUIXml *tree,
+BonoboUIXmlError bonobo_ui_xml_merge     (BonoboUIXml *tree,
 					  const char  *path,
 					  xmlNode     *nodes,
 					  gpointer     id);
 
-void             bonobo_ui_xml_rm        (BonoboUIXml *tree,
+BonoboUIXmlError bonobo_ui_xml_rm        (BonoboUIXml *tree,
 					  const char  *path,
 					  gpointer     id);
 

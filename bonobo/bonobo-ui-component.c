@@ -367,6 +367,8 @@ bonobo_ui_component_set (BonoboUIComponent  *component,
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
 
+/*	fprintf (stderr, "Set '%s'\n", xml);*/
+
 	if (ev)
 		real_ev = ev;
 	else {

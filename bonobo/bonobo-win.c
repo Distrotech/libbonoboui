@@ -357,8 +357,20 @@ get_cmd_state (BonoboWinPrivate *priv, const char *cmd_name)
 	if (!cmd_name)
 		return NULL;
 
-	path = g_strconcat ("/commands/cmd/#", cmd_name, NULL);
+	path = g_strconcat ("/commands/", cmd_name, NULL);
 	ret  = bonobo_ui_xml_get_path (priv->tree, path);
+
+	if (!ret) {
+		xmlNode *node = xmlNewNode (NULL, "cmd");
+		xmlSetProp (node, "name", cmd_name);
+
+		bonobo_ui_xml_merge (
+			priv->tree, "/commands", node, NULL);
+		
+		ret = bonobo_ui_xml_get_path (priv->tree, path);
+		g_assert (ret != NULL);
+	}
+
 	g_free (path);
 
 	return ret;
@@ -609,7 +621,7 @@ remove_fn (GtkObject *object, xmlNode *node, BonoboWinPrivate *priv)
 	real_emit_ui_event (priv, info->parent.id, id,
 			    Bonobo_UIComponent_REMOVED, "");
 
-	if (info->widget)
+	if (info->widget && !NODE_IS_ROOT_WIDGET (info))
 		gtk_widget_destroy (info->widget);
 
 	info->widget = NULL;
@@ -1158,19 +1170,16 @@ build_control (BonoboWinPrivate *priv,
 		    xmlNode          *node,
 		    GtkWidget        *parent)
 {
-	GtkWidget *control;
+	GtkWidget *control = NULL;
 	NodeInfo  *info = bonobo_ui_xml_get_data (priv->tree, node);
 
 	if (info->widget) { /* Re-parent the widget */
 		control = info->widget;
-	} else {
-		g_return_val_if_fail (info->object != CORBA_OBJECT_NIL, NULL);
+	} else if (info->object != NULL) {
 
 		control = bonobo_widget_new_control_from_objref
 			(bonobo_object_dup_ref (info->object, NULL),
 			 CORBA_OBJECT_NIL);
-		g_return_val_if_fail (control != NULL, NULL);
-				
 		g_return_val_if_fail (control != NULL, NULL);
 		
 		info->type |= CUSTOM_WIDGET;
@@ -1259,6 +1268,8 @@ build_menu_widget (BonoboWinPrivate *priv, xmlNode *node)
 		GtkWidget *control;
 
 		control = build_control (priv, node, parent);
+		if (!control)
+			return;
 
 		menu_widget = gtk_menu_item_new ();
 		gtk_container_add (GTK_CONTAINER (menu_widget), control);
@@ -1449,7 +1460,9 @@ build_toolbar_control (BonoboWinPrivate *priv, xmlNode *node)
 	parent = node_get_parent_widget (priv->tree, node);
 
 	item = build_control (priv, node, parent);
-	g_return_if_fail (item != NULL);
+	if (!item)
+		return;
+
 	gtk_widget_show (GTK_WIDGET (item));
 
 	bonobo_ui_toolbar_add (BONOBO_UI_TOOLBAR (parent), item);
@@ -1647,13 +1660,12 @@ update_status (BonoboWinPrivate *priv, xmlNode *node)
 		} else if (!strcmp (l->name, "control")) {
 			NodeInfo *info = bonobo_ui_xml_get_data (priv->tree, l);
 
-			g_warning ("TESTME: non-working code path");
-
 			if (!info->object) {
-				g_warning ("Unknown status bar object");
 				xmlFree (name);
 				continue;
 			}
+
+			/* FIXME: non working code path */
 
 			widget = bonobo_ui_item_new_control (info->object);
 			g_return_if_fail (widget != NULL);
@@ -1859,6 +1871,9 @@ bonobo_win_xml_get (BonoboWin  *app,
 	g_return_val_if_fail (doc != NULL, NULL);
 
 	node = bonobo_ui_xml_get_path (app->priv->tree, path);
+	if (!node)
+		return NULL;
+
 	doc->root = xmlCopyNode (node, TRUE);
 	g_return_val_if_fail (doc->root != NULL, NULL);
 
@@ -1884,12 +1899,16 @@ gboolean
 bonobo_win_xml_node_exists (BonoboWin  *app,
 			    const char *path)
 {
+	xmlNode *node;
+
 	g_return_val_if_fail (BONOBO_IS_WIN (app), FALSE);
 
-	return bonobo_ui_xml_exists (app->priv->tree, path);
+	node = bonobo_ui_xml_get_path (app->priv->tree, path);
+
+	return (node != NULL);
 }
 
-void
+BonoboUIXmlError
 bonobo_win_object_set (BonoboWin  *app,
 		       const char *path,
 		       Bonobo_Unknown object,
@@ -1898,10 +1917,11 @@ bonobo_win_object_set (BonoboWin  *app,
 	xmlNode   *node;
 	NodeInfo  *info;
 
-	g_return_if_fail (BONOBO_IS_WIN (app));
+	g_return_val_if_fail (BONOBO_IS_WIN (app), BONOBO_UI_XML_BAD_PARAM);
 
 	node = bonobo_ui_xml_get_path (app->priv->tree, path);
-	g_return_if_fail (node != NULL);
+	if (!node)
+		return BONOBO_UI_XML_INVALID_PATH;
 
 	info = bonobo_ui_xml_get_data (app->priv->tree, node);
 
@@ -1909,38 +1929,49 @@ bonobo_win_object_set (BonoboWin  *app,
 		bonobo_object_release_unref (info->object, ev);
 
 	info->object = bonobo_object_dup_ref (object, ev);
+
+	return BONOBO_UI_XML_OK;
 }
 
-Bonobo_Unknown
+BonoboUIXmlError
 bonobo_win_object_get (BonoboWin  *app,
 		       const char *path,
+		       Bonobo_Unknown *object,
 		       CORBA_Environment *ev)
 {
 	xmlNode *node;
 	NodeInfo *info;
 
-	g_return_val_if_fail (BONOBO_IS_WIN (app), CORBA_OBJECT_NIL);
+	g_return_val_if_fail (object != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (BONOBO_IS_WIN (app), BONOBO_UI_XML_BAD_PARAM);
+
+	*object = CORBA_OBJECT_NIL;
 
 	node = bonobo_ui_xml_get_path (app->priv->tree, path);
-	g_return_val_if_fail (node != NULL, CORBA_OBJECT_NIL);
+	if (!node)
+		return BONOBO_UI_XML_INVALID_PATH;
 
 	info = bonobo_ui_xml_get_data (app->priv->tree, node);
 
-	return bonobo_object_dup_ref (info->object, ev);
+	*object = bonobo_object_dup_ref (info->object, ev);
+
+	return BONOBO_UI_XML_OK;
 }
 
-void
+BonoboUIXmlError
 bonobo_win_xml_merge_tree (BonoboWin  *app,
 			   const char *path,
 			   xmlNode    *tree,
 			   const char *component)
 {
-	g_return_if_fail (app != NULL);
-	g_return_if_fail (app->priv != NULL);
-	g_return_if_fail (app->priv->tree != NULL);
+	BonoboUIXmlError err;
+	
+	g_return_val_if_fail (app != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (app->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (app->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
 
 	if (!tree || !tree->name)
-		return;
+		return BONOBO_UI_XML_OK;
 
 	/*
 	 *  Because peer to peer merging makes the code hard, and
@@ -1950,53 +1981,63 @@ bonobo_win_xml_merge_tree (BonoboWin  *app,
 	 */
 	if (!strcmp (tree->name, "Root")) {
 		bonobo_ui_xml_strip (tree);
-		bonobo_ui_xml_merge (app->priv->tree, path,
-				     tree->childs,
-				     win_component_cmp_name (app->priv, component));
+		err = bonobo_ui_xml_merge (
+			app->priv->tree, path, tree->childs,
+			win_component_cmp_name (app->priv, component));
 	} else
-		bonobo_ui_xml_merge (app->priv->tree, path, tree,
-				     win_component_cmp_name (app->priv, component));
+		err = bonobo_ui_xml_merge (
+			app->priv->tree, path, tree,
+			win_component_cmp_name (app->priv, component));
 
 	update_widgets (app->priv);
+
+	return err;
 }
 
-gboolean
+BonoboUIXmlError
 bonobo_win_xml_merge (BonoboWin  *app,
 		      const char *path,
 		      const char *xml,
 		      const char *component)
 {
 	xmlDoc  *doc;
+	BonoboUIXmlError err;
 
-	g_return_val_if_fail (app != NULL, FALSE);
-	g_return_val_if_fail (xml != NULL, FALSE);
-	g_return_val_if_fail (app->priv != NULL, FALSE);
-	g_return_val_if_fail (app->priv->tree != NULL, FALSE);
+	g_return_val_if_fail (app != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (xml != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (app->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (app->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
 
 	doc = xmlParseDoc ((char *)xml);
+	if (!doc)
+		return BONOBO_UI_XML_INVALID_XML;
 
-	g_return_val_if_fail (doc != NULL, FALSE);
-
-	bonobo_win_xml_merge_tree (app, path, doc->root, component);
+	err = bonobo_win_xml_merge_tree (app, path, doc->root, component);
 	doc->root = NULL;
 	
 	xmlFreeDoc (doc);
 
-	return TRUE;
+	return err;
 }
 
-void
+BonoboUIXmlError
 bonobo_win_xml_rm (BonoboWin  *app,
 		   const char *path,
 		   const char *by_component)
 {
-	g_return_if_fail (app != NULL);
-	g_return_if_fail (app->priv != NULL);
-	g_return_if_fail (app->priv->tree != NULL);
+	BonoboUIXmlError err;
 
-	bonobo_ui_xml_rm (app->priv->tree, "/",
-			  win_component_cmp_name (app->priv, by_component));
+	g_return_val_if_fail (app != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (app->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
+	g_return_val_if_fail (app->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
+
+	err = bonobo_ui_xml_rm (
+		app->priv->tree, "/",
+		win_component_cmp_name (app->priv, by_component));
+
 	update_widgets (app->priv);
+
+	return err;
 }
 
 void
@@ -2099,6 +2140,8 @@ construct_priv (BonoboWin  *app,
 					info_free_fn,
 					info_dump_fn,
 					add_node_fn);
+
+	bonobo_ui_util_build_skeleton (priv->tree);
 
 	gtk_signal_connect (GTK_OBJECT (priv->tree), "override",
 			    (GtkSignalFunc) override_fn, priv);

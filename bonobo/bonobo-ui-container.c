@@ -22,7 +22,7 @@ POA_Bonobo_UIContainer__vepv bonobo_ui_container_vepv;
 
 #define APP_DESTROYED 0x1
 
-static inline BonoboWin *
+static BonoboWin *
 bonobo_ui_container_from_servant (PortableServer_Servant servant)
 {
 	BonoboUIContainer *container;
@@ -72,7 +72,7 @@ impl_node_set (PortableServer_Servant   servant,
 {
 	BonoboWin *app = bonobo_ui_container_from_servant (servant);
 
-	if (!bonobo_win_xml_merge (app, path, xml, component_name))
+	if (bonobo_win_xml_merge (app, path, xml, component_name))
 		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
 				     ex_Bonobo_UIContainer_MalFormedXML, NULL);
 }
@@ -87,8 +87,11 @@ impl_node_get (PortableServer_Servant servant,
 	CORBA_char *xml;
 
 	xml = bonobo_win_xml_get (app, path, nodeOnly);
-	if (!xml)
-		return CORBA_string_dup ("<Error/>");
+	if (!xml) {
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIContainer_InvalidPath, NULL);
+		return NULL;
+	}
 
 	return xml;
 }
@@ -100,11 +103,16 @@ impl_node_remove (PortableServer_Servant servant,
 		  CORBA_Environment     *ev)
 {
 	BonoboWin *app = bonobo_ui_container_from_servant (servant);
+	BonoboUIXmlError err;
 
 	if (!app)
 		return;
 
-	bonobo_win_xml_rm (app, path, component_name);
+	err = bonobo_win_xml_rm (app, path, component_name);
+
+	if (err)
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIContainer_InvalidPath, NULL);
 }
 
 static CORBA_boolean
@@ -124,8 +132,13 @@ impl_object_set (PortableServer_Servant servant,
 		 CORBA_Environment     *ev)
 {
 	BonoboWin *app = bonobo_ui_container_from_servant (servant);
+	BonoboUIXmlError err;
 
-	bonobo_win_object_set (app, path, control, ev);
+	err = bonobo_win_object_set (app, path, control, ev);
+
+	if (err)
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIContainer_InvalidPath, NULL);
 }
 
 static Bonobo_Unknown
@@ -134,8 +147,16 @@ impl_object_get (PortableServer_Servant servant,
 		 CORBA_Environment     *ev)
 {
 	BonoboWin *app = bonobo_ui_container_from_servant (servant);
+	BonoboUIXmlError err;
+	Bonobo_Unknown object;
 
-	return bonobo_win_object_get (app, path, ev);
+	err = bonobo_win_object_get (app, path, &object, ev);
+
+	if (err)
+		CORBA_exception_set (ev, CORBA_USER_EXCEPTION,
+				     ex_Bonobo_UIContainer_InvalidPath, NULL);
+
+	return object;
 }
 
 /**

@@ -56,9 +56,12 @@ main (int argc, char **argv)
 	Bonobo_UIContainer corba_container;
 
 	char simplea [] =
-		"<submenu name=\"File\" label=\"_File\">\n"
-		"	<menuitem name=\"open\" label=\"_Open\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Wibble\"/>\n"
-		"</submenu>\n";
+		"<menu>\n"
+		"	<submenu name=\"File\" label=\"_File\">\n"
+		"		<menuitem name=\"open\" label=\"_Open\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Wibble\"/>\n"
+		"		<control name=\"MyControl\"/>\n"
+		"	</submenu>\n"
+		"</menu>";
 	char simpleb [] =
 		"<submenu name=\"File\" label=\"_FileB\">\n"
 		"	<menuitem name=\"open\" label=\"_OpenB\" pixtype=\"stock\" pixname=\"Menu_Open\" descr=\"Open you fool\"/>\n"
@@ -83,6 +86,7 @@ main (int argc, char **argv)
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"
 		"	<toolitem type=\"separator\" name=\"foo3\" pixtype=\"stock\" pixname=\"Save\" label=\"Separator\"/>\n"
 		"	<toolitem type=\"std\" name=\"baa\" pixtype=\"stock\" pixname=\"Open\" label=\"baa\" descr=\"My 2nd tooltip\" verb=\"testme\"/>\n"
+		"	<control name=\"AControl\"/>\n"
 		"</dockitem>";
 	char toolb [] =
 		"<dockitem name=\"toolbar\" look=\"icon\" relief=\"none\">\n"
@@ -92,7 +96,10 @@ main (int argc, char **argv)
 	char statusa [] =
 		"<item name=\"main\">Kippers</item>\n";
 	char statusb [] =
-		"<item name=\"main\">Nothing</item>\n";
+		"<status>\n"
+		"	<item name=\"main\">Nothing</item>\n"
+		"	<control name=\"Progress\"/>\n"
+		"</status>";
 	xmlNode *accel, *file;
 
 	free (malloc (8));
@@ -141,7 +148,9 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_set (componentb, corba_container, "/status", statusa, &ev);
 
-	bonobo_ui_component_set (componenta, corba_container, "/menu", simplea, &ev);
+	bonobo_ui_component_set (componenta, corba_container, "/", simplea, &ev);
+
+	bonobo_ui_component_set (componentb, corba_container, "/",   toola, &ev);
 
 	{
 		GtkWidget *widget = gtk_button_new_with_label ("My Label");
@@ -150,7 +159,7 @@ main (int argc, char **argv)
 		gtk_widget_show (widget);
 		bonobo_ui_container_object_set (
 			corba_container,
-			"/menu/submenu/#File/control/#MyControl",
+			"/menu/File/MyControl",
 			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
 			NULL);
 	}
@@ -163,14 +172,14 @@ main (int argc, char **argv)
 		gtk_widget_show (widget);
 		bonobo_ui_container_object_set (
 			corba_container,
-			"/dockitem/#toolbar/control/#AControl",
+			"/toolbar/AControl",
 			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
 			NULL);
 	}
 
-	bonobo_ui_component_set (componentb, corba_container, "/",     toola, &ev);
-
 	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
+
+	bonobo_ui_component_set (componentb, corba_container, "/",     statusb, &ev);
 
 	gtk_widget_show (GTK_WIDGET (app));
 
@@ -181,7 +190,6 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_set (componentb, corba_container, "/menu", simpleb, &ev);
 	bonobo_ui_component_set (componenta, corba_container, "/",     toolb, &ev);
-	bonobo_ui_component_set (componentb, corba_container, "/status", statusb, &ev);
 
 	{
 		GtkWidget *widget = gtk_button_new_with_label ("A progress bar");
@@ -191,7 +199,7 @@ main (int argc, char **argv)
 		gtk_widget_show (widget);
 		bonobo_ui_container_object_set (
 			corba_container,
-			"/status/control/#Progress",
+			"/status/Progress",
 			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
 			NULL);
 	}
@@ -201,7 +209,7 @@ main (int argc, char **argv)
 				 "<cmd name=\"MyFoo\" sensitive=\"0\"/>", &ev);
 	bonobo_ui_component_set (componentc, corba_container, "/menu", simplec, &ev);
 	
-	bonobo_ui_component_set (componentc, corba_container, "/menu/submenu/#File", simpled, &ev);
+	bonobo_ui_component_set (componentc, corba_container, "/menu/File", simpled, &ev);
 
 	gtk_main ();
 
