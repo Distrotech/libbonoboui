@@ -1,1 +1,6 @@
+.deps
+.libs
+Makefile
 Makefile.in
+sample-control-container
+sample-control-factory

@@ -1,1 +1,6 @@
+.deps
+.libs
+Makefile
 Makefile.in
+paint-component-simple
+sample-container
