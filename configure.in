@@ -45,10 +45,13 @@ PKG_CHECK_MODULES(BONOBOUI, $BONOBOUI_MODULES)
 AC_SUBST(BONOBOUI_CFLAGS)
 AC_SUBST(BONOBOUI_LIBS)
 
-pre_LIBS="$LIBS"
-LIBS="$LIBS $BONOBOUI_LIBS"
-AC_CHECK_FUNCS(gdk_screen_get_number gdk_get_default_screen)
-LIBS="$pre_LIBS"
+AC_MSG_CHECKING([for gtk+ multihead support])
+if $PKG_CONFIG --atleast-version 2.1.0 gtk+-2.0; then
+   AC_DEFINE(HAVE_GTK_MULTIHEAD,,[gtk+ with multihead support found])
+   AC_MSG_RESULT(yes)
+else
+   AC_MSG_RESULT(no)
+fi
 
 PKG_CHECK_MODULES(BONOBOUI_GLADE, $BONOBOUI_MODULES libglade-2.0 >= 1.99.11)
 AC_SUBST(BONOBOUI_GLADE_CFLAGS)

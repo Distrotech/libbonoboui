@@ -1,3 +1,8 @@
+2002-06-25  Mark McLoughlin  <mark@skynet.ie>
+
+	* configure.in: actually add check for multihead gtk+
+	this time.
+
 2002-06-18  Mark McLoughlin  <mark@skynet.ie>
 
 	* bonobo/bonobo-control-frame.c:
