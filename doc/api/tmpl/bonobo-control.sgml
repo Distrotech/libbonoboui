@@ -60,6 +60,16 @@ client side, since this will not ( and should not ) propagate
 over to the Control.
 </para>
 
+<para>
+One final thing worth thinking about is activation. When a control
+is embedded inside a #BonoboControlFrame, it is initialy inactive.
+In order for the control to recieve interactive input it is neccessary
+to use bonobo_control_frame_activate. This signals to the control
+that it is activated, at which point the Control should merge any
+UI elements it has with the associated #BonoboUIComponent. This
+needs to be done every time the control is activated.
+</para>
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
   #BonoboWidget, bonobo_widget_new()

@@ -485,6 +485,10 @@ main (int argc, char **argv)
 				    disconnect_progress, GUINT_TO_POINTER (id));
 	}
 
+	bonobo_ui_component_set_status (componenta, "This is a very long status message "
+					"that should cause the window to be resized if "
+					"there is in fact a bug in it", NULL);
+
 	bonobo_ui_component_thaw (componenta, NULL);
 	gtk_main ();
 	bonobo_ui_component_freeze (componenta, NULL);
