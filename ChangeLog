@@ -1,3 +1,13 @@
+2001-12-18  Darin Adler  <darin@bentspoon.com>
+
+	* bonobo/bonobo-ui-component.c: (bonobo_ui_component_set_tree):
+	* bonobo/bonobo-ui-engine.c: (bonobo_ui_engine_xml_get):
+	Use g_free to free the result of bonobo_ui_node_to_string.
+
+	* bonobo/bonobo-ui-node.c: (bonobo_ui_node_to_string):
+	Change function and documentation so that you use g_free to
+	free the result rather than bonobo_ui_node_free_string.
+
 2001-12-17  Darin Adler  <darin@bentspoon.com>
 
 	* bonobo/bonobo-ui-node.c: (bonobo_ui_node_to_string):

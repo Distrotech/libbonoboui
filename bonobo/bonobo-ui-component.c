@@ -651,7 +651,7 @@ bonobo_ui_component_set_tree (BonoboUIComponent *component,
 	bonobo_ui_component_set (
 		component, path, str, ev);
 
-	bonobo_ui_node_free_string (str);
+	g_free (str);
 }
 
 /**

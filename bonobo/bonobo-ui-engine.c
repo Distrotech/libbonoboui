@@ -1052,7 +1052,7 @@ bonobo_ui_engine_xml_get (BonoboUIEngine *engine,
  	else {		
  		str = bonobo_ui_node_to_string (node, !node_only);
  		ret = CORBA_string_dup (str);
- 		bonobo_ui_node_free_string (str);
+ 		g_free (str);
  		return ret;
   	}
 }

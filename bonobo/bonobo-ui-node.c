@@ -1022,16 +1022,15 @@ validate_tree (BonoboUINode *node)
  * @node: the node tree
  * @recurse: whether to dump its children as well
  * 
- * Convert the Node to its XML string representation
- * see also: bonobo_ui_node_free_string
+ * Convert the node to its XML string representation.
  * 
  * Return value: the string representation or NULL on error
+ * Use g_free to free.
  **/
 char *
 bonobo_ui_node_to_string (BonoboUINode *node,
 			  gboolean      recurse)
 {
-	char    *ret;
 	GString *str = g_string_sized_new (64);
 
 	internal_to_string (str, node, recurse);
@@ -1039,8 +1038,5 @@ bonobo_ui_node_to_string (BonoboUINode *node,
 /*	fprintf (stderr, "nodes to string: '%s'", str->str); */
 /*	validate_tree (node); */
 
-	ret = xmlStrdup (str->str);
-	g_string_free (str, TRUE);
-
-	return ret;
+	return g_string_free (str, FALSE);
 }
