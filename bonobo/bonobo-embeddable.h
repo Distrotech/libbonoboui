@@ -36,6 +36,14 @@ struct _GnomeComponent {
 
 typedef struct {
 	GnomeObjectClass parent_class;
+
+	/*
+	 * Signals
+	 */
+	void (*do_verb)            (GnomeComponent *comp,
+				    CORBA_short verb,
+				    const CORBA_char *verb_name);
+	void (*host_name_changed)  (GnomeComponent *comp);
 } GnomeComponentClass;
 
 GtkType         gnome_component_get_type  (void);

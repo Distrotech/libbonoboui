@@ -19,6 +19,7 @@ static GnomeObjectClass *gnome_component_parent_class;
 
 enum {
 	HOST_NAME_CHANGED,
+	DO_VERB,
 	LAST_SIGNAL
 };
 
@@ -32,7 +33,10 @@ impl_GNOME_Component_do_verb (PortableServer_Servant servant,
 {
 	GnomeComponent *component = GNOME_COMPONENT (gnome_object_from_servant (servant));
 
-	g_message ("do_verb");
+	gtk_signal_emit (
+		component,
+		component_signals [DO_VERB],
+		verb, verb_name);
 }
 
 static void
@@ -238,6 +242,24 @@ gnome_component_class_init (GnomeComponentClass *class)
 
 	gnome_component_parent_class = gtk_type_class (gtk_object_get_type ());
 
+	component_signals [DO_VERB] =
+                gtk_signal_new ("do_verb",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET(GnomeComponentClass, do_verb), 
+                                gtk_marshal_NONE__INT_POINTER,
+                                GTK_TYPE_NONE, 2,
+                                GTK_TYPE_INT,
+				GTK_TYPE_STRING); 
+
+	component_signals [HOST_NAME_CHANGED] =
+                gtk_signal_new ("host_name_changed",
+                                GTK_RUN_LAST,
+                                object_class->type,
+                                GTK_SIGNAL_OFFSET(GnomeComponentClass,host_name_changed), 
+                                gtk_marshal_NONE__NONE,
+                                GTK_TYPE_NONE, 0);
+	
 	object_class->destroy = gnome_component_destroy;
 }
 
