@@ -279,6 +279,35 @@ cmd_get_menu_pixmap (BonoboUINode     *node,
 	return NULL;
 }
 
+static gboolean
+str_uscore_equal (const char *plain, const char *scored)
+{
+	while (*plain && *scored) {
+		if (*scored == '_')
+			scored++;
+		else if (*scored != *plain)
+			return FALSE;
+		else {
+			scored++;
+			plain++;
+		}
+	}
+
+	return TRUE;
+}
+
+static gboolean
+label_same (GtkBin *menu_widget, const char *txt)
+{
+	GtkWidget *label;
+
+	return menu_widget &&
+		(label = menu_widget->child) &&
+		GTK_IS_ACCEL_LABEL (label) &&
+		((GtkLabel *)label)->label &&
+		str_uscore_equal (((GtkLabel *)label)->label, txt);
+}
+
 static void
 impl_bonobo_ui_sync_menu_state (BonoboUISync     *sync,
 				BonoboUINode     *node,
@@ -350,68 +379,63 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync     *sync,
 			return;
 		}
 
-		label = gtk_accel_label_new (txt);
+		if (!label_same (GTK_BIN (menu_widget), txt)) {
+			label = gtk_accel_label_new (txt);
 
-		/*
-		 * Setup the widget.
-		 */
-		gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-		gtk_widget_show (label);
-		
-		/*
-		 * Insert it into the menu item widget and setup the
-		 * accelerator. FIXME: rather inefficient.
-		 */
-		if (GTK_BIN (menu_widget)->child)
-			gtk_widget_destroy (GTK_BIN (menu_widget)->child);
-
-		gtk_container_add (GTK_CONTAINER (menu_widget), label);
-		gtk_accel_label_set_accel_widget (
-			GTK_ACCEL_LABEL (label), menu_widget);
-	
-		keyval = gtk_label_parse_uline (GTK_LABEL (label), txt);
-
-		bonobo_ui_node_free_string (label_attr);
+			/* Setup the widget. */
+			gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+			gtk_widget_show (label);
+			
+			/*
+			 * Insert it into the menu item widget and setup the
+			 * accelerator. FIXME: rather inefficient.
+			 */
+			if (GTK_BIN (menu_widget)->child)
+				gtk_widget_destroy (GTK_BIN (menu_widget)->child);
+			
+			gtk_container_add (GTK_CONTAINER (menu_widget), label);
+			gtk_accel_label_set_accel_widget (
+				GTK_ACCEL_LABEL (label), menu_widget);
+			
+			keyval = gtk_label_parse_uline (GTK_LABEL (label), txt);
+			
+			bonobo_ui_node_free_string (label_attr);
+			
+			if (keyval != GDK_VoidSymbol) {
+				if (GTK_IS_MENU (parent))
+					gtk_widget_add_accelerator (
+						menu_widget, "activate_item",
+						gtk_menu_ensure_uline_accel_group (
+							GTK_MENU (parent)),
+						keyval, 0, 0);
+				
+				else if (GTK_IS_MENU_BAR (parent) &&
+					 sync_menu->accel_group != NULL)
+					gtk_widget_add_accelerator (
+						menu_widget, "activate_item",
+						sync_menu->accel_group,
+						keyval, GDK_MOD1_MASK, 0);
+				else
+					g_warning ("Adding accelerator went bananas");
+			}
+		} /* else
+			g_warning ("No change in label '%s'", txt); */
 		g_free (txt);
-
-		if (keyval != GDK_VoidSymbol) {
-			if (GTK_IS_MENU (parent))
-				gtk_widget_add_accelerator (
-					menu_widget, "activate_item",
-					gtk_menu_ensure_uline_accel_group (
-						GTK_MENU (parent)),
-					keyval, 0, 0);
-
-			else if (GTK_IS_MENU_BAR (parent) &&
-				 sync_menu->accel_group != NULL)
-				gtk_widget_add_accelerator (
-					menu_widget, "activate_item",
-					sync_menu->accel_group,
-					keyval, GDK_MOD1_MASK, 0);
-			else
-				g_warning ("Adding accelerator went bananas");
-		}
 	}
 	
 	if ((txt = bonobo_ui_engine_get_attr (node, cmd_node, "accel"))) {
 		guint           key;
 		GdkModifierType mods;
-		char           *signal;
 
 /*		fprintf (stderr, "Accel name is afterwards '%s'\n", text); */
 		bonobo_ui_util_accel_parse (txt, &key, &mods);
 		bonobo_ui_node_free_string (txt);
 
-		if (!key)
+		if (!key) /* FIXME: this looks strange */
 			return;
 
-/*		if (GTK_IS_CHECK_MENU_ITEM (menu_widget))
-			signal = "toggled";
-			else*/
-		signal = "activate";
-
 		gtk_widget_add_accelerator (menu_widget,
-					    signal,
+					    "activate",
 					    sync_menu->accel_group,
 					    key, mods,
 					    GTK_ACCEL_VISIBLE);

@@ -217,8 +217,6 @@ gboolean
 bonobo_ui_sync_can_handle (BonoboUISync *sync,
 			   BonoboUINode *node)
 {
-	g_return_val_if_fail (BONOBO_IS_UI_SYNC (sync), FALSE);
-
 	if (CLASS (sync)->can_handle)
 		return CLASS (sync)->can_handle (sync, node);
 	else
