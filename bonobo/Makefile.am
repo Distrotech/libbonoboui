@@ -8,6 +8,7 @@ INCLUDES =                                              \
 	-I. 						\
 	-I$(top_builddir)				\
         -I$(includedir)                                 \
+	-I$(top_srcdir)/libefs/src			\
         $(GNOME_INCLUDEDIR)
 
 gnome_libs =			\
@@ -19,7 +20,7 @@ gnome_libs =			\
 bonobo_libs = 			\
 	libbonobo.la 		\
 	$(gnome_libs)		\
-	-lefs
+	$(top_builddir)/libefs/src/libefs.la
 
 
 lib_LTLIBRARIES = libbonobo.la
