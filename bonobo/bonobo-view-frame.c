@@ -206,7 +206,7 @@ bonobo_view_frame_destroy (GtkObject *object)
 		CORBA_exception_free (&ev);
 	}
 	
-	gtk_object_destroy (GTK_OBJECT (view_frame->priv->wrapper));
+	gtk_object_unref (GTK_OBJECT (view_frame->priv->wrapper));
 	g_free (view_frame->priv);
 	
 	GTK_OBJECT_CLASS (bonobo_view_frame_parent_class)->destroy (object);
@@ -326,6 +326,8 @@ bonobo_view_frame_bind_to_view (BonoboViewFrame *view_frame, Bonobo_View view)
 	bonobo_control_frame_bind_to_control (
 		BONOBO_CONTROL_FRAME (view_frame),
 		(Bonobo_Control) view);
+	
+	Bonobo_Unknown_ref (view, &ev);
 	view_frame->priv->view = CORBA_Object_duplicate (view, &ev);
 
 	CORBA_exception_free (&ev);

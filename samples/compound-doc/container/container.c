@@ -70,7 +70,7 @@ sample_app_create (void)
 
 	/* Do the packing stuff */
 	gnome_app_set_contents (GNOME_APP (app), box);
-	gtk_widget_set_usize (app, 400, 400);
+	gtk_widget_set_usize (app, 400, 600);
 
 	inst->container = bonobo_container_new ();
 	inst->ui_handler = bonobo_ui_handler_new ();

@@ -86,7 +86,7 @@ bonobo_client_site_destroy (GtkObject *object)
 	while (client_site->view_frames) {
 		BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (client_site->view_frames->data);
 
-		bonobo_object_destroy (BONOBO_OBJECT (view_frame));
+		bonobo_object_unref (BONOBO_OBJECT (view_frame));
 	}
 
 	/*
@@ -95,13 +95,13 @@ bonobo_client_site_destroy (GtkObject *object)
 	while (client_site->canvas_items) {
 		BonoboCanvasItem *item = BONOBO_CANVAS_ITEM (client_site->canvas_items->data);
 
-		bonobo_object_destroy (BONOBO_OBJECT (item));
+		bonobo_object_unref (BONOBO_OBJECT (item));
 	}
 
 	bonobo_container_remove (client_site->container, BONOBO_OBJECT (object));
 
 	if (client_site->bound_embeddable) {
-		bonobo_object_destroy (BONOBO_OBJECT (client_site->bound_embeddable));
+		bonobo_object_unref (BONOBO_OBJECT (client_site->bound_embeddable));
 		client_site->bound_embeddable = NULL;
 	}
 
@@ -333,6 +333,11 @@ bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectC
 		return FALSE;
 
 	CORBA_exception_init (&ev);
+
+	/* The QI adds a ref */
+	Bonobo_Unknown_unref (bonobo_object_corba_objref (
+		BONOBO_OBJECT (object)), &ev);
+
 	Bonobo_Embeddable_set_client_site (
 		embeddable_object, 
 		bonobo_object_corba_objref (BONOBO_OBJECT (client_site)),

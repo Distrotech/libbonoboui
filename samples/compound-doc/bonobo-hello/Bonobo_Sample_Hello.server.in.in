@@ -12,7 +12,6 @@
   <oaf_attribute name="repo_ids" type="stringv">
     <item value="IDL:Bonobo/Unknown:1.0"/>
     <item value="IDL:Bonobo/Embeddable:1.0"/>
-    <item value="IDL:Bonobo/ProgressiveDataSink:1.0"/>
     <item value="IDL:Bonobo/PersistStream:1.0"/>
     <item value="IDL:Bonobo/Persist:1.0"/>
   </oaf_attribute>

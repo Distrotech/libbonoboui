@@ -240,6 +240,7 @@ void
 component_del (Component *component)
 {
 	bonobo_object_unref (BONOBO_OBJECT (component->server));
+	bonobo_object_unref (BONOBO_OBJECT (component->client_site));
 
 	/* Remove from container */
 	sample_app_remove_component (component->container, component);

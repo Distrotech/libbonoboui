@@ -131,7 +131,7 @@ bonobo_control_plug_destroy_event_cb (GtkWidget   *plug,
 	/*
 	 * Destroy this plug's BonoboControl.
 	 */
-	bonobo_object_destroy (BONOBO_OBJECT (control));
+	bonobo_object_unref (BONOBO_OBJECT (control));
 }
 
 /*
@@ -156,7 +156,7 @@ bonobo_control_plug_destroy_cb (GtkWidget *plug,
 	 * destroy it later.  It will get destroyed on its
 	 * own.
 	 */
-	control->priv->plug            = NULL;
+	control->priv->plug = NULL;
 }
 
 
@@ -723,20 +723,28 @@ static void
 bonobo_control_destroy (GtkObject *object)
 {
 	BonoboControl *control = BONOBO_CONTROL (object);
+	CORBA_Environment ev;
+
+	CORBA_exception_init (&ev);
+
+	Bonobo_Unknown_unref (control->priv->control_frame, &ev);
+	CORBA_Object_release (control->priv->control_frame, &ev);
+
+	CORBA_exception_free (&ev);
 	
 	/*
 	 * If we have a UIHandler, destroy it.
 	 */
 	if (control->priv->uih != NULL) {
 		bonobo_ui_handler_unset_container (control->priv->uih);
-		bonobo_object_destroy (BONOBO_OBJECT (control->priv->uih));
+		bonobo_object_unref (BONOBO_OBJECT (control->priv->uih));
 	}
 
 	/*
 	 * Destroy the control's top-level widget.
 	 */
 	if (control->priv->widget)
-		gtk_object_destroy (GTK_OBJECT (control->priv->widget));
+		gtk_object_unref (GTK_OBJECT (control->priv->widget));
 
 	/*
 	 * If the plug still exists, destroy it.  The plug might not
@@ -807,8 +815,12 @@ bonobo_control_set_control_frame (BonoboControl *control, Bonobo_ControlFrame co
 
 	CORBA_exception_init (&ev);
 
+	if (control->priv->control_frame != CORBA_OBJECT_NIL) {
+		Bonobo_Unknown_unref (control->priv->control_frame, &ev);
+		CORBA_Object_release (control->priv->control_frame, &ev);
+	}
+	
 	Bonobo_Unknown_ref (control_frame, &ev);
-
 	control->priv->control_frame = CORBA_Object_duplicate (control_frame, &ev);
 	
 	CORBA_exception_free (&ev);
@@ -1021,6 +1033,8 @@ static void
 bonobo_control_init (BonoboControl *control)
 {
 	control->priv = g_new0 (BonoboControlPrivate, 1);
+
+	control->priv->control_frame = CORBA_OBJECT_NIL;
 }
 
 /**

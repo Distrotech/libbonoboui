@@ -66,6 +66,8 @@ idl_flags = `$(GNOME_CONFIG) --cflags idl` -D__BONOBO_COMPILATION
 $(CORBA_SOURCE): $(idls)
 	$(ORBIT_IDL) $(top_srcdir)/idl/Bonobo.idl -I$(top_srcdir)/idl $(idl_flags)
 
+Bonobo.h: $(idls)
+
 libbonobo_la_LDFLAGS = -version-info 2:0:1 $(gnome_libs)
 
 libbonobo_la_SOURCES =			\

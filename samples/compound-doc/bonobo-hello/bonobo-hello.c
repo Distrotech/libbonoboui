@@ -75,7 +75,7 @@ hello_bonobo_init (void)
 #if USING_OAF
 	factory =
 		bonobo_embeddable_factory_new (
-			"OAFIID:bonobo-hello-factory:694a23d5-dbb3-4705-8b4f-2229b9b319c6",
+			"OAFIID:bonobo-hello-factory:a3252fd8-c16d-478c-986d-2d1b89f28e01",
 			hello_embeddable_factory, NULL);
 #else
 	factory =

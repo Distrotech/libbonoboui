@@ -712,6 +712,10 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	 */
 	CORBA_exception_init (&ev);
 	Bonobo_Control_ref (control, &ev);
+
+	if (control_frame->priv->control != CORBA_OBJECT_NIL)
+		g_warning ("FIXME: leaking control reference");
+
 	control_frame->priv->control = CORBA_Object_duplicate (control, &ev);
 	CORBA_exception_free (&ev);
 
@@ -720,8 +724,8 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	 */
 	CORBA_exception_init (&ev);
 	Bonobo_Control_set_frame (control,
-				 bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
-				 &ev);
+				  bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
+				  &ev);
 	if (ev._major != CORBA_NO_EXCEPTION)
 		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);
@@ -730,10 +734,9 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	 * If the socket is realized, then we transfer the
 	 * window ID to the remote control.
 	 */
-	if (GTK_WIDGET_REALIZED (control_frame->priv->socket)) {
+	if (GTK_WIDGET_REALIZED (control_frame->priv->socket))
 		bonobo_control_frame_set_remote_window (control_frame->priv->socket,
-						       control_frame);
-	}
+							control_frame);
 }
 
 /**

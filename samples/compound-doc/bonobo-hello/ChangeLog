@@ -1,3 +1,7 @@
+2000-07-07  Michael Meeks  <michael@helixcode.com>
+
+	* hello.oafinfo: kill unimplemented ProgressiveDataSink I/F.
+
 2000-07-06  Michael Meeks  <michael@helixcode.com>
 
 	* hello-model.[ch]: Remove.

@@ -11,6 +11,10 @@
 #ifndef BONOBO_H
 #define BONOBO_H 1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <bonobo/bonobo-object.h>
 
 #include <bonobo/bonobo-moniker.h>
@@ -57,4 +61,8 @@
 #include <bonobo/bonobo-print.h>
 #include <bonobo/bonobo-print-client.h>
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* BONOBO_H */

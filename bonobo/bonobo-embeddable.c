@@ -204,7 +204,7 @@ ping_container (BonoboEmbeddable *embeddable)
 		 * The remote end is dead; it's time for
 		 * us to die too.
 		 */
-		bonobo_object_destroy (BONOBO_OBJECT (embeddable));
+		bonobo_object_unref (BONOBO_OBJECT (embeddable));
 	}
 }
 
@@ -551,14 +551,14 @@ bonobo_embeddable_destroy (GtkObject *object)
 	while (embeddable->priv->views) {
 		BonoboView *view = BONOBO_VIEW (embeddable->priv->views->data);
 
-		bonobo_object_destroy (BONOBO_OBJECT (view));
+		bonobo_object_unref (BONOBO_OBJECT (view));
 	}
 
 	while (embeddable->priv->canvas_items){
 		void *data = embeddable->priv->canvas_items->data;
 		BonoboCanvasComponent *comp = BONOBO_CANVAS_COMPONENT (data);
 
-		bonobo_object_destroy (BONOBO_OBJECT (comp));
+		bonobo_object_unref (BONOBO_OBJECT (comp));
 	}
 	
 	/*
