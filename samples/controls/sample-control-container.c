@@ -144,6 +144,7 @@ app_destroy_cb (GtkWidget *app, BonoboUIHandler *uih)
 	pbc = NULL;
 
 	gtk_main_quit ();
+	g_warning ("Main level %d\n", gtk_main_level ());
 }
 
 static int

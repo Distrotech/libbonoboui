@@ -147,15 +147,6 @@ bonobo_widget_construct_control (BonoboWidget     *bw,
 	return bonobo_widget_construct_control_from_objref (bw, control, uih);
 }
 
-/**
- * bonobo_widget_new_control_from_objref:
- * @control: The control; NB. this ref is handed ( cf. widget sinking )
- * @uih: the UI handler to merge the control's menus into
- * 
- * Create a new BonoboWidget containing this control
- * 
- * Return value: a newly created widget or NULL on error.
- **/
 GtkWidget *
 bonobo_widget_new_control_from_objref (Bonobo_Control   control,
 				       Bonobo_UIHandler uih)
@@ -364,8 +355,6 @@ bonobo_widget_destroy (GtkObject *object)
 		bonobo_object_unref (BONOBO_OBJECT (priv->view_frame));
 	if (priv->uih != CORBA_OBJECT_NIL)
 		bonobo_object_release_unref (priv->uih, NULL);
-	if (priv->server)
-		bonobo_object_unref (BONOBO_OBJECT (priv->server));
 
 	g_free (priv);
 	GTK_OBJECT_CLASS (bonobo_widget_parent_class)->destroy (object);
