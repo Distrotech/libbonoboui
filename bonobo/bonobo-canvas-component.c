@@ -8,6 +8,7 @@
  * (C) 1999 International GNOME Support
  *
  */
+#include <stdio.h>
 #include <config.h>
 #include <bonobo/bonobo.h>
 #include <libgnomeui/gnome-canvas.h>
