@@ -28,7 +28,6 @@ typedef struct {
 	Container	  *container;
 
 	GnomeClientSite   *client_site;
-	GnomeViewFrame	  *view_frame;
 	GnomeObjectClient *server;
 
 	GtkWidget	  *frame;
@@ -65,8 +64,10 @@ static void
 container_exit_cmd (GtkWidget *widget, Container *container)
 {
 	/*
-	 * FIXME: Kill all components.
+	 * Destroying the container will destroy all the components.
 	 */
+	gnome_object_destroy (GNOME_OBJECT (container->container));
+
 	gtk_main_quit ();
 }
 
@@ -207,6 +208,26 @@ component_request_resize_cb (GnomeViewFrame *view_frame, int width, int height, 
 }
 
 static void
+component_shutdown (Component *component)
+{
+	gtk_widget_destroy (component->frame);
+	gtk_widget_destroy (component->fs);
+
+	gnome_object_destroy (GNOME_OBJECT (component->client_site));
+
+	g_free (component);
+}
+
+static void
+component_view_frame_system_exception_cb (GnomeViewFrame *view_frame, CORBA_Object cobject,
+					  CORBA_Environment *ev, gpointer data)
+{
+	Component *component = (Component *) data;
+
+	gnome_object_destroy (GNOME_OBJECT (view_frame));
+}
+
+static void
 component_add_view (Component *component)
 {
 	GnomeViewFrame *view_frame;
@@ -218,7 +239,15 @@ component_add_view (Component *component)
 	 * Create the remote view and the local ViewFrame.
 	 */
 	view_frame = gnome_client_site_new_view (component->client_site);
-	component->view_frame = view_frame;
+
+	/*
+	 * Connect to the "system_exception" signal on the
+	 * newly-created view frame.  This signal will signify that
+	 * the object has encountered a fatal CORBA exception and is
+	 * defunct.
+	 */
+	gtk_signal_connect (GTK_OBJECT (view_frame), "system_exception",
+			    component_view_frame_system_exception_cb, component);
 
 	/*
 	 * Set the GnomeUIHandler for this ViewFrame.  That way, the
@@ -685,6 +714,15 @@ container_create_component_frame (Container *container, Component *component, ch
 }
 
 static void
+component_client_site_system_exception_cb (GnomeObject *client, CORBA_Object cobject,
+					   CORBA_Environment *ev, gpointer data)
+{
+	Component *component = (Component *) data;
+
+	component_shutdown (component);
+}
+
+static void
 container_activate_component (Container *container, char *component_goad_id)
 {
 	Component *component;
@@ -730,6 +768,15 @@ container_activate_component (Container *container, char *component_goad_id)
 	 * the embeddable in, when the user adds views for it.
 	 */
 	container_create_component_frame (container, component, component_goad_id);
+
+	/*
+	 * Connect to the "system_exception" signal so that we can
+	 * shut down this ClientSite when it encounters a fatal CORBA
+	 * exception.
+	 */
+	gtk_signal_connect (GTK_OBJECT (client_site), "system_exception",
+			    component_client_site_system_exception_cb,
+			    component);
 }
 
 static void
@@ -771,6 +818,25 @@ container_create_menus (Container *container)
 	gnome_ui_handler_menu_free_list (menu_list);
 }
 
+/*
+ * This callback is invoked if the GnomeContainer raises a
+ * system_exception signal, signifying that a fatal CORBA exception
+ * has been encountered.
+ */
+static void
+container_container_system_exception_cb (GnomeObject *container_object, CORBA_Object cobject,
+					 CORBA_Environment *ev, gpointer data)
+{
+	Container *container = (Container *) data;
+
+	gnome_warning_dialog (_("Container encountered a fatal CORBA exception!  Shutting down..."));
+
+	gnome_object_destroy (GNOME_OBJECT (container->container));
+	gtk_widget_destroy (container->app);
+
+	gtk_main_quit ();
+}
+
 static void
 container_create (void)
 {
@@ -785,6 +851,13 @@ container_create (void)
 	gtk_window_set_policy (GTK_WINDOW (container->app), TRUE, TRUE, FALSE);
 
 	container->container = gnome_container_new ();
+
+	/*
+	 * The "system_exception" signal will notify us if a fatal CORBA
+	 * exception has rendered the GnomeContainer defunct.
+	 */
+	gtk_signal_connect (GTK_OBJECT (container->container), "system_exception",
+			    container_container_system_exception_cb, container);
 
 	/*
 	 * This is the VBox we will stuff embedded components into.

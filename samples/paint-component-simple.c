@@ -368,6 +368,21 @@ view_motion_notify_cb (GtkWidget *drawing_area, GdkEventMotion *event,
 	embeddable_update_all_views (embeddable_data);
 }
 
+/*
+ * FIXME: Comment.
+ */
+static void
+view_button_press_cb (GtkWidget *drawing_area,
+		      GdkEventButton *event,
+		      gpointer data)
+{
+	view_data_t *view_data = (view_data_t *) data;
+
+	if (event->type == GDK_BUTTON_PRESS &&
+	    event->button == 3)
+		gnome_view_popup_verbs (view_data->view);
+}
+
 static void
 embeddable_clear_image (embeddable_data_t *embeddable_data)
 {
@@ -446,7 +461,11 @@ view_factory (GnomeEmbeddable *embeddable,
 	 */
 	gtk_widget_set_events (view_data->drawing_area,
 			       gtk_widget_get_events (view_data->drawing_area) |
-			       GDK_BUTTON_MOTION_MASK);
+			       GDK_BUTTON_MOTION_MASK |
+			       GDK_BUTTON_PRESS_MASK);
+
+	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "button_press_event",
+			    GTK_SIGNAL_FUNC (view_button_press_cb), view_data);
 
 	gtk_signal_connect (GTK_OBJECT (view_data->drawing_area), "motion_notify_event",
 			    GTK_SIGNAL_FUNC (view_motion_notify_cb), view_data);
@@ -642,18 +661,16 @@ embeddable_factory (GnomeEmbeddableFactory *this,
 	return GNOME_OBJECT (embeddable);
 }
 
-static void
+static GnomeEmbeddableFactory *
 init_simple_paint_factory (void)
 {
-	GnomeEmbeddableFactory *factory;
-
 	/*
 	 * This will create a factory server for our simple paint
 	 * component.  When a container wants to create a paint
 	 * component, it will ask the factory to create one, and the
 	 * factory will invoke our embeddable_factory() function.
 	 */
-	factory = gnome_embeddable_factory_new (
+	return gnome_embeddable_factory_new (
 		"embeddable-factory:paint-component-simple",
 		embeddable_factory, NULL);
 }
@@ -680,11 +697,13 @@ init_server_factory (int argc, char **argv)
 int
 main (int argc, char **argv)
 {
+	GnomeEmbeddableFactory *factory;
+
 	/*
 	 * Setup the factory.
 	 */
 	init_server_factory (argc, argv);
-	init_simple_paint_factory ();
+	factory = init_simple_paint_factory ();
 
 	/*
 	 * Start processing.
