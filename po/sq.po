@@ -1,20 +1,19 @@
 # Albanian translation of libbonoboui
 # This file is distributed under the same license as the libbonoboui package.
-# Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # Laurent Dhima <laurenti@alblinux.net>, 2003, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui.HEAD.sq\n"
+"Project-Id-Version: libbonoboui.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-12 15:01+0100\n"
-"PO-Revision-Date: 2004-02-12 12:51+0100\n"
+"POT-Creation-Date: 2004-02-20 12:15+0100\n"
+"PO-Revision-Date: 2004-02-20 12:16+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -22,7 +21,7 @@ msgstr "fabrika e corba"
 
 #: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
-msgstr "The factory pointer"
+msgstr "Treguesi i fabrikës"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
@@ -40,22 +39,22 @@ msgstr "Spiranco panelin e instrumentëve"
 msgid "Un dock the toolbar"
 msgstr "Hiq spirancën nga paneli i instrumentëve"
 
-#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-dock-item.c:222 bonobo/bonobo-dock-item.c:223
 #: bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Lloji i hijes"
 
-#: bonobo/bonobo-dock-item.c:225 bonobo/bonobo-dock-item.c:226
+#: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Orientimi"
 
-#: bonobo/bonobo-dock-item.c:236 bonobo/bonobo-dock-item.c:237
+#: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Gjerësia e preferuar"
 
-#: bonobo/bonobo-dock-item.c:245 bonobo/bonobo-dock-item.c:246
+#: bonobo/bonobo-dock-item.c:253 bonobo/bonobo-dock-item.c:254
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Lartësia e preferuar"
@@ -99,7 +98,7 @@ msgid ""
 "no interfaces are listed"
 msgstr ""
 "Një array interfaqeje përfunduar nga NULL që server-i duhet të suportojë në "
-"mënyrë që të listohet në zgjedhësin. Vlera e prezgjedhur është \"IDL:Bonobo/"
+"mënyrë që të listohet tek zgjedhësi. Vlera e prezgjedhur është \"IDL:Bonobo/"
 "Embeddable:1.0\" nëse nuk është listuar asnjë interfaqe."
 
 #: bonobo/bonobo-selector.c:348
@@ -112,7 +111,7 @@ msgstr "Njëra nga interfaqet e kërkuara"
 
 #: bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
-msgstr "I/e dukshëm"
+msgstr "I dukshëm"
 
 #: bonobo/bonobo-ui-config-widget.c:275
 msgid "_Show"
@@ -124,7 +123,7 @@ msgstr "_Fshih"
 
 #: bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
-msgstr "_Propozime"
+msgstr "Shfaq _Propozimet"
 
 #: bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
@@ -132,7 +131,7 @@ msgstr "Panelët e instrumentëve"
 
 #: bonobo/bonobo-ui-config-widget.c:303
 msgid "toolbars"
-msgstr "paneli i instrumentëve"
+msgstr "panelët e instrumentëve"
 
 #: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
@@ -152,7 +151,7 @@ msgstr "Vetëm tekst"
 
 #: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
-msgstr "Vetëm tekst _prioritar"
+msgstr "Vetëm teksti _prioritar"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
@@ -193,11 +192,11 @@ msgstr "DISPLAY"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
-msgstr "Screen X që duhet përdorur"
+msgstr "Ekrani X që duhet përdorur"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
-msgstr "SCREEN"
+msgstr "EKRANI"
 
 #: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
@@ -209,7 +208,7 @@ msgstr "Mos përdor veçoritë e X për kujtesën e përbashkët"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
-msgstr "Emri i programit që duhet përdorur nga manazhuesi i dritareve"
+msgstr "Emri i programit që duhet përdorur nga organizuesi i dritareve"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
@@ -217,7 +216,7 @@ msgstr "EMRI"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
-msgstr "Klasa e programit që duhet përdorur nga manazhuesi i dritareve"
+msgstr "Klasa e programit që duhet përdorur nga organizuesi i dritareve"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
@@ -281,11 +280,11 @@ msgstr "Personalizo panelin e instrumentëve"
 
 #: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
-msgstr "është flutuante"
+msgstr "është lëvizëse"
 
 #: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
-msgstr "tregon nëse paneli i instrumentëve është flutuant"
+msgstr "tregon nëse paneli i instrumentëve është lëvizës"
 
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
@@ -399,3 +398,4 @@ msgstr "I pamundur fillimi i kodit të libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "E pamundur nisja e Bonobo UI"
+
