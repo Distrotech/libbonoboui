@@ -38,27 +38,31 @@ idls =						\
 	$(top_srcdir)/idl/moniker.idl		\
 	$(top_srcdir)/idl/persist.idl		\
 	$(top_srcdir)/idl/storage.idl
-	
-$(CORBA_SOURCE): $(idls)
-	orbit-idl $(top_srcdir)/idl/bonobo.idl
 
-libbonobo_la_SOURCES =		\
-	$(CORBA_SOURCE)		\
-	gtk-interfaces.c	\
-	gnome-client-site.c	\
-	gnome-component.c	\
-	gnome-container.c	\
-	gnome-main.c		\
-	gnome-object.c		\
+idl_flags = `gnome-config --cflags idl`
+
+$(CORBA_SOURCE): $(idls)
+	orbit-idl $(top_srcdir)/idl/bonobo.idl -I$(idl_flags)
+
+libbonobo_la_SOURCES =			\
+	$(CORBA_SOURCE)			\
+	gtk-interfaces.c		\
+	gnome-client-site.c		\
+	gnome-component.c		\
+	gnome-component-factory.c 	\
+	gnome-container.c		\
+	gnome-main.c			\
+	gnome-object.c			\
 	gnome-view.c
 
-bonobo_headers =		\
-	gtk-interfaaces.h	\
-	gnome-client-site.h	\
-	gnome-component.h	\
-	gnome-container.h	\
-	gnome-main.h		\
-	gnome-object.h		\
+bonobo_headers =			\
+	gtk-interfaces.h		\
+	gnome-client-site.h		\
+	gnome-component.h		\
+	gnome-component-factory.h	\
+	gnome-container.h		\
+	gnome-main.h			\
+	gnome-object.h			\
 	gnome-view.h
 
 test_container_SOURCES =	\

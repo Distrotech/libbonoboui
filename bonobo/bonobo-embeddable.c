@@ -19,6 +19,7 @@ enum {
 };
 
 static guint component_signals [LAST_SIGNAL];
+
 static void
 impl_GNOME_Component_do_verb (PortableServer_Servant servant,
 			      const CORBA_short verb,
@@ -143,7 +144,7 @@ impl_GNOME_Component_new_view (PortableServer_Servant servant, CORBA_Environment
 	return GNOME_OBJECT (view)->object;
 }
 
-POA_GNOME_Component__epv gnome_component_epv = {
+static POA_GNOME_Component__epv gnome_component_epv = {
 	NULL,
 	&impl_GNOME_Component_do_verb,
 	&impl_GNOME_Component_set_client_site,
@@ -158,7 +159,7 @@ POA_GNOME_Component__epv gnome_component_epv = {
 	&impl_GNOME_Component_new_view
 };
 
-POA_GNOME_Component__vepv gnome_component_vepv = {
+static POA_GNOME_Component__vepv gnome_component_vepv = {
 	&gnome_object_base_epv,
 	&gnome_object_epv,
 	&gnome_component_epv
@@ -225,7 +226,6 @@ gnome_component_destroy (GtkObject *object)
 {
 	GnomeComponent *component = GNOME_COMPONENT (object);
 
-	gnome_object_drop_binding (GNOME_OBJECT (object));
 	GTK_OBJECT_CLASS (gnome_component_parent_class)->destroy (object);
 }
 

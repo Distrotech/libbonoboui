@@ -109,7 +109,6 @@ gnome_view_destroy (GtkObject *object)
 {
 	GnomeView *view = GNOME_VIEW (object);
 
-	gnome_object_drop_binding (GNOME_OBJECT (object));
 	if (view->widget)
 		gtk_object_unref (GTK_OBJECT (view->widget));
 

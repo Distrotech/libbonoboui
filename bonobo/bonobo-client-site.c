@@ -100,14 +100,14 @@ impl_GNOME_client_site__destroy (PortableServer_Servant servant, CORBA_Environme
 	g_free (servant);
 }
 
-PortableServer_ServantBase__epv gnome_client_site_base_epv =
+static PortableServer_ServantBase__epv gnome_client_site_base_epv =
 {
 	NULL,
 	&impl_GNOME_client_site__destroy,
 	NULL,
 };
 
-POA_GNOME_ClientSite__epv gnome_client_site_epv =
+static POA_GNOME_ClientSite__epv gnome_client_site_epv =
 {
 	NULL,
 	&impl_GNOME_client_site_get_container,
@@ -117,7 +117,7 @@ POA_GNOME_ClientSite__epv gnome_client_site_epv =
 	&impl_GNOME_client_site_save_object,
 };
 
-POA_GNOME_ClientSite__vepv gnome_client_site_vepv =
+static POA_GNOME_ClientSite__vepv gnome_client_site_vepv =
 {
 	&gnome_client_site_base_epv,
 	&gnome_object_epv,
