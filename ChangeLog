@@ -1,3 +1,17 @@
+2003-07-23  Federico Mena Quintero  <federico@ximian.com>
+
+	* bonobo/bonobo-socket.c (bonobo_socket_instance_init): Create a
+	private structure for the socket.
+	(bonobo_socket_finalize): Free the private structure.
+	(toplevel_set_focus_cb): New callback for GtkWindow::set_focus().
+	We use this to keep track of the focused widget and
+	activate/deactivate the control frame as appropriate --- our
+	focus_in/out handlers will not be called if the embedded plug is
+	in-process.
+	(bonobo_socket_hierarchy_changed): New handler for
+	GtkWidget::hierarchy_changed().  We must monitor the focused
+	widget on our toplevel, so we pick up toplevel changes here.
+
 2003-07-09  Michael Meeks  <michael@ximian.com>
 
 	* doc/api/tmpl/bonobo-widget.sgml: fix docs.
