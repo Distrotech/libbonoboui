@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2\n"
-"POT-Creation-Date: 2002-02-19 09:43+0000\n"
-"PO-Revision-Date: 2001-07-07 12:50+02:00\n"
+"POT-Creation-Date: 2002-03-03 16:21+0100\n"
+"PO-Revision-Date: 2002-03-03 16:29+0100\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@cgabriel.org>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,25 +32,25 @@ msgstr "Larghezza preferita"
 msgid "Preferred height"
 msgstr "Altezza preferita"
 
-#: bonobo/bonobo-file-selector-util.c:402
+#: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
-msgstr ""
+msgstr "Selezionare un file da aprire"
 
-#: bonobo/bonobo-file-selector-util.c:430
+#: bonobo/bonobo-file-selector-util.c:394
 msgid "Select files to open"
-msgstr ""
+msgstr "Selezionare i file da aprire"
 
-#: bonobo/bonobo-file-selector-util.c:459
+#: bonobo/bonobo-file-selector-util.c:423
 msgid "Select a filename to save"
-msgstr ""
+msgstr "Selezione il nome del file da salvare"
 
 #: bonobo/bonobo-plug.c:351
 msgid "Event Forwarding"
-msgstr ""
+msgstr "Inoltro degli eventi"
 
 #: bonobo/bonobo-plug.c:352
 msgid "Whether X events should be forwarded"
-msgstr ""
+msgstr "Se gli eventi X devono essere inoltrati"
 
 #: bonobo/bonobo-selector-widget.c:300
 msgid "Name"
@@ -81,15 +81,14 @@ msgid "Toolbars"
 msgstr "Barre strumenti"
 
 #: bonobo/bonobo-ui-config-widget.c:299
-#, fuzzy
 msgid "toolbars"
-msgstr "Barre strumenti"
+msgstr "barre strumenti"
 
-#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Look"
 msgstr "Aspetto"
 
-#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "_Icon"
 msgstr "_Icona"
 
@@ -105,176 +104,148 @@ msgstr "_Priorità al solo testo"
 msgid "Configure UI"
 msgstr "Configurazione UI"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "B_oth"
 msgstr "_Entrambi"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "T_ext"
 msgstr "_Testo"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Hide t_ips"
 msgstr "N_ascondi suggerimenti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:551
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Show t_ips"
 msgstr "_Mostra suggerimenti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "_Hide toolbar"
 msgstr "_Nascondi barra strumenti"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:552
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customi_ze"
 msgstr "_Personalizza"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:553
+#: bonobo/bonobo-ui-sync-toolbar.c:556
 msgid "Customize the toolbar"
 msgstr "Personalizza la barra degli strumenti"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr ""
+msgstr "Livello di Zoom"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr ""
+msgstr "Grado di ingrandimento"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "Livello di Zoom minimo"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr ""
+msgstr "Il grado di ingrandimento minimo"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "Livello di Zoom massimo"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr ""
+msgstr "Il grado di ingrandimento massimo"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr ""
+msgstr "Ha il livello di zoom minimo"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "Se avere o meno un livello di zoom minimo valido"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr ""
+msgstr "Ha il livello di zoom massimo"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "Se avere o meno un livello di zoom massimo valido"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr ""
+msgstr "È continuo"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "Se lo zoom è continuo"
 
 #: bonobo/bonobo-canvas-item.c:647
 msgid "corba factory"
-msgstr ""
+msgstr "fabbrica corba"
 
 #: bonobo/bonobo-canvas-item.c:648
 msgid "The factory pointer"
-msgstr ""
+msgstr "Il puntatore alla fabbrica"
 
 #: bonobo/bonobo-canvas-item.c:657
 msgid "corba UI container"
-msgstr ""
+msgstr "contenitore UI corba"
 
 #: bonobo/bonobo-canvas-item.c:658
 msgid "The User interface container"
-msgstr ""
+msgstr "Il contenitore dell'interfaccia utente"
 
 #: bonobo/bonobo-ui-toolbar.c:1099
 msgid "is floating"
-msgstr ""
+msgstr "è fluttuante"
 
 #: bonobo/bonobo-ui-toolbar.c:1100
 msgid "whether the toolbar is floating"
-msgstr ""
+msgstr "se la barra degli strumenti è fluttuante o meno"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr ""
+msgstr "Questo non fa niente: è solo una dimostrazione."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr ""
+msgstr "BonoboUI-Hello."
 
 #: samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr ""
+msgstr "Gnome Hello"
 
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr ""
+msgstr "Salve, Mondo!"
 
 #: samples/bonoboui/hello.c:312
-#, fuzzy
 msgid "Cannot init libbonoboui code"
-msgstr "Impossibile bonobo_ui_init"
+msgstr "Impossibile inizializzare il codice di libbonoboui"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr ""
+msgstr "Informazioni su questa applicazione"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr ""
+msgstr "Selezione"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr ""
+msgstr "_Informazioni..."
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr ""
+msgstr "_Modifica"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
-#, fuzzy
 msgid "_File"
-msgstr "_Nascondi"
+msgstr "_File"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr ""
+msgstr "_Selezione"
 
-#~ msgid "Can not bonobo_ui_init"
-#~ msgstr "Impossibile bonobo_ui_init"
-
-#~ msgid "Select an object"
-#~ msgstr "Selezionare un oggetto"
-
-#~ msgid "Can not activate object_server"
-#~ msgstr "Impossibile attivare object_server"
-
-#~ msgid "Can not bind object server to client_site"
-#~ msgstr "Impossibile collegare il server oggetti al client_site"
-
-#~ msgid "Can not activate server"
-#~ msgstr "Impossibile attivare il server"
-
-#~ msgid "Could not launch bonobo object."
-#~ msgstr "Impossibile lanciare oggetto Bonobo."
-
-#~ msgid "Could not launch Embeddable."
-#~ msgstr "Impossibile lanciare oggetto Embeddable."
-
-#~ msgid "Could not launch Control."
-#~ msgstr "Impossibile lanciare il controllo."
-
-#~ msgid "Can not bonobo_init"
-#~ msgstr "Impossibile bonobo_init"
