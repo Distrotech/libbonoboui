@@ -7,15 +7,14 @@
  * sample-control-container.c
  * 
  * Authors:
- *   Nat Friedman  (nat@helixcode.com)
- *   Michael Meeks (michael@helixcode.com)
+ *   Nat Friedman  (nat@ximian.com)
+ *   Michael Meeks (michael@ximian.com)
  *
- * Copyright 1999, 2000 Helix Code, Inc.
+ * Copyright 1999, 2001 Ximian, Inc.
  */
 #include <bonobo/bonobo-i18n.h>
-#include <liboaf/liboaf.h>
-#include <bonobo.h>
 
+#include <libbonoboui.h>
 
 static void
 app_destroy_cb (GtkWidget *app, BonoboUIContainer *uic)

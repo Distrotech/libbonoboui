@@ -3,14 +3,11 @@
  *
  * Author:
  *   Miguel de Icaza  (miguel@helixcode.com)
- *
  */
-
 
 #include <config.h>
 #include <gnome.h>
-#include <liboaf/liboaf.h>
-#include <bonobo.h>
+#include <libbonobo.h>
 #include "Bonobo_Sample_Echo.h"
 
 static void

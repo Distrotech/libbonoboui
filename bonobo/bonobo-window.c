@@ -13,7 +13,6 @@
 #include <libgnome/gnome-preferences.h>
 #include <bonobo/bonobo-window.h>
 #include <libbonobo.h>
-#include <liboaf/liboaf.h>
 
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-sync-menu.h>

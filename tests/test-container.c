@@ -12,11 +12,10 @@
  
 #include <config.h>
 #include <gnome.h>
-#include <liboaf/liboaf.h>
 
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
-#include <bonobo.h>
+#include <libbonoboui.h>
 #include <sys/stat.h>
 #include <unistd.h>
 

@@ -2,11 +2,11 @@
  * moniker-test.c: Test program for monikers resolving to various interfaces.
  *
  * Author:
- *   Vladimir Vukicevic (vladimir@helixcode.com)
+ *   Vladimir Vukicevic (vladimir@ximian.com)
  *
- * Based on moniker-control-test.c, by Joe Shaw (joe@helixcode.com)
+ * Based on moniker-control-test.c, by Joe Shaw (joe@ximian.com)
  *
- * Copyright (C) 2000, Helix Code, Inc.
+ * Copyright (C) 2001, Ximian, Inc.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -15,8 +15,7 @@
 
 #include <popt.h>
 #include <glib.h>
-#include <liboaf/liboaf.h>
-#include <bonobo.h>
+#include <libbonoboui.h>
 
 #define STD_SIG (const char *moniker, CORBA_Environment *ev)
 

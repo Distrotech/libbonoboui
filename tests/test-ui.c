@@ -14,9 +14,8 @@
 
 #include <config.h>
 #include <string.h>
-#include <bonobo.h>
+#include <libbonoboui.h>
 #include <gdk/gdkkeysyms.h>
-#include <liboaf/liboaf.h>
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>

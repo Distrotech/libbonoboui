@@ -1,8 +1,5 @@
 #include "component.h"
-#include <liboaf/oaf-activate.h>
-#include <bonobo/Bonobo.h>
-#include <bonobo/bonobo-object.h>
-#include <bonobo/bonobo-exception.h>
+#include <libbonobo.h>
 
 struct _SampleComponentPrivate {
 	Bonobo_Unknown	server;

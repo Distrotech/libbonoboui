@@ -1,3 +1,16 @@
+2001-07-31  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-ui.c, 
+	* tests/test-sensitivity.c, 
+	* tests/test-moniker.c, 
+	* tests/test-focus.c, 
+	* tests/test-container.c, 
+	* bonobo/bonobo-window.c, 
+	* bonobo/bonobo-ui-main.c, 
+	* bonobo/bonobo-ui-container.c, 
+	* samples/controls/sample-control-factory.c, 
+	* samples/controls/sample-control-container.c: remove 
+	redundant liboaf.h includes.
 2001-07-30  ERDI Gergo  <cactus@cactus.rulez.org>
 
 	* bonobo/Makefile.am: Create our own marshallers instead of

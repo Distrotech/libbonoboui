@@ -9,8 +9,7 @@
  */
 #include <config.h>
 #include <gnome.h>
-#include <liboaf/liboaf.h>
-#include <bonobo.h>
+#include <libbonoboui.h>
 
 Bonobo_PropertyBag pb = CORBA_OBJECT_NIL;
 

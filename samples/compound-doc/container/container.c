@@ -1,7 +1,6 @@
 #include "config.h"
 #include <libbonoboui.h>
 #include <gtk/gtkvbox.h>
-#include <liboaf/liboaf.h>
 #include <libgnome/libgnome-init.h>
 
 #include "container.h"

@@ -8,8 +8,8 @@
  */
 
 #include "config.h"
-#include <bonobo.h>
-#include <liboaf/liboaf.h>
+
+#include <libbonoboui.h>
 
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-main.h>

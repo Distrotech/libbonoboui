@@ -19,8 +19,6 @@
 #include <libgnome/libgnome-init.h>
 #include <gtk/gtkmain.h>
 
-#include <liboaf/liboaf.h>
-
 #include <X11/Xlib.h>
 
 static int (*gdk_x_error) (Display *, XErrorEvent *);

@@ -10,8 +10,7 @@
 
 #include <config.h>
 #include <gnome.h>
-#include <liboaf/liboaf.h>
-#include <bonobo.h>
+#include <libbonoboui.h>
 
 #include "bonobo-clock-control.h"
 #include "bonobo-calculator-control.h"

@@ -1,7 +1,6 @@
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-storage.h>
 #include "config.h"
-#include <liboaf/liboaf.h>
 
 #include "document.h"
 
