@@ -133,6 +133,17 @@ bonobo_ui_handler_class_init (BonoboUIHandlerClass *klass)
 				GTK_TYPE_POINTER);
 
 	bonobo_ui_handler_signals [MENU_ITEM_OVERRIDDEN] =
+		gtk_signal_new ("menu_item_overridden",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (BonoboUIHandlerClass, menu_item_overridden),
+				gtk_marshal_NONE__POINTER_POINTER_POINTER,
+				GTK_TYPE_NONE, 3,
+				GTK_TYPE_POINTER,
+				GTK_TYPE_POINTER,
+				GTK_TYPE_POINTER);
+
+	bonobo_ui_handler_signals [MENU_ITEM_REINSTATED] =
 		gtk_signal_new ("menu_item_reinstated",
 				GTK_RUN_LAST,
 				object_class->type,
@@ -166,6 +177,17 @@ bonobo_ui_handler_class_init (BonoboUIHandlerClass *klass)
 				GTK_TYPE_POINTER);
 
 	bonobo_ui_handler_signals [TOOLBAR_ITEM_OVERRIDDEN] =
+		gtk_signal_new ("toolbar_item_overridden",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (BonoboUIHandlerClass, toolbar_item_overridden),
+				gtk_marshal_NONE__POINTER_POINTER_POINTER,
+				GTK_TYPE_NONE, 3,
+				GTK_TYPE_POINTER,
+				GTK_TYPE_POINTER,
+				GTK_TYPE_POINTER);
+
+	bonobo_ui_handler_signals [TOOLBAR_ITEM_REINSTATED] =
 		gtk_signal_new ("toolbar_item_reinstated",
 				GTK_RUN_LAST,
 				object_class->type,
