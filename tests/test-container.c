@@ -523,6 +523,7 @@ do_add_canvas_cmd (Application *app, gboolean aa)
 	 */
 	item = bonobo_client_site_new_item (
 		BONOBO_CLIENT_SITE (client_site),
+		app->corba_container,
 		GNOME_CANVAS_GROUP (gnome_canvas_root (GNOME_CANVAS (canvas))));
 
 	gtk_signal_connect (

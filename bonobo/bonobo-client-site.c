@@ -98,8 +98,7 @@ bonobo_client_site_destroy (GtkObject *object)
 	 */
 	while (client_site->canvas_items) {
 		BonoboCanvasItem *item = BONOBO_CANVAS_ITEM (client_site->canvas_items->data);
-
-		bonobo_object_unref (BONOBO_OBJECT (item));
+		gtk_object_unref (GTK_OBJECT (item));
 	}
 
 	bonobo_item_container_remove (client_site->container, BONOBO_OBJECT (object));
@@ -517,15 +516,17 @@ canvas_item_destroyed (GnomeCanvasItem *item, BonoboClientSite *client_site)
 /**
  * bonobo_client_site_new_item:
  * @client_site: The client site that contains a remote Embeddable object
+ * @uic: The UI container for the item.
  * @group: The Canvas group that will be the parent for the new item.
  *
  * Returns: A GnomeCanvasItem that wraps the remote Canvas Item.
  */
 GnomeCanvasItem *
-bonobo_client_site_new_item (BonoboClientSite *client_site, GnomeCanvasGroup *group)
+bonobo_client_site_new_item (BonoboClientSite *client_site, Bonobo_UIContainer uic,
+			     GnomeCanvasGroup *group)
 {
-	BonoboObjectClient *server_object;
 	GnomeCanvasItem *item;
+	Bonobo_Embeddable corba_emb;
 		
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
@@ -533,12 +534,15 @@ bonobo_client_site_new_item (BonoboClientSite *client_site, GnomeCanvasGroup *gr
 	g_return_val_if_fail (group != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_GROUP (group), NULL);
 
-	server_object = client_site->bound_embeddable;
+	corba_emb = bonobo_object_corba_objref (
+			BONOBO_OBJECT (client_site->bound_embeddable));
 
-	item = bonobo_canvas_item_new (group, server_object);
+	item = gnome_canvas_item_new (group, bonobo_canvas_item_get_type (),
+				      "corba_ui_container", uic, 
+				      "corba_embeddable", corba_emb, NULL); 
 
 	/*
-	 * 5. Add this new view frame to the list of ViewFrames for
+	 * 5. Add this new item to the list of CanvasItems for
 	 * this embedded component.
 	 */
 	client_site->canvas_items = g_list_prepend (client_site->canvas_items, item);

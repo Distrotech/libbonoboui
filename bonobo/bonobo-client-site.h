@@ -71,6 +71,7 @@ BonoboViewFrame            *bonobo_client_site_new_view_full    (BonoboClientSit
 BonoboViewFrame            *bonobo_client_site_new_view         (BonoboClientSite   *client_site,
 								 Bonobo_UIContainer  uih);
 GnomeCanvasItem            *bonobo_client_site_new_item         (BonoboClientSite   *client_site,
+								 Bonobo_UIContainer  uic,
 								 GnomeCanvasGroup   *group);
 GList                      *bonobo_client_site_get_verbs        (BonoboClientSite   *client_site);
 void                        bonobo_client_site_free_verbs       (GList              *verb_list);

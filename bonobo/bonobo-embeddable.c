@@ -251,11 +251,7 @@ make_canvas_component (BonoboEmbeddable *embeddable, gboolean aa, Bonobo_Canvas_
 	BonoboCanvasComponent *component;
 	GnomeCanvas *pseudo_canvas;
 	
-	if (aa){
-		gdk_rgb_init ();
-		pseudo_canvas = GNOME_CANVAS (gnome_canvas_new_aa ());
-	} else
-		pseudo_canvas = GNOME_CANVAS (gnome_canvas_new ());
+	pseudo_canvas = bonobo_canvas_new (aa, item_proxy);
 	
 	component = (*embeddable->priv->item_creator)(
 		embeddable, pseudo_canvas,
@@ -265,11 +261,8 @@ make_canvas_component (BonoboEmbeddable *embeddable, gboolean aa, Bonobo_Canvas_
 		gtk_object_destroy (GTK_OBJECT (pseudo_canvas));
 		return NULL;
 	}
-	bonobo_canvas_component_set_proxy (component, item_proxy);
 
-	/*
-	 * Now keep track of it
-	 */
+	/* Now keep track of it */
 	embeddable->priv->canvas_items = g_list_prepend (embeddable->priv->canvas_items, component);
 	gtk_signal_connect (GTK_OBJECT (component), "destroy",
 			    GTK_SIGNAL_FUNC (canvas_item_destroyed), embeddable);
