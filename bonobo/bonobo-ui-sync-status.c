@@ -77,13 +77,15 @@ impl_bonobo_ui_sync_status_state (BonoboUISync     *sync,
 	if (!strcmp (name, "main")) {
 		const char *id_str;
 		const char *resize_grip;
+		gboolean    has_grip;
 
 		resize_grip = bonobo_ui_node_peek_attr (node, "resize_grip");
 
+		has_grip = TRUE;
 		if (resize_grip && atoi (resize_grip) == 0)
-			gtk_statusbar_set_has_resize_grip (msync->main_status,
-							   FALSE);
+        		has_grip = FALSE;
 
+		gtk_statusbar_set_has_resize_grip (msync->main_status, has_grip);
 		
 		id_str = bonobo_ui_engine_node_get_id (sync->engine, node);
 

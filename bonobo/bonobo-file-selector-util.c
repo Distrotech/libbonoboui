@@ -4,8 +4,9 @@
  *
  * Authors:
  *    Jacob Berkman  <jacob@ximian.com>
+ *    Paolo Maggi  <maggi@athena.polito.it>
  *
- * Copyright 2001 Ximian, Inc.
+ * Copyright 2001-2002 Ximian, Inc.
  *
  */
 
@@ -37,11 +38,6 @@ typedef enum {
 	FILESEL_OPEN_MULTI,
 	FILESEL_SAVE
 } FileselMode;
-
-/* Take in sync with gtkfilesel.c */
-enum {
-  FILE_COLUMN
-};
 
 static GQuark user_data_id = 0;
 
@@ -204,58 +200,8 @@ ok_clicked_cb (GtkWidget *widget, gpointer data)
 		g_free (dir_name);
 
 	} else if (GET_MODE (fsel) == FILESEL_OPEN_MULTI) {
-
-		GtkTreeSelection *selection;
-		GtkTreeModel *model;
-		GtkTreeIter iter;
+		gchar **strv = gtk_file_selection_get_selections (fsel);
 		
-		char *filedirname;
-		char **strv;
-		int rows, i;
-
-		gtk_widget_hide (GTK_WIDGET (fsel));
-
-		model = gtk_tree_view_get_model (GTK_TREE_VIEW (GTK_FILE_SELECTION (fsel)->file_list));	
-		selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (GTK_FILE_SELECTION (fsel)->file_list));	
-
-		rows = 	gtk_tree_model_iter_n_children (model, NULL);
-
-		strv = g_new (char *, rows + 2);
-		strv[rows] = g_strdup (file_name);
-
-		if (!gtk_tree_model_get_iter_root (model, &iter))
-			return;
-
-		filedirname = g_path_get_dirname (file_name);
-		
-		i = 0;
-		
-		do {
-			if (gtk_tree_selection_iter_is_selected (selection, &iter)) {
-		      		gchar *f;
-      
-      				gtk_tree_model_get (model, &iter, FILE_COLUMN, &f, -1);
-				strv[i] = concat_dir_and_file (filedirname, f);
-				
-				g_free (f);
-
-				/* avoid duplicates */
-				if (strv[rows] && (strcmp (strv[i], strv[rows]) == 0)) {
-					g_free (strv[rows]);
-					strv[rows] = NULL;
-				}
-
-				++i;
-			}
-		} while (gtk_tree_model_iter_next (model, &iter));
-
-		strv[i] = strv[rows];
-		strv[i + 1] = NULL;
-
-		strv = g_renew (char *, strv, i + 2);
-
-		g_free (filedirname);
-
 		g_object_set_qdata (G_OBJECT (fsel),
 				    user_data_id, strv);
 		gtk_main_quit ();
@@ -319,15 +265,8 @@ create_gtk_selector (FileselMode mode,
 
 	g_free (path);
 
-	if (mode == FILESEL_OPEN_MULTI) {
-		GtkTreeSelection *selection;
-
-		selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (GTK_FILE_SELECTION (filesel)->file_list));	
-		/* FIXME: change GTK_SELECTION_SINGLE to GTK_SELECTION_MULTIPLE as soon as bug #70505
-		 * will be fixed -- Paolo
-		 */	
-		gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
-	}
+	if (mode == FILESEL_OPEN_MULTI) 
+		gtk_file_selection_set_select_multiple (GTK_FILE_SELECTION (filesel), TRUE);
 
 	return GTK_WINDOW (filesel);
 }
