@@ -1,3 +1,9 @@
+2002-04-22  jacob berkman  <jacob@ximian.com>
+
+	* bonobo/bonobo-window.c (bonobo_window_construct): revert
+	previous commit as it broke the build and wasn't approved by the
+	release team
+
 2002-04-22  Murray Cumming  <murrayc@usa.net>
 
 	* glade/glade-bonobo.h: reverted part of previous commit - I
