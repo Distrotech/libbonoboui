@@ -8,6 +8,9 @@
  * Copyright 1999 Helix Code, Inc.
  */
 
+#ifndef BONOBO_H
+#define BONOBO_H 1
+
 #include <bonobo/bonobo-object.h>
 
 #include <bonobo/bonobo-moniker.h>
@@ -51,3 +54,4 @@
 
 #include <bonobo/bonobo-widget.h>
 
+#endif
