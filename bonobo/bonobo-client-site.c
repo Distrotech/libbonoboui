@@ -185,8 +185,8 @@ bonobo_client_site_init (BonoboClientSite *client_site)
 	client_site->bound_embeddable = NULL;
 }
 
-static CORBA_Object
-create_client_site (BonoboObject *object)
+CORBA_Object
+bonobo_client_site_corba_object_create (BonoboObject *object)
 {
 	POA_Bonobo_ClientSite *servant;
 	CORBA_Environment ev;
@@ -262,7 +262,7 @@ bonobo_client_site_new (BonoboContainer *container)
 	g_return_val_if_fail (BONOBO_IS_CONTAINER (container), NULL);
 	
 	client_site = gtk_type_new (bonobo_client_site_get_type ());
-	corba_client_site = create_client_site (BONOBO_OBJECT (client_site));
+	corba_client_site = bonobo_client_site_corba_object_create (BONOBO_OBJECT (client_site));
 	if (corba_client_site == CORBA_OBJECT_NIL){
 		bonobo_object_unref (BONOBO_OBJECT (client_site));
 		return NULL;
@@ -372,10 +372,27 @@ bonobo_client_site_bind_embeddable (BonoboClientSite   *client_site,
 BonoboObjectClient *
 bonobo_client_site_get_embeddable (BonoboClientSite *client_site)
 {
-	g_return_val_if_fail (client_site != NULL, NULL);
-	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
+	g_return_val_if_fail (
+		BONOBO_IS_CLIENT_SITE (client_site), NULL);
 
 	return client_site->bound_embeddable;
+}
+
+/**
+ * bonobo_client_site_get_container:
+ * @client_site: A BonoboClientSite object which is bound to a remote
+ * BonoboObject server.
+ *
+ * Returns: The BonoboObjectClient object which corresponds to the
+ * remote BonoboObject to which @client_site is bound.
+ **/
+BonoboContainer *
+bonobo_client_site_get_container (BonoboClientSite *client_site)
+{
+	g_return_val_if_fail (
+		BONOBO_IS_CLIENT_SITE (client_site), NULL);
+
+	return client_site->container;
 }
 
 static void

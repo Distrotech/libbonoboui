@@ -1,22 +1,3 @@
-/* $Id */
-/*
-  Sample-Container Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
-  
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 2
-  (included in the RadioActive distribution in doc/GPL) as published by
-  the Free Software Foundation.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-*/
-
 #ifndef SAMPLE_COMPONENT_H
 #define SAMPLE_COMPONENT_H
 
@@ -25,25 +6,38 @@
 
 #include "container.h"
 
-struct _Component {
-	SampleApp *container;
+#define SAMPLE_CLIENT_SITE_TYPE        (sample_client_site_get_type ())
+#define SAMPLE_CLIENT_SITE(o)          (GTK_CHECK_CAST ((o), SAMPLE_CLIENT_SITE_TYPE, SampleClientSite))
+#define SAMPLE_CLIENT_SITE_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), SAMPLE_CLIENT_SITE_TYPE, SampleClientSiteClass))
+#define SAMPLE_IS_CLIENT_SITE(o)       (GTK_CHECK_TYPE ((o), SAMPLE_CLIENT_SITE_TYPE))
+#define SAMPLE_IS_CLIENT_SITE_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), SAMPLE_CLIENT_SITE_TYPE))
 
-	BonoboClientSite *client_site;
-	BonoboObjectClient *server;
-	gchar *goad_id;
+struct _SampleClientSite {
+	BonoboClientSite parent;
+
+	SampleApp *app;
+	gchar     *obj_id;
 
 	GtkWidget *widget;
 	GtkWidget *views_hbox;
-	GList *views;
+	GtkWidget *frame;
 };
 
-void component_add_view (Component * component);
-void component_del_view (Component * component);
-void component_del (Component * component);
+typedef struct {
+	BonoboClientSiteClass parent_class;
+} SampleClientSiteClass;
 
-void component_print (Component * component, GnomePrintContext * ctx,
-		      gdouble x, gdouble y, gdouble width, gdouble height);
+GtkType           sample_client_site_get_type   (void);
+SampleClientSite *sample_client_site_new        (BonoboContainer    *container,
+						 SampleApp          *app,
+						 BonoboObjectClient *embeddable,
+						 const char         *embeddable_id);
 
-GtkWidget *component_create_frame (Component * component, gchar * goad_id);
+GtkWidget        *sample_client_site_get_widget (SampleClientSite   *site);
+
+void              object_print                  (BonoboObjectClient *object,
+						 GnomePrintContext  *ctx,
+						 gdouble x, gdouble y,
+						 gdouble width, gdouble height);
 
 #endif

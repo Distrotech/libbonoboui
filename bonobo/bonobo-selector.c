@@ -120,7 +120,7 @@ bonobo_selector_get_type (void)
  */
 GtkWidget *
 bonobo_selector_new (const gchar *title,
-			   const gchar **interfaces_required)
+		     const gchar **interfaces_required)
 {
 	BonoboSelector *sel;
 	BonoboSelectorPrivate *priv;
@@ -200,7 +200,6 @@ bonobo_selector_get_selected_id (BonoboSelector *sel)
  * returned is GOAD or OAF as appropriate to the activation framework
  * being used.
  */
-
 gchar *
 gnome_bonobo_select_id (const gchar *title,
 			const gchar **interfaces_required)
@@ -209,13 +208,12 @@ gnome_bonobo_select_id (const gchar *title,
 	gchar *name = NULL;
 	int n;
 
-	if (sel == NULL)
-		return NULL;
+	g_return_val_if_fail (sel != NULL, NULL);
 
-	gtk_signal_connect (GTK_OBJECT (sel),
-		"ok", GTK_SIGNAL_FUNC (ok_callback), NULL);
-	gtk_signal_connect (GTK_OBJECT (sel),
-		"cancel", GTK_SIGNAL_FUNC (cancel_callback), NULL);
+	gtk_signal_connect (GTK_OBJECT (sel), "ok",
+			    GTK_SIGNAL_FUNC (ok_callback), NULL);
+	gtk_signal_connect (GTK_OBJECT (sel), "cancel",
+			    GTK_SIGNAL_FUNC (cancel_callback), NULL);
 	
 	gtk_object_set_user_data (GTK_OBJECT (sel), NULL);
 	
@@ -224,6 +222,7 @@ gnome_bonobo_select_id (const gchar *title,
 	n = gnome_dialog_run (GNOME_DIALOG(sel));
 	if (n == -1)
 		return NULL;
+
 	if (n == 0)
 		name = gtk_object_get_user_data (GTK_OBJECT (sel));
 		

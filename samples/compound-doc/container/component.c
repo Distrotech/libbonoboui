@@ -1,68 +1,47 @@
 /* $Id$ */
-/*
-  Bonobo-Hello Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
-  Copyright (C) 2000 Helix Code, Inc.
-  
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 2
-  (included in the RadioActive distribution in doc/GPL) as published by
-  the Free Software Foundation.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
-  Authors:
-     ÉRDI Gergõ <cactus@cactus.rulez.org>
-     Michael Meeks <michael@helixcode.com>
-*/
 
 #include "component.h"
-
-#include "component-io.h"
+#include "embeddable-io.h"
 #include "container-filesel.h"
 
-static void
-deactivate (Component *component)
+BonoboClientSiteClass *sample_client_site_parent_class = NULL;
+
+void
+object_print (BonoboObjectClient *object,
+	      GnomePrintContext  *ctx,
+	      gdouble x, gdouble y,
+	      gdouble width, gdouble height)
 {
-	SampleApp *container = component->container;
+	BonoboPrintClient *print_client = bonobo_print_client_get (object);
+	BonoboPrintData   *print_data;
 
-	if (container->curr_view) {
-		/*
-		 * This just sends a notice to the embedded View that
-		 * it is being deactivated.  We will also forcibly
-		 * cover it so that it does not receive any Gtk
-		 * events.
-		 */
-		bonobo_view_frame_view_deactivate (container->curr_view);
+	if (!print_client)
+		return;
 
-		/*
-		 * Here we manually cover it if it hasn't acquiesced.
-		 * If it has consented to be deactivated, then it will
-		 * already have notified us that it is inactive, and
-		 * we will have covered it and set active_view_frame
-		 * to NULL.  Which is why this check is here.
-		 */
-		if (container->curr_view)
-			bonobo_view_frame_set_covered (
-				container->curr_view, TRUE);
+	print_data = bonobo_print_data_new (width, height);
+	bonobo_print_client_render (print_client, print_data);
+	bonobo_print_data_render (ctx, x, y, print_data, 0.0, 0.0);
+	bonobo_print_data_free (print_data);
 
-		container->curr_view = NULL;
-	}
+	bonobo_object_unref (BONOBO_OBJECT (print_client));
 }
 
 static void
-activate_request_cb (BonoboViewFrame * view_frame, Component * component)
+activate_request_cb (BonoboViewFrame  *view_frame,
+		     SampleClientSite *site)
 {
-	/*
-	 * If there is already an active View, deactivate it.
-	 */
-	deactivate (component);
+	SampleApp *app;
+
+	g_return_if_fail (site != NULL);
+	g_return_if_fail (site->app != NULL);
+
+	app = site->app;
+
+	if (app->curr_view) {
+		bonobo_view_frame_view_deactivate (app->curr_view);
+		if (app->curr_view)
+			bonobo_view_frame_set_covered (app->curr_view, FALSE);
+	}
 
 	/*
 	 * Activate the View which the user clicked on.  This just
@@ -79,10 +58,11 @@ activate_request_cb (BonoboViewFrame * view_frame, Component * component)
 }
 
 static void
-view_activated_cb (BonoboViewFrame * view_frame, gboolean activated,
-		   Component * component)
+view_activated_cb (BonoboViewFrame  *view_frame,
+		   gboolean          activated,
+		   SampleClientSite *site)
 {
-	SampleApp *container = component->container;
+	SampleApp *app = site->app;
 
 	if (activated) {
 		/*
@@ -90,7 +70,7 @@ view_activated_cb (BonoboViewFrame * view_frame, gboolean activated,
 		 * check whether or not there is already an active
 		 * View.
 		 */
-		if (container->curr_view) {
+		if (app->curr_view) {
 			g_warning ("View requested to be activated but "
 				   "there is already an active View!\n");
 			return;
@@ -101,7 +81,7 @@ view_activated_cb (BonoboViewFrame * view_frame, gboolean activated,
 		 * events, and set it as the active View.
 		 */
 		bonobo_view_frame_set_covered (view_frame, FALSE);
-		container->curr_view = view_frame;
+		app->curr_view = view_frame;
 	} else {
 		/*
 		 * If the View is asking to be deactivated, always
@@ -114,14 +94,14 @@ view_activated_cb (BonoboViewFrame * view_frame, gboolean activated,
 		 */
 		bonobo_view_frame_set_covered (view_frame, TRUE);
 
-		if (view_frame == container->curr_view)
-			container->curr_view = NULL;
+		if (view_frame == app->curr_view)
+			app->curr_view = NULL;
 	}
 }
 
 static void
-component_user_context_cb (BonoboViewFrame *view_frame,
-			   Component       *component)
+component_user_context_cb (BonoboViewFrame  *view_frame,
+			   SampleClientSite *site)
 {
 	char  *executed_verb;
 	GList *l;
@@ -130,7 +110,7 @@ component_user_context_cb (BonoboViewFrame *view_frame,
 	 * See if the remote BonoboEmbeddable supports any verbs at
 	 * all.
 	 */
-	l = bonobo_client_site_get_verbs (component->client_site);
+	l = bonobo_client_site_get_verbs (BONOBO_CLIENT_SITE (site));
 	if (!l)
 		return;
 	bonobo_client_site_free_verbs (l);
@@ -147,8 +127,8 @@ component_user_context_cb (BonoboViewFrame *view_frame,
 	g_free (executed_verb);
 }
 
-void
-component_add_view (Component *component)
+static void
+sample_site_add_frame (SampleClientSite *site)
 {
 	BonoboViewFrame *view_frame;
 	GtkWidget       *view_widget;
@@ -161,17 +141,15 @@ component_add_view (Component *component)
 	 * activated.
 	 */
 	view_frame = bonobo_client_site_new_view (
-		component->client_site,
-		bonobo_object_corba_objref (
-			BONOBO_OBJECT (component->container->
-				       ui_handler)));
+		BONOBO_CLIENT_SITE (site),
+		bonobo_object_corba_objref (BONOBO_OBJECT (
+			site->app->ui_handler)));
 
 	/*
 	 * Embed the view frame into the application.
 	 */
 	view_widget = bonobo_view_frame_get_wrapper (view_frame);
-	component->views = g_list_append (component->views, view_frame);
-	gtk_box_pack_start (GTK_BOX (component->views_hbox), view_widget,
+	gtk_box_pack_start (GTK_BOX (site->views_hbox), view_widget,
 			    FALSE, FALSE, 5);
 
 	/*
@@ -184,7 +162,7 @@ component_add_view (Component *component)
 	 */
 	gtk_signal_connect (GTK_OBJECT (view_frame), "user_activate",
 			    GTK_SIGNAL_FUNC (activate_request_cb),
-			    component);
+			    site);
 
 	/*
 	 * In-place activation of a component is a two-step process.
@@ -200,7 +178,7 @@ component_add_view (Component *component)
 	 */
 	gtk_signal_connect (GTK_OBJECT (view_frame), "activated",
 			    GTK_SIGNAL_FUNC (view_activated_cb),
-			    component);
+			    site);
 
 	/*
 	 * The "user_context" signal is emitted when the user right
@@ -208,7 +186,7 @@ component_add_view (Component *component)
 	 */
 	gtk_signal_connect (GTK_OBJECT (view_frame), "user_context",
 			    GTK_SIGNAL_FUNC (component_user_context_cb),
-			    component);
+			    site);
 
 	/*
 	 * Show the component.
@@ -216,77 +194,44 @@ component_add_view (Component *component)
 	gtk_widget_show_all (view_widget);
 }
 
-void
-component_del_view (Component *component)
-{
-	BonoboViewFrame *last_view;
-
-	if (!component->views)
-		return;
-
-	last_view = g_list_last (component->views)->data;
-	component->views = g_list_remove (component->views, last_view);
-
-	/* If this is the activated view, deactivate it */
-	if (component->container->curr_view == last_view)
-		deactivate (component);
-
-	gtk_container_remove (GTK_CONTAINER (component->views_hbox),
-			      bonobo_view_frame_get_wrapper (last_view));
-	bonobo_object_unref (BONOBO_OBJECT (last_view));
-}
-
-void
-component_del (Component *component)
-{
-	bonobo_object_unref (BONOBO_OBJECT (component->server));
-
-	/* Remove from container */
-	sample_app_remove_component (component->container, component);
-}
-
-void
-component_print (Component *component,
-		 GnomePrintContext *ctx,
-		 gdouble x, gdouble y,
-		 gdouble width, gdouble height)
-{
-	BonoboObjectClient *client = component->server;
-	BonoboPrintClient  *print_client = bonobo_print_client_get (client);
-	BonoboPrintData    *print_data;
-
-	if (!print_client)
-		return;
-
-	print_data = bonobo_print_data_new (width, height);
-	bonobo_print_client_render (print_client, print_data);
-	bonobo_print_data_render (ctx, x, y, print_data, 0.0, 0.0);
-	bonobo_print_data_free (print_data);
-}
-
-
 static void
-add_view_cb (GtkWidget *caller, Component *component)
+sample_site_del_frame (SampleClientSite *site)
 {
-	component_add_view (component);
+	BonoboViewFrame *view;
+
+	g_return_if_fail (site != NULL);
+	g_return_if_fail (site->parent.view_frames != NULL);
+
+	view = site->parent.view_frames->data;
+
+	gtk_container_remove (GTK_CONTAINER (site->views_hbox),
+			      bonobo_view_frame_get_wrapper (view));
+
+	bonobo_object_unref (BONOBO_OBJECT (view));
 }
 
 static void
-del_view_cb (GtkWidget *caller, Component *component)
+add_frame_cb (GtkWidget *caller, SampleClientSite *site)
 {
-	component_del_view (component);
+	sample_site_add_frame (site);
 }
 
 static void
-del_cb (GtkWidget *caller, Component *component)
+del_frame_cb (GtkWidget *caller, SampleClientSite *site)
 {
-	component_del (component);
+	sample_site_del_frame (site);
 }
 
 static void
-load_stream_cb (GtkWidget *caller, Component *component)
+del_cb (GtkWidget *caller, SampleClientSite *site)
 {
-	GtkWidget *fs = component->container->fileselection;
+	bonobo_object_unref (BONOBO_OBJECT (site));
+}
+
+static void
+load_stream_cb (GtkWidget *caller, SampleClientSite *site)
+{
+	GtkWidget *fs = site->app->fileselection;
 	gchar *filename = g_strdup (gtk_file_selection_get_filename
 				    (GTK_FILE_SELECTION (fs)));
 	gtk_widget_destroy (fs);
@@ -315,7 +260,7 @@ load_stream_cb (GtkWidget *caller, Component *component)
 		 * component.
 		 */
 		persist = bonobo_object_client_query_interface (
-			component->server,
+			bonobo_client_site_get_embeddable (BONOBO_CLIENT_SITE (site)),
 			"IDL:Bonobo/PersistStream:1.0", NULL);
 
 		/*
@@ -366,22 +311,75 @@ load_stream_cb (GtkWidget *caller, Component *component)
 }
 
 static void
-fill_cb (GtkWidget *caller, Component *component)
+fill_cb (GtkWidget *caller, SampleClientSite *site)
 {
-	container_request_file (component->container, FALSE,
-				load_stream_cb, component);
+	container_request_file (site->app, FALSE,
+				load_stream_cb, site);
 }
 
-GtkWidget *
-component_create_frame (Component *component, gchar *goad_id)
+static void
+sample_client_site_destroy (GtkObject *object)
+{
+	SampleClientSite *site = SAMPLE_CLIENT_SITE (object);
+
+	site->app->components = g_list_remove (
+		site->app->components, site);
+
+/* FIXME: unref the server as we pop it in */
+/*	bonobo_object_unref (BONOBO_OBJECT (component->server));*/
+
+	gtk_widget_destroy (site->frame);
+	GTK_OBJECT_CLASS (sample_client_site_parent_class)->destroy
+		(GTK_OBJECT (site));
+}
+
+static void
+sample_client_site_class_init (SampleClientSiteClass *klass)
+{
+	BonoboObjectClass *gobject_class = (BonoboObjectClass *) klass;
+	GtkObjectClass *object_class = (GtkObjectClass *) gobject_class;
+	
+	sample_client_site_parent_class = gtk_type_class (
+		bonobo_client_site_get_type ());
+
+	object_class->destroy = sample_client_site_destroy;
+}
+
+GtkType
+sample_client_site_get_type (void)
+{
+	static GtkType type = 0;
+
+	if (!type) {
+		GtkTypeInfo info = {
+			"SampleClientSite",
+			sizeof (SampleClientSite),
+			sizeof (SampleClientSiteClass),
+			(GtkClassInitFunc) sample_client_site_class_init,
+			(GtkObjectInitFunc) NULL,
+			NULL, /* reserved 1 */
+			NULL, /* reserved 2 */
+			(GtkClassInitFunc) NULL
+		};
+
+		type = gtk_type_unique (bonobo_client_site_get_type (), &info);
+	}
+
+	return type;
+}
+
+static void
+site_create_widgets (SampleClientSite *site)
 {
 	GtkWidget *frame;
 	GtkWidget *vbox, *hbox;
 	GtkWidget *new_view_button, *del_view_button;
 	GtkWidget *del_comp_button, *fill_comp_button;
 
+	g_return_if_fail (site != NULL);
+
 	/* Display widgets */
-	frame = component->widget = gtk_frame_new (goad_id);
+	frame = site->frame = gtk_frame_new (site->obj_id);
 	vbox = gtk_vbox_new (FALSE, 10);
 	hbox = gtk_hbox_new (TRUE, 5);
 	new_view_button = gtk_button_new_with_label ("New view");
@@ -389,36 +387,84 @@ component_create_frame (Component *component, gchar *goad_id)
 	del_comp_button = gtk_button_new_with_label ("Remove component");
 
 	/* The views of the component */
-	component->views_hbox = gtk_hbox_new (FALSE, 2);
+	site->views_hbox = gtk_hbox_new (FALSE, 2);
 	gtk_signal_connect (GTK_OBJECT (new_view_button), "clicked",
-			    GTK_SIGNAL_FUNC (add_view_cb), component);
+			    GTK_SIGNAL_FUNC (add_frame_cb), site);
 	gtk_signal_connect (GTK_OBJECT (del_view_button), "clicked",
-			    GTK_SIGNAL_FUNC (del_view_cb), component);
+			    GTK_SIGNAL_FUNC (del_frame_cb), site);
 	gtk_signal_connect (GTK_OBJECT (del_comp_button), "clicked",
-			    GTK_SIGNAL_FUNC (del_cb), component);
+ 			    GTK_SIGNAL_FUNC (del_cb), site);
 
 	gtk_container_add (GTK_CONTAINER (hbox), new_view_button);
 	gtk_container_add (GTK_CONTAINER (hbox), del_view_button);
 	gtk_container_add (GTK_CONTAINER (hbox), del_comp_button);
 
-	if (bonobo_object_client_has_interface (component->server,
-						"IDL:Bonobo/PersistStream:1.0",
-						NULL)) {
+	if (bonobo_object_client_has_interface (
+		bonobo_client_site_get_embeddable (BONOBO_CLIENT_SITE (site)),
+		"IDL:Bonobo/PersistStream:1.0", NULL)) {
+
 		fill_comp_button =
 		    gtk_button_new_with_label ("Fill with stream");
 		gtk_container_add (GTK_CONTAINER (hbox), fill_comp_button);
 
 		gtk_signal_connect (GTK_OBJECT (fill_comp_button),
 				    "clicked", GTK_SIGNAL_FUNC (fill_cb),
-				    component);
+				    site);
 	}
 
 
-	gtk_container_add (GTK_CONTAINER (vbox),  component->views_hbox);
+	gtk_container_add (GTK_CONTAINER (vbox),  site->views_hbox);
 	gtk_container_add (GTK_CONTAINER (vbox),  hbox);
 	gtk_container_add (GTK_CONTAINER (frame), vbox);
+}
 
-	component->goad_id = g_strdup (goad_id);
+GtkWidget *
+sample_client_site_get_widget (SampleClientSite *site)
+{
+	g_return_val_if_fail (site != NULL, NULL);
 
-	return frame;
+	return site->frame;
+}
+
+SampleClientSite *
+sample_client_site_new (BonoboContainer *container,
+			SampleApp       *app,
+			BonoboObjectClient *embeddable,
+			const char         *embeddable_id)
+{
+	SampleClientSite *site;
+	Bonobo_ClientSite corba_client_site;
+
+	g_return_val_if_fail (app != NULL, NULL);
+	g_return_val_if_fail (embeddable_id != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_CONTAINER (container), NULL);
+	g_return_val_if_fail (BONOBO_IS_OBJECT_CLIENT (embeddable), NULL);
+	
+	site = gtk_type_new (sample_client_site_get_type ());
+	corba_client_site = bonobo_client_site_corba_object_create
+		(BONOBO_OBJECT (site));
+
+	if (corba_client_site == CORBA_OBJECT_NIL) {
+		bonobo_object_unref (BONOBO_OBJECT (site));
+		return NULL;
+	}
+	
+	site = SAMPLE_CLIENT_SITE (bonobo_client_site_construct (
+		BONOBO_CLIENT_SITE (site), corba_client_site, container));
+
+	if (site) {
+		bonobo_client_site_bind_embeddable (BONOBO_CLIENT_SITE (site),
+						    embeddable);
+		bonobo_object_unref (BONOBO_OBJECT (embeddable));
+		bonobo_container_add (container,
+				      BONOBO_OBJECT (site));
+
+		site->app = app;
+		g_free (site->obj_id);
+		site->obj_id = g_strdup (embeddable_id);
+
+		site_create_widgets (site);
+	}
+
+	return site;
 }

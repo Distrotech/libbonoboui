@@ -1,22 +1,3 @@
-/* $Id */
-/*
-  Bonobo-Sample Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
-  
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 2
-  (included in the RadioActive distribution in doc/GPL) as published by
-  the Free Software Foundation.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-*/
-
 #include <gnome.h>
 #include <bonobo.h>
 #include "config.h"
@@ -36,14 +17,9 @@ poptContext ctx;
 void
 sample_app_exit (SampleApp *app)
 {
-	GList *l;
-
-	for (l = app->components; l;) {
-		GList *tmp = l->next;	/* Store the next pointer 
-					   as component_del invalidates l */
-		component_del (l->data);
-		l = tmp;
-	}
+	while (app->components)
+		bonobo_object_unref (
+			BONOBO_OBJECT (app->components->data));
 
 	bonobo_object_unref (BONOBO_OBJECT (app->container));
 
@@ -51,38 +27,39 @@ sample_app_exit (SampleApp *app)
 }
 
 static void
-delete_cb (GtkWidget *caller, SampleApp *inst)
+delete_cb (GtkWidget *caller, SampleApp *app)
 {
-	sample_app_exit (inst);
+	sample_app_exit (app);
 }
 
 static SampleApp *
 sample_app_create (void)
 {
-	SampleApp *inst = g_new0 (SampleApp, 1);
-	GtkWidget *app, *box;
-
+	SampleApp *app = g_new0 (SampleApp, 1);
+	GtkWidget *app_widget;
+	
 	/* Create widgets */
-	app = inst->app = gnome_app_new ("container",
-					 "Sample Bonobo container");
-	box = inst->box = gtk_vbox_new (FALSE, 10);
+	app_widget = app->app = gnome_app_new ("sample-container",
+					       _("Sample Bonobo container"));
+	app->box = gtk_vbox_new (FALSE, 10);
 
-	gtk_signal_connect (GTK_OBJECT (app), "destroy", delete_cb, inst);
+	gtk_signal_connect (GTK_OBJECT (app_widget), "destroy", delete_cb, app);
 
 	/* Do the packing stuff */
-	gnome_app_set_contents (GNOME_APP (app), box);
-	gtk_widget_set_usize (app, 400, 600);
+	gnome_app_set_contents (GNOME_APP (app_widget), app->box);
+	gtk_widget_set_usize (app_widget, 400, 600);
 
-	inst->container = bonobo_container_new ();
-	inst->ui_handler = bonobo_ui_handler_new ();
-	bonobo_ui_handler_set_app (inst->ui_handler, GNOME_APP (app));
+	app->container = bonobo_container_new ();
+	app->ui_handler = bonobo_ui_handler_new ();
+	bonobo_ui_handler_set_app (app->ui_handler, GNOME_APP (app_widget));
+
 	/* Create menu bar */
-	bonobo_ui_handler_create_menubar (inst->ui_handler);
-	sample_app_fill_menu (inst);
+	bonobo_ui_handler_create_menubar (app->ui_handler);
+	sample_app_fill_menu (app);
 
-	gtk_widget_show_all (app);
+	gtk_widget_show_all (app_widget);
 
-	return inst;
+	return app;
 }
 
 static void
@@ -91,82 +68,21 @@ sample_app_shutdown (SampleApp *app)
 	bonobo_object_unref (BONOBO_OBJECT (app->ui_handler));
 }
 
-static void
-create_component_frame (SampleApp *inst,
-			Component *component,
-			gchar     *name)
+SampleClientSite *
+sample_app_add_component (SampleApp *app,
+			  gchar     *object_id)
 {
-	GtkWidget *widget = component_create_frame (component, name);
-
-	gtk_widget_show_all (widget);
-	gtk_box_pack_start (GTK_BOX (inst->box), widget, FALSE, FALSE, 0);
-}
-
-static BonoboObjectClient *
-launch_component (BonoboClientSite *client_site,
-		  BonoboContainer  *container,
-		  gchar            *component_id)
-{
-	BonoboObjectClient *object_server;
-
-	/*
-	 * Launch the component.
-	 */
-	object_server =
-	    bonobo_object_activate_with_oaf_id (component_id, 0);
-
-	if (!object_server)
-		return NULL;
-
-	/*
-	 * Bind it to the local ClientSite.  Every embedded component
-	 * has a local BonoboClientSite object which serves as a
-	 * container-side point of contact for the embeddable.  The
-	 * container talks to the embeddable through its ClientSite
-	 */
-	if (!bonobo_client_site_bind_embeddable (
-		client_site, object_server)) {
-		bonobo_object_unref (BONOBO_OBJECT (object_server));
-		return NULL;
-	}
-
-	/*
-	 * The BonoboContainer object maintains a list of the
-	 * ClientSites which it manages.  Here we add the new
-	 * ClientSite to that list.
-	 */
-	bonobo_container_add (container, BONOBO_OBJECT (client_site));
-
-	return object_server;
-}
-
-Component *
-sample_app_add_component (SampleApp *inst,
-			  gchar     *obj_id)
-{
-	Component          *component;
-	BonoboClientSite   *client_site;
+	SampleClientSite   *site;
 	BonoboObjectClient *server;
 
-	/*
-	 * The ClientSite is the container-side point of contact for
-	 * the Embeddable.  So there is a one-to-one correspondence
-	 * between BonoboClientSites and BonoboEmbeddables.
-	 */
-	client_site = bonobo_client_site_new (inst->container);
-
-	/*
-	 * A BonoboObjectClient is a simple wrapper for a remote
-	 * BonoboObject (a server supporting Bonobo::Unknown).
-	 */
-	server = launch_component (client_site, inst->container, obj_id);
+	server = bonobo_object_activate_with_oaf_id (object_id, 0);
 
 	if (!server) {
 		gchar *error_msg;
 
 		error_msg =
 		    g_strdup_printf (_("Could not launch Embeddable %s!"),
-				     obj_id);
+				     object_id);
 		gnome_warning_dialog (error_msg);
 		g_free (error_msg);
 
@@ -174,36 +90,25 @@ sample_app_add_component (SampleApp *inst,
 	}
 
 	/*
-	 * Create the internal data structure which we will use to
-	 * keep track of this component.
+	 * The ClientSite is the container-side point of contact for
+	 * the Embeddable.  So there is a one-to-one correspondence
+	 * between BonoboClientSites and BonoboEmbeddables.
 	 */
-	component = g_new0 (Component, 1);
-	component->container = inst;
-	component->client_site = client_site;
-	component->server = server;
-	inst->components = g_list_append (inst->components, component);
+	site = sample_client_site_new (app->container, app,
+				       server, object_id);
+	if (!site) {
+		g_warning ("Can't create client site");
+		return NULL;
+	}
 
-	/*
-	 * Now we have a BonoboEmbeddable bound to our local
-	 * ClientSite.  Here we create a little on-screen box to store
-	 * the embeddable in, when the user adds views for it.
-	 */
-	create_component_frame (inst, component, obj_id);
+	app->components = g_list_append (app->components, site);
 
-	return component;
-}
-
-void
-sample_app_remove_component (SampleApp *inst, Component *component)
-{
-	inst->components = g_list_remove (inst->components, component);
-
-	bonobo_container_remove (inst->container, BONOBO_OBJECT (component->client_site));
-	bonobo_object_unref (BONOBO_OBJECT (component->client_site));
-
-	/* Destroy the container widget */
-	gtk_container_remove (GTK_CONTAINER (component->container->box),
-			      component->widget);
+	gtk_box_pack_start (GTK_BOX (app->box),
+			    sample_client_site_get_widget (site),
+			    FALSE, FALSE, 0);
+	gtk_widget_show_all (GTK_WIDGET (app->box));
+	
+	return site;
 }
 
 typedef struct {

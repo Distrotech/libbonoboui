@@ -1,3 +1,22 @@
+2000-07-23  Michael Meeks  <michael@helixcode.com>
+
+	* Massive clean, rename, re-write huge chunks, everything is now
+	officialy my fault.
+
+	* container-print.c (sample_app_print_preview): allow each component
+	a larger, square space to render to.
+
+	* container-menu.c: Prune all GUI conditionals, you just need to
+	save a compound document and use it on startup to get this effect.
+	(add_cb): use gnome_bonobo_select_id
+	(about_cb): update authors / copyright.
+
+	* container.c (sample_app_remove_component): don't do more work than
+	neccessary, don't container_remove, just destroy the containing widget.
+	Move into:
+	
+	* component.c (component_del): where it belongs.
+
 2000-07-13  Michael Meeks  <michael@helixcode.com>
 
 	* container-print.c (sample_app_print_preview): kill unref of print

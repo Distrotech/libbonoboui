@@ -51,6 +51,7 @@ typedef struct {
 } BonoboClientSiteClass;
 
 GtkType                     bonobo_client_site_get_type         (void);
+Bonobo_ClientSite           bonobo_client_site_corba_object_create (BonoboObject *object);
 BonoboClientSite           *bonobo_client_site_new              (BonoboContainer    *container);
 BonoboClientSite           *bonobo_client_site_construct        (BonoboClientSite   *client_site,
 								 Bonobo_ClientSite   corba_client_site,
@@ -58,6 +59,7 @@ BonoboClientSite           *bonobo_client_site_construct        (BonoboClientSit
 gboolean                    bonobo_client_site_bind_embeddable  (BonoboClientSite   *client_site,
 								 BonoboObjectClient *object);
 BonoboObjectClient         *bonobo_client_site_get_embeddable   (BonoboClientSite   *client_site);
+BonoboContainer            *bonobo_client_site_get_container    (BonoboClientSite   *client_site);
 
 /*
  * Proxy/Utility functions.

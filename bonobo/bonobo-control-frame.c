@@ -333,7 +333,7 @@ bonobo_control_frame_destroy (GtkObject *object)
 {
 	BonoboControlFrame *control_frame = BONOBO_CONTROL_FRAME (object);
 
-	if (control_frame->priv->control != CORBA_OBJECT_NIL){
+	if (control_frame->priv->control != CORBA_OBJECT_NIL) {
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);

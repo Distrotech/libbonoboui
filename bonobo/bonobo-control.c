@@ -727,6 +727,10 @@ bonobo_control_destroy (GtkObject *object)
 
 	CORBA_exception_init (&ev);
 
+	if (control->priv->active)
+		Bonobo_ControlFrame_activated (control->priv->control_frame,
+					       FALSE, &ev);
+
 	CORBA_Object_release (control->priv->control_frame, &ev);
 
 	CORBA_exception_free (&ev);
@@ -971,7 +975,7 @@ bonobo_control_get_remote_ui_handler (BonoboControl *control)
  */
 void
 bonobo_control_activate_notify (BonoboControl *control,
-			       gboolean      activated)
+				gboolean      activated)
 {
 	CORBA_Environment ev;
 
@@ -1076,6 +1080,7 @@ bonobo_control_set_property (BonoboControl       *control,
 	g_return_if_fail (BONOBO_IS_CONTROL (control));
 	g_return_if_fail (first_prop != NULL);
 
+	bonobo_object_ref (BONOBO_OBJECT (control->priv->propbag));
 	bag = (Bonobo_PropertyBag)
 		bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
 	cl = bonobo_property_bag_client_new (bag);

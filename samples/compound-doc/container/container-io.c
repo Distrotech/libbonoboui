@@ -1,31 +1,7 @@
-/* $Id */
-/*
-  Sample-Container Copyright (C) 2000 ÉRDI Gergõ <cactus@cactus.rulez.org>
-  Copyright (C) 2000 Helix Code, Inc.
-  
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 2
-  (included in the RadioActive distribution in doc/GPL) as published by
-  the Free Software Foundation.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-
-  Authors:
-     ÉRDI Gergõ <cactus@cactus.rulez.org>
-     Michael Meeks <michael@helixcode.com>
-*/
-
 #include <bonobo.h>
 
 #include "container-io.h"
-#include "component-io.h"
+#include "embeddable-io.h"
 
 #define STORAGE_TYPE "vfs"
 
@@ -48,7 +24,9 @@ create_stream (Bonobo_Storage     storage,
 #define DATA_FILE "data"
 
 static void
-save_component (BonoboStorage *storage, Component *component, int index)
+save_component (BonoboStorage    *storage,
+		SampleClientSite *site,
+		int index)
 {
 	char *curr_dir = g_strdup_printf ("%08d", index);
 
@@ -65,17 +43,28 @@ save_component (BonoboStorage *storage, Component *component, int index)
 	if (!corba_subdir)
 		g_warning ("Can't create '%s'", curr_dir);
 	else {
-		Bonobo_Stream corba_stream;
+		Bonobo_Stream       corba_stream;
+		BonoboObjectClient *embeddable;
 
 		corba_stream = create_stream (corba_subdir, GOAD_FILE, &ev);
-		component_save_id (component, corba_stream, &ev);
+
+		bonobo_stream_client_write_string (corba_stream,
+						   site->obj_id,
+						   TRUE, &ev);
+
 		Bonobo_Stream_close (corba_stream, &ev);
 		Bonobo_Unknown_unref (corba_stream, &ev);
 		CORBA_Object_release (corba_stream, &ev);
 
+		embeddable = bonobo_client_site_get_embeddable (
+			BONOBO_CLIENT_SITE (site));
+
 		corba_stream = create_stream (corba_subdir, DATA_FILE, &ev);
-		component_save (component, corba_stream, &ev);
+
+		object_save (embeddable, corba_stream, &ev);
+
 		Bonobo_Stream_close (corba_stream, &ev);
+
 		Bonobo_Unknown_unref (corba_stream, &ev);
 		CORBA_Object_release (corba_stream, &ev);
 
@@ -149,14 +138,14 @@ load_component_id (Bonobo_Storage     storage,
 }
 
 static void
-load_component (SampleApp *inst, BonoboStorage *storage, int index)
+load_component (SampleApp *app, BonoboStorage *storage, int index)
 {
 	char *curr_dir = g_strdup_printf ("%08d", index);
 	char *goad_id;
 	Bonobo_Storage corba_subdir;
 	Bonobo_Storage corba_storage =
-	    bonobo_object_corba_objref (BONOBO_OBJECT (storage));
-	Component *component;
+		bonobo_object_corba_objref (BONOBO_OBJECT (storage));
+	SampleClientSite *site;
 
 	CORBA_Environment ev;
 	CORBA_exception_init (&ev);
@@ -169,16 +158,22 @@ load_component (SampleApp *inst, BonoboStorage *storage, int index)
 	if (goad_id) {
 		Bonobo_Stream corba_stream;
 
-		component = sample_app_add_component (inst, goad_id);
+		site = sample_app_add_component (app, goad_id);
 
-		if (component) {
-			corba_stream = Bonobo_Storage_open_stream (corba_subdir, DATA_FILE,
-								   Bonobo_Storage_READ, &ev);
+		if (site) {
+			BonoboObjectClient *embeddable;
+
+			corba_stream =
+				Bonobo_Storage_open_stream (corba_subdir, DATA_FILE,
+							    Bonobo_Storage_READ, &ev);
 
 			if (ev._major != CORBA_NO_EXCEPTION)
 				return;
 
-			component_load (component, corba_stream, &ev);
+			embeddable = bonobo_client_site_get_embeddable (
+				BONOBO_CLIENT_SITE (site));
+
+			object_load (embeddable, corba_stream, &ev);
 		} else
 			g_warning ("Component '%s' activation failed", goad_id);
 
@@ -192,7 +187,7 @@ load_component (SampleApp *inst, BonoboStorage *storage, int index)
 
 
 void
-sample_container_load (SampleApp *inst, const char *filename)
+sample_container_load (SampleApp *app, const char *filename)
 {
 	CORBA_Environment ev;
 	BonoboStorage *storage;
@@ -218,14 +213,14 @@ sample_container_load (SampleApp *inst, const char *filename)
 	}
 
 	for (i = 0; i < list->_length; i++)
-		load_component (inst, storage, i);
+		load_component (app, storage, i);
 
 	CORBA_free (list);
 	CORBA_exception_free (&ev);
 }
 
 void
-sample_container_save (SampleApp *inst, const char *filename)
+sample_container_save (SampleApp *app, const char *filename)
 {
 	CORBA_Environment ev;
 	BonoboStorage *storage;
@@ -245,7 +240,7 @@ sample_container_save (SampleApp *inst, const char *filename)
 	    bonobo_object_corba_objref (BONOBO_OBJECT (storage));
 
 	i = 0;
-	for (components = g_list_first (inst->components);
+	for (components = g_list_first (app->components);
 	     components; components = g_list_next (components))
 		save_component (storage, components->data, i++);
 

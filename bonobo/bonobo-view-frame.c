@@ -34,9 +34,9 @@ static BonoboControlFrameClass *bonobo_view_frame_parent_class;
 POA_Bonobo_ViewFrame__vepv bonobo_view_frame_vepv;
 
 struct _BonoboViewFramePrivate {
-	GtkWidget	*wrapper; 
+	GtkWidget	 *wrapper; 
 	BonoboClientSite *client_site;
-	BonoboUIHandler	*uih;
+	BonoboUIHandler	 *uih;
 	Bonobo_View       view;
 };
 
@@ -198,7 +198,7 @@ bonobo_view_frame_destroy (GtkObject *object)
 {
 	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (object);
 
-	if (view_frame->priv->view != CORBA_OBJECT_NIL){
+	if (view_frame->priv->view != CORBA_OBJECT_NIL) {
 		CORBA_Environment ev;
 
 		CORBA_exception_init (&ev);
