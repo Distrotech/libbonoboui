@@ -6,7 +6,7 @@ INCLUDES =	\
 	$(BONOBOUI_CFLAGS)
 
 bonobo_sample_container_SOURCES =			\
-	bonobo-sample-controls.c
+	bonobo-sample-container.c
 
 bonobo_sample_container_LDADD =			\
 	$(top_builddir)/bonobo/libbonoboui-2.la \
