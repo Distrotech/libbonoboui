@@ -9,7 +9,8 @@
  */
 
 #include <config.h>
-#include "bonobo-ui-toolbar-separator-item.h"
+#include <libgnome/gnome-macros.h>
+#include <bonobo/bonobo-ui-toolbar-separator-item.h>
 
 
 #define PARENT_TYPE bonobo_ui_toolbar_item_get_type ()

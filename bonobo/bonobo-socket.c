@@ -18,15 +18,17 @@
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-control-frame.h>
 #include <bonobo/bonobo-control-internal.h>
+#include <libgnome/gnome-macros.h>
 
-static GtkSocketClass *parent_class = NULL;
+GNOME_CLASS_BOILERPLATE (BonoboSocket, bonobo_socket,
+			 GObject, GTK_TYPE_SOCKET);
 
 static void
 bonobo_socket_finalize (GObject *object)
 {
 	dprintf ("bonobo_socket_finalize %p\n", object);
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
 gboolean
@@ -47,7 +49,7 @@ bonobo_socket_dispose (GObject *object)
 		g_assert (socket->frame == NULL);
 	}
 
-	G_OBJECT_CLASS (parent_class)->dispose (object);
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, dispose, (object));
 }
 
 static void
@@ -62,8 +64,7 @@ bonobo_socket_realize (GtkWidget *widget)
 
 	dprintf ("bonobo_socket_realize %p\n", widget);
 
-	if (GTK_WIDGET_CLASS (parent_class)->realize)
-		(* GTK_WIDGET_CLASS (parent_class)->realize) (widget);
+	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, realize, (widget));
 
 	if (socket->frame) {
 		g_object_ref (socket->frame);
@@ -85,7 +86,7 @@ bonobo_socket_unrealize (GtkWidget *widget)
 	/* To stop evilness inside Gtk+ */
 	GTK_WIDGET_UNSET_FLAGS (widget, GTK_REALIZED);
 
-	GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
+	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, unrealize, (widget));
 }
 
 static gboolean
@@ -162,7 +163,7 @@ bonobo_socket_size_allocate (GtkWidget     *widget,
 		 allocation->x, allocation->y,
 		 allocation->width, allocation->height);
 	
-	GTK_WIDGET_CLASS (parent_class)->size_allocate (widget, allocation);
+	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, size_allocate, (widget, allocation));
 }
 
 static void
@@ -176,8 +177,8 @@ bonobo_socket_size_request (GtkWidget      *widget,
 	    !socket->frame ||
 	    (gtk_socket->is_mapped && gtk_socket->have_size))
 
-		GTK_WIDGET_CLASS (parent_class)->size_request (
-			widget, requisition);
+		GNOME_CALL_PARENT (GTK_WIDGET_CLASS, size_request,
+				   (widget, requisition));
 
 	else if (gtk_socket->have_size &&
 		 GTK_WIDGET_VISIBLE (gtk_socket)) {
@@ -222,18 +223,18 @@ bonobo_socket_plug_removed (GtkSocket *socket)
 }
 
 static void
-bonobo_socket_class_init (GObjectClass *klass)
+bonobo_socket_class_init (BonoboSocketClass *klass)
 {
+	GObjectClass   *gobject_class;
 	GtkWidgetClass *widget_class;
 	GtkSocketClass *socket_class;
 
-	widget_class = (GtkWidgetClass*) klass;
-	socket_class = (GtkSocketClass*) klass;
+	gobject_class = (GObjectClass *) klass;
+	widget_class  = (GtkWidgetClass *) klass;
+	socket_class  = (GtkSocketClass *) klass;
 
-	parent_class = g_type_class_peek_parent (klass);
-
-	klass->finalize = bonobo_socket_finalize;
-	klass->dispose  = bonobo_socket_dispose;
+	gobject_class->finalize = bonobo_socket_finalize;
+	gobject_class->dispose  = bonobo_socket_dispose;
 
 	widget_class->realize         = bonobo_socket_realize;
 	widget_class->unrealize       = bonobo_socket_unrealize;
@@ -248,27 +249,9 @@ bonobo_socket_class_init (GObjectClass *klass)
 	socket_class->plug_removed    = bonobo_socket_plug_removed;
 }
 
-GType
-bonobo_socket_get_type ()
+static void
+bonobo_socket_instance_init (BonoboSocket *socket)
 {
-	static GType socket_type = 0;
-
-	if (!socket_type) {
-		static const GtkTypeInfo socket_info = {
-			"BonoboSocket",
-			sizeof (BonoboSocket),
-			sizeof (BonoboSocketClass),
-			(GtkClassInitFunc) bonobo_socket_class_init,
-			(GtkObjectInitFunc) NULL,
-			NULL,
-			NULL
-		};
-
-		socket_type = gtk_type_unique (
-			gtk_socket_get_type (), &socket_info);
-	}
-
-	return socket_type;
 }
 
 /**

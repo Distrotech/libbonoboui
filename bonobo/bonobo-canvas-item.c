@@ -7,6 +7,9 @@
  *
  * (C) 1999, 2000 Ximian, Inc.
  */
+
+/* FIXME: this needs re-writing to use BonoboObject ! */
+
 #include <config.h>
 #include <stdio.h>
 #include <string.h>
@@ -14,12 +17,18 @@
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-canvas-item.h>
 #include <bonobo/bonobo-object.h>
+#include <bonobo/bonobo-types.h>
 #include <bonobo/bonobo-main.h>
+#include <libgnome/gnome-i18n.h>
+#include <libgnome/gnome-macros.h>
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtksignal.h>
 
-static GnomeCanvasItemClass *gbi_parent_class;
+GNOME_CLASS_BOILERPLATE (BonoboCanvasItem,
+			 bonobo_canvas_item,
+			 GObject,
+			 GNOME_TYPE_CANVAS_ITEM);
 
 typedef struct {
 	POA_Bonobo_Canvas_ComponentProxy proxy_servant;
@@ -35,9 +44,9 @@ struct _BonoboCanvasItemPrivate {
 };
 
 enum {
-	ARG_0,
-	ARG_CORBA_FACTORY,
-	ARG_CORBA_UI_CONTAINER,
+	PROP_0,
+	PROP_CORBA_FACTORY,
+	PROP_CORBA_UI_CONTAINER,
 };
 
 /*
@@ -156,7 +165,8 @@ prepare_state (GnomeCanvasItem *item, Bonobo_Canvas_State *target)
 }
 
 static void
-gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, int item_flags)
+gbi_update (GnomeCanvasItem *item, double *item_affine,
+	    ArtSVP *item_clip_path, int item_flags)
 {
 	Gbi *gbi = GBI (item);
 	Bonobo_Canvas_affine affine;
@@ -170,8 +180,8 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 	if (getenv ("DEBUG_BI"))
 		g_message ("gbi_update");
 
-	if (gbi_parent_class)
-		(*gbi_parent_class->update)(item, item_affine, item_clip_path, item_flags);
+	GNOME_CALL_PARENT (GNOME_CANVAS_ITEM_CLASS, update,
+			   (item, item_affine, item_clip_path, item_flags));
 	
 	for (i = 0; i < 6; i++)
 		affine [i] = item_affine [i];
@@ -234,10 +244,9 @@ gbi_realize (GnomeCanvasItem *item)
 	if (getenv ("DEBUG_BI"))
 		g_message ("gbi_realize");
 	
-	if (gbi_parent_class)
-		(*gbi_parent_class->realize) (item);
+	GNOME_CALL_PARENT (GNOME_CANVAS_ITEM_CLASS, realize, (item));
 
-	if (gbi->priv->object == CORBA_OBJECT_NIL){
+	if (gbi->priv->object == CORBA_OBJECT_NIL) {
 		gbi->priv->realize_pending = 1;
 		return;
 	}
@@ -269,8 +278,7 @@ gbi_unrealize (GnomeCanvasItem *item)
 		CORBA_exception_free (&ev);
 	}
 
-	if (gbi_parent_class)
-		(*gbi_parent_class->unrealize) (item);
+	GNOME_CALL_PARENT (GNOME_CANVAS_ITEM_CLASS, unrealize, (item));
 }
 
 static void
@@ -531,23 +539,24 @@ gbi_event (GnomeCanvasItem *item, GdkEvent *event)
 }
 
 static void
-gbi_set_arg (GtkObject *o, GtkArg *arg, guint arg_id)
+gbi_set_property (GObject      *object,
+		  guint         property_id,
+		  const GValue *value,
+		  GParamSpec   *pspec)
 {
-	Gbi *gbi = GBI (o);
+	Gbi *gbi = GBI (object);
 	Bonobo_Canvas_ComponentProxy proxy_ref;
 	Bonobo_CanvasComponentFactory factory;
 	CORBA_Environment ev;
 
-	switch (arg_id){
-	case ARG_CORBA_FACTORY:
+	switch (property_id) {
+	case PROP_CORBA_FACTORY:
 
 		CORBA_exception_init (&ev);
 
-		if (gbi->priv->object)
-			Bonobo_Canvas_Component_unref (gbi->priv->object, &ev);
-		
-		gbi->priv->object = CORBA_OBJECT_NIL;
-		factory = GTK_VALUE_POINTER (*arg);
+		gbi->priv->object = bonobo_object_release_unref (gbi->priv->object, &ev);
+
+		factory = bonobo_value_get_corba_object (value);
 
 		g_return_if_fail (factory != CORBA_OBJECT_NIL);
 
@@ -559,16 +568,23 @@ gbi_set_arg (GtkObject *o, GtkArg *arg, guint arg_id)
 				factory, GNOME_CANVAS_ITEM (gbi)->canvas->aa, 
 				proxy_ref, &ev);
 
+		if (ev._major != CORBA_NO_EXCEPTION)
+			gbi->priv->object = CORBA_OBJECT_NIL;
+
+		CORBA_Object_release (factory, &ev);
+
 		CORBA_exception_free (&ev);
 
 		if (gbi->priv->object == CORBA_OBJECT_NIL) {
-			gtk_object_unref (GTK_OBJECT (gbi));
+			g_object_unref (gbi);
 			return;
 		}
 
 		/* Initial size notification */
-		proxy_size_allocate (GNOME_CANVAS_ITEM (gbi)->canvas,
-			     &(GTK_WIDGET (GNOME_CANVAS_ITEM (gbi)->canvas)->allocation), gbi);
+		proxy_size_allocate (
+			GNOME_CANVAS_ITEM (gbi)->canvas,
+			&(GTK_WIDGET (GNOME_CANVAS_ITEM (gbi)->canvas)->allocation),
+			gbi);
 	
 		if (gbi->priv->realize_pending){
 			gbi->priv->realize_pending = 0;
@@ -576,18 +592,14 @@ gbi_set_arg (GtkObject *o, GtkArg *arg, guint arg_id)
 		}
 		break;
 
-	case ARG_CORBA_UI_CONTAINER:
-
-		gbi->priv->proxy->ui_container = GTK_VALUE_POINTER (*arg);
+	case PROP_CORBA_UI_CONTAINER:
+		gbi->priv->proxy->ui_container = bonobo_value_get_unknown (value);
 
 		g_return_if_fail (gbi->priv->proxy->ui_container != CORBA_OBJECT_NIL);
-
-		bonobo_object_dup_ref (gbi->priv->proxy->ui_container, NULL);
-
 		break;
 
 	default:
-		g_warning ("Unexpected arg_id %u", arg_id);
+		g_warning ("Unexpected arg_id %u", property_id);
 		break;
 	}
 }
@@ -603,8 +615,7 @@ gbi_finalize (GObject *object)
 
 	CORBA_exception_init (&ev);
 
-	if (gbi->priv->object != CORBA_OBJECT_NIL)
-		Bonobo_Canvas_Component_unref (gbi->priv->object, &ev);
+	bonobo_object_release_unref (gbi->priv->object, &ev);
 
 	if (gbi->priv->proxy){
 		ComponentProxyServant *proxy = gbi->priv->proxy;
@@ -617,30 +628,40 @@ gbi_finalize (GObject *object)
 	
 	g_free (gbi->priv);
 	CORBA_exception_free (&ev);
-	
-	(*G_OBJECT_CLASS (gbi_parent_class)->finalize)(object);
+
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
 static void
-gbi_class_init (GtkObjectClass *object_class)
+bonobo_canvas_item_class_init (BonoboCanvasItemClass *object_class)
 {
-	GnomeCanvasItemClass *item_class = (GnomeCanvasItemClass *) object_class;
 	GObjectClass *gobject_class = (GObjectClass *) object_class;
+	GnomeCanvasItemClass *item_class =
+		(GnomeCanvasItemClass *) object_class;
 
-	gbi_parent_class = gtk_type_class (gnome_canvas_item_get_type ());
+	g_object_class_install_property (
+		gobject_class,
+		PROP_CORBA_FACTORY,
+		g_param_spec_boxed (
+			"corba_factory",
+			_("corba factory"),
+			_("The factory pointer"),
+			BONOBO_TYPE_STATIC_UNKNOWN,
+			G_PARAM_WRITABLE));
 
-	gtk_object_add_arg_type (
-		"BonoboCanvasItem::corba_factory",
-		GTK_TYPE_POINTER,
-		GTK_ARG_WRITABLE, ARG_CORBA_FACTORY);
+	g_object_class_install_property (
+		gobject_class,
+		PROP_CORBA_UI_CONTAINER,
+		g_param_spec_boxed (
+			"corba_ui_factory",
+			_("corba UI container"),
+			_("The User interface container"),
+			BONOBO_TYPE_STATIC_UNKNOWN,
+			G_PARAM_WRITABLE));
 	
-	gtk_object_add_arg_type (
-		"BonoboCanvasItem::corba_ui_container",
-		GTK_TYPE_POINTER,
-		GTK_ARG_WRITABLE, ARG_CORBA_UI_CONTAINER);
-	
-	object_class->set_arg  = gbi_set_arg;
-	gobject_class->finalize = gbi_finalize;
+	gobject_class->finalize     = gbi_finalize;
+	gobject_class->set_property = gbi_set_property;
+
 	item_class->update     = gbi_update;
 	item_class->realize    = gbi_realize;
 	item_class->unrealize  = gbi_unrealize;
@@ -653,7 +674,7 @@ gbi_class_init (GtkObjectClass *object_class)
 
 static void
 impl_Bonobo_Canvas_ComponentProxy_requestUpdate (PortableServer_Servant servant,
-					         CORBA_Environment *ev)
+					         CORBA_Environment     *ev)
 {
 	ComponentProxyServant *item_proxy = (ComponentProxyServant *) servant;
 
@@ -663,10 +684,10 @@ impl_Bonobo_Canvas_ComponentProxy_requestUpdate (PortableServer_Servant servant,
 					    
 static void
 impl_Bonobo_Canvas_ComponentProxy_grabFocus (PortableServer_Servant servant,
-					     guint32 mask, 
-					     gint32 cursor_type,
-					     guint32 time,
-					     CORBA_Environment *ev)
+					     guint32                mask, 
+					     gint32                 cursor_type,
+					     guint32                time,
+					     CORBA_Environment     *ev)
 {
 	ComponentProxyServant *item_proxy = (ComponentProxyServant *) servant;
 	GdkCursor *cursor;
@@ -688,7 +709,7 @@ impl_Bonobo_Canvas_ComponentProxy_ungrabFocus (PortableServer_Servant servant,
 
 static Bonobo_UIContainer
 impl_Bonobo_Canvas_ComponentProxy_getUIContainer (PortableServer_Servant servant,
-						  CORBA_Environment *ev)
+						  CORBA_Environment     *ev)
 {
 	ComponentProxyServant *item_proxy = (ComponentProxyServant *) servant;
 
@@ -735,42 +756,15 @@ create_proxy (GnomeCanvasItem *item)
 }
 
 static void
-gbi_init (BonoboCanvasItem *gbi)
+bonobo_canvas_item_instance_init (BonoboCanvasItem *gbi)
 {
 	gbi->priv = g_new0 (BonoboCanvasItemPrivate, 1);
 	gbi->priv->proxy = create_proxy (GNOME_CANVAS_ITEM (gbi));
 }
 
-/**
- * bonobo_canvas_item_get_type:
- *
- * Returns the GtkType associated with a #BonoboCanvasItem canvas item
- */
-GtkType
-bonobo_canvas_item_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (!type) {
-		GtkTypeInfo info = {
-			"BonoboCanvasItem",
-			sizeof (BonoboCanvasItem),
-			sizeof (BonoboCanvasItemClass),
-			(GtkClassInitFunc) gbi_class_init,
-			(GtkObjectInitFunc) gbi_init,
-			NULL, /* reserved_1 */
-			NULL, /* reserved_2 */
-			(GtkClassInitFunc) NULL
-		};
-
-		type = gtk_type_unique (gnome_canvas_item_get_type (), &info);
-	}
-
-	return type;
-}
-
 void
-bonobo_canvas_item_set_bounds (BonoboCanvasItem *item, double x1, double y1, double x2, double y2)
+bonobo_canvas_item_set_bounds (BonoboCanvasItem *item, double x1, double y1,
+			       double x2, double y2)
 {
-	
+	g_warning ("Unimplemented");
 }

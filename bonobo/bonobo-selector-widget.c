@@ -406,7 +406,7 @@ bonobo_selector_widget_class_init (BonoboSelectorWidgetClass *klass)
 	signals [FINAL_SELECT] = g_signal_new (
 		"final_select",
 		G_TYPE_FROM_CLASS (object_class),
-		GTK_RUN_FIRST,
+		G_SIGNAL_RUN_FIRST,
 		G_STRUCT_OFFSET (BonoboSelectorWidgetClass,
 				 final_select),
 		NULL, NULL,

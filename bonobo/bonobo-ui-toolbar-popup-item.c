@@ -9,7 +9,8 @@
  */
 
 #include <config.h>
-#include "bonobo-ui-toolbar-popup-item.h"
+#include <bonobo/bonobo-ui-toolbar-popup-item.h>
+#include <libgnome/gnome-macros.h>
 
 #define PARENT_TYPE bonobo_ui_toolbar_toggle_button_item_get_type ()
 static BonoboUIToolbarToggleButtonItemClass *parent_class = NULL;

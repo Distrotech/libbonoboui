@@ -16,6 +16,8 @@
 #include <bonobo/bonobo-object.h>
 #include <libgnomecanvas/gnome-canvas.h>
 
+#ifndef BONOBO_UI_DISABLE_DEPRECATED
+
 G_BEGIN_DECLS
  
 #define BONOBO_TYPE_CANVAS_COMPONENT        (bonobo_canvas_component_get_type ())
@@ -68,5 +70,7 @@ GnomeCanvas *bonobo_canvas_new (gboolean                     is_aa,
 				Bonobo_Canvas_ComponentProxy proxy);
 
 G_END_DECLS
+
+#endif /* BONOBO_UI_DISABLE_DEPRECATED */
 
 #endif /* */

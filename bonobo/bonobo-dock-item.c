@@ -195,6 +195,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *class)
 			     GTK_SHADOW_OUT,
 			     (G_PARAM_READABLE |
 			      G_PARAM_WRITABLE)));
+
   g_object_class_install_property (
 	  gobject_class,
 	  PROP_ORIENTATION,
@@ -205,6 +206,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *class)
 			     GTK_ORIENTATION_HORIZONTAL,
 			     (G_PARAM_READABLE |
 			      G_PARAM_WRITABLE)));
+
   g_object_class_install_property (
 	  gobject_class,
 	  PROP_PREFERRED_WIDTH,
@@ -212,8 +214,8 @@ bonobo_dock_item_class_init (BonoboDockItemClass *class)
 			     _("Preferred width"),
 			     _("Preferred width"),
 			     0, G_MAXINT, 0,
-			     (G_PARAM_READABLE |
-			      G_PARAM_WRITABLE)));
+			     G_PARAM_READABLE));
+
   g_object_class_install_property (
 	  gobject_class,
 	  PROP_PREFERRED_HEIGHT,
@@ -221,8 +223,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *class)
 			     _("Preferred height"),
 			     _("Preferred height"),
 			     0, G_MAXINT, 0,
-			     (G_PARAM_READABLE |
-			      G_PARAM_WRITABLE)));
+			     G_PARAM_READABLE));
 
   dock_item_signals[DOCK_DRAG_BEGIN] =
 	  g_signal_new ("dock_drag_begin",

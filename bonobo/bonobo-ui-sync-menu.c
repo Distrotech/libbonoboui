@@ -623,13 +623,10 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 			
 			else
 				menu_widget = NULL;
-			
-			gtk_check_menu_item_set_show_toggle (
-				GTK_CHECK_MENU_ITEM (menu_widget), TRUE);
 
-			g_signal_connect (GTK_OBJECT (menu_widget), "toggled",
-					    (GtkSignalFunc) menu_toggle_emit_ui_event,
-					    engine);
+			g_signal_connect (menu_widget, "toggled",
+					  G_CALLBACK (menu_toggle_emit_ui_event),
+					  engine);
 
 			bonobo_ui_node_free_string (type);
 		} else {

@@ -105,7 +105,7 @@ ok_callback (GtkWidget *widget, gpointer data)
 	char *text = bonobo_selector_get_selected_id (
 		BONOBO_SELECTOR (widget));
 
-	gtk_object_set_user_data (GTK_OBJECT (widget), text);
+	g_object_set_data (G_OBJECT (widget), "UserData", text);
 }
 
 /**
@@ -132,10 +132,10 @@ bonobo_selector_select_id (const gchar  *title,
 
 	g_return_val_if_fail (sel != NULL, NULL);
 
-	g_signal_connect (GTK_OBJECT (sel), "ok",
-			    G_CALLBACK (ok_callback), NULL);
-	
-	gtk_object_set_user_data (GTK_OBJECT (sel), NULL);
+	g_signal_connect (sel, "ok",
+			  G_CALLBACK (ok_callback), NULL);
+
+	g_object_set_data (G_OBJECT (sel), "UserData", NULL);
 	
 	gtk_widget_show (sel);
 		
@@ -147,7 +147,7 @@ bonobo_selector_select_id (const gchar  *title,
 		break;
 	case GTK_RESPONSE_APPLY:
 	case GTK_RESPONSE_OK:
-		name = gtk_object_get_user_data (GTK_OBJECT (sel));
+		name = g_object_get_data (G_OBJECT (sel), "UserData");
 		break;
 	default:
 		break;
@@ -231,8 +231,8 @@ bonobo_selector_construct (BonoboSelector       *sel,
 
 	sel->priv->selector = selector;
 
-	g_signal_connect (GTK_OBJECT (selector), "final_select",
-			    G_CALLBACK (final_select_cb), sel);
+	g_signal_connect (selector, "final_select",
+			  G_CALLBACK (final_select_cb), sel);
 	
 	gtk_window_set_title (GTK_WINDOW (sel), title ? title : "");
 
@@ -246,8 +246,8 @@ bonobo_selector_construct (BonoboSelector       *sel,
 			       GTK_RESPONSE_CANCEL);
 	gtk_dialog_set_default_response (GTK_DIALOG (sel), GTK_RESPONSE_OK);
 	
-	g_signal_connect (GTK_OBJECT (sel), "response",
-			    G_CALLBACK (response_callback), sel);
+	g_signal_connect (sel, "response",
+			  G_CALLBACK (response_callback), sel);
 	
 	gtk_window_set_default_size (GTK_WINDOW (sel), 400, 300);
 	gtk_widget_show_all  (GTK_DIALOG (sel)->vbox);

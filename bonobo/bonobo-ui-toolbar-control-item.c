@@ -12,11 +12,14 @@
 #include <config.h>
 #include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-toolbar-control-item.h>
-
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-property-bag-client.h>
+#include <libgnome/gnome-macros.h>
 
-static GObjectClass *parent_class = NULL;
+GNOME_CLASS_BOILERPLATE (BonoboUIToolbarControlItem,
+			 bonobo_ui_toolbar_control_item,
+			 GObject,
+			 bonobo_ui_toolbar_button_item_get_type ());
 
 struct _BonoboUIToolbarControlItemPrivate {
         BonoboWidget *control;	/* The wrapped control */
@@ -149,9 +152,8 @@ impl_set_orientation (BonoboUIToolbarItem *item,
 
 	set_control_property_bag_gint (control_item, "orientation", orientation);
 
-	if (BONOBO_UI_TOOLBAR_ITEM_CLASS (parent_class)->set_orientation)
-		(* BONOBO_UI_TOOLBAR_ITEM_CLASS (parent_class)
-		 ->set_orientation) (item, orientation);	
+	GNOME_CALL_PARENT (BONOBO_UI_TOOLBAR_ITEM_CLASS, set_orientation,
+			   (item, orientation));
 }
 
 static void
@@ -208,7 +210,7 @@ impl_dispose (GObject *object)
 		control_item->priv->control = NULL;
 	}
 
-	parent_class->dispose (object);
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, dispose, (object));
 }
 
 static void
@@ -220,13 +222,13 @@ impl_finalize (GObject *object)
 
 	g_free (control_item->priv);
 
-	parent_class->finalize (object);
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
 /* Gtk+ object initialization.  */
 
 static void
-class_init (BonoboUIToolbarControlItemClass *klass)
+bonobo_ui_toolbar_control_item_class_init (BonoboUIToolbarControlItemClass *klass)
 {
         BonoboUIToolbarButtonItemClass *button_item_class;
         BonoboUIToolbarItemClass *item_class;
@@ -245,41 +247,12 @@ class_init (BonoboUIToolbarControlItemClass *klass)
 
 	object_class->dispose  = impl_dispose;
 	object_class->finalize = impl_finalize;
-
-        parent_class = gtk_type_class (
-		bonobo_ui_toolbar_button_item_get_type ());
 }
-
 
 static void
-init (BonoboUIToolbarControlItem *control_item)
+bonobo_ui_toolbar_control_item_instance_init (BonoboUIToolbarControlItem *control_item)
 {
         control_item->priv = g_new0 (BonoboUIToolbarControlItemPrivate, 1);
-}
-
-GtkType
-bonobo_ui_toolbar_control_item_get_type (void)
-{
-        static GtkType type = 0;
-
-        if (type == 0) {
-                static const GtkTypeInfo info = {
-                        "BonoboUIToolbarControlItem",
-                        sizeof (BonoboUIToolbarControlItem),
-                        sizeof (BonoboUIToolbarControlItemClass),
-                        (GtkClassInitFunc) class_init,
-                        (GtkObjectInitFunc) init,
-                        /* reserved_1 */ NULL,
-                        /* reserved_2 */ NULL,
-                        (GtkClassInitFunc) NULL,
-                };
-
-                type = gtk_type_unique (
-			bonobo_ui_toolbar_button_item_get_type (),
-			&info);
-        }
-
-        return type;
 }
 
 static void
@@ -305,8 +278,8 @@ bonobo_ui_toolbar_control_item_construct (
         priv->eventbox = gtk_event_box_new ();
         priv->box      = gtk_vbox_new (FALSE, 0);
 	
-	g_signal_connect (GTK_OBJECT (priv->button), "activate",
-			    (GtkSignalFunc) proxy_activate_cb, control_item);
+	g_signal_connect (priv->button, "activate",
+			  G_CALLBACK (proxy_activate_cb), control_item);
 	
 	gtk_container_add (GTK_CONTAINER (priv->box),
 			   GTK_WIDGET (priv->control));

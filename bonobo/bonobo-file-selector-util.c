@@ -42,6 +42,7 @@ enum {
   FILE_COLUMN
 };
 
+static GQuark user_data_id = 0;
 
 static gint
 delete_file_selector (GtkWidget *d, GdkEventAny *e, gpointer data)
@@ -84,10 +85,12 @@ listener_cb (BonoboListener *listener,
 		for (i = 0; i < seq->_length; i++)
 			strv[i] = g_strdup (seq->_buffer[i]);
 		strv[i] = NULL;
-		gtk_object_set_user_data (GTK_OBJECT (dialog), strv);
+		g_object_set_qdata (G_OBJECT (dialog),
+				    user_data_id, strv);
 	} else 
-		gtk_object_set_user_data (GTK_OBJECT (dialog),
-					  g_strdup (seq->_buffer[0]));
+		g_object_set_qdata (G_OBJECT (dialog),
+				    user_data_id,
+				    g_strdup (seq->_buffer[0]));
 
  cancel_clicked:
 	g_free (subtype);
@@ -198,6 +201,7 @@ ok_clicked_cb (GtkWidget *widget, gpointer data)
 		}
 		gtk_file_selection_set_filename (fsel, dir_name);
 		g_free (dir_name);
+
 	} else if (GET_MODE (fsel) == FILESEL_OPEN_MULTI) {
 
 		GtkTreeSelection *selection;
@@ -226,8 +230,7 @@ ok_clicked_cb (GtkWidget *widget, gpointer data)
 		i = 0;
 		
 		do {
-			if (gtk_tree_selection_iter_is_selected (selection, &iter))
-			{	
+			if (gtk_tree_selection_iter_is_selected (selection, &iter)) {
 		      		gchar *f;
       
       				gtk_tree_model_get (model, &iter, FILE_COLUMN, &f, -1);
@@ -252,14 +255,16 @@ ok_clicked_cb (GtkWidget *widget, gpointer data)
 
 		g_free (filedirname);
 
-		gtk_object_set_user_data (GTK_OBJECT (fsel), strv);
+		g_object_set_qdata (G_OBJECT (fsel),
+				    user_data_id, strv);
 		gtk_main_quit ();
 
 	} else {
 		gtk_widget_hide (GTK_WIDGET (fsel));
 
-		gtk_object_set_user_data (GTK_OBJECT (fsel),
-					  g_strdup (file_name));
+		g_object_set_qdata (G_OBJECT (fsel),
+				    user_data_id,
+				    g_strdup (file_name));
 		gtk_main_quit ();
 	}
 }
@@ -339,6 +344,9 @@ run_file_selector (GtkWindow  *parent,
 	GtkWindow *dialog = NULL;
 	gpointer   retval;
 
+	if (!user_data_id)
+		user_data_id = g_quark_from_static_string ("UserData");
+
 	if (!g_getenv ("GNOME_FILESEL_DISABLE_BONOBO"))
 		dialog = create_bonobo_selector (enable_vfs, mode, mime_types, 
 						 default_path, default_filename);
@@ -361,7 +369,7 @@ run_file_selector (GtkWindow  *parent,
 
 	gtk_main ();
 
-	retval = gtk_object_get_user_data (GTK_OBJECT (dialog));
+	retval = g_object_get_qdata (G_OBJECT (dialog), user_data_id);
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 

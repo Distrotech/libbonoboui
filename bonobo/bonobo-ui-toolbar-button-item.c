@@ -9,15 +9,17 @@
 
 #include <config.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include "bonobo-ui-private.h"
-#include "bonobo-ui-toolbar-button-item.h"
+#include <bonobo-ui-private.h>
+#include <bonobo-ui-toolbar-button-item.h>
+#include <libgnome/gnome-macros.h>
 
-
+GNOME_CLASS_BOILERPLATE (BonoboUIToolbarButtonItem,
+			 bonobo_ui_toolbar_button_item,
+			 GObject,
+			 bonobo_ui_toolbar_item_get_type ());
+
 /* Spacing between the icon and the label.  */
 #define SPACING 2
-
-#define PARENT_TYPE bonobo_ui_toolbar_item_get_type ()
-static BonoboUIToolbarItemClass *parent_class = NULL;
 
 struct _BonoboUIToolbarButtonItemPrivate {
 	/* The icon for the button.  */
@@ -134,7 +136,7 @@ layout_pixmap_and_label (BonoboUIToolbarButtonItem *button_item,
 	rebuild = FALSE;
 	if (style == BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_AND_TEXT_VERTICAL) {
 		if (!priv->box || !g_type_is_a (
-			G_TYPE_FROM_CLASS (GTK_OBJECT_GET_CLASS (priv->box)),
+			G_TYPE_FROM_INSTANCE (priv->box),
 			GTK_TYPE_VBOX)) {
 			
 			unparent_items (button_item);
@@ -145,9 +147,9 @@ layout_pixmap_and_label (BonoboUIToolbarButtonItem *button_item,
 			rebuild = TRUE;
 		}
 	} else {
-		if (!priv->box || !gtk_type_is_a (
-			G_TYPE_FROM_CLASS (GTK_OBJECT_GET_CLASS (priv->box)),
-			GTK_TYPE_HBOX)) {
+		if (!priv->box ||
+		    !g_type_is_a (G_TYPE_FROM_INSTANCE (priv->box),
+				  GTK_TYPE_HBOX)) {
 			
 			unparent_items (button_item);
 
@@ -202,29 +204,25 @@ button_widget_clicked_cb (GtkButton *button,
 	bonobo_ui_toolbar_item_activate (BONOBO_UI_TOOLBAR_ITEM (button_item));
 }
 
-
-/* GtkObject methods.  */
+/* GObject methods.  */
 
 static void
-impl_destroy (GtkObject *object)
+impl_finalize (GObject *object)
 {
 	BonoboUIToolbarButtonItem *button_item;
-	BonoboUIToolbarButtonItemPrivate *priv;
 
 	button_item = BONOBO_UI_TOOLBAR_BUTTON_ITEM (object);
-	priv = button_item->priv;
-	button_item->priv = NULL;
-	g_free (priv);
 
-	if (GTK_OBJECT_CLASS (parent_class)->destroy != NULL)
-		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+	g_free (button_item->priv);
+	button_item->priv = NULL;
+
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
-
 /* BonoboUIToolbarItem signals.  */
 
 static void
-impl_set_style (BonoboUIToolbarItem *item,
+impl_set_style (BonoboUIToolbarItem     *item,
 		BonoboUIToolbarItemStyle style)
 {
 	BonoboUIToolbarButtonItem *button_item;
@@ -233,8 +231,8 @@ impl_set_style (BonoboUIToolbarItem *item,
 
 	layout_pixmap_and_label (button_item, style);
 
-	if (BONOBO_UI_TOOLBAR_ITEM_CLASS (parent_class)->set_style != NULL)
-		(* BONOBO_UI_TOOLBAR_ITEM_CLASS (parent_class)->set_style) (item, style);
+	GNOME_CALL_PARENT (BONOBO_UI_TOOLBAR_ITEM_CLASS,
+			   set_style, (item, style));
 }
 
 static void
@@ -242,8 +240,8 @@ impl_set_tooltip (BonoboUIToolbarItem *item,
 		  GtkTooltips         *tooltips,
 		  const char          *tooltip)
 {
-	BonoboUIToolbarButtonItem *button_item;
 	GtkButton *button;
+	BonoboUIToolbarButtonItem *button_item;
 
 	button_item = BONOBO_UI_TOOLBAR_BUTTON_ITEM (item);
 
@@ -252,8 +250,8 @@ impl_set_tooltip (BonoboUIToolbarItem *item,
 			tooltips, GTK_WIDGET (button), tooltip, NULL);
 }
 
-
 /* BonoboUIToolbarButtonItem virtual methods.  */
+
 static void
 impl_set_icon  (BonoboUIToolbarButtonItem *button_item,
 		gpointer                   image)
@@ -282,13 +280,13 @@ impl_set_label (BonoboUIToolbarButtonItem *button_item,
 /* GTK+ object initialization.  */
 
 static void
-class_init (BonoboUIToolbarButtonItemClass *button_item_class)
+bonobo_ui_toolbar_button_item_class_init (BonoboUIToolbarButtonItemClass *button_item_class)
 {
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 	BonoboUIToolbarItemClass *item_class;
 
-	object_class = GTK_OBJECT_CLASS (button_item_class);
-	object_class->destroy = impl_destroy;
+	object_class = (GObjectClass *) button_item_class;
+	object_class->finalize = impl_finalize;
 
 	item_class = BONOBO_UI_TOOLBAR_ITEM_CLASS (button_item_class);
 	item_class->set_style = impl_set_style;
@@ -296,8 +294,6 @@ class_init (BonoboUIToolbarButtonItemClass *button_item_class)
 
 	button_item_class->set_icon  = impl_set_icon;
 	button_item_class->set_label = impl_set_label;
-
-	parent_class = gtk_type_class (bonobo_ui_toolbar_item_get_type ());
 
 	signals[CLICKED] = 
 		g_signal_new ("clicked",
@@ -311,7 +307,8 @@ class_init (BonoboUIToolbarButtonItemClass *button_item_class)
 }
 
 static void
-init (BonoboUIToolbarButtonItem *toolbar_button_item)
+bonobo_ui_toolbar_button_item_instance_init (
+	BonoboUIToolbarButtonItem *toolbar_button_item)
 {
 	BonoboUIToolbarButtonItemPrivate *priv;
 
@@ -321,30 +318,6 @@ init (BonoboUIToolbarButtonItem *toolbar_button_item)
 	priv->box   = NULL;
 
 	toolbar_button_item->priv = priv;
-}
-
-
-GtkType
-bonobo_ui_toolbar_button_item_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUIToolbarButtonItem",
-			sizeof (BonoboUIToolbarButtonItem),
-			sizeof (BonoboUIToolbarButtonItemClass),
-			(GtkClassInitFunc) class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
-		};
-
-		type = gtk_type_unique (PARENT_TYPE, &info);
-	}
-
-	return type;
 }
 
 void

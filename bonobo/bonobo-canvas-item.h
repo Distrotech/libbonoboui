@@ -13,6 +13,10 @@
 #include <glib/gmacros.h>
 #include <libgnomecanvas/gnome-canvas.h>
 
+#ifndef BONOBO_UI_DISABLE_DEPRECATED
+
+G_BEGIN_DECLS
+
 #define BONOBO_TYPE_CANVAS_ITEM          (bonobo_canvas_item_get_type ())
 #define BONOBO_CANVAS_ITEM(obj)          (GTK_CHECK_CAST((obj), bonobo_canvas_item_get_type (), BonoboCanvasItem))
 #define BONOBO_CANVAS_ITEM_CLASS(k)      (GTK_CHECK_CLASS_CAST ((k), bonobo_canvas_item_get_type (), BonoboCanvasItemClass))
@@ -29,8 +33,14 @@ typedef struct {
 	GnomeCanvasItemClass parent_class;
 } BonoboCanvasItemClass;
 
-GtkType          bonobo_canvas_item_get_type    (void) G_GNUC_CONST;
+GType bonobo_canvas_item_get_type   (void) G_GNUC_CONST;
+void  bonobo_canvas_item_set_bounds (BonoboCanvasItem *item,
+				     double x1, double y1,
+				     double x2, double y2);
 
-void		 bonobo_canvas_item_set_bounds (BonoboCanvasItem *item, double x1, double y1, double x2, double y2);
+G_END_DECLS
+
+#endif /* BONOBO_UI_DISABLE_DEPRECATED */
 
 #endif /* _BONOBO_CANVAS_ITEM_H_ */
+

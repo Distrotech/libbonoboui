@@ -8,11 +8,14 @@
  */
 
 #include <config.h>
-#include "bonobo-ui-toolbar-item.h"
+#include <bonobo-ui-toolbar-item.h>
+#include <libgnome/gnome-macros.h>
 
-
-#define PARENT_TYPE gtk_bin_get_type ()
-static GtkBinClass *parent_class = NULL;
+GNOME_CLASS_BOILERPLATE (BonoboUIToolbarItem,
+			 bonobo_ui_toolbar_item,
+			 GObject,
+			 GTK_TYPE_BIN);
+
 
 struct _BonoboUIToolbarItemPrivate {
 	/* Whether this item wants to have a label when the toolbar style is
@@ -47,29 +50,22 @@ enum {
 
 static int signals[LAST_SIGNAL] = { 0 };
 
-
-/* GtkObject methods.  */
+/* GObject methods.  */
 
 static void
-impl_destroy (GtkObject *object)
+impl_finalize (GObject *object)
 {
-	BonoboUIToolbarItem *toolbar_item;
-	BonoboUIToolbarItemPrivate *priv;
+	BonoboUIToolbarItem *toolbar_item = (BonoboUIToolbarItem *) object;
 
-	toolbar_item = BONOBO_UI_TOOLBAR_ITEM (object);
-	priv = toolbar_item->priv;
-	toolbar_item->priv = NULL;
-	g_free (priv);
+	g_free (toolbar_item->priv);
 
-	if (GTK_OBJECT_CLASS (parent_class)->destroy != NULL)
-		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
 }
 
-
 /* GtkWidget methods.  */
 
 static void
-impl_size_request (GtkWidget *widget,
+impl_size_request (GtkWidget      *widget,
 		   GtkRequisition *requisition_return)
 {
 	BonoboUIToolbarItem *toolbar_item;
@@ -99,7 +95,7 @@ impl_size_request (GtkWidget *widget,
 }
 
 static void
-impl_size_allocate (GtkWidget *widget,
+impl_size_allocate (GtkWidget     *widget,
 		    GtkAllocation *allocation)
 {
 	GtkAllocation child_allocation;
@@ -133,12 +129,11 @@ impl_size_allocate (GtkWidget *widget,
 	gtk_widget_size_allocate (GTK_BIN (widget)->child, &child_allocation);
 }
 
-
 /* BonoboUIToolbarItem signals.  */
 
 static void
 impl_set_orientation (BonoboUIToolbarItem *item,
-		      GtkOrientation orientation)
+		      GtkOrientation       orientation)
 {
 	BonoboUIToolbarItemPrivate *priv;
 
@@ -161,7 +156,7 @@ impl_set_style (BonoboUIToolbarItem *item,
 
 static void
 impl_set_want_label (BonoboUIToolbarItem *item,
-		     gboolean want_label)
+		     gboolean             want_label)
 {
 	BonoboUIToolbarItemPrivate *priv;
 
@@ -170,16 +165,17 @@ impl_set_want_label (BonoboUIToolbarItem *item,
 	priv->want_label = want_label;
 }
 
-
 /* Gtk+ object initialization.  */
 
 static void
-class_init (GtkObjectClass *object_class)
+bonobo_ui_toolbar_item_class_init (BonoboUIToolbarItemClass *object_class)
 {
+	GObjectClass *gobject_class;
 	GtkWidgetClass *widget_class;
 	BonoboUIToolbarItemClass *toolbar_item_class;
 
-	object_class->destroy = impl_destroy;
+	gobject_class = (GObjectClass *) object_class;
+	gobject_class->finalize = impl_finalize;
 
 	widget_class = GTK_WIDGET_CLASS (object_class);
 	widget_class->size_request  = impl_size_request;
@@ -215,7 +211,7 @@ class_init (GtkObjectClass *object_class)
 	signals[SET_WANT_LABEL] =
 		g_signal_new ("set_want_label",
 			      G_TYPE_FROM_CLASS (object_class),
-			      GTK_RUN_FIRST,
+			      G_SIGNAL_RUN_FIRST,
 			      G_STRUCT_OFFSET (BonoboUIToolbarItemClass,
 					       set_want_label),
 			      NULL, NULL,
@@ -242,17 +238,12 @@ class_init (GtkObjectClass *object_class)
 				NULL, NULL,
 				g_cclosure_marshal_VOID__VOID,
 				G_TYPE_NONE, 0);
-
-	parent_class = g_type_class_peek_parent (object_class);
 }
 
 static void
-init (GtkObject *object)
+bonobo_ui_toolbar_item_instance_init (BonoboUIToolbarItem *toolbar_item)
 {
-	BonoboUIToolbarItem *toolbar_item;
 	BonoboUIToolbarItemPrivate *priv;
-
-	toolbar_item = BONOBO_UI_TOOLBAR_ITEM (object);
 
 	priv = g_new (BonoboUIToolbarItemPrivate, 1);
 
@@ -264,30 +255,6 @@ init (GtkObject *object)
 	priv->minimum_width = 0;
 	
 	toolbar_item->priv = priv;
-}
-
-
-GtkType
-bonobo_ui_toolbar_item_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUIToolbarItem",
-			sizeof (BonoboUIToolbarItem),
-			sizeof (BonoboUIToolbarItemClass),
-			(GtkClassInitFunc) class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
-		};
-
-		type = gtk_type_unique (PARENT_TYPE, &info);
-	}
-
-	return type;
 }
 
 GtkWidget *

@@ -1,5 +1,32 @@
+2002-02-12  Michael Meeks  <michael@ximian.com>
+
+	* configure.in: depend on gconf >= 1.1.8
+
+	* bonobo/bonobo-ui-preferences.c
+	(bonobo_ui_preferences_shutdown): unref the
+	gconf client.
+
 2002-02-11  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-selector.c: port.
+
+	* bonobo/bonobo-file-selector-util.c: port.
+
+	* bonobo/*.[ch]: lots of porting action, too boring
+	to enumerate.
+
+	* bonobo/bonobo-canvas-item.c
+	(bonobo_canvas_item_get_type): kill.
+	(gbi_finalize): upd.
+	(gbi_set_property): re-write.
+	(gbi_class_init): port.
+
+	* bonobo/bonobo-canvas-item.h: 
+	* bonobo/bonobo-canvas-component.h: add
+	deprecated guards.
+
+2002-02-11  Michael Meeks  <michael@ximian.com>
+	
 	* bonobo/bonobo-ui-xml.c (do_set_id): only do
 	sanity checks where absolutely neccessary,
 	accelerate, remove redundant NULL check.

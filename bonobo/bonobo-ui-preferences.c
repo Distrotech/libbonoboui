@@ -122,8 +122,7 @@ bonobo_ui_preferences_shutdown (void)
 	int ret = 0;
 
 	if (client) {
-/* Re-enable this when GConf >= 1.1.8 comes out */
-/*		g_object_unref (client); */
+		g_object_unref (client);
 		client = NULL;
 		ret = gconf_debug_shutdown ();
 		if (ret)

@@ -10,12 +10,13 @@
 
 #include <config.h>
 #include <stdlib.h>
+#include <libgnome/gnome-macros.h>
+#include <bonobo/bonobo-ui-toolbar-toggle-button-item.h>
 
-#include "bonobo-ui-toolbar-toggle-button-item.h"
-
-
-#define PARENT_TYPE bonobo_ui_toolbar_button_item_get_type ()
-static BonoboUIToolbarButtonItemClass *parent_class = NULL;
+GNOME_CLASS_BOILERPLATE (BonoboUIToolbarToggleButtonItem,
+			 bonobo_ui_toolbar_toggle_button_item,
+			 GObject, 
+			 bonobo_ui_toolbar_button_item_get_type ());
 
 enum {
 	TOGGLED,
@@ -24,18 +25,13 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-
 /* GtkToggleButton callback.  */
 
 static void
 button_widget_toggled_cb (GtkToggleButton *toggle_button,
-			  void *data)
+			  gpointer         user_data)
 {
-	BonoboUIToolbarToggleButtonItem *button_item;
-
-	button_item = BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (data);
-
-	g_signal_emit (button_item, signals[TOGGLED], 0);
+	g_signal_emit (user_data, signals[TOGGLED], 0);
 }
 
 static void
@@ -53,59 +49,30 @@ impl_set_state (BonoboUIToolbarItem *item,
 			GTK_TOGGLE_BUTTON (button), active);
 }		
 
-
-/* Gtk+ object initialization.  */
+/* GObject initialization.  */
 
 static void
-class_init (BonoboUIToolbarToggleButtonItemClass *klass)
+bonobo_ui_toolbar_toggle_button_item_class_init (
+	BonoboUIToolbarToggleButtonItemClass *klass)
 {
-	GtkObjectClass *object_class;
 	BonoboUIToolbarItemClass *item_class = (BonoboUIToolbarItemClass *) klass;
-
-	object_class = GTK_OBJECT_CLASS (klass);
-
-	parent_class = gtk_type_class (bonobo_ui_toolbar_button_item_get_type ());
 
 	item_class->set_state = impl_set_state;
 
-	signals[TOGGLED] = g_signal_new ("toggled",
-					 G_TYPE_FROM_CLASS (object_class),
-					 GTK_RUN_FIRST,
-					 G_STRUCT_OFFSET (BonoboUIToolbarToggleButtonItemClass, toggled),
-					 NULL, NULL,
-					 g_cclosure_marshal_VOID__VOID,
-					 G_TYPE_NONE, 0);
+	signals[TOGGLED] = g_signal_new (
+		"toggled", G_TYPE_FROM_CLASS (klass),
+		G_SIGNAL_RUN_FIRST,
+		G_STRUCT_OFFSET (BonoboUIToolbarToggleButtonItemClass, toggled),
+		NULL, NULL, g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE, 0);
 }
 
 
 static void
-init (BonoboUIToolbarToggleButtonItem *toolbar_toggle_button_item)
+bonobo_ui_toolbar_toggle_button_item_instance_init (
+	BonoboUIToolbarToggleButtonItem *toolbar_toggle_button_item)
 {
 	/* Nothing to do here.  */
-}
-
-
-GtkType
-bonobo_ui_toolbar_toggle_button_item_get_type (void)
-{
-	static GtkType type = 0;
-
-	if (type == 0) {
-		static const GtkTypeInfo info = {
-			"BonoboUIToolbarToggleButtonItem",
-			sizeof (BonoboUIToolbarToggleButtonItem),
-			sizeof (BonoboUIToolbarToggleButtonItemClass),
-			(GtkClassInitFunc) class_init,
-			(GtkObjectInitFunc) init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
-		};
-
-		type = gtk_type_unique (PARENT_TYPE, &info);
-	}
-
-	return type;
 }
 
 static void
