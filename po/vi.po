@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
-"POT-Creation-Date: 2002-06-01 18:31+0100\n"
-"PO-Revision-Date: 2002-05-30 16:27+0700\n"
+"POT-Creation-Date: 2002-06-10 11:14+0200\n"
+"PO-Revision-Date: 2002-06-05 03:03+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -101,7 +101,7 @@ msgstr "Mục nhập giao diện yêu cầu"
 
 #: bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr ""
+msgstr "Một trong những giao diện được yêu cầu"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
