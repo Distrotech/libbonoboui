@@ -123,11 +123,6 @@ test_container_autoload_SOURCES =		\
 
 test_container_autoload_LDADD = $(bonobo_libs)
 
-object_test_SOURCES =		\
-	object_test.c
-
-object_test_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS)
-
 sample_server_SOURCES =		\
 	sample-server.c
 
