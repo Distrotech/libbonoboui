@@ -369,6 +369,7 @@ void
 gnome_ui_handler_set_container (GnomeUIHandler *uih, GNOME_UIHandler container)
 {
 	CORBA_Environment ev;
+	GNOME_UIHandler new_container;
 
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
@@ -383,17 +384,19 @@ gnome_ui_handler_set_container (GnomeUIHandler *uih, GNOME_UIHandler container)
 
 		GNOME_UIHandler_unregister_containee (uih->container_uih,
 						      gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);
+		CORBA_Object_release (uih->container_uih, &ev);
 		/* FIXME: Check the exception */
 	}
 
 	/*
 	 * Register with the new one.
 	 */
-	GNOME_UIHandler_register_containee (container, gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);
+	new_container = CORBA_Object_duplicate (container, &ev);
+	GNOME_UIHandler_register_containee (new_container, gnome_object_corba_objref (GNOME_OBJECT (uih)), &ev);
 
 	CORBA_exception_free (&ev);
 					    
-	uih->container_uih = container;
+	uih->container_uih = new_container;
 }
 
 /**
@@ -402,11 +405,15 @@ gnome_ui_handler_set_container (GnomeUIHandler *uih, GNOME_UIHandler container)
 void
 gnome_ui_handler_add_containee (GnomeUIHandler *uih, GNOME_UIHandler containee)
 {
+	CORBA_Environment ev;
+
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (containee != CORBA_OBJECT_NIL);
 
-	uih->containee_uihs = g_list_prepend (uih->containee_uihs, containee);
+	CORBA_exception_init (&ev);
+	uih->containee_uihs = g_list_prepend (uih->containee_uihs, CORBA_Object_duplicate (containee, &ev));
+	CORBA_exception_free (&ev);
 }
 
 typedef struct {
@@ -431,11 +438,14 @@ remove_containee_menu_item (gpointer path, gpointer value, gpointer user_data)
 		remove_me = NULL;
 		for (curr = l; curr != NULL; curr = curr->next) {
 			MenuItemInternal *internal = (MenuItemInternal *) curr->data;
+			CORBA_Environment ev;
 
-			if (internal->uih_corba == closure->containee) {
+			CORBA_exception_init (&ev);
+			if (CORBA_Object_is_equivalent (internal->uih_corba, closure->containee, &ev)) {
 				remove_me = internal;
 				break;
 			}
+			CORBA_exception_free (&ev);
 		}
 
 
@@ -476,11 +486,14 @@ remove_containee_toolbar_item (gpointer path, gpointer value, gpointer user_data
 		remove_me = NULL;
 		for (curr = l; curr != NULL; curr = curr->next) {
 			ToolbarItemInternal *internal = (ToolbarItemInternal *) curr->data;
+			CORBA_Environment ev;
 
-			if (internal->uih_corba == closure->containee) {
+			CORBA_exception_init (&ev);
+			if (CORBA_Object_is_equivalent (internal->uih_corba, closure->containee, &ev)) {
 				remove_me = internal;
 				break;
 			}
+			CORBA_exception_free (&ev);
 		}
 
 		l = g_list_remove (l, remove_me);
@@ -509,12 +522,25 @@ void
 gnome_ui_handler_remove_containee (GnomeUIHandler *uih, GNOME_UIHandler containee)
 {
 	removal_closure_t *closure;
+	GList *curr;
 
 	g_return_if_fail (uih != NULL);
 	g_return_if_fail (GNOME_IS_UI_HANDLER (uih));
 	g_return_if_fail (containee != CORBA_OBJECT_NIL);
 
-	uih->containee_uihs = g_list_remove (uih->containee_uihs, containee);
+	/*
+	 * Remove the containee from the list of containees.
+	 */
+	for (curr = uih->containee_uihs; curr != NULL; curr = curr->next) {
+		CORBA_Environment ev;
+
+		CORBA_exception_init (&ev);
+		if (CORBA_Object_is_equivalent ((GNOME_UIHandler) curr->data, containee, &ev)) {
+			g_list_remove_link (uih->containee_uihs, curr);
+			g_list_free_1 (curr);
+		}
+		CORBA_exception_free (&ev);
+	}
 
 	/*
 	 * Create a simple closure to pass some data into the removal
@@ -1754,7 +1780,7 @@ impl_GNOME_UIHandler_register_containee (PortableServer_Servant servant,
 	GnomeUIHandler *uih = GNOME_UI_HANDLER (gnome_object_from_servant (servant));
 
 	g_message ("Registering containee!\n");
-	gnome_ui_handler_add_containee (uih, CORBA_Object_duplicate(uih_containee, ev));
+	gnome_ui_handler_add_containee (uih, uih_containee);
 }
 
 static void
