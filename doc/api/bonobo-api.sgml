@@ -113,7 +113,6 @@
       &bonobo-persist;
       &bonobo-persist-file;
       &bonobo-persist-stream;
-      &bonobo-progressive;
       &bonobo-stream-client;
       &bonobo-storage-plugin;
   </chapter>
@@ -189,6 +188,7 @@
 
   <chapter id="bonobo-ugly">
     <title>Strange stuff</title>
+      &bonobo-progressive;
       &bonobo-zoomable;
       &bonobo-zoomable-frame;
       &bonobo-desktop-window;
