@@ -150,7 +150,7 @@ main (int argc, char **argv)
 		"	</submenu>\n"
 		"</menu>";
 	char simpleb [] =
-		"<submenu name=\"File\" _label=\"File\">\n"
+		"<submenu name=\"File\">\n"
 		"	<menuitem name=\"open\" _label=\"_OpenB\" pixtype=\"stock\" pixname=\"Open\" _tip=\"Open you fool\"/>\n"
 		"       <separator/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" _label=\"_ToggleMe\" _tip=\"a\" accel=\"*Control*t\"/>\n"
