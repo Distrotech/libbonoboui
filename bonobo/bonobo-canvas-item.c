@@ -291,10 +291,10 @@ gbi_render (GnomeCanvasItem *item, GnomeCanvasBuf *buf)
 
 	cbuf->rgb_buf._buffer = buf->buf;
 
+#if 0
 	/*
 	 * Inneficient!
 	 */
-#if 0
 	if (!buf->is_buf)
 		gnome_canvas_buf_ensure_buf (buf);
 #endif

@@ -251,7 +251,6 @@ gcc_render (PortableServer_Servant servant,
 	GnomeCanvasBuf canvas_buf;
 
 	if (!(buf->flags & GNOME_Canvas_IS_BUF)){
-		printf ("Allocating!\n");
 		buf->rgb_buf._length = buf->row_stride * (buf->rect.y1 - buf->rect.y0);
 		buf->rgb_buf._maximum = buf->rgb_buf._length;
 		
