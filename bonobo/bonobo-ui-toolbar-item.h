@@ -11,7 +11,7 @@
 #define _BONOBO_UI_TOOLBAR_ITEM_H_
 
 #include <libgnome/gnome-defs.h>
-#include <gtk/gtkbin.h>
+#include <gtk/gtk.h>
 
 BEGIN_GNOME_DECLS
 
