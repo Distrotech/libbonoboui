@@ -18,6 +18,7 @@
 <!entity bonobo-listener SYSTEM "sgml/bonobo-listener.sgml">
 <!entity bonobo-main SYSTEM "sgml/bonobo-main.sgml">
 <!entity bonobo-moniker SYSTEM "sgml/bonobo-moniker.sgml">
+<!entity bonobo-moniker-extender SYSTEM "sgml/bonobo-moniker-extender.sgml">
 <!entity bonobo-moniker-simple SYSTEM "sgml/bonobo-moniker-simple.sgml">
 <!entity bonobo-moniker-util SYSTEM "sgml/bonobo-moniker-util.sgml">
 <!entity bonobo-object-client SYSTEM "sgml/bonobo-object-client.sgml">
@@ -117,8 +118,19 @@
       &bonobo-storage-plugin;
   </chapter>
 
-  <chapter id="bonobo-documents-widgets">
-    <title>Bonobo Documents and Controls</title>
+  <chapter id="bonobo-controls">
+      <sect1>
+        <title>Controls</title>
+          &bonobo-control;
+          &bonobo-control-frame;
+          &bonobo-property-control;
+	  &bonobo-zoomable;
+	  &bonobo-zoomable-frame;
+      </sect1>
+  </chapter>
+
+  <chapter id="bonobo-documents">
+    <title>Bonobo Compound Documents</title>
       <sect1 id="bonobo-embedding">
         <title>Document interfaces</title>
           &bonobo-client-site;
@@ -128,15 +140,6 @@
 	  &bonobo-canvas-item;
           &bonobo-canvas-component;
           &bonobo-item-container;
-      </sect1>
-
-      <sect1>
-        <title>Controls</title>
-          &bonobo-control;
-          &bonobo-control-frame;
-	  &bonobo-zoomable;
-	  &bonobo-zoomable-frame;
-          &bonobo-property-control;
       </sect1>
 
       <sect1 id="bonobo-ui">
@@ -167,6 +170,7 @@
     <title>Writing Monikers</title>
       &bonobo-moniker;
       &bonobo-moniker-simple;
+      &bonobo-moniker-extender;
       &bonobo-item-handler;
   </chapter>
 

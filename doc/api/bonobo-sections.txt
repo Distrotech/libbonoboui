@@ -363,6 +363,23 @@ BonoboMonikerSimplePrivate
 </SECTION>
 
 <SECTION>
+<FILE>bonobo-moniker-extender</FILE>
+BonoboMonikerExtenderFn
+bonobo_moniker_extender_new
+bonobo_moniker_find_extender
+bonobo_moniker_use_extender
+<SUBSECTION Standard>
+BonoboMonikerExtender
+BonoboMonikerExtenderClass
+bonobo_moniker_extender_get_type
+BONOBO_MONIKER_EXTENDER_TYPE
+BONOBO_MONIKER_EXTENDER
+BONOBO_MONIKER_EXTENDER_CLASS
+BONOBO_IS_MONIKER_EXTENDER_CLASS
+BONOBO_IS_MONIKER_EXTENDER
+</SECTION>
+
+<SECTION>
 <FILE>bonobo-object-client</FILE>
 BONOBO_OBJECT_CLIENT_TYPE
 BONOBO_OBJECT_CLIENT

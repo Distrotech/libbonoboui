@@ -1684,6 +1684,77 @@ BonoboMoniker     *moniker,gboolean           sensitive
 BonoboMoniker     *moniker
 </FUNCTION>
 <MACRO>
+<NAME>BONOBO_MONIKER_EXTENDER_TYPE</NAME>
+#define BONOBO_MONIKER_EXTENDER_TYPE        (bonobo_moniker_extender_get_type ())
+</MACRO>
+<MACRO>
+<NAME>BONOBO_MONIKER_EXTENDER</NAME>
+#define BONOBO_MONIKER_EXTENDER(o)          (GTK_CHECK_CAST ((o), BONOBO_MONIKER_EXTENDER_TYPE, BonoboMonikerExtender))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_MONIKER_EXTENDER_CLASS</NAME>
+#define BONOBO_MONIKER_EXTENDER_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_MONIKER_EXTENDER_TYPE, BonoboMonikerExtenderClass))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_IS_MONIKER_EXTENDER</NAME>
+#define BONOBO_IS_MONIKER_EXTENDER(o)       (GTK_CHECK_TYPE ((o), BONOBO_MONIKER_EXTENDER_TYPE))
+</MACRO>
+<MACRO>
+<NAME>BONOBO_IS_MONIKER_EXTENDER_CLASS</NAME>
+#define BONOBO_IS_MONIKER_EXTENDER_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_MONIKER_EXTENDER_TYPE))
+</MACRO>
+<STRUCT>
+<NAME>BonoboMonikerExtender</NAME>
+</STRUCT>
+<USER_FUNCTION>
+<NAME>BonoboMonikerExtenderFn</NAME>
+<RETURNS>Bonobo_Unknown </RETURNS>
+BonoboMonikerExtender       *extender,
+						   const Bonobo_Moniker         parent,
+						   const Bonobo_ResolveOptions *options,
+						   const CORBA_char            *display_name,
+						   const CORBA_char            *requested_interface,
+						   CORBA_Environment           *ev
+</USER_FUNCTION>
+<STRUCT>
+<NAME>BonoboMonikerExtender</NAME>
+struct BonoboMonikerExtender {
+        BonoboXObject           object;
+	BonoboMonikerExtenderFn resolve;
+	gpointer                data;
+};
+</STRUCT>
+<TYPEDEF>
+<NAME>BonoboMonikerExtenderClass</NAME>
+typedef struct {
+	BonoboXObjectClass      parent_class;
+
+	POA_Bonobo_MonikerExtender__epv epv;
+	
+	BonoboMonikerExtenderFn resolve;
+} BonoboMonikerExtenderClass;
+</TYPEDEF>
+<FUNCTION>
+<NAME>bonobo_moniker_extender_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_extender_new</NAME>
+<RETURNS>BonoboMonikerExtender  *</RETURNS>
+BonoboMonikerExtenderFn      resolve,gpointer                     data
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_find_extender</NAME>
+<RETURNS>Bonobo_MonikerExtender  </RETURNS>
+const gchar                 *name,const gchar                 *interface,CORBA_Environment           *ev
+</FUNCTION>
+<FUNCTION>
+<NAME>bonobo_moniker_use_extender</NAME>
+<RETURNS>Bonobo_Unknown  </RETURNS>
+const gchar                 *extender_oafiid,BonoboMoniker               *moniker,const Bonobo_ResolveOptions *options,const CORBA_char            *requested_interface,CORBA_Environment           *ev
+</FUNCTION>
+<MACRO>
 <NAME>BONOBO_MONIKER_SIMPLE_TYPE</NAME>
 #define BONOBO_MONIKER_SIMPLE_TYPE        (bonobo_moniker_simple_get_type ())
 </MACRO>

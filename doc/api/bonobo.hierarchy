@@ -11,6 +11,8 @@ GtkObject
       BonoboEmbeddable
       BonoboItemContainer
       BonoboMoniker
+        BonoboMonikerSimple
+      BonoboMonikerExtender
       BonoboPersist
         BonoboPersistFile
         BonoboPersistStream

@@ -10,6 +10,8 @@ bonobo_embeddable_get_type
 bonobo_generic_factory_get_type
 bonobo_item_container_get_type
 bonobo_moniker_get_type
+bonobo_moniker_extender_get_type
+bonobo_moniker_simple_get_type
 bonobo_object_client_get_type
 bonobo_object_get_type
 bonobo_persist_file_get_type
