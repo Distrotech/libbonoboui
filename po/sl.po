@@ -1,0 +1,260 @@
+# Slovenian translations of libbonoboui messages
+# Copyright (C) 1999-2002 Free Software Foundation, Inc.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui\n"
+"POT-Creation-Date: 2002-03-07 12:30+0100\n"
+"PO-Revision-Date: 2002-02-26 00:23+0100\n"
+"Last-Translator: Andraž Tori <andraz.tori1@guest.arnes.si>\n"
+"Language-Team: slovenian <sl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
+msgid "Shadow type"
+msgstr "Vrsta sence"
+
+#: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
+#: bonobo/bonobo-ui-toolbar.c:1089 bonobo/bonobo-ui-toolbar.c:1090
+msgid "Orientation"
+msgstr "Usmerjenost"
+
+#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-ui-toolbar.c:1108 bonobo/bonobo-ui-toolbar.c:1109
+msgid "Preferred width"
+msgstr "Želena širina"
+
+#: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
+#: bonobo/bonobo-ui-toolbar.c:1117 bonobo/bonobo-ui-toolbar.c:1118
+msgid "Preferred height"
+msgstr "Želena višina"
+
+#: bonobo/bonobo-file-selector-util.c:366
+msgid "Select a file to open"
+msgstr "Izberi datoteko za odprtje"
+
+#: bonobo/bonobo-file-selector-util.c:394
+msgid "Select files to open"
+msgstr "Izberi datoteke za odprtje"
+
+#: bonobo/bonobo-file-selector-util.c:423
+msgid "Select a filename to save"
+msgstr "Izberite ime datoteke za shranitev"
+
+#: bonobo/bonobo-plug.c:351
+msgid "Event Forwarding"
+msgstr "Posredovanje dogodkov"
+
+#: bonobo/bonobo-plug.c:352
+msgid "Whether X events should be forwarded"
+msgstr "Ali naj bodo dogodki X posredovani"
+
+#: bonobo/bonobo-selector-widget.c:300
+msgid "Name"
+msgstr "Ime"
+
+#: bonobo/bonobo-selector-widget.c:322
+msgid "Description"
+msgstr "Opis"
+
+#: bonobo/bonobo-ui-config-widget.c:259
+msgid "Visible"
+msgstr "Vidno"
+
+#: bonobo/bonobo-ui-config-widget.c:266
+msgid "_Show"
+msgstr "_Kaži"
+
+#: bonobo/bonobo-ui-config-widget.c:273
+msgid "_Hide"
+msgstr "_Skrij"
+
+#: bonobo/bonobo-ui-config-widget.c:279
+msgid "_View tooltips"
+msgstr "_Kaži namige orodij"
+
+#: bonobo/bonobo-ui-config-widget.c:284
+msgid "Toolbars"
+msgstr "Orodjarne"
+
+#: bonobo/bonobo-ui-config-widget.c:294
+msgid "toolbars"
+msgstr "orodjarne"
+
+#: bonobo/bonobo-ui-config-widget.c:305 bonobo/bonobo-ui-sync-toolbar.c:553
+msgid "Look"
+msgstr "Pogled"
+
+#: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:553
+msgid "_Icon"
+msgstr "_Ikona"
+
+#: bonobo/bonobo-ui-config-widget.c:320
+msgid "_Text and Icon"
+msgstr "_Besedilo in ikone"
+
+#: bonobo/bonobo-ui-config-widget.c:326
+msgid "_Priority text only"
+msgstr "Le _prednostno besedilo"
+
+#: bonobo/bonobo-ui-engine-config.c:516
+msgid "Configure UI"
+msgstr "Nastavljiv uporabniški vmesnik"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:553
+msgid "B_oth"
+msgstr "_Oboje"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:553
+msgid "T_ext"
+msgstr "_Besedilo"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:554
+msgid "Hide t_ips"
+msgstr "Skrij _namige"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:554
+msgid "Show t_ips"
+msgstr "Kaži _namige"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:555
+msgid "_Hide toolbar"
+msgstr "_Skrij orodjarno"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:555
+msgid "Customi_ze"
+msgstr "Prilag_odi"
+
+#: bonobo/bonobo-ui-sync-toolbar.c:556
+msgid "Customize the toolbar"
+msgstr "Prikroji orodno vrstico"
+
+#: bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "Stopnja povečave"
+
+#: bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "Stopnja povečave"
+
+#: bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "Najmanjša stopnja povečave"
+
+#: bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "Najmanjša stopnja povečave"
+
+#: bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "Največja stopnja povečave"
+
+#: bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "Največja stopnja povečave"
+
+#: bonobo/bonobo-zoomable.c:353
+msgid "Has a minimum Zoom level"
+msgstr "Ima najmanjšo stopnjo povečave"
+
+#: bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "Ali imamo veljavno najmanjšo stopnjo povečave"
+
+#: bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "Ima največjo stopnjo povečave"
+
+#: bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "Ali imamo največjo stopnjo povečave"
+
+#: bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "Je zvezen"
+
+#: bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "Ali povečujemo zvezno (nasprotno od skočno)"
+
+#: bonobo/bonobo-canvas-item.c:647
+msgid "corba factory"
+msgstr "tovarna corba"
+
+#: bonobo/bonobo-canvas-item.c:648
+msgid "The factory pointer"
+msgstr "Kazalec tovarne"
+
+#: bonobo/bonobo-canvas-item.c:657
+msgid "corba UI container"
+msgstr "vsebovalnik corba uporabniškega vmesnika"
+
+#: bonobo/bonobo-canvas-item.c:658
+msgid "The User interface container"
+msgstr "Vsebovalnik uporabniškega vmesnika"
+
+#: bonobo/bonobo-ui-toolbar.c:1099
+msgid "is floating"
+msgstr "je lebdelč"
+
+#: bonobo/bonobo-ui-toolbar.c:1100
+msgid "whether the toolbar is floating"
+msgstr "ali je orodjarna lebdeča"
+
+#: samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "To ne počne ničesar, je le demonstracija."
+
+#: samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "Hello BonoboUI."
+
+#: samples/bonoboui/hello.c:217
+msgid "Gnome Hello"
+msgstr "Hello Gnome"
+
+#. Create Label and put it in the Button:
+#: samples/bonoboui/hello.c:272
+msgid "Hello, World!"
+msgstr "Pozdravljen svet!"
+
+#: samples/bonoboui/hello.c:312
+msgid "Cannot init libbonoboui code"
+msgstr "Ne morem inicializirati kode libbonoboui"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "O tem programu"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr "Izberi"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr "_O..."
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr "_Uredi"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+msgid "_File"
+msgstr "_Datoteka"
+
+#: samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr "_Izberi"
+
+
+# Smart report:
+# Total untranslated messages in file: 58 
+# Translations made:
+# full: 34
+# smart: 3
+# cond: 26
+# total: 63 ; distinct: 31
+
+
