@@ -1,3 +1,8 @@
+2004-01-21  Fernando Herrera  <fherrera@onirica.com>
+
+	* bonobo/bonobo-ui-init-gtk.c: Remove gxid-host and gxid-port 
+	from POPT_ARGs (they are not supported on gtk 2.3)
+
 2004-01-15  Michael Meeks  <michael@ximian.com>
 
 	* Version 2.5.2

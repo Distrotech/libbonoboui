@@ -140,23 +140,6 @@ static struct poptOption bonobo_ui_gtk_options [] = {
 	{ "class", '\0', POPT_ARG_STRING, NULL, 0,
 	  N_("Program class as used by the window manager"), N_("CLASS")},
 
-	/* X11 only */
-	{ "gxid-host", '\0', POPT_ARG_STRING, NULL, 0,
-	  NULL, N_("HOST")},
-
-	/* X11 only */
-	{ "gxid-port", '\0', POPT_ARG_STRING, NULL, 0,
-	  NULL, N_("PORT")},
-
-	/* FIXME: this doesn't seem to exist */
-#if 0
-	{ "xim-preedit", '\0', POPT_ARG_STRING, NULL, 0,
-	  NULL, N_("STYLE")},
-
-	{ "xim-status", '\0', POPT_ARG_STRING, NULL, 0,
-	  NULL, N_("STYLE")},
-#endif
-
 	{ "gtk-debug", '\0', POPT_ARG_STRING, NULL, 0,
 	  N_("Gtk+ debugging flags to set"), N_("FLAGS")},
 
