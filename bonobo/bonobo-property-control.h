@@ -12,11 +12,14 @@
 
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-control.h>
+#include <bonobo/bonobo-event-source.h>
 
 BEGIN_GNOME_DECLS
 
 typedef struct _BonoboPropertyControl        BonoboPropertyControl;
 typedef struct _BonoboPropertyControlPrivate BonoboPropertyControlPrivate;
+
+#define BONOBO_PROPERTY_CONTROL_CHANGED "Bonobo::PropertyControl_changed"
 
 #define BONOBO_PROPERTY_CONTROL_TYPE        (bonobo_property_control_get_type ())
 #define BONOBO_PROPERTY_CONTROL(o)          (GTK_CHECK_CAST ((o), BONOBO_PROPERTY_CONTROL_TYPE, BonoboPropertyControl))
@@ -47,15 +50,21 @@ POA_Bonobo_PropertyControl__epv *bonobo_property_control_get_epv (void);
 Bonobo_PropertyControl bonobo_property_control_corba_object_create (BonoboObject *object);
 
 BonoboPropertyControl *bonobo_property_control_construct (BonoboPropertyControl *property_control,
+							  BonoboEventSource *event_source,
 							  Bonobo_PropertyControl corba_control,
 							  BonoboPropertyControlGetControlFn get_fn,
 							  int num_pages,
 							  void *closure);
+BonoboPropertyControl *bonobo_property_control_new_full (BonoboPropertyControlGetControlFn get_fn,
+							 int num_pages,
+							 BonoboEventSource *event_source,
+							 void *closure);
 BonoboPropertyControl *bonobo_property_control_new (BonoboPropertyControlGetControlFn get_fn,
 						    int num_pages,
 						    void *closure);
 void bonobo_property_control_changed (BonoboPropertyControl *property_control,
 				      CORBA_Environment *opt_ev);
+BonoboEventSource *bonobo_property_control_get_event_source (BonoboPropertyControl *property_control);
 
 END_GNOME_DECLS
 

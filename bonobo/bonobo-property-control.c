@@ -231,6 +231,8 @@ bonobo_property_control_corba_object_create (BonoboObject *object)
 /**
  * bonobo_property_control_construct:
  * @property_control: A BonoboPropertyControl object.
+ * @event_source: A BonoboEventSource object that will be aggregated onto the
+ * property control.
  * @get_fn: Creation routine.
  * @closure: Data passed to closure routine.
  *
@@ -240,6 +242,7 @@ bonobo_property_control_corba_object_create (BonoboObject *object)
  */
 BonoboPropertyControl *
 bonobo_property_control_construct (BonoboPropertyControl *property_control,
+				   BonoboEventSource *event_source,
 				   Bonobo_PropertyControl corba_control,
 				   BonoboPropertyControlGetControlFn get_fn,
 				   int num_pages,
@@ -249,6 +252,8 @@ bonobo_property_control_construct (BonoboPropertyControl *property_control,
 
 	g_return_val_if_fail (property_control != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_PROPERTY_CONTROL (property_control), NULL);
+	g_return_val_if_fail (event_source != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_EVENT_SOURCE (event_source), NULL);
 	g_return_val_if_fail (corba_control != CORBA_OBJECT_NIL, NULL);
 
 	bonobo_object_construct (BONOBO_OBJECT (property_control), 
@@ -259,7 +264,7 @@ bonobo_property_control_construct (BonoboPropertyControl *property_control,
 	priv->page_count = num_pages;
 	priv->closure = closure;
 
-	priv->event_source = bonobo_event_source_new ();
+	priv->event_source = event_source;
 	bonobo_object_add_interface (BONOBO_OBJECT (property_control),
 				     BONOBO_OBJECT (priv->event_source));
 
@@ -267,8 +272,44 @@ bonobo_property_control_construct (BonoboPropertyControl *property_control,
 }
 
 /**
+ * bonobo_property_control_new_full:
+ * @get_fn: The function to be called when the getControl method is called.
+ * @num_pages: The number of pages this property control has.
+ * @event_source: The event source to use to emit events on.
+ * @closure: The data to be passed into the @get_fn routine.
+ *
+ * Creates a BonoboPropertyControl object.
+ *
+ * Returns: A pointer to a newly created BonoboPropertyControl object.
+ */
+BonoboPropertyControl *
+bonobo_property_control_new_full (BonoboPropertyControlGetControlFn get_fn,
+				  int num_pages,
+				  BonoboEventSource *event_source,
+				  void *closure)
+{
+	BonoboPropertyControl *property_control;
+	Bonobo_PropertyControl corba_control;
+
+	g_return_val_if_fail (num_pages > 0, NULL);
+	g_return_val_if_fail (event_source != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_EVENT_SOURCE (event_source), NULL);
+
+	property_control = gtk_type_new (bonobo_property_control_get_type ());
+	corba_control = bonobo_property_control_corba_object_create
+		(BONOBO_OBJECT (property_control));
+	if (corba_control == CORBA_OBJECT_NIL) {
+		bonobo_object_unref (BONOBO_OBJECT (property_control));
+		return NULL;
+	}
+					
+	return bonobo_property_control_construct (property_control, event_source, corba_control, get_fn, num_pages, closure);
+}
+
+/**
  * bonobo_property_control_new:
  * @get_fn: The function to be called when the getControl method is called.
+ * @num_pages: The number of pages this property control has.
  * @closure: The data to be passed into the @get_fn routine
  *
  * Creates a BonoboPropertyControl object.
@@ -281,6 +322,7 @@ bonobo_property_control_new (BonoboPropertyControlGetControlFn get_fn,
 			     void *closure)
 {
 	BonoboPropertyControl *property_control;
+	BonoboEventSource *event_source;
 	Bonobo_PropertyControl corba_control;
 
 	g_return_val_if_fail (num_pages > 0, NULL);
@@ -292,9 +334,9 @@ bonobo_property_control_new (BonoboPropertyControlGetControlFn get_fn,
 		bonobo_object_unref (BONOBO_OBJECT (property_control));
 		return NULL;
 	}
-								     
-	return bonobo_property_control_construct (property_control, corba_control,
-						  get_fn, num_pages, closure);
+					
+	event_source = bonobo_event_source_new ();
+	return bonobo_property_control_new_full (get_fn, num_pages, event_source, closure);
 }
 
 /**
@@ -329,7 +371,7 @@ bonobo_property_control_changed (BonoboPropertyControl *property_control,
 	any._value = &s;
 
 	bonobo_event_source_notify_listeners (priv->event_source,
-					      "property_box_changed",
+					      BONOBO_PROPERTY_CONTROL_CHANGED,
 					      &any, &ev);
 	if (opt_ev == NULL && ev._major != CORBA_NO_EXCEPTION) {
 		g_warning ("ERROR: %s", CORBA_exception_id (&ev));
@@ -337,4 +379,20 @@ bonobo_property_control_changed (BonoboPropertyControl *property_control,
 
 	if (opt_ev == NULL)
 		CORBA_exception_free (&ev);
+}
+
+/**
+ * bonobo_property_control_get_event_source:
+ * @property_control: The BonoboPropertyControl.
+ * 
+ * Returns the BonoboEventSource that @property_control uses.
+ * Returns: A BonoboEventSource.
+ */
+BonoboEventSource *
+bonobo_property_control_get_event_source (BonoboPropertyControl *property_control)
+{
+	g_return_val_if_fail (property_control != NULL, NULL);
+	g_return_val_if_fail (BONOBO_IS_PROPERTY_CONTROL (property_control), NULL);
+
+	return property_control->priv->event_source;
 }
