@@ -2,19 +2,24 @@
 GnomeStreamFS
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A file-based GnomeStream implementation
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+  The <classname>GnomeStreamFs</classname> object is a file-based
+  <classname>GnomeStream</classname> object that implements the
+  <classname>GNOME::Stream</classname> CORBA interface.
 </para>
 
+<para>
+  The routines in this module enable you to create a GnomeStream that
+  will be backed up by a file.
+</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+   <classname>GnomeStreamFile</classname>, <classname>GnomeStreamMem</classname>
 </para>
-
 
 <!-- ##### STRUCT GnomeStorageFS ##### -->
 <para>
@@ -24,7 +29,8 @@ GnomeStreamFS
 
 <!-- ##### MACRO GNOME_STREAM_FS_TYPE ##### -->
 <para>
-
+  Returns the GtkType associated with the
+  <classname>GnomeStreamFS</classname> object
 </para>
 
 

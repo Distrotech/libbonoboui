@@ -26,9 +26,6 @@ GnomeEmbeddable
 
 </para>
 
-@name: 
-@label: 
-@hint: 
 
 <!-- ##### USER_FUNCTION GnomeViewFactory ##### -->
 <para>

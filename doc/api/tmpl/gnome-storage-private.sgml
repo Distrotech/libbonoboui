@@ -9,12 +9,10 @@ gnome-storage-private
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### STRUCT StorageDriver ##### -->
 <para>
@@ -27,5 +25,4 @@ gnome-storage-private
 
 </para>
 
-@driver: 
 

@@ -9,12 +9,10 @@ GnomeUIHandler
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### MACRO GNOME_UI_HANDLER_TYPE ##### -->
 <para>
@@ -28,56 +26,18 @@ GnomeUIHandler
 
 </para>
 
-@path_to_menu_item: 
-@path_to_toolbar_item: 
-@name_to_toolbar: 
-@app: 
-@accelgroup: 
-@statusbar: 
-@menubar: 
-@common_toolbar: 
-@toolbars: 
-@path_to_menu_widget: 
-@path_to_menu_shell: 
-@name_to_toolbar_widget: 
-@path_to_toolbar_item_widget: 
-@containee_uihs: 
 
 <!-- ##### STRUCT GnomeUIHandlerMenuItem ##### -->
 <para>
 
 </para>
 
-@path: 
-@type: 
-@label: 
-@hint: 
-@pos: 
-@children: 
-@pixmap_type: 
-@pixmap_data: 
-@accelerator_key: 
-@ac_mods: 
-@callback: 
-@callback_data: 
 
 <!-- ##### STRUCT GnomeUIHandlerToolbarItem ##### -->
 <para>
 
 </para>
 
-@path: 
-@type: 
-@label: 
-@hint: 
-@pos: 
-@children: 
-@pixmap_type: 
-@pixmap_data: 
-@accelerator_key: 
-@ac_mods: 
-@callback: 
-@callback_data: 
 
 <!-- ##### USER_FUNCTION GnomeUIHandlerCallbackFunc ##### -->
 <para>
@@ -95,37 +55,18 @@ GnomeUIHandler
 
 </para>
 
-@GNOME_UI_HANDLER_PIXMAP_NONE: 
-@GNOME_UI_HANDLER_PIXMAP_STOCK: 
-@GNOME_UI_HANDLER_PIXMAP_FILENAME: 
-@GNOME_UI_HANDLER_PIXMAP_XPM_DATA: 
-@GNOME_UI_HANDLER_PIXMAP_RGBA_DATA: 
-@GNOME_UI_HANDLER_PIXMAP_RGB_DATA: 
 
 <!-- ##### ENUM GnomeUIHandlerMenuItemType ##### -->
 <para>
 
 </para>
 
-@GNOME_UI_HANDLER_MENU_END: 
-@GNOME_UI_HANDLER_MENU_ITEM: 
-@GNOME_UI_HANDLER_MENU_SUBTREE: 
-@GNOME_UI_HANDLER_MENU_RADIOITEM: 
-@GNOME_UI_HANDLER_MENU_RADIOGROUP: 
-@GNOME_UI_HANDLER_MENU_TOGGLEITEM: 
-@GNOME_UI_HANDLER_MENU_SEPARATOR: 
 
 <!-- ##### ENUM GnomeUIHandlerToolbarItemType ##### -->
 <para>
 
 </para>
 
-@GNOME_UI_HANDLER_TOOLBAR_END: 
-@GNOME_UI_HANDLER_TOOLBAR_ITEM: 
-@GNOME_UI_HANDLER_TOOLBAR_RADIOITEM: 
-@GNOME_UI_HANDLER_TOOLBAR_RADIOGROUP: 
-@GNOME_UI_HANDLER_TOOLBAR_TOGGLEITEM: 
-@GNOME_UI_HANDLER_TOOLBAR_SEPARATOR: 
 
 <!-- ##### FUNCTION gnome_ui_handler_construct ##### -->
 <para>
