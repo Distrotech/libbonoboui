@@ -371,14 +371,17 @@ bonobo_ui_util_xml_get_icon_pixbuf (BonoboUINode *node)
 		char *name, *text;
 
 		text = bonobo_ui_node_get_attr (node, "pixname");
-		name = gnome_pixmap_file (text);
-		bonobo_ui_node_free_string (text);
-
+		if (text[0] == '/' && g_file_exists (text)) {
+			name = g_strdup (text);
+		} else {
+			name = gnome_pixmap_file (text);
+		}
 		if (name == NULL)
 			g_warning ("Could not find GNOME pixmap file %s", text);
 		else
 			icon_pixbuf = gdk_pixbuf_new_from_file (name);
 
+		bonobo_ui_node_free_string (text);
 		g_free (name);
 	} else if (!strcmp (type, "pixbuf")) {
 		char      *text;

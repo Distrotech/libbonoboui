@@ -1769,7 +1769,7 @@ toolbar_build_widget (BonoboWinPrivate *priv,
 	/* FIXME: What about "id"s ! ? */
 	if ((verb = bonobo_ui_node_get_attr (node, "verb"))) {
 		gtk_signal_connect (GTK_OBJECT (item), "activate",
-				    (GtkSignalFunc) exec_verb_cb, node);
+				    (GtkSignalFunc) exec_verb_cb, priv);
 		bonobo_ui_node_free_string (verb);
 	}
 
