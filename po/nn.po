@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Bonobo 0.32\n"
-"POT-Creation-Date: 2002-02-11 11:45+0000\n"
+"POT-Creation-Date: 2002-02-19 09:43+0000\n"
 "PO-Revision-Date: 2002-01-30 04:56+0100\n"
 "Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
 "Language-Team: Norwegian/Nynorsk <nn@li.org>\n"
@@ -18,27 +18,30 @@ msgstr ""
 msgid "Shadow type"
 msgstr "Skuggetype"
 
-#: bonobo/bonobo-dock-item.c:202 bonobo/bonobo-dock-item.c:203
+#: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
+#: bonobo/bonobo-ui-toolbar.c:1089 bonobo/bonobo-ui-toolbar.c:1090
 msgid "Orientation"
 msgstr "Retning"
 
-#: bonobo/bonobo-dock-item.c:212 bonobo/bonobo-dock-item.c:213
+#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-ui-toolbar.c:1108 bonobo/bonobo-ui-toolbar.c:1109
 msgid "Preferred width"
 msgstr "Ønska breidde"
 
-#: bonobo/bonobo-dock-item.c:221 bonobo/bonobo-dock-item.c:222
+#: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
+#: bonobo/bonobo-ui-toolbar.c:1117 bonobo/bonobo-ui-toolbar.c:1118
 msgid "Preferred height"
 msgstr "Ønska høgde"
 
-#: bonobo/bonobo-file-selector-util.c:394
+#: bonobo/bonobo-file-selector-util.c:402
 msgid "Select a file to open"
 msgstr "Vel ei fil som skal opnast"
 
-#: bonobo/bonobo-file-selector-util.c:422
+#: bonobo/bonobo-file-selector-util.c:430
 msgid "Select files to open"
 msgstr "Velj filer som skal opnast"
 
-#: bonobo/bonobo-file-selector-util.c:451
+#: bonobo/bonobo-file-selector-util.c:459
 msgid "Select a filename to save"
 msgstr "Velj eit filnamn som skal lagrast"
 
@@ -50,51 +53,56 @@ msgstr "Hendingsvidaresending"
 msgid "Whether X events should be forwarded"
 msgstr "Om X hendingar skal vidaresendast"
 
-#: bonobo/bonobo-selector-widget.c:301
+#: bonobo/bonobo-selector-widget.c:300
 msgid "Name"
 msgstr "Namn"
 
-#: bonobo/bonobo-selector-widget.c:325
+#: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
 msgstr "Skildring"
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:264
 msgid "Visible"
 msgstr "Synleg"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:271
 msgid "_Show"
 msgstr "Vi_s"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:278
 msgid "_Hide"
 msgstr "_Gøym"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "_View tooltips"
 msgstr "_Vis verktytips"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:289
 msgid "Toolbars"
 msgstr "Verktylinjer"
 
-#: bonobo/bonobo-ui-config-widget.c:294 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:299
+#, fuzzy
+msgid "toolbars"
+msgstr "Verktylinjer"
+
+#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Look"
 msgstr "Sjå"
 
-#: bonobo/bonobo-ui-config-widget.c:303 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "_Icon"
 msgstr "_Ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:309
+#: bonobo/bonobo-ui-config-widget.c:325
 msgid "_Text and Icon"
 msgstr "_Tekst og ikon"
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Priority text only"
 msgstr "Kun _prioritert tekst"
 
-#: bonobo/bonobo-ui-engine-config.c:513
+#: bonobo/bonobo-ui-engine-config.c:516
 msgid "Configure UI"
 msgstr "Konfigurer brukargrensesnitt"
 
@@ -151,7 +159,8 @@ msgid "The maximum degree of enlargment"
 msgstr "Maksimum grad av forstørring"
 
 #: bonobo/bonobo-zoomable.c:353
-msgid "Has a minumum Zoom level"
+#, fuzzy
+msgid "Has a minimum Zoom level"
 msgstr "Har ei minimum forstørringsnivå"
 
 #: bonobo/bonobo-zoomable.c:354
@@ -173,6 +182,30 @@ msgstr "er kontinuerleg"
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
 msgstr "Om vi forstørrar kontinuerleg (i motsetnad til i steg)"
+
+#: bonobo/bonobo-canvas-item.c:647
+msgid "corba factory"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:648
+msgid "The factory pointer"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:657
+msgid "corba UI container"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:658
+msgid "The User interface container"
+msgstr ""
+
+#: bonobo/bonobo-ui-toolbar.c:1099
+msgid "is floating"
+msgstr ""
+
+#: bonobo/bonobo-ui-toolbar.c:1100
+msgid "whether the toolbar is floating"
+msgstr ""
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."

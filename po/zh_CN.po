@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: bonobo\n"
-"POT-Creation-Date: 2002-02-17 18:41+0800\n"
+"POT-Creation-Date: 2002-02-19 09:43+0000\n"
 "PO-Revision-Date: 2002-02-17 18:46+0800\n"
 "Last-Translator: Wang Jian <lark@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -18,14 +18,17 @@ msgid "Shadow type"
 msgstr "阴影类型"
 
 #: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
+#: bonobo/bonobo-ui-toolbar.c:1089 bonobo/bonobo-ui-toolbar.c:1090
 msgid "Orientation"
 msgstr "方向"
 
 #: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-ui-toolbar.c:1108 bonobo/bonobo-ui-toolbar.c:1109
 msgid "Preferred width"
 msgstr "首选宽度"
 
 #: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
+#: bonobo/bonobo-ui-toolbar.c:1117 bonobo/bonobo-ui-toolbar.c:1118
 msgid "Preferred height"
 msgstr "首选高度"
 
@@ -154,7 +157,8 @@ msgid "The maximum degree of enlargment"
 msgstr "最大缩放级别"
 
 #: bonobo/bonobo-zoomable.c:353
-msgid "Has a minumum Zoom level"
+#, fuzzy
+msgid "Has a minimum Zoom level"
 msgstr "有最小缩放级别"
 
 #: bonobo/bonobo-zoomable.c:354
@@ -176,6 +180,30 @@ msgstr "是否连续"
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
 msgstr "是否可连续缩放(和跳跃式相反)"
+
+#: bonobo/bonobo-canvas-item.c:647
+msgid "corba factory"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:648
+msgid "The factory pointer"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:657
+msgid "corba UI container"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:658
+msgid "The User interface container"
+msgstr ""
+
+#: bonobo/bonobo-ui-toolbar.c:1099
+msgid "is floating"
+msgstr ""
+
+#: bonobo/bonobo-ui-toolbar.c:1100
+msgid "whether the toolbar is floating"
+msgstr ""
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 1.108.1\n"
-"POT-Creation-Date: 2002-02-11 11:45+0000\n"
+"POT-Creation-Date: 2002-02-19 09:43+0000\n"
 "PO-Revision-Date: 2002-01-17 23:39+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -18,27 +18,30 @@ msgstr ""
 msgid "Shadow type"
 msgstr "シャドウの種類"
 
-#: bonobo/bonobo-dock-item.c:202 bonobo/bonobo-dock-item.c:203
+#: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
+#: bonobo/bonobo-ui-toolbar.c:1089 bonobo/bonobo-ui-toolbar.c:1090
 msgid "Orientation"
 msgstr "向き"
 
-#: bonobo/bonobo-dock-item.c:212 bonobo/bonobo-dock-item.c:213
+#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
+#: bonobo/bonobo-ui-toolbar.c:1108 bonobo/bonobo-ui-toolbar.c:1109
 msgid "Preferred width"
 msgstr "希望する幅"
 
-#: bonobo/bonobo-dock-item.c:221 bonobo/bonobo-dock-item.c:222
+#: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
+#: bonobo/bonobo-ui-toolbar.c:1117 bonobo/bonobo-ui-toolbar.c:1118
 msgid "Preferred height"
 msgstr "希望する高さ"
 
-#: bonobo/bonobo-file-selector-util.c:394
+#: bonobo/bonobo-file-selector-util.c:402
 msgid "Select a file to open"
 msgstr "開きたいファイルを選択"
 
-#: bonobo/bonobo-file-selector-util.c:422
+#: bonobo/bonobo-file-selector-util.c:430
 msgid "Select files to open"
 msgstr "開きたいファイルを選択"
 
-#: bonobo/bonobo-file-selector-util.c:451
+#: bonobo/bonobo-file-selector-util.c:459
 msgid "Select a filename to save"
 msgstr "保存するファイル名を選択"
 
@@ -50,51 +53,56 @@ msgstr "イベント転送"
 msgid "Whether X events should be forwarded"
 msgstr "X イベントを転送するかどうか"
 
-#: bonobo/bonobo-selector-widget.c:301
+#: bonobo/bonobo-selector-widget.c:300
 msgid "Name"
 msgstr "名称"
 
-#: bonobo/bonobo-selector-widget.c:325
+#: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
 msgstr "説明"
 
-#: bonobo/bonobo-ui-config-widget.c:259
+#: bonobo/bonobo-ui-config-widget.c:264
 msgid "Visible"
 msgstr "可視"
 
-#: bonobo/bonobo-ui-config-widget.c:266
+#: bonobo/bonobo-ui-config-widget.c:271
 msgid "_Show"
 msgstr "表示(_S)"
 
-#: bonobo/bonobo-ui-config-widget.c:273
+#: bonobo/bonobo-ui-config-widget.c:278
 msgid "_Hide"
 msgstr "隠す(_H)"
 
-#: bonobo/bonobo-ui-config-widget.c:279
+#: bonobo/bonobo-ui-config-widget.c:284
 msgid "_View tooltips"
 msgstr "ツールチップを表示(_V)"
 
-#: bonobo/bonobo-ui-config-widget.c:284
+#: bonobo/bonobo-ui-config-widget.c:289
 msgid "Toolbars"
 msgstr "ツールバー"
 
-#: bonobo/bonobo-ui-config-widget.c:294 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:299
+#, fuzzy
+msgid "toolbars"
+msgstr "ツールバー"
+
+#: bonobo/bonobo-ui-config-widget.c:310 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Look"
 msgstr "外観"
 
-#: bonobo/bonobo-ui-config-widget.c:303 bonobo/bonobo-ui-sync-toolbar.c:550
+#: bonobo/bonobo-ui-config-widget.c:319 bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "_Icon"
 msgstr "アイコン(_I)"
 
-#: bonobo/bonobo-ui-config-widget.c:309
+#: bonobo/bonobo-ui-config-widget.c:325
 msgid "_Text and Icon"
 msgstr "テキストとアイコン(_T)"
 
-#: bonobo/bonobo-ui-config-widget.c:315
+#: bonobo/bonobo-ui-config-widget.c:331
 msgid "_Priority text only"
 msgstr "テキストのみ(_P)"
 
-#: bonobo/bonobo-ui-engine-config.c:513
+#: bonobo/bonobo-ui-engine-config.c:516
 msgid "Configure UI"
 msgstr "UI の設定"
 
@@ -151,7 +159,8 @@ msgid "The maximum degree of enlargment"
 msgstr "最大でどの程度拡大するか"
 
 #: bonobo/bonobo-zoomable.c:353
-msgid "Has a minumum Zoom level"
+#, fuzzy
+msgid "Has a minimum Zoom level"
 msgstr "最小拡大率有り"
 
 #: bonobo/bonobo-zoomable.c:354
@@ -173,6 +182,31 @@ msgstr "連続的"
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
 msgstr "(段階的ではなく)連続的に拡大できるかどうか"
+
+#: bonobo/bonobo-canvas-item.c:647
+#, fuzzy
+msgid "corba factory"
+msgstr "ファクトリ(factory)"
+
+#: bonobo/bonobo-canvas-item.c:648
+msgid "The factory pointer"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:657
+msgid "corba UI container"
+msgstr ""
+
+#: bonobo/bonobo-canvas-item.c:658
+msgid "The User interface container"
+msgstr ""
+
+#: bonobo/bonobo-ui-toolbar.c:1099
+msgid "is floating"
+msgstr ""
+
+#: bonobo/bonobo-ui-toolbar.c:1100
+msgid "whether the toolbar is floating"
+msgstr ""
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -541,9 +575,6 @@ msgstr "選択(_S)"
 
 #~ msgid "Add"
 #~ msgstr "追加"
-
-#~ msgid "factory"
-#~ msgstr "ファクトリ(factory)"
 
 #~ msgid "exe"
 #~ msgstr "実行ファイル(exe)"
