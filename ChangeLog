@@ -1,3 +1,11 @@
+2002-10-17  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-toolbar.c (impl_finalize),
+	(impl_dispose): unlink widgets we destroy,
+	don't free the list until here - otherwise
+	we can't remove any widgets as we chain to
+	parent (doh) - thanks Jaka / Satyajit
+
 2002-10-08  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-toolbar-button-item.c

@@ -699,16 +699,16 @@ impl_dispose (GObject *object)
 	priv = toolbar->priv;
 
 	items = priv->items;
-	priv->items = NULL;
-	for (p = items; p != NULL; p = next) {
+	for (p = items; p; p = next) {
 		GtkWidget *item_widget;
 
 		next = p->next;
 		item_widget = GTK_WIDGET (p->data);
-		if (item_widget->parent == NULL)
+		if (item_widget->parent == NULL) {
+			items = g_list_remove (items, item_widget);
 			gtk_widget_destroy (item_widget);
+		}
 	}
-	g_list_free (items);
 
 	if (priv->popup_item &&
 	    GTK_WIDGET (priv->popup_item)->parent == NULL)
@@ -731,6 +731,7 @@ impl_finalize (GObject *object)
 {
 	BonoboUIToolbar *toolbar = (BonoboUIToolbar *) object;
 	
+	g_list_free (toolbar->priv->items);
 	g_free (toolbar->priv);
 
 	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
