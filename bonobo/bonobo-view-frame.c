@@ -36,6 +36,9 @@ impl_GNOME_ViewFrame_get_ui_handler (PortableServer_Servant servant,
 {
 	GnomeViewFrame *view_frame = GNOME_VIEW_FRAME (gnome_object_from_servant (servant));
 
+	if (view_frame->uih == CORBA_OBJECT_NIL)
+		return CORBA_OBJECT_NIL;
+	
 	return CORBA_Object_duplicate (
 		gnome_object_corba_objref (GNOME_OBJECT (view_frame->uih)), ev);
 }

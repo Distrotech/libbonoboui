@@ -297,6 +297,49 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	CORBA_Object_release (persist, &ev);
 }
 
+static void
+add_pdf_cmd (GtkWidget *widget, Application *app)
+{
+	GnomeObjectClient *object;
+	GnomeStream *stream;
+	GNOME_PersistStream persist;
+
+	object = add_cmd (widget, app, "bonobo-object:image-x-pdf", &image_client_site);
+	if (object == NULL)
+	  {
+	    gnome_warning_dialog (_("Could not launch bonobo object."));
+	    return;
+	  }
+
+	image_png_obj = object;
+
+	persist = GNOME_Unknown_query_interface (
+		gnome_object_corba_objref (GNOME_OBJECT (object)),
+		"IDL:GNOME/PersistStream:1.0", &ev);
+
+        if (ev._major != CORBA_NO_EXCEPTION)
+                return;
+
+        if (persist == CORBA_OBJECT_NIL)
+                return;
+
+	printf ("Good: Embeddable supports PersistStream\n");
+	
+	stream = gnome_stream_fs_open ("/tmp/a.pdf", GNOME_Storage_READ);
+
+	if (stream == NULL){
+		printf ("I could not open /tmp/a.pdf!\n");
+		return;
+	}
+	
+	GNOME_PersistStream_load (
+		persist,
+		(GNOME_Stream) gnome_object_corba_objref (GNOME_OBJECT (stream)), &ev);
+
+	GNOME_Unknown_unref (persist, &ev);
+	CORBA_Object_release (persist, &ev);
+}
+
 /*
  * Add a new view for the existing image/x-png Embeddable.
  */
@@ -513,6 +556,13 @@ static GnomeUIInfo container_image_png_menu [] = {
 	GNOMEUIINFO_END
 };
 
+static GnomeUIInfo container_image_pdf_menu [] = {
+	GNOMEUIINFO_ITEM_NONE (
+		N_("_Add a new image/x-pdf component"), NULL,
+		add_pdf_cmd),
+	GNOMEUIINFO_END
+};
+
 static GnomeUIInfo container_gnumeric_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
 		N_("Add a new Gnumeric instance trough monikers"),
@@ -531,6 +581,7 @@ static GnomeUIInfo container_main_menu [] = {
 	GNOMEUIINFO_MENU_FILE_TREE (container_file_menu),
 	GNOMEUIINFO_SUBTREE (N_("_text/plain"), container_text_plain_menu),
 	GNOMEUIINFO_SUBTREE (N_("_image/x-png"), container_image_png_menu),
+	GNOMEUIINFO_SUBTREE (N_("_image/x-pdf"), container_image_pdf_menu),
 	GNOMEUIINFO_SUBTREE (N_("Gnumeric"), container_gnumeric_menu),
 	GNOMEUIINFO_END
 };
