@@ -51,7 +51,7 @@ cb_do_popup (GtkWindow *window, BonoboWindow *win)
 static void
 cb_do_hide_toolbar (GtkWindow *window, BonoboWindow *win)
 {
-	const char path [] = "/toolbar";
+	const char path [] = "/Toolbar";
 	char *val;
 
 	val = bonobo_ui_component_get_prop (global_component, path, "hidden", NULL);
@@ -194,7 +194,7 @@ main (int argc, char **argv)
 	char simplee [] =
 		"<menuitem name=\"fish\" _label=\"_Inplace\" pixtype=\"stock\" pixname=\"Save\" _tip=\"tip2\"/>\n";
 	char toola [] =
-		"<dockitem name=\"toolbar\" homogeneous=\"0\" vlook=\"icon\">\n"
+		"<dockitem name=\"Toolbar\" homogeneous=\"0\" vlook=\"icon\">\n"
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" _label=\"TogSave\" _tip=\"My tooltip\"/>\n"
 		"	<separator/>\n"
 		"	<toolitem name=\"baa\" pixtype=\"stock\" pixname=\"Open\" _label=\"baa\" _tip=\"My 2nd tooltip\" verb=\"testme\"/>\n"
@@ -202,7 +202,7 @@ main (int argc, char **argv)
 		"	pixtype=\"stock\" pixname=\"Attach\"/>\n"
 		"</dockitem>";
 	char toolb [] =
-		"<dockitem name=\"toolbar\" look=\"icon\" relief=\"none\">\n"
+		"<dockitem name=\"Toolbar\" look=\"icon\" relief=\"none\">\n"
 		"	<toolitem name=\"foo1\" _label=\"Insensitive\" hidden=\"0\"/>\n"
 		"	<toolitem type=\"toggle\" name=\"foo5\" id=\"MyFoo\" pixtype=\"stock\" pixname=\"Close\""
 		"	 _label=\"TogSame\" _tip=\"My tooltip\"/>\n"
@@ -276,6 +276,9 @@ main (int argc, char **argv)
 	win = BONOBO_WINDOW (bonobo_window_new ("Win", "My Test Application"));
 	container = bonobo_ui_container_new ();
 	bonobo_ui_container_set_win (container, win);
+	
+	bonobo_ui_engine_config_set_path (bonobo_window_get_ui_engine (win),
+					  "/test-ui/UIConfig/kvps");
 
 	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (container));
 
@@ -402,7 +405,7 @@ main (int argc, char **argv)
 		gtk_widget_show (widget);
 		bonobo_ui_component_object_set (
 			componenta,
-			"/toolbar/AControl",
+			"/Toolbar/AControl",
 			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
 			NULL);
 	}
@@ -452,11 +455,11 @@ main (int argc, char **argv)
 				      "_Gå", NULL);
 
 	/* A 'transparent' node merge */
-	txt = bonobo_ui_component_get_prop (componenta, "/toolbar", "look", NULL);
+	txt = bonobo_ui_component_get_prop (componenta, "/Toolbar", "look", NULL);
 	printf ("Before merge look '%s'\n", txt);
-	bonobo_ui_component_set_translate (componenta, "/", "<dockitem name=\"toolbar\"/>", &ev);
+	bonobo_ui_component_set_translate (componenta, "/", "<dockitem name=\"Toolbar\"/>", &ev);
 	g_free (txt);
-	txt = bonobo_ui_component_get_prop (componenta, "/toolbar", "look", NULL);
+	txt = bonobo_ui_component_get_prop (componenta, "/Toolbar", "look", NULL);
 	printf ("After merge look '%s'\n", txt);
 	if (txt == NULL || strcmp (txt, "icon"))
 		g_warning ("Serious transparency regression");

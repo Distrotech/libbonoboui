@@ -1373,3 +1373,15 @@ bonobo_ui_toolbar_set_hv_styles (BonoboUIToolbar      *toolbar,
 
 	gtk_signal_emit (GTK_OBJECT (toolbar), signals [STYLE_CHANGED]);
 }
+
+void
+bonobo_ui_toolbar_show_tooltips (BonoboUIToolbar *toolbar,
+				 gboolean         show_tips)
+{
+	g_return_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar));
+
+	if (show_tips)
+		gtk_tooltips_enable (toolbar->priv->tooltips);
+	else
+		gtk_tooltips_disable (toolbar->priv->tooltips);
+}

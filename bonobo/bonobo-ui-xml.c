@@ -26,8 +26,9 @@
 #	define DUMP_XML(a,b,c)
 #endif
 
-static void watch_add_node (BonoboUIXml *tree, BonoboUINode *node);
-static void watch_update   (BonoboUIXml *tree, BonoboUINode *node);
+static void watch_update  (BonoboUIXml  *tree,
+			   BonoboUINode *node);
+static void watch_destroy (gpointer      data);
 
 /*
  * Change these to not have a cast in order to find all
@@ -192,8 +193,9 @@ set_children_dirty (BonoboUIXml *tree, BonoboUINode *node)
 }
 
 /*
- * FIXME: the placeholder functionality is broken and should live in
- * bonobo-win.c for cleanliness and never in this more generic code.
+ * FIXME: the placeholder functionality is broken and should
+ * live in bonobo-win.c for cleanliness and never in this
+ * more generic code.
  */
 void
 bonobo_ui_xml_set_dirty (BonoboUIXml *tree, BonoboUINode *node)
@@ -900,7 +902,7 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 		data = bonobo_ui_xml_get_data (tree, current);
 		data->dirty = TRUE;
 
-		watch_add_node (tree, b);
+		watch_update (tree, b);
 
 /*		DUMP_XML (tree, current, "After transfer");*/
 	}
@@ -988,11 +990,18 @@ bonobo_ui_xml_destroy (GtkObject *object)
 	BonoboUIXml *tree = BONOBO_UI_XML (object);
 
 	if (tree) {
+		GSList *l;
+
 		if (tree->root) {
 			free_nodedata_tree (tree, tree->root, TRUE);
 			bonobo_ui_node_free (tree->root);
 			tree->root = NULL;
 		}
+
+		for (l = tree->watches; l; l = l->next)
+			watch_destroy (l->data);
+		g_slist_free (tree->watches);
+		tree->watches = NULL;
 	}
 }
 
@@ -1098,51 +1107,85 @@ bonobo_ui_xml_new (BonoboUIXmlCompareFn   compare,
 	return tree;
 }
 
-static const char *
-is_watched_node (BonoboUIXml *tree, BonoboUINode *node)
-{
-	GSList *l;
-	char   *path = bonobo_ui_xml_make_path (node);
-
-	for (l = tree->watches; l; l = l->next) {
-		if (!strcmp (l->data, path)) {
-			fprintf (stderr, "Found watch on '%s'", path);
-			break;
-		}
-	}
-	g_free (path);
-
-	return l ? l->data : NULL;
-}
-
-static void
-watch_add_node (BonoboUIXml *tree, BonoboUINode *node)
-{
-	const char *path;
-
-	if (tree->watch &&
-	    (path = is_watched_node (tree, node)))
-		tree->watch (tree, path, node, tree->user_data);
-}
+typedef struct {
+	char    *path;
+	gpointer user_data;
+} Watch;
 
 static void
 watch_update (BonoboUIXml *tree, BonoboUINode *node)
 {
-	const char *path;
+	GSList *l;
+	char   *path;
 
-	if (tree->watch &&
-	    (path = is_watched_node (tree, node)))
-		tree->watch (tree, path, node, tree->user_data);
+	if (!tree->watch)
+		return;
+
+	/* FIXME: for speed we only check root nodes for now */
+	if (bonobo_ui_node_parent (node) !=
+	    tree->root)
+		return;
+
+	path = bonobo_ui_xml_make_path (node);
+
+	for (l = tree->watches; l; l = l->next) {
+		Watch *w = l->data;
+
+		if (!strcmp (w->path, path)) {
+/*			fprintf (stderr, "Found watch on '%s'", path);*/
+			tree->watch (tree, path, node, w->user_data);
+		}
+	}
+	g_free (path);
 }
 
 void
 bonobo_ui_xml_add_watch (BonoboUIXml  *tree,
-			 const char   *path)
+			 const char   *path,
+			 gpointer      user_data)
 {
+	Watch *w = g_new0 (Watch, 1);
+
 	g_return_if_fail (BONOBO_IS_UI_XML (tree));
 
-	tree->watches = g_slist_prepend (
-		tree->watches, g_strdup (path));
+	w->path = g_strdup (path);
+	w->user_data = user_data;
+
+	tree->watches = g_slist_append (
+		tree->watches, w);
+}
+
+void
+bonobo_ui_xml_remove_watch_by_data (BonoboUIXml *tree,
+				    gpointer     user_data)
+{
+	GSList *l;
+	GSList *next;
+
+	g_return_if_fail (BONOBO_IS_UI_XML (tree));
+
+	for (l = tree->watches; l; l = next) {
+		Watch *w = l->data;
+
+		next = l->next;
+
+		if (w->user_data == user_data) {
+			tree->watches = g_slist_remove (
+				tree->watches, w);
+			watch_destroy (w);
+		}
+	}
+}
+
+static void
+watch_destroy (gpointer data)
+{
+	Watch *w = data;
+	
+	if (w) {
+		g_free (w->path);
+		g_free (w);
+	}
 }
 
 void

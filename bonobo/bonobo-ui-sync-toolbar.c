@@ -35,6 +35,7 @@ static GtkObjectClass *parent_class = NULL;
 
 #define PARENT_TYPE bonobo_ui_sync_get_type ()
 
+#define CONFIG_TOOLBARS
 
 static GdkPixbuf *
 cmd_get_toolbar_pixbuf (BonoboUINode     *node,
@@ -451,6 +452,112 @@ parse_look (const char *look)
 		: BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
 }
 
+#ifdef CONFIG_TOOLBARS
+static char *
+do_config_popup (BonoboUIEngineConfig *config,
+		 BonoboUINode         *config_node,
+		 BonoboUIEngine       *popup_engine)
+{
+	char *txt;
+	gboolean tip;
+	BonoboUIToolbarStyle style;
+	
+	tip = TRUE;
+	if ((txt = bonobo_ui_node_get_attr (config_node, "tips"))) {
+		tip = atoi (txt);
+		bonobo_ui_node_free_string (txt);
+	}
+
+	style = parse_look (
+		(txt = bonobo_ui_node_get_attr (config_node, "look")));
+	bonobo_ui_node_free_string (txt);
+
+	txt = g_strdup_printf (
+		"<Root>"
+		"<commands>"
+		"<cmd name=\"LookBoth\" state=\"%d\"/>"
+		"<cmd name=\"LookIcon\" state=\"%d\"/>"
+		"<cmd name=\"LookText\" state=\"%d\"/>"
+		"</commands>"
+		"<popups>"
+		"<popup>"
+		"<submenu _label=\"Look\">"
+		"<menuitem verb=\"LookBoth\" _label=\"%s\" set=\"both\""
+		 "type=\"radio\" group=\"look\"/>"
+		"<menuitem verb=\"LookIcon\" _label=\"%s\" set=\"icon\""
+		 "type=\"radio\" group=\"look\"/>"
+		"<menuitem verb=\"LookText\" _label=\"%s\" set=\"text\""
+		 "type=\"radio\" group=\"look\"/>"
+		"</submenu>"
+		"<separator/>"
+		"<menuitem verb=\"Tip\" _label=\"%s\" set=\"%d\"/>"
+		"<menuitem verb=\"Hide\" _label=\"%s\"/>"
+		"</popup>"
+		"</popups>"
+		"</Root>",
+		style == BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT,
+		style == BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY,
+		style == BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT,
+		N_("B_oth"),
+		N_("_Icon"),
+		N_("T_ext"),
+		tip ? N_("Hide t_ips") : N_("Show t_ips"),
+		!tip, N_("_Hide toolbar"));
+
+	return txt;
+}
+
+static void
+config_verb_fn (BonoboUIEngineConfig *config,
+		const char           *path,
+		const char           *opt_state,
+		BonoboUIEngine       *popup_engine,
+		BonoboUINode         *popup_node)
+{
+	char *verb;
+	gboolean changed = TRUE;
+
+	if ((verb = bonobo_ui_node_get_attr (popup_node, "verb"))) {
+		char *set;
+
+		set = bonobo_ui_node_get_attr (popup_node, "set");
+
+		if (!strcmp (verb, "Hide"))
+			bonobo_ui_engine_config_add (
+				config, path, "hidden", "1");
+
+		else if (!strcmp (verb, "Show"))
+			bonobo_ui_engine_config_remove (
+				config, path, "hidden");
+
+		else if (!strcmp (verb, "Tip"))
+			bonobo_ui_engine_config_add (
+				config, path, "tips", set);
+
+		else if (!strncmp (verb, "Look", 4)) {
+			if (opt_state && atoi (opt_state))
+				bonobo_ui_engine_config_add (
+					config, path, "look", set);
+			else
+				changed = FALSE;
+			
+		} else if (!strcmp (verb, "Configure")) {
+			g_warning ("Do configure");
+			changed = FALSE;
+
+		} else
+			g_warning ("Unknown verb '%s'", verb);
+
+		bonobo_ui_node_free_string (verb);
+		bonobo_ui_node_free_string (set);
+	}
+
+
+	if (changed)
+		bonobo_ui_engine_config_serialize (config);
+}
+#endif
+
 static GnomeDockItem *
 create_dockitem (BonoboUISyncToolbar *sync,
 		 BonoboUINode        *node,
@@ -544,24 +651,10 @@ create_dockitem (BonoboUISyncToolbar *sync,
 #ifdef CONFIG_TOOLBARS
 	{
 		char *path;
-		static const char *popup_xml =
-			"<popups>"
-			"<popup>"
-			"<menuitem name=\"hide\" _label=\"_Hide\" dep_attr=\"hidden:bool:0\"/>"
-/* Drat we want to hide / show depending ... */
-			"<menuitem name=\"show\" _label=\"_Show\" dep_attr=\"hidden:bool:1\"/>"
-			"<menuitem name=\"Configure\" verb=\"\" _label=\"_Configure\"/>"
-			"</popup>"
-			"</popups>";
-/*		static const char *unused = {
-			N_("_Hide"),
-			N_("_Show")
-			};*/
-
 		bonobo_ui_engine_config_connect (
 			GTK_WIDGET (item), sync->parent.engine,
 			(path = bonobo_ui_xml_make_path (node)),
-			popup_xml);
+			do_config_popup, config_verb_fn);
 		g_free (path);
 	}
 #endif
@@ -593,6 +686,7 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 {
 	char          *txt;
 	char          *dockname = bonobo_ui_node_get_attr (node, "name");
+	gboolean       tooltips;
 	GnomeDockItem *item;
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarStyle look;
@@ -651,15 +745,12 @@ impl_bonobo_ui_sync_toolbar_update_root (BonoboUISync *sync,
 	}
 #endif
 
-#if 0
 	tooltips = TRUE;
 	if ((txt = bonobo_ui_node_get_attr (node, "tips"))) {
 		tooltips = atoi (txt);
 		bonobo_ui_node_free_string (txt);
 	}
-	
-	bonobo_ui_toolbar_set_tooltips (toolbar, tooltips);
-#endif
+	bonobo_ui_toolbar_show_tooltips (toolbar, tooltips);
 
        /*
 	* FIXME: It shouldn't be necessary to explicitly resize the

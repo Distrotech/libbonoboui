@@ -61,9 +61,9 @@ GtkType         bonobo_ui_engine_get_type      (void);
 BonoboUIEngine *bonobo_ui_engine_construct     (BonoboUIEngine   *engine);
 BonoboUIEngine *bonobo_ui_engine_new           (void);
 
-void          bonobo_ui_engine_set_config_path (BonoboUIEngine   *engine,
-						const char       *path);
-const char   *bonobo_ui_engine_get_config_path (BonoboUIEngine   *engine);
+void          bonobo_ui_engine_config_set_path (BonoboUIEngine *engine,
+						const char     *path);
+const char   *bonobo_ui_engine_config_get_path (BonoboUIEngine *engine);
 
 void          bonobo_ui_engine_add_sync        (BonoboUIEngine   *engine,
 						BonoboUISync     *sync);

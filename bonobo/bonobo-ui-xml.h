@@ -120,6 +120,10 @@ void             bonobo_ui_xml_set_watch_fn      (BonoboUIXml  *tree,
 						  BonoboUIXmlWatchFn watch);
 
 void             bonobo_ui_xml_add_watch         (BonoboUIXml  *tree,
-						  const char   *path);
+						  const char   *path,
+						  gpointer      user_data);
+
+void             bonobo_ui_xml_remove_watch_by_data (BonoboUIXml  *tree,
+						     gpointer      user_data);
 
 #endif /* _BONOBO_UI_XML_H_ */

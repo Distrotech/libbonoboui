@@ -2332,23 +2332,6 @@ bonobo_ui_engine_clean_tree (BonoboUIEngine *engine,
 		bonobo_ui_xml_clean (engine->priv->tree, node);
 }
 
-void
-bonobo_ui_engine_set_config_path (BonoboUIEngine *engine,
-				  const char     *path)
-{
-	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
-
-	bonobo_ui_engine_config_set_path (engine->priv->config, path);
-}
-
-const char *
-bonobo_ui_engine_get_config_path (BonoboUIEngine *engine)
-{
-	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
-
-	return bonobo_ui_engine_config_get_path (engine->priv->config);
-}
-
 BonoboUIXml *
 bonobo_ui_engine_get_xml (BonoboUIEngine *engine)
 {

@@ -39,22 +39,35 @@ typedef struct {
 GtkType bonobo_ui_engine_config_get_type  (void);
 
 BonoboUIEngineConfig *
-        bonobo_ui_engine_config_construct (BonoboUIEngineConfig *config,
-					   BonoboUIEngine       *engine);
+        bonobo_ui_engine_config_construct (BonoboUIEngineConfig   *config,
+					   BonoboUIEngine         *engine);
 
 BonoboUIEngineConfig *
-        bonobo_ui_engine_config_new       (BonoboUIEngine       *engine);
+        bonobo_ui_engine_config_new       (BonoboUIEngine         *engine);
 
-void    bonobo_ui_engine_config_set_path  (BonoboUIEngineConfig *config,
-					   const char           *path);
+typedef char*(*BonoboUIEngineConfigFn)    (BonoboUIEngineConfig   *config,
+					   BonoboUINode           *config_node,
+					   BonoboUIEngine         *popup_engine);
 
-const char *
-        bonobo_ui_engine_config_get_path  (BonoboUIEngineConfig *config);
+typedef void (*BonoboUIEngineConfigVerbFn)(BonoboUIEngineConfig   *config,
+					   const char             *path,
+					   const char             *opt_state,
+					   BonoboUIEngine         *popup_engine,
+					   BonoboUINode           *popup_node);
 
-void    bonobo_ui_engine_config_connect   (GtkWidget            *widget,
-					   BonoboUIEngine       *engine,
-					   const char           *path,
-					   const char           *popup_xml);
+void    bonobo_ui_engine_config_connect   (GtkWidget                  *widget,
+					   BonoboUIEngine             *engine,
+					   const char                 *path,
+					   BonoboUIEngineConfigFn      config_fn,
+					   BonoboUIEngineConfigVerbFn  verb_fn);
+void    bonobo_ui_engine_config_serialize (BonoboUIEngineConfig   *config);
+void    bonobo_ui_engine_config_add       (BonoboUIEngineConfig   *config,
+					   const char             *path,
+					   const char             *attr,
+					   const char             *value);
+void    bonobo_ui_engine_config_remove    (BonoboUIEngineConfig   *config,
+					   const char             *path,
+					   const char             *attr);
 
 END_GNOME_DECLS
 
