@@ -1,20 +1,20 @@
-# Albanian translation of libbonoboui-2.0
+# Albanian translation of libbonoboui
 # This file is distributed under the same license as the libbonoboui package.
-# Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
-# Laurent Dhima <laurenti@alblinux.net>, 2003.
+# Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+# Laurent Dhima <laurenti@alblinux.net>, 2003, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2004-01-15 09:07+0000\n"
-"PO-Revision-Date: 2003-08-31 02:48+0200\n"
+"Project-Id-Version: libbonoboui.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-16 02:42+0100\n"
+"PO-Revision-Date: 2004-01-16 02:43+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
-"X-Generator: KBabel 1.0.2\n"
+"X-Generator: KBabel 1.3\n"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -70,7 +70,7 @@ msgstr "Zgjidh files që duhen hapur"
 
 #: bonobo/bonobo-file-selector-util.c:418
 msgid "Select a filename to save"
-msgstr "Zgjidh emrin e file për tu ruajtur"
+msgstr "Zgjidh emrin e file për të ruajtur"
 
 #: bonobo/bonobo-plug.c:411
 msgid "Event Forwarding"
@@ -112,7 +112,7 @@ msgstr "Njëra nga interfaqet e kërkuara"
 
 #: bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
-msgstr "E dukshme"
+msgstr "I/e dukshëm"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
@@ -128,7 +128,7 @@ msgstr "_Propozime"
 
 #: bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
-msgstr "Paneli i instrumentëve"
+msgstr "Panelët e instrumentëve"
 
 #: bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
@@ -201,7 +201,7 @@ msgstr "SCREEN"
 
 #: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
-msgstr "Bëj thirrjet e X të sinkronizuara"
+msgstr "Bëj që thirrjet e X të jenë të sinkronizuara"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
@@ -411,3 +411,4 @@ msgstr "I pamundur fillimi i kodit të libbonoboui"
 #: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "E pamundur nisja e Bonobo UI"
+
