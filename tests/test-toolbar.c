@@ -1,11 +1,13 @@
-#include <gnome.h>
 #include <stdlib.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include "bonobo-ui-toolbar.h"
-#include "bonobo-ui-toolbar-button-item.h"
-#include "bonobo-ui-toolbar-separator-item.h"
+#include <bonobo/bonobo-ui-main.h>
+#include <bonobo/bonobo-i18n.h>
+
+#include <bonobo/bonobo-ui-toolbar.h>
+#include <bonobo/bonobo-ui-toolbar-button-item.h>
+#include <bonobo/bonobo-ui-toolbar-separator-item.h>
 
 static GtkWidget *
 prepend_item (BonoboUIToolbar *toolbar,
@@ -17,7 +19,7 @@ prepend_item (BonoboUIToolbar *toolbar,
 	GdkPixbuf *pixbuf;
 
 	if (icon_file_name)
-		pixbuf = gdk_pixbuf_new_from_file (icon_file_name);
+		pixbuf = gdk_pixbuf_new_from_file (icon_file_name, NULL);
 	else
 		pixbuf = NULL;
 
@@ -41,10 +43,11 @@ main (int argc, char **argv)
 	GtkWidget *frame;
 	GtkWidget *item;
 
-	gnome_init ("bonobo-toolbar-test", "0.0", argc, argv);
-
 	/* ElectricFence rules. */
 	free (malloc (1));
+
+	if (!bonobo_ui_init ("test-toolbar", VERSION, &argc, argv))
+		g_error (_("Can not bonobo_ui_init"));
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
@@ -60,14 +63,13 @@ main (int argc, char **argv)
 	/* bonobo_ui_toolbar_set_orientation (BONOBO_UI_TOOLBAR (toolbar), GTK_ORIENTATION_VERTICAL); */
 
 	{ /* Test late icon adding */
-		GdkPixbuf *pixbuf;
+		GtkWidget *image;
 
 		item = prepend_item (BONOBO_UI_TOOLBAR (toolbar), NULL, "Debian", FALSE);
 
-		pixbuf = gdk_pixbuf_new_from_file ("/usr/share/pixmaps/gnome-debian.png");
-		bonobo_ui_toolbar_button_item_set_icon (
-			BONOBO_UI_TOOLBAR_BUTTON_ITEM (item), pixbuf);
-		gdk_pixbuf_unref (pixbuf);
+		image = gtk_image_new_from_file ("/usr/share/pixmaps/gnome-debian.png");
+		bonobo_ui_toolbar_button_item_set_image (
+			BONOBO_UI_TOOLBAR_BUTTON_ITEM (item), image);
 	}
 
 	{ /* Test late label setting */

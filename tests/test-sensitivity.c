@@ -12,7 +12,8 @@
  *
  * Copyright 1999, 2000 Helix Code, Inc.
  */
-#include <gnome.h>
+#include <bonobo/bonobo-ui-main.h>
+#include <bonobo/bonobo-i18n.h>
 #include <liboaf/liboaf.h>
 #include <bonobo.h>
 
@@ -192,13 +193,10 @@ main (int argc, char **argv)
 	/* Encorage -lefence to play ball */
 	{ char *tmp = malloc (4); if (tmp) free (tmp); }
 
-        gnome_init_with_popt_table ("test-sensitivity", "0.0",
-				    argc, argv,
-				    oaf_popt_options, 0, NULL); 
-	orb = oaf_init (argc, argv);
+	if (!bonobo_ui_init ("test-sensitivity", VERSION, &argc, argv))
+		g_error (_("Can not bonobo_ui_init"));
 
-	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error ("Could not initialize Bonobo");
+	orb = bonobo_orb ();
 
 	/*
 	 * We can't make any CORBA calls unless we're in the main

@@ -11,15 +11,16 @@
  */
 
 #include "config.h"
-#include <gnome.h>
 #include <bonobo.h>
+#include <gdk/gdkkeysyms.h>
 #include <liboaf/liboaf.h>
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-win.h>
 
-poptContext ctx;
+#include <bonobo/bonobo-i18n.h>
+#include <bonobo/bonobo-ui-main.h>
 
 BonoboUIComponent *global_component;
 
@@ -64,7 +65,8 @@ cb_do_hide_toolbar (GtkWindow *window, BonoboWindow *win)
 static void
 cb_set_state (GtkEntry *state_entry, GtkEntry *path_entry)
 {
-	char *path, *state, *txt, *str;
+	const char *path, *state;
+	char *txt, *str;
 
 	path = gtk_entry_get_text (path_entry);
 	state = gtk_entry_get_text (state_entry);
@@ -151,7 +153,6 @@ int
 main (int argc, char **argv)
 {
 	BonoboWindow *win;
-	CORBA_ORB  orb;
 	BonoboUIComponent *componenta;
 	BonoboUIComponent *componentb;
 	BonoboUIComponent *componentc;
@@ -219,15 +220,10 @@ main (int argc, char **argv)
 
 	free (malloc (8));
 
-	gnome_init_with_popt_table ("container", VERSION,
-				    argc, argv, oaf_popt_options, 0, &ctx);
+	if (!bonobo_ui_init ("test-ui", VERSION, &argc, argv))
+		g_error (_("Can not bonobo_ui_init"));
 
 	textdomain (PACKAGE);
-
-	orb = oaf_init (argc, argv);
-
-	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error (_("Could not initialize Bonobo!\n"));
 
 	bonobo_activate ();
 
@@ -331,7 +327,7 @@ main (int argc, char **argv)
 	}
 
 	gtk_signal_connect (GTK_OBJECT (win), "size_request", 
-			    slow_size_request, NULL);
+			    GTK_SIGNAL_FUNC (slow_size_request), NULL);
 
 	componenta = bonobo_ui_component_new ("A");
 	bonobo_object_unref (BONOBO_OBJECT (componenta));
@@ -355,7 +351,7 @@ main (int argc, char **argv)
 	CORBA_exception_init (&ev);
 
 	fname = bonobo_ui_util_get_ui_fname (NULL, "std-ui.xml");
-	if (fname && g_file_exists (fname)) {
+	if (fname && g_file_test (fname, G_FILE_TEST_EXISTS)) {
 		fprintf (stderr, "\n\n--- Add std-ui.xml ---\n\n\n");
 		bonobo_ui_util_set_ui (componenta, NULL, "std-ui.xml",
 				       "gnomecal");
@@ -484,7 +480,7 @@ main (int argc, char **argv)
 
 		id = gtk_timeout_add (100, (GSourceFunc) update_progress, widget);
 		gtk_signal_connect (GTK_OBJECT (widget), "destroy",
-				    disconnect_progress, GUINT_TO_POINTER (id));
+				    GTK_SIGNAL_FUNC (disconnect_progress), GUINT_TO_POINTER (id));
 	}
 
 	bonobo_ui_component_set_status (componenta, "This is a very long status message "
@@ -535,9 +531,6 @@ main (int argc, char **argv)
 	gtk_widget_destroy (GTK_WIDGET (win));
 
 	CORBA_exception_free (&ev);
-
-	if (ctx)
-		poptFreeContext (ctx);
 
 	return 0;
 }

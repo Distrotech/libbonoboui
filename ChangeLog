@@ -1,5 +1,11 @@
 2001-05-01  Martin Baulig  <baulig@suse.de>
 
+	* tests/*.c: Make the tests actually work.
+
+	* Makefile.am (SUBDIRS): Added tests/.
+
+2001-05-01  Martin Baulig  <baulig@suse.de>
+
 	* bonobo/libbonoboui-2.0.pc.in: Make this actually work.
 
 2001-04-25  Martin Baulig  <baulig@suse.de>

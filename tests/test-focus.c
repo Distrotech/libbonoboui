@@ -8,13 +8,12 @@
  */
 
 #include "config.h"
-#include <gnome.h>
 #include <bonobo.h>
 #include <liboaf/liboaf.h>
 
 #include <bonobo/bonobo-widget.h>
-
-poptContext ctx;
+#include <bonobo/bonobo-ui-main.h>
+#include <bonobo/bonobo-i18n.h>
 
 int
 main (int argc, char **argv)
@@ -26,16 +25,12 @@ main (int argc, char **argv)
 
 	free (malloc (8));
 
-	gnome_init_with_popt_table (
-		"container", VERSION,
-		argc, argv, oaf_popt_options, 0, &ctx);
-
 	textdomain (PACKAGE);
 
-	orb = oaf_init (argc, argv);
+	if (!bonobo_ui_init ("test-focus", VERSION, &argc, argv))
+		g_error (_("Can not bonobo_ui_init"));
 
-	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error (_("Could not initialize Bonobo!\n"));
+	orb = bonobo_orb ();
 
 	bonobo_activate ();
 
@@ -57,9 +52,6 @@ main (int argc, char **argv)
 	gtk_widget_show_all (window);
 
 	gtk_main ();
-
-	if (ctx)
-		poptFreeContext (ctx);
 
 	return 0;
 }
