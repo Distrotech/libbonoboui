@@ -1,3 +1,7 @@
+libbonoboui 2.0.0
+
+	* Add bin-compat padding (Michael)
+
 libbonoboui 1.118.0
 
 	* Bugs fixed
