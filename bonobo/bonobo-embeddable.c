@@ -30,7 +30,7 @@ impl_GNOME_Component_do_verb (PortableServer_Servant servant,
 	GnomeComponent *component = GNOME_COMPONENT (gnome_object_from_servant (servant));
 
 	gtk_signal_emit (
-		component,
+		GTK_OBJECT (component),
 		component_signals [DO_VERB],
 		verb, verb_name);
 }
@@ -163,8 +163,8 @@ POA_GNOME_Component__epv gnome_component_epv = {
 };
 
 static POA_GNOME_Component__vepv gnome_component_vepv = {
-	&gnome_object_base_epv,
-	&gnome_object_epv,
+	&gnome_obj_base_epv,
+	&gnome_obj_epv,
 	&gnome_component_epv
 };
 

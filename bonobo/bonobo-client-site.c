@@ -120,7 +120,7 @@ POA_GNOME_ClientSite__epv gnome_client_site_epv =
 static POA_GNOME_ClientSite__vepv gnome_client_site_vepv =
 {
 	&gnome_client_site_base_epv,
-	&gnome_object_epv,
+	&gnome_obj_epv,
 	&gnome_client_site_epv,
 };
 
@@ -331,7 +331,7 @@ gnome_client_site_bind_component (GnomeClientSite *client_site, GnomeObjectClien
 
 	gnome_object = GNOME_OBJECT (object);
 	
-	corba_object = GNOME_object_query_interface (
+	corba_object = GNOME_obj_query_interface (
 		gnome_object->object, "IDL:GNOME/Component:1.0",
 		&gnome_object->ev);
 

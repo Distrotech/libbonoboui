@@ -123,7 +123,7 @@ init_view_corba_class (void)
 	gnome_view_epv.set_window = impl_GNOME_View_set_window;
 
 	/* Setup the vector of epvs */
-	gnome_view_vepv.GNOME_object_epv = &gnome_object_epv;
+	gnome_view_vepv.GNOME_obj_epv = &gnome_obj_epv;
 	gnome_view_vepv.GNOME_View_epv = &gnome_view_epv;
 }
 

@@ -80,7 +80,7 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	GNOME_PersistStream persist;
 
 	object = add_cmd (widget, app, "component:image-x-png");
-	persist = GNOME_object_query_interface (
+	persist = GNOME_obj_query_interface (
 		GNOME_OBJECT (object)->object,
 		"IDL:GNOME/PersistStream:1.0", &ev);
 
@@ -93,6 +93,11 @@ add_image_cmd (GtkWidget *widget, Application *app)
 	printf ("Good: Component supports PersistStream");
 	
 	stream = gnome_stream_fs_open (NULL, "/tmp/a.png", GNOME_Storage_READ);
+
+	if (stream == NULL){
+		printf ("I could not open /tmp/a.png!");
+		return;
+	}
 	
 	GNOME_PersistStream_load (persist, (GNOME_Stream) GNOME_OBJECT (stream)->object, &ev);
 }
