@@ -1,3 +1,14 @@
+2002-01-22  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-preferences.c
+	(bonobo_ui_gconf_leaks_refs): allow gconf to be turned off.
+	(bonobo_ui_preferences_get_toolbar_style): upd.
+	(bonobo_ui_preferences_add_engine): upd.
+	(bonobo_ui_preferences_remove_engine): upd.
+	(get): upd.
+
+	* tests/test-ui-auto.c: add.
+
 2002-01-21  Michael Meeks  <michael@ximian.com>
 
 	* glade/glade-bonobo.c (glade_bonobo_widget_new):
