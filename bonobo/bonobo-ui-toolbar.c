@@ -40,6 +40,8 @@ enum {
 	ARG_0,
 	ARG_ORIENTATION,
 	ARG_IS_FLOATING,
+	ARG_PREFERRED_WIDTH,
+	ARG_PREFERRED_HEIGHT
 };
 
 struct _BonoboUIToolbarPrivate {
@@ -954,10 +956,22 @@ impl_get_arg (GtkObject *obj,
 
 	switch (arg_id) {
 	case ARG_ORIENTATION:
-		GTK_VALUE_UINT(*arg) = bonobo_ui_toolbar_get_orientation (toolbar);
+		GTK_VALUE_UINT (*arg) = bonobo_ui_toolbar_get_orientation (toolbar);
 		break;
 	case ARG_IS_FLOATING:
-		GTK_VALUE_BOOL(*arg) = priv->is_floating;
+		GTK_VALUE_BOOL (*arg) = priv->is_floating;
+		break;
+	case ARG_PREFERRED_WIDTH:
+		if (bonobo_ui_toolbar_get_orientation (toolbar) == GTK_ORIENTATION_HORIZONTAL)
+			GTK_VALUE_UINT (*arg) = priv->total_width;
+		else
+			GTK_VALUE_UINT (*arg) = priv->max_width;
+		break;
+	case ARG_PREFERRED_HEIGHT:
+		if (bonobo_ui_toolbar_get_orientation (toolbar) == GTK_ORIENTATION_HORIZONTAL)
+			GTK_VALUE_UINT (*arg) = priv->max_height;
+		else
+			GTK_VALUE_UINT (*arg) = priv->total_height;
 		break;
 	default:
 		break;
@@ -1017,6 +1031,11 @@ class_init (BonoboUIToolbarClass *toolbar_class)
 				GTK_TYPE_UINT, GTK_ARG_READWRITE, ARG_ORIENTATION);
 	gtk_object_add_arg_type("BonoboUIToolbar::is_floating",
 				GTK_TYPE_BOOL, GTK_ARG_READWRITE, ARG_IS_FLOATING);
+
+	gtk_object_add_arg_type("BonoboUIToolbar::preferred_width",
+				GTK_TYPE_UINT, GTK_ARG_READABLE, ARG_PREFERRED_WIDTH);
+	gtk_object_add_arg_type("BonoboUIToolbar::preferred_height",
+				GTK_TYPE_UINT, GTK_ARG_READABLE, ARG_PREFERRED_HEIGHT);
 
 	signals[SET_ORIENTATION]
 		= gtk_signal_new ("set_orientation",
