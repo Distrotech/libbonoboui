@@ -7,12 +7,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-01-15 12:03+0000\n"
-"PO-Revision-Date: 2002-01-09 13:06+0100\n"
+"POT-Creation-Date: 2002-01-27 03:42+0100\n"
+"PO-Revision-Date: 2002-01-27 03:42+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bonobo/bonobo-dock-item.c:228 bonobo/bonobo-dock-item.c:229
@@ -25,31 +25,31 @@ msgstr "Orientering"
 
 #: bonobo/bonobo-dock-item.c:246 bonobo/bonobo-dock-item.c:247
 msgid "Preferred width"
-msgstr "Föredragen bredd"
+msgstr "FÃ¶redragen bredd"
 
 #: bonobo/bonobo-dock-item.c:254 bonobo/bonobo-dock-item.c:255
 msgid "Preferred height"
-msgstr "Föredragen höjd"
+msgstr "FÃ¶redragen hÃ¶jd"
 
 #: bonobo/bonobo-file-selector-util.c:375
 msgid "Select a file to open"
-msgstr "Väj en fil att öppna"
+msgstr "VÃ¤j en fil att Ã¶ppna"
 
 #: bonobo/bonobo-file-selector-util.c:403
 msgid "Select files to open"
-msgstr "Välj filer att öppna"
+msgstr "VÃ¤lj filer att Ã¶ppna"
 
 #: bonobo/bonobo-file-selector-util.c:432
 msgid "Select a filename to save"
-msgstr "Välj ett filnamn att spara"
+msgstr "VÃ¤lj ett filnamn att spara"
 
-#: bonobo/bonobo-plug.c:343
+#: bonobo/bonobo-plug.c:350
 msgid "Event Forwarding"
-msgstr "Händelsevidarebefordran"
+msgstr "HÃ¤ndelsevidarebefordran"
 
-#: bonobo/bonobo-plug.c:344
+#: bonobo/bonobo-plug.c:351
 msgid "Whether X events should be forwarded"
-msgstr "Huruvida X-händelser ska vidarebefordras"
+msgstr "Huruvida X-hÃ¤ndelser ska vidarebefordras"
 
 #: bonobo/bonobo-selector-widget.c:302
 msgid "Name"
@@ -69,7 +69,7 @@ msgstr "_Visa"
 
 #: bonobo/bonobo-ui-config-widget.c:274
 msgid "_Hide"
-msgstr "_Göm"
+msgstr "_GÃ¶m"
 
 #: bonobo/bonobo-ui-config-widget.c:280
 msgid "_View tooltips"
@@ -79,11 +79,11 @@ msgstr "V_isa verktygstips"
 msgid "Toolbars"
 msgstr "Verktygsrader"
 
-#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:295 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "Look"
 msgstr "Utseende"
 
-#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-config-widget.c:304 bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "_Icon"
 msgstr "_Ikon"
 
@@ -97,79 +97,79 @@ msgstr "_Endast prioritetstext"
 
 #: bonobo/bonobo-ui-engine-config.c:513
 msgid "Configure UI"
-msgstr "Konfigurera användargränssnitt"
+msgstr "Konfigurera anvÃ¤ndargrÃ¤nssnitt"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "B_oth"
-msgstr "B_åda"
+msgstr "B_Ã¥da"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:539
+#: bonobo/bonobo-ui-sync-toolbar.c:549
 msgid "T_ext"
 msgstr "Te_xt"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Hide t_ips"
-msgstr "Göm t_ips"
+msgstr "GÃ¶m t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:540
+#: bonobo/bonobo-ui-sync-toolbar.c:550
 msgid "Show t_ips"
 msgstr "Visa t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "_Hide toolbar"
-msgstr "_Göm verktygsrad"
+msgstr "_GÃ¶m verktygsrad"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:541
+#: bonobo/bonobo-ui-sync-toolbar.c:551
 msgid "Customi_ze"
 msgstr "Anpa_ssa"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:542
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Customize the toolbar"
 msgstr "Anpassa verktygsraden"
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "Zoomnivå"
+msgstr "ZoomnivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "Graden av förstoring"
+msgstr "Graden av fÃ¶rstoring"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "Minsta zoomnivån"
+msgstr "Minsta zoomnivÃ¥n"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "Minsta graden av förstoring"
+msgstr "Minsta graden av fÃ¶rstoring"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "Största zoomnivån"
+msgstr "StÃ¶rsta zoomnivÃ¥n"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "Största graden av förstoring"
+msgstr "StÃ¶rsta graden av fÃ¶rstoring"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minumum Zoom level"
-msgstr "Har en minsta zoomnivå"
+msgstr "Har en minsta zoomnivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Huruvida vi har en giltig minsta zoomnivå"
+msgstr "Huruvida vi har en giltig minsta zoomnivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Har en största zoomnivå"
+msgstr "Har en stÃ¶rsta zoomnivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Huruvida vi har en giltig största zoomnivå"
+msgstr "Huruvida vi har en giltig stÃ¶rsta zoomnivÃ¥"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr "Är kontinuerlig"
+msgstr "Ã„r kontinuerlig"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
@@ -177,7 +177,7 @@ msgstr "Huruvida vi zoomar kontinuerligt (i motsats till hopp)"
 
 #: samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Detta gör ingenting; det är bara en demonstration."
+msgstr "Detta gÃ¶r ingenting; det Ã¤r bara en demonstration."
 
 #: samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -190,7 +190,7 @@ msgstr "Gnome-hej"
 #. Create Label and put it in the Button:
 #: samples/bonoboui/hello.c:250
 msgid "Hello, World!"
-msgstr "Hej världen!"
+msgstr "Hej vÃ¤rlden!"
 
 #: samples/bonoboui/hello.c:290
 msgid "Cannot init libbonoboui code"
@@ -230,7 +230,7 @@ msgstr "_Markera"
 #~ msgstr "konfigurera indirekt moniker"
 
 #~ msgid "Unknown type"
-#~ msgstr "Okänd typ"
+#~ msgstr "OkÃ¤nd typ"
 
 #~ msgid "Key %s not found in configuration"
 #~ msgstr "Nycklen %s hittades inte i konfigurationen"
@@ -239,24 +239,24 @@ msgstr "_Markera"
 #~ "An exception occured while trying to load data into the component with "
 #~ "PersistStorage"
 #~ msgstr ""
-#~ "Ett undantag inträffade vid försök att läsa in data i komponenten med "
+#~ "Ett undantag intrÃ¤ffade vid fÃ¶rsÃ¶k att lÃ¤sa in data i komponenten med "
 #~ "PersistStorage"
 
 #~ msgid ""
 #~ "An exception occured while trying to save data from the component with "
 #~ "PersistStorage"
 #~ msgstr ""
-#~ "Ett undantag inträffade vid försök att spara data från komponenten med "
+#~ "Ett undantag intrÃ¤ffade vid fÃ¶rsÃ¶k att spara data frÃ¥n komponenten med "
 #~ "PersistStorage"
 
 #~ msgid "Can not bonobo_ui_init"
-#~ msgstr "Kan inte utföra bonobo_ui_init"
+#~ msgstr "Kan inte utfÃ¶ra bonobo_ui_init"
 
 #~ msgid "Select an object"
-#~ msgstr "Välj ett objekt"
+#~ msgstr "VÃ¤lj ett objekt"
 
 #~ msgid "Has a minimum Zoom level"
-#~ msgstr "Har en minsta zoomnivå"
+#~ msgstr "Har en minsta zoomnivÃ¥"
 
 #~ msgid "Can not activate object_server"
 #~ msgstr "Kan inte aktivera objekt_server"
@@ -277,7 +277,7 @@ msgstr "_Markera"
 #~ msgstr "Kunde inte starta kontroll."
 
 #~ msgid "Can not bonobo_init"
-#~ msgstr "Kan inte utföra bonobo_init"
+#~ msgstr "Kan inte utfÃ¶ra bonobo_init"
 
 #~ msgid "Cannot bonobo UI code"
 #~ msgstr "Kan inte bonobo-UI-kod"
