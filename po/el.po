@@ -469,11 +469,11 @@ msgstr "Αδύνατη η αρχικοποίηση της γραφικής δι�
 
 #: tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr "·Περιηγητής συστατικού Bonobo"
+msgstr " Περιηγητής συστατικού Bonobo"
 
 #: tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr "Εμφανίζει τα διαθέσιμα συστατικά ·Bonobo"
+msgstr "Εμφανίζει τα διαθέσιμα συστατικά  Bonobo"
 
 # #-#-#-#-#  gnome-libs.gnome-libs-1-0.el.po (gnome-libs 1.2.12)  #-#-#-#-#
 #
@@ -537,7 +537,7 @@ msgstr "Πνευματικά δικαιώματα 2001, The GNOME Foundation"
 
 #: tools/browser/window.c:216
 msgid "Bonobo component browser"
-msgstr " Περιηγητής·συστατικού·Bonobo"
+msgstr " Περιηγητής συστατικού Bonobo"
 
 #. create the window
 #: tools/browser/window.c:246
