@@ -1,5 +1,8 @@
 2004-12-11  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
 
+	* samples/canvdemo/Makefile.am (EXTRA_DIST): Remove
+	CanvDemo.server, fixes #160558.
+
 	* samples/controls/Makefile.am (EXTRA_DIST): Remove
 	$(server_in_files) and $(server_DATA).  Fixes #160380.
 
