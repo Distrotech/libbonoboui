@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0\n"
-"POT-Creation-Date: 2002-05-28 01:29+0200\n"
+"POT-Creation-Date: 2002-11-25 05:33+0100\n"
 "PO-Revision-Date: 2002-05-28 05:13+02:00\n"
 "Last-Translator: Huib Kleinhout <huib@stack.nl>\n"
 "Language-Team: Dutch <NL@li.org>\n"
@@ -39,22 +39,22 @@ msgstr "Gereedschapsbalk vastzetten"
 msgid "Un dock the toolbar"
 msgstr "Gereedschapsbalk vrijmaken"
 
-#: bonobo/bonobo-dock-item.c:285 bonobo/bonobo-dock-item.c:286
+#: bonobo/bonobo-dock-item.c:291 bonobo/bonobo-dock-item.c:292
 msgid "Shadow type"
 msgstr "Type schaduw"
 
-#: bonobo/bonobo-dock-item.c:296 bonobo/bonobo-dock-item.c:297
-#: bonobo/bonobo-ui-toolbar.c:1094 bonobo/bonobo-ui-toolbar.c:1095
+#: bonobo/bonobo-dock-item.c:302 bonobo/bonobo-dock-item.c:303
+#: bonobo/bonobo-ui-toolbar.c:1086 bonobo/bonobo-ui-toolbar.c:1087
 msgid "Orientation"
 msgstr "Oriëntatie"
 
-#: bonobo/bonobo-dock-item.c:307 bonobo/bonobo-dock-item.c:308
-#: bonobo/bonobo-ui-toolbar.c:1113 bonobo/bonobo-ui-toolbar.c:1114
+#: bonobo/bonobo-dock-item.c:313 bonobo/bonobo-dock-item.c:314
+#: bonobo/bonobo-ui-toolbar.c:1105 bonobo/bonobo-ui-toolbar.c:1106
 msgid "Preferred width"
 msgstr "Gewenste breedte"
 
-#: bonobo/bonobo-dock-item.c:316 bonobo/bonobo-dock-item.c:317
-#: bonobo/bonobo-ui-toolbar.c:1122 bonobo/bonobo-ui-toolbar.c:1123
+#: bonobo/bonobo-dock-item.c:322 bonobo/bonobo-dock-item.c:323
+#: bonobo/bonobo-ui-toolbar.c:1114 bonobo/bonobo-ui-toolbar.c:1115
 msgid "Preferred height"
 msgstr "Gewenste hoogte"
 
@@ -70,15 +70,15 @@ msgstr "Selecteer de te openen bestanden"
 msgid "Select a filename to save"
 msgstr "Selecteer het bestand om op te slaan"
 
-#: bonobo/bonobo-plug.c:363
+#: bonobo/bonobo-plug.c:372
 msgid "Event Forwarding"
 msgstr "Gebeurtenissen Doorsturen"
 
-#: bonobo/bonobo-plug.c:364
+#: bonobo/bonobo-plug.c:373
 msgid "Whether X events should be forwarded"
 msgstr "Of gebeurtenissen van X doorgestuurd moeten worden"
 
-#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:447
+#: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:415
 msgid "Name"
 msgstr "Naam"
 
@@ -132,11 +132,11 @@ msgstr "Gereedschapsbalken"
 msgid "toolbars"
 msgstr "gereedschapsbalken"
 
-#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:313 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
 msgstr "Uiterlijk"
 
-#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-config-widget.c:322 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "_Icon"
 msgstr "_Pictogram"
 
@@ -249,51 +249,51 @@ msgstr "GTK+"
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI ondersteuning"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "B_oth"
 msgstr "_Beide"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:556
+#: bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "T_ext"
 msgstr "T_ekst"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
 msgstr "Verberg t_ips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:557
+#: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
 msgstr "Toon _tips"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
 msgstr "_Verberg gereedschapsbalk"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:558
+#: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
 msgstr "_Aanpassen"
 
-#: bonobo/bonobo-ui-sync-toolbar.c:559
+#: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
 msgstr "Gereedschapsbalk aanpassen"
 
-#: bonobo/bonobo-ui-toolbar.c:1104
+#: bonobo/bonobo-ui-toolbar.c:1096
 msgid "is floating"
 msgstr "is zwevend"
 
-#: bonobo/bonobo-ui-toolbar.c:1105
+#: bonobo/bonobo-ui-toolbar.c:1097
 msgid "whether the toolbar is floating"
 msgstr "of de gereedschapsbalk zwevend is"
 
-#: bonobo/bonobo-ui-util.c:583
+#: bonobo/bonobo-ui-util.c:598
 msgid "_Contents"
 msgstr "_Inhoud"
 
-#: bonobo/bonobo-ui-util.c:584
+#: bonobo/bonobo-ui-util.c:599
 msgid "View help for this application"
 msgstr "Toon de hulp voor dit programma"
 
-#: bonobo/bonobo-window.c:448
+#: bonobo/bonobo-window.c:416
 msgid "Name of the window - used for configuration serialization."
 msgstr "Naam van het venster - gebruikt voor configuratieserialisatie."
 
@@ -390,6 +390,6 @@ msgstr "Hallo, Wereld!"
 msgid "Cannot init libbonoboui code"
 msgstr "De libbonoboui code kan niet geïnitialiseerd worden"
 
-#: samples/controls/bonobo-sample-controls.c:121
+#: samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
 msgstr "Kon Bonobo UI niet initialiseren"
