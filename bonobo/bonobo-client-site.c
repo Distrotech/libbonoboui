@@ -100,14 +100,9 @@ bonobo_client_site_destroy (GtkObject *object)
 
 	bonobo_container_remove (client_site->container, BONOBO_OBJECT (object));
 
-	if (client_site->bound_object) {
-		CORBA_Environment ev;
-	
-		CORBA_exception_init (&ev);
-		Bonobo_Unknown_unref (bonobo_object_corba_objref (
-			BONOBO_OBJECT (client_site->bound_object)), &ev);
-		client_site->bound_object = NULL;
-		CORBA_exception_free (&ev);
+	if (client_site->bound_embeddable) {
+		bonobo_object_destroy (BONOBO_OBJECT (client_site->bound_embeddable));
+		client_site->bound_embeddable = NULL;
 	}
 
 	object_class->destroy (object);
@@ -187,7 +182,7 @@ bonobo_client_site_class_init (BonoboClientSiteClass *klass)
 static void
 bonobo_client_site_init (BonoboClientSite *client_site)
 {
-	client_site->bound_object = NULL;
+	client_site->bound_embeddable = NULL;
 }
 
 static CORBA_Object
@@ -323,7 +318,7 @@ bonobo_client_site_get_type (void)
 gboolean
 bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectClient *object)
 {
-	CORBA_Object corba_object;
+	CORBA_Object embeddable_object;
 	CORBA_Environment ev;
 	
 	g_return_val_if_fail (client_site != NULL, FALSE);
@@ -331,32 +326,28 @@ bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectC
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), FALSE);
 	g_return_val_if_fail (BONOBO_IS_OBJECT_CLIENT (object), FALSE);
 
-	CORBA_exception_init (&ev);
-
-	corba_object = bonobo_object_client_query_interface (
+	embeddable_object = bonobo_object_client_query_interface (
 		object, "IDL:Bonobo/Embeddable:1.0", NULL);
 
-	if (corba_object == CORBA_OBJECT_NIL) {
-		CORBA_exception_free (&ev);
+	if (embeddable_object == CORBA_OBJECT_NIL)
 		return FALSE;
-	}
 
+	CORBA_exception_init (&ev);
 	Bonobo_Embeddable_set_client_site (
-		corba_object, 
+		embeddable_object, 
 		bonobo_object_corba_objref (BONOBO_OBJECT (client_site)),
 		&ev);
 		
-	if (ev._major != CORBA_NO_EXCEPTION){
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		bonobo_object_check_env (BONOBO_OBJECT (object),
+					 embeddable_object, &ev);
 		CORBA_exception_free (&ev);
-		bonobo_object_check_env (BONOBO_OBJECT (object), corba_object, &ev);
 		return FALSE;
 	}
-
-	client_site->bound_object = object;
-
-	Bonobo_Unknown_ref (bonobo_object_corba_objref (BONOBO_OBJECT (object)), &ev);
-	
 	CORBA_exception_free (&ev);
+
+	client_site->bound_embeddable = bonobo_object_client_from_corba (embeddable_object);
+	bonobo_object_client_ref (client_site->bound_embeddable, NULL);
 
 	return TRUE;
 }
@@ -375,7 +366,7 @@ bonobo_client_site_get_embeddable (BonoboClientSite *client_site)
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 
-	return client_site->bound_object;
+	return client_site->bound_embeddable;
 }
 
 static void
@@ -409,16 +400,16 @@ bonobo_client_site_new_view_full (BonoboClientSite *client_site,
 				  gboolean          visible_cover,
 				  gboolean          active_view)
 {
+	Bonobo_Embeddable server_object;
 	BonoboViewFrame *view_frame;
 	BonoboWrapper *wrapper;
-	CORBA_Object server_object;
 	Bonobo_View view;
 
 	CORBA_Environment ev;
 
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
-	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
+	g_return_val_if_fail (client_site->bound_embeddable != NULL, NULL);
 
 	/*
 	 * 1. Create the view frame.
@@ -431,11 +422,7 @@ bonobo_client_site_new_view_full (BonoboClientSite *client_site,
 	/*
 	 * 2. Now, create the view.
 	 */
-	server_object = bonobo_object_client_query_interface (
-		client_site->bound_object, "IDL:Bonobo/Embeddable:1.0", NULL);
-	if (server_object == CORBA_OBJECT_NIL)
-		return NULL;
-
+	server_object = bonobo_object_corba_objref (BONOBO_OBJECT (client_site->bound_embeddable));
 	CORBA_exception_init (&ev);
  	view = Bonobo_Embeddable_new_view (
 		server_object,
@@ -507,11 +494,11 @@ bonobo_client_site_new_item (BonoboClientSite *client_site, GnomeCanvasGroup *gr
 		
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
-	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
+	g_return_val_if_fail (client_site->bound_embeddable != NULL, NULL);
 	g_return_val_if_fail (group != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_GROUP (group), NULL);
 
-	server_object = client_site->bound_object;
+	server_object = client_site->bound_embeddable;
 
 	item = bonobo_canvas_item_new (group, server_object);
 
@@ -548,12 +535,12 @@ bonobo_client_site_get_verbs (BonoboClientSite *client_site)
 	
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
-	g_return_val_if_fail (client_site->bound_object != NULL, NULL);
+	g_return_val_if_fail (client_site->bound_embeddable != NULL, NULL);
 
 	CORBA_exception_init (&ev);
 
-	server_object = bonobo_object_client_query_interface (
-		client_site->bound_object, "IDL:Bonobo/Embeddable:1.0", NULL);
+	server_object = bonobo_object_corba_objref (
+		BONOBO_OBJECT (client_site->bound_embeddable));
 	if (server_object == CORBA_OBJECT_NIL)
 		return NULL;
 

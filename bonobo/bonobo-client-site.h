@@ -34,10 +34,10 @@ struct _BonoboClientSite {
 	BonoboObject base;
 
 	BonoboContainer    *container;
-	BonoboObjectClient *bound_object;
-	GList		  *view_frames;
-	GList             *canvas_items;
-	int               child_shown:1;
+	BonoboObjectClient *bound_embeddable; /* IDL:Bonobo/Embeddable:1.0 */
+	GList		   *view_frames;
+	GList              *canvas_items;
+	int                child_shown:1;
 
 	BonoboClientSitePrivate *priv;
 };
