@@ -192,16 +192,16 @@ bin_PROGRAMS = bonobo-ui-extract
 
 test_app_SOURCES = app.c
 test_app_LDADD =					\
-	$(top_builddir)/bonobo/libbonobo.la		\
-	$(top_builddir)/bonobo/libbonobox.la		\
-	$(top_builddir)/bonobo/libbonobo-print.la	\
+	libbonobo.la					\
+	libbonobox.la					\
+	libbonobo-print.la				\
 	$(BONOBOX_TEST_LIBS)
 
 test_toolbar_SOURCES = test-toolbar.c
-test_toolbar_LDADD =				\
-	$(top_builddir)/bonobo/libbonobo.la		\
-	$(top_builddir)/bonobo/libbonobox.la		\
-	$(top_builddir)/bonobo/libbonobo-print.la	\
+test_toolbar_LDADD =					\
+	libbonobo.la					\
+	libbonobox.la					\
+	libbonobo-print.la				\
 	$(BONOBOX_TEST_LIBS)
 
 bonobo_ui_extract_SOURCES = extract.c
