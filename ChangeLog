@@ -1,3 +1,11 @@
+2001-11-06  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c (impl_get_prop):
+	silently return NULL even with a NULL opt_ev, if we
+	get a NonExistantAttr.
+
+	* tests/test-ui.c (main): regression test it.
+
 2001-11-05  Michael Meeks  <michael@ximian.com>
 
 	* Version 1.106.0

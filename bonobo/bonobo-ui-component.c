@@ -1150,7 +1150,7 @@ impl_get_prop (BonoboUIComponent *component,
 	       CORBA_Environment *opt_ev)
 {
 	Bonobo_UIContainer container;
-	CORBA_Environment *real_ev, tmp_ev;
+	CORBA_Environment *ev, tmp_ev;
 	CORBA_char        *ret;
 	gchar             *retval;
 
@@ -1162,19 +1162,22 @@ impl_get_prop (BonoboUIComponent *component,
 	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
 
 	if (opt_ev)
-		real_ev = opt_ev;
+		ev = opt_ev;
 	else {
 		CORBA_exception_init (&tmp_ev);
-		real_ev = &tmp_ev;
+		ev = &tmp_ev;
 	}
 
 	ret = Bonobo_UIContainer_getAttr (
-		container, path, prop, real_ev);
+		container, path, prop, ev);
 
-	if (BONOBO_EX (real_ev)) {
-		if (!opt_ev)
-			g_warning ("Invalid path '%s' on prop '%s' get",
-				   path, prop);
+	if (BONOBO_EX (ev)) {
+		if (strcmp (BONOBO_EX_REPOID (ev),
+			    ex_Bonobo_UIContainer_NonExistantAttr)) {
+			if (!opt_ev)
+				g_warning ("Invalid path '%s' on prop '%s' get",
+					   path, prop);
+		}
 		ret = NULL;
 	}
 
@@ -1209,33 +1212,33 @@ bonobo_ui_component_path_exists (BonoboUIComponent *component,
 static gboolean
 impl_exists (BonoboUIComponent *component,
 	     const char        *path,
-	     CORBA_Environment *ev)
+	     CORBA_Environment *opt_ev)
 {
 	gboolean ret;
 	Bonobo_UIContainer container;
-	CORBA_Environment *real_ev, tmp_ev;
+	CORBA_Environment *ev, tmp_ev;
 
 	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), FALSE);
 	container = component->priv->container;
 	g_return_val_if_fail (container != CORBA_OBJECT_NIL, FALSE);
 
-	if (ev)
-		real_ev = ev;
+	if (opt_ev)
+		ev = opt_ev;
 	else {
 		CORBA_exception_init (&tmp_ev);
-		real_ev = &tmp_ev;
+		ev = &tmp_ev;
 	}
 
-	ret = Bonobo_UIContainer_exists (container, path, real_ev);
+	ret = Bonobo_UIContainer_exists (container, path, ev);
 
-	if (BONOBO_EX (real_ev)) {
+	if (BONOBO_EX (ev)) {
 		ret = FALSE;
-		if (!ev)
+		if (!opt_ev)
 			g_warning ("Serious exception on path_exists '$%s'",
-				   bonobo_exception_get_text (real_ev));
+				   bonobo_exception_get_text (ev));
 	}
 
-	if (!ev)
+	if (!opt_ev)
 		CORBA_exception_free (&tmp_ev);
 
 	return ret;

@@ -357,6 +357,9 @@ main (int argc, char **argv)
 
 	bonobo_ui_component_set_translate (componentb, "/status", statusa, &ev);
 
+	g_assert (bonobo_ui_component_get_prop (
+		componentb, "/status/main", "non-existant", NULL) == NULL);
+
 	bonobo_ui_component_set_translate (componenta, "/", simplea, &ev);
 
 	bonobo_ui_component_set_translate (componentb, "/",

@@ -1,3 +1,22 @@
+libbonoboui 1.106.0
+
+	* Add exception environments where missing (Me, Federico)
+	* Plug / Socket / Control / ControlFrame rewrite (Me)
+		+ cleaner, quicker, smaller, leaks killed
+		+ sizes before realizing
+		+ documented; doc/control.txt
+		+ unfinished.
+	* Use GConf not gnome-preferences (Me)
+	* Type name standardization (Seth Nickell)
+	* glade module (Jacob)
+	* Bonobo UI hello world re-written (Me)
+	* Method doc fixage (Havoc)
+	* Parallel install fixage (Abel Cheung, Havoc)
+	* Regression tests
+		+ added control / frame tests
+		+ (async) moniker test updates
+	* build fixage (Jacob)
+
 libbonoboui 1.103
 
 	* Bug fixes
