@@ -159,66 +159,12 @@ add_text_cmd (GtkWidget *widget, Application *app)
 
 /*
  * These functions handle the progressive transmission of data
- * to the text/plain component.  */
-
-/*
- * Just a quick struct to pass to the timeout function which sends a
- * new line to the text/plain component.
+ * to the text/plain component.
  */
 struct progressive_timeout {
 	GNOME_ProgressiveDataSink psink;
-	GNOME_SimpleDataSource ssource;
 	FILE *f;
-
-	char *outqueue;
-	size_t outqueue_sz;
 };
-
-/*
- * This is the GNOME::SimpleDataSource:pop_data method implementation.
- */
-static int
-ssource_pop_data (GnomeSimpleDataSource *ssource,
-		  const CORBA_long count,
-		  GNOME_SimpleDataSource_iobuf **buffer,
-		  void *data)
-{
-	struct progressive_timeout *tmt = (struct progressive_timeout *) data;
-	CORBA_octet *outbuff;
-
-	*buffer = GNOME_SimpleDataSource_iobuf__alloc ();
-	CORBA_sequence_set_release (*buffer, TRUE);
-
-	outbuff = CORBA_sequence_CORBA_octet_allocbuf (count);
-
-	memcpy (outbuff, tmt->outqueue, count);
-
-	(*buffer)->_buffer = outbuff;
-	(*buffer)->_length = count;
-
-	memmove (tmt->outqueue, tmt->outqueue + count,
-		 tmt->outqueue_sz - count);
-	tmt->outqueue_sz -= count;
-
-	if (tmt->outqueue_sz == 0)
-	{
-		g_free (tmt->outqueue);
-		tmt->outqueue = NULL;
-	}
-	else
-		tmt->outqueue = g_realloc (tmt->outqueue, tmt->outqueue_sz);
-
-	return 0;
-} /* ssource_pop_data */
-
-static CORBA_long
-ssource_remaining_data (GnomeSimpleDataSource *ssource,
-			void *data)
-{
-	struct progressive_timeout *tmt = (struct progressive_timeout *) data;
-
-	return (CORBA_long) tmt->outqueue_sz;
-} /* ssource_remaining_data */
 
 /*
  * Send a new line to the text/plain component.
@@ -227,28 +173,24 @@ static gboolean
 timeout_next_line (gpointer data)
 {
 	struct progressive_timeout *tmt = (struct progressive_timeout *) data;
+  
+	GNOME_ProgressiveDataSink_iobuf *buffer;
 	char line[1024];
 	int line_len;
 	
 	if (fgets (line, sizeof (line), tmt->f) == NULL)
-	{
-		if (tmt->outqueue != NULL)
-			g_free (tmt->outqueue);
-		g_free (tmt->outqueue);
-
-		return FALSE;
-	}
+	  return FALSE;
 
 	line_len = strlen (line);
 
-	tmt->outqueue = g_realloc (tmt->outqueue,
-				   tmt->outqueue_sz + line_len);
+	buffer = GNOME_ProgressiveDataSink_iobuf__alloc ();
+	CORBA_sequence_set_release (buffer, TRUE);
 
-	memcpy (tmt->outqueue + tmt->outqueue_sz, line, line_len);
-	tmt->outqueue_sz += line_len;
+	buffer->_length = line_len;
+	buffer->_buffer = CORBA_sequence_CORBA_octet_allocbuf (line_len);
+	memcpy (buffer->_buffer, line, line_len);
 
-	GNOME_ProgressiveDataSink_add_data (tmt->psink, tmt->outqueue_sz,
-					    tmt->ssource, &ev);
+	GNOME_ProgressiveDataSink_add_data (tmt->psink, buffer, &ev);
 
 	return TRUE;
 } /* timeout_add_more_data */
@@ -260,7 +202,6 @@ timeout_next_line (gpointer data)
 static void
 send_text_cmd (GtkWidget *widget, Application *app)
 {
-	GnomeSimpleDataSource *ssource;
 	GNOME_ProgressiveDataSink psink;
 	struct progressive_timeout *tmt;
 	FILE *f;
@@ -282,15 +223,6 @@ send_text_cmd (GtkWidget *widget, Application *app)
 
 	tmt = g_new0 (struct progressive_timeout, 1);
 
-	ssource = gnome_simple_data_source_new (ssource_pop_data,
-						NULL, /* remaining_data */
-						tmt);
-
-	if (ssource == NULL){
-		printf ("I could not create a GnomeSimpleDataSource!\n");
-		return;
-	}
-
 	GNOME_ProgressiveDataSink_start (psink, &ev);
 
 	CORBA_exception_free (&ev);
@@ -300,10 +232,8 @@ send_text_cmd (GtkWidget *widget, Application *app)
 		printf ("I could not open /usr/dict/words!\n");
 		return;
 	}
-
 	
 	tmt->psink = psink;
-	tmt->ssource = (GNOME_SimpleDataSource) GNOME_OBJECT (ssource)->object;
 	tmt->f = f;
 	
 	g_timeout_add (500, timeout_next_line, (gpointer) tmt);

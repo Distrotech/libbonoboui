@@ -66,7 +66,6 @@ libbonobo_la_SOURCES =			\
 	gnome-persist-stream.c		\
 	gnome-persist.c			\
 	gnome-progressive.c		\
-	gnome-simple-source.c		\
 	gnome-storage.c			\
 	gnome-storage-fs.c		\
 	gnome-stream.c			\
@@ -102,7 +101,6 @@ libbonoboinclude_HEADERS =		\
 	gnome-persist-stream.h		\
 	gnome-persist.h			\
 	gnome-progressive.h		\
-	gnome-simple-source.h		\
 	gnome-storage.h			\
 	gnome-storage-fs.h		\
 	gnome-stream.h			\

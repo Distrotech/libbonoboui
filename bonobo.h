@@ -38,7 +38,6 @@
 #include <bonobo/gnome-persist-stream.h>
 
 #include <bonobo/gnome-progressive.h>
-#include <bonobo/gnome-simple-source.h>
 
 #include <bonobo/gnome-storage.h>
 
