@@ -1,3 +1,7 @@
+2003-04-29  Christian Rose  <menthos@menthos.com>
+
+	* sv.po: Updated Swedish translation.
+
 2003-04-21  Michael Meeks  <michael@ximian.com>
 
 	* POTFILES.skip: ignore sample-container-ui.xml
@@ -35,7 +39,7 @@
 
 2003-02-09  Christian Rose  <menthos@menthos.com>
 
-	* po/kn.po: Added Kannada translation by
+	* kn.po: Added Kannada translation by
 	Pramod <rpramod@postmaster.co.uk>.
 
 2003-02-07  Fatih Demir <kabalak@gtranslator.org>
