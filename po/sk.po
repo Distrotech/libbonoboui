@@ -5,32 +5,40 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2002-03-22 10:10+0100\n"
-"PO-Revision-Date: 2002-03-22 10:23+0100\n"
+"POT-Creation-Date: 2002-03-27 07:17+0100\n"
+"PO-Revision-Date: 2002-03-27 07:24+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-l18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bonobo/bonobo-dock-item.c:192 bonobo/bonobo-dock-item.c:193
+#: bonobo/bonobo-dock-item.c:284 bonobo/bonobo-dock-item.c:285
 msgid "Shadow type"
 msgstr "Typ tieòa"
 
-#: bonobo/bonobo-dock-item.c:203 bonobo/bonobo-dock-item.c:204
-#: bonobo/bonobo-ui-toolbar.c:1089 bonobo/bonobo-ui-toolbar.c:1090
+#: bonobo/bonobo-dock-item.c:295 bonobo/bonobo-dock-item.c:296
+#: bonobo/bonobo-ui-toolbar.c:1091 bonobo/bonobo-ui-toolbar.c:1092
 msgid "Orientation"
 msgstr "Orientácia"
 
-#: bonobo/bonobo-dock-item.c:214 bonobo/bonobo-dock-item.c:215
-#: bonobo/bonobo-ui-toolbar.c:1108 bonobo/bonobo-ui-toolbar.c:1109
+#: bonobo/bonobo-dock-item.c:306 bonobo/bonobo-dock-item.c:307
+#: bonobo/bonobo-ui-toolbar.c:1110 bonobo/bonobo-ui-toolbar.c:1111
 msgid "Preferred width"
 msgstr "Preferovaná ¹írka"
 
-#: bonobo/bonobo-dock-item.c:223 bonobo/bonobo-dock-item.c:224
-#: bonobo/bonobo-ui-toolbar.c:1117 bonobo/bonobo-ui-toolbar.c:1118
+#: bonobo/bonobo-dock-item.c:315 bonobo/bonobo-dock-item.c:316
+#: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Preferred height"
 msgstr "Preferovaná vý¹ka"
+
+#: bonobo/bonobo-dock-item-grip.c:236
+msgid "Dock the toolbar"
+msgstr "Zaparkova» li¹tu nástrojov"
+
+#: bonobo/bonobo-dock-item-grip.c:237
+msgid "Un dock the toolbar"
+msgstr "Oddeli» li¹tu nástrojov"
 
 #: bonobo/bonobo-file-selector-util.c:366
 msgid "Select a file to open"
@@ -196,11 +204,11 @@ msgstr "kontajner UI corba"
 msgid "The User interface container"
 msgstr "Kontajner pou¾ívateµského rozhrania"
 
-#: bonobo/bonobo-ui-toolbar.c:1099
+#: bonobo/bonobo-ui-toolbar.c:1101
 msgid "is floating"
 msgstr "je plávajúca"
 
-#: bonobo/bonobo-ui-toolbar.c:1100
+#: bonobo/bonobo-ui-toolbar.c:1102
 msgid "whether the toolbar is floating"
 msgstr "èi je li¹ta nástrojov plávajúca"
 
@@ -285,7 +293,7 @@ msgstr "MODUL"
 msgid "GTK+"
 msgstr "GTK+"
 
-#: bonobo/bonobo-ui-main.c:187
+#: bonobo/bonobo-ui-main.c:188
 msgid "Bonobo GUI support"
 msgstr "Podpora Bonobo GUI"
 
