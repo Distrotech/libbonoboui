@@ -385,10 +385,13 @@ static void
 set_remote_window (GtkWidget *socket, GnomeViewFrame *view_frame)
 {
 	GNOME_View view = gnome_view_frame_get_view (view_frame);
+	GNOME_Control_windowid id;
 	CORBA_Environment ev;
 
 	CORBA_exception_init (&ev);
-	GNOME_View_set_window (view, GDK_WINDOW_XWINDOW (socket->window), &ev);
+	id = gnome_control_windowid_from_x11 (GDK_WINDOW_XWINDOW (socket->window));
+	GNOME_View_set_window (view, id, &ev);
+	g_free (id);
 	if (ev._major != CORBA_NO_EXCEPTION)
 		gnome_object_check_env (GNOME_OBJECT (view_frame), view, &ev);
 

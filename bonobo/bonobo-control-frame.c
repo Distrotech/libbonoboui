@@ -89,6 +89,7 @@ gnome_control_frame_set_remote_window (GtkWidget *socket, GnomeControlFrame *con
 {
 	GNOME_Control control = gnome_control_frame_get_control (control_frame);
 	CORBA_Environment ev;
+	GNOME_Control_windowid id;
 
 	/*
 	 * If we are not yet bound to a remote control, don't do
@@ -102,7 +103,9 @@ gnome_control_frame_set_remote_window (GtkWidget *socket, GnomeControlFrame *con
 	 * remote Control.
 	 */
 	CORBA_exception_init (&ev);
-	GNOME_Control_set_window (control, GDK_WINDOW_XWINDOW (socket->window), &ev);
+	id = gnome_control_windowid_from_x11 (GDK_WINDOW_XWINDOW (socket->window));
+	GNOME_Control_set_window (control, id, &ev);
+	g_free (id);
 	if (ev._major != CORBA_NO_EXCEPTION)
 		gnome_object_check_env (GNOME_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);

@@ -48,6 +48,7 @@ void		         gnome_control_set_property_bag       (GnomeControl *control,
 GnomePropertyBag        *gnome_control_get_property_bag       (GnomeControl *control);
 GnomePropertyBagClient  *gnome_control_get_ambient_properties (GnomeControl *control);
 
+GNOME_Control_windowid   gnome_control_windowid_from_x11      (guint32 x11_id);
 
 POA_GNOME_Control__epv *gnome_control_get_epv		      (void);
 

@@ -9,6 +9,7 @@
  * Copyright 1999 Helix Code, Inc.
  */
 #include <config.h>
+#include <stdlib.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkplug.h>
@@ -33,6 +34,58 @@ struct _GnomeControlPrivate {
 
 	GnomePropertyBag *propbag;
 };
+
+/**
+ * window_id_demangle:
+ * @id: CORBA_char *
+ * 
+ * De-mangle a window id string,
+ * fields are separated by ':' character,
+ * currently only the first field is used.
+ * 
+ * Return value: the X11 window id.
+ **/
+inline static guint32
+window_id_demangle (GNOME_Control_windowid id)
+{
+	guint32 x11_id;
+	char **elements;
+	
+/*	printf ("ID string '%s'\n", id);*/
+
+	elements = g_strsplit (id, ":", -1);
+	if (elements && elements [0])
+		x11_id = strtol (elements [0], NULL, 10);
+	else {
+		g_warning ("Serious X id mangling error");
+		x11_id = 0;
+	}
+	g_strfreev (elements);
+
+/*	printf ("x11 : %d\n", x11_id);*/
+
+	return x11_id;
+}
+
+/**
+ * gnome_control_windowid_from_x11:
+ * @x11_id: the x11 window id.
+ * 
+ * This mangles the X11 name into the ':' delimited
+ * string format "X-id: ..."
+ * 
+ * Return value: the string; free after use.
+ **/
+GNOME_Control_windowid
+gnome_control_windowid_from_x11 (guint32 x11_id)
+{
+	CORBA_char *str;
+
+	str = g_strdup_printf ("%d", x11_id);
+
+/*	printf ("Mangled %d to '%s'\n", x11_id, str);*/
+	return str;
+}
 
 /*
  * This callback is invoked when the plug is unexpectedly destroyed.
@@ -78,9 +131,12 @@ impl_GNOME_Control_set_window (PortableServer_Servant servant,
 			       GNOME_Control_windowid id,
 			       CORBA_Environment *ev)
 {
+	guint32 x11_id;
 	GnomeControl *control = GNOME_CONTROL (gnome_object_from_servant (servant));
 
-	control->priv->plug = gtk_plug_new (id);
+	x11_id = window_id_demangle (id);
+
+	control->priv->plug = gtk_plug_new (x11_id);
 	control->priv->plug_destroy_id = gtk_signal_connect (
 		GTK_OBJECT (control->priv->plug), "destroy_event",
 		GTK_SIGNAL_FUNC (gnome_control_plug_destroy_cb), control);

@@ -718,7 +718,7 @@ static GnomeUIInfo container_image_pdf_menu [] = {
 
 static GnomeUIInfo container_gnumeric_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
-		N_("Add a new Gnumeric instance trough monikers"),
+		N_("Add a new Gnumeric instance through monikers"),
 		NULL, add_gnumeric_cmd),
 	GNOMEUIINFO_END
 };
