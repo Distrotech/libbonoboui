@@ -58,23 +58,43 @@ onto it, effecively forcing a certain look.
 </para>
 
 
-<!-- ##### TYPEDEF BonoboUIEngineClass ##### -->
+<!-- ##### FUNCTION bonobo_ui_engine_deregister_dead_components ##### -->
 <para>
 
 </para>
 
+@engine: 
 
-<!-- ##### ENUM BonoboUIError ##### -->
+
+<!-- ##### FUNCTION bonobo_ui_engine_deregister_component_by_ref ##### -->
 <para>
 
 </para>
 
-@BONOBO_UI_ERROR_OK: 
-@BONOBO_UI_ERROR_BAD_PARAM: 
-@BONOBO_UI_ERROR_INVALID_PATH: 
-@BONOBO_UI_ERROR_INVALID_XML: 
+@engine: 
+@ref: 
 
-<!-- ##### FUNCTION bonobo_ui_engine_construct ##### -->
+
+<!-- ##### FUNCTION bonobo_ui_engine_deregister_component ##### -->
+<para>
+
+</para>
+
+@engine: 
+@name: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_register_component ##### -->
+<para>
+
+</para>
+
+@engine: 
+@name: 
+@component: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_get_component_names ##### -->
 <para>
 
 </para>
@@ -83,11 +103,13 @@ onto it, effecively forcing a certain look.
 @Returns: 
 
 
-<!-- ##### FUNCTION bonobo_ui_engine_new ##### -->
+<!-- ##### FUNCTION bonobo_ui_engine_get_component ##### -->
 <para>
 
 </para>
 
+@engine: 
+@name: 
 @Returns: 
 
 
@@ -101,6 +123,98 @@ onto it, effecively forcing a certain look.
 
 
 <!-- ##### FUNCTION bonobo_ui_engine_config_get_path ##### -->
+<para>
+
+</para>
+
+@engine: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_set_ui_container ##### -->
+<para>
+
+</para>
+
+@engine: 
+@ui_container: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_get_ui_container ##### -->
+<para>
+
+</para>
+
+@engine: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_freeze ##### -->
+<para>
+
+</para>
+
+@engine: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_thaw ##### -->
+<para>
+
+</para>
+
+@engine: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_update ##### -->
+<para>
+
+</para>
+
+@engine: 
+
+
+<!-- ##### ENUM BonoboUIError ##### -->
+<para>
+
+</para>
+
+@BONOBO_UI_ERROR_OK: 
+@BONOBO_UI_ERROR_BAD_PARAM: 
+@BONOBO_UI_ERROR_INVALID_PATH: 
+@BONOBO_UI_ERROR_INVALID_XML: 
+
+<!-- ##### STRUCT BonoboUIEnginePrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF BonoboUIEngineClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_construct ##### -->
+<para>
+
+</para>
+
+@engine: 
+@view: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_new ##### -->
+<para>
+
+</para>
+
+@view: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_get_view ##### -->
 <para>
 
 </para>
@@ -136,20 +250,13 @@ onto it, effecively forcing a certain look.
 @Returns: 
 
 
-<!-- ##### FUNCTION bonobo_ui_engine_update ##### -->
-<para>
-
-</para>
-
-@engine: 
-
-
 <!-- ##### FUNCTION bonobo_ui_engine_update_node ##### -->
 <para>
 
 </para>
 
 @engine: 
+@sync: 
 @node: 
 
 
@@ -191,6 +298,31 @@ onto it, effecively forcing a certain look.
 @engine: 
 @widget: 
 @node: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_xml_set_prop ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@property: 
+@value: 
+@component: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_engine_xml_get_prop ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@prop: 
+@invalid_path: 
+@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_ui_engine_prune_widget_info ##### -->
@@ -310,6 +442,16 @@ onto it, effecively forcing a certain look.
 @node: 
 
 
+<!-- ##### FUNCTION bonobo_ui_engine_widget_set ##### -->
+<para>
+
+</para>
+
+@engine: 
+@path: 
+@widget: 
+
+
 <!-- ##### FUNCTION bonobo_ui_engine_stamp_root ##### -->
 <para>
 
@@ -395,61 +537,6 @@ onto it, effecively forcing a certain look.
 @node: 
 
 
-<!-- ##### FUNCTION bonobo_ui_engine_deregister_dead_components ##### -->
-<para>
-
-</para>
-
-@engine: 
-
-
-<!-- ##### FUNCTION bonobo_ui_engine_deregister_component_by_ref ##### -->
-<para>
-
-</para>
-
-@engine: 
-@ref: 
-
-
-<!-- ##### FUNCTION bonobo_ui_engine_deregister_component ##### -->
-<para>
-
-</para>
-
-@engine: 
-@name: 
-
-
-<!-- ##### FUNCTION bonobo_ui_engine_register_component ##### -->
-<para>
-
-</para>
-
-@engine: 
-@name: 
-@component: 
-
-
-<!-- ##### FUNCTION bonobo_ui_engine_get_component_names ##### -->
-<para>
-
-</para>
-
-@engine: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_engine_get_component ##### -->
-<para>
-
-</para>
-
-@engine: 
-@name: 
-@Returns: 
-
-
 <!-- ##### FUNCTION bonobo_ui_engine_xml_get ##### -->
 <para>
 
@@ -518,28 +605,64 @@ onto it, effecively forcing a certain look.
 @Returns: 
 
 
-<!-- ##### FUNCTION bonobo_ui_engine_set_ui_container ##### -->
+<!-- ##### FUNCTION bonobo_ui_engine_exec_verb ##### -->
 <para>
 
 </para>
 
 @engine: 
-@ui_container: 
+@cname: 
+@ev: 
 
 
-<!-- ##### FUNCTION bonobo_ui_engine_freeze ##### -->
+<!-- ##### FUNCTION bonobo_ui_engine_ui_event ##### -->
 <para>
 
 </para>
 
 @engine: 
+@id: 
+@type: 
+@state: 
+@ev: 
 
 
-<!-- ##### FUNCTION bonobo_ui_engine_thaw ##### -->
+<!-- ##### SIGNAL BonoboUIEngine::add-hint ##### -->
 <para>
 
 </para>
 
-@engine: 
+@bonobouiengine: the object which received the signal.
+@arg1: 
 
+<!-- ##### SIGNAL BonoboUIEngine::destroy ##### -->
+<para>
+
+</para>
+
+@bonobouiengine: the object which received the signal.
+
+<!-- ##### SIGNAL BonoboUIEngine::emit-event-on ##### -->
+<para>
+
+</para>
+
+@bonobouiengine: the object which received the signal.
+@arg1: 
+@arg2: 
+
+<!-- ##### SIGNAL BonoboUIEngine::emit-verb-on ##### -->
+<para>
+
+</para>
+
+@bonobouiengine: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL BonoboUIEngine::remove-hint ##### -->
+<para>
+
+</para>
+
+@bonobouiengine: the object which received the signal.
 

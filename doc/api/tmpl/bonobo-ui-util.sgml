@@ -38,23 +38,13 @@ deprecated by the various tools to do this from dynamic files.
 @Returns: 
 
 
-<!-- ##### FUNCTION bonobo_ui_util_xml_get_icon_pixbuf ##### -->
+<!-- ##### FUNCTION bonobo_ui_util_xml_get_icon_widget ##### -->
 <para>
 
 </para>
 
 @node: 
-@prepend_menu: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_xml_get_icon_pixmap_widget ##### -->
-<para>
-
-</para>
-
-@node: 
-@prepend_menu: 
+@icon_size: 
 @Returns: 
 
 
@@ -67,33 +57,6 @@ deprecated by the various tools to do this from dynamic files.
 @pixbuf: 
 
 
-<!-- ##### FUNCTION bonobo_ui_util_xml_set_pix_xpm ##### -->
-<para>
-
-</para>
-
-@node: 
-@xpm: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_xml_set_pix_stock ##### -->
-<para>
-
-</para>
-
-@node: 
-@name: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_xml_set_pix_fname ##### -->
-<para>
-
-</para>
-
-@node: 
-@name: 
-
-
 <!-- ##### FUNCTION bonobo_ui_util_build_help_menu ##### -->
 <para>
 
@@ -103,84 +66,6 @@ deprecated by the various tools to do this from dynamic files.
 @app_prefix: 
 @app_name: 
 @parent: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_build_accel ##### -->
-<para>
-
-</para>
-
-@accelerator_key: 
-@accelerator_mods: 
-@verb: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_new_menu ##### -->
-<para>
-
-</para>
-
-@submenu: 
-@name: 
-@label: 
-@tip: 
-@verb: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_new_placeholder ##### -->
-<para>
-
-</para>
-
-@name: 
-@top: 
-@bottom: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_set_radiogroup ##### -->
-<para>
-
-</para>
-
-@node: 
-@group_name: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_set_toggle ##### -->
-<para>
-
-</para>
-
-@node: 
-@id: 
-@init_state: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_new_std_toolbar ##### -->
-<para>
-
-</para>
-
-@name: 
-@label: 
-@tip: 
-@verb: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_util_new_toggle_toolbar ##### -->
-<para>
-
-</para>
-
-@name: 
-@label: 
-@tip: 
-@id: 
-@Returns: 
 
 
 <!-- ##### FUNCTION bonobo_ui_util_get_ui_fname ##### -->
@@ -201,14 +86,6 @@ deprecated by the various tools to do this from dynamic files.
 @node: 
 
 
-<!-- ##### FUNCTION bonobo_ui_util_fixup_icons ##### -->
-<para>
-
-</para>
-
-@node: 
-
-
 <!-- ##### FUNCTION bonobo_ui_util_fixup_help ##### -->
 <para>
 
@@ -218,6 +95,14 @@ deprecated by the various tools to do this from dynamic files.
 @node: 
 @app_prefix: 
 @app_name: 
+
+
+<!-- ##### FUNCTION bonobo_ui_util_fixup_icons ##### -->
+<para>
+
+</para>
+
+@node: 
 
 
 <!-- ##### FUNCTION bonobo_ui_util_new_ui ##### -->
@@ -241,6 +126,7 @@ deprecated by the various tools to do this from dynamic files.
 @app_prefix: 
 @file_name: 
 @app_name: 
+@opt_ev: 
 
 
 <!-- ##### FUNCTION bonobo_ui_util_set_pixbuf ##### -->
@@ -251,6 +137,7 @@ deprecated by the various tools to do this from dynamic files.
 @component: 
 @path: 
 @pixbuf: 
+@opt_ev: 
 
 
 <!-- ##### FUNCTION bonobo_ui_util_accel_name ##### -->
@@ -273,22 +160,27 @@ deprecated by the various tools to do this from dynamic files.
 @accelerator_mods: 
 
 
-<!-- ##### FUNCTION bonobo_ui_util_decode_str ##### -->
+<!-- ##### MACRO bonobo_ui_util_decode_str ##### -->
 <para>
 
 </para>
 
+@s: 
+@e: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @str: 
 @err: 
-@Returns: 
 
 
-<!-- ##### FUNCTION bonobo_ui_util_encode_str ##### -->
+<!-- ##### MACRO bonobo_ui_util_encode_str ##### -->
 <para>
 
 </para>
 
-@str: 
+@s: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@str: 
 
 

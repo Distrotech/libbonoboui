@@ -132,6 +132,9 @@ depending on libxml inadvertantly.
 
 </para>
 
+@after: 
+@new_before: 
+<!-- # Unused Parameters # -->
 @sibling: 
 @prev_sibling: 
 
@@ -252,6 +255,14 @@ depending on libxml inadvertantly.
 @str: 
 
 
+<!-- ##### FUNCTION bonobo_ui_node_strip ##### -->
+<para>
+
+</para>
+
+@node: 
+
+
 <!-- ##### FUNCTION bonobo_ui_node_to_string ##### -->
 <para>
 
@@ -278,13 +289,5 @@ depending on libxml inadvertantly.
 
 @filename: 
 @Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_node_strip ##### -->
-<para>
-
-</para>
-
-@node: 
 
 

@@ -35,7 +35,13 @@ the user to select.
 
 </para>
 
-<!-- ##### TYPEDEF BonoboSelector ##### -->
+<!-- ##### STRUCT BonoboSelectorPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboSelector ##### -->
 <para>
 
 </para>
@@ -47,16 +53,6 @@ the user to select.
 </para>
 
 
-<!-- ##### FUNCTION bonobo_selector_new ##### -->
-<para>
-
-</para>
-
-@title: 
-@interfaces_required: 
-@Returns: 
-
-
 <!-- ##### FUNCTION bonobo_selector_construct ##### -->
 <para>
 
@@ -65,6 +61,16 @@ the user to select.
 @sel: 
 @title: 
 @selector: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_selector_new ##### -->
+<para>
+
+</para>
+
+@title: 
+@interfaces_required: 
 @Returns: 
 
 
@@ -105,6 +111,13 @@ the user to select.
 @Returns: 
 
 
+<!-- ##### SIGNAL BonoboSelector::cancel ##### -->
+<para>
+
+</para>
+
+@bonoboselector: the object which received the signal.
+
 <!-- ##### SIGNAL BonoboSelector::ok ##### -->
 <para>
 
@@ -112,10 +125,8 @@ the user to select.
 
 @bonoboselector: the object which received the signal.
 
-<!-- ##### SIGNAL BonoboSelector::cancel ##### -->
+<!-- ##### ARG BonoboSelector:interfaces-required ##### -->
 <para>
 
 </para>
-
-@bonoboselector: the object which received the signal.
 

@@ -55,7 +55,7 @@ cause unpredictable consequences, the most likely
 consequence being that the plug will appear as a 
 separate toplevel window. You can check if the plug
 has been created by examining the
-<StructField>plug_window</StructField> field of the
+<structfield>plug_window</structfield> field of the
 #BonoboSocket structure. If this field is non-NULL, 
 then the plug has been succesfully created inside
 of the socket.
@@ -88,22 +88,24 @@ as between a #BonoboPlug and a #BonoboSocket.
 </variablelist>
 </para>
 
-<!-- ##### TYPEDEF BonoboSocket ##### -->
+<!-- ##### STRUCT BonoboSocket ##### -->
 <para>
-The #GtkEditable structure contains the following field.
-(This field should be considered read-only. It should
-never be set by an application.)
+    The #GtkEditable structure contains the following field.
+    (This field should be considered read-only. It should
+    never be set by an application.)
 
-<informaltable pgwide=1 frame="none" role="struct">
-<tgroup cols="2"><colspec colwidth="2*"><colspec colwidth="8*">
-<tbody>
-
-<row>
-<entry>#GdkWindow *plug_window;</entry>
-<entry>the window embedded inside this #GtkSocket.</entry>
-</row>
-
-</tbody></tgroup></informaltable>
+    <informaltable pgwide="1" frame="none" role="struct">
+	<tgroup cols="2">
+	    <colspec colwidth="2*"/> <colspec colwidth="8*"/>
+	    <tbody>
+		<row>
+		    <entry>#GdkWindow *plug_window;</entry>
+		    <entry>the window embedded inside this #GtkSocket.</entry>
+		</row>
+		
+	    </tbody>
+	</tgroup>
+    </informaltable>
 </para>
 
 
@@ -119,23 +121,5 @@ never be set by an application.)
 </para>
 
 @Returns: 
-
-
-<!-- ##### FUNCTION bonobo_socket_set_control_frame ##### -->
-<para>
-
-</para>
-
-@socket: 
-@frame: 
-
-
-<!-- ##### FUNCTION bonobo_socket_steal ##### -->
-<para>
-
-</para>
-
-@socket: 
-@wid: 
 
 

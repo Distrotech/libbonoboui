@@ -104,40 +104,24 @@ Simplified embedding of widgets in Bonobo.
 </para>
 
 
+<!-- ##### STRUCT BonoboWidgetPrivate ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### TYPEDEF BonoboWidgetClass ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### FUNCTION bonobo_widget_get_server ##### -->
+<!-- ##### FUNCTION bonobo_widget_get_objref ##### -->
 <para>
 
 </para>
 
 @bw: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_widget_construct_control ##### -->
-<para>
-
-</para>
-
-@bw: 
-@moniker: 
-@uic: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_widget_construct_control_from_objref ##### -->
-<para>
-
-</para>
-
-@bw: 
-@control: 
-@uic: 
 @Returns: 
 
 
@@ -175,61 +159,58 @@ Simplified embedding of widgets in Bonobo.
 @Returns: 
 
 
-<!-- ##### FUNCTION bonobo_widget_new_subdoc ##### -->
+<!-- ##### FUNCTION bonobo_widget_get_ui_container ##### -->
+<para>
+
+</para>
+
+@bw: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION BonoboWidgetAsyncFn ##### -->
+<para>
+
+</para>
+
+@widget: 
+@ev: 
+@user_data: 
+
+
+<!-- ##### FUNCTION bonobo_widget_new_control_async ##### -->
 <para>
 
 </para>
 
 @moniker: 
 @uic: 
+@fn: 
+@user_data: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@object_desc: 
-@uih: 
 
 
-<!-- ##### FUNCTION bonobo_widget_get_container ##### -->
+<!-- ##### FUNCTION bonobo_widget_construct_control_from_objref ##### -->
 <para>
 
 </para>
 
 @bw: 
+@control: 
+@uic: 
+@ev: 
 @Returns: 
 
 
-<!-- ##### FUNCTION bonobo_widget_get_client_site ##### -->
+<!-- ##### FUNCTION bonobo_widget_construct_control ##### -->
 <para>
 
 </para>
 
 @bw: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_widget_get_view_frame ##### -->
-<para>
-
-</para>
-
-@bw: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_widget_get_uih ##### -->
-<para>
-
-</para>
-
-@bw: 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_widget_get_objref ##### -->
-<para>
-
-</para>
-
-@bw: 
+@moniker: 
+@uic: 
+@ev: 
 @Returns: 
 
 
@@ -251,5 +232,16 @@ Simplified embedding of widgets in Bonobo.
 @control: 
 @first_prop: 
 @Varargs: 
+
+
+<!-- ##### MACRO bonobo_widget_get_uih ##### -->
+<para>
+
+</para>
+
+@w: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@bw: 
 
 

@@ -23,7 +23,13 @@ Canvas Items.
    #BonoboCanvasComponent, #BonoboEmbeddable, #BonoboObjectClient.
 </para>
 
-<!-- ##### TYPEDEF BonoboCanvasItem ##### -->
+<!-- ##### STRUCT BonoboCanvasItemPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboCanvasItem ##### -->
 <para>
 
 </para>
@@ -46,14 +52,4 @@ Canvas Items.
 @x2: 
 @y2: 
 
-
-<!-- ##### ARG BonoboCanvasItem:corba-embeddable ##### -->
-<para>
-
-</para>
-
-<!-- ##### ARG BonoboCanvasItem:corba-ui-container ##### -->
-<para>
-
-</para>
 

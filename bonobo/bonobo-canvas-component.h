@@ -27,11 +27,12 @@ G_BEGIN_DECLS
 #define BONOBO_IS_CANVAS_COMPONENT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_CANVAS_COMPONENT))
 
 typedef struct _BonoboCanvasComponentPrivate BonoboCanvasComponentPrivate;
+typedef struct _BonoboCanvasComponent        BonoboCanvasComponent;
 
-typedef struct {
+struct _BonoboCanvasComponent {
 	BonoboObject base;
 	BonoboCanvasComponentPrivate *priv;
-} BonoboCanvasComponent;
+};
 
 typedef struct {
 	BonoboObjectClass parent_class;

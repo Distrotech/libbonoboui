@@ -16,6 +16,12 @@ of the code. No normal user should need to write his own synchronizer.
 
 </para>
 
+<!-- ##### STRUCT BonoboUISync ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### USER_FUNCTION BonoboUISyncStateFn ##### -->
 <para>
 
@@ -39,6 +45,18 @@ of the code. No normal user should need to write his own synchronizer.
 @pos: 
 @parent: 
 @Returns: 
+
+
+<!-- ##### STRUCT BonoboUISyncPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF BonoboUISyncClass ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### FUNCTION bonobo_ui_sync_construct ##### -->
@@ -207,6 +225,48 @@ of the code. No normal user should need to write his own synchronizer.
 @node: 
 @cmd_node: 
 @widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_sync_wrap_widget ##### -->
+<para>
+
+</para>
+
+@sync: 
+@custom_widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_sync_keys_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_sync_menu_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_sync_status_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION bonobo_ui_sync_toolbar_get_type ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 

@@ -1,3 +1,52 @@
+2003-01-22  Gustavo J. A. M. Carneiro  <gustavo@users.sourceforge.net>
+
+	* doc/api/tmpl/bonobo-item-container.sgml,
+	  doc/api/tmpl/bonobo-item-handler.sgml,
+	  doc/api/tmpl/bonobo-ui-toolbar-button-item.sgml,
+	  doc/api/tmpl/bonobo-ui-toolbar-icon.sgml,
+	  doc/api/tmpl/bonobo-ui-toolbar-item.sgml,
+	  doc/api/tmpl/bonobo-ui-toolbar-toggle-button-item.sgml,
+	  doc/api/tmpl/bonobo-win.sgml: Removed these files.
+
+	* doc/api/tmpl/bonobo-a11y.sgml,
+	  doc/api/tmpl/bonobo-file-selector-util.sgml,
+	  doc/api/tmpl/bonobo-property-control.sgml,
+	  doc/api/tmpl/bonobo-selector-widget.sgml,
+          doc/api/tmpl/bonobo-ui-config-widget.sgml,
+          doc/api/tmpl/bonobo-ui-engine-config.sgml,
+          doc/api/tmpl/bonobo-ui-main.sgml,
+          doc/api/tmpl/bonobo-ui-preferences.sgml,
+          doc/api/tmpl/bonobo-window.sgml,
+          doc/api/tmpl/bonobo-wrapper.sgml: Added these new template files.
+
+	* doc/api/tmpl/bonobo-socket.sgml: Some changes to convert from
+	SGML to XML.
+
+	* doc/api/libbonoboui-docs.sgml: Added the main documentation
+	file, based on bonobo-api.sgml, converted to XML and docbook
+	4.1.2.
+
+	* doc/api/libbonoboui.types: Added this file, with list of GObject
+	type's, for gtkdoc-scangobj.
+
+	* doc/api/Makefile.am: Replaced this entire makefile, based on
+	libbonobo's doc/api/Makefile.am.
+
+	* doc/Makefile.am (SUBDIRS): Enable recursion into the 'api'
+	directory, to build the api docs.
+
+	* configure.in: Added gtk-doc check and --enable argument; Write
+	doc/api/Makefile.
+
+	* doc/api/tmpl/bonobo-ui-component.sgml,
+	doc/api/tmpl/bonobo-ui-container.sgml: replaced #bonobo-ui-util
+	with an appropriate xref.
+
+	* bonobo/bonobo-window.h, bonobo/bonobo-selector.h,
+	bonobo/bonobo-canvas-item.h, bonobo/bonobo-canvas-component.h:
+	Split struct declaration from typedef, otherwise gtkdoc gets
+	confused.
+
 2003-01-22  Marius Andreiana <marius galuna.ro>
 
 	* configure.in: added 'ro' to ALL_LINGUAS

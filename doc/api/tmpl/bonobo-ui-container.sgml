@@ -39,10 +39,17 @@ Here is how your code should interact with the BonoboUIContainer
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-#BonoboUIComponent, #BonoboUIEngine, #BonoboWindow, #BonoboUISync, #bonobo-ui-util
+#BonoboUIComponent, #BonoboUIEngine, #BonoboWindow, #BonoboUISync,
+ <xref linkend="libbonoboui-bonobo-ui-util"/>
 </para>
 
-<!-- ##### TYPEDEF BonoboUIContainer ##### -->
+<!-- ##### STRUCT BonoboUIContainer ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboUIContainerPrivate ##### -->
 <para>
 
 </para>
@@ -54,30 +61,11 @@ Here is how your code should interact with the BonoboUIContainer
 </para>
 
 
-<!-- ##### FUNCTION bonobo_ui_container_construct ##### -->
-<para>
-
-</para>
-
-@container: 
-@corba_container: 
-@Returns: 
-
-
 <!-- ##### FUNCTION bonobo_ui_container_new ##### -->
 <para>
 
 </para>
 
-@Returns: 
-
-
-<!-- ##### FUNCTION bonobo_ui_container_get_engine ##### -->
-<para>
-
-</para>
-
-@container: 
 @Returns: 
 
 
@@ -90,16 +78,7 @@ Here is how your code should interact with the BonoboUIContainer
 @engine: 
 
 
-<!-- ##### FUNCTION bonobo_ui_container_set_win ##### -->
-<para>
-
-</para>
-
-@container: 
-@win: 
-
-
-<!-- ##### FUNCTION bonobo_ui_container_get_win ##### -->
+<!-- ##### FUNCTION bonobo_ui_container_get_engine ##### -->
 <para>
 
 </para>

@@ -32,7 +32,13 @@ pipe, to ensure synchronization between the X and CORBA transports.
    #BonoboSocket, #BonoboControlFrame.
 </para>
 
-<!-- ##### TYPEDEF BonoboPlug ##### -->
+<!-- ##### STRUCT BonoboPlug ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT BonoboPlugPrivate ##### -->
 <para>
 
 </para>
@@ -61,4 +67,9 @@ pipe, to ensure synchronization between the X and CORBA transports.
 @socket_id: 
 @Returns: 
 
+
+<!-- ##### ARG BonoboPlug:event-forwarding ##### -->
+<para>
+
+</para>
 
