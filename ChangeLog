@@ -1,5 +1,19 @@
 2002-05-14  Michael Meeks  <michael@ximian.com>
 
+	* bonobo/bonobo-ui-preferences.c (toolbar_styles):
+	update to handle "text" and "both_horiz"
+
+	* bonobo/bonobo-ui-sync-toolbar.c (parse_look): change
+	the 'text' -> 'both_horiz' and add the 'text' == text
+	only setting.
+
+	* doc/ui-xml.txt: update to reflect the changes.
+
+	* bonobo/bonobo-ui-toolbar.c (set_attributes_on_child): 
+	add a text only attribute.
+	
+2002-05-14  Michael Meeks  <michael@ximian.com>
+
 	* bonobo/bonobo-widget.c: update docs.
 
 2002-05-13  Balamurali Viswanathan <balamurali.viswanathan@wipro.com>

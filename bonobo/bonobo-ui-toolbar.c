@@ -137,6 +137,9 @@ set_attributes_on_child (BonoboUIToolbarItem *item,
 	case BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY:
 		bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_ICON_ONLY);
 		break;
+	case BONOBO_UI_TOOLBAR_STYLE_TEXT_ONLY:
+		bonobo_ui_toolbar_item_set_style (item, BONOBO_UI_TOOLBAR_ITEM_STYLE_TEXT_ONLY);
+		break;
 	default:
 		g_assert_not_reached ();
 	}

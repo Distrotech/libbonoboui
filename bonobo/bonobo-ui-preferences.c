@@ -20,9 +20,10 @@
 #define GLOBAL_INTERFACE_KEY "/desktop/gnome/interface"
 
 static GConfEnumStringPair toolbar_styles[] = {
-        { BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT, "text" },
-        { BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY, "icons" },
-        { BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT, "both" }
+        { BONOBO_UI_TOOLBAR_STYLE_TEXT_ONLY,      "text" },
+        { BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY,     "icons" },
+        { BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT, "both" },
+        { BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT,  "both_horiz" }
 };
 
 static GConfClient *client;
@@ -165,12 +166,10 @@ bonobo_ui_preferences_get_toolbar_style (void)
 				       NULL);
 	
 	if (str != NULL) {
-		gconf_string_to_enum(toolbar_styles,
-				     str,
-				     (gint*)&style);
-		g_free(str);
+		gconf_string_to_enum (toolbar_styles,
+				      str, (gint *)&style);
+		g_free (str);
 	}
-
 
 	return style;
 }

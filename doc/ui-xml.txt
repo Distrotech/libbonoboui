@@ -114,9 +114,9 @@ Verbs are actions to be taken when an item is activated.
 
 <dockitem>             - a dock item in a GnomeDock with a toolbar in it
  name="Foo"            - name to refer to dock item
- look="icon"           - lets you choose a toolbar style (text/icon/both)
+ look="icon"           - lets you choose a toolbar style (both/icon/text/both_horiz)
  hlook="text"          - lets you select a style for the horizontal case
- vlook="icon"          - ditto for the vertical case.
+ vlook="both"          - ditto for the vertical case.
  relief="none"         - button relief
  hidden="1/0"	       - whether the dockitem is hidden
 * The following items have effect only at dockitem creation.

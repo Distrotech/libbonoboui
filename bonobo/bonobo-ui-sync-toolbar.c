@@ -470,7 +470,10 @@ parse_look (const char *look)
 			return BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
 
 		if (!strcmp (look, "text"))
-			return BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT;	
+			return BONOBO_UI_TOOLBAR_STYLE_TEXT_ONLY;
+
+		if (!strcmp (look, "both_horiz"))
+			return BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT;
 	}
 
 	return bonobo_ui_preferences_get_toolbar_style ();
