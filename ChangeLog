@@ -1,3 +1,10 @@
+2002-05-13  Balamurali Viswanathan <balamurali.viswanathan@wipro.com>
+
+	* bonobo/bonobo-ui-init-gtk.c: pass the "screen"
+	argument onto gtk+
+
+	* configure.in: check for multi-head gdk.
+
 2002-05-13  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-socket.c (bonobo_socket_set_control_frame),
