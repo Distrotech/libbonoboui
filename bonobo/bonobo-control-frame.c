@@ -704,6 +704,7 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 {
 	CORBA_Environment ev;
 
+	g_return_if_fail (control != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
 
 	/*

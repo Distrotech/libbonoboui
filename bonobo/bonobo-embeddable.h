@@ -100,34 +100,34 @@ struct _GnomeVerb {
 	char *hint;
 };
 
-GtkType          bonobo_embeddable_get_type         (void);
+GtkType           bonobo_embeddable_get_type         (void);
 BonoboEmbeddable *bonobo_embeddable_new              (BonoboViewFactory  factory,
 						      void              *data);
 BonoboEmbeddable *bonobo_embeddable_new_canvas_item  (GnomeItemCreator item_factory,
-						    void *closure);
+						      void *closure);
 BonoboEmbeddable *bonobo_embeddable_construct        (BonoboEmbeddable *embeddable,
-						    Bonobo_Embeddable corba_embeddable,
-						    BonoboViewFactory factory,
-						    void *data);
+						      Bonobo_Embeddable corba_embeddable,
+						      BonoboViewFactory factory,
+						      void *data);
 BonoboEmbeddable *bonobo_embeddable_construct_full   (BonoboEmbeddable *embeddable,
-						    Bonobo_Embeddable corba_embeddable,
-						    BonoboViewFactory factory,
-						    void *factory_data,
-						    GnomeItemCreator item_factory,
-						    void *item_factory_data);
+						      Bonobo_Embeddable corba_embeddable,
+						      BonoboViewFactory factory,
+						      void *factory_data,
+						      GnomeItemCreator item_factory,
+						      void *item_factory_data);
 Bonobo_Embeddable bonobo_embeddable_corba_object_create (BonoboObject *object);
 
 void             bonobo_embeddable_add_verb         (BonoboEmbeddable *embeddable,
-						    const char *verb_name,
-						    const char *verb_label,
-						    const char *verb_hint);
+						     const char *verb_name,
+						     const char *verb_label,
+						     const char *verb_hint);
 void             bonobo_embeddable_add_verbs        (BonoboEmbeddable *embeddable,
-						    const GnomeVerb *verbs);
+						     const GnomeVerb *verbs);
 void             bonobo_embeddable_remove_verb      (BonoboEmbeddable *embeddable,
-						    const char *verb_name);
+						     const char *verb_name);
 void             bonobo_embeddable_set_view_factory (BonoboEmbeddable *embeddable,
-						    BonoboViewFactory factory,
-						    void *data);
+						     BonoboViewFactory factory,
+						     void *data);
 const GList	*bonobo_embeddable_get_verbs	   (BonoboEmbeddable *embeddable);
 
 

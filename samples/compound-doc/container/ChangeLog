@@ -1,3 +1,7 @@
+2000-07-03  Michael Meeks  <michael@helixcode.com>
+
+	* container-io.c (load_component_id_stream_read): update.
+
 2000-06-28  Michael Meeks  <michael@helixcode.com>
 
 	* container-menu.c (sample_app_file_menu): add a placeholder.

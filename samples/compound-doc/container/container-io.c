@@ -100,7 +100,6 @@ load_component_id_stream_read (Bonobo_Stream stream)
 {
 	Bonobo_Stream_iobuf *buffer;
 	CORBA_Environment    ev;
-	CORBA_long           bytes_read;
 	GString             *str;
 	char                *ans;
 
@@ -112,17 +111,21 @@ load_component_id_stream_read (Bonobo_Stream stream)
 	do {
 		int i;
 
-		bytes_read =
-		    Bonobo_Stream_read (stream, READ_CHUNK_SIZE, &buffer,
-					&ev);
-		for (i = 0; i < bytes_read && i < buffer->_length; i++)
+		Bonobo_Stream_read (stream, READ_CHUNK_SIZE, &buffer, &ev);
+		if (ev._major != CORBA_NO_EXCEPTION) {
+			CORBA_exception_free (&ev);
+			return NULL;
+		}			
+		for (i = 0; i < buffer->_length; i++)
 			g_string_append_c (str, buffer->_buffer [i]);
 
+		if (buffer->_length <= 0)
+			break;
 		CORBA_free (buffer);
 
-	} while (bytes_read > 0);
+	} while (1);
 #undef READ_CHUNK_SIZE
-
+	CORBA_free (buffer);
 	CORBA_exception_free (&ev);
 
 	ans = str->str;

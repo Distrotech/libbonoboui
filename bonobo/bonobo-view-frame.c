@@ -319,6 +319,7 @@ bonobo_view_frame_bind_to_view (BonoboViewFrame *view_frame, Bonobo_View view)
 	CORBA_Environment ev;
 
 	g_return_if_fail (view_frame != NULL);
+	g_return_if_fail (view != CORBA_OBJECT_NIL);
 	g_return_if_fail (BONOBO_IS_VIEW_FRAME (view_frame));
 
 	CORBA_exception_init (&ev);
