@@ -6,6 +6,7 @@ INCLUDES =                                              \
         -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(srcdir) -I$(top_srcdir) 			\
 	-I. 						\
+	-I$(top_builddir)				\
         -I$(includedir)                                 \
         $(GNOME_INCLUDEDIR)
 

@@ -4,7 +4,7 @@
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <gtk/gtkwidget.h>
-#include <bonobo/gnome-object.h>
+#include <bonobo/gnome-unknown.h>
 #include <bonobo/gnome-client-site.h>
 #include <bonobo/gnome-wrapper.h>
 

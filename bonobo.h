@@ -6,7 +6,7 @@
  */
 #include <bonobo/gtk-interfaces.h>
 
-#include <bonobo/gnome-object.h>
+#include <bonobo/gnome-unknown.h>
 
 #include <bonobo/gnome-bind-context.h>
 

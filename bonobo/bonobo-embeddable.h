@@ -4,7 +4,7 @@
 #include <libgnome/gnome-defs.h>
 #include <gtk/gtkobject.h>
 #include <bonobo/bonobo.h>
-#include <bonobo/gnome-object.h>
+#include <bonobo/gnome-unknown.h>
 #include <bonobo/gnome-view.h>
 
 BEGIN_GNOME_DECLS
