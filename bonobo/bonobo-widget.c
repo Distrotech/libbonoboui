@@ -51,6 +51,8 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmarshal.h>
 #include <bonobo/Bonobo.h>
+#include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-moniker-util.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-widget.h>
@@ -78,7 +80,6 @@ static BonoboWrapperClass *bonobo_widget_parent_class;
 static BonoboObjectClient *
 bonobo_widget_launch_component (const char *object_desc)
 {
-	Bonobo_Unknown *
 	BonoboObjectClient *server;
 	CORBA_Environment ev;
 
