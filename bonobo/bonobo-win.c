@@ -2451,10 +2451,20 @@ toolbar_sync_state (BonoboWindowPrivate *priv, BonoboUINode *node,
 static BonoboUIToolbarStyle
 parse_look (const char *look)
 {
-	if (!look || !strcmp (look, "both"))
-		return BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
-	else
-		return BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
+	if (look) {
+		if (!strcmp (look, "both"))
+			return BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT;
+
+		if (!strcmp (look, "icon"))
+			return BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
+
+		if (!strcmp (look, "text"))
+			return BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT;	
+	}
+
+	return gnome_preferences_get_toolbar_labels ()
+		? BONOBO_UI_TOOLBAR_STYLE_ICONS_AND_TEXT
+		: BONOBO_UI_TOOLBAR_STYLE_ICONS_ONLY;
 }
 
 static void
