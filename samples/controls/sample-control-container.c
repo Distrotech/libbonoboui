@@ -10,7 +10,7 @@
 #include <libgnorba/gnorba.h>
 #include <bonobo/gnome-bonobo.h>
 
-GList *property_list;
+GnomePropertyBagClient *pbc;
 
 #define CORBA_boolean__alloc() (CORBA_boolean *) CORBA_octet_allocbuf (sizeof (CORBA_boolean))
 
@@ -19,32 +19,26 @@ static void populate_property_list (GtkWidget *bw, GtkCList *clist);
 static void
 edit_property (GtkCList *clist, GdkEventButton *event, GnomeBonoboWidget *bw)
 {
-	GNOME_Property prop;
-	CORBA_Environment ev;
+	gchar *prop;
 	gint row, col;
-	CORBA_any *any, *newany;
-	CORBA_boolean *b;
+	GList *l;
+	CORBA_TypeCode tc;
 
 	if (event->button == 3) {
-		CORBA_exception_init (&ev);
 		gtk_clist_get_selection_info (clist, event->x, event->y,
 		                              &row, &col);
+		if (row < 0) return;
+		l = gnome_property_bag_client_get_property_names (pbc);
+		if (row > g_list_length (l) - 1) return;
 
 		/* Get the value of the property they clicked on. */
-		prop = g_list_nth_data (property_list, row);
-		any = GNOME_Property_get_value (prop, &ev);
-
+		prop = g_list_nth_data (l, row);
 		/* Change it appropriately. */
-		switch (any->_type->kind) {
+		tc = gnome_property_bag_client_get_property_type (pbc, prop);
+		switch (tc->kind) {
 		case CORBA_tk_boolean:
-			b = CORBA_boolean__alloc();
-			*b = ! *((CORBA_boolean *) any->_value);
-			newany = CORBA_any__alloc();
-			newany->_type = (CORBA_TypeCode) TC_boolean;
-			newany->_value = b;
-			CORBA_any_set_release (newany, TRUE);
-			GNOME_Property_set_value (prop, newany, &ev);
-			CORBA_free (newany);
+			gnome_property_bag_client_set_value_boolean (pbc, prop,
+				!gnome_property_bag_client_get_value_boolean (pbc, prop));
 			break;
 		default:
 			g_warning ("Cannot set_value this type of property yet, sorry.");
@@ -52,9 +46,7 @@ edit_property (GtkCList *clist, GdkEventButton *event, GnomeBonoboWidget *bw)
 			
 		}
 
-
-		CORBA_exception_free (&ev);
-
+		g_list_free (l);
 		/* Redraw the property list. */
 		gtk_clist_clear (clist);
 		populate_property_list (GTK_WIDGET(bw), clist);
@@ -66,64 +58,48 @@ edit_property (GtkCList *clist, GdkEventButton *event, GnomeBonoboWidget *bw)
 static void
 populate_property_list (GtkWidget *bw, GtkCList *clist)
 {
-	GnomePropertyBagClient *pbc;
 	GnomeControlFrame *cf;
-	GList *l;
-	CORBA_Environment ev;
+	GList *property_list, *l;
 
 	/* Get the list of properties. */
-	if (property_list == NULL) {
+	if (pbc == NULL) {
 		cf = gnome_bonobo_widget_get_control_frame (GNOME_BONOBO_WIDGET (bw));
 		pbc = gnome_control_frame_get_control_property_bag (cf);
-		property_list = gnome_property_bag_client_get_properties (pbc);
 	}
 
-	CORBA_exception_init (&ev);
+	property_list = gnome_property_bag_client_get_property_names (pbc);
 	for (l = property_list; l != NULL; l = l->next) {
-		GNOME_Property prop;
-		CORBA_any *any;
-		char *property_name;
 		char *row_array[2];
+		CORBA_TypeCode tc;
+		gchar *name = l->data;
 
-		prop = l->data;
-		property_name = GNOME_Property_get_name (prop, &ev);
+		row_array [0] = name;
 
-		if (ev._major != CORBA_NO_EXCEPTION) {
-			g_error ("populate_property_list: Exception trying to get property name");
-		}
-		
-		any = GNOME_Property_get_value (prop, &ev);
-
-		if (ev._major != CORBA_NO_EXCEPTION) {
-			g_error ("populate_property_list: Exception trying to get property value");
-		}
-
-		row_array [0] = property_name;
-
-		switch (any->_type->kind) {
+		tc = gnome_property_bag_client_get_property_type (pbc, name);
+		switch (tc->kind) {
 		case CORBA_tk_boolean:
-			row_array [1] = g_strdup (*((CORBA_boolean *) any->_value) ? "TRUE" : "FALSE");
+			row_array [1] = g_strdup (gnome_property_bag_client_get_value_boolean (pbc, name) ? "TRUE" : "FALSE");
 			break;
 		case CORBA_tk_string:
-			row_array [1] = g_strdup (*((CORBA_char **) any->_value));
+			row_array [1] = g_strdup (gnome_property_bag_client_get_value_string (pbc, name));
 			break;
 		case CORBA_tk_short:
-			row_array [1] = g_strdup_printf ("%d", *(CORBA_short *) any->_value);
+			row_array [1] = g_strdup_printf ("%d", gnome_property_bag_client_get_value_short (pbc, name));
 			break;
 		case CORBA_tk_ushort:
-			row_array [1] = g_strdup_printf ("%d", *(CORBA_unsigned_short *) any->_value);
+			row_array [1] = g_strdup_printf ("%d", gnome_property_bag_client_get_value_ushort (pbc, name));
 			break;
 		case CORBA_tk_long:
-			row_array [1] = g_strdup_printf ("%d", *(CORBA_long *) any->_value);
+			row_array [1] = g_strdup_printf ("%ld", gnome_property_bag_client_get_value_long (pbc, name));
 			break;
 		case CORBA_tk_ulong:
-			row_array [1] = g_strdup_printf ("%d", *(CORBA_unsigned_long *) any->_value);
+			row_array [1] = g_strdup_printf ("%ld", gnome_property_bag_client_get_value_ulong (pbc, name));
 			break;
 		case CORBA_tk_float:
-			row_array [1] = g_strdup_printf ("%f", *(CORBA_float *) any->_value);
+			row_array [1] = g_strdup_printf ("%f", gnome_property_bag_client_get_value_float (pbc, name));
 			break;
 		case CORBA_tk_double:
-			row_array [1] = g_strdup_printf ("%g", *(CORBA_double *) any->_value);
+			row_array [1] = g_strdup_printf ("%g", gnome_property_bag_client_get_value_double (pbc, name));
 			break;
 		default:
 			row_array [1] = g_strdup ("Unhandled Property Type");
@@ -131,7 +107,7 @@ populate_property_list (GtkWidget *bw, GtkCList *clist)
 
 		gtk_clist_append (clist, row_array);
 	}
-	CORBA_exception_free (&ev);
+	g_list_free (property_list);
 }
 
 static GtkWidget *
