@@ -72,16 +72,16 @@
   </bookinfo>
 
   <chapter id="bonobo-core">
-    <title>Core Bonobo.</title>
+    <title>Core Bonobo</title>
     
       <sect1 id="bonobo-core-object">
-        <title>Core Bonobo Object</title>
+        <title>Core Bonobo Objects</title>
           &bonobo-object;
           &bonobo-main;
       </sect1>
 
       <sect1 id="bonobo-object-activation">
-        <title>Object activation, lyfecicle</title>
+        <title>Object Activation and Lifecycle</title>
           &bonobo-context;
           &bonobo-activation-context;
           &bonobo-moniker-util;
@@ -92,7 +92,7 @@
       </sect1>
 
       <sect1 id="bonobo-properties">
-        <title>Propeties</title>
+        <title>Properties</title>
   	  &bonobo-property-bag;
   	  &bonobo-property;
   	  &bonobo-property-types;
@@ -104,7 +104,7 @@
       </sect1>
 
       <sect1 id="bonobo-notification">
-        <title>Notification, EventSources</title>
+        <title>Notification and EventSources</title>
           &bonobo-event-source;
           &bonobo-listener;
       </sect1>
@@ -112,7 +112,7 @@
 
 
   <chapter id="bonobo-storage">
-    <title>Storage and persistance.</title>
+    <title>Storage and Persistance</title>
       &bonobo-storage;
       &bonobo-stream;
       &bonobo-stream-memory;
@@ -127,7 +127,7 @@
   </chapter>
 
   <chapter id="bonobo-documents-widgets">
-    <title>Bonobo Documents and Controls </title>
+    <title>Bonobo Documents and Controls</title>
       <sect1 id="bonobo-embedding">
         <title>Document interfaces</title>
           &bonobo-client-site;
@@ -172,13 +172,13 @@
   </chapter>
 
   <chapter id="bonobo-moniker-handlers">
-    <title>Writing monikers</title>
+    <title>Writing Monikers</title>
       &bonobo-moniker;
       &bonobo-item-handler;
   </chapter>
 
   <chapter id="bonobo-support-utilities">
-    <title>Supporting classes</title>
+    <title>Supporting Classes</title>
       &bonobo-plug;
       &bonobo-socket;
       &bonobo-wrapper;
@@ -186,6 +186,3 @@
       &bonobo-selector;
   </chapter>
 </book>
-
-
-

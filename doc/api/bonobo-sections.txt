@@ -671,8 +671,6 @@ bonobo_property_generic_releaser
 </SECTION>
 
 <SECTION>
-<FILE>
-<SECTION>
 <FILE>bonobo-property</FILE>
 bonobo_property_servant_new
 bonobo_property_servant_destroy
@@ -787,7 +785,6 @@ BONOBO_IS_TRANSIENT
 BONOBO_IS_TRANSIENT_CLASS
 BonoboTransient
 BonoboTransientClass
-PortableServer_Servant
 BonoboTransientServantNew
 BonoboTransientServantDestroy
 bonobo_transient_new

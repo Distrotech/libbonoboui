@@ -10,11 +10,75 @@ DOC_MAIN_SGML_FILE=bonobo-api.sgml
 DOC_SOURCE_DIR=$(top_srcdir)/bonobo
 
 CFLAGS="-I../.. `gnome-config --cflags bonobo bonobox bonobox_print`"
-LDFLAGS=`gnome-config --libs bonobox bonobox_print`
+LDFLAGS="`gnome-config --libs bonobox bonobox_print`"
 
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
-tmpl_sources =
+tmpl_sources = 					\
+        tmpl/bonobo-activation-context.sgml	\
+        tmpl/bonobo-arg.sgml			\
+        tmpl/bonobo-canvas-component.sgml	\
+        tmpl/bonobo-canvas-item.sgml		\
+        tmpl/bonobo-client-site.sgml		\
+        tmpl/bonobo-component-io.sgml		\
+        tmpl/bonobo-context.sgml		\
+        tmpl/bonobo-control-frame.sgml		\
+        tmpl/bonobo-control.sgml		\
+        tmpl/bonobo-desktop-window.sgml		\
+        tmpl/bonobo-embeddable.sgml		\
+        tmpl/bonobo-event-source.sgml		\
+        tmpl/bonobo-exception.sgml		\
+        tmpl/bonobo-generic-factory.sgml	\
+        tmpl/bonobo-item-container.sgml		\
+        tmpl/bonobo-item-handler.sgml		\
+        tmpl/bonobo-listener.sgml		\
+        tmpl/bonobo-main.sgml			\
+        tmpl/bonobo-moniker-async.sgml		\
+        tmpl/bonobo-moniker-util.sgml		\
+        tmpl/bonobo-moniker.sgml		\
+        tmpl/bonobo-object-client.sgml		\
+        tmpl/bonobo-object-directory.sgml	\
+        tmpl/bonobo-object-io.sgml		\
+        tmpl/bonobo-object.sgml			\
+        tmpl/bonobo-persist-file.sgml		\
+        tmpl/bonobo-persist-stream.sgml		\
+        tmpl/bonobo-persist.sgml		\
+        tmpl/bonobo-plug.sgml			\
+        tmpl/bonobo-print-client.sgml		\
+        tmpl/bonobo-print.sgml			\
+        tmpl/bonobo-progressive.sgml		\
+        tmpl/bonobo-property-bag-client.sgml	\
+        tmpl/bonobo-property-bag-xml.sgml	\
+        tmpl/bonobo-property-bag.sgml		\
+        tmpl/bonobo-property-control.sgml	\
+        tmpl/bonobo-property-listener.sgml	\
+        tmpl/bonobo-property-types.sgml		\
+        tmpl/bonobo-property.sgml		\
+        tmpl/bonobo-selector.sgml		\
+        tmpl/bonobo-socket.sgml			\
+        tmpl/bonobo-storage-plugin.sgml		\
+        tmpl/bonobo-storage.sgml		\
+        tmpl/bonobo-stream-client.sgml		\
+        tmpl/bonobo-stream-memory.sgml		\
+        tmpl/bonobo-stream.sgml			\
+        tmpl/bonobo-transient.sgml		\
+        tmpl/bonobo-ui-component.sgml		\
+        tmpl/bonobo-ui-container.sgml		\
+        tmpl/bonobo-ui-node.sgml		\
+        tmpl/bonobo-ui-toolbar-button-item.sgml	\
+        tmpl/bonobo-ui-toolbar-icon.sgml	\
+        tmpl/bonobo-ui-toolbar-item.sgml	\
+        tmpl/bonobo-ui-toolbar-toggle-button-item.sgml \
+        tmpl/bonobo-ui-util.sgml		\
+        tmpl/bonobo-ui-xml.sgml			\
+        tmpl/bonobo-unused.sgml			\
+        tmpl/bonobo-view-frame.sgml		\
+        tmpl/bonobo-view.sgml			\
+        tmpl/bonobo-widget.sgml			\
+        tmpl/bonobo-win.sgml			\
+        tmpl/bonobo-wrapper.sgml		\
+        tmpl/bonobo-zoomable-frame.sgml		\
+        tmpl/bonobo-zoomable.sgml
 
 bonobo_docdir = $(HTML_DIR)
 bonobo_doc_DATA = \
@@ -35,10 +99,10 @@ else
 bonobo-api.html:
 endif
 
-html/book1.html: sgml/bonobo-api-doc.bottom
+html/book1.html: sgml/bonobo-doc.bottom
 	$(MAKE) html
 
-sgml/bonobo-api-doc.bottom: $(tmpl_sources)
+sgml/bonobo-doc.bottom: $(tmpl_sources)
 	$(MAKE) sgml
 
 scan:
@@ -114,7 +178,7 @@ templates: scan
 
 sgml:
 	cd $(srcdir) \
-	&& gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=..
+	&& gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(top_srcdir)
 
 html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html

@@ -110,7 +110,7 @@ bonobo_control_windowid_from_x11 (guint32 x11_id)
 /*
  * This callback is invoked when the plug is unexpectedly destroyed by
  * way of its associated X window dying.  This usually indicates that
- * the contaier application has died.  This callback is _not_ invoked
+ * the container application has died.  This callback is _not_ invoked
  * if the BonoboControl is destroyed normally, i.e. the user unrefs
  * the BonoboControl away.
  */
