@@ -90,13 +90,38 @@ popup_destroy (GtkObject *menu, Popup *popup)
 	popup_remove (smenu, popup);
 }
 
+static void
+add_tearoff (BonoboUINode *node, GtkMenu *menu)
+{
+	GtkWidget    *tearoff;
+	char         *txt;
+	gboolean      has_tearoff;
+
+	if (node && (txt = bonobo_ui_node_get_attr (node, "tearoff"))) {
+		has_tearoff = atoi (txt);
+		bonobo_ui_node_free_string (txt);
+	} else
+		has_tearoff = gnome_preferences_get_menus_have_tearoff ();
+
+	/*
+	 * Create the tearoff item at the beginning of the menu shell,
+	 * if appropriate.
+	 */
+	if (has_tearoff) {
+		tearoff = gtk_tearoff_menu_item_new ();
+		gtk_widget_show (tearoff);
+		gtk_menu_prepend (GTK_MENU (menu), tearoff);
+	}
+}
+
 void
 bonobo_ui_sync_menu_add_popup (BonoboUISyncMenu *smenu,
 			       GtkMenu          *menu,
 			       const char       *path)
 {
-	Popup           *popup;
-	BonoboUINode    *node;
+	Popup        *popup;
+	BonoboUINode *node;
+	GList        *children;
 
 	g_return_if_fail (path != NULL);
 	g_return_if_fail (GTK_IS_MENU (menu));
@@ -107,6 +132,13 @@ bonobo_ui_sync_menu_add_popup (BonoboUISyncMenu *smenu,
 	popup       = g_new (Popup, 1);
 	popup->menu = menu;
 	popup->path = g_strdup (path);
+
+	if ((children = gtk_container_children (GTK_CONTAINER (menu)))) {
+		g_warning ("Extraneous items in blank popup");
+		g_list_free (children);
+	}
+
+	add_tearoff (bonobo_ui_engine_get_path (smenu->parent.engine, path), menu);;
 
 	smenu->popups = g_slist_prepend (smenu->popups, popup);
 
@@ -528,11 +560,10 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 
 	if (!menu_widget)
 		return NULL;	
-	   
+
 	if (bonobo_ui_node_has_name (node, "submenu")) {
 		GtkMenuShell *shell;
 		GtkMenu      *menu;
-		GtkWidget    *tearoff;
 		
 		shell = GTK_MENU_SHELL (parent);
 
@@ -541,15 +572,7 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 
 		gtk_menu_set_accel_group (menu, menu_sync->accel_group);
 
-		/*
-		 * Create the tearoff item at the beginning of the menu shell,
-		 * if appropriate.
-		 */
-		if (gnome_preferences_get_menus_have_tearoff ()) {
-			tearoff = gtk_tearoff_menu_item_new ();
-			gtk_widget_show (tearoff);
-			gtk_menu_prepend (GTK_MENU (menu), tearoff);
-		}
+		add_tearoff (node, GTK_MENU (menu));
 
 		/*
 		 * Associate this menu shell with the menu item for

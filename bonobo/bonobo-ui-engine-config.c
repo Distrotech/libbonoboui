@@ -13,9 +13,14 @@
 
 #include <libgnome/gnome-defs.h>
 #include <libgnome/gnome-config.h>
+#include <libgnome/gnome-i18n.h>
+
+#include <libgnomeui/gnome-stock.h>
+#include <libgnomeui/gnome-dialog.h>
 
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-sync-menu.h>
+#include <bonobo/bonobo-ui-config-widget.h>
 #include <bonobo/bonobo-ui-engine-config.h>
 #include <bonobo/bonobo-ui-engine-private.h>
 
@@ -30,6 +35,8 @@ struct _BonoboUIEngineConfigPrivate {
 	BonoboUIXml    *tree;
 
 	GSList         *clobbers;
+
+	GtkWidget      *dialog;
 };
 
 typedef struct {
@@ -45,10 +52,10 @@ clobber_destroy (BonoboUIXml *tree, clobber_t *cl)
 		bonobo_ui_xml_remove_watch_by_data (tree, cl);
 
 		g_free (cl->path);
-		cl->path= NULL;
+		cl->path = NULL;
 
 		g_free (cl->attr);
-		cl->attr= NULL;
+		cl->attr = NULL;
 
 		g_free (cl->value);
 		cl->value = NULL;
@@ -180,13 +187,15 @@ bonobo_ui_engine_config_remove (BonoboUIEngineConfig *config,
 	}
 }
 
-static void
-config_hydrate (BonoboUIEngineConfig *config)
+void
+bonobo_ui_engine_config_hydrate (BonoboUIEngineConfig *config)
 {
 	char **argv;
 	int    argc, i;
 
 	g_return_if_fail (config->priv->path != NULL);
+
+	bonobo_ui_engine_freeze (config->priv->engine);
 
 	clobbers_free (config);
 
@@ -199,10 +208,13 @@ config_hydrate (BonoboUIEngineConfig *config)
 		if (!strs || !strs [0] || !strs [1] || !strs [2] || strs [3])
 			g_warning ("Syntax error in '%s'", argv [i]);
 		else
-			clobber_add (config, strs [0], strs [1], strs [2]);
+			bonobo_ui_engine_config_add (
+				config, strs [0], strs [1], strs [2]);
 
 		g_strfreev (strs);
 	}
+
+	bonobo_ui_engine_thaw (config->priv->engine);
 }
 
 typedef struct {
@@ -217,39 +229,6 @@ closure_destroy (closure_t *c)
 {
 	g_free (c->path);
 	g_free (c);
-}
-
-static char **
-parse_dep_attr (const char *str,
-		char      **attr,
-		char      **type,
-		char      **show_if_value,
-		char      **set_to_value)
-{
-	char **strs;
-
-	strs = g_strsplit (str, ":", -1);
-
-	if (!strs || !strs [0] || !strs [1] ||
-	    !strs [2] || !strs [3] || strs [4]) {
-		g_strfreev (strs);
-		g_warning ("dep_attr format error '%s'", str);
-		return NULL;
-	}
-
-	if (attr)
-		*attr = strs [0];
-
-	if (type)
-		*type = strs [1];
-
-	if (show_if_value)
-		*show_if_value = strs [2];
-
-	if (set_to_value)
-		*set_to_value = strs [3];
-
-	return strs;
 }
 
 static void
@@ -386,6 +365,19 @@ bonobo_ui_engine_config_watch (BonoboUIXml    *xml,
 }
 
 static void
+impl_destroy (GtkObject *object)
+{
+	BonoboUIEngineConfig *config;
+
+	config = BONOBO_UI_ENGINE_CONFIG (object);
+
+	if (config->priv->dialog)
+		gtk_widget_destroy (config->priv->dialog);
+
+	parent_class->destroy (object);
+}
+
+static void
 impl_finalize (GtkObject *object)
 {
 	BonoboUIEngineConfig *config;
@@ -412,6 +404,7 @@ class_init (BonoboUIEngineClass *engine_class)
 
 	object_class = GTK_OBJECT_CLASS (engine_class);
 
+	object_class->destroy  = impl_destroy;
 	object_class->finalize = impl_finalize;
 }
 
@@ -487,7 +480,7 @@ bonobo_ui_engine_config_set_path (BonoboUIEngine *engine,
 	g_free (config->priv->path);
 	config->priv->path = g_strdup (path);
 
-	config_hydrate (config);
+	bonobo_ui_engine_config_hydrate (config);
 }
 
 const char *
@@ -500,4 +493,67 @@ bonobo_ui_engine_config_get_path (BonoboUIEngine *engine)
 	config = bonobo_ui_engine_get_config (engine);
 	
 	return config->priv->path;
+}
+
+static void
+button_clicked_fn (GnomeDialog *dialog,
+		   gint         button_number,
+		   BonoboUIEngineConfig *config)
+{
+	if (button_number == 0) /* Ok */
+		bonobo_ui_engine_config_serialize (config);
+	else
+		bonobo_ui_engine_config_hydrate (config);
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+static GtkWidget *
+dialog_new (BonoboUIEngineConfig *config)
+{
+	GtkAccelGroup *accel_group;
+	GtkWidget     *window, *cwidget;
+
+	accel_group = gtk_accel_group_new ();
+
+	window = gnome_dialog_new (_("Configure UI"), 
+				   GNOME_STOCK_BUTTON_OK,
+				   GNOME_STOCK_BUTTON_CANCEL,
+				   NULL);
+	gnome_dialog_set_default (GNOME_DIALOG (window), 0);
+
+	gtk_signal_connect (GTK_OBJECT (window), "clicked",
+			    (GtkSignalFunc) button_clicked_fn, config);
+
+	cwidget = bonobo_ui_config_widget_new (config->priv->engine, accel_group);
+	gtk_widget_show (cwidget);
+	gtk_container_add (GTK_CONTAINER (GNOME_DIALOG (window)->vbox), cwidget);
+
+	gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
+	
+	return window;
+}
+
+static void
+null_dialog (GtkObject *object, 
+	     BonoboUIEngineConfig *config)
+{
+	config->priv->dialog = NULL;
+}
+
+void
+bonobo_ui_engine_config_configure (BonoboUIEngineConfig *config)
+{
+	/* Fire up a single non-modal dialog */
+	if (config->priv->dialog) {
+		gtk_window_activate_focus (
+			GTK_WINDOW (config->priv->dialog));
+		return;
+	}
+
+	config->priv->dialog = dialog_new (config);
+	gtk_widget_set_usize (config->priv->dialog, 300, 300); 
+	gtk_widget_show (config->priv->dialog);
+	gtk_signal_connect (GTK_OBJECT (config->priv->dialog),
+			    "destroy", (GtkSignalFunc) null_dialog, config);
 }

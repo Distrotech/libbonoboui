@@ -61,6 +61,7 @@ void    bonobo_ui_engine_config_connect   (GtkWidget                  *widget,
 					   BonoboUIEngineConfigFn      config_fn,
 					   BonoboUIEngineConfigVerbFn  verb_fn);
 void    bonobo_ui_engine_config_serialize (BonoboUIEngineConfig   *config);
+void    bonobo_ui_engine_config_hydrate   (BonoboUIEngineConfig   *config);
 void    bonobo_ui_engine_config_add       (BonoboUIEngineConfig   *config,
 					   const char             *path,
 					   const char             *attr,
@@ -68,6 +69,8 @@ void    bonobo_ui_engine_config_add       (BonoboUIEngineConfig   *config,
 void    bonobo_ui_engine_config_remove    (BonoboUIEngineConfig   *config,
 					   const char             *path,
 					   const char             *attr);
+
+void    bonobo_ui_engine_config_configure (BonoboUIEngineConfig   *config);
 
 END_GNOME_DECLS
 

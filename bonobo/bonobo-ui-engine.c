@@ -1058,13 +1058,22 @@ impl_emit_verb_on (BonoboUIEngine *engine,
 	if (!verb)
 		return;
 
-	if (!data->id) {
-		g_warning ("Weird; no ID on verb '%s'", verb);
-		bonobo_ui_node_free_string (verb);
-		return;
-	}
+	/* Builtins */
+	if (!strcmp (verb, "BonoboCustomize"))
+		bonobo_ui_engine_config_configure (engine->priv->config);
 
-	real_exec_verb (engine, data->id, verb);
+	else if (!strcmp (verb, "BonoboUIDump"))
+		bonobo_ui_engine_dump (engine, stderr, "from verb");
+
+	else {
+		if (!data->id) {
+			g_warning ("Weird; no ID on verb '%s'", verb);
+			bonobo_ui_node_free_string (verb);
+			return;
+		}
+
+		real_exec_verb (engine, data->id, verb);
+	}
 
 	g_free (verb);
 }

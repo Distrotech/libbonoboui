@@ -145,6 +145,7 @@ libbonoboinclude_HEADERS =			\
 	bonobo-transient.h			\
 	bonobo-ui-component.h            	\
 	bonobo-ui-container.h            	\
+	bonobo-ui-config-widget.h		\
 	bonobo-ui-engine.h	            	\
 	bonobo-ui-node.h                 	\
 	bonobo-ui-sync.h			\
@@ -194,6 +195,7 @@ libbonobox_la_SOURCES =				\
 	bonobo-selector-widget.c		\
 	bonobo-socket.c				\
 	bonobo-ui-component.c            	\
+	bonobo-ui-config-widget.c		\
 	bonobo-ui-container.c            	\
 	bonobo-ui-engine.c			\
 	bonobo-ui-engine-config.c		\

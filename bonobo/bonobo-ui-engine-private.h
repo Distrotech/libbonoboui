@@ -15,6 +15,7 @@ BEGIN_GNOME_DECLS
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-engine.h>
+#include <bonobo/bonobo-ui-engine-config.h>
 
 BonoboUIXml          *bonobo_ui_engine_get_xml    (BonoboUIEngine *engine);
 BonoboUIEngineConfig *bonobo_ui_engine_get_config (BonoboUIEngine *engine);
