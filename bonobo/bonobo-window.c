@@ -1853,7 +1853,7 @@ seek_dirty (BonoboWinPrivate *priv, BonoboUINode *node, UIUpdateType type)
 	info = bonobo_ui_xml_get_data (priv->tree, node);
 	if (info->dirty) { /* Rebuild tree from here down */
 		
-		bonobo_ui_xml_set_dirty (priv->tree, node, FALSE);
+		bonobo_ui_xml_clean (priv->tree, node);
 
 		switch (type) {
 		case UI_UPDATE_MENU:
@@ -2082,6 +2082,10 @@ bonobo_win_object_set (BonoboWin  *app,
 		info->object = bonobo_object_dup_ref (object, ev);
 	else
 		info->object = CORBA_OBJECT_NIL;
+
+	bonobo_ui_xml_set_dirty (app->priv->tree, node);
+
+	update_widgets (app->priv);
 
 	return BONOBO_UI_XML_OK;
 }

@@ -110,22 +110,26 @@ bonobo_ui_xml_get_data (BonoboUIXml *tree, BonoboUINode *node)
 }
 
 void
-bonobo_ui_xml_set_dirty (BonoboUIXml *tree,
-			 BonoboUINode     *node,
-			 gboolean     dirty)
+bonobo_ui_xml_clean (BonoboUIXml  *tree,
+		     BonoboUINode *node)
 {
 	BonoboUIXmlData *data;
-	BonoboUINode         *l;
+	BonoboUINode    *l;
 
 	data = bonobo_ui_xml_get_data (tree, node);
-	data->dirty = dirty;
+	data->dirty = FALSE;
 
-	for (l = bonobo_ui_node_children (node); l; l = bonobo_ui_node_next (l))
-		bonobo_ui_xml_set_dirty (tree, l, dirty);
+	for (l = bonobo_ui_node_children (node); l;
+	     l = bonobo_ui_node_next (l))
+		bonobo_ui_xml_clean (tree, l);
 }
 
-static void
-set_node_dirty (BonoboUIXml *tree, BonoboUINode *node)
+/*
+ * FIXME: this functionality is broken and should live in bonobo-win.c
+ * for cleanliness and never in this more generic code.
+ */
+void
+bonobo_ui_xml_set_dirty (BonoboUIXml *tree, BonoboUINode *node)
 {
 	int i;
 	BonoboUINode *l;
@@ -383,7 +387,7 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 			xmlCopyPropList (XML_NODE (new),
 					 XML_NODE (old)->properties);
 
-	set_node_dirty (tree, new);
+	bonobo_ui_xml_set_dirty (tree, new);
 
 	if (same)
 		node_free (tree, old);
@@ -423,7 +427,7 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		bonobo_ui_node_replace (old, node);
 
 		/* Mark dirty */
-		set_node_dirty (tree, old);
+		bonobo_ui_xml_set_dirty (tree, old);
 
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REINSTATE], old);
 	} else if (bonobo_ui_node_children (node)) { /* We need to leave the node here */
@@ -437,7 +441,7 @@ reinstate_old_node (BonoboUIXml *tree, BonoboUINode *node)
 		node->name, bonobo_ui_node_get_attr (node, "name"));*/
 
 		/* Mark dirty */
-		set_node_dirty (tree, node);
+		bonobo_ui_xml_set_dirty (tree, node);
 
 		gtk_signal_emit (GTK_OBJECT (tree), signals [REMOVE], node);
 		bonobo_ui_node_unlink (node);
@@ -801,7 +805,7 @@ merge (BonoboUIXml *tree, BonoboUINode *current, BonoboUINode **new)
 		else
 			bonobo_ui_node_add_child (current, b);
 		
-		set_node_dirty (tree, b);
+		bonobo_ui_xml_set_dirty (tree, b);
 
 		data = bonobo_ui_xml_get_data (tree, current);
 		data->dirty = TRUE;

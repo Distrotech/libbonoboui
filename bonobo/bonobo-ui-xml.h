@@ -73,8 +73,10 @@ gpointer         bonobo_ui_xml_get_data          (BonoboUIXml  *tree,
 						  BonoboUINode *node);
 
 void             bonobo_ui_xml_set_dirty         (BonoboUIXml  *tree,
-						  BonoboUINode *node,
-						  gboolean      dirty);
+						  BonoboUINode *node);
+
+void             bonobo_ui_xml_clean             (BonoboUIXml  *tree,
+						  BonoboUINode *node);
 
 BonoboUINode    *bonobo_ui_xml_get_path          (BonoboUIXml  *tree,
 						  const char   *path);
