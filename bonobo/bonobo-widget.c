@@ -483,7 +483,7 @@ bonobo_widget_set_property (BonoboWidget      *control,
 	if (err)
 		g_warning ("Error '%s'", err);
 
-	gtk_object_unref (GTK_OBJECT (cl));
+	bonobo_object_unref (BONOBO_OBJECT (cl));
 
 	va_end (args);
 }
@@ -508,7 +508,7 @@ bonobo_widget_get_property (BonoboWidget      *control,
 	if ((err = bonobo_property_bag_client_getv (cl, first_prop, args)))
 		g_warning ("Error '%s'", err);
 
-	gtk_object_unref (GTK_OBJECT (cl));
+	bonobo_object_unref (BONOBO_OBJECT (cl));
 
 	va_end (args);
 }

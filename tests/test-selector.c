@@ -1,5 +1,4 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
-
 #include <config.h>
 #include <gnome.h>
 #include <gtk/gtk.h>
@@ -15,11 +14,47 @@
 CORBA_Environment ev;
 CORBA_ORB orb;
 
-void panel_callback (GtkWidget *widget, gpointer data);
-void noact_callback (GtkWidget *widget, gpointer data);
-void quit_callback (GtkWidget *widget, gpointer data);
+static void
+noact_callback (GtkWidget *widget, gpointer data)
+{
+	gchar *text;
 
-int main(int argc, char *argv[])
+	text = gnome_bonobo_select_id (_("Select an object"), NULL);
+	g_print("%s\n", text);
+
+	if (text)
+		g_free(text);
+}
+
+static void
+quit_callback (GtkWidget *widget, gpointer data)
+{
+	gtk_main_quit ();
+}
+
+static void
+panel_callback (GtkWidget *widget, gpointer data)
+{
+/* it filters! */
+#if USING_OAF
+	g_warning ("You can't get an id of a panel applet since the panel"
+		   "is using GOAD at the moment");
+#else
+	{
+		const gchar *ints [] = { "IDL:Bonobo/Applet:1.0", NULL };
+		gchar *text;
+
+		text = gnome_bonobo_select_goad_id (_("Select an object"), ints);
+		
+		g_print("%s\n", text);
+		if (text != NULL)
+			g_free(text);
+	}
+#endif
+}
+
+int
+main (int argc, char *argv[])
 {
 	GtkWidget *window;
 	GtkWidget *vbox;
@@ -60,40 +95,3 @@ int main(int argc, char *argv[])
 	
 	return 0;
 }
-
-void panel_callback (GtkWidget *widget, gpointer data)
-{
-/* it filters! */
-	const gchar *ints [] = { "IDL:Bonobo/Applet:1.0", NULL };
-	gchar *text;
-
-#if USING_OAF
-	g_warning ("You can't get an id of a panel applet since the panel"
-		   "is using GOAD at the moment");
-#else
-	text = gnome_bonobo_select_goad_id (_("Select an object"), ints);
-
-	g_print("%s\n", text);
-	if (text != NULL)
-		g_free(text);
-#endif
-
-}
-
-void noact_callback (GtkWidget *widget, gpointer data)
-{
-	/* This is also a demonstration of default being what we just did above */ 
-	gchar *text;
-
-	text = gnome_bonobo_select_id (_("Select an object"), NULL);
-	g_print("%s\n", text);
-	if (text != NULL)
-		g_free(text);
-}
-
-void quit_callback (GtkWidget *widget, gpointer data)
-{
-	gtk_main_quit ();
-}
-
-

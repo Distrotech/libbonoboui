@@ -104,7 +104,7 @@ static void
 embeddable_system_exception_cb (BonoboEmbeddable *embeddable, CORBA_Object corba_object,
 				CORBA_Environment *ev, gpointer data)
 {
-	bonobo_object_destroy (BONOBO_OBJECT (embeddable));
+	bonobo_object_unref (BONOBO_OBJECT (embeddable));
 }
 
 /*
@@ -114,7 +114,7 @@ static void
 view_system_exception_cb (BonoboView *view, CORBA_Object corba_object,
 			  CORBA_Environment *ev, gpointer data)
 {
-	bonobo_object_destroy (BONOBO_OBJECT (view));
+	bonobo_object_unref (BONOBO_OBJECT (view));
 }
 
 /*
@@ -742,7 +742,6 @@ init_server_factory (int argc, char **argv)
 	orb = gnome_CORBA_ORB ();
 #endif
 
-
 	if (bonobo_init (orb, NULL, NULL) == FALSE)
 		g_error (_("Could not initialize Bonobo!"));
 }
@@ -760,6 +759,8 @@ main (int argc, char **argv)
 	 * Start processing.
 	 */
 	bonobo_main ();
+
+	bonobo_shutdown ();
 
 	return 0;
 }

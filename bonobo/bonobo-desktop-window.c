@@ -86,7 +86,7 @@ bonobo_desktop_window_new (GtkWindow *toplevel)
 
 	corba_desktop_window = bonobo_desktop_window_corba_object_create (BONOBO_OBJECT (desktop_window));
 	if (corba_desktop_window == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (desktop_window));
+		bonobo_object_unref (BONOBO_OBJECT (desktop_window));
 		return NULL;
 	}
 	

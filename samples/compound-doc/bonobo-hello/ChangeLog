@@ -1,3 +1,13 @@
+2000-07-12  Michael Meeks  <michael@helixcode.com>
+
+	* bonobo-hello.c (main): add bonobo_shutdown.
+	(server_factory_init): bind to the Orb.
+
+	* hello-embeddable.c (hello_bonobo_embeddable_construct): use
+	bonobo_object_unref not gtk_object_destroy.
+
+	* hello-view.c (hello_bonobo_view_factory): ditto.
+
 2000-07-07  Michael Meeks  <michael@helixcode.com>
 
 	* hello.oafinfo: kill unimplemented ProgressiveDataSink I/F.

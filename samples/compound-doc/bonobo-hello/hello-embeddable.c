@@ -28,7 +28,7 @@ hello_bonobo_embeddable_construct (HelloBonoboEmbeddable *embeddable)
 
 	corba_embeddable = bonobo_embeddable_corba_object_create (BONOBO_OBJECT (embeddable));
 	if (corba_embeddable == CORBA_OBJECT_NIL) {
-		gtk_object_destroy (GTK_OBJECT (embeddable));
+		bonobo_object_unref (BONOBO_OBJECT (embeddable));
 		return NULL;
 	}
 
@@ -44,7 +44,7 @@ hello_bonobo_embeddable_construct (HelloBonoboEmbeddable *embeddable)
 					    hello_object_pstream_get_types,
 					    embeddable);
 	if (!stream) {
-		gtk_object_destroy (GTK_OBJECT (embeddable));
+		bonobo_object_unref (BONOBO_OBJECT (embeddable));
 		return NULL;
 	}
 
@@ -54,7 +54,7 @@ hello_bonobo_embeddable_construct (HelloBonoboEmbeddable *embeddable)
 	/* Register the Bonobo::Print interface */
 	print = bonobo_print_new (hello_object_print, embeddable);
 	if (!print) {
-		gtk_object_destroy (GTK_OBJECT (embeddable));
+		bonobo_object_unref (BONOBO_OBJECT (embeddable));
 		return NULL;
 	}
 

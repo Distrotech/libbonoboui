@@ -240,7 +240,7 @@ impl_Bonobo_Embeddable_new_view (PortableServer_Servant servant,
 
 	if (bonobo_object_corba_objref (BONOBO_OBJECT (view)) == CORBA_OBJECT_NIL){
 		g_warning ("Returned view does not have a CORBA object bound");
-		gtk_object_destroy (GTK_OBJECT (view));
+		bonobo_object_unref (BONOBO_OBJECT (view));
 		return CORBA_OBJECT_NIL;
 	}
 	bonobo_view_set_view_frame (view, view_frame);
@@ -498,7 +498,7 @@ bonobo_embeddable_new (BonoboViewFactory factory, void *data)
 
 	corba_embeddable = bonobo_embeddable_corba_object_create (BONOBO_OBJECT (embeddable));
 	if (corba_embeddable == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (embeddable));
+		bonobo_object_unref (BONOBO_OBJECT (embeddable));
 		return NULL;
 	}
 	
@@ -532,7 +532,7 @@ bonobo_embeddable_new_canvas_item (GnomeItemCreator item_factory, void *data)
 
 	corba_embeddable = bonobo_embeddable_corba_object_create (BONOBO_OBJECT (embeddable));
 	if (corba_embeddable == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (embeddable));
+		bonobo_object_unref (BONOBO_OBJECT (embeddable));
 		return NULL;
 	}
 	

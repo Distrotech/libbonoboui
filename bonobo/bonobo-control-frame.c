@@ -321,7 +321,7 @@ bonobo_control_frame_new (Bonobo_UIHandler uih)
 
 	corba_control_frame = create_bonobo_control_frame (BONOBO_OBJECT (control_frame));
 	if (corba_control_frame == CORBA_OBJECT_NIL) {
-		gtk_object_destroy (GTK_OBJECT (control_frame));
+		bonobo_object_unref (BONOBO_OBJECT (control_frame));
 		return NULL;
 	}
 

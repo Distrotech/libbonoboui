@@ -221,8 +221,8 @@ create_client_site (BonoboObject *object)
  */
 BonoboClientSite *
 bonobo_client_site_construct (BonoboClientSite  *client_site,
-			     Bonobo_ClientSite  corba_client_site,
-			     BonoboContainer   *container)
+			      Bonobo_ClientSite  corba_client_site,
+			      BonoboContainer   *container)
 {
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
@@ -264,7 +264,7 @@ bonobo_client_site_new (BonoboContainer *container)
 	client_site = gtk_type_new (bonobo_client_site_get_type ());
 	corba_client_site = create_client_site (BONOBO_OBJECT (client_site));
 	if (corba_client_site == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (client_site));
+		bonobo_object_unref (BONOBO_OBJECT (client_site));
 		return NULL;
 	}
 
@@ -316,7 +316,8 @@ bonobo_client_site_get_type (void)
  * @client_site.
  */
 gboolean
-bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectClient *object)
+bonobo_client_site_bind_embeddable (BonoboClientSite   *client_site,
+				    BonoboObjectClient *object)
 {
 	CORBA_Object embeddable_object;
 	CORBA_Environment ev;
@@ -351,6 +352,9 @@ bonobo_client_site_bind_embeddable (BonoboClientSite *client_site, BonoboObjectC
 	}
 	CORBA_exception_free (&ev);
 
+	if (client_site->bound_embeddable)
+		bonobo_object_unref (client_site->bound_embeddable);
+
 	client_site->bound_embeddable = bonobo_object_client_from_corba (embeddable_object);
 	bonobo_object_client_ref (client_site->bound_embeddable, NULL);
 
@@ -375,7 +379,8 @@ bonobo_client_site_get_embeddable (BonoboClientSite *client_site)
 }
 
 static void
-bonobo_client_site_view_frame_destroy (BonoboViewFrame *view_frame, BonoboClientSite *client_site)
+bonobo_client_site_view_frame_destroy (BonoboViewFrame  *view_frame,
+				       BonoboClientSite *client_site)
 {
 	/*
 	 * Remove this view frame.
@@ -445,6 +450,7 @@ bonobo_client_site_new_view_full (BonoboClientSite *client_site,
 	}
 
 	bonobo_view_frame_bind_to_view (view_frame, view);
+	Bonobo_Unknown_unref (view, &ev);
 	CORBA_Object_release (view, &ev);
 	
 	/*
@@ -454,7 +460,8 @@ bonobo_client_site_new_view_full (BonoboClientSite *client_site,
 	client_site->view_frames = g_list_prepend (client_site->view_frames, view_frame);
 	
 	gtk_signal_connect (GTK_OBJECT (view_frame), "destroy",
-			    GTK_SIGNAL_FUNC (bonobo_client_site_view_frame_destroy), client_site);
+			    GTK_SIGNAL_FUNC (bonobo_client_site_view_frame_destroy),
+			    client_site);
 
 	CORBA_exception_free (&ev);		
 	return view_frame;

@@ -719,7 +719,7 @@ bonobo_canvas_component_new (GnomeCanvasItem *item)
 		BONOBO_OBJECT (comp));
 
 	if (corba_canvas_comp == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (comp));
+		bonobo_object_unref (BONOBO_OBJECT (comp));
 		return NULL;
 	}
 	return bonobo_canvas_component_construct (comp, corba_canvas_comp, item);

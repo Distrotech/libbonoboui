@@ -130,7 +130,8 @@ bonobo_view_frame_construct (BonoboViewFrame  *view_frame,
 	g_return_val_if_fail (client_site != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_CLIENT_SITE (client_site), NULL);
 
-	bonobo_control_frame_construct (BONOBO_CONTROL_FRAME (view_frame), corba_view_frame, uih);
+	bonobo_control_frame_construct (BONOBO_CONTROL_FRAME (view_frame),
+					corba_view_frame, uih);
 
 	view_frame->priv->client_site = client_site;
 	
@@ -140,7 +141,7 @@ bonobo_view_frame_construct (BonoboViewFrame  *view_frame,
 	 */
 	wrapper = bonobo_wrapper_new ();
 	if (wrapper == NULL) {
-		gtk_object_unref (GTK_OBJECT (view_frame));
+		bonobo_object_unref (BONOBO_OBJECT (view_frame));
 		return NULL;
 	}
 	gtk_object_ref (GTK_OBJECT (wrapper));
@@ -185,7 +186,7 @@ bonobo_view_frame_new (BonoboClientSite *client_site,
 
 	corba_view_frame = create_bonobo_view_frame (BONOBO_OBJECT (view_frame));
 	if (corba_view_frame == CORBA_OBJECT_NIL) {
-		gtk_object_destroy (GTK_OBJECT (view_frame));
+		bonobo_object_unref (BONOBO_OBJECT (view_frame));
 		return NULL;
 	}
 

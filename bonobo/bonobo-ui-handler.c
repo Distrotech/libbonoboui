@@ -55,7 +55,7 @@ bonobo_ui_handler_new (void)
 
 	corba_uihandler = create_bonobo_ui_handler (BONOBO_OBJECT (uih));
 	if (corba_uihandler == CORBA_OBJECT_NIL) {
-		gtk_object_destroy (GTK_OBJECT (uih));
+		bonobo_object_unref (BONOBO_OBJECT (uih));
 		return NULL;
 	}
 	

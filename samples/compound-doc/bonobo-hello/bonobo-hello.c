@@ -90,21 +90,24 @@ static void
 server_factory_init (int argc, char **argv)
 {
 	CORBA_Environment ev;
+	CORBA_ORB orb;
+
 	CORBA_exception_init (&ev);
 
 #if USING_OAF
 	gnome_init_with_popt_table (PACKAGE, VERSION,
 				    argc, argv, oaf_popt_options, 0, NULL);
-	oaf_init (argc, argv);
+	orb = oaf_init (argc, argv);
 #else
 	gnome_CORBA_init_with_popt_table (PACKAGE, VERSION,	/* Name of the component */
 					  &argc, argv,	/* Command-line arguments */
 					  NULL, 0, NULL,	/* popt table to parse arguments */
 					  GNORBA_INIT_SERVER_FUNC, &ev	/* GNORBA options */
 	    );
+	orb = gnome_CORBA_ORB ();
 #endif
 
-	if (!bonobo_init (CORBA_OBJECT_NIL,
+	if (!bonobo_init (orb,
 			  CORBA_OBJECT_NIL,
 			  CORBA_OBJECT_NIL))
 		    g_error (_("I could not initialize Bonobo"));
@@ -119,6 +122,8 @@ main (int argc, char **argv)
 	hello_bonobo_init ();
 
 	bonobo_main ();
+
+	bonobo_shutdown ();
 
 	return 0;
 }

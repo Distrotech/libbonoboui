@@ -183,8 +183,8 @@ echo_new (void)
 
 	corba_echo = create_echo (BONOBO_OBJECT (echo));
 
-	if (corba_echo == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (echo));
+	if (corba_echo == CORBA_OBJECT_NIL) {
+		bonobo_object_unref (BONOBO_OBJECT (echo));
 		return NULL;
 	}
 	

@@ -46,6 +46,7 @@ sample_app_exit (SampleApp *app)
 	}
 
 	bonobo_object_unref (BONOBO_OBJECT (app->container));
+
 	gtk_main_quit ();
 }
 
@@ -82,6 +83,12 @@ sample_app_create (void)
 	gtk_widget_show_all (app);
 
 	return inst;
+}
+
+static void
+sample_app_shutdown (SampleApp *app)
+{
+	bonobo_object_unref (BONOBO_OBJECT (app->ui_handler));
 }
 
 static void
@@ -191,6 +198,9 @@ sample_app_remove_component (SampleApp *inst, Component *component)
 {
 	inst->components = g_list_remove (inst->components, component);
 
+	bonobo_container_remove (inst->container, BONOBO_OBJECT (component->client_site));
+	bonobo_object_unref (BONOBO_OBJECT (component->client_site));
+
 	/* Destroy the container widget */
 	gtk_container_remove (GTK_CONTAINER (component->container->box),
 			      component->widget);
@@ -254,8 +264,12 @@ main (int argc, char **argv)
 
 	bonobo_main ();
 
+	sample_app_shutdown (init_data.app);
+
 	if (ctx)
 		poptFreeContext (ctx);
+
+	bonobo_shutdown ();
 
 	return 0;
 }

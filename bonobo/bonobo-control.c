@@ -487,8 +487,8 @@ bonobo_control_new (GtkWidget *widget)
 	control = gtk_type_new (bonobo_control_get_type ());
 
 	corba_control = bonobo_control_corba_object_create (BONOBO_OBJECT (control));
-	if (corba_control == CORBA_OBJECT_NIL){
-		gtk_object_destroy (GTK_OBJECT (control));
+	if (corba_control == CORBA_OBJECT_NIL) {
+		bonobo_object_unref (BONOBO_OBJECT (control));
 		return NULL;
 	}
 	
@@ -727,7 +727,6 @@ bonobo_control_destroy (GtkObject *object)
 
 	CORBA_exception_init (&ev);
 
-	Bonobo_Unknown_unref (control->priv->control_frame, &ev);
 	CORBA_Object_release (control->priv->control_frame, &ev);
 
 	CORBA_exception_free (&ev);
@@ -815,12 +814,9 @@ bonobo_control_set_control_frame (BonoboControl *control, Bonobo_ControlFrame co
 
 	CORBA_exception_init (&ev);
 
-	if (control->priv->control_frame != CORBA_OBJECT_NIL) {
-		Bonobo_Unknown_unref (control->priv->control_frame, &ev);
+	if (control->priv->control_frame != CORBA_OBJECT_NIL)
 		CORBA_Object_release (control->priv->control_frame, &ev);
-	}
 	
-	Bonobo_Unknown_ref (control_frame, &ev);
 	control->priv->control_frame = CORBA_Object_duplicate (control_frame, &ev);
 	
 	CORBA_exception_free (&ev);
@@ -1087,7 +1083,7 @@ bonobo_control_set_property (BonoboControl       *control,
 	if ((err = bonobo_property_bag_client_setv (cl, first_prop, args)))
 		g_warning ("Error '%s'", err);
 
-	gtk_object_unref (GTK_OBJECT (cl));
+	bonobo_object_unref (BONOBO_OBJECT (cl));
 
 	va_end (args);
 }
@@ -1114,7 +1110,7 @@ bonobo_control_get_property (BonoboControl       *control,
 	if ((err = bonobo_property_bag_client_getv (cl, first_prop, args)))
 		g_warning ("Error '%s'", err);
 
-	gtk_object_unref (GTK_OBJECT (cl));
+	bonobo_object_unref (BONOBO_OBJECT (cl));
 
 	va_end (args);
 }

@@ -164,7 +164,7 @@ bonobo_view_new (GtkWidget *widget)
 
 	corba_view = bonobo_view_corba_object_create (BONOBO_OBJECT (view));
 	if (corba_view == CORBA_OBJECT_NIL) {
-		gtk_object_destroy (GTK_OBJECT (view));
+		bonobo_object_unref (BONOBO_OBJECT (view));
 		return NULL;
 	}
 	
@@ -201,6 +201,8 @@ bonobo_view_destroy (GtkObject *object)
 
 	g_free (view->priv);
 	
+	bonobo_object_unref (BONOBO_OBJECT (view->embeddable));
+
 	GTK_OBJECT_CLASS (bonobo_view_parent_class)->destroy (object);
 }
 
@@ -324,10 +326,10 @@ bonobo_view_set_embeddable (BonoboView *view, BonoboEmbeddable *embeddable)
 	g_return_if_fail (BONOBO_IS_EMBEDDABLE (embeddable));
 
 	if (view->embeddable != NULL)
-		gtk_object_unref (GTK_OBJECT (view->embeddable));
+		bonobo_object_unref (BONOBO_OBJECT (view->embeddable));
 
 	view->embeddable = embeddable;
-	gtk_object_ref (GTK_OBJECT (view->embeddable));
+	bonobo_object_ref (BONOBO_OBJECT (view->embeddable));
 }
 
 /**

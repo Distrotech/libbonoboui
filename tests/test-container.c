@@ -387,7 +387,7 @@ add_gnumeric_cmd (GtkWidget *widget, Application *app)
 		moniker,
 		"Sheet 1!A1:D1");
 	moniker_string_rep = bonobo_moniker_get_as_string (moniker);
-	gtk_object_destroy (GTK_OBJECT (moniker));
+	bonobo_object_unref (BONOBO_OBJECT (moniker));
 	
 	add_cmd_moniker (widget, app, moniker_string_rep, &client_site); 
 	g_free (moniker_string_rep);

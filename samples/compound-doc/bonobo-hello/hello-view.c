@@ -71,7 +71,7 @@ hello_bonobo_view_factory (BonoboEmbeddable      *embeddable,
 
 	corba_view = bonobo_view_corba_object_create (BONOBO_OBJECT (view));
 	if (corba_view == CORBA_OBJECT_NIL) {
-		gtk_object_destroy (GTK_OBJECT (view));
+		bonobo_object_unref (BONOBO_OBJECT (view));
 		return NULL;
 	}
 
