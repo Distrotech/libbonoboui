@@ -8,4 +8,7 @@ tests/test-ui.c
 tests/test-ui-auto.c
 tests/test-events.c
 tests/test-filesel.c
+samples/compound-doc/Bonobo_Sample_CanvasItem.server.in.in
+samples/compound-doc/Bonobo_Sample_Paint.server.in.in
+samples/compound-doc/bonobo-hello/Bonobo_Sample_Hello.server.in.in
 samples/compound-doc/container/embeddable-io.c
