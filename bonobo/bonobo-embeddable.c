@@ -191,6 +191,9 @@ impl_Bonobo_Embeddable_createView (PortableServer_Servant servant,
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (bonobo_object_from_servant (servant));
 	BonoboView       *view;
 	
+	if (embeddable->priv->view_factory == NULL)
+		return CORBA_OBJECT_NIL;
+
 	view = embeddable->priv->view_factory (
 		embeddable, view_frame,
 		embeddable->priv->view_factory_closure);

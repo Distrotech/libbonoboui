@@ -78,9 +78,23 @@ static BonoboWrapperClass *bonobo_widget_parent_class;
 static BonoboObjectClient *
 bonobo_widget_launch_component (const char *object_desc)
 {
+	Bonobo_Unknown *
 	BonoboObjectClient *server;
+	CORBA_Environment ev;
 
-	server = bonobo_object_activate (object_desc, 0);
+	CORBA_exception_init (&ev);
+	server = bonobo_get_object (object_desc,
+				    "IDL:Bonobo/Unknown:1.0",
+				    &ev);
+	if (BONOBO_EX (&ev)) {
+		char *txt;
+		g_warning ("Activation exception '%s'",
+			   (txt = bonobo_exception_get_text (&ev)));
+		g_free (txt);
+		server = CORBA_OBJECT_NIL;
+	}
+	
+	CORBA_exception_free (&ev);
 
 	return server;
 }
