@@ -1,3 +1,9 @@
+2002-02-04  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-engine.c
+	(impl_emit_event_on): hold refs on the engine.
+	(class_init): setup state_id
+
 2002-02-02  Michael Meeks  <michael@ximian.com>
 
 	* bonobo/bonobo-ui-node.c (do_set_attr): fix

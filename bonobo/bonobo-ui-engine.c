@@ -41,6 +41,7 @@ static GObjectClass *parent_class = NULL;
 static GQuark id_id        = 0;
 static GQuark verb_id      = 0;
 static GQuark name_id      = 0;
+static GQuark state_id     = 0;
 static GQuark hidden_id    = 0;
 static GQuark sensitive_id = 0;
 
@@ -1604,7 +1605,6 @@ set_cmd_attr (BonoboUIEngine *engine,
 {
 	BonoboUINode *cmd_node;
 
-	g_return_if_fail (prop != NULL);
 	g_return_if_fail (node != NULL);
 	g_return_if_fail (value != NULL);
 	g_return_if_fail (BONOBO_IS_UI_ENGINE (engine));
@@ -1621,7 +1621,7 @@ set_cmd_attr (BonoboUIEngine *engine,
 #ifdef STATE_SYNC_DEBUG
 	fprintf (stderr, "Set '%s' : '%s' to '%s'",
 		 bonobo_ui_node_peek_attr (cmd_node, "name"),
-		 prop, value);
+		 g_quark_to_string (prop), value);
 #endif
 
 	if (!bonobo_ui_node_try_set_attr (cmd_node, prop, value))
@@ -1708,18 +1708,22 @@ impl_emit_event_on (BonoboUIEngine *engine,
 	data = bonobo_ui_xml_get_data (NULL, node);
 	g_return_if_fail (data != NULL);
 
+	g_object_ref (G_OBJECT (engine));
+
 	component_id = g_strdup (data->id);
 	real_id      = g_strdup (id);
 
 	/* This could invoke a CORBA method that might de-register the component */
-	set_cmd_attr (engine, node, "state", state, TRUE);
+	set_cmd_attr (engine, node, state_id, state, TRUE);
 
 	real_emit_ui_event (engine, component_id, real_id,
 			    Bonobo_UIComponent_STATE_CHANGED,
 			    state);
 
-	g_free (real_id);
+	g_object_unref (G_OBJECT (engine));
+
 	g_free (component_id);
+	g_free (real_id);
 }
 
 void
@@ -1798,6 +1802,7 @@ class_init (BonoboUIEngineClass *engine_class)
  	id_id        = g_quark_from_static_string ("id");
  	verb_id      = g_quark_from_static_string ("verb");
  	name_id      = g_quark_from_static_string ("name");
+	state_id     = g_quark_from_static_string ("state");
  	hidden_id    = g_quark_from_static_string ("hidden");
  	sensitive_id = g_quark_from_static_string ("sensitive");
 
