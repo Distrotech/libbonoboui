@@ -471,6 +471,8 @@ component_load_ps_ok_cb (GtkWidget *button, Component *component)
 	Bonobo_Unknown_unref (persist, &ev);
 	CORBA_Object_release (persist, &ev);
 
+	bonobo_object_unref (BONOBO_OBJECT (stream));
+
 	CORBA_exception_free (&ev);
 }
 
