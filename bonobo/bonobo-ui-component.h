@@ -114,6 +114,9 @@ gchar             *bonobo_ui_container_get_prop     (Bonobo_UIContainer  contain
 						     const char         *prop,
 						     CORBA_Environment  *opt_ev);
 
+void               bonobo_ui_container_set_status   (Bonobo_UIContainer  container,
+						     const char         *text,
+						     CORBA_Environment  *opt_ev);
 
 POA_Bonobo_UIComponent__epv *bonobo_ui_component_get_epv (void);
 Bonobo_UIComponent bonobo_ui_component_corba_object_create (BonoboObject *object);

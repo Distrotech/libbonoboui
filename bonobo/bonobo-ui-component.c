@@ -656,7 +656,7 @@ bonobo_ui_container_set_prop (Bonobo_UIContainer  container,
 			      CORBA_Environment  *opt_ev)
 {
 	xmlNode *node;
-	char *parent_path, *p;
+	char *parent_path;
 
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
@@ -667,14 +667,13 @@ bonobo_ui_container_set_prop (Bonobo_UIContainer  container,
 
 	xmlSetProp (node, prop, value);
 
-	parent_path = g_strdup (path);
-
-	if ((p = strrchr (parent_path, '/')))
-		*p = '\0';
+	parent_path = bonobo_ui_xml_get_parent_path (path);
 
 	bonobo_ui_component_set_tree (
 		NULL, container,
 		parent_path, node, opt_ev);
+
+	g_free (parent_path);
 
 	xmlFreeNode (node);
 }
@@ -706,4 +705,19 @@ bonobo_ui_container_get_prop (Bonobo_UIContainer  container,
 	xmlFreeNode (node);
 
 	return ret;
+}
+
+void
+bonobo_ui_container_set_status (Bonobo_UIContainer  container,
+				const char         *text,
+				CORBA_Environment  *opt_ev)
+{
+	char *str;
+
+	g_return_if_fail (text != NULL);
+	g_return_if_fail (container != CORBA_OBJECT_NIL);
+
+	str = g_strdup_printf ("<item name=\"main\">%s</item>", text);
+
+	bonobo_ui_component_set (NULL, container, "/status", str, opt_ev);
 }

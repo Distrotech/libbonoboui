@@ -79,6 +79,7 @@ void             bonobo_ui_xml_set_dirty (BonoboUIXml *tree,
 
 xmlNode         *bonobo_ui_xml_get_path  (BonoboUIXml *tree, const char *path);
 char            *bonobo_ui_xml_make_path (xmlNode     *node);
+char            *bonobo_ui_xml_get_parent_path (const char *path);
 
 BonoboUIXmlError bonobo_ui_xml_merge     (BonoboUIXml *tree,
 					  const char  *path,

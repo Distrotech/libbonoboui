@@ -49,7 +49,6 @@ ui_toolbar_init (BonoboUIToolbar *toolbar)
 		toolbar->look = GTK_TOOLBAR_BOTH;
 	else
 		toolbar->look = GTK_TOOLBAR_ICONS;
-
 }
 
 /**
@@ -158,4 +157,11 @@ bonobo_ui_toolbar_get_tooltips (BonoboUIToolbar *toolbar)
 	g_return_val_if_fail (BONOBO_IS_UI_TOOLBAR (toolbar), NULL);
 
 	return toolbar->tooltips;
+}
+
+void
+bonobo_ui_toolbar_set_homogeneous (BonoboUIToolbar *toolbar,
+				   gboolean         homogeneous)
+{
+	g_warning ("FIXME: implement homogeneity sensibly");
 }

@@ -1516,6 +1516,13 @@ update_dockitem (BonoboWinPrivate *priv, xmlNode *node)
 	container_destroy_siblings (priv->tree, GTK_WIDGET (item), node->childs);
 
 	toolbar = BONOBO_UI_TOOLBAR (bonobo_ui_toolbar_new ());
+
+	if ((txt = xmlGetProp (node, "homogeneous"))) {
+		bonobo_ui_toolbar_set_homogeneous (
+			toolbar, atoi (txt));
+		xmlFree (txt);
+	}
+
 	info->widget = GTK_WIDGET (toolbar);
 
 	gtk_container_add (GTK_CONTAINER (item),
@@ -2244,8 +2251,6 @@ bonobo_win_construct (BonoboWin  *win,
 		      const char *win_name,
 		      const char *title)
 {
-	BonoboWinPrivate *priv;
-
 	g_return_val_if_fail (BONOBO_IS_WIN (win), NULL);
 
 	bonobo_win_set_name (win, win_name);

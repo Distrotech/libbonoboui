@@ -8,6 +8,7 @@
  */
 
 #include "config.h"
+#include <string.h>
 #include <bonobo/bonobo-ui-xml.h>
 
 #undef UI_XML_DEBUG
@@ -107,6 +108,20 @@ bonobo_ui_xml_set_dirty (BonoboUIXml *tree,
 
 	for (l = node->childs; l; l = l->next)
 		bonobo_ui_xml_set_dirty (tree, l, dirty);
+}
+
+char *
+bonobo_ui_xml_get_parent_path (const char *path)
+{
+	const char *p;
+	char *ret;
+
+	if ((p = strrchr (path, '/')))
+		ret = g_strndup (path, p - path);
+	else
+		ret = g_strdup (path);
+
+	return ret;
 }
 
 static void node_free (BonoboUIXml *tree, xmlNode *node);

@@ -20,7 +20,7 @@
 #include <bonobo/bonobo-ui-container.h>
 #include <bonobo/bonobo-ui-compat.h>
 
-#define COMPAT_DEBUG
+#undef COMPAT_DEBUG
 
 typedef struct {
 	BonoboUIComponent *component;
@@ -1333,7 +1333,16 @@ void
 bonobo_ui_handler_menu_set_sensitivity (BonoboUIHandler *uih, const char *path,
 					gboolean sensitive)
 {
-	fprintf (stderr, "bonobo_ui_handler_menu_set_sensitivity unimplemented\n");
+	BonoboUIHandlerPrivate *priv = get_priv (uih);
+
+	g_return_if_fail (priv != NULL);
+
+	if (sensitive)
+		bonobo_ui_container_set_prop (
+			priv->container, path, "sensitive", "1", NULL);
+	else
+		bonobo_ui_container_set_prop (
+			priv->container, path, "sensitive", "0", NULL);
 }
 
 void

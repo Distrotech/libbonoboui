@@ -51,7 +51,10 @@ void       bonobo_ui_toolbar_set_style    (BonoboUIToolbar *toolbar,
 void       bonobo_ui_toolbar_set_tooltips (BonoboUIToolbar *toolbar,
 					    gboolean          enable);
 
-GtkTooltips *bonobo_ui_toolbar_get_tooltips (BonoboUIToolbar *toolbar);
+GtkTooltips *bonobo_ui_toolbar_get_tooltips    (BonoboUIToolbar *toolbar);
+
+void         bonobo_ui_toolbar_set_homogeneous (BonoboUIToolbar *toolbar,
+						gboolean         homogeneous);
 
 END_GNOME_DECLS
 

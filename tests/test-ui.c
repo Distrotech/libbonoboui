@@ -37,7 +37,7 @@ cb_do_dump (GtkWindow *window, BonoboWin *app)
 static void
 cb_set_state (GtkEntry *state_entry, GtkEntry *path_entry)
 {
-	char *path, *state, *txt;
+	char *path, *state, *txt, *str;
 
 	path = gtk_entry_get_text (path_entry);
 	state = gtk_entry_get_text (state_entry);
@@ -51,6 +51,10 @@ cb_set_state (GtkEntry *state_entry, GtkEntry *path_entry)
 		corba_container, path, "state", NULL);
 
 	g_warning ("Re-fetched state was '%s'", txt);
+
+	str = g_strdup_printf ("The state is now '%s'", txt);
+	bonobo_ui_container_set_status (corba_container, str, NULL);
+	g_free (str);
 
 	g_free (txt);
 }
@@ -125,7 +129,7 @@ main (int argc, char **argv)
 	char simpled [] =
 		"<menuitem name=\"save\" label=\"_SaveD\" pixtype=\"stock\" pixname=\"Menu_Save\"/>\n";
 	char toola [] =
-		"<dockitem name=\"toolbar\">\n"
+		"<dockitem name=\"toolbar\" homogeneous=\"0\">\n"
 		"	<toolitem type=\"toggle\" name=\"foo2\" id=\"MyFoo\"pixtype=\"stock\" pixname=\"Save\" label=\"TogSave\" descr=\"My tooltip\"/>\n"
 		"	<toolitem type=\"separator\" name=\"foo3\" pixtype=\"stock\" pixname=\"Save\" label=\"Separator\"/>\n"
 		"	<toolitem type=\"std\" name=\"baa\" pixtype=\"stock\" pixname=\"Open\" label=\"baa\" descr=\"My 2nd tooltip\" verb=\"testme\"/>\n"
