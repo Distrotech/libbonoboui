@@ -8,14 +8,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"POT-Creation-Date: 2004-02-24 10:15+0000\n"
-"PO-Revision-Date: 2003-12-19 01:46+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-02-29 04:17+0100\n"
+"PO-Revision-Date: 2004-02-29 11:15+0100\n"
 "Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
+"Content-Transfer-Encoding: 8bit"
 
 #: bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
@@ -35,7 +35,7 @@ msgstr "حاوي واجهة المستخدم"
 
 #: bonobo/bonobo-dock-item-grip.c:249
 msgid "Dock the toolbar"
-msgstr "ارساء شريط الأدوات"
+msgstr "إرساء شريط الأدوات"
 
 #: bonobo/bonobo-dock-item-grip.c:250
 msgid "Un dock the toolbar"
@@ -49,7 +49,7 @@ msgstr "نوع الظل"
 #: bonobo/bonobo-dock-item.c:233 bonobo/bonobo-dock-item.c:234
 #: bonobo/bonobo-ui-toolbar.c:1119 bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
-msgstr "الاتجاه"
+msgstr "الإتجاه"
 
 #: bonobo/bonobo-dock-item.c:244 bonobo/bonobo-dock-item.c:245
 #: bonobo/bonobo-ui-toolbar.c:1138 bonobo/bonobo-ui-toolbar.c:1139
@@ -59,19 +59,19 @@ msgstr "العرض المفضّل"
 #: bonobo/bonobo-dock-item.c:253 bonobo/bonobo-dock-item.c:254
 #: bonobo/bonobo-ui-toolbar.c:1147 bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
-msgstr "الارتفاع المفضّل"
+msgstr "الإرتفاع المفضّل"
 
 #: bonobo/bonobo-file-selector-util.c:361
 msgid "Select a file to open"
-msgstr "انتقاء ملفّ للفتح"
+msgstr "إنتقي ملفّ للفتح"
 
 #: bonobo/bonobo-file-selector-util.c:389
 msgid "Select files to open"
-msgstr "اختيار ملفّات لفتحها"
+msgstr "اختر ملفّات لفتحها"
 
 #: bonobo/bonobo-file-selector-util.c:418
 msgid "Select a filename to save"
-msgstr "انتقاء اسم ملف للحفظ"
+msgstr "انتقي اسم ملف للحفظ"
 
 #: bonobo/bonobo-plug.c:412
 msgid "Event Forwarding"
@@ -83,7 +83,7 @@ msgstr "فيما إذا وجب تحويل أحداث X"
 
 #: bonobo/bonobo-selector-widget.c:300 bonobo/bonobo-window.c:346
 msgid "Name"
-msgstr "الاسم"
+msgstr "الإسم"
 
 #: bonobo/bonobo-selector-widget.c:322
 msgid "Description"
@@ -302,47 +302,47 @@ msgstr "عرض المساعدة لهذا التطبيق"
 
 #: bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
-msgstr "أسم النافذة - يستعمل لتنسيق الاعدادات."
+msgstr "إسم النافذة - يستعمل لتنسيق الإعدادات."
 
 #: bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr ""
+msgstr "مستوى التكبير"
 
 #: bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "درجة التكبير"
+msgstr "درجة التوسيع"
 
 #: bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr ""
+msgstr "مستوى التكبير الأدنى"
 
 #: bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "أدنى درجة للتكبير"
+msgstr "أدنى درجة للتوسيع"
 
 #: bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr ""
+msgstr "مستوى التكبير الأقصى"
 
 #: bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "أعظم درجة للتكبير"
+msgstr "أقصى درجة للتوسيع"
 
 #: bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr ""
+msgstr "له مستوى تكبير أدنى"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr ""
+msgstr "فيما أذا كان لنا مستوى تكبير أدنى سليم"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr ""
+msgstr "له متسوى تكبير أقصى"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr ""
+msgstr "فيما إذا كان لنا مستوى تكبير أقصى سليم"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -350,7 +350,7 @@ msgstr "مستمر"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr ""
+msgstr "فيما إذا سنكبر استمرار (عكس التكبير المتدرج)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
