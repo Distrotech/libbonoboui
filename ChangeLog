@@ -1,3 +1,20 @@
+2002-08-21  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-socket.c (bonobo_socket_add_id): since
+	in-proc we know that Gtk+ will go through a 4 step
+	process:
+		 a) size_request the toplevel
+		 b) allocate the toplevel to the requested size 
+		 c) realize the toplevel
+		 d) map the toplevel
+	and since we have to add the plug at step 'c' - having
+	missed stepps a and b, - but since we know that the
+	size_request in a) is done fine via CORBA, and that the
+	other end is already realized (c), we simply add a size
+	request on the in-proc child plug to replace step b)
+	before continuing the chain to map.
+	This fixes a number of flickers / size allocation issues.
+
 2002-08-20  Peteris Krisjanis <peteris.krisjanis@os.lv>
 
 	* configure.in (ALL_LINGUAS): Added Latvian (lv) languaga support.

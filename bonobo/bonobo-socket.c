@@ -346,4 +346,18 @@ bonobo_socket_add_id (BonoboSocket   *socket,
 	GtkSocket *gtk_socket = (GtkSocket *) socket;
 
 	gtk_socket_add_id (gtk_socket, xid);
+
+	/* The allocate didn't get through even to the in-proc case,
+	 * so do it again */
+	if (gtk_socket->plug_widget) {
+		GtkAllocation child_allocation;
+
+		child_allocation.x = 0;
+		child_allocation.y = 0;
+		child_allocation.width = GTK_WIDGET (gtk_socket)->allocation.width;
+		child_allocation.height = GTK_WIDGET (gtk_socket)->allocation.height;
+		
+		gtk_widget_size_allocate (gtk_socket->plug_widget,
+					  &child_allocation);
+	}
 }

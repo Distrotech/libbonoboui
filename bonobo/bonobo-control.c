@@ -419,11 +419,8 @@ impl_Bonobo_Control_setSize (PortableServer_Servant  servant,
 	size.height = height;
 
 	/*
-	 * Nothing.
-	 *
-	 * In the Gnome implementation of Bonobo, all size negotiation
-	 * is handled by GtkPlug/GtkSocket for us, or GtkFrame in the
-	 * local case.
+	 * In the Gnome implementation of Bonobo, all size assignment
+	 * is handled by GtkPlug/GtkSocket for us.
 	 */
 
 	g_warning ("setSize untested");
