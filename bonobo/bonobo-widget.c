@@ -67,11 +67,10 @@ struct _BonoboWidgetPrivate {
 	/*
 	 * Subdocument (Embeddable/View) things.
 	 */
-	BonoboContainer	  *container;
+	BonoboContainer	   *container;
 	BonoboClientSite   *client_site;
 	BonoboViewFrame    *view_frame;
-	BonoboUIHandler	  *uih;
-
+	Bonobo_UIHandler    uih;
 };
 
 static BonoboWrapperClass *bonobo_widget_parent_class;
@@ -120,7 +119,18 @@ bonobo_widget_construct_control_from_objref (BonoboWidget     *bw,
 	gtk_container_add (GTK_CONTAINER (bw),
 			   control_frame_widget);
 	gtk_widget_show (control_frame_widget);
-	
+
+	if (uih != CORBA_OBJECT_NIL){
+		CORBA_Environment ev;
+		
+		CORBA_exception_init (&ev);
+
+		Bonobo_UIHandler_ref (uih, &ev);
+		if (ev._major == CORBA_NO_EXCEPTION)
+			bw->priv->uih = CORBA_Object_duplicate (uih, &ev);
+		CORBA_exception_free (&ev);
+	}
+
 	return bw;
 }
 
@@ -198,13 +208,13 @@ bonobo_widget_get_control_frame (BonoboWidget *bw)
  * Subdocument support for BonoboWidget.
  *
  */
-static void
+static BonoboWidget *
 bonobo_widget_create_subdoc_object (BonoboWidget     *bw,
 				    const char       *object_desc,
 				    Bonobo_UIHandler  uih)
 {
 	GtkWidget *view_widget;
-
+	
 	/*
 	 * Create the BonoboContainer.  This will contain
 	 * just one BonoboClientSite.
@@ -212,7 +222,9 @@ bonobo_widget_create_subdoc_object (BonoboWidget     *bw,
 	bw->priv->container = bonobo_container_new ();
 
 	bw->priv->server = bonobo_widget_launch_component (object_desc);
-
+	if (bw->priv->server == NULL)
+		return NULL;
+	
 	/*
 	 * Create the client site.  This is the container-side point
 	 * of contact for the remote component.
@@ -243,6 +255,19 @@ bonobo_widget_create_subdoc_object (BonoboWidget     *bw,
 	view_widget = bonobo_view_frame_get_wrapper (bw->priv->view_frame);
 	gtk_container_add (GTK_CONTAINER (bw), view_widget);
 	gtk_widget_show (view_widget);
+
+	if (uih != CORBA_OBJECT_NIL){
+		CORBA_Environment ev;
+		
+		CORBA_exception_init (&ev);
+
+		Bonobo_UIHandler_ref (uih, &ev);
+		if (ev._major == CORBA_NO_EXCEPTION)
+			bw->priv->uih = CORBA_Object_duplicate (uih, &ev);
+		CORBA_exception_free (&ev);
+	}
+	
+	return bw;
 }
 
 GtkWidget *
@@ -258,10 +283,10 @@ bonobo_widget_new_subdoc (const char       *object_desc,
 	if (bw == NULL)
 		return NULL;
 
-	bonobo_widget_create_subdoc_object (bw, object_desc, uih);
-
-	if (bw == NULL)
+	if (!bonobo_widget_create_subdoc_object (bw, object_desc, uih)){
+		gtk_object_destroy (GTK_OBJECT (bw));
 		return NULL;
+	}
  
 	bonobo_view_frame_set_covered (bw->priv->view_frame, FALSE);
 
@@ -296,7 +321,7 @@ bonobo_widget_get_view_frame (BonoboWidget *bw)
 	return bw->priv->view_frame;
 }
 
-BonoboUIHandler *
+Bonobo_UIHandler
 bonobo_widget_get_uih (BonoboWidget *bw)
 {
 	g_return_val_if_fail (bw != NULL, NULL);
@@ -324,6 +349,27 @@ bonobo_widget_get_server (BonoboWidget *bw)
 static void
 bonobo_widget_destroy (GtkObject *object)
 {
+	BonoboWidget *bw = BONOBO_WIDGET (object);
+	BonoboWidgetPrivate *priv = bw->priv;
+	
+	if (priv->control_frame)
+		bonobo_object_unref (BONOBO_OBJECT (priv->control_frame));
+	if (priv->container)
+		bonobo_object_unref (BONOBO_OBJECT (priv->container));
+	if (priv->client_site)
+		bonobo_object_unref (BONOBO_OBJECT (priv->client_site));
+	if (priv->view_frame)
+		bonobo_object_unref (BONOBO_OBJECT (priv->view_frame));
+	if (priv->uih){
+		CORBA_Environment ev;
+
+		CORBA_exception_init (&ev);
+		Bonobo_UIHandler_unref (priv->uih, &ev);
+		CORBA_Object_release (priv->uih, &ev);
+		CORBA_exception_free (&ev);
+	}
+	g_free (priv);
+	GTK_OBJECT_CLASS (bonobo_widget_parent_class)->destroy (object);
 }
 
 static void
