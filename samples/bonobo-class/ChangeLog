@@ -1,3 +1,10 @@
+2001-01-18  Dietmar Maurer  <dietmar@ximian.com>
+
+	* main.c: use the new factory macros
+
+	* Bonobo_Sample_Echo.oaf.in: changed the oaf IIDs to
+	OAFIID:Bonobo_Sample_Echo_Factory and OAFIID:Bonobo_Sample_Echo
+
 2000-10-31  Michael Meeks  <michael@helixcode.com>
 
 	* Makefile.am: get idl includes the right way round.

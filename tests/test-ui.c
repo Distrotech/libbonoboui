@@ -280,7 +280,7 @@ main (int argc, char **argv)
 	bonobo_ui_engine_config_set_path (bonobo_window_get_ui_engine (win),
 					  "/test-ui/UIConfig/kvps");
 
-	corba_container = bonobo_object_corba_objref (BONOBO_OBJECT (container));
+	corba_container = BONOBO_OBJREF (container);
 
 	{
 		GtkWidget *box = gtk_vbox_new (FALSE, 0);
@@ -390,11 +390,10 @@ main (int argc, char **argv)
 		BonoboControl *control = bonobo_control_new (widget);
 		
 		gtk_widget_show (widget);
-		bonobo_ui_component_object_set (
-			componenta,
-			"/menu/File/MyControl",
-			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
-			NULL);
+		bonobo_ui_component_object_set (componenta,
+						"/menu/File/MyControl",
+						BONOBO_OBJREF (control),
+						NULL);
 	}
 
 	{
@@ -403,11 +402,10 @@ main (int argc, char **argv)
 		
 		gtk_entry_set_text (GTK_ENTRY (widget), "Example text");
 		gtk_widget_show (widget);
-		bonobo_ui_component_object_set (
-			componenta,
-			"/Toolbar/AControl",
-			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
-			NULL);
+		bonobo_ui_component_object_set (componenta,
+						"/Toolbar/AControl",
+						BONOBO_OBJREF (control),
+						NULL);
 	}
 
 	bonobo_ui_component_add_listener (componentb, "MyFoo", toggled_cb, NULL);
@@ -474,10 +472,9 @@ main (int argc, char **argv)
 
 		gtk_progress_bar_update (GTK_PROGRESS_BAR (widget), 0.5);
 		gtk_widget_show (widget);
-		bonobo_ui_component_object_set (
-			componenta, "/status/Progress",
-			bonobo_object_corba_objref (BONOBO_OBJECT (control)),
-			NULL);
+		bonobo_ui_component_object_set (componenta, "/status/Progress",
+						BONOBO_OBJREF (control),
+						NULL);
 
 		id = gtk_timeout_add (100, (GSourceFunc) update_progress, widget);
 		gtk_signal_connect (GTK_OBJECT (widget), "destroy",

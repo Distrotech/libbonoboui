@@ -430,8 +430,7 @@ impl_Bonobo_Control_getProperties (PortableServer_Servant  servant,
 	if (control->priv->propbag == NULL)
 		return CORBA_OBJECT_NIL;
 
-	corba_propbag = bonobo_object_corba_objref (
-		BONOBO_OBJECT (control->priv->propbag));
+	corba_propbag = BONOBO_OBJREF (control->priv->propbag);
 
 	return bonobo_object_dup_ref (corba_propbag, ev);
 }
@@ -1006,7 +1005,7 @@ bonobo_control_set_property (BonoboControl       *control,
 
 	CORBA_exception_init (&ev);
 
-	bag = bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
+	bag = BONOBO_OBJREF (control->priv->propbag);
 
 	if ((err = bonobo_property_bag_client_setv (bag, &ev, first_prop, args)))
 		g_warning ("Error '%s'", err);
@@ -1033,7 +1032,7 @@ bonobo_control_get_property (BonoboControl       *control,
 
 	CORBA_exception_init (&ev);
 
-	bag = bonobo_object_corba_objref (BONOBO_OBJECT (control->priv->propbag));
+	bag = BONOBO_OBJREF (control->priv->propbag);
 
 	if ((err = bonobo_property_bag_client_getv (bag, &ev, first_prop, args)))
 		g_warning ("Error '%s'", err);

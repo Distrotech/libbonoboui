@@ -79,7 +79,7 @@ impl_Bonobo_PropertyControl_getControl (PortableServer_Servant servant,
 		return CORBA_OBJECT_NIL;
 
 	return (Bonobo_Control) CORBA_Object_duplicate 
-		(bonobo_object_corba_objref (BONOBO_OBJECT (control)), ev);
+		(BONOBO_OBJREF (control), ev);
 }
 
 static void

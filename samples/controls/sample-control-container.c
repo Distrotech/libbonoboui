@@ -214,9 +214,8 @@ container_create (void)
 	box = gtk_vbox_new (FALSE, 0);
 	bonobo_window_set_contents (BONOBO_WINDOW (app), box);
 
-	control = bonobo_widget_new_control (
-		"OAFIID:Bonobo_Sample_Calculator",
-		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
+	control = bonobo_widget_new_control ("OAFIID:Bonobo_Sample_Calculator",
+					     BONOBO_OBJREF (uic));
 
 	if (control)
 		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
@@ -224,9 +223,9 @@ container_create (void)
 	button = gtk_button_new_with_label ("Increment result");
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    (GtkSignalFunc)incr_calc, control);
-	control = bonobo_widget_new_control (
-		"OAFIID:Bonobo_Sample_Clock",
-		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
+	
+	control = bonobo_widget_new_control ("OAFIID:Bonobo_Sample_Clock",
+					     BONOBO_OBJREF (uic));
 
 	if (control)
 		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);
@@ -242,9 +241,8 @@ container_create (void)
 	
 	proplist = create_proplist (control);
 
-	control = bonobo_widget_new_control (
-		"OAFIID:Bonobo_Sample_Entry",
-		bonobo_object_corba_objref (BONOBO_OBJECT (uic)));
+	control = bonobo_widget_new_control ("OAFIID:Bonobo_Sample_Entry",
+					     BONOBO_OBJREF (uic));
 
 	if (control)
 		gtk_box_pack_start (GTK_BOX (box), control, TRUE, TRUE, 0);

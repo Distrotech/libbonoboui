@@ -84,9 +84,8 @@ impl_Bonobo_Embeddable_getClientSite (PortableServer_Servant servant,
 	BonoboEmbeddable *embeddable = BONOBO_EMBEDDABLE (
 		bonobo_object_from_servant (servant));
 
-	return bonobo_object_dup_ref (
-		bonobo_object_corba_objref (
-			BONOBO_OBJECT (embeddable->client_site)), ev);
+	return bonobo_object_dup_ref (BONOBO_OBJREF (embeddable->client_site),
+				      ev);
 }
 
 static void
@@ -202,7 +201,7 @@ impl_Bonobo_Embeddable_createView (PortableServer_Servant servant,
 	if (view == NULL)
 		return CORBA_OBJECT_NIL;
 
-	if (bonobo_object_corba_objref (BONOBO_OBJECT (view)) == CORBA_OBJECT_NIL){
+	if (BONOBO_OBJREF (view) == CORBA_OBJECT_NIL){
 		g_warning ("Returned view does not have a CORBA object bound");
 		bonobo_object_unref (BONOBO_OBJECT (view));
 		return CORBA_OBJECT_NIL;
@@ -215,8 +214,7 @@ impl_Bonobo_Embeddable_createView (PortableServer_Servant servant,
 	gtk_signal_connect (GTK_OBJECT (view), "destroy",
 			    GTK_SIGNAL_FUNC (bonobo_embeddable_view_destroy_cb), embeddable);
 
-	return CORBA_Object_duplicate (
-		bonobo_object_corba_objref (BONOBO_OBJECT (view)), ev);
+	return CORBA_Object_duplicate (BONOBO_OBJREF (view), ev);
 }
 
 static void
@@ -287,8 +285,7 @@ impl_Bonobo_Embeddable_createCanvasItem (PortableServer_Servant servant,
 	
 	component = make_canvas_component (embeddable, aa, item_proxy);
 
-	return bonobo_object_dup_ref (
-		bonobo_object_corba_objref (BONOBO_OBJECT (component)), ev);
+	return bonobo_object_dup_ref (BONOBO_OBJREF (component), ev);
 }
 
 /**

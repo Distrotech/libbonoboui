@@ -38,48 +38,7 @@ hello_embeddable_factory (BonoboGenericFactory *f, gpointer data)
 	return BONOBO_OBJECT (embeddable);
 }
 
-static void
-hello_bonobo_init (void)
-{
-	BonoboGenericFactory *factory;
-	
-	factory = bonobo_generic_factory_new (
-			"OAFIID:Bonobo_Sample_Hello_EmbeddableFactory",
-			hello_embeddable_factory, NULL);
-	if (!factory)
-		g_warning ("Couldn't register hello object factory");
-	else 
-		bonobo_running_context_auto_exit_unref (BONOBO_OBJECT (factory));
-}
-
-static void
-server_factory_init (int argc, char **argv)
-{
-	CORBA_Environment ev;
-	CORBA_ORB orb;
-
-	CORBA_exception_init (&ev);
-
-	gnome_init_with_popt_table (PACKAGE, VERSION,
-				    argc, argv, oaf_popt_options, 0, NULL);
-	orb = oaf_init (argc, argv);
-
-	if (!bonobo_init (orb,
-			  CORBA_OBJECT_NIL,
-			  CORBA_OBJECT_NIL))
-		    g_error (_("I could not initialize Bonobo"));
-
-	CORBA_exception_free (&ev);
-}
-
-int
-main (int argc, char **argv)
-{
-	server_factory_init (argc, argv);
-	hello_bonobo_init ();
-
-	bonobo_main ();
-
-	return 0;
-}
-
+BONOBO_OAF_FACTORY ("OAFIID:Bonobo_Sample_Hello_EmbeddableFactory",
+		    "bonobo hello",
+		    hello_embeddable_factory,
+		    NULL)

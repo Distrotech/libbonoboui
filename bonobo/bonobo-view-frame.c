@@ -47,8 +47,8 @@ impl_Bonobo_ViewFrame_getClientSite (PortableServer_Servant servant,
 {
 	BonoboViewFrame *view_frame = BONOBO_VIEW_FRAME (bonobo_object_from_servant (servant));
 
-	return bonobo_object_dup_ref (bonobo_object_corba_objref (
-		BONOBO_OBJECT (view_frame->priv->client_site)), ev);
+	return bonobo_object_dup_ref (
+	        BONOBO_OBJREF (view_frame->priv->client_site), ev);
 }
 
 static CORBA_Object

@@ -44,8 +44,7 @@ impl_Bonobo_ClientSite_getContainer (PortableServer_Servant servant, CORBA_Envir
 	Bonobo_ItemContainer  corba_object;
 	BonoboClientSite     *client_site = BONOBO_CLIENT_SITE (object);
 
-	corba_object = bonobo_object_corba_objref (
-		BONOBO_OBJECT (client_site->container));
+	corba_object = BONOBO_OBJREF (client_site->container);
 
 	return bonobo_object_dup_ref (corba_object, ev);
 }
@@ -337,13 +336,10 @@ bonobo_client_site_bind_embeddable (BonoboClientSite   *client_site,
 	CORBA_exception_init (&ev);
 
 	/* The QI adds a ref */
-	Bonobo_Unknown_unref (bonobo_object_corba_objref (
-		BONOBO_OBJECT (object)), &ev);
+	Bonobo_Unknown_unref (BONOBO_OBJREF (object), &ev);
 
-	Bonobo_Embeddable_setClientSite (
-		embeddable_object, 
-		bonobo_object_corba_objref (BONOBO_OBJECT (client_site)),
-		&ev);
+	Bonobo_Embeddable_setClientSite (embeddable_object, 
+					 BONOBO_OBJREF (client_site), &ev);
 		
 	if (BONOBO_EX (&ev)) {
 		bonobo_object_check_env (BONOBO_OBJECT (object),
@@ -450,12 +446,10 @@ bonobo_client_site_new_view_full (BonoboClientSite  *client_site,
 	/*
 	 * 2. Now, create the view.
 	 */
-	server_object = bonobo_object_corba_objref (BONOBO_OBJECT (client_site->bound_embeddable));
+	server_object = BONOBO_OBJREF (client_site->bound_embeddable);
 	CORBA_exception_init (&ev);
- 	view = Bonobo_Embeddable_createView (
-		server_object,
-		bonobo_object_corba_objref (BONOBO_OBJECT (view_frame)),
-		&ev);
+ 	view = Bonobo_Embeddable_createView (server_object, 
+					     BONOBO_OBJREF (view_frame), &ev);
 
 	if (BONOBO_EX (&ev)) {
 		bonobo_object_check_env (
@@ -531,8 +525,7 @@ bonobo_client_site_new_item (BonoboClientSite *client_site, Bonobo_UIContainer u
 	g_return_val_if_fail (group != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_CANVAS_GROUP (group), NULL);
 
-	corba_emb = bonobo_object_corba_objref (
-			BONOBO_OBJECT (client_site->bound_embeddable));
+	corba_emb = BONOBO_OBJREF (client_site->bound_embeddable);
 
 	item = gnome_canvas_item_new (group, bonobo_canvas_item_get_type (),
 				      "corba_ui_container", uic, 

@@ -611,53 +611,7 @@ embeddable_factory (BonoboGenericFactory *this,
 	return BONOBO_OBJECT (embeddable);
 }
 
-static void
-init_simple_paint_factory (void)
-{
-	BonoboGenericFactory *factory;
-	/*
-	 * This will create a factory server for our simple paint
-	 * component.  When a container wants to create a paint
-	 * component, it will ask the factory to create one, and the
-	 * factory will invoke our embeddable_factory() function.
-	 */
-         factory = bonobo_generic_factory_new (
-			    "OAFIID:Bonobo_Sample_Paint_EmbeddableFactory",
-			     embeddable_factory, NULL);
-
-	 bonobo_running_context_auto_exit_unref (BONOBO_OBJECT (factory));
-}
-
-static void
-init_server_factory (int argc, char **argv)
-{
-	CORBA_Environment ev;
-	CORBA_ORB orb;
-
-	CORBA_exception_init (&ev);
-
-        gnome_init_with_popt_table("bonobo-simple-paint", VERSION,
-				   argc, argv,
-				   oaf_popt_options, 0, NULL); 
-	orb = oaf_init (argc, argv);
-
-	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error (_("Could not initialize Bonobo!"));
-}
- 
-int
-main (int argc, char **argv)
-{
-	/*
-	 * Setup the factory.
-	 */
-	init_server_factory (argc, argv);
-	init_simple_paint_factory ();
-
-	/*
-	 * Start processing.
-	 */
-	bonobo_main ();
-
-	return 0;
-}
+BONOBO_OAF_FACTORY ("OAFIID:Bonobo_Sample_Paint_EmbeddableFactory",
+		    "bonobo-simple-paint",
+		    embeddable_factory,
+		    NULL)

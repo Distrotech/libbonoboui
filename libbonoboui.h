@@ -17,7 +17,6 @@ extern "C" {
 #endif
 
 #include <bonobo/bonobo-object.h>
-#include <bonobo/bonobo-running-context.h>
 #include <bonobo/bonobo-moniker.h>
 #include <bonobo/bonobo-moniker-simple.h>
 #include <bonobo/bonobo-context.h>

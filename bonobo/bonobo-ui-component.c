@@ -1075,8 +1075,7 @@ bonobo_ui_component_set_container (BonoboUIComponent *component,
 
 		CORBA_exception_init (&ev);
 
-		corba_component = 
-			bonobo_object_corba_objref (BONOBO_OBJECT (component));
+		corba_component = BONOBO_OBJREF (component);
 
 		name = component->priv->name ? component->priv->name : "";
 

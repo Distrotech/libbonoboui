@@ -45,7 +45,7 @@ main (int argc, char *argv [])
 
 	init_bonobo (argc, argv);
 
-	obj_id = "OAFIID:demo_echo:fe45dab2-ae27-45e9-943d-34a49eefca96";
+	obj_id = "OAFIID:Bonobo_Sample_Echo";
 
 	server = bonobo_object_activate (obj_id, 0);
 
@@ -59,7 +59,7 @@ main (int argc, char *argv [])
 	/*
 	 * Get the CORBA Object reference from the BonoboObjectClient
 	 */
-	echo_server = bonobo_object_corba_objref (BONOBO_OBJECT (server));
+	echo_server = BONOBO_OBJREF (server);
 
 	/*
 	 * Send a message

@@ -1258,8 +1258,7 @@ bonobo_ui_handler_set_app (BonoboUIHandler *uih, BonoboWindow *win)
 
 	container = bonobo_ui_container_new ();
 	bonobo_ui_container_set_win (container, win);
-	bonobo_ui_handler_set_container (
-		uih, bonobo_object_corba_objref (BONOBO_OBJECT (container)));
+	bonobo_ui_handler_set_container (uih, BONOBO_OBJREF (container));
 }
 
 BonoboWindow *

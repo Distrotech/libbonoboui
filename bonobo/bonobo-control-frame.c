@@ -83,8 +83,7 @@ impl_Bonobo_ControlFrame_getAmbientProperties (PortableServer_Servant  servant,
 	if (control_frame->priv->propbag == NULL)
 		return CORBA_OBJECT_NIL;
 
-	corba_propbag = (Bonobo_PropertyBag)
-		bonobo_object_corba_objref (BONOBO_OBJECT (control_frame->priv->propbag));
+	corba_propbag = BONOBO_OBJREF (control_frame->priv->propbag);
 
 	return bonobo_object_dup_ref (corba_propbag, ev);
 }
@@ -801,9 +800,8 @@ bonobo_control_frame_bind_to_control (BonoboControlFrame *control_frame, Bonobo_
 	/*
 	 * Introduce ourselves to the Control.
 	 */
-	Bonobo_Control_setFrame (control,
-				 bonobo_object_corba_objref (BONOBO_OBJECT (control_frame)),
-				 &ev);
+	Bonobo_Control_setFrame (control, BONOBO_OBJREF (control_frame), &ev);
+
 	if (BONOBO_EX (&ev))
 		bonobo_object_check_env (BONOBO_OBJECT (control_frame), control, &ev);
 	CORBA_exception_free (&ev);

@@ -119,9 +119,8 @@ sample_client_site_add_frame (SampleClientSite *site)
 	 * so that it can merge menu and toolbar items when it gets
 	 * activated.
 	 */
-	view_frame = bonobo_client_site_new_view (
-		BONOBO_CLIENT_SITE (site),
-		bonobo_object_corba_objref (BONOBO_OBJECT (site->app->ui_container)));
+	view_frame = bonobo_client_site_new_view (BONOBO_CLIENT_SITE (site),
+		BONOBO_OBJREF (site->app->ui_container));
 	
 	/*
 	 * Embed the view frame into the application.
@@ -263,10 +262,7 @@ load_stream_cb (GtkWidget *caller, SampleClientSite *site)
 		/*
 		 * Load the file into the component using PersistStream.
 		 */
-		Bonobo_PersistStream_load (persist,
-					   (Bonobo_Stream)
-					   bonobo_object_corba_objref
-					   (BONOBO_OBJECT (stream)),
+		Bonobo_PersistStream_load (persist, BONOBO_OBJREF (stream),
 					   "", &ev);
 
 		if (ev._major != CORBA_NO_EXCEPTION) {

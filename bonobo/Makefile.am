@@ -161,8 +161,7 @@ libbonoboinclude_HEADERS =			\
 	bonobo-win.h				\
 	bonobo-wrapper.h			\
 	bonobo-zoomable.h			\
-	bonobo-zoomable-frame.h			\
-	bonobo-running-context.h
+	bonobo-zoomable-frame.h			
 
 noinst_HEADERS =				\
 	bonobo-activation-context.h		\
@@ -176,7 +175,8 @@ noinst_HEADERS =				\
 	bonobo-ui-toolbar-control-item.h  	\
 	bonobo-ui-toolbar-popup-item.h		\
 	bonobo-ui-toolbar-separator-item.h	\
-	bonobo-ui-xml.h				
+	bonobo-ui-xml.h				\
+	bonobo-running-context.h		
 
 libbonobox_la_LDFLAGS = \
 	-version-info $(BONOBO_CURRENT):$(BONOBO_REVISION):$(BONOBO_AGE)

@@ -278,7 +278,7 @@ bonobo_ui_handler_construct (BonoboUIHandler *ui_handler, Bonobo_UIHandler corba
 	/* Create the toplevel entry. */
 	root = g_new0 (MenuItemInternal, 1);
 	root->uih = ui_handler;
-	root->uih_corba = bonobo_object_corba_objref (BONOBO_OBJECT (ui_handler));
+	root->uih_corba = BONOBO_OBJREF (ui_handler);
 	root->sensitive = TRUE;
 	l = g_list_prepend (NULL, root);
 	g_hash_table_insert (ui_handler->top->path_to_menu_item, g_strdup ("/"), l);
@@ -360,8 +360,7 @@ impl_Bonobo_UIHandler_get_toplevel (PortableServer_Servant  servant,
 	BonoboUIHandler *uih = BONOBO_UI_HANDLER (bonobo_object_from_servant (servant));
 
 	if (uih->top_level_uih == CORBA_OBJECT_NIL)
-		return bonobo_object_dup_ref (
-			bonobo_object_corba_objref (BONOBO_OBJECT (uih)), ev);
+		return bonobo_object_dup_ref (BONOBO_OBJREF (uih), ev);
 
 	return bonobo_object_dup_ref (uih->top_level_uih, ev);
 }
@@ -401,8 +400,7 @@ bonobo_ui_handler_set_container (BonoboUIHandler  *uih,
 
 		/* Register with the top-level UIHandler. */
 		Bonobo_UIHandler_register_containee (
-			uih->top_level_uih,
-			bonobo_object_corba_objref (BONOBO_OBJECT (uih)), &ev);
+			uih->top_level_uih, BONOBO_OBJREF (uih), &ev);
 
 		if (BONOBO_EX (&ev)) {
 			bonobo_object_check_env (
@@ -433,8 +431,7 @@ bonobo_ui_handler_unset_container (BonoboUIHandler *uih)
 	if (uih->top_level_uih != CORBA_OBJECT_NIL) {
 
 		Bonobo_UIHandler_unregister_containee (
-			uih->top_level_uih,
-			bonobo_object_corba_objref (BONOBO_OBJECT (uih)), &ev);
+			uih->top_level_uih, BONOBO_OBJREF (uih), &ev);
 
 		if (BONOBO_EX (&ev)) {
 			bonobo_object_check_env (
