@@ -38,7 +38,6 @@ typedef struct {
 	BonoboUISyncClass parent_class;
 } BonoboUISyncToolbarClass;
 
-GtkType       bonobo_ui_sync_toolbar_get_type (void);
 BonoboUISync *bonobo_ui_sync_toolbar_new      (BonoboUIEngine *engine,
 					       GnomeDock      *dock);
 

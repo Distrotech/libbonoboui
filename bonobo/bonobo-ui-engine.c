@@ -105,6 +105,14 @@ bonobo_ui_engine_remove_sync (BonoboUIEngine *engine,
 		engine->priv->syncs, sync);
 }
 
+GSList *
+bonobo_ui_engine_get_syncs (BonoboUIEngine *engine)
+{
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
+
+	return g_slist_copy (engine->priv->syncs);
+}
+
 #define NODE_IS_ROOT_WIDGET(n)   ((n->type & ROOT_WIDGET) != 0)
 #define NODE_IS_CUSTOM_WIDGET(n) ((n->type & CUSTOM_WIDGET) != 0)
 

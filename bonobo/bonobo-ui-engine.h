@@ -59,6 +59,7 @@ void          bonobo_ui_engine_add_sync        (BonoboUIEngine   *engine,
 						BonoboUISync     *sync);
 void          bonobo_ui_engine_remove_sync     (BonoboUIEngine   *engine,
 						BonoboUISync     *sync);
+GSList       *bonobo_ui_engine_get_syncs       (BonoboUIEngine   *engine);
 
 void          bonobo_ui_engine_update          (BonoboUIEngine   *engine);
 void          bonobo_ui_engine_update_node     (BonoboUIEngine   *engine,

@@ -39,8 +39,6 @@ typedef struct {
 	BonoboUISyncClass parent_class;
 } BonoboUISyncStatusClass;
 
-GtkType       bonobo_ui_sync_status_get_type (void);
-
 BonoboUISync *bonobo_ui_sync_status_new      (BonoboUIEngine *engine,
 					      GtkBox         *status);
 

@@ -38,8 +38,6 @@ typedef struct {
 	BonoboUISyncClass parent_class;
 } BonoboUISyncKeysClass;
 
-GtkType       bonobo_ui_sync_keys_get_type       (void);
-
 BonoboUISync *bonobo_ui_sync_keys_new            (BonoboUIEngine   *engine);
 
 gint          bonobo_ui_sync_keys_binding_handle (GtkWidget        *widget,

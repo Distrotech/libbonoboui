@@ -43,8 +43,6 @@ typedef struct {
 	BonoboUISyncClass parent_class;
 } BonoboUISyncMenuClass;
 
-GtkType       bonobo_ui_sync_menu_get_type     (void);
-
 BonoboUISync *bonobo_ui_sync_menu_new          (BonoboUIEngine *engine,
 						GtkMenuBar     *menu,
 						GtkWidget      *menu_dock_item,

@@ -146,9 +146,15 @@ gboolean   bonobo_ui_sync_do_show_hide       (BonoboUISync     *sync,
 					      BonoboUINode     *cmd_node,
 					      GtkWidget        *widget);
 
-void       bonobo_ui_engine_dump             (BonoboUIEngine   *engine,
-					      FILE             *out,
-					      const char       *msg);
+/*
+ *  These are to allow you to remove certain types of Sync
+ * from a bonobo-window to allow full sub-classing of that.
+ * Do not use to instantiate syncs manualy or to sub-class.
+ */
+GtkType bonobo_ui_sync_keys_get_type    (void);
+GtkType bonobo_ui_sync_menu_get_type    (void);
+GtkType bonobo_ui_sync_status_get_type  (void);
+GtkType bonobo_ui_sync_toolbar_get_type (void);
 
 END_GNOME_DECLS
 
