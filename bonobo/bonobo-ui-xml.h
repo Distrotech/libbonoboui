@@ -30,9 +30,10 @@ typedef gboolean         (*BonoboUIXmlCompareFn)   (gpointer         id_a,
 						    gpointer         id_b);
 typedef BonoboUIXmlData *(*BonoboUIXmlDataNewFn)   (void);
 typedef void             (*BonoboUIXmlDataFreeFn)  (BonoboUIXmlData *data);
-typedef void             (*BonoboUIXmlDumpFn)      (BonoboUIXmlData *data);
-typedef void             (*BonoboUIXmlAddNode)     (BonoboUINode         *parent,
-						    BonoboUINode         *child);
+typedef void             (*BonoboUIXmlDumpFn)      (BonoboUIXml      *tree,
+						    BonoboUINode     *node);
+typedef void             (*BonoboUIXmlAddNode)     (BonoboUINode     *parent,
+						    BonoboUINode     *child);
 
 struct _BonoboUIXml {
 	GtkObject              object;

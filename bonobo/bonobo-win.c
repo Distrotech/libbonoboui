@@ -84,15 +84,6 @@ typedef struct {
 	Bonobo_Unknown  object;
 } NodeInfo;
 
-static void
-info_dump_fn (BonoboUIXmlData *a)
-{
-	NodeInfo *info = (NodeInfo *) a;
-
-	fprintf (stderr, " '%s' widget %8p object %8p type %d\n",
-		 (char *)a->id, info->widget, info->object, info->type);
-}
-
 static BonoboUIXmlData *
 info_new_fn (void)
 {
@@ -128,6 +119,35 @@ widget_get_node (GtkWidget *widget)
 				    WIDGET_NODE_KEY);
 }
 
+static void
+info_dump_fn (BonoboUIXml *tree, BonoboUINode *node)
+{
+	NodeInfo *info = bonobo_ui_xml_get_data (tree, node);
+
+	if (info) {
+		fprintf (stderr, " '%15s' object %8p type %d ",
+			 (char *)info->parent.id, info->object, info->type);
+
+		if (info->widget) {
+			BonoboUINode *attached_node = widget_get_node (info->widget);
+
+			fprintf (stderr, "widget '%8p' with node '%8p' attached ",
+				 info->widget, attached_node);
+
+			if (attached_node == NULL)
+				fprintf (stderr, "is NULL\n");
+
+			else if (attached_node != node)
+				fprintf (stderr, "Serious mismatch attaches should be '%8p'\n",
+					 node);
+			else
+				fprintf (stderr, "and matching\n");
+ 		} else
+			fprintf (stderr, " no associated widget\n");
+	} else
+		fprintf (stderr, " very wierd no data on node '%p'\n", node);
+}
+
 /* We need to map the shell to the item */
 static GtkWidget *
 get_item_widget (GtkWidget *widget)
@@ -151,12 +171,14 @@ widget_set_node (GtkWidget    *widget,
 		 BonoboUINode *node)
 {
 	if (widget) {
+		GtkWidget *aux_widget;
+
 		gtk_object_set_data (GTK_OBJECT (widget),
 				     WIDGET_NODE_KEY, node);
 
-		if ((widget = get_item_widget (widget)))
+		if ((aux_widget = get_item_widget (widget)) != widget)
 
-			gtk_object_set_data (GTK_OBJECT (widget),
+			gtk_object_set_data (GTK_OBJECT (aux_widget),
 					     WIDGET_NODE_KEY, node);
 	}
 }
@@ -506,6 +528,7 @@ sync_generic_widgets (BonoboWinPrivate *priv,
 				printf ("-- just syncing state --\n");
 #endif
 				ss (priv, a, b->data, parent);
+				(*pos)++;
 			} else {
 				NodeInfo   *info;
 				GtkWidget  *widget;
@@ -530,7 +553,7 @@ sync_generic_widgets (BonoboWinPrivate *priv,
 				}
 #ifdef WIDGET_SYNC_DEBUG
 				else
-					printf ("Failed to build widget");
+					printf ("Failed to build widget\n");
 #endif
 
 				nextb = b; /* NB. don't advance 'b' */
@@ -551,14 +574,19 @@ sync_generic_widgets (BonoboWinPrivate *priv,
 					 * on this 'b' node until a more favorable 'a'
 					 */
 					nextb = b;
-				} else
-					g_warning ("non dirty node, but widget mismatch "
-						   "a: '%s:%s', b: '%s:%s' '%p'",
-						   bonobo_ui_node_get_name (a),
-						   bonobo_ui_node_get_attr (a, "name"),
-						   bn ? bonobo_ui_node_get_name (bn) : "NULL",
-						   bn ? bonobo_ui_node_get_attr (bn, "name") : "NULL",
-						   info->widget);
+					g_assert (info->type | CUSTOM_WIDGET);
+#ifdef WIDGET_SYNC_DEBUG
+					printf ("not dirty & not same, but has no widget\n");
+#endif
+				} else {
+					printf ("Bonobo-WARNING **: non dirty node, but widget mismatch "
+						"a: '%s:%s', b: '%s:%s' '%p'\n\n",
+						bonobo_ui_node_get_name (a),
+						bonobo_ui_node_get_attr (a, "name"),
+						bn ? bonobo_ui_node_get_name (bn) : "NULL",
+						bn ? bonobo_ui_node_get_attr (bn, "name") : "NULL",
+						info->widget);
+				}
 			}
 #ifdef WIDGET_SYNC_DEBUG
 			else
@@ -582,6 +610,31 @@ sync_generic_widgets (BonoboWinPrivate *priv,
 		b = b->next;
 
 	*widgets = b;
+}
+
+static void
+check_excess_widgets (BonoboWinPrivate *priv, GList *wptr)
+{
+	if (wptr) {
+		GList *b;
+		int warned = 0;
+
+		for (b = wptr; b; b = b->next) {
+			BonoboUINode *node;
+
+			if (widget_is_special (b->data))
+				continue;
+			
+			if (!warned++)
+				printf ("Bonono-Warning **: Excess widgets at the "
+					"end of the container; wierd\n\n");
+
+			node = widget_get_node (b->data);
+			printf ("Widget type '%s' with node: '%s'\n",
+				gtk_type_name (GTK_OBJECT (b->data)->klass->type),
+				node ? bonobo_ui_xml_make_path (node) : "NULL");
+		}
+	}
 }
 
 static void
@@ -1364,6 +1417,12 @@ add_node_fn (BonoboUINode *parent, BonoboUINode *child)
 		bonobo_ui_node_add_child (insert, child);
 }
 
+static void
+debug_reparents (BonoboControl *control, const char *str)
+{
+	g_warning ("Control '%s' unmapped\n", str);
+}
+
 static GtkWidget *
 build_control (BonoboWinPrivate *priv,
 	       BonoboUINode     *node,
@@ -1377,7 +1436,7 @@ build_control (BonoboWinPrivate *priv,
 
 	if (info->widget) {
 		control = info->widget;
-/*		g_assert (info->widget->parent == NULL);*/
+		g_assert (info->widget->parent == NULL);
 	} else if (info->object != CORBA_OBJECT_NIL) {
 
 		control = bonobo_widget_new_control_from_objref
@@ -1386,8 +1445,12 @@ build_control (BonoboWinPrivate *priv,
 		g_return_val_if_fail (control != NULL, NULL);
 		
 		info->type |= CUSTOM_WIDGET;
-		info->widget = control;
 	}
+
+	if (info->widget)
+		gtk_signal_connect (GTK_OBJECT (info->widget), "unmap",
+				    (GtkSignalFunc) debug_reparents,
+				    bonobo_ui_xml_make_path (node));
 
 	do_show_hide (control, node);
 
@@ -1722,8 +1785,7 @@ update_menus (BonoboWinPrivate *priv, BonoboUINode *node)
 			      menu_sync_state,
 			      menu_build_item,
 			      menu_build_placeholder);
-	if (wptr)
-		g_warning ("Excess widgets at the end of the container; wierd");
+	check_excess_widgets (priv, wptr);
 
 	if (bonobo_ui_node_parent (node) == priv->tree->root)
 		do_show_hide (info->widget, node);
@@ -2097,8 +2159,7 @@ update_dockitem (BonoboWinPrivate *priv, BonoboUINode *node)
 			      toolbar_sync_state,
 			      toolbar_build_item,
 			      toolbar_build_placeholder);
-	if (wptr)
-		g_warning ("Excess widgets at the end of the container; wierd");
+	check_excess_widgets (priv, wptr);
 	g_list_free  (widgets);
 /*	bonobo_win_dump (priv->win, "after build widgets");*/
 
@@ -2310,16 +2371,57 @@ status_build_item (BonoboWinPrivate *priv,
 
 		widget = build_control (
 			priv, node, GTK_WIDGET (priv->status));
-		if (!widget)
-			return NULL;
 
-		gtk_box_pack_end (GTK_BOX (parent), widget, FALSE, FALSE, 0);
+		if (widget)
+			gtk_box_pack_end (GTK_BOX (parent), widget,
+					  FALSE, FALSE, 0);
 	}
 	bonobo_ui_node_free_string (name);
 
-	gtk_box_reorder_child (priv->status, widget, (*pos)++);
+	if (widget)
+		gtk_box_reorder_child (priv->status, widget, (*pos)++);
 
 	return widget;
+}
+
+static GtkWidget *
+status_build_placeholder (BonoboWinPrivate *priv,
+			  BonoboUINode    *node,
+			  int             *pos,
+			  NodeInfo        *info,
+			  GtkWidget       *parent)
+{
+	GtkWidget *widget;
+
+	g_warning ("TESTME: status bar placeholders");
+
+	widget = bonobo_ui_toolbar_separator_item_new ();
+	gtk_widget_set_sensitive (widget, FALSE);
+
+	gtk_box_pack_end (GTK_BOX (parent), widget,
+			  FALSE, FALSE, 0);
+
+	if (widget)
+		gtk_box_reorder_child (priv->status, widget, (*pos)++);
+
+	return widget;
+}
+
+static GList *
+box_get_children_in_order (GtkBox *box)
+{
+	GList       *ret = NULL;
+	GList       *l;
+
+	g_return_val_if_fail (GTK_IS_BOX (box), NULL);
+
+	for (l = box->children; l; l = l->next) {
+		GtkBoxChild *child = l->data;
+
+		ret = g_list_prepend (ret, child->widget);
+	}
+
+	return g_list_reverse (ret);
 }
 
 static void
@@ -2331,15 +2433,14 @@ update_status (BonoboWinPrivate *priv, BonoboUINode *node)
 
 	priv->main_status = NULL;
 
-	wptr = widgets = gtk_container_children (GTK_CONTAINER (priv->status));
+	wptr = widgets = box_get_children_in_order (GTK_BOX (priv->status));
 	pos = 0;
 	sync_generic_widgets (priv, bonobo_ui_node_children (node),
 			      GTK_WIDGET (priv->status), &wptr, &pos,
 			      status_sync_state,
 			      status_build_item,
-			      toolbar_build_placeholder);
-	if (wptr)
-		g_warning ("Excess widgets at the end of the container; wierd");
+			      status_build_placeholder);
+	check_excess_widgets (priv, wptr);
 	g_list_free  (widgets);
 
 	do_show_hide (item, node);
@@ -2490,6 +2591,8 @@ update_widgets (BonoboWinPrivate *priv)
 	setup_root_widgets (priv);
 	move_dirt_cmd_to_widget (priv);
 
+/*	bonobo_win_dump (priv->win, "before update");*/
+
 	for (node = bonobo_ui_node_children (priv->tree->root); node; node = bonobo_ui_node_next (node)) {
 		if (!bonobo_ui_node_get_name (node))
 			continue;
@@ -2513,6 +2616,8 @@ update_widgets (BonoboWinPrivate *priv)
 	}
 
 	update_commands_state (priv);
+
+/*	bonobo_win_dump (priv->win, "after update");*/
 }
 
 static void
@@ -2844,6 +2949,8 @@ bonobo_win_xml_merge (BonoboWin  *win,
 	g_return_val_if_fail (xml != NULL, BONOBO_UI_XML_BAD_PARAM);
 	g_return_val_if_fail (win->priv != NULL, BONOBO_UI_XML_BAD_PARAM);
 	g_return_val_if_fail (win->priv->tree != NULL, BONOBO_UI_XML_BAD_PARAM);
+
+/*	fprintf (stderr, "Merging :\n%s\n", xml);*/
 
 	node = bonobo_ui_node_from_string (xml);
 	

@@ -152,7 +152,7 @@ main (int argc, char **argv)
 	char simpleb [] =
 		"<submenu name=\"File\">\n"
 		"	<menuitem name=\"open\" _label=\"_OpenB\" pixtype=\"stock\" pixname=\"Open\" _tip=\"Open you fool\"/>\n"
-		"       <menuitem/>\n"
+		"       <separator/>\n"
 		"       <menuitem name=\"toggle\" type=\"toggle\" id=\"MyFoo\" _label=\"_ToggleMe\" accel=\"*Control*t\"/>\n"
 		"       <placeholder name=\"Nice\" delimit=\"top\"/>\n"
 		"	<menuitem name=\"close\" noplace=\"1\" verb=\"Close\" _label=\"_CloseB\" "

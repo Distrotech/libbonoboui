@@ -331,14 +331,14 @@ dump_internals (BonoboUIXml *tree, BonoboUINode *node)
 	for (i = 0; i < indent; i++)
 		fprintf (stderr, " ");
 
-	fprintf (stderr, "%s name=\"%s\" ", bonobo_ui_node_get_name (node),
+	fprintf (stderr, "%10s name=\"%10s\" ", bonobo_ui_node_get_name (node),
 		 (txt = bonobo_ui_node_get_attr (node, "name")));
 	if (txt)
 		bonobo_ui_node_free_string (txt);
 	fprintf (stderr, "%d len %d", data->dirty,
 		 g_slist_length (data->overridden));
 	if (tree->dump)
-		tree->dump (data);
+		tree->dump (tree, node);
 	else
 		fprintf (stderr, "\n");
 
