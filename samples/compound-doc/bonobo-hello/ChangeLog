@@ -1,3 +1,9 @@
+2000-06-26  Michael Meeks  <michael@helixcode.com>
+
+	* hello-object-io.c (hello_object_stream_read): kill, move to
+	(hello_object_pstream_load): and drasticaly simplify removing henious
+	coding. (hello_object_pstream_save): ditto.
+
 2000-05-26  Dan Winship  <danw@helixcode.com>
 
 	* hello-object.c, hello-object-io.[ch] (hello_object_stream_read,

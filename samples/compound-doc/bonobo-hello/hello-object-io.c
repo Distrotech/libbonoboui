@@ -19,46 +19,16 @@
 
 #include "hello-object-io.h"
 
-/* Load data from a BonoboStream -- implementation */
-static void
-hello_object_stream_read (Bonobo_Stream stream, Hello * obj,
-			  CORBA_Environment *ev)
-{
-	Bonobo_Stream_iobuf *buffer;
-	CORBA_long bytes_read;
-	gchar *charbuf = g_new0 (gchar, 0);
-	size_t last_len = 0;
-
-	/* We will read the data in chunks of the specified size */
-#define READ_CHUNK_SIZE 65536
-	do {
-		bytes_read =
-		    Bonobo_Stream_read (stream, READ_CHUNK_SIZE, &buffer, ev);
-		if (ev->_major != CORBA_NO_EXCEPTION)
-			return;
-
-		charbuf = g_realloc (charbuf, last_len + buffer->_length);
-		memcpy (charbuf + last_len, buffer->_buffer,
-			buffer->_length);
-		last_len += buffer->_length;
-
-		CORBA_free (buffer);
-	} while (bytes_read > 0);
-#undef READ_CHUNK_SIZE
-
-	charbuf[last_len] = '\0';
-	hello_model_set_text (obj, charbuf);
-	g_free (charbuf);
-}
-
 /* This function implements the Bonobo::PersistStream:load method. */
 void
-hello_object_pstream_load (BonoboPersistStream * ps,
-			   const Bonobo_Stream stream,
+hello_object_pstream_load (BonoboPersistStream       *ps,
+			   const Bonobo_Stream        stream,
 			   Bonobo_Persist_ContentType type,
-			   void *data, CORBA_Environment *ev)
+			   void                      *data,
+			   CORBA_Environment         *ev)
 {
 	Hello *obj = (Hello *) data;
+	char  *str;
 
 	/* 0. Check the Content Type? FIXME */
 
@@ -66,7 +36,10 @@ hello_object_pstream_load (BonoboPersistStream * ps,
 	hello_model_clear (obj);
 
 	/* 2. Read the new text data. */
-	hello_object_stream_read (stream, obj, ev);
+	if (bonobo_stream_client_read_string (stream, &str, ev) > 0) {
+		hello_model_set_text (obj, str);
+		g_free (str);
+	}
 }
 
 /* This function implements the Bonobo::PersistStream:save method. */
@@ -77,31 +50,10 @@ hello_object_pstream_save (BonoboPersistStream * ps,
 			   void *data, CORBA_Environment *ev)
 {
 	Hello *obj = data;
-	Bonobo_Stream_iobuf *buffer;
-	size_t pos = 0, length = strlen (obj->text);
 
-	/* FIXME: Should check content type */
-
-	/* Write the text data into the stream. */
-	buffer = Bonobo_Stream_iobuf__alloc ();
-
-	buffer->_buffer = obj->text;
-	buffer->_length = length;
-
-	while (pos < length) {
-		CORBA_long bytes_written;
-
-		bytes_written = Bonobo_Stream_write (stream, buffer, ev);
-
-		if (ev->_major != CORBA_NO_EXCEPTION) {
-			CORBA_free (buffer);
-			return;
-		}
-
-		pos += bytes_written;
-	}
-
-	CORBA_free (buffer);
+	bonobo_stream_client_write_string (stream,
+					   obj->text?obj->text:"",
+					   TRUE, ev);
 }
 
 CORBA_long
