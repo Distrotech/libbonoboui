@@ -1,5 +1,5 @@
 # Serbian translation of libbonoboui
-# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003, 2004.
+# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003, 2004, 2005.
 #
 # This file is distributed under the same license as the libbonoboui package.
 #
@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-05 15:33+0000\n"
-"PO-Revision-Date: 2004-10-15 22:38+0200\n"
+"POT-Creation-Date: 2005-02-11 13:59+0100\n"
+"PO-Revision-Date: 2005-02-11 14:00+0100\n"
 "Last-Translator: Veljko M. Stanojevic <veljko@vms.homelinux.net>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,6 @@ msgid "Dock the toolbar"
 msgstr "Prikači traku sa alatima"
 
 #: bonobo/bonobo-dock-item-grip.c:258
-#, fuzzy
 msgid "Undock the toolbar"
 msgstr "Otkači traku sa alatima"
 
