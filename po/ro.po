@@ -1,14 +1,15 @@
 # Romanian translation for libbonoboui
-# Copyright (C) 2003 Free Software Foundation, Inc.
-# Mişu Moldovan <dumol@go.ro>, 2003.
+# Copyright (C) 2003 - 2004 Free Software Foundation, Inc.
+# Mişu Moldovan <dumol@go.ro>, 2003, 2004.
 #
 # OBS. Nu sunt programator, m-am inspirat din celelalte localizări 
 # libbonobo, orice sugestie sau corectură este binevenită.
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui-2.3.6\n"
-"POT-Creation-Date: 2004-03-09 11:44+0000\n"
-"PO-Revision-Date: 2003-08-24 21:18+0300\n"
+"Project-Id-Version: libbonoboui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-03-18 04:10+0100\n"
+"PO-Revision-Date: 2004-03-18 15:05+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@go.ro>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +22,7 @@ msgstr "fabrică Corba"
 
 #: bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
-msgstr "Pointerul fabricii"
+msgstr "Pointer fabrică"
 
 #: bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
@@ -99,7 +100,7 @@ msgid ""
 msgstr ""
 "O matrice de interfeţe terminate în NULL pe care un server trebuie să le "
 "suporte pentru a fi incluse în lista selectorului. Implicit este „IDL:Bonobo/"
-"Embeddable:1.0“, dacă nici o altă interfaţă nu este listată"
+"Embeddable:1.0”, dacă nici o altă interfaţă nu este listată"
 
 #: bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -123,15 +124,15 @@ msgstr "A_scunde"
 
 #: bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
-msgstr "Arată _ponturi"
+msgstr "Arată _indicii"
 
 #: bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
-msgstr "Bare de unelte"
+msgstr "Bare cu unelte"
 
 #: bonobo/bonobo-ui-config-widget.c:303
 msgid "toolbars"
-msgstr "bare de unelte"
+msgstr "bare cu unelte"
 
 #: bonobo/bonobo-ui-config-widget.c:314 bonobo/bonobo-ui-sync-toolbar.c:552
 msgid "Look"
@@ -143,7 +144,7 @@ msgstr "_Iconiţă"
 
 #: bonobo/bonobo-ui-config-widget.c:329
 msgid "_Text and Icon"
-msgstr "_Text şi Iconiţe"
+msgstr "_Text şi iconiţe"
 
 #: bonobo/bonobo-ui-config-widget.c:335
 msgid "Text only"
@@ -151,7 +152,7 @@ msgstr "Doar text"
 
 #: bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
-msgstr "_Doar textele importante"
+msgstr "_Doar text prioritar"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
@@ -159,7 +160,7 @@ msgstr "Depanare"
 
 #: bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "_Scoate XML"
+msgstr "_Ieşire XML"
 
 #: bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
@@ -176,7 +177,7 @@ msgstr "Indicatoare de depanare Gdk de setat"
 #: bonobo/bonobo-ui-init-gtk.c:113 bonobo/bonobo-ui-init-gtk.c:116
 #: bonobo/bonobo-ui-init-gtk.c:144 bonobo/bonobo-ui-init-gtk.c:147
 msgid "FLAGS"
-msgstr "INDICATOARE"
+msgstr "FLAGS"
 
 #: bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
@@ -196,7 +197,7 @@ msgstr "Ecran X de folosit"
 
 #: bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
-msgstr "ECRAN"
+msgstr "SCREEN"
 
 #: bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
@@ -204,7 +205,7 @@ msgstr "Sincronizează apelurile X"
 
 #: bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
-msgstr "Nu folosi extensia X de memorie partajată"
+msgstr "Nu utiliza extensia X de memorie partajată"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
@@ -212,7 +213,7 @@ msgstr "Numele programului pentru managerul de ferestre"
 
 #: bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
-msgstr "NUME"
+msgstr "NAME"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
@@ -220,7 +221,7 @@ msgstr "Clasa programului pentru managerul de ferestre"
 
 #: bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
-msgstr "CLASĂ"
+msgstr "CLASS"
 
 #: bonobo/bonobo-ui-init-gtk.c:144
 msgid "Gtk+ debugging flags to set"
@@ -260,15 +261,15 @@ msgstr "_Text"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Hide t_ips"
-msgstr "Ascunde _ponturile"
+msgstr "Ascunde _indiciile"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:553
 msgid "Show t_ips"
-msgstr "Arată p_onturile"
+msgstr "Arată in_diciile"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "_Hide toolbar"
-msgstr "Ascunde _bara de unelte"
+msgstr "Ascunde _bara cu unelte"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:554
 msgid "Customi_ze"
@@ -276,7 +277,7 @@ msgstr "Personali_zare"
 
 #: bonobo/bonobo-ui-sync-toolbar.c:555
 msgid "Customize the toolbar"
-msgstr "Personalizaţi bara de unelte"
+msgstr "Personalizaţi bara cu unelte"
 
 #: bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
@@ -284,11 +285,11 @@ msgstr "este flotantă"
 
 #: bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
-msgstr "dacă bara de unelte este flotantă"
+msgstr "dacă bara cu unelte este flotantă"
 
 #: bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
-msgstr "Stilul dungii din marginea bării de unelte"
+msgstr "Stilul dungii din marginea barei cu unelte"
 
 #: bonobo/bonobo-ui-util.c:629
 msgid "_Contents"
@@ -332,7 +333,7 @@ msgstr "Are un nivel minim de zoom"
 
 #: bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Dacă avem un grad minim de zoom"
+msgstr "Specifică existenţa unui nivel minim valid de zoom"
 
 #: bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
@@ -340,7 +341,7 @@ msgstr "Are un nivel maxim de zoom"
 
 #: bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Dacă avem un grad maxim valid de zoom"
+msgstr "Specifică existenţa unui nivel maxim valid de zoom"
 
 #: bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -348,7 +349,7 @@ msgstr "Este continuu"
 
 #: bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Dacă modificăm zoom-ul continuu (şi nu prin salturi)"
+msgstr "Dacă se modifică nivelul de zoom continuu (şi nu prin salturi)"
 
 #: samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -399,11 +400,3 @@ msgstr "Nu am putut iniţializa codul libbonoboui"
 msgid "Could not initialize Bonobo UI"
 msgstr "Nu am putut iniţializa interfaţa Bonobo"
 
-#~ msgid "HOST"
-#~ msgstr "GAZDĂ"
-
-#~ msgid "PORT"
-#~ msgstr "PORT"
-
-#~ msgid "STYLE"
-#~ msgstr "STIL"
