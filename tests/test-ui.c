@@ -24,8 +24,37 @@
 
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-ui-main.h>
+#include <bonobo/bonobo-ui-preferences.h>
 
 BonoboUIComponent *global_component;
+
+#define PRINT_PREF(spref, pref) \
+	fprintf (stderr, "\t" spref " : %s\n", \
+		 bonobo_ui_preferences_get_ ## pref () ? "True" : "False")
+
+static void
+dump_prefs (void)
+{
+	fprintf (stderr, "--- UI Preferences ---\n");
+
+	fprintf (stderr, "Toolbar:\n");
+
+	PRINT_PREF ("labels", toolbar_labels);
+	PRINT_PREF ("detachable", toolbar_detachable);
+	PRINT_PREF ("relief", toolbar_relief);
+
+	fprintf (stderr, "Menus:\n");
+
+	PRINT_PREF ("have icons", menus_have_icons);
+	PRINT_PREF ("have tearoff", menus_have_tearoff);
+
+	fprintf (stderr, "Menubar:\n");
+
+	PRINT_PREF ("detachable", menubar_detachable);
+	PRINT_PREF ("relief", menubar_relief);
+}
+
+#undef PRINT_PREF
 
 static void
 cb_do_quit (GtkWindow *window, gpointer dummy)
@@ -233,6 +262,8 @@ main (int argc, char **argv)
 	textdomain (PACKAGE);
 
 	bonobo_activate ();
+
+	dump_prefs ();
 
 	win = BONOBO_WINDOW (bonobo_window_new ("Win", "My Test Application"));
 	container = bonobo_window_get_ui_container (win);

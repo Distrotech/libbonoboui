@@ -1,3 +1,24 @@
+2001-10-26  Michael Meeks  <michael@ximian.com>
+
+	* tests/test-ui.c (dump_prefs): impl. (main): invoke.
+
+2001-10-26  Michael Meeks  <michael@ximian.com>
+
+	* glade/glade-bonobo.c (glade_module_register_widgets):
+	use the new, new API - the pace of change ...
+
+2001-10-26  Michael Meeks  <michael@ximian.com>
+
+	* glade/glade-bonobo.c (glade_module_register_widgets):
+	don't use glade_register_widget - it doesn't exist.
+	Use glade_standard_build_widget for a BonoboWindow.
+	Use 8 stop tabs.
+
+2001-10-25  Michael Meeks  <michael@ximian.com>
+
+	* doc/control.txt: add re-design of Control / ControlFrame
+	thoughts.
+
 2001-10-24  jacob berkman  <jacob@ximian.com>
 
 	* glade/glade-bonobo.c: move from libglade/glade/
