@@ -71,6 +71,29 @@ launch_server (GnomeClientSite *client_site, GnomeContainer *container, char *go
 	return object_server;
 }
 
+static GnomeObjectClient *
+launch_server_moniker (GnomeClientSite *client_site, GnomeContainer *container, char *moniker)
+{
+	GnomeObjectClient *object_server;
+	
+	gnome_container_add (container, GNOME_OBJECT (client_site));
+
+	printf ("Launching moniker %s...\n", moniker);
+	object_server = gnome_object_activate (moniker, 0);
+	printf ("Return: %p\n", object_server);
+	if (!object_server){
+		g_warning (_("Can not activate object_server\n"));
+		return NULL;
+	}
+
+	if (!gnome_client_site_bind_embeddable (client_site, object_server)){
+		g_warning (_("Can not bind object server to client_site\n"));
+		return NULL;
+	}
+
+	return object_server;
+}
+
 /*
  * This function is called when the user double clicks on a View in
  * order to activate it.
@@ -209,6 +232,21 @@ add_cmd (GtkWidget *widget, Application *app, char *server_goadid,
 	return server;
 }
 
+static GnomeObjectClient *
+add_cmd_moniker (GtkWidget *widget, Application *app, char *moniker, GnomeClientSite **client_site)
+{
+	GnomeObjectClient *server;
+	
+	*client_site = gnome_client_site_new (app->container);
+
+	server = launch_server_moniker (*client_site, app->container, moniker);
+	if (server == NULL)
+		return NULL;
+
+	add_view (widget, app, *client_site, server);
+	return server;
+}
+
 static void
 add_demo_cmd (GtkWidget *widget, Application *app)
 {
@@ -270,6 +308,28 @@ add_image_view (GtkWidget *widget, Application *app)
 
 	add_view (NULL, app, image_client_site, image_png_obj);
 } /* add_image_view */
+
+static void
+add_gnumeric_cmd (GtkWidget *widget, Application *app)
+{
+	GnomeClientSite *client_site;
+	GnomeMoniker *moniker;
+	char *moniker_string_rep;
+	
+	moniker = gnome_moniker_new ();
+	gnome_moniker_set_server (
+		moniker,
+		"IDL:GNOME:Gnumeric:Workbook:1.0",
+		"/tmp/sales.gnumeric");
+	gnome_moniker_append_item_name (
+		moniker,
+		"Sheet 1!A1:D1");
+	moniker_string_rep = gnome_moniker_get_as_string (moniker);
+	gtk_object_destroy (GTK_OBJECT (moniker));
+	
+	add_cmd_moniker (widget, app, moniker_string_rep, &client_site); 
+	g_free (moniker_string_rep);
+}
 
 /*
  * This function uses GNOME::PersistStream to load a set of data into
@@ -440,17 +500,23 @@ static GnomeUIInfo container_text_plain_menu [] = {
 	GNOMEUIINFO_ITEM_NONE (
 		N_("Add a new _view to an existing text/plain component"),
 			       NULL, add_text_view),
-	
 	GNOMEUIINFO_END
 };
 
 static GnomeUIInfo container_image_png_menu [] = {
-	GNOMEUIINFO_ITEM_NONE (N_("_Add a new image/x-png component"), NULL,
-			       add_image_cmd),
+	GNOMEUIINFO_ITEM_NONE (
+		N_("_Add a new image/x-png component"), NULL,
+		add_image_cmd),
  	GNOMEUIINFO_ITEM_NONE (
 		N_("Add a new _view to an existing image/x-png component"),
 			       NULL, add_image_view),
-	
+	GNOMEUIINFO_END
+};
+
+static GnomeUIInfo container_gnumeric_menu [] = {
+	GNOMEUIINFO_ITEM_NONE (
+		N_("Add a new Gnumeric instance trough monikers"),
+		NULL, add_gnumeric_cmd),
 	GNOMEUIINFO_END
 };
 
@@ -465,6 +531,7 @@ static GnomeUIInfo container_main_menu [] = {
 	GNOMEUIINFO_MENU_FILE_TREE (container_file_menu),
 	GNOMEUIINFO_SUBTREE (N_("_text/plain"), container_text_plain_menu),
 	GNOMEUIINFO_SUBTREE (N_("_image/x-png"), container_image_png_menu),
+	GNOMEUIINFO_SUBTREE (N_("Gnumeric"), container_gnumeric_menu),
 	GNOMEUIINFO_END
 };
 
