@@ -1971,7 +1971,7 @@ menu_sync_state (BonoboWindowPrivate *priv, BonoboUINode *node,
 					    GTK_ACCEL_VISIBLE);
 	}
 
-	widget_queue_state (priv, widget, node);
+	widget_queue_state (priv, widget, cmd_node != NULL ? cmd_node : node);
 }
 
 static GtkWidget *
@@ -2290,18 +2290,19 @@ toolbar_sync_state (BonoboWindowPrivate *priv, BonoboUINode *node,
 	if ((hidden    = bonobo_ui_node_get_attr (node, "hidden")) ||
 	    (sensitive = bonobo_ui_node_get_attr (node, "sensitive")) ||
 	    (state     = bonobo_ui_node_get_attr (node, "state"))) {
-		if (cmd_node && !warned++) {
-			g_warning ("FIXME: We have an attribute '%s' at '%s' breaking "
-				   "cmd/widget separation, please fix",
-				   hidden?"hidden":((sensitive)?"sensitive":((state)?"state":"error")),
-				   bonobo_ui_xml_make_path (node));
+		if (cmd_node) {
+			if (!warned++) {
+				g_warning ("FIXME: We have an attribute '%s' at '%s' breaking "
+					   "cmd/widget separation, please fix",
+					   hidden?"hidden":((sensitive)?"sensitive":((state)?"state":"error")),
+					   bonobo_ui_xml_make_path (node));
+			}
 			if (hidden)
 				set_cmd_attr (priv, node, "hidden", hidden, FALSE);
 			if (sensitive)
 				set_cmd_attr (priv, node, "sensitive", sensitive, FALSE);
 			if (state)
 				set_cmd_attr (priv, node, "state", state, FALSE);
-			cmd_set_dirty (priv, cmd_node);
 		}
 	}
 	bonobo_ui_node_free_string (state);
@@ -2399,7 +2400,7 @@ toolbar_sync_state (BonoboWindowPrivate *priv, BonoboUINode *node,
 		bonobo_ui_node_free_string (txt);
 	}
 
-	widget_queue_state (priv, widget, node);
+	widget_queue_state (priv, widget, cmd_node != NULL ? cmd_node : node);
 }
 
 static BonoboUIToolbarStyle

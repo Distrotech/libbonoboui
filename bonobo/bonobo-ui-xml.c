@@ -90,7 +90,7 @@ do_strip (xmlNode *node)
 			do_strip (a->val);
 		}
 
-		for (l = node->childs; l; l = next) {
+		for (l = node->xmlChildrenNode; l; l = next) {
 			next = l->next;
 			do_strip (l);
 		}
@@ -372,13 +372,13 @@ bonobo_ui_xml_dump (BonoboUIXml *tree, BonoboUINode *bnode, const char *descr)
         xmlNode *node = XML_NODE (bnode);
 
 	doc = xmlNewDoc ("1.0");
-	doc->root = node;
+	doc->xmlRootNode = node;
 	
 	fprintf (stderr, "%s\n", descr);
 
 	xmlDocDump (stderr, doc);
 
-	doc->root = NULL;
+	doc->xmlRootNode = NULL;
 	xmlFreeDoc (doc);
 	fprintf (stderr, "--- Internals ---\n");
 	dump_internals (tree, BNODE (node));
@@ -470,7 +470,7 @@ override_node_with (BonoboUIXml *tree, BonoboUINode *old, BonoboUINode *new)
 
  	/* This code doesn't work right with opaque BonoboUINode object */
  	if (bonobo_ui_node_children (new))
- 		merge (tree, old, (BonoboUINode**)&XML_NODE (new)->childs);
+ 		merge (tree, old, (BonoboUINode**)&XML_NODE (new)->xmlChildrenNode);
 
 	move_children (old, new);
 

@@ -15,8 +15,13 @@
 #include <gnome-xml/parserInternals.h>
 #include <gnome-xml/xmlmemory.h>
 
-#define XML_NODE(x) ((xmlNode*)(x))
-#define BNODE(x) ((BonoboUINode*)(x))
+/* Having this struct here makes debugging nicer. */
+struct _BonoboUINode {
+	xmlNode real_node;
+};
+
+#define XML_NODE(x) (&(x)->real_node)
+#define BNODE(x) ((BonoboUINode *)(x))
 
 BonoboUINode*
 bonobo_ui_node_new (const char   *name)
@@ -171,7 +176,7 @@ bonobo_ui_node_prev (BonoboUINode *node)
 BonoboUINode*
 bonobo_ui_node_children (BonoboUINode *node)
 {
-        return BNODE (XML_NODE (node)->childs);
+        return BNODE (XML_NODE (node)->xmlChildrenNode);
 }
 
 BonoboUINode*
@@ -211,12 +216,12 @@ bonobo_ui_node_to_string (BonoboUINode *node,
 	doc = xmlNewDoc ("1.0");
 	g_return_val_if_fail (doc != NULL, NULL);
 
-	doc->root = XML_NODE(bonobo_ui_node_copy (node, TRUE));
-	g_return_val_if_fail (doc->root != NULL, NULL);
+	doc->xmlRootNode = XML_NODE(bonobo_ui_node_copy (node, TRUE));
+	g_return_val_if_fail (doc->xmlRootNode != NULL, NULL);
 
-	if (!recurse && bonobo_ui_node_children (BNODE(doc->root))) {
+	if (!recurse && bonobo_ui_node_children (BNODE (doc->xmlRootNode))) {
 		BonoboUINode *tmp;
-		while ((tmp = bonobo_ui_node_children (BNODE(doc->root)))) {
+		while ((tmp = bonobo_ui_node_children (BNODE (doc->xmlRootNode)))) {
 			xmlUnlinkNode (XML_NODE(tmp));
 			bonobo_ui_node_free (tmp);
 		}
@@ -242,9 +247,9 @@ bonobo_ui_node_from_string (const char *xml)
 	if (!doc)
 		return NULL;
 	
-	node = BNODE (doc->root);
+	node = BNODE (doc->xmlRootNode);
 
-	doc->root = NULL;
+	doc->xmlRootNode = NULL;
 	
 	xmlFreeDoc (doc);
 
@@ -252,7 +257,7 @@ bonobo_ui_node_from_string (const char *xml)
 }
 
 BonoboUINode*
-bonobo_ui_node_from_file   (const char *fname)
+bonobo_ui_node_from_file (const char *fname)
 {
 	/* Error reporting blows here too (because it blows
 	 * in libxml)
@@ -266,9 +271,9 @@ bonobo_ui_node_from_file   (const char *fname)
 
 	g_return_val_if_fail (doc != NULL, NULL);
 
-	node = BNODE (doc->root);
+	node = BNODE (doc->xmlRootNode);
 
-	doc->root = NULL;
+	doc->xmlRootNode = NULL;
 	xmlFreeDoc (doc);
 
 	return node;
