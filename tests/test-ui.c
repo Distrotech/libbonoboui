@@ -223,12 +223,9 @@ main (int argc, char **argv)
 
 	free (malloc (8));
 
-	if (!bonobo_init (&argc, argv))
-		g_error (_("Cannot init bonobo"));
-
 	if (!bonobo_ui_init_full ("test-ui", VERSION, &argc, argv,
 				  NULL, NULL, NULL, TRUE))
-		g_error (_("Cannot bonobo UI code"));
+		g_error (_("Cannot init libbonoboui code"));
 
 	textdomain (PACKAGE);
 

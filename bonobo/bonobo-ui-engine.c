@@ -994,6 +994,41 @@ state_update_now (BonoboUIEngine *engine,
 }
 
 /**
+ * bonobo_ui_engine_xml_get_prop:
+ * @engine: the engine
+ * @path: the path into the tree
+ * @prop: The property
+ * 
+ * This function fetches the property @prop at node
+ * at @path in the internal structure.
+ *
+ * Return value: the XML string - use bonobo_ui_node_free_string to free
+ **/
+CORBA_char *
+bonobo_ui_engine_xml_get_prop (BonoboUIEngine *engine,
+			       const char     *path,
+			       const char     *prop)
+{
+ 	char         *str;
+ 	BonoboUINode *node;
+  	CORBA_char   *ret;
+  
+  	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), NULL);
+  
+  	node = bonobo_ui_xml_get_path (engine->priv->tree, path);
+  	if (!node)
+  		return NULL;
+ 	else {
+ 		str = bonobo_ui_node_get_attr (node, prop);
+		if (!str)
+			return NULL;
+ 		ret = CORBA_string_dup (str);
+ 		bonobo_ui_node_free_string (str);
+ 		return ret;
+  	}
+}
+
+/**
  * bonobo_ui_engine_xml_get:
  * @engine: the engine
  * @path: the path into the tree
@@ -1149,6 +1184,43 @@ bonobo_ui_engine_object_get (BonoboUIEngine    *engine,
 	if (info->object != CORBA_OBJECT_NIL)
 		*object = bonobo_object_dup_ref (info->object, ev);
 
+	return BONOBO_UI_ERROR_OK;
+}
+
+/**
+ * bonobo_ui_engine_xml_set_prop:
+ * @engine: the engine
+ * @path: the path into the tree
+ * @property: The property to set
+ * @value: The new value of the property
+ * @component: the component ID associated with the nodes.
+ * 
+ * This function sets the property of a node in the internal tree
+ * representation at @path in @engine.
+ * 
+ * Return value: flag on error
+ **/
+BonoboUIError
+bonobo_ui_engine_xml_set_prop (BonoboUIEngine    *engine,
+			       const char        *path,
+			       const char        *property,
+			       const char        *value)
+{
+	BonoboUINode *node;
+	
+	g_return_val_if_fail (BONOBO_IS_UI_ENGINE (engine), 
+			      BONOBO_UI_ERROR_BAD_PARAM);
+
+	node = bonobo_ui_engine_get_path (engine, path);
+
+	if (!node) 
+		return BONOBO_UI_ERROR_INVALID_PATH;
+
+	bonobo_ui_node_set_attr (node, property, value);
+	bonobo_ui_xml_set_dirty (engine->priv->tree, node);
+	
+	bonobo_ui_engine_update (engine);
+	
 	return BONOBO_UI_ERROR_OK;
 }
 

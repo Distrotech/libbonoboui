@@ -92,6 +92,13 @@ BonoboUINode *bonobo_ui_engine_widget_get_node   (GtkWidget        *widget);
 void          bonobo_ui_engine_widget_set_node   (BonoboUIEngine   *engine,
 						  GtkWidget        *widget,
 						  BonoboUINode     *node);
+BonoboUIError bonobo_ui_engine_xml_set_prop      (BonoboUIEngine   *engine,
+						  const char       *path,
+						  const char       *property,
+						  const char       *value);
+CORBA_char   *bonobo_ui_engine_xml_get_prop      (BonoboUIEngine   *engine,
+						  const char       *path,
+						  const char       *prop);
 void          bonobo_ui_engine_prune_widget_info (BonoboUIEngine   *engine,
 						  BonoboUINode     *node,
 						  gboolean          save_custom);

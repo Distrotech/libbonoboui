@@ -1,3 +1,22 @@
+2001-07-24  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-main.c (bonobo_ui_init_full): init. bonobo
+	inside here - of course :-)
+
+2001-07-23  Michael Meeks  <michael@ximian.com>
+
+	* bonobo/bonobo-ui-component.c (impl_set_prop): re-write to use
+	setAttr.
+	(impl_get_prop): upd. for getAttr.
+
+	* bonobo/bonobo-ui-container.c (impl_Bonobo_UIContainer_getAttr),
+	(impl_Bonobo_UIContainer_setAttr): impl.
+	(bonobo_ui_container_class_init): hook em up.
+
+	* bonobo/bonobo-ui-engine.c (bonobo_ui_engine_xml_set_prop):
+	forward port from Alex's bonobo 1.0 UI work
+	(bonobo_ui_engine_xml_get_prop): ditto.
+
 2001-07-23  Martin Baulig  <baulig@suse.de>
 
 	* bonobo/bonobo-ui-engine-config.[ch]: Ported to GObject.

@@ -127,6 +127,41 @@ impl_Bonobo_UIContainer_getNode (PortableServer_Servant servant,
 }
 
 static void
+impl_Bonobo_UIContainer_setAttr (PortableServer_Servant   servant,
+				 const CORBA_char        *path,
+				 const CORBA_char        *attr,
+				 const CORBA_char        *value,
+				 CORBA_Environment       *ev)
+{
+	BonoboUIEngine *engine = get_engine (servant);
+
+	/* Ignore the error for speed */
+	bonobo_ui_engine_xml_set_prop (
+		engine, path, attr, value);
+}
+
+static CORBA_char *
+impl_Bonobo_UIContainer_getAttr (PortableServer_Servant servant,
+				 const CORBA_char      *path,
+				 const CORBA_char      *attr,
+				 CORBA_Environment     *ev)
+{
+	CORBA_char *xml;
+	BonoboUIEngine *engine = get_engine (servant);
+
+	xml = bonobo_ui_engine_xml_get_prop (engine, path, attr);
+	
+	if (!xml) {
+		CORBA_exception_set (
+			ev, CORBA_USER_EXCEPTION,
+			ex_Bonobo_UIContainer_InvalidPath, NULL);
+		return NULL;
+	}
+
+	return xml;
+}
+
+static void
 impl_Bonobo_UIContainer_removeNode (PortableServer_Servant servant,
 				    const CORBA_char      *path,
 				    const CORBA_char      *component_name,
@@ -241,8 +276,8 @@ bonobo_ui_container_class_init (BonoboUIContainerClass *klass)
 	epv->registerComponent   = impl_Bonobo_UIContainer_registerComponent;
 	epv->deregisterComponent = impl_Bonobo_UIContainer_deregisterComponent;
 
-/*	epv->setAttr    = impl_Bonobo_UIContainer_setAttr;
-	epv->getAttr    = impl_Bonobo_UIContainer_getAttr;*/
+	epv->setAttr    = impl_Bonobo_UIContainer_setAttr;
+	epv->getAttr    = impl_Bonobo_UIContainer_getAttr;
 
 	epv->setNode    = impl_Bonobo_UIContainer_setNode;
 	epv->getNode    = impl_Bonobo_UIContainer_getNode;

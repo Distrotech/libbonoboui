@@ -1,3 +1,8 @@
+2001-07-24  Michael Meeks  <michael@ximian.com>
+
+	* container.c (sample_app_exit): bonobo_main_quit.
+	(main): fixup inits.
+
 2001-07-22  Mike Kestner <mkestner@speakeasy.net>
 
 	* samples/compound-doc/container/Makefile.am : add new document and

@@ -1103,33 +1103,29 @@ impl_set_prop (BonoboUIComponent  *component,
 	       const char         *value,
 	       CORBA_Environment  *opt_ev)
 {
-	BonoboUINode *node;
-	char *parent_path;
 	Bonobo_UIContainer container;
+	CORBA_Environment *real_ev, tmp_ev;
 
+	g_return_if_fail (path != NULL);
+	g_return_if_fail (prop != NULL);
+	g_return_if_fail (value != NULL);
 	g_return_if_fail (BONOBO_IS_UI_COMPONENT (component));
+
 	container = component->priv->container;
 	g_return_if_fail (container != CORBA_OBJECT_NIL);
 
-	bonobo_object_ref (BONOBO_OBJECT (component));
+	if (opt_ev)
+		real_ev = opt_ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
 
-	node = bonobo_ui_component_get_tree (
-		component, path, FALSE, opt_ev);
+	Bonobo_UIContainer_setAttr (
+		container, path, prop, value, real_ev);
 
-	g_return_if_fail (node != NULL);
-
-	bonobo_ui_node_set_attr (node, prop, value);
-
-	parent_path = bonobo_ui_xml_get_parent_path (path);
-
-	bonobo_ui_component_set_tree (
-		component, parent_path, node, opt_ev);
-
-	g_free (parent_path);
-
-	bonobo_ui_node_free (node);
-
-	bonobo_object_unref (BONOBO_OBJECT (component));
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 }
 
 /**
@@ -1161,27 +1157,45 @@ impl_get_prop (BonoboUIComponent *component,
 	       const char        *prop,
 	       CORBA_Environment *opt_ev)
 {
-	BonoboUINode *node;
-	xmlChar *ans;
-	gchar   *ret;
+	Bonobo_UIContainer container;
+	CORBA_Environment *real_ev, tmp_ev;
+	CORBA_char        *ret;
+	gchar             *retval;
 
+	g_return_val_if_fail (path != NULL, NULL);
+	g_return_val_if_fail (prop != NULL, NULL);
 	g_return_val_if_fail (BONOBO_IS_UI_COMPONENT (component), NULL);
 
-	node = bonobo_ui_component_get_tree (
-		component, path, FALSE, opt_ev);
+	container = component->priv->container;
+	g_return_val_if_fail (container != CORBA_OBJECT_NIL, NULL);
 
-	g_return_val_if_fail (node != NULL, NULL);
+	if (opt_ev)
+		real_ev = opt_ev;
+	else {
+		CORBA_exception_init (&tmp_ev);
+		real_ev = &tmp_ev;
+	}
 
-	ans = bonobo_ui_node_get_attr (node, prop);
-	if (ans) {
-		ret = g_strdup (ans);
-		bonobo_ui_node_free_string (ans);
-	} else
+	ret = Bonobo_UIContainer_getAttr (
+		container, path, prop, real_ev);
+
+	if (BONOBO_EX (real_ev)) {
+		if (!opt_ev)
+			g_warning ("Invalid path '%s' on prop '%s' get",
+				   path, prop);
 		ret = NULL;
+	}
 
-	bonobo_ui_node_free (node);
+	if (!opt_ev)
+		CORBA_exception_free (&tmp_ev);
 
-	return ret;
+	if (ret) {
+		retval = g_strdup (ret);
+		CORBA_free (ret);
+	} else
+		retval = NULL;
+
+	return retval;
 }
 
 /**

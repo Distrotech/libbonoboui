@@ -1,7 +1,5 @@
 #include "config.h"
-#include <bonobo/bonobo-object.h>
-#include <bonobo/bonobo-ui-container.h>
-#include <bonobo/bonobo-window.h>
+#include <libbonoboui.h>
 #include <gtk/gtkvbox.h>
 #include <liboaf/liboaf.h>
 #include <libgnome/libgnome-init.h>
@@ -23,7 +21,7 @@ sample_app_exit (SampleApp *app)
 
 	g_free (app);
 
-	gtk_main_quit ();
+	bonobo_main_quit ();
 }
 
 static gint
@@ -80,11 +78,8 @@ main (int argc, char **argv)
 
 	free (malloc (8));
 
-	if (bonobo_init (&argc, argv) == FALSE)
-		g_error ("Could not initialize Bonobo!\n");
-
-	gnome_program_init ("container", VERSION, &libgnome_module_info,
-			     argc, argv, NULL);
+	if (!bonobo_ui_init ("container", VERSION, &argc, argv))
+		g_error ("Could not initialize libbonoboui!\n");
 
 	doc = sample_doc_new ();
 	app = sample_app_new (doc);

@@ -107,6 +107,9 @@ bonobo_ui_init_full (const gchar *app_name, const gchar *app_version,
 	else
 		bonobo_ui_inited = TRUE;
 
+	if (!bonobo_init (argc, argv))
+		return FALSE;
+
 	if (full_init) {
 		/*
 		 * Initialize all our dependencies.
