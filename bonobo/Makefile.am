@@ -66,6 +66,7 @@ libbonobo_la_SOURCES =			\
 	bonobo-item-handler.c		\
 	bonobo-listener.c		\
 	bonobo-main.c			\
+	bonobo-mobject.c		\
 	bonobo-moniker.c		\
 	bonobo-moniker-extender.c	\
 	bonobo-moniker-simple.c		\
@@ -115,6 +116,7 @@ libbonoboinclude_HEADERS =			\
 	bonobo-item-handler.h			\
 	bonobo-listener.h			\
 	bonobo-main.h				\
+	bonobo-mobject.h			\
 	bonobo-moniker.h			\
 	bonobo-moniker-extender.h		\
 	bonobo-moniker-simple.h			\
