@@ -59,6 +59,9 @@ struct _BonoboUIToolbarPrivate {
 	int max_width, max_height;
 	int total_width, total_height;
 
+	/* position of left edge of left-most pack-end item */
+	int end_position;
+	
 	/* List of all the items in the toolbar.  Both the ones that have been
            unparented because they don't fit, and the ones that are visible.
            The BonoboUIToolbarPopupItem is not here though.  */
@@ -217,8 +220,9 @@ create_popup_window (BonoboUIToolbar *toolbar)
 
 		item_widget = GTK_WIDGET (p->data);
 
-		if (! GTK_WIDGET_VISIBLE (item_widget))
-			continue;
+		if (! GTK_WIDGET_VISIBLE (item_widget) || 
+			bonobo_ui_toolbar_item_get_pack_end (BONOBO_UI_TOOLBAR_ITEM (item_widget)))
+				continue;
 
 		if (item_widget->parent != NULL)
 			gtk_container_remove (GTK_CONTAINER (item_widget->parent), item_widget);
@@ -440,13 +444,13 @@ allocate_popup_item (BonoboUIToolbar *toolbar)
 	popup_item_allocation.y = toolbar_allocation->y;
 
 	if (priv->orientation == GTK_ORIENTATION_HORIZONTAL) {
-		popup_item_allocation.x      += toolbar_allocation->width - popup_item_requisition.width - border_width;
+		popup_item_allocation.x      = priv->end_position - popup_item_requisition.width - border_width;
 		popup_item_allocation.y      += border_width;
 		popup_item_allocation.width  = popup_item_requisition.width;
 		popup_item_allocation.height = toolbar_allocation->height - 2 * border_width;
 	} else {
 		popup_item_allocation.x      += border_width;
-		popup_item_allocation.y      += toolbar_allocation->height - popup_item_requisition.height - border_width;
+		popup_item_allocation.y      = priv->end_position - popup_item_requisition.height - border_width;
 		popup_item_allocation.width  = toolbar_allocation->width - 2 * border_width;
 		popup_item_allocation.height = popup_item_requisition.height;
 	}
@@ -505,8 +509,11 @@ hide_not_fitting_items (BonoboUIToolbar *toolbar)
 	child_allocation.width  = 1;
 	child_allocation.height = 1;
 
-	for (p = priv->first_not_fitting_item; p != NULL; p = p->next)
+	for (p = priv->first_not_fitting_item; p != NULL; p = p->next) {
+		if (bonobo_ui_toolbar_item_get_pack_end (BONOBO_UI_TOOLBAR_ITEM (p->data)))
+			continue;
 		gtk_widget_size_allocate (GTK_WIDGET (p->data), &child_allocation);
+	}
 }
 
 static void
@@ -515,6 +522,8 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 {
 	BonoboUIToolbarPrivate *priv;
 	GtkAllocation child_allocation;
+	BonoboUIToolbarItem *item;
+	GtkRequisition child_requisition;
 	int border_width;
 	int space_required;
 	int available_space;
@@ -529,7 +538,6 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 	priv = toolbar->priv;
 
 	border_width = GTK_CONTAINER (toolbar)->border_width;
-
 	popup_item_size = get_popup_item_size (toolbar);
 
 	if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
@@ -537,15 +545,73 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 	else
 		available_space = MAX ((int) allocation->height - 2 * border_width, popup_item_size);
 
+	child_allocation.x = allocation->x + border_width;
+	child_allocation.y = allocation->y + border_width;
+
+	/* 
+	 * if there is exactly one toolbar item, handle it specially, by giving it all of the available space,
+	 * even if it doesn't fit, since we never want everything in the pop-up.
+	 */	 
+	if (priv->items != NULL && priv->items->next == NULL) {
+		item = BONOBO_UI_TOOLBAR_ITEM (priv->items->data);		
+		gtk_widget_get_child_requisition (GTK_WIDGET (item), &child_requisition);
+		child_allocation.width = child_requisition.width;
+		child_allocation.height = child_requisition.height;
+
+		if (bonobo_ui_toolbar_item_get_expandable (item)) {
+			if (priv->orientation == GTK_ORIENTATION_HORIZONTAL)
+				child_allocation.width = available_space;
+			else
+				child_allocation.height = available_space;
+		
+		} 
+		gtk_widget_size_allocate (GTK_WIDGET (item), &child_allocation);		
+		
+		return;
+	}
+
+	/* first, make a pass through the items to layout the ones that are packed on the right */
+	priv->end_position = allocation->x + available_space - 8;
+	for (p = priv->items; p != NULL; p = p->next) {
+
+		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
+		if (! bonobo_ui_toolbar_item_get_pack_end (item))
+			continue;
+
+		gtk_widget_get_child_requisition (GTK_WIDGET (item), &child_requisition);
+
+		if (priv->orientation == GTK_ORIENTATION_HORIZONTAL) {
+			available_space -= child_requisition.width;
+			priv->end_position -= child_requisition.width;
+			
+			child_allocation.x = priv->end_position;
+			child_allocation.width = child_requisition.width;
+			child_allocation.height = priv->max_height;
+		} else {
+			available_space -= child_requisition.height;
+			priv->end_position -= child_requisition.height;
+			
+			child_allocation.y = priv->end_position;
+			child_allocation.height = child_requisition.height;
+			child_allocation.width = priv->max_width;
+		}
+		
+		gtk_widget_size_allocate (GTK_WIDGET (item), &child_allocation);
+	}
+	
+	/* make a pass through the items to determine how many fit */	
 	space_required = 0;
 	num_expandable_items = 0;
+
+	child_allocation.x = allocation->x + border_width;
+	child_allocation.y = allocation->y + border_width;
+
 	for (p = priv->items; p != NULL; p = p->next) {
-		BonoboUIToolbarItem *item;
-		GtkRequisition child_requisition;
 		int item_size;
 
 		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
-		if (! GTK_WIDGET_VISIBLE (item) || GTK_WIDGET (item)->parent != GTK_WIDGET (toolbar))
+		if (! GTK_WIDGET_VISIBLE (item) || GTK_WIDGET (item)->parent != GTK_WIDGET (toolbar) ||
+			bonobo_ui_toolbar_item_get_pack_end (item))
 			continue;
 
 		gtk_widget_get_child_requisition (GTK_WIDGET (item), &child_requisition);
@@ -571,6 +637,7 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 
 	priv->first_not_fitting_item = p;
 
+	/* determine the amount of space available for expansion */
 	if (priv->first_not_fitting_item != NULL) {
 		extra_space = 0;
 	} else {
@@ -578,9 +645,6 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 		if (priv->first_not_fitting_item != NULL)
 			extra_space -= popup_item_size;
 	}
-
-	child_allocation.x = allocation->x + border_width;
-	child_allocation.y = allocation->y + border_width;
 
 	first_expandable = FALSE;
 
@@ -590,7 +654,8 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 		int expansion_amount;
 
 		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
-		if (! GTK_WIDGET_VISIBLE (item) || GTK_WIDGET (item)->parent != GTK_WIDGET (toolbar))
+		if (! GTK_WIDGET_VISIBLE (item) || GTK_WIDGET (item)->parent != GTK_WIDGET (toolbar) ||
+			bonobo_ui_toolbar_item_get_pack_end (item))
 			continue;
 
 		gtk_widget_get_child_requisition (GTK_WIDGET (item), &child_requisition);

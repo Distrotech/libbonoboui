@@ -119,6 +119,10 @@ void                      bonobo_ui_toolbar_item_set_expandable   (BonoboUIToolb
 								   gboolean                  expandable);
 gboolean                  bonobo_ui_toolbar_item_get_expandable   (BonoboUIToolbarItem      *button_item);
 
+void                      bonobo_ui_toolbar_item_set_pack_end     (BonoboUIToolbarItem      *button_item,
+								   gboolean                  expandable);
+gboolean                  bonobo_ui_toolbar_item_get_pack_end     (BonoboUIToolbarItem      *button_item);
+
 void                      bonobo_ui_toolbar_item_activate         (BonoboUIToolbarItem     *item);
 
 #ifdef __cplusplus
