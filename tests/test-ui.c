@@ -181,7 +181,7 @@ main (int argc, char **argv)
 		"</submenu>\n";
 	char simplec [] =
 		"<submenu name=\"File\" _label=\"_FileC\" _tip=\"what!\">\n"
-		"    <placeholder name=\"Nice\" delimit=\"top\">\n"
+		"    <placeholder name=\"Nice\" delimit=\"top\" hidden=\"1\">\n"
 		"	<menuitem name=\"fooa\" _label=\"_FooA\" type=\"radio\" group=\"foogroup\" _tip=\"Radio1\"/>\n"
 		"	<menuitem name=\"foob\" _label=\"_FooB\" type=\"radio\" group=\"foogroup\" _tip=\"kippers\"/>\n"
 		"	<menuitem name=\"wibble\" verb=\"ThisForcesAnError\" _label=\"_Baa\""

@@ -543,6 +543,12 @@ placeholder_sync (BonoboWindowPrivate *priv,
 	if (!bonobo_ui_node_children (node))
 		show = FALSE;
 
+	if ((txt = bonobo_ui_node_get_attr (node, "hidden"))) {
+		if (atoi (txt))
+			show = FALSE;
+		bonobo_ui_node_free_string (txt);
+	}
+
 	if (show)
 		gtk_widget_show (widget);	
 	else
