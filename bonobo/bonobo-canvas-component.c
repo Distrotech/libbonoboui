@@ -13,6 +13,7 @@
 #include <bonobo/bonobo.h>
 #include <libgnomeui/gnome-canvas.h>
 #include <gdk/gdkx.h>
+#include <gdk/gdkprivate.h>
 #include <bonobo/gnome-canvas-component.h>
 
 typedef GnomeCanvasComponent Gcc;
@@ -109,8 +110,27 @@ CORBA_UTA (ArtUta *uta)
 	return cuta;
 }
 
+static void
+restore_state (GnomeCanvasItem *item, GNOME_Canvas_State *state)
+{
+	double affine [6];
+	int i;
+
+	for (i = 0; i < 6; i++)
+		affine [i] = state->item_aff [i];
+	gnome_canvas_item_affine_absolute (item, affine);
+	item->canvas->pixels_per_unit = state->pixels_per_unit;
+	item->canvas->scroll_x1 = state->canvas_scroll_x1;
+	item->canvas->scroll_y1 = state->canvas_scroll_y1;
+	item->canvas->zoom_xofs = state->zoom_xofs;
+	item->canvas->zoom_yofs = state->zoom_yofs;
+	GTK_LAYOUT (item->canvas)->xoffset = state->xoffset;
+	GTK_LAYOUT (item->canvas)->yoffset = state->yoffset;
+}
+
 static GNOME_Canvas_ArtUTA *
 gcc_update (PortableServer_Servant servant,
+	    GNOME_Canvas_State     *state,
 	    GNOME_Canvas_affine    aff,
 	    GNOME_Canvas_SVP       *clip_path,
 	    CORBA_long             flags,
@@ -126,7 +146,8 @@ gcc_update (PortableServer_Servant servant,
 	int i;
 	ArtSVP *svp = NULL;
 	GNOME_Canvas_ArtUTA *cuta;
-	
+
+	restore_state (item, state);
 	for (i = 0; i < 6; i++)
 		affine [i] = aff [i];
 
@@ -188,6 +209,8 @@ gcc_update (PortableServer_Servant servant,
 	return cuta;
 }
 
+static GdkGC *the_gc;
+
 static void
 gcc_realize (PortableServer_Servant servant,
 	     GNOME_Canvas_window_id window,
@@ -201,7 +224,8 @@ gcc_realize (PortableServer_Servant servant,
 		g_warning ("Invalid window id passed=0x%x\n", window);
 		return;
 	}
-	
+
+	the_gc = gdk_gc_new (gdk_window);
 	item->canvas->layout.bin_window = gdk_window;
 	ICLASS (item)->realize (item);
 }
@@ -242,7 +266,23 @@ gcc_unmap (PortableServer_Servant servant,
 }
 
 static void
+my_gdk_pixmap_foreign_release (GdkPixmap *pixmap)
+{
+	GdkWindowPrivate *priv = (GdkWindowPrivate *) pixmap;
+
+	if (priv->ref_count != 1){
+		g_warning ("This item is keeping a refcount to a foreign pixmap");
+		return;
+	}
+
+	gdk_xid_table_remove (priv->xwindow);
+	g_dataset_destroy (priv);
+	g_free (priv);
+}
+
+static void
 gcc_draw (PortableServer_Servant servant,
+	  GNOME_Canvas_State *state,
 	  GNOME_Canvas_window_id drawable,
 	  CORBA_short x, CORBA_short y,
 	  CORBA_short width, CORBA_short height,
@@ -252,16 +292,19 @@ gcc_draw (PortableServer_Servant servant,
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	GdkPixmap *pix;
 	
+	gdk_flush ();
 	pix = gdk_pixmap_foreign_new (drawable);
 
 	if (pix == NULL){
 		g_warning ("Invalid window id passed=0x%x\n", drawable);
 		return;
 	}
-	
+
+	restore_state (item, state);
 	ICLASS (item)->draw (item, pix, x, y, width, height);
 
-	gdk_pixmap_unref (pix);
+	my_gdk_pixmap_foreign_release (pix);
+	gdk_flush ();
 }
 
 static void
@@ -324,19 +367,27 @@ gcc_contains (PortableServer_Servant servant,
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
 	GnomeCanvasItem *new_item;
+	CORBA_boolean ret;
 	
-	return ICLASS (item)->point (item, x, y, 0, 0, &new_item) == 0.0;
+	if (getenv ("CC_DEBUG"))
+		printf ("Point %g %g: ", x, y);
+	ret = ICLASS (item)->point (item, x, y, 0, 0, &new_item) == 0.0;
+	if (getenv ("CC_DEBUG"))
+		printf ("=> %s\n", ret ? "yes" : "no");
+	return ret;
 }
 
 static void
 gcc_bounds (PortableServer_Servant servant,
+	    GNOME_Canvas_State *state,
 	    CORBA_double * x1, CORBA_double * x2,
 	    CORBA_double * y1, CORBA_double * y2,
 	    CORBA_Environment *ev)
 {
 	Gcc *gcc = GCC (gnome_object_from_servant (servant));
 	GnomeCanvasItem *item = GNOME_CANVAS_ITEM (gcc->priv->item);
-	
+
+	restore_state (item, state);
 	ICLASS (item)->bounds (item, x1, y1, x2, y2);
 }
 
@@ -441,6 +492,7 @@ free_event (GdkEvent *event)
  */
 static CORBA_boolean
 gcc_event (PortableServer_Servant servant,
+	   GNOME_Canvas_State *state,
 	   GNOME_Gdk_Event * gnome_event,
 	   CORBA_Environment *ev)
 {
@@ -454,6 +506,7 @@ gcc_event (PortableServer_Servant servant,
 
 	GNOME_Gdk_Event_to_GdkEvent (gnome_event, &gdk_event);
 
+	restore_state (item, state);
 	retval = ICLASS (item)->event (item, &gdk_event);
 	free_event (&gdk_event);
 
@@ -702,7 +755,8 @@ rih_update (GnomeCanvasItem *item, double affine [6], ArtSVP *svp, int flags)
 	/*
 	 * Mark our canvas as fully updated
 	 */
-	art_uta_free (item->canvas->redraw_area);
+	if (item->canvas->redraw_area)
+		art_uta_free (item->canvas->redraw_area);
 	item->canvas->redraw_area = NULL;
 	item->canvas->need_redraw = FALSE;
 }
@@ -768,14 +822,13 @@ gnome_canvas_component_set_proxy (GnomeCanvasComponent *comp, GNOME_Canvas_ItemP
 	g_return_if_fail (comp != NULL);
 	g_return_if_fail (GNOME_IS_CANVAS_COMPONENT (comp));
 
-	g_warning ("Retruning\n");
-	return;
-	
 	canvas = comp->priv->item->canvas;
 	
 	comp->priv->original_root = canvas->root;
 	canvas->root = GNOME_CANVAS_ITEM (root_item_hack_new (canvas, proxy));
 
+	gtk_widget_realize (GTK_WIDGET (canvas));
+	
 	/*
 	 * Gross
 	 */

@@ -130,10 +130,31 @@ uta_from_cuta (GNOME_Canvas_ArtUTA *cuta)
 }
 
 static void
+prepare_state (GnomeCanvasItem *item, GNOME_Canvas_State *target)
+{
+	double item_affine [6];
+	GnomeCanvas *canvas = item->canvas;
+	int i;
+
+	gnome_canvas_item_i2w_affine (item, item_affine);
+	for (i = 0; i < 6; i++)
+		target->item_aff [i] = item_affine [i];
+
+	target->pixels_per_unit = canvas->pixels_per_unit;
+	target->canvas_scroll_x1 = canvas->scroll_x1;
+	target->canvas_scroll_y1 = canvas->scroll_y1;
+	target->zoom_xofs = canvas->zoom_xofs;
+	target->zoom_yofs = canvas->zoom_yofs;
+	target->xoffset   = GTK_LAYOUT (canvas)->xoffset;
+	target->yoffset   = GTK_LAYOUT (canvas)->yoffset;
+}
+
+static void
 gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, int item_flags)
 {
 	Gbi *gbi = GBI (item);
 	GNOME_Canvas_affine affine;
+	GNOME_Canvas_State state;
 	GNOME_Canvas_SVP *clip_path = NULL;
 	CORBA_Environment ev;
 	CORBA_double x1, y1, x2, y2;
@@ -154,8 +175,10 @@ gbi_update (GnomeCanvasItem *item, double *item_affine, ArtSVP *item_clip_path, 
 		return;
 
 	CORBA_exception_init (&ev);
+	prepare_state (item, &state);
 	cuta = GNOME_Canvas_Item_update (
-		gbi->priv->object, affine, clip_path, item_flags,
+		gbi->priv->object,
+		&state, affine, clip_path, item_flags,
 		&x1, &y1, &x2, &y2,
 		&ev);
 
@@ -196,6 +219,7 @@ gbi_realize (GnomeCanvasItem *item)
 		(*gbi_parent_class->realize) (item);
 	
 	CORBA_exception_init (&ev);
+	gdk_flush ();
 	GNOME_Canvas_Item_realize (
 		gbi->priv->object, 
 		GDK_WINDOW_XWINDOW (item->canvas->layout.bin_window),
@@ -225,13 +249,24 @@ gbi_draw (GnomeCanvasItem *item, GdkDrawable *drawable, int x, int y, int width,
 {
 	Gbi *gbi = GBI (item);
 	CORBA_Environment ev;
+	GNOME_Canvas_State state;
 	
 	if (getenv ("DEBUG_BI"))
-		printf ("gbi_draw: 0x%x\n", GDK_WINDOW_XWINDOW (drawable));
+		printf ("draw: %d %d %d %d\n", x, y, width, height);
 
+	/*
+	 * This call ensures the drawable XID is allocated on the X server
+	 */
 	gdk_flush ();
 	CORBA_exception_init (&ev);
-	GNOME_Canvas_Item_draw (gbi->priv->object, GDK_WINDOW_XWINDOW (drawable), x, y, width, height, &ev);
+
+	prepare_state (item, &state);
+	GNOME_Canvas_Item_draw (
+		gbi->priv->object,
+		&state,
+		GDK_WINDOW_XWINDOW (drawable),
+		x, y, width, height,
+		&ev);
 	CORBA_exception_free (&ev);
 }
 
@@ -265,12 +300,14 @@ gbi_bounds (GnomeCanvasItem *item, double *x1, double *y1, double *x2, double *y
 {
 	Gbi *gbi = GBI (item);
 	CORBA_Environment ev;
+	GNOME_Canvas_State state;
 	
 	if (getenv ("DEBUG_BI"))
 		printf ("gbi_bounds\n");
 	
 	CORBA_exception_init (&ev);
-	GNOME_Canvas_Item_bounds (gbi->priv->object, x1, y1, x2, y2, &ev);
+	prepare_state (item, &state);
+	GNOME_Canvas_Item_bounds (gbi->priv->object, &state, x1, y1, x2, y2, &ev);
 	CORBA_exception_free (&ev);
 
 	if (getenv ("DEBUG_BI"))
@@ -443,6 +480,7 @@ gbi_event (GnomeCanvasItem *item, GdkEvent *event)
 	Gbi *gbi = GBI (item);
 	CORBA_Environment ev;
 	GNOME_Gdk_Event *corba_event;
+	GNOME_Canvas_State state;
 	CORBA_boolean ret;
 	
 	if (getenv ("DEBUG_BI"))
@@ -453,7 +491,8 @@ gbi_event (GnomeCanvasItem *item, GdkEvent *event)
 		return FALSE;
 	
 	CORBA_exception_init (&ev);
-	ret = GNOME_Canvas_Item_event (gbi->priv->object, corba_event, &ev);
+	prepare_state (item, &state);
+	ret = GNOME_Canvas_Item_event (gbi->priv->object, &state, corba_event, &ev);
 	CORBA_exception_free (&ev);
 	CORBA_free (corba_event);
 
