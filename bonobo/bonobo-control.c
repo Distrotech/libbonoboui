@@ -370,13 +370,17 @@ impl_Bonobo_Control_setSize (PortableServer_Servant  servant,
 
 static void
 impl_Bonobo_Control_getDesiredSize (PortableServer_Servant  servant,
-				  CORBA_short            *desired_width,
-				  CORBA_short            *desired_height,
-				  CORBA_Environment      *ev)
+				    CORBA_short            *desired_width,
+				    CORBA_short            *desired_height,
+				    CORBA_Environment      *ev)
 {
-	/*
-	 * Nothing.
-	 */
+	BonoboControl *control = BONOBO_CONTROL (bonobo_object_from_servant (servant));
+	GtkRequisition requisition;
+
+	gtk_widget_size_request (control->priv->widget, &requisition);
+
+	*desired_width = requisition.width;
+	*desired_height = requisition.height;
 }
 
 static GtkStateType

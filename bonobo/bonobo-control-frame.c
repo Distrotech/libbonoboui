@@ -937,3 +937,35 @@ bonobo_control_frame_get_control_property_bag (BonoboControlFrame *control_frame
 
 	return pbag;
 }
+
+void
+bonobo_control_frame_size_request (BonoboControlFrame *control_frame,
+				   int *desired_width, int *desired_height)
+{
+	CORBA_Environment ev;
+	CORBA_short width, height;
+
+	g_return_if_fail (control_frame != NULL);
+	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (control_frame));
+	g_return_if_fail (control_frame->priv->control != CORBA_OBJECT_NIL);
+	g_return_if_fail (desired_width != NULL);
+	g_return_if_fail (desired_height != NULL);
+
+	CORBA_exception_init (&ev);
+
+	Bonobo_Control_getDesiredSize (control_frame->priv->control,
+				       &width, &height, &ev);
+
+	if (ev._major != CORBA_NO_EXCEPTION) {
+		bonobo_object_check_env (
+			BONOBO_OBJECT (control_frame),
+			(CORBA_Object) control_frame->priv->control, &ev);
+
+		width = height = 0;
+	}
+
+	*desired_width = width;
+	*desired_height = height;
+
+	CORBA_exception_free (&ev);
+}
