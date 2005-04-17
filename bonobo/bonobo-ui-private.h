@@ -42,6 +42,20 @@ GtkWidget *bonobo_ui_internal_toolbar_new (void);
 
 GList *bonobo_ui_internal_toolbar_get_children (GtkWidget *toolbar);
 
+#ifdef G_OS_WIN32
+char      *_bonobo_ui_get_localedir       (void);
+char      *_bonobo_ui_get_datadir	  (void);
+char	  *_bonobo_ui_get_uidir		  (void);
+
+#undef BONOBO_LOCALEDIR
+#define BONOBO_LOCALEDIR _bonobo_ui_get_localedir()
+#undef BONOBO_DATADIR
+#define BONOBO_DATADIR _bonobo_ui_get_datadir()
+#undef BONOBO_UIDIR
+#define BONOBO_UIDIR _bonobo_ui_get_uidir()
+
+#endif
+
 #ifndef   DEBUG_UI
 
 static inline void dprintf (const char *format, ...) { };

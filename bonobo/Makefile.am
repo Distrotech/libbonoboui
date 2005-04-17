@@ -3,6 +3,7 @@ INCLUDES = \
 	-I$(top_builddir)				\
 	$(WARN_CFLAGS)					\
 	$(BONOBOUI_CFLAGS)				\
+	-DPREFIX=\""$(prefix)"\"			\
 	-DPLUGIN_DIR=\""$(PLUGIN_DIR)"\"		\
 	-DBONOBO_UI_INTERNAL				\
 	-DBONOBO_UIDIR=\""$(datadir)/gnome-2.0/ui/"\"	\
@@ -129,6 +130,7 @@ libbonoboui_2_la_SOURCES = \
 	bonobo-ui-internal-toolbar.c		\
 	bonobo-ui-type-builtins.c		\
 	bonobo-ui-util.c			\
+	bonobo-ui-win32.c			\
 	bonobo-ui-xml.c				\
 	bonobo-widget.c				\
 	bonobo-window.c				\

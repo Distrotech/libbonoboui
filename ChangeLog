@@ -1,3 +1,35 @@
+2005-04-17  Tor Lillqvist  <tml@novell.com>
+
+	* configure.in: Require GTK+ and GObject 2.6.
+
+	* bonobo/Makefile.am: Add bonobo-ui-win32.c. Pass also the
+	compile-time prefix as PREFIX to the compilations.
+
+	* bonobo/bonobo-ui-main.c (do_low_level_init): On Win32, register
+	an own XML file open callback that takes a UTF-8 file name and uses
+	g_fopen().
+
+	* bonobo/bonobo-ui-util.c (find_pixmap_in_path,
+	bonobo_ui_util_get_ui_fname): Use GLib path manipulation functions
+	g_path_is_absolute() and g_build_filename().
+
+	* bonobo/bonobo-ui-win32.c: New file, for Win32. Contains DLL
+	entry point DllMain() and helper functions to get the localedir,
+	datadir and uidir at run-time using the end-user machine specific
+	installation prefix.
+	(DllMain): Here I use a very minimal DllMain() that just tucks
+	away the DLL handle for later use. This feels much safer than the
+	more complex DllMain() functions I have occasionally used that
+	call GLib functions and whatnot.
+	(setup): Helper function that looks up the DLL's location at
+	run-time and detetmines the installation folder from that. 
+	(_bonobo_ui_get_localedir, _bonobo_ui_get_datadir,
+	_bonobo_ui_get_uidir): Return the run-time directories.
+
+	* bonobo/bonobo-ui-private.h: Declare above helper functions and
+	redefine the BONOBO_LOCALEDIR etc macros from Makefile.am to call
+	them.
+
 2005-03-30  Steve Murphy  <murf@e-tools.com>
 
         * configure.in: Added "rw" to ALL_LINGUAS.
@@ -47,8 +79,8 @@
 	on X11.
 	(do_low_level_init): Set CORBA context X11 display only on X11.
 
-	* tests/test-reparent.c: Add and remove widgets through timeouts,
-	makes it work more reliably on Win32.
+	* tests/test-reparent.c: Add and remove the widgets through
+	timeouts, makes it work more reliably on Win32.
 	
 2005-02-08  Christian Rose  <menthos@menthos.com>
 

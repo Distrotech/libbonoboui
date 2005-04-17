@@ -22,6 +22,13 @@
 
 #include <gtk/gtkmain.h>
 
+#ifdef G_OS_WIN32
+#include <string.h>
+#include <libxml/xmlIO.h>
+#include <libxml/uri.h>
+#include <glib/gstdio.h>
+#endif
+
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
 #include <X11/Xlib.h>
@@ -93,6 +100,60 @@ bonobo_ui_is_initialized (void)
 	return bonobo_ui_inited;
 }
 
+#ifdef G_OS_WIN32
+
+static void *
+utf8_file_open_real (const char *filename)
+{
+    const char *path = NULL;
+    FILE *fd;
+
+    if (filename == NULL)
+        return (NULL);
+
+    if (!strcmp (filename, "-")) {
+	fd = stdin;
+	return ((void *) fd);
+    }
+
+    if (!xmlStrncasecmp (filename, "file://localhost/", 17))
+	    path = &filename[17];
+    else if (!xmlStrncasecmp (filename, "file:///", 8)) {
+	    path = &filename[8];
+    } else 
+	    path = filename;
+
+    if (path == NULL)
+	    return (NULL);
+    if (!g_file_test (path, G_FILE_TEST_IS_REGULAR))
+	    return (NULL);
+
+    fd = g_fopen (path, "rb");
+    if (fd == NULL)
+	    return (NULL);
+
+    return ((void *) fd);
+}
+
+static void *
+utf8_file_open (const char *filename)
+{
+	char *unescaped;
+	void *retval;
+
+	unescaped = xmlURIUnescapeString (filename, 0, NULL);
+	if (unescaped != NULL) {
+		retval = utf8_file_open_real (unescaped);
+		xmlFree (unescaped);
+	} else {
+		retval = utf8_file_open_real (filename);
+	}
+	return retval;
+	
+}
+
+#endif
+
 static void
 do_low_level_init (void)
 {
@@ -112,6 +173,13 @@ do_low_level_init (void)
 	bindtextdomain (GETTEXT_PACKAGE, BONOBO_LOCALEDIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
+#ifdef G_OS_WIN32
+	/* This is a suitable place to register our own libxml2 file
+	 * open callback that takes UTF-8 filenames.
+	 */
+	xmlRegisterInputCallbacks (xmlFileMatch, utf8_file_open,
+				   xmlFileRead, xmlFileClose);
+#endif
 
 #ifdef GDK_WINDOWING_X11
 	bonobo_setup_x_error_handler ();

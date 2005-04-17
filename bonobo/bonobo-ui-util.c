@@ -228,7 +228,7 @@ find_pixmap_in_path (const gchar *filename)
 {
 	gchar *file;
 
-	if (filename [0] == '/')
+	if (g_path_is_absolute (filename))
 		return g_strdup (filename);
 
 	file = gnome_program_locate_file (gnome_program_get (),
@@ -664,26 +664,29 @@ bonobo_ui_util_get_ui_fname (const char *component_datadir,
 {
 	char *fname, *name;
 
-	if ((file_name [0] == '/' || file_name [0] == '.') &&
+	if ((g_path_is_absolute (file_name) || file_name [0] == '.') &&
 	    g_file_test (file_name, G_FILE_TEST_EXISTS))
 		return g_strdup (file_name);
 
 	if (component_datadir) {
-		fname = g_strdup_printf ("%s/gnome-2.0/ui/%s",
-					 component_datadir, file_name);
+		fname = g_build_filename (component_datadir,
+					  "gnome-2.0",
+					  "ui",
+					  file_name,
+					  NULL);
 
 		if (g_file_test (fname, G_FILE_TEST_EXISTS))
 			return fname;
 		g_free (fname);
 	}
 
-	name = g_strconcat (BONOBO_UIDIR, file_name, NULL);
+	name = g_build_filename (BONOBO_UIDIR, file_name, NULL);
 	if (g_file_test (name, G_FILE_TEST_EXISTS))
 		return name;
 	g_free (name);
 
 	if (component_datadir) {
-		name = g_strconcat (component_datadir, "/", file_name, NULL);
+		name = g_build_filename (component_datadir, file_name, NULL);
 		if (g_file_test (name, G_FILE_TEST_EXISTS))
 			return name;
 		g_free (name);
