@@ -28,9 +28,9 @@ BOOL WINAPI DllMain (HINSTANCE hinstDLL,
 /* Ditto. We can't include bonobo-ui-private.h where the prototypes
  * are in this file.
  */
-char *_bonobo_ui_get_localedir (void);
-char *_bonobo_ui_get_datadir (void);
-char *_bonobo_ui_get_uidir (void);
+const char *_bonobo_ui_get_localedir (void);
+const char *_bonobo_ui_get_datadir (void);
+const char *_bonobo_ui_get_uidir (void);
 
 static HMODULE hmodule;
 G_LOCK_DEFINE_STATIC (mutex);
@@ -137,21 +137,21 @@ setup (void)
 	G_UNLOCK (mutex);
 }
 
-char *
+const char *
 _bonobo_ui_get_localedir (void)
 {
 	setup ();
 	return _bonobo_localedir;
 }
 
-char *
+const char *
 _bonobo_ui_get_datadir (void)
 {
 	setup ();
 	return _bonobo_datadir;
 }
 
-char *
+const char *
 _bonobo_ui_get_uidir (void)
 {
 	setup ();

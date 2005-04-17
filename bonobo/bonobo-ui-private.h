@@ -43,9 +43,9 @@ GtkWidget *bonobo_ui_internal_toolbar_new (void);
 GList *bonobo_ui_internal_toolbar_get_children (GtkWidget *toolbar);
 
 #ifdef G_OS_WIN32
-char      *_bonobo_ui_get_localedir       (void);
-char      *_bonobo_ui_get_datadir	  (void);
-char	  *_bonobo_ui_get_uidir		  (void);
+const char *_bonobo_ui_get_localedir      (void);
+const char *_bonobo_ui_get_datadir	  (void);
+const char *_bonobo_ui_get_uidir	  (void);
 
 #undef BONOBO_LOCALEDIR
 #define BONOBO_LOCALEDIR _bonobo_ui_get_localedir()
