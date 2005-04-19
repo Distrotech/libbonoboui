@@ -706,6 +706,21 @@ bonobo_ui_util_get_ui_fname (const char *component_datadir,
 void
 bonobo_ui_util_translate_ui (BonoboUINode *node)
 {
+	bonobo_ui_util_translate_ui_with_domain (node, NULL);
+}
+
+/**
+ * bonobo_ui_util_translate_ui:
+ * @node: the node to start at.
+ * @domain: the translation domain
+ * 
+ *  Quest through a tree looking for translatable properties
+ * ( those prefixed with an '_' ). Translates the value of the
+ * property according to the domain and removes the leading '_'.
+ **/
+void
+bonobo_ui_util_translate_ui_with_domain (BonoboUINode *node, const char *domain)
+{
         BonoboUINode *l;
 	int           i;
 
@@ -729,7 +744,7 @@ bonobo_ui_util_translate_ui (BonoboUINode *node)
 
 			old = a->value;
 #ifdef ENABLE_NLS
-			a->value = xmlStrdup (gettext(a->value));
+			a->value = xmlStrdup (domain ? dgettext (domain, a->value) : gettext(a->value));
 #else
 			a->value = xmlStrdup (a->value);
 #endif
@@ -738,7 +753,7 @@ bonobo_ui_util_translate_ui (BonoboUINode *node)
 	}
 
 	for (l = node->children; l; l = l->next)
-		bonobo_ui_util_translate_ui (l);
+		bonobo_ui_util_translate_ui_with_domain (l, domain);
 }
 
 /**
@@ -847,6 +862,29 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 		       const char        *app_prefix,
 		       const char        *app_name)
 {
+	return bonobo_ui_util_new_ui_with_domain (component, file_name, app_prefix, app_name, NULL);
+}
+
+/**
+ * bonobo_ui_util_new_ui_with_domain:
+ * @component: The component help callback should be on
+ * @file_name: Filename of the UI file
+ * @app_name: Application name ( for finding help )
+ * @domain: Translation domain
+ * 
+ *  Loads an xml tree from a file, cleans the 
+ * doc cruft from its nodes; and translates the nodes
+ * according to the domain.
+ * 
+ * Return value: The translated tree ready to be merged.
+ **/
+BonoboUINode *
+bonobo_ui_util_new_ui_with_domain  (BonoboUIComponent *component,
+				    const char        *file_name,
+				    const char        *app_prefix,
+				    const char        *app_name,
+				    const char        *domain)
+{
 	BonoboUINode *node;
 
 	g_return_val_if_fail (app_name != NULL, NULL);
@@ -854,7 +892,7 @@ bonobo_ui_util_new_ui (BonoboUIComponent *component,
 
         node = bonobo_ui_node_from_file (file_name);
 
-	bonobo_ui_util_translate_ui (node);
+	bonobo_ui_util_translate_ui_with_domain (node, domain);
 
 	bonobo_ui_util_fixup_help (component, node, app_prefix, app_name);
 

@@ -33,6 +33,8 @@ char      *bonobo_ui_util_get_ui_fname        (const char        *component_pref
 					       const char        *file_name);
 
 void       bonobo_ui_util_translate_ui        (BonoboUINode      *node);
+void       bonobo_ui_util_translate_ui_with_domain (BonoboUINode      *node,
+						    const char        *domain);
 
 void       bonobo_ui_util_fixup_help          (BonoboUIComponent *component,
 					       BonoboUINode      *node,
@@ -48,6 +50,11 @@ BonoboUINode   *bonobo_ui_util_new_ui       (BonoboUIComponent *component,
 					     const char        *fname,
 					     const char        *app_prefix,
 					     const char        *app_name);
+BonoboUINode   *bonobo_ui_util_new_ui_with_domain (BonoboUIComponent *component,
+						   const char        *fname,
+						   const char        *app_prefix,
+						   const char        *app_name,
+						   const char        *domain);
 
 void            bonobo_ui_util_set_ui       (BonoboUIComponent *component,
 					     const char        *app_prefix,
