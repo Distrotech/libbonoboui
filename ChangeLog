@@ -1,13 +1,3 @@
-2005-04-20  Changwoo Ryu  <cwryu@debian.org>
-
-	* bonobo/bonobo-ui-util.c (bonobo_ui_util_new_ui_with_domain,
-	bonobo_ui_util_translate_ui_with_domain): New functions which do
-	the same things as bonobo_ui_util_new_ui() and
-	bonobo_ui_util_translate() respectively but translate with the
-	specified translation domain.  Fixes #301118.
-	* bonobo/bonobo-ui-util.h: bonobo_ui_util_new_ui_with_domain() and
-	bonobo_ui_util_translate_ui_with_domain() prototypes.
-
 2005-04-17  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in: Require GTK+ and GObject 2.6.
