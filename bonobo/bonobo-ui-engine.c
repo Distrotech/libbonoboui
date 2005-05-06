@@ -2321,10 +2321,10 @@ bonobo_ui_engine_sync (BonoboUIEngine   *engine,
 				} else {
 					g_warning ("non dirty node, but widget mismatch "
 						   "a: '%s:%s', b: '%s:%s' '%p'",
-						   bonobo_ui_node_get_name (a),
-						   bonobo_ui_node_peek_attr (a, "name"),
-						   bn ? bonobo_ui_node_get_name (bn) : "NULL",
-						   bn ? bonobo_ui_node_peek_attr (bn, "name") : "NULL",
+						   bonobo_ui_node_get_name (a) ? bonobo_ui_node_get_name (a) : "NULL",
+						   bonobo_ui_node_peek_attr (a, "name") ? bonobo_ui_node_peek_attr (a, "name") : "NULL",
+						   bn ? (bonobo_ui_node_get_name (bn) ? bonobo_ui_node_get_name (bn) : "NULL") : "NULL",
+						   bn ? (bonobo_ui_node_peek_attr (bn, "name") ? bonobo_ui_node_peek_attr (bn, "name") : "NULL" ) : "NULL",
 						   info->widget);
 				}
 			}

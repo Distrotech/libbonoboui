@@ -1,3 +1,9 @@
+2005-05-06  Balamurali Viswanathan  <balamurali.viswanathan@wipro.com>
+
+	* bonobo/bonobo-ui-engine.c
+	(bonobo_ui_engine_sync): Add a check for NULL in
+	g_warning.
+
 2005-04-17  Tor Lillqvist  <tml@novell.com>
 
 	* configure.in: Require GTK+ and GObject 2.6.
