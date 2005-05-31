@@ -32,6 +32,7 @@
 #include <gtk/gtkstock.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkentry.h>
+#include <gtk/gtkradiobutton.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-ui-container.h>
@@ -273,23 +274,23 @@ bonobo_browser_create_window (void)
 	bonobo_window_set_contents (BONOBO_WINDOW (window), main_vbox);
 
 	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, FALSE, 3);
 
 	info->comp_list = component_list_new ();
 	gtk_box_pack_start (GTK_BOX (main_vbox), info->comp_list,
-			    TRUE, TRUE, 0);
+			    TRUE, TRUE, 3);
 
 	status_bar = gtk_statusbar_new ();
-	gtk_box_pack_start (GTK_BOX (main_vbox), status_bar, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (main_vbox), status_bar, FALSE, TRUE, 3);
 
 	/* Fill out the tool bar */
-	all_button = gtk_button_new_with_label ("All");
+	all_button = gtk_radio_button_new_with_label (NULL, _("All"));
 	g_signal_connect (G_OBJECT (all_button), "clicked",
 			  G_CALLBACK (all_query_cb), info);
-	active_button = gtk_button_new_with_label ("Active");
+	active_button = gtk_radio_button_new_with_label (gtk_radio_button_get_group (GTK_RADIO_BUTTON (all_button)), _("Active"));
 	g_signal_connect (G_OBJECT (active_button), "clicked",
 			  G_CALLBACK (active_query_cb), info);
-	inactive_button = gtk_button_new_with_label ("Inactive");
+	inactive_button = gtk_radio_button_new_with_label (gtk_radio_button_get_group (GTK_RADIO_BUTTON (all_button)), _("Inactive"));
 	g_signal_connect (G_OBJECT (inactive_button), "clicked",
 			  G_CALLBACK (inactive_query_cb), info);
 	query_label = gtk_label_new ("Query:");
@@ -300,12 +301,12 @@ bonobo_browser_create_window (void)
 	g_signal_connect (G_OBJECT (execute_button), "clicked",
 			  G_CALLBACK (execute_query_cb), info);
 
-	gtk_box_pack_start (GTK_BOX (hbox), all_button, FALSE, FALSE, 1);
-	gtk_box_pack_start (GTK_BOX (hbox), active_button, FALSE, FALSE, 1);
-	gtk_box_pack_start (GTK_BOX (hbox), inactive_button, FALSE, FALSE, 1);
+	gtk_box_pack_start (GTK_BOX (hbox), all_button, FALSE, FALSE, 3);
+	gtk_box_pack_start (GTK_BOX (hbox), active_button, FALSE, FALSE, 3);
+	gtk_box_pack_start (GTK_BOX (hbox), inactive_button, FALSE, FALSE, 3);
 	gtk_box_pack_start (GTK_BOX (hbox), query_label, FALSE, FALSE, 1);
-	gtk_box_pack_start (GTK_BOX (hbox), info->entry, TRUE, TRUE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), execute_button, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), info->entry, TRUE, TRUE, 3);
+	gtk_box_pack_start (GTK_BOX (hbox), execute_button, FALSE, FALSE, 3);
 
 	/* Attach to the component-details signal */
 	g_signal_connect (G_OBJECT (info->comp_list), "component-details",

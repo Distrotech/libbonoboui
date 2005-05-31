@@ -1,3 +1,8 @@
+2005-05-30  Rodrigo Moya <rodrigo@novell.com>
+
+	* tools/browser/window.c (bonobo_browser_create_window):
+	fixed widgets spacing and use stock icons where possible.
+
 2005-05-06  Balamurali Viswanathan  <balamurali.viswanathan@wipro.com>
 
 	* bonobo/bonobo-ui-engine.c
