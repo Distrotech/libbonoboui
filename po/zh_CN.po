@@ -500,7 +500,7 @@ msgstr "Bonobo 浏览器"
 
 #: tools/browser/window.c:215
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr "版权2001，GNOME 基金会"
+msgstr "版权 2001，GNOME 基金会"
 
 #: tools/browser/window.c:216
 msgid "Bonobo component browser"
@@ -510,3 +510,12 @@ msgstr "Bonobo 组件浏览器"
 #: tools/browser/window.c:246
 msgid "Component Browser"
 msgstr "组件浏览器"
+
+#. Fill out the tool bar
+#: ../tools/browser/window.c:287
+msgid "All"
+msgstr "全部"
+
+#: ../tools/browser/window.c:293
+msgid "Inactive"
+msgstr "非激活"
