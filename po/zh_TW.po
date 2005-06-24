@@ -1,16 +1,16 @@
 # traditional Chinese translation of libbonoboui.
 # Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
 # Joe Man <trmetal@yahoo.com.hk>, 2001.
-# Abel Cheung <maddog@linux.org.hk>, 2002-2003.
+# Abel Cheung <abel@oaka.org>, 2002-2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.3.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-30 11:54+0800\n"
+"POT-Creation-Date: 2005-06-23 22:04+0000\n"
 "PO-Revision-Date: 2005-03-29 17:15+0800\n"
-"Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
-"Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
+"Last-Translator: Abel Cheung <abel@oaka.org>\n"
+"Language-Team: Chinese (traditional) <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -251,7 +251,7 @@ msgstr "模組"
 msgid "GTK+"
 msgstr "GTK+"
 
-#: ../bonobo/bonobo-ui-main.c:210
+#: ../bonobo/bonobo-ui-main.c:278
 msgid "Bonobo GUI support"
 msgstr "Bonobo 圖形界面支援"
 
@@ -452,7 +452,7 @@ msgstr "詳細資料"
 msgid "Detailed Information"
 msgstr "詳細資料"
 
-#: ../tools/browser/component-list.c:370
+#: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
 msgid "Active"
 msgstr "使用中"
 
@@ -460,26 +460,36 @@ msgstr "使用中"
 msgid "Type"
 msgstr "類型"
 
-#: ../tools/browser/window.c:169
+#: ../tools/browser/window.c:170
 msgid "Component Details"
 msgstr "元件的詳細資料"
 
-#: ../tools/browser/window.c:214
+#: ../tools/browser/window.c:215
 msgid "Bonobo Browser"
 msgstr "Bonobo 瀏覽器"
 
-#: ../tools/browser/window.c:215
+#: ../tools/browser/window.c:216
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "版權所有 2001, The GNOME Foundation"
 
-#: ../tools/browser/window.c:216
+#: ../tools/browser/window.c:217
 msgid "Bonobo component browser"
 msgstr "Bonobo 元件瀏覽器"
 
 #. create the window
-#: ../tools/browser/window.c:246
+#: ../tools/browser/window.c:247
 msgid "Component Browser"
 msgstr "元件瀏覽器"
+
+#. Fill out the tool bar
+#: ../tools/browser/window.c:287
+msgid "All"
+msgstr ""
+
+#: ../tools/browser/window.c:293
+#, fuzzy
+msgid "Inactive"
+msgstr "使用中"
 
 #~ msgid "HOST"
 #~ msgstr "主機"
