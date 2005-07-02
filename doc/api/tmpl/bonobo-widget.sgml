@@ -71,6 +71,9 @@ Simplified embedding of widgets in Bonobo.
    #BonoboEmbeddable, #BonoboUIContainer, #BonoboItemContainer. 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT BonoboWidget ##### -->
 <para>
 

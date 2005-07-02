@@ -147,6 +147,9 @@ installed help files can be deduced.
 #BonoboUIContainer, <xref linkend="libbonoboui-bonobo-ui-util"/>, #BonoboControl
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT BonoboUIComponent ##### -->
 <para>
 

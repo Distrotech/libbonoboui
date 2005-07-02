@@ -88,6 +88,9 @@ as between a #BonoboPlug and a #BonoboSocket.
 </variablelist>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT BonoboSocket ##### -->
 <para>
     The #GtkEditable structure contains the following field.

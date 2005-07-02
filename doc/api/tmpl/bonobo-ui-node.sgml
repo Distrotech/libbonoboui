@@ -17,6 +17,9 @@ than libxml's at some later date.
   #BonoboUIComponent, #bonobo-ui-util
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT BonoboUINode ##### -->
 <para>
 The BonoboUINode structure is fully opaque to stop any code

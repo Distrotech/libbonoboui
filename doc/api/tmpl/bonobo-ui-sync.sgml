@@ -16,6 +16,9 @@ of the code. No normal user should need to write his own synchronizer.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT BonoboUISync ##### -->
 <para>
 

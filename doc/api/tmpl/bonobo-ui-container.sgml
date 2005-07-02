@@ -43,6 +43,9 @@ Here is how your code should interact with the BonoboUIContainer
  <xref linkend="libbonoboui-bonobo-ui-util"/>
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT BonoboUIContainer ##### -->
 <para>
 

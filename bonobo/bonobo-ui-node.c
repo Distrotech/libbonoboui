@@ -478,7 +478,7 @@ char*
 bonobo_ui_node_get_attr (BonoboUINode *node,
                          const char   *name)
 {
-	return g_strdup (
+	return xmlStrdup (
 		bonobo_ui_node_get_attr_by_id (
 			node, g_quark_from_string (name)));
 }

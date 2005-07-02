@@ -14,6 +14,9 @@ bonobo-file-selector-util
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION bonobo_file_selector_open ##### -->
 <para>
 

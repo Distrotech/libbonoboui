@@ -32,6 +32,9 @@ pipe, to ensure synchronization between the X and CORBA transports.
    #BonoboSocket, #BonoboControlFrame.
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT BonoboPlug ##### -->
 <para>
 

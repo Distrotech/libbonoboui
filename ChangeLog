@@ -1,3 +1,8 @@
+2005-03-14  Not Zed  <NotZed@Ximian.com>
+
+	* bonobo/bonobo-ui-node.c (bonobo_ui_node_get_attr): use
+	xmlStrDup, since free_string uses xmlFree.  See bug #170282.
+
 2005-05-30  Rodrigo Moya <rodrigo@novell.com>
 
 	* tools/browser/window.c (bonobo_browser_create_window):

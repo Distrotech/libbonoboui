@@ -84,6 +84,9 @@ needs to be done every time the control is activated.
   #BonoboWidget, bonobo_widget_new()
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### STRUCT BonoboControl ##### -->
 <para>
 
