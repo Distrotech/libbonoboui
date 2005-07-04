@@ -1,3 +1,9 @@
+libbonoboui 2.10.0
+
+	* bugs fixed
+		+ Don't mix memory pools (Michael Zucchi)
+		+ Updated translations: eu, gl, hu, rw, zh_TW
+ 
 libbonoboui 2.8.1
 
 	* bugs fixed
