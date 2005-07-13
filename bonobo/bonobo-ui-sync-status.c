@@ -219,6 +219,10 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 		char *behavior;
 		char **behavior_array;
 
+		gboolean pack_start = FALSE;
+		gboolean fill = FALSE;
+		gboolean expand = FALSE;
+
 		widget = bonobo_ui_engine_build_control (sync->engine, node);
 		if (widget) {
 			behavior_array = NULL;
@@ -227,13 +231,18 @@ impl_bonobo_ui_sync_status_build (BonoboUISync     *sync,
 				bonobo_ui_node_free_string (behavior);
 			}
 
-			if (behavior_array != NULL && 
-			    string_array_contains (behavior_array, "pack-start"))
+			if (behavior_array != NULL) {
+				pack_start = string_array_contains (behavior_array, "pack-start");
+				fill = string_array_contains (behavior_array, "fill");
+				expand = string_array_contains (behavior_array, "expand");
+			}
+			
+			if (pack_start)
 				gtk_box_pack_start (GTK_BOX (parent), widget,
-						    FALSE, FALSE, 0);
+						    expand, fill, 0);
 			else
 				gtk_box_pack_end (GTK_BOX (parent), widget,
-						  FALSE, FALSE, 0);
+						  expand, fill, 0);
 
 			g_strfreev (behavior_array);
 		}

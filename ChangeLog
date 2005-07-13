@@ -1,3 +1,13 @@
+2005-07-13  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
+
+	reviewed by: Michael Meeks <michael@ximian.com>
+
+	* bonobo/bonobo-ui-sync-status.c:
+	(impl_bonobo_ui_sync_status_build):
+	* doc/ui-xml.txt:
+	
+	Add options to pack control in statusbar.
+
 2005-03-14  Not Zed  <NotZed@Ximian.com>
 
 	* bonobo/bonobo-ui-node.c (bonobo_ui_node_get_attr): use

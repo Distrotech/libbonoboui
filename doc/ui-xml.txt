@@ -171,7 +171,9 @@ Example:
 <control>           - a control to be inserted into the status area. If name="main" 
 		      it overrides the standard bar. Otherwise it gets packed
 	              into the right side of the status area.
- name="Foo"         - name of statusbar
+ name="Foo"         - name of control
+ behavior="..."     - Possible options pack-start, fill, expand change packing of
+                      control in statusbar. Example is behavior="pack-start,expand".
 
 * Key bindings
 
