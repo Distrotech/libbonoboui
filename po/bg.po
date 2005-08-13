@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui gnome 2.10 branch\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 15:48+0300\n"
-"PO-Revision-Date: 2005-07-08 22:05+0300\n"
+"POT-Creation-Date: 2005-08-13 20:38+0300\n"
+"PO-Revision-Date: 2005-08-13 20:39+0300\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -304,7 +304,7 @@ msgstr "Стилът на повдигането около лентата с и
 
 #: ../bonobo/bonobo-ui-util.c:630
 msgid "_Contents"
-msgstr "_Потребителско ръководство"
+msgstr "_Ръководство"
 
 #: ../bonobo/bonobo-ui-util.c:631
 msgid "View help for this application"
