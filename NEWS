@@ -1,3 +1,13 @@
+libbonoboui 2.10.0
+
+	* bugs fixed
+		+ xml string free (NotZed)
+		+ browser widget fix (Rodrigo Moya)
+		+ UI engine sync check (Balamurali Viswanathan)
+	* features
+		+ statusbar packing options (Nickolay Shmyrev)
+		+ Win32 support (Tor Lillqvist)
+
 libbonoboui 2.8.1
 
 	* bugs fixed
