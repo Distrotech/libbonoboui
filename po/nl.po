@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-01 06:43+0000\n"
+"POT-Creation-Date: 2005-08-25 07:03+0000\n"
 "PO-Revision-Date: 2005-01-16 20:09+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -486,12 +486,11 @@ msgstr "Componentverkenner"
 #. Fill out the tool bar
 #: ../tools/browser/window.c:287
 msgid "All"
-msgstr ""
+msgstr "Allen"
 
 #: ../tools/browser/window.c:293
-#, fuzzy
 msgid "Inactive"
-msgstr "Actief"
+msgstr "Inactief"
 
 #~ msgid "HOST"
 #~ msgstr "COMPUTERNAAM"
