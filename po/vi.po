@@ -1,41 +1,43 @@
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# This file is distributed under the same license as the libbonoboui package.
-# pclouds <pclouds@gmx.net>, 2002.
+# Vietnamese translation for LibBoboboGUI.
+# Copyright © 2005 Gnome i18n Project for Vietnamese.
+# Nguyễn Thái Ngọc Duy <pclouds@gmx.net>, 2002.
+# Clytie Siddall <clytie@riverland.net.au>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui VERSION\n"
+"Project-Id-Version: libbonoboui Gnome HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-21 06:39+0000\n"
-"PO-Revision-Date: 2003-10-02 10:07+0700\n"
-"Last-Translator: pclouds <pclouds@gmx.net>\n"
-"Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2005-08-26 23:34+0000\n"
+"PO-Revision-Date: 2005-08-27 22:44+0930\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: LocFactoryEditor 1.2.2\n"
 
 #: ../bonobo/bonobo-canvas-item.c:683
 msgid "corba factory"
-msgstr "corba factory"
+msgstr "Bộ tạo corba"
 
 #: ../bonobo/bonobo-canvas-item.c:684
 msgid "The factory pointer"
-msgstr "Con trỏ factory"
+msgstr "Con trỏ bộ tạo"
 
 #: ../bonobo/bonobo-canvas-item.c:693
 msgid "corba UI container"
-msgstr "corba UI container"
+msgstr "Đồ chứa giao diện người dùng corba"
 
 #: ../bonobo/bonobo-canvas-item.c:694
 msgid "The User interface container"
-msgstr "Container UI"
+msgstr "Đồ chứa giao diện người dùng"
 
 #: ../bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
-msgstr "Gắn thanh công cụ"
+msgstr "Neo thanh công cụ"
 
 #: ../bonobo/bonobo-dock-item-grip.c:258
-#, fuzzy
 msgid "Undock the toolbar"
 msgstr "Tháo rời thanh công cụ"
 
@@ -69,15 +71,15 @@ msgstr "Chọn các tập tin cần mở"
 
 #: ../bonobo/bonobo-file-selector-util.c:414
 msgid "Select a filename to save"
-msgstr "Chọn tên tập tin để lưu"
+msgstr "Chọn tên tập tin cần lưu"
 
 #: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
-msgstr "Chuyển sự kiện"
+msgstr "Chuyển tiếp sự kiện"
 
 #: ../bonobo/bonobo-plug.c:426
 msgid "Whether X events should be forwarded"
-msgstr "Các sự kiện X có nên được chuyển đi hay không"
+msgstr "Các sự kiện X có nên được chuyển tiếp hay không"
 
 #: ../bonobo/bonobo-selector-widget.c:303 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
@@ -100,17 +102,17 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Mảng giao diện kết thúc bằng NULL, mà một server phải hỗ trợ để được liệt kê "
-"trong bộ chọn. Mặc định là \"IDL:Bonobo/Embeddable:1.0\" nếu không có giao "
-"diện nào được liệt kê"
+"Mảng giao diện kết thúc bằng NULL, mà một trình phục vụ phải hỗ trợ để được liệt kê "
+"trong bộ chọn. Mặc định là « IDL:Bonobo/Embeddable:1.0 » nếu không có giao "
+"diện nào được liệt kê."
 
 #: ../bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "Mục nhập giao diện yêu cầu"
+msgstr "Mục nhập giao diện cần thiết"
 
 #: ../bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr "Một trong những giao diện được yêu cầu"
+msgstr "Một trong những giao diện cần thiết"
 
 #: ../bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
@@ -126,7 +128,7 @@ msgstr "Ẩ_n"
 
 #: ../bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
-msgstr "_Xem tooltip"
+msgstr "_Xem mẹo công cụ"
 
 #: ../bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
@@ -148,27 +150,27 @@ msgstr "_Biểu tượng"
 
 #: ../bonobo/bonobo-ui-config-widget.c:329
 msgid "_Text and Icon"
-msgstr "_Chữ và hình"
+msgstr "_Chữ và Hình"
 
 #: ../bonobo/bonobo-ui-config-widget.c:335
 msgid "Text only"
-msgstr "Chữ và hình"
+msgstr "Chỉ chữ"
 
 #: ../bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
-msgstr "Chỉ ưu tiên _text"
+msgstr "Chỉ chữ _ưu tiên"
 
 #: ../bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
-msgstr "Debug"
+msgstr "Gỡ lỗi"
 
 #: ../bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "_Dump XML"
+msgstr "_Đổ XML"
 
 #: ../bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Xuất (dump) toàn bộ mô tả UI bằng XML ra console"
+msgstr "Đổ toàn bộ mô tả giao diện người dùng (UI) bằng XML ra bàn giao tiếp."
 
 #: ../bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
@@ -176,32 +178,32 @@ msgstr "Cấu hình UI"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:113
 msgid "Gdk debugging flags to set"
-msgstr "Cờ debug Gdk được bật"
+msgstr "Cờ gỡ lỗi Gdk cần đặt"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:113 ../bonobo/bonobo-ui-init-gtk.c:116
 #: ../bonobo/bonobo-ui-init-gtk.c:144 ../bonobo/bonobo-ui-init-gtk.c:147
 msgid "FLAGS"
-msgstr "CỜ HIỆU"
+msgstr "CỜ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:116
 msgid "Gdk debugging flags to unset"
-msgstr "Cờ debug Gdk được tắt"
+msgstr "Cờ gỡ lỗi Gdk cần tắt"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:120
 msgid "X display to use"
-msgstr "X display được dùng"
+msgstr "Bộ trình bày X cần dùng"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:120
 msgid "DISPLAY"
-msgstr "DISPLAY"
+msgstr "BỘ TRÌNH BÀY"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:124
 msgid "X screen to use"
-msgstr "X screen cần dùng"
+msgstr "Màn hình X cần dùng"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:124
 msgid "SCREEN"
-msgstr "SCREEN"
+msgstr "MÀN HÌNH"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
@@ -209,11 +211,11 @@ msgstr "Dùng lệnh gọi X đồng bộ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
-msgstr "Không dùng phần mở rộng \"bộ nhớ chia sẻ\" của X"
+msgstr "Không dùng phần mở rộng « bộ nhớ chia sẻ » của X"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "Program name as used by the window manager"
-msgstr "Tên chương trình được dùng bởi trình quản lý cửa sổ"
+msgstr "Tên chương trình như được dùng bởi bộ quản lý cửa sổ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "NAME"
@@ -221,19 +223,19 @@ msgstr "TÊN"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "Program class as used by the window manager"
-msgstr "Lớp chương trình được dùng bởi trình quản lý cửa sổ"
+msgstr "Hạng chương trình như được dùng bởi bộ quản lý cửa sổ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "CLASS"
-msgstr "LỚP"
+msgstr "HẠNG"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:144
 msgid "Gtk+ debugging flags to set"
-msgstr "Cờ debug Gtk+ được bật"
+msgstr "Cờ gỡ lỗi Gtk+ cần đặt"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:147
 msgid "Gtk+ debugging flags to unset"
-msgstr "Cờ debug Gtk+ được tắt"
+msgstr "Cờ gỡ lỗi Gtk+ cần tắt"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:150
 msgid "Make all warnings fatal"
@@ -241,11 +243,11 @@ msgstr "Coi mọi cảnh báo là nghiêm trọng"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:153
 msgid "Load an additional Gtk module"
-msgstr "Nạp module bổ sung của Gtk"
+msgstr "Tải mô-đun bổ sung của Gtk"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:153
 msgid "MODULE"
-msgstr "MODULE"
+msgstr "MÔ-ĐUN"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:162
 msgid "GTK+"
@@ -253,7 +255,7 @@ msgstr "GTK+"
 
 #: ../bonobo/bonobo-ui-main.c:278
 msgid "Bonobo GUI support"
-msgstr "Hỗ trợ Bonobo GUI"
+msgstr "Hỗ trợ GUI Bonobo"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "B_oth"
@@ -261,15 +263,15 @@ msgstr "Cả _hai"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "T_ext"
-msgstr "T_ext"
+msgstr "_Chữ"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Hide t_ips"
-msgstr "Ẩn t_ip"
+msgstr "Ẩn _mẹo"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Show t_ips"
-msgstr "Hiện t_ip"
+msgstr "Hiện _mẹo"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Hide toolbar"
@@ -293,7 +295,7 @@ msgstr "thanh công cụ có trôi nổi hay không"
 
 #: ../bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
-msgstr "Kiểu trang trí quanh thanh công cụ"
+msgstr "Kiểu cạnh xiên quanh thanh công cụ"
 
 #: ../bonobo/bonobo-ui-util.c:630
 msgid "_Contents"
@@ -305,7 +307,7 @@ msgstr "Xem trợ giúp về ứng dụng này"
 
 #: ../bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
-msgstr "Tên cửa sổ - được dùng để serialize cấu hình."
+msgstr "Tên cửa sổ —  được dùng để xếp cấu hình theo thứ tự."
 
 #: ../bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -386,11 +388,11 @@ msgstr "Không làm gì cả; chỉ là một minh hoạ."
 
 #: ../samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr "BonoboUI-Hello."
+msgstr "BonoboUI-Chào."
 
 #: ../samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr "Gnome Hello"
+msgstr "Gnome Chào"
 
 #. Create Label and put it in the Button:
 #: ../samples/bonoboui/hello.c:272
@@ -403,100 +405,89 @@ msgstr "Không thể khởi động mã libbonoboui"
 
 #: ../samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr "Không thể khởi động Bonobo UI"
+msgstr "Không thể khởi động UI Bonobo."
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr ""
+msgstr "Bộ duyệt thành phần Bonobo"
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr ""
+msgstr "Hiển thị các thành phần Bonobo hiện có"
 
 #: ../tools/browser/bonobo-browser.xml.h:1
-#, fuzzy
 msgid "About this program..."
-msgstr "Giới thiệu ứng dụng này"
+msgstr "Giới thiệu chương trình này..."
 
 #: ../tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr ""
+msgstr "Đóng cửa sổ hiện có"
 
 #: ../tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
-msgstr ""
+msgstr "Mở cửa sổ mới"
 
 #: ../tools/browser/bonobo-browser.xml.h:5
-#, fuzzy
 msgid "_Help"
-msgstr "Ẩ_n"
+msgstr "Trợ _giúp"
 
 #. Build the general tab
 #: ../tools/browser/component-details.c:109
 msgid "General"
-msgstr ""
+msgstr "Chung"
 
 #: ../tools/browser/component-details.c:116
 #: ../tools/browser/component-list.c:401
 msgid "IID"
-msgstr ""
+msgstr "IID"
 
 #: ../tools/browser/component-details.c:117
 msgid "Location"
-msgstr ""
+msgstr "Địa điểm"
 
 #. Build the details tab
 #: ../tools/browser/component-details.c:167
 msgid "Details"
-msgstr ""
+msgstr "Chi tiết"
 
 #: ../tools/browser/component-details.c:168
 msgid "Detailed Information"
-msgstr ""
+msgstr "Thông tin chi tiết"
 
 #: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
 msgid "Active"
-msgstr ""
+msgstr "Hoạt động"
 
 #: ../tools/browser/component-list.c:391
 msgid "Type"
-msgstr ""
+msgstr "Kiểu"
 
 #: ../tools/browser/window.c:170
 msgid "Component Details"
-msgstr ""
+msgstr "Chi tiết thành phần"
 
 #: ../tools/browser/window.c:215
 msgid "Bonobo Browser"
-msgstr ""
+msgstr "Bộ duyệt Bonobo"
 
 #: ../tools/browser/window.c:216
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr ""
+msgstr "Bản quyền © năm 2001 Tổ chức Gnome."
 
 #: ../tools/browser/window.c:217
 msgid "Bonobo component browser"
-msgstr ""
+msgstr "Bộ duyệt thành phần Bonobo"
 
 #. create the window
 #: ../tools/browser/window.c:247
 msgid "Component Browser"
-msgstr ""
+msgstr "Bộ duyệt thành phần"
 
 #. Fill out the tool bar
 #: ../tools/browser/window.c:287
 msgid "All"
-msgstr ""
+msgstr "Tất cả"
 
 #: ../tools/browser/window.c:293
 msgid "Inactive"
-msgstr ""
-
-msgid "HOST"
-msgstr "MÁY"
-
-msgid "PORT"
-msgstr "CỔNG"
-
-msgid "STYLE"
-msgstr "KIỂU"
+msgstr "Không hoạt động"
