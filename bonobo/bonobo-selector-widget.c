@@ -27,9 +27,6 @@
 #include <bonobo/bonobo-selector-widget.h>
 #include <bonobo/bonobo-ui-preferences.h>
 
-#undef GNOME_DISABLE_DEPRECATED /* To get prototype for gnome_i18n_get_language_list() */
-#include <libgnome/gnome-i18n.h>
-
 #include "bonobo-insert-component.xpm"
 
 GNOME_CLASS_BOILERPLATE (BonoboSelectorWidget,
@@ -94,12 +91,14 @@ build_id_query_fragment (const char **required_ids)
 static GSList *
 get_lang_list (void)
 {
-	const GList   *l;
 	static GSList *ret = NULL;
 
 	if (!ret) {
-		for (l = gnome_i18n_get_language_list (NULL); l; l = l->next)
-			ret = g_slist_prepend (ret, l->data);
+		const gchar * const *names;
+		
+		for (names = g_get_language_names (); *names; names++)
+			ret = g_slist_prepend (ret, (gchar *) *names);
+		ret = g_slist_reverse (ret);
 	}
 
 	return ret;

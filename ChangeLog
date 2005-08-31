@@ -1,3 +1,9 @@
+2005-08-31  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
+
+	* bonobo/bonobo-selector-widget.c (get_lang_list): Use
+	g_get_language_names instead of the deprecated
+	gnome_i18n_get_language_list().
+
 2005-08-19  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* Version 2.10.1: Fix up the release confusion I created.
