@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-12 06:42+0000\n"
+"POT-Creation-Date: 2005-09-10 18:44+0200\n"
 "PO-Revision-Date: 2005-06-12 15:30+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -79,13 +79,13 @@ msgstr "Přeposílání událostí"
 msgid "Whether X events should be forwarded"
 msgstr "Jestli mají být přeposílány události X"
 
-#: ../bonobo/bonobo-selector-widget.c:303 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:381
 msgid "Name"
 msgstr "Jméno"
 
-#: ../bonobo/bonobo-selector-widget.c:325
+#: ../bonobo/bonobo-selector-widget.c:324
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Popis"
@@ -489,12 +489,3 @@ msgstr "Vše"
 #: ../tools/browser/window.c:293
 msgid "Inactive"
 msgstr "Neaktivní"
-
-#~ msgid "HOST"
-#~ msgstr "POČÍTAČ"
-
-#~ msgid "PORT"
-#~ msgstr "PORT"
-
-#~ msgid "STYLE"
-#~ msgstr "STYL"

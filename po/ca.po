@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.11.92\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-25 10:19+0200\n"
+"POT-Creation-Date: 2005-09-10 18:44+0200\n"
 "PO-Revision-Date: 2005-08-25 10:20+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -79,13 +79,13 @@ msgstr "Reenviament de l'esdeveniment"
 msgid "Whether X events should be forwarded"
 msgstr "Si els esdeveniments X haurien de ser reenviats"
 
-#: ../bonobo/bonobo-selector-widget.c:303 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:381
 msgid "Name"
 msgstr "Nom"
 
-#: ../bonobo/bonobo-selector-widget.c:325
+#: ../bonobo/bonobo-selector-widget.c:324
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Descripció"
@@ -490,42 +490,3 @@ msgstr "Tots"
 #: ../tools/browser/window.c:293
 msgid "Inactive"
 msgstr "Inactiu"
-
-#~ msgid "HOST"
-#~ msgstr "ORDINADOR CENTRAL"
-
-#~ msgid "PORT"
-#~ msgstr "PORT"
-
-#~ msgid "STYLE"
-#~ msgstr "ESTIL"
-
-#~ msgid "Can not bonobo_ui_init"
-#~ msgstr "No es pot bonobo_ui_init"
-
-#~ msgid "Select an object"
-#~ msgstr "Seleccioneu un objecte"
-
-#~ msgid "Can not activate object_server"
-#~ msgstr "No es pot activar object_server"
-
-#~ msgid "Can not bind object server to client_site"
-#~ msgstr "No es pot vincular el servidor d'objectes a client_site"
-
-#~ msgid "Can not activate server"
-#~ msgstr "No es pot activar el servidor"
-
-#~ msgid "Could not launch bonobo object."
-#~ msgstr "No es pot executar l'objecte del bonobo."
-
-#~ msgid "Could not launch Embeddable."
-#~ msgstr "No es pot executar l'Embeddable."
-
-#~ msgid "Could not launch Control."
-#~ msgstr "No es pot executar el Control."
-
-#~ msgid "Can not bonobo_init"
-#~ msgstr "No es pot bonobo_init"
-
-#~ msgid "Cannot bonobo UI code"
-#~ msgstr "No es pot fer bonobo al codi UI"

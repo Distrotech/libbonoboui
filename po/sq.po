@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-16 14:38+0000\n"
+"POT-Creation-Date: 2005-09-10 18:44+0200\n"
 "PO-Revision-Date: 2005-07-16 18:33+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -79,13 +79,13 @@ msgstr "Ridërgimi i ndodhive"
 msgid "Whether X events should be forwarded"
 msgstr "Nëse ndodhitë X duhen ridërguar"
 
-#: ../bonobo/bonobo-selector-widget.c:303 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:381
 msgid "Name"
 msgstr "Emri"
 
-#: ../bonobo/bonobo-selector-widget.c:325
+#: ../bonobo/bonobo-selector-widget.c:324
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Përshkrimi"
@@ -489,4 +489,3 @@ msgstr "Gjithçka"
 #: ../tools/browser/window.c:293
 msgid "Inactive"
 msgstr "Jo aktiv"
-

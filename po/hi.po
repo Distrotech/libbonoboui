@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-08 06:28+0000\n"
+"POT-Creation-Date: 2005-09-10 18:44+0200\n"
 "PO-Revision-Date: 2005-07-08 15:37+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -15,7 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 
 #: ../bonobo/bonobo-canvas-item.c:683
 msgid "corba factory"
@@ -81,13 +82,13 @@ msgstr "घटना अग्रेषण"
 msgid "Whether X events should be forwarded"
 msgstr "क्या एक्स घटनाओं को अग्रेषित किया जाना है"
 
-#: ../bonobo/bonobo-selector-widget.c:303 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:381
 msgid "Name"
 msgstr "नाम"
 
-#: ../bonobo/bonobo-selector-widget.c:325
+#: ../bonobo/bonobo-selector-widget.c:324
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "वर्णन"
@@ -101,7 +102,10 @@ msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
-msgstr "अंतरफलक का एक NULL-terminated सरणी जिसको एक सर्वर को जरूर समर्थन करना चाहिये चयनक की सूची में शामिल होने के लिये. \"IDL:Bonobo/Embeddable:1.0\" में मूलभूत अगर कोई अंतरफलक सूचीबद्ध नहीं है."
+msgstr ""
+"अंतरफलक का एक NULL-terminated सरणी जिसको एक सर्वर को जरूर समर्थन करना चाहिये चयनक "
+"की सूची में शामिल होने के लिये. \"IDL:Bonobo/Embeddable:1.0\" में मूलभूत अगर कोई "
+"अंतरफलक सूचीबद्ध नहीं है."
 
 #: ../bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -489,4 +493,3 @@ msgstr "सब"
 #: ../tools/browser/window.c:293
 msgid "Inactive"
 msgstr "निष्क्रिय"
-

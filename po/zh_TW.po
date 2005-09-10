@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.3.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-01 21:27+0800\n"
+"POT-Creation-Date: 2005-09-10 18:44+0200\n"
 "PO-Revision-Date: 2005-07-01 21:30+0800\n"
 "Last-Translator: Abel Cheung <abel@oaka.org>\n"
 "Language-Team: Chinese (traditional) <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: ../bonobo/bonobo-canvas-item.c:683
 msgid "corba factory"
@@ -80,13 +80,13 @@ msgstr "傳遞動作"
 msgid "Whether X events should be forwarded"
 msgstr "輸入裝置發出的動作應否直接傳遞至 X"
 
-#: ../bonobo/bonobo-selector-widget.c:303 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:381
 msgid "Name"
 msgstr "名稱"
 
-#: ../bonobo/bonobo-selector-widget.c:325
+#: ../bonobo/bonobo-selector-widget.c:324
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "描述"
@@ -490,4 +490,3 @@ msgstr "全部"
 #: ../tools/browser/window.c:293
 msgid "Inactive"
 msgstr "非作用中"
-
