@@ -158,7 +158,7 @@ msgstr "Chỉ chữ"
 
 #: ../bonobo/bonobo-ui-config-widget.c:341
 msgid "_Priority text only"
-msgstr "Chỉ chữ _ưu tiên"
+msgstr "Chỉ chữ ư_u tiên"
 
 #: ../bonobo/bonobo-ui-engine.c:90
 msgid "Debug"
@@ -166,7 +166,7 @@ msgstr "Gỡ lỗi"
 
 #: ../bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "_Đổ XML"
+msgstr "Đổ _XML"
 
 #: ../bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
