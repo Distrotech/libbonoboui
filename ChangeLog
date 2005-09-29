@@ -1,3 +1,12 @@
+2005-09-29  Christian Persch  <chpe@cvs.gnome.org>
+
+	* configure.in: Bump version to 2.13.0, and require libbonobo and
+	bonobo-activation 2.13.0.
+	* bonobo/bonobo-ui-init-gtk.c: (bonobo_ui_gtk_pre_args_parse),
+	(bonobo_ui_gtk_post_args_parse), (bonobo_ui_gtk_module_info_get):
+	Enable GOption argument parsing in gnome_program_init.
+	Patch by Pawel Sliwowski <open.list@gmail.com>, bug #307312.
+
 2005-09-10  Erdal Ronahi  <erdal.ronahi@gmail.com>
 
 	* po/ku.po: Added Kurdish Translation

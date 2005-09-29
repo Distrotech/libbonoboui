@@ -12,8 +12,14 @@ static void
 bonobo_ui_gtk_pre_args_parse (GnomeProgram    *program,
 			      GnomeModuleInfo *mod_info)
 {
-	bonobo_ui_gtk_init_info_t *init_info = g_new0 (bonobo_ui_gtk_init_info_t, 1);
+	GOptionContext *context;
+	bonobo_ui_gtk_init_info_t *init_info;
 
+	g_object_get (G_OBJECT (program), GNOME_PARAM_GOPTION_CONTEXT,
+		      &context, NULL);
+	if (context) return;
+	
+	init_info = g_new0 (bonobo_ui_gtk_init_info_t, 1);
 	init_info->gtk_args = g_ptr_array_new ();
 
 	g_object_set_data (G_OBJECT (program),
@@ -25,10 +31,15 @@ static void
 bonobo_ui_gtk_post_args_parse (GnomeProgram    *program,
 			       GnomeModuleInfo *mod_info)
 {
+	GOptionContext *context;
 	bonobo_ui_gtk_init_info_t *init_info;
 	int final_argc;
 	char **final_argv;
 	int i;
+
+	g_object_get (G_OBJECT (program), GNOME_PARAM_GOPTION_CONTEXT,
+		      &context, NULL);
+	if (context) return;
 
 	init_info = g_object_get_data (G_OBJECT (program),
 				       "Libbonoboui-Gtk-Module-init-info");
@@ -165,6 +176,10 @@ bonobo_ui_gtk_module_info_get (void)
 		NULL,
 		NULL, NULL, NULL
 	};
+	
+	/* FIXME: TRUE or FALSE (open default display)? */
+	module_info.expansion1 = (gpointer) gtk_get_option_group (TRUE);
+
 	if (module_info.version == NULL) {
 		module_info.version = g_strdup_printf ("%d.%d.%d",
 						       GTK_MAJOR_VERSION,
