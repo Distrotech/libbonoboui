@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-10 18:44+0200\n"
+"POT-Creation-Date: 2005-10-15 12:39+0200\n"
 "PO-Revision-Date: 2005-01-16 20:09+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -16,19 +16,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../bonobo/bonobo-canvas-item.c:683
+#: ../bonobo/bonobo-canvas-item.c:667
 msgid "corba factory"
 msgstr "corba-fabriek"
 
-#: ../bonobo/bonobo-canvas-item.c:684
+#: ../bonobo/bonobo-canvas-item.c:668
 msgid "The factory pointer"
 msgstr "De fabriekpointer"
 
-#: ../bonobo/bonobo-canvas-item.c:693
+#: ../bonobo/bonobo-canvas-item.c:677
 msgid "corba UI container"
 msgstr "corba UI-container"
 
-#: ../bonobo/bonobo-canvas-item.c:694
+#: ../bonobo/bonobo-canvas-item.c:678
 msgid "The User interface container"
 msgstr "De Gebruikersinterface-container"
 
@@ -40,53 +40,53 @@ msgstr "Werkbalk vastzetten"
 msgid "Undock the toolbar"
 msgstr "Werkbalk vrijmaken"
 
-#: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
+#: ../bonobo/bonobo-dock-item.c:233 ../bonobo/bonobo-dock-item.c:234
 #: ../bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Type schaduw"
 
-#: ../bonobo/bonobo-dock-item.c:246 ../bonobo/bonobo-dock-item.c:247
+#: ../bonobo/bonobo-dock-item.c:244 ../bonobo/bonobo-dock-item.c:245
 #: ../bonobo/bonobo-ui-toolbar.c:1119 ../bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Oriëntatie"
 
-#: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
+#: ../bonobo/bonobo-dock-item.c:255 ../bonobo/bonobo-dock-item.c:256
 #: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Gewenste breedte"
 
-#: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
+#: ../bonobo/bonobo-dock-item.c:264 ../bonobo/bonobo-dock-item.c:265
 #: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Gewenste hoogte"
 
-#: ../bonobo/bonobo-file-selector-util.c:357
+#: ../bonobo/bonobo-file-selector-util.c:351
 msgid "Select a file to open"
 msgstr "Selecteer het te openen bestand"
 
-#: ../bonobo/bonobo-file-selector-util.c:385
+#: ../bonobo/bonobo-file-selector-util.c:379
 msgid "Select files to open"
 msgstr "Selecteer de te openen bestanden"
 
-#: ../bonobo/bonobo-file-selector-util.c:414
+#: ../bonobo/bonobo-file-selector-util.c:408
 msgid "Select a filename to save"
 msgstr "Selecteer het bestand om op te slaan"
 
-#: ../bonobo/bonobo-plug.c:425
+#: ../bonobo/bonobo-plug.c:412
 msgid "Event Forwarding"
 msgstr "Gebeurtenissen Doorsturen"
 
-#: ../bonobo/bonobo-plug.c:426
+#: ../bonobo/bonobo-plug.c:413
 msgid "Whether X events should be forwarded"
 msgstr "Of gebeurtenissen van X doorgestuurd moeten worden"
 
-#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:300 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:381
 msgid "Name"
 msgstr "Naam"
 
-#: ../bonobo/bonobo-selector-widget.c:324
+#: ../bonobo/bonobo-selector-widget.c:322
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Beschrijving"
@@ -253,7 +253,7 @@ msgstr "MODULE"
 msgid "GTK+"
 msgstr "GTK+"
 
-#: ../bonobo/bonobo-ui-main.c:278
+#: ../bonobo/bonobo-ui-main.c:202
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI ondersteuning"
 
@@ -443,7 +443,7 @@ msgstr "IID"
 
 #: ../tools/browser/component-details.c:117
 msgid "Location"
-msgstr "Locatie"
+msgstr "Lokatie"
 
 #. Build the details tab
 #: ../tools/browser/component-details.c:167
@@ -454,7 +454,7 @@ msgstr "Details"
 msgid "Detailed Information"
 msgstr "Gedetailleerde informatie"
 
-#: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
+#: ../tools/browser/component-list.c:370
 msgid "Active"
 msgstr "Actief"
 
@@ -462,32 +462,32 @@ msgstr "Actief"
 msgid "Type"
 msgstr "Type"
 
-#: ../tools/browser/window.c:170
+#: ../tools/browser/window.c:169
 msgid "Component Details"
 msgstr "Component-details"
 
-#: ../tools/browser/window.c:215
+#: ../tools/browser/window.c:214
 msgid "Bonobo Browser"
 msgstr "Bonobo-verkenner"
 
-#: ../tools/browser/window.c:216
+#: ../tools/browser/window.c:215
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "Copyright 2001, De GNOME Foundation"
 
-#: ../tools/browser/window.c:217
+#: ../tools/browser/window.c:216
 msgid "Bonobo component browser"
 msgstr "Bonobo componentverkenner"
 
 #. create the window
-#: ../tools/browser/window.c:247
+#: ../tools/browser/window.c:246
 msgid "Component Browser"
 msgstr "Componentverkenner"
 
-#. Fill out the tool bar
-#: ../tools/browser/window.c:287
-msgid "All"
-msgstr "Allen"
+#~ msgid "HOST"
+#~ msgstr "COMPUTERNAAM"
 
-#: ../tools/browser/window.c:293
-msgid "Inactive"
-msgstr "Inactief"
+#~ msgid "PORT"
+#~ msgstr "POORT"
+
+#~ msgid "STYLE"
+#~ msgstr "STIJL"
