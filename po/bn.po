@@ -1,14 +1,14 @@
 # Bengali Translation of libbonoboui.
 # Copyright (C) 1991-2003 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libbonoboui package.
-# Khandakar Mujahidul Islam <suzan229@yahoo.com>, 2003-2005.
+# Khandakar Mujahidul Islam <suzan@bengalinux.org>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-01 06:01+0200\n"
-"PO-Revision-Date: 2005-09-26 17:26+0600\n"
+"POT-Creation-Date: 2005-10-20 05:40+0200\n"
+"PO-Revision-Date: 2003-07-18 09:35+0600\n"
 "Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -39,8 +39,9 @@ msgid "Dock the toolbar"
 msgstr "টুলবার আটকাও"
 
 #: ../bonobo/bonobo-dock-item-grip.c:258
+#, fuzzy
 msgid "Undock the toolbar"
-msgstr "টুলবার খুলে দাও"
+msgstr "টুলবার আটকিও না"
 
 #: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
 #: ../bonobo/bonobo-ui-toolbar.c:1175
@@ -65,25 +66,25 @@ msgstr "পছন্দের উচ্চতা"
 
 #: ../bonobo/bonobo-file-selector-util.c:357
 msgid "Select a file to open"
-msgstr "খোলার জন্য একটি ফাইল বেছে নিন"
+msgstr "খোলার জন্য একটি ফাইল বাছাই করুন"
 
 #: ../bonobo/bonobo-file-selector-util.c:385
 msgid "Select files to open"
-msgstr "খোলার জন্য ফাইলগুলো বেছে নিন"
+msgstr "খোলার জন্য ফাইলগুলো বাছাই করুন"
 
 # msgstr "কয়েকটি ফাইল বাছাই করো"
 #: ../bonobo/bonobo-file-selector-util.c:414
 msgid "Select a filename to save"
-msgstr "সংরক্ষণ করার জন্য ফাইলের নাম বেছে নিন"
+msgstr "সংরক্ষণ করার জন্য ফাইলের নাম বাছাই করুন"
 
 #: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
-msgstr "ইভেন্ট ফরওয়ার্ডিং"
+msgstr "ইভেন্ট ফরওয়ার্ড করে দেয়া"
 
 # msgstr "ইভেন্ট পাঠিয়ে দেয়া"
 #: ../bonobo/bonobo-plug.c:426
 msgid "Whether X events should be forwarded"
-msgstr "এক্স ইভেন্ট পাঠিয়ে দেয়া উচিত্ কিনা"
+msgstr "এক্স ইভেন্ট পাঠিয়ে দেয়া উচিত্‍ কিনা"
 
 # msgstr "যে কোনো ক্ষেত্রে এক্স ইভেন্ট পাঠিয়ে দেয়া উচিত"
 # msgstr "যে কোনো ক্ষেত্রে এক্স ইভেন্ট ফরওয়ার্ড করে দেয়া উচিত"
@@ -109,14 +110,11 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"ইন্টারফেসের একটি NULL-terminated array যা একটি সার্ভার অবশ্যই সমর্থন করবে "
-"নির্বাচকের তালিকাভুক্ত হওযার জন্য। যদি কোন ইন্টারফেস তালিকাকৃত না থাকে তখন ডিফল্ট "
-"হিসেবে  \"IDL:Bonobo/Embeddable:1.0\" থাকবে"
 
 # সার্ভার চালুরাখতেসাহায্যকরা ধারা 
 #: ../bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "ইন্টারফেসের প্রয়োজনীয় এন্ট্রি"
+msgstr "ইন্টারফেসে প্রয়োজনের এন্ট্রি"
 
 #: ../bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
@@ -451,7 +449,7 @@ msgstr "BonoboUI-Hello."
 # msgstr "বনোবো ইউ.আই.(UI)-শুভেচ্ছা"
 #: ../samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr "গ‌নোম হ্যালো"
+msgstr "গুহ্‌নোম হ্যালো"
 
 # msgstr "গুহ্‌নোম শুভেচ্ছা"
 #. Create Label and put it in the Button:
@@ -469,85 +467,97 @@ msgstr "বনোবো ইউ.আই'কে আরম্ভ করতে পা
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr "বনোবো কম্পোনেন্ট ব্রাউজার"
+msgstr ""
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr "সহজলভ্য বনোবো কম্পোনেন্ট দেখাও"
+msgstr ""
 
 #: ../tools/browser/bonobo-browser.xml.h:1
+#, fuzzy
 msgid "About this program..."
-msgstr "এই প্রোগ্রাম পরিচিতি..."
+msgstr "অ্যাপ্লিকেশন পরিচিতি"
 
 #: ../tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr "বর্তমান উইন্ডো বন্ধ কর"
+msgstr ""
 
 #: ../tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
-msgstr "নতুন উইন্ডো খোল"
+msgstr ""
 
 #: ../tools/browser/bonobo-browser.xml.h:5
+#, fuzzy
 msgid "_Help"
-msgstr "সহায়িকা (_ত)"
+msgstr "লুকানো হোক (_ল)"
 
 #. Build the general tab
 #: ../tools/browser/component-details.c:109
 msgid "General"
-msgstr "সাধারণ"
+msgstr ""
 
 #: ../tools/browser/component-details.c:116
 #: ../tools/browser/component-list.c:401
 msgid "IID"
-msgstr "IID"
+msgstr ""
 
 #: ../tools/browser/component-details.c:117
 msgid "Location"
-msgstr "অবস্থান"
+msgstr ""
 
 #. Build the details tab
 #: ../tools/browser/component-details.c:167
 msgid "Details"
-msgstr "বিস্তারিত"
+msgstr ""
 
 #: ../tools/browser/component-details.c:168
 msgid "Detailed Information"
-msgstr "বিস্তারিত তথ্য"
+msgstr ""
 
 #: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
 msgid "Active"
-msgstr "সক্রিয়"
+msgstr ""
 
 #: ../tools/browser/component-list.c:391
 msgid "Type"
-msgstr "ধরণ"
+msgstr ""
 
 #: ../tools/browser/window.c:170
 msgid "Component Details"
-msgstr "কম্পোনেন্টের বিবরণ"
+msgstr ""
 
 #: ../tools/browser/window.c:215
 msgid "Bonobo Browser"
-msgstr "বনোবো ব্রাউজার"
+msgstr ""
 
 #: ../tools/browser/window.c:216
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr "কপিরাইট ২০০১, গনোম ফাউন্ডেশন"
+msgstr ""
 
 #: ../tools/browser/window.c:217
 msgid "Bonobo component browser"
-msgstr "বনোবো কম্পোনেন্ট ব্রাউজার"
+msgstr ""
 
 #. create the window
 #: ../tools/browser/window.c:247
 msgid "Component Browser"
-msgstr "কম্পোনেন্ট ব্রাউজার"
+msgstr ""
 
 #. Fill out the tool bar
 #: ../tools/browser/window.c:287
 msgid "All"
-msgstr "সব"
+msgstr ""
 
 #: ../tools/browser/window.c:293
 msgid "Inactive"
-msgstr "নিষ্ক্রিয়"
+msgstr ""
+
+# msgstr "ক্লাস"
+#~ msgid "HOST"
+#~ msgstr "হোস্ট"
+
+#~ msgid "PORT"
+#~ msgstr "পোর্ট"
+
+#~ msgid "STYLE"
+#~ msgstr "ধরন"
