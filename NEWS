@@ -1,3 +1,25 @@
+libbonoboui 2.13.0
+
+	* Add support for GOption argument parsing in libgnome (Pawel Sliwowski, chpe) [#307312]
+	* Don't use deprecated gnome_i18n_get_language_list (Gustavo J. A. M. Carneiro)
+	* Translation updates:
+		* Khandakar Mujahidul Islam (bn)
+		* Jordi Mallach (ca)
+		* Iñaki Larrañaga Murgoitio (eu)
+		* Roozbeh Pournader (fa)
+		* Christophe Merlet (RedFox) (fr)
+		* Mohammad DAMT (id)
+		* Alessio Frusciante (it)
+		* Changwoo Ryu (ko)
+		* Erdal Ronahi (ku)
+		* Žygimantas Beručka (lt)
+		* Tino Meinen (nl)
+		* Afonso Celso Medina (pt_BR)
+		* Leonid Kanter (ru)
+		* Christian Rose (sv)
+		* Baris Cicek (tr)
+		* Clytie Siddall (vi)
+
 libbonoboui 2.10.1
 
 	* Translation updates.
