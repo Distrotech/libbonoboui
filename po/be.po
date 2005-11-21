@@ -1,8 +1,7 @@
-# translation of libbonoboui.HEAD.be.po to Belarusian
 # translation of libbonoboui.HEAD.be.po to belarusian
 # This file is distributed under the same license as the libbonoboui.HEAD.be package.
 # Copyright (C) 2005 THE libbonoboui.HEAD.be'S COPYRIGHT HOLDER
-# Vital Khilko <dojlid@mova.org>, 2003
+# Vital Khilko <vk@altlinux.ru>, 2003, 2005.
 # Ales Nyakhaychyk <nab@mail.by>, 2005.
 # 
 # 
@@ -10,13 +9,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.be\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-10 18:44+0200\n"
-"PO-Revision-Date: 2005-02-14 09:09+0200\n"
+"POT-Creation-Date: 2005-11-19 14:48+0100\n"
+"PO-Revision-Date: 2005-11-19 20:01+0200\n"
 "Last-Translator: Vital Khilko <vk@altlinux.ru>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
 
 #: ../bonobo/bonobo-canvas-item.c:683
 msgid "corba factory"
@@ -24,7 +26,7 @@ msgstr "вытворчасьць corba"
 
 #: ../bonobo/bonobo-canvas-item.c:684
 msgid "The factory pointer"
-msgstr "Указальнік вытворчасьці"
+msgstr "Указальнік на вытворчасьці"
 
 #: ../bonobo/bonobo-canvas-item.c:693
 msgid "corba UI container"
@@ -68,11 +70,11 @@ msgstr "Выберыце файл для адкрыцьця"
 
 #: ../bonobo/bonobo-file-selector-util.c:385
 msgid "Select files to open"
-msgstr "Выбярыце файлы для адкрыцьця"
+msgstr "Выберыце файлы для адкрыцьця"
 
 #: ../bonobo/bonobo-file-selector-util.c:414
 msgid "Select a filename to save"
-msgstr "Выбярыце назву файла для захаваньня"
+msgstr "Выберыце назву файла для захаваньня"
 
 #: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
@@ -80,7 +82,7 @@ msgstr "Перасылка падзеі"
 
 #: ../bonobo/bonobo-plug.c:426
 msgid "Whether X events should be forwarded"
-msgstr "Ці мусяць перасылацца X падзеі"
+msgstr "Ці мусяць перасылацца падзеі Х-паслужніку"
 
 #: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
@@ -104,8 +106,8 @@ msgid ""
 "no interfaces are listed"
 msgstr ""
 "Масіў інтэрфэйсаў які канчаецца на NULL, якія павінен падтрымліваць "
-"паслужнік па чарзе пералічэньня ў вылучальніку. Дапомна \"IDL:Bonobo/"
-"Embeddable:1.0\" калі інтэрфэйсы не пералічаны"
+"паслужнік па чарзе пералічэньня ў выбарніку. Прадвызначана \"IDL:Bonobo/"
+"Embeddable:1.0\" калі інтэрфэйсы не пералічаныя"
 
 #: ../bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
@@ -117,7 +119,7 @@ msgstr "Адзін з інтэрфэйсаў патрабуе гэта"
 
 #: ../bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
-msgstr "Бачна"
+msgstr "Бачны"
 
 #: ../bonobo/bonobo-ui-config-widget.c:275
 msgid "_Show"
@@ -147,7 +149,7 @@ msgstr "Выгляд"
 #: ../bonobo/bonobo-ui-config-widget.c:323
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "_Icon"
-msgstr "_Значкі"
+msgstr "_Значка"
 
 #: ../bonobo/bonobo-ui-config-widget.c:329
 msgid "_Text and Icon"
@@ -177,80 +179,80 @@ msgstr "Адбіць поўнае XML апісаньне UI у кансоль"
 msgid "Configure UI"
 msgstr "Наладка UI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113
+#: ../bonobo/bonobo-ui-init-gtk.c:124
 msgid "Gdk debugging flags to set"
-msgstr "сьцягі адладкі Gdk для усталяваньня"
+msgstr "Сьцягі адладкі Gdk для усталяваньня"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113 ../bonobo/bonobo-ui-init-gtk.c:116
-#: ../bonobo/bonobo-ui-init-gtk.c:144 ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:124 ../bonobo/bonobo-ui-init-gtk.c:127
+#: ../bonobo/bonobo-ui-init-gtk.c:155 ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "FLAGS"
 msgstr "СЬЦЯГІ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:116
+#: ../bonobo/bonobo-ui-init-gtk.c:127
 msgid "Gdk debugging flags to unset"
 msgstr "сьцягі адладкі Gdk для скіданьня"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "X display to use"
 msgstr "X-дысплэй для выкарыстаньня"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "DISPLAY"
 msgstr "ДЫСПЛЭЙ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:135
 msgid "X screen to use"
 msgstr "X экран для выкарыстаньня"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:135
 msgid "SCREEN"
 msgstr "ЭКРАН"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:128
+#: ../bonobo/bonobo-ui-init-gtk.c:139
 msgid "Make X calls synchronous"
 msgstr "Рабіць X выклікі сынхронна"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:145
 msgid "Don't use X shared memory extension"
 msgstr "Не выкарыстоўваць пашырэньне Х падзеленай памяці"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:149
 msgid "Program name as used by the window manager"
 msgstr "Назва праграмы якая будзе выкарыстоўвацца кіраўніком вокнаў"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:149
 msgid "NAME"
 msgstr "НАЗВА"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "Program class as used by the window manager"
 msgstr "Кляса праграмы якая будзе выкарыстоўвацца кіраўніком вокнаў"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "CLASS"
 msgstr "КЛЯСА"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:144
+#: ../bonobo/bonobo-ui-init-gtk.c:155
 msgid "Gtk+ debugging flags to set"
-msgstr "сьцягі адладкі Gtk+ для усталяваньня"
+msgstr "Сьцягі адладкі Gtk+ для усталяваньня"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "Gtk+ debugging flags to unset"
-msgstr "сьцягі адладкі Gtk+ для скіданьня"
+msgstr "Сьцягі адладкі Gtk+ для скіданьня"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:150
+#: ../bonobo/bonobo-ui-init-gtk.c:161
 msgid "Make all warnings fatal"
 msgstr "Зрабіць усе папярэджаньні фатальнымі"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "Load an additional Gtk module"
 msgstr "Загрузіць дадатковы модуль Gtk"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "MODULE"
 msgstr "МОДУЛЬ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:162
+#: ../bonobo/bonobo-ui-init-gtk.c:173
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -288,7 +290,7 @@ msgstr "Наладзіць панэль інструмэнтаў"
 
 #: ../bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
-msgstr "плавае"
+msgstr "плавальная"
 
 #: ../bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
@@ -336,7 +338,7 @@ msgstr "Найбольшая ступень павялічэньня"
 
 #: ../bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "Утрымлівае найменьшы ўзровень павялічэньня"
+msgstr "Утрымлівае найменшы ўзровень павялічэньня"
 
 #: ../bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
@@ -352,11 +354,11 @@ msgstr "Ці ўтрымлівае правільны найбольшы ўзро
 
 #: ../bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
-msgstr "Неперарыўна"
+msgstr "Непарыўная"
 
 #: ../bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Ці маштабаваньне неперарыўнае (у супрацьлегласьць \"скачкамі\")"
+msgstr "Ці маштабаваньне непарыўнае (у супрацьлегласьць \"скачкамі\")"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -385,7 +387,7 @@ msgstr "_Выбар"
 
 #: ../samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Гэта нічога ня робіць; гэта толькі паказ магчымасьцяў."
+msgstr "Гэтае дастасаваньне нічога ня робіць; гэта толькі паказ магчымасьцяў."
 
 #: ../samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -418,11 +420,11 @@ msgstr "Адлюстроўвае наяўныя кампанэнты Bonobo"
 
 #: ../tools/browser/bonobo-browser.xml.h:1
 msgid "About this program..."
-msgstr "Пра гэту праграму"
+msgstr "Пра гэтую праграму"
 
 #: ../tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr "Закрыць гэта вакно"
+msgstr "Закрыць гэтае акно"
 
 #: ../tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
@@ -444,7 +446,7 @@ msgstr "IID"
 
 #: ../tools/browser/component-details.c:117
 msgid "Location"
-msgstr "Месца"
+msgstr "Разьмяшчэньне"
 
 #. Build the details tab
 #: ../tools/browser/component-details.c:167
@@ -487,9 +489,9 @@ msgstr "Вандроўнік па кампанэнтах"
 #. Fill out the tool bar
 #: ../tools/browser/window.c:287
 msgid "All"
-msgstr ""
+msgstr "Усё"
 
 #: ../tools/browser/window.c:293
-#, fuzzy
 msgid "Inactive"
 msgstr "Актыўны"
+
