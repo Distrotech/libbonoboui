@@ -8,27 +8,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-15 12:39+0200\n"
-"PO-Revision-Date: 2005-01-16 20:09+0100\n"
+"POT-Creation-Date: 2005-12-09 14:57+0100\n"
+"PO-Revision-Date: 2005-12-09 21:46+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../bonobo/bonobo-canvas-item.c:667
+#: ../bonobo/bonobo-canvas-item.c:683
 msgid "corba factory"
 msgstr "corba-fabriek"
 
-#: ../bonobo/bonobo-canvas-item.c:668
+#: ../bonobo/bonobo-canvas-item.c:684
 msgid "The factory pointer"
 msgstr "De fabriekpointer"
 
-#: ../bonobo/bonobo-canvas-item.c:677
+#: ../bonobo/bonobo-canvas-item.c:693
 msgid "corba UI container"
 msgstr "corba UI-container"
 
-#: ../bonobo/bonobo-canvas-item.c:678
+#: ../bonobo/bonobo-canvas-item.c:694
 msgid "The User interface container"
 msgstr "De Gebruikersinterface-container"
 
@@ -40,53 +40,53 @@ msgstr "Werkbalk vastzetten"
 msgid "Undock the toolbar"
 msgstr "Werkbalk vrijmaken"
 
-#: ../bonobo/bonobo-dock-item.c:233 ../bonobo/bonobo-dock-item.c:234
+#: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
 #: ../bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "Type schaduw"
 
-#: ../bonobo/bonobo-dock-item.c:244 ../bonobo/bonobo-dock-item.c:245
+#: ../bonobo/bonobo-dock-item.c:246 ../bonobo/bonobo-dock-item.c:247
 #: ../bonobo/bonobo-ui-toolbar.c:1119 ../bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
 msgstr "Oriëntatie"
 
-#: ../bonobo/bonobo-dock-item.c:255 ../bonobo/bonobo-dock-item.c:256
+#: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
 #: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "Gewenste breedte"
 
-#: ../bonobo/bonobo-dock-item.c:264 ../bonobo/bonobo-dock-item.c:265
+#: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
 #: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "Gewenste hoogte"
 
-#: ../bonobo/bonobo-file-selector-util.c:351
+#: ../bonobo/bonobo-file-selector-util.c:357
 msgid "Select a file to open"
 msgstr "Selecteer het te openen bestand"
 
-#: ../bonobo/bonobo-file-selector-util.c:379
+#: ../bonobo/bonobo-file-selector-util.c:385
 msgid "Select files to open"
 msgstr "Selecteer de te openen bestanden"
 
-#: ../bonobo/bonobo-file-selector-util.c:408
+#: ../bonobo/bonobo-file-selector-util.c:414
 msgid "Select a filename to save"
 msgstr "Selecteer het bestand om op te slaan"
 
-#: ../bonobo/bonobo-plug.c:412
+#: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
 msgstr "Gebeurtenissen Doorsturen"
 
-#: ../bonobo/bonobo-plug.c:413
+#: ../bonobo/bonobo-plug.c:426
 msgid "Whether X events should be forwarded"
 msgstr "Of gebeurtenissen van X doorgestuurd moeten worden"
 
-#: ../bonobo/bonobo-selector-widget.c:300 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:381
 msgid "Name"
 msgstr "Naam"
 
-#: ../bonobo/bonobo-selector-widget.c:322
+#: ../bonobo/bonobo-selector-widget.c:324
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Beschrijving"
@@ -176,84 +176,84 @@ msgstr "De gehele XML-beschrijving van de UI in de console dumpen"
 msgid "Configure UI"
 msgstr "Gebruikersinterface instellen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113
+#: ../bonobo/bonobo-ui-init-gtk.c:124
 msgid "Gdk debugging flags to set"
 msgstr "Aan te zetten Gdk debugmarkeringen "
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113 ../bonobo/bonobo-ui-init-gtk.c:116
-#: ../bonobo/bonobo-ui-init-gtk.c:144 ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:124 ../bonobo/bonobo-ui-init-gtk.c:127
+#: ../bonobo/bonobo-ui-init-gtk.c:155 ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "FLAGS"
 msgstr "MARKERINGEN"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:116
+#: ../bonobo/bonobo-ui-init-gtk.c:127
 msgid "Gdk debugging flags to unset"
 msgstr "Uit te zetten Gdk debugmarkeringen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "X display to use"
 msgstr "Te gebruiken X-display"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:135
 msgid "X screen to use"
 msgstr "Te gebruiken X-scherm"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:135
 msgid "SCREEN"
 msgstr "SCHERM"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:128
+#: ../bonobo/bonobo-ui-init-gtk.c:139
 msgid "Make X calls synchronous"
 msgstr "X-calls synchroon maken"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:145
 msgid "Don't use X shared memory extension"
 msgstr "Geen gebruik maken van  X shared memory extension"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:149
 msgid "Program name as used by the window manager"
 msgstr "Programmanaam zoals de windowmanager deze gebruikt"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:149
 msgid "NAME"
 msgstr "NAAM"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "Program class as used by the window manager"
 msgstr "Pragrammaklasse zoals de windowmanager deze gebruikt"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:144
+#: ../bonobo/bonobo-ui-init-gtk.c:155
 msgid "Gtk+ debugging flags to set"
 msgstr "Aan te zetten Gtk+ debugmarkeringen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "Gtk+ debugging flags to unset"
 msgstr "Uit te zetten Gtk+ debugmarkeringen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:150
+#: ../bonobo/bonobo-ui-init-gtk.c:161
 msgid "Make all warnings fatal"
 msgstr "Laat alle waarschuwingen fataal zijn"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "Load an additional Gtk module"
 msgstr "Laad een extra Gtk module"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "MODULE"
 msgstr "MODULE"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:162
+#: ../bonobo/bonobo-ui-init-gtk.c:173
 msgid "GTK+"
 msgstr "GTK+"
 
-#: ../bonobo/bonobo-ui-main.c:202
+#: ../bonobo/bonobo-ui-main.c:278
 msgid "Bonobo GUI support"
 msgstr "Bonobo GUI ondersteuning"
 
@@ -454,7 +454,7 @@ msgstr "Details"
 msgid "Detailed Information"
 msgstr "Gedetailleerde informatie"
 
-#: ../tools/browser/component-list.c:370
+#: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
 msgid "Active"
 msgstr "Actief"
 
@@ -462,26 +462,37 @@ msgstr "Actief"
 msgid "Type"
 msgstr "Type"
 
-#: ../tools/browser/window.c:169
+#: ../tools/browser/window.c:170
 msgid "Component Details"
 msgstr "Component-details"
 
-#: ../tools/browser/window.c:214
+#: ../tools/browser/window.c:215
 msgid "Bonobo Browser"
 msgstr "Bonobo-verkenner"
 
-#: ../tools/browser/window.c:215
+#: ../tools/browser/window.c:216
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "Copyright 2001, De GNOME Foundation"
 
-#: ../tools/browser/window.c:216
+#: ../tools/browser/window.c:217
 msgid "Bonobo component browser"
 msgstr "Bonobo componentverkenner"
 
 #. create the window
-#: ../tools/browser/window.c:246
+#: ../tools/browser/window.c:247
 msgid "Component Browser"
 msgstr "Componentverkenner"
+
+# alles/geheel/allemaal/allen
+#. Fill out the tool bar
+#: ../tools/browser/window.c:287
+msgid "All"
+msgstr "Alles"
+
+# niet actief
+#: ../tools/browser/window.c:293
+msgid "Inactive"
+msgstr "Inactief"
 
 #~ msgid "HOST"
 #~ msgstr "COMPUTERNAAM"
