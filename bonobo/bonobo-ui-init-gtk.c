@@ -15,6 +15,7 @@ bonobo_ui_gtk_pre_args_parse (GnomeProgram    *program,
 	GOptionContext *context;
 	bonobo_ui_gtk_init_info_t *init_info;
 
+	/* Only do this for popt option parsing */
 	g_object_get (G_OBJECT (program), GNOME_PARAM_GOPTION_CONTEXT,
 		      &context, NULL);
 	if (context) return;
@@ -37,6 +38,7 @@ bonobo_ui_gtk_post_args_parse (GnomeProgram    *program,
 	char **final_argv;
 	int i;
 
+	/* Only do this for popt option parsing */
 	g_object_get (G_OBJECT (program), GNOME_PARAM_GOPTION_CONTEXT,
 		      &context, NULL);
 	if (context) return;
@@ -166,6 +168,13 @@ static struct poptOption bonobo_ui_gtk_options [] = {
 	{ NULL, '\0', 0, NULL, 0}
 };
 
+static GOptionGroup *
+bonobo_ui_gtk_module_get_goption_group (void)
+{
+	/* FIXME: TRUE or FALSE (open default display)? */
+	return gtk_get_option_group (TRUE);
+}
+
 const GnomeModuleInfo *
 bonobo_ui_gtk_module_info_get (void)
 {
@@ -177,8 +186,7 @@ bonobo_ui_gtk_module_info_get (void)
 		NULL, NULL, NULL
 	};
 	
-	/* FIXME: TRUE or FALSE (open default display)? */
-	module_info.expansion1 = (gpointer) gtk_get_option_group (TRUE);
+	module_info.expansion1 = bonobo_ui_gtk_module_get_goption_group;
 
 	if (module_info.version == NULL) {
 		module_info.version = g_strdup_printf ("%d.%d.%d",
