@@ -1,4 +1,4 @@
-# Chinese (Taiwan) translation of libbonoboui.
+# Chinese (Hong Kong) translation of libbonoboui.
 # Copyright (C) 2001, 02, 03, 06 Free Software Foundation, Inc.
 # Joe Man <trmetal@yahoo.com.hk>, 2001.
 # Abel Cheung <abel@oaka.org>, 2002-03, 06.
@@ -11,7 +11,7 @@ msgstr ""
 "POT-Creation-Date: 2006-01-13 05:28+0800\n"
 "PO-Revision-Date: 2006-01-13 06:32+0800\n"
 "Last-Translator: Abel Cheung <abel@oaka.org>\n"
-"Language-Team: Chinese (Taiwan) <community@linuxhall.org>\n"
+"Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -206,7 +206,7 @@ msgstr "螢幕"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:128
 msgid "Make X calls synchronous"
-msgstr "使用同步方式調用 X 函式"
+msgstr "使用同步方式調用 X 函數"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:134
 msgid "Don't use X shared memory extension"
@@ -396,7 +396,7 @@ msgstr "GNOME 示範"
 #. Create Label and put it in the Button:
 #: ../samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "您好！"
+msgstr "你好！"
 
 #: ../samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
