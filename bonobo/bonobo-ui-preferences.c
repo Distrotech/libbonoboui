@@ -11,9 +11,6 @@
 
 #include <config.h>
 #include <string.h>
-
-#include <popt.h>
-
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
 #include <libgnome/gnome-gconf.h>

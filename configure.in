@@ -98,7 +98,7 @@ dnl Start of pkg-config checks
 dnl
 BONOBOUI_MODULES="libgnomecanvas-2.0 >= 1.116.0 \
 		  libbonobo-2.0 >= 2.13.0 \
-		  libgnome-2.0 >= 2.13.5 \
+		  libgnome-2.0 >= 2.13.7 \
 		  bonobo-activation-2.0 >= 2.13.0 \
 		  libxml-2.0 >= 2.4.20 \
 		  gconf-2.0 >= 1.1.9 \

@@ -1,4 +1,13 @@
 2006-01-16  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+	
+	* configure.in: depend on libgnome >= 2.13.7 since it fixes the
+	previous include hack.
+	
+	* bonobo/bonobo-ui-init-gtk.c:
+	* bonobo/bonobo-ui-preferences.c:
+	* bonobo/bonobo-ui-util.c: revert previous hack.
+
+2006-01-16  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
 	* bonobo/bonobo-ui-init-gtk.c:
 	* bonobo/bonobo-ui-preferences.c:
