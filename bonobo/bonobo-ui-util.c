@@ -9,6 +9,8 @@
 #include <config.h>
 #include <string.h>
 
+#include <popt.h>
+
 #include <gtk/gtkstock.h>
 #include <gtk/gtkimage.h>
 #include <gtk/gtkiconfactory.h>

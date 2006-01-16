@@ -1,4 +1,7 @@
 #include <config.h>
+
+#include <popt.h>
+
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-ui-main.h>
