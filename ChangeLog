@@ -1,4 +1,8 @@
 2006-01-16  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
+	* NEWS: release 2.13.1
+
+2006-01-16  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 	
 	* configure.in: depend on libgnome >= 2.13.7 since it fixes the
 	previous include hack.

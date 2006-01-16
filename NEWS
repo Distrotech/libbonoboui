@@ -2,7 +2,8 @@ libbonoboui 2.13.1
 
 	* Fix leaks introduced by the GOption argument handling code
 	(Christian Perch)
-	* 
+	* Sync with latest libgnome (Christian Persch) [#326846]
+
 libbonoboui 2.13.0
 
 	* Add support for GOption argument parsing in libgnome (Pawel Sliwowski, chpe) [#307312]
