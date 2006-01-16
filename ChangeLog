@@ -1,3 +1,7 @@
+2006-01-17  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
+	* configure.in: post release bump to 2.13.2
+
 2006-01-16  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
 	* NEWS: release 2.13.1
