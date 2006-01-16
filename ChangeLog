@@ -1,5 +1,8 @@
 2006-01-16  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
+
+2006-01-16  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+
 	* bonobo/bonobo-ui-init-gtk.c: (bonobo_ui_gtk_module_info_get): Apply a
 	patch from Christian Persch that makes libbonoboui use the correct
 	struct member for parsing command line arguments using GOption.
