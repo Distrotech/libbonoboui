@@ -186,7 +186,7 @@ bonobo_ui_gtk_module_info_get (void)
 		NULL, NULL, NULL
 	};
 	
-	module_info.expansion1 = bonobo_ui_gtk_module_get_goption_group;
+	module_info.get_goption_group_func = bonobo_ui_gtk_module_get_goption_group;
 
 	if (module_info.version == NULL) {
 		module_info.version = g_strdup_printf ("%d.%d.%d",
