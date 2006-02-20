@@ -1,3 +1,10 @@
+2006-02-21  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
+
+	* tools/browser/bonobo-browser.desktop.in:
+	
+	Update desktop file. Fix for the bugs #331647 and
+	#328466. Thanks to Stephane Loeuillet and Vincent Untz.
+
 2006-01-17  Emmanuele Bassi  <ebassi@cvs.gnome.org>
 
 	* configure.in: post release bump to 2.13.2
