@@ -1,3 +1,9 @@
+2006-02-21  Gustavo J. A. M. Carneiro  <gjc@inescporto.pt>
+
+	* bonobo/bonobo-widget.c (control_new_async_cb): Missing unref on
+	object.  Fixes Bug 331590: "bonobo widget code leaks CORBA Object
+	reference".  Patch by Adriano Winter Bess.
+
 2006-02-21  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
 
 	* tools/browser/bonobo-browser.desktop.in:

@@ -179,6 +179,7 @@ control_new_async_cb (Bonobo_Unknown     object,
 
 	g_object_unref (c->bw);
 	bonobo_object_release_unref (c->uic, ev);
+	bonobo_object_release_unref (object, ev);
 	g_free (c);
 }
 
