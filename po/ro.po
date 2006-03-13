@@ -1,13 +1,13 @@
 # Romanian translation for libbonoboui
-# Copyright (C) 2003 - 2005 Free Software Foundation, Inc.
-# Mişu Moldovan <dumol@gnome.ro>, 2003 - 2005.
+# Copyright (C) 2003 - 2006 Free Software Foundation, Inc.
+# Mişu Moldovan <dumol@gnome.ro>, 2003 - 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-10 18:44+0200\n"
-"PO-Revision-Date: 2005-08-14 21:02+0300\n"
+"POT-Creation-Date: 2006-03-12 15:05+0100\n"
+"PO-Revision-Date: 2006-03-12 23:22+0200\n"
 "Last-Translator: Mişu Moldovan <dumol@gnome.ro>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -173,80 +173,80 @@ msgstr "Listează întreaga descriere XML a interfeţei în consolă"
 msgid "Configure UI"
 msgstr "Configurare UI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113
+#: ../bonobo/bonobo-ui-init-gtk.c:126
 msgid "Gdk debugging flags to set"
 msgstr "Indicatoare de depanare Gdk de setat"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113 ../bonobo/bonobo-ui-init-gtk.c:116
-#: ../bonobo/bonobo-ui-init-gtk.c:144 ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:126 ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:157 ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
-msgstr "FLAGS"
+msgstr "INDICATORI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:116
+#: ../bonobo/bonobo-ui-init-gtk.c:129
 msgid "Gdk debugging flags to unset"
-msgstr "Indicatoare de depanare Gdk de resetat"
+msgstr "Indicatori de depanare Gdk de resetat"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "X display to use"
 msgstr "Display X de folosit"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X screen to use"
 msgstr "Ecran X de folosit"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "SCREEN"
-msgstr "SCREEN"
+msgstr "ECRAN"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:128
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "Make X calls synchronous"
 msgstr "Sincronizează apelurile X"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:147
 msgid "Don't use X shared memory extension"
 msgstr "Nu utiliza extensia X de memorie partajată"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Program name as used by the window manager"
 msgstr "Numele programului pentru managerul de ferestre"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "NAME"
-msgstr "NAME"
+msgstr "NUME"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "Program class as used by the window manager"
 msgstr "Clasa programului pentru managerul de ferestre"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "CLASS"
-msgstr "CLASS"
+msgstr "CLASĂ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:144
+#: ../bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
 msgstr "Indicatoare de depanare Gtk+ de setat"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
 msgstr "Indicatoare de depanare Gtk+ de resetat"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:150
+#: ../bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
-msgstr "Fă toate avertizările fatale"
+msgstr "Setează toate avertizările ca fiind fatale"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
 msgstr "Încarcă un modul adiţional Gtk"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
-msgstr "MODULE"
+msgstr "MODUL"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:162
+#: ../bonobo/bonobo-ui-init-gtk.c:182
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -377,7 +377,7 @@ msgstr "_Fişier"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "_Selectaţi"
+msgstr "_Selectare"
 
 #: ../samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
@@ -394,15 +394,15 @@ msgstr "Salut Gnome"
 #. Create Label and put it in the Button:
 #: ../samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "Hello, World!"
+msgstr "Hello World!"
 
 #: ../samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "Nu am putut iniţializa codul libbonoboui"
+msgstr "Nu s-a putut iniţializa codul libbonoboui"
 
 #: ../samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr "Nu am putut iniţializa interfaţa Bonobo"
+msgstr "Nu s-a putut iniţializa interfaţa Bonobo"
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
@@ -431,7 +431,7 @@ msgstr "_Ajutor"
 #. Build the general tab
 #: ../tools/browser/component-details.c:109
 msgid "General"
-msgstr "General"
+msgstr "Generale"
 
 #: ../tools/browser/component-details.c:116
 #: ../tools/browser/component-list.c:401
@@ -453,7 +453,7 @@ msgstr "Informaţii detaliate"
 
 #: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
 msgid "Active"
-msgstr "Activ"
+msgstr "Activă"
 
 #: ../tools/browser/component-list.c:391
 msgid "Type"
@@ -488,3 +488,4 @@ msgstr "Toate"
 #: ../tools/browser/window.c:293
 msgid "Inactive"
 msgstr "Inactive"
+
