@@ -1,6 +1,7 @@
 # Oriya translation of libbonoboui.HEAD.pot.
 # Copyright (C) 2004 Free Software Foundation, Inc.
-# Dillip Rout<bol2dilip@yahoo.co.in> 2004.
+# Dillip Rout<bol2dilip@yahoo.co.in>, 2004.
+# Subhransu Behera <arya_subhransu@yahoo.co.in>, 2006.
 # $Id$
 #
 msgid ""
@@ -8,7 +9,7 @@ msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.or\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-03-06 07:17+0100\n"
-"PO-Revision-Date: 2006-03-07 02:53+0530\n"
+"PO-Revision-Date: 2006-03-15 02:37+0530\n"
 "Last-Translator: Subhransu Behera<arya_subhransu@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
 "MIME-Version: 1.0\n"
