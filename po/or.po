@@ -2,6 +2,7 @@
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # Dillip Rout<bol2dilip@yahoo.co.in>, 2004.
 # Subhransu Behera <arya_subhransu@yahoo.co.in>, 2006.
+# Gora Mohanty <gora_mohanty@yahoo.co.in>, 2006.
 # $Id$
 #
 msgid ""
@@ -9,7 +10,7 @@ msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.or\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-03-06 07:17+0100\n"
-"PO-Revision-Date: 2006-03-15 02:37+0530\n"
+"PO-Revision-Date: 2006-03-21 03:42+0530\n"
 "Last-Translator: Subhransu Behera<arya_subhransu@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,11 +31,11 @@ msgstr "କୋର୍ବା ୟୁ.ଆଇ. ଧାରକ"
 
 #: ../bonobo/bonobo-canvas-item.c:694
 msgid "The User interface container"
-msgstr "ବ୍ଯବହାରକାରୀ ଅନ୍ତରାପ୍ରୁଷ୍ଠ ଧାରକ"
+msgstr "ବ୍ଯବହାରକାରୀ ଅନ୍ତରାପୃଷ୍ଠ ଧାରକ"
 
 #: ../bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
-msgstr "ସାଧନ ପଟି ୟୋଗ କରନ୍ତୁ"
+msgstr "ସାଧନ ପଟି ଯୋଗ କରନ୍ତୁ"
 
 #: ../bonobo/bonobo-dock-item-grip.c:258
 msgid "Undock the toolbar"
@@ -53,12 +54,12 @@ msgstr "ଅନୁସ୍ଥାପନ"
 #: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
 #: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
-msgstr "ମାନ୍ଯ ଓସାର"
+msgstr "ପସନ୍ଦ ଓସାର"
 
 #: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
 #: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
-msgstr "ମାନ୍ଯ ଉଚ୍ଚତା"
+msgstr "ପସନ୍ଦ ଉଚ୍ଚତା"
 
 #: ../bonobo/bonobo-file-selector-util.c:357
 msgid "Select a file to open"
@@ -66,7 +67,7 @@ msgstr "ଖୋଲିବା ପାଇଁ ଫାଇଲ ବାଛନ୍ତୁ"
 
 #: ../bonobo/bonobo-file-selector-util.c:385
 msgid "Select files to open"
-msgstr "ଖୋଲିବା ପାଇଁ ଫାଇଲଗୁଡ଼ିକ ବାଛନ୍ତୁ "
+msgstr "ଖୋଲିବା ପାଇଁ ଫାଇଲଗୁଡ଼ିକ ବାଛନ୍ତୁ"
 
 #: ../bonobo/bonobo-file-selector-util.c:414
 msgid "Select a filename to save"
@@ -74,11 +75,11 @@ msgstr "ସଂରକ୍ଷଣ ପାଇଁ ଫାଇଲ ନାମ ବାଛନ�
 
 #: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
-msgstr "ଘଟଣା ଅଗ୍ରସର କରାଯାଉଛି"
+msgstr "ଘଟଣା ପଠାଇବା"
 
 #: ../bonobo/bonobo-plug.c:426
 msgid "Whether X events should be forwarded"
-msgstr "ଏକ୍ସ ଘଟଣାଗୁଡି଼କ ଅଗ୍ରସର କରାଯିବା ଉଚିତ କି"
+msgstr "ଏକ୍ସ ଘଟଣାଗୁଡି଼କ ପଠାଯିବା ଉଚିତ କି"
 
 #: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
@@ -93,7 +94,7 @@ msgstr "ବର୍ଣ୍ଣନା"
 
 #: ../bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
-msgstr "ଅାବଶ୍ଯକ ଅନ୍ତରାପ୍ରୁଷ୍ଠଗୁଡି଼କ"
+msgstr "ଅାବଶ୍ଯକ ଅନ୍ତରାପୃଷ୍ଠ"
 
 #: ../bonobo/bonobo-selector.c:346
 msgid ""
@@ -101,17 +102,17 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"ଚୟକରେ ତାଲିକାଭୁକ୍ତ ହେବା ପାଇଁ, ଅନ୍ତରାପ୍ରୁଷ୍ଠଗୁଡି଼କର ନଲରେ ସମାପ୍ତ ହୋଇଥିବା ଆରେ ଜେଉଁଟାକି ଗୋଟିଏ "
-"ସେବକକୁ ସହାୟକ କରିବା ଆବଶ୍ଯକ. କୌଣସି ଅନ୍ତରପ୍ରୁଷ୍ଠ ତାଲିକାଭୁକ୍ତ ନ ହୋଇଥିଲେ,  ପୂର୍ବନିର୍ଦ୍ଧାରିତ ମୂଲ୍ଯ "
-"ହେଲା \"IDL:Bonobo/Embeddable:1.0\""
+"ଚୟକରେ ଭର୍ତ୍ତି ହେବା ପାଇଁ,  ସେବକ ଦ୍ବାରା ସହାୟକ ଥିବା ନଲରେ ସମାପ୍ତ ଅନ୍ତରାପୃଷ୍ଠର ଆରେ. କୌଣସି "
+"ଅନ୍ତରାପୃଷ୍ଠ ଉଲ୍ଲେଖିତ ନ ହୋଇଥିଲେ, ପୂର୍ବନିର୍ଦ୍ଧାରିତ ମୂଲ୍ଯ ହେଲା "
+"\"IDL:Bonobo/Embeddable:1.0\""
 
 #: ../bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "ଅନ୍ତରାପ୍ରୁଷ୍ଠର ଅାବଶ୍ଯକ ଭରଣ"
+msgstr "ଅନ୍ତରାପୃଷ୍ଠରେ ଭରଣ ଅାବଶ୍ଯକ"
 
 #: ../bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr "ଗୋଟିଏ ଅାବଶ୍ଯକ ଅନ୍ତରାପ୍ରୁଷ୍ଠ"
+msgstr "ଗୋଟିଏ ଅାବଶ୍ଯକ ଅନ୍ତରାପୃଷ୍ଠ"
 
 #: ../bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
@@ -165,11 +166,11 @@ msgstr "ତ୍ରୁଟିମୁକ୍ତ କରନ୍ତୁ"
 
 #: ../bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "ଏକ୍ସ.ଏମ.ଏଲ. ରୂପେ ଲେଖନ୍ତୁ"
+msgstr "ଏକ୍ସ.ଏମ.ଏଲ. ରୂପେ ଲେଖନ୍ତୁ (_D)"
 
 #: ../bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "ୟୁ.ଅାଇ.ର ସଂପୂର୍ଣ୍ଣ ବିବରଣୀକୁ ଏକ୍ସ.ଏମ.ଏଲ. ରୂପେ କନ୍ସୋଲରେ ଲେଖନ୍ତୁ"
+msgstr "ୟୁ.ଅାଇ.ର ସଂପୂର୍ଣ୍ଣ ଏକ୍ସ.ଏମ.ଏଲ. ବିବରଣୀକୁ କନ୍ସୋଲରେ ଲେଖନ୍ତୁ"
 
 #: ../bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
@@ -214,7 +215,7 @@ msgstr "ଏକ୍ସ ସହଭାଗୀ ସ୍ମ୍ରୁତି ଅନୁଲଗ
 
 #: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Program name as used by the window manager"
-msgstr "ଓ୍ବିଣ୍ଡୋ ପରିଚାଳକ ଦ୍ବାରା ବ୍ଯବହ୍ରୁତ କାରିକାର ନାମ"
+msgstr "ଓ୍ବିଣ୍ଡୋ ପରିଚାଳକ ଦ୍ବାରା ବ୍ଯବହୃତ କାରିକାର ନାମ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "NAME"
@@ -222,7 +223,7 @@ msgstr "ନାମ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "Program class as used by the window manager"
-msgstr "ଓ୍ବିଣ୍ଡୋ ପରିଚାଳକ ଦ୍ବାରା ବ୍ଯବହ୍ରୁତ କାରିକାର ଶ୍ରେଣୀ "
+msgstr "ଓ୍ବିଣ୍ଡୋ ପରିଚାଳକ ଦ୍ବାରା ବ୍ଯବହୃତ କାରିକାର ଶ୍ରେଣୀ "
 
 #: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "CLASS"
@@ -250,7 +251,7 @@ msgstr "ଏକକାଂଶ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:182
 msgid "GTK+"
-msgstr "ଜିଟିକେ+"
+msgstr "ଜି.ଟି.କେ.+"
 
 #: ../bonobo/bonobo-ui-main.c:278
 msgid "Bonobo GUI support"
@@ -294,11 +295,11 @@ msgstr "ସାଧନ ପଟି ଭାସୁ ଅଛି କି"
 
 #: ../bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
-msgstr "ସାଧନ ପଟି ର ଚାରିପାଖ ଗଡାଣିଆ ଧାର ର ଶୈଳୀ ରେ ନିର୍ମାଣ କରାଯାଇଛି"
+msgstr "ସାଧନ ପଟି ଚାରିପାେଖ ଗଡ଼ାଣିଆ ଧାରର ଶୈଳୀ"
 
 #: ../bonobo/bonobo-ui-util.c:630
 msgid "_Contents"
-msgstr "_Contents"
+msgstr "ସୂଚୀପତ୍ର (_C)"
 
 #: ../bonobo/bonobo-ui-util.c:631
 msgid "View help for this application"
@@ -306,7 +307,7 @@ msgstr "ଏହି ପ୍ରୟୋଗ ପାଇଁ ସହାୟତା ଦେଖ�
 
 #: ../bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
-msgstr "ଓ୍ବିଣ୍ଡୋର ନାମ - କ୍ରମିକ ବିନ୍ଯାସ ପାଇଁ ବ୍ଯବହାର କରାଯିବ"
+msgstr "ଓ୍ବିଣ୍ଡୋର ନାମ - କ୍ରମିକ ବିନ୍ଯାସ ପାଇଁ ବ୍ଯବହାର କରାଯିବ."
 
 #: ../bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -334,19 +335,19 @@ msgstr "ସର୍ବାଧିକ ବ୍ରୁଦ୍ଧିକରଣର ସ୍ତ�
 
 #: ../bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "ସର୍ବନିମ୍ନ ସାନବଡ଼ କରିବାର ସ୍ତର ଅଛି "
+msgstr "ସର୍ବନିମ୍ନ ସାନବଡ଼ କରିବାର ସ୍ତର ଅଛି"
 
 #: ../bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "ସର୍ବନିମ୍ନ ସାନବଡ଼ କରିବା ପାଇଁ ଆମର ବୈଧ ସ୍ତର ଅଛି କି"
+msgstr "ସର୍ବନିମ୍ନ ସାନବଡ଼ କରିବାର ବୈଧ ସ୍ତର ଅଛି କି"
 
 #: ../bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "ସର୍ବାଧିକ ସାନବଡ଼ କରିବାର ସ୍ତର ଅଛି କି"
+msgstr "ସର୍ବାଧିକ ସାନବଡ଼ କରିବାର ସ୍ତର ଅଛି"
 
 #: ../bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "ଅାମମାନଙ୍କ ସର୍ବାଧିକ ସାନବଡ ସ୍ତର କଣ ବୈଧ ଅଟେ କି?"
+msgstr "ସର୍ବାଧିକ ସାନବଡ଼ କରିବାର ବୈଧ ସ୍ତର ଅଛି କି"
 
 #: ../bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -370,7 +371,7 @@ msgstr "ବିଷୟରେ... (_A)"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "ସଂପାଦନ କରନ୍ତୁ (_E)"
+msgstr "ସଂପାଦନ (_E)"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 #: ../tools/browser/bonobo-browser.xml.h:4
@@ -383,7 +384,7 @@ msgstr "ବାଛନ୍ତୁ (_S)"
 
 #: ../samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "ଏହା କିଛି କରେ ନାହଁି; ଏହା ରେବଳ ଗୋଟିଏ ପ୍ରଦର୍ଶନ"
+msgstr "ଏହା କିଛି କରେ ନାହଁି; ଏହା ରେବଳ ଗୋଟିଏ ପ୍ରଦର୍ଶନ."
 
 #: ../samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -404,7 +405,7 @@ msgstr "ଲିବବନୋବୋୟୁଅାଇ ସଂେକତ ପ୍ରାର�
 
 #: ../samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr "ବନୋବା ୟୁଅାଇକୁ ପ୍ରାରମ୍ଭ କରିହେଲା ନାହିଁ"
+msgstr "ବନୋବା ୟୁ.ଅାଇ.କୁ ପ୍ରାରମ୍ଭ କରିହେଲା ନାହିଁ"
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
@@ -471,7 +472,7 @@ msgstr "ବନୋବୋ ଖୋଜାଳି"
 
 #: ../tools/browser/window.c:216
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr "ସ୍ବତ୍ତ୍ବାଧିକାର ୨୦୦୧, ନୋମ ସଂସ୍ଥା"
+msgstr "ସ୍ବତ୍ତ୍ବାଧିକାର 2001, ନୋମ ସଂସ୍ଥା"
 
 #: ../tools/browser/window.c:217
 msgid "Bonobo component browser"
