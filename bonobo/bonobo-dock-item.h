@@ -129,6 +129,9 @@ GtkOrientation bonobo_dock_item_get_orientation (BonoboDockItem *dock_item);
 BonoboDockItemBehavior
                bonobo_dock_item_get_behavior    (BonoboDockItem *dock_item);
 
+void	       bonobo_dock_item_set_behavior    (BonoboDockItem         *dock_item,
+                                                 BonoboDockItemBehavior  behavior);
+
 /* Private methods.  */
 #ifdef BONOBO_UI_INTERNAL
 void           bonobo_dock_item_set_locked      (BonoboDockItem *dock_item,

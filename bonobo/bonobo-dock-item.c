@@ -81,11 +81,6 @@ enum {
   LAST_SIGNAL
 };
 
-/* this function is not public, but should be exported */
-void        bonobo_dock_item_set_behavior   (BonoboDockItem         *dock_item,
-                                             BonoboDockItemBehavior  behavior);
-
-
 static guint     get_preferred_width   (BonoboDockItem *item);
 static guint     get_preferred_height  (BonoboDockItem *item);
 
