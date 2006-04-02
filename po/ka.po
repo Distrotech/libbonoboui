@@ -1,0 +1,499 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libbonoboui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-02-10 00:20+0100\n"
+"PO-Revision-Date: 2006-03-30 19:33+0400\n"
+"Last-Translator: Giasher <giasher@telenet.ge>\n"
+"Language-Team: Georgian <www.gia.ge>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Georgian\n"
+"X-Poedit-Country: GEORGIA\n"
+
+#: ../bonobo/bonobo-canvas-item.c:683
+msgid "corba factory"
+msgstr "corba-ს საწარმო"
+
+#: ../bonobo/bonobo-canvas-item.c:684
+msgid "The factory pointer"
+msgstr "საწარმოს მაჩვენებელი"
+
+#: ../bonobo/bonobo-canvas-item.c:693
+msgid "corba UI container"
+msgstr "corba UI კონტეინერი"
+
+#: ../bonobo/bonobo-canvas-item.c:694
+msgid "The User interface container"
+msgstr "მომხმარებლის ინტერფეისის კონტეინერი"
+
+#: ../bonobo/bonobo-dock-item-grip.c:257
+msgid "Dock the toolbar"
+msgstr "პულტის მიმაგრება"
+
+#: ../bonobo/bonobo-dock-item-grip.c:258
+msgid "Undock the toolbar"
+msgstr "პულტის გათავისუფლება"
+
+#: ../bonobo/bonobo-dock-item.c:235
+#: ../bonobo/bonobo-dock-item.c:236
+#: ../bonobo/bonobo-ui-toolbar.c:1175
+msgid "Shadow type"
+msgstr "დჩრდილვის ტიპი"
+
+#: ../bonobo/bonobo-dock-item.c:246
+#: ../bonobo/bonobo-dock-item.c:247
+#: ../bonobo/bonobo-ui-toolbar.c:1119
+#: ../bonobo/bonobo-ui-toolbar.c:1120
+msgid "Orientation"
+msgstr "ორიენტაცია"
+
+#: ../bonobo/bonobo-dock-item.c:257
+#: ../bonobo/bonobo-dock-item.c:258
+#: ../bonobo/bonobo-ui-toolbar.c:1138
+#: ../bonobo/bonobo-ui-toolbar.c:1139
+msgid "Preferred width"
+msgstr "სასურველი სიგანე"
+
+#: ../bonobo/bonobo-dock-item.c:266
+#: ../bonobo/bonobo-dock-item.c:267
+#: ../bonobo/bonobo-ui-toolbar.c:1147
+#: ../bonobo/bonobo-ui-toolbar.c:1148
+msgid "Preferred height"
+msgstr "სასურველი სიმაღლე"
+
+#: ../bonobo/bonobo-file-selector-util.c:357
+msgid "Select a file to open"
+msgstr "გასახსენლი ფაილის შერჩევა"
+
+#: ../bonobo/bonobo-file-selector-util.c:385
+msgid "Select files to open"
+msgstr "გასახსენლი ფაილების შერჩევა"
+
+#: ../bonobo/bonobo-file-selector-util.c:414
+msgid "Select a filename to save"
+msgstr "შესანახი ფაილის სახელის შერჩევა"
+
+#: ../bonobo/bonobo-plug.c:425
+msgid "Event Forwarding"
+msgstr "მოვლენის გადაგზავნა"
+
+#: ../bonobo/bonobo-plug.c:426
+msgid "Whether X events should be forwarded"
+msgstr "გადაიგზავნოს თუ არა X მოვლენები"
+
+#: ../bonobo/bonobo-selector-widget.c:302
+#: ../bonobo/bonobo-window.c:346
+#: ../tools/browser/component-details.c:114
+#: ../tools/browser/component-list.c:381
+msgid "Name"
+msgstr "სახელი"
+
+#: ../bonobo/bonobo-selector-widget.c:324
+#: ../tools/browser/component-details.c:115
+msgid "Description"
+msgstr "აღწერილობა"
+
+#: ../bonobo/bonobo-selector.c:345
+msgid "Interfaces required"
+msgstr "საჭირო ინტერფეისები"
+
+#: ../bonobo/bonobo-selector.c:346
+msgid "A NULL-terminated array of interfaces which a server must support in order to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
+msgstr "NULL-ით დაბოლოებული ინტერფეისების მასივი, რომელტა მხარდაჭერაც სერვერიდან აუცილებელია, რათა სელექტორის სიაში იყოს. თუ ინტერფეისების სია არაა, იგულისხმება \"IDL:Bonobo/Embeddable:1.0\"."
+
+#: ../bonobo/bonobo-selector.c:348
+msgid "Interface required entry"
+msgstr "საჭირო ინტერფეისის ელემენტი"
+
+#: ../bonobo/bonobo-selector.c:349
+msgid "One of the interfaces that's required"
+msgstr "ერთერთი საჭირო ინტერფეისი"
+
+#: ../bonobo/bonobo-ui-config-widget.c:268
+msgid "Visible"
+msgstr "ხილული"
+
+#: ../bonobo/bonobo-ui-config-widget.c:275
+msgid "_Show"
+msgstr "_ჩვენება"
+
+#: ../bonobo/bonobo-ui-config-widget.c:282
+msgid "_Hide"
+msgstr "_დამალვა"
+
+#: ../bonobo/bonobo-ui-config-widget.c:288
+msgid "_View tooltips"
+msgstr "_მინიშნებების ჩვენება"
+
+#: ../bonobo/bonobo-ui-config-widget.c:293
+msgid "Toolbars"
+msgstr "პულტები"
+
+#: ../bonobo/bonobo-ui-config-widget.c:303
+msgid "toolbars"
+msgstr "პულტები"
+
+#: ../bonobo/bonobo-ui-config-widget.c:314
+#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+msgid "Look"
+msgstr "ხედი"
+
+#: ../bonobo/bonobo-ui-config-widget.c:323
+#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+msgid "_Icon"
+msgstr "_ხატულა"
+
+#: ../bonobo/bonobo-ui-config-widget.c:329
+msgid "_Text and Icon"
+msgstr "_ტექსტი და ხატულები"
+
+#: ../bonobo/bonobo-ui-config-widget.c:335
+msgid "Text only"
+msgstr "მხოლოდ ტექსტი"
+
+#: ../bonobo/bonobo-ui-config-widget.c:341
+msgid "_Priority text only"
+msgstr "_მხოლოდ ტექსტი"
+
+#: ../bonobo/bonobo-ui-engine.c:90
+msgid "Debug"
+msgstr "გამართვა"
+
+#: ../bonobo/bonobo-ui-engine.c:90
+msgid "_Dump XML"
+msgstr "_XML გამოტანა"
+
+#: ../bonobo/bonobo-ui-engine.c:91
+msgid "Dump the entire UI's XML description to the console"
+msgstr "UI-ს სრული XML აღწერილობის ეკრანზე გამოტანა"
+
+#: ../bonobo/bonobo-ui-engine-config.c:522
+msgid "Configure UI"
+msgstr "UI კონფიგურაცია"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:126
+msgid "Gdk debugging flags to set"
+msgstr "Gdk გამართვის მოსანიშნი ალმები"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:126
+#: ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:157
+#: ../bonobo/bonobo-ui-init-gtk.c:160
+msgid "FLAGS"
+msgstr "ალმები"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:129
+msgid "Gdk debugging flags to unset"
+msgstr "Gdk გამართვის მოსახსნელი ალმები"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:133
+msgid "X display to use"
+msgstr "გამოსაყენებელი X დისპლეი"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:133
+msgid "DISPLAY"
+msgstr "დისპლეი"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:137
+msgid "X screen to use"
+msgstr "გამოსაყენებელი X ეკრანი"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:137
+msgid "SCREEN"
+msgstr "ეკრანი"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:141
+msgid "Make X calls synchronous"
+msgstr "X გამოძახების სინქრონიზება"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:147
+msgid "Don't use X shared memory extension"
+msgstr "მეხსიერების X გაზიარების პაკეტის გარეშე"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:151
+msgid "Program name as used by the window manager"
+msgstr "პროგრამის სახელი, როგორც ფანჯრის მმართველის მიერ გამოიყენება"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:151
+msgid "NAME"
+msgstr "სახელი"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:154
+msgid "Program class as used by the window manager"
+msgstr "პროგრამის კლასი, როგორც ფანჯრის მმართველის მიერ გამოიყენება"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:154
+msgid "CLASS"
+msgstr "კლასი"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:157
+msgid "Gtk+ debugging flags to set"
+msgstr "Gtk+ გამართვის მოსანიშნი ალმები"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:160
+msgid "Gtk+ debugging flags to unset"
+msgstr "Gtk+ გამართვის მოსახსნელი ალმები"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:163
+msgid "Make all warnings fatal"
+msgstr "ყველა გაფრთხილების კრიტიკულად მითითება"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:166
+msgid "Load an additional Gtk module"
+msgstr "დამატებითი Gtk მოდულის ჩატვირთვა"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:166
+msgid "MODULE"
+msgstr "მოდული"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:182
+msgid "GTK+"
+msgstr "GTK+"
+
+#: ../bonobo/bonobo-ui-main.c:278
+msgid "Bonobo GUI support"
+msgstr "Bonobo GUI მხარდაჭერა"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+msgid "B_oth"
+msgstr "_ორივე"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+msgid "T_ext"
+msgstr "ტე_ქსტი"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:567
+msgid "Hide t_ips"
+msgstr "მინიშნებების _დამალვა"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:567
+msgid "Show t_ips"
+msgstr "მინი_შნებების _დამალვა"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "_Hide toolbar"
+msgstr "_პულტის დამალვა"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "Customi_ze"
+msgstr "მო_რგება"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
+msgid "Customize the toolbar"
+msgstr "პულტის მორგება"
+
+#: ../bonobo/bonobo-ui-toolbar.c:1129
+msgid "is floating"
+msgstr "მოდრეიფე"
+
+#: ../bonobo/bonobo-ui-toolbar.c:1130
+msgid "whether the toolbar is floating"
+msgstr "არის თუ არა პულტი მოდრეიფე"
+
+#: ../bonobo/bonobo-ui-toolbar.c:1176
+msgid "Style of bevel around the toolbar"
+msgstr "პულტის გაფორმების სტილი"
+
+#: ../bonobo/bonobo-ui-util.c:630
+msgid "_Contents"
+msgstr "_შიგთავსი"
+
+#: ../bonobo/bonobo-ui-util.c:631
+msgid "View help for this application"
+msgstr "ამ პროგრამის დახმარების ნახვა"
+
+#: ../bonobo/bonobo-window.c:347
+msgid "Name of the window - used for configuration serialization."
+msgstr "ფანჯრის სახელი - გამოიყენება კონფიგურაციის სერიალიზაციისთვის."
+
+#: ../bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "მასშტაბის სიდიდე"
+
+#: ../bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "გაზრდის ხარისხი"
+
+#: ../bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "მასშტაბის მინიმალური სიდიდე"
+
+#: ../bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "გაზრდის მინიმალური ხარისხი"
+
+#: ../bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "მასშტაბის მაქსიმალური სიდიდე"
+
+#: ../bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "გაზრდის მაქსიმალური ხარისხი"
+
+#: ../bonobo/bonobo-zoomable.c:353
+msgid "Has a minimum Zoom level"
+msgstr "აქვს მასშტაბის მინიმალური სიდიდე"
+
+#: ../bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "გვაქვს თუ არა მასშტაბის მართებული მინიმალური სიდიდე"
+
+#: ../bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "აქვს მასშტაბის მაქსიმალური სიდიდე"
+
+#: ../bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "გვაქვს თუ არა მასშტაბის მართებული მაქსიმალური სიდიდე"
+
+#: ../bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "უწყვეტია"
+
+#: ../bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "არის თუ არა მასშტაბი უწყვეტი (წყვეტილის საპირისპიროდ)"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "ამ პროგრამის შესახებ"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr "არჩევა"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr "_პროგრამის შესახებ..."
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr "_რედაქტირება"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#: ../tools/browser/bonobo-browser.xml.h:4
+msgid "_File"
+msgstr "_ფაილი"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr "_არჩევა"
+
+#: ../samples/bonoboui/hello.c:63
+msgid "This does nothing; it is only a demonstration."
+msgstr "ეს მხოლოდ დემონსტრაციაა"
+
+#: ../samples/bonoboui/hello.c:145
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI მისალმება."
+
+#: ../samples/bonoboui/hello.c:217
+msgid "Gnome Hello"
+msgstr "Gnome მისალმება"
+
+#. Create Label and put it in the Button:
+#: ../samples/bonoboui/hello.c:272
+msgid "Hello, World!"
+msgstr "მოგესალმები, მსოფლიო!"
+
+#: ../samples/bonoboui/hello.c:312
+msgid "Cannot init libbonoboui code"
+msgstr "libbonoboui კოდის ინიციალიზება ვერ ხერხდება"
+
+#: ../samples/controls/bonobo-sample-controls.c:131
+msgid "Could not initialize Bonobo UI"
+msgstr "Bonobo UI-ს ინიციალიზება ვერ ხერხდება"
+
+#: ../tools/browser/bonobo-browser.desktop.in.h:1
+msgid "Bonobo Component Browser"
+msgstr "Bonobo კომპონენტების გზამკვლევი"
+
+#: ../tools/browser/bonobo-browser.desktop.in.h:2
+msgid "Shows available Bonobo components"
+msgstr "შესაძლო Bonobo კომპონენტების ჩვენება"
+
+#: ../tools/browser/bonobo-browser.xml.h:1
+msgid "About this program..."
+msgstr "ამ პროგრამის შესახებ..."
+
+#: ../tools/browser/bonobo-browser.xml.h:2
+msgid "Close the current window"
+msgstr "მიმდინარე ფანჯრის დახურვა"
+
+#: ../tools/browser/bonobo-browser.xml.h:3
+msgid "Open a new window"
+msgstr "ახალი ფანჯრის გახსნა"
+
+#: ../tools/browser/bonobo-browser.xml.h:5
+msgid "_Help"
+msgstr "_დახმარება"
+
+#. Build the general tab
+#: ../tools/browser/component-details.c:109
+msgid "General"
+msgstr "ზოგადი"
+
+#: ../tools/browser/component-details.c:116
+#: ../tools/browser/component-list.c:401
+msgid "IID"
+msgstr "IID"
+
+#: ../tools/browser/component-details.c:117
+msgid "Location"
+msgstr "მისამართი"
+
+#. Build the details tab
+#: ../tools/browser/component-details.c:167
+msgid "Details"
+msgstr "დეტალები"
+
+#: ../tools/browser/component-details.c:168
+msgid "Detailed Information"
+msgstr "დეტალური ინფორმაცია"
+
+#: ../tools/browser/component-list.c:370
+#: ../tools/browser/window.c:290
+msgid "Active"
+msgstr "აცტიური"
+
+#: ../tools/browser/component-list.c:391
+msgid "Type"
+msgstr "ტიპი"
+
+#: ../tools/browser/window.c:170
+msgid "Component Details"
+msgstr "კომპონენტის დეტალები"
+
+#: ../tools/browser/window.c:215
+msgid "Bonobo Browser"
+msgstr "Bonobo გზამკვლევი"
+
+#: ../tools/browser/window.c:216
+msgid "Copyright 2001, The GNOME Foundation"
+msgstr "საავტორო უფლება 2001, GNOME ფონდი"
+
+#: ../tools/browser/window.c:217
+msgid "Bonobo component browser"
+msgstr "Bonobo კომპონენტების გზამკვლევი"
+
+#. create the window
+#: ../tools/browser/window.c:247
+msgid "Component Browser"
+msgstr "კომპონენტების გზამკვლევი"
+
+#. Fill out the tool bar
+#: ../tools/browser/window.c:287
+msgid "All"
+msgstr "ყველა"
+
+#: ../tools/browser/window.c:293
+msgid "Inactive"
+msgstr "პასიური"
+
