@@ -1,3 +1,15 @@
+libbonoboui 2.14.0
+
+	* Fix CORBA object leaks (Adriano Winter Bess)
+	* Fix bonobo-object-browser .desktop file
+	  (Stephane Loeuillet and Vincent Untz
+
+	* Translation updates:
+		* Žygimantas Beručka (lt)
+		* Kjartan Maraas (nn)
+		* Subhransu Behera (or)
+		* Mişu Moldovan (ro)
+
 libbonoboui 2.13.1
 
 	* Fix leaks introduced by the GOption argument handling code
