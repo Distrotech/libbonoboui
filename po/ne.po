@@ -1,17 +1,24 @@
+# translation of libbonoboui.gnome-2-14.ne.po to Nepali
+# translation of libbonoboui.gnome-2-10.ne.po to Nepali
+# translation of libbonoboui.gnome-2-10.po to Nepali
 # translation of libbonoboui.HEAD.po to Nepali
 # Ganesh Ghimire <gghimire@gmail.com>, 2005.
+# Bishnu Adhikari <bsn_adk@hotmail.com>, 2005.
+# Jaydeep Bhusal <zaydeep@hotmail.com>, 2005.
+# Shyam Krishna Bal <shyamkrishna_bal@yahoo.com>, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui.HEAD\n"
+"Project-Id-Version: libbonoboui.gnome-2-14.ne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-10 18:44+0200\n"
-"PO-Revision-Date: 2005-05-02 12:22+0545\n"
-"Last-Translator: Ganesh Ghimire <gghimire@gmail.com>\n"
+"POT-Creation-Date: 2006-04-02 07:23+0200\n"
+"PO-Revision-Date: 2006-04-27 20:24+0545\n"
+"Last-Translator: Shyam Krishna Bal <shyamkrishna_bal@yahoo.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.9.1\n"
+"X-Generator: KBabel 1.10.2\n"
+"Plural-Forms: nplurals=2;plural=(n!=1)\n"
 
 #: ../bonobo/bonobo-canvas-item.c:683
 msgid "corba factory"
@@ -19,7 +26,7 @@ msgstr "कोरबा कारखाना"
 
 #: ../bonobo/bonobo-canvas-item.c:684
 msgid "The factory pointer"
-msgstr "कारखानाको ठाउँ"
+msgstr "कारखानाको सूचक"
 
 #: ../bonobo/bonobo-canvas-item.c:693
 msgid "corba UI container"
@@ -31,51 +38,51 @@ msgstr "प्रयोगकर्ताको इन्टरफेस कन�
 
 #: ../bonobo/bonobo-dock-item-grip.c:257
 msgid "Dock the toolbar"
-msgstr "औजारबार डक गर"
+msgstr "उपकरणपट्टी डक गर्नुहोस्"
 
 #: ../bonobo/bonobo-dock-item-grip.c:258
 msgid "Undock the toolbar"
-msgstr "टुलबार डक नगर"
+msgstr "उपकरणपट्टी डक नगर्नुहोस्"
 
-#: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
+#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
 #: ../bonobo/bonobo-ui-toolbar.c:1175
 msgid "Shadow type"
 msgstr "छायाँ प्रकार"
 
-#: ../bonobo/bonobo-dock-item.c:246 ../bonobo/bonobo-dock-item.c:247
+#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
 #: ../bonobo/bonobo-ui-toolbar.c:1119 ../bonobo/bonobo-ui-toolbar.c:1120
 msgid "Orientation"
-msgstr "दिशानिर्देश"
+msgstr "पृष्ठविन्यास"
 
-#: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
+#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
 #: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
 msgid "Preferred width"
 msgstr "रोजिएको चौडाइ"
 
-#: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
+#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
 #: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
 msgid "Preferred height"
 msgstr "रोजिएको उचाइ"
 
 #: ../bonobo/bonobo-file-selector-util.c:357
 msgid "Select a file to open"
-msgstr "खोल्नु पर्नेफाइल छनोट गर"
+msgstr "खोल्नु पर्ने फाइल चयन गर्नुहोस्"
 
 #: ../bonobo/bonobo-file-selector-util.c:385
 msgid "Select files to open"
-msgstr "खोल्नुपर्ने फाइलहरू छनोट गर"
+msgstr "खोल्नुपर्ने फाइलहरू चयन गर्नुहोस्"
 
 #: ../bonobo/bonobo-file-selector-util.c:414
 msgid "Select a filename to save"
-msgstr "संचित गर्नुपर्ने फाइलको नाम छनोट गर"
+msgstr "संचित गर्नुपर्ने फाइलको नाम चयन गर्नुहोस्"
 
 #: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
-msgstr "कार्य अघि ल्याउनु"
+msgstr "घटना अघि ल्याउँदै"
 
 #: ../bonobo/bonobo-plug.c:426
 msgid "Whether X events should be forwarded"
-msgstr "X कार्य अघि ल्याउनु पर्छ"
+msgstr "X घटना अघि ल्याउनु पर्छ"
 
 #: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
@@ -86,7 +93,7 @@ msgstr "नाम"
 #: ../bonobo/bonobo-selector-widget.c:324
 #: ../tools/browser/component-details.c:115
 msgid "Description"
-msgstr "ब्याख्या"
+msgstr "वर्णन"
 
 #: ../bonobo/bonobo-selector.c:345
 msgid "Interfaces required"
@@ -98,54 +105,54 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"इन्टरफेसको तीरजस्तो खाली जोडन जहाँ चयकमा सेवादायकले टेवा दिनुपर्छ। \"आईडीएल:बोनोबो/"
-"खप्टिनसक्ने:१.0\" सँग पूर्वाधारित छन् यदि छैनन्भने इण्टरफेस यहाँ सूचीकृत छन्"
+"इन्टरफेसको तीरजस्तो खाली जोडन जहाँ चयकमा सर्भरले टेवा दिनुपर्छ। \"आईडीएल:बोनोबो/"
+"खप्टिनसक्ने:१.0\" सँग पूर्वनिर्धारित छन् यदि छैन ्भनइन्टरफेसरफेस यहाँ सूचीकृत छन्"
 
 #: ../bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
-msgstr "आवश्यक Interface entry"
+msgstr "आवश्यक इन्टरफेस प्रविष्टि"
 
 #: ../bonobo/bonobo-selector.c:349
 msgid "One of the interfaces that's required"
-msgstr "एक  आवश्यक इन्टरफेस"
+msgstr "एक आवश्यक इन्टरफेस"
 
 #: ../bonobo/bonobo-ui-config-widget.c:268
 msgid "Visible"
-msgstr "देखिने"
+msgstr "दृश्यात्मक"
 
 #: ../bonobo/bonobo-ui-config-widget.c:275
 msgid "_Show"
-msgstr "देखाउ"
+msgstr "देखाउनुहोस्"
 
 #: ../bonobo/bonobo-ui-config-widget.c:282
 msgid "_Hide"
-msgstr "लुकाउ"
+msgstr "लुकाउनुहोस्"
 
 #: ../bonobo/bonobo-ui-config-widget.c:288
 msgid "_View tooltips"
-msgstr "tooltips देखाउ"
+msgstr "उपकरण टिपहरू देखाउनुहोस्"
 
 #: ../bonobo/bonobo-ui-config-widget.c:293
 msgid "Toolbars"
-msgstr "औजारबार"
+msgstr "उपकरणपट्टी"
 
 #: ../bonobo/bonobo-ui-config-widget.c:303
 msgid "toolbars"
-msgstr "औजारबार"
+msgstr "उपकरणपट्टी"
 
 #: ../bonobo/bonobo-ui-config-widget.c:314
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "Look"
-msgstr "हेर"
+msgstr "हेर्नुहोस्"
 
 #: ../bonobo/bonobo-ui-config-widget.c:323
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "_Icon"
-msgstr "आइकन"
+msgstr "प्रतिमा"
 
 #: ../bonobo/bonobo-ui-config-widget.c:329
 msgid "_Text and Icon"
-msgstr "पाठ्य र आइकन"
+msgstr "पाठ् र प्रतिमा"
 
 #: ../bonobo/bonobo-ui-config-widget.c:335
 msgid "Text only"
@@ -161,96 +168,96 @@ msgstr "डिबग"
 
 #: ../bonobo/bonobo-ui-engine.c:90
 msgid "_Dump XML"
-msgstr "XML थुपार"
+msgstr "XML डम्प गर्नुहोस्"
 
 #: ../bonobo/bonobo-ui-engine.c:91
 msgid "Dump the entire UI's XML description to the console"
-msgstr "UI को पूरा XML consoleमा थुपार"
+msgstr "UI को सम्पूर्ण XML कन्सोलमा वर्णन डम्प गर्नहोस्"
 
 #: ../bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
-msgstr "UI समायोजन गर"
+msgstr "UI कन्फिगरेसन"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113
+#: ../bonobo/bonobo-ui-init-gtk.c:126
 msgid "Gdk debugging flags to set"
-msgstr "GDK डिवग ध्वजा सेट गर"
+msgstr "GDK डिवग ध्वजा सेट गर्न"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113 ../bonobo/bonobo-ui-init-gtk.c:116
-#: ../bonobo/bonobo-ui-init-gtk.c:144 ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:126 ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:157 ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
-msgstr "ध्वजा"
+msgstr "FLAGS"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:116
+#: ../bonobo/bonobo-ui-init-gtk.c:129
 msgid "Gdk debugging flags to unset"
-msgstr "GDK डिवग ध्वजा सेट नगर"
+msgstr "GDK डिवग ध्वजा सेट नगर्न"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "X display to use"
-msgstr "X डिस्प्ले प्रयोग गर"
+msgstr "X प्रदर्शन प्रयोग गर्नुहोस्"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "DISPLAY"
-msgstr "डिस्प्ले"
+msgstr "DISPLAY"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X screen to use"
-msgstr "X स्क्रिन प्रयोग गर"
+msgstr "X स्क्रिन प्रयोग गर्न"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "SCREEN"
-msgstr "स्क्रिन"
+msgstr "SCREEN"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:128
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "Make X calls synchronous"
-msgstr "Make X calls synchronous"
+msgstr " X बोलावटहरू सिङ्क्रोनस बनाउनुहोस्"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:147
 msgid "Don't use X shared memory extension"
-msgstr "Don't use X shared memory extension"
+msgstr " X बाँडिएको स्मृति विस्तार प्रयोग नगर्नुहोस्"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Program name as used by the window manager"
-msgstr "विन्डो प्रबन्धकले प्रयोग गरेको प्रोग्रामको नाम"
+msgstr "सन्झ्याल प्रबन्धकले प्रयोग गरेको प्रोग्रामको नाम"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "NAME"
 msgstr "नाम"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "Program class as used by the window manager"
-msgstr "विन्डो प्रबन्धकले प्रयोग गरेको प्रोग्रामको क्लास"
+msgstr "सन्झ्याल प्रबन्धकले प्रयोग गरेको प्रोग्रामको क्लास"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "CLASS"
-msgstr "क्लास"
+msgstr "CLASS"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:144
+#: ../bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
-msgstr "Gtk+ डिवग ध्वजा जडान गर"
+msgstr "Gtk+ डिवग ध्वजा सेट गर्न"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
-msgstr "Gtk+ डिवग ध्वजा जडान नगर"
+msgstr "Gtk+ डिवग ध्वजा सेट नगर्न"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:150
+#: ../bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
-msgstr "सबै चेतावनी घातक बनाउ"
+msgstr "सबै चेतावनी घातक बनाउनुहोस्"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
-msgstr "थप GTK मोडुल लोड गर"
+msgstr "एउटा थप GTK मोडुल लोड गर्नुहोस्"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
-msgstr "मोडुल"
+msgstr "MODULE"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:162
+#: ../bonobo/bonobo-ui-init-gtk.c:182
 msgid "GTK+"
 msgstr "GTK+"
 
 #: ../bonobo/bonobo-ui-main.c:278
 msgid "Bonobo GUI support"
-msgstr "Bonobo GUI सपोर्ट"
+msgstr "Bonobo GUI समर्थित"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "B_oth"
@@ -262,87 +269,87 @@ msgstr "पाठ"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Hide t_ips"
-msgstr "सङ्केत नदेखाउ"
+msgstr "टिप्स लुकाउनुहोस्"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Show t_ips"
-msgstr "सङ्केत देखाउ"
+msgstr "टिप देखाउनुहोस्"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Hide toolbar"
-msgstr "औजारबार लुकाउ"
+msgstr "उपकरणपट्टी लुकाउनुहोस्"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "Customi_ze"
-msgstr "कस्टमाइज"
+msgstr "अनुकूलन गर्नुहोस्"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Customize the toolbar"
-msgstr "औजारबार कस्टमाइज गर"
+msgstr "उपकरणपट्टी अनुकूलन गर्नुहोस्"
 
 #: ../bonobo/bonobo-ui-toolbar.c:1129
 msgid "is floating"
-msgstr "तैरिएको छ"
+msgstr "उत्प्लावन छ"
 
 #: ../bonobo/bonobo-ui-toolbar.c:1130
 msgid "whether the toolbar is floating"
-msgstr "के औजारबार तैरिएको छ"
+msgstr "के उपकरणपट्टी उत्प्लावन छ"
 
 #: ../bonobo/bonobo-ui-toolbar.c:1176
 msgid "Style of bevel around the toolbar"
-msgstr "औजारबार वरिपरि वेभेल शैली"
+msgstr "उपकरणपट्टी वरिपरि वेभेलको शैली"
 
 #: ../bonobo/bonobo-ui-util.c:630
 msgid "_Contents"
-msgstr "बिषयसूची"
+msgstr "सामाग्रीहरू"
 
 #: ../bonobo/bonobo-ui-util.c:631
 msgid "View help for this application"
-msgstr "यस एप्लिकेसनको सहायता हेर्नुस"
+msgstr "यो अनुप्रयोगको लागि मद्दत हेर्नुहोस्"
 
 #: ../bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
-msgstr "समायोजन गर्न प्रयोग गरिएको विन्डोको नाम"
+msgstr "कन्फिगरेसन प्रयोग गरिएको सन्झ्यालको नाम"
 
 #: ../bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "जूम लेबल"
+msgstr "जूम स्तर"
 
 #: ../bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "जूमको दर्जा"
+msgstr "विस्तारको डिग्री"
 
 #: ../bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "न्यून जूम लेबल"
+msgstr "न्यूनतम जूम स्तर"
 
 #: ../bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "जूमको न्यून दर्जा"
+msgstr "विस्तारको न्यूनतम डिग्री"
 
 #: ../bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "अधिक जूम लेबल"
+msgstr "अधिकतम जूम स्तर"
 
 #: ../bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "जूमको अधिक दर्जा"
+msgstr "जूमको अधिकतम डिग्री"
 
 #: ../bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "जूम लेबल न्यून छ"
+msgstr "जूम स्तर न्यूनतम छ"
 
 #: ../bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "मान्य न्यून जूम लेबल  छ ?"
+msgstr "हामि सँग एउटा वैध न्यूनतम जूम स्तर छ"
 
 #: ../bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "जूम लेबल अधिक छ"
+msgstr "जूम स्तर अधिकतम छ"
 
 #: ../bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "मान्य अधिक जूम लेबल  छ ?"
+msgstr "हामि सँग एउटा वैध न्यूनतम जूम स्तर छ"
 
 #: ../bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -350,7 +357,7 @@ msgstr "निरन्तर छ"
 
 #: ../bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "बिस्तारै जूम घटबढ गर"
+msgstr "बिस्तारै जूम घटबढ गर्नुहोस् (जम्प गर्न रोकिएको रुपमा)"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -358,15 +365,15 @@ msgstr "यस अनुप्रयोगको बारेमा"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr "छनोट"
+msgstr "चयन गर्नुहोस्"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "बारेमा"
+msgstr "बारेमा..."
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
-msgstr "संशोधन"
+msgstr "सम्पादन"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 #: ../tools/browser/bonobo-browser.xml.h:4
@@ -375,41 +382,41 @@ msgstr "फाइल"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "छनोट"
+msgstr "चयन गर्नुहोस्"
 
 #: ../samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "यो डेमो हो । "
+msgstr "यो केहि हुँदैन; यो केवल प्रदर्शन मात्र हो."
 
 #: ../samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
-msgstr "हेलो BonoboUI"
+msgstr "हेलो बोनोबियू"
 
 #: ../samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr "हेलो Gnome "
+msgstr "हेलो जिनोम"
 
 #  Create Label and put it in the Button:
 #. Create Label and put it in the Button:
 #: ../samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "हेलो, संसार"
+msgstr "हेलो, संसार!"
 
 #: ../samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "libbonoboui कोड सुरु गर्न सकिएन"
+msgstr "इबोनोबियू कोड सुरु गर्न सकिएन"
 
 #: ../samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr "Bonobo UI सुरु गर्न सकिएन"
+msgstr "बोनोबो UI सुरु गर्न सकिएन"
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
-msgstr "बोनोबो अबयब ब्राउजर"
+msgstr "बोनोबो अवयव ब्राउजर"
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr "प्रप्त बोनोबो अबयबहरू देखाउँदछ"
+msgstr "उपलब्ध बोनोबो अवयवहरू देखाउँदछ"
 
 #: ../tools/browser/bonobo-browser.xml.h:1
 msgid "About this program..."
@@ -425,7 +432,7 @@ msgstr "नयाँ सञ्झ्याल खोल्नुहोस्"
 
 #: ../tools/browser/bonobo-browser.xml.h:5
 msgid "_Help"
-msgstr "_सहायता"
+msgstr "मद्दत"
 
 #. Build the general tab
 #: ../tools/browser/component-details.c:109
@@ -444,15 +451,15 @@ msgstr "स्थान"
 #. Build the details tab
 #: ../tools/browser/component-details.c:167
 msgid "Details"
-msgstr "बिस्तृत"
+msgstr "विवरण"
 
 #: ../tools/browser/component-details.c:168
 msgid "Detailed Information"
-msgstr "बिस्तृत सूचना"
+msgstr "विवरण सूचना"
 
 #: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
 msgid "Active"
-msgstr "सकृय"
+msgstr "क्रियाशील"
 
 #: ../tools/browser/component-list.c:391
 msgid "Type"
@@ -460,7 +467,7 @@ msgstr "प्रकार"
 
 #: ../tools/browser/window.c:170
 msgid "Component Details"
-msgstr "बिस्तृत अबयब"
+msgstr "विवरण अवयव"
 
 #: ../tools/browser/window.c:215
 msgid "Bonobo Browser"
@@ -472,19 +479,19 @@ msgstr "प्रतिलिपि अधिकार २००१, जिन�
 
 #: ../tools/browser/window.c:217
 msgid "Bonobo component browser"
-msgstr "बोनोबो अबयब ब्राउजर"
+msgstr "बोनोबो अवयव ब्राउजर"
 
 #. create the window
 #: ../tools/browser/window.c:247
 msgid "Component Browser"
-msgstr "अबयब ब्राउजर"
+msgstr "अवयव ब्राउजर"
 
 #. Fill out the tool bar
 #: ../tools/browser/window.c:287
 msgid "All"
-msgstr ""
+msgstr "सबै"
 
 #: ../tools/browser/window.c:293
-#, fuzzy
 msgid "Inactive"
-msgstr "सकृय"
+msgstr "निश्क्रिय गर्नु"
+
