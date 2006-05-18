@@ -35,7 +35,7 @@
 GNOME_CLASS_BOILERPLATE (BonoboCanvasItem,
 			 bonobo_canvas_item,
 			 GObject,
-			 GNOME_TYPE_CANVAS_ITEM);
+			 GNOME_TYPE_CANVAS_ITEM)
 
 typedef struct {
 	POA_Bonobo_Canvas_ComponentProxy proxy_servant;

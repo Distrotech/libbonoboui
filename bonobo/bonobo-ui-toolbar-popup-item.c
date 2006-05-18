@@ -15,7 +15,7 @@
 GNOME_CLASS_BOILERPLATE (BonoboUIToolbarPopupItem,
 			 bonobo_ui_toolbar_popup_item,
 			 BonoboUIToolbarToggleButtonItem,
-			 bonobo_ui_toolbar_toggle_button_item_get_type ());
+			 bonobo_ui_toolbar_toggle_button_item_get_type ())
 
 static GdkPixbuf *right_arrow_pixbuf = NULL;
 static GdkPixbuf *down_arrow_pixbuf = NULL;

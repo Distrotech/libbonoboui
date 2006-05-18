@@ -31,7 +31,7 @@
 
 GNOME_CLASS_BOILERPLATE (BonoboSelectorWidget,
 			 bonobo_selector_widget,
-			 GObject, GTK_TYPE_VBOX);
+			 GObject, GTK_TYPE_VBOX)
 
 
 #define GET_CLASS(o) BONOBO_SELECTOR_WIDGET_CLASS (GTK_OBJECT_GET_CLASS (o))

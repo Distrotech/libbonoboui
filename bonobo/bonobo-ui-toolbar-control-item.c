@@ -20,7 +20,7 @@
 GNOME_CLASS_BOILERPLATE (BonoboUIToolbarControlItem,
 			 bonobo_ui_toolbar_control_item,
 			 GObject,
-			 GTK_TYPE_TOOL_BUTTON);
+			 GTK_TYPE_TOOL_BUTTON)
 
 static void
 set_control_property_bag_value (BonoboUIToolbarControlItem *item,
@@ -71,7 +71,7 @@ get_parent_toolbar (BonoboUIToolbarControlItem *control_item)
 
 	toolbar = GTK_WIDGET (control_item)->parent;
 	if (!GTK_IS_TOOLBAR (toolbar)) {
-		g_warning ("Non-toolbar parent '%s'", g_type_name_from_instance (toolbar));
+		g_warning ("Non-toolbar parent '%s'", g_type_name_from_instance ((GTypeInstance *)toolbar));
 		return NULL;
 	}
 
@@ -264,8 +264,7 @@ bonobo_ui_toolbar_control_item_instance_init (BonoboUIToolbarControlItem *contro
 	control_item->box = gtk_vbox_new (FALSE, 0);
 
 	control_item->button = GTK_BIN (control_item)->child;
-	g_object_ref (control_item->button);
-	gtk_object_sink (GTK_OBJECT (control_item->button));
+	g_object_ref_sink (control_item->button);
 	gtk_container_remove (GTK_CONTAINER (control_item), control_item->button);
 	gtk_container_add (GTK_CONTAINER (control_item->box), control_item->button);
 	g_object_ref (control_item->button);

@@ -24,15 +24,7 @@
 #include <config.h>
 #endif
 
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkstatusbar.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkradiobutton.h>
+#include <gtk/gtk.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-ui-container.h>
@@ -203,23 +195,25 @@ verb_FileNewWindow (BonoboUIComponent *uic, void *data, const char *path)
 static void
 verb_HelpAbout (BonoboUIComponent *uic, void *data, const char *path)
 {
+#if 0
 	static const gchar *authors[] = {
 		"Dan Siemon <dan@coverfire.com>",
 		"Rodrigo Moya <rodrigo@gnome-db.org>",
 		"Patanjali Somayaji <patanjali@morelinux.com>",
 		NULL
 	};
-#if 0
 	GtkWidget *about;
 
-	about = gnome_about_new (_("Bonobo Browser"), VERSION,
-				 _("Copyright 2001, The GNOME Foundation"),
-				 _("Bonobo component browser"),
-				 authors,
-				 NULL,
-				 NULL,
-				 NULL);
-	gtk_widget_show (about);
+	gtk_show_about_dialog (GTK_WINDOW (about),
+		      "name", _("Bonobo Browser"),
+		      "version", VERSION,
+		      "copyright", _("Copyright 2001, The GNOME Foundation"),
+		      "comments", _("Bonobo component browser"),
+		      "authors", authors,
+		      "documenters", NULL,
+		      "translation-credits", _("translation-credits"),
+		      "logo-icon-name", "gtk-about",
+		      NULL);
 #endif
 }
 

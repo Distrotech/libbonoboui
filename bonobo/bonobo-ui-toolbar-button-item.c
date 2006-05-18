@@ -17,7 +17,7 @@
 GNOME_CLASS_BOILERPLATE (BonoboUIToolbarButtonItem,
 			 bonobo_ui_toolbar_button_item,
 			 GObject,
-			 bonobo_ui_toolbar_item_get_type ());
+			 bonobo_ui_toolbar_item_get_type ())
 
 /* Spacing between the icon and the label.  */
 #define SPACING 2

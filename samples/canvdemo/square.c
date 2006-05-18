@@ -10,6 +10,7 @@
 #include <glib/gmacros.h>
 #include <gtk/gtk.h>
 #include <libgnomecanvas/gnome-canvas.h>
+#include <libgnomecanvas/gnome-canvas-rect-ellipse.h>
 
 #ifdef WITH_BONOBO
 #include <bonobo/Bonobo.h>

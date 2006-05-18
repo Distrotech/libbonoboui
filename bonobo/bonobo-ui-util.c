@@ -378,7 +378,7 @@ bonobo_ui_util_xml_set_image (GtkImage     *image,
 		return;
 	}
 
-	key = g_strdup_printf ("%s:%d", text, icon_size);
+	key = g_strdup_printf ("%s:%u", text, icon_size);
 
 	if (!pixbuf_cache)
 		pixbuf_cache = g_hash_table_new_full (

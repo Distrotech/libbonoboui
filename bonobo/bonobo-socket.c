@@ -40,7 +40,7 @@ typedef struct {
 } BonoboSocketPrivate;
 
 GNOME_CLASS_BOILERPLATE (BonoboSocket, bonobo_socket,
-			 GObject, GTK_TYPE_SOCKET);
+			 GObject, GTK_TYPE_SOCKET)
 
 static void
 bonobo_socket_finalize (GObject *object)

@@ -2,7 +2,7 @@
 <commands>
       <cmd name="FileNewWindow" stockid="gtk-new" _tip="Open a new window"/>
       <cmd name="FileClose" stockid="gtk-close" _tip="Close the current window"/>
-      <cmd name="HelpAbout" stockid="gnome-stock-about" _tip="About this program..."/>
+      <cmd name="HelpAbout" stockid="gtk-about" _tip="About this program..."/>
 </commands>
 
 <menu>

@@ -16,7 +16,7 @@
 GNOME_CLASS_BOILERPLATE (BonoboUIToolbarToggleButtonItem,
 			 bonobo_ui_toolbar_toggle_button_item,
 			 GObject, 
-			 bonobo_ui_toolbar_button_item_get_type ());
+			 bonobo_ui_toolbar_button_item_get_type ())
 
 enum {
 	TOGGLED,

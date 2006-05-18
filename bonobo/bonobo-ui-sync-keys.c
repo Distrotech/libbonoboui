@@ -87,8 +87,6 @@ bonobo_ui_sync_keys_binding_handle (GtkWidget        *widget,
 
 		return TRUE;
 	}
-	
-	return FALSE;
 }
 
 static void

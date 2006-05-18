@@ -35,7 +35,7 @@ enum {
 };
 
 GNOME_CLASS_BOILERPLATE (BonoboPlug, bonobo_plug,
-			 GObject, GTK_TYPE_PLUG);
+			 GObject, GTK_TYPE_PLUG)
 
 /**
  * bonobo_plug_construct:

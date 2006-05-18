@@ -127,9 +127,9 @@ bonobo_control_add_listener (CORBA_Object        object,
 Bonobo_Gdk_WindowId
 bonobo_control_window_id_from_x11 (guint32 x11_id)
 {
-	guchar str[32];
+	gchar str[32];
 
-	snprintf (str, 31, "%d", x11_id);
+	snprintf (str, 31, "%u", x11_id);
 	str[31] = '\0';
 
 /*	printf ("Mangled %d to '%s'\n", x11_id, str);*/
@@ -288,8 +288,7 @@ create_plug (BonoboControl *control)
 	
 	plug = bonobo_plug_new (0);
 
-	g_object_ref (G_OBJECT (plug));
-	gtk_object_sink (GTK_OBJECT (plug));
+	g_object_ref_sink (plug);
 	
 	bonobo_control_set_plug (control, BONOBO_PLUG (plug));
 
@@ -299,7 +298,7 @@ create_plug (BonoboControl *control)
 
 	g_signal_emit (control, control_signals [PLUG_CREATED], 0);
 
-	g_object_unref (G_OBJECT (plug));
+	g_object_unref (plug);
 }
 
 static int
@@ -384,7 +383,7 @@ impl_Bonobo_Control_getWindowId (PortableServer_Servant servant,
 
 	x11_id = gtk_plug_get_id (GTK_PLUG (control->priv->plug));
 		
-	dprintf ("plug id %d\n", x11_id);
+	dprintf ("plug id %u\n", x11_id);
 
 	return bonobo_control_window_id_from_x11 (x11_id);
 }
@@ -638,8 +637,7 @@ bonobo_control_construct (BonoboControl  *control,
 		(GSourceFunc) never_got_frame_timeout,
 		control);
 
-	control->priv->widget = g_object_ref (widget);
-	gtk_object_sink (GTK_OBJECT (widget));
+	control->priv->widget = g_object_ref_sink (widget);
 
 	gtk_container_add (GTK_CONTAINER (control->priv->plug),
 			   control->priv->widget);
@@ -1516,7 +1514,7 @@ bonobo_control_do_popup_full (BonoboControl       *control,
 	char    *path;
 	gboolean retval;
 
-	path = g_strdup_printf ("/popups/button%d", button);
+	path = g_strdup_printf ("/popups/button%u", button);
 
 	retval = bonobo_control_do_popup_path
 		(control, parent_menu_shell, parent_menu_item,

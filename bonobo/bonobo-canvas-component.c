@@ -1044,14 +1044,11 @@ GnomeCanvas *
 bonobo_canvas_new (gboolean is_aa, Bonobo_Canvas_ComponentProxy proxy)
 {
 	GnomeCanvas *canvas;
-	GnomeCanvasItem *orig_root;
 
 	if (is_aa)
 		canvas = GNOME_CANVAS (gnome_canvas_new_aa ());
 	else
 		canvas = GNOME_CANVAS (gnome_canvas_new ());
-
-	orig_root = canvas->root;
 
 	canvas->root = GNOME_CANVAS_ITEM (root_item_hack_new (canvas, proxy));
 
@@ -1231,7 +1228,7 @@ bonobo_canvas_component_factory_init (BonoboCanvasComponentFactory *factory)
 BONOBO_TYPE_FUNC_FULL (BonoboCanvasComponentFactory,
                        Bonobo_CanvasComponentFactory,
                        BONOBO_TYPE_X_OBJECT,
-                       bonobo_canvas_component_factory);
+                       bonobo_canvas_component_factory)
 
 /**
  * bonobo_canvas_component_factory_new:

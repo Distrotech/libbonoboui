@@ -1217,8 +1217,7 @@ bonobo_ui_engine_widget_set (BonoboUIEngine    *engine,
 
 	if (custom_widget) {
 		info = bonobo_ui_xml_get_data (engine->priv->tree, node);
-		info->widget = gtk_widget_ref (custom_widget);
-		gtk_object_sink (GTK_OBJECT (custom_widget));
+		info->widget = g_object_ref_sink (custom_widget);
 
 		bonobo_ui_engine_stamp_custom (engine, node);
 	}
@@ -3158,7 +3157,7 @@ bonobo_ui_engine_thaw (BonoboUIEngine *engine)
  * 
  * This is a debugging function mostly for internal
  * and testing use, it dumps the XML tree, including
- * the assoicated, and overridden nodes in a wierd
+ * the associated, and overridden nodes in a wierd
  * hackish format to the @out stream with the
  * helpful @msg prepended.
  **/

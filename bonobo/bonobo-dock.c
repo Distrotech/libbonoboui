@@ -33,7 +33,7 @@
 #include <libgnome/gnome-macros.h>
 
 GNOME_CLASS_BOILERPLATE (BonoboDock, bonobo_dock,
-			 GtkContainer, GTK_TYPE_CONTAINER);
+			 GtkContainer, GTK_TYPE_CONTAINER)
 
 #define noBONOBO_DOCK_DEBUG
 
@@ -750,9 +750,9 @@ drag_new (BonoboDock *dock,
       if (where == NULL)
         *area = where = g_list_prepend (*area, new_band);
       else if (where->next == NULL)
-        g_list_append (where, new_band);
+        where = g_list_append (where, new_band);
       else
-        g_list_prepend (where->next, new_band);
+        where = g_list_prepend (where->next, new_band);
 
       new_band_setup (dock, GTK_WIDGET (new_band),
 		      is_vertical ? GTK_ORIENTATION_VERTICAL
@@ -1807,7 +1807,7 @@ _bonobo_dock_handle_key_nav (BonoboDock     *dock,
   if (bonobo_dock_band_get_num_children (band) == 0)
     gtk_widget_destroy (GTK_WIDGET (band));
 
-  g_object_unref (G_OBJECT (item));
+  g_object_unref (item);
 
   return TRUE;
 }

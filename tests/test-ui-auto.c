@@ -185,7 +185,7 @@ test_engine_misc (CORBA_Environment *ev)
 	g_assert (bonobo_ui_engine_node_is_dirty (
 		engine, bonobo_ui_engine_get_path (engine, "/Foo")));
 
-	g_object_unref (G_OBJECT (engine));
+	g_object_unref (engine);
 }
 
 static void
@@ -336,9 +336,7 @@ test_ui_performance (CORBA_Environment *ev)
 
 	g_timer_reset (timer);
 	for (i = 0; i < 10000; i++) {
-		BonoboUINode *node;
 		char *path = g_strdup_printf ("/menu/%d", i % 14);
-		node = bonobo_ui_engine_get_path (engine, path);
 		g_free (path);
 	}
 	fprintf (stderr, "  path lookup: %g(ns)\n",

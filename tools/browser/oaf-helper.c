@@ -53,7 +53,7 @@ get_string_value (GList *properties_list,
  * I have no clue if this is the right way to do this or not.
  */
 static gchar *
-get_lang () {
+get_lang (void) {
 	gchar *lang, *ret;
 	gchar **search;
 
@@ -341,7 +341,7 @@ bonobo_component_get_repoids (BonoboComponentInfo *info)
 			
 			prop_temp = prop->property_value.value_stringlist;
 			while (prop_temp != NULL) {
-				// Get the values.
+				/* Get the values. */
 				str = g_strdup_printf ("%s",
 						       (char*)prop_temp->data);
 
@@ -352,11 +352,9 @@ bonobo_component_get_repoids (BonoboComponentInfo *info)
 		}
 		/* We got what we want. */
 		break;
-
-		temp = temp->next;
 	}
 
-	return (ret_list);
+	return ret_list;
 }
 
 
@@ -364,11 +362,6 @@ bonobo_component_get_repoids (BonoboComponentInfo *info)
 /*
  * Debugging functions.
  */
-static void
-bonobo_component_print_properties ()
-{
-}
-
 void
 bonobo_component_list_print (GList *list)
 {

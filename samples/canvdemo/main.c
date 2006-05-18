@@ -185,8 +185,8 @@ create_app (void)
         GnomeCanvasGroup *group;
 	
         window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_signal_connect (GTK_OBJECT(window), "destroy", 
-              GTK_SIGNAL_FUNC(on_destroy), NULL);
+	g_signal_connect (G_OBJECT(window), "destroy", 
+              G_CALLBACK(on_destroy), NULL);
 
 	gtk_widget_set_usize (GTK_WIDGET(window), 400, 300);
         box = gtk_vbox_new (FALSE, 2);

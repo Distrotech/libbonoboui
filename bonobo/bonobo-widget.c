@@ -40,7 +40,7 @@
 #include <libgnome/gnome-macros.h>
 
 GNOME_CLASS_BOILERPLATE (BonoboWidget, bonobo_widget,
-			 GObject, GTK_TYPE_BIN);
+			 GObject, GTK_TYPE_BIN)
 
 struct _BonoboWidgetPrivate {
 	/* Control stuff. */
@@ -142,8 +142,7 @@ bonobo_widget_construct_control (BonoboWidget      *bw,
 		moniker, "IDL:Bonobo/Control:1.0", ev);
 	if (BONOBO_EX (ev) || control == CORBA_OBJECT_NIL) {
 		/* Kill it (it is a floating object) */
-		gtk_object_sink (GTK_OBJECT (bw));
-		
+		g_object_ref_sink (bw);
 		return NULL;
 	}
 

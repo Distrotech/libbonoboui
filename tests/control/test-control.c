@@ -332,7 +332,6 @@ int
 main (int argc, char **argv)
 {
 	GtkWidget *window;
-	CORBA_ORB  orb;
 
 	free (malloc (8));
 
@@ -340,8 +339,6 @@ main (int argc, char **argv)
 
 	if (!bonobo_ui_init ("test-focus", VERSION, &argc, argv))
 		g_error ("Can not bonobo_ui_init");
-
-	orb = bonobo_orb ();
 
 	bonobo_activate ();
 

@@ -60,7 +60,7 @@ struct _BonoboDockItemPrivate
 };
 
 GNOME_CLASS_BOILERPLATE (BonoboDockItem, bonobo_dock_item,
-			 GtkBin, GTK_TYPE_BIN);
+			 GtkBin, GTK_TYPE_BIN)
 
 enum {
   PROP_0,
@@ -584,13 +584,11 @@ static void
 bonobo_dock_item_unrealize (GtkWidget *widget)
 {
   BonoboDockItem *di;
-  BonoboDockItemPrivate *priv;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (BONOBO_IS_DOCK_ITEM (widget));
 
   di = BONOBO_DOCK_ITEM (widget);
-  priv = di->_priv;
 
   gdk_window_set_user_data (di->bin_window, NULL);
   gdk_window_destroy (di->bin_window);
@@ -815,11 +813,9 @@ bonobo_dock_item_size_allocate (GtkWidget     *widget,
 
   if (bin->child && GTK_WIDGET_VISIBLE (bin->child))
     {
-      GtkWidget *child;
       GtkAllocation child_allocation;
       int border_width;
 
-      child = bin->child;
       border_width = GTK_CONTAINER (widget)->border_width;
 
       child_allocation.x = border_width;
@@ -1172,8 +1168,7 @@ bonobo_dock_item_add (GtkContainer *container,
   /* Claim the base reference to the widget, so that it doesn't get owned by the
    * floating window.
    */
-  g_object_ref (widget);
-  gtk_object_sink (GTK_OBJECT (widget));
+  g_object_ref_sink (widget);
 
   gtk_widget_set_parent_window (widget, dock_item->bin_window);
   dock_item->_priv->child = widget;

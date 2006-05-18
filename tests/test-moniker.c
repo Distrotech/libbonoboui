@@ -45,9 +45,9 @@ typedef struct {
 	int async, ps, pr, pc;
 } MonikerTestOptions;
 
-MonikerTestOptions global_mto = { NULL };
+static MonikerTestOptions global_mto = { NULL };
 
-struct poptOption moniker_test_options [] = {
+static struct poptOption moniker_test_options [] = {
 	{ "interface", 'i', POPT_ARG_STRING, &global_mto.requested_interface, 'i', "request specific interface", "interface" },
 	{ "async",     'a', POPT_ARG_NONE, &global_mto.async, 'a', "request asynchronous operation where possible", NULL },
 	{ "stream",    's', POPT_ARG_NONE, &global_mto.ps, 's', "request Bonobo/Stream", NULL },
@@ -241,7 +241,7 @@ display_as_control (const char *moniker, CORBA_Environment *ev)
 	bonobo_main ();
 }
 
-MonikerTestDisplayers displayers[] = {
+static MonikerTestDisplayers displayers[] = {
 	{ AS_INTERFACE, display_as_interface },
 	{ AS_STREAM, display_as_stream },
 	{ AS_STORAGE_FILE_LIST, display_as_storage_file_list },

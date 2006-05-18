@@ -15,7 +15,7 @@ typedef struct {
 
 GType internal_toolbar_get_type (void) G_GNUC_CONST;
 
-G_DEFINE_TYPE(InternalToolbar, internal_toolbar, GTK_TYPE_TOOLBAR);
+G_DEFINE_TYPE(InternalToolbar, internal_toolbar, GTK_TYPE_TOOLBAR)
 
 enum {
 	PROP_0,

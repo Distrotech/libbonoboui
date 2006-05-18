@@ -160,14 +160,14 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 
 	if (bonobo_ui_node_has_name (node, "control") &&
 	    BONOBO_IS_UI_TOOLBAR_CONTROL_ITEM (widget)) {
-		const char *txt;
+		const char *text;
 		BonoboUIToolbarControlDisplay hdisp, vdisp;
 		
-		txt = bonobo_ui_node_peek_attr (node, "hdisplay");
-		hdisp = decode_control_disp (txt);
+		text = bonobo_ui_node_peek_attr (node, "hdisplay");
+		hdisp = decode_control_disp (text);
 
-		txt = bonobo_ui_node_peek_attr (node, "vdisplay");
-		vdisp = decode_control_disp (txt);
+		text = bonobo_ui_node_peek_attr (node, "vdisplay");
+		vdisp = decode_control_disp (text);
 
 		bonobo_ui_toolbar_control_item_set_display (
 			BONOBO_UI_TOOLBAR_CONTROL_ITEM (widget), hdisp, vdisp);
@@ -234,7 +234,7 @@ toolbar_build_control (BonoboUISync     *sync,
 		g_assert (bonobo_item->parent == NULL);
 		if (!GTK_IS_TOOL_ITEM (bonobo_item))
 			g_warning ("Serious oddness not a toolbar item: '%s'",
-				   g_type_name_from_instance (bonobo_item));
+				   g_type_name_from_instance ((GTypeInstance *)bonobo_item));
 	} else {
 		Bonobo_Control control;
 

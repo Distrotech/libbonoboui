@@ -185,7 +185,7 @@ component_details_init (ComponentDetails *comp_details,
 	comp_details->priv->model = gtk_tree_store_new (1, G_TYPE_STRING);
 	gtk_tree_view_set_model (GTK_TREE_VIEW (comp_details->priv->tree),
 				 GTK_TREE_MODEL (comp_details->priv->model));
-	g_object_unref (G_OBJECT (comp_details->priv->model));
+	g_object_unref (comp_details->priv->model);
 
 	text_renderer = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes (NULL,

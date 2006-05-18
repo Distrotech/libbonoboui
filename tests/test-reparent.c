@@ -10,11 +10,11 @@
 
 #include <bonobo.h>
 
-gboolean do_remote = TRUE;
-gboolean do_local  = TRUE;
+static gboolean do_remote = TRUE;
+static gboolean do_local  = TRUE;
 
-GtkWidget *window, *vbox, *button, *placeholder1, *placeholder2;
-GtkWidget *remote_widget = NULL, *inproc_widget = NULL;
+static GtkWidget *window, *vbox, *button, *placeholder1, *placeholder2;
+static GtkWidget *remote_widget = NULL, *inproc_widget = NULL;
 
 #define TEST_OAFIID "OAFIID:Bonobo_Sample_Entry"
 

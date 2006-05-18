@@ -15,7 +15,7 @@
 GNOME_CLASS_BOILERPLATE (BonoboUIToolbarItem,
 			 bonobo_ui_toolbar_item,
 			 GObject,
-			 GTK_TYPE_BIN);
+			 GTK_TYPE_BIN)
 
 
 struct _BonoboUIToolbarItemPrivate {

@@ -1,3 +1,72 @@
+2006-05-17  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* bonobo/bonobo-canvas-component.c: (bonobo_canvas_new):
+	* bonobo/bonobo-canvas-item.c:
+	* bonobo/bonobo-control-frame.c:
+	(bonobo_control_frame_get_remote_window):
+	* bonobo/bonobo-control.c: (bonobo_control_window_id_from_x11),
+	(create_plug), (impl_Bonobo_Control_getWindowId),
+	(bonobo_control_construct), (bonobo_control_do_popup_full):
+	* bonobo/bonobo-dock-band.c: (bonobo_dock_band_remove),
+	(bonobo_dock_band_insert):
+	* bonobo/bonobo-dock-item-grip.c: (bonobo_dock_item_grip_dock),
+	(bonobo_dock_item_grip_undock):
+	* bonobo/bonobo-dock-item.c: (bonobo_dock_item_unrealize),
+	(bonobo_dock_item_size_allocate), (bonobo_dock_item_add):
+	* bonobo/bonobo-dock.c: (drag_new), (_bonobo_dock_handle_key_nav):
+	* bonobo/bonobo-plug.c:
+	* bonobo/bonobo-selector-widget.c:
+	* bonobo/bonobo-selector.c:
+	* bonobo/bonobo-socket.c:
+	* bonobo/bonobo-ui-config-widget.c: (set_values):
+	* bonobo/bonobo-ui-engine.c: (bonobo_ui_engine_widget_set):
+	* bonobo/bonobo-ui-internal-toolbar.c:
+	* bonobo/bonobo-ui-preferences.c:
+	* bonobo/bonobo-ui-sync-keys.c:
+	(bonobo_ui_sync_keys_binding_handle):
+	* bonobo/bonobo-ui-sync-toolbar.c:
+	(impl_bonobo_ui_sync_toolbar_state), (toolbar_build_control):
+	* bonobo/bonobo-ui-sync.c:
+	* bonobo/bonobo-ui-toolbar-button-item.c:
+	* bonobo/bonobo-ui-toolbar-control-item.c: (get_parent_toolbar),
+	(bonobo_ui_toolbar_control_item_instance_init):
+	* bonobo/bonobo-ui-toolbar-item.c:
+	* bonobo/bonobo-ui-toolbar-popup-item.c:
+	* bonobo/bonobo-ui-toolbar-toggle-button-item.c:
+	* bonobo/bonobo-ui-toolbar.c: (item_destroy_cb),
+	(popup_window_map_cb), (popup_item_toggled_cb),
+	(size_allocate_helper), (impl_dispose), (impl_size_allocate),
+	(bonobo_ui_toolbar_insert):
+	* bonobo/bonobo-ui-util.c: (bonobo_ui_util_xml_set_image):
+	* bonobo/bonobo-ui-xml.c: (dump_internals):
+	* bonobo/bonobo-widget.c: (bonobo_widget_construct_control):
+	* bonobo/bonobo-window.c:
+	* samples/canvdemo/main.c: (create_app):
+	* samples/canvdemo/square.c:
+	* tests/control/test-control.c: (main):
+	* tests/test-focus.c: (main):
+	* tests/test-moniker.c:
+	* tests/test-reparent.c:
+	* tests/test-sensitivity.c: (main):
+	* tests/test-ui-auto.c: (test_engine_misc), (test_ui_performance):
+	* tests/test-ui.c: (toggled_cb), (main):
+	* tools/browser/bonobo-browser.xml:
+	* tools/browser/component-details.c: (component_details_init):
+	* tools/browser/component-list.c: (sort_component_active),
+	(sort_component_name), (sort_component_type), (sort_component_iid),
+	(component_list_init), (component_list_finalize),
+	(component_list_get_selected_iid):
+	* tools/browser/oaf-helper.c: (get_lang),
+	(bonobo_component_get_repoids):
+	* tools/browser/window.c: (verb_HelpAbout):
+	- Remove dead code
+	- Remove extraneous semi-colons
+	- Fix typos
+	- Fix format specifiers
+	- Fix compiler warnings
+	- Mark some code as static
+	- Rename some variables
+
 2006-04-18  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Remove obsolete entry for no_NO

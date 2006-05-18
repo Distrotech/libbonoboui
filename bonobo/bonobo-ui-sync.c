@@ -388,7 +388,7 @@ bonobo_ui_sync_can_handle (BonoboUISync *sync,
  * these couples in the XML tree, since then we can
  * do things more genericaly and cleanly.
  * 
- * Return value: an assoicated widget or NULL if none exists.
+ * Return value: an associated widget or NULL if none exists.
  **/
 GtkWidget *
 bonobo_ui_sync_get_attached (BonoboUISync *sync,

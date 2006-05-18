@@ -30,8 +30,8 @@ static GConfEnumStringPair toolbar_styles[] = {
 
 static GConfClient *client;
 static GSList *engine_list;
-guint desktop_notify_id;
-guint update_engines_idle_id;
+static guint desktop_notify_id;
+static guint update_engines_idle_id;
 
 static void keys_changed_fn (GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
 
@@ -176,10 +176,10 @@ bonobo_ui_preferences_get_toolbar_style (void)
 	return style;
 }
 
-DEFINE_BONOBO_UI_PREFERENCE (toolbar_detachable, "toolbar_detachable", TRUE);
-DEFINE_BONOBO_UI_PREFERENCE (menus_have_icons,   "menus_have_icons",   TRUE);
-DEFINE_BONOBO_UI_PREFERENCE (menus_have_tearoff, "menus_have_tearoff", FALSE);
-DEFINE_BONOBO_UI_PREFERENCE (menubar_detachable, "menubar_detachable", TRUE);
+DEFINE_BONOBO_UI_PREFERENCE (toolbar_detachable, "toolbar_detachable", TRUE)
+DEFINE_BONOBO_UI_PREFERENCE (menus_have_icons,   "menus_have_icons",   TRUE)
+DEFINE_BONOBO_UI_PREFERENCE (menus_have_tearoff, "menus_have_tearoff", FALSE)
+DEFINE_BONOBO_UI_PREFERENCE (menubar_detachable, "menubar_detachable", TRUE)
 
 
 static void

@@ -58,7 +58,7 @@ static const char * tame_xpm[] = {
 "                        "
 };
 
-BonoboUIComponent *global_component;
+static BonoboUIComponent *global_component;
 
 #define PRINT_PREF(spref, pref) \
 	fprintf (stderr, "\t" spref " : %s\n", \
@@ -159,7 +159,7 @@ toggled_cb (BonoboUIComponent           *component,
 	    const char                  *state,
 	    gpointer                     user_data)
 {
-	fprintf (stderr, "toggled to '%s' type '%d' path '%s'\n",
+	fprintf (stderr, "toggled to '%s' type '%u' path '%s'\n",
 		 state, type, path);
 }
 
@@ -221,7 +221,7 @@ do_sane_popup (GtkWidget      *widget,
 	return FALSE;
 }
 
-BonoboUIVerb verbs [] = {
+static BonoboUIVerb verbs [] = {
 	BONOBO_UI_VERB ("FileExit", file_exit_cmd),
 	BONOBO_UI_VERB ("FileOpen", file_open_cmd),
 
@@ -530,8 +530,9 @@ main (int argc, char **argv)
 	CORBA_exception_free (ev);
 
   	{
-  		char *txt = bonobo_ui_component_get (componenta, "/status/main", TRUE, NULL);
  		const char *good = "<item name=\"main\">WhatA6&gt;</item>\n";
+
+  		txt = bonobo_ui_component_get (componenta, "/status/main", TRUE, NULL);
  
  		if (!txt || strcmp (txt, good)) {
  			g_warning ("Broken merging code '%s' should be '%s'", txt, good);

@@ -154,13 +154,13 @@ bonobo_dock_item_grip_dock (BonoboDockItemGrip *grip)
 	bonobo_dock_add_item (
 		dock, grip->item,
 		placement, 2, 0, 0, TRUE);
-	g_object_unref (G_OBJECT (grip->item));
+	g_object_unref (grip->item);
 }
 
 static void
 bonobo_dock_item_grip_undock (BonoboDockItemGrip *grip)
 {
-	guint x, y;
+	int x, y;
 
 	g_return_if_fail (BONOBO_IS_DOCK_ITEM_GRIP (grip));
 

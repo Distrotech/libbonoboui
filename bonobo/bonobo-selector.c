@@ -22,7 +22,7 @@
 #include <bonobo/bonobo-selector.h>
 
 GNOME_CLASS_BOILERPLATE (BonoboSelector, bonobo_selector,
-			 GtkDialog, GTK_TYPE_DIALOG);
+			 GtkDialog, GTK_TYPE_DIALOG)
 
 #define DEFAULT_INTERFACE "IDL:Bonobo/Control:1.0"
 #define BONOBO_PAD_SMALL 4

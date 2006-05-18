@@ -22,7 +22,7 @@
 
 GNOME_CLASS_BOILERPLATE (BonoboUIConfigWidget,
 			 bonobo_ui_config_widget,
-			 GtkVBox, GTK_TYPE_VBOX);
+			 GtkVBox, GTK_TYPE_VBOX)
 
 struct _BonoboUIConfigWidgetPrivate {
 	GtkTreeView  *list_view;
@@ -92,7 +92,7 @@ set_values (BonoboUIConfigWidget *config)
 		break;
 		
 	default:
-		g_warning ("Bogus style %d", style);
+		g_warning ("Bogus style %u", style);
 		break;
 	}
 	

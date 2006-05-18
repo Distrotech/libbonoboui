@@ -69,7 +69,6 @@ main (int argc, char **argv)
 	GtkWidget *tmp;
 	GtkWidget *window;
 	GtkWidget *vbox;
-	CORBA_ORB  orb;
 
 	free (malloc (8));
 
@@ -78,8 +77,6 @@ main (int argc, char **argv)
 	gnome_program_init ("test-focus", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
-
-	orb = bonobo_orb ();
 
 	bonobo_activate ();
 

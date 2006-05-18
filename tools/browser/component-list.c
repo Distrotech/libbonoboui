@@ -101,14 +101,14 @@ sort_component_active (GtkTreeModel *model, GtkTreeIter *a,
 	gtk_tree_model_get (model, b, COL_ACTIVE, &component2, -1);
 
 	if (component1 == component2) {
-		return (0);
+		return 0;
 	} else if ((component1 == TRUE) && (component2 == FALSE)) {
 		/* 'larger' */
-		return (1);
+		return 1;
 	} else {
 		/* component1 == FALSE && component2 == TRUE */
 		/* 'smaller' */
-		return (-1);
+		return -1;
 	}
 }
 
@@ -127,7 +127,7 @@ sort_component_name (GtkTreeModel *model, GtkTreeIter *a,
 	g_free (component1);
 	g_free (component2);
 
-	return (ret);
+	return ret;
 }
 
 static gint
@@ -145,7 +145,7 @@ sort_component_type (GtkTreeModel *model, GtkTreeIter *a,
 	g_free (component1);
 	g_free (component2);
 
-	return (ret);
+	return ret;
 }
 
 static gint
@@ -163,7 +163,7 @@ sort_component_iid (GtkTreeModel *model, GtkTreeIter *a,
 	g_free (component1);
 	g_free (component2);
 
-	return (ret);
+	return ret;
 }
 
 /*
@@ -273,7 +273,6 @@ component_list_init (ComponentList *comp_list, ComponentListClass *klass)
 	gint w, h;
 	GdkPixbuf *scaled;
 	GtkWidget *hbox;
-	GtkTreeSelection *selection;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *text_renderer;
 	GtkCellRenderer *pixbuf_renderer = NULL;
@@ -292,7 +291,7 @@ component_list_init (ComponentList *comp_list, ComponentListClass *klass)
 	scaled = gdk_pixbuf_scale_simple (comp_list->priv->active_icon,
 					  w, h,
 					  GDK_INTERP_BILINEAR);
-	g_object_unref (G_OBJECT (comp_list->priv->active_icon));
+	g_object_unref (comp_list->priv->active_icon);
 	comp_list->priv->active_icon = scaled;
 
 	/* Inactive icon */
@@ -304,7 +303,7 @@ component_list_init (ComponentList *comp_list, ComponentListClass *klass)
 		comp_list->priv->inactive_icon,
 		w, h,
 		GDK_INTERP_BILINEAR);
-	g_object_unref (G_OBJECT (comp_list->priv->inactive_icon));
+	g_object_unref (comp_list->priv->inactive_icon);
 	comp_list->priv->inactive_icon = scaled;
 
 	/* create the main container */
@@ -329,8 +328,6 @@ component_list_init (ComponentList *comp_list, ComponentListClass *klass)
 
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (comp_list->priv->list),
 				      TRUE);
-	selection = gtk_tree_view_get_selection (
-		GTK_TREE_VIEW (comp_list->priv->list));
 
 	/* Connect the row_activated signal */
 	g_signal_connect (G_OBJECT (comp_list->priv->list),
@@ -363,7 +360,7 @@ component_list_init (ComponentList *comp_list, ComponentListClass *klass)
 		GTK_TREE_SORTABLE (comp_list->priv->model),
 		COL_IID, sort_component_iid,
 		NULL, NULL);
-	g_object_unref (G_OBJECT (comp_list->priv->model));
+	g_object_unref (comp_list->priv->model);
 
 	/* add columns */
 	pixbuf_renderer = gtk_cell_renderer_pixbuf_new ();
@@ -417,8 +414,8 @@ component_list_finalize (GObject *object)
 
 	bonobo_browser_free_components_list (comp_list->priv->components);
 
-	g_object_unref (G_OBJECT (comp_list->priv->active_icon));
-	g_object_unref (G_OBJECT (comp_list->priv->inactive_icon));
+	g_object_unref (comp_list->priv->active_icon);
+	g_object_unref (comp_list->priv->inactive_icon);
 
 	g_free (comp_list->priv);
 	comp_list->priv = NULL;
@@ -468,7 +465,6 @@ component_list_get_selected_iid (ComponentList *comp_list)
 	gchar *iid;
 	GtkTreeSelection *selection;
 	GtkTreeIter iter;
-	GtkListStore *model;
 	gboolean isSelected;
 
 	g_assert (IS_COMPONENT_LIST (comp_list));
@@ -476,20 +472,18 @@ component_list_get_selected_iid (ComponentList *comp_list)
 	selection = gtk_tree_view_get_selection (
 		GTK_TREE_VIEW (comp_list->priv->list));
 
-	model = g_new0 (GtkListStore, 1);
-
 	isSelected = gtk_tree_selection_get_selected (selection,
 						      NULL, &iter);
 
 	if (isSelected == FALSE) {
 		g_print ("Umm... Should we be here?\n");
-		return (NULL);
+		return NULL;
 	}
 
 	gtk_tree_model_get (GTK_TREE_MODEL (comp_list->priv->model),
 			    &iter, 3, &iid, -1);
 
-	return (iid);
+	return iid;
 }
 
 void

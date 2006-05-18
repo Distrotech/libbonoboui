@@ -313,7 +313,7 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 		BonoboPlug *plug = NULL;
 
 		xid = bonobo_control_x11_from_window_id (id);
-		dprintf ("setFrame id '%s' (=%d)\n", id, xid);
+		dprintf ("setFrame id '%s' (=%u)\n", id, xid);
 		CORBA_free (id);
 
 		{

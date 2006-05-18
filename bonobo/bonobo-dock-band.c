@@ -30,7 +30,7 @@
 #include "bonobo-dock-item.h"
 
 GNOME_CLASS_BOILERPLATE (BonoboDockBand, bonobo_dock_band,
-			 GtkContainer, GTK_TYPE_CONTAINER);
+			 GtkContainer, GTK_TYPE_CONTAINER)
 
 #define noBONOBO_DOCK_BAND_DEBUG
 
@@ -597,12 +597,10 @@ bonobo_dock_band_remove (GtkContainer *container, GtkWidget *widget)
   child = find_child (band, widget);
   if (child != NULL)
     {
-      gboolean was_visible;
 
       if (child == band->floating_child)
         band->floating_child = NULL;
 
-      was_visible = GTK_WIDGET_VISIBLE (widget);
       gtk_widget_unparent (widget);
 
       band->children = g_list_remove_link (band->children, child);
@@ -1527,7 +1525,7 @@ bonobo_dock_band_insert (BonoboDockBand *band,
       GList *p;
 
       p = g_list_nth (band->children, position);
-      g_list_prepend (p, band_child);
+      p = g_list_prepend (p, band_child);
     }
 
   gtk_widget_set_parent (child, GTK_WIDGET (band));

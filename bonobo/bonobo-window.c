@@ -30,7 +30,7 @@
 #include <libxml/parser.h>
 
 GNOME_CLASS_BOILERPLATE (BonoboWindow, bonobo_window,
-			 GtkWindow, GTK_TYPE_WINDOW);
+			 GtkWindow, GTK_TYPE_WINDOW)
 
 struct _BonoboWindowPrivate {
 	BonoboUIEngine *engine;

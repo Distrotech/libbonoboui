@@ -19,7 +19,7 @@
 GNOME_CLASS_BOILERPLATE (BonoboUIToolbar,
 			 bonobo_ui_toolbar,
 			 GObject,
-			 GTK_TYPE_CONTAINER);
+			 GTK_TYPE_CONTAINER)
 enum {
 	PROP_0,
 	PROP_ORIENTATION,
@@ -144,12 +144,10 @@ item_destroy_cb (GtkObject *object,
 {
 	BonoboUIToolbar *toolbar;
 	BonoboUIToolbarPrivate *priv;
-	GtkWidget *widget;
 
 	toolbar = BONOBO_UI_TOOLBAR (data);
 	priv = toolbar->priv;
 
-	widget = GTK_WIDGET (object);
 	priv->items = g_list_remove (priv->items, object);
 	g_object_unref (object);
 }
@@ -287,9 +285,6 @@ static void
 popup_window_map_cb (GtkWidget *widget,
 		     void *data)
 {
-	BonoboUIToolbar *toolbar;
-
-	toolbar = BONOBO_UI_TOOLBAR (data);
 
 	if (gdk_pointer_grab (widget->window, TRUE,
 			      (GDK_BUTTON_PRESS_MASK
@@ -351,11 +346,9 @@ popup_item_toggled_cb (BonoboUIToolbarToggleButtonItem *toggle_button_item,
 		       void *data)
 {
 	BonoboUIToolbar *toolbar;
-	BonoboUIToolbarPrivate *priv;
 	gboolean active;
 
 	toolbar = BONOBO_UI_TOOLBAR (data);
-	priv = toolbar->priv;
 
 	active = bonobo_ui_toolbar_toggle_button_item_get_active (toggle_button_item);
 
@@ -661,8 +654,6 @@ size_allocate_helper (BonoboUIToolbar *toolbar,
 	first_expandable = FALSE;
 
 	for (p = priv->items; p != priv->first_not_fitting_item; p = p->next) {
-		BonoboUIToolbarItem *item;
-		GtkRequisition child_requisition;
 		int expansion_amount;
 
 		item = BONOBO_UI_TOOLBAR_ITEM (p->data);
@@ -738,7 +729,7 @@ impl_dispose (GObject *object)
 	priv->popup_window = NULL;
 
 	if (priv->tooltips)
-		gtk_object_sink (GTK_OBJECT (priv->tooltips));
+		g_object_ref_sink (GTK_OBJECT (priv->tooltips));
 	priv->tooltips = NULL;
 
 	GNOME_CALL_PARENT (G_OBJECT_CLASS, dispose, (object));
@@ -805,10 +796,8 @@ impl_size_allocate (GtkWidget *widget,
 		    GtkAllocation *allocation)
 {
 	BonoboUIToolbar *toolbar;
-	BonoboUIToolbarPrivate *priv;
 
 	toolbar = BONOBO_UI_TOOLBAR (widget);
-	priv = toolbar->priv;
 
 	size_allocate_helper (toolbar, allocation);
 }
@@ -1334,8 +1323,7 @@ bonobo_ui_toolbar_insert (BonoboUIToolbar *toolbar,
 	 * child of either this widget, or the popup window.
 	 */
 	if (!g_list_find (priv->items, item)) {
-		g_object_ref (item);
-		gtk_object_sink (GTK_OBJECT (item));
+		g_object_ref_sink (item);
 		priv->items = g_list_insert (priv->items, item, position);
 	}
 

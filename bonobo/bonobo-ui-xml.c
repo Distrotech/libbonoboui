@@ -289,7 +289,7 @@ dump_internals (BonoboUIXml *tree, BonoboUINode *node)
 	fprintf (stderr, "%16s name=\"%10s\" ", bonobo_ui_node_get_name (node),
 		 (txt = bonobo_ui_node_peek_attr (node, "name")) ? txt : "NULL");
 
-	fprintf (stderr, "%d len %d", data->dirty,
+	fprintf (stderr, "%d len %u", data->dirty,
 		 g_slist_length (data->overridden));
 	if (tree->dump)
 		tree->dump (tree, node);
@@ -297,14 +297,14 @@ dump_internals (BonoboUIXml *tree, BonoboUINode *node)
 		fprintf (stderr, "\n");
 
 	if (data->overridden) {
-		GSList *l;
+		GSList *list;
 		int     old_indent;
 		old_indent = indent;
-		for (l = data->overridden; l; l = l->next) {
+		for (list = data->overridden; list; list = list->next) {
 			for (i = 0; i < indent; i++)
 				fprintf (stderr, " ");
 			fprintf (stderr, "`--->");
-			dump_internals (tree, l->data);
+			dump_internals (tree, list->data);
 			indent += 4;
 		}
 		indent = old_indent;

@@ -187,7 +187,6 @@ int
 main (int argc, char **argv)
 {
 	CORBA_Environment ev;
-	CORBA_ORB orb;
 	CORBA_exception_init (&ev);
 
 	/* Encorage -lefence to play ball */
@@ -196,8 +195,6 @@ main (int argc, char **argv)
 	gnome_program_init ("test-sensitivity", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
-
-	orb = bonobo_orb ();
 
 	/*
 	 * We can't make any CORBA calls unless we're in the main
