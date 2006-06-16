@@ -57,7 +57,11 @@ get_lang (void) {
 	gchar *lang, *ret;
 	gchar **search;
 
+#ifndef G_OS_WIN32
 	lang = getenv ("LANG");
+#else
+	lang = g_win32_getlocale ();
+#endif
 
 	search = g_strsplit (lang, "_", 1);
 	if (!search)
