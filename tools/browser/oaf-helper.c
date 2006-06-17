@@ -62,16 +62,18 @@ get_lang (void) {
 #else
 	lang = g_win32_getlocale ();
 #endif
+	if (!lang)
+		return g_strdup ("");
 
 	search = g_strsplit (lang, "_", 1);
 	if (!search)
-		return "";
+		return g_strdup ("");
 
 	ret = g_strdup_printf ("%s", search[0]);
 
 	g_strfreev (search);
 
-	return (ret);
+	return ret;
 }
 
 /*

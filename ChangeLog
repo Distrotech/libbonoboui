@@ -1,5 +1,11 @@
 2006-06-17  Kjartan Maraas  <kmaraas@gnome.org>
 
+	* tools/browser/oaf-helper.c: (get_lang): Patch from
+	Joe Marcus Clarke to fix a crash when LANG is NULL.
+	Closes bug #166430. 
+
+2006-06-17  Kjartan Maraas  <kmaraas@gnome.org>
+
 	* configure.in: Patch from Przemysław Grzegorczyk for
 	po/LINGUAS support.
 	* po/LINGUAS: Closes bug #338544.
