@@ -1,3 +1,9 @@
+2006-06-17  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
+
+	* bonobo/bonobo-dock-item.c: (bonobo_dock_item_detach):
+	Fixes bug #167944. One can move detached toolbars 
+	again.
+
 2006-06-17  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* tools/browser/oaf-helper.c: (get_lang): Patch from

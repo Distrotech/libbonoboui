@@ -1629,7 +1629,7 @@ bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
 
    */
 
-      gtk_container_add (GTK_CONTAINER (item->_priv->float_window), priv->float_window_box);
+      gtk_container_add (GTK_CONTAINER (priv->float_window), priv->float_window_box);
 
       widget = priv->grip; /* container_remove() will make priv->grip NULL, so we save it here */
       g_object_ref (priv->grip);
@@ -1646,16 +1646,18 @@ bonobo_dock_item_detach (BonoboDockItem *item, gint x, gint y)
       g_object_unref (priv->child);
     }
 
-  gtk_window_move (GTK_WINDOW (item->_priv->float_window), x, y);
-  gtk_widget_show_all (GTK_WIDGET (item->_priv->float_window));
+  gtk_window_move (GTK_WINDOW (priv->float_window), x, y);
+  gtk_widget_show_all (GTK_WIDGET (priv->float_window));
+
+  gdk_window_set_events (priv->float_window->window, gdk_window_get_events (priv->float_window->window) | GDK_BUTTON_PRESS_MASK);
 
   item->float_window_mapped = TRUE;
-  item->_priv->float_window_hidden = FALSE;
+  priv->float_window_hidden = FALSE;
 
   gdk_window_hide (GTK_WIDGET (item)->window);
   gtk_widget_queue_draw (GTK_WIDGET (item));
 
-  gtk_window_set_transient_for (GTK_WINDOW (item->_priv->float_window),
+  gtk_window_set_transient_for (GTK_WINDOW (priv->float_window),
                                 (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (item)))));
 
   g_signal_emit (item, dock_item_signals [DOCK_DETACH], 0);
