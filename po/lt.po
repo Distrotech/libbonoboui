@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-03 01:14+0200\n"
-"PO-Revision-Date: 2006-03-03 01:17+0200\n"
+"POT-Creation-Date: 2006-07-01 12:29+0300\n"
+"PO-Revision-Date: 2006-07-01 12:31+0300\n"
 "Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
@@ -40,23 +40,23 @@ msgstr "Prisegti įrankių juostą"
 msgid "Undock the toolbar"
 msgstr "Atkabinti įrankių juostą"
 
-#: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
-#: ../bonobo/bonobo-ui-toolbar.c:1175
+#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
+#: ../bonobo/bonobo-ui-toolbar.c:1164
 msgid "Shadow type"
 msgstr "Šešėlio tipas"
 
-#: ../bonobo/bonobo-dock-item.c:246 ../bonobo/bonobo-dock-item.c:247
-#: ../bonobo/bonobo-ui-toolbar.c:1119 ../bonobo/bonobo-ui-toolbar.c:1120
+#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
+#: ../bonobo/bonobo-ui-toolbar.c:1108 ../bonobo/bonobo-ui-toolbar.c:1109
 msgid "Orientation"
 msgstr "Orientacija"
 
-#: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
-#: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
+#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
+#: ../bonobo/bonobo-ui-toolbar.c:1127 ../bonobo/bonobo-ui-toolbar.c:1128
 msgid "Preferred width"
 msgstr "Pageidautinas plotis"
 
-#: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
-#: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
+#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
+#: ../bonobo/bonobo-ui-toolbar.c:1136 ../bonobo/bonobo-ui-toolbar.c:1137
 msgid "Preferred height"
 msgstr "Pageidautinas aukštis"
 
@@ -82,7 +82,7 @@ msgstr "Ar X įvykiai turėtų būti persiunčiami"
 
 #: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:381
+#: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Vardas"
 
@@ -284,15 +284,15 @@ msgstr "_Tinkinti"
 msgid "Customize the toolbar"
 msgstr "Tinkinti įrankių juostą"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1129
+#: ../bonobo/bonobo-ui-toolbar.c:1118
 msgid "is floating"
 msgstr "yra slanki"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1130
+#: ../bonobo/bonobo-ui-toolbar.c:1119
 msgid "whether the toolbar is floating"
 msgstr "ar įrankių juostą yra slanki"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1176
+#: ../bonobo/bonobo-ui-toolbar.c:1165
 msgid "Style of bevel around the toolbar"
 msgstr "Įrankių juostos rėmelio stilius"
 
@@ -436,7 +436,7 @@ msgid "General"
 msgstr "Esmė"
 
 #: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:401
+#: ../tools/browser/component-list.c:398
 msgid "IID"
 msgstr "IID"
 
@@ -453,40 +453,46 @@ msgstr "Detalės"
 msgid "Detailed Information"
 msgstr "Detali informacija"
 
-#: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
+#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:284
 msgid "Active"
 msgstr "Aktyvuota"
 
-#: ../tools/browser/component-list.c:391
+#: ../tools/browser/component-list.c:388
 msgid "Type"
 msgstr "Tipas"
 
-#: ../tools/browser/window.c:170
+#: ../tools/browser/window.c:162
 msgid "Component Details"
 msgstr "Komponento detalės"
 
-#: ../tools/browser/window.c:215
+#: ../tools/browser/window.c:208
 msgid "Bonobo Browser"
 msgstr "Bonobo naršyklė"
 
-#: ../tools/browser/window.c:216
+#: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "Autorinės teisės 2001, GNOME organizacija"
 
-#: ../tools/browser/window.c:217
+#: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
 msgstr "Bonobo komponentų naršyklė"
 
+#: ../tools/browser/window.c:214
+msgid "translation-credits"
+msgstr ""
+"Paskutinysis vertėjas:"
+"Žygimantas Beručka <zygis@gnome.org>"
+
 #. create the window
-#: ../tools/browser/window.c:247
+#: ../tools/browser/window.c:241
 msgid "Component Browser"
 msgstr "Komponentų naršyklė"
 
 #. Fill out the tool bar
-#: ../tools/browser/window.c:287
+#: ../tools/browser/window.c:281
 msgid "All"
 msgstr "Visas"
 
-#: ../tools/browser/window.c:293
+#: ../tools/browser/window.c:287
 msgid "Inactive"
 msgstr "Neaktyvus"
