@@ -1,3 +1,9 @@
+2006-08-04  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* samples/canvdemo/circle.c: Fix headers.
+	* samples/canvdemo/square.c: Fix headers.
+	* samples/controls/bonobo-sample-controls.c: Same here.
+
 2006-06-17  Nickolay V. Shmyrev  <nshmyrev@yandex.ru>
 
 	* bonobo/bonobo-dock-item.c: (bonobo_dock_item_detach):

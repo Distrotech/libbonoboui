@@ -4,7 +4,7 @@
 #include <string.h>
 #include <glib/gmacros.h>
 #include <gtk/gtk.h>
-#include <libgnomecanvas/gnome-canvas.h>
+#include <libgnomecanvas/libgnomecanvas.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo.h>
 

@@ -10,7 +10,7 @@
 #include <config.h>
 #include <string.h>
 #include <libbonoboui.h>
-#include <libgnomecanvas/gnome-canvas-widget.h>
+#include <libgnomecanvas/libgnomecanvas.h>
 #undef USE_SCROLLED
 
 static void
