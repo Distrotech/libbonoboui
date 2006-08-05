@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui 2.13.1\n"
+"Project-Id-Version: libbonoboui 2.14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-10 18:44+0200\n"
+"POT-Creation-Date: 2006-08-01 23:30+0200\n"
 "PO-Revision-Date: 2006-01-13 06:29+0800\n"
 "Last-Translator: Abel Cheung <abel@oaka.org>\n"
 "Language-Team: Chinese (Taiwan) <community@linuxhall.org>\n"
@@ -40,23 +40,23 @@ msgstr "嵌入工具列"
 msgid "Undock the toolbar"
 msgstr "卸離工具列"
 
-#: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
-#: ../bonobo/bonobo-ui-toolbar.c:1175
+#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
+#: ../bonobo/bonobo-ui-toolbar.c:1164
 msgid "Shadow type"
 msgstr "陰影類別"
 
-#: ../bonobo/bonobo-dock-item.c:246 ../bonobo/bonobo-dock-item.c:247
-#: ../bonobo/bonobo-ui-toolbar.c:1119 ../bonobo/bonobo-ui-toolbar.c:1120
+#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
+#: ../bonobo/bonobo-ui-toolbar.c:1108 ../bonobo/bonobo-ui-toolbar.c:1109
 msgid "Orientation"
 msgstr "方向"
 
-#: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
-#: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
+#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
+#: ../bonobo/bonobo-ui-toolbar.c:1127 ../bonobo/bonobo-ui-toolbar.c:1128
 msgid "Preferred width"
 msgstr "首選的寬度"
 
-#: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
-#: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
+#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
+#: ../bonobo/bonobo-ui-toolbar.c:1136 ../bonobo/bonobo-ui-toolbar.c:1137
 msgid "Preferred height"
 msgstr "首選的高度"
 
@@ -82,7 +82,7 @@ msgstr "輸入裝置發出的動作應否直接傳遞至 X"
 
 #: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:381
+#: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "名稱"
 
@@ -175,80 +175,80 @@ msgstr "傾印整個用戶界面的 XML 描述資料"
 msgid "Configure UI"
 msgstr "設定用戶界面"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113
+#: ../bonobo/bonobo-ui-init-gtk.c:126
 msgid "Gdk debugging flags to set"
 msgstr "準備設定的 Gdk 偵錯旗標"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113 ../bonobo/bonobo-ui-init-gtk.c:116
-#: ../bonobo/bonobo-ui-init-gtk.c:144 ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:126 ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:157 ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
 msgstr "旗標"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:116
+#: ../bonobo/bonobo-ui-init-gtk.c:129
 msgid "Gdk debugging flags to unset"
 msgstr "準備去除的 Gdk 偵錯旗標"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "X display to use"
 msgstr "使用的 X 畫面"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "DISPLAY"
 msgstr "畫面"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X screen to use"
 msgstr "使用的 X 螢幕"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "SCREEN"
 msgstr "螢幕"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:128
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "Make X calls synchronous"
 msgstr "使用同步方式調用 X 函式"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:147
 msgid "Don't use X shared memory extension"
 msgstr "不使用 X 分享記憶體延伸功能"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Program name as used by the window manager"
 msgstr "視窗總管中使用的程式名稱"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "NAME"
 msgstr "名稱"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "Program class as used by the window manager"
 msgstr "視窗總管所需的程式類別名稱"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "CLASS"
 msgstr "類別"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:144
+#: ../bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
 msgstr "準備設定的 Gtk+ 偵錯旗標"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
 msgstr "準備去除的 Gtk+ 偵錯旗標"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:150
+#: ../bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
 msgstr "把所有的警告訊息都當成嚴重錯誤"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
 msgstr "載入額外的 Gtk 模組"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
 msgstr "模組"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:162
+#: ../bonobo/bonobo-ui-init-gtk.c:182
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -284,15 +284,15 @@ msgstr "自選(_Z)"
 msgid "Customize the toolbar"
 msgstr "自選工具列"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1129
+#: ../bonobo/bonobo-ui-toolbar.c:1118
 msgid "is floating"
 msgstr "是浮動"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1130
+#: ../bonobo/bonobo-ui-toolbar.c:1119
 msgid "whether the toolbar is floating"
 msgstr "工具列是否浮動"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1176
+#: ../bonobo/bonobo-ui-toolbar.c:1165
 msgid "Style of bevel around the toolbar"
 msgstr "圍繞工具列周圍的斜邊款式"
 
@@ -436,7 +436,7 @@ msgid "General"
 msgstr "一般"
 
 #: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:401
+#: ../tools/browser/component-list.c:398
 msgid "IID"
 msgstr "IID"
 
@@ -453,40 +453,50 @@ msgstr "詳細資料"
 msgid "Detailed Information"
 msgstr "詳細資料"
 
-#: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
+#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:284
 msgid "Active"
 msgstr "使用中"
 
-#: ../tools/browser/component-list.c:391
+#: ../tools/browser/component-list.c:388
 msgid "Type"
 msgstr "類型"
 
-#: ../tools/browser/window.c:170
+#: ../tools/browser/window.c:162
 msgid "Component Details"
 msgstr "元件的詳細資料"
 
-#: ../tools/browser/window.c:215
+#: ../tools/browser/window.c:208
 msgid "Bonobo Browser"
 msgstr "Bonobo 瀏覽器"
 
-#: ../tools/browser/window.c:216
+#: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "版權所有 2001, The GNOME Foundation"
 
-#: ../tools/browser/window.c:217
+#: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
 msgstr "Bonobo 元件瀏覽器"
 
+#: ../tools/browser/window.c:214
+msgid "translation-credits"
+msgstr ""
+"如對翻譯有任何意見，請送一封電子郵件給\n"
+"以下地址，GNOME 翻譯團隊會盡快回覆您：\n"
+"community@linuxhall.org\n"
+"\n"
+"Abel Cheung <abel@oaka.org>, 2002-03, 06\n"
+"Joe Man <trmetal@yahoo.com.hk>, 2001"
+
 #. create the window
-#: ../tools/browser/window.c:247
+#: ../tools/browser/window.c:241
 msgid "Component Browser"
 msgstr "元件瀏覽器"
 
 #. Fill out the tool bar
-#: ../tools/browser/window.c:287
+#: ../tools/browser/window.c:281
 msgid "All"
 msgstr "全部"
 
-#: ../tools/browser/window.c:293
+#: ../tools/browser/window.c:287
 msgid "Inactive"
 msgstr "非作用中"
