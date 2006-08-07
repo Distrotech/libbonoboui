@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <glib.h>
 #include <glib-object.h>
 
 #include <bonobo/bonobo-widget.h>
@@ -2371,7 +2372,7 @@ check_excess_widgets (BonoboUISync *sync, GList *wptr)
 
 			node = bonobo_ui_engine_widget_get_node (b->data);
 			g_message ("Widget type '%s' with node: '%s'",
-				   G_OBJECT_CLASS_NAME (b->data) ? G_OBJECT_CLASS_NAME (b->data) : "NULL",
+				   G_OBJECT_CLASS_NAME (G_OBJECT_GET_CLASS (b->data)) ? G_OBJECT_CLASS_NAME (G_OBJECT_GET_CLASS (b->data)) : "NULL",
 				   node ? bonobo_ui_xml_make_path (node) : "NULL");
 		}
 	}

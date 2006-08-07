@@ -1,5 +1,12 @@
 2006-08-07  Kjartan Maraas  <kmaraas@gnome.org>
 
+	* bonobo/bonobo-ui-engine.c: (check_excess_widgets):
+	Use G_OBJECT_GET_CLASS() to before passing stuff on to
+	G_OBJECT_CLASS_NAME(). Patch from Narayana Pattipati.
+	Closes bug #109883.
+
+2006-08-07  Kjartan Maraas  <kmaraas@gnome.org>
+
 	* bonobo/bonobo-ui-preferences.c:
 	(bonobo_ui_preferences_get_toolbar_style): Fix for
 	strict aliasing warning from GCC. Patch from
