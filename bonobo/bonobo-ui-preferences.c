@@ -168,9 +168,13 @@ bonobo_ui_preferences_get_toolbar_style (void)
 				       NULL);
 	
 	if (str != NULL) {
+		gint intstyle;
+
 		gconf_string_to_enum (toolbar_styles,
-				      str, (gint *)&style);
+				      str, &intstyle);
+
 		g_free (str);
+		style = intstyle;
 	}
 
 	return style;

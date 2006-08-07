@@ -1,3 +1,11 @@
+2006-08-07  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* bonobo/bonobo-ui-preferences.c:
+	(bonobo_ui_preferences_get_toolbar_style): Fix for
+	strict aliasing warning from GCC. Patch from
+	mmeisner at suse de. Closes bug #308446.
+	* configure.in: Bump version.
+
 2006-08-04  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* samples/canvdemo/circle.c: Fix headers.
