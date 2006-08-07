@@ -65,11 +65,11 @@ gboolean                    bonobo_control_get_automerge           (BonoboContro
 void                        bonobo_control_set_property            (BonoboControl       *control,
 								    CORBA_Environment   *opt_ev,
 								    const char          *first_prop,
-								    ...);
+								    ...) G_GNUC_NULL_TERMINATED;
 void                        bonobo_control_get_property            (BonoboControl       *control,
 								    CORBA_Environment   *opt_ev,
 								    const char          *first_prop,
-								    ...);
+								    ...) G_GNUC_NULL_TERMINATED;
 
 void                        bonobo_control_set_transient_for       (BonoboControl       *control,
 								    GtkWindow           *window,

@@ -84,10 +84,10 @@ BonoboWidget       *bonobo_widget_construct_control             (BonoboWidget   
  */
 void                 bonobo_widget_set_property             (BonoboWidget       *control,
 							     const char         *first_prop,
-							     ...);
+							     ...) G_GNUC_NULL_TERMINATED;
 void                 bonobo_widget_get_property             (BonoboWidget       *control,
 							     const char         *first_prop,
-							     ...);
+							     ...) G_GNUC_NULL_TERMINATED;
 
 /* Compat */
 #define bonobo_widget_get_uih(w) bonobo_widget_get_ui_container (w)

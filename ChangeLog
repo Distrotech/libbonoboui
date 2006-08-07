@@ -1,5 +1,12 @@
 2006-08-07  Kjartan Maraas  <kmaraas@gnome.org>
 
+	* bonobo/bonobo-control.h:
+	* bonobo/bonobo-widget.h:
+	Sentinel markup patch from Marcus Meissner
+	Closes bug #308444.
+
+2006-08-07  Kjartan Maraas  <kmaraas@gnome.org>
+
 	* bonobo/bonobo-ui-engine.c: (check_excess_widgets):
 	Use G_OBJECT_GET_CLASS() to before passing stuff on to
 	G_OBJECT_CLASS_NAME(). Patch from Narayana Pattipati.
