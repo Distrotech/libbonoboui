@@ -1,4 +1,3 @@
-# translation of eu.po to Basque
 # translation of libbonoboui.HEAD.po to basque
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
@@ -9,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-19 12:24+0000\n"
+"POT-Creation-Date: 2006-08-08 10:11+0000\n"
 "PO-Revision-Date: 2006-05-19 12:25+0000\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -17,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.10.2\n"
-"Plural-Forms: Plural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../bonobo/bonobo-canvas-item.c:683
 msgid "corba factory"
@@ -162,15 +161,15 @@ msgstr "Testua bakarrik"
 msgid "_Priority text only"
 msgstr "_Lehentasunezko testua bakarrik"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "Debug"
 msgstr "Araztu"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "_Dump XML"
 msgstr "_Irauli XMLa"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:92
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Irauli Uin XML azalpen osoa kontsolan"
 
@@ -497,4 +496,3 @@ msgstr "Denak"
 #: ../tools/browser/window.c:287
 msgid "Inactive"
 msgstr "Inaktibo"
-
