@@ -140,9 +140,6 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 @ui_container: 
 @ev: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@uih: 
-@corba_control_frame: 
 
 
 <!-- ##### FUNCTION bonobo_control_frame_new ##### -->
@@ -152,8 +149,6 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 
 @ui_container: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@uic: 
 
 
 <!-- ##### FUNCTION bonobo_control_frame_get_widget ##### -->
@@ -217,8 +212,6 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 @control_frame: 
 @opt_ev: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ev: 
 
 
 <!-- ##### FUNCTION bonobo_control_frame_set_propbag ##### -->

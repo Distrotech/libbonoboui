@@ -1,3 +1,23 @@
+libbonoboui 2.15.0
+
+	* Use move LINGUAS out of configure.in (Przemysław Grzegorczyk)
+	* Build and warning fixes (Marcus Meissner, Kjartan)
+	* Fix moving of detached toolbars (Nikolay V. Shmyrev)
+	* Fix a crash in the component browser (Joe Marcus Clarke)
+	* Win32 portability fixes (Tor Lillqvist)
+
+	* Translation updates:
+		* Runa Bhattacharjee (bn_IN)
+		* Rajesh Ranjan (hi)
+		* Christophe Merlet (fr)
+		* Žygimantas Beručka (lt)
+		* Raivis Dejus (lv)
+		* Subhransu Behera (or)
+		* Leonardo Ferreira Fontenelle (pt_BR)
+		* Inaki Larranaga (eu)
+		* Baris Cicek (tr) 
+		* Maxim Dziumanenko (uk)
+
 libbonoboui 2.14.0
 
 	* Fix CORBA object leaks (Adriano Winter Bess)

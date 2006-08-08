@@ -171,9 +171,6 @@ deprecated by the various tools to do this from dynamic files.
 @s: 
 @e: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@str: 
-@err: 
 
 
 <!-- ##### MACRO bonobo_ui_util_encode_str ##### -->
@@ -183,7 +180,5 @@ deprecated by the various tools to do this from dynamic files.
 
 @s: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@str: 
 
 

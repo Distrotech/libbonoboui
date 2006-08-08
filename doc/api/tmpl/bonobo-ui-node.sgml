@@ -137,9 +137,6 @@ depending on libxml inadvertantly.
 
 @after: 
 @new_before: 
-<!-- # Unused Parameters # -->
-@sibling: 
-@prev_sibling: 
 
 
 <!-- ##### FUNCTION bonobo_ui_node_unlink ##### -->

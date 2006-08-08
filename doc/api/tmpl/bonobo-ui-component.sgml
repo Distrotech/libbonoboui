@@ -229,8 +229,6 @@ installed help files can be deduced.
 @component: 
 @name: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@corba_ui: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_new ##### -->
@@ -315,10 +313,6 @@ installed help files can be deduced.
 @component: 
 @cname: 
 @closure: 
-<!-- # Unused Parameters # -->
-@fn: 
-@user_data: 
-@destroy_fn: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_remove_verb ##### -->
@@ -358,10 +352,6 @@ installed help files can be deduced.
 @component: 
 @id: 
 @closure: 
-<!-- # Unused Parameters # -->
-@fn: 
-@user_data: 
-@destroy_fn: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_remove_listener ##### -->
@@ -391,8 +381,6 @@ installed help files can be deduced.
 @path: 
 @xml: 
 @opt_ev: 
-<!-- # Unused Parameters # -->
-@ev: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_set_translate ##### -->
@@ -404,8 +392,6 @@ installed help files can be deduced.
 @path: 
 @xml: 
 @opt_ev: 
-<!-- # Unused Parameters # -->
-@ev: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_set_tree ##### -->
@@ -450,8 +436,6 @@ installed help files can be deduced.
 @recurse: 
 @opt_ev: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ev: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_get_tree ##### -->
@@ -464,8 +448,6 @@ installed help files can be deduced.
 @recurse: 
 @opt_ev: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ev: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_object_set ##### -->
@@ -477,8 +459,6 @@ installed help files can be deduced.
 @path: 
 @control: 
 @opt_ev: 
-<!-- # Unused Parameters # -->
-@ev: 
 
 
 <!-- ##### FUNCTION bonobo_ui_component_object_get ##### -->
