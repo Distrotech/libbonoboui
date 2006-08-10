@@ -757,12 +757,21 @@ impl_bonobo_ui_sync_menu_update_root (BonoboUISync *sync,
 				      BonoboUINode *root)
 {
 	BonoboUISyncMenu *smenu = BONOBO_UI_SYNC_MENU (sync);
+	const char *txt;
+	gboolean    detachable;
 
 	if (bonobo_ui_node_has_name (root, "menu") &&
 	    smenu->menu_dock_item)
 		bonobo_ui_sync_do_show_hide (
 			sync, root, NULL,
 			smenu->menu_dock_item);
+
+	if ((txt = bonobo_ui_node_peek_attr (root, "behavior")) &&
+	    strstr (txt, "detachable"))
+		detachable = TRUE;
+	else
+	    detachable = bonobo_ui_preferences_get_menubar_detachable ();
+	bonobo_dock_item_set_locked (smenu->menu_dock_item, !detachable);
 }
 
 static void

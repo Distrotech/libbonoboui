@@ -1,3 +1,9 @@
+2006-08-10  Manuel Clos  <llanero@jazzfree.com>
+
+	* bonobo/bonobo-ui-sync-menu.c:
+	Set the menubar to the correct detachable state.
+	Closes bug #80156.
+
 ============================= 2.15.0 ======================
 
 2006-08-07  Kjartan Maraas  <kmaraas@gnome.org>
