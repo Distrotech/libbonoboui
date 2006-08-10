@@ -26,9 +26,11 @@ INSTALL
 intl
 ABOUT-NLS
 .lclintrc
-xml-i18n-*
 intltool-*
 libbonoboui-*.tar.gz
 libbonoboui2-*.tar.gz
 autom4te.cache
 stamp-h1
+libbonoboui-zip
+gtk-doc.make
+depcomp
