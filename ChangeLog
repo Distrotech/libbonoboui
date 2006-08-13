@@ -1,3 +1,9 @@
+2006-08-14  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* tools/browser/window.c: (verb_HelpAbout):
+	Fix the about dialog. Patch from Matthias Clasen.
+	Closes bug #351127.
+
 2006-08-10  Manuel Clos  <llanero@jazzfree.com>
 
 	* bonobo/bonobo-ui-sync-menu.c:

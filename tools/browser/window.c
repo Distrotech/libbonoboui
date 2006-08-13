@@ -195,26 +195,25 @@ verb_FileNewWindow (BonoboUIComponent *uic, void *data, const char *path)
 static void
 verb_HelpAbout (BonoboUIComponent *uic, void *data, const char *path)
 {
-#if 0
+	BonoboWindow *window = (BonoboWindow *) data;
+
 	static const gchar *authors[] = {
 		"Dan Siemon <dan@coverfire.com>",
 		"Rodrigo Moya <rodrigo@gnome-db.org>",
 		"Patanjali Somayaji <patanjali@morelinux.com>",
 		NULL
 	};
-	GtkWidget *about;
 
-	gtk_show_about_dialog (GTK_WINDOW (about),
+	gtk_show_about_dialog (GTK_WINDOW (window),
 		      "name", _("Bonobo Browser"),
 		      "version", VERSION,
 		      "copyright", _("Copyright 2001, The GNOME Foundation"),
 		      "comments", _("Bonobo component browser"),
 		      "authors", authors,
 		      "documenters", NULL,
-		      "translation-credits", _("translation-credits"),
+		      "translator-credits", _("translator-credits"),
 		      "logo-icon-name", "gtk-about",
 		      NULL);
-#endif
 }
 
 /*
