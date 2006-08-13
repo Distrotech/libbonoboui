@@ -1,3 +1,7 @@
+libbonoboui 2.15.1
+
+	* Fix the about dialog in bonobo-browser (Matthias)
+
 libbonoboui 2.15.0
 
 	* Use move LINGUAS out of configure.in (Przemysław Grzegorczyk)
