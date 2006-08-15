@@ -2,14 +2,14 @@
 # Copyright (C) 2002-2003 Free Software Foundation, Inc.
 # Jörgen Scheibengruber <mfcn@gmx.de>, 2002.
 # Christian Neumair <chris@gnome.de.org>, 2002, 2003.
-# Hendrik Richter <hendrikr@gnome.org>, 2004, 2005.
+# Hendrik Richter <hendrikr@gnome.org>, 2004, 2005, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-10 18:44+0200\n"
-"PO-Revision-Date: 2006-06-15 17:21+0200\n"
+"POT-Creation-Date: 2006-08-15 23:07+0200\n"
+"PO-Revision-Date: 2006-08-15 23:11+0200\n"
 "Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,23 +40,23 @@ msgstr "Die Werkzeugleiste andocken"
 msgid "Undock the toolbar"
 msgstr "Die Werkzeugleiste abdocken"
 
-#: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
-#: ../bonobo/bonobo-ui-toolbar.c:1175
+#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
+#: ../bonobo/bonobo-ui-toolbar.c:1164
 msgid "Shadow type"
 msgstr "Schattentyp"
 
-#: ../bonobo/bonobo-dock-item.c:246 ../bonobo/bonobo-dock-item.c:247
-#: ../bonobo/bonobo-ui-toolbar.c:1119 ../bonobo/bonobo-ui-toolbar.c:1120
+#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
+#: ../bonobo/bonobo-ui-toolbar.c:1108 ../bonobo/bonobo-ui-toolbar.c:1109
 msgid "Orientation"
 msgstr "Ausrichtung"
 
-#: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
-#: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
+#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
+#: ../bonobo/bonobo-ui-toolbar.c:1127 ../bonobo/bonobo-ui-toolbar.c:1128
 msgid "Preferred width"
 msgstr "Bevorzugte Breite"
 
-#: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
-#: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
+#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
+#: ../bonobo/bonobo-ui-toolbar.c:1136 ../bonobo/bonobo-ui-toolbar.c:1137
 msgid "Preferred height"
 msgstr "Bevorzugte Höhe"
 
@@ -82,7 +82,7 @@ msgstr "Sollen X-Ereignisse weitergeleitet werden?"
 
 #: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:381
+#: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Name"
 
@@ -160,15 +160,15 @@ msgstr "Nur Text"
 msgid "_Priority text only"
 msgstr "Nur _vorrangiger Text"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "Debug"
 msgstr "Fehlerdiagnose"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "_Dump XML"
 msgstr "XML _ausgeben"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:92
 msgid "Dump the entire UI's XML description to the console"
 msgstr ""
 "Die XML-Beschreibung der gesamten Benutzeroberfläche im Terminal ausgeben"
@@ -177,80 +177,80 @@ msgstr ""
 msgid "Configure UI"
 msgstr "Benutzeroberfläche konfigurieren"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113
+#: ../bonobo/bonobo-ui-init-gtk.c:126
 msgid "Gdk debugging flags to set"
 msgstr "Zu setzende GDK-Fehlerdiagnoseoptionen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:113 ../bonobo/bonobo-ui-init-gtk.c:116
-#: ../bonobo/bonobo-ui-init-gtk.c:144 ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:126 ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:157 ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
 msgstr "OPTIONEN"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:116
+#: ../bonobo/bonobo-ui-init-gtk.c:129
 msgid "Gdk debugging flags to unset"
 msgstr "Zu deaktivierende GDK-Fehlerdiagnoseoptionen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "X display to use"
 msgstr "Zu verwendende X-Anzeige"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "DISPLAY"
 msgstr "ANZEIGE"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X screen to use"
 msgstr "Zu verwendender X-Bildschirm"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "SCREEN"
 msgstr "BILDSCHIRM"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:128
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "Make X calls synchronous"
 msgstr "X-Aufrufe synchron durchführen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:147
 msgid "Don't use X shared memory extension"
 msgstr "Die X-Erweiterung für gemeinsamen Speicher nicht nutzen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Program name as used by the window manager"
 msgstr "Anwendungsname wie vom Fenstermanager verwendet"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "NAME"
 msgstr "NAME"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "Program class as used by the window manager"
 msgstr "Anwendungsklasse wie vom Fenstermanager verwendet"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:144
+#: ../bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
 msgstr "Zu setzende GTK+-Fehlerdiagnoseoptionen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
 msgstr "Zu deaktivierende GTK+-Fehlerdiagnoseoptionen"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:150
+#: ../bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
 msgstr "Alle Warnungen wie schwerwiegende Fehler behandeln"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
 msgstr "Ein zusätzliches GTK-Modul laden"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
 msgstr "MODUL"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:162
+#: ../bonobo/bonobo-ui-init-gtk.c:182
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -286,15 +286,15 @@ msgstr "_Anpassen"
 msgid "Customize the toolbar"
 msgstr "Die Werkzeugleiste anpassen"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1129
+#: ../bonobo/bonobo-ui-toolbar.c:1118
 msgid "is floating"
 msgstr "schwebt"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1130
+#: ../bonobo/bonobo-ui-toolbar.c:1119
 msgid "whether the toolbar is floating"
 msgstr "Ob die Werkzeugleiste schweben soll"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1176
+#: ../bonobo/bonobo-ui-toolbar.c:1165
 msgid "Style of bevel around the toolbar"
 msgstr "Stil des Rands um die Werkzeugleiste"
 
@@ -439,7 +439,7 @@ msgid "General"
 msgstr "Allgemein"
 
 #: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:401
+#: ../tools/browser/component-list.c:398
 msgid "IID"
 msgstr "IID"
 
@@ -456,43 +456,47 @@ msgstr "Details"
 msgid "Detailed Information"
 msgstr "Erweiterte Informationen"
 
-#: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
+#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../tools/browser/component-list.c:391
+#: ../tools/browser/component-list.c:388
 msgid "Type"
 msgstr "Typ"
 
-#: ../tools/browser/window.c:170
+#: ../tools/browser/window.c:162
 msgid "Component Details"
 msgstr "Komponenten-Details"
 
-#: ../tools/browser/window.c:215
+#: ../tools/browser/window.c:208
 msgid "Bonobo Browser"
 msgstr "Bonobo-Browser"
 
-#: ../tools/browser/window.c:216
+#: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "Copyright 2001, The GNOME Foundation"
 
-#: ../tools/browser/window.c:217
+#: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
 msgstr "Bonobo-Komponenten-Browser"
 
+#: ../tools/browser/window.c:214
+msgid "translator-credits"
+msgstr ""
+"Jörgen Scheibengruber <mfcn@gmx.de>\n"
+"Christian Neumair <chris@gnome.de.org>\n"
+"Hendrik Richter <hendrikr@gnome.org>"
+
 #. create the window
-#: ../tools/browser/window.c:247
+#: ../tools/browser/window.c:240
 msgid "Component Browser"
 msgstr "Komponenten-Browser"
 
 #. Fill out the tool bar
-#: ../tools/browser/window.c:287
+#: ../tools/browser/window.c:280
 msgid "All"
 msgstr "Alles"
 
-#: ../tools/browser/window.c:293
+#: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "Inaktiv"
-
-
-
