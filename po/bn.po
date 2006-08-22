@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-20 13:31+0200\n"
-"PO-Revision-Date: 2005-09-26 17:26+0600\n"
+"POT-Creation-Date: 2006-08-22 19:52+0600\n"
+"PO-Revision-Date: 2006-08-22 19:52+0600\n"
 "Last-Translator: Khandakar Mujahidul Islam <suzan@bengalinux.org>\n"
 "Language-Team: Bengali <gnome-translation@bengalinux.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,24 +42,24 @@ msgstr "টুলবার আটকাও"
 msgid "Undock the toolbar"
 msgstr "টুলবার খুলে দাও"
 
-#: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
-#: ../bonobo/bonobo-ui-toolbar.c:1175
+#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
+#: ../bonobo/bonobo-ui-toolbar.c:1164
 msgid "Shadow type"
 msgstr "ছায়ার ধরন"
 
-#: ../bonobo/bonobo-dock-item.c:246 ../bonobo/bonobo-dock-item.c:247
-#: ../bonobo/bonobo-ui-toolbar.c:1119 ../bonobo/bonobo-ui-toolbar.c:1120
+#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
+#: ../bonobo/bonobo-ui-toolbar.c:1108 ../bonobo/bonobo-ui-toolbar.c:1109
 msgid "Orientation"
 msgstr "ওরিয়েন্টেশন"
 
 # msgstr "সজ্জা"
-#: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
-#: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
+#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
+#: ../bonobo/bonobo-ui-toolbar.c:1127 ../bonobo/bonobo-ui-toolbar.c:1128
 msgid "Preferred width"
 msgstr "পছন্দের প্রস্থ"
 
-#: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
-#: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
+#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
+#: ../bonobo/bonobo-ui-toolbar.c:1136 ../bonobo/bonobo-ui-toolbar.c:1137
 msgid "Preferred height"
 msgstr "পছন্দের উচ্চতা"
 
@@ -89,7 +89,7 @@ msgstr "এক্স ইভেন্ট পাঠিয়ে দেয়া উচ�
 # msgstr "যে কোনো ক্ষেত্রে এক্স ইভেন্ট ফরওয়ার্ড করে দেয়া উচিত"
 #: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:381
+#: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "নাম"
 
@@ -113,7 +113,7 @@ msgstr ""
 "নির্বাচকের তালিকাভুক্ত হওযার জন্য। যদি কোন ইন্টারফেস তালিকাকৃত না থাকে তখন ডিফল্ট "
 "হিসেবে  \"IDL:Bonobo/Embeddable:1.0\" থাকবে"
 
-# সার্ভার চালুরাখতেসাহায্যকরা ধারা 
+# সার্ভার চালুরাখতেসাহায্যকরা ধারা
 #: ../bonobo/bonobo-selector.c:348
 msgid "Interface required entry"
 msgstr "ইন্টারফেসের প্রয়োজনীয় এন্ট্রি"
@@ -172,17 +172,17 @@ msgid "_Priority text only"
 msgstr "শুধুমাত্র অগ্রাধিকারপ্রাপ্ত টেক্সট (_অ)"
 
 # msgstr "শুধুমাত্র টেক্সটের _অগ্রাধিকার"
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "Debug"
 msgstr "ডিবাগ"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "_Dump XML"
 msgstr "এক্স.এম.এল. ডাম্প করো (_ড)"
 
 # msgstr "XML'র অস্থায়ী ভান্ডার"
 # msgstr "ডাম্প এক্স.এম.এল. (_ড)"
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:92
 msgid "Dump the entire UI's XML description to the console"
 msgstr "সম্পূর্ণ ইউ.আই. (UI) এর এক্স.এম.এল. বিবরণ কনসোলে ডাম্প করো"
 
@@ -190,97 +190,97 @@ msgstr "সম্পূর্ণ ইউ.আই. (UI) এর এক্স.এম.
 msgid "Configure UI"
 msgstr "ইউ.আই. (UI) কনফিগার করো"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:126
 msgid "Gdk debugging flags to set"
 msgstr "যেসকল Gdk ডিবাগিং ফ্ল্যাগ সক্রিয় (Set) করা হবে"
 
 # msgstr "জিডিকে ডিবাগিং করার ফ্ল্যাগস নির্ধারণ করা হয়েছে"
 # msgstr "জিডিকে ডিবাগিং করার ফ্ল্যাগস নির্দিষ্ট করা হয়েছে"
-#: ../bonobo/bonobo-ui-init-gtk.c:124 ../bonobo/bonobo-ui-init-gtk.c:127
-#: ../bonobo/bonobo-ui-init-gtk.c:155 ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:126 ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:157 ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
 msgstr "ফ্ল্যাগস"
 
 # msgstr "পতাকাগুলো"
-#: ../bonobo/bonobo-ui-init-gtk.c:127
+#: ../bonobo/bonobo-ui-init-gtk.c:129
 msgid "Gdk debugging flags to unset"
 msgstr "জিডিকে ডিবাগিং করার ফ্ল্যাগস নির্দিষ্ট করা হয় নি"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:131
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "X display to use"
 msgstr "যে এক্স পর্দা ব্যবহার করা হবে"
 
 # msgstr "ব্যবহার করার জন্য X ডিসপ্লে"
 # msgstr "ব্যবহৃত এক্স ডিসপ্লে"
-#: ../bonobo/bonobo-ui-init-gtk.c:131
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "DISPLAY"
 msgstr "পর্দা"
 
 # msgstr "ডিসপ্লে"
-#: ../bonobo/bonobo-ui-init-gtk.c:135
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X screen to use"
 msgstr "যে এক্স পর্দা ব্যবহার করা হবে"
 
 # msgstr "ব্যবহার করার জন্য এক্স পর্দা"
 # msgstr "ব্যবহৃত এক্স পর্দা"
-#: ../bonobo/bonobo-ui-init-gtk.c:135
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "SCREEN"
 msgstr "পর্দা"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:139
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "Make X calls synchronous"
 msgstr "যুগপত্‍ ভাবে এক্স'কে ডাকো"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:145
+#: ../bonobo/bonobo-ui-init-gtk.c:147
 msgid "Don't use X shared memory extension"
 msgstr "প্রসারিত এক্স অধিকৃত মেমরি কখনো ব্যবহার করা হবে না"
 
 # msgstr "প্রসারিত এক্স অধিকৃত মেমরি কখনো ব্যবহার করবে না"
-#: ../bonobo/bonobo-ui-init-gtk.c:149
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Program name as used by the window manager"
 msgstr "উইন্ডো ম্যানেজার কর্তৃক ব্যবহৃত প্রোগ্রামের নাম"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:149
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "NAME"
 msgstr "নাম"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:152
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "Program class as used by the window manager"
 msgstr "উইন্ডো ম্যানেজার কর্তৃক ব্যবহৃত প্রোগ্রামের শ্রেণী"
 
 # msgstr "উইন্ডো ম্যানেজার কর্তৃক ব্যবহৃত প্রোগ্রামের ক্লাস"
-#: ../bonobo/bonobo-ui-init-gtk.c:152
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "CLASS"
 msgstr "শ্রেণী"
 
 # msgstr "স্টাইল"
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
 msgstr "যেসকল Gtk+ ডিবাগিং ফ্ল্যাগ সক্রিয় (Set) করা হবে"
 
 # msgstr "জিটিকে+ ডিবাগিং করার ফ্ল্যাগ্‌স নির্ধারণ করা হয়েছে"
 # msgstr "জিটিকে+ ডিবাগিং ফ্ল্যাগস নির্ধারণ করা হয়েছে"
 # msgstr "জিটিকে+ ডিবাগিং ফ্ল্যাগস নির্দিষ্ট করা হয়েছে"
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
 msgstr "যেসকল Gtk+ ডিবাগিং ফ্ল্যাগ নিক্রিয় (Unset) করা হবে"
 
 # msgstr "জিটিকে+ ডিবাগিং ফ্ল্যাগস নির্ধারণ করা হয় নি"
 # msgstr "জিটিকে+ ডিবাগিং ফ্ল্যাগস নির্দিষ্ট করা হয় নি"
-#: ../bonobo/bonobo-ui-init-gtk.c:161
+#: ../bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
 msgstr "সকল সতর্কতাকে মারাত্মক করো"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
 msgstr "একটি অতিরিক্ত জিটিকে মডিউল লোড করো"
 
 # msgstr "একটি সংযোজিত জিটিকে মডিউল লোড করো"
-#: ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
 msgstr "মডিউল"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:173
+#: ../bonobo/bonobo-ui-init-gtk.c:182
 msgid "GTK+"
 msgstr "জিটিকে+"
 
@@ -316,17 +316,17 @@ msgstr "ইচ্ছামাফিক পরিবর্তন (_ছ)"
 msgid "Customize the toolbar"
 msgstr "ইচ্ছামাফিক পরিবর্তনের টুলবার"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1129
+#: ../bonobo/bonobo-ui-toolbar.c:1118
 msgid "is floating"
 msgstr "পরিবর্তন হচ্ছে"
 
 # msgstr "ভাসছে"
 # msgstr "উদ্দেশ্যহীনভাবে ভাসছে"
-#: ../bonobo/bonobo-ui-toolbar.c:1130
+#: ../bonobo/bonobo-ui-toolbar.c:1119
 msgid "whether the toolbar is floating"
 msgstr "যে কোনো ক্ষেত্রে টুলবারে পরিবর্তন হচ্ছে কিনা"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1176
+#: ../bonobo/bonobo-ui-toolbar.c:1165
 msgid "Style of bevel around the toolbar"
 msgstr "টুলবারের চারপাশের ঢালের ধরন"
 
@@ -497,7 +497,7 @@ msgid "General"
 msgstr "সাধারণ"
 
 #: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:401
+#: ../tools/browser/component-list.c:398
 msgid "IID"
 msgstr "IID"
 
@@ -514,40 +514,44 @@ msgstr "বিস্তারিত"
 msgid "Detailed Information"
 msgstr "বিস্তারিত তথ্য"
 
-#: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
+#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "সক্রিয়"
 
-#: ../tools/browser/component-list.c:391
+#: ../tools/browser/component-list.c:388
 msgid "Type"
 msgstr "ধরণ"
 
-#: ../tools/browser/window.c:170
+#: ../tools/browser/window.c:162
 msgid "Component Details"
 msgstr "কম্পোনেন্টের বিবরণ"
 
-#: ../tools/browser/window.c:215
+#: ../tools/browser/window.c:208
 msgid "Bonobo Browser"
 msgstr "বনোবো ব্রাউজার"
 
-#: ../tools/browser/window.c:216
+#: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "কপিরাইট ২০০১, গনোম ফাউন্ডেশন"
 
-#: ../tools/browser/window.c:217
+#: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
 msgstr "বনোবো কম্পোনেন্ট ব্রাউজার"
 
+#: ../tools/browser/window.c:214
+msgid "translator-credits"
+msgstr "অঙ্কুর গ্রুপের পক্ষ থেকে খন্দকার মুজাহিদুল ইসলাম সুজন <suzan@bengalinux.org>"
+
 #. create the window
-#: ../tools/browser/window.c:247
+#: ../tools/browser/window.c:240
 msgid "Component Browser"
 msgstr "কম্পোনেন্ট ব্রাউজার"
 
 #. Fill out the tool bar
-#: ../tools/browser/window.c:287
+#: ../tools/browser/window.c:280
 msgid "All"
 msgstr "সব"
 
-#: ../tools/browser/window.c:293
+#: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "নিষ্ক্রিয়"
