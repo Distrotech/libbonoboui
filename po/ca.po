@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.11.92\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-10 15:49+0200\n"
-"PO-Revision-Date: 2006-06-10 15:51+0200\n"
+"POT-Creation-Date: 2006-08-25 01:24+0200\n"
+"PO-Revision-Date: 2006-08-25 01:24+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -158,15 +158,15 @@ msgstr "Només text"
 msgid "_Priority text only"
 msgstr "Només el text de _prioritat"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "Debug"
 msgstr "Depuració"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "_Dump XML"
 msgstr "_Bolca XML"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:92
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Bolca la descripció sencera de la IU a la consola"
 
@@ -453,7 +453,7 @@ msgstr "Detalls"
 msgid "Detailed Information"
 msgstr "Informació detallada"
 
-#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:284
+#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "Actiu"
 
@@ -478,19 +478,19 @@ msgid "Bonobo component browser"
 msgstr "Navegador de components Bonobo"
 
 #: ../tools/browser/window.c:214
-msgid "translation-credits"
+msgid "translator-credits"
 msgstr "Jordi Mallach <jordi@sindominio.net>"
 
 #. create the window
-#: ../tools/browser/window.c:241
+#: ../tools/browser/window.c:240
 msgid "Component Browser"
 msgstr "Navegador de components"
 
 #. Fill out the tool bar
-#: ../tools/browser/window.c:281
+#: ../tools/browser/window.c:280
 msgid "All"
 msgstr "Tots"
 
-#: ../tools/browser/window.c:287
+#: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "Inactiu"
