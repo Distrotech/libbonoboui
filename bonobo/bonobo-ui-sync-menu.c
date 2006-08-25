@@ -282,6 +282,30 @@ label_same (GtkBin *menu_widget, const char *txt)
 		!strcmp (((GtkLabel *)label)->label, txt);
 }
 
+static gboolean
+widget_has_accel (GtkWidget       *widget,
+		  GtkAccelGroup   *accel_group,
+		  guint           key, 
+		  GdkModifierType mods)
+{
+	int i;
+	guint n_entries;
+	GList *l_tmp, *l_closures = gtk_widget_list_accel_closures (widget);
+	GtkAccelGroupEntry *entry = gtk_accel_group_query (accel_group,
+							   key, mods,
+							   &n_entries);
+
+	if (n_entries)
+		for (l_tmp = l_closures; l_tmp; l_tmp = l_tmp->next)
+	  		for (i=0; i<n_entries; i++) 
+			  	if (entry[i].closure == l_tmp->data) 
+					return TRUE;
+	
+	g_list_free (l_closures);
+
+	return FALSE;
+}
+
 static void
 impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 				BonoboUINode *node,
@@ -392,11 +416,12 @@ impl_bonobo_ui_sync_menu_state (BonoboUISync *sync,
 		if (!key) /* FIXME: this looks strange */
 			return;
 
-		gtk_widget_add_accelerator (menu_widget,
-					    "activate",
-					    sync_menu->accel_group,
-					    key, mods,
-					    GTK_ACCEL_VISIBLE);
+	  	if (! widget_has_accel (menu_widget, sync_menu->accel_group, key, mods))
+			gtk_widget_add_accelerator (menu_widget,
+						    "activate",
+						    sync_menu->accel_group,
+						    key, mods,
+						    GTK_ACCEL_VISIBLE);
 	}
 
 	bonobo_ui_engine_queue_update (
