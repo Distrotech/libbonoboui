@@ -298,8 +298,10 @@ widget_has_accel (GtkWidget       *widget,
 	if (n_entries)
 		for (l_tmp = l_closures; l_tmp; l_tmp = l_tmp->next)
 	  		for (i=0; i<n_entries; i++) 
-			  	if (entry[i].closure == l_tmp->data) 
+			  	if (entry[i].closure == l_tmp->data) {
+					g_list_free (l_closures);
 					return TRUE;
+				}
 	
 	g_list_free (l_closures);
 

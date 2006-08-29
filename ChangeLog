@@ -1,4 +1,13 @@
+2006-08-28  Federico Mena Quintero  <federico@novell.com>
+
+	* bonobo/bonobo-ui-sync-menu.c (widget_has_accel): Free the list
+	of closures if we find a match.  Patch by Cecilia González
+	<m3gumi@gmail.com>.
+
 2006-08-21  Cecilia Gonzalez  <m3gumi@gmail.com>
+
+	Fixes #352628:
+
 	* bonobo/bonobo-ui-sync-menu.c 
 	(impl_bonobo_ui_sync_menu_state): Check if a accelerator closure
 	exists already and avoid multiple addings of the same accelerator.
