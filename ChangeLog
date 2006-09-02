@@ -1,3 +1,5 @@
+======================== 2.15.1 ===========================
+
 2006-08-28  Federico Mena Quintero  <federico@novell.com>
 
 	* bonobo/bonobo-ui-sync-menu.c (widget_has_accel): Free the list

@@ -1,6 +1,9 @@
 libbonoboui 2.15.1
 
 	* Fix the about dialog in bonobo-browser (Matthias)
+	* Fix leaks in the UI code that showed up when changing
+	components in evolution. (Cecilia Gonzalez)
+	* Set menubar to correct detachable state (Manuel Clos)
 
 libbonoboui 2.15.0
 
