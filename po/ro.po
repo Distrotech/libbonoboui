@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-12 15:05+0100\n"
-"PO-Revision-Date: 2006-03-12 23:22+0200\n"
+"POT-Creation-Date: 2006-09-03 21:24+0200\n"
+"PO-Revision-Date: 2006-09-04 02:26+0300\n"
 "Last-Translator: Mişu Moldovan <dumol@gnome.ro>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -38,23 +38,23 @@ msgstr "Ataşează bara de unelte"
 msgid "Undock the toolbar"
 msgstr "Detaşează bara de unelte"
 
-#: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
-#: ../bonobo/bonobo-ui-toolbar.c:1175
+#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
+#: ../bonobo/bonobo-ui-toolbar.c:1164
 msgid "Shadow type"
 msgstr "Tip umbră"
 
-#: ../bonobo/bonobo-dock-item.c:246 ../bonobo/bonobo-dock-item.c:247
-#: ../bonobo/bonobo-ui-toolbar.c:1119 ../bonobo/bonobo-ui-toolbar.c:1120
+#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
+#: ../bonobo/bonobo-ui-toolbar.c:1108 ../bonobo/bonobo-ui-toolbar.c:1109
 msgid "Orientation"
 msgstr "Orientare"
 
-#: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
-#: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
+#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
+#: ../bonobo/bonobo-ui-toolbar.c:1127 ../bonobo/bonobo-ui-toolbar.c:1128
 msgid "Preferred width"
 msgstr "Lăţime preferată"
 
-#: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
-#: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
+#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
+#: ../bonobo/bonobo-ui-toolbar.c:1136 ../bonobo/bonobo-ui-toolbar.c:1137
 msgid "Preferred height"
 msgstr "Înălţime preferată"
 
@@ -80,7 +80,7 @@ msgstr "Dacă evenimentele X trebuie înaintate"
 
 #: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:381
+#: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Nume"
 
@@ -157,15 +157,15 @@ msgstr "Doar text"
 msgid "_Priority text only"
 msgstr "_Doar text prioritar"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "Debug"
 msgstr "Depanare"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "_Dump XML"
 msgstr "_Ieşire XML"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:92
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Listează întreaga descriere XML a interfeţei în consolă"
 
@@ -282,15 +282,15 @@ msgstr "Personali_zare"
 msgid "Customize the toolbar"
 msgstr "Personalizaţi bara cu unelte"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1129
+#: ../bonobo/bonobo-ui-toolbar.c:1118
 msgid "is floating"
 msgstr "este flotantă"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1130
+#: ../bonobo/bonobo-ui-toolbar.c:1119
 msgid "whether the toolbar is floating"
 msgstr "dacă bara cu unelte este flotantă"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1176
+#: ../bonobo/bonobo-ui-toolbar.c:1165
 msgid "Style of bevel around the toolbar"
 msgstr "Stilul dungii din marginea barei cu unelte"
 
@@ -434,7 +434,7 @@ msgid "General"
 msgstr "Generale"
 
 #: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:401
+#: ../tools/browser/component-list.c:398
 msgid "IID"
 msgstr "IID"
 
@@ -451,41 +451,44 @@ msgstr "Detalii"
 msgid "Detailed Information"
 msgstr "Informaţii detaliate"
 
-#: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
+#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "Activă"
 
-#: ../tools/browser/component-list.c:391
+#: ../tools/browser/component-list.c:388
 msgid "Type"
 msgstr "Tip"
 
-#: ../tools/browser/window.c:170
+#: ../tools/browser/window.c:162
 msgid "Component Details"
 msgstr "Detalii componente"
 
-#: ../tools/browser/window.c:215
+#: ../tools/browser/window.c:208
 msgid "Bonobo Browser"
 msgstr "Navigator Bonobo"
 
-#: ../tools/browser/window.c:216
+#: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "© Drepturi de autor 2001, The GNOME Foundation"
 
-#: ../tools/browser/window.c:217
+#: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
 msgstr "Navigator componente Bonobo"
 
+#: ../tools/browser/window.c:214
+msgid "translator-credits"
+msgstr "Mişu Moldovan <dumol@gnome.ro>"
+
 #. create the window
-#: ../tools/browser/window.c:247
+#: ../tools/browser/window.c:240
 msgid "Component Browser"
 msgstr "Navigator componente"
 
 #. Fill out the tool bar
-#: ../tools/browser/window.c:287
+#: ../tools/browser/window.c:280
 msgid "All"
 msgstr "Toate"
 
-#: ../tools/browser/window.c:293
+#: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "Inactive"
-
