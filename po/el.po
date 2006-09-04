@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-10 18:44+0200\n"
-"PO-Revision-Date: 2005-08-12 19:29+0300\n"
+"POT-Creation-Date: 2006-09-04 13:30+0300\n"
+"PO-Revision-Date: 2006-09-04 13:30+0300\n"
 "Last-Translator: Kostas Papadimas <pkst@gmx.net>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
@@ -46,23 +46,23 @@ msgstr "Αγκύρωση της εργαλειοθήκης"
 msgid "Undock the toolbar"
 msgstr "Απαγκύρωση εργαλειοθήκης"
 
-#: ../bonobo/bonobo-dock-item.c:235 ../bonobo/bonobo-dock-item.c:236
-#: ../bonobo/bonobo-ui-toolbar.c:1175
+#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
+#: ../bonobo/bonobo-ui-toolbar.c:1164
 msgid "Shadow type"
 msgstr "Τύπος σκιάς"
 
-#: ../bonobo/bonobo-dock-item.c:246 ../bonobo/bonobo-dock-item.c:247
-#: ../bonobo/bonobo-ui-toolbar.c:1119 ../bonobo/bonobo-ui-toolbar.c:1120
+#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
+#: ../bonobo/bonobo-ui-toolbar.c:1108 ../bonobo/bonobo-ui-toolbar.c:1109
 msgid "Orientation"
 msgstr "Προσανατολισμός"
 
-#: ../bonobo/bonobo-dock-item.c:257 ../bonobo/bonobo-dock-item.c:258
-#: ../bonobo/bonobo-ui-toolbar.c:1138 ../bonobo/bonobo-ui-toolbar.c:1139
+#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
+#: ../bonobo/bonobo-ui-toolbar.c:1127 ../bonobo/bonobo-ui-toolbar.c:1128
 msgid "Preferred width"
 msgstr "Επιθυμητό πλάτος"
 
-#: ../bonobo/bonobo-dock-item.c:266 ../bonobo/bonobo-dock-item.c:267
-#: ../bonobo/bonobo-ui-toolbar.c:1147 ../bonobo/bonobo-ui-toolbar.c:1148
+#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
+#: ../bonobo/bonobo-ui-toolbar.c:1136 ../bonobo/bonobo-ui-toolbar.c:1137
 msgid "Preferred height"
 msgstr "Επιθυμητό ύψος"
 
@@ -96,7 +96,7 @@ msgstr "Πότε τα γεγονότα Χ πρέπει να προωθούντα
 #
 #: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
 #: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:381
+#: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Όνομα"
 
@@ -182,15 +182,15 @@ msgstr "Μόνο κείμενο"
 msgid "_Priority text only"
 msgstr "Μόνο κείμενο _προτεραιότητας"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "Debug"
 msgstr "Αποσφαλμάτωση"
 
-#: ../bonobo/bonobo-ui-engine.c:90
+#: ../bonobo/bonobo-ui-engine.c:91
 msgid "_Dump XML"
 msgstr "_Απόρριψη XML"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:92
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Απόρριψη ολόκληρης της περιγραφής UI's XML στην κονσόλα"
 
@@ -199,95 +199,95 @@ msgid "Configure UI"
 msgstr "Ρύθμιση Διασύνδεσης Χρήστη"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:113
+#: ../bonobo/bonobo-ui-init-gtk.c:126
 msgid "Gdk debugging flags to set"
 msgstr "Διακόπτες αποσφαλμάτωσης του Gdk για ενεργοποίηση"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:113 ../bonobo/bonobo-ui-init-gtk.c:116
-#: ../bonobo/bonobo-ui-init-gtk.c:144 ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:126 ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:157 ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "FLAGS"
 msgstr "FLAGS"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:116
+#: ../bonobo/bonobo-ui-init-gtk.c:129
 msgid "Gdk debugging flags to unset"
 msgstr "Διακόπτες αποσφαλμάτωσης του Gdk για απενεργοποίηση"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "X display to use"
 msgstr "Επιλογή οθόνης X προς χρήση"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:120
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "DISPLAY"
 msgstr "ΟΘΌΝΗ"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X screen to use"
 msgstr "Οθόνη X προς χρήση"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:124
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "SCREEN"
 msgstr "ΟΘΌΝΗ"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:128
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "Make X calls synchronous"
 msgstr "Χρήση σύγχρονων κλήσεων X"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:147
 msgid "Don't use X shared memory extension"
 msgstr "Απενεργοποίηση επεκτασης χρήσης κοινής μνήμης στα X"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Program name as used by the window manager"
 msgstr "Όνομα προγράμματος όπως δηλώνεται από το διαχειριστή παραθύρων"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "NAME"
 msgstr "ΌΝΟΜΑ"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "Program class as used by the window manager"
 msgstr "Τάξη προγράμματος όπως δηλώνεται από το διαχειριστή παραθύρων"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:154
 msgid "CLASS"
 msgstr "ΤΑΞΗ"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:144
+#: ../bonobo/bonobo-ui-init-gtk.c:157
 msgid "Gtk+ debugging flags to set"
 msgstr "Διακόπτες αποσφαλμάτωσης του Gtk+ για ενεργοποίηση"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:160
 msgid "Gtk+ debugging flags to unset"
 msgstr "Διακόπτες αποσφαλμάτωσης του Gtk+ για απενεργοποίηση"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:150
+#: ../bonobo/bonobo-ui-init-gtk.c:163
 msgid "Make all warnings fatal"
 msgstr "Όλες οι προειδοποιήσεις ολέθριες"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "Load an additional Gtk module"
 msgstr "Φόρτωση επιπρόσθετου συστατικού Gtk"
 
 #
-#: ../bonobo/bonobo-ui-init-gtk.c:153
+#: ../bonobo/bonobo-ui-init-gtk.c:166
 msgid "MODULE"
 msgstr "ΣΥΣΤΑΤΙΚΌ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:162
+#: ../bonobo/bonobo-ui-init-gtk.c:182
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -324,15 +324,15 @@ msgstr "Παραμετρο_ποίηση"
 msgid "Customize the toolbar"
 msgstr "Παραμετροποίηση γραμμής εντολών"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1129
+#: ../bonobo/bonobo-ui-toolbar.c:1118
 msgid "is floating"
 msgstr "αιωρείται"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1130
+#: ../bonobo/bonobo-ui-toolbar.c:1119
 msgid "whether the toolbar is floating"
 msgstr "αν η εργαλειοθήκη αιωρήται"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1176
+#: ../bonobo/bonobo-ui-toolbar.c:1165
 msgid "Style of bevel around the toolbar"
 msgstr "Στυλ γωνίας γύρω από την εργαλειοθήκη"
 
@@ -503,7 +503,7 @@ msgid "General"
 msgstr "Γενικά"
 
 #: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:401
+#: ../tools/browser/component-list.c:398
 msgid "IID"
 msgstr "IID"
 
@@ -520,41 +520,45 @@ msgstr "Λεπτομέρειες"
 msgid "Detailed Information"
 msgstr "Λεπτομερείς πληροφορίες"
 
-#: ../tools/browser/component-list.c:370 ../tools/browser/window.c:290
+#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "Ενεργό"
 
-#: ../tools/browser/component-list.c:391
+#: ../tools/browser/component-list.c:388
 msgid "Type"
 msgstr "Τύπος"
 
-#: ../tools/browser/window.c:170
+#: ../tools/browser/window.c:162
 msgid "Component Details"
 msgstr "Λεπτομέρειες συστατικού"
 
-#: ../tools/browser/window.c:215
+#: ../tools/browser/window.c:208
 msgid "Bonobo Browser"
 msgstr "Περιηγητής Bonobo"
 
-#: ../tools/browser/window.c:216
+#: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "Πνευματικά δικαιώματα 2001, The GNOME Foundation"
 
-#: ../tools/browser/window.c:217
+#: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
 msgstr " Περιηγητής συστατικού Bonobo"
 
+#: ../tools/browser/window.c:214
+msgid "translator-credits"
+msgstr "Κώστας Παπαδήμας <pkst@gnome.org>"
+
 #. create the window
-#: ../tools/browser/window.c:247
+#: ../tools/browser/window.c:240
 msgid "Component Browser"
 msgstr "Περιηγητής συστατικού"
 
 #. Fill out the tool bar
-#: ../tools/browser/window.c:287
+#: ../tools/browser/window.c:280
 msgid "All"
 msgstr "Όλα"
 
-#: ../tools/browser/window.c:293
+#: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "Ανενεργό"
 
