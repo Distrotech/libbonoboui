@@ -483,7 +483,7 @@ msgid "Bonobo component browser"
 msgstr "Bonobo komponendilehitseja"
 
 #: ../tools/browser/window.c:214
-msgid "translation-credits"
+msgid "translator-credits"
 msgstr ""
 "Priit Laes <amd@tt.ee>, 2004.\n"
 "Ivar Smolin <okul@linux.ee>, 2005, 2006."
