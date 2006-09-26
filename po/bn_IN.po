@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-01 13:09+0200\n"
+"POT-Creation-Date: 2006-09-26 03:54+0200\n"
 "PO-Revision-Date: 2006-09-01 18:29+0530\n"
 "Last-Translator: Runa Bhattacharjee <runabh@gmail.com>\n"
 "Language-Team: Bengali India\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"\n"
 
 #: ../bonobo/bonobo-canvas-item.c:683
 msgid "corba factory"
@@ -545,7 +546,9 @@ msgstr "Bonobo component browser"
 
 #: ../tools/browser/window.c:214
 msgid "translator-credits"
-msgstr "রুণা ভট্টাচার্য (runabh@gmail.com)"
+msgstr ""
+"অঙ্কুর গ্রুপের পক্ষ থেকে খন্দকার মুজাহিদুল ইসলাম সুজন <suzan@bengalinux.org>\n"
+"রুণা ভট্টাচার্য (runabh@gmail.com)"
 
 #. create the window
 #: ../tools/browser/window.c:240
@@ -560,4 +563,3 @@ msgstr "সমগ্র"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "নিষ্ক্রিয়"
-
