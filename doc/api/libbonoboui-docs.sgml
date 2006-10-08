@@ -72,5 +72,8 @@
 	&bonobo-a11y;
     </chapter>
 
+    <index>
+        <title>Index</title>
+    </index>
 
 </book>

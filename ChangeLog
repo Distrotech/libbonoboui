@@ -1,3 +1,7 @@
+2006-10-08  Matthew Barnes  <mbarnes@redhat.com>
+
+	* doc/api/libbonoboui-docs.sgml: Add an index to the API docs.
+
 ======================== 2.15.1 ===========================
 
 2006-08-28  Federico Mena Quintero  <federico@novell.com>
