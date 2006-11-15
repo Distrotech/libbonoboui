@@ -279,8 +279,6 @@ impl_Bonobo_Canvas_Component_update (PortableServer_Servant     servant,
 	return cuta;
 }
 
-static GdkGC *the_gc;
-
 static void
 impl_Bonobo_Canvas_Component_realize (PortableServer_Servant  servant,
 				      const CORBA_char       *window,
@@ -297,7 +295,6 @@ impl_Bonobo_Canvas_Component_realize (PortableServer_Servant  servant,
 		return;
 	}
 
-	the_gc = gdk_gc_new (gdk_window);
 	item->canvas->layout.bin_window = gdk_window;
 	ICLASS (item)->realize (item);
 }

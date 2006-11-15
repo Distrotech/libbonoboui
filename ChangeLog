@@ -1,3 +1,34 @@
+2006-11-15  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* bonobo/bonobo-canvas-component.c:
+	(impl_Bonobo_Canvas_Component_realize): Remove unused bits.
+	* bonobo/bonobo-control-frame.c: (control_connection_died_cb),
+	(bonobo_control_frame_get_remote_window),
+	(bonobo_control_frame_dispose), (bonobo_control_frame_finalize):
+	Rename dprintf() to dbgprintf() to avoid conflict with libc function.
+	* bonobo/bonobo-control.c: (control_frame_connection_died_cb),
+	(bonobo_control_add_listener), (impl_Bonobo_Control_getWindowId),
+	(bonobo_control_destroy), (bonobo_control_finalize),
+	(bonobo_control_set_plug): dprintf() -> dbgprintf().
+	* bonobo/bonobo-plug.c: (bonobo_plug_new_for_display),
+	(bonobo_plug_set_control), (bonobo_plug_delete_event),
+	(bonobo_plug_realize), (bonobo_plug_unrealize), (bonobo_plug_map),
+	(bonobo_plug_dispose), (bonobo_plug_size_allocate),
+	(bonobo_plug_size_request), (bonobo_plug_expose_event): Same again.
+	* bonobo/bonobo-socket.c: (bonobo_socket_finalize),
+	(bonobo_socket_dispose), (bonobo_socket_realize),
+	(bonobo_socket_unrealize), (bonobo_socket_expose_event),
+	(bonobo_socket_focus_in), (bonobo_socket_focus_out),
+	(bonobo_socket_size_allocate), (bonobo_socket_size_request),
+	(bonobo_socket_show), (bonobo_socket_plug_removed): Same again.
+	* bonobo/bonobo-ui-engine.c: (info_free_fn),
+	(bonobo_ui_engine_object_set), (bonobo_ui_engine_dispose),
+	(impl_finalize): And here.
+	* bonobo/bonobo-ui-private.h: Rename the declarations.
+	* bonobo/bonobo-ui-sync-menu.c: 
+	(impl_bonobo_ui_sync_menu_update_root): Fix a compiler warning.
+	* tests/control/test-control.c: (destroy_cb): More renaming.
+
 2006-10-08  Matthew Barnes  <mbarnes@redhat.com>
 
 	* doc/api/libbonoboui-docs.sgml: Add an index to the API docs.

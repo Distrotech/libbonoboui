@@ -363,7 +363,7 @@ info_free_fn (BonoboUIXmlData *data)
 	NodeInfo *info = (NodeInfo *) data;
 
 	if (info->object != CORBA_OBJECT_NIL) {
-		dprintf ("** Releasing object %p on info %p\n", info->object, info);
+		dbgprintf ("** Releasing object %p on info %p\n", info->object, info);
 		bonobo_object_release_unref (info->object, NULL);
 		info->object = CORBA_OBJECT_NIL;
 	}
@@ -1176,7 +1176,7 @@ bonobo_ui_engine_object_set (BonoboUIEngine   *engine,
 		widget_unref (&info->widget);
 	}
 	
-	dprintf ("** Setting object %p on info %p\n", object, info);
+	dbgprintf ("** Setting object %p on info %p\n", object, info);
 	info->object = bonobo_object_dup_ref (object, ev);
 
 	bonobo_ui_xml_set_dirty (engine->priv->tree, node);
@@ -1850,7 +1850,7 @@ bonobo_ui_engine_dispose (BonoboUIEngine *engine)
 	GSList *l;
 	BonoboUIEnginePrivate *priv = engine->priv;
 
-	dprintf ("bonobo_ui_engine_dispose %p\n", engine);
+	dbgprintf ("bonobo_ui_engine_dispose %p\n", engine);
 
 	bonobo_ui_engine_freeze (engine);
 
@@ -1899,7 +1899,7 @@ impl_finalize (GObject *object)
 {
 	BonoboUIEngine *engine;
 
-	dprintf ("bonobo_ui_engine_finalize %p\n", object);
+	dbgprintf ("bonobo_ui_engine_finalize %p\n", object);
        
 	engine = BONOBO_UI_ENGINE (object);
 

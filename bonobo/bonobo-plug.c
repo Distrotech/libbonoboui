@@ -90,7 +90,7 @@ bonobo_plug_new_for_display (GdkDisplay *display,
 
 	bonobo_plug_construct_full (plug, display, socket_id);
 
-	dprintf ("bonobo_plug_new => %p\n", plug);
+	dbgprintf ("bonobo_plug_new => %p\n", plug);
 
 	return GTK_WIDGET (plug);
 }
@@ -130,7 +130,7 @@ bonobo_plug_set_control (BonoboPlug    *plug,
 	if (plug->control == control)
 		return;
 
-	dprintf ("bonobo_plug_set_control (%p, %p) [%p]\n",
+	dbgprintf ("bonobo_plug_set_control (%p, %p) [%p]\n",
 		 plug, control, plug->control);
 
 	old_control = plug->control;
@@ -153,7 +153,7 @@ static gboolean
 bonobo_plug_delete_event (GtkWidget   *widget,
 			  GdkEventAny *event)
 {
-	dprintf ("bonobo_plug_delete_event %p\n", widget);
+	dbgprintf ("bonobo_plug_delete_event %p\n", widget);
 
 	return FALSE;
 }
@@ -163,7 +163,7 @@ bonobo_plug_realize (GtkWidget *widget)
 {
 	BonoboPlug *plug = (BonoboPlug *) widget;
 
-	dprintf ("bonobo_plug_realize %p\n", plug);
+	dbgprintf ("bonobo_plug_realize %p\n", plug);
 
 	GTK_WIDGET_CLASS (parent_class)->realize (widget);
 }
@@ -173,7 +173,7 @@ bonobo_plug_unrealize (GtkWidget *widget)
 {
 	BonoboPlug *plug = (BonoboPlug *) widget;
 
-	dprintf ("bonobo_plug_unrealize %p\n", plug);
+	dbgprintf ("bonobo_plug_unrealize %p\n", plug);
 
 	GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
 }
@@ -181,7 +181,7 @@ bonobo_plug_unrealize (GtkWidget *widget)
 static void
 bonobo_plug_map (GtkWidget *widget)
 {
-	dprintf ("bonobo_plug_map %p at size %d, %d\n",
+	dbgprintf ("bonobo_plug_map %p at size %d, %d\n",
 		 widget, widget->allocation.width,
 		 widget->allocation.height);
 	GTK_WIDGET_CLASS (parent_class)->map (widget);
@@ -193,12 +193,12 @@ bonobo_plug_dispose (GObject *object)
 	BonoboPlug *plug = (BonoboPlug *) object;
 	GtkBin *bin_plug = (GtkBin *) object;
 
-	dprintf ("bonobo_plug_dispose %p\n", object);
+	dbgprintf ("bonobo_plug_dispose %p\n", object);
 
 	if (bin_plug->child) {
 		gtk_container_remove (
 			&bin_plug->container, bin_plug->child);
-		dprintf ("Removing child ...");
+		dbgprintf ("Removing child ...");
 	}
 
 	if (plug->control)
@@ -266,7 +266,7 @@ static void
 bonobo_plug_size_allocate (GtkWidget     *widget,
 			   GtkAllocation *allocation)
 {
-	dprintf ("bonobo_plug_size_allocate %p: (%d, %d), (%d, %d) %d! %s\n",
+	dbgprintf ("bonobo_plug_size_allocate %p: (%d, %d), (%d, %d) %d! %s\n",
 		 widget,
 		 allocation->x, allocation->y,
 		 allocation->width, allocation->height,
@@ -284,7 +284,7 @@ bonobo_plug_size_request (GtkWidget      *widget,
 {
 	GTK_WIDGET_CLASS (parent_class)->size_request (widget, requisition);
 
-	dprintf ("bonobo_plug_size_request %p: %d, %d\n",
+	dbgprintf ("bonobo_plug_size_request %p: %d, %d\n",
 		 widget, requisition->width, requisition->height);
 }
 
@@ -296,7 +296,7 @@ bonobo_plug_expose_event (GtkWidget      *widget,
 
 	retval = GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
 
-	dprintf ("bonobo_plug_expose_event %p (%d, %d), (%d, %d)"
+	dbgprintf ("bonobo_plug_expose_event %p (%d, %d), (%d, %d)"
 		 "%s (%d && %d == %d)\n",
 		 widget,
 		 event->area.x, event->area.y,

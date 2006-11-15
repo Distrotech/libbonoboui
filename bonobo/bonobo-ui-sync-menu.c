@@ -15,6 +15,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-i18n.h>
+#include <bonobo/bonobo-dock-item.h>
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-engine.h>
@@ -798,7 +799,7 @@ impl_bonobo_ui_sync_menu_update_root (BonoboUISync *sync,
 		detachable = TRUE;
 	else
 	    detachable = bonobo_ui_preferences_get_menubar_detachable ();
-	bonobo_dock_item_set_locked (smenu->menu_dock_item, !detachable);
+	bonobo_dock_item_set_locked (BONOBO_DOCK_ITEM (smenu->menu_dock_item), !detachable);
 }
 
 static void

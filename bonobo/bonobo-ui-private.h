@@ -58,13 +58,13 @@ const char *_bonobo_ui_get_uidir	  (void);
 
 #ifndef   DEBUG_UI
 
-static inline void dprintf (const char *format, ...) { };
+static inline void dbgprintf (const char *format, ...) { };
 
 #else  /* DEBUG_UI */
 
 #include <stdio.h>
 
-#define dprintf(format...) fprintf(stderr, format)
+#define dbgprintf(format...) fprintf(stderr, format)
 
 #endif /* DEBUG_UI */
 

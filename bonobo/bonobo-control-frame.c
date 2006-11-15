@@ -70,7 +70,7 @@ control_connection_died_cb (gpointer connection,
 
 	g_return_if_fail (frame != NULL);
 
-	dprintf ("The remote control end died unexpectedly");
+	dbgprintf ("The remote control end died unexpectedly");
 
 	CORBA_exception_init (&ev);
 
@@ -285,7 +285,7 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 
 	g_return_if_fail (BONOBO_IS_CONTROL_FRAME (frame));
 
-	dprintf ("bonobo_control_frame_get_remote_window "
+	dbgprintf ("bonobo_control_frame_get_remote_window "
 		 "%p %p %d %p\n", frame->priv, frame->priv->socket,
 		 GTK_WIDGET_REALIZED (frame->priv->socket),
 		 frame->priv->control);
@@ -304,7 +304,7 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 	/* Introduce ourselves to the Control. */
 	id = bonobo_control_frame_get_remote_window_id (frame, ev);
 	if (BONOBO_EX (ev)) {
-		dprintf ("getWindowId exception\n");
+		dbgprintf ("getWindowId exception\n");
 		bonobo_object_check_env (BONOBO_OBJECT (frame),
 					 frame->priv->control, ev);
 
@@ -313,7 +313,7 @@ bonobo_control_frame_get_remote_window (BonoboControlFrame *frame,
 		BonoboPlug *plug = NULL;
 
 		xid = bonobo_control_x11_from_window_id (id);
-		dprintf ("setFrame id '%s' (=%u)\n", id, xid);
+		dbgprintf ("setFrame id '%s' (=%u)\n", id, xid);
 		CORBA_free (id);
 
 		{
@@ -393,7 +393,7 @@ bonobo_control_frame_dispose (GObject *object)
 {
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (object);
 
-	dprintf ("bonobo_control_frame_dispose %p\n", object);
+	dbgprintf ("bonobo_control_frame_dispose %p\n", object);
 
 	if (frame->priv->socket)
 		bonobo_control_frame_set_socket (frame, NULL);
@@ -414,7 +414,7 @@ bonobo_control_frame_finalize (GObject *object)
 {
 	BonoboControlFrame *frame = BONOBO_CONTROL_FRAME (object);
 
-	dprintf ("bonobo_control_frame_finalize %p\n", object);
+	dbgprintf ("bonobo_control_frame_finalize %p\n", object);
 
 	g_free (frame->priv);
 	

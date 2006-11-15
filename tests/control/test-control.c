@@ -90,7 +90,7 @@ destroy_test (Test *test, DestroyType type)
 static void
 destroy_cb (GObject *object, Test *text)
 {
-	dprintf ("destroy %s %p\n",
+	dbgprintf ("destroy %s %p\n",
 		 g_type_name_from_instance (
 			 (GTypeInstance *) object), object);
 }

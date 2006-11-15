@@ -89,7 +89,7 @@ control_frame_connection_died_cb (gpointer connection,
 
 	bonobo_control_disconnected (control);
 
-	dprintf ("The remote control frame died unexpectedly");
+	dbgprintf ("The remote control frame died unexpectedly");
 	bonobo_object_unref (BONOBO_OBJECT (control));
 }
 
@@ -111,7 +111,7 @@ bonobo_control_add_listener (CORBA_Object        object,
 	case ORBIT_CONNECTION_CONNECTED:
 		break;
 	default:
-		dprintf ("premature CORBA_Object death");
+		dbgprintf ("premature CORBA_Object death");
 		bonobo_exception_general_error_set (
 			ev, NULL, "Control died prematurely");
 		break;
@@ -383,7 +383,7 @@ impl_Bonobo_Control_getWindowId (PortableServer_Servant servant,
 
 	x11_id = gtk_plug_get_id (GTK_PLUG (control->priv->plug));
 		
-	dprintf ("plug id %u\n", x11_id);
+	dbgprintf ("plug id %u\n", x11_id);
 
 	return bonobo_control_window_id_from_x11 (x11_id);
 }
@@ -729,7 +729,7 @@ bonobo_control_destroy (BonoboObject *object)
 {
 	BonoboControl *control = (BonoboControl *) object;
 
-	dprintf ("bonobo_control_destroy %p\n", object);
+	dbgprintf ("bonobo_control_destroy %p\n", object);
 
 	if (control->priv->plug)
 		bonobo_control_set_plug (control, NULL);
@@ -766,7 +766,7 @@ bonobo_control_finalize (GObject *object)
 {
 	BonoboControl *control = BONOBO_CONTROL (object);
 
-	dprintf ("bonobo_control_finalize %p\n", object);
+	dbgprintf ("bonobo_control_finalize %p\n", object);
 
 	g_free (control->priv);
 
@@ -1357,7 +1357,7 @@ bonobo_control_set_plug (BonoboControl *control,
 	if ((BonoboPlug *) control->priv->plug == plug)
 		return;
 
-	dprintf ("bonobo_control_set_plug (%p, %p) [%p]\n",
+	dbgprintf ("bonobo_control_set_plug (%p, %p) [%p]\n",
 		 control, plug, control->priv->plug);
 
 	old_plug = (BonoboPlug *) control->priv->plug;

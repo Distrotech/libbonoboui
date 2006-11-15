@@ -48,7 +48,7 @@ bonobo_socket_finalize (GObject *object)
 	BonoboSocket *socket;
 	BonoboSocketPrivate *priv;
 
-	dprintf ("bonobo_socket_finalize %p\n", object);
+	dbgprintf ("bonobo_socket_finalize %p\n", object);
 
 	socket = BONOBO_SOCKET (object);
 	priv = socket->priv;
@@ -73,7 +73,7 @@ bonobo_socket_dispose (GObject *object)
 	BonoboSocket *socket = (BonoboSocket *) object;
 	BonoboSocketPrivate *priv;
 
-	dprintf ("bonobo_socket_dispose %p\n", object);
+	dbgprintf ("bonobo_socket_dispose %p\n", object);
 
 	priv = socket->priv;
 
@@ -101,7 +101,7 @@ bonobo_socket_realize (GtkWidget *widget)
 
 	socket = BONOBO_SOCKET (widget);
 
-	dprintf ("bonobo_socket_realize %p\n", widget);
+	dbgprintf ("bonobo_socket_realize %p\n", widget);
 
 	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, realize, (widget));
 
@@ -117,7 +117,7 @@ bonobo_socket_realize (GtkWidget *widget)
 static void
 bonobo_socket_unrealize (GtkWidget *widget)
 {
-	dprintf ("unrealize %p\n", widget);
+	dbgprintf ("unrealize %p\n", widget);
 
 	g_assert (GTK_WIDGET_REALIZED (widget));
 	g_assert (GTK_WIDGET (widget)->window);
@@ -136,7 +136,7 @@ bonobo_socket_expose_event (GtkWidget      *widget,
 
 	retval = GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
 
-	dprintf ("bonobo_socket_expose_event %p (%d, %d), (%d, %d)\n",
+	dbgprintf ("bonobo_socket_expose_event %p (%d, %d), (%d, %d)\n",
 		 widget,
 		 event->area.x, event->area.y,
 		 event->area.width, event->area.height);
@@ -248,7 +248,7 @@ bonobo_socket_focus_in (GtkWidget     *widget,
 	    bonobo_control_frame_get_autoactivate (socket->frame))
 		bonobo_control_frame_control_activate (socket->frame);
 	else
-		dprintf ("No activate on focus in");
+		dbgprintf ("No activate on focus in");
 
 	return GTK_WIDGET_CLASS (parent_class)->focus_in_event (widget, focus);
 }
@@ -266,7 +266,7 @@ bonobo_socket_focus_out (GtkWidget     *widget,
 	    bonobo_control_frame_get_autoactivate (socket->frame))
 		bonobo_control_frame_control_deactivate (socket->frame);
 	else
-		dprintf ("No de-activate on focus out");
+		dbgprintf ("No de-activate on focus out");
 
 	return GTK_WIDGET_CLASS (parent_class)->focus_out_event (widget, focus);
 }
@@ -277,7 +277,7 @@ bonobo_socket_size_allocate (GtkWidget     *widget,
 {
 	GtkSocket *socket = (GtkSocket *) widget;
 
-	dprintf ("bonobo_socket_size_allocate %p: (%d, %d), (%d, %d), %p, %p\n",
+	dbgprintf ("bonobo_socket_size_allocate %p: (%d, %d), (%d, %d), %p, %p\n",
 		 widget, allocation->x, allocation->y,
 		 allocation->width, allocation->height,
 		 socket->plug_widget, socket->plug_window);
@@ -292,7 +292,7 @@ bonobo_socket_size_request (GtkWidget      *widget,
 	BonoboSocket *socket = (BonoboSocket *) widget;
 	GtkSocket    *gtk_socket = (GtkSocket *) widget;
 
-	dprintf ("pre bonobo_socket_size_request %p: realized %d, %s frame, %d %d\n",
+	dbgprintf ("pre bonobo_socket_size_request %p: realized %d, %s frame, %d %d\n",
 		 widget, GTK_WIDGET_REALIZED (widget) ? 1:0,
 		 socket->frame ? "has" : "no",
 		 gtk_socket->is_mapped, gtk_socket->have_size);
@@ -330,14 +330,14 @@ bonobo_socket_size_request (GtkWidget      *widget,
 	}
 #endif
 
-	dprintf ("bonobo_socket_size_request %p: %d, %d\n",
+	dbgprintf ("bonobo_socket_size_request %p: %d, %d\n",
 		 widget, requisition->width, requisition->height);
 }
 
 static void
 bonobo_socket_show (GtkWidget *widget)
 {
-	dprintf ("bonobo_socket_show %p\n", widget);
+	dbgprintf ("bonobo_socket_show %p\n", widget);
 
 	/* We do a check_resize here, since if we're in-proc we
 	 * want to force a size_allocate on the contained GtkPlug,
@@ -359,7 +359,7 @@ bonobo_socket_show_all (GtkWidget *widget)
 static gboolean
 bonobo_socket_plug_removed (GtkSocket *socket)
 {
-	dprintf ("bonobo_socket_plug_removed %p\n", socket);
+	dbgprintf ("bonobo_socket_plug_removed %p\n", socket);
 
 	return TRUE;
 }
