@@ -181,6 +181,7 @@ impl_style_changed (GtkToolbar *toolbar,
 	gtk_widget_queue_resize (GTK_WIDGET (toolbar));
 
 	GTK_TOOLBAR_CLASS (internal_toolbar_parent_class)->style_changed (toolbar, style);
+	g_list_free (items);
 }
 
 static void

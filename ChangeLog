@@ -1,5 +1,10 @@
 2006-11-15  Kjartan Maraas  <kmaraas@gnome.org>
 
+	* bonobo/bonobo-ui-internal-toolbar.c: (impl_style_changed):
+	Fix a GList leak.
+
+2006-11-15  Kjartan Maraas  <kmaraas@gnome.org>
+
 	* bonobo/bonobo-canvas-component.c:
 	(impl_Bonobo_Canvas_Component_realize): Remove unused bits.
 	* bonobo/bonobo-control-frame.c: (control_connection_died_cb),
