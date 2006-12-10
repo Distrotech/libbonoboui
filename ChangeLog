@@ -1,3 +1,7 @@
+2006-12-10  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
+
+	* bonobo/bonobo-ui-init-gtk.c: Add missing #include <popt.h>.
+
 2006-12-10  P. Henrique Silva  <ph.silva@gmail.com>
 
 	reviewed by: Gustavo Carneiro
