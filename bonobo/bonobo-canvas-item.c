@@ -21,7 +21,6 @@
 #include <bonobo/bonobo-types.h>
 #include <bonobo/bonobo-main.h>
 #include <glib/gi18n.h>
-#include <libgnome/gnome-macros.h>
 #include <gdk/gdkprivate.h>
 #if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
@@ -32,10 +31,7 @@
 #endif
 #include <gtk/gtksignal.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboCanvasItem,
-			 bonobo_canvas_item,
-			 GObject,
-			 GNOME_TYPE_CANVAS_ITEM)
+G_DEFINE_TYPE (BonoboCanvasItem, bonobo_canvas_item, GNOME_TYPE_CANVAS_ITEM)
 
 typedef struct {
 	POA_Bonobo_Canvas_ComponentProxy proxy_servant;
@@ -187,8 +183,8 @@ gbi_update (GnomeCanvasItem *item, double *item_affine,
 	if (getenv ("DEBUG_BI"))
 		g_message ("gbi_update");
 
-	GNOME_CALL_PARENT (GNOME_CANVAS_ITEM_CLASS, update,
-			   (item, item_affine, item_clip_path, item_flags));
+	GNOME_CANVAS_ITEM_CLASS (bonobo_canvas_item_parent_class)->update
+			   (item, item_affine, item_clip_path, item_flags);
 	
 	for (i = 0; i < 6; i++)
 		affine [i] = item_affine [i];
@@ -255,7 +251,7 @@ gbi_realize (GnomeCanvasItem *item)
 	if (getenv ("DEBUG_BI"))
 		g_message ("gbi_realize");
 	
-	GNOME_CALL_PARENT (GNOME_CANVAS_ITEM_CLASS, realize, (item));
+	GNOME_CANVAS_ITEM_CLASS (bonobo_canvas_item_parent_class)->realize (item);
 
 	if (gbi->priv->object == CORBA_OBJECT_NIL) {
 		gbi->priv->realize_pending = 1;
@@ -303,7 +299,7 @@ gbi_unrealize (GnomeCanvasItem *item)
 		CORBA_exception_free (&ev);
 	}
 
-	GNOME_CALL_PARENT (GNOME_CANVAS_ITEM_CLASS, unrealize, (item));
+	GNOME_CANVAS_ITEM_CLASS (bonobo_canvas_item_parent_class)->unrealize (item);
 }
 
 static void
@@ -663,7 +659,7 @@ gbi_finalize (GObject *object)
 	g_free (gbi->priv);
 	CORBA_exception_free (&ev);
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+	G_OBJECT_CLASS (bonobo_canvas_item_parent_class)->finalize (object);
 }
 
 static void
@@ -825,7 +821,7 @@ create_proxy (GnomeCanvasItem *item)
 }
 
 static void
-bonobo_canvas_item_instance_init (BonoboCanvasItem *gbi)
+bonobo_canvas_item_init (BonoboCanvasItem *gbi)
 {
 	gbi->priv = g_new0 (BonoboCanvasItemPrivate, 1);
 	gbi->priv->proxy = create_proxy (GNOME_CANVAS_ITEM (gbi));

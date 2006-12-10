@@ -10,16 +10,13 @@
 
 #include <config.h>
 #include <glib/gi18n.h>
-#include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-toolbar.h>
 #include <bonobo/bonobo-ui-toolbar-item.h>
 #include <bonobo/bonobo-ui-toolbar-popup-item.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboUIToolbar,
-			 bonobo_ui_toolbar,
-			 GObject,
-			 GTK_TYPE_CONTAINER)
+G_DEFINE_TYPE (BonoboUIToolbar, bonobo_ui_toolbar, GTK_TYPE_CONTAINER)
+
 enum {
 	PROP_0,
 	PROP_ORIENTATION,
@@ -732,7 +729,7 @@ impl_dispose (GObject *object)
 		g_object_ref_sink (GTK_OBJECT (priv->tooltips));
 	priv->tooltips = NULL;
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, dispose, (object));
+	G_OBJECT_CLASS (bonobo_ui_toolbar_parent_class)->dispose (object);
 }
 
 static void
@@ -743,7 +740,7 @@ impl_finalize (GObject *object)
 	g_list_free (toolbar->priv->items);
 	g_free (toolbar->priv);
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+	G_OBJECT_CLASS (bonobo_ui_toolbar_parent_class)->finalize (object);
 }
 
 /* GtkWidget methods.  */
@@ -1169,7 +1166,7 @@ bonobo_ui_toolbar_class_init (BonoboUIToolbarClass *toolbar_class)
 }
 
 static void
-bonobo_ui_toolbar_instance_init (BonoboUIToolbar *toolbar)
+bonobo_ui_toolbar_init (BonoboUIToolbar *toolbar)
 {
 	AtkObject *ao;
 	BonoboUIToolbarStyle style;

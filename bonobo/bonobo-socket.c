@@ -21,7 +21,6 @@
 #if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
 #endif
-#include <libgnome/gnome-macros.h>
 
 
 /* Used to turn on any socket sizing
@@ -39,8 +38,7 @@ typedef struct {
 	guint descendant_has_focus : 1;
 } BonoboSocketPrivate;
 
-GNOME_CLASS_BOILERPLATE (BonoboSocket, bonobo_socket,
-			 GObject, GTK_TYPE_SOCKET)
+G_DEFINE_TYPE (BonoboSocket, bonobo_socket, GTK_TYPE_SOCKET)
 
 static void
 bonobo_socket_finalize (GObject *object)
@@ -58,7 +56,7 @@ bonobo_socket_finalize (GObject *object)
 	g_free (priv);
 	socket->priv = NULL;
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+	G_OBJECT_CLASS (bonobo_socket_parent_class)->finalize (object);
 }
 
 gboolean
@@ -88,7 +86,7 @@ bonobo_socket_dispose (GObject *object)
 		priv->set_focus_id = 0;
 	}
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, dispose, (object));
+	G_OBJECT_CLASS (bonobo_socket_parent_class)->dispose (object);
 }
 
 static void
@@ -103,7 +101,7 @@ bonobo_socket_realize (GtkWidget *widget)
 
 	dbgprintf ("bonobo_socket_realize %p\n", widget);
 
-	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, realize, (widget));
+	GTK_WIDGET_CLASS (bonobo_socket_parent_class)->realize (widget);
 
 	if (socket->frame) {
 		g_object_ref (socket->frame);
@@ -125,7 +123,7 @@ bonobo_socket_unrealize (GtkWidget *widget)
 	/* To stop evilness inside Gtk+ */
 	GTK_WIDGET_UNSET_FLAGS (widget, GTK_REALIZED);
 
-	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, unrealize, (widget));
+	GTK_WIDGET_CLASS (bonobo_socket_parent_class)->unrealize (widget);
 }
 
 static gboolean
@@ -134,7 +132,7 @@ bonobo_socket_expose_event (GtkWidget      *widget,
 {
 	gboolean retval;
 
-	retval = GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
+	retval = GTK_WIDGET_CLASS (bonobo_socket_parent_class)->expose_event (widget, event);
 
 	dbgprintf ("bonobo_socket_expose_event %p (%d, %d), (%d, %d)\n",
 		 widget,
@@ -228,7 +226,7 @@ bonobo_socket_hierarchy_changed (GtkWidget *widget, GtkWidget *previous_toplevel
 		priv->set_focus_id = 0;
 	}
 
-	(* GTK_WIDGET_CLASS (parent_class)->hierarchy_changed) (widget, previous_toplevel);
+	(* GTK_WIDGET_CLASS (bonobo_socket_parent_class)->hierarchy_changed) (widget, previous_toplevel);
 
 	if (socket->socket.toplevel && GTK_IS_WINDOW (socket->socket.toplevel))
 		priv->set_focus_id = g_signal_connect_after (socket->socket.toplevel, "set_focus",
@@ -250,7 +248,7 @@ bonobo_socket_focus_in (GtkWidget     *widget,
 	else
 		dbgprintf ("No activate on focus in");
 
-	return GTK_WIDGET_CLASS (parent_class)->focus_in_event (widget, focus);
+	return GTK_WIDGET_CLASS (bonobo_socket_parent_class)->focus_in_event (widget, focus);
 }
 
 /* NOTE: This will only get called in the out-of-process case.  GTK+ only sends
@@ -268,7 +266,7 @@ bonobo_socket_focus_out (GtkWidget     *widget,
 	else
 		dbgprintf ("No de-activate on focus out");
 
-	return GTK_WIDGET_CLASS (parent_class)->focus_out_event (widget, focus);
+	return GTK_WIDGET_CLASS (bonobo_socket_parent_class)->focus_out_event (widget, focus);
 }
 
 static void
@@ -282,7 +280,7 @@ bonobo_socket_size_allocate (GtkWidget     *widget,
 		 allocation->width, allocation->height,
 		 socket->plug_widget, socket->plug_window);
 
-	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, size_allocate, (widget, allocation));
+	GTK_WIDGET_CLASS (bonobo_socket_parent_class)->size_allocate (widget, allocation);
 }
 
 static void
@@ -302,8 +300,8 @@ bonobo_socket_size_request (GtkWidget      *widget,
 	    !socket->frame ||
 	    (gtk_socket->is_mapped && gtk_socket->have_size))
 #endif
-		GNOME_CALL_PARENT (GTK_WIDGET_CLASS, size_request,
-				   (widget, requisition));
+		GTK_WIDGET_CLASS (bonobo_socket_parent_class)->size_request
+			(widget, requisition);
 
 #ifndef DEBUG_RAW_GTK
 	else if (gtk_socket->have_size &&
@@ -346,7 +344,7 @@ bonobo_socket_show (GtkWidget *widget)
 	 * extreme ugliness and flicker */
 	gtk_container_check_resize (GTK_CONTAINER (widget));
 
-	GNOME_CALL_PARENT (GTK_WIDGET_CLASS, show, (widget));
+	GTK_WIDGET_CLASS (bonobo_socket_parent_class)->show (widget);
 }
 
 static void
@@ -394,7 +392,7 @@ bonobo_socket_class_init (BonoboSocketClass *klass)
 }
 
 static void
-bonobo_socket_instance_init (BonoboSocket *socket)
+bonobo_socket_init (BonoboSocket *socket)
 {
 	BonoboSocketPrivate *priv;
 

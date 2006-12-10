@@ -12,12 +12,10 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <bonobo-ui-private.h>
 #include <bonobo-ui-toolbar-button-item.h>
-#include <libgnome/gnome-macros.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboUIToolbarButtonItem,
-			 bonobo_ui_toolbar_button_item,
-			 GObject,
-			 bonobo_ui_toolbar_item_get_type ())
+G_DEFINE_TYPE (BonoboUIToolbarButtonItem,
+	       bonobo_ui_toolbar_button_item,
+	       BONOBO_TYPE_UI_TOOLBAR_ITEM)
 
 /* Spacing between the icon and the label.  */
 #define SPACING 2
@@ -229,7 +227,7 @@ impl_finalize (GObject *object)
 	g_free (button_item->priv);
 	button_item->priv = NULL;
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+	G_OBJECT_CLASS (bonobo_ui_toolbar_button_item_parent_class)->finalize (object);
 }
 
 /* BonoboUIToolbarItem signals.  */
@@ -244,8 +242,8 @@ impl_set_style (BonoboUIToolbarItem     *item,
 
 	layout_pixmap_and_label (button_item, style);
 
-	GNOME_CALL_PARENT (BONOBO_UI_TOOLBAR_ITEM_CLASS,
-			   set_style, (item, style));
+	BONOBO_UI_TOOLBAR_ITEM_CLASS (bonobo_ui_toolbar_button_item_parent_class)->set_style
+		(item, style);
 }
 
 static void
@@ -320,7 +318,7 @@ bonobo_ui_toolbar_button_item_class_init (BonoboUIToolbarButtonItemClass *button
 }
 
 static void
-bonobo_ui_toolbar_button_item_instance_init (
+bonobo_ui_toolbar_button_item_init (
 	BonoboUIToolbarButtonItem *toolbar_button_item)
 {
 	BonoboUIToolbarButtonItemPrivate *priv;

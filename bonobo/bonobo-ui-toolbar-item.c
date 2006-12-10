@@ -10,13 +10,8 @@
 #include <config.h>
 #include <bonobo/bonobo-ui-private.h>
 #include <bonobo-ui-toolbar-item.h>
-#include <libgnome/gnome-macros.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboUIToolbarItem,
-			 bonobo_ui_toolbar_item,
-			 GObject,
-			 GTK_TYPE_BIN)
-
+G_DEFINE_TYPE (BonoboUIToolbarItem, bonobo_ui_toolbar_item, GTK_TYPE_BIN)
 
 struct _BonoboUIToolbarItemPrivate {
 	/* Whether this item wants to have a label when the toolbar style is
@@ -60,7 +55,7 @@ impl_finalize (GObject *object)
 
 	g_free (toolbar_item->priv);
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+	G_OBJECT_CLASS (bonobo_ui_toolbar_item_parent_class)->finalize (object);
 }
 
 /* GtkWidget methods.  */
@@ -242,7 +237,7 @@ bonobo_ui_toolbar_item_class_init (BonoboUIToolbarItemClass *object_class)
 }
 
 static void
-bonobo_ui_toolbar_item_instance_init (BonoboUIToolbarItem *toolbar_item)
+bonobo_ui_toolbar_item_init (BonoboUIToolbarItem *toolbar_item)
 {
 	BonoboUIToolbarItemPrivate *priv;
 

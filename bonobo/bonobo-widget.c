@@ -37,10 +37,8 @@
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-moniker-util.h>
-#include <libgnome/gnome-macros.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboWidget, bonobo_widget,
-			 GObject, GTK_TYPE_BIN)
+G_DEFINE_TYPE (BonoboWidget, bonobo_widget, GTK_TYPE_BIN)
 
 struct _BonoboWidgetPrivate {
 	/* Control stuff. */
@@ -368,7 +366,7 @@ bonobo_widget_dispose (GObject *object)
 		priv->frame = NULL;
 	}
 
-	parent_class->dispose (object);
+	G_OBJECT_CLASS (bonobo_widget_parent_class)->dispose (object);
 }
 
 static void
@@ -378,7 +376,7 @@ bonobo_widget_finalize (GObject *object)
 	
 	g_free (bw->priv);
 
-	parent_class->finalize (object);
+	G_OBJECT_CLASS (bonobo_widget_parent_class)->finalize (object);
 }
 
 static void
@@ -434,7 +432,7 @@ bonobo_widget_remove (GtkContainer *container,
 
 	bw->priv->frame = NULL;
 
-	GTK_CONTAINER_CLASS (parent_class)->remove (container, widget);
+	GTK_CONTAINER_CLASS (bonobo_widget_parent_class)->remove (container, widget);
 }
 
 static void
@@ -454,7 +452,7 @@ bonobo_widget_class_init (BonoboWidgetClass *klass)
 }
 
 static void
-bonobo_widget_instance_init (BonoboWidget *bw)
+bonobo_widget_init (BonoboWidget *bw)
 {
 	bw->priv = g_new0 (BonoboWidgetPrivate, 1);
 }

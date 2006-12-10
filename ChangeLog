@@ -1,3 +1,62 @@
+2006-12-10  P. Henrique Silva  <ph.silva@gmail.com>
+
+	reviewed by: Gustavo Carneiro
+
+	* bonobo/bonobo-canvas-item.c (gbi_update, gbi_realize),
+	(gbi_unrealize, gbi_finalize, bonobo_canvas_item_init):
+	* bonobo/bonobo-dock-band.c (bonobo_dock_band_init),
+	(bonobo_dock_band_map, bonobo_dock_band_unmap),
+	(bonobo_dock_band_finalize):
+	* bonobo/bonobo-dock-item-grip.c (bonobo_dock_item_grip_init),
+	(bonobo_dock_item_grip_key_press_event),
+	(bonobo_dock_item_grip_class_init):
+	* bonobo/bonobo-dock-item.c (bonobo_dock_item_init),
+	(bonobo_dock_item_finalize, bonobo_dock_item_unrealize),
+	(bonobo_dock_item_float_window_expose, bonobo_dock_item_expose),
+	(bonobo_dock_item_add, bonobo_dock_item_remove):
+	* bonobo/bonobo-dock.c (bonobo_dock_init, bonobo_dock_map),
+	(bonobo_dock_unmap, bonobo_dock_finalize):
+	* bonobo/bonobo-plug.c (bonobo_plug_realize),
+	(bonobo_plug_unrealize, bonobo_plug_map, bonobo_plug_dispose),
+	(bonobo_plug_finalize, bonobo_plug_size_allocate),
+	(bonobo_plug_size_request, bonobo_plug_expose_event),
+	(bonobo_plug_init):
+	* bonobo/bonobo-selector-widget.c:
+	(bonobo_selector_widget_finalize, bonobo_selector_widget_init):
+	* bonobo/bonobo-selector.c (bonobo_selector_finalize),
+	(bonobo_selector_init):
+	* bonobo/bonobo-socket.c (bonobo_socket_finalize),
+	(bonobo_socket_dispose, bonobo_socket_realize),
+	(bonobo_socket_unrealize, bonobo_socket_expose_event),
+	(bonobo_socket_hierarchy_changed, bonobo_socket_focus_in),
+	(bonobo_socket_focus_out, bonobo_socket_size_allocate),
+	(bonobo_socket_size_request, bonobo_socket_show),
+	(bonobo_socket_init):
+	* bonobo/bonobo-ui-config-widget.c (bonobo_ui_config_widget_init),
+	(bonobo_ui_config_widget_finalize):
+	* bonobo/bonobo-ui-toolbar-button-item.c (impl_finalize),
+	(impl_set_style, bonobo_ui_toolbar_button_item_init):
+	* bonobo/bonobo-ui-toolbar-control-item.c:
+	(impl_toolbar_reconfigured, impl_dispose),
+	(impl_create_menu_proxy, impl_notify, impl_map_event),
+	(bonobo_ui_toolbar_control_item_init):
+	* bonobo/bonobo-ui-toolbar-item.c (impl_finalize),
+	(bonobo_ui_toolbar_item_init):
+	* bonobo/bonobo-ui-toolbar-popup-itemc (impl_set_orientation),
+	(bonobo_ui_toolbar_popup_item_init):
+	* bonobo/bonobo-ui-toolbar-toggle-button-item.c:
+	(bonobo_ui_toolbar_toggle_button_item_init):
+	* bonobo/bonobo-ui-toolbar.c (impl_dispose, impl_finalize),
+	(bonobo_ui_toolbar_init):
+	* bonobo/bonobo-widget.c (bonobo_widget_dispose),
+	(bonobo_widget_finalize, bonobo_widget_remove),
+	(bonobo_widget_init):
+	* bonobo/bonobo-window.c (bonobo_window_dispose),
+	(bonobo_window_finalize, bonobo_window_key_press_event),
+	(bonobo_window_key_release_event, bonobo_window_init):
+
+	Bug 383497 - build fails: deprecated macros used in libbonoboui.
+
 2006-11-15  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* bonobo/bonobo-ui-internal-toolbar.c: (impl_style_changed):

@@ -21,7 +21,6 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-selector-widget.h>
@@ -29,10 +28,7 @@
 
 #include "bonobo-insert-component.xpm"
 
-GNOME_CLASS_BOILERPLATE (BonoboSelectorWidget,
-			 bonobo_selector_widget,
-			 GObject, GTK_TYPE_VBOX)
-
+G_DEFINE_TYPE (BonoboSelectorWidget, bonobo_selector_widget, GTK_TYPE_VBOX)
 
 #define GET_CLASS(o) BONOBO_SELECTOR_WIDGET_CLASS (GTK_OBJECT_GET_CLASS (o))
 
@@ -164,7 +160,7 @@ bonobo_selector_widget_finalize (GObject *object)
 {
 	g_free (BONOBO_SELECTOR_WIDGET (object)->priv);
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+	G_OBJECT_CLASS (bonobo_selector_widget_parent_class)->finalize (object);
 }
 
 static gchar *
@@ -275,7 +271,7 @@ row_activated (GtkTreeView          *tree_view,
 }
 
 static void
-bonobo_selector_widget_instance_init (BonoboSelectorWidget *widget)
+bonobo_selector_widget_init (BonoboSelectorWidget *widget)
 {
 	BonoboSelectorWidget *sel = BONOBO_SELECTOR_WIDGET (widget);
 	GtkWidget *scrolled, *pixmap;

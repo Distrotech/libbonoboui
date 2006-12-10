@@ -10,12 +10,10 @@
 
 #include <config.h>
 #include <bonobo/bonobo-ui-toolbar-popup-item.h>
-#include <libgnome/gnome-macros.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboUIToolbarPopupItem,
-			 bonobo_ui_toolbar_popup_item,
-			 BonoboUIToolbarToggleButtonItem,
-			 bonobo_ui_toolbar_toggle_button_item_get_type ())
+G_DEFINE_TYPE (BonoboUIToolbarPopupItem,
+	       bonobo_ui_toolbar_popup_item,
+	       BONOBO_TYPE_UI_TOOLBAR_TOGGLE_BUTTON_ITEM)
 
 static GdkPixbuf *right_arrow_pixbuf = NULL;
 static GdkPixbuf *down_arrow_pixbuf = NULL;
@@ -85,8 +83,7 @@ impl_set_orientation (BonoboUIToolbarItem *item,
 	GtkWidget *image;
 	GdkPixbuf *icon;
 
-	GNOME_CALL_PARENT (
-		BONOBO_UI_TOOLBAR_ITEM_CLASS, set_orientation, (item, orientation));
+	BONOBO_UI_TOOLBAR_ITEM_CLASS(bonobo_ui_toolbar_popup_item_parent_class)->set_orientation (item, orientation);
 
 	popup_item = BONOBO_UI_TOOLBAR_POPUP_ITEM (item);
 
@@ -109,7 +106,7 @@ bonobo_ui_toolbar_popup_item_class_init (
 }
 
 static void
-bonobo_ui_toolbar_popup_item_instance_init (
+bonobo_ui_toolbar_popup_item_init (
 	BonoboUIToolbarPopupItem *toolbar_popup_item)
 {
 }

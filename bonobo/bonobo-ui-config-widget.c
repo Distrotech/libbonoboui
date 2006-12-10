@@ -18,11 +18,8 @@
 #include <bonobo/bonobo-ui-config-widget.h>
 #include <bonobo/bonobo-ui-sync-toolbar.h>
 #include <bonobo/bonobo-ui-toolbar.h>
-#include <libgnome/gnome-macros.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboUIConfigWidget,
-			 bonobo_ui_config_widget,
-			 GtkVBox, GTK_TYPE_VBOX)
+G_DEFINE_TYPE (BonoboUIConfigWidget, bonobo_ui_config_widget, GTK_TYPE_VBOX)
 
 struct _BonoboUIConfigWidgetPrivate {
 	GtkTreeView  *list_view;
@@ -359,7 +356,7 @@ widgets_init (BonoboUIConfigWidget *config,
 }
 
 static void
-bonobo_ui_config_widget_instance_init (BonoboUIConfigWidget *config)
+bonobo_ui_config_widget_init (BonoboUIConfigWidget *config)
 {
 	config->priv = g_new0 (BonoboUIConfigWidgetPrivate, 1);
 }
@@ -371,7 +368,7 @@ bonobo_ui_config_widget_finalize (GObject *object)
 
 	g_free (config->priv);
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+	G_OBJECT_CLASS (bonobo_ui_config_widget_parent_class)->finalize (object);
 }
 
 GtkWidget *

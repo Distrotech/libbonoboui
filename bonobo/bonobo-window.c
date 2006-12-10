@@ -16,7 +16,6 @@
 #include <bonobo/bonobo-window.h>
 #include <libbonobo.h>
 #include <glib/gi18n.h>
-#include <libgnome/gnome-macros.h>
 
 #include <bonobo/bonobo-ui-preferences.h>
 #include <bonobo/bonobo-ui-engine.h>
@@ -29,8 +28,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboWindow, bonobo_window,
-			 GtkWindow, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE (BonoboWindow, bonobo_window, GTK_TYPE_WINDOW)
 
 struct _BonoboWindowPrivate {
 	BonoboUIEngine *engine;
@@ -140,7 +138,7 @@ bonobo_window_dispose (GObject *object)
 		win->priv->engine = NULL;
 	}
 
-	G_OBJECT_CLASS (parent_class)->dispose (object);
+	G_OBJECT_CLASS (bonobo_window_parent_class)->dispose (object);
 }
 
 static void
@@ -154,7 +152,7 @@ bonobo_window_finalize (GObject *object)
 
 	win->priv = NULL;
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (bonobo_window_parent_class)->finalize (object);
 }
 
 /**
@@ -264,7 +262,7 @@ bonobo_window_key_press_event (GtkWidget *widget,
 	BonoboUISyncKeys *sync;
 	BonoboWindow *window = (BonoboWindow *) widget;
 
-	handled = GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
+	handled = GTK_WIDGET_CLASS (bonobo_window_parent_class)->key_press_event (widget, event);
 	if (handled)
 		return TRUE;
 
@@ -279,7 +277,7 @@ static gboolean
 bonobo_window_key_release_event (GtkWidget *widget,
 				 GdkEventKey *event)
 {
-	return GTK_WIDGET_CLASS (parent_class)->key_release_event (widget, event);
+	return GTK_WIDGET_CLASS (bonobo_window_parent_class)->key_release_event (widget, event);
 }
 
 static void
@@ -350,7 +348,7 @@ bonobo_window_class_init (BonoboWindowClass *klass)
 }
 
 static void
-bonobo_window_instance_init (BonoboWindow *win)
+bonobo_window_init (BonoboWindow *win)
 {
 	BonoboUIContainer *ui_container = NULL;
 	

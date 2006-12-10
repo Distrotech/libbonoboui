@@ -18,11 +18,9 @@
 #include <config.h>
 #include <string.h>
 #include <glib/gi18n.h>
-#include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-selector.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboSelector, bonobo_selector,
-			 GtkDialog, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE (BonoboSelector, bonobo_selector, GTK_TYPE_DIALOG)
 
 #define DEFAULT_INTERFACE "IDL:Bonobo/Control:1.0"
 #define BONOBO_PAD_SMALL 4
@@ -51,7 +49,7 @@ bonobo_selector_finalize (GObject *object)
 
 	g_free (BONOBO_SELECTOR (object)->priv);
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+	G_OBJECT_CLASS (bonobo_selector_parent_class)->finalize (object);
 }
 
 /**
@@ -257,7 +255,7 @@ bonobo_selector_internal_construct (BonoboSelector       *sel)
 }
 
 static void
-bonobo_selector_instance_init (BonoboSelector *sel)
+bonobo_selector_init (BonoboSelector *sel)
 {
 	BonoboSelectorWidget *selectorwidget = NULL;
 	

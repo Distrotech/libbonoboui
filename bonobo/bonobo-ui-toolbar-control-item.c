@@ -15,12 +15,10 @@
 #include <bonobo/bonobo-ui-toolbar-control-item.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-property-bag-client.h>
-#include <libgnome/gnome-macros.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboUIToolbarControlItem,
-			 bonobo_ui_toolbar_control_item,
-			 GObject,
-			 GTK_TYPE_TOOL_BUTTON)
+G_DEFINE_TYPE (BonoboUIToolbarControlItem,
+	       bonobo_ui_toolbar_control_item,
+	       GTK_TYPE_TOOL_BUTTON)
 
 static void
 set_control_property_bag_value (BonoboUIToolbarControlItem *item,
@@ -141,7 +139,7 @@ impl_toolbar_reconfigured (GtkToolItem *item)
 	set_control_property_bag_gint (control_item, "style",
 				       gtk_toolbar_get_style (toolbar));
 
-	GNOME_CALL_PARENT (GTK_TOOL_ITEM_CLASS, toolbar_reconfigured, (item));
+	GTK_TOOL_ITEM_CLASS (bonobo_ui_toolbar_control_item_parent_class)->toolbar_reconfigured (item);
 }
 
 static void
@@ -157,7 +155,7 @@ impl_dispose (GObject *object)
 		control_item->widget = NULL;
 	}
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, dispose, (object));
+	G_OBJECT_CLASS (bonobo_ui_toolbar_control_item_parent_class)->dispose (object);
 }
 
 static void
@@ -200,7 +198,7 @@ impl_create_menu_proxy (GtkToolItem *tool_item)
 	if (control_item->hdisplay != BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_CONTROL ||
 	    control_item->vdisplay != BONOBO_UI_TOOLBAR_CONTROL_DISPLAY_CONTROL)
 		/* Can cope with just a button */
-		return GTK_TOOL_ITEM_CLASS (parent_class)->create_menu_proxy (tool_item);
+		return GTK_TOOL_ITEM_CLASS (bonobo_ui_toolbar_control_item_parent_class)->create_menu_proxy (tool_item);
 
 	menu_item = gtk_menu_item_new ();
 
@@ -225,7 +223,7 @@ impl_notify (GObject    *object,
 			(bonobo_widget_get_control_frame (control_item->control),
 			 GTK_WIDGET_SENSITIVE (control_item) ? Bonobo_Gtk_StateNormal : Bonobo_Gtk_StateInsensitive);
 
-	GNOME_CALL_PARENT (G_OBJECT_CLASS, notify, (object, pspec));
+	G_OBJECT_CLASS (bonobo_ui_toolbar_control_item_parent_class)->notify (object, pspec);
 }
 
 static gboolean
@@ -237,7 +235,7 @@ impl_map_event (GtkWidget   *widget,
 	if (control_item->widget && control_item->widget->parent != control_item->box)
 		menu_item_return_control (control_item->widget->parent, control_item);
 
-	return GTK_WIDGET_CLASS (parent_class)->map_event (widget, event);
+	return GTK_WIDGET_CLASS (bonobo_ui_toolbar_control_item_parent_class)->map_event (widget, event);
 }
 
 static void
@@ -257,7 +255,7 @@ bonobo_ui_toolbar_control_item_class_init (BonoboUIToolbarControlItemClass *klas
 }
 
 static void
-bonobo_ui_toolbar_control_item_instance_init (BonoboUIToolbarControlItem *control_item)
+bonobo_ui_toolbar_control_item_init (BonoboUIToolbarControlItem *control_item)
 {
 	gtk_tool_item_set_homogeneous (GTK_TOOL_ITEM (control_item), FALSE);
 

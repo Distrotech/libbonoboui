@@ -24,13 +24,11 @@
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
-#include <libgnome/gnome-macros.h>
 #include "bonobo-dock.h"
 #include "bonobo-dock-band.h"
 #include "bonobo-dock-item.h"
 
-GNOME_CLASS_BOILERPLATE (BonoboDockBand, bonobo_dock_band,
-			 GtkContainer, GTK_TYPE_CONTAINER)
+G_DEFINE_TYPE (BonoboDockBand, bonobo_dock_band, GTK_TYPE_CONTAINER)
 
 #define noBONOBO_DOCK_BAND_DEBUG
 
@@ -151,7 +149,7 @@ bonobo_dock_band_class_init (BonoboDockBandClass *klass)
 }
 
 static void
-bonobo_dock_band_instance_init (BonoboDockBand *band)
+bonobo_dock_band_init (BonoboDockBand *band)
 {
   GtkWidget *widget = GTK_WIDGET (band);
 
@@ -540,7 +538,7 @@ bonobo_dock_band_map (GtkWidget *widget)
   g_return_if_fail(widget != NULL);
   g_return_if_fail(BONOBO_IS_DOCK_BAND(widget));
 
-  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, map, (widget));
+  GTK_WIDGET_CLASS (bonobo_dock_band_parent_class)->map (widget);
 
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
@@ -561,7 +559,7 @@ bonobo_dock_band_unmap (GtkWidget *widget)
   g_return_if_fail(widget != NULL);
   g_return_if_fail(BONOBO_IS_DOCK_BAND(widget));
 
-  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, unmap, (widget));
+  GTK_WIDGET_CLASS (bonobo_dock_band_parent_class)->unmap (widget);
 
   for (lp = band->children; lp != NULL; lp = lp->next)
     {
@@ -656,7 +654,7 @@ bonobo_dock_band_finalize (GObject *object)
   g_free (self->_priv);
   self->_priv = NULL;
 
-  GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+  G_OBJECT_CLASS (bonobo_dock_band_parent_class)->finalize (object);
 }
 
 

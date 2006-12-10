@@ -47,7 +47,6 @@
 #include <gtk/gtkwindow.h>
 
 #include <glib/gi18n.h>
-#include <libgnome/gnome-macros.h>
 
 struct _BonoboDockItemPrivate
 {
@@ -59,8 +58,7 @@ struct _BonoboDockItemPrivate
   gboolean  float_window_hidden;
 };
 
-GNOME_CLASS_BOILERPLATE (BonoboDockItem, bonobo_dock_item,
-			 GtkBin, GTK_TYPE_BIN)
+G_DEFINE_TYPE (BonoboDockItem, bonobo_dock_item, GTK_TYPE_BIN)
 
 enum {
   PROP_0,
@@ -329,7 +327,7 @@ bonobo_dock_item_class_init (BonoboDockItemClass *klass)
 }
 
 static void
-bonobo_dock_item_instance_init (BonoboDockItem *dock_item)
+bonobo_dock_item_init (BonoboDockItem *dock_item)
 {
   GTK_WIDGET_UNSET_FLAGS (dock_item, GTK_NO_WINDOW);
 
@@ -436,7 +434,7 @@ bonobo_dock_item_finalize (GObject *object)
   g_free (di->_priv);
   di->_priv = NULL;
 
-  GNOME_CALL_PARENT (G_OBJECT_CLASS, finalize, (object));
+  G_OBJECT_CLASS (bonobo_dock_item_parent_class)->finalize (object);
 }
 
 static void
@@ -603,7 +601,7 @@ bonobo_dock_item_unrealize (GtkWidget *widget)
   gtk_widget_destroy (GTK_WIDGET (di->_priv->float_window));
   di->_priv->float_window = NULL;
 
-  GNOME_CALL_PARENT (GTK_WIDGET_CLASS, unrealize, (widget));
+  GTK_WIDGET_CLASS (bonobo_dock_item_parent_class)->unrealize (widget);
 }
 
 static void
@@ -941,8 +939,7 @@ bonobo_dock_item_float_window_expose (GtkWidget *widget,
     {
       bonobo_dock_item_float_window_paint (widget, event, data);
 
-      if (GTK_WIDGET_CLASS (parent_class)->expose_event)
-              return GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
+      GTK_WIDGET_CLASS (bonobo_dock_item_parent_class)->expose_event (widget, event);
     }
 
   return FALSE;
@@ -960,8 +957,7 @@ bonobo_dock_item_expose (GtkWidget      *widget,
     {
       bonobo_dock_item_paint (widget, event);
 
-      if (GTK_WIDGET_CLASS (parent_class)->expose_event)
-	      return GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
+      GTK_WIDGET_CLASS (bonobo_dock_item_parent_class)->expose_event (widget, event);
     }
 
   return FALSE;
@@ -1172,7 +1168,7 @@ bonobo_dock_item_add (GtkContainer *container,
 
   gtk_widget_set_parent_window (widget, dock_item->bin_window);
   dock_item->_priv->child = widget;
-  GNOME_CALL_PARENT (GTK_CONTAINER_CLASS, add, (container, widget));
+  GTK_CONTAINER_CLASS (bonobo_dock_item_parent_class)->add (container, widget);
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (widget),
 					"orientation");
@@ -1236,8 +1232,7 @@ bonobo_dock_item_remove (GtkContainer *container,
   g_object_unref (di->_priv->child);
   di->_priv->child = NULL;
 
-  GNOME_CALL_PARENT (GTK_CONTAINER_CLASS,
-		     remove, (container, widget));
+  GTK_CONTAINER_CLASS (bonobo_dock_item_parent_class)->remove (container, widget);
   
 }
 

@@ -12,7 +12,6 @@
 
 #include "config.h"
 #include <gdk/gdkkeysyms.h>
-#include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
@@ -34,8 +33,7 @@ enum {
 	PROP_FORWARD_EVENTS
 };
 
-GNOME_CLASS_BOILERPLATE (BonoboPlug, bonobo_plug,
-			 GObject, GTK_TYPE_PLUG)
+G_DEFINE_TYPE (BonoboPlug, bonobo_plug, GTK_TYPE_PLUG)
 
 /**
  * bonobo_plug_construct:
@@ -165,7 +163,7 @@ bonobo_plug_realize (GtkWidget *widget)
 
 	dbgprintf ("bonobo_plug_realize %p\n", plug);
 
-	GTK_WIDGET_CLASS (parent_class)->realize (widget);
+	GTK_WIDGET_CLASS (bonobo_plug_parent_class)->realize (widget);
 }
 
 static void
@@ -175,7 +173,7 @@ bonobo_plug_unrealize (GtkWidget *widget)
 
 	dbgprintf ("bonobo_plug_unrealize %p\n", plug);
 
-	GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
+	GTK_WIDGET_CLASS (bonobo_plug_parent_class)->unrealize (widget);
 }
 
 static void
@@ -184,7 +182,7 @@ bonobo_plug_map (GtkWidget *widget)
 	dbgprintf ("bonobo_plug_map %p at size %d, %d\n",
 		 widget, widget->allocation.width,
 		 widget->allocation.height);
-	GTK_WIDGET_CLASS (parent_class)->map (widget);
+	GTK_WIDGET_CLASS (bonobo_plug_parent_class)->map (widget);
 }
 
 static void
@@ -204,7 +202,7 @@ bonobo_plug_dispose (GObject *object)
 	if (plug->control)
 		bonobo_plug_set_control (plug, NULL);
 
-	parent_class->dispose (object);
+	G_OBJECT_CLASS (bonobo_plug_parent_class)->dispose (object);
 }
 
 static void
@@ -215,7 +213,7 @@ bonobo_plug_finalize (GObject *object)
 	if (plug->priv)
 		g_free (plug->priv);
 
-	parent_class->finalize (object);
+	G_OBJECT_CLASS (bonobo_plug_parent_class)->finalize (object);
 }
 
 static void
@@ -275,14 +273,14 @@ bonobo_plug_size_allocate (GtkWidget     *widget,
 		 g_type_name_from_instance ((gpointer)GTK_BIN (widget)->child):
 		 "No child!");
 
-	GTK_WIDGET_CLASS (parent_class)->size_allocate (widget, allocation);
+	GTK_WIDGET_CLASS (bonobo_plug_parent_class)->size_allocate (widget, allocation);
 }
 
 static void
 bonobo_plug_size_request (GtkWidget      *widget,
 			  GtkRequisition *requisition)
 {
-	GTK_WIDGET_CLASS (parent_class)->size_request (widget, requisition);
+	GTK_WIDGET_CLASS (bonobo_plug_parent_class)->size_request (widget, requisition);
 
 	dbgprintf ("bonobo_plug_size_request %p: %d, %d\n",
 		 widget, requisition->width, requisition->height);
@@ -294,7 +292,7 @@ bonobo_plug_expose_event (GtkWidget      *widget,
 {
 	gboolean retval;
 
-	retval = GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
+	retval = GTK_WIDGET_CLASS (bonobo_plug_parent_class)->expose_event (widget, event);
 
 	dbgprintf ("bonobo_plug_expose_event %p (%d, %d), (%d, %d)"
 		 "%s (%d && %d == %d)\n",
@@ -386,7 +384,7 @@ bonobo_plug_button_event (GtkWidget      *widget,
 }
 
 static void
-bonobo_plug_instance_init (BonoboPlug *plug)
+bonobo_plug_init (BonoboPlug *plug)
 {
 	BonoboPlugPrivate *priv;
 

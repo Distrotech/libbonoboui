@@ -17,7 +17,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkaccessible.h>
 #include <gtk/gtkbindings.h>
-#include <libgnome/gnome-macros.h>
 #include <glib/gi18n.h>
 #include <string.h>
 
@@ -31,8 +30,7 @@ static guint signals [LAST_SIGNAL];
 
 static AtkObjectClass *a11y_parent_class = NULL;
 
-GNOME_CLASS_BOILERPLATE (BonoboDockItemGrip, bonobo_dock_item_grip,
-			 GtkWidget, GTK_TYPE_WIDGET)
+G_DEFINE_TYPE (BonoboDockItemGrip, bonobo_dock_item_grip, GTK_TYPE_WIDGET)
 
 static gint
 bonobo_dock_item_grip_expose (GtkWidget      *widget,
@@ -276,7 +274,7 @@ bonobo_dock_item_grip_activate (BonoboDockItemGrip *grip)
 }
 
 static void
-bonobo_dock_item_grip_instance_init (BonoboDockItemGrip *grip)
+bonobo_dock_item_grip_init (BonoboDockItemGrip *grip)
 {
 	GTK_WIDGET_SET_FLAGS (grip, GTK_CAN_FOCUS); 
 	GTK_WIDGET_SET_FLAGS (grip, GTK_NO_WINDOW);
@@ -307,7 +305,7 @@ bonobo_dock_item_grip_key_press_event (GtkWidget   *widget,
       return TRUE;
     }
 
-  return GTK_WIDGET_CLASS (parent_class)->key_press_event (widget, event);
+  return GTK_WIDGET_CLASS (bonobo_dock_item_grip_parent_class)->key_press_event (widget, event);
 }
 
 static void
@@ -315,8 +313,6 @@ bonobo_dock_item_grip_class_init (BonoboDockItemGripClass *klass)
 {
 	GtkBindingSet  *binding_set;
 	GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
-
-	parent_class = g_type_class_peek_parent (klass);
 
 	widget_class->expose_event = bonobo_dock_item_grip_expose;
 	widget_class->get_accessible = bonobo_dock_item_grip_get_accessible;

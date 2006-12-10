@@ -10,13 +10,11 @@
 
 #include <config.h>
 #include <stdlib.h>
-#include <libgnome/gnome-macros.h>
 #include <bonobo/bonobo-ui-toolbar-toggle-button-item.h>
 
-GNOME_CLASS_BOILERPLATE (BonoboUIToolbarToggleButtonItem,
-			 bonobo_ui_toolbar_toggle_button_item,
-			 GObject, 
-			 bonobo_ui_toolbar_button_item_get_type ())
+G_DEFINE_TYPE (BonoboUIToolbarToggleButtonItem,
+	       bonobo_ui_toolbar_toggle_button_item,
+	       BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM)
 
 enum {
 	TOGGLED,
@@ -69,7 +67,7 @@ bonobo_ui_toolbar_toggle_button_item_class_init (
 
 
 static void
-bonobo_ui_toolbar_toggle_button_item_instance_init (
+bonobo_ui_toolbar_toggle_button_item_init (
 	BonoboUIToolbarToggleButtonItem *toolbar_toggle_button_item)
 {
 	/* Nothing to do here.  */
