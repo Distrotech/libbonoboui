@@ -4,7 +4,8 @@
 	* bonobo/bonobo-control-frame.c:
 	* bonobo/bonobo-control.c:
 	* bonobo/bonobo-plug.c:
-	Make it build with the Quartz backend.
+	Make it build with the Quartz backend. Patch from Min Sik Kim
+	Closes bug #382692.
 
 2006-12-14  Kjartan Maraas  <kmaraas@gnome.org>
 
