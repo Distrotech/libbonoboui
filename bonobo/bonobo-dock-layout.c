@@ -503,14 +503,14 @@ bonobo_dock_layout_create_string (BonoboDockLayout *layout)
 
       if (i->placement == BONOBO_DOCK_FLOATING)
         tmp[tmp_count] = g_strdup_printf ("%s\\%d,%d,%d,%d",
-                                          i->item->name,
+                                          i->item->name ? i->item->name : "",
                                           (gint) i->placement,
                                           i->position.floating.x,
                                           i->position.floating.y,
                                           i->position.floating.orientation);
       else
         tmp[tmp_count] = g_strdup_printf ("%s\\%d,%d,%d,%d",
-                                          i->item->name,
+                                          i->item->name ? i->item->name : "",
                                           (gint) i->placement,
                                           i->position.docked.band_num,
                                           i->position.docked.band_position,

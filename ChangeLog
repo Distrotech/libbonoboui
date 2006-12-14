@@ -1,5 +1,11 @@
 2006-12-14  Kjartan Maraas  <kmaraas@gnome.org>
 
+	* bonobo/bonobo-dock-layout.c: (bonobo_dock_layout_create_string):
+	Guard against NULL to avoid crashes on Win32 at least. Patch from
+	Andreas Köhler. Closes bug #379365.
+
+2006-12-14  Kjartan Maraas  <kmaraas@gnome.org>
+
 	* bonobo/bonobo-ui-toolbar-popup-item.c: (set_arrow_orientation),
 	(impl_set_orientation), (bonobo_ui_toolbar_popup_item_class_init),
 	(bonobo_ui_toolbar_popup_item_construct): Use GtkArrow to draw
