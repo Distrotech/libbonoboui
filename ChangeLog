@@ -1,3 +1,17 @@
+2006-12-14  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* bonobo/bonobo-control.c:
+	* bonobo/bonobo-selector-widget.c: (bonobo_selector_widget_init):
+	* bonobo/bonobo-ui-private.h:
+	* bonobo/bonobo-ui-sync-toolbar.c:
+	(impl_bonobo_ui_sync_toolbar_state):
+	* samples/compound-doc/bonobo-hello/hello-view.c: (view_new):
+	* tools/browser/component-details.c: (component_details_init),
+	(component_details_get_info):
+	A bunch of cleanups:
+	- Don't use C++ type comments
+	- Pass NULL to gtk_label_new() to save some work.
+
 2006-12-10  Gustavo J. A. M. Carneiro  <gjc@gnome.org>
 
 	* bonobo/bonobo-ui-init-gtk.c: Add missing #include <popt.h>.

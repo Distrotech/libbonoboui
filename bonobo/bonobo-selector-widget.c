@@ -320,7 +320,7 @@ bonobo_selector_widget_init (BonoboSelectorWidget *widget)
 	frame = gtk_frame_new (_("Description"));
 	gtk_box_pack_start (GTK_BOX (sel), frame, FALSE, TRUE, 0);
 	
-	priv->desc_label = gtk_label_new ("");
+	priv->desc_label = gtk_label_new (NULL);
 	gtk_misc_set_alignment (GTK_MISC (priv->desc_label), 0.0, 0.5);
 	gtk_label_set_line_wrap (GTK_LABEL (priv->desc_label), TRUE);
 	gtk_label_set_justify (GTK_LABEL (priv->desc_label), GTK_JUSTIFY_LEFT);

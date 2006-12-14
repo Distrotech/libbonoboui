@@ -124,7 +124,7 @@ component_details_init (ComponentDetails *comp_details,
 	gtk_box_pack_start (GTK_BOX (general_vbox),
 			    description_frame, TRUE, TRUE, 0);
 
-	comp_details->priv->iid_label = gtk_label_new ("");
+	comp_details->priv->iid_label = gtk_label_new (NULL);
 	gtk_label_set_justify (GTK_LABEL (comp_details->priv->iid_label),
 			       GTK_JUSTIFY_RIGHT);
 	gtk_label_set_selectable (GTK_LABEL (comp_details->priv->iid_label),
@@ -132,7 +132,7 @@ component_details_init (ComponentDetails *comp_details,
 	gtk_container_add (GTK_CONTAINER (iid_frame),
 			   comp_details->priv->iid_label);
 
-	comp_details->priv->name_label = gtk_label_new ("");
+	comp_details->priv->name_label = gtk_label_new (NULL);
 	gtk_label_set_justify (GTK_LABEL (comp_details->priv->name_label),
 			       GTK_JUSTIFY_RIGHT);
 	gtk_label_set_selectable (
@@ -141,7 +141,7 @@ component_details_init (ComponentDetails *comp_details,
 			   comp_details->priv->name_label);
 
 
-	comp_details->priv->loc_label = gtk_label_new ("");
+	comp_details->priv->loc_label = gtk_label_new (NULL);
 	gtk_label_set_line_wrap (
 		GTK_LABEL (comp_details->priv->loc_label), TRUE);
 	gtk_label_set_justify (
@@ -152,7 +152,7 @@ component_details_init (ComponentDetails *comp_details,
 			   comp_details->priv->loc_label);
 	
 
-	comp_details->priv->description_label = gtk_label_new ("");
+	comp_details->priv->description_label = gtk_label_new (NULL);
 	gtk_label_set_line_wrap (
 		GTK_LABEL (comp_details->priv->description_label), TRUE);
 	gtk_label_set_justify (
@@ -270,12 +270,12 @@ component_details_get_info (ComponentDetails *comp_details, gchar *iid) {
 
 	len = g_list_length (comp_details->priv->components);
 	if (len == 0) {
-		// We don't handle this correctly yet.
+		/* We don't handle this correctly yet. */
 		g_print ("No components found\n");
 		g_assert_not_reached ();
 	} else if (len > 1) {
-		// This should never happen. No two components
-		// should have the same IID.
+		/* This should never happen. No two components */
+		/* should have the same IID. */
 		g_print ("Two component with the same IID!!!\n");
 		g_assert_not_reached ();
 	}

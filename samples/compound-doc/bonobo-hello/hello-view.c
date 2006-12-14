@@ -43,7 +43,7 @@ button_clicked_cb (GtkWidget *caller, HelloBonoboView *view)
 static GtkWidget *
 view_new (HelloBonoboView *view)
 {
-	view->label = gtk_label_new ("");
+	view->label = gtk_label_new (NULL);
 
 	view->button = gtk_button_new_with_label ("Change text");
 	g_signal_connect (GTK_OBJECT (view->button), "clicked",

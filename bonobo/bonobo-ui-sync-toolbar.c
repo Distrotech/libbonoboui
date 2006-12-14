@@ -143,7 +143,7 @@ impl_bonobo_ui_sync_toolbar_state (BonoboUISync     *sync,
 			GtkLabel *label_widget;
 
 			if (!(label_widget = GTK_LABEL (gtk_tool_button_get_label_widget (button_item)))) {
-				label_widget = GTK_LABEL (gtk_label_new (""));
+				label_widget = GTK_LABEL (gtk_label_new (NULL));
 				gtk_tool_button_set_label_widget (button_item, GTK_WIDGET (label_widget));
 			}
 

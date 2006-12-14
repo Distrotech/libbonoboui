@@ -14,6 +14,7 @@
 #include <config.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <gdkconfig.h>
 #include <gtk/gtksignal.h>
