@@ -1,5 +1,13 @@
 2006-12-14  Kjartan Maraas  <kmaraas@gnome.org>
 
+	* bonobo/bonobo-ui-toolbar-popup-item.c: (set_arrow_orientation),
+	(impl_set_orientation), (bonobo_ui_toolbar_popup_item_class_init),
+	(bonobo_ui_toolbar_popup_item_construct): Use GtkArrow to draw
+	the arrows instead of hardcoding them internally. Patch from
+	Diego Escalante Urrelo. Closes bug #162312.
+
+2006-12-14  Kjartan Maraas  <kmaraas@gnome.org>
+
 	* bonobo/bonobo-control.c:
 	* bonobo/bonobo-selector-widget.c: (bonobo_selector_widget_init):
 	* bonobo/bonobo-ui-private.h:
