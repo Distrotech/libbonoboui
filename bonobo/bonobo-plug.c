@@ -20,6 +20,7 @@
 #include <gdk/gdkx.h>
 #elif defined (GDK_WINDOWING_WIN32)
 #include <gdk/gdkwin32.h>
+#elif defined (GDK_WINDOWING_QUARTZ)
 #else
 #error Port to this GDK backend
 #endif

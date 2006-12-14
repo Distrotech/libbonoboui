@@ -24,6 +24,7 @@
 #define interface _win32_interface
 #include <gdk/gdkwin32.h>
 #undef interface
+#elif defined (GDK_WINDOWING_QUARTZ)
 #else
 #error Port to this GDK backend
 #endif
