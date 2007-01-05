@@ -1,3 +1,8 @@
+2007-01-05  Gustavo Noronha Silva  <kov@debian.org>
+
+	* pt_BR.po: unfuzzy translator_credits string
+	  bug #390878
+
 2006-11-18  Matic Zgur  <mr.zgur@gmail.com>
 
 	* pl.po: Updated Polish translation by GNOME PL Team.
