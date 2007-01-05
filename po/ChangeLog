@@ -1,3 +1,8 @@
+2007-01-05  Gustavo Noronha Silva  <kov@debian.org>
+
+	* pt_BR.po: unfuzzy translator_credits string
+	  bug #390878
+
 2006-12-28  Adam Weinberger  <adamw@gnome.org>
 
 	* en_CA.po: Updated Canadian English translation.
