@@ -1,3 +1,29 @@
+libbonoboui 2.17.1
+
+	* Add an index to the API docs (Matthew Barnes)
+	* Leak fixes (Kjartan Maraas)
+	* Fix build after new deprecations in libgnome (P. Henrique Silva) [#383497]
+	* Code cleanups (Kjartan Maraas)
+	* Use GtkArrow to draw the arrows (Diego Escalante Urrelo) [#162312]
+	* Guard against NULL to avoid crashes on Win32 (Andreas Köhler) [#379365]
+	* Fix build with quartz backend (Min Sik Kim) [#382692]
+	* Move ORBit2 and libxml2 to Requires.private (Samuel Thibault) [#352191]
+	* Translation updates:
+		* Khaled Hosny (ar)
+		* Runa Bhattacharjee (bn_IN)
+		* Mindu Dorji (dz)
+		* Adam Weinberger (en_CA)
+		* David Lodge (en_GB)
+		* Ivar Smolin (et)
+		* Ignacio Casal Quinteiro (gl)
+		* Yair Hershkovitz (he)
+		* Luca Ferretti (it)
+		* Vladimer Sichinava (ka)
+		* Kjartan Maraas (nb)
+		* Shiva Prasad Pokharel (ne)
+		* Artur Flinta (pl)
+		* Leonardo Ferreira Fontenelle (pt_BR)
+
 libbonoboui 2.16.0
 
 	* Translation updates.
