@@ -1,9 +1,12 @@
 #include <config.h>
 #include <gtk/gtk.h>
 #include <bonobo/bonobo-i18n.h>
-#include <bonobo/bonobo-ui-main.h>
+
+/* We need the undeprecated form of GnomeModuleInfo and also the popt.h include */
+#undef GNOME_DISABLE_DEPRECATED
 #include <libgnome/gnome-init.h>
-#include <popt.h>
+
+#include <bonobo/bonobo-ui-main.h>
 
 typedef struct {
 	GPtrArray *gtk_args;

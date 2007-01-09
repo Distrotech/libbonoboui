@@ -1,3 +1,9 @@
+2007-01-09  Christian Persch  <chpe@svn.gnome.org>
+
+	* bonobo/bonobo-ui-init-gtk.c:
+	Instead of just including popt.h, include gnome-init.h with
+	GNOME_DISABLE_DEPRECATED undefined.
+
 2006-12-19  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* bonobo/libbonoboui-2.0.pc.in: Move ORBit2 and libxml2
