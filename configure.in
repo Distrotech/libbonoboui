@@ -1,4 +1,4 @@
-AC_INIT([libbonoboui],[2.17.0],[http://bugzilla.gnome.org/enter_bug.cgi?product=bonobo&component=libbonoboui])
+AC_INIT([libbonoboui],[2.17.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=bonobo&component=libbonoboui])
 
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.9 foreign no-dist-gzip dist-bzip2])
@@ -45,8 +45,6 @@ GNOME_MAINTAINER_MODE_DEFINES
 GETTEXT_PACKAGE=libbonoboui-2.0
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Gettext domain])
-gnomelocaledir='${prefix}/${DATADIRNAME}/locale'
-AC_SUBST(gnomelocaledir)
 
 AM_GLIB_GNU_GETTEXT
 
