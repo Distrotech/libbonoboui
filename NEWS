@@ -1,4 +1,4 @@
-libbonoboui 2.17.1
+libbonoboui 2.17.0
 
 	* Add an index to the API docs (Matthew Barnes)
 	* Leak fixes (Kjartan Maraas)

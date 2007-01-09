@@ -1,5 +1,15 @@
 2007-01-09  Christian Persch  <chpe@svn.gnome.org>
 
+	R acconfig.h:
+	* autogen.sh:
+	* bonobo/Makefile.am:
+	* configure.in:
+	Use GNOME_MAINTAINER_MODE_DEFINES which will only define the
+	deprecations if you build with --enable-maintainer-mode.
+	Misc autoconf cleanup.
+
+2007-01-09  Christian Persch  <chpe@svn.gnome.org>
+
 	* bonobo/bonobo-ui-init-gtk.c:
 	Instead of just including popt.h, include gnome-init.h with
 	GNOME_DISABLE_DEPRECATED undefined.
