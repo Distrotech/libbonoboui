@@ -1,3 +1,9 @@
+2007-01-14  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* bonobo/libbonoboui-2.0-uninstalled.pc.in:
+	* bonobo/libbonoboui-2.0.pc.in:
+	Add gnome-vfs-2.0 to Requires.private.
+
 2007-01-13  Marko Anastasov  <marko@marko.anastasov.name>
 
 	* configure.in: Add gnome-vfs and gnome-vfs-module to BONOBOUI_MODULES.
