@@ -1,3 +1,7 @@
+2007-01-13  Marko Anastasov  <marko@marko.anastasov.name>
+
+	* configure.in: Add gnome-vfs and gnome-vfs-module to BONOBOUI_MODULES.
+
 2007-01-09  Christian Persch  <chpe@svn.gnome.org>
 
 	* bonobo/Makefile.am:
