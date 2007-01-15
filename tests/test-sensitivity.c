@@ -188,11 +188,12 @@ main (int argc, char **argv)
 {
 	CORBA_Environment ev;
 	CORBA_exception_init (&ev);
+	GnomeProgram *program;
 
 	/* Encorage -lefence to play ball */
 	{ char *tmp = malloc (4); if (tmp) free (tmp); }
 
-	gnome_program_init ("test-sensitivity", VERSION,
+	program = gnome_program_init ("test-sensitivity", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
 
@@ -203,6 +204,8 @@ main (int argc, char **argv)
 	gtk_idle_add ((GtkFunction) container_create, NULL);
 
 	bonobo_main ();
+
+	g_object_unref (program);
 
 	return bonobo_ui_debug_shutdown ();
 }

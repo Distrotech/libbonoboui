@@ -40,6 +40,7 @@ exit_cb (GtkWidget *widget, gpointer user_data)
 int
 main (int argc, char **argv)
 {
+	GnomeProgram *program;
 	GtkWidget *window;
 	GtkWidget *control;
 	gchar     *iid;
@@ -51,7 +52,7 @@ main (int argc, char **argv)
 
 	textdomain (GETTEXT_PACKAGE);
 
-	gnome_program_init ("test-events", VERSION,
+	program = gnome_program_init ("test-events", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
 
@@ -73,6 +74,8 @@ main (int argc, char **argv)
 	gtk_widget_show_all (window);
 
 	gtk_main ();
+
+	g_object_unref (program);
 
 	return bonobo_debug_shutdown ();
 }

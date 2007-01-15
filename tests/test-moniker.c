@@ -271,6 +271,7 @@ do_moniker_magic (void)
 int
 main (int argc, char **argv)
 {
+	GnomeProgram *program;
 	int nextopt;
 	poptContext ctx = NULL;
 
@@ -290,7 +291,7 @@ main (int argc, char **argv)
 		exit (1);
 	}
 
-	gnome_program_init ("test-moniker", VERSION,
+	program = gnome_program_init ("test-moniker", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
 
@@ -355,6 +356,8 @@ main (int argc, char **argv)
 
 	while (global_mto.async && !async_done)
 		g_main_context_iteration (NULL, TRUE);
+
+	g_object_unref (program);
 
 	return bonobo_ui_debug_shutdown ();
 }

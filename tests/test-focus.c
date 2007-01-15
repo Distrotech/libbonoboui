@@ -69,12 +69,13 @@ main (int argc, char **argv)
 	GtkWidget *tmp;
 	GtkWidget *window;
 	GtkWidget *vbox;
+	GnomeProgram *program;
 
 	free (malloc (8));
 
 	textdomain (GETTEXT_PACKAGE);
 
-	gnome_program_init ("test-focus", VERSION,
+	program = gnome_program_init ("test-focus", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
 
@@ -105,6 +106,8 @@ main (int argc, char **argv)
 	gtk_widget_show_all (window);
 
 	gtk_main ();
+
+	g_object_unref (program);
 
 	return bonobo_ui_debug_shutdown ();
 }

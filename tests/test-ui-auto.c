@@ -349,13 +349,14 @@ int
 main (int argc, char **argv)
 {
 	CORBA_Environment *ev, real_ev;
+	GnomeProgram *program;
 
 	ev = &real_ev;
 	CORBA_exception_init (ev);
 
 	free (malloc (8)); /* -lefence */
 
-	gnome_program_init ("test-ui-uao", VERSION,
+	program = gnome_program_init ("test-ui-uao", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
 
@@ -368,6 +369,8 @@ main (int argc, char **argv)
 	CORBA_exception_free (ev);
 
 	fprintf (stderr, "All tests passed successfully\n");
+
+	g_object_unref (program);
 
 	return bonobo_ui_debug_shutdown ();
 }

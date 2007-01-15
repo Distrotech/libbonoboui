@@ -81,6 +81,7 @@ do_ui_signal_connect (GnomeUIInfo *uiinfo, const char *signal_name, GnomeUIBuild
 int
 main (int argc, char **argv)
 {
+  GnomeProgram *program;
   GnomeUIBuilderData uibdata;
   GnomeDockLayout *layout;
   int i;
@@ -88,7 +89,7 @@ main (int argc, char **argv)
   /* I am having troubles with CVS gnome-libs today, so let's do
      things by hand.  */
 
-  gnome_program_init ("dock_demo", "1.0", &libgnomeui_module_info,
+  program = gnome_program_init ("dock_demo", "1.0", &libgnomeui_module_info,
 		      argc, argv, NULL);
 
   app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -188,6 +189,8 @@ main (int argc, char **argv)
 
   gtk_widget_show (app);
   gtk_main ();
+
+  g_object_unref (program);
 
   return 0;
 }

@@ -1,3 +1,21 @@
+2007-01-15  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* samples/container/bonobo-sample-container.c: (window_destroyed),
+	(window_title), (verb_HelpAbout), (verb_FileExit), (verb_Activate),
+	(window_create), (main):
+	* tests/dock_demo.c: (main):
+	* tests/test-events.c: (main):
+	* tests/test-filesel.c: (main):
+	* tests/test-focus.c: (main):
+	* tests/test-moniker.c: (main):
+	* tests/test-reparent.c: (main):
+	* tests/test-selector.c: (main):
+	* tests/test-sensitivity.c: (main):
+	* tests/test-toolbar.c: (main):
+	* tests/test-ui-auto.c: (main):
+	* tests/test-ui.c: (main):
+	Unref the GnomeProgram in these.
+
 2007-01-14  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* bonobo/libbonoboui-2.0-uninstalled.pc.in:

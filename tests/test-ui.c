@@ -238,6 +238,7 @@ main (int argc, char **argv)
 	BonoboUIContainer *container;
 	Bonobo_UIContainer corba_container;
 	CORBA_Environment  real_ev, *ev;
+	GnomeProgram *program;
 	char *txt, *fname;
 	int i;
 
@@ -309,7 +310,7 @@ main (int argc, char **argv)
 
 	free (malloc (8));
 
-	gnome_program_init ("test-ui", VERSION,
+	program = gnome_program_init ("test-ui", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
 
@@ -665,6 +666,8 @@ main (int argc, char **argv)
 	gtk_widget_destroy (GTK_WIDGET (win));
 
 	CORBA_exception_free (ev);
+
+	g_object_unref (program);
 
 	return bonobo_ui_debug_shutdown ();
 }

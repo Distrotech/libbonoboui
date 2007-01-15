@@ -113,7 +113,9 @@ quit_cb (GtkWindow *window, GdkEvent *event, gpointer dummy)
 int
 main (int argc, char **argv)
 {
-	gnome_program_init ("test-reparent", VERSION,
+	GnomeProgram *program;
+
+	program = gnome_program_init ("test-reparent", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
 
@@ -140,6 +142,8 @@ main (int argc, char **argv)
 	bonobo_main ();
 
 	gtk_widget_destroy (window);
-  
+
+	g_object_unref (program);
+
 	return bonobo_ui_debug_shutdown ();
 }

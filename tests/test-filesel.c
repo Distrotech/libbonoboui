@@ -48,12 +48,13 @@ get_files (gpointer data)
 int
 main (int argc, char *argv[])
 {
+	GnomeProgram *program;
 
 	free (malloc (8));
 
 	textdomain (GETTEXT_PACKAGE);
 
-	gnome_program_init ("test-filesel", VERSION,
+	program = gnome_program_init ("test-filesel", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
 
@@ -62,6 +63,8 @@ main (int argc, char *argv[])
 	g_idle_add (get_files, NULL);
 
 	bonobo_main ();
+
+	g_object_unref (program);
 
 	return 0;
 }

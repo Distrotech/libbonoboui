@@ -41,11 +41,12 @@ main (int argc, char **argv)
 	GtkWidget *toolbar;
 	GtkWidget *frame;
 	GtkWidget *item;
+	GnomeProgram *program;
 
 	/* ElectricFence rules. */
 	free (malloc (1));
 
-	gnome_program_init ("test-toolbar", VERSION,
+	program = gnome_program_init ("test-toolbar", VERSION,
 			    LIBBONOBOUI_MODULE,
 			    argc, argv, NULL);
 
@@ -87,6 +88,8 @@ main (int argc, char **argv)
 	gtk_widget_show (window);
 
 	gtk_main ();
+
+	g_object_unref (program);
 
 	return 0;
 }
