@@ -1,61 +1,61 @@
 # Ukrainian translation of libbonoboui.
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Yuriy Syrota <rasta@renome.rovno.ua>, 2001.
-# Maxim Dziumanenko <dziumanenko@gmail.com>, 2004-2006
+# Maxim Dziumanenko <dziumanenko@gmail.com>, 2004-2007
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-04 17:42+0300\n"
-"PO-Revision-Date: 2006-07-27 19:00+0200\n"
+"POT-Creation-Date: 2007-01-18 19:07+0200\n"
+"PO-Revision-Date: 2007-01-18 19:00+0200\n"
 "Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../bonobo/bonobo-canvas-item.c:683
+#: ../bonobo/bonobo-canvas-item.c:680
 msgid "corba factory"
 msgstr "фабрика CORBA"
 
-#: ../bonobo/bonobo-canvas-item.c:684
+#: ../bonobo/bonobo-canvas-item.c:681
 msgid "The factory pointer"
-msgstr "Вказівник фабрики"
+msgstr "Вказівник на фабрику"
 
-#: ../bonobo/bonobo-canvas-item.c:693
+#: ../bonobo/bonobo-canvas-item.c:690
 msgid "corba UI container"
 msgstr "контейнер інтерфейсу користувача CORBA"
 
-#: ../bonobo/bonobo-canvas-item.c:694
+#: ../bonobo/bonobo-canvas-item.c:691
 msgid "The User interface container"
 msgstr "Контейнер інтерфейсу користувача"
 
-#: ../bonobo/bonobo-dock-item-grip.c:257
+#: ../bonobo/bonobo-dock-item-grip.c:255
 msgid "Dock the toolbar"
 msgstr "Пристикувати панель інструментів"
 
-#: ../bonobo/bonobo-dock-item-grip.c:258
+#: ../bonobo/bonobo-dock-item-grip.c:256
 msgid "Undock the toolbar"
 msgstr "Відчепити панель інструментів"
 
-#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
-#: ../bonobo/bonobo-ui-toolbar.c:1164
+#: ../bonobo/bonobo-dock-item.c:228 ../bonobo/bonobo-dock-item.c:229
+#: ../bonobo/bonobo-ui-toolbar.c:1161
 msgid "Shadow type"
 msgstr "Тип тіні"
 
-#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
-#: ../bonobo/bonobo-ui-toolbar.c:1108 ../bonobo/bonobo-ui-toolbar.c:1109
+#: ../bonobo/bonobo-dock-item.c:239 ../bonobo/bonobo-dock-item.c:240
+#: ../bonobo/bonobo-ui-toolbar.c:1105 ../bonobo/bonobo-ui-toolbar.c:1106
 msgid "Orientation"
 msgstr "Орієнтація"
 
-#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
-#: ../bonobo/bonobo-ui-toolbar.c:1127 ../bonobo/bonobo-ui-toolbar.c:1128
+#: ../bonobo/bonobo-dock-item.c:250 ../bonobo/bonobo-dock-item.c:251
+#: ../bonobo/bonobo-ui-toolbar.c:1124 ../bonobo/bonobo-ui-toolbar.c:1125
 msgid "Preferred width"
 msgstr "Бажана ширина"
 
-#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
-#: ../bonobo/bonobo-ui-toolbar.c:1136 ../bonobo/bonobo-ui-toolbar.c:1137
+#: ../bonobo/bonobo-dock-item.c:259 ../bonobo/bonobo-dock-item.c:260
+#: ../bonobo/bonobo-ui-toolbar.c:1133 ../bonobo/bonobo-ui-toolbar.c:1134
 msgid "Preferred height"
 msgstr "Бажана висота"
 
@@ -71,30 +71,30 @@ msgstr "Виберіть файли для відкривання"
 msgid "Select a filename to save"
 msgstr "Виберіть файл для збереження"
 
-#: ../bonobo/bonobo-plug.c:425
+#: ../bonobo/bonobo-plug.c:424
 msgid "Event Forwarding"
-msgstr "Пересилання події"
+msgstr "Пересилання подій"
 
-#: ../bonobo/bonobo-plug.c:426
+#: ../bonobo/bonobo-plug.c:425
 msgid "Whether X events should be forwarded"
 msgstr "Чи мають пересилатися події X Window"
 
-#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:298 ../bonobo/bonobo-window.c:344
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Назва"
 
-#: ../bonobo/bonobo-selector-widget.c:324
+#: ../bonobo/bonobo-selector-widget.c:320
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Опис"
 
-#: ../bonobo/bonobo-selector.c:345
+#: ../bonobo/bonobo-selector.c:343
 msgid "Interfaces required"
-msgstr "Потрібні інтерфейси"
+msgstr "Обов'язкові інтерфейси"
 
-#: ../bonobo/bonobo-selector.c:346
+#: ../bonobo/bonobo-selector.c:344
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
@@ -104,57 +104,57 @@ msgstr ""
 "перерахованим.  Типове значення \"IDL:Bonobo/Embeddable:1.0\" якщо "
 "інтерфейси не перераховано."
 
-#: ../bonobo/bonobo-selector.c:348
+#: ../bonobo/bonobo-selector.c:346
 msgid "Interface required entry"
-msgstr "Елемент потрібного інтерфейсу"
+msgstr "Елемент обов'язкового інтерфейсу"
 
-#: ../bonobo/bonobo-selector.c:349
+#: ../bonobo/bonobo-selector.c:347
 msgid "One of the interfaces that's required"
 msgstr "Один з потрібних інтерфейсів"
 
-#: ../bonobo/bonobo-ui-config-widget.c:268
+#: ../bonobo/bonobo-ui-config-widget.c:265
 msgid "Visible"
 msgstr "Видимий"
 
-#: ../bonobo/bonobo-ui-config-widget.c:275
+#: ../bonobo/bonobo-ui-config-widget.c:272
 msgid "_Show"
 msgstr "П_оказати"
 
-#: ../bonobo/bonobo-ui-config-widget.c:282
+#: ../bonobo/bonobo-ui-config-widget.c:279
 msgid "_Hide"
 msgstr "Пр_ибрати"
 
-#: ../bonobo/bonobo-ui-config-widget.c:288
+#: ../bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
 msgstr "_Перегляд підказок"
 
-#: ../bonobo/bonobo-ui-config-widget.c:293
+#: ../bonobo/bonobo-ui-config-widget.c:290
 msgid "Toolbars"
 msgstr "Панелі інструментів"
 
-#: ../bonobo/bonobo-ui-config-widget.c:303
+#: ../bonobo/bonobo-ui-config-widget.c:300
 msgid "toolbars"
 msgstr "панелі"
 
-#: ../bonobo/bonobo-ui-config-widget.c:314
+#: ../bonobo/bonobo-ui-config-widget.c:311
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "Look"
 msgstr "Вигляд"
 
-#: ../bonobo/bonobo-ui-config-widget.c:323
+#: ../bonobo/bonobo-ui-config-widget.c:320
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "_Icon"
 msgstr "_Значок"
 
-#: ../bonobo/bonobo-ui-config-widget.c:329
+#: ../bonobo/bonobo-ui-config-widget.c:326
 msgid "_Text and Icon"
 msgstr "_Текст та значок"
 
-#: ../bonobo/bonobo-ui-config-widget.c:335
+#: ../bonobo/bonobo-ui-config-widget.c:332
 msgid "Text only"
 msgstr "Лише текст"
 
-#: ../bonobo/bonobo-ui-config-widget.c:341
+#: ../bonobo/bonobo-ui-config-widget.c:338
 msgid "_Priority text only"
 msgstr "_Лише текст"
 
@@ -172,82 +172,82 @@ msgstr "Вивести весь опис інтерфейсу на консол�
 
 #: ../bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
-msgstr "Настроїти інтерфейс"
+msgstr "Налаштувати інтерфейс"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:126
+#: ../bonobo/bonobo-ui-init-gtk.c:130
 msgid "Gdk debugging flags to set"
 msgstr "Ознаки налагодження GTK, які слід встановити"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:126 ../bonobo/bonobo-ui-init-gtk.c:129
-#: ../bonobo/bonobo-ui-init-gtk.c:157 ../bonobo/bonobo-ui-init-gtk.c:160
+#: ../bonobo/bonobo-ui-init-gtk.c:130 ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:161 ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
 msgstr "ОЗНАКИ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "Gdk debugging flags to unset"
 msgstr "Ознаки налагодження GTK, які слід зняти"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X display to use"
 msgstr "Дисплей X Window, який слід використовувати"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "DISPLAY"
 msgstr "ДИСПЛЕЙ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "X screen to use"
 msgstr "Екран X Window, який слід використовувати"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "SCREEN"
 msgstr "ЕКРАН"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:145
 msgid "Make X calls synchronous"
 msgstr "Синхронізовані виклики X Window"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Don't use X shared memory extension"
 msgstr "Не використовувати додаткові функції X Window для спільної пам'яті"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:155
 msgid "Program name as used by the window manager"
 msgstr "Назва програми, що використовується віконним менеджером"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:155
 msgid "NAME"
 msgstr "НАЗВА"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:154
+#: ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "Program class as used by the window manager"
 msgstr "Клас програми, що використовується віконним менеджером"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:154
+#: ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "CLASS"
 msgstr "КЛАС"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:157
+#: ../bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "Ознаки налагодження GTK+, які слід встановити"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:160
+#: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
 msgstr "Ознаки налагодження GTK+, які слід зняти"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:163
+#: ../bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
 msgstr "Вважати всі попередження фатальними"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:166
+#: ../bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "Завантажити додатковий модуль GTK"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:166
+#: ../bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
 msgstr "МОДУЛЬ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:182
+#: ../bonobo/bonobo-ui-init-gtk.c:186
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -283,15 +283,15 @@ msgstr "_Налаштувати"
 msgid "Customize the toolbar"
 msgstr "Налаштувати панель"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1118
+#: ../bonobo/bonobo-ui-toolbar.c:1115
 msgid "is floating"
-msgstr "переміщуваний"
+msgstr "переміщується"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1119
+#: ../bonobo/bonobo-ui-toolbar.c:1116
 msgid "whether the toolbar is floating"
-msgstr "чи є панель переміщуваною"
+msgstr "чи панель здатна переміщуватись"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1165
+#: ../bonobo/bonobo-ui-toolbar.c:1162
 msgid "Style of bevel around the toolbar"
 msgstr "Стиль рамки навколо панелі"
 
@@ -303,7 +303,7 @@ msgstr "_Зміст"
 msgid "View help for this application"
 msgstr "Показати довідку до цієї програми"
 
-#: ../bonobo/bonobo-window.c:347
+#: ../bonobo/bonobo-window.c:345
 msgid "Name of the window - used for configuration serialization."
 msgstr "Назва вікна (використовується для серіалізації конфігурації)."
 
@@ -317,7 +317,7 @@ msgstr "Ступінь збільшення"
 
 #: ../bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "Мінімальний масштаб"
+msgstr "Мінімальне збільшення"
 
 #: ../bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
@@ -325,7 +325,7 @@ msgstr "Мінімальний ступінь збільшення"
 
 #: ../bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "Максимальний масштаб"
+msgstr "Максимальне збільшення"
 
 #: ../bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
@@ -333,19 +333,19 @@ msgstr "Максимальний ступінь збільшення"
 
 #: ../bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "Має мінімальний масштаб"
+msgstr "Має мінімальне збільшення"
 
 #: ../bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Чи є допустимий мінімальний масштаб"
+msgstr "Чи є допустима мінімальна величина збільшення"
 
 #: ../bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "Має максимальний масштаб"
+msgstr "Має максимальне збільшення"
 
 #: ../bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Чи є допустимий максимальний масштаб"
+msgstr "Чи є допустима максимальна величина збільшення"
 
 #: ../bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -390,7 +390,7 @@ msgstr "BonoboUI-Hello."
 
 #: ../samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
-msgstr "GNOME Привіт"
+msgstr "Привіт GNOME"
 
 #. Create Label and put it in the Button:
 #: ../samples/bonoboui/hello.c:272
@@ -446,7 +446,7 @@ msgstr "Адреса"
 #. Build the details tab
 #: ../tools/browser/component-details.c:167
 msgid "Details"
-msgstr "подробиці"
+msgstr "Подробиці"
 
 #: ../tools/browser/component-details.c:168
 msgid "Detailed Information"
@@ -478,7 +478,9 @@ msgstr "Оглядач компонентів Bonobo"
 
 #: ../tools/browser/window.c:214
 msgid "translator-credits"
-msgstr "Максим Дзюманенко <dziumanenko@gmail.com>"
+msgstr ""
+"Yuriy Syrota <rasta@renome.rovno.ua>\n"
+"Максим Дзюманенко <dziumanenko@gmail.com>"
 
 #. create the window
 #: ../tools/browser/window.c:240
