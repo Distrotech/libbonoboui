@@ -211,8 +211,7 @@ bonobo_plug_finalize (GObject *object)
 {
 	BonoboPlug *plug = (BonoboPlug *) object;
 
-	if (plug->priv)
-		g_free (plug->priv);
+	g_free (plug->priv);
 
 	G_OBJECT_CLASS (bonobo_plug_parent_class)->finalize (object);
 }

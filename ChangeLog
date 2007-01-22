@@ -1,3 +1,9 @@
+2007-01-22  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* bonobo/bonobo-plug.c: (bonobo_plug_finalize):
+	* tools/browser/component-info.c: (free_all_members):
+	Remove more checks before g_free().
+
 2007-01-15  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* samples/container/bonobo-sample-container.c: (window_destroyed),

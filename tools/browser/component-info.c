@@ -29,22 +29,14 @@ free_all_members (BonoboComponentInfo *info)
 
 	g_return_if_fail (info != NULL);
 
-	if (info->component_iid)
-		g_free (info->component_iid);
-	if (info->component_type)
-		g_free (info->component_type);
-	if (info->component_location)
-		g_free (info->component_location);
-	if (info->component_username)
-		g_free (info->component_username);
-	if (info->component_hostname)
-		g_free (info->component_hostname);
-	if (info->component_domain)
-		g_free (info->component_domain);
-	if (info->component_description)
-		g_free (info->component_description);
-	if (info->component_name)
-		g_free (info->component_name);
+	g_free (info->component_iid);
+	g_free (info->component_type);
+	g_free (info->component_location);
+	g_free (info->component_username);
+	g_free (info->component_hostname);
+	g_free (info->component_domain);
+	g_free (info->component_description);
+	g_free (info->component_name);
 
 	info->component_iid = NULL;
 	info->component_type = info->component_location = NULL;
