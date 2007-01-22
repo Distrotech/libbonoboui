@@ -1,6 +1,7 @@
 doc/api/ui-faq.xml
 doc/std-ui.xml
 samples/canvdemo/CanvDemo.server.in.in
+samples/canvdemo/CanvDemo.server.in
 samples/canvdemo/circle.c
 samples/canvdemo/main.c
 samples/canvdemo/square.c
