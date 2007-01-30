@@ -51,6 +51,7 @@ main (int argc, char **argv)
 			    argc, argv, NULL);
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);

@@ -16,21 +16,27 @@ G_DEFINE_TYPE (BonoboUIToolbarPopupItem,
 	       bonobo_ui_toolbar_popup_item,
 	       BONOBO_TYPE_UI_TOOLBAR_TOGGLE_BUTTON_ITEM)
 
-static GtkWidget *arrow = NULL;
+#define GET_PRIVATE(inst) (G_TYPE_INSTANCE_GET_PRIVATE (inst, BONOBO_TYPE_UI_TOOLBAR_POPUP_ITEM, BonoboUIToolbarPopupItemPrivate))
+
+struct _BonoboUIToolbarPopupItemPrivate
+{
+  GtkWidget *arrow;
+};
 
 /* Utility functions.  */
 
 static void 
 set_arrow_orientation (BonoboUIToolbarPopupItem *popup_item)
 {
+	BonoboUIToolbarPopupItemPrivate *priv = GET_PRIVATE (popup_item);
 	GtkOrientation orientation;
 
 	orientation = bonobo_ui_toolbar_item_get_orientation (BONOBO_UI_TOOLBAR_ITEM (popup_item));
 
 	if (orientation == GTK_ORIENTATION_HORIZONTAL)
-		gtk_arrow_set (GTK_ARROW (arrow), GTK_ARROW_RIGHT, GTK_SHADOW_NONE);
+		gtk_arrow_set (GTK_ARROW (priv->arrow), GTK_ARROW_RIGHT, GTK_SHADOW_NONE);
 	else
-		gtk_arrow_set (GTK_ARROW (arrow), GTK_ARROW_DOWN, GTK_SHADOW_NONE);
+		gtk_arrow_set (GTK_ARROW (priv->arrow), GTK_ARROW_DOWN, GTK_SHADOW_NONE);
 }
 
 static void
@@ -47,32 +53,59 @@ impl_set_orientation (BonoboUIToolbarItem *item,
 }
 
 static void
+bonobo_ui_toolbar_popup_item_finalize (GObject *object)
+{
+	BonoboUIToolbarPopupItemPrivate *priv = GET_PRIVATE (object);
+	
+	g_object_unref (priv->arrow);
+
+	G_OBJECT_CLASS (bonobo_ui_toolbar_popup_item_parent_class)->finalize (object);
+}
+
+static void
 bonobo_ui_toolbar_popup_item_class_init (
 	BonoboUIToolbarPopupItemClass *popup_item_class)
 {
+	GObjectClass *gobject_class;
 	BonoboUIToolbarItemClass *toolbar_item_class;
 
+	gobject_class = G_OBJECT_CLASS (popup_item_class);
 	toolbar_item_class = BONOBO_UI_TOOLBAR_ITEM_CLASS (popup_item_class);
+
+	gobject_class->finalize = bonobo_ui_toolbar_popup_item_finalize;
+
 	toolbar_item_class->set_orientation = impl_set_orientation;
 
-	arrow = gtk_arrow_new (GTK_ARROW_RIGHT, GTK_SHADOW_NONE);
+	g_type_class_add_private (gobject_class, sizeof (BonoboUIToolbarPopupItemPrivate));
 }
 
 static void
 bonobo_ui_toolbar_popup_item_init (
 	BonoboUIToolbarPopupItem *toolbar_popup_item)
 {
+	BonoboUIToolbarPopupItemPrivate *priv = GET_PRIVATE (toolbar_popup_item);
+
+	priv->arrow = gtk_arrow_new (GTK_ARROW_RIGHT, GTK_SHADOW_NONE);
+	g_object_ref_sink (priv->arrow);
 }
 
 void
 bonobo_ui_toolbar_popup_item_construct (BonoboUIToolbarPopupItem *popup_item)
 {
-	g_return_if_fail (popup_item != NULL);
+	BonoboUIToolbarPopupItemPrivate *priv;
+
 	g_return_if_fail (BONOBO_IS_UI_TOOLBAR_POPUP_ITEM (popup_item));
+
+	priv = GET_PRIVATE (popup_item);
 
 	set_arrow_orientation (popup_item);
 
-	bonobo_ui_toolbar_toggle_button_item_construct (BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (popup_item), arrow, NULL);
+	/* Note! Despite bonobo_ui_toolbar_toggle_button_item_construct taking a |GdkPixbuf*| as 2nd argument,
+	 * it is just passed unchecked to bonobo_ui_toolbar_button_item_construct which also takes a |GdkPixbuf*|,
+	 * which is passed unchecked through to bonobo-ui-toolbar-button-item.c:set_image which supports arbitrary
+	 * |GtkWidget*|'s. So we can just add a C cast (NOT a GObject cast) to silence the compiler warning.
+	 */
+	bonobo_ui_toolbar_toggle_button_item_construct (BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM (popup_item), (GdkPixbuf*) priv->arrow, NULL);
 }
 
 GtkWidget *

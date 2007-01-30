@@ -1,3 +1,16 @@
+2007-01-30  Christian Persch  <chpe@svn.gnome.org>
+
+	* bonobo/bonobo-ui-toolbar-popup-item.c: (set_arrow_orientation),
+	(bonobo_ui_toolbar_popup_item_finalize),
+	(bonobo_ui_toolbar_popup_item_class_init),
+	(bonobo_ui_toolbar_popup_item_init),
+	(bonobo_ui_toolbar_popup_item_construct): Fix a bug introduced by the
+	switch to GtkArrow by creating one arrow per widget, not a global one.
+	Silence a compiler warning, and add a comment explaining why it's ok
+	to do so here. Bug #162312.
+
+	* tests/test-toolbar.c: (main): Quit when closing the window.
+
 2007-01-23  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* tests/test-sensitivity.c: (main): Fix build with
