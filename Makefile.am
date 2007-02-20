@@ -6,6 +6,7 @@ libinclude_HEADERS =    \
 	libbonoboui.h
 
 EXTRA_DIST = \
+	MAINTAINERS	     \
 	libbonoboui-zip.in   \
 	changes.txt          \
 	intltool-extract.in  \
