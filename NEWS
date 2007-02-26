@@ -1,3 +1,11 @@
+libbonoboui 2.17.92
+
+	* Dist MAINTAINERS (Kjartan)
+	* Updated translations:
+	  - Khaled Hosny (ar)
+	  - Jonathan Ernst (fr)
+	  - Thierry Randrianiriana (mg)
+
 libbonoboui 2.17.91
 
 	* Fix the port to GtkArrow (Christian Persch)
