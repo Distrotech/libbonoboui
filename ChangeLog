@@ -1,3 +1,12 @@
+============================= 2.17.94 ====================
+
+2006-02-26  Kjartan Maraas  <kmaraas@gnome.org>
+
+	bonobo/Makefile.am: Fix the previous fix.
+	configure.in: Bump version again.
+
+============================= 2.17.93 ====================
+
 2007-02-26  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* bonobo/Makefile.am: Make sure bonobo-ui-type-builtins.c
