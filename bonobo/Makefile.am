@@ -161,7 +161,8 @@ bonobo-ui-marshal.c: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
 	$(GLIB_GENMARSHAL) $< --body --prefix=bonobo_ui_marshal > $@
 
 bonobo-ui-type-builtins.c: $(GLIB_MKENUMS) $(libbonoboui_h_sources)
-	$(GLIB_MKENUMS) --fhead "#include \"libbonoboui.h\"\n\n" \
+	$(GLIB_MKENUMS) --fhead "#include \"config.h\"\n \
+			--fhead "#include \"libbonoboui.h\"\n\n" \
 			--fhead "#include \"bonobo-ui-type-builtins.h\"\n\n" \
 			--fprod "\n/* enumerations from \"@filename@\" */" \
 			--vhead "static const G@Type@Value _@enum_name@_values[] = {" \
