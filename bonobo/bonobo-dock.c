@@ -1106,7 +1106,7 @@ get_docked_item_by_name (BonoboDock *dock,
       { NULL, BONOBO_DOCK_BOTTOM },
       { NULL, BONOBO_DOCK_LEFT },
       { NULL, BONOBO_DOCK_RIGHT },
-      { NULL, BONOBO_DOCK_FLOATING },
+      { NULL, BONOBO_DOCK_FLOATING }
     };
     GList *lp;
     guint i;
