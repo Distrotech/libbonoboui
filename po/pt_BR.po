@@ -1,15 +1,15 @@
 # Brazilian Portuguese translation for libbonoboui.
-# Copyright (C) 2002-2005 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2005-2007 Free Software Foundation, Inc.
 # Evandro Fernandes Giovanini <evandrofg@ig.com.br>, 2002.
 # Afonso Celso Medina <medina@maua.br>, 2005.
-# Leonardo Ferreira Fontenelle <leo.fontenelle@gmail.com>, 2006
+# Leonardo Ferreira Fontenelle <leo.fontenelle@gmail.com>, 2006-2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-05 15:26-0200\n"
-"PO-Revision-Date: 2007-01-05 15:26-0200\n"
+"POT-Creation-Date: 2007-03-09 03:42-0300\n"
+"PO-Revision-Date: 2007-03-09 03:12-0300\n"
 "Last-Translator: Leonardo Ferreira Fontenelle <leo.fontenelle@gmail.com>\n"
 "Language-Team: Português/Brasil <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -72,11 +72,11 @@ msgstr "Selecione os arquivos a serem abertos"
 msgid "Select a filename to save"
 msgstr "Selecione o nome de arquivo a ser salvo"
 
-#: ../bonobo/bonobo-plug.c:424
+#: ../bonobo/bonobo-plug.c:423
 msgid "Event Forwarding"
 msgstr "Encaminhamento de Evento"
 
-#: ../bonobo/bonobo-plug.c:425
+#: ../bonobo/bonobo-plug.c:424
 msgid "Whether X events should be forwarded"
 msgstr "Indica se os eventos X devem ser encaminhados"
 
@@ -175,80 +175,80 @@ msgstr "Mandar toda a descrição da UI XML para o console"
 msgid "Configure UI"
 msgstr "Configurar UI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:127
+#: ../bonobo/bonobo-ui-init-gtk.c:130
 msgid "Gdk debugging flags to set"
 msgstr "Sinalizadores de depuração Gdk a serem definidos"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:127 ../bonobo/bonobo-ui-init-gtk.c:130
-#: ../bonobo/bonobo-ui-init-gtk.c:158 ../bonobo/bonobo-ui-init-gtk.c:161
+#: ../bonobo/bonobo-ui-init-gtk.c:130 ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:161 ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
-msgstr "FLAGS"
+msgstr "SINALIZADORES"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "Gdk debugging flags to unset"
 msgstr "Os sinalizadores de depuração Gdk a serem removidos"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X display to use"
-msgstr "Exibição X a ser usada"
+msgstr "Dispositivo X a ser usado"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "X screen to use"
 msgstr "Tela X a ser usada"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "SCREEN"
-msgstr "SCREEN"
+msgstr "TELA"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:142
+#: ../bonobo/bonobo-ui-init-gtk.c:145
 msgid "Make X calls synchronous"
-msgstr "Tornar chamadas X síncronas"
+msgstr "Torna síncronas as chamadas do X"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:148
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Don't use X shared memory extension"
 msgstr "Não usar a extensão de memória compartilhada X"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:152
+#: ../bonobo/bonobo-ui-init-gtk.c:155
 msgid "Program name as used by the window manager"
 msgstr "Nome de programa como usado pelo gerenciador de janelas"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:152
-msgid "NAME"
-msgstr "NAME"
-
 #: ../bonobo/bonobo-ui-init-gtk.c:155
+msgid "NAME"
+msgstr "NOME"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "Program class as used by the window manager"
 msgstr "Classe de programa como usada pelo gerenciador de janelas"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
-msgid "CLASS"
-msgstr "CLASS"
-
 #: ../bonobo/bonobo-ui-init-gtk.c:158
+msgid "CLASS"
+msgstr "CLASSE"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "Os sinalizadores de depuração Gtk+ a serem definidos"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:161
+#: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
 msgstr "Os sinalizadores de depuração Gtk+ a serem removidos"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:164
-msgid "Make all warnings fatal"
-msgstr "Tornar todos os avisos fatais"
-
 #: ../bonobo/bonobo-ui-init-gtk.c:167
+msgid "Make all warnings fatal"
+msgstr "Torna todos os avisos fatais"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "Carregar um módulo Gtk adicional"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:167
+#: ../bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
-msgstr "MODULE"
+msgstr "MÓDULO"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:183
+#: ../bonobo/bonobo-ui-init-gtk.c:186
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -302,7 +302,7 @@ msgstr "_Conteúdo"
 
 #: ../bonobo/bonobo-ui-util.c:631
 msgid "View help for this application"
-msgstr "Ver a ajuda desta aplicação"
+msgstr "Mostra a ajuda para esta aplicação"
 
 #: ../bonobo/bonobo-window.c:345
 msgid "Name of the window - used for configuration serialization."
@@ -428,7 +428,7 @@ msgstr "Abre uma nova janela"
 
 #: ../tools/browser/bonobo-browser.xml.h:5
 msgid "_Help"
-msgstr "_Ajuda"
+msgstr "Aj_uda"
 
 #. Build the general tab
 #: ../tools/browser/component-details.c:109
