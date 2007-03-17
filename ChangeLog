@@ -1,3 +1,8 @@
+2007-03-17  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* tools/browser/bonobo-browser.desktop.in: Remove
+	Application from the categories.
+
 ============================= 2.18.0 =====================
 
 2007-02-27  Kjartan Maraas  <kmaraas@gnome.org>
