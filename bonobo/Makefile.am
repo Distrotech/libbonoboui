@@ -13,9 +13,9 @@ INCLUDES = \
         -DBONOBO_BINDIR=\""$(bindir)"\" 		\
         -DBONOBO_LOCALSTATEDIR=\""$(localstatedir)"\" 	\
         -DBONOBO_LOCALEDIR="\"$(datadir)/locale\""	\
+	-DBONOBO_EXPLICIT_TRANSLATION_DOMAIN="GETTEXT_PACKAGE" \
 	-DG_LOG_DOMAIN=\"Bonobo\"			\
 	-DVERSION=\"$(VERSION)\"			\
-	-DBONOBO_EXPLICIT_TRANSLATION_DOMAIN=\"$(GETTEXT_PACKAGE)\"\
 	$(DISABLE_DEPRECATED)				\
 	-UBONOBO_DISABLE_DEPRECATED			\
 	-UBONOBO_UI_DISABLE_DEPRECATED
@@ -160,7 +160,7 @@ bonobo-ui-marshal.h: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
 bonobo-ui-marshal.c: bonobo-ui-marshal.list $(GLIB_GENMARSHAL)
 	$(GLIB_GENMARSHAL) $< --body --prefix=bonobo_ui_marshal > $@
 
-bonobo-ui-type-builtins.c: $(GLIB_MKENUMS) $(libbonoboui_h_sources)
+bonobo-ui-type-builtins.c: Makefile $(libbonoboui_h_sources)
 	$(GLIB_MKENUMS) --fhead "#include \"config.h\"\n\n" \
 			--fhead "#include \"libbonoboui.h\"\n\n" \
 			--fhead "#include \"bonobo-ui-type-builtins.h\"\n\n" \
@@ -177,7 +177,7 @@ bonobo-ui-type-builtins.c: $(GLIB_MKENUMS) $(libbonoboui_h_sources)
 	&& cp xgen-gtbec $(@F) \
 	&& rm -f xgen-gtbec
 
-bonobo-ui-type-builtins.h: $(GLIB_MKENUMS) $(libbonoboui_h_sources)
+bonobo-ui-type-builtins.h: Makefile $(libbonoboui_h_sources)
 	$(GLIB_MKENUMS) --fhead "#ifndef __BONOBO_UI_TYPE_BUILTINS_H__\n" \
 			--fhead "#define __BONOBO_UI_TYPE_BUILTINS_H__ 1\n\n" \
 			--fhead "#include <glib-object.h>\n\n" \
@@ -191,7 +191,7 @@ bonobo-ui-type-builtins.h: $(GLIB_MKENUMS) $(libbonoboui_h_sources)
 	&& cp xgen-gth $(@F) \
 	&& rm -f xgen-gth
 
-libbonoboui.defs: $(libbonoboui_h_sources) $(GLIB_MKENUMS)
+libbonoboui.defs: Makefile $(libbonoboui_h_sources)
 	$(GLIB_MKENUMS) --comments ";; @comment@" \
 			--fprod "; enumerations from \"@filename@\"\n " \
 	                --vhead "(define-@type@ @EnumName@" \

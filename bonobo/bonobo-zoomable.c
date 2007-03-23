@@ -10,7 +10,7 @@
  */
 #include <config.h>
 #include <string.h>
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n-lib.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-zoomable.h>
 #include <bonobo/bonobo-property-bag.h>

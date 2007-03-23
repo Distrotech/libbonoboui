@@ -1,6 +1,6 @@
 #include <config.h>
 #include <gtk/gtk.h>
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n-lib.h>
 
 /* We need the undeprecated form of GnomeModuleInfo and also the popt.h include */
 #undef GNOME_DISABLE_DEPRECATED

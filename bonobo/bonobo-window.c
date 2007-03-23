@@ -15,7 +15,7 @@
 #include <bonobo/bonobo-dock.h>
 #include <bonobo/bonobo-window.h>
 #include <libbonobo.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 #include <bonobo/bonobo-ui-preferences.h>
 #include <bonobo/bonobo-ui-engine.h>

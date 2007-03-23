@@ -19,7 +19,7 @@
 
 #include <bonobo/bonobo-ui-xml.h>
 #include <bonobo/bonobo-ui-util.h>
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n-lib.h>
 #include <bonobo/bonobo-ui-private.h>
 
 static gchar *find_pixmap_in_path (const gchar *filename);

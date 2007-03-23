@@ -1,3 +1,31 @@
+2007-03-23  Christian Persch  <chpe@gnome.org>
+
+	* bonobo/Makefile.am:
+	* bonobo/bonobo-canvas-item.c:
+	* bonobo/bonobo-dock-item-grip.c:
+	* bonobo/bonobo-dock-item.c:
+	* bonobo/bonobo-file-selector-util.c:
+	* bonobo/bonobo-plug.c:
+	* bonobo/bonobo-selector-widget.c:
+	* bonobo/bonobo-selector.c:
+	* bonobo/bonobo-ui-config-widget.c:
+	* bonobo/bonobo-ui-engine-config.c:
+	* bonobo/bonobo-ui-engine.c:
+	* bonobo/bonobo-ui-init-gtk.c:
+	* bonobo/bonobo-ui-main.c:
+	* bonobo/bonobo-ui-sync-menu.c:
+	* bonobo/bonobo-ui-sync-toolbar.c:
+	* bonobo/bonobo-ui-toolbar.c:
+	* bonobo/bonobo-ui-util.c:
+	* bonobo/bonobo-window.c:
+	* bonobo/bonobo-zoomable.c:
+	* tests/control/test-control.c:
+	* tests/test-focus.c:
+	* tests/test-sensitivity.c:
+	* tests/test-toolbar.c:
+	* tests/test-ui.c: Use glib/gi18n[-lib].h instead of bonobo-i18n.h.
+	Bug #419535.
+
 2007-03-17  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* tools/browser/bonobo-browser.desktop.in: Remove

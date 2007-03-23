@@ -3,7 +3,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <bonobo/bonobo-ui-main.h>
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n.h>
 
 #include <bonobo/bonobo-ui-toolbar.h>
 #include <bonobo/bonobo-ui-toolbar-button-item.h>

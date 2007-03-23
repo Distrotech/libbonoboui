@@ -11,7 +11,7 @@
  */
 #include <config.h>
 
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n-lib.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-main.h>

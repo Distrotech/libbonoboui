@@ -20,7 +20,7 @@
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-types.h>
 #include <bonobo/bonobo-main.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 #include <gdk/gdkprivate.h>
 #if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>

@@ -17,7 +17,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkaccessible.h>
 #include <gtk/gtkbindings.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 #include <string.h>
 
 #define DRAG_HANDLE_SIZE 10

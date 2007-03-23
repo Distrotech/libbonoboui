@@ -10,8 +10,8 @@
 #include "config.h"
 
 #include <stdlib.h>
+#include <glib/gi18n.h>
 #include <libbonoboui.h>
-#include <bonobo/bonobo-i18n.h>
 #include <bonobo/bonobo-control-internal.h>
 
 typedef struct {

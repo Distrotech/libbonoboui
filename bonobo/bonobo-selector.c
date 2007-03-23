@@ -17,7 +17,7 @@
  */
 #include <config.h>
 #include <string.h>
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 #include <bonobo/bonobo-selector.h>
 
 G_DEFINE_TYPE (BonoboSelector, bonobo_selector, GTK_TYPE_DIALOG)

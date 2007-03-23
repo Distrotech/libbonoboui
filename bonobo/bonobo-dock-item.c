@@ -46,7 +46,7 @@
 #include <gtk/gtktoolbar.h>
 #include <gtk/gtkwindow.h>
 
-#include <glib/gi18n.h>
+#include <glib/gi18n-lib.h>
 
 struct _BonoboDockItemPrivate
 {

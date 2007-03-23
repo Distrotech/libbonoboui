@@ -12,7 +12,7 @@
 
 #include "config.h"
 #include <gdk/gdkkeysyms.h>
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n-lib.h>
 #include <bonobo/bonobo-plug.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-internal.h>

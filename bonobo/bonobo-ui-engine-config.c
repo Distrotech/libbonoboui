@@ -15,7 +15,7 @@
 #include <glib/gmacros.h>
 #include <gtk/gtk.h>
 
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n-lib.h>
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-private.h>
 #include <bonobo/bonobo-ui-sync-menu.h>

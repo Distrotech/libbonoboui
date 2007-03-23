@@ -30,7 +30,7 @@
 #include <libgnomevfs/gnome-vfs.h>
 #endif
 
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n-lib.h>
 
 #define GET_MODE(w) (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "GnomeFileSelectorMode")))
 #define SET_MODE(w, m) (g_object_set_data (G_OBJECT (w), "GnomeFileSelectorMode", GINT_TO_POINTER (m)))

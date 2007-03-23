@@ -20,8 +20,8 @@
 #include <glib.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
-#include <glib/gi18n.h>
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n-lib.h>
+#include <glib/gi18n-lib.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-selector-widget.h>
 #include <bonobo/bonobo-ui-preferences.h>

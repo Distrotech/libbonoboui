@@ -14,7 +14,7 @@
 
 #include <bonobo/bonobo-widget.h>
 #include <bonobo/bonobo-ui-main.h>
-#include <bonobo/bonobo-i18n.h>
+#include <glib/gi18n.h>
 
 static void
 clicked_fn (GtkButton *button, GtkWidget *control)
