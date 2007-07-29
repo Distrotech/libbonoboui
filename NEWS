@@ -1,3 +1,6 @@
+libbonoboui 2.19.5
+	* Fix build with gtk+ >= 2.11.6
+
 libbonoboui 2.19.4
         * Cleanup bonobo-browser .desktop file (Kjartan Maraas)
         * Use glib/gi18n[-lib].h instead of bonobo-i18n.h (Christian Persch)
