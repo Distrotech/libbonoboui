@@ -299,7 +299,7 @@ msgstr "_Somari"
 
 #: ../bonobo/bonobo-ui-util.c:631
 msgid "View help for this application"
-msgstr "Mostrar l'ajuda de l'aplicacion"
+msgstr "Visualizar l'ajuda de l'aplicacion"
 
 #: ../bonobo/bonobo-window.c:347
 msgid "Name of the window - used for configuration serialization."
@@ -417,7 +417,7 @@ msgstr ""
 
 #: ../tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr "Barrar la fenèstra activa"
+msgstr "Tampar la fenèstra activa"
 
 #: ../tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
