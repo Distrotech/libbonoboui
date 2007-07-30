@@ -1,3 +1,10 @@
+============================= 2.19.6 =====================
+
+2007-07-30  Christian Persch  <chpe@gnome.org>
+
+	* autogen.sh:
+	* configure.in: Build fixes.
+
 2007-07-11  Christian Persch  <chpe@gnome.org>
 
 	* configure.in: Temporarily remove the deprecation flags so we can
