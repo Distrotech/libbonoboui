@@ -1,3 +1,8 @@
+2007-08-10  Theppitak Karoonboonyanan  <thep@linux.thai.net>
+
+	* LINGUAS: Added 'th'.
+	* th.po: Added Thai translation by aka.ape <aka.ape@gmail.com>.
+
 2007-08-06  Ilkka Tuohela  <hile@iki.fi>
 
 	* fi.po: Updated Finnish translation.
