@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-09-10 18:44+0200\n"
 "PO-Revision-Date: 2007-05-23 10:22+0200\n"
-"Last-Translator: Yannig MARCHEGAY <yannig@marchegay.org>\n"
+"Last-Translator: Yannig MARCHEGAY (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -116,7 +116,7 @@ msgstr "Visible"
 
 #: ../bonobo/bonobo-ui-config-widget.c:275
 msgid "_Show"
-msgstr "_Mostrar"
+msgstr "_Visualizacion"
 
 #: ../bonobo/bonobo-ui-config-widget.c:282
 msgid "_Hide"
