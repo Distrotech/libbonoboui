@@ -1,3 +1,10 @@
+2007-08-19  Gilles Dartiguelongue  <gdartigu@svn.gnome.org>
+
+	* samples/container/bonobo-sample-container.c: (main):
+	* tests/Makefile.am:
+	* tests/test-moniker.c: (main): move to GOption and fix a typoe
+	in Makefile.am
+
 ============================= 2.19.6 =====================
 
 2007-07-30  Christian Persch  <chpe@gnome.org>

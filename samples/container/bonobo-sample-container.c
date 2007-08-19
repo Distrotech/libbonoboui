@@ -2,14 +2,19 @@
 #include <bonobo.h>
 #include <glib.h>
 
-#ifndef POPT_TABLEEND /* popt < 1.6.2 */
-#define POPT_TABLEEND { NULL, '\0', 0, NULL, 0, NULL, NULL }
-#endif
-
 #define APPNAME "TestContainer"
 #define APPVERSION "1.0"
 
 #define UI_XML "Bonobo_Sample_Container-ui.xml"
+
+static gchar **files = NULL;
+static gboolean use_gtk_window = FALSE;
+static const GOptionEntry options[] = {
+	{ "gtk", 'g', 0, G_OPTION_ARG_NONE, &use_gtk_window,
+	  "Use GtkWindow instead of BonoboWindow (default)", NULL },
+	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, &files, NULL, "FILE" },
+	{ NULL }
+};
 
 /*
  * FIXME: TODO:
@@ -125,44 +130,34 @@ int
 main (int argc, char *argv[])
 {
         int i;
-        const char **args;
-        poptContext popt_context;
+        GOptionContext *context;
         GnomeProgram *program;
-
-        static gboolean use_gtk_window = FALSE;
-        static struct poptOption options[] = {
-                {"gtk", 'g', POPT_ARG_NONE, &use_gtk_window, 0,
-                 "Use GtkWindow instead of BonoboWindow (default)", NULL},
-                POPT_AUTOHELP POPT_TABLEEND
-        };
-
+        
+        context = g_option_context_new (NULL);
+        g_option_context_add_main_entries (context, options, "bonobo-sample-container");
+        
         program = gnome_program_init (APPNAME, APPVERSION,
-                                       LIBBONOBOUI_MODULE,
-                                       argc, argv,
-                                       GNOME_PARAM_POPT_TABLE, options,
-                                       GNOME_PARAM_NONE);
-
-        g_object_get (program, GNOME_PARAM_POPT_CONTEXT, &popt_context,
-                       NULL);
+                                      LIBBONOBOUI_MODULE,
+                                      argc, argv,
+                                      GNOME_PARAM_GOPTION_CONTEXT, context,
+                                      GNOME_PARAM_NONE);
 
         /* Check for argument consistency. */
-        if (!popt_context || !(args = poptGetArgs (popt_context))) {
+        if (files == NULL) {
                 g_message ("Must specify a filename");
                 return 1;
         }
 
-        for (i = 0; args[i]; i++) {
+        for (i = 0; i < g_strv_length (files); i++) {
                 char *moniker;
 
                 /* FIXME: we should do some auto-detection here */
-                moniker = g_strdup_printf ("file:%s", args[i]);
+                moniker = g_strdup_printf ("file:%s", files[i]);
 
                 window_create (moniker, use_gtk_window);
         }
 
         bonobo_main ();
-
-        poptFreeContext (popt_context);
 
         g_object_unref (program);
 

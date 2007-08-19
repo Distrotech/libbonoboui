@@ -35,6 +35,6 @@ test_selector_SOURCES =	test-selector.c
 test_sensitivity_SOURCES = test-sensitivity.c
 test_reparent_SOURCES = test-reparent.c
 test_moniker_SOURCES = test-moniker.c
-test_filesel_SOURCE = test-filesel.c
+test_filesel_SOURCES = test-filesel.c
 
 TESTS = test-ui-auto

@@ -15,7 +15,6 @@
 #endif
 
 #include <stdlib.h>
-#include <popt.h>
 #include <glib.h>
 #include <libbonoboui.h>
 
@@ -42,19 +41,21 @@ typedef struct {
 	MonikerTestDisplayAs display_as;
 	gchar *moniker;
 
-	int async, ps, pr, pc;
+	gboolean async, ps, pr, pc;
 } MonikerTestOptions;
+
+static gchar **remaining = NULL;
 
 static MonikerTestOptions global_mto = { NULL };
 
-static struct poptOption moniker_test_options [] = {
-	{ "interface", 'i', POPT_ARG_STRING, &global_mto.requested_interface, 'i', "request specific interface", "interface" },
-	{ "async",     'a', POPT_ARG_NONE, &global_mto.async, 'a', "request asynchronous operation where possible", NULL },
-	{ "stream",    's', POPT_ARG_NONE, &global_mto.ps, 's', "request Bonobo/Stream", NULL },
-	{ "storage",   'r', POPT_ARG_NONE, &global_mto.pr, 'r', "request Bonobo/Storage", NULL },
-	{ "control",   'c', POPT_ARG_NONE, &global_mto.pc, 'c', "request Bonobo/Control", NULL },
-	POPT_AUTOHELP
-	{ NULL, 0, 0, NULL, 0, NULL }
+static const GOptionEntry moniker_test_options [] = {
+	{ "interface", 'i', 0, G_OPTION_ARG_STRING, &global_mto.requested_interface, "request specific interface", "interface" },
+	{ "async",     'a', 0, G_OPTION_ARG_NONE, &global_mto.async, "request asynchronous operation where possible", NULL },
+	{ "stream",    's', 0, G_OPTION_ARG_NONE, &global_mto.ps, "request Bonobo/Stream", NULL },
+	{ "storage",   'r', 0, G_OPTION_ARG_NONE, &global_mto.pr, "request Bonobo/Storage", NULL },
+	{ "control",   'c', 0, G_OPTION_ARG_NONE, &global_mto.pc, "request Bonobo/Control", NULL },
+	{ G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &remaining, "moniker", "moniker" },
+	{ NULL }
 };
 
 static void
@@ -272,33 +273,19 @@ int
 main (int argc, char **argv)
 {
 	GnomeProgram *program;
-	int nextopt;
-	poptContext ctx = NULL;
+	GOptionContext *context = NULL;
 
 	free (malloc (8)); /* -lefence */
+	
+	context = g_option_context_new ("- test-moniker");
+	
+	g_option_context_add_main_entries (context, moniker_test_options, GETTEXT_PACKAGE);
 
-	ctx = poptGetContext ("test-moniker", argc,
-			      (const char **) argv,
-			      moniker_test_options, 0);
-
-	while ((nextopt = poptGetNextOpt (ctx)) > 0)
-		/* do nothing */ ;
-
-	if (nextopt != -1) {
-		printf ("Error on option %s: %s.\nRun '%s --help' to "
-			" see a full list of available command line options.\n",
-			poptBadOption (ctx, 0), poptStrerror (nextopt), argv [0]);
-		exit (1);
-	}
-
-	program = gnome_program_init ("test-moniker", VERSION,
+	program = gnome_program_init ("- test-moniker", VERSION,
 			    LIBBONOBOUI_MODULE,
-			    argc, argv, NULL);
-
-	if (global_mto.ps + global_mto.pr + global_mto.pc > 1) {
-		poptPrintUsage (ctx, stderr, 0);
-		return 1;
-	}
+			    argc, argv,
+			    GNOME_PARAM_GOPTION_CONTEXT, context,
+			    NULL);
 
 	if (global_mto.requested_interface)
 		global_mto.display_as = AS_INTERFACE;
@@ -309,22 +296,17 @@ main (int argc, char **argv)
 	else if (global_mto.pc)
 		global_mto.display_as = AS_CONTROL;
 	else {
-		fprintf (stderr, "Usage: %s [-i interface] [-srch] <moniker>\n", argv [0]);
-		fprintf (stderr, "Run %s --help for more info\n", argv [0]);
+		fprintf (stderr, "%s", g_option_context_get_help (context, TRUE, NULL));
 		return 1;
 	}
 
+	if (remaining!=NULL)
+		global_mto.requested_moniker = remaining[0];
 
-	poptSetOtherOptionHelp (ctx, "<moniker>");
-	global_mto.requested_moniker = g_strdup (poptGetArg (ctx));
-	if (!global_mto.requested_moniker) {
-		fprintf (stderr, "Usage: %s [-i interface] [-srch] <moniker>\n", argv[0]);
-		fprintf (stderr, "Run %s --help for more info\n", argv[0]);
+	if (global_mto.requested_moniker == NULL) {
+		fprintf (stderr, "%s", g_option_context_get_help (context, TRUE, NULL));
 		return 1;
 	}
-
-	poptFreeContext (ctx);
-	/* done with nasty popt stuff */
 
 	fprintf (stderr, "Resolving moniker '%s' as ", global_mto.requested_moniker);
 	switch (global_mto.display_as) {
