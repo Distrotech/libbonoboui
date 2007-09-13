@@ -98,7 +98,7 @@ msgstr "فيما إذا وجب تمرير أحداث X"
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
-msgstr "الإسم"
+msgstr "الاسم"
 
 #: ../bonobo/bonobo-selector-widget.c:324
 #: ../tools/browser/component-details.c:115
