@@ -1,3 +1,12 @@
+libbonobo 2.20.0
+	* More GOption porting (Gilles Dartiguelounge) 
+	* Updated translations:
+	  - Arabic (Khaled Hosny)
+	  - Finnish (Ilkka Tuohela)
+	  - Portugese (Leonardo Ferreira Fontenelle)
+	  - Sinhala (Danishka Navin)
+	  - Thai (aka.ape@gmail.com)
+
 libbonoboui 2.19.5
 	* Fix build with gtk+ >= 2.11.6
 
