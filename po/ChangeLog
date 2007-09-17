@@ -1,3 +1,8 @@
+2007-09-17  Danishka Navin  <danishka@gmail.com>
+
+	* LINGUAS: Added 'si'.
+	* si.po: Added Sinhala translation by Danishka Navin.
+
 2007-09-13  Djihed Afifi <djihed@gmail.com> 
 
 	* ar.po: Updated Arabic Translation by Khaled Hosny.
