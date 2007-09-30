@@ -6,13 +6,14 @@
 # Christophe Fergeau <teuf@users.sourceforge.net>, 2002.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
 # Benoît Dejean <benoit@placenet.org>, 2006.
+# Stéphane Raimbault <stephane.raimbault@gmail.com>, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.15.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-09 18:55+0100\n"
-"PO-Revision-Date: 2007-02-09 18:55+0100\n"
+"PO-Revision-Date: 2007-09-30 21:58+0200\n"
 "Last-Translator: Stéphane Raimbault <stephane.raimbault@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -126,7 +127,7 @@ msgstr "_Afficher"
 
 #: ../bonobo/bonobo-ui-config-widget.c:279
 msgid "_Hide"
-msgstr "_Cacher"
+msgstr "_Masquer"
 
 #: ../bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
@@ -156,11 +157,11 @@ msgstr "_Texte et icône"
 
 #: ../bonobo/bonobo-ui-config-widget.c:332
 msgid "Text only"
-msgstr "Texte seulement"
+msgstr "Texte uniquement"
 
 #: ../bonobo/bonobo-ui-config-widget.c:338
 msgid "_Priority text only"
-msgstr "_Priorité au texte seulement"
+msgstr "_Priorité au texte uniquement"
 
 #: ../bonobo/bonobo-ui-engine.c:91
 msgid "Debug"
@@ -210,7 +211,7 @@ msgstr "ÉCRAN"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:145
 msgid "Make X calls synchronous"
-msgstr "Faire des appels X synchrones"
+msgstr "Effectuer des appels X synchrones"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Don't use X shared memory extension"
@@ -270,7 +271,7 @@ msgstr "T_exte"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Hide t_ips"
-msgstr "Cacher les _astuces"
+msgstr "Masquer les _astuces"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:567
 msgid "Show t_ips"
@@ -278,7 +279,7 @@ msgstr "Afficher les _astuces"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Hide toolbar"
-msgstr "_Cacher la barre d'outils"
+msgstr "_Masquer la barre d'outils"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "Customi_ze"
@@ -389,7 +390,7 @@ msgstr "_Sélectionner"
 
 #: ../samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "Cela ne fait rien ; c'est juste une démonstration."
+msgstr "Ne fait rien ; ceci est juste une démonstration."
 
 #: ../samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -418,7 +419,7 @@ msgstr "Navigateur de composants Bonobo"
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:2
 msgid "Shows available Bonobo components"
-msgstr "Affiche les composants Bonobo disponible"
+msgstr "Affiche les composants Bonobo disponibles"
 
 #: ../tools/browser/bonobo-browser.xml.h:1
 msgid "About this program..."
@@ -426,7 +427,7 @@ msgstr "À propos de ce programme..."
 
 #: ../tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
-msgstr "Ferme la fenêtre courante"
+msgstr "Ferme la fenêtre actuelle"
 
 #: ../tools/browser/bonobo-browser.xml.h:3
 msgid "Open a new window"
@@ -477,7 +478,7 @@ msgstr "Navigateur Bonobo"
 
 #: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr "Copyright 2001, La fondation GNOME"
+msgstr "Copyright 2001, la fondation GNOME"
 
 #: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
@@ -489,7 +490,8 @@ msgstr ""
 "Christophe Merlet <redfox@redfoxcenter.org>\n"
 "Christophe Fergeau <teuf@users.sourceforge.net>\n"
 "Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
-"Benoît Dejean <benoit@placenet.org>"
+"Benoît Dejean <benoit@placenet.org>\n"
+"Stéphane Raimbault <stephane.raimbault@gmail.com>"
 
 #. create the window
 #: ../tools/browser/window.c:240
