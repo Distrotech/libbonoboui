@@ -593,8 +593,21 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 		cl->program, doc_id, doc_id, NULL, &error);
 
 	if (error) {
-		/* FIXME: better error handling ? */
-		g_warning ("Error: '%s'", error->message);
+		GtkWidget *dialog;
+
+		dialog = gtk_message_dialog_new (NULL, 0, 
+                                                 GTK_MESSAGE_ERROR,
+						 GTK_BUTTONS_OK,
+						 _("Could not display help for this application"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
+							  "%s",
+							  error->message);
+		g_signal_connect_swapped (dialog, "response",
+					  G_CALLBACK (gtk_widget_destroy),
+					  dialog);
+
+		gtk_window_present (GTK_WINDOW (dialog));
+
 		g_error_free (error);
 	}
 }
