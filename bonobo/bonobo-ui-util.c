@@ -593,6 +593,11 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 		cl->program, doc_id, doc_id, NULL, &error);
 
 	if (error) {
+#if 1
+#warning Switch to the currently disabled dialog code once the string freeze is over
+		g_warning ("Error: '%s'", error->message);
+#else
+/* Disabled for now:
 		GtkWidget *dialog;
 
 		dialog = gtk_message_dialog_new (NULL, 0, 
@@ -607,6 +612,8 @@ bonobo_help_display_cb (BonoboUIComponent *component,
 					  dialog);
 
 		gtk_window_present (GTK_WINDOW (dialog));
+ */
+#endif
 
 		g_error_free (error);
 	}

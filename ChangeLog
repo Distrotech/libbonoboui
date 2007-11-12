@@ -1,3 +1,8 @@
+2007-11-12  J.H.M. Dassen (Ray) <jdassen@debian.org>
+
+	* bonobo/bonobo-ui-util.c: (bonobo_help_display_cb): Disabled the
+	dialog for now due to breaking the string freeze.
+
 2007-11-11  J.H.M. Dassen (Ray) <jdassen@debian.org>
 
 	* bonobo/bonobo-ui-util.c: (bonobo_help_display_cb):
