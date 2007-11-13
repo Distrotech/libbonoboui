@@ -1,3 +1,8 @@
+2007-11-13  Christian Persch  <chpe@gnome.org>
+
+	* bonobo/bonobo-ui-util.c: (bonobo_help_display_cb): Remove the fix
+	for bug #125046 on the branch.
+
 2007-11-12  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* bonobo/bonobo-selector-widget.c: Remove redundant include.
