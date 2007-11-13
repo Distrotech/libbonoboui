@@ -1,5 +1,10 @@
 2007-11-13  Christian Persch  <chpe@gnome.org>
 
+	* bonobo/bonobo-ui-util.c: (bonobo_help_display_cb): Restore the fix
+	for bug #125046.
+
+2007-11-13  Christian Persch  <chpe@gnome.org>
+
 	* configure.in: Update version after branching.
 
 2007-11-12  Kjartan Maraas  <kmaraas@gnome.org>
