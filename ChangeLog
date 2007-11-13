@@ -1,3 +1,7 @@
+2007-11-13  Christian Persch  <chpe@gnome.org>
+
+	* configure.in: Update version after branching.
+
 2007-11-12  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* bonobo/bonobo-selector-widget.c: Remove redundant include.
