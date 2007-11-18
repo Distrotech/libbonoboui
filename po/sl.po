@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-02 03:22+0000\n"
-"PO-Revision-Date: 2007-01-17 14:36+0100\n"
-"Last-Translator: Matic Žgur <mr.zgur@gmail.com>\n"
+"POT-Creation-Date: 2007-01-17 13:38+0000\n"
+"PO-Revision-Date: 2007-11-18 19:55+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,22 +81,22 @@ msgstr "Izberite datoteke, ki jih želite odprti"
 msgid "Select a filename to save"
 msgstr "Izberite ime datoteke, ki jo želite shraniti"
 
-#: ../bonobo/bonobo-plug.c:424
+#: ../bonobo/bonobo-plug.c:423
 msgid "Event Forwarding"
 msgstr "Posredovanje dogodkov"
 
-#: ../bonobo/bonobo-plug.c:425
+#: ../bonobo/bonobo-plug.c:424
 msgid "Whether X events should be forwarded"
 msgstr "Ali naj bodo dogodki X posredovani"
 
-#: ../bonobo/bonobo-selector-widget.c:298
+#: ../bonobo/bonobo-selector-widget.c:297
 #: ../bonobo/bonobo-window.c:344
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Ime"
 
-#: ../bonobo/bonobo-selector-widget.c:320
+#: ../bonobo/bonobo-selector-widget.c:319
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Opis"
@@ -179,82 +179,82 @@ msgstr "Izpiši opis XML celotnega uporabniškega vmesnika v konzolo"
 msgid "Configure UI"
 msgstr "Nastavljiv uporabniški vmesnik"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:127
+#: ../bonobo/bonobo-ui-init-gtk.c:130
 msgid "Gdk debugging flags to set"
 msgstr "Zastavice razhroščevanja gdk, ki naj se nastavijo"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:127
 #: ../bonobo/bonobo-ui-init-gtk.c:130
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 #: ../bonobo/bonobo-ui-init-gtk.c:161
+#: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
 msgstr "ZASTAVICE"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130
+#: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "Gdk debugging flags to unset"
 msgstr "Zastavice razhroščevanja gdk, ki naj se odnastavijo"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X display to use"
 msgstr "Zaslon X, ki naj se uporabi"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "DISPLAY"
 msgstr "ZASLON"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "X screen to use"
 msgstr "Zaslon X, ki naj se uporabi"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:138
+#: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "SCREEN"
 msgstr "ZASLON"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:142
+#: ../bonobo/bonobo-ui-init-gtk.c:145
 msgid "Make X calls synchronous"
 msgstr "Naredi klice X asinhrone"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:148
+#: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Don't use X shared memory extension"
 msgstr "Ne uporabi dodatka za deljen pomnilnik X"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:152
+#: ../bonobo/bonobo-ui-init-gtk.c:155
 msgid "Program name as used by the window manager"
 msgstr "Ime programa kot ga uporablja upravljalnik oken"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:152
+#: ../bonobo/bonobo-ui-init-gtk.c:155
 msgid "NAME"
 msgstr "IME"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "Program class as used by the window manager"
 msgstr "Razred programa kot ga uporablja upravljalnik oken"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "CLASS"
 msgstr "RAZRED"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
 msgstr "Zastavice razhroščevanja gtk+, ki naj se nastavijo"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:161
+#: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
 msgstr "Zastavice rahroščevanja gtk+, ki naj se odnastavijo"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
 msgstr "Naredi vsa opozorila usodna"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:167
+#: ../bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
 msgstr "Naloži dodatni modul Gtk"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:167
+#: ../bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
 msgstr "MODUL"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:183
+#: ../bonobo/bonobo-ui-init-gtk.c:186
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -302,11 +302,15 @@ msgstr "ali je orodjarna lebdeča"
 msgid "Style of bevel around the toolbar"
 msgstr "Slog obrobe okoli orodjarne"
 
-#: ../bonobo/bonobo-ui-util.c:630
+#: ../bonobo/bonobo-ui-util.c:601
+msgid "Could not display help for this application"
+msgstr "Ni mogoče prikazati pomoči za ta program"
+
+#: ../bonobo/bonobo-ui-util.c:643
 msgid "_Contents"
 msgstr "_Vsebina"
 
-#: ../bonobo/bonobo-ui-util.c:631
+#: ../bonobo/bonobo-ui-util.c:644
 msgid "View help for this application"
 msgstr "Glej pomoč za ta program"
 
