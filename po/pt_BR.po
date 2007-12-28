@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-09 03:42-0300\n"
-"PO-Revision-Date: 2007-08-05 18:22-0300\n"
+"POT-Creation-Date: 2007-12-22 18:07-0200\n"
+"PO-Revision-Date: 2007-12-27 22:48-0200\n"
 "Last-Translator: Leonardo Ferreira Fontenelle <leo.fontenelle@gmail.com>\n"
 "Language-Team: Português/Brasil <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -80,13 +80,13 @@ msgstr "Encaminhamento de Evento"
 msgid "Whether X events should be forwarded"
 msgstr "Indica se os eventos X devem ser encaminhados"
 
-#: ../bonobo/bonobo-selector-widget.c:298 ../bonobo/bonobo-window.c:344
+#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Nome"
 
-#: ../bonobo/bonobo-selector-widget.c:320
+#: ../bonobo/bonobo-selector-widget.c:319
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Descrição"
@@ -145,7 +145,7 @@ msgstr "Olhar"
 #: ../bonobo/bonobo-ui-config-widget.c:320
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "_Icon"
-msgstr "_Ícone"
+msgstr "Í_cone"
 
 #: ../bonobo/bonobo-ui-config-widget.c:326
 msgid "_Text and Icon"
@@ -296,11 +296,15 @@ msgstr "indica se a barra de ferramentas é flutuante"
 msgid "Style of bevel around the toolbar"
 msgstr "Estilo da moldura ao redor da barra de ferramentas"
 
-#: ../bonobo/bonobo-ui-util.c:630
+#: ../bonobo/bonobo-ui-util.c:601
+msgid "Could not display help for this application"
+msgstr "Não foi possível exibir ajuda para essa aplicação"
+
+#: ../bonobo/bonobo-ui-util.c:643
 msgid "_Contents"
 msgstr "S_umário"
 
-#: ../bonobo/bonobo-ui-util.c:631
+#: ../bonobo/bonobo-ui-util.c:644
 msgid "View help for this application"
 msgstr "Mostra a ajuda para esta aplicação"
 
