@@ -6,20 +6,20 @@
 #
 # Isam Bayazidi <bayazidi@arabeyes.org>, 2002.
 # Arafat Medini <lumina@silverpen.de>, 2003, 2004.
-# Khaled Hosny <khaledhosny@eglug.org>, 2006, 2007.
+# Khaled Hosny <khaledhosny@eglug.org>, 2006, 2007, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui.HEAD\n"
+"Project-Id-Version: libbonoboui.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-28 02:35+0000\n"
-"PO-Revision-Date: 2007-12-23 12:04+0100\n"
-"Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"PO-Revision-Date: 2008-01-11 14:50+0200\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"Language-Team: Arabic <doc@eglug.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=10 ? 2 : 3\n"
+"Plural-Forms:  nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 && n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5;\n"
 
 #: ../bonobo/bonobo-canvas-item.c:680
 msgid "corba factory"
@@ -56,7 +56,7 @@ msgstr "نوع الظل"
 #: ../bonobo/bonobo-ui-toolbar.c:1105
 #: ../bonobo/bonobo-ui-toolbar.c:1106
 msgid "Orientation"
-msgstr "الإتجاه"
+msgstr "الاتجاه"
 
 #: ../bonobo/bonobo-dock-item.c:250
 #: ../bonobo/bonobo-dock-item.c:251
@@ -70,19 +70,19 @@ msgstr "العرض المفضّل"
 #: ../bonobo/bonobo-ui-toolbar.c:1133
 #: ../bonobo/bonobo-ui-toolbar.c:1134
 msgid "Preferred height"
-msgstr "الإرتفاع المفضّل"
+msgstr "الارتفاع المفضّل"
 
 #: ../bonobo/bonobo-file-selector-util.c:357
 msgid "Select a file to open"
-msgstr "انتقِ ملفّ لفتحه"
+msgstr "اختر ملفّا لفتحه"
 
 #: ../bonobo/bonobo-file-selector-util.c:385
 msgid "Select files to open"
-msgstr "انتقِ ملفّات لفتحها"
+msgstr "اختر ملفّات لفتحها"
 
 #: ../bonobo/bonobo-file-selector-util.c:414
 msgid "Select a filename to save"
-msgstr "انتقِ اسم ملف للحفظ"
+msgstr "اختر اسم ملف للحفظ"
 
 #: ../bonobo/bonobo-plug.c:423
 msgid "Event Forwarding"
@@ -90,7 +90,7 @@ msgstr "تمرير الأحداث"
 
 #: ../bonobo/bonobo-plug.c:424
 msgid "Whether X events should be forwarded"
-msgstr "فيما إذا وجب تمرير أحداث X"
+msgstr "فيما إذا وجب تمرير أحداث س"
 
 #: ../bonobo/bonobo-selector-widget.c:297
 #: ../bonobo/bonobo-window.c:344
@@ -110,7 +110,7 @@ msgstr "الواجهات مطلوبة"
 
 #: ../bonobo/bonobo-selector.c:344
 msgid "A NULL-terminated array of interfaces which a server must support in order to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
-msgstr "مصفوفة منتهية بـNULL للواجهات التي يجب على الخادم أن يدعمها حتى يتم سرْدها في أداة الإختيار. الخيار الإفتراضي هو \"IDL:Bonobo/Embeddable:1.0\" إذا لم تُسْرد أية واجهات"
+msgstr "مصفوفة منتهية بـNULL للواجهات التي يجب على الخادم أن يدعمها حتى يتم سرْدها في أداة الإختيار. الخيار المبدئي هو \"IDL:Bonobo/Embeddable:1.0\" إذا لم تُسْرد أية واجهات"
 
 #: ../bonobo/bonobo-selector.c:346
 msgid "Interface required entry"
@@ -118,7 +118,7 @@ msgstr "خانة تطلُبها الواجهة"
 
 #: ../bonobo/bonobo-selector.c:347
 msgid "One of the interfaces that's required"
-msgstr "أحد الواجهات المطلوبة"
+msgstr "إحدى الواجهات المطلوبة"
 
 #: ../bonobo/bonobo-ui-config-widget.c:265
 msgid "Visible"
@@ -130,7 +130,7 @@ msgstr "ا_عرض"
 
 #: ../bonobo/bonobo-ui-config-widget.c:279
 msgid "_Hide"
-msgstr "ا_خفي"
+msgstr "ا_خفِ"
 
 #: ../bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
@@ -172,11 +172,11 @@ msgstr "نقِّح"
 
 #: ../bonobo/bonobo-ui-engine.c:91
 msgid "_Dump XML"
-msgstr "_اسقاط XML"
+msgstr "ا_طرح XML"
 
 #: ../bonobo/bonobo-ui-engine.c:92
 msgid "Dump the entire UI's XML description to the console"
-msgstr "اسقاط كامل وصف XML لواجهة المستخدم إلى الشاشة الطرفية"
+msgstr "اطرح كامل وصف XML لواجهة المستخدم إلى الشاشة الطرفية"
 
 #: ../bonobo/bonobo-ui-engine-config.c:522
 msgid "Configure UI"
@@ -191,59 +191,59 @@ msgstr "شارات تنقيح Gdk التي ستُضبط"
 #: ../bonobo/bonobo-ui-init-gtk.c:161
 #: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "FLAGS"
-msgstr "FLAGS"
+msgstr "شارات"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:133
 msgid "Gdk debugging flags to unset"
-msgstr "شارات تنقيح Gdk التي سيلغى ضبطها"
+msgstr "شارات تنقيح Gdk التي ستُصفّر"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X display to use"
-msgstr "عرض X الذي سيُستعمل"
+msgstr "مِعراض س الذي سيُستعمل"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "DISPLAY"
-msgstr "DISPLAY"
+msgstr "مِعراض"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "X screen to use"
-msgstr "شاشة X التي ستُستعمل"
+msgstr "شاشة س التي ستُستعمل"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "SCREEN"
-msgstr "SCREEN"
+msgstr "شاشة"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:145
 msgid "Make X calls synchronous"
-msgstr "اجعل نداءات X متزامنة"
+msgstr "اجعل نداءات س متزامنة"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:151
 msgid "Don't use X shared memory extension"
-msgstr "لا تستخدم امتداد ذاكرة X المشتركة"
+msgstr "لا تستخدم امتداد ذاكرة س المشتركة"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:155
 msgid "Program name as used by the window manager"
-msgstr "اسم البرنامج كما هو مستخدم من قبل مدير النوافذ"
+msgstr "اسم البرنامج كما يستخدمه مدير النوافذ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:155
 msgid "NAME"
-msgstr "NAME"
+msgstr "اسم"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "Program class as used by the window manager"
-msgstr "صنف البرنامج كما هو مستخدم من قبل مدير النوافذ"
+msgstr "صنف البرنامج كما يستخدمه مدير النوافذ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:158
 msgid "CLASS"
-msgstr "CLASS"
+msgstr "صنف"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:161
 msgid "Gtk+ debugging flags to set"
-msgstr "شارات تنقيح Gtk+ التي ستُضبط"
+msgstr "شارات تنقيح ج‌ت‌ك+ التي ستُضبط"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:164
 msgid "Gtk+ debugging flags to unset"
-msgstr "شارات تنقيح Gtk+ التي سيلغى ضبطها"
+msgstr "شارات تنقيح ج‌ت‌ك+ التي ستُصفّر"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:167
 msgid "Make all warnings fatal"
@@ -251,15 +251,15 @@ msgstr "اجعل جميع التحذيرات قاتلة"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:170
 msgid "Load an additional Gtk module"
-msgstr "حمِّل وحدة Gtk إضافية"
+msgstr "حمِّل وحدة ج‌ت‌ك إضافية"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:170
 msgid "MODULE"
-msgstr "MODULE"
+msgstr "وحدة"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:186
 msgid "GTK+"
-msgstr "GTK+"
+msgstr "ج‌ت‌ك+"
 
 #: ../bonobo/bonobo-ui-main.c:278
 msgid "Bonobo GUI support"
@@ -323,43 +323,43 @@ msgstr "اسم النافذة - يستعمل لتنسيق الإعدادات."
 
 #: ../bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "مستوى التكبير"
+msgstr "مستوى التقريب"
 
 #: ../bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
-msgstr "درجة التوسيع"
+msgstr "درجة التكبير"
 
 #: ../bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
-msgstr "مستوى التكبير الأدنى"
+msgstr "مستوى التقريب الأدنى"
 
 #: ../bonobo/bonobo-zoomable.c:336
 msgid "The minimum degree of enlargment"
-msgstr "أدنى درجة للتوسيع"
+msgstr "أدنى درجة للتكبير"
 
 #: ../bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
-msgstr "مستوى التكبير الأقصى"
+msgstr "مستوى التقريب الأقصى"
 
 #: ../bonobo/bonobo-zoomable.c:345
 msgid "The maximum degree of enlargment"
-msgstr "أقصى درجة للتوسيع"
+msgstr "أقصى درجة للتكبير"
 
 #: ../bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
-msgstr "له مستوى تكبير أدنى"
+msgstr "له مستوى تقريب أدنى"
 
 #: ../bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "فيما أذا كان لنا مستوى تكبير أدنى سليم"
+msgstr "فيما إذا كان لنا مستوى تقريب أدنى سليم"
 
 #: ../bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
-msgstr "له متسوى تكبير أقصى"
+msgstr "له متسوى تقريب أقصى"
 
 #: ../bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "فيما إذا كان لنا مستوى تكبير أقصى سليم"
+msgstr "فيما إذا كان لنا مستوى تقريب أقصى سليم"
 
 #: ../bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -367,19 +367,19 @@ msgstr "مستمر"
 
 #: ../bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "فيما إذا سنكبر باستمرار (عكس التكبير المتدرج)"
+msgstr "فيما إذا سنقرب باستمرار (عكس التقريب المتدرج)"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "حوْل هذا التطبيق"
+msgstr "عنْ هذا التطبيق"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
-msgstr "انتقِ"
+msgstr "اختر"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
 msgid "_About..."
-msgstr "_حوْل..."
+msgstr "_عنْ..."
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
 msgid "_Edit"
@@ -392,11 +392,11 @@ msgstr "_ملف"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
 msgid "_Select"
-msgstr "ا_نتقِ"
+msgstr "ا_ختر"
 
 #: ../samples/bonoboui/hello.c:63
 msgid "This does nothing; it is only a demonstration."
-msgstr "هذا لا يفعل شيئاً، للعرض فقط."
+msgstr "هذا لا يفعل شيئًا، للعرض فقط."
 
 #: ../samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
@@ -409,15 +409,15 @@ msgstr "أهلا جنوم"
 #. Create Label and put it in the Button:
 #: ../samples/bonoboui/hello.c:272
 msgid "Hello, World!"
-msgstr "اهلا، يا عالم!"
+msgstr "أهلا، يا عالم!"
 
 #: ../samples/bonoboui/hello.c:312
 msgid "Cannot init libbonoboui code"
-msgstr "لم يمكن تشغيل شفرة libbonoboui"
+msgstr "تعذّر تشغيل شفرة libbonoboui"
 
 #: ../samples/controls/bonobo-sample-controls.c:131
 msgid "Could not initialize Bonobo UI"
-msgstr "لم يمكن تشغيل واجهة مستخدم بونوبو"
+msgstr "تعذّر تشغيل واجهة مستخدم بونوبو"
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
@@ -429,7 +429,7 @@ msgstr "يعرض مكوّنات بونوبو المتوفّرة"
 
 #: ../tools/browser/bonobo-browser.xml.h:1
 msgid "About this program..."
-msgstr "حوْل هذا البرنامج..."
+msgstr "عنْ هذا البرنامج..."
 
 #: ../tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
@@ -455,7 +455,7 @@ msgstr "IID"
 
 #: ../tools/browser/component-details.c:117
 msgid "Location"
-msgstr "الموقع"
+msgstr "المكان"
 
 #. Build the details tab
 #: ../tools/browser/component-details.c:167
@@ -485,7 +485,7 @@ msgstr "متصفّح بونوبو"
 
 #: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr "جميع الحقوق محفوظة 2001، مؤسّسة جنوم"
+msgstr "حقوق النشر 2001، مؤسّسة جنوم"
 
 #: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
