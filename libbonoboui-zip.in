@@ -14,7 +14,11 @@ bin/libbonoboui-2-0.dll
 lib/libglade/2.0/libbonobo.dll
 EOF
 
-zip $ZIP lib/locale/*/LC_MESSAGES/libbonoboui-2.0.mo
+if [ -f share/locale/de/LC_MESSAGES/libbonoboui-2.0.mo ]; then
+  zip $ZIP share/locale/*/LC_MESSAGES/libbonoboui-2.0.mo
+else
+  zip $ZIP lib/locale/*/LC_MESSAGES/libbonoboui-2.0.mo
+fi
 
 rm $DEVZIP
 zip -r $DEVZIP -@ <<EOF
