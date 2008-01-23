@@ -77,7 +77,7 @@ libbonoboui_2_la_LDFLAGS = \
 	-no-undefined
 
 libbonoboui_2_la_LIBADD = \
-	$(BONOBOUI_LIBS) ${X_LIBS} $(INTLLIBS)
+	$(BONOBOUI_LIBS) ${X_LIBS} $(INTLLIBS) $(POPT_LIBS)
 
 libbonoboui_2_la_SOURCES = \
 	bonobo-a11y.c				\

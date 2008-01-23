@@ -1,3 +1,10 @@
+2008-01-23  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* bonobo/Makefile.am: Link to popt
+	* bonobo/bonobo-ui-init-gtk.c: #include <popt.h>
+	* configure.in: Check for popt
+	* tests/test-ui.c: (cb_do_hide_toolbar): Fix a leak.
+
 2008-01-22  Tor Lillqvist  <tml@novell.com>
 
 	* libbonoboui-zip.in: Look for catalogs in share/locale first, as

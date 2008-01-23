@@ -124,6 +124,7 @@ cb_do_hide_toolbar (GtkWindow *window, BonoboWindow *win)
 		bonobo_ui_component_set_prop (global_component, path, "hidden", "0", NULL);
 	else
 		bonobo_ui_component_set_prop (global_component, path, "hidden", "1", NULL);
+	g_free (val);
 }
 
 static void
