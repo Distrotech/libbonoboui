@@ -1,20 +1,21 @@
 # Thai translation of libbonoboui.
-# Copyright (C) 2007 Free Software Foundation, Inc.
+# Copyright (C) 2007-2008 Free Software Foundation, Inc.
 # This file is distributed under the same license as the libbonoboui package.
 # aka.ape <aka.ape@gmail.com>, 2007.
-# 
-# 
+# Theppitak Karoonboonyanan <thep@linux.thai.net, 2008.
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.19.90\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-24 03:30+0100\n"
-"PO-Revision-Date: 2007-08-08 12:09+0700\n"
-"Last-Translator: aka.ape <aka.ape@gmail.com>\n"
+"POT-Creation-Date: 2008-01-25 15:42+0700\n"
+"PO-Revision-Date: 2008-01-25 15:44+0700\n"
+"Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: ../bonobo/bonobo-canvas-item.c:680
 msgid "corba factory"
@@ -80,13 +81,13 @@ msgstr "การส่งต่อเหตุการณ์"
 msgid "Whether X events should be forwarded"
 msgstr "กำหนดว่าเหตุการณ์ X ควรถูกส่งต่อหรือไม่"
 
-#: ../bonobo/bonobo-selector-widget.c:298 ../bonobo/bonobo-window.c:344
+#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "ชื่อ"
 
-#: ../bonobo/bonobo-selector-widget.c:320
+#: ../bonobo/bonobo-selector-widget.c:319
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "คำอธิบาย"
@@ -174,80 +175,80 @@ msgstr "Dump รายละเอียด XML ของ UI ไปยังค�
 msgid "Configure UI"
 msgstr "ปรับแต่ง UI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "Gdk debugging flags to set"
 msgstr "flag สำหรับการดีบั๊กของ Gdk ที่จะตั้ง"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130 ../bonobo/bonobo-ui-init-gtk.c:133
-#: ../bonobo/bonobo-ui-init-gtk.c:161 ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:131 ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:162 ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:134
 msgid "Gdk debugging flags to unset"
 msgstr "flag สำหรับการดีบั๊กของ Gdk ที่จะล้าง"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "X display to use"
 msgstr "ดิสเพลย์ X ที่จะใช้"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "X screen to use"
 msgstr "สกรีน X ที่ใช้"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "SCREEN"
 msgstr "SCREEN"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:145
+#: ../bonobo/bonobo-ui-init-gtk.c:146
 msgid "Make X calls synchronous"
 msgstr "ใช้การเรียก X แบบซิงโครนัส"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "Don't use X shared memory extension"
 msgstr "ไม่ใช้ส่วนขยายการใช้หน่วยความจำร่วมของ X"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "Program name as used by the window manager"
 msgstr "ชื่อโปรแกรมที่ใช้โดยโปรแกรมจัดการหน้าต่าง"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "NAME"
 msgstr "NAME"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "Program class as used by the window manager"
 msgstr "คลาสโปรแกรมที่ใช้โดยโปรแกรมจัดการหน้าต่าง"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "CLASS"
 msgstr "CLASS"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:161
+#: ../bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
 msgstr "flag สำหรับการดีบั๊กของ Gtk+ ที่จะตั้ง"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
 msgstr "flag สำหรับการดีบั๊กของ Gtk+ ที่จะล้าง"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:167
+#: ../bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
 msgstr "ถือว่าทุกคำเตือนร้ายแรง"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:170
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
 msgstr "โหลดมอดูล Gtk เพิ่มเติม"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:170
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
 msgstr "MODULE"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:186
+#: ../bonobo/bonobo-ui-init-gtk.c:187
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -295,11 +296,15 @@ msgstr "กำหนดว่าแถบเครื่องมือลอย
 msgid "Style of bevel around the toolbar"
 msgstr "รูปแบบของความต่างระดับที่ขอบแถบเครื่องมือ"
 
-#: ../bonobo/bonobo-ui-util.c:630
+#: ../bonobo/bonobo-ui-util.c:601
+msgid "Could not display help for this application"
+msgstr "ไม่สามารถแสดงวิธีใช้สำหรับโปรแกรมนี้"
+
+#: ../bonobo/bonobo-ui-util.c:643
 msgid "_Contents"
 msgstr "เนื้อ_หา"
 
-#: ../bonobo/bonobo-ui-util.c:631
+#: ../bonobo/bonobo-ui-util.c:644
 msgid "View help for this application"
 msgstr "แสดงวิธีใช้โปรแกรม"
 
@@ -493,4 +498,3 @@ msgstr "ทั้งหมด"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "ไม่ทำงาน"
-
