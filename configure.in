@@ -1,4 +1,4 @@
-AC_INIT([libbonoboui],[2.21.0],[http://bugzilla.gnome.org/enter_bug.cgi?product=bonobo&component=libbonoboui])
+AC_INIT([libbonoboui],[2.21.90],[http://bugzilla.gnome.org/enter_bug.cgi?product=bonobo&component=libbonoboui])
 
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.9 foreign no-dist-gzip dist-bzip2])

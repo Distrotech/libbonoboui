@@ -1,3 +1,10 @@
+==================== libbonoboui 2.21.90 ====================
+
+2008-01-28  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* NEWS: Update
+	* configure.in: Bump version.
+
 2008-01-23  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* bonobo/Makefile.am: Link to popt
