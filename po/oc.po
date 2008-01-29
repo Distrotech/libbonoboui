@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-20 17:38+0100\n"
+"POT-Creation-Date: 2008-01-20 16:53+0100\n"
 "PO-Revision-Date: 2007-08-21 00:45+0200\n"
 "Last-Translator: Yannig MARCHEGAY (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../bonobo/bonobo-canvas-item.c:680
 msgid "corba factory"
@@ -80,13 +80,13 @@ msgstr ""
 msgid "Whether X events should be forwarded"
 msgstr ""
 
-#: ../bonobo/bonobo-selector-widget.c:298 ../bonobo/bonobo-window.c:344
+#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Nom"
 
-#: ../bonobo/bonobo-selector-widget.c:320
+#: ../bonobo/bonobo-selector-widget.c:319
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Descripcion"
@@ -293,11 +293,16 @@ msgstr ""
 msgid "Style of bevel around the toolbar"
 msgstr ""
 
-#: ../bonobo/bonobo-ui-util.c:630
-msgid "_Contents"
-msgstr "_Somari"
+#: ../bonobo/bonobo-ui-util.c:601
+#, fuzzy
+msgid "Could not display help for this application"
+msgstr "Impossible de visualizar l'ajuda de l'aplicacion"
 
-#: ../bonobo/bonobo-ui-util.c:631
+#: ../bonobo/bonobo-ui-util.c:643
+msgid "_Contents"
+msgstr "_Ensenhador"
+
+#: ../bonobo/bonobo-ui-util.c:644
 msgid "View help for this application"
 msgstr "Visualizar l'ajuda de l'aplicacion"
 
@@ -476,7 +481,9 @@ msgstr ""
 
 #: ../tools/browser/window.c:214
 msgid "translator-credits"
-msgstr "La còla occitana de revirada d'Ubuntu, 2007 - ubuntu-l10n-oci@lists.ubuntu.com"
+msgstr ""
+"La còla occitana de revirada d'Ubuntu, 2007 - ubuntu-l10n-oci@lists.ubuntu."
+"com"
 
 #. create the window
 #: ../tools/browser/window.c:240
@@ -491,4 +498,3 @@ msgstr "Totes"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "Inactiu"
-
