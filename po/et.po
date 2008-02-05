@@ -2,10 +2,11 @@
 # Estonian translation of Libbonoboui.
 #
 # Copyright (C) 2004-2006 Free Software Foundation, Inc.
+# Copyright (C) 2008 The Gnome Project.
 # This file is distributed under the same license as the libbonoboui package.
 #
 # Priit Laes <amd@tt.ee>, 2004.
-# Ivar Smolin <okul@linux.ee>, 2005, 2006.
+# Ivar Smolin <okul@linux.ee>, 2005, 2006, 2008.
 #
 msgid ""
 msgstr ""
@@ -437,7 +438,7 @@ msgstr "Uue akna avamine"
 
 #: ../tools/browser/bonobo-browser.xml.h:5
 msgid "_Help"
-msgstr "_Abi"
+msgstr "A_bi"
 
 #. Build the general tab
 #: ../tools/browser/component-details.c:109
@@ -490,7 +491,7 @@ msgstr "Bonobo komponendilehitseja"
 msgid "translator-credits"
 msgstr ""
 "Priit Laes <amd@tt.ee>, 2004.\n"
-"Ivar Smolin <okul@linux.ee>, 2005, 2006."
+"Ivar Smolin <okul@linux.ee>, 2005, 2006, 2008."
 
 #. create the window
 #: ../tools/browser/window.c:240
