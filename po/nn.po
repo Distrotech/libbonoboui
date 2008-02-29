@@ -4,62 +4,62 @@
 #
 # Kjartan Maraas  <kmaraas@gnome.org>, 2001, 2006.
 # Roy-Magne Mo <rmo@sunnmore.net>, 2002.
-# Åsmund Skjæveland <aasmunds@fys.uio.no>, 2003, 2006.
+# Åsmund Skjæveland <aasmunds@ulrik.uio.no>, 2003-2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-02 15:27+0200\n"
-"PO-Revision-Date: 2006-09-02 15:26+0200\n"
-"Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
+"POT-Creation-Date: 2008-02-29 14:37+0100\n"
+"PO-Revision-Date: 2008-02-29 14:36+0100\n"
+"Last-Translator: Åsmund Skjæveland <aasmunds@ulrik.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.2\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../bonobo/bonobo-canvas-item.c:683
+#: ../bonobo/bonobo-canvas-item.c:680
 msgid "corba factory"
 msgstr "corba-fabrikk"
 
-#: ../bonobo/bonobo-canvas-item.c:684
+#: ../bonobo/bonobo-canvas-item.c:681
 msgid "The factory pointer"
 msgstr "Fabrikkpeikar"
 
-#: ../bonobo/bonobo-canvas-item.c:693
+#: ../bonobo/bonobo-canvas-item.c:690
 msgid "corba UI container"
 msgstr "corba UI-haldar"
 
-#: ../bonobo/bonobo-canvas-item.c:694
+#: ../bonobo/bonobo-canvas-item.c:691
 msgid "The User interface container"
 msgstr "Haldar for brukargrensesnitt"
 
-#: ../bonobo/bonobo-dock-item-grip.c:257
+#: ../bonobo/bonobo-dock-item-grip.c:255
 msgid "Dock the toolbar"
 msgstr "Fest verktøylinja"
 
-#: ../bonobo/bonobo-dock-item-grip.c:258
+#: ../bonobo/bonobo-dock-item-grip.c:256
 msgid "Undock the toolbar"
 msgstr "Løys verktøylinja"
 
-#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
-#: ../bonobo/bonobo-ui-toolbar.c:1164
+#: ../bonobo/bonobo-dock-item.c:228 ../bonobo/bonobo-dock-item.c:229
+#: ../bonobo/bonobo-ui-toolbar.c:1161
 msgid "Shadow type"
 msgstr "Skuggetype"
 
-#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
-#: ../bonobo/bonobo-ui-toolbar.c:1108 ../bonobo/bonobo-ui-toolbar.c:1109
+#: ../bonobo/bonobo-dock-item.c:239 ../bonobo/bonobo-dock-item.c:240
+#: ../bonobo/bonobo-ui-toolbar.c:1105 ../bonobo/bonobo-ui-toolbar.c:1106
 msgid "Orientation"
 msgstr "Retning"
 
-#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
-#: ../bonobo/bonobo-ui-toolbar.c:1127 ../bonobo/bonobo-ui-toolbar.c:1128
+#: ../bonobo/bonobo-dock-item.c:250 ../bonobo/bonobo-dock-item.c:251
+#: ../bonobo/bonobo-ui-toolbar.c:1124 ../bonobo/bonobo-ui-toolbar.c:1125
 msgid "Preferred width"
 msgstr "Ønska breidde"
 
-#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
-#: ../bonobo/bonobo-ui-toolbar.c:1136 ../bonobo/bonobo-ui-toolbar.c:1137
+#: ../bonobo/bonobo-dock-item.c:259 ../bonobo/bonobo-dock-item.c:260
+#: ../bonobo/bonobo-ui-toolbar.c:1133 ../bonobo/bonobo-ui-toolbar.c:1134
 msgid "Preferred height"
 msgstr "Ønska høgde"
 
@@ -75,30 +75,30 @@ msgstr "Vel filer som skal opnast"
 msgid "Select a filename to save"
 msgstr "Vel eit filnamn å lagra"
 
-#: ../bonobo/bonobo-plug.c:425
+#: ../bonobo/bonobo-plug.c:423
 msgid "Event Forwarding"
 msgstr "Hendingsvidaresending"
 
-#: ../bonobo/bonobo-plug.c:426
+#: ../bonobo/bonobo-plug.c:424
 msgid "Whether X events should be forwarded"
 msgstr "Om X hendingar skal vidaresendast"
 
-#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Namn"
 
-#: ../bonobo/bonobo-selector-widget.c:324
+#: ../bonobo/bonobo-selector-widget.c:319
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Skildring"
 
-#: ../bonobo/bonobo-selector.c:345
+#: ../bonobo/bonobo-selector.c:343
 msgid "Interfaces required"
 msgstr "Naudsynte grensesnitt"
 
-#: ../bonobo/bonobo-selector.c:346
+#: ../bonobo/bonobo-selector.c:344
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
@@ -108,57 +108,57 @@ msgstr ""
 "lista i veljaren. Standardverdi er «IDL:Bonobo/Embeddable:1.0» dersom det "
 "ikkje er lista nokon grensesnitt"
 
-#: ../bonobo/bonobo-selector.c:348
+#: ../bonobo/bonobo-selector.c:346
 msgid "Interface required entry"
 msgstr "Oppføring som vert kravd av grensesnittet"
 
-#: ../bonobo/bonobo-selector.c:349
+#: ../bonobo/bonobo-selector.c:347
 msgid "One of the interfaces that's required"
 msgstr "Eit av grensesnitta som vert kravd"
 
-#: ../bonobo/bonobo-ui-config-widget.c:268
+#: ../bonobo/bonobo-ui-config-widget.c:265
 msgid "Visible"
 msgstr "Synleg"
 
-#: ../bonobo/bonobo-ui-config-widget.c:275
+#: ../bonobo/bonobo-ui-config-widget.c:272
 msgid "_Show"
 msgstr "Vi_s"
 
-#: ../bonobo/bonobo-ui-config-widget.c:282
+#: ../bonobo/bonobo-ui-config-widget.c:279
 msgid "_Hide"
 msgstr "_Gøym"
 
-#: ../bonobo/bonobo-ui-config-widget.c:288
+#: ../bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
 msgstr "_Vis verktøytips"
 
-#: ../bonobo/bonobo-ui-config-widget.c:293
+#: ../bonobo/bonobo-ui-config-widget.c:290
 msgid "Toolbars"
 msgstr "Verktøylinjer"
 
-#: ../bonobo/bonobo-ui-config-widget.c:303
+#: ../bonobo/bonobo-ui-config-widget.c:300
 msgid "toolbars"
 msgstr "Verktøylinjer"
 
-#: ../bonobo/bonobo-ui-config-widget.c:314
+#: ../bonobo/bonobo-ui-config-widget.c:311
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "Look"
 msgstr "Sjå"
 
-#: ../bonobo/bonobo-ui-config-widget.c:323
+#: ../bonobo/bonobo-ui-config-widget.c:320
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "_Icon"
 msgstr "_Ikon"
 
-#: ../bonobo/bonobo-ui-config-widget.c:329
+#: ../bonobo/bonobo-ui-config-widget.c:326
 msgid "_Text and Icon"
 msgstr "_Tekst og ikon"
 
-#: ../bonobo/bonobo-ui-config-widget.c:335
+#: ../bonobo/bonobo-ui-config-widget.c:332
 msgid "Text only"
 msgstr "Berre tekst"
 
-#: ../bonobo/bonobo-ui-config-widget.c:341
+#: ../bonobo/bonobo-ui-config-widget.c:338
 msgid "_Priority text only"
 msgstr "Kun _prioritert tekst"
 
@@ -178,80 +178,80 @@ msgstr "Skriv heile XML-skildringa til konsollet"
 msgid "Configure UI"
 msgstr "Konfigurer brukargrensesnitt"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:126
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "Gdk debugging flags to set"
 msgstr "Gdk-feilsøkingsflagg som skal setjast"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:126 ../bonobo/bonobo-ui-init-gtk.c:129
-#: ../bonobo/bonobo-ui-init-gtk.c:157 ../bonobo/bonobo-ui-init-gtk.c:160
+#: ../bonobo/bonobo-ui-init-gtk.c:131 ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:162 ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "FLAGG"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:134
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk-feilsøkingsflagg som skal nullstillast"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "X display to use"
 msgstr "X-display som skal brukast"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "X screen to use"
 msgstr "X-skjerm som skal brukast"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "SCREEN"
 msgstr "SKJERM"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:146
 msgid "Make X calls synchronous"
 msgstr "Gjer X-kall synkrone"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "Don't use X shared memory extension"
 msgstr "Ikkje bruk X-utvidingar for delt minne"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "Program name as used by the window manager"
 msgstr "Programnamn som skal brukast av vindaugshandsamaren"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "NAME"
 msgstr "NAMN"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:154
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som skal brukast av vindaugshandsamaren"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:154
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:157
+#: ../bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+-feilsøkingsflagg som skal setjast"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:160
+#: ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+-feilsøkingsflagg som skal nullstillast"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:163
+#: ../bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
 msgstr "Gjer alle åtvaringar fatale"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:166
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
 msgstr "Last inn ein ekstra Gtk+-modul"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:166
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
 msgstr "MODUL"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:182
+#: ../bonobo/bonobo-ui-init-gtk.c:187
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -287,27 +287,31 @@ msgstr "_Skreddarsy"
 msgid "Customize the toolbar"
 msgstr "Skreddarsy verktøylinja"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1118
+#: ../bonobo/bonobo-ui-toolbar.c:1115
 msgid "is floating"
 msgstr "er flytande"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1119
+#: ../bonobo/bonobo-ui-toolbar.c:1116
 msgid "whether the toolbar is floating"
 msgstr "om verktøylinja er flytande"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1165
+#: ../bonobo/bonobo-ui-toolbar.c:1162
 msgid "Style of bevel around the toolbar"
 msgstr "Stil på kanten rundt verktøylinja"
 
-#: ../bonobo/bonobo-ui-util.c:630
+#: ../bonobo/bonobo-ui-util.c:601
+msgid "Could not display help for this application"
+msgstr "Klarte ikkje å visa hjelpeteksten til dette programmet"
+
+#: ../bonobo/bonobo-ui-util.c:643
 msgid "_Contents"
 msgstr "_Innhald"
 
-#: ../bonobo/bonobo-ui-util.c:631
+#: ../bonobo/bonobo-ui-util.c:644
 msgid "View help for this application"
 msgstr "Vis hjelpeteksten til dette programmet"
 
-#: ../bonobo/bonobo-window.c:347
+#: ../bonobo/bonobo-window.c:345
 msgid "Name of the window - used for configuration serialization."
 msgstr "Namn på vindauget - vert brukt for serialisering av oppsett."
 
@@ -483,7 +487,7 @@ msgstr "Bonobo komponentvisar"
 #: ../tools/browser/window.c:214
 msgid "translator-credits"
 msgstr ""
-"Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
+"Åsmund Skjæveland <aasmunds@ulrik.uio.no>\n"
 "\n"
 "Send feilmeldingar og kommentarar til <i18n-nn@lister.ping.uio.no>"
 
