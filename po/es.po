@@ -1,22 +1,20 @@
-# translation of es.po to Spanish
+# translation of libbonoboui.HEAD.po to Español
 # Héctor García Álvarez <hector@scouts-es.org>, 2001.
 # Juan Manuel García Molina <juanma_gm@wanadoo.es>, 2002.
 # Francisco Javier F. Serrador <serrador@arrakis.es>, 2003.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2006.
-# Jorge González <jorgegonz@svn.gnome.org>, 2007.
+# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008.
 # traducción de es.po al Spanish
-# translation of libbonoboui.HEAD.po to Spanish
-# translation of libbonoboui.HEAD.es.po to Spanish
 # Translation into spanish of libbonoboui.
-# Copyright (C) 2001,2003, 2004, 2006, 2007 Free Software Foundation, Inc.
+# Copyright (C) 2001,2003, 2004, 2006, 2007, 2008 Free Software Foundation, Inc.
 msgid ""
 msgstr ""
-"Project-Id-Version: libbonoboui.HEAD.es\n"
+"Project-Id-Version: libbonoboui.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-13 21:46+0000\n"
-"PO-Revision-Date: 2007-11-14 15:16+0100\n"
+"POT-Creation-Date: 2007-11-14 14:17+0000\n"
+"PO-Revision-Date: 2008-03-02 15:47+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Spanish <traductores@es.gnome.org>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -109,7 +107,7 @@ msgid ""
 "no interfaces are listed"
 msgstr ""
 "Para que un servidor sea listado en el selector, debe soportar un array de "
-"interfaces terminado en nulo.  Por omisión es «IDL:Bonobo/Embeddable:1.0» si "
+"interfaces terminado en nulo. De forma predeterminada es «IDL:Bonobo/Embeddable:1.0» si "
 "no se listan ninguna interfaz"
 
 #: ../bonobo/bonobo-selector.c:346
@@ -197,7 +195,7 @@ msgstr "Banderas de depuración de GDK a desactivar"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "X display to use"
-msgstr "Visor (display) X a usar"
+msgstr "Visor (display) X que usar"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:137
 msgid "DISPLAY"
@@ -205,7 +203,7 @@ msgstr "VISOR"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "X screen to use"
-msgstr "Pantalla (screen) X a usar"
+msgstr "Pantalla (screen) X que usar"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:141
 msgid "SCREEN"
@@ -490,7 +488,9 @@ msgstr "Examinador de componentes Bonobo"
 
 #: ../tools/browser/window.c:214
 msgid "translator-credits"
-msgstr "Francisco Javier F. Serrador <serrador@openshine.com>"
+msgstr ""
+"Jorge González <jorgegonz@svn.gnome.org>\n"
+"Francisco Javier F. Serrador <serrador@openshine.com>"
 
 #. create the window
 #: ../tools/browser/window.c:240
