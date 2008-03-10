@@ -1,3 +1,6 @@
+libbonoboui 2.22.0
+	* Translation updates.
+
 libbonoboui 2.21.90
 	* Link to popt since we use it (dmacks at netspace org)
 	* Use a dialog for the "Help not found" case (Matthias)
