@@ -1,14 +1,14 @@
 # Përkthimi i mesazheve të libbonoboui në shqip
 # This file is distributed under the same license as the libbonoboui package.
-# Copyright (C) 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
 #
-# Laurent Dhima <laurenti@alblinux.net>, 2003, 2004, 2005, 2006, 2007.
+# Laurent Dhima <laurenti@alblinux.net>, 2003, 2004, 2005, 2006, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-06 10:51+0100\n"
-"PO-Revision-Date: 2007-03-06 10:51+0100\n"
+"POT-Creation-Date: 2008-03-17 17:41+0100\n"
+"PO-Revision-Date: 2008-03-18 16:50+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -80,13 +80,13 @@ msgstr "Ridërgimi i ndodhive"
 msgid "Whether X events should be forwarded"
 msgstr "Nëse ndodhitë X duhen ridërguar"
 
-#: ../bonobo/bonobo-selector-widget.c:298 ../bonobo/bonobo-window.c:344
+#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Emri"
 
-#: ../bonobo/bonobo-selector-widget.c:320
+#: ../bonobo/bonobo-selector-widget.c:319
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Përshkrimi"
@@ -95,15 +95,16 @@ msgstr "Përshkrimi"
 msgid "Interfaces required"
 msgstr "Interfaqet e kërkuara"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../bonobo/bonobo-selector.c:344
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"Një array interfaqeje përfunduar nga NULL që server-i duhet të suportojë në "
-"mënyrë që të listohet tek zgjedhësi. Vlera e prezgjedhur është \"IDL:Bonobo/"
-"Embeddable:1.0\" nëse nuk është listuar asnjë interfaqe."
+"Një array interfaqeje përfunduar nga NULL që serveri duhet të suportojë në "
+"mënyrë që të figurojë në listën e zgjedhësit. Vlera e paracaktuar është "
+"\"IDL:Bonobo/Embeddable:1.0\" nëse nuk është figuron asnjë interfaqe."
 
 #: ../bonobo/bonobo-selector.c:346
 msgid "Interface required entry"
@@ -125,9 +126,10 @@ msgstr "_Shfaq"
 msgid "_Hide"
 msgstr "_Fshih"
 
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
 #: ../bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
-msgstr "Shfaq _Propozimet"
+msgstr "Shfaq _propozimet"
 
 #: ../bonobo/bonobo-ui-config-widget.c:290
 msgid "Toolbars"
@@ -163,10 +165,12 @@ msgstr "Vetëm teksti _prioritar"
 msgid "Debug"
 msgstr "Gjetja dhe korrigjimi i gabimeve"
 
+# (pofilter) unchanged: please translate
 #: ../bonobo/bonobo-ui-engine.c:91
 msgid "_Dump XML"
 msgstr "_Dump XML"
 
+# (pofilter) endwhitespace: checks whether whitespace at the end of the strings matches
 #: ../bonobo/bonobo-ui-engine.c:92
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Shkarko të gjithë përshkrimin XML të UI në konsolë "
@@ -175,80 +179,90 @@ msgstr "Shkarko të gjithë përshkrimin XML të UI në konsolë "
 msgid "Configure UI"
 msgstr "Konfiguro UI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "Gdk debugging flags to set"
-msgstr "Flag të debug të Gdk që duhen zgjedhur"
+msgstr "Flag e debug të Gdk për tu caktuar"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130 ../bonobo/bonobo-ui-init-gtk.c:133
-#: ../bonobo/bonobo-ui-init-gtk.c:161 ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:131 ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:162 ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
+#: ../bonobo/bonobo-ui-init-gtk.c:134
 msgid "Gdk debugging flags to unset"
 msgstr "Flag të debug të Gdk që duhen anulluar"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "X display to use"
 msgstr "Monitori X që duhet përdorur"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "DISPLAY"
-msgstr "DISPLAY"
+msgstr "MONITORI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "X screen to use"
 msgstr "Ekrani X që duhet përdorur"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+# (pofilter) acronyms: acronyms should not be translated: SCREEN
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "SCREEN"
 msgstr "EKRANI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:145
+#: ../bonobo/bonobo-ui-init-gtk.c:146
 msgid "Make X calls synchronous"
 msgstr "Bëj që thirrjet e X të jenë të sinkronizuara"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "Don't use X shared memory extension"
 msgstr "Mos përdor veçoritë e X për kujtesën e përbashkët"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "Program name as used by the window manager"
-msgstr "Emri i programit që duhet përdorur nga organizuesi i dritareve"
+msgstr "Emri i programit që përdoret nga manazhuesi i dritareve"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+# (pofilter) acronyms: acronyms should not be translated: NAME
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "NAME"
 msgstr "EMRI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "Program class as used by the window manager"
-msgstr "Klasa e programit që duhet përdorur nga organizuesi i dritareve"
+msgstr "Klasa e programit që përdoret nga manazhuesi i dritareve"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+# (pofilter) acronyms: acronyms should not be translated: CLASS
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "CLASS"
 msgstr "KLASA"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:161
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
+#: ../bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
-msgstr "Flags të debug të Gtk+ që duhen vendosur"
+msgstr "Flag e debug të Gtk+ për tu caktuar"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:164
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
+#: ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
-msgstr "Flags të debug të Gtk+ që duhen anulluar"
+msgstr "Flag e debug të Gtk+ për tu hequr"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:167
+#: ../bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
 msgstr "Bëj që të gjithë paralajmërimet të jenë fatale"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:170
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
 msgstr "Ngarko një modul Gtk shtesë"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:170
+# (pofilter) acronyms: acronyms should not be translated: MODULE
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
 msgstr "MODULI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:186
+#: ../bonobo/bonobo-ui-init-gtk.c:187
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -296,11 +310,16 @@ msgstr "tregon nëse paneli i instrumentëve është lëvizës"
 msgid "Style of bevel around the toolbar"
 msgstr "Stili i bordit rreth panelit të instrumentëve"
 
-#: ../bonobo/bonobo-ui-util.c:630
+# (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
+#: ../bonobo/bonobo-ui-util.c:601
+msgid "Could not display help for this application"
+msgstr "E pamundur shfaqja e ndihmës për këtë aplikativ"
+
+#: ../bonobo/bonobo-ui-util.c:643
 msgid "_Contents"
 msgstr "_Përmbajtja"
 
-#: ../bonobo/bonobo-ui-util.c:631
+#: ../bonobo/bonobo-ui-util.c:644
 msgid "View help for this application"
 msgstr "Shiko ndihmën në lidhje me këtë program"
 
@@ -352,9 +371,10 @@ msgstr "Nëse të kemi apo jo një nivel maksimum zmadhimi të vlefshëm"
 msgid "Is continuous"
 msgstr "Është i vazhdueshëm"
 
+# (pofilter) brackets: translation is missing '(', ')'
 #: ../bonobo/bonobo-zoomable.c:370
 msgid "Whether we zoom continuously (as opposed to jumps)"
-msgstr "Se zmadhimi është i vazhdueshëm"
+msgstr "Tregon nëse zmadhimi duhet të jetë i vazhdueshëm (dhe jo gradual)"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
@@ -372,6 +392,7 @@ msgstr "_Informacione..."
 msgid "_Edit"
 msgstr "_Ndrysho"
 
+# (pofilter) unchanged: please translate
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
 #: ../tools/browser/bonobo-browser.xml.h:4
 msgid "_File"
@@ -385,10 +406,12 @@ msgstr "_Zgjidh"
 msgid "This does nothing; it is only a demonstration."
 msgstr "Nuk bën asgjë; është vetëm një shembull."
 
+# (pofilter) unchanged: please translate
 #: ../samples/bonoboui/hello.c:145
 msgid "BonoboUI-Hello."
 msgstr "BonoboUI-Hello."
 
+# (pofilter) unchanged: please translate
 #: ../samples/bonoboui/hello.c:217
 msgid "Gnome Hello"
 msgstr "Gnome Hello"
@@ -442,12 +465,12 @@ msgstr "IID"
 
 #: ../tools/browser/component-details.c:117
 msgid "Location"
-msgstr "Vendodhja"
+msgstr "Vendndodhja"
 
 #. Build the details tab
 #: ../tools/browser/component-details.c:167
 msgid "Details"
-msgstr "Hollësi"
+msgstr "Detaje"
 
 #: ../tools/browser/component-details.c:168
 msgid "Detailed Information"
@@ -469,14 +492,17 @@ msgstr "Detajet e komponentit"
 msgid "Bonobo Browser"
 msgstr "Shfletuesi Bonobo"
 
+# (pofilter) unchanged: please translate
 #: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
 msgstr "Copyright 2001, The GNOME Foundation"
 
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
 #: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
 msgstr "Shfletuesi i komponentëve Bonobo"
 
+# (pofilter) credits: checks for messages containing translation credits instead of normal translations.
 #: ../tools/browser/window.c:214
 msgid "translator-credits"
 msgstr "Laurent Dhima <laurenti@alblinux.net>"
@@ -494,3 +520,4 @@ msgstr "Gjithçka"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "Jo aktiv"
+
