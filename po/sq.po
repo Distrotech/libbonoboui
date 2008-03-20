@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-17 17:41+0100\n"
-"PO-Revision-Date: 2008-03-18 16:50+0100\n"
+"PO-Revision-Date: 2008-03-20 11:52+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -378,7 +378,7 @@ msgstr "Tregon nëse zmadhimi duhet të jetë i vazhdueshëm (dhe jo gradual)"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "Informacione mbi këtë program"
+msgstr "Informacione në lidhje me këtë aplikativ"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
