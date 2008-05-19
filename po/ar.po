@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-28 02:35+0000\n"
+"POT-Creation-Date: 2008-01-31 08:21+0000\n"
 "PO-Revision-Date: 2008-01-11 14:50+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -19,7 +19,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 && n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5;\n"
+"Plural-Forms:  nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 && "
+"n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5;\n"
 
 #: ../bonobo/bonobo-canvas-item.c:680
 msgid "corba factory"
@@ -45,30 +46,23 @@ msgstr "ارساء شريط الأدوات"
 msgid "Undock the toolbar"
 msgstr "إلغاء ارساء شريط الأدوات"
 
-#: ../bonobo/bonobo-dock-item.c:228
-#: ../bonobo/bonobo-dock-item.c:229
+#: ../bonobo/bonobo-dock-item.c:228 ../bonobo/bonobo-dock-item.c:229
 #: ../bonobo/bonobo-ui-toolbar.c:1161
 msgid "Shadow type"
 msgstr "نوع الظل"
 
-#: ../bonobo/bonobo-dock-item.c:239
-#: ../bonobo/bonobo-dock-item.c:240
-#: ../bonobo/bonobo-ui-toolbar.c:1105
-#: ../bonobo/bonobo-ui-toolbar.c:1106
+#: ../bonobo/bonobo-dock-item.c:239 ../bonobo/bonobo-dock-item.c:240
+#: ../bonobo/bonobo-ui-toolbar.c:1105 ../bonobo/bonobo-ui-toolbar.c:1106
 msgid "Orientation"
 msgstr "الاتجاه"
 
-#: ../bonobo/bonobo-dock-item.c:250
-#: ../bonobo/bonobo-dock-item.c:251
-#: ../bonobo/bonobo-ui-toolbar.c:1124
-#: ../bonobo/bonobo-ui-toolbar.c:1125
+#: ../bonobo/bonobo-dock-item.c:250 ../bonobo/bonobo-dock-item.c:251
+#: ../bonobo/bonobo-ui-toolbar.c:1124 ../bonobo/bonobo-ui-toolbar.c:1125
 msgid "Preferred width"
 msgstr "العرض المفضّل"
 
-#: ../bonobo/bonobo-dock-item.c:259
-#: ../bonobo/bonobo-dock-item.c:260
-#: ../bonobo/bonobo-ui-toolbar.c:1133
-#: ../bonobo/bonobo-ui-toolbar.c:1134
+#: ../bonobo/bonobo-dock-item.c:259 ../bonobo/bonobo-dock-item.c:260
+#: ../bonobo/bonobo-ui-toolbar.c:1133 ../bonobo/bonobo-ui-toolbar.c:1134
 msgid "Preferred height"
 msgstr "الارتفاع المفضّل"
 
@@ -92,8 +86,7 @@ msgstr "تمرير الأحداث"
 msgid "Whether X events should be forwarded"
 msgstr "فيما إذا وجب تمرير أحداث س"
 
-#: ../bonobo/bonobo-selector-widget.c:297
-#: ../bonobo/bonobo-window.c:344
+#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
@@ -109,8 +102,14 @@ msgid "Interfaces required"
 msgstr "الواجهات مطلوبة"
 
 #: ../bonobo/bonobo-selector.c:344
-msgid "A NULL-terminated array of interfaces which a server must support in order to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no interfaces are listed"
-msgstr "مصفوفة منتهية بـNULL للواجهات التي يجب على الخادم أن يدعمها حتى يتم سرْدها في أداة الإختيار. الخيار المبدئي هو \"IDL:Bonobo/Embeddable:1.0\" إذا لم تُسْرد أية واجهات"
+msgid ""
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+"مصفوفة منتهية بـNULL للواجهات التي يجب على الخادم أن يدعمها حتى يتم سرْدها في "
+"أداة الإختيار. الخيار المبدئي هو \"IDL:Bonobo/Embeddable:1.0\" إذا لم تُسْرد "
+"أية واجهات"
 
 #: ../bonobo/bonobo-selector.c:346
 msgid "Interface required entry"
@@ -182,82 +181,80 @@ msgstr "اطرح كامل وصف XML لواجهة المستخدم إلى الش
 msgid "Configure UI"
 msgstr "اضبط واجهة المستخدم"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "Gdk debugging flags to set"
 msgstr "شارات تنقيح Gdk التي ستُضبط"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130
-#: ../bonobo/bonobo-ui-init-gtk.c:133
-#: ../bonobo/bonobo-ui-init-gtk.c:161
-#: ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:131 ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:162 ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "شارات"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:134
 msgid "Gdk debugging flags to unset"
 msgstr "شارات تنقيح Gdk التي ستُصفّر"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "X display to use"
 msgstr "مِعراض س الذي سيُستعمل"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "DISPLAY"
 msgstr "مِعراض"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "X screen to use"
 msgstr "شاشة س التي ستُستعمل"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "SCREEN"
 msgstr "شاشة"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:145
+#: ../bonobo/bonobo-ui-init-gtk.c:146
 msgid "Make X calls synchronous"
 msgstr "اجعل نداءات س متزامنة"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "Don't use X shared memory extension"
 msgstr "لا تستخدم امتداد ذاكرة س المشتركة"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "Program name as used by the window manager"
 msgstr "اسم البرنامج كما يستخدمه مدير النوافذ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "NAME"
 msgstr "اسم"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "Program class as used by the window manager"
 msgstr "صنف البرنامج كما يستخدمه مدير النوافذ"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "CLASS"
 msgstr "صنف"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:161
+#: ../bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
 msgstr "شارات تنقيح ج‌ت‌ك+ التي ستُضبط"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
 msgstr "شارات تنقيح ج‌ت‌ك+ التي ستُصفّر"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:167
+#: ../bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
 msgstr "اجعل جميع التحذيرات قاتلة"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:170
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
 msgstr "حمِّل وحدة ج‌ت‌ك إضافية"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:170
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
 msgstr "وحدة"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:186
+#: ../bonobo/bonobo-ui-init-gtk.c:187
 msgid "GTK+"
 msgstr "ج‌ت‌ك+"
 
@@ -466,8 +463,7 @@ msgstr "التّفاصيل"
 msgid "Detailed Information"
 msgstr "معلومات مفصّلة"
 
-#: ../tools/browser/component-list.c:367
-#: ../tools/browser/window.c:283
+#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "نشط"
 
@@ -511,4 +507,3 @@ msgstr "الكل"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "غير نشط"
-
