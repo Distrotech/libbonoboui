@@ -107,7 +107,7 @@ msgid ""
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
 "no interfaces are listed"
 msgstr ""
-"مصفوفة منتهية بـNULL للواجهات التي يجب على الخادم أن يدعمها حتى يتم سرْدها في "
+"مصفوفة منتهية بـNULL للواجهات التي يجب على الخادوم أن يدعمها حتى يتم سرْدها في "
 "أداة الإختيار. الخيار المبدئي هو \"IDL:Bonobo/Embeddable:1.0\" إذا لم تُسْرد "
 "أية واجهات"
 
