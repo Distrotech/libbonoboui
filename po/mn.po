@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-27 22:36+0200\n"
+"POT-Creation-Date: 2008-05-27 22:46+0200\n"
 "PO-Revision-Date: 2008-05-27 22:43+0200\n"
 "Last-Translator: Badral <badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-translation@lists.sf.net>\n"
@@ -503,4 +503,3 @@ msgstr "Бүх"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "Идэвхгүй"
-
