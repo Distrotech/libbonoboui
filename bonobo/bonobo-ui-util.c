@@ -1100,6 +1100,41 @@ is_release (const gchar *string)
 		(string[8] == DELIM_POST));
 }
 
+static inline gboolean
+is_super (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 's' || string[1] == 'S') &&
+		(string[2] == 'u' || string[2] == 'U') &&
+		(string[3] == 'p' || string[3] == 'P') &&
+		(string[4] == 'e' || string[4] == 'E') &&
+		(string[5] == 'r' || string[5] == 'R') &&
+		(string[6] == DELIM_POST));
+}
+
+static inline gboolean
+is_hyper (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 'h' || string[1] == 'H') &&
+		(string[2] == 'y' || string[2] == 'Y') &&
+		(string[3] == 'p' || string[3] == 'P') &&
+		(string[4] == 'e' || string[4] == 'E') &&
+		(string[5] == 'r' || string[5] == 'R') &&
+		(string[6] == DELIM_POST));
+}
+
+static inline gboolean
+is_meta (const gchar *string)
+{
+	return ((string[0] == DELIM_PRE) &&
+		(string[1] == 'm' || string[1] == 'M') &&
+		(string[2] == 'e' || string[2] == 'E') &&
+		(string[3] == 't' || string[3] == 'T') &&
+		(string[4] == 'a' || string[4] == 'A') &&
+		(string[5] == DELIM_POST));
+}
+
 /**
  * bonobo_ui_util_accel_parse:
  * @accelerator: the accelerator name
@@ -1192,6 +1227,24 @@ bonobo_ui_util_accel_parse (const char        *accelerator,
 				len -= 5;
 				mods |= GDK_MOD1_MASK;
 			}
+			else if (len >= 7 && is_super (accelerator))
+			{
+				accelerator += 7;
+				len -= 7;
+				mods |= GDK_SUPER_MASK;
+			}
+			else if (len >= 7 && is_hyper (accelerator))
+			{
+				accelerator += 7;
+				len -= 7;
+				mods |= GDK_HYPER_MASK;
+			}
+			else if (len >= 6 && is_meta (accelerator))
+			{
+				accelerator += 6;
+				len -= 6;
+				mods |= GDK_META_MASK;
+			}
 			else
 			{
 				gchar last_ch;
@@ -1241,6 +1294,9 @@ bonobo_ui_util_accel_name (guint              accelerator_key,
 	static const gchar text_mod3[] = DELIM_PRE_S "Mod3" DELIM_POST_S;
 	static const gchar text_mod4[] = DELIM_PRE_S "Mod4" DELIM_POST_S;
 	static const gchar text_mod5[] = DELIM_PRE_S "Mod5" DELIM_POST_S;
+	static const gchar text_super[] = DELIM_PRE_S "Super" DELIM_POST_S;
+	static const gchar text_hyper[] = DELIM_PRE_S "Hyper" DELIM_POST_S;
+	static const gchar text_meta[] = DELIM_PRE_S "Meta" DELIM_POST_S;
 	guint l;
 	gchar *keyval_name;
 	gchar *accelerator;
@@ -1268,6 +1324,12 @@ bonobo_ui_util_accel_name (guint              accelerator_key,
 		l += sizeof (text_mod4) - 1;
 	if (accelerator_mods & GDK_MOD5_MASK)
 		l += sizeof (text_mod5) - 1;
+	if (accelerator_mods & GDK_SUPER_MASK)
+		l += sizeof (text_super) - 1;
+	if (accelerator_mods & GDK_HYPER_MASK)
+		l += sizeof (text_hyper) - 1;
+	if (accelerator_mods & GDK_META_MASK)
+		l += sizeof (text_meta) - 1;
 	l += strlen (keyval_name);
 
 	accelerator = g_new (gchar, l + 1);
@@ -1299,14 +1361,25 @@ bonobo_ui_util_accel_name (guint              accelerator_key,
 		strcpy (accelerator + l, text_mod3);
 		l += sizeof (text_mod3) - 1;
 	}
-	if (accelerator_mods & GDK_MOD4_MASK)
-	{
+	if (accelerator_mods & GDK_MOD4_MASK) {
 		strcpy (accelerator + l, text_mod4);
 		l += sizeof (text_mod4) - 1;
 	}
 	if (accelerator_mods & GDK_MOD5_MASK) {
 		strcpy (accelerator + l, text_mod5);
 		l += sizeof (text_mod5) - 1;
+	}
+	if (accelerator_mods & GDK_SUPER_MASK) {
+		strcpy (accelerator + l, text_super);
+		l += sizeof (text_super) - 1;
+	}
+	if (accelerator_mods & GDK_HYPER_MASK) {
+		strcpy (accelerator + l, text_hyper);
+		l += sizeof (text_hyper) - 1;
+	}
+	if (accelerator_mods & GDK_META_MASK) {
+		strcpy (accelerator + l, text_meta);
+		l += sizeof (text_meta) - 1;
 	}
 	strcpy (accelerator + l, keyval_name);
 

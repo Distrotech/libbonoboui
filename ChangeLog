@@ -1,3 +1,12 @@
+2008-05-28  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	reviewed by: Michael Meeks
+
+	* bonobo/bonobo-ui-util.c: (is_super), (is_hyper), (is_meta),
+	(bonobo_ui_util_accel_parse), (bonobo_ui_util_accel_name):
+	Add support for Super/Hyper/Meta in keybindings.
+	Patch by Ted Gould. (#525626).
+
 ==================== libbonoboui 2.22.0 =====================
 
 2008-03-10  Kjartan Maraas  <kmaraas@gnome.org>
