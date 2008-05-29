@@ -12,7 +12,7 @@
 
 #include <stdarg.h>
 #include <atk/atkaction.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

@@ -10,7 +10,7 @@
 #ifndef _BONOBO_CANVAS_ITEM_H_
 #define _BONOBO_CANVAS_ITEM_H_
 
-#include <glib/gmacros.h>
+#include <glib.h>
 #include <libgnomecanvas/gnome-canvas.h>
 
 #ifndef BONOBO_UI_DISABLE_DEPRECATED

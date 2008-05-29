@@ -12,8 +12,8 @@
 #ifndef _GNOME_COMPONENT_FACTORY_H_
 #define _GNOME_COMPONENT_FACTORY_H_
 
-#include <glib/gmacros.h>
-#include <gtk/gtkobject.h>
+#include <glib.h>
+#include <gtk/gtk.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-view.h>

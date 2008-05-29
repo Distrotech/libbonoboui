@@ -10,9 +10,8 @@
 #ifndef _BONOBO_UI_PRIVATE_H_
 #define _BONOBO_UI_PRIVATE_H_
 
-#include <gtk/gtkmisc.h>
+#include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <gtk/gtkimage.h>
 #include <bonobo/bonobo-ui-node.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-node-private.h>

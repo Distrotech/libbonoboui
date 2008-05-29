@@ -15,8 +15,8 @@
 #ifdef BONOBO_UI_INTERNAL
 
 #include <stdio.h>
-#include <glib/gmacros.h>
-#include <gtk/gtkcontainer.h>
+#include <glib.h>
+#include <gtk/gtk.h>
 #include <bonobo/bonobo-ui-node.h>
 
 typedef struct _BonoboUISync BonoboUISync;

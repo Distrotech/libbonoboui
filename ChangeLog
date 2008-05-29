@@ -1,3 +1,35 @@
+2008-05-29  Christian Persch  <chpe@gnome.org>
+
+	* bonobo/bonobo-a11y.h:
+	* bonobo/bonobo-canvas-component.h:
+	* bonobo/bonobo-canvas-item.h:
+	* bonobo/bonobo-control-frame.h:
+	* bonobo/bonobo-control.h:
+	* bonobo/bonobo-dock-item-grip.h:
+	* bonobo/bonobo-embeddable-factory.h:
+	* bonobo/bonobo-file-selector-util.h:
+	* bonobo/bonobo-plug.h:
+	* bonobo/bonobo-socket.h:
+	* bonobo/bonobo-ui-component.h:
+	* bonobo/bonobo-ui-container.h:
+	* bonobo/bonobo-ui-engine.h:
+	* bonobo/bonobo-ui-private.h:
+	* bonobo/bonobo-ui-sync-keys.h:
+	* bonobo/bonobo-ui-sync-menu.h:
+	* bonobo/bonobo-ui-sync-status.h:
+	* bonobo/bonobo-ui-sync.h:
+	* bonobo/bonobo-ui-toolbar-button-item.h:
+	* bonobo/bonobo-ui-toolbar-control-item.h:
+	* bonobo/bonobo-ui-toolbar-item.h:
+	* bonobo/bonobo-ui-toolbar-popup-item.h:
+	* bonobo/bonobo-ui-toolbar-toggle-button-item.h:
+	* bonobo/bonobo-ui-toolbar.h:
+	* bonobo/bonobo-ui-util.h:
+	* bonobo/bonobo-widget.h:
+	* bonobo/bonobo-window.h:
+	* bonobo/bonobo-wrapper.h: Include <glib.h> instead of single headers.
+	Bug #535475.
+
 2008-05-28  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	reviewed by: Michael Meeks

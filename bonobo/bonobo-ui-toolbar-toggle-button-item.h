@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_TOGGLE_BUTTON_ITEM_H_
 
-#include <glib/gmacros.h>
+#include <glib.h>
 #include "bonobo-ui-toolbar-button-item.h"
 
 #ifndef BONOBO_UI_DISABLE_DEPRECATED

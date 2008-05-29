@@ -26,8 +26,8 @@
 #ifndef __BONOBO_SOCKET_H__
 #define __BONOBO_SOCKET_H__
 
-#include <glib/gmacros.h>
-#include <gtk/gtksocket.h>
+#include <glib.h>
+#include <gtk/gtk.h>
 
 typedef struct _BonoboSocket BonoboSocket;
 

@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_TOOLBAR_POPUP_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_POPUP_ITEM_H_
 
-#include <glib/gmacros.h>
+#include <glib.h>
 #include "bonobo-ui-toolbar-toggle-button-item.h"
 
 G_BEGIN_DECLS

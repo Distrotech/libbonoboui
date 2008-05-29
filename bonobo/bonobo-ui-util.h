@@ -9,7 +9,7 @@
 #ifndef _BONOBO_UI_XML_UTIL_H_
 #define _BONOBO_UI_XML_UTIL_H_
 
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <bonobo/bonobo-ui-component.h>
 

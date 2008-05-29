@@ -11,7 +11,7 @@
 #ifndef _BONOBO_DOCK_ITEM_GRIP_H_
 #define _BONOBO_DOCK_ITEM_GRIP_H_
 
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 #include <bonobo/bonobo-dock-item.h>
 
 G_BEGIN_DECLS

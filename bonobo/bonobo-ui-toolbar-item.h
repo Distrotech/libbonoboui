@@ -10,7 +10,7 @@
 #ifndef _BONOBO_UI_TOOLBAR_ITEM_H_
 #define _BONOBO_UI_TOOLBAR_ITEM_H_
 
-#include <glib/gmacros.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #ifndef BONOBO_UI_DISABLE_DEPRECATED

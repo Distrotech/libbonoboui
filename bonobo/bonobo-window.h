@@ -10,8 +10,8 @@
 #ifndef _BONOBO_WINDOW_H_
 #define _BONOBO_WINDOW_H_
 
-#include <gtk/gtkmenu.h>
-#include <gtk/gtkwindow.h>
+#include <glib.h>
+#include <gtk/gtk.h>
 #include <bonobo/bonobo-object.h>
 #include <bonobo/bonobo-ui-engine.h>
 #include <bonobo/bonobo-ui-container.h>

@@ -26,9 +26,9 @@
 #ifndef __BONOBO_PLUG_H__
 #define __BONOBO_PLUG_H__
 
-#include <glib/gmacros.h>
+#include <glib.h>
 #include <gdk/gdk.h>
-#include <gtk/gtkplug.h>
+#include <gtk/gtk.h>
 
 typedef struct _BonoboPlug BonoboPlug;
 

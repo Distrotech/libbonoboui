@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_SYNC_KEYS_H_
 #define _BONOBO_UI_SYNC_KEYS_H_
 
-#include <gtk/gtkstatusbar.h>
+#include <gtk/gtk.h>
 
 #include <bonobo/bonobo-ui-sync.h>
 

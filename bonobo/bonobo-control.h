@@ -11,11 +11,8 @@
 #ifndef _BONOBO_CONTROL_H_
 #define _BONOBO_CONTROL_H_
 
-#include <glib/gmacros.h>
-#include <gtk/gtkobject.h>
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkwindow.h>
-#include <gtk/gtkmenu.h>
+#include <glib.h>
+#include <gtk/gtk.h>
 
 typedef struct _BonoboControl BonoboControl;
 

@@ -12,8 +12,8 @@
 #ifndef _BONOBO_FILE_SELECTOR_UTIL_H_
 #define _BONOBO_FILE_SELECTOR_UTIL_H_
 
-#include <glib/gmacros.h>
-#include <gtk/gtkwindow.h>
+#include <glib.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

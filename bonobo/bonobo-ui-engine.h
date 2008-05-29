@@ -11,7 +11,7 @@
 #ifndef _BONOBO_UI_ENGINE_H_
 #define _BONOBO_UI_ENGINE_H_
 
-#include <glib/gmacros.h>
+#include <glib.h>
 #include <bonobo/bonobo-object.h>
 
 G_BEGIN_DECLS
