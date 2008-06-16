@@ -1,6 +1,6 @@
 m4_define([bonobo_major_version],[2])
 m4_define([bonobo_minor_version],[23])
-m4_define([bonobo_micro_version],[4])
+m4_define([bonobo_micro_version],[5])
 m4_define([bonobo_version],[bonobo_major_version.bonobo_minor_version.bonobo_micro_version])
 
 AC_INIT([libbonoboui],[bonobo_version],[http://bugzilla.gnome.org/enter_bug.cgi?product=bonobo&component=libbonoboui])
