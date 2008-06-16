@@ -1,11 +1,14 @@
-AC_INIT([libbonoboui],[2.22.0],[http://bugzilla.gnome.org/enter_bug.cgi?product=bonobo&component=libbonoboui])
+m4_define([bonobo_major_version],[2])
+m4_define([bonobo_minor_version],[23])
+m4_define([bonobo_micro_version],[4])
+m4_define([bonobo_version],[bonobo_major_version.bonobo_minor_version.bonobo_micro_version])
+
+AC_INIT([libbonoboui],[bonobo_version],[http://bugzilla.gnome.org/enter_bug.cgi?product=bonobo&component=libbonoboui])
 
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.9 foreign no-dist-gzip dist-bzip2])
 
 AM_MAINTAINER_MODE
-
-IT_PROG_INTLTOOL([0.35.0])
 
 AC_CANONICAL_HOST
 
@@ -43,6 +46,8 @@ GNOME_COMPILE_WARNINGS([maximum])
 
 # see bug #455597
 # GNOME_MAINTAINER_MODE_DEFINES
+
+IT_PROG_INTLTOOL([0.40.0])
 
 GETTEXT_PACKAGE=libbonoboui-2.0
 AC_SUBST(GETTEXT_PACKAGE)

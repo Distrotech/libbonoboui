@@ -9,15 +9,9 @@ EXTRA_DIST = \
 	MAINTAINERS	     \
 	libbonoboui-zip.in   \
 	changes.txt          \
-	intltool-extract.in  \
-	intltool-merge.in    \
-	intltool-update.in   \
 	gtk-doc.make
 
-DISTCLEANFILES = \
-	intltool-extract \
-	intltool-merge   \
-	intltool-update
+DISTCLEANFILES =
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 

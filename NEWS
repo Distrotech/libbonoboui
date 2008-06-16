@@ -1,3 +1,9 @@
+libbonoboui 2.23.4	
+
+        * Only include <glib.h>/<gtk/gtk.h> in public libbonoboui headers (#535475)
+        * Add support for Super/Hyper/Meta in keybindings (#525626)
+	* Translation updates.
+
 libbonoboui 2.22.0
 	* Translation updates.
 
