@@ -1,3 +1,34 @@
+2008-06-19  Christian Persch  <chpe@gnome.org>
+
+	* bonobo/bonobo-canvas-component.c: (root_item_hack_get_type):
+	* bonobo/bonobo-canvas-item.h:
+	* bonobo/bonobo-dock-band.h:
+	* bonobo/bonobo-dock-item.h:
+	* bonobo/bonobo-dock.h:
+	* bonobo/bonobo-plug.h:
+	* bonobo/bonobo-property-control.h:
+	* bonobo/bonobo-selector-widget.h:
+	* bonobo/bonobo-selector.h:
+	* bonobo/bonobo-socket.h:
+	* bonobo/bonobo-ui-config-widget.h:
+	* bonobo/bonobo-ui-sync.c:
+	* bonobo/bonobo-ui-toolbar-button-item.h:
+	* bonobo/bonobo-ui-toolbar-control-item.h:
+	* bonobo/bonobo-ui-toolbar-item.h:
+	* bonobo/bonobo-ui-toolbar-popup-item.h:
+	* bonobo/bonobo-ui-toolbar-toggle-button-item.h:
+	* bonobo/bonobo-ui-toolbar.h:
+	* bonobo/bonobo-ui-xml.c:
+	* bonobo/bonobo-ui-xml.h:
+	* bonobo/bonobo-widget.h:
+	* bonobo/bonobo-window.h:
+	* bonobo/bonobo-wrapper.h:
+	* samples/compound-doc/bonobo-hello/hello-embeddable.h:
+	* samples/compound-doc/bonobo-hello/hello-view.h: Use GType and the
+	G_TYPE_* macros instead of the deprecated GtkType and GTK_* macros.
+	Allows building libbonoboui using programmes with
+	GTK_DISABLE_DEPRECATED again.
+
 ==================== libbonoboui 2.23.4 =====================
 
 2008-06-14  Christian Persch  <chpe@gnome.org>

@@ -20,10 +20,10 @@
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_TOOLBAR            (bonobo_ui_toolbar_get_type ())
-#define BONOBO_UI_TOOLBAR(obj)            (GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR, BonoboUIToolbar))
-#define BONOBO_UI_TOOLBAR_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_TOOLBAR, BonoboUIToolbarClass))
-#define BONOBO_IS_UI_TOOLBAR(obj)         (GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR))
-#define BONOBO_IS_UI_TOOLBAR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_UI_TOOLBAR))
+#define BONOBO_UI_TOOLBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR, BonoboUIToolbar))
+#define BONOBO_UI_TOOLBAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_TOOLBAR, BonoboUIToolbarClass))
+#define BONOBO_IS_UI_TOOLBAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR))
+#define BONOBO_IS_UI_TOOLBAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_UI_TOOLBAR))
 
 typedef enum {
 	BONOBO_UI_TOOLBAR_STYLE_PRIORITY_TEXT,
@@ -50,7 +50,7 @@ typedef struct {
 	gpointer dummy[4];
 } BonoboUIToolbarClass;
 
-GtkType               bonobo_ui_toolbar_get_type         (void) G_GNUC_CONST;
+GType               bonobo_ui_toolbar_get_type         (void) G_GNUC_CONST;
 void                  bonobo_ui_toolbar_construct        (BonoboUIToolbar      *toolbar);
 GtkWidget            *bonobo_ui_toolbar_new              (void);
 

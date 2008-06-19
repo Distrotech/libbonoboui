@@ -105,7 +105,7 @@ struct _BonoboDockItemClass
 };
 
 /* Public methods.  */
-GtkType        bonobo_dock_item_get_type        (void) G_GNUC_CONST;
+GType        bonobo_dock_item_get_type        (void) G_GNUC_CONST;
 GtkWidget     *bonobo_dock_item_new             (const gchar *name,
                                                 BonoboDockItemBehavior behavior);
 void           bonobo_dock_item_construct       (BonoboDockItem *new_dock_item,

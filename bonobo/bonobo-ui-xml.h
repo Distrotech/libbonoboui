@@ -78,7 +78,7 @@ typedef struct {
 	gpointer               dummy;
 } BonoboUIXmlClass;
 
-GtkType          bonobo_ui_xml_get_type          (void) G_GNUC_CONST;
+GType          bonobo_ui_xml_get_type          (void) G_GNUC_CONST;
 
 BonoboUIXml     *bonobo_ui_xml_new               (BonoboUIXmlCompareFn  compare,
 						  BonoboUIXmlDataNewFn  data_new,

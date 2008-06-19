@@ -21,10 +21,10 @@ typedef struct _BonoboPropertyControlPrivate BonoboPropertyControlPrivate;
 #define BONOBO_PROPERTY_CONTROL_CHANGED "Bonobo::PropertyControl_changed"
 
 #define BONOBO_TYPE_PROPERTY_CONTROL        (bonobo_property_control_get_type ())
-#define BONOBO_PROPERTY_CONTROL(o)          (GTK_CHECK_CAST ((o), BONOBO_TYPE_PROPERTY_CONTROL, BonoboPropertyControl))
-#define BONOBO_PROPERTY_CONTROL_CLASS(k)    (GTK_CHECK_CLASS_CAST((k), BONOBO_TYPE_PROPERTY_CONTROL, BonoboPropertyControlClass))
-#define BONOBO_IS_PROPERTY_CONTROL(o)       (GTK_CHECK_TYPE ((o), BONOBO_TYPE_PROPERTY_CONTROL))
-#define BONOBO_IS_PROPERTY_CONTROL_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_PROPERTY_CONTROL))
+#define BONOBO_PROPERTY_CONTROL(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), BONOBO_TYPE_PROPERTY_CONTROL, BonoboPropertyControl))
+#define BONOBO_PROPERTY_CONTROL_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), BONOBO_TYPE_PROPERTY_CONTROL, BonoboPropertyControlClass))
+#define BONOBO_IS_PROPERTY_CONTROL(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), BONOBO_TYPE_PROPERTY_CONTROL))
+#define BONOBO_IS_PROPERTY_CONTROL_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), BONOBO_TYPE_PROPERTY_CONTROL))
 
 typedef BonoboControl *(* BonoboPropertyControlGetControlFn) (BonoboPropertyControl *control,
 							      int page_number,
@@ -47,7 +47,7 @@ typedef struct {
 			 Bonobo_PropertyControl_Action action);
 } BonoboPropertyControlClass;
 
-GtkType bonobo_property_control_get_type (void) G_GNUC_CONST;
+GType bonobo_property_control_get_type (void) G_GNUC_CONST;
 
 BonoboPropertyControl *bonobo_property_control_construct (BonoboPropertyControl *property_control,
 							  BonoboEventSource     *event_source,

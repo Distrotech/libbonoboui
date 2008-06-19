@@ -54,7 +54,7 @@ class_init (BonoboUISyncClass *sync_class)
  * 
  * Synchronizer type function for derivation.
  * 
- * Return value: the GtkType index.
+ * Return value: the GType index.
  **/
 GType
 bonobo_ui_sync_get_type (void)

@@ -15,9 +15,9 @@
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_SELECTOR_WIDGET             (bonobo_selector_widget_get_type ())
-#define BONOBO_SELECTOR_WIDGET(obj)		GTK_CHECK_CAST(obj,  bonobo_selector_widget_get_type (), BonoboSelectorWidget)
-#define BONOBO_SELECTOR_WIDGET_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, bonobo_selector_widget_get_type (), BonoboSelectorWidgetClass)
-#define BONOBO_IS_SELECTOR_WIDGET(obj)		GTK_CHECK_TYPE (obj, bonobo_selector_widget_get_type ())
+#define BONOBO_SELECTOR_WIDGET(obj)		G_TYPE_CHECK_INSTANCE_CAST(obj,  bonobo_selector_widget_get_type (), BonoboSelectorWidget)
+#define BONOBO_SELECTOR_WIDGET_CLASS(klass)	G_TYPE_CHECK_CLASS_CAST (klass, bonobo_selector_widget_get_type (), BonoboSelectorWidgetClass)
+#define BONOBO_IS_SELECTOR_WIDGET(obj)		G_TYPE_CHECK_INSTANCE_TYPE (obj, bonobo_selector_widget_get_type ())
 
 typedef struct _BonoboSelectorWidgetPrivate BonoboSelectorWidgetPrivate;
 
@@ -43,7 +43,7 @@ typedef struct {
 	gpointer dummy[2];
 } BonoboSelectorWidgetClass;
 
-GtkType	   bonobo_selector_widget_get_type (void) G_GNUC_CONST;
+GType	   bonobo_selector_widget_get_type (void) G_GNUC_CONST;
 
 GtkWidget *bonobo_selector_widget_new      (void);
 

@@ -17,10 +17,10 @@ G_BEGIN_DECLS
 
 
 #define GNOME_TYPE_WRAPPER            (bonobo_wrapper_get_type ())
-#define BONOBO_WRAPPER(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_WRAPPER, BonoboWrapper))
-#define BONOBO_WRAPPER_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_WRAPPER, BonoboWrapperClass))
-#define BONOBO_IS_WRAPPER(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_WRAPPER))
-#define BONOBO_IS_WRAPPER_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_WRAPPER))
+#define BONOBO_WRAPPER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GNOME_TYPE_WRAPPER, BonoboWrapper))
+#define BONOBO_WRAPPER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GNOME_TYPE_WRAPPER, BonoboWrapperClass))
+#define BONOBO_IS_WRAPPER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GNOME_TYPE_WRAPPER))
+#define BONOBO_IS_WRAPPER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_WRAPPER))
 
 
 typedef struct _BonoboWrapperPrivate BonoboWrapperPrivate;
@@ -37,7 +37,7 @@ typedef struct {
 } BonoboWrapperClass;
 
 
-GtkType		 bonobo_wrapper_get_type	(void) G_GNUC_CONST;
+GType		 bonobo_wrapper_get_type	(void) G_GNUC_CONST;
 GtkWidget	*bonobo_wrapper_new		(void);
 
 void		 bonobo_wrapper_set_covered	(BonoboWrapper *wrapper, gboolean covered);

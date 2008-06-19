@@ -940,7 +940,7 @@ typedef struct {
 
 static GType root_item_hack_get_type (void);
 #define ROOT_ITEM_HACK_TYPE (root_item_hack_get_type ())
-#define ROOT_ITEM_HACK(obj) (GTK_CHECK_CAST((obj), ROOT_ITEM_HACK_TYPE, RootItemHack))
+#define ROOT_ITEM_HACK(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), ROOT_ITEM_HACK_TYPE, RootItemHack))
 
 static void
 rih_dispose (GObject *obj)
@@ -996,7 +996,7 @@ rih_class_init (GObjectClass *klass)
 static GType
 root_item_hack_get_type (void)
 {
-	static GtkType type = 0;
+	static GType type = 0;
 
 	if (!type) {
 		GTypeInfo info = {

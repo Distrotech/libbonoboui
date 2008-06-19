@@ -936,7 +936,7 @@ bonobo_ui_xml_class_init (BonoboUIXmlClass *klass)
 /**
  * bonobo_cmd_model_get_type:
  *
- * Returns the GtkType for the BonoboCmdModel class.
+ * Returns the GType for the BonoboCmdModel class.
  */
 GType
 bonobo_ui_xml_get_type (void)

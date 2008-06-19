@@ -102,7 +102,7 @@ struct _BonoboDockBandChild
 };
 
 GtkWidget     *bonobo_dock_band_new              (void);
-GtkType        bonobo_dock_band_get_type         (void) G_GNUC_CONST;
+GType        bonobo_dock_band_get_type         (void) G_GNUC_CONST;
    
 void           bonobo_dock_band_set_orientation  (BonoboDockBand *band,
                                                  GtkOrientation orientation);

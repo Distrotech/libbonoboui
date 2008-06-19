@@ -20,10 +20,10 @@
 G_BEGIN_DECLS
 
 #define BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM		(bonobo_ui_toolbar_button_item_get_type ())
-#define BONOBO_UI_TOOLBAR_BUTTON_ITEM(obj)		(GTK_CHECK_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM, BonoboUIToolbarButtonItem))
-#define BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS(klass)	(GTK_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM, BonoboUIToolbarButtonItemClass))
-#define BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM(obj)		(GTK_CHECK_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM))
-#define BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM_CLASS(klass)	(GTK_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM))
+#define BONOBO_UI_TOOLBAR_BUTTON_ITEM(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM, BonoboUIToolbarButtonItem))
+#define BONOBO_UI_TOOLBAR_BUTTON_ITEM_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM, BonoboUIToolbarButtonItemClass))
+#define BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM))
+#define BONOBO_IS_UI_TOOLBAR_BUTTON_ITEM_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BONOBO_TYPE_UI_TOOLBAR_BUTTON_ITEM))
 
 typedef struct _BonoboUIToolbarButtonItemPrivate BonoboUIToolbarButtonItemPrivate;
 
@@ -49,7 +49,7 @@ typedef struct {
 	gpointer dummy[2];
 } BonoboUIToolbarButtonItemClass;
 
-GtkType    bonobo_ui_toolbar_button_item_get_type           (void) G_GNUC_CONST;
+GType    bonobo_ui_toolbar_button_item_get_type           (void) G_GNUC_CONST;
 void       bonobo_ui_toolbar_button_item_construct          (BonoboUIToolbarButtonItem *item,
 							     GtkButton                 *button_widget,
 							     GdkPixbuf                 *icon,
