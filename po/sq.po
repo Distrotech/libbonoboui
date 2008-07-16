@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-17 17:41+0100\n"
+"POT-Creation-Date: 2008-07-16 15:33+0200\n"
 "PO-Revision-Date: 2008-03-20 11:52+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -520,4 +520,3 @@ msgstr "Gjithçka"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "Jo aktiv"
-
