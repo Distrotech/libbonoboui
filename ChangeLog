@@ -1,3 +1,11 @@
+2008-08-04  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	reviewed by: Michael Meeks <michael.meeks@novell.com>
+
+	* bonobo/bonobo-file-selector-util.c: (run_file_selector):
+	* configure.in:
+	Remove gnome-vfs dependency (#544831).
+
 2008-06-19  Christian Persch  <chpe@gnome.org>
 
 	* bonobo/bonobo-canvas-component.c: (root_item_hack_get_type):

@@ -111,9 +111,7 @@ BONOBOUI_MODULES="libgnomecanvas-2.0 >= 1.116.0 \
 		  libxml-2.0 >= 2.4.20 \
 		  gconf-2.0 >= 1.1.9 \
 		  gtk+-2.0 >= 2.6.0 \
-		  gobject-2.0 >= 2.6.0 \
-		  gnome-vfs-2.0 >= 2.8.0 \
-		  gnome-vfs-module-2.0 > 2.8.0"
+		  gobject-2.0 >= 2.6.0"
 PKG_CHECK_MODULES(BONOBOUI, $BONOBOUI_MODULES)
 AC_SUBST(BONOBOUI_CFLAGS)
 AC_SUBST(BONOBOUI_LIBS)

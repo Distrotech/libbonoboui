@@ -26,10 +26,8 @@
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkstock.h>
-#ifndef G_OS_WIN32
-#include <libgnomevfs/gnome-vfs.h>
-#endif
 
+#include <glib.h>
 #include <glib/gi18n-lib.h>
 
 #define GET_MODE(w) (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "GnomeFileSelectorMode")))
@@ -303,7 +301,7 @@ run_file_selector (GtkWindow  *parent,
 #ifndef G_OS_WIN32
 		if (enable_vfs && !using_bonobo_filesel &&
 				(mode != FILESEL_OPEN_MULTI)) {
-	 		retval = gnome_vfs_get_uri_from_local_path (data);
+	 		retval = g_filename_to_uri (data, NULL, NULL);
  			g_free (data);
 
 		} else if (enable_vfs && !using_bonobo_filesel &&
@@ -313,7 +311,7 @@ run_file_selector (GtkWindow  *parent,
 
 			for (i = 0; files[i]; ++i) {
 				gchar *tmp = files[i];
-				files[i] = gnome_vfs_get_uri_from_local_path (tmp);
+				files[i] = g_filename_to_uri (tmp, NULL, NULL);
 				g_free (tmp);
 			}
 
