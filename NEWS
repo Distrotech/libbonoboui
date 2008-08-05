@@ -1,3 +1,9 @@
+libbonoboui 2.23.5
+
+	* Remove gnome-vfs dependency (#544831, Cosimo Cecchi)
+	* Allows to build using GTK_DISABLE_DEPRECATED (chpe).
+	* Translation updates.
+
 libbonoboui 2.23.4	
 
         * Only include <glib.h>/<gtk/gtk.h> in public libbonoboui headers (#535475)
