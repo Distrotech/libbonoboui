@@ -1,3 +1,8 @@
+2008-08-28  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* container-print.c: (sample_app_print_preview):
+	Don't use deprecated api.
+
 2002-02-13  Michael Meeks  <michael@ximian.com>
 
 	* container.c (sample_app_new): upd. sizing.
