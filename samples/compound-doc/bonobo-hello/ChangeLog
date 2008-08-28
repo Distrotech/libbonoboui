@@ -1,3 +1,8 @@
+2008-08-28  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* hello-object-print.c: (hello_object_print):
+	Don't use deprecated api from glib/gtk+.
+
 2001-10-29  jacob berkman  <jacob@ximian.com>
 
 	* Makefile.am: use INTLTOOL rules

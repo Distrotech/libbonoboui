@@ -32,5 +32,5 @@ hello_object_print (GnomePrintContext         *ctx,
 	gnome_print_moveto (ctx, (width / 2) - (w2 / 2), height / 2 - h);
 	gnome_print_show (ctx, str);
 
-	gtk_object_unref (GTK_OBJECT (font));
+	g_object_unref (G_OBJECT (font));
 }
