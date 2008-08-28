@@ -182,7 +182,6 @@ static guint
 create_app (void)
 {
 	GtkWidget *canvas, *window, *box, *hbox, *control; 
-        GnomeCanvasGroup *group;
 	
         window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect (G_OBJECT(window), "destroy", 
@@ -214,8 +213,6 @@ create_app (void)
 int 
 main (int argc, char** argv)
 {
-	CORBA_ORB orb;
-	
         if (!bonobo_ui_init (argv[0], VERSION, &argc, argv))
                 g_error ("Could not initialize libbonoboui!\n");
 

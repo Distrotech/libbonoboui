@@ -1,3 +1,20 @@
+2008-08-28  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* samples/canvdemo/main.c: (create_app), (main):
+	Remove some unused vars (Andreas Köhler)
+	* samples/compound-doc/paint-component-simple.c:
+	(update_view_foreach), (view_factory), (render_fn):
+	* tests/control/test-control.c: (test_gtk_weakrefs):
+	* tests/dock_demo.c: (delete_callback), (main):
+	Don't use deprecated glib/gtk+ api.
+	* tests/test-moniker.c: (main):
+	Add missing fprintf format specifier.
+	* tools/browser/oaf-helper.c: (get_string_value),
+	(bonobo_component_get_locale_name),
+	(bonobo_component_get_locale_desc), (num_query_matches),
+	(is_component_active), (bonobo_component_get_repoids):
+	More Cleanups (TM).
+
 2008-08-05  Olav Vitters  <olav@bkor.dhs.org>
 
 	* configure.in: Post release version bump.

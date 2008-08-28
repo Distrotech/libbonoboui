@@ -115,7 +115,7 @@ update_view_foreach (BonoboView *view, void *data)
 {
 	view_data_t *view_data;
 
-	view_data = gtk_object_get_data (GTK_OBJECT (view), "view_data");
+	view_data = g_object_get_data (G_OBJECT (view), "view_data");
 	view_update (view_data);
 }
 
@@ -460,7 +460,7 @@ view_factory (BonoboEmbeddable       *embeddable,
 	 */
 	view = bonobo_view_new (vbox);
 	view_data->view = view;
-	gtk_object_set_data (GTK_OBJECT (view), "view_data", view_data);
+	g_object_set_data (G_OBJECT (view), "view_data", view_data);
 
 	/*
 	 * When our container wants to activate a given view of this
@@ -507,7 +507,7 @@ render_fn (GnomePrintContext         *ctx,
 	gnome_print_moveto (ctx, (width / 2) - (w / 2),
 			    height / 2);
 	gnome_print_show (ctx, str);
-	gtk_object_unref (GTK_OBJECT (font));
+	g_object_unref (G_OBJECT (font));
 
 	gnome_print_moveto (ctx, 0, 0);
 	gnome_print_lineto (ctx, width, height);

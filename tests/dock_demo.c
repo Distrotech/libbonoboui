@@ -63,7 +63,7 @@ static void delete_callback (GtkWidget *w)
   gnome_config_set_string ("Dock/Placement", layout_string);
   gnome_config_sync ();
 
-  gtk_object_unref (GTK_OBJECT (layout));
+  g_object_unref (G_OBJECT (layout));
 
   gtk_main_quit ();
 }
@@ -166,21 +166,21 @@ main (int argc, char **argv)
   gnome_dock_layout_add_to_dock (GNOME_DOCK_LAYOUT (layout),
                                  GNOME_DOCK (dock));
 
-  gtk_object_unref (GTK_OBJECT(layout));
+  g_object_unref (G_OBJECT (layout));
 
   client_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type(GTK_FRAME (client_frame), GTK_SHADOW_IN);
   drawing_area = gtk_drawing_area_new();
 
-  g_signal_connect (GTK_OBJECT (app),
-                      "delete_event",
-                      G_CALLBACK (delete_callback),
-                      NULL);
+  g_signal_connect (G_OBJECT (app),
+                    "delete_event",
+                    G_CALLBACK (delete_callback),
+                    NULL);
 
-  g_signal_connect (GTK_OBJECT (dock),
-                      "layout_changed",
-                      G_CALLBACK (layout_changed_callback),
-                      NULL);
+  g_signal_connect (G_OBJECT (dock),
+                    "layout_changed",
+                    G_CALLBACK (layout_changed_callback),
+                    NULL);
 
   gnome_dock_set_client_area (GNOME_DOCK (dock), client_frame);
   gtk_widget_show (client_frame);

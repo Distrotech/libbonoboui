@@ -319,8 +319,7 @@ test_gtk_weakrefs (void)
 	GtkObject *object = g_object_new (GTK_TYPE_BUTTON, NULL);
 
 	ref = object;
-	gtk_object_ref (object);
-	gtk_object_sink (object);
+	g_object_ref_sink (object);
 	g_object_add_weak_pointer (ref, &ref);
 	gtk_object_destroy (object);
 	g_object_unref (object);

@@ -311,7 +311,7 @@ main (int argc, char **argv)
 	fprintf (stderr, "Resolving moniker '%s' as ", global_mto.requested_moniker);
 	switch (global_mto.display_as) {
         case AS_INTERFACE:
-		fprintf (stderr, global_mto.requested_interface);
+		fprintf (stderr, "%s", global_mto.requested_interface);
 		break;
         case AS_STREAM:
 		fprintf (stderr, "IDL:Bonobo/Stream:1.0");

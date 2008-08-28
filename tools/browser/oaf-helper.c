@@ -38,14 +38,14 @@ get_string_value (GList *properties_list,
 
 	for (temp = properties_list; temp; temp = temp->next) {
                 property = temp->data;
-                if (!g_strcasecmp (property_name, property->property_name) &&
+                if (!g_ascii_strcasecmp (property_name, property->property_name) &&
                         property->property_type == PROPERTY_TYPE_STRING) {
                            description = g_strdup_printf (
 				"%s", property->property_value.value_string);
                 }
         }
 
-        return (description);
+        return description;
 }
 
 /*
@@ -91,7 +91,7 @@ bonobo_component_get_locale_name (GList *property_list, gchar *lang)
 	name = get_string_value (property_list, e_lang);
 	if (name != NULL) {
 		/* We found a name property for this locale, return it. */
-		return (name);
+		return name;
 	}
 
 	g_free (e_lang);
@@ -104,7 +104,7 @@ bonobo_component_get_locale_name (GList *property_list, gchar *lang)
 		name = g_strdup_printf ("-");
 	}
 		
-	return (name);
+	return name;
 }
 
 /*
@@ -122,7 +122,7 @@ bonobo_component_get_locale_desc (GList *property_list, gchar *lang)
 	description = get_string_value (property_list, e_lang);
 	if (description != NULL) {
 		/* We found a description property so return it. */
-		return (description);
+		return description;
 	}
 
 	g_free (e_lang);
@@ -134,7 +134,7 @@ bonobo_component_get_locale_desc (GList *property_list, gchar *lang)
 		description = g_strdup_printf ("-");
 	}
 
-	return (description);
+	return description;
 }
 
 static GList *
@@ -210,7 +210,7 @@ num_query_matches (gchar *query)
 	CORBA_free (server_info_list);
 	CORBA_exception_free (&ev);
 
-	return (ret);
+	return ret;
 }
 
 /**
@@ -228,10 +228,10 @@ is_component_active (gchar *iid)
 
 	if (num_query_matches(query) != 0) {
 		g_free (query);
-		return (TRUE);
+		return TRUE;
 	} else {
 		g_free (query);
-		return (FALSE);
+		return FALSE;
 	}
 }
 
@@ -343,7 +343,7 @@ bonobo_component_get_repoids (BonoboComponentInfo *info)
 		prop = (BonoboComponentProperty *) temp->data;
 		
 		/* We only want repo_ids */
-		if (g_strcasecmp (prop->property_name, "repo_ids") == 0) {
+		if (g_ascii_strcasecmp (prop->property_name, "repo_ids") == 0) {
 			
 			prop_temp = prop->property_value.value_stringlist;
 			while (prop_temp != NULL) {
