@@ -1,3 +1,9 @@
+2008-08-29  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	* bonobo/libbonoboui-2.0-uninstalled.pc.in:
+	* bonobo/libbonoboui-2.0.pc.in:
+	Do not require gnome-vfs anymore.
+
 2008-08-28  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* samples/canvdemo/main.c: (create_app), (main):
