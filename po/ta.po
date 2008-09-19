@@ -1,26 +1,26 @@
 # translation of libbonoboui.HEAD.ta.po to Tamil
-# translation of ta.po to Tamil
 # Tamil translation of libbonoboui2.
-# Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2004, 2006, 2008 Free Software Foundation, Inc.
+#
 # Balaji Narayanan <balaji.narayanan@wipro.com>, 2001.
 # Dinesh Nadarajah <dinesh_list@sbcglobal.net>, 2004.
 # Jayaradha N <jaya@pune.redhat.com>, 2004.
 # Felix <ifelix25@gmail.com>, 2006.
 #  தங்கம் அருண் <thangam.arunx@gmail.com>, 2007.
-#
+# I. Felix <ifelix@redhat.com>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui.HEAD.ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-13 21:46+0000\n"
-"PO-Revision-Date: 2006-08-30 16:48+0530\n"
-"Last-Translator: தங்கம் அருண் <thangam.arunx@gmail.com>\n"
-"Language-Team: தமிழ் <ubuntu-l10n-tam@lists.ubuntu.com>\n"
+"POT-Creation-Date: 2008-01-03 07:59+0000\n"
+"PO-Revision-Date: 2008-09-18 22:29+0530\n"
+"Last-Translator: I. Felix <ifelix@redhat.com>\n"
+"Language-Team: Tamil <fedora-trans-ta@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
 "\n"
 "\n"
 "\n"
@@ -305,9 +305,8 @@ msgid "Style of bevel around the toolbar"
 msgstr "கருவிப்பட்டை நிழலின் பாணி"
 
 #: ../bonobo/bonobo-ui-util.c:601
-#, fuzzy
 msgid "Could not display help for this application"
-msgstr "இன்நிரலுக்கான உதவியைப் பார்க்கவும்"
+msgstr "இந்த நிரலுக்கான உதவியைக் காட்ட முடியவில்லை"
 
 #: ../bonobo/bonobo-ui-util.c:643
 msgid "_Contents"
@@ -507,3 +506,4 @@ msgstr "அனைத்தும்"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "செயலற்ற"
+
