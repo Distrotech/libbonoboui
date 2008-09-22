@@ -1,3 +1,5 @@
+======================== 2.24.0 ====================
+
 2008-09-22  Runa Bhattacharjee  <runab@redhat.com>
 
 	* bn_IN.po: Minor typ correction in the Bengali India Translation
@@ -17,7 +19,7 @@
 
 2008-09-16  Krishnababu K  <kkrothap@redhat.com>
 
-	*te.po: Updated Telugu Translation.
+	* te.po: Updated Telugu Translation.
 
 2008-09-15  Djihed Afifi <djihed@gmail.com> 
 
