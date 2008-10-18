@@ -10,7 +10,7 @@
 
 #include <config.h>
 #include <bonobo/bonobo-ui-toolbar-popup-item.h>
-#include <gtk/gtkarrow.h>
+#include <gtk/gtk.h>
 
 G_DEFINE_TYPE (BonoboUIToolbarPopupItem,
 	       bonobo_ui_toolbar_popup_item,

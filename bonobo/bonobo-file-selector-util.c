@@ -20,12 +20,7 @@
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-widget.h>
 
-#include <gtk/gtkfilechooserdialog.h>
-#include <gtk/gtkmain.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtkstock.h>
+#include <gtk/gtk.h>
 
 #include <glib.h>
 #include <glib/gi18n-lib.h>

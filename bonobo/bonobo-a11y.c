@@ -8,10 +8,10 @@
  * Copyright 2002 Sun Microsystems, Inc.
  */
 #include "config.h"
-#include <glib/garray.h>
+#include <glib.h>
 #include <atk/atkregistry.h>
 #include <atk/atkobjectfactory.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 #include <bonobo-a11y.h>
 
 GType

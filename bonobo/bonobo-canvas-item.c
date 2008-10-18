@@ -30,7 +30,7 @@
 #else
 #error Port to this GDK backend
 #endif
-#include <gtk/gtksignal.h>
+#include <gtk/gtk.h>
 
 G_DEFINE_TYPE (BonoboCanvasItem, bonobo_canvas_item, GNOME_TYPE_CANVAS_ITEM)
 

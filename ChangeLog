@@ -1,3 +1,21 @@
+2008-10-18  Cosimo Cecchi  <cosimoc@gnome.org>
+
+	* bonobo/Makefile.am:
+	* bonobo/bonobo-a11y.c:
+	* bonobo/bonobo-canvas-component.c:
+	* bonobo/bonobo-canvas-item.c:
+	* bonobo/bonobo-control-frame.c:
+	* bonobo/bonobo-dock-item-grip.c:
+	* bonobo/bonobo-dock-item.c:
+	* bonobo/bonobo-file-selector-util.c:
+	* bonobo/bonobo-socket.c:
+	* bonobo/bonobo-ui-engine-config.c:
+	* bonobo/bonobo-ui-main.c:
+	* bonobo/bonobo-ui-toolbar-popup-item.c:
+	* bonobo/bonobo-ui-util.c:
+	* configure.in:
+	Use and enforce single GTK+/GLib includes.
+
 2008-09-22  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* NEWS: Update

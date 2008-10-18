@@ -41,10 +41,7 @@
 #include <gdk/gdkx.h>
 #endif
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtkmain.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtktoolbar.h>
-#include <gtk/gtkwindow.h>
+#include <gtk/gtk.h>
 
 #include <glib/gi18n-lib.h>
 

@@ -11,9 +11,7 @@
  */
 #include "config.h"
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtkwindow.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtkdnd.h>
+#include <gtk/gtk.h>
 #include <bonobo/bonobo-socket.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-control-frame.h>

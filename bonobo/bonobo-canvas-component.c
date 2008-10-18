@@ -10,7 +10,7 @@
 #include <config.h>
 #include <stdio.h>
 #include <string.h>
-#include <gtk/gtksignal.h>
+#include <gtk/gtk.h>
 #include <bonobo/Bonobo.h>
 #include <libart_lgpl/art_affine.h>
 #include <libgnomecanvas/gnome-canvas.h>

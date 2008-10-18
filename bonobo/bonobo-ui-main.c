@@ -20,7 +20,7 @@
 
 #include <libgnome/gnome-init.h>
 
-#include <gtk/gtkmain.h>
+#include <gtk/gtk.h>
 
 #ifdef G_OS_WIN32
 #include <string.h>

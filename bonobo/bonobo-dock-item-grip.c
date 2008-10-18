@@ -15,8 +15,7 @@
 #include <glib-object.h>
 #include <atk/atkstateset.h>
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtkaccessible.h>
-#include <gtk/gtkbindings.h>
+#include <gtk/gtk.h>
 #include <glib/gi18n-lib.h>
 #include <string.h>
 

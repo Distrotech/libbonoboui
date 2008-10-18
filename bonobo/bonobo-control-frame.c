@@ -14,10 +14,6 @@
  *                 2000 Eazel, Inc.
  */
 #include <config.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtkmarshal.h>
-#include <gtk/gtkplug.h>
-#include <gtk/gtkbox.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-control.h>
 #include <bonobo/bonobo-control-frame.h>
@@ -30,8 +26,7 @@
 #else
 #error Port to this GDK backend
 #endif
-#include <gdk/gdktypes.h>
-#include <gtk/gtkhbox.h>
+#include <gdk/gdk.h>
 #include <bonobo/bonobo-socket.h>
 #include <bonobo/bonobo-exception.h>
 #include <bonobo/bonobo-ui-marshal.h>

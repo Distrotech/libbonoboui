@@ -9,9 +9,7 @@
 #include <config.h>
 #include <string.h>
 
-#include <gtk/gtkstock.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtkiconfactory.h>
+#include <gtk/gtk.h>
 
 #include <libgnome/gnome-help.h>
 #include <libgnome/gnome-init.h>
