@@ -1,5 +1,10 @@
 2008-10-18  Cosimo Cecchi  <cosimoc@gnome.org>
 
+	* configure.in:
+	Only enforce single includes under maintainer mode.
+
+2008-10-18  Cosimo Cecchi  <cosimoc@gnome.org>
+
 	* bonobo/Makefile.am:
 	* bonobo/bonobo-a11y.c:
 	* bonobo/bonobo-canvas-component.c:
