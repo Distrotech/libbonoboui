@@ -7,7 +7,7 @@
 #define WITH_BONOBO
 
 #include <string.h>
-#include <glib/gmacros.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 #include <libgnomecanvas/libgnomecanvas.h>
 

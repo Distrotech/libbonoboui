@@ -2,7 +2,7 @@
 #include <bonobo/bonobo-ui-component.h>
 #include <bonobo/bonobo-selector.h>
 #include <bonobo/bonobo-window.h>
-#include <gtk/gtkfilechooser.h>
+#include <gtk/gtk.h>
 
 #include "container-menu.h"
 #include "container.h"

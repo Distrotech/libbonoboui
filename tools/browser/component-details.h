@@ -21,7 +21,7 @@
 #ifndef __COMPONENT_DETAILS_H__
 #define __COMPONENT_DETAILS_H__
 
-#include <gtk/gtkvbox.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

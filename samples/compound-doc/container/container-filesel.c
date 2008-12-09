@@ -1,6 +1,5 @@
 #include "config.h"
-#include <gtk/gtkfilechooserdialog.h>
-#include <gtk/gtkstock.h>
+#include <gtk/gtk.h>
 #include "container-filesel.h"
 #include "container.h"
 

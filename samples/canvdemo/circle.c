@@ -2,7 +2,7 @@
 #include "config.h"
 #include <gdk/gdkkeysyms.h>
 #include <string.h>
-#include <glib/gmacros.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 #include <libgnomecanvas/libgnomecanvas.h>
 #include <bonobo/Bonobo.h>
@@ -126,7 +126,7 @@ circle_control_new (CommonData *com)
         gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
         spin_label = gtk_label_new ("Speed:");
         gtk_box_pack_start (GTK_BOX (hbox), spin_label, FALSE, FALSE, 0);
-        adj = gtk_adjustment_new(100.0, 0.0, 1000.0, 1.0, 10.0, 10.0);
+        adj = gtk_adjustment_new(100.0, 0.0, 1000.0, 1.0, 10.0, 0.0);
         g_signal_connect(adj, "value_changed", G_CALLBACK(set_speed), com);
         spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 0.0, 0);
         gtk_box_pack_start (GTK_BOX (hbox), spin, FALSE, FALSE, 0);

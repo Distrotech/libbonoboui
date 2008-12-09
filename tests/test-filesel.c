@@ -13,7 +13,7 @@
 #include <bonobo/bonobo-file-selector-util.h>
 #include <bonobo/bonobo-ui-main.h>
 
-#include <gtk/gtkmain.h>
+#include <gtk/gtk.h>
 
 #include <glib/gi18n.h>
 

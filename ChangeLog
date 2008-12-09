@@ -1,3 +1,15 @@
+2008-12-09  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* samples/canvdemo/circle.c: (circle_control_new):
+	* samples/canvdemo/square.c:
+	* tests/test-filesel.c:
+	* tools/browser/component-details.c:
+	* tools/browser/component-details.h:
+	* tools/browser/component-list.c:
+	* tools/browser/component-list.h:
+	More gtk+ include cleanups. Patch from Przemysław Grzegorczyk.
+	Closes bug #563711.
+
 2008-10-18  Cosimo Cecchi  <cosimoc@gnome.org>
 
 	* configure.in:

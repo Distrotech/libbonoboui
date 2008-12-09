@@ -2,7 +2,7 @@
 #define _SAMPLE_DOC_VIEW_H
 
 #include <bonobo/Bonobo.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 
 #include "document.h"
 

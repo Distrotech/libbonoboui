@@ -24,13 +24,7 @@
 
 #include "oaf-helper.h"
 #include "component-details.h"
-#include <gtk/gtknotebook.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkframe.h>
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreestore.h>
-#include <gtk/gtkcellrenderertext.h>
+#include <gtk/gtk.h>
 
 #define PARENT_TYPE GTK_TYPE_VBOX
 
