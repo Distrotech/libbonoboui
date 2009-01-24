@@ -1,101 +1,101 @@
 # translation of lv.po to Latvian
-# Copyright (C) 2006 Free Software Foundation, Inc.
+# Copyright (C) 2006, 2009 Free Software Foundation, Inc.
 #
-# Raivis Dejus <orvils@gmail.com>, 2006.
+# Raivis Dejus <orvils@gmail.com>, 2006, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: lv\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-01 14:15+0300\n"
-"PO-Revision-Date: 2006-09-01 14:16+0300\n"
+"POT-Creation-Date: 2008-11-07 14:28+0100\n"
+"PO-Revision-Date: 2009-01-24 18:41+0200\n"
 "Last-Translator: Raivis Dejus <orvils@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.2\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
 
-#: ../bonobo/bonobo-canvas-item.c:683
+#: ../bonobo/bonobo-canvas-item.c:680
 msgid "corba factory"
 msgstr "corba ražotne"
 
-#: ../bonobo/bonobo-canvas-item.c:684
+#: ../bonobo/bonobo-canvas-item.c:681
 msgid "The factory pointer"
 msgstr "Ražotnes punktieris"
 
-#: ../bonobo/bonobo-canvas-item.c:693
+#: ../bonobo/bonobo-canvas-item.c:690
 msgid "corba UI container"
 msgstr "corba UI saturētājs"
 
-#: ../bonobo/bonobo-canvas-item.c:694
+#: ../bonobo/bonobo-canvas-item.c:691
 msgid "The User interface container"
 msgstr "Lietotāja saskarnes saturētājs"
 
-#: ../bonobo/bonobo-dock-item-grip.c:257
+#: ../bonobo/bonobo-dock-item-grip.c:254
 msgid "Dock the toolbar"
 msgstr "Pieslēgt rīkjoslu"
 
-#: ../bonobo/bonobo-dock-item-grip.c:258
+#: ../bonobo/bonobo-dock-item-grip.c:255
 msgid "Undock the toolbar"
 msgstr "Atslēgt rīkjoslu"
 
-#: ../bonobo/bonobo-dock-item.c:230 ../bonobo/bonobo-dock-item.c:231
-#: ../bonobo/bonobo-ui-toolbar.c:1164
+#: ../bonobo/bonobo-dock-item.c:225 ../bonobo/bonobo-dock-item.c:226
+#: ../bonobo/bonobo-ui-toolbar.c:1161
 msgid "Shadow type"
 msgstr "Ēnas tips"
 
-#: ../bonobo/bonobo-dock-item.c:241 ../bonobo/bonobo-dock-item.c:242
-#: ../bonobo/bonobo-ui-toolbar.c:1108 ../bonobo/bonobo-ui-toolbar.c:1109
+#: ../bonobo/bonobo-dock-item.c:236 ../bonobo/bonobo-dock-item.c:237
+#: ../bonobo/bonobo-ui-toolbar.c:1105 ../bonobo/bonobo-ui-toolbar.c:1106
 msgid "Orientation"
 msgstr "Novietojums"
 
-#: ../bonobo/bonobo-dock-item.c:252 ../bonobo/bonobo-dock-item.c:253
-#: ../bonobo/bonobo-ui-toolbar.c:1127 ../bonobo/bonobo-ui-toolbar.c:1128
+#: ../bonobo/bonobo-dock-item.c:247 ../bonobo/bonobo-dock-item.c:248
+#: ../bonobo/bonobo-ui-toolbar.c:1124 ../bonobo/bonobo-ui-toolbar.c:1125
 msgid "Preferred width"
 msgstr "Vēlamais platums"
 
-#: ../bonobo/bonobo-dock-item.c:261 ../bonobo/bonobo-dock-item.c:262
-#: ../bonobo/bonobo-ui-toolbar.c:1136 ../bonobo/bonobo-ui-toolbar.c:1137
+#: ../bonobo/bonobo-dock-item.c:256 ../bonobo/bonobo-dock-item.c:257
+#: ../bonobo/bonobo-ui-toolbar.c:1133 ../bonobo/bonobo-ui-toolbar.c:1134
 msgid "Preferred height"
 msgstr "Vēlamais augstums"
 
-#: ../bonobo/bonobo-file-selector-util.c:357
+#: ../bonobo/bonobo-file-selector-util.c:350
 msgid "Select a file to open"
 msgstr "Izvēlieties failu, ko atvērt"
 
-#: ../bonobo/bonobo-file-selector-util.c:385
+#: ../bonobo/bonobo-file-selector-util.c:378
 msgid "Select files to open"
 msgstr "Izvēlieties failus, ko atvērt"
 
-#: ../bonobo/bonobo-file-selector-util.c:414
+#: ../bonobo/bonobo-file-selector-util.c:407
 msgid "Select a filename to save"
 msgstr "Izvēlieties faila nosaukumu, lai saglabātu"
 
-#: ../bonobo/bonobo-plug.c:425
+#: ../bonobo/bonobo-plug.c:423
 msgid "Event Forwarding"
 msgstr "Notikumu Pārsūtīšana"
 
-#: ../bonobo/bonobo-plug.c:426
+#: ../bonobo/bonobo-plug.c:424
 msgid "Whether X events should be forwarded"
 msgstr "Vai X notikumiem jātiek pārsūtītiem"
 
-#: ../bonobo/bonobo-selector-widget.c:302 ../bonobo/bonobo-window.c:346
+#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
 #: ../tools/browser/component-details.c:114
 #: ../tools/browser/component-list.c:378
 msgid "Name"
 msgstr "Nosaukums"
 
-#: ../bonobo/bonobo-selector-widget.c:324
+#: ../bonobo/bonobo-selector-widget.c:319
 #: ../tools/browser/component-details.c:115
 msgid "Description"
 msgstr "Apraksts"
 
-#: ../bonobo/bonobo-selector.c:345
+#: ../bonobo/bonobo-selector.c:343
 msgid "Interfaces required"
 msgstr "Pieprasītie interfeisi"
 
-#: ../bonobo/bonobo-selector.c:346
+#: ../bonobo/bonobo-selector.c:344
 msgid ""
 "A NULL-terminated array of interfaces which a server must support in order "
 "to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
@@ -105,57 +105,57 @@ msgstr ""
 "tiku parādīti izvēlētājā. Noklusētais ir uz \"IDL:Bonobo/Embeddable:1.0\" ja "
 "interfeisi nav parādīti"
 
-#: ../bonobo/bonobo-selector.c:348
+#: ../bonobo/bonobo-selector.c:346
 msgid "Interface required entry"
 msgstr "Pieprasīts interfeiss ievads"
 
-#: ../bonobo/bonobo-selector.c:349
+#: ../bonobo/bonobo-selector.c:347
 msgid "One of the interfaces that's required"
 msgstr "Viens no interfeisiem kas pieprasīts"
 
-#: ../bonobo/bonobo-ui-config-widget.c:268
+#: ../bonobo/bonobo-ui-config-widget.c:265
 msgid "Visible"
 msgstr "Redzams"
 
-#: ../bonobo/bonobo-ui-config-widget.c:275
+#: ../bonobo/bonobo-ui-config-widget.c:272
 msgid "_Show"
 msgstr "_Rādīt"
 
-#: ../bonobo/bonobo-ui-config-widget.c:282
+#: ../bonobo/bonobo-ui-config-widget.c:279
 msgid "_Hide"
 msgstr "_Slēpt"
 
-#: ../bonobo/bonobo-ui-config-widget.c:288
+#: ../bonobo/bonobo-ui-config-widget.c:285
 msgid "_View tooltips"
 msgstr "_Skatīt knifus"
 
-#: ../bonobo/bonobo-ui-config-widget.c:293
+#: ../bonobo/bonobo-ui-config-widget.c:290
 msgid "Toolbars"
 msgstr "Rīkjoslas"
 
-#: ../bonobo/bonobo-ui-config-widget.c:303
+#: ../bonobo/bonobo-ui-config-widget.c:300
 msgid "toolbars"
 msgstr "rīkjoslas"
 
-#: ../bonobo/bonobo-ui-config-widget.c:314
+#: ../bonobo/bonobo-ui-config-widget.c:311
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "Look"
 msgstr "Skatīties"
 
-#: ../bonobo/bonobo-ui-config-widget.c:323
+#: ../bonobo/bonobo-ui-config-widget.c:320
 #: ../bonobo/bonobo-ui-sync-toolbar.c:566
 msgid "_Icon"
 msgstr "_Ikona"
 
-#: ../bonobo/bonobo-ui-config-widget.c:329
+#: ../bonobo/bonobo-ui-config-widget.c:326
 msgid "_Text and Icon"
 msgstr "_Teksts un Ikona"
 
-#: ../bonobo/bonobo-ui-config-widget.c:335
+#: ../bonobo/bonobo-ui-config-widget.c:332
 msgid "Text only"
 msgstr "Tikai Teksts"
 
-#: ../bonobo/bonobo-ui-config-widget.c:341
+#: ../bonobo/bonobo-ui-config-widget.c:338
 msgid "_Priority text only"
 msgstr "Tikai _prioritātes teksts"
 
@@ -175,80 +175,80 @@ msgstr "Izmest visu LI XML aprakstu konsolē"
 msgid "Configure UI"
 msgstr "Konfigurēt UI"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:126
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "Gdk debugging flags to set"
 msgstr "Uzstādāmie Gdk atkļūdošanas karodziņi"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:126 ../bonobo/bonobo-ui-init-gtk.c:129
-#: ../bonobo/bonobo-ui-init-gtk.c:157 ../bonobo/bonobo-ui-init-gtk.c:160
+#: ../bonobo/bonobo-ui-init-gtk.c:131 ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:162 ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:129
+#: ../bonobo/bonobo-ui-init-gtk.c:134
 msgid "Gdk debugging flags to unset"
 msgstr "Noņemamie Gdk atkļūdošanas karodziņi"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "X display to use"
 msgstr "Izmantojamais X displejs"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "X screen to use"
 msgstr "Izmantojamais X ekrāns"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "SCREEN"
 msgstr "SCREEN"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:146
 msgid "Make X calls synchronous"
 msgstr "Padarīt X izsaukumus sinhronus"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:147
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "Don't use X shared memory extension"
 msgstr "Nelietot X kopējās atmiņas paplašinājumu"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "Program name as used by the window manager"
 msgstr "Programmas nosaukums, ko izmanto logu pārvaldnieks"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "NAME"
 msgstr "NAME"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:154
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "Program class as used by the window manager"
 msgstr "Programas klase, ko izmanto logu pārvaldnieks"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:154
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "CLASS"
 msgstr "CLASS"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:157
+#: ../bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
 msgstr "Uzstādamie Gtk+ atkļūdošanas karodziņi"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:160
+#: ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
 msgstr "Noņemamie Gtk+ atkļūdošanas karodziņi"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:163
+#: ../bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
 msgstr "Padarīt visus brīdinājumus fatālus"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:166
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
 msgstr "Ielādēt papildus Gtk moduli"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:166
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
 msgstr "MODULE"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:182
+#: ../bonobo/bonobo-ui-init-gtk.c:187
 msgid "GTK+"
 msgstr "GTK+"
 
@@ -284,27 +284,31 @@ msgstr "Pār_veidot"
 msgid "Customize the toolbar"
 msgstr "Pārveidot rīkjoslu"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1118
+#: ../bonobo/bonobo-ui-toolbar.c:1115
 msgid "is floating"
 msgstr "'peldēšana'"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1119
+#: ../bonobo/bonobo-ui-toolbar.c:1116
 msgid "whether the toolbar is floating"
 msgstr "vai rīkjosla 'peld'"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1165
+#: ../bonobo/bonobo-ui-toolbar.c:1162
 msgid "Style of bevel around the toolbar"
 msgstr "Konusa tips ap rīkjoslu"
 
-#: ../bonobo/bonobo-ui-util.c:630
+#: ../bonobo/bonobo-ui-util.c:599
+msgid "Could not display help for this application"
+msgstr "Nevar parādīt palīdzību šai aplikācijai"
+
+#: ../bonobo/bonobo-ui-util.c:641
 msgid "_Contents"
 msgstr "_Saturs"
 
-#: ../bonobo/bonobo-ui-util.c:631
+#: ../bonobo/bonobo-ui-util.c:642
 msgid "View help for this application"
 msgstr "Skatīt palīdzību šai aplikācijai"
 
-#: ../bonobo/bonobo-window.c:347
+#: ../bonobo/bonobo-window.c:345
 msgid "Name of the window - used for configuration serialization."
 msgstr "Loga nosaukums - izmantots konfigurācijas serializācijai."
 
@@ -471,7 +475,7 @@ msgstr "Bonobo pārlūks"
 
 #: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr "Copyright 2001, The GNOME Foundation"
+msgstr "Autortiesības 2001, GNOME fonds"
 
 #: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
