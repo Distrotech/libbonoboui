@@ -1,3 +1,9 @@
+libbonoboui 2.24.1
+
+	* Use single glib/gtk+ includes (Cosimo Cecchi, Przemysław Grzegorczyk)
+	* Remove use of deprecated glib/gtk+ api (Kjartan)
+	* Updated translations (ar, bg, dz, hi, lv, or, pt_BR, zh_HK, zh_TW)
+ 
 libbonoboui 2.24.0
 
 	* Remove more gnome-vfs deps (Cosimo Cecchi)
