@@ -9,6 +9,8 @@
  * Copyright 2001 Ximian, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <string.h>
 #include <gconf/gconf.h>

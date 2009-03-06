@@ -8,6 +8,8 @@
  * Copyright (C) 2001 Ximian, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include <bonobo.h>
 
 static gboolean do_remote = TRUE;
@@ -123,8 +125,8 @@ main (int argc, char **argv)
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox);
 
-	g_signal_connect (GTK_OBJECT (window), "delete_event",
-			    (GtkSignalFunc) quit_cb, NULL);
+	g_signal_connect (G_OBJECT (window), "delete_event",
+			  G_CALLBACK (quit_cb), NULL);
 
 	placeholder1 = gtk_frame_new ("Out of proc");
 	gtk_box_pack_start (GTK_BOX (vbox), placeholder1, TRUE, TRUE, 0);
@@ -134,8 +136,8 @@ main (int argc, char **argv)
 
 	button = gtk_button_new_with_label ("Remove and add");
 	gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 0);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    G_CALLBACK (remove_and_add), NULL);
+	g_signal_connect (G_OBJECT (button), "clicked",
+			  G_CALLBACK (remove_and_add), NULL);
   
 	gtk_widget_show_all (window);
 	g_timeout_add (0, idle_init, NULL);

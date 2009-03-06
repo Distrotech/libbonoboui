@@ -13,6 +13,9 @@
  * Copyright 1999, 2001 Ximian, Inc.
  *                 2000 Eazel, Inc.
  */
+
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-control.h>

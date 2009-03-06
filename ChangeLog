@@ -1,3 +1,60 @@
+2009-03-06  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* NEWS: Updated for release.
+	* bonobo/Makefile.am:
+	* bonobo/bonobo-canvas-component.c:
+	(impl_Bonobo_Canvas_Component_update):
+	* bonobo/bonobo-control-frame.c:
+	* bonobo/bonobo-control.c:
+	* bonobo/bonobo-dock-layout.c: (remove_item):
+	* bonobo/bonobo-dock.c: (drag_floating),
+	(bonobo_dock_add_floating_item), (bonobo_dock_set_client_area):
+	* bonobo/bonobo-plug.c:
+	* bonobo/bonobo-selector-widget.c:
+	* bonobo/bonobo-socket.c:
+	* bonobo/bonobo-ui-config-widget.c:
+	* bonobo/bonobo-ui-engine-config.c:
+	(bonobo_ui_engine_config_configure):
+	* bonobo/bonobo-ui-engine.c: (widget_unref), (state_update_new),
+	(state_update_destroy), (bonobo_ui_engine_construct),
+	(bonobo_ui_engine_sync), (bonobo_ui_engine_stamp_root):
+	* bonobo/bonobo-ui-internal-toolbar.c:
+	* bonobo/bonobo-ui-main.c:
+	* bonobo/bonobo-ui-preferences.c:
+	* bonobo/bonobo-ui-sync-keys.c:
+	* bonobo/bonobo-ui-sync-menu.c: (bonobo_ui_sync_menu_add_popup),
+	(impl_bonobo_ui_sync_menu_build):
+	* bonobo/bonobo-ui-sync-status.c:
+	* bonobo/bonobo-ui-sync-toolbar.c:
+	* bonobo/bonobo-ui-toolbar-button-item.c: (unparent_items):
+	* bonobo/bonobo-ui-toolbar-control-item.c:
+	* bonobo/bonobo-ui-toolbar-item.c:
+	* bonobo/bonobo-ui-toolbar-item.h:
+	* bonobo/bonobo-ui-toolbar-popup-item.c:
+	* bonobo/bonobo-ui-toolbar-toggle-button-item.c:
+	* bonobo/bonobo-ui-toolbar.c: (bonobo_ui_toolbar_construct):
+	* bonobo/bonobo-ui-util.c:
+	* bonobo/bonobo-window.c:
+	* glade/glade-bonobo.c:
+	* samples/bonoboui/hello.c:
+	* samples/canvdemo/circle.c:
+	* samples/canvdemo/main.c:
+	* samples/canvdemo/square.c:
+	* samples/container/bonobo-sample-container.c:
+	* samples/controls/bonobo-sample-controls.c:
+	* tests/control/test-control.c:
+	* tests/test-events.c:
+	* tests/test-focus.c:
+	* tests/test-moniker.c:
+	* tests/test-reparent.c: (main):
+	* tests/test-selector.c:
+	* tests/test-sensitivity.c: (main):
+	* tests/test-toolbar.c:
+	* tests/test-ui-auto.c:
+	* tests/test-ui.c:
+	* tools/browser/window.c: (bonobo_browser_create_window):
+	Make everything build with deprecations enabled in glib/gtk+.
+
 2008-12-09  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* samples/canvdemo/circle.c: (circle_control_new):

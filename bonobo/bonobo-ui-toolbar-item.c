@@ -7,6 +7,8 @@
  * Copyright (C) 2000 Ximian, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <bonobo/bonobo-ui-private.h>
 #include <bonobo-ui-toolbar-item.h>

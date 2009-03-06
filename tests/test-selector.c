@@ -1,4 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <libbonoboui.h>
 

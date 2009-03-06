@@ -1,3 +1,5 @@
+#undef GTK_DISABLE_DEPRECATED
+
 #include <stdlib.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>

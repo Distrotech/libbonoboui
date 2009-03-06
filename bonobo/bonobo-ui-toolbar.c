@@ -8,6 +8,8 @@
  * Copyright (C) 2000 Ximian, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <glib/gi18n-lib.h>
 #include <bonobo/bonobo-ui-private.h>
@@ -1217,12 +1219,12 @@ bonobo_ui_toolbar_construct (BonoboUIToolbar *toolbar)
 	bonobo_ui_toolbar_item_set_orientation (priv->popup_item, priv->orientation);
 	parentize_widget (toolbar, GTK_WIDGET (priv->popup_item));
 
-	g_signal_connect (GTK_OBJECT (priv->popup_item), "toggled",
-			    G_CALLBACK (popup_item_toggled_cb), toolbar);
+	g_signal_connect (G_OBJECT (priv->popup_item), "toggled",
+			  G_CALLBACK (popup_item_toggled_cb), toolbar);
 
 	priv->popup_window = gtk_window_new (GTK_WINDOW_POPUP);
-	g_signal_connect (GTK_OBJECT (priv->popup_window), "button_release_event",
-			    G_CALLBACK (popup_window_button_release_cb), toolbar);
+	g_signal_connect (G_OBJECT (priv->popup_window), "button_release_event",
+			  G_CALLBACK (popup_window_button_release_cb), toolbar);
 
 	frame = gtk_frame_new (NULL);
 	gtk_widget_show (frame);

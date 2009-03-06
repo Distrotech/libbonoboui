@@ -1,4 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
+
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 
 /* Comment the below line out and rebuild to see the difference with and 

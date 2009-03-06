@@ -1,3 +1,5 @@
+=============================== 2.24.1 ===========================
+
 2008-08-28  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* hello-object-print.c: (hello_object_print):

@@ -313,6 +313,6 @@ bonobo_browser_create_window (void)
 	/* add this window to our list of open windows */
 	open_windows = g_list_append (open_windows, window);
 
-	gtk_widget_set_usize (window, 600, 500);
+	gtk_widget_set_size_request (window, 600, 500);
 	gtk_widget_show_all (window);
 }

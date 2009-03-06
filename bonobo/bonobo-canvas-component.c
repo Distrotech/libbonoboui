@@ -210,7 +210,7 @@ impl_Bonobo_Canvas_Component_update (PortableServer_Servant     servant,
 	ArtSVP *svp = NULL;
 	Bonobo_Canvas_ArtUTA *cuta;
 
-	GnomeCanvasItemClass *gci_class = gtk_type_class (
+	GnomeCanvasItemClass *gci_class = g_type_class_ref (
 					gnome_canvas_item_get_type ());
 
 	restore_state (item, state);

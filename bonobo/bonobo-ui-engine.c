@@ -13,6 +13,8 @@
  * looking for cleanliness & then re-building
  * from there on down */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -353,7 +355,7 @@ widget_unref (GtkWidget **ref)
 	
 	if ((w = *ref)) {
 		*ref = NULL;
-		gtk_widget_unref (w);
+		g_object_unref (w);
 	}
 }
 
@@ -996,7 +998,7 @@ state_update_new (BonoboUISync *sync,
 		
 		su->sync   = sync;
 		su->widget = widget;
-		gtk_widget_ref (su->widget);
+		g_object_ref (su->widget);
 		su->state  = state;
 	} else
 		su = NULL;
@@ -1008,7 +1010,7 @@ static void
 state_update_destroy (StateUpdate *su)
 {
 	if (su) {
-		gtk_widget_unref (su->widget);
+		g_object_unref (su->widget);
 		bonobo_ui_node_free_string (su->state);
 
 		g_free (su);
@@ -2072,19 +2074,19 @@ bonobo_ui_engine_construct (BonoboUIEngine *engine,
 		add_debug_menu (engine);
 
 	g_signal_connect (priv->tree, "override",
-			  (GtkSignalFunc) override_fn, engine);
+			  G_CALLBACK (override_fn), engine);
 
 	g_signal_connect (priv->tree, "replace_override",
-			  (GtkSignalFunc) replace_override_fn, engine);
+			  G_CALLBACK (replace_override_fn), engine);
 
 	g_signal_connect (priv->tree, "reinstate",
-			  (GtkSignalFunc) reinstate_fn, engine);
+			  G_CALLBACK (reinstate_fn), engine);
 
 	g_signal_connect (priv->tree, "rename",
-			  (GtkSignalFunc) rename_fn, engine);
+			  G_CALLBACK (rename_fn), engine);
 
 	g_signal_connect (priv->tree, "remove",
-			  (GtkSignalFunc) remove_fn, engine);
+			  G_CALLBACK (remove_fn), engine);
 
 	/* Add the engine to the configuration notify list */
 	bonobo_ui_preferences_add_engine (engine);
@@ -2283,7 +2285,7 @@ bonobo_ui_engine_sync (BonoboUIEngine   *engine,
 					widget, bonobo_ui_node_get_name (a), *pos);
 #endif
 
-				info->widget = widget ? gtk_widget_ref (widget) : NULL;
+				info->widget = widget ? g_object_ref (widget) : NULL;
 				if (widget) {
 					bonobo_ui_engine_widget_set_node (
 						sync->engine, widget, a);
@@ -3085,9 +3087,9 @@ bonobo_ui_engine_stamp_root (BonoboUIEngine *engine,
 
 	info = bonobo_ui_xml_get_data (engine->priv->tree, node);
 
-	new_root = widget ? gtk_widget_ref (widget) : NULL;
+	new_root = widget ? g_object_ref (widget) : NULL;
 	if (info->widget)
-		gtk_widget_unref (info->widget);
+		g_object_unref (info->widget);
 	info->widget = new_root;
 	info->type |= ROOT_WIDGET;
 

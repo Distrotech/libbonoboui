@@ -6,6 +6,9 @@
  *
  * Copyright 2002 Ximian, Inc.
  */
+
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <string.h>
 

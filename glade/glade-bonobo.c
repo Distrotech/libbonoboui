@@ -7,6 +7,9 @@
  *
  * Copyright (C) 2000,2001 Ximian, Inc., 2001,2002 James Henstridge.
  */
+
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <stdlib.h>
 #include <string.h>

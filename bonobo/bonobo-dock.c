@@ -825,7 +825,7 @@ drag_floating (BonoboDock *dock,
               && rel_y >= client_allocation->y
               && rel_y < client_allocation->y + client_allocation->height))
         {
-          gtk_widget_ref (item_widget);
+          g_object_ref (item_widget);
 
           gtk_container_remove (GTK_CONTAINER (item_widget->parent),
                                 item_widget);
@@ -842,7 +842,7 @@ drag_floating (BonoboDock *dock,
           if (item->in_drag)
             bonobo_dock_item_grab_pointer (item);
 
-          gtk_widget_unref (item_widget);
+          g_object_unref (item_widget);
         }
     }
   else
@@ -1352,7 +1352,7 @@ bonobo_dock_add_floating_item (BonoboDock *dock,
   bonobo_dock_item_set_orientation (item, orientation);
 
   widget = GTK_WIDGET(item);
-  gtk_widget_ref (widget);
+  g_object_ref (widget);
 
 #if 0
   if (widget->parent != NULL)
@@ -1377,7 +1377,7 @@ bonobo_dock_add_floating_item (BonoboDock *dock,
 
   connect_drag_signals (dock, widget);
 
-  gtk_widget_unref (widget);
+  g_object_unref (widget);
 
   g_signal_emit (dock, dock_signals[LAYOUT_CHANGED], 0);
 }
@@ -1395,7 +1395,7 @@ bonobo_dock_set_client_area (BonoboDock *dock, GtkWidget *widget)
   g_return_if_fail (dock != NULL);
 
   if (widget != NULL)
-    gtk_widget_ref (widget);
+    g_object_ref (widget);
 
   if (dock->client_area != NULL)
     gtk_widget_unparent (dock->client_area);
@@ -1424,7 +1424,7 @@ bonobo_dock_set_client_area (BonoboDock *dock, GtkWidget *widget)
     }
 
   if (widget != NULL)
-    gtk_widget_unref (widget);
+    g_object_unref (widget);
 }
 
 /**

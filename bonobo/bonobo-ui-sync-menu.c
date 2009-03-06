@@ -8,6 +8,8 @@
  * Copyright 2000 Ximian, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <stdlib.h>
 #include <string.h>
@@ -179,8 +181,8 @@ bonobo_ui_sync_menu_add_popup (BonoboUISyncMenu *smenu,
 
 	g_object_set_data (G_OBJECT (menu), UI_SYNC_MENU_KEY, smenu);
 
-	g_signal_connect (GTK_OBJECT (menu), "destroy",
-			    (GtkSignalFunc) popup_destroy, popup);
+	g_signal_connect (G_OBJECT (menu), "destroy",
+			  G_CALLBACK (popup_destroy), popup);
 
 	node = bonobo_ui_engine_get_path (smenu->parent.engine, path);
 
@@ -624,12 +626,12 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 		if (!menu_widget)
 			return NULL;
 			
-		g_signal_connect (GTK_OBJECT (menu_widget),
+		g_signal_connect (G_OBJECT (menu_widget),
 				    "select",
 				    G_CALLBACK (put_hint_in_statusbar),
 				    engine);
 
-		g_signal_connect (GTK_OBJECT (menu_widget),
+		g_signal_connect (G_OBJECT (menu_widget),
 				    "deselect",
 				    G_CALLBACK (remove_hint_from_statusbar),
 				    engine);
@@ -643,14 +645,14 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 		GtkMenu      *menu;
 		
 		shell = GTK_MENU_SHELL (parent);
-		g_signal_connect (GTK_OBJECT (shell), "key_press_event",
-				  (GtkSignalFunc) sucking_gtk_keybindings_cb, NULL);
+		g_signal_connect (G_OBJECT (shell), "key_press_event",
+				  G_CALLBACK (sucking_gtk_keybindings_cb), NULL);
 
 
 		/* Create the menu shell. */
 		menu = GTK_MENU (gtk_menu_new ());
-		g_signal_connect (GTK_OBJECT (menu), "key_press_event",
-				  (GtkSignalFunc) sucking_gtk_keybindings_cb, NULL);
+		g_signal_connect (G_OBJECT (menu), "key_press_event",
+				  G_CALLBACK (sucking_gtk_keybindings_cb), NULL);
 
 		gtk_menu_set_accel_group (menu, menu_sync->accel_group);
 
@@ -673,11 +675,11 @@ impl_bonobo_ui_sync_menu_build (BonoboUISync     *sync,
 		ret_widget = menu_widget;
 
 	if (!GTK_IS_CHECK_MENU_ITEM (menu_widget))
-		g_signal_connect (GTK_OBJECT (menu_widget), "activate",
-				    (GtkSignalFunc) exec_verb_cb, engine);
+		g_signal_connect (G_OBJECT (menu_widget), "activate",
+				  G_CALLBACK (exec_verb_cb), engine);
 
-	g_signal_connect (GTK_OBJECT (menu_widget), "key_press_event",
-			  (GtkSignalFunc) sucking_gtk_keybindings_cb, NULL);
+	g_signal_connect (G_OBJECT (menu_widget), "key_press_event",
+			  G_CALLBACK (sucking_gtk_keybindings_cb), NULL);
 
 	gtk_widget_show (menu_widget);
 			    

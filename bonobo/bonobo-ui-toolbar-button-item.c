@@ -7,6 +7,8 @@
  * Copyright (C) 2000 Ximian, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <string.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -117,7 +119,7 @@ unparent_items (BonoboUIToolbarButtonItem *button_item)
 
 	if (priv->icon != NULL) {
 		if (priv->icon->parent != NULL) {
-			gtk_widget_ref (priv->icon);
+			g_object_ref (priv->icon);
 			gtk_container_remove (GTK_CONTAINER (priv->icon->parent),
 					      priv->icon);
 		}
@@ -125,7 +127,7 @@ unparent_items (BonoboUIToolbarButtonItem *button_item)
 
 	if (priv->label != NULL) {
 		if (priv->label->parent != NULL) {
-			gtk_widget_ref (priv->label);
+			g_object_ref (priv->label);
 			gtk_container_remove (GTK_CONTAINER (priv->label->parent),
 					      priv->label);
 		}

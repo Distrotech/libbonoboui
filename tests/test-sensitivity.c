@@ -12,6 +12,9 @@
  *
  * Copyright 1999, 2001 Ximian, Inc.
  */
+
+#undef GTK_DISABLE_DEPRECATED
+
 #include <stdlib.h>
 
 #include <glib/gi18n.h>
@@ -202,7 +205,7 @@ main (int argc, char **argv)
 	 * We can't make any CORBA calls unless we're in the main
 	 * loop.  So we delay creating the container here.
 	 */
-	gtk_idle_add ((GtkFunction) container_create, NULL);
+	g_idle_add ((GSourceFunc) container_create, NULL);
 
 	bonobo_main ();
 

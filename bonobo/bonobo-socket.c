@@ -9,6 +9,9 @@
  * Copyright 2001, Ximian, Inc.
  *                 Martin Baulig.
  */
+
+#undef GTK_DISABLE_DEPRECATED
+
 #include "config.h"
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>

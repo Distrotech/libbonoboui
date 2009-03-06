@@ -7,6 +7,8 @@
  * Copyright 2001 Sun Microsytems, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include "config.h"
 #include <string.h>
 

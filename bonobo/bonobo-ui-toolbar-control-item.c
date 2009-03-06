@@ -9,6 +9,8 @@
  * Copyright (C) 2001 Eazel, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <string.h>
 #include <bonobo/bonobo-ui-private.h>

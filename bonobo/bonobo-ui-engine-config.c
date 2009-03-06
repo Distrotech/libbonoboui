@@ -8,6 +8,8 @@
  * Copyright 2001 Ximian, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include "config.h"
 #include <stdlib.h>
 #include <string.h>
@@ -561,8 +563,8 @@ bonobo_ui_engine_config_configure (BonoboUIEngineConfig *config)
 	gtk_window_set_default_size (
 		GTK_WINDOW (config->priv->dialog), 300, 300);
 	gtk_widget_show (config->priv->dialog);
-	g_signal_connect (GTK_OBJECT (config->priv->dialog),
-			    "destroy", (GtkSignalFunc) null_dialog, config);
+	g_signal_connect (config->priv->dialog,
+			  "destroy", G_CALLBACK (null_dialog), config);
 }
 
 BonoboUIEngine *

@@ -13,6 +13,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
+#undef GTK_DISABLE_DEPRECATED
 #ifndef BONOBO_UI_DISABLE_DEPRECATED
 
 G_BEGIN_DECLS

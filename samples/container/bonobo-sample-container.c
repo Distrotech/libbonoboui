@@ -1,3 +1,5 @@
+#undef GTK_DISABLE_DEPRECATED
+
 #include <unistd.h>
 #include <bonobo.h>
 #include <glib.h>

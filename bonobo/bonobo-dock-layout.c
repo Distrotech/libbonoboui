@@ -177,7 +177,7 @@ remove_item (BonoboDockLayout *layout,
 
   item = ((BonoboDockLayoutItem *) list->data)->item;
 
-  gtk_widget_unref (GTK_WIDGET (item));
+  g_object_unref (GTK_WIDGET (item));
 
   layout->items = g_list_remove_link (layout->items, list);
 

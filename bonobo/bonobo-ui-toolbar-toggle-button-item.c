@@ -8,6 +8,8 @@
  * Copyright (C) 2000 Ximian, Inc.
  */
 
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <stdlib.h>
 #include <bonobo/bonobo-ui-toolbar-toggle-button-item.h>

@@ -15,6 +15,9 @@
  *                      Martin Baulig, Anders Carlsson,
  *                      Havoc Pennigton, Dietmar Maurer
  */
+
+#undef GTK_DISABLE_DEPRECATED
+
 #include <config.h>
 #include <string.h> /* strcmp */
 #include <glib.h>
