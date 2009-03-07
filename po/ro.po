@@ -1,13 +1,13 @@
 # Romanian translation for libbonoboui
-# Copyright (C) 2003 - 2008 Free Software Foundation, Inc.
-# Mișu Moldovan <dumol@gnome.ro>, 2003 - 2008.
+# Copyright (C) 2003 - 2009 Free Software Foundation, Inc.
+# Mișu Moldovan <dumol@gnome.ro>, 2003 - 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-07 18:13+0000\n"
-"PO-Revision-Date: 2008-09-18 21:34+0300\n"
+"POT-Creation-Date: 2009-03-07 23:55+0200\n"
+"PO-Revision-Date: 2009-03-07 23:58+0200\n"
 "Last-Translator: Mișu Moldovan <dumol@gnome.ro>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -30,43 +30,43 @@ msgstr "container de interfață Corba"
 msgid "The User interface container"
 msgstr "Containerul interfeței utilizator"
 
-#: ../bonobo/bonobo-dock-item-grip.c:255
+#: ../bonobo/bonobo-dock-item-grip.c:254
 msgid "Dock the toolbar"
-msgstr "Atașează bara de unelte"
+msgstr "Atașare bara de unelte"
 
-#: ../bonobo/bonobo-dock-item-grip.c:256
+#: ../bonobo/bonobo-dock-item-grip.c:255
 msgid "Undock the toolbar"
-msgstr "Detașează bara de unelte"
+msgstr "Detașare bara de unelte"
 
-#: ../bonobo/bonobo-dock-item.c:228 ../bonobo/bonobo-dock-item.c:229
+#: ../bonobo/bonobo-dock-item.c:225 ../bonobo/bonobo-dock-item.c:226
 #: ../bonobo/bonobo-ui-toolbar.c:1161
 msgid "Shadow type"
-msgstr "Tip umbră"
+msgstr "Tipul umbrei"
 
-#: ../bonobo/bonobo-dock-item.c:239 ../bonobo/bonobo-dock-item.c:240
+#: ../bonobo/bonobo-dock-item.c:236 ../bonobo/bonobo-dock-item.c:237
 #: ../bonobo/bonobo-ui-toolbar.c:1105 ../bonobo/bonobo-ui-toolbar.c:1106
 msgid "Orientation"
 msgstr "Orientare"
 
-#: ../bonobo/bonobo-dock-item.c:250 ../bonobo/bonobo-dock-item.c:251
+#: ../bonobo/bonobo-dock-item.c:247 ../bonobo/bonobo-dock-item.c:248
 #: ../bonobo/bonobo-ui-toolbar.c:1124 ../bonobo/bonobo-ui-toolbar.c:1125
 msgid "Preferred width"
 msgstr "Lățime preferată"
 
-#: ../bonobo/bonobo-dock-item.c:259 ../bonobo/bonobo-dock-item.c:260
+#: ../bonobo/bonobo-dock-item.c:256 ../bonobo/bonobo-dock-item.c:257
 #: ../bonobo/bonobo-ui-toolbar.c:1133 ../bonobo/bonobo-ui-toolbar.c:1134
 msgid "Preferred height"
 msgstr "Înălțime preferată"
 
-#: ../bonobo/bonobo-file-selector-util.c:357
+#: ../bonobo/bonobo-file-selector-util.c:350
 msgid "Select a file to open"
 msgstr "Alegeți un fișier de deschis"
 
-#: ../bonobo/bonobo-file-selector-util.c:385
+#: ../bonobo/bonobo-file-selector-util.c:378
 msgid "Select files to open"
 msgstr "Alegeți fișierele de deschis"
 
-#: ../bonobo/bonobo-file-selector-util.c:414
+#: ../bonobo/bonobo-file-selector-util.c:407
 msgid "Select a filename to save"
 msgstr "Alegeți un nume de fișier pentru salvare"
 
@@ -79,13 +79,13 @@ msgid "Whether X events should be forwarded"
 msgstr "Dacă evenimentele X trebuie înaintate"
 
 #: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
-#: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:378
+#: ../tools/browser/component-details.c:108
+#: ../tools/browser/component-list.c:369
 msgid "Name"
 msgstr "Nume"
 
 #: ../bonobo/bonobo-selector-widget.c:319
-#: ../tools/browser/component-details.c:115
+#: ../tools/browser/component-details.c:109
 msgid "Description"
 msgstr "Descriere"
 
@@ -228,11 +228,11 @@ msgstr "CLASĂ"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
-msgstr "Indicatoare de depanare Gtk+ de setat"
+msgstr "Indicatoare de depanare Gtk+ de activat"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
-msgstr "Indicatoare de depanare Gtk+ de resetat"
+msgstr "Indicatoare de depanare Gtk+ de dezactivat"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
@@ -294,25 +294,25 @@ msgstr "dacă bara cu unelte este flotantă"
 msgid "Style of bevel around the toolbar"
 msgstr "Stilul dungii din marginea barei cu unelte"
 
-#: ../bonobo/bonobo-ui-util.c:601
+#: ../bonobo/bonobo-ui-util.c:599
 msgid "Could not display help for this application"
 msgstr "Nu s-a putut deschide manualul acestei aplicații"
 
-#: ../bonobo/bonobo-ui-util.c:643
+#: ../bonobo/bonobo-ui-util.c:641
 msgid "_Contents"
 msgstr "_Conținut"
 
-#: ../bonobo/bonobo-ui-util.c:644
+#: ../bonobo/bonobo-ui-util.c:642
 msgid "View help for this application"
 msgstr "Consultați manualul acestei aplicații"
 
 #: ../bonobo/bonobo-window.c:345
 msgid "Name of the window - used for configuration serialization."
-msgstr "Nume fereastră - folosit la serializarea configurației."
+msgstr "Numele ferestrei - folosit la serializarea configurației."
 
 #: ../bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
-msgstr "Nivel zoom"
+msgstr "Nivel de zoom"
 
 #: ../bonobo/bonobo-zoomable.c:327
 msgid "The degree of enlargment"
@@ -433,33 +433,33 @@ msgid "_Help"
 msgstr "_Ajutor"
 
 #. Build the general tab
-#: ../tools/browser/component-details.c:109
+#: ../tools/browser/component-details.c:103
 msgid "General"
 msgstr "Generale"
 
-#: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:398
+#: ../tools/browser/component-details.c:110
+#: ../tools/browser/component-list.c:389
 msgid "IID"
 msgstr "IID"
 
-#: ../tools/browser/component-details.c:117
+#: ../tools/browser/component-details.c:111
 msgid "Location"
 msgstr "Locație"
 
 #. Build the details tab
-#: ../tools/browser/component-details.c:167
+#: ../tools/browser/component-details.c:161
 msgid "Details"
 msgstr "Detalii"
 
-#: ../tools/browser/component-details.c:168
+#: ../tools/browser/component-details.c:162
 msgid "Detailed Information"
 msgstr "Informații detaliate"
 
-#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
+#: ../tools/browser/component-list.c:358 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "Activă"
 
-#: ../tools/browser/component-list.c:388
+#: ../tools/browser/component-list.c:379
 msgid "Type"
 msgstr "Tip"
 
