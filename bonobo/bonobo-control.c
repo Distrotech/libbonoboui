@@ -20,7 +20,7 @@
 #include <stdio.h>
 
 #include <gdkconfig.h>
-#include <gtk/gtksignal.h>
+#include <gtk/gtk.h>
 #if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
 #elif defined (GDK_WINDOWING_WIN32)

@@ -14,7 +14,7 @@
 #include <bonobo/bonobo-ui-util.h>
 #include <bonobo/bonobo-ui-container.h>
 
-#include <gtk/gtksignal.h>
+#include <gtk/gtk.h>
 
 #define PARENT_TYPE BONOBO_TYPE_OBJECT
 

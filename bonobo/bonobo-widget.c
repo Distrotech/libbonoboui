@@ -29,8 +29,7 @@
  */
 
 #include <config.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtkmarshal.h>
+#include <gtk/gtk.h>
 #include <bonobo/Bonobo.h>
 #include <bonobo/bonobo-main.h>
 #include <bonobo/bonobo-object.h>
