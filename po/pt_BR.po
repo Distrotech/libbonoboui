@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-30 20:00-0400\n"
-"PO-Revision-Date: 2008-07-24 14:02-0300\n"
+"POT-Creation-Date: 2009-09-06 22:35-0300\n"
+"PO-Revision-Date: 2009-09-06 22:35-0300\n"
 "Last-Translator: Vladimir Melo <vladimirmelo.psi@gmail.com>\n"
-"Language-Team: Português/Brasil <gnome-l10n-br@listas.cipsga.org.br>\n"
+"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,62 +32,62 @@ msgstr "recipiente da UI do corba"
 msgid "The User interface container"
 msgstr "O recipiente da interface do usuário"
 
-#: ../bonobo/bonobo-dock-item-grip.c:255
+#: ../bonobo/bonobo-dock-item-grip.c:254
 msgid "Dock the toolbar"
 msgstr "Encaixar a barra de ferramentas"
 
-#: ../bonobo/bonobo-dock-item-grip.c:256
+#: ../bonobo/bonobo-dock-item-grip.c:255
 msgid "Undock the toolbar"
 msgstr "Desencaixar a barra de ferramentas"
 
-#: ../bonobo/bonobo-dock-item.c:228 ../bonobo/bonobo-dock-item.c:229
-#: ../bonobo/bonobo-ui-toolbar.c:1161
+#: ../bonobo/bonobo-dock-item.c:225 ../bonobo/bonobo-dock-item.c:226
+#: ../bonobo/bonobo-ui-toolbar.c:1163
 msgid "Shadow type"
 msgstr "Tipo de sombra"
 
-#: ../bonobo/bonobo-dock-item.c:239 ../bonobo/bonobo-dock-item.c:240
-#: ../bonobo/bonobo-ui-toolbar.c:1105 ../bonobo/bonobo-ui-toolbar.c:1106
+#: ../bonobo/bonobo-dock-item.c:236 ../bonobo/bonobo-dock-item.c:237
+#: ../bonobo/bonobo-ui-toolbar.c:1107 ../bonobo/bonobo-ui-toolbar.c:1108
 msgid "Orientation"
 msgstr "Orientação"
 
-#: ../bonobo/bonobo-dock-item.c:250 ../bonobo/bonobo-dock-item.c:251
-#: ../bonobo/bonobo-ui-toolbar.c:1124 ../bonobo/bonobo-ui-toolbar.c:1125
+#: ../bonobo/bonobo-dock-item.c:247 ../bonobo/bonobo-dock-item.c:248
+#: ../bonobo/bonobo-ui-toolbar.c:1126 ../bonobo/bonobo-ui-toolbar.c:1127
 msgid "Preferred width"
 msgstr "Largura preferencial"
 
-#: ../bonobo/bonobo-dock-item.c:259 ../bonobo/bonobo-dock-item.c:260
-#: ../bonobo/bonobo-ui-toolbar.c:1133 ../bonobo/bonobo-ui-toolbar.c:1134
+#: ../bonobo/bonobo-dock-item.c:256 ../bonobo/bonobo-dock-item.c:257
+#: ../bonobo/bonobo-ui-toolbar.c:1135 ../bonobo/bonobo-ui-toolbar.c:1136
 msgid "Preferred height"
 msgstr "Altura preferencial"
 
-#: ../bonobo/bonobo-file-selector-util.c:355
+#: ../bonobo/bonobo-file-selector-util.c:350
 msgid "Select a file to open"
 msgstr "Selecione o arquivo a ser aberto"
 
-#: ../bonobo/bonobo-file-selector-util.c:383
+#: ../bonobo/bonobo-file-selector-util.c:378
 msgid "Select files to open"
 msgstr "Selecione os arquivos a serem abertos"
 
-#: ../bonobo/bonobo-file-selector-util.c:412
+#: ../bonobo/bonobo-file-selector-util.c:407
 msgid "Select a filename to save"
 msgstr "Selecione o nome de arquivo a ser salvo"
 
-#: ../bonobo/bonobo-plug.c:423
+#: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
 msgstr "Encaminhamento de evento"
 
-#: ../bonobo/bonobo-plug.c:424
+#: ../bonobo/bonobo-plug.c:426
 msgid "Whether X events should be forwarded"
 msgstr "Indica se os eventos X devem ser encaminhados"
 
-#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
-#: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:378
+#: ../bonobo/bonobo-selector-widget.c:300 ../bonobo/bonobo-window.c:347
+#: ../tools/browser/component-details.c:108
+#: ../tools/browser/component-list.c:369
 msgid "Name"
 msgstr "Nome"
 
-#: ../bonobo/bonobo-selector-widget.c:319
-#: ../tools/browser/component-details.c:115
+#: ../bonobo/bonobo-selector-widget.c:322
+#: ../tools/browser/component-details.c:109
 msgid "Description"
 msgstr "Descrição"
 
@@ -113,65 +113,65 @@ msgstr "Entrada necessária da interface"
 msgid "One of the interfaces that's required"
 msgstr "Uma das interfaces necessárias"
 
-#: ../bonobo/bonobo-ui-config-widget.c:265
+#: ../bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "Visível"
 
-#: ../bonobo/bonobo-ui-config-widget.c:272
+#: ../bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "Mo_strar"
 
-#: ../bonobo/bonobo-ui-config-widget.c:279
+#: ../bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "_Ocultar"
 
-#: ../bonobo/bonobo-ui-config-widget.c:285
+#: ../bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "_Ver dicas de ferramentas"
 
-#: ../bonobo/bonobo-ui-config-widget.c:290
+#: ../bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "Barras de ferramentas"
 
-#: ../bonobo/bonobo-ui-config-widget.c:300
+#: ../bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "barras de ferramentas"
 
-#: ../bonobo/bonobo-ui-config-widget.c:311
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-config-widget.c:313
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "Look"
 msgstr "Olhar"
 
-#: ../bonobo/bonobo-ui-config-widget.c:320
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-config-widget.c:322
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Icon"
 msgstr "Í_cone"
 
-#: ../bonobo/bonobo-ui-config-widget.c:326
+#: ../bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "Ícone e _texto"
 
-#: ../bonobo/bonobo-ui-config-widget.c:332
+#: ../bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
 msgstr "Somente texto"
 
-#: ../bonobo/bonobo-ui-config-widget.c:338
+#: ../bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "Somente texto _prioritário"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:93
 msgid "Debug"
 msgstr "Depurar"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:93
 msgid "_Dump XML"
 msgstr "_Despejar XML"
 
-#: ../bonobo/bonobo-ui-engine.c:92
+#: ../bonobo/bonobo-ui-engine.c:94
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Mandar toda a descrição da UI XML para o console"
 
-#: ../bonobo/bonobo-ui-engine-config.c:522
+#: ../bonobo/bonobo-ui-engine-config.c:524
 msgid "Configure UI"
 msgstr "Configurar UI"
 
@@ -252,63 +252,63 @@ msgstr "MÓDULO"
 msgid "GTK+"
 msgstr "GTK+"
 
-#: ../bonobo/bonobo-ui-main.c:278
+#: ../bonobo/bonobo-ui-main.c:281
 msgid "Bonobo GUI support"
 msgstr "Suporte à GUI do Bonobo"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "B_oth"
 msgstr "Amb_os"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "T_ext"
 msgstr "T_exto"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:567
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Hide t_ips"
 msgstr "Ocultar d_icas"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:567
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Show t_ips"
 msgstr "Mostrar d_icas"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
 msgid "_Hide toolbar"
 msgstr "_Ocultar barra de ferramentas"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
 msgid "Customi_ze"
 msgstr "Personali_zar"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:569
+#: ../bonobo/bonobo-ui-sync-toolbar.c:571
 msgid "Customize the toolbar"
 msgstr "Personalizar a barra de ferramentas"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1115
+#: ../bonobo/bonobo-ui-toolbar.c:1117
 msgid "is floating"
 msgstr "é flutuante"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1116
+#: ../bonobo/bonobo-ui-toolbar.c:1118
 msgid "whether the toolbar is floating"
 msgstr "indica se a barra de ferramentas é flutuante"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1162
+#: ../bonobo/bonobo-ui-toolbar.c:1164
 msgid "Style of bevel around the toolbar"
 msgstr "Estilo da moldura ao redor da barra de ferramentas"
 
-#: ../bonobo/bonobo-ui-util.c:601
+#: ../bonobo/bonobo-ui-util.c:602
 msgid "Could not display help for this application"
 msgstr "Não foi possível exibir ajuda para este aplicativo"
 
-#: ../bonobo/bonobo-ui-util.c:643
+#: ../bonobo/bonobo-ui-util.c:644
 msgid "_Contents"
 msgstr "S_umário"
 
-#: ../bonobo/bonobo-ui-util.c:644
+#: ../bonobo/bonobo-ui-util.c:645
 msgid "View help for this application"
 msgstr "Vê a ajuda para este aplicativo"
 
-#: ../bonobo/bonobo-window.c:345
+#: ../bonobo/bonobo-window.c:348
 msgid "Name of the window - used for configuration serialization."
 msgstr "Nome da janela - usado para serialização de configuração."
 
@@ -385,28 +385,28 @@ msgstr "_Arquivo"
 msgid "_Select"
 msgstr "_Selecionar"
 
-#: ../samples/bonoboui/hello.c:63
+#: ../samples/bonoboui/hello.c:65
 msgid "This does nothing; it is only a demonstration."
 msgstr "Não executa ação alguma; apenas uma demonstração."
 
-#: ../samples/bonoboui/hello.c:145
+#: ../samples/bonoboui/hello.c:147
 msgid "BonoboUI-Hello."
 msgstr "BonoboUI-Hello."
 
-#: ../samples/bonoboui/hello.c:217
+#: ../samples/bonoboui/hello.c:219
 msgid "Gnome Hello"
 msgstr "Gnome Hello"
 
 #. Create Label and put it in the Button:
-#: ../samples/bonoboui/hello.c:272
+#: ../samples/bonoboui/hello.c:274
 msgid "Hello, World!"
 msgstr "Olá, mundo!"
 
-#: ../samples/bonoboui/hello.c:312
+#: ../samples/bonoboui/hello.c:314
 msgid "Cannot init libbonoboui code"
 msgstr "Não é possível inicializar o código do libbonoboui"
 
-#: ../samples/controls/bonobo-sample-controls.c:131
+#: ../samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Não foi possível inicializar a UI do Bonobo"
 
@@ -435,33 +435,33 @@ msgid "_Help"
 msgstr "Aj_uda"
 
 #. Build the general tab
-#: ../tools/browser/component-details.c:109
+#: ../tools/browser/component-details.c:103
 msgid "General"
 msgstr "Geral"
 
-#: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:398
+#: ../tools/browser/component-details.c:110
+#: ../tools/browser/component-list.c:389
 msgid "IID"
 msgstr "IID"
 
-#: ../tools/browser/component-details.c:117
+#: ../tools/browser/component-details.c:111
 msgid "Location"
 msgstr "Localização"
 
 #. Build the details tab
-#: ../tools/browser/component-details.c:167
+#: ../tools/browser/component-details.c:161
 msgid "Details"
 msgstr "Detalhes"
 
-#: ../tools/browser/component-details.c:168
+#: ../tools/browser/component-details.c:162
 msgid "Detailed Information"
 msgstr "Informação detalhada"
 
-#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
+#: ../tools/browser/component-list.c:358 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "Ativo"
 
-#: ../tools/browser/component-list.c:388
+#: ../tools/browser/component-list.c:379
 msgid "Type"
 msgstr "Tipo"
 
