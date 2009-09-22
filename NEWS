@@ -1,3 +1,45 @@
+libbonoboui 2.24.2
+
+Amanpreet Singh Alam (1):
+      updating for Gnome Punjabi Translation by A S Alam
+
+Carles Ferrando (1):
+      Added Catalan (Valencian) translation
+
+Christian Persch (1):
+      More gtk single include fixes. Bug #535475.
+
+Denis Arnaud (1):
+      Updated breton translation, added br in LINGUAS file
+
+Djihed Afifi (1):
+      Updated Arabic translation
+
+Ignacio Casal Quinteiro (1):
+      Updated Galician translation
+
+Jamil Ahmed (1):
+      Updated Bengali translation
+
+Jorge Gonzalez (1):
+      Updated Spanish translation
+
+Kostas Papadimas (1):
+      Updated Greek Translation by Jennie Petoumenou.
+
+Mohammad Anwari (1):
+      Updated Indonesian translation by Andika Triwidada
+
+Rodrigo L. M. Flores (1):
+      Updated Brazilian Portuguese mailing list address.
+
+Shankar Prasad (1):
+      updated kn.po
+
+Zabeeh Khan (1):
+      Updated Pashto translation
+
+
 libbonoboui 2.24.1
 
 	* Use single glib/gtk+ includes (Cosimo Cecchi, Przemysław Grzegorczyk)
