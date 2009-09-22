@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui 2.11.92\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-27 10:42+0100\n"
-"PO-Revision-Date: 2008-01-27 11:05+0100\n"
+"POT-Creation-Date: 2009-09-22 17:00+0200\n"
+"PO-Revision-Date: 2009-09-22 17:00+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -31,62 +31,62 @@ msgstr "El contenidor UI de CORBA"
 msgid "The User interface container"
 msgstr "El contenidor de la interfície d'usuari"
 
-#: ../bonobo/bonobo-dock-item-grip.c:255
+#: ../bonobo/bonobo-dock-item-grip.c:254
 msgid "Dock the toolbar"
 msgstr "Acobla la barra d'eines"
 
-#: ../bonobo/bonobo-dock-item-grip.c:256
+#: ../bonobo/bonobo-dock-item-grip.c:255
 msgid "Undock the toolbar"
 msgstr "Separa la barra d'eines"
 
-#: ../bonobo/bonobo-dock-item.c:228 ../bonobo/bonobo-dock-item.c:229
-#: ../bonobo/bonobo-ui-toolbar.c:1161
+#: ../bonobo/bonobo-dock-item.c:225 ../bonobo/bonobo-dock-item.c:226
+#: ../bonobo/bonobo-ui-toolbar.c:1163
 msgid "Shadow type"
 msgstr "Tipus d'ombra"
 
-#: ../bonobo/bonobo-dock-item.c:239 ../bonobo/bonobo-dock-item.c:240
-#: ../bonobo/bonobo-ui-toolbar.c:1105 ../bonobo/bonobo-ui-toolbar.c:1106
+#: ../bonobo/bonobo-dock-item.c:236 ../bonobo/bonobo-dock-item.c:237
+#: ../bonobo/bonobo-ui-toolbar.c:1107 ../bonobo/bonobo-ui-toolbar.c:1108
 msgid "Orientation"
 msgstr "Orientació"
 
-#: ../bonobo/bonobo-dock-item.c:250 ../bonobo/bonobo-dock-item.c:251
-#: ../bonobo/bonobo-ui-toolbar.c:1124 ../bonobo/bonobo-ui-toolbar.c:1125
+#: ../bonobo/bonobo-dock-item.c:247 ../bonobo/bonobo-dock-item.c:248
+#: ../bonobo/bonobo-ui-toolbar.c:1126 ../bonobo/bonobo-ui-toolbar.c:1127
 msgid "Preferred width"
 msgstr "Amplada preferida"
 
-#: ../bonobo/bonobo-dock-item.c:259 ../bonobo/bonobo-dock-item.c:260
-#: ../bonobo/bonobo-ui-toolbar.c:1133 ../bonobo/bonobo-ui-toolbar.c:1134
+#: ../bonobo/bonobo-dock-item.c:256 ../bonobo/bonobo-dock-item.c:257
+#: ../bonobo/bonobo-ui-toolbar.c:1135 ../bonobo/bonobo-ui-toolbar.c:1136
 msgid "Preferred height"
 msgstr "Alçada preferida"
 
-#: ../bonobo/bonobo-file-selector-util.c:357
+#: ../bonobo/bonobo-file-selector-util.c:350
 msgid "Select a file to open"
 msgstr "Seleccioneu un fitxer a obrir"
 
-#: ../bonobo/bonobo-file-selector-util.c:385
+#: ../bonobo/bonobo-file-selector-util.c:378
 msgid "Select files to open"
 msgstr "Seleccioneu els fitxers a obrir"
 
-#: ../bonobo/bonobo-file-selector-util.c:414
+#: ../bonobo/bonobo-file-selector-util.c:407
 msgid "Select a filename to save"
 msgstr "Seleccioneu un nom de fitxer per a desar"
 
-#: ../bonobo/bonobo-plug.c:423
+#: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
 msgstr "Reenviament de l'esdeveniment"
 
-#: ../bonobo/bonobo-plug.c:424
+#: ../bonobo/bonobo-plug.c:426
 msgid "Whether X events should be forwarded"
 msgstr "Si s'haurien de reenviar els esdeveniments X"
 
-#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
-#: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:378
+#: ../bonobo/bonobo-selector-widget.c:300 ../bonobo/bonobo-window.c:347
+#: ../tools/browser/component-details.c:108
+#: ../tools/browser/component-list.c:369
 msgid "Name"
 msgstr "Nom"
 
-#: ../bonobo/bonobo-selector-widget.c:319
-#: ../tools/browser/component-details.c:115
+#: ../bonobo/bonobo-selector-widget.c:322
+#: ../tools/browser/component-details.c:109
 msgid "Description"
 msgstr "Descripció"
 
@@ -112,65 +112,66 @@ msgstr "Entrada d'interfície requerida"
 msgid "One of the interfaces that's required"
 msgstr "Una de les interfícies que es requereix"
 
-#: ../bonobo/bonobo-ui-config-widget.c:265
+#: ../bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "Visible"
 
-#: ../bonobo/bonobo-ui-config-widget.c:272
+#: ../bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "Mo_stra"
 
-#: ../bonobo/bonobo-ui-config-widget.c:279
+#: ../bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
-msgstr "_Amaga"
+msgstr "_Oculta"
 
-#: ../bonobo/bonobo-ui-config-widget.c:285
+#: ../bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "_Mostra els indicadors de funcions"
 
-#: ../bonobo/bonobo-ui-config-widget.c:290
+#: ../bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "Barres d'eines"
 
-#: ../bonobo/bonobo-ui-config-widget.c:300
+#: ../bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "barres d'eines"
 
-#: ../bonobo/bonobo-ui-config-widget.c:311
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-config-widget.c:313
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "Look"
 msgstr "Aspecte"
 
-#: ../bonobo/bonobo-ui-config-widget.c:320
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-config-widget.c:322
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Icon"
 msgstr "_Icona"
 
-#: ../bonobo/bonobo-ui-config-widget.c:326
+#: ../bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "_Text i icona"
 
-#: ../bonobo/bonobo-ui-config-widget.c:332
+#: ../bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
 msgstr "Només text"
 
-#: ../bonobo/bonobo-ui-config-widget.c:338
+#: ../bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "Només els textos _prioritaris"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:93
 msgid "Debug"
 msgstr "Depuració"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:93
 msgid "_Dump XML"
 msgstr "_Bolca en XML"
 
-#: ../bonobo/bonobo-ui-engine.c:92
+#: ../bonobo/bonobo-ui-engine.c:94
 msgid "Dump the entire UI's XML description to the console"
-msgstr "Bolca la descripció sencera de la interfície d'usuari en XML a la consola"
+msgstr ""
+"Bolca la descripció sencera de la interfície d'usuari en XML a la consola"
 
-#: ../bonobo/bonobo-ui-engine-config.c:522
+#: ../bonobo/bonobo-ui-engine-config.c:524
 msgid "Configure UI"
 msgstr "Configura la interfície d'usuari"
 
@@ -251,63 +252,63 @@ msgstr "MÒDUL"
 msgid "GTK+"
 msgstr "GTK+"
 
-#: ../bonobo/bonobo-ui-main.c:278
+#: ../bonobo/bonobo-ui-main.c:281
 msgid "Bonobo GUI support"
 msgstr "Funcionalitat d'interfície gràfica del Bonobo"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "B_oth"
 msgstr "A_mbdues"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "T_ext"
 msgstr "T_ext"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:567
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Hide t_ips"
-msgstr "Amaga els c_onsells"
+msgstr "Oculta els c_onsells"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:567
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Show t_ips"
 msgstr "Mostra els c_onsells"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
 msgid "_Hide toolbar"
-msgstr "_Amaga la barra d'eines"
+msgstr "_Oculta la barra d'eines"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
 msgid "Customi_ze"
 msgstr "Personalit_za"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:569
+#: ../bonobo/bonobo-ui-sync-toolbar.c:571
 msgid "Customize the toolbar"
 msgstr "Personalitza la barra d'eines"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1115
+#: ../bonobo/bonobo-ui-toolbar.c:1117
 msgid "is floating"
 msgstr "és flotant"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1116
+#: ../bonobo/bonobo-ui-toolbar.c:1118
 msgid "whether the toolbar is floating"
 msgstr "si la barra d'eines és flotant"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1162
+#: ../bonobo/bonobo-ui-toolbar.c:1164
 msgid "Style of bevel around the toolbar"
 msgstr "Estil del bisell que envolta la barra d'eines"
 
-#: ../bonobo/bonobo-ui-util.c:601
+#: ../bonobo/bonobo-ui-util.c:602
 msgid "Could not display help for this application"
 msgstr "No s'ha pogut mostrar l'ajuda per a aquesta aplicació"
 
-#: ../bonobo/bonobo-ui-util.c:643
+#: ../bonobo/bonobo-ui-util.c:644
 msgid "_Contents"
 msgstr "_Continguts"
 
-#: ../bonobo/bonobo-ui-util.c:644
+#: ../bonobo/bonobo-ui-util.c:645
 msgid "View help for this application"
 msgstr "Visualitza l'ajuda per a aquesta aplicació"
 
-#: ../bonobo/bonobo-window.c:345
+#: ../bonobo/bonobo-window.c:348
 msgid "Name of the window - used for configuration serialization."
 msgstr ""
 "Nom de la finestra - utilitzat per a la serialització de la configuració."
@@ -385,28 +386,28 @@ msgstr "_Fitxer"
 msgid "_Select"
 msgstr "_Selecciona"
 
-#: ../samples/bonoboui/hello.c:63
+#: ../samples/bonoboui/hello.c:65
 msgid "This does nothing; it is only a demonstration."
 msgstr "Això no fa res; només és una demostració."
 
-#: ../samples/bonoboui/hello.c:145
+#: ../samples/bonoboui/hello.c:147
 msgid "BonoboUI-Hello."
 msgstr "Hola, BonoboUI."
 
-#: ../samples/bonoboui/hello.c:217
+#: ../samples/bonoboui/hello.c:219
 msgid "Gnome Hello"
 msgstr "Hola, GNOME"
 
 #. Create Label and put it in the Button:
-#: ../samples/bonoboui/hello.c:272
+#: ../samples/bonoboui/hello.c:274
 msgid "Hello, World!"
 msgstr "Hola, món!"
 
-#: ../samples/bonoboui/hello.c:312
+#: ../samples/bonoboui/hello.c:314
 msgid "Cannot init libbonoboui code"
 msgstr "No es pot inicialitzar el codi de la libbonoboui"
 
-#: ../samples/controls/bonobo-sample-controls.c:131
+#: ../samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "No es pot inicialitzar la interfície d'usuari del Bonobo"
 
@@ -435,33 +436,33 @@ msgid "_Help"
 msgstr "A_juda"
 
 #. Build the general tab
-#: ../tools/browser/component-details.c:109
+#: ../tools/browser/component-details.c:103
 msgid "General"
 msgstr "General"
 
-#: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:398
+#: ../tools/browser/component-details.c:110
+#: ../tools/browser/component-list.c:389
 msgid "IID"
 msgstr "IID"
 
-#: ../tools/browser/component-details.c:117
+#: ../tools/browser/component-details.c:111
 msgid "Location"
 msgstr "Ubicació"
 
 #. Build the details tab
-#: ../tools/browser/component-details.c:167
+#: ../tools/browser/component-details.c:161
 msgid "Details"
 msgstr "Detalls"
 
-#: ../tools/browser/component-details.c:168
+#: ../tools/browser/component-details.c:162
 msgid "Detailed Information"
 msgstr "Informació detallada"
 
-#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
+#: ../tools/browser/component-list.c:358 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "Actiu"
 
-#: ../tools/browser/component-list.c:388
+#: ../tools/browser/component-list.c:379
 msgid "Type"
 msgstr "Tipus"
 
