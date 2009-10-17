@@ -1251,6 +1251,10 @@ bonobo_ui_util_accel_parse (const char        *accelerator,
 				gchar last_ch;
 	      
 				last_ch = *accelerator;
+				if (!last_ch || last_ch == DELIM_POST) {
+					g_warning ("Unknown accelerator - '%s'", accelerator);
+					return;
+				}
 				while (last_ch && last_ch != DELIM_POST)
 				{
 					last_ch = *accelerator;
