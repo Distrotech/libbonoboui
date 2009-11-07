@@ -1,0 +1,405 @@
+# Shavian translation for libbonoboui.
+# Copyright (C) 2009 The Gnome Foundation.
+# Thomas Thurman <tthurman@gnome.org>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: metacity\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2009-11-06 19:17+0200\n"
+"Last-Translator: Thomas Thurman <tthurman@gnome.org>\n"
+"Language-Team: Shavian <ubuntu-l10n-en-shaw@lists.launchpad.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../bonobo/bonobo-canvas-item.c:681
+msgid "The factory pointer"
+msgstr "𐑞 𐑓𐑨𐑒𐑑𐑼𐑦 𐑐𐑶𐑯𐑑𐑼"
+
+#: ../bonobo/bonobo-canvas-item.c:691
+msgid "The User interface container"
+msgstr "𐑞 𐑿𐑟𐑼 𐑦𐑯𐑑𐑼𐑓𐑱𐑕 𐑒𐑩𐑯𐑑𐑱𐑯𐑼"
+
+#: ../bonobo/bonobo-dock-item-grip.c:254
+msgid "Dock the toolbar"
+msgstr "𐑛𐑭𐑒 𐑞 𐑑𐑵𐑤𐑚𐑸"
+
+#: ../bonobo/bonobo-dock-item-grip.c:255
+msgid "Undock the toolbar"
+msgstr "𐑩𐑯𐑛𐑭𐑒 𐑞 𐑑𐑵𐑤𐑚𐑸"
+
+#: ../bonobo/bonobo-dock-item.c:225 ../bonobo/bonobo-dock-item.c:226
+#: ../bonobo/bonobo-ui-toolbar.c:1163
+msgid "Shadow type"
+msgstr "𐑖𐑨𐑛𐑴 𐑑𐑲𐑐"
+
+#: ../bonobo/bonobo-dock-item.c:236 ../bonobo/bonobo-dock-item.c:237
+#: ../bonobo/bonobo-ui-toolbar.c:1107 ../bonobo/bonobo-ui-toolbar.c:1108
+msgid "Orientation"
+msgstr "𐑪𐑮𐑦𐑩𐑯𐑑𐑱𐑖𐑩𐑯"
+
+#: ../bonobo/bonobo-dock-item.c:247 ../bonobo/bonobo-dock-item.c:248
+#: ../bonobo/bonobo-ui-toolbar.c:1126 ../bonobo/bonobo-ui-toolbar.c:1127
+msgid "Preferred width"
+msgstr "𐑐𐑮𐑦𐑓𐑻𐑛 𐑢𐑦𐑛𐑔"
+
+#: ../bonobo/bonobo-dock-item.c:256 ../bonobo/bonobo-dock-item.c:257
+#: ../bonobo/bonobo-ui-toolbar.c:1135 ../bonobo/bonobo-ui-toolbar.c:1136
+msgid "Preferred height"
+msgstr "𐑐𐑮𐑦𐑓𐑻𐑛 𐑣𐑲𐑑"
+
+#: ../bonobo/bonobo-file-selector-util.c:350
+msgid "Select a file to open"
+msgstr "𐑕𐑩𐑤𐑧𐑒𐑑 𐑩 𐑓𐑲𐑤 𐑑 𐑴𐑐𐑩𐑯"
+
+#: ../bonobo/bonobo-file-selector-util.c:378
+msgid "Select files to open"
+msgstr "𐑕𐑩𐑤𐑧𐑒𐑑 𐑓𐑲𐑤𐑟 𐑑 𐑴𐑐𐑩𐑯"
+
+#: ../bonobo/bonobo-file-selector-util.c:407
+msgid "Select a filename to save"
+msgstr "𐑕𐑩𐑤𐑧𐑒𐑑 𐑩 𐑓𐑲𐑤𐑯𐑱𐑥 𐑑 𐑕𐑱𐑝"
+
+#: ../bonobo/bonobo-plug.c:425
+msgid "Event Forwarding"
+msgstr "𐑦𐑝𐑧𐑯𐑑 𐑓𐑪𐑮𐑢𐑻𐑛𐑦𐑙"
+
+#: ../bonobo/bonobo-plug.c:426
+msgid "Whether X events should be forwarded"
+msgstr "𐑢𐑧𐑞𐑼 X 𐑦𐑝𐑧𐑯𐑑𐑕 𐑖𐑫𐑛 𐑚𐑰 𐑓𐑪𐑮𐑢𐑻𐑛𐑦𐑛"
+
+#: ../bonobo/bonobo-selector-widget.c:300 ../bonobo/bonobo-window.c:347
+#: ../tools/browser/component-details.c:108
+#: ../tools/browser/component-list.c:369
+msgid "Name"
+msgstr "𐑯𐑱𐑥"
+
+#: ../bonobo/bonobo-selector-widget.c:322
+#: ../tools/browser/component-details.c:109
+msgid "Description"
+msgstr "𐑛𐑦𐑕𐑒𐑮𐑦𐑐𐑖𐑩𐑯"
+
+#: ../bonobo/bonobo-selector.c:343
+msgid "Interfaces required"
+msgstr "𐑦𐑯𐑑𐑼𐑓𐑱𐑕𐑩𐑟 𐑮𐑦𐑒𐑢𐑲𐑼𐑛"
+
+#: ../bonobo/bonobo-selector.c:346
+msgid "Interface required entry"
+msgstr "𐑦𐑯𐑑𐑼𐑓𐑱𐑕 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑧𐑯𐑑𐑮𐑦"
+
+#: ../bonobo/bonobo-selector.c:347
+msgid "One of the interfaces that's required"
+msgstr "𐑢𐑳𐑯 𐑝 𐑞 𐑦𐑯𐑑𐑼𐑓𐑱𐑕𐑩𐑟 𐑞𐑨𐑑'𐑕 𐑮𐑦𐑒𐑢𐑲𐑼𐑛"
+
+#: ../bonobo/bonobo-ui-config-widget.c:267
+msgid "Visible"
+msgstr "𐑝𐑦𐑕𐑦𐑚𐑩𐑤"
+
+#: ../bonobo/bonobo-ui-config-widget.c:274
+msgid "_Show"
+msgstr "_𐑖𐑴"
+
+#: ../bonobo/bonobo-ui-config-widget.c:281
+msgid "_Hide"
+msgstr "_𐑣𐑲𐑛"
+
+#: ../bonobo/bonobo-ui-config-widget.c:292
+msgid "Toolbars"
+msgstr "𐑑𐑵𐑤𐑚𐑸𐑟"
+
+#: ../bonobo/bonobo-ui-config-widget.c:302
+msgid "toolbars"
+msgstr "𐑑𐑵𐑤𐑚𐑸𐑟"
+
+#: ../bonobo/bonobo-ui-config-widget.c:313
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "Look"
+msgstr "𐑤𐑫𐑒"
+
+#: ../bonobo/bonobo-ui-config-widget.c:322
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "_Icon"
+msgstr "_𐑲𐑒𐑪𐑯"
+
+#: ../bonobo/bonobo-ui-config-widget.c:328
+msgid "_Text and Icon"
+msgstr "_𐑑𐑧𐑒𐑕𐑑 𐑯 𐑲𐑒𐑪𐑯"
+
+#: ../bonobo/bonobo-ui-config-widget.c:334
+msgid "Text only"
+msgstr "𐑑𐑧𐑒𐑕𐑑 𐑴𐑯𐑤𐑦"
+
+#: ../bonobo/bonobo-ui-config-widget.c:340
+msgid "_Priority text only"
+msgstr "_𐑐𐑮𐑲𐑪𐑮𐑦𐑑𐑦 𐑑𐑧𐑒𐑕𐑑 𐑴𐑯𐑤𐑦"
+
+#: ../bonobo/bonobo-ui-engine.c:93
+msgid "Debug"
+msgstr "𐑛𐑰𐑚𐑳𐑜"
+
+#: ../bonobo/bonobo-ui-engine.c:93
+msgid "_Dump XML"
+msgstr "_𐑛𐑳𐑥𐑐 XML"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:131 ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:162 ../bonobo/bonobo-ui-init-gtk.c:165
+msgid "FLAGS"
+msgstr "𐑓𐑤𐑨𐑜𐑟"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:138
+msgid "X display to use"
+msgstr "X 𐑛𐑩𐑕𐑐𐑤𐑱 𐑑 𐑿𐑕"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:138
+msgid "DISPLAY"
+msgstr "𐑛𐑩𐑕𐑐𐑤𐑱"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:142
+msgid "X screen to use"
+msgstr "X 𐑕𐑒𐑮𐑰𐑯 𐑑 𐑿𐑕"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:142
+msgid "SCREEN"
+msgstr "𐑕𐑒𐑮𐑰𐑯"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:152
+msgid "Don't use X shared memory extension"
+msgstr "𐑛𐑴𐑯𐑑 𐑿𐑟 X 𐑖𐑺𐑛 𐑥𐑧𐑥𐑼𐑦 𐑩𐑒𐑕𐑑𐑧𐑯𐑖𐑩𐑯"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:156
+msgid "Program name as used by the window manager"
+msgstr "𐑐𐑮𐑴𐑜𐑮𐑨𐑥 𐑯𐑱𐑥 𐑨𐑟 𐑿𐑕𐑑 𐑚𐑲 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:156
+msgid "NAME"
+msgstr "𐑯𐑱𐑥"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:159
+msgid "Program class as used by the window manager"
+msgstr "𐑐𐑮𐑴𐑜𐑮𐑨𐑥 𐑒𐑤𐑭𐑕 𐑨𐑟 𐑿𐑕𐑑 𐑚𐑲 𐑞 𐑢𐑦𐑯𐑛𐑴 𐑥𐑨𐑯𐑩𐑡𐑼"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:159
+msgid "CLASS"
+msgstr "𐑒𐑤𐑭𐑕"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:168
+msgid "Make all warnings fatal"
+msgstr "𐑥𐑱𐑒 𐑷𐑤 𐑢𐑪𐑮𐑯𐑦𐑙𐑟 𐑓𐑱𐑑𐑩𐑤"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:171
+msgid "MODULE"
+msgstr "𐑥𐑪𐑛𐑿𐑤"
+
+#: ../bonobo/bonobo-ui-main.c:281
+msgid "Bonobo GUI support"
+msgstr "·𐑚𐑭𐑯𐑭𐑚𐑴 GUI 𐑕𐑩𐑐𐑹𐑑"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "B_oth"
+msgstr "𐑝_𐑴𐑔"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "T_ext"
+msgstr "𐑑_𐑧𐑒𐑕𐑑"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
+msgid "Hide t_ips"
+msgstr "𐑣𐑲𐑛 𐑑_𐑦𐑐𐑕"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
+msgid "Show t_ips"
+msgstr "𐑖𐑴 𐑑_𐑦𐑐𐑕"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
+msgid "_Hide toolbar"
+msgstr "_𐑣𐑲𐑛 𐑑𐑵𐑤𐑚𐑸"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
+msgid "Customi_ze"
+msgstr "𐑒𐑩𐑕𐑑𐑩𐑥𐑲_𐑟"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:571
+msgid "Customize the toolbar"
+msgstr "𐑒𐑩𐑕𐑑𐑩𐑥𐑲𐑟 𐑞 𐑑𐑵𐑤𐑚𐑸"
+
+#: ../bonobo/bonobo-ui-toolbar.c:1117
+msgid "is floating"
+msgstr "𐑦𐑟 𐑓𐑤𐑴𐑑𐑦𐑙"
+
+#: ../bonobo/bonobo-ui-toolbar.c:1118
+msgid "whether the toolbar is floating"
+msgstr "𐑢𐑧𐑞𐑼 𐑞 𐑑𐑵𐑤𐑚𐑸 𐑦𐑟 𐑓𐑤𐑴𐑑𐑦𐑙"
+
+#: ../bonobo/bonobo-ui-toolbar.c:1164
+msgid "Style of bevel around the toolbar"
+msgstr "𐑕𐑑𐑲𐑤 𐑝 𐑚𐑧𐑝𐑩𐑤 𐑼𐑬𐑯𐑛 𐑞 𐑑𐑵𐑤𐑚𐑸"
+
+#: ../bonobo/bonobo-ui-util.c:602
+msgid "Could not display help for this application"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑛𐑩𐑕𐑐𐑤𐑱 𐑣𐑧𐑤𐑐 𐑓𐑹 𐑞𐑦𐑕 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯"
+
+#: ../bonobo/bonobo-ui-util.c:644
+msgid "_Contents"
+msgstr "_𐑒𐑪𐑯𐑑𐑩𐑯𐑑𐑕"
+
+#: ../bonobo/bonobo-ui-util.c:645
+msgid "View help for this application"
+msgstr "𐑝𐑿 𐑣𐑧𐑤𐑐 𐑓𐑹 𐑞𐑦𐑕 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯"
+
+#: ../bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
+
+#: ../bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "𐑥𐑦𐑯𐑩𐑥𐑩𐑥 𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
+
+#: ../bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "𐑥𐑨𐑒𐑕𐑦𐑥𐑩𐑥 𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
+
+#: ../bonobo/bonobo-zoomable.c:353
+msgid "Has a minimum Zoom level"
+msgstr "𐑣𐑨𐑟 𐑩 𐑥𐑦𐑯𐑩𐑥𐑩𐑥 𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
+
+#: ../bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "𐑢𐑧𐑞𐑼 𐑢𐑰 𐑣𐑨𐑝 𐑩 𐑝𐑨𐑤𐑦𐑛 𐑥𐑦𐑯𐑩𐑥𐑩𐑥 𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
+
+#: ../bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "𐑣𐑨𐑟 𐑩 𐑥𐑨𐑒𐑕𐑦𐑥𐑩𐑥 𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
+
+#: ../bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "𐑢𐑧𐑞𐑼 𐑢𐑰 𐑣𐑨𐑝 𐑩 𐑝𐑨𐑤𐑦𐑛 𐑥𐑨𐑒𐑕𐑦𐑥𐑩𐑥 𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
+
+#: ../bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "𐑦𐑟 𐑒𐑩𐑯𐑑𐑦𐑯𐑿𐑩𐑕"
+
+#: ../bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "𐑢𐑧𐑞𐑼 𐑢𐑰 𐑟𐑵𐑥 𐑒𐑩𐑯𐑑𐑦𐑯𐑿𐑩𐑕𐑤𐑦 (𐑨𐑟 𐑩𐑐𐑴𐑟𐑛 𐑑 𐑡𐑳𐑥𐑐𐑕)"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "𐑩𐑚𐑬𐑑 𐑞𐑦𐑕 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr "𐑕𐑩𐑤𐑧𐑒𐑑"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr "_𐑩𐑚𐑬𐑑..."
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr "_𐑧𐑛𐑦𐑑"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#: ../tools/browser/bonobo-browser.xml.h:4
+msgid "_File"
+msgstr "_𐑓𐑲𐑤"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr "_𐑕𐑩𐑤𐑧𐑒𐑑"
+
+#: ../samples/bonoboui/hello.c:65
+msgid "This does nothing; it is only a demonstration."
+msgstr "𐑞𐑦𐑕 𐑛𐑴𐑟 𐑯𐑳𐑔𐑦𐑙; 𐑦𐑑 𐑦𐑟 𐑴𐑯𐑤𐑦 𐑩 𐑛𐑧𐑥𐑩𐑯𐑕𐑑𐑮𐑱𐑖𐑩𐑯."
+
+#: ../samples/bonoboui/hello.c:219
+msgid "Gnome Hello"
+msgstr "·𐑜𐑯𐑴𐑥 𐑣𐑩𐑤𐑴"
+
+#. Create Label and put it in the Button:
+#: ../samples/bonoboui/hello.c:274
+msgid "Hello, World!"
+msgstr "𐑣𐑩𐑤𐑴, 𐑢𐑻𐑤𐑛!"
+
+#: ../tools/browser/bonobo-browser.desktop.in.h:1
+msgid "Bonobo Component Browser"
+msgstr "·𐑚𐑭𐑯𐑭𐑚𐑴 𐑒𐑩𐑥𐑐𐑴𐑯𐑩𐑯𐑑 𐑚𐑮𐑬𐑟𐑼"
+
+#: ../tools/browser/bonobo-browser.desktop.in.h:2
+msgid "Shows available Bonobo components"
+msgstr "𐑖𐑴𐑟 𐑩𐑝𐑱𐑤𐑩𐑚𐑩𐑤 ·𐑚𐑭𐑯𐑭𐑚𐑴 𐑒𐑩𐑥𐑐𐑴𐑯𐑩𐑯𐑑𐑕"
+
+#: ../tools/browser/bonobo-browser.xml.h:1
+msgid "About this program..."
+msgstr "𐑩𐑚𐑬𐑑 𐑞𐑦𐑕 𐑐𐑮𐑴𐑜𐑮𐑨𐑥..."
+
+#: ../tools/browser/bonobo-browser.xml.h:2
+msgid "Close the current window"
+msgstr "𐑒𐑤𐑴𐑟 𐑞 𐑒𐑳𐑮𐑩𐑯𐑑 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../tools/browser/bonobo-browser.xml.h:3
+msgid "Open a new window"
+msgstr "𐑴𐑐𐑩𐑯 𐑩 𐑯𐑿 𐑢𐑦𐑯𐑛𐑴"
+
+#: ../tools/browser/bonobo-browser.xml.h:5
+msgid "_Help"
+msgstr "_𐑣𐑧𐑤𐑐"
+
+#. Build the general tab
+#: ../tools/browser/component-details.c:103
+msgid "General"
+msgstr "𐑡𐑧𐑯𐑼𐑩𐑤"
+
+#: ../tools/browser/component-details.c:111
+msgid "Location"
+msgstr "𐑤𐑴𐑒𐑱𐑖𐑩𐑯"
+
+#. Build the details tab
+#: ../tools/browser/component-details.c:161
+msgid "Details"
+msgstr "𐑛𐑰𐑑𐑱𐑤𐑟"
+
+#: ../tools/browser/component-details.c:162
+msgid "Detailed Information"
+msgstr "𐑛𐑰𐑑𐑱𐑤𐑛 𐑦𐑯𐑓𐑼𐑥𐑱𐑖𐑩𐑯"
+
+#: ../tools/browser/component-list.c:358 ../tools/browser/window.c:283
+msgid "Active"
+msgstr "𐑨𐑒𐑑𐑦𐑝"
+
+#: ../tools/browser/component-list.c:379
+msgid "Type"
+msgstr "𐑑𐑲𐑐"
+
+#: ../tools/browser/window.c:162
+msgid "Component Details"
+msgstr "𐑒𐑩𐑥𐑐𐑴𐑯𐑩𐑯𐑑 𐑛𐑰𐑑𐑱𐑤𐑟"
+
+#: ../tools/browser/window.c:208
+msgid "Bonobo Browser"
+msgstr "·𐑚𐑭𐑯𐑭𐑚𐑴 𐑚𐑮𐑬𐑟𐑼"
+
+#: ../tools/browser/window.c:210
+msgid "Copyright 2001, The GNOME Foundation"
+msgstr "𐑒𐑪𐑐𐑦𐑮𐑲𐑑 2001, 𐑞 ·𐑜𐑯𐑴𐑥 𐑓𐑬𐑯𐑛𐑱𐑖𐑩𐑯"
+
+#: ../tools/browser/window.c:211
+msgid "Bonobo component browser"
+msgstr "·𐑚𐑭𐑯𐑭𐑚𐑴 𐑒𐑩𐑥𐑐𐑴𐑯𐑩𐑯𐑑 𐑚𐑮𐑬𐑟𐑼"
+
+#: ../tools/browser/window.c:214
+msgid "translator-credits"
+msgstr "𐑑𐑮𐑩𐑯𐑕𐑤𐑱𐑑𐑼-𐑒𐑮𐑧𐑛𐑦𐑑𐑕"
+
+#. create the window
+#: ../tools/browser/window.c:240
+msgid "Component Browser"
+msgstr "𐑒𐑩𐑥𐑐𐑴𐑯𐑩𐑯𐑑 𐑚𐑮𐑬𐑟𐑼"
+
+#. Fill out the tool bar
+#: ../tools/browser/window.c:280
+msgid "All"
+msgstr "𐑷𐑤"
+
+#: ../tools/browser/window.c:286
+msgid "Inactive"
+msgstr "𐑦𐑯𐑨𐑒𐑑𐑦𐑝"
