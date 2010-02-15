@@ -12,14 +12,15 @@
 # Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005, 2006.
 # Ignacio Casal Quinteiro <icq@svn.gnome.org>, 2008.
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
+# Fran Diéguez <frandieguez@ubuntu.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-13 22:11+0100\n"
-"PO-Revision-Date: 2009-03-10 20:17+0000\n"
-"Last-Translator: Suso Baleato <suso.baleato@xunta.es>\n"
-"Language-Team: Galego <proxecto@trasno.net>\n"
+"POT-Creation-Date: 2010-02-15 13:26+0100\n"
+"PO-Revision-Date: 2010-02-05 12:45+0100\n"
+"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
+"Language-Team: Gallician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -112,7 +113,7 @@ msgid ""
 "no interfaces are listed"
 msgstr ""
 "Matriz de interfaces terminada en NULL que debe soportar un servidor para "
-"ser listado no selector. A predeterminada é \"IDL:Bonobo/Embeddable:1.0\" se "
+"ser listado no selector. A predefinida é \"IDL:Bonobo/Embeddable:1.0\" se "
 "non hai interfaces listadas"
 
 #: ../bonobo/bonobo-selector.c:346
@@ -276,11 +277,11 @@ msgstr "T_exto"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Hide t_ips"
-msgstr "Ocultar suxerenc_ias"
+msgstr "Ocultar suxest_ións"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Show t_ips"
-msgstr "Mostrar suxerenc_ias"
+msgstr "Mostrar suxest_ións"
 
 #: ../bonobo/bonobo-ui-sync-toolbar.c:570
 msgid "_Hide toolbar"
@@ -308,7 +309,7 @@ msgstr "Estilo do bisel en torno da barra de ferramentas"
 
 #: ../bonobo/bonobo-ui-util.c:602
 msgid "Could not display help for this application"
-msgstr "Non foi posíbel mostrar a axuda para esta aplicación"
+msgstr "Non foi posíbel mostrar a axuda para este aplicativo"
 
 #: ../bonobo/bonobo-ui-util.c:644
 msgid "_Contents"
@@ -316,7 +317,7 @@ msgstr "_Contidos"
 
 #: ../bonobo/bonobo-ui-util.c:645
 msgid "View help for this application"
-msgstr "Ver a axuda desta aplicación"
+msgstr "Ver a axuda deste aplicativo"
 
 #: ../bonobo/bonobo-window.c:348
 msgid "Name of the window - used for configuration serialization."
@@ -352,7 +353,7 @@ msgstr "Ten un nivel mínimo de zoom"
 
 #: ../bonobo/bonobo-zoomable.c:354
 msgid "Whether we have a valid minimum zoom level"
-msgstr "Indica se hai un nivel mínimo de zoom válido"
+msgstr "Indica se hai un nivel mínimo de zoom correcto"
 
 #: ../bonobo/bonobo-zoomable.c:361
 msgid "Has a maximum Zoom level"
@@ -360,7 +361,7 @@ msgstr "Ten un nivel de zoom máximo"
 
 #: ../bonobo/bonobo-zoomable.c:362
 msgid "Whether we have a valid maximum zoom level"
-msgstr "Indica se hai un nivel máximo de zoom válido"
+msgstr "Indica se hai un nivel máximo de zoom correcto"
 
 #: ../bonobo/bonobo-zoomable.c:369
 msgid "Is continuous"
@@ -372,7 +373,7 @@ msgstr "Indica se se amplía progresivamente (e non a saltos)"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
 msgid "About this application"
-msgstr "Sobre esta aplicación"
+msgstr "Sobre este aplicativo"
 
 #: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
 msgid "Select"
@@ -410,7 +411,7 @@ msgstr "Ola Gnome"
 #. Create Label and put it in the Button:
 #: ../samples/bonoboui/hello.c:274
 msgid "Hello, World!"
-msgstr "Ola, Mundo!"
+msgstr "Ola Mundo!"
 
 #: ../samples/bonoboui/hello.c:314
 msgid "Cannot init libbonoboui code"
@@ -430,7 +431,7 @@ msgstr "Mostrar os compoñentes dispoñíbeis do Bonobo"
 
 #: ../tools/browser/bonobo-browser.xml.h:1
 msgid "About this program..."
-msgstr "Sobre esta aplicación..."
+msgstr "Sobre este aplicativo..."
 
 #: ../tools/browser/bonobo-browser.xml.h:2
 msgid "Close the current window"
@@ -485,20 +486,22 @@ msgstr "Navegador Bonobo"
 
 #: ../tools/browser/window.c:210
 msgid "Copyright 2001, The GNOME Foundation"
-msgstr "Copyright 2001, The GNOME Foundation"
+msgstr "Copyright 2001, A Fundación GNOME"
 
 #: ../tools/browser/window.c:211
 msgid "Bonobo component browser"
-msgstr "Navegador de compoñentes Bonobo"
+msgstr "Explorador de compoñentes Bonobo"
 
 #: ../tools/browser/window.c:214
 msgid "translator-credits"
-msgstr "Suso Baleato <suso.baleato@xunta.es>"
+msgstr ""
+"Francisco Diéguez <frandieguez@ubuntu.com>, 2009, 2010;\n"
+"Suso Baleato <suso.baleato@xunta.es>"
 
 #. create the window
 #: ../tools/browser/window.c:240
 msgid "Component Browser"
-msgstr "Navegador de compoñentes"
+msgstr "Explorador de compoñentes"
 
 #. Fill out the tool bar
 #: ../tools/browser/window.c:280
