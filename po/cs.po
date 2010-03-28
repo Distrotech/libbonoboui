@@ -7,10 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: libbonoboui\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=libbonoboui&component=general\n"
-"POT-Creation-Date: 2010-02-15 12:26+0000\n"
-"PO-Revision-Date: 2010-03-07 13:13+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-29 01:15+0200\n"
+"PO-Revision-Date: 2010-03-28 17:04+0100\n"
 "Last-Translator: Lucas Lommer <llommer@svn.gnome.org>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +70,7 @@ msgstr "Zvolte soubory pro otevření"
 
 #: ../bonobo/bonobo-file-selector-util.c:407
 msgid "Select a filename to save"
-msgstr "Zvolte jméno souboru pro uložení"
+msgstr "Zvolte název souboru pro uložení"
 
 #: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
@@ -85,7 +84,7 @@ msgstr "Jestli mají být přeposílány události X"
 #: ../tools/browser/component-details.c:108
 #: ../tools/browser/component-list.c:369
 msgid "Name"
-msgstr "Jméno"
+msgstr "Název"
 
 #: ../bonobo/bonobo-selector-widget.c:322
 #: ../tools/browser/component-details.c:109
@@ -104,7 +103,7 @@ msgid ""
 msgstr ""
 "Pole ukončené NULL obsahující rozhraní, které musí server podporovat, aby "
 "byl uveden ve výběru. Nejsou-li požadována žádná rozhraní, ve výchozím "
-"nastavení se bere \"IDL:Bonobo/Embeddable:1.0\""
+"nastavení se bere „IDL:Bonobo/Embeddable:1.0“"
 
 #: ../bonobo/bonobo-selector.c:346
 msgid "Interface required entry"
@@ -215,11 +214,11 @@ msgstr "Nepoužívat rozšířené X o sdílenou paměť"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "Program name as used by the window manager"
-msgstr "Jméno programu, jak je používá manažer oken"
+msgstr "Název programu, jak je používá manažer oken"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "NAME"
-msgstr "JMÉNO"
+msgstr "NÁZEV"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "Program class as used by the window manager"
@@ -311,7 +310,7 @@ msgstr "Zobrazit nápovědu pro tuto aplikaci"
 
 #: ../bonobo/bonobo-window.c:348
 msgid "Name of the window - used for configuration serialization."
-msgstr "Jméno okna - používané pro serializaci konfigurace."
+msgstr "Název okna - používané pro serializaci konfigurace."
 
 #: ../bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
@@ -501,4 +500,3 @@ msgstr "Vše"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "Neaktivní"
-
