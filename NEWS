@@ -1,3 +1,8 @@
+libbonoboui 2.24.3
+	* Skip unknown accelerators (Jeff Cai)
+	* Don't pass NULL to G_OBJECT_GET_CLASS() (Paul Bolle)
+	* Updated translations (ast, bn, cs, cy, en@shaw, gl, lt, ru)
+
 libbonoboui 2.24.2
 
 Amanpreet Singh Alam (1):
