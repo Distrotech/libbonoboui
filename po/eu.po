@@ -1,17 +1,17 @@
-# translation of libbonoboui.HEAD.po to Basque
+# translation of eu.po to Basque
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
 # Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004, 2005.
-# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2005, 2006.
+# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2005, 2006, 2010.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-27 16:29+0100\n"
-"PO-Revision-Date: 2007-12-27 16:29+0100\n"
-"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
+"POT-Creation-Date: 2010-03-31 17:38+0200\n"
+"PO-Revision-Date: 2010-03-31 17:40+0200\n"
+"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,62 +35,62 @@ msgstr "corbaren UI edukiontzia"
 msgid "The User interface container"
 msgstr "Erabiltzailearen interfazearen edukiontzia"
 
-#: ../bonobo/bonobo-dock-item-grip.c:255
+#: ../bonobo/bonobo-dock-item-grip.c:254
 msgid "Dock the toolbar"
 msgstr "Atrakatu tresna-barra"
 
-#: ../bonobo/bonobo-dock-item-grip.c:256
+#: ../bonobo/bonobo-dock-item-grip.c:255
 msgid "Undock the toolbar"
-msgstr "Desatrakatu tresna-barra"
+msgstr "Desuztartu tresna-barra"
 
-#: ../bonobo/bonobo-dock-item.c:228 ../bonobo/bonobo-dock-item.c:229
-#: ../bonobo/bonobo-ui-toolbar.c:1161
+#: ../bonobo/bonobo-dock-item.c:225 ../bonobo/bonobo-dock-item.c:226
+#: ../bonobo/bonobo-ui-toolbar.c:1163
 msgid "Shadow type"
 msgstr "Itzal-mota"
 
-#: ../bonobo/bonobo-dock-item.c:239 ../bonobo/bonobo-dock-item.c:240
-#: ../bonobo/bonobo-ui-toolbar.c:1105 ../bonobo/bonobo-ui-toolbar.c:1106
+#: ../bonobo/bonobo-dock-item.c:236 ../bonobo/bonobo-dock-item.c:237
+#: ../bonobo/bonobo-ui-toolbar.c:1107 ../bonobo/bonobo-ui-toolbar.c:1108
 msgid "Orientation"
 msgstr "Orientazioa"
 
-#: ../bonobo/bonobo-dock-item.c:250 ../bonobo/bonobo-dock-item.c:251
-#: ../bonobo/bonobo-ui-toolbar.c:1124 ../bonobo/bonobo-ui-toolbar.c:1125
+#: ../bonobo/bonobo-dock-item.c:247 ../bonobo/bonobo-dock-item.c:248
+#: ../bonobo/bonobo-ui-toolbar.c:1126 ../bonobo/bonobo-ui-toolbar.c:1127
 msgid "Preferred width"
 msgstr "Hobetsitako zabalera"
 
-#: ../bonobo/bonobo-dock-item.c:259 ../bonobo/bonobo-dock-item.c:260
-#: ../bonobo/bonobo-ui-toolbar.c:1133 ../bonobo/bonobo-ui-toolbar.c:1134
+#: ../bonobo/bonobo-dock-item.c:256 ../bonobo/bonobo-dock-item.c:257
+#: ../bonobo/bonobo-ui-toolbar.c:1135 ../bonobo/bonobo-ui-toolbar.c:1136
 msgid "Preferred height"
 msgstr "Hobetsitako altuera"
 
-#: ../bonobo/bonobo-file-selector-util.c:357
+#: ../bonobo/bonobo-file-selector-util.c:350
 msgid "Select a file to open"
 msgstr "Hautatu fitxategi bat irekitzeko"
 
-#: ../bonobo/bonobo-file-selector-util.c:385
+#: ../bonobo/bonobo-file-selector-util.c:378
 msgid "Select files to open"
 msgstr "Hautatu fitxategiak irekitzeko"
 
-#: ../bonobo/bonobo-file-selector-util.c:414
+#: ../bonobo/bonobo-file-selector-util.c:407
 msgid "Select a filename to save"
 msgstr "Hautatu fitxategi bat gordetzeko"
 
-#: ../bonobo/bonobo-plug.c:423
+#: ../bonobo/bonobo-plug.c:425
 msgid "Event Forwarding"
 msgstr "Gertaerak birbidaltzea"
 
-#: ../bonobo/bonobo-plug.c:424
+#: ../bonobo/bonobo-plug.c:426
 msgid "Whether X events should be forwarded"
 msgstr "X gertaera birbidali beharko litzatekeen ala ez adierazten du"
 
-#: ../bonobo/bonobo-selector-widget.c:297 ../bonobo/bonobo-window.c:344
-#: ../tools/browser/component-details.c:114
-#: ../tools/browser/component-list.c:378
+#: ../bonobo/bonobo-selector-widget.c:300 ../bonobo/bonobo-window.c:347
+#: ../tools/browser/component-details.c:108
+#: ../tools/browser/component-list.c:369
 msgid "Name"
 msgstr "Izena"
 
-#: ../bonobo/bonobo-selector-widget.c:319
-#: ../tools/browser/component-details.c:115
+#: ../bonobo/bonobo-selector-widget.c:322
+#: ../tools/browser/component-details.c:109
 msgid "Description"
 msgstr "Azalpena"
 
@@ -116,202 +116,202 @@ msgstr "Interfazeak sarrera eskatzen du"
 msgid "One of the interfaces that's required"
 msgstr "Behar den interfazeetako bat"
 
-#: ../bonobo/bonobo-ui-config-widget.c:265
+#: ../bonobo/bonobo-ui-config-widget.c:267
 msgid "Visible"
 msgstr "Ikusgai"
 
-#: ../bonobo/bonobo-ui-config-widget.c:272
+#: ../bonobo/bonobo-ui-config-widget.c:274
 msgid "_Show"
 msgstr "_Erakutsi"
 
-#: ../bonobo/bonobo-ui-config-widget.c:279
+#: ../bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "E_zkutatu"
 
-#: ../bonobo/bonobo-ui-config-widget.c:285
+#: ../bonobo/bonobo-ui-config-widget.c:287
 msgid "_View tooltips"
 msgstr "Iku_si argibideak"
 
-#: ../bonobo/bonobo-ui-config-widget.c:290
+#: ../bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
 msgstr "Tresna-barrak"
 
-#: ../bonobo/bonobo-ui-config-widget.c:300
+#: ../bonobo/bonobo-ui-config-widget.c:302
 msgid "toolbars"
 msgstr "tresna-barrak"
 
-#: ../bonobo/bonobo-ui-config-widget.c:311
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-config-widget.c:313
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "Look"
 msgstr "Itxura"
 
-#: ../bonobo/bonobo-ui-config-widget.c:320
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-config-widget.c:322
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "_Icon"
 msgstr "I_konoa"
 
-#: ../bonobo/bonobo-ui-config-widget.c:326
+#: ../bonobo/bonobo-ui-config-widget.c:328
 msgid "_Text and Icon"
 msgstr "_Testua eta ikonoa"
 
-#: ../bonobo/bonobo-ui-config-widget.c:332
+#: ../bonobo/bonobo-ui-config-widget.c:334
 msgid "Text only"
 msgstr "Testua bakarrik"
 
-#: ../bonobo/bonobo-ui-config-widget.c:338
+#: ../bonobo/bonobo-ui-config-widget.c:340
 msgid "_Priority text only"
 msgstr "_Lehentasunezko testua bakarrik"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:93
 msgid "Debug"
 msgstr "Araztu"
 
-#: ../bonobo/bonobo-ui-engine.c:91
+#: ../bonobo/bonobo-ui-engine.c:93
 msgid "_Dump XML"
 msgstr "_Irauli XMLa"
 
-#: ../bonobo/bonobo-ui-engine.c:92
+#: ../bonobo/bonobo-ui-engine.c:94
 msgid "Dump the entire UI's XML description to the console"
 msgstr "Irauli UIaren XML azalpen osoa kontsolan"
 
-#: ../bonobo/bonobo-ui-engine-config.c:522
+#: ../bonobo/bonobo-ui-engine-config.c:524
 msgid "Configure UI"
 msgstr "Konfiguratu UIa"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130
+#: ../bonobo/bonobo-ui-init-gtk.c:131
 msgid "Gdk debugging flags to set"
 msgstr "Ezarri beharreko Gdk arazketa-banderak"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:130 ../bonobo/bonobo-ui-init-gtk.c:133
-#: ../bonobo/bonobo-ui-init-gtk.c:161 ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:131 ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:162 ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "BANDERAK"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:133
+#: ../bonobo/bonobo-ui-init-gtk.c:134
 msgid "Gdk debugging flags to unset"
 msgstr "Ezarpenetik kendu beharreko Gdk arazketa-banderak"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "X display to use"
 msgstr "Erabili beharreko X bistaratzea"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:137
+#: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "DISPLAY"
 msgstr "BISTARATZEA"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "X screen to use"
 msgstr "Erabili beharreko X pantaila"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:141
+#: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "SCREEN"
 msgstr "PANTAILA"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:145
+#: ../bonobo/bonobo-ui-init-gtk.c:146
 msgid "Make X calls synchronous"
 msgstr "Bihurtu X dei sinkroniko"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:151
+#: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "Don't use X shared memory extension"
 msgstr "Ez erabili X memoria-hedapen partekatua"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "Program name as used by the window manager"
 msgstr "Leiho-kudeatzaileak erabilitako programa-izena"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:155
+#: ../bonobo/bonobo-ui-init-gtk.c:156
 msgid "NAME"
 msgstr "IZENA"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "Program class as used by the window manager"
 msgstr "Leiho-kudeatzaileak erabilitako programa-klasea"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:158
+#: ../bonobo/bonobo-ui-init-gtk.c:159
 msgid "CLASS"
 msgstr "KLASEA"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:161
+#: ../bonobo/bonobo-ui-init-gtk.c:162
 msgid "Gtk+ debugging flags to set"
 msgstr "Ezarri beharreko Gtk+ arazketa-banderak"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:164
+#: ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "Gtk+ debugging flags to unset"
 msgstr "Ezarpenetik kendu beharreko Gtk+ arazketa-banderak"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:167
+#: ../bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
 msgstr "Bihurtu abisu guztiak errore larri"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:170
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "Load an additional Gtk module"
 msgstr "Kargatu Gtk modulu gehigarria"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:170
+#: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
 msgstr "MODULUA"
 
-#: ../bonobo/bonobo-ui-init-gtk.c:186
+#: ../bonobo/bonobo-ui-init-gtk.c:187
 msgid "GTK+"
 msgstr "GTK+"
 
-#: ../bonobo/bonobo-ui-main.c:278
+#: ../bonobo/bonobo-ui-main.c:281
 msgid "Bonobo GUI support"
 msgstr "Bonoboren GUI euskarria"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "B_oth"
 msgstr "_Biak"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:566
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
 msgid "T_ext"
 msgstr "Te_stua"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:567
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Hide t_ips"
 msgstr "Ezkutatu i_radokizunak"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:567
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
 msgid "Show t_ips"
 msgstr "Erakutsi ira_dokizunak"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
 msgid "_Hide toolbar"
 msgstr "E_zkutatu tresna-barra"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
 msgid "Customi_ze"
 msgstr "_Pertsonalizatu"
 
-#: ../bonobo/bonobo-ui-sync-toolbar.c:569
+#: ../bonobo/bonobo-ui-sync-toolbar.c:571
 msgid "Customize the toolbar"
 msgstr "Pertsonalizatu tresna-barra"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1115
+#: ../bonobo/bonobo-ui-toolbar.c:1117
 msgid "is floating"
 msgstr "mugikorra da"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1116
+#: ../bonobo/bonobo-ui-toolbar.c:1118
 msgid "whether the toolbar is floating"
 msgstr "tresna-barra mugikorra den ala ez adierazten du"
 
-#: ../bonobo/bonobo-ui-toolbar.c:1162
+#: ../bonobo/bonobo-ui-toolbar.c:1164
 msgid "Style of bevel around the toolbar"
 msgstr "Tresna-barraren inguruko alaka-estiloa"
 
-#: ../bonobo/bonobo-ui-util.c:601
+#: ../bonobo/bonobo-ui-util.c:602
 msgid "Could not display help for this application"
 msgstr "Ezin izan da aplikazio honen laguntza bistaratu"
 
-#: ../bonobo/bonobo-ui-util.c:643
+#: ../bonobo/bonobo-ui-util.c:644
 msgid "_Contents"
 msgstr "_Edukia"
 
-#: ../bonobo/bonobo-ui-util.c:644
+#: ../bonobo/bonobo-ui-util.c:645
 msgid "View help for this application"
 msgstr "Ikusi aplikazio honen laguntza"
 
-#: ../bonobo/bonobo-window.c:345
+#: ../bonobo/bonobo-window.c:348
 msgid "Name of the window - used for configuration serialization."
 msgstr "Leihoaren izena - konfigurazioaren serializaziorako erabiltzen da."
 
@@ -388,28 +388,28 @@ msgstr "_Fitxategia"
 msgid "_Select"
 msgstr "_Hautatu"
 
-#: ../samples/bonoboui/hello.c:63
+#: ../samples/bonoboui/hello.c:65
 msgid "This does nothing; it is only a demonstration."
 msgstr "Ez du ezer egiten; azalpen bat besterik ez da."
 
-#: ../samples/bonoboui/hello.c:145
+#: ../samples/bonoboui/hello.c:147
 msgid "BonoboUI-Hello."
 msgstr "BonoboUI-Hello."
 
-#: ../samples/bonoboui/hello.c:217
+#: ../samples/bonoboui/hello.c:219
 msgid "Gnome Hello"
 msgstr "Kaixo, Gnome"
 
 #. Create Label and put it in the Button:
-#: ../samples/bonoboui/hello.c:272
+#: ../samples/bonoboui/hello.c:274
 msgid "Hello, World!"
 msgstr "Kaixo guztiei!"
 
-#: ../samples/bonoboui/hello.c:312
+#: ../samples/bonoboui/hello.c:314
 msgid "Cannot init libbonoboui code"
 msgstr "Ezin da libbonoboui-n kodea hasieratu"
 
-#: ../samples/controls/bonobo-sample-controls.c:131
+#: ../samples/controls/bonobo-sample-controls.c:133
 msgid "Could not initialize Bonobo UI"
 msgstr "Ezin izan da Bonoboren UI hasieratu"
 
@@ -438,33 +438,33 @@ msgid "_Help"
 msgstr "_Laguntza"
 
 #. Build the general tab
-#: ../tools/browser/component-details.c:109
+#: ../tools/browser/component-details.c:103
 msgid "General"
 msgstr "Orokorra"
 
-#: ../tools/browser/component-details.c:116
-#: ../tools/browser/component-list.c:398
+#: ../tools/browser/component-details.c:110
+#: ../tools/browser/component-list.c:389
 msgid "IID"
 msgstr "IIDa"
 
-#: ../tools/browser/component-details.c:117
+#: ../tools/browser/component-details.c:111
 msgid "Location"
 msgstr "Kokalekua"
 
 #. Build the details tab
-#: ../tools/browser/component-details.c:167
+#: ../tools/browser/component-details.c:161
 msgid "Details"
 msgstr "Xehetasunak"
 
-#: ../tools/browser/component-details.c:168
+#: ../tools/browser/component-details.c:162
 msgid "Detailed Information"
 msgstr "Informazio xehea"
 
-#: ../tools/browser/component-list.c:367 ../tools/browser/window.c:283
+#: ../tools/browser/component-list.c:358 ../tools/browser/window.c:283
 msgid "Active"
 msgstr "Aktibo"
 
-#: ../tools/browser/component-list.c:388
+#: ../tools/browser/component-list.c:379
 msgid "Type"
 msgstr "Mota"
 
