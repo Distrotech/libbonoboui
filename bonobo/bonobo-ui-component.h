@@ -216,11 +216,11 @@ typedef struct {
 	gpointer       dummy;
 } BonoboUIVerb;
 
-#define BONOBO_UI_VERB(name,cb)                  { (name), (cb), NULL   }
-#define BONOBO_UI_VERB_DATA(name,cb,data)        { (name), (cb), (data) }
-#define BONOBO_UI_UNSAFE_VERB(name,cb)           { (name), ((BonoboUIVerbFn)(cb)), NULL   }
-#define BONOBO_UI_UNSAFE_VERB_DATA(name,cb,data) { (name), ((BonoboUIVerbFn)(cb)), (data) }
-#define BONOBO_UI_VERB_END                       { NULL, NULL, NULL }
+#define BONOBO_UI_VERB(name,cb)                  { (name), (cb), NULL, NULL   }
+#define BONOBO_UI_VERB_DATA(name,cb,data)        { (name), (cb), (data), NULL }
+#define BONOBO_UI_UNSAFE_VERB(name,cb)           { (name), ((BonoboUIVerbFn)(cb)), NULL, NULL   }
+#define BONOBO_UI_UNSAFE_VERB_DATA(name,cb,data) { (name), ((BonoboUIVerbFn)(cb)), (data), NULL }
+#define BONOBO_UI_VERB_END                       { NULL, NULL, NULL, NULL }
 
 void    bonobo_ui_component_add_verb_list           (BonoboUIComponent  *component,
 						     const BonoboUIVerb *list);
