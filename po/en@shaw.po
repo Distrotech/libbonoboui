@@ -4,17 +4,29 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2009-11-06 19:17+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=bonobo&component=libbonoboui\n"
+"POT-Creation-Date: 2010-05-11 15:33+0000\n"
+"PO-Revision-Date: 2010-05-12 18:37 -0400\n"
 "Last-Translator: Thomas Thurman <tthurman@gnome.org>\n"
-"Language-Team: Shavian <ubuntu-l10n-en-shaw@lists.launchpad.net>\n"
+"Language-Team: Shavian <ubuntu-l10n-en-shaw@launchpad.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n!=1;\n"
+
+#, fuzzy
+#: ../bonobo/bonobo-canvas-item.c:680
+msgid "corba factory"
+msgstr "corba 𐑓𐑨𐑒𐑑𐑼𐑦"
 
 #: ../bonobo/bonobo-canvas-item.c:681
 msgid "The factory pointer"
 msgstr "𐑞 𐑓𐑨𐑒𐑑𐑼𐑦 𐑐𐑶𐑯𐑑𐑼"
+
+#, fuzzy
+#: ../bonobo/bonobo-canvas-item.c:690
+msgid "corba UI container"
+msgstr "corba UI 𐑒𐑩𐑯𐑑𐑱𐑯𐑼"
 
 #: ../bonobo/bonobo-canvas-item.c:691
 msgid "The User interface container"
@@ -83,6 +95,16 @@ msgstr "𐑛𐑦𐑕𐑒𐑮𐑦𐑐𐑖𐑩𐑯"
 msgid "Interfaces required"
 msgstr "𐑦𐑯𐑑𐑼𐑓𐑱𐑕𐑩𐑟 𐑮𐑦𐑒𐑢𐑲𐑼𐑛"
 
+#, fuzzy
+#: ../bonobo/bonobo-selector.c:344
+msgid ""
+"A NULL-terminated array of interfaces which a server must support in order to "
+"be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if no "
+"interfaces are listed"
+msgstr ""
+"𐑩 𐑯𐑳𐑤-𐑑𐑻𐑥𐑩𐑯𐑱𐑑𐑩𐑛 𐑼𐑱 𐑝 𐑦𐑯𐑑𐑼𐑓𐑱𐑕𐑩𐑟 𐑢𐑦𐑗 𐑩 𐑕𐑻𐑝𐑼 𐑥𐑳𐑕𐑑 𐑕𐑩𐑐𐑹𐑑 𐑦𐑯 𐑹𐑛𐑼 𐑑 𐑚𐑰 𐑤𐑦𐑕𐑑𐑩𐑛 𐑦𐑯 𐑞 "
+"selector. 𐑛𐑦𐑓𐑷𐑤𐑑𐑕 𐑑 \"IDL:𐑚𐑭𐑯𐑭𐑚𐑴/Embeddable:1.0\" 𐑦𐑓 𐑯𐑴 𐑦𐑯𐑑𐑼𐑓𐑱𐑕𐑩𐑟 𐑸 𐑤𐑦𐑕𐑑𐑩𐑛"
+
 #: ../bonobo/bonobo-selector.c:346
 msgid "Interface required entry"
 msgstr "𐑦𐑯𐑑𐑼𐑓𐑱𐑕 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑧𐑯𐑑𐑮𐑦"
@@ -102,6 +124,11 @@ msgstr "_𐑖𐑴"
 #: ../bonobo/bonobo-ui-config-widget.c:281
 msgid "_Hide"
 msgstr "_𐑣𐑲𐑛"
+
+#, fuzzy
+#: ../bonobo/bonobo-ui-config-widget.c:287
+msgid "_View tooltips"
+msgstr "_View tooltips"
 
 #: ../bonobo/bonobo-ui-config-widget.c:292
 msgid "Toolbars"
@@ -141,10 +168,30 @@ msgstr "𐑛𐑰𐑚𐑳𐑜"
 msgid "_Dump XML"
 msgstr "_𐑛𐑳𐑥𐑐 XML"
 
+#, fuzzy
+#: ../bonobo/bonobo-ui-engine.c:94
+msgid "Dump the entire UI's XML description to the console"
+msgstr "𐑛𐑳𐑥𐑐 𐑞 𐑧𐑯𐑑𐑲𐑼 UI's ·𐑦·𐑥·𐑤 𐑛𐑦𐑕𐑒𐑮𐑦𐑐𐑖𐑩𐑯 𐑑 𐑞 𐑒𐑪𐑯𐑕𐑴𐑤"
+
+#, fuzzy
+#: ../bonobo/bonobo-ui-engine-config.c:524
+msgid "Configure UI"
+msgstr "𐑒𐑩𐑯𐑓𐑦𐑜𐑘𐑼 UI"
+
+#, fuzzy
+#: ../bonobo/bonobo-ui-init-gtk.c:131
+msgid "Gdk debugging flags to set"
+msgstr "Gdk 𐑛𐑰𐑚𐑳𐑜𐑦𐑙 𐑓𐑤𐑨𐑜𐑟 𐑑 𐑕𐑧𐑑"
+
 #: ../bonobo/bonobo-ui-init-gtk.c:131 ../bonobo/bonobo-ui-init-gtk.c:134
 #: ../bonobo/bonobo-ui-init-gtk.c:162 ../bonobo/bonobo-ui-init-gtk.c:165
 msgid "FLAGS"
 msgstr "𐑓𐑤𐑨𐑜𐑟"
+
+#, fuzzy
+#: ../bonobo/bonobo-ui-init-gtk.c:134
+msgid "Gdk debugging flags to unset"
+msgstr "Gdk 𐑛𐑰𐑚𐑳𐑜𐑦𐑙 𐑓𐑤𐑨𐑜𐑟 𐑑 𐑩𐑯𐑕𐑧𐑑"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:138
 msgid "X display to use"
@@ -161,6 +208,11 @@ msgstr "X 𐑕𐑒𐑮𐑰𐑯 𐑑 𐑿𐑕"
 #: ../bonobo/bonobo-ui-init-gtk.c:142
 msgid "SCREEN"
 msgstr "𐑕𐑒𐑮𐑰𐑯"
+
+#, fuzzy
+#: ../bonobo/bonobo-ui-init-gtk.c:146
+msgid "Make X calls synchronous"
+msgstr "𐑥𐑱𐑒 𐑧𐑒𐑕 𐑒𐑷𐑤𐑟 synchronous"
 
 #: ../bonobo/bonobo-ui-init-gtk.c:152
 msgid "Don't use X shared memory extension"
@@ -182,13 +234,33 @@ msgstr "𐑐𐑮𐑴𐑜𐑮𐑨𐑥 𐑒𐑤𐑭𐑕 𐑨𐑟 𐑿𐑕𐑑 𐑚
 msgid "CLASS"
 msgstr "𐑒𐑤𐑭𐑕"
 
+#, fuzzy
+#: ../bonobo/bonobo-ui-init-gtk.c:162
+msgid "Gtk+ debugging flags to set"
+msgstr "Gtk+ 𐑛𐑰𐑚𐑳𐑜𐑦𐑙 𐑓𐑤𐑨𐑜𐑟 𐑑 𐑕𐑧𐑑"
+
+#, fuzzy
+#: ../bonobo/bonobo-ui-init-gtk.c:165
+msgid "Gtk+ debugging flags to unset"
+msgstr "Gtk+ 𐑛𐑰𐑚𐑳𐑜𐑦𐑙 𐑓𐑤𐑨𐑜𐑟 𐑑 𐑩𐑯𐑕𐑧𐑑"
+
 #: ../bonobo/bonobo-ui-init-gtk.c:168
 msgid "Make all warnings fatal"
 msgstr "𐑥𐑱𐑒 𐑷𐑤 𐑢𐑪𐑮𐑯𐑦𐑙𐑟 𐑓𐑱𐑑𐑩𐑤"
 
+#, fuzzy
+#: ../bonobo/bonobo-ui-init-gtk.c:171
+msgid "Load an additional Gtk module"
+msgstr "𐑤𐑴𐑛 𐑩𐑯 𐑩𐑛𐑦𐑖𐑩𐑯𐑩𐑤 Gtk 𐑥𐑪𐑛𐑿𐑤"
+
 #: ../bonobo/bonobo-ui-init-gtk.c:171
 msgid "MODULE"
 msgstr "𐑥𐑪𐑛𐑿𐑤"
+
+#, fuzzy
+#: ../bonobo/bonobo-ui-init-gtk.c:187
+msgid "GTK+"
+msgstr "GTK+"
 
 #: ../bonobo/bonobo-ui-main.c:281
 msgid "Bonobo GUI support"
@@ -246,17 +318,37 @@ msgstr "_𐑒𐑪𐑯𐑑𐑩𐑯𐑑𐑕"
 msgid "View help for this application"
 msgstr "𐑝𐑿 𐑣𐑧𐑤𐑐 𐑓𐑹 𐑞𐑦𐑕 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯"
 
+#, fuzzy
+#: ../bonobo/bonobo-window.c:348
+msgid "Name of the window - used for configuration serialization."
+msgstr "𐑯𐑱𐑥 𐑝 𐑞 𐑢𐑦𐑯𐑛𐑴 - 𐑿𐑕𐑑 𐑓𐑹 𐑒𐑩𐑯𐑓𐑦𐑜𐑘𐑼𐑱𐑖𐑩𐑯 serialization."
+
 #: ../bonobo/bonobo-zoomable.c:326
 msgid "Zoom level"
 msgstr "𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
+
+#, fuzzy
+#: ../bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "𐑞 𐑛𐑦𐑜𐑮𐑰 𐑝 enlargment"
 
 #: ../bonobo/bonobo-zoomable.c:335
 msgid "Minimum Zoom level"
 msgstr "𐑥𐑦𐑯𐑩𐑥𐑩𐑥 𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
 
+#, fuzzy
+#: ../bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "𐑞 𐑥𐑦𐑯𐑩𐑥𐑩𐑥 𐑛𐑦𐑜𐑮𐑰 𐑝 enlargment"
+
 #: ../bonobo/bonobo-zoomable.c:344
 msgid "Maximum Zoom level"
 msgstr "𐑥𐑨𐑒𐑕𐑦𐑥𐑩𐑥 𐑟𐑵𐑥 𐑤𐑧𐑝𐑩𐑤"
+
+#, fuzzy
+#: ../bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "𐑞 𐑥𐑨𐑒𐑕𐑦𐑥𐑩𐑥 𐑛𐑦𐑜𐑮𐑰 𐑝 enlargment"
 
 #: ../bonobo/bonobo-zoomable.c:353
 msgid "Has a minimum Zoom level"
@@ -311,6 +403,11 @@ msgstr "_𐑕𐑩𐑤𐑧𐑒𐑑"
 msgid "This does nothing; it is only a demonstration."
 msgstr "𐑞𐑦𐑕 𐑛𐑴𐑟 𐑯𐑳𐑔𐑦𐑙; 𐑦𐑑 𐑦𐑟 𐑴𐑯𐑤𐑦 𐑩 𐑛𐑧𐑥𐑩𐑯𐑕𐑑𐑮𐑱𐑖𐑩𐑯."
 
+#, fuzzy
+#: ../samples/bonoboui/hello.c:147
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-𐑣𐑩𐑤𐑴."
+
 #: ../samples/bonoboui/hello.c:219
 msgid "Gnome Hello"
 msgstr "·𐑜𐑯𐑴𐑥 𐑣𐑩𐑤𐑴"
@@ -319,6 +416,16 @@ msgstr "·𐑜𐑯𐑴𐑥 𐑣𐑩𐑤𐑴"
 #: ../samples/bonoboui/hello.c:274
 msgid "Hello, World!"
 msgstr "𐑣𐑩𐑤𐑴, 𐑢𐑻𐑤𐑛!"
+
+#, fuzzy
+#: ../samples/bonoboui/hello.c:314
+msgid "Cannot init libbonoboui code"
+msgstr "𐑒𐑨𐑯𐑪𐑑 init libbonoboui 𐑒𐑴𐑛"
+
+#, fuzzy
+#: ../samples/controls/bonobo-sample-controls.c:133
+msgid "Could not initialize Bonobo UI"
+msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑦𐑯𐑦𐑖𐑩𐑤𐑲𐑟 𐑚𐑭𐑯𐑭𐑚𐑴 UI"
 
 #: ../tools/browser/bonobo-browser.desktop.in.h:1
 msgid "Bonobo Component Browser"
@@ -348,6 +455,12 @@ msgstr "_𐑣𐑧𐑤𐑐"
 #: ../tools/browser/component-details.c:103
 msgid "General"
 msgstr "𐑡𐑧𐑯𐑼𐑩𐑤"
+
+#, fuzzy
+#: ../tools/browser/component-details.c:110
+#: ../tools/browser/component-list.c:389
+msgid "IID"
+msgstr "IID"
 
 #: ../tools/browser/component-details.c:111
 msgid "Location"
@@ -403,3 +516,4 @@ msgstr "𐑷𐑤"
 #: ../tools/browser/window.c:286
 msgid "Inactive"
 msgstr "𐑦𐑯𐑨𐑒𐑑𐑦𐑝"
+
