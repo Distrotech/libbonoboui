@@ -35,6 +35,9 @@ pipe, to ensure synchronization between the X and CORBA transports.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboPlug ##### -->
 <para>
 

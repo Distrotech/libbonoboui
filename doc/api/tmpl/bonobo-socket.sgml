@@ -91,6 +91,9 @@ as between a #BonoboPlug and a #BonoboSocket.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboSocket ##### -->
 <para>
     The #GtkEditable structure contains the following field.
@@ -125,6 +128,7 @@ as between a #BonoboPlug and a #BonoboSocket.
 
 </para>
 
+@void: 
 @Returns: 
 
 

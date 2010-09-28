@@ -23,6 +23,9 @@ deprecated by the various tools to do this from dynamic files.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION bonobo_ui_util_pixbuf_to_xml ##### -->
 <para>
 

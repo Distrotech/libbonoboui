@@ -17,6 +17,9 @@ bonobo-selector-widget
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboSelectorWidgetPrivate ##### -->
 <para>
 
@@ -49,6 +52,7 @@ bonobo-selector-widget
 
 </para>
 
+@void: 
 @Returns: 
 
 

@@ -17,6 +17,9 @@ bonobo-ui-preferences
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO BONOBO_UI_PAD ##### -->
 <para>
 
@@ -59,6 +62,7 @@ bonobo-ui-preferences
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -67,6 +71,7 @@ bonobo-ui-preferences
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -75,6 +80,7 @@ bonobo-ui-preferences
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -83,6 +89,7 @@ bonobo-ui-preferences
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -91,6 +98,7 @@ bonobo-ui-preferences
 
 </para>
 
+@void: 
 @Returns: 
 
 

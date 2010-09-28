@@ -17,6 +17,9 @@ bonobo-ui-engine-config
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboUIEngineConfigPrivate ##### -->
 <para>
 

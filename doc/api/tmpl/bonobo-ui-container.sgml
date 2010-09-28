@@ -46,6 +46,9 @@ Here is how your code should interact with the BonoboUIContainer
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboUIContainer ##### -->
 <para>
 
@@ -72,6 +75,7 @@ Here is how your code should interact with the BonoboUIContainer
 
 </para>
 
+@void: 
 @Returns: 
 
 

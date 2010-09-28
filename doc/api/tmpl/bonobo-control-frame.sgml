@@ -84,6 +84,9 @@ bonobo_widget_construct_control_from_objref (BonoboWidget      *bw,
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboControlFrame ##### -->
 <para>
 

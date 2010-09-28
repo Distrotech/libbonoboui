@@ -150,6 +150,9 @@ installed help files can be deduced.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboUIComponent ##### -->
 <para>
 
@@ -245,6 +248,7 @@ installed help files can be deduced.
 
 </para>
 
+@void: 
 @Returns: 
 
 

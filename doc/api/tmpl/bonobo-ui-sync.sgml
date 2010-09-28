@@ -19,6 +19,9 @@ of the code. No normal user should need to write his own synchronizer.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboUISync ##### -->
 <para>
 
@@ -260,6 +263,7 @@ of the code. No normal user should need to write his own synchronizer.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -268,6 +272,7 @@ of the code. No normal user should need to write his own synchronizer.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -276,6 +281,7 @@ of the code. No normal user should need to write his own synchronizer.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -284,6 +290,7 @@ of the code. No normal user should need to write his own synchronizer.
 
 </para>
 
+@void: 
 @Returns: 
 
 

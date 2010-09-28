@@ -87,6 +87,9 @@ needs to be done every time the control is activated.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboControl ##### -->
 <para>
 
@@ -422,6 +425,7 @@ needs to be done every time the control is activated.
 
 </para>
 
+@void: 
 
 
 <!-- ##### FUNCTION bonobo_control_life_set_purge ##### -->
@@ -453,6 +457,7 @@ needs to be done every time the control is activated.
 
 </para>
 
+@void: 
 @Returns: 
 
 

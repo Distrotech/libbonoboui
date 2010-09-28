@@ -17,6 +17,9 @@ bonobo-wrapper
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### STRUCT BonoboWrapperPrivate ##### -->
 <para>
 
@@ -43,6 +46,7 @@ bonobo-wrapper
 
 </para>
 
+@void: 
 @Returns: 
 
 
