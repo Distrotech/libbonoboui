@@ -1,0 +1,506 @@
+# translation of po_libbonoboui-2.0-km.po to Khmer
+# Khmer translation for libbonoboui
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the libbonoboui package.
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: po_libbonoboui-2.0-km\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=bonobo&keywords=I18N+L10N&component=libbonoboui\n"
+"POT-Creation-Date: 2011-09-08 11:58+0000\n"
+"PO-Revision-Date: 2012-04-20 09:15+0000\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <support@khmeros.info>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2012-09-03 23:41+0000\n"
+"X-Generator: Launchpad (build 15890)\n"
+
+#: ../bonobo/bonobo-canvas-item.c:680
+msgid "corba factory"
+msgstr "ឃ្លាំង corba"
+
+#: ../bonobo/bonobo-canvas-item.c:681
+msgid "The factory pointer"
+msgstr "ទ្រនិច​បង្ហាញ​ឃ្លាំង"
+
+#: ../bonobo/bonobo-canvas-item.c:690
+msgid "corba UI container"
+msgstr "ឧបករណ៍​ផ្ទុក corba UI"
+
+#: ../bonobo/bonobo-canvas-item.c:691
+msgid "The User interface container"
+msgstr "ឧបករណ៍​ផ្ទុក​ចំណុច​ប្រទាក់​អ្នក​ប្រើ"
+
+#: ../bonobo/bonobo-dock-item-grip.c:254
+msgid "Dock the toolbar"
+msgstr "ចត​របារ​ឧបករណ៍"
+
+#: ../bonobo/bonobo-dock-item-grip.c:255
+msgid "Undock the toolbar"
+msgstr "លែង​ចត​របារ​ឧបករណ៍"
+
+#: ../bonobo/bonobo-dock-item.c:225 ../bonobo/bonobo-dock-item.c:226
+#: ../bonobo/bonobo-ui-toolbar.c:1163
+msgid "Shadow type"
+msgstr "ប្រភេទ​ស្រមោល"
+
+#: ../bonobo/bonobo-dock-item.c:236 ../bonobo/bonobo-dock-item.c:237
+#: ../bonobo/bonobo-ui-toolbar.c:1107 ../bonobo/bonobo-ui-toolbar.c:1108
+msgid "Orientation"
+msgstr "ទិស"
+
+#: ../bonobo/bonobo-dock-item.c:247 ../bonobo/bonobo-dock-item.c:248
+#: ../bonobo/bonobo-ui-toolbar.c:1126 ../bonobo/bonobo-ui-toolbar.c:1127
+msgid "Preferred width"
+msgstr "ទទឹង​​ដែល​ចូលចិត្ត"
+
+#: ../bonobo/bonobo-dock-item.c:256 ../bonobo/bonobo-dock-item.c:257
+#: ../bonobo/bonobo-ui-toolbar.c:1135 ../bonobo/bonobo-ui-toolbar.c:1136
+msgid "Preferred height"
+msgstr "កម្ពស់​ដែល​ចូល​ចិត្ត"
+
+#: ../bonobo/bonobo-file-selector-util.c:350
+msgid "Select a file to open"
+msgstr "ជ្រើស​ឯកសារ​ត្រូវបើក"
+
+#: ../bonobo/bonobo-file-selector-util.c:378
+msgid "Select files to open"
+msgstr "ជ្រើស​ឯកសារ​ត្រូវ​បើក"
+
+#: ../bonobo/bonobo-file-selector-util.c:407
+msgid "Select a filename to save"
+msgstr "ជ្រើស​ឈ្មោះ​ឯកសារ​ត្រូវ​រក្សាទុក"
+
+#: ../bonobo/bonobo-plug.c:425
+msgid "Event Forwarding"
+msgstr "ព្រឹត្តិការណ៍​បញ្ជូន​បន្ត"
+
+#: ../bonobo/bonobo-plug.c:426
+msgid "Whether X events should be forwarded"
+msgstr "ថា​តើ​ព្រឹត្តិការណ៍ X គួរ​តែ​ត្រូវ​បាន​បញ្ជូន​បន្ត​ដែរ​ឬ​ទេ"
+
+#: ../bonobo/bonobo-selector-widget.c:300 ../bonobo/bonobo-window.c:347
+#: ../tools/browser/component-details.c:108
+#: ../tools/browser/component-list.c:369
+msgid "Name"
+msgstr "ឈ្មោះ"
+
+#: ../bonobo/bonobo-selector-widget.c:322
+#: ../tools/browser/component-details.c:109
+msgid "Description"
+msgstr "សេចក្ដី​ពិពណ៌នា"
+
+#: ../bonobo/bonobo-selector.c:343
+msgid "Interfaces required"
+msgstr "បាន​ទាមទារ​ចំណុច​ប្រទាក់"
+
+#: ../bonobo/bonobo-selector.c:344
+msgid ""
+"A NULL-terminated array of interfaces which a server must support in order "
+"to be listed in the selector. Defaults to \"IDL:Bonobo/Embeddable:1.0\" if "
+"no interfaces are listed"
+msgstr ""
+"អារេ​ដែល​​មិន​បាន​បញ្ចប់​នៃ​ចំណុច​ប្រទាក់​ម៉ាស៊ីន​បម្រើ​ត្រូវ​គាំទ្រ​ ដើម្បី​រាយ​បញ្ជី​នៅ​ក្នុង​កម្មវិធី​ជ្រើស ។  \"IDL:"
+"Bonobo/Embeddable:1.0\" លំនាំដើម ប្រសិនបើ​គ្មាន​ចំណុច​ប្រទាក់​ត្រូវ​បាន​រាយ​បញ្ជី​ទេ​នោះ"
+
+#: ../bonobo/bonobo-selector.c:346
+msgid "Interface required entry"
+msgstr "ធាតុ​ចំណុច​ប្រទាក់​ដែល​បាន​ទាមទារ"
+
+#: ../bonobo/bonobo-selector.c:347
+msgid "One of the interfaces that's required"
+msgstr "មួយ​ចំណុច​ប្រទាក់​ដែល​បាន​ទាមទារ"
+
+#: ../bonobo/bonobo-ui-config-widget.c:267
+msgid "Visible"
+msgstr "អាច​មើល​ឃើញ"
+
+#: ../bonobo/bonobo-ui-config-widget.c:274
+msgid "_Show"
+msgstr "បង្ហាញ"
+
+#: ../bonobo/bonobo-ui-config-widget.c:281
+msgid "_Hide"
+msgstr "លាក់"
+
+#: ../bonobo/bonobo-ui-config-widget.c:287
+msgid "_View tooltips"
+msgstr "មើល​ព័ត៌មាន​ជំនួយ"
+
+#: ../bonobo/bonobo-ui-config-widget.c:292
+msgid "Toolbars"
+msgstr "របារ​ឧបករណ៍"
+
+#: ../bonobo/bonobo-ui-config-widget.c:302
+msgid "toolbars"
+msgstr "របារ​ឧបករណ៍"
+
+#: ../bonobo/bonobo-ui-config-widget.c:313
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "Look"
+msgstr "មើល"
+
+#: ../bonobo/bonobo-ui-config-widget.c:322
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "_Icon"
+msgstr "រូបតំណាង"
+
+#: ../bonobo/bonobo-ui-config-widget.c:328
+msgid "_Text and Icon"
+msgstr "អត្ថបទ និង​រូបតំណាង"
+
+#: ../bonobo/bonobo-ui-config-widget.c:334
+msgid "Text only"
+msgstr "តែ​អត្ថបទ​ប៉ុណ្ណោះ"
+
+#: ../bonobo/bonobo-ui-config-widget.c:340
+msgid "_Priority text only"
+msgstr "តែ​អត្ថបទ​ដែល​មាន​អាទិភាព​ប៉ុណ្ណោះ"
+
+#: ../bonobo/bonobo-ui-engine.c:93
+msgid "Debug"
+msgstr "បំបាត់​កំហុស"
+
+#: ../bonobo/bonobo-ui-engine.c:93
+msgid "_Dump XML"
+msgstr "បោះបង់ XML"
+
+#: ../bonobo/bonobo-ui-engine.c:94
+msgid "Dump the entire UI's XML description to the console"
+msgstr "បោះបង់​សេចក្ដី​ពិពណ៌នា​អំពី UI's XML ចំពោះ​កុងសូល"
+
+#: ../bonobo/bonobo-ui-engine-config.c:524
+msgid "Configure UI"
+msgstr "កំណត់​រចនាសម្ព័ន្ធ UI"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:131
+msgid "Gdk debugging flags to set"
+msgstr "កំណត់​ទង់​ជាតិ​បំបាត់​កំហុស Gdk"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:131 ../bonobo/bonobo-ui-init-gtk.c:134
+#: ../bonobo/bonobo-ui-init-gtk.c:162 ../bonobo/bonobo-ui-init-gtk.c:165
+msgid "FLAGS"
+msgstr "ទង់ជាតិ"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:134
+msgid "Gdk debugging flags to unset"
+msgstr "មិន​បាន​កំណត់​ទង់ជាតិ​បំបាត់​កំហុស Gdk"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:138
+msgid "X display to use"
+msgstr "X display ត្រូវ​ប្រើ"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:138
+msgid "DISPLAY"
+msgstr "បង្ហាញ"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:142
+msgid "X screen to use"
+msgstr "X screen ត្រូវ​ប្រើ"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:142
+msgid "SCREEN"
+msgstr "អេក្រង់"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:146
+msgid "Make X calls synchronous"
+msgstr "ធ្វើ​ការ​ហៅ X នៅ​ពេល​តែ​មួយ"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:152
+msgid "Don't use X shared memory extension"
+msgstr "កុំ​ប្រើ​ផ្នែក​បន្ថែម​អង្គ​ចងចាំ​ដែល​បាន​ចែក​រំលែក X"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:156
+msgid "Program name as used by the window manager"
+msgstr "ឈ្មោះ​កម្មវិធី​ដែល​បាន​ប្រើ​តាម​កម្មវិធី​គ្រប់គ្រង​បង្អួច"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:156
+msgid "NAME"
+msgstr "ឈ្មោះ"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:159
+msgid "Program class as used by the window manager"
+msgstr "class កម្មវិធី​ដែល​បាន​ប្រើ​​តាម​កម្មវិធី​គ្រប់គ្រង​បង្អួច"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:159
+msgid "CLASS"
+msgstr "CLASS"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:162
+msgid "Gtk+ debugging flags to set"
+msgstr "កំណត់​ទង់ជាតិ​បំបាត់​កំហុស Gtk+"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:165
+msgid "Gtk+ debugging flags to unset"
+msgstr "មិន​កំណត់​ទង់ជាតិ​បំបាត់​កំហុស Gtk+ ឡើយ"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:168
+msgid "Make all warnings fatal"
+msgstr "ធ្វើ​ឲ្យ​មាន​ការ​ព្រមាន​ធ្ងន់ធ្ងរ​ទាំងអស់"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:171
+msgid "Load an additional Gtk module"
+msgstr "ផ្ទុក​ម៉ូឌុល Gtk បន្ថែម"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:171
+msgid "MODULE"
+msgstr "ម៉ូឌុល"
+
+#: ../bonobo/bonobo-ui-init-gtk.c:187
+msgid "GTK+"
+msgstr "GTK+"
+
+#: ../bonobo/bonobo-ui-main.c:281
+msgid "Bonobo GUI support"
+msgstr "គាំទ្រ Bonobo GUI"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "B_oth"
+msgstr "ទាំងពីរ"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:568
+msgid "T_ext"
+msgstr "អត្ថបទ"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
+msgid "Hide t_ips"
+msgstr "លាក់​ព័ត៌មាន​ជំនួយ"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:569
+msgid "Show t_ips"
+msgstr "បង្ហាញ​ព័ត៌មាន​ជំនួយ"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
+msgid "_Hide toolbar"
+msgstr "លាក់​របារ​ឧបករណ៍"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:570
+msgid "Customi_ze"
+msgstr "ប្ដូរ​តាម​បំណង"
+
+#: ../bonobo/bonobo-ui-sync-toolbar.c:571
+msgid "Customize the toolbar"
+msgstr "ប្ដូរ​របារ​ឧបករណ៍​តាម​បំណង"
+
+#: ../bonobo/bonobo-ui-toolbar.c:1117
+msgid "is floating"
+msgstr "អណ្ដែត"
+
+#: ../bonobo/bonobo-ui-toolbar.c:1118
+msgid "whether the toolbar is floating"
+msgstr "ថា​តើ​របារ​ឧបករណ៍​អណ្ដែត​ដែរ​ឬ​ទេ"
+
+#: ../bonobo/bonobo-ui-toolbar.c:1164
+msgid "Style of bevel around the toolbar"
+msgstr "រចនាប័ទ្ម​ជុំវិញ​របារ​ឧបករណ៍"
+
+#: ../bonobo/bonobo-ui-util.c:602
+msgid "Could not display help for this application"
+msgstr "មិន​អាច​បង្ហាញ​ជំនួយ​សម្រាប់​កម្មវិធី​នេះ​បាន​ទេ"
+
+#: ../bonobo/bonobo-ui-util.c:644
+msgid "_Contents"
+msgstr "មាតិកា"
+
+#: ../bonobo/bonobo-ui-util.c:645
+msgid "View help for this application"
+msgstr "មើល​ជំនួយ​សម្រាប់​កម្មវិធីនេះ"
+
+#: ../bonobo/bonobo-window.c:348
+msgid "Name of the window - used for configuration serialization."
+msgstr "ឈ្មោះ​បង្អួច​ដែល​បាន​ប្រើ​សម្រាប់​ការ​កំណត់​​រចនាសម្ព័ន្ធ​ការ​បោះពុម្ព ។"
+
+#: ../bonobo/bonobo-zoomable.c:326
+msgid "Zoom level"
+msgstr "កម្រិត​ពង្រីក"
+
+#: ../bonobo/bonobo-zoomable.c:327
+msgid "The degree of enlargment"
+msgstr "កម្រិត​នៃ​ការ​ពង្រីក"
+
+#: ../bonobo/bonobo-zoomable.c:335
+msgid "Minimum Zoom level"
+msgstr "កម្រិត​ពង្រីក​អប្បបរមា"
+
+#: ../bonobo/bonobo-zoomable.c:336
+msgid "The minimum degree of enlargment"
+msgstr "កម្រិត​​នៃ​ការ​ពង្រីក​អប្បបរមា"
+
+#: ../bonobo/bonobo-zoomable.c:344
+msgid "Maximum Zoom level"
+msgstr "កម្រិត​ពង្រីក​អតិបរមា"
+
+#: ../bonobo/bonobo-zoomable.c:345
+msgid "The maximum degree of enlargment"
+msgstr "កម្រិត​នៃ​​​ការ​ពង្រីក​​អតិបរមា"
+
+#: ../bonobo/bonobo-zoomable.c:353
+msgid "Has a minimum Zoom level"
+msgstr "មាន​កម្រិត​ពង្រីក​អប្បបរមា"
+
+#: ../bonobo/bonobo-zoomable.c:354
+msgid "Whether we have a valid minimum zoom level"
+msgstr "ថា​តើ​យើង​មាន​កម្រិត​ពង្រីក​អប្បបរមា​ត្រឹមត្រូវ​ដែរ​ឬ​ទេ"
+
+#: ../bonobo/bonobo-zoomable.c:361
+msgid "Has a maximum Zoom level"
+msgstr "មាន​កម្រិត​​ពង្រីក​អតិបរមា"
+
+#: ../bonobo/bonobo-zoomable.c:362
+msgid "Whether we have a valid maximum zoom level"
+msgstr "ថា​តើ​​យើង​មាន​កម្រិត​ពង្រីក​អតិបរមា​ត្រឹមត្រូវ​ដែរ​ឬ​ទេ"
+
+#: ../bonobo/bonobo-zoomable.c:369
+msgid "Is continuous"
+msgstr "បន្ត"
+
+#: ../bonobo/bonobo-zoomable.c:370
+msgid "Whether we zoom continuously (as opposed to jumps)"
+msgstr "ថា​តើ​យើង​ពង្រីក​បន្ត (ដូច​ដែរ​ប្រឆាំង​ការ​លោត)"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:1
+msgid "About this application"
+msgstr "អំពី​កម្មវិធី​នេះ"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:2
+msgid "Select"
+msgstr "ជ្រើស"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:3
+msgid "_About..."
+msgstr "អំពី..."
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:4
+msgid "_Edit"
+msgstr "កែសម្រួល"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:5
+#: ../tools/browser/bonobo-browser.xml.h:4
+msgid "_File"
+msgstr "ឯកសារ"
+
+#: ../samples/bonoboui/Bonobo_Sample_Hello.xml.h:6
+msgid "_Select"
+msgstr "ជ្រើស"
+
+#: ../samples/bonoboui/hello.c:65
+msgid "This does nothing; it is only a demonstration."
+msgstr "គ្មាន​អ្វី​ឡើយ វា​គ្រាន់​​តែ​ជា​ការ​បង្ហាញ​ប៉ុណ្ណោះ ។"
+
+#: ../samples/bonoboui/hello.c:147
+msgid "BonoboUI-Hello."
+msgstr "BonoboUI-Hello."
+
+#: ../samples/bonoboui/hello.c:219
+msgid "Gnome Hello"
+msgstr "សួស្ដី Gnome"
+
+#. Create Label and put it in the Button:
+#: ../samples/bonoboui/hello.c:274
+msgid "Hello, World!"
+msgstr "សួស្ដី ទាំងអស់​គ្នា !"
+
+#: ../samples/bonoboui/hello.c:314
+msgid "Cannot init libbonoboui code"
+msgstr "មិន​អាច​ចាប់ផ្ដើម​កូដ libbonoboui បាន​ឡើយ"
+
+#: ../samples/controls/bonobo-sample-controls.c:133
+msgid "Could not initialize Bonobo UI"
+msgstr "មិន​អាច​ចាប់ផ្ដើម Bonobo UI បាន​ឡើយ"
+
+#: ../tools/browser/bonobo-browser.desktop.in.h:1
+msgid "Bonobo Component Browser"
+msgstr "កម្មវិធី​រុករក​សមាសភាគ Bonobo"
+
+#: ../tools/browser/bonobo-browser.desktop.in.h:2
+msgid "Shows available Bonobo components"
+msgstr "បង្ហាញ​សមាសភាគ Bonobo ដែល​​មាន"
+
+#: ../tools/browser/bonobo-browser.xml.h:1
+msgid "About this program..."
+msgstr "អំពី​កម្មវិធី​នេះ..."
+
+#: ../tools/browser/bonobo-browser.xml.h:2
+msgid "Close the current window"
+msgstr "បិទ​បង្អួច​បច្ចុប្បន្ន"
+
+#: ../tools/browser/bonobo-browser.xml.h:3
+msgid "Open a new window"
+msgstr "បើក​បង្អួច​ថ្មី"
+
+#: ../tools/browser/bonobo-browser.xml.h:5
+msgid "_Help"
+msgstr "ជំនួយ"
+
+#. Build the general tab
+#: ../tools/browser/component-details.c:103
+msgid "General"
+msgstr "ទូទៅ"
+
+#: ../tools/browser/component-details.c:110
+#: ../tools/browser/component-list.c:389
+msgid "IID"
+msgstr "IID"
+
+#: ../tools/browser/component-details.c:111
+msgid "Location"
+msgstr "ទីតាំង"
+
+#. Build the details tab
+#: ../tools/browser/component-details.c:161
+msgid "Details"
+msgstr "លម្អិត"
+
+#: ../tools/browser/component-details.c:162
+msgid "Detailed Information"
+msgstr "ព័ត៌មាន​​លម្អិត"
+
+#: ../tools/browser/component-list.c:358 ../tools/browser/window.c:283
+msgid "Active"
+msgstr "សកម្ម"
+
+#: ../tools/browser/component-list.c:379
+msgid "Type"
+msgstr "ប្រភេទ"
+
+#: ../tools/browser/window.c:162
+msgid "Component Details"
+msgstr "សេចក្ដី​លម្អិត​សមាសភាគ"
+
+#: ../tools/browser/window.c:208
+msgid "Bonobo Browser"
+msgstr "កម្មវិធី​រុករក Bonobo"
+
+#: ../tools/browser/window.c:210
+msgid "Copyright 2001, The GNOME Foundation"
+msgstr "រក្សាសិទ្ធិ​ឆ្នាំ ២០០១ ដោយ​មូលនិធិ GNOME"
+
+#: ../tools/browser/window.c:211
+msgid "Bonobo component browser"
+msgstr "កម្មវិធី​រុករក​សមាសភាគ​ Bonobo"
+
+#: ../tools/browser/window.c:214
+msgid "translator-credits"
+msgstr ""
+"Launchpad Contributions:\n"
+"  Khoem Sokhem https://launchpad.net/~khoemsokhem"
+
+#. create the window
+#: ../tools/browser/window.c:240
+msgid "Component Browser"
+msgstr "កម្មវិធី​រុករក​សមាសភាគ"
+
+#. Fill out the tool bar
+#: ../tools/browser/window.c:280
+msgid "All"
+msgstr "ទាំងអស់"
+
+#: ../tools/browser/window.c:286
+msgid "Inactive"
+msgstr "អសកម្ម"
