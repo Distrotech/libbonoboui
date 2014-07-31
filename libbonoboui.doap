@@ -10,7 +10,7 @@
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/desktop-devel-list" />
   <download-page rdf:resource="http://download.gnome.org/sources/libbonoboui/" />
   <bug-database rdf:resource="https://bugzilla.gnome.org/enter_bug.cgi?product=bonobo%26component=libbonoboui" />
-  <category rdf:resource="http://api.gnome.org/doap-extensions#platform" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#deprecated" />
 
   <maintainer>
     <foaf:Person>
