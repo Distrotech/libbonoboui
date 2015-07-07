@@ -2,7 +2,6 @@ INCLUDES =	\
 	-DBONOBO_BROWSER_DATADIR=\""$(datadir)"\"	\
         -DBONOBO_SUPPORT_LOCALEDIR=\""$(datadir)/locale"\"        \
 	-I$(srcdir) -I$(top_srcdir) 			\
-	-I$(top_srcdir)/bonobo-browser			\
 	$(BONOBOUI_CFLAGS)				\
 	$(WARN_CFLAGS)
 
